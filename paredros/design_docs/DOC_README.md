@@ -52,7 +52,9 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   J1b adds world-owned fractional terrain motion and v5 archives with v3/v4
   compatibility. 119 world tests, 5 native tests, the full workspace compile
   and a reviewed automated window smoke pass; remaining contact limits are in
-  the plan.
+  the plan. B4 adds revisioned precise combat geometry; 126 world tests,
+  5 native tests and a reviewed automated window smoke pass. The same plan records
+  why anatomical stance shapes require explicit support roles first.
 - [World conditions and authored laws](2026-09-09_world_conditions_plan.md):
   independent skill/risk surgery, causal composition, proposed stored charge and
   sympathetic coupling, and explicitly scoped rules adapters; planned.

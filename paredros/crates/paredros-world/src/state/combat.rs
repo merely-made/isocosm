@@ -3,8 +3,8 @@
 
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 
-use crate::combat::resolve as resolve_combat;
-use crate::{DeathCause, GameError, GameEvent, MovementError};
+use crate::combat::{resolve as resolve_combat, precision::resolve as resolve_precision};
+use crate::{COMBAT_RULES_REVISION, DeathCause, GameError, GameEvent, MovementError};
 
 use super::GameState;
 
@@ -31,18 +31,41 @@ impl GameState {
             .movement
             .position(target)
             .ok_or(MovementError::MissingSubject(target))?;
-        let resolution = resolve_combat(
-            actor,
-            actor_revision,
-            &actor_document,
-            actor_at,
-            target,
-            &target_document,
-            target_at,
-            self.world.ground(),
-            strikes,
-            rules,
-        )?;
+        let resolution = if rules.revision == COMBAT_RULES_REVISION {
+            let actor_pose = self
+                .movement
+                .pose(actor)
+                .ok_or(MovementError::MissingSubject(actor))?;
+            let target_pose = self
+                .movement
+                .pose(target)
+                .ok_or(MovementError::MissingSubject(target))?;
+            resolve_precision(
+                actor,
+                actor_revision,
+                &actor_document,
+                actor_pose,
+                target,
+                &target_document,
+                target_pose,
+                self.world.ground(),
+                strikes,
+                rules,
+            )?
+        } else {
+            resolve_combat(
+                actor,
+                actor_revision,
+                &actor_document,
+                actor_at,
+                target,
+                &target_document,
+                target_at,
+                self.world.ground(),
+                strikes,
+                rules,
+            )?
+        };
         if resolution.harm == 0 {
             return Ok(vec![GameEvent::VolleyResolved {
                 tick,

@@ -301,6 +301,7 @@ impl App {
         app
     }
     fn smoke_sequence(&mut self) {
+        self.move_player([1, 0, 0]);
         assert!(self.action.prepare(self.attack_direction).is_ok());
         assert!(self.action.join(mesocosm_core::PartId(2)).is_ok());
         let start = self.action.action().unwrap().last_tick;
@@ -382,7 +383,7 @@ impl App {
                 .pose(player)
                 .unwrap()
                 .step,
-            1
+            2
         );
         let after_release = self.action.save().unwrap();
         self.save();

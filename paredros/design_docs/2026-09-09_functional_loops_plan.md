@@ -732,3 +732,69 @@ retained treatment/severance and target consequences. Artifacts:
 Use the B2 reproduction commands above with the same pins and Cargo home.
 Physical keyboard/mouse acceptance remains open. Existing unused Vello-patch
 and default-build `retarget_from_ground` warnings remain.
+
+
+### B4. Precise combat geometry (2026-09-13)
+
+CombatRules revision 2 reads both subjects' accepted precise movement poses.
+Anatomical bounds keep their existing pivot, attachment and yaw transforms. The
+translation anchor is the feet pose minus half a voxel on x/z: an untouched cell
+pose therefore reproduces the existing body placement, while fractional movement
+translates that same geometry without rounding it back to the cell. Face touching
+remains a miss; any positive overlap can hit. Quality retains its existing u16
+whole-voxel scale, flooring the smallest overlap, so a subvoxel hit can correctly
+report quality 0 and still apply base harm plus paid charge.
+
+Visibility uses a bounded fixed-point voxel ray through Ground between the two
+part centres. It retains the endpoint-cell exclusion policy, but does not round
+the endpoints before traversing intermediate cells. Simultaneous boundary
+crossings enter the diagonal cell; cells touched only at an isolated corner are
+not added. Entering a neighbour at parameter zero when travelling negatively
+still checks that neighbour. This is centre-ray visibility, not swept-volume
+terrain contact or a continuous pointer-driven swing.
+
+Revision 1 retains the previous integer-cell adjudicator exactly. New actions
+use revision 2 by default; existing histories replay their recorded revision.
+GameSave remains v5 because the serialized field and intent vocabulary are
+unchanged and the rules already carry their semantic revision. Unsupported rules
+fail admission. Injury, severance, equipment release and action repair retain
+the existing owner paths. Traversal limits reject excessive work atomically;
+they never turn a failed query into a miss or a partially applied volley.
+
+The visibility budgets are 4,096 cells per ray and 65,536 across a volley.
+Bounds must fit Ground's i32 cell envelope before traversal.
+
+B4 verification: **126 world tests** and **5 native handler tests** pass. The
+fractional-contact regression checks both subjects: moving the attacker within
+its cell changes touching into a quality-0 hit; matching the target's movement
+restores the miss. Revision 1 retains its integer result. Save/resume preserves
+the precise result. A real pre-B4 v5 native archive restores and rewrites
+byte-for-byte, then accepts continued motion; fixture
+`crates/paredros-world/tests/fixtures/timed-action-v1-game-v5.save` has SHA-256
+`f8fd1d199c88534ab459af02aacaeaf4b966e2d6d3dceb69557ffd5ea449afc3`.
+
+The native binary builds and its automated window smoke passes after fractional
+movement before the strike. The reviewed frame shows motion step 2 at
+`[-56.367, 15.000, -51.500]`, target vitality 83, severed part 2, and dropped item
+3 after save/load. Artifacts: `C:/Users/mark_/Code/.tmp/paredros-precise-20260913/`.
+Logs under `Code/.tmp`: `paredros-precise-world-final.log`,
+`paredros-precise-native-final.log`, and `paredros-precise-build.log`.
+Physical keyboard/mouse acceptance remains open.
+
+#### Movement-shape follow-up
+
+The anatomy review found that BodyDocument describes geometry and attachment,
+but does not say which parts support locomotion. Taking a union of all bounds
+would include outstretched striking/grasping limbs and make them block narrow
+passages. The current explicit MotionRules stance profile remains appropriate
+until that missing meaning is admitted.
+
+The next shape slice should bind explicit envelope/support roles to current
+part addresses and revision, with a configurable support band. It must distinguish
+collision envelope from support/reach, preserve full geometry for combat and
+inspection, and recompute only the declared support projection after severance.
+A new shape/rules revision must retain literal revision-1 movement replay.
+Done when removing a supporting part changes its declared movement projection,
+removing an unrelated extended arm does not enlarge the collision envelope, and
+both results survive save/resume. Root bounds can be a proposed default, but
+geometry alone must not silently designate arbitrary parts as legs or supports.

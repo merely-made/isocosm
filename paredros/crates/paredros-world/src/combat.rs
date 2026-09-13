@@ -17,7 +17,12 @@ use serde::{Deserialize, Serialize};
 use crate::part_bounds;
 use crate::timed_action::{Direction, StrikeReceipt};
 
-pub const COMBAT_RULES_REVISION: u32 = 1;
+pub(crate) mod precision;
+
+/// Revision 2 resolves anatomy against each subject's accepted Q16.16 pose.
+/// Revision 1 remains the archived logical-cell grammar.
+pub const COMBAT_RULES_REVISION: u32 = 2;
+const LEGACY_COMBAT_RULES_REVISION: u32 = 1;
 pub const MAX_VOLLEY_STRIKES: usize = 32;
 pub const MAX_COMBAT_REACH: i32 = 64;
 
@@ -86,7 +91,10 @@ pub enum CombatError {
 
 impl CombatRules {
     pub fn validate(self) -> Result<(), CombatError> {
-        if self.revision != COMBAT_RULES_REVISION
+        if !matches!(
+            self.revision,
+            LEGACY_COMBAT_RULES_REVISION | COMBAT_RULES_REVISION
+        )
             || self.max_reach < 1
             || self.max_reach > MAX_COMBAT_REACH
             || self.charge_per_reach == 0
@@ -100,6 +108,48 @@ impl CombatRules {
 }
 
 pub(crate) fn resolve(
+    actor: SubjectId,
+    actor_revision: BodyRevisionId,
+    actor_body: &BodyDocument,
+    actor_at: [i32; 3],
+    target: SubjectId,
+    target_body: &BodyDocument,
+    target_at: [i32; 3],
+    ground: &Ground,
+    receipts: &[StrikeReceipt],
+    rules: CombatRules,
+) -> Result<VolleyResolution, CombatError> {
+    if rules.revision == COMBAT_RULES_REVISION {
+        return precision::resolve(
+            actor,
+            actor_revision,
+            actor_body,
+            crate::MotionPose::at_cell(actor_at),
+            target,
+            target_body,
+            crate::MotionPose::at_cell(target_at),
+            ground,
+            receipts,
+            rules,
+        );
+    }
+    resolve_legacy(
+        actor,
+        actor_revision,
+        actor_body,
+        actor_at,
+        target,
+        target_body,
+        target_at,
+        ground,
+        receipts,
+        rules,
+    )
+}
+
+/// The original integer-cell resolver. Keep its instruction order intact so
+/// every revision-1 history retains its prior replay result.
+fn resolve_legacy(
     actor: SubjectId,
     actor_revision: BodyRevisionId,
     actor_body: &BodyDocument,
