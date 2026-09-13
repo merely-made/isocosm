@@ -25,13 +25,15 @@ use winit::{
     keyboard::KeyCode,
     window::Window,
 };
-#[path = "view.rs"]
-mod view;
+#[path = "actions.rs"]
+mod actions;
 #[path = "host.rs"]
 mod host;
 #[cfg(test)]
 #[path = "tests.rs"]
 mod tests;
+#[path = "view.rs"]
+mod view;
 
 pub fn run() {
     let event_loop = EventLoop::new().expect("event loop");
@@ -346,6 +348,27 @@ impl App {
             Some(ItemLocation::At(target_at)),
             "the attached target dressing is released at the target"
         );
+        self.take_dressing();
+        self.injure();
+        self.rest();
+        let player = self.action.session().control().played();
+        let game = self.action.session().game();
+        assert_eq!(game.bodies().get(player).unwrap().wound, 0);
+        assert!(
+            game.current_anatomy(player)
+                .unwrap()
+                .document
+                .part(mesocosm_core::PartId(1))
+                .unwrap()
+                .severed
+        );
+        assert_eq!(
+            game.items()
+                .carried_by(player)
+                .filter(|item| item.kind == ItemKind::Dressing)
+                .count(),
+            0
+        );
         let after_release = self.action.save().unwrap();
         self.save();
         assert!(
@@ -420,6 +443,8 @@ impl App {
             },
             KeyCode::KeyJ => self.join_limb(),
             KeyCode::KeyI => self.injure(),
+            KeyCode::KeyR => self.rest(),
+            KeyCode::KeyE => self.take_dressing(),
             KeyCode::F5 => self.save(),
             KeyCode::F9 => self.load(),
             _ => return,
@@ -495,64 +520,6 @@ impl App {
                 _ => None,
             })
             .unwrap_or_else(|| vec!["No volley resolution recorded".into()])
-    }
-    fn move_player(&mut self, toward: [i32; 3]) {
-        let tick = self.action.session().game().next_tick();
-        let subject = self.action.session().control().played();
-        let at = self
-            .action
-            .session()
-            .game()
-            .movement()
-            .position(subject)
-            .expect("played body has a position");
-        let goal = [at[0] + toward[0], at[1] + toward[1], at[2] + toward[2]];
-        self.status = match self.action.apply_game_batch(&[GameIntent::Move {
-            tick,
-            subject,
-            toward: goal,
-        }]) {
-            Ok(events) => vec![format!("Moved: {} event(s)", events.len())],
-            Err(e) => vec![format!("Move failed: {e:?}")],
-        };
-    }
-    fn injure(&mut self) {
-        let subject = self.action.session().control().played();
-        let old = self
-            .action
-            .session()
-            .game()
-            .bodies()
-            .get(subject)
-            .unwrap()
-            .revision;
-        let first = self.action.session().game().next_tick();
-        let second = Tick(first.0 + 1);
-        let next = paredros_identity::BodyRevisionId(old.0 + 1);
-        let result = self.action.apply_game_batch(&[
-            GameIntent::Fall {
-                tick: first,
-                subject,
-                distance: 5,
-            },
-            GameIntent::ReconcileAnatomy {
-                tick: second,
-                subject,
-                from_revision: old,
-                revision: next,
-                severed_parts: vec![mesocosm_core::PartId(1)],
-            },
-        ]);
-        self.status = vec![format!(
-            "Injury cut: {}",
-            result
-                .map(|events| format!(
-                    "{} events; part 1 removed, surviving contributors retained",
-                    events.len()
-                ))
-                .unwrap_or_else(|e| format!("{e:?}"))
-        )];
-        self.redraw();
     }
     fn save(&mut self) {
         self.status = match self

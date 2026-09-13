@@ -1,9 +1,10 @@
 # Paredros functional loops and wiring plan
 
-**Status: in progress, 2026-09-09.** Lane design is recorded; bounded J0
-body-sheet inspection and J1a controlled-session persistence are implemented
-locally. This plan does not claim a
-joined playable world, directional combat, construction, or adventure saves.
+**Status: in progress, 2026-09-13.** J0 body inspection, J1a controlled-session
+persistence, B1 charged limb contributions and B2 cardinal strike adjudication
+are implemented. The native client uses the same injury and inventory owners.
+Continuous contact movement, construction and full adventure coordination remain
+open.
 
 ## Direction
 
@@ -605,3 +606,51 @@ The existing unused Vello-patch warning remains; the default native build also
 reports the existing unused `retarget_from_ground` helper. Broader ContactWorld
 integration, continuous swing trajectories and physical input acceptance remain
 separate work.
+
+
+### B3. Injury and treatment keep detailed anatomy current (2026-09-13)
+
+`Session::fall(distance)` and `Session::rest()` compose the existing body-change
+intent with anatomy reconciliation in one atomic caller operation. They require
+current anatomy at entry. A surviving revision change records two ordered game
+intents, with an empty new-severance list: refresh the revision while preserving
+all existing lost parts. A safe fall or rest without healing records only the
+ordinary intent. GameState retains its historical low-level transition behavior.
+There is no new save vocabulary or hash layout; real v3/v4 histories remain valid.
+
+Treatment uses the existing world's dressing and rest rules. One available
+owned dressing is consumed when wounded; without one rest reduces fatigue but
+does not heal. Treatment does not regrow a limb. A fatal fall leaves the last
+admitted anatomy as historical evidence; current-anatomy queries reject the dead
+body, and treatment cannot revive it. TimedActionSession wraps these operations
+with contribution repair at the same atomic boundary: surviving charge remains,
+lost or dead-body contributions are cancelled, and bindings follow the current
+revision.
+
+The native timed-action client exposes E to pick up a dressing at the player's
+position and R to rest. The existing I command remains an explicitly authored
+injury/severance debug action. The display reports the player's wound, vitality
+and remaining dressings so treatment has a visible consequence.
+
+Contact research identified a separate prerequisite for J1: Movement currently
+owns integer ground positions, while ContactWorld owns fractional positions and
+velocities plus independent fixture integrity/recovery. Adding continuous pose
+fields changes serialized GameState hashes, including existing archive checks.
+The next contact implementation must settle one position owner, units, clock
+conversion and migration together. A disposable fall fixture would not settle
+that boundary and is not the chosen integration strategy. B3 does not claim
+continuous movement or a new collision-to-injury bridge.
+
+
+B3 verification on 2026-09-13: **110 world tests** and **5 native timed-action
+handler tests** pass on the B2 pins. The actual binary's automated window smoke
+passes, including injury, dressing consumption, retained severance and exact
+post-treatment save/load. Its reviewed capture shows player vitality 100,
+wound 0, dressings 0, lost parts 1; target vitality 83 and its dropped item remain
+unchanged by player treatment. Artifacts are in
+`C:/Users/mark_/Code/.tmp/paredros-treatment-20260913/`; gate logs are
+`.tmp/paredros-body-change-{world,native,build}.log` under `Code`. Reproduction
+uses the same B2 test/build commands above. This is automated handler and headed
+evidence; physical keyboard/mouse acceptance remains open. Independent Terra
+review found no remaining atomicity or replay issue. Native actions were split
+from `model.rs` to keep it below the 600-line ceiling.

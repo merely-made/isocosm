@@ -17,6 +17,8 @@ use crate::{
     LEGACY_GAME_STATE_VERSION, World,
 };
 
+mod body_change;
+
 pub const SESSION_VERSION: u32 = 1;
 pub const MAX_SESSION_BYTES: usize = 64 * 1024 * 1024;
 pub const MAX_GAME_INTENTS: usize = 1_000_000;

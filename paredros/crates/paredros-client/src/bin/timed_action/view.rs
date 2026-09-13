@@ -43,7 +43,22 @@ impl AppView for App {
             .map(|item| format!("{:?}", item.location))
             .unwrap_or_else(|| "missing".into());
         vec![
-            format!("Player at {:?}", game.movement().position(player)),
+            format!(
+                "Player at {:?}; vitality={} wound={} dressings={} lost parts={}",
+                game.movement().position(player),
+                game.bodies().get(player).map_or(0, |body| body.vitality),
+                game.bodies().get(player).map_or(0, |body| body.wound),
+                game.items()
+                    .carried_by(player)
+                    .filter(|item| item.kind == paredros_world::ItemKind::Dressing)
+                    .count(),
+                game.anatomies().get(player).map_or(0, |record| record
+                    .document
+                    .parts
+                    .iter()
+                    .filter(|part| part.severed)
+                    .count())
+            ),
             format!(
                 "Target {} at {:?}; vitality={} {}",
                 body.name.as_ref().map_or("unnamed", |n| n.as_str()),
@@ -59,7 +74,7 @@ impl AppView for App {
     fn display_lines(&self) -> Vec<String> {
         let mut lines = vec![
             "Arrows: prepare direction | WASD: move | Hold Space or left mouse: charge | Release: strike".into(),
-            "J: join second limb | I: self-injury debug | F5: save | F9: load | Esc: close".into(),
+            "J: join limb | I: injury debug | E: take dressing | R: rest | F5: save | F9: load | Esc: close".into(),
         ];
         lines.extend(self.status.iter().cloned());
         if let Some(action) = self.action.action() {

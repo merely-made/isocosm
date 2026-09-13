@@ -15,6 +15,7 @@ use wing_functions::{
     NetworkSnapshot, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
 };
 
+mod body_change;
 mod combat;
 mod routing;
 use routing::route_open;
