@@ -5,6 +5,8 @@
 pub(super) mod model;
 #[cfg(test)]
 mod oracle;
+#[cfg(test)]
+mod completion;
 pub(super) mod renderer;
 
 use super::{LEAF_KEY, state::Bench, view::Child};
@@ -27,7 +29,7 @@ pub fn view(state: &Bench) -> Child {
     Box::new(el("div", (
         el("h1", text("Specimen bench / Population")),
         el("p", text(format!("{} bodies / {} designs / {} / seed {}", population.config.bodies, population.config.designs, population.config.kind.label(), population.config.seed))),
-        el("p", text("Presentation workload. Independent body and design counts; fixed camera and scale.")),
+        el("p", text(format!("Spacing {} / view half-height {} / {} depth layers / {} submission", population.config.grid_spacing, population.config.camera_extent, population.config.depth_layers, if population.config.reverse_instances { "reverse" } else { "forward" }))),
         custom_leaf::<Bench, ()>(LEAF_KEY, 640, 400)
             .attr("id", "specimen-viewport")
             .attr("class", match state.tint { 1 => "viewport warm", 2 => "viewport cool", _ => "viewport" })

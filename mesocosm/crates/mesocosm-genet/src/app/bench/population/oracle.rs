@@ -123,15 +123,15 @@ fn box_hit(origin: [f32; 3], direction: [f32; 3], min: [f32; 3]) -> Option<f32> 
     (far >= near).then_some(near)
 }
 
-fn ray(x: f32, y: f32) -> ([f32; 3], [f32; 3]) {
+fn ray(x: f32, y: f32, extent: f32) -> ([f32; 3], [f32; 3]) {
     let (s, c) = std::f32::consts::FRAC_PI_4.sin_cos();
     let (sp, cp) = 0.6154797_f32.sin_cos();
     let toward_eye = [c * cp, sp, s * cp];
     let right = [s, 0., -c];
     let up = [-c * sp, cp, -s * sp];
-    let distance = EXTENT * 4. + 32.;
-    let sx = (2. * x / SIDE as f32 - 1.) * EXTENT;
-    let sy = (1. - 2. * y / SIDE as f32) * EXTENT;
+    let distance = extent * 4. + 32.;
+    let sx = (2. * x / SIDE as f32 - 1.) * extent;
+    let sy = (1. - 2. * y / SIDE as f32) * extent;
     (
         [0, 1, 2].map(|i| [0., 7., 0.][i] + distance * toward_eye[i] + sx * right[i] + sy * up[i]),
         toward_eye.map(|v| -v),
@@ -139,7 +139,17 @@ fn ray(x: f32, y: f32) -> ([f32; 3], [f32; 3]) {
 }
 
 fn hits(x: f32, y: f32, yaw: f32, bodies: &[(Vec<[f32; 3]>, [f32; 3])]) -> Vec<f32> {
-    let (origin, direction) = ray(x, y);
+    hits_at_extent(x, y, yaw, bodies, EXTENT)
+}
+
+fn hits_at_extent(
+    x: f32,
+    y: f32,
+    yaw: f32,
+    bodies: &[(Vec<[f32; 3]>, [f32; 3])],
+    extent: f32,
+) -> Vec<f32> {
+    let (origin, direction) = ray(x, y, extent);
     let (s, c) = yaw.sin_cos();
     let inverse = |p: [f32; 3]| [c * p[0] - s * p[2], p[1], s * p[0] + c * p[2]];
     let mut hits = Vec::new();
@@ -242,5 +252,151 @@ fn population_pixels_match_independent_voxel_occupancy_and_nearest_depth() {
                 "non-vacuous {kind:?}/{yaw}: foreground {foreground_count}, background {background_count}, overlap {overlap_count}"
             );
         }
+    }
+}
+
+#[test]
+fn four_and_eight_separated_depth_layers_preserve_silhouette_and_submission_order() {
+    const DENSE_EXTENT: f32 = 32.;
+    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
+    let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
+        .expect("oracle GPU adapter");
+    let (device, queue) = pollster::block_on(adapter.request_device(&Default::default())).unwrap();
+    let mut prior_coverage = None;
+    for layers in [4, 8] {
+        let mut workload = Workload::new(Config {
+            bodies: layers,
+            designs: layers,
+            kind: Kind::Appearance,
+            depth_layers: layers,
+            camera_extent: DENSE_EXTENT as u32,
+            ..Config::default()
+        })
+        .unwrap();
+        let (s, c) = std::f32::consts::FRAC_PI_4.sin_cos();
+        let (sp, cp) = 0.6154797_f32.sin_cos();
+        let toward_eye = [c * cp, sp, s * cp];
+        let bodies: Vec<_> = (0..layers)
+            .map(|i| {
+                let distance = (i as f32 - (layers - 1) as f32 * 0.5) * 40.;
+                let expected = toward_eye.map(|v| v * distance);
+                for axis in 0..3 {
+                    assert!((workload.instances[i].origin[axis] - expected[axis]).abs() < 1e-5);
+                }
+                (cells(Kind::Appearance, 0, 7), expected)
+            })
+            .collect();
+        let mut renderer = Renderer::new(&device, &queue, (SIDE, SIDE), &workload).unwrap();
+        renderer.oracle_extent(DENSE_EXTENT);
+        let yaw = 0.41;
+        renderer
+            .render(&device, &queue, &workload, yaw, [1.; 3])
+            .unwrap();
+        let forward_color = read(&device, &queue, renderer.oracle_texture(), false);
+        let forward_depth = read(&device, &queue, renderer.oracle_depth(), true);
+        workload.instances.reverse();
+        renderer
+            .render(&device, &queue, &workload, yaw, [1.; 3])
+            .unwrap();
+        assert_eq!(
+            read(&device, &queue, renderer.oracle_texture(), false),
+            forward_color,
+            "{layers} layers: RGBA must not depend on submission order"
+        );
+        assert_eq!(
+            read(&device, &queue, renderer.oracle_depth(), true),
+            forward_depth,
+            "{layers} layers: depth must not depend on submission order"
+        );
+        workload.instances.reverse();
+        workload.config.reverse_instances = true;
+        renderer
+            .render(&device, &queue, &workload, yaw, [1.; 3])
+            .unwrap();
+        assert_eq!(
+            read(&device, &queue, renderer.oracle_texture(), false),
+            forward_color,
+            "{layers} layers: configured reverse order must preserve RGBA"
+        );
+        assert_eq!(
+            read(&device, &queue, renderer.oracle_depth(), true),
+            forward_depth,
+            "{layers} layers: configured reverse order must preserve depth"
+        );
+        let mut coverage = Vec::new();
+        let mut body_intersections = 0;
+        let mut tested_front = 0;
+        let mut tested_clear = 0;
+        for y in 0..SIDE {
+            for x in 0..SIDE {
+                let center =
+                    hits_at_extent(x as f32 + 0.5, y as f32 + 0.5, yaw, &bodies, DENSE_EXTENT);
+                coverage.push(!center.is_empty());
+                body_intersections += center.len();
+                let stable = [(0.3, 0.5), (0.7, 0.5), (0.5, 0.3), (0.5, 0.7)]
+                    .into_iter()
+                    .all(|(dx, dy)| {
+                        let nearby = hits_at_extent(
+                            x as f32 + dx,
+                            y as f32 + dy,
+                            yaw,
+                            &bodies,
+                            DENSE_EXTENT,
+                        );
+                        match (center.first(), nearby.first()) {
+                            (None, None) => true,
+                            (Some(a), Some(b)) => (a - b).abs() < 0.3 && nearby.len() == layers,
+                            _ => false,
+                        }
+                    });
+                if !stable {
+                    continue;
+                }
+                let offset = ((y * SIDE + x) * 4) as usize;
+                let observed =
+                    f32::from_le_bytes(forward_depth[offset..offset + 4].try_into().unwrap());
+                if let Some(distance) = center.first() {
+                    assert_eq!(
+                        center.len(),
+                        layers,
+                        "each covered ray crosses every separated body"
+                    );
+                    assert!(
+                        center
+                            .windows(2)
+                            .all(|pair| (pair[1] - pair[0] - 40.).abs() < 0.001)
+                    );
+                    let far = 2. * (DENSE_EXTENT * 4. + 32.) + DENSE_EXTENT * 4.;
+                    let expected = (distance - 0.1) / (far - 0.1);
+                    assert!(
+                        (observed - expected).abs() < 2e-5,
+                        "{layers} layers ({x},{y}) observed {observed} expected {expected}"
+                    );
+                    assert_ne!(&forward_color[offset..offset + 4], &forward_color[..4]);
+                    tested_front += 1;
+                } else {
+                    assert_eq!(observed, 1.0);
+                    assert_eq!(&forward_color[offset..offset + 4], &forward_color[..4]);
+                    tested_clear += 1;
+                }
+            }
+        }
+        let covered = coverage.iter().filter(|&&occupied| occupied).count();
+        assert_eq!(
+            body_intersections,
+            covered * layers,
+            "geometric depth complexity grows independently of covered pixel count"
+        );
+        assert!(tested_front > 100 && tested_clear > 1000);
+        if let Some(previous) = &prior_coverage {
+            assert_eq!(
+                &coverage, previous,
+                "doubling depth layers must preserve silhouette coverage"
+            );
+        }
+        eprintln!(
+            "independent population oracle: layers={layers} covered_pixels={covered} body_ray_intersections={body_intersections} checked_front={tested_front} checked_clear={tested_clear}"
+        );
+        prior_coverage = Some(coverage);
     }
 }

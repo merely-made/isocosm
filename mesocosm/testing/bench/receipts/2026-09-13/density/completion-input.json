@@ -1,0 +1,329 @@
+{
+  "width": 1236,
+  "height": 756,
+  "samples": 24,
+  "cases": [
+    {
+      "name": "appearance-wide",
+      "config": {
+        "kind": "appearance",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 500,
+        "grid_spacing": 24,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "appearance-dense",
+      "config": {
+        "kind": "appearance",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 100,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "appearance-layer1",
+      "config": {
+        "kind": "appearance",
+        "bodies": 120,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "appearance-layer4",
+      "config": {
+        "kind": "appearance",
+        "bodies": 480,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 4,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "appearance-layer8",
+      "config": {
+        "kind": "appearance",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "appearance-layer8-reverse",
+      "config": {
+        "kind": "appearance",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": true
+      }
+    },
+    {
+      "name": "assembly-wide",
+      "config": {
+        "kind": "assembly",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 500,
+        "grid_spacing": 24,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-dense",
+      "config": {
+        "kind": "assembly",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 100,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-layer1",
+      "config": {
+        "kind": "assembly",
+        "bodies": 120,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-layer4",
+      "config": {
+        "kind": "assembly",
+        "bodies": 480,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 4,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-layer8",
+      "config": {
+        "kind": "assembly",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-layer8-reverse",
+      "config": {
+        "kind": "assembly",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": true
+      }
+    },
+    {
+      "name": "geometry-wide",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 500,
+        "grid_spacing": 24,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-dense",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 100,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-layer1",
+      "config": {
+        "kind": "geometry",
+        "bodies": 120,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-layer4",
+      "config": {
+        "kind": "geometry",
+        "bodies": 480,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 4,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-layer8",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-layer8-reverse",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": true
+      }
+    },
+    {
+      "name": "geometry-layer8-unique",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 960,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-layer8-unique-reverse",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 960,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 8,
+        "reverse_instances": true
+      }
+    },
+    {
+      "name": "appearance-dense-crop",
+      "config": {
+        "kind": "appearance",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "assembly-dense-crop",
+      "config": {
+        "kind": "assembly",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    },
+    {
+      "name": "geometry-dense-crop",
+      "config": {
+        "kind": "geometry",
+        "bodies": 960,
+        "designs": 120,
+        "seed": 7,
+        "mesh_capacity": 1024,
+        "camera_extent": 50,
+        "grid_spacing": 6,
+        "depth_layers": 1,
+        "reverse_instances": false
+      }
+    }
+  ]
+}

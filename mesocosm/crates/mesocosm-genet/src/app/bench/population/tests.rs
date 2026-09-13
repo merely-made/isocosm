@@ -116,3 +116,125 @@ fn thousand_generated_designs_have_distinct_actual_occupancy() {
     assert_eq!(geometries.len(), 1000);
     assert_eq!(workload.stats.unique_meshes, 1002);
 }
+
+#[test]
+fn default_layout_is_unchanged_and_density_preserves_geometry() {
+    let config = Config {
+        bodies: 16,
+        designs: 16,
+        kind: Kind::Geometry,
+        ..Default::default()
+    };
+    let baseline = Workload::new(config.clone()).unwrap();
+    for (i, instance) in baseline.instances.iter().enumerate() {
+        let [x, z] = grid(i);
+        assert_eq!(instance.origin, [x as f32 * 24.0, 0.0, z as f32 * 24.0]);
+    }
+    let dense = Workload::new(Config {
+        camera_extent: 64,
+        grid_spacing: 8,
+        depth_layers: 4,
+        ..config
+    })
+    .unwrap();
+    let keys = |workload: &Workload| {
+        workload
+            .designs
+            .iter()
+            .flatten()
+            .map(|m| m.placements[0].volume)
+            .collect::<BTreeSet<_>>()
+    };
+    assert_eq!(keys(&baseline), keys(&dense));
+    assert_eq!(baseline.stats.body_count, dense.stats.body_count);
+    assert_eq!(baseline.stats.instance_quads, dense.stats.instance_quads);
+    assert_eq!(dense.stats.occupied_groups, 4);
+    assert_eq!(dense.stats.occupied_layers, 4);
+    assert_ne!(baseline.digest, dense.digest);
+}
+
+#[test]
+fn depth_layers_have_distinct_origins_on_the_camera_axis_and_stable_prefixes() {
+    let config = Config {
+        bodies: 16,
+        designs: 1,
+        depth_layers: 8,
+        ..Default::default()
+    };
+    let small = Workload::new(config.clone()).unwrap();
+    let large = Workload::new(Config {
+        bodies: 128,
+        ..config
+    })
+    .unwrap();
+    assert_eq!(small.instances, large.instances[..16]);
+    let origins: BTreeSet<_> = large
+        .instances
+        .iter()
+        .map(|i| i.origin.map(f32::to_bits))
+        .collect();
+    assert_eq!(origins.len(), 128);
+    let camera = mesocosm_render::Camera::default();
+    let view_axis = [
+        camera.yaw.cos() * camera.pitch.cos(),
+        camera.pitch.sin(),
+        camera.yaw.sin() * camera.pitch.cos(),
+    ];
+    for pair in small.instances[..8].windows(2) {
+        let delta = [0, 1, 2].map(|i| pair[1].origin[i] - pair[0].origin[i]);
+        assert!((0..3).all(|i| (delta[i] - 40.0 * view_axis[i]).abs() < 0.0001));
+    }
+}
+
+#[test]
+fn density_controls_are_validated_and_independently_recorded() {
+    for config in [
+        Config {
+            camera_extent: 7,
+            ..Default::default()
+        },
+        Config {
+            camera_extent: 2001,
+            ..Default::default()
+        },
+        Config {
+            grid_spacing: 0,
+            ..Default::default()
+        },
+        Config {
+            grid_spacing: 129,
+            ..Default::default()
+        },
+        Config {
+            depth_layers: 0,
+            ..Default::default()
+        },
+        Config {
+            depth_layers: 33,
+            ..Default::default()
+        },
+    ] {
+        assert!(Workload::new(config).is_err());
+    }
+    let base = Workload::new(Config::default()).unwrap();
+    for config in [
+        Config {
+            camera_extent: 499,
+            ..Default::default()
+        },
+        Config {
+            grid_spacing: 23,
+            ..Default::default()
+        },
+        Config {
+            depth_layers: 2,
+            ..Default::default()
+        },
+        Config {
+            reverse_instances: true,
+            ..Default::default()
+        },
+    ] {
+        assert_ne!(base.digest, Workload::new(config).unwrap().digest);
+    }
+}

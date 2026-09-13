@@ -1003,16 +1003,61 @@ including the receipt-only readiness correction between them.
 
 Only 4.55-5.01% of the native viewport foreground is occupied at 1000 bodies.
 This receipt prices sparse fixed-scale submissions and the document boundary.
-Dense coverage/overdraw, real generated anatomy with ecological projection,
-terrain/effects together, full memory residency and application working limits
-remain Bench D gates. Initial CPU preparation also repeats shared part meshing
+That sparse receipt did not settle dense coverage/overdraw, real generated
+anatomy with ecological projection, terrain/effects together, full memory
+residency or application working limits. Initial CPU preparation also repeats shared part meshing
 across assembly designs; it is reported honestly rather than treated as a
 shared preparation cache. Existing yaw/coplanar policy receipts remain in force.
+
+**Dense and layered receipt, 2026-09-13:** population controls now expose
+camera half-height (8..2000), spacing (1..128), depth layers (1..32) and input
+reversal. Defaults preserve the earlier layout; the v2 digest records these
+settings. Layer groups occupy distinct positions 40 units apart along the
+camera axis. Tight lateral packing is a renderer stress fixture, not admitted
+ecological placement. Volume-key grouping still determines GPU batching.
+
+[Twenty-three native cases](../testing/bench/receipts/2026-09-13/density/matrix.json)
+pass the existing style/yaw/reset and warm-cache checks. Unclipped dense
+layouts cover 33-35% of the viewport; tightly cropped layouts cover 93-95%.
+The crop submits 960 bodies and reports 350-371 conservative bounds crossing
+clip planes, including 154-165 wholly outside a plane. This is not a claim
+that all submitted bodies are visible. One/four/eight-layer controls keep
+the same projected group count and camera. Native reversal comparisons
+change zero viewport pixels in all four tested pairs.
+
+The independent oracle now tests four and eight separated layers. At its
+magnified framing, 265 covered pixel rays intersect 1060 then 2120 bodies;
+the silhouette stays unchanged. Stable interior depth and clear background
+checks retain their tolerances. Both manual and configured input reversal
+preserve exact RGBA/depth. These counts describe geometric overlap, not shader
+invocations or early-depth rejection.
+
+The native device confirms timestamp queries disabled. A separate ignored
+diagnostic uses a private baseline-feature device, drains old queue work
+outside each sample, and records CPU render/submit, completion wait and
+serialized total with a ten-second bound. Its 23 cases and 24 steady samples
+per case pass at the native attachment dimensions, 1236x756. It identifies
+an NVIDIA RTX 4060 Laptop GPU using Vulkan; native adapter identity is not
+exposed by the current host hook, so their timings are not subtracted.
+
+Private-device median serialized totals were 0.56 ms wide / 0.65 ms cropped
+for shared appearance, 0.57 / 0.68 ms for assemblies, and 1.15 / 1.27 ms for
+122 geometry keys. The 962-key eight-layer case took 5.68 ms forward and
+4.85 ms reversed. These are one bounded run's CPU-plus-completion times,
+not GPU-only durations or application frame budgets. Native profiles and
+available concurrent-build snapshots are retained separately.
+
+This closes the bounded dense/layered fixture receipt. Real generated anatomy
+through ecological projection, terrain and causal effects together, transparent
+compositing, full memory accounting and application working limits remain open.
+The raw capture/profile paths, source identities and repeat commands are in
+[the source receipt](../testing/bench/receipts/2026-09-13/density/source.json).
 
 The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
 bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;
-dense coverage and application working limits remain open. T1 general
+dense/layered fixtures now have a follow-up receipt; integrated real scenes
+and application working limits remain open. T1 general
 CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.

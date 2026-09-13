@@ -12,6 +12,7 @@ use std::collections::BTreeSet;
 pub const MAX_BODIES: usize = 1000;
 pub const GRID_STRIDE: f32 = 24.0;
 pub const CAMERA_EXTENT: f32 = 500.0;
+pub const DEPTH_LAYER_SPACING: f32 = 40.0;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -40,6 +41,12 @@ pub struct Config {
     pub seed: u64,
     pub kind: Kind,
     pub mesh_capacity: usize,
+    /// Orthographic half-height in world units, independent of population.
+    pub camera_extent: u32,
+    pub grid_spacing: u32,
+    pub depth_layers: usize,
+    /// Reverse body input order; the renderer still groups by volume key.
+    pub reverse_instances: bool,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -49,6 +56,10 @@ impl Default for Config {
             seed: 7,
             kind: Kind::Appearance,
             mesh_capacity: 1024,
+            camera_extent: CAMERA_EXTENT as u32,
+            grid_spacing: GRID_STRIDE as u32,
+            depth_layers: 1,
+            reverse_instances: false,
         }
     }
 }
@@ -66,6 +77,8 @@ pub struct WorkloadStats {
     /// CPU meshing calls during preparation, including repeated volume copies.
     pub cpu_mesh_builds: usize,
     pub cpu_retained_meshes: usize,
+    pub occupied_groups: usize,
+    pub occupied_layers: usize,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -98,6 +111,15 @@ impl Workload {
         }
         if !(1..=4096).contains(&config.mesh_capacity) {
             return Err("mesh capacity must be 1..4096".into());
+        }
+        if !(8..=2000).contains(&config.camera_extent) {
+            return Err("camera extent must be 8..2000 world units".into());
+        }
+        if !(1..=128).contains(&config.grid_spacing) {
+            return Err("grid spacing must be 1..128 world units".into());
+        }
+        if !(1..=32).contains(&config.depth_layers) {
+            return Err("depth layers must be 1..32".into());
         }
         let unique = if config.kind == Kind::Geometry {
             config.designs + 2
@@ -133,17 +155,33 @@ impl Workload {
                 (min, max)
             })
             .collect();
+        let camera = mesocosm_render::Camera::default();
+        let direction = [
+            camera.yaw.cos() * camera.pitch.cos(),
+            camera.pitch.sin(),
+            camera.yaw.sin() * camera.pitch.cos(),
+        ];
         let instances: Vec<_> = (0..config.bodies)
             .map(|i| {
                 let ordinal = i % config.designs;
-                let [x, z] = grid(i);
+                let [x, z] = grid(i / config.depth_layers);
+                let base = [
+                    x as f32 * config.grid_spacing as f32,
+                    0.0,
+                    z as f32 * config.grid_spacing as f32,
+                ];
+                // Same screen position within a group, distinct world depth.
+                // The centred span depends on settings, never population, so
+                // growing a population preserves its existing instance prefix.
+                let depth = DEPTH_LAYER_SPACING
+                    * ((i % config.depth_layers) as f32 - (config.depth_layers - 1) as f32 * 0.5);
                 Instance {
                     design: if config.kind == Kind::Appearance {
                         0
                     } else {
                         ordinal
                     },
-                    origin: [x as f32 * GRID_STRIDE, 0.0, z as f32 * GRID_STRIDE],
+                    origin: [0, 1, 2].map(|axis| base[axis] + direction[axis] * depth),
                     tint: if config.kind == Kind::Appearance {
                         colour(ordinal, config.seed)
                     } else {
@@ -186,10 +224,18 @@ impl Workload {
             instance_quads,
             cpu_mesh_builds: mesh_designs * 3,
             cpu_retained_meshes: mesh_designs * 3,
+            occupied_groups: config.bodies.div_ceil(config.depth_layers),
+            occupied_layers: config.bodies.min(config.depth_layers),
         };
         let mut hash = 0xcbf2_9ce4_8422_2325;
-        feed(&mut hash, b"bench-population-v1");
+        // v2 adds explicit camera, grid density and depth-layer controls. Old
+        // omitted fields keep their old layout, but receive a new receipt ID.
+        feed(&mut hash, b"bench-population-v2");
         feed(&mut hash, config.kind.label().as_bytes());
+        feed(&mut hash, &config.camera_extent.to_le_bytes());
+        feed(&mut hash, &config.grid_spacing.to_le_bytes());
+        feed(&mut hash, &(config.depth_layers as u64).to_le_bytes());
+        feed(&mut hash, &[u8::from(config.reverse_instances)]);
         for instance in &instances {
             for value in instance.origin.into_iter().chain(instance.tint) {
                 feed(&mut hash, &value.to_bits().to_le_bytes());

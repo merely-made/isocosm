@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use super::model::{CAMERA_EXTENT, Workload};
+use super::model::Workload;
 use mesocosm_render::{
     Camera,
     live_body::{LiveBody, LiveBodyRenderer},
@@ -21,7 +21,12 @@ pub struct RenderStats {
     pub cached_meshes: usize,
     /// Bodies whose conservative posed bounds cross the viewport/clip depth.
     pub clipped_bodies: usize,
+    /// Conservative bounds completely beyond a single viewport/depth plane.
+    pub fully_outside_bodies: usize,
     pub texture_bytes: u64,
+    pub width: u32,
+    pub height: u32,
+    pub timestamp_queries_enabled: bool,
 }
 
 pub struct Renderer {
@@ -99,7 +104,7 @@ impl Renderer {
             size,
             camera: Camera {
                 target: [0.0, 7.0, 0.0],
-                extent: CAMERA_EXTENT,
+                extent: workload.config.camera_extent as f32,
                 aspect: size.0 as f32 / size.1 as f32,
                 ..Default::default()
             },
@@ -135,7 +140,12 @@ impl Renderer {
             return Err("invalid population appearance".into());
         }
         let mut bodies = Vec::with_capacity(workload.stats.part_instances);
-        for instance in &workload.instances {
+        let ordered: Box<dyn Iterator<Item = _>> = if workload.config.reverse_instances {
+            Box::new(workload.instances.iter().rev())
+        } else {
+            Box::new(workload.instances.iter())
+        };
+        for instance in ordered {
             for mesh in &workload.designs[instance.design] {
                 let mut body = LiveBody::new(mesh, instance.origin);
                 body.yaw_radians = yaw;
@@ -145,9 +155,11 @@ impl Renderer {
         }
         let matrix = self.camera.view_proj();
         let mut clipped_bodies = 0;
+        let mut fully_outside_bodies = 0;
         let (s, c) = yaw.sin_cos();
         for instance in &workload.instances {
             let mut clipped = false;
+            let mut outside = [true; 6];
             let (min, max) = workload.bounds[instance.design];
             for bits in 0..8 {
                 let p = [0, 1, 2].map(|i| if bits & (1 << i) == 0 { min[i] } else { max[i] });
@@ -156,8 +168,20 @@ impl Renderer {
                 let clip = matrix.transform_point3(world.into());
                 clipped |=
                     clip.x.abs() > 1.0 || clip.y.abs() > 1.0 || !(0.0..=1.0).contains(&clip.z);
+                let planes = [
+                    clip.x < -1.,
+                    clip.x > 1.,
+                    clip.y < -1.,
+                    clip.y > 1.,
+                    clip.z < 0.,
+                    clip.z > 1.,
+                ];
+                for i in 0..6 {
+                    outside[i] &= planes[i];
+                }
             }
             clipped_bodies += usize::from(clipped);
+            fully_outside_bodies += usize::from(outside.into_iter().any(|v| v));
         }
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
             label: Some("bench population"),
@@ -217,7 +241,11 @@ impl Renderer {
             evictions: stats.evictions,
             cached_meshes: stats.cached_meshes,
             clipped_bodies,
+            fully_outside_bodies,
             texture_bytes: u64::from(self.size.0) * u64::from(self.size.1) * 8,
+            width: self.size.0,
+            height: self.size.1,
+            timestamp_queries_enabled: device.features().contains(wgpu::Features::TIMESTAMP_QUERY),
         })
     }
 }

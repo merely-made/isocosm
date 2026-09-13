@@ -1,0 +1,80 @@
+{
+  "parent": "0a670f950e2afd6cda3489359d54f20bd55e0bac",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population.rs": "ea2a3e68b776226483220b4ccdd70ab16739029c",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/completion.rs": "e3f213f758eb918dceef92ae55ce12a6fb33bcd0",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/model.rs": "c6d9972c60aea86e76436a6cc1c520ed39830de8",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/oracle.rs": "6722ab63a5fcd599f7cad0e1cce711b8c21d1724",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/renderer.rs": "e863a13cbc57e4fe574f36c88274be8a112ba02c",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/tests.rs": "3535ee3ae17bb2000be2a2195e294f3f95578294",
+    "mesocosm/testing/bench/population.scenario": "92debc6a67160b53e62f08608a24623b0a9a66c5"
+  },
+  "native_executable_sha256": "ed642b7235ef1d4daea0a9f941379619a09db63376cfe80e624acaff95ad6e49",
+  "test_executable_sha256": "c330164d48a7a1f8ffec080aeccc9684c6da0259b11d06cd86ce0dfae5c28292",
+  "source_note": "The cfg(test) completion module declaration and test-only diagnostic were added during the native build; production rendering code is unchanged. The later test binary contains the complete diagnostic.",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "tests": "cargo test --release --frozen -p mesocosm-genet --lib app::bench::population -j3 -- --nocapture",
+  "test_result": {
+    "ordinary_passed": 12,
+    "diagnostic_ignored_in_ordinary_run": 1,
+    "explicit_diagnostic_passed": 1,
+    "oracle": {
+      "layers": [
+        4,
+        8
+      ],
+      "covered_pixels": [
+        265,
+        265
+      ],
+      "body_ray_intersections": [
+        1060,
+        2120
+      ],
+      "stable_foreground_checked": [
+        193,
+        193
+      ],
+      "stable_clear_checked": [
+        16105,
+        16105
+      ]
+    }
+  },
+  "native": {
+    "configurations": 23,
+    "frames": 5198,
+    "all_passed": true,
+    "regression_frames": 167,
+    "regression_passed": true,
+    "viewport": [
+      1236,
+      756
+    ],
+    "timestamp_queries_enabled": false,
+    "capacity_and_density_refusals": "camera extent 0 exited 1 before host creation"
+  },
+  "completion": {
+    "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "backend": "Vulkan",
+    "cases": 23,
+    "samples_per_case": 24,
+    "native_adapter_identity": "not exposed by existing host hook; no identity equivalence or subtraction assumed",
+    "scope": "private-device serialized CPU render/submit plus bounded GPU completion wait; not GPU-only duration"
+  },
+  "commands": {
+    "native": "mesocosm-genet.exe --population INPUT.json --frames 1800 --scenario testing/bench/population.scenario --receipt OUTPUT.json --capture OUTPUT.png",
+    "completion": "Set MESOCOSM_POPULATION_COMPLETION_INPUT to completion-input.json and MESOCOSM_POPULATION_COMPLETION_OUTPUT to an explicit output file; cargo test --release --frozen -p mesocosm-genet --lib population_completion_receipt -- --ignored --nocapture"
+  },
+  "cargo_home": "C:/Users/mark_/Code/.cargo-homes/specimen-generation-20260913",
+  "artifact_directory": "C:\\Users\\mark_\\Code\\testing\\density-2026-09-13",
+  "load_note": "Available process snapshots are retained. A missing snapshot file means the PowerShell pipeline emitted no file, not an independently verified idle machine.",
+  "limits": [
+    "Fixed simple three-part fixtures, not real ecological anatomy.",
+    "Tight lateral spacing can interpenetrate; depth layers themselves are separated by 40 units.",
+    "Dense crop submits 960 bodies; clipping/outside bounds are explicitly counted, not all bodies visible.",
+    "Geometric depth complexity and order-invariant pixels do not count actual GPU fragment invocations.",
+    "Opaque renderer only; terrain, causal effects, transparency, full memory accounting and application limits remain open.",
+    "Native and private-device timing contexts remain separate; concurrent workload can change measured times."
+  ]
+}

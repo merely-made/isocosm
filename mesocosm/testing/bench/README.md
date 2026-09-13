@@ -231,3 +231,36 @@ snapshots. Raw frame profiles and PNGs remain in the recorded local artifact
 directory. The workload uses the body renderer directly, so its figures exclude
 ecological projection, terrain and effects. Fixed native scale is deliberately
 sparse; the independent voxel/depth tests use magnified framing.
+
+### Dense coverage and depth overlap
+
+Population inputs also accept `camera_extent` (8..2000 world-unit half-height),
+`grid_spacing` (1..128), `depth_layers` (1..32), and
+`reverse_instances` (boolean). Defaults preserve extent 500, spacing 24 and
+one layer. The v2 workload digest records these settings. Layers occupy
+distinct positions 40 world units apart along the camera axis; equal
+projections do not mean coincident surfaces. Tight lateral spacing is a
+rendering stress fixture and may interpenetrate; it is not an admitted ecology.
+
+Use the same existing population scenario. Compare foreground coverage
+against the known clear colour, not the image's most common colour, which
+can become a body colour in dense scenes. Receipts separate submitted bodies,
+conservative bounds crossing a clip plane, and bounds wholly outside a plane.
+Input reversal does not reverse volume-key grouping inside the renderer.
+
+A separate ignored test, `population_completion_receipt`, accepts explicit
+`MESOCOSM_POPULATION_COMPLETION_INPUT` and
+`MESOCOSM_POPULATION_COMPLETION_OUTPUT` paths. Its manifest contains width,
+height, samples and named config cases. It uses a private baseline-feature
+device and reports its adapter. Queue draining precedes each timed sample;
+render/submit, bounded completion wait and serialized total are separate.
+Cold setup, preparation and three warmups are outside steady distributions.
+This includes CPU and GPU completion; it is not GPU-only timing or native
+document/presentation cost.
+
+[Dense/layered receipts](receipts/2026-09-13/density/source.json) retain the 23
+inputs and both measurement paths. Native foreground reaches 93-95% in crop
+cases; explicit clipping counts accompany those figures. A four/eight-layer
+oracle verifies unchanged silhouette and doubled body intersections per ray.
+Runtime-generated anatomy, terrain/effects together and transparent blending
+are outside this fixture receipt.
