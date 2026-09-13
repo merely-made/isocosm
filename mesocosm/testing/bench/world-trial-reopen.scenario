@@ -1,0 +1,70 @@
+wait 1200
+assert snap ready == yes
+assert snap source-hash == 9fe519b5ff23b58f
+click role:button World trial
+settle 3
+assert snap trial-hash == 9fe519b5ff23b58f
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 3
+capture activity-8
+assert snap trial-hash == 7b38f55512d0fb49
+assert snap trial-total-moved == 12
+assert snap trial-total-fed == 20
+assert snap trial-activity == [{"sequence":30,"tick":1,"event":{"Fed":{"eater":4,"from":23,"mass_mg":19,"kind":"Predation"}},"source":4,"target":23,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":31,"tick":1,"event":{"Fed":{"eater":23,"from":4,"mass_mg":7,"kind":"Predation"}},"source":23,"target":4,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":32,"tick":1,"event":{"Fed":{"eater":24,"from":0,"mass_mg":16,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-11,13,-11]},{"sequence":33,"tick":1,"event":{"Moved":{"organism":24,"from":[-10,12,-10],"to":[-11,13,-11]}},"source":24,"target":null,"from":[-10,12,-10],"to":[-11,13,-11]},{"sequence":34,"tick":2,"event":{"Fed":{"eater":4,"from":23,"mass_mg":19,"kind":"Predation"}},"source":4,"target":23,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":35,"tick":2,"event":{"Fed":{"eater":23,"from":4,"mass_mg":6,"kind":"Predation"}},"source":23,"target":4,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":36,"tick":2,"event":{"Fed":{"eater":24,"from":0,"mass_mg":16,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-12,13,-11]},{"sequence":37,"tick":2,"event":{"Moved":{"organism":24,"from":[-11,13,-11],"to":[-12,13,-11]}},"source":24,"target":null,"from":[-11,13,-11],"to":[-12,13,-11]},{"sequence":38,"tick":3,"event":{"Fed":{"eater":4,"from":23,"mass_mg":19,"kind":"Predation"}},"source":4,"target":23,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":39,"tick":3,"event":{"Fed":{"eater":23,"from":4,"mass_mg":5,"kind":"Predation"}},"source":23,"target":4,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":40,"tick":3,"event":{"Fed":{"eater":24,"from":0,"mass_mg":16,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-13,13,-11]},{"sequence":41,"tick":3,"event":{"Moved":{"organism":24,"from":[-12,13,-11],"to":[-13,13,-11]}},"source":24,"target":null,"from":[-12,13,-11],"to":[-13,13,-11]},{"sequence":42,"tick":4,"event":{"Fed":{"eater":4,"from":23,"mass_mg":19,"kind":"Predation"}},"source":4,"target":23,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":43,"tick":4,"event":{"Fed":{"eater":23,"from":4,"mass_mg":4,"kind":"Predation"}},"source":23,"target":4,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":44,"tick":4,"event":{"Fed":{"eater":24,"from":0,"mass_mg":16,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-14,13,-11]},{"sequence":45,"tick":4,"event":{"Moved":{"organism":24,"from":[-13,13,-11],"to":[-14,13,-11]}},"source":24,"target":null,"from":[-13,13,-11],"to":[-14,13,-11]},{"sequence":46,"tick":5,"event":{"Fed":{"eater":4,"from":23,"mass_mg":20,"kind":"Predation"}},"source":4,"target":23,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":47,"tick":5,"event":{"Fed":{"eater":23,"from":4,"mass_mg":3,"kind":"Predation"}},"source":23,"target":4,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":48,"tick":5,"event":{"Fed":{"eater":24,"from":0,"mass_mg":16,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-15,13,-11]},{"sequence":50,"tick":5,"event":{"Moved":{"organism":24,"from":[-14,13,-11],"to":[-15,13,-11]}},"source":24,"target":null,"from":[-14,13,-11],"to":[-15,13,-11]},{"sequence":51,"tick":6,"event":{"Fed":{"eater":24,"from":0,"mass_mg":17,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-16,13,-11]},{"sequence":52,"tick":6,"event":{"Moved":{"organism":20,"from":[11,13,-40],"to":[-46,13,52]}},"source":20,"target":null,"from":[11,13,-40],"to":[-46,13,52]},{"sequence":54,"tick":6,"event":{"Moved":{"organism":22,"from":[47,17,13],"to":[-46,13,52]}},"source":22,"target":null,"from":[47,17,13],"to":[-46,13,52]},{"sequence":55,"tick":6,"event":{"Moved":{"organism":24,"from":[-15,13,-11],"to":[-16,13,-11]}},"source":24,"target":null,"from":[-15,13,-11],"to":[-16,13,-11]},{"sequence":56,"tick":7,"event":{"Fed":{"eater":22,"from":20,"mass_mg":12,"kind":"Scavenging"}},"source":22,"target":20,"from":[-46,13,52],"to":[-46,13,52]},{"sequence":57,"tick":7,"event":{"Fed":{"eater":24,"from":0,"mass_mg":18,"kind":"Predation"}},"source":24,"target":0,"from":[-17,13,-11],"to":[-17,13,-11]},{"sequence":59,"tick":7,"event":{"Moved":{"organism":24,"from":[-16,13,-11],"to":[-17,13,-11]}},"source":24,"target":null,"from":[-16,13,-11],"to":[-17,13,-11]}]
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 3
+capture replayed
+assert snap trial-hash == ac44b1260d95924c
+assert snap trial-total-moved == 12
+assert snap trial-total-fed == 50
+assert snap trial-activity == []
+click role:button Exit world trial
+settle 3
+assert snap hash == 9fe519b5ff23b58f
+assert snap error == none

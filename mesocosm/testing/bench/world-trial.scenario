@@ -1,0 +1,179 @@
+wait 1200
+assert snap ready == yes
+click role:button Generation controls
+settle 3
+click role:button Seed 7
+wait 1200
+click role:button Consumer
+wait 1200
+click role:button Save specimen
+click role:button Generation controls
+settle 3
+remember source
+capture source
+click role:button World trial
+settle 3
+assert snap trial-active == true
+assert snap trial-steps == 0
+same source hash
+same source source-hash
+remember beginning
+capture beginning
+click role:button Step world
+settle 2
+capture activity-1
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 2
+capture activity-4
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 2
+capture activity-8
+remember style-base
+click role:button Mark height
+click role:button Mark size
+settle 3
+same style-base trial-hash
+same style-base trial-event-count
+same style-base trial-activity
+capture restyled
+viewport-pixels-change activity-8 restyled
+click role:button Mark height
+click role:button Mark height
+click role:button Mark height
+click role:button Mark height
+click role:button Mark size
+click role:button Mark size
+settle 3
+capture style-restored
+viewport-pixels-same activity-8 style-restored
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 2
+capture activity-16
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 2
+capture activity-24
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 2
+capture activity-32
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 3
+remember evolved
+capture evolved
+more beginning trial-event-count
+same source source-hash
+settle 8
+same evolved trial-event-count
+same evolved trial-activity
+same evolved trial-hash
+capture paused
+viewport-pixels-same evolved paused
+click role:button Reset world
+settle 3
+assert snap trial-steps == 0
+assert snap trial-event-count == 0
+same beginning trial-hash
+capture reset
+viewport-pixels-same beginning reset
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 3
+same evolved trial-hash
+same evolved trial-activity
+same evolved trial-total-moved
+same evolved trial-total-fed
+capture replayed
+viewport-pixels-same evolved replayed
+click role:button Exit world trial
+settle 3
+assert snap trial-active == false
+same source hash
+capture returned
+viewport-pixels-same source returned
+assert snap error == none

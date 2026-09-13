@@ -137,11 +137,11 @@ impl TrialEvidence {
                 living.insert(organism);
             },
             Event::Fed {
-                from,
+                eater,
                 kind: MealKind::Predation,
                 mass_mg,
                 ..
-            } if from == subject => {
+            } if eater == subject => {
                 self.subject_predation_mg = self.subject_predation_mg.saturating_add(mass_mg);
             },
             Event::Died { organism, .. } | Event::Returned { organism }
@@ -220,6 +220,36 @@ mod tests {
             lineage: SpeciesId(3),
             kingdom: Kingdom::Consumer,
         }
+    }
+
+    #[test]
+    fn predation_is_credited_to_eater_not_victim() {
+        let predator = OrganismId(7);
+        let prey = OrganismId(8);
+        let world = World::new(1, 3);
+        let mut predator_evidence = TrialEvidence::begin(&world, predator, 1);
+        let mut prey_evidence = TrialEvidence::begin(&world, prey, 1);
+        let mut living = BTreeSet::from([predator, prey]);
+        for (eater, from, mass_mg, kind) in [
+            (predator, prey, 9, MealKind::Predation),
+            (prey, predator, 4, MealKind::Predation),
+            (predator, prey, 20, MealKind::Grazing),
+            (prey, predator, 30, MealKind::Scavenging),
+        ] {
+            let event = Event::Fed {
+                eater,
+                from,
+                mass_mg,
+                kind,
+            };
+            predator_evidence.record_event(event, predator, &mut living);
+            prey_evidence.record_event(event, prey, &mut living);
+        }
+        assert_eq!(predator_evidence.subject_predation_mg, 9);
+        assert_eq!(prey_evidence.subject_predation_mg, 4);
+        assert!(predator_evidence.summary().contains("predated 9 mg"));
+        assert!(prey_evidence.summary().contains("predated 4 mg"));
+        assert_eq!(living, BTreeSet::from([predator, prey]));
     }
 
     #[test]

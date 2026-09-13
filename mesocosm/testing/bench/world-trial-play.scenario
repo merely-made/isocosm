@@ -1,0 +1,42 @@
+wait 1200
+assert snap ready == yes
+remember source
+click role:button World trial
+settle 3
+remember beginning
+click role:button Play world
+settle 120
+click role:button Pause world
+more beginning trial-steps
+assert snap trial-playing == false
+remember paused
+settle 8
+same paused trial-steps
+same paused trial-event-count
+same paused trial-activity
+same source source-hash
+capture paused
+click role:button Reset world
+assert snap trial-steps == 0
+click role:button Play world
+click role:button Hide / show
+assert snap trial-playing == false
+remember hidden
+settle 8
+same hidden trial-steps
+click role:button Hide / show
+settle 3
+click role:button Play world
+click role:button Effects experiment
+assert snap trial-playing == false
+click role:button Back to specimen
+settle 3
+click role:button Exit world trial
+same source hash
+click role:button World trial
+click role:button Reroll
+wait 1200
+assert snap trial-active == false
+assert snap ready == yes
+assert snap error == none
+capture regenerated

@@ -1,0 +1,79 @@
+{
+  "parent": "bb09fa66a92c648a7b7643060752736e9611393c",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-core/src/world/generation/trial.rs": "11083316f53bc47ce0033643f858f0ecf8207f5a",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "00de71ad3227e1953fe1e784bb0c2bb7fde7bdce",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/comparison.rs": "bf77c0cc41c10331708451e129e3325b9c2c33e6",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "6c3f75c93a24cc6a1b15e7547608439a5099fd13",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "03a29b8e6c26e168ac9d88b17cf481a4f600a82a",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "e50ace657294aa51fcb74f5876bcf849aa9193ea",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial.rs": "c7b7e16f7a001067d00a7c2624fb3990e002dd83",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "142f7b533b40dd8329f62c5c83e74a2897575a62",
+    "mesocosm/crates/mesocosm-runtime/src/lib.rs": "c8f784318ad58142dccaa64d87c016a5baf31f48",
+    "mesocosm/crates/mesocosm-runtime/src/runtime.rs": "40879d19681339568d1c93266aeb22abdc7ba887",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial.rs": "dcb4b291c0d1c625f689d0953f3ba0836e49e294",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial/tests.rs": "4fd07a762354851fe7e6f74d46fb65ae7e3fa10b",
+    "mesocosm/testing/bench/world-trial-play.scenario": "861415efb95798637c11aa147a740e9de2ef519c",
+    "mesocosm/testing/bench/world-trial-reopen.scenario": "ea9d53fa295c85ed8c009a4468a34325fda7981c",
+    "mesocosm/testing/bench/world-trial.scenario": "f16e785691e2f56e68de11cb4fb85b3bac82bf92"
+  },
+  "executable_sha256": "331e1f7596bb77331c555bf8c4421d09e62dc534415d79e540c72227f11c2a91",
+  "cargo_home": "C:/Users/mark_/Code/.cargo-homes/specimen-generation-20260913",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "checks": [
+    "cargo check --release --frozen --workspace --all-features --all-targets -j3 (before final presentation controls)",
+    "cargo check --release --frozen -p mesocosm-genet --all-features --all-targets -j3 (before final presentation controls)"
+  ],
+  "focused_tests": {
+    "runtime_trial": 4,
+    "core_generation": 33,
+    "passed": true
+  },
+  "native": {
+    "acceptance": {
+      "frames": 228,
+      "captures": 16,
+      "ok": true
+    },
+    "reopen": {
+      "frames": 84,
+      "captures": 3,
+      "ok": true
+    },
+    "play": {
+      "frames": 189,
+      "captures": 3,
+      "ok": true
+    },
+    "bench": {
+      "frames": 167,
+      "captures": 15,
+      "ok": true
+    },
+    "spatial": {
+      "frames": 336,
+      "captures": 32,
+      "ok": true
+    },
+    "effects": {
+      "frames": 125,
+      "captures": 10,
+      "ok": true
+    }
+  },
+  "saved_specimen_sha256": "85d293467cc10a62b2930d4cad2cecad4d3ae54dbf6e7e2ec4c42833d902ddb1",
+  "reopen": "mesocosm-genet.exe --bench --comparison specimen.json --frames 1800 --scenario testing/bench/world-trial-reopen.scenario --receipt reopen.json --capture reopen.png",
+  "source_hash": "9fe519b5ff23b58f",
+  "final_trial_hash": "ac44b1260d95924c",
+  "ticks": 48,
+  "movements": 12,
+  "feeding": 50,
+  "artifact_directory": "C:\\Users\\mark_\\Code\\testing\\world-trial-2026-09-13",
+  "scope": "Exact fresh specimen clone, bounded ordinary Idle runtime, recorded movement/feeding, raised configurable opaque activity indicators. World state and event coordinates are independent of styling.",
+  "limits": [
+    "Natural checkpoint not separately exercised in native scenario; focused test injects one.",
+    "Donor-removal endpoint fallback implemented but not a distinct acceptance fixture.",
+    "Broader controlled intents, physical contact localization, material reactions, transparent effects, sound and integrated cost remain open."
+  ],
+  "correction": "Preserve serialized pending founding records for exact source identity. Core trial-report predation now credits eater rather than donor; old report receipts remain historical."
+}

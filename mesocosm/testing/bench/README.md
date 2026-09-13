@@ -162,3 +162,35 @@ Focused tests are `section::glyphs::tests`, `section::bodies::anchors::tests`
 and `app::bench::spatial::sampling::tests`. This matrix covers opaque rendering
 and attachment. Transparent compositing and causal world interactions remain
 separate acceptance work.
+
+## Disposable world trial
+
+Choose **World trial** to run the currently displayed fresh specimen in its
+habitat. **Step world** applies one ordinary Idle tick. **Play world** advances
+at ten ticks per second; pause, reset and exit remain explicit controls. The
+runtime stops at a checkpoint or 128 applied ticks. Reset restores the exact
+baseline, including pending founding records. Exiting returns to unchanged
+generation; rerolling or changing generation cancels the trial.
+
+Slashes indicate recorded movement and quotes indicate recorded feeding at
+organism locations. They do not identify physical feet, mouths or contacts.
+The cached marks live for eight simulation ticks and are capped at 128.
+**Mark height** cycles 0/2/4/6/8 world units (default 4); **Mark size** cycles
+0.7/1.4/2.8 (default 1.4). These raised activity indicators keep their recorded
+coordinates unchanged. Changing their presentation does not step the world.
+Repeated redraws do not emit events or advance time. Hide and the planar
+experiment pause playback. Save specimen continues saving source generation.
+
+`world-trial.scenario` saves a seed-7 consumer specimen, steps 48 times (or to
+an earlier checkpoint), compares paused/redrawn activity, resets and replays,
+and checks source identity on exit. `world-trial-play.scenario` covers playback,
+pause, hiding, switching experiment and reroll cancellation. A generated
+`world-trial-reopen.scenario` receipt reopens the saved specimen with
+`--comparison FILE` and applies the same Idle sequence.
+
+Focused runtime tests: `runtime::trial::tests`. Freshness admission deliberately
+refuses advanced snapshots, whose history and checkpoint must accompany them.
+The prior trial report's predation attribution is corrected from donor to eater;
+its regression test is `world::generation::trial::tests::predation_is_credited_to_eater_not_victim`.
+
+Native receipts and source identities: [world-trial receipt](receipts/2026-09-13/world-trial/source.json).

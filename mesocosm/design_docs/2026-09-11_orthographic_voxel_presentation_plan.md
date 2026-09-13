@@ -362,7 +362,7 @@ appearance crate plus DOM. The `d1_depth` receipt is retired with rationale,
 since the join it proved is replaced by L3 interleave. The renderling fork,
 spirv-std pins, and crabslab fork leave the Paredros manifest.
 
-**Done when:** `paredros-room` builds with no renderling dependency; the S0
+**Done when:** `paredros-client` builds with no renderling dependency; the S0
 replay hash is unchanged; the room composes through the same layers as
 Mesocosm's section; the probes that still want renderling are archived, not
 patched.
@@ -901,6 +901,48 @@ initial/final hashes and activity; the scene visibly reflects actual movement
 or feeding; redraw does not repeat an event; reroll/reset rejects stale worker,
 selection and activity state. Runtime/history/flow remain the source of facts.
 
+**Bounded idle trial implementation, 2026-09-13:** `mesocosm-runtime::Trial`
+owns an exact clone of the displayed fresh specimen world, including proportion
+and size choices. It reuses ordinary Runtime stepping and checkpoint handling;
+it admits only fresh tick-zero, epoch-zero worlds with a living controlled body.
+A later snapshot needs its runtime history/checkpoint and is refused here.
+The trial applies at most 128 Idle intents. Its immutable baseline plus that
+trace, rather than seed/count metadata alone, is the replay source.
+
+The native bench exposes World trial, Step world (one tick), Play/Pause,
+Reset and Exit. Trial rendering uses the habitat and accumulated terrain dirty
+regions. Each successful step consumes a new accepted-history batch once;
+redraw is read-only. Movement slashes use recorded departure/arrival positions;
+feeding quotes use donor pre-step and eater post-step locations, including a
+donor that disappears. These are organism-level activity indicators, not
+physical mouth/foot contacts. Marks live for eight simulation ticks and are
+bounded to 128; clipping and occlusion may hide them. Marker height (0/2/4/6/8,
+default 4 world units) and size (0.7/1.4/2.8, default 1.4) are independent
+presentation controls. The recorded interaction coordinates stay unchanged.
+
+Start/reset/exit replace presentation identity; successful ticks expire part
+selection; generation changes discard the trial. Saving a specimen during a
+trial still refers to source generation, and exiting restores that source.
+Playback pauses when hidden or when the planar experiment opens. The existing
+spatial preview remains a separate presentation experiment.
+
+The resource audit also corrected `TrialEvidence.subject_predation_mg`: it
+must credit `Event::Fed.eater`, not the victim in `from`. A paired-subject test
+checks both directions and excludes non-predatory feeding. Previous receipts
+of that field reflect the earlier implementation; they are not reinterpreted
+as verified incoming predation evidence.
+
+**Native acceptance:** the seed-7 consumer's 48 Idle ticks reproduce 12 accepted
+movements and 50 feeding events. Reset and a separate process reopening the
+saved specimen reproduce the hashes and activity. Restyling changes viewport
+pixels while preserving world state and activity; restoring styling restores
+the viewport. Playback, pause, hidden/planar transitions and reroll cancellation
+are exercised. See [receipts](../testing/bench/receipts/2026-09-13/world-trial/source.json).
+This closes the bounded Idle trial, not broader controlled intents, contact
+localization, material reactions, transparency, sound or integrated cost.
+Checkpoint stopping has a focused injected-state test; a natural checkpoint
+and donor removal are not separate native acceptance cases.
+
 ### Bench D. Variety and cost receipt
 
 **Owner:** integrated bench host. Reuse the probe-only variety comparison above
@@ -919,8 +961,8 @@ the renderer's policy for coincident surfaces; count foreground coverage separat
 Record the source revisions and benchmark population, including unique geometry.
 
 The two immediate probes, Bench A and Bench B's bounded native integration
-are complete. Generation comparison is the current focus; Bench C's visible
-world trial is paused at Mark's request. Bench D will measure the integrated
+are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
+bounded idle trial has native reset/reopen and lifecycle receipts. Bench D will measure the integrated
 document/style/input boundary. T1 general
 CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
@@ -944,7 +986,8 @@ and compact receipts retained at Mere cc4c079c. Bench A adds posed bounds,
 preview framing and visible-part queries to the existing Section; its fresh
 headless readbacks pass. Bench B adds the native viewport, style bridge and
 part examiner, with fresh presented-document captures and failing controls.
-The visible world trial and integrated population/cost receipt remain open.
+The bounded idle world trial is implemented; broader world-intent trials and
+the integrated population/cost receipt remain open.
 
 
 ### Spatial glyph preview (2026-09-13)

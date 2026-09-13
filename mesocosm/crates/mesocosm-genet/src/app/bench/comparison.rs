@@ -79,6 +79,13 @@ impl SavedComparison {
 
 impl Specimen {
     pub fn world(&self) -> &World {
+        self.trial
+            .as_ref()
+            .map(|t| t.driver.world())
+            .unwrap_or_else(|| self.source_world())
+    }
+
+    pub fn source_world(&self) -> &World {
         self.comparison
             .as_ref()
             .and_then(|c| c.cards.get(c.selected))
@@ -171,6 +178,7 @@ impl Specimen {
             };
             cards.push(card);
         }
+        self.trial = None;
         self.comparison = Some(Comparison {
             epoch: self.epoch + 1,
             source,
@@ -240,6 +248,7 @@ impl Bench {
             return;
         }
         comparison.selected = index;
+        model.trial = None;
         model.selected = None;
         model.epoch += 1;
         model.changed();
@@ -288,7 +297,7 @@ impl Bench {
                 .content
                 .clone()
                 .ok_or("Saving requires an admitted content pack.")?,
-            expected_hash: state_hash(model.world()),
+            expected_hash: state_hash(model.source_world()),
         };
         let reproduced = saved
             .selection

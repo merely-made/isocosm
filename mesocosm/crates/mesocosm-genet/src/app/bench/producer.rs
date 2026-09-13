@@ -27,6 +27,7 @@ pub(super) struct BenchScene {
     size: (u32, u32),
     tint: Option<[f32; 3]>,
     card: Option<usize>,
+    ground_revision: Option<u64>,
 }
 
 impl BenchScene {
@@ -46,6 +47,7 @@ impl BenchScene {
             size: (0, 0),
             tint: None,
             card: None,
+            ground_revision: None,
         }
     }
 
@@ -99,7 +101,6 @@ impl BenchScene {
         let section = self.section.as_mut()?;
         let subject = model.subject()?;
         let count = model
-            .creator
             .world()
             .organisms
             .iter()
@@ -151,6 +152,7 @@ impl BenchScene {
             .is_none_or(|s| s.mode() != model.camera)
             || self.epoch != epoch
         {
+            self.ground_revision = None;
             self.section = Some(Section::new(
                 device.clone(),
                 queue.clone(),
@@ -183,10 +185,10 @@ impl BenchScene {
             None
         };
         section.set_body_focus(selected.map(|s| s.organism), selected);
-        let mut centre = world.position().unwrap_or([0, 0, 0]).map(|v| v as f32);
+        let mut centre = world.position().or_else(||model.source_world().position()).unwrap_or([0, 0, 0]).map(|v| v as f32);
         let mut half = 28.0;
         let mut depth = section::SLAB_DEPTH;
-        let isolated = model.isolated || self.card.is_some();
+        let isolated = (model.isolated && model.trial.is_none()) || self.card.is_some();
         if isolated {
             if let Some(organism) = world.controlled() {
                 if let Some(bounds) = section.presentation_bounds(organism, &model.volumes)? {
@@ -215,7 +217,9 @@ impl BenchScene {
             .selected
             .and_then(|s| world.organisms.iter().find(|o| o.id == s.organism))
             .or_else(|| world.controlled());
-        let marks = if self.card.is_none() && model.spatial.enabled {
+        let marks = if self.card.is_none() && model.trial.is_some() {
+            model.trial.as_ref().unwrap().marks.clone()
+        } else if self.card.is_none() && model.spatial.enabled {
             match attachment_subject {
                 Some(organism) => match section.presentation_bounds(organism, &model.volumes)? {
                     Some(bounds) => {
@@ -250,19 +254,30 @@ impl BenchScene {
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
             label: Some("specimen bench shared-depth scene"),
         });
+        let dirty: Vec<_> =
+            if self.card.is_none() && self.ground_revision != Some(world.ground().revision()) {
+                model
+                    .trial
+                    .as_ref()
+                    .map(|t| t.dirty.iter().copied().collect())
+                    .unwrap_or_default()
+            } else {
+                Vec::new()
+            };
         section.render(
             &mut encoder,
             SectionFrame {
                 world,
                 volumes: &model.volumes,
                 ground: world.ground(),
-                dirty: &[],
+                dirty: &dirty,
                 centre,
                 pose: None,
                 roster: &[],
             },
         )?;
         queue.submit(Some(encoder.finish()));
+        self.ground_revision = Some(world.ground().revision());
         self.stats = section.body_stats();
         self.mesh_upload_bytes += self.stats.mesh_upload_bytes;
         self.instance_upload_bytes += self.stats.instance_upload_bytes;
@@ -279,6 +294,7 @@ impl BenchScene {
 
     pub fn retire(&mut self) {
         self.section = None;
+        self.ground_revision = None;
         self.revision = 0;
         self.size = (0, 0);
     }

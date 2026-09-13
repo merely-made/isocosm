@@ -195,7 +195,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .selected
                 .map_or("none".into(), |s| s.organism.0.to_string()),
         )
-        .with_field("view", if model.isolated { "body" } else { "habitat" })
+        .with_field("view", if model.isolated && model.trial.is_none() { "body" } else { "habitat" })
         .with_field("camera", model.camera.name())
         .with_field(
             "tint",
@@ -249,6 +249,11 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .map_or("none".into(), |p| p.display().to_string()),
         );
     }
+    snapshot=snapshot.with_field("source-request",serde_json::to_string(&model.creator.request).expect("generation request serializes"));
+    snapshot=snapshot.with_field("source-hash",format!("{:016x}",mesocosm_core::state_hash(model.source_world())));
+    if let Some(trial)=&model.trial {
+        for (key,value) in trial.probe_fields() {snapshot=snapshot.with_field(key,value);}
+    } else {snapshot=snapshot.with_field("trial-active","false");}
     for (key, value) in state.effects.probe_fields() {
         snapshot = snapshot.with_field(key, value);
     }

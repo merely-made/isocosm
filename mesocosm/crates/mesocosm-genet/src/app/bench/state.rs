@@ -18,6 +18,7 @@ pub(super) struct Specimen {
     pub selected: Option<BodySelection>,
     pub yaw: f32,
     pub spatial: super::spatial::Spatial,
+    pub trial: Option<super::trial::WorldTrial>,
     pub isolated: bool,
     pub camera: CameraMode,
     pub content: Option<mesocosm_mesh::content::ContentPack>,
@@ -33,6 +34,7 @@ impl Specimen {
     }
 
     pub fn replaced(&mut self) {
+        self.trial = None;
         self.comparison = None;
         self.epoch = self.epoch.checked_add(1).expect("bench epoch exhausted");
         self.selected = None;
@@ -58,7 +60,10 @@ impl Specimen {
                     self.world(),
                     selected.organism,
                     selected.part,
-                    &History::new(),
+                    self.trial
+                        .as_ref()
+                        .map(|t| t.driver.history())
+                        .unwrap_or(&History::new()),
                 )
             })
     }

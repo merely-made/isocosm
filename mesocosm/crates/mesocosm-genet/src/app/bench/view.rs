@@ -157,10 +157,12 @@ pub(super) fn root(state: &Bench) -> Child {
             state.clear();
         },
     )));
-    let controls = vec![
+    let mut controls = vec![
+        button("World trial", Bench::start_trial),
         button("Effects experiment", |s| {
             s.effects.open = !s.effects.open;
             s.model.borrow_mut().spatial.playing = false;
+            s.model.borrow_mut().pause_trial();
             s.effects.playing = false;
         }),
         button("Generation controls", |s| {
@@ -173,8 +175,10 @@ pub(super) fn root(state: &Bench) -> Child {
         button("Save criteria", Bench::save),
         button("Turn left", |s| s.turn(-0.2617994)),
         button("Turn right", |s| s.turn(0.2617994)),
-        button("Body / habitat", Bench::toggle_habitat),
     ];
+    if state.model.borrow().trial.is_none() {
+        controls.push(button("Body / habitat", Bench::toggle_habitat));
+    }
     let appearance = vec![
         button("Natural", |s| s.tint = 0),
         button("Warm", |s| s.tint = 1),
@@ -183,6 +187,7 @@ pub(super) fn root(state: &Bench) -> Child {
         button("Hide / show", |s| {
             s.visible = !s.visible;
             s.model.borrow_mut().spatial.playing = false;
+            s.model.borrow_mut().pause_trial();
             s.clear();
         }),
         button("Transform", |s| s.transformed = !s.transformed),
@@ -205,6 +210,7 @@ pub(super) fn root(state: &Bench) -> Child {
                 super::comparison_view::strip(state),
                 super::generation_controls::view(state),
                 super::effects::view(state),
+                super::trial::view(state),
                 el(
                     "main",
                     (
@@ -221,7 +227,11 @@ pub(super) fn root(state: &Bench) -> Child {
                                 ),
                                 el("div", controls).attr("class", "toolbar"),
                                 el("div", appearance).attr("class", "toolbar appearance"),
-                                super::spatial::view(state),
+                                if model.trial.is_none() {
+                                    super::spatial::view(state)
+                                } else {
+                                    Box::new(el("div", ())) as Child
+                                },
                                 el("p", text(notice))
                                     .attr("role", "status")
                                     .attr("id", "notice"),
@@ -242,7 +252,9 @@ pub(super) fn root(state: &Bench) -> Child {
         )
         .attr(
             "class",
-            if state.generation.open {
+            if model.trial.is_some() {
+                "bench trial"
+            } else if state.generation.open {
                 "bench generating"
             } else if model.comparison.is_some() {
                 "bench comparing"
@@ -307,5 +319,9 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .generation-choice.selected { background:#315c3e; color:white; }
 .generation-input { width:145px; padding:6px; border:1px solid #a6b3a5; background:white; }
 .generation-input input { display:block; width:100%; min-height:20px; color:#27332e; font:14px monospace; }
+.world-trial { margin:0 0 12px; padding:8px; background:#faf8f2; border:1px solid #a6b3a5; }
+.world-trial p { margin:4px 0; font-size:12px; }
+.world-trial .toolbar { margin:0; }
+.trial .viewport { height:calc(100vh - 480px); min-height:180px; }
 .generating .viewport { height:180px; min-height:180px; }
 "#;

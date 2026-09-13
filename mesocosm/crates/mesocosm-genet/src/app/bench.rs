@@ -21,6 +21,7 @@ mod producer;
 mod spatial;
 mod state;
 mod structure_controls;
+mod trial;
 mod view;
 
 use state::{Bench, Specimen};
@@ -109,6 +110,7 @@ pub fn run_inputs(
         selected: None,
         yaw: 0.0,
         spatial: spatial::Spatial::default(),
+        trial: None,
         isolated: true,
         camera: host.config.camera,
         content: host.content,
@@ -149,6 +151,7 @@ pub fn run_inputs(
             }
             if !ctx.runner.state().effects.open
                 && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().trial.is_none()
                 && ctx.runner.state().model.borrow().spatial.playing
             {
                 ctx.runner.update(|s| {
@@ -157,6 +160,12 @@ pub fn run_inputs(
                         m.changed();
                     }
                 });
+            }
+            if !ctx.runner.state().effects.open
+                && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().trial_playing()
+            {
+                ctx.runner.update(|s| s.model.borrow_mut().advance_trial());
             }
             ctx.runner.state().effects.sync(ctx.leaves);
             let pending = ctx.runner.state().model.borrow().creator.pending;
@@ -185,7 +194,11 @@ pub fn run_inputs(
             }
             state.model.borrow().creator.pending
                 || (state.effects.open && state.effects.playing)
-                || (state.visible && !state.effects.open && state.model.borrow().spatial.playing)
+                || (state.visible && !state.effects.open && state.model.borrow().trial_playing())
+                || (state.visible
+                    && !state.effects.open
+                    && state.model.borrow().trial.is_none()
+                    && state.model.borrow().spatial.playing)
         }),
         after_dispatch: Box::new(|_| {}),
         after_frame: Box::new(move |ctx| {
