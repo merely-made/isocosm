@@ -16,6 +16,7 @@ mod comparison;
 mod comparison_view;
 mod effects;
 mod generation_controls;
+mod population;
 mod probe;
 mod producer;
 mod spatial;
@@ -38,14 +39,26 @@ pub fn run_comparison(
     config: HostConfig,
     path: Option<std::path::PathBuf>,
 ) -> Result<i32, winit::error::EventLoopError> {
-    run_inputs(config, path, None)
+    run_inputs(config, path, None, None)
 }
 
 pub fn run_inputs(
     mut config: HostConfig,
     path: Option<std::path::PathBuf>,
     effect_path: Option<std::path::PathBuf>,
+    population_path: Option<std::path::PathBuf>,
 ) -> Result<i32, winit::error::EventLoopError> {
+    if population_path.is_some() && (path.is_some() || effect_path.is_some()) {
+        eprintln!("Population workload cannot be combined with saved specimen/effect inputs.");
+        return Ok(1);
+    }
+    let population = match population_path.map(|p| population::load(&p)).transpose() {
+        Ok(value) => value,
+        Err(why) => {
+            eprintln!("Population refused: {why}");
+            return Ok(1);
+        },
+    };
     let effect = match effect_path {
         Some(path) => match effects::Effects::load(&path) {
             Ok(effect) => effect,
@@ -111,6 +124,7 @@ pub fn run_inputs(
         yaw: 0.0,
         spatial: spatial::Spatial::default(),
         trial: None,
+        population,
         isolated: true,
         camera: host.config.camera,
         content: host.content,

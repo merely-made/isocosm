@@ -1,0 +1,86 @@
+{
+  "publication_parent": "431466596ed986454c12ae24604c0af9f00d4646",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "3749e01b48dfa3f2303ca684785176cc76566f76",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population.rs": "fd165aa5f479afadb0697909c127babd2e078de2",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/model.rs": "17668ddb18d02a6d5520a3b76cdafa400f70e080",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/oracle.rs": "dfcdabcd65c4f0f026d72c5dea61d6d3790a2e37",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/renderer.rs": "390d1be8d4e783d5ba1b01bd2be7f6bdc83c54ca",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/tests.rs": "8f85b906d933b02d92068fa9f64152046416e9df",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "4558751be43cefe479cb1b004a8bee824bfed2a4",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_cost.rs": "581f8abd8590a39e0fa59fe82c75391c0920d035",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_cost/tests.rs": "836c6a07acf16c6c0956e034d9730ca4296b9acc",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "4ffd8f839cc2bbd7aa7edfa79c8826cdbf3a2c04",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "502c95e89551bdff0f77559b3585e7932f68f9b9",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "572c9f079d7a465175283774911fe8bdb7f6a20e",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "dfaf800894a66619f7be137f94584261a402fe97",
+    "mesocosm/crates/mesocosm-genet/src/main.rs": "7935894cff9f69222ac493285f98bdce5a1d5a44",
+    "mesocosm/testing/bench/population.scenario": "92debc6a67160b53e62f08608a24623b0a9a66c5"
+  },
+  "executable_sha256": "2c674c801b851fc279ca8b114b55e0f3f6b54d35d4a12d22c9a7b05ab885398e",
+  "matrix_measured_source": "measured-source.json",
+  "final_change": "Receipt-only active and ready flags now recognize population renderer. The renderer, workload, cost collection and matrix scenario are unchanged; three final workload rechecks confirm active/ready yes.",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "cargo_home": "C:/Users/mark_/Code/.cargo-homes/specimen-generation-20260913",
+  "tests": {
+    "population_model": 5,
+    "independent_gpu_oracle": 1,
+    "oracle_combinations": 6,
+    "cost_summary": 4,
+    "passed": true
+  },
+  "matrix": {
+    "configurations": 21,
+    "frames": 4746,
+    "scenario": "testing/bench/population.scenario",
+    "seed": 7,
+    "pixel_scale": "fixed camera extent 500; same native viewport size across configurations; exact viewport/attachment bytes in receipts",
+    "all_admitted_bodies_submitted": true,
+    "clipped_bodies": 0,
+    "warm_mesh_upload_bytes": 0,
+    "evictions": 0
+  },
+  "final_native": {
+    "final-appearance-1000-1000": {
+      "ok": true,
+      "frames": 226,
+      "captures": 6
+    },
+    "final-assembly-1000-1000": {
+      "ok": true,
+      "frames": 226,
+      "captures": 6
+    },
+    "final-geometry-1000-1000": {
+      "ok": true,
+      "frames": 226,
+      "captures": 6
+    },
+    "regression-acceptance": {
+      "ok": true,
+      "frames": 167,
+      "captures": 15
+    },
+    "regression-world-trial": {
+      "ok": true,
+      "frames": 228,
+      "captures": 16
+    },
+    "regression-effects": {
+      "ok": true,
+      "frames": 125,
+      "captures": 10
+    }
+  },
+  "capacity_negative": "geometry with 16 designs requires 18 live keys; capacity 4 exited 1 before host creation",
+  "artifact_directory": "C:\\Users\\mark_\\Code\\testing\\population-2026-09-13",
+  "timing_scope": "CPU host-thread wall time; no GPU timestamps. Capture samples excluded from phase distributions. Concurrent build snapshots retained. Callback profiles do not prove per-frame presentation.",
+  "limits": [
+    "Native 1000-body foreground is only 4.55-5.01%; dense coverage/overdraw and application limits remain open.",
+    "Direct body renderer population excludes ecological projection, terrain and effects.",
+    "Preparation repeats shared part meshing across assembly designs; CPU and GPU reuse are separately counted.",
+    "Independent oracle checks silhouette/background and nearest depth at magnified framing, not exact material colors.",
+    "Texture byte count is only RGBA8 plus Depth32 attachments, not total GPU/process memory.",
+    "Population shell awaits the otherwise unused creator completion; first document profile includes this startup context."
+  ]
+}

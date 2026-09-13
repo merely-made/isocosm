@@ -1,0 +1,1814 @@
+{
+  "captures": [
+    {
+      "digest": "e24d43ba8874abbd",
+      "height": 1504,
+      "name": "base",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13\\final-geometry-1000-1000-base.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    },
+    {
+      "digest": "31c7e0e9d6272e87",
+      "height": 1504,
+      "name": "styled",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13\\final-geometry-1000-1000-styled.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    },
+    {
+      "digest": "e24d43ba8874abbd",
+      "height": 1504,
+      "name": "neutral",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13\\final-geometry-1000-1000-neutral.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    },
+    {
+      "digest": "b2e4f36764232d00",
+      "height": 1504,
+      "name": "turned",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13\\final-geometry-1000-1000-turned.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    },
+    {
+      "digest": "e24d43ba8874abbd",
+      "height": 1504,
+      "name": "reset",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13\\final-geometry-1000-1000-reset.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    },
+    {
+      "digest": "e24d43ba8874abbd",
+      "height": 1504,
+      "name": "final",
+      "path": "C:/Users/mark_/Code/testing/population-2026-09-13/final-geometry-1000-1000.png",
+      "viewport": {
+        "border": [
+          24.0,
+          125.0,
+          640.0,
+          400.0
+        ],
+        "overlay": null,
+        "pixel_scale": 2.0,
+        "transformed": false
+      },
+      "width": 2464
+    }
+  ],
+  "cost": {
+    "budget_exceeded": false,
+    "eligibility": "profile available, no active producer error, no capture pending; the host callback does not prove successful presentation or GPU completion per sample",
+    "first_document": {
+      "capture": false,
+      "counts": {
+        "actual_scene_redraws": 1,
+        "dirty_tiles": 0,
+        "instance_upload_bytes": 336000,
+        "layout_mutations": 0,
+        "layout_rebuilt": 0,
+        "leaf_repaints": 0,
+        "mesh_upload_bytes": 3573648,
+        "producer_calls": 1,
+        "producer_invalid_frames": 0,
+        "producer_retirements": 0,
+        "producer_stages": 0,
+        "producer_suspensions": 0
+      },
+      "frame": 1,
+      "times_us": {
+        "a11y_us": 79,
+        "acquire_us": 36,
+        "capture_us": 0,
+        "clear_us": 93,
+        "compose_us": 117,
+        "content_extent_us": 0,
+        "dirty_tile_rebuild_us": 0,
+        "emit_scene_us": 135,
+        "excluding_acquire_present_capture_us": 2057,
+        "frame_hook_us": 2,
+        "ime_us": 0,
+        "layout_apply_us": 0,
+        "layout_rebuild_us": 0,
+        "layout_tick_us": 0,
+        "layout_update_us": 0,
+        "layout_with_text_us": 0,
+        "leaf_boxes_us": 5,
+        "leaf_fragments_us": 0,
+        "leaf_render_us": 0,
+        "master_compose_us": 11,
+        "pointer_us": 0,
+        "present_us": 100,
+        "producer_render_us": 1,
+        "producer_stage_us": 0,
+        "raster_total_us": 1474,
+        "raster_us": 1605,
+        "relayout_us": 7,
+        "shadows_us": 0,
+        "style_resolve_us": 0,
+        "tile_invalidate_us": 11,
+        "total_us": 2193,
+        "vello_render_us": 1445
+      },
+      "valid": true
+    },
+    "first_frame_policy": "first_document is the first observed host frame; first_populated is the first successful scene redraw with body geometry; neither measures process startup or asynchronous generation latency",
+    "first_populated": {
+      "capture": false,
+      "counts": {
+        "actual_scene_redraws": 1,
+        "dirty_tiles": 0,
+        "instance_upload_bytes": 336000,
+        "layout_mutations": 0,
+        "layout_rebuilt": 0,
+        "leaf_repaints": 0,
+        "mesh_upload_bytes": 3573648,
+        "producer_calls": 1,
+        "producer_invalid_frames": 0,
+        "producer_retirements": 0,
+        "producer_stages": 0,
+        "producer_suspensions": 0
+      },
+      "frame": 1,
+      "times_us": {
+        "a11y_us": 79,
+        "acquire_us": 36,
+        "capture_us": 0,
+        "clear_us": 93,
+        "compose_us": 117,
+        "content_extent_us": 0,
+        "dirty_tile_rebuild_us": 0,
+        "emit_scene_us": 135,
+        "excluding_acquire_present_capture_us": 2057,
+        "frame_hook_us": 2,
+        "ime_us": 0,
+        "layout_apply_us": 0,
+        "layout_rebuild_us": 0,
+        "layout_tick_us": 0,
+        "layout_update_us": 0,
+        "layout_with_text_us": 0,
+        "leaf_boxes_us": 5,
+        "leaf_fragments_us": 0,
+        "leaf_render_us": 0,
+        "master_compose_us": 11,
+        "pointer_us": 0,
+        "present_us": 100,
+        "producer_render_us": 1,
+        "producer_stage_us": 0,
+        "raster_total_us": 1474,
+        "raster_us": 1605,
+        "relayout_us": 7,
+        "shadows_us": 0,
+        "style_resolve_us": 0,
+        "tile_invalidate_us": 11,
+        "total_us": 2193,
+        "vello_render_us": 1445
+      },
+      "valid": true
+    },
+    "limits": {
+      "phases": 32,
+      "samples": 4096
+    },
+    "phases": [
+      {
+        "all_frames_us": {
+          "a11y_us": {
+            "count": 62,
+            "max": 111,
+            "median": 75.5,
+            "p95": 99
+          },
+          "acquire_us": {
+            "count": 62,
+            "max": 28752,
+            "median": 4286.0,
+            "p95": 10182
+          },
+          "capture_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 62,
+            "max": 314,
+            "median": 256.0,
+            "p95": 298
+          },
+          "compose_us": {
+            "count": 62,
+            "max": 225,
+            "median": 139.5,
+            "p95": 189
+          },
+          "content_extent_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 62,
+            "max": 254,
+            "median": 183.0,
+            "p95": 222
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 62,
+            "max": 1898,
+            "median": 1414.0,
+            "p95": 1709
+          },
+          "frame_hook_us": {
+            "count": 62,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_apply_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_tick_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 62,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_with_text_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_boxes_us": {
+            "count": 62,
+            "max": 11,
+            "median": 9.0,
+            "p95": 11
+          },
+          "leaf_fragments_us": {
+            "count": 62,
+            "max": 1,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_render_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 62,
+            "max": 15,
+            "median": 11.0,
+            "p95": 15
+          },
+          "pointer_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 62,
+            "max": 128,
+            "median": 84.0,
+            "p95": 116
+          },
+          "producer_render_us": {
+            "count": 62,
+            "max": 1,
+            "median": 1.0,
+            "p95": 1
+          },
+          "producer_stage_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "raster_total_us": {
+            "count": 62,
+            "max": 1152,
+            "median": 656.5,
+            "p95": 972
+          },
+          "raster_us": {
+            "count": 62,
+            "max": 1188,
+            "median": 693.0,
+            "p95": 1019
+          },
+          "relayout_us": {
+            "count": 62,
+            "max": 14,
+            "median": 10.0,
+            "p95": 13
+          },
+          "shadows_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 62,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "tile_invalidate_us": {
+            "count": 62,
+            "max": 16,
+            "median": 11.0,
+            "p95": 15
+          },
+          "total_us": {
+            "count": 62,
+            "max": 30244,
+            "median": 5834.0,
+            "p95": 11683
+          },
+          "vello_render_us": {
+            "count": 62,
+            "max": 1116,
+            "median": 628.0,
+            "p95": 932
+          }
+        },
+        "capture_frames": 0,
+        "completed": true,
+        "eligible_counter_totals": {
+          "actual_scene_redraws": 0,
+          "dirty_tiles": 0,
+          "instance_upload_bytes": 0,
+          "layout_mutations": 0,
+          "layout_rebuilt": 0,
+          "leaf_repaints": 0,
+          "mesh_upload_bytes": 0,
+          "producer_calls": 62,
+          "producer_invalid_frames": 0,
+          "producer_retirements": 0,
+          "producer_stages": 0,
+          "producer_suspensions": 0
+        },
+        "eligible_frames": 62,
+        "first_frame": {
+          "capture": false,
+          "counts": {
+            "actual_scene_redraws": 0,
+            "dirty_tiles": 0,
+            "instance_upload_bytes": 0,
+            "layout_mutations": 0,
+            "layout_rebuilt": 0,
+            "leaf_repaints": 0,
+            "mesh_upload_bytes": 0,
+            "producer_calls": 1,
+            "producer_invalid_frames": 0,
+            "producer_retirements": 0,
+            "producer_stages": 0,
+            "producer_suspensions": 0
+          },
+          "frame": 8,
+          "times_us": {
+            "a11y_us": 62,
+            "acquire_us": 30,
+            "capture_us": 0,
+            "clear_us": 74,
+            "compose_us": 88,
+            "content_extent_us": 0,
+            "dirty_tile_rebuild_us": 0,
+            "emit_scene_us": 201,
+            "excluding_acquire_present_capture_us": 1291,
+            "frame_hook_us": 1,
+            "ime_us": 0,
+            "layout_apply_us": 0,
+            "layout_rebuild_us": 0,
+            "layout_tick_us": 0,
+            "layout_update_us": 0,
+            "layout_with_text_us": 0,
+            "leaf_boxes_us": 7,
+            "leaf_fragments_us": 0,
+            "leaf_render_us": 0,
+            "master_compose_us": 10,
+            "pointer_us": 0,
+            "present_us": 82,
+            "producer_render_us": 1,
+            "producer_stage_us": 0,
+            "raster_total_us": 811,
+            "raster_us": 840,
+            "relayout_us": 8,
+            "shadows_us": 0,
+            "style_resolve_us": 0,
+            "tile_invalidate_us": 10,
+            "total_us": 1403,
+            "vello_render_us": 784
+          },
+          "valid": true
+        },
+        "invalid_frames": 0,
+        "name": "idle",
+        "steady_after_first_us": {
+          "a11y_us": {
+            "count": 61,
+            "max": 111,
+            "median": 76.0,
+            "p95": 99
+          },
+          "acquire_us": {
+            "count": 61,
+            "max": 28752,
+            "median": 4294.0,
+            "p95": 10182
+          },
+          "capture_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 61,
+            "max": 314,
+            "median": 257.0,
+            "p95": 298
+          },
+          "compose_us": {
+            "count": 61,
+            "max": 225,
+            "median": 140.0,
+            "p95": 189
+          },
+          "content_extent_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 61,
+            "max": 254,
+            "median": 183.0,
+            "p95": 222
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 61,
+            "max": 1898,
+            "median": 1423.0,
+            "p95": 1709
+          },
+          "frame_hook_us": {
+            "count": 61,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_apply_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_tick_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 61,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_with_text_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_boxes_us": {
+            "count": 61,
+            "max": 11,
+            "median": 9.0,
+            "p95": 11
+          },
+          "leaf_fragments_us": {
+            "count": 61,
+            "max": 1,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_render_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 61,
+            "max": 15,
+            "median": 11.0,
+            "p95": 15
+          },
+          "pointer_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 61,
+            "max": 128,
+            "median": 84.0,
+            "p95": 116
+          },
+          "producer_render_us": {
+            "count": 61,
+            "max": 1,
+            "median": 1.0,
+            "p95": 1
+          },
+          "producer_stage_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "raster_total_us": {
+            "count": 61,
+            "max": 1152,
+            "median": 653.0,
+            "p95": 972
+          },
+          "raster_us": {
+            "count": 61,
+            "max": 1188,
+            "median": 692.0,
+            "p95": 1019
+          },
+          "relayout_us": {
+            "count": 61,
+            "max": 14,
+            "median": 10.0,
+            "p95": 13
+          },
+          "shadows_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "tile_invalidate_us": {
+            "count": 61,
+            "max": 16,
+            "median": 11.0,
+            "p95": 15
+          },
+          "total_us": {
+            "count": 61,
+            "max": 30244,
+            "median": 5836.0,
+            "p95": 11683
+          },
+          "vello_render_us": {
+            "count": 61,
+            "max": 1116,
+            "median": 623.0,
+            "p95": 932
+          }
+        }
+      },
+      {
+        "all_frames_us": {
+          "a11y_us": {
+            "count": 61,
+            "max": 99,
+            "median": 67.0,
+            "p95": 93
+          },
+          "acquire_us": {
+            "count": 61,
+            "max": 3637,
+            "median": 34.0,
+            "p95": 51
+          },
+          "capture_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 61,
+            "max": 234,
+            "median": 73.0,
+            "p95": 184
+          },
+          "compose_us": {
+            "count": 61,
+            "max": 172,
+            "median": 88.0,
+            "p95": 144
+          },
+          "content_extent_us": {
+            "count": 61,
+            "max": 5,
+            "median": 3.0,
+            "p95": 4
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 61,
+            "max": 281,
+            "median": 195.0,
+            "p95": 247
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 61,
+            "max": 10137,
+            "median": 7929.0,
+            "p95": 8978
+          },
+          "frame_hook_us": {
+            "count": 61,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 61,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_apply_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 61,
+            "max": 1774,
+            "median": 1185.0,
+            "p95": 1494
+          },
+          "layout_tick_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 61,
+            "max": 1775,
+            "median": 1187.0,
+            "p95": 1496
+          },
+          "layout_with_text_us": {
+            "count": 61,
+            "max": 896,
+            "median": 606.0,
+            "p95": 838
+          },
+          "leaf_boxes_us": {
+            "count": 61,
+            "max": 9,
+            "median": 4.0,
+            "p95": 7
+          },
+          "leaf_fragments_us": {
+            "count": 61,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "leaf_render_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 61,
+            "max": 22,
+            "median": 12.0,
+            "p95": 16
+          },
+          "pointer_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 61,
+            "max": 184,
+            "median": 86.0,
+            "p95": 110
+          },
+          "producer_render_us": {
+            "count": 61,
+            "max": 6897,
+            "median": 4967.0,
+            "p95": 5813
+          },
+          "producer_stage_us": {
+            "count": 61,
+            "max": 866,
+            "median": 499.0,
+            "p95": 766
+          },
+          "raster_total_us": {
+            "count": 61,
+            "max": 1476,
+            "median": 802.0,
+            "p95": 1227
+          },
+          "raster_us": {
+            "count": 61,
+            "max": 1502,
+            "median": 831.0,
+            "p95": 1250
+          },
+          "relayout_us": {
+            "count": 61,
+            "max": 1785,
+            "median": 1192.0,
+            "p95": 1504
+          },
+          "shadows_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 61,
+            "max": 831,
+            "median": 540.0,
+            "p95": 653
+          },
+          "tile_invalidate_us": {
+            "count": 61,
+            "max": 49,
+            "median": 11.0,
+            "p95": 15
+          },
+          "total_us": {
+            "count": 61,
+            "max": 10268,
+            "median": 8070.0,
+            "p95": 9092
+          },
+          "vello_render_us": {
+            "count": 61,
+            "max": 1443,
+            "median": 765.0,
+            "p95": 1195
+          }
+        },
+        "capture_frames": 0,
+        "completed": true,
+        "eligible_counter_totals": {
+          "actual_scene_redraws": 60,
+          "dirty_tiles": 0,
+          "instance_upload_bytes": 20160000,
+          "layout_mutations": 60,
+          "layout_rebuilt": 60,
+          "leaf_repaints": 0,
+          "mesh_upload_bytes": 0,
+          "producer_calls": 61,
+          "producer_invalid_frames": 0,
+          "producer_retirements": 0,
+          "producer_stages": 60,
+          "producer_suspensions": 0
+        },
+        "eligible_frames": 61,
+        "first_frame": {
+          "capture": false,
+          "counts": {
+            "actual_scene_redraws": 0,
+            "dirty_tiles": 0,
+            "instance_upload_bytes": 0,
+            "layout_mutations": 0,
+            "layout_rebuilt": 0,
+            "leaf_repaints": 0,
+            "mesh_upload_bytes": 0,
+            "producer_calls": 1,
+            "producer_invalid_frames": 0,
+            "producer_retirements": 0,
+            "producer_stages": 0,
+            "producer_suspensions": 0
+          },
+          "frame": 72,
+          "times_us": {
+            "a11y_us": 74,
+            "acquire_us": 3637,
+            "capture_us": 0,
+            "clear_us": 234,
+            "compose_us": 128,
+            "content_extent_us": 0,
+            "dirty_tile_rebuild_us": 0,
+            "emit_scene_us": 225,
+            "excluding_acquire_present_capture_us": 1556,
+            "frame_hook_us": 2,
+            "ime_us": 0,
+            "layout_apply_us": 0,
+            "layout_rebuild_us": 0,
+            "layout_tick_us": 0,
+            "layout_update_us": 0,
+            "layout_with_text_us": 0,
+            "leaf_boxes_us": 9,
+            "leaf_fragments_us": 1,
+            "leaf_render_us": 0,
+            "master_compose_us": 13,
+            "pointer_us": 0,
+            "present_us": 75,
+            "producer_render_us": 1,
+            "producer_stage_us": 0,
+            "raster_total_us": 820,
+            "raster_us": 852,
+            "relayout_us": 11,
+            "shadows_us": 0,
+            "style_resolve_us": 0,
+            "tile_invalidate_us": 16,
+            "total_us": 5268,
+            "vello_render_us": 782
+          },
+          "valid": true
+        },
+        "invalid_frames": 0,
+        "name": "material",
+        "steady_after_first_us": {
+          "a11y_us": {
+            "count": 60,
+            "max": 99,
+            "median": 67.0,
+            "p95": 93
+          },
+          "acquire_us": {
+            "count": 60,
+            "max": 125,
+            "median": 34.0,
+            "p95": 50
+          },
+          "capture_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 60,
+            "max": 190,
+            "median": 73.0,
+            "p95": 180
+          },
+          "compose_us": {
+            "count": 60,
+            "max": 172,
+            "median": 88.0,
+            "p95": 144
+          },
+          "content_extent_us": {
+            "count": 60,
+            "max": 5,
+            "median": 3.0,
+            "p95": 4
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 60,
+            "max": 281,
+            "median": 194.5,
+            "p95": 247
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 60,
+            "max": 10137,
+            "median": 7944.5,
+            "p95": 8978
+          },
+          "frame_hook_us": {
+            "count": 60,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 60,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_apply_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 60,
+            "max": 1774,
+            "median": 1186.0,
+            "p95": 1494
+          },
+          "layout_tick_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 60,
+            "max": 1775,
+            "median": 1187.5,
+            "p95": 1496
+          },
+          "layout_with_text_us": {
+            "count": 60,
+            "max": 896,
+            "median": 606.5,
+            "p95": 838
+          },
+          "leaf_boxes_us": {
+            "count": 60,
+            "max": 7,
+            "median": 4.0,
+            "p95": 7
+          },
+          "leaf_fragments_us": {
+            "count": 60,
+            "max": 2,
+            "median": 1.0,
+            "p95": 2
+          },
+          "leaf_render_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 60,
+            "max": 22,
+            "median": 12.0,
+            "p95": 16
+          },
+          "pointer_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 60,
+            "max": 184,
+            "median": 86.0,
+            "p95": 110
+          },
+          "producer_render_us": {
+            "count": 60,
+            "max": 6897,
+            "median": 4967.5,
+            "p95": 5813
+          },
+          "producer_stage_us": {
+            "count": 60,
+            "max": 866,
+            "median": 504.0,
+            "p95": 766
+          },
+          "raster_total_us": {
+            "count": 60,
+            "max": 1476,
+            "median": 799.0,
+            "p95": 1227
+          },
+          "raster_us": {
+            "count": 60,
+            "max": 1502,
+            "median": 830.5,
+            "p95": 1250
+          },
+          "relayout_us": {
+            "count": 60,
+            "max": 1785,
+            "median": 1192.5,
+            "p95": 1504
+          },
+          "shadows_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 60,
+            "max": 831,
+            "median": 544.5,
+            "p95": 653
+          },
+          "tile_invalidate_us": {
+            "count": 60,
+            "max": 49,
+            "median": 11.0,
+            "p95": 15
+          },
+          "total_us": {
+            "count": 60,
+            "max": 10268,
+            "median": 8091.0,
+            "p95": 9092
+          },
+          "vello_render_us": {
+            "count": 60,
+            "max": 1443,
+            "median": 764.0,
+            "p95": 1195
+          }
+        }
+      },
+      {
+        "all_frames_us": {
+          "a11y_us": {
+            "count": 61,
+            "max": 107,
+            "median": 67.0,
+            "p95": 95
+          },
+          "acquire_us": {
+            "count": 61,
+            "max": 64,
+            "median": 33.0,
+            "p95": 50
+          },
+          "capture_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 61,
+            "max": 173,
+            "median": 69.0,
+            "p95": 115
+          },
+          "compose_us": {
+            "count": 61,
+            "max": 182,
+            "median": 86.0,
+            "p95": 148
+          },
+          "content_extent_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 61,
+            "max": 1,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 61,
+            "max": 269,
+            "median": 187.0,
+            "p95": 252
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 61,
+            "max": 10716,
+            "median": 7031.0,
+            "p95": 9250
+          },
+          "frame_hook_us": {
+            "count": 61,
+            "max": 3,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 61,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_apply_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_tick_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 61,
+            "max": 3,
+            "median": 1.0,
+            "p95": 1
+          },
+          "layout_with_text_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_boxes_us": {
+            "count": 61,
+            "max": 10,
+            "median": 5.0,
+            "p95": 8
+          },
+          "leaf_fragments_us": {
+            "count": 61,
+            "max": 2,
+            "median": 1.0,
+            "p95": 1
+          },
+          "leaf_render_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 61,
+            "max": 20,
+            "median": 11.0,
+            "p95": 16
+          },
+          "pointer_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 61,
+            "max": 260,
+            "median": 85.0,
+            "p95": 131
+          },
+          "producer_render_us": {
+            "count": 61,
+            "max": 8252,
+            "median": 5348.0,
+            "p95": 7452
+          },
+          "producer_stage_us": {
+            "count": 61,
+            "max": 796,
+            "median": 541.0,
+            "p95": 741
+          },
+          "raster_total_us": {
+            "count": 61,
+            "max": 1166,
+            "median": 689.0,
+            "p95": 1061
+          },
+          "raster_us": {
+            "count": 61,
+            "max": 1194,
+            "median": 713.0,
+            "p95": 1088
+          },
+          "relayout_us": {
+            "count": 61,
+            "max": 14,
+            "median": 6.0,
+            "p95": 11
+          },
+          "shadows_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 61,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "tile_invalidate_us": {
+            "count": 61,
+            "max": 18,
+            "median": 11.0,
+            "p95": 17
+          },
+          "total_us": {
+            "count": 61,
+            "max": 10863,
+            "median": 7184.0,
+            "p95": 9368
+          },
+          "vello_render_us": {
+            "count": 61,
+            "max": 1133,
+            "median": 657.0,
+            "p95": 1028
+          }
+        },
+        "capture_frames": 0,
+        "completed": true,
+        "eligible_counter_totals": {
+          "actual_scene_redraws": 60,
+          "dirty_tiles": 0,
+          "instance_upload_bytes": 20160000,
+          "layout_mutations": 0,
+          "layout_rebuilt": 0,
+          "leaf_repaints": 0,
+          "mesh_upload_bytes": 0,
+          "producer_calls": 61,
+          "producer_invalid_frames": 0,
+          "producer_retirements": 0,
+          "producer_stages": 60,
+          "producer_suspensions": 0
+        },
+        "eligible_frames": 61,
+        "first_frame": {
+          "capture": false,
+          "counts": {
+            "actual_scene_redraws": 0,
+            "dirty_tiles": 0,
+            "instance_upload_bytes": 0,
+            "layout_mutations": 0,
+            "layout_rebuilt": 0,
+            "leaf_repaints": 0,
+            "mesh_upload_bytes": 0,
+            "producer_calls": 1,
+            "producer_invalid_frames": 0,
+            "producer_retirements": 0,
+            "producer_stages": 0,
+            "producer_suspensions": 0
+          },
+          "frame": 148,
+          "times_us": {
+            "a11y_us": 81,
+            "acquire_us": 32,
+            "capture_us": 0,
+            "clear_us": 86,
+            "compose_us": 117,
+            "content_extent_us": 0,
+            "dirty_tile_rebuild_us": 0,
+            "emit_scene_us": 151,
+            "excluding_acquire_present_capture_us": 1261,
+            "frame_hook_us": 1,
+            "ime_us": 0,
+            "layout_apply_us": 0,
+            "layout_rebuild_us": 0,
+            "layout_tick_us": 0,
+            "layout_update_us": 0,
+            "layout_with_text_us": 0,
+            "leaf_boxes_us": 5,
+            "leaf_fragments_us": 0,
+            "leaf_render_us": 0,
+            "master_compose_us": 8,
+            "pointer_us": 0,
+            "present_us": 91,
+            "producer_render_us": 1,
+            "producer_stage_us": 0,
+            "raster_total_us": 774,
+            "raster_us": 803,
+            "relayout_us": 6,
+            "shadows_us": 0,
+            "style_resolve_us": 0,
+            "tile_invalidate_us": 10,
+            "total_us": 1384,
+            "vello_render_us": 751
+          },
+          "valid": true
+        },
+        "invalid_frames": 0,
+        "name": "yaw",
+        "steady_after_first_us": {
+          "a11y_us": {
+            "count": 60,
+            "max": 107,
+            "median": 67.0,
+            "p95": 95
+          },
+          "acquire_us": {
+            "count": 60,
+            "max": 64,
+            "median": 33.0,
+            "p95": 50
+          },
+          "capture_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "clear_us": {
+            "count": 60,
+            "max": 173,
+            "median": 68.5,
+            "p95": 115
+          },
+          "compose_us": {
+            "count": 60,
+            "max": 182,
+            "median": 86.0,
+            "p95": 148
+          },
+          "content_extent_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "dirty_tile_rebuild_us": {
+            "count": 60,
+            "max": 1,
+            "median": 0.0,
+            "p95": 0
+          },
+          "emit_scene_us": {
+            "count": 60,
+            "max": 269,
+            "median": 187.0,
+            "p95": 252
+          },
+          "excluding_acquire_present_capture_us": {
+            "count": 60,
+            "max": 10716,
+            "median": 7049.0,
+            "p95": 9250
+          },
+          "frame_hook_us": {
+            "count": 60,
+            "max": 3,
+            "median": 1.0,
+            "p95": 2
+          },
+          "ime_us": {
+            "count": 60,
+            "max": 1,
+            "median": 0.0,
+            "p95": 1
+          },
+          "layout_apply_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_rebuild_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_tick_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "layout_update_us": {
+            "count": 60,
+            "max": 3,
+            "median": 1.0,
+            "p95": 1
+          },
+          "layout_with_text_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "leaf_boxes_us": {
+            "count": 60,
+            "max": 10,
+            "median": 4.5,
+            "p95": 8
+          },
+          "leaf_fragments_us": {
+            "count": 60,
+            "max": 2,
+            "median": 1.0,
+            "p95": 1
+          },
+          "leaf_render_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "master_compose_us": {
+            "count": 60,
+            "max": 20,
+            "median": 11.0,
+            "p95": 16
+          },
+          "pointer_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "present_us": {
+            "count": 60,
+            "max": 260,
+            "median": 84.5,
+            "p95": 131
+          },
+          "producer_render_us": {
+            "count": 60,
+            "max": 8252,
+            "median": 5353.0,
+            "p95": 7452
+          },
+          "producer_stage_us": {
+            "count": 60,
+            "max": 796,
+            "median": 542.5,
+            "p95": 741
+          },
+          "raster_total_us": {
+            "count": 60,
+            "max": 1166,
+            "median": 684.0,
+            "p95": 1061
+          },
+          "raster_us": {
+            "count": 60,
+            "max": 1194,
+            "median": 710.0,
+            "p95": 1088
+          },
+          "relayout_us": {
+            "count": 60,
+            "max": 14,
+            "median": 6.5,
+            "p95": 11
+          },
+          "shadows_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "style_resolve_us": {
+            "count": 60,
+            "max": 0,
+            "median": 0.0,
+            "p95": 0
+          },
+          "tile_invalidate_us": {
+            "count": 60,
+            "max": 18,
+            "median": 11.0,
+            "p95": 17
+          },
+          "total_us": {
+            "count": 60,
+            "max": 10863,
+            "median": 7195.5,
+            "p95": 9368
+          },
+          "vello_render_us": {
+            "count": 60,
+            "max": 1133,
+            "median": 652.5,
+            "p95": 1028
+          }
+        }
+      }
+    ],
+    "schema": 1,
+    "scope": "all bench scenes; actual redraw and upload deltas distinguish retained producer calls",
+    "summary_policy": "capture and invalid frames excluded; steady excludes the first eligible frame per phase; p95 is nearest rank; stage timings overlap and must not be summed",
+    "timing": "CPU wall-time microseconds on the native host thread, not GPU durations",
+    "unfinished": null
+  },
+  "errors": [],
+  "final": {
+    "active": "yes",
+    "alternative": "none",
+    "alternatives-admitted": "0",
+    "archetype": "none",
+    "body-bounds": "[8, 12, 48]",
+    "body-plan": "axial",
+    "camera": "oblique",
+    "candidate": "0",
+    "candidates": "4",
+    "capacity": "3334",
+    "captures": "6",
+    "comparison": "no",
+    "comparison-rendered": "0",
+    "comparison-round": "0",
+    "comparison-scale": "none",
+    "creator-pending": "no",
+    "creator-ready": "yes",
+    "decorated": "no",
+    "drawn-bodies": "1000",
+    "drawn-parts": "3000",
+    "effects-appearance-seed": "42",
+    "effects-behavior": "enclose",
+    "effects-connection": "pairs",
+    "effects-glyph": "quotes",
+    "effects-marks": "24",
+    "effects-notice": "",
+    "effects-open": "false",
+    "effects-origin": "guaranteed",
+    "effects-playing": "false",
+    "effects-profile": "guaranteed",
+    "effects-receiver": "stone",
+    "effects-request": "{\"version\":1,\"world_seed\":7,\"appearance_seed\":42,\"glyph\":\"quotes\",\"behavior\":\"enclose\",\"receiver\":\"stone\",\"profile\":\"guaranteed\",\"count\":24,\"duration_ticks\":120}",
+    "effects-response": "reflect",
+    "effects-sample": "[{\"id\":0,\"glyph\":\"\\\"\",\"x\":870,\"y\":500,\"z\":0,\"angle\":0,\"scale\":943,\"opacity\":255,\"group\":0},{\"id\":1,\"glyph\":\"\\\"\",\"x\":841,\"y\":528,\"z\":0,\"angle\":15,\"scale\":1012,\"opacity\":255,\"group\":0},{\"id\":2,\"glyph\":\"\\\"\",\"x\":813,\"y\":556,\"z\":0,\"angle\":30,\"scale\":927,\"opacity\":255,\"group\":1},{\"id\":3,\"glyph\":\"\\\"\",\"x\":785,\"y\":585,\"z\":0,\"angle\":45,\"scale\":936,\"opacity\":255,\"group\":1},{\"id\":4,\"glyph\":\"\\\"\",\"x\":756,\"y\":613,\"z\":0,\"angle\":60,\"scale\":987,\"opacity\":255,\"group\":2},{\"id\":5,\"glyph\":\"\\\"\",\"x\":728,\"y\":641,\"z\":0,\"angle\":75,\"scale\":997,\"opacity\":255,\"group\":2},{\"id\":6,\"glyph\":\"\\\"\",\"x\":700,\"y\":670,\"z\":0,\"angle\":90,\"scale\":946,\"opacity\":255,\"group\":3},{\"id\":7,\"glyph\":\"\\\"\",\"x\":672,\"y\":641,\"z\":0,\"angle\":105,\"scale\":858,\"opacity\":255,\"group\":3},{\"id\":8,\"glyph\":\"\\\"\",\"x\":644,\"y\":613,\"z\":0,\"angle\":120,\"scale\":1006,\"opacity\":255,\"group\":4},{\"id\":9,\"glyph\":\"\\\"\",\"x\":615,\"y\":585,\"z\":0,\"angle\":135,\"scale\":1152,\"opacity\":255,\"group\":4},{\"id\":10,\"glyph\":\"\\\"\",\"x\":587,\"y\":556,\"z\":0,\"angle\":150,\"scale\":902,\"opacity\":255,\"group\":5},{\"id\":11,\"glyph\":\"\\\"\",\"x\":559,\"y\":528,\"z\":0,\"angle\":165,\"scale\":935,\"opacity\":255,\"group\":5},{\"id\":12,\"glyph\":\"\\\"\",\"x\":530,\"y\":500,\"z\":0,\"angle\":180,\"scale\":1103,\"opacity\":255,\"group\":6},{\"id\":13,\"glyph\":\"\\\"\",\"x\":559,\"y\":472,\"z\":0,\"angle\":195,\"scale\":1017,\"opacity\":255,\"group\":6},{\"id\":14,\"glyph\":\"\\\"\",\"x\":587,\"y\":444,\"z\":0,\"angle\":210,\"scale\":977,\"opacity\":255,\"group\":7},{\"id\":15,\"glyph\":\"\\\"\",\"x\":615,\"y\":415,\"z\":0,\"angle\":225,\"scale\":928,\"opacity\":255,\"group\":7},{\"id\":16,\"glyph\":\"\\\"\",\"x\":644,\"y\":387,\"z\":0,\"angle\":240,\"scale\":993,\"opacity\":255,\"group\":8},{\"id\":17,\"glyph\":\"\\\"\",\"x\":672,\"y\":359,\"z\":0,\"angle\":255,\"scale\":933,\"opacity\":255,\"group\":8},{\"id\":18,\"glyph\":\"\\\"\",\"x\":700,\"y\":330,\"z\":0,\"angle\":270,\"scale\":947,\"opacity\":255,\"group\":9},{\"id\":19,\"glyph\":\"\\\"\",\"x\":728,\"y\":359,\"z\":0,\"angle\":285,\"scale\":846,\"opacity\":255,\"group\":9},{\"id\":20,\"glyph\":\"\\\"\",\"x\":756,\"y\":387,\"z\":0,\"angle\":300,\"scale\":1085,\"opacity\":255,\"group\":10},{\"id\":21,\"glyph\":\"\\\"\",\"x\":785,\"y\":415,\"z\":0,\"angle\":315,\"scale\":940,\"opacity\":255,\"group\":10},{\"id\":22,\"glyph\":\"\\\"\",\"x\":813,\"y\":444,\"z\":0,\"angle\":330,\"scale\":1182,\"opacity\":255,\"group\":11},{\"id\":23,\"glyph\":\"\\\"\",\"x\":841,\"y\":472,\"z\":0,\"angle\":345,\"scale\":1009,\"opacity\":255,\"group\":11}]",
+    "effects-saved": "",
+    "effects-tick": "0",
+    "effects-world-seed": "7",
+    "epoch": "2",
+    "error": "none",
+    "fallback-bodies": "0",
+    "hash": "4449b4e6ebba3747",
+    "instance-bytes": "41328000",
+    "logical-height": "752",
+    "logical-width": "1232",
+    "mass": "800",
+    "mesh-bytes": "3573648",
+    "notice": "",
+    "opacity": "1",
+    "original-hash": "none",
+    "output-scale": "2",
+    "overlay-clicks": "0",
+    "population": "true",
+    "population-bodies": "1000",
+    "population-config": "{\"bodies\":1000,\"designs\":1000,\"seed\":7,\"kind\":\"geometry\",\"mesh_capacity\":1024}",
+    "population-digest": "fnv1a64:987dbc238f3f95fa",
+    "population-meshes": "1002",
+    "population-preparation-us": "17736",
+    "population-render": "{\"mesh_builds\":0,\"mesh_upload_bytes\":0,\"instance_upload_bytes\":336000,\"frame_upload_bytes\":0,\"draw_parts\":3000,\"body_count\":1000,\"draws\":1002,\"evictions\":0,\"cached_meshes\":1002,\"clipped_bodies\":0,\"texture_bytes\":7475328}",
+    "population-stats": "{\"body_count\":1000,\"design_count\":1000,\"unique_meshes\":1002,\"assembly_count\":1,\"occupancy_count\":1002,\"part_instances\":3000,\"unique_quads\":24817,\"instance_quads\":36805,\"cpu_mesh_builds\":3000,\"cpu_retained_meshes\":3000}",
+    "ready": "yes",
+    "renders": "123",
+    "revision": "63",
+    "seed": "10975940",
+    "selected": "no",
+    "selected-organism": "none",
+    "selected-part": "none",
+    "size": "1",
+    "source-hash": "4449b4e6ebba3747",
+    "source-request": "{\"version\":4,\"seed\":10975940,\"variation\":0,\"place\":4,\"candidates\":4,\"attempts\":128,\"organisms\":24,\"soil_min_mg\":60,\"soil_max_mg\":180,\"criteria\":{\"body_plan\":\"axial\",\"archetype\":null,\"structure\":null,\"role\":null,\"min_segments\":1,\"max_segments\":32,\"max_parts\":128,\"movement_organs\":null,\"mass_mg\":800},\"fixed_body\":null,\"soil_pattern\":\"patches\",\"min_open_steps\":0}",
+    "spatial-anchors": "0",
+    "spatial-camera": "Oblique",
+    "spatial-count": "18",
+    "spatial-drawn": "0",
+    "spatial-enabled": "false",
+    "spatial-form": "Orbit",
+    "spatial-glyph": "quotes",
+    "spatial-playing": "false",
+    "spatial-saved": "none",
+    "spatial-seed": "7",
+    "spatial-tick": "0",
+    "structure-layout": "none",
+    "structure-length": "0",
+    "structure-organs": "none",
+    "structure-stretches": "0",
+    "tint": "natural",
+    "transformed": "no",
+    "trial-active": "false",
+    "ui-zoom": "1",
+    "variation": "0",
+    "view": "body",
+    "visible": "yes"
+  },
+  "frames": 226,
+  "kind": "native-specimen-bench",
+  "ok": true,
+  "pixel_checks": [
+    {
+      "background_pixels": 876731,
+      "background_rgb": [
+        29,
+        39,
+        47
+      ],
+      "changed_background_pixels": 0,
+      "changed_pixels": 41813,
+      "first": "base",
+      "operation": "viewport-pixels-change",
+      "sampled_pixels": 918544,
+      "second": "styled"
+    },
+    {
+      "background_pixels": 876731,
+      "background_rgb": [
+        29,
+        39,
+        47
+      ],
+      "changed_background_pixels": 0,
+      "changed_pixels": 0,
+      "first": "base",
+      "operation": "viewport-pixels-same",
+      "sampled_pixels": 918544,
+      "second": "neutral"
+    },
+    {
+      "background_pixels": 876731,
+      "background_rgb": [
+        29,
+        39,
+        47
+      ],
+      "changed_background_pixels": 5420,
+      "changed_pixels": 38954,
+      "first": "base",
+      "operation": "viewport-pixels-change",
+      "sampled_pixels": 918544,
+      "second": "turned"
+    },
+    {
+      "background_pixels": 876731,
+      "background_rgb": [
+        29,
+        39,
+        47
+      ],
+      "changed_background_pixels": 0,
+      "changed_pixels": 0,
+      "first": "base",
+      "operation": "viewport-pixels-same",
+      "sampled_pixels": 918544,
+      "second": "reset"
+    }
+  ],
+  "scenario": true,
+  "process_snapshot": [
+    {
+      "ProcessName": "cargo",
+      "Id": 24836,
+      "CPU": 0.015625,
+      "StartTime": "2026-09-13T14:09:45.1524027-04:00"
+    },
+    {
+      "ProcessName": "cargo",
+      "Id": 34324,
+      "CPU": 0.046875,
+      "StartTime": "2026-09-13T14:07:38.7296393-04:00"
+    },
+    {
+      "ProcessName": "cargo",
+      "Id": 37376,
+      "CPU": 35.359375,
+      "StartTime": "2026-09-13T14:07:38.7717803-04:00"
+    },
+    {
+      "ProcessName": "cargo",
+      "Id": 37384,
+      "CPU": 10.9375,
+      "StartTime": "2026-09-13T14:09:45.181342-04:00"
+    },
+    {
+      "ProcessName": "rustc",
+      "Id": 26568,
+      "CPU": 0.65625,
+      "StartTime": "2026-09-13T14:19:18.3620204-04:00"
+    },
+    {
+      "ProcessName": "rustc",
+      "Id": 39584,
+      "CPU": 1.0,
+      "StartTime": "2026-09-13T14:19:18.5517077-04:00"
+    }
+  ]
+}

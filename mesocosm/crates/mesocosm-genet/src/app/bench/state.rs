@@ -19,6 +19,7 @@ pub(super) struct Specimen {
     pub yaw: f32,
     pub spatial: super::spatial::Spatial,
     pub trial: Option<super::trial::WorldTrial>,
+    pub population: Option<super::population::model::Workload>,
     pub isolated: bool,
     pub camera: CameraMode,
     pub content: Option<mesocosm_mesh::content::ContentPack>,

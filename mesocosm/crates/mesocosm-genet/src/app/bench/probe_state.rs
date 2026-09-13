@@ -110,7 +110,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                         .filter(|(index, card)| {
                             let scene = state.cards[*index].borrow();
                             card.world.is_some()
-                                && scene.section.is_some()
+                                && (scene.section.is_some() || scene.population_stats.is_some())
                                 && scene.error.is_none()
                                 && scene.stats.voxel_bodies == 1
                         })
@@ -173,10 +173,12 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("creator-pending", yes(model.creator.pending))
         .with_field(
             "ready",
-            yes(creator_ready
-                && scene.section.is_some()
-                && scene.error.is_none()
-                && scene.renders > 0),
+            yes(
+                (creator_ready || (model.population.is_some() && !model.creator.pending))
+                    && (scene.section.is_some() || scene.population_stats.is_some())
+                    && scene.error.is_none()
+                    && scene.renders > 0,
+            ),
         )
         .with_field("epoch", model.epoch.to_string())
         .with_field("revision", model.revision.to_string())
@@ -195,7 +197,14 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .selected
                 .map_or("none".into(), |s| s.organism.0.to_string()),
         )
-        .with_field("view", if model.isolated && model.trial.is_none() { "body" } else { "habitat" })
+        .with_field(
+            "view",
+            if model.isolated && model.trial.is_none() {
+                "body"
+            } else {
+                "habitat"
+            },
+        )
         .with_field("camera", model.camera.name())
         .with_field(
             "tint",
@@ -206,7 +215,10 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
             },
         )
         .with_field("visible", yes(state.visible))
-        .with_field("active", yes(scene.section.is_some()))
+        .with_field(
+            "active",
+            yes(scene.section.is_some() || scene.population_stats.is_some()),
+        )
         .with_field("decorated", yes(state.decorated))
         .with_field("transformed", yes(state.transformed))
         .with_field("renders", scene.renders.to_string())
@@ -249,13 +261,51 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .map_or("none".into(), |p| p.display().to_string()),
         );
     }
-    snapshot=snapshot.with_field("source-request",serde_json::to_string(&model.creator.request).expect("generation request serializes"));
-    snapshot=snapshot.with_field("source-hash",format!("{:016x}",mesocosm_core::state_hash(model.source_world())));
-    if let Some(trial)=&model.trial {
-        for (key,value) in trial.probe_fields() {snapshot=snapshot.with_field(key,value);}
-    } else {snapshot=snapshot.with_field("trial-active","false");}
+    snapshot = snapshot.with_field(
+        "source-request",
+        serde_json::to_string(&model.creator.request).expect("generation request serializes"),
+    );
+    snapshot = snapshot.with_field(
+        "source-hash",
+        format!("{:016x}", mesocosm_core::state_hash(model.source_world())),
+    );
+    if let Some(trial) = &model.trial {
+        for (key, value) in trial.probe_fields() {
+            snapshot = snapshot.with_field(key, value);
+        }
+    } else {
+        snapshot = snapshot.with_field("trial-active", "false");
+    }
     for (key, value) in state.effects.probe_fields() {
         snapshot = snapshot.with_field(key, value);
+    }
+    if let Some(population) = &model.population {
+        snapshot = snapshot
+            .with_field("population", "true")
+            .with_field("population-digest", population.digest.clone())
+            .with_field(
+                "population-preparation-us",
+                population.preparation_us.to_string(),
+            )
+            .with_field(
+                "population-config",
+                serde_json::to_string(&population.config).unwrap(),
+            )
+            .with_field(
+                "population-stats",
+                serde_json::to_string(&population.stats).unwrap(),
+            )
+            .with_field("population-bodies", population.stats.body_count.to_string())
+            .with_field(
+                "population-meshes",
+                population.stats.unique_meshes.to_string(),
+            );
+        if let Some(stats) = &scene.population_stats {
+            snapshot =
+                snapshot.with_field("population-render", serde_json::to_string(stats).unwrap());
+        }
+    } else {
+        snapshot = snapshot.with_field("population", "false");
     }
     snapshot
 }

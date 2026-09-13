@@ -17,6 +17,8 @@ pub(super) struct BenchScene {
     pub section: Option<Section>,
     pub error: Option<String>,
     pub stats: BodyFrameStats,
+    population: Option<super::population::renderer::Renderer>,
+    pub population_stats: Option<super::population::renderer::RenderStats>,
     pub renders: u64,
     pub glyph_count: usize,
     pub anchor_count: usize,
@@ -37,6 +39,8 @@ impl BenchScene {
             section: None,
             error: None,
             stats: BodyFrameStats::default(),
+            population: None,
+            population_stats: None,
             renders: 0,
             glyph_count: 0,
             anchor_count: 0,
@@ -143,6 +147,37 @@ impl BenchScene {
         {
             return Ok(None);
         }
+        if let Some(workload) = &model.population {
+            if self.population.is_none() || self.size != size {
+                self.population = Some(super::population::renderer::Renderer::new(
+                    device, queue, size, workload,
+                )?);
+            } else if !needs_frame && self.revision == model.revision && self.tint == Some(tint) {
+                return Ok(None);
+            }
+            let renderer = self.population.as_mut().unwrap();
+            let stats = renderer.render(device, queue, workload, model.yaw, tint)?;
+            self.stats = BodyFrameStats {
+                candidates: stats.body_count,
+                voxel_bodies: stats.body_count,
+                voxel_parts: stats.draw_parts,
+                draw_parts: stats.draw_parts,
+                mesh_builds: stats.mesh_builds,
+                mesh_upload_bytes: stats.mesh_upload_bytes as u64,
+                instance_upload_bytes: stats.instance_upload_bytes as u64,
+                frame_upload_bytes: stats.frame_upload_bytes as u64,
+                ..Default::default()
+            };
+            self.mesh_upload_bytes += self.stats.mesh_upload_bytes;
+            self.instance_upload_bytes += self.stats.instance_upload_bytes;
+            self.population_stats = Some(stats);
+            self.renders += 1;
+            self.epoch = epoch;
+            self.revision = model.revision;
+            self.size = size;
+            self.tint = Some(tint);
+            return Ok(Some(renderer.view().clone()));
+        }
         let world = model
             .card_world(self.card)
             .ok_or("Alternative is not admitted.")?;
@@ -185,7 +220,11 @@ impl BenchScene {
             None
         };
         section.set_body_focus(selected.map(|s| s.organism), selected);
-        let mut centre = world.position().or_else(||model.source_world().position()).unwrap_or([0, 0, 0]).map(|v| v as f32);
+        let mut centre = world
+            .position()
+            .or_else(|| model.source_world().position())
+            .unwrap_or([0, 0, 0])
+            .map(|v| v as f32);
         let mut half = 28.0;
         let mut depth = section::SLAB_DEPTH;
         let isolated = (model.isolated && model.trial.is_none()) || self.card.is_some();
@@ -294,6 +333,8 @@ impl BenchScene {
 
     pub fn retire(&mut self) {
         self.section = None;
+        self.population = None;
+        self.population_stats = None;
         self.ground_revision = None;
         self.revision = 0;
         self.size = (0, 0);

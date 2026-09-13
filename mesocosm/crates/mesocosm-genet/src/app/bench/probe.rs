@@ -26,6 +26,8 @@ use super::{
     view::{Child, Logic, SHEET},
 };
 
+#[path = "probe_cost.rs"]
+mod cost;
 #[path = "probe_pixels.rs"]
 mod pixels;
 #[path = "probe_state.rs"]
@@ -73,6 +75,7 @@ pub(super) struct Lane {
     frame_limit: Option<u32>,
     frames: u64,
     finished: bool,
+    costs: cost::Costs,
 }
 
 impl Lane {
@@ -100,6 +103,7 @@ impl Lane {
             frame_limit: None,
             frames: 0,
             finished: false,
+            costs: cost::Costs::default(),
         }
     }
 
@@ -132,6 +136,12 @@ impl Lane {
             return;
         }
         self.frames += 1;
+        if let Err(why) = self
+            .costs
+            .observe_context(self.frames, ctx, self.pending.is_some())
+        {
+            self.errors.push(why);
+        }
         self.collect_capture(ctx);
         if self.pending.is_none()
             && let Some(mut scenario) = self.scenario.take()
@@ -303,6 +313,9 @@ impl Lane {
 
     fn finish(&mut self, ctx: &mut Context<'_>) {
         self.finished = true;
+        if let Err(why) = self.costs.finish() {
+            self.errors.push(why);
+        }
         self.errors.extend(self.misses.borrow_mut().drain(..));
         let final_state = snapshot(ctx, self.captures.len(), self.opacity);
         if let Some(error) = final_state.field("error").filter(|value| *value != "none") {
@@ -316,6 +329,7 @@ impl Lane {
             "errors": self.errors, "final": final_state.fields,
             "checkpoints": self.checkpoints, "captures": self.captures,
             "pixel_checks": self.pixel_checks,
+            "cost": self.costs.report(),
         });
         if let Some(path) = &self.receipt {
             let result = create_parent(path).and_then(|()| {
@@ -424,6 +438,7 @@ impl Automatable for Probe<'_, '_> {
                 || (state.visible
                     && !state.effects.open
                     && scene.section.is_none()
+                    && scene.population_stats.is_none()
                     && scene.error.is_none()),
         )
     }
@@ -444,6 +459,8 @@ impl Driveable for Probe<'_, '_> {
     fn app_step(&mut self, line: &str) -> Result<(), String> {
         let words: Vec<_> = line.split_whitespace().collect();
         match words.as_slice() {
+            ["cost-begin", name] => self.lane.costs.begin(name)?,
+            ["cost-end"] => self.lane.costs.end()?,
             ["input-text", value] => {
                 let mut select = cambium::KeyEvent::new(cambium::Key::Character("a".into()));
                 select.mods.ctrl = true;

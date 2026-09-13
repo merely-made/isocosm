@@ -194,3 +194,40 @@ The prior trial report's predation attribution is corrected from donor to eater;
 its regression test is `world::generation::trial::tests::predation_is_credited_to_eater_not_victim`.
 
 Native receipts and source identities: [world-trial receipt](receipts/2026-09-13/world-trial/source.json).
+
+## Population cost workload
+
+The separate `--population FILE` bench input admits a presentation workload
+before GPU creation. It keeps ecology and saved specimens out of benchmark
+population construction. Body count and design count are independent; the
+three classes are shared geometry with instance colour, rearranged reusable
+parts, and seeded exterior occupancy changes. The latter is a bounded shape
+fixture, not a claim of general anatomy generation.
+
+The normal Genet document and texture-producer boundary remains in use.
+Natural/Warm/Cool exercise resolved CSS appearance; turn/reset exercises
+instance pose. Configurations use the same fixed orthographic camera and
+world-to-pixel scale at a given viewport size. The workload reports actual
+unique meshes, assemblies, instances and clipping separately.
+
+Scenarios can bracket CPU cost phases with `cost-begin NAME` and `cost-end`.
+Collection precedes scenario dispatch, so a phase begins on the following
+frame. Each phase reports its first eligible profile and median/p95/max for
+all eligible profiles and for the remainder after the first. Capture frames
+are retained but excluded from distributions. Producer calls and actual scene
+redraws are distinct counts. These are CPU wall times from the pinned Cambium
+host, not GPU durations or a guarantee that each callback presented.
+
+Example input: `{"kind":"geometry","bodies":1000,"designs":128,"seed":7,"mesh_capacity":1024}`.
+Kinds are `appearance`, `assembly`, and `geometry`. Run:
+
+```powershell
+cargo run --release -p mesocosm-genet -- --population FILE --frames 1800 --scenario testing/bench/population.scenario --receipt OUTPUT.json --capture OUTPUT.png
+```
+
+[The retained matrix](receipts/2026-09-13/population/matrix.json) includes actual
+counts, foreground coverage, first/steady CPU stage distributions and build-load
+snapshots. Raw frame profiles and PNGs remain in the recorded local artifact
+directory. The workload uses the body renderer directly, so its figures exclude
+ecological projection, terrain and effects. Fixed native scale is deliberately
+sparse; the independent voxel/depth tests use magnified framing.

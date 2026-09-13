@@ -960,10 +960,59 @@ cost and cache activity. Carry the equivalent-pose yaw baseline and document
 the renderer's policy for coincident surfaces; count foreground coverage separately from background.
 Record the source revisions and benchmark population, including unique geometry.
 
+**Integrated population workload, 2026-09-13:** `--population FILE` is a
+presentation-only bench input over the existing LiveBodyRenderer and the same
+Cambium producer/Genet document boundary. It does not invent ecological
+organisms or alter a saved specimen. Three versioned fixture families separate
+instance colour, assembly placement, and seeded exterior occupancy notches.
+Body count (1..1000), design count (1..body count), seed and mesh capacity
+(1..4096) are explicit JSON inputs. Insufficient live-key capacity is refused
+before GPU creation. Generated occupancy is not general anatomy generation.
+
+The fixed orthographic camera and spiral grid preserve pixel scale and
+population prefixes. Actual unique meshes, assemblies, part instances, quads,
+CPU preparation and retained mesh counts are reported separately from GPU
+cache builds/uploads/evictions. The population surface uses the existing body
+renderer directly; ecological projection, terrain and active effects are
+outside this workload. Texture bytes cover its RGBA8 colour and Depth32
+attachments, not total process/GPU memory.
+
+The pinned Cambium host already exposes CPU stage profiles. Named native
+cost phases retain first-frame and median/p95/max values, separate producer
+calls from actual redraws, and exclude capture profiles. GPU execution
+duration and successful presentation of every callback are not inferred.
+Independent ray/AABB tests derive silhouettes and nearest depth from explicit
+voxel occupancy for all three families at two poses, including overlap. Their
+magnified framing is separate from the native fixed-camera coverage receipt.
+
+**Receipt:** [21 native configurations](../testing/bench/receipts/2026-09-13/population/matrix.json)
+cover 1/16/128/1000 bodies and independent design counts through 1000.
+All 4,746 frames' scenario runs pass; admitted runs submit all requested
+parts without clipping, cache eviction or warm mesh uploads. At 1000 bodies,
+shared appearance and assembly use three GPU mesh keys; 1000 occupancy
+designs use 1002. Each redraw uploads 336,000 instance bytes. The two scene
+attachments occupy 7,475,328 bytes at the measured viewport size.
+
+Observed median producer CPU time during yaw was 1.02 ms for 1000 appearance
+variants, 1.24 ms for 1000 assemblies, and 7.12 ms for 1000 distinct notched
+torsos. Resolved CSS changes incurred roughly 2.1 ms of relayout in these
+runs. GPU duration and sustained display throughput remain unmeasured. Process snapshots retain concurrent build
+load; they do not establish application working limits. A later three-case
+recheck measured 0.58/0.80/5.35 ms respectively. Both passes are retained,
+including the receipt-only readiness correction between them.
+
+Only 4.55-5.01% of the native viewport foreground is occupied at 1000 bodies.
+This receipt prices sparse fixed-scale submissions and the document boundary.
+Dense coverage/overdraw, real generated anatomy with ecological projection,
+terrain/effects together, full memory residency and application working limits
+remain Bench D gates. Initial CPU preparation also repeats shared part meshing
+across assembly designs; it is reported honestly rather than treated as a
+shared preparation cache. Existing yaw/coplanar policy receipts remain in force.
+
 The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
-bounded idle trial has native reset/reopen and lifecycle receipts. Bench D will measure the integrated
-document/style/input boundary. T1 general
+bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;
+dense coverage and application working limits remain open. T1 general
 CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.

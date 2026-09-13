@@ -1,0 +1,21 @@
+{
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "3749e01b48dfa3f2303ca684785176cc76566f76",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population.rs": "fd165aa5f479afadb0697909c127babd2e078de2",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/model.rs": "17668ddb18d02a6d5520a3b76cdafa400f70e080",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/oracle.rs": "dfcdabcd65c4f0f026d72c5dea61d6d3790a2e37",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/renderer.rs": "390d1be8d4e783d5ba1b01bd2be7f6bdc83c54ca",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/population/tests.rs": "8f85b906d933b02d92068fa9f64152046416e9df",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "4558751be43cefe479cb1b004a8bee824bfed2a4",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_cost.rs": "581f8abd8590a39e0fa59fe82c75391c0920d035",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_cost/tests.rs": "836c6a07acf16c6c0956e034d9730ca4296b9acc",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "2b4c727ca18d7be15b47104fd9b6ef595f3907ee",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "502c95e89551bdff0f77559b3585e7932f68f9b9",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "572c9f079d7a465175283774911fe8bdb7f6a20e",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "dfaf800894a66619f7be137f94584261a402fe97",
+    "mesocosm/crates/mesocosm-genet/src/main.rs": "7935894cff9f69222ac493285f98bdce5a1d5a44",
+    "mesocosm/testing/bench/population.scenario": "92debc6a67160b53e62f08608a24623b0a9a66c5"
+  },
+  "executable_sha256": "54a8a5a5159ad63c5a3e175b9b2ad6cd1f0c7d33a09f7ed4690f495a2b8ba4bc",
+  "note": "Measured before receipt-only active/ready corrections in probe_state.rs. Renderer, workload, timing and scenario code unchanged."
+}

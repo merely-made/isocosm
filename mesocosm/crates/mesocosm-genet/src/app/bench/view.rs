@@ -32,6 +32,9 @@ fn row(label: &str, value: String) -> Child {
 }
 
 pub(super) fn root(state: &Bench) -> Child {
+    if state.model.borrow().population.is_some() {
+        return super::population::view(state);
+    }
     if state.effects.open {
         return Box::new(
             el(

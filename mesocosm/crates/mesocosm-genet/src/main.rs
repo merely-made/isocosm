@@ -70,12 +70,21 @@ fn main() {
     let mut bench = false;
     let mut comparison = None;
     let mut effect_experiment = None;
+    let mut population = None;
     let mut size_explicit = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--create" => create = true,
             "--bench" => {
+                bench = true;
+                create = true;
+            },
+            "--population" => {
+                population = Some(PathBuf::from(args.next().unwrap_or_else(|| {
+                    eprintln!("--population requires a workload JSON path");
+                    std::process::exit(1);
+                })));
                 bench = true;
                 create = true;
             },
@@ -351,7 +360,7 @@ fn main() {
         config.height = 900;
     }
     let result = if bench {
-        mesocosm_genet::app::bench::run_inputs(config, comparison, effect_experiment)
+        mesocosm_genet::app::bench::run_inputs(config, comparison, effect_experiment, population)
     } else {
         Host::run(config)
     };
@@ -393,6 +402,7 @@ mesocosm-genet: run Mesocosm in a window
   --seed N        world seed
   --create        compare generated starting lives before play (arrows, R/N/P/C/M, +/-)
   --bench         open the native specimen bench (1280x900); uses creator criteria
+  --population PATH run a bounded presentation-only population workload JSON
   --comparison PATH reopen saved proportion alternatives and their admitted content
   --draft PATH    reopen criteria or begin a new draft; implies --create; S saves
                   K retains selected role/organs/segment count; U clears these filters

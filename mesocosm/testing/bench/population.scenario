@@ -1,0 +1,152 @@
+wait 1200
+assert snap ready == yes
+assert snap population == true
+assert snap error == none
+capture base
+remember stable
+cost-begin idle
+settle 60
+cost-end
+same stable mesh-bytes
+cost-begin material
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+cost-end
+settle 3
+same stable mesh-bytes
+capture styled
+viewport-pixels-change base styled
+click role:button Natural
+settle 3
+capture neutral
+viewport-pixels-same base neutral
+cost-begin yaw
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+click role:button Turn right
+cost-end
+settle 3
+same stable mesh-bytes
+capture turned
+viewport-pixels-change base turned
+click role:button Reset pose
+settle 3
+capture reset
+viewport-pixels-same base reset
+same stable population-digest
+assert snap error == none
