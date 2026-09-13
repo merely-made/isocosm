@@ -176,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn producer_does_not_draw_pending_typed_soil() {
+    fn producer_draws_same_tick_upkeep_but_not_post_settlement_soil_completion() {
         let mut producer = Organism::founding(
             OrganismId(1),
             SpeciesId(2),
@@ -208,12 +208,18 @@ mod tests {
             &mut soil,
         );
 
-        assert_eq!(soil.stock(column).amounts()[1..], pending.amounts()[1..]);
+        let (completed, pending_after) = pending.take(1);
+        assert_eq!(
+            soil.stock(column).amounts()[1..],
+            pending_after.amounts()[1..]
+        );
         // Rent returns untyped nutrients before this tick's roots draw. That
-        // lot may be synthesized; none of the pending typed stock may be.
+        // lot may be synthesized. Soil completion follows roots, so this
+        // tick's completed nis is available only on the next tick.
         let mut returned = 0;
         let mut synthesized = 0;
-        for envelope in ledger.records() {
+        let mut completion = None;
+        for (index, envelope) in ledger.records().iter().enumerate() {
             let flow = envelope.record;
             if flow.process == Process::Upkeep && flow.destination == Account::Soil {
                 returned += flow.amount_mg;
@@ -226,8 +232,21 @@ mod tests {
                 assert_eq!(input, Stock::single(Material::Untyped, flow.amount_mg));
                 synthesized += flow.amount_mg;
             }
+            if flow.process == Process::Decay
+                && flow.source == Account::Soil
+                && flow.destination == Account::Soil
+            {
+                completion = Some((index, flow));
+            }
         }
         assert!(synthesized > 0);
         assert_eq!(synthesized, returned);
+        let (completion_index, completion) = completion.expect("pending soil completed");
+        assert_eq!(completion.composition.unwrap().input, completed);
+        assert!(ledger.records()[..completion_index].iter().any(|envelope| {
+            envelope.record.composition.is_some_and(|composition| {
+                composition.conversion == Some(crate::flow::Conversion::Synthesis)
+            })
+        }));
     }
 }

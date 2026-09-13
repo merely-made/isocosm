@@ -4,6 +4,24 @@
 use super::{Account, Carrier, Composition, FlowEvent, Process, Subject};
 
 impl FlowEvent {
+    /// A completed soil conversion at one column. Neither side belongs to a
+    /// body, so the position on the enclosing record names the column.
+    pub fn soil_mineralization(stock: crate::matter::Stock) -> Self {
+        let amount_mg =
+            u64::try_from(stock.total()).expect("a scalar-bounded soil conversion fits one flow");
+        Self {
+            process: Process::Decay,
+            carrier: Carrier::Matter,
+            source: Account::Soil,
+            destination: Account::Soil,
+            amount_mg,
+            composition: None,
+            from: None,
+            to: None,
+        }
+        .mineralized(stock)
+    }
+
     /// Matter routed between accounts within one body is not new income.
     pub fn is_internal(&self) -> bool {
         self.source.is_body()

@@ -45,6 +45,9 @@
 
 use mesocosm_core::{Crossing, Intent, OrganismId, Placement, World};
 
+#[path = "matter/channels.rs"]
+mod channels;
+
 /// The ledger, or what is wrong with it. `Ok` is silence; `Err` is the message
 /// a failing conservation assertion prints.
 ///
@@ -89,7 +92,12 @@ fn matter_is_conserved_across_a_long_run() {
         assert!(opening > 0, "seed {seed} founded an empty enclosure");
 
         for tick in 1..=4_000 {
+            let before = channels::books(&world);
             world.apply(Intent::Idle);
+            let flows = world.drain_flows();
+            channels::reconciles(&before, &world, &flows).unwrap_or_else(|why| {
+                panic!("typed accounts failed on tick {tick} of seed {seed}: {why}")
+            });
             if let Err(why) = conserved(&world, opening, &format!("on tick {tick} of seed {seed}"))
             {
                 panic!("{why}");
@@ -111,7 +119,11 @@ fn matter_is_conserved_at_the_shipping_cohort() {
     assert!(opening > 0, "the wide enclosure founded empty");
 
     for tick in 1..=200 {
+        let before = channels::books(&world);
         world.apply(Intent::Idle);
+        let flows = world.drain_flows();
+        channels::reconciles(&before, &world, &flows)
+            .unwrap_or_else(|why| panic!("typed accounts failed on shipping tick {tick}: {why}"));
         conserved(
             &world,
             opening,
@@ -119,6 +131,21 @@ fn matter_is_conserved_at_the_shipping_cohort() {
         )
         .expect("conserved");
     }
+}
+
+#[test]
+fn channel_book_refuses_a_kind_swap_that_scalar_conservation_cannot_see() {
+    let world = World::new(1, 60);
+    let opening = world.total_matter_mg();
+    let before = channels::books(&world);
+    let mut swapped = before.clone();
+    channels::swap_one_soil_kind(&mut swapped);
+
+    conserved(&world, opening, "beside an equal-total channel swap")
+        .expect("scalar conservation cannot observe provenance");
+    let complaint = channels::matches_actual(&before, &swapped)
+        .expect_err("the typed book must refuse the equal-total channel swap");
+    assert!(complaint.contains("accounts differ"), "{complaint}");
 }
 
 #[test]

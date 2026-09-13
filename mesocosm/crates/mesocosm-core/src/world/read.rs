@@ -22,6 +22,16 @@ use crate::record::WorldRecord;
 use super::{Ineligible, World};
 
 impl World {
+    /// What the most recent tick did to the enclosure.
+    pub fn last_tally(&self) -> crate::organism::Tally {
+        self.last_tally
+    }
+
+    /// Living organisms, in id order.
+    pub fn living(&self) -> impl Iterator<Item = &Organism> {
+        self.organisms.iter().filter(|o| o.is_alive())
+    }
+
     /// Which organism the player is, if any.
     pub fn controlled_id(&self) -> Option<OrganismId> {
         self.controlled

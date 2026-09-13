@@ -34,7 +34,7 @@ mod flows;
 mod kinship;
 mod movement;
 mod rates;
-
+mod soil;
 use flows::{earn_stock, record_intake, record_synthesis, release_reserve};
 use movement::{
     CarrionTarget, LivingTarget, carrion_cells, choose_carrion_target, choose_living_target,
@@ -94,7 +94,18 @@ pub fn step(
     soil: &mut Soil,
 ) -> Tally {
     step_inner(
-        organisms, next_id, rng, records, lineages, palette, soil, None, None, None, None,
+        organisms,
+        next_id,
+        rng,
+        records,
+        lineages,
+        palette,
+        soil,
+        None,
+        None,
+        None,
+        None,
+        crate::rules::DEFAULT_SOIL_MINERALIZATION_MG_PER_COLUMN_PER_TICK,
     )
 }
 
@@ -125,6 +136,7 @@ pub fn step_with_places(
         None,
         focus,
         None,
+        crate::rules::DEFAULT_SOIL_MINERALIZATION_MG_PER_COLUMN_PER_TICK,
     )
 }
 
@@ -152,6 +164,7 @@ pub fn step_with_ground(
     ground: &Ground,
     focus: Option<[i32; 3]>,
     held: Option<OrganismId>,
+    soil_mineralization_mg_per_column_per_tick: u64,
 ) -> Tally {
     step_inner(
         organisms,
@@ -165,6 +178,7 @@ pub fn step_with_ground(
         Some(ground),
         focus,
         held,
+        soil_mineralization_mg_per_column_per_tick,
     )
 }
 
@@ -181,6 +195,7 @@ fn step_inner(
     ground: Option<&Ground>,
     focus: Option<[i32; 3]>,
     held: Option<OrganismId>,
+    soil_mineralization_mg_per_column_per_tick: u64,
 ) -> Tally {
     let mut tally = Tally::default();
 
@@ -567,6 +582,12 @@ fn step_inner(
 
     organisms.extend(newborns);
     organisms.retain(|o| o.stage != Stage::Spent);
+
+    // A provisional simulation rule: the exact amount of retained nis that
+    // becomes root-accessible mineral stock each ecology tick. This is a
+    // bounded, per-column conversion rather than a biology claim. It runs
+    // after bodies settle and before transport, so roots see it next tick.
+    soil::mineralize(soil, soil_mineralization_mg_per_column_per_tick, records);
 
     // The ground settles, after everything the tick put into it. Pure
     // transport between columns: no matter is made or lost here.

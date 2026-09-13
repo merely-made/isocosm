@@ -468,6 +468,7 @@ impl World {
             &self.ground,
             focus,
             held,
+            self.rules.soil_mineralization_mg_per_column_per_tick,
         );
 
         // A forced birth joins the roster here: the same point `breed`'s own
@@ -576,16 +577,6 @@ impl World {
     pub(crate) fn reattach_ruleset(&mut self, ruleset: std::sync::Arc<crate::process::Registry>) {
         self.ruleset = ruleset;
     }
-
-    /// What the most recent tick did to the enclosure.
-    pub fn last_tally(&self) -> crate::organism::Tally {
-        self.last_tally
-    }
-
-    /// Living organisms, in id order.
-    pub fn living(&self) -> impl Iterator<Item = &Organism> {
-        self.organisms.iter().filter(|o| o.is_alive())
-    }
 }
 
 #[cfg(test)]
@@ -596,5 +587,7 @@ mod tests;
 mod tg1_tests;
 #[cfg(test)]
 mod tg2_returns_tests;
+#[cfg(test)]
+mod tg2_soil_tests;
 #[cfg(test)]
 mod typed_soil_tests;

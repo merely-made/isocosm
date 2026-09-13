@@ -50,6 +50,8 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::matter::{Stock, StockError, transport};
 
+mod mineralization;
+
 /// Fraction of a column that percolates outward each tick, as a divisor.
 ///
 /// **Measured, and the round's own structural finding put it here.** With
@@ -236,6 +238,14 @@ impl Soil {
         let x = position[0].clamp(-self.extent, self.extent) + self.extent;
         let z = position[2].clamp(-self.extent, self.extent) + self.extent;
         Column((z * self.side() + x) as u32)
+    }
+
+    /// The canonical ground position of a column this store minted.
+    pub(crate) fn position_of(&self, column: Column) -> [i32; 3] {
+        let side = self.side();
+        let x = column.0 as i32 % side - self.extent;
+        let z = column.0 as i32 / side - self.extent;
+        [x, 0, z]
     }
 
     /// Every material channel in one column.

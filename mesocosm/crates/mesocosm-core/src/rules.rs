@@ -59,7 +59,13 @@ pub const DEFAULT_EPOCH_TICKS: u64 = 1_000;
 /// Revision 4 preserves whole-meal mixtures and records reserve digestion.
 /// Revision 5 preserves birth provisioning and records completed tissue returns.
 /// Revision 6 introduces producer synthesis and explicit founder tissue recipes.
-pub const TROPHIC_GRAMMAR_REVISION: u32 = 6;
+/// Revision 7 completes pending typed soil at a declared per-column rate.
+pub const TROPHIC_GRAMMAR_REVISION: u32 = 7;
+
+/// Pending typed matter completed into nutrients per column per ecology tick.
+/// This is a provisional simulation rate, not a calibrated decomposition model.
+/// Worlds may override it; zero keeps pending tissue intact for a paired control.
+pub const DEFAULT_SOIL_MINERALIZATION_MG_PER_COLUMN_PER_TICK: u64 = 1;
 
 /// How long a candidate is grown before its flow record is read. (P4b)
 ///
@@ -204,10 +210,18 @@ pub struct WorldRules {
     /// The trophic grammar that decides which body can admit which food.
     #[serde(default)]
     pub trophic_grammar: u32,
+    /// Typed soil completed after bodies settle and before percolation.
+    /// Roots can spend the resulting nutrients on the following tick.
+    #[serde(default = "default_soil_mineralization")]
+    pub soil_mineralization_mg_per_column_per_tick: u64,
 }
 
 fn default_score_ticks() -> u64 {
     DEFAULT_SCORE_TICKS
+}
+
+fn default_soil_mineralization() -> u64 {
+    DEFAULT_SOIL_MINERALIZATION_MG_PER_COLUMN_PER_TICK
 }
 
 /// **Written out rather than derived**, because a derived one would give this
@@ -221,6 +235,7 @@ impl Default for WorldRules {
             epoch: EpochRule::default(),
             score_ticks: DEFAULT_SCORE_TICKS,
             trophic_grammar: 0,
+            soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
         }
     }
 }
@@ -239,6 +254,7 @@ impl WorldRules {
             epoch: EpochRule::default(),
             score_ticks: DEFAULT_SCORE_TICKS,
             trophic_grammar: TROPHIC_GRAMMAR_REVISION,
+            soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
         }
     }
 
@@ -266,6 +282,11 @@ impl WorldRules {
         bytes.extend_from_slice(&self.epoch.bytes());
         bytes.extend_from_slice(&self.score_ticks.to_le_bytes());
         bytes.extend_from_slice(&self.trophic_grammar.to_le_bytes());
+        bytes.extend_from_slice(
+            &self
+                .soil_mineralization_mg_per_column_per_tick
+                .to_le_bytes(),
+        );
         crate::snapshot::hash_bytes(&bytes)
     }
 }
@@ -323,6 +344,22 @@ mod tests {
             ..native
         };
         assert_ne!(pre_ports.digest(), native.digest());
+    }
+
+    #[test]
+    fn the_soil_completion_rate_is_saved_and_digested() {
+        let native = WorldRules::native();
+        assert_eq!(native.soil_mineralization_mg_per_column_per_tick, 1);
+        for dose in [0, 3, u64::MAX] {
+            let configured = WorldRules {
+                soil_mineralization_mg_per_column_per_tick: dose,
+                ..native
+            };
+            assert_ne!(configured.digest(), native.digest());
+            let decoded: WorldRules =
+                crate::snapshot::decode(&crate::snapshot::encode(&configured).unwrap()).unwrap();
+            assert_eq!(decoded, configured);
+        }
     }
 
     /// Only Timed ends an epoch on the clock; Gated is still named-only data.

@@ -1,8 +1,10 @@
 # Trophic Grammar Plan (2026-09-04)
 
 **Status: accepted by Mark 2026-09-04; TG1 complete 2026-09-05;
-TG2a-TG2e implemented 2026-09-09; TG2f implemented 2026-09-12.
-Full TG2-TG7 remain open.** The three
+TG2a-TG2e implemented 2026-09-09; TG2f implemented 2026-09-12;
+TG2g implemented 2026-09-13.
+TG2 conservation and replay gates pass; its 100 ms tick-cost gate remains open.
+TG3-TG7 remain open.** The three
 rulings in section 4 are given. This is PE4's first
 build: the material scheme ruled 2026-09-02 turned into a trophic grammar. It
 owns typed intake, typed accounts, part composition, defenses, and selective
@@ -252,16 +254,41 @@ the parent's actual donated stock. A later anatomical or trophic change does
 not rewrite existing scruples. Pending typed soil, dietary display and full
 ecological acceptance remain separate work.
 
-The next accounting join is completed mineralization of pending typed soil,
-followed by the bounded natural soil-to-body-to-soil per-channel loop.
-TG3 still needs dietary differences shown through the inspection surface
-and the declared compatibility allowance applied at intake.
-
 **Done when:** generated founders carry declared tissue, producer uptake and
 reserve routing reconcile every material channel, mixed recipes close odd
 mass totals exactly, invalid recipes are refused, and snapshots replay the
 accepted flows under the new grammar. Existing action, runtime and long-run
 matter checks must pass with the same scalar rates.
+
+**TG2g pending soil completion, 2026-09-13.** `Soil::mineralize` completes
+at most the world's declared milligrams of typed material per column per
+ecology tick. It selects an exact proportional lot from the three typed
+channels, retains the unpaid remainder, and replaces the paid lot with
+untyped nutrients in the same column. Untyped stock needs no conversion.
+The default is 1 mg per column per tick; zero disables this pass for paired
+controls. This is a provisional simulation rule, not calibrated decomposition.
+
+Ecology calls the pass once after organism settlement and before percolation.
+The resulting nutrients become available to roots on the next tick. This is
+distinct from TG2e's already-completed upkeep, travel and corpse-decay
+payments, whose nutrients can be used immediately. Every pending-soil
+completion records a subjectless soil-to-soil decay flow with its actual
+typed input and untyped output. It changes neither scalar matter nor body
+income. There is no additional persistent material store or age per deposit.
+
+`WorldRules::soil_mineralization_mg_per_column_per_tick` is serialized and
+included in rule identity; grammar revision 7 identifies this biology.
+The existing checked snapshot door offers native world-rule defaults, so it
+refuses a save with a different completion rate. Custom-rule admission remains
+the wider PE4 API task already required for custom epoch/scoring rules.
+Structural body documents and creator requests are unchanged by this slice.
+
+**Done when:** a paired ordinary-tick fixture distinguishes same-tick upkeep
+from next-tick soil completion, snapshots replay exact flows, the existing
+four-seed 4,000-tick conservation gate reconciles each channel, a deliberate
+equal-total channel substitution fails that receipt, and the shipping-roster
+tick measurement records its result against the 100 ms budget. TG3's dietary
+inspection and intake-compatibility acceptance remain separate.
 
 ### TG3: scruple per part
 
@@ -379,6 +406,46 @@ beginning body types; start investigating a beginning set of traits.
 ---
 
 ## Findings
+
+- **2026-09-13, TG2g accounting acceptance:** 802 core/runtime tests passed,
+  with one existing ignored test across 19 suites, on `8ed87fd` plus this
+  patch. The release/offline/locked library and integration command from
+  TG2f was reused with a separate `C:/t/mesocosm-tissue` target. The 235
+  source/manifest inputs matched their hashes before and after validation;
+  all 16 owned Rust files passed formatting and the 600-line ceiling.
+  `world/tg2_soil_tests.rs` proves the paired next-tick nutrient join and
+  exact snapshot/flow replay. `tests/matter.rs` now replays actual four-channel
+  compositions against actual soil and each organism's substance/reserve
+  on all four seeds of its 4,000-tick run, plus the shipping 200-tick run.
+  Its channel substitution control and the world's actual-stock mutation
+  retain scalar mass while failing the typed comparison.
+
+  `live_soil_receipt` measured 917 founders including the played body,
+  with 20 warmup ticks and 200 measured ticks on each of three seeds. Every
+  tick also reconciled all channels outside the timer; final snapshots
+  round-tripped exactly. The same 235 inputs remained unchanged. Typical ticks
+  took about 18 ms, but maxima reached 175-263 ms: the 100 ms gate is not met.
+  This receipt does not isolate the cause of those spikes. The timer covers `World::apply`; it excludes
+  reconciliation, snapshot work and rendering. This initial 220-tick window
+  does not reach the 1,000-tick epoch boundary. The long-run receipt above
+  supplies lifetime accounting coverage at 61 founders, not a lifetime timing
+  guarantee at the shipping population.
+
+  | Seed | Median ms | p95 ms | Maximum ms | Final state hash |
+  |---|---:|---:|---:|---|
+  | 1 | 17.56 | 37.53 | 175.40 | `9140f3a728fc1fc4` |
+  | 4 | 18.10 | 99.08 | 255.59 | `be7d281d73d2871d` |
+  | 7 | 18.66 | 52.23 | 262.59 | `d6064f1785f4ff6f` |
+
+  Reproduce the measurement with
+  `cargo run --manifest-path mesocosm/Cargo.toml -p mesocosm-core --release --example live_soil_receipt --offline --locked --target-dir C:/t/mesocosm-tissue`.
+  Local full output is `C:/Users/mark_/Code/testing/tg2g/live-soil.json`;
+  commands, test log and source hashes are beside it. TG2 conservation and
+  replay pass for these admitted transactions and tested populations/windows;
+  its tick-cost acceptance remains open. The next bounded lane should attribute
+  the slow ticks and compare the same seeds/window before changing biology.
+  Dietary inspection and intake compatibility remain TG3; food-web viability
+  remains TG6. This receipt claims no new headed or rendering acceptance.
 
 - **2026-09-12, TG2f synthesis and founders:** all core/runtime library and
   integration suites passed on `89752cd` plus this patch: 753 passed, one
@@ -546,6 +613,14 @@ beginning body types; start investigating a beginning set of traits.
   `perception.rs:206`, and no body change measured holds the corridor.
 
 ## Progress
+
+- **2026-09-13, TG2g.** Pending typed soil now completes through one bounded
+  soil-owned pass after bodies settle. Grammar 7 records its configurable
+  rate. The paired cycle, checked replay and full-run channel reconciliation
+  pass. The shipping measurement exposes 175-263 ms worst ticks, leaving one
+  TG2 gate: attribute and bring those ticks within 100 ms at the current
+  population. TG3 intake compatibility and dietary inspection remain next;
+  the specimen bench owns the latter's UI.
 
 - **2026-09-12, TG2f.** Producers synthesize typed tissue from untyped soil.
   Founder recipes declare the starting mixture and follow lineage forks;
