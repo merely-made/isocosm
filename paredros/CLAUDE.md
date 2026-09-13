@@ -78,7 +78,10 @@ superseded.
 
 The local `paredros-world::Session` foundation (2026-09-09) composes one
 `GameState` with historically validated control and existing-life succession.
-Its versioned save supports configurable archive limits; full contact,
+Its versioned save supports configurable archive limits. The bounded J1b
+`AdvanceMotion` path now owns fractional terrain motion and landing injury in
+GameState; precise poses survive replay, while existing navigation/items/combat
+retain explicit logical-cell projections. Full contact,
 autonomous/social coordination, outsider arrival and host integration remain
 open. See `design_docs/2026-09-09_functional_loops_plan.md` for current lanes.
 

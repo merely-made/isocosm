@@ -54,6 +54,8 @@ pub(crate) struct App {
     pub(crate) target_item: paredros_world::ItemId,
     pub(crate) attack_direction: Direction,
     pub(crate) held: bool,
+    pub(crate) movement_keys: [bool; 4],
+    pub(crate) last_motion: Instant,
     pub(crate) last_charge: Instant,
     pub(crate) status: Vec<String>,
     pub(crate) smoke: bool,
@@ -284,6 +286,8 @@ impl App {
             target_item: target_item.id,
             attack_direction: Direction::Right,
             held: false,
+            movement_keys: [false; 4],
+            last_motion: Instant::now(),
             last_charge: Instant::now(),
             status: vec!["Ready: choose a direction, then hold Space or left mouse.".into()],
             smoke: env::var_os("PAREDROS_TIMED_ACTION_SMOKE").is_some(),
@@ -369,6 +373,17 @@ impl App {
                 .count(),
             0
         );
+        self.move_player([1, 0, 0]);
+        assert_eq!(
+            self.action
+                .session()
+                .game()
+                .movement()
+                .pose(player)
+                .unwrap()
+                .step,
+            1
+        );
         let after_release = self.action.save().unwrap();
         self.save();
         assert!(
@@ -394,6 +409,7 @@ impl App {
         )];
     }
     fn tick(&mut self) {
+        self.tick_motion();
         if !self.held || self.last_charge.elapsed() < Duration::from_millis(100) {
             return;
         }
@@ -418,6 +434,20 @@ impl App {
         self.redraw();
     }
     fn dispatch(&mut self, code: KeyCode, pressed: bool, loop_: &ActiveEventLoop) {
+        let movement = match code {
+            KeyCode::KeyW => Some(0),
+            KeyCode::KeyS => Some(1),
+            KeyCode::KeyA => Some(2),
+            KeyCode::KeyD => Some(3),
+            _ => None,
+        };
+        if let Some(index) = movement {
+            if !self.motion_running() {
+                self.last_motion = Instant::now();
+            }
+            self.movement_keys[index] = pressed;
+            return;
+        }
         if !pressed {
             if code == KeyCode::Space {
                 self.release();
@@ -430,10 +460,6 @@ impl App {
             KeyCode::ArrowDown => self.prepare(Direction::Backward),
             KeyCode::ArrowLeft => self.prepare(Direction::Left),
             KeyCode::ArrowRight => self.prepare(Direction::Right),
-            KeyCode::KeyW => self.move_player([0, 0, 1]),
-            KeyCode::KeyS => self.move_player([0, 0, -1]),
-            KeyCode::KeyA => self.move_player([-1, 0, 0]),
-            KeyCode::KeyD => self.move_player([1, 0, 0]),
             KeyCode::Space => {
                 if self.action.action().is_none() {
                     self.prepare(self.attack_direction);
@@ -547,6 +573,8 @@ impl App {
                 } else {
                     self.action = action;
                     self.held = false;
+                    self.movement_keys = [false; 4];
+                    self.last_motion = Instant::now();
                     self.last_charge = Instant::now();
                     vec![format!("Loaded {}", self.save_path.display())]
                 }

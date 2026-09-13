@@ -31,6 +31,7 @@ mod contact;
 mod equipment;
 pub mod fixtures;
 mod items;
+mod motion;
 mod movement;
 mod navigation;
 mod population;
@@ -64,6 +65,7 @@ pub use contact::{
 };
 pub use equipment::AttachmentView;
 pub use items::{Item, ItemError, ItemId, ItemKind, ItemLocation, Items};
+pub use motion::{MOTION_SCALE, MotionError, MotionInput, MotionPose, MotionRules};
 pub use movement::{Movement, MovementError, MovementEvent, MovementIntent, MovementSave};
 pub use navigation::{Navigation, NavigationError};
 pub use population::{
@@ -92,8 +94,8 @@ pub use technique::{
     SubjectBody, TechniqueId, TechniqueInputs, TechniqueKnowledge, arrest_fall,
 };
 pub use transitions::{
-    DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
-    LEGACY_GAME_STATE_VERSION,
+    COMBAT_GAME_STATE_VERSION, DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent,
+    GameSave, LEGACY_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

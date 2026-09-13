@@ -12,11 +12,15 @@ use serde::{Deserialize, Serialize};
 use crate::bodies::{BodyError, Name};
 use crate::items::{ItemError, ItemId};
 use crate::timed_action::StrikeReceipt;
-use crate::{AnatomyError, CombatRules, MovementError, ResolvedStrike, WorldError, WorldSave};
+use crate::{
+    AnatomyError, CombatRules, MotionInput, MotionPose, MotionRules, MovementError, ResolvedStrike,
+    WorldError, WorldSave,
+};
 
-/// Version 4 writes combat-capable histories without changing the GameSave
-/// field layout. Version 3 remains a valid archive of the earlier grammar.
-pub const GAME_STATE_VERSION: u32 = 4;
+/// Version 5 adds fixed-point continuous movement without changing the
+/// `GameSave` field layout. Versions 3 and 4 remain valid earlier grammars.
+pub const GAME_STATE_VERSION: u32 = 5;
+pub const COMBAT_GAME_STATE_VERSION: u32 = 4;
 pub const LEGACY_GAME_STATE_VERSION: u32 = 3;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -98,6 +102,16 @@ pub enum GameIntent {
         strikes: Vec<StrikeReceipt>,
         rules: CombatRules,
     },
+    /// One GameState-owned fixed step. The recorded input and rules replay
+    /// through the motion solver; hosts never supply a final position.
+    AdvanceMotion {
+        tick: Tick,
+        subject: SubjectId,
+        revision: BodyRevisionId,
+        step: u64,
+        input: MotionInput,
+        rules: MotionRules,
+    },
 }
 
 impl GameIntent {
@@ -116,6 +130,7 @@ impl GameIntent {
             | Self::AttachItem { tick, .. }
             | Self::DetachItem { tick, .. }
             | Self::ResolveVolley { tick, .. }
+            | Self::AdvanceMotion { tick, .. }
             | Self::Wait { tick, .. } => *tick,
         }
     }
@@ -134,6 +149,7 @@ impl GameIntent {
             | Self::ReconcileAnatomy { subject, .. }
             | Self::AttachItem { subject, .. }
             | Self::DetachItem { subject, .. }
+            | Self::AdvanceMotion { subject, .. }
             | Self::Wait { subject, .. } => *subject,
             Self::ResolveVolley { actor, .. } => *actor,
         }
@@ -247,6 +263,12 @@ pub enum GameEvent {
         harm: u16,
         revision: BodyRevisionId,
     },
+    MotionAdvanced {
+        tick: Tick,
+        subject: SubjectId,
+        pose: MotionPose,
+        landed_distance: Option<i32>,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -265,7 +287,9 @@ pub enum GameError {
     Item(ItemError),
     Anatomy(AnatomyError),
     Combat(crate::CombatError),
+    Motion(crate::MotionError),
     LegacyCombatIntent,
+    LegacyMotionIntent,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },
     VersionDiverged { saved: u32, current: u32 },
@@ -306,5 +330,11 @@ impl From<AnatomyError> for GameError {
 impl From<crate::CombatError> for GameError {
     fn from(error: crate::CombatError) -> Self {
         Self::Combat(error)
+    }
+}
+
+impl From<crate::MotionError> for GameError {
+    fn from(error: crate::MotionError) -> Self {
+        Self::Motion(error)
     }
 }

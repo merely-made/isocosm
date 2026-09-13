@@ -49,6 +49,10 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   full host/contact join remain open. B3 adds atomic session fall/rest with
   anatomy and prepared-action repair, plus native dressing pickup and rest;
   110 world tests, 5 native tests and a reviewed automated window smoke pass.
+  J1b adds world-owned fractional terrain motion and v5 archives with v3/v4
+  compatibility. 119 world tests, 5 native tests, the full workspace compile
+  and a reviewed automated window smoke pass; remaining contact limits are in
+  the plan.
 - [World conditions and authored laws](2026-09-09_world_conditions_plan.md):
   independent skill/risk surgery, causal composition, proposed stored charge and
   sympathetic coupling, and explicitly scoped rules adapters; planned.
@@ -81,7 +85,7 @@ save/reopen/load check with reviewed composited captures. The private Cargo
 cache bypassed shared-cache contention. Physical save/load input acceptance
 remains open because the computer-use helper timed out. Startup and exit do
 not automatically load or save. `PAREDROS_EQUIPMENT_SAVES` selects storage.
-Current world saves use version 4, read version 3, and reject versions 1 and 2.
+Current world saves use version 5, read versions 3 and 4, and reject versions 1 and 2.
 The execution plan
 records the independent G/release crossing
 fix and unresolved presentation feedback. Charge and

@@ -73,7 +73,7 @@ fn actual_pre_combat_native_save_restores_and_can_continue() {
     assert!(!restored.release(tick).unwrap().is_empty());
     let upgraded = restored.save().unwrap();
     let saved: TimedActionSave = snapshot::decode(&upgraded).unwrap();
-    assert_eq!(saved.session.game.version, 4);
+    assert_eq!(saved.session.game.version, paredros_world::GAME_STATE_VERSION);
     assert_eq!(TimedActionSession::restore(&upgraded).unwrap(), restored);
 }
 

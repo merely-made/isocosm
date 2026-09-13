@@ -79,20 +79,23 @@ impl ApplicationHandler for App {
                     self.release();
                 }
             },
-            WindowEvent::Focused(false) => self.held = false,
             WindowEvent::Resized(_) => {
                 if let Some(live) = self.live.as_mut() {
                     configure(live);
                 }
             },
             WindowEvent::RedrawRequested => self.frame(el),
+            WindowEvent::Focused(false) => {
+                self.movement_keys = [false; 4];
+                self.held = false;
+            },
             WindowEvent::CloseRequested => el.exit(),
             _ => {},
         }
     }
     fn about_to_wait(&mut self, el: &ActiveEventLoop) {
-        el.set_control_flow(if self.held || self.smoke {
-            ControlFlow::WaitUntil(Instant::now() + Duration::from_millis(100))
+        el.set_control_flow(if self.held || self.smoke || self.motion_running() {
+            ControlFlow::WaitUntil(Instant::now() + Duration::from_millis(16))
         } else {
             ControlFlow::Wait
         });

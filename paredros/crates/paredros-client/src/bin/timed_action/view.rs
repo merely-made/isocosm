@@ -73,7 +73,7 @@ impl AppView for App {
 
     fn display_lines(&self) -> Vec<String> {
         let mut lines = vec![
-            "Arrows: prepare direction | WASD: move | Hold Space or left mouse: charge | Release: strike".into(),
+            "Arrows: prepare direction | Hold WASD: move | Hold Space or left mouse: charge | Release: strike".into(),
             "J: join limb | I: injury debug | E: take dressing | R: rest | F5: save | F9: load | Esc: close".into(),
         ];
         lines.extend(self.status.iter().cloned());
@@ -90,6 +90,16 @@ impl AppView for App {
             }
         } else {
             lines.push("Action: idle".into());
+        }
+        let subject = self.action.session().control().played();
+        if let Some(pose) = self.action.session().game().movement().pose(subject) {
+            let at = pose
+                .position
+                .map(|v| v as f64 / paredros_world::MOTION_SCALE as f64);
+            lines.push(format!(
+                "Position {:.3}, {:.3}, {:.3}; step={} grounded={}",
+                at[0], at[1], at[2], pose.step, pose.grounded
+            ));
         }
         lines.extend(self.target_lines());
         lines

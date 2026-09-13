@@ -19,7 +19,9 @@ use mesocosm_core::snapshot::{self, hash_bytes};
 use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
-use crate::World;
+use crate::{MotionError, MotionPose, World};
+
+mod motion;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum MovementIntent {
@@ -33,12 +35,20 @@ pub enum MovementIntent {
         subject: SubjectId,
         toward: [i32; 3],
     },
+    /// Exact pose resolved by the product-owned continuous-motion transition.
+    ContactPose {
+        tick: Tick,
+        subject: SubjectId,
+        pose: MotionPose,
+    },
 }
 
 impl MovementIntent {
     pub const fn tick(self) -> Tick {
         match self {
-            Self::Spawn { tick, .. } | Self::Step { tick, .. } => tick,
+            Self::Spawn { tick, .. } | Self::Step { tick, .. } | Self::ContactPose { tick, .. } => {
+                tick
+            },
         }
     }
 }
@@ -61,6 +71,13 @@ pub enum MovementEvent {
         subject: SubjectId,
         at: [i32; 3],
     },
+    ContactMoved {
+        tick: Tick,
+        subject: SubjectId,
+        from: [i32; 3],
+        to: [i32; 3],
+        pose: MotionPose,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -73,6 +90,9 @@ pub enum MovementError {
     SubjectExists(SubjectId),
     MissingSubject(SubjectId),
     InvalidStart([i32; 3]),
+    MixedMovement(SubjectId),
+    WrongMotionStep { previous: u64, next: u64 },
+    Motion(MotionError),
     WrongTick { expected: Tick, actual: Tick },
     Encode,
     Decode,
@@ -94,6 +114,23 @@ impl Movement {
 
     pub fn position(&self, subject: SubjectId) -> Option<[i32; 3]> {
         self.positions.get(&subject).copied()
+    }
+
+    /// The accepted exact contact pose, or the legacy cell pose when this
+    /// subject has not yet entered continuous motion.
+    pub fn pose(&self, subject: SubjectId) -> Option<MotionPose> {
+        self.intents
+            .iter()
+            .rev()
+            .find_map(|intent| match intent {
+                MovementIntent::ContactPose {
+                    subject: found,
+                    pose,
+                    ..
+                } if *found == subject => Some(*pose),
+                _ => None,
+            })
+            .or_else(|| self.position(subject).map(MotionPose::at_cell))
     }
 
     pub fn positions(&self) -> impl Iterator<Item = (SubjectId, [i32; 3])> + '_ {
@@ -138,6 +175,9 @@ impl Movement {
         subject: SubjectId,
         toward: [i32; 3],
     ) -> Result<MovementEvent, MovementError> {
+        if self.has_contact_pose(subject) {
+            return Err(MovementError::MixedMovement(subject));
+        }
         self.apply(
             world,
             MovementIntent::Step {
@@ -177,6 +217,9 @@ impl Movement {
                 subject,
                 toward,
             } => {
+                if self.has_contact_pose(subject) {
+                    return Err(MovementError::MixedMovement(subject));
+                }
                 let from = self
                     .position(subject)
                     .ok_or(MovementError::MissingSubject(subject))?;
@@ -199,6 +242,39 @@ impl Movement {
                         from,
                         to,
                     }
+                }
+            },
+            MovementIntent::ContactPose {
+                tick,
+                subject,
+                pose,
+            } => {
+                pose.validate().map_err(MovementError::Motion)?;
+                let prior = self
+                    .pose(subject)
+                    .ok_or(MovementError::MissingSubject(subject))?;
+                let expected_step = prior.step.checked_add(1).ok_or(MotionError::Overflow)?;
+                if pose.step != expected_step {
+                    return Err(MovementError::WrongMotionStep {
+                        previous: prior.step,
+                        next: pose.step,
+                    });
+                }
+                let from = self
+                    .position(subject)
+                    .ok_or(MovementError::MissingSubject(subject))?;
+                let to = pose.cell().map_err(MovementError::Motion)?;
+                self.positions.insert(subject, to);
+                self.trails
+                    .get_mut(&subject)
+                    .expect("a positioned subject has a trail")
+                    .push(to);
+                MovementEvent::ContactMoved {
+                    tick,
+                    subject,
+                    from,
+                    to,
+                    pose,
                 }
             },
         };
@@ -234,5 +310,11 @@ impl Movement {
             movement.apply(world, intent)?;
         }
         Ok(movement)
+    }
+}
+
+impl From<MotionError> for MovementError {
+    fn from(error: MotionError) -> Self {
+        Self::Motion(error)
     }
 }

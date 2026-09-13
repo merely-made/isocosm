@@ -9,8 +9,9 @@
 use crate::bodies::{Bodies, BodyError};
 use crate::items::{ItemError, ItemKind, ItemLocation, Items};
 use crate::{
-    Anatomies, AnatomyError, AnatomyRecord, DeathCause, GAME_STATE_VERSION, GameError, GameEvent,
-    GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, Movement, MovementError, MovementEvent, World,
+    Anatomies, AnatomyError, AnatomyRecord, COMBAT_GAME_STATE_VERSION, DeathCause,
+    GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION,
+    Movement, MovementError, MovementEvent, World,
 };
 use mesocosm_core::places::spot;
 use mesocosm_core::snapshot::{self, hash_bytes};
@@ -18,6 +19,7 @@ use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
 mod combat;
+mod motion;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GameState {
@@ -50,6 +52,12 @@ impl GameState {
 
     pub fn movement(&self) -> &Movement {
         &self.movement
+    }
+
+    /// Exact accepted movement pose. Integer movement positions remain a
+    /// derived compatibility projection for legacy world consumers.
+    pub fn pose(&self, subject: SubjectId) -> Option<crate::MotionPose> {
+        self.movement.pose(subject)
     }
 
     pub fn bodies(&self) -> &Bodies {
@@ -152,6 +160,13 @@ impl GameState {
         let tick = intent.tick();
         let subject = intent.subject();
         let mut events = match &intent {
+            GameIntent::AdvanceMotion {
+                revision,
+                step,
+                input,
+                rules,
+                ..
+            } => self.advance_motion(tick, subject, *revision, *step, *input, *rules)?,
             GameIntent::AttachItem {
                 item,
                 part,
@@ -324,7 +339,9 @@ impl GameState {
                         to,
                     },
                     MovementEvent::Held { at, .. } => GameEvent::Held { tick, subject, at },
-                    MovementEvent::Spawned { .. } => unreachable!("step cannot spawn"),
+                    MovementEvent::Spawned { .. } | MovementEvent::ContactMoved { .. } => {
+                        unreachable!("legacy step cannot emit another movement kind")
+                    },
                 };
                 let mut events = vec![event];
                 self.exert(subject, 1, 2, tick, &mut events);
@@ -472,7 +489,10 @@ impl GameState {
         Self::restore_record(save)
     }
     pub fn restore_record(save: GameSave) -> Result<Self, GameError> {
-        if save.version != GAME_STATE_VERSION && save.version != LEGACY_GAME_STATE_VERSION {
+        if save.version != GAME_STATE_VERSION
+            && save.version != COMBAT_GAME_STATE_VERSION
+            && save.version != LEGACY_GAME_STATE_VERSION
+        {
             return Err(GameError::VersionDiverged {
                 saved: save.version,
                 current: GAME_STATE_VERSION,
@@ -485,6 +505,14 @@ impl GameState {
                 .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
         {
             return Err(GameError::LegacyCombatIntent);
+        }
+        if save.version != GAME_STATE_VERSION
+            && save
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::AdvanceMotion { .. }))
+        {
+            return Err(GameError::LegacyMotionIntent);
         }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world);

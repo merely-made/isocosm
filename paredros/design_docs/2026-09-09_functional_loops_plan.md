@@ -2,9 +2,9 @@
 
 **Status: in progress, 2026-09-13.** J0 body inspection, J1a controlled-session
 persistence, B1 charged limb contributions and B2 cardinal strike adjudication
-are implemented. The native client uses the same injury and inventory owners.
-Continuous contact movement, construction and full adventure coordination remain
-open.
+are implemented, along with B3 treatment and J1b fractional terrain motion.
+The native client uses the same movement, injury and inventory owners. Broader
+contact mechanics, construction and full adventure coordination remain open.
 
 ## Direction
 
@@ -654,3 +654,81 @@ uses the same B2 test/build commands above. This is automated handler and headed
 evidence; physical keyboard/mouse acceptance remains open. Independent Terra
 review found no remaining atomicity or replay issue. Native actions were split
 from `model.rs` to keep it below the 600-line ceiling.
+
+
+### J1b. World-owned fractional movement (2026-09-13)
+
+The first movement join uses `GameIntent::AdvanceMotion`, not an imported
+ContactWorld save or host-submitted position. The input names a subject, current
+body revision, next motion step and explicit movement rules. GameState checks
+that binding, solves terrain contact, records the resulting pose and applies any
+landing injury atomically. Existing timed-action admission repairs prepared limb
+contributions after that same transition. There is no second integrity value.
+
+Movement's precise pose is the latest accepted pose receipt in its own history.
+Its old integer position map is a derived logical-cell cache: navigation, item
+pickup/drop and the existing cardinal combat baseline still use that cell.
+Fractional movement never starts from the truncated cell. Legacy integer Move
+is rejected after a subject begins continuous movement, rather than silently
+throwing away velocity or residual position. Autonomous scheduling has not yet
+been switched to the new motion input. Combat remains cell-based until a
+separate revision introduces precise strike-space semantics.
+
+Coordinates are signed Q16.16 voxel units (65,536 quanta per voxel), with checked
+i32 cell bounds. Position is the feet centre; genesis centres x/z in the logical
+column and places feet at its integer y. Cell projection uses Euclidean floor,
+including negative coordinates. Velocity is quanta per second. Each accepted
+motion input advances exactly 1/60 simulation second and increments the subject's
+motion-step count. Game-intent ticks remain accepted-command sequence numbers;
+they are not seconds. MovementIntent ticks are ordinals in that subsystem's
+own movement stream. The native host samples held WASD, admits at most eight
+catch-up steps per wake, and pauses excess wall-clock debt. Input release and
+focus loss clear held movement. Save/load restores the simulated pose and clock,
+not the physical keyboard state.
+
+The disposable Conatus character query receives nearby generated Ground voxels
+in coordinates relative to the current cell, avoiding large absolute f32
+positions. Results are quantized before the next step and checked against exact
+Ground occupancy. Rules revision 1 provides bounded, configurable speed, gravity,
+terminal velocity and a box stance shape. This is terrain contact for an explicit
+stance shape, not a full anatomical collider, creature-to-creature collision,
+step climbing, jumping, boarding, tethering or a migration of the crossing's
+fixture mechanics. Grounded state, vertical velocity and fall-start height persist
+midair. Landing converts accumulated height loss to completed whole voxels once;
+only a harmful landing applies the existing fall rule and anatomy refresh.
+
+GameSave writer v5 appends vocabulary without changing old enum tags or state
+field layouts. v3 and v4 remain readable with their original expected hashes;
+either may contain a motion intent. The real 801-byte v4 native treatment save
+from B3 is retained as `tests/fixtures/timed-action-v1-game-v4.save` alongside the
+existing v3 fixture (v4 fixture SHA-256
+`1b99e8eeb99dedc55eea8e5194d755b94b7151a327684bec0a404fa549f80049`).
+Both must restore and upgrade. Recomputed solver output is
+covered by the saved state hash; matching continuation is tested on the current
+pinned backend. Cross-platform floating-point replay has not been certified.
+
+This is a correctness-first join: pose lookup scans accepted movement history,
+and atomic admission clones candidate state. Saves still retain full command
+history under configurable session limits. Checkpointing, archive growth and
+long-session runtime cost remain open in the memory/retention lane; this slice
+does not establish multi-year capacity.
+
+
+J1b verification on 2026-09-13: **119 world tests**, **5 native handler tests**,
+and the **all-features/all-targets Paredros workspace check** pass. The eight
+session unit tests also pass after their mechanical extraction into
+`session/tests.rs` to retain the 600-line ceiling. The landing regression starts
+from generated relief and deepens the lower column through recorded World::Carve;
+it verifies a single injury, current anatomy, no repeated injury while grounded,
+and identical continuation after a midair save. The unmodified shallow ledge
+produces only a safe landing under the completed-whole-voxel fall rule.
+
+The actual native binary's automated window smoke passes and its capture was
+reviewed. After load it displays precise position `[-56.433, 15.000, -51.500]`,
+logical cell `[-57, 15, -52]`, motion step 1 and grounded state, alongside the
+retained treatment/severance and target consequences. Artifacts:
+`C:/Users/mark_/Code/.tmp/paredros-motion-20260913/`; gate logs are
+`.tmp/paredros-motion-{world,native,workspace,session,build}.log` under `Code`.
+Use the B2 reproduction commands above with the same pins and Cargo home.
+Physical keyboard/mouse acceptance remains open. Existing unused Vello-patch
+and default-build `retarget_from_ground` warnings remain.

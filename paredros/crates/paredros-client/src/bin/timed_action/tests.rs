@@ -140,7 +140,7 @@ fn wrong_direction_is_a_recorded_miss() {
 }
 
 #[test]
-fn native_move_uses_one_step_toward_absolute_goal() {
+fn native_fractional_motion_resumes_exactly() {
     let mut app = App::new();
     let subject = app.action.session().control().played();
     let before = app
@@ -148,7 +148,7 @@ fn native_move_uses_one_step_toward_absolute_goal() {
         .session()
         .game()
         .movement()
-        .position(subject)
+        .pose(subject)
         .unwrap();
     app.move_player([1, 0, 0]);
     let after = app
@@ -156,8 +156,14 @@ fn native_move_uses_one_step_toward_absolute_goal() {
         .session()
         .game()
         .movement()
-        .position(subject)
+        .pose(subject)
         .unwrap();
-    assert_eq!(after[0], before[0] + 1);
-    assert_eq!(after[1..], before[1..]);
+    assert_eq!(after.step, 1);
+    assert!(after.position[0] > before.position[0]);
+    assert!(after.position[0] - before.position[0] < paredros_world::MOTION_SCALE);
+    let mut resumed = App::new();
+    resumed.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    app.move_player([1, 0, 0]);
+    resumed.move_player([1, 0, 0]);
+    assert_eq!(app.action, resumed.action);
 }

@@ -5,24 +5,72 @@ use super::*;
 
 impl App {
     pub(super) fn move_player(&mut self, toward: [i32; 3]) {
-        let tick = self.action.session().game().next_tick();
         let subject = self.action.session().control().played();
-        let at = self
-            .action
+        let game = self.action.session().game();
+        let pose = game.movement().pose(subject).expect("played pose");
+        let revision = game.bodies().get(subject).unwrap().revision;
+        self.status = match self.action.apply_game_batch(&[GameIntent::AdvanceMotion {
+            tick: game.next_tick(),
+            subject,
+            revision,
+            step: pose.step + 1,
+            input: paredros_world::MotionInput {
+                move_x: (toward[0] * 32767) as i16,
+                move_z: (toward[2] * 32767) as i16,
+            },
+            rules: paredros_world::MotionRules::default(),
+        }]) {
+            Ok(events) => vec![format!(
+                "Motion step {}: {} event(s)",
+                pose.step + 1,
+                events.len()
+            )],
+            Err(e) => {
+                self.movement_keys = [false; 4];
+                vec![format!("Motion failed: {e:?}")]
+            },
+        };
+    }
+    pub(super) fn motion_running(&self) -> bool {
+        let subject = self.action.session().control().played();
+        self.action
             .session()
             .game()
-            .movement()
-            .position(subject)
-            .expect("played body has a position");
-        let goal = [at[0] + toward[0], at[1] + toward[1], at[2] + toward[2]];
-        self.status = match self.action.apply_game_batch(&[GameIntent::Move {
-            tick,
-            subject,
-            toward: goal,
-        }]) {
-            Ok(events) => vec![format!("Moved: {} event(s)", events.len())],
-            Err(e) => vec![format!("Move failed: {e:?}")],
-        };
+            .bodies()
+            .get(subject)
+            .is_some_and(|body| body.alive())
+            && (self.movement_keys.iter().any(|key| *key)
+                || self
+                    .action
+                    .session()
+                    .game()
+                    .movement()
+                    .pose(subject)
+                    .is_some_and(|pose| !pose.grounded))
+    }
+    pub(super) fn tick_motion(&mut self) {
+        if !self.motion_running() {
+            self.last_motion = Instant::now();
+            return;
+        }
+        let interval = Duration::from_secs_f64(1.0 / 60.0);
+        let mut steps = 0;
+        while self.last_motion.elapsed() >= interval && steps < 8 && self.motion_running() {
+            let input = [
+                i32::from(self.movement_keys[3]) - i32::from(self.movement_keys[2]),
+                0,
+                i32::from(self.movement_keys[0]) - i32::from(self.movement_keys[1]),
+            ];
+            self.move_player(input);
+            self.last_motion += interval;
+            steps += 1;
+        }
+        if steps == 8 {
+            self.last_motion = Instant::now();
+        }
+        if steps > 0 {
+            self.redraw();
+        }
     }
     pub(super) fn injure(&mut self) {
         let subject = self.action.session().control().played();
