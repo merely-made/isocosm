@@ -271,6 +271,7 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .comparing .viewport { height:220px; min-height:220px; }
 .generation-controls { padding:12px; margin-bottom:16px; border:1px solid #a6b3a5; background:#faf8f2; }
 .generation-controls p { font-size:12px; }
+.generation-controls button { padding:5px 8px; font-size:12px; }
 .generation-controls .toolbar { margin-top:6px; align-items:center; }
 .generation-options { display:flex; flex-wrap:wrap; gap:20px; }
 .generation-choice.selected { background:#315c3e; color:white; }

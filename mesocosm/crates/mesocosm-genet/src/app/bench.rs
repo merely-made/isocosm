@@ -15,6 +15,7 @@ use cambium_genet_winit_host::{HostHooks, HostOptions, Init};
 mod comparison;
 mod comparison_view;
 mod generation_controls;
+mod structure_controls;
 mod probe;
 mod producer;
 mod state;

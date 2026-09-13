@@ -3,20 +3,24 @@
 
 //! Generate inspectable candidates and selection files for `mesocosm-genet --start`.
 use mesocosm_core::{
-    Founding, Kingdom,
-    world::generation::{Archetype, BodyPlan, Request, Selection, SoilPattern, VERSION},
+    Kingdom,
+    world::generation::{
+        Archetype, BodyPlan, Request, Selection, SoilPattern, Structure, StructureLayout,
+        StructureOrgans, VERSION,
+    },
 };
 use std::path::PathBuf;
 
 fn run() -> Result<(), String> {
     let mut request = Request::default();
+    let mut explicit_role = false;
     let mut observe = 0u32;
     let mut output = PathBuf::from("generated-start");
     let mut args = std::env::args().skip(1);
     while let Some(flag) = args.next() {
         if flag == "--help" {
             println!(
-                "generate-start [--request request.json] [--seed N] [--variation N] [--body-plan axial|branched|generated --archetype raccoon|cat|horse|bird|fish|grass|shrub|tree] [--role producer|consumer|decomposer|any] [--movement-organs yes|no|any] [--place 0..8] [--mass MG] [--max-parts N] [--candidates N] [--population N] [--soil-min MG] [--soil-max MG] [--soil-pattern patches|uniform|contrasting] [--min-open-steps 0..4] [--observe 0..128] [--output DIR]\nWrites report.json and start-N.json. Enter with mesocosm-genet --start DIR/start-N.json. Requested criteria are enforced; unsatisfied requests remain visible."
+                "generate-start [--request request.json] [--seed N] [--variation N] [--body-plan axial|branched|generated] [--archetype raccoon|cat|horse|bird|fish|grass|shrub|tree] [--layout chain|radial|crown|mat|vine|roots] [--organs bare|legs|wings|fins|leaves|feelers] [--stretches N] [--length N] [--role producer|consumer|decomposer|any] [--movement-organs yes|no|any] [--place 0..8] [--mass MG] [--max-parts N] [--candidates N] [--population N] [--soil-min MG] [--soil-max MG] [--soil-pattern patches|uniform|contrasting] [--min-open-steps 0..4] [--observe 0..128] [--output DIR]\nComposition flags select generated structure and clear the archetype; a later archetype or body-plan clears composition. Leaves require producer anatomy. Explicit role constraints are preserved. Writes report.json and start-N.json. Enter with mesocosm-genet --start DIR/start-N.json. Requested criteria are enforced; unsatisfied requests remain visible."
             );
             return Ok(());
         }
@@ -26,6 +30,11 @@ fn run() -> Result<(), String> {
         match flag.as_str() {
             "--body-plan" => {
                 request.version = VERSION;
+                request.criteria.structure = None;
+                request.criteria.archetype = None;
+                if !explicit_role {
+                    request.criteria.role = None;
+                }
                 request.criteria.body_plan = match value.as_str() {
                     "axial" => BodyPlan::Axial,
                     "branched" => BodyPlan::Branched,
@@ -34,15 +43,57 @@ fn run() -> Result<(), String> {
                 };
             },
             "--archetype" => {
+                request.version = VERSION;
+                request.criteria.structure = None;
                 request.criteria.archetype = Some(
                     serde_json::from_value::<Archetype>(serde_json::Value::String(value))
                         .map_err(|_| "unknown archetype")?,
                 );
-                request.criteria.role = request.criteria.archetype.map(Archetype::role);
+                if !explicit_role {
+                    request.criteria.role = request.criteria.archetype.map(Archetype::role);
+                }
+            },
+            "--layout" | "--organs" | "--stretches" | "--length" => {
+                request.version = VERSION;
+                request.criteria.body_plan = BodyPlan::Generated;
+                request.criteria.archetype = None;
+                let structure = request
+                    .criteria
+                    .structure
+                    .get_or_insert_with(Structure::default);
+                match flag.as_str() {
+                    "--layout" => {
+                        structure.layout = serde_json::from_value::<StructureLayout>(
+                            serde_json::Value::String(value),
+                        )
+                        .map_err(|_| "layout must be chain, radial, crown, mat, vine or roots")?;
+                    },
+                    "--organs" => {
+                        structure.organs = serde_json::from_value::<StructureOrgans>(
+                            serde_json::Value::String(value),
+                        )
+                        .map_err(|_| "organs must be bare, legs, wings, fins, leaves or feelers")?;
+                    },
+                    "--stretches" => {
+                        structure.branch_count =
+                            value.parse().map_err(|_| "invalid stretch count")?
+                    },
+                    "--length" => {
+                        structure.segment_length =
+                            value.parse().map_err(|_| "invalid segment length")?
+                    },
+                    _ => unreachable!(),
+                }
+                if !explicit_role {
+                    request.criteria.role =
+                        (structure.organs == StructureOrgans::Leaves).then_some(Kingdom::Producer);
+                }
             },
             "--request" => {
-                request = serde_json::from_slice(&std::fs::read(&value).map_err(|e| e.to_string())?)
-                    .map_err(|e| e.to_string())?
+                request =
+                    serde_json::from_slice(&std::fs::read(&value).map_err(|e| e.to_string())?)
+                        .map_err(|e| e.to_string())?;
+                explicit_role = request.criteria.role.is_some();
             },
             "--observe" => {
                 observe = value.parse().map_err(|_| "invalid trial ticks")?;
@@ -83,6 +134,7 @@ fn run() -> Result<(), String> {
                 request.candidates = value.parse().map_err(|_| "invalid candidate count")?
             },
             "--role" => {
+                explicit_role = true;
                 request.criteria.role = match value.as_str() {
                     "producer" => Some(Kingdom::Producer),
                     "consumer" => Some(Kingdom::Consumer),
@@ -104,8 +156,9 @@ fn run() -> Result<(), String> {
         }
     }
     // Same generated content admission as the native host, including its refs.
-    let pack = mesocosm_mesh::ContentPack::generate(Founding::Drawn.palette())
-        .map_err(|e| format!("{e:?}"))?;
+    let pack =
+        mesocosm_mesh::ContentPack::generate(mesocosm_genet::generation_content::palette(&request))
+            .map_err(|e| format!("{e:?}"))?;
     let began = std::time::Instant::now();
     let prepared = request
         .prepare(pack.palette)

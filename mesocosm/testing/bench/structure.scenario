@@ -1,0 +1,68 @@
+# Seeded structural combinations through actual native controls.
+wait 1200
+assert snap ready == yes
+click role:button Generation controls
+settle 3
+click role:button Consumer
+wait 1200
+click role:button Compose anatomy
+wait 1200
+assert snap ready == yes
+assert snap structure-layout == chain
+assert snap structure-organs == legs
+click role:button Stretches 6
+wait 1200
+assert snap structure-stretches == 6
+capture crawler
+remember crawler
+click role:button Reroll
+wait 1200
+more crawler variation
+click role:button Seed 1
+wait 1200
+same crawler hash
+click role:button Layout: radial
+wait 1200
+click role:button Organs: feelers
+wait 1200
+assert snap ready == yes
+capture radial
+click role:button Organs: wings
+wait 1200
+assert snap ready == yes
+capture wings
+click role:button Organs: fins
+wait 1200
+assert snap ready == yes
+capture fins
+click role:button Organs: leaves
+wait 1200
+click role:button Layout: crown
+wait 1200
+assert snap ready == yes
+capture crown
+click role:button Layout: mat
+wait 1200
+assert snap ready == yes
+capture mat
+click role:button Layout: vine
+wait 1200
+assert snap ready == yes
+capture vine
+click role:button Layout: roots
+wait 1200
+assert snap ready == yes
+capture roots
+click role:button Length ≤2
+wait 1200
+assert snap structure-length == 2
+assert snap ready == yes
+click role:button Save specimen
+settle 3
+capture saved
+click role:button cat-like
+wait 1200
+assert snap structure-layout == none
+assert snap archetype == cat-like
+assert snap ready == yes
+capture preset

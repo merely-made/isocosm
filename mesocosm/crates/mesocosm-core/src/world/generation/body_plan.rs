@@ -7,6 +7,8 @@ use crate::{Kingdom, PartPalette, Recipe, Rng};
 use serde::{Deserialize, Serialize};
 
 mod generated;
+mod structure;
+pub use structure::{Structure, StructureLayout, StructureOrgans};
 
 /// Developmental arrangement, independent of feeding role and taxonomy.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

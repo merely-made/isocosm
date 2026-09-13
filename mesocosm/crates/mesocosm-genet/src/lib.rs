@@ -41,6 +41,7 @@ pub mod chrome;
 pub mod creator_draft;
 pub mod dev;
 pub mod fixture;
+pub mod generation_content;
 pub mod hud;
 pub mod input;
 pub mod played;

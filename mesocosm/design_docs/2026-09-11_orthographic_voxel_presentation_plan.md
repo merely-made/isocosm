@@ -769,6 +769,53 @@ the one post-build formatting-only change are recorded under
 `testing/bench/receipts/2026-09-13/generation/`; images remain under
 `Code/testing/generation-wiring-2026-09-13/`.
 
+### Composable anatomy (2026-09-13)
+
+**Status:** native-verified. The named animals and plants are reference body plans,
+not a closed roster. Core adds independently selected stretch arrangements
+and appendage patterns to the existing generated recipe path. The host exposes
+the choices, counts and seeded length bounds through the specimen bench.
+Requests without structure settings retain their existing draw streams.
+
+**Done when:** arrangements and organ patterns produce measurably distinct
+developed anatomy; feasible combinations admit through ordinary founding;
+seed replay, paid mass and saved restoration hold; native controls and captures
+exercise animal and plant combinations; prior generation acceptance passes.
+The first vocabulary is chain, cardinal radial branches, crown, mat, bent vine
+and downward roots, combined with bare sites, legs, wings, fins, leaves or
+feelers. These describe anatomy. Flight, swimming, climbing and root physiology
+remain application capabilities. Shells, rounded or tapered part shapes and
+surface markings remain further vocabulary work.
+
+**Receipt:** 32 core generation tests pass, including all 96 compatible
+layout/organ/feeding-role combinations on the bench's SpacedRoster palette
+at seed 1 and six structural stretches. Tests cover paid founding, JSON replay,
+sparse palettes and bounds. Review caught coincident fin pairs and converging
+mat/root branches; their resolved-position fixtures now pass. These fixtures
+do not establish general self-intersection freedom. Feeding supports remain
+separate from structural stretch counts, and radial branches use a hub separate
+from the feeding root so ordinary ecology does not mistake a downward mass
+for a mouth.
+
+Native composition acceptance passes in 75 frames with 11 captures. Saved
+roots/leaves at length 2 reopens and regenerates the same `9c2153f6c1c90c07`
+world hash. Command-line generation and native loading use the same rich
+palette for explicit structure; a radial-feeler request matches the independently
+observed native-control hash `50e8f3a3a6b6d22d`. Earlier command-line requests
+retain their primitive palette for replay compatibility. All 14 deterministic
+checkpoints in the previous generation receipt match, and the old resized save
+still reopens. The ordinary native bench acceptance and release workspace
+all-features/all-targets check pass. One host content-selection/roundtrip test
+also passes.
+
+Source identities and compact receipts are under
+`testing/bench/receipts/2026-09-13/structure/`; captures remain under
+`Code/testing/structure-generation-2026-09-13/`. The capture review confirms
+distinct but blocky structures. This slice broadens combinations of existing
+parts; it does not yet expand the finite voxel shape bank or qualify population
+rendering cost. Shells, tapering, rounded forms and coherent surface patterns
+are the next visual vocabulary candidates.
+
 ### Bench C. Visible disposable world trial
 
 **Owner:** Mesocosm host/runtime. Reuse Prepared::enter and the existing runtime

@@ -83,8 +83,11 @@ pub(super) fn start(
     let pack = match &config.replay {
         Some(trace) => trace.content.clone(),
         None if config.generated_content || config.effective_start().is_some() => Some(
-            ContentPack::generate(founding.palette())
-                .map_err(|why| format!("generation refused: {why:?}"))?,
+            ContentPack::generate(config.effective_start().map_or_else(
+                || founding.palette(),
+                |selection| crate::generation_content::palette(&selection.request),
+            ))
+            .map_err(|why| format!("generation refused: {why:?}"))?,
         ),
         None => None,
     };

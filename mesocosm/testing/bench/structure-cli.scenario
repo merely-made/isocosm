@@ -1,0 +1,12 @@
+# --start from generate-start: seed 1, radial, feelers, 6 stretches, length 3,
+# consumer. Literal hash observed independently through the bench controls.
+wait 1200
+assert snap ready == yes
+assert snap structure-layout == radial
+assert snap structure-organs == feelers
+assert snap hash == 50e8f3a3a6b6d22d
+capture radial
+click role:button Part 0
+settle 3
+assert snap selected == yes
+capture inspected

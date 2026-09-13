@@ -54,7 +54,7 @@ starting anatomy. **Reroll** advances body variation without changing habitat;
 are checked starting points. Enter a seed or mass and choose **Apply seed and
 mass**. Invalid input refuses without replacing the current specimen.
 
-Sizes 1–3 change the admitted content and authoritative body geometry. Sensory
+Sizes 1-3 change the admitted content and authoritative body geometry. Sensory
 and role-sensitive detail retain their original size. Mass is separately paid
 tissue and reserve; the panel reports actual body mass and capacity. A large
 body does not receive free matter. **Save specimen** preserves the seed,
@@ -70,3 +70,34 @@ size, native mass editing and export. Reopen a saved specimen with the same
 Compact native receipts and source identities are in
 `receipts/2026-09-13/generation/`. The starting anatomies are structural
 prototypes; finished species likeness and surface markings remain open.
+
+## Compose anatomy
+
+**Compose anatomy** separates layout from organ pattern. Choose chain, radial,
+crown, mat, vine or roots; combine with bare sites, legs, wings, fins, leaves or
+feelers. Structural stretch count excludes feeding supports. Length is the seeded
+maximum segments per stretch. Feeding organs remain present at bare sites;
+leaves selects Producer. The seed and variation determine the remaining draws.
+Selecting a starting anatomy or ordinary body plan leaves composition mode.
+
+These controls use the ordinary recipe, content and matter pipeline. Radial
+branches follow cardinal directions; roots branch down and vines bend. They
+do not add flight, swimming, climbing or root physiology to the world.
+
+`structure.scenario` exercises combinations, counts, replay and saving.
+The same settings can be supplied to `generate-start`, for example:
+
+```powershell
+cargo run --release -p mesocosm-genet --bin generate-start -- --seed 1 --layout radial --organs feelers --stretches 4 --length 3 --role consumer --output generated-radial
+```
+
+Use a fresh output directory. Request JSON and **Save specimen** retain the
+composition settings. Old requests without those settings keep their existing
+generation streams.
+
+`structure-reopen.scenario` uses the composition scenario's saved specimen.
+`structure-cli.scenario` checks a CLI radial/feelers request at seed 1, six
+stretches, length 3, consumer, against the independently observed bench hash.
+Both CLI generation and native loading select the rich bench palette for
+explicit structures; earlier CLI requests preserve their original palette.
+Compact receipts live in `receipts/2026-09-13/structure/`.

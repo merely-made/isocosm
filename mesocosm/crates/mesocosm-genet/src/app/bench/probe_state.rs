@@ -20,6 +20,48 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("seed", model.creator.request.seed.to_string())
         .with_field("variation", model.creator.request.variation.to_string())
         .with_field(
+            "structure-layout",
+            model
+                .creator
+                .request
+                .criteria
+                .structure
+                .as_ref()
+                .map_or("none", |s| s.layout.label()),
+        )
+        .with_field(
+            "structure-organs",
+            model
+                .creator
+                .request
+                .criteria
+                .structure
+                .as_ref()
+                .map_or("none", |s| s.organs.label()),
+        )
+        .with_field(
+            "structure-stretches",
+            model
+                .creator
+                .request
+                .criteria
+                .structure
+                .as_ref()
+                .map_or(0, |s| s.branch_count)
+                .to_string(),
+        )
+        .with_field(
+            "structure-length",
+            model
+                .creator
+                .request
+                .criteria
+                .structure
+                .as_ref()
+                .map_or(0, |s| s.segment_length)
+                .to_string(),
+        )
+        .with_field(
             "body-plan",
             model.creator.request.criteria.body_plan.label(),
         )

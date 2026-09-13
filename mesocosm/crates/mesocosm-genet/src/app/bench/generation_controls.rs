@@ -38,7 +38,7 @@ impl Bench {
         self.commit_generation(|_| {});
     }
 
-    fn commit_generation(
+    pub(super) fn commit_generation(
         &mut self,
         change: impl FnOnce(&mut mesocosm_core::world::generation::Request),
     ) {
@@ -77,6 +77,7 @@ impl Bench {
     pub fn use_archetype(&mut self, archetype: Option<Archetype>, plan: BodyPlan) {
         self.commit_generation(|request| {
             request.criteria.archetype = archetype;
+            request.criteria.structure = None;
             request.criteria.body_plan = plan;
             request.criteria.role = archetype.map(Archetype::role);
             request.criteria.movement_organs = None;
@@ -143,7 +144,7 @@ impl Bench {
     }
 }
 
-fn choice(label: &str, selected: bool, action: impl Fn(&mut Bench) + 'static) -> Child {
+pub(super) fn choice(label: &str, selected: bool, action: impl Fn(&mut Bench) + 'static) -> Child {
     Box::new(focusable(clickable(
         el("button", text(label.to_owned()))
             .attr("aria-label", label.to_owned())
@@ -171,7 +172,9 @@ pub(super) fn view(state: &Bench) -> Child {
         .map(|plan| {
             choice(
                 plan.label(),
-                criteria.archetype.is_none() && criteria.body_plan == plan,
+                criteria.archetype.is_none()
+                    && criteria.structure.is_none()
+                    && criteria.body_plan == plan,
                 move |s| s.use_archetype(None, plan),
             )
         })
@@ -241,6 +244,7 @@ pub(super) fn view(state: &Bench) -> Child {
     });
     Box::new(el("section", (
         el("div", plans).attr("class", "toolbar"),
+        super::structure_controls::view(state),
         el("div", (el("span", text("Seed")),
             el("div", lens(|input: &mut TextInput| text_field_typed(input), |s: &mut Bench| &mut s.generation.seed)).attr("class", "generation-input generation-seed").attr("id", "generation-seed"),
             el("span", text("Mass (mg)")),

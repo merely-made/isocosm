@@ -19,7 +19,7 @@ use crate::{
 pub const VERSION: u32 = 4;
 
 mod body_plan;
-pub use body_plan::BodyPlan;
+pub use body_plan::{BodyPlan, Structure, StructureLayout, StructureOrgans};
 mod archetype;
 pub use archetype::Archetype;
 mod proportions;
@@ -35,6 +35,8 @@ pub struct Criteria {
     pub body_plan: BodyPlan,
     /// Recognizable starting recipe; its organs determine the feeding role.
     pub archetype: Option<Archetype>,
+    /// Explicit composable grammar. Absence preserves existing seeded draws.
+    pub structure: Option<Structure>,
     /// Feeding role read from realized organs, not biological taxonomy.
     pub role: Option<Kingdom>,
     pub min_segments: u32,
@@ -51,6 +53,7 @@ impl Default for Criteria {
         Self {
             body_plan: BodyPlan::Axial,
             archetype: None,
+            structure: None,
             role: None,
             min_segments: 1,
             max_segments: 32,
@@ -163,6 +166,23 @@ impl Request {
             return Err(Error::Invalid("start access must be 0..4 directions"));
         }
         let c = &self.criteria;
+        if let Some(structure) = c.structure {
+            if c.body_plan != BodyPlan::Generated || c.archetype.is_some() {
+                return Err(Error::Invalid(
+                    "structure requires generated plan without archetype",
+                ));
+            }
+            structure.validate(c.role)?;
+            if self.fixed_body.as_ref().is_some_and(|fixed| {
+                structure
+                    .required_role()
+                    .is_some_and(|required| fixed.role != required)
+            }) {
+                return Err(Error::Invalid(
+                    "held body conflicts with structural feeding role",
+                ));
+            }
+        }
         if c.archetype
             .is_some_and(|a| c.role.is_some_and(|r| r != a.role()))
         {
@@ -269,6 +289,7 @@ impl Request {
                 .criteria
                 .archetype
                 .map(Archetype::role)
+                .or(self.criteria.structure.and_then(Structure::required_role))
                 .or(self.criteria.role)
                 .unwrap_or(
                     [Kingdom::Producer, Kingdom::Consumer, Kingdom::Decomposer]
@@ -299,9 +320,10 @@ impl Request {
         role: Kingdom,
     ) -> Result<Candidate, &'static str> {
         let mut rng = Rng::from_seed(seed);
-        let recipe = match self.criteria.archetype {
-            Some(archetype) => archetype.generate(&mut rng),
-            None => self.criteria.body_plan.generate(&mut rng, role, palette),
+        let recipe = match (self.criteria.archetype, self.criteria.structure) {
+            (Some(archetype), _) => archetype.generate(&mut rng),
+            (_, Some(structure)) => structure.generate(&mut rng, role, palette),
+            _ => self.criteria.body_plan.generate(&mut rng, role, palette),
         };
         self.candidate_recipe(world, palette, centre, seed, role, recipe)
     }
@@ -320,6 +342,9 @@ impl Request {
             return Err("segment constraint");
         }
         let soma = Soma::develop(&recipe, seed);
+        if self.criteria.structure.is_some_and(|s| !s.accepts(&soma)) {
+            return Err("selected structural organs lost during realization");
+        }
         if self.criteria.archetype.is_some_and(|a| !a.accepts(&soma)) {
             return Err("starting anatomy lost an organ during realization");
         }
