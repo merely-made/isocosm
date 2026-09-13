@@ -101,3 +101,32 @@ stretches, length 3, consumer, against the independently observed bench hash.
 Both CLI generation and native loading select the rich bench palette for
 explicit structures; earlier CLI requests preserve their original palette.
 Compact receipts live in `receipts/2026-09-13/structure/`.
+
+## Glyph effect experiment
+
+Choose **Effects experiment** for a separate 2D plane. Quotes, slashes and
+backticks combine with stream, enclosure and inscription behavior. Stone,
+metal and moss are receiver samples. The guaranteed demonstration profile
+reflects from stone, splits at metal and binds to moss. Generated rules select
+stable responses from the interaction seed. Appearance reseeding changes
+the marks without changing the receiver rule.
+
+The report explains whether the combination admits pairs, a string or separate
+marks. Play/pause uses a fixed experiment clock; Step advances ten ticks and
+Reset returns to zero. The specimen world does not advance. Contact timing
+is scripted for this plane, not world collision or body attachment.
+
+**Save experiment** writes a fresh JSON file beside the capture path.
+**Reopen experiment** restores that file, including its tick. After restarting:
+
+```powershell
+cargo run --release -p mesocosm-genet -- --effect-experiment <saved-file.json>
+```
+
+`effects.scenario` checks native controls, changed animation pixels, unchanged
+guaranteed-rule pixels after interaction reseeding, independent appearance,
+split/string outcomes, restoration and specimen hash preservation.
+`effects-reopen.scenario` checks restart replay, playback and pause using the
+first scenario's save. Unsupported versions or invalid counts must refuse
+before host creation. D&D/PF2e rule packs and scene-attached effects remain
+future consumers of the documented distinction.

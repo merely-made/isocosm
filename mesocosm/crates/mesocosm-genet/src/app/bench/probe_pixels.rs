@@ -79,6 +79,14 @@ pub(super) fn viewport(ctx: &Context<'_>) -> Option<Viewport> {
             .find_map(|node| ctx.painted_rect(node))
             .map(|(x, y, w, h)| [x, y, w, h])
     };
+    if let Some(border) = rect(Selector::role("img").containing("Glyph effect experiment")) {
+        return Some(Viewport {
+            border,
+            transformed: false,
+            pixel_scale: ctx.window.map_or(1.0, |w| w.scale_factor()) as f32 * ctx.ui_zoom,
+            overlay: None,
+        });
+    }
     let border = rect(Selector::role("img").containing("Specimen"))?;
     (border[2] > 0.0 && border[3] > 0.0).then(|| Viewport {
         border,

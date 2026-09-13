@@ -1,0 +1,31 @@
+wait 1200
+assert snap effects-open == true
+assert snap effects-glyph == backticks
+assert snap effects-behavior == inscribe
+assert snap effects-receiver == moss
+assert snap effects-connection == string
+assert snap effects-tick == 80
+remember restored
+capture restored
+click role:button Reset effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+same restored effects-sample
+capture replayed
+viewport-pixels-same restored replayed
+click role:button Play effects
+settle 120
+click role:button Pause effects
+more restored effects-tick
+remember paused
+settle 10
+same paused effects-tick
+same restored hash
+capture paused

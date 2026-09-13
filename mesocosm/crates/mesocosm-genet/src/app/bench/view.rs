@@ -32,6 +32,23 @@ fn row(label: &str, value: String) -> Child {
 }
 
 pub(super) fn root(state: &Bench) -> Child {
+    if state.effects.open {
+        return Box::new(
+            el(
+                "div",
+                (
+                    el("h1", text("Specimen bench / Effects")),
+                    button("Back to specimen", |s| {
+                        s.effects.open = false;
+                        s.effects.playing = false;
+                    }),
+                    super::effects::view(state),
+                ),
+            )
+            .attr("class", "bench"),
+        );
+    }
+
     let model = state.model.borrow();
     let creator = &model.creator;
     let subject = model
@@ -141,6 +158,10 @@ pub(super) fn root(state: &Bench) -> Child {
         },
     )));
     let controls = vec![
+        button("Effects experiment", |s| {
+            s.effects.open = !s.effects.open;
+            s.effects.playing = false;
+        }),
         button("Generation controls", |s| {
             s.generation.open = !s.generation.open
         }),
@@ -181,6 +202,7 @@ pub(super) fn root(state: &Bench) -> Child {
                 ),
                 super::comparison_view::strip(state),
                 super::generation_controls::view(state),
+                super::effects::view(state),
                 el(
                     "main",
                     (
@@ -269,6 +291,11 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .proportion p { font-size:11px; margin:4px 0; line-height:1.25; }
 .change-summary { min-height:42px; }
 .comparing .viewport { height:220px; min-height:220px; }
+.effect-panel { padding:16px; margin-bottom:16px; background:#faf8f2; border:1px solid #a6b3a5; }
+.effect-panel h2 { margin:0; }
+.effect-panel p { font-size:12px; }
+.effect-panel button { padding:5px 8px; font-size:12px; }
+.effect-viewport { display:block; width:100%; height:240px; margin-top:12px; }
 .generation-controls { padding:12px; margin-bottom:16px; border:1px solid #a6b3a5; background:#faf8f2; }
 .generation-controls p { font-size:12px; }
 .generation-controls button { padding:5px 8px; font-size:12px; }

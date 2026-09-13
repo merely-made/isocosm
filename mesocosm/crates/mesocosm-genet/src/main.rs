@@ -69,6 +69,7 @@ fn main() {
     let mut create = false;
     let mut bench = false;
     let mut comparison = None;
+    let mut effect_experiment = None;
     let mut size_explicit = false;
 
     while let Some(arg) = args.next() {
@@ -81,6 +82,14 @@ fn main() {
             "--comparison" => {
                 comparison = Some(PathBuf::from(args.next().unwrap_or_else(|| {
                     eprintln!("--comparison requires a saved comparison JSON path");
+                    std::process::exit(1);
+                })));
+                bench = true;
+                create = true;
+            },
+            "--effect-experiment" => {
+                effect_experiment = Some(PathBuf::from(args.next().unwrap_or_else(|| {
+                    eprintln!("--effect-experiment requires a saved experiment JSON path");
                     std::process::exit(1);
                 })));
                 bench = true;
@@ -342,7 +351,7 @@ fn main() {
         config.height = 900;
     }
     let result = if bench {
-        mesocosm_genet::app::bench::run_comparison(config, comparison)
+        mesocosm_genet::app::bench::run_inputs(config, comparison, effect_experiment)
     } else {
         Host::run(config)
     };
@@ -388,6 +397,7 @@ mesocosm-genet: run Mesocosm in a window
   --draft PATH    reopen criteria or begin a new draft; implies --create; S saves
                   K retains selected role/organs/segment count; U clears these filters
   --start PATH    enter a generated selection JSON (recorded for replay)
+  --effect-experiment PATH  reopen a saved planar glyph experiment in the bench
   --scene MODE    ecology (default), terrarium, or authored graft-practice/expression-practice/family-practice/family-clearing/family-clearing-lean
   --terrarium-pitch DEG  shallow camera pitch, 0..45 degrees (default 12)
   --cutaway MODE  occupied (default), always (expose interior), or never

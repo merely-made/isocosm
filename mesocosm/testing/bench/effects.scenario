@@ -1,0 +1,94 @@
+wait 1200
+assert snap ready == yes
+remember world
+click role:button Effects experiment
+settle 3
+assert snap effects-open == true
+assert snap effects-response == reflect
+assert snap effects-connection == pairs
+capture start
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+capture moved
+viewport-pixels-change start moved
+remember guaranteed
+click role:button Reseed interactions
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+same guaranteed effects-response
+capture guaranteed
+viewport-pixels-same moved guaranteed
+click role:button Reseed appearance
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+same guaranteed effects-response
+capture restyled
+viewport-pixels-change guaranteed restyled
+click role:button Glyph slashes
+click role:button Behavior stream
+click role:button Receiver metal
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+click role:button Step effects
+click role:button Step effects
+settle 3
+assert snap effects-response == split
+assert snap effects-connection == separate
+assert snap effects-marks == 48
+capture split
+click role:button Glyph backticks
+click role:button Behavior inscribe
+click role:button Receiver moss
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+click role:button Step effects
+settle 3
+assert snap effects-response == bind
+assert snap effects-connection == string
+capture string
+remember saved
+click role:button Save experiment
+settle 2
+click role:button Receiver stone
+assert snap effects-connection == separate
+click role:button Rules generated
+click role:button Reseed interactions
+capture generated
+click role:button Reopen experiment
+settle 3
+same saved effects-request
+same saved effects-sample
+same saved effects-tick
+same world hash
+capture restored
+viewport-pixels-same string restored
+click role:button Back to specimen
+wait 1200
+assert snap ready == yes
+same world hash
+click role:button Effects experiment
+settle 3
+same saved effects-sample
+capture returned
+viewport-pixels-same restored returned

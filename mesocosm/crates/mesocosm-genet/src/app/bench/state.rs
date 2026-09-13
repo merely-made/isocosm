@@ -78,6 +78,7 @@ pub(super) struct Bench {
     pub export_directory: std::path::PathBuf,
     pub restore: Option<super::comparison::SavedComparison>,
     pub generation: super::generation_controls::Controls,
+    pub effects: super::effects::Effects,
 }
 
 impl Bench {

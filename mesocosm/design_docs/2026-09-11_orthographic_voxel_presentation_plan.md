@@ -816,6 +816,76 @@ parts; it does not yet expand the finite voxel shape bank or qualify population
 rendering cost. Shells, tapering, rounded forms and coherent surface patterns
 are the next visual vocabulary candidates.
 
+### Glyph effects and interaction experiment (2026-09-13)
+
+**Status:** first planar experiment native-verified. Mark's working model mixes
+a glyph-effect lexicon with spatial, rule-based behavior and stable generated
+material/surface/item interactions. Strings form only when the selected glyph
+and behavior support a relationship; individual marks remain valid outcomes.
+Clouds are one arrangement among streams, boundaries, branches and inscriptions.
+
+Three independent inputs are glyph vocabulary, spatial behavior and receiving
+interaction profile. Generated choices are seeded and persisted so discoveries
+can be repeated. A ruleset may guarantee an effect's existence, conditions,
+outcome and interactions, reserving explicit slots for generated variation.
+Appearance changes must not silently alter those guarantees. D&D 5e and PF2e
+are motivating consumers, not implemented rule packs for this experiment.
+
+Keep game adjudication with each product. Existing wing-functions supplies
+part-bound functional blueprints and typed proposals; it does not become a
+universal collision, magic or ecology evaluator. Visual and audio consumers
+read accepted activity. Glyphs, meshes, strokes and surface patches can share
+presentation recipes without becoming biological traits or gameplay authority.
+
+**First slice:** an explicitly separate bench interaction experiment. Hold the
+effect and seed fixed while changing a receiver, then hold the receiver while
+changing spatial behavior. Show the resulting marks and relationships beside
+a readable explanation. Support deterministic sampling, replay and bounded
+counts. An authored guarantee must survive reseeding; allowed generated
+interactions may vary. The first viewport may be planar and must say so;
+shared-depth body attachment and world collision require their own rendering
+and activity receipts.
+
+**Done when:** native controls visibly distinguish stream, enclosure and
+surface attachment; compatible marks form inspectable strings while incompatible
+marks remain separate; receiver changes produce repeatable explained outcomes;
+saved experiment inputs reconstruct; fixed guarantees resist reseeding; and
+existing anatomy and bench acceptance remain green. Document presentation-only
+inputs and all unimplemented gameplay semantics explicitly.
+
+**Receipt, 2026-09-13:** `mesocosm-core::effect_experiment` owns a versioned,
+bounded request, stable material-response selection and stateless integer
+samples. The host draws procedural glyph strokes through the existing Sprigging
+leaf path. No dependencies or platform pins changed. The demonstration has
+quotes/slashes/backticks, stream/enclose/inscribe, and stone/metal/moss samples.
+Guaranteed responses are authored demonstration laws, not imported game rules.
+Generated lookup depends on the interaction seed and receiver, never the
+appearance seed. Groups require glyph, behavior and response compatibility.
+
+Seven focused core tests pass. Native acceptance passes in 125 frames with ten
+captures: animation changes pixels, guaranteed interaction reseeding preserves
+pixels, appearance reseeding changes marks while retaining the response, and
+split/string relationships differ. Save/reopen and closing/reopening the view
+reproduce all 786,384 sampled viewport pixels. Restart restoration, fixed-tick
+playback and pause pass separately in 166 frames with four captures. Invalid
+version, count and saved tick each refuse before host creation. The specimen
+world hash stays unchanged through the experiment. Existing bench acceptance
+(167 frames) and anatomy composition acceptance (75 frames), plus the release
+workspace all-features/all-targets check, pass.
+
+Native review changed the initial stream from simultaneous clumped marks to
+staggered emissions with individual scripted arrival times. Saved requests and
+ticks reopen with `--effect-experiment FILE`. Compact receipts and source
+identities live at `testing/bench/receipts/2026-09-13/effects/`; images remain at
+`Code/testing/effects-2026-09-13/final/`.
+
+**Remaining scope:** the receiver is a material sample on a demonstration plane.
+Contact age is scripted, not a collision result. Surface and item identities,
+organ emission sites, spatial depth, CSS effect styling, sound, mixed fixed and
+generated rule packs, and effect-to-effect composition remain subsequent work.
+The first comparison proves controllable expression and reproducible responses,
+not gameplay adjudication, camouflage or a populated-scene performance budget.
+
 ### Bench C. Visible disposable world trial
 
 **Owner:** Mesocosm host/runtime. Reuse Prepared::enter and the existing runtime

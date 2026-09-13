@@ -14,11 +14,12 @@ use cambium_genet_winit_host::{HostHooks, HostOptions, Init};
 
 mod comparison;
 mod comparison_view;
+mod effects;
 mod generation_controls;
-mod structure_controls;
 mod probe;
 mod producer;
 mod state;
+mod structure_controls;
 mod view;
 
 use state::{Bench, Specimen};
@@ -32,9 +33,27 @@ pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
 }
 
 pub fn run_comparison(
-    mut config: HostConfig,
+    config: HostConfig,
     path: Option<std::path::PathBuf>,
 ) -> Result<i32, winit::error::EventLoopError> {
+    run_inputs(config, path, None)
+}
+
+pub fn run_inputs(
+    mut config: HostConfig,
+    path: Option<std::path::PathBuf>,
+    effect_path: Option<std::path::PathBuf>,
+) -> Result<i32, winit::error::EventLoopError> {
+    let effect = match effect_path {
+        Some(path) => match effects::Effects::load(&path) {
+            Ok(effect) => effect,
+            Err(why) => {
+                eprintln!("Effect experiment refused: {why}");
+                return Ok(1);
+            },
+        },
+        None => effects::Effects::default(),
+    };
     let restore = match path {
         Some(path) => match comparison::SavedComparison::load(&path) {
             Ok(saved) => {
@@ -123,6 +142,10 @@ pub fn run_comparison(
     let close_lane = lane.clone();
     let hooks: HostHooks<Bench, Logic, Child> = HostHooks {
         frame: Box::new(|ctx| {
+            if ctx.runner.state().effects.open && ctx.runner.state().effects.playing {
+                ctx.runner.update(|s| s.effects.advance());
+            }
+            ctx.runner.state().effects.sync(ctx.leaves);
             let pending = ctx.runner.state().model.borrow().creator.pending;
             if pending {
                 ctx.runner.update(|s| {
@@ -130,12 +153,12 @@ pub fn run_comparison(
                 });
             }
             let state = ctx.runner.state();
-            if state.visible && !ctx.producers.contains(LEAF_KEY) {
+            if state.visible && !state.effects.open && !ctx.producers.contains(LEAF_KEY) {
                 ctx.producers
                     .register(LEAF_KEY, state.scene.clone(), &["color"])
                     .expect("bench owns one producer key");
             }
-            if state.visible {
+            if state.visible && !state.effects.open {
                 if let Some(comparison) = &state.model.borrow().comparison {
                     for (index, card) in comparison.cards.iter().enumerate() {
                         let key = LEAF_KEY + 1 + index as u64;
@@ -147,7 +170,7 @@ pub fn run_comparison(
                     }
                 }
             }
-            state.model.borrow().creator.pending
+            state.model.borrow().creator.pending || (state.effects.open && state.effects.playing)
         }),
         after_dispatch: Box::new(|_| {}),
         after_frame: Box::new(move |ctx| {
@@ -217,6 +240,7 @@ pub fn run_comparison(
                 export_directory,
                 restore,
                 generation,
+                effects: effect,
             },
             logic: view::root as Logic,
             sheet: view::SHEET.into(),

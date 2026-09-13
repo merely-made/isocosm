@@ -46,6 +46,7 @@ pub mod axis;
 pub mod body;
 pub mod cohort;
 pub mod development;
+pub mod effect_experiment;
 pub mod discovery;
 pub mod flow;
 pub mod functions;

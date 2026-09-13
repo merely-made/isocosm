@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-13",
+  "parent": "fd45197dfb59a699af15bec087c2280555a4d009",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-core/src/lib.rs": "5c7fa3a6c292210ec6e29df6db7cc96df3b68a1d",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "81764b93f2b5ddb23be747020f9aa9d1d9d03999",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "a95538143d0c3ac9d7b39b4d709826ccb9b84bb4",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_pixels.rs": "bdda9134b9c57f871d9ed7201872beebc5b5e320",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "64cd9c6f967be68ff276c6716c3ce4aecdb7e501",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "6738d4d86e03a60318018359a52f6bd00b37b037",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "871611a3fe92cf929ce31a9f7e63072661aebb91",
+    "mesocosm/crates/mesocosm-genet/src/main.rs": "5b2cc9b412eea36469e74f8ed40baab0a36d48da",
+    "mesocosm/crates/mesocosm-core/src/effect_experiment.rs": "3feaaa81ab93e2167c6fe0c9096d3e63f198732f",
+    "mesocosm/crates/mesocosm-core/src/effect_experiment/tests.rs": "39bab9f15c13397f396be20852b7b14d0d7fce34",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/effects.rs": "11ef6a339ae167f0fc1461a530c3885412efeedd",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/effects/paint.rs": "372b5f412b269c4890dc69d19e64ac55324393e2"
+  },
+  "exe_sha256": "3221932B5F8762F4D6491AEE88CF928976C2CE5C462402F832DF663F9B18969C",
+  "build": "cargo build --release --frozen -p mesocosm-genet --bin mesocosm-genet -j3",
+  "cargo_home": "C:/Users/mark_/Code/.cargo-homes/specimen-generation-20260913",
+  "dependencies": "Unchanged committed Git pins and Cargo.lock",
+  "tests": {
+    "native_restart_frames": 166,
+    "native_effect_frames": 125,
+    "workspace_check": "release all-features all-targets passed",
+    "bench_frames": 167,
+    "focused_core": 7,
+    "anatomy_frames": 75
+  },
+  "anatomy_hash_matches": {
+    "crawler": "bf3bb9fddf2a0ebf",
+    "radial": "50e8f3a3a6b6d22d",
+    "wings": "6bbafc49c17828b1",
+    "fins": "103f68335e3a9862",
+    "crown": "a0a829ca6ac6c489",
+    "mat": "25d3403a139f5fb3",
+    "vine": "c369e432b57651e5",
+    "roots": "0c09e6b6d3388ebb",
+    "saved": "9c2153f6c1c90c07",
+    "preset": "4fccc695b790eaf3",
+    "final": "4fccc695b790eaf3"
+  },
+  "saved_path": "C:/Users/mark_/Code/testing/effects-2026-09-13/final\\effect-experiment-X9YXZS.json",
+  "saved_request": {
+    "request": {
+      "version": 1,
+      "world_seed": 8,
+      "appearance_seed": 43,
+      "glyph": "backticks",
+      "behavior": "inscribe",
+      "receiver": "moss",
+      "profile": "guaranteed",
+      "count": 24,
+      "duration_ticks": 120
+    },
+    "tick": 80
+  },
+  "negative_controls": {
+    "tick": "121 beyond duration120 refused before host, exit1",
+    "count": "129 refused before host, exit1",
+    "version": "99 refused before host, exit1"
+  },
+  "native_directory": "C:/Users/mark_/Code/testing/effects-2026-09-13/final",
+  "limits": "Planar scripted contact; no World mutation, body attachment, game-rule pack or performance qualification"
+}

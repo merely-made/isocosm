@@ -15,7 +15,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     let creator_ready =
         !model.creator.pending && model.creator.prepared.is_some() && model.creator.count() > 0;
     let yes = |value| if value { "yes" } else { "no" };
-    ProbeSnapshot::default()
+    let mut snapshot = ProbeSnapshot::default()
         .with_field("notice", state.notice.clone())
         .with_field("seed", model.creator.request.seed.to_string())
         .with_field("variation", model.creator.request.variation.to_string())
@@ -228,5 +228,9 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .or(scene.error.as_deref())
                 .unwrap_or("none"),
         )
-        .with_field("captures", captures.to_string())
+        .with_field("captures", captures.to_string());
+    for (key, value) in state.effects.probe_fields() {
+        snapshot = snapshot.with_field(key, value);
+    }
+    snapshot
 }
