@@ -180,7 +180,15 @@ fn real_v5_motion_archive_retains_its_legacy_combat_history() {
         }
     )));
     let mut restored = TimedActionSession::restore(bytes).unwrap();
-    assert_eq!(restored.save().unwrap(), bytes.as_slice());
+    let rewritten: TimedActionSave =
+        mesocosm_core::snapshot::decode(&restored.save().unwrap()).unwrap();
+    assert_eq!(
+        rewritten.session.game.version,
+        paredros_world::GAME_STATE_VERSION
+    );
+    let mut upgraded = save.clone();
+    upgraded.session.game.version = paredros_world::GAME_STATE_VERSION;
+    assert_eq!(rewritten, upgraded);
     let subject = restored.session().control().played();
     let game = restored.session().game();
     let step = game.pose(subject).unwrap().step + 1;

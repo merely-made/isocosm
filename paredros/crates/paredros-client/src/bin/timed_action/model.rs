@@ -29,6 +29,8 @@ use winit::{
 mod actions;
 #[path = "host.rs"]
 mod host;
+#[path = "support.rs"]
+mod support;
 #[cfg(test)]
 #[path = "tests.rs"]
 mod tests;
@@ -127,6 +129,7 @@ impl App {
             document: Box::new(three_lives::three_lives()[0].body.clone()),
         })
         .unwrap();
+        support::configure_keeper(&mut game, subject);
         let target = paredros_identity::SubjectId(702);
         let target_item = game
             .items()

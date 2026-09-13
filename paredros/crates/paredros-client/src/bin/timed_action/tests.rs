@@ -167,3 +167,37 @@ fn native_fractional_motion_resumes_exactly() {
     resumed.move_player([1, 0, 0]);
     assert_eq!(app.action, resumed.action);
 }
+
+#[test]
+fn native_support_loss_slows_movement_and_is_visible_after_resume() {
+    use super::view::AppView;
+    let mut app = App::new();
+    let subject = app.action.session().control().played();
+    let before = app
+        .action
+        .session()
+        .game()
+        .movement_projection(subject)
+        .unwrap()
+        .unwrap();
+    assert_eq!(before.active_supports.len(), 4);
+    app.injure();
+    app.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    let after = app
+        .action
+        .session()
+        .game()
+        .movement_projection(subject)
+        .unwrap()
+        .unwrap();
+    assert_eq!(after.active_supports.len(), 3);
+    assert_eq!(after.speed * 4, before.speed * 3);
+    assert_eq!(after.envelope, before.envelope);
+    assert!(
+        app.display_lines()
+            .iter()
+            .any(|line| line.contains("supports 3/4"))
+    );
+    app.move_player([1, 0, 0]);
+    assert_eq!(app.action.session().game().pose(subject).unwrap().step, 1);
+}

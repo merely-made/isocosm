@@ -33,6 +33,7 @@ pub mod fixtures;
 mod items;
 mod motion;
 mod movement;
+mod movement_profile;
 mod navigation;
 mod population;
 mod projects;
@@ -67,6 +68,9 @@ pub use equipment::AttachmentView;
 pub use items::{Item, ItemError, ItemId, ItemKind, ItemLocation, Items};
 pub use motion::{MOTION_SCALE, MotionError, MotionInput, MotionPose, MotionRules};
 pub use movement::{Movement, MovementError, MovementEvent, MovementIntent, MovementSave};
+pub use movement_profile::{
+    MOVEMENT_PROFILE_REVISION, MotionEnvelope, MovementProfile, MovementProjection, SupportBand,
+};
 pub use navigation::{Navigation, NavigationError};
 pub use population::{
     Life, MAX_MIGRANTS_PER_ROUTE, MAX_RESIDENTS_PER_SITE, Migration, Population, PopulationConfig,
@@ -95,7 +99,7 @@ pub use technique::{
 };
 pub use transitions::{
     COMBAT_GAME_STATE_VERSION, DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent,
-    GameSave, LEGACY_GAME_STATE_VERSION,
+    GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

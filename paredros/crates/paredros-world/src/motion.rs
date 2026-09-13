@@ -92,8 +92,20 @@ impl Default for MotionRules {
 }
 impl MotionRules {
     pub fn validate(self) -> Result<(), MotionError> {
-        if self.revision != 1
+        if !(1..=crate::MOVEMENT_PROFILE_REVISION).contains(&self.revision)
             || !(1..=16 * S).contains(&self.speed)
+            || !(1..=32 * S).contains(&self.gravity)
+            || !(1..=32 * S).contains(&self.terminal_speed)
+            || !(S / 16..=S).contains(&self.half_width)
+            || !(S / 4..=4 * S).contains(&self.height)
+        {
+            return Err(MotionError::InvalidRules);
+        }
+        Ok(())
+    }
+    pub(crate) fn validate_projection(self) -> Result<(), MotionError> {
+        if self.revision != crate::MOVEMENT_PROFILE_REVISION
+            || !(0..=16 * S).contains(&self.speed)
             || !(1..=32 * S).contains(&self.gravity)
             || !(1..=32 * S).contains(&self.terminal_speed)
             || !(S / 16..=S).contains(&self.half_width)
@@ -112,6 +124,8 @@ pub enum MotionError {
     InvalidPose,
     Collision,
     Physics,
+    InvalidProfile,
+    MissingEnvelopeAnchor(mesocosm_core::PartId),
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MotionOutcome {
@@ -125,7 +139,11 @@ pub(crate) fn advance(
     input: MotionInput,
     rules: MotionRules,
 ) -> Result<MotionOutcome, MotionError> {
-    rules.validate()?;
+    match rules.revision {
+        1 => rules.validate()?,
+        crate::MOVEMENT_PROFILE_REVISION => rules.validate_projection()?,
+        _ => return Err(MotionError::InvalidRules),
+    }
     if input.move_x == i16::MIN || input.move_z == i16::MIN {
         return Err(MotionError::InvalidInput);
     }

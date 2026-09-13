@@ -101,6 +101,18 @@ impl AppView for App {
                 at[0], at[1], at[2], pose.step, pose.grounded
             ));
         }
+        match self.action.session().game().movement_projection(subject) {
+            Ok(Some(projection)) => lines.push(format!(
+                "Movement supports {}/{}; speed {:.2} voxels/s; clearance {:.2} wide x {:.2} high",
+                projection.active_supports.len(),
+                projection.declared_supports,
+                projection.speed as f64 / paredros_world::MOTION_SCALE as f64,
+                2.0 * projection.envelope.half_width as f64 / paredros_world::MOTION_SCALE as f64,
+                projection.envelope.height as f64 / paredros_world::MOTION_SCALE as f64,
+            )),
+            Ok(None) => lines.push("Movement: legacy stance profile".into()),
+            Err(error) => lines.push(format!("Movement support unavailable: {error:?}")),
+        }
         lines.extend(self.target_lines());
         lines
     }

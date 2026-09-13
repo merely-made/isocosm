@@ -13,13 +13,13 @@ use crate::bodies::{BodyError, Name};
 use crate::items::{ItemError, ItemId};
 use crate::timed_action::StrikeReceipt;
 use crate::{
-    AnatomyError, CombatRules, MotionInput, MotionPose, MotionRules, MovementError, ResolvedStrike,
-    WorldError, WorldSave,
+    AnatomyError, CombatRules, MotionInput, MotionPose, MotionRules, MovementError,
+    MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version 5 adds fixed-point continuous movement without changing the
-/// `GameSave` field layout. Versions 3 and 4 remain valid earlier grammars.
-pub const GAME_STATE_VERSION: u32 = 5;
+/// Version 6 adds explicit anatomy-based locomotion profiles.
+pub const GAME_STATE_VERSION: u32 = 6;
+pub const MOTION_GAME_STATE_VERSION: u32 = 5;
 pub const COMBAT_GAME_STATE_VERSION: u32 = 4;
 pub const LEGACY_GAME_STATE_VERSION: u32 = 3;
 
@@ -112,6 +112,12 @@ pub enum GameIntent {
         input: MotionInput,
         rules: MotionRules,
     },
+    ConfigureMovementProfile {
+        tick: Tick,
+        subject: SubjectId,
+        revision: BodyRevisionId,
+        profile: MovementProfile,
+    },
 }
 
 impl GameIntent {
@@ -131,6 +137,7 @@ impl GameIntent {
             | Self::DetachItem { tick, .. }
             | Self::ResolveVolley { tick, .. }
             | Self::AdvanceMotion { tick, .. }
+            | Self::ConfigureMovementProfile { tick, .. }
             | Self::Wait { tick, .. } => *tick,
         }
     }
@@ -150,6 +157,7 @@ impl GameIntent {
             | Self::AttachItem { subject, .. }
             | Self::DetachItem { subject, .. }
             | Self::AdvanceMotion { subject, .. }
+            | Self::ConfigureMovementProfile { subject, .. }
             | Self::Wait { subject, .. } => *subject,
             Self::ResolveVolley { actor, .. } => *actor,
         }
@@ -269,6 +277,11 @@ pub enum GameEvent {
         pose: MotionPose,
         landed_distance: Option<i32>,
     },
+    MovementProfileConfigured {
+        tick: Tick,
+        subject: SubjectId,
+        profile: MovementProfile,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -290,6 +303,7 @@ pub enum GameError {
     Motion(crate::MotionError),
     LegacyCombatIntent,
     LegacyMotionIntent,
+    LegacyMovementProfileIntent,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },
     VersionDiverged { saved: u32, current: u32 },

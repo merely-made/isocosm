@@ -11,7 +11,8 @@ use crate::items::{ItemError, ItemKind, ItemLocation, Items};
 use crate::{
     Anatomies, AnatomyError, AnatomyRecord, COMBAT_GAME_STATE_VERSION, DeathCause,
     GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION,
-    Movement, MovementError, MovementEvent, World,
+    MOTION_GAME_STATE_VERSION, Movement, MovementError, MovementEvent, MovementProfile,
+    MovementProjection, World,
 };
 use mesocosm_core::places::spot;
 use mesocosm_core::snapshot::{self, hash_bytes};
@@ -95,6 +96,41 @@ impl GameState {
         Ok(record)
     }
 
+    /// Latest declared locomotion roles. The returned projection is rebuilt
+    /// from the current anatomy, so severance changes supports without mutating
+    /// an independent shape cache.
+    pub fn movement_profile(&self, subject: SubjectId) -> Option<&MovementProfile> {
+        self.intents.iter().rev().find_map(|intent| match intent {
+            GameIntent::ConfigureMovementProfile {
+                subject: found,
+                profile,
+                ..
+            } if *found == subject => Some(profile),
+            _ => None,
+        })
+    }
+
+    pub fn movement_projection(
+        &self,
+        subject: SubjectId,
+    ) -> Result<Option<MovementProjection>, GameError> {
+        self.movement_projection_with_speed(subject, crate::MotionRules::default().speed)
+    }
+
+    fn movement_projection_with_speed(
+        &self,
+        subject: SubjectId,
+        requested_speed: i64,
+    ) -> Result<Option<MovementProjection>, GameError> {
+        let Some(profile) = self.movement_profile(subject) else {
+            return Ok(None);
+        };
+        Ok(Some(profile.project(
+            self.current_anatomy(subject)?,
+            requested_speed,
+        )?))
+    }
+
     pub fn intents(&self) -> &[GameIntent] {
         &self.intents
     }
@@ -167,6 +203,20 @@ impl GameState {
                 rules,
                 ..
             } => self.advance_motion(tick, subject, *revision, *step, *input, *rules)?,
+            GameIntent::ConfigureMovementProfile {
+                revision, profile, ..
+            } => {
+                self.living(subject)?;
+                if profile.source_revision != *revision {
+                    return Err(crate::MotionError::InvalidProfile.into());
+                }
+                profile.validate_at(self.current_anatomy(subject)?)?;
+                vec![GameEvent::MovementProfileConfigured {
+                    tick,
+                    subject,
+                    profile: profile.clone(),
+                }]
+            },
             GameIntent::AttachItem {
                 item,
                 part,
@@ -490,6 +540,7 @@ impl GameState {
     }
     pub fn restore_record(save: GameSave) -> Result<Self, GameError> {
         if save.version != GAME_STATE_VERSION
+            && save.version != MOTION_GAME_STATE_VERSION
             && save.version != COMBAT_GAME_STATE_VERSION
             && save.version != LEGACY_GAME_STATE_VERSION
         {
@@ -506,13 +557,27 @@ impl GameState {
         {
             return Err(GameError::LegacyCombatIntent);
         }
-        if save.version != GAME_STATE_VERSION
+        if save.version < MOTION_GAME_STATE_VERSION
             && save
                 .intents
                 .iter()
                 .any(|intent| matches!(intent, GameIntent::AdvanceMotion { .. }))
         {
             return Err(GameError::LegacyMotionIntent);
+        }
+        if save.version != GAME_STATE_VERSION
+            && save.intents.iter().any(|intent| {
+                matches!(
+                    intent,
+                    GameIntent::ConfigureMovementProfile { .. }
+                        | GameIntent::AdvanceMotion {
+                            rules: crate::MotionRules { revision: 2, .. },
+                            ..
+                        }
+                )
+            })
+        {
+            return Err(GameError::LegacyMovementProfileIntent);
         }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world);

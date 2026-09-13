@@ -76,6 +76,25 @@ impl GameState {
             .into());
         }
 
+        // Validate the caller's recorded rules before the anatomy projection
+        // may reduce their speed to zero. A no-support idle step is valid,
+        // but a malformed requested profile is never repaired by projection.
+        rules.validate()?;
+
+        let rules = match rules.revision {
+            1 => rules,
+            crate::MOVEMENT_PROFILE_REVISION => {
+                let projection = self
+                    .movement_projection_with_speed(subject, rules.speed)?
+                    .ok_or(crate::MotionError::InvalidProfile)?;
+                let effective = projection.rules_for(rules)?;
+                if effective.speed == 0 && (input.move_x != 0 || input.move_z != 0) {
+                    return Err(crate::BodyError::Immobile(subject).into());
+                }
+                effective
+            },
+            _ => return Err(crate::MotionError::InvalidRules.into()),
+        };
         let outcome = crate::motion::advance(self.world.ground(), prior, input, rules)?;
         debug_assert_eq!(outcome.pose.step, step);
         self.movement

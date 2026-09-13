@@ -798,3 +798,52 @@ Done when removing a supporting part changes its declared movement projection,
 removing an unrelated extended arm does not enlarge the collision envelope, and
 both results survive save/resume. Root bounds can be a proposed default, but
 geometry alone must not silently designate arbitrary parts as legs or supports.
+
+### J1c. Explicit anatomical movement roles (2026-09-13)
+
+The first role-bearing movement profile belongs to Paredros's locomotion rules.
+`ConfigureMovementProfile` records the source anatomy revision, an envelope
+anchor, explicit collision dimensions, supporting part addresses, and a vertical
+support band in body-document voxel coordinates. The profile is recovered from
+accepted history. It does not add a second anatomy store or change Mesocosm's
+body grammar. Shared role semantics can be promoted when another consumer uses
+them.
+
+Revision-2 motion projects that profile against current anatomy. An intact
+declared part contributes when its transformed bounds overlap the support band.
+Horizontal speed scales by active supports divided by declared supports. With
+none left, deliberate horizontal movement is rejected; idle gravity remains
+available. This is a count-based support rule, not gait simulation or a balance
+solver. The keeper explicitly assigns its four gripping limbs as supports.
+
+The collision envelope retains its authored dimensions. The anchor names the
+part that owns it; it does not translate the feet-centred collision box to that
+part's combat bounds. A missing anchor requires a replacement profile. Combat
+continues to use full precise anatomy, so an extended arm can strike without
+enlarging terrain clearance. No automatic crouching or crawling is introduced.
+
+GameSave v6 admits the new profile intent and revision-2 movement. Earlier
+archives retain revision-1 locomotion and migrate their envelope version when
+saved again. The native client selects revision 2 when a profile exists and
+continues to accept profile-free old saves. The movement display exposes current
+support count and effective speed so injury consequences can be inspected.
+
+J1c verification: **132 world tests**, **6 native handler tests**, and the
+**all-features/all-targets Paredros workspace check** pass. The tests compare
+actual displacement with one of two supports severed, preserve the original
+profile through injury, check unchanged clearance with an unrelated limb
+removed, and continue identically after save/resume. Zero-support idle input
+and malformed requested speeds are tested separately. Real v3/v4/v5 archives
+still restore; the v5 fixture migrates only its envelope version when rewritten.
+
+The built native binary's automated window smoke passes. Its reviewed capture
+shows support count 3/4, speed 3.00 voxels/s, clearance 0.50 by 2.00, position
+`[-56.383, 15.000, -51.500]`, motion step 2, and retained target severance and
+dropped equipment after load. Artifacts:
+`C:/Users/mark_/Code/.tmp/paredros-support-20260913/`; logs under `Code/.tmp` are
+`paredros-support-world-final.log`, `paredros-support-native.log`,
+`paredros-support-build.log`, and `paredros-support-workspace.log`.
+Checks ran alongside the separately owned Mesocosm soil-accounting changes;
+those files are excluded from this slice. Physical keyboard/mouse acceptance
+remains open. Terrain clearance for a newly configured envelope is checked
+atomically on its first motion, not during profile admission.

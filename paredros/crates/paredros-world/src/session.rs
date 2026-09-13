@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
-    GameState, LEGACY_GAME_STATE_VERSION, World,
+    GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, World,
 };
 
 mod body_change;
@@ -222,6 +222,7 @@ impl Session {
         }
         if ![
             GAME_STATE_VERSION,
+            MOTION_GAME_STATE_VERSION,
             COMBAT_GAME_STATE_VERSION,
             LEGACY_GAME_STATE_VERSION,
         ]
@@ -241,7 +242,7 @@ impl Session {
         {
             return Err(SessionError::Game(GameError::LegacyCombatIntent));
         }
-        if save.game.version != GAME_STATE_VERSION
+        if save.game.version < MOTION_GAME_STATE_VERSION
             && save
                 .game
                 .intents
@@ -249,6 +250,20 @@ impl Session {
                 .any(|intent| matches!(intent, GameIntent::AdvanceMotion { .. }))
         {
             return Err(SessionError::Game(GameError::LegacyMotionIntent));
+        }
+        if save.game.version != GAME_STATE_VERSION
+            && save.game.intents.iter().any(|intent| {
+                matches!(
+                    intent,
+                    GameIntent::ConfigureMovementProfile { .. }
+                        | GameIntent::AdvanceMotion {
+                            rules: crate::MotionRules { revision: 2, .. },
+                            ..
+                        }
+                )
+            })
+        {
+            return Err(SessionError::Game(GameError::LegacyMovementProfileIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents

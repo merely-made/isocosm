@@ -18,7 +18,7 @@ impl App {
                 move_x: (toward[0] * 32767) as i16,
                 move_z: (toward[2] * 32767) as i16,
             },
-            rules: paredros_world::MotionRules::default(),
+            rules: support::rules(game, subject),
         }]) {
             Ok(events) => vec![format!(
                 "Motion step {}: {} event(s)",

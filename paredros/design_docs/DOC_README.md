@@ -54,7 +54,11 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   and a reviewed automated window smoke pass; remaining contact limits are in
   the plan. B4 adds revisioned precise combat geometry; 126 world tests,
   5 native tests and a reviewed automated window smoke pass. The same plan records
-  why anatomical stance shapes require explicit support roles first.
+  why anatomical stance shapes require explicit support roles first. J1c adds
+  explicit support/envelope roles, proportional locomotion speed after support
+  loss, native support inspection, and v6 archives retaining older replay;
+  132 world tests, 6 native tests, full workspace compile and reviewed automated
+  window smoke pass. Physical input acceptance remains open.
 - [World conditions and authored laws](2026-09-09_world_conditions_plan.md):
   independent skill/risk surgery, causal composition, proposed stored charge and
   sympathetic coupling, and explicitly scoped rules adapters; planned.
