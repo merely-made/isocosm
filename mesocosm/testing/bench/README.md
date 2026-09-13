@@ -130,3 +130,19 @@ split/string outcomes, restoration and specimen hash preservation.
 first scenario's save. Unsupported versions or invalid counts must refuse
 before host creation. D&D/PF2e rule packs and scene-attached effects remain
 future consumers of the documented distinction.
+
+## Spatial glyph preview
+
+Choose **Spatial glyphs** in the specimen view. Eighteen opaque glyphs orbit
+the posed body's bounds in 3D, with camera-facing faces and shared scene depth.
+**Step orbit** advances fifteen ticks; **Reset orbit** restores zero. Play/pause
+uses a 33 ms presentation tick. **Change glyph** cycles quotes, slashes and
+backticks; **View angle** switches between oblique and across cameras.
+This preview does not mutate the specimen or implement world interactions.
+
+Run `spatial.scenario` with the ordinary bench command above. It selects the
+cat-like starting anatomy, checks orbit changes and exact reset pixels, two
+angles, glyph changes, and unchanged world hash. The independent GPU test
+`section::glyphs::tests` checks hidden rear strokes and visible edges against a
+real voxel cube from two cameras. Solid strokes are the admitted first slice;
+transparent overlap, surface attachment and glyph picking remain future work.

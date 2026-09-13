@@ -18,6 +18,7 @@ mod effects;
 mod generation_controls;
 mod probe;
 mod producer;
+mod spatial;
 mod state;
 mod structure_controls;
 mod view;
@@ -107,6 +108,7 @@ pub fn run_inputs(
         revision: 1,
         selected: None,
         yaw: 0.0,
+        spatial: spatial::Spatial::default(),
         isolated: true,
         camera: host.config.camera,
         content: host.content,
@@ -145,6 +147,17 @@ pub fn run_inputs(
             if ctx.runner.state().effects.open && ctx.runner.state().effects.playing {
                 ctx.runner.update(|s| s.effects.advance());
             }
+            if !ctx.runner.state().effects.open
+                && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().spatial.playing
+            {
+                ctx.runner.update(|s| {
+                    let mut m = s.model.borrow_mut();
+                    if m.spatial.advance() {
+                        m.changed();
+                    }
+                });
+            }
             ctx.runner.state().effects.sync(ctx.leaves);
             let pending = ctx.runner.state().model.borrow().creator.pending;
             if pending {
@@ -170,7 +183,9 @@ pub fn run_inputs(
                     }
                 }
             }
-            state.model.borrow().creator.pending || (state.effects.open && state.effects.playing)
+            state.model.borrow().creator.pending
+                || (state.effects.open && state.effects.playing)
+                || (state.visible && !state.effects.open && state.model.borrow().spatial.playing)
         }),
         after_dispatch: Box::new(|_| {}),
         after_frame: Box::new(move |ctx| {

@@ -17,6 +17,7 @@ pub(super) struct Specimen {
     pub revision: u64,
     pub selected: Option<BodySelection>,
     pub yaw: f32,
+    pub spatial: super::spatial::Spatial,
     pub isolated: bool,
     pub camera: CameraMode,
     pub content: Option<mesocosm_mesh::content::ContentPack>,

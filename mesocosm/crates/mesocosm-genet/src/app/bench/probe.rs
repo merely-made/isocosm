@@ -421,7 +421,10 @@ impl Automatable for Probe<'_, '_> {
         Some(
             model.creator.pending
                 || self.lane.pending.is_some()
-                || (state.visible && !state.effects.open && scene.section.is_none() && scene.error.is_none()),
+                || (state.visible
+                    && !state.effects.open
+                    && scene.section.is_none()
+                    && scene.error.is_none()),
         )
     }
 }

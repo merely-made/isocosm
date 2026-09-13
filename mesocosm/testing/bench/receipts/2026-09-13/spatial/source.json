@@ -1,0 +1,43 @@
+{
+  "parent": "51727f2ebe24274bf13f8df5058d0b90813fd924",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/spatial.rs": "28cbbaf38436caaa19eb83ffd2b1054778f6e3ac",
+    "mesocosm/crates/mesocosm-genet/src/section/glyphs.rs": "50a21b69a7a301a1dfebbae5f8ea958ba9c4ef79",
+    "mesocosm/crates/mesocosm-genet/src/section/glyphs.wgsl": "ce81f057a85b796887df21b4945ce7bc776483dd",
+    "mesocosm/crates/mesocosm-genet/src/section/glyphs/tests.rs": "b9653690e89aaf3cd1e604485ed2ddf59b91a088",
+    "mesocosm/testing/bench/spatial.scenario": "17b4bf660fa7afbb6b97bd3cb15f7d75ef947e98",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "be4d31b408143451a7245463f7ff976c5b860058",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "a7cb6e84360b1daa21606e06ffbb2c8f19659546",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "f88109399f8b57b8ef3f9535e5874fec4c18c828",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "6ba1235452014dc1e9e6b1b38726c63c8df3a4bd",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "08e3fa384d3d90557297e90ff5d31756b3d98180",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "089e680e4d4515529ef7b72fd7b7710a02d0095a",
+    "mesocosm/crates/mesocosm-genet/src/section.rs": "875a34636166a6989092ce8065306a281d5614fd"
+  },
+  "executable_sha256": "1c2aa686d9fd3a35b08f9155a2506883e3ada89b91e21f9296650ae00241c3b8",
+  "gpu_depth_test": {
+    "passed": true,
+    "Side": {
+      "hidden": 392,
+      "exposed": 404,
+      "front_difference": 0
+    },
+    "Oblique": {
+      "hidden": 486,
+      "exposed": 310,
+      "front_difference": 0
+    }
+  },
+  "check": "cargo check --release --frozen --workspace --all-features --all-targets -j3: passed",
+  "native": {
+    "spatial_frames": 207,
+    "bench_frames": 167,
+    "effects_frames": 125
+  },
+  "limitations": [
+    "Opaque glyphs only",
+    "Decorative orbit, no gameplay collision or glyph picking",
+    "No population cost receipt",
+    "Orthographic cameras; no perspective preview"
+  ]
+}

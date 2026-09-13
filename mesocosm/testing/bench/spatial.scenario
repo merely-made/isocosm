@@ -1,0 +1,50 @@
+wait 1200
+assert snap ready == yes
+click role:button Generation controls
+settle 3
+click role:button cat-like
+wait 1200
+click role:button Generation controls
+settle 3
+remember world
+capture body
+click role:button Spatial glyphs
+settle 3
+assert snap spatial-enabled == true
+capture orbit
+click role:button Step orbit
+click role:button Step orbit
+settle 3
+assert snap spatial-tick == 30
+capture moved
+viewport-pixels-change orbit moved
+click role:button Reset orbit
+settle 3
+capture reset
+viewport-pixels-same orbit reset
+click role:button View angle
+settle 3
+capture across
+viewport-pixels-change reset across
+click role:button Change glyph
+settle 3
+capture slashes
+viewport-pixels-change across slashes
+click role:button Play orbit
+settle 120
+click role:button Pause orbit
+assert snap spatial-playing == false
+remember paused
+settle 8
+same paused spatial-tick
+click role:button Play orbit
+click role:button Effects experiment
+assert snap spatial-playing == false
+click role:button Back to specimen
+settle 3
+same world hash
+assert snap error == none
+click role:button Spatial glyphs
+settle 3
+assert snap spatial-enabled == false
+same world hash

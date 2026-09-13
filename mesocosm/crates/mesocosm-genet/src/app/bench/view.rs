@@ -160,6 +160,7 @@ pub(super) fn root(state: &Bench) -> Child {
     let controls = vec![
         button("Effects experiment", |s| {
             s.effects.open = !s.effects.open;
+            s.model.borrow_mut().spatial.playing = false;
             s.effects.playing = false;
         }),
         button("Generation controls", |s| {
@@ -181,6 +182,7 @@ pub(super) fn root(state: &Bench) -> Child {
         button("Frame", |s| s.decorated = !s.decorated),
         button("Hide / show", |s| {
             s.visible = !s.visible;
+            s.model.borrow_mut().spatial.playing = false;
             s.clear();
         }),
         button("Transform", |s| s.transformed = !s.transformed),
@@ -219,6 +221,7 @@ pub(super) fn root(state: &Bench) -> Child {
                                 ),
                                 el("div", controls).attr("class", "toolbar"),
                                 el("div", appearance).attr("class", "toolbar appearance"),
+                                super::spatial::view(state),
                                 el("p", text(notice))
                                     .attr("role", "status")
                                     .attr("id", "notice"),

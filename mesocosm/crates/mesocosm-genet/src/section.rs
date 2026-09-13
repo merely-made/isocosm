@@ -15,6 +15,8 @@
 //! measured slice compared it against are still there behind `--camera` (DC4,
 //! Q9). None of the three moves the hash.
 
+mod glyphs;
+pub use glyphs::{MAX_SPATIAL_GLYPHS, SpatialGlyph};
 mod bodies;
 mod camera;
 mod capsules;
@@ -112,6 +114,7 @@ pub struct Section {
     mode: CameraMode,
     body_mode: BodyMode,
     bodies: bodies::BodyLayer,
+    glyphs: Option<glyphs::GlyphLayer>,
     terrarium: Option<terrarium::TerrariumView>,
     presented: Option<inspection::PresentedFrame>,
     /// What the tracer writes: display-encoded values in a linear-tagged
@@ -167,6 +170,7 @@ impl Section {
             mode: framing.mode,
             body_mode: BodyMode::default(),
             bodies,
+            glyphs: None,
             terrarium: None,
             presented: None,
             traced,
@@ -359,6 +363,15 @@ impl Section {
                 self.bodies.fallback_all(frame.world);
             }
             if self.bodies.isolated && self.bodies.stats.fallback_bodies == 0 {
+                if let Some(glyphs) = &self.glyphs {
+                    glyphs.draw(
+                        &self.queue,
+                        encoder,
+                        &self.traced_view,
+                        &self.bodies.depth_view,
+                        camera_view,
+                    );
+                }
                 self.copy_to_display(encoder);
                 self.complete_query_frame(camera_view, false);
                 return Ok(());
@@ -397,6 +410,17 @@ impl Section {
                 .map_err(|error| error.to_string())?;
         }
         self.terrain_upload_pending = false;
+        if self.body_mode == BodyMode::Voxels {
+            if let Some(glyphs) = &self.glyphs {
+                glyphs.draw(
+                    &self.queue,
+                    encoder,
+                    &self.traced_view,
+                    &self.bodies.depth_view,
+                    self.view(frame.centre),
+                );
+            }
+        }
         self.copy_to_display(encoder);
         if self.body_mode == BodyMode::Voxels {
             self.complete_query_frame(self.view(frame.centre), true);

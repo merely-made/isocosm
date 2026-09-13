@@ -881,7 +881,7 @@ identities live at `testing/bench/receipts/2026-09-13/effects/`; images remain a
 
 **Remaining scope:** the receiver is a material sample on a demonstration plane.
 Contact age is scripted, not a collision result. Surface and item identities,
-organ emission sites, spatial depth, CSS effect styling, sound, mixed fixed and
+organ emission sites, scene interaction, CSS effect styling, sound, mixed fixed and
 generated rule packs, and effect-to-effect composition remain subsequent work.
 The first comparison proves controllable expression and reproducible responses,
 not gameplay adjudication, camouflage or a populated-scene performance budget.
@@ -945,6 +945,40 @@ preview framing and visible-part queries to the existing Section; its fresh
 headless readbacks pass. Bench B adds the native viewport, style bridge and
 part examiner, with fresh presented-document captures and failing controls.
 The visible world trial and integrated population/cost receipt remain open.
+
+
+### Spatial glyph preview (2026-09-13)
+
+The bench now places opaque punctuation strokes in world space around the
+posed specimen. Section draws one bounded glyph batch against its existing
+body and terrain depth attachment, including isolated previews. Positions are
+3D; glyph faces follow the orthographic camera. This is the first 2.5D view of
+the spatial effect vocabulary. It does not yet lift the planar experiment's
+receiver rules into world collisions.
+
+**Spatial glyphs** enables an eighteen-mark orbit. Step, reset, play/pause,
+glyph selection and oblique/across camera controls are presentation settings.
+Hiding the specimen or opening the planar experiment pauses the orbit.
+The body world and gameplay clock remain unchanged. Comparison cards retain
+ordinary bodies and follow camera changes consistently.
+
+The renderer admits at most 128 finite, opaque glyphs, reuses its GPU buffers,
+and initializes only when first used. It shares the exact section matrix,
+slab and bounds; no DOM element or depth key is needed per mark. No population
+or frame-cost claim is made by this preview. Glyphs are decorative and do not
+participate in the body's picking hook.
+
+Done conditions: a real voxel-body GPU fixture verifies front and rear strokes
+from Side and Oblique cameras over all covered pixels, including exposed
+edges; native controls change orbit pixels; reset reproduces exact pixels;
+camera changes preserve world identity; existing bench and planar scenarios
+still pass. Native scenario: `testing/bench/spatial.scenario`. Receipts:
+`testing/bench/receipts/2026-09-13/spatial/`.
+
+Next experiments are surface-bound inscriptions, tethers and paths, and
+organ emission sites driven by accepted world events. Transparent haze needs
+an explicit overlap policy. Ruleset guarantees and generated receiver laws
+remain core-owned; this orbit is a rendering preview, not their adjudicator.
 
 ## CSS features and standards to earmark
 

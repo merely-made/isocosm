@@ -141,7 +141,12 @@ impl BenchScene {
         let world = model
             .card_world(self.card)
             .ok_or("Alternative is not admitted.")?;
-        if self.section.is_none() || self.epoch != epoch {
+        if self
+            .section
+            .as_ref()
+            .is_none_or(|s| s.mode() != model.camera)
+            || self.epoch != epoch
+        {
             self.section = Some(Section::new(
                 device.clone(),
                 queue.clone(),
@@ -200,6 +205,31 @@ impl BenchScene {
                 }
             }
         }
+        let marks = if self.card.is_none() && model.spatial.enabled {
+            match world.controlled() {
+                Some(organism) => match section.presentation_bounds(organism, &model.volumes)? {
+                    Some(bounds) => model.spatial.marks(bounds),
+                    None => Vec::new(),
+                },
+                None => Vec::new(),
+            }
+        } else {
+            Vec::new()
+        };
+        if isolated && !marks.is_empty() {
+            let mut min = centre;
+            let mut max = centre;
+            for mark in &marks {
+                for i in 0..3 {
+                    min[i] = min[i].min(mark.centre[i] - mark.size);
+                    max[i] = max[i].max(mark.centre[i] + mark.size);
+                }
+            }
+            let (_, glyph_half, glyph_depth) = fit((min, max), size, model.camera);
+            half = half.max(glyph_half);
+            depth = depth.max(glyph_depth);
+        }
+        section.set_glyphs(marks)?;
         section.set_half_height(half);
         section.set_body_preview(isolated, depth);
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
