@@ -1091,6 +1091,43 @@ ecological populations, transparency, uptake/contact effects and full memory
 remain next gates. Exact sources, executable identity, repeat command and
 measurement limits are in the [source receipt](../testing/bench/receipts/2026-09-13/integrated-world/source.json).
 
+**Uptake and terrain accounting receipt (2026-09-13).** The next
+[three-world matrix](../testing/bench/receipts/2026-09-13/uptake-world/matrix.json)
+adds actual positive soil uptake from the runtime's accepted flow batch.
+Internal substance-to-reserve bookkeeping is excluded. Biographical activity
+JSON stays unchanged; `Trial::uptakes()` carries exact flow provenance with
+stable tick/flow-ordinal identity and explicitly sampled recipient positions.
+The soil ledger does not identify the drawn-from column or responsible root,
+so this is an organism-level indicator, not a contact trace.
+
+Continuous uptake refreshes one rising backtick pulse per recipient. Eight-tick
+recent records remain bounded to 128; whole-trial transfer counts and milligrams
+are separate. The combined movement/feeding/uptake display retains its 128-mark
+cap and reports drops. Uptake can be hidden separately; resetting preserves the
+presentation settings. At tick eight axial/roots/cat worlds record 128/136/128
+uptake transfers totaling 1452/1467/1284 mg, shown as 16/17/16 uptake pulses.
+Combined marks are 43/56/51, with zero budget drops.
+
+All three 449-frame scenarios pass positive uptake-only pixel change and exact
+hide/show and hidden-step replay. Their captured viewports now fit entirely in
+the window: the trial height allowance is corrected, with existing 0.75 zoom
+and size-2.8 marks selected for these receipts. The default size-1.4 rooted
+fixture changed only 25 pixels, below the existing 32-pixel acceptance threshold;
+the larger configurable setting is the qualified visibility receipt.
+
+Section now exposes serializable terrain diagnostics: actual pointer/atlas and
+uniform write calls, bytes, full-map and unchanged-revision flags, processed
+slot declarations, and existing trace/resource counters. Skipped or failed
+terrain encodes expose no stale diagnostic. Native captured frames retain the
+map with zero upload bytes while still encoding a trace pass. A separate GPU
+test proves cold full upload, unchanged retention, carved-slot upload of exactly
+516 bytes per slot in its fixture, and no duplicate upload at the same revision.
+Seven runtime tests, this GPU test, 39 Section tests and the 190-frame lifecycle
+scenario pass. [Source identity and repeat commands](../testing/bench/receipts/2026-09-13/uptake-world/source.json)
+record the limits. General contact reactions, native carving intents, scaled
+ecological workloads and GPU timing remain open; uptake does not supply missing
+impact normals or material-contact facts.
+
 The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
 bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;

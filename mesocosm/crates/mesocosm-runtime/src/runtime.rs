@@ -26,7 +26,7 @@ use crate::succession::{Checkpoint, Occasion};
 mod expression_practice;
 mod terrarium;
 mod trial;
-pub use trial::{MAX_TRIAL_STEPS, Trial, TrialActivity};
+pub use trial::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake, UptakePosition};
 
 /// Default ceiling on steps authorised by one `advance` call. A stalled host
 /// resuming after a long pause catches up over several frames rather than in
@@ -54,6 +54,9 @@ pub struct Runtime {
     /// put a presentation reading inside the replay hash. `Runtime::replayed`
     /// rebuilds it, which is that claim made executable.
     readings: FlowWindows,
+    /// Optional one-tick presentation reading used only by disposable trials.
+    /// The ordinary driver does not retain an additional flow copy.
+    trial_flows: Option<Vec<mesocosm_core::flow::RecordedFlow>>,
     /// The one body whose own accounts are being reduced beside the ecology's,
     /// and what they read. (DT2)
     ///
@@ -195,6 +198,7 @@ impl Runtime {
             trace: Vec::new(),
             history: History::new(),
             readings: FlowWindows::new(),
+            trial_flows: None,
             watched: None,
             accounts: Accounts::default(),
             checkpoint: None,
@@ -344,6 +348,9 @@ impl Runtime {
     ) {
         let events = self.world.drain_events();
         let flows = self.world.drain_flows();
+        if let Some(captured) = &mut self.trial_flows {
+            captured.clone_from(&flows);
+        }
         self.readings.absorb(&events, &flows);
         // The watched body's own half of the same tick, through core's split.
         // (DT2)

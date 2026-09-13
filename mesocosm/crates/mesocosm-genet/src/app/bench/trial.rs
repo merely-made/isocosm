@@ -9,7 +9,7 @@ use super::{
 use crate::section::{GlyphOrientation, SpatialGlyph};
 use cambium::{clickable, el, focusable, text};
 use mesocosm_core::{World, effect_experiment::Glyph, history::Event};
-use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity};
+use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
 use std::{
     collections::BTreeSet,
     time::{Duration, Instant},
@@ -25,7 +25,12 @@ pub(super) struct WorldTrial {
     pub marker_height: f32,
     pub marker_size: f32,
     pub show_marks: bool,
+    show_uptake: bool,
     recent: Vec<TrialActivity>,
+    uptake: Vec<TrialUptake>,
+    uptake_count: u64,
+    uptake_mg: u64,
+    marks_dropped: usize,
     last: Instant,
 }
 impl WorldTrial {
@@ -40,7 +45,12 @@ impl WorldTrial {
             marker_height: 4.0,
             marker_size: 1.4,
             show_marks: true,
+            show_uptake: true,
             recent: Vec::new(),
+            uptake: Vec::new(),
+            uptake_count: 0,
+            uptake_mg: 0,
+            marks_dropped: 0,
             last: Instant::now(),
         })
     }
@@ -57,7 +67,16 @@ impl WorldTrial {
             }
             self.recent.push(activity.clone());
         }
+        for uptake in self.driver.uptakes() {
+            self.uptake_count += 1;
+            self.uptake_mg += uptake.record.record.amount_mg;
+            self.uptake.push(uptake.clone());
+        }
         let tick = self.driver.world().tick;
+        self.uptake.retain(|a| tick.saturating_sub(a.tick) < 8);
+        if self.uptake.len() > 128 {
+            self.uptake.drain(..self.uptake.len() - 128);
+        }
         self.recent.retain(|a| tick.saturating_sub(a.tick) < 8);
         if self.recent.len() > 128 {
             self.recent.drain(..self.recent.len() - 128);
@@ -70,12 +89,13 @@ impl WorldTrial {
         true
     }
     fn refresh_marks(&mut self) {
+        self.marks_dropped = 0;
         if !self.show_marks {
             self.marks.clear();
             return;
         }
         let tick = self.driver.world().tick;
-        self.marks = self
+        let mut marks: Vec<_> = self
             .recent
             .iter()
             .map(|a| {
@@ -88,19 +108,61 @@ impl WorldTrial {
                 } else {
                     Glyph::Quotes
                 };
-                SpatialGlyph {
-                    centre,
-                    size: self.marker_size * (1. - age * 0.5),
-                    angle: age * 0.6,
-                    glyph,
-                    orientation: GlyphOrientation::CameraFacing,
-                    color: if glyph == Glyph::Slashes {
-                        [0.45, 0.95, 0.8, 1.]
-                    } else {
-                        [1., 0.75, 0.3, 1.]
+                (
+                    (a.tick, 0u8, a.sequence),
+                    SpatialGlyph {
+                        centre,
+                        size: self.marker_size * (1. - age * 0.5),
+                        angle: age * 0.6,
+                        glyph,
+                        orientation: GlyphOrientation::CameraFacing,
+                        color: if glyph == Glyph::Slashes {
+                            [0.45, 0.95, 0.8, 1.]
+                        } else {
+                            [1., 0.75, 0.3, 1.]
+                        },
                     },
-                }
+                )
             })
+            .collect();
+        // Continuous uptake refreshes one pulse per recipient, rather than
+        // emitting a new particle every tick. Retained flow facts remain in uptake.
+        let mut recipients = BTreeSet::new();
+        marks.extend(
+            self.uptake
+                .iter()
+                .rev()
+                .filter(|a| recipients.insert(a.organism))
+                .filter(|_| self.show_uptake)
+                .filter_map(|a| {
+                    let mut centre = a.at?.map(|v| v as f32);
+                    let age = tick.saturating_sub(a.tick) as f32 / 8.;
+                    // Recipient-level indicator: the flow has no soil cell or root tip.
+                    centre[1] += self.marker_height + age * self.marker_size * 2.;
+                    Some((
+                        (a.tick, 1u8, a.sequence),
+                        SpatialGlyph {
+                            centre,
+                            size: self.marker_size * (1. - age * 0.5),
+                            angle: 0.,
+                            glyph: Glyph::Backticks,
+                            orientation: GlyphOrientation::WorldPlane {
+                                right: [1., 0., 0.],
+                                up: [0., 1., 0.],
+                            },
+                            color: [0.6, 0.85, 0.3, 1.],
+                        },
+                    ))
+                }),
+        );
+        marks.sort_by_key(|(key, _)| *key);
+        self.marks_dropped = marks
+            .len()
+            .saturating_sub(crate::section::MAX_SPATIAL_GLYPHS);
+        self.marks = marks
+            .into_iter()
+            .skip(self.marks_dropped)
+            .map(|(_, mark)| mark)
             .collect();
     }
     fn advance(&mut self) -> bool {
@@ -126,6 +188,10 @@ impl WorldTrial {
         self.moved = 0;
         self.fed = 0;
         self.recent.clear();
+        self.uptake.clear();
+        self.uptake_count = 0;
+        self.uptake_mg = 0;
+        self.marks_dropped = 0;
         self.last = Instant::now();
     }
     pub fn probe_fields(&self) -> Vec<(&'static str, String)> {
@@ -142,10 +208,26 @@ impl WorldTrial {
             ("trial-event-count", (self.moved + self.fed).to_string()),
             ("trial-total-moved", self.moved.to_string()),
             ("trial-total-fed", self.fed.to_string()),
+            ("trial-uptake-count", self.uptake_count.to_string()),
+            ("trial-uptake-mg", self.uptake_mg.to_string()),
+            (
+                "trial-uptake-pulses",
+                self.marks
+                    .iter()
+                    .filter(|m| m.glyph == Glyph::Backticks)
+                    .count()
+                    .to_string(),
+            ),
+            (
+                "trial-uptake",
+                serde_json::to_string(&self.uptake).expect("uptake serializes"),
+            ),
+            ("trial-mark-budget-dropped", self.marks_dropped.to_string()),
             ("trial-visible-marks", self.marks.len().to_string()),
             ("trial-marker-height", self.marker_height.to_string()),
             ("trial-marker-size", self.marker_size.to_string()),
             ("trial-show-marks", self.show_marks.to_string()),
+            ("trial-show-uptake", self.show_uptake.to_string()),
             (
                 "trial-checkpoint",
                 self.driver.checkpoint().is_some().to_string(),
@@ -245,6 +327,14 @@ impl Bench {
             m.trial_replaced();
         }
     }
+    fn toggle_uptake_marks(&mut self) {
+        let mut m = self.model.borrow_mut();
+        if let Some(t) = &mut m.trial {
+            t.show_uptake = !t.show_uptake;
+            t.refresh_marks();
+            m.changed();
+        }
+    }
     fn toggle_trial_marks(&mut self) {
         let mut m = self.model.borrow_mut();
         if let Some(t) = &mut m.trial {
@@ -282,8 +372,8 @@ pub(super) fn view(state: &Bench) -> Child {
         "Paused"
     };
     Box::new(el("section",(
-        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
-        el("p",text(format!("{status} / {} of {MAX_TRIAL_STEPS} ticks / {} movements, {} meals / {} activity marks / height {} / size {}",trial.driver.steps(),trial.moved,trial.fed,trial.marks.len(),trial.marker_height,trial.marker_size))),
-        el("p",text("Recorded movement and feeding, with adjustable raised markers. The trial leaves saved generation unchanged.")),
+        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button(if trial.show_uptake { "Hide uptake" } else { "Show uptake" },Bench::toggle_uptake_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
+        el("p",text(format!("{status} / {} of {MAX_TRIAL_STEPS} ticks / {} movements, {} meals, {} uptake transfers / {} activity marks / height {} / size {}",trial.driver.steps(),trial.moved,trial.fed,trial.uptake_count,trial.marks.len(),trial.marker_height,trial.marker_size))),
+        el("p",text("Recorded movement, feeding and soil uptake, with adjustable organism-level markers. The trial leaves saved generation unchanged.")),
     )).attr("class","world-trial"))
 }

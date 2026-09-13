@@ -8,11 +8,43 @@
 
 use super::Runtime;
 use crate::Checkpoint;
+use mesocosm_core::flow::{Account, Process, RecordedFlow};
 use mesocosm_core::{History, Intent, OrganismId, World, history::Event, state_hash};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
 pub const MAX_TRIAL_STEPS: u32 = 128;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UptakePosition {
+    AfterTick,
+    BeforeTick,
+    Unavailable,
+}
+impl UptakePosition {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::AfterTick => "recipient position after tick",
+            Self::BeforeTick => "recipient position before tick",
+            Self::Unavailable => "recipient position unavailable",
+        }
+    }
+}
+
+/// Actual positive soil uptake, kept separate from biographical events.
+/// Source soil-cell and responsible organ coordinates are not in this record.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct TrialUptake {
+    pub tick: u64,
+    /// Ordinal in the complete accepted flow batch for this tick. Identity is
+    /// (tick, sequence), not the unrelated history sequence in TrialActivity.
+    pub sequence: u64,
+    pub record: RecordedFlow,
+    pub organism: OrganismId,
+    pub at: Option<[i32; 3]>,
+    pub position_basis: UptakePosition,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct TrialActivity {
@@ -36,6 +68,7 @@ pub struct Trial {
     runtime: Runtime,
     steps: u32,
     activities: Vec<TrialActivity>,
+    uptakes: Vec<TrialUptake>,
 }
 
 impl Trial {
@@ -59,6 +92,7 @@ impl Trial {
             runtime,
             steps: 0,
             activities: Vec::new(),
+            uptakes: Vec::new(),
         })
     }
 
@@ -88,6 +122,11 @@ impl Trial {
     pub fn activities(&self) -> &[TrialActivity] {
         &self.activities
     }
+    /// Latest successful step's accepted uptake reading. Repeated reads do
+    /// not consume it; process only after a successful step, by tick/ordinal.
+    pub fn uptakes(&self) -> &[TrialUptake] {
+        &self.uptakes
+    }
     pub fn drain_ground_dirty(&mut self) -> Vec<[i16; 3]> {
         self.runtime.drain_ground_dirty()
     }
@@ -96,6 +135,7 @@ impl Trial {
         self.runtime = driver(&self.baseline);
         self.steps = 0;
         self.activities.clear();
+        self.uptakes.clear();
     }
 
     /// One ordinary idle step. Checkpoints retain their existing runtime
@@ -116,6 +156,17 @@ impl Trial {
         }
         self.steps += 1;
         self.activities.clear();
+        self.uptakes = self
+            .runtime
+            .trial_flows
+            .as_deref()
+            .unwrap_or_default()
+            .iter()
+            .enumerate()
+            .filter_map(|(index, record)| {
+                uptake(*record, index as u64, &before, self.runtime.world())
+            })
+            .collect();
         for (offset, recorded) in self.runtime.history().log().entries()[start..]
             .iter()
             .enumerate()
@@ -165,7 +216,40 @@ impl Trial {
 fn driver(baseline: &World) -> Runtime {
     // Runtime's legacy seed/count fields are deliberately unexposed here.
     // The owned baseline is this trial's exact and only reconstruction source.
-    Runtime::from_world(baseline.clone(), 0, 0, 1)
+    let mut runtime = Runtime::from_world(baseline.clone(), 0, 0, 1);
+    runtime.trial_flows = Some(Vec::new());
+    runtime
+}
+
+fn uptake(
+    record: RecordedFlow,
+    sequence: u64,
+    before: &BTreeMap<OrganismId, [i32; 3]>,
+    world: &World,
+) -> Option<TrialUptake> {
+    let flow = record.record;
+    // Internal Substance→Reserve synthesis bookkeeping also uses Uptake.
+    // Only the actual soil transfer is an intake, so never count both legs.
+    if flow.process != Process::Uptake || flow.source != Account::Soil || flow.amount_mg == 0 {
+        return None;
+    }
+    let organism = flow.to?.organism;
+    let (at, position_basis) = if let Some(body) = world.organisms.iter().find(|o| o.id == organism)
+    {
+        (Some(body.position), UptakePosition::AfterTick)
+    } else if let Some(at) = before.get(&organism) {
+        (Some(*at), UptakePosition::BeforeTick)
+    } else {
+        (None, UptakePosition::Unavailable)
+    };
+    Some(TrialUptake {
+        tick: record.tick,
+        sequence,
+        record,
+        organism,
+        at,
+        position_basis,
+    })
 }
 
 #[cfg(test)]

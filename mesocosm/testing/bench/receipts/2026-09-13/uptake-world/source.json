@@ -1,0 +1,45 @@
+{
+  "parent": "e3128140fb65dd7bac706523c27d261f9e660e07",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "671ef1f3e0bdd3eacadb0f0b48a88d111a1843f0",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial.rs": "2cd744c726c7f88ce844ca9b91d4f223ad3db329",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "045dd6f8b3f220de9fc56175dd542e7274263083",
+    "mesocosm/crates/mesocosm-genet/src/section.rs": "db817b63d72c8ef71500e3725b59c15b7e08dee2",
+    "mesocosm/crates/mesocosm-lens/src/tracer.rs": "84d0fe5971273b7d43cd9d2c06a2b96e0103e7fe",
+    "mesocosm/crates/mesocosm-lens/src/tracer/residency.rs": "5ae0a38f7d8b549e969e3c6db60fb8724005f01a",
+    "mesocosm/crates/mesocosm-lens/src/tracer/types.rs": "a2147aa9f8c9561cf0b83827c236753d90c7f228",
+    "mesocosm/crates/mesocosm-runtime/src/lib.rs": "de1407340847c19ca961051e38b932e3107432fb",
+    "mesocosm/crates/mesocosm-runtime/src/runtime.rs": "4ac0d7aa8604b4137595ae617b4af54031600652",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial.rs": "1bfc4d33df86d00d7c792bdcd072f9cd1c67df95",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial/tests.rs": "84ea01108eb285255b5cc292fe046825183f197d",
+    "mesocosm/crates/mesocosm-lens/src/tracer/counters.rs": "9d9d420d0b4ea7ca4c353d4cdaecd400a1cabf5c",
+    "mesocosm/testing/bench/uptake-world.scenario": "00651be29d7180e56000cabdca11d97c735fe4f6"
+  },
+  "executable_sha256": "61b92673371d5ea188b7335e6ad2f2e25ce4133497a7c2a2e578defe42bd6466",
+  "raw": "C:\\Users\\mark_\\Code\\testing\\uptake-world-2026-09-13",
+  "source_worlds": "../integrated-world/{axial,roots,cat}-source.json",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "tests": {
+    "runtime_trial": 7,
+    "terrain_gpu_counter": 1,
+    "section": 39,
+    "all_pass": true
+  },
+  "native": {
+    "cases": 3,
+    "frames_each": 449,
+    "captures_each": 9,
+    "lifecycle_frames": 190,
+    "lifecycle_captures": 3
+  },
+  "repeat": "From mesocosm: mesocosm-genet.exe --bench --comparison testing/bench/receipts/2026-09-13/integrated-world/NAME-source.json --frames 1800 --scenario testing/bench/uptake-world.scenario --receipt OUTPUT.json --capture OUTPUT.png",
+  "limits": [
+    "Only positive Soil-source uptake flows; internal transfers excluded. Recipient position is sampled before/after tick, not root/soil contact.",
+    "Whole-trial uptake totals; recent raw records retain at most 128 transfers and 8 ticks. One pulse per most recent recipient, combined mark cap128.",
+    "Native oblique camera, zoom0.75 and configured mark size2.8. Fixed XY-plane uptake glyphs can be edge-on in another camera.",
+    "Full viewport bounds verified against every final capture. Older 1.4-size roots trial changed25 pixels below32-pixel acceptance threshold; retained roots-small-marks.json.",
+    "Terrain stats describe last Section encode. Native snapshots are warm zero-map-upload frames, cold/carve upload proofs are the dedicated GPU test, not native world carving.",
+    "CPU profile includes comparison surfaces; no GPU-duration or incremental effect-cost claim. No build from this task during final native matrix; external load unrecorded.",
+    "Contact/material impacts, native carving intent, larger ecology, three-way depth oracle, transparency and full memory remain open."
+  ]
+}

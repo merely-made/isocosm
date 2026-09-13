@@ -41,6 +41,7 @@ impl BrickTracer {
         let resident = self.map.as_mut().expect("map created");
         let projection_changed = resident.projection_revision != input.map.projection_revision();
         if resident.revision == input.revision && !projection_changed && !recreate {
+            diagnostics.map_revision_unchanged = true;
             return;
         }
         diagnostics.projection_replaced = projection_changed && !recreate;
@@ -97,6 +98,7 @@ impl BrickTracer {
         // over retained textures: the whole (kilobyte-scale) pointer volume
         // moves, but only the declared slots' atlas bytes do.
         let full = recreate || matches!(input.change, BrickChange::Full);
+        diagnostics.full_map_upload = full;
         if full {
             write_texture_3d(
                 &self.queue,
@@ -107,6 +109,7 @@ impl BrickTracer {
                 bytemuck::cast_slice(input.map.pointers()),
             );
             diagnostics.brick_upload_bytes += size_of_val(input.map.pointers()) as u64;
+            diagnostics.pointer_write_calls += 1;
             if atlas_from_cpu {
                 write_texture_3d(
                     &self.queue,
@@ -117,8 +120,10 @@ impl BrickTracer {
                     input.map.atlas(),
                 );
                 diagnostics.brick_upload_bytes += input.map.atlas().len() as u64;
+                diagnostics.atlas_write_calls += 1;
             }
         } else if let BrickChange::Slots(slots) = input.change {
+            diagnostics.changed_slots_declared = slots.len();
             if projection_changed {
                 write_texture_3d(
                     &self.queue,
@@ -129,6 +134,7 @@ impl BrickTracer {
                     bytemuck::cast_slice(input.map.pointers()),
                 );
                 diagnostics.brick_upload_bytes += size_of_val(input.map.pointers()) as u64;
+                diagnostics.pointer_write_calls += 1;
             } else {
                 for slot in slots {
                     let Some(pointer_coord) = input.map.pointer_coord(*slot) else {
@@ -144,11 +150,14 @@ impl BrickTracer {
                         bytemuck::bytes_of(&pointer),
                     );
                     diagnostics.brick_upload_bytes += size_of::<u32>() as u64;
+                    diagnostics.pointer_write_calls += 1;
                 }
             }
             if atlas_from_cpu {
-                diagnostics.brick_upload_bytes +=
+                let (bytes, calls) =
                     write_atlas_slot_boxes(&self.queue, &resident.atlas, input.map, slots);
+                diagnostics.brick_upload_bytes += bytes;
+                diagnostics.atlas_write_calls += calls;
             }
         }
         resident.revision = input.revision;
@@ -322,7 +331,7 @@ fn write_atlas_slot_boxes(
     atlas: &wgpu::Texture,
     map: &BrickMap,
     slots: &[u32],
-) -> u64 {
+) -> (u64, u32) {
     let [sx, _, sz] = map.slots();
     let [width, height, _] = map.atlas_extent();
     let data = map.atlas();
@@ -331,6 +340,7 @@ fn write_atlas_slot_boxes(
     sorted.dedup();
 
     let mut uploaded = 0u64;
+    let mut calls = 0u32;
     let mut write_box = |origin_slots: [u32; 3], extent_slots: [u32; 3]| {
         let origin = origin_slots.map(|axis| axis * 8);
         let extent = extent_slots.map(|axis| axis * 8);
@@ -359,6 +369,7 @@ fn write_atlas_slot_boxes(
             },
         );
         uploaded += u64::from(extent[0]) * u64::from(extent[1]) * u64::from(extent[2]);
+        calls += 1;
     };
 
     let mut runs = sorted.iter().peekable();
@@ -388,7 +399,7 @@ fn write_atlas_slot_boxes(
             }
         }
     }
-    uploaded
+    (uploaded, calls)
 }
 
 fn write_texture_3d(

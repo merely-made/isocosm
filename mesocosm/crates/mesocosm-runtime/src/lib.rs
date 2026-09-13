@@ -41,6 +41,6 @@ pub use clock::{Advance, Clock};
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS};
 pub use review::{Authored, Proposed, Review, Row, Source};
 pub use runtime::{DEFAULT_MAX_STEPS_PER_ADVANCE, Receipt, Replayed, Runtime};
-pub use runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity};
+pub use runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake, UptakePosition};
 pub use succession::{Birth, Boundary, Checkpoint, Loss, Occasion};
 pub use tactile::{TactileCapsule, TactileError, TactileHit, TactilePick, TactileWorld};

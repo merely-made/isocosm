@@ -15,6 +15,8 @@ use std::time::Instant;
 #[cfg(target_arch = "wasm32")]
 use web_time::Instant;
 
+#[cfg(test)]
+mod counters;
 mod lease;
 mod params;
 mod residency;
@@ -319,6 +321,7 @@ impl BrickTracer {
             self.queue
                 .write_buffer(&self.params, 0, bytemuck::bytes_of(&params));
             diagnostics.uniform_upload_bytes += size_of::<TraceParams>() as u64;
+            diagnostics.uniform_write_calls += 1;
             self.last_params = Some(params);
         }
         self.write_roster(input, &mut diagnostics);
@@ -340,6 +343,7 @@ impl BrickTracer {
         self.queue
             .write_buffer(&self.roster, 0, bytemuck::bytes_of(&count));
         diagnostics.uniform_upload_bytes += ROSTER_HEADER_BYTES;
+        diagnostics.uniform_write_calls += 1;
         if !roster.is_empty() {
             self.queue.write_buffer(
                 &self.roster,
@@ -347,6 +351,7 @@ impl BrickTracer {
                 bytemuck::cast_slice(&roster),
             );
             diagnostics.uniform_upload_bytes += size_of_val(roster.as_slice()) as u64;
+            diagnostics.uniform_write_calls += 1;
         }
         self.last_roster = roster;
     }

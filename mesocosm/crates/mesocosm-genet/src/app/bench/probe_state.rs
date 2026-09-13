@@ -377,7 +377,16 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 "unavailable"
             },
         )
-        .with_field("section-terrain-counters", "unavailable")
+        .with_field(
+            "section-terrain-counters",
+            scene
+                .section
+                .as_ref()
+                .filter(|_| ordinary)
+                .and_then(|section| section.terrain_diagnostics())
+                .map(|stats| serde_json::to_string(&stats).expect("terrain diagnostics serialize"))
+                .unwrap_or_else(|| "unavailable".into()),
+        )
         .with_field("world-organisms", model.world().organisms.len().to_string())
         .with_field(
             "world-ground-revision",

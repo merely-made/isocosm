@@ -1,0 +1,245 @@
+wait 1200
+assert snap ready == yes
+remember unzoomed
+zoom 0.75
+settle 3
+same unzoomed hash
+same unzoomed source-hash
+click role:button World trial
+settle 3
+assert snap trial-active == true
+click role:button Mark size
+settle 3
+assert snap trial-marker-size == 2.8
+remember baseline
+assert snap trial-uptake-count == 0
+capture baseline
+cost-begin world_steps
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+cost-end
+settle 3
+assert snap trial-steps == 8
+assert snap section-active == yes
+assert snap section-fallback-bodies == 0
+assert snap section-omitted-bodies == 0
+assert snap section-missing-volumes == 0
+assert snap section-projection-failures == 0
+more baseline trial-uptake-count
+more baseline trial-uptake-pulses
+more baseline trial-uptake-mg
+assert snap trial-mark-budget-dropped == 0
+remember activity
+capture activity
+click role:button Hide uptake
+settle 3
+same activity trial-hash
+same activity trial-uptake
+same activity trial-uptake-mg
+capture uptake-hidden
+viewport-pixels-change activity uptake-hidden
+assert snap trial-uptake-pulses == 0
+click role:button Show uptake
+settle 3
+capture uptake-restored
+viewport-pixels-same activity uptake-restored
+same activity trial-visible-marks
+same activity trial-uptake-pulses
+cost-begin marks_shown
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+cost-end
+click role:button Natural
+settle 3
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+cost-begin paused
+settle 40
+cost-end
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+cost-begin activity_visibility
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+cost-end
+settle 3
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+capture restored
+viewport-pixels-same activity restored
+click role:button Hide activity
+settle 3
+assert snap trial-show-marks == false
+assert snap trial-visible-marks == 0
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+capture hidden
+viewport-pixels-change activity hidden
+cost-begin marks_hidden
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+cost-end
+click role:button Natural
+settle 3
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+click role:button Reset world
+settle 3
+assert snap trial-show-marks == false
+same baseline trial-hash
+cost-begin hidden_world_steps
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+cost-end
+settle 3
+same activity trial-hash
+same activity trial-activity
+same activity trial-uptake
+same activity trial-uptake-count
+same activity trial-uptake-mg
+same activity trial-total-moved
+same activity trial-total-fed
+assert snap trial-visible-marks == 0
+click role:button Show activity
+settle 3
+capture replayed
+viewport-pixels-same activity replayed
+same activity trial-visible-marks
+same activity trial-uptake-pulses
+assert snap error == none
+remember play_begin
+cost-begin playback
+click role:button Play world
+settle 120
+click role:button Pause world
+cost-end
+settle 3
+more play_begin trial-steps
+capture playback
+assert snap trial-playing == false
+assert snap error == none

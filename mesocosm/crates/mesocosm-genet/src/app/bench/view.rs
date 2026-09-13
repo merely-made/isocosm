@@ -325,6 +325,6 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .world-trial { margin:0 0 12px; padding:8px; background:#faf8f2; border:1px solid #a6b3a5; }
 .world-trial p { margin:4px 0; font-size:12px; }
 .world-trial .toolbar { margin:0; }
-.trial .viewport { height:calc(100vh - 480px); min-height:180px; }
+.trial .viewport { height:calc(100vh - 580px); min-height:180px; }
 .generating .viewport { height:180px; min-height:180px; }
 "#;

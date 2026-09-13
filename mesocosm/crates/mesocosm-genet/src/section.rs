@@ -35,8 +35,8 @@ pub use terrarium::{
 pub use view::camera_basis;
 mod inspection;
 
-pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
 pub use bodies::anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
+pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
 pub use inspection::{BodyPick, BodyPickError, BodySelection};
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, SlabWindow, TERRARIUM_DEGREES};
@@ -103,6 +103,7 @@ pub struct Section {
     /// A CPU map change that has not reached a successful terrain encode.
     /// Isolated previews and failed frames must not consume its upload.
     terrain_upload_pending: bool,
+    terrain_diagnostics: Option<mesocosm_lens::BrickDiagnostics>,
     grade: Grade,
     terrain_appearance: Option<mesocosm_lens::TerrainAppearance>,
     width: u32,
@@ -163,6 +164,7 @@ impl Section {
             tracer,
             map,
             terrain_upload_pending: true,
+            terrain_diagnostics: None,
             grade: Grade::retro(PALETTE),
             terrain_appearance: None,
             width,
@@ -245,6 +247,13 @@ impl Section {
         self.bodies.stats.clone()
     }
 
+    /// Most recent Section encode's terrain work. None means terrain was
+    /// skipped or the encode failed, never a retained prior terrain receipt.
+    /// Encoding counters do not assert queue completion or visible pixels.
+    pub fn terrain_diagnostics(&self) -> Option<mesocosm_lens::BrickDiagnostics> {
+        self.terrain_diagnostics
+    }
+
     /// How much world the section frames, in voxels of half-height.
     pub fn half_height(&self) -> f32 {
         self.half_height
@@ -297,6 +306,7 @@ impl Section {
         // cannot retain a query receipt from a different completed frame.
         self.invalidate_query();
         let mut full = self.terrain_upload_pending;
+        self.terrain_diagnostics = None;
         let slots = if let Some(view) = &mut self.terrarium {
             if let Some(map) = view.refresh(frame.ground, self.mode)? {
                 self.map = map;
@@ -390,9 +400,11 @@ impl Section {
             if let Some(pose) = self.bodies.played_fallback.as_ref() {
                 input = input.with_pose(pose);
             }
-            self.tracer
-                .encode_with_depth(encoder, &self.traced_view, &self.bodies.depth_view, input)
-                .map_err(|error| error.to_string())?;
+            self.terrain_diagnostics = Some(
+                self.tracer
+                    .encode_with_depth(encoder, &self.traced_view, &self.bodies.depth_view, input)
+                    .map_err(|error| error.to_string())?,
+            );
         } else {
             let mut input = BrickFrameInput::for_camera(
                 &self.map,
@@ -406,9 +418,11 @@ impl Section {
             if let Some(pose) = frame.pose {
                 input = input.with_pose(pose);
             }
-            self.tracer
-                .encode(encoder, &self.traced_view, input)
-                .map_err(|error| error.to_string())?;
+            self.terrain_diagnostics = Some(
+                self.tracer
+                    .encode(encoder, &self.traced_view, input)
+                    .map_err(|error| error.to_string())?,
+            );
         }
         self.terrain_upload_pending = false;
         if self.body_mode == BodyMode::Voxels {

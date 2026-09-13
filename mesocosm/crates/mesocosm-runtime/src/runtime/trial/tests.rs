@@ -138,3 +138,130 @@ fn advanced_worlds_are_refused_instead_of_losing_runtime_context() {
     world.apply(Intent::Idle);
     assert!(Trial::new(&world).is_err());
 }
+
+#[test]
+fn uptake_matches_actual_soil_transfers_and_replays_without_touching_history() {
+    let source = World::new(7, 60);
+    let mut trial = Trial::new(&source).unwrap();
+    let mut ordinary = driver(&source);
+    let mut observed = Vec::new();
+    let mut ids = std::collections::BTreeSet::new();
+    let mut total = 0;
+    while trial.step() {
+        assert_eq!(ordinary.step(1), 1);
+        assert_eq!(trial.state_hash(), ordinary.state_hash());
+        assert_eq!(trial.history(), ordinary.history());
+        let expected: Vec<_> = ordinary
+            .trial_flows
+            .as_ref()
+            .unwrap()
+            .iter()
+            .enumerate()
+            .filter(|(_, f)| {
+                f.record.process == Process::Uptake
+                    && f.record.source == Account::Soil
+                    && f.record.amount_mg > 0
+                    && f.record.to.is_some()
+            })
+            .collect();
+        assert_eq!(trial.uptakes().len(), expected.len());
+        for (actual, (index, record)) in trial.uptakes().iter().zip(expected) {
+            assert_eq!(actual.record, *record);
+            assert_eq!(actual.sequence, index as u64);
+            assert_eq!(actual.tick, record.tick);
+            assert_eq!(actual.organism, record.record.to.unwrap().organism);
+            assert!(ids.insert((actual.tick, actual.sequence)));
+            total += record.record.amount_mg;
+        }
+        observed.push(trial.uptakes().to_vec());
+        assert_eq!(trial.uptakes(), observed.last().unwrap());
+    }
+    assert!(total > 0, "fixture exercises accepted soil uptake");
+    let hash = trial.state_hash();
+    let last = trial.uptakes().to_vec();
+    assert!(!trial.step());
+    assert_eq!(trial.uptakes(), last);
+    assert_eq!(trial.state_hash(), hash);
+    trial.reset();
+    assert!(trial.uptakes().is_empty());
+    let mut replay = Vec::new();
+    while trial.step() {
+        replay.push(trial.uptakes().to_vec());
+    }
+    assert_eq!(observed, replay);
+    assert_eq!(trial.state_hash(), hash);
+}
+
+#[test]
+fn uptake_filter_refuses_zero_internal_and_unrelated_transfers_and_labels_positions() {
+    let source = World::new(7, 60);
+    let mut trial = Trial::new(&source).unwrap();
+    let record = loop {
+        assert!(trial.step());
+        if let Some(sample) = trial.uptakes().first() {
+            break sample.record;
+        }
+    };
+    let organism = record.record.to.unwrap().organism;
+    let before = BTreeMap::from([(organism, [11, 22, 33])]);
+    let present = uptake(record, 3, &before, trial.world()).unwrap();
+    assert_eq!(present.position_basis, UptakePosition::AfterTick);
+    assert_eq!(
+        present.at,
+        trial
+            .world()
+            .organisms
+            .iter()
+            .find(|o| o.id == organism)
+            .map(|o| o.position)
+    );
+    let mut absent = trial.world().clone();
+    absent.organisms.retain(|o| o.id != organism);
+    let earlier = uptake(record, 3, &before, &absent).unwrap();
+    assert_eq!(earlier.at, Some([11, 22, 33]));
+    assert_eq!(earlier.position_basis, UptakePosition::BeforeTick);
+    let unknown = uptake(record, 3, &BTreeMap::new(), &absent).unwrap();
+    assert_eq!(unknown.at, None);
+    assert_eq!(unknown.position_basis, UptakePosition::Unavailable);
+    let mut zero = record;
+    zero.record.amount_mg = 0;
+    let mut internal = record;
+    internal.record.source = Account::Substance;
+    internal.record.destination = Account::Reserve;
+    let mut unrelated = record;
+    unrelated.record.process = Process::Upkeep;
+    let mut unaddressed = record;
+    unaddressed.record.to = None;
+    for excluded in [zero, internal, unrelated, unaddressed] {
+        assert!(uptake(excluded, 3, &before, trial.world()).is_none());
+    }
+}
+
+#[test]
+fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_invent_uptake() {
+    let source = World::new(7, 60);
+    let ordinary = Runtime::new(7, 60, 1);
+    assert!(ordinary.trial_flows.is_none());
+    let mut runtime = driver(&source);
+    runtime.queue(Intent::TakeControl {
+        organism: OrganismId(999999),
+    });
+    assert_eq!(runtime.step(1), 1);
+    assert!(matches!(
+        runtime.last_outcomes(),
+        [mesocosm_core::Outcome::Rejected(_)]
+    ));
+    // Rejection does not freeze the ecology. Its legitimate producer transfers
+    // remain available; none purport to be uptake by the rejected target.
+    let before = source
+        .organisms
+        .iter()
+        .map(|o| (o.id, o.position))
+        .collect();
+    for (index, record) in runtime.trial_flows.as_ref().unwrap().iter().enumerate() {
+        if let Some(activity) = uptake(*record, index as u64, &before, runtime.world()) {
+            assert_ne!(activity.organism, OrganismId(999999));
+            assert_eq!(activity.record, *record);
+        }
+    }
+}

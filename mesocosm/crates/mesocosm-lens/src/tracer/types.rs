@@ -421,10 +421,21 @@ impl<'a> BrickFrameInput<'a> {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, serde::Serialize)]
 pub struct BrickDiagnostics {
     pub cpu_prepare_us: u64,
     pub brick_upload_bytes: u64,
+    /// Actual Queue::write_texture calls, including coalesced atlas boxes.
+    pub pointer_write_calls: u32,
+    pub atlas_write_calls: u32,
+    /// Actual Queue::write_buffer calls for trace parameters and roster.
+    pub uniform_write_calls: u32,
+    /// Map and projection revisions matched existing textures; no map writes.
+    pub map_revision_unchanged: bool,
+    /// A full map upload was selected (atlas may instead arrive by lease).
+    pub full_map_upload: bool,
+    /// Declared slot entries on an accepted changed revision, before dedup.
+    pub changed_slots_declared: usize,
     /// Voxel bytes that reached the atlas from a GPU-resident producer
     /// rather than the CPU. These are not counted in
     /// `brick_upload_bytes`, which stays the CPU-upload measure.
