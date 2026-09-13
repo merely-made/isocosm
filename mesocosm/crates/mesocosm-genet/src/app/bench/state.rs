@@ -185,6 +185,13 @@ impl Bench {
     pub fn toggle_habitat(&mut self) {
         let mut model = self.model.borrow_mut();
         model.isolated = !model.isolated;
+        if model.isolated
+            && model
+                .selected
+                .is_some_and(|s| Some(s.organism) != model.world().controlled_id())
+        {
+            model.selected = None;
+        }
         model.changed();
         self.events.push("view-changed".into());
     }

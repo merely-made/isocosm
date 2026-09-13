@@ -67,6 +67,37 @@ pub fn body_bounds(body: LiveBody<'_>) -> Result<Option<([f32; 3], [f32; 3])>, L
     Ok(seen.then_some((min.to_array(), max.to_array())))
 }
 
+/// One actual meshed face, transformed by the same part matrix used to draw.
+/// This is before clipping or occlusion, and is not a whole-body exterior test.
+pub fn posed_quad(
+    body: LiveBody<'_>,
+    part: PartId,
+    quad_index: usize,
+) -> Result<[[f32; 3]; 4], LiveBodyError> {
+    validate_body(body)?;
+    let placement = body
+        .mesh
+        .placements
+        .iter()
+        .find(|p| p.part == part)
+        .ok_or(LiveBodyError::InvalidBody)?;
+    let quad = body
+        .mesh
+        .mesh_for(placement.volume)
+        .and_then(|mesh| mesh.quads.get(quad_index))
+        .ok_or(LiveBodyError::InvalidBody)?;
+    let model = model_matrix(body, placement.yaw, placement.pivot, placement.pivot_at);
+    let points = quad.corners().map(|corner| {
+        model
+            .transform_point3(Vec3::from_array(corner.map(|v| v as f32)))
+            .to_array()
+    });
+    if points.iter().flatten().any(|v| !v.is_finite()) {
+        return Err(LiveBodyError::InvalidBody);
+    }
+    Ok(points)
+}
+
 /// Nearest submitted surface along a ray, including distance zero and far.
 ///
 /// Query only the successfully drawn projection snapshot. This function does

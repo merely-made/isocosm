@@ -146,3 +146,19 @@ angles, glyph changes, and unchanged world hash. The independent GPU test
 `section::glyphs::tests` checks hidden rear strokes and visible edges against a
 real voxel cube from two cameras. Solid strokes are the admitted first slice;
 transparent overlap, surface attachment and glyph picking remain future work.
+
+### Opaque spatial coverage
+
+The form buttons select Orbit, Surface, Tether and Emission. Surface and
+Emission can use a selected part. Tether requires two parts, so clear selection
+to use the body's anchors. Faces are actual posed mesh rectangles, including
+continuous body turning. Reseed spatial changes appearance; Glyph count cycles
+6/18/64/128. Save/Reopen spatial replays settings and tick on the same specimen,
+pose, camera and selection; it does not reload a world or provide a CLI import.
+
+`spatial-coverage.scenario` exercises all 24 form/glyph/camera combinations,
+seed/count/replay, maximum density, selected attachments and unchanged world.
+Focused tests are `section::glyphs::tests`, `section::bodies::anchors::tests`
+and `app::bench::spatial::sampling::tests`. This matrix covers opaque rendering
+and attachment. Transparent compositing and causal world interactions remain
+separate acceptance work.

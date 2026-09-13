@@ -16,6 +16,8 @@ use super::{CameraMode, SLAB_DEPTH};
 
 #[path = "appearance.rs"]
 mod appearance;
+#[path = "anchors.rs"]
+pub(super) mod anchors;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {

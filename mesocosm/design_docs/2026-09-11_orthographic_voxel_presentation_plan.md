@@ -975,10 +975,60 @@ camera changes preserve world identity; existing bench and planar scenarios
 still pass. Native scenario: `testing/bench/spatial.scenario`. Receipts:
 `testing/bench/receipts/2026-09-13/spatial/`.
 
-Next experiments are surface-bound inscriptions, tethers and paths, and
-organ emission sites driven by accepted world events. Transparent haze needs
-an explicit overlap policy. Ruleset guarantees and generated receiver laws
-remain core-owned; this orbit is a rendering preview, not their adjudicator.
+### Spatial coverage extension (2026-09-13)
+
+The admitted opaque spatial vocabulary now includes four forms. These are
+presentation experiments; they do not yet lift the planar receiver rules into
+world adjudication or claim that every glyph combination is a causal string.
+
+| Form | Placement | Behavior | Attachment |
+| --- | --- | --- | --- |
+| Orbit | Camera-facing strokes in a 3D loop | Repeating world-space orbit | Posed body bounds |
+| Surface | World-plane strokes | Stable seeded inscription | Largest actual meshed face per admitted part |
+| Tether | Camera-facing strokes along a bowed path | Repeating orientation | Two distinct part anchors required |
+| Emission | Camera-facing strokes moving outward | Staggered travel and shrinking lifetime | Actual face normal, optionally selected part |
+
+`Section::glyph_anchors` returns at most 32 anchors in stable PartId order.
+It uses the renderer's own `posed_quad` transform, including part placement,
+continuous body yaw, origin and scale. A selected part must match the current
+body projection revision. Meshed faces may be hidden by another part or ground;
+shared depth determines visibility. An anchor does not assert that a face is
+exposed to an ecological process. Surface strokes get a small world-space
+normal offset to avoid coplanar depth ties.
+
+Appearance seed and count are configurable. Counts cycle through 6, 18, 64 and
+128 in the bench; saved requests admit 2 through 128. Sampling is stateless in
+tick order. Framing uses a fixed form envelope so travel does not pump the zoom.
+Save/Reopen spatial stores the form, glyph, appearance seed, count and tick;
+replay requires the same specimen world hash, pose, camera, body/habitat mode
+and complete part identity (organism, part and mesh revision).
+It is a settings receipt for the current bench, not a standalone world save.
+
+Coverage targets:
+
+- All four forms, three glyphs and two native camera views (24 combinations).
+- Counts 2/18/128, arbitrary sampling order, seed changes and replay in pure tests.
+- All three glyphs with camera-facing and world-plane bases, body occlusion,
+  exposed stroke edges, world bounds and slab clipping in GPU tests.
+- Invalid finite/size/colour/orientation inputs preserve the prior renderer list;
+  128 entries admitted, 129 refused, empty input clears.
+- Actual sparse-mesh faces, exact continuous pose, part revision expiry and
+  bounded anchors checked independently of the presentation sampler.
+- Native seed/count changes, exact saved replay pixels, selected-part surface
+  and emission, tether refusal for one anchor, and unchanged world identity.
+
+Native receipt: the 24-combination matrix plus density, selected attachments,
+replay and isolation-refusal checks passed in 336 frames (32 captures). Original
+orbit controls passed in 207 frames, bench regression in 167, and planar effects
+in 125. Native images are under `Code/testing/spatial-coverage-2026-09-13/`;
+compact receipts are under `testing/bench/receipts/2026-09-13/spatial-coverage/`.
+
+The complete effects system remains open: world collision and material/item
+responses, gameplay rule packs and guarantees, effect composition, transparent
+haze and overlap policy, surface editing/picking, soundscape event consumption,
+perspective cameras, richer glyph assets and population cost measurement.
+Those need their own owner-specific acceptance, rather than being implied by
+this opaque spatial coverage matrix.
 
 ## CSS features and standards to earmark
 

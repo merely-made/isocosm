@@ -231,10 +231,23 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("captures", captures.to_string());
     {
         let m = state.model.borrow();
+        snapshot = snapshot.with_field("spatial-drawn", scene.glyph_count.to_string());
+        snapshot = snapshot.with_field("spatial-anchors", scene.anchor_count.to_string());
         snapshot = snapshot.with_field("spatial-enabled", m.spatial.enabled.to_string());
         snapshot = snapshot.with_field("spatial-tick", m.spatial.tick.to_string());
         snapshot = snapshot.with_field("spatial-playing", m.spatial.playing.to_string());
         snapshot = snapshot.with_field("spatial-camera", format!("{:?}", m.camera));
+        snapshot = snapshot.with_field("spatial-form", m.spatial.form.label());
+        snapshot = snapshot.with_field("spatial-glyph", m.spatial.glyph.label());
+        snapshot = snapshot.with_field("spatial-seed", m.spatial.seed.to_string());
+        snapshot = snapshot.with_field("spatial-count", m.spatial.count.to_string());
+        snapshot = snapshot.with_field(
+            "spatial-saved",
+            m.spatial
+                .saved
+                .as_ref()
+                .map_or("none".into(), |p| p.display().to_string()),
+        );
     }
     for (key, value) in state.effects.probe_fields() {
         snapshot = snapshot.with_field(key, value);

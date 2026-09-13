@@ -28,7 +28,7 @@ mod pose;
 mod query;
 
 pub use materials::PartMaterial;
-pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies};
+pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad};
 
 use materials::part_appearance;
 #[cfg(test)]

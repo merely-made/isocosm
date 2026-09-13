@@ -1,0 +1,54 @@
+{
+  "parent": "f09349ee0e739d05bbd3bec7f9bc2325b89a1f24",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/spatial/sampling.rs": "aa3919805059340842d82b016ef07c92308cbb94",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/spatial/sampling/tests.rs": "e45f2b972abe725339042d584b7709ac8a2e3da2",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/spatial/saved.rs": "c71ab0d3ce6f37823a3a57dfb3610a6b7dfe63ca",
+    "mesocosm/crates/mesocosm-genet/src/section/anchors.rs": "9dd0eda0f8eb3c642d833cfddbbbb8609cdd77f7",
+    "mesocosm/crates/mesocosm-genet/src/section/anchors_tests.rs": "3611018e524062fa510d77ec1e056418ffd1ae34",
+    "mesocosm/testing/bench/spatial-coverage.scenario": "4654d92f338d1c345d7d7060bf4511d33b9363d9",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "b01d9719412ecfe042418dd2b0f95f6cfdcbe84a",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "cbf359c8f23baac05fc762dd0006f2bd9f76534e",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/spatial.rs": "e9ce7f1efa22d037e4e268842902d1c1c0840348",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "74df3610f88e1650d7d0409f62c2d0a24a8e17fb",
+    "mesocosm/crates/mesocosm-genet/src/section.rs": "8ffae17d6b7bbd83027c08a53d64d854794265a6",
+    "mesocosm/crates/mesocosm-genet/src/section/bodies.rs": "6dde19e889ca22720f2139319b1fb6565565a0b4",
+    "mesocosm/crates/mesocosm-genet/src/section/glyphs.rs": "caeaec5e89b35ee6ded8d53be3d1895257e7b0fb",
+    "mesocosm/crates/mesocosm-genet/src/section/glyphs/tests.rs": "59b653ef659e71fd4abf03d14340a2d300cb6560",
+    "mesocosm/crates/mesocosm-render/src/live_body.rs": "c67e847dd159ea4dc606d0bbb1e6b1b36d87f44c",
+    "mesocosm/crates/mesocosm-render/src/live_body/query.rs": "3f8195798573021ff6986d33c2bdca29e1db6695"
+  },
+  "executable_sha256": "3ed7a49fbb22ce441cc6e2a4df5ec88c637c987024f3bf325282d04fe4749e0c",
+  "source_note": "Saved validation tests were added after native build; production source unchanged. Tests compile separately with cfg(test).",
+  "focused_tests": {
+    "glyph_gpu_tests": 2,
+    "depth_combinations": 12,
+    "anchor_tests": 3,
+    "sampling_and_save_tests": 8,
+    "passed": true
+  },
+  "native_matrix": {
+    "forms": 4,
+    "glyphs": 3,
+    "cameras": 2,
+    "combinations": 24,
+    "frames": 336,
+    "captures": 32
+  },
+  "limits": {
+    "glyphs": 128,
+    "anchors": 32,
+    "renderer": "opaque orthographic strokes",
+    "replay": "same-session settings, matching complete attachment identity and view"
+  },
+  "open": [
+    "World interactions and material/item rules",
+    "Transparent overlap",
+    "Perspective camera",
+    "Standalone experiment restore",
+    "Glyph picking",
+    "Soundscape",
+    "Population cost measurement"
+  ],
+  "workspace_check": "cargo check --release --frozen --workspace --all-features --all-targets -j3: passed"
+}

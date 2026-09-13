@@ -21,7 +21,7 @@ with [magic and generator discussions](../mesocosm/design_docs/2026-08-06_genera
   Generation comparison now holds the original beside four admitted shape
   alternatives, with native inspection, scale comparison and saved replay.
   Generation wiring adds seeded parent trees, eight starting anatomies and
-  independent size/mass controls; native acceptance passes. Composable anatomy extends the grammar; native acceptance and saved replay pass. A native-verified planar glyph-effect experiment separates guaranteed responses from seeded receiver rules, with animated marks, compatible strings and saved replay. A spatial glyph preview adds world-space orbits with shared body depth and two orthographic views.
+  independent size/mass controls; native acceptance passes. Composable anatomy extends the grammar; native acceptance and saved replay pass. A native-verified planar glyph-effect experiment separates guaranteed responses from seeded receiver rules, with animated marks, compatible strings and saved replay. Opaque spatial forms cover orbit, mesh-face inscription, tether and emission with shared body depth, seeded appearance and two orthographic views.
   General CSS 3D, large-DOM scaling, planar retention, the appearance crate
   merger and visible disposable world trials remain separate work.
 - [Cross-port sharing audit](../mesocosm/design_docs/2026-08-18_engine_ecology_rulings_and_review.md#7-cross-port-sharing-audit-2026-09-09):

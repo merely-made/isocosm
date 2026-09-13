@@ -1,0 +1,211 @@
+wait 1200
+assert snap ready == yes
+click role:button Generation controls
+settle 3
+click role:button cat-like
+wait 1200
+click role:button Generation controls
+settle 3
+remember world
+click role:button Spatial glyphs
+settle 3
+click role:button Orbit
+settle 3
+assert snap spatial-form == Orbit
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-quotes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-quotes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-slashes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-slashes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-backticks-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture orbit-backticks-across
+click role:button View angle
+click role:button Change glyph
+click role:button Surface
+settle 3
+assert snap spatial-form == Surface
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-quotes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-quotes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-slashes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-slashes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-backticks-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture surface-backticks-across
+click role:button View angle
+click role:button Change glyph
+click role:button Tether
+settle 3
+assert snap spatial-form == Tether
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-quotes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-quotes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-slashes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-slashes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-backticks-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture tether-backticks-across
+click role:button View angle
+click role:button Change glyph
+click role:button Emission
+settle 3
+assert snap spatial-form == Emission
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-quotes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-quotes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-slashes-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-slashes-across
+click role:button View angle
+click role:button Change glyph
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-backticks-oblique
+click role:button View angle
+settle 3
+assert snap error == none
+assert snap spatial-drawn == 18
+capture emission-backticks-across
+click role:button View angle
+click role:button Change glyph
+click role:button Emission
+click role:button Step orbit
+settle 3
+capture saved
+remember saved
+click role:button Save spatial
+click role:button Reseed spatial
+click role:button Glyph count
+click role:button Step orbit
+settle 3
+assert snap spatial-drawn == 64
+capture varied
+viewport-pixels-change saved varied
+click role:button Reopen spatial
+settle 3
+same saved spatial-seed
+same saved spatial-count
+same saved spatial-tick
+capture restored
+viewport-pixels-same saved restored
+click role:button Glyph count
+click role:button Glyph count
+settle 3
+assert snap spatial-drawn == 128
+capture maximum
+click role:button Surface
+click role:button Part 0
+settle 3
+assert snap spatial-anchors == 1
+assert snap spatial-drawn == 128
+capture selected-surface
+click role:button Tether
+settle 3
+assert snap spatial-drawn == 0
+click role:button Emission
+settle 3
+assert snap spatial-drawn == 128
+capture selected-emission
+click role:button Clear selection
+click role:button Surface
+click role:button Turn right
+settle 3
+capture turned-surface
+same world hash
+assert snap error == none
+click role:button Save spatial
+click role:button Step orbit
+remember changed-view
+click role:button Body / habitat
+settle 3
+click role:button Reopen spatial
+same changed-view spatial-tick
+click role:button Body / habitat
+settle 3
+same world hash
+assert snap error == none

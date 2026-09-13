@@ -18,6 +18,8 @@ pub(super) struct BenchScene {
     pub error: Option<String>,
     pub stats: BodyFrameStats,
     pub renders: u64,
+    pub glyph_count: usize,
+    pub anchor_count: usize,
     pub mesh_upload_bytes: u64,
     pub instance_upload_bytes: u64,
     epoch: u64,
@@ -35,6 +37,8 @@ impl BenchScene {
             error: None,
             stats: BodyFrameStats::default(),
             renders: 0,
+            glyph_count: 0,
+            anchor_count: 0,
             mesh_upload_bytes: 0,
             instance_upload_bytes: 0,
             epoch: 0,
@@ -205,10 +209,22 @@ impl BenchScene {
                 }
             }
         }
+        self.anchor_count = 0;
+        let mut attachment_anchors = Vec::new();
+        let attachment_subject = model
+            .selected
+            .and_then(|s| world.organisms.iter().find(|o| o.id == s.organism))
+            .or_else(|| world.controlled());
         let marks = if self.card.is_none() && model.spatial.enabled {
-            match world.controlled() {
+            match attachment_subject {
                 Some(organism) => match section.presentation_bounds(organism, &model.volumes)? {
-                    Some(bounds) => model.spatial.marks(bounds),
+                    Some(bounds) => {
+                        let anchors =
+                            section.glyph_anchors(organism, &model.volumes, model.selected)?;
+                        self.anchor_count = anchors.len();
+                        attachment_anchors = anchors;
+                        model.spatial.marks(bounds, &attachment_anchors)
+                    },
                     None => Vec::new(),
                 },
                 None => Vec::new(),
@@ -217,18 +233,17 @@ impl BenchScene {
             Vec::new()
         };
         if isolated && !marks.is_empty() {
-            let mut min = centre;
-            let mut max = centre;
-            for mark in &marks {
-                for i in 0..3 {
-                    min[i] = min[i].min(mark.centre[i] - mark.size);
-                    max[i] = max[i].max(mark.centre[i] + mark.size);
+            if let Some(organism) = attachment_subject {
+                if let Some(bounds) = section.presentation_bounds(organism, &model.volumes)? {
+                    (centre, half, depth) = fit(
+                        model.spatial.framing_bounds(bounds, &attachment_anchors),
+                        size,
+                        model.camera,
+                    );
                 }
             }
-            let (_, glyph_half, glyph_depth) = fit((min, max), size, model.camera);
-            half = half.max(glyph_half);
-            depth = depth.max(glyph_depth);
         }
+        self.glyph_count = marks.len();
         section.set_glyphs(marks)?;
         section.set_half_height(half);
         section.set_body_preview(isolated, depth);

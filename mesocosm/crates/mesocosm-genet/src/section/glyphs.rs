@@ -7,8 +7,36 @@ use super::view::View;
 use mesocosm_core::effect_experiment::Glyph;
 
 pub const MAX_SPATIAL_GLYPHS: usize = 128;
+/// The plane in which strokes are constructed. A world plane remains fixed
+/// when the camera turns. Its axes must be finite orthonormal world vectors;
+/// the caller supplies any surface offset needed to avoid coplanar depth ties.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub enum GlyphOrientation {
+    #[default]
+    CameraFacing,
+    WorldPlane {
+        right: [f32; 3],
+        up: [f32; 3],
+    },
+}
+impl GlyphOrientation {
+    fn valid(self) -> bool {
+        match self {
+            Self::CameraFacing => true,
+            Self::WorldPlane { right, up } => {
+                let dot = |a: [f32; 3], b: [f32; 3]| {
+                    a.into_iter().zip(b).map(|(a, b)| a * b).sum::<f32>()
+                };
+                right.iter().chain(up.iter()).all(|v| v.is_finite())
+                    && (dot(right, right) - 1.).abs() <= 1e-4
+                    && (dot(up, up) - 1.).abs() <= 1e-4
+                    && dot(right, up).abs() <= 1e-4
+            },
+        }
+    }
+}
 /// Host-owned presentation only. Size is the glyph height in world units;
-/// angle is radians in the camera-facing plane. Colour is display-encoded
+/// angle is radians in the selected orientation's plane. Colour is display-encoded
 /// opaque RGBA, matching the section target's existing byte convention.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SpatialGlyph {
@@ -16,6 +44,7 @@ pub struct SpatialGlyph {
     pub size: f32,
     pub angle: f32,
     pub glyph: Glyph,
+    pub orientation: GlyphOrientation,
     pub color: [f32; 4],
 }
 
@@ -134,9 +163,10 @@ impl GlyphLayer {
                 || !g.angle.is_finite()
                 || g.color.iter().any(|v| !(0.0..=1.0).contains(v))
                 || g.color[3] != 1.
+                || !g.orientation.valid()
         }) {
             return Err(
-                "Spatial glyphs require finite poses, positive size and opaque colours in 0..1."
+                "Spatial glyphs require finite poses, positive size, opaque colours in 0..1 and orthonormal world-plane axes."
                     .into(),
             );
         }
@@ -207,10 +237,14 @@ impl GlyphLayer {
     }
 }
 fn geometry(glyphs: &[SpatialGlyph], view: View) -> Vec<u8> {
-    let [right, up, _] = view.basis();
+    let [camera_right, camera_up, _] = view.basis();
     let matrix = view.matrix();
     let mut data = Vec::new();
     for glyph in glyphs {
+        let (right, up) = match glyph.orientation {
+            GlyphOrientation::CameraFacing => (camera_right, camera_up),
+            GlyphOrientation::WorldPlane { right, up } => (right, up),
+        };
         let segments: &[[[f32; 2]; 2]] = match glyph.glyph {
             Glyph::Slashes => &[[[-0.28, -0.5], [0.28, 0.5]]],
             Glyph::Backticks => &[[[-0.2, 0.5], [0.15, 0.15]]],

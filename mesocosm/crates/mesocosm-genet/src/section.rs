@@ -16,7 +16,7 @@
 //! Q9). None of the three moves the hash.
 
 mod glyphs;
-pub use glyphs::{MAX_SPATIAL_GLYPHS, SpatialGlyph};
+pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph};
 mod bodies;
 mod camera;
 mod capsules;
@@ -36,6 +36,7 @@ pub use view::camera_basis;
 mod inspection;
 
 pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
+pub use bodies::anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
 pub use inspection::{BodyPick, BodyPickError, BodySelection};
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, SlabWindow, TERRARIUM_DEGREES};
