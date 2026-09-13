@@ -1,0 +1,58 @@
+{
+  "parent": "6be8d57c9f369b051d2066f0bf3d1964dcf1d76a",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "152ba92e20222edcdb39ea68167ae95aa145b80d",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "36f6977568e78161e77cc7d09ead69b8444b9fe5",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial.rs": "1a2bc0d53c0f405320138ca226c61e80129c101d",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "80edc7a0cf5df3c270b8b8f552377b4e113dfbaa",
+    "mesocosm/crates/mesocosm-runtime/src/lib.rs": "3010a80f06df1d42911d682a69d475b3c6cfaa65",
+    "mesocosm/crates/mesocosm-runtime/src/runtime.rs": "caf558e7b59eefae983a576877d4e67cd3d3e2c1",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial.rs": "7bd88a436af8ee4d11ca6fdbe00d4e32f452ac63",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial/carving.rs": "4c203f3f33827ef86a52a526b0f62fa212d1589c",
+    "mesocosm/crates/mesocosm-runtime/src/runtime/trial/carve_tests.rs": "f976e79f1101fa0ffa0ac7ff4ab0baac06d58ece",
+    "mesocosm/testing/bench/carving-world.scenario": "40cd7c0108453961a6af43fa9fc02c0739e6c0d2",
+    "mesocosm/testing/bench/carving-visible.scenario": "bca97ba245c648c6a08f737b0805e47a0e17a894"
+  },
+  "executable_sha256": "d43666313ed37c1692461b89aaea0f0be70b8d0c1d72f62d55b69bc065310622",
+  "raw": "C:\\Users\\mark_\\Code\\testing\\carving-world-2026-09-13",
+  "source_worlds": "../integrated-world/{axial,roots,cat}-source.json",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "tests": {
+    "runtime_trial": 10,
+    "carving_presentation": 2,
+    "all_pass": true
+  },
+  "native": {
+    "worlds": {
+      "count": 3,
+      "frames_each": 227,
+      "captures_each": 8
+    },
+    "visible_axial": {
+      "frames": 46,
+      "captures": 4
+    },
+    "uptake_regression": {
+      "frames": 449,
+      "captures": 9
+    },
+    "lifecycle": {
+      "frames": 189,
+      "captures": 3
+    },
+    "all_pass": true
+  },
+  "repeat": "From mesocosm: mesocosm-genet.exe --bench --comparison testing/bench/receipts/2026-09-13/integrated-world/NAME-source.json --frames 1800 --scenario testing/bench/carving-world.scenario --receipt OUTPUT/NAME-receipt.json --capture OUTPUT/NAME.png; then python testing/bench/receipts/2026-09-13/carving-world/verify.py OUTPUT",
+  "limits": [
+    "Accepted cube counts independently agree with positive Carved event; no material mass, impact normal or debris inference.",
+    "Rejected carve still advances ordinary ecology. Assert exact OutOfReach outcome, unchanged terrain revision/solids/upload total, not unchanged whole-world hash.",
+    "Native settings zoom0.75, mark size2.8, display height8. All captured viewport bounds fit inside image.",
+    "Carving marker changes103 pixels in axial pose; roots/cat markers change0 pixels in these poses. Separate visibility receipt is axial-only; exact terrain and replay checks pass all3.",
+    "Cumulative terrain counters cover main BenchScene texture over its lifetime, including cold recreation; reported action deltas exclude the baseline cold upload and include only terrain pointer/atlas writes.",
+    "Bounded recent carving records128/8ticks, shared mark budget128; reset retains target/radius/visibility settings.",
+    "Unit carve fixture relocates one critter onto seeded terrain; native matrix uses unmodified saved sources.",
+    "No frame-time/GPU-time claim. Concurrent Paredros work preserved; native runs are correctness gates.",
+    "Initial roots visibility expectation failed at0changedpixels; raw roots-visibility-error.json retained.",
+    "Contact materials, wider ecology, full memory and independent three-way depth oracle remain open."
+  ]
+}

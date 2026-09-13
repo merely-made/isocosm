@@ -23,6 +23,8 @@ pub(super) struct BenchScene {
     pub glyph_count: usize,
     pub anchor_count: usize,
     pub mesh_upload_bytes: u64,
+    pub terrain_upload_bytes: u64,
+    pub terrain_write_calls: u64,
     pub instance_upload_bytes: u64,
     epoch: u64,
     revision: u64,
@@ -45,6 +47,8 @@ impl BenchScene {
             glyph_count: 0,
             anchor_count: 0,
             mesh_upload_bytes: 0,
+            terrain_upload_bytes: 0,
+            terrain_write_calls: 0,
             instance_upload_bytes: 0,
             epoch: 0,
             revision: 0,
@@ -317,6 +321,11 @@ impl BenchScene {
         )?;
         queue.submit(Some(encoder.finish()));
         self.ground_revision = Some(world.ground().revision());
+        if let Some(terrain) = section.terrain_diagnostics() {
+            self.terrain_upload_bytes += terrain.brick_upload_bytes;
+            self.terrain_write_calls +=
+                u64::from(terrain.pointer_write_calls) + u64::from(terrain.atlas_write_calls);
+        }
         self.stats = section.body_stats();
         self.mesh_upload_bytes += self.stats.mesh_upload_bytes;
         self.instance_upload_bytes += self.stats.instance_upload_bytes;

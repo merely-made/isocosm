@@ -26,7 +26,7 @@ use crate::succession::{Checkpoint, Occasion};
 mod expression_practice;
 mod terrarium;
 mod trial;
-pub use trial::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake, UptakePosition};
+pub use trial::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialCarve, TrialUptake, UptakePosition};
 
 /// Default ceiling on steps authorised by one `advance` call. A stalled host
 /// resuming after a long pause catches up over several frames rather than in

@@ -10,6 +10,8 @@ use crate::section::{GlyphOrientation, SpatialGlyph};
 use cambium::{clickable, el, focusable, text};
 use mesocosm_core::{World, effect_experiment::Glyph, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
+mod carving;
+
 use std::{
     collections::BTreeSet,
     time::{Duration, Instant},
@@ -17,6 +19,7 @@ use std::{
 
 pub(super) struct WorldTrial {
     pub driver: Trial,
+    carving: carving::Carving,
     pub playing: bool,
     pub marks: Vec<SpatialGlyph>,
     pub dirty: BTreeSet<[i16; 3]>,
@@ -37,6 +40,7 @@ impl WorldTrial {
     fn new(source: &World) -> Result<Self, String> {
         Ok(Self {
             driver: Trial::new(source)?,
+            carving: carving::Carving::new(),
             playing: false,
             marks: Vec::new(),
             dirty: BTreeSet::new(),
@@ -59,6 +63,10 @@ impl WorldTrial {
             self.playing = false;
             return false;
         }
+        self.consume_step();
+        true
+    }
+    fn consume_step(&mut self) {
         for activity in self.driver.activities() {
             match activity.event {
                 Event::Moved { .. } => self.moved += 1,
@@ -73,6 +81,7 @@ impl WorldTrial {
             self.uptake.push(uptake.clone());
         }
         let tick = self.driver.world().tick;
+        self.carving.observe(self.driver.carves(), tick);
         self.uptake.retain(|a| tick.saturating_sub(a.tick) < 8);
         if self.uptake.len() > 128 {
             self.uptake.drain(..self.uptake.len() - 128);
@@ -86,7 +95,6 @@ impl WorldTrial {
         if self.driver.steps() >= MAX_TRIAL_STEPS || self.driver.checkpoint().is_some() {
             self.playing = false;
         }
-        true
     }
     fn refresh_marks(&mut self) {
         self.marks_dropped = 0;
@@ -155,6 +163,10 @@ impl WorldTrial {
                     ))
                 }),
         );
+        marks.extend(
+            self.carving
+                .marks(tick, self.marker_height, self.marker_size),
+        );
         marks.sort_by_key(|(key, _)| *key);
         self.marks_dropped = marks
             .len()
@@ -182,6 +194,7 @@ impl WorldTrial {
     }
     fn reset(&mut self) {
         self.driver.reset();
+        self.carving.reset();
         self.playing = false;
         self.marks.clear();
         self.dirty.clear();
@@ -195,7 +208,7 @@ impl WorldTrial {
         self.last = Instant::now();
     }
     pub fn probe_fields(&self) -> Vec<(&'static str, String)> {
-        vec![
+        let mut fields = vec![
             ("trial-active", "true".into()),
             ("trial-playing", self.playing.to_string()),
             ("trial-steps", self.driver.steps().to_string()),
@@ -236,7 +249,13 @@ impl WorldTrial {
                 "trial-activity",
                 serde_json::to_string(&self.recent).expect("activity serializes"),
             ),
-        ]
+        ];
+        fields.extend(self.carving.probe_fields());
+        fields.push((
+            "trial-trace",
+            serde_json::to_string(self.driver.trace()).expect("trace serializes"),
+        ));
+        fields
     }
 }
 impl Specimen {
@@ -375,5 +394,6 @@ pub(super) fn view(state: &Bench) -> Child {
         el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button(if trial.show_uptake { "Hide uptake" } else { "Show uptake" },Bench::toggle_uptake_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
         el("p",text(format!("{status} / {} of {MAX_TRIAL_STEPS} ticks / {} movements, {} meals, {} uptake transfers / {} activity marks / height {} / size {}",trial.driver.steps(),trial.moved,trial.fed,trial.uptake_count,trial.marks.len(),trial.marker_height,trial.marker_size))),
         el("p",text("Recorded movement, feeding and soil uptake, with adjustable organism-level markers. The trial leaves saved generation unchanged.")),
+        carving::view(state),
     )).attr("class","world-trial"))
 }

@@ -1128,6 +1128,40 @@ record the limits. General contact reactions, native carving intents, scaled
 ecological workloads and GPU timing remain open; uptake does not supply missing
 impact normals or material-contact facts.
 
+**Trial carving receipt (2026-09-13).** `Trial::carve` now queues one
+ordinary carve and advances one runtime tick, exposing actual outcomes and a
+separate positive `TrialCarve` reading. The default target is the existing
+played-host convention, one cell below the critter at radius one. Bench controls
+expose bounded relative XYZ offsets, radius one/two, target reset, and carving
+indicator visibility. Core still admits anatomical reach and removes terrain;
+trial limits/checkpoints refuse before queuing. Numeric overflow also refuses
+before queuing. Rejected attempts advance ecology, so rejection is not a promise
+of an unchanged world hash.
+
+The [three-world receipt](../testing/bench/receipts/2026-09-13/carving-world/matrix.json)
+independently samples solids in each requested cube. Axial/roots/cat remove
+18/18/9 voxels, matching the accepted events, with 1032/1032/516 uploaded bytes
+and 4/4/2 pointer/atlas write calls. Targets offset +64 on X are actually rejected
+as out of reach (reaches 49/3/28), leaving terrain revision, sampled solids and
+terrain upload totals unchanged. Cumulative main-surface terrain counters retain
+the dirty upload receipt across later cached redraws. Reset and exact two-intent
+replay restore world, trace, activity, uptake, carving records and pixels.
+
+Orange slashes mark recorded carving locations, raised by the existing display
+height setting. They do not claim contact normals or material debris. The axial
+pose changes 103 pixels when carving marks are hidden; the rooted and cat-like
+poses change none. Those two qualify terrain/replay, not visible-marker coverage.
+The separate axial visibility scenario passes. Recent records remain bounded to
+128/eight ticks and share the global mark cap; target/style settings survive reset.
+
+Ten runtime tests and two presentation tests pass. Native checks pass three
+227-frame world traces, a 46-frame axial visibility case, the 449-frame uptake
+regression and the 189-frame playback lifecycle. All recorded viewports fit the
+capture at zoom 0.75; the trial height allowance includes the new controls.
+[Sources, verification script and commands](../testing/bench/receipts/2026-09-13/carving-world/source.json)
+retain the evidence and view-dependent visibility limit. General contact/material
+reactions and larger ecological workloads remain separate next gates.
+
 The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
 bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;

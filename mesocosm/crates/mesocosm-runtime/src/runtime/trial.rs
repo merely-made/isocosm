@@ -9,7 +9,7 @@
 use super::Runtime;
 use crate::Checkpoint;
 use mesocosm_core::flow::{Account, Process, RecordedFlow};
-use mesocosm_core::{History, Intent, OrganismId, World, history::Event, state_hash};
+use mesocosm_core::{History, Intent, OrganismId, Outcome, World, history::Event, state_hash};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
@@ -46,6 +46,18 @@ pub struct TrialUptake {
     pub position_basis: UptakePosition,
 }
 
+/// Positive accepted terrain removal. `at` is the recorded command centre,
+/// not a reconstructed surface contact or normal.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct TrialCarve {
+    pub tick: u64,
+    /// Ordinal in this trial's complete history, shared with TrialActivity.
+    pub sequence: u64,
+    pub organism: OrganismId,
+    pub at: [i32; 3],
+    pub removed: u32,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct TrialActivity {
     /// Zero-based ordinal in this disposable trial's accepted history.
@@ -69,6 +81,7 @@ pub struct Trial {
     steps: u32,
     activities: Vec<TrialActivity>,
     uptakes: Vec<TrialUptake>,
+    carves: Vec<TrialCarve>,
 }
 
 impl Trial {
@@ -93,6 +106,7 @@ impl Trial {
             steps: 0,
             activities: Vec::new(),
             uptakes: Vec::new(),
+            carves: Vec::new(),
         })
     }
 
@@ -127,6 +141,15 @@ impl Trial {
     pub fn uptakes(&self) -> &[TrialUptake] {
         &self.uptakes
     }
+    /// Latest applied step's positive terrain changes. Reads never consume it.
+    pub fn carves(&self) -> &[TrialCarve] {
+        &self.carves
+    }
+    /// Actual core outcomes of the last applied step, including rejections.
+    /// A refused trial action (false) preserves this previous result.
+    pub fn last_outcomes(&self) -> &[Outcome] {
+        self.runtime.last_outcomes()
+    }
     pub fn drain_ground_dirty(&mut self) -> Vec<[i16; 3]> {
         self.runtime.drain_ground_dirty()
     }
@@ -136,11 +159,41 @@ impl Trial {
         self.steps = 0;
         self.activities.clear();
         self.uptakes.clear();
+        self.carves.clear();
     }
 
     /// One ordinary idle step. Checkpoints retain their existing runtime
     /// semantics; the trial never answers a question on the user's behalf.
     pub fn step(&mut self) -> bool {
+        self.apply_one(Intent::Idle)
+    }
+
+    /// Queue one ordinary carve intent and apply exactly one tick. True means
+    /// a tick ran, including a core rejection; inspect `last_outcomes` for it.
+    /// Checkpoints, the step bound and unrepresentable coordinate arithmetic
+    /// refuse before queuing. Radius and anatomical reach remain core rules.
+    pub fn carve(&mut self, at: [i32; 3], radius: i32) -> bool {
+        if let Some(body) = self.world().controlled() {
+            if (0..3).any(|axis| {
+                at[axis]
+                    .checked_sub(body.position[axis])
+                    .and_then(i32::checked_abs)
+                    .is_none()
+            }) {
+                return false;
+            }
+        }
+        if (1..=2).contains(&radius)
+            && at
+                .iter()
+                .any(|v| v.checked_sub(radius).is_none() || v.checked_add(radius).is_none())
+        {
+            return false;
+        }
+        self.apply_one(Intent::Carve { at, radius })
+    }
+
+    fn apply_one(&mut self, intent: Intent) -> bool {
         if self.steps >= MAX_TRIAL_STEPS || self.checkpoint().is_some() {
             return false;
         }
@@ -151,11 +204,14 @@ impl Trial {
             .map(|o| (o.id, o.position))
             .collect();
         let start = self.history().len();
+        debug_assert_eq!(self.runtime.queued_len(), 0);
+        self.runtime.queue(intent);
         if self.runtime.step(1) == 0 {
             return false;
         }
         self.steps += 1;
         self.activities.clear();
+        self.carves.clear();
         self.uptakes = self
             .runtime
             .trial_flows
@@ -171,6 +227,22 @@ impl Trial {
             .iter()
             .enumerate()
         {
+            if let Event::Carved {
+                organism,
+                at,
+                removed,
+            } = recorded.record
+            {
+                if removed > 0 {
+                    self.carves.push(TrialCarve {
+                        tick: recorded.tick,
+                        sequence: (start + offset) as u64,
+                        organism,
+                        at,
+                        removed,
+                    });
+                }
+            }
             let endpoints = match recorded.record {
                 Event::Moved { organism, from, to } if from != to => {
                     Some((organism, None, from, to))
@@ -254,3 +326,6 @@ fn uptake(
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod carve_tests;

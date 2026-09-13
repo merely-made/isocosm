@@ -1,0 +1,29 @@
+wait 1200
+assert snap ready == yes
+zoom 0.75
+settle 3
+click role:button World trial
+settle 3
+click role:button Mark size
+click role:button Mark height
+click role:button Mark height
+settle 3
+remember baseline
+capture baseline
+assert snap trial-carving-events == 0
+click role:button Carve ground
+settle 3
+assert snap trial-steps == 1
+assert snap trial-carving-events == 1
+more baseline trial-carving-removed
+more baseline world-ground-revision
+more baseline terrain-upload-bytes
+remember carved
+capture carved
+click role:button Hide carving
+settle 3
+same carved trial-hash
+same carved trial-carving-recent
+capture carving-hidden
+viewport-pixels-change carved carving-hidden
+assert snap error == none

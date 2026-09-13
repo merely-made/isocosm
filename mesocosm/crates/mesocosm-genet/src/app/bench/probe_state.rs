@@ -223,6 +223,11 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("transformed", yes(state.transformed))
         .with_field("renders", scene.renders.to_string())
         .with_field("mesh-bytes", scene.mesh_upload_bytes.to_string())
+        .with_field(
+            "terrain-upload-bytes",
+            scene.terrain_upload_bytes.to_string(),
+        )
+        .with_field("terrain-write-calls", scene.terrain_write_calls.to_string())
         .with_field("instance-bytes", scene.instance_upload_bytes.to_string())
         .with_field("drawn-bodies", scene.stats.voxel_bodies.to_string())
         .with_field("drawn-parts", scene.stats.voxel_parts.to_string())

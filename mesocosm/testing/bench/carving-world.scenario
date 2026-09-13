@@ -1,0 +1,192 @@
+wait 1200
+assert snap ready == yes
+zoom 0.75
+settle 3
+click role:button World trial
+settle 3
+click role:button Mark size
+click role:button Mark height
+click role:button Mark height
+settle 3
+remember baseline
+capture baseline
+assert snap trial-carving-events == 0
+click role:button Carve ground
+settle 3
+assert snap trial-steps == 1
+assert snap trial-carving-events == 1
+more baseline trial-carving-removed
+more baseline world-ground-revision
+more baseline terrain-upload-bytes
+remember carved
+capture carved
+click role:button Hide carving
+settle 3
+same carved trial-hash
+same carved trial-carving-recent
+same carved terrain-upload-bytes
+capture carving-hidden
+click role:button Show carving
+settle 3
+capture carving-restored
+viewport-pixels-same carved carving-restored
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+settle 3
+remember far
+click role:button Carve ground
+settle 3
+assert snap trial-steps == 2
+same far trial-carving-events
+same far trial-carving-removed
+same far world-ground-revision
+same far terrain-upload-bytes
+remember rejected
+capture rejected
+click role:button Reset world
+click role:button Reset carve target
+settle 3
+same baseline trial-hash
+capture reset
+viewport-pixels-same baseline reset
+click role:button Carve ground
+settle 3
+same carved trial-hash
+same carved trial-carving-recent
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve +X
+click role:button Carve ground
+settle 3
+same rejected trial-hash
+same rejected trial-trace
+same rejected trial-carving-recent
+same rejected trial-activity
+same rejected trial-uptake
+same rejected trial-carving-action
+capture replayed
+viewport-pixels-same rejected replayed
+assert snap error == none
