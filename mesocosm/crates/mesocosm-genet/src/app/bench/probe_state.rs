@@ -16,6 +16,46 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         !model.creator.pending && model.creator.prepared.is_some() && model.creator.count() > 0;
     let yes = |value| if value { "yes" } else { "no" };
     ProbeSnapshot::default()
+        .with_field("notice", state.notice.clone())
+        .with_field("seed", model.creator.request.seed.to_string())
+        .with_field("variation", model.creator.request.variation.to_string())
+        .with_field(
+            "body-plan",
+            model.creator.request.criteria.body_plan.label(),
+        )
+        .with_field(
+            "archetype",
+            model
+                .creator
+                .request
+                .criteria
+                .archetype
+                .map_or("none", |a| a.label()),
+        )
+        .with_field("size", state.generation.size.to_string())
+        .with_field(
+            "mass",
+            model
+                .world()
+                .controlled()
+                .map_or(0, |o| o.biomass_mg())
+                .to_string(),
+        )
+        .with_field(
+            "capacity",
+            model
+                .world()
+                .controlled()
+                .map_or(0, |o| o.mass_ceiling_mg())
+                .to_string(),
+        )
+        .with_field(
+            "body-bounds",
+            model
+                .world()
+                .controlled()
+                .map_or("none".into(), |o| format!("{:?}", o.body().aabb().extent())),
+        )
         .with_field(
             "comparison-rendered",
             model

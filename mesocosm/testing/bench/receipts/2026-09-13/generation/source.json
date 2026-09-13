@@ -1,0 +1,48 @@
+{
+  "date": "2026-09-13",
+  "parent": "4a197119cff47e07c7679ebfc00fc4b702663d0c",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-core/src/world/generation.rs": "49e107f2439c567c0a944518c6bcb77cd13ed4b7",
+    "mesocosm/crates/mesocosm-core/src/world/generation/body_plan.rs": "60fffe60463dc91d5d75de43096576b375794513",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "63983037cc68ad7d3445b901f62be3bb4bc53702",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/comparison.rs": "84d6ed05568fc7d24af4f48b8f3021836c881ead",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "baad16a0ef3a5817fbe8fa67104c9ca36b397326",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "7986a7b107a7dba00e21297c8fa2f81cb4c363fb",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "608a8e3b2c862070c452bac4773a5dffc791936d",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "d2b9ea20923379947da0dab420e63d72780892db",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "eb7f5dd72181c263e6ccd9044624fc8f1d07e503",
+    "mesocosm/crates/mesocosm-genet/src/app/creator.rs": "6dd85b0503176b5206b9b1e2865e62189c3530fc",
+    "mesocosm/crates/mesocosm-genet/src/bin/generate-start.rs": "3a236234f508a41aa8fe1d067db10e3a65317b04",
+    "mesocosm/crates/mesocosm-mesh/src/content.rs": "c52c47b6eb0551575c1987d44a2e6c5e1370f6c7",
+    "mesocosm/crates/mesocosm-core/src/world/generation/archetype.rs": "7b43e1e783162d5746b7d0bbaa692c40cffb653c",
+    "mesocosm/crates/mesocosm-core/src/world/generation/archetype/tests.rs": "f7800b8fbcc922f2d82e55d4e15261d4ebef7425",
+    "mesocosm/crates/mesocosm-core/src/world/generation/body_plan/generated.rs": "59f1b09c06bf85f191d23f6e92a8e9895951106d",
+    "mesocosm/crates/mesocosm-core/src/world/generation/body_plan/generated/tests.rs": "098bfd90cb039d73d4d93f9eea7c91c485bfc4a8",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/generation_controls.rs": "fd56fdc9408eceddf339ce2a75ef3b7842d1ef59",
+    "mesocosm/crates/mesocosm-mesh/src/content/size.rs": "f73a7e4d490f9fa0b13bb35ce8a2e721a16d870b"
+  },
+  "post_build_formatting": {
+    "change": "Only format! line wrapping; no semantic change",
+    "built_blob": "97211d07e0d772f0b2ba89f50c81e9bf47091cde",
+    "path": "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs"
+  },
+  "exe_sha256": "23ad1d0426fd69aebcbfcdf590aba5fe6294e4c145422918d6d0f09a1c375e07",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j 3",
+  "cargo_home": "C:/Users/mark_/Code/.cargo-homes/specimen-generation-20260913",
+  "cache": "Separate offline lock directory; existing git and registry source caches, auto-clean disabled",
+  "dependencies": "Committed Git dependencies; no sibling overrides",
+  "tests": {
+    "content": 10,
+    "generation": 27,
+    "workspace_check": "release all-features all-targets passed"
+  },
+  "saved_hash": "4e8f6296be013bcd",
+  "saved_notice": "Saved C:/Users/mark_/Code/testing/generation-wiring-2026-09-13\\specimen-proportions-m9Tdtc.json. Reopen with --bench --comparison FILE.",
+  "negative_controls": {
+    "size_exit": 1,
+    "hash_exit": 1,
+    "size_message": "Saved size does not reproduce its content.",
+    "hash_message": "Comparison no longer reproduces its saved world."
+  },
+  "native_directory": "C:/Users/mark_/Code/testing/generation-wiring-2026-09-13"
+}

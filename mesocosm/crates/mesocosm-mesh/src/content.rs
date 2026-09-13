@@ -71,6 +71,9 @@ pub struct ContentEntry {
 /// A pack that cannot truthfully resolve its palette.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ContentError {
+    InvalidSize {
+        found: u8,
+    },
     PaletteMismatch,
     InvalidExtent {
         half_extent: [i32; 3],
@@ -502,3 +505,5 @@ fn connected(volume: &Volume) -> bool {
 #[cfg(test)]
 #[path = "content_tests.rs"]
 mod tests;
+
+mod size;

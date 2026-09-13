@@ -1,0 +1,14 @@
+wait 1200
+assert snap ready == yes
+assert snap size == 2
+assert snap mass == 1600
+assert snap archetype == cat-like
+assert snap alternative == 0
+capture restored
+click role:button Generation controls
+settle 3
+click role:button Size 1
+wait 1200
+assert snap ready == yes
+assert snap size == 1
+capture base

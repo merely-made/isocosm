@@ -441,6 +441,16 @@ impl Driveable for Probe<'_, '_> {
     fn app_step(&mut self, line: &str) -> Result<(), String> {
         let words: Vec<_> = line.split_whitespace().collect();
         match words.as_slice() {
+            ["input-text", value] => {
+                let mut select = cambium::KeyEvent::new(cambium::Key::Character("a".into()));
+                select.mods.ctrl = true;
+                self.ctx.runner.dispatch_key(select);
+                self.ctx
+                    .runner
+                    .dispatch_key(cambium::KeyEvent::new(cambium::Key::Character(
+                        (*value).into(),
+                    )));
+            },
             ["resize", width, height] => {
                 let dimension = |value: &str| {
                     value

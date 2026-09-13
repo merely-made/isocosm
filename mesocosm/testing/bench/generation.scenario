@@ -1,0 +1,95 @@
+# All controls use native pointer/focus delivery. Seed 1 baseline.
+wait 1200
+assert snap ready == yes
+click role:button Generation controls
+settle 3
+click role:button raccoon-like
+wait 1200
+assert snap ready == yes
+assert snap archetype == raccoon-like
+capture raccoon
+click role:button cat-like
+wait 1200
+assert snap ready == yes
+capture cat
+click role:button horse-like
+wait 1200
+assert snap ready == yes
+capture horse
+click role:button bird-like
+wait 1200
+assert snap ready == yes
+capture bird
+click role:button fish-like
+wait 1200
+assert snap ready == yes
+capture fish
+click role:button grass
+wait 1200
+assert snap ready == yes
+capture grass
+click role:button shrub
+wait 1200
+assert snap ready == yes
+capture shrub
+click role:button tree
+wait 1200
+assert snap ready == yes
+capture tree
+click role:button generated
+wait 1200
+assert snap ready == yes
+assert snap body-plan == generated
+remember generated
+capture generated
+click role:button Reroll
+wait 1200
+assert snap ready == yes
+more generated variation
+capture rerolled
+click role:button Seed 1
+wait 1200
+same generated hash
+click role:button cat-like
+wait 1200
+remember small
+click role:button Size 2
+wait 1200
+assert snap ready == yes
+assert snap size == 2
+same small mass
+more small capacity
+capture large
+remember large
+click .generation-mass
+input-text invalid
+click role:button bird-like
+settle 2
+same large hash
+assert snap archetype == cat-like
+click .generation-mass
+input-text 1600
+click role:button Apply seed and mass
+wait 1200
+assert snap mass == 1600
+same large body-bounds
+capture heavier
+viewport-pixels-same large heavier
+click role:button Save specimen
+settle 2
+capture saved
+click role:button Size 1
+wait 1200
+assert snap size == 1
+same small body-bounds
+click role:button Random seed
+wait 1200
+assert snap ready == yes
+capture random
+click role:button bird-like
+wait 1200
+click role:button Seed 1
+wait 1200
+click role:button Generation controls
+settle 3
+capture bird-detail

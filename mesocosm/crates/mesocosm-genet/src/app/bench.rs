@@ -14,6 +14,7 @@ use cambium_genet_winit_host::{HostHooks, HostOptions, Init};
 
 mod comparison;
 mod comparison_view;
+mod generation_controls;
 mod probe;
 mod producer;
 mod state;
@@ -91,6 +92,14 @@ pub fn run_comparison(
         content: host.content,
         comparison: None,
     }));
+    let mut generation = generation_controls::Controls::new(&model.borrow());
+    if let Some(saved) = &restore {
+        generation.size = saved.size;
+        generation.base = saved
+            .base_content
+            .clone()
+            .or_else(|| Some(saved.content.clone()));
+    }
     let scene = Rc::new(RefCell::new(producer::BenchScene::new(model.clone())));
     let cards = (0..5)
         .map(|card| {
@@ -206,6 +215,7 @@ pub fn run_comparison(
                 cards,
                 export_directory,
                 restore,
+                generation,
             },
             logic: view::root as Logic,
             sheet: view::SHEET.into(),

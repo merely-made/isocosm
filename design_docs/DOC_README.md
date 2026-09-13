@@ -20,6 +20,8 @@ with [magic and generator discussions](../mesocosm/design_docs/2026-08-06_genera
   Cambium producer lifecycle, CSS appearance and native pointer routing.
   Generation comparison now holds the original beside four admitted shape
   alternatives, with native inspection, scale comparison and saved replay.
+  Generation wiring adds seeded parent trees, eight starting anatomies and
+  independent size/mass controls; native acceptance passes.
   General CSS 3D, large-DOM scaling, planar retention, the appearance crate
   merger and visible disposable world trials remain separate work.
 - [Cross-port sharing audit](../mesocosm/design_docs/2026-08-18_engine_ecology_rulings_and_review.md#7-cross-port-sharing-audit-2026-09-09):

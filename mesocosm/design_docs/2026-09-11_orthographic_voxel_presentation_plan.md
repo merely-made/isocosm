@@ -704,6 +704,71 @@ overrides. Compact receipts and source identities are under
 `testing/bench/receipts/2026-09-13/proportions/`; PNGs and saved comparison files
 remain under `Code/testing/specimen-proportions-2026-09-13/`.
 
+### Generation wiring and gap filling (2026-09-13)
+
+**Status:** generation wiring native-verified; species likeness remains open. Mark clarified that a proportion comparison is one
+control within the intended generator, not its completion. Parallel audits
+identified existing stretch graphs, appendage chains, archetype recipes and
+material accounts whose vocabulary the creator was not exposing.
+
+Core owns a new `Generated` body plan: seeded bounded parent trees, segment
+counts, socket directions, admitted shape choices and serial appendage chains.
+Axial and Branched retain their existing streams. Eight starting anatomies
+provide raccoon-like, cat-like, horse-like, bird-like, fish-like, grass, shrub
+and tree recipes. Starting forms reject developmental organ omissions; their
+feeding roles still come from ordinary realized anatomy. These references do
+not confer flying or swimming capabilities on the existing world simulation.
+
+The host exposes body plan, starting anatomy, feeding role, seed entry, random
+seed, suggested reproducible seeds, reroll, mass and size. Generation remains
+on the existing worker with stale-result rejection. Refused candidates remain
+visible. Save specimen includes the exact content, request and expected hash
+through the same saved-comparison format.
+
+Size belongs to the admitted content pack. Sizes 2 and 3 enlarge eligible
+structural shapes and update voxel bytes, content addresses and palette bounds
+together. Sensory and other role-sensitive detail retain their admitted size;
+every resize derives from the unchanged base pack. Mass remains independently
+editable paid tissue, with its own reserve and ecological consequences. Neither
+control is a CSS scaling effect. Saves retain both the base pack and selected
+size, and validate that resizing reproduces the saved content on reopen.
+
+**Done when:** all eight starts admit and render; generated topology differs
+across seeds and replays; seed/reroll and editable mass work through native
+controls; size changes authoritative bounds while preserving paid mass; mass
+changes accounts while holding geometry; saved resized specimens reconstruct;
+and previous generation and bench acceptance remain green.
+
+**Findings:** core supports ordered acyclic attachment graphs, but does not
+currently enforce whole-body self-intersection freedom. The generated grammar
+uses cardinal stretches and finite admitted shapes. Surface markings and
+finished visual recognition need their own native inspection, not inference
+from archetype labels. Native captures show distinct but still blocky structural
+prototypes; finished species likeness and surface markings remain open. World
+trials remain paused.
+
+**Receipt, 2026-09-13:** 27 core generation tests and 10 content tests pass.
+The native generation scenario passes in 106 frames with 16 captures, covering
+all eight starting forms, generated topology reroll and seed replay, invalid
+input, size and paid mass. The cat fixture changes from bounds `[16,19,30]`
+to `[32,32,60]` at Size 2 while retaining 800 mg. Capacity changes from 1,522
+to 7,429 mg. Raising mass to 1,600 mg preserves the larger bounds and all
+474,216 sampled viewport pixels. This verifies independent controls, not a
+constant-density growth rule.
+
+Saved Size 2 reopens in 19 frames with three captures and the identical
+`4e8f6296be013bcd` world hash. Restoring Size 1 recovers the base geometry.
+Falsified size metadata and expected hash both refuse before host creation;
+a zero-candidate request refuses saving without crashing. The existing native
+bench scenario (167 frames/15 captures) and proportion scenario (71/6) pass.
+The release all-features/all-targets workspace check passes on committed Git
+dependencies. An unrelated task held the shared Cargo cache lock, so the final
+frozen build used a separate offline lock directory over the already-present
+sources, with cache cleanup disabled. Source identities, native receipts and
+the one post-build formatting-only change are recorded under
+`testing/bench/receipts/2026-09-13/generation/`; images remain under
+`Code/testing/generation-wiring-2026-09-13/`.
+
 ### Bench C. Visible disposable world trial
 
 **Owner:** Mesocosm host/runtime. Reuse Prepared::enter and the existing runtime

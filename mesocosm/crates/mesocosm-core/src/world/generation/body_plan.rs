@@ -3,8 +3,10 @@
 
 use crate::axis::{Anchor, Stretch, Tagma};
 use crate::plan::Facing;
-use crate::{Kingdom, Recipe, Rng};
+use crate::{Kingdom, PartPalette, Recipe, Rng};
 use serde::{Deserialize, Serialize};
+
+mod generated;
 
 /// Developmental arrangement, independent of feeding role and taxonomy.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -13,6 +15,7 @@ pub enum BodyPlan {
     #[default]
     Axial,
     Branched,
+    Generated,
 }
 
 impl BodyPlan {
@@ -20,10 +23,14 @@ impl BodyPlan {
         match self {
             Self::Axial => "axial",
             Self::Branched => "branched",
+            Self::Generated => "generated",
         }
     }
 
-    pub(super) fn generate(self, rng: &mut Rng, role: Kingdom) -> Recipe {
+    pub(super) fn generate(self, rng: &mut Rng, role: Kingdom, palette: PartPalette) -> Recipe {
+        if self == Self::Generated {
+            return generated::draw(rng, role, palette);
+        }
         let mut recipe = crate::axis::seed(rng, role);
         if self == Self::Axial {
             return recipe; // Preserve the version-1 draw stream exactly.

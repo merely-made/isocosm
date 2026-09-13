@@ -76,6 +76,11 @@ impl Creator {
         self.preview.as_deref().unwrap_or(&self.empty)
     }
 
+    pub(super) fn replace_palette(&mut self, palette: PartPalette) {
+        self.worker = worker::Worker::new(palette);
+        self.regenerate();
+    }
+
     pub(super) fn regenerate(&mut self) {
         self.serial += 1;
         self.observation = None;
@@ -283,6 +288,7 @@ impl Host {
                 creator.request.criteria.body_plan = match creator.request.criteria.body_plan {
                     BodyPlan::Axial => BodyPlan::Branched,
                     BodyPlan::Branched => BodyPlan::Axial,
+                    BodyPlan::Generated => BodyPlan::Axial,
                 };
             },
             "k" => {

@@ -1,0 +1,11 @@
+wait 1200
+click role:button Generation controls
+settle 3
+click .generation-mass
+input-text 10000
+click role:button Apply seed and mass
+wait 1200
+assert snap candidates == 0
+click role:button Save specimen
+settle 3
+capture refused

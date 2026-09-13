@@ -20,6 +20,8 @@ pub const VERSION: u32 = 4;
 
 mod body_plan;
 pub use body_plan::BodyPlan;
+mod archetype;
+pub use archetype::Archetype;
 mod proportions;
 pub use proportions::{ProportionOption, ProportionSelection};
 mod habitat;
@@ -31,6 +33,8 @@ pub use trial::{TrialController, TrialEvidence};
 #[serde(default, deny_unknown_fields)]
 pub struct Criteria {
     pub body_plan: BodyPlan,
+    /// Recognizable starting recipe; its organs determine the feeding role.
+    pub archetype: Option<Archetype>,
     /// Feeding role read from realized organs, not biological taxonomy.
     pub role: Option<Kingdom>,
     pub min_segments: u32,
@@ -46,6 +50,7 @@ impl Default for Criteria {
     fn default() -> Self {
         Self {
             body_plan: BodyPlan::Axial,
+            archetype: None,
             role: None,
             min_segments: 1,
             max_segments: 32,
@@ -158,6 +163,11 @@ impl Request {
             return Err(Error::Invalid("start access must be 0..4 directions"));
         }
         let c = &self.criteria;
+        if c.archetype
+            .is_some_and(|a| c.role.is_some_and(|r| r != a.role()))
+        {
+            return Err(Error::Invalid("archetype conflicts with requested role"));
+        }
         if self
             .fixed_body
             .as_ref()
@@ -255,10 +265,15 @@ impl Request {
         while draft.attempted < self.attempts && draft.candidates.len() < self.candidates as usize {
             draft.attempted += 1;
             let candidate_seed = stream.next_u64();
-            let role = self.criteria.role.unwrap_or(
-                [Kingdom::Producer, Kingdom::Consumer, Kingdom::Decomposer]
-                    [((draft.attempted - 1) % 3) as usize],
-            );
+            let role = self
+                .criteria
+                .archetype
+                .map(Archetype::role)
+                .or(self.criteria.role)
+                .unwrap_or(
+                    [Kingdom::Producer, Kingdom::Consumer, Kingdom::Decomposer]
+                        [((draft.attempted - 1) % 3) as usize],
+                );
             match self.candidate(&world, palette, centre, candidate_seed, role) {
                 Ok(candidate) => {
                     if draft.candidates.iter().any(|old| {
@@ -284,7 +299,10 @@ impl Request {
         role: Kingdom,
     ) -> Result<Candidate, &'static str> {
         let mut rng = Rng::from_seed(seed);
-        let recipe = self.criteria.body_plan.generate(&mut rng, role);
+        let recipe = match self.criteria.archetype {
+            Some(archetype) => archetype.generate(&mut rng),
+            None => self.criteria.body_plan.generate(&mut rng, role, palette),
+        };
         self.candidate_recipe(world, palette, centre, seed, role, recipe)
     }
 
@@ -302,6 +320,9 @@ impl Request {
             return Err("segment constraint");
         }
         let soma = Soma::develop(&recipe, seed);
+        if self.criteria.archetype.is_some_and(|a| !a.accepts(&soma)) {
+            return Err("starting anatomy lost an organ during realization");
+        }
         let mut body =
             crate::develop_body(SpeciesId(1), &recipe, &soma, self.criteria.mass_mg, palette)
                 .map_err(|_| "development or material constraint")?;

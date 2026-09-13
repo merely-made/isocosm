@@ -35,7 +35,12 @@ impl Specimen {
         self.comparison = None;
         self.epoch = self.epoch.checked_add(1).expect("bench epoch exhausted");
         self.selected = None;
-        self.yaw = 0.0;
+        // Show the face of authored starts; the turn controls remain available.
+        self.yaw = if self.creator.request.criteria.archetype.is_some() {
+            std::f32::consts::PI
+        } else {
+            0.0
+        };
         self.changed();
     }
 
@@ -72,6 +77,7 @@ pub(super) struct Bench {
     pub cards: Vec<Rc<RefCell<BenchScene>>>,
     pub export_directory: std::path::PathBuf,
     pub restore: Option<super::comparison::SavedComparison>,
+    pub generation: super::generation_controls::Controls,
 }
 
 impl Bench {
@@ -102,6 +108,7 @@ impl Bench {
     }
 
     pub fn candidate(&mut self, backwards: bool) {
+        self.restore = None;
         let mut model = self.model.borrow_mut();
         let count = model.creator.count();
         if count == 0 {
@@ -117,6 +124,7 @@ impl Bench {
     }
 
     pub fn reroll(&mut self) {
+        self.restore = None;
         let mut model = self.model.borrow_mut();
         model.creator.request.variation = model.creator.request.variation.wrapping_add(1);
         model.creator.regenerate();
@@ -182,6 +190,9 @@ impl Bench {
     pub fn save(&mut self) {
         let mut model = self.model.borrow_mut();
         model.creator.save_draft();
-        self.notice = model.creator.notice.clone();
+        self.notice = format!(
+            "{} Criteria exclude resized content; Save specimen preserves it.",
+            model.creator.notice
+        );
     }
 }

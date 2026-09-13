@@ -141,6 +141,9 @@ pub(super) fn root(state: &Bench) -> Child {
         },
     )));
     let controls = vec![
+        button("Generation controls", |s| {
+            s.generation.open = !s.generation.open
+        }),
         button("Previous", |s| s.candidate(true)),
         button("Next", |s| s.candidate(false)),
         button("Reroll", Bench::reroll),
@@ -177,6 +180,7 @@ pub(super) fn root(state: &Bench) -> Child {
                     ),
                 ),
                 super::comparison_view::strip(state),
+                super::generation_controls::view(state),
                 el(
                     "main",
                     (
@@ -213,7 +217,9 @@ pub(super) fn root(state: &Bench) -> Child {
         )
         .attr(
             "class",
-            if model.comparison.is_some() {
+            if state.generation.open {
+                "bench generating"
+            } else if model.comparison.is_some() {
                 "bench comparing"
             } else {
                 "bench"
@@ -263,4 +269,12 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .proportion p { font-size:11px; margin:4px 0; line-height:1.25; }
 .change-summary { min-height:42px; }
 .comparing .viewport { height:220px; min-height:220px; }
+.generation-controls { padding:12px; margin-bottom:16px; border:1px solid #a6b3a5; background:#faf8f2; }
+.generation-controls p { font-size:12px; }
+.generation-controls .toolbar { margin-top:6px; align-items:center; }
+.generation-options { display:flex; flex-wrap:wrap; gap:20px; }
+.generation-choice.selected { background:#315c3e; color:white; }
+.generation-input { width:145px; padding:6px; border:1px solid #a6b3a5; background:white; }
+.generation-input input { display:block; width:100%; min-height:20px; color:#27332e; font:14px monospace; }
+.generating .viewport { height:180px; min-height:180px; }
 "#;

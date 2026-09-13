@@ -34,12 +34,31 @@ pub(super) struct SavedComparison {
     pub selection: ProportionSelection,
     pub content: ContentPack,
     pub expected_hash: u64,
+    #[serde(default)]
+    pub base_content: Option<ContentPack>,
+    #[serde(default = "base_size")]
+    pub size: u8,
+}
+
+fn base_size() -> u8 {
+    1
 }
 
 impl SavedComparison {
     pub fn load(path: &Path) -> Result<Self, String> {
         let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
         let saved: Self = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        if let Some(base) = &saved.base_content {
+            if base
+                .resized(saved.size)
+                .map_err(|e| format!("Size refused: {e:?}"))?
+                != saved.content
+            {
+                return Err("Saved size does not reproduce its content.".into());
+            }
+        } else if saved.size != 1 {
+            return Err("Saved size requires its base content.".into());
+        }
         saved
             .content
             .resolve()
@@ -249,13 +268,21 @@ impl Bench {
 
     fn write_comparison(&self) -> Result<PathBuf, String> {
         let model = self.model.borrow();
-        let comparison = model
-            .comparison
-            .as_ref()
-            .ok_or("Compare proportions first.")?;
-        let mut selection = comparison.source.clone();
-        selection.selected = comparison.selected;
+        let selection = if let Some(comparison) = &model.comparison {
+            let mut selection = comparison.source.clone();
+            selection.selected = comparison.selected;
+            selection
+        } else {
+            model
+                .creator
+                .prepared
+                .as_ref()
+                .ok_or("Wait for generation.")?
+                .proportion_selection(model.creator.selected, 0, 0)
+        };
         let saved = SavedComparison {
+            base_content: self.generation.base.clone(),
+            size: self.generation.size,
             selection,
             content: model
                 .content
@@ -263,6 +290,13 @@ impl Bench {
                 .ok_or("Saving requires an admitted content pack.")?,
             expected_hash: state_hash(model.world()),
         };
+        let reproduced = saved
+            .selection
+            .enter()
+            .map_err(|e| format!("Specimen cannot be saved: {e:?}"))?;
+        if state_hash(&reproduced) != saved.expected_hash {
+            return Err("Wait for the selected specimen before saving.".into());
+        }
         let parent = self.export_directory.as_path();
         std::fs::create_dir_all(parent).map_err(|e| e.to_string())?;
         let file = tempfile::Builder::new()

@@ -43,3 +43,30 @@ The native scenarios are `proportions.scenario` (use seed 1) and
 checks the retained original, selection, camera-scale setting, generation of
 more options and export. The second checks restoration. A changed expected
 hash or mismatching content palette must fail before the native host starts.
+
+
+## Generation controls
+
+Open **Generation controls** for axial, branched or generated body plans and
+raccoon-like, cat-like, horse-like, bird-like, fish-like, grass, shrub and tree
+starting anatomy. **Reroll** advances body variation without changing habitat;
+**Random seed** chooses and displays a new reproducible seed. Seeds 1, 7 and 42
+are checked starting points. Enter a seed or mass and choose **Apply seed and
+mass**. Invalid input refuses without replacing the current specimen.
+
+Sizes 1–3 change the admitted content and authoritative body geometry. Sensory
+and role-sensitive detail retain their original size. Mass is separately paid
+tissue and reserve; the panel reports actual body mass and capacity. A large
+body does not receive free matter. **Save specimen** preserves the seed,
+criteria, content, base size and world hash. **Save criteria** exports only the
+request and therefore does not preserve resized content.
+
+`generation.scenario` exercises all eight starts, generated reroll/replay,
+size, native mass editing and export. Reopen a saved specimen with the same
+`--bench --comparison FILE` command as a saved proportion comparison.
+
+`generation-reopen.scenario` checks preserved size and return to the base;
+`generation-refusal.scenario` checks an unfundable request and save refusal.
+Compact native receipts and source identities are in
+`receipts/2026-09-13/generation/`. The starting anatomies are structural
+prototypes; finished species likeness and surface markings remain open.

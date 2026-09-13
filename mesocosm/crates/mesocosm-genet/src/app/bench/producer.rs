@@ -156,12 +156,13 @@ impl BenchScene {
         }
         let section = self.section.as_mut().unwrap();
         section.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
-        if let Some(subject) = world.controlled_id() {
+        if let Some(organism) = world.controlled() {
+            let subject = organism.id;
             section
                 .set_body_yaw(subject, model.yaw)
                 .map_err(|e| format!("Body pose: {e:?}"))?;
             // CSS white is neutral; retain the organism's ordinary palette.
-            let base = crate::app::look_of(world.controlled().unwrap()).0;
+            let base = crate::app::look_of(organism).0;
             let appearance = [0, 1, 2].map(|i| base[i] * tint[i]);
             section
                 .set_body_tint(subject, Some(appearance))
