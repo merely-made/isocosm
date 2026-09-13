@@ -1,0 +1,199 @@
+wait 1200
+assert snap ready == yes
+click role:button World trial
+settle 3
+assert snap trial-active == true
+remember baseline
+capture baseline
+cost-begin world_steps
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+cost-end
+settle 3
+assert snap trial-steps == 8
+assert snap section-active == yes
+assert snap section-fallback-bodies == 0
+assert snap section-omitted-bodies == 0
+assert snap section-missing-volumes == 0
+assert snap section-projection-failures == 0
+remember activity
+capture activity
+cost-begin marks_shown
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+cost-end
+click role:button Natural
+settle 3
+same activity trial-hash
+same activity trial-activity
+cost-begin paused
+settle 40
+cost-end
+same activity trial-hash
+same activity trial-activity
+cost-begin activity_visibility
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+click role:button Hide activity
+click role:button Show activity
+cost-end
+settle 3
+same activity trial-hash
+same activity trial-activity
+capture restored
+viewport-pixels-same activity restored
+click role:button Hide activity
+settle 3
+assert snap trial-show-marks == false
+assert snap trial-visible-marks == 0
+same activity trial-hash
+same activity trial-activity
+capture hidden
+viewport-pixels-change activity hidden
+cost-begin marks_hidden
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+click role:button Warm
+click role:button Cool
+cost-end
+click role:button Natural
+settle 3
+same activity trial-hash
+same activity trial-activity
+click role:button Reset world
+settle 3
+assert snap trial-show-marks == false
+same baseline trial-hash
+cost-begin hidden_world_steps
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+cost-end
+settle 3
+same activity trial-hash
+same activity trial-activity
+same activity trial-total-moved
+same activity trial-total-fed
+assert snap trial-visible-marks == 0
+click role:button Show activity
+settle 3
+capture replayed
+viewport-pixels-same activity replayed
+same activity trial-visible-marks
+assert snap error == none
+remember play_begin
+cost-begin playback
+click role:button Play world
+settle 120
+click role:button Pause world
+cost-end
+settle 3
+more play_begin trial-steps
+capture playback
+assert snap trial-playing == false
+assert snap error == none

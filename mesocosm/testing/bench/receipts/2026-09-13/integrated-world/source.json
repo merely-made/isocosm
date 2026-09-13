@@ -1,0 +1,24 @@
+{
+  "parent": "c77e7256a3b97e99bee02c811e0121dc8152f0bc",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial.rs": "4210ae79436c413845d9ebac05abf36244e2a58f",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "00a883d6d2eb4a34b691a987005768d4ba601139",
+    "mesocosm/testing/bench/integrated-world.scenario": "bc7917df4ef4866c6fcc7da31b794e39fee58954"
+  },
+  "executable_sha256": "4ceca15c300ee22173fb0c32779c08c7da6a3dc7247c21f685bb5cfaa87bb60a",
+  "raw": "C:\\Users\\mark_\\Code\\testing\\integrated-world-2026-09-13",
+  "build": "cargo build --release --frozen -p mesocosm-genet -j3",
+  "tests": "cargo test --release --frozen -p mesocosm-genet --lib section:: -j3 -- --nocapture: 39 passed",
+  "repeat": "From mesocosm: mesocosm-genet.exe --bench --comparison testing/bench/receipts/2026-09-13/integrated-world/NAME-source.json --frames 1800 --scenario testing/bench/integrated-world.scenario --receipt OUTPUT.json --capture OUTPUT.png",
+  "limits": [
+    "Native CPU wall time, not GPU duration.",
+    "Comparison cards remain present; aggregate producer timers and upload counters include all six surfaces. Material alternation invalidates the main surface only; visibility and simulation changes invalidate all six.",
+    "Manual scenario steps occur after_frame and exclude some simulation work; autoplay frame_hook includes ordinary timed stepping. Autoplay tick count varies with wall time.",
+    "Markers describe organism-level movement and feeding; producer uptake has no mark.",
+    "Section counters are last-produced texture work, not visible pixels; candidates are filtered by renderer policy.",
+    "Terrain counters, three-way depth oracle, full memory, transparency and scaled ecological workload remain open.",
+    "Default document clips lower viewport; pixel checks cover the captured viewport portion.",
+    "No build from this task during the final native matrix; external load was not recorded. Initial wait command was a readiness wait, not elapsed-time delay; failed receipt retained in raw folder, corrected to settle 120."
+  ],
+  "lifecycle": "world-trial-play.scenario: 190 frames, 3 captures, pass"
+}

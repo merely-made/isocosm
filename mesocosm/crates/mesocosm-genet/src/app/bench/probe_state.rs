@@ -307,5 +307,81 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     } else {
         snapshot = snapshot.with_field("population", "false");
     }
+    // Scene counters describe the last produced Section texture. Retention can
+    // reuse that texture over multiple document callbacks; these are not per-
+    // callback deltas or a claim about visible pixels.
+    let ordinary = scene.section.is_some() && scene.population_stats.is_none();
+    snapshot = snapshot.with_field("section-active", yes(ordinary));
+    snapshot = snapshot.with_field(
+        "section-stats-scope",
+        if ordinary {
+            "last-produced-texture"
+        } else {
+            "unavailable"
+        },
+    );
+    let count = |value: usize| {
+        if ordinary {
+            value.to_string()
+        } else {
+            "unavailable".into()
+        }
+    };
+    for (name, value) in [
+        ("section-body-candidates", scene.stats.candidates),
+        ("section-voxel-bodies", scene.stats.voxel_bodies),
+        ("section-voxel-parts", scene.stats.voxel_parts),
+        ("section-draw-parts", scene.stats.draw_parts),
+        ("section-fallback-bodies", scene.stats.fallback_bodies),
+        (
+            "section-fallback-parts-dropped",
+            scene.stats.fallback_parts_dropped,
+        ),
+        ("section-omitted-bodies", scene.stats.omitted_bodies),
+        ("section-missing-volumes", scene.stats.missing_volumes),
+        (
+            "section-projection-failures",
+            scene.stats.projection_failures,
+        ),
+        ("section-carcasses", scene.stats.carcasses),
+        ("section-material-parts", scene.stats.material_parts),
+        ("section-secretory-parts", scene.stats.secretory_parts),
+        ("section-mesh-builds", scene.stats.mesh_builds),
+        ("section-glyphs-submitted", scene.glyph_count),
+        ("section-glyph-anchors", scene.anchor_count),
+    ] {
+        snapshot = snapshot.with_field(name, count(value));
+    }
+    snapshot = snapshot
+        .with_field(
+            "section-body-stats",
+            if ordinary {
+                serde_json::to_string(&scene.stats).expect("body frame stats serialize")
+            } else {
+                "unavailable".into()
+            },
+        )
+        .with_field(
+            "section-controlled-drawn",
+            if ordinary {
+                yes(scene.stats.controlled_drawn)
+            } else {
+                "unavailable"
+            },
+        )
+        .with_field(
+            "section-projection-error",
+            if ordinary {
+                scene.stats.last_error.as_deref().unwrap_or("none")
+            } else {
+                "unavailable"
+            },
+        )
+        .with_field("section-terrain-counters", "unavailable")
+        .with_field("world-organisms", model.world().organisms.len().to_string())
+        .with_field(
+            "world-ground-revision",
+            model.world().ground().revision().to_string(),
+        );
     snapshot
 }

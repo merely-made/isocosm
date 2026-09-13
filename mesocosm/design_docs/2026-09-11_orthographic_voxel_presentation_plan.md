@@ -1053,11 +1053,49 @@ compositing, full memory accounting and application working limits remain open.
 The raw capture/profile paths, source identities and repeat commands are in
 [the source receipt](../testing/bench/receipts/2026-09-13/density/source.json).
 
+**Integrated generated-world receipt (2026-09-13).** The existing Section path
+now has a [three-source native matrix](../testing/bench/receipts/2026-09-13/integrated-world/matrix.json):
+axial consumer, rooted producer, and size-2 cat-like consumer, reopened from
+retained requests, palettes and volume content. Each passes 391 frames, eight
+ordinary Idle steps, activity hiding/restoration, hidden-step reset/replay,
+and autoplay/pause. Showing activity again restores identical captured viewport
+pixels and identical history, event totals and world hash. The trial's new
+Show/Hide activity setting affects presentation only and survives reset.
+
+At tick eight the three worlds submit respectively 13/15/16 voxel bodies,
+454/492/537 parts, and 27/39/35 activity glyphs. All report zero fallback,
+budget omission, missing volume and projection failure. These are submitted
+counts after Section filtering, not a visible-pixel census. The rooted world
+has movement and feeding by its other organisms; uptake itself has no glyph.
+Read-only Section probe fields now expose that distinction, complete body
+stats, world organism count and ground revision. Terrain counters are explicitly
+unavailable.
+
+Forty alternating material changes force main-surface redraws at the same
+paused poses, both with marks and without them. CPU producer medians span
+1.05-1.86 ms in this run; paused frames cause zero actual scene redraws and
+zero mesh/instance uploads. Warm phases upload no body mesh geometry. The
+shown-first ordering and timing variation do not establish an incremental
+glyph cost. Five comparison surfaces remain in the document: material changes
+redraw the main surface, while visibility and simulation revisions redraw all
+six. Aggregate profiles therefore remain document-level receipts. Manual-step
+phases exclude some simulation CPU in the after-frame scenario callback;
+a separate autoplay phase includes ordinary frame-hook stepping and records
+its actual tick count. Neither is a GPU duration or an application budget.
+
+The 39 Section tests, including pairwise body/terrain and body/glyph depth,
+and the 190-frame trial lifecycle scenario pass. A three-way generated depth
+oracle remains open. Default window captures clip the lower viewport, so
+pixel checks cover its captured portion. Complete terrain accounting, larger
+ecological populations, transparency, uptake/contact effects and full memory
+remain next gates. Exact sources, executable identity, repeat command and
+measurement limits are in the [source receipt](../testing/bench/receipts/2026-09-13/integrated-world/source.json).
+
 The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
 bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;
-dense/layered fixtures now have a follow-up receipt; integrated real scenes
-and application working limits remain open. T1 general
+dense/layered fixtures and three bounded generated worlds now have receipts;
+scaled ecological scenes and application working limits remain open. T1 general
 CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.

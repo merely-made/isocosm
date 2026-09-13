@@ -24,6 +24,7 @@ pub(super) struct WorldTrial {
     pub fed: u64,
     pub marker_height: f32,
     pub marker_size: f32,
+    pub show_marks: bool,
     recent: Vec<TrialActivity>,
     last: Instant,
 }
@@ -38,6 +39,7 @@ impl WorldTrial {
             fed: 0,
             marker_height: 4.0,
             marker_size: 1.4,
+            show_marks: true,
             recent: Vec::new(),
             last: Instant::now(),
         })
@@ -68,6 +70,10 @@ impl WorldTrial {
         true
     }
     fn refresh_marks(&mut self) {
+        if !self.show_marks {
+            self.marks.clear();
+            return;
+        }
         let tick = self.driver.world().tick;
         self.marks = self
             .recent
@@ -139,6 +145,7 @@ impl WorldTrial {
             ("trial-visible-marks", self.marks.len().to_string()),
             ("trial-marker-height", self.marker_height.to_string()),
             ("trial-marker-size", self.marker_size.to_string()),
+            ("trial-show-marks", self.show_marks.to_string()),
             (
                 "trial-checkpoint",
                 self.driver.checkpoint().is_some().to_string(),
@@ -238,6 +245,14 @@ impl Bench {
             m.trial_replaced();
         }
     }
+    fn toggle_trial_marks(&mut self) {
+        let mut m = self.model.borrow_mut();
+        if let Some(t) = &mut m.trial {
+            t.show_marks = !t.show_marks;
+            t.refresh_marks();
+            m.changed();
+        }
+    }
     fn exit_trial(&mut self) {
         let mut m = self.model.borrow_mut();
         m.trial = None;
@@ -267,7 +282,7 @@ pub(super) fn view(state: &Bench) -> Child {
         "Paused"
     };
     Box::new(el("section",(
-        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
+        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
         el("p",text(format!("{status} / {} of {MAX_TRIAL_STEPS} ticks / {} movements, {} meals / {} activity marks / height {} / size {}",trial.driver.steps(),trial.moved,trial.fed,trial.marks.len(),trial.marker_height,trial.marker_size))),
         el("p",text("Recorded movement and feeding, with adjustable raised markers. The trial leaves saved generation unchanged.")),
     )).attr("class","world-trial"))
