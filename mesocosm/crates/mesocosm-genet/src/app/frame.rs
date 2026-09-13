@@ -94,21 +94,34 @@ impl Host {
                 .as_ref()
                 .map(|gpu| (gpu.config.width, gpu.config.height))
                 .unwrap_or((960, 540));
-            if let Some((focused, fitted, depth)) = grafting::framing(
-                self.creator
-                    .as_ref()
-                    .map(creator::Creator::world)
-                    .unwrap_or_else(|| {
-                        self.grafting
-                            .preview
-                            .as_deref()
-                            .unwrap_or(self.runtime.world())
-                    }),
-                frame,
-                self.config.camera,
-                self.habitat.as_ref().map(|_| self.config.terrarium_pitch),
-                body_scale,
-            ) {
+            let candidate = self
+                .creator
+                .as_ref()
+                .map(creator::Creator::world)
+                .unwrap_or_else(|| {
+                    self.grafting
+                        .preview
+                        .as_deref()
+                        .unwrap_or(self.runtime.world())
+                });
+            let bounds = self.gpu.as_mut().and_then(|gpu| {
+                candidate.controlled().and_then(|organism| {
+                    // A missing geometry projection already receives the
+                    // renderer's counted fallback; retain ordinary framing.
+                    gpu.section
+                        .presentation_bounds(organism, &self.volumes)
+                        .ok()
+                        .flatten()
+                })
+            });
+            if let Some((focused, fitted, depth)) = bounds.and_then(|bounds| {
+                grafting::framing(
+                    bounds,
+                    frame,
+                    self.config.camera,
+                    self.habitat.as_ref().map(|_| self.config.terrarium_pitch),
+                )
+            }) {
                 centre = focused;
                 view_half = fitted;
                 preview_depth = depth;

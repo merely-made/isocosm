@@ -16,7 +16,10 @@ use std::ops::Deref;
 use mesocosm_core::places::{BRICK, Ground};
 use modulus::BrickMap as SharedBrickMap;
 
+mod ray;
+
 pub use modulus::{BrickMapError, BrickProjectionRevision, RetargetDelta};
+pub use ray::{BrickRayError, BrickRayHit};
 
 /// A Ground-backed adapter over the product-neutral brick map.
 #[derive(Clone, Debug)]

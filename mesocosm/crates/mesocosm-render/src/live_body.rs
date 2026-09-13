@@ -13,18 +13,27 @@
 use std::collections::BTreeMap;
 
 use bytemuck::{Pod, Zeroable};
+#[cfg(test)]
 use glam::Mat4;
-use mesocosm_core::{PartId, VolumeRef, Yaw};
+#[cfg(test)]
+use mesocosm_core::Yaw;
+use mesocosm_core::{PartId, VolumeRef};
 use mesocosm_mesh::{BodyMesh, PartMesh};
 use wgpu::util::DeviceExt;
 
 use crate::geometry::{Vertex, face_shade, material_colour};
 
 mod materials;
+mod pose;
+mod query;
 
 pub use materials::PartMaterial;
+pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies};
 
-use materials::{part_appearance, valid_materials};
+use materials::part_appearance;
+#[cfg(test)]
+use materials::valid_materials;
+use pose::{model_matrix, validate_body, validate_clip};
 
 /// A body owned by the caller's projection. Identity remains alongside this
 /// lightweight draw item in the host's attributed projection.
@@ -329,34 +338,9 @@ impl LiveBodyRenderer {
         {
             return Err(LiveBodyError::InvalidClip);
         }
-        if let Some(slab) = clip_slab
-            && (!slab.normal.iter().all(|value| value.is_finite())
-                || !slab.min.is_finite()
-                || !slab.max.is_finite()
-                || slab.min > slab.max
-                || slab.normal.iter().map(|value| value * value).sum::<f32>() <= f32::EPSILON)
-        {
-            return Err(LiveBodyError::InvalidClip);
-        }
+        validate_clip(clip_slab)?;
         for body in bodies {
-            if !body.origin.iter().all(|value| value.is_finite())
-                || !body.scale.is_finite()
-                || body.scale <= 0.0
-                || !body.yaw_radians.is_finite()
-                || !body.tint.iter().all(|value| value.is_finite())
-            {
-                return Err(LiveBodyError::InvalidBody);
-            }
-            for placement in &body.mesh.placements {
-                if body.mesh.mesh_for(placement.volume).is_none() {
-                    return Err(LiveBodyError::MissingMesh {
-                        volume: placement.volume,
-                    });
-                }
-            }
-            if !valid_materials(body.materials) {
-                return Err(LiveBodyError::InvalidMaterials);
-            }
+            validate_body(*body)?;
         }
         self.clock = self.clock.wrapping_add(1);
         let mut stats = BodyDrawStats::default();
@@ -550,29 +534,6 @@ impl LiveBodyRenderer {
             cached.bytes.extend_from_slice(bytes);
         }
     }
-}
-
-fn model_matrix(body: LiveBody<'_>, yaw: Yaw, pivot: [i32; 3], pivot_at: [i32; 3]) -> Mat4 {
-    let angle = match yaw {
-        Yaw::Zero => 0.0,
-        Yaw::Quarter => core::f32::consts::FRAC_PI_2,
-        Yaw::Half => core::f32::consts::PI,
-        Yaw::ThreeQuarter => -core::f32::consts::FRAC_PI_2,
-    };
-    Mat4::from_translation(glam::Vec3::from_array(body.origin))
-        * Mat4::from_scale(glam::Vec3::splat(body.scale))
-        * Mat4::from_rotation_y(body.yaw_radians)
-        * Mat4::from_translation(glam::Vec3::new(
-            pivot_at[0] as f32,
-            pivot_at[1] as f32,
-            pivot_at[2] as f32,
-        ))
-        * Mat4::from_rotation_y(angle)
-        * Mat4::from_translation(glam::Vec3::new(
-            -pivot[0] as f32,
-            -pivot[1] as f32,
-            -pivot[2] as f32,
-        ))
 }
 
 fn part_vertices(mesh: &PartMesh) -> Vec<Vertex> {

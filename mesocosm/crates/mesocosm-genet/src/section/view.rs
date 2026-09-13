@@ -51,14 +51,32 @@ impl View {
         if self.pitch.is_none() && self.depth == super::SLAB_DEPTH {
             return self.mode.slab_reach(self.half, self.aspect);
         }
-        let [_, up, forward] = self.basis();
-        SlabWall::new(forward, up, self.half, self.aspect, self.depth)
+        let forward = self.basis()[2];
+        SlabWall::new(forward, [0.0, 1.0, 0.0], self.half, self.aspect, self.depth)
             .map_or(self.depth * 0.5, |wall| wall.reach)
     }
 
     pub fn trace(self) -> Option<TraceCamera> {
-        let [_, up, forward] = self.basis();
-        TraceCamera::orthographic_slab(self.centre, forward, up, self.half, self.aspect, self.depth)
+        if self.centre.iter().any(|v| !v.is_finite())
+            || [self.half, self.aspect, self.depth]
+                .iter()
+                .any(|v| !v.is_finite() || *v <= 0.0)
+            || self.pitch.is_some_and(|pitch| !pitch.is_finite())
+        {
+            return None;
+        }
+        let forward = self.basis()[2];
+        // The constructor's up vector defines the standing wall, not merely
+        // the screen basis. Supplying screen-up tilts the ray interval away
+        // from the body shader's world-vertical cut slab.
+        TraceCamera::orthographic_slab(
+            self.centre,
+            forward,
+            [0.0, 1.0, 0.0],
+            self.half,
+            self.aspect,
+            self.depth,
+        )
     }
 
     pub fn window(self) -> SlabWindow {
@@ -112,6 +130,47 @@ fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn pitched_rays_start_and_end_on_the_same_standing_walls_as_body_clipping() {
+        for pitch in [12.0, 45.0] {
+            let mut mode = CameraMode::TerrariumEast;
+            for _ in 0..4 {
+                let view = View {
+                    mode,
+                    centre: [3.0, 200.0, -7.0],
+                    half: 5.0,
+                    aspect: 1.0,
+                    depth: 16.0,
+                    pitch: Some(pitch),
+                    bounds: None,
+                };
+                let camera = view.trace().unwrap();
+                let clip = view.clip();
+                for ndc in [[0.0, 0.5], [-0.75, -0.75], [0.75, 0.75]] {
+                    let (origin, direction) = camera.ray_at(ndc).unwrap();
+                    let end = [0, 1, 2].map(|i| origin[i] + direction[i] * camera.far());
+                    assert!(
+                        (dot(clip.normal, origin) - clip.min).abs() < 1e-4,
+                        "{mode:?}/{pitch}: front wall"
+                    );
+                    assert!(
+                        (dot(clip.normal, end) - clip.max).abs() < 1e-4,
+                        "{mode:?}/{pitch}: far wall"
+                    );
+                    for point in [origin, end] {
+                        let matrix = view.matrix();
+                        let depth =
+                            matrix[3][2] + (0..3).map(|i| matrix[i][2] * point[i]).sum::<f32>();
+                        assert!(
+                            (0.0..=1.0).contains(&depth),
+                            "standing interval must fit raster depth"
+                        );
+                    }
+                }
+                mode = mode.quarter_turn(false);
+            }
+        }
+    }
     #[test]
     fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
         for pitch in [0.0, 12.0, 45.0] {

@@ -21,9 +21,13 @@ impl Section {
         section_centre: [f32; 3],
         clearing_y: f32,
     ) {
+        let before = (self.grade, self.terrain_appearance);
         if style.resolved(self.terrarium.is_some()) == TerrainStyle::Classic {
             self.terrain_appearance = None;
             self.grade = Grade::retro(PALETTE);
+            if before != (self.grade, self.terrain_appearance) {
+                self.invalidate_query();
+            }
             return;
         }
         self.grade = Grade {
@@ -39,6 +43,9 @@ impl Section {
             section_centre,
             clearing_y,
         });
+        if before != (self.grade, self.terrain_appearance) {
+            self.invalidate_query();
+        }
     }
 }
 

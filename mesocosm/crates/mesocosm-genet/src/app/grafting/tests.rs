@@ -30,8 +30,19 @@ fn whole_body_preview_fits_deep_bodies_after_every_turn() {
             for mode in CameraMode::ALL {
                 for pitch in [None, Some(12.0)] {
                     for frame in [(960, 600), (1280, 720)] {
-                        let (centre, half, depth) =
-                            framing(&world, frame, mode, pitch, 1.0).unwrap();
+                        let origin = [0, 1, 2].map(|i| {
+                            organism.position[i] as f32
+                                - if i == 1 && pitch.is_some() {
+                                    bounds.min[1] as f32
+                                } else {
+                                    0.0
+                                }
+                        });
+                        let presented = (
+                            [0, 1, 2].map(|i| origin[i] + bounds.min[i] as f32),
+                            [0, 1, 2].map(|i| origin[i] + bounds.max[i] as f32),
+                        );
+                        let (centre, half, depth) = framing(presented, frame, mode, pitch).unwrap();
                         exceeds_world_slice |= depth > crate::section::SLAB_DEPTH;
                         let [right, up, _] = camera_basis(mode, pitch);
                         let normal = [right[2], 0.0, -right[0]];
@@ -67,6 +78,52 @@ fn whole_body_preview_fits_deep_bodies_after_every_turn() {
         exceeds_world_slice,
         "fixture must exercise the old thin-slice failure"
     );
+}
+
+#[test]
+fn rotating_presentation_bounds_fit_beside_the_panel_and_inside_the_slab() {
+    use mesocosm_mesh::{BodyMesh, Volume};
+    use mesocosm_render::live_body::{LiveBody, body_bounds};
+    let mesh = BodyMesh::single(
+        mesocosm_core::VolumeRef::from_tag(251),
+        &Volume::solid([4, 6, 40], 3),
+    );
+    for degrees in [0.0_f32, 45.0, 90.0, 180.0, 270.0, 360.0] {
+        let mut body = LiveBody::new(&mesh, [13.0, 4.0, -17.0]);
+        body.yaw_radians = degrees.to_radians();
+        let bounds = body_bounds(body).unwrap().unwrap();
+        for mode in crate::section::CameraMode::ALL {
+            let frame = (960, 600);
+            let pitch = Some(12.0);
+            let (centre, half, depth) = framing(bounds, frame, mode, pitch).unwrap();
+            let [right, up, forward] = crate::section::camera_basis(mode, pitch);
+            let length = forward[0].hypot(forward[2]);
+            let normal = [forward[0] / length, 0.0, forward[2] / length];
+            let available =
+                (frame.0 as f32 - mesocosm_views::BODY_MENU_WIDTH as f32 - 24.0).max(80.0);
+            let left = -half * frame.0 as f32 / frame.1 as f32;
+            let right_edge = left + 2.0 * half * available / frame.1 as f32;
+            for mask in 0..8 {
+                let delta = [0, 1, 2].map(|i| {
+                    if mask & (1 << i) == 0 {
+                        bounds.0[i] - centre[i]
+                    } else {
+                        bounds.1[i] - centre[i]
+                    }
+                });
+                let dot = |axis: [f32; 3]| (0..3).map(|i| delta[i] * axis[i]).sum::<f32>();
+                assert!(
+                    dot(right) > left && dot(right) < right_edge,
+                    "{degrees}/{mode:?}: panel fit"
+                );
+                assert!(dot(up).abs() < half, "{degrees}/{mode:?}: vertical fit");
+                assert!(
+                    dot(normal).abs() < depth * 0.5,
+                    "{degrees}/{mode:?}: cutaway fit"
+                );
+            }
+        }
+    }
 }
 
 #[test]

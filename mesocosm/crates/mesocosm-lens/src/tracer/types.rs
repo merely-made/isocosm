@@ -228,9 +228,19 @@ impl TraceCamera {
         .expect("Flight carries a valid camera")
     }
 
-    #[cfg(test)]
-    pub(crate) fn ray_at(self, ndc: [f32; 2]) -> ([f32; 3], [f32; 3]) {
-        if self.projection == ORTHOGRAPHIC {
+    /// Ray seeded on the same front wall as the shader. NDC uses positive Y
+    /// upward. Invalid coordinates or deserialized camera values return None.
+    pub fn ray_at(self, ndc: [f32; 2]) -> Option<([f32; 3], [f32; 3])> {
+        if !ndc.into_iter().all(f32::is_finite)
+            || !self.far.is_finite()
+            || self.far <= 0.0
+            || !matches!(self.projection, ORTHOGRAPHIC | PERSPECTIVE)
+            || (self.projection == ORTHOGRAPHIC
+                && (dot(self.forward, self.forward) - 1.0).abs() > 8.0 * f32::EPSILON)
+        {
+            return None;
+        }
+        let ray = if self.projection == ORTHOGRAPHIC {
             // The shader's `camera_ray`, in the same order: the near-plane
             // point, then the slide along forward onto the front wall.
             let advance = self.wall[0] * ndc[0] + self.wall[1] * ndc[1] + self.wall[2];
@@ -250,10 +260,16 @@ impl TraceCamera {
                 normalize(add(
                     self.forward,
                     add(scale(self.right, ndc[0]), scale(self.up, ndc[1])),
-                ))
-                .expect("camera rays are nonzero"),
+                ))?,
             )
-        }
+        };
+        (ray.0.into_iter().chain(ray.1).all(f32::is_finite) && dot(ray.1, ray.1) > 1e-12)
+            .then_some(ray)
+    }
+
+    /// World-space traversal distance starting at `ray_at`'s front wall.
+    pub const fn far(self) -> f32 {
+        self.far
     }
 }
 
@@ -514,12 +530,19 @@ mod camera_tests {
             6.0,
         )
         .unwrap();
-        let left = camera.ray_at([-1.0, 0.0]);
-        let right = camera.ray_at([1.0, 0.0]);
+        let left = camera.ray_at([-1.0, 0.0]).unwrap();
+        let right = camera.ray_at([1.0, 0.0]).unwrap();
         assert_eq!(left.1, right.1);
         assert_eq!(left.0[0], -10.0);
         assert_eq!(right.0[0], 10.0);
         assert_eq!(left.0[2], 11.0);
+        assert_eq!(camera.far(), 6.0);
+        assert!(camera.ray_at([f32::NAN, 0.0]).is_none());
+        let invalid = TraceCamera {
+            forward: [0.0, 0.0, -2.0],
+            ..camera
+        };
+        assert!(invalid.ray_at([0.0, 0.0]).is_none());
     }
 
     #[test]
@@ -533,10 +556,12 @@ mod camera_tests {
             20.0,
         )
         .unwrap();
-        let left = camera.ray_at([-1.0, 0.0]);
-        let right = camera.ray_at([1.0, 0.0]);
+        let left = camera.ray_at([-1.0, 0.0]).unwrap();
+        let right = camera.ray_at([1.0, 0.0]).unwrap();
         assert_eq!(left.0, right.0);
         assert!(left.1[0] < 0.0);
         assert!(right.1[0] > 0.0);
+        assert_eq!(camera.far(), 20.0);
+        assert!(camera.ray_at([0.0, f32::INFINITY]).is_none());
     }
 }

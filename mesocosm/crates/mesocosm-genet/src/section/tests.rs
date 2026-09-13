@@ -64,7 +64,7 @@ fn an_unset_half_height_falls_back_to_the_ruled_default() {
 /// and says what it could not carry.
 #[test]
 fn a_body_of_the_playtest_size_is_still_posed() {
-    use mesocosm_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+    use mesocosm_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
 
     let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, [2, 2, 2]);
     for index in 0..303 {

@@ -32,7 +32,7 @@ mod terrain_tests;
 mod tracer_tests;
 
 pub use body::{BodyLensProjection, BodyPlacement, BodyProjectionError, BodyRevision, LensPart};
-pub use bricks::{BrickMap, BrickMapError, BrickProjectionRevision};
+pub use bricks::{BrickMap, BrickMapError, BrickProjectionRevision, BrickRayError, BrickRayHit};
 pub use renderer::{
     Capture, DirtyRect, FRAME_FORMAT, FrameDiagnostics, FrameInput, Lens, LensError, MapChange,
     MapRevision,

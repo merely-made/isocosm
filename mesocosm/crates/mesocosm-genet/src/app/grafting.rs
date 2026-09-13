@@ -298,28 +298,27 @@ impl Host {
     }
 }
 
-/// Fit the candidate beside the panel using the same camera basis as terrain
-/// and body rendering. This temporary framing never changes saved camera settings.
+/// Fit the candidate's presented bounds beside the panel using the same
+/// camera basis as terrain and body rendering. This temporary framing never
+/// changes saved camera settings or the fixed habitat volume.
 pub(super) fn framing(
-    world: &World,
+    (min, max): ([f32; 3], [f32; 3]),
     frame: (u32, u32),
     mode: crate::section::CameraMode,
     pitch: Option<f32>,
-    scale: f32,
 ) -> Option<([f32; 3], f32, f32)> {
-    let organism = world.controlled()?;
-    let bounds = organism.body().aabb();
+    if frame.0 == 0
+        || frame.1 == 0
+        || (0..3).any(|i| !min[i].is_finite() || !max[i].is_finite() || min[i] > max[i])
+    {
+        return None;
+    }
     let [right, up, forward] = crate::section::camera_basis(mode, pitch);
-    let size: [f32; 3] = [0, 1, 2].map(|i| (bounds.max[i] - bounds.min[i]) as f32 * scale);
+    let size: [f32; 3] = [0, 1, 2].map(|i| max[i] - min[i]);
     let span = |axis: [f32; 3]| (0..3).map(|i| size[i] * axis[i].abs()).sum::<f32>();
     let available = (frame.0 as f32 - mesocosm_views::BODY_MENU_WIDTH as f32 - 24.0).max(80.0);
     let half = (span(up).max(span(right) * frame.1 as f32 / available) * 0.75).max(2.0);
-    let mut centre = [0, 1, 2].map(|i| {
-        organism.position[i] as f32 + (bounds.min[i] + bounds.max[i]) as f32 * 0.5 * scale
-    });
-    if pitch.is_some() {
-        centre[1] -= bounds.min[1] as f32 * scale;
-    }
+    let mut centre = [0, 1, 2].map(|i| (min[i] + max[i]) * 0.5);
     let offset = half * (frame.0 as f32 - available) / frame.1.max(1) as f32;
     for i in 0..3 {
         centre[i] += right[i] * offset;

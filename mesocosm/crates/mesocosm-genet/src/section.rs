@@ -17,7 +17,11 @@
 
 mod bodies;
 mod camera;
+mod capsules;
 mod capture;
+#[cfg(test)]
+use capsules::pose_at;
+pub use capsules::{pose_of, pose_of_scaled, roster_of, roster_of_scaled};
 mod materials;
 mod terrain;
 mod terrarium;
@@ -30,15 +34,15 @@ pub use view::camera_basis;
 mod inspection;
 
 pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
-pub use inspection::BodySelection;
+pub use inspection::{BodyPick, BodyPickError, BodySelection};
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, SlabWindow, TERRARIUM_DEGREES};
 
+use mesocosm_core::World;
 use mesocosm_core::places::Ground;
-use mesocosm_core::{BodyDocument, Organism, World};
 use mesocosm_lens::{
-    BodyLensProjection, BodyPlacement, BrickChange, BrickFrameInput, BrickMap, BrickRevision,
-    BrickTracer, CritterPose, FRAME_FORMAT, Grade, MAX_ROSTER, TraceCamera,
+    BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, FRAME_FORMAT,
+    Grade, TraceCamera,
 };
 use mesocosm_render::composite::Composite;
 
@@ -93,6 +97,9 @@ pub struct Section {
     queue: wgpu::Queue,
     tracer: BrickTracer,
     map: BrickMap,
+    /// A CPU map change that has not reached a successful terrain encode.
+    /// Isolated previews and failed frames must not consume its upload.
+    terrain_upload_pending: bool,
     grade: Grade,
     terrain_appearance: Option<mesocosm_lens::TerrainAppearance>,
     width: u32,
@@ -106,6 +113,7 @@ pub struct Section {
     body_mode: BodyMode,
     bodies: bodies::BodyLayer,
     terrarium: Option<terrarium::TerrariumView>,
+    presented: Option<inspection::PresentedFrame>,
     /// What the tracer writes: display-encoded values in a linear-tagged
     /// format, exactly as the lens's own captures read them back.
     traced: wgpu::Texture,
@@ -150,6 +158,7 @@ impl Section {
             queue,
             tracer,
             map,
+            terrain_upload_pending: true,
             grade: Grade::retro(PALETTE),
             terrain_appearance: None,
             width,
@@ -159,6 +168,7 @@ impl Section {
             body_mode: BodyMode::default(),
             bodies,
             terrarium: None,
+            presented: None,
             traced,
             traced_view,
             display,
@@ -168,6 +178,7 @@ impl Section {
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
+        self.invalidate_query();
         self.width = width.max(1);
         self.height = height.max(1);
         self.tracer.resize(self.width, self.height);
@@ -208,6 +219,9 @@ impl Section {
     }
 
     pub fn configure_bodies(&mut self, mode: BodyMode, budget: usize) {
+        if self.body_mode != mode || self.bodies.budget != budget.max(1) {
+            self.invalidate_query();
+        }
         self.body_mode = mode;
         self.bodies.budget = budget.max(1);
         if mode == BodyMode::Capsules {
@@ -226,7 +240,11 @@ impl Section {
 
     /// Host-owned framing, shared by terrain rays, body depth and culling.
     pub fn set_half_height(&mut self, half: f32) {
-        self.half_height = half_height_or_default(half);
+        let half = half_height_or_default(half);
+        if self.half_height != half {
+            self.invalidate_query();
+            self.half_height = half;
+        }
     }
 
     /// The world box this camera actually shows, from the camera's own
@@ -263,7 +281,10 @@ impl Section {
         encoder: &mut wgpu::CommandEncoder,
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
-        let mut full = false;
+        // A partial encode may have changed terrain or body projections. It
+        // cannot retain a query receipt from a different completed frame.
+        self.invalidate_query();
+        let mut full = self.terrain_upload_pending;
         let slots = if let Some(view) = &mut self.terrarium {
             if let Some(map) = view.refresh(frame.ground, self.mode)? {
                 self.map = map;
@@ -273,10 +294,14 @@ impl Section {
         } else if frame.dirty.is_empty() {
             Vec::new()
         } else {
+            // Keep a full retry pending even if refresh or a later encode
+            // fails. This frame still uses its ordinary incremental slots.
+            self.terrain_upload_pending = true;
             self.map
                 .refresh(frame.ground, frame.dirty.iter().copied())
                 .map_err(|error| error.to_string())?
         };
+        self.terrain_upload_pending |= full;
         let change = if full {
             BrickChange::Full
         } else {
@@ -328,6 +353,7 @@ impl Section {
             }
             if self.bodies.isolated && self.bodies.stats.fallback_bodies == 0 {
                 self.copy_to_display(encoder);
+                self.complete_query_frame(camera_view, false);
                 return Ok(());
             }
             let mut input = BrickFrameInput::for_camera(
@@ -363,7 +389,11 @@ impl Section {
                 .encode(encoder, &self.traced_view, input)
                 .map_err(|error| error.to_string())?;
         }
+        self.terrain_upload_pending = false;
         self.copy_to_display(encoder);
+        if self.body_mode == BodyMode::Voxels {
+            self.complete_query_frame(self.view(frame.centre), true);
+        }
         Ok(())
     }
 
@@ -471,114 +501,11 @@ pub fn centre_on(at: [i32; 3], pan: Pan, half_height: f32, mode: CameraMode) -> 
     ]
 }
 
-/// The controlled critter's pose, through the landed V2 projection.
-///
-/// It stays the tracer's single pose rather than a roster member, because a
-/// member's capsule budget is smaller than the played body's: see
-/// [`mesocosm_lens::MAX_ROSTER`].
-/// The pose comes back with the count of parts the capsule budget dropped, so
-/// a truncated player is reported rather than merely smaller.
-pub fn pose_of(world: &World, tint: [f32; 3]) -> Option<(CritterPose, u32)> {
-    pose_of_scaled(world, tint, 1.0, false)
-}
-
-pub fn pose_of_scaled(
-    world: &World,
-    tint: [f32; 3],
-    scale: f32,
-    grounded: bool,
-) -> Option<(CritterPose, u32)> {
-    let body = world.body()?;
-    let mut at = world.position()?.map(|v| v as f32);
-    if grounded {
-        at[1] -= body.aabb().min[1] as f32 * scale;
-    }
-    pose_at_origin(body, at, tint, scale)
-}
-
-/// Every other living organism the window holds, posed and tinted.
-///
-/// The scan is a bounds test per organism and a projection only for those
-/// inside, so the frame's cost tracks organisms in the slab rather than
-/// organisms in the world. The lens truncates whatever exceeds its own cap;
-/// the take here just stops projecting once the cap is met.
-pub fn roster_of(
-    world: &World,
-    window: SlabWindow,
-    tint: impl Fn(&Organism) -> [f32; 3],
-) -> Vec<CritterPose> {
-    roster_of_scaled(world, window, tint, 1.0, false)
-}
-
-pub fn roster_of_scaled(
-    world: &World,
-    window: SlabWindow,
-    tint: impl Fn(&Organism) -> [f32; 3],
-    scale: f32,
-    grounded: bool,
-) -> Vec<CritterPose> {
-    let controlled = world.controlled_id();
-    world
-        .organisms
-        .iter()
-        .filter(|organism| {
-            organism.is_alive()
-                && Some(organism.id) != controlled
-                && window.holds(organism.position)
-        })
-        .filter_map(|organism| {
-            let body = organism.body();
-            let mut at = organism.position.map(|v| v as f32);
-            if grounded {
-                at[1] -= body.aabb().min[1] as f32 * scale;
-            }
-            pose_at_origin(body, at, tint(organism), scale).map(|(pose, _)| pose)
-        })
-        .take(MAX_ROSTER)
-        .collect()
-}
-
-/// One body placed where it stands, and the parts its capsule budget could
-/// not carry.
-///
-/// Body space is world voxels — the raster lane draws a part's voxels at
-/// `position + v` — so the scale is 1 and the projection's floor subtraction
-/// is undone, or the two views would disagree about where the same voxel is.
-///
-/// **A body past the lens's capsule limit is drawn truncated, never dropped.**
-/// Until DC3 this swallowed the refusal with `.ok()` and the frame simply had
-/// no body in it, which is how a played critter could disappear while alive.
-/// The overflow is now a number the host puts in its receipt.
-#[cfg(test)]
-fn pose_at(
-    body: &BodyDocument,
-    at: [i32; 3],
-    tint: [f32; 3],
-    scale: f32,
-) -> Option<(CritterPose, u32)> {
-    pose_at_origin(body, at.map(|v| v as f32), tint, scale)
-}
-
-fn pose_at_origin(
-    body: &BodyDocument,
-    at: [f32; 3],
-    tint: [f32; 3],
-    scale: f32,
-) -> Option<(CritterPose, u32)> {
-    let floor = body.aabb().min[1] as f32 * scale;
-    let placement = BodyPlacement {
-        ground: [at[0], at[1] + floor, at[2]],
-        scale,
-        tint,
-    };
-    BodyLensProjection::project_truncated(body, placement)
-        .ok()
-        .map(|(projected, dropped)| (projected.pose, dropped as u32))
-}
-
 #[cfg(test)]
 mod depth_tests;
 #[cfg(test)]
 mod inspection_tests;
+#[cfg(test)]
+mod picking_tests;
 #[cfg(test)]
 mod tests;

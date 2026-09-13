@@ -125,7 +125,10 @@ pub fn occupied(habitat: &TerrariumHabitat, at: [i32; 3]) -> bool {
 
 impl Section {
     pub fn set_mode(&mut self, mode: CameraMode) {
-        self.mode = mode;
+        if self.mode != mode {
+            self.invalidate_query();
+            self.mode = mode;
+        }
     }
 
     pub fn configure_terrarium(
@@ -139,6 +142,11 @@ impl Section {
         self.bodies.ground_anatomy = true;
         let reveal =
             policy == Cutaway::Always || (policy == Cutaway::Occupied && occupied(habitat, at));
+        if self.terrarium.as_ref().is_none_or(|view| {
+            view.habitat != *habitat || view.pitch != pitch || view.reveal != reveal
+        }) {
+            self.invalidate_query();
+        }
         let view = self.terrarium.get_or_insert_with(|| TerrariumView {
             habitat: habitat.clone(),
             pitch,
@@ -146,6 +154,10 @@ impl Section {
             cached: None,
             revision: 0,
         });
+        if view.habitat != *habitat {
+            view.habitat = habitat.clone();
+            view.cached = None;
+        }
         view.pitch = pitch;
         view.reveal = reveal;
     }

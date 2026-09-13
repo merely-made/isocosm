@@ -9,9 +9,10 @@ the 2026-09-13 follow-up completes continuous parent yaw and the content-keyed
 sprite/shape-count probes. On identical poses at 1,000 bodies, A takes
 135–148 ms median and C 2.14–2.43 ms. At 1,000 distinct torso shapes C takes
 about 8 ms; repeated sprites now share 12 images. Residual pixels and timing
-tails remain qualified in the receipt. Genet embedding remains open.
-These probes did not require viewport embedding, style mapping or picking. The later bench
-reuses Mesocosm's creator, disposable trials and shared
+tails remain qualified in the receipt. Bench A now supplies posed bounds and
+visible-part queries to the existing Section, with headless pixel checks.
+Genet embedding remains open. The standalone probes did not require viewport
+embedding, style mapping or picking. The later bench reuses Mesocosm's creator, disposable trials and shared
 depth section. General CSS 3D, the large-DOM first-frame gate and retained
 planar fragment repair remain independent work, not prerequisites for that
 bench. See [the assessed slices](#specimen-bench-prerequisites-2026-09-13).
@@ -427,8 +428,10 @@ can settle the two immediate questions without Genet or any new picking API.
    a small varied scene is checked against the oracle, and equivalent
    population runs report timing, uploads and memory. This precedes T3.
 
-**Receipt:** `Code/testing/wing/l0c_2026-09-13/README.md`, raw JSON and source
-snapshot beside it. LiveBody now accepts finite continuous parent yaw;
+**Receipt:** the probe, raw JSON and source identities are retained in
+`mere/crates/probes/wing-three-paths/` at cc4c079c; the full local capture is
+`Code/testing/wing/l0c_2026-09-13/README.md`, with its source snapshot beside
+it. LiveBody now accepts finite continuous parent yaw;
 17 renderer tests, 10 probe tests and the Mesocosm workspace all-features/
 all-targets check pass. Fresh A/C yaw runs share the same
 workload digest and report 135–148 / 2.14–2.43 ms median at 1,000 bodies,
@@ -439,12 +442,17 @@ with 276 MiB of images. The notch sampler measures geometry reuse, not
 general generated anatomy. Sampled coloured residuals were traced to
 coincident surfaces; isolated terrain pixels and timing tails remain explicit.
 
-The code owners are mesocosm-render and the existing
-mere/crates/probes/wing-three-paths probe. Broader application pose bounds,
-part picking, CSS appearance and host producer lifecycle remain the later
-bench slices below.
+The probe code owners are mesocosm-render and the existing
+mere/crates/probes/wing-three-paths probe. Bench A below supplies the bounds
+and part-query consumer; CSS appearance and host producer lifecycle remain
+Bench B's integration work.
 
 ### Bench A. Presentation pose and visible-part queries
+
+**Status, 2026-09-13:** implemented in the existing Section API, following the
+adapter/probe baseline at Isometry bf05d2b and Mere cc4c079c. Fresh CPU and GPU
+pixel checks pass. Native pointer routing and Genet viewport input remain
+Bench B's integration work.
 
 **Owner:** Mesocosm rendering and host projection. The immediate probe supplied
 validated parent yaw above resolved part attachments, leaving core Yaw,
@@ -461,6 +469,49 @@ coordinates agree; overlapping bodies, nearer terrain and cutaway clipping
 yield the visible part; a long body rotating at a viewport/slab edge is not
 incorrectly culled; severing invalidates stale selection. Preserve the
 existing quarter-turn and shared-depth tests.
+
+**Implementation findings, 2026-09-13:** draw, bounds and body queries now
+share the renderer's part matrices. Bounds visit actual transformed quads:
+the core AABB omits attachment yaw and noncentral pivots, so it is not a safe
+presentation rejection test, even before adding parent yaw. A future cheap
+bounds cache must remain conservative for those admitted shapes. This host
+culling work has not been included in the standalone L0c cost numbers.
+
+The Section query joins addressed body faces to the filtered terrain map
+that it encoded. It refuses incomplete frames and capsule fallbacks, and
+separates a frame-specific hit from a geometry-revision-scoped semantic
+selection. Equal-distance body identities carry an explicit tie flag; the
+stable CPU tie choice does not promise the GPU's colour owner on coincident
+surfaces. Exact raster-boundary coverage is likewise not a CPU ray guarantee.
+
+Review also exposed a standing-wall camera error: the slab constructor needs
+world vertical, not screen-up. Pitched-view acceptance must test front and
+far cuts as well as projected XY. Frame identity must survive Section
+replacement without aliasing, and changed habitat bounds/chamber must retire
+both the filtered terrain cache and the previous query receipt. These are
+part of the integrated acceptance checks, not new simulation rules.
+Terrain uploads also remain pending while an isolated preview omits terrain
+or a frame fails. The next successful terrain encode receives the full pending
+map; ordinary uninterrupted terrain edits retain their incremental uploads.
+
+**Verification, 2026-09-13:** 32 mesocosm-render library tests, six lens terrain
+ray tests, two lens camera tests, 33 Section tests and six grafting/preview
+tests pass, as do all 10 standalone probe tests. The Section suite includes
+fresh whole-frame selection-colour readbacks compared with every pixel query,
+independent leading/top/trailing/outside rectangles, pitched front/far wall
+pixels, the noncentral attachment, nearer terrain, cutaway changes made while
+isolated, Section recreation and severing. Existing shared-depth, expression
+material and family-scene tests remain green. This is headless rendering
+acceptance; it does not claim a headed or document-embedded specimen bench.
+Both the Mesocosm workspace and Isometry's root workspace pass
+`cargo check --workspace --all-features --all-targets --offline --locked`.
+
+The retained implementation is in `mesocosm-render/src/live_body/{pose,query}.rs`,
+`mesocosm-lens/src/bricks/ray.rs`, and
+`mesocosm-genet/src/section/{bodies,inspection,view}.rs`; all are under
+`mesocosm/crates/`. Section's `set_body_yaw`, `presentation_bounds`,
+`pick_pixel`/`pick_ndc` and `validate_pick` form the next viewport's consumer
+seam. The preview uses these presented bounds to fit the body beside its panel.
 
 ### Bench B. One interactive Genet viewport
 
@@ -516,9 +567,9 @@ cost and cache activity. Carry the equivalent-pose yaw baseline and document
 the renderer's policy for coincident surfaces; count foreground coverage separately from background.
 Record the source revisions and benchmark population, including unique geometry.
 
-The two immediate probes are complete without bench integration. Next,
-Bench A and Bench C can proceed independently. Bench B's geometry and producer
-pieces can proceed independently, then join A for picking. Bench D measures
+The two immediate probes and Bench A are complete without document embedding.
+Next, Bench B joins the Section's tested pose/query API to one Genet viewport.
+Bench C can proceed independently. Bench D measures
 that integrated result. T1 general CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.
@@ -536,9 +587,11 @@ and configurable voice/detail budgets. It shares facts with visual effects.
 recorded; stale L3/L5 and T3 embedding descriptions reconciled. Mark then
 separated the cheap adapter/yaw and variety probes from bench integration.
 Those probe slices now have source, tests, fresh performance/correctness JSON
-and a reproducible receipt at `Code/testing/wing/l0c_2026-09-13/`. The
-viewport, style bridge, part queries and visible trial remain unimplemented
-by this work. No fresh headed specimen-bench receipt is claimed.
+and a reproducible receipt at `Code/testing/wing/l0c_2026-09-13/`, with the probe
+and compact receipts retained at Mere cc4c079c. Bench A adds posed bounds,
+preview framing and visible-part queries to the existing Section; its fresh
+headless readbacks pass. The viewport, style bridge, native pointer routing
+and visible trial remain open. No headed specimen-bench receipt is claimed.
 
 ## CSS features and standards to earmark
 
