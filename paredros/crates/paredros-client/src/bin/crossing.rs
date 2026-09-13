@@ -15,8 +15,8 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
-use paredros_room::crossing::{self, BodyId, BodyKind, HeldInput, Input, TriggeredInput};
-use paredros_room::gpu::{self, Composer, SIZE, Tenant};
+use paredros_client::crossing::{self, BodyId, BodyKind, HeldInput, Input, TriggeredInput};
+use paredros_client::gpu::{self, Composer, SIZE, Tenant};
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;
 use winit::event::KeyEvent;

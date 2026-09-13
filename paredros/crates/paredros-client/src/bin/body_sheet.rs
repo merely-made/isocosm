@@ -9,9 +9,9 @@ use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use netrender::{Compositor, PresentedFrame, Scene, SurfaceKey};
-use paredros_room::body_sheet::{EquipmentCommand, EquipmentSession, EquipmentView};
-use paredros_room::body_sheet::{Hud, LOGICAL_SIZE, LifeSheet, SheetKey, SheetView};
-use paredros_room::gpu::{self, Composer, MASTER_FORMAT};
+use paredros_client::body_sheet::{EquipmentCommand, EquipmentSession, EquipmentView};
+use paredros_client::body_sheet::{Hud, LOGICAL_SIZE, LifeSheet, SheetKey, SheetView};
+use paredros_client::gpu::{self, Composer, MASTER_FORMAT};
 use paredros_world::fixtures::three_lives as fixture;
 use paredros_world::{SubjectSheet, SubjectSheetInput};
 use winit::application::ApplicationHandler;
@@ -63,7 +63,7 @@ impl App {
     fn new(smoke: bool) -> Self {
         let mut view = SheetView::default();
         if smoke {
-            view.focus = paredros_room::body_sheet::Focus::Action;
+            view.focus = paredros_client::body_sheet::Focus::Action;
             view.action = 2;
         }
         let mut app = Self {
@@ -213,7 +213,7 @@ impl App {
             if self.captured < 6 {
                 self.view.select_life(&self.lives, self.captured.min(2));
                 if self.captured == 1 {
-                    self.view.focus = paredros_room::body_sheet::Focus::Action;
+                    self.view.focus = paredros_client::body_sheet::Focus::Action;
                     self.view.action = 0;
                 } else if self.captured == 2 {
                     self.view.part = 1;
@@ -225,7 +225,7 @@ impl App {
                         .position(|part| part.id.0 == 7)
                         .expect("fixture symbiont");
                 } else if self.captured == 4 {
-                    self.view.focus = paredros_room::body_sheet::Focus::Action;
+                    self.view.focus = paredros_client::body_sheet::Focus::Action;
                     self.view.action = 1;
                 } else {
                     self.view.key(&self.lives, SheetKey::TogglePartsView);
@@ -287,10 +287,10 @@ impl App {
                     .equipment
                     .save_bytes()
                     .and_then(|bytes| {
-                        paredros_room::body_sheet::save_equipment(&self.save_directory, &bytes)
+                        paredros_client::body_sheet::save_equipment(&self.save_directory, &bytes)
                     })
                     .map(|path| format!("Saved {}", path.display())),
-                EquipmentCommand::Load => paredros_room::body_sheet::load_equipment(
+                EquipmentCommand::Load => paredros_client::body_sheet::load_equipment(
                     &self.save_directory,
                 )
                 .and_then(|(path, bytes)| {
@@ -512,7 +512,7 @@ mod tests {
         app.equipment_view.part = 3;
         let selected = app.equipment_view.clone();
         let corrupt =
-            paredros_room::body_sheet::save_equipment(&app.save_directory, b"bad").unwrap();
+            paredros_client::body_sheet::save_equipment(&app.save_directory, b"bad").unwrap();
         app.equipment_command(EquipmentCommand::Load);
         assert_eq!(app.equipment.game(), &saved);
         assert_eq!(app.equipment_view, selected);

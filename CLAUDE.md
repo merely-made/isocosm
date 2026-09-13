@@ -4,8 +4,8 @@
 
 This Git repository contains three products. The tabletop uses the root Cargo
 workspace; Mesocosm uses `mesocosm/`; Paredros uses `paredros/`. Read each
-product's `CLAUDE.md` before editing it. Package names and licenses remain
-unchanged. Build workspaces remain separate to preserve source/patch policy.
+product's `CLAUDE.md` before editing it. Licenses remain unchanged; Paredros's
+native package is now `paredros-client`. Build workspaces remain separate to preserve source/patch policy.
 `design_docs/DOC_README.md` is the wing entry index and links product indexes.
 Shared wing design currently lives in `mesocosm/design_docs/` within this repo.
 

@@ -10,11 +10,11 @@ publish = false
 # The one crate allowed to read both owners. The execution plan's two-owners
 # rule keeps social willingness and combat execution apart; S3 is where they
 # meet, so this crate depends on both and neither depends back. The world and
-# kinematics come through paredros-room exactly as S0 consumes them (which
+# kinematics come through paredros-client exactly as S0 consumes them (which
 # brings the render stack along in the build; the sim here never touches it).
 [dependencies]
 paredros-identity = { version = "0.0.1", path = "../paredros-identity" }
 paredros-social = { version = "0.0.1", path = "../paredros-social" }
-paredros-room = { version = "0.0.1", path = "../paredros-room" }
+paredros-client = { version = "0.0.1", path = "../paredros-client" }
 mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }

@@ -12,7 +12,10 @@ use mesocosm_core::snapshot::{self, hash_bytes};
 use paredros_identity::{Control, ControlIntent, IdentityError, SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
-use crate::{GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave, GameState, World};
+use crate::{
+    GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave, GameState,
+    LEGACY_GAME_STATE_VERSION, World,
+};
 
 pub const SESSION_VERSION: u32 = 1;
 pub const MAX_SESSION_BYTES: usize = 64 * 1024 * 1024;
@@ -215,11 +218,21 @@ impl Session {
                 current: SESSION_VERSION,
             });
         }
-        if save.game.version != GAME_STATE_VERSION {
+        if save.game.version != GAME_STATE_VERSION && save.game.version != LEGACY_GAME_STATE_VERSION
+        {
             return Err(SessionError::Game(GameError::VersionDiverged {
                 saved: save.game.version,
                 current: GAME_STATE_VERSION,
             }));
+        }
+        if save.game.version == LEGACY_GAME_STATE_VERSION
+            && save
+                .game
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyCombatIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents

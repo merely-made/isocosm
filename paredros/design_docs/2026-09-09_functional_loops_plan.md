@@ -463,9 +463,10 @@ produces direction/binding/charge receipts for those adjudicators to consume.
   followed by save/restore/release, death, stale anatomy, forged bindings and
   rejected transitions. Native handler and presentation receipts are recorded below.
 
-Run the native surface with `./scripts/wing.ps1 paredros run -p paredros-room
+Run the native surface with `./scripts/wing.ps1 paredros run -p paredros-client
 --bin timed_action`. Arrow keys prepare a direction; hold Space or left mouse
-for charge, release to emit strikes, J joins the second limb, I applies injury,
+for charge, release to strike the target, WASD moves, J joins the second limb,
+I applies self-injury for debugging,
 and F5/F9 save/load. `PAREDROS_TIMED_ACTION_SAVE` selects the save path.
 `PAREDROS_TIMED_ACTION_SMOKE=1` requests the asserted lifecycle and one presented
 frame. These controls currently use an authored two-limb functional network.
@@ -495,3 +496,112 @@ bounded multi-year world size or a history-compaction policy.
   -j 2 --target-dir target-contact` passed its one handler lifecycle test on the
   same Mere `fc382ac4` / Netrender `c77b0be8` graph as the headed smoke. Existing
   room dead-code and unused Vello-patch warnings remain unrelated to this slice.
+
+
+## B2: strikes and embodied consequences (2026-09-13)
+
+**Status: complete for the bounded B2 slice; automated gates pass.** B1 now causes actual target
+injury. The initiating subject and the affected target are distinct identities:
+Session authorizes the initiator, while GameState owns both bodies, positions,
+anatomy and equipment. A released volley is one atomic recorded transition.
+
+The first adjudicator derives bounded directional contact from admitted part
+geometry and authoritative positions, with configurable reach, quality, harm and
+severance rules. It records misses as well as hits. It does not claim SRD RAW,
+continuous pointer-driven swing trajectories, or the complete ContactWorld join.
+The existing fixed-step contact probe retains its separate experimental status.
+
+A hit changes the target's existing body condition and revision, reconciles
+anatomy and releases attachments on lost parts at the same accepted cut. Death
+must remain a valid consequence of a multi-limb volley. Bad targets, stale
+bindings, malformed rules and rejected transitions preserve both action and
+world state. Save/resume must preserve and continue the resulting consequences.
+
+Lanes:
+
+- Terra: research then implement the world-owned adjudicator, transition and
+  timed-action integration, including replay and focused tests.
+- Luna: audit the native crate's name, then wire the accepted API into native
+  controls and target/consequence inspection after path ownership is settled.
+- Root: naming/manifests, independent rejection and continuation review,
+  integration, documentation and publication. Shared Mesocosm anatomy/rendering
+  changes require coordination with their existing lanes.
+
+Done when a released charged action can geometrically miss or injure a real
+second subject; a severed part drops its attached equipment; subsequent action
+availability and inspection agree with that anatomy; save/load preserves those
+facts; and native controls exercise the same owner API. Capture/input evidence
+is labelled separately from model and replay tests.
+
+- 2026-09-13: renamed the native package/directory to `paredros-client`, its
+  dominant input/rendering/inspection role. The `room` fixture and all existing
+  binary/environment names remain. Historical receipts retain their original
+  package name; current commands and imports follow the new package.
+
+The bounded adjudicator uses each contributing part's placed bounding box,
+extends it in one cardinal direction, and selects the first overlapping target
+part along that direction (PartId breaks exact ties). Positive overlap is
+required. Terrain visibility uses a ray between the source and target part
+centres, so this is not swept-volume terrain collision. Root contact can injure
+or kill, but cannot sever the root. The entire volley reads the same pre-hit
+anatomy, then aggregates harm and reconciles severance once.
+
+`CombatRules` is explicit input recorded with every volley. Revision 1 uses
+`min(1 + charge / charge_per_reach, max_reach)` for reach; quality is the smallest
+positive overlap dimension in world units. Harm is base harm plus charge plus
+quality, saturating at the integer bound. These are configurable baseline
+policies, not a calibrated simulation or an SRD to-hit formula. The timed-action
+wrapper supplies already paid contributions and rejects raw volley injection
+through its ordinary game-batch API. GameState accepts validated recorded
+receipts; replay does not independently reconstruct charge-routing history.
+
+GameSave v4 appends the combat vocabulary without changing the save field
+layout. Genuine v3 histories remain readable; a v3 record containing a v4 combat
+intent is rejected. The regression fixture
+`crates/paredros-world/tests/fixtures/timed-action-v1-game-v3.save` is the verbatim
+506-byte native smoke save produced on 2026-09-09 at `b9ae9a2` (SHA-256
+`cf40be57866387048ae0237bcd0869c5249e882660735209b7a6089bbd091c87`).
+
+- 2026-09-13: native handler tests pass movement, a fully charged wrong-direction
+  miss, and actual target injury/severance/item release followed by exact
+  post-hit save/load. The native fixture uses distinct positions and an authored
+  raised rear limb to accommodate its sloping ground; strikes still use the
+  ordinary admitted geometry and adjudicator. These are automated handler tests.
+- 2026-09-13: aligned Paredros's `conatus`/`modulus` pins to Mesocosm's existing
+  Mere `4f4de1d05ec99461f7fa3cdc4e514e904a999213`. The previous `fb7e136b` selection
+  produced incompatible `BrickMap` types at the shared lens boundary. Netrender
+  remains `c77b0be84fb6fc28a3c1602a2b1637f7d913acc0`; Parley remains Genet
+  `3a7b50230d447f6fa7ed6921cba019f78347d932`. New receipts use these selections.
+- 2026-09-13: full `paredros-world` suite passes **104 tests** on the aligned
+  pins, including the real v3 archive, rejected-input atomicity, outer-surface
+  contact ordering, lethal two-hit resolution and a survivor's available action
+  becoming unavailable after severance, followed by restored continuation.
+  `paredros-client --bin timed_action` passes **3 handler tests**. The runnable
+  binary's bounded headed smoke also passes and its capture was inspected:
+  target vitality 83, rear part 2 severed, item 3 dropped at `[-45, 13, -52]`,
+  all preserved after save/load. Local artifacts:
+  `C:/Users/mark_/Code/.tmp/paredros-combat-20260913-final/` (`smoke.png`,
+  `smoke.save`, `stdout.log`, `stderr.log`). This is automated headed acceptance;
+  physical keyboard/mouse testing remains open.
+
+Reproduce from the umbrella with `./scripts/wing.ps1 paredros` followed by:
+
+```text
+test -p paredros-world --offline --locked --target-dir target-contact -j 2
+test -p paredros-client --bin timed_action --offline --locked --target-dir target-contact -j 2
+build -p paredros-client --bin timed_action --offline --locked --target-dir target-contact -j 2
+check --workspace --all-features --all-targets --offline --locked --target-dir target-contact -j 2
+```
+
+These runs used `CARGO_HOME=C:/Users/mark_/.cargo`; the older isolated cache had
+been retired. Ignored Paredros Cargo.lock SHA-256:
+`7633c59574141afefb250b09fa13f7e8bae9f468fe9e7fb91b86b7e8f2e1b6dd`.
+The client requires its selected target to exist when loading an archive; the
+general v3 migration receipt belongs to the underlying session/game API.
+
+The final workspace check passes every Paredros target and feature, including
+Sortie and the retained room/residency/depth consumers of the renamed client.
+The existing unused Vello-patch warning remains; the default native build also
+reports the existing unused `retarget_from_ground` helper. Broader ContactWorld
+integration, continuous swing trajectories and physical input acceptance remain
+separate work.

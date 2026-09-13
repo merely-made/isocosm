@@ -26,6 +26,7 @@
 
 mod anatomy;
 mod bodies;
+mod combat;
 mod contact;
 mod equipment;
 pub mod fixtures;
@@ -47,10 +48,14 @@ mod world;
 
 pub use anatomy::{
     Anatomies, AnatomyError, AnatomyRecord, MAX_ANATOMY_COORDINATE, MAX_ANATOMY_PARTS,
-    MAX_ANATOMY_WORLD_COORDINATE,
+    MAX_ANATOMY_WORLD_COORDINATE, part_bounds,
 };
 pub use bodies::{
     Bodies, Body, BodyError, BodyProfile, MAX_NEED, MOBILITY_WOUND, Name, Needs, SAFE_FALL,
+};
+pub use combat::{
+    COMBAT_RULES_REVISION, CombatError, CombatRules, MAX_COMBAT_REACH, MAX_VOLLEY_STRIKES,
+    ResolvedStrike, StrikeOutcome,
 };
 pub use contact::{
     BodyId, BodyKind, BodyProfile as ContactBodyProfile, BodyState, BoxCollider, ContactEffect,
@@ -86,7 +91,10 @@ pub use technique::{
     PartCapability, PartFunction, ResourceCost, ResourceKind, ResourceReserve, SourceQuery,
     SubjectBody, TechniqueId, TechniqueInputs, TechniqueKnowledge, arrest_fall,
 };
-pub use transitions::{DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave};
+pub use transitions::{
+    DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
+    LEGACY_GAME_STATE_VERSION,
+};
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,
 };

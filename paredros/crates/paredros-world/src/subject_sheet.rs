@@ -8,6 +8,7 @@
 use mesocosm_core::{Aabb, BodyDocument, PartId, Provenance};
 use paredros_identity::{BodyRevisionId, SubjectId};
 
+use crate::part_bounds;
 use crate::{
     ActionBlocker, BindingBlocker, BindingKind, EquipmentFunction, EquipmentProjection,
     PartFunction, ResourceCost, ResourceKind, SourceQuery, SubjectBody, TechniqueId,
@@ -167,39 +168,6 @@ impl SubjectSheet {
                 .collect(),
         }
     }
-}
-
-/// Derive a part's body-space AABB from its transformed local corners. The
-/// core owns pivot, yaw, and nested attachment arithmetic; this projection
-/// only enumerates the eight corners of the authored box.
-fn part_bounds(body: &BodyDocument, id: PartId) -> Option<Aabb> {
-    let part = body.part(id)?;
-    let extent = [
-        part.half_extent[0].checked_mul(2)?,
-        part.half_extent[1].checked_mul(2)?,
-        part.half_extent[2].checked_mul(2)?,
-    ];
-    let mut corners = (0..8).map(|mask| {
-        body.place(
-            id,
-            [
-                if mask & 1 == 0 { 0 } else { extent[0] },
-                if mask & 2 == 0 { 0 } else { extent[1] },
-                if mask & 4 == 0 { 0 } else { extent[2] },
-            ],
-        )
-    });
-    let first = corners.next()??;
-    let mut min = first;
-    let mut max = first;
-    for corner in corners {
-        let corner = corner?;
-        for axis in 0..3 {
-            min[axis] = min[axis].min(corner[axis]);
-            max[axis] = max[axis].max(corner[axis]);
-        }
-    }
-    Some(Aabb { min, max })
 }
 
 fn equipment_for(sources: &[SourceQuery], equipment: &[EquipmentProjection]) -> Vec<EquipmentRow> {

@@ -22,7 +22,7 @@
 
 use mesocosm_core::places::Ground;
 use paredros_identity::{BodyRevisionId, Control, Facets, SubjectId, Tick};
-use paredros_room::room::{Room, SEED};
+use paredros_client::room::{Room, SEED};
 use paredros_social::companion::Craft;
 use paredros_social::offer::{Terms, Work};
 use paredros_social::response::Response;

@@ -490,7 +490,7 @@ impl Composer {
         let input = netrender::OpaqueTenantInput::new(
             tenant.target_texture(),
             netrender::OpaqueTenantMetadata::new(
-                "paredros-room",
+                "paredros-client",
                 "renderling::Stage::encode_into (opaque)",
                 0,
                 0,

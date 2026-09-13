@@ -6,17 +6,18 @@
 
 //! The coordinator over separately owned world, movement, body, and item state.
 
+use crate::bodies::{Bodies, BodyError};
+use crate::items::{ItemError, ItemKind, ItemLocation, Items};
+use crate::{
+    Anatomies, AnatomyError, AnatomyRecord, DeathCause, GAME_STATE_VERSION, GameError, GameEvent,
+    GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, Movement, MovementError, MovementEvent, World,
+};
 use mesocosm_core::places::spot;
 use mesocosm_core::snapshot::{self, hash_bytes};
 use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
-use crate::bodies::{Bodies, BodyError};
-use crate::items::{ItemError, ItemKind, ItemLocation, Items};
-use crate::{
-    Anatomies, AnatomyError, AnatomyRecord, DeathCause, GAME_STATE_VERSION, GameError, GameEvent,
-    GameIntent, GameSave, Movement, MovementError, MovementEvent, World,
-};
+mod combat;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GameState {
@@ -189,6 +190,13 @@ impl GameState {
                     item: *item,
                 }]
             },
+            GameIntent::ResolveVolley {
+                actor,
+                target,
+                strikes,
+                rules,
+                ..
+            } => self.resolve_volley(tick, *actor, *target, strikes, *rules)?,
             GameIntent::ReconcileAnatomy {
                 from_revision,
                 revision,
@@ -448,7 +456,6 @@ impl GameState {
         self.events.append(&mut events);
         Ok(returned)
     }
-
     pub fn save_record(&self) -> Result<GameSave, GameError> {
         Ok(GameSave {
             version: GAME_STATE_VERSION,
@@ -457,22 +464,27 @@ impl GameState {
             intents: self.intents.clone(),
         })
     }
-
     pub fn save(&self) -> Result<Vec<u8>, GameError> {
         snapshot::encode(&self.save_record()?).map_err(|_| GameError::Encode)
     }
-
     pub fn restore(bytes: &[u8]) -> Result<Self, GameError> {
         let save: GameSave = snapshot::decode(bytes).map_err(|_| GameError::Decode)?;
         Self::restore_record(save)
     }
-
     pub fn restore_record(save: GameSave) -> Result<Self, GameError> {
-        if save.version != GAME_STATE_VERSION {
+        if save.version != GAME_STATE_VERSION && save.version != LEGACY_GAME_STATE_VERSION {
             return Err(GameError::VersionDiverged {
                 saved: save.version,
                 current: GAME_STATE_VERSION,
             });
+        }
+        if save.version == LEGACY_GAME_STATE_VERSION
+            && save
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
+        {
+            return Err(GameError::LegacyCombatIntent);
         }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world);

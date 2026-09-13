@@ -11,9 +11,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::bodies::{BodyError, Name};
 use crate::items::{ItemError, ItemId};
-use crate::{AnatomyError, MovementError, WorldError, WorldSave};
+use crate::timed_action::StrikeReceipt;
+use crate::{AnatomyError, CombatRules, MovementError, ResolvedStrike, WorldError, WorldSave};
 
-pub const GAME_STATE_VERSION: u32 = 3;
+/// Version 4 writes combat-capable histories without changing the GameSave
+/// field layout. Version 3 remains a valid archive of the earlier grammar.
+pub const GAME_STATE_VERSION: u32 = 4;
+pub const LEGACY_GAME_STATE_VERSION: u32 = 3;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GameIntent {
@@ -87,6 +91,13 @@ pub enum GameIntent {
         subject: SubjectId,
         item: ItemId,
     },
+    ResolveVolley {
+        tick: Tick,
+        actor: SubjectId,
+        target: SubjectId,
+        strikes: Vec<StrikeReceipt>,
+        rules: CombatRules,
+    },
 }
 
 impl GameIntent {
@@ -104,6 +115,7 @@ impl GameIntent {
             | Self::ReconcileAnatomy { tick, .. }
             | Self::AttachItem { tick, .. }
             | Self::DetachItem { tick, .. }
+            | Self::ResolveVolley { tick, .. }
             | Self::Wait { tick, .. } => *tick,
         }
     }
@@ -123,6 +135,7 @@ impl GameIntent {
             | Self::AttachItem { subject, .. }
             | Self::DetachItem { subject, .. }
             | Self::Wait { subject, .. } => *subject,
+            Self::ResolveVolley { actor, .. } => *actor,
         }
     }
 }
@@ -131,6 +144,7 @@ impl GameIntent {
 pub enum DeathCause {
     Fall,
     Starvation,
+    Strike,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -224,6 +238,15 @@ pub enum GameEvent {
         subject: SubjectId,
         cause: DeathCause,
     },
+    VolleyResolved {
+        tick: Tick,
+        actor: SubjectId,
+        target: SubjectId,
+        rules: CombatRules,
+        strikes: Vec<ResolvedStrike>,
+        harm: u16,
+        revision: BodyRevisionId,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -241,6 +264,8 @@ pub enum GameError {
     Body(BodyError),
     Item(ItemError),
     Anatomy(AnatomyError),
+    Combat(crate::CombatError),
+    LegacyCombatIntent,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },
     VersionDiverged { saved: u32, current: u32 },
@@ -275,5 +300,11 @@ impl From<ItemError> for GameError {
 impl From<AnatomyError> for GameError {
     fn from(error: AnatomyError) -> Self {
         Self::Anatomy(error)
+    }
+}
+
+impl From<crate::CombatError> for GameError {
+    fn from(error: crate::CombatError) -> Self {
+        Self::Combat(error)
     }
 }

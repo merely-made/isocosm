@@ -19,7 +19,7 @@ exclude = ["design_docs/"]
 [workspace]
 members = [
     "crates/paredros-identity",
-    "crates/paredros-room",
+    "crates/paredros-client",
     "crates/paredros-social",
     "crates/paredros-sortie",
     "crates/paredros-world",
@@ -49,8 +49,8 @@ opt-level = 1
 # Renderer source is selected once for this product; use the same immutable
 # family revision as the other games and their Mere/Genet host dependencies.
 [workspace.dependencies]
-conatus = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-modulus = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "4f4de1d05ec99461f7fa3cdc4e514e904a999213" }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "4f4de1d05ec99461f7fa3cdc4e514e904a999213" }
 netrender = { git = "https://github.com/merely-made/netrender.git", rev = "c77b0be84fb6fc28a3c1602a2b1637f7d913acc0" }
 netrender_text = { git = "https://github.com/merely-made/netrender.git", rev = "c77b0be84fb6fc28a3c1602a2b1637f7d913acc0" }
 

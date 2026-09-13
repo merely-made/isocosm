@@ -14,7 +14,7 @@ use std::{path::Path, sync::Arc, time::Instant};
 
 use mesocosm_core::places::BRICK;
 use mesocosm_lens::{BrickDiagnostics, BrickRevision};
-use paredros_room::{
+use paredros_client::{
     gpu::{self, Composer, DdaTenant, SIZE},
     residency::{
         RESIDENT_BUDGET_BYTES, ResidencyMetrics, ResidencyPolicy, ResidencyScene, V1_FRAMES,
@@ -458,7 +458,7 @@ fn report(
         adapter,
         size: SIZE,
         frames: samples.len(),
-        world_extent: paredros_room::residency::WORLD_EXTENT,
+        world_extent: paredros_client::residency::WORLD_EXTENT,
         world_bricks: scene.ground.brick_count(),
         ground_revision: scene.ground.revision(),
         resident_budget_bytes: RESIDENT_BUDGET_BYTES,

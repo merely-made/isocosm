@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use paredros_room::crossing::{
+use paredros_client::crossing::{
     self, BodyId, BodyKind, ContactWorld, HeldInput, Input, TriggeredInput,
 };
 

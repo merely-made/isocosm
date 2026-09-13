@@ -1,7 +1,8 @@
 # CLAUDE.md — Paredros Repository Role
 
 **Repository location, 2026-09-09:** this product now lives in Isometry's
-`paredros/` directory, with its existing Cargo workspace and package names.
+`paredros/` directory, with its own Cargo workspace. The native package was renamed from
+`paredros-room` to `paredros-client` on 2026-09-13.
 Read `../CLAUDE.md` for umbrella guidance. The root repository index is
 `../design_docs/DOC_README.md`. Shared wing design is now in the sibling
 `../mesocosm/design_docs/` inside the same repository. Git operations affect
@@ -31,7 +32,8 @@ whether a community remains itself as control, bodies, and generations
 change.
 
 **Early implementation.** The repo holds the name-reservation package, the
-design docs, and five crates. `crates/paredros-room` is the S0 room probe
+design docs, and five crates. `crates/paredros-client` owns native input, rendering and inspection,
+including body sheets, timed actions and the retained S0 room probe
 landed 2026-08-08: one room carved into a grown mesocosm hillside, one body
 under near-tier kinematics, a fixed input trace with save/reload/replay, and
 a headed run presenting netrender's composed master with a renderling room

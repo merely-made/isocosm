@@ -11,9 +11,9 @@
 //! is determinism.
 
 use mesocosm_core::snapshot;
-use paredros_room::probe::{ProbeError, Save};
-use paredros_room::room::SEED;
-use paredros_room::{Probe, TICKS};
+use paredros_client::probe::{ProbeError, Save};
+use paredros_client::room::SEED;
+use paredros_client::{Probe, TICKS};
 
 fn spent() -> Probe {
     let mut probe = Probe::new(SEED).expect("the room probe grows its world");

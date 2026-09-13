@@ -8,7 +8,7 @@
 //!
 //! The execution plan keeps social willingness and combat execution as
 //! separate owners that never read each other; this crate is the one place
-//! they meet. The world and kinematics come from `paredros-room` and
+//! they meet. The world and kinematics come from `paredros-client` and
 //! mesocosm's near tier exactly as S0 consumes them; willingness comes from
 //! `paredros-social` exactly as S1 and S2 built it; who the player is being
 //! comes from `paredros-identity`'s control pointer. What is new here is

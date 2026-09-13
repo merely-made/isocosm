@@ -169,6 +169,19 @@ impl Body {
         }
         (harm, self.revision, died)
     }
+
+    pub(crate) fn injure(&mut self, harm: u16, at: Tick) -> (BodyRevisionId, bool) {
+        if harm > 0 {
+            self.wound = self.wound.saturating_add(harm).min(100);
+            self.vitality = self.vitality.saturating_sub(harm);
+            self.revision = BodyRevisionId(self.revision.0 + 1);
+        }
+        let died = self.vitality == 0 && self.died_at.is_none();
+        if died {
+            self.died_at = Some(at);
+        }
+        (self.revision, died)
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

@@ -6,9 +6,9 @@
 
 //! Opt-in RG3c receipt over the fixed Paredros room tenant.
 
-use paredros_room::gpu::{self, Composer, SIZE, Tenant};
-use paredros_room::room::SEED;
-use paredros_room::{Probe, TICKS, scene};
+use paredros_client::gpu::{self, Composer, SIZE, Tenant};
+use paredros_client::room::SEED;
+use paredros_client::{Probe, TICKS, scene};
 
 fn draw_tenant(
     tenant: &Tenant,
@@ -58,7 +58,7 @@ fn rg3c_fixed_room_graph_matches_legacy_composition() {
         "boundary-zero chrome anchor is not present: {chrome_anchor:?}"
     );
     assert!(candidate.distinct > 16, "room content is not visible");
-    assert_eq!(receipt.tenant_name, "paredros-room");
+    assert_eq!(receipt.tenant_name, "paredros-client");
     assert_eq!(
         receipt.producer_path,
         "renderling::Stage::encode_into (opaque)"

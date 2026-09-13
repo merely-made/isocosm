@@ -22,7 +22,7 @@ use mesocosm_lens::{
 };
 use modulus::{BrickMap, BrickProjectionRevision};
 use netrender::WgpuHandles;
-use paredros_room::{
+use paredros_client::{
     gpu::{self, Composer, SIZE},
     residency::{
         RESIDENT_BUDGET_BYTES, ResidencyMetrics, ResidencyScene, StableResidency, V1_FRAMES,

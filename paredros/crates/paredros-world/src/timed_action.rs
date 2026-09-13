@@ -15,6 +15,7 @@ use wing_functions::{
     NetworkSnapshot, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
 };
 
+mod combat;
 mod routing;
 use routing::route_open;
 
@@ -130,6 +131,7 @@ pub enum TimedActionError {
     WrongTick { previous: Tick, next: Tick },
     ElapsedLimit,
     NoAvailableLimb,
+    DirectVolleyForbidden,
     VersionDiverged { saved: u32, current: u32 },
     Encode,
     Decode,
@@ -378,7 +380,6 @@ impl TimedActionSession {
         *self = candidate;
         Ok(strikes)
     }
-
     fn release_inner(&mut self, tick: Tick) -> Result<Vec<StrikeReceipt>, TimedActionError> {
         let action = self
             .action
@@ -404,13 +405,18 @@ impl TimedActionSession {
             })
             .collect())
     }
-
     /// Applies a whole injury/reconciliation cut before action repair. A failed
     /// member leaves both the session and action untouched.
     pub fn apply_game_batch(
         &mut self,
         intents: &[GameIntent],
     ) -> Result<Vec<GameEvent>, TimedActionError> {
+        if intents
+            .iter()
+            .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
+        {
+            return Err(TimedActionError::DirectVolleyForbidden);
+        }
         let mut candidate = self.clone();
         let mut events = Vec::new();
         for intent in intents {

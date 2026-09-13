@@ -1,7 +1,7 @@
 # Paredros
 
 Paredros now lives in the [Isometry umbrella repository](../README.md), under
-`paredros/`. It retains its own Cargo workspace and package names. See the
+`paredros/`. It retains its own Cargo workspace. See the
 [wing index](../design_docs/DOC_README.md) for all three products.
 
 A second-person action RPG in a persistent generated world.
@@ -21,12 +21,17 @@ the world.
 Vessel 2 of a three-game wing (Mesocosm, Paredros, Isometry); the wing-level
 architecture lives in the sibling mesocosm repo and is cited, not copied.
 
-## Status (2026-09-05)
+## Status (2026-09-13)
 
 Early implementation. Four proof scenes landed 2026-08-08; nothing here is a
-shipped game yet.
+shipped game yet. The native package is now `paredros-client` (formerly
+`paredros-room`): it hosts rendering, input and inspection as well as the
+retained room/crossing probes. Timed multi-limb strikes now resolve against
+another creature's anatomy, updating injury, lost parts and attached equipment
+together. Save/load preserves these consequences. This bounded loop passes
+104 world tests, 3 native handler tests and an automated window smoke check.
 
-- S0 room probe (`paredros-room`): one body walking one room carved into
+- S0 room probe (`paredros-client`): one body walking one room carved into
   grown mesocosm terrain, with save/reload replay to a matching state hash,
   rendered through the shared renderer stack.
 - S1 refusal scene (`paredros-social`): three companions with different
@@ -68,7 +73,7 @@ those spatial laws can judge it.
 The dry damaged-crossing sandbox is interactive:
 
 ```sh
-cargo run -p paredros-room --bin crossing
+cargo run -p paredros-client --bin crossing
 ```
 
 WASD moves, arrows or right-drag orbit, wheel zooms, Shift braces, E handles
@@ -90,10 +95,10 @@ relative paths, since cross-repo deps are path deps.
 cargo run -p paredros-social --bin refusal   # three companions answer one offer
 cargo run -p paredros-social --bin home      # the negotiated home
 cargo run -p paredros-sortie --bin sortie    # one sortie and return
-ROOM_TRACE=1 cargo run -p paredros-room --bin room   # headed room probe
-PAREDROS_RG3_HEADED_PROBE=awaited cargo run -p paredros-room --bin room
-PAREDROS_RG3_HEADED_PROBE=optimistic cargo run -p paredros-room --bin room
-PAREDROS_RG3_REBUILD_PROBE=1 cargo run -p paredros-room --bin room
+ROOM_TRACE=1 cargo run -p paredros-client --bin room   # headed room probe
+PAREDROS_RG3_HEADED_PROBE=awaited cargo run -p paredros-client --bin room
+PAREDROS_RG3_HEADED_PROBE=optimistic cargo run -p paredros-client --bin room
+PAREDROS_RG3_REBUILD_PROBE=1 cargo run -p paredros-client --bin room
 ```
 
 ## License

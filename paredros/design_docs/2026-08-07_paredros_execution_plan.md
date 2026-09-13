@@ -1,5 +1,9 @@
 # Paredros Execution Plan (2026-08-07)
 
+**Native package, 2026-09-13:** current examples use `paredros-client`,
+renamed from `paredros-room`. Dated verification entries below retain the
+original package name.
+
 **Status: in progress (2026-09-09); F0-F2 closed, F3 active, F3a landed.**
 The dry crossing contact fixture is implemented alongside F3 design. The
 borg three-lives/action-query and graphical body/equipment sheet are implemented
@@ -90,7 +94,7 @@ save/reload; a headed screenshot receipt exists; frame spans are recorded
 beside netrender's.
 
 **Done when, 2026-08-08.** All three hold. The probe is
-`crates/paredros-room` (lib plus `src/bin/room.rs`), the repo's first
+`crates/paredros-client` (lib plus `src/bin/room.rs`), the repo's first
 game code.
 
 Determinism: a 64-tick const trace of per-tick headings drives one body
@@ -108,7 +112,7 @@ are dated against mesocosm as of this entry, not pinned in an assertion:
 they witness a replay, and relief changes upstream are allowed to move
 them.
 
-Picture: `ROOM_TRACE=1 cargo run -p paredros-room --bin room` opens a
+Picture: `ROOM_TRACE=1 cargo run -p paredros-client --bin room` opens a
 winit window presenting netrender's composed master, which is the
 renderling room composited at scene-op boundary 0 with a vello chrome bar
 over it, both on one device. It drives itself from the trace, captures,
@@ -126,7 +130,7 @@ move the torch; that is the first thing to fix when a frame budget
 matters.
 
 **R1 shared-traversal receipt, 2026-08-20.** The historical receipt command
-`ROOM_R1=1 cargo run -p paredros-room --features r1-proof --bin room`
+`ROOM_R1=1 cargo run -p paredros-client --features r1-proof --bin room`
 keeps this room, trace, camera policy, netrender master, and replay
 discipline, but projects `Ground` through the same `BrickTracer` and brick
 DDA used by Mesocosm. Paredros supplies its existing
@@ -150,7 +154,7 @@ or `BRICK_DDA_WGSL`. The original renderling S0 receipt remains intact;
 raymarch-depth composition closed as D1 on 2026-08-26.
 
 **V1 continuous-zoom residency receipt, 2026-08-21.** The opt-in command
-`cargo run -p paredros-room --features v1-proof --bin v1_residency`
+`cargo run -p paredros-client --features v1-proof --bin v1_residency`
 grows a 256-voxel-half-extent planning region, holds one surface character
 as the camera focus, and drives the ratified near-acts / mid-leads /
 far-plans camera from distance 8 to 72. The rig rises continuously from 50
@@ -207,7 +211,7 @@ exact cache, not before. Neither gate promotes product projection identity,
 frame cadence, or lease scheduling into a cross-product contract.
 
 **V1b stable-cache receipt, 2026-08-26.** The opt-in command
-`cargo run -p paredros-room --features v1b-proof --bin v1b_residency`
+`cargo run -p paredros-client --features v1b-proof --bin v1b_residency`
 holds the exact V1 zoom-and-travel trace over one capacity-fixed cache
 (`StableResidency` over `conatus_brick::BrickMap::with_capacity` at
 `bd8f0044`): 1,791 slots, 931,376 fixed bytes under the unchanged 1 MiB
@@ -286,7 +290,7 @@ receipt changes behaviour.
 frame without the matrix, hands the whole frame to either side with
 constant-depth matrices, and splits it on a world-z ramp against a
 mid-plane raster stand-in; all 33 mesocosm-lens tests are green. The
-headed run `cargo run -p paredros-room --features d1-proof --bin d1_depth`
+headed run `cargo run -p paredros-client --features d1-proof --bin d1_depth`
 draws the body and three cyan witness pillars through renderling — one
 standing before the wall, one with its base a voxel under the floor, one
 wholly sunken beneath the surface — and the raymarched room over the
@@ -908,7 +912,7 @@ silently become a parallel save authority.
 
 This native prototype is a separate authored scenario inspector, not a
 player-control selector. `paredros-world` supplies read-only presentation
-rows from body/query facts; `paredros-room` owns selection, navigation,
+rows from body/query facts; `paredros-client` owns selection, navigation,
 layout and rendering on the existing Netrender host. The three-lives fixture
 has one public demo-data home so tests, the text receipt and native inspector
 read the same facts. It is not a new procedural start generator.
@@ -1240,7 +1244,7 @@ before expanding the social or procedural scope.
 
 ##### Dry fixture implementation (2026-09-05)
 
-`cargo run -p paredros-room --bin crossing` opens the authored dry cut, loose
+`cargo run -p paredros-client --bin crossing` opens the authored dry cut, loose
 board, overhead hold, broad exit stair, and stationary practice body. The
 crawler can carry the board; the climber can attach a tether. Both can use the
 channel and stairs. Keys 1/2 restart the entire fixture with a different body;

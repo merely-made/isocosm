@@ -23,12 +23,12 @@ use std::task::{Context, Poll, Waker};
 use std::time::Instant;
 use std::{future::Future, pin::Pin};
 
-use paredros_room::frame_health::{FrameDecision, FrameHealth, PresentationPolicy, SharedFault};
-use paredros_room::gpu::{self, Composer, SIZE, Tenant};
+use paredros_client::frame_health::{FrameDecision, FrameHealth, PresentationPolicy, SharedFault};
+use paredros_client::gpu::{self, Composer, SIZE, Tenant};
 #[cfg(feature = "r1-proof")]
-use paredros_room::gpu::{BrickAbi, DdaTenant};
-use paredros_room::room::SEED;
-use paredros_room::{Probe, TICKS, scene};
+use paredros_client::gpu::{BrickAbi, DdaTenant};
+use paredros_client::room::SEED;
+use paredros_client::{Probe, TICKS, scene};
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;
 use winit::event::WindowEvent;
@@ -192,7 +192,7 @@ impl HeadedValidationProbe {
     fn completed_record<'a>(
         &self,
         health: &'a FrameHealth,
-    ) -> Option<&'a paredros_room::frame_health::ValidationRecord> {
+    ) -> Option<&'a paredros_client::frame_health::ValidationRecord> {
         let injected = self.injected_attempt?;
         let validation = health
             .validations()
@@ -224,7 +224,7 @@ impl HeadedValidationProbe {
             .then_some(validation)
     }
 
-    fn write_receipt(&self, validation: &paredros_room::frame_health::ValidationRecord) {
+    fn write_receipt(&self, validation: &paredros_client::frame_health::ValidationRecord) {
         let (policy, path) = match self.policy {
             PresentationPolicy::AwaitedDiagnostic => ("awaited", RG3B_AWAITED_RECEIPT),
             PresentationPolicy::Optimistic => ("optimistic", RG3B_OPTIMISTIC_RECEIPT),
@@ -607,7 +607,7 @@ impl RoomApp {
                         &dda.view,
                     ),
                     None,
-                    "paredros-room",
+                    "paredros-client",
                     "paredros::DdaTenant::draw",
                 )
             } else {
@@ -623,7 +623,7 @@ impl RoomApp {
                 (
                     master,
                     Some(receipt),
-                    "paredros-room",
+                    "paredros-client",
                     "renderling::Stage::encode_into (opaque)",
                 )
             }
@@ -641,7 +641,7 @@ impl RoomApp {
                 (
                     master,
                     Some(receipt),
-                    "paredros-room",
+                    "paredros-client",
                     "renderling::Stage::encode_into (opaque)",
                 )
             }
@@ -868,7 +868,7 @@ fn report(
             capture_size: capture.size,
             capture_distinct_colours: capture.distinct,
             capture: path.display().to_string(),
-            dependency_provenance: "paredros-room -> netrender RG3a d08f713d8",
+            dependency_provenance: "paredros-client -> netrender RG3a d08f713d8",
             plan_dump: &receipt.logical_plan_dump,
         };
         let json = serde_json::to_string_pretty(&rg3).expect("RG3c receipt JSON");

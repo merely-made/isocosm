@@ -30,6 +30,10 @@ any other index and is updated in the same session as any doc change.
 
 ## Active docs
 
+The native package and directory are `paredros-client` as of 2026-09-13.
+Historical receipts retain `paredros-room`; current run commands use the new
+package. The `room` binary and existing environment variables retain their names.
+
 **Implementation direction, 2026-09-09:** build connected functional systems;
 the crossing is an optional fixture. The following plans own the next wiring
 dependencies while the execution plan retains F0-F8 semantic milestones:
@@ -39,7 +43,10 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   bounded J0 body-sheet safety and J1a controlled-session persistence implemented
   locally; J1a passes 35 library + 3 integration tests. B1 timed limb contributions
   now pass 9 focused model tests, one native handler test and an automated
-  captured/presented smoke run. Physical input and full host/contact join remain open.
+  captured/presented smoke run. B2 strike adjudication and target consequences
+  now pass 104 world tests, 3 native handler tests, an automated window smoke
+  and the all-features/all-targets workspace compile. Physical input and the
+  full host/contact join remain open.
 - [World conditions and authored laws](2026-09-09_world_conditions_plan.md):
   independent skill/risk surgery, causal composition, proposed stored charge and
   sympathetic coupling, and explicitly scoped rules adapters; planned.

@@ -1,11 +1,15 @@
 [package]
-name = "paredros-room"
+name = "paredros-client"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
-description = "S0, the room probe: one body, one room, a close camera, a fixed input trace, and a rendered receipt."
+description = "Paredros native client: rendering, input, inspection surfaces, and retained S0 room probes."
 repository = "https://github.com/merely-made/isometry"
 publish = false
+
+[lib]
+name = "paredros_client"
+path = "src/lib.rs"
 
 [features]
 # The shared traversal is a permanent compile-time product organ. `ROOM_R1`

@@ -18,10 +18,10 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Instant;
 
-use paredros_room::gpu::{self, BrickAbi, Composer, JoinTenant, SIZE, Tenant};
-use paredros_room::room::SEED;
-use paredros_room::scene::Pillar;
-use paredros_room::{Probe, TICKS, scene};
+use paredros_client::gpu::{self, BrickAbi, Composer, JoinTenant, SIZE, Tenant};
+use paredros_client::room::SEED;
+use paredros_client::scene::Pillar;
+use paredros_client::{Probe, TICKS, scene};
 use renderling::glam::{Mat4, Vec4};
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;

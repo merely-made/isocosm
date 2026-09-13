@@ -10,7 +10,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use mesocosm_core::{BodyDocument, PartId, Yaw};
+use mesocosm_core::{Aabb, BodyDocument, PartId, Yaw};
 use paredros_identity::{BodyRevisionId, SubjectId};
 use serde::{Deserialize, Serialize};
 
@@ -21,6 +21,38 @@ pub const MAX_ANATOMY_PARTS: usize = 256;
 pub const MAX_ANATOMY_COORDINATE: i32 = 1_000_000;
 /// A root-to-leaf pivot may accumulate one bounded offset per admitted part.
 pub const MAX_ANATOMY_WORLD_COORDINATE: i32 = 256_000_000;
+
+/// Derive a part's body-space bounds through the core's pivot and attachment
+/// arithmetic. Consumers may translate this into an authoritative world pose.
+pub fn part_bounds(document: &BodyDocument, id: PartId) -> Option<Aabb> {
+    let part = document.part(id)?;
+    let extent = [
+        part.half_extent[0].checked_mul(2)?,
+        part.half_extent[1].checked_mul(2)?,
+        part.half_extent[2].checked_mul(2)?,
+    ];
+    let mut corners = (0..8).map(|mask| {
+        document.place(
+            id,
+            [
+                if mask & 1 == 0 { 0 } else { extent[0] },
+                if mask & 2 == 0 { 0 } else { extent[1] },
+                if mask & 4 == 0 { 0 } else { extent[2] },
+            ],
+        )
+    });
+    let first = corners.next()??;
+    let mut min = first;
+    let mut max = first;
+    for corner in corners {
+        let corner = corner?;
+        for axis in 0..3 {
+            min[axis] = min[axis].min(corner[axis]);
+            max[axis] = max[axis].max(corner[axis]);
+        }
+    }
+    Some(Aabb { min, max })
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AnatomyRecord {

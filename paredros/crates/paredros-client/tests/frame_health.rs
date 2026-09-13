@@ -6,14 +6,14 @@
 
 //! Opt-in physical receipt for host-owned validation attribution.
 
-use paredros_room::frame_health::{FrameDecision, FrameHealth, PresentationPolicy};
+use paredros_client::frame_health::{FrameDecision, FrameHealth, PresentationPolicy};
 
 #[test]
 #[ignore = "opt-in physical validation-scope receipt"]
 fn tenant_validation_scope_leaves_later_frame_usable() {
     let instance =
         wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle_from_env());
-    let handles = paredros_room::gpu::boot(&instance, None);
+    let handles = paredros_client::gpu::boot(&instance, None);
     let mut health = FrameHealth::new(PresentationPolicy::AwaitedDiagnostic);
 
     assert_eq!(health.begin_frame(1), FrameDecision::Proceed);
@@ -44,7 +44,7 @@ fn tenant_validation_scope_leaves_later_frame_usable() {
     let detail = format!("{error:?}");
     assert_eq!(
         health.finish_validation(
-            "paredros-room",
+            "paredros-client",
             "renderling::Stage::encode_into (opaque)",
             1,
             Some(detail.clone()),
@@ -52,7 +52,7 @@ fn tenant_validation_scope_leaves_later_frame_usable() {
         FrameDecision::Suppress
     );
     assert_eq!(health.validations().len(), 1);
-    assert_eq!(health.validations()[0].tenant_name, "paredros-room");
+    assert_eq!(health.validations()[0].tenant_name, "paredros-client");
     assert_eq!(
         health.validations()[0].producer_path,
         "renderling::Stage::encode_into (opaque)"
@@ -75,7 +75,7 @@ fn tenant_validation_scope_leaves_later_frame_usable() {
     assert!(pollster::block_on(valid_scope.pop()).is_none());
     assert_eq!(
         health.finish_validation(
-            "paredros-room",
+            "paredros-client",
             "renderling::Stage::encode_into (opaque)",
             2,
             None
