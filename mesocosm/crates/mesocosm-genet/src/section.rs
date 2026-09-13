@@ -218,6 +218,13 @@ impl Section {
         self.mode
     }
 
+    /// Display-encoded sRGB bytes in an unorm view, for a document compositor
+    /// that samples encoded values directly. Alpha is opaque. The caller must
+    /// submit the section's encoder before staging this same-device image.
+    pub fn encoded_view(&self) -> &wgpu::TextureView {
+        &self.traced_view
+    }
+
     pub fn configure_bodies(&mut self, mode: BodyMode, budget: usize) {
         if self.body_mode != mode || self.bodies.budget != budget.max(1) {
             self.invalidate_query();

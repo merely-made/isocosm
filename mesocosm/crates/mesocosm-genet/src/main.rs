@@ -67,10 +67,16 @@ fn main() {
     let mut capture = None;
     let mut slab_explicit = false;
     let mut create = false;
+    let mut bench = false;
+    let mut size_explicit = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--create" => create = true,
+            "--bench" => {
+                bench = true;
+                create = true;
+            },
             "--draft" => {
                 config.creator_draft = Some(PathBuf::from(args.next().unwrap_or_else(|| {
                     eprintln!("--draft requires a criteria JSON path");
@@ -99,6 +105,7 @@ fn main() {
                 };
                 config.width = width;
                 config.height = height;
+                size_explicit = true;
             },
             "--bodies" => {
                 let named = args.next().unwrap_or_default();
@@ -246,8 +253,20 @@ fn main() {
     // `--replay` is checked against, so running this binary with no arguments
     // destroyed it. See `played::DEFAULT_STEM`.
     let trace_path = trace.unwrap_or_else(played::default_trace_path);
-    config.capture = Some(capture.unwrap_or_else(played::default_capture_path));
-    config.receipt = Some(receipt.unwrap_or_else(played::default_receipt_path));
+    config.capture = Some(capture.unwrap_or_else(|| {
+        if bench {
+            played::default_capture_path().with_file_name("scratch_bench.png")
+        } else {
+            played::default_capture_path()
+        }
+    }));
+    config.receipt = Some(receipt.unwrap_or_else(|| {
+        if bench {
+            played::default_receipt_path().with_file_name("scratch_bench.json")
+        } else {
+            played::default_receipt_path()
+        }
+    }));
 
     if let Some(path) = replay {
         match played::read_trace(&path) {
@@ -264,7 +283,7 @@ fn main() {
                 std::process::exit(1);
             },
         }
-    } else {
+    } else if !bench {
         config.trace = Some(trace_path);
     }
 
@@ -305,7 +324,16 @@ fn main() {
             });
         config.creator_request = Some(request);
     }
-    match Host::run(config) {
+    if bench && !size_explicit {
+        config.width = 1280;
+        config.height = 900;
+    }
+    let result = if bench {
+        mesocosm_genet::app::bench::run(config)
+    } else {
+        Host::run(config)
+    };
+    match result {
         Ok(code) => std::process::exit(code),
         Err(error) => {
             eprintln!("host failed: {error}");
@@ -342,6 +370,7 @@ mesocosm-genet: run Mesocosm in a window
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --seed N        world seed
   --create        compare generated starting lives before play (arrows, R/N/P/C/M, +/-)
+  --bench         open the native specimen bench (1280x900); uses creator criteria
   --draft PATH    reopen criteria or begin a new draft; implies --create; S saves
                   K retains selected role/organs/segment count; U clears these filters
   --start PATH    enter a generated selection JSON (recorded for replay)
@@ -366,6 +395,9 @@ mesocosm-genet: run Mesocosm in a window
 headed-verify home: <Code>/testing/mesocosm/scratch_played.png, .trace.json and
 .json. They are never the golden ps1_played.* fixture, which is written only
 when one of those flags names it.
+The bench defaults to scratch_bench.png and scratch_bench.json in the same
+directory. It accepts --seed, --draft, --start, --camera and --size; its
+controls leave the generated entry world unstepped.
 
 controls: Z/V turn the terrarium left/right; WASD move along world axes, E/Space eat, Q deposit, C dig, arrows pan, Esc quit
 Y opens Inspect and consume tissue (world paused): arrows or J/L select; Enter consumes; Esc cancels

@@ -33,8 +33,10 @@ sprigging = { workspace = true }
 # The cambium lane. genet does not own the window here: the runner diffs a
 # view tree into a ScriptedDom, genet-livery lays it out and emits a paint
 # list, and the raster composites over the frame like any other chrome
-# texture. Hence no cambium-winit and no genet-winit-host.
+# texture. The separate --bench entry uses Cambium's native document host.
 cambium = { workspace = true }
+cambium-genet-winit-host = { workspace = true }
+cambium-rootstock = { workspace = true }
 genet-livery = { workspace = true }
 genet-scripted-dom = { workspace = true }
 # The scenario driver (DT4). The host implements `Automatable` and `Driveable`

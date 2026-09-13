@@ -24,6 +24,7 @@ use crate::chrome::Chrome;
 use crate::section::{self, Pan, Section, SectionFrame};
 
 pub mod actions;
+pub mod bench;
 mod config;
 mod content;
 mod creator;

@@ -76,7 +76,7 @@ impl Creator {
         self.preview.as_deref().unwrap_or(&self.empty)
     }
 
-    fn regenerate(&mut self) {
+    pub(super) fn regenerate(&mut self) {
         self.serial += 1;
         self.observation = None;
         self.prepared = None;
@@ -125,7 +125,7 @@ impl Creator {
         }
     }
 
-    fn select(&mut self, index: usize) {
+    pub(super) fn select(&mut self, index: usize) {
         self.selected = index;
         self.preview = self
             .prepared
@@ -142,7 +142,7 @@ impl Creator {
         self.refresh();
     }
 
-    fn count(&self) -> usize {
+    pub(super) fn count(&self) -> usize {
         self.prepared
             .as_ref()
             .map_or(0, |p| p.draft().candidates.len())
@@ -457,7 +457,7 @@ impl Creator {
         self.regenerate();
     }
 
-    fn save_draft(&mut self) {
+    pub(super) fn save_draft(&mut self) {
         self.notice = match &self.draft_path {
             Some(path) => match crate::creator_draft::save(path, &self.request) {
                 Ok(()) => "Criteria saved. Reopening regenerates candidates.".into(),

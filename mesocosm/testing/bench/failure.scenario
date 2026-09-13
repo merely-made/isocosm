@@ -1,0 +1,4 @@
+# Negative control: the process and receipt must fail while retaining a fresh PNG.
+wait 1200
+assert snap ready == impossible
+capture intentional-failure

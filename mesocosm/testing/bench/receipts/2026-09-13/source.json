@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-13",
+  "kind": "native-specimen-bench-source",
+  "isometry_parent": "7c0ca7534ceaf873409671fe74f7714dba763a3f",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-genet/src/app.rs": "7a645d1991cf1e058813f3aacb0c1a46c11db85d",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "dcab0cf6d36af14522337537e92200b40430bead",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_pixels.rs": "c83197ac2187bec994ea57073d6ced5f58d2d6e1",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "fb379c6090e3a9a650483a730a0e5ed72c0ee577",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe.rs": "8b9b7343f19dcbfaedff4ee95ceaee424cef2c6e",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "491b1eb315349fc3c6b8be20d70c34965dceff35",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "9815572d034edadd863a2d224033f5259b6f3787",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "2537b1e664af68e65fadeb196a44c19ffe755c36",
+    "mesocosm/crates/mesocosm-genet/src/app/creator.rs": "e9f5ca19d8753da176baba9fd60dbd857b64dd04",
+    "mesocosm/crates/mesocosm-genet/src/main.rs": "72b6f490eae1acd769c91c9a3e09fa1119a0082f",
+    "mesocosm/crates/mesocosm-genet/src/section.rs": "c58b8e3835da2125cf8d8cdf960096c6cdd44bd7",
+    "mesocosm/crates/mesocosm-genet/src/section/appearance_tests.rs": "aaf25990175d14004cbc64932f410f6265c57985",
+    "mesocosm/crates/mesocosm-genet/src/section/appearance.rs": "a14a0b72179125e03f3a7b1da3bb662c9401b3ac",
+    "mesocosm/crates/mesocosm-genet/src/section/bodies.rs": "ba6a04d6f8d4ac01a22da10a72fccfc24aeb02da"
+  },
+  "genet": "101d9e9ade8671564e723443d9f0498e899a33f1",
+  "mere": "4f4de1d05ec99461f7fa3cdc4e514e904a999213",
+  "netrender": "3961aca919f707ab09a786379eb4ce8bb121258e",
+  "executable_sha256": "a26218a59799122504946eed9bb3d38367d4858d0625c8dd66e4f824d04a3a70",
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "capture_directory": "C:/Users/mark_/Code/testing/specimen-bench/native-final",
+  "runtime_build": "Development path overrides; committed dependency check recorded in the wing plan",
+  "committed_dependency_check": {
+    "workspace": "isometry/mesocosm",
+    "command": "cargo check --release --offline --workspace --all-features --all-targets -j 3",
+    "development_overrides": false,
+    "exit_code": 0
+  },
+  "scope": "Native controls and image correctness; population/frame-cost benchmark remains Bench D"
+}

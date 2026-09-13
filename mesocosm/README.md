@@ -46,6 +46,7 @@ must make somebody want another run.
 
 ```sh
 cargo run -p mesocosm-genet    # WASD move, E/Space eat, arrows orbit, Esc quit
+cargo run -p mesocosm-genet -- --bench --seed 7 # native specimen bench and parts examiner
 cargo test --workspace
 ```
 

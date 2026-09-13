@@ -14,6 +14,9 @@ use super::{BodySelection, SlabWindow};
 #[cfg(test)]
 use super::{CameraMode, SLAB_DEPTH};
 
+#[path = "appearance.rs"]
+mod appearance;
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
     Capsules,
@@ -92,6 +95,7 @@ pub(super) struct BodyLayer {
     renderer: LiveBodyRenderer,
     placed: Vec<PlacedBody>,
     yaw: BTreeMap<OrganismId, f32>,
+    tints: BTreeMap<OrganismId, [f32; 3]>,
     pub fallback: Vec<CritterPose>,
     pub played_fallback: Option<CritterPose>,
     pub stats: BodyFrameStats,
@@ -114,6 +118,7 @@ impl BodyLayer {
             renderer: LiveBodyRenderer::new(device, mesocosm_lens::FRAME_FORMAT, 256),
             placed: Vec::new(),
             yaw: BTreeMap::new(),
+            tints: BTreeMap::new(),
             fallback: Vec::new(),
             played_fallback: None,
             stats: BodyFrameStats::default(),
@@ -321,7 +326,7 @@ impl BodyLayer {
                 self.stats.omitted_bodies += candidate_count - index;
                 break;
             }
-            let tint = crate::app::look_of(organism).0;
+            let tint = self.rendered_tint(organism);
             match self
                 .projector
                 .project(organism.id, organism.body(), volumes)
@@ -467,7 +472,7 @@ impl BodyLayer {
                 self.add_fallback(
                     organism,
                     Some(subject) == world.controlled_id(),
-                    crate::app::look_of(organism).0,
+                    self.rendered_tint(organism),
                 );
             }
         }

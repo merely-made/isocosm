@@ -1,0 +1,135 @@
+# Native Bench B acceptance. Run --bench --dev --size 1280x900 --frames 1800
+# with this --scenario and explicit --receipt/--capture artifact paths.
+# Every click goes through the native host's retained DOM and pointer routing.
+wait 1200
+assert snap ready == yes
+assert snap selected == no
+assert snap fallback-bodies == 0
+assert text Specimen bench
+assert text Parts examiner
+capture opened
+remember original
+
+# Both the viewport and the same-identity DOM control must select a real part.
+click role:img Specimen
+settle 2
+assert snap selected == yes
+assert event part-selected
+capture picked
+click role:button Clear selection
+settle 2
+assert snap selected == no
+assert snap overlay-clicks == 1
+click role:button Part 0
+settle 2
+assert snap selected-part == 0
+capture examined
+same original hash mesh-bytes
+
+# Appearance changes must touch instances and pixels while meshes stay cached.
+remember appearance
+click role:button Warm
+settle 2
+assert snap tint == warm
+same appearance hash mesh-bytes
+more appearance instance-bytes renders
+capture warm
+body-pixels-change examined warm
+click role:button Cool
+settle 2
+assert snap tint == cool
+same appearance hash mesh-bytes
+capture cool
+body-pixels-change warm cool
+click role:button Warm
+settle 2
+remember warm
+settle 3
+same warm renders mesh-bytes instance-bytes
+click role:button Frame
+settle 2
+assert snap decorated == yes
+same warm renders mesh-bytes instance-bytes hash
+capture decorated
+captures-differ warm decorated
+viewport-pixels-same warm decorated
+
+# Document opacity changes the composed image without repainting the producer.
+remember opaque
+opacity 0.45
+settle 2
+assert snap opacity == 0.45
+same opaque renders mesh-bytes instance-bytes hash
+capture faded
+viewport-pixels-change decorated faded
+opacity 1
+settle 2
+same opaque renders mesh-bytes instance-bytes hash
+capture opaque
+viewport-pixels-same decorated opaque
+
+# Transform the actual padded/bordered viewport and prove overlay input wins.
+click role:button Transform
+settle 2
+assert snap transformed == yes
+click role:button Clear selection
+settle 2
+assert snap selected == no
+assert snap overlay-clicks == 2
+click role:img Specimen
+settle 2
+assert snap selected == yes
+capture transformed
+same original hash mesh-bytes
+
+# Removal must retire the image/query source; return must redraw current state.
+click role:button Hide / show
+settle 2
+assert snap visible == no
+assert snap active == no
+assert snap selected == no
+capture hidden
+click role:button Hide / show
+wait 120
+assert snap visible == yes
+assert snap ready == yes
+assert snap selected == no
+capture returned
+same original hash
+captures-differ hidden returned
+
+resize 1120 780
+settle 4
+capture resized
+capture-size-changed returned resized
+assert snap ready == yes
+same original hash
+
+zoom 1.25
+settle 3
+assert snap ui-zoom == 1.25
+click role:button Clear selection
+settle 2
+assert snap selected == no
+assert snap overlay-clicks == 3
+click role:img Specimen
+settle 2
+assert snap selected == yes
+capture zoomed
+same original hash
+zoom 1
+settle 3
+
+# Replacing the candidate expires the examiner even when local part IDs recur.
+click role:button Part 0
+settle 2
+assert snap selected-part == 0
+remember candidate
+click role:button Next
+settle 2
+more candidate epoch
+assert snap selected == no
+assert snap ready == yes
+capture next-candidate
+captures-differ resized next-candidate
+log native specimen controls, pixels, appearance and lifecycle exercised

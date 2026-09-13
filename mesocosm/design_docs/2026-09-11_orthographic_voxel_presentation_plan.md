@@ -11,9 +11,11 @@ sprite/shape-count probes. On identical poses at 1,000 bodies, A takes
 about 8 ms; repeated sprites now share 12 images. Residual pixels and timing
 tails remain qualified in the receipt. Bench A now supplies posed bounds and
 visible-part queries to the existing Section, with headless pixel checks.
-Genet embedding remains open. The standalone probes did not require viewport
-embedding, style mapping or picking. The later bench reuses Mesocosm's creator, disposable trials and shared
-depth section. General CSS 3D, the large-DOM first-frame gate and retained
+Bench B now embeds that scene in Genet with CSS appearance and native part
+input; its qualified native receipt is below. The standalone probes did not
+require viewport embedding, style mapping or picking. The bench reuses
+Mesocosm's creator and shared-depth section; visible disposable trials follow
+in Bench C. General CSS 3D, the large-DOM first-frame gate and retained
 planar fragment repair remain independent work, not prerequisites for that
 bench. See [the assessed slices](#specimen-bench-prerequisites-2026-09-13).
 
@@ -30,6 +32,9 @@ execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan
 
 - [PolyCSS](https://github.com/layoutit/polycss), MIT: polygon meshes and
   `.vox` volumes as DOM elements under `matrix3d`.
+- [Layoutit Voxels](https://github.com/layoutit/layoutit-voxels/tree/35ee4110a8c9c66eb210d0ad0d184e66641a01fd),
+  GPL-2.0-only: source studied on 2026-09-13 as an interaction reference for
+  the specimen bench and parts examiner. No implementation is incorporated.
 - [Zdog](https://zzz.dog), MIT: flat-shaded pseudo-3D drawn as 2D vector
   paths under 3D transforms.
 - [Bonsai](https://github.com/scallyw4g/bonsai), WTFPL: already adopted three
@@ -378,8 +383,9 @@ fragment.
 
 ## Specimen bench prerequisites (2026-09-13)
 
-**Status:** assessment and both standalone probe prerequisites complete. Three parallel
-source audits checked rendering, host embedding, and world/activity inputs.
+**Status:** assessment, both standalone probe prerequisites, Bench A and
+Bench B's bounded native integration are complete. Three parallel source
+audits checked rendering, host embedding, and world/activity inputs.
 The existing creator is the starting point, not a second specimen model.
 Its prior headed receipts establish earlier source revisions; they were not
 rerun in this assessment. Current source anchors were Isometry 5e98d14,
@@ -404,6 +410,31 @@ Rootstock input/layout and Genet scripted/realm edits left intact.
   the engine geometry work and references Mere's missing Cambium producer
   bridge. The external_texture element constructor alone is not a connected
   rendering path.
+
+### Interaction reference: Layoutit Voxels (2026-09-13)
+
+Mark authorized source study as a reference independently of code reuse.
+The inspected revision is `35ee4110a8c9c66eb210d0ad0d184e66641a01fd`.
+Its face-addressed tools (`src/components/layers.vue`) suggest a direct
+selection-to-inspection flow: the drawn part and its ordinary DOM reading
+refer to the same organism, part and geometry revision. Bench B uses the
+existing creator and `mesocosm_views::part_of` to expose that correspondence.
+Selection expires when its preview or geometry is replaced.
+
+The cube presentation separates simple geometry from face colour/texture
+choices. The bench's declared appearance controls therefore exercise instance
+updates while keeping resident geometry cached. Report staging and geometry
+uploads separately. Palette experiments need no new body representation.
+
+Two follow-ons are useful without expanding Bench B's gates. A portable
+inspection view can extend the existing saved generation request with pose,
+camera and part selection, retaining enough versioned inputs to reproduce it.
+Geometry editing/export must derive visibility from the same shape data as
+the scene and queries: Layoutit's cube preview and export helper disagree
+about occlusion by non-cube neighbours (`cube.vue`, `visibleFaces.mjs`).
+Mixed-shape boundaries become an explicit agreement fixture if such shapes
+are admitted. Snapshot undo and one DOM element per voxel are implementation
+choices in that reference, not requirements of the bench.
 
 ### Immediate probes, before embedding
 
@@ -515,6 +546,10 @@ seam. The preview uses these presented bounds to fit the body beside its panel.
 
 ### Bench B. One interactive Genet viewport
 
+**Status, 2026-09-13:** bounded native integration accepted with the evidence
+and limits below. The `--bench` entry uses Cambium's native host and the existing
+creator's Request/Prepared worlds. Whole-game host migration remains separate.
+
 **Owners:** Mere/Cambium producer lifecycle, Genet content-box and common 2D
 paint/input geometry, Mesocosm scene producer and appearance mapping. Reuse
 custom_leaf, DrawExternalTexture and stage_external_image. Initialize from
@@ -534,6 +569,81 @@ opacity, zoom and output scale agree in pixels and picks; an overlaid control
 wins input; resize/hide/remove/recreate preserve lifecycle; unchanged sources
 skip staging and decorative style changes leave geometry cached. Use the
 accepted Ortet image tests and Cambium native smoke host as starting fixtures.
+
+**Implementation:** Cambium's `ProducerRegistry` binds a producer to the
+existing custom-leaf slot after layout. It supplies the host device/queue,
+content extent and declared resolved appearance. Changed view identities or
+generations are staged before ordinary document paint. Resize invalidates the
+old image; hiding suspends; removal retires the registration. A recreated node
+registers again. Encoded sRGB and source alpha are explicit contracts.
+
+Genet's `ElementGeometry` supplies content origin, inverse accumulated 2D
+transform and ancestor clips to the host input path. Ordinary DOM hit routing
+decides the recipient first, so the clear-selection overlay wins. The slot
+does not introduce a clip around legacy retained fragments: its image bounds
+and authored CSS overflow supply clipping, preserving the T4-independent path.
+Pixel padding is covered; the existing percentage-padding query approximation
+is not promoted into a conformance claim by this work.
+
+Mesocosm's producer reuses `Section`, including its body/terrain depth and
+visible-part queries. CSS `color` converts from encoded sRGB into a linear
+multiplier on the organism's ordinary presentation tint. The instance override
+does not edit world or material facts. Group opacity stays in document paint.
+Unchanged scene inputs skip producer rendering as well as image staging.
+The parts examiner uses the existing `part_of` projection; buttons and viewport
+hits identify the same organism/part. Preview replacement expires selection
+even when a new candidate reuses local IDs.
+
+`testing/bench/acceptance.scenario` drives native pointer input and captures
+the presented document. Its decoded-PNG checks isolate viewport content from
+labels, buttons and the overlay: tint must change body pixels with background
+fixed, while decorative CSS must preserve content pixels and upload counters.
+The separate habitat and deliberate-failure scenarios exercise the composed
+habitat and the receipt's failure path. These are correctness checks, not the
+population and frame-cost comparison assigned to Bench D.
+
+**Native receipt, 2026-09-13:** the final development build passes acceptance
+in 167 frames with 15 captures, at actual output scale 2. The initial seed-1
+candidate has 33 parts and uploads 8,064 static mesh bytes. Each tint comparison
+changes 102,660 body pixels while all 1,128,060 sampled background pixels remain
+fixed. Decorative CSS leaves all 1,230,720 sampled content pixels unchanged;
+opacity changes composition and resets to the same pixels. Neither operation
+rerenders the producer or adds mesh/instance uploads. Transformed centre clicks,
+UI zoom 1.25, overlay priority, resizing, removal/recreation and candidate
+replacement pass through real host input. The independent geometry fixture
+calculates the authored 7-degree/0.9 transform rather than querying Genet's
+inverse back as its own oracle.
+
+The habitat scenario passes in 25 frames with ten detailed bodies and 343
+parts beside the traced terrain, with no capsule fallback or world-hash change.
+This frame establishes native assembly; exact occlusion is carried by Bench A's
+body/terrain pixel tests, and literal clipping/transform edges by Genet's and
+Cambium's focused fixtures. Body count alone is not an occlusion oracle. The
+deliberately false assertion produces process exit 1, `ok: false` and two fresh
+PNGs. A separate Section GPU test verifies tint changes, reset pixels, invalid
+input, unchanged geometry and preserved material facts.
+
+Compact receipts and source-blob identities are retained under
+`testing/bench/receipts/2026-09-13/`; full PNGs are under
+`Code/testing/specimen-bench/native-final/`. The source record identifies the
+actual executable, avoiding the older binary under `mesocosm/target`. Those
+captures use development path overrides, with source blobs recorded before
+commit. A separate full Mesocosm workspace check passes on Rust 1.97.1 with
+the committed Git dependencies and no sibling overrides:
+
+```text
+cargo check --release --offline --workspace --all-features --all-targets -j 3
+```
+
+That graph uses Mere `4f4de1d05ec99461f7fa3cdc4e514e904a999213`,
+Genet `101d9e9ade8671564e723443d9f0498e899a33f1` and netrender
+`3961aca919f707ab09a786379eb4ce8bb121258e`, with one source identity per
+family. Genet's 61 focused checks, Cambium's 34 CPU and two GPU producer tests,
+62 native-host regression tests, and the Section tint GPU test pass. The
+separate Isometry root workspace also passes its required locked/offline
+all-features/all-targets check on its unchanged dependency baseline; it is
+not a second host acceptance of the new pins. Remaining warnings are the
+existing unused TraceCamera helper and core-test mutable binding.
 
 ### Bench C. Visible disposable world trial
 
@@ -567,10 +677,10 @@ cost and cache activity. Carry the equivalent-pose yaw baseline and document
 the renderer's policy for coincident surfaces; count foreground coverage separately from background.
 Record the source revisions and benchmark population, including unique geometry.
 
-The two immediate probes and Bench A are complete without document embedding.
-Next, Bench B joins the Section's tested pose/query API to one Genet viewport.
-Bench C can proceed independently. Bench D measures
-that integrated result. T1 general CSS 3D, T2's large-element sweep, T4 planar
+The two immediate probes, Bench A and Bench B's bounded native integration
+are complete. Next, Bench C gives the bench a visible disposable world trial;
+Bench D measures the integrated document/style/input boundary. T1 general
+CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.
 
@@ -590,8 +700,9 @@ Those probe slices now have source, tests, fresh performance/correctness JSON
 and a reproducible receipt at `Code/testing/wing/l0c_2026-09-13/`, with the probe
 and compact receipts retained at Mere cc4c079c. Bench A adds posed bounds,
 preview framing and visible-part queries to the existing Section; its fresh
-headless readbacks pass. The viewport, style bridge, native pointer routing
-and visible trial remain open. No headed specimen-bench receipt is claimed.
+headless readbacks pass. Bench B adds the native viewport, style bridge and
+part examiner, with fresh presented-document captures and failing controls.
+The visible world trial and integrated population/cost receipt remain open.
 
 ## CSS features and standards to earmark
 

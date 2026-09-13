@@ -1,0 +1,19 @@
+# A separate fixture gate for the complete shared-depth scene between DOM siblings.
+# This intentionally fails if the chosen deterministic Request presents only one body.
+wait 1200
+assert snap ready == yes
+remember entry
+click role:button Body / habitat
+settle 3
+assert snap view == habitat
+assert snap drawn-bodies >= 2
+assert snap fallback-bodies == 0
+same entry hash
+capture habitat
+click role:button Body / habitat
+settle 3
+assert snap view == body
+assert snap ready == yes
+same entry hash
+capture isolated
+captures-differ habitat isolated
