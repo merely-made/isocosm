@@ -1,0 +1,176 @@
+{
+  "accepted_grants": [
+    {
+      "event": {
+        "Carved": {
+          "at": [
+            0,
+            12,
+            0
+          ],
+          "organism": 0,
+          "removed": 15
+        }
+      },
+      "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+      "glyph": "demo:earth",
+      "outcome": "acquired",
+      "sequence": 1,
+      "tick": 0
+    }
+  ],
+  "actor": 0,
+  "baseline_hash": "765c055b377dfb62",
+  "carve_target": [
+    0,
+    12,
+    0
+  ],
+  "divine_power_minted": false,
+  "effect_reference_executed": false,
+  "experience_awarded_by_world": false,
+  "final_world_hash": "ea76e63d1fb9fa13",
+  "measurement": {
+    "end_tick": 4,
+    "metric_id": "demo:seed-0-actor-0-removed-voxels-v1",
+    "start_tick": 0,
+    "total": 15,
+    "unit": "removed voxels"
+  },
+  "observations": [
+    {
+      "removed_voxels": 15,
+      "tick": 0
+    },
+    {
+      "removed_voxels": 0,
+      "tick": 1
+    },
+    {
+      "removed_voxels": 0,
+      "tick": 2
+    },
+    {
+      "removed_voxels": 0,
+      "tick": 3
+    }
+  ],
+  "qualification": {
+    "can_ascend": true,
+    "can_wish": true,
+    "complete": true
+  },
+  "scope": "real accepted-event acquisition; separate shared progression and period probe",
+  "seed": 0,
+  "standalone_progression": {
+    "ascension_basis": [
+      {
+        "glyph": "demo:earth",
+        "life": 1,
+        "policy": "RequireOwnedBase",
+        "provenance": {
+          "context": "Carved; organism=0",
+          "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+          "kind": "Event"
+        },
+        "tick": 0
+      }
+    ],
+    "inherent_at_10_xp": 1,
+    "inherent_at_9_xp": 0,
+    "journey": {
+      "acquisitions": [
+        {
+          "glyph": "demo:earth",
+          "life": 1,
+          "provenance": {
+            "context": "Carved; organism=0",
+            "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+            "kind": "Event"
+          },
+          "tick": 0
+        }
+      ],
+      "canon": {
+        "glyphs": [
+          {
+            "display": "#",
+            "effect": "demo:reshape-reference",
+            "id": "demo:earth"
+          }
+        ],
+        "id": "demo:carving-canon",
+        "limits": {
+          "glyphs": 4096,
+          "variants": 4096
+        },
+        "revision": 1,
+        "variants": [],
+        "version": 1
+      },
+      "divine": true,
+      "experience": 10,
+      "grants": [
+        {
+          "glyph": "demo:earth",
+          "life": 1,
+          "policy": "RequireOwnedBase",
+          "provenance": {
+            "context": "Carved; organism=0",
+            "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+            "kind": "Event"
+          },
+          "tick": 0
+        }
+      ],
+      "individual": "demo:seed-0-organism-0",
+      "life": 2,
+      "limits": {
+        "grants": 16384,
+        "transitions": 65536
+      },
+      "transitions": [
+        {
+          "Grant": {
+            "index": 0
+          }
+        },
+        "Ascend",
+        "Reincarnate",
+        {
+          "Experience": {
+            "amount": 9
+          }
+        },
+        {
+          "Experience": {
+            "amount": 1
+          }
+        }
+      ],
+      "unlock_thresholds": [
+        10
+      ],
+      "version": 1
+    },
+    "motif": [
+      {
+        "grants": [
+          {
+            "glyph": "demo:earth",
+            "life": 1,
+            "policy": "RequireOwnedBase",
+            "provenance": {
+              "context": "Carved; organism=0",
+              "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+              "kind": "Event"
+            },
+            "tick": 0
+          }
+        ],
+        "kind": "Event"
+      }
+    ]
+  },
+  "world_reincarnation_applied": false
+}

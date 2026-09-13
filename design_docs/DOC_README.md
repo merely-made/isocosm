@@ -81,3 +81,4 @@ mode (E0-E6 landed).
 None yet. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
 - [Functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md): shared charge networks, operators, body bindings, and generator proposal carriage; first slice implemented and tested locally.
+- [Glyph canon and divinity](../mesocosm/design_docs/2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13): configurable world vocabulary, provenance and ordered reacquisition across lives, journey constraints, fixed-period divine power, and the shared kernel's first Mesocosm consumer.

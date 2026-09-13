@@ -15,6 +15,12 @@ the subsequent open discussion of body/item grammars, magic anatomy,
 operator composition, vows, curation, and SRD adjudication. These broaden
 the candidate space without settling a spec or scheduling implementation.
 
+**Implementation update, 2026-09-13:** §7.4 adopts Mark's configurable glyph
+canon and journey-shaped divinity direction. Its shared kernel and Mesocosm
+trial adapter are implemented and tested; playable effects and durable lives
+remain open. This is a specific exception to the earlier
+blanket deferral of fantastical implementation, not adoption of all §6–§9.
+
 **Implementation status, 2026-08-07 (audit-corrected wording): E0-E4
 implementation slices landed and workspace-green; acceptance gates
 open.** E0 allometry, E1 anatomy-derived feeding and
@@ -897,6 +903,185 @@ is cut, replaced or attached to an item. This tests structural breadth and
 functional consequences before attempting generated cosmologies. Sample both
 critter and constructed forms early; a large catalogue can follow.
 
+### 7.4 Glyph canon, the journey, and divinity (2026-09-13)
+
+**Status: G1/G2 implemented and tested; G3/G4 open, 2026-09-13.** Mark
+explicitly authorized a module usable by Mesocosm, Paredros, and Isometry.
+Sharing this bounded machinery proceeds now; sharing the products' entire
+rule evaluators is not required. The journey to divinity itself becomes the
+new god's motif and constraint. This section owns progression and world laws;
+the [presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#glyph-effects-and-interaction-experiment-2026-09-13)
+owns the glyph experiments and their rendering evidence.
+
+#### World vocabulary and effect identity
+
+A world admits a finite, versioned canon. Each base glyph has a stable ID,
+display text, and a unique effect correspondence. The desired default covers
+letters, numbers, and symbols; a world may use only `a`, `b`, and `c`, or a mod
+may supply a much larger vocabulary. Arbitrary Unicode text is admitted as
+display data. A character code, rendered shape, or font's glyph index is not
+the gameplay ID. Explicit aliases and accent/variant definitions resolve to
+a base and declared modifiers. Variants do not silently increase the set
+needed for collection; a world wishing to require one makes it a base entry.
+Font availability and legibility remain presentation validation, especially
+for combining marks and visually similar signs.
+
+The canonical correspondence is authored. A seeded shuffle permutes it while
+preserving the one-to-one mapping, then the resulting definition is saved.
+Reopening never reruns a newer generator over an inhabited world's meanings.
+Effect IDs alone are not implemented effects: a product must admit a behavior,
+cost, target rule, receiver interaction, and visible explanation for each.
+The current three punctuation renderings are not an alphabet-sized spellbook.
+
+Acquiring every base glyph in that world's canon qualifies the individual to
+ascend or request a wish. An empty canon grants neither by collection. Other
+routes, such as a named item or an extraordinary deed, are independent,
+authored predicates; they need not invent missing glyphs. Whether a wish
+consumes a collection, can repeat, or excludes later ascension remains a
+world rule. A qualification receipt does not execute an unrestricted wish.
+Canon changes during play require explicit migration of completion and
+correspondence. They must not quietly revoke a god or make an old collection
+complete under different meanings.
+
+#### An individual has a journey, not just an inventory
+
+Record original acquisition order, incarnation, simulation tick, and accepted
+source evidence, including the means: ability, trait, technique, item, bond,
+quest, event, or a mod-defined category. Losing an item is distinct from
+forgetting that one learned through it. Reacquisition never rewrites the
+first acquisition. Critter, borg, and character are all eligible; the record
+belongs to the continuing individual, independent of taxonomy and controller.
+Accepted append order is authoritative; source tick metadata never reorders
+the journey across different clocks. `ascension_basis()` retains the exact
+grant prefix at first ascension, even when later lives add further evidence.
+
+Ascension enables reincarnation of that individual. It preserves the journey
+while starting a new body's experience progression. Configured experience
+thresholds restore inherent access in original acquisition order. Provenance
+remains available at each unlock so a bond-earned effect can return as a
+bond-dependent ability, while a practiced technique can require performance.
+The later bag may expand without rearranging earlier acquisitions.
+
+The same collection can therefore produce different divinities. As an
+illustrative rule, a rescuer who learned through sheltering others might
+recover protection through maintained bonds; a survivor who acquired that
+glyph through enduring fire might recover it through exposure and endurance.
+These are authored possibilities, not judgments inferred from event names.
+Any generated affinity, cost, obligation, exception, or restriction must cite
+the acquisition evidence and rule revision supporting it. Grouping acquisition
+categories is an inspectable motif summary; it is not yet that rule evaluator.
+Show the likely constraints before commitment, and retain the player's means
+of understanding, fulfilling, or deliberately challenging them.
+
+#### Chosen divine power and periods
+
+Collection determines available vocabulary. Divine power depends on the
+chosen referent: a condition, event, entity kind, or another admitted metric.
+The god chooses its source and measurement period before the period begins,
+then chooses again at its end. The definition includes world/reference scope,
+predicate revision, unit, aggregation, and the simulation interval `[start,end)`.
+A name such as "popular" is insufficient: event occurrences, distinct actors,
+and entity-ticks are different quantities. Products supply accepted observations;
+the shared ledger never samples a renderer, wall clock, or arbitrary biography.
+
+For the first kernel, the explicit policy is accumulation followed by settlement
+at the end. Every simulation tick contributes one aggregate, including zero.
+Missing ticks cannot be mistaken for zero; duplicate or out-of-order input is
+rejected. Choice stays fixed, arithmetic is checked, and settlement is one-time.
+A long period delays access and accumulates more of a continuing source. A
+short period offers earlier access and an earlier chance to change dependence.
+With identical observations, dividing a period does not multiply its total.
+Additional interest, decay, averaging, caps, stockpiles, spending, and ongoing
+access during a period need explicit world policies rather than hidden bonuses.
+
+Journey and referent are distinct but connected. A world's journey rules may
+restrict eligible referents, alter their costs, or impose obligations; a chosen
+referent does not erase the history that made the god. Reference definitions
+and active commitments must survive death, replay, and save restoration under
+the product's chosen reincarnation rules. The first accumulator proves period
+mechanics, not persistent divine economy or a universal predicate language.
+
+#### Owners and implementation gates
+
+`shared/wing-glyphs` owns canon validation, deterministic correspondence,
+acquisition history, ordered unlocks, explicit progression transitions, and
+fixed-period accumulation. It has no graphics or product dependencies.
+Cloned canons share immutable indexed storage, with logarithmic identity
+lookups. Individual journeys store their acquisitions and references without
+copying the entire vocabulary. Exported snapshots embed the full canon for
+standalone restoration; a future world save can deduplicate that carriage.
+Canon size and journey retention budgets are explicit configuration, not a
+fixed alphabet ceiling. Large mod canons can raise those budgets and the JSON
+ingress limit. Every successful JSON export must fit its corresponding import
+budget. Rejected grants leave evidence intact and report exhaustion; silently
+evicting an original acquisition would change the future god. Longer-lived
+worlds will need compaction preserving those consequential records.
+`wing-functions` keeps body-bound resource routing and operator receipts;
+`wing-formats` keeps primitive interchange framing. Neither needs to become
+a magic scheduler. Glyph display and strings consume admitted effect facts;
+their color, animation, and generated layout cannot award an acquisition.
+
+Mesocosm's optional disposable trial maps positive accepted movement, feeding,
+and carving records through configured grant rules. Actual history ordinal,
+tick, and organism identify the evidence. Trial reset reconstructs the same
+journey. This is an integration experiment, not a new field in durable `World`
+or a playable reincarnation feature. Isometry's system-resolution boundary
+owns adjudication; Paredros's continuing subject identity is distinct from a
+body revision and from succession into another existing life.
+
+1. **G1, shared kernel, implemented:** validate small/empty/Unicode canons, variants and
+   seeded bijections; preserve first acquisition, source, and order; prove
+   non-vacuous completion, reincarnation unlocks, fixed-period totals, rejection
+   without mutation, and validated journey restoration. The period accumulator
+   has inspection serialization only; durable period restoration is G4.
+   No effect execution claim.
+2. **G2, real consumer, implemented:** optional Mesocosm rules consume accepted world events;
+   refused actions cannot grant the action's glyph; baseline/reset/replay and
+   repeated reads reproduce the same records. No player-succession shortcut.
+3. **G3, usable vocabulary:** admit a default effect pack and two contrasting
+   journey rules through product adjudication. Explain their costs and motifs,
+   execute receiver interactions, and show distinguishable spatial results.
+4. **G4, durable lives and divinity:** products admit world/canon/journey save
+   ownership, alternate ascension and wish policies, same-individual rebirth,
+   active source commitments, and spending. A second product exercises the
+   shared API with its own identity and law rather than importing Mesocosm's
+   ecology. Mods and world migrations have explicit rejection and repair paths.
+
+#### First implementation receipt
+
+The new MPL-2.0 `shared/wing-glyphs` crate passes **16 tests**, including a
+literal seeded-shuffle vector, opaque Unicode and explicit variants, a
+5,000-entry canon with shared storage, first-acquisition preservation,
+divine-only rebirth, immutable ascension evidence, snapshot transition replay,
+and five fixed-period tests. The period tests include zero support, ordering,
+overflow, one-time settlement and additive short/long periods. Snapshot replay
+checks consistency, not the authenticity of a caller's evidence.
+
+Mesocosm's final release runtime suite passes **44 tests**, including five new
+consumer tests. They exercise real accepted carving, movement and feeding,
+zero-removal/rejected actions, unchanged core history/hash, exact reset/replay,
+and actual control transfer followed by another body's carve. The collection
+does not follow that control transfer.
+
+The [public-API example](../crates/mesocosm-runtime/examples/glyph_journey.rs)
+produces [this JSON receipt](../testing/glyphs/journey.json). An unmodified
+seed-0 founder removes 15 voxels at `[0,12,0]`, earning the one configured base
+glyph. Its four-tick metric observations are `15,0,0,0`; settlement is 15.
+The copied shared journey qualifies for both routes, ascends, reincarnates,
+retains its original source, and restores inherent access at 10 experience,
+with none at 9. Experience is explicitly supplied to this isolated probe.
+The core world does not reincarnate, award that experience, execute the
+referenced effect, or mint divine power. Baseline hash is `765c055b377dfb62`;
+the ordinary four-action world ends at `ea76e63d1fb9fa13`.
+
+Validation commands were `cargo test --offline` from `shared/wing-glyphs`, and
+`cargo test --release --frozen -p mesocosm-runtime --lib -j3` plus
+`cargo run --release --frozen -p mesocosm-runtime --example glyph_journey -j3`
+from `mesocosm`. The product lockfile is locally generated under its existing
+ignore policy; the standalone shared crate's lockfile is tracked. These are
+CPU correctness receipts. This slice changes no native view and supplies no
+new visual or performance acceptance claim.
+
 ## 8. Discovery as the delivery vehicle (proposed)
 
 If the laws differ per world, **learning them is the content**. NetHack
@@ -1048,6 +1233,10 @@ until its condition holds:
 **Not scheduled. No adoption decision. Listed so the shape can be argued
 with.**
 
+These historical F-gates remain proposals. The authorized G1–G4 glyph lane
+in §7.4 is a separate current implementation sequence; its canon and journey
+do not wait on the earlier F0 prohibition on shared types or registries.
+
 Reordered 2026-08-07 (review): **the proof precedes the abstraction.**
 The first draft's F0 was a registry, which is declaring the portable
 profile in advance; the sequence now follows the evaluator rule.
@@ -1086,8 +1275,11 @@ profile in advance; the sequence now follows the evaluator rule.
   simulation loop, it has become the thing the anti-Spore law forbids.
 - **No shared evaluator before two sovereign proofs** (phenotype plan's
   rule, which the first draft violated in spirit). Common grammar,
-  sovereign rule systems, extraction after repetition. A registry never
-  precedes the second working state family.
+  sovereign rule systems, extraction after repetition. **2026-09-13 exception:**
+  Mark explicitly authorized the bounded shared glyph canon, journey, and
+  period machinery in §7.4 before a second consumer. Product world-effect
+  adjudication remains local; the old registry sequencing rule does not block
+  this slice.
 - **State legible, dynamics throttleable** (§1.2). Every layer must leave
   inspectable, attributable state behind if its dynamics get cut.
 - **No name coined without a naming round.** §1's empty slot is a finding,
@@ -1107,6 +1299,16 @@ profile in advance; the sequence now follows the evaluator rule.
 ---
 
 ## Findings
+
+- **2026-09-13, glyph ownership inventory:** `shared/wing-functions` owns
+  resource routing; `shared/wing-formats` owns primitive framed records.
+  Neither supplies acquisition history or divine progression. Mesocosm's
+  `runtime::trial` exposes exact accepted history after normal core stepping.
+  `isometry-system/src/sys/system_actions.rs::resolve_action` is the tabletop
+  rule-resolution seam. Paredros's `SubjectId` and `BodyRevisionId` distinguish
+  person from body, while ordinary succession changes the subject. These
+  findings support the separate `wing-glyphs` module and an optional trial
+  adapter; they do not establish shared persistent souls or rule execution.
 
 - **2026-08-06:** the GEM-shaped slot for a general model class of
   fantastical ecology is **empty** (§1), verified rather than assumed.
@@ -1159,6 +1361,14 @@ in §6-§9 is built on the details:
   navigable 2D effect space.
 
 ## Progress
+
+- **2026-09-13, glyph G1/G2:** adopted §7.4 and implemented `wing-glyphs`,
+  with a configurable accepted-event Mesocosm trial adapter and public-API
+  example. Sixteen kernel and 44 final runtime tests pass. Review added shared
+  indexed canon storage, configurable budgets, a divine-only rebirth gate,
+  transition-validated restoration and immutable founding evidence. G3/G4
+  retain default effect content, generated journey restrictions, durable
+  reincarnation, wish execution, power spending and second-product admission.
 
 - **2026-09-09, body/operator discussion:** §7.2 preserves the submitted
   proposal and open questions, with review notes distinguished from it.

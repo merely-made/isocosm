@@ -82,6 +82,7 @@ pub struct Trial {
     activities: Vec<TrialActivity>,
     uptakes: Vec<TrialUptake>,
     carves: Vec<TrialCarve>,
+    glyphs: Option<crate::glyphs::GlyphReading>,
 }
 
 impl Trial {
@@ -107,7 +108,23 @@ impl Trial {
             activities: Vec::new(),
             uptakes: Vec::new(),
             carves: Vec::new(),
+            glyphs: None,
         })
+    }
+
+    /// Opt into the gameplay-data experiment before any tick. Invalid rules
+    /// leave an existing configuration intact. No rendering action grants it.
+    pub fn enable_glyphs(&mut self, rules: crate::glyphs::GlyphRules) -> Result<(), String> {
+        if self.steps != 0 {
+            return Err("enable glyph rules before the first trial step".into());
+        }
+        let reading = crate::glyphs::GlyphReading::new(rules, &self.baseline)?;
+        self.glyphs = Some(reading);
+        Ok(())
+    }
+
+    pub fn glyphs(&self) -> Option<&crate::glyphs::GlyphReading> {
+        self.glyphs.as_ref()
     }
 
     pub fn world(&self) -> &World {
@@ -160,6 +177,9 @@ impl Trial {
         self.activities.clear();
         self.uptakes.clear();
         self.carves.clear();
+        if let Some(reading) = &mut self.glyphs {
+            reading.reset(&self.baseline);
+        }
     }
 
     /// One ordinary idle step. Checkpoints retain their existing runtime
@@ -280,6 +300,9 @@ impl Trial {
                     to,
                 });
             }
+        }
+        if let Some(reading) = &mut self.glyphs {
+            reading.absorb(self.runtime.history(), start, self.runtime.state_hash());
         }
         true
     }

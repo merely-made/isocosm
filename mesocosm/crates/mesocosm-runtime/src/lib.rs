@@ -31,6 +31,7 @@
 //! integer-only.
 
 pub mod clock;
+pub mod glyphs;
 pub mod readings;
 pub mod review;
 pub mod runtime;

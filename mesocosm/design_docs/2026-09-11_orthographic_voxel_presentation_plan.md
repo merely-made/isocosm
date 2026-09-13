@@ -818,6 +818,13 @@ are the next visual vocabulary candidates.
 
 ### Glyph effects and interaction experiment (2026-09-13)
 
+The [general model §7.4](2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
+now owns the configurable world canon, acquisition history, journey-shaped
+divinity and fixed-period power direction. Its shared kernel and optional
+accepted-event trial integration are a gameplay-data slice. The rendering
+experiments below retain their measured scope; a drawn glyph is not evidence
+that an individual acquired its effect.
+
 **Status:** first planar experiment native-verified. Mark's working model mixes
 a glyph-effect lexicon with spatial, rule-based behavior and stable generated
 material/surface/item interactions. Strings form only when the selected glyph
