@@ -2,8 +2,8 @@
 
 **Status: accepted by Mark 2026-09-04; TG1 complete 2026-09-05;
 TG2a-TG2e implemented 2026-09-09; TG2f implemented 2026-09-12;
-TG2g implemented 2026-09-13.
-TG2 conservation and replay gates pass; its 100 ms tick-cost gate remains open.
+TG2g implemented and TG2h bounded performance acceptance complete 2026-09-13.
+TG2 conservation, replay and the defined 917-founder tick-cost gates pass.
 TG3-TG7 remain open.** The three
 rulings in section 4 are given. This is PE4's first
 build: the material scheme ruled 2026-09-02 turned into a trophic grammar. It
@@ -290,6 +290,25 @@ equal-total channel substitution fails that receipt, and the shipping-roster
 tick measurement records its result against the 100 ms budget. TG3's dietary
 inspection and intake-compatibility acceptance remain separate.
 
+**TG2h tick-cost diagnostics, complete 2026-09-13.** The existing
+`live_soil_receipt` now retains the original tick number, wall time, population,
+flow count and ecology tally, and accepts an optional repeat count after its
+output path. On Windows its example-local helper also reads current-thread
+user plus kernel CPU time through `GetThreadTimes`; other platforms or failed
+reads report unavailable values. Scheduler accounting is quantized, so these
+samples indicate broad CPU cost rather than exact waiting time for a tick.
+The simulation core remains clock-free and unchanged.
+
+**Done:** two repetitions of the same three seeds, each with the incumbent
+20 warmup and 200 measured ticks, preserve all TG2g final hashes and every
+per-tick deterministic counter. All 1,200 measured ticks stay below 55 ms;
+including 120 warmup ticks, all 1,320 observed ticks stay below 60 ms. This
+passes the existing 100 ms gate for the defined window. TG2g's 175-263 ms
+historical observations remain valid and unattributed: those samples lacked
+thread CPU and tick identifiers. Transient host contention is consistent with
+the observations, but no specific cause is proved and no simulation speedup
+is claimed. Whole-lifetime timing and TG6 viability are separate acceptance.
+
 ### TG3: scruple per part
 
 Composition gets its two ruled layers. The **lineage layer** declares what nis
@@ -407,6 +426,39 @@ beginning body types; start investigating a beginning set of traits.
 
 ## Findings
 
+- **2026-09-13, TG2h repeated tick-cost receipt:** release-built
+  `live_soil_receipt` on `c2a26c2` plus diagnostic-only example changes ran
+  seeds 1/4/7 twice, retaining the original 20/200 window at 917 founders.
+  All 1,320 ticks reconciled actual material channels; every final hash matched
+  TG2g, and all per-tick population/flow/tally counters matched between repeats.
+  Example input hashes stayed unchanged during execution. The other 234
+  recorded TG2g source/manifest inputs are unchanged, including all simulation,
+  runtime and shared sources; TG2g's 802-test gate was not needlessly rerun.
+
+  | Repeat | Seed | Median ms | p95 ms | Maximum ms | Mean CPU ms | Maximum CPU ms |
+  |---|---|---:|---:|---:|---:|---:|
+  | 1 | 1 | 17.26 | 28.00 | 35.41 | 15.31 | 31.25 |
+  | 1 | 4 | 19.75 | 31.98 | 41.08 | 15.62 | 31.25 |
+  | 1 | 7 | 17.69 | 23.80 | 29.04 | 17.34 | 31.25 |
+  | 2 | 1 | 20.19 | 30.55 | 38.29 | 14.53 | 31.25 |
+  | 2 | 4 | 18.17 | 36.78 | 54.87 | 15.55 | 31.25 |
+  | 2 | 7 | 19.57 | 25.81 | 36.18 | 16.02 | 31.25 |
+
+  The maximum including startup/warmup was 59.39 ms. CPU samples are
+  scheduler-accounted and quantized, not a precise subtraction from wall time.
+  Before this run, a host sample showed antivirus consuming roughly ten of
+  sixteen logical CPUs; local build/test activity also ran during the repeated
+  receipt. Neither observation identifies the cause of TG2g's historical
+  outliers, which had no CPU/tick data. The defined current performance gate
+  passes; the historical spikes are unreproduced, not described as fixed.
+
+  Reproduce with
+  `cargo run --manifest-path mesocosm/Cargo.toml -p mesocosm-core --release --example live_soil_receipt --offline --locked --target-dir C:/t/mesocosm-tissue -- receipt.json 2`.
+  Local evidence: `C:/Users/mark_/Code/testing/tg2h/repeated.json`, `host.json`,
+  `inputs.json`, and `command.json`. Windows ABI declarations were checked
+  against the installed 10.0.26100.0 SDK headers. No simulation rules, rates,
+  snapshots, dependencies, rendering or bench code changed in this slice.
+
 - **2026-09-13, TG2g accounting acceptance:** 802 core/runtime tests passed,
   with one existing ignored test across 19 suites, on `8ed87fd` plus this
   patch. The release/offline/locked library and integration command from
@@ -442,8 +494,8 @@ beginning body types; start investigating a beginning set of traits.
   Local full output is `C:/Users/mark_/Code/testing/tg2g/live-soil.json`;
   commands, test log and source hashes are beside it. TG2 conservation and
   replay pass for these admitted transactions and tested populations/windows;
-  its tick-cost acceptance remains open. The next bounded lane should attribute
-  the slow ticks and compare the same seeds/window before changing biology.
+  this initial receipt left tick-cost acceptance open. TG2h above provides
+  the subsequent exact-window repeats; these historical spikes remain unattributed.
   Dietary inspection and intake compatibility remain TG3; food-web viability
   remains TG6. This receipt claims no new headed or rendering acceptance.
 
@@ -613,6 +665,13 @@ beginning body types; start investigating a beginning set of traits.
   `perception.rs:206`, and no body change measured holds the corridor.
 
 ## Progress
+
+- **2026-09-13, TG2h.** Diagnostic-only changes add repeated per-tick wall
+  and optional thread CPU receipts. The same three seeds and 20/200 window
+  pass twice with exact hashes/counters and measured maxima below 55 ms,
+  closing TG2's defined performance gate. No simulation optimization was
+  justified. Historical outliers remain recorded without a claimed cause.
+  Next is TG3 intake compatibility; dietary inspection stays with the bench.
 
 - **2026-09-13, TG2g.** Pending typed soil now completes through one bounded
   soil-owned pass after bodies settle. Grammar 7 records its configurable
