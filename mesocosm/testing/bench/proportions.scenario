@@ -1,0 +1,44 @@
+# Native original-plus-four comparison, with ordinary host input.
+wait 1200
+assert snap ready == yes
+remember entry
+click role:button Compare proportions
+settle 5
+assert snap comparison == yes
+assert snap alternative == 0
+assert snap alternatives-admitted == 4
+assert snap comparison-rendered == 5
+assert snap comparison-scale == shared
+same entry hash
+remember comparison
+capture proportions
+click role:button Alternative 1
+settle 3
+assert snap alternative == 1
+same comparison original-hash
+capture alternative
+click role:button Part 0
+settle 3
+assert snap selected == yes
+capture examined
+click role:button Shared scale / fit each
+settle 3
+assert snap comparison-scale == fit
+same comparison original-hash
+click role:button Save comparison
+settle 2
+capture saved
+click role:button Original
+settle 3
+assert snap selected == no
+same entry hash
+click role:button More proportions
+settle 4
+same comparison original-hash
+assert snap alternative == 0
+assert snap comparison-round == 4
+capture more
+click role:button Next
+settle 3
+assert snap comparison == no
+assert snap selected == no

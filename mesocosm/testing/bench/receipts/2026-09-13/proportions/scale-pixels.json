@@ -1,0 +1,52 @@
+[
+  {
+    "card": 0,
+    "region": [
+      70,
+      325,
+      490,
+      528
+    ],
+    "changed_pixels": 0
+  },
+  {
+    "card": 1,
+    "region": [
+      548,
+      325,
+      968,
+      528
+    ],
+    "changed_pixels": 4361
+  },
+  {
+    "card": 2,
+    "region": [
+      1025,
+      325,
+      1445,
+      528
+    ],
+    "changed_pixels": 4377
+  },
+  {
+    "card": 3,
+    "region": [
+      1503,
+      325,
+      1923,
+      528
+    ],
+    "changed_pixels": 6171
+  },
+  {
+    "card": 4,
+    "region": [
+      1980,
+      325,
+      2400,
+      528
+    ],
+    "changed_pixels": 4762
+  }
+]

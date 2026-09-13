@@ -36,7 +36,7 @@ pub(super) fn root(state: &Bench) -> Child {
     let creator = &model.creator;
     let subject = model
         .subject()
-        .and_then(|id| creator.world().organisms.iter().find(|o| o.id == id));
+        .and_then(|id| model.world().organisms.iter().find(|o| o.id == id));
     let parts: Vec<Child> = subject
         .map(|organism| {
             organism
@@ -61,7 +61,7 @@ pub(super) fn root(state: &Bench) -> Child {
         })
         .unwrap_or_default();
     let reading = model.reading();
-    let detail: Vec<Child> = reading
+    let mut detail: Vec<Child> = reading
         .reading
         .map(|r| {
             vec![
@@ -82,6 +82,9 @@ pub(super) fn root(state: &Bench) -> Child {
                 text("Choose a visible part, or use the part buttons."),
             ))]
         });
+    if let Some(change) = model.selected_change() {
+        detail.insert(0, row("Generation change", change));
+    }
     let status = if creator.pending {
         "Generating specimens…".to_owned()
     } else {
@@ -141,6 +144,7 @@ pub(super) fn root(state: &Bench) -> Child {
         button("Previous", |s| s.candidate(true)),
         button("Next", |s| s.candidate(false)),
         button("Reroll", Bench::reroll),
+        button("Compare proportions", Bench::compare),
         button("Save criteria", Bench::save),
         button("Turn left", |s| s.turn(-0.2617994)),
         button("Turn right", |s| s.turn(0.2617994)),
@@ -172,6 +176,7 @@ pub(super) fn root(state: &Bench) -> Child {
                         el("p", text(status)).attr("id", "specimen-status"),
                     ),
                 ),
+                super::comparison_view::strip(state),
                 el(
                     "main",
                     (
@@ -206,7 +211,14 @@ pub(super) fn root(state: &Bench) -> Child {
                 ),
             ),
         )
-        .attr("class", "bench"),
+        .attr(
+            "class",
+            if model.comparison.is_some() {
+                "bench comparing"
+            } else {
+                "bench"
+            },
+        ),
     )
 }
 
@@ -240,4 +252,15 @@ aside { width:300px; padding:20px; background:#faf8f2; border:1px solid #c3cabc;
 .field-name { font-size:12px; margin-bottom:3px; }
 .field-value { font-size:14px; line-height:1.4; }
 #notice { min-height:24px; }
+.comparison { margin-bottom:16px; }
+.comparison-toolbar { display:flex; gap:10px; align-items:center; margin-bottom:8px; }
+.comparison-toolbar p { flex:1; font-size:13px; }
+.comparison-cards { display:flex; gap:10px; }
+.proportion { flex:1; min-width:0; padding:6px; border:2px solid #bcc7b9; background:#faf8f2; }
+.proportion.chosen { border-color:#315c3e; }
+.proportion-preview { display:block; width:100%; height:110px; color:rgb(255,255,255); background:#000000; }
+.proportion button { margin-top:6px; padding:4px 8px; font-size:12px; }
+.proportion p { font-size:11px; margin:4px 0; line-height:1.25; }
+.change-summary { min-height:42px; }
+.comparing .viewport { height:220px; min-height:220px; }
 "#;

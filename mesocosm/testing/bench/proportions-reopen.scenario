@@ -1,0 +1,6 @@
+wait 1200
+assert snap ready == yes
+assert snap comparison == yes
+assert snap alternative == 1
+assert snap selected == no
+capture reopened

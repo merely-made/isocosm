@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-13",
+  "isometry_parent": "c6841a034f3451088f1c727ab73c29015dc08811",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-core/src/world/generation.rs": "d5d3e9fb751f14d962477c5ce603ab911b048089",
+    "mesocosm/crates/mesocosm-genet/src/app/bench.rs": "ae585d9a964248a8471550f72c17e5819adedb4f",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/probe_state.rs": "9c6bba7ecde69cc3c46717bc5c9c59875a447b0e",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/producer.rs": "870c456b28b37fb63a877c7efaead259071118a3",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/state.rs": "568f1ac29d8877f42c6c4d8138164087dbf40730",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/view.rs": "7308b03b8a1f0dc390345265a1894e72367c5185",
+    "mesocosm/crates/mesocosm-genet/src/main.rs": "4e63ca3b7a0b2e9081494216c5724cfcf185ac56",
+    "mesocosm/crates/mesocosm-core/src/world/generation/proportions.rs": "75e438d249c43c6aef936cb9d1246469fe5177c6",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/comparison.rs": "f8f6649f8939c12b0ab117102329ba81c735d744",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/comparison_view.rs": "adb1e89ab12000112cb207e72d4fade6e8cb9211"
+  },
+  "executable_sha256": "f5f5937c2a0a0aceae3b52a21987746a5e6b6edbb2c475941572bc36a6fd9f09",
+  "build": "cargo build --release --offline -p mesocosm-genet -j 3",
+  "dependencies": "Committed Git dependencies, no sibling overrides",
+  "original_hash": "aa8ae203bde513d6",
+  "alternative_1_hash": "333f1885cc2ef33c",
+  "corrupt_reopen_exit": 1,
+  "corrupt_reopen_message": "Comparison no longer reproduces its saved world.",
+  "native_directory": "C:/Users/mark_/Code/testing/specimen-proportions-2026-09-13",
+  "saved_comparison": "specimen-proportions-AOhZMa.json"
+}

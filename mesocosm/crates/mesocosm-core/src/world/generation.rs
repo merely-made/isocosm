@@ -20,6 +20,8 @@ pub const VERSION: u32 = 4;
 
 mod body_plan;
 pub use body_plan::BodyPlan;
+mod proportions;
+pub use proportions::{ProportionOption, ProportionSelection};
 mod habitat;
 pub use habitat::{FixedBody, Observation, SoilPattern};
 mod trial;
@@ -283,6 +285,18 @@ impl Request {
     ) -> Result<Candidate, &'static str> {
         let mut rng = Rng::from_seed(seed);
         let recipe = self.criteria.body_plan.generate(&mut rng, role);
+        self.candidate_recipe(world, palette, centre, seed, role, recipe)
+    }
+
+    fn candidate_recipe(
+        &self,
+        world: &World,
+        palette: PartPalette,
+        centre: [i32; 2],
+        seed: u64,
+        role: Kingdom,
+        recipe: Recipe,
+    ) -> Result<Candidate, &'static str> {
         let segments = recipe.segments();
         if !(self.criteria.min_segments..=self.criteria.max_segments).contains(&segments) {
             return Err("segment constraint");
@@ -358,7 +372,6 @@ impl Prepared {
     }
 
     pub fn enter(&self, index: usize) -> Result<World, Error> {
-        let mut world = self.foundation.clone();
         let candidate = self
             .draft
             .candidates
@@ -367,6 +380,11 @@ impl Prepared {
                 requested: index,
                 available: self.draft.candidates.len(),
             })?;
+        self.enter_admitted(candidate)
+    }
+
+    fn enter_admitted(&self, candidate: &Candidate) -> Result<World, Error> {
+        let mut world = self.foundation.clone();
         // The selected founder and its reserve are paid from the local patch.
         // Return the displaced provisional founder to its original soil first.
         let original = &world.organisms[0];

@@ -645,6 +645,65 @@ all-features/all-targets check on its unchanged dependency baseline; it is
 not a second host acceptance of the new pins. Remaining warnings are the
 existing unused TraceCamera helper and core-test mutable binding.
 
+### Generation comparison (2026-09-13)
+
+**Priority:** Mark paused world-trial work to explore generation with the bench.
+The 48-specimen audit is at `Code/testing/generation-audit-2026-09-13/audit.md`:
+the random draw uses little of the existing shape and appendage-chain vocabulary.
+The first experiment changes proportions through admitted mass-part shapes.
+
+**Status:** implemented and native-verified. The bench retains the
+original beside four explicit single-stretch alternatives. Recipe topology,
+individual segment counts, appendage assignments and mass stay fixed. Shape
+selection uses only distinct envelopes actually admitted by the current palette.
+The ordinary generation admission and founding path checks each alternative;
+missing choices and refusals remain visible. More proportions advances through
+the finite available edits; it is not a claim of unlimited unique generation.
+
+Core ownership is `generation/proportions.rs`. It reuses the existing recipe
+admission and founding operations, leaving ordinary seeded requests unchanged.
+The UI owns disposable comparison worlds, shared-scale or individually fitted
+cards, an inspected selection, and generation-change readings for affected parts.
+Each card uses the existing Cambium producer/Section path. Meshes are currently
+cached per viewport; this slice does not claim cross-viewport mesh sharing or
+integrated population-cost acceptance.
+
+Save comparison writes a fresh local file containing versioned selection inputs,
+the palette, admitted voxel content and the expected world hash. Reopening with
+`--bench --comparison FILE` validates content and reconstructs that hash before
+showing the comparison. It does not rewrite a played world or reinterpret a
+shape selector using whichever palette happens to be current.
+
+**Done when:** native captures show the original and four alternatives; choosing
+one updates the same parts examiner and expires old selection; shared scale and
+fit-each behave distinctly; generating more alternatives leaves the original
+hash unchanged; exported inputs reopen the selected world exactly; corrupt
+records refuse; and the existing generation/bench checks remain green.
+
+The broader controls inventory, arbitrary topology edits, chain variation,
+general per-part generation traces and surface-pattern variation remain later
+experiments. This first slice reports the changed stretch and affected part IDs,
+not a complete provenance map of every development operation.
+
+**Receipt, 2026-09-13:** all 20 core generation tests pass, including two new
+proportion tests that pin realized topology, mass, appendage instructions,
+original preservation, palette exhaustion and serialized replay. The native
+proportion scenario passes in 71 frames with six captures: four alternatives
+are admitted and all five cards draw. The retained hash is `aa8ae203bde513d6`;
+alternative 1 is `333f1885cc2ef33c`, including after export/reopen. Reopen passes
+in eight frames with two captures; a falsified expected hash exits 1 before
+host creation. Shared-scale versus fit-each changes sampled pixels in all four
+alternative previews (4,361; 4,377; 6,171; 4,762 pixels), while the original's
+sample remains identical. These fixed native image regions exclude card labels
+and selection borders; they are a bounded fixture, not a general scaling oracle.
+
+The previous 167-frame/15-capture bench acceptance also passes. Both Mesocosm's
+release and Isometry's separate root workspace all-features/all-targets checks
+pass. The native build uses the committed Git dependencies without sibling
+overrides. Compact receipts and source identities are under
+`testing/bench/receipts/2026-09-13/proportions/`; PNGs and saved comparison files
+remain under `Code/testing/specimen-proportions-2026-09-13/`.
+
 ### Bench C. Visible disposable world trial
 
 **Owner:** Mesocosm host/runtime. Reuse Prepared::enter and the existing runtime
@@ -678,8 +737,9 @@ the renderer's policy for coincident surfaces; count foreground coverage separat
 Record the source revisions and benchmark population, including unique geometry.
 
 The two immediate probes, Bench A and Bench B's bounded native integration
-are complete. Next, Bench C gives the bench a visible disposable world trial;
-Bench D measures the integrated document/style/input boundary. T1 general
+are complete. Generation comparison is the current focus; Bench C's visible
+world trial is paused at Mark's request. Bench D will measure the integrated
+document/style/input boundary. T1 general
 CSS 3D, T2's large-element sweep, T4 planar
 retention, the L2 crate merger, portable body v1 and a general audio framework
 do not block these slices.

@@ -24,6 +24,7 @@ pub(super) struct BenchScene {
     revision: u64,
     size: (u32, u32),
     tint: Option<[f32; 3]>,
+    card: Option<usize>,
 }
 
 impl BenchScene {
@@ -40,6 +41,14 @@ impl BenchScene {
             revision: 0,
             size: (0, 0),
             tint: None,
+            card: None,
+        }
+    }
+
+    pub fn for_card(model: Rc<RefCell<Specimen>>, card: usize) -> Self {
+        Self {
+            card: Some(card),
+            ..Self::new(model)
         }
     }
 
@@ -74,7 +83,7 @@ impl BenchScene {
             ])
             .map_err(|why| format!("Part query unavailable: {why:?}"))?;
         Ok(hit
-            .filter(|pick| section.validate_pick(*pick, model.creator.world(), &model.volumes))
+            .filter(|pick| section.validate_pick(*pick, model.world(), &model.volumes))
             .map(|pick| pick.selection))
     }
 
@@ -99,7 +108,7 @@ impl BenchScene {
             selected = section.select_part(subject, selected, false);
             if let Some(selection) = selected.filter(|s| s.part == part) {
                 return section
-                    .validate_selection(selection, model.creator.world(), &model.volumes)
+                    .validate_selection(selection, model.world(), &model.volumes)
                     .then_some(selection);
             }
         }
@@ -115,17 +124,24 @@ impl BenchScene {
         needs_frame: bool,
     ) -> Result<Option<wgpu::TextureView>, String> {
         let model = self.model.borrow();
+        let epoch = if self.card.is_some() {
+            model.comparison.as_ref().map_or(model.epoch, |c| c.epoch)
+        } else {
+            model.epoch
+        };
         if !needs_frame
             && self.section.is_some()
-            && self.epoch == model.epoch
+            && self.epoch == epoch
             && self.revision == model.revision
             && self.size == size
             && self.tint == Some(tint)
         {
             return Ok(None);
         }
-        let world = model.creator.world();
-        if self.section.is_none() || self.epoch != model.epoch {
+        let world = model
+            .card_world(self.card)
+            .ok_or("Alternative is not admitted.")?;
+        if self.section.is_none() || self.epoch != epoch {
             self.section = Some(Section::new(
                 device.clone(),
                 queue.clone(),
@@ -151,19 +167,40 @@ impl BenchScene {
                 .set_body_tint(subject, Some(appearance))
                 .map_err(|e| format!("Body appearance: {e:?}"))?;
         }
-        section.set_body_focus(model.selected.map(|s| s.organism), model.selected);
+        let selected = if self.card.is_none() {
+            model.selected
+        } else {
+            None
+        };
+        section.set_body_focus(selected.map(|s| s.organism), selected);
         let mut centre = world.position().unwrap_or([0, 0, 0]).map(|v| v as f32);
         let mut half = 28.0;
         let mut depth = section::SLAB_DEPTH;
-        if model.isolated {
+        let isolated = model.isolated || self.card.is_some();
+        if isolated {
             if let Some(organism) = world.controlled() {
                 if let Some(bounds) = section.presentation_bounds(organism, &model.volumes)? {
                     (centre, half, depth) = fit(bounds, size, model.camera);
                 }
             }
         }
+        if self.card.is_some() {
+            if let Some(comparison) = &model.comparison {
+                if comparison.shared_scale {
+                    for card in &comparison.cards {
+                        if let Some(organism) = card.world.as_ref().and_then(|w| w.controlled()) {
+                            if let Some(bounds) =
+                                section.presentation_bounds(organism, &model.volumes)?
+                            {
+                                half = half.max(fit(bounds, size, model.camera).1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         section.set_half_height(half);
-        section.set_body_preview(model.isolated, depth);
+        section.set_body_preview(isolated, depth);
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
             label: Some("specimen bench shared-depth scene"),
         });
@@ -187,7 +224,7 @@ impl BenchScene {
             .renders
             .checked_add(1)
             .expect("bench frame generation exhausted");
-        self.epoch = model.epoch;
+        self.epoch = epoch;
         self.revision = model.revision;
         self.size = size;
         self.tint = Some(tint);

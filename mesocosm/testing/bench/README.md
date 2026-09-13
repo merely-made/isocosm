@@ -24,3 +24,22 @@ PNGs remain in the local capture directory; compact JSON is retained under
 
 Source ownership, qualified acceptance and the remaining trial/cost work live
 in the [wing plan](../../design_docs/2026-09-11_orthographic_voxel_presentation_plan.md#bench-b-one-interactive-genet-viewport).
+
+## Proportion comparison
+
+Choose **Compare proportions** to retain the current specimen beside four
+single-stretch shape alternatives. **More proportions** advances through the
+finite set of available edits. **Shared scale / fit each** changes only the
+comparison cards; the large selected view is always framed for inspection.
+Use **Save comparison** to save a new JSON file beside the configured capture
+output. Its full path appears in the notice. Reopen it with:
+
+```powershell
+cargo run --release -p mesocosm-genet -- --bench --comparison <saved-file.json>
+```
+
+The native scenarios are `proportions.scenario` (use seed 1) and
+`proportions-reopen.scenario` (use the resulting saved comparison). The first
+checks the retained original, selection, camera-scale setting, generation of
+more options and export. The second checks restoration. A changed expected
+hash or mismatching content palette must fail before the native host starts.

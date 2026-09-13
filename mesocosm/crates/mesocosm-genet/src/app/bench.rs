@@ -12,6 +12,8 @@ use std::{
 use super::{Host, HostConfig};
 use cambium_genet_winit_host::{HostHooks, HostOptions, Init};
 
+mod comparison;
+mod comparison_view;
 mod probe;
 mod producer;
 mod state;
@@ -23,7 +25,27 @@ use view::{Child, Logic};
 const LEAF_KEY: u64 = 0x5350_4543;
 
 /// Runs the bench with the creator flags already admitted by the ordinary CLI.
-pub fn run(mut config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
+pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
+    run_comparison(config, None)
+}
+
+pub fn run_comparison(
+    mut config: HostConfig,
+    path: Option<std::path::PathBuf>,
+) -> Result<i32, winit::error::EventLoopError> {
+    let restore = match path {
+        Some(path) => match comparison::SavedComparison::load(&path) {
+            Ok(saved) => {
+                config.creator_request = Some(saved.selection.source.request.clone());
+                Some(saved)
+            },
+            Err(why) => {
+                eprintln!("{why}");
+                return Ok(1);
+            },
+        },
+        None => None,
+    };
     if config.creator_request.is_none() {
         config.creator_request = Some(mesocosm_core::world::generation::Request {
             seed: config.seed,
@@ -36,6 +58,27 @@ pub fn run(mut config: HostConfig) -> Result<i32, winit::error::EventLoopError> 
         ..Default::default()
     };
     let mut host = Host::new(config);
+    if let Some(saved) = &restore {
+        host.volumes = saved
+            .content
+            .resolve()
+            .expect("saved content was validated");
+        host.content = Some(saved.content.clone());
+        host.creator = Some(super::creator::Creator::new(
+            saved.selection.source.request.clone(),
+            saved.content.palette,
+            host.runtime.world(),
+            host.config.camera,
+            host.config.creator_draft.clone(),
+        ));
+    }
+    let export_directory = host
+        .config
+        .capture
+        .as_ref()
+        .and_then(|p| p.parent())
+        .unwrap_or_else(|| std::path::Path::new("."))
+        .to_path_buf();
     let model = Rc::new(RefCell::new(Specimen {
         creator: host.creator.take().expect("bench has a creator"),
         volumes: host.volumes,
@@ -45,8 +88,18 @@ pub fn run(mut config: HostConfig) -> Result<i32, winit::error::EventLoopError> 
         yaw: 0.0,
         isolated: true,
         camera: host.config.camera,
+        content: host.content,
+        comparison: None,
     }));
     let scene = Rc::new(RefCell::new(producer::BenchScene::new(model.clone())));
+    let cards = (0..5)
+        .map(|card| {
+            Rc::new(RefCell::new(producer::BenchScene::for_card(
+                model.clone(),
+                card,
+            )))
+        })
+        .collect();
     let exit_code = Rc::new(Cell::new(0));
     let lane = Rc::new(RefCell::new(
         probe::Lane::new(
@@ -72,15 +125,51 @@ pub fn run(mut config: HostConfig) -> Result<i32, winit::error::EventLoopError> 
                     .register(LEAF_KEY, state.scene.clone(), &["color"])
                     .expect("bench owns one producer key");
             }
+            if state.visible {
+                if let Some(comparison) = &state.model.borrow().comparison {
+                    for (index, card) in comparison.cards.iter().enumerate() {
+                        let key = LEAF_KEY + 1 + index as u64;
+                        if card.world.is_some() && !ctx.producers.contains(key) {
+                            ctx.producers
+                                .register(key, state.cards[index].clone(), &["color"])
+                                .expect("comparison owns its producer keys");
+                        }
+                    }
+                }
+            }
             state.model.borrow().creator.pending
         }),
         after_dispatch: Box::new(|_| {}),
         after_frame: Box::new(move |ctx| {
-            let error = ctx.runner.state().scene.borrow().error.clone().or_else(|| {
-                ctx.producers
-                    .error(LEAF_KEY)
-                    .map(|why| format!("Viewport unavailable: {why:?}"))
-            });
+            let error = ctx
+                .runner
+                .state()
+                .scene
+                .borrow()
+                .error
+                .clone()
+                .or_else(|| {
+                    ctx.producers
+                        .error(LEAF_KEY)
+                        .map(|why| format!("Viewport unavailable: {why:?}"))
+                })
+                .or_else(|| {
+                    let state = ctx.runner.state();
+                    let model = state.model.borrow();
+                    let comparison = model.comparison.as_ref()?;
+                    comparison
+                        .cards
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, c)| c.world.is_some())
+                        .find_map(|(index, _)| {
+                            state.cards[index].borrow().error.clone().or_else(|| {
+                                ctx.producers
+                                    .error(LEAF_KEY + 1 + index as u64)
+                                    .map(|why| format!("Alternative viewport: {why:?}"))
+                            })
+                        })
+                });
             if ctx.runner.state().published_error != error {
                 ctx.runner.update(|state| state.published_error = error);
                 if let Some(window) = ctx.window {
@@ -114,6 +203,9 @@ pub fn run(mut config: HostConfig) -> Result<i32, winit::error::EventLoopError> 
                 visible: true,
                 transformed: false,
                 overlay_clicks: 0,
+                cards,
+                export_directory,
+                restore,
             },
             logic: view::root as Logic,
             sheet: view::SHEET.into(),

@@ -16,6 +16,69 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         !model.creator.pending && model.creator.prepared.is_some() && model.creator.count() > 0;
     let yes = |value| if value { "yes" } else { "no" };
     ProbeSnapshot::default()
+        .with_field(
+            "comparison-rendered",
+            model
+                .comparison
+                .as_ref()
+                .map_or(0, |c| {
+                    c.cards
+                        .iter()
+                        .enumerate()
+                        .filter(|(index, card)| {
+                            let scene = state.cards[*index].borrow();
+                            card.world.is_some()
+                                && scene.section.is_some()
+                                && scene.error.is_none()
+                                && scene.stats.voxel_bodies == 1
+                        })
+                        .count()
+                })
+                .to_string(),
+        )
+        .with_field("comparison", yes(model.comparison.is_some()))
+        .with_field(
+            "alternative",
+            model
+                .comparison
+                .as_ref()
+                .map_or("none".into(), |c| c.selected.to_string()),
+        )
+        .with_field(
+            "alternatives-admitted",
+            model
+                .comparison
+                .as_ref()
+                .map_or(0, |c| {
+                    c.cards.iter().skip(1).filter(|c| c.world.is_some()).count()
+                })
+                .to_string(),
+        )
+        .with_field(
+            "comparison-round",
+            model
+                .comparison
+                .as_ref()
+                .map_or(0, |c| c.source.round)
+                .to_string(),
+        )
+        .with_field(
+            "comparison-scale",
+            model
+                .comparison
+                .as_ref()
+                .map_or("none", |c| if c.shared_scale { "shared" } else { "fit" }),
+        )
+        .with_field(
+            "original-hash",
+            model
+                .comparison
+                .as_ref()
+                .and_then(|c| c.cards[0].world.as_deref())
+                .map_or("none".into(), |w| {
+                    format!("{:016x}", mesocosm_core::state_hash(w))
+                }),
+        )
         .with_field("opacity", opacity.to_string())
         .with_field("ui-zoom", ctx.ui_zoom.to_string())
         .with_field(
@@ -73,8 +136,15 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("overlay-clicks", state.overlay_clicks.to_string())
         .with_field(
             "hash",
-            format!("{:016x}", mesocosm_core::state_hash(model.creator.world())),
+            format!("{:016x}", mesocosm_core::state_hash(model.world())),
         )
-        .with_field("error", scene.error.as_deref().unwrap_or("none"))
+        .with_field(
+            "error",
+            state
+                .published_error
+                .as_deref()
+                .or(scene.error.as_deref())
+                .unwrap_or("none"),
+        )
         .with_field("captures", captures.to_string())
 }

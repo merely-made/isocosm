@@ -19,6 +19,8 @@ pub(super) struct Specimen {
     pub yaw: f32,
     pub isolated: bool,
     pub camera: CameraMode,
+    pub content: Option<mesocosm_mesh::content::ContentPack>,
+    pub comparison: Option<super::comparison::Comparison>,
 }
 
 impl Specimen {
@@ -30,6 +32,7 @@ impl Specimen {
     }
 
     pub fn replaced(&mut self) {
+        self.comparison = None;
         self.epoch = self.epoch.checked_add(1).expect("bench epoch exhausted");
         self.selected = None;
         self.yaw = 0.0;
@@ -39,14 +42,14 @@ impl Specimen {
     pub fn subject(&self) -> Option<OrganismId> {
         self.selected
             .map(|s| s.organism)
-            .or_else(|| self.creator.world().controlled_id())
+            .or_else(|| self.world().controlled_id())
     }
 
     pub fn reading(&self) -> PartInspection {
         self.selected
             .map_or_else(PartInspection::default, |selected| {
                 mesocosm_views::part_of(
-                    self.creator.world(),
+                    self.world(),
                     selected.organism,
                     selected.part,
                     &History::new(),
@@ -66,6 +69,9 @@ pub(super) struct Bench {
     pub visible: bool,
     pub transformed: bool,
     pub overlay_clicks: u64,
+    pub cards: Vec<Rc<RefCell<BenchScene>>>,
+    pub export_directory: std::path::PathBuf,
+    pub restore: Option<super::comparison::SavedComparison>,
 }
 
 impl Bench {
@@ -80,6 +86,16 @@ impl Bench {
             model.replaced();
             self.events.push("specimen-ready".into());
             self.notice = model.creator.notice.clone();
+            if let Some(saved) = self.restore.take() {
+                model.creator.select(saved.selection.source.candidate);
+                match model.compare(saved.selection.round) {
+                    Ok(()) => {
+                        model.comparison.as_mut().unwrap().selected = saved.selection.selected;
+                        self.notice = "Saved comparison restored.".into();
+                    },
+                    Err(why) => self.notice = why,
+                }
+            }
             return true;
         }
         false

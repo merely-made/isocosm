@@ -68,12 +68,21 @@ fn main() {
     let mut slab_explicit = false;
     let mut create = false;
     let mut bench = false;
+    let mut comparison = None;
     let mut size_explicit = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--create" => create = true,
             "--bench" => {
+                bench = true;
+                create = true;
+            },
+            "--comparison" => {
+                comparison = Some(PathBuf::from(args.next().unwrap_or_else(|| {
+                    eprintln!("--comparison requires a saved comparison JSON path");
+                    std::process::exit(1);
+                })));
                 bench = true;
                 create = true;
             },
@@ -302,6 +311,10 @@ fn main() {
     }
 
     if create {
+        if comparison.is_some() && (config.creator_draft.is_some() || config.start.is_some()) {
+            eprintln!("choose --comparison, --draft, or --start as the generation input");
+            std::process::exit(1);
+        }
         if config.replay.is_some() || config.effective_scene() != played::SceneMode::Ecology {
             eprintln!("--create requires a fresh ecology run");
             std::process::exit(1);
@@ -329,7 +342,7 @@ fn main() {
         config.height = 900;
     }
     let result = if bench {
-        mesocosm_genet::app::bench::run(config)
+        mesocosm_genet::app::bench::run_comparison(config, comparison)
     } else {
         Host::run(config)
     };
@@ -371,6 +384,7 @@ mesocosm-genet: run Mesocosm in a window
   --seed N        world seed
   --create        compare generated starting lives before play (arrows, R/N/P/C/M, +/-)
   --bench         open the native specimen bench (1280x900); uses creator criteria
+  --comparison PATH reopen saved proportion alternatives and their admitted content
   --draft PATH    reopen criteria or begin a new draft; implies --create; S saves
                   K retains selected role/organs/segment count; U clears these filters
   --start PATH    enter a generated selection JSON (recorded for replay)
