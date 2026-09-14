@@ -691,3 +691,23 @@ Restating L9's six conditions against tests that exist or must be written.
   identically at 0a519da and at 83248c4: the step-1 pulse fix expires a
   pulse at eight ticks and the scenario reads it at tick eight; a
   presentation bug in the fix, not in the extraction, handled separately.
+- **2026-09-14, step 5 done, gate passed.** wing-scene gains query.rs
+  (217: `BodyPick`, `BodyPickError`, `PresentedFrame`, and on `Scene`
+  set_body_focus, presentation_bounds, part_bounds, glyph_anchors,
+  pick_pixel, pick_ndc, validate_pick, select_part, invalidate_query,
+  query_generation) with four tests over hand-made documents and
+  `DeclaredExtentVolumes`, plus the deferred `SlabCamera::ndc_of` and
+  `pixel_of`. `Scene::render` owns the frame receipt. The GPU picking
+  tests stayed in mesocosm-genet, split in place into query_tests.rs
+  (449) and mask_tests.rs (159), because every one builds a Mesocosm
+  World. `BodySelection` keeps its OrganismId shape and the saved
+  spatial request format is untouched on disk (app/ has no diff;
+  spatial-coverage round-trips save and reopen with byte-identical
+  viewports). `part_bounds` is over `posed_quad`, so it includes parent
+  rotation and pivot, stronger than Paredros's `place_point`-only oracle
+  (risk 6). Green: wing-scene 25, mesocosm-genet 150 release, both
+  workspace checks, bench acceptance 167, spatial 207, spatial-coverage
+  336 with all 32 viewports byte-identical, proportions 71.
+  structure-cli.scenario fails identically at HEAD on a generated-start
+  hash (`50e8f3a3a6b6d22d` expected, `8d1d3676ecf24452` got); fixture
+  drift upstream of this lane, recorded, not acted on.

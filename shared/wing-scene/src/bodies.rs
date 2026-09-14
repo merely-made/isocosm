@@ -201,6 +201,29 @@ impl BodyLayer {
             .map_err(|error| format!("body bounds: {error:?}"))
     }
 
+    /// World bounds of one drawn part, under the same part matrix the draw
+    /// used — parent rotation, pivot and continuous yaw included.
+    ///
+    /// Read off the meshed faces rather than the declared volume box, so a
+    /// sparse anatomy reports what it actually occupies.
+    pub fn part_bounds(&self, subject: SubjectKey, part: PartId) -> Option<([f32; 3], [f32; 3])> {
+        let placed = self.placed.iter().find(|body| body.subject == subject)?;
+        let placement = placed.mesh.placements.iter().find(|p| p.part == part)?;
+        let quads = placed.mesh.mesh_for(placement.volume)?.quads.len();
+        let live = placed.live();
+        let mut min = [f32::INFINITY; 3];
+        let mut max = [f32::NEG_INFINITY; 3];
+        for index in 0..quads {
+            for corner in mesocosm_render::live_body::posed_quad(live, part, index).ok()? {
+                for axis in 0..3 {
+                    min[axis] = min[axis].min(corner[axis]);
+                    max[axis] = max[axis].max(corner[axis]);
+                }
+            }
+        }
+        (min[0] <= max[0]).then_some((min, max))
+    }
+
     pub fn pick(
         &self,
         origin: [f32; 3],

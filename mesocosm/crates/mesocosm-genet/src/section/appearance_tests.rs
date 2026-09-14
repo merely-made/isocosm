@@ -115,10 +115,10 @@ fn tint_changes_material_pixels_and_instances_while_geometry_stays_cached() {
         red, initial,
         "instance tint visibly changes a material body"
     );
-    let generation = section.presented.unwrap().generation;
+    let generation = section.scene.query_generation().unwrap();
 
     assert_eq!(section.set_body_tint(subject, Some(tint)), Ok(false));
-    assert_eq!(section.presented.unwrap().generation, generation);
+    assert_eq!(section.scene.query_generation().unwrap(), generation);
     for invalid in [
         [f32::NAN, 0.0, 0.0],
         [0.0, f32::INFINITY, 0.0],
@@ -131,7 +131,7 @@ fn tint_changes_material_pixels_and_instances_while_geometry_stays_cached() {
             Err(LiveBodyError::InvalidBody)
         );
         assert_eq!(section.body_tint(subject), Some(tint));
-        assert_eq!(section.presented.unwrap().generation, generation);
+        assert_eq!(section.scene.query_generation().unwrap(), generation);
     }
     assert_eq!(render(&mut section, &world, &volumes, centre), red);
     cached(&section);

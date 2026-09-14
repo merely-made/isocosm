@@ -327,7 +327,11 @@ fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
             [0.0, 0.0, 20.0],
             SIDE,
             100.0,
-            Some(camera(SIDE, [0.0, 0.0, 0.0], 28.0, 1.0).with_cutaway(cutaway).clip()),
+            Some(
+                camera(SIDE, [0.0, 0.0, 0.0], 28.0, 1.0)
+                    .with_cutaway(cutaway)
+                    .clip(),
+            ),
         )
         .expect("pick")
     };
@@ -349,4 +353,45 @@ fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
         .is_some(),
         "the same plane laid on the camera's own front wall cuts nothing"
     );
+}
+
+/// The screen pair is the raster matrix read forwards: the centre lands on
+/// the centre, the frame edges land on ±1, and the pixel convention is the
+/// one a pick inverts.
+#[test]
+fn a_world_point_lands_where_the_raster_matrix_puts_it() {
+    for look in [SIDE, ACROSS, oblique()] {
+        let camera = SlabCamera {
+            centre: [3.0, 5.0, -2.0],
+            forward: look,
+            half_height: 4.0,
+            aspect: 2.0,
+            depth: SLAB_DEPTH,
+            cutaway: None,
+        };
+        let [right, up, _] = camera.basis();
+        let ndc = camera.ndc_of(camera.centre).unwrap();
+        assert!(ndc[0].abs() < 1e-5 && ndc[1].abs() < 1e-5, "{ndc:?}");
+
+        // One half-height up and one half-width right are the frame corners.
+        let corner = [0, 1, 2].map(|axis| {
+            camera.centre[axis]
+                + right[axis] * camera.half_height * camera.aspect
+                + up[axis] * camera.half_height
+        });
+        let ndc = camera.ndc_of(corner).unwrap();
+        assert!(
+            (ndc[0] - 1.0).abs() < 1e-5 && (ndc[1] - 1.0).abs() < 1e-5,
+            "{ndc:?}"
+        );
+
+        // Top-left pixel origin, pixel centres, and nothing outside the frame.
+        assert_eq!(camera.pixel_of(camera.centre, [64, 32]), Some([32, 16]));
+        assert_eq!(camera.pixel_of(corner, [64, 32]), None);
+        let inside = [0, 1, 2]
+            .map(|axis| camera.centre[axis] + up[axis] * camera.half_height * (31.0 / 32.0));
+        assert_eq!(camera.pixel_of(inside, [64, 32]), Some([32, 0]));
+        assert_eq!(camera.pixel_of(camera.centre, [0, 32]), None);
+        assert_eq!(camera.ndc_of([f32::NAN; 3]), None);
+    }
 }

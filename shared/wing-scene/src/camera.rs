@@ -201,6 +201,43 @@ impl SlabCamera {
         }
     }
 
+    /// Where a world point lands on screen, in normalized clip coordinates:
+    /// x right, y up, each in [-1, 1] inside the frame and outside it beyond.
+    ///
+    /// The projection is [`Self::clip_from_world`]'s, so a test that names a
+    /// pixel names the one the draw wrote. `None` when the numbers cannot
+    /// frame anything, or the point is not finite.
+    pub fn ndc_of(self, point: [f32; 3]) -> Option<[f32; 2]> {
+        if !self.framable() || !point.iter().all(|v| v.is_finite()) {
+            return None;
+        }
+        let matrix = self.clip_from_world();
+        // Columns are indexed by world axis, rows by clip axis; orthographic,
+        // so w is 1 and there is nothing to divide by.
+        let clip = [0, 1].map(|row| {
+            (0..3)
+                .map(|axis| matrix[axis][row] * point[axis])
+                .sum::<f32>()
+                + matrix[3][row]
+        });
+        clip.iter().all(|v| v.is_finite()).then_some(clip)
+    }
+
+    /// The texture pixel a world point falls in, for a target of `size`.
+    ///
+    /// The inverse of the pixel-centre convention a pick uses: coordinates
+    /// start at the top left, and a point outside the frame has no pixel.
+    pub fn pixel_of(self, point: [f32; 3], size: [u32; 2]) -> Option<[u32; 2]> {
+        if size[0] == 0 || size[1] == 0 {
+            return None;
+        }
+        let ndc = self.ndc_of(point)?;
+        let x = ((ndc[0] + 1.0) * size[0] as f32 * 0.5 - 0.5).round();
+        let y = ((1.0 - ndc[1]) * size[1] as f32 * 0.5 - 0.5).round();
+        (x >= 0.0 && y >= 0.0 && x < size[0] as f32 && y < size[1] as f32)
+            .then_some([x as u32, y as u32])
+    }
+
     /// How far above and below its centre this camera actually frames, in
     /// world voxels.
     ///

@@ -22,6 +22,7 @@ use mesocosm_lens::{
 use crate::bodies::{BodyFrameStats, BodyLayer, SceneBody, SceneVolumes};
 use crate::camera::SlabCamera;
 use crate::glyphs::GlyphLayer;
+use crate::query::PresentedFrame;
 
 mod terrain;
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
@@ -98,7 +99,6 @@ pub trait SceneHost {
     fn played(&self) -> Option<&CritterPose> {
         None
     }
-
 }
 
 pub struct Scene {
@@ -125,6 +125,10 @@ pub struct Scene {
     /// twin's decode-on-sample cancels the target's encode.
     display: wgpu::Texture,
     display_view: wgpu::TextureView,
+    /// The query receipt of the last complete encode. Every visual change a
+    /// host owns rather than a frame drops it through
+    /// [`Scene::invalidate_query`].
+    pub(crate) presented: Option<PresentedFrame>,
 }
 
 impl Scene {
@@ -155,10 +159,12 @@ impl Scene {
             traced_view,
             display,
             display_view,
+            presented: None,
         })
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
+        self.invalidate_query();
         self.width = width.max(1);
         self.height = height.max(1);
         self.tracer.resize(self.width, self.height);
@@ -258,6 +264,9 @@ impl Scene {
         frame: SceneFrame<'_>,
         host: &mut dyn SceneHost,
     ) -> Result<SceneStats, String> {
+        // A partial encode may have changed terrain or body projections. It
+        // cannot retain a query receipt from a different completed frame.
+        self.invalidate_query();
         self.terrain_diagnostics = None;
         let mut full = self.terrain_upload_pending;
         let mut slots = Vec::new();
@@ -293,6 +302,7 @@ impl Scene {
             {
                 self.draw_glyphs(encoder, camera);
                 self.copy_to_display(encoder);
+                self.complete_query_frame(camera, false);
                 return Ok(SceneStats::default());
             }
             let revision = frame.terrain.expect("terrain present").revision();
@@ -356,6 +366,11 @@ impl Scene {
             self.draw_glyphs(encoder, camera);
         }
         self.copy_to_display(encoder);
+        // A capsule frame rasters no meshes, so it leaves no part identity to
+        // query: the host's stand-ins are not selectable surfaces.
+        if frame.capsules.is_none() {
+            self.complete_query_frame(camera, true);
+        }
         Ok(SceneStats {
             terrain: self.terrain_diagnostics,
             terrain_drawn: true,

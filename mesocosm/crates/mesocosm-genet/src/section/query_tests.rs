@@ -1,15 +1,20 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Section consumer receipts: actual encoded body poses joined to its terrain.
+//! Pick and validate: Section consumer receipts over actual encoded body
+//! poses joined to its terrain.
+//!
+//! The GPU ownership mask that several of these read is [`mask`]'s, beside
+//! them because both drive the same fixtures. What the scene can answer
+//! without a Mesocosm world is `wing-scene`'s own `query/tests.rs`.
 
 use super::*;
 use mesocosm_core::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
 use mesocosm_mesh::VolumeMap;
 use mesocosm_render::{RenderError, Renderer};
 
-#[path = "picking_pixels.rs"]
-mod pixels;
+#[path = "mask_tests.rs"]
+mod mask;
 
 fn world() -> (World, OrganismId, OrganismId) {
     let mut world = World::new(41, 40);
@@ -95,7 +100,7 @@ fn visible_body_identity_uses_the_drawn_pose_and_expires_with_its_frame() {
     // Independently projected open rectangle: world x=-1..1, y=199..201,
     // half-height 4, centre [.25,200.25], 65 pixels. No edge passes through
     // a pixel centre; leading/top/trailing and their outside neighbours count.
-    pixels::assert_selection_mask(
+    mask::assert_selection_mask(
         &mut section,
         &world,
         &volumes,
@@ -186,9 +191,12 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     section.configure_terrarium(&habitat, 0.0, Cutaway::Never, [1, 1, 0]);
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert_eq!(section.pick_ndc([0.0; 2]).unwrap(), None);
-    assert_ne!(section.scene.terrain_map().unwrap().material_at([1, 1, 4]), 0);
+    assert_ne!(
+        section.scene.terrain_map().unwrap().material_at([1, 1, 4]),
+        0
+    );
     let selection = section.select_part(controlled, None, false).unwrap();
-    let hidden = pixels::assert_selection_mask(
+    let hidden = mask::assert_selection_mask(
         &mut section,
         &world,
         &volumes,
@@ -213,7 +221,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
             .organism,
         controlled
     );
-    let exposed = pixels::assert_selection_mask(
+    let exposed = mask::assert_selection_mask(
         &mut section,
         &world,
         &volumes,
@@ -226,7 +234,10 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         exposed[32 * 65 + 32],
         "isolated view removes the terrain occluder"
     );
-    let dimensions = (section.scene.terrain_map().unwrap().pointer_extent(), section.scene.terrain_map().unwrap().atlas_extent());
+    let dimensions = (
+        section.scene.terrain_map().unwrap().pointer_extent(),
+        section.scene.terrain_map().unwrap().atlas_extent(),
+    );
     section.configure_terrarium(&habitat, 0.0, Cutaway::Always, [1, 1, 0]);
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert!(
@@ -234,7 +245,10 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         "isolated render cannot acknowledge terrain upload"
     );
     assert_eq!(
-        (section.scene.terrain_map().unwrap().pointer_extent(), section.scene.terrain_map().unwrap().atlas_extent()),
+        (
+            section.scene.terrain_map().unwrap().pointer_extent(),
+            section.scene.terrain_map().unwrap().atlas_extent()
+        ),
         dimensions,
         "retained bedrock keeps atlas dimensions fixed while cutaway materials change"
     );
@@ -244,7 +258,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         !section.scene.terrain_upload_pending(),
         "terrain return consumed the pending full upload"
     );
-    let resumed = pixels::assert_selection_mask(
+    let resumed = mask::assert_selection_mask(
         &mut section,
         &world,
         &volumes,
@@ -283,7 +297,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
             .organism,
         controlled
     );
-    let exposed = pixels::assert_selection_mask(
+    let exposed = mask::assert_selection_mask(
         &mut section,
         &world,
         &volumes,
@@ -404,4 +418,32 @@ fn a_queried_part_expires_after_severing_and_fallbacks_never_offer_false_visibil
         section.pick_ndc([0.0; 2]),
         Err(BodyPickError::CapsuleFallback)
     );
+}
+
+#[test]
+fn recreated_sections_cannot_validate_an_old_frame_receipt() {
+    let (world, _, _) = world();
+    let volumes = crate::fixture::volumes_for(&world);
+    let Some((_renderer, mut first)) = section(world.ground(), 4.0) else {
+        return;
+    };
+    let centre = [0.25, 200.25, 0.0];
+    render(&mut first, &world, &volumes, world.ground(), centre).unwrap();
+    let old = first.pick_ndc([0.0; 2]).unwrap().unwrap();
+    let mut replacement = Section::new(
+        first.device.clone(),
+        first.queue.clone(),
+        65,
+        65,
+        wgpu::TextureFormat::Rgba8Unorm,
+        world.ground(),
+        Framing::new(4.0, CameraMode::Side),
+    )
+    .unwrap();
+    render(&mut replacement, &world, &volumes, world.ground(), centre).unwrap();
+    let current = replacement.pick_ndc([0.0; 2]).unwrap().unwrap();
+    assert_eq!(current.selection, old.selection);
+    assert_ne!(current.frame, old.frame);
+    assert!(!replacement.validate_pick(old, &world, &volumes));
+    assert!(replacement.validate_pick(current, &world, &volumes));
 }

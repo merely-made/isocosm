@@ -1,8 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Fresh Section readbacks. Selection changes only the named part's pixels,
-//! providing a GPU ownership mask independent of the CPU surface query.
+//! The GPU ownership mask. Fresh Section readbacks: selection changes only
+//! the named part's pixels, which is a colour-owner claim independent of the
+//! CPU surface query it is asserted against.
+//!
+//! Fixtures come from the parent, `query_tests.rs`.
 
 use super::*;
 
@@ -108,34 +111,6 @@ fn noncentral_pivot_and_quarter_turned_attachment_are_not_culled_by_core_bounds(
         hit.selection,
         Some([0, 64, 20, 52]),
     );
-}
-
-#[test]
-fn recreated_sections_cannot_validate_an_old_frame_receipt() {
-    let (world, _, _) = world();
-    let volumes = crate::fixture::volumes_for(&world);
-    let Some((_renderer, mut first)) = section(world.ground(), 4.0) else {
-        return;
-    };
-    let centre = [0.25, 200.25, 0.0];
-    render(&mut first, &world, &volumes, world.ground(), centre).unwrap();
-    let old = first.pick_ndc([0.0; 2]).unwrap().unwrap();
-    let mut replacement = Section::new(
-        first.device.clone(),
-        first.queue.clone(),
-        65,
-        65,
-        wgpu::TextureFormat::Rgba8Unorm,
-        world.ground(),
-        Framing::new(4.0, CameraMode::Side),
-    )
-    .unwrap();
-    render(&mut replacement, &world, &volumes, world.ground(), centre).unwrap();
-    let current = replacement.pick_ndc([0.0; 2]).unwrap().unwrap();
-    assert_eq!(current.selection, old.selection);
-    assert_ne!(current.frame, old.frame);
-    assert!(!replacement.validate_pick(old, &world, &volumes));
-    assert!(replacement.validate_pick(current, &world, &volumes));
 }
 
 #[test]

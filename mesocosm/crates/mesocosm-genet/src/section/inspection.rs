@@ -1,27 +1,33 @@
 // Copyright 2026 Mark Alan Boykin
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Presentation identity for a part that was actually drawn as a voxel body.
+//! Mesocosm's half of the presentation queries.
+//!
+//! The queries themselves — the frame receipt, the ray, the terrain
+//! occlusion test and the part walk — are [`wing_scene::Scene`]'s now. What
+//! stays here is the product's own address: a [`BodySelection`] keyed on
+//! `OrganismId`, which is what the bench's saved spatial request writes to
+//! disk, and the world lookup an adapter does before the scene sees a body.
 
 use mesocosm_core::{OrganismId, PartId, World};
 use mesocosm_mesh::BodyDependencyRevision;
-use std::sync::atomic::{AtomicU64, Ordering};
 use wing_scene::{PartAddress, SceneVolumes};
 
 use super::Section;
 use super::bodies::{key, organism_of};
 
-// Presentation receipts also expire across Section replacement. This identity
-// is deliberately outside the world, its serialization and its trace.
-static NEXT_QUERY_FRAME: AtomicU64 = AtomicU64::new(1);
+/// The pick error is the scene's; nothing about it is Mesocosm's.
+pub use wing_scene::BodyPickError;
 
 /// A part address carried by the last successful voxel-body projection.
 ///
 /// The revision makes a selection expire when attachment geometry changes.
 /// It is presentation state, never a world address or trace input.
+///
+/// Kept keyed on `OrganismId` rather than renamed to the scene's
+/// [`PartAddress`]: `app/bench/spatial/saved.rs` writes `(organism, part,
+/// revision)` into the saved spatial request, and that file's format is not
+/// this extraction's to change.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct BodySelection {
     pub organism: OrganismId,
@@ -62,24 +68,16 @@ pub struct BodyPick {
     pub tied: bool,
 }
 
-#[derive(Clone, Debug, PartialEq)]
-pub enum BodyPickError {
-    /// No complete voxel section is available after a configuration change,
-    /// resize, failed render, or before the first render.
-    NotReady,
-    InvalidCoordinates,
-    /// A visible capsule fallback has no exact part-surface query. Refusing
-    /// prevents picking a mesh through an unqueried capsule occluder.
-    CapsuleFallback,
-    Body(mesocosm_render::live_body::BodyQueryError),
-    Terrain(mesocosm_lens::BrickRayError),
-}
-
-#[derive(Clone, Copy)]
-pub(super) struct PresentedFrame {
-    pub view: super::view::View,
-    pub generation: u64,
-    pub terrain: bool,
+impl BodyPick {
+    fn from_scene(pick: wing_scene::BodyPick) -> Self {
+        Self {
+            selection: BodySelection::from_address(pick.address),
+            frame: pick.frame,
+            distance: pick.distance,
+            point: pick.point,
+            tied: pick.tied,
+        }
+    }
 }
 
 impl Section {
@@ -128,65 +126,20 @@ impl Section {
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
         self.scene
-            .bodies_mut()
             .presentation_bounds(&body, SceneVolumes::Voxels(volumes))
     }
 
     /// Queries the centre of a texture pixel; coordinates start at top-left.
     /// Host window/CSS coordinate conversion belongs outside this section.
     pub fn pick_pixel(&self, pixel: [u32; 2]) -> Result<Option<BodyPick>, BodyPickError> {
-        if pixel[0] >= self.width || pixel[1] >= self.height {
-            return Err(BodyPickError::InvalidCoordinates);
-        }
-        self.pick_ndc([
-            2.0 * (pixel[0] as f32 + 0.5) / self.width as f32 - 1.0,
-            1.0 - 2.0 * (pixel[1] as f32 + 0.5) / self.height as f32,
-        ])
+        Ok(self.scene.pick_pixel(pixel)?.map(BodyPick::from_scene))
     }
 
     /// Queries a completed voxel section at normalized clip coordinates:
     /// x points right, y points up, and each lies in [-1, 1]. The last complete
     /// draw's poses, camera, filtered terrain and cut slab own the answer.
     pub fn pick_ndc(&self, ndc: [f32; 2]) -> Result<Option<BodyPick>, BodyPickError> {
-        if ndc
-            .iter()
-            .any(|v| !v.is_finite() || !(-1.0..=1.0).contains(v))
-        {
-            return Err(BodyPickError::InvalidCoordinates);
-        }
-        let frame = self.presented.ok_or(BodyPickError::NotReady)?;
-        if self.scene.bodies().stats.fallback_bodies != 0 {
-            return Err(BodyPickError::CapsuleFallback);
-        }
-        let camera = frame.view.trace().ok_or(BodyPickError::NotReady)?;
-        let (origin, direction) = camera
-            .ray_at(ndc)
-            .ok_or(BodyPickError::InvalidCoordinates)?;
-        let Some((selection, hit)) = self
-            .scene
-            .bodies()
-            .pick(origin, direction, camera.far(), frame.view.clip())
-            .map_err(BodyPickError::Body)?
-        else {
-            return Ok(None);
-        };
-        if frame.terrain {
-            let terrain = self
-                .scene
-                .terrain_ray(origin, direction, camera.far())
-                .map_err(BodyPickError::Terrain)?;
-            // Terrain draws after bodies with LessEqual depth testing.
-            if terrain.is_some_and(|terrain| terrain.distance <= hit.distance) {
-                return Ok(None);
-            }
-        }
-        Ok(Some(BodyPick {
-            selection: BodySelection::from_address(selection),
-            frame: frame.generation,
-            distance: hit.distance,
-            point: hit.point,
-            tied: hit.tied,
-        }))
+        Ok(self.scene.pick_ndc(ndc)?.map(BodyPick::from_scene))
     }
 
     /// A hit receipt expires on redraw or visual configuration changes;
@@ -197,29 +150,12 @@ impl Section {
         world: &World,
         volumes: &mesocosm_mesh::VolumeMap,
     ) -> bool {
-        self.presented
-            .is_some_and(|frame| frame.generation == pick.frame)
+        self.scene.query_generation() == Some(pick.frame)
             && self.validate_selection(pick.selection, world, volumes)
     }
 
     pub(super) fn invalidate_query(&mut self) {
-        self.presented = None;
-    }
-
-    pub(super) fn complete_query_frame(&mut self, view: super::view::View, terrain: bool) {
-        let Ok(generation) =
-            NEXT_QUERY_FRAME.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
-                value.checked_add(1)
-            })
-        else {
-            self.presented = None;
-            return;
-        };
-        self.presented = Some(PresentedFrame {
-            view,
-            generation,
-            terrain,
-        });
+        self.scene.invalidate_query();
     }
 
     /// Walks parts in the last successful voxel-body draw for `subject`.
@@ -233,9 +169,7 @@ impl Section {
         if self.body_mode != super::BodyMode::Voxels {
             return None;
         }
-        self.presented?;
         self.scene
-            .bodies()
             .select_part(key(subject), current.map(BodySelection::address), backwards)
             .map(BodySelection::from_address)
     }
@@ -259,19 +193,16 @@ impl Section {
             return false;
         };
         let body = self.host_bodies.scene_body(organism, &[], None);
-        self.scene
-            .bodies_mut()
-            .validate_address(selection.address(), &body, SceneVolumes::Voxels(volumes))
+        self.scene.bodies_mut().validate_address(
+            selection.address(),
+            &body,
+            SceneVolumes::Voxels(volumes),
+        )
     }
 
     /// Sets host-owned inspection emphasis for the next body draw.
     pub fn set_body_focus(&mut self, subject: Option<OrganismId>, selected: Option<BodySelection>) {
-        if self
-            .scene
-            .bodies_mut()
-            .set_focus(subject.map(key), selected.map(BodySelection::address))
-        {
-            self.invalidate_query();
-        }
+        self.scene
+            .set_body_focus(subject.map(key), selected.map(BodySelection::address));
     }
 }

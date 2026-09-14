@@ -22,7 +22,7 @@ impl Section {
         selected: Option<BodySelection>,
     ) -> Result<Vec<GlyphAnchor>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
-        self.scene.bodies_mut().glyph_anchors(
+        self.scene.glyph_anchors(
             &body,
             SceneVolumes::Voxels(volumes),
             selected.map(BodySelection::address),

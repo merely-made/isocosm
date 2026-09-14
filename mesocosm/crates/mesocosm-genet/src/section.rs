@@ -119,7 +119,6 @@ pub struct Section {
     /// The Mesocosm facts the scene is handed rather than the ones it derives.
     host_bodies: bodies::HostBodies,
     terrarium: Option<terrarium::TerrariumView>,
-    presented: Option<inspection::PresentedFrame>,
     composite: Composite,
 }
 
@@ -155,13 +154,11 @@ impl Section {
             body_budget: DEFAULT_BODY_BUDGET,
             host_bodies: bodies::HostBodies::new(),
             terrarium: None,
-            presented: None,
             composite,
         })
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
-        self.invalidate_query();
         self.width = width.max(1);
         self.height = height.max(1);
         self.scene.resize(self.width, self.height);
@@ -242,8 +239,7 @@ impl Section {
         let stats = &self.scene.bodies().stats;
         if self.body_mode == BodyMode::Voxels {
             return (stats.voxel_bodies + stats.fallback_bodies)
-                .saturating_sub(usize::from(stats.controlled_drawn))
-                as u32;
+                .saturating_sub(usize::from(stats.controlled_drawn)) as u32;
         }
         self.scene
             .last_trace_diagnostics()
@@ -268,9 +264,6 @@ impl Section {
         encoder: &mut wgpu::CommandEncoder,
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
-        // A partial encode may have changed terrain or body projections. It
-        // cannot retain a query receipt from a different completed frame.
-        self.invalidate_query();
         let rebuilt = match &mut self.terrarium {
             Some(view) => view.refresh(frame.ground, self.mode)?,
             None => None,
@@ -305,7 +298,7 @@ impl Section {
             bodies: host_bodies,
             world: frame.world,
         };
-        let stats = scene.render(
+        scene.render(
             encoder,
             SceneFrame {
                 camera,
@@ -323,9 +316,6 @@ impl Section {
             },
             &mut host,
         )?;
-        if voxels {
-            self.complete_query_frame(camera, stats.terrain_drawn);
-        }
         Ok(())
     }
 
@@ -396,7 +386,6 @@ impl wing_scene::SceneHost for SectionHost<'_> {
     fn played(&self) -> Option<&CritterPose> {
         self.bodies.played_fallback.as_ref()
     }
-
 }
 
 /// The half-height a host actually frames with: its own, or the default when
@@ -442,6 +431,6 @@ mod depth_tests;
 #[cfg(test)]
 mod inspection_tests;
 #[cfg(test)]
-mod picking_tests;
+mod query_tests;
 #[cfg(test)]
 mod tests;
