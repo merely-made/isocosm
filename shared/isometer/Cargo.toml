@@ -58,6 +58,6 @@ wgpu = { version = "30", default-features = false, features = [
 # product's own identical patch table is the one that applies.
 [patch.crates-io]
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
-parley = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1", version = "=0.14.0" }
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
+parley = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7baa554c", version = "=0.14.0" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c" }
