@@ -129,6 +129,23 @@ inputs, and a deliberately false assertion exits nonzero with fresh captures.
 Physical keyboard and mouse acceptance is recorded separately and remains
 open until a person runs it.
 
+### P4. Paredros as the second wing-glyphs consumer (ruled 2026-09-14)
+
+Mark ruled that Paredros becomes the second consumer of `shared/wing-glyphs`
+after P2 lands. Today only Mesocosm's runtime consumes it, through a trial
+adapter mapping accepted carving, movement and feeding events to configured
+grants. Paredros's adapter maps accepted `GameState` events, combat, injury,
+treatment, equipment and terrain outcomes, to grants in the same shape, and
+the P2 host gains an acquisition journal panel beside the subject sheet.
+Glyph marks drawn in the scene are a later layer on the P1 producer's shared
+depth attachment, as the bench's spatial glyph preview already is on the
+Section's; P1's contract must not close that off. GlyphCSS's palette-as-
+shading idea is the presentation twin of "one glyph, one effect" and is a
+reference for that layer, not a dependency.
+
+Scope and done-conditions are assessed separately once P2 has a host for the
+panel. Not started; P1 and P2 do not add a wing-glyphs dependency.
+
 ## Ownership and verification
 
 Terra and Luna are the implementation lanes Mark chose. Each runs on opus,
@@ -186,3 +203,27 @@ creator files are owned by a concurrent lane and are never swept.
   through the patched parley. Logs and capture under
   `Code/.tmp/paredros-genet-host-20260913/`. The first P0 attempt failed
   on the dropped parley patch; the correction is recorded under Pins.
+- **2026-09-14, P1 landed.** `paredros_client::producer` (root plus
+  `camera`, `bodies`, `handle`, `scene`, with test-only `fixture`, `harness`
+  and `tests`; every file under the ceiling). `SceneModel` holds one
+  `Session` and the played subject behind `SceneHandle`, an `Rc<RefCell>`
+  the P2 host will share; `SceneProducer` implements the rootstock
+  `TextureProducer`: bodies as live instances first, then the tracer's
+  `encode_with_depth` into the same colour and `Depth32Float` attachments
+  with one `clip_from_world` from `CameraPolicy`'s orthographic slab.
+  Unchanged inputs return `None`; suspend and retire drop GPU targets and
+  keep the per-`(subject, revision)` mesh cache. Declared limits: parts are
+  declared-extent solid boxes under one material (anatomies carry no voxel
+  data); body scale is a presentation guess of 0.25; the CPU pick ignores
+  terrain. Eight headless GPU tests prove nearer-body ownership of shared
+  pixels, terrain occlusion with a bodies-only control, severance without
+  re-upload, fractional-pose displacement within a pixel, no-op frames, and
+  pick agreement; 45 client lib tests, 132 world tests, 6 native tests and
+  the clean workspace check were rerun by the root. Captures and logs under
+  `Code/.tmp/paredros-genet-host-20260913/p1-*`. Two findings for Mesocosm's
+  lane: the tracer paints pure black at a zero-distance hit on the slab's
+  front wall (visible as a block over the keeper in the terrain capture),
+  and world seed 7 never buries the keeper, so terrain occlusion is proved
+  as one mechanism on the target. The module is gated behind `r1-proof`
+  only because `mesocosm-lens` and `modulus` are optional there; that gate
+  is a wart to remove when the renderling bins retire under L7.
