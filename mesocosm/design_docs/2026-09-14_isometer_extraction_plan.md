@@ -777,3 +777,17 @@ Restating L9's six conditions against tests that exist or must be written.
   fix of 83248c4 and 1b99f9a. Later comparisons for this lane use the
   2026-09-14 spatial-coverage set for bodies and glyphs and the
   l9-terrain-parity procedure for terrain.
+- **2026-09-14, step 8 done by the Paredros session (e138186), lane
+  closed.** Paredros deleted its local camera, body layer and scene render
+  (838 lines) and its  is an isometer  over
+  precise poses, declared-extent volumes and the ground, with
+   and  as presets over ; the eight
+  GPU receipts keep their claims on the shared API. 45 client lib, 6
+  native and 140 world tests, both workspace checks and the acceptance,
+  failure and smoke scenarios pass there; its final capture differs from
+  the previous run only in the terrain faces the tracer floor lifted, and
+  the pick now consults terrain. The crate's sources reference no
+  ,  or  item
+  (grep on closing: 0). The only product coupling left is the family's,
+  's neutral types, which the isometer family plan owns.
+  All six done conditions hold; the presentation plan's L9 is closed.
