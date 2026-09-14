@@ -79,10 +79,9 @@ impl Pulses {
 /// pulse has expired. Recipient-level indicator: the flow has no soil cell or
 /// root tip, so the mark rises out of the body rather than marking a contact.
 pub(super) fn pulse(at: [i32; 3], ticks: u64, height: f32, size: f32) -> Option<SpatialGlyph> {
-    if ticks >= PULSE_TICKS {
-        return None;
-    }
-    let age = ticks as f32 / PULSE_TICKS as f32;
+    // Unbroken flow keeps pulsing: the phase wraps every PULSE_TICKS while
+    // the run lives, and `Pulses::retain` retires the run once flow stops.
+    let age = (ticks % PULSE_TICKS) as f32 / PULSE_TICKS as f32;
     let mut centre = at.map(|v| v as f32);
     centre[1] += height + age * size * 2.;
     Some(SpatialGlyph {
@@ -123,13 +122,14 @@ mod tests {
             assert!(now > last, "tick {tick}: {now} did not rise above {last}");
             last = now;
         }
-        // Eight ticks of unbroken flow retire the pulse, as every mark retires.
-        for tick in 6..=8 {
+        // Eight ticks of unbroken flow start the next pulse rather than
+        // retiring the recipient's indicator while uptake continues.
+        for tick in 6..=9 {
             pulses.observe(WHO, tick);
         }
-        assert_eq!(pulses.age(WHO, 8), Some(7));
-        assert!(pulse(AT, 7, 4., 1.4).is_some());
-        assert!(pulse(AT, 8, 4., 1.4).is_none());
+        assert_eq!(pulses.age(WHO, 9), Some(8));
+        assert_eq!(height(&pulses, 9), height(&pulses, 1));
+        assert!(height(&pulses, 8) > height(&pulses, 9));
     }
 
     #[test]
