@@ -471,6 +471,17 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
 - 2026-09-14: crates.io returns zero crates for the query `isometer`, so the
   umbrella and all four component names are free; `isomere` returns two
   unrelated chemistry crates.
+- 2026-09-14, later: **the mere revision split is resolved.** The umbrella
+  push e1f5c7c repinned the root workspace to one revision per family
+  (mere 3675a352, genet 7baa554c, netrender 3961aca9, cleromancy 3617583b),
+  and isometer's cambium-rootstock line moved to mere 3675a352 in the same
+  series (419f6c9, f35661f). The root, mesocosm, paredros and isometer now
+  share one mere revision, so the risk recorded above at `fb7e136b` against
+  `4f4de1d0` no longer holds. isometer stays in the root's `exclude` list
+  because it carries its own `[workspace]`, which is a layout choice this
+  plan's move order can revisit, not a resolution constraint; "Isometry
+  builds against the family" is unblocked at the pin level and waits only
+  on a consumer in the tabletop crates.
 
 ## Progress
 
