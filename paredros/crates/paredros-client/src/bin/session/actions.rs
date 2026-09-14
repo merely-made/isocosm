@@ -346,7 +346,10 @@ impl SessionApp {
         };
         let path = self.save_path.clone();
         self.status = vec![match write_atomically(&path, &bytes) {
-            Ok(()) => format!("Saved {}", path.display()),
+            Ok(()) => {
+                self.saves += 1;
+                format!("Saved {}", path.display())
+            },
             Err(why) => format!("Save failed: {why}"),
         }];
     }
@@ -381,6 +384,7 @@ impl SessionApp {
                     self.latched = [None; 4];
                     self.last_motion = Instant::now();
                     self.last_charge = Instant::now();
+                    self.loads += 1;
                     format!("Loaded {}", path.display())
                 }
             },

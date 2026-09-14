@@ -1,0 +1,6 @@
+# Negative control for P3b: the process and the receipt must fail while a fresh
+# capture is still written. Run exactly as acceptance.scenario, with this file
+# and its own --receipt/--capture paths; it must exit 1 with "ok": false.
+wait
+assert snap ready == impossible
+capture intentional-failure

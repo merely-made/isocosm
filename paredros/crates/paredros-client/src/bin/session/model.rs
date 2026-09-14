@@ -51,6 +51,8 @@ use paredros_world::{CombatRules, ItemId};
 mod actions;
 #[path = "panels.rs"]
 mod panels;
+#[path = "probe.rs"]
+mod probe;
 #[path = "smoke.rs"]
 mod smoke;
 #[path = "view.rs"]
@@ -85,6 +87,9 @@ pub(crate) struct SessionApp {
     pub(crate) selected: Option<(SubjectId, PartId)>,
     pub(crate) published_error: Option<String>,
     pub(crate) save_path: PathBuf,
+    /// Completed saves and loads. The scenario's `save-loaded` reading.
+    pub(crate) saves: u32,
+    pub(crate) loads: u32,
     pub(crate) closing: bool,
 }
 
@@ -162,6 +167,9 @@ impl SessionApp {
 
 /// Builds the fixture world, opens the window, and returns the process code.
 pub fn run() -> i32 {
+    let Some(options) = probe::options() else {
+        return 0;
+    };
     let fixture = session_fixture::timed_action_world();
     let played = fixture.keeper;
     let target = fixture.target;
@@ -188,14 +196,28 @@ pub fn run() -> i32 {
         selected: None,
         published_error: None,
         save_path: saves.join("session.save"),
+        saves: 0,
+        loads: 0,
         closing: false,
     };
     let exit = Rc::new(Cell::new(0));
     let lane = Rc::new(RefCell::new(
-        smoking.then(|| smoke::Lane::new(saves, exit.clone())),
+        (smoking && !options.driven).then(|| smoke::Lane::new(saves, exit.clone())),
     ));
+    let driven = Rc::new(RefCell::new(options.driven.then(|| {
+        probe::Lane::new(
+            options.scenario,
+            options.receipt,
+            options.capture,
+            exit.clone(),
+            options.frames,
+        )
+    })));
     let close_lane = lane.clone();
     let after_lane = lane.clone();
+    let close_driven = driven.clone();
+    let after_driven = driven.clone();
+    let frame_driven = driven.clone();
     let hooks: HostHooks<SessionApp, view::Logic, view::Child> = HostHooks {
         frame: Box::new(move |ctx| {
             if ctx.runner.state().closing {
@@ -213,7 +235,9 @@ pub fn run() -> i32 {
                     state.tick_charge();
                 });
             }
-            ctx.runner.state().animating() || lane.borrow().is_some()
+            ctx.runner.state().animating()
+                || lane.borrow().is_some()
+                || frame_driven.borrow().is_some()
         }),
         after_dispatch: Box::new(|ctx| {
             if let Some(window) = ctx.window {
@@ -242,11 +266,17 @@ pub fn run() -> i32 {
             if let Some(lane) = after_lane.borrow_mut().as_mut() {
                 lane.after_frame(ctx);
             }
+            if let Some(lane) = after_driven.borrow_mut().as_mut() {
+                lane.after_frame(ctx);
+            }
         }),
         after_wake: Box::new(|_| {}),
         close_request: Box::new(move |ctx, _| {
             if let Some(lane) = close_lane.borrow_mut().as_mut() {
                 lane.refuse();
+            }
+            if let Some(lane) = close_driven.borrow_mut().as_mut() {
+                lane.request_close();
             }
             if let Some(window) = ctx.window {
                 window.request_redraw();
@@ -263,7 +293,7 @@ pub fn run() -> i32 {
     };
     let options = HostOptions {
         title: "Paredros · Session".into(),
-        initial_logical_size: (1240.0, 820.0),
+        initial_logical_size: options.size,
         ..Default::default()
     };
     if let Err(why) = cambium_genet_winit_host::run(

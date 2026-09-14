@@ -48,6 +48,9 @@ cambium = { workspace = true }
 cambium-rootstock = { workspace = true }
 cambium-genet-winit-host = { workspace = true }
 genet-probe = { workspace = true }
+# P3b: the promoted scenario lane. A sibling path crate under the repository's
+# `shared/`, declared directly as mesocosm-genet declares it.
+wing-scenario = { path = "../../../shared/wing-scenario" }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
 renderling = { path = "../../../../../crates/renderling/crates/renderling" }

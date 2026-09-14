@@ -308,3 +308,25 @@ creator files are owned by a concurrent lane and are never swept.
   lock is ignored like the products' locks; it has no LICENSE file, like
   wing-glyphs. The root manifest's exclude list and mesocosm's `.gitignore`
   (now ignoring `target-contact`) changed by one line each.
+- **2026-09-14, P3b landed.** The session bin is the second wing-scenario
+  consumer: `SessionProduct` supplies the sheet, a 25-field snapshot
+  (ready, action, aim, position, step, grounded, supports, vitality, wound,
+  dressings, lost-parts, target vitality and parts, selection, saves,
+  loads, hash and more), an event drain over accepted `GameEvent`s, the
+  `Scene` leaf as viewport, and an `act` vocabulary for keyboard-only
+  intents (movement, aim, join, charge, strike, take, rest, injure, save,
+  load); DOM buttons are clicked through pointer routing. The bin takes
+  `--scenario`, `--receipt`, `--capture`, `--frames` and `--size`.
+  `paredros/testing/session/acceptance.scenario` moves, strikes, treats,
+  selects and round-trips a save with receipts under
+  `testing/session/receipts/2026-09-14/`; the root reran it (86 frames,
+  4 captures, ok), the failure scenario (exit 1, fresh capture), the smoke,
+  the clean workspace check and the 45 lib, 6 native and 132 world tests,
+  and inspected the final frame. Two act shortcuts run movement steps and
+  charge ticks outright instead of the latch and the wall clock, so
+  auto-repeat timing and mouse-held charging stay with physical
+  acceptance, which remains open. One shared gap is recorded rather than
+  worked around in `shared/`: wing-scenario has `remember`/`same`/`more`
+  but no "differs" or "dropped" verb and gives `app_step` no checkpoint
+  access, so the product keeps its own `mark`/`differs`/`dropped`; promoting
+  those is a wing-scenario edit. The status panel clips at 1280 by 900.
