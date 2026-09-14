@@ -91,6 +91,11 @@ pub enum MeshError {
     /// Every surviving part resolved, but all of its volumes are empty.
     /// Publishing this as a voxel body would make the subject disappear.
     EmptyBodyProjection { organism: mesocosm_core::OrganismId },
+    /// The same failure, reported by the identity-free projection path. A
+    /// caller that has no `OrganismId` — a wing product keyed on its own
+    /// subject type — still needs the loud refusal, without borrowing
+    /// Mesocosm's id space to get it.
+    EmptyBody,
     /// More parts than the attributed flatten can name. Checked rather than
     /// assumed because the artifact it feeds crosses a repo boundary.
     TooManyParts { parts: usize },

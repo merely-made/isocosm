@@ -50,6 +50,10 @@ workbench = { workspace = true }
 # path crate (P3a, ruled 2026-09-14) so Paredros's session host consumes the
 # same lifecycle. Declared by path here, as wing-glyphs is in mesocosm-runtime.
 wing-scenario = { path = "../../../shared/wing-scenario" }
+# The shared orthographic slab scene (L9, plan of 2026-09-14): the camera, its
+# cut and its cull window, so Mesocosm's `CameraMode` presets and Paredros's
+# `CameraPolicy` are presets over one set of numbers rather than two.
+wing-scene = { path = "../../../shared/wing-scene" }
 wgpu = { workspace = true }
 winit = "0.30"
 pollster = "0.4"

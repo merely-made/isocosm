@@ -238,7 +238,7 @@ impl GlyphLayer {
 }
 fn geometry(glyphs: &[SpatialGlyph], view: View) -> Vec<u8> {
     let [camera_right, camera_up, _] = view.basis();
-    let matrix = view.matrix();
+    let matrix = view.clip_from_world();
     let mut data = Vec::new();
     for glyph in glyphs {
         let (right, up) = match glyph.orientation {

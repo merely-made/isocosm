@@ -307,7 +307,10 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     assert_eq!(section.pick_ndc([0.0; 2]), Err(BodyPickError::NotReady));
     assert!(!section.validate_pick(old, &world, &volumes));
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
-    assert_eq!(section.view(centre).bounds.unwrap().0[0], 3.0);
+    let Some(wing_scene::Cutaway::Bounds { min, .. }) = section.view(centre).cutaway else {
+        panic!("a configured terrarium supplies a bounds cutaway");
+    };
+    assert_eq!(min[0], 3.0);
     assert_eq!(
         section.pick_ndc([0.0; 2]).unwrap(),
         None,

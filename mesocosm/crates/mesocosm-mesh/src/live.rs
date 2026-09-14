@@ -83,17 +83,44 @@ impl LiveBodyProjector {
         self.mesh_cache.len()
     }
 
-    /// Projects every surviving part of `body`.
+    /// Projects every surviving part of `body` for a Mesocosm organism.
     ///
-    /// Resolution and placement are completed before the cache or output is
-    /// changed. A missing volume or malformed attachment therefore returns one
-    /// loud error rather than an incomplete, publishable body.
+    /// A thin identity wrapper over [`Self::project_body`]: the two share one
+    /// per-[`VolumeRef`] mesh cache and one revision, and differ only in that
+    /// this one stamps the result with an `OrganismId` and names it in the
+    /// empty-projection failure.
     pub fn project(
         &mut self,
         organism: OrganismId,
         body: &BodyDocument,
         source: &impl VolumeSource,
     ) -> Result<LiveBodyProjection, MeshError> {
+        let (mesh, revision) = self.project_body(body, source).map_err(|error| match error {
+            MeshError::EmptyBody => MeshError::EmptyBodyProjection { organism },
+            other => other,
+        })?;
+        Ok(LiveBodyProjection {
+            organism,
+            revision,
+            mesh,
+        })
+    }
+
+    /// Projects every surviving part of `body` without an owning identity.
+    ///
+    /// The neutral path: a product that keys bodies on its own subject type
+    /// gets the same geometry, the same dependency revision and the same
+    /// per-[`VolumeRef`] mesh cache without routing its ids through
+    /// Mesocosm's `OrganismId`.
+    ///
+    /// Resolution and placement are completed before the cache or output is
+    /// changed. A missing volume or malformed attachment therefore returns one
+    /// loud error rather than an incomplete, publishable body.
+    pub fn project_body(
+        &mut self,
+        body: &BodyDocument,
+        source: &impl VolumeSource,
+    ) -> Result<(BodyMesh, BodyDependencyRevision), MeshError> {
         let mut placements = Vec::with_capacity(body.len());
         let mut volumes = BTreeMap::new();
 
@@ -147,7 +174,7 @@ impl LiveBodyProjector {
             mesh.mesh_for(placement.volume)
                 .is_some_and(|part| part.quads.is_empty())
         }) {
-            return Err(MeshError::EmptyBodyProjection { organism });
+            return Err(MeshError::EmptyBody);
         }
         for (reference, part_mesh, volume) in newly_meshed {
             if self.mesh_cache.len() == self.mesh_capacity {
@@ -162,11 +189,7 @@ impl LiveBodyProjector {
             );
         }
 
-        Ok(LiveBodyProjection {
-            organism,
-            revision,
-            mesh,
-        })
+        Ok((mesh, revision))
     }
 }
 
@@ -454,6 +477,70 @@ mod tests {
             }
         );
         assert_eq!(projector.cached_mesh_count(), 0);
+    }
+
+    /// The identity-free path is the same projection: same meshes, same
+    /// placements, same revision, and **one** shared per-`VolumeRef` cache —
+    /// the second call through either door builds nothing new.
+    #[test]
+    fn the_neutral_path_yields_the_same_mesh_over_the_same_cache() {
+        let mut body = body();
+        body.attach(
+            VolumeRef::from_tag(2),
+            20,
+            [1, 1, 1],
+            Attachment {
+                parent: body.root,
+                offset: [4, 0, 0],
+                yaw: Yaw::Zero,
+            },
+            Provenance::founding(),
+        )
+        .unwrap();
+        let mut projector = LiveBodyProjector::new();
+
+        let owned = projector.project(OrganismId(41), &body, &source()).unwrap();
+        let filled = projector.cached_mesh_count();
+        let (mesh, revision) = projector.project_body(&body, &source()).unwrap();
+
+        assert_eq!(filled, 2, "the owned call filled the shared cache");
+        assert_eq!(
+            projector.cached_mesh_count(),
+            filled,
+            "the neutral call reused it rather than growing a second one"
+        );
+        assert_eq!(revision, owned.revision);
+        assert_eq!(mesh.mesh_count(), owned.mesh.mesh_count());
+        assert_eq!(mesh.placements, owned.mesh.placements);
+        for placement in &owned.mesh.placements {
+            assert_eq!(
+                mesh.mesh_for(placement.volume).map(|part| part.quads.len()),
+                owned
+                    .mesh
+                    .mesh_for(placement.volume)
+                    .map(|part| part.quads.len())
+            );
+        }
+    }
+
+    /// The neutral path names the same refusal without borrowing an id, and
+    /// the owned path still reports the organism.
+    #[test]
+    fn an_all_empty_volume_fails_loudly_on_both_paths() {
+        let mut source = VolumeMap::new();
+        source.insert(VolumeRef::from_tag(1), Volume::empty([2, 2, 2]));
+        let mut projector = LiveBodyProjector::new();
+
+        assert_eq!(
+            projector.project_body(&body(), &source).unwrap_err(),
+            MeshError::EmptyBody
+        );
+        assert_eq!(
+            projector.project(OrganismId(1), &body(), &source).unwrap_err(),
+            MeshError::EmptyBodyProjection {
+                organism: OrganismId(1)
+            }
+        );
     }
 
     #[test]

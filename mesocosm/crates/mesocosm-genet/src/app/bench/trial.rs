@@ -11,6 +11,7 @@ use cambium::{clickable, el, focusable, text};
 use mesocosm_core::{World, effect_experiment::Glyph, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
 mod carving;
+mod uptake;
 
 use std::{
     collections::BTreeSet,
@@ -31,6 +32,7 @@ pub(super) struct WorldTrial {
     show_uptake: bool,
     recent: Vec<TrialActivity>,
     uptake: Vec<TrialUptake>,
+    pulses: uptake::Pulses,
     uptake_count: u64,
     uptake_mg: u64,
     marks_dropped: usize,
@@ -52,6 +54,7 @@ impl WorldTrial {
             show_uptake: true,
             recent: Vec::new(),
             uptake: Vec::new(),
+            pulses: uptake::Pulses::new(),
             uptake_count: 0,
             uptake_mg: 0,
             marks_dropped: 0,
@@ -78,10 +81,12 @@ impl WorldTrial {
         for uptake in self.driver.uptakes() {
             self.uptake_count += 1;
             self.uptake_mg += uptake.record.record.amount_mg;
+            self.pulses.observe(uptake.organism, uptake.tick);
             self.uptake.push(uptake.clone());
         }
         let tick = self.driver.world().tick;
         self.carving.observe(self.driver.carves(), tick);
+        self.pulses.retain(tick);
         self.uptake.retain(|a| tick.saturating_sub(a.tick) < 8);
         if self.uptake.len() > 128 {
             self.uptake.drain(..self.uptake.len() - 128);
@@ -134,7 +139,9 @@ impl WorldTrial {
             })
             .collect();
         // Continuous uptake refreshes one pulse per recipient, rather than
-        // emitting a new particle every tick. Retained flow facts remain in uptake.
+        // emitting a new particle every tick. Retained flow facts remain in
+        // uptake; the pulse's age comes from the run anchor, not the newest
+        // record, so unbroken flow still rises instead of standing still.
         let mut recipients = BTreeSet::new();
         marks.extend(
             self.uptake
@@ -143,24 +150,9 @@ impl WorldTrial {
                 .filter(|a| recipients.insert(a.organism))
                 .filter(|_| self.show_uptake)
                 .filter_map(|a| {
-                    let mut centre = a.at?.map(|v| v as f32);
-                    let age = tick.saturating_sub(a.tick) as f32 / 8.;
-                    // Recipient-level indicator: the flow has no soil cell or root tip.
-                    centre[1] += self.marker_height + age * self.marker_size * 2.;
-                    Some((
-                        (a.tick, 1u8, a.sequence),
-                        SpatialGlyph {
-                            centre,
-                            size: self.marker_size * (1. - age * 0.5),
-                            angle: 0.,
-                            glyph: Glyph::Backticks,
-                            orientation: GlyphOrientation::WorldPlane {
-                                right: [1., 0., 0.],
-                                up: [0., 1., 0.],
-                            },
-                            color: [0.6, 0.85, 0.3, 1.],
-                        },
-                    ))
+                    let ticks = self.pulses.age(a.organism, tick)?;
+                    let glyph = uptake::pulse(a.at?, ticks, self.marker_height, self.marker_size)?;
+                    Some(((a.tick, 1u8, a.sequence), glyph))
                 }),
         );
         marks.extend(
@@ -202,6 +194,7 @@ impl WorldTrial {
         self.fed = 0;
         self.recent.clear();
         self.uptake.clear();
+        self.pulses.reset();
         self.uptake_count = 0;
         self.uptake_mg = 0;
         self.marks_dropped = 0;

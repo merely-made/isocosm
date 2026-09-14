@@ -39,7 +39,10 @@ pub use bodies::anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
 pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
 pub use inspection::{BodyPick, BodyPickError, BodySelection};
 
-pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, SlabWindow, TERRARIUM_DEGREES};
+pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
+/// The cull window is `wing-scene`'s now; re-exported so the host's roster
+/// and bench keep one import path.
+pub use wing_scene::SlabWindow;
 
 use mesocosm_core::World;
 use mesocosm_core::places::Ground;
@@ -361,7 +364,7 @@ impl Section {
                 });
             }
             let camera_view = self.view(frame.centre);
-            let matrix = camera_view.matrix();
+            let matrix = camera_view.clip_from_world();
             if let Err(error) = self.bodies.draw(
                 &self.device,
                 &self.queue,

@@ -59,7 +59,7 @@ pub fn roster_of_scaled(
         .filter(|organism| {
             organism.is_alive()
                 && Some(organism.id) != controlled
-                && window.holds(organism.position)
+                && window.holds(organism.position.map(|v| v as f32))
         })
         .filter_map(|organism| {
             let body = organism.body();

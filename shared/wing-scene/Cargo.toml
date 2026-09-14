@@ -1,0 +1,40 @@
+[package]
+name = "wing-scene"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "The wing's shared orthographic slab scene: one camera, one cut, one depth, and the product-neutral body inputs that feed them."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# Its own workspace, like the other `shared/` path crates, and excluded from
+# the Isometry root workspace beside them. The root pins mere at a different
+# revision, so pulling this crate into it would fork the cambium family.
+[workspace]
+members = ["."]
+resolver = "2"
+
+[dependencies]
+# Body documents, part ids and content addresses. **Never `World`**: the whole
+# point of this crate is that a product world does not appear in its graph.
+mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
+# The projection seam: `VolumeSource`, `VolumeMap`, `Volume`. Declared by
+# relative path, as `mesocosm-mesh` already declares `wing-formats`.
+mesocosm-mesh = { path = "../../mesocosm/crates/mesocosm-mesh" }
+# The tracer's camera and its standing wall. One on-disk crate, one version.
+mesocosm-lens = { path = "../../mesocosm/crates/mesocosm-lens" }
+# The body renderer's world cut interval.
+mesocosm-render = { path = "../../mesocosm/crates/mesocosm-render" }
+
+[dev-dependencies]
+serde_json = "1"
+
+# `[patch]` applies only from a workspace root and is not inherited through a
+# path dependency, so this crate restates what its consumers already declare in
+# order to build standalone. Consumed by path from a product workspace, the
+# product's own identical patch table is the one that applies.
+[patch.crates-io]
+vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
+parley = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1", version = "=0.14.0" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }

@@ -56,7 +56,11 @@ impl Default for Spatial {
     }
 }
 impl Spatial {
-    pub fn framing_bounds(&self, (mut min, mut max): ([f32; 3], [f32; 3]), anchors: &[crate::section::GlyphAnchor]) -> ([f32; 3], [f32; 3]) {
+    pub fn framing_bounds(
+        &self,
+        (mut min, mut max): ([f32; 3], [f32; 3]),
+        anchors: &[crate::section::GlyphAnchor],
+    ) -> ([f32; 3], [f32; 3]) {
         let height = (max[1] - min[1]).max(2.0);
         match self.form {
             Form::Orbit => {

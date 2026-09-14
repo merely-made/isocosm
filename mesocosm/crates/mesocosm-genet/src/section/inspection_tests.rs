@@ -26,7 +26,7 @@ fn prepare(layer: &mut BodyLayer, world: &World, volumes: &mesocosm_mesh::Volume
     layer.prepare(
         world,
         volumes,
-        SlabWindow::new(CameraMode::Side, [0.0, 20.0, 0.0], 256.0, 1.0),
+        super::view::slab_camera(CameraMode::Side, [0.0, 20.0, 0.0], 256.0, 1.0).window(),
     );
 }
 
@@ -60,8 +60,8 @@ fn preview_depth_and_bounds_are_temporary() {
         section.set_body_preview(false, 80.0);
         let restored = section.view(centre);
         assert_eq!(restored.depth, original.depth);
-        assert_eq!(restored.bounds, original.bounds);
-        assert_eq!(restored.matrix(), original.matrix());
+        assert_eq!(restored.cutaway, original.cutaway);
+        assert_eq!(restored.clip_from_world(), original.clip_from_world());
     }
 }
 

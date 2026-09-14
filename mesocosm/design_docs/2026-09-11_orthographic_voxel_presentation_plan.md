@@ -1283,6 +1283,50 @@ perspective cameras, richer glyph assets and population cost measurement.
 Those need their own owner-specific acceptance, rather than being implied by
 this opaque spatial coverage matrix.
 
+### L9. The shared scene crate, wing-scene (founded 2026-09-14)
+
+Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
+shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
+23 files, 31 references to `mesocosm_core::World`) is the only implementation
+of tracer plus live bodies plus glyphs on one depth attachment; Paredros's
+document-host plan (`paredros/design_docs/2026-09-13_genet_document_host_plan.md`,
+lane P1) was building a second producer over the same two renderers because
+`Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
+be a third. That is the duplicate-runs-at-one-problem case the consolidation
+rule forbids, so the scene becomes an Isometry path crate at
+`shared/wing-scene`, beside `wing-glyphs` and `wing-scenario`. Plain working
+name; no naming round spent. This is not the merged appearance crate of L2,
+whose home stays an open decision below.
+
+**Owner tree:** `shared/wing-scene`, with mesocosm-genet's `Section` and
+Paredros's P1 producer becoming thin adapters over it. Mesocosm's `World`,
+Paredros's `GameState`, and Isometry's map stay outside the crate.
+
+**Done when:**
+
+1. Body inputs are decoupled from any product world: per body a body
+   document, a pose (position plus continuous parent yaw, ruling 15), a
+   volume source, a tint, and a stable identity of subject id plus part id.
+   A volume source answering tag-only references with declared-extent solid
+   parts exists as the fallback Paredros anatomies need.
+2. The terrain tracer and live bodies draw on one depth attachment under one
+   `clip_from_world`; an orthographic slab camera is selectable; the cutaway
+   is a world-space plane or slab (§ Specifying a presentation).
+3. The spatial glyph batch draws against that same depth.
+4. The CPU pick and presentation-bounds queries (`set_body_yaw`,
+   `presentation_bounds`, `pick_pixel`, `pick_ndc`, `validate_pick`) address
+   the same identities.
+5. A `TextureProducer` wrapper carries the unchanged-input skip and the
+   sRGB/straight-alpha contract the bench settled, so each product supplies
+   state and framing, never GPU code.
+6. Mesocosm's bench and section acceptance stay green through the adapter;
+   Paredros's P1 retargets to the crate and retires its local producer; the
+   crate has no dependency on `mesocosm_core::World`, `paredros_world`, or
+   `isometry_core`.
+
+**Sequencing:** starts after the wing-scenario extraction lands, since both
+lanes edit mesocosm-genet.
+
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's
@@ -1362,6 +1406,8 @@ consumer. That edit is genet's, in the same session the lane opens.
   CPU bake as the downlevel tier, or replaces the CPU bake outright.
 - Where the merged appearance crate lives: the Isometry root workspace, or
   mere as a platform organ once a non-wing consumer appears.
+  The scene crate is ruled separately (L9, `shared/wing-scene`, 2026-09-14);
+  this decision covers volume, palette, bake and mesh only.
 - Poses and clips (raised 2026-09-12): whether a pose (a set of part
   transforms) and a clip (keyframes over poses) become body-document data
   played as CSS animations on the individual transform properties, with

@@ -14,10 +14,10 @@ use super::{BodySelection, SlabWindow};
 #[cfg(test)]
 use super::{CameraMode, SLAB_DEPTH};
 
-#[path = "appearance.rs"]
-mod appearance;
 #[path = "anchors.rs"]
 pub(super) mod anchors;
+#[path = "appearance.rs"]
+mod appearance;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
@@ -427,7 +427,7 @@ impl BodyLayer {
         colour: &wgpu::TextureView,
         camera: super::view::View,
     ) -> Result<[[f32; 4]; 4], String> {
-        let matrix = camera.matrix();
+        let matrix = camera.clip_from_world();
         let bodies: Vec<_> = self
             .placed
             .iter()
@@ -529,16 +529,7 @@ pub(super) fn clip_from_world(
     half: f32,
     aspect: f32,
 ) -> [[f32; 4]; 4] {
-    super::view::View {
-        mode,
-        centre,
-        half,
-        aspect,
-        depth: SLAB_DEPTH,
-        pitch: None,
-        bounds: None,
-    }
-    .matrix()
+    super::view::slab_camera(mode, centre, half, aspect).clip_from_world()
 }
 
 fn depth_target(

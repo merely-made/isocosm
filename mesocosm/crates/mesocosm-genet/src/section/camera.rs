@@ -4,13 +4,16 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Presentation camera orientations and the legacy section's cull window.
+//! Presentation camera orientations: Mesocosm's named presets over the shared
+//! [`wing_scene::SlabCamera`].
 //!
 //! Side, across and the default oblique view retain their measured Q9
 //! geometry. CP1 adds four cardinal terrarium views at a shallow pitch.
-//! `view.rs` supplies configurable pitch and one matching terrain/raster
-//! transform; `terrarium.rs` clips a fixed habitat volume and applies the
-//! interior information policy. Rotation never reaches a world intent.
+//! Each mode produces a forward vector; `view.rs` turns that plus the
+//! configurable terrarium pitch into the one `SlabCamera` the terrain rays,
+//! the raster depth and the cull window all read. `terrarium.rs` clips a fixed
+//! habitat volume and applies the interior information policy. Rotation never
+//! reaches a world intent.
 
 use mesocosm_lens::SlabWall;
 
@@ -216,50 +219,6 @@ impl Framing {
 /// avoid.
 const WIDEST_ASPECT: f32 = 1.0;
 
-/// The world box the section's slab shows: the camera's own oriented box,
-/// in voxels around its centre.
-///
-/// **Oriented, not axis-aligned** (DC4). The half extents are along the
-/// camera's right, up and forward — not along world x, y and z — so the same
-/// numbers describe the same slab whichever way the section is turned. For
-/// [`CameraMode::Side`] the basis is the identity up to sign and this is
-/// exactly the box the tree culled against before.
-#[derive(Clone, Copy, Debug)]
-pub struct SlabWindow {
-    pub centre: [f32; 3],
-    /// Right, up and forward, orthonormal — [`CameraMode::basis`]'s output.
-    pub axes: [[f32; 3]; 3],
-    /// Half extents along those three axes, in the same order.
-    pub half: [f32; 3],
-}
-
-impl SlabWindow {
-    /// The window a camera in `mode` frames at `centre`.
-    pub fn new(mode: CameraMode, centre: [f32; 3], half_height: f32, aspect: f32) -> Self {
-        Self {
-            centre,
-            axes: mode.basis(),
-            half: [
-                half_height * aspect,
-                half_height,
-                mode.slab_reach(half_height, aspect),
-            ],
-        }
-    }
-
-    /// Whether a voxel position falls inside the window. Position alone, not
-    /// the body's extent: a body straddling the cut plane is drawn whole and
-    /// the tracer's own ray interval does the trimming.
-    pub fn holds(&self, at: [i32; 3]) -> bool {
-        let offset = [
-            at[0] as f32 - self.centre[0],
-            at[1] as f32 - self.centre[1],
-            at[2] as f32 - self.centre[2],
-        ];
-        (0..3).all(|axis| dot(offset, self.axes[axis]).abs() <= self.half[axis])
-    }
-}
-
 fn cross(a: [f32; 3], b: [f32; 3]) -> [f32; 3] {
     [
         a[1] * b[2] - a[2] * b[1],
@@ -336,7 +295,11 @@ mod tests {
                 "{} changed forward",
                 mode.name()
             );
-            assert!(SlabWindow::new(mode, centre, 28.0, 1.0).holds([13, 29, -7]));
+            assert!(
+                super::super::view::slab_camera(mode, centre, 28.0, 1.0)
+                    .window()
+                    .holds([13.0, 29.0, -7.0])
+            );
             assert!(dot(right, right) > 0.99);
         }
         let first = CameraMode::TerrariumEast.forward();
@@ -437,57 +400,33 @@ mod tests {
         );
     }
 
-    /// The window is the camera's box, so `across` keeps what it can see and
-    /// drops what it cannot — the exact inverse of `side` on the same world.
+    /// Risk 4 of the wing-scene extraction: handing a preset's forward vector
+    /// to the shared camera must return the *same float* the preset's own
+    /// numbers do, not one that rounds to it. Basis and reach both, for every
+    /// mode, so the cull window and the bedrock clamp cannot drift apart from
+    /// the tracer by a ulp.
     #[test]
-    fn the_cull_window_turns_with_the_camera() {
-        let centre = [0.0, 30.0, 0.0];
-        let side = SlabWindow::new(CameraMode::Side, centre, 28.0, 1.78);
-        let across = SlabWindow::new(CameraMode::Across, centre, 28.0, 1.78);
-
-        // Far along x, on the cut plane in z: in shot side-on, behind the
-        // camera's own slab across.
-        let along_x = [40, 30, 0];
-        assert!(side.holds(along_x));
-        assert!(!across.holds(along_x));
-
-        // And the other way about.
-        let along_z = [0, 30, 40];
-        assert!(!side.holds(along_z));
-        assert!(across.holds(along_z));
-
-        // Whoever is being followed is in shot under every mode, which is
-        // what makes the three captures comparable at all.
+    fn the_shared_camera_keeps_each_preset_to_the_bit() {
+        let centre = [3.0, 30.0, -5.0];
         for mode in CameraMode::ALL {
-            let window = SlabWindow::new(mode, centre, 28.0, 1.78);
-            assert!(window.holds([0, 30, 0]), "{} lost the centre", mode.name());
+            for half in [20.0, 28.0, 48.0] {
+                for aspect in [1.0, 1.78] {
+                    let camera = super::super::view::slab_camera(mode, centre, half, aspect);
+                    assert_eq!(
+                        camera.basis(),
+                        mode.basis(),
+                        "{} moved its basis on the shared camera",
+                        mode.name()
+                    );
+                    assert_eq!(
+                        camera.reach(),
+                        mode.slab_reach(half, aspect),
+                        "{} moved its slab reach on the shared camera",
+                        mode.name()
+                    );
+                }
+            }
         }
     }
 
-    /// `side` is the control arm and has to stay the shipped framing: the
-    /// generalized window must agree with the axis-aligned box the tree
-    /// culled against before this module existed.
-    #[test]
-    fn the_side_window_is_the_axis_aligned_box_it_replaces() {
-        let (centre, half_height, aspect) = ([3.0, 30.0, -5.0], 28.0, 1.78);
-        let window = SlabWindow::new(CameraMode::Side, centre, half_height, aspect);
-        let old = [half_height * aspect, half_height, SLAB_DEPTH * 0.5];
-        for at in [
-            [3, 30, -5],
-            [52, 30, -5],
-            [53, 30, -5],
-            [3, 57, -5],
-            [3, 59, -5],
-            [3, 30, 2],
-            [3, 30, 4],
-        ] {
-            let axis_aligned =
-                (0..3).all(|axis| (at[axis] as f32 - centre[axis]).abs() <= old[axis]);
-            assert_eq!(
-                window.holds(at),
-                axis_aligned,
-                "the side window moved at {at:?}"
-            );
-        }
-    }
 }

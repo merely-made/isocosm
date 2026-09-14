@@ -4,6 +4,7 @@
 //! Independent pixel coverage receipt against real voxel raster depth.
 use super::*;
 use crate::section::{CameraMode, view::View};
+use wing_scene::Cutaway;
 use mesocosm_core::{VolumeRef, effect_experiment::Glyph};
 use mesocosm_lens::FRAME_FORMAT;
 use mesocosm_mesh::{BodyMesh, Volume};
@@ -135,13 +136,12 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
         ] {
             for mode in [CameraMode::Side, CameraMode::Oblique] {
                 let view = View {
-                    mode,
                     centre: [0.0; 3],
-                    half: 7.0,
+                    forward: mode.forward(),
+                    half_height: 7.0,
                     aspect: 1.0,
                     depth: 32.0,
-                    pitch: None,
-                    bounds: None,
+                    cutaway: None,
                 };
                 let forward = view.basis()[2];
                 let mut render = |body: bool,
@@ -150,7 +150,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                                   bounds: Option<([f32; 3], [f32; 3])>,
                                   clip_depth: Option<f32>| {
                     let view = View {
-                        bounds,
+                        cutaway: bounds.map(|(min, max)| Cutaway::Bounds { min, max }),
                         depth: clip_depth.unwrap_or(view.depth),
                         ..view
                     };
@@ -164,7 +164,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                                 &mut encoder,
                                 &color_view,
                                 &depth_view,
-                                view.matrix(),
+                                view.clip_from_world(),
                                 Some(view.clip()),
                                 &[LiveBody {
                                     mesh: &mesh,
@@ -380,16 +380,15 @@ fn world_plane_is_camera_independent_and_invalid_lists_do_not_replace_it() {
         );
     }
     let view = View {
-        mode: CameraMode::Side,
         centre: [0.0; 3],
-        half: 7.0,
+        forward: CameraMode::Side.forward(),
+        half_height: 7.0,
         aspect: 1.0,
         depth: 32.0,
-        pitch: None,
-        bounds: None,
+        cutaway: None,
     };
     let other = View {
-        mode: CameraMode::Oblique,
+        forward: CameraMode::Oblique.forward(),
         ..view
     };
     let world_vertices = |data: Vec<u8>| {

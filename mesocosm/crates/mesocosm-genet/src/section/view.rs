@@ -1,29 +1,31 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! One set of camera numbers for terrain rays, raster depth and body culling.
+//! Mesocosm's presets, turned into the one shared camera.
+//!
+//! The camera numbers themselves — trace, raster matrix, cut slab, reach and
+//! cull window — live in `wing-scene` now. What stays here is the product's
+//! own reading: which [`CameraMode`] is selected, whether a terrarium view is
+//! overriding the pitch and the depth, and which habitat box is cut away.
 
-use super::{CameraMode, SlabWindow};
-use mesocosm_lens::{SlabWall, TraceCamera};
-use mesocosm_render::ClipSlab;
+use super::CameraMode;
+use wing_scene::{Cutaway, SlabCamera};
 
-#[derive(Clone, Copy)]
-pub(super) struct View {
-    pub mode: CameraMode,
-    pub centre: [f32; 3],
-    pub half: f32,
-    pub aspect: f32,
-    pub depth: f32,
-    pub pitch: Option<f32>,
-    pub bounds: Option<([f32; 3], [f32; 3])>,
-}
+/// The section's camera, for as long as `Section` is still the thing that
+/// builds it. Retired with the adapter step.
+pub(super) type View = SlabCamera;
 
 impl super::Section {
     pub(super) fn view(&self, centre: [f32; 3]) -> View {
-        View {
-            mode: self.mode,
+        let pitch = self.terrarium.as_ref().map(|view| view.pitch());
+        SlabCamera {
             centre,
-            half: self.half_height,
+            // The un-pitched preset hands its own exact vector over; a pitched
+            // terrarium hands the rotated one. Both are what the slab wall was
+            // built from before this crate existed, so the reach, the cut
+            // normal and the window are unchanged to the bit.
+            forward: forward_of(self.mode, pitch),
+            half_height: self.half_height,
             aspect: self.aspect(),
             depth: if self.bodies.isolated {
                 self.bodies.preview_depth
@@ -32,186 +34,42 @@ impl super::Section {
                     .as_ref()
                     .map_or(super::SLAB_DEPTH, |view| view.depth())
             },
-            pitch: self.terrarium.as_ref().map(|view| view.pitch()),
-            bounds: if self.bodies.isolated {
+            cutaway: if self.bodies.isolated {
                 None
             } else {
-                self.terrarium.as_ref().map(|view| view.bounds())
+                self.terrarium
+                    .as_ref()
+                    .map(|view| view.bounds())
+                    .map(|(min, max)| Cutaway::Bounds { min, max })
             },
         }
     }
 }
 
-impl View {
-    pub fn basis(self) -> [[f32; 3]; 3] {
-        camera_basis(self.mode, self.pitch)
-    }
-
-    fn reach(self) -> f32 {
-        if self.pitch.is_none() && self.depth == super::SLAB_DEPTH {
-            return self.mode.slab_reach(self.half, self.aspect);
-        }
-        let forward = self.basis()[2];
-        SlabWall::new(forward, [0.0, 1.0, 0.0], self.half, self.aspect, self.depth)
-            .map_or(self.depth * 0.5, |wall| wall.reach)
-    }
-
-    pub fn trace(self) -> Option<TraceCamera> {
-        if self.centre.iter().any(|v| !v.is_finite())
-            || [self.half, self.aspect, self.depth]
-                .iter()
-                .any(|v| !v.is_finite() || *v <= 0.0)
-            || self.pitch.is_some_and(|pitch| !pitch.is_finite())
-        {
-            return None;
-        }
-        let forward = self.basis()[2];
-        // The constructor's up vector defines the standing wall, not merely
-        // the screen basis. Supplying screen-up tilts the ray interval away
-        // from the body shader's world-vertical cut slab.
-        TraceCamera::orthographic_slab(
-            self.centre,
-            forward,
-            [0.0, 1.0, 0.0],
-            self.half,
-            self.aspect,
-            self.depth,
-        )
-    }
-
-    pub fn window(self) -> SlabWindow {
-        SlabWindow {
-            centre: self.centre,
-            axes: self.basis(),
-            half: [self.half * self.aspect, self.half, self.reach()],
-        }
-    }
-
-    pub fn matrix(self) -> [[f32; 4]; 4] {
-        let [right, up, forward] = self.basis();
-        let x = right.map(|v| v / (self.half * self.aspect));
-        let y = up.map(|v| v / self.half);
-        let z = forward.map(|v| v / (2.0 * (self.reach() + 1.0)));
-        [
-            [x[0], y[0], z[0], 0.0],
-            [x[1], y[1], z[1], 0.0],
-            [x[2], y[2], z[2], 0.0],
-            [
-                -dot(x, self.centre),
-                -dot(y, self.centre),
-                0.5 - dot(z, self.centre),
-                1.0,
-            ],
-        ]
-    }
-
-    pub fn clip(self) -> ClipSlab {
-        let forward = if self.pitch.is_none() {
-            self.mode.forward()
-        } else {
-            self.basis()[2]
-        };
-        let length = (forward[0] * forward[0] + forward[2] * forward[2]).sqrt();
-        let normal = [forward[0] / length, 0.0, forward[2] / length];
-        let middle = dot(normal, self.centre);
-        ClipSlab {
-            normal,
-            min: middle - self.depth * 0.5,
-            max: middle + self.depth * 0.5,
-            bounds: self.bounds,
-        }
+/// Which way a mode looks once the terrarium's pitch has had its say.
+fn forward_of(mode: CameraMode, pitch: Option<f32>) -> [f32; 3] {
+    match pitch {
+        None => mode.forward(),
+        Some(_) => camera_basis(mode, pitch)[2],
     }
 }
 
-fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {
-    a.into_iter().zip(b).map(|(a, b)| a * b).sum()
-}
-
+/// A camera in `mode` at the section's shipped slab depth, level. The
+/// fixtures' constructor; the host itself always goes through [`Section::view`].
 #[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn pitched_rays_start_and_end_on_the_same_standing_walls_as_body_clipping() {
-        for pitch in [12.0, 45.0] {
-            let mut mode = CameraMode::TerrariumEast;
-            for _ in 0..4 {
-                let view = View {
-                    mode,
-                    centre: [3.0, 200.0, -7.0],
-                    half: 5.0,
-                    aspect: 1.0,
-                    depth: 16.0,
-                    pitch: Some(pitch),
-                    bounds: None,
-                };
-                let camera = view.trace().unwrap();
-                let clip = view.clip();
-                for ndc in [[0.0, 0.5], [-0.75, -0.75], [0.75, 0.75]] {
-                    let (origin, direction) = camera.ray_at(ndc).unwrap();
-                    let end = [0, 1, 2].map(|i| origin[i] + direction[i] * camera.far());
-                    assert!(
-                        (dot(clip.normal, origin) - clip.min).abs() < 1e-4,
-                        "{mode:?}/{pitch}: front wall"
-                    );
-                    assert!(
-                        (dot(clip.normal, end) - clip.max).abs() < 1e-4,
-                        "{mode:?}/{pitch}: far wall"
-                    );
-                    for point in [origin, end] {
-                        let matrix = view.matrix();
-                        let depth =
-                            matrix[3][2] + (0..3).map(|i| matrix[i][2] * point[i]).sum::<f32>();
-                        assert!(
-                            (0.0..=1.0).contains(&depth),
-                            "standing interval must fit raster depth"
-                        );
-                    }
-                }
-                mode = mode.quarter_turn(false);
-            }
-        }
-    }
-    #[test]
-    fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
-        for pitch in [0.0, 12.0, 45.0] {
-            let mut mode = CameraMode::TerrariumEast;
-            for _ in 0..4 {
-                let view = View {
-                    mode,
-                    centre: [-8.0, 23.0, 16.0],
-                    half: 38.0,
-                    aspect: 16.0 / 9.0,
-                    depth: 180.0,
-                    pitch: Some(pitch),
-                    bounds: None,
-                };
-                let camera = serde_json::to_value(view.trace().unwrap()).unwrap();
-                let vector =
-                    |name: &str| [0, 1, 2].map(|i| camera[name][i].as_f64().unwrap() as f32);
-                let origin = vector("origin");
-                let right = vector("right");
-                let up = vector("up");
-                let direction = vector("forward");
-                let wall = vector("wall");
-                for uv in [[-0.8, 0.5], [0.0, 0.0], [0.6, -0.7]] {
-                    let advance = wall[0] * uv[0] + wall[1] * uv[1] + wall[2];
-                    let point = [0, 1, 2].map(|i| {
-                        origin[i]
-                            + right[i] * uv[0]
-                            + up[i] * uv[1]
-                            + direction[i] * (advance + 40.0)
-                    });
-                    let matrix = view.matrix();
-                    let projected = [0, 1, 2].map(|row| {
-                        matrix[3][row]
-                            + (0..3).map(|col| matrix[col][row] * point[col]).sum::<f32>()
-                    });
-                    assert!((projected[0] - uv[0]).abs() < 1e-4);
-                    assert!((projected[1] - uv[1]).abs() < 1e-4);
-                }
-                mode = mode.quarter_turn(false);
-            }
-        }
+pub(super) fn slab_camera(
+    mode: CameraMode,
+    centre: [f32; 3],
+    half_height: f32,
+    aspect: f32,
+) -> SlabCamera {
+    SlabCamera {
+        centre,
+        forward: mode.forward(),
+        half_height,
+        aspect,
+        depth: super::SLAB_DEPTH,
+        cutaway: None,
     }
 }
 

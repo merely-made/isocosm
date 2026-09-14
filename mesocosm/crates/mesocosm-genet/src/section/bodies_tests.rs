@@ -64,16 +64,7 @@ fn mesh_projection_matches_traced_rays_in_all_camera_modes() {
 #[test]
 fn vertical_cut_plane_is_independent_of_height() {
     for mode in CameraMode::ALL {
-        let slab = super::super::view::View {
-            mode,
-            centre: [4.0, 20.0, 7.0],
-            half: 28.0,
-            aspect: 1.0,
-            depth: SLAB_DEPTH,
-            pitch: None,
-            bounds: None,
-        }
-        .clip();
+        let slab = super::super::view::slab_camera(mode, [4.0, 20.0, 7.0], 28.0, 1.0).clip();
         assert_eq!(slab.normal[1], 0.0);
         assert!((slab.max - slab.min - SLAB_DEPTH).abs() < 1e-5);
     }
