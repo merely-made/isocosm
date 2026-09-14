@@ -639,3 +639,22 @@ Restating L9's six conditions against tests that exist or must be written.
   3, and the isolated Oblique preview without a terrarium can differ from
   the old reach in the last bit because the forward vector is no longer
   renormalised there; every shipped path is bit-exact.
+- **2026-09-14, step 2 done.** wing-scene gains src/bodies.rs (473 lines:
+  `SubjectKey`, `PartAddress`, `Pose`, `SceneBody`, `SceneVolumes`,
+  `BodyLayer` with prepare/draw/pick/select_part/validate_address/
+  presentation_bounds/set_focus), bodies/placement.rs (96), anchors.rs
+  (140) and anchors/tests.rs (151, plus a test that a `SubjectKey` above
+  `u32::MAX` round-trips). mesocosm-genet's section/bodies.rs is the
+  adapter (`HostBodies`, `scene_body`, `add_fallback`, `rendered_tint`,
+  OrganismId to SubjectKey both ways); `BodySelection` keeps its
+  `OrganismId` shape until step 5 because renaming it reaches the saved
+  spatial request format (risk 8). `prepare` takes a fourth argument, a
+  stats sink, because the capsule fallback interleaves with the budget
+  check and bit-identical stats need it. `BodyFrameStats` moved whole
+  (risk 10 left open). Green: wing-scene 17, mesocosm-genet 152 release
+  (the three anchors tests moved), mesocosm-mesh 62, both workspace
+  checks, bench acceptance 167 frames, spatial-coverage 336 frames with
+  all 32 viewports byte-identical to the 2026-09-13 receipt. Known cost:
+  `scene_materials` projects the phenotype mosaic for every living
+  organism each frame rather than only drawn bodies; output unchanged,
+  to fold into step 7's producer skip.

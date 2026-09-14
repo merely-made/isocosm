@@ -128,7 +128,10 @@ mod tests {
         let root = volumes.volume(VolumeRef::from_tag(1)).unwrap();
         assert_eq!(root.size, [2, 4, 6]);
         assert_eq!(root.get(0, 0, 0), 245);
-        assert_eq!(volumes.volume(VolumeRef::from_tag(2)).unwrap().size, [4, 4, 4]);
+        assert_eq!(
+            volumes.volume(VolumeRef::from_tag(2)).unwrap().size,
+            [4, 4, 4]
+        );
         assert!(volumes.volume(VolumeRef::from_tag(9)).is_none());
     }
 
@@ -170,7 +173,10 @@ mod tests {
 
         assert_eq!(volumes.len(), 1);
         assert_eq!(volumes.conflicts(), 1);
-        assert_eq!(volumes.volume(VolumeRef::from_tag(4)).unwrap().size, [2, 2, 2]);
+        assert_eq!(
+            volumes.volume(VolumeRef::from_tag(4)).unwrap().size,
+            [2, 2, 2]
+        );
         assert!(DeclaredExtentVolumes::from_documents(std::iter::empty(), 1).is_empty());
     }
 }

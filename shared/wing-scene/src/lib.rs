@@ -15,9 +15,15 @@
 //!
 //! See `mesocosm/design_docs/2026-09-14_wing_scene_extraction_plan.md`.
 
+mod anchors;
+mod bodies;
 mod camera;
 mod volumes;
 
+pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
+pub use bodies::{
+    BodyFrameStats, BodyLayer, PartAddress, Pose, SceneBody, SceneVolumes, SubjectKey,
+};
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
 pub use volumes::DeclaredExtentVolumes;
 

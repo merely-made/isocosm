@@ -9,8 +9,10 @@
 use mesocosm_core::{OrganismId, PartId, World};
 use mesocosm_mesh::BodyDependencyRevision;
 use std::sync::atomic::{AtomicU64, Ordering};
+use wing_scene::{PartAddress, SceneVolumes};
 
 use super::Section;
+use super::bodies::{key, organism_of};
 
 // Presentation receipts also expire across Section replacement. This identity
 // is deliberately outside the world, its serialization and its trace.
@@ -25,6 +27,26 @@ pub struct BodySelection {
     pub organism: OrganismId,
     pub part: PartId,
     pub revision: BodyDependencyRevision,
+}
+
+impl BodySelection {
+    /// The same address, keyed the way the scene keys it. Every key the scene
+    /// hands back was minted here, so the round trip is exact.
+    pub(super) fn address(self) -> PartAddress {
+        PartAddress {
+            subject: key(self.organism),
+            part: self.part,
+            revision: self.revision,
+        }
+    }
+
+    pub(super) fn from_address(address: PartAddress) -> Self {
+        Self {
+            organism: organism_of(address.subject),
+            part: address.part,
+            revision: address.revision,
+        }
+    }
 }
 
 /// A surface hit in one successfully encoded section frame. A host must
@@ -86,14 +108,14 @@ impl Section {
         if !radians.is_finite() {
             return Err(mesocosm_render::live_body::LiveBodyError::InvalidBody);
         }
-        if self.bodies.set_yaw(subject, radians) {
+        if self.host_bodies.set_yaw(subject, radians) {
             self.invalidate_query();
         }
         Ok(())
     }
 
     pub fn body_yaw(&self, subject: OrganismId) -> f32 {
-        self.bodies.yaw(subject)
+        self.host_bodies.yaw(subject)
     }
 
     /// Exact transformed quad bounds for host framing, before viewport and
@@ -103,7 +125,9 @@ impl Section {
         organism: &mesocosm_core::Organism,
         volumes: &mesocosm_mesh::VolumeMap,
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
-        self.bodies.presentation_bounds(organism, volumes)
+        let body = self.host_bodies.scene_body(organism, &[], None);
+        self.bodies
+            .presentation_bounds(&body, SceneVolumes::Voxels(volumes))
     }
 
     /// Queries the centre of a texture pixel; coordinates start at top-left.
@@ -154,7 +178,7 @@ impl Section {
             }
         }
         Ok(Some(BodyPick {
-            selection,
+            selection: BodySelection::from_address(selection),
             frame: frame.generation,
             distance: hit.distance,
             point: hit.point,
@@ -207,7 +231,9 @@ impl Section {
             return None;
         }
         self.presented?;
-        self.bodies.select_part(subject, current, backwards)
+        self.bodies
+            .select_part(key(subject), current.map(BodySelection::address), backwards)
+            .map(BodySelection::from_address)
     }
 
     /// Confirms that a selected part remains both drawable and geometrically
@@ -221,12 +247,24 @@ impl Section {
         if self.body_mode != super::BodyMode::Voxels {
             return false;
         }
-        self.bodies.validate_selection(selection, world, volumes)
+        let Some(organism) = world
+            .organisms
+            .iter()
+            .find(|organism| organism.id == selection.organism)
+        else {
+            return false;
+        };
+        let body = self.host_bodies.scene_body(organism, &[], None);
+        self.bodies
+            .validate_address(selection.address(), &body, SceneVolumes::Voxels(volumes))
     }
 
     /// Sets host-owned inspection emphasis for the next body draw.
     pub fn set_body_focus(&mut self, subject: Option<OrganismId>, selected: Option<BodySelection>) {
-        if self.bodies.set_focus(subject, selected) {
+        if self
+            .bodies
+            .set_focus(subject.map(key), selected.map(BodySelection::address))
+        {
             self.invalidate_query();
         }
     }

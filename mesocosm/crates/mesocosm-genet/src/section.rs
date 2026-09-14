@@ -35,9 +35,11 @@ pub use terrarium::{
 pub use view::camera_basis;
 mod inspection;
 
-pub use bodies::anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
-pub use bodies::{BodyFrameStats, BodyMode, DEFAULT_BODY_BUDGET};
+pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
 pub use inspection::{BodyPick, BodyPickError, BodySelection};
+/// The glyph attachments and the frame receipt are `wing-scene`'s now;
+/// re-exported so the host's bench and receipts keep one import path.
+pub use wing_scene::{BodyFrameStats, GlyphAnchor, MAX_GLYPH_ANCHORS};
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
 /// The cull window is `wing-scene`'s now; re-exported so the host's roster
@@ -118,7 +120,9 @@ pub struct Section {
     /// same reason: it frames the world and decides nothing in it.
     mode: CameraMode,
     body_mode: BodyMode,
-    bodies: bodies::BodyLayer,
+    bodies: wing_scene::BodyLayer,
+    /// The Mesocosm facts the scene is handed rather than the ones it derives.
+    host_bodies: bodies::HostBodies,
     glyphs: Option<glyphs::GlyphLayer>,
     terrarium: Option<terrarium::TerrariumView>,
     presented: Option<inspection::PresentedFrame>,
@@ -152,7 +156,8 @@ impl Section {
         let tracer =
             BrickTracer::with_format(device.clone(), queue.clone(), width, height, FRAME_FORMAT);
         let composite = Composite::new(&device, format);
-        let bodies = bodies::BodyLayer::new(&device, width, height);
+        let mut bodies = wing_scene::BodyLayer::new(&device, width, height, SLAB_DEPTH);
+        bodies.budget = DEFAULT_BODY_BUDGET;
         let (traced, traced_view) = target(&device, width, height, FRAME_FORMAT, "traced section");
         let (display, display_view) = target(
             &device,
@@ -176,6 +181,7 @@ impl Section {
             mode: framing.mode,
             body_mode: BodyMode::default(),
             bodies,
+            host_bodies: bodies::HostBodies::new(),
             glyphs: None,
             terrarium: None,
             presented: None,
@@ -337,7 +343,10 @@ impl Section {
             .ok_or("invalid terrarium camera")?;
         if self.body_mode == BodyMode::Voxels {
             let window = self.slab_window(frame.centre);
-            self.bodies.prepare(frame.world, frame.volumes, window);
+            // The mosaics outlive the scene bodies that borrow them.
+            let materials = self.scene_materials(frame.world);
+            let scene = self.scene_bodies(frame.world, &materials);
+            self.prepare_bodies(frame.world, frame.volumes, window, &scene);
             {
                 let _clear = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                     label: Some("clear shared section attachments"),
@@ -374,7 +383,7 @@ impl Section {
             ) {
                 eprintln!("{error}; using capsule fallback");
                 self.bodies.stats.last_error = Some(error);
-                self.bodies.fallback_all(frame.world);
+                self.fallback_all(&scene);
             }
             if self.bodies.isolated && self.bodies.stats.fallback_bodies == 0 {
                 if let Some(glyphs) = &self.glyphs {
@@ -398,9 +407,9 @@ impl Section {
             )
             .changed(change)
             .with_clip_from_world(matrix)
-            .with_roster(&self.bodies.fallback);
+            .with_roster(&self.host_bodies.fallback);
             input.terrain_appearance = self.terrain_appearance;
-            if let Some(pose) = self.bodies.played_fallback.as_ref() {
+            if let Some(pose) = self.host_bodies.played_fallback.as_ref() {
                 input = input.with_pose(pose);
             }
             self.terrain_diagnostics = Some(

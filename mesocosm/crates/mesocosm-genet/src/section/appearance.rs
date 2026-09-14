@@ -9,7 +9,7 @@
 use mesocosm_core::{Organism, OrganismId};
 use mesocosm_render::live_body::LiveBodyError;
 
-use super::BodyLayer;
+use super::HostBodies;
 use crate::section::Section;
 
 impl Section {
@@ -36,10 +36,10 @@ impl Section {
         }
         match tint {
             Some(rgb) => {
-                self.bodies.tints.insert(subject, rgb);
+                self.host_bodies.tints.insert(subject, rgb);
             },
             None => {
-                self.bodies.tints.remove(&subject);
+                self.host_bodies.tints.remove(&subject);
             },
         }
         self.invalidate_query();
@@ -48,11 +48,11 @@ impl Section {
 
     /// The host override, or `None` while the ordinary organism tint is used.
     pub fn body_tint(&self, subject: OrganismId) -> Option<[f32; 3]> {
-        self.bodies.tints.get(&subject).copied()
+        self.host_bodies.tints.get(&subject).copied()
     }
 }
 
-impl BodyLayer {
+impl HostBodies {
     pub(super) fn rendered_tint(&self, organism: &Organism) -> [f32; 3] {
         self.tints
             .get(&organism.id)

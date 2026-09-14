@@ -3,6 +3,7 @@
 
 use super::*;
 use mesocosm_lens::TraceCamera;
+use mesocosm_render::PartMaterial;
 
 #[test]
 fn grounded_terrarium_anatomy_fits_the_fixed_volume() {
@@ -10,8 +11,14 @@ fn grounded_terrarium_anatomy_fits_the_fixed_volume() {
     let world = World::terrarium(7, founding, founding.palette()).unwrap();
     let bounds = super::super::framed_habitat(&world).bounds;
     let scale = super::super::TERRARIUM_BODY_SCALE;
+    let host = HostBodies {
+        scale,
+        ground_anatomy: true,
+        ..HostBodies::new()
+    };
+    const NONE: &[PartMaterial] = &[];
     for organism in &world.organisms {
-        let origin = body_origin(organism, scale, true);
+        let origin = host.scene_body(organism, NONE, None).origin();
         let body = organism.body().aabb();
         assert_eq!(
             origin[1] + body.min[1] as f32 * scale,

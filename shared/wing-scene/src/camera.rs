@@ -119,14 +119,8 @@ impl SlabCamera {
     /// the renormalized [`Self::basis`], so a host that hands an exact preset
     /// vector gets the same float it got before this crate existed.
     pub fn reach(self) -> f32 {
-        SlabWall::new(
-            self.forward,
-            UP,
-            self.half_height,
-            self.aspect,
-            self.depth,
-        )
-        .map_or(self.depth * 0.5, |wall| wall.reach)
+        SlabWall::new(self.forward, UP, self.half_height, self.aspect, self.depth)
+            .map_or(self.depth * 0.5, |wall| wall.reach)
     }
 
     /// The tracer's camera, or `None` when the numbers cannot frame anything.

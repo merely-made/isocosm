@@ -138,8 +138,8 @@ impl Section {
         policy: Cutaway,
         at: [i32; 3],
     ) {
-        self.bodies.scale = BODY_SCALE;
-        self.bodies.ground_anatomy = true;
+        self.host_bodies.scale = BODY_SCALE;
+        self.host_bodies.ground_anatomy = true;
         let reveal =
             policy == Cutaway::Always || (policy == Cutaway::Occupied && occupied(habitat, at));
         if self.terrarium.as_ref().is_none_or(|view| {

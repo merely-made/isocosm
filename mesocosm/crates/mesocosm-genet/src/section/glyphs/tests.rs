@@ -4,11 +4,11 @@
 //! Independent pixel coverage receipt against real voxel raster depth.
 use super::*;
 use crate::section::{CameraMode, view::View};
-use wing_scene::Cutaway;
 use mesocosm_core::{VolumeRef, effect_experiment::Glyph};
 use mesocosm_lens::FRAME_FORMAT;
 use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};
+use wing_scene::Cutaway;
 
 const WIDTH: u32 = 128;
 

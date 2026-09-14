@@ -23,8 +23,13 @@ mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
 mesocosm-mesh = { path = "../../mesocosm/crates/mesocosm-mesh" }
 # The tracer's camera and its standing wall. One on-disk crate, one version.
 mesocosm-lens = { path = "../../mesocosm/crates/mesocosm-lens" }
-# The body renderer's world cut interval.
+# The body renderer's world cut interval, instance draw and part queries.
 mesocosm-render = { path = "../../mesocosm/crates/mesocosm-render" }
+# The device the body layer owns its depth attachment on. Backends are left to
+# the leaf binaries, as the presentation plan's dependency table rules.
+wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
+# The frame receipt is serialized by the hosts' bench and receipts lanes.
+serde = { version = "1", features = ["derive"] }
 
 [dev-dependencies]
 serde_json = "1"

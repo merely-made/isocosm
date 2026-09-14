@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::section::BodySelection;
-use mesocosm_core::{OrganismId, PartId, effect_experiment::Glyph};
+use mesocosm_core::{PartId, effect_experiment::Glyph};
 use mesocosm_mesh::BodyDependencyRevision;
+use wing_scene::{PartAddress, SubjectKey};
 
 const BOUNDS: ([f32; 3], [f32; 3]) = ([-10., -4., -8.], [12., 16., 10.]);
 fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {
@@ -17,8 +17,8 @@ fn anchors() -> [GlyphAnchor; 2] {
     let a = 0.6_f32;
     [
         GlyphAnchor {
-            selection: BodySelection {
-                organism: OrganismId(1),
+            selection: PartAddress {
+                subject: SubjectKey(1),
                 part: PartId(2),
                 revision: BodyDependencyRevision(1),
             },
@@ -30,8 +30,8 @@ fn anchors() -> [GlyphAnchor; 2] {
             extent: [3., 8.],
         },
         GlyphAnchor {
-            selection: BodySelection {
-                organism: OrganismId(1),
+            selection: PartAddress {
+                subject: SubjectKey(1),
                 part: PartId(9),
                 revision: BodyDependencyRevision(1),
             },

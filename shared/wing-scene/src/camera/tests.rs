@@ -22,10 +22,7 @@ const ACROSS: [f32; 3] = [-1.0, 0.0, 0.0];
 /// The forward `CameraMode::Oblique` produces: yawed off `-z`, then pitched
 /// down, both by the same angle.
 fn oblique() -> [f32; 3] {
-    let (yaw, pitch) = (
-        OBLIQUE_DEGREES.to_radians(),
-        OBLIQUE_DEGREES.to_radians(),
-    );
+    let (yaw, pitch) = (OBLIQUE_DEGREES.to_radians(), OBLIQUE_DEGREES.to_radians());
     [
         -yaw.sin() * pitch.cos(),
         -pitch.sin(),
