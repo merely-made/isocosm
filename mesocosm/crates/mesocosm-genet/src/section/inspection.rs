@@ -4,20 +4,18 @@
 //! Mesocosm's half of the presentation queries.
 //!
 //! The queries themselves — the frame receipt, the ray, the terrain
-//! occlusion test and the part walk — are [`wing_scene::Scene`]'s now. What
-//! stays here is the product's own address: a [`BodySelection`] keyed on
-//! `OrganismId`, which is what the bench's saved spatial request writes to
-//! disk, and the world lookup an adapter does before the scene sees a body.
+//! occlusion test, the part walk and the glyph anchor geometry — are
+//! [`wing_scene::Scene`]'s now. What stays here is the product's own address:
+//! a [`BodySelection`] keyed on `OrganismId`, which is what the bench's saved
+//! spatial request writes to disk, and the world lookup an adapter does
+//! before the scene sees a body.
 
 use mesocosm_core::{OrganismId, PartId, World};
 use mesocosm_mesh::BodyDependencyRevision;
-use wing_scene::{PartAddress, SceneVolumes};
+use wing_scene::{BodyPickError, PartAddress, SceneVolumes};
 
 use super::Section;
 use super::bodies::{key, organism_of};
-
-/// The pick error is the scene's; nothing about it is Mesocosm's.
-pub use wing_scene::BodyPickError;
 
 /// A part address carried by the last successful voxel-body projection.
 ///
@@ -204,5 +202,25 @@ impl Section {
     pub fn set_body_focus(&mut self, subject: Option<OrganismId>, selected: Option<BodySelection>) {
         self.scene
             .set_body_focus(subject.map(key), selected.map(BodySelection::address));
+    }
+
+    /// Largest meshed face per living part, ordered by PartId and capped at
+    /// 32. An explicit selection must match this body's current mesh revision.
+    /// Uses the configured pose for the next draw, before cutaway/occlusion.
+    ///
+    /// The geometry is the scene's; what happens here is turning one Mesocosm
+    /// organism into the body it reads.
+    pub fn glyph_anchors(
+        &mut self,
+        organism: &mesocosm_core::Organism,
+        volumes: &mesocosm_mesh::VolumeMap,
+        selected: Option<BodySelection>,
+    ) -> Result<Vec<wing_scene::GlyphAnchor>, String> {
+        let body = self.host_bodies.scene_body(organism, &[], None);
+        self.scene.glyph_anchors(
+            &body,
+            SceneVolumes::Voxels(volumes),
+            selected.map(BodySelection::address),
+        )
     }
 }

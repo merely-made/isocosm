@@ -711,3 +711,18 @@ Restating L9's six conditions against tests that exist or must be written.
   structure-cli.scenario fails identically at HEAD on a generated-start
   hash (`50e8f3a3a6b6d22d` expected, `8d1d3676ecf24452` got); fixture
   drift upstream of this lane, recorded, not acted on.
+- **2026-09-14, step 6 done, gate passed.** Structural only: the `View`
+  alias retired for `wing_scene::SlabCamera` by name, section/capture.rs
+  and section/anchors.rs removed as trivial forwarders, `BodyPickError`
+  re-exported once. section.rs is 456 lines (`SectionFrame`,
+  `SectionHost`, `centre_on` with the bedrock clamp and the terrarium map
+  rebuild are host policy and stay); view.rs stays because it builds the
+  camera from `CameraMode`, pitch and preview depth. terrarium.rs,
+  terrain.rs, materials.rs, capsules.rs and appearance.rs are
+  byte-unchanged. wing-scene has a zero diff. Green: wing-scene 25,
+  mesocosm-genet 150 release, fmt clean on both, both workspace checks,
+  bench acceptance 167, spatial 207, spatial-coverage 336 with all 32
+  viewports byte-identical against the `acceptance-*` arm of the
+  2026-09-13 receipt (its `precheck-*` arm differs from it in 17 of 32),
+  world-trial 228, uptake-world 449, proportions 71. mesocosm-mesh's two
+  step-1 formatting misses in live.rs are fixed here.

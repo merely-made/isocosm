@@ -19,8 +19,6 @@ use wing_scene::{BodyFrameStats, Pose, SceneBody, SubjectKey};
 #[cfg(test)]
 use super::{CameraMode, SLAB_DEPTH};
 
-#[path = "anchors.rs"]
-pub(super) mod anchors;
 #[path = "appearance.rs"]
 mod appearance;
 

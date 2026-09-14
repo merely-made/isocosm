@@ -95,10 +95,12 @@ impl LiveBodyProjector {
         body: &BodyDocument,
         source: &impl VolumeSource,
     ) -> Result<LiveBodyProjection, MeshError> {
-        let (mesh, revision) = self.project_body(body, source).map_err(|error| match error {
-            MeshError::EmptyBody => MeshError::EmptyBodyProjection { organism },
-            other => other,
-        })?;
+        let (mesh, revision) = self
+            .project_body(body, source)
+            .map_err(|error| match error {
+                MeshError::EmptyBody => MeshError::EmptyBodyProjection { organism },
+                other => other,
+            })?;
         Ok(LiveBodyProjection {
             organism,
             revision,
@@ -536,7 +538,9 @@ mod tests {
             MeshError::EmptyBody
         );
         assert_eq!(
-            projector.project(OrganismId(1), &body(), &source).unwrap_err(),
+            projector
+                .project(OrganismId(1), &body(), &source)
+                .unwrap_err(),
             MeshError::EmptyBodyProjection {
                 organism: OrganismId(1)
             }

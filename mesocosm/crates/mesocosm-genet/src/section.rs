@@ -20,7 +20,6 @@
 mod bodies;
 mod camera;
 mod capsules;
-mod capture;
 #[cfg(test)]
 use capsules::pose_at;
 pub use capsules::{pose_of, pose_of_scaled, roster_of, roster_of_scaled};
@@ -36,12 +35,12 @@ pub use view::camera_basis;
 mod inspection;
 
 pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
-pub use inspection::{BodyPick, BodyPickError, BodySelection};
+pub use inspection::{BodyPick, BodySelection};
 /// The glyph batch, its attachments and the frame receipt are `wing-scene`'s
 /// now; re-exported so the host's bench and receipts keep one import path.
 pub use wing_scene::{
-    BodyFrameStats, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS, MAX_SPATIAL_GLYPHS,
-    SpatialGlyph,
+    BodyFrameStats, BodyPickError, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS,
+    MAX_SPATIAL_GLYPHS, SpatialGlyph,
 };
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
@@ -322,6 +321,27 @@ impl Section {
     /// The completed same-device texture imported by Netrender's frame graph.
     pub fn display_texture(&self) -> &wgpu::Texture {
         self.scene.display_texture()
+    }
+
+    /// Reads the most recently traced frame back as RGBA8, with `overlay`
+    /// given the chance to composite chrome over it first. The staging buffer
+    /// and the row padding are the scene's.
+    pub fn capture(
+        &self,
+        overlay: impl FnOnce(&mut wgpu::CommandEncoder, &wgpu::TextureView, wgpu::TextureFormat),
+    ) -> Option<(u32, u32, Vec<u8>)> {
+        self.scene.capture(overlay)
+    }
+
+    /// Reads a completed frame master back as RGBA8. RG3 uses this route so
+    /// its evidence crosses the same imported-tenant master as the live
+    /// window.
+    pub fn capture_from(
+        &self,
+        master: &wgpu::Texture,
+        overlay: impl FnOnce(&mut wgpu::CommandEncoder, &wgpu::TextureView, wgpu::TextureFormat),
+    ) -> Option<(u32, u32, Vec<u8>)> {
+        self.scene.capture_from(master, overlay)
     }
 
     /// Chromeless fallback: trace and composite directly into the surface.

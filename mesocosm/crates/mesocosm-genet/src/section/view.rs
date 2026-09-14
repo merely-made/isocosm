@@ -11,12 +11,8 @@
 use super::CameraMode;
 use wing_scene::{Cutaway, SlabCamera};
 
-/// The section's camera, for as long as `Section` is still the thing that
-/// builds it. Retired with the adapter step.
-pub(super) type View = SlabCamera;
-
 impl super::Section {
-    pub(super) fn view(&self, centre: [f32; 3]) -> View {
+    pub(super) fn view(&self, centre: [f32; 3]) -> SlabCamera {
         let pitch = self.terrarium.as_ref().map(|view| view.pitch());
         SlabCamera {
             centre,
