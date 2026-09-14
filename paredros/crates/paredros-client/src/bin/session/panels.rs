@@ -11,6 +11,7 @@
 
 use mesocosm_core::PartId;
 use paredros_identity::SubjectId;
+use paredros_world::glyphs::ProvenanceKind;
 use paredros_world::{
     AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, ItemKind, ItemLocation, MOTION_SCALE,
     SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
@@ -242,5 +243,81 @@ impl SessionApp {
 
     pub(super) fn played(&self) -> SubjectId {
         self.model.borrow().played()
+    }
+}
+
+/// One acquired glyph, as the acquisition journal lists it.
+pub(super) struct JournalRow {
+    pub glyph: String,
+    /// The canon's display mark. Opaque text, never an identity.
+    pub display: String,
+    pub effect: String,
+    /// The accepted event kind that was the evidence.
+    pub kind: String,
+    pub tick: u64,
+}
+
+impl SessionApp {
+    /// The journal in first-acquisition order. A projection of the reading:
+    /// drawing it grants nothing and reads no world fact.
+    pub(super) fn journal(&self) -> Vec<JournalRow> {
+        let Some(reading) = self.glyphs.as_ref() else {
+            return Vec::new();
+        };
+        let canon = reading.canon();
+        reading
+            .journey()
+            .acquisitions()
+            .iter()
+            .map(|acquisition| JournalRow {
+                glyph: acquisition.glyph.clone(),
+                display: canon
+                    .spec()
+                    .glyphs
+                    .iter()
+                    .find(|glyph| glyph.id == acquisition.glyph)
+                    .map(|glyph| glyph.display.clone())
+                    .unwrap_or_default(),
+                effect: canon
+                    .effect(&acquisition.glyph)
+                    .unwrap_or("unknown")
+                    .to_owned(),
+                kind: match &acquisition.provenance.kind {
+                    ProvenanceKind::Custom(kind) => kind.clone(),
+                    other => format!("{other:?}").to_lowercase(),
+                },
+                tick: acquisition.tick,
+            })
+            .collect()
+    }
+
+    /// How many of the canon's glyphs are held, and what that makes eligible.
+    pub(super) fn journal_summary(&self) -> String {
+        let Some(reading) = self.glyphs.as_ref() else {
+            return "Acquisition journal unavailable.".to_owned();
+        };
+        let eligibility = reading.eligibility();
+        format!(
+            "{} of {} acquired · {} evidence records · {}{}",
+            reading.journey().acquisitions().len(),
+            reading.canon().spec().glyphs.len(),
+            reading.records().len(),
+            if eligibility.complete {
+                "canon complete"
+            } else {
+                "canon incomplete"
+            },
+            if reading.ended() { " · ended" } else { "" }
+        )
+    }
+
+    /// The last glyph acquired, for the scenario's `glyph-last` reading.
+    pub(super) fn last_glyph(&self) -> Option<String> {
+        self.glyphs
+            .as_ref()?
+            .journey()
+            .acquisitions()
+            .last()
+            .map(|acquisition| acquisition.glyph.clone())
     }
 }

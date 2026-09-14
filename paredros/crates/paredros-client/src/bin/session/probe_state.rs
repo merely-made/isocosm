@@ -141,6 +141,14 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .map(|(_, part)| part.0.to_string())
                 .unwrap_or("none".into()),
         )
+        .with_field(
+            "glyphs",
+            app.glyphs
+                .as_ref()
+                .map_or(0, |reading| reading.journey().acquisitions().len())
+                .to_string(),
+        )
+        .with_field("glyph-last", app.last_glyph().unwrap_or("none".into()))
         .with_field("saves", app.saves.to_string())
         .with_field("loads", app.loads.to_string())
         .with_field("save-loaded", yes(app.loads > 0))

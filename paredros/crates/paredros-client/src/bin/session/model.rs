@@ -44,6 +44,7 @@ use mesocosm_core::PartId;
 use paredros_client::producer::{SceneHandle, SceneModel, SceneProducer};
 use paredros_client::session_fixture;
 use paredros_identity::SubjectId;
+use paredros_world::glyphs::GlyphReading;
 use paredros_world::timed_action::Direction;
 use paredros_world::{CombatRules, ItemId};
 
@@ -83,6 +84,9 @@ pub(crate) struct SessionApp {
     pub(crate) latched: [Option<Instant>; 4],
     pub(crate) last_motion: Instant,
     pub(crate) last_charge: Instant,
+    /// The opt-in acquisition journal. `None` when the rules were refused, so
+    /// a rejected canon costs the session nothing. Never in any save.
+    pub(crate) glyphs: Option<GlyphReading>,
     pub(crate) status: Vec<String>,
     pub(crate) selected: Option<(SubjectId, PartId)>,
     pub(crate) published_error: Option<String>,
@@ -159,6 +163,23 @@ impl SessionApp {
         true
     }
 
+    /// Whether accepted events are waiting for the journal to read them.
+    pub(crate) fn glyphs_pending(&self) -> bool {
+        let model = self.model.borrow();
+        self.glyphs
+            .as_ref()
+            .is_some_and(|reading| reading.pending(model.game()))
+    }
+
+    /// Reads whatever the world accepted this frame. The reading changes no
+    /// world fact, so this is safe to run after every dispatched intent.
+    pub(crate) fn advance_glyphs(&mut self) {
+        let Some(reading) = self.glyphs.as_mut() else {
+            return;
+        };
+        reading.advance(self.model.borrow().game());
+    }
+
     /// True while a frame is still owed to an animation.
     fn animating(&self) -> bool {
         self.charging || self.motion_running()
@@ -176,6 +197,16 @@ pub fn run() -> i32 {
     let target_item = fixture.target_item;
     let combat_rules = fixture.combat_rules;
     let model = SceneModel::timed(fixture.action, played).into_handle();
+    let glyphs = {
+        let rules = session_fixture::demonstration_rules(played);
+        match GlyphReading::new(rules, model.borrow().game()) {
+            Ok(reading) => Some(reading),
+            Err(why) => {
+                eprintln!("session: acquisition journal disabled: {why}");
+                None
+            },
+        }
+    };
     let scene = Rc::new(RefCell::new(SceneProducer::new(model.clone())));
     let saves = std::env::var_os("PAREDROS_SESSION_SAVES")
         .map(PathBuf::from)
@@ -190,6 +221,7 @@ pub fn run() -> i32 {
         direction: Direction::Right,
         charging: false,
         latched: [None; 4],
+        glyphs,
         last_motion: Instant::now(),
         last_charge: Instant::now(),
         status: vec!["Ready: aim with the arrows, then charge and strike.".into()],
@@ -234,6 +266,9 @@ pub fn run() -> i32 {
                     state.tick_motion();
                     state.tick_charge();
                 });
+            }
+            if ctx.runner.state().glyphs_pending() {
+                ctx.runner.update(SessionApp::advance_glyphs);
             }
             ctx.runner.state().animating()
                 || lane.borrow().is_some()

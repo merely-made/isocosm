@@ -12,6 +12,9 @@
 use mesocosm_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 use paredros_world::fixtures::three_lives;
+use paredros_world::glyphs::{
+    AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules,
+};
 use paredros_world::timed_action::{Direction, TimedActionRules, TimedActionSession};
 use paredros_world::{
     CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation, MOTION_SCALE,
@@ -300,4 +303,59 @@ pub fn advance_motion(
             rules: MotionRules::default(),
         })
         .expect("recorded motion step");
+}
+
+/// The demonstration glyph canon the session host's acquisition journal reads
+/// against, and the rules that bind it to the played subject.
+///
+/// **This is a fixture, not a world canon.** Paredros has no authored glyph
+/// correspondence; these seven ids and effects are plain placeholder words
+/// chosen to make the journal legible in the window, and the effect ids are
+/// references the reading never executes. A real canon is a design decision
+/// this lane does not make.
+pub fn demonstration_canon() -> CanonSpec {
+    let glyph = |id: &str, display: &str, effect: &str| GlyphDefinition {
+        id: format!("paredros-fixture:{id}"),
+        display: display.to_owned(),
+        effect: format!("paredros-fixture:{effect}"),
+    };
+    CanonSpec {
+        version: 1,
+        id: "paredros-fixture:canon".into(),
+        revision: 1,
+        glyphs: vec![
+            glyph("step", ".", "travel"),
+            glyph("strike", "/", "reach"),
+            glyph("carry", "+", "hold"),
+            glyph("wear", "o", "fasten"),
+            glyph("endure", "x", "hold-on"),
+            glyph("mend", "~", "recover"),
+            glyph("end", "#", "close"),
+        ],
+        variants: Vec::new(),
+        limits: Default::default(),
+    }
+}
+
+/// One grant per accepted event kind the played subject can produce here.
+pub fn demonstration_rules(subject: SubjectId) -> GlyphRules {
+    let grant = |event, glyph: &str| EventGrant {
+        event,
+        glyph: format!("paredros-fixture:{glyph}"),
+    };
+    GlyphRules {
+        canon: demonstration_canon(),
+        individual: "Keeper".into(),
+        subject,
+        unlock_thresholds: vec![0, 0, 0, 0, 0, 0, 0],
+        grants: vec![
+            grant(AcceptedKind::MotionAdvanced, "step"),
+            grant(AcceptedKind::VolleyResolved, "strike"),
+            grant(AcceptedKind::Took, "carry"),
+            grant(AcceptedKind::ItemAttached, "wear"),
+            grant(AcceptedKind::Injured, "endure"),
+            grant(AcceptedKind::Rested, "mend"),
+            grant(AcceptedKind::Died, "end"),
+        ],
+    }
 }

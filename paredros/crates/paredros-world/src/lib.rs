@@ -30,6 +30,7 @@ mod combat;
 mod contact;
 mod equipment;
 pub mod fixtures;
+pub mod glyphs;
 mod items;
 mod motion;
 mod movement;

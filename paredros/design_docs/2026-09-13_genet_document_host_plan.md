@@ -206,6 +206,11 @@ creator files are owned by a concurrent lane and are never swept.
   done-conditions. Section is 4,569 lines across 23 files with 31 `World`
   references, so decoupling is a lane, not a lift. Until that crate exists
   P1 stays local; when it lands, P1 becomes a thin adapter over it.
+  *Ruled later the same day:* the crate is `shared/wing-scene`, beside
+  wing-glyphs and wing-scenario, founded as its own lane in Mesocosm's
+  presentation plan with P1's five requirements as its done-conditions;
+  the extraction starts after wing-scenario landed (it did, cc7828f). P1's
+  retarget is a Paredros lane once that API is messaged over.
 - **Retirements.** When P2 covers them, the timed-action bin and the
   body sheet's private `EquipmentSession` are candidates for archival with
   rationale. Neither is retired by this plan.
@@ -330,3 +335,27 @@ creator files are owned by a concurrent lane and are never swept.
   but no "differs" or "dropped" verb and gives `app_step` no checkpoint
   access, so the product keeps its own `mark`/`differs`/`dropped`; promoting
   those is a wing-scenario edit. The status panel clips at 1280 by 900.
+- **2026-09-14, P4 landed.** `paredros_world::glyphs`: `GlyphRules` for
+  one subject (canon spec, individual, subject, unlock thresholds, grants
+  keyed by `AcceptedKind` over VolleyResolved as striker, Injured, Rested,
+  Took, ItemAttached, MotionAdvanced, Moved and Died) and `GlyphReading`,
+  built from accepted history and advanced by cursor, holding a
+  `wing_glyphs::Journey` plus evidence records; `Died` ends it. Opt-in and
+  non-durable like Mesocosm's: not in `GameSave`, no intent writes it, and
+  `state_hash` is proven identical with and without it. Two departures
+  from Mesocosm are recorded in the module: provenance uses a custom kind
+  naming the event so the motif groups by event kind, and evidence carries
+  no construction-time hash, because a reading rebuilt from a restored save
+  must equal one opened at the start. The session host gains an
+  acquisition journal panel under the sheet, fed by an authored fixture
+  canon of seven marks, and the acceptance scenario asserts the journal
+  grows after the strike and the rest and survives the save round trip.
+  140 world tests (8 new), the untouched kernel's 16, 45 lib and 6 native
+  tests, the clean workspace check, the acceptance scenario (95 frames,
+  ok), the failure scenario and the smoke were rerun by the root, and the
+  final frame inspected. Receipt at
+  `testing/session/receipts/2026-09-14/acceptance-glyphs.json`. Open:
+  glyph marks in the scene on the shared depth, a real canon, durable
+  journey persistence, reincarnation and divine spending, and the world
+  crate's own copy of the seed-7 fixture (the client's cannot be reached
+  from the world crate; a client/world boundary question).

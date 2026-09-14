@@ -136,6 +136,57 @@ fn sheet_panel(state: &SessionApp) -> Child {
     )
 }
 
+/// The acquisition journal, beside the subject sheet: what the played
+/// subject's accepted history has been read as, in first-acquisition order.
+fn journal_panel(state: &SessionApp) -> Child {
+    let journal = state.journal();
+    let rows: Vec<Child> = if journal.is_empty() {
+        vec![Box::new(el(
+            "p",
+            text("Nothing acquired yet. Move, strike, take, rest."),
+        ))]
+    } else {
+        journal
+            .iter()
+            .map(|row| {
+                Box::new(
+                    el(
+                        "div",
+                        (
+                            el(
+                                "div",
+                                text(format!("{}  {}", row.display, row.glyph)),
+                            )
+                            .attr("class", "glyph-name"),
+                            el(
+                                "div",
+                                text(format!("{} · {} · tick {}", row.effect, row.kind, row.tick)),
+                            )
+                            .attr("class", "field-name"),
+                        ),
+                    )
+                    .attr("class", "glyph"),
+                ) as Child
+            })
+            .collect()
+    };
+    Box::new(
+        el(
+            "aside",
+            (
+                el("h2", text("Acquisition journal")),
+                // The summary leads: in a window this size the rows run past
+                // the fold, and the count and eligibility are the reading.
+                el("p", text(state.journal_summary()))
+                    .attr("id", "journal-summary")
+                    .attr("role", "status"),
+                el("div", rows).attr("class", "glyphs"),
+            ),
+        )
+        .attr("class", "panel"),
+    )
+}
+
 fn equipment_panel(state: &SessionApp) -> Child {
     let attachable = state.attachable_parts();
     let carried = state.carried();
@@ -274,8 +325,15 @@ pub(super) fn root(state: &SessionApp) -> Child {
                             ),
                         )
                         .attr("class", "scene-column"),
-                        el("div", (sheet_panel(state), equipment_panel(state)))
-                            .attr("class", "panel-column"),
+                        el(
+                            "div",
+                            (
+                                sheet_panel(state),
+                                journal_panel(state),
+                                equipment_panel(state),
+                            ),
+                        )
+                        .attr("class", "panel-column"),
                     ),
                 ),
                 status_panel(state),
@@ -314,6 +372,10 @@ button:focus { outline:2px solid #6fa8dc; outline-offset:2px; }
 .field-name { font-size:11px; color:#8e9aa2; margin-bottom:2px; }
 .field-value { font-size:13px; line-height:1.35; }
 .items { max-height:260px; overflow:auto; }
+.glyphs { max-height:220px; overflow:auto; }
+.glyph { padding:5px 6px; margin-bottom:5px; border:1px solid #39424a; }
+.glyph-name { font:13px monospace; color:#e4e9ec; }
+#journal-summary { font-size:12px; color:#9fb0ba; }
 .item { padding:6px; margin-bottom:6px; border:1px solid #39424a; }
 #selection { font-size:12px; color:#9fb0ba; }
 #viewport-error { min-height:18px; font-size:12px; color:#e0a0a0; }

@@ -12,6 +12,7 @@ assert snap error == none
 assert snap viewport-error == none
 assert text Subject sheet
 assert text Equipment
+assert text Acquisition journal
 assert text Status
 capture opened
 remember start
@@ -28,6 +29,7 @@ assert snap grounded == yes
 # The charged volley: aim, join a limb, charge, release. The target loses the
 # authored limb it wears the dressing on.
 mark before-volley
+remember before-volley
 act aim-right
 settle 2
 assert snap action == Right
@@ -43,6 +45,12 @@ differs before-volley hash
 capture volleyed
 viewport-pixels-change opened volleyed
 
+# The acquisition journal reads the same accepted volley: a new glyph, named
+# in the panel, with the strike as its evidence.
+more before-volley glyphs
+assert snap glyph-last == paredros-fixture:strike
+assert text paredros-fixture:strike
+
 # Treatment through the controls themselves. The injury debug has no button of
 # its own, so it is the one act between the two clicks.
 click role:button Take dressing
@@ -50,9 +58,13 @@ settle 2
 act injure
 settle 2
 assert event anatomy-reconciled
+remember before-rest
 click role:button Rest
 settle 3
 assert event rested
+more before-rest glyphs
+assert snap glyph-last == paredros-fixture:mend
+assert text paredros-fixture:mend
 assert snap wound == 0
 assert snap lost-parts == 1
 

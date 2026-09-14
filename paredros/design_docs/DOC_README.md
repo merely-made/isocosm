@@ -70,8 +70,14 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   presentation join. One played session presented through genet and netrender
   with a Paredros scene producer over the shared tracer and live body renderer,
   DOM panels reading the same `GameState`, and scenario acceptance; consumes
-  Mesocosm's presentation plan rulings and lane L7. Pins ruled 2026-09-13;
-  planned, no code yet.
+  Mesocosm's presentation plan rulings and lane L7. P0 to P4 landed
+  2026-09-14: aligned pins, a renderling-free scene producer over the shared
+  tracer and live body renderer, the `session` document host with sheet,
+  equipment, status and acquisition journal panels, the shared
+  `wing-scenario` crate promoted from Mesocosm's bench with a Paredros
+  acceptance scenario, and Paredros as the second wing-glyphs consumer.
+  The shared-depth scene crate (`wing-scene`) is Mesocosm's lane; P1 is
+  the duplicate to retire onto it. Physical input acceptance remains open.
 
 **Current design focus, 2026-09-08:** the founding plan's
 [borg generation and character-sheet proposal](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
