@@ -679,3 +679,15 @@ Restating L9's six conditions against tests that exist or must be written.
   spatial-coverage 336 frames with all 32 viewports byte-identical to the
   2026-09-13 receipt; the 15 acceptance captures differ only in the
   reflowed control strip.
+- **2026-09-14, step 4 done, gate passed.** glyphs.rs (301), glyphs.wgsl
+  and glyphs/tests.rs (441) moved by `git mv` into wing-scene; `Scene`
+  owns the glyph batch and `SceneHost` loses `overlay`, leaving
+  `begin`/`fallback`/`prepared`/`roster`/`played`. Only section.rs
+  changed in mesocosm-genet. wing-scene's dev-dependencies gain pollster
+  and a wgpu backend so the moved GPU receipt can find an adapter. Green:
+  wing-scene 20, mesocosm-genet 150 release, both workspace checks,
+  bench acceptance 167, spatial-coverage 336 with all 32 viewports
+  byte-identical, spatial 207, world-trial 228. uptake-world fails
+  identically at 0a519da and at 83248c4: the step-1 pulse fix expires a
+  pulse at eight ticks and the scenario reads it at tick eight; a
+  presentation bug in the fix, not in the extraction, handled separately.

@@ -33,6 +33,21 @@ serde = { version = "1", features = ["derive"] }
 
 [dev-dependencies]
 serde_json = "1"
+pollster = "0.4"
+# The GPU receipts are this crate's own leaf: `default-features = false` above
+# turns every backend off, and an instance with no backend panics at
+# construction rather than reporting a missing adapter. Naming them here keeps
+# them out of the library a product links and out of that product's own
+# backend choice.
+wgpu = { version = "30", default-features = false, features = [
+    "std",
+    "wgsl",
+    "dx12",
+    "vulkan",
+    "metal",
+    "gles",
+    "webgpu",
+] }
 
 # `[patch]` applies only from a workspace root and is not inherited through a
 # path dependency, so this crate restates what its consumers already declare in

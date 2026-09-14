@@ -21,6 +21,7 @@ use mesocosm_lens::{
 
 use crate::bodies::{BodyFrameStats, BodyLayer, SceneBody, SceneVolumes};
 use crate::camera::SlabCamera;
+use crate::glyphs::GlyphLayer;
 
 mod terrain;
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
@@ -75,8 +76,7 @@ pub struct SceneStats {
 /// The host policy a frame calls back into.
 ///
 /// Every method here is a seam of this extraction rather than a permanent
-/// one: the glyph batch takes [`SceneHost::overlay`] over when it moves in,
-/// and the capsule fallback is Mesocosm's alone — the scene reports that a
+/// one: the capsule fallback is Mesocosm's alone — the scene reports that a
 /// body would not project and the host decides what the frame shows instead.
 pub trait SceneHost {
     /// Before the frame's bodies are projected.
@@ -99,16 +99,6 @@ pub trait SceneHost {
         None
     }
 
-    /// Chrome drawn into the scene's own colour and depth, after the join and
-    /// before the display copy.
-    fn overlay(
-        &mut self,
-        _encoder: &mut wgpu::CommandEncoder,
-        _colour: &wgpu::TextureView,
-        _depth: &wgpu::TextureView,
-        _camera: SlabCamera,
-    ) {
-    }
 }
 
 pub struct Scene {
@@ -121,6 +111,9 @@ pub struct Scene {
     terrain_upload_pending: bool,
     terrain_diagnostics: Option<BrickDiagnostics>,
     bodies: BodyLayer,
+    /// The scene's own chrome, on the scene's own depth. Built on first use,
+    /// because a frame that never sets a glyph pays for no pipeline.
+    pub(crate) glyphs: Option<GlyphLayer>,
     pub(crate) width: u32,
     pub(crate) height: u32,
     /// What the tracer writes: display-encoded values in a linear-tagged
@@ -155,6 +148,7 @@ impl Scene {
             terrain_upload_pending: true,
             terrain_diagnostics: None,
             bodies,
+            glyphs: None,
             width,
             height,
             traced,
@@ -254,8 +248,8 @@ impl Scene {
     /// Encodes one frame into the tenant-owned display texture.
     ///
     /// Bodies raster first into the shared depth, then the tracer joins the
-    /// terrain against it under the same `clip_from_world`, then the host's
-    /// overlay, then the display copy. A frame with no terrain stops after the
+    /// terrain against it under the same `clip_from_world`, then the glyph
+    /// batch against that same depth, then the display copy. A frame with no terrain stops after the
     /// bodies: that is the isolated preview, and it completes with
     /// `terrain_drawn` false so a pick does not consult the brick map.
     pub fn render(
@@ -297,7 +291,7 @@ impl Scene {
             if frame.terrain.is_none()
                 || (self.bodies.isolated && self.bodies.stats.fallback_bodies == 0)
             {
-                host.overlay(encoder, &self.traced_view, &self.bodies.depth_view, camera);
+                self.draw_glyphs(encoder, camera);
                 self.copy_to_display(encoder);
                 return Ok(SceneStats::default());
             }
@@ -359,13 +353,27 @@ impl Scene {
         }
         self.terrain_upload_pending = false;
         if frame.capsules.is_none() {
-            host.overlay(encoder, &self.traced_view, &self.bodies.depth_view, camera);
+            self.draw_glyphs(encoder, camera);
         }
         self.copy_to_display(encoder);
         Ok(SceneStats {
             terrain: self.terrain_diagnostics,
             terrain_drawn: true,
         })
+    }
+
+    /// The bounded glyph batch, drawn into the scene's own colour against the
+    /// depth the bodies and the terrain join already wrote.
+    fn draw_glyphs(&self, encoder: &mut wgpu::CommandEncoder, camera: SlabCamera) {
+        if let Some(glyphs) = &self.glyphs {
+            glyphs.draw(
+                &self.queue,
+                encoder,
+                &self.traced_view,
+                &self.bodies.depth_view,
+                camera,
+            );
+        }
     }
 
     /// Projects, culls and rasters the frame's bodies, clearing the shared

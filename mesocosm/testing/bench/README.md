@@ -143,7 +143,7 @@ This preview does not mutate the specimen or implement world interactions.
 Run `spatial.scenario` with the ordinary bench command above. It selects the
 cat-like starting anatomy, checks orbit changes and exact reset pixels, two
 angles, glyph changes, and unchanged world hash. The independent GPU test
-`section::glyphs::tests` checks hidden rear strokes and visible edges against a
+`wing_scene::glyphs::tests` checks hidden rear strokes and visible edges against a
 real voxel cube from two cameras. Solid strokes are the admitted first slice;
 transparent overlap, surface attachment and glyph picking remain future work.
 
@@ -158,7 +158,7 @@ pose, camera and selection; it does not reload a world or provide a CLI import.
 
 `spatial-coverage.scenario` exercises all 24 form/glyph/camera combinations,
 seed/count/replay, maximum density, selected attachments and unchanged world.
-Focused tests are `section::glyphs::tests`, `section::bodies::anchors::tests`
+Focused tests are `wing_scene::glyphs::tests`, `wing_scene::anchors::tests`
 and `app::bench::spatial::sampling::tests`. This matrix covers opaque rendering
 and attachment. Transparent compositing and causal world interactions remain
 separate acceptance work.

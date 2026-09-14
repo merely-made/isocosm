@@ -1,16 +1,38 @@
 // Copyright 2026 Mark Alan Boykin
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
 //! Independent pixel coverage receipt against real voxel raster depth.
+//!
+//! Carried over from Mesocosm's `section/glyphs/tests.rs` with the product's
+//! `CameraMode` replaced by the bare forward vectors those presets produce,
+//! exactly as the camera suite does.
 use super::*;
-use crate::section::{CameraMode, view::View};
+use crate::camera::Cutaway;
 use mesocosm_core::{VolumeRef, effect_experiment::Glyph};
 use mesocosm_lens::FRAME_FORMAT;
 use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};
-use wing_scene::Cutaway;
 
 const WIDTH: u32 = 128;
+const SLAB_DEPTH: f32 = 32.0;
+const OBLIQUE_DEGREES: f32 = 20.0;
+
+/// The forward `CameraMode::Side` produces.
+const SIDE: [f32; 3] = [0.0, 0.0, -1.0];
+
+/// The forward `CameraMode::Oblique` produces: yawed off `-z`, then pitched
+/// down, both by the same angle.
+fn oblique() -> [f32; 3] {
+    let (yaw, pitch) = (OBLIQUE_DEGREES.to_radians(), OBLIQUE_DEGREES.to_radians());
+    [
+        -yaw.sin() * pitch.cos(),
+        -pitch.sin(),
+        -yaw.cos() * pitch.cos(),
+    ]
+}
 
 fn read(device: &wgpu::Device, queue: &wgpu::Queue, texture: &wgpu::Texture) -> Vec<[u8; 4]> {
     let buffer = device.create_buffer(&wgpu::BufferDescriptor {
@@ -134,13 +156,13 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                 up: [0.0, 1.0, 0.0],
             },
         ] {
-            for mode in [CameraMode::Side, CameraMode::Oblique] {
-                let view = View {
+            for (mode, look) in [("side", SIDE), ("oblique", oblique())] {
+                let view = SlabCamera {
                     centre: [0.0; 3],
-                    forward: mode.forward(),
+                    forward: look,
                     half_height: 7.0,
                     aspect: 1.0,
-                    depth: 32.0,
+                    depth: SLAB_DEPTH,
                     cutaway: None,
                 };
                 let forward = view.basis()[2];
@@ -149,7 +171,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                                   ignore_occluder: bool,
                                   bounds: Option<([f32; 3], [f32; 3])>,
                                   clip_depth: Option<f32>| {
-                    let view = View {
+                    let view = SlabCamera {
                         cutaway: bounds.map(|(min, max)| Cutaway::Bounds { min, max }),
                         depth: clip_depth.unwrap_or(view.depth),
                         ..view
@@ -213,17 +235,17 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                         hidden += 1;
                         assert_eq!(
                             behind[i], body[i],
-                            "{mode:?}: rear stroke leaks through body at pixel {i}"
+                            "{mode}: rear stroke leaks through body at pixel {i}"
                         );
                         assert_eq!(
                             no_occluder_depth[i], isolated[i],
-                            "{mode:?}: depth-cleared control must reveal stroke at pixel {i}"
+                            "{mode}: depth-cleared control must reveal stroke at pixel {i}"
                         );
                     } else if is_glyph {
                         exposed += 1;
                         assert_eq!(
                             behind[i], isolated[i],
-                            "{mode:?}: exposed stroke edge disappeared at pixel {i}"
+                            "{mode}: exposed stroke edge disappeared at pixel {i}"
                         );
                     }
                     if ahead[i] != no_occluder_depth[i] {
@@ -232,18 +254,18 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                 }
                 assert!(
                     hidden > 20 && exposed > 20,
-                    "{mode:?}: fixture must cover body and stroke edges ({hidden}/{exposed})"
+                    "{mode}: fixture must cover body and stroke edges ({hidden}/{exposed})"
                 );
                 // Translation along the view axis leaves projection unchanged. Allow
                 // two boundary pixels for floating-point raster ties in oblique view.
                 assert!(
                     front_mismatch <= 2,
-                    "{mode:?}: front glyph differs from depth-cleared control at {front_mismatch} pixels"
+                    "{mode}: front glyph differs from depth-cleared control at {front_mismatch} pixels"
                 );
                 eprintln!(
-                    "glyph depth {glyph:?}/{orientation:?}/{mode:?}: hidden={hidden}, exposed={exposed}, front_difference={front_mismatch}"
+                    "glyph depth {glyph:?}/{orientation:?}/{mode}: hidden={hidden}, exposed={exposed}, front_difference={front_mismatch}"
                 );
-                if mode == CameraMode::Side
+                if mode == "side"
                     && glyph == Glyph::Slashes
                     && matches!(orientation, GlyphOrientation::WorldPlane { .. })
                 {
@@ -379,16 +401,16 @@ fn world_plane_is_camera_independent_and_invalid_lists_do_not_replace_it() {
             "invalid replacement must retain the entire admitted list"
         );
     }
-    let view = View {
+    let view = SlabCamera {
         centre: [0.0; 3],
-        forward: CameraMode::Side.forward(),
+        forward: SIDE,
         half_height: 7.0,
         aspect: 1.0,
-        depth: 32.0,
+        depth: SLAB_DEPTH,
         cutaway: None,
     };
-    let other = View {
-        forward: CameraMode::Oblique.forward(),
+    let other = SlabCamera {
+        forward: oblique(),
         ..view
     };
     let world_vertices = |data: Vec<u8>| {

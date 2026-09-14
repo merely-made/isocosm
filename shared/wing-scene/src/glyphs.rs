@@ -1,9 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Bounded opaque punctuation strokes in the existing section attachments.
-//! World positions and the section camera determine actual raster depth.
-use super::view::View;
+//! Bounded opaque punctuation strokes in the scene's own attachments.
+//! World positions and the slab camera determine actual raster depth.
+use crate::camera::SlabCamera;
+use crate::scene::Scene;
 use mesocosm_core::effect_experiment::Glyph;
 
 pub const MAX_SPATIAL_GLYPHS: usize = 128;
@@ -48,7 +52,7 @@ pub struct SpatialGlyph {
     pub color: [f32; 4],
 }
 
-pub(super) struct GlyphLayer {
+pub(crate) struct GlyphLayer {
     pipeline: wgpu::RenderPipeline,
     vertices: wgpu::Buffer,
     clip: wgpu::Buffer,
@@ -179,14 +183,14 @@ impl GlyphLayer {
         encoder: &mut wgpu::CommandEncoder,
         color: &wgpu::TextureView,
         depth: &wgpu::TextureView,
-        view: View,
+        camera: SlabCamera,
     ) {
         if self.glyphs.is_empty() {
             return;
         }
-        let data = geometry(&self.glyphs, view);
+        let data = geometry(&self.glyphs, camera);
         queue.write_buffer(&self.vertices, 0, &data);
-        let clip = view.clip();
+        let clip = camera.clip();
         let (minimum, maximum) = clip.bounds.unwrap_or(([0.; 3], [0.; 3]));
         let uniform = bytes([
             clip.normal[0],
@@ -236,9 +240,9 @@ impl GlyphLayer {
         pass.draw(0..(data.len() as u64 / STRIDE) as u32, 0..1);
     }
 }
-fn geometry(glyphs: &[SpatialGlyph], view: View) -> Vec<u8> {
-    let [camera_right, camera_up, _] = view.basis();
-    let matrix = view.clip_from_world();
+fn geometry(glyphs: &[SpatialGlyph], camera: SlabCamera) -> Vec<u8> {
+    let [camera_right, camera_up, _] = camera.basis();
+    let matrix = camera.clip_from_world();
     let mut data = Vec::new();
     for glyph in glyphs {
         let (right, up) = match glyph.orientation {
@@ -281,7 +285,7 @@ fn geometry(glyphs: &[SpatialGlyph], view: View) -> Vec<u8> {
     }
     data
 }
-impl super::Section {
+impl Scene {
     /// Replaces the complete bounded presentation list. Invalid input leaves
     /// the previous list intact. Empty input removes all glyphs.
     pub fn set_glyphs(&mut self, glyphs: Vec<SpatialGlyph>) -> Result<(), String> {

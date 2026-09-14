@@ -19,6 +19,7 @@ mod anchors;
 mod bodies;
 mod camera;
 mod capture;
+mod glyphs;
 mod scene;
 mod volumes;
 
@@ -27,6 +28,7 @@ pub use bodies::{
     BodyFrameStats, BodyLayer, PartAddress, Pose, SceneBody, SceneVolumes, SubjectKey,
 };
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
+pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph};
 pub use scene::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneHost, SceneStats,
     TerrainRefresh, TerrainSource,

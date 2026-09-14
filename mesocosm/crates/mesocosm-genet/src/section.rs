@@ -17,8 +17,6 @@
 //! measured slice compared it against are still there behind `--camera` (DC4,
 //! Q9). None of the three moves the hash.
 
-mod glyphs;
-pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph};
 mod bodies;
 mod camera;
 mod capsules;
@@ -39,9 +37,12 @@ mod inspection;
 
 pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
 pub use inspection::{BodyPick, BodyPickError, BodySelection};
-/// The glyph attachments and the frame receipt are `wing-scene`'s now;
-/// re-exported so the host's bench and receipts keep one import path.
-pub use wing_scene::{BodyFrameStats, GlyphAnchor, MAX_GLYPH_ANCHORS};
+/// The glyph batch, its attachments and the frame receipt are `wing-scene`'s
+/// now; re-exported so the host's bench and receipts keep one import path.
+pub use wing_scene::{
+    BodyFrameStats, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS, MAX_SPATIAL_GLYPHS,
+    SpatialGlyph,
+};
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
 /// The cull window is `wing-scene`'s now; re-exported so the host's roster
@@ -117,7 +118,6 @@ pub struct Section {
     body_budget: usize,
     /// The Mesocosm facts the scene is handed rather than the ones it derives.
     host_bodies: bodies::HostBodies,
-    glyphs: Option<glyphs::GlyphLayer>,
     terrarium: Option<terrarium::TerrariumView>,
     presented: Option<inspection::PresentedFrame>,
     composite: Composite,
@@ -154,7 +154,6 @@ impl Section {
             body_mode: BodyMode::default(),
             body_budget: DEFAULT_BODY_BUDGET,
             host_bodies: bodies::HostBodies::new(),
-            glyphs: None,
             terrarium: None,
             presented: None,
             composite,
@@ -185,6 +184,13 @@ impl Section {
     /// submit the section's encoder before staging this same-device image.
     pub fn encoded_view(&self) -> &wgpu::TextureView {
         self.scene.encoded_view()
+    }
+
+    /// Replaces the complete bounded presentation list. Invalid input leaves
+    /// the previous list intact. Empty input removes all glyphs. The batch
+    /// itself is the scene's, drawn against the depth it already wrote.
+    pub fn set_glyphs(&mut self, glyphs: Vec<SpatialGlyph>) -> Result<(), String> {
+        self.scene.set_glyphs(glyphs)
     }
 
     pub fn configure_bodies(&mut self, mode: BodyMode, budget: usize) {
@@ -293,16 +299,10 @@ impl Section {
         };
         let (grade, appearance, budget) = (self.grade, self.terrain_appearance, self.body_budget);
         let Self {
-            scene,
-            host_bodies,
-            glyphs,
-            queue,
-            ..
+            scene, host_bodies, ..
         } = self;
         let mut host = SectionHost {
             bodies: host_bodies,
-            glyphs: glyphs.as_ref(),
-            queue,
             world: frame.world,
         };
         let stats = scene.render(
@@ -356,12 +356,9 @@ impl Section {
 }
 
 /// The host policy one frame calls back into: Mesocosm's capsule stand-in for
-/// a body that would not project, the counters only a world can supply, and
-/// the glyph batch until it moves into `wing-scene`.
+/// a body that would not project, and the counters only a world can supply.
 struct SectionHost<'a> {
     bodies: &'a mut bodies::HostBodies,
-    glyphs: Option<&'a glyphs::GlyphLayer>,
-    queue: &'a wgpu::Queue,
     world: &'a World,
 }
 
@@ -400,17 +397,6 @@ impl wing_scene::SceneHost for SectionHost<'_> {
         self.bodies.played_fallback.as_ref()
     }
 
-    fn overlay(
-        &mut self,
-        encoder: &mut wgpu::CommandEncoder,
-        colour: &wgpu::TextureView,
-        depth: &wgpu::TextureView,
-        camera: wing_scene::SlabCamera,
-    ) {
-        if let Some(glyphs) = self.glyphs {
-            glyphs.draw(self.queue, encoder, colour, depth, camera);
-        }
-    }
 }
 
 /// The half-height a host actually frames with: its own, or the default when
