@@ -17,17 +17,42 @@
 use std::{cell::RefCell, rc::Rc};
 
 use paredros_identity::SubjectId;
-use paredros_world::{GameError, GameIntent, GameState, Session, SessionError};
+use paredros_world::timed_action::{TimedActionError, TimedActionSession};
+use paredros_world::{GameError, GameEvent, GameIntent, GameState, Session};
 
 use super::bodies::Appearance;
 use super::camera::CameraPolicy;
+
+/// What holds the one `Session`.
+///
+/// `TimedActionSession` owns its `Session` by value and deliberately exposes
+/// no mutable handle on it (its own doc comment says so), so a host that wants
+/// both charged strikes and the producer's view cannot keep two. This slot is
+/// the answer: the timed-action wrapper goes *inside* the model rather than
+/// beside it, and `session()` reads through. There is still exactly one
+/// `Session`, and every panel reads it.
+pub enum Held {
+    /// A session nothing else wraps. What the producer tests use.
+    Plain(Session),
+    /// A session the bounded timed-action grammar owns.
+    Timed(Box<TimedActionSession>),
+}
+
+impl Held {
+    pub fn session(&self) -> &Session {
+        match self {
+            Self::Plain(session) => session,
+            Self::Timed(action) => action.session(),
+        }
+    }
+}
 
 /// One played session plus the presentation policy over it.
 ///
 /// World state lives in the `Session`; everything else on this struct is
 /// presentation and reaches no intent.
 pub struct SceneModel {
-    session: Session,
+    held: Held,
     played: SubjectId,
     pub camera: CameraPolicy,
     pub appearance: Appearance,
@@ -38,8 +63,17 @@ pub struct SceneModel {
 
 impl SceneModel {
     pub fn new(session: Session, played: SubjectId) -> Self {
+        Self::held(Held::Plain(session), played)
+    }
+
+    /// The same model over a session the timed-action grammar owns.
+    pub fn timed(action: TimedActionSession, played: SubjectId) -> Self {
+        Self::held(Held::Timed(Box::new(action)), played)
+    }
+
+    fn held(held: Held, played: SubjectId) -> Self {
         Self {
-            session,
+            held,
             played,
             camera: CameraPolicy::default(),
             appearance: Appearance::default(),
@@ -53,11 +87,28 @@ impl SceneModel {
     }
 
     pub fn session(&self) -> &Session {
-        &self.session
+        self.held.session()
+    }
+
+    /// The timed-action wrapper, when this model holds one.
+    pub fn action(&self) -> Option<&TimedActionSession> {
+        match &self.held {
+            Held::Timed(action) => Some(action),
+            Held::Plain(_) => None,
+        }
+    }
+
+    /// Mutable access for the charge/release path, which is the wrapper's own
+    /// grammar rather than a plain intent.
+    pub fn action_mut(&mut self) -> Option<&mut TimedActionSession> {
+        match &mut self.held {
+            Held::Timed(action) => Some(action),
+            Held::Plain(_) => None,
+        }
     }
 
     pub fn game(&self) -> &GameState {
-        self.session.game()
+        self.session().game()
     }
 
     pub fn played(&self) -> SubjectId {
@@ -72,17 +123,35 @@ impl SceneModel {
 
     /// The one way world state changes here: the session's recorded intent
     /// path, exactly as the timed-action host drives it.
-    pub fn apply(
-        &mut self,
-        intent: GameIntent,
-    ) -> Result<Vec<paredros_world::GameEvent>, SessionError> {
-        self.session.apply_game(intent)
+    pub fn apply(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, TimedActionError> {
+        self.apply_batch(&[intent])
+    }
+
+    /// One accepted cut. The timed arm reconciles the open action against the
+    /// batch, so an injury that severs a contributing limb repairs the action
+    /// rather than leaving it addressing a part that no longer exists.
+    pub fn apply_batch(&mut self, intents: &[GameIntent]) -> Result<Vec<GameEvent>, TimedActionError> {
+        match &mut self.held {
+            Held::Plain(session) => {
+                let mut events = Vec::new();
+                for intent in intents {
+                    events.extend(session.apply_game(intent.clone())?);
+                }
+                Ok(events)
+            },
+            Held::Timed(action) => action.apply_game_batch(intents),
+        }
     }
 
     /// Replaces the session wholesale, for save/load and for a test that
     /// drives intents through another session wrapper.
     pub fn set_session(&mut self, session: Session) {
-        self.session = session;
+        self.held = Held::Plain(session);
+    }
+
+    /// Replaces the timed-action wrapper wholesale, for F9 load.
+    pub fn set_action(&mut self, action: TimedActionSession) {
+        self.held = Held::Timed(Box::new(action));
     }
 
     /// Where the frame is centred: the played subject's exact pose, or its

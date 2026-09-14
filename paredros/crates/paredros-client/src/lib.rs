@@ -39,6 +39,9 @@ pub mod producer;
 pub mod residency;
 pub mod room;
 pub mod scene;
+// The timed-action fixture world, shared by the producer tests and the
+// document host so neither grows a third copy of it.
+pub mod session_fixture;
 
 pub use probe::{Probe, ProbeError, Save, TICKS, TRACE};
 pub use room::{Room, RoomError};

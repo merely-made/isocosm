@@ -45,7 +45,7 @@ mod scene;
 
 pub use bodies::{Appearance, BODY_MATERIAL, BODY_SCALE, BodyLayer, DrawnBody};
 pub use camera::{CameraPolicy, SlabView};
-pub use handle::{SceneHandle, SceneModel};
+pub use handle::{Held, SceneHandle, SceneModel};
 pub use scene::SceneProducer;
 
 #[cfg(test)]

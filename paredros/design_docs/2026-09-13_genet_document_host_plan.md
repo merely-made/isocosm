@@ -227,3 +227,24 @@ creator files are owned by a concurrent lane and are never swept.
   as one mechanism on the target. The module is gated behind `r1-proof`
   only because `mesocosm-lens` and `modulus` are optional there; that gate
   is a wart to remove when the renderling bins retire under L7.
+- **2026-09-14, P2 landed.** The `session` bin (working name) runs the
+  Cambium winit host with a viewport leaf over `SceneProducer`, a subject
+  sheet, an equipment panel and a status panel, all reading one `Session`.
+  `SceneModel` now holds that session in a `Held` slot, plain or wrapped in
+  `TimedActionSession`, so the charge grammar and every panel share it.
+  The seed-7 fixture moved to `paredros_client::session_fixture`; the
+  producer tests re-export it and the timed-action bin is untouched.
+  Controls: WASD, arrows, Space or held left mouse, E, R, I, J, Ctrl+S,
+  Ctrl+L, Esc, plus DOM buttons for the same intents and per-part and
+  per-item selection; a viewport click resolves through the leaf's content
+  box to the pick. The smoke runs the volley, injury, rest, dressing, save,
+  move and load inside the host and captures the presented document; the
+  root reran it and inspected the frame. 45 lib, 6 native and 132 world
+  tests and the clean workspace check were rerun by the root. Two Cambium
+  host limits are recorded rather than worked around: rootstock routes key
+  presses only, so held movement is a latch refreshed by auto-repeat and
+  charging is a toggle on the keyboard (the mouse carries down and up);
+  and function keys lower to one `Other` variant, so save and load are
+  Ctrl+S and Ctrl+L. The leaf is a fixed 720 by 440 box. The sheet's bounds
+  field is empty for the picked part; that projection is paredros-world's.
+  Physical keyboard and mouse acceptance remains open.

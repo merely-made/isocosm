@@ -76,6 +76,13 @@ path = "src/bin/body_sheet.rs"
 name = "timed_action"
 path = "src/bin/timed_action.rs"
 
+# The P2 document host. `session` is a working name; the real one is a later
+# naming round. Gated on `r1-proof` because the scene producer is.
+[[bin]]
+name = "session"
+path = "src/bin/session.rs"
+required-features = ["r1-proof"]
+
 [[bin]]
 name = "v1_residency"
 path = "src/bin/v1_residency.rs"
