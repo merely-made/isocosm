@@ -19,7 +19,7 @@ pub(super) fn observation(ctx: &Context<'_>) -> CostObservation {
     let mut populated = false;
     for scene in std::iter::once(&state.scene).chain(state.cards.iter()) {
         let s = scene.borrow();
-        totals.redraws += s.renders;
+        totals.redraws += s.renders();
         totals.mesh_bytes += s.mesh_upload_bytes;
         totals.instance_bytes += s.instance_upload_bytes;
         populated |= s.stats.voxel_bodies > 0;

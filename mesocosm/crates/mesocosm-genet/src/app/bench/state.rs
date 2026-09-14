@@ -7,7 +7,7 @@ use mesocosm_core::{OrganismId, PartId, history::History};
 use mesocosm_mesh::VolumeMap;
 use mesocosm_views::PartInspection;
 
-use super::{super::creator::Creator, producer::BenchScene};
+use super::{super::creator::Creator, producer::BenchProducer};
 use crate::section::{BodySelection, CameraMode};
 
 pub(super) struct Specimen {
@@ -72,7 +72,7 @@ impl Specimen {
 
 pub(super) struct Bench {
     pub model: Rc<RefCell<Specimen>>,
-    pub scene: Rc<RefCell<BenchScene>>,
+    pub scene: Rc<RefCell<BenchProducer>>,
     pub events: Vec<String>,
     pub notice: String,
     pub published_error: Option<String>,
@@ -81,7 +81,7 @@ pub(super) struct Bench {
     pub visible: bool,
     pub transformed: bool,
     pub overlay_clicks: u64,
-    pub cards: Vec<Rc<RefCell<BenchScene>>>,
+    pub cards: Vec<Rc<RefCell<BenchProducer>>>,
     pub export_directory: std::path::PathBuf,
     pub restore: Option<super::comparison::SavedComparison>,
     pub generation: super::generation_controls::Controls,

@@ -7,10 +7,21 @@ use super::state::Specimen;
 use crate::section::{
     self, BodyFrameStats, BodyMode, BodySelection, Framing, Section, SectionFrame,
 };
-use cambium_rootstock::{
-    ProducedTexture, ProducerContext, SourceAlpha, SourceEncoding, TextureProducer,
-};
 use mesocosm_core::PartId;
+use wing_scene::{FrameRequest, SceneProducer, SceneSignature, SceneSource};
+
+/// The bench's scene behind the wing's producer wrapper: the unchanged-input
+/// skip and the sRGB / straight-alpha output contract are `wing-scene`'s, and
+/// everything a receipt reads is still this bench's own.
+pub(super) type BenchProducer = SceneProducer<BenchScene>;
+
+pub(super) fn bench_producer(model: Rc<RefCell<Specimen>>) -> BenchProducer {
+    SceneProducer::new(BenchScene::new(model))
+}
+
+pub(super) fn card_producer(model: Rc<RefCell<Specimen>>, card: usize) -> BenchProducer {
+    SceneProducer::new(BenchScene::for_card(model, card))
+}
 
 pub(super) struct BenchScene {
     pub model: Rc<RefCell<Specimen>>,
@@ -19,7 +30,6 @@ pub(super) struct BenchScene {
     pub stats: BodyFrameStats,
     population: Option<super::population::renderer::Renderer>,
     pub population_stats: Option<super::population::renderer::RenderStats>,
-    pub renders: u64,
     pub glyph_count: usize,
     pub anchor_count: usize,
     pub mesh_upload_bytes: u64,
@@ -43,7 +53,6 @@ impl BenchScene {
             stats: BodyFrameStats::default(),
             population: None,
             population_stats: None,
-            renders: 0,
             glyph_count: 0,
             anchor_count: 0,
             mesh_upload_bytes: 0,
@@ -137,20 +146,7 @@ impl BenchScene {
         needs_frame: bool,
     ) -> Result<Option<wgpu::TextureView>, String> {
         let model = self.model.borrow();
-        let epoch = if self.card.is_some() {
-            model.comparison.as_ref().map_or(model.epoch, |c| c.epoch)
-        } else {
-            model.epoch
-        };
-        if !needs_frame
-            && self.section.is_some()
-            && self.epoch == epoch
-            && self.revision == model.revision
-            && self.size == size
-            && self.tint == Some(tint)
-        {
-            return Ok(None);
-        }
+        let epoch = self.epoch(&model);
         if let Some(workload) = &model.population {
             if self.population.is_none() || self.size != size {
                 self.population = Some(super::population::renderer::Renderer::new(
@@ -175,7 +171,6 @@ impl BenchScene {
             self.mesh_upload_bytes += self.stats.mesh_upload_bytes;
             self.instance_upload_bytes += self.stats.instance_upload_bytes;
             self.population_stats = Some(stats);
-            self.renders += 1;
             self.epoch = epoch;
             self.revision = model.revision;
             self.size = size;
@@ -329,10 +324,6 @@ impl BenchScene {
         self.stats = section.body_stats();
         self.mesh_upload_bytes += self.stats.mesh_upload_bytes;
         self.instance_upload_bytes += self.stats.instance_upload_bytes;
-        self.renders = self
-            .renders
-            .checked_add(1)
-            .expect("bench frame generation exhausted");
         self.epoch = epoch;
         self.revision = model.revision;
         self.size = size;
@@ -350,43 +341,98 @@ impl BenchScene {
     }
 }
 
-impl TextureProducer for BenchScene {
-    fn render(&mut self, cx: &ProducerContext<'_>) -> Option<ProducedTexture> {
-        let color = cx.frame.appearance.color().unwrap_or([1.0; 4]);
+impl BenchScene {
+    /// The bench's own epoch: a card reads the comparison's, the main leaf the
+    /// model's.
+    fn epoch(&self, model: &Specimen) -> u64 {
+        if self.card.is_some() {
+            model.comparison.as_ref().map_or(model.epoch, |c| c.epoch)
+        } else {
+            model.epoch
+        }
+    }
+
+    /// The document's CSS colour as a linear tint. The conversion stays here:
+    /// the wing's producer carries no colour policy, and the bench's neutral
+    /// white must land as an unmodified kingdom palette.
+    fn tint(request: &FrameRequest<'_>) -> Result<[f32; 3], String> {
+        let color = request.color.unwrap_or([1.0; 4]);
         if color[3] != 1.0 {
-            self.error = Some(
+            return Err(
                 "Body tint needs an opaque colour. Use viewport opacity to fade the scene.".into(),
             );
-            return None;
         }
-        let size = (cx.frame.physical_size[0], cx.frame.physical_size[1]);
-        let tint = [color[0], color[1], color[2]].map(|channel| {
+        Ok([color[0], color[1], color[2]].map(|channel| {
             if channel <= 0.04045 {
                 channel / 12.92
             } else {
                 ((channel + 0.055) / 1.055).powf(2.4)
             }
-        });
-        match self.render_scene(cx.device, cx.queue, size, tint, cx.frame.needs_frame) {
+        }))
+    }
+}
+
+impl SceneSource for BenchScene {
+    /// The bench's skip key, unchanged: the specimen's epoch and revision, the
+    /// viewport and the tint. It stays host-opaque because the bench's bodies
+    /// are the section's to walk, not this leaf's.
+    fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
+        let tint = match Self::tint(request) {
+            Ok(tint) => tint,
+            Err(why) => {
+                self.error = Some(why.clone());
+                return Err(why);
+            },
+        };
+        self.error = None;
+        let model = self.model.borrow();
+        let epoch = self.epoch(&model);
+        Ok(SceneSignature {
+            size: request.size,
+            host: vec![
+                epoch,
+                model.revision,
+                u64::from(tint[0].to_bits()),
+                u64::from(tint[1].to_bits()),
+                u64::from(tint[2].to_bits()),
+            ],
+            ..Default::default()
+        })
+    }
+
+    fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
+        let tint = Self::tint(request)?;
+        let size = (request.size[0], request.size[1]);
+        match self.render_scene(
+            request.device,
+            request.queue,
+            size,
+            tint,
+            request.needs_frame,
+        ) {
             Ok(view) => {
                 self.error = None;
-                view.map(|view| ProducedTexture {
-                    view,
-                    generation: self.renders,
-                    alpha: SourceAlpha::Straight,
-                    encoding: SourceEncoding::Srgb,
-                })
+                Ok(view)
             },
             Err(why) => {
-                self.error = Some(why);
-                None
+                self.error = Some(why.clone());
+                Err(why)
             },
         }
+    }
+
+    fn presented_camera(&self) -> Option<wing_scene::SlabCamera> {
+        self.section.as_ref().and_then(Section::presented_camera)
+    }
+
+    fn cached_bodies(&self) -> usize {
+        self.section.as_ref().map_or(0, Section::cached_bodies)
     }
 
     fn suspend(&mut self) {
         self.retire();
     }
+
     fn retire(&mut self) {
         BenchScene::retire(self);
     }

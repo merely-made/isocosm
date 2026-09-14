@@ -14,7 +14,7 @@ use mesocosm_core::{Organism, OrganismId, World};
 use mesocosm_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 use mesocosm_render::PartMaterial;
 use std::collections::BTreeMap;
-use wing_scene::{BodyFrameStats, Pose, SceneBody, SubjectKey};
+use wing_scene::{BodyFrameStats, Pose, SceneBody, SlabWindow, SubjectKey};
 
 #[cfg(test)]
 use super::{CameraMode, SLAB_DEPTH};
@@ -185,11 +185,53 @@ impl super::Section {
 
     /// The process mosaics behind those bodies, held by the caller so the
     /// scene bodies can borrow them for the frame.
-    pub(super) fn scene_materials(&self, world: &World) -> Vec<Vec<PartMaterial>> {
+    ///
+    /// Only the organisms the scene could still draw are projected: a mosaic
+    /// is a walk of a phenotype against the ruleset, and a body the cull or
+    /// the budget already excluded never has its materials read. The order and
+    /// the cut are `BodyLayer::prepare`'s own, so the slice every drawn body
+    /// receives is exactly what it received before the fold; the rest get an
+    /// empty slice, which was already legal.
+    pub(super) fn scene_materials(
+        &self,
+        world: &World,
+        window: SlabWindow,
+    ) -> Vec<Vec<PartMaterial>> {
+        let controlled = world.controlled_id();
+        let isolated = self.scene.bodies().isolated;
+        let distance = |organism: &Organism| {
+            (0..3)
+                .map(|axis| (organism.position[axis] as f32 - window.centre[axis]).powi(2))
+                .sum::<f32>()
+        };
+        let mut candidates: Vec<usize> = world
+            .organisms
+            .iter()
+            .enumerate()
+            .filter(|(_, organism)| !isolated || Some(organism.id) == controlled)
+            .filter(|(_, organism)| organism.body().living().next().is_some())
+            .map(|(index, _)| index)
+            .collect();
+        candidates.sort_by(|&a, &b| {
+            let (a, b) = (&world.organisms[a], &world.organisms[b]);
+            (Some(a.id) != controlled)
+                .cmp(&(Some(b.id) != controlled))
+                .then_with(|| distance(a).total_cmp(&distance(b)))
+                .then(a.id.0.cmp(&b.id.0))
+        });
+        candidates.truncate(self.body_budget.max(1));
+        let drawn: std::collections::BTreeSet<usize> = candidates.into_iter().collect();
         world
             .organisms
             .iter()
-            .map(|organism| super::materials::project(&organism.phenotype, world.ruleset()))
+            .enumerate()
+            .map(|(index, organism)| {
+                if drawn.contains(&index) {
+                    super::materials::project(&organism.phenotype, world.ruleset())
+                } else {
+                    Vec::new()
+                }
+            })
             .collect()
     }
 }

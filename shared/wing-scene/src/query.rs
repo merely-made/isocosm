@@ -72,6 +72,12 @@ impl Scene {
         self.presented = None;
     }
 
+    /// The camera the frame the queries answer against was drawn with, so a
+    /// caller can name the pixel a world point landed on.
+    pub fn presented_camera(&self) -> Option<SlabCamera> {
+        self.presented.map(|frame| frame.camera)
+    }
+
     /// The generation of the frame the queries currently answer against, or
     /// `None` when there is no complete frame.
     pub fn query_generation(&self) -> Option<u64> {

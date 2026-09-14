@@ -20,6 +20,7 @@ mod bodies;
 mod camera;
 mod capture;
 mod glyphs;
+mod producer;
 mod query;
 mod scene;
 mod volumes;
@@ -30,6 +31,10 @@ pub use bodies::{
 };
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
 pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph};
+pub use producer::{
+    BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,
+    SceneSource,
+};
 pub use query::{BodyPick, BodyPickError};
 pub use scene::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneHost, SceneStats,

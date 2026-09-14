@@ -726,3 +726,30 @@ Restating L9's six conditions against tests that exist or must be written.
   2026-09-13 receipt (its `precheck-*` arm differs from it in 17 of 32),
   world-trial 228, uptake-world 449, proportions 71. mesocosm-mesh's two
   step-1 formatting misses in live.rs are fixed here.
+- **2026-09-14, step 7 done, gate passed.** wing-scene gains producer.rs
+  (298) and producer/tests.rs (362): `SceneSource { inputs, frame,
+  presented_camera, cached_bodies, suspend, retire }`,
+  `SceneProducer<S>` implementing `cambium_rootstock::TextureProducer`
+  with `renders`, `presented_camera`, `signature`, `cached_bodies`,
+  `last_error`, `render_scene` and a `Deref` to its source;
+  `SceneSignature { size, camera, terrain_revision, bodies, host }` with
+  `BodySignature`; `SCENE_ALPHA = Straight`, `SCENE_ENCODING = Srgb`.
+  Deviation from §3: the source owns its `Scene` and `SceneSource` is
+  split into `inputs` and `frame`, because `Scene::render` takes the
+  `SceneHost` beside the frame and Mesocosm's bench owns a `Section` plus
+  a second population renderer, so a raw `SceneFrame` source would have
+  dissolved `Section` at the gated step. `FrameRequest` carries device,
+  queue, colour and needs_frame from `ProducerContext`.
+  `BodySignature.revision` is the host's u64 (projecting in `inputs` is
+  forbidden); `cached_bodies` counts the projector's per-`VolumeRef`
+  meshes. The bench's `BenchScene` is a `SceneSource` with its tint
+  conversion kept; its receipts read through `Deref` unchanged. The
+  step-2 `scene_materials` cost is folded by replicating `prepare`'s cull
+  and budget. wing-scene now depends on cambium-rootstock at mere
+  `4f4de1d0`, the revision both products pin. Green: wing-scene 28,
+  mesocosm-genet 150 release, fmt clean on both, both workspace checks,
+  six bench scenarios, all 32 spatial-coverage viewports byte-identical,
+  21 producer receipt keys unchanged, and an acceptance run at HEAD
+  differs from this step's by zero non-timing fields and zero pixels.
+  population.scenario fails and flakes identically at HEAD; not chased.
+  Step 8 is the Paredros session's retarget, handed over by message.

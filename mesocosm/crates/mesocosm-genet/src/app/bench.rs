@@ -138,14 +138,9 @@ pub fn run_inputs(
             .clone()
             .or_else(|| Some(saved.content.clone()));
     }
-    let scene = Rc::new(RefCell::new(producer::BenchScene::new(model.clone())));
+    let scene = Rc::new(RefCell::new(producer::bench_producer(model.clone())));
     let cards = (0..5)
-        .map(|card| {
-            Rc::new(RefCell::new(producer::BenchScene::for_card(
-                model.clone(),
-                card,
-            )))
-        })
+        .map(|card| Rc::new(RefCell::new(producer::card_producer(model.clone(), card))))
         .collect();
     let exit_code = Rc::new(Cell::new(0));
     let lane = Rc::new(RefCell::new(

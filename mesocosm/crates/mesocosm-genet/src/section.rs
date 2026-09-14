@@ -169,6 +169,18 @@ impl Section {
         self.width as f32 / self.height.max(1) as f32
     }
 
+    /// The camera the last completed frame drew with, for a caller naming a
+    /// pixel of it.
+    pub fn presented_camera(&self) -> Option<wing_scene::SlabCamera> {
+        self.scene.presented_camera()
+    }
+
+    /// Distinct part geometries the body layer is retaining. What a producer's
+    /// suspension keeps.
+    pub fn cached_bodies(&self) -> usize {
+        self.scene.cached_bodies()
+    }
+
     /// Which way this section is looking. The receipt names it, so a capture
     /// can be told apart from the next one.
     pub fn mode(&self) -> CameraMode {
@@ -280,7 +292,7 @@ impl Section {
         let voxels = self.body_mode == BodyMode::Voxels;
         // The mosaics outlive the scene bodies that borrow them.
         let materials = if voxels {
-            self.scene_materials(frame.world)
+            self.scene_materials(frame.world, camera.window())
         } else {
             Vec::new()
         };

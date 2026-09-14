@@ -193,6 +193,11 @@ impl Scene {
         &mut self.bodies
     }
 
+    /// Distinct part geometries the body layer retains across frames.
+    pub fn cached_bodies(&self) -> usize {
+        self.bodies.cached_bodies()
+    }
+
     /// Display-encoded sRGB bytes in an unorm view, for a document compositor
     /// that samples encoded values directly. Alpha is opaque. The caller must
     /// submit the scene's encoder before staging this same-device image.

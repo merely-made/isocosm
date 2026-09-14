@@ -161,6 +161,14 @@ impl BodyLayer {
         &self.depth
     }
 
+    /// Distinct part geometries the projector is retaining. One per addressed
+    /// [`crate::VolumeRef`] rather than one per body, because that is the
+    /// cache a body's parts are actually resolved out of; it is what survives
+    /// a producer's suspension.
+    pub fn cached_bodies(&self) -> usize {
+        self.projector.cached_mesh_count()
+    }
+
     pub fn clear_inspection(&mut self) {
         self.placed.clear();
         self.selected = None;

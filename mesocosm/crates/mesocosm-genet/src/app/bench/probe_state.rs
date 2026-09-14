@@ -177,7 +177,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 (creator_ready || (model.population.is_some() && !model.creator.pending))
                     && (scene.section.is_some() || scene.population_stats.is_some())
                     && scene.error.is_none()
-                    && scene.renders > 0,
+                    && scene.renders() > 0,
             ),
         )
         .with_field("epoch", model.epoch.to_string())
@@ -221,7 +221,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         )
         .with_field("decorated", yes(state.decorated))
         .with_field("transformed", yes(state.transformed))
-        .with_field("renders", scene.renders.to_string())
+        .with_field("renders", scene.renders().to_string())
         .with_field("mesh-bytes", scene.mesh_upload_bytes.to_string())
         .with_field(
             "terrain-upload-bytes",
