@@ -13,7 +13,7 @@
 //! Mesocosm's `CameraMode` presets, Paredros's `CameraPolicy` and Isometry's
 //! board all stay in their own hosts and hand this crate a forward vector.
 //!
-//! See `mesocosm/design_docs/2026-09-14_wing_scene_extraction_plan.md`.
+//! See `mesocosm/design_docs/2026-09-14_isometer_extraction_plan.md`.
 
 mod anchors;
 mod bodies;

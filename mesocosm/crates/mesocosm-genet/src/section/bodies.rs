@@ -4,7 +4,7 @@
 //! Mesocosm's half of the body layer.
 //!
 //! The projection, the instance draw, the cull and the part queries are
-//! `wing-scene`'s now. What stays here is everything that needs a Mesocosm
+//! `isometer`'s now. What stays here is everything that needs a Mesocosm
 //! world to mean anything: which organism is controlled, what colour the
 //! kingdom palette gives it, how the terrarium scales and grounds anatomies,
 //! and the capsule roster a body falls back to when its voxels will not
@@ -14,7 +14,7 @@ use mesocosm_core::{Organism, OrganismId, World};
 use mesocosm_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 use mesocosm_render::PartMaterial;
 use std::collections::BTreeMap;
-use wing_scene::{BodyFrameStats, Pose, SceneBody, SlabWindow, SubjectKey};
+use isometer::{BodyFrameStats, Pose, SceneBody, SlabWindow, SubjectKey};
 
 #[cfg(test)]
 use super::{CameraMode, SLAB_DEPTH};
@@ -48,7 +48,7 @@ impl BodyMode {
 
 pub const DEFAULT_BODY_BUDGET: usize = MAX_ROSTER + 1;
 
-/// The host's side of one body frame: the presentation facts wing-scene is
+/// The host's side of one body frame: the presentation facts isometer is
 /// handed rather than the ones it derives.
 pub(super) struct HostBodies {
     /// Terrarium body scale, applied to every drawn anatomy.

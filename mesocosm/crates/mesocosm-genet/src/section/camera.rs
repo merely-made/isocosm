@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Presentation camera orientations: Mesocosm's named presets over the shared
-//! [`wing_scene::SlabCamera`].
+//! [`isometer::SlabCamera`].
 //!
 //! Side, across and the default oblique view retain their measured Q9
 //! geometry. CP1 adds four cardinal terrarium views at a shallow pitch.
@@ -400,7 +400,7 @@ mod tests {
         );
     }
 
-    /// Risk 4 of the wing-scene extraction: handing a preset's forward vector
+    /// Risk 4 of the isometer extraction: handing a preset's forward vector
     /// to the shared camera must return the *same float* the preset's own
     /// numbers do, not one that rounds to it. Basis and reach both, for every
     /// mode, so the cull window and the bedrock clamp cannot drift apart from

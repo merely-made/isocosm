@@ -6,7 +6,7 @@
 //!
 //! The GPU ownership mask that several of these read is [`mask`]'s, beside
 //! them because both drive the same fixtures. What the scene can answer
-//! without a Mesocosm world is `wing-scene`'s own `query/tests.rs`.
+//! without a Mesocosm world is `isometer`'s own `query/tests.rs`.
 
 use super::*;
 use mesocosm_core::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
@@ -321,7 +321,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     assert_eq!(section.pick_ndc([0.0; 2]), Err(BodyPickError::NotReady));
     assert!(!section.validate_pick(old, &world, &volumes));
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
-    let Some(wing_scene::Cutaway::Bounds { min, .. }) = section.view(centre).cutaway else {
+    let Some(isometer::Cutaway::Bounds { min, .. }) = section.view(centre).cutaway else {
         panic!("a configured terrarium supplies a bounds cutaway");
     };
     assert_eq!(min[0], 3.0);

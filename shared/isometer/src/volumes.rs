@@ -20,7 +20,7 @@
 //! rather than drawn wrong silently.
 //!
 //! Lifted from `paredros-client/src/producer/bodies.rs` as part of the
-//! wing-scene extraction; the producer keeps its own `BODY_MATERIAL` choice,
+//! isometer extraction; the producer keeps its own `BODY_MATERIAL` choice,
 //! because the palette is presentation.
 
 use std::collections::{BTreeMap, btree_map::Entry};

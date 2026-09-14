@@ -1,14 +1,14 @@
-# wing-scene extraction plan
+# isometer extraction plan
 
 **Date:** 2026-09-14
 
 **Status, 2026-09-14:** assessment. No code moved. Owns the execution of lane
-L9 in [the orthographic voxel presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-wing-scene-founded-2026-09-14),
+L9 in [the orthographic voxel presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-isometer-founded-2026-09-14),
 whose six done conditions are restated in §7 as tests and receipts. The lane's
 sequencing precondition is met: `shared/wing-scenario` landed at cc7828f.
 
 **Owns:** the move of Mesocosm's shared-depth scene out of `mesocosm-genet`
-into the Isometry path crate `shared/wing-scene`, the product-neutral input
+into the Isometry path crate `shared/isometer`, the product-neutral input
 contract that replaces `mesocosm_core::World`, and the order of steps that
 keeps both product workspaces compiling throughout.
 
@@ -151,7 +151,7 @@ Five further couplings are not `World` but are equally product-bound:
 
 ---
 
-## 3. The proposed wing-scene public API
+## 3. The proposed isometer public API
 
 Illustrative, not compile-ready: derives are omitted and exact error types
 follow the move.
@@ -353,7 +353,7 @@ supplies, per frame:
   Mesocosm's bedrock clamp; none of it is shared.
 - `terrarium.rs`: habitat framing, `framed_habitat`, `Cutaway` the *policy*
   enum with its occupied/always/never reading, the filtered `BrickMap` rebuild.
-  It produces a `wing_scene::Cutaway::Bounds` and a `TerrainSource`.
+  It produces a `isometer::Cutaway::Bounds` and a `TerrainSource`.
 - `terrain.rs` (`TerrainStyle`, the `Grade`/`TerrainAppearance` presets),
   `materials.rs` (phenotype to `Vec<PartMaterial>`), `capsules.rs` (the
   `CritterPose` roster and played pose, minus the retired `pose_of`/`roster_of`),
@@ -381,11 +381,11 @@ volumes from `DeclaredExtentVolumes::from_documents(.., BODY_MATERIAL)`;
 
 | Dependency | Mesocosm | Paredros | One version? |
 | --- | --- | --- | --- |
-| `mesocosm-lens` — `BrickTracer`, `BrickMap`, `TraceCamera`, `SlabWall`, `Grade`, `FRAME_FORMAT` | path (`mesocosm/Cargo.toml:89`) | path `../../../mesocosm/…`, **optional**, behind `r1-proof` (`paredros-client/Cargo.toml:41`, `:19`) | Yes — one on-disk crate. wing-scene declares it by relative path, as `mesocosm-mesh` already declares `wing-formats`. |
+| `mesocosm-lens` — `BrickTracer`, `BrickMap`, `TraceCamera`, `SlabWall`, `Grade`, `FRAME_FORMAT` | path (`mesocosm/Cargo.toml:89`) | path `../../../mesocosm/…`, **optional**, behind `r1-proof` (`paredros-client/Cargo.toml:41`, `:19`) | Yes — one on-disk crate. isometer declares it by relative path, as `mesocosm-mesh` already declares `wing-formats`. |
 | `mesocosm-render` — `LiveBodyRenderer`, `LiveBody`, `ClipSlab`, `PartMaterial`, `pick_bodies`, `body_bounds`, `posed_quad` | path (`:93`) | path, not optional (`:43`) | Yes |
 | `mesocosm-mesh` — `LiveBodyProjector`, `mesh_body`, `VolumeSource`, `VolumeMap`, `Volume`, `BodyDependencyRevision` | path (`:91`) | path (`:42`) | Yes |
 | `mesocosm-core`, **not `World`** — `BodyDocument`, `PartId`, `VolumeRef`, `places::Ground`, `effect_experiment::Glyph` | path (`:88`) | path (`:40`); `paredros-world` takes it too (`paredros-world/Cargo.toml:17`) | Yes. lens, mesh and render all depend on it already, so it is unavoidable and is the de-facto shared body-document crate. |
-| `wgpu` | workspace `30`, backends named (`mesocosm/Cargo.toml:116-125`) | `30`, same backend list (`paredros-client/Cargo.toml:57`) | Yes, one major. wing-scene declares `version = "30", default-features = false, features = ["std", "wgsl"]` and leaves backends to the leaf binaries. |
+| `wgpu` | workspace `30`, backends named (`mesocosm/Cargo.toml:116-125`) | `30`, same backend list (`paredros-client/Cargo.toml:57`) | Yes, one major. isometer declares `version = "30", default-features = false, features = ["std", "wgsl"]` and leaves backends to the leaf binaries. |
 | `cambium-rootstock` — `TextureProducer`, `ProducedTexture`, `ProducerContext`, `SourceAlpha`, `SourceEncoding` | mere `4f4de1d0` (`mesocosm/Cargo.toml:64`) | mere `4f4de1d0` (`paredros/Cargo.toml:68`) | Yes, identical rev; `shared/wing-scenario/Cargo.toml` pins the same. |
 | `netrender` | — | — | **Not needed.** `Section` never names netrender; the host imports `display_texture()` into netrender's graph (`app/frame.rs:342`). |
 | `modulus` | workspace | optional under `r1-proof` | Transitive under `mesocosm-lens`; no direct row. |
@@ -397,7 +397,7 @@ volumes from `DeclaredExtentVolumes::from_documents(.., BODY_MATERIAL)`;
 `World`, `Organism`, `OrganismId`, `BodyPhenotype`, `process::Registry` and
 `world::TerrariumHabitat` all stay behind the adapter.
 
-**Patch table.** wing-scene needs its own `[workspace]` and a restated
+**Patch table.** isometer needs its own `[workspace]` and a restated
 `[patch.crates-io]` exactly as `shared/wing-scenario/Cargo.toml` does (vello
 fork, parley, genet-taffy `=0.14.0`, ipc-channel at genet `101d9e9a`), because
 `[patch]` applies only from a workspace root and does not inherit through a
@@ -412,7 +412,7 @@ pins mere at `fb7e136b`, not `4f4de1d0`, so it must never be pulled in.
 Each step ends with `cargo check --workspace --all-features --all-targets` and
 `cargo test` green in **both** product workspaces.
 
-1. **Found the crate.** `shared/wing-scene` with the `wing-scenario` manifest
+1. **Found the crate.** `shared/isometer` with the `wing-scenario` manifest
    shape (own `[workspace]`, restated patch table, MPL-2.0, `publish = false`),
    added to the root `exclude`. Move `section/camera.rs` and `section/view.rs`
    into `src/camera.rs` (camera numbers, `SlabCamera`, `SlabWindow`, `Cutaway`)
@@ -479,7 +479,7 @@ absence is replaced by richer stats), `picking_tests.rs` (404) with
    takes an `OrganismId` (`mesocosm-mesh/src/live.rs:91`) and
    `LiveBodyProjection` carries it (`:43`), as does
    `MeshError::EmptyBodyProjection`. A `SubjectKey(u64)` cannot round-trip
-   through it. Three ways out: wing-scene calls `mesh_body`
+   through it. Three ways out: isometer calls `mesh_body`
    (`mesocosm-mesh/src/lib.rs:213`) and owns its own per-`(SubjectKey,
    revision)` cache, as Paredros already does
    (`producer/bodies.rs:239-255`) — but that loses the per-`VolumeRef` mesh
@@ -492,7 +492,7 @@ absence is replaced by richer stats), `picking_tests.rs` (404) with
    `SceneVolumes` as an enum works; a `&'a dyn VolumeSource` field does not,
    without an `impl VolumeSource for &dyn VolumeSource` blanket in
    mesocosm-mesh. The API above uses the enum to avoid that edit; the cost is
-   that a third product cannot add a volume source without a wing-scene change.
+   that a third product cannot add a volume source without a isometer change.
 3. **Draw order is opposite in the two producers.** `Section::render`
    (`section.rs:336-407`) draws bodies, then glyphs *only in the isolated
    preview shortcut*, then the tracer, then glyphs again
@@ -525,7 +525,7 @@ absence is replaced by richer stats), `picking_tests.rs` (404) with
    `part_bounds`, `cached_bodies`, `signature`) and `body_stats()`. Three break
    as written: `presented_view() -> Option<SlabView>` becomes
    `Option<SlabCamera>`; `DrawnBody::part_bounds` (`producer/bodies.rs:100-121`)
-   has no equivalent in the proposed API — wing-scene must expose a
+   has no equivalent in the proposed API — isometer must expose a
    `part_bounds(subject, part)` or the severance and fractional-pose tests lose
    their oracle; and `cached_bodies()`/`signature()` are the skip test's
    evidence, so `SceneProducer` must expose the same two. Add all three to the
@@ -558,9 +558,9 @@ absence is replaced by richer stats), `picking_tests.rs` (404) with
 Restating L9's six conditions against tests that exist or must be written.
 
 1. **Decoupled body inputs.** *Exists:* nothing.
-   *Must be written:* a pure test in wing-scene building a `SceneFrame` from
+   *Must be written:* a pure test in isometer building a `SceneFrame` from
    two hand-made `BodyDocument`s with no product crate in scope, asserting the
-   crate's `deny` list holds — `cargo tree -p wing-scene` shows no
+   crate's `deny` list holds — `cargo tree -p isometer` shows no
    `mesocosm-runtime`, `mesocosm-genet`, `paredros-world`, `paredros-identity`
    or `isometry-core`; and a `DeclaredExtentVolumes` test asserting one solid
    per addressed tag at `half_extent * 2` and a counted conflict when one tag
@@ -589,7 +589,7 @@ Restating L9's six conditions against tests that exist or must be written.
 5. **Producer wrapper.** *Exists:* `producer/tests.rs:480` (an unchanged frame
    produces nothing; a suspension keeps the geometry) and
    `bench/producer.rs:354-385`'s `SourceAlpha::Straight` /
-   `SourceEncoding::Srgb`. *Must be written:* one wing-scene test asserting the
+   `SourceEncoding::Srgb`. *Must be written:* one isometer test asserting the
    skip signature covers camera, size, terrain revision and every body's
    `(subject, revision, pose)`, and that `alpha`/`encoding` are fixed.
 6. **Both products green; no product-world dependency.** *Exists:* Mesocosm's
@@ -601,7 +601,7 @@ Restating L9's six conditions against tests that exist or must be written.
    *Receipt for the lane:* both workspaces' `--all-features --all-targets`
    check, both test suites, Mesocosm's `acceptance` and `spatial-coverage`
    scenarios rerun with captures compared against 2026-09-13, Paredros's eight
-   GPU tests green against `wing_scene::SceneProducer`, and
+   GPU tests green against `isometer::SceneProducer`, and
    `paredros-client/src/producer/{camera,bodies,scene}.rs` deleted.
 
 ## Findings
@@ -619,7 +619,7 @@ Restating L9's six conditions against tests that exist or must be written.
 
 - **2026-09-14:** assessed and written. No code moved, no commit.
 
-- **2026-09-14, step 1 done, uncommitted.** `shared/wing-scene` founded
+- **2026-09-14, step 1 done, uncommitted.** `shared/isometer` founded
   (Cargo.toml in the wing-scenario shape, src/lib.rs, src/camera.rs 276
   lines + camera/tests.rs 310, src/volumes.rs 176) with `SlabCamera`,
   `Cutaway`, `SlabWindow`, `DeclaredExtentVolumes` and the `VolumeSource`
@@ -628,7 +628,7 @@ Restating L9's six conditions against tests that exist or must be written.
   `LiveBodyProjector::project_body(&BodyDocument, &impl VolumeSource) ->
   Result<(BodyMesh, BodyDependencyRevision), MeshError>` with `project`
   delegating to it and a new `MeshError::EmptyBody` (ruling on risk 1).
-  Green: wing-scene 13 tests, mesocosm-mesh 62, mesocosm-genet 155 release,
+  Green: isometer 13 tests, mesocosm-mesh 62, mesocosm-genet 155 release,
   both workspace checks, bench acceptance 167 frames and spatial-coverage
   336 frames. Camera parity: all 32 spatial-coverage captures have
   byte-identical viewports against the 2026-09-13 receipt; the only
@@ -639,7 +639,7 @@ Restating L9's six conditions against tests that exist or must be written.
   3, and the isolated Oblique preview without a terrarium can differ from
   the old reach in the last bit because the forward vector is no longer
   renormalised there; every shipped path is bit-exact.
-- **2026-09-14, step 2 done.** wing-scene gains src/bodies.rs (473 lines:
+- **2026-09-14, step 2 done.** isometer gains src/bodies.rs (473 lines:
   `SubjectKey`, `PartAddress`, `Pose`, `SceneBody`, `SceneVolumes`,
   `BodyLayer` with prepare/draw/pick/select_part/validate_address/
   presentation_bounds/set_focus), bodies/placement.rs (96), anchors.rs
@@ -651,14 +651,14 @@ Restating L9's six conditions against tests that exist or must be written.
   spatial request format (risk 8). `prepare` takes a fourth argument, a
   stats sink, because the capsule fallback interleaves with the budget
   check and bit-identical stats need it. `BodyFrameStats` moved whole
-  (risk 10 left open). Green: wing-scene 17, mesocosm-genet 152 release
+  (risk 10 left open). Green: isometer 17, mesocosm-genet 152 release
   (the three anchors tests moved), mesocosm-mesh 62, both workspace
   checks, bench acceptance 167 frames, spatial-coverage 336 frames with
   all 32 viewports byte-identical to the 2026-09-13 receipt. Known cost:
   `scene_materials` projects the phenotype mosaic for every living
   organism each frame rather than only drawn bodies; output unchanged,
   to fold into step 7's producer skip.
-- **2026-09-14, step 3 done, gate passed.** wing-scene gains src/scene.rs
+- **2026-09-14, step 3 done, gate passed.** isometer gains src/scene.rs
   (473: `Scene`, `SceneFrame`, `SceneStats`, `SceneHost`, `CapsuleFrame`,
   the render body, `target`, `copy_to_display`), scene/terrain.rs (111:
   `TerrainSource`, `TerrainRefresh {Current, Slots, Full}`,
@@ -673,25 +673,25 @@ Restating L9's six conditions against tests that exist or must be written.
   there. `Cutaway::Plane` is confirmed as the correct lowering (the plane
   replaces the camera's near wall, `ClipSlab` holds one normal) and is
   now tested; a plane reaches bodies only, since `BrickFrameInput` has no
-  cut and terrain is cut by rebuilding a filtered map. Green: wing-scene
+  cut and terrain is cut by rebuilding a filtered map. Green: isometer
   18, mesocosm-genet 152 release including the depth and materials GPU
   tests, both workspace checks, bench acceptance 167 frames,
   spatial-coverage 336 frames with all 32 viewports byte-identical to the
   2026-09-13 receipt; the 15 acceptance captures differ only in the
   reflowed control strip.
 - **2026-09-14, step 4 done, gate passed.** glyphs.rs (301), glyphs.wgsl
-  and glyphs/tests.rs (441) moved by `git mv` into wing-scene; `Scene`
+  and glyphs/tests.rs (441) moved by `git mv` into isometer; `Scene`
   owns the glyph batch and `SceneHost` loses `overlay`, leaving
   `begin`/`fallback`/`prepared`/`roster`/`played`. Only section.rs
-  changed in mesocosm-genet. wing-scene's dev-dependencies gain pollster
+  changed in mesocosm-genet. isometer's dev-dependencies gain pollster
   and a wgpu backend so the moved GPU receipt can find an adapter. Green:
-  wing-scene 20, mesocosm-genet 150 release, both workspace checks,
+  isometer 20, mesocosm-genet 150 release, both workspace checks,
   bench acceptance 167, spatial-coverage 336 with all 32 viewports
   byte-identical, spatial 207, world-trial 228. uptake-world fails
   identically at 0a519da and at 83248c4: the step-1 pulse fix expires a
   pulse at eight ticks and the scenario reads it at tick eight; a
   presentation bug in the fix, not in the extraction, handled separately.
-- **2026-09-14, step 5 done, gate passed.** wing-scene gains query.rs
+- **2026-09-14, step 5 done, gate passed.** isometer gains query.rs
   (217: `BodyPick`, `BodyPickError`, `PresentedFrame`, and on `Scene`
   set_body_focus, presentation_bounds, part_bounds, glyph_anchors,
   pick_pixel, pick_ndc, validate_pick, select_part, invalidate_query,
@@ -705,28 +705,28 @@ Restating L9's six conditions against tests that exist or must be written.
   spatial-coverage round-trips save and reopen with byte-identical
   viewports). `part_bounds` is over `posed_quad`, so it includes parent
   rotation and pivot, stronger than Paredros's `place_point`-only oracle
-  (risk 6). Green: wing-scene 25, mesocosm-genet 150 release, both
+  (risk 6). Green: isometer 25, mesocosm-genet 150 release, both
   workspace checks, bench acceptance 167, spatial 207, spatial-coverage
   336 with all 32 viewports byte-identical, proportions 71.
   structure-cli.scenario fails identically at HEAD on a generated-start
   hash (`50e8f3a3a6b6d22d` expected, `8d1d3676ecf24452` got); fixture
   drift upstream of this lane, recorded, not acted on.
 - **2026-09-14, step 6 done, gate passed.** Structural only: the `View`
-  alias retired for `wing_scene::SlabCamera` by name, section/capture.rs
+  alias retired for `isometer::SlabCamera` by name, section/capture.rs
   and section/anchors.rs removed as trivial forwarders, `BodyPickError`
   re-exported once. section.rs is 456 lines (`SectionFrame`,
   `SectionHost`, `centre_on` with the bedrock clamp and the terrarium map
   rebuild are host policy and stay); view.rs stays because it builds the
   camera from `CameraMode`, pitch and preview depth. terrarium.rs,
   terrain.rs, materials.rs, capsules.rs and appearance.rs are
-  byte-unchanged. wing-scene has a zero diff. Green: wing-scene 25,
+  byte-unchanged. isometer has a zero diff. Green: isometer 25,
   mesocosm-genet 150 release, fmt clean on both, both workspace checks,
   bench acceptance 167, spatial 207, spatial-coverage 336 with all 32
   viewports byte-identical against the `acceptance-*` arm of the
   2026-09-13 receipt (its `precheck-*` arm differs from it in 17 of 32),
   world-trial 228, uptake-world 449, proportions 71. mesocosm-mesh's two
   step-1 formatting misses in live.rs are fixed here.
-- **2026-09-14, step 7 done, gate passed.** wing-scene gains producer.rs
+- **2026-09-14, step 7 done, gate passed.** isometer gains producer.rs
   (298) and producer/tests.rs (362): `SceneSource { inputs, frame,
   presented_camera, cached_bodies, suspend, retire }`,
   `SceneProducer<S>` implementing `cambium_rootstock::TextureProducer`
@@ -745,11 +745,18 @@ Restating L9's six conditions against tests that exist or must be written.
   meshes. The bench's `BenchScene` is a `SceneSource` with its tint
   conversion kept; its receipts read through `Deref` unchanged. The
   step-2 `scene_materials` cost is folded by replicating `prepare`'s cull
-  and budget. wing-scene now depends on cambium-rootstock at mere
-  `4f4de1d0`, the revision both products pin. Green: wing-scene 28,
+  and budget. isometer now depends on cambium-rootstock at mere
+  `4f4de1d0`, the revision both products pin. Green: isometer 28,
   mesocosm-genet 150 release, fmt clean on both, both workspace checks,
   six bench scenarios, all 32 spatial-coverage viewports byte-identical,
   21 producer receipt keys unchanged, and an acceptance run at HEAD
   differs from this step's by zero non-timing fields and zero pixels.
   population.scenario fails and flakes identically at HEAD; not chased.
   Step 8 is the Paredros session's retarget, handed over by message.
+- **2026-09-14, renamed.** Mark ruled the scene crate's name: `isometer`,
+  at `shared/isometer`, free on crates.io on 2026-09-14. It was founded as
+  `wing-scene` and every reference in this plan, the presentation plan and
+  the code was renamed with it; earlier progress entries read `isometer`
+  for the crate they founded. The isometer family (mesocosm-lens,
+  mesocosm-render and mesocosm-mesh as its component crates) is a separate
+  lane with its own plan.

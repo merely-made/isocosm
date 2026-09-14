@@ -10,7 +10,7 @@ use mesocosm_render::{RenderError, Renderer};
 
 use super::bodies::{HostBodies, key};
 use super::*;
-use wing_scene::{BodyLayer, PartAddress, SceneVolumes};
+use isometer::{BodyLayer, PartAddress, SceneVolumes};
 
 /// The layer as `Section` builds it, with Mesocosm's half beside it.
 fn layer() -> Option<(Renderer, BodyLayer, HostBodies)> {

@@ -89,7 +89,7 @@ fn render(scene: &mut Scene, bodies: &[SceneBody<'_>], volumes: &DeclaredExtentV
 #[test]
 fn a_pick_addresses_the_nearer_body_and_expires_with_its_frame() {
     let Some((device, queue)) = device() else {
-        eprintln!("no adapter; skipping wing-scene query receipt");
+        eprintln!("no adapter; skipping isometer query receipt");
         return;
     };
     let (near, far) = (document(70), document(71));

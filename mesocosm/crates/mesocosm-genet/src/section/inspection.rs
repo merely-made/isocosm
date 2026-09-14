@@ -5,14 +5,14 @@
 //!
 //! The queries themselves — the frame receipt, the ray, the terrain
 //! occlusion test, the part walk and the glyph anchor geometry — are
-//! [`wing_scene::Scene`]'s now. What stays here is the product's own address:
+//! [`isometer::Scene`]'s now. What stays here is the product's own address:
 //! a [`BodySelection`] keyed on `OrganismId`, which is what the bench's saved
 //! spatial request writes to disk, and the world lookup an adapter does
 //! before the scene sees a body.
 
 use mesocosm_core::{OrganismId, PartId, World};
 use mesocosm_mesh::BodyDependencyRevision;
-use wing_scene::{BodyPickError, PartAddress, SceneVolumes};
+use isometer::{BodyPickError, PartAddress, SceneVolumes};
 
 use super::Section;
 use super::bodies::{key, organism_of};
@@ -67,7 +67,7 @@ pub struct BodyPick {
 }
 
 impl BodyPick {
-    fn from_scene(pick: wing_scene::BodyPick) -> Self {
+    fn from_scene(pick: isometer::BodyPick) -> Self {
         Self {
             selection: BodySelection::from_address(pick.address),
             frame: pick.frame,
@@ -215,7 +215,7 @@ impl Section {
         organism: &mesocosm_core::Organism,
         volumes: &mesocosm_mesh::VolumeMap,
         selected: Option<BodySelection>,
-    ) -> Result<Vec<wing_scene::GlyphAnchor>, String> {
+    ) -> Result<Vec<isometer::GlyphAnchor>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
         self.scene.glyph_anchors(
             &body,

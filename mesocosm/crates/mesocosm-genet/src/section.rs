@@ -8,7 +8,7 @@
 //!
 //! The join itself — bodies rastered into a depth attachment, terrain traced
 //! against it, the display twin and the capture read-back — is
-//! [`wing_scene::Scene`]'s now. What stays here is the vessel's policy over
+//! [`isometer::Scene`]'s now. What stays here is the vessel's policy over
 //! it: which Ground the map binds, where the slab sits, which body is posed,
 //! and how the traced texture reaches the surface the HUD then composites on.
 //!
@@ -36,23 +36,23 @@ mod inspection;
 
 pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
 pub use inspection::{BodyPick, BodySelection};
-/// The glyph batch, its attachments and the frame receipt are `wing-scene`'s
+/// The glyph batch, its attachments and the frame receipt are `isometer`'s
 /// now; re-exported so the host's bench and receipts keep one import path.
-pub use wing_scene::{
+pub use isometer::{
     BodyFrameStats, BodyPickError, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS,
     MAX_SPATIAL_GLYPHS, SpatialGlyph,
 };
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
-/// The cull window is `wing-scene`'s now; re-exported so the host's roster
+/// The cull window is `isometer`'s now; re-exported so the host's roster
 /// and bench keep one import path.
-pub use wing_scene::SlabWindow;
+pub use isometer::SlabWindow;
 
 use mesocosm_core::World;
 use mesocosm_core::places::Ground;
 use mesocosm_lens::{BrickMap, CritterPose, Grade};
 use mesocosm_render::composite::Composite;
-use wing_scene::{
+use isometer::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
 };
 
@@ -171,7 +171,7 @@ impl Section {
 
     /// The camera the last completed frame drew with, for a caller naming a
     /// pixel of it.
-    pub fn presented_camera(&self) -> Option<wing_scene::SlabCamera> {
+    pub fn presented_camera(&self) -> Option<isometer::SlabCamera> {
         self.scene.presented_camera()
     }
 
@@ -384,17 +384,17 @@ struct SectionHost<'a> {
     world: &'a World,
 }
 
-impl wing_scene::SceneHost for SectionHost<'_> {
+impl isometer::SceneHost for SectionHost<'_> {
     fn begin(&mut self) {
         self.bodies.fallback.clear();
         self.bodies.played_fallback = None;
     }
 
-    fn fallback(&mut self, body: &wing_scene::SceneBody<'_>, stats: &mut BodyFrameStats) {
+    fn fallback(&mut self, body: &isometer::SceneBody<'_>, stats: &mut BodyFrameStats) {
         self.bodies.add_fallback(body, stats);
     }
 
-    fn prepared(&mut self, layer: &mut wing_scene::BodyLayer) {
+    fn prepared(&mut self, layer: &mut isometer::BodyLayer) {
         layer.stats.body_scale = self.bodies.scale;
         // The scene knows the documents, not which of them belong to a dead
         // organism, so the carcass count is read back here.

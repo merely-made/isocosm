@@ -4,12 +4,12 @@
 //! Mesocosm's presets, turned into the one shared camera.
 //!
 //! The camera numbers themselves — trace, raster matrix, cut slab, reach and
-//! cull window — live in `wing-scene` now. What stays here is the product's
+//! cull window — live in `isometer` now. What stays here is the product's
 //! own reading: which [`CameraMode`] is selected, whether a terrarium view is
 //! overriding the pitch and the depth, and which habitat box is cut away.
 
 use super::CameraMode;
-use wing_scene::{Cutaway, SlabCamera};
+use isometer::{Cutaway, SlabCamera};
 
 impl super::Section {
     pub(super) fn view(&self, centre: [f32; 3]) -> SlabCamera {

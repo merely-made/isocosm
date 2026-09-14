@@ -8,10 +8,10 @@ use crate::section::{
     self, BodyFrameStats, BodyMode, BodySelection, Framing, Section, SectionFrame,
 };
 use mesocosm_core::PartId;
-use wing_scene::{FrameRequest, SceneProducer, SceneSignature, SceneSource};
+use isometer::{FrameRequest, SceneProducer, SceneSignature, SceneSource};
 
 /// The bench's scene behind the wing's producer wrapper: the unchanged-input
-/// skip and the sRGB / straight-alpha output contract are `wing-scene`'s, and
+/// skip and the sRGB / straight-alpha output contract are `isometer`'s, and
 /// everything a receipt reads is still this bench's own.
 pub(super) type BenchProducer = SceneProducer<BenchScene>;
 
@@ -421,7 +421,7 @@ impl SceneSource for BenchScene {
         }
     }
 
-    fn presented_camera(&self) -> Option<wing_scene::SlabCamera> {
+    fn presented_camera(&self) -> Option<isometer::SlabCamera> {
         self.section.as_ref().and_then(Section::presented_camera)
     }
 

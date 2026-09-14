@@ -186,7 +186,7 @@ fn request<'a>(
 #[test]
 fn an_unchanged_frame_neither_encodes_nor_advances_the_generation() {
     let Some((device, queue)) = device() else {
-        eprintln!("no adapter; skipping wing-scene producer receipt");
+        eprintln!("no adapter; skipping isometer producer receipt");
         return;
     };
     let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
@@ -292,7 +292,7 @@ fn an_unchanged_frame_neither_encodes_nor_advances_the_generation() {
 #[test]
 fn the_produced_texture_is_straight_alpha_encoded_srgb() {
     let Some((device, queue)) = device() else {
-        eprintln!("no adapter; skipping wing-scene output contract receipt");
+        eprintln!("no adapter; skipping isometer output contract receipt");
         return;
     };
     let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
@@ -329,7 +329,7 @@ fn the_produced_texture_is_straight_alpha_encoded_srgb() {
 #[test]
 fn a_refused_request_neither_banks_nor_spends_the_last_frame() {
     let Some((device, queue)) = device() else {
-        eprintln!("no adapter; skipping wing-scene refusal receipt");
+        eprintln!("no adapter; skipping isometer refusal receipt");
         return;
     };
     let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));

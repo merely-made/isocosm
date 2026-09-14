@@ -1283,7 +1283,7 @@ perspective cameras, richer glyph assets and population cost measurement.
 Those need their own owner-specific acceptance, rather than being implied by
 this opaque spatial coverage matrix.
 
-### L9. The shared scene crate, wing-scene (founded 2026-09-14)
+### L9. The shared scene crate, isometer (founded 2026-09-14)
 
 Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
 shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
@@ -1294,11 +1294,11 @@ lane P1) was building a second producer over the same two renderers because
 `Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
 be a third. That is the duplicate-runs-at-one-problem case the consolidation
 rule forbids, so the scene becomes an Isometry path crate at
-`shared/wing-scene`, beside `wing-glyphs` and `wing-scenario`. Plain working
+`shared/isometer`, beside `wing-glyphs` and `wing-scenario`. Plain working
 name; no naming round spent. This is not the merged appearance crate of L2,
 whose home stays an open decision below.
 
-**Owner tree:** `shared/wing-scene`, with mesocosm-genet's `Section` and
+**Owner tree:** `shared/isometer`, with mesocosm-genet's `Section` and
 Paredros's P1 producer becoming thin adapters over it. Mesocosm's `World`,
 Paredros's `GameState`, and Isometry's map stay outside the crate.
 
@@ -1328,7 +1328,7 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 lanes edit mesocosm-genet.
 
 **Progress (2026-09-14):** steps 1 to 7 of the
-[extraction plan](2026-09-14_wing_scene_extraction_plan.md) landed on main
+[extraction plan](2026-09-14_isometer_extraction_plan.md) landed on main
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 waits
 on step 8, the Paredros retarget, handed to the Paredros session by message.
@@ -1412,7 +1412,7 @@ consumer. That edit is genet's, in the same session the lane opens.
   CPU bake as the downlevel tier, or replaces the CPU bake outright.
 - Where the merged appearance crate lives: the Isometry root workspace, or
   mere as a platform organ once a non-wing consumer appears.
-  The scene crate is ruled separately (L9, `shared/wing-scene`, 2026-09-14);
+  The scene crate is ruled separately (L9, `shared/isometer`, 2026-09-14);
   this decision covers volume, palette, bake and mesh only.
 - Poses and clips (raised 2026-09-12): whether a pose (a set of part
   transforms) and a clip (keyframes over poses) become body-document data
