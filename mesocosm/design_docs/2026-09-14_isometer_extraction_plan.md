@@ -760,3 +760,20 @@ Restating L9's six conditions against tests that exist or must be written.
   for the crate they founded. The isometer family (mesocosm-lens,
   mesocosm-render and mesocosm-mesh as its component crates) is a separate
   lane with its own plan.
+- **2026-09-14, the gate's blind spot, closed.** spatial-coverage.scenario
+  renders the isolated specimen on a black background with no traced
+  ground in frame, so the byte gate every step used never covered the
+  terrain join step 3 moved; the Paredros session's rebake at bef651d
+  (`Code/testing/spatial-coverage-2026-09-14/`, all 32 viewports
+  byte-identical to the acceptance arm of the 13th) found that, and the
+  tracer floor fix cannot show there either. Terrain parity was then
+  measured directly: world-trial.scenario and uptake-world.scenario run at
+  112e876 (before the extraction) and at 6983ea5 (step 7), both on the old
+  lens, compared over the section viewport with a same-commit control
+  (`Code/testing/l9-terrain-parity/`). 19 of 25 captures differed in two
+  small bands; with the uptake pulse presentation held at its 112e876 form
+  in a second control, all 25 captures differ by zero in-viewport pixels.
+  The extraction moved no traced-terrain pixel; the bands were the pulse
+  fix of 83248c4 and 1b99f9a. Later comparisons for this lane use the
+  2026-09-14 spatial-coverage set for bodies and glyphs and the
+  l9-terrain-parity procedure for terrain.
