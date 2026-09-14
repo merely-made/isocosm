@@ -66,6 +66,12 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   observer-relative answers, personal preferences, bounded recall, durable
   history, checkpoint/retention strategy and Hagiograph; planned, with a measured
   20,004-intent equipment-history save baseline.
+- [Genet document host](2026-09-13_genet_document_host_plan.md): the
+  presentation join. One played session presented through genet and netrender
+  with a Paredros scene producer over the shared tracer and live body renderer,
+  DOM panels reading the same `GameState`, and scenario acceptance; consumes
+  Mesocosm's presentation plan rulings and lane L7. Pins ruled 2026-09-13;
+  planned, no code yet.
 
 **Current design focus, 2026-09-08:** the founding plan's
 [borg generation and character-sheet proposal](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)

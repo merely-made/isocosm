@@ -42,6 +42,14 @@ mesocosm-lens = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-l
 mesocosm-mesh = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-mesh" }
 mesocosm-render = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-render" }
 netrender = { workspace = true }
+# P1/P2 document-host lane deps: the Cambium host, its producer seam, the
+# scenario driver, and the paint-list path netrender rasterizes.
+cambium = { workspace = true }
+cambium-rootstock = { workspace = true }
+cambium-genet-winit-host = { workspace = true }
+genet-probe = { workspace = true }
+paint_list_api = { workspace = true }
+paint_list_render = { workspace = true }
 renderling = { path = "../../../../../crates/renderling/crates/renderling" }
 wgpu = { version = "30", default-features = false, features = [
     "dx12",

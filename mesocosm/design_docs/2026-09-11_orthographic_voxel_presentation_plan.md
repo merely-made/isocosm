@@ -1318,6 +1318,7 @@ consumer. That edit is genet's, in the same session the lane opens.
 | Source | Transfers | Does not |
 | --- | --- | --- |
 | PolyCSS | face culling, greedy rectangle merge, painter sort, baked per-normal shading, atlas slicing, snapshot as standalone HTML | `corner-shape` triangles; a JS dependency |
+| [GlyphCSS](https://github.com/apresmoi/glyphcss), MIT, PolyCSS fork (added 2026-09-13) | glyph palettes as Lambert shading ramps, one character grid written as a single string per change, wireframe/solid/voxel/ink modes; a reference for the glyph canon and the bench's stroke work | per-polygon DOM is gone, but so is depth: painter order only; a JS dependency |
 | Zdog | flat-shaded vector pseudo-3D under affine transforms, exactly the Vello lane | canvas/SVG runtime |
 | Bonsai | relief lab loop, decoration tier, SDF layer brush editing, profiler-first culture | meshing, deferred shading, GPU-authoritative generation |
 | Renderling | headless image-test pattern, slab allocation ideas for L6 | the runtime and its toolchain |

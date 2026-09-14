@@ -573,6 +573,9 @@ intent is rejected. The regression fixture
   produced incompatible `BrickMap` types at the shared lens boundary. Netrender
   remains `c77b0be84fb6fc28a3c1602a2b1637f7d913acc0`; Parley remains Genet
   `3a7b50230d447f6fa7ed6921cba019f78347d932`. New receipts use these selections.
+  *Superseded 2026-09-14:* Netrender moved to `3961aca9` and the Parley, Taffy
+  and IPC patches to Genet `101d9e9a`, matching Mesocosm, under the
+  [genet document host plan](2026-09-13_genet_document_host_plan.md) P0.
 - 2026-09-13: full `paredros-world` suite passes **104 tests** on the aligned
   pins, including the real v3 archive, rejected-input atomicity, outer-surface
   contact ordering, lethal two-hit resolution and a survivor's available action
@@ -847,3 +850,12 @@ Checks ran alongside the separately owned Mesocosm soil-accounting changes;
 those files are excluded from this slice. Physical keyboard/mouse acceptance
 remains open. Terrain clearance for a newly configured envelope is checked
 atomically on its first motion, not during profile admission.
+
+#### Presentation join (2026-09-13)
+
+The rendered-world/body-sheet join now has its own plan,
+[genet document host](2026-09-13_genet_document_host_plan.md). A renderling
+tenant inside the timed-action host was proposed and rejected the same day:
+the wing presents through genet and netrender, and renderling exits Paredros
+under Mesocosm's L7. Session, movement, combat and anatomy rules stay here;
+the host, scene producer and scenario acceptance live there.
