@@ -1332,7 +1332,7 @@ lanes edit mesocosm-genet.
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
 with step 8, the Paredros retarget (e138186, by the Paredros session), and
-the terrain parity control at . **L9
+the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
 core types, owned by the [isometer family plan](2026-09-14_isometer_family_plan.md).
 
