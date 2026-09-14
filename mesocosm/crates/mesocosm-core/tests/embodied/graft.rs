@@ -24,6 +24,9 @@ use mesocosm_core::{
 
 use super::bulk_world;
 
+#[path = "graft/compatibility.rs"]
+mod compatibility;
+
 /// The donor line, and the id its carcass carries.
 const DONOR_LINE: SpeciesId = SpeciesId(5);
 const DONOR: OrganismId = OrganismId(9_700);
@@ -396,67 +399,6 @@ fn a_cross_domain_carry_lands_a_visibly_incompatible_branch() {
     };
     super::develop_played(&mut world, &proposal).expect("the branch can be made to work");
     assert!(world.phenotype().unwrap().secretory_mg() > 0);
-}
-
-#[test]
-fn a_disfavoured_carry_is_refused_and_regrowth_is_the_route_that_remains() {
-    // The third verdict, and the wing contract's rule for it: an incompatible
-    // carry is refused or redirected to regrowth, never silently rewritten. So
-    // the refusal names the boundary, and the other crossing still lands.
-    let mut world = world_with(Verdict::Refused);
-    let (frond, _) = donor(&mut world);
-    let before = mesocosm_core::state_hash(&world);
-
-    let refused = take(&mut world, frond, Crossing::Carry);
-    assert_eq!(
-        refused,
-        Outcome::Rejected(Rejection::Incompatible {
-            from: Domain(2),
-            into: Domain(1),
-        }),
-        "the refusal names which tissue would not go into which"
-    );
-    assert!(
-        corpse_of(&world).body().is_living(frond),
-        "and the corpse still has its branch"
-    );
-
-    let outcome = take(&mut world, frond, Crossing::Regrow);
-    let Outcome::Grafted { root, verdict, .. } = outcome else {
-        panic!("regrowth is supposed to be feasible: {outcome:?}");
-    };
-    assert_eq!(
-        verdict,
-        Verdict::Refused,
-        "the table did not change its mind"
-    );
-    let phenotype = world.phenotype().unwrap();
-    assert!(
-        phenotype.expresses_on(root, fixing()),
-        "a regrown plate does what this body's rules make of a plate"
-    );
-    assert!(
-        !phenotype.expresses_on(root, gland()),
-        "and not what the donor had arranged on it: regrowing is not carrying"
-    );
-    // Regrowing preserves identity and provenance and realizes the phenotype
-    // under the destination's rules — the wing contract's own words for this
-    // route, and the half of it a rebuilt allocation must not quietly drop.
-    assert_eq!(
-        phenotype
-            .body()
-            .part(root)
-            .map(|part| &part.provenance.origin),
-        Some(&Origin::Incorporated {
-            from_species: DONOR_LINE,
-            from_part: frond,
-        })
-    );
-    assert_ne!(
-        mesocosm_core::state_hash(&world),
-        before,
-        "the refused carry and the landed regrowth are different worlds"
-    );
 }
 
 // ---------------------------------------------------------------------------

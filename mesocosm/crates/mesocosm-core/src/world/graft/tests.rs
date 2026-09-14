@@ -11,7 +11,7 @@ use crate::{
 
 use super::GraftPreview;
 
-fn fixture() -> (World, OrganismId, PartId, PartId) {
+pub(super) fn fixture() -> (World, OrganismId, PartId, PartId) {
     let mut world = World::new(4_242, 24);
     let recipient = world.controlled_id().expect("embodied");
     let (species, position) = {
@@ -83,6 +83,9 @@ fn fixture() -> (World, OrganismId, PartId, PartId) {
     world.organisms.push(carcass);
     (world, donor, branch, tip)
 }
+
+#[path = "compatibility_tests.rs"]
+mod compatibility_tests;
 
 #[test]
 fn preview_is_read_only_and_matches_the_published_graft() {

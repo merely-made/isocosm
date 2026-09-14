@@ -4,7 +4,9 @@
 TG2a-TG2e implemented 2026-09-09; TG2f implemented 2026-09-12;
 TG2g implemented and TG2h bounded performance acceptance complete 2026-09-13.
 TG2 conservation, replay and the defined 917-founder tick-cost gates pass.
-TG3-TG7 remain open.** The three
+TG3a bounded graft compatibility is implemented and verified 2026-09-13;
+TG3 dietary inspection and
+TG4-TG7 remain open.** The three
 rulings in section 4 are given. This is PE4's first
 build: the material scheme ruled 2026-09-02 turned into a trophic grammar. It
 owns typed intake, typed accounts, part composition, defenses, and selective
@@ -311,6 +313,30 @@ is claimed. Whole-lifetime timing and TG6 viability are separate acceptance.
 
 ### TG3: scruple per part
 
+**TG3a starting rule, approved by Mark 2026-09-13.** A valid disfavoured
+domain pairing can carry a small branch through the ordinary allocation
+validator. The native allowance is one recipient root tissue cell, using
+the existing developmental cell mass; the incoming branch also costs its
+own mass in reserve. Both values are configurable world rules. The cap
+counts all living incorporated tissue from disfavoured source domains,
+including tissue whose arrangement was regrown. Severed tissue no longer
+counts. This prevents repeated small carries from evading the allowance.
+Regrow itself remains available under its existing fit and reserve checks.
+
+The compatibility receipt separates incoming mass, retained mass, base and
+effective allowance, applied condition IDs and the additional reserve cost.
+The donor's exact scruple is preserved; the cost joins development's
+Reserve-to-Soil return. Grammar 8 includes the compatibility rule in world
+identity. Two optional condition-bonus slots compose with PE2's current two
+content-addressed discovery conditions. They are empty in the native rule:
+this slice does not invent a hunger-to-compatibility reward or a general NPC
+condition evaluator. A learned compatibility acquisition route remains open.
+
+This is the existing domain-affinity graft seam, not a mapping from the
+four provenance channels to tissue domains and not a change to meal
+admission. The graft menu reads the checked preview's allowance, remaining
+margin and cost. Dietary appearance remains the specimen bench's slice.
+
 Composition gets its two ruled layers. The **lineage layer** declares what nis
 a line's tissue is made of; the **part layer**, the scruple, records the mix a
 part was actually built from, which differs after a graft or an odd diet. It
@@ -425,6 +451,25 @@ beginning body types; start investigating a beginning set of traits.
 ---
 
 ## Findings
+
+- **2026-09-13, TG3a compatibility seam:** the September 2 ruling answers
+  ProcessDef's older disfavoured-graft question. The implementation retains
+  `Verdict::Refused` as the raw affinity result, then evaluates explicit
+  world terms for a valid domain pair. Native and favoured carries, meal
+  ports and the separate Regrow allocation route keep their existing rules.
+  Graft previews and saved records expose the checked calculation; an
+  accepted disfavoured carry is described as such rather than shown as
+  refused. The cap uses living incorporated part mass and source lineage
+  domain, not a guessed correspondence between domain and provenance kind.
+  Focused release validation passes 17 compatibility-selected tests,
+  including accepted mixed-stock replay and a scalar reserve-to-soil cost.
+  Full release verification passes 864 core/runtime/view tests across 20
+  suites, with one existing ignored test. All 462 source/manifest inputs
+  stayed unchanged during that run. A subsequent module split keeps every
+  owned Rust file below 600 lines; the affected core library, embodied graft
+  suite and views pass again (674 tests, one existing ignored). The native
+  host passes all-features/all-targets release checking after that split.
+  This verifies menu integration and wording, not a new headed playthrough.
 
 - **2026-09-13, TG2h repeated tick-cost receipt:** release-built
   `live_soil_receipt` on `c2a26c2` plus diagnostic-only example changes ran
@@ -665,6 +710,13 @@ beginning body types; start investigating a beginning set of traits.
   `perception.rs:206`, and no body change measured holds the corridor.
 
 ## Progress
+
+- **2026-09-13, TG3a verified.** Mark approved the configurable one-cell
+  allowance and equal-mass reserve cost. Core compatibility and menu
+  explanations are implemented, including cumulative retention and
+  configured PE2 condition bonuses. The native rule supplies no invented
+  learning reward. Dietary inspection and a learned compatibility route
+  remain separate work; this receipt does not close all of TG3.
 
 - **2026-09-13, TG2h.** Diagnostic-only changes add repeated per-tick wall
   and optional thread CPU receipts. The same three seeds and 20/200 window

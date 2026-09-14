@@ -315,14 +315,19 @@ pub enum Rejection {
     /// injured body, so the root is not a branch anybody can take; eating it is
     /// the verb for wanting all of it. (P3)
     WholeBody(PartId),
-    /// This world's graft affinity refuses to carry that line's tissue into
-    /// this one. Regrowing it here is the feasible route, which is what the
-    /// wing contract requires of an incompatible carry: refused or redirected,
-    /// never silently rewritten. (P3)
+    /// The affinity table does not hold one of this carry's tissue domains.
+    /// Known disfavoured pairs use the separate graft allowance instead.
     Incompatible {
         from: crate::graft::Domain,
         into: crate::graft::Domain,
     },
+    /// Incoming and already retained disfavoured tissue exceed this body's cap.
+    GraftAllowance {
+        requested_mg: u64,
+        allowance_mg: u64,
+    },
+    /// This world's configured graft allowance or price cannot be represented.
+    GraftCostOverflow,
     /// The part is severed or already taken, so there is nothing there to
     /// settle. A severed part's milligrams have already left the conservation
     /// account; eating one would create matter.

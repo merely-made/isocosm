@@ -180,6 +180,12 @@ impl Host {
                             &preview.phenotype
                         ))
                     );
+                    if let Some(compatibility) = &preview.compatibility {
+                        detail.push_str(&format!(
+                            " Disfavoured carry: {}.",
+                            mesocosm_views::vitals::compatibility_words(compatibility)
+                        ));
+                    }
                     state.root = Some(preview.root);
                     let mut projected = world.clone();
                     projected
@@ -196,6 +202,15 @@ impl Host {
                     let reason = mesocosm_views::refusal_words(&refusal);
                     rows[state.selected - page].refusal = Some(reason.into());
                     detail = format!("Cannot graft this branch: {reason}.");
+                    if let mesocosm_core::Rejection::GraftAllowance {
+                        requested_mg,
+                        allowance_mg,
+                    } = refusal
+                    {
+                        detail.push_str(&format!(
+                            " {requested_mg} mg incoming plus retained tissue; allowance {allowance_mg} mg."
+                        ));
+                    }
                     status =
                         "Nothing applied. Choose another branch or try regrowing its arrangement."
                             .into();

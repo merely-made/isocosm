@@ -35,6 +35,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::body::{PartId, SpeciesId};
 use crate::flow::{Account, FlowEvent, Subject};
+use crate::graft::compatibility::{CompatibilityReceipt, CompatibilityRefusal};
 use crate::graft::{Crossing, Verdict};
 use crate::organism::OrganismId;
 use crate::phenotype::{Branch, Lowering};
@@ -72,7 +73,10 @@ pub struct Graft {
     pub mass_mg: u64,
     pub crossing: Crossing,
     pub verdict: Verdict,
-    /// What the transfer's development cost, out of the reserve.
+    /// Terms applied when a disfavoured carry was admitted within its allowance.
+    #[serde(default)]
+    pub compatibility: Option<CompatibilityReceipt>,
+    /// Development plus any compatibility penalty, out of the reserve.
     pub cost_mg: u64,
     /// The phenotype revision the transfer created.
     pub revision: u32,
@@ -155,6 +159,7 @@ impl World {
             donor_part,
             crossing,
             verdict,
+            compatibility,
             phenotype,
             root,
             parts,
@@ -230,6 +235,7 @@ impl World {
             mass_mg,
             crossing,
             verdict,
+            compatibility,
             cost_mg,
             revision,
         });
@@ -284,17 +290,57 @@ impl World {
         let Some(me) = self.controlled() else {
             return Err(Rejection::Disembodied);
         };
-        // **The terms, declared before anything moves.** A carry the table
-        // refuses is refused here and not silently rewritten into a regrowth;
-        // the player is told which boundary failed and regrowth is the route
-        // that remains.
+        // Terms are checked before anything moves. A disfavoured carry needs
+        // the world's allowance and price; it never silently becomes regrowth.
         let (from, into) = (self.lineages.domain(line), self.lineages.domain(me.species));
         let verdict = self.affinity.verdict(from, into);
+        let mut compatibility = None;
         let lowering = match (crossing, verdict) {
             (Crossing::Carry, Verdict::Native) => Lowering::Carried,
             (Crossing::Carry, Verdict::Adapter) => Lowering::Adapted,
             (Crossing::Carry, Verdict::Refused) => {
-                return Err(Rejection::Incompatible { from, into });
+                // An absent domain is still an incompatible boundary. A held
+                // reverse edge is the priced, recoverable TG3 case.
+                if !self.affinity.holds(from) || !self.affinity.holds(into) {
+                    return Err(Rejection::Incompatible { from, into });
+                }
+                let retained_mg = me
+                    .phenotype
+                    .body()
+                    .living()
+                    .filter(|part| {
+                        matches!(
+                            part.provenance.origin,
+                            crate::body::Origin::Incorporated { from_species, .. }
+                                if self.affinity.verdict(
+                                    self.lineages.domain(from_species),
+                                    into,
+                                ) == Verdict::Refused
+                        )
+                    })
+                    .try_fold(0u64, |total, part| total.checked_add(part.mass_mg))
+                    .ok_or(Rejection::GraftCostOverflow)?;
+                let receipt = self
+                    .rules
+                    .graft_compatibility
+                    .evaluate(
+                        mass_mg,
+                        retained_mg,
+                        me.phenotype.cell_mg(me.body().root),
+                        |condition| self.discovered(condition),
+                    )
+                    .map_err(|refusal| match refusal {
+                        CompatibilityRefusal::OverAllowance {
+                            requested_mg,
+                            allowance_mg,
+                        } => Rejection::GraftAllowance {
+                            requested_mg,
+                            allowance_mg,
+                        },
+                        CompatibilityRefusal::Overflow => Rejection::GraftCostOverflow,
+                    })?;
+                compatibility = Some(receipt);
+                Lowering::Carried
             },
             (Crossing::Regrow, _) => Lowering::Regrown,
         };
@@ -335,7 +381,15 @@ impl World {
         {
             return Err(Rejection::NoRoom);
         }
-        if graftage.cost_mg > energy_mg {
+        let cost_mg = graftage
+            .cost_mg
+            .checked_add(
+                compatibility
+                    .as_ref()
+                    .map_or(0, |receipt| receipt.penalty_mg),
+            )
+            .ok_or(Rejection::GraftCostOverflow)?;
+        if cost_mg > energy_mg {
             return Err(Rejection::InsufficientMass);
         }
 
@@ -347,12 +401,13 @@ impl World {
                 donor_part: part,
                 crossing,
                 verdict,
+                compatibility,
                 attachment: site,
                 phenotype: candidate,
                 root: graftage.root,
                 parts: graftage.parts,
                 mass_mg,
-                cost_mg: graftage.cost_mg,
+                cost_mg,
                 revision: graftage.development.instruction.revision,
             },
             donor_index: index,

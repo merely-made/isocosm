@@ -39,6 +39,8 @@
 
 use serde::{Deserialize, Serialize};
 
+pub mod compatibility;
+
 /// A tissue domain, as one world numbers them.
 ///
 /// Opaque. Nothing in the rules reads a particular value; the world's
@@ -63,7 +65,9 @@ pub enum Verdict {
     /// until an adapter is grown on it.
     Adapter,
     /// A disfavoured edge. This tissue cannot be carried into this body at all;
-    /// regrowing it here is the feasible route.
+    /// the raw affinity table does not permit Carry for this source and
+    /// destination pair. A World may state separate compatibility terms for
+    /// retained material; those terms do not rewrite this verdict.
     Refused,
 }
 

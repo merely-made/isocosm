@@ -60,7 +60,8 @@ pub const DEFAULT_EPOCH_TICKS: u64 = 1_000;
 /// Revision 5 preserves birth provisioning and records completed tissue returns.
 /// Revision 6 introduces producer synthesis and explicit founder tissue recipes.
 /// Revision 7 completes pending typed soil at a declared per-column rate.
-pub const TROPHIC_GRAMMAR_REVISION: u32 = 7;
+/// Revision 8 admits bounded, priced disfavoured carries.
+pub const TROPHIC_GRAMMAR_REVISION: u32 = 8;
 
 /// Pending typed matter completed into nutrients per column per ecology tick.
 /// This is a provisional simulation rate, not a calibrated decomposition model.
@@ -214,6 +215,9 @@ pub struct WorldRules {
     /// Roots can spend the resulting nutrients on the following tick.
     #[serde(default = "default_soil_mineralization")]
     pub soil_mineralization_mg_per_column_per_tick: u64,
+    /// Cumulative disfavoured tissue allowance and the incoming graft's cost.
+    #[serde(default = "crate::graft::compatibility::Compatibility::legacy_disabled")]
+    pub graft_compatibility: crate::graft::compatibility::Compatibility,
 }
 
 fn default_score_ticks() -> u64 {
@@ -236,6 +240,7 @@ impl Default for WorldRules {
             score_ticks: DEFAULT_SCORE_TICKS,
             trophic_grammar: 0,
             soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
+            graft_compatibility: crate::graft::compatibility::Compatibility::legacy_disabled(),
         }
     }
 }
@@ -255,6 +260,7 @@ impl WorldRules {
             score_ticks: DEFAULT_SCORE_TICKS,
             trophic_grammar: TROPHIC_GRAMMAR_REVISION,
             soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
+            graft_compatibility: crate::graft::compatibility::Compatibility::native(),
         }
     }
 
@@ -287,6 +293,7 @@ impl WorldRules {
                 .soil_mineralization_mg_per_column_per_tick
                 .to_le_bytes(),
         );
+        bytes.extend_from_slice(&self.graft_compatibility.digest().to_le_bytes());
         crate::snapshot::hash_bytes(&bytes)
     }
 }

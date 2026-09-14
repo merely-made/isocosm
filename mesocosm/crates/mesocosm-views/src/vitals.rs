@@ -17,9 +17,12 @@
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
 use mesocosm_core::{
-    Crossing, Discovery, Gland, Graft, Ineligible, Observation, Outcome, Refusal, Rejection, Trend,
+    Crossing, Discovery, Gland, Ineligible, Observation, Outcome, Refusal, Rejection, Trend,
     Unrevised, World,
 };
+
+mod graft;
+pub use graft::{GraftWords, compatibility_words, graft_words};
 
 /// A view in the vitals tree. Inert: nothing here takes a click, because
 /// during an epoch you act on the world, not on a panel.
@@ -88,52 +91,6 @@ pub struct DiscoveryWords {
     pub route: String,
     /// What it grants, and on what.
     pub grants: String,
-}
-
-/// The two sentences a transferred branch is owed: where it came from, and
-/// what it is doing here. (P3)
-///
-/// Provenance is the first of them because it is the thing a graft has that
-/// growing does not: this tissue was somebody. The second is the verdict made
-/// legible — a carried branch that arrived native works, a carried branch over
-/// a cross-domain edge is on you and doing nothing, and a regrown one is doing
-/// whatever your own rules make of that shape.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct GraftWords {
-    /// Which parts came, off which part of which line.
-    pub taken: String,
-    /// The crossing, the verdict, and what that leaves the branch doing.
-    pub terms: String,
-}
-
-/// A branch transfer in plain words.
-pub fn graft_words(graft: &Graft, expressing: bool) -> GraftWords {
-    let taken = format!(
-        "{} part{} from part {} of line {}",
-        graft.parts.len(),
-        if graft.parts.len() == 1 { "" } else { "s" },
-        graft.donor_part.0,
-        graft.donor_line.0,
-    );
-    // What the branch is *doing* is read off the body rather than inferred from
-    // the verdict, because they are two different facts and a panel that
-    // guessed the second from the first would be describing the table instead
-    // of the creature.
-    let doing = if expressing {
-        "working"
-    } else {
-        "doing nothing yet"
-    };
-    GraftWords {
-        taken,
-        terms: format!(
-            "{} on part {} — {}, {}",
-            graft.crossing.name(),
-            graft.root.0,
-            graft.verdict.name(),
-            doing
-        ),
-    }
 }
 
 /// The three sentences a gland is owed, one per question a player asks of it:
@@ -392,6 +349,8 @@ pub fn refusal_words(rejection: &Rejection) -> &'static str {
         // branch instead of the whole thing, or regrow what cannot be carried.
         Rejection::WholeBody(_) => "that is the whole of it",
         Rejection::Incompatible { .. } => "that tissue will not go in you",
+        Rejection::GraftAllowance { .. } => "disfavoured tissue exceeds your graft allowance",
+        Rejection::GraftCostOverflow => "this world's graft terms exceed supported quantities",
         Rejection::Ineligible(Ineligible::NotAlive) => "that one is dead",
         Rejection::Ineligible(Ineligible::AboveTheFrontier { .. }) => "beyond you",
         Rejection::Ineligible(Ineligible::NoSuchOrganism) => "nothing there",

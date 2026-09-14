@@ -7,6 +7,7 @@
 //! A graft's checked candidate, before the world publishes it.
 
 use crate::body::{Attachment, PartId, SpeciesId};
+use crate::graft::compatibility::CompatibilityReceipt;
 use crate::graft::{Crossing, Verdict};
 use crate::organism::OrganismId;
 use crate::phenotype::BodyPhenotype;
@@ -27,6 +28,8 @@ pub struct GraftPreview {
     pub donor_part: PartId,
     pub crossing: Crossing,
     pub verdict: Verdict,
+    /// The checked allowance and penalty for a disfavoured carry, when used.
+    pub compatibility: Option<CompatibilityReceipt>,
     /// The body-plan attachment selected for the branch root.
     pub attachment: Attachment,
     /// The exact checked recipient phenotype, including the arriving branch.

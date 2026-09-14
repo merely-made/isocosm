@@ -13,6 +13,7 @@
 //! verdicts — and only the literal words can hold that.
 
 use super::*;
+use mesocosm_core::Graft;
 
 #[test]
 fn a_world_with_nobody_in_it_reads_dead() {
@@ -279,6 +280,7 @@ fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
         mass_mg: 20,
         crossing: Crossing::Carry,
         verdict: mesocosm_core::Verdict::Adapter,
+        compatibility: None,
         cost_mg: 72,
         revision: 1,
     };
@@ -287,6 +289,32 @@ fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
     // not: the parts, the part they came off, and the line.
     let words = graft_words(&carried, false);
     assert_eq!(words.taken, "2 parts from part 31 of line 2");
+    let priced = Graft {
+        verdict: mesocosm_core::Verdict::Refused,
+        compatibility: Some(mesocosm_core::graft::compatibility::CompatibilityReceipt {
+            base_allowance_mg: 20,
+            effective_allowance_mg: 25,
+            incoming_mg: 20,
+            retained_mg: 0,
+            requested_mg: 20,
+            penalty_mg: 20,
+            applied: vec![mesocosm_core::discovery::conditions()[0].id()],
+        }),
+        ..carried.clone()
+    };
+    let priced_words = graft_words(&priced, true);
+    assert!(
+        priced_words
+            .terms
+            .contains("20 / 25 mg allowance (5 mg remaining)")
+    );
+    assert!(priced_words.terms.contains("20 mg extra reserve cost"));
+    assert!(
+        priced_words
+            .terms
+            .contains("raised by mesocosm:endured-hunger")
+    );
+    assert!(!priced_words.terms.contains("refused"));
     assert_eq!(
         words.terms, "carried on part 41 — needs an adapter, doing nothing yet",
         "the crossing, the verdict, and the consequence in one line"

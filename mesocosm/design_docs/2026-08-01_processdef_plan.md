@@ -276,6 +276,15 @@ or a heritable compound recipe evaluated through its parents.
 
 ### Directed graft affinity
 
+**Updated 2026-09-13, TG3a.** The September 2 ruling supersedes the
+initial hard Carry gate described in this historical implementation note.
+For a valid disfavoured domain pairing, the world's configured cumulative
+allowance and reserve price now determine feasibility before the same
+allocation validator is called. Invalid domains remain refused. Regrow
+retains its separate route. See [TG3a](2026-09-04_trophic_grammar_plan.md#tg3-scruple-per-part)
+for the approved one-cell allowance, equal-mass reserve cost, condition
+composition and remaining acceptance work.
+
 **Built at phenotype P3, 2026-09-01.** `mesocosm-core::graft` holds `Domain`,
 `Verdict` and `Affinity`; the graph is world data (a default world holds the
 three-domain favoured cycle), each lineage carries a domain drawn from its own
