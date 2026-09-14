@@ -26,9 +26,8 @@ mesocosm-lens = { path = "../../mesocosm/crates/mesocosm-lens" }
 # The body renderer's world cut interval, instance draw and part queries.
 mesocosm-render = { path = "../../mesocosm/crates/mesocosm-render" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
-# output-contract enums. Pinned at the revision both products pin, as
-# `shared/wing-scenario` does.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "4f4de1d05ec99461f7fa3cdc4e514e904a999213" }
+# output-contract enums. Pinned at the revision both products pin.
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }

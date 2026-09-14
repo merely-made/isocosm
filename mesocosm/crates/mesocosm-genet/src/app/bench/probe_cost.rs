@@ -5,11 +5,11 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Which bench scenes the shared cost receipt is counting. The sampling,
-//! bounding and summary policy are `wing_scenario::Costs`; the scene walk is
+//! bounding and summary policy are `mesquite::Costs`; the scene walk is
 //! the bench's, because only the bench knows it owns one main scene plus five
 //! comparison cards.
 
-use wing_scenario::{CostObservation, Totals};
+use mesquite::{CostObservation, Totals};
 
 use super::Context;
 

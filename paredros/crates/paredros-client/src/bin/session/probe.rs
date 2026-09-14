@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! P3b: the session host's scenario acceptance, as a thin adapter over
-//! `wing-scenario`.
+//! `mesquite`.
 //!
 //! The lane lifecycle — scenario ticking per presented frame, the frame limit,
 //! the deferred close, capture arming, PNG writing, the receipt JSON, pixel
@@ -20,8 +20,8 @@
 use std::{cell::Cell, path::PathBuf, rc::Rc};
 
 use cambium_genet_winit_host::AppCtx;
-use genet_probe::{ProbeSnapshot, Scenario};
-use wing_scenario::{CostObservation, Totals, Viewport};
+use mesquite::{CostObservation, Totals, Viewport};
+use taproot::{ProbeSnapshot, Scenario};
 
 use super::SessionApp;
 use super::view::{Child, Logic, SHEET};
@@ -42,7 +42,7 @@ struct SessionProduct {
     drained: usize,
 }
 
-impl wing_scenario::Product for SessionProduct {
+impl mesquite::Product for SessionProduct {
     type State = SessionApp;
     type Logic = Logic;
     type View = Child;
@@ -112,8 +112,8 @@ pub(super) fn default_out_dir() -> PathBuf {
         .unwrap_or_else(|| PathBuf::from("testing/session"))
 }
 
-/// The session's scenario lane. The body is `wing_scenario::Lane`.
-pub(super) struct Lane(wing_scenario::Lane<SessionProduct>);
+/// The session's scenario lane. The body is `mesquite::Lane`.
+pub(super) struct Lane(mesquite::Lane<SessionProduct>);
 
 impl Lane {
     pub(super) fn new(
@@ -124,7 +124,7 @@ impl Lane {
         frames: Option<u32>,
     ) -> Self {
         Self(
-            wing_scenario::Lane::new(
+            mesquite::Lane::new(
                 SessionProduct { drained: 0 },
                 scenario,
                 receipt,

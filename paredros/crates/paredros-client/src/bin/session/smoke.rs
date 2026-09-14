@@ -10,7 +10,7 @@
 //! viewport leaf's own painted rectangle, a capture PNG, a save file, one
 //! final line and an exit code.
 //!
-//! This is not the P3 scenario driver: no `genet-probe` scenario, no synthetic
+//! This is not the P3 scenario driver: no `taproot` scenario, no synthetic
 //! input, no receipt JSON. P3 owns those.
 
 use std::cell::{Cell, RefCell};
@@ -22,9 +22,9 @@ use std::rc::Rc;
 use std::time::Instant;
 
 use cambium_genet_winit_host::{AppCtx, Frame, read_frame};
-use genet_probe::Selector;
 use mesocosm_core::PartId;
 use paredros_world::{GameEvent, ItemKind, StrikeOutcome};
+use taproot::Selector;
 
 use super::view::{Child, Logic};
 use super::{CHARGE_INTERVAL, SessionApp};
@@ -241,7 +241,7 @@ impl Lane {
 fn viewport(ctx: &Context<'_>) -> Option<([f32; 4], f32)> {
     let dom = ctx.runner.dom();
     let dom = dom.borrow();
-    let node = genet_probe::matching(&dom, &Selector::role("img").containing("Scene"))
+    let node = taproot::matching(&dom, &Selector::role("img").containing("Scene"))
         .into_iter()
         .next()?;
     drop(dom);

@@ -27,8 +27,8 @@
 //! never both at once; the dev lane draws only while `--dev` is set. None of
 //! them touches the world, so none can reach the trace.
 
-//! **The harness is genet-probe's** (DT4). This host implements `Automatable`
-//! and `Driveable`, so a text `genet_probe::Scenario` drives a run: see
+//! **The harness is taproot's** (DT4). This host implements `Automatable`
+//! and `Driveable`, so a text `taproot::Scenario` drives a run: see
 //! [`app::drive`] for what each verb means here and [`app::actions`] for what
 //! `act` can ask for. The four cambium lanes above hand the driver the retained
 //! trees they draw from, so an `assert text` is a claim about what is on

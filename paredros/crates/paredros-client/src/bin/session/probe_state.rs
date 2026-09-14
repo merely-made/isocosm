@@ -4,8 +4,8 @@
 //! The typed reading a Paredros scenario asserts against, and the event stream
 //! it matches. Projections only: nothing here applies an intent.
 
-use genet_probe::ProbeSnapshot;
 use paredros_world::{GameEvent, ItemKind, MOTION_SCALE};
+use taproot::ProbeSnapshot;
 
 use super::Context;
 

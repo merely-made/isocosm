@@ -10,9 +10,9 @@
 //! `--replay` cursor, a `--record-demo` script, an `--auto-eat` interval and a
 //! one-off `examples/dt3_script.rs`, each a separate way of running the game
 //! without a person in front of it. The dev tools plan's fourth principle says
-//! that folds toward genet-probe rather than growing, and this is the fold: the
+//! that folds toward taproot rather than growing, and this is the fold: the
 //! host implements [`Automatable`] and [`Driveable`], and
-//! [`genet_probe::Scenario`] — the same driver turnstone uses — pumps a text
+//! [`taproot::Scenario`] — the same driver turnstone uses — pumps a text
 //! file against it one step per rendered frame.
 //!
 //! # What each verb means here
@@ -55,7 +55,7 @@
 //!   stream, which an `assert event` can catch, rather than silently swallowing
 //!   a click and letting the scenario believe it landed. `click` therefore
 //!   resolves a selector correctly and then goes nowhere, which is the honest
-//!   state of this host and not a defect in genet-probe.
+//!   state of this host and not a defect in taproot.
 //! - **No verb for founding a world.** A scenario is pumped inside an app that
 //!   already exists, so the seed, the founder count and a trace to replay are
 //!   necessarily flags. Expressed as `--seed`, `--replay` and `--scenario`
@@ -66,7 +66,7 @@
 
 use std::path::PathBuf;
 
-use genet_probe::{Automatable, Driveable, ProbeSnapshot, ProbeSurface, Progress};
+use taproot::{Automatable, Driveable, ProbeSnapshot, ProbeSurface, Progress};
 use mesocosm_core::Outcome;
 use winit::event_loop::ActiveEventLoop;
 

@@ -47,13 +47,14 @@ netrender = { workspace = true }
 cambium = { workspace = true }
 cambium-rootstock = { workspace = true }
 cambium-genet-winit-host = { workspace = true }
-genet-probe = { workspace = true }
-# P3b: the promoted scenario lane. A sibling path crate under the repository's
-# `shared/`, declared directly as mesocosm-genet declares it.
-wing-scenario = { path = "../../../shared/wing-scenario" }
+taproot = { workspace = true }
+# P3b: the promoted scenario lane, now mere's `mesquite` (2026-09-14) rather
+# than this repository's `shared/wing-scenario`, through the workspace pin as
+# mesocosm-genet takes it.
+mesquite = { workspace = true }
 # The wing's shared orthographic slab scene, extracted from Mesocosm's section.
-# A sibling path crate under the repository's `shared/`, declared directly as
-# wing-scenario is; its cambium-rootstock pin is this workspace's own.
+# A sibling path crate under the repository's `shared/`; its cambium-rootstock
+# pin is this workspace's own.
 isometer = { path = "../../../shared/isometer" }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }

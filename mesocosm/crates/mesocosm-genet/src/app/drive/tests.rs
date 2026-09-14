@@ -16,7 +16,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use cambium::GenetAppRunner;
-use genet_probe::{ProbeSurface, Scenario, text_present};
+use taproot::{ProbeSurface, Scenario, text_present};
 use genet_scripted_dom::ScriptedDom;
 use mesocosm_core::Intent;
 
@@ -42,7 +42,7 @@ fn replaying(trace: PlayedTrace) -> Host {
 /// The headless equivalent of the frame loop: advance, note what the world
 /// answered, pump one scenario step. Capped so a scenario that never finishes
 /// fails the test rather than hanging it.
-fn pump(host: &mut Host, text: &str) -> genet_probe::Outcome {
+fn pump(host: &mut Host, text: &str) -> taproot::Outcome {
     let mut scenario = Scenario::parse(text).expect("the scenario parses");
     for _ in 0..20_000 {
         host.advance();

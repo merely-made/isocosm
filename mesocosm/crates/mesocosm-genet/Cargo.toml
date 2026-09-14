@@ -42,14 +42,15 @@ genet-scripted-dom = { workspace = true }
 # The scenario driver (DT4). The host implements `Automatable` and `Driveable`
 # over the same cambium surfaces the lanes above already retain, and a text
 # scenario drives a run through them. See `crate::drive`.
-genet-probe = { workspace = true }
+taproot = { workspace = true }
 # The dev lane's placement (ruled 2026-09-02): a workbench tile, not a
 # hand-rolled corner constant. See `dev`.
 workbench = { workspace = true }
-# The generic half of the bench acceptance lane, promoted to a shared Isometry
-# path crate (P3a, ruled 2026-09-14) so Paredros's session host consumes the
-# same lifecycle. Declared by path here, as wing-glyphs is in mesocosm-runtime.
-wing-scenario = { path = "../../../shared/wing-scenario" }
+# The generic half of the bench acceptance lane. It was the shared Isometry
+# path crate `shared/wing-scenario` (P3a, 2026-09-14); mere took it into the
+# cambium family the same day as `mesquite`, so it arrives from mere.git at
+# the family rev like every other cambium edge.
+mesquite = { workspace = true }
 # The shared orthographic slab scene (L9, plan of 2026-09-14): the camera, its
 # cut and its cull window, so Mesocosm's `CameraMode` presets and Paredros's
 # `CameraPolicy` are presets over one set of numbers rather than two.

@@ -59,7 +59,7 @@ fn atlas_field_drag_captures_from_canvas_and_does_not_travel() {
 
     let before_place = harness.state().world.party_at("dm").map(str::to_owned);
     let field_node = harness.with_dom(|dom| {
-        genet_probe::matching(dom, &Selector::class("graph-canvas-atlas-field"))
+        taproot::matching(dom, &Selector::class("graph-canvas-atlas-field"))
             .into_iter()
             .next()
             .expect("a keyboard-semantic atlas field exists")
@@ -101,7 +101,7 @@ fn atlas_reduced_motion_keeps_dispatch_path_idle_after_release() {
     harness.relayout();
     let before_place = harness.state().world.party_at("dm").map(str::to_owned);
     let field_node = harness.with_dom(|dom| {
-        genet_probe::matching(dom, &Selector::class("graph-canvas-atlas-field"))
+        taproot::matching(dom, &Selector::class("graph-canvas-atlas-field"))
             .into_iter()
             .next()
             .expect("atlas field")

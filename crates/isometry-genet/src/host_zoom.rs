@@ -12,8 +12,8 @@
 //! board's scale has.
 
 use cambium_genet_winit_host::{Harness, HostOptions, Init, inert_hooks};
-use genet_probe::Selector;
 use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
+use taproot::Selector;
 
 use super::*;
 
@@ -64,7 +64,7 @@ fn board(window: (f32, f32), fit: bool) -> BoardHarness {
 fn rect(harness: &BoardHarness, class: &str) -> (f32, f32, f32, f32) {
     harness
         .with_dom(|dom| {
-            genet_probe::matching(dom, &Selector::class(class))
+            taproot::matching(dom, &Selector::class(class))
                 .first()
                 .copied()
         })
@@ -87,7 +87,7 @@ fn whole(device: f32) -> bool {
 /// a target pick is armed.
 fn panel_bottom(harness: &BoardHarness) -> f32 {
     let rows = harness.with_dom(|dom| {
-        let side = genet_probe::matching(dom, &Selector::class("side"))
+        let side = taproot::matching(dom, &Selector::class("side"))
             .first()
             .copied()
             .expect("the panel strip is in the retained tree");
@@ -431,7 +431,7 @@ fn collapsing_turns_takes_the_section_off_the_panel() {
 
     let panel = harness
         .with_dom(|dom| {
-            genet_probe::matching(dom, &Selector::class("disclosure-panel"))
+            taproot::matching(dom, &Selector::class("disclosure-panel"))
                 .first()
                 .copied()
         })

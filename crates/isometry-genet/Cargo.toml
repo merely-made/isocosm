@@ -41,6 +41,6 @@ ab_glyph = "0.2"
 [dev-dependencies]
 # Host-routing receipts run through `Harness`, the windowless twin of the
 # shipping host: a click, a right-click, a wheel notch and a key press take the
-# same hit test, capture and dispatch path the real window takes. `genet-probe`
+# same hit test, capture and dispatch path the real window takes. `taproot`
 # supplies the semantic selectors those tests target controls by.
-genet-probe = { workspace = true }
+taproot = { workspace = true }

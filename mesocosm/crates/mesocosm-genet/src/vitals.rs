@@ -213,7 +213,7 @@ impl VitalsChrome {
     }
 
     /// This lane's retained DOM, where it sits in the window, and the sheet it
-    /// lays out under — what a `genet_probe::ProbeSurface` is made of. (DT4)
+    /// lays out under — what a `taproot::ProbeSurface` is made of. (DT4)
     ///
     /// The driver searches and asserts against exactly the tree this lane draws
     /// from, so an `assert text` is a claim about what is on screen rather than

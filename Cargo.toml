@@ -10,7 +10,7 @@ members = [
     "crates/isometry-system",
     "crates/isometry-voxel",
 ]
-exclude = ["crates/isometry-runtime", "mesocosm", "paredros", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/wing-scenario", "shared/isometer"]
+exclude = ["crates/isometry-runtime", "mesocosm", "paredros", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer"]
 
 # Keep interactive debug builds responsive; see the watchtower plan's M4 drag
 # receipt. Include the app where generic host/layout code is instantiated.
@@ -60,31 +60,34 @@ postcard = { version = "1", features = ["alloc"], default-features = false }
 # Portable slots/blobs over a host-chosen backend. Isometry uses its redb
 # backend for private desktop campaign state; the future web host can swap
 # the backend without changing campaign data.
-muniment = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+muniment = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # Host-neutral actor runtime for background host/session work. The Genet
 # application owns its state on the winit thread and drains typed updates.
-armillary = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-personae = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-mooting = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+armillary = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+personae = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+mooting = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # Murm's peer-exchange replication foundation (SyncedSpace/MunimentStore/
 # processor). Split out of `mooting` by mere's murm peer-runtime work; mooting
 # now keeps only governance policy.
-murm-replication = { package = "stickleback", git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-gemot = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+murm-replication = { package = "stickleback", git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+gemot = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # mere renamed the package to `mere-transport` (the lib is still `transport`),
 # and `[patch]` keys match the *package* name, so both this dep and the local
 # override in .cargo/tabletop-local.toml must say so.
-transport = { package = "mere-transport", git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-murm = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+transport = { package = "mere-transport", git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+murm = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 p2panda-core = "0.7.0"
-# The net crate is the **published** `mere-p2panda-net =0.7.2`, taken exactly
-# as `mere-transport` and `stickleback` take it: same package, same exact
-# version, same features. isonetry composes `LogSync` on the endpoint
+# The net crate is `mere-p2panda-net =0.7.4`, taken exactly as
+# `mere-transport` and `stickleback` take it: same package, same exact
+# version, same features. It is no longer a registry edge: mere moved the
+# family to the fork's `0.7.4` release (mere `0db9d10d`, "Pin mere-p2panda-net
+# 0.7.4 with prompt idle sync shutdown"), and 0.7.4 was never published, so the
+# `[patch.crates-io]` table below repoints this line at the fork tag. isonetry composes `LogSync` on the endpoint
 # `P2pandaTransport::sync_parts` hands it, so a different dep line here lands a
 # second net crate and the endpoint types stop matching. Every feature except
 # `sqlite`: the address book runs on stickleback's muniment-backed store, and
 # feature unification means every consumer has to opt out, not just one.
-p2panda-net = { package = "mere-p2panda-net", version = "=0.7.2", default-features = false, features = [
+p2panda-net = { package = "mere-p2panda-net", version = "=0.7.4", default-features = false, features = [
     "address_book",
     "iroh_endpoint",
     "iroh_mdns",
@@ -99,15 +102,15 @@ thiserror = "1"
 # Product-free projection score and analytic solvers. Isometry owns the
 # campaign-to-score adapter in `isometry-views`; the shared crates carry only
 # opaque source refs, measured footprints, and scenes.
-sceno = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-scenomise = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-scenotime = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+sceno = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+scenomise = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+scenotime = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+graphshell-endpoint = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # The projection contract. Was `graphshell-protocol`; mere renamed it to
 # `chirograph` on 2026-08-14 because the contract is the family's, not the
 # portal's. Same types, same re-exports.
-chirograph = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
-graphshell-stdio = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+chirograph = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
+graphshell-stdio = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 
 # UI: the shared Cambium desktop host. Git deps on the owned repos so any
 # machine resolves; local checkouts override via the gitignored
@@ -133,7 +136,7 @@ graphshell-stdio = { git = "https://github.com/merely-made/mere.git", rev = "fb7
 # The node-label floor the old registry pin used to state is long past —
 # `with_node_labels` labels carry node state from cambium 0.3.2 on, and mere
 # main is 0.3.3.
-cambium = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # The single-root Cambium desktop host (genet G1, 2026-08-09; mere's since
 # 2026-09-03). It owns the winit lifecycle, the surface, layout, paint, hit
 # testing, input routing and the AccessKit sync isometry used to assemble by
@@ -141,24 +144,25 @@ cambium = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b1329
 # genet-winit-host, cambium-winit, netrender, paint_list_*, wgpu, winit) are
 # gone from this workspace. They still arrive transitively; only what isometry
 # may *name* changed.
-cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # Cambium's retained custom-paint leaves (the graph-canvas swatch's painted
 # nodes + edges). A host wires them directly, the pelt-desktop pattern. From the
 # same git source as cambium, which is what keeps one `PaintCmd` in the graph.
-sprigging = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+sprigging = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 
 # The DOM seams that stayed in genet when Cambium left. Their revision is not
 # free: mere's `cambium-genet-winit-host` takes `layout-dom-api` (as
-# `layout_dom_api`), `genet-scripted-dom`, `genet-probe`, `genet-winit-host`
+# `layout_dom_api`), `genet-scripted-dom`, `taproot`, `genet-winit-host`
 # and `genet-livery` from the owner-selected Genet revision below.
 # One reference per git source, or two copies of the DOM seams land
 # and the host's `LayoutDom` stops being the one isometry's views and receipts
 # build. Bump this when mere's genet pin moves, and only then.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932", version = "=0.1.0" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932", version = "=0.1.0" }
+layout-dom-api = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a", version = "=0.1.0" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a", version = "=0.1.0" }
 # The shared automatability substrate: selector resolution, so isometry's
 # host-routing receipts target a control by role and label rather than pixel.
-genet-probe = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932" }
+# Named `genet-probe` until genet 7baa554c (2026-09-14).
+taproot = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a" }
 
 # Mirror of the [patch.crates-io] entries this workspace's genet graph needs;
 # patches are per-workspace-root and do NOT inherit through a git dep, so both
@@ -170,13 +174,13 @@ genet-probe = { git = "https://github.com/merely-made/genet.git", rev = "3a7b502
 # workspace tracks the repo. Two sources means two `muniment::Backend` traits and
 # `MunimentStore`'s bounds stop matching, so redirect the registry edge at the
 # same git source and revision: exactly one muniment lands.
-muniment = { git = "https://github.com/merely-made/mere.git", rev = "fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c" }
+muniment = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # The two DOM seams again, from the registry side: published Buckram and Livery
 # reach them through crates.io, and a registry copy beside the git one is the
 # same two-`LayoutDom` split the workspace dep above guards against. Same
 # revision as mere's Cambium consumes, necessarily.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932", version = "=0.1.0" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932", version = "=0.1.0" }
+layout-dom-api = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a", version = "=0.1.0" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a", version = "=0.1.0" }
 # There is deliberately no `cambium` or `sprigging` entry here. Both are
 # published, but nothing in this graph reaches them through the registry —
 # mere's members take them by path inside mere's own checkout — so an entry
@@ -194,15 +198,15 @@ genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "
 # different: Buckram and Livery consume the renamed `genet-taffy` package, so
 # the patch below names that package explicitly while keeping the dependency
 # alias Cargo expects.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932", version = "=0.14.0" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a", version = "=0.14.0" }
 # Genet Livery uses AlignmentOptions::last_line_alignment and
 # StyleProperty::TabSize from Genet's Parley fork. Published Parley 0.10.0 has
 # the same version but not those APIs, so a clean consumer must restate the
 # workspace patch.
-parley = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932" }
+parley = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a" }
 # ipc-channel: genet's in-process fork (force-inprocess default; drops the
 # windows 0.61 pin that broke gpu-allocator/wgpu-hal unification).
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "3a7b50230d447f6fa7ed6921cba019f78347d932" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a" }
 # `murm-replication` (stickleback) and `mere-transport` are written against the
 # **owned p2panda fork**, not the published crates. mere's manifest repoints the
 # family there; this workspace must mirror it, or it resolves stock p2panda from
@@ -218,16 +222,25 @@ ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "3a7b502
 # branch: a branch lets the two workspaces drift a commit apart, which is the
 # same duplicate hazard by another route. Keep no local paths here; the
 # machine-local redirect belongs in the gitignored `.cargo/tabletop-local.toml`.
-p2panda-auth = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-p2panda-core = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-p2panda-discovery = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-p2panda-encryption = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-p2panda-store = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-p2panda-sync = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.2" }
-# There is deliberately no `p2panda-net` entry, matching mere: that package name
-# is no longer consumed anywhere in the graph. The net crate is the published
-# `mere-p2panda-net =0.7.2`, named directly in [workspace.dependencies] above,
-# so a patch on `p2panda-net` would be permanently unused.
+p2panda-auth = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+p2panda-core = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+p2panda-discovery = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+p2panda-encryption = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+p2panda-store = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+p2panda-sync = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
+# `mere-p2panda-net` joins the family here as of mere `3675a352`. It used to be
+# left out because the net crate came from the registry at `=0.7.2`; mere's
+# `0db9d10d` moved the family to the `0.7.4` fork release, which was never
+# published, so the registry edge named in [workspace.dependencies] above has
+# to be repointed at the fork or `stickleback`'s `=0.7.4` cannot resolve at all:
+#
+#   error: failed to select a version for the requirement
+#   `mere-p2panda-net = "=0.7.4"` ... candidate versions found which didn't
+#   match: 0.7.2, 0.7.1
+#
+# There is still deliberately no `p2panda-net` entry: that *package name* is
+# consumed nowhere in the graph, so patching it would be permanently unused.
+mere-p2panda-net = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere-p2panda-net-0.7.4" }
 #
 # `p2panda-stream` is deliberately absent too, though mere patches it. Nothing
 # here reaches it even under `--all-features` — stickleback names it as a

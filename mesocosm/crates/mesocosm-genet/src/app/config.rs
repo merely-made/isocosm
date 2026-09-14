@@ -42,7 +42,7 @@ pub struct HostConfig {
     pub replay: Option<PlayedTrace>,
     /// The scenario text driving this run, when `--scenario` gave it one. (DT4)
     ///
-    /// The text rather than a parsed [`genet_probe::Scenario`], because a
+    /// The text rather than a parsed [`taproot::Scenario`], because a
     /// config is cloned and compared and a parsed scenario is neither. `Host::new`
     /// parses it, so a typo stops the run before a window opens.
     pub scenario: Option<String>,

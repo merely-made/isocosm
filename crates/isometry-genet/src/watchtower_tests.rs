@@ -8,9 +8,9 @@ use std::rc::Rc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use cambium_genet_winit_host::{Harness, Init};
-use genet_probe::Selector;
 use isometry_core::TokenId;
 use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
+use taproot::Selector;
 
 use super::*;
 
@@ -97,7 +97,7 @@ fn generated_forest_sites_reach_the_native_board() {
         harness.update(|ui| ui.apply_snapshot(visit));
         harness.relayout();
         let labels = harness.with_dom(|dom| {
-            genet_probe::matching(dom, &Selector::class("tile-encounter"))
+            taproot::matching(dom, &Selector::class("tile-encounter"))
                 .into_iter()
                 .map(|node| {
                     dom.attribute(node, &Namespace::from(""), &LocalName::from("aria-label"))
@@ -131,7 +131,7 @@ fn board_tile_clips_its_hit_area_to_the_visible_diamond() {
         harness.update(|ui| ui.set_pixel_grid((2.0, zoom)));
         harness.layout_at(WINDOW.0, WINDOW.1);
         let tile = harness.with_dom(|dom| {
-            let tiles = genet_probe::matching(dom, &Selector::class("tile"));
+            let tiles = taproot::matching(dom, &Selector::class("tile"));
             assert_eq!(tiles.len(), 1);
             tiles[0]
         });
@@ -244,7 +244,7 @@ fn watchtower_preview_commit_projects_inhabitants_and_reopens_checkpoint() {
     );
     assert!(
         harness.with_dom(|dom| {
-            !genet_probe::matching(dom, &Selector::class("token-tower-beast")).is_empty()
+            !taproot::matching(dom, &Selector::class("token-tower-beast")).is_empty()
         }),
         "the projected board renders the creature's pack sprite class"
     );

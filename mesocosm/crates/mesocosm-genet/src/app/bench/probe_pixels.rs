@@ -5,14 +5,14 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Which element is the bench's viewport, and how a click reaches it. The mask
-//! arithmetic and the decoded-PNG comparison are `wing_scenario::pixels`; what
+//! arithmetic and the decoded-PNG comparison are `mesquite::pixels`; what
 //! is here is the authored fixture those generic checks are run over.
 //!
 //! The transform below is restated from `view.rs` on purpose: a check that asks
 //! Genet's own transform implementation where a pixel went proves nothing.
 
-use genet_probe::Selector;
-use wing_scenario::{Viewport, ViewportTransform};
+use mesquite::{Viewport, ViewportTransform};
+use taproot::Selector;
 
 use super::Context;
 
@@ -30,7 +30,7 @@ pub(super) fn viewport(ctx: &Context<'_>) -> Option<Viewport> {
     let dom = ctx.runner.dom();
     let dom = dom.borrow();
     let rect = |selector: Selector| {
-        genet_probe::matching(&dom, &selector)
+        taproot::matching(&dom, &selector)
             .into_iter()
             .find_map(|node| ctx.painted_rect(node))
             .map(|(x, y, w, h)| [x, y, w, h])
@@ -53,7 +53,7 @@ pub(super) fn target_point(
     border: [f32; 4],
 ) -> (f32, f32) {
     let point = (border[0] + border[2] * 0.5, border[1] + border[3] * 0.5);
-    let specimen = genet_probe::matching(
+    let specimen = taproot::matching(
         &ctx.runner.dom().borrow(),
         &Selector::role("img").containing("Specimen"),
     )

@@ -7,7 +7,7 @@
 //! Read-only receipts of the existing Creator and scene producer.
 
 use super::Context;
-use genet_probe::ProbeSnapshot;
+use taproot::ProbeSnapshot;
 pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> ProbeSnapshot {
     let state = ctx.runner.state();
     let model = state.model.borrow();

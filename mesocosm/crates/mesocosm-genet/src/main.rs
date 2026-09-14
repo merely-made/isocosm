@@ -17,7 +17,7 @@
 //! fixture is written only when a flag names it, ruled 2026-09-02 — before
 //! that the defaults were the fixture, and an unqualified run overwrote it.
 //!
-//! `--scenario` drives the run from a text scenario through genet-probe's
+//! `--scenario` drives the run from a text scenario through taproot's
 //! shared driver (DT4). It is where `--record-demo` and `--auto-eat` went: both
 //! are now actions a scenario asks for by name. See [`mesocosm_genet::app::drive`]
 //! for the verbs and [`mesocosm_genet::app::actions`] for the names.

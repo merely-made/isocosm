@@ -31,7 +31,7 @@
 //!
 //! A script has no eye and no hand, so a handful of things a person does
 //! without thinking have no key at all. These are host actions rather than new
-//! genet-probe verbs, per the plan's instruction: where the stack lacks a verb,
+//! taproot verbs, per the plan's instruction: where the stack lacks a verb,
 //! express it through `act` with a host-side name and report the gap.
 //!
 //! | Name | What it does | Why no key |

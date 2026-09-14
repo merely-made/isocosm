@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Native bench acceptance, as a thin adapter over `wing-scenario`.
+//! Native bench acceptance, as a thin adapter over `mesquite`.
 //!
 //! The lane lifecycle — scenario ticking per presented frame, the frame limit,
 //! the deferred close, capture arming through `read_frame`, PNG writing, the
@@ -18,8 +18,8 @@
 use std::{cell::Cell, path::PathBuf, rc::Rc};
 
 use cambium_genet_winit_host::AppCtx;
-use genet_probe::{ProbeSnapshot, Scenario};
-use wing_scenario::{CostObservation, Viewport};
+use mesquite::{CostObservation, Viewport};
+use taproot::{ProbeSnapshot, Scenario};
 
 use super::{
     state::Bench,
@@ -38,7 +38,7 @@ pub(super) type Context<'a> = AppCtx<'a, Bench, Logic, Child>;
 /// The bench's answers to the shared lane's questions.
 struct BenchProduct;
 
-impl wing_scenario::Product for BenchProduct {
+impl mesquite::Product for BenchProduct {
     type State = Bench;
     type Logic = Logic;
     type View = Child;
@@ -107,7 +107,7 @@ impl wing_scenario::Product for BenchProduct {
     fn app_step(
         &mut self,
         _ctx: &mut Context<'_>,
-        _checkpoints: wing_scenario::Checkpoints<'_>,
+        _checkpoints: mesquite::Checkpoints<'_>,
         line: &str,
     ) -> Result<(), String> {
         Err(format!("unknown bench step: {line}"))
@@ -115,8 +115,8 @@ impl wing_scenario::Product for BenchProduct {
 }
 
 /// The bench's scenario lane. The API `bench.rs` drives is unchanged; the body
-/// is `wing_scenario::Lane`.
-pub(super) struct Lane(wing_scenario::Lane<BenchProduct>);
+/// is `mesquite::Lane`.
+pub(super) struct Lane(mesquite::Lane<BenchProduct>);
 
 impl Lane {
     pub fn new(
@@ -125,7 +125,7 @@ impl Lane {
         final_capture: Option<PathBuf>,
         exit_code: Rc<Cell<i32>>,
     ) -> Self {
-        Self(wing_scenario::Lane::new(
+        Self(mesquite::Lane::new(
             BenchProduct,
             scenario,
             receipt,

@@ -149,7 +149,7 @@ pub struct Host {
     /// `None` for an ordinary session at the keyboard, and for a bare
     /// `--replay`. While it is `Some`, the scenario decides when the run ends;
     /// see [`drive`].
-    scenario: Option<genet_probe::Scenario>,
+    scenario: Option<taproot::Scenario>,
     /// Semantic events since the driver last drained them. Presentation of a
     /// sort: it is written from what the world already answered and read only
     /// by `assert event`, so nothing in it reaches an intent.
@@ -251,7 +251,7 @@ impl Host {
         let follow = config.follow.map(mesocosm_core::OrganismId);
         // Parsed once, here, so a typo in a scenario stops the run before a
         // window opens rather than three verbs into it. (DT4)
-        let scenario = match config.scenario.as_deref().map(genet_probe::Scenario::parse) {
+        let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {
             Some(Ok(scenario)) => Some(scenario),
             Some(Err(why)) => {
                 eprintln!("scenario: {why}");
