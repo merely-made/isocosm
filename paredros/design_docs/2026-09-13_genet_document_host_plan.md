@@ -209,7 +209,15 @@ and the brick map for revision-driven rebuilds.
   root), moving from `shared/wing-scenario` into mere's cambium family
   because graphshell, turnstone and signalman already consume the probe.
   **tamarisk** is banked for a later extension. Both crates.io-free at the
-  ruling; taproot is claimed by a real publish at 0.1.0.
+  ruling. *Landed 2026-09-14:* genet 7baa554c renames the component; mere
+  3675a352 adds `crates/cambium/mesquite` and takes taproot across its
+  consumers; the umbrella (419f6c9, e1f5c7c) moves mesocosm, paredros,
+  isometer and the root onto those revisions, deletes `shared/wing-scenario`,
+  and repins cleromancy (3617583) so every lock holds one revision per
+  family; knot-editor 5c763e2 and turnstone 6ec391f follow. The taproot
+  publish waits on a buckram release: the registry's buckram 0.0.1 no
+  longer compiles against genet-taffy, so a registry-only taproot graph
+  cannot verify.
 - **isometer** is the game-world scene family (the wing-scene extraction),
   with lens, render and mesh as its components rather than Mesocosm-owned
   path dependencies; **isomere** is the wing-unique GUI layer, scene and
