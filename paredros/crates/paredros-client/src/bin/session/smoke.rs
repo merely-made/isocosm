@@ -78,7 +78,8 @@ impl Lane {
     /// A close arriving before the script finished is a failure, not an exit.
     pub(super) fn refuse(&mut self) {
         if !matches!(self.stage, Stage::Done) {
-            self.errors.push("window closed before the smoke finished".into());
+            self.errors
+                .push("window closed before the smoke finished".into());
             self.finish();
         }
     }
@@ -96,7 +97,8 @@ impl Lane {
             Stage::Script => {
                 self.viewport = viewport(ctx);
                 if self.viewport.is_none() {
-                    self.errors.push("the scene viewport has no painted box".into());
+                    self.errors
+                        .push("the scene viewport has no painted box".into());
                     self.finish();
                     self.stage = Stage::Done;
                 } else {
@@ -132,7 +134,8 @@ impl Lane {
         let result = self.readback.borrow_mut().take();
         let Some(result) = result else {
             if self.frames.saturating_sub(self.armed) > READBACK_GRACE {
-                self.errors.push("the capture never reached a presented frame".into());
+                self.errors
+                    .push("the capture never reached a presented frame".into());
                 self.stage = Stage::Done;
                 self.finish();
             }
@@ -151,7 +154,8 @@ impl Lane {
             || frame.height == 0
             || frame.rgba.len() != frame.width as usize * frame.height as usize * 4
         {
-            self.errors.push("the capture has invalid pixel storage".into());
+            self.errors
+                .push("the capture has invalid pixel storage".into());
             return;
         }
         let path = self.directory.join("session-smoke.png");
@@ -165,7 +169,8 @@ impl Lane {
             .chunks_exact(4)
             .all(|pixel| pixel == &frame.rgba[..4])
         {
-            self.errors.push("the presented frame is one flat colour".into());
+            self.errors
+                .push("the presented frame is one flat colour".into());
         }
         let Some((rect, scale)) = self.viewport else {
             return;
@@ -200,7 +205,8 @@ impl Lane {
             colours.len()
         ));
         if sampled == 0 {
-            self.errors.push("the viewport mask covered no captured pixels".into());
+            self.errors
+                .push("the viewport mask covered no captured pixels".into());
         } else if detail < MIN_VIEWPORT_DETAIL || colours.len() < 3 {
             self.errors.push(format!(
                 "the viewport region is trivial: {detail} off-modal pixels in {} colours",
@@ -208,7 +214,8 @@ impl Lane {
             ));
         }
         if let Some(error) = ctx.runner.state().published_error.clone() {
-            self.errors.push(format!("viewport error published: {error}"));
+            self.errors
+                .push(format!("viewport error published: {error}"));
         }
     }
 
@@ -316,7 +323,9 @@ fn script(state: &mut SessionApp, errors: &mut Vec<String>) {
         let game = model.game();
         let played = model.played();
         check!(
-            game.bodies().get(played).is_some_and(|body| body.wound == 0),
+            game.bodies()
+                .get(played)
+                .is_some_and(|body| body.wound == 0),
             "rest did not clear the played subject's wound"
         );
         check!(

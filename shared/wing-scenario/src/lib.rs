@@ -34,11 +34,13 @@ use std::path::PathBuf;
 use cambium_rootstock::{AppCtx, NodeId, meristem_bounds::RootView};
 use genet_probe::ProbeSnapshot;
 
+mod checkpoints;
 mod cost;
 mod lane;
 mod pixels;
 mod probe;
 
+pub use checkpoints::{Checkpoint, Checkpoints};
 pub use cost::{CostObservation, Costs, Totals};
 pub use lane::{Capture, Lane, capture_path};
 pub use pixels::{PixelCheck, Viewport, ViewportTransform, create_parent, write_png};
@@ -133,8 +135,15 @@ pub trait Product: Sized {
     }
 
     /// Handle a scenario verb the generic grammar did not recognize.
-    fn app_step(&mut self, ctx: &mut Ctx<'_, Self>, line: &str) -> Result<(), String> {
-        let _ = ctx;
+    /// `checkpoints` is the read-only view of what `remember` has taken, so a
+    /// product verb compares against the same checkpoints the shared verbs do.
+    fn app_step(
+        &mut self,
+        ctx: &mut Ctx<'_, Self>,
+        checkpoints: Checkpoints<'_>,
+        line: &str,
+    ) -> Result<(), String> {
+        let _ = (ctx, checkpoints);
         Err(format!("unknown scenario step: {line}"))
     }
 }

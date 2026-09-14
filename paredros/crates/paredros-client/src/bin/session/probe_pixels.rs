@@ -26,6 +26,5 @@ pub(super) fn viewport(ctx: &Context<'_>) -> Option<Viewport> {
         .next()?;
     let (x, y, width, height) = ctx.painted_rect(node)?;
     let pixel_scale = ctx.window.map_or(1.0, |window| window.scale_factor()) as f32 * ctx.ui_zoom;
-    (width > 0.0 && height > 0.0)
-        .then(|| Viewport::new([x, y, width, height], pixel_scale, INSET))
+    (width > 0.0 && height > 0.0).then(|| Viewport::new([x, y, width, height], pixel_scale, INSET))
 }

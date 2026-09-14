@@ -6,16 +6,16 @@
 
 //! The [`Automatable`]/[`Driveable`] implementation the scenario drives: one
 //! retained surface, host-owned selector geometry, pointer delivery through the
-//! host's own routing, and the shared verbs (`remember`, `same`/`more`,
-//! `capture`s comparison, pixel checks, `zoom`, `opacity`, `resize`,
-//! `input-text`, `cost-begin`/`cost-end`).
+//! host's own routing, and the shared verbs (`remember`,
+//! `same`/`differs`/`more`/`dropped`, `capture`s comparison, pixel checks,
+//! `zoom`, `opacity`, `resize`, `input-text`, `cost-begin`/`cost-end`).
 
 use cambium_rootstock::{HostPointer, WindowCommand};
 use genet_probe::{
     Automatable, Driveable, Hit, ProbeSnapshot, ProbeSurface, Selector, SelectorTarget,
 };
 
-use crate::{Ctx, Lane, Product, pixels};
+use crate::{Checkpoints, Ctx, Lane, Product, pixels};
 
 pub(crate) struct Probe<'a, 'c, P: Product> {
     pub(crate) ctx: &'a mut Ctx<'c, P>,
@@ -160,35 +160,13 @@ impl<P: Product> Driveable for Probe<'_, '_, P> {
                 let check = pixels::compare(&self.lane.captures, verb, first, second)?;
                 self.lane.pixel_checks.push(check);
             },
-            [verb @ ("same" | "more"), name, fields @ ..] if !fields.is_empty() => {
-                let before = self
-                    .lane
-                    .checkpoints
-                    .get(*name)
-                    .ok_or_else(|| format!("unknown checkpoint {name}"))?
-                    .clone();
+            [
+                verb @ ("same" | "differs" | "more" | "dropped"),
+                name,
+                fields @ ..,
+            ] if !fields.is_empty() => {
                 let now = self.snapshot();
-                for field in fields {
-                    let first = before
-                        .get(*field)
-                        .ok_or_else(|| format!("checkpoint {name} has no {field}"))?;
-                    let current = now
-                        .field(field)
-                        .ok_or_else(|| format!("no snapshot field {field}"))?;
-                    let matches = if *verb == "same" {
-                        first == current
-                    } else {
-                        current
-                            .parse::<u64>()
-                            .map_err(|_| format!("{field} is not a counter"))?
-                            > first
-                                .parse::<u64>()
-                                .map_err(|_| format!("{field} was not a counter"))?
-                    };
-                    if !matches {
-                        return Err(format!("{verb} {name} {field}: {first} -> {current}"));
-                    }
-                }
+                Checkpoints(&self.lane.checkpoints).compare(verb, name, fields, &now)?;
             },
             [
                 verb @ ("captures-differ" | "capture-size-changed"),
@@ -212,7 +190,16 @@ impl<P: Product> Driveable for Probe<'_, '_, P> {
                     return Err(format!("{verb}: {first} and {second} agree"));
                 }
             },
-            _ => return self.lane.product.app_step(self.ctx, line),
+            _ => {
+                // Disjoint fields: the product hook is handed the lane's own
+                // checkpoints rather than keeping a second set of its own.
+                let Lane {
+                    product,
+                    checkpoints,
+                    ..
+                } = &mut *self.lane;
+                return product.app_step(self.ctx, Checkpoints(checkpoints), line);
+            },
         }
         Ok(())
     }

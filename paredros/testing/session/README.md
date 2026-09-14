@@ -49,7 +49,7 @@ acceptance artifact.
   `selected-subject` 701, `selected-part` 3.
 - `Save` then `Load`, both clicked, round-trip one `GameSave` version: a move
   between them changes the hash, and the load restores it exactly
-  (`same round-trip hash`). Captures `final`.
+  (`same saved hash`). Captures `final`.
 
 `failure.scenario` is the negative control: one deliberately false assertion
 (`ready == impossible`). The run must exit 1 with `"ok": false` in the receipt

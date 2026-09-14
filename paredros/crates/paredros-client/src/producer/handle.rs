@@ -130,7 +130,10 @@ impl SceneModel {
     /// One accepted cut. The timed arm reconciles the open action against the
     /// batch, so an injury that severs a contributing limb repairs the action
     /// rather than leaving it addressing a part that no longer exists.
-    pub fn apply_batch(&mut self, intents: &[GameIntent]) -> Result<Vec<GameEvent>, TimedActionError> {
+    pub fn apply_batch(
+        &mut self,
+        intents: &[GameIntent],
+    ) -> Result<Vec<GameEvent>, TimedActionError> {
         match &mut self.held {
             Held::Plain(session) => {
                 let mut events = Vec::new();

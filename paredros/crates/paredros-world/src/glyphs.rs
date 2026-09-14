@@ -244,17 +244,16 @@ impl GlyphReading {
             evidence: evidence.clone(),
             context: Some(format!("subject={}", self.rules.subject.0)),
         };
-        let outcome = match self.journey.grant(
-            &glyph,
-            provenance,
-            tick,
-            VariantPolicy::RequireOwnedBase,
-        ) {
-            Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
-            Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
-            Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
-            Err(why) => GlyphGrantOutcome::Rejected(why),
-        };
+        let outcome =
+            match self
+                .journey
+                .grant(&glyph, provenance, tick, VariantPolicy::RequireOwnedBase)
+            {
+                Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
+                Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
+                Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
+                Err(why) => GlyphGrantOutcome::Rejected(why),
+            };
         self.records.push(GlyphEvidence {
             index,
             tick,
@@ -280,9 +279,7 @@ fn accepted(event: &GameEvent) -> Option<(AcceptedKind, SubjectId)> {
         GameEvent::Rested { subject, .. } => Some((AcceptedKind::Rested, *subject)),
         GameEvent::Took { subject, .. } => Some((AcceptedKind::Took, *subject)),
         GameEvent::ItemAttached { subject, .. } => Some((AcceptedKind::ItemAttached, *subject)),
-        GameEvent::MotionAdvanced { subject, .. } => {
-            Some((AcceptedKind::MotionAdvanced, *subject))
-        },
+        GameEvent::MotionAdvanced { subject, .. } => Some((AcceptedKind::MotionAdvanced, *subject)),
         GameEvent::Moved {
             subject, from, to, ..
         } if from != to => Some((AcceptedKind::Moved, *subject)),
@@ -316,9 +313,6 @@ fn tick_of(event: &GameEvent) -> u64 {
     }
 }
 
-#[cfg(test)]
-#[path = "glyphs/fixture.rs"]
-mod fixture;
 #[cfg(test)]
 #[path = "glyphs/tests.rs"]
 mod tests;

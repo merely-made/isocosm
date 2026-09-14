@@ -371,14 +371,19 @@ impl Hud {
         scene.push_rect(0., 0., 1280., 720., [0.035, 0.05, 0.065, 1.]);
         scene.push_rect(24., 20., 1256., 680., [0.025, 0.04, 0.055, 0.96]);
         let ink = [0.91, 0.95, 0.96, 1.];
-        self.text.label(&mut scene, title, [48., 48.], 28., ink, 1160.);
+        self.text
+            .label(&mut scene, title, [48., 48.], 28., ink, 1160.);
         for (index, line) in lines.iter().enumerate() {
             self.text.label(
                 &mut scene,
                 line,
                 [54., 112. + index as f32 * 31.],
                 18.,
-                if index == 0 { [0.95, 0.78, 0.42, 1.] } else { ink },
+                if index == 0 {
+                    [0.95, 0.78, 0.42, 1.]
+                } else {
+                    ink
+                },
                 1140.,
             );
         }

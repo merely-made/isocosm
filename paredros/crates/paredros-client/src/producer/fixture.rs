@@ -3,16 +3,22 @@
 
 //! The producer tests' view of the promoted fixture world.
 //!
-//! The world itself lives in [`crate::session_fixture`], which the P2 host
-//! also builds from; only the scene handle is producer-specific.
+//! The world itself lives in [`paredros_world::fixtures::session`], which the
+//! session host also builds from; only the scene handle is producer-specific.
 
-pub use crate::session_fixture::{Fixture, advance_motion, timed_action_world};
+pub use paredros_world::fixtures::session::{Fixture, advance_motion, timed_action_world};
 
 use super::{SceneHandle, SceneModel};
 
-impl Fixture {
+/// The one producer-specific reading of the shared fixture. An extension
+/// trait because [`Fixture`] is the world crate's type now.
+pub trait FixtureScene {
     /// A handle over a copy of the current session, framed on the keeper.
-    pub fn scene(&self) -> SceneHandle {
+    fn scene(&self) -> SceneHandle;
+}
+
+impl FixtureScene for Fixture {
+    fn scene(&self) -> SceneHandle {
         SceneModel::new(self.action.session().clone(), self.keeper).into_handle()
     }
 }

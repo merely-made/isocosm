@@ -70,7 +70,10 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         )
         .with_field(
             "error",
-            scene.last_error().map(str::to_owned).unwrap_or("none".into()),
+            scene
+                .last_error()
+                .map(str::to_owned)
+                .unwrap_or("none".into()),
         )
         .with_field(
             "viewport-error",

@@ -66,9 +66,9 @@ impl SessionApp {
             knowledge: &knowledge,
             inputs: &inputs,
             part_names: paredros_world::fixtures::three_lives::PART_NAMES,
-            selected_part: self.selected.and_then(|(subject, part)| {
-                (subject == played).then_some(part)
-            }),
+            selected_part: self
+                .selected
+                .and_then(|(subject, part)| (subject == played).then_some(part)),
         });
         sheet.actions.clear();
         sheet.resources.clear();

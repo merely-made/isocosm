@@ -37,13 +37,11 @@ use std::path::PathBuf;
 use std::rc::Rc;
 use std::time::{Duration, Instant};
 
-use cambium_genet_winit_host::{
-    CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey,
-};
+use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey};
 use mesocosm_core::PartId;
 use paredros_client::producer::{SceneHandle, SceneModel, SceneProducer};
-use paredros_client::session_fixture;
 use paredros_identity::SubjectId;
+use paredros_world::fixtures::session as session_fixture;
 use paredros_world::glyphs::GlyphReading;
 use paredros_world::timed_action::Direction;
 use paredros_world::{CombatRules, ItemId};

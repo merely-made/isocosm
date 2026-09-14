@@ -5,7 +5,8 @@
 #     --frames 1800 --size 1240x820
 # Every click goes through the host's own retained DOM and pointer routing.
 # Everything with no DOM control of its own is an `act`, which is this host's
-# keyboard-only vocabulary by name.
+# keyboard-only vocabulary by name. Every checkpoint verb is wing-scenario's:
+# `remember` takes one, and `same`/`differs`/`more`/`dropped` read it back.
 wait
 assert snap ready == yes
 assert snap error == none
@@ -16,7 +17,6 @@ assert text Acquisition journal
 assert text Status
 capture opened
 remember start
-mark start
 
 # Movement reaches the accepted world, not just the drawn frame.
 act move-right
@@ -28,7 +28,6 @@ assert snap grounded == yes
 
 # The charged volley: aim, join a limb, charge, release. The target loses the
 # authored limb it wears the dressing on.
-mark before-volley
 remember before-volley
 act aim-right
 settle 2
@@ -78,13 +77,12 @@ assert snap selected-part == 3
 click role:button Save
 settle 2
 assert snap saves == 1
-remember round-trip
-mark saved
+remember saved
 act move-forward
 settle 2
 differs saved position hash
 click role:button Load
 settle 3
 assert snap save-loaded == yes
-same round-trip hash
+same saved hash
 capture final

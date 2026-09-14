@@ -359,3 +359,27 @@ creator files are owned by a concurrent lane and are never swept.
   journey persistence, reincarnation and divine spending, and the world
   crate's own copy of the seed-7 fixture (the client's cannot be reached
   from the world crate; a client/world boundary question).
+- **2026-09-14, P5 landed** (the two follow-ups P3b and P4 left open). The
+  seed-7 fixture has one home: `paredros_world::fixtures::session`, public and
+  unconditional like `three_lives`, built from this crate's own dependencies
+  only. `paredros-world/src/glyphs/fixture.rs` and
+  `paredros-client/src/session_fixture.rs` are both gone; `glyphs::tests` reads
+  the promoted world and keeps only the host verbs it drives it with, the
+  producer tests re-export it, and the client's `Fixture::scene` stays an
+  extension trait in `producer/fixture.rs`. One glyph test changed meaning with
+  the shared world: the target now has accepted acts of its own, so
+  "another subject starts an empty journal" became "another subject reads only
+  its own evidence", which proves the same binding against a busier history.
+  `wing-scenario` gained the two verbs P3b kept product-local: `Product::app_step`
+  is handed a read-only `Checkpoints<'_>` view of what `remember` took, and
+  `differs <checkpoint> <field>...` and `dropped <checkpoint> <field>...` join
+  `same` and `more` in the shared grammar, all four sharing one comparison with
+  the same attributable miss line. `dropped` reads decimals, which is why the
+  struck target's falling vitality needed it. The session bin's `mark`/`differs`/
+  `dropped` are deleted and the acceptance scenario is `remember` plus shared
+  verbs only; Mesocosm's adapter took exactly one signature edit (the extra
+  `_checkpoints` parameter) and nothing else. 17 shared tests (5 new), 140 world,
+  45 lib, 6 native, the clean Paredros workspace check, the acceptance scenario
+  (92 frames, 4 captures, ok) and the failure scenario (exit 1) were rerun by the
+  root, plus Mesocosm's `mesocosm-genet` check (no warnings) and its 158 tests.
+  Receipt at `testing/session/receipts/2026-09-14/acceptance-shared-verbs.json`.

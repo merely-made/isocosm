@@ -394,8 +394,14 @@ pub fn capture_path(
         return path.to_path_buf();
     }
     let base = final_capture.or(receipt).unwrap_or(default);
-    let fallback = default.file_stem().and_then(|s| s.to_str()).unwrap_or("capture");
-    let stem = base.file_stem().and_then(|s| s.to_str()).unwrap_or(fallback);
+    let fallback = default
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("capture");
+    let stem = base
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or(fallback);
     let name: String = name
         .chars()
         .map(|c| {

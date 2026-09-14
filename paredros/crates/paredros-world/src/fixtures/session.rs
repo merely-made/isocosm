@@ -1,27 +1,28 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The timed-action fixture world, promoted out of the binaries that need it.
+//! The seed-7 timed-action fixture world: one home for every consumer.
 //!
 //! `bin/timed_action/model.rs` builds this world inside the binary, where no
-//! other target can reach it. P1 copied it test-only; P2 needs the same world
-//! at run time, so the construction lives here once and both the producer
-//! tests and the `session` host consume it. The timed-action bin keeps its own
-//! copy until it retires. Seed 7, keeper plus target, identical intent order.
+//! other target can reach it. P2 promoted a copy into the client crate; P5
+//! moved it here, because the construction depends only on this crate's own
+//! dependencies and the glyph tests need it too. The producer tests, the
+//! `session` host and `glyphs::tests` all read this one. The timed-action bin
+//! keeps its own copy until it retires. Seed 7, keeper plus target, identical
+//! intent order.
 
 use mesocosm_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
-use paredros_world::fixtures::three_lives;
-use paredros_world::glyphs::{
-    AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules,
-};
-use paredros_world::timed_action::{Direction, TimedActionRules, TimedActionSession};
-use paredros_world::{
-    CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation, MOTION_SCALE,
-    MotionEnvelope, MotionRules, MovementProfile, Session, SupportBand, World, WorldConfig,
-};
 use wing_functions::{
     Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
+};
+
+use crate::fixtures::three_lives;
+use crate::glyphs::{AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules};
+use crate::timed_action::{Direction, TimedActionRules, TimedActionSession};
+use crate::{
+    CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation, MOTION_SCALE,
+    MotionEnvelope, MotionRules, MovementProfile, Session, SupportBand, World, WorldConfig,
 };
 
 pub struct Fixture {
@@ -89,7 +90,7 @@ fn target_body() -> BodyDocument {
 fn configure_keeper(game: &mut GameState, subject: SubjectId) {
     let body = &game.current_anatomy(subject).unwrap().document;
     let profile = MovementProfile {
-        revision: paredros_world::MOVEMENT_PROFILE_REVISION,
+        revision: crate::MOVEMENT_PROFILE_REVISION,
         source_revision: BodyRevisionId(0),
         envelope: MotionEnvelope {
             anchor: body.root,
@@ -180,7 +181,7 @@ pub fn timed_action_world() -> Fixture {
     apply(&mut game, |tick| GameIntent::Name {
         tick,
         subject: keeper,
-        name: paredros_world::Name::new("Keeper").unwrap(),
+        name: crate::Name::new("Keeper").unwrap(),
     });
     apply(&mut game, |tick| GameIntent::AdmitAnatomy {
         tick,
@@ -211,7 +212,7 @@ pub fn timed_action_world() -> Fixture {
     apply(&mut game, |tick| GameIntent::Name {
         tick,
         subject: target,
-        name: paredros_world::Name::new("Target").unwrap(),
+        name: crate::Name::new("Target").unwrap(),
     });
     apply(&mut game, |tick| GameIntent::AdmitAnatomy {
         tick,
@@ -284,11 +285,7 @@ pub fn motion_rules(game: &GameState, subject: SubjectId) -> MotionRules {
 
 /// One recorded fixed motion step for a subject, the same path the
 /// timed-action host's movement keys take.
-pub fn advance_motion(
-    session: &mut Session,
-    subject: SubjectId,
-    input: paredros_world::MotionInput,
-) {
+pub fn advance_motion(session: &mut Session, subject: SubjectId, input: crate::MotionInput) {
     let game = session.game();
     let pose = game.movement().pose(subject).expect("pose");
     let revision = game.bodies().get(subject).expect("body").revision;

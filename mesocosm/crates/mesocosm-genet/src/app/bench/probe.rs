@@ -15,11 +15,7 @@
 //! Controls still use the host's actual pointer routing; captures still read
 //! the presented document, including its embedded depth scene.
 
-use std::{
-    cell::Cell,
-    path::PathBuf,
-    rc::Rc,
-};
+use std::{cell::Cell, path::PathBuf, rc::Rc};
 
 use cambium_genet_winit_host::AppCtx;
 use genet_probe::{ProbeSnapshot, Scenario};
@@ -108,7 +104,12 @@ impl wing_scenario::Product for BenchProduct {
         cost::observation(ctx)
     }
 
-    fn app_step(&mut self, _ctx: &mut Context<'_>, line: &str) -> Result<(), String> {
+    fn app_step(
+        &mut self,
+        _ctx: &mut Context<'_>,
+        _checkpoints: wing_scenario::Checkpoints<'_>,
+        line: &str,
+    ) -> Result<(), String> {
         Err(format!("unknown bench step: {line}"))
     }
 }

@@ -62,8 +62,11 @@ fn viewport(state: &SessionApp) -> Child {
 fn sheet_panel(state: &SessionApp) -> Child {
     let Some(sheet) = state.sheet() else {
         return Box::new(
-            el("aside", el("p", text("No admitted anatomy for the played subject.")))
-                .attr("class", "panel"),
+            el(
+                "aside",
+                el("p", text("No admitted anatomy for the played subject.")),
+            )
+            .attr("class", "panel"),
         );
     };
     let played = state.played();
@@ -153,11 +156,8 @@ fn journal_panel(state: &SessionApp) -> Child {
                     el(
                         "div",
                         (
-                            el(
-                                "div",
-                                text(format!("{}  {}", row.display, row.glyph)),
-                            )
-                            .attr("class", "glyph-name"),
+                            el("div", text(format!("{}  {}", row.display, row.glyph)))
+                                .attr("class", "glyph-name"),
                             el(
                                 "div",
                                 text(format!("{} · {} · tick {}", row.effect, row.kind, row.tick)),
@@ -191,7 +191,10 @@ fn equipment_panel(state: &SessionApp) -> Child {
     let attachable = state.attachable_parts();
     let carried = state.carried();
     let rows: Vec<Child> = if carried.is_empty() {
-        vec![Box::new(el("p", text("Nothing carried. Press E over a dressing.")))]
+        vec![Box::new(el(
+            "p",
+            text("Nothing carried. Press E over a dressing."),
+        ))]
     } else {
         carried
             .iter()
@@ -243,7 +246,10 @@ fn equipment_panel(state: &SessionApp) -> Child {
     Box::new(
         el(
             "aside",
-            (el("h2", text("Equipment")), el("div", rows).attr("class", "items")),
+            (
+                el("h2", text("Equipment")),
+                el("div", rows).attr("class", "items"),
+            ),
         )
         .attr("class", "panel"),
     )

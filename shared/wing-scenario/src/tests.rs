@@ -60,7 +60,12 @@ fn a_named_capture_hangs_off_the_run_s_own_artifact_stem() {
     let receipt = Path::new("/runs/p3a/acceptance.json");
     // The final capture wins over the receipt, and the receipt over the default.
     assert_eq!(
-        capture_path("opened", Some(Path::new("/runs/p3a/shot.png")), Some(receipt), default),
+        capture_path(
+            "opened",
+            Some(Path::new("/runs/p3a/shot.png")),
+            Some(receipt),
+            default
+        ),
         PathBuf::from("/runs/p3a/shot-opened.png")
     );
     assert_eq!(
@@ -106,7 +111,11 @@ fn a_close_with_no_scenario_is_an_ordinary_successful_end() {
     let mut lane = lane(None, None);
     lane.request_close();
     assert!(lane.errors.is_empty());
-    assert!(lane.receipt_value(true, &BTreeMap::new())["ok"].as_bool().unwrap());
+    assert!(
+        lane.receipt_value(true, &BTreeMap::new())["ok"]
+            .as_bool()
+            .unwrap()
+    );
 }
 
 #[test]
@@ -134,7 +143,10 @@ fn the_receipt_carries_every_named_section_and_its_kind() {
     assert_eq!(value["kind"], "test-lane");
     assert_eq!(value["scenario"], true);
     assert_eq!(value["ok"], false);
-    assert_eq!(value["errors"][0], "window closed before the scenario completed");
+    assert_eq!(
+        value["errors"][0],
+        "window closed before the scenario completed"
+    );
     // The cost block always declares its schema, even with no phases.
     assert_eq!(value["cost"]["schema"], 1);
 }
@@ -161,7 +173,10 @@ fn the_viewport_mask_insets_its_border_and_drops_an_overlay() {
     assert!(viewport.contains(50, 50));
     assert!(!viewport.contains(95, 50));
     let masked = viewport.with_overlay(Some([40.0, 40.0, 20.0, 20.0]));
-    assert!(!masked.contains(50, 50), "the overlay rectangle is excluded");
+    assert!(
+        !masked.contains(50, 50),
+        "the overlay rectangle is excluded"
+    );
     assert!(masked.contains(20, 20));
 }
 
@@ -181,7 +196,11 @@ fn a_declared_transform_round_trips_a_point_and_shows_in_the_receipt() {
     assert_eq!(json["transformed"], true);
     assert_eq!(json["pixel_scale"], 2.0);
     assert_eq!(
-        json.as_object().unwrap().keys().cloned().collect::<Vec<_>>(),
+        json.as_object()
+            .unwrap()
+            .keys()
+            .cloned()
+            .collect::<Vec<_>>(),
         ["border", "overlay", "pixel_scale", "transformed"],
         "the receipt shape must not gain the mask's private arithmetic"
     );

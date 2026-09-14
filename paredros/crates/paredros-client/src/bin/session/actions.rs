@@ -39,7 +39,7 @@ impl SessionApp {
                     move_x: (toward[0] * 32767) as i16,
                     move_z: (toward[2] * 32767) as i16,
                 },
-                rules: paredros_client::session_fixture::motion_rules(game, played),
+                rules: paredros_world::fixtures::session::motion_rules(game, played),
             }
         };
         let step = match &intent {
@@ -74,9 +74,7 @@ impl SessionApp {
     /// for why a latch stands in for a held key here.
     pub(super) fn steering(&self) -> [i32; 3] {
         let now = Instant::now();
-        let live = |index: usize| {
-            i32::from(self.latched[index].is_some_and(|until| until > now))
-        };
+        let live = |index: usize| i32::from(self.latched[index].is_some_and(|until| until > now));
         [live(3) - live(2), 0, live(0) - live(1)]
     }
 
@@ -157,7 +155,13 @@ impl SessionApp {
 
     /// Begins a charge, preparing the standing direction when none is open.
     pub(super) fn begin_charge(&mut self) {
-        if self.model.borrow().action().and_then(|a| a.action()).is_none() {
+        if self
+            .model
+            .borrow()
+            .action()
+            .and_then(|a| a.action())
+            .is_none()
+        {
             self.prepare(self.direction);
             let _ = self.join_limb(PartId(2));
         }

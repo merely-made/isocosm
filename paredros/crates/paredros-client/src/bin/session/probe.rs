@@ -10,7 +10,9 @@
 //! Mesocosm's bench in P3a. What lives here is what is about *this* host: the
 //! snapshot fields a Paredros scenario asserts, its event stream, which leaf is
 //! the viewport, the keyboard-only `act` vocabulary, and the default artifact
-//! directory.
+//! directory. P5 promoted this host's `mark`/`differs`/`dropped` into the
+//! shared grammar as `remember` plus `differs`/`dropped`, so nothing here adds
+//! a verb any more.
 //!
 //! The smoke lane in `smoke.rs` is untouched and still answers
 //! `PAREDROS_SESSION_SMOKE=1`; this is the driven lane.
@@ -38,8 +40,6 @@ struct SessionProduct {
     /// How many accepted `GameEvent`s have already been reported. A load
     /// replaces the session, so the cursor is clamped rather than trusted.
     drained: usize,
-    /// This product's own `mark`/`differs` checkpoints. See [`act::app_step`].
-    marks: Vec<(String, std::collections::BTreeMap<String, String>)>,
 }
 
 impl wing_scenario::Product for SessionProduct {
@@ -99,10 +99,6 @@ impl wing_scenario::Product for SessionProduct {
             populated: stats.instances > 0,
         }
     }
-
-    fn app_step(&mut self, ctx: &mut Context<'_>, line: &str) -> Result<(), String> {
-        act::app_step(&mut self.marks, ctx, line)
-    }
 }
 
 /// `paredros/testing/session/`, the headed-verify home for this host.
@@ -127,10 +123,7 @@ impl Lane {
     ) -> Self {
         Self(
             wing_scenario::Lane::new(
-                SessionProduct {
-                    drained: 0,
-                    marks: Vec::new(),
-                },
+                SessionProduct { drained: 0 },
                 scenario,
                 receipt,
                 final_capture,
@@ -188,7 +181,9 @@ pub(super) fn options() -> Option<Options> {
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--scenario" => {
-                let path = args.next().unwrap_or_else(|| fail("--scenario wants a path"));
+                let path = args
+                    .next()
+                    .unwrap_or_else(|| fail("--scenario wants a path"));
                 let text = std::fs::read_to_string(&path)
                     .unwrap_or_else(|error| fail(&format!("scenario {path}: {error}")));
                 scenario = Some(
@@ -196,12 +191,18 @@ pub(super) fn options() -> Option<Options> {
                         .unwrap_or_else(|error| fail(&format!("scenario {path}: {error}"))),
                 );
             },
-            "--receipt" => receipt = Some(PathBuf::from(
-                args.next().unwrap_or_else(|| fail("--receipt wants a path")),
-            )),
-            "--capture" => capture = Some(PathBuf::from(
-                args.next().unwrap_or_else(|| fail("--capture wants a path")),
-            )),
+            "--receipt" => {
+                receipt = Some(PathBuf::from(
+                    args.next()
+                        .unwrap_or_else(|| fail("--receipt wants a path")),
+                ))
+            },
+            "--capture" => {
+                capture = Some(PathBuf::from(
+                    args.next()
+                        .unwrap_or_else(|| fail("--capture wants a path")),
+                ))
+            },
             "--frames" => {
                 frames = Some(
                     args.next()
@@ -230,9 +231,7 @@ pub(super) fn options() -> Option<Options> {
         scenario,
         // Scratch names, so an unqualified driven run never overwrites a kept
         // acceptance artifact.
-        receipt: receipt.or_else(|| {
-            driven.then(|| default_out_dir().join("scratch_session.json"))
-        }),
+        receipt: receipt.or_else(|| driven.then(|| default_out_dir().join("scratch_session.json"))),
         capture: capture.or_else(|| driven.then(|| default_out_dir().join("scratch_session.png"))),
         frames,
         size,

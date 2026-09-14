@@ -18,7 +18,7 @@ use mesocosm_render::live_body::pick_bodies;
 use paredros_identity::SubjectId;
 use paredros_world::MotionInput;
 
-use super::fixture::{advance_motion, timed_action_world};
+use super::fixture::{FixtureScene, advance_motion, timed_action_world};
 use super::harness::{self, Ink, SIZE};
 use super::{SceneHandle, SceneProducer, SlabView};
 
