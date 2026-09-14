@@ -791,3 +791,16 @@ Restating L9's six conditions against tests that exist or must be written.
   on closing: 0). The only product coupling left is the family's,
   `mesocosm-core`'s neutral types, which the isometer family plan owns.
   All six done conditions hold; the presentation plan's L9 is closed.
+  Paredros's port notes, for the next consumer: `Scene::pick_ndc`
+  consults terrain, so a click through a ridge answers None where a
+  terrain-blind pick answered; horizontal centring on a column is carried
+  in `Pose.position` from the document AABB, since `grounded` only stands
+  the floor; the played subject sets `always_visible` while other bodies
+  are CPU-culled by the slab window; the leaf presents `encoded_view()`
+  (Rgba8Unorm) rather than `display_view()`; and `GroundTerrain::refresh`
+  with an empty dirty list answers `Current`, so a wholesale rebuild on a
+  ground revision change is done host-side through `set_terrain_map`.
+  Paredros's counts on closing: workspace check clean, 45 client lib tests
+  with the eight GPU receipts single-threaded, 6 timed_action, 140 world,
+  session acceptance 92 frames and 4 captures, failure exit 1, smoke pass;
+  the lock holds one mere revision, 4f4de1d0, identical to isometer's.
