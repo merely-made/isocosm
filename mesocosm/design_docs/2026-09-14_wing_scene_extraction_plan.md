@@ -658,3 +658,24 @@ Restating L9's six conditions against tests that exist or must be written.
   `scene_materials` projects the phenotype mosaic for every living
   organism each frame rather than only drawn bodies; output unchanged,
   to fold into step 7's producer skip.
+- **2026-09-14, step 3 done, gate passed.** wing-scene gains src/scene.rs
+  (473: `Scene`, `SceneFrame`, `SceneStats`, `SceneHost`, `CapsuleFrame`,
+  the render body, `target`, `copy_to_display`), scene/terrain.rs (111:
+  `TerrainSource`, `TerrainRefresh {Current, Slots, Full}`,
+  `GroundTerrain`, `HostTerrain`) and capture.rs (113, verbatim).
+  `Section::render` is one `Scene::render` call; section.rs is 461 lines.
+  Deviations: `Scene::render` takes a `&mut dyn SceneHost` because the
+  capsule fallback, the world-only counters and the glyph batch interleave
+  inside one frame (its five methods are the seams steps 4 and 7 close);
+  `SceneFrame` carries `capsules: Option<CapsuleFrame>` since the capsule
+  mode is a different tracer pass; Section still passes `terrain: Some`
+  in the isolated preview because picking_tests pins the map rebuild
+  there. `Cutaway::Plane` is confirmed as the correct lowering (the plane
+  replaces the camera's near wall, `ClipSlab` holds one normal) and is
+  now tested; a plane reaches bodies only, since `BrickFrameInput` has no
+  cut and terrain is cut by rebuilding a filtered map. Green: wing-scene
+  18, mesocosm-genet 152 release including the depth and materials GPU
+  tests, both workspace checks, bench acceptance 167 frames,
+  spatial-coverage 336 frames with all 32 viewports byte-identical to the
+  2026-09-13 receipt; the 15 acceptance captures differ only in the
+  reflowed control strip.

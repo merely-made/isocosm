@@ -305,3 +305,48 @@ fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
         }
     }
 }
+
+/// The plane cutaway reaches the body cut, not just the `ClipSlab` struct.
+///
+/// The section 7.2 case the extraction plan owed: `Bounds` was the only
+/// cutaway anything exercised. A world plane six voxels behind the body drops
+/// it from the pick even though the camera's own slab holds it, and the same
+/// plane at the camera's own front wall changes nothing — so the cut is the
+/// plane's, in world coordinates, and not a restatement of the slab.
+#[test]
+fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
+    use mesocosm_core::VolumeRef;
+    use mesocosm_mesh::{BodyMesh, Volume};
+    use mesocosm_render::live_body::{LiveBody, pick_bodies};
+
+    let mesh = BodyMesh::single(VolumeRef::from_tag(1), &Volume::solid([2, 2, 2], 1));
+    let bodies = [LiveBody::new(&mesh, [0.0, 0.0, 0.0])];
+    let hit = |cutaway| {
+        pick_bodies(
+            &bodies,
+            [0.0, 0.0, 20.0],
+            SIDE,
+            100.0,
+            Some(camera(SIDE, [0.0, 0.0, 0.0], 28.0, 1.0).with_cutaway(cutaway).clip()),
+        )
+        .expect("pick")
+    };
+
+    assert!(hit(None).is_some(), "the plain slab holds the body");
+    assert!(
+        hit(Some(Cutaway::Plane {
+            normal: [0.0, 0.0, -1.0],
+            distance: 6.0,
+        }))
+        .is_none(),
+        "a plane six voxels along the view drops everything on its near side"
+    );
+    assert!(
+        hit(Some(Cutaway::Plane {
+            normal: [0.0, 0.0, -1.0],
+            distance: -SLAB_DEPTH * 0.5,
+        }))
+        .is_some(),
+        "the same plane laid on the camera's own front wall cuts nothing"
+    );
+}

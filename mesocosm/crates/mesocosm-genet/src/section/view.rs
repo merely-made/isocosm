@@ -27,14 +27,14 @@ impl super::Section {
             forward: forward_of(self.mode, pitch),
             half_height: self.half_height,
             aspect: self.aspect(),
-            depth: if self.bodies.isolated {
-                self.bodies.preview_depth
+            depth: if self.scene.bodies().isolated {
+                self.scene.bodies().preview_depth
             } else {
                 self.terrarium
                     .as_ref()
                     .map_or(super::SLAB_DEPTH, |view| view.depth())
             },
-            cutaway: if self.bodies.isolated {
+            cutaway: if self.scene.bodies().isolated {
                 None
             } else {
                 self.terrarium

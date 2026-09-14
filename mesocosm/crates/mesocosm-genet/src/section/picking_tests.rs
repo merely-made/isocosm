@@ -186,7 +186,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     section.configure_terrarium(&habitat, 0.0, Cutaway::Never, [1, 1, 0]);
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert_eq!(section.pick_ndc([0.0; 2]).unwrap(), None);
-    assert_ne!(section.map.material_at([1, 1, 4]), 0);
+    assert_ne!(section.scene.terrain_map().unwrap().material_at([1, 1, 4]), 0);
     let selection = section.select_part(controlled, None, false).unwrap();
     let hidden = pixels::assert_selection_mask(
         &mut section,
@@ -226,22 +226,22 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         exposed[32 * 65 + 32],
         "isolated view removes the terrain occluder"
     );
-    let dimensions = (section.map.pointer_extent(), section.map.atlas_extent());
+    let dimensions = (section.scene.terrain_map().unwrap().pointer_extent(), section.scene.terrain_map().unwrap().atlas_extent());
     section.configure_terrarium(&habitat, 0.0, Cutaway::Always, [1, 1, 0]);
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert!(
-        section.terrain_upload_pending,
+        section.scene.terrain_upload_pending(),
         "isolated render cannot acknowledge terrain upload"
     );
     assert_eq!(
-        (section.map.pointer_extent(), section.map.atlas_extent()),
+        (section.scene.terrain_map().unwrap().pointer_extent(), section.scene.terrain_map().unwrap().atlas_extent()),
         dimensions,
         "retained bedrock keeps atlas dimensions fixed while cutaway materials change"
     );
     section.set_body_preview(false, 60.0);
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert!(
-        !section.terrain_upload_pending,
+        !section.scene.terrain_upload_pending(),
         "terrain return consumed the pending full upload"
     );
     let resumed = pixels::assert_selection_mask(
@@ -266,7 +266,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     assert_eq!(section.pick_ndc([0.0; 2]), Err(BodyPickError::NotReady));
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert_eq!(
-        section.map.material_at([1, 1, 4]),
+        section.scene.terrain_map().unwrap().material_at([1, 1, 4]),
         0,
         "query uses the cutaway map"
     );
@@ -317,7 +317,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         "new habitat bounds clip the body"
     );
     assert!(
-        section.map.material_at([3, 1, 4]) != 0,
+        section.scene.terrain_map().unwrap().material_at([3, 1, 4]) != 0,
         "new chamber restores previously hidden terrain"
     );
 }

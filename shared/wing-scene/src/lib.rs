@@ -18,6 +18,8 @@
 mod anchors;
 mod bodies;
 mod camera;
+mod capture;
+mod scene;
 mod volumes;
 
 pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
@@ -25,6 +27,10 @@ pub use bodies::{
     BodyFrameStats, BodyLayer, PartAddress, Pose, SceneBody, SceneVolumes, SubjectKey,
 };
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
+pub use scene::{
+    CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneHost, SceneStats,
+    TerrainRefresh, TerrainSource,
+};
 pub use volumes::DeclaredExtentVolumes;
 
 /// The volume seam, re-exported so a producer needs one crate in scope.

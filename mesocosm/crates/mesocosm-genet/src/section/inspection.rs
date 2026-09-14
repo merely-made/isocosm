@@ -91,10 +91,11 @@ impl Section {
         } else {
             super::SLAB_DEPTH
         };
-        if self.bodies.isolated != isolated || self.bodies.preview_depth != depth {
+        let bodies = self.scene.bodies_mut();
+        if bodies.isolated != isolated || bodies.preview_depth != depth {
+            bodies.isolated = isolated;
+            bodies.preview_depth = depth;
             self.invalidate_query();
-            self.bodies.isolated = isolated;
-            self.bodies.preview_depth = depth;
         }
     }
 
@@ -126,7 +127,8 @@ impl Section {
         volumes: &mesocosm_mesh::VolumeMap,
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
-        self.bodies
+        self.scene
+            .bodies_mut()
             .presentation_bounds(&body, SceneVolumes::Voxels(volumes))
     }
 
@@ -153,7 +155,7 @@ impl Section {
             return Err(BodyPickError::InvalidCoordinates);
         }
         let frame = self.presented.ok_or(BodyPickError::NotReady)?;
-        if self.bodies.stats.fallback_bodies != 0 {
+        if self.scene.bodies().stats.fallback_bodies != 0 {
             return Err(BodyPickError::CapsuleFallback);
         }
         let camera = frame.view.trace().ok_or(BodyPickError::NotReady)?;
@@ -161,7 +163,8 @@ impl Section {
             .ray_at(ndc)
             .ok_or(BodyPickError::InvalidCoordinates)?;
         let Some((selection, hit)) = self
-            .bodies
+            .scene
+            .bodies()
             .pick(origin, direction, camera.far(), frame.view.clip())
             .map_err(BodyPickError::Body)?
         else {
@@ -169,8 +172,8 @@ impl Section {
         };
         if frame.terrain {
             let terrain = self
-                .map
-                .trace_ray(origin, direction, camera.far())
+                .scene
+                .terrain_ray(origin, direction, camera.far())
                 .map_err(BodyPickError::Terrain)?;
             // Terrain draws after bodies with LessEqual depth testing.
             if terrain.is_some_and(|terrain| terrain.distance <= hit.distance) {
@@ -231,7 +234,8 @@ impl Section {
             return None;
         }
         self.presented?;
-        self.bodies
+        self.scene
+            .bodies()
             .select_part(key(subject), current.map(BodySelection::address), backwards)
             .map(BodySelection::from_address)
     }
@@ -255,14 +259,16 @@ impl Section {
             return false;
         };
         let body = self.host_bodies.scene_body(organism, &[], None);
-        self.bodies
+        self.scene
+            .bodies_mut()
             .validate_address(selection.address(), &body, SceneVolumes::Voxels(volumes))
     }
 
     /// Sets host-owned inspection emphasis for the next body draw.
     pub fn set_body_focus(&mut self, subject: Option<OrganismId>, selected: Option<BodySelection>) {
         if self
-            .bodies
+            .scene
+            .bodies_mut()
             .set_focus(subject.map(key), selected.map(BodySelection::address))
         {
             self.invalidate_query();

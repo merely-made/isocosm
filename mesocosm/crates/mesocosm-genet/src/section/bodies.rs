@@ -185,54 +185,6 @@ impl super::Section {
             .collect()
     }
 
-    /// Projects one frame's bodies, with Mesocosm's capsule stand-in behind
-    /// the scene's failures and its own reading of what was drawn.
-    pub(super) fn prepare_bodies(
-        &mut self,
-        world: &World,
-        volumes: &mesocosm_mesh::VolumeMap,
-        window: wing_scene::SlabWindow,
-        scene: &[SceneBody<'_>],
-    ) {
-        let Self {
-            bodies,
-            host_bodies,
-            ..
-        } = &mut *self;
-        host_bodies.fallback.clear();
-        host_bodies.played_fallback = None;
-        bodies.prepare(
-            scene,
-            wing_scene::SceneVolumes::Voxels(volumes),
-            window,
-            |body, stats| host_bodies.add_fallback(body, stats),
-        );
-        bodies.stats.body_scale = host_bodies.scale;
-        // The scene knows the documents, not which of them belong to a dead
-        // organism, so the carcass count is read back here.
-        let carcasses = bodies
-            .drawn()
-            .filter(|subject| {
-                let id = organism_of(*subject);
-                world
-                    .organisms
-                    .iter()
-                    .any(|organism| organism.id == id && !organism.is_alive())
-            })
-            .count();
-        bodies.stats.carcasses = carcasses;
-    }
-
-    /// Replaces every drawn body with its capsule stand-in, after a failed
-    /// voxel draw. No world lookup: the frame's own bodies are still here.
-    pub(super) fn fallback_all(&mut self, scene: &[SceneBody<'_>]) {
-        for subject in self.bodies.take_drawn() {
-            if let Some(body) = scene.iter().find(|body| body.subject == subject) {
-                self.host_bodies.add_fallback(body, &mut self.bodies.stats);
-            }
-        }
-    }
-
     /// The process mosaics behind those bodies, held by the caller so the
     /// scene bodies can borrow them for the frame.
     pub(super) fn scene_materials(&self, world: &World) -> Vec<Vec<PartMaterial>> {
