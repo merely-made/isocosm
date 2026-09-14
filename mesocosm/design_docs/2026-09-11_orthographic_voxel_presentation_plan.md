@@ -1327,6 +1327,12 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 **Sequencing:** starts after the wing-scenario extraction lands, since both
 lanes edit mesocosm-genet.
 
+**Progress (2026-09-14):** steps 1 to 7 of the
+[extraction plan](2026-09-14_wing_scene_extraction_plan.md) landed on main
+through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
+to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 waits
+on step 8, the Paredros retarget, handed to the Paredros session by message.
+
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's
