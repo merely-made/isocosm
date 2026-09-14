@@ -173,6 +173,26 @@ world hash is unchanged by enabling the reading; and Mesocosm's 16 shared
 kernel tests and its runtime tests still pass untouched. P1 and P2 added no
 wing-glyphs dependency; P4 adds it to `paredros-world` only.
 
+### Names ruled 2026-09-14
+
+- **taproot** is genet-probe's new name (the organ a plant grows to find
+  water: selectors, the Automatable and Driveable seam, the text scenario),
+  and **mesquite** is the scenario lane's (the plant that lives by that
+  root), moving from `shared/wing-scenario` into mere's cambium family
+  because graphshell, turnstone and signalman already consume the probe.
+  **tamarisk** is banked for a later extension. Both crates.io-free at the
+  ruling; taproot is claimed by a real publish at 0.1.0.
+- **isometer** is the game-world scene family (the wing-scene extraction),
+  with lens, render and mesh as its components rather than Mesocosm-owned
+  path dependencies; **isomere** is the wing-unique GUI layer, scene and
+  host chrome, overlays, graphs and other applications of cambium that
+  belong to the wing and not one product. Both crates.io-free at the ruling.
+- **hagioglyph**: glyphs that vary over time by world criteria, a canon
+  revision driven by a world period or a promoted event, with acquisitions
+  keeping their founding evidence under the revision they were acquired in.
+  A Paredros lane under the remembrance plan once isometer lands, so marks
+  in the scene have a depth to sit on. crates.io-free at the ruling.
+
 ## Ownership and verification
 
 Terra and Luna are the implementation lanes Mark chose. Each runs on opus,

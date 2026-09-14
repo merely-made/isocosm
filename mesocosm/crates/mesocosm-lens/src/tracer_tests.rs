@@ -13,6 +13,7 @@ use crate::{
 
 mod grade;
 mod roster;
+mod unlit;
 
 fn ground() -> Ground {
     let grown = Places::grown(4_242, 4, 64);

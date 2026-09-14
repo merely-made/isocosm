@@ -318,14 +318,30 @@ fn steps_along_hue(colour: vec3<f32>, dither: f32) -> vec3<f32> {
 // `along_hue` picks which ladder. It is set for the ground seen from above and
 // for nothing else — see the gate at the ground hit below, which is exactly
 // false under a level section, so every capture the tree holds of one is
-// unchanged to the byte.
-fn grade(colour: vec3<f32>, t: f32, pixel: vec2<u32>, along_hue: bool) -> vec3<f32> {
+// unchanged to the byte. `floor_it` is the ground's other request, described
+// where it is applied.
+fn grade(colour: vec3<f32>, t: f32, pixel: vec2<u32>, along_hue: bool, floor_it: bool) -> vec3<f32> {
     var fog = clamp((t / params.camera.far - params.fog.w) / max(1.0 - params.fog.w, 0.001), 0.0, 1.0);
     if (params.look.y > 0.5) {
         fog = floor(fog * params.look.y) / params.look.y;
     }
     var out = mix(colour, params.fog.xyz, fog);
     if (params.look.z > 0.5) {
+        // The quantiser's floor: ground the ray found is never nothing.
+        //
+        // A face turned away from the sun keeps only the ambient term, and
+        // soil and rock are that dark, so the ladder wrote black. The gate is
+        // every colour the dither could still black out — the first rung less
+        // the dither's worst reach — and the lift clears that rung under every
+        // phase while staying under the second. It sits directly under the
+        // ladder, after the fog mix, so a face fog has already carried clear
+        // of the rung is left alone, and a frame with no ladder never sees it.
+        if (floor_it) {
+            let value = max(max(out.r, out.g), out.b);
+            if (value > 0.0 && value < 0.25) {
+                out = out * (0.26 / value);
+            }
+        }
         let dither = bayer(pixel) * params.look.x;
         if (along_hue) {
             out = steps_along_hue(out, dither);
@@ -407,7 +423,7 @@ fn trace_sample(in: VsOut) -> TraceSample {
             base = base * 0.12;
         }
         let lit = shade_body(normal, base, ray.direction);
-        return TraceSample(vec4(grade(lit, body_t, pixel, false), 1.0), point);
+        return TraceSample(vec4(grade(lit, body_t, pixel, false, false), 1.0), point);
     }
 
     if (!hit.found) {
@@ -423,7 +439,7 @@ fn trace_sample(in: VsOut) -> TraceSample {
             sky = select(params.terrain[5].xyz, params.terrain[4].xyz, plane_y >= params.terrain[6].w);
         }
         let colour = select(
-            grade(sky, params.camera.far, pixel, false),
+            grade(sky, params.camera.far, pixel, false, false),
             sky,
             params.terrain[0].x > 0.5,
         );
@@ -454,8 +470,10 @@ fn trace_sample(in: VsOut) -> TraceSample {
     // frame exactly where it was, since the pixels it excludes there were
     // already excluded by the ray direction.
     let from_above = hit.normal.y > 0.5 && ray.direction.y < 0.0 && !in_wall;
+    // The ground is the one caller that asks for the quantiser's floor; see
+    // `grade`. Sky and bodies never do.
     return TraceSample(
-        vec4(grade(material_colour(hit.material) * light, hit.t, pixel, from_above), 1.0),
+        vec4(grade(material_colour(hit.material) * light, hit.t, pixel, from_above, true), 1.0),
         ray.origin + ray.direction * hit.t,
     );
 }
