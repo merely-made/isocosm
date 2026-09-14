@@ -30,7 +30,7 @@
 //!   `NamedKey::Other`, so the two arrive indistinguishable. Save and load are
 //!   bound to Ctrl+S and Ctrl+L here, and to the Save/Load buttons.
 //! - **Picking ignores terrain**, inherited from
-//!   [`SceneProducer::pick_body_ignoring_terrain`].
+//!   [`SceneModelSource::pick_body`].
 
 use std::cell::{Cell, RefCell};
 use std::path::PathBuf;
@@ -39,7 +39,7 @@ use std::time::{Duration, Instant};
 
 use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey};
 use mesocosm_core::PartId;
-use paredros_client::producer::{SceneHandle, SceneModel, SceneProducer};
+use paredros_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
 use paredros_identity::SubjectId;
 use paredros_world::fixtures::session as session_fixture;
 use paredros_world::glyphs::GlyphReading;
@@ -205,7 +205,9 @@ pub fn run() -> i32 {
             },
         }
     };
-    let scene = Rc::new(RefCell::new(SceneProducer::new(model.clone())));
+    let scene = Rc::new(RefCell::new(SceneProducer::new(SceneModelSource::new(
+        model.clone(),
+    ))));
     let saves = std::env::var_os("PAREDROS_SESSION_SAVES")
         .map(PathBuf::from)
         .unwrap_or_else(|| std::env::temp_dir().join("paredros-session"));

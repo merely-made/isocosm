@@ -51,6 +51,10 @@ genet-probe = { workspace = true }
 # P3b: the promoted scenario lane. A sibling path crate under the repository's
 # `shared/`, declared directly as mesocosm-genet declares it.
 wing-scenario = { path = "../../../shared/wing-scenario" }
+# The wing's shared orthographic slab scene, extracted from Mesocosm's section.
+# A sibling path crate under the repository's `shared/`, declared directly as
+# wing-scenario is; its cambium-rootstock pin is this workspace's own.
+isometer = { path = "../../../shared/isometer" }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
 renderling = { path = "../../../../../crates/renderling/crates/renderling" }

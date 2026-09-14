@@ -20,8 +20,7 @@ use paredros_identity::SubjectId;
 use paredros_world::timed_action::{TimedActionError, TimedActionSession};
 use paredros_world::{GameError, GameEvent, GameIntent, GameState, Session};
 
-use super::bodies::Appearance;
-use super::camera::CameraPolicy;
+use super::policy::{Appearance, CameraPolicy};
 
 /// What holds the one `Session`.
 ///
@@ -52,13 +51,24 @@ impl Held {
 /// World state lives in the `Session`; everything else on this struct is
 /// presentation and reaches no intent.
 pub struct SceneModel {
-    held: Held,
+    pub(super) held: Held,
     played: SubjectId,
     pub camera: CameraPolicy,
     pub appearance: Appearance,
     /// Draw the traced terrain under the bodies. The bodies-only arm is the
     /// isolated preview: same camera, same depth, no ground.
     pub terrain: bool,
+    /// The shared scene this model draws through, built on the first frame
+    /// because the device only arrives with a producer request. `None` after a
+    /// retirement, which is the whole of this host's GPU release.
+    pub(super) scene: Option<isometer::Scene>,
+    /// What [`Self::scene`] was last sized for. `Scene` keeps its own width and
+    /// height privately, so the resize decision is made here.
+    pub(super) scene_size: [u32; 2],
+    /// The ground revision the bound brick map was built from. The map is
+    /// rebuilt wholesale when this moves, so an ordinary frame costs no CPU
+    /// walk of the world.
+    pub(super) terrain_map_revision: Option<u64>,
 }
 
 impl SceneModel {
@@ -78,6 +88,9 @@ impl SceneModel {
             camera: CameraPolicy::default(),
             appearance: Appearance::default(),
             terrain: true,
+            scene: None,
+            scene_size: [0; 2],
+            terrain_map_revision: None,
         }
     }
 

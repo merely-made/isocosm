@@ -173,6 +173,34 @@ world hash is unchanged by enabling the reading; and Mesocosm's 16 shared
 kernel tests and its runtime tests still pass untouched. P1 and P2 added no
 wing-glyphs dependency; P4 adds it to `paredros-world` only.
 
+### P1 retargeted onto isometer (2026-09-14)
+
+The duplicate is retired. `producer/camera.rs`, `bodies.rs` and `scene.rs`
+are deleted and the crate takes `isometer` by path. `SceneModel` owns an
+`isometer::Scene` beside its `Held` session slot; `SceneModelSource` is its
+`SceneSource`: `inputs` declares ground revision, framed subject, terrain
+on or off, camera and every drawn subject, revision and pose, and `frame`
+builds `SceneBody` from the precise `MotionPose`, declared-extent volumes
+from the current anatomies, and `GroundTerrain` when terrain is on.
+`SceneProducer` is now a type alias over `isometer::SceneProducer`.
+`CameraPolicy` and `Appearance` survive in `producer/policy.rs` as the
+presets over `SlabCamera`; everything else is the shared crate's. The
+eight receipts keep their claims on the isometer API, with per-body
+coverage now exact ray against `Scene::part_bounds` and readback through
+`Scene::capture`. The lock holds one Mere revision, identical to isometer's.
+
+Rerun by the root: 45 client lib tests, 6 native, 140 world, the clean
+Paredros workspace check, Mesocosm's workspace check, the acceptance
+scenario (92 frames, ok), the failure scenario (exit 1) and the smoke. The
+final capture differs from the pre-retarget run only in the terrain faces
+the tracer floor lifted. Three behaviour notes: the pick now consults
+terrain, so a click through a ridge answers nothing where it used to pick
+(the smoke's fallback absorbs it; a ruling if the old behaviour is wanted);
+horizontal centring on the column is carried in the pose position; and
+only the played subject bypasses isometer's window cull. The `r1-proof`
+gate on the producer stays because the source still names the lens grade
+and the brick map for revision-driven rebuilds.
+
 ### Names ruled 2026-09-14
 
 - **taproot** is genet-probe's new name (the organ a plant grows to find

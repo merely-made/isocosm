@@ -374,7 +374,7 @@ fn script(state: &mut SessionApp, errors: &mut Vec<String>) {
     state.selected = state
         .scene
         .borrow()
-        .pick_body_ignoring_terrain([0.0, 0.0])
+        .pick_body([0.0, 0.0])
         .or(state.selected);
 }
 

@@ -13,14 +13,14 @@
 //! the session's controlled-subject path, so the moving body in these receipts
 //! is always the keeper.
 
+use isometer::SlabCamera;
 use mesocosm_core::PartId;
-use mesocosm_render::live_body::pick_bodies;
 use paredros_identity::SubjectId;
 use paredros_world::MotionInput;
 
 use super::fixture::{FixtureScene, advance_motion, timed_action_world};
 use super::harness::{self, Ink, SIZE};
-use super::{SceneHandle, SceneProducer, SlabView};
+use super::{SceneHandle, SceneModelSource, SceneProducer};
 
 fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {
     a.into_iter().zip(b).map(|(a, b)| a * b).sum()
@@ -34,33 +34,72 @@ fn ndc_of_pixel(x: u32, y: u32) -> [f32; 2] {
 }
 
 /// Does this one body's own surface lie under this pixel, ignoring every other
-/// body? The same matrices the frame drew with, so the answer is comparable to
-/// the frame's own coverage.
-fn covers(producer: &SceneProducer, subject: SubjectId, view: SlabView, x: u32, y: u32) -> bool {
-    part_under(producer, subject, view, x, y).is_some()
+/// body? The same camera the frame drew with, over the same posed part bounds
+/// the scene reports, so the answer is comparable to the frame's own coverage.
+///
+/// Exact rather than approximate: a Paredros part is one solid declared box, so
+/// `Scene::part_bounds` — the world bounds of that part's meshed faces under
+/// the draw's own part matrix — *is* the surface, and a ray against it is the
+/// same intersection the renderer rasterized.
+fn covers(
+    producer: &SceneProducer,
+    subject: SubjectId,
+    camera: SlabCamera,
+    x: u32,
+    y: u32,
+) -> bool {
+    part_under(producer, subject, camera, x, y).is_some()
 }
 
 /// Which of that body's parts is nearest under this pixel.
 fn part_under(
     producer: &SceneProducer,
     subject: SubjectId,
-    view: SlabView,
+    camera: SlabCamera,
     x: u32,
     y: u32,
 ) -> Option<PartId> {
-    let body = producer.bodies().body(subject)?;
-    let camera = view.trace()?;
-    let (origin, direction) = camera.ray_at(ndc_of_pixel(x, y))?;
-    pick_bodies(
-        &[body.live()],
-        origin,
-        direction,
-        camera.far(),
-        Some(view.clip()),
-    )
-    .ok()
-    .flatten()
-    .map(|hit| hit.part)
+    let trace = camera.trace()?;
+    let (origin, direction) = trace.ray_at(ndc_of_pixel(x, y))?;
+    let far = trace.far();
+    let mut nearest: Option<(f32, PartId)> = None;
+    for part in producer.drawn_parts(subject) {
+        let Some(bounds) = producer.part_bounds(subject, part) else {
+            continue;
+        };
+        let Some(distance) = ray_box(origin, direction, far, bounds) else {
+            continue;
+        };
+        if nearest.is_none_or(|(held, _)| distance < held) {
+            nearest = Some((distance, part));
+        }
+    }
+    nearest.map(|(_, part)| part)
+}
+
+/// Where a ray first meets a world box, within the slab's own reach. `None`
+/// when it misses or the box lies wholly behind the far wall.
+fn ray_box(
+    origin: [f32; 3],
+    direction: [f32; 3],
+    far: f32,
+    (min, max): ([f32; 3], [f32; 3]),
+) -> Option<f32> {
+    let mut enter = 0.0f32;
+    let mut leave = far;
+    for axis in 0..3 {
+        if direction[axis].abs() < 1e-9 {
+            if origin[axis] < min[axis] || origin[axis] > max[axis] {
+                return None;
+            }
+            continue;
+        }
+        let first = (min[axis] - origin[axis]) / direction[axis];
+        let second = (max[axis] - origin[axis]) / direction[axis];
+        enter = enter.max(first.min(second));
+        leave = leave.min(first.max(second));
+    }
+    (enter <= leave).then_some(enter)
 }
 
 /// How many corners of this world box have solid ground standing between them
@@ -68,12 +107,12 @@ fn part_under(
 /// a camera can be chosen without assuming what seed 7 grew.
 fn corners_behind_rock(
     handle: &SceneHandle,
-    view: SlabView,
+    camera: SlabCamera,
     bounds: ([f32; 3], [f32; 3]),
 ) -> usize {
     let model = handle.borrow();
     let ground = model.game().world().ground();
-    let reach = view.depth * 0.5 + 4.0;
+    let reach = camera.depth * 0.5 + 4.0;
     let (min, max) = bounds;
     (0..8)
         .filter(|mask| {
@@ -86,7 +125,7 @@ fn corners_behind_rock(
             });
             let mut step = 0.25;
             while step <= reach {
-                let cell = [0, 1, 2].map(|i| (corner[i] - view.forward[i] * step).floor() as i32);
+                let cell = [0, 1, 2].map(|i| (corner[i] - camera.forward[i] * step).floor() as i32);
                 if ground.solid(cell) {
                     return true;
                 }
@@ -108,16 +147,15 @@ fn the_nearer_body_owns_every_pixel_the_two_bodies_share() {
     };
     let fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     // Two bodies only overlap on screen when the section looks along the line
     // between them. Derive that yaw from where they actually stand, then lean a
     // few degrees off it so the farther one is partly, not wholly, covered.
     harness::aim(&handle, [1.0, 0.0, 0.0], 6.0, false);
     harness::frame(&gpu, &mut producer, true);
     let separation = {
-        let bodies = producer.bodies();
-        let keeper = centre_of(bodies.body(fixture.keeper).unwrap().bounds().unwrap());
-        let target = centre_of(bodies.body(fixture.target).unwrap().bounds().unwrap());
+        let keeper = centre_of(producer.body_bounds(fixture.keeper).unwrap());
+        let target = centre_of(producer.body_bounds(fixture.target).unwrap());
         [0, 1, 2].map(|i| target[i] - keeper[i])
     };
     let base = separation[2].atan2(separation[0]);
@@ -135,14 +173,11 @@ fn the_nearer_body_owns_every_pixel_the_two_bodies_share() {
     for forward in aims {
         harness::aim(&handle, forward, 6.0, false);
         let frame = harness::frame(&gpu, &mut producer, true);
-        let view = producer.presented_view().expect("presented view");
-        let (Some(keeper), Some(target)) = (
-            producer.bodies().body(fixture.keeper),
-            producer.bodies().body(fixture.target),
+        let view = producer.presented_camera().expect("presented camera");
+        let (Some(keeper_bounds), Some(target_bounds)) = (
+            producer.body_bounds(fixture.keeper),
+            producer.body_bounds(fixture.target),
         ) else {
-            continue;
-        };
-        let (Some(keeper_bounds), Some(target_bounds)) = (keeper.bounds(), target.bounds()) else {
             continue;
         };
         let keeper_depth = dot(view.forward, centre_of(keeper_bounds));
@@ -200,7 +235,7 @@ fn terrain_hides_a_body_standing_behind_it() {
     };
     let fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     // Either body may be the buried one; whichever stands in the open is the
     // control, in the same frame. Seed 7 puts the keeper on open ground and no
     // searched camera buries it whole, so in practice this receipt hides the
@@ -219,14 +254,11 @@ fn terrain_hides_a_body_standing_behind_it() {
         harness::aim(&handle, forward, 10.0, false);
         handle.borrow_mut().camera.depth = depth;
         let bare = harness::frame(&gpu, &mut producer, true);
-        let view = producer.presented_view().expect("presented view");
-        let (Some(keeper), Some(target)) = (
-            producer.bodies().body(fixture.keeper),
-            producer.bodies().body(fixture.target),
+        let view = producer.presented_camera().expect("presented camera");
+        let (Some(keeper_bounds), Some(target_bounds)) = (
+            producer.body_bounds(fixture.keeper),
+            producer.body_bounds(fixture.target),
         ) else {
-            continue;
-        };
-        let (Some(keeper_bounds), Some(target_bounds)) = (keeper.bounds(), target.bounds()) else {
             continue;
         };
         // Every corner of the hidden body must be behind rock; a body the
@@ -293,13 +325,13 @@ fn a_severed_part_leaves_the_next_frame_without_reuploading_the_rest() {
     };
     let mut fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     let limb = PartId(2);
     let mut found = None;
     for forward in harness::candidates() {
         harness::aim(&handle, forward, 6.0, false);
         let frame = harness::frame(&gpu, &mut producer, true);
-        let view = producer.presented_view().expect("presented view");
+        let view = producer.presented_camera().expect("presented camera");
         // The limb's own visible pixels: the target's nearest surface here is
         // the limb, and the frame agrees the target is drawn.
         let region: Vec<[u32; 2]> = (0..SIZE[1])
@@ -372,21 +404,18 @@ fn a_fractional_motion_step_moves_the_drawn_body_by_the_projected_fraction() {
     };
     let fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     // The camera follows the played keeper, so a keeper step moves every other
     // drawn body across the frame by the same projected vector, negated.
     let mut framing = None;
     for forward in harness::candidates() {
         harness::aim(&handle, forward, 14.0, false);
         let frame = harness::frame(&gpu, &mut producer, true);
-        let view = producer.presented_view().expect("presented view");
-        let (Some(keeper), Some(target)) = (
-            producer.bodies().body(fixture.keeper),
-            producer.bodies().body(fixture.target),
+        let view = producer.presented_camera().expect("presented camera");
+        let (Some(keeper_bounds), Some(target_bounds)) = (
+            producer.body_bounds(fixture.keeper),
+            producer.body_bounds(fixture.target),
         ) else {
-            continue;
-        };
-        let (Some(keeper_bounds), Some(target_bounds)) = (keeper.bounds(), target.bounds()) else {
             continue;
         };
         let (Some(keeper_box), Some(target_box)) = (
@@ -420,7 +449,7 @@ fn a_fractional_motion_step_moves_the_drawn_body_by_the_projected_fraction() {
 
     // Step across the frame, not into it: motion along the view axis would move
     // no pixels at all and prove nothing about projection.
-    let [right, _, _] = view.basis().expect("camera basis");
+    let [right, _, _] = view.basis();
     let across = if right[0].abs() >= right[2].abs() {
         MotionInput {
             move_x: 32_767 * right[0].signum() as i16,
@@ -454,7 +483,7 @@ fn a_fractional_motion_step_moves_the_drawn_body_by_the_projected_fraction() {
     // The keeper moved, so the frame's centre moved: a stationary body slides
     // the other way by exactly the projected fraction.
     let delta = [0, 1, 2].map(|i| -((moved[i] - start[i]) as f32) / scale as f32);
-    let [right, up, _] = view.basis().expect("camera basis");
+    let [right, up, _] = view.basis();
     let expected = [
         dot(right, delta) / (view.half_height * view.aspect) * 0.5 * SIZE[0] as f32,
         -dot(up, delta) / view.half_height * 0.5 * SIZE[1] as f32,
@@ -483,11 +512,11 @@ fn an_unchanged_frame_produces_nothing_and_a_suspension_keeps_the_geometry() {
     };
     let fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     harness::aim(&handle, [1.0, 0.0, 0.0], 12.0, true);
     let render = |producer: &mut SceneProducer, needs: bool| {
         producer
-            .render_scene(&gpu.device, &gpu.queue, SIZE, needs)
+            .render_scene(&harness::request(&gpu, needs))
             .expect("scene renders")
     };
     assert!(render(&mut producer, false).is_some(), "the first frame");
@@ -519,12 +548,12 @@ fn an_unchanged_frame_produces_nothing_and_a_suspension_keeps_the_geometry() {
         "a moved pose must produce a frame"
     );
 
-    let cached = producer.bodies().cached_bodies();
+    let cached = producer.cached_bodies();
     assert!(cached > 0, "geometry was cached");
     use cambium_rootstock::TextureProducer;
     producer.suspend();
     assert_eq!(
-        producer.bodies().cached_bodies(),
+        producer.cached_bodies(),
         cached,
         "suspension keeps the renderer's cached geometry"
     );
@@ -541,7 +570,7 @@ fn the_cpu_pick_answers_the_body_the_frame_drew() {
     };
     let fixture = timed_action_world();
     let handle = fixture.scene();
-    let mut producer = SceneProducer::new(handle.clone());
+    let mut producer = SceneProducer::new(SceneModelSource::new(handle.clone()));
     harness::aim(&handle, [1.0, 0.0, 0.0], 5.0, false);
     let frame = harness::frame(&gpu, &mut producer, true);
     frame.write_png("pick");
@@ -552,7 +581,7 @@ fn the_cpu_pick_answers_the_body_the_frame_drew() {
             if ink == Ink::Scene {
                 continue;
             }
-            let Some((subject, _)) = producer.pick_body_ignoring_terrain(ndc_of_pixel(x, y)) else {
+            let Some((subject, _)) = producer.pick_body(ndc_of_pixel(x, y)) else {
                 continue;
             };
             let expected = if subject == fixture.keeper {

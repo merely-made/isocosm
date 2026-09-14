@@ -92,11 +92,13 @@ impl wing_scenario::Product for SessionProduct {
         CostObservation {
             totals: Totals {
                 redraws: scene.renders(),
-                mesh_bytes: stats.mesh_upload_bytes as u64,
-                instance_bytes: stats.instance_upload_bytes as u64,
+                mesh_bytes: stats.mesh_upload_bytes,
+                instance_bytes: stats.instance_upload_bytes,
             },
             valid: scene.last_error().is_none(),
-            populated: stats.instances > 0,
+            // Rigid part placements submitted: the shared stats' nearest
+            // reading of the retired `instances` counter.
+            populated: stats.draw_parts > 0,
         }
     }
 }

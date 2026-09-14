@@ -328,7 +328,7 @@ impl SessionApp {
             (local.0 / size.0) * 2.0 - 1.0,
             1.0 - (local.1 / size.1) * 2.0,
         ];
-        match self.scene.borrow().pick_body_ignoring_terrain(ndc) {
+        match self.scene.borrow().pick_body(ndc) {
             Some((subject, part)) => {
                 self.selected = Some((subject, part));
                 self.status = vec![format!("Picked subject {} part {}", subject.0, part.0)];

@@ -6,7 +6,9 @@
 
 use std::path::PathBuf;
 
-use super::{Appearance, CameraPolicy, SceneHandle, SceneProducer, SlabView};
+use isometer::{FrameRequest, SlabCamera};
+
+use super::{Appearance, CameraPolicy, SceneHandle, SceneProducer};
 
 /// Square and a multiple of 64 pixels wide, so a readback row is already
 /// 256-byte aligned.
@@ -134,56 +136,30 @@ impl Frame {
     }
 }
 
+/// One producer invocation at the receipts' own size.
+pub fn request<'a>(gpu: &'a Gpu, needs_frame: bool) -> FrameRequest<'a> {
+    FrameRequest {
+        device: &gpu.device,
+        queue: &gpu.queue,
+        size: SIZE,
+        aspect: SIZE[0] as f32 / SIZE[1] as f32,
+        color: None,
+        needs_frame,
+    }
+}
+
 /// Renders one frame and reads it back. Panics when the producer skipped, so
 /// a caller that expects pixels says so.
 pub fn frame(gpu: &Gpu, producer: &mut SceneProducer, needs_frame: bool) -> Frame {
     producer
-        .render_scene(&gpu.device, &gpu.queue, SIZE, needs_frame)
+        .render_scene(&request(gpu, needs_frame))
         .expect("scene renders")
         .expect("scene produced a frame");
-    read_back(gpu, producer.colour_texture().expect("colour target"))
-}
-
-pub fn read_back(gpu: &Gpu, texture: &wgpu::Texture) -> Frame {
-    let size = [texture.width(), texture.height()];
-    let bytes_per_row = size[0] * 4;
-    assert_eq!(bytes_per_row % 256, 0, "readback row must be 256-aligned");
-    let buffer = gpu.device.create_buffer(&wgpu::BufferDescriptor {
-        label: Some("scene readback"),
-        size: u64::from(bytes_per_row * size[1]),
-        usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
-        mapped_at_creation: false,
-    });
-    let mut encoder = gpu
-        .device
-        .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-            label: Some("scene readback"),
-        });
-    encoder.copy_texture_to_buffer(
-        texture.as_image_copy(),
-        wgpu::TexelCopyBufferInfo {
-            buffer: &buffer,
-            layout: wgpu::TexelCopyBufferLayout {
-                offset: 0,
-                bytes_per_row: Some(bytes_per_row),
-                rows_per_image: Some(size[1]),
-            },
-        },
-        wgpu::Extent3d {
-            width: size[0],
-            height: size[1],
-            depth_or_array_layers: 1,
-        },
-    );
-    gpu.queue.submit(Some(encoder.finish()));
-    let slice = buffer.slice(..);
-    slice.map_async(wgpu::MapMode::Read, |_| {});
-    gpu.device
-        .poll(wgpu::PollType::wait_indefinitely())
-        .expect("readback");
-    let pixels = slice.get_mapped_range().expect("mapped range").to_vec();
-    buffer.unmap();
-    Frame { pixels, size }
+    let (width, height, pixels) = producer.capture().expect("a completed frame to read back");
+    Frame {
+        pixels,
+        size: [width, height],
+    }
 }
 
 /// Aims the scene, leaving everything else the policy's default.
@@ -214,7 +190,7 @@ pub fn candidates() -> Vec<[f32; 3]> {
 
 /// The screen box a world AABB projects into, clamped to the frame.
 pub fn screen_box(
-    view: SlabView,
+    camera: SlabCamera,
     bounds: ([f32; 3], [f32; 3]),
     size: [u32; 2],
 ) -> Option<[u32; 4]> {
@@ -229,7 +205,7 @@ pub fn screen_box(
                 max[axis]
             }
         });
-        let ndc = view.ndc_of(corner)?;
+        let ndc = camera.ndc_of(corner)?;
         let pixel = [
             (ndc[0] * 0.5 + 0.5) * size[0] as f32,
             (0.5 - ndc[1] * 0.5) * size[1] as f32,
