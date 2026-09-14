@@ -1,0 +1,38 @@
+[package]
+name = "wing-scenario"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "The generic scenario lane for a Cambium document host: scenario ticking, deferred close, frame capture, pixel checks, cost accounting and a receipt."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# Its own workspace, like the other `shared/` path crates, and excluded from
+# the Isometry root workspace beside them.
+[workspace]
+members = ["."]
+resolver = "2"
+
+[dependencies]
+# The scenario grammar, the selector resolver and the `Automatable`/`Driveable`
+# seam this crate implements generically. Pinned at the revision every wing
+# product pins, so one genet identity stays in every consumer's graph.
+genet-probe = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
+# The document host seam: `AppCtx`, the capture arming hook, `read_frame`, the
+# frame profile and the pointer queue. From mere with the cambium family.
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "4f4de1d05ec99461f7fa3cdc4e514e904a999213" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "4f4de1d05ec99461f7fa3cdc4e514e904a999213" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+png = "0.17"
+
+# `[patch]` applies only from a workspace root and is not inherited through a
+# path dependency, so this crate restates what its consumers already declare in
+# order to build standalone. Consumed by path from a product workspace, the
+# product's own identical patch table is the one that applies.
+[patch.crates-io]
+vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
+parley = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1", version = "=0.14.0" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "101d9e9ade8671564e723443d9f0498e899a33f1" }

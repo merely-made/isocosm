@@ -143,8 +143,35 @@ Section's; P1's contract must not close that off. GlyphCSS's palette-as-
 shading idea is the presentation twin of "one glyph, one effect" and is a
 reference for that layer, not a dependency.
 
-Scope and done-conditions are assessed separately once P2 has a host for the
-panel. Not started; P1 and P2 do not add a wing-glyphs dependency.
+**Assessment, 2026-09-14 (P2 landed).** Mesocosm's consumer is
+`mesocosm-runtime::glyphs`: an opt-in `GlyphRules` (canon spec, individual,
+organism, unlock thresholds, event-to-glyph grants) that a `Trial` enables,
+producing a `GlyphReading` holding a `wing_glyphs::Journey` plus evidence
+records. It reads accepted history, changes no world fact, and grants no
+durable divinity; replay is deterministic and a control change does not
+transfer the collection. Paredros mirrors that shape over its own accepted
+events. `GameEvent` already carries the needed kinds: `VolleyResolved`,
+`Injured`, `Rested`, `Took`, `ItemAttached`, `MotionAdvanced`, `Moved`,
+`Died`.
+
+**Scope.** A `paredros_world::glyphs` reading (world crate, because the
+evidence is accepted `GameState` history, not presentation): `GlyphRules`
+for one subject with event-kind grants, built from `game.events()` and
+advanced as new events are accepted, with the same non-durable, opt-in
+posture as Mesocosm's. The session host gains an acquisition journal panel:
+glyph, display mark, effect id, provenance kind and the accepting tick, in
+first-acquisition order, plus eligibility. `Died` ends the reading for that
+subject; succession does not carry it. Reincarnation, wishes, divine
+spending and durable journey persistence stay open, as they do in Mesocosm.
+
+**Done when:** a scripted volley, injury, rest and dressing pickup produce
+the configured grants in acceptance order with exact event provenance;
+rebuilding the reading from the saved and reloaded `GameState` yields an
+identical journal; a control change to another subject starts an empty
+reading; the panel shows the journal and the smoke asserts its text; the
+world hash is unchanged by enabling the reading; and Mesocosm's 16 shared
+kernel tests and its runtime tests still pass untouched. P1 and P2 added no
+wing-glyphs dependency; P4 adds it to `paredros-world` only.
 
 ## Ownership and verification
 
@@ -159,13 +186,26 @@ creator files are owned by a concurrent lane and are never swept.
 
 ## Open decisions for Mark
 
-- **Probe lane promotion.** Mesocosm's `app/bench/probe.rs` wraps scenario,
-  receipt, capture and exit code inside the Cambium host. Paredros is the
-  second consumer. Promote it to a shared home under mere's cambium family,
-  or copy the shape locally for P3 and promote later. The consolidation rule
-  argues for promotion; the pin cadence argues for a local first receipt.
+- **Probe lane promotion (ruled 2026-09-14).** Mesocosm's
+  `app/bench/probe.rs` wraps scenario, receipt, capture and exit code inside
+  the Cambium host, and Paredros is the second consumer. Mark ruled: promote
+  first, into an Isometry `shared/` path crate beside `wing-glyphs`
+  (working name `wing-scenario`), consumed by Mesocosm and Paredros with no
+  Mere commit or pin bump; it moves to mere once a non-wing consumer
+  appears, mirroring the appearance-crate ruling. P3 is therefore P3a, the
+  extraction with Mesocosm's bench retargeted onto it and its acceptance
+  scenarios unchanged, then P3b, the Paredros scenario over the session bin.
 - **Bin name.** The new host is the product session, not a probe. A name is
   a naming round, not a session default.
+- **P1 is the duplicate to retire (2026-09-14).** The Mesocosm depth-sorting
+  lane agreed that the shared-depth scene should become one wing crate with
+  body inputs decoupled from the Mesocosm `World`, and is putting that to
+  Mark as its own lane with P1's five requirements (decoupled bodies, one
+  depth attachment with an orthographic camera, the glyph batch on that
+  depth, Bench A's queries, the producer wrapper) as its first
+  done-conditions. Section is 4,569 lines across 23 files with 31 `World`
+  references, so decoupling is a lane, not a lift. Until that crate exists
+  P1 stays local; when it lands, P1 becomes a thin adapter over it.
 - **Retirements.** When P2 covers them, the timed-action bin and the
   body sheet's private `EquipmentSession` are candidates for archival with
   rationale. Neither is retired by this plan.
@@ -248,3 +288,23 @@ creator files are owned by a concurrent lane and are never swept.
   Ctrl+S and Ctrl+L. The leaf is a fixed 720 by 440 box. The sheet's bounds
   field is empty for the picked part; that projection is paredros-world's.
   Physical keyboard and mouse acceptance remains open.
+- **2026-09-14, P3a landed.** `shared/wing-scenario` (working name) is the
+  promoted scenario lane: `Lane<P>` over a `Product` trait whose hooks
+  supply the sheet, snapshot fields, event drain, default capture path and
+  optional act, busy, viewport, target point, opacity sheet, cost
+  observation and app-specific steps; `capture_path`, `Viewport`,
+  `PixelCheck`, `Costs` and the shared verbs (cost, input-text, resize,
+  remember, zoom, opacity, same/more, captures-differ, pixel-change checks)
+  live there. Mesocosm's `bench/probe*.rs` is a thin adapter keeping the
+  `Lane` API, so `bench.rs` and `probe_state.rs` are byte-unchanged; its
+  Mesocosm-only selectors, sheet, transform and snapshot fields stayed
+  local. 12 shared tests, Mesocosm's 158 genet tests, the workspace check
+  with its two pre-existing warnings, and the bench acceptance scenario
+  (167 frames, 15 captures, ok) and failure scenario (exit 1) were rerun by
+  the root; Paredros's workspace check is unaffected. Receipt JSON is
+  structurally identical to the 2026-09-13 baseline; the value drift in
+  hash, drawn parts and instance bytes comes from another lane's
+  uncommitted body and trial edits, not from the extraction. The crate's
+  lock is ignored like the products' locks; it has no LICENSE file, like
+  wing-glyphs. The root manifest's exclude list and mesocosm's `.gitignore`
+  (now ignoring `target-contact`) changed by one line each.

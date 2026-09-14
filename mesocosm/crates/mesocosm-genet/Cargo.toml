@@ -46,6 +46,10 @@ genet-probe = { workspace = true }
 # The dev lane's placement (ruled 2026-09-02): a workbench tile, not a
 # hand-rolled corner constant. See `dev`.
 workbench = { workspace = true }
+# The generic half of the bench acceptance lane, promoted to a shared Isometry
+# path crate (P3a, ruled 2026-09-14) so Paredros's session host consumes the
+# same lifecycle. Declared by path here, as wing-glyphs is in mesocosm-runtime.
+wing-scenario = { path = "../../../shared/wing-scenario" }
 wgpu = { workspace = true }
 winit = "0.30"
 pollster = "0.4"
