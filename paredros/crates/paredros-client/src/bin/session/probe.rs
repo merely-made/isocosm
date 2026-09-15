@@ -52,7 +52,7 @@ impl mesquite::Product for SessionProduct {
     const LOG_PREFIX: &'static str = "session";
 
     fn sheet(&self) -> &'static str {
-        SHEET
+        SHEET.as_str()
     }
 
     fn snapshot(&self, ctx: &Context<'_>, captures: usize, opacity: f32) -> ProbeSnapshot {

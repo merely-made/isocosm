@@ -3,10 +3,13 @@
 
 //! The document: one viewport leaf and three panels over the same session.
 
+use std::sync::LazyLock;
+
 use cambium::{
     AnyView, GenetCtx, GenetElement, PointerPhase, clickable, custom_leaf, el, focusable,
     on_pointer, text,
 };
+use isomere::{Picked, Seeds, Sizes};
 use isometer::core::PartId;
 use paredros_world::ItemKind;
 
@@ -356,40 +359,99 @@ pub(super) fn root(state: &SessionApp) -> Child {
     )
 }
 
-pub(super) const SHEET: &str = r#"
-html, body { margin:0; padding:0; background:#1b1d21; color:#dfe3e6; font:14px sans-serif; }
-* { box-sizing:border-box; }
-.session { padding:16px; min-height:100vh; background:#1b1d21; }
-header { margin-bottom:12px; }
-h1 { margin:0; font-size:22px; font-weight:700; }
-h2 { margin:0 0 10px; font-size:16px; }
-p { margin:5px 0; line-height:1.4; }
-#controls-help { color:#93a0a8; font-size:12px; }
-main { display:flex; gap:16px; align-items:flex-start; }
+/// The hex the session sheet has carried since it was written, handed to
+/// isomere as seeds so the derived palette is this palette and the P12
+/// capture set holds byte for byte (M0 of the isomere plan, Mark's ruling of
+/// 2026-09-15). Anything left `None` in `picked` is isomere's to fill.
+fn seeds() -> Seeds {
+    let hex = |s: &str| isomere::color_from_hex(s).expect("session seed hex");
+    Seeds {
+        background: hex("#1b1d21"),
+        ink: hex("#dfe3e6"),
+        muted: hex("#8e9aa2"),
+        accent: hex("#2f6b46"),
+        warning: None,
+        answer: None,
+        picked: Picked {
+            panel: Some(hex("#23272c")),
+            card: Some(hex("#000000")),
+            help: Some(hex("#93a0a8")),
+            border: Some(hex("#39424a")),
+            card_border: Some(hex("#39424a")),
+            button_border: Some(hex("#4a555e")),
+            // The session draws no frame on the viewport; the width below is
+            // zero, so this colour never reaches a pixel.
+            viewport_border: Some(hex("#39424a")),
+            button_bg: Some(hex("#2e343a")),
+            button_ink: Some(hex("#e4e9ec")),
+            hover: Some(hex("#3a434b")),
+            focus: Some(hex("#6fa8dc")),
+            accent_ink: Some(hex("#e4e9ec")),
+            selected_ink: Some(hex("#e4e9ec")),
+            selected_border: Some(hex("#49a06a")),
+            error: Some(hex("#e0a0a0")),
+            ..Picked::NONE
+        },
+    }
+}
+
+/// The lengths the session reads at. Every one of them differed from the
+/// bench's, which is why they are properties rather than constants.
+const SIZES: Sizes = Sizes {
+    font: "14px",
+    line: "1.4",
+    header_gap: "12px",
+    h1: "22px",
+    h2: "16px",
+    h2_gap: "10px",
+    p_gap: "5px",
+    main_gap: "16px",
+    card_pad: "8px",
+    viewport_height: "440px",
+    viewport_pad: "0",
+    viewport_border_width: "0",
+    toolbar_gap: "6px",
+    toolbar_top: "8px",
+    button_pad: "5px 9px",
+    button_radius: "4px",
+    button_font: "12px",
+    parts_gap: "5px",
+    parts_height: "150px",
+    parts_gap_bottom: "12px",
+    reading_height: "260px",
+    field_gap: "8px",
+    field_name_font: "11px",
+    field_name_gap: "2px",
+    field_value_font: "13px",
+    field_value_line: "1.35",
+    error_height: "18px",
+    error_font: "12px",
+    help_font: "12px",
+};
+
+/// What is left once the shared sheet is subtracted: the session's own
+/// columns, its three panels, the glyph journal and the equipment list. Rule
+/// order is the order the sheet was written in, and these land after the
+/// shared rules so a product override still wins.
+const PAREDROS_RULES: &str = r#"
+.session { padding:16px; min-height:100vh; background:var(--isomere-background); }
 .scene-column { flex:0 0 auto; min-width:240px; }
 .panel-column { display:flex; flex-direction:column; gap:12px; width:330px; }
-.scene-card { padding:8px; border:2px solid #39424a; background:#000000; }
-.viewport { display:block; width:100%; height:440px; min-height:240px; color:rgb(255,255,255); }
-.panel { padding:12px; background:#23272c; border:1px solid #39424a; }
+.panel { padding:12px; background:var(--isomere-panel); border:1px solid var(--isomere-border); }
 .status { margin-top:14px; }
 .status-lines p { font:12px monospace; margin:2px 0; color:#c6d0d6; }
-.toolbar { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-button { padding:5px 9px; border:1px solid #4a555e; border-radius:4px; background:#2e343a; color:#e4e9ec; font:12px sans-serif; cursor:pointer; }
-button:hover { background:#3a434b; }
-button:focus { outline:2px solid #6fa8dc; outline-offset:2px; }
-.parts { display:flex; flex-wrap:wrap; gap:5px; max-height:150px; overflow:auto; margin-bottom:12px; }
-.part.selected { background:#2f6b46; border-color:#49a06a; }
 .part.severed { color:#8b7076; text-decoration:line-through; }
-.reading { max-height:260px; overflow:auto; }
-.field { margin-bottom:8px; }
-.field-name { font-size:11px; color:#8e9aa2; margin-bottom:2px; }
-.field-value { font-size:13px; line-height:1.35; }
 .items { max-height:260px; overflow:auto; }
 .glyphs { max-height:220px; overflow:auto; }
-.glyph { padding:5px 6px; margin-bottom:5px; border:1px solid #39424a; }
-.glyph-name { font:13px monospace; color:#e4e9ec; }
+.glyph { padding:5px 6px; margin-bottom:5px; border:1px solid var(--isomere-border); }
+.glyph-name { font:13px monospace; color:var(--isomere-button-ink); }
 #journal-summary { font-size:12px; color:#9fb0ba; }
-.item { padding:6px; margin-bottom:6px; border:1px solid #39424a; }
+.item { padding:6px; margin-bottom:6px; border:1px solid var(--isomere-border); }
 #selection { font-size:12px; color:#9fb0ba; }
-#viewport-error { min-height:18px; font-size:12px; color:#e0a0a0; }
 "#;
+
+/// The document's sheet: isomere's shared rules under this product's palette
+/// and lengths, then the rules above. Built once, and `&'static str` because
+/// that is what the scenario lane's `Product::sheet` asks for.
+pub(super) static SHEET: LazyLock<String> =
+    LazyLock::new(|| isomere::sheet_with(&seeds(), &SIZES, PAREDROS_RULES));

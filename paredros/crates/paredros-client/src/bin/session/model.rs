@@ -336,7 +336,7 @@ pub fn run() -> i32 {
         move |_, _, _| Init {
             state,
             logic: view::root as view::Logic,
-            sheet: view::SHEET.into(),
+            sheet: view::SHEET.clone(),
             fonts: Vec::new(),
             images: Vec::new(),
         },

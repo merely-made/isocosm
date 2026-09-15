@@ -1,0 +1,37 @@
+[package]
+name = "isomere"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "The wing's GUI layer: the shared stylesheet, palette derivation and host chrome the three products already agreed on, promoted once and consumed back."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# Its own workspace, like `shared/isometer` and the other `shared/` path
+# crates, and excluded from the Isometry root workspace beside them. The root
+# pins mere at a different revision, so pulling this crate into it would fork
+# the cambium family.
+[workspace]
+
+[dependencies]
+# The widget vocabulary the panels are written in. M0 uses none of it, but the
+# crate's whole reason to exist is the tiers above the sheet, and the family
+# revision is fixed here once rather than per milestone.
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+# Perceptual seed-to-palette derivation. The sheet's colours are `Seeds` a
+# product hand-picked plus the states tinct fills.
+tinct = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+
+# Deliberately nothing from `shared/isometer`: isomere never names a voxel and
+# never names a scene. A viewport card holds a leaf key, not a body.
+
+# `[patch]` applies only from a workspace root and is not inherited through a
+# path dependency, so this crate restates what its consumers already declare in
+# order to build standalone. Consumed by path from a product workspace, the
+# product's own identical patch table is the one that applies.
+[patch.crates-io]
+vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
+# No parley or fontique row: genet published its forks as `genet-parley` and
+# `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d", version = "=0.14.0" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
