@@ -119,6 +119,40 @@ impl GlyphReading {
         &self.records
     }
 
+    /// Does the bound individual own a base whose *current* canon effect is
+    /// this one? Read-only: it joins `Journey::owns_base` to `Canon::effect`
+    /// and grants nothing. Keying on the current revision, not the effect
+    /// recorded at acquisition, is what `EffectPackTable` expects.
+    pub fn owns_effect(&self, effect: &str) -> bool {
+        self.effect_bases(effect)
+            .any(|base| self.journey.owns_base(base))
+    }
+
+    /// Which acquiring act earned this effect, read back out of the accepted
+    /// event the grant was made from. `None` when it is not owned.
+    pub fn acquired_by(&self, effect: &str) -> Option<AcceptedKind> {
+        let canon = self.journey.canon();
+        self.records.iter().find_map(|record| {
+            if record.outcome != GlyphGrantOutcome::Acquired {
+                return None;
+            }
+            let base = canon.base_id(&record.glyph)?;
+            (canon.effect(base)? == effect)
+                .then(|| accepted(record.event).map(|(kind, _)| kind))
+                .flatten()
+        })
+    }
+
+    fn effect_bases<'a>(&'a self, effect: &'a str) -> impl Iterator<Item = &'a str> + 'a {
+        let canon = self.journey.canon();
+        canon
+            .spec()
+            .glyphs
+            .iter()
+            .filter(move |glyph| glyph.effect == effect)
+            .map(|glyph| glyph.id.as_str())
+    }
+
     pub(crate) fn reset(&mut self, baseline: &World) {
         *self = Self::new(self.rules.clone(), baseline)
             .expect("previously validated exact baseline and rules");

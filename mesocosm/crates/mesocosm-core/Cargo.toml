@@ -15,6 +15,11 @@ publish = false
 # postcard/wire seam. Every item it owns is re-exported below at its old path.
 isometer-core = { workspace = true }
 wing-functions = { path = "../../../shared/wing-functions" }
+# D1 (effect pack preset plan, ruled 2026-09-15): the shared effect
+# declaration vocabulary, so the execution table below names it once instead
+# of restating behaviour, receiver and cost locally. Pure data; wing-glyphs
+# stays product-free and nothing here grants, draws or reads a Journey.
+wing-glyphs = { path = "../../../shared/wing-glyphs" }
 wing-formats = { path = "../../../shared/wing-formats" }
 serde = { workspace = true }
 postcard = { workspace = true }

@@ -608,3 +608,29 @@ Verified in the tree today; the rest are cited inline above.
   runtime action taken was running the existing
   `mesocosm-runtime` example `glyph_journey` to test the `journey.json`
   fixture, which produced the R1 measurement above.
+- **2026-09-15, step 0 done (a4d28d4).** `testing/glyphs/journey.json`
+  regenerated: baseline `df397e7c183eec55`, final `2dc9e1470df7c7c4`,
+  every other field unchanged; worldgen commits of 2026-09-13 moved the
+  seed-0 world, not the glyph lane.
+- **2026-09-15, steps 1 to 3 done.** wing-glyphs gains `pack.rs` (204
+  lines): `EffectDeclaration`, `BehaviourKind`, `ReceiverClass`,
+  `CostShape` with `CostUnit`, `EffectPackSpec` with a defaulted
+  `PackLimits`, and `EffectPack` with `covers(&Canon)`; pure data, no
+  execution; 19 to 24 tests. mesocosm-core depends on wing-glyphs (ruling
+  D1) and gains `effect_pack.rs` (357) beside the experiment: `Acquiring
+  { Carved, Fed, Moved }`, `MarkForm`, `PackRule` with a citation,
+  `Amount` with a saturating permille curve, `MarkRequest` carrying the
+  experiment glyph and no renderer type, `Refusal`, and
+  `EffectPackTable::{default_pack, resolve, resolve_for_glyph,
+  validate_against}`; `resolve` takes `owned` by value and no `&mut`; the
+  revision pin keys the lookup on the current canon's effect; seven tests
+  and the six move pins pass; no `World` touched. mesocosm-runtime's
+  `GlyphReading` gains `owns_effect` and `acquired_by` reading the kept
+  event, and the two invariant tests landed early: repeated resolution
+  leaves the journey byte-identical, and a core-rejected carve yields no
+  grant and no mark; 44 to 47 tests. Deviations: `validate_against`
+  checks coverage, not cost equality, since three poles carry three cost
+  shapes on one effect; `Amount` accepts any magnitude at any pole so
+  uptake mass reaches the feeding pole (ruling 3); a sustained lifetime
+  runs 8 to 16 ticks by amount with the caller retiring on a gap. The
+  default effect id is `mesocosm:reshape-reference`, following the demo.

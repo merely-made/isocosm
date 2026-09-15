@@ -46,6 +46,7 @@ pub mod cohort;
 pub mod development;
 pub mod discovery;
 pub mod effect_experiment;
+pub mod effect_pack;
 pub mod flow;
 pub mod functions;
 pub mod graft;

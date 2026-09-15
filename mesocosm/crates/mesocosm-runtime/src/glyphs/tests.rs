@@ -280,3 +280,149 @@ fn real_trial_acquisition_can_feed_a_standalone_shared_progression_demo() {
     assert!(!trial.glyphs().unwrap().journey().is_divine());
     assert_eq!(trial.glyphs().unwrap().journey().life(), 1);
 }
+
+#[test]
+fn owns_effect_joins_the_journey_to_the_current_canon_effect_through_base_and_variant() {
+    let (world, at) = carve_fixture();
+    let mut config = rules(world.controlled_id().unwrap(), AcceptedKind::Carved);
+    config.canon.variants.push(wing_glyphs::VariantDefinition {
+        id: "test:earth-acute".into(),
+        display: "#\u{301}".into(),
+        base: "test:earth".into(),
+        modifiers: vec!["test:acute".into()],
+    });
+    let canon = Canon::new(config.canon.clone()).unwrap();
+    let mut trial = Trial::new(&world).unwrap();
+    trial.enable_glyphs(config).unwrap();
+    let reading = trial.glyphs().unwrap();
+    assert!(!reading.owns_effect("test:reshape"), "nothing owned yet");
+    assert_eq!(reading.acquired_by("test:reshape"), None);
+
+    assert!(trial.carve(at, 1));
+    let reading = trial.glyphs().unwrap();
+    assert!(reading.journey().owns_base("test:earth"));
+    // The join, stated both ways: owning the base is owning its effect, and
+    // a variant resolves to the same effect through its base.
+    assert!(reading.owns_effect(canon.effect("test:earth").unwrap()));
+    assert_eq!(
+        canon.effect("test:earth-acute"),
+        canon.effect("test:earth"),
+        "a variant carries no effect of its own"
+    );
+    assert!(reading.owns_effect(canon.effect("test:earth-acute").unwrap()));
+    // The other base is untouched, so its effect is not owned.
+    assert!(!reading.journey().owns_base("test:passage"));
+    assert!(!reading.owns_effect("test:traverse"));
+    assert!(!reading.owns_effect("test:absent"));
+    // The acquiring pole is read back out of the accepted event itself.
+    assert_eq!(
+        reading.acquired_by("test:reshape"),
+        Some(AcceptedKind::Carved)
+    );
+    assert_eq!(reading.acquired_by("test:traverse"), None);
+}
+
+#[test]
+fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
+    use mesocosm_core::effect_pack::{Acquiring, EffectPackTable, MarkForm, Refusal};
+    let (world, at) = carve_fixture();
+    let mut trial = Trial::new(&world).unwrap();
+    trial
+        .enable_glyphs(rules(world.controlled_id().unwrap(), AcceptedKind::Carved))
+        .unwrap();
+    assert!(trial.carve(at, 1));
+    let table = EffectPackTable::default_pack();
+    let reading = trial.glyphs().unwrap();
+    let before = serde_json::to_string(&reading.journey().snapshot()).unwrap();
+    let grants = reading.journey().grants().len();
+    let hash = trial.state_hash();
+
+    // Resolving is a reading, not an act: no &mut, no Journey reachable from
+    // the table, and ownership arrives as a bool by value.
+    let owned = reading.owns_effect("test:reshape");
+    let pole = reading.acquired_by("test:reshape").unwrap();
+    assert_eq!(pole, AcceptedKind::Carved);
+    let first = table
+        .resolve(
+            mesocosm_core::effect_pack::DEFAULT_EFFECT,
+            owned,
+            Acquiring::Carved,
+            at,
+            None,
+            mesocosm_core::effect_pack::Amount::Voxels(1),
+        )
+        .unwrap();
+    for _ in 0..32 {
+        let reading = trial.glyphs().unwrap();
+        let again = table
+            .resolve(
+                mesocosm_core::effect_pack::DEFAULT_EFFECT,
+                reading.owns_effect("test:reshape"),
+                Acquiring::Carved,
+                at,
+                None,
+                mesocosm_core::effect_pack::Amount::Voxels(1),
+            )
+            .unwrap();
+        assert_eq!(again, first);
+    }
+    assert_eq!(first.form, MarkForm::SurfaceInscription);
+    let reading = trial.glyphs().unwrap();
+    assert_eq!(
+        serde_json::to_string(&reading.journey().snapshot()).unwrap(),
+        before
+    );
+    assert_eq!(reading.journey().grants().len(), grants);
+    assert_eq!(trial.state_hash(), hash);
+    // An unowned effect paints nothing, however many times it is asked.
+    assert_eq!(
+        table.resolve(
+            mesocosm_core::effect_pack::DEFAULT_EFFECT,
+            false,
+            Acquiring::Carved,
+            at,
+            None,
+            mesocosm_core::effect_pack::Amount::Voxels(1),
+        ),
+        Err(Refusal::NotAcquired {
+            effect: mesocosm_core::effect_pack::DEFAULT_EFFECT.into()
+        })
+    );
+}
+
+#[test]
+fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
+    use mesocosm_core::effect_pack::{Acquiring, Amount, DEFAULT_EFFECT, EffectPackTable, Refusal};
+    let (world, at) = carve_fixture();
+    let mut trial = Trial::new(&world).unwrap();
+    trial
+        .enable_glyphs(rules(world.controlled_id().unwrap(), AcceptedKind::Carved))
+        .unwrap();
+    // Radius zero: core accepts the call and records a carve that removed
+    // nothing. `accepted()` filters on `removed > 0`, so nothing is granted.
+    assert!(trial.carve(at, 0));
+    let reading = trial.glyphs().unwrap();
+    assert!(reading.records().is_empty(), "a null carve is no evidence");
+    assert!(reading.journey().acquisitions().is_empty());
+    assert!(reading.journey().grants().is_empty());
+    assert!(!reading.owns_effect("test:reshape"));
+    assert_eq!(reading.acquired_by("test:reshape"), None);
+    let table = EffectPackTable::default_pack();
+    assert_eq!(
+        table.resolve(
+            DEFAULT_EFFECT,
+            reading.owns_effect("test:reshape"),
+            Acquiring::Carved,
+            at,
+            None,
+            Amount::Voxels(0),
+        ),
+        Err(Refusal::NotAcquired {
+            effect: DEFAULT_EFFECT.into()
+        }),
+        "a refused act cannot grant, so its mark is withheld"
+    );
+    // A real carve on the same trial does grant, proving the fixture could.
+    assert!(trial.carve(at, 1));
+    assert!(trial.glyphs().unwrap().owns_effect("test:reshape"));
+}

@@ -6,6 +6,7 @@
 mod canon;
 pub mod divine;
 mod journey;
+mod pack;
 
 pub use canon::{
     Canon, CanonLimits, CanonSpec, CorrespondenceMove, EffectId, GlyphDefinition, GlyphId,
@@ -15,10 +16,15 @@ pub use journey::{
     Acquisition, Eligibility, GrantOutcome, GrantRecord, Journey, JourneyLimits, JourneySnapshot,
     JourneyTransition, MotifGroup, Provenance, ProvenanceKind, VariantPolicy,
 };
+pub use pack::{
+    BehaviourKind, CostShape, CostUnit, EffectDeclaration, EffectPack, EffectPackSpec, PackLimits,
+    ReceiverClass,
+};
 
 pub const SCHEMA_VERSION: u32 = 1;
 pub const DEFAULT_MAX_GLYPHS: usize = 4096;
 pub const DEFAULT_MAX_VARIANTS: usize = 4096;
+pub const DEFAULT_MAX_DECLARATIONS: usize = 4096;
 pub const DEFAULT_MAX_GRANTS: usize = 16384;
 pub const DEFAULT_MAX_TRANSITIONS: usize = 65536;
 pub const DEFAULT_MAX_JSON_BYTES: usize = 8 * 1024 * 1024;
