@@ -1060,7 +1060,7 @@ body revision and from succession into another existing life.
 
 #### First implementation receipt
 
-The new MPL-2.0 `shared/wing-glyphs` crate passes **16 tests**, including a
+The new MPL-2.0 `shared/wing-glyphs` crate passed **16 tests** at ac38887 (28 as of 2026-09-15, after the pack and expression tables), including a
 literal seeded-shuffle vector, opaque Unicode and explicit variants, a
 5,000-entry canon with shared storage, first-acquisition preservation,
 divine-only rebirth, immutable ascension evidence, snapshot transition replay,
