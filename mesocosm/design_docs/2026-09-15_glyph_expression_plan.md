@@ -586,6 +586,290 @@ through traits stays the first Mesocosm slice; experience follows it.
    and lifted in world up, since a mark flush to its face is occluded by
    its own body.
 
+## 9. The experience slice
+
+**Assessment, 2026-09-15**, against the ruling above: a glyph is experienced
+when a general predicate over the log holds — **an encounter with the glyph and
+a deed among the significant events that matches its meaning** — recorded with
+the manner that satisfied it. Nothing here depends on the hagiograph's epoch
+wiring (R5); the feed is what the trial already accepts.
+
+### 9.1 The predicate vocabulary, as data
+
+**Where.** A new `shared/wing-glyphs/src/experience.rs`, beside `expression.rs`
+and `pack.rs`, keyed by namespaced strings through the existing `identifier()`
+(`lib.rs:38-50`) and `bounded_text()` (`lib.rs:53-57`), for §2.1's reason: a
+kernel enum over Mesocosm's `Event` (`history.rs:73-213`) could not be read by
+Paredros or Isometry, which have neither `Event` nor `ProcessRef`. Mesocosm
+resolves the deed verb to its own event types, exactly as
+`mesocosm-core/src/embodiment.rs` resolves a `TraitId` through `Registry`.
+
+**Encounter** — how the individual met the glyph. Four kinds, two live:
+
+| Kind | Satisfied by, in Mesocosm | Status |
+| --- | --- | --- |
+| `Embodied` | a living part expresses it: `embodiment::embodied` (`embodiment.rs:53-63`) says so this tick | live |
+| `Borne` | a bearing part was grown or grafted: `Grew`, `Grafted`, `Expressed`, `Inherited` (`history.rs:97`, `:163`, `:151`, `:197`) naming a part whose site expresses the glyph | live |
+| `Carried` | an item bearing the glyph | **declared, unavailable.** Mesocosm has no item tier; `Bearer::Held` is likewise declared and unauthored (`effect_pack.rs:51-66`). A borg holds; a critter does not |
+| `Inscribed` | the glyph seen written on the world or on another body | **declared, unavailable.** Nothing in the tree writes a glyph onto terrain or onto a body; the bench's marks are a drawn reading and cannot be seen by a critter |
+
+The two unavailable kinds are declared so the shape does not change when the
+borg tier lands, and an evaluator meeting one **refuses with a named reason**
+rather than silently failing the conjunction.
+
+**Deed** — a matcher over what the runtime already accepts, as a namespaced
+verb, one scalar floor, and an optional qualifier string:
+
+```rust
+// shared/wing-glyphs/src/experience.rs — illustrative, not compile-ready.
+pub struct Deed { pub verb: String, pub at_least: u64, pub qualifier: Option<String> }
+pub struct Condition { pub glyph: GlyphId, pub encounter: Vec<Encounter>, pub deed: Deed }
+pub struct ExperienceSpec {
+    pub version: u32, pub id: String, pub canon_revision: u64,
+    pub entries: Vec<Condition>, pub limits: ExperienceLimits,
+}
+```
+
+Mesocosm's half resolves the verb against the accepted batch: `mesocosm:fed`
+(`at_least` = `mass_mg`, qualifier = `MealKind`, `history.rs:84-90`),
+`mesocosm:carved` (`removed`, `:123-128`), `mesocosm:moved` (`:91-96`,
+`from != to`), `mesocosm:grew` (`:97`), `mesocosm:severed` (`:104`),
+`mesocosm:died` (`:106`), `mesocosm:grafted` (`parts`, `:163-172`), and
+`mesocosm:took` for positive soil uptake — a recorded flow rather than an event,
+reaching the adapter as `TrialUptake` (`runtime/trial.rs:37-47`). `accepted()`
+(`runtime/glyphs.rs:299-308`) is the existing three-verb version of this.
+
+**Combinators: conjunction only.** Mark's example — killed something with fire
+*and* found this glyph — is one encounter and one deed, and the "with fire"
+qualification rides the deed's own qualifier and floor, not a counter. So
+neither quantifier is built here; the fields they would occupy are named
+(`times: u32`, `within: Option<u64>`) and left unauthored, like `Bearer::Held`.
+Adding either later is a data change, not a shape change.
+
+**A canon revision changes what counts.** `ExperienceSpec.canon_revision` and
+`covers(&Canon)` mirror `ExpressionTable::covers` (`expression.rs:144-160`): the
+revisions must agree and every base needs a condition. Every `Acquisition` and
+`GrantRecord` already keeps the revision it was accepted under
+(`journey.rs:57-61`, `:70-72`), and `grant_at_revision` refuses one older than
+the founding revision (`journey.rs:243-252`). So a republished revision changes
+what counts **from now on** and cannot re-judge what is already experienced;
+completion still runs against the founding canon (`eligibility()`,
+`journey.rs:313-322`). `Canon::correspondence_diff` (`canon.rs:203`) names
+exactly the bases whose meaning moved — the list whose conditions must be
+re-authored, which is the migration path §7.4 demands.
+
+### 9.2 The manner, and how it reaches the divinity
+
+The satisfied predicate is granted through the kernel door the runtime already
+uses, `Journey::grant_at_revision` (`journey.rs:245`), writing an `Acquisition`
+whose `Provenance.kind` is the manner:
+
+| Manner | `ProvenanceKind` | Note |
+| --- | --- | --- |
+| embodiment | `Trait` | exists since G1 and has **never been written** (`journey.rs:12-21`) |
+| deed | `Event` | what every Mesocosm grant is today (`runtime/glyphs.rs:251`) |
+| craft | `Technique` | exists, unwritten |
+| discovery | `Custom("glyph:discovery")` | **no kernel kind names finding a thing.** `Custom` is validated and bounded (`journey.rs:36-38`) and `motif()` groups it like any other, so no kernel change is needed. Promote it to a real variant after a second product writes it, not before |
+
+**Evidence string.** Experience is satisfied by a *pair*, so the evidence must
+name both halves or the `(glyph, evidence)` idempotence key
+(`journey.rs:253-262`) would collapse two different satisfactions into one:
+
+```text
+mesocosm.trial/{baseline:016x}/{post:016x}/experience/{condition}/{encounter}/{deed-ordinal}
+```
+
+— the condition's digest (a `ConditionId`-shaped hash over the rule-bearing
+bytes, as `discovery/conditions.rs:94-108` does), the encounter's witness (a
+`PartId` for `Embodied`/`Borne`), and the deed's history sequence or
+`(tick, flow ordinal)`. Retried evidence stays a `Duplicate`; a second deed
+satisfying the same condition is a new `GrantRecord` with outcome `Recorded`,
+which is what the kernel already does. `Provenance.context` keeps the plain
+words.
+
+**`motif()` then reads it**, grouping grants by kind in first-seen order
+(`journey.rs:381-394`). Today every Mesocosm journey is one group; a journey
+carrying an embodiment manner and a deed manner returns two, which is the first
+non-trivial motif and what "different divinities from the same collection" is
+read off. §7.4's rule holds: a generated affinity must cite the acquisition
+evidence and the rule revision, and both are on the record.
+
+**What changes in the runtime adapter** (`mesocosm-runtime/src/glyphs.rs`):
+
+- `EventGrant`/`GlyphRules.grants` (`:34-53`) **retire as a rule axis**. The
+  rules carry an `ExperienceSpec` instead; `AcceptedKind` stays as evidence on
+  `GlyphEvidence`, which is where it was already demoted (`:24-32`, `:140-155`).
+- `absorb` (`:190-217`) and `absorb_uptake` (`:224-256`) stop granting and
+  **become the deed feed**: each accepted record is offered to the evaluator as
+  a candidate deed, once, in batch order, as `discovery::evaluate` runs once per
+  accepted piece of evidence.
+- The encounter half reads embodiment: `embodied_glyphs` (`:160-172`) and
+  `embodiment::bearing_parts` (`embodiment.rs:88-106`) for `Embodied`, and the
+  same history batch for `Borne`.
+- `owns_effect` and `effect_bases` are unchanged; `acquired_by` stays evidence.
+
+### 9.3 The feed, without the hagiograph
+
+The evaluator sits in **mesocosm-runtime**, as `glyphs/experience.rs`, reached
+only through `Trial::glyphs()` (`runtime/trial.rs:126-128`) — the one door, as
+today. `Trial::apply_one` already hands the adapter both accepted sources once
+per successful tick, history first then this tick's positive uptake
+(`runtime/trial.rs:341-348`), and that is the whole feed: **every accepted event
+in the batch is a candidate deed**, nothing polls, and a refused action never
+reaches it. The bench never calls the evaluator — `Binding` asks the body then
+the journey and holds no `&mut` (`bench/trial/journey.rs:247-283`).
+
+The hagiograph's promoted events become an **additional, later feed**, on §3.4's
+shape: a promoted event is an ordinary event carrying a promotion receipt, and a
+condition may require the receipt. It is blocked upstream — `Runtime::end_epoch`
+has one caller and it is a unit test, so `WorldRecord` is empty in a real run
+(R5) — so **no condition in this slice may require a receipt, and the evaluator
+must not take `WorldRecord` as an input.** Wiring the epoch boundary later adds
+a feed; it changes no type here.
+
+### 9.4 What the bench shows
+
+Both visual states are already built and ruled: an embodied glyph draws before
+it is experienced (bench ruling 1), and an experienced glyph not currently
+embodied draws through the journeyed form — amber quotes, camera-facing,
+unanchored — distinguishable from the embodied inscription on stroke, hue and
+placement (Progress, step 8). **Experience needs no new mark form.** It needs
+two probe fields and one scenario:
+
+- `trial-experienced` — the glyph ids the bound journey has an `Acquisition`
+  for, in acquisition order.
+- `trial-manner` — glyph id to manner, off each acquisition's provenance kind.
+  The receipt carries the satisfying `encounter` and `deed` as separate fields,
+  so embodiment and deed stay distinguishable in it whichever way E3 goes.
+
+**`experience-deed.scenario`**, reusing the seed-7 consumer and the accepted
+carve `expression-sever.scenario` already drives: the body embodies
+`mesocosm:reshape` and `mesocosm:reach` from tick zero, so the encounter holds
+before anything happens; the carve is the deed. It asserts `trial-borne-by ==
+embodied` (what bears it) against `trial-manner` (how it was experienced) — two
+different facts that must not be read off one field — then steps the world until
+the bound body dies and asserts `trial-borne-by == journeyed` while
+`trial-experienced` and `trial-manner` are byte-identical: **bearing moves,
+manner never does.**
+
+### 9.5 Move order
+
+Smallest first; each green and revertible on its own.
+
+1. **Experience vocabulary, shared.** New `shared/wing-glyphs/src/experience.rs`
+   + `experience_tests.rs`, exported from `lib.rs`. Data only. *Gate:* the
+   wing-glyphs suite, **28 tests today**, growing; nothing else compiles
+   against it yet.
+2. **Manner mapping, shared.** `Manner → ProvenanceKind` in the same module,
+   with discovery as `Custom`. *Gate:* wing-glyphs, plus a `motif()` test
+   proving two manners make two groups where today's journeys make one.
+3. **Mesocosm resolution.** New `mesocosm-core/src/experience.rs`: deed verb to
+   `Event`/flow match, encounter to the embodiment reading and the
+   part-naming events. `&`-only, no `World` mutation, no renderer type.
+   *Gate:* the core suite, `tests/embodied.rs`, and `tests/move_pins.rs` — the
+   **six byte pins**, including the state hash (`:87`) and the profile
+   schema/version (`:96`). No `World` is touched, so no pin may move.
+4. **Evaluator, runtime.** New `mesocosm-runtime/src/glyphs/experience.rs`;
+   `absorb` and `absorb_uptake` route through it; `GlyphRules.grants` gives way
+   to the condition table; `GlyphReading` gains `experienced()` and `manner()`.
+   *Gate:* the **50 runtime tests**, with the ten glyph tests re-authored on
+   conditions and the two read-only invariants kept verbatim.
+5. **Example and receipt.** `examples/glyph_journey.rs` supplies a condition
+   instead of an `EventGrant`; **regenerate `testing/glyphs/journey.json`.** The
+   world is untouched, so `baseline_hash` `df397e7c183eec55` and
+   `final_world_hash` `2dc9e1470df7c7c4` must come back identical, and the pin
+   comment citing them (`move_pins.rs:39-49`) is checked in the same commit.
+   What changes: each `accepted_grants` entry gains `encounter`, `deed` and
+   `manner`, the evidence strings take the 9.2 shape, and
+   `standalone_progression.motif` gains its second group.
+6. **Bench probe fields.** `trial-experienced` and `trial-manner` join the block
+   at `bench/trial.rs:305-390`. *Gate:* `world-trial`, `world-trial-play`,
+   `world-trial-reopen`, `uptake-world`, `expression-sever`. **Pixels do not
+   move** — probe fields are text.
+7. **The scenario.** New `experience-deed.scenario`. *Gate:* the three trial
+   scenarios plus `expression-sever` and the new one; `spatial-coverage`'s
+   **32 viewports byte-identical**; the genet suite, **156 single-threaded**.
+
+Workspace gates throughout: `cargo check --workspace --all-features
+--all-targets`, `cargo fmt` clean, and `structure-cli` and `population`
+**named as excluded** with their HEAD failure hashes (`50e8f3a3a6b6d22d`
+expected / `8d1d3676ecf24452` got).
+
+### 9.6 Risks and decisions for Mark
+
+**E1. Retiring the act-based grants changes who earns anything.** Today any
+positive accepted carve, move, feed or uptake by the bound organism grants
+(`glyphs.rs:190-217`, `:299-308`). Under experience the same act grants **only
+with an encounter**. The bench's bodies should be unaffected — the seed-1
+producer and the seed-7 consumer both embody `mesocosm:reshape` from tick zero —
+but a body embodying nothing now grants nothing where it grants today, so every
+scenario asserting `trial-grants == N` must be re-read rather than assumed.
+**Confirm before step 4.**
+
+**E2. Does uptake-as-feeding stay a deed?** Ruling 5 said a plant earns the
+glyph by making its living, and `absorb_uptake` is the tree's only flow-reading
+grant path. But a producer takes up soil **every living tick** (Progress, step
+8), so `mesocosm:took` is a deed that is never scarce: the first acquires and
+every later one is `Recorded`, filling the record without changing the journey.
+Keep it with a mass floor, keep it unbounded as today, or drop it and leave
+uptake as the *used* evidence it already is. **Mark's.**
+
+**E3. What does the manner name?** Every experience is a conjunction, so a deed
+and an encounter are always both present, and the four manners do not obviously
+divide them. Recommended reading: **the manner names the encounter**, with
+`deed` as the manner when the deed is itself the encounter (the glyph met in the
+doing, no bearer and no find). Under the other reading the manner names the deed
+and embodiment becomes context, and the one assertion in 9.4's scenario flips.
+The receipt carries both halves either way.
+
+**E4. Ascension eligibility once experience and embodiment differ.**
+`eligibility()` counts owned bases against the founding canon
+(`journey.rs:313-322`), and "owned" now means **experienced**, which is Mark's
+ruling exactly. Mantling is the gap: **no type records which glyphs a divinity
+requires**, so the embodied subset gates nothing yet. Does a `Mantle` predicate
+over the §2.3 reading belong in this slice or the next? This plan assumes the
+next and builds nothing for it.
+
+**E5. Two smaller records.** `GlyphRules` is `deny_unknown_fields` serde
+(`glyphs.rs:42-53`), so replacing `grants` breaks any stored rules file — the
+only two authors are the bench preset and the example, both re-authored at steps
+4 and 5, so there is nothing to migrate. And the genet source carries **158**
+`#[test]` attributes against the 156 the gate names; confirm which is right
+before quoting it in a green claim.
+
+### 9.7 Done conditions
+
+1. **wing-glyphs `experience`:** JSON round-trip; `covers` accepts a canon whose
+   every base has a condition and refuses one that does not, and refuses a table
+   whose `canon_revision` disagrees; an empty encounter list refuses at `new`;
+   an unavailable encounter kind round-trips and is refused at evaluation with
+   its reason, never silently unsatisfied; identifiers and bounded text match
+   `canon.rs`'s rules.
+2. **Manner:** each of the four maps to its `ProvenanceKind`; a journey carrying
+   two manners returns two `motif()` groups where a one-manner journey returns
+   one; a grant under a revision older than the founding one is refused.
+3. **mesocosm-core `experience`:** each deed verb matches exactly its `Event`
+   variant and no other; a below-floor deed (`removed == 0`, `mass_mg == 0`) and
+   a disagreeing qualifier do not match; the encounter reading is `&`-only and
+   byte-identical run twice over one unchanged phenotype; the six pins hold.
+4. **mesocosm-runtime:** a deed with no encounter grants nothing and leaves the
+   journey byte-identical; the same deed with an encounter acquires once and
+   records thereafter; the same pair retried is a duplicate; a core-rejected
+   carve yields no grant and no mark. Both read-only invariants verbatim.
+5. The **28** wing-glyphs tests, the **50** runtime tests and the six move pins
+   stay green at every step.
+6. **Scenarios:** `world-trial`, `world-trial-play`, `world-trial-reopen`,
+   `uptake-world` and `expression-sever` pass with no assertion weakened and
+   with pixels unchanged through step 7; `experience-deed.scenario` shows the
+   carve experienced while embodied, the manner recorded, and the manner
+   unchanged after the bearing is lost; `spatial-coverage` keeps all 32
+   viewports byte-identical; `structure-cli` and `population` are named as
+   excluded with their HEAD failure hashes in every green claim.
+7. **Receipts**, under `testing/bench/receipts/2026-09-15/experience/`: the
+   condition table for one run; per experienced glyph the encounter, deed and
+   manner; the journey snapshot and its `motif()` groups; and the regenerated
+   `testing/glyphs/journey.json` with both world hashes unmoved.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.
