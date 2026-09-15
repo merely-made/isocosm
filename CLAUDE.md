@@ -98,8 +98,10 @@ crates/
                     iroh behind a feature.
   isometry-system/  System plugin lane: schemas plus piccolo Lua rules, with
                     the 5e SRD content pack.
-  isometry-voxel/   Voxel appearance pipeline: .vox ingest, recipes, palette
-                    swaps, and isometric sprite bakes.
+  (voxel appearance) Recipes, palettes, .vox ingest and the isometric
+                    sprite bake moved to the isometer family on 2026-09-15:
+                    `shared/isometer/crates/isometer-mesh`, reached as
+                    `isometer_mesh::bake` and `isometer_mesh::voxel`.
 ```
 
 Planned (phase-gated, see the bootstrap and horizon plans): `isometry-web`
@@ -133,8 +135,8 @@ file I/O. Event log semantics live in core; transport lives in
   `cargo check --workspace --all-features --all-targets` after touching a
   sibling repo, and before committing anything in `isonetry`. Every
   campaign feature is `default = []`, so a plain `cargo test` compiles
-  neither them nor their tests: `--all-features` runs 182 tests where the
-  default runs 173. They rot silently whenever mere moves, and nothing else
+  neither them nor their tests: `--all-features` runs 363 tests where the
+  default runs 354 (counts of 2026-09-15; the gap is the nine gated tests). They rot silently whenever mere moves, and nothing else
   will tell you. This is not hypothetical — 2026-07-17 found all four
   campaign features uncompilable (a removed `mooting` re-export, a
   duplicate `muniment`, and a de-async'd `MootStore::in_memory`), broken for
