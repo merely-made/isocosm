@@ -3,8 +3,12 @@
 //! diamonds stand in for sprites until a pixel tileset lands (and the
 //! `image-rendering: pixelated` engine seam opens, probe P1).
 
+mod kinds;
 mod watchtower;
 mod tokens;
+
+pub(crate) use kinds::{BASE_TILE_KINDS, WATCHTOWER_TILE_KINDS, tile_kind_css};
+pub use kinds::tile_kind_colour;
 
 /// The floor every overlay panel stacks from, above the whole board.
 ///
@@ -303,12 +307,7 @@ pub fn board_css() -> String {
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
-.tile-grass { background-color: #4f8f3b; }
-.tile-grass.alt { background-color: #478536; }
-.tile-water { background-color: #2f629e; }
-.tile-water.alt { background-color: #2a5a93; }
-.tile-stone { background-color: #8d9098; }
-.tile-stone.alt { background-color: #84878f; }
+/* @tile-kinds: generated from BASE_TILE_KINDS, see tile_kind_css. */
 
 /* Elevation is real geometry: each raised roof emits only the two exposed
    foreground trapezoids, rather than a stack of dark diamonds. The faces are
@@ -415,7 +414,10 @@ pub fn board_css() -> String {
 .btn-attack { background-color: #5a2b2b; color: #ffd9d9; }
 .btn-attack:hover { background-color: #7a3a3a; }
 "#
-    .to_owned();
+    .replace(
+        "/* @tile-kinds: generated from BASE_TILE_KINDS, see tile_kind_css. */",
+        &tile_kind_css(BASE_TILE_KINDS),
+    );
     // Voxel-baked pixel tileset: the pixel sprites this sheet was waiting for
     // (design_docs/2026-07-08_campaign_packs_plan.md). Knight is the demo rig;
     // goblin is the same rig recoloured, proving palette-swap on the board.

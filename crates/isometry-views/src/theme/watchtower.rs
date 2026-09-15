@@ -29,10 +29,9 @@ pub(super) fn css() -> &'static str {
                  background-position: bottom center; background-repeat: no-repeat; image-rendering: pixelated; }}\n"
             ));
         }
-        css.push_str(".tile-rubble { background-color: #81775f; }\n");
+        css.push_str(&super::tile_kind_css(super::WATCHTOWER_TILE_KINDS));
         css.push_str(".prop-forest-tree { width: 32px; height: 40px; }\n");
         css.push_str(".tile-face-stone.tile-face-left { background-color: #676c69; }\n.tile-face-stone.tile-face-right { background-color: #515956; }\n");
-        css.push_str(".tile-forest-floor { background-color: #405b35; }\n.tile-forest-floor.alt { background-color: #46613a; }\n.tile-forest-path { background-color: #8a7953; }\n");
         css
     })
 }

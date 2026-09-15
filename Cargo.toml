@@ -47,6 +47,10 @@ isometry-campaign = { path = "crates/isometry-campaign", version = "0.1.0" }
 # crate on 2026-09-15. It carries its own workspace, so it stays in the
 # `exclude` list above and is taken by path, as wing-integration takes it.
 isometer-mesh = { path = "shared/isometer/crates/isometer-mesh" }
+# The family floor (brick ground, the Terrain seam) and the lens type the
+# board binds its tile-kind palette through; same workspace, same path rule.
+isometer-core = { path = "shared/isometer/crates/isometer-core" }
+isometer-lens = { path = "shared/isometer/crates/isometer-lens" }
 isometry-views = { path = "crates/isometry-views", version = "0.1.0" }
 isonetry = { path = "crates/isonetry", version = "0.1.0" }
 isometry-system = { path = "crates/isometry-system", version = "0.1.0" }

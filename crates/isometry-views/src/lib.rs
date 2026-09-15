@@ -17,6 +17,7 @@ mod governance;
 mod overmap;
 mod panel;
 mod projection;
+mod scene;
 mod sheet;
 mod state;
 mod storylet;
@@ -43,4 +44,5 @@ pub use state::{
 };
 pub use state::{OvermapMotionState, OvermapMotionTick};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
-pub use theme::board_css;
+pub use scene::{MapTerrain, SEA_LEVEL, VOID_SURFACE, terrain_palette};
+pub use theme::{board_css, tile_kind_colour};
