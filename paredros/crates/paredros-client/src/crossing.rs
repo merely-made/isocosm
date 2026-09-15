@@ -6,7 +6,7 @@
 
 mod draw;
 
-use mesocosm_render::geometry::Vertex;
+use isometer_render::geometry::Vertex;
 use netrender::Scene;
 pub use paredros_world::{BodyId, BodyKind, ContactWorld, HeldInput, Input, TriggeredInput};
 use paredros_world::{BoxCollider, MovableBoard};

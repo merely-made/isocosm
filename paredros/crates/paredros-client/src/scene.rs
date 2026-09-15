@@ -16,9 +16,9 @@ use isometer_core::VolumeRef;
 use isometer_core::ground::{BRICK, Ground};
 use mesocosm_core::places::WALKER_HEIGHT;
 #[cfg(feature = "r1-proof")]
-use mesocosm_lens::{CritterPose, TraceCamera, critter::Capsule};
+use isometer_lens::{CritterPose, TraceCamera, critter::Capsule};
 use isometer_mesh::{BodyMesh, Volume};
-use mesocosm_render::geometry::{SceneItem, Vertex, build_scene_vertices};
+use isometer_render::geometry::{SceneItem, Vertex, build_scene_vertices};
 use netrender::Scene;
 use renderling::glam::{Mat4, Vec3};
 

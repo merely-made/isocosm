@@ -14,7 +14,7 @@ use std::{collections::BTreeSet, fmt};
 
 use isometer_core::ground::{BRICK, Ground};
 use mesocosm_core::places::{Places, WALKER_HEIGHT};
-use mesocosm_lens::TraceCamera;
+use isometer_lens::TraceCamera;
 use modulus::{BrickMap, BrickMapError, BrickProjectionRevision};
 use renderling::glam::Vec3;
 

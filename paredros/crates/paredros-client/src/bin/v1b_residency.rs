@@ -17,7 +17,7 @@
 use std::{path::Path, sync::Arc, time::Instant};
 
 use isometer_core::ground::BRICK;
-use mesocosm_lens::{
+use isometer_lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, Grade,
 };
 use modulus::{BrickMap, BrickProjectionRevision};
@@ -124,8 +124,8 @@ impl StableTenant {
         &mut self,
         map: &BrickMap,
         revision: BrickRevision,
-        camera: mesocosm_lens::TraceCamera,
-        pose: &mesocosm_lens::CritterPose,
+        camera: isometer_lens::TraceCamera,
+        pose: &isometer_lens::CritterPose,
         loaded_slots: &[u32],
     ) -> Result<BrickDiagnostics, String> {
         let mut encoder = self
@@ -531,7 +531,7 @@ fn report(
         gate: "V1b",
         vessel: "paredros",
         camera_profile: "third-person continuous zoom: near acts, mid leads, far plans",
-        traversal_implementation: "modulus::BRICK_DDA_WGSL via mesocosm_lens::BrickTracer",
+        traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer_lens::BrickTracer",
         resident_measure: "fixed pointer plus atlas allocation, with wgpu allocator-report bytes",
         publication_mode: "one capacity-fixed cache; retargets publish the pointer volume plus \
                            loaded slots only, retained slots never re-upload",

@@ -3,7 +3,7 @@
 
 //! Presentation helpers for the authored contact fixture.
 
-use mesocosm_render::geometry::Vertex;
+use isometer_render::geometry::Vertex;
 use netrender::Scene;
 use netrender_text::parley::{
     Alignment, AlignmentOptions, FontContext, FontFamily, Layout, LayoutContext, StyleProperty,

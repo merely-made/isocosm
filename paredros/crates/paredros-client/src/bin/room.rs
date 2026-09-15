@@ -112,7 +112,7 @@ struct Live {
     composer: Composer,
     /// The room is meshed once. Only the torch changes, and the torch rides
     /// the eye, so the vertices are re-shaded per frame rather than remeshed.
-    room: Vec<mesocosm_render::geometry::Vertex>,
+    room: Vec<isometer_render::geometry::Vertex>,
     #[cfg(feature = "r1-proof")]
     adapter: String,
     health: Arc<Mutex<FrameHealth>>,
@@ -383,7 +383,7 @@ struct RoomApp {
     captured: bool,
     frame_us: Vec<u64>,
     #[cfg(feature = "r1-proof")]
-    last_trace: Option<mesocosm_lens::BrickDiagnostics>,
+    last_trace: Option<isometer_lens::BrickDiagnostics>,
     policy: PresentationPolicy,
     headed_validation_probe: Option<HeadedValidationProbe>,
     rebuild_probe: Option<RebuildProbe>,
@@ -802,7 +802,7 @@ struct ReportEvidence<'a> {
     r1_mode: bool,
     frame_us: &'a [u64],
     #[cfg(feature = "r1-proof")]
-    trace: Option<mesocosm_lens::BrickDiagnostics>,
+    trace: Option<isometer_lens::BrickDiagnostics>,
     #[cfg(feature = "r1-proof")]
     abi: Option<BrickAbi>,
     #[cfg(feature = "r1-proof")]
@@ -884,7 +884,7 @@ fn report(
             gate: "R1",
             vessel: "paredros",
             camera_profile: "close-perspective-room",
-            traversal_implementation: "modulus::BRICK_DDA_WGSL via mesocosm_lens::BrickTracer",
+            traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer_lens::BrickTracer",
             adapter: evidence.adapter,
             size: SIZE,
             frames: spans.len(),
