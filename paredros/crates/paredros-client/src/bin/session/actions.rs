@@ -13,9 +13,15 @@ use std::time::{Duration, Instant};
 use mesocosm_core::PartId;
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 use paredros_world::timed_action::Direction;
-use paredros_world::{GameEvent, GameIntent, ItemId, ItemKind, MotionInput, StrikeOutcome};
+use paredros_world::{
+    CanonRevisionCause, GameEvent, GameIntent, ItemId, ItemKind, MotionInput, StrikeOutcome,
+};
 
 use super::{CHARGE_INTERVAL, MOTION_INTERVAL, SessionApp};
+
+/// The fixed seed the fixture's authored revision permutes with, so the
+/// journal and the scenario read one reproducible correspondence.
+const REVISION_SEED: u64 = 11;
 
 impl SessionApp {
     /// One fixed 60 Hz motion step in the latched direction.
@@ -223,6 +229,35 @@ impl SessionApp {
                 events.len()
             ),
             Err(error) => format!("Injury cut: {error:?}"),
+        }];
+    }
+
+    /// Publishes one authored canon revision.
+    ///
+    /// **A fixture control, not a product action.** Paredros has no authored
+    /// canon and no world criterion that settles one; this act exists so the
+    /// journal and the scenario can show what a published revision does. A
+    /// real revision comes from a settled period or an admitted promotion,
+    /// which this host does not own.
+    pub(super) fn revise_canon(&mut self) {
+        let revision = self
+            .glyphs
+            .as_ref()
+            .map_or(2, |reading| reading.live_canon().spec().revision + 1);
+        let intent = {
+            let model = self.model.borrow();
+            GameIntent::ReviseCanon {
+                tick: model.game().next_tick(),
+                revision,
+                seed: REVISION_SEED,
+                cause: CanonRevisionCause::Authored {
+                    label: "session fixture epoch".into(),
+                },
+            }
+        };
+        self.status = vec![match self.model.borrow_mut().apply(intent) {
+            Ok(_) => format!("Canon revision {revision} published (fixture control)"),
+            Err(error) => format!("Canon revision failed: {error:?}"),
         }];
     }
 

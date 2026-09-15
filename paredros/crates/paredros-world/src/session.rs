@@ -14,7 +14,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
-    GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, World,
+    GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
+    World,
 };
 
 mod body_change;
@@ -123,10 +124,13 @@ impl Session {
 
     /// Applies one ordinary game action for the one currently controlled body.
     pub fn apply_game(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, SessionError> {
-        if intent.subject() != self.control.played() {
+        // A world-level intent names no subject, so control does not gate it.
+        if let Some(subject) = intent.subject()
+            && subject != self.control.played()
+        {
             return Err(SessionError::NotControlled {
                 expected: self.control.played(),
-                actual: intent.subject(),
+                actual: subject,
             });
         }
         Ok(self.game.apply(intent)?)
@@ -220,20 +224,13 @@ impl Session {
                 current: SESSION_VERSION,
             });
         }
-        if ![
-            GAME_STATE_VERSION,
-            MOTION_GAME_STATE_VERSION,
-            COMBAT_GAME_STATE_VERSION,
-            LEGACY_GAME_STATE_VERSION,
-        ]
-        .contains(&save.game.version)
-        {
+        if !(LEGACY_GAME_STATE_VERSION..=GAME_STATE_VERSION).contains(&save.game.version) {
             return Err(SessionError::Game(GameError::VersionDiverged {
                 saved: save.game.version,
                 current: GAME_STATE_VERSION,
             }));
         }
-        if save.game.version == LEGACY_GAME_STATE_VERSION
+        if save.game.version < COMBAT_GAME_STATE_VERSION
             && save
                 .game
                 .intents
@@ -251,7 +248,7 @@ impl Session {
         {
             return Err(SessionError::Game(GameError::LegacyMotionIntent));
         }
-        if save.game.version != GAME_STATE_VERSION
+        if save.game.version < PROFILE_GAME_STATE_VERSION
             && save.game.intents.iter().any(|intent| {
                 matches!(
                     intent,
@@ -264,6 +261,15 @@ impl Session {
             })
         {
             return Err(SessionError::Game(GameError::LegacyMovementProfileIntent));
+        }
+        if save.game.version < GAME_STATE_VERSION
+            && save
+                .game
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::ReviseCanon { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyCanonIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents
@@ -293,12 +299,12 @@ impl Session {
             }
             if cut < save.game.intents.len() {
                 let intent = save.game.intents[cut].clone();
-                if let Some(control) = &control
-                    && intent.subject() != control.played()
+                if let (Some(control), Some(subject)) = (&control, intent.subject())
+                    && subject != control.played()
                 {
                     return Err(SessionError::NotControlled {
                         expected: control.played(),
-                        actual: intent.subject(),
+                        actual: subject,
                     });
                 }
                 game.apply(intent)?;

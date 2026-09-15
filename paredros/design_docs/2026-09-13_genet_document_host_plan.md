@@ -272,6 +272,14 @@ creator files are owned by a concurrent lane and are never swept.
   rationale. Neither is retired by this plan.
 - **Hybrid focus policy** and the other open decisions in the presentation
   plan stay Mesocosm's.
+- **isometer-core (ruled 2026-09-14).** Mark chose the physical split:
+  body document, parts, SpeciesId, Ground, the snapshot and wire seam and
+  Role/classify move to `shared/isometer/crates/isometer-core`, with
+  mesocosm-core re-exporting them at their current paths. When that step
+  lands, paredros-world and paredros-client take body and ground from
+  isometer-core and keep mesocosm-core only for generation (Places, Grown,
+  the seeded RNG), which stays Mesocosm's until a second generator exists.
+  That is the one Paredros-side change in the family lane.
 
 ## References
 

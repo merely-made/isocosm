@@ -9,10 +9,8 @@
 use crate::bodies::{Bodies, BodyError};
 use crate::items::{ItemError, ItemKind, ItemLocation, Items};
 use crate::{
-    Anatomies, AnatomyError, AnatomyRecord, COMBAT_GAME_STATE_VERSION, DeathCause,
-    GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION,
-    MOTION_GAME_STATE_VERSION, Movement, MovementError, MovementEvent, MovementProfile,
-    MovementProjection, World,
+    Anatomies, AnatomyError, AnatomyRecord, DeathCause, GameError, GameEvent, GameIntent, Movement,
+    MovementError, MovementEvent, MovementProfile, MovementProjection, World,
 };
 use mesocosm_core::places::spot;
 use mesocosm_core::snapshot::{self, hash_bytes};
@@ -21,6 +19,7 @@ use serde::{Deserialize, Serialize};
 
 mod combat;
 mod motion;
+mod save;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GameState {
@@ -194,8 +193,26 @@ impl GameState {
             });
         }
         let tick = intent.tick();
-        let subject = intent.subject();
-        let mut events = match &intent {
+        if let GameIntent::ReviseCanon {
+            revision,
+            seed,
+            cause,
+            ..
+        } = &intent
+        {
+            cause.validate()?;
+            let event = GameEvent::CanonRevised {
+                tick,
+                revision: *revision,
+                seed: *seed,
+                cause: cause.clone(),
+            };
+            return Ok(self.accept(intent, vec![event]));
+        }
+        let subject = intent
+            .subject()
+            .expect("every intent but a world-level revision names a subject");
+        let events = match &intent {
             GameIntent::AdvanceMotion {
                 revision,
                 step,
@@ -511,6 +528,8 @@ impl GameState {
                 }
                 events
             },
+            // Returned above: a world-level revision has no subject to route.
+            GameIntent::ReviseCanon { .. } => unreachable!("world-level intent"),
             GameIntent::Wait { .. } => {
                 self.living(subject)?;
                 let mut events = vec![GameEvent::Waited { tick, subject }];
@@ -518,79 +537,14 @@ impl GameState {
                 events
             },
         };
+        Ok(self.accept(intent, events))
+    }
+
+    /// Records one accepted intent and the events it produced.
+    fn accept(&mut self, intent: GameIntent, mut events: Vec<GameEvent>) -> Vec<GameEvent> {
         let returned = events.clone();
         self.intents.push(intent);
         self.events.append(&mut events);
-        Ok(returned)
-    }
-    pub fn save_record(&self) -> Result<GameSave, GameError> {
-        Ok(GameSave {
-            version: GAME_STATE_VERSION,
-            world: self.world.save_record(),
-            expected_hash: self.state_hash()?,
-            intents: self.intents.clone(),
-        })
-    }
-    pub fn save(&self) -> Result<Vec<u8>, GameError> {
-        snapshot::encode(&self.save_record()?).map_err(|_| GameError::Encode)
-    }
-    pub fn restore(bytes: &[u8]) -> Result<Self, GameError> {
-        let save: GameSave = snapshot::decode(bytes).map_err(|_| GameError::Decode)?;
-        Self::restore_record(save)
-    }
-    pub fn restore_record(save: GameSave) -> Result<Self, GameError> {
-        if save.version != GAME_STATE_VERSION
-            && save.version != MOTION_GAME_STATE_VERSION
-            && save.version != COMBAT_GAME_STATE_VERSION
-            && save.version != LEGACY_GAME_STATE_VERSION
-        {
-            return Err(GameError::VersionDiverged {
-                saved: save.version,
-                current: GAME_STATE_VERSION,
-            });
-        }
-        if save.version == LEGACY_GAME_STATE_VERSION
-            && save
-                .intents
-                .iter()
-                .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
-        {
-            return Err(GameError::LegacyCombatIntent);
-        }
-        if save.version < MOTION_GAME_STATE_VERSION
-            && save
-                .intents
-                .iter()
-                .any(|intent| matches!(intent, GameIntent::AdvanceMotion { .. }))
-        {
-            return Err(GameError::LegacyMotionIntent);
-        }
-        if save.version != GAME_STATE_VERSION
-            && save.intents.iter().any(|intent| {
-                matches!(
-                    intent,
-                    GameIntent::ConfigureMovementProfile { .. }
-                        | GameIntent::AdvanceMotion {
-                            rules: crate::MotionRules { revision: 2, .. },
-                            ..
-                        }
-                )
-            })
-        {
-            return Err(GameError::LegacyMovementProfileIntent);
-        }
-        let world = World::restore_record(save.world)?;
-        let mut state = Self::new(world);
-        for intent in save.intents {
-            state.apply(intent)?;
-        }
-        let restored = state.state_hash()?;
-        if restored != save.expected_hash {
-            return Err(GameError::StateDiverged {
-                saved: save.expected_hash,
-                restored,
-            });
-        }
-        Ok(state)
+        returned
     }
 }

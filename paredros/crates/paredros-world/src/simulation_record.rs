@@ -131,7 +131,8 @@ fn validate_decisions(
         if decision.round >= round
             || previous.is_some_and(|previous| decision.intent_index <= previous)
             || intent.is_none_or(|intent| {
-                intent.subject() != decision.subject || !pursuit_matches(&decision.pursuit, intent)
+                intent.subject() != Some(decision.subject)
+                    || !pursuit_matches(&decision.pursuit, intent)
             })
         {
             return Err(SimulationError::DecisionDiverged(number as u64));

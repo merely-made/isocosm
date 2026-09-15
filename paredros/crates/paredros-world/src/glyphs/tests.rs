@@ -6,7 +6,7 @@ use paredros_identity::{BodyRevisionId, Tick};
 
 use super::*;
 use crate::fixtures::session::{self, Fixture};
-use crate::{GameIntent, ItemId, ItemKind, MotionInput, MotionRules};
+use crate::{CanonRevisionCause, GameIntent, ItemId, ItemKind, MotionInput, MotionRules};
 
 /// The bound subject's rules: the shared fixture's demonstration canon, read
 /// here as authored evidence rather than a world canon.
@@ -363,4 +363,182 @@ fn a_repeated_kind_records_without_a_second_acquisition() {
             .map(|grant| grant.glyph.as_str()),
         Some("paredros-fixture:step")
     ));
+}
+
+/// The authored revision the hagioglyph tests publish: seed 11, revision 2.
+const REVISION: (u64, u64) = (2, 11);
+
+fn authored(label: &str) -> CanonRevisionCause {
+    CanonRevisionCause::Authored {
+        label: label.to_owned(),
+    }
+}
+
+impl Fixture {
+    /// The world publishes a newer correspondence, through the same open
+    /// action the host's other verbs take.
+    fn revise(&mut self, revision: u64, seed: u64, cause: CanonRevisionCause) {
+        let tick = self.game().next_tick();
+        self.action
+            .apply_game_batch(&[GameIntent::ReviseCanon {
+                tick,
+                revision,
+                seed,
+                cause,
+            }])
+            .expect("accepted canon revision");
+    }
+}
+
+#[test]
+fn a_revision_moves_the_live_effect_and_leaves_every_founding_meaning_alone() {
+    let mut world = scripted();
+    let mut reading = GlyphReading::new(rules(world.keeper), world.game()).unwrap();
+    let founding: Vec<_> = reading
+        .canon()
+        .spec()
+        .glyphs
+        .iter()
+        .map(|glyph| (glyph.id.clone(), glyph.effect.clone()))
+        .collect();
+    let eligibility = reading.eligibility();
+    let basis = reading.journey().ascension_basis().map(<[_]>::to_vec);
+    let acquired_before = reading.journey().acquisitions().to_vec();
+    assert!(reading.revision().is_none());
+
+    world.revise(REVISION.0, REVISION.1, authored("second epoch"));
+    reading.advance(world.game());
+
+    let live = reading.revision().expect("the revision was accepted");
+    assert_eq!((live.revision, live.seed), REVISION);
+    assert_eq!(live.cause, authored("second epoch"));
+    for (glyph, effect) in &founding {
+        assert_eq!(reading.founding_effect(glyph), Some(effect.as_str()));
+    }
+    assert_eq!(reading.eligibility(), eligibility);
+    assert_eq!(
+        reading.journey().ascension_basis().map(<[_]>::to_vec),
+        basis
+    );
+    assert_eq!(reading.journey().acquisitions(), acquired_before);
+
+    let moved = reading.moved_bases();
+    assert!(!moved.is_empty(), "the revision moved something");
+    for case in &moved {
+        assert_ne!(
+            reading.live_effect(&case.glyph),
+            reading.founding_effect(&case.glyph)
+        );
+        assert_eq!(
+            reading.founding_effect(&case.glyph),
+            Some(&*case.from_effect)
+        );
+        assert_eq!(reading.live_effect(&case.glyph), Some(&*case.to_effect));
+    }
+
+    // The revision is accepted history, so a reading rebuilt from a reloaded
+    // save arrives at the same live correspondence.
+    let restored = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let rebuilt = GlyphReading::new(rules(world.keeper), &restored).unwrap();
+    assert_eq!(rebuilt.revision(), reading.revision());
+    assert_eq!(rebuilt.live_canon(), reading.live_canon());
+    assert_eq!(rebuilt.journey().snapshot(), reading.journey().snapshot());
+    assert_eq!(rebuilt.records(), reading.records());
+}
+
+#[test]
+fn evidence_on_each_side_of_a_revision_names_the_revision_it_was_accepted_under() {
+    let mut world = session::timed_action_world();
+    world.step([1, 0, 0]);
+    let mut reading = GlyphReading::new(rules(world.keeper), world.game()).unwrap();
+    let step = "paredros-fixture:step";
+    let before = reading.live_effect(step).unwrap().to_owned();
+    assert_eq!(reading.founding_effect(step), Some(before.as_str()));
+
+    world.revise(REVISION.0, REVISION.1, authored("second epoch"));
+    world.step([1, 0, 0]);
+    reading.advance(world.game());
+
+    let after = reading.live_effect(step).unwrap();
+    assert_ne!(after, before, "the same glyph now carries another effect");
+    assert_eq!(
+        reading.founding_effect(step),
+        Some(before.as_str()),
+        "what it was acquired under does not move"
+    );
+    let stamps: Vec<u64> = reading
+        .records()
+        .iter()
+        .filter(|record| record.glyph == step)
+        .map(|record| record.canon_revision)
+        .collect();
+    assert_eq!(stamps, [1, REVISION.0]);
+    assert_eq!(
+        reading
+            .journey()
+            .grants()
+            .iter()
+            .map(|grant| grant.canon_revision)
+            .collect::<Vec<_>>(),
+        stamps,
+        "the kernel keeps the same stamps"
+    );
+    assert_eq!(
+        reading.journey().acquisitions()[0].canon_revision,
+        1,
+        "the acquisition keeps the revision it happened under"
+    );
+}
+
+#[test]
+fn a_promotion_cause_is_refused_without_its_condition_receipt() {
+    let world = session::timed_action_world();
+    let mut game = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let unreceipted = CanonRevisionCause::Promotion {
+        promotion_id: "hagiograph:promotion/1".into(),
+        condition_receipt: None,
+    };
+    let before = game.state_hash().unwrap();
+    assert_eq!(
+        game.apply(GameIntent::ReviseCanon {
+            tick: game.next_tick(),
+            revision: REVISION.0,
+            seed: REVISION.1,
+            cause: unreceipted,
+        }),
+        Err(crate::GameError::UnreceiptedPromotion)
+    );
+    assert_eq!(game.state_hash().unwrap(), before, "nothing was accepted");
+
+    let admitted = CanonRevisionCause::Promotion {
+        promotion_id: "hagiograph:promotion/1".into(),
+        condition_receipt: Some("world-conditions:receipt/9".into()),
+    };
+    game.apply(GameIntent::ReviseCanon {
+        tick: game.next_tick(),
+        revision: REVISION.0,
+        seed: REVISION.1,
+        cause: admitted.clone(),
+    })
+    .unwrap();
+    assert_ne!(
+        game.state_hash().unwrap(),
+        before,
+        "a revision is world history"
+    );
+    let mut reading = GlyphReading::new(rules(world.keeper), &game).unwrap();
+    assert_eq!(
+        reading.revision().map(|live| live.cause.clone()),
+        Some(admitted)
+    );
+
+    // The reading itself still moves nothing.
+    let after = game.state_hash().unwrap();
+    reading.advance(&game);
+    assert_eq!(game.state_hash().unwrap(), after);
+    assert_eq!(
+        GameState::restore(&game.save().unwrap()).unwrap().save(),
+        game.save(),
+        "the revision replays and the reading is still not in the save"
+    );
 }

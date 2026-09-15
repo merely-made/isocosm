@@ -55,6 +55,10 @@ pub struct Acquisition {
     /// kernel does not assume all callers share a monotonic simulation clock.
     pub tick: u64,
     pub life: u64,
+    /// The canon revision this acquisition was accepted under. Absent in
+    /// archives written before revisions existed; those restore founding.
+    #[serde(default)]
+    pub canon_revision: u64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -65,6 +69,8 @@ pub struct GrantRecord {
     pub tick: u64,
     pub life: u64,
     pub policy: VariantPolicy,
+    #[serde(default)]
+    pub canon_revision: u64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -219,6 +225,15 @@ impl Journey {
         self.snapshot.clone()
     }
 
+    /// The canon revision this journey was founded on. Completion and the
+    /// ascension basis are judged against it, whatever the world publishes
+    /// later.
+    pub fn founding_revision(&self) -> u64 {
+        self.snapshot.canon.spec().revision
+    }
+
+    /// Accepts evidence under the founding revision. Callers with no canon
+    /// revision of their own keep this signature.
     pub fn grant(
         &mut self,
         glyph: &str,
@@ -226,7 +241,23 @@ impl Journey {
         tick: u64,
         policy: VariantPolicy,
     ) -> Result<GrantOutcome, String> {
+        self.grant_at_revision(glyph, provenance, tick, policy, self.founding_revision())
+    }
+
+    /// Accepts evidence under a published canon revision, which the record
+    /// keeps. A revision older than the founding one is not this canon.
+    pub fn grant_at_revision(
+        &mut self,
+        glyph: &str,
+        provenance: Provenance,
+        tick: u64,
+        policy: VariantPolicy,
+        canon_revision: u64,
+    ) -> Result<GrantOutcome, String> {
         provenance.validate()?;
+        if canon_revision < self.founding_revision() {
+            return Err("grant revision precedes the founding canon".into());
+        }
         let base = self
             .canon()
             .base_id(glyph)
@@ -256,6 +287,7 @@ impl Journey {
                 provenance: provenance.clone(),
                 tick,
                 life: self.snapshot.life,
+                canon_revision,
             });
             self.owned.insert(base.clone(), ordinal);
         }
@@ -269,6 +301,7 @@ impl Journey {
             tick,
             life: self.snapshot.life,
             policy,
+            canon_revision,
         });
         Ok(if new {
             GrantOutcome::Acquired { base, ordinal }
@@ -391,7 +424,20 @@ impl Journey {
         }
         serde_json::from_str(json).map_err(|e| e.to_string())
     }
-    pub fn from_snapshot(snapshot: JourneySnapshot) -> Result<Self, String> {
+    pub fn from_snapshot(mut snapshot: JourneySnapshot) -> Result<Self, String> {
+        // An archive written before revisions existed carries no stamp at all;
+        // every record in it was accepted under the founding correspondence.
+        let founding = snapshot.canon.spec().revision;
+        for record in &mut snapshot.grants {
+            if record.canon_revision == 0 {
+                record.canon_revision = founding;
+            }
+        }
+        for record in &mut snapshot.acquisitions {
+            if record.canon_revision == 0 {
+                record.canon_revision = founding;
+            }
+        }
         if snapshot.version != SCHEMA_VERSION
             || snapshot.life == 0
             || snapshot.grants.len() > snapshot.limits.grants
@@ -419,11 +465,12 @@ impl Journey {
                         return Err("grant life disagrees with transitions".into());
                     }
                     if matches!(
-                        rebuilt.grant(
+                        rebuilt.grant_at_revision(
                             &grant.glyph,
                             grant.provenance.clone(),
                             grant.tick,
-                            grant.policy
+                            grant.policy,
+                            grant.canon_revision,
                         )?,
                         GrantOutcome::Duplicate { .. }
                     ) {

@@ -152,6 +152,12 @@ fn journal_panel(state: &SessionApp) -> Child {
         journal
             .iter()
             .map(|row| {
+                // The founding line always shows; the live line only when the
+                // published revision moved this base.
+                let revised = match (&row.live_effect, &row.cause) {
+                    (Some(live), Some(cause)) => format!("now {live} · {cause}"),
+                    _ => String::new(),
+                };
                 Box::new(
                     el(
                         "div",
@@ -163,6 +169,7 @@ fn journal_panel(state: &SessionApp) -> Child {
                                 text(format!("{} · {} · tick {}", row.effect, row.kind, row.tick)),
                             )
                             .attr("class", "field-name"),
+                            el("div", text(revised)).attr("class", "field-name"),
                         ),
                     )
                     .attr("class", "glyph"),

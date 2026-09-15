@@ -70,6 +70,7 @@ pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
         "take" => state.take_dressing(),
         "rest" => state.rest(),
         "injure" => state.injure(),
+        "revise-canon" => state.revise_canon(),
         "save" => state.save(),
         "load" => state.load(),
         _ => return false,

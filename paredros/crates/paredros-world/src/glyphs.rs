@@ -33,6 +33,18 @@
 //!   *does* is not modelled here at all.
 //! - Reincarnation, wishes and divine spending are the shared kernel's and
 //!   stay unused, exactly as they do in Mesocosm.
+//! # Hagioglyph (F3b5)
+//!
+//! The world may publish a newer correspondence as
+//! [`GameIntent::ReviseCanon`](crate::GameIntent::ReviseCanon), which is
+//! accepted history like any other intent. This reading follows it: from that
+//! event on, every evidence record and grant is stamped with the live
+//! revision, and [`GlyphReading::live_effect`] answers from the revised canon
+//! while [`GlyphReading::founding_effect`] keeps answering from the founding
+//! one. Eligibility, the ascension basis and completion are the kernel's and
+//! read the founding canon only. A revision no newer than the live one is
+//! recorded world history the reading ignores.
+//!
 //! - A load that shortens the accepted log rewinds the cursor. Replayed
 //!   indices then arrive as `Duplicate` (same glyph, same evidence) or, if a
 //!   different history now occupies an index already used for the same glyph,
@@ -43,12 +55,13 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wing_glyphs::{GrantOutcome, Journey, Provenance, VariantPolicy};
 
-use crate::{GameEvent, GameState};
+use crate::{CanonRevisionCause, GameEvent, GameState};
 
 // The kernel types a host needs to author rules and draw a journal, so a
 // consumer of this module needs no `wing-glyphs` dependency of its own.
 pub use wing_glyphs::{
-    Acquisition, Canon, CanonSpec, Eligibility, GlyphDefinition, GrantRecord, ProvenanceKind,
+    Acquisition, Canon, CanonSpec, CorrespondenceMove, Eligibility, GlyphDefinition, GrantRecord,
+    ProvenanceKind,
 };
 
 /// The accepted `GameEvent` kinds a rule may select. Each one names the
@@ -126,12 +139,27 @@ pub struct GlyphEvidence {
     pub glyph: String,
     pub evidence: String,
     pub outcome: GlyphGrantOutcome,
+    /// The live canon revision this record was accepted under.
+    pub canon_revision: u64,
+}
+
+/// The revision this reading currently answers `live_effect` from, and the
+/// accepted cause that published it.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct LiveCanon {
+    pub revision: u64,
+    pub seed: u64,
+    pub cause: CanonRevisionCause,
 }
 
 /// The opt-in reading: a `wing_glyphs::Journey` plus the evidence behind it.
 pub struct GlyphReading {
     rules: GlyphRules,
     canon: Canon,
+    /// The published correspondence, equal to `canon` until a revision is
+    /// read. Only the effect an owned glyph *now* carries follows it.
+    live: Canon,
+    revised: Option<LiveCanon>,
     journey: Journey,
     records: Vec<GlyphEvidence>,
     cursor: usize,
@@ -168,7 +196,9 @@ impl GlyphReading {
         )?;
         let mut reading = Self {
             rules,
+            live: canon.clone(),
             canon,
+            revised: None,
             journey,
             records: Vec::new(),
             cursor: 0,
@@ -188,6 +218,15 @@ impl GlyphReading {
         let mut index = self.cursor.min(events.len());
         while index < events.len() {
             let event = &events[index];
+            if let GameEvent::CanonRevised {
+                revision,
+                seed,
+                cause,
+                ..
+            } = event
+            {
+                self.revise(*revision, *seed, cause.clone());
+            }
             if let Some((kind, subject)) = accepted(event)
                 && subject == self.rules.subject
             {
@@ -209,8 +248,33 @@ impl GlyphReading {
     pub fn rules(&self) -> &GlyphRules {
         &self.rules
     }
+    /// The founding correspondence: what completion and the ascension basis
+    /// are judged against, whatever the world publishes later.
     pub fn canon(&self) -> &Canon {
         &self.canon
+    }
+    /// The published correspondence this reading currently answers from.
+    pub fn live_canon(&self) -> &Canon {
+        &self.live
+    }
+    /// The accepted revision in force, when one has been read.
+    pub fn revision(&self) -> Option<&LiveCanon> {
+        self.revised.as_ref()
+    }
+    /// What this glyph meant when the journey was founded.
+    pub fn founding_effect(&self, glyph: &str) -> Option<&str> {
+        self.canon.effect(glyph)
+    }
+    /// What this glyph means under the live revision. Equal to the founding
+    /// effect until a revision moves that base.
+    pub fn live_effect(&self, glyph: &str) -> Option<&str> {
+        self.live.effect(glyph)
+    }
+    /// The bases whose effect the live revision moved.
+    pub fn moved_bases(&self) -> Vec<CorrespondenceMove> {
+        self.canon
+            .correspondence_diff(&self.live)
+            .unwrap_or_default()
     }
     pub fn journey(&self) -> &Journey {
         &self.journey
@@ -244,16 +308,19 @@ impl GlyphReading {
             evidence: evidence.clone(),
             context: Some(format!("subject={}", self.rules.subject.0)),
         };
-        let outcome =
-            match self
-                .journey
-                .grant(&glyph, provenance, tick, VariantPolicy::RequireOwnedBase)
-            {
-                Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
-                Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
-                Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
-                Err(why) => GlyphGrantOutcome::Rejected(why),
-            };
+        let canon_revision = self.live.spec().revision;
+        let outcome = match self.journey.grant_at_revision(
+            &glyph,
+            provenance,
+            tick,
+            VariantPolicy::RequireOwnedBase,
+            canon_revision,
+        ) {
+            Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
+            Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
+            Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
+            Err(why) => GlyphGrantOutcome::Rejected(why),
+        };
         self.records.push(GlyphEvidence {
             index,
             tick,
@@ -261,7 +328,26 @@ impl GlyphReading {
             glyph,
             evidence,
             outcome,
+            canon_revision,
         });
+    }
+
+    /// Follows one accepted revision. Every revision is derived from the
+    /// founding canon, so the live correspondence is a function of the
+    /// published seed and revision alone. A revision that is not newer is
+    /// history this reading has already answered under.
+    fn revise(&mut self, revision: u64, seed: u64, cause: CanonRevisionCause) {
+        if revision <= self.live.spec().revision {
+            return;
+        }
+        if let Ok(live) = self.canon.shuffled(seed, revision) {
+            self.live = live;
+            self.revised = Some(LiveCanon {
+                revision,
+                seed,
+                cause,
+            });
+        }
     }
 }
 
@@ -309,7 +395,8 @@ fn tick_of(event: &GameEvent) -> u64 {
         | GameEvent::Died { tick, .. }
         | GameEvent::VolleyResolved { tick, .. }
         | GameEvent::MotionAdvanced { tick, .. }
-        | GameEvent::MovementProfileConfigured { tick, .. } => tick.0,
+        | GameEvent::MovementProfileConfigured { tick, .. }
+        | GameEvent::CanonRevised { tick, .. } => tick.0,
     }
 }
 

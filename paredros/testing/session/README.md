@@ -42,6 +42,11 @@ acceptance artifact.
   `severed`), drops `target-vitality`, and changes the hash. Captures
   `volleyed`, and a `viewport-pixels-change` against `opened` proves the drawn
   viewport moved with it.
+- Hagioglyph (F3b5): `act revise-canon` publishes one authored canon revision
+  with a fixed seed — a fixture control, not a product action. Afterwards
+  `canon-revision` has moved, the acquired glyph and its count have not, the
+  strike's founding effect `paredros-fixture:reach` is still on the surface,
+  and `glyph-last-live-effect` is the revised `paredros-fixture:fasten`.
 - Treatment through the controls themselves: `Take dressing` and `Rest` are
   clicked as buttons, through the host's own pointer routing, and afterwards
   the played subject's `wound` is 0 with one `lost-part` from the injury cut.

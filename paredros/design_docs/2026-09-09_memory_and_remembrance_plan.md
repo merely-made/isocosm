@@ -420,6 +420,32 @@ show both meanings. Reincarnation, wishes and divine spending stay open.
 Mesocosm's §7.4 gains the time-variation rule as a G-gate in its own doc,
 since the shared design lives there.
 
+**Landed 2026-09-14.** Kernel: `Acquisition` and `GrantRecord` carry
+`canon_revision`, restored to the founding revision for older snapshots;
+`Journey::grant_at_revision` stamps an accepted revision while `grant` keeps
+its signature, so mesocosm-runtime compiles unchanged; and
+`Canon::correspondence_diff` names the moved bases and refuses a different
+canon or base set. 16 kernel tests became 19. World:
+`GameIntent::ReviseCanon` and `GameEvent::CanonRevised` with
+`CanonRevisionCause::{Period, Promotion, Authored}`; a promotion without
+its condition receipt is refused at apply time; the reading derives each
+revision from the founding canon by seed and revision, stamps its records,
+and answers `founding_effect` and `live_effect` separately while eligibility
+and the ascension basis stay on the founding canon. `GameIntent::subject`
+became optional because a revision names no body, and `GameSave` moved to
+version 7 with its gates reshaped so v3 to v6 archives restore exactly as
+before; a pre-v7 archive carrying the new intent is refused. 140 world tests
+became 143. Host: each journal row shows the founding effect and, when it
+moved, the live effect and the revision's cause; `act revise-canon` is a
+fixed-seed fixture control; the acceptance scenario asserts the revision
+moved, the acquisition did not, and the live effect differs (106 frames,
+ok). Rerun by the root: 19 kernel, 143 world, 45 lib tests, the clean
+Paredros workspace check, the acceptance scenario and the final frame.
+Receipt at `testing/session/receipts/2026-09-14/acceptance-hagioglyph.json`.
+A formatter pass at the workspace level reflowed files other lanes own and
+was reverted; `cargo fmt --check` fails at HEAD for the combat files, which
+their owner will meet when they next format.
+
 ## Open decisions and risks
 
 Choose initial salience inputs from event/deed facts and retelling counts before

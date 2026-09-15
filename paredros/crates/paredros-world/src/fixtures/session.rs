@@ -21,8 +21,9 @@ use crate::fixtures::three_lives;
 use crate::glyphs::{AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules};
 use crate::timed_action::{Direction, TimedActionRules, TimedActionSession};
 use crate::{
-    CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation, MOTION_SCALE,
-    MotionEnvelope, MotionRules, MovementProfile, Session, SupportBand, World, WorldConfig,
+    CanonRevisionCause, CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation,
+    MOTION_SCALE, MotionEnvelope, MotionRules, MovementProfile, Session, SupportBand, World,
+    WorldConfig,
 };
 
 pub struct Fixture {
@@ -300,6 +301,21 @@ pub fn advance_motion(session: &mut Session, subject: SubjectId, input: crate::M
             rules: MotionRules::default(),
         })
         .expect("recorded motion step");
+}
+
+/// Publishes one canon revision into accepted history, the world fact a
+/// hagioglyph reading follows. The cause is the caller's: an authored label
+/// is a fixture control, while a promotion needs its condition receipt.
+pub fn revise_canon(session: &mut Session, revision: u64, seed: u64, cause: CanonRevisionCause) {
+    let tick = session.game().next_tick();
+    session
+        .apply_game(GameIntent::ReviseCanon {
+            tick,
+            revision,
+            seed,
+            cause,
+        })
+        .expect("accepted canon revision");
 }
 
 /// The demonstration glyph canon the session host's acquisition journal reads

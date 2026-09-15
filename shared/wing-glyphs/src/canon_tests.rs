@@ -117,3 +117,47 @@ fn larger_canon_is_caller_admitted_and_clones_share_immutable_storage() {
     assert_eq!(clone.effect("glyph:4999"), Some("effect:reference-4999"));
     assert_eq!(clone.effect("glyph:variant"), Some("effect:reference-0"));
 }
+
+#[test]
+fn a_correspondence_diff_names_exactly_the_bases_whose_effect_moved() {
+    let original = Canon::new(spec()).unwrap();
+    let shuffled = original.shuffled(7, 1).unwrap();
+    let moves = original.correspondence_diff(&shuffled).unwrap();
+    assert_eq!(
+        moves
+            .iter()
+            .map(|m| (
+                m.glyph.as_str(),
+                m.from_effect.as_str(),
+                m.to_effect.as_str()
+            ))
+            .collect::<Vec<_>>(),
+        [
+            ("glyph:0", "effect:reference-0", "effect:reference-4"),
+            ("glyph:2", "effect:reference-2", "effect:reference-3"),
+            ("glyph:3", "effect:reference-3", "effect:reference-0"),
+            ("glyph:4", "effect:reference-4", "effect:reference-2"),
+        ],
+        "glyph:1 kept effect:reference-1 and is not named"
+    );
+    // The diff is a reading of two revisions, not a change to either.
+    assert_eq!(original.spec(), &spec());
+    assert!(original.correspondence_diff(&original).unwrap().is_empty());
+    assert_eq!(
+        shuffled.correspondence_diff(&original).unwrap().len(),
+        moves.len()
+    );
+
+    let mut other = spec();
+    other.id = "world:other".into();
+    let other = Canon::new(other).unwrap();
+    assert!(original.correspondence_diff(&other).is_err());
+    let mut shorter = spec();
+    shorter.glyphs.pop();
+    shorter.variants.clear();
+    assert!(
+        original
+            .correspondence_diff(&Canon::new(shorter).unwrap())
+            .is_err()
+    );
+}

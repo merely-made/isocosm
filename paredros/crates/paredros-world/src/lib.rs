@@ -99,8 +99,9 @@ pub use technique::{
     SubjectBody, TechniqueId, TechniqueInputs, TechniqueKnowledge, arrest_fall,
 };
 pub use transitions::{
-    COMBAT_GAME_STATE_VERSION, DeathCause, GAME_STATE_VERSION, GameError, GameEvent, GameIntent,
-    GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
+    COMBAT_GAME_STATE_VERSION, CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
+    GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
+    PROFILE_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

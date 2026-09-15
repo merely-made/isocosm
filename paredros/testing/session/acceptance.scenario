@@ -50,6 +50,22 @@ more before-volley glyphs
 assert snap glyph-last == paredros-fixture:strike
 assert text paredros-fixture:strike
 
+# Hagioglyph: the world publishes a newer correspondence. What the strike was
+# acquired under does not move; what it now means does. The act is a fixture
+# control with a fixed seed, not a product action.
+remember before-revision
+assert snap canon-revision == 1
+assert text paredros-fixture:reach
+act revise-canon
+settle 2
+assert event canon-revised
+differs before-revision canon-revision
+same before-revision glyph-last
+same before-revision glyphs
+differs before-revision glyph-last-live-effect
+assert snap glyph-last-live-effect == paredros-fixture:fasten
+assert text paredros-fixture:reach
+
 # Treatment through the controls themselves. The injury debug has no button of
 # its own, so it is the one act between the two clicks.
 click role:button Take dressing

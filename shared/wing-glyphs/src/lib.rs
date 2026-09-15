@@ -8,8 +8,8 @@ pub mod divine;
 mod journey;
 
 pub use canon::{
-    Canon, CanonLimits, CanonSpec, EffectId, GlyphDefinition, GlyphId, ModifierId,
-    VariantDefinition,
+    Canon, CanonLimits, CanonSpec, CorrespondenceMove, EffectId, GlyphDefinition, GlyphId,
+    ModifierId, VariantDefinition,
 };
 pub use journey::{
     Acquisition, Eligibility, GrantOutcome, GrantRecord, Journey, JourneyLimits, JourneySnapshot,

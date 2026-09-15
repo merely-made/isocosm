@@ -61,6 +61,15 @@ pub struct CanonSpec {
     pub limits: CanonLimits,
 }
 
+/// One base whose effect reference moved between two revisions of the same
+/// canon. Identity and display are unchanged; only the correspondence moved.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CorrespondenceMove {
+    pub glyph: GlyphId,
+    pub from_effect: EffectId,
+    pub to_effect: EffectId,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(try_from = "CanonSpec", into = "CanonSpec")]
 pub struct Canon {
@@ -186,6 +195,32 @@ impl Canon {
             spec.glyphs[index].effect = effect;
         }
         Self::new(spec)
+    }
+
+    /// The bases whose effect moved between two revisions of one canon, in
+    /// this canon's glyph order. Same canon identity and same base set are
+    /// required: a different canon is not a revision of this one.
+    pub fn correspondence_diff(&self, other: &Canon) -> Result<Vec<CorrespondenceMove>, String> {
+        if self.spec.id != other.spec.id {
+            return Err("correspondence diff requires one canon identity".into());
+        }
+        if self.spec.glyphs.len() != other.spec.glyphs.len() {
+            return Err("canon revisions disagree on the base glyph set".into());
+        }
+        let mut moves = Vec::new();
+        for glyph in &self.spec.glyphs {
+            let to = other
+                .effect(&glyph.id)
+                .ok_or("canon revisions disagree on the base glyph set")?;
+            if to != glyph.effect {
+                moves.push(CorrespondenceMove {
+                    glyph: glyph.id.clone(),
+                    from_effect: glyph.effect.clone(),
+                    to_effect: to.to_owned(),
+                });
+            }
+        }
+        Ok(moves)
     }
 
     pub fn to_json(&self) -> Result<String, String> {

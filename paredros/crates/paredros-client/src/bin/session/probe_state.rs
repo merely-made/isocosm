@@ -152,6 +152,16 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .to_string(),
         )
         .with_field("glyph-last", app.last_glyph().unwrap_or("none".into()))
+        .with_field(
+            "canon-revision",
+            app.canon_revision()
+                .map(|revision| revision.to_string())
+                .unwrap_or("none".into()),
+        )
+        .with_field(
+            "glyph-last-live-effect",
+            app.last_live_effect().unwrap_or("none".into()),
+        )
         .with_field("saves", app.saves.to_string())
         .with_field("loads", app.loads.to_string())
         .with_field("save-loaded", yes(app.loads > 0))

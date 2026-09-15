@@ -11,6 +11,7 @@
 
 use mesocosm_core::PartId;
 use paredros_identity::SubjectId;
+use paredros_world::CanonRevisionCause;
 use paredros_world::glyphs::ProvenanceKind;
 use paredros_world::{
     AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, ItemKind, ItemLocation, MOTION_SCALE,
@@ -251,7 +252,12 @@ pub(super) struct JournalRow {
     pub glyph: String,
     /// The canon's display mark. Opaque text, never an identity.
     pub display: String,
+    /// What this glyph meant when it was acquired. This never moves.
     pub effect: String,
+    /// What it means under the live revision, when that is not the same, with
+    /// the cause the world published the revision for.
+    pub live_effect: Option<String>,
+    pub cause: Option<String>,
     /// The accepted event kind that was the evidence.
     pub kind: String,
     pub tick: u64,
@@ -265,6 +271,7 @@ impl SessionApp {
             return Vec::new();
         };
         let canon = reading.canon();
+        let cause = reading.revision().map(|live| describe_cause(&live.cause));
         reading
             .journey()
             .acquisitions()
@@ -282,6 +289,11 @@ impl SessionApp {
                     .effect(&acquisition.glyph)
                     .unwrap_or("unknown")
                     .to_owned(),
+                live_effect: reading
+                    .live_effect(&acquisition.glyph)
+                    .filter(|live| Some(*live) != canon.effect(&acquisition.glyph))
+                    .map(str::to_owned),
+                cause: cause.clone(),
                 kind: match &acquisition.provenance.kind {
                     ProvenanceKind::Custom(kind) => kind.clone(),
                     other => format!("{other:?}").to_lowercase(),
@@ -311,6 +323,17 @@ impl SessionApp {
         )
     }
 
+    /// The live canon revision the reading answers from.
+    pub(super) fn canon_revision(&self) -> Option<u64> {
+        Some(self.glyphs.as_ref()?.live_canon().spec().revision)
+    }
+
+    /// What the last acquired glyph means now, for `glyph-last-live-effect`.
+    pub(super) fn last_live_effect(&self) -> Option<String> {
+        let reading = self.glyphs.as_ref()?;
+        reading.live_effect(&self.last_glyph()?).map(str::to_owned)
+    }
+
     /// The last glyph acquired, for the scenario's `glyph-last` reading.
     pub(super) fn last_glyph(&self) -> Option<String> {
         self.glyphs
@@ -319,5 +342,17 @@ impl SessionApp {
             .acquisitions()
             .last()
             .map(|acquisition| acquisition.glyph.clone())
+    }
+}
+
+/// One published revision's cause, in the panel's own words.
+fn describe_cause(cause: &CanonRevisionCause) -> String {
+    match cause {
+        CanonRevisionCause::Period {
+            metric_id,
+            end_tick,
+        } => format!("period {metric_id} ended tick {}", end_tick.0),
+        CanonRevisionCause::Promotion { promotion_id, .. } => format!("promotion {promotion_id}"),
+        CanonRevisionCause::Authored { label } => format!("authored {label}"),
     }
 }

@@ -268,3 +268,74 @@ fn ascension_basis_does_not_change_when_later_evidence_accumulates() {
     let reopened = Journey::from_json(&j.to_json().unwrap()).unwrap();
     assert_eq!(reopened.ascension_basis().unwrap(), basis);
 }
+
+#[test]
+fn a_grant_keeps_the_revision_it_was_accepted_under_and_refuses_an_older_one() {
+    let mut j = journey();
+    assert_eq!(j.founding_revision(), 3);
+    j.grant("glyph:a", provenance("a"), 0, VariantPolicy::AcquireBase)
+        .unwrap();
+    j.grant_at_revision("glyph:b", provenance("b"), 1, VariantPolicy::AcquireBase, 9)
+        .unwrap();
+    assert_eq!(
+        j.acquisitions()
+            .iter()
+            .map(|a| (a.glyph.as_str(), a.canon_revision))
+            .collect::<Vec<_>>(),
+        [("glyph:a", 3), ("glyph:b", 9)],
+        "the plain grant stamps the founding revision"
+    );
+    assert_eq!(
+        j.grants()
+            .iter()
+            .map(|g| g.canon_revision)
+            .collect::<Vec<_>>(),
+        [3, 9]
+    );
+
+    let before = j.snapshot();
+    assert_eq!(
+        j.grant_at_revision("glyph:c", provenance("c"), 2, VariantPolicy::AcquireBase, 2)
+            .unwrap_err(),
+        "grant revision precedes the founding canon"
+    );
+    assert_eq!(j.snapshot(), before);
+    // Eligibility and the ascension basis never read a revision.
+    j.grant_at_revision("glyph:c", provenance("c"), 2, VariantPolicy::AcquireBase, 9)
+        .unwrap();
+    assert!(j.eligibility().can_ascend);
+    assert_eq!(
+        Journey::from_json(&j.to_json().unwrap())
+            .unwrap()
+            .snapshot(),
+        j.snapshot()
+    );
+}
+
+#[test]
+fn an_archive_written_before_revisions_restores_at_the_founding_revision() {
+    let mut j = journey();
+    complete(&mut j);
+    j.ascend().unwrap();
+    let mut value = serde_json::to_value(j.snapshot()).unwrap();
+    for list in ["acquisitions", "grants"] {
+        for record in value[list].as_array_mut().unwrap() {
+            record
+                .as_object_mut()
+                .unwrap()
+                .remove("canon_revision")
+                .expect("a current snapshot stamps every record");
+        }
+    }
+    let restored: Journey = serde_json::from_value(value).unwrap();
+    assert!(
+        restored
+            .acquisitions()
+            .iter()
+            .map(|a| a.canon_revision)
+            .chain(restored.grants().iter().map(|g| g.canon_revision))
+            .all(|revision| revision == 3)
+    );
+    assert_eq!(restored.snapshot(), j.snapshot());
+    assert!(restored.is_divine());
+}

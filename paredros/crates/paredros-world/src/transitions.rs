@@ -17,11 +17,43 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version 6 adds explicit anatomy-based locomotion profiles.
-pub const GAME_STATE_VERSION: u32 = 6;
+/// Version 7 adds published canon revisions.
+pub const GAME_STATE_VERSION: u32 = 7;
+pub const PROFILE_GAME_STATE_VERSION: u32 = 6;
 pub const MOTION_GAME_STATE_VERSION: u32 = 5;
 pub const COMBAT_GAME_STATE_VERSION: u32 = 4;
 pub const LEGACY_GAME_STATE_VERSION: u32 = 3;
+
+/// Why the world published a canon revision. Each cause names the accepted
+/// world fact behind it; a revision is recorded history, never a rewrite of
+/// what earlier acquisitions meant.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CanonRevisionCause {
+    /// A period settled: the metric whose window closed, and when.
+    Period { metric_id: String, end_tick: Tick },
+    /// A hagiograph promotion, admitted only with its condition receipt.
+    Promotion {
+        promotion_id: String,
+        condition_receipt: Option<String>,
+    },
+    /// An authored epoch. Fixture and authored-world control, not play.
+    Authored { label: String },
+}
+
+impl CanonRevisionCause {
+    /// A promotion without an admitted condition receipt is refused, so a
+    /// retelling alone cannot move what a glyph means.
+    pub fn validate(&self) -> Result<(), GameError> {
+        match self {
+            Self::Promotion {
+                condition_receipt, ..
+            } if condition_receipt.as_deref().unwrap_or_default().is_empty() => {
+                Err(GameError::UnreceiptedPromotion)
+            },
+            _ => Ok(()),
+        }
+    }
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GameIntent {
@@ -118,6 +150,14 @@ pub enum GameIntent {
         revision: BodyRevisionId,
         profile: MovementProfile,
     },
+    /// The world publishes a newer glyph correspondence. No subject: this is
+    /// a world fact, and the reading that follows it is nobody's property.
+    ReviseCanon {
+        tick: Tick,
+        revision: u64,
+        seed: u64,
+        cause: CanonRevisionCause,
+    },
 }
 
 impl GameIntent {
@@ -138,11 +178,14 @@ impl GameIntent {
             | Self::ResolveVolley { tick, .. }
             | Self::AdvanceMotion { tick, .. }
             | Self::ConfigureMovementProfile { tick, .. }
+            | Self::ReviseCanon { tick, .. }
             | Self::Wait { tick, .. } => *tick,
         }
     }
 
-    pub const fn subject(&self) -> SubjectId {
+    /// The subject this intent is for, or `None` for a world-level intent
+    /// that belongs to no body.
+    pub const fn subject(&self) -> Option<SubjectId> {
         match self {
             Self::Generate { subject, .. }
             | Self::Name { subject, .. }
@@ -158,8 +201,9 @@ impl GameIntent {
             | Self::DetachItem { subject, .. }
             | Self::AdvanceMotion { subject, .. }
             | Self::ConfigureMovementProfile { subject, .. }
-            | Self::Wait { subject, .. } => *subject,
-            Self::ResolveVolley { actor, .. } => *actor,
+            | Self::Wait { subject, .. } => Some(*subject),
+            Self::ResolveVolley { actor, .. } => Some(*actor),
+            Self::ReviseCanon { .. } => None,
         }
     }
 }
@@ -282,6 +326,12 @@ pub enum GameEvent {
         subject: SubjectId,
         profile: MovementProfile,
     },
+    CanonRevised {
+        tick: Tick,
+        revision: u64,
+        seed: u64,
+        cause: CanonRevisionCause,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -304,6 +354,8 @@ pub enum GameError {
     LegacyCombatIntent,
     LegacyMotionIntent,
     LegacyMovementProfileIntent,
+    LegacyCanonIntent,
+    UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },
     VersionDiverged { saved: u32, current: u32 },
