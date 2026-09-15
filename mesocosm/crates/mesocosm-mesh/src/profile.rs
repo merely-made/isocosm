@@ -48,7 +48,7 @@
 //! is then recoverable per voxel, and a reader that does not care can ignore
 //! it entirely.
 
-use mesocosm_core::{BodyDocument, PartOrigin, wire};
+use isometer_core::{BodyDocument, PartOrigin, wire};
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
 
@@ -58,7 +58,7 @@ use crate::{MeshError, VolumeSource, flatten::flatten_attributed};
 /// reader knows what it is holding before it opens it.
 pub const PROFILE_SCHEMA: &str = wing_formats::BODY_SCHEMA;
 
-/// Schema magic. See [`mesocosm_core::wire`] for why this sits outside the
+/// Schema magic. See [`isometer_core::wire`] for why this sits outside the
 /// payload rather than in a version field the decoder cannot reach.
 pub const PROFILE_MAGIC: [u8; 8] = wing_formats::BODY_MAGIC;
 
@@ -180,7 +180,7 @@ impl BodyProfile {
 mod tests {
     use super::*;
     use crate::{Volume, VolumeMap};
-    use mesocosm_core::{Attachment, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 
     /// A two-part body: a root, and one limb taken from another species.
     fn donated() -> (BodyDocument, VolumeMap) {

@@ -11,7 +11,7 @@
 //! nothing that could name a world. A host keeps its own organisms, subjects or
 //! tokens behind a [`SubjectKey`] and hands this layer one slice per frame.
 
-use mesocosm_core::{BodyDocument, PartId};
+use isometer_core::{BodyDocument, PartId};
 use mesocosm_mesh::{BodyDependencyRevision, BodyMesh, LiveBodyProjector, MeshError, VolumeMap};
 use mesocosm_render::live_body::{LiveBody, LiveBodyRenderer};
 

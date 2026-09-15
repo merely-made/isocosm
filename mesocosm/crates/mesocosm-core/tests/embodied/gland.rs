@@ -30,6 +30,7 @@
 //! and records, [`develop_played`](super::develop_played) for what a body a
 //! host could never author *is*. One validator underneath both, unchanged.
 
+use mesocosm_core::BodyOrgans;
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, ConditionId, Intent, Outcome, PartId,
     Process, ProcessRef, ProposedSite, Provenance, Refusal, Registry, VolumeRef, World, Yaw,

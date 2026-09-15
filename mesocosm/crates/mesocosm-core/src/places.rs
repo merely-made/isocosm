@@ -55,10 +55,15 @@ mod near;
 mod relief;
 mod soil;
 
+pub use bricks::NestEntry;
 #[cfg(test)]
 pub(crate) use bricks::nest_entry;
-pub use bricks::{AIR, BRICK, Brick, Ground, NestEntry, ROCK, SOIL, SURFACE_BAND};
+// Brick truth itself lives in `isometer-core` (family plan step 6); `bricks`
+// keeps the Mesocosm half — the nest routes `Grown` describes and the
+// `Terrain` impl `Ground::grow` reads. Restated here so every caller keeps
+// naming `places::Ground`, `places::BRICK` and the rest unchanged.
 pub use grown::{Grown, Nest};
+pub use isometer_core::ground::{AIR, BRICK, Brick, Ground, ROCK, SOIL, SURFACE_BAND};
 pub use near::{
     BODY_VOXELS_PER_GROUND_VOXEL, Tier, TierLine, WALKER_HEIGHT, WalkerShape, route_step,
     route_step_for, spot, spot_for, step, step_for, surface_stance_for,

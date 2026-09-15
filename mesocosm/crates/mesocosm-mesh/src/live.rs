@@ -14,7 +14,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::{BodyDocument, Provenance, VolumeRef, Yaw};
+use isometer_core::{BodyDocument, Provenance, VolumeRef, Yaw};
 
 use crate::{BodyMesh, MeshError, PartMesh, Placement, VolumeSource, mesh_volume};
 
@@ -181,8 +181,8 @@ fn revision_for(placements: &[Placement]) -> BodyDependencyRevision {
 
 fn hash_provenance(hasher: &mut Fnv1a, provenance: &Provenance) {
     match &provenance.origin {
-        mesocosm_core::Origin::Founding => hasher.write_u8(0),
-        mesocosm_core::Origin::Incorporated {
+        isometer_core::Origin::Founding => hasher.write_u8(0),
+        isometer_core::Origin::Incorporated {
             from_species,
             from_part,
         } => {

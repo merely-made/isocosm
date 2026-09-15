@@ -10,7 +10,8 @@ publish = false
 # wgpu is declared once, at the workspace root, so this workspace cannot end up
 # with two device types. The pin and the reason for it live there.
 [dependencies]
-mesocosm-core = { workspace = true }
+# Part ids, quarter turns and content addresses, from the family floor.
+isometer-core = { workspace = true }
 mesocosm-mesh = { workspace = true }
 wgpu = { workspace = true }
 bytemuck = { version = "1", features = ["derive"] }
@@ -20,3 +21,6 @@ pollster = "0.4"
 [dev-dependencies]
 # Only for the example that writes a frame to disk for a human to look at.
 png = "0.17"
+# `render_body` drives a real `World` to get a body worth drawing; nothing in
+# the library names a product type.
+mesocosm-core = { workspace = true }

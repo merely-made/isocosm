@@ -8,7 +8,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 
 use super::LiveBody;
 

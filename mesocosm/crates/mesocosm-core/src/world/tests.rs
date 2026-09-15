@@ -7,6 +7,7 @@
 use super::*;
 use crate::body::{Attachment, Origin, PartId, Provenance, VolumeRef, Yaw};
 use crate::history::History;
+use crate::organism::BodyOrgans;
 use crate::organism::{Kingdom, LastSeen, Stage};
 use crate::places::{
     Places, Tier, WALKER_HEIGHT, WalkerShape, route_step, spot, spot_for, step, step_for,

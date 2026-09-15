@@ -17,7 +17,9 @@ resident-ground-receipt = ["dep:burn", "conatus/resident"]
 # grows into a second custom pipeline.
 [dependencies]
 modulus = { workspace = true }
-mesocosm-core = { workspace = true }
+# Body documents and brick ground, from the family floor. The lens names no
+# product type in production code.
+isometer-core = { workspace = true }
 wgpu = { workspace = true }
 bytemuck = { version = "1", features = ["derive"] }
 pollster = "0.4"
@@ -31,6 +33,11 @@ web-time = "1"
 
 [dev-dependencies]
 png = "0.17"
+# Tests and examples still raise a Mesocosm world to trace: `Places::grown`,
+# `develop_body` and the archetype fixtures have no family equivalent, and
+# generation stays Mesocosm's (family plan §4 ruling). Production code names
+# nothing from it.
+mesocosm-core = { workspace = true }
 mesocosm-mesh = { workspace = true }
 mesocosm-render = { workspace = true }
 netrender = { workspace = true }

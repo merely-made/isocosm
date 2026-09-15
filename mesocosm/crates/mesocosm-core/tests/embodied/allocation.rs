@@ -10,6 +10,7 @@
 //! are what these extend: capability is still read off what a body is made of,
 //! and now the tissue that reads that way is named, counted and conserved.
 
+use mesocosm_core::BodyProcesses;
 use mesocosm_core::{
     Aim, AllocationProposal, Arrangement, Intent, OrganismId, Outcome, PartPalette, PartTemplate,
     Placement, Process, Registry, RoleShapes, VolumeRef, World, arrange, snapshot,

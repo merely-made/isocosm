@@ -8,7 +8,7 @@
 //! receipts use: no product world is in scope here either.
 
 use cambium_rootstock::{ProducerFrameInfo, ResolvedAppearance};
-use mesocosm_core::{BodyDocument, SpeciesId, VolumeRef};
+use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
 
 use super::*;
 use crate::bodies::{SceneVolumes, SubjectKey};

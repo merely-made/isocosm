@@ -218,16 +218,21 @@ mod tests {
     }
 
     #[test]
-    fn mass_and_reach_are_folds_over_what_survives() {
+    fn mass_and_extent_are_folds_over_what_survives() {
         // Capability as a consequence, not a stored number: the same body
         // answers differently after an injury, with nothing recomputed by hand.
+        // A product's own reading of the same fold — Mesocosm's `reach` — is
+        // pinned beside that reading, in the crate that owns it.
         let (mut body, [arm, _, _, _]) = limbed();
-        let reach_before = body.reach();
+        let span_before = body.aabb().extent()[0];
         let mass_before = body.total_mass_mg();
 
         body.sever(arm);
 
-        assert!(body.reach() < reach_before, "the long limb was the reach");
+        assert!(
+            body.aabb().extent()[0] < span_before,
+            "the long limb was the span"
+        );
         assert_eq!(
             body.total_mass_mg(),
             mass_before - 300,

@@ -25,7 +25,7 @@
 
 use std::collections::{BTreeMap, btree_map::Entry};
 
-use mesocosm_core::{BodyDocument, VolumeRef};
+use isometer_core::{BodyDocument, VolumeRef};
 use mesocosm_mesh::{Volume, VolumeMap, VolumeSource};
 
 /// One solid box per volume reference a set of documents addresses.
@@ -97,7 +97,7 @@ impl VolumeSource for DeclaredExtentVolumes {
 
 #[cfg(test)]
 mod tests {
-    use mesocosm_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
 
     use super::*;
 

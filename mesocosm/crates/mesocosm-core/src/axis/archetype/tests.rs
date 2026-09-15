@@ -12,6 +12,7 @@ use crate::body::{BodyDocument, SpeciesId};
 use crate::development::develop_body;
 use crate::organism::{Kingdom, ecology};
 use crate::plan::{Role, classify};
+use crate::process::BodyProcesses;
 use crate::process::{FeedingMode, Process};
 
 /// The adult mass carving B implies, and the mass DC2's column is taken at.

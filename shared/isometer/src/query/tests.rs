@@ -11,7 +11,7 @@
 //! need a host's own policy to set up and stay in Mesocosm's
 //! `section/query_tests.rs`.
 
-use mesocosm_core::{BodyDocument, PartId, SpeciesId, VolumeRef};
+use isometer_core::{BodyDocument, PartId, SpeciesId, VolumeRef};
 
 use super::*;
 use crate::bodies::Pose;

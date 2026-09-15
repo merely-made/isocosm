@@ -6,6 +6,7 @@
 
 use super::*;
 use crate::body::VolumeRef;
+use crate::organism::BodyOrgans;
 use crate::organism::{Kingdom, Organism, OrganismId, Stage};
 use crate::places::Tier;
 use crate::process::{IntakePort, NisKind, Process, Registry};

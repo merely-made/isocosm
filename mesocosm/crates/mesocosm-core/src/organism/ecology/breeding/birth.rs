@@ -12,6 +12,7 @@ use crate::body::{SpeciesId, VolumeRef};
 use crate::development::PartPalette;
 use crate::flow::{Ledger, Records};
 use crate::matter::{Material, Stock};
+use crate::organism::BodyOrgans;
 use crate::organism::Kingdom;
 
 fn parent() -> Organism {

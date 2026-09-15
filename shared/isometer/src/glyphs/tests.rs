@@ -11,7 +11,7 @@
 //! exactly as the camera suite does.
 use super::*;
 use crate::camera::Cutaway;
-use mesocosm_core::VolumeRef;
+use isometer_core::VolumeRef;
 use mesocosm_lens::FRAME_FORMAT;
 use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};

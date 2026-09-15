@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use mesocosm_core::{PartId, VolumeRef};
+use isometer_core::{PartId, VolumeRef};
 use mesocosm_mesh::{Volume, place_point};
 
 fn gpu() -> Option<crate::Renderer> {

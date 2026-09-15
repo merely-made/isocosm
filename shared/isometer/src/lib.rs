@@ -43,5 +43,5 @@ pub use scene::{
 pub use volumes::DeclaredExtentVolumes;
 
 /// The volume seam, re-exported so a producer needs one crate in scope.
-pub use mesocosm_core::VolumeRef;
+pub use isometer_core::VolumeRef;
 pub use mesocosm_mesh::{Volume, VolumeMap, VolumeSource};

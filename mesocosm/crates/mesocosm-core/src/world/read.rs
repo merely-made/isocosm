@@ -20,6 +20,7 @@ use crate::process::Unmet;
 use crate::record::WorldRecord;
 
 use super::{Ineligible, World};
+use crate::process::BodyProcesses;
 
 impl World {
     /// What the most recent tick did to the enclosure.

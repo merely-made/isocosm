@@ -11,6 +11,8 @@
 
 use super::*;
 use crate::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+use crate::process::BodyProcesses;
+use crate::process::ShapeProcesses;
 
 /// A bulk root, with an optional long limb reaching out along +x.
 fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {

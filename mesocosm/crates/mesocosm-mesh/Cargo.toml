@@ -11,8 +11,15 @@ publish = false
 # host turns those into vertex buffers, and Isometry's baker turns the same
 # quads into sprites. Nothing here may depend on wgpu or a windowing stack.
 [dependencies]
-mesocosm-core = { workspace = true }
+# Body documents, part identity, yaw, provenance and the wire seam.
+isometer-core = { workspace = true }
 wing-formats = { path = "../../../shared/wing-formats" }
 serde = { workspace = true }
 postcard = { workspace = true }
 blake3 = "1.8.5"
+
+[dev-dependencies]
+# Fixtures only: `World`, `develop_body`, `Recipe`, `Soma`, `PartPalette` and
+# the archetype roster are Mesocosm's development model, which stays with
+# Mesocosm. Production code names nothing from it.
+mesocosm-core = { workspace = true }

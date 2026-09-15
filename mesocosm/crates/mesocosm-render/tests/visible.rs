@@ -15,7 +15,7 @@
 //! skip rather than pass silently, because a visual test that passes when
 //! nothing rendered is worse than no test.
 
-use mesocosm_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
 use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
 use mesocosm_render::{Camera, RenderError, Renderer};
 

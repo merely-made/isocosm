@@ -16,8 +16,8 @@ use bytemuck::{Pod, Zeroable};
 #[cfg(test)]
 use glam::Mat4;
 #[cfg(test)]
-use mesocosm_core::Yaw;
-use mesocosm_core::{PartId, VolumeRef};
+use isometer_core::Yaw;
+use isometer_core::{PartId, VolumeRef};
 use mesocosm_mesh::{BodyMesh, PartMesh};
 use wgpu::util::DeviceExt;
 

@@ -136,9 +136,8 @@ pub fn classify(half_extent: [i32; 3]) -> Role {
 /// **Geometry only, since DC1.5.** It used to be a kingdom signature as well,
 /// and `Kingdom::from_symmetry` made the two a bijection — so a body's whole
 /// trophic life was decided by a field that decides where a limb's twin goes.
-/// A kingdom is now read from feeding anatomy
-/// ([`Kingdom::of_body`](crate::organism::Kingdom::of_body)); this says which
-/// growth mirrors, and nothing else.
+/// A kingdom is now read from feeding anatomy by the product that owns one;
+/// this says which growth mirrors, and nothing else.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum Symmetry {
     /// Paired left and right, so lateral growth grows a twin.

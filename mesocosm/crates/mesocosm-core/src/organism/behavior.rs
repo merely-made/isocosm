@@ -16,6 +16,7 @@ use crate::process::{FeedingMode, Process};
 use crate::rng::Rng;
 
 use super::{Organism, OrganismId, Signal};
+use crate::process::BodyProcesses;
 
 const SENSOR_COUNT: usize = 5;
 const DRIVE_COUNT: usize = 3;

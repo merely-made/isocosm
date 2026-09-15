@@ -11,6 +11,7 @@ pub use super::*;
 
 use crate::body::{SpeciesId, VolumeRef};
 use crate::history::Event;
+use crate::organism::BodyOrgans;
 use crate::organism::{Kingdom, Signal};
 use crate::process::{IntakePort, NisKind, Process, Registry};
 

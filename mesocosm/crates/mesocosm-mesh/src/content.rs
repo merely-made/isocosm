@@ -20,7 +20,7 @@
 
 use std::collections::{BTreeSet, VecDeque};
 
-use mesocosm_core::{Role, VolumeRef, classify};
+use isometer_core::{Role, VolumeRef, classify};
 use serde::{Deserialize, Serialize};
 
 use crate::{Volume, VolumeMap};

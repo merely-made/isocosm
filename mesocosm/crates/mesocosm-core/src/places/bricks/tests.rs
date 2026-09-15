@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use super::super::Places;
+use super::super::{Ground, Places};
 use super::*;
 
 fn world() -> (Grown, Ground) {

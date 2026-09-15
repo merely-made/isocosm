@@ -18,7 +18,7 @@
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 
 use crate::anchors::GlyphAnchor;
 use crate::bodies::{PartAddress, SceneBody, SceneVolumes, SubjectKey};

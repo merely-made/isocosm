@@ -105,7 +105,16 @@ impl Process {
     ];
 }
 
-impl Role {
+/// Mesocosm's metabolic reading of a shape.
+///
+/// [`Role`] itself is the family's ([`isometer_core::plan`]); what a role
+/// *does* is this product's, so it arrives as an extension rather than an
+/// inherent method. Bring it into scope to call `role.processes()`.
+pub trait ShapeProcesses {
+    fn processes(self) -> &'static [Process];
+}
+
+impl ShapeProcesses for Role {
     /// What a part of this shape contributes.
     ///
     /// A long thin part is an actuator, a bulky one admits material, a small
@@ -118,7 +127,7 @@ impl Role {
     /// [`Process::Secrete`] and does not seed it; the two questions are
     /// [`Registry::seeds`] and [`ProcessDef::admits`], and only the first one
     /// is this.
-    pub fn processes(self) -> &'static [Process] {
+    fn processes(self) -> &'static [Process] {
         // The registry is the definition of record (PD1b); this remains the
         // fast native view of it, and the parity receipt in `process/tests.rs`
         // keeps the two from drifting. Seeding itself reads the registry.
@@ -427,9 +436,22 @@ impl Process {
     }
 }
 
-impl BodyDocument {
+/// Mesocosm's metabolic reading of a body.
+///
+/// The document is the family's; reach, and what a part performs, are read
+/// through this product's process vocabulary, so they arrive as an extension
+/// rather than as inherent methods. Bring it into scope to call
+/// `body.reach()`.
+pub trait BodyProcesses {
+    fn processes(&self, id: PartId) -> &'static [Process];
+    fn performs(&self, process: Process) -> bool;
+    fn reach(&self) -> i32;
+    fn can_reach(&self, distance: i32) -> Result<(), Unmet>;
+}
+
+impl BodyProcesses for BodyDocument {
     /// The processes a part contributes, from its shape.
-    pub fn processes(&self, id: PartId) -> &'static [Process] {
+    fn processes(&self, id: PartId) -> &'static [Process] {
         match self.part(id) {
             Some(part) if !part.severed => classify(part.half_extent).processes(),
             _ => &[],
@@ -437,7 +459,7 @@ impl BodyDocument {
     }
 
     /// Whether any living part performs `process`.
-    pub fn performs(&self, process: Process) -> bool {
+    fn performs(&self, process: Process) -> bool {
         self.living()
             .any(|part| classify(part.half_extent).processes().contains(&process))
     }
@@ -451,7 +473,7 @@ impl BodyDocument {
     ///
     /// Nothing stores this. Grow a limb and it grows; sever the limb and it
     /// shrinks; and neither required editing a number.
-    pub fn reach(&self) -> i32 {
+    fn reach(&self) -> i32 {
         let Some(origin) = self.world_pivot(self.root) else {
             return 0;
         };
@@ -484,7 +506,7 @@ impl BodyDocument {
     }
 
     /// Whether this body could reach `distance`, and why not when it could not.
-    pub fn can_reach(&self, distance: i32) -> Result<(), Unmet> {
+    fn can_reach(&self, distance: i32) -> Result<(), Unmet> {
         let reach = self.reach();
         if distance <= reach {
             return Ok(());

@@ -13,6 +13,7 @@
 use super::perception::NEAR_SIGHT_RANGE;
 use super::*;
 use crate::body::{SpeciesId, VolumeRef};
+use crate::organism::BodyOrgans;
 use crate::organism::{Kingdom, Signal};
 use crate::process::{IntakePort, Process, Registry};
 use crate::species::Lineages;

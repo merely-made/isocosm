@@ -12,7 +12,7 @@
 
 use std::cell::RefCell;
 
-use mesocosm_core::places::Ground;
+use isometer_core::ground::Ground;
 use mesocosm_lens::BrickMap;
 
 /// What one frame's refresh did to the map, and therefore what the tracer has

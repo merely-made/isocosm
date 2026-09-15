@@ -17,7 +17,7 @@
 //! so this is the adapter that lane needs, and Isometry's baker requires no
 //! change.
 
-use mesocosm_core::{BodyDocument, Yaw};
+use isometer_core::{BodyDocument, Yaw};
 
 use crate::{MeshError, Volume, VolumeSource, place_point};
 
@@ -156,7 +156,7 @@ type Placed<'a> = ([i32; 3], [i32; 3], Yaw, &'a Volume);
 fn resolve<'a>(
     body: &BodyDocument,
     source: &'a impl VolumeSource,
-    part: mesocosm_core::PartId,
+    part: isometer_core::PartId,
 ) -> Result<Placed<'a>, MeshError> {
     let pivot_at = body
         .world_pivot(part)
@@ -197,7 +197,7 @@ fn volume_corners(volume: &Volume) -> [[i32; 3]; 8] {
 mod tests {
     use super::*;
     use crate::VolumeMap;
-    use mesocosm_core::{Attachment, PartId, Provenance, SpeciesId, VolumeRef};
+    use isometer_core::{Attachment, PartId, Provenance, SpeciesId, VolumeRef};
 
     /// Volumes sized to exactly twice their part's half-extent, so the picture
     /// and the physics describe the same box.

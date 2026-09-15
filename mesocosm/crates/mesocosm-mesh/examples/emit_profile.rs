@@ -24,7 +24,7 @@
 
 use std::{fs, path::PathBuf};
 
-use mesocosm_core::{
+use isometer_core::{
     Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
 };
 use mesocosm_mesh::{BodyProfile, Volume, VolumeMap};

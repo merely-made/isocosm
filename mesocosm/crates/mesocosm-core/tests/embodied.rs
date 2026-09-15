@@ -20,6 +20,7 @@ use mesocosm_core::{
     Attachment, Capability, IntakePort, Intent, NisKind, OrganismId, Outcome, Placement, Process,
     ProcessRef, Provenance, Registry, Rejection, Unmet, VolumeRef, World, Yaw,
 };
+use mesocosm_core::{BodyOrgans, BodyProcesses};
 
 // An integration test's crate root resolves `mod` against `tests/`, and a
 // bare `tests/allocation.rs` would become a second test binary. The explicit

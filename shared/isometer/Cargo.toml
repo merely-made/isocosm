@@ -15,9 +15,11 @@ members = [".", "crates/*"]
 resolver = "2"
 
 [dependencies]
-# Body documents, part ids and content addresses. **Never `World`**: the whole
-# point of this crate is that a product world does not appear in its graph.
-mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
+# Body documents, part ids, content addresses and brick ground, from the
+# family's own floor. **Never `World`**: the whole point of this crate is that
+# a product world does not appear in its graph, and since the core split there
+# is no product crate left in it at all.
+isometer-core = { path = "crates/isometer-core" }
 # The projection seam: `VolumeSource`, `VolumeMap`, `Volume`. Declared by
 # relative path, as `mesocosm-mesh` already declares `wing-formats`.
 mesocosm-mesh = { path = "../../mesocosm/crates/mesocosm-mesh" }

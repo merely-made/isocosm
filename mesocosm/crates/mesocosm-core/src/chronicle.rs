@@ -49,7 +49,7 @@ use std::ops::{Deref, DerefMut};
 pub use wing_formats::{Deed, PartOrigin};
 
 use crate::axis::{Recipe, Soma};
-use crate::body::{BodyDocument, Origin, PartId, Provenance, SpeciesId};
+use crate::body::{BodyDocument, PartId, Provenance, SpeciesId};
 use crate::development::{DevelopmentError, PartPalette, develop_body};
 use crate::rng::Rng;
 use crate::wire::{WireError, frame, unframe};
@@ -63,48 +63,10 @@ pub const CHRONICLE_MAGIC: [u8; 8] = wing_formats::CHRONICLE_MAGIC;
 /// The only version this build accepts.
 pub const CHRONICLE_VERSION: u16 = wing_formats::CHRONICLE_VERSION;
 
-/// Where one part came from.
-///
-/// The wire form of [`Provenance`]. Flat on purpose: `None` for both fields
-/// means the part was there at founding, and a foreign reader needs no enum
-/// from this crate to tell that from a part that was taken off somebody.
-impl From<&Provenance> for PartOrigin {
-    fn from(provenance: &Provenance) -> Self {
-        match provenance.origin {
-            Origin::Founding => PartOrigin {
-                from_species: None,
-                from_part: None,
-                epoch: provenance.epoch,
-            },
-            Origin::Incorporated {
-                from_species,
-                from_part,
-            } => PartOrigin {
-                from_species: Some(from_species.0),
-                from_part: Some(from_part.0),
-                epoch: provenance.epoch,
-            },
-        }
-    }
-}
-
-impl From<&PartOrigin> for Provenance {
-    fn from(origin: &PartOrigin) -> Self {
-        match (origin.from_species, origin.from_part) {
-            (Some(species), Some(part)) => Provenance {
-                origin: Origin::Incorporated {
-                    from_species: SpeciesId(species),
-                    from_part: PartId(part),
-                },
-                epoch: origin.epoch,
-            },
-            _ => Provenance {
-                origin: Origin::Founding,
-                epoch: origin.epoch,
-            },
-        }
-    }
-}
+// `PartOrigin` is `wing-formats`' flat wire form of `Provenance`, and both
+// conversions moved to `isometer-core` beside the type they convert (family
+// plan step 6). Re-exported above, so `mesocosm_core::chronicle::PartOrigin`
+// and `Provenance::from(&origin)` read exactly as they did.
 
 /// One thing that happened, recorded by whoever it happened to.
 ///

@@ -12,7 +12,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::{
+use isometer_core::{
     BodyDocument, Part, PartId, Provenance, VolumeRef,
     snapshot::{encode, hash_bytes},
 };
@@ -302,7 +302,7 @@ fn eyes_for(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::{Attachment, Origin, SpeciesId, Yaw};
+    use isometer_core::{Attachment, Origin, SpeciesId, Yaw};
 
     fn body() -> BodyDocument {
         let mut body = BodyDocument::new(SpeciesId(7), VolumeRef::from_tag(1), 100, [2, 2, 2]);

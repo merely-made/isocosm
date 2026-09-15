@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use mesocosm_core::{VolumeRef, Yaw};
+use isometer_core::{VolumeRef, Yaw};
 use mesocosm_mesh::Volume;
 
 const SUBJECT: SubjectKey = SubjectKey(3);

@@ -62,7 +62,7 @@ fn forwards() -> [(&'static str, [f32; 3]); 2] {
 /// A live tracer over the shipped procedural ground, plus the same map on the
 /// CPU side for classification.
 struct Probe {
-    ground: mesocosm_core::places::Ground,
+    ground: isometer_core::ground::Ground,
     map: BrickMap,
     tracer: BrickTracer,
 }

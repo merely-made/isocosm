@@ -25,7 +25,7 @@ use serde::{Deserialize, Serialize};
 use crate::body::Aabb;
 
 use super::Places;
-use super::bricks::Ground;
+use isometer_core::ground::Ground;
 
 /// How tall a walker is, in voxels, for occupancy checks.
 pub const WALKER_HEIGHT: i32 = 2;

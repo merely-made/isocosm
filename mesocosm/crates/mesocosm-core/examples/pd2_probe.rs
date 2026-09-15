@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Throwaway PD2 staging probe.
-use mesocosm_core::{Role, World, classify};
+use mesocosm_core::{BodyOrgans, Role, World, classify};
 
 fn main() {
     let world = World::new(7, 916);

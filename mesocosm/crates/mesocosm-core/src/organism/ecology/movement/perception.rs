@@ -16,6 +16,7 @@ use crate::organism::ecology::kinship::Kin;
 use crate::organism::ecology::sight_for_body;
 use crate::organism::{Kingdom, Organism, OrganismId, Signal};
 use crate::places::{Ground, Tier, WalkerShape, spot_for};
+use crate::process::BodyProcesses;
 use crate::process::{FeedingMode, NisKind};
 
 /// An embodied mind's local visual horizon, for a body with no sense organ at

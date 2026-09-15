@@ -172,6 +172,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "isometer-core"
+version = "0.1.0"
+dependencies = [
+ "postcard",
+ "serde",
+ "wing-formats",
+]
+
+[[package]]
 name = "isometry-campaign"
 version = "0.1.0"
 dependencies = [
@@ -243,6 +252,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 name = "mesocosm-core"
 version = "0.0.1"
 dependencies = [
+ "isometer-core",
  "muniment",
  "nisus",
  "postcard",
@@ -256,7 +266,7 @@ name = "mesocosm-mesh"
 version = "0.0.1"
 dependencies = [
  "blake3",
- "mesocosm-core",
+ "isometer-core",
  "postcard",
  "serde",
  "wing-formats",
@@ -265,7 +275,7 @@ dependencies = [
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/mere.git?rev=fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c#fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c"
+source = "git+https://github.com/merely-made/mere.git?rev=3675a3528f750ec121cd603aca5e7fc2c73dc7fa#3675a3528f750ec121cd603aca5e7fc2c73dc7fa"
 dependencies = [
  "async-trait",
  "blake3",
@@ -276,7 +286,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?rev=fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c#fb7e136b13298b1e9c56ece8a282fb1b1fac4d8c"
+source = "git+https://github.com/merely-made/mere.git?rev=3675a3528f750ec121cd603aca5e7fc2c73dc7fa#3675a3528f750ec121cd603aca5e7fc2c73dc7fa"
 dependencies = [
  "serde",
 ]

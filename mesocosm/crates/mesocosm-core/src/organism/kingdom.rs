@@ -156,7 +156,19 @@ impl BodyPhenotype {
     }
 }
 
-impl BodyDocument {
+/// Mesocosm's feeding and canopy reading of a body.
+///
+/// Pure geometry, but the questions are this product's: what counts as a
+/// canopy and what counts as a mouth are trophic rules, not family facts. The
+/// document lives in `isometer-core`, so these arrive as an extension. Bring
+/// it into scope to call `body.canopy_parts()`.
+pub trait BodyOrgans {
+    fn canopy_parts(&self) -> impl Iterator<Item = PartId> + '_;
+    fn mouth_part(&self) -> Option<PartId>;
+    fn mouth(&self) -> Option<Role>;
+}
+
+impl BodyOrgans for BodyDocument {
     /// Whether this body holds a fixing surface up in the light.
     ///
     /// # The canopy rule (DC4)
@@ -190,7 +202,7 @@ impl BodyDocument {
     /// a canopy position*; whether one of them is doing anything is
     /// [`BodyPhenotype::canopy`], because allocation is not the anatomy
     /// document's to know.
-    pub fn canopy_parts(&self) -> impl Iterator<Item = PartId> + '_ {
+    fn canopy_parts(&self) -> impl Iterator<Item = PartId> + '_ {
         // Heights in one forward pass: a part's parent always has the lower
         // id, so the chain resolves in document order without walking it once
         // per part.
@@ -231,7 +243,7 @@ impl BodyDocument {
     ///
     /// `Limb` wins a body that grew more than one, because a jaw is the organ
     /// that decides what the body can take.
-    pub fn mouth_part(&self) -> Option<PartId> {
+    fn mouth_part(&self) -> Option<PartId> {
         let mut found = None;
         for part in self.living() {
             let borne_under_the_head = part
@@ -251,7 +263,7 @@ impl BodyDocument {
         found
     }
 
-    pub fn mouth(&self) -> Option<Role> {
+    fn mouth(&self) -> Option<Role> {
         self.mouth_part()
             .and_then(|part| self.part(part))
             .map(|part| classify(part.half_extent))
@@ -262,6 +274,7 @@ impl BodyDocument {
 mod tests {
     use super::*;
     use crate::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+    use crate::process::BodyProcesses;
 
     /// A body as it would actually be born: anatomy with its allocation
     /// seeded. Since PD2 the kingdom readings ask what tissue is doing, so a

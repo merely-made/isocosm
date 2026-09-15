@@ -623,3 +623,35 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   whole frame; spatial, world-trial and uptake-world pass. Green:
   mesocosm check, core 558 plus the six pins, genet 154, views 46,
   isometer 28, paredros check, root check, locks unchanged.
+- **2026-09-14, step 6 done, every gate held.** `shared/isometer/crates/
+  isometer-core` exists (MPL-2.0; body.rs 491 with body/tests.rs 191,
+  anatomy.rs 249, plan.rs 291, ground.rs 495, snapshot.rs 73, wire.rs 12,
+  lib.rs 48; 32 tests; dependencies wing-formats, serde, postcard only;
+  `cargo tree` names no product crate). mesocosm-core depends on it and
+  re-exports every moved item at its old path, so mesocosm-runtime,
+  mesocosm-views, mesocosm-genet, paredros-world, paredros-social,
+  paredros-sortie and wing-integration compile unchanged; paredros-world's
+  tests pass with no Paredros edit. lens, render, mesh and isometer take
+  isometer-core; isometer names mesocosm-core nowhere; the three
+  components keep it as a dev-dependency only, for the generation
+  fixtures the ruling leaves Mesocosm's. Deviations: plan.rs moved whole
+  because `BodyDocument.plan` is a `BodyPlan` over `Role`, `Facing` and
+  `Symmetry`; anatomy.rs moved because body.rs calls `living()`;
+  bricks.rs split, with a neutral `Terrain` trait and `Cavity` in
+  isometer-core so `Ground::grow` keeps its inherent form and Mesocosm's
+  `Grown` implements it beside `nest_entry` in a new
+  mesocosm-core/src/places/bricks.rs; `SnapshotError` stayed and a
+  two-variant `CodecError` carries the codec seam; five inherent impls on
+  now-foreign types became extension traits (`ShapeProcesses`,
+  `BodyProcesses`, `BodyOrgans`) with one `use` line in 21 mesocosm-core
+  files and no consumer change; one anatomy test folds over extent
+  instead of `reach`, whose assertion lives in process tests. Gates: the
+  six pins unchanged; the sensor content address; all 32 spatial-coverage
+  captures identical to the 2026-09-14 set and to a baseline captured at
+  a736009; acceptance's 15 captures and every non-timing receipt field
+  identical to that baseline. Green everywhere: isometer 28, isometer-core
+  32, core 535 plus suites, mesh 60, render 32 + 5, lens 56, runtime 44,
+  views 46, genet 154, paredros check and world tests, root check with the
+  root lock unchanged. wing-integration's tracked lock changed: isometer-
+  core entered its graph, and two stale mere lines refreshed to 3675a352,
+  drift left by the umbrella repin, recorded rather than reverted.

@@ -315,7 +315,7 @@ fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
 /// plane's, in world coordinates, and not a restatement of the slab.
 #[test]
 fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
-    use mesocosm_core::VolumeRef;
+    use isometer_core::VolumeRef;
     use mesocosm_mesh::{BodyMesh, Volume};
     use mesocosm_render::live_body::{LiveBody, pick_bodies};
 

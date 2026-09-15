@@ -14,7 +14,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::VolumeRef;
+use isometer_core::VolumeRef;
 use serde::{Deserialize, Serialize};
 
 /// A part's occupancy grid. `0` is empty; any other value is a material id

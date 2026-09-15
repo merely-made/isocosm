@@ -8,6 +8,7 @@
 
 use super::*;
 use crate::flow::Process as FlowProcess;
+use crate::organism::BodyOrgans;
 use crate::organism::Kingdom;
 
 #[test]

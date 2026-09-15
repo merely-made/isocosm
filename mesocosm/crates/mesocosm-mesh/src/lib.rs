@@ -47,7 +47,7 @@ pub mod volume;
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::{BodyDocument, PartId, Provenance, VolumeRef, Yaw};
+use isometer_core::{BodyDocument, PartId, Provenance, VolumeRef, Yaw};
 
 pub use content::{
     ContentEntry, ContentError, ContentPack, MATERIAL_BODY, MATERIAL_EDGE, MATERIAL_JOINT,
@@ -248,7 +248,7 @@ pub fn mesh_body(body: &BodyDocument, source: &impl VolumeSource) -> Result<Body
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::{Attachment, Provenance, SpeciesId};
+    use isometer_core::{Attachment, Provenance, SpeciesId};
 
     fn source() -> VolumeMap {
         let mut map = VolumeMap::new();

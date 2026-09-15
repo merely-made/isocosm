@@ -7,7 +7,7 @@
 //! CPU queries over the actual double-sided faces submitted by the renderer.
 
 use glam::{DMat4, DVec3, Vec3};
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 
 use super::pose::{clip_contains, model_matrix, validate_body, validate_clip};
 use super::{ClipSlab, LiveBody, LiveBodyError};

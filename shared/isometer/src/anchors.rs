@@ -7,7 +7,7 @@
 //! Bounded effect attachments on actual meshed part faces. These faces may be
 //! hidden by another part or terrain. The depth renderer owns that occlusion.
 
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 use mesocosm_mesh::{BodyDependencyRevision, BodyMesh};
 use mesocosm_render::live_body::{LiveBody, posed_quad};
 

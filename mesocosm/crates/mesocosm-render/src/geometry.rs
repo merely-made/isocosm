@@ -250,7 +250,7 @@ fn append_body(out: &mut Vec<Vertex>, item: &SceneItem) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::{BodyDocument, SpeciesId, VolumeRef};
+    use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
     use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
 
     fn source() -> VolumeMap {

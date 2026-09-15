@@ -13,6 +13,7 @@
 use super::*;
 use crate::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 use crate::plan::Role;
+use crate::process::BodyProcesses;
 use crate::process::{IntakePort, NisKind, Process, Registry};
 
 /// A bulk root `[2, 2, 2]`, a long limb `[7, 1, 1]`, and a frond `[4, 4, 1]`

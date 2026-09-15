@@ -41,13 +41,11 @@
 //!   └── snapshot()     the whole world, captured in one call
 //! ```
 
-pub mod anatomy;
 pub mod axis;
-pub mod body;
 pub mod cohort;
 pub mod development;
-pub mod effect_experiment;
 pub mod discovery;
+pub mod effect_experiment;
 pub mod flow;
 pub mod functions;
 pub mod graft;
@@ -57,7 +55,6 @@ pub mod matter;
 pub mod organism;
 pub mod phenotype;
 pub mod places;
-pub mod plan;
 pub mod pressure;
 pub mod process;
 pub mod program;
@@ -71,13 +68,28 @@ pub mod voxel_profile;
 pub mod world;
 
 pub mod chronicle;
-pub mod wire;
 
-pub use axis::{Appendage, AppendageStep, ChainFacing, Recipe, Soma, Tagma, Unspeakable};
-pub use body::{
+// ---------------------------------------------------------------------------
+// The isometer-core re-export block.
+//
+// `body.rs`, `anatomy.rs`, `plan.rs`, `wire.rs`, the brick ground and the
+// codec seam moved to `isometer-core` (family plan step 6, 2026-09-14). Every
+// moved item is re-exported here at the path it had before the move, so
+// `mesocosm-runtime`, `mesocosm-views`, `mesocosm-genet`, `paredros-world`,
+// `paredros-social`, `paredros-sortie` and `wing-integration` name it exactly
+// as they did. `places::{AIR, BRICK, Brick, Ground, ROCK, SOIL, SURFACE_BAND}`
+// and `snapshot::{encode, decode, hash_bytes}` are restated in their own
+// modules for the same reason.
+// ---------------------------------------------------------------------------
+pub use isometer_core::{
     Aabb, AttachError, Attachment, BodyDocument, Origin, Part, PartId, Provenance, SpeciesId,
     VolumeRef, Yaw,
 };
+pub use isometer_core::{BodyPlan, Facing, Role, Symmetry, classify};
+pub use isometer_core::{WireError, frame, unframe};
+pub use isometer_core::{anatomy, body, plan, wire};
+
+pub use axis::{Appendage, AppendageStep, ChainFacing, Recipe, Soma, Tagma, Unspeakable};
 pub use chronicle::{Chronicle, Consequence, Deed, PartOrigin, generate};
 pub use cohort::{Cohort, CohortKey, CohortMember};
 pub use development::{
@@ -96,8 +108,8 @@ pub use graft::{Affinity, Crossing, Domain, Verdict};
 pub use growth::{Growth, resolve};
 pub use history::{Ending, Event, History, MealKind, Passing};
 pub use organism::{
-    FaunaDecisionTrace, FaunaDrive, FaunaDriveScores, FaunaPolicy, FaunaSenses, FaunaTraits,
-    Kingdom, Organism, OrganismId, Signal, Stage, Tally,
+    BodyOrgans, FaunaDecisionTrace, FaunaDrive, FaunaDriveScores, FaunaPolicy, FaunaSenses,
+    FaunaTraits, Kingdom, Organism, OrganismId, Signal, Stage, Tally,
 };
 pub use phenotype::{
     Aim, AllocationProposal, Arrangement, BodyPhenotype, Branch, CellId, Cutting, Development,
@@ -105,11 +117,10 @@ pub use phenotype::{
     SiteId, SiteReading, arrange,
 };
 pub use places::{Place, PlaceId, Places};
-pub use plan::{BodyPlan, Facing, Role, Symmetry, classify};
 pub use pressure::{AUTHORED, Force, HEAVY_DEEP, LONG_YEAR, Pressure, TIDAL_SHELF, WorldProfile};
 pub use process::{
-    BULK_REACH, Capability, DefinitionDigest, FeedingMode, IntakePort, NATIVE_ABI, NisKind,
-    Process, ProcessDef, ProcessId, ProcessRef, Registry, Seeding, Unmet,
+    BULK_REACH, BodyProcesses, Capability, DefinitionDigest, FeedingMode, IntakePort, NATIVE_ABI,
+    NisKind, Process, ProcessDef, ProcessId, ProcessRef, Registry, Seeding, ShapeProcesses, Unmet,
 };
 pub use program::{
     Citation, Conditions, DeclaredSite, Filial, Founder, Preview, Program, Revision, RevisionId,
@@ -121,7 +132,6 @@ pub use rules::{RulesetDigest, TROPHIC_GRAMMAR_REVISION, WorldRules};
 pub use score::{Reading, readings};
 pub use snapshot::{SnapshotError, restore, restore_under, snapshot, state_hash};
 pub use species::{InitialTissueRecipe, Lineages, Species, TissueRecipeError};
-pub use wire::{WireError, frame, unframe};
 pub use world::{
     ExpressionPreview, Founding, Gland, Graft, GraftPreview, INSTINCT_IDLE_TICKS, Ineligible,
     Intent, Offer, Outcome, PLACE_MATTER_MAX_MG, Placement, Prospect, Rejection, Route,

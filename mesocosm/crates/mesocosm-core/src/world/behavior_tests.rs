@@ -8,6 +8,7 @@ use super::*;
 use crate::body::{SpeciesId, VolumeRef};
 use crate::organism::{FaunaDrive, Kingdom, Organism, OrganismId};
 use crate::places::{WALKER_HEIGHT, spot, step};
+use crate::process::BodyProcesses;
 use crate::process::FeedingMode;
 
 #[test]

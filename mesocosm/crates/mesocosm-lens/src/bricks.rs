@@ -13,7 +13,7 @@
 use std::collections::BTreeMap;
 use std::ops::Deref;
 
-use mesocosm_core::places::{BRICK, Ground};
+use isometer_core::ground::{BRICK, Ground};
 use modulus::BrickMap as SharedBrickMap;
 
 mod ray;

@@ -14,10 +14,17 @@
 //! The state hash is over the snapshot bytes, so two worlds hash equal exactly
 //! when they would serialize equal.
 
-use serde::{Serialize, de::DeserializeOwned};
-
 use crate::world::World;
 
+// The codec half moved to `isometer-core` with the body document it serves
+// (family plan step 6). Restated here so `mesocosm_core::snapshot::encode`,
+// `::decode` and `::hash_bytes` still resolve for every caller in both
+// products; the implementation, and therefore the bytes, are one.
+pub use isometer_core::snapshot::{CodecError, decode, encode, hash_bytes};
+
+/// The world-facing refusals. `Encode` and `Decode` mirror
+/// [`CodecError`]'s, so a caller that only round-trips bytes can keep matching
+/// on this enum; the two ruleset variants are Mesocosm's own.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SnapshotError {
     Encode,
@@ -51,12 +58,12 @@ pub enum SnapshotError {
 
 /// Captures the whole world as bytes.
 pub fn snapshot(world: &World) -> Result<Vec<u8>, SnapshotError> {
-    encode(world)
+    Ok(encode(world)?)
 }
 
 /// Restores a world captured by [`snapshot`].
 pub fn restore(bytes: &[u8]) -> Result<World, SnapshotError> {
-    decode(bytes)
+    Ok(decode(bytes)?)
 }
 
 /// Restores a world and checks it against the ruleset the caller is holding.
@@ -100,31 +107,20 @@ pub fn restore_under(
     Ok(world)
 }
 
-/// Round-trips any core value. Used by the body-document tests and by hosts
-/// that carry parts of the world without carrying all of it.
-pub fn encode<T: Serialize>(value: &T) -> Result<Vec<u8>, SnapshotError> {
-    postcard::to_allocvec(value).map_err(|_| SnapshotError::Encode)
+impl From<CodecError> for SnapshotError {
+    fn from(error: CodecError) -> Self {
+        match error {
+            CodecError::Encode => SnapshotError::Encode,
+            CodecError::Decode => SnapshotError::Decode,
+        }
+    }
 }
 
-pub fn decode<T: DeserializeOwned>(bytes: &[u8]) -> Result<T, SnapshotError> {
-    postcard::from_bytes(bytes).map_err(|_| SnapshotError::Decode)
-}
-
-/// FNV-1a over the snapshot bytes. Chosen for being a few integer operations
-/// with no platform-dependent behaviour; this is an equality witness for
-/// replay, not a cryptographic digest.
+/// FNV-1a over the snapshot bytes. The world half of the seam: the witness
+/// itself is [`hash_bytes`], which the whole family shares.
 pub fn state_hash(world: &World) -> u64 {
     let bytes = snapshot(world).expect("a world is always encodable");
     hash_bytes(&bytes)
-}
-
-pub fn hash_bytes(bytes: &[u8]) -> u64 {
-    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-    for byte in bytes {
-        hash ^= *byte as u64;
-        hash = hash.wrapping_mul(0x0000_0100_0000_01B3);
-    }
-    hash
 }
 
 #[cfg(test)]

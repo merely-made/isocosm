@@ -7,7 +7,7 @@
 //! Shared draw/query placement and admission checks.
 
 use glam::{Mat4, Vec3};
-use mesocosm_core::Yaw;
+use isometer_core::Yaw;
 
 use super::{ClipSlab, LiveBody, LiveBodyError, materials::valid_materials};
 

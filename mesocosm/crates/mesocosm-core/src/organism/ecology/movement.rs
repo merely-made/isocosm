@@ -22,7 +22,7 @@ use crate::places::{
     Ground, Places, Soil, Tier, WalkerShape, route_step_for, step_for as grounded_step,
     surface_stance_for,
 };
-use crate::process::{FeedingMode, NisKind};
+use crate::process::{BodyProcesses, FeedingMode, NisKind};
 use crate::rng::Rng;
 use std::cmp::Reverse;
 

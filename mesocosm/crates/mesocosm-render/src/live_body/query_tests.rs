@@ -6,7 +6,7 @@
 
 use super::*;
 use crate::live_body::PartMaterial;
-use mesocosm_core::{VolumeRef, Yaw};
+use isometer_core::{VolumeRef, Yaw};
 use mesocosm_mesh::{BodyMesh, Volume};
 
 fn cube() -> BodyMesh {

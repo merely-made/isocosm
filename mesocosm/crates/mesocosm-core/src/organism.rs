@@ -23,6 +23,7 @@ use crate::body::{Attachment, BodyDocument, Provenance, Yaw};
 use crate::phenotype::BodyPhenotype;
 use crate::places::{Tier, WalkerShape};
 use crate::plan::{Role, classify};
+use crate::process::BodyProcesses;
 use crate::process::{FeedingMode, NisKind, Process};
 
 mod behavior;
@@ -35,7 +36,7 @@ pub use behavior::{
 };
 pub use ecology::step;
 use ecology::{OFFSPRING_COST, STARVATION_MG};
-pub use kingdom::Kingdom;
+pub use kingdom::{BodyOrgans, Kingdom};
 pub use ledger::Upkeep;
 
 use crate::body::{SpeciesId, VolumeRef};
