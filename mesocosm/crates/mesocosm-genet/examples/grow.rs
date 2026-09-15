@@ -16,8 +16,8 @@
 //! ```
 
 use isometer_mesh::{VolumeSource, flatten, mesh_body};
+use isometer_render::{Camera, Renderer, SceneItem};
 use mesocosm_core::{Placement, World};
-use mesocosm_render::{Camera, Renderer, SceneItem};
 
 use mesocosm_genet::fixture;
 

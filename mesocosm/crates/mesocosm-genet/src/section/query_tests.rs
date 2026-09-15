@@ -10,8 +10,8 @@
 
 use super::*;
 use isometer_mesh::VolumeMap;
+use isometer_render::{RenderError, Renderer};
 use mesocosm_core::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
-use mesocosm_render::{RenderError, Renderer};
 
 #[path = "mask_tests.rs"]
 mod mask;

@@ -1,0 +1,36 @@
+[package]
+name = "isometer-render"
+version = "0.0.1"
+edition = "2024"
+license = "MPL-2.0"
+description = "The wing's body renderer: turns meshed bodies into frames on wgpu. Headless-first, so 'the part is visible' is a test rather than an opinion."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# wgpu is restated here in full rather than inherited: this crate is a member
+# of the family workspace, which has no central table, and the spec below is
+# byte-identical to the one mesocosm declares so the feature request the
+# resolver sees does not move with the crate.
+[dependencies]
+# Part ids, quarter turns and content addresses, from the family floor.
+isometer-core = { path = "../isometer-core" }
+isometer-mesh = { path = "../isometer-mesh" }
+wgpu = { version = "30", default-features = false, features = [
+    "std",
+    "wgsl",
+    "dx12",
+    "vulkan",
+    "metal",
+    "gles",
+    "webgpu",
+] }
+bytemuck = { version = "1", features = ["derive"] }
+glam = "0.30"
+pollster = "0.4"
+
+[dev-dependencies]
+# Only for the example that writes a frame to disk for a human to look at.
+png = "0.17"
+# `render_body` drives a real `World` to get a body worth drawing; nothing in
+# the library names a product type.
+mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }

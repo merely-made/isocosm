@@ -7,8 +7,8 @@
 use super::*;
 use crate::section::{BodyMode, BodyPickError, CameraMode, Framing, SectionFrame};
 use isometer_mesh::VolumeMap;
+use isometer_render::{RenderError, Renderer};
 use mesocosm_core::{Founding, World};
-use mesocosm_render::{RenderError, Renderer};
 
 fn render(section: &mut Section, world: &World, volumes: &VolumeMap, centre: [f32; 3]) -> Vec<u8> {
     let mut encoder = section.device.create_command_encoder(&Default::default());

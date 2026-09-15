@@ -20,9 +20,7 @@ exclude = ["design_docs/"]
 members = [
     "crates/mesocosm-core",
     "crates/mesocosm-genet",
-    "crates/mesocosm-lens",
     "crates/mesocosm-phenotype",
-    "crates/mesocosm-render",
     "crates/mesocosm-runtime",
     "crates/mesocosm-views",
 ]
@@ -42,7 +40,6 @@ nisus = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750e
 conatus = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # Product-neutral sparse brick carriage and ray-in WGSL traversal. Product
 # lenses keep source binding, camera, material, and composition policy.
-modulus = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # The scenograph projection contract and its solvers: the adapter-first UI
 # posture. Mesocosm discloses facts as a score; scenomise places them; a host
 # realizes the scene. Views never hand-roll layout.
@@ -95,11 +92,11 @@ paint_list_render = { git = "https://github.com/merely-made/netrender.git", rev 
 # resolves the one on-disk crate. The family lives in `shared/isometer` and
 # carries its own workspace; these rows are the only way into it.
 isometer-core = { path = "../shared/isometer/crates/isometer-core", version = "0.1.0" }
+isometer-lens = { path = "../shared/isometer/crates/isometer-lens", version = "0.0.1" }
 isometer-mesh = { path = "../shared/isometer/crates/isometer-mesh", version = "0.0.1" }
+isometer-render = { path = "../shared/isometer/crates/isometer-render", version = "0.0.1" }
 mesocosm-core = { path = "crates/mesocosm-core", version = "0.0.1" }
-mesocosm-lens = { path = "crates/mesocosm-lens", version = "0.0.1" }
 mesocosm-phenotype = { path = "crates/mesocosm-phenotype", version = "0.0.1" }
-mesocosm-render = { path = "crates/mesocosm-render", version = "0.0.1" }
 mesocosm-genet = { path = "crates/mesocosm-genet", version = "0.0.1" }
 mesocosm-runtime = { path = "crates/mesocosm-runtime", version = "0.0.1" }
 mesocosm-views = { path = "crates/mesocosm-views", version = "0.0.1" }

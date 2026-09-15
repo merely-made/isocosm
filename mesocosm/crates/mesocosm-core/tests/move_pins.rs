@@ -129,7 +129,7 @@ fn fixture_body_document_wire_frame_bytes_are_pinned() {
 
 #[test]
 fn fixture_body_revision_hash_is_pinned() {
-    // `mesocosm-lens`'s `BodyRevision`, which the tracer keys its body cache
+    // `isometer-lens`'s `BodyRevision`, which the tracer keys its body cache
     // on, is exactly `hash_bytes(encode(body))` (`lens/src/body.rs:113-114`).
     // Both halves live in this crate today, so the pin does too.
     assert_eq!(

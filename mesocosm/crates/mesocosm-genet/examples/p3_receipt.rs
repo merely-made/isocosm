@@ -7,7 +7,7 @@
 //! P3's headed receipt: a body wearing a branch that used to be somebody else.
 //!
 //! **Two real pipelines, one sheet.** The body is rendered by
-//! `mesocosm-render` off the authoritative anatomy, the way `grow` renders one;
+//! `isometer-render` off the authoritative anatomy, the way `grow` renders one;
 //! the panel is rasterized through the real cambium/netrender chrome over a
 //! headless device, the way `pe2_receipt` is. Neither half
 //! is a drawing of what the code would do. They are stacked into one PNG here
@@ -25,12 +25,12 @@
 //! ```
 
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
+use isometer_render::{Camera, Renderer, SceneItem};
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Intent, Kingdom,
     Organism, OrganismId, Outcome, PartId, Process, ProposedSite, Provenance, Registry, SpeciesId,
     Stage, Trend, VolumeRef, World, Yaw,
 };
-use mesocosm_render::{Camera, Renderer, SceneItem};
 
 use mesocosm_genet::chrome::Chrome;
 use mesocosm_genet::vitals::VitalsChrome;

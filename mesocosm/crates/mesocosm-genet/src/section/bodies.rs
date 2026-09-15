@@ -10,9 +10,9 @@
 //! and the capsule roster a body falls back to when its voxels will not
 //! project.
 
+use isometer_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
+use isometer_render::PartMaterial;
 use mesocosm_core::{Organism, OrganismId, World};
-use mesocosm_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
-use mesocosm_render::PartMaterial;
 use std::collections::BTreeMap;
 use isometer::{BodyFrameStats, Pose, SceneBody, SlabWindow, SubjectKey};
 
@@ -140,7 +140,7 @@ impl HostBodies {
                         .pose
                         .capsules
                         .len()
-                        .saturating_sub(mesocosm_lens::MAX_ROSTER_CAPSULES);
+                        .saturating_sub(isometer_lens::MAX_ROSTER_CAPSULES);
                 }
                 if controlled {
                     self.played_fallback = Some(projected.pose);

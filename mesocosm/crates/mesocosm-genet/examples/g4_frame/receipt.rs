@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_lens::BrickDiagnostics;
+use isometer_lens::BrickDiagnostics;
 use netrender::profiling::FrameTimings;
 
 use crate::burrow_scenario::SEED;

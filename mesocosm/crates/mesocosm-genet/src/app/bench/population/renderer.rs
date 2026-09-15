@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::model::Workload;
-use mesocosm_render::{
+use isometer_render::{
     Camera,
     live_body::{LiveBody, LiveBodyRenderer},
 };

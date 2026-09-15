@@ -19,13 +19,13 @@
 //! travel `-z`, so the first solid cell along a column is an integer scan
 //! of `Ground::solid`, no traversal arithmetic shared with Rapier.
 
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_core::snapshot;
-use mesocosm_core::voxel_profile::GroundVoxelProfile;
-use mesocosm_lens::{
+use isometer_lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
     CritterPose, Grade, TraceCamera, critter::Capsule,
 };
+use mesocosm_core::places::{Ground, Places};
+use mesocosm_core::snapshot;
+use mesocosm_core::voxel_profile::GroundVoxelProfile;
 use mesocosm_runtime::{TactileCapsule, TactilePick, TactileWorld};
 
 pub const INITIAL_SIZE: [u32; 2] = [960, 540];

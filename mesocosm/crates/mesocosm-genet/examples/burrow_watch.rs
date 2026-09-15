@@ -36,12 +36,12 @@
 
 use std::sync::Arc;
 
-use mesocosm_core::places::spot;
-use mesocosm_core::{Intent, OrganismId, World, state_hash};
-use mesocosm_lens::{
+use isometer_lens::{
     BodyLensProjection, BodyPlacement, BrickChange, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, CritterPose, Flight, Grade,
 };
+use mesocosm_core::places::spot;
+use mesocosm_core::{Intent, OrganismId, World, state_hash};
 use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, NetrenderOptions,
     PresentedFrame, Renderer, Scene, SurfaceKey, WgpuHandles, create_netrender_instance,

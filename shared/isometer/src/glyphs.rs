@@ -136,7 +136,7 @@ impl GlyphLayer {
                 entry_point: Some("fs_main"),
                 compilation_options: Default::default(),
                 targets: &[Some(wgpu::ColorTargetState {
-                    format: mesocosm_lens::FRAME_FORMAT,
+                    format: isometer_lens::FRAME_FORMAT,
                     blend: None,
                     write_mask: wgpu::ColorWrites::ALL,
                 })],

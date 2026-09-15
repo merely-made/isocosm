@@ -15,13 +15,13 @@
 //! cargo run -p mesocosm-genet --example menagerie -- <out_dir>
 //! ```
 
+use isometer_lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens};
 use mesocosm_core::{
     PartPalette, PartTemplate, Recipe, RoleShapes, Soma, SpeciesId, VolumeRef,
     axis::{archetype, catalogue},
     develop_body,
 };
 use mesocosm_genet::maps;
-use mesocosm_lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens};
 
 fn palette() -> PartPalette {
     PartPalette {

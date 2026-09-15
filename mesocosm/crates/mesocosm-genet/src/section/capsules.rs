@@ -4,13 +4,13 @@
 //! Legacy capsule projections and counted body fallbacks.
 
 use super::SlabWindow;
+use isometer_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 use mesocosm_core::{BodyDocument, Organism, World};
-use mesocosm_lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 /// The controlled critter's pose, through the landed V2 projection.
 ///
 /// It stays the tracer's single pose rather than a roster member, because a
 /// member's capsule budget is smaller than the played body's: see
-/// [`mesocosm_lens::MAX_ROSTER`].
+/// [`isometer_lens::MAX_ROSTER`].
 /// The pose comes back with the count of parts the capsule budget dropped, so
 /// a truncated player is reported rather than merely smaller.
 pub fn pose_of(world: &World, tint: [f32; 3]) -> Option<(CritterPose, u32)> {

@@ -9,11 +9,11 @@
 
 use std::time::Instant;
 
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_lens::{
+use isometer_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Flight, Grade,
     critter::Capsule,
 };
+use mesocosm_core::places::{Ground, Places};
 
 const WIDTH: u32 = 1920;
 const HEIGHT: u32 = 1080;
@@ -130,7 +130,7 @@ fn draw(
     tracer: &mut BrickTracer,
     view: &wgpu::TextureView,
     input: BrickFrameInput<'_>,
-) -> Result<mesocosm_lens::BrickDiagnostics, String> {
+) -> Result<isometer_lens::BrickDiagnostics, String> {
     let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
         label: Some("Mesocosm G2 measured frame"),
     });

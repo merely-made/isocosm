@@ -4,7 +4,7 @@
 //! Host presentation presets. They never enter a world or a played trace.
 
 use super::{Grade, PALETTE, Section};
-use mesocosm_lens::TerrainAppearance;
+use isometer_lens::TerrainAppearance;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum TerrainStyle {

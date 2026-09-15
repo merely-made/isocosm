@@ -6,7 +6,7 @@
 
 //! Reading a completed frame back as bytes, with the host's chrome over it.
 
-use mesocosm_render::composite::Composite;
+use isometer_render::composite::Composite;
 
 use crate::scene::{CAPTURE_FORMAT, Scene, target};
 

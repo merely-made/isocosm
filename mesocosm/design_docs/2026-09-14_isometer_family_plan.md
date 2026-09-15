@@ -685,3 +685,24 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   4 + 2, mesocosm check, core suites, render 32 + 5, lens 56, runtime 44,
   genet 154, wing-integration check, root check with the root lock
   unchanged.
+- **2026-09-15, steps 8 and 9 done, one commit.** mesocosm-render is
+  `shared/isometer/crates/isometer-render` and mesocosm-lens is
+  `shared/isometer/crates/isometer-lens`, both moved by rename with source
+  verbatim beyond the import prefix; each manifest keeps mesocosm-core as
+  a dev-dependency by path and expands the wgpu, serde and postcard rows
+  to mesocosm's exact specs; lens restates conatus and modulus at the
+  family's mere revision 3675a352, burn verbatim, and netrender at
+  3961aca9 for its tests, and its five remaining examples came with it.
+  mesocosm/crates now holds core, genet, phenotype, runtime and views;
+  mesocosm's central rows point into the family, and the unused modulus
+  row is dropped. Paredros's render and lens rows are flipped in the
+  working tree for the Paredros session to commit with its manifest,
+  together with its own import prefixes (mesh, render, lens). Gates: the
+  six core pins; all 32 spatial-coverage captures byte-identical to the
+  2026-09-14 set; acceptance and world-trial, which draws the traced
+  ground, pass. Green: isometer 28, isometer-core 32, isometer-mesh 60 +
+  4 + 2, isometer-render 32 + 5, isometer-lens 56 single-threaded,
+  mesocosm check, runtime 44, genet 154, wing-integration check, root
+  check with the root lock unchanged. A `paredros-client` feature still
+  gates the optional lens (`r1-proof`); step 10 retires it on the
+  Paredros side.

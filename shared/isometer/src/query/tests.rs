@@ -75,7 +75,7 @@ fn render(scene: &mut Scene, bodies: &[SceneBody<'_>], volumes: &DeclaredExtentV
                 volumes: SceneVolumes::DeclaredSolid(volumes),
                 terrain: None,
                 dirty: &[],
-                grade: mesocosm_lens::Grade::retro(3),
+                grade: isometer_lens::Grade::retro(3),
                 terrain_appearance: None,
                 body_budget: 8,
                 capsules: None,

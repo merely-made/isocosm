@@ -83,6 +83,6 @@ fn a_body_of_the_playtest_size_is_still_posed() {
     }
     assert_eq!(body.living().count(), 304);
     let (pose, dropped) = pose_at(&body, [0, 8, 0], [0.4, 0.6, 0.4], 1.0).expect("a posed body");
-    assert_eq!(pose.capsules.len(), mesocosm_lens::MAX_CAPSULES);
+    assert_eq!(pose.capsules.len(), isometer_lens::MAX_CAPSULES);
     assert_eq!(dropped, 48);
 }

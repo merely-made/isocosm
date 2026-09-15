@@ -5,9 +5,9 @@
 //! Usage: cargo run --release -p mesocosm-genet --example voxel_families -- OUT_DIR [spaced|jointed|branching|axial]
 
 use isometer_mesh::mesh_body;
+use isometer_render::{Camera, Renderer, SceneItem, kingdom_colour};
 use mesocosm_core::{World, axis::archetype};
 use mesocosm_genet::generation_content::{DevelopmentPalette, Pack};
-use mesocosm_render::{Camera, Renderer, SceneItem, kingdom_colour};
 use std::path::PathBuf;
 
 fn main() {

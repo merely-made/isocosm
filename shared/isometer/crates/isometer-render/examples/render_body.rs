@@ -10,14 +10,14 @@
 //! *legible* is for a person looking at it, so this writes a frame to disk.
 //!
 //! ```text
-//! cargo run -p mesocosm-render --example render_body -- <output-dir>
+//! cargo run -p isometer-render --example render_body -- <output-dir>
 //! ```
 
 use std::path::{Path, PathBuf};
 
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
+use isometer_render::{Camera, Renderer};
 use mesocosm_core::{Intent, OrganismId, Outcome, PartId, Placement, VolumeRef, World, Yaw};
-use mesocosm_render::{Camera, Renderer};
 
 const SIZE: u32 = 512;
 const SEED: u64 = 0x00A7_7AC4;

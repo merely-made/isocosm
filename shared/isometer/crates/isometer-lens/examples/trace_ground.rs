@@ -7,15 +7,15 @@
 //! Captures Ground through the retained brick tracer before and after a carve.
 //!
 //! ```text
-//! cargo run -p mesocosm-lens --example trace_ground --release -- <output-dir>
+//! cargo run -p isometer-lens --example trace_ground --release -- <output-dir>
 //! ```
 
 use std::path::{Path, PathBuf};
 
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_lens::{
+use isometer_lens::{
     BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade,
 };
+use mesocosm_core::places::{Ground, Places};
 
 const WIDTH: u32 = 512;
 const HEIGHT: u32 = 384;

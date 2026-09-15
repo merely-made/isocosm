@@ -21,11 +21,11 @@ use conatus::resident::{
     ChunkBounds, ChunkStamp, DirtyRegion, PlaneClass, PlaneElementType, PlaneId, RawKernelView,
     ReadEpoch, ResidentChunk, ResidentClient,
 };
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_lens::{
+use isometer_lens::{
     BrickChange, BrickFrameInput, BrickMap, BrickProjectionRevision, BrickRevision, BrickTracer,
     Flight, Grade, LeasedAtlas,
 };
+use mesocosm_core::places::{Ground, Places};
 use serde::{Deserialize, Serialize};
 
 const WIDTH: u32 = 96;

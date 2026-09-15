@@ -17,7 +17,7 @@
 
 use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
-use mesocosm_render::{Camera, RenderError, Renderer};
+use isometer_render::{Camera, RenderError, Renderer};
 
 const SIZE: u32 = 256;
 

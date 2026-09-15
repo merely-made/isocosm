@@ -4,8 +4,8 @@
 //! Fixed habitat volume and explicit, presentation-only interior exposure.
 
 use super::{CameraMode, Section};
+use isometer_lens::{BrickMap, BrickProjectionRevision};
 use mesocosm_core::{places::Ground, world::TerrariumHabitat};
-use mesocosm_lens::{BrickMap, BrickProjectionRevision};
 
 /// CP1 uses the existing locomotion unit conversion for all visible anatomy.
 pub const BODY_SCALE: f32 = 1.0 / mesocosm_core::places::BODY_VOXELS_PER_GROUND_VOXEL as f32;

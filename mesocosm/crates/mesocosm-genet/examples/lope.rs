@@ -12,8 +12,8 @@
 //! cargo run -p mesocosm-genet --example lope -- <out_dir>
 //! ```
 
+use isometer_lens::{CritterPose, Flight, Grade, Lens, critter};
 use mesocosm_genet::maps;
-use mesocosm_lens::{CritterPose, Flight, Grade, Lens, critter};
 
 fn write_png(path: &std::path::Path, width: u32, height: u32, pixels: &[u8]) {
     if let Some(parent) = path.parent() {

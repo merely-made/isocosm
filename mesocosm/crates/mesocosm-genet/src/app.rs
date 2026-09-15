@@ -11,8 +11,8 @@ use std::sync::Arc;
 use std::time::Instant;
 
 use isometer_mesh::{BodyMesh, VolumeMap, VolumeSource, mesh_body};
+use isometer_render::{SceneItem, deadened, kingdom_colour};
 use mesocosm_core::{Kingdom, Organism, Signal, Stage};
-use mesocosm_render::{SceneItem, deadened, kingdom_colour};
 use mesocosm_runtime::Runtime;
 use winit::application::ApplicationHandler;
 use winit::event::{ElementState, WindowEvent};

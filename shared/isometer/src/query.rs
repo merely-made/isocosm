@@ -51,8 +51,8 @@ pub enum BodyPickError {
     /// A visible host fallback has no exact part-surface query. Refusing
     /// prevents picking a mesh through an unqueried stand-in occluder.
     CapsuleFallback,
-    Body(mesocosm_render::live_body::BodyQueryError),
-    Terrain(mesocosm_lens::BrickRayError),
+    Body(isometer_render::live_body::BodyQueryError),
+    Terrain(isometer_lens::BrickRayError),
 }
 
 /// What one completed encode left behind for the queries to read.

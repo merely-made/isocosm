@@ -9,7 +9,7 @@
 
 use isometer_core::PartId;
 use isometer_mesh::{BodyDependencyRevision, BodyMesh};
-use mesocosm_render::live_body::{LiveBody, posed_quad};
+use isometer_render::live_body::{LiveBody, posed_quad};
 
 use crate::bodies::{BodyLayer, PartAddress, SceneBody, SceneVolumes, SubjectKey, posed};
 

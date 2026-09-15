@@ -13,7 +13,7 @@
 
 use isometer_core::{BodyDocument, PartId};
 use isometer_mesh::{BodyDependencyRevision, BodyMesh, LiveBodyProjector, MeshError, VolumeMap};
-use mesocosm_render::live_body::{LiveBody, LiveBodyRenderer};
+use isometer_render::live_body::{LiveBody, LiveBodyRenderer};
 
 use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
@@ -62,7 +62,7 @@ pub struct SceneBody<'a> {
     pub grounded: bool,
     pub tint: [f32; 3],
     /// Product-projected per-part expression; empty is legal.
-    pub materials: &'a [mesocosm_render::PartMaterial],
+    pub materials: &'a [isometer_render::PartMaterial],
     /// In shot regardless of the window, and first in draw order. Mesocosm's
     /// controlled critter; a host with no such body leaves this false.
     pub always_visible: bool,
@@ -93,7 +93,7 @@ struct PlacedBody {
     subject: SubjectKey,
     revision: BodyDependencyRevision,
     mesh: BodyMesh,
-    materials: Vec<mesocosm_render::PartMaterial>,
+    materials: Vec<isometer_render::PartMaterial>,
     origin: [f32; 3],
     scale: f32,
     yaw_radians: f32,
@@ -139,7 +139,7 @@ impl BodyLayer {
         let (depth, depth_view) = depth_target(device, width, height);
         Self {
             projector: LiveBodyProjector::default(),
-            renderer: LiveBodyRenderer::new(device, mesocosm_lens::FRAME_FORMAT, 256),
+            renderer: LiveBodyRenderer::new(device, isometer_lens::FRAME_FORMAT, 256),
             placed: Vec::new(),
             stats: BodyFrameStats::default(),
             budget: 1,
@@ -182,7 +182,7 @@ impl BodyLayer {
     /// The material slice each projected body kept, in the same draw order as
     /// [`BodyLayer::drawn`]. A host reads this back for the counters whose
     /// meaning is its own vocabulary and not the scene's.
-    pub fn drawn_materials(&self) -> impl Iterator<Item = &[mesocosm_render::PartMaterial]> + '_ {
+    pub fn drawn_materials(&self) -> impl Iterator<Item = &[isometer_render::PartMaterial]> + '_ {
         self.placed.iter().map(|body| body.materials.as_slice())
     }
 
@@ -212,7 +212,7 @@ impl BodyLayer {
         let (mesh, _) = self
             .project(body, volumes)
             .map_err(|error| format!("body projection: {error:?}"))?;
-        mesocosm_render::live_body::body_bounds(posed(body, &mesh))
+        isometer_render::live_body::body_bounds(posed(body, &mesh))
             .map_err(|error| format!("body bounds: {error:?}"))
     }
 
@@ -229,7 +229,7 @@ impl BodyLayer {
         let mut min = [f32::INFINITY; 3];
         let mut max = [f32::NEG_INFINITY; 3];
         for index in 0..quads {
-            for corner in mesocosm_render::live_body::posed_quad(live, part, index).ok()? {
+            for corner in isometer_render::live_body::posed_quad(live, part, index).ok()? {
                 for axis in 0..3 {
                     min[axis] = min[axis].min(corner[axis]);
                     max[axis] = max[axis].max(corner[axis]);
@@ -244,13 +244,13 @@ impl BodyLayer {
         origin: [f32; 3],
         direction: [f32; 3],
         far: f32,
-        clip: mesocosm_render::ClipSlab,
+        clip: isometer_render::ClipSlab,
     ) -> Result<
-        Option<(PartAddress, mesocosm_render::live_body::BodyHit)>,
-        mesocosm_render::live_body::BodyQueryError,
+        Option<(PartAddress, isometer_render::live_body::BodyHit)>,
+        isometer_render::live_body::BodyQueryError,
     > {
         let bodies: Vec<_> = self.placed.iter().map(PlacedBody::live).collect();
-        mesocosm_render::live_body::pick_bodies(&bodies, origin, direction, far, Some(clip)).map(
+        isometer_render::live_body::pick_bodies(&bodies, origin, direction, far, Some(clip)).map(
             |hit| {
                 hit.map(|hit| {
                     let body = &self.placed[hit.body_index];
@@ -406,7 +406,7 @@ impl BodyLayer {
                         yaw_radians: body.pose.yaw_radians,
                         tint: body.tint,
                     };
-                    match mesocosm_render::live_body::body_bounds(placed.live()) {
+                    match isometer_render::live_body::body_bounds(placed.live()) {
                         Ok(Some(bounds)) if body.always_visible || intersects(bounds, window) => {},
                         Ok(_) => {
                             self.stats.candidates -= 1;

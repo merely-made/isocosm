@@ -15,7 +15,7 @@
 //! habitat volume and applies the interior information policy. Rotation never
 //! reaches a world intent.
 
-use mesocosm_lens::SlabWall;
+use isometer_lens::SlabWall;
 
 /// **Slice thickness, and deliberately not scaled with the enclosure.** A
 /// section shows a cut of fixed depth; widening it to keep the same fraction of
@@ -144,7 +144,7 @@ impl CameraMode {
     /// [`Self::forward`] and world up: right, up, forward, in that order.
     ///
     /// Derived by the **same** construction
-    /// [`mesocosm_lens::TraceCamera::orthographic_slab`] uses, because the
+    /// [`isometer_lens::TraceCamera::orthographic_slab`] uses, because the
     /// cull window and the camera disagreeing about where the slab is would
     /// show critters that are not drawn and drop critters that are.
     pub fn basis(self) -> [[f32; 3]; 3] {

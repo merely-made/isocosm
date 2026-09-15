@@ -155,7 +155,7 @@ impl Workload {
                 (min, max)
             })
             .collect();
-        let camera = mesocosm_render::Camera::default();
+        let camera = isometer_render::Camera::default();
         let direction = [
             camera.yaw.cos() * camera.pitch.cos(),
             camera.pitch.sin(),

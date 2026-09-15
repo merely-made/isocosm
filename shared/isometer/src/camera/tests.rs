@@ -317,7 +317,7 @@ fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
 fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
     use isometer_core::VolumeRef;
     use isometer_mesh::{BodyMesh, Volume};
-    use mesocosm_render::live_body::{LiveBody, pick_bodies};
+    use isometer_render::live_body::{LiveBody, pick_bodies};
 
     let mesh = BodyMesh::single(VolumeRef::from_tag(1), &Volume::solid([2, 2, 2], 1));
     let bodies = [LiveBody::new(&mesh, [0.0, 0.0, 0.0])];

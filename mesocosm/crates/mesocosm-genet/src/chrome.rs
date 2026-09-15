@@ -17,7 +17,7 @@
 //! `Renderer::render_vello` takes `&self`, so the chrome surfaces and the RG3
 //! frame graph share one rasterizer and use separate targets.
 
-use mesocosm_render::composite::Composite;
+use isometer_render::composite::Composite;
 use netrender::{
     ColorLoad, Compositor, ExternalTexturePlacement, OpaqueTenantInput, OpaqueTenantMetadata,
     OpaqueTenantReceipt, PresentedFrame, Renderer as NetRenderer, Scene, SurfaceKey, WgpuHandles,
@@ -168,7 +168,7 @@ impl Chrome {
         let scene = Scene::new(frame.0, frame.1);
         let metadata = OpaqueTenantMetadata::new(
             "mesocosm-section",
-            "mesocosm_lens::BrickTracer + mesocosm_genet::Section::render",
+            "isometer_lens::BrickTracer + mesocosm_genet::Section::render",
             fallback_count,
             0,
             ExternalTexturePlacement::new([0.0, 0.0, frame.0 as f32, frame.1 as f32]),

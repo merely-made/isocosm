@@ -9,11 +9,11 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_lens::{
+use isometer_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Flight, Grade,
     critter::Capsule,
 };
+use mesocosm_core::places::{Ground, Places};
 
 const WIDTH: u32 = 960;
 const HEIGHT: u32 = 540;

@@ -83,7 +83,7 @@ fn whole_body_preview_fits_deep_bodies_after_every_turn() {
 #[test]
 fn rotating_presentation_bounds_fit_beside_the_panel_and_inside_the_slab() {
     use isometer_mesh::{BodyMesh, Volume};
-    use mesocosm_render::live_body::{LiveBody, body_bounds};
+    use isometer_render::live_body::{LiveBody, body_bounds};
     let mesh = BodyMesh::single(
         mesocosm_core::VolumeRef::from_tag(251),
         &Volume::solid([4, 6, 40], 3),

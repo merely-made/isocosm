@@ -17,8 +17,8 @@
 //! Mesocosm's, not the lens's (isometer family plan, step 4). The lens keeps
 //! [`BiomeMaps`], which is the renderer's input type.
 
+use isometer_lens::maps::BiomeMaps;
 use mesocosm_core::{Places, Rng};
-use mesocosm_lens::maps::BiomeMaps;
 
 /// One biome, derived from a place.
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]

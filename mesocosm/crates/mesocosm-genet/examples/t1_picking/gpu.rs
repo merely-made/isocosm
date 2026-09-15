@@ -9,8 +9,8 @@
 
 use std::sync::Arc;
 
-use mesocosm_lens::{BrickTracer, FRAME_FORMAT};
-use mesocosm_render::composite::Composite;
+use isometer_lens::{BrickTracer, FRAME_FORMAT};
+use isometer_render::composite::Composite;
 use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, NetrenderOptions,
     PresentedFrame, Scene, WgpuHandles, create_netrender_instance,

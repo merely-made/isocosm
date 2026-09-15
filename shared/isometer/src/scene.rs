@@ -14,7 +14,7 @@
 //! graded. What a host still decides for itself it supplies through
 //! [`SceneHost`].
 
-use mesocosm_lens::{
+use isometer_lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
     CritterPose, FRAME_FORMAT, Grade, TerrainAppearance,
 };
@@ -249,7 +249,7 @@ impl Scene {
         origin: [f32; 3],
         direction: [f32; 3],
         far: f32,
-    ) -> Result<Option<mesocosm_lens::BrickRayHit>, mesocosm_lens::BrickRayError> {
+    ) -> Result<Option<isometer_lens::BrickRayHit>, isometer_lens::BrickRayError> {
         match &self.map {
             Some(map) => map.trace_ray(origin, direction, far),
             None => Ok(None),

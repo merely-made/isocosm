@@ -101,9 +101,9 @@ impl Section {
         &mut self,
         subject: OrganismId,
         radians: f32,
-    ) -> Result<(), mesocosm_render::live_body::LiveBodyError> {
+    ) -> Result<(), isometer_render::live_body::LiveBodyError> {
         if !radians.is_finite() {
-            return Err(mesocosm_render::live_body::LiveBodyError::InvalidBody);
+            return Err(isometer_render::live_body::LiveBodyError::InvalidBody);
         }
         if self.host_bodies.set_yaw(subject, radians) {
             self.invalidate_query();

@@ -24,15 +24,15 @@ fn main() {
 mod native {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
+    use isometer_lens::{
+        BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
+    };
     use isometer_mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
     use mesocosm_core::{
         BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
         snapshot, world::organism_extent,
     };
     use mesocosm_genet::maps;
-    use mesocosm_lens::{
-        BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
-    };
     use serde::Serialize;
 
     const SIDE: u32 = 256;
@@ -312,12 +312,12 @@ mod native {
         changed
     }
 
-    fn sample_ground(maps: &mesocosm_lens::maps::BiomeMaps, x: f32, z: f32) -> f32 {
+    fn sample_ground(maps: &isometer_lens::maps::BiomeMaps, x: f32, z: f32) -> f32 {
         let index = (z as u32 % maps.side) * maps.side + (x as u32 % maps.side);
         maps.height[index as usize] as f32
     }
 
-    fn frame_body(projected: &BodyLensProjection, maps: &mesocosm_lens::maps::BiomeMaps) -> Flight {
+    fn frame_body(projected: &BodyLensProjection, maps: &isometer_lens::maps::BiomeMaps) -> Flight {
         let centre = projected.pose.bounds_centre;
         let radius = projected.pose.bounds_radius.max(4.0);
         let mut eye = [

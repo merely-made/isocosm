@@ -5,8 +5,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use isometer_mesh::VolumeMap;
+use isometer_render::{RenderError, Renderer};
 use mesocosm_core::PartId;
-use mesocosm_render::{RenderError, Renderer};
 
 use super::bodies::{HostBodies, key};
 use super::*;
@@ -31,7 +31,7 @@ fn prepare(
     world: &World,
     volumes: &isometer_mesh::VolumeMap,
 ) {
-    let none: Vec<Vec<mesocosm_render::PartMaterial>> =
+    let none: Vec<Vec<isometer_render::PartMaterial>> =
         world.organisms.iter().map(|_| Vec::new()).collect();
     let controlled = world.controlled_id();
     let scene: Vec<_> = world

@@ -144,7 +144,7 @@ impl SceneSource for Specimen {
                 volumes: SceneVolumes::DeclaredSolid(volumes),
                 terrain: None,
                 dirty: &[],
-                grade: mesocosm_lens::Grade::retro(3),
+                grade: isometer_lens::Grade::retro(3),
                 terrain_appearance: None,
                 body_budget: 8,
                 capsules: None,

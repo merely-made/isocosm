@@ -12,9 +12,9 @@
 use super::*;
 use crate::camera::Cutaway;
 use isometer_core::VolumeRef;
+use isometer_lens::FRAME_FORMAT;
 use isometer_mesh::{BodyMesh, Volume};
-use mesocosm_lens::FRAME_FORMAT;
-use mesocosm_render::{LiveBody, LiveBodyRenderer};
+use isometer_render::{LiveBody, LiveBodyRenderer};
 
 const WIDTH: u32 = 128;
 const SLAB_DEPTH: f32 = 32.0;

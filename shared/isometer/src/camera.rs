@@ -16,8 +16,8 @@
 //! world's vertical stops presenting the axis the section exists to present,
 //! and the tracer seeds its rays on a world-vertical wall regardless.
 
-use mesocosm_lens::{SlabWall, TraceCamera};
-use mesocosm_render::ClipSlab;
+use isometer_lens::{SlabWall, TraceCamera};
+use isometer_render::ClipSlab;
 
 /// World up. Every camera keeps it; it defines the standing wall, not merely
 /// the screen basis.
@@ -95,7 +95,7 @@ impl SlabCamera {
     /// Right, up, forward — the orthonormal frame the tracer builds.
     ///
     /// Derived by the **same** construction
-    /// [`mesocosm_lens::TraceCamera::orthographic_slab`] uses, because the
+    /// [`isometer_lens::TraceCamera::orthographic_slab`] uses, because the
     /// cull window and the camera disagreeing about where the slab is would
     /// show bodies that are not drawn and drop bodies that are.
     pub fn basis(self) -> [[f32; 3]; 3] {

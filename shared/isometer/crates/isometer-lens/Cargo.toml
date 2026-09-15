@@ -1,5 +1,5 @@
 [package]
-name = "mesocosm-lens"
+name = "isometer-lens"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
@@ -15,18 +15,32 @@ resident-ground-receipt = ["dep:burn", "conatus/resident"]
 # Everything it consumes is 2D data: a heightmap, a colormap, a grade block.
 # If this earns its keep it dies into a netrender render-graph task; it never
 # grows into a second custom pipeline.
+#
+# The mere and netrender git rows are restated here at the family's own pin
+# (`cambium-rootstock` in the workspace root), and wgpu, serde and postcard in
+# full, because this workspace carries no central table. The specs below are
+# byte-identical to the ones mesocosm declares, so the feature request and the
+# revision the resolver sees do not move with the crate.
 [dependencies]
-modulus = { workspace = true }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 # Body documents and brick ground, from the family floor. The lens names no
 # product type in production code.
-isometer-core = { workspace = true }
-wgpu = { workspace = true }
+isometer-core = { path = "../isometer-core" }
+wgpu = { version = "30", default-features = false, features = [
+    "std",
+    "wgsl",
+    "dx12",
+    "vulkan",
+    "metal",
+    "gles",
+    "webgpu",
+] }
 bytemuck = { version = "1", features = ["derive"] }
 pollster = "0.4"
-serde = { workspace = true }
-postcard = { workspace = true }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+postcard = { version = "1", default-features = false, features = ["alloc"] }
 burn = { version = "0.22.0-pre.2", default-features = false, features = ["std", "wgpu"], optional = true }
-conatus = { workspace = true }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-time = "1"
@@ -37,10 +51,10 @@ png = "0.17"
 # `develop_body` and the archetype fixtures have no family equivalent, and
 # generation stays Mesocosm's (family plan §4 ruling). Production code names
 # nothing from it.
-mesocosm-core = { workspace = true }
-isometer-mesh = { workspace = true }
-mesocosm-render = { workspace = true }
-netrender = { workspace = true }
+mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }
+isometer-mesh = { path = "../isometer-mesh" }
+isometer-render = { path = "../isometer-render" }
+netrender = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
 serde_json = "1"
 winit = "0.30"
 

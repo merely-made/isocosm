@@ -6,13 +6,13 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::organism::FaunaDrive;
-use mesocosm_core::places::{PlaceId, WALKER_HEIGHT};
-use mesocosm_core::{History, Intent, Outcome, World, state_hash};
-use mesocosm_lens::{
+use isometer_lens::{
     BodyLensProjection, BodyPlacement, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, Flight, Grade,
 };
+use mesocosm_core::organism::FaunaDrive;
+use mesocosm_core::places::{PlaceId, WALKER_HEIGHT};
+use mesocosm_core::{History, Intent, Outcome, World, state_hash};
 
 use crate::burrow_scenario::{self, HUNTER_ID, PLAYER_ID};
 

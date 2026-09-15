@@ -174,7 +174,7 @@ fn depth_layers_have_distinct_origins_on_the_camera_axis_and_stable_prefixes() {
         .map(|i| i.origin.map(f32::to_bits))
         .collect();
     assert_eq!(origins.len(), 128);
-    let camera = mesocosm_render::Camera::default();
+    let camera = isometer_render::Camera::default();
     let view_axis = [
         camera.yaw.cos() * camera.pitch.cos(),
         camera.pitch.sin(),

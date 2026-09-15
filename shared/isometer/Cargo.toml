@@ -23,10 +23,12 @@ isometer-core = { path = "crates/isometer-core" }
 # The projection seam: `VolumeSource`, `VolumeMap`, `Volume`. A member of this
 # workspace since the move, beside the core.
 isometer-mesh = { path = "crates/isometer-mesh" }
-# The tracer's camera and its standing wall. One on-disk crate, one version.
-mesocosm-lens = { path = "../../mesocosm/crates/mesocosm-lens" }
-# The body renderer's world cut interval, instance draw and part queries.
-mesocosm-render = { path = "../../mesocosm/crates/mesocosm-render" }
+# The tracer's camera and its standing wall. A member of this workspace since
+# the move, beside the core, the mesh and the renderer.
+isometer-lens = { path = "crates/isometer-lens" }
+# The body renderer's world cut interval, instance draw and part queries. A
+# member of this workspace since the move, beside the core and the mesh.
+isometer-render = { path = "crates/isometer-render" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
 cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f750ec121cd603aca5e7fc2c73dc7fa" }

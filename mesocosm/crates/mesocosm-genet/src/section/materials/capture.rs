@@ -5,8 +5,8 @@
 
 use crate::section::{CameraMode, bodies::clip_from_world};
 use isometer_mesh::{LiveBodyProjector, VolumeMap};
+use isometer_render::{LiveBody, LiveBodyRenderer, Renderer};
 use mesocosm_core::{Founding, OrganismId, World};
-use mesocosm_render::{LiveBody, LiveBodyRenderer, Renderer};
 
 #[path = "family.rs"]
 mod family;
@@ -28,7 +28,7 @@ impl Capture {
     fn with_volumes(volumes: VolumeMap) -> Option<Self> {
         let host = match Renderer::headless(512, 512) {
             Ok(host) => host,
-            Err(mesocosm_render::RenderError::NoAdapter) => {
+            Err(isometer_render::RenderError::NoAdapter) => {
                 eprintln!("no adapter; skipping material pixel receipt");
                 return None;
             },

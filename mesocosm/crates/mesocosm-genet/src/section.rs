@@ -63,10 +63,10 @@ pub use isometer::SlabWindow;
 use isometer::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
 };
+use isometer_lens::{BrickMap, CritterPose, Grade};
+use isometer_render::composite::Composite;
 use mesocosm_core::World;
 use mesocosm_core::places::Ground;
-use mesocosm_lens::{BrickMap, CritterPose, Grade};
-use mesocosm_render::composite::Composite;
 
 /// The G2 slab: section depth and the palette depth of the retro grade, plus
 /// the half-height Mark ruled on 2026-08-29. Kept as defaults, not as constants
@@ -116,7 +116,7 @@ pub struct Section {
     /// The shared join. Everything device-side lives in here.
     scene: Scene,
     grade: Grade,
-    terrain_appearance: Option<mesocosm_lens::TerrainAppearance>,
+    terrain_appearance: Option<isometer_lens::TerrainAppearance>,
     width: u32,
     height: u32,
     /// How much world this section frames. Presentation, so it lives beside the
@@ -231,7 +231,7 @@ impl Section {
     /// Most recent Section encode's terrain work. None means terrain was
     /// skipped or the encode failed, never a retained prior terrain receipt.
     /// Encoding counters do not assert queue completion or visible pixels.
-    pub fn terrain_diagnostics(&self) -> Option<mesocosm_lens::BrickDiagnostics> {
+    pub fn terrain_diagnostics(&self) -> Option<isometer_lens::BrickDiagnostics> {
         self.scene.terrain_diagnostics()
     }
 

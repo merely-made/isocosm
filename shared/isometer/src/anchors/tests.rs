@@ -49,7 +49,7 @@ fn largest_meshed_face_follows_part_and_continuous_body_pose() {
     assert!((a.extent[1] - 12.0).abs() < 0.0001);
     let ray = [0, 1, 2].map(|i| a.centre[i] + a.normal[i] * 5.0);
     let hit =
-        mesocosm_render::live_body::pick_bodies(&[body], ray, a.normal.map(|v| -v), 10.0, None)
+        isometer_render::live_body::pick_bodies(&[body], ray, a.normal.map(|v| -v), 10.0, None)
             .unwrap()
             .unwrap();
     near(hit.point, a.centre);
