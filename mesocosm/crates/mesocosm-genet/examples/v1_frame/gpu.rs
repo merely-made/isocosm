@@ -6,9 +6,9 @@
 
 use std::sync::Arc;
 
+use mesocosm_genet::maps;
 use mesocosm_lens::{
     CritterPose, FRAME_FORMAT, Flight, FrameInput, Grade, Lens, LensScene, MapRevision, critter,
-    maps,
 };
 use mesocosm_render::composite::Composite;
 use netrender::{

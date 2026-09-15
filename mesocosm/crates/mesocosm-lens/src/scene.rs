@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn a_scene_round_trips_as_the_same_projection() {
-        let maps = maps::synthesize(41, 32);
+        let maps = maps::probe(41, 32);
         let scene = LensScene {
             grade: Grade::retro(maps.palette.len() as u32),
             maps,

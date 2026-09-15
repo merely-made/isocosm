@@ -12,7 +12,7 @@
 //! than a renderer sculpt.
 //!
 //! ```text
-//! cargo run -p mesocosm-lens --example menagerie -- <out_dir>
+//! cargo run -p mesocosm-genet --example menagerie -- <out_dir>
 //! ```
 
 use mesocosm_core::{
@@ -20,7 +20,8 @@ use mesocosm_core::{
     axis::{archetype, catalogue},
     develop_body,
 };
-use mesocosm_lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens, maps};
+use mesocosm_genet::maps;
+use mesocosm_lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens};
 
 fn palette() -> PartPalette {
     PartPalette {

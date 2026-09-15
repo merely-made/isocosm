@@ -28,8 +28,9 @@ mod native {
         BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
         snapshot, world::organism_extent,
     };
+    use mesocosm_genet::maps;
     use mesocosm_lens::{
-        BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision, maps,
+        BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
     };
     use mesocosm_mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
     use serde::Serialize;

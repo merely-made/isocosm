@@ -529,3 +529,19 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   v2_projection panic on world-fixture assertions identically before and
   after the move (positive control run in place), the same drift risk 1
   records for structure-cli; not chased.
+- **2026-09-14, step 4 done (run ahead of steps 2 and 3, which wait on
+  another session's live edits in mesocosm-genet's section files).** The
+  probe biome synthesiser left the lens for `mesocosm-genet/src/maps.rs`
+  (168 lines) with its four tests and the three examples that call it
+  (flyover, lope, menagerie, by rename); `BiomeMaps`, the renderer's input
+  type, stays at `mesocosm_lens::maps::BiomeMaps` so no consumer moved a
+  line, and the lens's five in-crate test call sites use a 55-line
+  test-only `maps::probe` fixture instead of a second copy of the
+  generator. `tracer/counters.rs` needed nothing: it is a single
+  `#[cfg(test)]` function using the same `Places::grown` fixture as four
+  other lens test modules, and the done condition exempts tests. No
+  production `Places` or `Rng` site remains in mesocosm-lens; its
+  mesocosm-core dependency stays for the types step 6 moves. Green:
+  mesocosm workspace check, lens 56 single-threaded, genet 154, both
+  example sets build, isometer 28, paredros check, root check with both
+  locks byte-identical.

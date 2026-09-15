@@ -7,7 +7,7 @@
 //! G4's headed judgment harness: the burrow run, watched from inside.
 //!
 //! ```text
-//! cargo run -p mesocosm-lens --example burrow_watch --release
+//! cargo run -p mesocosm-genet --example burrow_watch --release
 //! ```
 //!
 //! Every other G4 receipt measures the run. This one puts a person in

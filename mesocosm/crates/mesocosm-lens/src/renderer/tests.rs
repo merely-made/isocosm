@@ -23,7 +23,7 @@ fn a_steady_frame_has_no_resource_or_upload_churn() {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
-    let maps = maps::synthesize(17, 64);
+    let maps = maps::probe(17, 64);
     let flight = flight();
     let grade = Grade::retro(maps.palette.len() as u32);
     let input = FrameInput::new(&maps, MapRevision(1), &flight, &grade);
@@ -50,7 +50,7 @@ fn camera_and_dirty_region_updates_stay_narrow() {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
-    let mut maps = maps::synthesize(23, 64);
+    let mut maps = maps::probe(23, 64);
     let grade = Grade::clay();
     let first_flight = flight();
     lens.capture(FrameInput::new(
@@ -120,7 +120,7 @@ fn resize_rebuilds_only_size_dependent_resources() {
         eprintln!("no adapter; skipping retained lens receipt");
         return;
     };
-    let maps = maps::synthesize(31, 64);
+    let maps = maps::probe(31, 64);
     let flight = flight();
     let grade = Grade::clay();
     lens.capture(FrameInput::new(&maps, MapRevision(1), &flight, &grade))
@@ -143,7 +143,7 @@ fn oversized_bodies_are_refused_instead_of_truncated() {
         eprintln!("no adapter; skipping capsule admission receipt");
         return;
     };
-    let maps = maps::synthesize(37, 64);
+    let maps = maps::probe(37, 64);
     let flight = flight();
     let grade = Grade::clay();
     let capsule = crate::critter::Capsule {

@@ -9,10 +9,11 @@
 //! does it read as an animal, not a blob.
 //!
 //! ```text
-//! cargo run -p mesocosm-lens --example lope -- <out_dir>
+//! cargo run -p mesocosm-genet --example lope -- <out_dir>
 //! ```
 
-use mesocosm_lens::{CritterPose, Flight, Grade, Lens, critter, maps};
+use mesocosm_genet::maps;
+use mesocosm_lens::{CritterPose, Flight, Grade, Lens, critter};
 
 fn write_png(path: &std::path::Path, width: u32, height: u32, pixels: &[u8]) {
     if let Some(parent) = path.parent() {

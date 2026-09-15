@@ -44,6 +44,7 @@ pub mod fixture;
 pub mod generation_content;
 pub mod hud;
 pub mod input;
+pub mod maps;
 pub mod played;
 pub mod review;
 pub mod section;
