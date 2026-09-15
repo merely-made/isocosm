@@ -192,6 +192,14 @@ with the family's receipts unchanged; then the board.
 - No producer-side pixel scaling (I3) and no camera presets (I5).
 - The bake's four facings versus the scene's continuous yaw: the recipe's
   `Clip` vocabulary is reserved but empty.
+- Found by B1, 2026-09-15: `Ground` has no public material-at-voxel
+  accessor, so a consumer re-derives the brick and local index by hand;
+  a `material(&self, at)` beside `solid` would retire that copy. The
+  void is implicit: `Terrain::surface` says "nothing here" by returning
+  a y below zero so the growth range is empty; an `Option` or a stated
+  line on the trait would make it part of the seam. `MAX_MATERIAL` (core,
+  63) and `MAX_TERRAIN_MATERIALS` (lens, 64) are one bound counted twice
+  with no compile-time link.
 
 ## 7. Findings
 
@@ -260,3 +268,17 @@ with the family's receipts unchanged; then the board.
   broken six exhaustive literals in the products; B1 binds it from the
   tile-kind mapping. 35 core, 58 lens, 46 facade tests. All six isometer
   additions are now on main; the board lanes B1 to B5 follow.
+- **2026-09-15, B1 landed.** `isometry_views::MapTerrain` reads a
+  `MapDocument` as isometer-core `Terrain`: map `(col, row)` is terrain
+  `(x, z)` centred on the origin with no axis flip, one voxel per height
+  unit, sea level at -1 so every painted cell is dry, and an off-map or
+  empty column at -2 so `grow` lays nothing there. Material is the tile
+  kind plus one; `terrain_palette` reads the kind colours from the one
+  table (`theme/kinds.rs`) that now generates the `.tile-<kind>` rules at
+  their old cascade positions, and a test parses the hex back out of
+  `board_css` so a hand-edited rule fails. Props are counted, not grown.
+  isometer-core and isometer-lens are root workspace path dependencies;
+  the lens brings wgpu unconditionally, which B2 needs anyway. Noticed
+  and left alone: `overmap/atlas_terrain.rs` carries a second kind-to-
+  colour table for the overmap swatch, a drift risk for a later pass.
+  80 views tests, 368 workspace tests with all features.
