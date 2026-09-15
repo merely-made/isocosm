@@ -281,6 +281,8 @@ pub fn run_inputs(
             },
             logic: view::root as Logic,
             sheet: view::SHEET.into(),
+            fonts: Vec::new(),
+            images: Vec::new(),
         },
         hooks,
     )?;

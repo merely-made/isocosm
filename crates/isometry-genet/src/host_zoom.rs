@@ -39,6 +39,8 @@ fn board(window: (f32, f32), fit: bool) -> BoardHarness {
             state: ui,
             logic: board_root as Logic,
             sheet: board_css(),
+            fonts: Vec::new(),
+            images: Vec::new(),
         },
         hooks,
         HostOptions {

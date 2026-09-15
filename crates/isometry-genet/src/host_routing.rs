@@ -50,6 +50,8 @@ fn board() -> BoardHarness {
             state: ui,
             logic: board_root as Logic,
             sheet: board_css(),
+            fonts: Vec::new(),
+            images: Vec::new(),
         },
         hooks,
     );

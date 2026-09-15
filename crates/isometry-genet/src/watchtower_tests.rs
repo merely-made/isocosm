@@ -173,6 +173,8 @@ fn watchtower() -> (WatchtowerHarness, Rc<RefCell<App>>) {
             state: ui,
             logic: board_root as Logic,
             sheet,
+            fonts: Vec::new(),
+            images: Vec::new(),
         },
         hooks::hooks(&app),
     );

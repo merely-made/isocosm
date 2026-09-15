@@ -337,6 +337,8 @@ pub fn run() -> i32 {
             state,
             logic: view::root as view::Logic,
             sheet: view::SHEET.into(),
+            fonts: Vec::new(),
+            images: Vec::new(),
         },
         hooks,
     ) {
