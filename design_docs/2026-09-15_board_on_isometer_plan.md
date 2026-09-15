@@ -1,0 +1,200 @@
+# The board on isometer
+
+**Date:** 2026-09-15
+
+**Status:** assessment, for Mark's sign-off. No code moved, no commit.
+
+**Owns:** drawing Isometry's board through the wing's shared scene, `isometer`,
+instead of one DOM element per tile, prop and token, while keeping the locked
+2:1 isometric lens, the tileset-as-stylesheet contract, and every tile and
+token selectable as today. It is the third consumer the presentation plan's
+lane L4 and the isometer family plan both name, and the one that tests whether
+isometer is neutral rather than Mesocosm-shaped.
+
+**Does not own:** camera freedom (the locked lens stays the shipped 2D lens;
+2.5D and 3D lenses need their own plan, per CLAUDE.md), the session model,
+system plugins, campaign packs, or isomere (the wing GUI layer, designed
+separately).
+
+**Consumes:** `mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md`
+(rulings 1, 5, 6, 12 to 15; lanes L4, L5, L6), the isometer extraction and
+family plans of 2026-09-14, and the watchtower plan's board receipts.
+
+---
+
+## 1. The board as it draws today
+
+One absolutely positioned element per ground tile, exposed cliff face, prop,
+marker and token inside `.board`; the container's inline offset is the
+camera; depth is `isometry_core::depth_key` written as `z-index`
+(`crates/isometry-views/src/board.rs:1-7`). Tiles are diamonds by `clip-path`,
+faces are trapezoids by inline polygon, tokens are 24 by 36 boxes whose
+`background-image` is a sprite baked by `isometer_mesh::bake` from a voxel
+recipe and palette-swapped into `.token-<sprite>` rules
+(`crates/isometry-views/src/theme/tokens.rs`). Identity is closure-captured
+per element (`tile_el` calls `ui.click_tile(at)`, `token_el` calls
+`ui.click_token(id)`); nothing on the DOM names a tile, and two geometric
+fallbacks already exist for the pane (`UiState::tile_at_pane`,
+`token_drag_candidate`). The class vocabulary `tile-<kind>`,
+`token-<sprite>`, `prop-<kind>`, `cond-*`, `beat-*` is the modding contract
+(PROJECT_DESCRIPTION pillar 3).
+
+Receipts: 632 board elements per steady frame in the 2026-09-06 headed
+session; M4 layout median 36.8 ms; atlas interaction pointer 1.9 ms median;
+the clip receipt `board_tile_clips_its_hit_area_to_the_visible_diamond`
+defines what selectable means; 363 root tests with all features.
+
+## 2. What isometer offers, and where it is still Mesocosm-shaped
+
+Neutral today: `SlabCamera` (free forward, world up fixed), `Cutaway`,
+`SceneBody` with `Pose` and continuous yaw, `SceneVolumes::{Voxels,
+DeclaredSolid}`, the glyph batch on the shared depth, `pick_ndc`,
+`presentation_bounds`, `part_bounds`, `capture`, `SceneSource` and
+`SceneProducer` with the sRGB straight-alpha contract, `SubjectKey(u64)`.
+
+Assumptions the board runs into, each with the smallest addition that
+removes it:
+
+| Assumption in isometer | Where | Addition |
+| --- | --- | --- |
+| Terrain must be a `BrickMap`; `HostTerrain` takes a whole map and `GroundTerrain` a `Ground` | `scene/terrain.rs`, `lens/bricks.rs` | None for structure: implement isometer-core's `Terrain` trait over the height field and grow a `Ground`, so the tracer, depth join and cutaway work unchanged (the peer's route). Extent becomes a square bound; the host offsets. |
+| Terrain materials are soil, rock and unknown, hard-coded in the tracer shader | `isometer-lens/src/tracer.wgsl:87-97`, `TerrainAppearance` | **I1, material palette:** the trace takes a bounded material-to-colour table (u8 index, up to 64 entries) instead of three fixed slots, and `Ground::grow` takes a material sampler so a tile kind becomes a brick material. Mesocosm's two-material appearance is entry 2 and 3 of the same table; its receipts stay byte-identical by construction. |
+| Picks address bodies only; a terrain hit is an occluder with no identity | `query.rs`, `scene.rs::terrain_ray` | **I2, terrain hit:** `pick_ndc` answers `Pick::{Body(BodyPick), Terrain(TerrainHit { position, brick, normal, distance })}` and the host maps position to column, row and elevation with its own iso math. `depth_key` is retired as an ordering rule. |
+| The scene renders at the leaf's physical size; no internal resolution or nearest upscale | `producer.rs` | **I3, integer render scale:** the producer takes a render scale so the scene draws at a low internal size and the leaf presents it nearest-neighbour; the host owns the pixel grid it wants. |
+| No sprite path; tokens are meshed bodies or nothing | `bodies.rs`, `glyphs.rs` | **I4, tokens as live bodies:** `isometer_mesh` gains `Voxels` to `Volume` (the bake lane's palette-index cells become a mesh-lane volume with a material per palette entry) and a one-part `BodyDocument` builder, so a voxel recipe is drawn live under the same camera as the terrain. Ruling 6 wants live faces first; the bake stays the far and many-token tier for a later hybrid. |
+| Cutaway reaches bodies only; terrain is cut by a filtered map rebuild | `camera.rs::clip`, `bricks.rs::from_ground_filtered` | None: a focus elevation is a keep predicate over the grown Ground, rebuilt on focus change, as Mesocosm's terrarium does. Cost is one full upload per focus change; measured in B5. |
+| `SceneFrame` carries Mesocosm's capsule fallback and `dirty` brick keys | `scene.rs` | None for this lane; the board leaves capsules `None` and reports dirty bricks from `Ground::drain_dirty` after an edit. Noted under §6. |
+| The 2:1 dimetric angle is a forward vector, but nothing pins it | `camera.rs` | **I5, camera preset:** `SlabCamera::dimetric_2_1(centre, half_height, aspect, depth)` with a test that unit tile diagonals project 2:1 and an elevation step projects to the board's `elev_step` ratio. |
+
+Every addition is tested inside isometer against its existing receipts:
+Mesocosm's bench acceptance and the spatial-coverage and l9-terrain-parity
+sets must stay byte-identical, since none of them uses the new inputs.
+
+## 3. The board through the scene
+
+`crates/isometry-views` keeps the map, state, editor and session code and
+gains a scene adapter; `isometry-core` stays pure and keeps iso math and
+`depth_key` for any DOM overlay that still wants a paint order.
+
+- **Terrain adapter.** `MapDocument` (elevation grid, ground and prop layers,
+  tile kinds) implements isometer-core's `Terrain`: surface is the elevation
+  in voxel units (one voxel per `elev_step`), cavities are none, the material
+  sampler maps a cell's tile kind to a palette index and the kind name to a
+  colour through the tileset stylesheet's existing colour rules, so the
+  stylesheet still decides looks. Props that are voxel recipes become bodies;
+  props that are flat sprites stay DOM for now and are counted.
+- **Token adapter.** Each token becomes a `SceneBody` with a one-part
+  document from its recipe (I4), pose at the tile's world position with yaw
+  from its four-way facing, `SubjectKey` from `TokenId`, tint from its
+  owner. Conditions and beats stay CSS on the DOM control that ruling 14
+  keeps optional, positioned by `pixel_of` over the body's bounds.
+- **Camera.** The I5 preset, centre from the pan, `half_height` from the
+  viewport in tiles, `Cutaway::Bounds` from the map box, a focus elevation
+  as the filtered-map predicate; render scale from the board's pixel grid.
+- **Viewport.** One `custom_leaf` per board pane with a `SceneProducer` over
+  the adapter, registered exactly as Mesocosm's bench and Paredros's session
+  do; the pane's wheel and pointer handlers stay.
+- **Selection.** A pointer press resolves through the leaf to `pick_ndc`:
+  a body pick is a token, a terrain hit maps to a tile through
+  `screen_to_tile`'s inverse on the hit position, and the two existing
+  fallbacks are retired once the pick agrees with them under test. The
+  editor's nine modes and the session's local and remote branches are
+  unchanged; only how a click finds its tile changes.
+- **Overlays.** Reach, path, template, fog shroud, selection and doors are
+  the presentation plan's glyph and material channels: reach and path as
+  material tints on the terrain palette (I1 gives the slots), selection and
+  templates as glyph strokes or a tinted material until isomere owns
+  overlays. Markers and the context menu stay DOM.
+- **Switch.** The DOM board and the scene board coexist behind one flag
+  until parity, so every existing receipt can run against both.
+
+## 4. Lanes and done-conditions
+
+Isometer additions first, each a Terra lane touching `shared/isometer` only,
+with the family's receipts unchanged; then the board.
+
+- **I1 material palette.** Done when the tracer draws a 16-material fixture
+  with each material at its table colour, Mesocosm's habitat and classic
+  frames are byte-identical, and `Ground::grow` with a sampler yields the
+  same bricks as today for the soil and rock sampler.
+- **I2 terrain hit.** Done when a pick over open ground returns the brick
+  and world point under the pixel, a pick over a body still returns the
+  body, a pick through a ridge returns the ridge, and the existing pick
+  receipts pass.
+- **I3 integer render scale.** Done when a scene requested at scale 4
+  produces a texture a quarter the leaf's size that the leaf presents
+  nearest-neighbour with no interpolation, and scale 1 is byte-identical to
+  today.
+- **I4 tokens as live bodies.** Done when a bake-lane `Voxels` becomes a
+  mesh-lane `Volume` with one material per palette entry, a one-part body
+  from it draws under the scene camera, and its baked sprite and its live
+  render agree on silhouette coverage within the bake's existing tolerance.
+- **I5 camera preset.** Done when unit tile diagonals project 2:1 and an
+  elevation step projects to `elev_step` over `tile_h` within one pixel at
+  the board's scales.
+- **B1 terrain adapter (Isometry).** Done when the watchtower map grows a
+  Ground whose surface matches the elevation grid at every cell and whose
+  materials match the tile kinds, in a headless test.
+- **B2 scene board behind the flag.** Done when the scene board renders the
+  watchtower map and its tokens, the DOM board still renders, and the two
+  agree on which tile is under every one of a grid of probe pixels (the
+  parity gate: same tiles selectable, not same bytes, since the renderers
+  differ).
+- **B3 selection and interaction.** Done when every host_routing, host_zoom
+  and watchtower receipt passes on the scene board, including the clip
+  receipt, and the geometric fallbacks are retired.
+- **B4 overlays and edits.** Done when reach, path, selection, fog, doors
+  and encounter sites are visible on the scene board, an elevation edit
+  reaches the next frame through `drain_dirty`, and a focus elevation hides
+  the layers above it.
+- **B5 receipts and the switch.** Done when the scene board's frame profile
+  is recorded beside the M4 and atlas numbers on the same machine, the
+  headed session shows zero board elements emitted, and the DOM board is
+  archived with rationale or kept behind the flag by Mark's ruling.
+
+## 5. Decisions for Mark
+
+1. **Tokens live or billboarded.** The plan takes ruling 6 at its word:
+   live bodies from recipes (I4), sprites kept for a later far tier. The
+   alternative is a camera-facing image batch beside the glyph batch, cheaper
+   and closer to today's look, and it is what a hybrid would add later.
+2. **Pixel grid ownership.** Internal resolution and integer scaling move
+   from the DOM's `board_scale` to the producer's render scale (I3). The
+   GBA crispness pillar then holds inside the scene rather than in CSS.
+3. **What overlays wait for isomere.** Reach, path and selection tints can
+   land through materials now; richer overlays (range templates, facing
+   arcs, labels) are isomere's and would otherwise be built twice.
+4. **The DOM board's fate** after parity: archive, or keep as a downlevel
+   path.
+
+## 6. Improvements noticed in isometer, recorded for its owner
+
+- `Cutaway` cuts bodies only; terrain needs a whole-map rebuild per focus
+  change. A slab plane in the tracer would make the cutaway one concept.
+- `TerrainAppearance` and the tracer's material switch are a two-material
+  palette; I1 generalises it, and the `unknown` colour becomes table entry 0.
+- `HostTerrain` has no incremental path; a host that authors bricks needs
+  slot refresh, which `GroundTerrain` gets for free.
+- `SceneFrame::capsules` and `SceneHost` are Mesocosm's, marked as seams of
+  the extraction; a third consumer implements them as no-ops.
+- `always_visible` is named for Mesocosm's controlled critter; a focus
+  policy (presentation plan open decision 1) would replace it.
+- The heightfield march and chain critter sit unconsumed in isometer-lens.
+- No producer-side pixel scaling (I3) and no camera presets (I5).
+- The bake's four facings versus the scene's continuous yaw: the recipe's
+  `Clip` vocabulary is reserved but empty.
+
+## 7. Findings
+
+- The family-plan risk that the Isometry root pins an older mere is closed
+  as of 2026-09-15: root, isometer and both products share mere 876320fd and
+  genet 5ae30cad.
+- No Isometry-side document cited the L4 done condition before this plan.
+- `isometry-runtime`, which holds the earlier fixed-isometric GPU tenant,
+  is excluded from the root workspace and untouched by this plan.
+
+## Progress
+
+- **2026-09-15:** founded from three read-only assessments (the board today,
+  isometer for a third consumer, the wing GUI inventory) and the isometer
+  owner's API notes. Awaiting sign-off.
