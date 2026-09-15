@@ -48,7 +48,7 @@ impl mesquite::Product for BenchProduct {
     const LOG_PREFIX: &'static str = "bench";
 
     fn sheet(&self) -> &'static str {
-        SHEET
+        SHEET.as_str()
     }
 
     fn snapshot(&self, ctx: &Context<'_>, captures: usize, opacity: f32) -> ProbeSnapshot {
@@ -96,7 +96,8 @@ impl mesquite::Product for BenchProduct {
 
     fn opacity_sheet(&self, opacity: f32) -> Option<String> {
         Some(format!(
-            "{SHEET}\n#specimen-viewport {{ opacity:{opacity}; }}"
+            "{}\n#specimen-viewport {{ opacity:{opacity}; }}",
+            SHEET.as_str()
         ))
     }
 

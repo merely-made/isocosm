@@ -280,7 +280,7 @@ pub fn run_inputs(
                 effects: effect,
             },
             logic: view::root as Logic,
-            sheet: view::SHEET.into(),
+            sheet: view::SHEET.clone(),
             fonts: Vec::new(),
             images: Vec::new(),
         },
