@@ -156,12 +156,15 @@ fn run() -> Result<(), String> {
         }
     }
     // Same generated content admission as the native host, including its refs.
-    let pack =
-        mesocosm_mesh::ContentPack::generate(mesocosm_genet::generation_content::palette(&request))
-            .map_err(|e| format!("{e:?}"))?;
+    let pack = mesocosm_genet::generation_content::Pack::generate(
+        mesocosm_genet::generation_content::DevelopmentPalette(
+            mesocosm_genet::generation_content::palette(&request),
+        ),
+    )
+    .map_err(|e| format!("{e:?}"))?;
     let began = std::time::Instant::now();
     let prepared = request
-        .prepare(pack.palette)
+        .prepare(pack.palette.0)
         .map_err(|e| format!("{e:?}"))?;
     let draft = prepared.draft();
     println!(

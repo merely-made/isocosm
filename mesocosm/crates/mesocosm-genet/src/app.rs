@@ -94,7 +94,7 @@ pub struct Host {
     config: HostConfig,
     runtime: Runtime,
     volumes: VolumeMap,
-    content: Option<mesocosm_mesh::content::ContentPack>,
+    content: Option<crate::generation_content::Pack>,
     /// Where the section sits relative to the critter it follows. Presentation
     /// only; it never reaches an intent, so it cannot reach the trace.
     pan: Pan,
@@ -235,7 +235,11 @@ impl Host {
         let creator = config.creator_request.take().map(|request| {
             creator::Creator::new(
                 request,
-                content.as_ref().expect("generated creator content").palette,
+                content
+                    .as_ref()
+                    .expect("generated creator content")
+                    .palette
+                    .0,
                 runtime.world(),
                 config.camera,
                 config.creator_draft.clone(),

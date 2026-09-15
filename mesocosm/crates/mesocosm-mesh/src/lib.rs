@@ -51,8 +51,8 @@ use mesocosm_core::{BodyDocument, PartId, Provenance, VolumeRef, Yaw};
 
 pub use content::{
     ContentEntry, ContentError, ContentPack, MATERIAL_BODY, MATERIAL_EDGE, MATERIAL_JOINT,
-    MATERIAL_LIMB, MATERIAL_PLATE, MATERIAL_SENSOR, MAX_PACK_VOLUMES, MAX_VOLUME_VOXELS,
-    VOXEL_GRAMMAR_V1,
+    MATERIAL_LIMB, MATERIAL_PLATE, MATERIAL_SENSOR, MAX_PACK_VOLUMES, MAX_VOLUME_VOXELS, Palette,
+    Shape, VOXEL_GRAMMAR_V1,
 };
 pub use flatten::{Flattened, flatten, flatten_attributed};
 pub use greedy::{PartMesh, Quad, mesh_volume, mesh_volume_naive};

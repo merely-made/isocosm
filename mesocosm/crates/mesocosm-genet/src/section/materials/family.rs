@@ -4,9 +4,9 @@
 //! Joined family evidence: one runtime, recorded intents and admitted content.
 
 use super::Capture;
+use crate::generation_content::Pack;
 use crate::played::{BodyLayout, PlayedTrace, SceneMode};
 use mesocosm_core::{Intent, OrganismId};
-use mesocosm_mesh::content::ContentPack;
 use mesocosm_runtime::Runtime;
 
 fn apply(runtime: &mut Runtime, intent: Intent) -> mesocosm_core::Outcome {
@@ -21,7 +21,7 @@ fn apply(runtime: &mut Runtime, intent: Intent) -> mesocosm_core::Outcome {
 
 fn record_stage(
     runtime: &Runtime,
-    pack: &ContentPack,
+    pack: &Pack,
     capture: &mut Capture,
     label: &str,
     subjects: &[OrganismId],
@@ -95,9 +95,12 @@ fn record_stage(
 #[test]
 fn family_scene_replays_intake_expression_and_a_natural_descendant() {
     use mesocosm_core::{Founding, Outcome, history::Event, process::Process};
-    let pack = ContentPack::generate(Founding::SpacedRoster.palette()).unwrap();
+    let pack = Pack::generate(crate::generation_content::DevelopmentPalette(
+        Founding::SpacedRoster.palette(),
+    ))
+    .unwrap();
     let mut runtime =
-        Runtime::family_practice(7, 10, Founding::SpacedRoster, pack.palette).unwrap();
+        Runtime::family_practice(7, 10, Founding::SpacedRoster, pack.palette.0).unwrap();
     let ids = runtime.world().family_practice_ids().unwrap();
     let opening = runtime.world().family_practice_opening().unwrap();
     let original_program = runtime
@@ -252,7 +255,8 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
         "descendant",
         &[ids.parent, ids.relative, child],
     );
-    let mut replay = Runtime::family_practice(7, 10, Founding::SpacedRoster, pack.palette).unwrap();
+    let mut replay =
+        Runtime::family_practice(7, 10, Founding::SpacedRoster, pack.palette.0).unwrap();
     for intent in runtime.trace() {
         apply(&mut replay, intent.clone());
     }

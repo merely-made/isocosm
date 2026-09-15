@@ -3,7 +3,7 @@
 
 use super::*;
 
-impl ContentPack {
+impl<P: Palette + PartialEq + Clone> ContentPack<P> {
     /// Enlarges structural shapes by an integer factor in 1..=3.
     ///
     /// This transforms the supplied pack, so callers select each size from
@@ -70,10 +70,14 @@ impl ContentPack {
             entry.reference =
                 content_ref(result.version, entry.role, entry.slot, half_extent, &volume);
             entry.volume = volume;
-            *template_mut(&mut result.palette, entry.role, entry.slot) = PartTemplate {
-                volume: entry.reference,
-                half_extent,
-            };
+            result.palette.admit(
+                entry.role,
+                entry.slot,
+                Shape {
+                    volume: entry.reference,
+                    half_extent,
+                },
+            );
         }
         result.validate()?;
         Ok(result)
@@ -103,7 +107,7 @@ mod tests {
         let base = ContentPack::generate(Founding::default().palette()).unwrap();
         for size in [2, 3] {
             let enlarged = base.resized(size).unwrap();
-            let restored: ContentPack =
+            let restored: ContentPack<mesocosm_core::PartPalette> =
                 postcard::from_bytes(&postcard::to_allocvec(&enlarged).unwrap()).unwrap();
             assert_eq!(restored, enlarged);
             assert!(restored.resolve_for(enlarged.palette).is_ok());

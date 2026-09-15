@@ -562,3 +562,20 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   root check, all four locks unchanged. Note for later steps:
   mesocosm-genet carries pre-existing rustfmt drift in seven files; a
   `cargo fmt` there is not a no-op and must not ride into a family commit.
+- **2026-09-14, step 3 done.** mesocosm-mesh's `content.rs` names from
+  mesocosm-core only `Role`, `VolumeRef` and `classify`. The plan's
+  "parameters of `generate`" became a trait: `PartPalette` is a serialized
+  field of `ContentPack`, so `ContentPack<P: Palette>` with a two-method
+  mesh-local `Palette` (`admitted`, `admit`) and a `Shape` view; the impl
+  lives on a `#[serde(transparent)]` newtype `DevelopmentPalette` in
+  mesocosm-genet's `generation_content.rs` because the orphan rule forbids
+  the impl in either crate that owns a side, and `mesocosm-core` cannot
+  depend on mesh. Persisted packs, replay traces and saved specimens are
+  byte-unchanged; `generate-start` output is byte-identical before and
+  after, and the pinned sensor content address holds. Mesh's tests keep a
+  test-only impl on `PartPalette` so fixtures stay literal. Every
+  mesocosm-core item mesh still names outside tests is on step 6's list:
+  `BodyDocument`, `PartId`, `PartOrigin`, `Provenance`, `Origin`, `Role`,
+  `VolumeRef`, `Yaw`, `classify`, `wire`. Green: mesocosm check, mesh 60,
+  genet 154, runtime 44, views 46, isometer 28, paredros check, root
+  check, all four locks unchanged.

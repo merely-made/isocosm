@@ -389,7 +389,8 @@ impl Host {
             .content
             .as_ref()
             .expect("creator admits generated content")
-            .palette;
+            .palette
+            .0;
         let entered = mesocosm_runtime::Runtime::generated_start(
             &selection,
             palette,

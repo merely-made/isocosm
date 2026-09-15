@@ -20,10 +20,35 @@
 
 use std::collections::{BTreeSet, VecDeque};
 
-use mesocosm_core::{PartPalette, PartTemplate, Role, RoleShapes, VolumeRef, classify};
+use mesocosm_core::{Role, VolumeRef, classify};
 use serde::{Deserialize, Serialize};
 
 use crate::{Volume, VolumeMap};
+
+/// One admitted part shape: the envelope a product's development declares, and
+/// the content address that answers for it.
+///
+/// This is the mesh's own view of a palette slot.  A product keeps its own
+/// palette type, carrying whatever development vocabulary it has; the mesh
+/// only ever reads and rewrites these two fields.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Shape {
+    pub volume: VolumeRef,
+    pub half_extent: [i32; 3],
+}
+
+/// A product's part palette, seen as the (role, slot, shape) table generation
+/// needs and nothing else.
+///
+/// Which shapes a world admits is the product's development model; turning
+/// them into bytes is presentation.  This trait is the whole of that boundary,
+/// so no development vocabulary crosses into the mesh.
+pub trait Palette {
+    /// Every admitted slot for one role, selector zero first.
+    fn admitted(&self, role: Role) -> Vec<(u8, Shape)>;
+    /// Rewrites one admitted slot.  Only slots `admitted` reported are passed.
+    fn admit(&mut self, role: Role, slot: u8, shape: Shape);
+}
 
 /// The first admitted voxel-part grammar.
 pub const VOXEL_GRAMMAR_V1: u16 = 1;
@@ -46,12 +71,13 @@ pub const MATERIAL_EDGE: u8 = 245;
 
 /// Generated content and the palette whose templates cite it.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct ContentPack {
+pub struct ContentPack<P> {
     /// A version is part of the digest domain.  A later algorithm receives a
     /// new version rather than replacing bytes at an old address.
     pub version: u16,
-    /// The exact role/shape vocabulary a world records in its snapshot.
-    pub palette: PartPalette,
+    /// The exact role/shape vocabulary a world records in its snapshot, in
+    /// the product's own palette type.
+    pub palette: P,
     /// A vector keeps the wire unambiguous and permits a useful duplicate
     /// refusal.  Resolution builds the ordered map the mesh layer consumes.
     pub entries: Vec<ContentEntry>,
@@ -127,30 +153,36 @@ pub enum ContentError {
     },
 }
 
-impl ContentPack {
+impl<P: Palette + PartialEq> ContentPack<P> {
     /// Generates one immutable form for every admitted palette template.
     ///
     /// `base` supplies biological role and envelope facts.  The returned
     /// palette changes only `VolumeRef`s, so role classification, mass prices,
     /// attachment geometry and developmental selectors remain untouched.
-    pub fn generate(base: PartPalette) -> Result<Self, ContentError> {
+    pub fn generate(base: P) -> Result<Self, ContentError> {
         let mut palette = base;
         let mut entries = Vec::new();
 
         for role in Role::ALL {
-            let shapes = base.shapes(role);
-            for (slot, template) in templates(shapes) {
-                let volume = generate_volume(role, slot, template.half_extent)?;
+            for (slot, shape) in palette.admitted(role) {
+                let volume = generate_volume(role, slot, shape.half_extent)?;
                 let reference =
-                    content_ref(VOXEL_GRAMMAR_V1, role, slot, template.half_extent, &volume);
+                    content_ref(VOXEL_GRAMMAR_V1, role, slot, shape.half_extent, &volume);
                 entries.push(ContentEntry {
                     role,
                     slot,
-                    half_extent: template.half_extent,
+                    half_extent: shape.half_extent,
                     reference,
                     volume,
                 });
-                template_mut(&mut palette, role, slot).volume = reference;
+                palette.admit(
+                    role,
+                    slot,
+                    Shape {
+                        volume: reference,
+                        half_extent: shape.half_extent,
+                    },
+                );
             }
         }
 
@@ -175,7 +207,7 @@ impl ContentPack {
     }
 
     /// Pairs persisted content with the palette in a restored world.
-    pub fn resolve_for(&self, palette: PartPalette) -> Result<VolumeMap, ContentError> {
+    pub fn resolve_for(&self, palette: P) -> Result<VolumeMap, ContentError> {
         if self.palette != palette {
             return Err(ContentError::PaletteMismatch);
         }
@@ -257,7 +289,7 @@ impl ContentPack {
         }
 
         for role in Role::ALL {
-            for (slot, template) in templates(self.palette.shapes(role)) {
+            for (slot, shape) in self.palette.admitted(role) {
                 let Some(entry) = self
                     .entries
                     .iter()
@@ -265,22 +297,24 @@ impl ContentPack {
                 else {
                     return Err(ContentError::MissingEntry { role, slot });
                 };
-                if entry.half_extent != template.half_extent {
+                if entry.half_extent != shape.half_extent {
                     return Err(ContentError::EnvelopeMismatch {
                         role,
                         slot,
-                        expected: envelope(template.half_extent)?,
+                        expected: envelope(shape.half_extent)?,
                         found: entry.volume.size,
                     });
                 }
-                if entry.reference != template.volume {
+                if entry.reference != shape.volume {
                     return Err(ContentError::ReferenceMismatch { role, slot });
                 }
             }
         }
 
         for entry in &self.entries {
-            if !templates(self.palette.shapes(entry.role))
+            if !self
+                .palette
+                .admitted(entry.role)
                 .into_iter()
                 .any(|(slot, _)| slot == entry.slot)
             {
@@ -291,35 +325,6 @@ impl ContentPack {
             }
         }
         Ok(())
-    }
-}
-
-fn templates(shapes: RoleShapes) -> Vec<(u8, PartTemplate)> {
-    std::iter::once((0, shapes.default))
-        .chain(
-            shapes
-                .extra
-                .into_iter()
-                .enumerate()
-                .filter_map(|(index, template)| {
-                    template.map(|template| (index as u8 + 1, template))
-                }),
-        )
-        .collect()
-}
-
-fn template_mut(palette: &mut PartPalette, role: Role, slot: u8) -> &mut PartTemplate {
-    let shapes = match role {
-        Role::Mass => &mut palette.mass,
-        Role::Limb => &mut palette.limb,
-        Role::Plate => &mut palette.plate,
-        Role::Sensor => &mut palette.sensor,
-    };
-    match slot {
-        0 => &mut shapes.default,
-        _ => shapes.extra[usize::from(slot - 1)]
-            .as_mut()
-            .expect("generation only visits admitted palette slots"),
     }
 }
 

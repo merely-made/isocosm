@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::state::{Bench, Specimen};
+use crate::generation_content::Pack;
 use mesocosm_core::{
     PartId, World, state_hash,
     world::generation::{Candidate, ProportionSelection},
 };
-use mesocosm_mesh::content::ContentPack;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeSet,
@@ -32,10 +32,10 @@ pub(super) struct Comparison {
 #[serde(deny_unknown_fields)]
 pub(super) struct SavedComparison {
     pub selection: ProportionSelection,
-    pub content: ContentPack,
+    pub content: Pack,
     pub expected_hash: u64,
     #[serde(default)]
-    pub base_content: Option<ContentPack>,
+    pub base_content: Option<Pack>,
     #[serde(default = "base_size")]
     pub size: u8,
 }
@@ -63,7 +63,7 @@ impl SavedComparison {
             .content
             .resolve()
             .map_err(|e| format!("Content refused: {e:?}"))?;
-        if saved.selection.palette != saved.content.palette {
+        if saved.selection.palette != saved.content.palette.0 {
             return Err("Comparison palette does not match its content.".into());
         }
         let world = saved

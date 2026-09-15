@@ -102,7 +102,7 @@ pub fn run_inputs(
         host.content = Some(saved.content.clone());
         host.creator = Some(super::creator::Creator::new(
             saved.selection.source.request.clone(),
-            saved.content.palette,
+            saved.content.palette.0,
             host.runtime.world(),
             host.config.camera,
             host.config.creator_draft.clone(),

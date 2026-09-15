@@ -5,7 +5,8 @@
 //! Usage: cargo run --release -p mesocosm-genet --example voxel_families -- OUT_DIR [spaced|jointed|branching|axial]
 
 use mesocosm_core::{World, axis::archetype};
-use mesocosm_mesh::{content::ContentPack, mesh_body};
+use mesocosm_genet::generation_content::{DevelopmentPalette, Pack};
+use mesocosm_mesh::mesh_body;
 use mesocosm_render::{Camera, Renderer, SceneItem, kingdom_colour};
 use std::path::PathBuf;
 
@@ -20,9 +21,9 @@ fn main() {
         &std::env::args().nth(2).unwrap_or_else(|| "spaced".into()),
     )
     .expect("layout wants spaced, jointed, branching or axial");
-    let pack = ContentPack::generate(layout.founding().palette()).unwrap();
+    let pack = Pack::generate(DevelopmentPalette(layout.founding().palette())).unwrap();
     let volumes = pack.resolve().unwrap();
-    let world = World::founded_with_palette(7, 120, layout.founding(), pack.palette).unwrap();
+    let world = World::founded_with_palette(7, 120, layout.founding(), pack.palette.0).unwrap();
     std::fs::write(
         out.join("world.snapshot"),
         mesocosm_core::snapshot(&world).unwrap(),

@@ -70,7 +70,7 @@ fn generated_selection_replays_with_saved_content_and_ignores_current_start() {
     let (mut live, pack, volumes) = start(&config).unwrap();
     let expected = selection
         .request
-        .preview(pack.as_ref().unwrap().palette)
+        .preview(pack.as_ref().unwrap().palette.0)
         .unwrap();
     assert_eq!(live.world().body().unwrap(), &expected.candidates[1].body);
     for _ in 0..20 {
@@ -205,7 +205,10 @@ fn historical_recordings_keep_their_original_palette() {
 #[test]
 fn a_bad_saved_pack_is_refused_without_falling_back_to_fixtures() {
     let mut trace = crate::played::record_demo(7, 40, 10, 0);
-    let mut pack = ContentPack::generate(mesocosm_core::Founding::Roster.palette()).unwrap();
+    let mut pack = Pack::generate(crate::generation_content::DevelopmentPalette(
+        mesocosm_core::Founding::Roster.palette(),
+    ))
+    .unwrap();
     pack.version = u16::MAX;
     trace.content = Some(pack);
     let result = start(&HostConfig {
@@ -229,14 +232,20 @@ fn snapshot_and_saved_content_recover_the_same_anatomy_and_voxels() {
     let world = mesocosm_core::restore(&snapshot).unwrap();
     assert_eq!(state_hash(&world), runtime.state_hash());
     let bytes = serde_json::to_vec(&pack.unwrap()).unwrap();
-    let saved: ContentPack = serde_json::from_slice(&bytes).unwrap();
-    let restored = saved.resolve_for(world.development_palette()).unwrap();
+    let saved: Pack = serde_json::from_slice(&bytes).unwrap();
+    let restored = saved
+        .resolve_for(crate::generation_content::DevelopmentPalette(
+            world.development_palette(),
+        ))
+        .unwrap();
     assert!(
         saved
-            .resolve_for(mesocosm_core::Founding::Roster.palette())
+            .resolve_for(crate::generation_content::DevelopmentPalette(
+                mesocosm_core::Founding::Roster.palette(),
+            ))
             .is_err()
     );
-    assert_eq!(world.development_palette(), saved.palette);
+    assert_eq!(world.development_palette(), saved.palette.0);
     for line in world.lineages().all() {
         assert_eq!(
             line.recipe,

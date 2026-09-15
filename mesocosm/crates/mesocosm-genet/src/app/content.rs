@@ -3,7 +3,9 @@
 
 //! Admit immutable voxel content before founding, and restore recorded bytes.
 
-use mesocosm_mesh::{VolumeMap, content::ContentPack};
+use mesocosm_mesh::VolumeMap;
+
+use crate::generation_content::{DevelopmentPalette, Pack};
 use mesocosm_runtime::Runtime;
 
 use super::HostConfig;
@@ -63,9 +65,7 @@ fn runtime(
     result.map_err(|why| format!("founding refused: {why:?}"))
 }
 
-pub(super) fn start(
-    config: &HostConfig,
-) -> Result<(Runtime, Option<ContentPack>, VolumeMap), String> {
+pub(super) fn start(config: &HostConfig) -> Result<(Runtime, Option<Pack>, VolumeMap), String> {
     if config.creator_request.is_some()
         && (config.replay.is_some()
             || config.effective_scene() != crate::played::SceneMode::Ecology)
@@ -83,10 +83,10 @@ pub(super) fn start(
     let pack = match &config.replay {
         Some(trace) => trace.content.clone(),
         None if config.generated_content || config.effective_start().is_some() => Some(
-            ContentPack::generate(config.effective_start().map_or_else(
+            Pack::generate(DevelopmentPalette(config.effective_start().map_or_else(
                 || founding.palette(),
                 |selection| crate::generation_content::palette(&selection.request),
-            ))
+            )))
             .map_err(|why| format!("generation refused: {why:?}"))?,
         ),
         None => None,
@@ -95,7 +95,7 @@ pub(super) fn start(
         let volumes = pack
             .resolve()
             .map_err(|why| format!("pack refused: {why:?}"))?;
-        let runtime = runtime(config, founding, pack.palette)?;
+        let runtime = runtime(config, founding, pack.palette.0)?;
         Ok((runtime, Some(pack), volumes))
     } else {
         let runtime = runtime(config, founding, founding.palette())?;

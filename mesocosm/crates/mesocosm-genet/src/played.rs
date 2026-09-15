@@ -139,7 +139,7 @@ pub struct PlayedTrace {
     /// Immutable palette and voxel bytes admitted when this world was founded.
     /// Absent in existing recordings, which retain their original fixtures.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub content: Option<mesocosm_mesh::content::ContentPack>,
+    pub content: Option<crate::generation_content::Pack>,
 }
 
 /// What a run says about itself on the way out.

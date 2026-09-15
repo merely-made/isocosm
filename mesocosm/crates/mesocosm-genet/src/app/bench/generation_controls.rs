@@ -6,19 +6,19 @@ use super::{
     state::{Bench, Specimen},
     view::Child,
 };
+use crate::generation_content::Pack;
 use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
 use mesocosm_core::{
     Kingdom,
     world::generation::{Archetype, BodyPlan},
 };
-use mesocosm_mesh::content::ContentPack;
 
 pub(super) struct Controls {
     pub open: bool,
     pub seed: TextInput,
     pub mass: TextInput,
     pub size: u8,
-    pub base: Option<ContentPack>,
+    pub base: Option<Pack>,
 }
 
 impl Controls {
@@ -133,7 +133,7 @@ impl Bench {
                 self.generation.size = size;
                 let mut model = self.model.borrow_mut();
                 model.creator.request.fixed_body = None;
-                model.creator.replace_palette(pack.palette);
+                model.creator.replace_palette(pack.palette.0);
                 model.content = Some(pack);
                 model.volumes = volumes;
                 model.replaced();

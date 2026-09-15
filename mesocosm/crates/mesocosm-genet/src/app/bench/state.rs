@@ -22,7 +22,7 @@ pub(super) struct Specimen {
     pub population: Option<super::population::model::Workload>,
     pub isolated: bool,
     pub camera: CameraMode,
-    pub content: Option<mesocosm_mesh::content::ContentPack>,
+    pub content: Option<crate::generation_content::Pack>,
     pub comparison: Option<super::comparison::Comparison>,
 }
 
