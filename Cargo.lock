@@ -4285,6 +4285,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "isometer"
+version = "0.1.0"
+dependencies = [
+ "cambium-rootstock",
+ "isometer-core",
+ "isometer-lens",
+ "isometer-mesh",
+ "isometer-render",
+ "serde",
+ "wgpu",
+]
+
+[[package]]
 name = "isometer-core"
 version = "0.1.0"
 dependencies = [
@@ -4317,6 +4330,18 @@ dependencies = [
  "postcard",
  "serde",
  "wing-formats",
+]
+
+[[package]]
+name = "isometer-render"
+version = "0.0.1"
+dependencies = [
+ "bytemuck",
+ "glam 0.30.10",
+ "isometer-core",
+ "isometer-mesh",
+ "pollster",
+ "wgpu",
 ]
 
 [[package]]
@@ -4398,6 +4423,7 @@ version = "0.1.0"
 dependencies = [
  "cambium",
  "isomere",
+ "isometer",
  "isometer-core",
  "isometer-lens",
  "isometer-mesh",
@@ -4405,11 +4431,13 @@ dependencies = [
  "isometry-core",
  "isonetry",
  "muniment",
+ "pollster",
  "sceno",
  "scenomise",
  "scenotime",
  "serde_json",
  "sprigging",
+ "wgpu",
 ]
 
 [[package]]

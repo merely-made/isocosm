@@ -34,14 +34,14 @@
 //! session to this sync loop). Env hooks: `ISOMETRY_PROFILE=1` (frame timers +
 //! net trace), `ISOMETRY_CAPTURE_DIR` (one final self-capture),
 //! `ISOMETRY_CAPTURE_EVERY_FRAME=1` (continuous diagnostic self-capture),
-//! `ISOMETRY_SYNTH=1`
-//! (stress board), `ISOMETRY_NET_SELFTEST=1` (fire one end-turn after warm-up
-//! to verify the session round-trip without OS input automation),
+//! `ISOMETRY_SYNTH=1` (stress board), `ISOMETRY_NET_SELFTEST=1` (fire one
+//! end-turn after warm-up to verify the session round-trip without OS input),
 //! `ISOMETRY_OVERMAP_SELFTEST=1` (overmap capture),
 //! `ISOMETRY_OVERMAP_SOURCE_TIME_SELFTEST=1` (historical-overmap capture),
 //! `ISOMETRY_COMPENDIUM_SELFTEST=1` and `ISOMETRY_WHISPER_SELFTEST=1` (the two
-//! M3 text lanes, typed through the field and held open for a capture), and
-//! `ISOMETRY_TURNS_SELFTEST=1` (collapse the Turns section through its trigger).
+//! M3 text lanes, typed through the field and held open for a capture),
+//! `ISOMETRY_TURNS_SELFTEST=1` (collapse the Turns section through its
+//! trigger), and `ISOMETRY_SCENE_BOARD=1` (the scene board; see [`scene_board`]).
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -87,6 +87,7 @@ mod host_routing;
 mod host_zoom;
 mod net;
 mod overmap;
+mod scene_board;
 mod selection_rows;
 mod selftest;
 mod sheets;
@@ -211,6 +212,9 @@ struct App {
     /// The pane size last pushed into the view, so an unchanged frame does not
     /// rebuild the retained tree to write the same two floats.
     last_viewport: (f32, f32),
+    /// B2's scene board, built by `init` when the flag is set and `None` —
+    /// costing the board nothing at all — when it is not.
+    scene_board: Option<scene_board::SceneBoard>,
     profile: bool,
     /// Native frame receipt policy. By default it writes one final frame after
     /// armed self-tests finish; `ISOMETRY_CAPTURE_EVERY_FRAME=1` is the
@@ -501,6 +505,7 @@ impl App {
             beat_until: None,
             sheet,
             last_viewport: (0.0, 0.0),
+            scene_board: None,
             profile: std::env::var_os("ISOMETRY_PROFILE").is_some(),
             capture: capture::Capture::from_env(),
             net_intent: parse_net_intent(),

@@ -11,8 +11,8 @@ use std::collections::HashSet;
 use cambium::{
     AnyView, CommandEvent, CommandItem, CommandState, ElementView, GenetCtx, GenetElement,
     HoverEvent, HoverPhase, OverlayDismiss, OverlayRole, OverlaySurface, Placement, PointerButton,
-    PointerEvent, PointerPhase, WheelEvent, clickable, command_menu, el, lens, map_action,
-    on_hover, on_pointer, on_wheel, overlay_surface,
+    PointerEvent, PointerPhase, WheelEvent, clickable, command_menu, custom_leaf, el, lens,
+    map_action, on_hover, on_pointer, on_wheel, overlay_surface,
 };
 use isometry_core::{MapDocument, TileCoord, TileKindId, Token, depth_key, path_to};
 
@@ -156,8 +156,10 @@ mod tokens;
 use menu::context_menu_overlay;
 use tiles::{ground_tiles, prop_tiles};
 use tokens::{marker_el, token_el};
-/// The screen root the runner diffs.
-pub fn board_root(ui: &UiState) -> UiChild {
+/// Every element inside `.board`: ground, props, the two markers and the
+/// tokens, in paint order. The DOM board's whole content, lifted out of
+/// [`board_root`] so the scene board can stand in one place.
+fn board_elements(ui: &UiState) -> Vec<UiChild> {
     let mut layers: Vec<UiChild> = ground_tiles(ui);
     layers.extend(prop_tiles(ui));
     // Markers and tokens follow fog: a marker only shows on a token the
@@ -185,13 +187,62 @@ pub fn board_root(ui: &UiState) -> UiChild {
             .filter(|t| ui.token_visible(t))
             .map(|t| token_el(ui, t)),
     );
+    layers
+}
+
+/// The board pane's scene leaf: the whole board as one producer-backed image,
+/// sized to the pane the host reported.
+///
+/// The leaf is the `.board` container's only child, so the container's inline
+/// camera offset still applies — and is zero to the scene, which carries the
+/// pan in its own camera instead. The box falls back to the design pane until
+/// the host reports a viewport, so a first frame frames the board rather than
+/// collapsing to nothing.
+fn scene_leaf(ui: &UiState) -> UiChild {
+    let (w, h) = ui.viewport;
+    let (w, h) = if w > 0.0 && h > 0.0 {
+        (w, h)
+    } else {
+        (SCENE_FALLBACK.0, SCENE_FALLBACK.1)
+    };
+    Box::new(
+        custom_leaf::<UiState, ()>(crate::scene::BOARD_SCENE_LEAF_KEY, w as u32, h as u32)
+            .attr("id", "scene-board")
+            .attr("class", "scene-board")
+            .attr("role", "img")
+            .attr("aria-label", format!("Scene board: {}", ui.map.name)),
+    )
+}
+
+/// The leaf's box before the host has reported a pane, in logical px.
+const SCENE_FALLBACK: (f32, f32) = (1180.0, 820.0);
+
+/// The screen root the runner diffs.
+pub fn board_root(ui: &UiState) -> UiChild {
+    // B2: behind `ISOMETRY_SCENE_BOARD` the board pane carries one scene leaf
+    // instead of one element per tile, prop, marker and token. Everything
+    // outside the `.board` container — the side panel, the overlays, the
+    // gestures — is the same tree either way. Markers and the context menu
+    // stay DOM but are B3's to bring back over the leaf, so nothing is emitted
+    // beside it yet and the pane shows exactly what the scene drew.
+    let layers: Vec<UiChild> = if ui.scene_board {
+        vec![scene_leaf(ui)]
+    } else {
+        board_elements(ui)
+    };
     // Windowing metric: with `ISOMETRY_PROFILE` on, report how many
     // elements the viewport emits. It should stay bounded by the pane, not
     // grow with the board (see the windowing plan).
     if std::env::var_os("ISOMETRY_PROFILE").is_some() {
         eprintln!("[isometry] board elements emitted: {}", layers.len());
     }
-    let (camx, camy) = ui.camera;
+    // The scene carries the pan in its own camera, so the container that
+    // carries it for the DOM board sits at the pane's origin instead.
+    let (camx, camy) = if ui.scene_board {
+        (0.0, 0.0)
+    } else {
+        ui.camera
+    };
     let mut pane_children: Vec<UiChild> = vec![Box::new(
         el("div", layers)
             .attr("class", "board")

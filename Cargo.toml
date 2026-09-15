@@ -51,6 +51,15 @@ isometer-mesh = { path = "shared/isometer/crates/isometer-mesh" }
 # board binds its tile-kind palette through; same workspace, same path rule.
 isometer-core = { path = "shared/isometer/crates/isometer-core" }
 isometer-lens = { path = "shared/isometer/crates/isometer-lens" }
+# The wing's shared scene itself: `Scene`, `SlabCamera`, `SceneSource` and the
+# `SceneProducer` the scene board registers as a document leaf (B2). The three
+# crates above are the family floor; this is the facade over them, and taking
+# it by path follows the same rule they do.
+isometer = { path = "shared/isometer" }
+# Named only for the two `wgpu::TextureView` words in the `SceneSource`
+# signature. Backends stay the leaf binary's choice, exactly as isometer's own
+# manifest rules; the scene adapter's own receipts turn them on as dev deps.
+wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
 # The wing GUI layer: the shared panels and the keymap the control-help
 # line is derived from. Its own workspace, so it is taken by path too.
 isomere = { path = "shared/isomere" }

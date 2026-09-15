@@ -334,6 +334,13 @@ pub(crate) fn init(
     ui.spells = spells_of();
     ui.items = items_of();
     app.system = Some(system);
+    // B2's flag, read once here for the same reason every other `ISOMETRY_*`
+    // hook is: the environment is the host's to read, and the view is handed a
+    // field. With it unset nothing below is built and the DOM board stands.
+    if scene_board::enabled() {
+        ui.scene_board = true;
+        app.scene_board = Some(scene_board::SceneBoard::new(&ui));
+    }
 
     Init {
         state: ui,
@@ -521,6 +528,12 @@ pub(crate) fn hooks(app: &Rc<RefCell<App>>) -> HostHooks<UiState, Logic, UiChild
             app.sync_viewport(ctx);
             let atlas_moving = app.drive_atlas_motion(ctx);
             app.sync_overmap_leaf(ctx);
+            // After the viewport: the scene's camera is framed by the pane the
+            // two calls above just settled.
+            if let Some(mut board) = app.scene_board.take() {
+                board.sync(ctx);
+                app.scene_board = Some(board);
+            }
             let selftests_pending = app.selftests_pending();
             app.capture.arm(ctx, !selftests_pending);
             let beating = app.drive_beats(ctx);

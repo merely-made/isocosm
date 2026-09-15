@@ -9,6 +9,8 @@ mod tokens;
 
 pub(crate) use kinds::{BASE_TILE_KINDS, WATCHTOWER_TILE_KINDS, tile_kind_css};
 pub use kinds::tile_kind_colour;
+// The scene board draws the same rig these rules bake (B2).
+pub(crate) use tokens::token_recipes;
 
 /// The floor every overlay panel stacks from, above the whole board.
 ///

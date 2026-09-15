@@ -37,7 +37,11 @@ pub use projection::{
     ISOMETRY_TILE_BOARD_ADAPTER, ISOMETRY_TILE_BOARD_BACKDROP, tile_board_cells, tile_board_scene,
     tile_board_score,
 };
-pub use scene::{MapTerrain, SEA_LEVEL, VOID_SURFACE, terrain_palette};
+pub use scene::{
+    BOARD_SCENE_LEAF_KEY, BoardHandle, BoardPick, BoardProducer, BoardSource, BoardView,
+    BoardWorld, ELEVATION_PX, MapTerrain, SEA_LEVEL, TokenBodies, VOID_SURFACE, WORLD_PX,
+    owner_tint, terrain_palette, world_px, yaw_of,
+};
 pub use state::{
     ActionRow, BOARD_UNIT, CharacterCreateRequest, CompendiumTab, EditMode, FactionMoveRow,
     FogLevel, GenerationRequest, GeneratorSelectionRequest, GovernanceBindingRow,

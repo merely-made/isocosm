@@ -107,6 +107,10 @@ pub struct UiState {
     /// host has not reported it yet, in which case culling is skipped (emit
     /// everything, the safe pre-windowing behavior).
     pub viewport: (f32, f32),
+    /// `ISOMETRY_SCENE_BOARD=1`: draw the board through the isometer scene
+    /// leaf instead of one element per tile and token (B2). Host-set once at
+    /// boot; off is the shipped DOM board, unchanged.
+    pub scene_board: bool,
     pub selected: Option<TileCoord>,
     pub mode: EditMode,
     /// Palette selection painted by `PaintGround` / `PaintProp` / `Fill`.
@@ -422,6 +426,7 @@ impl UiState {
             pixel_grid: (1.0, 1.0),
             camera: (0.0, 0.0),
             viewport: (0.0, 0.0),
+            scene_board: false,
             selected: None,
             mode: EditMode::Select,
             brush: TileKindId(1),

@@ -14,6 +14,8 @@ isonetry = { workspace = true }
 isometer-mesh = { workspace = true }
 isometer-core = { workspace = true }
 isometer-lens = { workspace = true }
+isometer = { workspace = true }
+wgpu = { workspace = true }
 isomere = { workspace = true }
 muniment = { workspace = true }
 cambium = { workspace = true }
@@ -24,3 +26,15 @@ scenotime = { workspace = true }
 
 [dev-dependencies]
 serde_json = { workspace = true }
+# The parity gate is a real GPU frame, so the receipts — and only the
+# receipts — turn the backends on. The library above links none.
+wgpu = { version = "30", default-features = false, features = [
+    "std",
+    "wgsl",
+    "dx12",
+    "vulkan",
+    "metal",
+    "gles",
+    "webgpu",
+] }
+pollster = "0.4"
