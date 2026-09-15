@@ -582,8 +582,30 @@ the kernel-facing adapter, outside this slice. Flagged, not taken.
    as a free trail.
 3. **Uptake binds to the feeding glyph.** No fourth accepted kind; uptake
    milligrams drive the feeding-earned emission's size and lifetime.
+5. **Uptake is a producer's feeding (2026-09-15, from the step 5 finding
+   that the bound organism in every trial scenario is a producer that
+   never moves, feeds or carves).** The runtime adapter gains an uptake
+   kind that reads recorded flows and grants through the feeding pole; a
+   plant earns the glyph by making its living.
+6. **Form follows the acquiring act.** Ownership is journey-wide, and every
+   mark of the effect takes the rule of the pole the journey acquired it
+   through: acquired by carving, it returns as an inscription on every
+   use; by feeding, as an emission; by movement, as a trail. One glyph,
+   different divinities. The plan's per-kind gating in §2.5 is dropped.
+7. **The mass cap is 32 mg**, calibrated to the recorded 3 to 28 mg range
+   of meals and uptake, in place of the plan's 4,000.
 4. **The glyph journey receipt is regenerated as step 0** before any preset
    receipt cites a hash, with the worldgen change that moved it noted.
+
+**Superseded, 2026-09-15 (same day).** Mark ruled later that day that
+experiencing the glyph is the main thing, that a glyph is *had* rather than
+performed, and that a critter's access is **embodied** — a trait or part bears
+it. That replaces the acquiring act with the **bearer** as the journey-rule
+axis, so **§3 in full and rulings 2, 5 and 6 above are superseded** by the
+[glyph expression plan](2026-09-15_glyph_expression_plan.md). The rest of this
+plan — §§0-2 and 4-8, and rulings 1, 3, 4 and 7 — remains the record of steps 0
+to 3, which landed. The new plan says file by file what is kept, reworked or
+retired; nothing landed is discarded, and `Acquiring` becomes `Bearer`.
 
 ## Findings (2026-09-15)
 
