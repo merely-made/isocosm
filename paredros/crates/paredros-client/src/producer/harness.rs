@@ -145,6 +145,7 @@ pub fn request<'a>(gpu: &'a Gpu, needs_frame: bool) -> FrameRequest<'a> {
         aspect: SIZE[0] as f32 / SIZE[1] as f32,
         color: None,
         needs_frame,
+        render_scale: 1,
     }
 }
 

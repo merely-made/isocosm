@@ -113,6 +113,9 @@ impl SceneSource for Specimen {
         let revision = self.revision;
         Ok(SceneSignature {
             size: request.size,
+            // The producer writes this from the request either way; a source
+            // that declares it names the same number.
+            render_scale: request.render_scale,
             camera: Some(self.camera(request.aspect)),
             terrain_revision: None,
             bodies: self
@@ -126,6 +129,11 @@ impl SceneSource for Specimen {
 
     fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
         let camera = self.camera(request.aspect);
+        // A source sizes its scene from the request it is handed, which at a
+        // render scale is already the scaled size.
+        if [self.scene.width, self.scene.height] != request.size {
+            self.scene.resize(request.size[0], request.size[1]);
+        }
         let Self {
             scene,
             documents,
@@ -177,7 +185,84 @@ fn request<'a>(
         aspect: 1.0,
         color: None,
         needs_frame,
+        render_scale: 1,
     }
+}
+
+/// One request at a leaf size and a pixel grid: `size` is the leaf's, and the
+/// scene inside it draws at `size / scale`.
+fn scaled<'a>(
+    device: &'a wgpu::Device,
+    queue: &'a wgpu::Queue,
+    size: [u32; 2],
+    scale: u32,
+) -> FrameRequest<'a> {
+    FrameRequest {
+        device,
+        queue,
+        size,
+        aspect: size[0] as f32 / size[1] as f32,
+        color: None,
+        needs_frame: false,
+        render_scale: scale,
+    }
+}
+
+/// A texture's RGBA8 bytes, straight off the texture rather than through
+/// [`Scene::capture`], so nothing but the pass under test is between the two
+/// images a scale receipt compares.
+fn read_back(
+    device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    texture: &wgpu::Texture,
+    size: [u32; 2],
+) -> Vec<u8> {
+    let unpadded = size[0] * 4;
+    let align = wgpu::COPY_BYTES_PER_ROW_ALIGNMENT;
+    let padded = unpadded.div_ceil(align) * align;
+    let staging = device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("scale receipt readback"),
+        size: (padded * size[1]) as wgpu::BufferAddress,
+        usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+        mapped_at_creation: false,
+    });
+    let mut encoder = device.create_command_encoder(&Default::default());
+    encoder.copy_texture_to_buffer(
+        texture.as_image_copy(),
+        wgpu::TexelCopyBufferInfo {
+            buffer: &staging,
+            layout: wgpu::TexelCopyBufferLayout {
+                offset: 0,
+                bytes_per_row: Some(padded),
+                rows_per_image: Some(size[1]),
+            },
+        },
+        wgpu::Extent3d {
+            width: size[0],
+            height: size[1],
+            depth_or_array_layers: 1,
+        },
+    );
+    queue.submit([encoder.finish()]);
+    let slice = staging.slice(..);
+    slice.map_async(wgpu::MapMode::Read, |_| {});
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("the readback maps");
+    let mapped = slice.get_mapped_range().expect("mapped bytes");
+    let mut pixels = Vec::with_capacity((unpadded * size[1]) as usize);
+    for row in 0..size[1] {
+        let start = (row * padded) as usize;
+        pixels.extend_from_slice(&mapped[start..start + unpadded as usize]);
+    }
+    drop(mapped);
+    staging.unmap();
+    pixels
+}
+
+fn pixel(bytes: &[u8], width: u32, x: u32, y: u32) -> [u8; 4] {
+    let at = ((y * width + x) * 4) as usize;
+    bytes[at..at + 4].try_into().expect("four channels")
 }
 
 /// Plan §7 condition 5: the skip signature covers the camera, the size and
@@ -359,4 +444,153 @@ fn a_refused_request_neither_banks_nor_spends_the_last_frame() {
             .is_none()
     );
     assert_eq!(producer.renders(), 1);
+}
+
+/// I3: scale 1 is the path that shipped. No presentation pass is built, the
+/// view the leaf receives is the scene's own, and the bytes are the bytes an
+/// unscaled producer draws.
+#[test]
+fn scale_one_takes_the_unscaled_path_byte_for_byte() {
+    let Some((device, queue)) = device() else {
+        eprintln!("no adapter; skipping isometer scale-1 receipt");
+        return;
+    };
+    let mut plain = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    let view = plain
+        .render_scene(&request(&device, &queue, false))
+        .unwrap()
+        .expect("the unscaled frame");
+    assert_eq!(
+        &view,
+        plain.scene.display_view(),
+        "an unscaled frame presents the scene's own view"
+    );
+    assert!(
+        plain.display.is_none() && plain.upscale.is_none(),
+        "and builds no presentation pass"
+    );
+    let unscaled = read_back(&device, &queue, plain.scene.display_texture(), SIZE);
+
+    let mut declared = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    declared.set_render_scale(1);
+    let view = declared
+        .render_scene(&scaled(&device, &queue, SIZE, 1))
+        .unwrap()
+        .expect("the scale-1 frame");
+    assert_eq!(&view, declared.scene.display_view());
+    assert!(declared.display.is_none() && declared.upscale.is_none());
+    assert_eq!(
+        read_back(&device, &queue, declared.scene.display_texture(), SIZE),
+        unscaled,
+        "scale 1 is byte-identical to no scale at all"
+    );
+    assert_eq!(declared.signature().render_scale, 1);
+}
+
+/// I3's done-condition: a scene requested at scale 4 draws a quarter-sized
+/// image, and the leaf receives a texture of its own size in which every 4 by
+/// 4 block is one colour — the scene pixel it came from, not a blend of its
+/// neighbours.
+#[test]
+fn a_scale_four_frame_presents_each_scene_pixel_as_one_block() {
+    let Some((device, queue)) = device() else {
+        eprintln!("no adapter; skipping isometer render-scale receipt");
+        return;
+    };
+    const LEAF: [u32; 2] = [64, 64];
+    const SCALE: u32 = 4;
+    let small = [LEAF[0] / SCALE, LEAF[1] / SCALE];
+
+    let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    producer.set_render_scale(SCALE);
+    producer
+        .render_scene(&scaled(&device, &queue, LEAF, SCALE))
+        .unwrap()
+        .expect("the scaled frame");
+
+    assert_eq!(
+        [producer.scene.width, producer.scene.height],
+        small,
+        "the scene drew at the scaled size"
+    );
+    assert_eq!(producer.signature().size, small, "and declared it");
+    assert_eq!(producer.signature().render_scale, SCALE);
+    let (texture, _, size) = producer.display.as_ref().expect("a presentation target");
+    assert_eq!(*size, LEAF, "the leaf is handed its own physical size");
+
+    let scene = read_back(&device, &queue, producer.scene.display_texture(), small);
+    let presented = read_back(&device, &queue, texture, LEAF);
+    for y in 0..small[1] {
+        for x in 0..small[0] {
+            let want = pixel(&scene, small[0], x, y);
+            for dy in 0..SCALE {
+                for dx in 0..SCALE {
+                    let got = pixel(&presented, LEAF[0], x * SCALE + dx, y * SCALE + dy);
+                    assert_eq!(
+                        got, want,
+                        "block ({x}, {y}) offset ({dx}, {dy}) is not the scene pixel"
+                    );
+                }
+            }
+        }
+    }
+}
+
+/// A scale change with nothing else moved is a real frame, even where the
+/// scaled size floors to the same pixel and the signature's size cannot tell
+/// the two apart.
+#[test]
+fn a_changed_render_scale_alone_is_a_new_frame() {
+    let Some((device, queue)) = device() else {
+        eprintln!("no adapter; skipping isometer scale-change receipt");
+        return;
+    };
+    const LEAF: [u32; 2] = [4, 4];
+    let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    producer
+        .render_scene(&scaled(&device, &queue, LEAF, 4))
+        .unwrap()
+        .expect("the first scaled frame");
+    assert_eq!(producer.renders(), 1);
+    let banked = producer.signature().clone();
+    assert_eq!(banked.size, [1, 1]);
+
+    producer
+        .render_scene(&scaled(&device, &queue, LEAF, 5))
+        .unwrap()
+        .expect("a changed scale must produce a frame");
+    assert_eq!(producer.renders(), 2);
+    assert_eq!(
+        producer.signature().size,
+        banked.size,
+        "the scene size floored to the same pixel"
+    );
+    assert_eq!(producer.signature().render_scale, 5);
+}
+
+/// The skip is the skip at every scale: an unchanged scaled frame re-encodes
+/// nothing and advances no generation.
+#[test]
+fn an_unchanged_scaled_frame_still_skips() {
+    let Some((device, queue)) = device() else {
+        eprintln!("no adapter; skipping isometer scaled-skip receipt");
+        return;
+    };
+    const LEAF: [u32; 2] = [64, 64];
+    let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
+    producer
+        .render_scene(&scaled(&device, &queue, LEAF, 4))
+        .unwrap()
+        .expect("the first scaled frame");
+    assert_eq!(producer.draws, 1);
+
+    assert!(
+        producer
+            .render_scene(&scaled(&device, &queue, LEAF, 4))
+            .unwrap()
+            .is_none(),
+        "an unchanged scaled frame must produce nothing"
+    );
+    assert_eq!(producer.renders(), 1, "a skip advances no generation");
+    assert_eq!(producer.draws, 1, "and reaches no encode");
 }

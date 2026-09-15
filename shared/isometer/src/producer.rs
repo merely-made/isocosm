@@ -20,6 +20,13 @@
 //!    bridge converts alpha and performs no colour transfer, so declaring
 //!    anything else here washes the scene out.
 //!
+//! A third contract rides on the second: the leaf is handed a texture of
+//! exactly its physical size, whatever internal resolution the scene drew at.
+//! [`FrameRequest::render_scale`] is the host's pixel grid — the scene draws at
+//! the leaf's size divided by the scale, and this producer presents it back up
+//! by that scale with a nearest sampler. Scale 1 takes no extra pass at all and
+//! is the path that shipped.
+//!
 //! Everything above those two is the product's: [`SceneSource`] owns its own
 //! [`Scene`](crate::Scene), builds its own [`SceneFrame`](crate::SceneFrame)
 //! and decides what a frame's pixels are. See the extraction plan §3 and §5
@@ -76,6 +83,10 @@ impl BodySignature {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct SceneSignature {
     pub size: [u32; 2],
+    /// The host's pixel grid, 1 for an unscaled leaf. The producer writes this
+    /// from the request after the source answers, so a scale change is a real
+    /// frame whether or not a source thought to declare it.
+    pub render_scale: u32,
     /// `None` where the source has no camera yet, which never equals a frame
     /// that does.
     pub camera: Option<SlabCamera>,
@@ -88,10 +99,17 @@ pub struct SceneSignature {
 }
 
 /// One producer invocation, before a source decides whether to draw it.
+#[derive(Clone, Copy)]
 pub struct FrameRequest<'a> {
     pub device: &'a wgpu::Device,
     pub queue: &'a wgpu::Queue,
+    /// The size to draw at. On the request a host or `render` builds this is
+    /// the leaf's physical size; on the one a [`SceneSource`] is handed it is
+    /// already divided by [`Self::render_scale`], because sizing the scene is
+    /// exactly what a source uses it for. See [`Self::for_scene`].
     pub size: [u32; 2],
+    /// The leaf's aspect, taken from its physical size at both scales: the
+    /// scaled scene frames the same world, and the upscale never stretches it.
     pub aspect: f32,
     /// The leaf's resolved CSS `color`, encoded sRGB with straight alpha, or
     /// `None` where the document declared none. A host tint is its own
@@ -100,12 +118,18 @@ pub struct FrameRequest<'a> {
     /// No prior image is usable. Set after resize, suspension or a new device,
     /// and it defeats the skip.
     pub needs_frame: bool,
+    /// The integer pixel grid the host wants: the scene draws at `size /
+    /// render_scale` and the producer presents it back up nearest-neighbour
+    /// into a texture of the leaf's physical size. 1 is today's path, and
+    /// takes no presentation pass.
+    pub render_scale: u32,
 }
 
-impl FrameRequest<'_> {
+impl<'a> FrameRequest<'a> {
     /// The context as a request, with aspect taken from the physical size so a
-    /// resized leaf stretches nothing.
-    pub fn of<'a>(cx: &'a ProducerContext<'a>) -> FrameRequest<'a> {
+    /// resized leaf stretches nothing. Unscaled: the producer's own
+    /// [`SceneProducer::set_render_scale`] is what puts a grid on it.
+    pub fn of(cx: &'a ProducerContext<'a>) -> FrameRequest<'a> {
         let size = cx.frame.physical_size;
         FrameRequest {
             device: cx.device,
@@ -114,6 +138,24 @@ impl FrameRequest<'_> {
             aspect: size[0] as f32 / size[1].max(1) as f32,
             color: cx.frame.appearance.color(),
             needs_frame: cx.frame.needs_frame,
+            render_scale: 1,
+        }
+    }
+
+    /// The scale, never zero.
+    pub fn scale(&self) -> u32 {
+        self.render_scale.max(1)
+    }
+
+    /// The same request at the size the scene draws: the leaf's size divided
+    /// by the scale, rounded down and never below one pixel. This is what a
+    /// [`SceneSource`] sees in `inputs` and `frame`; the aspect it keeps is
+    /// still the leaf's, so a floor that loses a row costs no framing.
+    pub fn for_scene(&self) -> FrameRequest<'a> {
+        let scale = self.scale();
+        FrameRequest {
+            size: [(self.size[0] / scale).max(1), (self.size[1] / scale).max(1)],
+            ..*self
         }
     }
 }
@@ -168,6 +210,12 @@ pub struct SceneProducer<S: SceneSource> {
     presented: Option<SlabCamera>,
     renders: u64,
     error: Option<String>,
+    /// The host's pixel grid. 1 presents the source's own view untouched.
+    render_scale: u32,
+    /// The nearest-neighbour presentation pass and the leaf-sized texture it
+    /// writes, built on the first scaled frame and never on an unscaled one.
+    upscale: Option<Upscale>,
+    display: Option<(wgpu::Texture, wgpu::TextureView, [u32; 2])>,
 }
 
 impl<S: SceneSource> SceneProducer<S> {
@@ -179,7 +227,22 @@ impl<S: SceneSource> SceneProducer<S> {
             presented: None,
             renders: 0,
             error: None,
+            render_scale: 1,
+            upscale: None,
+            display: None,
         }
+    }
+
+    /// The integer pixel grid this leaf draws on: the scene renders at the
+    /// leaf's physical size divided by the scale and is presented back up
+    /// nearest-neighbour, so the produced texture is always the leaf's own
+    /// size. Zero is read as one, and a change is a real frame.
+    pub fn set_render_scale(&mut self, scale: u32) {
+        self.render_scale = scale.max(1);
+    }
+
+    pub fn render_scale(&self) -> u32 {
+        self.render_scale
     }
 
     pub fn source(&self) -> &S {
@@ -222,11 +285,21 @@ impl<S: SceneSource> SceneProducer<S> {
         &mut self,
         request: &FrameRequest<'_>,
     ) -> Result<Option<wgpu::TextureView>, String> {
-        let current = self.source.inputs(request)?;
+        let scene = request.for_scene();
+        let mut current = self.source.inputs(&scene)?;
+        // The source declared its own inputs; the grid it drew them on is the
+        // producer's, so a host that never mentions the scale still redraws
+        // when the scale moves under it.
+        current.render_scale = request.scale();
         if !request.needs_frame && self.produced && self.signature == current {
             return Ok(None);
         }
-        let view = self.source.frame(request)?;
+        let mut view = self.source.frame(&scene)?;
+        if request.scale() > 1 {
+            if let Some(drawn) = view.clone() {
+                view = Some(self.present(request, &drawn)?);
+            }
+        }
         if view.is_some() {
             self.signature = current;
             self.produced = true;
@@ -246,11 +319,212 @@ impl<S: SceneSource> SceneProducer<S> {
         self.produced = false;
         self.presented = None;
     }
+
+    /// Blows the scene's image up by the request's scale into a texture of the
+    /// leaf's physical size, with a nearest sampler, so the leaf still gets the
+    /// exact size rootstock's contract demands and no host sampler of any
+    /// filter can soften the pixels.
+    ///
+    /// `scene` is the view the source just submitted: the scene's display twin,
+    /// encoded sRGB in an sRGB-tagged format, which this pass decodes on sample
+    /// and re-encodes on write, so the bytes that arrive are the bytes that
+    /// leave.
+    fn present(
+        &mut self,
+        request: &FrameRequest<'_>,
+        scene: &wgpu::TextureView,
+    ) -> Result<wgpu::TextureView, String> {
+        let size = [request.size[0].max(1), request.size[1].max(1)];
+        let upscale = self
+            .upscale
+            .get_or_insert_with(|| Upscale::new(request.device));
+        let display = match self.display.take() {
+            Some(display) if display.2 == size => display,
+            _ => {
+                let (texture, view) = crate::scene::target(
+                    request.device,
+                    size[0],
+                    size[1],
+                    crate::scene::CAPTURE_FORMAT,
+                    "scene presentation",
+                );
+                (texture, view, size)
+            },
+        };
+        let mut encoder = request
+            .device
+            .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                label: Some("scene presentation"),
+            });
+        upscale.draw(request.device, &mut encoder, scene, &display.1);
+        request.queue.submit([encoder.finish()]);
+        let view = display.1.clone();
+        self.display = Some(display);
+        Ok(view)
+    }
+}
+
+/// The nearest-neighbour presentation pass: one fullscreen triangle sampling
+/// the scene's image into a leaf-sized target. Deliberately its own small
+/// pipeline rather than `isometer_render::composite::Composite`, whose sampler
+/// is linear and would soften exactly the pixel edges a host asked for.
+struct Upscale {
+    pipeline: wgpu::RenderPipeline,
+    layout: wgpu::BindGroupLayout,
+    sampler: wgpu::Sampler,
+}
+
+const UPSCALE_SHADER: &str = r#"
+@group(0) @binding(0) var scene: texture_2d<f32>;
+@group(0) @binding(1) var scene_sampler: sampler;
+
+struct VsOut {
+    @builtin(position) pos: vec4<f32>,
+    @location(0) uv: vec2<f32>,
+};
+
+@vertex
+fn vs(@builtin(vertex_index) index: u32) -> VsOut {
+    // One oversized triangle: no vertex buffer and no seam down a diagonal.
+    let uv = vec2(f32((index << 1u) & 2u), f32(index & 2u));
+    var out: VsOut;
+    out.pos = vec4(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0, 0.0, 1.0);
+    out.uv = uv;
+    return out;
+}
+
+@fragment
+fn fs(in: VsOut) -> @location(0) vec4<f32> {
+    return textureSample(scene, scene_sampler, in.uv);
+}
+"#;
+
+impl Upscale {
+    fn new(device: &wgpu::Device) -> Self {
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("scene presentation"),
+            source: wgpu::ShaderSource::Wgsl(UPSCALE_SHADER.into()),
+        });
+        let layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("scene presentation"),
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::Texture {
+                        sample_type: wgpu::TextureSampleType::Float { filterable: true },
+                        view_dimension: wgpu::TextureViewDimension::D2,
+                        multisampled: false,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::FRAGMENT,
+                    ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                    count: None,
+                },
+            ],
+        });
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("scene presentation"),
+            bind_group_layouts: &[Some(&layout)],
+            immediate_size: 0,
+        });
+        let pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("scene presentation"),
+            layout: Some(&pipeline_layout),
+            vertex: wgpu::VertexState {
+                module: &shader,
+                entry_point: Some("vs"),
+                buffers: &[],
+                compilation_options: Default::default(),
+            },
+            fragment: Some(wgpu::FragmentState {
+                module: &shader,
+                entry_point: Some("fs"),
+                targets: &[Some(wgpu::ColorTargetState {
+                    // The scene's own colour, copied: no blend, no coverage
+                    // maths against whatever the target held.
+                    format: crate::scene::CAPTURE_FORMAT,
+                    blend: None,
+                    write_mask: wgpu::ColorWrites::ALL,
+                })],
+                compilation_options: Default::default(),
+            }),
+            primitive: wgpu::PrimitiveState::default(),
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState::default(),
+            multiview_mask: None,
+            cache: None,
+        });
+        let sampler = device.create_sampler(&wgpu::SamplerDescriptor {
+            label: Some("scene presentation"),
+            address_mode_u: wgpu::AddressMode::ClampToEdge,
+            address_mode_v: wgpu::AddressMode::ClampToEdge,
+            address_mode_w: wgpu::AddressMode::ClampToEdge,
+            mag_filter: wgpu::FilterMode::Nearest,
+            min_filter: wgpu::FilterMode::Nearest,
+            mipmap_filter: wgpu::MipmapFilterMode::Nearest,
+            ..Default::default()
+        });
+        Self {
+            pipeline,
+            layout,
+            sampler,
+        }
+    }
+
+    fn draw(
+        &self,
+        device: &wgpu::Device,
+        encoder: &mut wgpu::CommandEncoder,
+        scene: &wgpu::TextureView,
+        target: &wgpu::TextureView,
+    ) {
+        let bind = device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("scene presentation"),
+            layout: &self.layout,
+            entries: &[
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: wgpu::BindingResource::TextureView(scene),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: wgpu::BindingResource::Sampler(&self.sampler),
+                },
+            ],
+        });
+        let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+            label: Some("scene presentation"),
+            color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                view: target,
+                depth_slice: None,
+                resolve_target: None,
+                ops: wgpu::Operations {
+                    load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
+                    store: wgpu::StoreOp::Store,
+                },
+            })],
+            depth_stencil_attachment: None,
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
+        });
+        pass.set_pipeline(&self.pipeline);
+        pass.set_bind_group(0, &bind, &[]);
+        pass.draw(0..3, 0..1);
+    }
 }
 
 impl<S: SceneSource> TextureProducer for SceneProducer<S> {
     fn render(&mut self, cx: &ProducerContext<'_>) -> Option<ProducedTexture> {
-        match self.render_scene(&FrameRequest::of(cx)) {
+        let request = FrameRequest {
+            render_scale: self.render_scale,
+            ..FrameRequest::of(cx)
+        };
+        match self.render_scene(&request) {
             Ok(view) => {
                 self.error = None;
                 view.map(|view| ProducedTexture {
@@ -275,6 +549,9 @@ impl<S: SceneSource> TextureProducer for SceneProducer<S> {
     fn retire(&mut self) {
         self.source.retire();
         self.forget();
+        // The presentation target is this producer's own image resource.
+        self.display = None;
+        self.upscale = None;
     }
 }
 

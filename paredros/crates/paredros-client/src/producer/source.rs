@@ -236,6 +236,7 @@ impl SceneModel {
             .collect();
         Ok(SceneSignature {
             size: request.size,
+            render_scale: request.render_scale,
             camera: Some(camera),
             terrain_revision: self.terrain.then(|| game.world().ground().revision()),
             bodies,
