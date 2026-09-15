@@ -1,0 +1,1 @@
+Also carried the Paredros session's isomere dependency row (M0 of the isomere plan), swept in by the whole-file pathspec commit; shared/isomere was already tracked, so the row resolves.
