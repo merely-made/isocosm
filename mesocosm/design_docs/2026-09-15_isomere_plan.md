@@ -301,3 +301,53 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   370 tests. Newly recorded: Paredros's `acceptance-opened.png` also
   flickers over a text region near x 907 to 1024, y 148 to 297 logical,
   which a same-binary rerun flips both ways; pre-existing, not chased.
+- **2026-09-15, M4 landed in half: the assembly and Paredros.**
+  `isomere::host` is the seven `HostHooks` closures with the five things
+  all three products filled by hand filled once: producer registration
+  for viewport leaves, the mesquite lane in `after_frame` and
+  `close_request` with the deferred-close redraw, capture arming, the
+  error line resolved from the product's own scene error then the first
+  producer error among its leaves, and the frame profile line. `Product`
+  is what is left, four associated types and fifteen defaulted methods,
+  and `ScenarioLane` is the two calls every host already made on
+  `mesquite::Lane`, blanket-implemented for it so a product hands its
+  lane over as itself rather than through a forwarding newtype.
+  `Capture` is Isometry's bounded capture-directory policy with the env
+  names, filename and prefix lifted into `CaptureNames`; it writes
+  through `mesquite::write_png`, so the wing still has one PNG encoder.
+  The module is behind a `host` feature because the winit host drags
+  wgpu in and the M1 to M3 panels must stay payable by a view crate.
+  Paredros's session is the assembly plus an 85-line product impl, its
+  probe lane newtype deleted and its smoke lane an ordinary
+  `ScenarioLane`; no DOM changed and no view file was touched.
+  `cambium-genet-winit-host` does not re-export `RootView`, so isomere
+  names `cambium-rootstock` as well; a one-line upstream re-export would
+  retire that, recorded for §3. Receipts: 41 isomere tests by default and
+  49 with the host feature; Paredros check clean, 45 lib tests,
+  acceptance ok and the failure scenario exit 1, captures matching a
+  same-tree pre-change baseline except one-count single-channel pixels at
+  (1647, 595) and a newly seen (1610, 922), both flipping direction
+  between runs; Mesocosm untouched, check and release build clean, bench
+  acceptance ok with 15 of 15 captures byte-identical. Newly recorded:
+  the session's charge is wall-clock timed, so a slow frame can extend a
+  latch and move the whole run's world state, seen once in three runs.
+  Not an M4 regression, and a real fragility in that acceptance.
+- **2026-09-15, Mesocosm's main binary held for Mark.** The M4 lane took
+  before-baselines and stopped, because the move forces four rulings.
+  (1) The chrome is laid out in physical pixels and the shared host in
+  logical ones, so at this machine's scale factor of 2 every panel
+  constant is half the size it would need and the glyphs rasterise
+  differently: the captures rebase by construction, which M0's ruling
+  that captures hold does not cover. (2) Deleting `chrome.rs` deletes the
+  played receipt's whole `frame_graph` block, which is the opaque-tenant
+  envelope and has no source behind a `TextureProducer`. (3) The
+  scenario grammar's `assert text` reads the six lanes' private DOMs,
+  which the move dissolves, and the driver is hand-rolled rather than a
+  mesquite lane, so re-pointing it is arguably M6 arriving early.
+  (4) Separately and already true at HEAD, the golden played trace
+  refuses because it records trophic grammar revision 0 against this
+  build's 8, which takes the played scenario and all three camera arms
+  with it and leaves one scripted headed acceptance. Scale if it
+  proceeds: about 2,100 lines deleted against 2,400 rewritten, with the
+  hard parts already solved elsewhere (the bench proves the scene
+  producer, and meristem composes the six per-state roots into one).

@@ -84,7 +84,21 @@
 //! Isometry's message log is the journal's third consumer and its side status
 //! the status panel's.
 
+//!
+//! ## M4: the host assembly
+//!
+//! [`host`] is the seven `HostHooks` closures with the five things all three
+//! products filled by hand already filled: producer registration for viewport
+//! leaves, the mesquite scenario lane in `after_frame` and `close_request`,
+//! capture arming, the error line published from producer errors, and the
+//! frame profile line. What is left is [`host::Product`] — the product's
+//! state, its root view, its own frame work, its keymap dispatch and its
+//! actions. Behind the `host` feature, because the winit host drags wgpu in
+//! and the panels above must stay payable by a view crate.
+
 pub mod examiner;
+#[cfg(feature = "host")]
+pub mod host;
 pub mod journal;
 pub mod palette;
 pub mod sheet;

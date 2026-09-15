@@ -36,7 +36,7 @@ mod state;
 pub(super) type Context<'a> = AppCtx<'a, SessionApp, Logic, Child>;
 
 /// The session host's answers to the shared lane's questions.
-struct SessionProduct {
+pub(super) struct SessionProduct {
     /// How many accepted `GameEvent`s have already been reported. A load
     /// replaces the session, so the cursor is clamped rather than trusted.
     drained: usize,
@@ -112,37 +112,29 @@ pub(super) fn default_out_dir() -> PathBuf {
         .unwrap_or_else(|| PathBuf::from("testing/session"))
 }
 
-/// The session's scenario lane. The body is `mesquite::Lane`.
-pub(super) struct Lane(mesquite::Lane<SessionProduct>);
-
-impl Lane {
-    pub(super) fn new(
-        scenario: Option<Scenario>,
-        receipt: Option<PathBuf>,
-        final_capture: Option<PathBuf>,
-        exit_code: Rc<Cell<i32>>,
-        frames: Option<u32>,
-    ) -> Self {
-        Self(
-            mesquite::Lane::new(
-                SessionProduct { drained: 0 },
-                scenario,
-                receipt,
-                final_capture,
-                exit_code,
-            )
-            .with_frame_limit(frames),
-        )
-    }
-
-    /// Defer the native close until the last frame and the receipt are saved.
-    pub(super) fn request_close(&mut self) {
-        self.0.request_close();
-    }
-
-    pub(super) fn after_frame(&mut self, ctx: &mut Context<'_>) {
-        self.0.after_frame(ctx);
-    }
+/// The session's scenario lane.
+///
+/// M4 removed the newtype that used to stand here. It existed only to hide
+/// `SessionProduct` behind two forwarding methods, and
+/// `isomere::host::ScenarioLane` is implemented for every `mesquite::Lane`
+/// whose product matches the host's — deferring the native close until the
+/// last frame and the receipt are saved included. So the lane is handed to the
+/// assembly as itself.
+pub(super) fn lane(
+    scenario: Option<Scenario>,
+    receipt: Option<PathBuf>,
+    final_capture: Option<PathBuf>,
+    exit_code: Rc<Cell<i32>>,
+    frames: Option<u32>,
+) -> mesquite::Lane<SessionProduct> {
+    mesquite::Lane::new(
+        SessionProduct { drained: 0 },
+        scenario,
+        receipt,
+        final_capture,
+        exit_code,
+    )
+    .with_frame_limit(frames)
 }
 
 /// The scenario lane's command line, mirroring Mesocosm's bench flags.

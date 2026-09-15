@@ -349,3 +349,6 @@ mod examiner;
 mod journal;
 mod status;
 mod viewport;
+
+#[cfg(feature = "host")]
+mod host;

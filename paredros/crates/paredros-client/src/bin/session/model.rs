@@ -38,7 +38,8 @@ use std::rc::Rc;
 use std::sync::LazyLock;
 use std::time::{Duration, Instant};
 
-use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey};
+use cambium_genet_winit_host::{Key, NamedKey};
+use isomere::host::{Assembly, Ctx, HostOptions, Init, KeyPress, Product, Runner};
 use isomere::{Binding, Keymap};
 use isometer::core::PartId;
 use paredros_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
@@ -282,6 +283,90 @@ impl SessionApp {
     }
 }
 
+/// This host's residue (M4 of the isomere plan).
+///
+/// [`isomere::host::Assembly`] fills the five things every wing host filled by
+/// hand — registering the viewport producer, ticking the scenario lanes,
+/// publishing the error line, arming captures, printing the frame profile.
+/// What is left below is what is about *this* host: which key the leaf is,
+/// where its scene error comes from, the two animations a frame owes, and the
+/// keymap dispatch. The lane adapter in `probe.rs` is the same division one
+/// tier down.
+struct Session;
+
+impl Product for Session {
+    type State = SessionApp;
+    type Logic = view::Logic;
+    type View = view::Child;
+    type Producer = Rc<RefCell<SceneProducer>>;
+
+    const LOG_PREFIX: &'static str = "session";
+
+    fn viewport_keys(&self, _ctx: &Ctx<'_, Self>, keys: &mut Vec<u64>) {
+        keys.push(LEAF_KEY);
+    }
+
+    fn producer(&self, ctx: &Ctx<'_, Self>, _key: u64) -> Option<Self::Producer> {
+        Some(ctx.runner.state().scene.clone())
+    }
+
+    /// The scene's own refusal outranks a producer error, because a scene that
+    /// declined to draw knows why and the registry only knows that nothing
+    /// arrived.
+    fn product_error(&self, ctx: &Ctx<'_, Self>) -> Option<String> {
+        ctx.runner
+            .state()
+            .scene
+            .borrow()
+            .last_error()
+            .map(str::to_owned)
+    }
+
+    fn published_error(state: &SessionApp) -> Option<&str> {
+        state.published_error.as_deref()
+    }
+
+    fn publish_error(state: &mut SessionApp, error: Option<String>) {
+        state.published_error = error;
+    }
+
+    fn closing(state: &SessionApp) -> bool {
+        state.closing
+    }
+
+    fn frame(&mut self, ctx: &mut Ctx<'_, Self>) -> bool {
+        if ctx.runner.state().animating() {
+            ctx.runner.update(|state| {
+                state.tick_motion();
+                state.tick_charge();
+            });
+        }
+        if ctx.runner.state().glyphs_pending() {
+            ctx.runner.update(SessionApp::advance_glyphs);
+        }
+        ctx.runner.state().animating()
+    }
+
+    /// A dispatched intent changes the world the producer draws, so the frame
+    /// that shows it has to be asked for.
+    fn after_dispatch(&mut self, ctx: &mut Ctx<'_, Self>) {
+        if let Some(window) = ctx.window {
+            window.request_redraw();
+        }
+    }
+
+    fn key(
+        &mut self,
+        runner: &mut Runner<SessionApp, view::Logic, view::Child>,
+        press: &KeyPress,
+    ) -> bool {
+        let (key, ctrl, repeat) = (press.key.clone(), press.modifiers.ctrl, press.repeat);
+        let mut consumed = false;
+        runner.update(|state| consumed = state.key(&key, ctrl, repeat));
+        consumed
+    }
+}
+
 /// Builds the fixture world, opens the window, and returns the process code.
 pub fn run() -> i32 {
     let Some(options) = probe::options() else {
@@ -331,115 +416,35 @@ pub fn run() -> i32 {
         closing: false,
     };
     let exit = Rc::new(Cell::new(0));
-    let lane = Rc::new(RefCell::new(
+    let lanes = (
         (smoking && !options.driven).then(|| smoke::Lane::new(saves, exit.clone())),
-    ));
-    let driven = Rc::new(RefCell::new(options.driven.then(|| {
-        probe::Lane::new(
-            options.scenario,
-            options.receipt,
-            options.capture,
-            exit.clone(),
-            options.frames,
-        )
-    })));
-    let close_lane = lane.clone();
-    let after_lane = lane.clone();
-    let close_driven = driven.clone();
-    let after_driven = driven.clone();
-    let frame_driven = driven.clone();
-    let hooks: HostHooks<SessionApp, view::Logic, view::Child> = HostHooks {
-        frame: Box::new(move |ctx| {
-            if ctx.runner.state().closing {
-                *ctx.close = true;
-            }
-            if !ctx.producers.contains(LEAF_KEY) {
-                let scene = ctx.runner.state().scene.clone();
-                ctx.producers
-                    .register(LEAF_KEY, scene, &["color"])
-                    .expect("the session document owns one producer key");
-            }
-            if ctx.runner.state().animating() {
-                ctx.runner.update(|state| {
-                    state.tick_motion();
-                    state.tick_charge();
-                });
-            }
-            if ctx.runner.state().glyphs_pending() {
-                ctx.runner.update(SessionApp::advance_glyphs);
-            }
-            ctx.runner.state().animating()
-                || lane.borrow().is_some()
-                || frame_driven.borrow().is_some()
+        options.driven.then(|| {
+            probe::lane(
+                options.scenario,
+                options.receipt,
+                options.capture,
+                exit.clone(),
+                options.frames,
+            )
         }),
-        after_dispatch: Box::new(|ctx| {
-            if let Some(window) = ctx.window {
-                window.request_redraw();
-            }
-        }),
-        after_frame: Box::new(move |ctx| {
-            let error = ctx
-                .runner
-                .state()
-                .scene
-                .borrow()
-                .last_error()
-                .map(str::to_owned)
-                .or_else(|| {
-                    ctx.producers
-                        .error(LEAF_KEY)
-                        .map(|why| format!("Viewport unavailable: {why:?}"))
-                });
-            if ctx.runner.state().published_error != error {
-                ctx.runner.update(|state| state.published_error = error);
-                if let Some(window) = ctx.window {
-                    window.request_redraw();
-                }
-            }
-            if let Some(lane) = after_lane.borrow_mut().as_mut() {
-                lane.after_frame(ctx);
-            }
-            if let Some(lane) = after_driven.borrow_mut().as_mut() {
-                lane.after_frame(ctx);
-            }
-        }),
-        after_wake: Box::new(|_| {}),
-        close_request: Box::new(move |ctx, _| {
-            if let Some(lane) = close_lane.borrow_mut().as_mut() {
-                lane.refuse();
-            }
-            if let Some(lane) = close_driven.borrow_mut().as_mut() {
-                lane.request_close();
-            }
-            if let Some(window) = ctx.window {
-                window.request_redraw();
-            }
-            CloseDisposition::Exit
-        }),
-        focused_text: Box::new(|_| None),
-        key_intercept: Box::new(|runner, press| {
-            let (key, ctrl, repeat) = (press.key.clone(), press.modifiers.ctrl, press.repeat);
-            let mut consumed = false;
-            runner.update(|state| consumed = state.key(&key, ctrl, repeat));
-            consumed
-        }),
-    };
+    );
+    // The smoke lane first and the driven lane second, the order the two
+    // `after_frame` calls were written in. They are mutually exclusive anyway.
+    let host = Assembly::new(Session)
+        .with_optional_lane(lanes.0)
+        .with_optional_lane(lanes.1);
     let options = HostOptions {
-        title: "Paredros · Session".into(),
+        title: "Paredros \u{b7} Session".into(),
         initial_logical_size: options.size,
         ..Default::default()
     };
-    if let Err(why) = cambium_genet_winit_host::run(
-        options,
-        move |_, _, _| Init {
-            state,
-            logic: view::root as view::Logic,
-            sheet: view::SHEET.clone(),
-            fonts: Vec::new(),
-            images: Vec::new(),
-        },
-        hooks,
-    ) {
+    if let Err(why) = host.run(options, move |_, _, _| Init {
+        state,
+        logic: view::root as view::Logic,
+        sheet: view::SHEET.clone(),
+        fonts: Vec::new(),
+        images: Vec::new(),
+    }) {
         eprintln!("session: event loop failed: {why}");
         return 1;
     }

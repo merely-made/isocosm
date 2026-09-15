@@ -13,6 +13,14 @@ publish = false
 # the cambium family.
 [workspace]
 
+[features]
+default = []
+# M4's host assembly. Off by default: `cambium-genet-winit-host` drags wgpu,
+# netrender and winit in, and `isometry-views` / `mesocosm-views` consume this
+# crate only to emit elements. The three hosts turn it on; the view crates
+# never pay for a renderer.
+host = ["dep:cambium-genet-winit-host", "dep:cambium-rootstock", "dep:mesquite"]
+
 [dependencies]
 # The widget vocabulary the panels are written in. M0 uses none of it, but the
 # crate's whole reason to exist is the tiers above the sheet, and the family
@@ -21,6 +29,15 @@ cambium = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4c
 # Perceptual seed-to-palette derivation. The sheet's colours are `Seeds` a
 # product hand-picked plus the states tinct fills.
 tinct = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+
+# M4: the host assembly's substrate. The seven hooks, the producer registry and
+# the frame readback are the winit host's; `RootView` and the context types are
+# rootstock's, which the winit host uses privately rather than re-exports;
+# `mesquite` is the scenario lane wired into two of the seven hooks, and its
+# `write_png` is the wing's one PNG encoder. All three behind `host`.
+cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
+mesquite = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
 
 # Deliberately nothing from `shared/isometer`: isomere never names a voxel and
 # never names a scene. A viewport card holds a leaf key, not a body.

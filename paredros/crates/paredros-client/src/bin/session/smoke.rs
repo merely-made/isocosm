@@ -84,7 +84,7 @@ impl Lane {
         }
     }
 
-    pub(super) fn after_frame(&mut self, ctx: &mut Context<'_>) {
+    fn tick(&mut self, ctx: &mut Context<'_>) {
         self.frames += 1;
         self.presented += 1;
         match self.stage {
@@ -391,4 +391,18 @@ fn write_png(path: &Path, frame: &Frame) -> Result<(), String> {
         .write_image_data(&frame.rgba)
         .map_err(|error| error.to_string())?;
     writer.finish().map_err(|error| error.to_string())
+}
+
+/// The smoke lane as the shared assembly drives it (M4 of the isomere plan).
+///
+/// A close arriving before the script finished is a failure and not an exit,
+/// which is exactly what the shared lane's `request_close` means here.
+impl isomere::host::ScenarioLane<super::Session> for Lane {
+    fn after_frame(&mut self, ctx: &mut Context<'_>) {
+        self.tick(ctx);
+    }
+
+    fn request_close(&mut self) {
+        self.refuse();
+    }
 }
