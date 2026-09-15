@@ -14,4 +14,3 @@ description = "Live producer-to-consumer receipts for the games wing."
 mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
 isometry-campaign = { path = "../../crates/isometry-campaign" }
-isometry-voxel = { path = "../../crates/isometry-voxel" }

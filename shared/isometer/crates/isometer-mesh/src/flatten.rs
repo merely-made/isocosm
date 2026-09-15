@@ -12,10 +12,9 @@
 //! moving parts.
 //!
 //! Both derive from the same body document, which is the actual shared organ.
-//! An earlier note in the plan claimed Isometry's baker wanted the mesher's
-//! quads; it does not. `isometry-voxel::bake_facing` takes an occupancy grid,
-//! so this is the adapter that lane needs, and Isometry's baker requires no
-//! change.
+//! An earlier note in the plan claimed the baker wanted the mesher's quads; it
+//! does not. [`bake_facing`](crate::bake::bake_facing) takes an occupancy grid,
+//! so this is the adapter that lane needs.
 
 use isometer_core::{BodyDocument, Yaw};
 

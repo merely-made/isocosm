@@ -2,7 +2,7 @@
 /// once from [`board_css`]. `background-size: contain` plus a bottom anchor
 /// stands the sprite in the 24x36 token box with its feet at the tile.
 pub(super) fn voxel_token_css() -> String {
-    use isometry_voxel::{BakeParams, Palette, bake_facing, demo};
+    use isometer_mesh::bake::{BakeParams, Palette, bake_facing, demo};
     let p = BakeParams {
         half_w: 2,
         cube_h: 2,

@@ -23,6 +23,13 @@
 //!      └── VolumeRef ──▶ VolumeSource ┘   meshed once, reused per placement
 //! ```
 //!
+//! **The sprite half.** [`bake`] is the other projection: the same volumes
+//! rendered at the locked isometric angle into RGBA sheets, with the recipe
+//! and palette vocabulary a tileset binds through. It shares this crate's
+//! volumes and body profile rather than meshing a second copy of them, and it
+//! adds no dependency — the `.vox` importer sits behind the default-off `vox`
+//! feature.
+//!
 //! Parts are rigid and meshed individually, so a part's geometry depends only
 //! on its volume. That is what makes attachment cheap: incorporating a part
 //! adds a placement and, if the volume is new, one mesh. Nothing already on
@@ -38,12 +45,14 @@
 //! so a part that cannot be drawn is a reported failure and not an invisible
 //! critter.
 
+pub mod bake;
 pub mod content;
 pub mod flatten;
 pub mod greedy;
 pub mod live;
 pub mod profile;
 pub mod volume;
+pub mod voxel;
 
 use std::collections::BTreeMap;
 

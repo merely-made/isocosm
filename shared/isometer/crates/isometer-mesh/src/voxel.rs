@@ -8,7 +8,7 @@
 //!
 //! Voxels store a palette *index*, not a colour, so recolouring a model is a
 //! palette swap (the character-creator soul feature) rather than a repaint.
-//! Colours resolve through [`crate::Palette`] at bake time.
+//! Colours resolve through [`crate::bake::Palette`] at bake time.
 
 use serde::{Deserialize, Serialize};
 
@@ -28,7 +28,12 @@ pub struct Voxels {
 impl Voxels {
     pub fn new(dx: i32, dy: i32, dz: i32) -> Self {
         assert!(dx > 0 && dy > 0 && dz > 0, "voxel dims must be positive");
-        Voxels { dx, dy, dz, cells: vec![None; (dx * dy * dz) as usize] }
+        Voxels {
+            dx,
+            dy,
+            dz,
+            cells: vec![None; (dx * dy * dz) as usize],
+        }
     }
 
     #[inline]

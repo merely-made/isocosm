@@ -11,7 +11,7 @@ description = "Isometry's Cambium view layer: board + chrome view fns and the CS
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
 isonetry = { workspace = true }
-isometry-voxel = { workspace = true }
+isometer-mesh = { workspace = true }
 muniment = { workspace = true }
 cambium = { workspace = true }
 sceno = { workspace = true }

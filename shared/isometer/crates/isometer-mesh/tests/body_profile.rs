@@ -1,24 +1,30 @@
 //! The interchange receipt: real Mesocosm bytes become an Isometry sprite.
 //!
-//! The unit tests in `body.rs` build their own wire bytes, while this file
+//! The unit tests in `bake/body.rs` build their own wire bytes, while this file
 //! keeps a literal v0 artifact readable. It protects persisted data but cannot
 //! by itself detect a later producer change. `shared/wing-integration` feeds
 //! current Mesocosm output to this reader; update this fixture only through a
 //! deliberate schema compatibility decision.
 
-use isometry_voxel::{BakeParams, BodyError, BodyProfile, bake_facing};
+use isometer_mesh::BodyProfile;
+use isometer_mesh::bake::{BakeParams, bake_facing};
+use isometer_mesh::profile::ProfileError;
 
 /// One critter, grown by incorporation: a founding trunk plus a limb and a
 /// plate taken from two other species.
-const CRITTER: &[u8] = include_bytes!("fixtures/critter.body");
+const CRITTER: &[u8] = include_bytes!("../fixtures/critter.body");
 
 #[test]
 fn real_mesocosm_bytes_are_readable() {
-    let body = BodyProfile::read(CRITTER).expect("the fixture is a valid body profile");
+    let body = BodyProfile::from_bytes(CRITTER).expect("the fixture is a valid body profile");
 
     assert_eq!(body.species, 7, "the lineage crossed intact");
     assert_eq!(body.size, [7, 9, 7], "the flattened grid crossed intact");
-    assert_eq!(body.origin, [-2, -3, -3], "body space is signed and the origin says so");
+    assert_eq!(
+        body.origin,
+        [-2, -3, -3],
+        "body space is signed and the origin says so"
+    );
     assert_eq!(body.cells.len(), 7 * 9 * 7);
     assert_eq!(body.attribution.len(), body.cells.len());
 }
@@ -28,7 +34,7 @@ fn the_critters_history_crossed_with_it() {
     // Wave 1.4's done-condition, and the part that is easy to lose: a
     // flattened grid records materials, so without the attribution half this
     // body would arrive as anonymous geometry.
-    let body = BodyProfile::read(CRITTER).unwrap();
+    let body = BodyProfile::from_bytes(CRITTER).unwrap();
 
     assert_eq!(body.parts.len(), 3, "trunk, limb, plate");
     assert_eq!(body.incorporated_parts(), 2, "two of the three were eaten");
@@ -45,7 +51,7 @@ fn the_critters_history_crossed_with_it() {
 
 #[test]
 fn every_solid_cell_names_the_part_that_wrote_it() {
-    let body = BodyProfile::read(CRITTER).unwrap();
+    let body = BodyProfile::from_bytes(CRITTER).unwrap();
     for (index, cell) in body.cells.iter().enumerate() {
         assert_eq!(
             *cell != 0,
@@ -53,19 +59,25 @@ fn every_solid_cell_names_the_part_that_wrote_it() {
             "cell {index} disagrees about being occupied"
         );
     }
-    assert!(body.cells.iter().any(|c| *c != 0), "the fixture is not empty");
+    assert!(
+        body.cells.iter().any(|c| *c != 0),
+        "the fixture is not empty"
+    );
 }
 
 #[test]
 fn a_real_body_bakes_to_a_sprite_from_every_facing() {
     // The done-condition's other half: body document -> Isometry sprite.
-    let body = BodyProfile::read(CRITTER).unwrap();
+    let body = BodyProfile::from_bytes(CRITTER).unwrap();
     let voxels = body.voxels_by_part();
     let palette = body.origin_palette([90, 140, 60], [200, 120, 70]);
 
     for facing in 0..4 {
         let sheet = bake_facing(&voxels, &palette, facing, &BakeParams::default());
-        assert!(sheet.w > 0 && sheet.h > 0, "facing {facing} produced a sprite");
+        assert!(
+            sheet.w > 0 && sheet.h > 0,
+            "facing {facing} produced a sprite"
+        );
         assert!(
             sheet.opaque_pixels() > 0,
             "facing {facing} produced visible pixels rather than a transparent sheet"
@@ -84,7 +96,7 @@ fn the_sprite_shows_which_parts_were_taken() {
     // pixel verbatim, so counting exact RGB matches would test the shader
     // rather than the claim. Distinct-colour count is what actually says
     // "a viewer can tell these apart".
-    let body = BodyProfile::read(CRITTER).unwrap();
+    let body = BodyProfile::from_bytes(CRITTER).unwrap();
     let voxels = body.voxels_by_part();
     let own = [90, 140, 60];
     let taken = [200, 120, 70];
@@ -118,7 +130,10 @@ fn a_truncated_fixture_is_refused_rather_than_half_read() {
     // ones: a partial transfer must not produce a partial critter.
     let cut = &CRITTER[..CRITTER.len() / 2];
     assert!(
-        matches!(BodyProfile::read(cut), Err(BodyError::Malformed | BodyError::Inconsistent)),
+        matches!(
+            BodyProfile::from_bytes(cut),
+            Err(ProfileError::Malformed | ProfileError::Inconsistent)
+        ),
         "half a profile is refused"
     );
 }
@@ -128,7 +143,10 @@ fn a_version_bump_in_the_fixture_is_refused() {
     let mut bumped = CRITTER.to_vec();
     bumped[8..10].copy_from_slice(&1u16.to_le_bytes());
     assert_eq!(
-        BodyProfile::read(&bumped),
-        Err(BodyError::UnknownVersion { found: 1, expected: 0 })
+        BodyProfile::from_bytes(&bumped),
+        Err(ProfileError::UnknownVersion {
+            found: 1,
+            expected: 0
+        })
     );
 }

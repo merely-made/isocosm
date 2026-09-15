@@ -5,7 +5,7 @@ use std::sync::OnceLock;
 pub(super) fn css() -> &'static str {
     static CSS: OnceLock<String> = OnceLock::new();
     CSS.get_or_init(|| {
-        use isometry_voxel::{BakeParams, bake_facing, watchtower::tower_beast};
+        use isometer_mesh::bake::{BakeParams, bake_facing, watchtower::tower_beast};
         let (body, palette) = tower_beast();
         let params = BakeParams { half_w: 2, cube_h: 2, facings: 4, margin: 2 };
         let mut css = String::new();
@@ -16,7 +16,7 @@ pub(super) fn css() -> &'static str {
                  background-size: contain; background-position: bottom center; transform: none; }}\n"
             ));
         }
-        use isometry_voxel::watchtower::{bell, forest_tree, nest, rubble};
+        use isometer_mesh::bake::watchtower::{bell, forest_tree, nest, rubble};
         for (selector, (model, palette)) in [
             (".prop-wall, .prop-tower-wall-east, .prop-tower-wall-west", rubble()),
             (".prop-broken-bell", bell()),

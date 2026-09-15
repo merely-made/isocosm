@@ -2,12 +2,13 @@
 //! Mesocosm critter arrives in Isometry as a legible sprite.
 //!
 //! Run the committed fixture:
-//! `cargo run -p isometry-voxel --example critter_sprite -- [output.png]`
+//! `cargo run -p isometer-mesh --example critter_sprite -- [output.png]`
 //!
 //! Bake an arbitrary compatible crossing:
-//! `cargo run -p isometry-voxel --example critter_sprite -- --body critter.body --out output.png`
+//! `cargo run -p isometer-mesh --example critter_sprite -- --body critter.body --out output.png`
 
-use isometry_voxel::{BODY_SCHEMA, BakeParams, BodyProfile, bake_strip};
+use isometer_mesh::bake::{BakeParams, bake_strip};
+use isometer_mesh::{BodyProfile, PROFILE_SCHEMA};
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -42,10 +43,10 @@ fn main() {
         Some(path) => {
             supplied = std::fs::read(path).expect("body profile is readable");
             supplied.as_slice()
-        }
-        None => include_bytes!("../tests/fixtures/critter.body"),
+        },
+        None => include_bytes!("../fixtures/critter.body"),
     };
-    let body = BodyProfile::read(bytes).expect("the body profile reads");
+    let body = BodyProfile::from_bytes(bytes).expect("the body profile reads");
 
     let params = BakeParams {
         half_w: 8,
@@ -63,7 +64,7 @@ fn main() {
     if let Some(path) = receipt {
         let receipt = BakeReceipt {
             gate: "V2",
-            schema: BODY_SCHEMA,
+            schema: PROFILE_SCHEMA,
             profile_digest: format!("fnv1a64:{:016x}", fnv1a64(bytes)),
             species: body.species,
             parts: body.parts.len(),

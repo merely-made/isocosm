@@ -12,14 +12,18 @@
 //! with *stored* (uncompressed) DEFLATE blocks: no compressor needed, still a
 //! valid PNG a browser renders. Sprites are small, so size is a non-issue.
 
-use crate::bake::Sheet;
+use crate::bake::sheet::Sheet;
 
 fn crc32(bytes: &[u8]) -> u32 {
     let mut table = [0u32; 256];
     for (n, slot) in table.iter_mut().enumerate() {
         let mut c = n as u32;
         for _ in 0..8 {
-            c = if c & 1 != 0 { 0xEDB8_8320 ^ (c >> 1) } else { c >> 1 };
+            c = if c & 1 != 0 {
+                0xEDB8_8320 ^ (c >> 1)
+            } else {
+                c >> 1
+            };
         }
         *slot = c;
     }
@@ -102,8 +106,16 @@ fn base64(data: &[u8]) -> String {
             | (*c.get(2).unwrap_or(&0) as u32);
         s.push(T[((n >> 18) & 63) as usize] as char);
         s.push(T[((n >> 12) & 63) as usize] as char);
-        s.push(if c.len() > 1 { T[((n >> 6) & 63) as usize] as char } else { '=' });
-        s.push(if c.len() > 2 { T[(n & 63) as usize] as char } else { '=' });
+        s.push(if c.len() > 1 {
+            T[((n >> 6) & 63) as usize] as char
+        } else {
+            '='
+        });
+        s.push(if c.len() > 2 {
+            T[(n & 63) as usize] as char
+        } else {
+            '='
+        });
     }
     s
 }

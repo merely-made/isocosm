@@ -18,9 +18,10 @@
 //! cargo run -p isometer-mesh --example emit_profile
 //! ```
 //!
-//! then copy `fixtures/critter.body` into isometry's
-//! `crates/isometry-voxel/tests/fixtures/` only as an explicit persisted-data
-//! compatibility update. The live integration receipt remains independent.
+//! which rewrites `fixtures/critter.body` in place. That file is persisted
+//! data: the bake lane's `tests/body_profile.rs` and wing-integration both
+//! read it, so regenerate it only as an explicit compatibility update. The
+//! live integration receipt remains independent.
 
 use std::{fs, path::PathBuf};
 

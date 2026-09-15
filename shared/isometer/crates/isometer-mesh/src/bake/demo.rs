@@ -10,7 +10,7 @@
 //! something to bake before any artist opens MagicaVoxel. They are not the
 //! art direction; they are scaffolding.
 
-use crate::recipe::Palette;
+use crate::bake::recipe::Palette;
 use crate::voxel::Voxels;
 
 /// A little humanoid and its palette. Facing 0's camera-front is `-z`.

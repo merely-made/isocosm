@@ -1,7 +1,8 @@
 //! Creatures arriving from Mesocosm, and the history this campaign adds to
 //! them.
 //!
-//! A sibling of [`isometry_voxel::body`], and the other half of the same seam.
+//! A sibling of `isometer_mesh::bake`'s body projection, and the other half
+//! of the same seam.
 //! A body profile carries what a creature *looks like*; a chronicle carries
 //! what it *is and did*. Appearance goes to the voxel lane, the record comes
 //! here, and neither needs the other.

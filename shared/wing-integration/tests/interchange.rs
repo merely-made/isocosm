@@ -3,10 +3,16 @@
 //! This is intentionally a separate workspace. The tests depend on both
 //! vessels only to exercise bytes at their public boundary; neither product
 //! gains a dependency on the other.
+//!
+//! Since lane L2 merged the tabletop's voxel bake into `isometer-mesh`, the
+//! writer and the reader are one type. The receipt still stands: it is the
+//! producer's live bytes against the retained artifact, and the same bytes
+//! through the baker.
 
+use isometer_mesh::bake::{BakeParams, bake_facing};
+use isometer_mesh::profile::ProfileError;
 use isometer_mesh::{BodyProfile, Volume, VolumeMap};
 use isometry_campaign::{Arrival, ChronicleError};
-use isometry_voxel::{BakeParams, BodyError, BodyProfile as TabletopBodyProfile, bake_facing};
 use mesocosm_core::{
     Attachment, BodyDocument, Chronicle, Consequence, Deed, Origin, PartId, Provenance, SpeciesId,
     VolumeRef, Yaw,
@@ -15,7 +21,7 @@ use mesocosm_core::{
 /// The retained v0 artifact protects persisted data. The live producer test
 /// below protects the producer-reader seam when either side changes.
 const CRITTER_FIXTURE: &[u8] =
-    include_bytes!("../../../crates/isometry-voxel/tests/fixtures/critter.body");
+    include_bytes!("../../isometer/crates/isometer-mesh/fixtures/critter.body");
 
 fn grown() -> (BodyDocument, VolumeMap) {
     let mut body = BodyDocument::new(SpeciesId(7), VolumeRef::from_tag(1), 4_000, [2, 3, 2]);
@@ -80,8 +86,7 @@ fn current_body_producer_reaches_tabletop_reader_and_every_facing() {
         "the retained v0 artifact still records this producer output"
     );
 
-    let body =
-        TabletopBodyProfile::read(&bytes).expect("the tabletop reads current producer bytes");
+    let body = BodyProfile::from_bytes(&bytes).expect("the reader takes current producer bytes");
     assert_eq!(body.species, 7);
     assert_eq!(body.size, [7, 9, 7]);
     assert_eq!(body.origin, [-2, -3, -3]);
@@ -116,22 +121,25 @@ fn current_body_producer_reaches_tabletop_reader_and_every_facing() {
 fn current_body_bytes_refuse_corruption_and_an_unknown_version() {
     let bytes = live_profile_bytes();
     assert!(matches!(
-        TabletopBodyProfile::read(&bytes[..bytes.len() / 2]),
-        Err(BodyError::Malformed | BodyError::Inconsistent)
+        BodyProfile::from_bytes(&bytes[..bytes.len() / 2]),
+        Err(ProfileError::Malformed | ProfileError::Inconsistent)
     ));
 
     let mut foreign = bytes.clone();
     foreign[..8].copy_from_slice(b"NOTABODY");
     assert_eq!(
-        TabletopBodyProfile::read(&foreign),
-        Err(BodyError::NotABody)
+        BodyProfile::from_bytes(&foreign),
+        Err(ProfileError::WrongSchema {
+            found: *b"NOTABODY",
+            expected: *b"MESOBODY"
+        })
     );
 
     let mut newer = bytes;
     newer[8..10].copy_from_slice(&1u16.to_le_bytes());
     assert_eq!(
-        TabletopBodyProfile::read(&newer),
-        Err(BodyError::UnknownVersion {
+        BodyProfile::from_bytes(&newer),
+        Err(ProfileError::UnknownVersion {
             found: 1,
             expected: 0
         })

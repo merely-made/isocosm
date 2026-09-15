@@ -17,9 +17,19 @@ wing-formats = { path = "../../../wing-formats" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
 blake3 = "1.8.5"
+# MagicaVoxel ingest, behind the default-off `vox` feature: a consumer that
+# only bakes in-crate models pulls no file-format dependency.
+dot_vox = { version = "5", optional = true }
+
+[features]
+default = []
+vox = ["dep:dot_vox"]
 
 [dev-dependencies]
 # Fixtures only: `World`, `develop_body`, `Recipe`, `Soma`, `PartPalette` and
 # the archetype roster are Mesocosm's development model, which stays with
 # Mesocosm. Production code names nothing from it.
 mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }
+# The bake lane's appearance recipes round-trip as JSON, and the sprite
+# example writes a JSON receipt.
+serde_json = "1"

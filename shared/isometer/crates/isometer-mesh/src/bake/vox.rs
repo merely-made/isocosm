@@ -12,7 +12,7 @@
 //! becomes our height. The model's 256-colour palette rides along, so a
 //! recolour is still just a [`Palette`] swap.
 
-use crate::recipe::Palette;
+use crate::bake::recipe::Palette;
 use crate::voxel::Voxels;
 
 /// Load the first model of a `.vox` byte stream into a volume + palette.

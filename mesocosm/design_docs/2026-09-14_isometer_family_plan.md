@@ -723,3 +723,33 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   2026-09-14 set; acceptance 167 frames. Green: every family member,
   mesocosm check, runtime 44, views 46, genet 154 and all examples,
   wing-integration check, root check; no lock anywhere changed.
+- **2026-09-15, step 11 done; the lane is complete.** isometry-voxel is
+  folded into isometer-mesh as `isometer_mesh::voxel::{Rgb, Voxels}` and
+  `isometer_mesh::bake::{BakeParams, Sheet, bake_facing, bake_strip,
+  Appearance, Clip, Palette, compose, demo, watchtower}`, with `.vox`
+  ingest behind a default-off `vox` feature so dot_vox leaves every graph
+  by default; the bake `Palette` is not re-exported at the crate root
+  because the content-pack trait already owns that name. The two
+  `BodyProfile` newtypes were both transparent over the same
+  `wing_formats::BodyProfile`, magic, version and schema, so the merge
+  deleted a duplicate type, not a format; one grid-relative part lookup
+  that only its own tests used gave way to the body-space one, and the
+  profile receipt is byte-identical. crates/isometry-voxel is retired from
+  the root workspace; isometry-views bakes from the family; the root lock
+  swaps isometry-voxel and dot_vox for isometer-core and isometer-mesh,
+  and mesocosm-core does not enter the root graph. Pixel identity:
+  Isometry's real tileset bake, `board_css()`, is byte-identical before
+  and after (211,902 bytes, sha256 b8a18031…); the seven bake artifacts
+  and the sprite receipt are identical; a committed pin asserts the beast
+  sheet's PNG bytes against the pre-move file's blake3. Quads untouched.
+  Tests: isometer-mesh 74 (75 with `vox`) + 4 + 7 + 2; the root workspace
+  354 default and 363 all-features, down by exactly the 22 that moved
+  with the crate (the CLAUDE.md counts of 182 and 173 were already stale
+  at 385 and 376); every family member, mesocosm and paredros check
+  clean. The MPL text moved to `shared/isometer/LICENSE`. L2 of the
+  presentation plan is met on all four clauses; done conditions 1 to 6
+  of this plan hold, with Isometry's board now the family's third
+  consumer through isometry-views. Left for Mark: isometry's CLAUDE.md
+  still lists `isometry-voxel/` and the old test counts; the heightfield
+  march and chain critter stayed in isometer-lens as unconsumed
+  components.

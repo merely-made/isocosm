@@ -40,9 +40,10 @@ Pre-release; the full game loop runs. Built in Rust on the Merely stack
   explicit doorway transitions with a proven late-join replay receipt.
 - A 5e SRD content pack ships in `isometry-system` (sheets, bestiary, items,
   spells) with Lua rules via piccolo.
-- Eight-crate workspace (core, campaign, graphshell, views, genet, net,
-  system, voxel); `isometry-voxel` bakes MagicaVoxel-style volumes into
-  isometric sprites.
+- Seven-crate workspace (core, campaign, graphshell, views, genet, net,
+  system). The voxel appearance pipeline folded into the isometer family's
+  `isometer-mesh` on 2026-09-15; `isometry-views` bakes tileset sprites
+  through `isometer_mesh::bake`.
 
 Current plans live in [design_docs/](design_docs/DOC_README.md): finish
 protocol hardening (overmap travel as one resolved payload with a two-peer
@@ -62,10 +63,11 @@ cargo test --workspace --all-features        # default features skip the campaig
 
 ## License
 
-MIT OR Apache-2.0 for the tabletop crates in this workspace, with one
-exception: `crates/isometry-voxel` is MPL-2.0 (ruled 2026-09-14, ahead of
-its fold into the isometer family's mesh component). Mesocosm, Paredros and
-the shared wing crates carry their own licence files.
+MIT OR Apache-2.0 for the tabletop crates in this workspace. The voxel bake
+that was `crates/isometry-voxel` was relicensed MPL-2.0 on 2026-09-14 and
+folded into the MPL-2.0 `isometer-mesh` on 2026-09-15, so the exception is
+now simply the wing's own licence. Mesocosm, Paredros and the shared wing
+crates carry their own licence files.
 
 ---
 

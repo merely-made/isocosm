@@ -1,7 +1,7 @@
 //! Bake the original watchtower creature with the same parameters as the UI.
-//! Usage: cargo run -p isometry-voxel --example watchtower_sprites -- <output-dir>
+//! Usage: cargo run -p isometer-mesh --example watchtower_sprites -- <output-dir>
 
-use isometry_voxel::{BakeParams, bake_facing, bake_strip, watchtower::tower_beast};
+use isometer_mesh::bake::{BakeParams, bake_facing, bake_strip, watchtower::tower_beast};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let directory = std::env::args_os()

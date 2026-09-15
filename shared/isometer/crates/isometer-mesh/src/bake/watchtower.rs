@@ -7,7 +7,8 @@
 //! Original starter-campaign creature. Geometry is appearance only; its
 //! abilities and disposition live in the watchtower content pack.
 
-use crate::{Palette, Voxels};
+use crate::bake::Palette;
+use crate::voxel::Voxels;
 
 /// A broad forest crown over a visible trunk. The board binds this to a
 /// three-height-unit canopy; the model supplies appearance, not sight rules.

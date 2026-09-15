@@ -17,7 +17,7 @@
 //! voxel's top vertex into a 2:1 iso grid, and splat a precomputed cube stamp
 //! (top / left / right faces, three-tone shaded) with a z-buffer.
 
-use crate::recipe::Palette;
+use crate::bake::recipe::Palette;
 use crate::voxel::{Rgb, Voxels};
 
 /// Bake geometry. Defaults match the spike (small, cute voxels).
@@ -37,7 +37,12 @@ pub struct BakeParams {
 
 impl Default for BakeParams {
     fn default() -> Self {
-        BakeParams { half_w: 5, cube_h: 5, facings: 4, margin: 6 }
+        BakeParams {
+            half_w: 5,
+            cube_h: 5,
+            facings: 4,
+            margin: 6,
+        }
     }
 }
 
@@ -51,7 +56,11 @@ pub struct Sheet {
 
 impl Sheet {
     fn transparent(w: i32, h: i32) -> Self {
-        Sheet { w, h, rgba: vec![0; (w * h * 4) as usize] }
+        Sheet {
+            w,
+            h,
+            rgba: vec![0; (w * h * 4) as usize],
+        }
     }
     /// Count of non-transparent pixels (test/repro helper).
     pub fn opaque_pixels(&self) -> usize {
@@ -200,7 +209,9 @@ pub fn bake_facing(model: &Voxels, palette: &Palette, facing: u8, p: &BakeParams
 
 /// Bake every facing side by side into one strip (a simple sprite sheet).
 pub fn bake_strip(model: &Voxels, palette: &Palette, p: &BakeParams) -> Sheet {
-    let faces: Vec<Sheet> = (0..p.facings).map(|f| bake_facing(model, palette, f, p)).collect();
+    let faces: Vec<Sheet> = (0..p.facings)
+        .map(|f| bake_facing(model, palette, f, p))
+        .collect();
     let gap = p.margin;
     let cell_w = faces.iter().map(|s| s.w).max().unwrap_or(1);
     let cell_h = faces.iter().map(|s| s.h).max().unwrap_or(1);

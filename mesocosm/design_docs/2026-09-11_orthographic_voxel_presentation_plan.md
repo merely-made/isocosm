@@ -262,6 +262,14 @@ number for a body whose parts move every frame.
 
 ### L2. One appearance crate
 
+**Closed 2026-09-15** by the [isometer family plan](2026-09-14_isometer_family_plan.md)
+step 11: the merged crate is `isometer-mesh` at
+`shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
+document, greedy quads and projection beside isometry-voxel's recipes,
+palettes and bakes; Isometry's tileset bake is byte-identical, the meshes
+are untouched, and the crate has no engine or wgpu dependency. The open
+decision on where the appearance crate lives is resolved the same way.
+
 This broader wing consolidation does not block the specimen bench, which
 can consume the existing mesocosm-mesh and mesocosm-render APIs directly.
 

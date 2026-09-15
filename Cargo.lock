@@ -2042,18 +2042,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dot_vox"
-version = "5.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f160bf661e495a80ec98ac88a6535f5c80c02d2271c7013af70fe9ec670ccbff"
-dependencies = [
- "ahash",
- "lazy_static",
- "log",
- "nom 8.0.0",
-]
-
-[[package]]
 name = "downcast-rs"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4243,6 +4231,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "isometer-core"
+version = "0.1.0"
+dependencies = [
+ "postcard",
+ "serde",
+ "wing-formats",
+]
+
+[[package]]
+name = "isometer-mesh"
+version = "0.0.1"
+dependencies = [
+ "blake3",
+ "isometer-core",
+ "postcard",
+ "serde",
+ "wing-formats",
+]
+
+[[package]]
 name = "isometry-campaign"
 version = "0.1.0"
 dependencies = [
@@ -4320,9 +4328,9 @@ name = "isometry-views"
 version = "0.1.0"
 dependencies = [
  "cambium",
+ "isometer-mesh",
  "isometry-campaign",
  "isometry-core",
- "isometry-voxel",
  "isonetry",
  "muniment",
  "sceno",
@@ -4330,17 +4338,6 @@ dependencies = [
  "scenotime",
  "serde_json",
  "sprigging",
-]
-
-[[package]]
-name = "isometry-voxel"
-version = "0.1.0"
-dependencies = [
- "dot_vox",
- "postcard",
- "serde",
- "serde_json",
- "wing-formats",
 ]
 
 [[package]]

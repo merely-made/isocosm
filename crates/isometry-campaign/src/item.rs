@@ -109,7 +109,7 @@ impl ItemInstance {
     }
 
     /// Appearance layers selected by equipment, in authored order. The view
-    /// later resolves these keys through an `isometry-voxel::Appearance` rig.
+    /// later resolves these keys through an `isometer_mesh::bake::Appearance` rig.
     pub fn appearance_layers(&self) -> impl Iterator<Item = &str> {
         self.appearance_layers.iter().map(String::as_str).chain(
             self.modifiers
