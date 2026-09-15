@@ -369,6 +369,57 @@ Done-conditions:
 - Tests prove that retelling alone cannot mutate terrain or create a procedural
   event, while an accepted condition can produce the documented manifestation.
 
+## Stage F3b5: hagioglyph, glyphs that vary over time by world criteria
+
+**Assessment, 2026-09-14 (ruled as a lane by Mark; not started).** A
+hagioglyph is a base glyph whose live meaning follows a canon revision the
+world publishes, while every acquisition keeps the meaning it was acquired
+under. The kernel already has the pieces: `Canon::shuffled(seed, revision)`
+makes a new monotonic revision that permutes the correspondence without
+breaking its one-to-one mapping, and a `Journey` embeds its founding canon.
+What it lacks is any record of which revision an acquisition was accepted
+under: `Acquisition` carries glyph, provenance, tick and life only. The
+general model §7.4 rule governs: canon changes during play need explicit
+migration and must neither revoke a god nor complete an old collection under
+different meanings. Completion and ascension therefore stay judged against
+the journey's founding canon; only the live effect of an owned glyph moves.
+
+**Drivers, all accepted history, never a rewrite.** A revision has a cause
+the world records: a period settling (a `DomainWindow` receipt), a hagiograph
+promotion admitted with its condition receipt (F3b4), or an authored epoch.
+Paredros admits it as `GameIntent::ReviseCanon { tick, revision, seed,
+cause }` producing `GameEvent::CanonRevised`; replay is deterministic and the
+prior correspondence stays in the saved definition, as §7.4 requires.
+
+**Scope.**
+
+- `wing-glyphs` (shared; Paredros is the second consumer that challenges
+  it): `Acquisition` and `GrantRecord` gain `canon_revision` with a serde
+  default of the founding revision, and `Canon` gains a correspondence diff
+  naming the bases whose effect moved between two revisions. No other
+  kernel semantics change; the 16 kernel tests stay and gain their own.
+- `paredros-world::glyphs`: the reading tracks the live canon revision from
+  accepted `CanonRevised` events, stamps each evidence record and grant with
+  the revision it was accepted under, and answers `founding_effect(glyph)`
+  and `live_effect(glyph)` separately. Eligibility is unchanged. A promotion
+  cause without an admitted condition receipt is refused (F3b4's rule).
+- Session host: the acquisition journal shows the founding effect and, when
+  it differs, the live effect and the revision's cause; the scenario asserts
+  both after a scripted revision.
+- Glyph marks in the scene, drawn against isometer's shared depth, may take
+  the live display mark; that is presentation and follows the isometer
+  family lane.
+
+**Done when:** a revision mid-history leaves eligibility, ascension basis
+and every founding meaning unchanged and replays identically from a restored
+save; the same glyph acquired before and after a revision reports different
+live effects with the revision and cause pointable from each; a promotion
+cause is refused without a condition receipt and admitted with one; the
+kernel's diff names exactly the moved bases; and the journal and scenario
+show both meanings. Reincarnation, wishes and divine spending stay open.
+Mesocosm's §7.4 gains the time-variation rule as a G-gate in its own doc,
+since the shared design lives there.
+
 ## Open decisions and risks
 
 Choose initial salience inputs from event/deed facts and retelling counts before

@@ -943,6 +943,17 @@ Canon changes during play require explicit migration of completion and
 correspondence. They must not quietly revoke a god or make an old collection
 complete under different meanings.
 
+**G5, hagioglyph (Mark, 2026-09-14).** A glyph may vary over time by world
+criteria: a canon revision the world publishes, caused by a period settling,
+a hagiograph promotion admitted with its condition receipt, or an authored
+epoch, and recorded in accepted history rather than rewriting it. Every
+acquisition and grant keeps the revision it was accepted under; completion
+and the ascension basis are judged against the journey's founding canon;
+only the live effect of an owned glyph follows the current revision, so the
+same glyph acquired at different times can carry different costs. The kernel
+gains the revision stamp and a correspondence diff between two revisions;
+Paredros is the first consumer, under its remembrance plan's stage F3b5.
+
 #### An individual has a journey, not just an inventory
 
 Record original acquisition order, incarnation, simulation tick, and accepted
