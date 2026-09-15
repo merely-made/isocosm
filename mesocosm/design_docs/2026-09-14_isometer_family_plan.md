@@ -598,3 +598,28 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   unchanged. population.scenario fails identically at HEAD; not chased.
   Precondition one of the ruling is met: isometer names no
   `mesocosm_core::process` item.
+- **2026-09-14, step 6a done: the split's two preconditions.** isometer's
+  glyph renderer has its own `Stroke { Quotes, Slashes, Backticks }`,
+  bit-identical strokes, and names nothing from `effect_experiment` or
+  `process`; Mesocosm maps `effect_experiment::Glyph` to it in one
+  function in section.rs, and the saved spatial request still serializes
+  the Mesocosm type unchanged. Everything isometer still names from
+  mesocosm-core is on step 6's list, plus `Attachment` in a test fixture,
+  which body.rs carries anyway; the move list should name `Attachment`,
+  `AttachError` and `BodyPlan` explicitly. The byte-pin test lives at
+  mesocosm-core/tests/move_pins.rs (six tests): `state_hash` of
+  `World::new(0, 0)` at tick 0 = `df397e7c183eec55`; `PROFILE_SCHEMA`
+  `mesocosm.body/v0`, version 0, magic `MESOBODY`, header 10; a fixture
+  body document's 105 postcard bytes and its framed wire bytes as literal
+  arrays; the lens body revision `f4abe81ee0b320a4`; `VolumeRef` as 32
+  raw bytes. The blake3 content-address pin already exists literally in
+  mesocosm-mesh's content tests and is cited, not copied. **Finding:**
+  the glyph journey receipt (`testing/glyphs/journey.json`, committed
+  ac38887) records baseline `765c055b377dfb62`, but the same example at
+  e088d7e prints `df397e7c183eec55` and a different final hash; the
+  simulation moved between those commits, not this lane, and that
+  receipt is stale in the way risk 1 describes. Gate: all 32
+  spatial-coverage captures identical to the 2026-09-14 set over the
+  whole frame; spatial, world-trial and uptake-world pass. Green:
+  mesocosm check, core 558 plus the six pins, genet 154, views 46,
+  isometer 28, paredros check, root check, locks unchanged.

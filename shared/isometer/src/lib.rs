@@ -30,7 +30,7 @@ pub use bodies::{
     BodyFrameStats, BodyLayer, PartAddress, Pose, SceneBody, SceneVolumes, SubjectKey,
 };
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
-pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph};
+pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke};
 pub use producer::{
     BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,
     SceneSource,

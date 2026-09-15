@@ -11,7 +11,7 @@
 //! exactly as the camera suite does.
 use super::*;
 use crate::camera::Cutaway;
-use mesocosm_core::{VolumeRef, effect_experiment::Glyph};
+use mesocosm_core::VolumeRef;
 use mesocosm_lens::FRAME_FORMAT;
 use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};
@@ -144,7 +144,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
     let mesh = BodyMesh::single(VolumeRef::from_tag(91), &Volume::solid([4, 4, 4], 7));
     let mut bodies = LiveBodyRenderer::new(&device, FRAME_FORMAT, 8);
     let mut glyphs = GlyphLayer::new(&device);
-    for glyph in Glyph::ALL.iter().copied() {
+    for glyph in Stroke::ALL.iter().copied() {
         for orientation in [
             GlyphOrientation::CameraFacing,
             GlyphOrientation::WorldPlane {
@@ -266,7 +266,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                     "glyph depth {glyph:?}/{orientation:?}/{mode}: hidden={hidden}, exposed={exposed}, front_difference={front_mismatch}"
                 );
                 if mode == "side"
-                    && glyph == Glyph::Slashes
+                    && glyph == Stroke::Slashes
                     && matches!(orientation, GlyphOrientation::WorldPlane { .. })
                 {
                     let full = render(false, Some(0.0), false, None, None);
@@ -332,7 +332,7 @@ fn world_plane_is_camera_independent_and_invalid_lists_do_not_replace_it() {
         centre: [1.0, 2.0, 3.0],
         size: 2.0,
         angle: 0.3,
-        glyph: Glyph::Quotes,
+        glyph: Stroke::Quotes,
         color: [1.0, 0.0, 1.0, 1.0],
         orientation: GlyphOrientation::WorldPlane {
             right: [1.0, 0.0, 0.0],

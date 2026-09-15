@@ -40,8 +40,20 @@ pub use inspection::{BodyPick, BodySelection};
 /// now; re-exported so the host's bench and receipts keep one import path.
 pub use isometer::{
     BodyFrameStats, BodyPickError, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS,
-    MAX_SPATIAL_GLYPHS, SpatialGlyph,
+    MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke,
 };
+
+/// The experiment's glyph choice as the renderer's stroke shape. `isometer`
+/// draws shapes; the effect-experiment vocabulary is Mesocosm's, and this is
+/// the one place the two meet.
+pub fn stroke(glyph: mesocosm_core::effect_experiment::Glyph) -> Stroke {
+    use mesocosm_core::effect_experiment::Glyph;
+    match glyph {
+        Glyph::Quotes => Stroke::Quotes,
+        Glyph::Slashes => Stroke::Slashes,
+        Glyph::Backticks => Stroke::Backticks,
+    }
+}
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
 /// The cull window is `isometer`'s now; re-exported so the host's roster

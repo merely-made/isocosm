@@ -8,9 +8,20 @@
 //! World positions and the slab camera determine actual raster depth.
 use crate::camera::SlabCamera;
 use crate::scene::Scene;
-use mesocosm_core::effect_experiment::Glyph;
 
 pub const MAX_SPATIAL_GLYPHS: usize = 128;
+/// The stroke shapes the shader draws. A presentation vocabulary and nothing
+/// more: what a stroke *means* belongs to the host that placed it.
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
+pub enum Stroke {
+    #[default]
+    Quotes,
+    Slashes,
+    Backticks,
+}
+impl Stroke {
+    pub const ALL: &'static [Self] = &[Self::Quotes, Self::Slashes, Self::Backticks];
+}
 /// The plane in which strokes are constructed. A world plane remains fixed
 /// when the camera turns. Its axes must be finite orthonormal world vectors;
 /// the caller supplies any surface offset needed to avoid coplanar depth ties.
@@ -47,7 +58,7 @@ pub struct SpatialGlyph {
     pub centre: [f32; 3],
     pub size: f32,
     pub angle: f32,
-    pub glyph: Glyph,
+    pub glyph: Stroke,
     pub orientation: GlyphOrientation,
     pub color: [f32; 4],
 }
@@ -250,9 +261,9 @@ fn geometry(glyphs: &[SpatialGlyph], camera: SlabCamera) -> Vec<u8> {
             GlyphOrientation::WorldPlane { right, up } => (right, up),
         };
         let segments: &[[[f32; 2]; 2]] = match glyph.glyph {
-            Glyph::Slashes => &[[[-0.28, -0.5], [0.28, 0.5]]],
-            Glyph::Backticks => &[[[-0.2, 0.5], [0.15, 0.15]]],
-            Glyph::Quotes => &[
+            Stroke::Slashes => &[[[-0.28, -0.5], [0.28, 0.5]]],
+            Stroke::Backticks => &[[[-0.2, 0.5], [0.15, 0.15]]],
+            Stroke::Quotes => &[
                 [[-0.32, 0.5], [-0.22, 0.22]],
                 [[-0.22, 0.22], [-0.4, 0.02]],
                 [[0.26, 0.5], [0.36, 0.22]],

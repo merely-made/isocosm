@@ -20,3 +20,6 @@ nisus = { workspace = true }
 
 [dev-dependencies]
 serde_json = "1"
+# Already a real dependency above; named again so `tests/move_pins.rs` can pin
+# the shared header constants by their own names rather than by a copy.
+wing-formats = { path = "../../../shared/wing-formats" }

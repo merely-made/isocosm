@@ -7,7 +7,7 @@
 //! moves. The age here comes from the tick the recipient's current run of
 //! consecutive uptake ticks began; a gap of a whole tick without uptake breaks
 //! the run and re-anchors it. Retained flow facts are untouched by this.
-use super::{Glyph, GlyphOrientation, SpatialGlyph};
+use super::{GlyphOrientation, SpatialGlyph, Stroke};
 use mesocosm_core::OrganismId;
 use std::collections::{BTreeMap, btree_map::Entry};
 
@@ -88,7 +88,7 @@ pub(super) fn pulse(at: [i32; 3], ticks: u64, height: f32, size: f32) -> Option<
         centre,
         size: size * (1. - age * 0.5),
         angle: 0.,
-        glyph: Glyph::Backticks,
+        glyph: Stroke::Backticks,
         orientation: GlyphOrientation::WorldPlane {
             right: [1., 0., 0.],
             up: [0., 1., 0.],

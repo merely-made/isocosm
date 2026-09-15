@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use isometer::{PartAddress, SubjectKey};
 use mesocosm_core::{PartId, effect_experiment::Glyph};
 use mesocosm_mesh::BodyDependencyRevision;
-use isometer::{PartAddress, SubjectKey};
 
 const BOUNDS: ([f32; 3], [f32; 3]) = ([-10., -4., -8.], [12., 16., 10.]);
 fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {
@@ -77,7 +77,11 @@ fn every_form_and_glyph_is_bounded_finite_and_replays_out_of_order() {
                             && m.angle.is_finite()
                             && m.color[3] == 1.
                     }));
-                    assert!(first.iter().all(|m| m.glyph == glyph));
+                    assert!(
+                        first
+                            .iter()
+                            .all(|m| m.glyph == crate::section::stroke(glyph))
+                    );
                     spatial.tick = 359 - tick;
                     let _ = spatial.marks(BOUNDS, &anchors);
                     spatial.tick = tick;

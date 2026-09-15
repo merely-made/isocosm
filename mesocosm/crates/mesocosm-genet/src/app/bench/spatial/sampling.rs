@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::{Form, Spatial};
-use crate::section::{GlyphAnchor, GlyphOrientation, SpatialGlyph};
+use crate::section::{GlyphAnchor, GlyphOrientation, SpatialGlyph, stroke};
 
 // Stateless appearance noise. It never chooses a receiver rule or mutates World.
 fn noise(seed: u64, id: u64) -> f32 {
@@ -33,7 +33,7 @@ impl Spatial {
                 centre,
                 size: height * 0.18,
                 angle: phase * 0.25,
-                glyph: self.glyph,
+                glyph: stroke(self.glyph),
                 orientation: GlyphOrientation::CameraFacing,
                 color: if jitter < 0.5 {
                     [0.35, 0.95, 0.72, 1.0]

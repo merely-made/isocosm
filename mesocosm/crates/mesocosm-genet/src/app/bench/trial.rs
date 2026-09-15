@@ -6,7 +6,7 @@ use super::{
     state::{Bench, Specimen},
     view::Child,
 };
-use crate::section::{GlyphOrientation, SpatialGlyph};
+use crate::section::{GlyphOrientation, SpatialGlyph, Stroke, stroke};
 use cambium::{clickable, el, focusable, text};
 use mesocosm_core::{World, effect_experiment::Glyph, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
@@ -127,7 +127,7 @@ impl WorldTrial {
                         centre,
                         size: self.marker_size * (1. - age * 0.5),
                         angle: age * 0.6,
-                        glyph,
+                        glyph: stroke(glyph),
                         orientation: GlyphOrientation::CameraFacing,
                         color: if glyph == Glyph::Slashes {
                             [0.45, 0.95, 0.8, 1.]
@@ -220,7 +220,7 @@ impl WorldTrial {
                 "trial-uptake-pulses",
                 self.marks
                     .iter()
-                    .filter(|m| m.glyph == Glyph::Backticks)
+                    .filter(|m| m.glyph == Stroke::Backticks)
                     .count()
                     .to_string(),
             ),

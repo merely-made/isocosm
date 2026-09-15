@@ -4,9 +4,9 @@
 //! Controls issue a runtime-owned carve. Marks indicate recorded locations;
 //! their height is presentation, not a contact normal or debris simulation.
 use super::{Bench, Child};
-use crate::section::{GlyphOrientation, SpatialGlyph};
+use crate::section::{GlyphOrientation, SpatialGlyph, Stroke};
 use cambium::{clickable, el, focusable, text};
-use mesocosm_core::{World, effect_experiment::Glyph};
+use mesocosm_core::World;
 use mesocosm_runtime::TrialCarve;
 use serde::Serialize;
 
@@ -101,7 +101,7 @@ impl Carving {
                         centre,
                         size: size * (1. - age * 0.5),
                         angle: 0.,
-                        glyph: Glyph::Slashes,
+                        glyph: Stroke::Slashes,
                         orientation: GlyphOrientation::CameraFacing,
                         color: [1., 0.45, 0.2, 1.],
                     },
