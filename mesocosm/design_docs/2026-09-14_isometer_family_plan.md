@@ -482,6 +482,11 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   plan's move order can revisit, not a resolution constraint; "Isometry
   builds against the family" is unblocked at the pin level and waits only
   on a consumer in the tabletop crates.
+- 2026-09-14, later: **isometry-voxel is MPL-2.0 (Mark's ruling).** The
+  crate no longer inherits the root workspace's MIT OR Apache-2.0; its
+  manifest declares MPL-2.0, its sources carry the MPL header block the
+  Mesocosm crates use, and the MPL text sits beside it. The licence risk
+  to lane L2's fold into isometer-mesh is closed.
 
 ## Progress
 
