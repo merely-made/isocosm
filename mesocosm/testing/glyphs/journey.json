@@ -12,7 +12,7 @@
           "removed": 15
         }
       },
-      "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+      "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
       "glyph": "demo:earth",
       "outcome": "acquired",
       "sequence": 1,
@@ -20,7 +20,7 @@
     }
   ],
   "actor": 0,
-  "baseline_hash": "765c055b377dfb62",
+  "baseline_hash": "df397e7c183eec55",
   "carve_target": [
     0,
     12,
@@ -29,7 +29,7 @@
   "divine_power_minted": false,
   "effect_reference_executed": false,
   "experience_awarded_by_world": false,
-  "final_world_hash": "ea76e63d1fb9fa13",
+  "final_world_hash": "2dc9e1470df7c7c4",
   "measurement": {
     "end_tick": 4,
     "metric_id": "demo:seed-0-actor-0-removed-voxels-v1",
@@ -65,12 +65,13 @@
   "standalone_progression": {
     "ascension_basis": [
       {
+        "canon_revision": 1,
         "glyph": "demo:earth",
         "life": 1,
         "policy": "RequireOwnedBase",
         "provenance": {
           "context": "Carved; organism=0",
-          "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+          "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
           "kind": "Event"
         },
         "tick": 0
@@ -81,11 +82,12 @@
     "journey": {
       "acquisitions": [
         {
+          "canon_revision": 1,
           "glyph": "demo:earth",
           "life": 1,
           "provenance": {
             "context": "Carved; organism=0",
-            "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+            "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
             "kind": "Event"
           },
           "tick": 0
@@ -112,12 +114,13 @@
       "experience": 10,
       "grants": [
         {
+          "canon_revision": 1,
           "glyph": "demo:earth",
           "life": 1,
           "policy": "RequireOwnedBase",
           "provenance": {
             "context": "Carved; organism=0",
-            "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+            "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
             "kind": "Event"
           },
           "tick": 0
@@ -157,12 +160,13 @@
       {
         "grants": [
           {
+            "canon_revision": 1,
             "glyph": "demo:earth",
             "life": 1,
             "policy": "RequireOwnedBase",
             "provenance": {
               "context": "Carved; organism=0",
-              "evidence": "mesocosm.trial/765c055b377dfb62/be48b8db5df83dd9/history/1",
+              "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
               "kind": "Event"
             },
             "tick": 0

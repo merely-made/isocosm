@@ -570,6 +570,21 @@ the kernel-facing adapter, outside this slice. Flagged, not taken.
 
 ---
 
+## Rulings (Mark, 2026-09-15)
+
+1. **D1: mesocosm-core depends on wing-glyphs.** One new pure-data edge;
+   the execution table in core names the shared declaration once and
+   wing-glyphs stays product-free.
+2. **The axis is the acquiring act with three poles**, carved, fed and
+   moved, all already selected by the runtime adapter's event filter:
+   carving-earned returns as a per-use surface inscription, feeding-earned
+   as an emission that lives only while feeding continues, movement-earned
+   as a free trail.
+3. **Uptake binds to the feeding glyph.** No fourth accepted kind; uptake
+   milligrams drive the feeding-earned emission's size and lifetime.
+4. **The glyph journey receipt is regenerated as step 0** before any preset
+   receipt cites a hash, with the worldgen change that moved it noted.
+
 ## Findings (2026-09-15)
 
 Verified in the tree today; the rest are cited inline above.
