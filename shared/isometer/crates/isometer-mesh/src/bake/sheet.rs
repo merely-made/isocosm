@@ -75,7 +75,7 @@ impl Sheet {
 
 // One voxel's screen footprint, tagged by face: 0=top, 1=left, 2=right.
 // Reference point (0,0) is the top vertex of the cube.
-fn build_stamp(half_w: i32, cube_h: i32) -> Vec<(i32, i32, u8)> {
+pub(crate) fn build_stamp(half_w: i32, cube_h: i32) -> Vec<(i32, i32, u8)> {
     let s = half_w as f32;
     let e = cube_h as f32;
     let t = (0.0, 0.0);
@@ -150,20 +150,61 @@ fn rot(x: f32, z: f32, facing: u8) -> (f32, f32) {
     }
 }
 
+/// The model centre a facing turns about: the projection's own origin, so a
+/// second projection of the same volume lands on the same pixels.
+pub(crate) fn model_centre(dx: i32, dz: i32) -> (f32, f32) {
+    ((dx - 1) as f32 / 2.0, (dz - 1) as f32 / 2.0)
+}
+
+/// One voxel's screen position and depth at the locked iso angle.
+///
+/// The arithmetic the sprite bake runs per voxel, named so the mesh lane can
+/// project the same truth the same way rather than keeping a second copy that
+/// drifts. Returns `(sx, sy, depth)`, where `(sx, sy)` is the cube's **top
+/// vertex** — the stamp from [`build_stamp`] hangs off it.
+pub(crate) fn project_voxel(
+    coord: (i32, i32, i32),
+    centre: (f32, f32),
+    facing: u8,
+    p: &BakeParams,
+) -> (f32, f32, f32) {
+    let (x, y, z) = coord;
+    let (cx, cz) = centre;
+    let (hw, ch) = (p.half_w as f32, p.cube_h as f32);
+    let (xp, zp) = rot(x as f32 - cx, z as f32 - cz, facing);
+    let sx = (xp - zp) * hw;
+    let sy = (xp + zp) * (hw / 2.0) - y as f32 * ch;
+    let depth = (xp + zp) + y as f32;
+    (sx, sy, depth)
+}
+
+/// The sheet's size and origin for a set of projected top vertices.
+///
+/// Shared with the mesh lane so a silhouette computed there lands in the same
+/// frame as the bake's, which is what makes the two masks comparable.
+pub(crate) fn sheet_frame(
+    minx: f32,
+    maxx: f32,
+    miny: f32,
+    maxy: f32,
+    p: &BakeParams,
+) -> (i32, i32, f32, f32) {
+    let w = (maxx - minx).ceil() as i32 + 2 * p.half_w + 2 * p.margin;
+    let h = (maxy - miny).ceil() as i32 + p.half_w + p.cube_h + 2 * p.margin;
+    let ox = -minx + (p.half_w + p.margin) as f32;
+    let oy = -miny + p.margin as f32;
+    (w, h, ox, oy)
+}
+
 /// Bake one facing of `model` under `palette` at the locked iso angle.
 pub fn bake_facing(model: &Voxels, palette: &Palette, facing: u8, p: &BakeParams) -> Sheet {
-    let cx = (model.dx - 1) as f32 / 2.0;
-    let cz = (model.dz - 1) as f32 / 2.0;
-    let (hw, ch) = (p.half_w as f32, p.cube_h as f32);
+    let centre = model_centre(model.dx, model.dz);
 
     // Project every voxel; gather (sx, sy, depth, palette index) and bounds.
     let mut pts: Vec<(f32, f32, f32, u8)> = Vec::new();
     let (mut minx, mut maxx, mut miny, mut maxy) = (f32::MAX, f32::MIN, f32::MAX, f32::MIN);
     for (x, y, z, idx) in model.iter() {
-        let (xp, zp) = rot(x as f32 - cx, z as f32 - cz, facing);
-        let sx = (xp - zp) * hw;
-        let sy = (xp + zp) * (hw / 2.0) - y as f32 * ch;
-        let depth = (xp + zp) + y as f32;
+        let (sx, sy, depth) = project_voxel((x, y, z), centre, facing, p);
         pts.push((sx, sy, depth, idx));
         minx = minx.min(sx);
         maxx = maxx.max(sx);
@@ -174,10 +215,7 @@ pub fn bake_facing(model: &Voxels, palette: &Palette, facing: u8, p: &BakeParams
         return Sheet::transparent(1, 1);
     }
 
-    let w = (maxx - minx).ceil() as i32 + 2 * p.half_w + 2 * p.margin;
-    let h = (maxy - miny).ceil() as i32 + p.half_w + p.cube_h + 2 * p.margin;
-    let ox = -minx + (p.half_w + p.margin) as f32;
-    let oy = -miny + p.margin as f32;
+    let (w, h, ox, oy) = sheet_frame(minx, maxx, miny, maxy, p);
 
     let mut sheet = Sheet::transparent(w, h);
     let mut zbuf = vec![f32::NEG_INFINITY; (w * h) as usize];

@@ -51,6 +51,7 @@ pub mod flatten;
 pub mod greedy;
 pub mod live;
 pub mod profile;
+pub mod token;
 pub mod volume;
 pub mod voxel;
 
@@ -67,6 +68,7 @@ pub use flatten::{Flattened, flatten, flatten_attributed};
 pub use greedy::{PartMesh, Quad, mesh_volume, mesh_volume_naive};
 pub use live::{BodyDependencyRevision, DEFAULT_MESH_CACHE_CAPACITY, LiveBodyProjector};
 pub use profile::{BodyProfile, PROFILE_SCHEMA, PROFILE_VERSION, ProfileError};
+pub use token::{MissingLayer, Silhouette, TokenBody, material_colours, mesh_silhouette};
 pub use volume::{Volume, VolumeError, VolumeMap, VolumeSource};
 
 /// One part's mesh, placed in body space.

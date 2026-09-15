@@ -25,7 +25,7 @@ pub mod watchtower;
 mod body;
 mod png;
 mod recipe;
-mod sheet;
+pub(crate) mod sheet;
 #[cfg(feature = "vox")]
 mod vox;
 

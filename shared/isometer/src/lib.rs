@@ -23,6 +23,7 @@ mod glyphs;
 mod producer;
 mod query;
 mod scene;
+mod tokens;
 mod volumes;
 
 pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
@@ -39,6 +40,9 @@ pub use query::{BodyPick, BodyPickError};
 pub use scene::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneHost, SceneStats,
     TerrainRefresh, TerrainSource,
+};
+pub use tokens::{
+    MissingLayer, Silhouette, TokenBody, material_colours, mesh_silhouette, scene_volumes,
 };
 pub use volumes::DeclaredExtentVolumes;
 
