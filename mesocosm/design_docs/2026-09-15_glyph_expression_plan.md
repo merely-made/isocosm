@@ -550,6 +550,26 @@ not stand on their own; the manner set maps onto the kernel's provenance
 kinds, which already exist and are what the motif reads. Expression
 through traits stays the first Mesocosm slice; experience follows it.
 
+## Rulings on the three findings (Mark, 2026-09-15)
+
+1. **Many more traits.** The five native process definitions are not the
+   trait set; the catalogue grows, through admitted definitions and the
+   traits brief's composed and rarer traits, until every canon glyph has
+   expressing traits. Sizing the catalogue is its own lane in the
+   phenotype and traits material, and this plan consumes it.
+2. **Authored expression with a pinned shuffle.** The canon's expression
+   set is authored; a world may shuffle it by seed, and the shuffled
+   mapping is pinned into the world's definition exactly as the canon
+   correspondence already is (`Canon::shuffled(seed, revision)` then
+   saved, never rerun on an inhabited world), so a shared world keeps one
+   consistent set. Open decision D1 is closed this way.
+3. **A lineage acquires traits over epochs.** A critter cut down to no
+   expressing trait is a dead end only within its epoch: play runs as a
+   round in the terrarium and then review and revision on the trait board
+   in initiative order by biomass, so the lineage takes traits across
+   epochs, and discovery and deed manners need no bearing trait at all.
+   Finding 3 is answered by the game's own loop rather than by a rule.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.
