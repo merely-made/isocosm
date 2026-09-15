@@ -53,7 +53,7 @@ isometry-system = { path = "crates/isometry-system", version = "0.1.0" }
 # Private host-side choice receipts. The committed source stays on Git; a local
 # Cleromancy checkout is supplied by the machine-local source patch during
 # paired development.
-cleromancy = { git = "https://github.com/merely-made/cleromancy.git", rev = "3617583b9ea3f9bdfa14eef2314f09ca54d184a6", default-features = false }
+cleromancy = { git = "https://github.com/merely-made/cleromancy.git", rev = "9b496157c7852983f6cd2ac10e06f8b4aa59f653", default-features = false }
 
 # Persistence
 serde = { version = "1.0", features = ["derive"] }
@@ -201,20 +201,6 @@ genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "
 # the patch below names that package explicitly while keeping the dependency
 # alias Cargo expects.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d", version = "=0.14.0" }
-# Parley, for the OLD Genet only. As of genet 5ae30cad the forks are published
-# as `genet-parley`/`genet-fontique` and genet-livery reaches them by path
-# inside its own checkout, so the current Genet needs no row here (and a row
-# naming `parley` at 5ae30cad would match no package and fail resolution).
-#
-# But this workspace carries a SECOND genet-livery: cleromancy 3617583 still
-# pins genet 7baa554c, where the workspace declared `parley = "0.10.0"` from
-# crates.io and relied on genet's own `[patch]`, which does not inherit. With
-# no row here that copy resolves published parley 0.10.0 and fails on
-# `set_base_level`, `AlignmentOptions::last_line_alignment` and
-# `StyleProperty::TabSize`. So the row stays, pinned to the OLD revision that
-# still answers to the name. Delete it when cleromancy's lane moves off
-# 7baa554c; nothing else here reaches a registry parley.
-parley = { git = "https://github.com/merely-made/genet.git", rev = "7baa554c66f966295ee945d908738b635afe136a" }
 # ipc-channel: genet's in-process fork (force-inprocess default; drops the
 # windows 0.61 pin that broke gpu-allocator/wgpu-hal unification).
 ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
