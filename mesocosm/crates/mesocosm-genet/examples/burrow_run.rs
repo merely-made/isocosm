@@ -11,7 +11,7 @@
 
 use std::fs::File;
 
-use isometer_lens::{
+use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap,
     BrickRevision, BrickTracer, Flight, Grade,
 };

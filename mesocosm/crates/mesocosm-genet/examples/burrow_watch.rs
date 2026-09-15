@@ -36,7 +36,7 @@
 
 use std::sync::Arc;
 
-use isometer_lens::{
+use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickChange, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, CritterPose, Flight, Grade,
 };

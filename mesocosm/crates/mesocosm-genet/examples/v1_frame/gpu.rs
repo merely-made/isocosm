@@ -6,10 +6,10 @@
 
 use std::sync::Arc;
 
-use isometer_lens::{
+use isometer::lens::{
     CritterPose, FRAME_FORMAT, Flight, FrameInput, Grade, Lens, LensScene, MapRevision, critter,
 };
-use isometer_render::composite::Composite;
+use isometer::render::composite::Composite;
 use mesocosm_genet::maps;
 use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, NetrenderOptions,

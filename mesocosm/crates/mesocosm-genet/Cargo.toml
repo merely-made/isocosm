@@ -19,11 +19,6 @@ publish = false
 [dependencies]
 tempfile = "3"
 mesocosm-core = { workspace = true }
-# The main view since PS1: the ruled side-on section is traced, not rasterized.
-# isometer-render stays for the HUD's own backdrop renderer.
-isometer-lens = { workspace = true }
-isometer-mesh = { workspace = true }
-isometer-render = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
 netrender = { workspace = true }
@@ -53,7 +48,10 @@ workbench = { workspace = true }
 mesquite = { workspace = true }
 # The shared orthographic slab scene (L9, plan of 2026-09-14): the camera, its
 # cut and its cull window, so Mesocosm's `CameraMode` presets and Paredros's
-# `CameraPolicy` are presets over one set of numbers rather than two.
+# `CameraPolicy` are presets over one set of numbers rather than two. Since the
+# facade landed (family plan step 10) this one row also carries the family:
+# the traced main view is `isometer::lens`, the HUD's backdrop renderer is
+# `isometer::render`, and the body projection is `isometer::mesh`.
 isometer = { path = "../../../shared/isometer" }
 wgpu = { workspace = true }
 winit = "0.30"

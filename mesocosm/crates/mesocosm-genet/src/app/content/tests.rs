@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::{Host, played::PlayedTrace};
-use isometer_mesh::mesh_body;
+use isometer::mesh::mesh_body;
 use mesocosm_core::{Intent, state_hash};
 
 #[test]
@@ -46,7 +46,7 @@ fn family_practice_scene_roundtrips_and_overrides_the_host_scene() {
     );
 }
 
-fn same_mesh(a: isometer_mesh::BodyMesh, b: isometer_mesh::BodyMesh) {
+fn same_mesh(a: isometer::mesh::BodyMesh, b: isometer::mesh::BodyMesh) {
     assert_eq!(a.placements, b.placements);
     assert_eq!(a.mesh_count(), b.mesh_count());
     for placement in &a.placements {

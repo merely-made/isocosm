@@ -10,8 +10,8 @@
 //! spatial request writes to disk, and the world lookup an adapter does
 //! before the scene sees a body.
 
+use isometer::mesh::BodyDependencyRevision;
 use isometer::{BodyPickError, PartAddress, SceneVolumes};
-use isometer_mesh::BodyDependencyRevision;
 use mesocosm_core::{OrganismId, PartId, World};
 
 use super::Section;
@@ -101,9 +101,9 @@ impl Section {
         &mut self,
         subject: OrganismId,
         radians: f32,
-    ) -> Result<(), isometer_render::live_body::LiveBodyError> {
+    ) -> Result<(), isometer::render::live_body::LiveBodyError> {
         if !radians.is_finite() {
-            return Err(isometer_render::live_body::LiveBodyError::InvalidBody);
+            return Err(isometer::render::live_body::LiveBodyError::InvalidBody);
         }
         if self.host_bodies.set_yaw(subject, radians) {
             self.invalidate_query();
@@ -120,7 +120,7 @@ impl Section {
     pub fn presentation_bounds(
         &mut self,
         organism: &mesocosm_core::Organism,
-        volumes: &isometer_mesh::VolumeMap,
+        volumes: &isometer::mesh::VolumeMap,
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
         self.scene
@@ -146,7 +146,7 @@ impl Section {
         &mut self,
         pick: BodyPick,
         world: &World,
-        volumes: &isometer_mesh::VolumeMap,
+        volumes: &isometer::mesh::VolumeMap,
     ) -> bool {
         self.scene.query_generation() == Some(pick.frame)
             && self.validate_selection(pick.selection, world, volumes)
@@ -178,7 +178,7 @@ impl Section {
         &mut self,
         selection: BodySelection,
         world: &World,
-        volumes: &isometer_mesh::VolumeMap,
+        volumes: &isometer::mesh::VolumeMap,
     ) -> bool {
         if self.body_mode != super::BodyMode::Voxels {
             return false;
@@ -213,7 +213,7 @@ impl Section {
     pub fn glyph_anchors(
         &mut self,
         organism: &mesocosm_core::Organism,
-        volumes: &isometer_mesh::VolumeMap,
+        volumes: &isometer::mesh::VolumeMap,
         selected: Option<BodySelection>,
     ) -> Result<Vec<isometer::GlyphAnchor>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);

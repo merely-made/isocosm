@@ -4,7 +4,7 @@
 //! Surface appearance reads admitted, living process tissue. Allocation cells
 //! remain simulation facts; their proportions drive a disposable voxel pattern.
 
-use isometer_render::PartMaterial;
+use isometer::render::PartMaterial;
 use mesocosm_core::{
     BodyPhenotype,
     process::{Process, Registry},

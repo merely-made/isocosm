@@ -15,7 +15,7 @@
 //! [`crate::vitals`] is the first consumer of. What the guard still forbids is
 //! teaching this lane lettering as a shortcut.
 
-use isometer_render::{Camera, Renderer, SceneItem};
+use isometer::render::{Camera, Renderer, SceneItem};
 use mesocosm_core::World;
 use mesocosm_views::MinimapLeaf;
 use sprigging::{Leaf, PaintCx, Size};

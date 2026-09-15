@@ -3,7 +3,7 @@
 
 //! Admit immutable voxel content before founding, and restore recorded bytes.
 
-use isometer_mesh::VolumeMap;
+use isometer::mesh::VolumeMap;
 
 use crate::generation_content::{DevelopmentPalette, Pack};
 use mesocosm_runtime::Runtime;

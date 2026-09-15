@@ -60,11 +60,11 @@ pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEG
 /// and bench keep one import path.
 pub use isometer::SlabWindow;
 
+use isometer::lens::{BrickMap, CritterPose, Grade};
+use isometer::render::composite::Composite;
 use isometer::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
 };
-use isometer_lens::{BrickMap, CritterPose, Grade};
-use isometer_render::composite::Composite;
 use mesocosm_core::World;
 use mesocosm_core::places::Ground;
 
@@ -97,7 +97,7 @@ pub struct Pan {
 #[derive(Clone, Copy)]
 pub struct SectionFrame<'a> {
     pub world: &'a World,
-    pub volumes: &'a isometer_mesh::VolumeMap,
+    pub volumes: &'a isometer::mesh::VolumeMap,
     pub ground: &'a Ground,
     /// The host's drain of the world's changed bricks. The slots they map to
     /// are the only region the tracer re-uploads, so a carve costs its own
@@ -116,7 +116,7 @@ pub struct Section {
     /// The shared join. Everything device-side lives in here.
     scene: Scene,
     grade: Grade,
-    terrain_appearance: Option<isometer_lens::TerrainAppearance>,
+    terrain_appearance: Option<isometer::lens::TerrainAppearance>,
     width: u32,
     height: u32,
     /// How much world this section frames. Presentation, so it lives beside the
@@ -231,7 +231,7 @@ impl Section {
     /// Most recent Section encode's terrain work. None means terrain was
     /// skipped or the encode failed, never a retained prior terrain receipt.
     /// Encoding counters do not assert queue completion or visible pixels.
-    pub fn terrain_diagnostics(&self) -> Option<isometer_lens::BrickDiagnostics> {
+    pub fn terrain_diagnostics(&self) -> Option<isometer::lens::BrickDiagnostics> {
         self.scene.terrain_diagnostics()
     }
 

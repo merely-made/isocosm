@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isometer_lens::TraceCamera;
-use isometer_render::PartMaterial;
+use isometer::lens::TraceCamera;
+use isometer::render::PartMaterial;
 
 #[test]
 fn grounded_terrarium_anatomy_fits_the_fixed_volume() {

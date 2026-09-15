@@ -6,8 +6,8 @@
 
 use super::*;
 use crate::section::{BodyMode, BodyPickError, CameraMode, Framing, SectionFrame};
-use isometer_mesh::VolumeMap;
-use isometer_render::{RenderError, Renderer};
+use isometer::mesh::VolumeMap;
+use isometer::render::{RenderError, Renderer};
 use mesocosm_core::{Founding, World};
 
 fn render(section: &mut Section, world: &World, volumes: &VolumeMap, centre: [f32; 3]) -> Vec<u8> {

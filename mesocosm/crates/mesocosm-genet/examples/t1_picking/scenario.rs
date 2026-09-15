@@ -19,7 +19,7 @@
 //! travel `-z`, so the first solid cell along a column is an integer scan
 //! of `Ground::solid`, no traversal arithmetic shared with Rapier.
 
-use isometer_lens::{
+use isometer::lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
     CritterPose, Grade, TraceCamera, critter::Capsule,
 };

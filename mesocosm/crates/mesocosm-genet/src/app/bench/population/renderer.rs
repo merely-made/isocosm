@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::model::Workload;
-use isometer_render::{
+use isometer::render::{
     Camera,
     live_body::{LiveBody, LiveBodyRenderer},
 };

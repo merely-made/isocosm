@@ -4,8 +4,8 @@
 //! GPU evidence using the same material adapter and cached renderer as play.
 
 use crate::section::{CameraMode, bodies::clip_from_world};
-use isometer_mesh::{LiveBodyProjector, VolumeMap};
-use isometer_render::{LiveBody, LiveBodyRenderer, Renderer};
+use isometer::mesh::{LiveBodyProjector, VolumeMap};
+use isometer::render::{LiveBody, LiveBodyRenderer, Renderer};
 use mesocosm_core::{Founding, OrganismId, World};
 
 #[path = "family.rs"]
@@ -28,7 +28,7 @@ impl Capture {
     fn with_volumes(volumes: VolumeMap) -> Option<Self> {
         let host = match Renderer::headless(512, 512) {
             Ok(host) => host,
-            Err(isometer_render::RenderError::NoAdapter) => {
+            Err(isometer::render::RenderError::NoAdapter) => {
                 eprintln!("no adapter; skipping material pixel receipt");
                 return None;
             },

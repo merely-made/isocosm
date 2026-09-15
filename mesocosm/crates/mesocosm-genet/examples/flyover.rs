@@ -12,7 +12,7 @@
 //! cargo run -p mesocosm-genet --example flyover -- <out_dir>
 //! ```
 
-use isometer_lens::{Flight, Grade, Lens};
+use isometer::lens::{Flight, Grade, Lens};
 use mesocosm_genet::maps;
 
 fn write_png(path: &std::path::Path, width: u32, height: u32, pixels: &[u8]) {

@@ -1,8 +1,8 @@
-use isometer_lens::{
+use isometer::lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, FRAME_FORMAT, Grade, TraceCamera,
 };
-use isometer_mesh::{BodyMesh, Volume};
-use isometer_render::{LiveBody, LiveBodyRenderer};
+use isometer::mesh::{BodyMesh, Volume};
+use isometer::render::{LiveBody, LiveBodyRenderer};
 use mesocosm_core::places::{Ground, Places};
 use mesocosm_core::{PartId, VolumeRef};
 

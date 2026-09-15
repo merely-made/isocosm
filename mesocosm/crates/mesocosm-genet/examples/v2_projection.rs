@@ -24,10 +24,10 @@ fn main() {
 mod native {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
-    use isometer_lens::{
+    use isometer::lens::{
         BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
     };
-    use isometer_mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
+    use isometer::mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
     use mesocosm_core::{
         BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
         snapshot, world::organism_extent,
@@ -264,8 +264,8 @@ mod native {
     }
 
     fn changed_mesh_parts(
-        before: &isometer_mesh::BodyMesh,
-        after: &isometer_mesh::BodyMesh,
+        before: &isometer::mesh::BodyMesh,
+        after: &isometer::mesh::BodyMesh,
     ) -> Vec<PartId> {
         let before = before
             .placements
@@ -312,12 +312,15 @@ mod native {
         changed
     }
 
-    fn sample_ground(maps: &isometer_lens::maps::BiomeMaps, x: f32, z: f32) -> f32 {
+    fn sample_ground(maps: &isometer::lens::maps::BiomeMaps, x: f32, z: f32) -> f32 {
         let index = (z as u32 % maps.side) * maps.side + (x as u32 % maps.side);
         maps.height[index as usize] as f32
     }
 
-    fn frame_body(projected: &BodyLensProjection, maps: &isometer_lens::maps::BiomeMaps) -> Flight {
+    fn frame_body(
+        projected: &BodyLensProjection,
+        maps: &isometer::lens::maps::BiomeMaps,
+    ) -> Flight {
         let centre = projected.pose.bounds_centre;
         let radius = projected.pose.bounds_radius.max(4.0);
         let mut eye = [

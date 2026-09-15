@@ -80,7 +80,7 @@ fn the_composited_ground_is_the_background_colour() {
         pollster::block_on(adapter.request_device(&Default::default())).expect("a headless device");
 
     const SIDE: u32 = 32;
-    let shot = isometer_render::Renderer::with_device(device.clone(), queue.clone(), SIDE, SIDE);
+    let shot = isometer::render::Renderer::with_device(device.clone(), queue.clone(), SIDE, SIDE);
     let make = |format: wgpu::TextureFormat, extra: wgpu::TextureUsages| {
         device.create_texture(&wgpu::TextureDescriptor {
             label: None,
@@ -106,7 +106,7 @@ fn the_composited_ground_is_the_background_colour() {
     let target_view = target.create_view(&Default::default());
 
     // An empty scene: pure background.
-    let camera = isometer_render::Camera::default();
+    let camera = isometer::render::Camera::default();
     let mut encoder = device.create_command_encoder(&Default::default());
     shot.draw_scene(&mut encoder, &backdrop_view, &[], &camera);
     queue.submit(Some(encoder.finish()));
@@ -114,7 +114,7 @@ fn the_composited_ground_is_the_background_colour() {
     let direct = read_texture(&device, &queue, &backdrop, SIDE);
     println!("backdrop texel: {:?}", &direct[0..4]);
 
-    let composite = isometer_render::composite::Composite::new(&device, shot.format());
+    let composite = isometer::render::composite::Composite::new(&device, shot.format());
     let mut encoder = device.create_command_encoder(&Default::default());
     {
         // Clear the target to a sentinel so pass-through is visible.

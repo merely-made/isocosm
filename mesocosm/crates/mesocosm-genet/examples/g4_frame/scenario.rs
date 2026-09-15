@@ -6,7 +6,7 @@
 
 use std::collections::BTreeSet;
 
-use isometer_lens::{
+use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, Flight, Grade,
 };

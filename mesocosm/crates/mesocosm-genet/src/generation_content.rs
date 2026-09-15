@@ -3,7 +3,7 @@
 
 //! Shared content admission for generated starts and their command-line preview.
 
-use isometer_mesh::content::{ContentPack, Palette, Shape};
+use isometer::mesh::content::{ContentPack, Palette, Shape};
 use mesocosm_core::{
     Founding, PartPalette, PartTemplate, Role, RoleShapes, world::generation::Request,
 };

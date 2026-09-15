@@ -24,8 +24,8 @@
 //! cargo run -p mesocosm-genet --release --example p3_receipt
 //! ```
 
-use isometer_mesh::{Volume, VolumeMap, mesh_body};
-use isometer_render::{Camera, Renderer, SceneItem};
+use isometer::mesh::{Volume, VolumeMap, mesh_body};
+use isometer::render::{Camera, Renderer, SceneItem};
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Intent, Kingdom,
     Organism, OrganismId, Outcome, PartId, Process, ProposedSite, Provenance, Registry, SpeciesId,

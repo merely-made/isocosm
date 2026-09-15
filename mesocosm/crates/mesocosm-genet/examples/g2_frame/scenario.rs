@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use isometer_lens::{
+use isometer::lens::{
     BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Grade,
     TraceCamera, critter::Capsule,
 };

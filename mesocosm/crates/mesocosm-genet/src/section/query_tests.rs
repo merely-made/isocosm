@@ -9,8 +9,8 @@
 //! without a Mesocosm world is `isometer`'s own `query/tests.rs`.
 
 use super::*;
-use isometer_mesh::VolumeMap;
-use isometer_render::{RenderError, Renderer};
+use isometer::mesh::VolumeMap;
+use isometer::render::{RenderError, Renderer};
 use mesocosm_core::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
 
 #[path = "mask_tests.rs"]

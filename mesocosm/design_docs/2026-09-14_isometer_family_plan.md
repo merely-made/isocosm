@@ -706,3 +706,20 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   check with the root lock unchanged. A `paredros-client` feature still
   gates the optional lens (`r1-proof`); step 10 retires it on the
   Paredros side.
+- **2026-09-15, step 10 done.** The facade re-exports the family:
+  `pub use isometer_core as core`, `isometer_lens as lens`,
+  `isometer_mesh as mesh`, `isometer_render as render`, beside its direct
+  re-exports. mesocosm-genet takes `isometer` alone and names
+  `isometer::mesh::`, `::render::`, `::lens::` in 52 files (paths only);
+  its three component rows and mesocosm's three central rows are gone,
+  and `cargo tree` shows one `isometer` edge and no component edge.
+  mesocosm-core keeps isometer-core as a direct dependency through the
+  central row, since it sits below the family and must not take the
+  facade. `cargo doc` resolves the four facade paths. Paredros checked
+  clean at this point: the Paredros session had already landed its
+  import prefixes for mesh, render and lens; its move to the facade and
+  the retirement of the r1-proof gate are its side of this step. Gates:
+  the six pins; all 32 spatial-coverage captures byte-identical to the
+  2026-09-14 set; acceptance 167 frames. Green: every family member,
+  mesocosm check, runtime 44, views 46, genet 154 and all examples,
+  wing-integration check, root check; no lock anywhere changed.

@@ -4,7 +4,7 @@
 //! Versioned presentation fixtures. These are renderer workloads, not organisms
 //! or developmental claims. Geometry variation is bounded exterior notching.
 
-use isometer_mesh::{BodyMesh, Volume};
+use isometer::mesh::{BodyMesh, Volume};
 use mesocosm_core::{PartId, VolumeRef};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
@@ -155,7 +155,7 @@ impl Workload {
                 (min, max)
             })
             .collect();
-        let camera = isometer_render::Camera::default();
+        let camera = isometer::render::Camera::default();
         let direction = [
             camera.yaw.cos() * camera.pitch.cos(),
             camera.pitch.sin(),

@@ -15,7 +15,7 @@
 //! cargo run -p mesocosm-genet --example menagerie -- <out_dir>
 //! ```
 
-use isometer_lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens};
+use isometer::lens::{BodyLensProjection, BodyPlacement, Flight, Grade, Lens};
 use mesocosm_core::{
     PartPalette, PartTemplate, Recipe, RoleShapes, Soma, SpeciesId, VolumeRef,
     axis::{archetype, catalogue},

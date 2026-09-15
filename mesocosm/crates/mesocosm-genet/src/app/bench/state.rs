@@ -3,7 +3,7 @@
 
 use std::{cell::RefCell, rc::Rc};
 
-use isometer_mesh::VolumeMap;
+use isometer::mesh::VolumeMap;
 use mesocosm_core::{OrganismId, PartId, history::History};
 use mesocosm_views::PartInspection;
 

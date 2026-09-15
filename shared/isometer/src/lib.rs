@@ -45,3 +45,11 @@ pub use volumes::DeclaredExtentVolumes;
 /// The volume seam, re-exported so a producer needs one crate in scope.
 pub use isometer_core::VolumeRef;
 pub use isometer_mesh::{Volume, VolumeMap, VolumeSource};
+
+/// The family, reached through the facade: a product takes `isometer` alone
+/// and names `isometer::mesh`, `isometer::render`, `isometer::lens` and
+/// `isometer::core` rather than four path rows of its own.
+pub use isometer_core as core;
+pub use isometer_lens as lens;
+pub use isometer_mesh as mesh;
+pub use isometer_render as render;

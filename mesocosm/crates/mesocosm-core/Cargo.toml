@@ -13,7 +13,7 @@ publish = false
 [dependencies]
 # The family floor: body documents, the body plan, brick ground, and the
 # postcard/wire seam. Every item it owns is re-exported below at its old path.
-isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
+isometer-core = { workspace = true }
 wing-functions = { path = "../../../shared/wing-functions" }
 wing-formats = { path = "../../../shared/wing-formats" }
 serde = { workspace = true }
