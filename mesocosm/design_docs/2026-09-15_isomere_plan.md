@@ -164,9 +164,16 @@ Isometry's host routing, zoom and watchtower suites.
   log and the review rows are the shared journal; the help line is derived
   from each product's keymap; scenarios pass.
 - **M4 host assembly.** Done when Isometry's and Paredros's hosts are the
-  shared assembly plus a product impl, and Mesocosm's main binary moves off
-  `chrome.rs` onto it with its five adapters deleted and its headed receipts
-  unchanged.
+  shared assembly plus a product impl. Mesocosm's main binary was in this
+  lane and is deferred to a later round by Mark's ruling of 2026-09-15:
+  its chrome lays out in physical pixels against the shared host's
+  logical ones, so the move rebases its capture set by construction,
+  which is not a cost this round is carrying. When it does run, it moves
+  off `chrome.rs` with its five adapters deleted, and it answers the two
+  questions the assessment left: what replaces the played receipt's
+  `frame_graph` block behind a producer, and whether the scenario
+  grammar's `assert text` becomes a host-DOM assertion with the driver
+  moved onto a mesquite lane.
 - **M5 body sheet retirement.** Done when Paredros's netrender-drawn
   `body_sheet` is archived with rationale and its equipment session's
   claims live in the session host's examiner; 2,400 lines gone.
@@ -186,7 +193,11 @@ in parallel (disjoint panels), then M4, then M5 and M6.
 2. **Mesocosm's host migration is in scope.** M4 moves the one remaining
    hand-rolled winit host; that is the largest single change and the one
    with the most headed receipts. It can be deferred to a later round
-   without blocking M0 to M3.
+   without blocking M0 to M3. **Ruled 2026-09-15: deferred**, on the
+   measurement that the physical-versus-logical pixel difference rebases
+   its captures however the move is done. The assembly it would have
+   moved onto is built and proven by Paredros, so the deferral costs the
+   later round nothing but the product work itself.
 3. **Naming inside isomere.** Panel names above are plain working words
    (examiner, journal, status); nothing is coined.
 
@@ -351,3 +362,9 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   proceeds: about 2,100 lines deleted against 2,400 rewritten, with the
   hard parts already solved elsewhere (the bench proves the scene
   producer, and meristem composes the six per-state roots into one).
+- **2026-09-15, Mark ruled on the two M4 questions.** Mesocosm's main
+  binary is deferred to a later round rather than migrated with a capture
+  rebase; M4 is therefore the assembly, Paredros and Isometry. The stale
+  golden played trace is recorded as a finding and left, in the played
+  slice plan's findings where that receipt lives, rather than re-recorded
+  now.

@@ -144,6 +144,19 @@ adaptation — remains unwired and is PE3's.
 
 ## Findings
 
+- **2026-09-15, the golden trace is stale and stays that way for now.**
+  `ps1_played.trace.json` records trophic grammar revision 0 and this
+  build is at revision 8, so `--replay` refuses it. That takes
+  `ps1_played.scenario` and all three `camera_*.scenario` arms with it,
+  leaving `dt3.scenario` as the only scripted headed acceptance this
+  binary still has. Found by the isomere plan's M4 lane while taking
+  before-baselines for a host migration, not caused by it. Ruled by Mark
+  the same day: recorded as a finding and left, to be re-recorded
+  whenever this host is next worked on. Anything that needs a headed
+  comparison before then takes its own baseline first, as M4 did. The
+  deeper question the staleness raises, whether a recorded trace is the
+  right instrument when the grammar revs under it, is not ruled.
+
 - **2026-08-29 (second real playtest, Mark):** 1,819 steps over 5,003
   frames, hash `faea34e116b2e243`, trace preserved as
   `mark_playtest2.*`. Four findings, in his words where they matter:
