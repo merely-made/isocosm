@@ -3,11 +3,8 @@
 
 use std::sync::LazyLock;
 
-use cambium::{
-    AnyView, GenetCtx, GenetElement, PointerPhase, clickable, custom_leaf, el, focusable,
-    on_pointer, text,
-};
-use isomere::{Picked, Seeds, Sizes};
+use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
+use isomere::{Picked, Seeds, Sizes, ViewportCard};
 
 use super::{LEAF_KEY, state::Bench};
 
@@ -123,37 +120,6 @@ pub(super) fn root(state: &Bench) -> Child {
             parts.len()
         )
     };
-    let viewport: Child = if state.visible {
-        Box::new(on_pointer(
-            custom_leaf::<Bench, ()>(LEAF_KEY, 640, 400)
-                .attr("id", "specimen-viewport")
-                .attr(
-                    "class",
-                    match state.tint {
-                        1 => "viewport warm",
-                        2 => "viewport cool",
-                        _ => "viewport",
-                    },
-                )
-                .attr("role", "img")
-                .attr("aria-label", "Specimen")
-                .attr(
-                    "style",
-                    if state.transformed {
-                        "transform:rotate(7deg) scale(0.9); transform-origin:25% 75%;"
-                    } else {
-                        ""
-                    },
-                ),
-            |state: &mut Bench, event: cambium::PointerEvent| {
-                if event.phase == PointerPhase::Down {
-                    state.pick(event.local, event.size);
-                }
-            },
-        ))
-    } else {
-        Box::new(el("div", text("Specimen hidden")).attr("class", "hidden-preview"))
-    };
     let overlay: Child = Box::new(focusable(clickable(
         el("button", text("Clear selection"))
             .attr("class", "overlay")
@@ -163,6 +129,48 @@ pub(super) fn root(state: &Bench) -> Child {
             state.clear();
         },
     )));
+    // isomere's shared card (M1 of the isomere plan), with the bench's own
+    // tint class, its transform demonstration and its decorated frame. Hidden,
+    // the same container holds the placeholder, so the overlay stays over it.
+    let card_class = if state.decorated {
+        "scene-card decorated"
+    } else {
+        "scene-card"
+    };
+    let scene: Child = if state.visible {
+        let card = ViewportCard {
+            id: Some("specimen-viewport"),
+            class: Some(match state.tint {
+                1 => "viewport warm",
+                2 => "viewport cool",
+                _ => "viewport",
+            }),
+            style: Some(if state.transformed {
+                "transform:rotate(7deg) scale(0.9); transform-origin:25% 75%;"
+            } else {
+                ""
+            }),
+            card_class: Some(card_class),
+            ..ViewportCard::new(LEAF_KEY, (640, 400), "Specimen")
+        };
+        isomere::viewport_card(
+            &card,
+            Some(overlay),
+            Some(|state: &mut Bench, event: cambium::PointerEvent| {
+                if event.phase == PointerPhase::Down {
+                    state.pick(event.local, event.size);
+                }
+            }),
+        )
+    } else {
+        isomere::scene_card(
+            Some(card_class),
+            vec![
+                Box::new(el("div", text("Specimen hidden")).attr("class", "hidden-preview")),
+                overlay,
+            ],
+        )
+    };
     let mut controls = vec![
         button("World trial", Bench::start_trial),
         button("Effects experiment", |s| {
@@ -223,14 +231,7 @@ pub(super) fn root(state: &Bench) -> Child {
                         el(
                             "section",
                             (
-                                el("div", (viewport, overlay)).attr(
-                                    "class",
-                                    if state.decorated {
-                                        "scene-card decorated"
-                                    } else {
-                                        "scene-card"
-                                    },
-                                ),
+                                scene,
                                 el("div", controls).attr("class", "toolbar"),
                                 el("div", appearance).attr("class", "toolbar appearance"),
                                 if model.trial.is_none() {
@@ -238,9 +239,7 @@ pub(super) fn root(state: &Bench) -> Child {
                                 } else {
                                     Box::new(el("div", ())) as Child
                                 },
-                                el("p", text(notice))
-                                    .attr("role", "status")
-                                    .attr("id", "notice"),
+                                isomere::error_line("notice", notice),
                             ),
                         )
                         .attr("class", "preview-column"),

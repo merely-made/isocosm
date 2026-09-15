@@ -5,11 +5,8 @@
 
 use std::sync::LazyLock;
 
-use cambium::{
-    AnyView, GenetCtx, GenetElement, PointerPhase, clickable, custom_leaf, el, focusable,
-    on_pointer, text,
-};
-use isomere::{Picked, Seeds, Sizes};
+use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
+use isomere::{Picked, Seeds, Sizes, ViewportCard};
 use isometer::core::PartId;
 use paredros_world::ItemKind;
 
@@ -41,25 +38,32 @@ fn field(name: &str, value: String) -> Child {
     )
 }
 
+/// The scene card: isomere's shared container and leaf, with the session's own
+/// key, label and selection description (M1 of the isomere plan). The card
+/// carries no overlay; the session's controls live under it, not over it.
 fn viewport(state: &SessionApp) -> Child {
-    Box::new(on_pointer(
-        custom_leaf::<SessionApp, ()>(LEAF_KEY, 720, 440)
-            .attr("id", "scene-viewport")
-            .attr("class", "viewport")
-            .attr("role", "img")
-            .attr("aria-label", "Scene")
-            .attr("aria-description", state.selection_line()),
-        |state: &mut SessionApp, event: cambium::PointerEvent| match event.phase {
-            // A press both names what was clicked and begins the charge, so a
-            // mouse-only player has the same verb the keyboard has.
-            PointerPhase::Down => {
-                state.pick(event.local, event.size);
-                state.begin_charge();
+    let description = state.selection_line();
+    let card = ViewportCard {
+        id: Some("scene-viewport"),
+        description: Some(&description),
+        ..ViewportCard::new(LEAF_KEY, (720, 440), "Scene")
+    };
+    isomere::viewport_card(
+        &card,
+        None,
+        Some(
+            |state: &mut SessionApp, event: cambium::PointerEvent| match event.phase {
+                // A press both names what was clicked and begins the charge, so
+                // a mouse-only player has the same verb the keyboard has.
+                PointerPhase::Down => {
+                    state.pick(event.local, event.size);
+                    state.begin_charge();
+                },
+                PointerPhase::Up => state.release(),
+                PointerPhase::Move => {},
             },
-            PointerPhase::Up => state.release(),
-            PointerPhase::Move => {},
-        },
-    ))
+        ),
+    )
 }
 
 fn sheet_panel(state: &SessionApp) -> Child {
@@ -330,14 +334,12 @@ pub(super) fn root(state: &SessionApp) -> Child {
                         el(
                             "section",
                             (
-                                el("div", viewport(state)).attr("class", "scene-card"),
+                                viewport(state),
                                 el("p", text(state.selection_line()))
                                     .attr("id", "selection")
                                     .attr("role", "status"),
                                 el("div", controls).attr("class", "toolbar"),
-                                el("p", text(error))
-                                    .attr("id", "viewport-error")
-                                    .attr("role", "status"),
+                                isomere::error_line("viewport-error", error),
                             ),
                         )
                         .attr("class", "scene-column"),

@@ -50,11 +50,26 @@
 //! assert!(css.contains(".part.selected"));
 //! ```
 
+//! ## M1: the viewport card and the error line
+//!
+//! [`viewport`] is the card the bench and the session each wrote by hand: a
+//! `custom_leaf` with `role="img"` and a label, inside a `.scene-card`, with an
+//! optional overlay over it, and the error line under the column. What a
+//! product hands over is a leaf key and a box — never a scene — plus the four
+//! things the two genuinely differed on (leaf class, id, description, and the
+//! bench's transform style). The Isometry overmap is *not* a consumer: its leaf
+//! is Cambium's own `GraphCanvasSwatch`, placed in a panel rather than a card.
+
 pub mod palette;
 pub mod sheet;
+pub mod viewport;
 
 pub use palette::{Palette, Picked, Seeds, css_vars, derive, text_contrast};
 pub use sheet::{Sizes, css_sizes, from_palette, shared, sheet, sheet_with};
+pub use viewport::{
+    CARD_CLASS, ERROR_CLASS, LEAF_CLASS, ViewportCard, error_attrs, error_line, scene_card,
+    viewport_card, viewport_leaf,
+};
 
 /// Re-exported so a product names one crate, not two, when it spells a seed.
 pub use tinct::{Srgb, best_on, color_from_hex, color_to_hex, contrast, mix};
