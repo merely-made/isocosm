@@ -21,6 +21,9 @@ tempfile = "3"
 mesocosm-core = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
+# The shared glyph kernel: the canon the bench's journey preset declares and
+# the declaration half of the effect pack. Data only; execution is core's.
+wing-glyphs = { path = "../../../shared/wing-glyphs" }
 netrender = { workspace = true }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
@@ -53,6 +56,11 @@ mesquite = { workspace = true }
 # the traced main view is `isometer::lens`, the HUD's backdrop renderer is
 # `isometer::render`, and the body projection is `isometer::mesh`.
 isometer = { path = "../../../shared/isometer" }
+# M0 of the isomere plan: the wing GUI layer. The bench sheet is isomere's
+# shared rules under this product's seeds plus its own remaining rules. A
+# sibling path crate under the repository's `shared/`, like isometer, and it
+# names no scene and no voxel.
+isomere = { path = "../../../shared/isomere" }
 wgpu = { workspace = true }
 winit = "0.30"
 pollster = "0.4"
