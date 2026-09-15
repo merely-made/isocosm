@@ -1,0 +1,17 @@
+[package]
+name = "isometer-core"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "The wing's product-neutral body and ground substrate: body documents, part identity, voxel content addresses, quarter turns, provenance, brick ground, and the postcard/blake3-free interchange seam."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# The family's floor. It must stay buildable for any target a host might run
+# on, and it must never name a product: no world, no organism, no lineage
+# generation, no rendering, no wgpu.
+[dependencies]
+# The shared wire header and the flat `PartOrigin` record the framing carries.
+wing-formats = { path = "../../../wing-formats" }
+serde = { version = "1", features = ["derive"] }
+postcard = { version = "1", features = ["alloc"] }
