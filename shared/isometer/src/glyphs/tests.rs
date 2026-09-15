@@ -197,6 +197,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
                                     tint: [1.0; 3],
                                     focused: false,
                                     selected_part: None,
+                                    palette: None,
                                 }],
                             )
                             .expect("real voxel occluder");

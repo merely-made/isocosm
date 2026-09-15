@@ -10,7 +10,7 @@
 //! placement, an organism's movement, scale, and its presentation tint are
 //! per-frame instance data, so they do not cause static geometry uploads.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use bytemuck::{Pod, Zeroable};
 #[cfg(test)]
@@ -21,16 +21,19 @@ use isometer_core::{PartId, VolumeRef};
 use isometer_mesh::{BodyMesh, PartMesh};
 use wgpu::util::DeviceExt;
 
-use crate::geometry::{Vertex, face_shade, material_colour};
-
 mod materials;
+mod palette;
 mod pose;
 mod query;
+mod vertex;
 
 pub use materials::{PartMaterial, TISSUE_CHANNELS};
+pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
 pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad};
 
 use materials::part_appearance;
+use palette::{PaletteBlock, PaletteTable, palette_slot};
+use vertex::{BodyVertex, part_vertices};
 #[cfg(test)]
 use materials::valid_materials;
 use pose::{model_matrix, validate_body, validate_clip};
@@ -56,6 +59,13 @@ pub struct LiveBody<'a> {
     /// Per-part expression summaries from the host's phenotype projection.
     /// They are per-instance data and never alter the immutable volume cache.
     pub materials: &'a [PartMaterial],
+    /// Optional colour table for this body's material ids. `None`, an empty
+    /// table, or an id the table is too short to name all keep the hashed
+    /// [`material_colour`](crate::material_colour) this pass has always used.
+    ///
+    /// Per-instance data like the tint: the immutable volume cache is keyed by
+    /// volume bytes alone, and a palette never enters it.
+    pub palette: Option<MaterialPalette<'a>>,
 }
 
 impl<'a> LiveBody<'a> {
@@ -69,6 +79,7 @@ impl<'a> LiveBody<'a> {
             focused: false,
             selected_part: None,
             materials: &[],
+            palette: None,
         }
     }
 }
@@ -108,6 +119,9 @@ pub struct BodyDrawStats {
     pub frame_upload_bytes: usize,
     pub instances: usize,
     pub instance_upload_bytes: usize,
+    /// Colour-table bytes written this call. Zero for every frame whose
+    /// bodies carry no palette, including the first.
+    pub palette_upload_bytes: usize,
     /// Rigid part placements submitted, before batching shared volumes.
     pub draw_parts: usize,
     pub draws: usize,
@@ -215,7 +229,10 @@ pub struct LiveBodyRenderer {
     frame_buffer: wgpu::Buffer,
     frame_bind_group: wgpu::BindGroup,
     meshes: BTreeMap<[u8; 32], CachedMesh>,
-    instances: BTreeMap<[u8; 32], CachedInstances>,
+    /// Keyed by volume *and* palette slot: two bodies of one volume under
+    /// different colour tables are two batches over one cached geometry.
+    instances: BTreeMap<([u8; 32], u32), CachedInstances>,
+    palettes: PaletteTable,
     max_cached_meshes: usize,
     clock: u64,
     last_frame: Option<FrameUniform>,
@@ -260,9 +277,10 @@ impl LiveBodyRenderer {
                 resource: frame_buffer.as_entire_binding(),
             }],
         });
+        let palettes = PaletteTable::new(device);
         let layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
             label: Some("mesocosm live body layout"),
-            bind_group_layouts: &[Some(&frame_layout)],
+            bind_group_layouts: &[Some(&frame_layout), Some(&palettes.layout)],
             immediate_size: 0,
         });
         let pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
@@ -271,7 +289,7 @@ impl LiveBodyRenderer {
             vertex: wgpu::VertexState {
                 module: &shader,
                 entry_point: Some("vs_main"),
-                buffers: &[Some(Vertex::LAYOUT), Some(Instance::LAYOUT)],
+                buffers: &[Some(BodyVertex::LAYOUT), Some(Instance::LAYOUT)],
                 compilation_options: Default::default(),
             },
             fragment: Some(wgpu::FragmentState {
@@ -306,6 +324,7 @@ impl LiveBodyRenderer {
             frame_bind_group,
             meshes: BTreeMap::new(),
             instances: BTreeMap::new(),
+            palettes,
             max_cached_meshes: max_cached_meshes.max(1),
             clock: 0,
             last_frame: None,
@@ -344,10 +363,14 @@ impl LiveBodyRenderer {
         }
         self.clock = self.clock.wrapping_add(1);
         let mut stats = BodyDrawStats::default();
-        let mut instances: BTreeMap<[u8; 32], Vec<Instance>> = BTreeMap::new();
+        let mut instances: BTreeMap<([u8; 32], u32), Vec<Instance>> = BTreeMap::new();
+        let mut tables: Vec<MaterialPalette<'_>> = Vec::new();
+        let mut volumes: BTreeSet<[u8; 32]> = BTreeSet::new();
         for body in bodies {
+            let slot = palette_slot(body.palette, &mut tables);
             for placement in &body.mesh.placements {
-                let key = placement.volume.0;
+                let key = (placement.volume.0, slot);
+                volumes.insert(placement.volume.0);
                 let model = model_matrix(*body, placement.yaw, placement.pivot, placement.pivot_at);
                 let appearance = part_appearance(*body, placement.part);
                 instances.entry(key).or_default().push(Instance {
@@ -358,13 +381,15 @@ impl LiveBodyRenderer {
                 });
             }
         }
-        if instances.len() > self.max_cached_meshes {
+        // The cache holds geometry, so its capacity is counted in distinct
+        // volumes rather than in batches a palette may have split.
+        if volumes.len() > self.max_cached_meshes {
             self.last_stats = BodyDrawStats {
                 cached_meshes: self.meshes.len(),
                 ..stats
             };
             return Err(LiveBodyError::CacheOverflow {
-                required_meshes: instances.len(),
+                required_meshes: volumes.len(),
                 capacity: self.max_cached_meshes,
             });
         }
@@ -398,6 +423,9 @@ impl LiveBodyRenderer {
             stats.frame_upload_bytes = size_of::<FrameUniform>();
             self.last_frame = Some(frame);
         }
+        let mut blocks = vec![PaletteBlock::zeroed()];
+        blocks.extend(tables.iter().map(|table| PaletteBlock::of(*table)));
+        stats.palette_upload_bytes = self.palettes.upload(device, queue, &blocks);
         for (key, batch) in &instances {
             stats.instances += batch.len();
             stats.draw_parts += batch.len();
@@ -429,11 +457,12 @@ impl LiveBodyRenderer {
         pass.set_pipeline(&self.pipeline);
         pass.set_bind_group(0, &self.frame_bind_group, &[]);
         for (key, batch) in &instances {
-            let cached = self.meshes.get(key).expect("cached before batching");
+            let cached = self.meshes.get(&key.0).expect("cached before batching");
             if cached.vertex_count == 0 {
                 continue;
             }
             let instance_buffer = &self.instances.get(key).expect("updated before pass").buffer;
+            pass.set_bind_group(1, self.palettes.bind_group(), &[PaletteTable::offset(key.1)]);
             pass.set_vertex_buffer(0, cached.vertices.slice(..));
             pass.set_vertex_buffer(1, instance_buffer.slice(..));
             pass.draw(0..cached.vertex_count, 0..batch.len() as u32);
@@ -464,7 +493,7 @@ impl LiveBodyRenderer {
                 .map(|(key, _)| *key)
                 .expect("nonempty over capacity");
             self.meshes.remove(&oldest);
-            self.instances.remove(&oldest);
+            self.instances.retain(|(volume, _), _| *volume != oldest);
             stats.evictions += 1;
         }
         let vertices = part_vertices(mesh);
@@ -472,9 +501,10 @@ impl LiveBodyRenderer {
         let buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("mesocosm live body volume"),
             contents: if vertices.is_empty() {
-                bytemuck::bytes_of(&Vertex {
+                bytemuck::bytes_of(&BodyVertex {
                     position: [0.0; 3],
-                    color: [0.0; 3],
+                    colour: [0.0; 3],
+                    material_shade: [0.0; 2],
                 })
             } else {
                 bytemuck::cast_slice(&vertices)
@@ -491,7 +521,7 @@ impl LiveBodyRenderer {
         );
         stats.mesh_builds += 1;
         stats.mesh_uploads += 1;
-        stats.mesh_upload_bytes += size_of::<Vertex>() * vertices.len();
+        stats.mesh_upload_bytes += size_of::<BodyVertex>() * vertices.len();
         stats.static_vertices_uploaded += vertices.len();
     }
 
@@ -499,7 +529,7 @@ impl LiveBodyRenderer {
         &mut self,
         device: &wgpu::Device,
         queue: &wgpu::Queue,
-        key: [u8; 32],
+        key: ([u8; 32], u32),
         instances: &[Instance],
         stats: &mut BodyDrawStats,
     ) {
@@ -536,23 +566,10 @@ impl LiveBodyRenderer {
     }
 }
 
-fn part_vertices(mesh: &PartMesh) -> Vec<Vertex> {
-    let mut vertices = Vec::with_capacity(mesh.quads.len() * 6);
-    for quad in &mesh.quads {
-        let base = material_colour(quad.material);
-        let shade = face_shade(quad.axis, quad.positive);
-        let colour = [base[0] * shade, base[1] * shade, base[2] * shade];
-        let corners = quad.corners();
-        for index in [0, 1, 2, 0, 2, 3] {
-            vertices.push(Vertex {
-                position: corners[index].map(|value| value as f32),
-                color: colour,
-            });
-        }
-    }
-    vertices
-}
-
 #[cfg(test)]
 #[path = "live_body_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "live_body/palette_tests.rs"]
+mod palette_tests;

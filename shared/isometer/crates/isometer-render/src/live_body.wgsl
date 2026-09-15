@@ -9,6 +9,17 @@ struct Frame {
 @group(0) @binding(0)
 var<uniform> frame: Frame;
 
+// One body's colour table. Entry i is material i, and its w marks an entry the
+// table actually names; an all-zero block is "no table" and every material
+// then keeps the vertex's own hashed colour. Bound per draw by a dynamic
+// offset, so bodies sharing a palette still batch.
+struct Palette {
+    entries: array<vec4<f32>, 256>,
+};
+
+@group(1) @binding(0)
+var<uniform> palette: Palette;
+
 struct VertexIn {
     @location(0) position: vec3<f32>,
     @location(1) color: vec3<f32>,
@@ -19,6 +30,7 @@ struct VertexIn {
     @location(6) tint: vec4<f32>,
     @location(7) expression: vec4<f32>,
     @location(8) expression_tail: vec4<f32>,
+    @location(9) material_shade: vec2<f32>,
 };
 
 struct VertexOut {
@@ -35,9 +47,17 @@ struct VertexOut {
 fn vs_main(input: VertexIn) -> VertexOut {
     let model = mat4x4<f32>(input.model_x, input.model_y, input.model_z, input.model_w);
     let world = model * vec4<f32>(input.position, 1.0);
+    // The vertex already carries material_colour(material) * face_shade(..).
+    // A table entry replaces only the material half of that product, so the
+    // face shading and the tint multiply exactly as they always have.
+    var base = input.color;
+    let entry = palette.entries[u32(input.material_shade.x)];
+    if (entry.w > 0.5) {
+        base = entry.xyz * input.material_shade.y;
+    }
     return VertexOut(
         frame.clip_from_world * world,
-        input.color * input.tint.xyz,
+        base * input.tint.xyz,
         world.xyz,
         input.position,
         input.expression,

@@ -192,6 +192,7 @@ fn voxel_body_and_brick_tracer_share_depth_in_both_orders() {
                         tint: [1.0; 3],
                         focused: false,
                         selected_part: selected.then_some(PartId(0)),
+                        palette: None,
                     }],
                 )
                 .expect("body draw");

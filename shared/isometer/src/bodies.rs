@@ -11,9 +11,15 @@
 //! nothing that could name a world. A host keeps its own organisms, subjects or
 //! tokens behind a [`SubjectKey`] and hands this layer one slice per frame.
 
+use std::collections::BTreeMap;
+
 use isometer_core::{BodyDocument, PartId};
 use isometer_mesh::{BodyDependencyRevision, BodyMesh, LiveBodyProjector, MeshError, VolumeMap};
 use isometer_render::live_body::{LiveBody, LiveBodyRenderer};
+
+/// The renderer's colour table and its entries, reached through the facade so
+/// a host names one crate.
+pub use isometer_render::live_body::{MaterialPalette, PaletteColour};
 
 use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
@@ -98,6 +104,10 @@ struct PlacedBody {
     scale: f32,
     yaw_radians: f32,
     tint: [f32; 3],
+    /// The colour table this body was prepared under, copied so a host may
+    /// change its registry between prepare and draw without the frame
+    /// changing colour half-way through.
+    palette: Vec<PaletteColour>,
 }
 
 impl PlacedBody {
@@ -105,6 +115,7 @@ impl PlacedBody {
         LiveBody {
             mesh: &self.mesh,
             materials: &self.materials,
+            palette: (!self.palette.is_empty()).then(|| MaterialPalette::new(&self.palette)),
             origin: self.origin,
             scale: self.scale,
             yaw_radians: self.yaw_radians,
@@ -121,6 +132,7 @@ pub struct BodyLayer {
     projector: LiveBodyProjector,
     renderer: LiveBodyRenderer,
     placed: Vec<PlacedBody>,
+    palettes: BTreeMap<SubjectKey, Vec<PaletteColour>>,
     pub stats: BodyFrameStats,
     pub budget: usize,
     /// Draw only the always-visible body, with no terrain behind it.
@@ -141,6 +153,7 @@ impl BodyLayer {
             projector: LiveBodyProjector::default(),
             renderer: LiveBodyRenderer::new(device, isometer_lens::FRAME_FORMAT, 256),
             placed: Vec::new(),
+            palettes: BTreeMap::new(),
             stats: BodyFrameStats::default(),
             budget: 1,
             isolated: false,
@@ -167,6 +180,38 @@ impl BodyLayer {
     /// a producer's suspension.
     pub fn cached_bodies(&self) -> usize {
         self.projector.cached_mesh_count()
+    }
+
+    /// Gives one subject a per-material colour table, or takes its table
+    /// away with `None`.
+    ///
+    /// Registered against the subject rather than carried on [`SceneBody`]
+    /// because a body's palette belongs to its *recipe*, which outlives the
+    /// frame: a host builds the table once from
+    /// [`material_colours`](crate::material_colours) and every later frame of
+    /// that token draws through it, with no per-frame slice to keep alive. A
+    /// subject with no table draws exactly as it did before there were
+    /// tables: the renderer keeps its hashed material colour.
+    ///
+    /// Entry `i` is material `i`; entry `0` is the empty material and is never
+    /// drawn. A table shorter than the highest material id in the body is not
+    /// an error — the materials it does not name keep the hashed colour.
+    pub fn set_palette(&mut self, subject: SubjectKey, colours: Option<Vec<PaletteColour>>) {
+        match colours {
+            Some(colours) => self.palettes.insert(subject, colours),
+            None => self.palettes.remove(&subject),
+        };
+    }
+
+    /// The table a subject draws through, if it has one.
+    pub fn palette(&self, subject: SubjectKey) -> Option<&[PaletteColour]> {
+        self.palettes.get(&subject).map(Vec::as_slice)
+    }
+
+    /// Forgets every registered table. A host whose subject keys are reused
+    /// across worlds calls this when it swaps one.
+    pub fn clear_palettes(&mut self) {
+        self.palettes.clear();
     }
 
     pub fn clear_inspection(&mut self) {
@@ -405,6 +450,7 @@ impl BodyLayer {
                         scale: body.scale,
                         yaw_radians: body.pose.yaw_radians,
                         tint: body.tint,
+                        palette: self.palettes.get(&body.subject).cloned().unwrap_or_default(),
                     };
                     match isometer_render::live_body::body_bounds(placed.live()) {
                         Ok(Some(bounds)) if body.always_visible || intersects(bounds, window) => {},
