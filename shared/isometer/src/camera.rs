@@ -79,6 +79,71 @@ impl SlabCamera {
         camera.framable().then_some(camera)
     }
 
+    /// The board's locked 2:1 dimetric lens, as a forward vector.
+    ///
+    /// Isometry's `IsoGeometry` is a pure screen transform — a tile at
+    /// `(col, row, elev)` lands at `x = (col - row) * tile_w / 2`,
+    /// `y = (col + row) * tile_h / 2 - elev * elev_step`, with the shipped
+    /// 32 / 16 / 8 defaults. This preset is the camera that reproduces it,
+    /// so the same board drawn through the scene keeps the shipped framing.
+    ///
+    /// **Azimuth.** The lens looks down the `x = z` diagonal, so the column
+    /// axis (world `+x`) runs down-right on screen and the row axis (world
+    /// `+z`) down-left, as `tile_to_screen` has them. The horizontal part of
+    /// the forward is therefore `(-1, 0, -1) / sqrt(2)`.
+    ///
+    /// **Pitch.** With `h = (hx, 0, hz)` the unit horizontal and `theta` the
+    /// downward pitch, [`Self::basis`] builds
+    /// `right = (-hz, 0, hx)` and `up = (hx sin, cos, hz sin)`, both unit.
+    /// The frame is square-pixelled when the target's aspect is its width
+    /// over its height, and then a world offset `d` moves
+    /// `dx = k dot(right, d)`, `dy = -k dot(up, d)` pixels for one scale `k`.
+    /// A world `+x` unit gives `dx = -k hz = k / sqrt(2)` and
+    /// `dy = -k hx sin(theta) = k sin(theta) / sqrt(2)`, so
+    ///
+    /// ```text
+    /// dy / dx = sin(theta) = tile_h / tile_w = 1 / 2  =>  theta = 30 degrees
+    /// ```
+    ///
+    /// Thirty degrees, **not** the `atan(1/2)` ~= 26.565 degrees that the
+    /// 2:1 slope suggests: `atan(1/2)` is the angle of the tile edge *on
+    /// screen*, while the projection divides the vertical by the camera's own
+    /// unit `up`, which costs a further `cos(theta)`. (The 35.264 degrees of
+    /// a true isometric would give 2 : 1.155 tiles, which is why the pixel
+    /// lens is dimetric.) Hence
+    /// `forward = (-cos30/sqrt2, -sin30, -cos30/sqrt2)`, a unit vector whose
+    /// flat components are `sqrt(3/8)`.
+    ///
+    /// **The vertical.** A world `+y` unit projects to `dy = -k cos(theta)`:
+    /// straight up the screen, as elevation does on the board. One board
+    /// elevation step is therefore not one tile of world height. With
+    /// `tile_len` world units to a tile, a tile spans
+    /// `tile_h = k tile_len sin(theta) sqrt(2)` pixels tall, so the world
+    /// height that rises `elev_step` pixels is
+    ///
+    /// ```text
+    /// step = tile_len * (elev_step / tile_h) * sqrt(2) * tan(theta)
+    ///      = tile_len * (elev_step / tile_h) * sqrt(2 / 3)
+    /// ```
+    ///
+    /// — for the shipped halves-and-doubles defaults, `tile_len / sqrt(6)`.
+    /// A host places `(col, row, elev)` at
+    /// `(col * tile_len, elev * step, row * tile_len)` and gets the board's
+    /// own pixels back, to a uniform scale and translation.
+    ///
+    /// `None` on the same terms as [`SlabCamera::new`]: the forward always
+    /// has a horizontal component, so only the extents can refuse.
+    pub fn dimetric_2_1(
+        centre: [f32; 3],
+        half_height: f32,
+        aspect: f32,
+        depth: f32,
+    ) -> Option<Self> {
+        // cos(30) / sqrt(2), squared: (3/4) / 2.
+        let flat = -(0.375f32).sqrt();
+        Self::new(centre, [flat, -0.5, flat], half_height, aspect, depth)
+    }
+
     pub fn with_cutaway(self, cutaway: Option<Cutaway>) -> Self {
         Self { cutaway, ..self }
     }

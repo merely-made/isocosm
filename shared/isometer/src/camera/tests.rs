@@ -61,8 +61,15 @@ fn camera(forward: [f32; 3], centre: [f32; 3], half: f32, aspect: f32) -> SlabCa
     }
 }
 
+/// The forward `SlabCamera::dimetric_2_1` produces: the board's locked lens.
+fn dimetric_forward() -> [f32; 3] {
+    SlabCamera::dimetric_2_1([0.0; 3], 28.0, 1.78, SLAB_DEPTH)
+        .expect("the preset frames")
+        .forward
+}
+
 fn all_presets() -> Vec<[f32; 3]> {
-    let mut presets = vec![SIDE, ACROSS, oblique()];
+    let mut presets = vec![SIDE, ACROSS, oblique(), dimetric_forward()];
     presets.extend(HORIZONTALS.map(|h| pitched(h, 12.0)));
     presets
 }
@@ -394,4 +401,200 @@ fn a_world_point_lands_where_the_raster_matrix_puts_it() {
         assert_eq!(camera.pixel_of(camera.centre, [0, 32]), None);
         assert_eq!(camera.ndc_of([f32::NAN; 3]), None);
     }
+}
+
+/// Isometry's shipped `IsoGeometry` defaults, restated rather than imported:
+/// `isometry-core` is the host's crate and this one stays neutral.
+const TILE_W: f32 = 32.0;
+const TILE_H: f32 = 16.0;
+const ELEV_STEP: f32 = 8.0;
+/// One tile is one world unit along each board axis.
+const TILE_LEN: f32 = 1.0;
+/// Where the board sits in the world; nothing about the lens depends on it.
+const BOARD_ORIGIN: [f32; 3] = [-3.25, 11.5, 7.75];
+
+/// The host's placement: columns along `+x`, rows along `+z`, elevation up,
+/// one elevation step being the world height `dimetric_2_1` derives.
+fn board_world(col: i32, row: i32, elev: i32) -> [f32; 3] {
+    let step = TILE_LEN * (ELEV_STEP / TILE_H) * (2.0f32 / 3.0).sqrt();
+    [
+        BOARD_ORIGIN[0] + col as f32 * TILE_LEN,
+        BOARD_ORIGIN[1] + elev as f32 * step,
+        BOARD_ORIGIN[2] + row as f32 * TILE_LEN,
+    ]
+}
+
+/// `IsoGeometry::tile_to_screen` with the shipped 32 / 16 / 8 defaults.
+fn board_screen(col: i32, row: i32, elev: i32) -> [f32; 2] {
+    [
+        (col - row) as f32 * TILE_W * 0.5,
+        (col + row) as f32 * TILE_H * 0.5 - elev as f32 * ELEV_STEP,
+    ]
+}
+
+/// Pixels per world unit: `pixel_of`'s scale on a square-pixelled target.
+fn world_to_pixels(size: [u32; 2], half_height: f32) -> f32 {
+    size[1] as f32 / (2.0 * half_height)
+}
+
+/// The preset framed onto a target of `size`, at the aspect that makes its
+/// pixels square — the only aspect at which a 2:1 claim means anything — and
+/// nudged half a pixel so a board tile's exact position lands on a pixel
+/// centre rather than on `pixel_of`'s rounding knife-edge.
+fn dimetric(centre: [f32; 3], size: [u32; 2], half_height: f32) -> SlabCamera {
+    let aspect = size[0] as f32 / size[1] as f32;
+    let camera = SlabCamera::dimetric_2_1(centre, half_height, aspect, SLAB_DEPTH)
+        .expect("the preset frames");
+    let [right, up, _] = camera.basis();
+    let half_pixel = 0.5 / world_to_pixels(size, half_height);
+    SlabCamera {
+        centre: [0, 1, 2].map(|i| centre[i] + (up[i] - right[i]) * half_pixel),
+        ..camera
+    }
+}
+
+/// The board through the preset is the board: every cell of a 9 by 9 by 3 grid
+/// lands where `tile_to_screen` puts it, to one scale and one translation,
+/// within a pixel. First at the scale that makes a board screen unit a pixel —
+/// the shipped lens — then at another, since the preset owes the angle, not
+/// the zoom.
+#[test]
+fn the_dimetric_preset_lands_board_tiles_where_iso_geometry_puts_them() {
+    let size = [384u32, 256];
+    for half_height in [4.0 * std::f32::consts::SQRT_2, 4.0] {
+        let camera = dimetric(board_world(4, 4, 1), size, half_height);
+        // One board screen unit in pixels: a world x unit lies `1 / sqrt 2`
+        // along the camera's right, and half a tile width on the board.
+        let scale = world_to_pixels(size, half_height) / (TILE_W * 0.5 * std::f32::consts::SQRT_2);
+        let anchor = camera
+            .pixel_of(board_world(4, 4, 1), size)
+            .expect("the grid centre is in shot");
+        let anchor_screen = board_screen(4, 4, 1);
+        for col in 0..9 {
+            for row in 0..9 {
+                for elev in 0..3 {
+                    let pixel = camera
+                        .pixel_of(board_world(col, row, elev), size)
+                        .unwrap_or_else(|| panic!("({col}, {row}, {elev}) left the frame"));
+                    let screen = board_screen(col, row, elev);
+                    for axis in 0..2 {
+                        let expected =
+                            anchor[axis] as f32 + scale * (screen[axis] - anchor_screen[axis]);
+                        assert!(
+                            (pixel[axis] as f32 - expected).abs() <= 1.0,
+                            "({col}, {row}, {elev}) axis {axis} at half height {half_height}: {pixel:?} against {expected}"
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// The 2:1 claim itself, on the projection rather than on a rounded pixel: a
+/// column step runs down-right and a row step down-left, each twice as far
+/// across as it falls — at 30 degrees of pitch, not the 26.565 the slope of
+/// the tile edge suggests.
+#[test]
+fn the_dimetric_board_axes_project_exactly_two_to_one() {
+    let size = [384u32, 256];
+    let camera = dimetric(board_world(4, 4, 1), size, 4.0 * std::f32::consts::SQRT_2);
+
+    let forward = camera.forward;
+    assert!((dot(forward, forward) - 1.0).abs() < 1e-6, "{forward:?}");
+    assert!(
+        ((-forward[1]).asin().to_degrees() - 30.0).abs() < 1e-4,
+        "the pitch is arcsin(1/2): {forward:?}"
+    );
+    assert!(
+        (forward[0] - forward[2]).abs() < 1e-6 && forward[0] < 0.0,
+        "45 degrees of azimuth, looking down the x = z diagonal: {forward:?}"
+    );
+
+    // Screen offset in pixels between two world points, off the projection.
+    let offset = |from: [f32; 3], to: [f32; 3]| {
+        let (a, b) = (camera.ndc_of(from).unwrap(), camera.ndc_of(to).unwrap());
+        [
+            (b[0] - a[0]) * size[0] as f32 * 0.5,
+            (a[1] - b[1]) * size[1] as f32 * 0.5,
+        ]
+    };
+
+    for (axis, cell, across) in [("column", (1, 0), 1.0f32), ("row", (0, 1), -1.0)] {
+        let step = offset(board_world(0, 0, 0), board_world(cell.0, cell.1, 0));
+        assert!(
+            step[1] > 0.0,
+            "the {axis} axis runs down the screen: {step:?}"
+        );
+        assert!(
+            step[0] * across > 0.0,
+            "the {axis} axis runs the way tile_to_screen has it: {step:?}"
+        );
+        assert!(
+            (step[0].abs() - 2.0 * step[1]).abs() < 1e-3,
+            "the {axis} axis is not 2:1: {step:?}"
+        );
+    }
+}
+
+/// Elevation is the board's too: a raised cell sits directly above its ground
+/// cell, `elev_step` pixels per step, at the lens's own scale.
+#[test]
+fn a_raised_board_cell_projects_straight_up_by_the_elevation_step() {
+    let size = [384u32, 256];
+    // One board screen unit is one pixel at this half height.
+    let half_height = TILE_LEN * size[1] as f32 / (TILE_W * std::f32::consts::SQRT_2);
+    let camera = dimetric(board_world(4, 4, 1), size, half_height);
+    for (col, row) in [(0, 0), (4, 4), (8, 0), (0, 8), (8, 8), (2, 7)] {
+        let ground = camera
+            .pixel_of(board_world(col, row, 0), size)
+            .expect("in shot");
+        for elev in 1..3 {
+            let raised = camera
+                .pixel_of(board_world(col, row, elev), size)
+                .expect("in shot");
+            assert_eq!(raised[0], ground[0], "({col}, {row}) leaned as it rose");
+            assert_eq!(
+                ground[1] - raised[1],
+                elev as u32 * ELEV_STEP as u32,
+                "({col}, {row}) rose the wrong distance at elevation {elev}"
+            );
+        }
+    }
+}
+
+/// The preset is a camera like any other: it frames, its rays start on the
+/// front standing wall and end on the far one, its raster depth holds them,
+/// and its window keeps what it draws.
+#[test]
+fn the_dimetric_preset_seeds_its_rays_on_the_standing_walls() {
+    let view = camera(dimetric_forward(), [3.0, 200.0, -7.0], 5.0, 1.0);
+    let trace = view.trace().expect("the preset frames");
+    let clip = view.clip();
+    for ndc in [[0.0, 0.5], [-0.75, -0.75], [0.75, 0.75]] {
+        let (origin, direction) = trace.ray_at(ndc).unwrap();
+        let end = [0, 1, 2].map(|i| origin[i] + direction[i] * trace.far());
+        assert!(
+            (dot(clip.normal, origin) - clip.min).abs() < 1e-4,
+            "front wall"
+        );
+        assert!((dot(clip.normal, end) - clip.max).abs() < 1e-4, "far wall");
+        for point in [origin, end] {
+            let matrix = view.clip_from_world();
+            let depth = matrix[3][2] + (0..3).map(|i| matrix[i][2] * point[i]).sum::<f32>();
+            assert!(
+                (0.0..=1.0).contains(&depth),
+                "{point:?} left the raster depth"
+            );
+        }
+    }
+    assert!(
+        view.reach() > SLAB_DEPTH * 0.5,
+        "a pitched camera reaches past its half depth"
+    );
+    assert!(view.window().holds(view.centre));
+    assert!(view.vertical_half() > view.half_height);
+    // And it refuses the numbers `new` refuses.
+    assert!(SlabCamera::dimetric_2_1([0.0; 3], 0.0, 1.5, SLAB_DEPTH).is_none());
+    assert!(SlabCamera::dimetric_2_1([f32::NAN; 3], 8.0, 1.5, SLAB_DEPTH).is_none());
 }
