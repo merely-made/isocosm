@@ -282,3 +282,44 @@ with the family's receipts unchanged; then the board.
   and left alone: `overmap/atlas_terrain.rs` carries a second kind-to-
   colour table for the overmap swatch, a drift risk for a later pass.
   80 views tests, 368 workspace tests with all features.
+- **2026-09-15, B2 landed.** `ISOMETRY_SCENE_BOARD=1` draws the board as
+  one `custom_leaf` over an `isometer::SceneProducer`: B1's `MapTerrain`
+  grown to a `Ground` and bound as a `BrickMap` with `terrain_palette`,
+  each token a one-part `TokenBody` from the same recipe table the
+  sprite bake reads (now `theme::token_recipes`, read by both), coloured
+  through `material_colours` on the body layer and tinted by owner,
+  under `SlabCamera::dimetric_2_1`. The camera is the whole of the
+  alignment: one tile is one world unit, the centre is taken on the top
+  plane of flat ground and offset half a voxel, because a terrain column
+  occupies a half-open range while a tile is a diamond about a point.
+  Miss either and the board sits half a tile up the screen. The parity
+  gate is 256 probe pixels over the demo map: of the 100 that land on a
+  flat top face the two paths name the same tile 100 times, 18 land on
+  side faces the DOM has no element for, and 8 on raised tops where the
+  DOM's flat inverse names the tile behind it, as it documents. The
+  producer owns the pixel grid. Without the flag nothing changes.
+  Deviations: `dirty` is empty so a terrain edit regrows the whole
+  ground (B4 owns the incremental path); props are counted, not drawn,
+  and since the tile layer is absent under the flag they vanish rather
+  than staying DOM; `BoardPick::Tile` gained the hit's elevation and
+  face, which §3 did not name. Seen in the capture and still open:
+  no props, no selection diamond, no markers, the tracer's sky fills
+  the pane instead of its dark ground, a one-pixel darker column runs
+  the pane's full height, and material edges are about three physical
+  pixels soft rather than hard blocks, so the crispness the render
+  scale exists for is not yet visible. `main.rs` is now at exactly 600
+  lines: the next lane to touch it splits it first. 84 views tests,
+  372 across the workspace.
+- **Found by B2, 2026-09-15, for §6.** `TokenBody::from_volume` is
+  private, so a host holding a `Volume` round-trips through `Voxels`.
+  `SceneVolumes::Voxels` takes one `VolumeMap` while each `TokenBody`
+  owns its own, so merging N tokens clones every volume; a
+  `VolumeMap::extend` would retire that. The I6 colour table is
+  registered per subject with no way to clear the set, so a host that
+  reuses keys across maps leaks stale palettes. `FrameRequest` carries
+  no layout scale, so a source cannot see the pixel grid it draws on and
+  the host sets the render scale out of band. Nothing helps a host say
+  "one world unit is k pixels": every consumer re-derives the half
+  height. And the soft edges above want I3's owner before B5 records the
+  pixel grid as landed, since at scale 2 with a fractional fit the
+  nearest upscale looks resampled once more by the compositor.
