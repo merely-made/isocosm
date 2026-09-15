@@ -487,7 +487,28 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   manifest declares MPL-2.0, its sources carry the MPL header block the
   Mesocosm crates use, and the MPL text sits beside it. The licence risk
   to lane L2's fold into isometer-mesh is closed.
+- 2026-09-14, ruled (Mark, relayed by the Paredros session as he said it
+  would be): **shape 1, the physical split with mesocosm-core
+  re-exporting.** `shared/isometer/crates/isometer-core` takes body.rs,
+  places/bricks.rs (`Ground`, `BRICK`), snapshot.rs's seam, wire.rs, `Role`
+  and `classify` from plan.rs, and `SpeciesId`, added from the import scan
+  because it rides on every `BodyDocument` and both products import it.
+  mesocosm-core depends on isometer-core and re-exports every moved item at
+  its current path; lens, render, mesh and isometer switch to isometer-core
+  and drop mesocosm-core. Two named preconditions: isometer's own
+  `process::Process::Secrete` and `effect_experiment::Glyph` references are
+  cut first (step 5 and the wing-glyphs canon), or isometer keeps the
+  back-dependency. Gate: Mesocosm's world hash and Paredros's v3 to v6
+  archive restores byte-identical across the move. Generation (`Places`,
+  `Grown`, `Rng`) stays Mesocosm's; Paredros keeps mesocosm-core for that
+  one seam and takes body and ground from isometer-core, a product-side
+  change the Paredros session makes when step 6 lands. Sequence: steps 1 to
+  5, then the split. The heightfield-march lane and the chain critter are
+  kept as unconsumed components pending Mark's word, since the march is the
+  large-scale lens and the chain a locomotion model an airborne critter
+  would use.
 
 ## Progress
 
 - **2026-09-14:** assessed and written. No code moved, no commit.
+- **2026-09-14, lane started** on the ruling above; step 1 running.
