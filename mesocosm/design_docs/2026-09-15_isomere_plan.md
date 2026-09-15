@@ -266,3 +266,38 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   `selected-part == 3` intact; Mesocosm library check clean, release
   build, bench acceptance ok with 15 of 15 captures byte-identical to the
   M1 set and every receipt field unchanged.
+- **2026-09-15, M3 landed.** `isomere::journal` is the ordered rows
+  Paredros's acquisition journal and Mesocosm's trait board each wrote by
+  hand: `JournalRow` carries a headline, an optional mark two spaces
+  after it, a founding line that never moves, an optional live line, and
+  the board's selection cursor. `JournalClasses` extends the
+  `None`-means-shared idiom to class names, because the two sources are
+  styled by different sheets (the session by M0's, the board by its own
+  `board_css` in a netrender raster M4 and M6 own), so the board became
+  the shared row without moving a pixel. `isomere::status` is the lines
+  nobody clicks: `status_line` (the product's id plus the shared class
+  and `role="status"`), `status_panel`, and `help_line` over a declared
+  `Keymap`. The keymap is the milestone's real work: `Keymap::command` is
+  what a key handler dispatches through and `Keymap::help` is the
+  sentence, so a binding cannot move without the line moving with it. It
+  is generic over the product's press type, because Cambium's `Key` and
+  cambium-rootstock's are different types and taking rootstock would
+  pull wgpu into a crate that emits elements. Cambium's `command_surface`
+  and `sectioned_list` were read and not adopted. Paredros's key handler
+  and its control-help line are one declaration; Isometry's eight plain
+  board verbs are `isometry_views::KEYMAP`, which `key_intercept`
+  dispatches through and the side panel's crib is read off. Two §1 rows
+  are corrected: Isometry's message log is five flat `.roll-line` divs
+  sharing the dice log's rule, not a journal, and its `.side-status`
+  waits for M4. The M0 sheet gained `.journal-founding, .journal-live` on
+  the existing `.field-name` rule and nothing else; §2.1's claim that it
+  already carried journal-row and status-line rules was wrong. The root
+  workspace excludes `shared/isomere` as it does `shared/isometer`.
+  Receipts: 41 isomere tests; Paredros check clean, 45 lib tests,
+  acceptance ok with captures unchanged except the recorded flicker;
+  Mesocosm check clean, release build, 46 mesocosm-views tests, bench
+  acceptance ok with 15 of 15 captures byte-identical to the M2 set;
+  Isometry workspace check clean under all features and all targets,
+  370 tests. Newly recorded: Paredros's `acceptance-opened.png` also
+  flickers over a text region near x 907 to 1024, y 148 to 297 logical,
+  which a same-binary rerun flips both ways; pre-existing, not chased.

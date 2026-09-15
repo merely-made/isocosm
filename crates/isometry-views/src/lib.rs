@@ -14,6 +14,7 @@ mod demo;
 mod downtime;
 mod generator;
 mod governance;
+mod keymap;
 mod overmap;
 mod panel;
 mod projection;
@@ -26,6 +27,7 @@ mod widgets;
 
 pub use board::{UiChild, board_root};
 pub use demo::{SYNTH_PARTY, demo_map, synth_map, synth_world};
+pub use keymap::{BoardKey, KEYMAP, NamedPress, Press, key_hint};
 pub use overmap::{
     AtlasBounds, AtlasProjection, AtlasRoute, AtlasSite, AtlasTerrainCell,
     ISOMETRY_OVERMAP_ADAPTER, OVERMAP_CANVAS, OVERMAP_LEAF_KEY, OvermapNodeKind, atlas_projection,
@@ -35,6 +37,7 @@ pub use projection::{
     ISOMETRY_TILE_BOARD_ADAPTER, ISOMETRY_TILE_BOARD_BACKDROP, tile_board_cells, tile_board_scene,
     tile_board_score,
 };
+pub use scene::{MapTerrain, SEA_LEVEL, VOID_SURFACE, terrain_palette};
 pub use state::{
     ActionRow, BOARD_UNIT, CharacterCreateRequest, CompendiumTab, EditMode, FactionMoveRow,
     FogLevel, GenerationRequest, GeneratorSelectionRequest, GovernanceBindingRow,
@@ -44,5 +47,4 @@ pub use state::{
 };
 pub use state::{OvermapMotionState, OvermapMotionTick};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
-pub use scene::{MapTerrain, SEA_LEVEL, VOID_SURFACE, terrain_palette};
 pub use theme::{board_css, tile_kind_colour};

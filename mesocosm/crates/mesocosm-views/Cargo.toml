@@ -16,6 +16,10 @@ mesocosm-core = { workspace = true }
 # The cambium lane's half of this crate: view fns and the sheet that styles
 # them. Host-agnostic, exactly as the painted leaves below are.
 cambium = { workspace = true }
+# M3 of the isomere plan: the wing GUI layer. The trait board's candidate rows
+# are isomere's shared journal row, passing the board's own class names so its
+# raster does not move; nothing else here is isomere's.
+isomere = { path = "../../../shared/isomere" }
 sceno = { workspace = true }
 scenomise = { workspace = true }
 sprigging = { workspace = true }

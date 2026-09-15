@@ -4277,6 +4277,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "isomere"
+version = "0.1.0"
+dependencies = [
+ "cambium",
+ "tinct",
+]
+
+[[package]]
 name = "isometer-core"
 version = "0.1.0"
 dependencies = [
@@ -4389,6 +4397,7 @@ name = "isometry-views"
 version = "0.1.0"
 dependencies = [
  "cambium",
+ "isomere",
  "isometer-core",
  "isometer-lens",
  "isometer-mesh",

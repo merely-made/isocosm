@@ -9,7 +9,7 @@ members = [
     "crates/isonetry",
     "crates/isometry-system",
 ]
-exclude = ["crates/isometry-runtime", "mesocosm", "paredros", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer"]
+exclude = ["crates/isometry-runtime", "mesocosm", "paredros", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
 
 # Keep interactive debug builds responsive; see the watchtower plan's M4 drag
 # receipt. Include the app where generic host/layout code is instantiated.
@@ -51,6 +51,9 @@ isometer-mesh = { path = "shared/isometer/crates/isometer-mesh" }
 # board binds its tile-kind palette through; same workspace, same path rule.
 isometer-core = { path = "shared/isometer/crates/isometer-core" }
 isometer-lens = { path = "shared/isometer/crates/isometer-lens" }
+# The wing GUI layer: the shared panels and the keymap the control-help
+# line is derived from. Its own workspace, so it is taken by path too.
+isomere = { path = "shared/isomere" }
 isometry-views = { path = "crates/isometry-views", version = "0.1.0" }
 isonetry = { path = "crates/isonetry", version = "0.1.0" }
 isometry-system = { path = "crates/isometry-system", version = "0.1.0" }

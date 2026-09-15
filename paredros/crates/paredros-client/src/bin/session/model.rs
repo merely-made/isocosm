@@ -35,9 +35,11 @@
 use std::cell::{Cell, RefCell};
 use std::path::PathBuf;
 use std::rc::Rc;
+use std::sync::LazyLock;
 use std::time::{Duration, Instant};
 
 use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey};
+use isomere::{Binding, Keymap};
 use isometer::core::PartId;
 use paredros_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
 use paredros_identity::SubjectId;
@@ -69,6 +71,120 @@ const LATCH_FIRST: Duration = Duration::from_millis(700);
 /// promptly once the repeats stop arriving.
 const LATCH_REPEAT: Duration = Duration::from_millis(150);
 
+/// One key press as the declaration below compares it: a character key,
+/// lower-cased, with its Ctrl state, or a named key.
+///
+/// The one normalization this host does. Named keys carry no Ctrl state
+/// because the handler never read one for them, and lowering happens here so
+/// the declaration is written the way a person would read it.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) enum Press {
+    Char(String, bool),
+    Named(NamedKey),
+}
+
+impl Press {
+    /// A plain character key.
+    fn character(key: &str) -> Self {
+        Self::Char(key.to_owned(), false)
+    }
+
+    /// The same key held with Ctrl.
+    fn with_ctrl(key: &str) -> Self {
+        Self::Char(key.to_owned(), true)
+    }
+
+    /// What the platform reported, as the declaration compares it. `None` for
+    /// an unidentified or dead key, which claims nothing.
+    fn of(key: &Key, ctrl: bool) -> Option<Self> {
+        match key {
+            Key::Character(character) => Some(Self::Char(character.to_ascii_lowercase(), ctrl)),
+            Key::Named(named) => Some(Self::Named(*named)),
+            _ => None,
+        }
+    }
+}
+
+/// What a press asks this session to do.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Command {
+    /// W, S, A, D, by their latch index.
+    Move(usize),
+    Aim(Direction),
+    Charge,
+    Take,
+    Rest,
+    Injure,
+    Join,
+    Save,
+    Load,
+    Close,
+}
+
+/// The session's keys, declared once (M3 of the isomere plan).
+///
+/// This list is both halves of what used to be two: [`SessionApp::key`]
+/// dispatches through [`Keymap::command`], and the header's control-help line
+/// is [`Keymap::help`] over the same entries. A binding cannot move without
+/// the sentence moving with it, and a key that is not here cannot be handled.
+/// The pointer verb is declared with no press of its own because the help line
+/// still has to name it; the handler for it is on the scene card.
+pub(crate) static KEYMAP: LazyLock<Keymap<'static, Press, Command>> = LazyLock::new(|| {
+    Keymap::new(vec![
+        Binding::group(
+            "WASD",
+            "move",
+            vec![
+                (Press::character("w"), Command::Move(0)),
+                (Press::character("s"), Command::Move(1)),
+                (Press::character("a"), Command::Move(2)),
+                (Press::character("d"), Command::Move(3)),
+            ],
+        ),
+        Binding::group(
+            "arrows",
+            "aim",
+            vec![
+                (
+                    Press::Named(NamedKey::ArrowUp),
+                    Command::Aim(Direction::Forward),
+                ),
+                (
+                    Press::Named(NamedKey::ArrowDown),
+                    Command::Aim(Direction::Backward),
+                ),
+                (
+                    Press::Named(NamedKey::ArrowLeft),
+                    Command::Aim(Direction::Left),
+                ),
+                (
+                    Press::Named(NamedKey::ArrowRight),
+                    Command::Aim(Direction::Right),
+                ),
+            ],
+        ),
+        Binding::one(
+            "Space",
+            "charge, Space again to strike",
+            Press::Named(NamedKey::Space),
+            Command::Charge,
+        ),
+        Binding::said("left mouse hold on the scene", "to charge"),
+        Binding::one("E", "take", Press::character("e"), Command::Take),
+        Binding::one("R", "rest", Press::character("r"), Command::Rest),
+        Binding::one("I", "injury", Press::character("i"), Command::Injure),
+        Binding::one("J", "join part 2", Press::character("j"), Command::Join),
+        Binding::one("Ctrl+S", "save", Press::with_ctrl("s"), Command::Save),
+        Binding::one("Ctrl+L", "load", Press::with_ctrl("l"), Command::Load),
+        Binding::one(
+            "Esc",
+            "close",
+            Press::Named(NamedKey::Escape),
+            Command::Close,
+        ),
+    ])
+});
+
 pub(crate) struct SessionApp {
     /// The one session, plus the presentation policy the producer reads.
     pub(crate) model: SceneHandle,
@@ -98,65 +214,47 @@ pub(crate) struct SessionApp {
 impl SessionApp {
     /// One key press. Returns `true` when this host consumed it, so ordinary
     /// document keys (Tab, typing) still reach the tree.
+    ///
+    /// Every branch below answers a [`Command`] the declared [`KEYMAP`] handed
+    /// back, so an unclaimed key falls through untouched and a claimed one
+    /// that grew no arm here is a compile error rather than a dead binding in
+    /// the help line.
     fn key(&mut self, key: &Key, ctrl: bool, repeat: bool) -> bool {
-        let hold = if repeat { LATCH_REPEAT } else { LATCH_FIRST };
-        if let Key::Character(character) = key {
-            let lower = character.to_ascii_lowercase();
-            if ctrl {
-                match lower.as_str() {
-                    "s" => self.save(),
-                    "l" => self.load(),
-                    _ => return false,
-                }
-                return true;
-            }
-            let movement = match lower.as_str() {
-                "w" => Some(0),
-                "s" => Some(1),
-                "a" => Some(2),
-                "d" => Some(3),
-                _ => None,
-            };
-            if let Some(index) = movement {
+        let Some(press) = Press::of(key, ctrl) else {
+            return false;
+        };
+        let Some(command) = KEYMAP.command(&press).copied() else {
+            return false;
+        };
+        match command {
+            // A held movement key refreshes the latch rather than repeating.
+            Command::Move(index) => {
+                let hold = if repeat { LATCH_REPEAT } else { LATCH_FIRST };
                 if self.latched[index].is_none_or(|until| until <= Instant::now()) {
                     self.last_motion = Instant::now();
                 }
                 actions::latch(&mut self.latched[index], hold);
-                return true;
-            }
-            if repeat {
-                return false;
-            }
-            match lower.as_str() {
-                "i" => self.injure(),
-                "r" => self.rest(),
-                "e" => self.take_dressing(),
-                "j" => self.join_limb(PartId(2)),
-                _ => return false,
-            }
-            return true;
-        }
-        let Key::Named(named) = key else {
-            return false;
-        };
-        if repeat && *named == NamedKey::Space {
+            },
             // Swallow the repeat: a held Space must not toggle sixty times.
-            return true;
-        }
-        match named {
-            NamedKey::Escape => self.closing = true,
-            NamedKey::ArrowUp => self.prepare(Direction::Forward),
-            NamedKey::ArrowDown => self.prepare(Direction::Backward),
-            NamedKey::ArrowLeft => self.prepare(Direction::Left),
-            NamedKey::ArrowRight => self.prepare(Direction::Right),
-            NamedKey::Space => {
+            Command::Charge if repeat => {},
+            Command::Charge => {
                 if self.charging {
                     self.release();
                 } else {
                     self.begin_charge();
                 }
             },
-            _ => return false,
+            Command::Aim(direction) => self.prepare(direction),
+            Command::Close => self.closing = true,
+            Command::Save => self.save(),
+            Command::Load => self.load(),
+            // The four world verbs are one press, one deed: an auto-repeat
+            // falls through rather than queueing a dozen of them.
+            _ if repeat => return false,
+            Command::Take => self.take_dressing(),
+            Command::Rest => self.rest(),
+            Command::Injure => self.injure(),
+            Command::Join => self.join_limb(PartId(2)),
         }
         true
     }

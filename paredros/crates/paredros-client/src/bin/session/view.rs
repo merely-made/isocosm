@@ -6,7 +6,10 @@
 use std::sync::LazyLock;
 
 use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
-use isomere::{ExaminerModel, ExaminerRow, Picked, Seeds, Sizes, ViewportCard};
+use isomere::{
+    ExaminerModel, ExaminerRow, JournalModel, JournalRow, Picked, Seeds, Sizes, StatusPanel,
+    ViewportCard,
+};
 use isometer::core::PartId;
 use paredros_world::ItemKind;
 
@@ -136,57 +139,38 @@ fn sheet_panel(state: &SessionApp) -> Child {
 
 /// The acquisition journal, beside the subject sheet: what the played
 /// subject's accepted history has been read as, in first-acquisition order.
+///
+/// isomere's shared journal (M3 of the isomere plan). What crosses is the four
+/// pieces of text this panel already had in words; the canon, the reading and
+/// the revision stay the session's.
 fn journal_panel(state: &SessionApp) -> Child {
-    let journal = state.journal();
-    let rows: Vec<Child> = if journal.is_empty() {
-        vec![Box::new(el(
-            "p",
-            text("Nothing acquired yet. Move, strike, take, rest."),
-        ))]
-    } else {
-        journal
-            .iter()
-            .map(|row| {
-                // The founding line always shows; the live line only when the
-                // published revision moved this base.
-                let revised = match (&row.live_effect, &row.cause) {
-                    (Some(live), Some(cause)) => format!("now {live} · {cause}"),
-                    _ => String::new(),
-                };
-                Box::new(
-                    el(
-                        "div",
-                        (
-                            el("div", text(format!("{}  {}", row.display, row.glyph)))
-                                .attr("class", "glyph-name"),
-                            el(
-                                "div",
-                                text(format!("{} · {} · tick {}", row.effect, row.kind, row.tick)),
-                            )
-                            .attr("class", "field-name"),
-                            el("div", text(revised)).attr("class", "field-name"),
-                        ),
-                    )
-                    .attr("class", "glyph"),
-                ) as Child
-            })
-            .collect()
-    };
-    Box::new(
-        el(
-            "aside",
-            (
-                el("h2", text("Acquisition journal")),
-                // The summary leads: in a window this size the rows run past
-                // the fold, and the count and eligibility are the reading.
-                el("p", text(state.journal_summary()))
-                    .attr("id", "journal-summary")
-                    .attr("role", "status"),
-                el("div", rows).attr("class", "glyphs"),
-            ),
-        )
-        .attr("class", "panel"),
-    )
+    let rows: Vec<JournalRow> = state
+        .journal()
+        .iter()
+        .map(|row| JournalRow {
+            // The founding line always shows; the live line is always emitted
+            // and carries words only when the published revision moved this
+            // base, so a row cannot change height as one arrives.
+            live: Some(match (&row.live_effect, &row.cause) {
+                (Some(live), Some(cause)) => format!("now {live} · {cause}"),
+                _ => String::new(),
+            }),
+            ..JournalRow::new(
+                row.display.clone(),
+                format!("{} · {} · tick {}", row.effect, row.kind, row.tick),
+            )
+            .marked(row.glyph.clone())
+        })
+        .collect();
+    isomere::journal(&JournalModel {
+        rows,
+        // The summary leads: in a window this size the rows run past the fold,
+        // and the count and eligibility are the reading.
+        summary: Some(("journal-summary", state.journal_summary())),
+        note: Some("Nothing acquired yet. Move, strike, take, rest."),
+        class: Some("panel"),
+        ..JournalModel::new("Acquisition journal")
+    })
 }
 
 fn equipment_panel(state: &SessionApp) -> Child {
@@ -257,22 +241,14 @@ fn equipment_panel(state: &SessionApp) -> Child {
     )
 }
 
+/// The status panel: isomere's shared stack of published lines (M3), over the
+/// same readings the timed-action host's text view prints.
 fn status_panel(state: &SessionApp) -> Child {
-    let lines: Vec<Child> = state
-        .status_lines()
-        .into_iter()
-        .map(|line| Box::new(el("p", text(line))) as Child)
-        .collect();
-    Box::new(
-        el(
-            "section",
-            (
-                el("h2", text("Status")),
-                el("div", lines).attr("class", "status-lines"),
-            ),
-        )
-        .attr("class", "panel status"),
-    )
+    isomere::status_panel(&StatusPanel {
+        lines: state.status_lines(),
+        class: Some("panel status"),
+        ..StatusPanel::new("Status")
+    })
 }
 
 pub(super) fn root(state: &SessionApp) -> Child {
@@ -305,15 +281,10 @@ pub(super) fn root(state: &SessionApp) -> Child {
                     "header",
                     (
                         el("h1", text("Paredros · Session")),
-                        el(
-                            "p",
-                            text(
-                                "WASD move · arrows aim · Space charge, Space again to strike · \
-                                 left mouse hold on the scene to charge · E take · R rest · \
-                                 I injury · J join part 2 · Ctrl+S save · Ctrl+L load · Esc close",
-                            ),
-                        )
-                        .attr("id", "controls-help"),
+                        // The control-help line, read off the one declared
+                        // keymap the key handler dispatches through (M3), so
+                        // the sentence cannot outlive a binding.
+                        isomere::help_line("controls-help", super::KEYMAP.help()),
                     ),
                 ),
                 el(
@@ -323,9 +294,7 @@ pub(super) fn root(state: &SessionApp) -> Child {
                             "section",
                             (
                                 viewport(state),
-                                el("p", text(state.selection_line()))
-                                    .attr("id", "selection")
-                                    .attr("role", "status"),
+                                isomere::status_line("selection", state.selection_line()),
                                 el("div", controls).attr("class", "toolbar"),
                                 isomere::error_line("viewport-error", error),
                             ),
@@ -432,9 +401,9 @@ const PAREDROS_RULES: &str = r#"
 .status-lines p { font:12px monospace; margin:2px 0; color:#c6d0d6; }
 .part.severed { color:#8b7076; text-decoration:line-through; }
 .items { max-height:260px; overflow:auto; }
-.glyphs { max-height:220px; overflow:auto; }
-.glyph { padding:5px 6px; margin-bottom:5px; border:1px solid var(--isomere-border); }
-.glyph-name { font:13px monospace; color:var(--isomere-button-ink); }
+.journal { max-height:220px; overflow:auto; }
+.journal-row { padding:5px 6px; margin-bottom:5px; border:1px solid var(--isomere-border); }
+.journal-headline { font:13px monospace; color:var(--isomere-button-ink); }
 #journal-summary { font-size:12px; color:#9fb0ba; }
 .item { padding:6px; margin-bottom:6px; border:1px solid var(--isomere-border); }
 #selection { font-size:12px; color:#9fb0ba; }

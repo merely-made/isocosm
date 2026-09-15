@@ -71,17 +71,40 @@
 //! `sheet.rs` is not a consumer: it is a character-sheet overlay of
 //! `.sheet-row` lines with no palette, so §1's row is corrected there too.
 
+//!
+//! ## M3: the journal, the status lines and the help line
+//!
+//! [`journal`] is the ordered rows Paredros's acquisition journal and
+//! Mesocosm's trait board each wrote by hand — a headline with a mark, a
+//! founding line that never moves, and a live line that only shows when the
+//! reading has diverged — over a summary line. [`status`] is the lines nobody
+//! clicks: the published status line, the status panel, and the control-help
+//! line, which is now *derived* from a [`Keymap`] the product's key handler
+//! dispatches through, so the sentence and the bindings cannot drift.
+//! Isometry's message log is the journal's third consumer and its side status
+//! the status panel's.
+
 pub mod examiner;
+pub mod journal;
 pub mod palette;
 pub mod sheet;
+pub mod status;
 pub mod viewport;
 
 pub use examiner::{
     ExaminerModel, ExaminerRow, FIELD_CLASS, FIELD_NAME_CLASS, FIELD_VALUE_CLASS, PART_CLASS,
     PARTS_CLASS, READING_CLASS, examiner, field, field_cells, parts_palette, reading_column,
 };
+pub use journal::{
+    FOUNDING_CLASS, HEADLINE_CLASS, JOURNAL_CLASS, JournalClasses, JournalModel, JournalRow,
+    LIVE_CLASS, ROW_CLASS, SELECTED_CLASS, journal, journal_row, journal_rows,
+};
 pub use palette::{Palette, Picked, Seeds, css_vars, derive, text_contrast};
 pub use sheet::{Sizes, css_sizes, from_palette, shared, sheet, sheet_with};
+pub use status::{
+    Binding, HELP_CLASS, Keymap, STATUS_LINE_CLASS, STATUS_LINES_CLASS, StatusPanel, help_attrs,
+    help_line, status_attrs, status_line, status_panel,
+};
 pub use viewport::{
     CARD_CLASS, ERROR_CLASS, LEAF_CLASS, ViewportCard, error_attrs, error_line, scene_card,
     viewport_card, viewport_leaf,

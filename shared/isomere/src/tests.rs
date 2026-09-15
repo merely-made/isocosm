@@ -346,4 +346,6 @@ fn attr<'a>(attrs: &'a [(&'static str, String)], name: &str) -> Option<&'a str> 
 }
 
 mod examiner;
+mod journal;
+mod status;
 mod viewport;

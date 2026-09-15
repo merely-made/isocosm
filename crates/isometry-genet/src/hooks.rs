@@ -13,6 +13,8 @@ use cambium_genet_winit_host::{
     CloseDisposition, HostHooks, HostWake, HostWindow, Init, Key, KeyPress, NamedKey,
 };
 
+use isometry_views::{BoardKey, NamedPress, Press};
+
 use super::*;
 
 mod text;
@@ -105,53 +107,52 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
         }
         return true;
     }
-    // The command sigil opens the > line, the way `w` opens a whisper. The
-    // draft starts empty; the ">" is the prompt.
-    if plain_char(press, ">") {
-        runner.update(|ui| ui.start_command());
-        return true;
-    }
-    if plain_char(press, "w") {
-        runner.update(|ui| ui.start_compose());
-        return true;
-    }
-    if plain_char(press, "r") {
-        runner.update(|ui| ui.rotate_selected());
-        return true;
-    }
-    if plain_char(press, "f") {
+    // Everything below is a plain board verb, and every one of them is a row
+    // in `isometry_views::KEYMAP` — the one declaration the side panel's key
+    // crib is also read off (M3 of the isomere plan). A key that is not in it
+    // falls through to the tree untouched, and a row that grew no arm here is
+    // a compile error rather than a dead line in the crib.
+    let Some(claimed) = board_press(press) else {
+        return false;
+    };
+    let Some(command) = isometry_views::KEYMAP.command(&claimed).copied() else {
+        return false;
+    };
+    match command {
+        // The command sigil opens the > line, the way `w` opens a whisper. The
+        // draft starts empty; the ">" is the prompt.
+        BoardKey::Command => runner.update(|ui| ui.start_command()),
+        BoardKey::Whisper => runner.update(|ui| ui.start_compose()),
+        BoardKey::Face => runner.update(|ui| ui.rotate_selected()),
         // Cycle the fog viewer: omniscient, then each side. Lets the DM preview
         // a player's view (and drives single-window fog verification without a
         // session).
-        runner.update(|ui| ui.cycle_viewer());
-        return true;
+        BoardKey::FogView => runner.update(|ui| ui.cycle_viewer()),
+        BoardKey::EndTurn => runner.update(|ui| ui.end_turn()),
+        BoardKey::Undo => runner.update(|ui| ui.undo()),
+        BoardKey::Redo => runner.update(|ui| ui.redo()),
+        BoardKey::Pan(dc, dr) => runner.update(|ui| ui.pan_tiles(f32::from(dc), f32::from(dr))),
     }
-    if named(press, NamedKey::Enter) {
-        runner.update(|ui| ui.end_turn());
-        return true;
-    }
-    if press.modifiers.ctrl {
-        if matches!(&press.key, Key::Character(c) if c == "z") {
-            runner.update(|ui| ui.undo());
-            return true;
-        }
-        if matches!(&press.key, Key::Character(c) if c == "y") {
-            runner.update(|ui| ui.redo());
-            return true;
-        }
-    }
-    let pan = match &press.key {
-        Key::Named(NamedKey::ArrowLeft) => Some((-1.0, 1.0)),
-        Key::Named(NamedKey::ArrowRight) => Some((1.0, -1.0)),
-        Key::Named(NamedKey::ArrowUp) => Some((-1.0, -1.0)),
-        Key::Named(NamedKey::ArrowDown) => Some((1.0, 1.0)),
+    true
+}
+
+/// One press as the view layer's declaration compares it.
+///
+/// The only place this host lowers a platform key into the keymap's vocabulary.
+/// Named keys drop the chord because the chain this replaced never read one for
+/// them: a Ctrl-held arrow has always panned, and Ctrl+Enter has always ended
+/// the turn.
+fn board_press(press: &KeyPress) -> Option<Press> {
+    match &press.key {
+        Key::Character(character) if press.modifiers.ctrl => Some(Press::ctrl(character)),
+        Key::Character(character) => Some(Press::plain(character)),
+        Key::Named(NamedKey::Enter) => Some(Press::Named(NamedPress::Enter)),
+        Key::Named(NamedKey::ArrowLeft) => Some(Press::Named(NamedPress::ArrowLeft)),
+        Key::Named(NamedKey::ArrowRight) => Some(Press::Named(NamedPress::ArrowRight)),
+        Key::Named(NamedKey::ArrowUp) => Some(Press::Named(NamedPress::ArrowUp)),
+        Key::Named(NamedKey::ArrowDown) => Some(Press::Named(NamedPress::ArrowDown)),
         _ => None,
-    };
-    if let Some((dc, dr)) = pan {
-        runner.update(|ui| ui.pan_tiles(dc, dr));
-        return true;
     }
-    false
 }
 
 /// Build the starting state: the map, the campaign checkpoint, the game system,

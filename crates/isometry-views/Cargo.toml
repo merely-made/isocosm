@@ -14,6 +14,7 @@ isonetry = { workspace = true }
 isometer-mesh = { workspace = true }
 isometer-core = { workspace = true }
 isometer-lens = { workspace = true }
+isomere = { workspace = true }
 muniment = { workspace = true }
 cambium = { workspace = true }
 sceno = { workspace = true }

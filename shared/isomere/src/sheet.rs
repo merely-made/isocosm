@@ -201,7 +201,7 @@ button:focus { outline:2px solid var(--isomere-focus); outline-offset:2px; }
 .part.selected { background:var(--isomere-selected); color:var(--isomere-selected-ink); border-color:var(--isomere-selected-border); }
 .reading { max-height:var(--isomere-reading-height); overflow:auto; }
 .field { margin-bottom:var(--isomere-field-gap); }
-.field-name { font-size:var(--isomere-field-name-font); color:var(--isomere-muted); margin-bottom:var(--isomere-field-name-gap); }
+.field-name, .journal-founding, .journal-live { font-size:var(--isomere-field-name-font); color:var(--isomere-muted); margin-bottom:var(--isomere-field-name-gap); }
 .field-value { font-size:var(--isomere-field-value-font); line-height:var(--isomere-field-value-line); }
 #notice, #viewport-error, .error-line { min-height:var(--isomere-error-height); font-size:var(--isomere-error-font); color:var(--isomere-error); }
 "#;

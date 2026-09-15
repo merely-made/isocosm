@@ -24,6 +24,7 @@
 //! decides when there is anything to show.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
+use isomere::{JournalClasses, JournalRow};
 use mesocosm_core::{Feat, Offer, Reading, Scale, Trend, Untakeable};
 
 pub type BoardChild = Box<dyn AnyView<Board, (), GenetCtx, GenetElement>>;
@@ -294,34 +295,40 @@ pub fn board_root(state: &Board) -> BoardChild {
     Box::new(el::<_, Board, ()>("div", children).attr("class", "board"))
 }
 
+/// The board's own class names for a journal row (M3 of the isomere plan).
+///
+/// The board is styled by [`board_css`] below and drawn into its own raster,
+/// not by isomere's shared sheet, so it keeps every name it had: the rows
+/// become the shared journal without one of its pixels moving. When the board
+/// joins the shared sheet these go.
+const BOARD_CLASSES: JournalClasses<'static> = JournalClasses {
+    journal: None,
+    row: Some("board-row"),
+    selected: Some("board-row-on"),
+    headline: Some("board-row-name"),
+    founding: Some("board-row-figures"),
+    live: Some("board-row-reason"),
+};
+
+/// One candidate as the shared journal reads it: the name with its sources as
+/// the mark, the three figures as the founding line, and the reason as the
+/// live line — which is why a row that can be taken says nothing there rather
+/// than printing "nothing is wrong" where a player learns to stop reading.
+pub fn journal_row(row: &BoardRow) -> JournalRow {
+    JournalRow {
+        live: row.reason.clone(),
+        selected: row.selected,
+        ..JournalRow::new(
+            row.name.clone(),
+            format!("{} / {} / {}", row.net, row.price, row.preview),
+        )
+        .marked(format!("({})", row.source))
+    }
+}
+
 /// One row, as three lines: what it is, what it came to, and what stops it.
 fn row_view(row: &BoardRow) -> BoardChild {
-    let class = if row.selected {
-        "board-row board-row-on"
-    } else {
-        "board-row"
-    };
-    let mut lines: Vec<BoardChild> = vec![
-        Box::new(
-            el::<_, Board, ()>("div", text(format!("{}  ({})", row.name, row.source)))
-                .attr("class", "board-row-name"),
-        ),
-        Box::new(
-            el::<_, Board, ()>(
-                "div",
-                text(format!("{} / {} / {}", row.net, row.price, row.preview)),
-            )
-            .attr("class", "board-row-figures"),
-        ),
-    ];
-    // Only when it is true. A row that always carried a reason line would be
-    // saying "nothing is wrong" in a place a player learns to stop reading.
-    if let Some(reason) = &row.reason {
-        lines.push(Box::new(
-            el::<_, Board, ()>("div", text(reason.clone())).attr("class", "board-row-reason"),
-        ));
-    }
-    Box::new(el::<_, Board, ()>("div", lines).attr("class", class))
+    isomere::journal_row(&journal_row(row), &BOARD_CLASSES)
 }
 
 /// The sheet the board is styled by. Heavier than the vitals panel and darker

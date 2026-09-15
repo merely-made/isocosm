@@ -205,7 +205,10 @@ pub(super) fn root(state: &Bench) -> Child {
                     "header",
                     (
                         el("h1", text("Specimen bench")),
-                        el("p", text(status)).attr("id", "specimen-status"),
+                        // isomere's shared status line (M3 of the isomere
+                        // plan): the bench's own id, the shared class, and the
+                        // live-region role the line always deserved.
+                        isomere::status_line("specimen-status", status),
                     ),
                 ),
                 super::comparison_view::strip(state),

@@ -4,8 +4,8 @@
 //! board uses, so the palette can never drift from the tileset.
 
 use cambium::{
-    caret_text_field, clickable, disclosure_with, el, lens, request_focus, segmented_control,
-    text, TextInput,
+    TextInput, caret_text_field, clickable, disclosure_with, el, lens, request_focus,
+    segmented_control, text,
 };
 use isometry_core::{TemplateKind, TileKindId, TokenId};
 
@@ -446,7 +446,7 @@ pub fn side_panel(ui: &UiState) -> UiChild {
                 .get(c.max(0) as u32, r.max(0) as u32)
                 .unwrap_or(&0);
             format!("selected: ({c}, {r}) h{elev}")
-        }
+        },
         None => "selected: none".to_owned(),
     };
     let mut children: Vec<UiChild> = vec![
@@ -546,12 +546,11 @@ pub fn side_panel(ui: &UiState) -> UiChild {
     // what the arrows and Enter do, and the status line already reads
     // `whisper (enter send, esc cancel)` (Mark, 2026-09-03).
     if ui.picking_target() {
+        // Read off the one declared keymap the host dispatches through (M3 of
+        // the isomere plan), so the crib cannot outlive a binding across the
+        // crate boundary between this panel and `key_intercept`.
         children.push(Box::new(
-            el(
-                "div",
-                text("arrows: pan / r: face / enter: end turn / f: fog view"),
-            )
-            .attr("class", "side-hint"),
+            el("div", text(crate::keymap::key_hint())).attr("class", "side-hint"),
         ));
     }
     Box::new(el("div", children).attr("class", "side"))
