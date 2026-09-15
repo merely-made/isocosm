@@ -1,0 +1,144 @@
+# Experienced but not embodied: the effect pack's second visual state.
+#
+# The bench has no control that severs a part of the bound body, so the
+# removal here is the world's own: the bound consumer dies, and a dead body's
+# parts leave the embodied reading exactly as severed parts do, since both
+# gate on BodyPhenotype's living parts. One accepted carve is the whole
+# journey, so the post-death bearing is Journeyed rather than none, and this
+# bound body neither moves nor feeds, so the grant count never moves again.
+wait 1200
+assert snap ready == yes
+# The marks are a few pixels each at the default chrome and size, so the two
+# forms are given uptake-world's framing before anything is compared.
+zoom 0.75
+settle 3
+click role:button Generation controls
+settle 3
+click role:button Seed 7
+wait 1200
+click role:button Consumer
+wait 1200
+click role:button Generation controls
+settle 3
+remember source
+capture source
+click role:button World trial
+settle 3
+click role:button Mark size
+settle 3
+assert snap trial-marker-size == 2.8
+assert snap trial-active == true
+assert snap trial-steps == 0
+assert snap trial-grants == 0
+# Expression is visible from birth: the body bears the glyph before the
+# journey has earned anything.
+assert snap trial-borne-by == embodied
+click role:button Carve ground
+settle 3
+assert snap trial-carving-tick-processed == true
+assert snap trial-grants == 1
+assert snap trial-borne-by == embodied
+assert snap trial-embodied == ["mesocosm:reach","mesocosm:reshape"]
+assert snap trial-marks-withheld == 0
+assert snap trial-mark-budget-dropped == 0
+assert snap trial-anchor-fallbacks == 0
+assert snap trial-visible-marks >= 1
+remember embodied
+capture embodied
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+click role:button Step world
+settle 5
+# Every expressing part is gone, the journey is untouched, and the pack's
+# Journeyed rule takes over: camera-facing emission at the recorded place,
+# with no face to anchor to.
+assert snap trial-embodied == []
+assert snap trial-expressing-parts == []
+assert snap trial-borne-by == journeyed
+assert snap trial-marks-withheld == 0
+assert snap trial-mark-budget-dropped == 0
+assert snap trial-anchor-fallbacks == 0
+assert snap trial-visible-marks >= 1
+differs embodied trial-embodied
+differs embodied trial-expressing-parts
+differs embodied trial-borne-by
+same embodied trial-journey
+same embodied trial-grants
+remember journeyed
+capture journeyed
+viewport-pixels-change embodied journeyed
+# The journeyed marks are actually in the frame.
+click role:button Hide activity
+settle 3
+assert snap trial-visible-marks == 0
+capture journeyed-hidden
+viewport-pixels-change journeyed journeyed-hidden
+click role:button Show activity
+settle 3
+capture journeyed-restored
+viewport-pixels-same journeyed journeyed-restored
+same journeyed trial-visible-marks
+# Redrawing cannot grant, express or advance anything.
+click role:button Mark height
+click role:button Mark size
+settle 3
+same journeyed trial-hash
+same journeyed trial-journey
+same journeyed trial-grants
+same journeyed trial-borne-by
+same journeyed trial-embodied
+capture restyled
+viewport-pixels-change journeyed restyled
+click role:button Mark height
+click role:button Mark height
+click role:button Mark height
+click role:button Mark height
+click role:button Mark size
+click role:button Mark size
+settle 3
+assert snap trial-marker-height == 4
+assert snap trial-marker-size == 2.8
+capture style-restored
+viewport-pixels-same journeyed style-restored
+click role:button Exit world trial
+settle 3
+assert snap trial-active == false
+same source hash
+assert snap error == none

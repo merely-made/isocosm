@@ -634,3 +634,24 @@ Measured in the tree today; the rest are cited inline above.
   it is experienced (the plan's §4 said otherwise); the placeholder glyph
   ids and grouping; one bearing part per mark chosen by ordinal; the
   world-up display raise on an anchored mark.
+- **2026-09-15, step 8 done; the expression slice is closed.** The
+  journeyed form was already authored (amber quotes, camera-facing,
+  unanchored) and is distinguishable from the embodied inscription
+  (orange slashes on the bearing part's face) on stroke, hue and
+  placement. `expression-sever.scenario` grants once through an accepted
+  carve on a seed-7 consumer, captures the embodied state, steps the
+  world until the bound body dies, and asserts that `trial-embodied` and
+  `trial-expressing-parts` empty, `trial-borne-by` becomes journeyed, the
+  journey and grant count are byte-identical across the change, and the
+  viewport changes; 167 frames, 8 captures, receipts under
+  `testing/bench/receipts/2026-09-15/expression/`. Deviation: the bench
+  has no action that severs a part of the bound body, and a button
+  calling the phenotype's sever directly would change a body with no
+  `Event::Severed` behind it, so the scenario uses death, which empties
+  the embodied reading the same way; a true sever needs a door on `Trial`
+  that records the event through core, for Mark. The seed-1 producer
+  could not serve, since it grants through uptake every living tick and
+  never leaves the embodied state within the trial limit. Gates: the
+  three trial scenarios, spatial-coverage's 32 captures byte-identical,
+  acceptance. Done conditions of section 8 hold except the experience
+  evaluator, which section 3 defers to the next slice.

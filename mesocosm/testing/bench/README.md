@@ -188,12 +188,27 @@ pause, hiding, switching experiment and reroll cancellation. A generated
 `world-trial-reopen.scenario` receipt reopens the saved specimen with
 `--comparison FILE` and applies the same Idle sequence.
 
+`expression-sever.scenario` shows the two states a glyph mark can be drawn in.
+A bound seed-7 consumer embodies the base glyph from tick zero, so its marks
+are slashes inscribed on the faces of the parts expressing it. One carve is the
+whole journey: it earns the glyph once, and this body never moves or feeds, so
+the grant count stays at one for the rest of the run. Forty steps later the body
+is gone and no living part expresses anything, so the same effect is drawn
+through the journey instead — amber quotes rising camera-facing at the recorded
+place, with no face to anchor to. The journey reading and the grant count are
+byte-identical either side of the change. The bench has no control that severs
+a part, so the removal is the world's own death of the bound body; both paths
+leave the embodied reading the same way, through living parts. Framing follows
+uptake-world (UI zoom 0.75, mark size 2.8) because the marks are a few pixels
+each at the default.
+
 Focused runtime tests: `runtime::trial::tests`. Freshness admission deliberately
 refuses advanced snapshots, whose history and checkpoint must accompany them.
 The prior trial report's predation attribution is corrected from donor to eater;
 its regression test is `world::generation::trial::tests::predation_is_credited_to_eater_not_victim`.
 
-Native receipts and source identities: [world-trial receipt](receipts/2026-09-13/world-trial/source.json).
+Native receipts and source identities: [world-trial receipt](receipts/2026-09-13/world-trial/source.json),
+[expression receipt](receipts/2026-09-15/expression/source.json).
 
 ## Population cost workload
 

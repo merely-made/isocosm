@@ -1,0 +1,100 @@
+{
+  "parent": "4b12b8690acddc799fb729f618ed48be58af7c5c",
+  "source_blobs": {
+    "mesocosm/crates/mesocosm-core/src/effect_pack.rs": "0d5db842c80e23ef5934742ab1a25be54b93910b",
+    "mesocosm/crates/mesocosm-core/src/embodiment.rs": "18ae64e7b2083f89d1f486cb64948bfc7ac6d1c1",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial.rs": "ba6ea6cdd2a3591fa3cab1757e57c422aa30d09c",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial/carving.rs": "bd2cda6f80c7b04ab0d451de676ae029bf9b28b3",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial/journey.rs": "314af42b3ad647d2c71c545732ea336576eaf306",
+    "mesocosm/crates/mesocosm-genet/src/app/bench/trial/uptake.rs": "ea8903252aa4c0dd5f2a2ae21435ba10f4889ca0",
+    "mesocosm/crates/mesocosm-runtime/src/glyphs.rs": "4dd167b2f8572a946dfeacea236c7acc5c979c72",
+    "shared/wing-glyphs/src/expression.rs": "b742e4b14df4593f1e06c368f48355849befcc98",
+    "shared/wing-glyphs/src/pack.rs": "36bdedd10f1d142b6313ed2690b46fa9d2d424db",
+    "mesocosm/testing/bench/expression-sever.scenario": "48fb7e2d85bb5570b4acb93d3099fbbc37e98daf",
+    "mesocosm/testing/bench/README.md": "6a06afc414bcfb9b8c637f3dc0cd9a113d41975e"
+  },
+  "executable_sha256": "6c627ec30f2fb96414c6aa4f21f74fdfec4c4876eb5f3fba7ac822c6d3937013",
+  "raw": "C:\\Users\\mark_\\Code\\testing\\expression-step8",
+  "build": "cargo build --release -p mesocosm-genet",
+  "checks": [
+    "cargo check --workspace --all-features --all-targets (mesocosm workspace): clean, one pre-existing unused_mut warning in mesocosm-core/src/organism/kingdom.rs:346 tests",
+    "cargo test --release -p mesocosm-genet -- --test-threads=1: 156 passed, 2 ignored, plus 2 hud_raster tests"
+  ],
+  "native": {
+    "expression-sever": {
+      "frames": 167,
+      "captures": 8,
+      "pixel_checks": 5,
+      "ok": true
+    },
+    "world-trial": {
+      "frames": 228,
+      "captures": 16,
+      "pixel_checks": 6,
+      "ok": true
+    },
+    "world-trial-play": {
+      "frames": 189,
+      "captures": 3,
+      "pixel_checks": 0,
+      "ok": true
+    },
+    "uptake-world": {
+      "frames": 449,
+      "captures": 9,
+      "pixel_checks": 5,
+      "ok": true
+    },
+    "spatial-coverage": {
+      "frames": 336,
+      "captures": 32,
+      "pixel_checks": 2,
+      "ok": true
+    },
+    "acceptance": {
+      "frames": 167,
+      "captures": 15,
+      "pixel_checks": 5,
+      "ok": true
+    }
+  },
+  "repeat": "From mesocosm: cargo run --release -p mesocosm-genet -- --bench --seed 1 --frames 1800 --size 1232x752 --scenario testing/bench/NAME.scenario --receipt OUTPUT/NAME.json --capture OUTPUT/NAME.png",
+  "spatial_coverage": "All 32 captures byte-identical (sha256) to C:/Users/mark_/Code/testing/spatial-coverage-2026-09-14, compared by capture name with the differing file prefix stripped.",
+  "probe_at_captures": {
+    "trial-start": {
+      "trial-steps": "0",
+      "trial-grants": "0",
+      "trial-borne-by": "embodied"
+    },
+    "embodied": {
+      "trial-steps": "1",
+      "trial-grants": "1",
+      "trial-borne-by": "embodied",
+      "trial-embodied": "[\"mesocosm:reach\",\"mesocosm:reshape\"]",
+      "trial-expressing-parts": "[0,2,5,8,11,12,13,14,15,16,17,20,23,26,27]",
+      "trial-marks-withheld": "0",
+      "trial-mark-budget-dropped": "0",
+      "trial-anchor-fallbacks": "0",
+      "trial-journey": "{\"organism\":0,\"owned\":[{\"effect\":\"mesocosm:reshape-reference\",\"acquired_by\":\"carved\"}]}"
+    },
+    "journeyed": {
+      "trial-steps": "41",
+      "trial-grants": "1",
+      "trial-borne-by": "journeyed",
+      "trial-embodied": "[]",
+      "trial-expressing-parts": "[]",
+      "trial-marks-withheld": "0",
+      "trial-mark-budget-dropped": "0",
+      "trial-anchor-fallbacks": "0",
+      "trial-journey": "{\"organism\":0,\"owned\":[{\"effect\":\"mesocosm:reshape-reference\",\"acquired_by\":\"carved\"}]}"
+    }
+  },
+  "limits": [
+    "The bench exposes no control that severs a part of the bound body. The removal in expression-sever is the world's own: the bound seed-7 consumer dies between trial steps 33 and 37, and a dead body's parts leave the embodied reading exactly as severed parts do, since both gate on BodyPhenotype's living parts. No partial-sever window exists on this body: the expressing part set is constant while it lives and empty once it does not.",
+    "The bound body is a consumer, not a producer. The default seed-1 producer embodies the base glyph for the whole trial limit and never reaches the journeyed state, and every one of its living ticks grants through uptake, so its grant count cannot be held still across a change of bearing.",
+    "One accepted carve is the whole journey. This bound consumer never moves or feeds, so trial-grants is 1 from the carve onward and is byte-identical across the change of bearing.",
+    "The two forms are compared under uptake-world framing (UI zoom 0.75, mark size 2.8). At the default chrome and size 1.4 each mark is a few pixels and the comparison is not legible; the retained crops expression-sever-crop-{embodied,journeyed}.png are the side-by-side.",
+    "viewport-pixels-change embodied -> journeyed (11961 px) covers forty ticks of world change as well as the change of bearing. The mark contribution alone is the journeyed -> journeyed-hidden check, 1037 px.",
+    "world-trial-reopen is not in this arm: it needs a saved comparison file from a prior world-trial run and was not regenerated here."
+  ]
+}
