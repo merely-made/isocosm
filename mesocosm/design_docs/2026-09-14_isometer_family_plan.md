@@ -655,3 +655,16 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   root lock unchanged. wing-integration's tracked lock changed: isometer-
   core entered its graph, and two stale mere lines refreshed to 3675a352,
   drift left by the umbrella repin, recorded rather than reverted.
+- **2026-09-14, step 6 gate closed on the Paredros side.** At 5dfc721,
+  with no Paredros edit: paredros-world 143 tests including motion_compat's
+  real v3 and v4 archive restores and the v5 and v6 save-restore tests,
+  paredros-client 45 lib tests with the eight GPU receipts, session
+  acceptance ok in 106 frames; byte-identity holds on every restored
+  fixture (Paredros's state hash is not versioned by its save header, so
+  the restores are the pin). Steps 7 to 9 are pre-agreed with the Paredros
+  session: this lane changes only the three mesocosm-lens, -render and
+  -mesh path rows in paredros-client/Cargo.toml, one per step, runs the
+  Paredros workspace check before each commit, and touches nothing else
+  under paredros/. Their product-side switch to isometer-core runs in
+  parallel in paredros-world and paredros-client source and dependency
+  rows, committed by pathspec on their side.
