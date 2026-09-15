@@ -59,11 +59,27 @@
 //! things the two genuinely differed on (leaf class, id, description, and the
 //! bench's transform style). The Isometry overmap is *not* a consumer: its leaf
 //! is Cambium's own `GraphCanvasSwatch`, placed in a panel rather than a card.
+//!
+//! ## M2: the examiner
+//!
+//! [`examiner`] is the parts palette and the reading column the session's
+//! subject sheet and the bench's parts examiner each wrote by hand:
+//! `button.part` chips with a label, a selected state and a condition class,
+//! over `.field` name-value rows. A product hands over an
+//! [`ExaminerModel`] built from its own projection — a row is a `u64` and a
+//! label, never a part — and a selection handler over its own state. Isometry's
+//! `sheet.rs` is not a consumer: it is a character-sheet overlay of
+//! `.sheet-row` lines with no palette, so §1's row is corrected there too.
 
+pub mod examiner;
 pub mod palette;
 pub mod sheet;
 pub mod viewport;
 
+pub use examiner::{
+    ExaminerModel, ExaminerRow, FIELD_CLASS, FIELD_NAME_CLASS, FIELD_VALUE_CLASS, PART_CLASS,
+    PARTS_CLASS, READING_CLASS, examiner, field, field_cells, parts_palette, reading_column,
+};
 pub use palette::{Palette, Picked, Seeds, css_vars, derive, text_contrast};
 pub use sheet::{Sizes, css_sizes, from_palette, shared, sheet, sheet_with};
 pub use viewport::{

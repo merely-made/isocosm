@@ -6,7 +6,7 @@
 use std::sync::LazyLock;
 
 use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
-use isomere::{Picked, Seeds, Sizes, ViewportCard};
+use isomere::{ExaminerModel, ExaminerRow, Picked, Seeds, Sizes, ViewportCard};
 use isometer::core::PartId;
 use paredros_world::ItemKind;
 
@@ -23,19 +23,6 @@ fn button(label: String, class: &'static str, action: impl Fn(&mut SessionApp) +
             .attr("aria-label", aria),
         move |state: &mut SessionApp, _| action(state),
     )))
-}
-
-fn field(name: &str, value: String) -> Child {
-    Box::new(
-        el(
-            "div",
-            (
-                el("div", text(name.to_owned())).attr("class", "field-name"),
-                el("div", text(value)).attr("class", "field-value"),
-            ),
-        )
-        .attr("class", "field"),
-    )
 }
 
 /// The scene card: isomere's shared container and leaf, with the session's own
@@ -77,34 +64,35 @@ fn sheet_panel(state: &SessionApp) -> Child {
         );
     };
     let played = state.played();
-    let parts: Vec<Child> = sheet
+    let parts: Vec<ExaminerRow<'_>> = sheet
         .parts
         .iter()
-        .map(|part| {
-            let id = part.id;
-            let selected = state.selected == Some((played, id));
-            let label = format!(
-                "{} ({}){}",
-                part.name,
-                id.0,
-                if part.severed { " severed" } else { "" }
-            );
-            let class = match (part.severed, selected) {
-                (true, _) => "part severed",
-                (false, true) => "part selected",
-                (false, false) => "part",
-            };
-            button(label, class, move |state: &mut SessionApp| {
-                state.select(played, id)
-            })
+        .map(|part| ExaminerRow {
+            // A severed part still reads as severed while it is the selected
+            // one, which is what this panel has always done; isomere's chip
+            // keeps that and publishes the selection as `aria-pressed`.
+            state_class: part.severed.then_some("severed"),
+            selected: state.selected == Some((played, part.id)),
+            ..ExaminerRow::new(
+                u64::from(part.id.0),
+                format!(
+                    "{} ({}){}",
+                    part.name,
+                    part.id.0,
+                    if part.severed { " severed" } else { "" }
+                ),
+            )
         })
         .collect();
-    let mut rows: Vec<Child> = vec![
-        field("Subject", format!("{}", sheet.subject.0)),
-        field("Anatomy revision", format!("{}", sheet.revision.0)),
-        field("Learned techniques", format!("{}", sheet.learned.len())),
-        field(
-            "Intact parts",
+    let mut rows: Vec<(String, String)> = vec![
+        ("Subject".into(), format!("{}", sheet.subject.0)),
+        ("Anatomy revision".into(), format!("{}", sheet.revision.0)),
+        (
+            "Learned techniques".into(),
+            format!("{}", sheet.learned.len()),
+        ),
+        (
+            "Intact parts".into(),
             format!(
                 "{} of {}",
                 sheet.parts.iter().filter(|part| !part.severed).count(),
@@ -113,36 +101,36 @@ fn sheet_panel(state: &SessionApp) -> Child {
         ),
     ];
     for blocker in &sheet.global_blockers {
-        rows.push(field("Blocker", blocker.clone()));
+        rows.push(("Blocker".into(), blocker.clone()));
     }
     if let Some((subject, part)) = state.selected
         && let Some(row) = sheet.parts.iter().find(|row| row.id == part)
         && subject == played
     {
-        rows.push(field("Selected part", row.name.clone()));
-        rows.push(field(
-            "Attached to",
+        rows.push(("Selected part".into(), row.name.clone()));
+        rows.push((
+            "Attached to".into(),
             row.parent
                 .map(|parent| format!("part {}", parent.0))
                 .unwrap_or_else(|| "root".into()),
         ));
-        rows.push(field(
-            "Bounds",
+        rows.push((
+            "Bounds".into(),
             row.bounds
                 .map(|bounds| format!("{:?} .. {:?}", bounds.min, bounds.max))
                 .unwrap_or_else(|| "not placed".into()),
         ));
     }
-    Box::new(
-        el(
-            "aside",
-            (
-                el("h2", text("Subject sheet")),
-                el("div", parts).attr("class", "parts"),
-                el("div", rows).attr("class", "reading"),
-            ),
-        )
-        .attr("class", "panel"),
+    // isomere's shared examiner (M2 of the isomere plan). What crosses is the
+    // number this session's `PartId` wraps; the selection stays the session's.
+    isomere::examiner(
+        ExaminerModel {
+            rows: parts,
+            readings: rows,
+            class: Some("panel"),
+            ..ExaminerModel::new("Subject sheet")
+        },
+        move |state: &mut SessionApp, id| state.select(played, PartId(id as u32)),
     )
 }
 

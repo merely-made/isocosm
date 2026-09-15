@@ -205,3 +205,64 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   day with two rulings: the palette is seeded from today's exact hex so
   captures hold and tinct fills only the unpicked states; and Mesocosm's
   main-binary host migration (M4) is in this round, after M0 to M3.
+- **2026-09-15, M0 founded (ab4d4c0, Paredros half; Mesocosm half in the
+  working tree).** `shared/isomere` is its own workspace beside isometer,
+  MPL-2.0, cambium and tinct from mere at 876320fd, nothing from isometer.
+  `isomere::sheet` carries the 21 rules the bench and session sheets agreed
+  on with every colour and every disputed length an `--isomere-*`
+  property; `Seeds`, `Picked`, `derive` and `css_vars` reproduce both
+  products' hand-picked hex exactly and derive only the unpicked states;
+  `Sizes` carries the four font sizes and three box numbers that differed.
+  Both sheets are now seeds plus product rules (the bench keeps 37, the
+  session 14). Nothing was rebased. Receipts: 12 isomere tests; Paredros
+  check clean, 45 lib tests, acceptance ok and failure exit 1; Mesocosm
+  check clean, bench acceptance and spatial-coverage ok with 47 of 47
+  captures byte-identical to a pre-change baseline and 32 of 32 to the
+  kept 2026-09-14 set. Paredros's captures differ from the previous run at
+  one pixel, (1647, 595), red channel by one count, which a same-binary
+  rerun flips in both directions: pre-existing nondeterminism, recorded
+  here so it is not chased again. The Mesocosm bench half (view.rs,
+  probe.rs, bench.rs and the manifest row) lands once the shared manifest
+  is free of the effect-pack lane's row. *Landed as de699c0 the same day.*
+- **2026-09-15, M1 landed (9e0aed5).** `isomere::viewport` is the card
+  the bench and the session each wrote by hand: `ViewportCard` carries a
+  leaf key, a box, a label and the four things the two differed on (leaf
+  class, id, description, and the bench's transform style in the leaf's
+  own slot); `viewport_card` emits the scene card, the leaf with its image
+  role and label, and an optional overlay; `scene_card` is the container
+  alone; `error_line` emits the product's id plus the shared class.
+  `Child<State, Action>` is spelled as both products' own alias, so neither
+  needed a wrapper. The only DOM change is the added `.error-line` class
+  the M0 sheet already styled. The Isometry overmap leaf did not move: it
+  is Cambium's graph swatch in a panel, not a card, so §1's row is
+  corrected and it belongs to a later milestone. Receipts: 19 isomere
+  tests; Paredros 45 lib tests, acceptance ok, captures unchanged except
+  the recorded flicker; Mesocosm bench acceptance ok, 15 of 15 captures
+  byte-identical to the M0 set.
+- **2026-09-15, M2 landed.** `isomere::examiner` is the panel the
+  session's subject sheet and the bench's parts examiner each wrote by
+  hand: `ExaminerRow` carries an id, a label, a condition class and a
+  selected flag; `ExaminerModel` adds the heading, the name-value
+  readings, the schematic slot M5 waits on, and the two things the
+  products differed on (the container class, and the bench's "choose a
+  part" note, which rides under a generation-change row and so is the
+  product's call rather than "no rows"). Chips are `button.part` with
+  `aria-label` and `aria-pressed`; readings are `.field` / `.field-name`
+  / `.field-value`. A condition class replaces the selected class rather
+  than joining it, which is what the session did, and `aria-pressed`
+  carries the truth either way. Cambium's `detail_panel` was read and not
+  adopted: its `.detail-row` spans are not what the M0 sheet styles, and
+  adopting them would restyle both columns. The only DOM change anywhere
+  is the `aria-pressed` the session's chips now carry and the bench's
+  already did. Isometry's `sheet.rs` did not move: it is a character-sheet
+  overlay of `.sheet-row` lines with no palette and no addressable part,
+  so §1's examiner row is corrected for it as the viewport row was for
+  the overmap in M1. The test file split at the ceiling into an M0 roof
+  with M1 and M2 siblings. Known inert row: isomere's `[patch]` mirrors
+  Mesocosm's `genet-taffy` entry, which nothing in this crate's graph
+  consumes, so cargo reports it unused on every run. Receipts: 25 isomere
+  tests; Paredros check clean, 45 lib tests, session acceptance ok with
+  captures unchanged except the recorded (1647, 595) flicker and
+  `selected-part == 3` intact; Mesocosm library check clean, release
+  build, bench acceptance ok with 15 of 15 captures byte-identical to the
+  M1 set and every receipt field unchanged.

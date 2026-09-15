@@ -4,7 +4,8 @@
 use std::sync::LazyLock;
 
 use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
-use isomere::{Picked, Seeds, Sizes, ViewportCard};
+use isomere::{ExaminerModel, ExaminerRow, Picked, Seeds, Sizes, ViewportCard};
+use mesocosm_core::PartId;
 
 use super::{LEAF_KEY, state::Bench};
 
@@ -16,19 +17,6 @@ fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
         el("button", text(label)).attr("aria-label", label),
         move |state: &mut Bench, _| action(state),
     )))
-}
-
-fn row(label: &str, value: String) -> Child {
-    Box::new(
-        el(
-            "div",
-            (
-                el("div", text(label.to_owned())).attr("class", "field-name"),
-                el("div", text(value)).attr("class", "field-value"),
-            ),
-        )
-        .attr("class", "field"),
-    )
 }
 
 pub(super) fn root(state: &Bench) -> Child {
@@ -57,53 +45,52 @@ pub(super) fn root(state: &Bench) -> Child {
     let subject = model
         .subject()
         .and_then(|id| model.world().organisms.iter().find(|o| o.id == id));
-    let parts: Vec<Child> = subject
+    let parts: Vec<ExaminerRow<'_>> = subject
         .map(|organism| {
             organism
                 .body()
                 .parts
                 .iter()
                 .filter(|p| !p.severed)
-                .map(|part| {
-                    let id = part.id;
-                    let selected = model
+                .map(|part| ExaminerRow {
+                    selected: model
                         .selected
-                        .is_some_and(|s| s.organism == organism.id && s.part == id);
-                    Box::new(focusable(clickable(
-                        el("button", text(format!("Part {}", id.0)))
-                            .attr("aria-label", format!("Part {}", id.0))
-                            .attr("aria-pressed", selected.to_string())
-                            .attr("class", if selected { "part selected" } else { "part" }),
-                        move |state: &mut Bench, _| state.select(id),
-                    ))) as Child
+                        .is_some_and(|s| s.organism == organism.id && s.part == part.id),
+                    ..ExaminerRow::new(u64::from(part.id.0), format!("Part {}", part.id.0))
                 })
                 .collect()
         })
         .unwrap_or_default();
     let reading = model.reading();
-    let mut detail: Vec<Child> = reading
+    let mut detail: Vec<(String, String)> = reading
         .reading
+        .as_ref()
         .map(|r| {
-            vec![
-                row("Part", r.id),
-                row("Role", r.role),
-                row("Condition", r.condition),
-                row("Processes", r.process),
-                row("Intake", r.intake),
-                row("Feeding", r.feeding),
-                row("Lineage", r.lineage),
-                row("Source", r.donor),
-                row("History", r.history_event),
+            [
+                ("Part", &r.id),
+                ("Role", &r.role),
+                ("Condition", &r.condition),
+                ("Processes", &r.process),
+                ("Intake", &r.intake),
+                ("Feeding", &r.feeding),
+                ("Lineage", &r.lineage),
+                ("Source", &r.donor),
+                ("History", &r.history_event),
             ]
+            .into_iter()
+            .map(|(name, value)| (name.to_owned(), value.clone()))
+            .collect()
         })
-        .unwrap_or_else(|| {
-            vec![Box::new(el(
-                "p",
-                text("Choose a visible part, or use the part buttons."),
-            ))]
-        });
+        .unwrap_or_default();
+    // The prompt stands in for the reading, and rides *under* a generation
+    // change the bench still has to say, which is why it is the product's call
+    // and not "no rows".
+    let note = reading
+        .reading
+        .is_none()
+        .then_some("Choose a visible part, or use the part buttons.");
     if let Some(change) = model.selected_change() {
-        detail.insert(0, row("Generation change", change));
+        detail.insert(0, ("Generation change".to_owned(), change));
     }
     let status = if creator.pending {
         "Generating specimens…".to_owned()
@@ -243,13 +230,17 @@ pub(super) fn root(state: &Bench) -> Child {
                             ),
                         )
                         .attr("class", "preview-column"),
-                        el(
-                            "aside",
-                            (
-                                el("h2", text("Parts examiner")),
-                                el("div", parts).attr("class", "parts"),
-                                el("div", detail).attr("class", "reading"),
-                            ),
+                        // isomere's shared examiner (M2 of the isomere plan).
+                        // What crosses is the number this bench's `PartId`
+                        // wraps; the selection stays the bench's.
+                        isomere::examiner(
+                            ExaminerModel {
+                                rows: parts,
+                                readings: detail,
+                                note,
+                                ..ExaminerModel::new("Parts examiner")
+                            },
+                            |state: &mut Bench, id| state.select(PartId(id as u32)),
                         ),
                     ),
                 ),
