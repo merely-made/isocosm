@@ -63,3 +63,8 @@ serde = { workspace = true }
 # Trace and receipt files are read by people and by other hosts, so they are
 # JSON rather than the wire format the world itself travels in.
 serde_json = "1"
+
+[dev-dependencies]
+# The frame examples that moved here from mesocosm-lens (family plan step 1)
+# hash their own scene bytes, so they name the wire format directly.
+postcard = { workspace = true }

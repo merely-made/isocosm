@@ -11,7 +11,7 @@ publish = false
 # the Isometry root workspace beside them. The root pins mere at a different
 # revision, so pulling this crate into it would fork the cambium family.
 [workspace]
-members = ["."]
+members = [".", "crates/*"]
 resolver = "2"
 
 [dependencies]

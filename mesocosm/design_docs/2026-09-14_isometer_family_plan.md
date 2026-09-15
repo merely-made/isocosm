@@ -512,3 +512,20 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
 
 - **2026-09-14:** assessed and written. No code moved, no commit.
 - **2026-09-14, lane started** on the ruling above; step 1 running.
+- **2026-09-14, step 1 done.** `shared/isometer` is a workspace with
+  `members = [".", "crates/*"]` and an empty `crates/`. Twenty-three
+  example files moved verbatim by rename from mesocosm-lens to
+  mesocosm-genet: the four the plan named (burrow_run, burrow_watch,
+  g4_frame, v2_projection), t1_picking (the sole consumer of lens's
+  mesocosm-runtime dev-dependency), and, as the one deviation, v1_frame
+  and g2_frame, whose `app.rs` and `gpu.rs` the moved examples include by
+  path; moving the family beat a cross-crate path include or a duplicate.
+  The mesocosm-runtime dev-dependency rows are gone from lens and render
+  (render's was already dead); mesocosm-genet gains a postcard
+  dev-dependency; `cargo tree` shows no runtime or genet edge under lens,
+  render or mesh. Green: mesocosm workspace check, lens 60 single-threaded,
+  render 32 + 5, genet 150, all seven moved examples build, isometer 28,
+  paredros check, root check with Cargo.lock unchanged. burrow_run and
+  v2_projection panic on world-fixture assertions identically before and
+  after the move (positive control run in place), the same drift risk 1
+  records for structure-cli; not chased.

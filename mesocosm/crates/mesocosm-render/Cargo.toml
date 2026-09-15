@@ -20,4 +20,3 @@ pollster = "0.4"
 [dev-dependencies]
 # Only for the example that writes a frame to disk for a human to look at.
 png = "0.17"
-mesocosm-runtime = { workspace = true }
