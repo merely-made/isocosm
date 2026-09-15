@@ -89,7 +89,8 @@ impl Capture {
             .unwrap_or_else(|error| panic!("organism {subject:?} failed to project: {error:?}"));
         let mut materials = super::project(&organism.phenotype, world.ruleset());
         if hide_secretion {
-            materials.retain(|m| m.process != mesocosm_core::process::Process::Secrete);
+            materials
+                .retain(|m| m.material != super::channel(mesocosm_core::process::Process::Secrete));
         }
         let bounds = organism.body().aabb();
         let centre = [0, 1, 2].map(|i| (bounds.min[i] + bounds.max[i]) as f32 * 0.5);
@@ -270,7 +271,7 @@ fn descendant_comparison_renders_recorded_bodies() {
         receipts.push(serde_json::json!({ "stage": stage.label, "subject": stage.subject.0,
             "tick": stage.world.tick, "state_hash": format!("{hash:016x}"),
             "program": stage.world.lineages().get(organism.species).unwrap().program().digest(),
-            "secretory_parts": materials.iter().filter(|m| m.process == mesocosm_core::process::Process::Secrete).count(),
+            "secretory_parts": materials.iter().filter(|m| m.material == super::channel(mesocosm_core::process::Process::Secrete)).count(),
             "assisted_setup": proof.assisted_setup }));
     }
     assert_eq!(

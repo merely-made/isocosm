@@ -6,7 +6,7 @@
 
 use super::*;
 use crate::live_body::PartMaterial;
-use mesocosm_core::{VolumeRef, Yaw, process::Process};
+use mesocosm_core::{VolumeRef, Yaw};
 use mesocosm_mesh::{BodyMesh, Volume};
 
 fn cube() -> BodyMesh {
@@ -396,7 +396,7 @@ fn missing_mesh_and_invalid_materials_cannot_publish_partial_queries() {
     let mesh = cube();
     let materials = [PartMaterial {
         part: PartId(0),
-        process: Process::ALL[0],
+        material: 0,
         fraction: 1.1,
     }];
     let mut body = LiveBody::new(&mesh, [0.0; 3]);

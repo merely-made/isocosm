@@ -13,15 +13,20 @@ use super::{SceneBody, SlabWindow};
 
 /// What one prepared frame of bodies cost and contained.
 ///
-/// Some counters are still Mesocosm's meanings (`carcasses`, the two capsule
-/// `fallback_*` fields) and are written by a host after [`BodyLayer::prepare`]
-/// rather than by the layer. They stay on one struct while `Section` is still
-/// the thing that publishes the receipt.
+/// Some counters are still Mesocosm's meanings (`carcasses`, `secretory_parts`
+/// and the two capsule `fallback_*` fields) and are written by a host after
+/// [`BodyLayer::prepare`] rather than by the layer. They stay on one struct
+/// while `Section` is still the thing that publishes the receipt.
 ///
 /// [`BodyLayer::prepare`]: super::BodyLayer::prepare
 #[derive(Clone, Debug, Default, serde::Serialize)]
 pub struct BodyFrameStats {
     pub material_parts: usize,
+    /// Host-written, over [`BodyLayer::drawn_materials`]: which material
+    /// channel is the noteworthy one is the host's vocabulary, not the
+    /// scene's.
+    ///
+    /// [`BodyLayer::drawn_materials`]: super::BodyLayer::drawn_materials
     pub secretory_parts: usize,
     pub candidates: usize,
     pub body_scale: f32,

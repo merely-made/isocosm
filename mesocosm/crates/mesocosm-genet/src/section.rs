@@ -48,13 +48,13 @@ pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEG
 /// and bench keep one import path.
 pub use isometer::SlabWindow;
 
+use isometer::{
+    CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
+};
 use mesocosm_core::World;
 use mesocosm_core::places::Ground;
 use mesocosm_lens::{BrickMap, CritterPose, Grade};
 use mesocosm_render::composite::Composite;
-use isometer::{
-    CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
-};
 
 /// The G2 slab: section depth and the palette depth of the retro grade, plus
 /// the half-height Mark ruled on 2026-08-29. Kept as defaults, not as constants
@@ -396,6 +396,19 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     fn prepared(&mut self, layer: &mut isometer::BodyLayer) {
         layer.stats.body_scale = self.bodies.scale;
+        // The scene carries neutral material channels; which of them is the
+        // expressed gland is Mesocosm's vocabulary, so the count is read back
+        // here rather than named inside the scene.
+        let secrete = materials::channel(mesocosm_core::process::Process::Secrete);
+        layer.stats.secretory_parts = layer
+            .drawn_materials()
+            .map(|materials| {
+                materials
+                    .iter()
+                    .filter(|material| material.material == secrete)
+                    .count()
+            })
+            .sum();
         // The scene knows the documents, not which of them belong to a dead
         // organism, so the carcass count is read back here.
         let world = self.world;

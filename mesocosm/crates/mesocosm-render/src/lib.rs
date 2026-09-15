@@ -38,6 +38,7 @@ pub use geometry::{
 };
 pub use live_body::{
     BodyDrawStats, ClipSlab, LiveBody, LiveBodyError, LiveBodyRenderer, PartMaterial,
+    TISSUE_CHANNELS,
 };
 
 /// Colour the frame is cleared to. Distinct from every material colour, so

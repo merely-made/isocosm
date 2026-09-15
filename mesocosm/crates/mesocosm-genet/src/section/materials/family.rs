@@ -56,7 +56,7 @@ fn record_stage(
             "alive": organism.is_alive(),
             "reserve_mg": organism.energy_mg,
             "phenotype_digest": organism.phenotype.digest(),
-            "secretory_parts": materials.iter().filter(|m| m.process == mesocosm_core::process::Process::Secrete).count(),
+            "secretory_parts": materials.iter().filter(|m| m.material == crate::section::materials::channel(mesocosm_core::process::Process::Secrete)).count(),
         }));
     }
     assert_eq!(runtime.state_hash(), hash, "rendering is read-only");
@@ -94,6 +94,7 @@ fn record_stage(
 
 #[test]
 fn family_scene_replays_intake_expression_and_a_natural_descendant() {
+    use crate::section::materials::channel;
     use mesocosm_core::{Founding, Outcome, history::Event, process::Process};
     let pack = Pack::generate(crate::generation_content::DevelopmentPalette(
         Founding::SpacedRoster.palette(),
@@ -226,7 +227,7 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
     assert!(
         !super::super::project(&relative.phenotype, runtime.world().ruleset())
             .iter()
-            .any(|m| m.process == Process::Secrete)
+            .any(|m| m.material == channel(Process::Secrete))
     );
     assert!(!runtime.history().log().entries().iter().any(|entry| matches!(entry.record,
         Event::Expressed { organism, .. } | Event::Grafted { organism, .. } if organism == ids.relative)));
@@ -246,7 +247,7 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
     assert!(
         super::super::project(&offspring.phenotype, runtime.world().ruleset())
             .iter()
-            .any(|m| m.process == Process::Secrete)
+            .any(|m| m.material == channel(Process::Secrete))
     );
     record_stage(
         &runtime,

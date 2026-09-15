@@ -46,34 +46,35 @@ fn vs_main(input: VertexIn) -> VertexOut {
     );
 }
 
-fn process_colour(index: u32) -> vec3<f32> {
-    // Native-process palette, ordered exactly as Process::ALL. These marks
-    // mean an allocated process, not a kingdom or a guessed material.
+fn channel_colour(index: u32) -> vec3<f32> {
+    // One mark per tissue channel, in the producer's own channel order. These
+    // marks mean an allocated material, not a kingdom or a guessed surface.
     switch index {
-        case 0u: { return vec3<f32>(0.82, 0.30, 0.25); } // contract
-        case 1u: { return vec3<f32>(0.82, 0.55, 0.20); } // intake
-        case 2u: { return vec3<f32>(0.32, 0.72, 0.92); } // sense
-        case 3u: { return vec3<f32>(0.34, 0.76, 0.30); } // fix
-        default: { return vec3<f32>(0.78, 0.25, 0.72); } // secrete
+        case 0u: { return vec3<f32>(0.82, 0.30, 0.25); }
+        case 1u: { return vec3<f32>(0.82, 0.55, 0.20); }
+        case 2u: { return vec3<f32>(0.32, 0.72, 0.92); }
+        case 3u: { return vec3<f32>(0.34, 0.76, 0.30); }
+        default: { return vec3<f32>(0.78, 0.25, 0.72); }
     }
 }
 
-fn tissue_mark(local_position: vec3<f32>, expression: vec4<f32>, secrete: f32) -> vec3<f32> {
+fn tissue_mark(local_position: vec3<f32>, expression: vec4<f32>, tail: f32) -> vec3<f32> {
     // A regular voxel-aligned screen. The mosaic has no render-voxel
     // coordinates, so this is a density reading of caller-supplied fractions,
-    // never a fabricated cell-to-voxel assignment.
+    // never a fabricated cell-to-voxel assignment. The five fractions arrive
+    // in the producer's channel order and are read positionally.
     let cell = floor(local_position + vec3<f32>(0.001));
     let phase = fract((cell.x + 3.0 * cell.y + 5.0 * cell.z) / 16.0);
-    let contract_end = expression.x;
-    let intake_end = contract_end + expression.y;
-    let sense_end = intake_end + expression.z;
-    let fix_end = sense_end + expression.w;
-    let secrete_end = fix_end + secrete;
-    if (phase < contract_end) { return process_colour(0u); }
-    if (phase < intake_end) { return process_colour(1u); }
-    if (phase < sense_end) { return process_colour(2u); }
-    if (phase < fix_end) { return process_colour(3u); }
-    if (phase < secrete_end) { return process_colour(4u); }
+    let end_0 = expression.x;
+    let end_1 = end_0 + expression.y;
+    let end_2 = end_1 + expression.z;
+    let end_3 = end_2 + expression.w;
+    let end_4 = end_3 + tail;
+    if (phase < end_0) { return channel_colour(0u); }
+    if (phase < end_1) { return channel_colour(1u); }
+    if (phase < end_2) { return channel_colour(2u); }
+    if (phase < end_3) { return channel_colour(3u); }
+    if (phase < end_4) { return channel_colour(4u); }
     return vec3<f32>(-1.0);
 }
 

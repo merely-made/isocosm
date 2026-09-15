@@ -27,7 +27,7 @@ mod materials;
 mod pose;
 mod query;
 
-pub use materials::PartMaterial;
+pub use materials::{PartMaterial, TISSUE_CHANNELS};
 pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad};
 
 use materials::part_appearance;

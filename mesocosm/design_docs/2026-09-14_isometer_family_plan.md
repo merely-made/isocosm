@@ -579,3 +579,22 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   `VolumeRef`, `Yaw`, `classify`, `wire`. Green: mesocosm check, mesh 60,
   genet 154, runtime 44, views 46, isometer 28, paredros check, root
   check, all four locks unchanged.
+- **2026-09-14, step 5 done, gate passed.** `PartMaterial.material` is a
+  neutral tissue-channel index (`u8`, `TISSUE_CHANNELS = 5`) and
+  mesocosm-render names `process::Process` nowhere, tests included;
+  Mesocosm's `section/materials.rs` maps `Process` to the channel from
+  `Process::ALL`'s position so the shader order holds by construction;
+  isometer's `Process::Secrete` filter is gone and `secretory_parts` is
+  host-written through `SceneHost::prepared` beside `carcasses`, with
+  `BodyFrameStats`'s serde shape unchanged because the played receipt
+  serializes it verbatim. The shader changed in comments and local names
+  only. The channel values are not mesh's `MATERIAL_*` palette codes,
+  which sit on a different axis. Gate: all 32 spatial-coverage captures
+  byte-identical to the 2026-09-14 reference over the whole frame, and an
+  inverted-channel control moved 2.2 million viewport pixels, so the
+  comparison is sensitive to exactly the ordering preserved. Green:
+  mesocosm check, render 32 + 5, genet 154, runtime 44, views 46,
+  isometer 28, paredros check (it names neither type), root check, locks
+  unchanged. population.scenario fails identically at HEAD; not chased.
+  Precondition one of the ruling is met: isometer names no
+  `mesocosm_core::process` item.

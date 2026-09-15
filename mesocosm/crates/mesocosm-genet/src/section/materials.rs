@@ -4,12 +4,29 @@
 //! Surface appearance reads admitted, living process tissue. Allocation cells
 //! remain simulation facts; their proportions drive a disposable voxel pattern.
 
-use mesocosm_core::{BodyPhenotype, process::Registry};
+use mesocosm_core::{
+    BodyPhenotype,
+    process::{Process, Registry},
+};
 use mesocosm_render::PartMaterial;
 use std::collections::BTreeMap;
 
 #[cfg(test)]
 mod capture;
+
+/// The renderer's tissue channel a native process paints into.
+///
+/// `PartMaterial::material` is a neutral index: the shader reads the channels
+/// positionally and holds no metabolic vocabulary, so the process-to-channel
+/// mapping is Mesocosm's and lives here. `Process::ALL` is the order that
+/// mapping has always had, which is why deriving the index from it rather
+/// than writing one down leaves every drawn pixel where it was.
+pub(super) fn channel(process: Process) -> u8 {
+    Process::ALL
+        .iter()
+        .position(|candidate| *candidate == process)
+        .expect("Process::ALL lists every native process") as u8
+}
 
 pub(super) fn project(phenotype: &BodyPhenotype, registry: &Registry) -> Vec<PartMaterial> {
     let mut materials = Vec::new();
@@ -39,7 +56,7 @@ pub(super) fn project(phenotype: &BodyPhenotype, registry: &Registry) -> Vec<Par
         materials.extend(counts.into_iter().filter(|(_, cells)| *cells > 0).map(
             |(process, cells)| PartMaterial {
                 part: part.id,
-                process,
+                material: channel(process),
                 fraction: cells as f32 / capacity as f32,
             },
         ));
@@ -50,7 +67,7 @@ pub(super) fn project(phenotype: &BodyPhenotype, registry: &Registry) -> Vec<Par
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::{Founding, World, process::Process};
+    use mesocosm_core::{Founding, World};
 
     #[test]
     fn preview_materials_read_allocated_tissue_without_changing_authority_or_geometry() {
@@ -62,10 +79,14 @@ mod tests {
         let actual = &world.controlled().unwrap().phenotype;
         let before = project(actual, world.ruleset());
         let after = project(&preview.phenotype, world.ruleset());
-        assert!(!before.iter().any(|m| m.process == Process::Secrete));
+        assert!(
+            !before
+                .iter()
+                .any(|m| m.material == channel(Process::Secrete))
+        );
         let material = after
             .iter()
-            .find(|m| m.process == Process::Secrete)
+            .find(|m| m.material == channel(Process::Secrete))
             .unwrap();
         assert_eq!(material.part, preview.part);
         assert!(material.fraction > 0.0 && material.fraction < 1.0);

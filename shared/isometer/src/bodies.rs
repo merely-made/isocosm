@@ -179,6 +179,13 @@ impl BodyLayer {
         self.placed.iter().map(|body| body.subject)
     }
 
+    /// The material slice each projected body kept, in the same draw order as
+    /// [`BodyLayer::drawn`]. A host reads this back for the counters whose
+    /// meaning is its own vocabulary and not the scene's.
+    pub fn drawn_materials(&self) -> impl Iterator<Item = &[mesocosm_render::PartMaterial]> + '_ {
+        self.placed.iter().map(|body| body.materials.as_slice())
+    }
+
     /// Drops every projected body, returning the subjects that had been drawn
     /// so a host can replace them with its own fallback presentation.
     ///
@@ -418,11 +425,6 @@ impl BodyLayer {
                         .map(|m| m.part)
                         .collect::<std::collections::BTreeSet<_>>()
                         .len();
-                    self.stats.secretory_parts += body
-                        .materials
-                        .iter()
-                        .filter(|m| m.process == mesocosm_core::process::Process::Secrete)
-                        .count();
                     self.stats.controlled_drawn |= body.always_visible;
                     self.stats.voxel_parts += placed.mesh.placement_count();
                     self.stats.voxel_bodies += 1;

@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use mesocosm_core::{PartId, VolumeRef, process::Process};
+use mesocosm_core::{PartId, VolumeRef};
 use mesocosm_mesh::{Volume, place_point};
 
 fn gpu() -> Option<crate::Renderer> {
@@ -383,27 +383,27 @@ fn inspection_tint_prioritizes_the_addressed_part() {
 }
 
 #[test]
-fn expression_materials_aggregate_by_addressed_part_and_process() {
+fn expression_materials_aggregate_by_addressed_part_and_channel() {
     let mesh = BodyMesh::single(VolumeRef::from_tag(1), &Volume::solid([1, 1, 1], 1));
     let materials = [
         PartMaterial {
             part: PartId(3),
-            process: Process::Fix,
+            material: 3,
             fraction: 0.25,
         },
         PartMaterial {
             part: PartId(3),
-            process: Process::Secrete,
+            material: 4,
             fraction: 0.25,
         },
         PartMaterial {
             part: PartId(3),
-            process: Process::Fix,
+            material: 3,
             fraction: 0.25,
         },
         PartMaterial {
             part: PartId(4),
-            process: Process::Sense,
+            material: 2,
             fraction: 1.0,
         },
     ];
@@ -423,19 +423,19 @@ fn expression_materials_refuse_impossible_capacity_claims() {
     let over_capacity = [
         PartMaterial {
             part: PartId(3),
-            process: Process::Fix,
+            material: 3,
             fraction: 0.75,
         },
         PartMaterial {
             part: PartId(3),
-            process: Process::Secrete,
+            material: 4,
             fraction: 0.5,
         },
     ];
     assert!(!valid_materials(&over_capacity));
     assert!(!valid_materials(&[PartMaterial {
         part: PartId(3),
-        process: Process::Fix,
+        material: 3,
         fraction: f32::NAN,
     }]));
 }
@@ -447,14 +447,14 @@ fn changed_expression_reuses_the_immutable_volume_upload() {
     let colour_view = colour.create_view(&Default::default());
     let depth_view = depth.create_view(&Default::default());
     let mesh = BodyMesh::single(VolumeRef::from_tag(41), &Volume::solid([2, 2, 2], 1));
-    let fix = [PartMaterial {
+    let channel_3 = [PartMaterial {
         part: PartId(0),
-        process: Process::Fix,
+        material: 3,
         fraction: 1.0,
     }];
-    let secrete = [PartMaterial {
+    let channel_4 = [PartMaterial {
         part: PartId(0),
-        process: Process::Secrete,
+        material: 4,
         fraction: 1.0,
     }];
     let mut live = LiveBodyRenderer::new(host.device(), wgpu::TextureFormat::Rgba8Unorm, 4);
@@ -473,11 +473,11 @@ fn changed_expression_reuses_the_immutable_volume_upload() {
             None,
             &[
                 LiveBody {
-                    materials: &fix,
+                    materials: &channel_3,
                     ..LiveBody::new(&mesh, [0.0; 3])
                 },
                 LiveBody {
-                    materials: &secrete,
+                    materials: &channel_4,
                     ..LiveBody::new(&mesh, [4.0, 0.0, 0.0])
                 },
             ],
@@ -502,11 +502,11 @@ fn changed_expression_reuses_the_immutable_volume_upload() {
             None,
             &[
                 LiveBody {
-                    materials: &secrete,
+                    materials: &channel_4,
                     ..LiveBody::new(&mesh, [0.0; 3])
                 },
                 LiveBody {
-                    materials: &fix,
+                    materials: &channel_3,
                     ..LiveBody::new(&mesh, [4.0, 0.0, 0.0])
                 },
             ],
