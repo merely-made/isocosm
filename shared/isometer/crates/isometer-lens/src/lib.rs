@@ -111,6 +111,85 @@ pub struct Grade {
     pub downscale: u32,
 }
 
+/// Terrain materials a [`TerrainPalette`] can name, entry zero included.
+///
+/// Brick materials are `u8`, but the table rides in the trace's existing
+/// parameter uniform, so it is bounded rather than open: 64 entries is 1 KiB
+/// of a 16 KiB downlevel binding that was already half spent.
+/// `isometer_core::ground::MAX_MATERIAL` is the same bound on the authoring
+/// side, and clamps there so nothing past it ever reaches a projection.
+pub const MAX_TERRAIN_MATERIALS: usize = 64;
+
+/// A bounded material-to-colour table for the terrain trace.
+///
+/// The index is the brick material, so **entry 0 is the unknown colour** — no
+/// voxel is ever material 0, which is air, and a material the table does not
+/// reach falls back to that entry. A frame that binds no palette traces the
+/// fixed soil, rock and unknown arithmetic it always did, byte for byte;
+/// binding one replaces that arithmetic in both the classic and the habitat
+/// branch and in nothing else.
+#[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct TerrainPalette {
+    colours: Vec<[f32; 3]>,
+}
+
+impl TerrainPalette {
+    /// A table from its colours in material order, entry 0 first. Colours past
+    /// [`MAX_TERRAIN_MATERIALS`] are dropped, with a debug assertion.
+    pub fn new(colours: impl IntoIterator<Item = [f32; 3]>) -> Self {
+        let mut colours: Vec<[f32; 3]> = colours.into_iter().collect();
+        debug_assert!(
+            colours.len() <= MAX_TERRAIN_MATERIALS,
+            "a terrain palette holds {MAX_TERRAIN_MATERIALS} colours, not {}",
+            colours.len()
+        );
+        colours.truncate(MAX_TERRAIN_MATERIALS);
+        Self { colours }
+    }
+
+    /// Names one material's colour, growing the table to reach it. Entries the
+    /// growth skips take the unknown colour, so a sparse host palette reads as
+    /// unknown where it has said nothing.
+    pub fn with_material(mut self, material: u8, colour: [f32; 3]) -> Self {
+        let index = material as usize;
+        debug_assert!(
+            index < MAX_TERRAIN_MATERIALS,
+            "material {material} is past the palette bound"
+        );
+        if index >= MAX_TERRAIN_MATERIALS {
+            return self;
+        }
+        let unknown = self.colours.first().copied().unwrap_or_default();
+        while self.colours.len() <= index {
+            self.colours.push(unknown);
+        }
+        self.colours[index] = colour;
+        self
+    }
+
+    pub fn len(&self) -> usize {
+        self.colours.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.colours.is_empty()
+    }
+
+    pub fn colours(&self) -> &[[f32; 3]] {
+        &self.colours
+    }
+
+    /// What the shader draws `material` in: its entry, or entry 0 where the
+    /// table does not reach. `None` only for an empty table, which is the
+    /// same as binding no palette at all.
+    pub fn colour(&self, material: u8) -> Option<[f32; 3]> {
+        self.colours
+            .get(material as usize)
+            .or_else(|| self.colours.first())
+            .copied()
+    }
+}
+
 /// Optional terrain presentation supplied by the host.
 #[derive(Clone, Copy, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct TerrainAppearance {

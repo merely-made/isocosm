@@ -16,7 +16,7 @@
 
 use isometer_lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
-    CritterPose, FRAME_FORMAT, Grade, TerrainAppearance,
+    CritterPose, FRAME_FORMAT, Grade, TerrainAppearance, TerrainPalette,
 };
 
 use crate::bodies::{BodyFrameStats, BodyLayer, SceneBody, SceneVolumes};
@@ -24,6 +24,8 @@ use crate::camera::SlabCamera;
 use crate::glyphs::GlyphLayer;
 use crate::query::PresentedFrame;
 
+#[cfg(test)]
+mod palette_tests;
 mod terrain;
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
 
@@ -106,6 +108,11 @@ pub struct Scene {
     pub(crate) queue: wgpu::Queue,
     tracer: BrickTracer,
     map: Option<BrickMap>,
+    /// The material-to-colour table every traced frame reads its terrain
+    /// through. Host state rather than frame state, like the map itself: a
+    /// tileset or a biome names it once and the frames after it inherit it.
+    /// `None` keeps the tracer's fixed soil, rock and unknown arithmetic.
+    terrain_palette: Option<TerrainPalette>,
     /// A CPU map change that has not reached a successful terrain encode.
     /// Isolated previews and failed frames must not consume its upload.
     terrain_upload_pending: bool,
@@ -149,6 +156,7 @@ impl Scene {
             queue,
             tracer,
             map: None,
+            terrain_palette: None,
             terrain_upload_pending: true,
             terrain_diagnostics: None,
             bodies,
@@ -236,6 +244,21 @@ impl Scene {
         self.terrain_upload_pending
     }
 
+    /// The table the traced terrain's materials are coloured through.
+    pub fn terrain_palette(&self) -> Option<&TerrainPalette> {
+        self.terrain_palette.as_ref()
+    }
+
+    /// Colours the traced terrain's materials through `palette` from the next
+    /// frame on. `None` — and an empty table — restore the tracer's fixed
+    /// soil, rock and unknown colours exactly.
+    pub fn set_terrain_palette(&mut self, palette: Option<TerrainPalette>) {
+        if self.terrain_palette != palette {
+            self.invalidate_query();
+        }
+        self.terrain_palette = palette;
+    }
+
     /// Binds a map the host built itself, pending a full upload.
     pub fn set_terrain_map(&mut self, map: BrickMap) {
         self.map = Some(map);
@@ -316,6 +339,7 @@ impl Scene {
                 map,
                 bodies,
                 traced_view,
+                terrain_palette,
                 ..
             } = &mut *self;
             let mut input = BrickFrameInput::for_camera(
@@ -328,6 +352,7 @@ impl Scene {
             .with_clip_from_world(matrix)
             .with_roster(host.roster());
             input.terrain_appearance = frame.terrain_appearance;
+            input.terrain_palette = terrain_palette.as_ref();
             if let Some(pose) = host.played() {
                 input = input.with_pose(pose);
             }
@@ -346,6 +371,7 @@ impl Scene {
                 tracer,
                 map,
                 traced_view,
+                terrain_palette,
                 ..
             } = &mut *self;
             let mut input = BrickFrameInput::for_camera(
@@ -357,6 +383,7 @@ impl Scene {
             .changed(change)
             .with_roster(capsules.roster);
             input.terrain_appearance = frame.terrain_appearance;
+            input.terrain_palette = terrain_palette.as_ref();
             if let Some(pose) = capsules.played {
                 input = input.with_pose(pose);
             }

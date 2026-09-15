@@ -26,8 +26,8 @@ use modulus::BRICK_DDA_WGSL;
 
 use crate::{FRAME_FORMAT, MAX_ROSTER, MAX_ROSTER_CAPSULES};
 use params::{
-    ROSTER_BUFFER_BYTES, ROSTER_HEADER_BYTES, RosterPose, TraceParams, validates_change,
-    validates_pose,
+    ROSTER_BUFFER_BYTES, ROSTER_HEADER_BYTES, RosterPose, TERRAIN_BASE, TERRAIN_ENTRIES,
+    TraceParams, validates_change, validates_pose,
 };
 use residency::ResidentMap;
 
@@ -125,11 +125,12 @@ impl BrickTracer {
             label: Some("brick tracer layout"),
             entries: &[texture(0), texture(1), uniform(2), uniform(3)],
         });
-        // The roster's array sizes are the Rust caps, injected rather than
-        // written twice: a drift between the two layouts is a silent
-        // misread of the uniform.
+        // The roster's array sizes and the terrain block's layout are the Rust
+        // caps, injected rather than written twice: a drift between the two
+        // layouts is a silent misread of the uniform.
         let shader_source = format!(
-            "{BRICK_DDA_WGSL}\nconst ROSTER_MEMBERS = {MAX_ROSTER};\nconst ROSTER_PAIRS = {};\n{}",
+            "{BRICK_DDA_WGSL}\nconst ROSTER_MEMBERS = {MAX_ROSTER};\nconst ROSTER_PAIRS = {};\n\
+             const TERRAIN_BASE = {TERRAIN_BASE}u;\nconst TERRAIN_ENTRIES = {TERRAIN_ENTRIES}u;\n{}",
             MAX_ROSTER_CAPSULES * 2,
             include_str!("tracer.wgsl")
         );

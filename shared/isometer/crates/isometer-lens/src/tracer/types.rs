@@ -11,7 +11,7 @@ use bytemuck::{Pod, Zeroable};
 use modulus::BrickMap;
 
 use super::LeasedAtlas;
-use crate::{CritterPose, Flight, Grade, TerrainAppearance};
+use crate::{CritterPose, Flight, Grade, TerrainAppearance, TerrainPalette};
 
 const PERSPECTIVE: u32 = 0;
 const ORTHOGRAPHIC: u32 = 1;
@@ -322,6 +322,12 @@ pub struct BrickFrameInput<'a> {
     /// Optional vessel-owned terrain presentation. `None` preserves the
     /// original renderer path and its capture bytes.
     pub terrain_appearance: Option<TerrainAppearance>,
+    /// Optional material-to-colour table for the terrain trace. `None` — and
+    /// an empty table — keep the fixed soil, rock and unknown arithmetic, so
+    /// every frame that names none is unchanged to the byte. Independent of
+    /// `terrain_appearance`: a palette replaces the material colours in the
+    /// classic branch and the habitat branch alike.
+    pub terrain_palette: Option<&'a TerrainPalette>,
     /// Presentation-only SDF bodies. Their source remains the caller's
     /// projection, never the brick map or world state.
     pub pose: Option<&'a CritterPose>,
@@ -371,6 +377,7 @@ impl<'a> BrickFrameInput<'a> {
             camera,
             grade,
             terrain_appearance: None,
+            terrain_palette: None,
             pose: None,
             roster: &[],
             leased_atlas: None,
@@ -417,6 +424,13 @@ impl<'a> BrickFrameInput<'a> {
 
     pub fn with_terrain_appearance(mut self, appearance: TerrainAppearance) -> Self {
         self.terrain_appearance = Some(appearance);
+        self
+    }
+
+    /// Draw terrain materials through `palette` instead of the fixed soil,
+    /// rock and unknown colours.
+    pub fn with_terrain_palette(mut self, palette: &'a TerrainPalette) -> Self {
+        self.terrain_palette = Some(palette);
         self
     }
 }

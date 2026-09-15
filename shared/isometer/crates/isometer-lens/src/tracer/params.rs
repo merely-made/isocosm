@@ -11,7 +11,15 @@ use bytemuck::{Pod, Zeroable};
 use modulus::BrickTraceSpace;
 
 use super::types::{BrickChange, BrickFrameInput, BrickTraceError};
-use crate::{CritterPose, MAX_CAPSULES, MAX_ROSTER, MAX_ROSTER_CAPSULES};
+use crate::{CritterPose, MAX_CAPSULES, MAX_ROSTER, MAX_ROSTER_CAPSULES, MAX_TERRAIN_MATERIALS};
+
+/// Terrain entries before the palette: mode and palette length, five
+/// colours, and the classifying plane. The palette follows them in the same
+/// array, which is why it costs no second binding and no layout change.
+pub(super) const TERRAIN_BASE: usize = 7;
+
+/// The whole terrain array: the habitat block plus the palette table.
+pub(super) const TERRAIN_ENTRIES: usize = TERRAIN_BASE + MAX_TERRAIN_MATERIALS;
 
 pub(super) const IDENTITY: [[f32; 4]; 4] = [
     [1.0, 0.0, 0.0, 0.0],
@@ -27,8 +35,10 @@ pub(super) struct TraceParams {
     pub space: BrickTraceSpace,
     pub fog: [f32; 4],
     pub look: [f32; 4],
-    /// Optional habitat appearance: mode, five colours, and plane data.
-    pub terrain: [[f32; 4]; 7],
+    /// Habitat appearance in the first [`TERRAIN_BASE`] entries — mode, five
+    /// colours, plane data, and the palette length in `terrain[0][1]` — then
+    /// the material palette itself.
+    pub terrain: [[f32; 4]; TERRAIN_ENTRIES],
     /// Column-major, identity when the frame carries no depth join.
     pub clip_from_world: [[f32; 4]; 4],
     pub critter: CritterParams,
@@ -80,48 +90,45 @@ impl TraceParams {
                 input.grade.palette_len as f32,
                 0.0,
             ],
-            terrain: input
-                .terrain_appearance
-                .map_or([[0.0; 4]; 7], |appearance| {
-                    [
-                        [1.0, 0.0, 0.0, 0.0],
-                        [
-                            appearance.soil[0],
-                            appearance.soil[1],
-                            appearance.soil[2],
-                            0.0,
-                        ],
-                        [
-                            appearance.rock[0],
-                            appearance.rock[1],
-                            appearance.rock[2],
-                            0.0,
-                        ],
-                        [
-                            appearance.unknown[0],
-                            appearance.unknown[1],
-                            appearance.unknown[2],
-                            0.0,
-                        ],
-                        [appearance.sky[0], appearance.sky[1], appearance.sky[2], 0.0],
-                        [
-                            appearance.underground[0],
-                            appearance.underground[1],
-                            appearance.underground[2],
-                            0.0,
-                        ],
-                        [
-                            appearance.section_centre[0],
-                            appearance.section_centre[1],
-                            appearance.section_centre[2],
-                            appearance.clearing_y,
-                        ],
-                    ]
-                }),
+            terrain: terrain_of(input),
             clip_from_world: input.clip_from_world.unwrap_or(IDENTITY),
             critter: CritterParams::from_pose(input.pose),
         }
     }
+}
+
+/// The terrain block: the habitat entries the appearance describes, then the
+/// palette table, then the palette's length where the shader reads it.
+///
+/// A frame with neither writes the zeros it always wrote, and a frame with
+/// only an appearance writes exactly the seven entries it always wrote,
+/// followed by zeros no shader path reads — so no existing capture moves.
+fn terrain_of(input: BrickFrameInput<'_>) -> [[f32; 4]; TERRAIN_ENTRIES] {
+    let mut terrain = [[0.0; 4]; TERRAIN_ENTRIES];
+    if let Some(appearance) = input.terrain_appearance {
+        terrain[0][0] = 1.0;
+        for (slot, colour) in [
+            appearance.soil,
+            appearance.rock,
+            appearance.unknown,
+            appearance.sky,
+            appearance.underground,
+            appearance.section_centre,
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            terrain[slot + 1][..3].copy_from_slice(&colour);
+        }
+        terrain[6][3] = appearance.clearing_y;
+    }
+    if let Some(palette) = input.terrain_palette {
+        for (index, colour) in palette.colours().iter().enumerate() {
+            terrain[TERRAIN_BASE + index][..3].copy_from_slice(colour);
+        }
+        terrain[0][1] = palette.len() as f32;
+    }
+    terrain
 }
 
 impl CritterParams {
@@ -392,9 +399,9 @@ mod tests {
         assert!(ROSTER_BUFFER_BYTES < limit);
         assert!((size_of::<TraceParams>() as u64) < limit);
         // Both bindings are live at once, and each has to fit the same limit
-        // on its own. The frame uniform (header 336 B + pose, including the slab wall) spends 52.4%,
-        // the roster 93.8%.
-        assert_eq!(size_of::<TraceParams>(), 8592);
+        // on its own. The frame uniform (header 1 360 B + pose, the slab wall and
+        // the 1 KiB material palette included) spends 58.7%, the roster 93.8%.
+        assert_eq!(size_of::<TraceParams>(), 9616);
         assert_eq!(ROSTER_BUFFER_BYTES * 100 / limit, 93);
         // The budget §3 writes as `M × (C + 1) ≤ 511`, checked rather than
         // recited: 40 members at 11 capsules is 480, and one more capsule each

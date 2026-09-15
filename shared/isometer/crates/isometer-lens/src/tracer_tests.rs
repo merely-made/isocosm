@@ -12,6 +12,7 @@ use crate::{
 };
 
 mod grade;
+mod palette;
 mod roster;
 mod unlit;
 

@@ -30,6 +30,21 @@ pub const AIR: u8 = 0;
 pub const ROCK: u8 = 2;
 pub const SOIL: u8 = 3;
 
+/// Highest material a ground may hold.
+///
+/// Brick materials are palette indices, and the bounded table the trace reads
+/// them through (`isometer_lens::TerrainPalette`) holds 64 entries with entry
+/// zero the unknown colour. A sampler that names a larger material has nothing
+/// to be drawn as, so [`Ground::grow_with`] clamps it here and trips a debug
+/// assertion rather than letting it reach a projection.
+pub const MAX_MATERIAL: u8 = 63;
+
+/// The material [`Ground::grow`] has always laid: soil for the top two voxels
+/// of a column, rock under them. `depth` is voxels below the column's surface.
+pub fn soil_over_rock(_x: i32, _z: i32, depth: i32) -> u8 {
+    if depth < 2 { SOIL } else { ROCK }
+}
+
 /// One dense 8³ brick, y-major then z then x.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Brick {
@@ -142,6 +157,23 @@ impl Ground {
     /// bound: bricks are laid from `-extent` to `extent` on both horizontal
     /// axes.
     pub fn grow<T: Terrain + ?Sized>(terrain: &T, extent: i32) -> Self {
+        Self::grow_with(terrain, extent, soil_over_rock)
+    }
+
+    /// The same growth with the column's materials chosen by `material`,
+    /// which is handed the column and how many voxels below that column's
+    /// surface the voxel sits (0 is the surface voxel itself).
+    ///
+    /// [`Self::grow`] is this with [`soil_over_rock`], so a product that wants
+    /// a tile kind per column writes one closure and inherits the cavities,
+    /// the bedrock and the revision discipline unchanged. Materials past
+    /// [`MAX_MATERIAL`] are clamped to it, with a debug assertion: past the
+    /// palette bound there is no colour to draw them in.
+    pub fn grow_with<T: Terrain + ?Sized>(
+        terrain: &T,
+        extent: i32,
+        material: impl Fn(i32, i32, i32) -> u8,
+    ) -> Self {
         let mut ground = Self {
             extent,
             sea_level: terrain.sea_level(extent),
@@ -154,8 +186,12 @@ impl Ground {
             for x in -extent..=extent {
                 let surface = terrain.surface(extent, x, z);
                 for y in 0..=surface {
-                    let material = if y + 2 > surface { SOIL } else { ROCK };
-                    ground.place([x, y, z], material);
+                    let chosen = material(x, z, surface - y);
+                    debug_assert!(
+                        chosen <= MAX_MATERIAL,
+                        "material {chosen} at [{x}, {y}, {z}] is past the palette bound {MAX_MATERIAL}"
+                    );
+                    ground.place([x, y, z], chosen.min(MAX_MATERIAL));
                 }
             }
         }
@@ -388,6 +424,9 @@ impl Brick {
         &self.materials
     }
 }
+
+#[cfg(test)]
+mod material_tests;
 
 #[cfg(test)]
 mod tests {

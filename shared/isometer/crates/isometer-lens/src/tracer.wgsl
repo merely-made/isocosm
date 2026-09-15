@@ -6,8 +6,8 @@
 
 // Mesocosm presentation over conatus-brick's product-neutral DDA.
 //
-// ROSTER_MEMBERS and ROSTER_PAIRS are injected ahead of this source from the
-// Rust caps, so the two layouts cannot drift.
+// ROSTER_MEMBERS, ROSTER_PAIRS, TERRAIN_BASE and TERRAIN_ENTRIES are injected
+// ahead of this source from the Rust caps, so the two layouts cannot drift.
 
 struct TraceCamera {
     origin: vec3<f32>,
@@ -30,8 +30,9 @@ struct TraceParams {
     space: BrickTraceSpace,
     fog: vec4<f32>,
     look: vec4<f32>,
-    // mode, soil, rock, unknown, sky, underground, section centre + clearing Y
-    terrain: array<vec4<f32>, 7>,
+    // mode + palette length, soil, rock, unknown, sky, underground, section
+    // centre + clearing Y, then TERRAIN_BASE onward the material palette.
+    terrain: array<vec4<f32>, TERRAIN_ENTRIES>,
     // Column-major world-to-clip for the depth join; identity when unused.
     clip_from_world: mat4x4<f32>,
     critter: CritterParams,
@@ -84,7 +85,20 @@ fn vs(@builtin(vertex_index) index: u32) -> VsOut {
     return out;
 }
 
+// What a brick material is drawn in.
+//
+// A bound palette is the whole answer for both branches below: the table is
+// indexed by the material itself, entry 0 is the unknown colour, and a
+// material the table does not reach falls back to it. `terrain[0].y` is the
+// table's length and is exactly zero for every frame that binds none, so the
+// fixed arithmetic underneath is reached on the same instruction it always
+// was and no existing capture moves.
 fn material_colour(material: u32) -> vec3<f32> {
+    let palette = u32(params.terrain[0].y);
+    if (palette > 0u) {
+        let index = select(0u, material, material < palette);
+        return params.terrain[TERRAIN_BASE + index].xyz;
+    }
     if (params.terrain[0].x > 0.5) {
         if (material == 3u) { return params.terrain[1].xyz; }
         if (material == 2u) { return params.terrain[2].xyz; }
