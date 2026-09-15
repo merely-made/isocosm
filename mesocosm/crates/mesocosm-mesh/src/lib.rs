@@ -56,9 +56,7 @@ pub use content::{
 };
 pub use flatten::{Flattened, flatten, flatten_attributed};
 pub use greedy::{PartMesh, Quad, mesh_volume, mesh_volume_naive};
-pub use live::{
-    BodyDependencyRevision, DEFAULT_MESH_CACHE_CAPACITY, LiveBodyProjection, LiveBodyProjector,
-};
+pub use live::{BodyDependencyRevision, DEFAULT_MESH_CACHE_CAPACITY, LiveBodyProjector};
 pub use profile::{BodyProfile, PROFILE_SCHEMA, PROFILE_VERSION, ProfileError};
 pub use volume::{Volume, VolumeError, VolumeMap, VolumeSource};
 
@@ -90,11 +88,8 @@ pub enum MeshError {
     Unplaceable { part: PartId },
     /// Every surviving part resolved, but all of its volumes are empty.
     /// Publishing this as a voxel body would make the subject disappear.
-    EmptyBodyProjection { organism: mesocosm_core::OrganismId },
-    /// The same failure, reported by the identity-free projection path. A
-    /// caller that has no `OrganismId` — a wing product keyed on its own
-    /// subject type — still needs the loud refusal, without borrowing
-    /// Mesocosm's id space to get it.
+    /// Identity-free on purpose: a caller names its own subject when it
+    /// surfaces this, rather than the mesh borrowing a product's id space.
     EmptyBody,
     /// More parts than the attributed flatten can name. Checked rather than
     /// assumed because the artifact it feeds crosses a repo boundary.

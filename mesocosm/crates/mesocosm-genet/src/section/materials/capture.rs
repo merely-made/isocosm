@@ -82,10 +82,11 @@ impl Capture {
             .iter()
             .find(|o| o.id == subject)
             .expect("recorded body");
-        let projection = self
+        // The mesh is identity-free; the subject is Mesocosm's to name.
+        let (mesh, _revision) = self
             .projector
-            .project(subject, organism.body(), &self.volumes)
-            .unwrap();
+            .project_body(organism.body(), &self.volumes)
+            .unwrap_or_else(|error| panic!("organism {subject:?} failed to project: {error:?}"));
         let mut materials = super::project(&organism.phenotype, world.ruleset());
         if hide_secretion {
             materials.retain(|m| m.process != mesocosm_core::process::Process::Secrete);
@@ -138,7 +139,7 @@ impl Capture {
                 None,
                 &[LiveBody {
                     materials: &materials,
-                    ..LiveBody::new(&projection.mesh, [0.0; 3])
+                    ..LiveBody::new(&mesh, [0.0; 3])
                 }],
             )
             .unwrap();

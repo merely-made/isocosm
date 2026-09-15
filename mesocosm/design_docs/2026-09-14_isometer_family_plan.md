@@ -545,3 +545,20 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   mesocosm workspace check, lens 56 single-threaded, genet 154, both
   example sets build, isometer 28, paredros check, root check with both
   locks byte-identical.
+- **2026-09-14, step 2 done.** `OrganismId` is out of mesocosm-mesh's
+  production code: `LiveBodyProjector::project`, `LiveBodyProjection` and
+  `MeshError::EmptyBodyProjection` are gone (the struct outright, since
+  nothing constructed it once `project` left), every caller uses
+  `project_body`, and Mesocosm's one product caller,
+  section/materials/capture.rs, names the organism itself on failure.
+  isometer's own error receipt already reconstructed the subject id, so
+  every receipt is byte-identical by construction. Mesh still names, in
+  production, `PartPalette`/`PartTemplate`/`RoleShapes` (step 3) and
+  `PartOrigin` from wire (step 6's list), plus the move-list types; its
+  tests name `Attachment`, `Founding`, `Recipe`, `Soma`, `develop_body`,
+  `Kingdom`, `Organism`, `Stage`, which step 6 must carry or rewrite.
+  Green: mesocosm check, mesh 60 (two comparison tests folded into their
+  survivors), genet 154, runtime 44, views 46, isometer 28, paredros check,
+  root check, all four locks unchanged. Note for later steps:
+  mesocosm-genet carries pre-existing rustfmt drift in seven files; a
+  `cargo fmt` there is not a no-op and must not ride into a family commit.
