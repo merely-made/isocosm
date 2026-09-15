@@ -132,6 +132,15 @@ with the family's receipts unchanged; then the board.
 - **I5 camera preset.** Done when unit tile diagonals project 2:1 and an
   elevation step projects to `elev_step` over `tile_h` within one pixel at
   the board's scales.
+- **I6 body material palette** (found by I4, 2026-09-15). The live
+  renderer colours a quad by a hashed material colour times the body's
+  tint and takes no colour table, so a token from a recipe draws with the
+  right silhouette in the wrong colours. Done when a `SceneBody` can carry
+  a per-material colour table (the palette shifted by one, as
+  `material_colours` gives it), the renderer samples it per material with
+  the body tint as a multiplier, a body without a table draws exactly as
+  today, and a rendered token's colours match its baked sprite's at every
+  covered pixel.
 - **B1 terrain adapter (Isometry).** Done when the watchtower map grows a
   Ground whose surface matches the elevation grid at every cell and whose
   materials match the tile kinds, in a headless test.
@@ -197,4 +206,57 @@ with the family's receipts unchanged; then the board.
 
 - **2026-09-15:** founded from three read-only assessments (the board today,
   isometer for a third consumer, the wing GUI inventory) and the isometer
-  owner's API notes. Awaiting sign-off.
+  owner's API notes. Approved the same day: tokens as live bodies, the
+  producer owns the pixel grid.
+- **2026-09-15, I5 landed (845b6b0).** `SlabCamera::dimetric_2_1`: 45
+  degrees azimuth down the x=z diagonal at a 30-degree pitch, which is what
+  a 2:1 tile ratio requires once the projection is divided by the camera's
+  own up vector (the edge slope's 26.6 degrees is the wrong number); a 9 by
+  9 by 3 grid lands where `tile_to_screen` puts it within a pixel, the two
+  board axes project exactly 2:1, an elevation step projects straight up.
+  The camera test file sits at the 600-line ceiling and splits next.
+- **2026-09-15, I4 landed (61b5056).** `Volume::from_voxels` (palette index
+  i is material i+1, absent cells 0), `TokenBody` (a one-part body plus its
+  volume map from voxels, layers or an `Appearance`, content-addressed),
+  `material_colours`, and a CPU silhouette over the bake's own projection
+  proving the baked sprite and the live mesh agree on every pixel for three
+  subjects at four facings. Found I6: the live renderer takes no colour
+  table, so a token draws in hashed colours until it does.
+- **2026-09-15, I3 landed (b71ced7).** `render_scale` on the request and
+  the signature; the scene draws at the leaf size over the scale and a
+  nearest fullscreen pass presents each pixel as one block at exactly the
+  leaf's size; scale one takes no pass and is byte-identical. Netrender
+  samples nearest at every stage of the external-image path. Two field
+  initialisers landed in Paredros, whose acceptance hash is unchanged. Two
+  notes: `Scene::capture` still reads the internal image, so a headed
+  capture at scale four is the small master; and nothing calls
+  `set_render_scale` until the board does.
+- **2026-09-15, I2 landed (db1d81e).** `Scene::pick` and `pick_at_pixel`
+  answer the nearer of a body pick and a `TerrainHit` (world point, entered
+  voxel, brick, normal, distance, material) from the presented frame's own
+  camera, ray and map; ties go to the ground as the depth test does;
+  `pick_ndc` keeps its bodies-only behaviour. The lens needed nothing: the
+  brick ray already carried every field. Five headless receipts. The hit
+  carries no frame stamp, since it names geometry rather than a minted
+  identity; a host that wants one reads the query generation.
+- **2026-09-15, I6 landed (1ea3572).** The live renderer takes an optional
+  256-entry colour table per body, bound as one shared uniform block with a
+  dynamic offset and batched by palette slot; absent or empty tables keep
+  the exact hashed colour and face shade arithmetic. The facade registers a
+  table per subject on the body layer rather than adding a field to
+  `SceneBody`, so no existing literal moved. A facade receipt draws the demo
+  hero through the scene and finds only its baked palette entries under the
+  six face shades; pixel-for-pixel agreement with the sprite waits on the
+  camera alignment B2 owns.
+- **2026-09-15, I1 landed.** `TerrainPalette` (64 colours, entry 0
+  unknown) rides in the trace params by extending the terrain array, so
+  the bind group layout is unchanged; the shader falls back to the exact
+  classic and habitat arithmetic when no table is bound, with an explicit
+  no-palette receipt. `Ground::grow_with` takes a material sampler over
+  column and depth below the surface and `grow` is the soil-over-rock
+  case. One deviation from §2: the palette is host state on `Scene`
+  (`set_terrain_palette`), like the terrain map and the render scale,
+  rather than a field on the frame or the appearance, which would have
+  broken six exhaustive literals in the products; B1 binds it from the
+  tile-kind mapping. 35 core, 58 lens, 46 facade tests. All six isometer
+  additions are now on main; the board lanes B1 to B5 follow.
