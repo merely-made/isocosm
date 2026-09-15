@@ -28,7 +28,8 @@ mod volumes;
 
 pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
 pub use bodies::{
-    BodyFrameStats, BodyLayer, PartAddress, Pose, SceneBody, SceneVolumes, SubjectKey,
+    BodyFrameStats, BodyLayer, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody,
+    SceneVolumes, SubjectKey,
 };
 pub use camera::{Cutaway, SlabCamera, SlabWindow};
 pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke};
@@ -36,7 +37,7 @@ pub use producer::{
     BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,
     SceneSource,
 };
-pub use query::{BodyPick, BodyPickError};
+pub use query::{BodyPick, BodyPickError, Pick, TerrainHit};
 pub use scene::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneHost, SceneStats,
     TerrainRefresh, TerrainSource,
