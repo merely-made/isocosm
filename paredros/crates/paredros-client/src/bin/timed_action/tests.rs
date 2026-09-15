@@ -18,11 +18,11 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
         .count();
     assert_eq!(dressings, 1);
     app.action.prepare(Direction::Right).unwrap();
-    app.action.join(mesocosm_core::PartId(2)).unwrap();
+    app.action.join(isometer_core::PartId(2)).unwrap();
     let tick = app.action.action().unwrap().last_tick;
     app.action.charge(Tick(tick.0 + 1)).unwrap();
     app.injure();
-    let before = app.action.action().unwrap().contributors[&mesocosm_core::PartId(2)].charge;
+    let before = app.action.action().unwrap().contributors[&isometer_core::PartId(2)].charge;
     assert!(before > 0);
     app.rest();
     let game = app.action.session().game();
@@ -38,21 +38,21 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
     assert!(
         anatomy
             .document
-            .part(mesocosm_core::PartId(1))
+            .part(isometer_core::PartId(1))
             .unwrap()
             .severed
     );
     let action = app.action.action().unwrap();
     assert_eq!(
-        action.contributors[&mesocosm_core::PartId(1)].state,
+        action.contributors[&isometer_core::PartId(1)].state,
         paredros_world::timed_action::ContributionState::Cancelled
     );
     assert_eq!(
-        action.contributors[&mesocosm_core::PartId(2)].charge,
+        action.contributors[&isometer_core::PartId(2)].charge,
         before
     );
     assert_eq!(
-        action.contributors[&mesocosm_core::PartId(2)]
+        action.contributors[&isometer_core::PartId(2)]
             .binding
             .revision,
         anatomy.revision

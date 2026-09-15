@@ -10,7 +10,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use mesocosm_core::{Aabb, BodyDocument, PartId, Yaw};
+use isometer_core::{Aabb, BodyDocument, PartId, Yaw};
 use paredros_identity::{BodyRevisionId, SubjectId};
 use serde::{Deserialize, Serialize};
 
@@ -313,7 +313,7 @@ fn checked_rotate(yaw: Yaw, [x, y, z]: [i32; 3]) -> Result<[i32; 3], AnatomyErro
 mod tests {
     use super::*;
     use crate::fixtures::three_lives::wetland_body;
-    use mesocosm_core::{Attachment, SpeciesId, VolumeRef};
+    use isometer_core::{Attachment, SpeciesId, VolumeRef};
 
     const SUBJECT: SubjectId = SubjectId(4);
 
@@ -374,7 +374,7 @@ mod tests {
                     offset: [i32::MAX, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                mesocosm_core::Provenance::founding(),
+                isometer_core::Provenance::founding(),
             )
             .unwrap();
         assert_rejected(huge_offset, AnatomyError::CoordinateOutOfBounds);
@@ -413,7 +413,7 @@ mod tests {
         assert_eq!(record.document, expected);
         assert_eq!(
             record.document.part(PartId(1)).unwrap().provenance,
-            mesocosm_core::Provenance::founding()
+            isometer_core::Provenance::founding()
         );
     }
 
@@ -502,7 +502,7 @@ mod tests {
                     offset: [2, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                mesocosm_core::Provenance::founding(),
+                isometer_core::Provenance::founding(),
             )
             .unwrap();
         let mut anatomies = admitted(BodyRevisionId(2), document);

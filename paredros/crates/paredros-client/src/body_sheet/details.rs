@@ -3,7 +3,7 @@
 
 //! Stable text rows for the inspection viewport.
 
-use mesocosm_core::Origin;
+use isometer_core::Origin;
 
 use super::{Focus, LifeSheet, SheetView};
 

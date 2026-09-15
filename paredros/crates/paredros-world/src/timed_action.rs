@@ -7,7 +7,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use mesocosm_core::{PartId, snapshot};
+use isometer_core::{PartId, snapshot};
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 use wing_functions::{

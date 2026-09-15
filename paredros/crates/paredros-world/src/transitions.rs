@@ -106,20 +106,20 @@ pub enum GameIntent {
         tick: Tick,
         subject: SubjectId,
         revision: BodyRevisionId,
-        document: Box<mesocosm_core::BodyDocument>,
+        document: Box<isometer_core::BodyDocument>,
     },
     ReconcileAnatomy {
         tick: Tick,
         subject: SubjectId,
         from_revision: BodyRevisionId,
         revision: BodyRevisionId,
-        severed_parts: Vec<mesocosm_core::PartId>,
+        severed_parts: Vec<isometer_core::PartId>,
     },
     AttachItem {
         tick: Tick,
         subject: SubjectId,
         item: ItemId,
-        part: mesocosm_core::PartId,
+        part: isometer_core::PartId,
         revision: BodyRevisionId,
     },
     DetachItem {
@@ -227,7 +227,7 @@ pub enum GameEvent {
         tick: Tick,
         subject: SubjectId,
         item: ItemId,
-        part: mesocosm_core::PartId,
+        part: isometer_core::PartId,
     },
     ItemDetached {
         tick: Tick,

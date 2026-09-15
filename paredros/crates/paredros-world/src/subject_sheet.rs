@@ -5,7 +5,7 @@
 //! This module owns labels and row shape only. `arrest_fall` evaluates
 //! availability; callers remain responsible for admitting the supplied facts.
 
-use mesocosm_core::{Aabb, BodyDocument, PartId, Provenance};
+use isometer_core::{Aabb, BodyDocument, PartId, Provenance};
 use paredros_identity::{BodyRevisionId, SubjectId};
 
 use crate::part_bounds;
@@ -234,7 +234,7 @@ fn binding_label(blocker: &BindingBlocker) -> String {
 mod tests {
     use super::*;
     use crate::fixtures::three_lives as fixture;
-    use mesocosm_core::{Attachment, Origin, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, Origin, SpeciesId, VolumeRef, Yaw};
 
     fn sheet(
         life: &fixture::Life,

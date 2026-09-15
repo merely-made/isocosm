@@ -17,7 +17,7 @@ use isometer::{
     SceneBody, SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera,
     SubjectKey, TerrainSource,
 };
-use mesocosm_core::{BodyDocument, PartId};
+use isometer_core::{BodyDocument, PartId};
 use mesocosm_lens::{BrickMap, Grade};
 use paredros_identity::SubjectId;
 use paredros_world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};

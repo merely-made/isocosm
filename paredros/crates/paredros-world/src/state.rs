@@ -12,8 +12,8 @@ use crate::{
     Anatomies, AnatomyError, AnatomyRecord, DeathCause, GameError, GameEvent, GameIntent, Movement,
     MovementError, MovementEvent, MovementProfile, MovementProjection, World,
 };
+use isometer_core::snapshot::{self, hash_bytes};
 use mesocosm_core::places::spot;
-use mesocosm_core::snapshot::{self, hash_bytes};
 use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 

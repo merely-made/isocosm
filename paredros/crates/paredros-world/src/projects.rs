@@ -8,7 +8,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::snapshot::{self, hash_bytes};
+use isometer_core::snapshot::{self, hash_bytes};
 use paredros_identity::SubjectId;
 use serde::{Deserialize, Serialize};
 

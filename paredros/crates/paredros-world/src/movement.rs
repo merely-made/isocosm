@@ -14,8 +14,8 @@
 
 use std::collections::BTreeMap;
 
+use isometer_core::snapshot::{self, hash_bytes};
 use mesocosm_core::places::{WALKER_HEIGHT, step};
-use mesocosm_core::snapshot::{self, hash_bytes};
 use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 

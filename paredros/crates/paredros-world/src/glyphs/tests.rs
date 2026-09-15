@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 use paredros_identity::{BodyRevisionId, Tick};
 
 use super::*;

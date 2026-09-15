@@ -37,9 +37,10 @@ paredros-world = { path = "../paredros-world" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }
+isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
 mesocosm-lens = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-lens", optional = true }
-mesocosm-mesh = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-mesh" }
+isometer-mesh = { version = "0.0.1", path = "../../../shared/isometer/crates/isometer-mesh" }
 mesocosm-render = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-render" }
 netrender = { workspace = true }
 # P1/P2 document-host lane deps: the Cambium host, its producer seam, the

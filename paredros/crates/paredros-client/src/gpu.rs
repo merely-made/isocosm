@@ -13,7 +13,7 @@
 //! whole point of the cohesion contract this gate is proving.
 
 #[cfg(feature = "r1-proof")]
-use mesocosm_core::places::Ground;
+use isometer_core::ground::Ground;
 #[cfg(feature = "r1-proof")]
 use mesocosm_lens::{
     BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, CritterPose, Grade, TraceCamera,

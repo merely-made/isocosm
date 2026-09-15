@@ -11,7 +11,7 @@
 //! projection, and environmental observations. The result explains whether a
 //! known `ArrestFall` principle can use each of its three implementations.
 
-use mesocosm_core::{BodyDocument, PartId};
+use isometer_core::{BodyDocument, PartId};
 use paredros_identity::{BodyRevisionId, SubjectId};
 use serde::{Deserialize, Serialize};
 

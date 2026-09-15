@@ -5,7 +5,7 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 use paredros_identity::BodyRevisionId;
 use serde::{Deserialize, Serialize};
 

@@ -14,6 +14,7 @@ publish = false
 wing-functions = { path = "../../../shared/wing-functions" }
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
 conatus = { workspace = true }
+isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
 paredros-identity = { version = "0.0.1", path = "../paredros-identity" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }

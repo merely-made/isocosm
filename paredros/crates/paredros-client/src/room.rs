@@ -12,7 +12,8 @@
 //! buried spot, in a deterministic outward scan, whose whole footprint is
 //! solid and whose thinnest overburden still leaves a roof.
 
-use mesocosm_core::places::{Ground, Places, WALKER_HEIGHT};
+use isometer_core::ground::Ground;
+use mesocosm_core::places::{Places, WALKER_HEIGHT};
 
 /// The world this probe plays in. One seed, so the room is the same room on
 /// every machine and in every replay.
@@ -91,7 +92,7 @@ impl Room {
     /// room. Meshing the whole enclosure would draw a hundred thousand
     /// quads nobody standing in this chamber can see.
     pub fn nearby_bricks(&self, reach: i32) -> Vec<[i16; 3]> {
-        let brick = mesocosm_core::places::BRICK;
+        let brick = isometer_core::ground::BRICK;
         self.ground
             .keys()
             .filter(|key| {

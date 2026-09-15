@@ -12,7 +12,7 @@ use crate::{
     EquipmentProjection, ItemId, PartCapability, PartFunction, ResourceKind, ResourceReserve,
     TechniqueId, TechniqueInputs, TechniqueKnowledge,
 };
-use mesocosm_core::{
+use isometer_core::{
     Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
 };
 use paredros_identity::{BodyRevisionId, SubjectId};

@@ -7,16 +7,17 @@
 //! Room and body as triangles, and where the camera stands.
 //!
 //! The bricks the walker collides against are the bricks that get drawn:
-//! `mesh_volume` over `Ground::brick_materials`, exactly as mesocosm-mesh's
+//! `mesh_volume` over `Ground::brick_materials`, exactly as isometer-mesh's
 //! own ground-projection receipt builds them. The body is drawn as the
 //! volume it actually occupies, one voxel by `WALKER_HEIGHT`, so what you
 //! see is what `stands` was asked about.
 
-use mesocosm_core::VolumeRef;
-use mesocosm_core::places::{BRICK, Ground, WALKER_HEIGHT};
+use isometer_core::VolumeRef;
+use isometer_core::ground::{BRICK, Ground};
+use mesocosm_core::places::WALKER_HEIGHT;
 #[cfg(feature = "r1-proof")]
 use mesocosm_lens::{CritterPose, TraceCamera, critter::Capsule};
-use mesocosm_mesh::{BodyMesh, Volume};
+use isometer_mesh::{BodyMesh, Volume};
 use mesocosm_render::geometry::{SceneItem, Vertex, build_scene_vertices};
 use netrender::Scene;
 use renderling::glam::{Mat4, Vec3};

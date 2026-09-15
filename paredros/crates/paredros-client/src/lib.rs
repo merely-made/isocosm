@@ -13,7 +13,7 @@
 //! - the world and the room are `mesocosm-core`'s [`places`] tier: a grown
 //!   world, brick ground, and a room carved into a hillside;
 //! - movement is `near::step` exactly, with no kinematics of our own;
-//! - geometry is `mesocosm-mesh`'s greedy mesher over the same bricks the
+//! - geometry is `isometer-mesh`'s greedy mesher over the same bricks the
 //!   walker collides against;
 //! - the picture is renderling on netrender's device, composed into
 //!   netrender's master frame as an external texture.

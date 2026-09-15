@@ -9,7 +9,7 @@
 use conatus::{
     BodyDesc, BodyWorld, CharacterConfig, ColliderDesc, ColliderId, ColliderShape, Transform,
 };
-use mesocosm_core::places::Ground;
+use isometer_core::ground::Ground;
 use serde::{Deserialize, Serialize};
 
 pub const MOTION_SCALE: i64 = 65_536;
@@ -125,7 +125,7 @@ pub enum MotionError {
     Collision,
     Physics,
     InvalidProfile,
-    MissingEnvelopeAnchor(mesocosm_core::PartId),
+    MissingEnvelopeAnchor(isometer_core::PartId),
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MotionOutcome {

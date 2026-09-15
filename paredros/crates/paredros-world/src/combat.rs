@@ -9,8 +9,8 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::places::Ground;
-use mesocosm_core::{Aabb, BodyDocument, PartId};
+use isometer_core::ground::Ground;
+use isometer_core::{Aabb, BodyDocument, PartId};
 use paredros_identity::{BodyRevisionId, SubjectId};
 use serde::{Deserialize, Serialize};
 
@@ -361,7 +361,7 @@ mod tests {
     #[test]
     fn outer_surface_wins_over_a_nearer_internal_part_center() {
         use crate::timed_action::LimbBinding;
-        use mesocosm_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+        use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
         let actor = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 10, [1; 3]);
         let mut target = BodyDocument::new(SpeciesId(2), VolumeRef::from_tag(2), 100, [10, 1, 1]);
         target

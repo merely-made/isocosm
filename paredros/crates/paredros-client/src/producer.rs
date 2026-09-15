@@ -21,7 +21,7 @@
 //! # Declared limits
 //!
 //! - **Anatomies have no voxel data.** Paredros bodies address volumes by
-//!   [`mesocosm_core::VolumeRef::from_tag`] and store no voxels, so each intact
+//!   [`isometer_core::VolumeRef::from_tag`] and store no voxels, so each intact
 //!   part is drawn as one solid box of its own declared extent
 //!   (`half_extent * 2`) in a single flat material, through
 //!   [`isometer::DeclaredExtentVolumes`]. A part's silhouette is its declared

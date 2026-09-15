@@ -13,7 +13,8 @@
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet, BinaryHeap};
 
-use mesocosm_core::places::{Ground, SURFACE_BAND, WALKER_HEIGHT, step};
+use isometer_core::ground::{Ground, SURFACE_BAND};
+use mesocosm_core::places::{WALKER_HEIGHT, step};
 
 use crate::{Layer, SlotId, World};
 

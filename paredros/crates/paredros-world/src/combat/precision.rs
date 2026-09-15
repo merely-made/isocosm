@@ -5,8 +5,8 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::places::Ground;
-use mesocosm_core::{BodyDocument, PartId};
+use isometer_core::ground::Ground;
+use isometer_core::{BodyDocument, PartId};
 use paredros_identity::{BodyRevisionId, SubjectId};
 
 use super::*;

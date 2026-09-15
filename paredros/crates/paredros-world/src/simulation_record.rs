@@ -6,7 +6,7 @@
 
 //! Regrow-and-replay persistence for autonomous simulation state.
 
-use mesocosm_core::snapshot::{self, hash_bytes};
+use isometer_core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
 use crate::{

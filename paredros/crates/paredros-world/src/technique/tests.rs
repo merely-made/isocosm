@@ -1,5 +1,5 @@
 use super::*;
-use mesocosm_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 
 fn body() -> BodyDocument {
     BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [1, 1, 1])

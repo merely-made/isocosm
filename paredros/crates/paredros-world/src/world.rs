@@ -4,8 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::places::{Ground, Grown, Places};
-use mesocosm_core::snapshot::{self, hash_bytes};
+use isometer_core::ground::Ground;
+use isometer_core::snapshot::{self, hash_bytes};
+use mesocosm_core::places::{Grown, Places};
 use paredros_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 

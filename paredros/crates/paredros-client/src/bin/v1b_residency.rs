@@ -16,7 +16,7 @@
 
 use std::{path::Path, sync::Arc, time::Instant};
 
-use mesocosm_core::places::BRICK;
+use isometer_core::ground::BRICK;
 use mesocosm_lens::{
     BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, Grade,
 };

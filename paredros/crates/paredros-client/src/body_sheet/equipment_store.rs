@@ -120,7 +120,7 @@ mod tests {
                 .as_nanos()
         ));
         let mut session = EquipmentSession::new().unwrap();
-        session.attach(session.items()[0].id, mesocosm_core::PartId(1));
+        session.attach(session.items()[0].id, isometer_core::PartId(1));
         let path = save_equipment(&directory, &session.save_bytes().unwrap()).unwrap();
         let (_, bytes) = load_equipment(&directory).unwrap();
         let mut fresh = EquipmentSession::new().unwrap();

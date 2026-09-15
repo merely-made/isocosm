@@ -16,7 +16,7 @@ mod mechanics;
 mod spatial;
 use math::*;
 
-use mesocosm_core::snapshot;
+use isometer_core::snapshot;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 

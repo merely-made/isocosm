@@ -16,8 +16,8 @@
 //! taken from, so restoring into a world that regenerated differently is a
 //! reported failure rather than a silently divergent replay.
 
+use isometer_core::snapshot::{self, hash_bytes};
 use mesocosm_core::places::{WALKER_HEIGHT, step};
-use mesocosm_core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
 use crate::room::{Room, RoomError};

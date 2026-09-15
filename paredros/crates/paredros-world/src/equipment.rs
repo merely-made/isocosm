@@ -4,7 +4,7 @@
 //! Derived attachment readings. An attachment is not a grant of an ability.
 
 use crate::{GameState, ItemId, ItemLocation};
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 use paredros_identity::{BodyRevisionId, SubjectId};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

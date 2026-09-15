@@ -10,7 +10,7 @@
 //! so an older archive is admitted only when it cannot be hiding a newer
 //! intent it never had a word for.
 
-use mesocosm_core::snapshot;
+use isometer_core::snapshot;
 
 use super::GameState;
 use crate::{

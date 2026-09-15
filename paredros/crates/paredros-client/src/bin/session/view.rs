@@ -7,7 +7,7 @@ use cambium::{
     AnyView, GenetCtx, GenetElement, PointerPhase, clickable, custom_leaf, el, focusable,
     on_pointer, text,
 };
-use mesocosm_core::PartId;
+use isometer_core::PartId;
 use paredros_world::ItemKind;
 
 use super::{LEAF_KEY, SessionApp};

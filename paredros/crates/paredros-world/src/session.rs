@@ -8,7 +8,7 @@
 //! A control change is stamped at a game-intent cut, so restore can validate
 //! who was alive when they were selected rather than guessing from final state.
 
-use mesocosm_core::snapshot::{self, hash_bytes};
+use isometer_core::snapshot::{self, hash_bytes};
 use paredros_identity::{Control, ControlIntent, IdentityError, SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 

@@ -11,7 +11,7 @@
 //! keeps its own copy until it retires. Seed 7, keeper plus target, identical
 //! intent order.
 
-use mesocosm_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 use wing_functions::{
     Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
