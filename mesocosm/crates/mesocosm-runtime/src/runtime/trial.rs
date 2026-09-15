@@ -301,8 +301,13 @@ impl Trial {
                 });
             }
         }
+        // Both accepted sources reach the adapter, history first: events in
+        // log order, then this tick's positive soil uptake. Only the adapter
+        // grants; nothing drawn ever gets here.
+        let post_hash = self.runtime.state_hash();
         if let Some(reading) = &mut self.glyphs {
-            reading.absorb(self.runtime.history(), start, self.runtime.state_hash());
+            reading.absorb(self.runtime.history(), start, post_hash);
+            reading.absorb_uptake(&self.uptakes, post_hash);
         }
         true
     }

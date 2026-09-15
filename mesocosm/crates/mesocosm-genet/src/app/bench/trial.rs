@@ -6,23 +6,39 @@ use super::{
     state::{Bench, Specimen},
     view::Child,
 };
-use crate::section::{GlyphOrientation, SpatialGlyph, Stroke, stroke};
+use crate::section::{GlyphOrientation, SpatialGlyph};
 use cambium::{clickable, el, focusable, text};
-use mesocosm_core::{World, effect_experiment::Glyph, history::Event};
+use isometer::GlyphAnchor;
+use mesocosm_core::{PartId, World, effect_pack::Amount, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
 mod carving;
+mod journey;
 mod uptake;
 
 use std::{
+    cell::Cell,
     collections::BTreeSet,
     time::{Duration, Instant},
 };
 
+/// Base clearance along a face normal for a mark inscribed on it, in world
+/// units, under the bench's own marker height. The spatial preview's attached
+/// form uses the same base figure (`spatial/sampling.rs`).
+const FACE_CLEARANCE: f32 = 0.01;
+
 pub(super) struct WorldTrial {
     pub driver: Trial,
     carving: carving::Carving,
+    journey: journey::Binding,
     pub playing: bool,
     pub marks: Vec<SpatialGlyph>,
+    /// The bearing part each mark asked to sit on, index-aligned with
+    /// `marks`. `None` for a mark that is not an inscription on a body.
+    mark_anchors: Vec<Option<PartId>>,
+    /// Anchored marks the scene could not answer for, counted at the draw
+    /// that asked. A cell because the anchors arrive while the model is
+    /// borrowed for reading; nothing else about the trial moves there.
+    anchor_fallbacks: Cell<usize>,
     pub dirty: BTreeSet<[i16; 3]>,
     pub moved: u64,
     pub fed: u64,
@@ -36,15 +52,26 @@ pub(super) struct WorldTrial {
     uptake_count: u64,
     uptake_mg: u64,
     marks_dropped: usize,
+    marks_withheld: usize,
+    uptake_pulses: usize,
     last: Instant,
 }
 impl WorldTrial {
     fn new(source: &World) -> Result<Self, String> {
+        let mut driver = Trial::new(source)?;
+        // The preset binds the journey before the first tick. Grants stay the
+        // adapter's; the bench only ever reads what accepted history earned.
+        let rules = journey::default_rules(source)
+            .ok_or("specimen trial requires a controlled body to bind the journey")?;
+        driver.enable_glyphs(rules)?;
         Ok(Self {
-            driver: Trial::new(source)?,
+            driver,
             carving: carving::Carving::new(),
+            journey: journey::Binding::new(),
             playing: false,
             marks: Vec::new(),
+            mark_anchors: Vec::new(),
+            anchor_fallbacks: Cell::new(0),
             dirty: BTreeSet::new(),
             moved: 0,
             fed: 0,
@@ -58,6 +85,8 @@ impl WorldTrial {
             uptake_count: 0,
             uptake_mg: 0,
             marks_dropped: 0,
+            marks_withheld: 0,
+            uptake_pulses: 0,
             last: Instant::now(),
         })
     }
@@ -101,73 +130,142 @@ impl WorldTrial {
             self.playing = false;
         }
     }
+    /// Every mark now reads the bound body first and the journey second: the
+    /// form comes from **what bears the glyph** — a living part expressing it,
+    /// or the journey remembering it — and never from the mark's own kind. An
+    /// effect the journey does not own still paints nothing and is counted
+    /// instead. The bench never writes the journey, and only accepted history
+    /// and flows reach the adapter.
     fn refresh_marks(&mut self) {
         self.marks_dropped = 0;
+        self.marks_withheld = 0;
+        self.uptake_pulses = 0;
         if !self.show_marks {
             self.marks.clear();
+            self.mark_anchors.clear();
             return;
         }
         let tick = self.driver.world().tick;
-        let mut marks: Vec<_> = self
-            .recent
-            .iter()
-            .map(|a| {
-                let age = tick.saturating_sub(a.tick) as f32 / 8.;
-                let mut centre =
-                    [0, 1, 2].map(|i| a.from[i] as f32 * (1. - age) + a.to[i] as f32 * age);
-                centre[1] += self.marker_height;
-                let glyph = if matches!(a.event, Event::Moved { .. }) {
-                    Glyph::Slashes
-                } else {
-                    Glyph::Quotes
-                };
-                (
-                    (a.tick, 0u8, a.sequence),
-                    SpatialGlyph {
-                        centre,
-                        size: self.marker_size * (1. - age * 0.5),
-                        angle: age * 0.6,
-                        glyph: stroke(glyph),
-                        orientation: GlyphOrientation::CameraFacing,
-                        color: if glyph == Glyph::Slashes {
-                            [0.45, 0.95, 0.8, 1.]
-                        } else {
-                            [1., 0.75, 0.3, 1.]
-                        },
-                    },
-                )
-            })
-            .collect();
+        let mut marks: Vec<((u64, u8, u64), SpatialGlyph, Option<PartId>)> = Vec::new();
+        for activity in &self.recent {
+            // Amount stays the event's; form comes from what bears the glyph.
+            let amount = match activity.event {
+                Event::Moved { .. } => Amount::None,
+                Event::Fed { mass_mg, .. } => Amount::MealMass(mass_mg),
+                _ => continue,
+            };
+            match self.journey.resolve(
+                &self.driver,
+                activity.sequence,
+                activity.from,
+                Some(activity.to),
+                amount,
+            ) {
+                Ok(request) => {
+                    let life = f32::from(request.lifetime_ticks).max(1.);
+                    let age = tick.saturating_sub(activity.tick) as f32 / life;
+                    marks.push((
+                        (activity.tick, 0u8, activity.sequence),
+                        journey::glyph(&request, age, self.marker_height, self.marker_size),
+                        journey::face_of(&request),
+                    ));
+                },
+                Err(_) => self.marks_withheld += 1,
+            }
+        }
         // Continuous uptake refreshes one pulse per recipient, rather than
         // emitting a new particle every tick. Retained flow facts remain in
         // uptake; the pulse's age comes from the run anchor, not the newest
         // record, so unbroken flow still rises instead of standing still.
-        let mut recipients = BTreeSet::new();
-        marks.extend(
-            self.uptake
-                .iter()
-                .rev()
-                .filter(|a| recipients.insert(a.organism))
-                .filter(|_| self.show_uptake)
-                .filter_map(|a| {
-                    let ticks = self.pulses.age(a.organism, tick)?;
-                    let glyph = uptake::pulse(a.at?, ticks, self.marker_height, self.marker_size)?;
-                    Some(((a.tick, 1u8, a.sequence), glyph))
-                }),
+        // Uptake grants in its own right (ruling 5); its milligrams drive the
+        // mark's size, and the form comes from what bears the glyph.
+        if self.show_uptake {
+            let mut recipients = BTreeSet::new();
+            for record in self.uptake.iter().rev() {
+                if !recipients.insert(record.organism) {
+                    continue;
+                }
+                let (Some(at), Some(ticks)) = (record.at, self.pulses.age(record.organism, tick))
+                else {
+                    continue;
+                };
+                let amount = Amount::UptakeMass(record.record.record.amount_mg);
+                match self
+                    .journey
+                    .resolve(&self.driver, record.sequence, at, None, amount)
+                {
+                    Ok(request) => {
+                        marks.push((
+                            (record.tick, 1u8, record.sequence),
+                            uptake::pulse(&request, ticks, self.marker_height, self.marker_size),
+                            journey::face_of(&request),
+                        ));
+                        self.uptake_pulses += 1;
+                    },
+                    Err(_) => self.marks_withheld += 1,
+                }
+            }
+        }
+        let (carved, withheld) = self.carving.marks(
+            &self.journey,
+            &self.driver,
+            tick,
+            self.marker_height,
+            self.marker_size,
         );
-        marks.extend(
-            self.carving
-                .marks(tick, self.marker_height, self.marker_size),
-        );
-        marks.sort_by_key(|(key, _)| *key);
+        marks.extend(carved);
+        self.marks_withheld += withheld;
+        marks.sort_by_key(|(key, ..)| *key);
         self.marks_dropped = marks
             .len()
             .saturating_sub(crate::section::MAX_SPATIAL_GLYPHS);
-        self.marks = marks
-            .into_iter()
-            .skip(self.marks_dropped)
-            .map(|(_, mark)| mark)
+        marks.drain(..self.marks_dropped);
+        self.mark_anchors = marks.iter().map(|(_, _, part)| *part).collect();
+        self.marks = marks.into_iter().map(|(_, mark, _)| mark).collect();
+    }
+
+    /// The marks as this draw should place them: an inscription borne by a
+    /// part sits on **that part's own meshed face**, taking its centre and
+    /// axes from the scene's anchor for it. A mark the scene cannot answer
+    /// for keeps the placement the bench has always used and is counted.
+    ///
+    /// The anchors arrive from the draw rather than from the tick because
+    /// only the scene knows where a posed part's face is; the reading that
+    /// chose the part is still the body's, and nothing here can change it.
+    pub fn anchored_marks(&self, anchors: &[GlyphAnchor]) -> Vec<SpatialGlyph> {
+        let mut fallbacks = 0;
+        let placed = self
+            .marks
+            .iter()
+            .zip(&self.mark_anchors)
+            .map(|(mark, part)| {
+                let Some(part) = part else {
+                    return mark.clone();
+                };
+                let Some(anchor) = anchors.iter().find(|a| a.part == *part) else {
+                    fallbacks += 1;
+                    return mark.clone();
+                };
+                // Cleared off the face along its own normal, then raised by
+                // the bench's marker height exactly as every trial mark has
+                // always been raised. A mark left in the face plane is the
+                // depth renderer's to occlude and it occludes it; the raise
+                // is display, and the face is what the mark now belongs to.
+                let mut centre =
+                    [0, 1, 2].map(|i| anchor.centre[i] + anchor.normal[i] * FACE_CLEARANCE);
+                centre[1] += self.marker_height;
+                SpatialGlyph {
+                    centre,
+                    orientation: GlyphOrientation::WorldPlane {
+                        right: anchor.right,
+                        up: anchor.up,
+                    },
+                    ..mark.clone()
+                }
+            })
             .collect();
+        self.anchor_fallbacks.set(fallbacks);
+        placed
     }
     fn advance(&mut self) -> bool {
         if !self.playing {
@@ -189,6 +287,8 @@ impl WorldTrial {
         self.carving.reset();
         self.playing = false;
         self.marks.clear();
+        self.mark_anchors.clear();
+        self.anchor_fallbacks.set(0);
         self.dirty.clear();
         self.moved = 0;
         self.fed = 0;
@@ -198,6 +298,8 @@ impl WorldTrial {
         self.uptake_count = 0;
         self.uptake_mg = 0;
         self.marks_dropped = 0;
+        self.marks_withheld = 0;
+        self.uptake_pulses = 0;
         self.last = Instant::now();
     }
     pub fn probe_fields(&self) -> Vec<(&'static str, String)> {
@@ -216,19 +318,58 @@ impl WorldTrial {
             ("trial-total-fed", self.fed.to_string()),
             ("trial-uptake-count", self.uptake_count.to_string()),
             ("trial-uptake-mg", self.uptake_mg.to_string()),
-            (
-                "trial-uptake-pulses",
-                self.marks
-                    .iter()
-                    .filter(|m| m.glyph == Stroke::Backticks)
-                    .count()
-                    .to_string(),
-            ),
+            // Counted as the pulses are built. The stroke is the pack's now,
+            // and it is the same shape the feeding mark uses.
+            ("trial-uptake-pulses", self.uptake_pulses.to_string()),
             (
                 "trial-uptake",
                 serde_json::to_string(&self.uptake).expect("uptake serializes"),
             ),
             ("trial-mark-budget-dropped", self.marks_dropped.to_string()),
+            // Marks that asked for a bearing part's face and did not get one,
+            // counted at the last draw. Nonzero means the scene answered with
+            // no anchor for that part and the mark kept its old placement.
+            (
+                "trial-anchor-fallbacks",
+                self.anchor_fallbacks.get().to_string(),
+            ),
+            (
+                "trial-journey",
+                serde_json::to_string(&self.journey.reading(&self.driver))
+                    .expect("journey reading serializes"),
+            ),
+            (
+                "trial-grants",
+                self.journey.grants(&self.driver).to_string(),
+            ),
+            // What bears the effect's glyph, and so which rule every mark of
+            // it resolves through: a living part expressing it, the journey
+            // remembering it, or nothing.
+            (
+                "trial-borne-by",
+                journey::borne_label(self.journey.borne_by(&self.driver)).into(),
+            ),
+            // The glyphs the bound body embodies right now, and the living
+            // parts bearing the preset's base glyph. Both are pure readings
+            // over the phenotype; neither is a grant and neither is stored.
+            (
+                "trial-embodied",
+                serde_json::to_string(&self.journey.embodied(&self.driver))
+                    .expect("embodied glyphs serialize"),
+            ),
+            (
+                "trial-expressing-parts",
+                serde_json::to_string(
+                    &self
+                        .journey
+                        .expressing_parts(&self.driver)
+                        .iter()
+                        .map(|part| part.0)
+                        .collect::<Vec<_>>(),
+                )
+                .expect("expressing parts serialize"),
+            ),
+            ("trial-marks-withheld", self.marks_withheld.to_string()),
             ("trial-visible-marks", self.marks.len().to_string()),
             ("trial-marker-height", self.marker_height.to_string()),
             ("trial-marker-size", self.marker_size.to_string()),

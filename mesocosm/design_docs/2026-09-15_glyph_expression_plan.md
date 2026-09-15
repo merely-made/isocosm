@@ -588,3 +588,33 @@ Measured in the tree today; the rest are cited inline above.
 ## Progress
 
 - **2026-09-15.** Plan written. No code moved, nothing committed.
+- **2026-09-15, steps 1 to 7 done, committed together once the tree was
+  green.** wing-glyphs: `expression.rs` (238), a per-canon-revision table
+  with `traits_of`, `glyphs_of`, `covers`, JSON with limits, and
+  `shuffled(seed, revision)` pinned like the canon's, with a literal
+  receipt; 24 to 28 tests. mesocosm-core: `embodiment.rs` (111) with
+  `embodied`, `expressed_traits`, `bearing_parts` over `BodyPhenotype` and
+  the process registry, tested for founding, growth, grafting, severing
+  and death; `effect_pack.rs` re-keyed to `Bearer { Embodied, Journeyed,
+  Held }` with `MarkRequest.anchor` (the trait identity travels on the
+  anchor, since a rule keyed on a trait id cannot be validated as a
+  finite set), Held declared and unauthored; the six pins hold.
+  mesocosm-runtime: `embodied_glyphs(&World, &table)` through the trial's
+  one door; `acquired_by` and the uptake kind are evidence only; 50 tests;
+  the bound producer embodies from tick zero while its journey is empty.
+  Bench: `trial/journey.rs` holds a placeholder three-glyph table over the
+  five native process ids, asks the body first and the journey second;
+  probe fields `trial-embodied`, `trial-expressing-parts`,
+  `trial-borne-by`, `trial-anchor-fallbacks`; marks re-seat on the
+  bearing part's glyph anchor, cleared along the normal and raised by the
+  bench's marker height, spread across bearing parts by record ordinal.
+  Gates: world-trial, world-trial-play and uptake-world pass with no
+  assertion weakened; spatial-coverage's 32 captures byte-identical to the
+  2026-09-14 set; acceptance passes; budget drops zero; one anchor
+  fallback in uptake-world where a body expresses on 33 parts against the
+  32-anchor cap. The dead bound body in world-trial's late captures
+  embodies nothing and every mark withdraws, the gate showing as designed.
+  Four choices the agent made await Mark: an embodied glyph draws before
+  it is experienced (the plan's §4 said otherwise); the placeholder glyph
+  ids and grouping; one bearing part per mark chosen by ordinal; the
+  world-up display raise on an anchored mark.

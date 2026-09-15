@@ -5,6 +5,7 @@ use wing_glyphs::{CanonSpec, EffectPack, GlyphDefinition};
 
 const AT: [i32; 3] = [4, 12, -3];
 const TO: [i32; 3] = [5, 12, -3];
+const BEARER: PartId = PartId(2);
 
 fn canon(effect: &str) -> Canon {
     Canon::new(CanonSpec {
@@ -35,11 +36,19 @@ fn canon(effect: &str) -> Canon {
 }
 
 #[test]
-fn an_unacquired_effect_paints_nothing_at_any_pole_and_an_undeclared_one_has_no_rule() {
+fn an_unacquired_effect_paints_nothing_at_any_bearer_and_an_undeclared_one_has_no_rule() {
     let table = EffectPackTable::default_pack();
-    for pole in [Acquiring::Carved, Acquiring::Fed, Acquiring::Moved] {
+    for bearer in [Bearer::Embodied, Bearer::Journeyed, Bearer::Held] {
         assert_eq!(
-            table.resolve(DEFAULT_EFFECT, false, pole, AT, Some(TO), Amount::None),
+            table.resolve(
+                DEFAULT_EFFECT,
+                false,
+                bearer,
+                AT,
+                Some(TO),
+                Some(BEARER),
+                Amount::None
+            ),
             Err(Refusal::NotAcquired {
                 effect: DEFAULT_EFFECT.into()
             })
@@ -47,20 +56,44 @@ fn an_unacquired_effect_paints_nothing_at_any_pole_and_an_undeclared_one_has_no_
         // Ownership is checked before the table, so an unowned unknown effect
         // still refuses as unacquired rather than leaking the table's shape.
         assert_eq!(
-            table.resolve("mesocosm:absent", true, pole, AT, None, Amount::None),
+            table.resolve(
+                "mesocosm:absent",
+                true,
+                bearer,
+                AT,
+                None,
+                None,
+                Amount::None
+            ),
             Err(Refusal::NoRule {
                 effect: "mesocosm:absent".into()
             })
         );
     }
+    // The borg tier is declared and deliberately unauthored: an owned glyph
+    // held as an item refuses rather than borrowing another bearer's form.
+    assert_eq!(
+        table.resolve(
+            DEFAULT_EFFECT,
+            true,
+            Bearer::Held,
+            AT,
+            None,
+            None,
+            Amount::None
+        ),
+        Err(Refusal::NoRule {
+            effect: DEFAULT_EFFECT.into()
+        })
+    );
 }
 
 #[test]
-fn each_pole_returns_its_authored_form_stroke_colour_cost_and_citation() {
+fn each_bearer_returns_its_authored_form_stroke_colour_cost_and_citation() {
     let table = EffectPackTable::default_pack();
     let expected = [
         (
-            Acquiring::Carved,
+            Bearer::Embodied,
             MarkForm::SurfaceInscription,
             Glyph::Slashes,
             [255u8, 115, 51, 255],
@@ -68,25 +101,25 @@ fn each_pole_returns_its_authored_form_stroke_colour_cost_and_citation() {
             BASE_LIFETIME_TICKS,
         ),
         (
-            Acquiring::Fed,
+            Bearer::Journeyed,
             MarkForm::SustainedEmission,
             Glyph::Quotes,
             [255, 191, 77, 255],
             Amount::MealMass(0),
             BASE_LIFETIME_TICKS,
         ),
-        (
-            Acquiring::Moved,
-            MarkForm::PathTrail,
-            Glyph::Slashes,
-            [115, 242, 204, 255],
-            Amount::None,
-            BASE_LIFETIME_TICKS,
-        ),
     ];
-    for (pole, form, stroke, color, amount, lifetime) in expected {
+    for (bearer, form, stroke, color, amount, lifetime) in expected {
         let mark = table
-            .resolve(DEFAULT_EFFECT, true, pole, AT, Some(TO), amount)
+            .resolve(
+                DEFAULT_EFFECT,
+                true,
+                bearer,
+                AT,
+                Some(TO),
+                Some(BEARER),
+                amount,
+            )
             .unwrap();
         assert_eq!((mark.form, mark.stroke, mark.color), (form, stroke, color));
         assert_eq!(mark.at, AT);
@@ -98,34 +131,57 @@ fn each_pole_returns_its_authored_form_stroke_colour_cost_and_citation() {
             (form == MarkForm::PathTrail).then_some(TO),
             "{form:?}"
         );
-        let rule = table.rule(DEFAULT_EFFECT, pole).unwrap();
+        // **Only a bearing part is anchored.** Experienced without a living
+        // bearer, there is no face to sit on, and the absent anchor is the
+        // whole of that distinction.
+        assert_eq!(
+            mark.anchor,
+            (bearer == Bearer::Embodied).then_some(BEARER),
+            "{bearer:?}"
+        );
+        let rule = table.rule(DEFAULT_EFFECT, bearer).unwrap();
         assert!(
             mark.explanation.contains(&rule.citation),
             "the explanation template reads the rule's citation: {}",
             mark.explanation
         );
+        assert!(
+            mark.explanation.contains(&format!("borne by {bearer:?}")),
+            "the axis is what bears it: {}",
+            mark.explanation
+        );
     }
-    // The three poles are visibly different, which is the point of the axis.
+    // The two authored bearers are visibly different, which is the point.
     let forms: Vec<_> = table.rules().iter().map(|r| r.form).collect();
     assert_eq!(
         forms,
-        [
-            MarkForm::SurfaceInscription,
-            MarkForm::SustainedEmission,
-            MarkForm::PathTrail
-        ]
+        [MarkForm::SurfaceInscription, MarkForm::SustainedEmission]
     );
     assert!(matches!(
-        table.rule(DEFAULT_EFFECT, Acquiring::Carved).unwrap().cost,
+        table.rule(DEFAULT_EFFECT, Bearer::Embodied).unwrap().cost,
         CostShape::PerUse { .. }
     ));
     assert!(matches!(
-        table.rule(DEFAULT_EFFECT, Acquiring::Fed).unwrap().cost,
+        table.rule(DEFAULT_EFFECT, Bearer::Journeyed).unwrap().cost,
         CostShape::WhileSustained { .. }
     ));
+    assert!(table.rule(DEFAULT_EFFECT, Bearer::Held).is_none());
+    // An anchor offered for a bearer that is not a part is dropped rather
+    // than carried: a journeyed mark cannot be talked onto a face.
     assert_eq!(
-        table.rule(DEFAULT_EFFECT, Acquiring::Moved).unwrap().cost,
-        CostShape::Free
+        table
+            .resolve(
+                DEFAULT_EFFECT,
+                true,
+                Bearer::Journeyed,
+                AT,
+                None,
+                Some(BEARER),
+                Amount::None
+            )
+            .unwrap()
+            .anchor,
+        None
     );
 }
 
@@ -165,15 +221,16 @@ fn the_amount_curve_is_monotone_saturating_and_exact_at_its_endpoints() {
         assert!((BASE_SCALE_PERMILLE..=top).contains(&scale));
         previous = scale;
     }
-    // Uptake binds to the feeding glyph, so its milligrams drive that pole's
-    // size and its lifetime; a one-shot pole keeps the fixed base life.
+    // A sustained emission's milligrams drive its size and its lifetime; a
+    // one-shot inscription keeps the fixed base life however large it is.
     let table = EffectPackTable::default_pack();
     let small = table
         .resolve(
             DEFAULT_EFFECT,
             true,
-            Acquiring::Fed,
+            Bearer::Journeyed,
             AT,
+            None,
             None,
             Amount::UptakeMass(0),
         )
@@ -182,8 +239,9 @@ fn the_amount_curve_is_monotone_saturating_and_exact_at_its_endpoints() {
         .resolve(
             DEFAULT_EFFECT,
             true,
-            Acquiring::Fed,
+            Bearer::Journeyed,
             AT,
+            None,
             None,
             Amount::UptakeMass(MASS_CAP_MG),
         )
@@ -194,32 +252,33 @@ fn the_amount_curve_is_monotone_saturating_and_exact_at_its_endpoints() {
         large.lifetime_ticks,
         BASE_LIFETIME_TICKS + SUSTAINED_LIFETIME_SPAN
     );
-    let carved = table
+    let inscribed = table
         .resolve(
             DEFAULT_EFFECT,
             true,
-            Acquiring::Carved,
+            Bearer::Embodied,
             AT,
             None,
+            Some(BEARER),
             Amount::Voxels(u32::MAX),
         )
         .unwrap();
-    assert_eq!(carved.lifetime_ticks, BASE_LIFETIME_TICKS);
-    assert_eq!(carved.scale_permille, top);
+    assert_eq!(inscribed.lifetime_ticks, BASE_LIFETIME_TICKS);
+    assert_eq!(inscribed.scale_permille, top);
 }
 
 #[test]
-fn validation_refuses_two_rules_on_one_effect_and_pole_pair() {
+fn validation_refuses_two_rules_on_one_effect_and_bearer_pair() {
     let table = EffectPackTable::default_pack();
     assert!(table.validate().is_ok());
     let mut rules = table.rules().to_vec();
     rules.push(rules[0].clone());
     let why = EffectPackTable::new(rules.clone()).unwrap_err();
     assert!(
-        why.contains("duplicate pack rule") && why.contains("Carved"),
+        why.contains("duplicate pack rule") && why.contains("Embodied"),
         "{why}"
     );
-    // A different effect on the same pole is a different pair and is admitted.
+    // A different effect on the same bearer is a different pair, and admitted.
     rules.last_mut().unwrap().effect = "mesocosm:other-reference".into();
     assert!(EffectPackTable::new(rules).is_ok());
     assert!(EffectPackTable::new(Vec::new()).is_err());
@@ -272,9 +331,10 @@ fn the_lookup_keys_on_the_current_canons_effect_not_the_one_at_acquisition() {
             &founding,
             owned,
             true,
-            Acquiring::Carved,
+            Bearer::Embodied,
             AT,
             None,
+            Some(BEARER),
             Amount::Voxels(8),
         )
         .unwrap();
@@ -286,17 +346,18 @@ fn the_lookup_keys_on_the_current_canons_effect_not_the_one_at_acquisition() {
                 &founding,
                 "mesocosm:earth-acute",
                 true,
-                Acquiring::Carved,
+                Bearer::Embodied,
                 AT,
                 None,
+                Some(BEARER),
                 Amount::Voxels(8),
             )
             .unwrap(),
         before
     );
     // Publish a later revision in which this base's effect moved away. The
-    // glyph is still owned; the live effect is not the table's, so the mark
-    // is withheld rather than drawn from the acquisition-time effect.
+    // glyph is still owned and still borne; the live effect is not the
+    // table's, so the mark is withheld rather than drawn from the old one.
     let moved = (0..64)
         .find_map(|seed| {
             let candidate = founding.shuffled(seed, 2).ok()?;
@@ -310,9 +371,10 @@ fn the_lookup_keys_on_the_current_canons_effect_not_the_one_at_acquisition() {
             &moved,
             owned,
             true,
-            Acquiring::Carved,
+            Bearer::Embodied,
             AT,
             None,
+            Some(BEARER),
             Amount::Voxels(8)
         ),
         Err(Refusal::NoRule {
@@ -327,9 +389,10 @@ fn the_lookup_keys_on_the_current_canons_effect_not_the_one_at_acquisition() {
                 &moved,
                 "mesocosm:other",
                 true,
-                Acquiring::Carved,
+                Bearer::Embodied,
                 AT,
                 None,
+                Some(BEARER),
                 Amount::Voxels(8),
             )
             .unwrap(),
@@ -340,8 +403,9 @@ fn the_lookup_keys_on_the_current_canons_effect_not_the_one_at_acquisition() {
             &founding,
             "mesocosm:absent",
             true,
-            Acquiring::Carved,
+            Bearer::Embodied,
             AT,
+            None,
             None,
             Amount::None
         ),
@@ -358,9 +422,10 @@ fn a_mark_request_round_trips_json_and_repeated_resolution_is_a_pure_function() 
         .resolve(
             DEFAULT_EFFECT,
             true,
-            Acquiring::Fed,
+            Bearer::Journeyed,
             AT,
             Some(TO),
+            None,
             Amount::UptakeMass(1234),
         )
         .unwrap();
@@ -370,9 +435,10 @@ fn a_mark_request_round_trips_json_and_repeated_resolution_is_a_pure_function() 
                 .resolve(
                     DEFAULT_EFFECT,
                     true,
-                    Acquiring::Fed,
+                    Bearer::Journeyed,
                     AT,
                     Some(TO),
+                    None,
                     Amount::UptakeMass(1234)
                 )
                 .unwrap(),

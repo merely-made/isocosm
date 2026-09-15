@@ -7,8 +7,8 @@ use super::state::Specimen;
 use crate::section::{
     self, BodyFrameStats, BodyMode, BodySelection, Framing, Section, SectionFrame,
 };
-use mesocosm_core::PartId;
 use isometer::{FrameRequest, SceneProducer, SceneSignature, SceneSource};
+use mesocosm_core::PartId;
 
 /// The bench's scene behind the wing's producer wrapper: the unchanged-input
 /// skip and the sRGB / straight-alpha output contract are `isometer`'s, and
@@ -256,7 +256,15 @@ impl BenchScene {
             .and_then(|s| world.organisms.iter().find(|o| o.id == s.organism))
             .or_else(|| world.controlled());
         let marks = if self.card.is_none() && model.trial.is_some() {
-            model.trial.as_ref().unwrap().marks.clone()
+            // A trial mark borne by a living part sits on that part's own
+            // meshed face, so the anchors are read here, where the scene can
+            // answer for a posed body. The spatial preview's own anchor
+            // count stays its own; this path never touches it.
+            let anchors = match world.controlled() {
+                Some(organism) => section.glyph_anchors(organism, &model.volumes, None)?,
+                None => Vec::new(),
+            };
+            model.trial.as_ref().unwrap().anchored_marks(&anchors)
         } else if self.card.is_none() && model.spatial.enabled {
             match attachment_subject {
                 Some(organism) => match section.presentation_bounds(organism, &model.volumes)? {

@@ -5,6 +5,10 @@ use super::*;
 use crate::Trial;
 use wing_glyphs::GlyphDefinition;
 
+// What the body bears is a different subject from what the journey earned,
+// so it drives its own file over these shared fixtures.
+mod embodiment;
+
 fn rules(organism: OrganismId, event: AcceptedKind) -> GlyphRules {
     GlyphRules {
         canon: CanonSpec {
@@ -82,7 +86,8 @@ fn opted_in_carve_grant_has_exact_core_provenance_and_replays() {
     assert_eq!(record.outcome, GlyphGrantOutcome::Acquired);
     let event = &enabled.history().log().entries()[record.sequence as usize];
     assert_eq!(record.tick, event.tick);
-    assert_eq!(record.event, event.record);
+    assert_eq!(record.event, Some(event.record));
+    assert_eq!(record.kind, AcceptedKind::Carved);
     let acquisition = &reading.journey().acquisitions()[0];
     assert_eq!(acquisition.glyph, "test:earth");
     assert_eq!(acquisition.provenance.evidence, record.evidence);
@@ -193,7 +198,8 @@ fn movement_and_feeding_rules_consume_actual_actor_events_only() {
         for (record, (sequence, envelope)) in records.iter().zip(expected) {
             assert_eq!(record.sequence, sequence as u64);
             assert_eq!(record.tick, envelope.tick);
-            assert_eq!(record.event, envelope.record);
+            assert_eq!(record.event, Some(envelope.record));
+            assert_eq!(record.kind, kind);
             assert!(!matches!(record.outcome, GlyphGrantOutcome::Rejected(_)));
         }
         let records = records.to_vec();
@@ -324,7 +330,7 @@ fn owns_effect_joins_the_journey_to_the_current_canon_effect_through_base_and_va
 
 #[test]
 fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
-    use mesocosm_core::effect_pack::{Acquiring, EffectPackTable, MarkForm, Refusal};
+    use mesocosm_core::effect_pack::{Bearer, EffectPackTable, MarkForm, Refusal};
     let (world, at) = carve_fixture();
     let mut trial = Trial::new(&world).unwrap();
     trial
@@ -340,14 +346,18 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
     // Resolving is a reading, not an act: no &mut, no Journey reachable from
     // the table, and ownership arrives as a bool by value.
     let owned = reading.owns_effect("test:reshape");
-    let pole = reading.acquired_by("test:reshape").unwrap();
-    assert_eq!(pole, AcceptedKind::Carved);
+    // The acquiring act is still on the record, and no longer chooses a form.
+    assert_eq!(
+        reading.acquired_by("test:reshape"),
+        Some(AcceptedKind::Carved)
+    );
     let first = table
         .resolve(
             mesocosm_core::effect_pack::DEFAULT_EFFECT,
             owned,
-            Acquiring::Carved,
+            Bearer::Embodied,
             at,
+            None,
             None,
             mesocosm_core::effect_pack::Amount::Voxels(1),
         )
@@ -358,8 +368,9 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
             .resolve(
                 mesocosm_core::effect_pack::DEFAULT_EFFECT,
                 reading.owns_effect("test:reshape"),
-                Acquiring::Carved,
+                Bearer::Embodied,
                 at,
+                None,
                 None,
                 mesocosm_core::effect_pack::Amount::Voxels(1),
             )
@@ -379,8 +390,9 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
         table.resolve(
             mesocosm_core::effect_pack::DEFAULT_EFFECT,
             false,
-            Acquiring::Carved,
+            Bearer::Embodied,
             at,
+            None,
             None,
             mesocosm_core::effect_pack::Amount::Voxels(1),
         ),
@@ -392,7 +404,7 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
 
 #[test]
 fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
-    use mesocosm_core::effect_pack::{Acquiring, Amount, DEFAULT_EFFECT, EffectPackTable, Refusal};
+    use mesocosm_core::effect_pack::{Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, Refusal};
     let (world, at) = carve_fixture();
     let mut trial = Trial::new(&world).unwrap();
     trial
@@ -412,8 +424,9 @@ fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
         table.resolve(
             DEFAULT_EFFECT,
             reading.owns_effect("test:reshape"),
-            Acquiring::Carved,
+            Bearer::Embodied,
             at,
+            None,
             None,
             Amount::Voxels(0),
         ),
@@ -425,4 +438,124 @@ fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
     // A real carve on the same trial does grant, proving the fixture could.
     assert!(trial.carve(at, 1));
     assert!(trial.glyphs().unwrap().owns_effect("test:reshape"));
+}
+
+/// A baseline body that draws on the soil and records no accepted event of any
+/// kind over the whole run — a producer making its living, found rather than
+/// assumed. Nothing here relocates a body or synthesizes a flow.
+fn uptake_fixture() -> (World, OrganismId) {
+    let world = World::new(7, 60);
+    let mut scout = Trial::new(&world).unwrap();
+    let mut takers = BTreeSet::new();
+    while scout.step() {
+        for record in scout.uptakes() {
+            if record.record.record.amount_mg > 0 {
+                takers.insert(record.organism);
+            }
+        }
+    }
+    let actors: BTreeSet<_> = scout
+        .history()
+        .log()
+        .entries()
+        .iter()
+        .filter_map(|e| accepted(e.record).map(|(_, actor)| actor))
+        .collect();
+    let organism = takers
+        .into_iter()
+        .find(|id| !actors.contains(id) && world.organisms.iter().any(|o| o.id == *id))
+        .expect("a baseline producer that only takes up soil");
+    (world, organism)
+}
+
+/// Ruling 5: uptake is a producer's feeding. The bound body never moves, feeds
+/// or carves; it makes its living out of the soil, and that is what earns the
+/// glyph. Grants still come only from the adapter reading accepted records.
+#[test]
+fn a_producer_that_only_takes_up_soil_acquires_through_uptake() {
+    let (world, organism) = uptake_fixture();
+    let mut trial = Trial::new(&world).unwrap();
+    trial
+        .enable_glyphs(rules(organism, AcceptedKind::Uptake))
+        .unwrap();
+    let mut acquired = None;
+    while trial.step() {
+        if trial.glyphs().unwrap().owns_effect("test:reshape") {
+            acquired = Some(trial.world().tick);
+            break;
+        }
+    }
+    assert!(
+        acquired.is_some(),
+        "the bound producer earns the glyph by taking up soil"
+    );
+    let reading = trial.glyphs().unwrap();
+    // Every record is a flow: no event of any kind was needed or used.
+    assert!(
+        reading
+            .records()
+            .iter()
+            .all(|r| r.kind == AcceptedKind::Uptake && r.event.is_none()),
+        "only uptake earned it"
+    );
+    assert_eq!(reading.records()[0].outcome, GlyphGrantOutcome::Acquired);
+    assert!(
+        reading.records()[1..]
+            .iter()
+            .all(|r| r.outcome == GlyphGrantOutcome::Duplicate),
+        "later uptake is a duplicate kept as evidence"
+    );
+    assert_eq!(reading.journey().acquisitions().len(), 1);
+    assert_eq!(
+        reading.acquired_by("test:reshape"),
+        Some(AcceptedKind::Uptake),
+        "the feeding pole, read back out of the accepted flow"
+    );
+    // Uptake identity is (tick, flow ordinal), not a history sequence.
+    assert!(reading.records()[0].evidence.contains("/uptake/"));
+}
+
+/// The other half of the ruling: a zero transfer is not an accepted act, and
+/// neither is somebody else's. The positive control runs in the same test.
+#[test]
+fn zero_and_foreign_uptake_are_not_accepted_acts() {
+    use mesocosm_core::flow::{Account, Carrier, Envelope, FlowEvent, Process};
+    let (world, organism) = uptake_fixture();
+    let mut reading = GlyphReading::new(rules(organism, AcceptedKind::Uptake), &world).unwrap();
+    let flow = |mg| TrialUptake {
+        tick: 1,
+        sequence: 0,
+        record: Envelope::new(
+            1,
+            None,
+            FlowEvent {
+                process: Process::Uptake,
+                carrier: Carrier::Matter,
+                source: Account::Soil,
+                destination: Account::Substance,
+                amount_mg: mg,
+                composition: None,
+                from: None,
+                to: None,
+            },
+        ),
+        organism,
+        at: Some([0, 0, 0]),
+        position_basis: crate::UptakePosition::AfterTick,
+    };
+    reading.absorb_uptake(&[flow(0)], 0);
+    assert!(reading.records().is_empty(), "zero milligrams is no act");
+    let mut foreign = flow(9);
+    foreign.organism = OrganismId(u32::MAX);
+    reading.absorb_uptake(&[foreign], 0);
+    assert!(reading.records().is_empty(), "another body's living is not");
+    assert!(!reading.owns_effect("test:reshape"));
+    assert_eq!(reading.acquired_by("test:reshape"), None);
+    // Positive control: the same path with milligrams above zero does grant.
+    reading.absorb_uptake(&[flow(9)], 0);
+    assert_eq!(reading.records().len(), 1);
+    assert_eq!(
+        reading.acquired_by("test:reshape"),
+        Some(AcceptedKind::Uptake)
+    );
 }

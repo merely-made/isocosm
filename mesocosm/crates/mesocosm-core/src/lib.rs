@@ -47,6 +47,7 @@ pub mod development;
 pub mod discovery;
 pub mod effect_experiment;
 pub mod effect_pack;
+pub mod embodiment;
 pub mod flow;
 pub mod functions;
 pub mod graft;
@@ -101,6 +102,7 @@ pub use discovery::{
     Candidate, Condition, ConditionId, Discovery, Evidence, Input, Miss, Observation, Source,
     Stress,
 };
+pub use embodiment::{bearing_parts, embodied, expressed_traits};
 pub use flow::{
     Account, Accounts, Carrier, Envelope, FlowEvent, Ledger, RecordedEvent, RecordedFlow, Subject,
     Trend, WARN_AFTER_TICKS,

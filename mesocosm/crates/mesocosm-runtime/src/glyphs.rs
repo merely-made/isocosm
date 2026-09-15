@@ -5,11 +5,13 @@
 //! caller-configured glyph canon. This reading neither changes World nor grants
 //! durable divinity powers. Core remains the authority for the underlying act.
 
-use mesocosm_core::{History, OrganismId, World, history::Event, state_hash};
+use crate::TrialUptake;
+use mesocosm_core::{History, OrganismId, World, embodiment::embodied, history::Event, state_hash};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wing_glyphs::{
-    Canon, CanonSpec, GrantOutcome, Journey, Provenance, ProvenanceKind, VariantPolicy,
+    Canon, CanonSpec, ExpressionTable, GlyphId, GrantOutcome, Journey, Provenance, ProvenanceKind,
+    VariantPolicy,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -18,6 +20,16 @@ pub enum AcceptedKind {
     Carved,
     Moved,
     Fed,
+    /// A producer's feeding: positive soil uptake, recorded as a flow rather
+    /// than an event (ruled 2026-09-15). It grants through the same base
+    /// glyph as feeding.
+    ///
+    /// **Evidence, not a form selector** (2026-09-15). Which act a grant came
+    /// through is still on the record and still explains the acquisition; it
+    /// no longer decides how the glyph returns, because the axis is now what
+    /// bears the glyph. This is also the seed of the *used* manner in the
+    /// experience condition: a trait took part in a recorded flow.
+    Uptake,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -54,7 +66,10 @@ pub enum GlyphGrantOutcome {
 pub struct GlyphEvidence {
     pub sequence: u64,
     pub tick: u64,
-    pub event: Event,
+    /// Which accepted act this record answers to, stated rather than
+    /// re-derived. Uptake is a recorded flow, so `event` is absent for it.
+    pub kind: AcceptedKind,
+    pub event: Option<Event>,
     pub glyph: String,
     /// Identifies the exact baseline, post-step world and history ordinal.
     /// Retained separately from the core event, whose authority is unchanged.
@@ -79,8 +94,8 @@ impl GlyphReading {
         {
             return Err("glyph experiment requires a living bound organism".into());
         }
-        if rules.grants.is_empty() || rules.grants.len() > 3 {
-            return Err("glyph experiment requires one to three event grant rules".into());
+        if rules.grants.is_empty() || rules.grants.len() > 4 {
+            return Err("glyph experiment requires one to four event grant rules".into());
         }
         let mut kinds = BTreeSet::new();
         for rule in &rules.grants {
@@ -128,8 +143,14 @@ impl GlyphReading {
             .any(|base| self.journey.owns_base(base))
     }
 
-    /// Which acquiring act earned this effect, read back out of the accepted
-    /// event the grant was made from. `None` when it is not owned.
+    /// Which accepted act earned this effect, read back out of the event or
+    /// flow the grant was made from. `None` when it is not owned.
+    ///
+    /// **Evidence only.** Under the acquiring-act axis this chose the mark's
+    /// form; it no longer does. The form follows what bears the glyph, and
+    /// this stays because the acquisition still has to be explainable and
+    /// because the manner that satisfied an experience condition is what
+    /// shapes the divinity later.
     pub fn acquired_by(&self, effect: &str) -> Option<AcceptedKind> {
         let canon = self.journey.canon();
         self.records.iter().find_map(|record| {
@@ -137,10 +158,29 @@ impl GlyphReading {
                 return None;
             }
             let base = canon.base_id(&record.glyph)?;
-            (canon.effect(base)? == effect)
-                .then(|| accepted(record.event).map(|(kind, _)| kind))
-                .flatten()
+            (canon.effect(base)? == effect).then_some(record.kind)
         })
+    }
+
+    /// Every glyph the bound body **currently embodies**, read through the
+    /// expression table.
+    ///
+    /// Not the journey's answer and not a grant: a body embodies from its
+    /// first frame, having done nothing, and loses a glyph when the part
+    /// expressing it is cut. `&`-only in both directions — this cannot grant,
+    /// cannot express, and cannot change one saved byte.
+    ///
+    /// The world arrives by reference rather than being held: the reading is
+    /// a disposable trial's record and must not own or outlive world state,
+    /// and the registry the sites resolve against is the world's own ruleset.
+    /// A body that is absent or no longer alive bears nothing.
+    pub fn embodied_glyphs(&self, world: &World, table: &ExpressionTable) -> BTreeSet<GlyphId> {
+        world
+            .organisms
+            .iter()
+            .find(|o| o.id == self.rules.organism && o.is_alive())
+            .map(|o| embodied(&o.phenotype, world.ruleset(), table))
+            .unwrap_or_default()
     }
 
     fn effect_bases<'a>(&'a self, effect: &'a str) -> impl Iterator<Item = &'a str> + 'a {
@@ -170,34 +210,99 @@ impl GlyphReading {
                 continue;
             };
             let sequence = (start + offset) as u64;
+            let glyph = rule.glyph.clone();
             let evidence = format!(
                 "mesocosm.trial/{:016x}/{post_hash:016x}/history/{sequence}",
                 self.baseline_hash
             );
-            let outcome = match self.journey.grant(
-                &rule.glyph,
-                Provenance {
-                    kind: ProvenanceKind::Event,
-                    evidence: evidence.clone(),
-                    context: Some(format!("{kind:?}; organism={}", actor.0)),
-                },
-                recorded.tick,
-                VariantPolicy::RequireOwnedBase,
-            ) {
-                Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
-                Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
-                Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
-                Err(why) => GlyphGrantOutcome::Rejected(why),
-            };
-            self.records.push(GlyphEvidence {
-                sequence,
-                tick: recorded.tick,
-                event: recorded.record,
-                glyph: rule.glyph.clone(),
+            let context = format!("{kind:?}; organism={}", actor.0);
+            self.grant_one(
+                glyph,
                 evidence,
-                outcome,
-            });
+                context,
+                recorded.tick,
+                sequence,
+                kind,
+                Some(recorded.record),
+            );
         }
+    }
+
+    /// Accepted soil uptake: a producer's feeding (ruled 2026-09-15). Only
+    /// positive milligrams to the bound body count, and `Trial::uptakes`
+    /// already carries nothing else. The first one acquires the base glyph and
+    /// later ones are duplicates kept as evidence, exactly as an event is.
+    /// A flow carries no `Event`, so the record states its kind instead.
+    pub(crate) fn absorb_uptake(&mut self, uptakes: &[TrialUptake], post_hash: u64) {
+        let Some(glyph) = self
+            .rules
+            .grants
+            .iter()
+            .find(|rule| rule.event == AcceptedKind::Uptake)
+            .map(|rule| rule.glyph.clone())
+        else {
+            return;
+        };
+        for record in uptakes {
+            if record.organism != self.rules.organism || record.record.record.amount_mg == 0 {
+                continue;
+            }
+            // Uptake identity is (tick, flow ordinal), not a history sequence.
+            let evidence = format!(
+                "mesocosm.trial/{:016x}/{post_hash:016x}/uptake/{}/{}",
+                self.baseline_hash, record.tick, record.sequence
+            );
+            let context = format!(
+                "Uptake; organism={}; {} mg",
+                record.organism.0, record.record.record.amount_mg
+            );
+            self.grant_one(
+                glyph.clone(),
+                evidence,
+                context,
+                record.tick,
+                record.sequence,
+                AcceptedKind::Uptake,
+                None,
+            );
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn grant_one(
+        &mut self,
+        glyph: String,
+        evidence: String,
+        context: String,
+        tick: u64,
+        sequence: u64,
+        kind: AcceptedKind,
+        event: Option<Event>,
+    ) {
+        let outcome = match self.journey.grant(
+            &glyph,
+            Provenance {
+                kind: ProvenanceKind::Event,
+                evidence: evidence.clone(),
+                context: Some(context),
+            },
+            tick,
+            VariantPolicy::RequireOwnedBase,
+        ) {
+            Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
+            Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
+            Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
+            Err(why) => GlyphGrantOutcome::Rejected(why),
+        };
+        self.records.push(GlyphEvidence {
+            sequence,
+            tick,
+            kind,
+            event,
+            glyph,
+            evidence,
+            outcome,
+        });
     }
 }
 

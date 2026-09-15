@@ -5,6 +5,7 @@
 //! not executable spells. Product rules own grants and their consequences.
 mod canon;
 pub mod divine;
+mod expression;
 mod journey;
 mod pack;
 
@@ -12,6 +13,7 @@ pub use canon::{
     Canon, CanonLimits, CanonSpec, CorrespondenceMove, EffectId, GlyphDefinition, GlyphId,
     ModifierId, VariantDefinition,
 };
+pub use expression::{ExpressionLimits, ExpressionSpec, ExpressionTable, GlyphExpression, TraitId};
 pub use journey::{
     Acquisition, Eligibility, GrantOutcome, GrantRecord, Journey, JourneyLimits, JourneySnapshot,
     JourneyTransition, MotifGroup, Provenance, ProvenanceKind, VariantPolicy,
@@ -25,6 +27,10 @@ pub const SCHEMA_VERSION: u32 = 1;
 pub const DEFAULT_MAX_GLYPHS: usize = 4096;
 pub const DEFAULT_MAX_VARIANTS: usize = 4096;
 pub const DEFAULT_MAX_DECLARATIONS: usize = 4096;
+pub const DEFAULT_MAX_EXPRESSIONS: usize = 4096;
+/// A glyph is expressed by several traits, never by a catalogue of them: the
+/// bound is on the authored claim, not on the trait set itself.
+pub const DEFAULT_MAX_TRAITS_PER_GLYPH: usize = 64;
 pub const DEFAULT_MAX_GRANTS: usize = 16384;
 pub const DEFAULT_MAX_TRANSITIONS: usize = 65536;
 pub const DEFAULT_MAX_JSON_BYTES: usize = 8 * 1024 * 1024;

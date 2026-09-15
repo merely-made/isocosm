@@ -7,8 +7,9 @@
 //! moves. The age here comes from the tick the recipient's current run of
 //! consecutive uptake ticks began; a gap of a whole tick without uptake breaks
 //! the run and re-anchors it. Retained flow facts are untouched by this.
-use super::{GlyphOrientation, SpatialGlyph, Stroke};
-use mesocosm_core::OrganismId;
+use super::journey;
+use crate::section::SpatialGlyph;
+use mesocosm_core::{OrganismId, effect_pack::MarkRequest};
 use std::collections::{BTreeMap, btree_map::Entry};
 
 /// Ticks a pulse lives, matching the retention of every other trial mark.
@@ -75,65 +76,78 @@ impl Pulses {
     }
 }
 
-/// Glyph for one recipient's pulse, `ticks` after its run began. None once the
-/// pulse has expired. Recipient-level indicator: the flow has no soil cell or
-/// root tip, so the mark rises out of the body rather than marking a contact.
-pub(super) fn pulse(at: [i32; 3], ticks: u64, height: f32, size: f32) -> Option<SpatialGlyph> {
-    // Unbroken flow keeps pulsing: the phase wraps every PULSE_TICKS while
-    // the run lives, and `Pulses::retain` retires the run once flow stops.
-    let age = (ticks % PULSE_TICKS) as f32 / PULSE_TICKS as f32;
-    let mut centre = at.map(|v| v as f32);
-    centre[1] += height + age * size * 2.;
-    Some(SpatialGlyph {
-        centre,
-        size: size * (1. - age * 0.5),
-        angle: 0.,
-        glyph: Stroke::Backticks,
-        orientation: GlyphOrientation::WorldPlane {
-            right: [1., 0., 0.],
-            up: [0., 1., 0.],
-        },
-        color: [0.6, 0.85, 0.3, 1.],
-    })
+/// Glyph for one recipient's pulse, `ticks` after its run began. Recipient-
+/// level indicator: the flow has no soil cell or root tip, so the mark rises
+/// out of the body rather than marking a contact. The request's lifetime sets
+/// the phase, so a larger uptake pulses more slowly as well as larger.
+pub(super) fn pulse(request: &MarkRequest, ticks: u64, height: f32, size: f32) -> SpatialGlyph {
+    // Unbroken flow keeps pulsing: the phase wraps every lifetime while the
+    // run lives, and `Pulses::retain` retires the run once flow stops.
+    let life = u64::from(request.lifetime_ticks).max(1);
+    let age = (ticks % life) as f32 / life as f32;
+    journey::glyph(request, age, height, size)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use mesocosm_core::effect_pack::{Amount, Bearer, DEFAULT_EFFECT, EffectPackTable};
 
     const WHO: OrganismId = OrganismId(1);
     const AT: [i32; 3] = [2, 3, 4];
 
-    fn height(pulses: &Pulses, tick: u64) -> f32 {
-        pulse(AT, pulses.age(WHO, tick).expect("anchored"), 4., 1.4)
-            .expect("live pulse")
-            .centre[1]
+    /// A resolved sustained emission for `mg` of uptake: the journeyed
+    /// bearing, owned, at the recipient's recorded place and on no part face.
+    /// The pulse geometry this file owns is what is under test, so the request
+    /// is the sustained one whatever a given body happens to embody.
+    fn request(mg: u64) -> MarkRequest {
+        EffectPackTable::default_pack()
+            .resolve(
+                DEFAULT_EFFECT,
+                true,
+                Bearer::Journeyed,
+                AT,
+                None,
+                None,
+                Amount::UptakeMass(mg),
+            )
+            .expect("the default pack rules the journeyed bearing")
+    }
+
+    fn height(pulses: &Pulses, tick: u64, request: &MarkRequest) -> f32 {
+        pulse(request, pulses.age(WHO, tick).expect("anchored"), 4., 1.4).centre[1]
     }
 
     #[test]
     fn continuous_uptake_rises_across_consecutive_ticks() {
+        let request = request(0);
+        let life = u64::from(request.lifetime_ticks);
         let mut pulses = Pulses::new();
         let mut last = f32::MIN;
         for tick in 1..=5 {
             pulses.observe(WHO, tick);
             pulses.retain(tick);
             assert_eq!(pulses.age(WHO, tick), Some(tick - 1));
-            let now = height(&pulses, tick);
+            let now = height(&pulses, tick, &request);
             assert!(now > last, "tick {tick}: {now} did not rise above {last}");
             last = now;
         }
-        // Eight ticks of unbroken flow start the next pulse rather than
+        // A whole lifetime of unbroken flow starts the next pulse rather than
         // retiring the recipient's indicator while uptake continues.
-        for tick in 6..=9 {
+        for tick in 6..=(life + 1) {
             pulses.observe(WHO, tick);
         }
-        assert_eq!(pulses.age(WHO, 9), Some(8));
-        assert_eq!(height(&pulses, 9), height(&pulses, 1));
-        assert!(height(&pulses, 8) > height(&pulses, 9));
+        assert_eq!(pulses.age(WHO, life + 1), Some(life));
+        assert_eq!(
+            height(&pulses, life + 1, &request),
+            height(&pulses, 1, &request)
+        );
+        assert!(height(&pulses, life, &request) > height(&pulses, life + 1, &request));
     }
 
     #[test]
     fn a_gap_of_one_tick_re_anchors_the_run() {
+        let request = request(0);
         let mut pulses = Pulses::new();
         for tick in [1, 2, 3] {
             pulses.observe(WHO, tick);
@@ -143,10 +157,10 @@ mod tests {
         pulses.observe(WHO, 5);
         assert_eq!(pulses.age(WHO, 5), Some(0));
         // A fresh run sits at the bare marker height above the recipient.
-        assert_eq!(height(&pulses, 5), AT[1] as f32 + 4.);
+        assert_eq!(height(&pulses, 5, &request), AT[1] as f32 + 4.);
         pulses.observe(WHO, 6);
         assert_eq!(pulses.age(WHO, 6), Some(1));
-        assert!(height(&pulses, 6) > height(&pulses, 5));
+        assert!(height(&pulses, 6, &request) > height(&pulses, 5, &request));
     }
 
     #[test]
@@ -164,5 +178,21 @@ mod tests {
         assert_eq!(pulses.age(WHO, 12), Some(0));
         pulses.reset();
         assert!(pulses.age(WHO, 12).is_none());
+    }
+
+    /// Step 6's visible difference: more milligrams, a bigger and slower
+    /// pulse, both from the accepted integer record and neither from a clock.
+    #[test]
+    fn a_larger_uptake_pulses_larger_and_slower() {
+        let small = request(3);
+        let large = request(27);
+        assert!(large.scale_permille > small.scale_permille);
+        assert!(large.lifetime_ticks > small.lifetime_ticks);
+        let mut pulses = Pulses::new();
+        pulses.observe(WHO, 1);
+        assert!(
+            pulse(&large, 0, 4., 1.4).size > pulse(&small, 0, 4., 1.4).size,
+            "a larger uptake draws a larger pulse"
+        );
     }
 }

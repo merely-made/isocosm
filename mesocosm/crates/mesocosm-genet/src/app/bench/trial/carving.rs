@@ -3,11 +3,11 @@
 
 //! Controls issue a runtime-owned carve. Marks indicate recorded locations;
 //! their height is presentation, not a contact normal or debris simulation.
-use super::{Bench, Child};
-use crate::section::{GlyphOrientation, SpatialGlyph, Stroke};
+use super::{Bench, Child, journey};
+use crate::section::SpatialGlyph;
 use cambium::{clickable, el, focusable, text};
-use mesocosm_core::World;
-use mesocosm_runtime::TrialCarve;
+use mesocosm_core::{PartId, World, effect_pack::Amount};
+use mesocosm_runtime::{Trial, TrialCarve};
 use serde::Serialize;
 
 #[derive(Clone, Debug, Serialize)]
@@ -79,35 +79,49 @@ impl Carving {
         }
     }
 
+    /// The marks and the count withheld. A carving mark asks the pack for the
+    /// effect, and paints nothing until the bound journey owns it; the form it
+    /// returns as is the bearing's — a living part expressing the glyph, or
+    /// the journey remembering it — never carving's. The `events` and
+    /// `removed` counters keep counting either way.
     pub(super) fn marks(
         &self,
+        binding: &journey::Binding,
+        driver: &Trial,
         tick: u64,
         height: f32,
         size: f32,
-    ) -> Vec<((u64, u8, u64), SpatialGlyph)> {
+    ) -> (Vec<((u64, u8, u64), SpatialGlyph, Option<PartId>)>, usize) {
         if !self.show {
-            return Vec::new();
+            return (Vec::new(), 0);
         }
-        self.recent
+        let mut marks = Vec::new();
+        let mut withheld = 0;
+        for event in self
+            .recent
             .iter()
             .filter(|e| tick >= e.tick && tick - e.tick < 8)
-            .map(|e| {
-                let age = (tick - e.tick) as f32 / 8.;
-                let mut centre = e.at.map(|v| v as f32);
-                centre[1] += height;
-                (
-                    (e.tick, 2, e.sequence),
-                    SpatialGlyph {
-                        centre,
-                        size: size * (1. - age * 0.5),
-                        angle: 0.,
-                        glyph: Stroke::Slashes,
-                        orientation: GlyphOrientation::CameraFacing,
-                        color: [1., 0.45, 0.2, 1.],
-                    },
-                )
-            })
-            .collect()
+        {
+            match binding.resolve(
+                driver,
+                event.sequence,
+                event.at,
+                None,
+                Amount::Voxels(event.removed),
+            ) {
+                Ok(request) => {
+                    let life = f32::from(request.lifetime_ticks).max(1.);
+                    let age = (tick - event.tick) as f32 / life;
+                    marks.push((
+                        (event.tick, 2, event.sequence),
+                        journey::glyph(&request, age, height, size),
+                        journey::face_of(&request),
+                    ));
+                },
+                Err(_) => withheld += 1,
+            }
+        }
+        (marks, withheld)
     }
 
     pub(super) fn probe_fields(&self) -> Vec<(&'static str, String)> {
@@ -314,6 +328,8 @@ pub(super) fn view(state: &Bench) -> Child {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use mesocosm_core::effect_pack::{Bearer, DEFAULT_EFFECT};
+
     fn event(sequence: u64) -> TrialCarve {
         TrialCarve {
             tick: 1,
@@ -323,30 +339,96 @@ mod tests {
             removed: 5,
         }
     }
+
+    /// A bound trial whose journey has earned nothing yet, over the same
+    /// grounded-founder fixture the runtime example searches for.
+    fn bound_trial() -> (Trial, [i32; 3]) {
+        let (world, at) = (0..32)
+            .find_map(|seed| {
+                let world = World::new(seed, 0);
+                let position = world.controlled()?.position;
+                let at = [position[0], position[1] - 1, position[2]];
+                (at[1] >= 1 && world.ground().solid(at) && world.in_reach(at))
+                    .then_some((world, at))
+            })
+            .expect("a grounded founder in fixture range");
+        let mut trial = Trial::new(&world).expect("a fresh specimen trial");
+        trial
+            .enable_glyphs(journey::default_rules(&world).expect("a controlled body"))
+            .expect("the preset rules are admitted");
+        (trial, at)
+    }
+
     #[test]
     fn accepted_records_deduplicate_expire_and_keep_raw_coordinates() {
+        let (mut trial, at) = bound_trial();
+        assert!(trial.carve(at, 1), "the fixture carve applies");
+        let binding = journey::Binding::new();
         let mut carving = Carving::new();
         carving.observe(&[event(0)], 1);
         carving.observe(&[event(0)], 1);
         assert_eq!((carving.events, carving.removed), (1, 5));
-        let marks = carving.marks(1, 4., 1.4);
+        let (marks, withheld) = carving.marks(&binding, &trial, 1, 4., 1.4);
+        assert_eq!(withheld, 0, "one accepted carve earns the glyph");
         assert_eq!(marks[0].0, (1, 2, 0));
         assert_eq!(marks[0].1.centre, [2., 7., 4.]);
         assert_eq!(carving.recent[0].at, [2, 3, 4]);
-        assert_eq!(carving.marks(8, 4., 1.4).len(), 1);
-        assert!(carving.marks(9, 4., 1.4).is_empty());
+        assert_eq!(carving.marks(&binding, &trial, 8, 4., 1.4).0.len(), 1);
+        assert!(carving.marks(&binding, &trial, 9, 4., 1.4).0.is_empty());
         carving.observe(&[], 9);
         assert!(carving.recent.is_empty());
     }
+
+    /// The visible consequence of expression, and the asymmetry against the
+    /// retired acquiring-act axis: the bound body embodies the glyph from tick
+    /// zero, so its mark draws **before** the journey has granted anything,
+    /// and the accepted carve that does grant leaves the bearing unchanged.
+    /// What bears the glyph is the body, never the act.
+    #[test]
+    fn an_embodied_glyph_paints_before_any_grant() {
+        let (mut trial, at) = bound_trial();
+        let binding = journey::Binding::new();
+        let mut carving = Carving::new();
+        carving.observe(&[event(0)], 1);
+        assert!(
+            !trial
+                .glyphs()
+                .expect("a reading")
+                .owns_effect(DEFAULT_EFFECT),
+            "the journey has earned nothing yet"
+        );
+        assert_eq!(binding.borne_by(&trial), Some(Bearer::Embodied));
+        let (marks, withheld) = carving.marks(&binding, &trial, 1, 4., 1.4);
+        assert_eq!((marks.len(), withheld), (1, 0));
+        assert_eq!((carving.events, carving.removed), (1, 5));
+        assert!(trial.carve(at, 1), "the fixture carve applies");
+        assert!(
+            trial
+                .glyphs()
+                .expect("a reading")
+                .owns_effect(DEFAULT_EFFECT)
+        );
+        assert_eq!(
+            binding.borne_by(&trial),
+            Some(Bearer::Embodied),
+            "a grant does not change what bears the glyph"
+        );
+        let (marks, withheld) = carving.marks(&binding, &trial, 1, 4., 1.4);
+        assert_eq!((marks.len(), withheld), (1, 0));
+    }
+
     #[test]
     fn bounded_history_and_reset_preserve_configuration() {
+        let (mut trial, at) = bound_trial();
+        assert!(trial.carve(at, 1), "the fixture carve applies");
+        let binding = journey::Binding::new();
         let mut carving = Carving::new();
         carving.offset = [4, 5, 6];
         carving.radius = 2;
         carving.show = false;
         carving.observe(&(0..140).map(event).collect::<Vec<_>>(), 1);
         assert_eq!((carving.recent.len(), carving.events), (128, 140));
-        assert!(carving.marks(1, 4., 1.4).is_empty());
+        assert!(carving.marks(&binding, &trial, 1, 4., 1.4).0.is_empty());
         carving.reset();
         assert_eq!(
             (carving.offset, carving.radius, carving.show),
