@@ -14,7 +14,7 @@
 //! is always the keeper.
 
 use isometer::SlabCamera;
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_identity::SubjectId;
 use paredros_world::MotionInput;
 

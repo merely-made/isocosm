@@ -10,7 +10,7 @@
 
 use std::time::{Duration, Instant};
 
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_identity::{BodyRevisionId, SubjectId, Tick};
 use paredros_world::timed_action::Direction;
 use paredros_world::{

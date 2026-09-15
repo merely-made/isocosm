@@ -9,7 +9,7 @@
 //! subject's admitted anatomy, exactly as `body_sheet::equipment_session`
 //! builds one, but read from this session rather than that private fixture.
 
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_identity::SubjectId;
 use paredros_world::CanonRevisionCause;
 use paredros_world::glyphs::ProvenanceKind;

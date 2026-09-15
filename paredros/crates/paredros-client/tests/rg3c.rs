@@ -13,7 +13,7 @@ use paredros_client::{Probe, TICKS, scene};
 fn draw_tenant(
     tenant: &Tenant,
     probe: &Probe,
-    room: &[isometer_render::geometry::Vertex],
+    room: &[isometer::render::geometry::Vertex],
 ) -> renderling::stage::StageEncodeReport {
     let aspect = SIZE[0] as f32 / SIZE[1] as f32;
     let camera = scene::camera(probe.room(), probe.at(), probe.heading(), aspect);

@@ -3,7 +3,7 @@
 
 //! Stable text rows for the inspection viewport.
 
-use isometer_core::Origin;
+use isometer::core::Origin;
 
 use super::{Focus, LifeSheet, SheetView};
 

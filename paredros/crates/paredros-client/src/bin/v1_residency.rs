@@ -12,8 +12,8 @@
 
 use std::{path::Path, sync::Arc, time::Instant};
 
-use isometer_core::ground::BRICK;
-use isometer_lens::{BrickDiagnostics, BrickRevision};
+use isometer::core::ground::BRICK;
+use isometer::lens::{BrickDiagnostics, BrickRevision};
 use paredros_client::{
     gpu::{self, Composer, DdaTenant, SIZE},
     residency::{
@@ -452,7 +452,7 @@ fn report(
         gate: "V1",
         vessel: "paredros",
         camera_profile: "third-person continuous zoom: near acts, mid leads, far plans",
-        traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer_lens::BrickTracer",
+        traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer",
         resident_measure: "logical pointer plus atlas payload; excludes driver rounding and transition overlap",
         publication_mode: "retained equal-sized textures; full CPU republish when projection revision changes",
         adapter,

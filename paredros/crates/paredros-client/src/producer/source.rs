@@ -12,13 +12,13 @@
 //! how the camera preset becomes a [`SlabCamera`], and where the terrain comes
 //! from.
 
+use isometer::core::{BodyDocument, PartId};
+use isometer::lens::{BrickMap, Grade};
 use isometer::{
     BodyFrameStats, BodySignature, DeclaredExtentVolumes, FrameRequest, GroundTerrain, Pose, Scene,
     SceneBody, SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera,
     SubjectKey, TerrainSource,
 };
-use isometer_core::{BodyDocument, PartId};
-use isometer_lens::{BrickMap, Grade};
 use paredros_identity::SubjectId;
 use paredros_world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 

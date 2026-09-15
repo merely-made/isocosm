@@ -12,13 +12,12 @@
 //! volume it actually occupies, one voxel by `WALKER_HEIGHT`, so what you
 //! see is what `stands` was asked about.
 
-use isometer_core::VolumeRef;
-use isometer_core::ground::{BRICK, Ground};
+use isometer::core::VolumeRef;
+use isometer::core::ground::{BRICK, Ground};
+use isometer::lens::{CritterPose, TraceCamera, critter::Capsule};
+use isometer::mesh::{BodyMesh, Volume};
+use isometer::render::geometry::{SceneItem, Vertex, build_scene_vertices};
 use mesocosm_core::places::WALKER_HEIGHT;
-#[cfg(feature = "r1-proof")]
-use isometer_lens::{CritterPose, TraceCamera, critter::Capsule};
-use isometer_mesh::{BodyMesh, Volume};
-use isometer_render::geometry::{SceneItem, Vertex, build_scene_vertices};
 use netrender::Scene;
 use renderling::glam::{Mat4, Vec3};
 
@@ -88,7 +87,6 @@ pub struct Camera {
 }
 
 impl Camera {
-    #[cfg(feature = "r1-proof")]
     pub fn trace(self, aspect: f32) -> TraceCamera {
         TraceCamera::perspective(
             self.eye.to_array(),
@@ -222,7 +220,6 @@ pub fn pillar_vertices(pillars: &[Pillar]) -> Vec<Vertex> {
 }
 
 /// The same played body as a presentation-only SDF for the DDA profile.
-#[cfg(feature = "r1-proof")]
 pub fn body_pose(at: [i32; 3]) -> CritterPose {
     let centre = [at[0] as f32 + 0.5, at[1] as f32, at[2] as f32 + 0.5];
     CritterPose::from_capsules(

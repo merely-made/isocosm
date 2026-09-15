@@ -7,7 +7,7 @@
 //! from the admitted anatomy after each read, so presentation never repairs
 //! or mutates the durable game facts.
 
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_identity::{BodyRevisionId, SubjectId};
 use paredros_world::fixtures::three_lives::wetland_body;
 use paredros_world::{
@@ -391,7 +391,7 @@ mod tests {
 
         let mut wrong_version = session.game().save_record().unwrap();
         wrong_version.version = 0;
-        let wrong_version = isometer_core::snapshot::encode(&wrong_version).unwrap();
+        let wrong_version = isometer::core::snapshot::encode(&wrong_version).unwrap();
         assert!(session.load_bytes(&wrong_version).is_err());
         assert_eq!(session.save_bytes().unwrap(), before);
 

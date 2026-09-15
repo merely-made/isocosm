@@ -16,7 +16,7 @@ path = "src/lib.rs"
 # selects it at runtime for the historical R1 receipt; ordinary room rendering
 # can still select the Renderling tenant.
 default = ["r1-proof"]
-r1-proof = ["dep:modulus", "dep:isometer-lens", "dep:serde_json"]
+r1-proof = ["dep:modulus", "dep:serde_json"]
 # V1 keeps the R1 traversal receipt and adds Paredros-owned camera and
 # residency policy over a larger exact Ground working set.
 v1-proof = ["r1-proof"]
@@ -37,11 +37,7 @@ paredros-world = { path = "../paredros-world" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }
-isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
-isometer-lens = { version = "0.0.1", path = "../../../shared/isometer/crates/isometer-lens", optional = true }
-isometer-mesh = { version = "0.0.1", path = "../../../shared/isometer/crates/isometer-mesh" }
-isometer-render = { version = "0.0.1", path = "../../../shared/isometer/crates/isometer-render" }
 netrender = { workspace = true }
 # P1/P2 document-host lane deps: the Cambium host, its producer seam, the
 # scenario driver, and the paint-list path netrender rasterizes.

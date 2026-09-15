@@ -280,6 +280,16 @@ creator files are owned by a concurrent lane and are never swept.
   isometer-core and keep mesocosm-core only for generation (Places, Grown,
   the seeded RNG), which stays Mesocosm's until a second generator exists.
   That is the one Paredros-side change in the family lane.
+  *Landed 2026-09-15:* paredros-world takes isometer-core directly
+  (63ef2c5); paredros-client followed each rename (63ef2c5, 48d70d7) and
+  then step 10's facade, taking `isometer` alone and naming
+  `isometer::{core, lens, mesh, render}`. The producer's `r1-proof` gate is
+  gone: lens arrives unconditionally through the facade, so the scene lane
+  compiles with no default features. What `r1-proof` still gates is the
+  DDA and brick traversal profile (brick.rs, the DDA tenant and the receipt
+  writers), which turns on optional modulus and serde_json; that gate is
+  load-bearing and stays until modulus stops being optional. Every step
+  kept the session acceptance receipt's hash at `6df69c7c2a265ca5`.
 
 ## References
 

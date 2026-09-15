@@ -96,7 +96,7 @@ impl App {
                 subject,
                 from_revision: old,
                 revision: next,
-                severed_parts: vec![isometer_core::PartId(1)],
+                severed_parts: vec![isometer::core::PartId(1)],
             },
         ]);
         self.status = vec![format!(

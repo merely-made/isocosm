@@ -22,7 +22,7 @@ use std::rc::Rc;
 use std::time::Instant;
 
 use cambium_genet_winit_host::{AppCtx, Frame, read_frame};
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_world::{GameEvent, ItemKind, StrikeOutcome};
 use taproot::Selector;
 

@@ -12,9 +12,9 @@
 
 use std::{collections::BTreeSet, fmt};
 
-use isometer_core::ground::{BRICK, Ground};
+use isometer::core::ground::{BRICK, Ground};
+use isometer::lens::TraceCamera;
 use mesocosm_core::places::{Places, WALKER_HEIGHT};
-use isometer_lens::TraceCamera;
 use modulus::{BrickMap, BrickMapError, BrickProjectionRevision};
 use renderling::glam::Vec3;
 

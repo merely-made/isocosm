@@ -38,7 +38,7 @@ use std::rc::Rc;
 use std::time::{Duration, Instant};
 
 use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, Init, Key, NamedKey};
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
 use paredros_identity::SubjectId;
 use paredros_world::fixtures::session as session_fixture;

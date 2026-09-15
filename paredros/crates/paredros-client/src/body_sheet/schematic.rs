@@ -7,7 +7,7 @@
 //! a stable part address and is separated when its projected footprint would
 //! hide another part.
 
-use isometer_core::{Origin, PartId};
+use isometer::core::{Origin, PartId};
 use netrender::{Scene, ScenePath};
 use paredros_world::{PartRow, SourceQuery};
 
@@ -328,7 +328,7 @@ fn diamond(scene: &mut Scene, at: [f32; 2], color: [f32; 4]) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometer_core::Aabb;
+    use isometer::core::Aabb;
     use paredros_world::{SubjectSheet, SubjectSheetInput, fixtures::three_lives as fixture};
 
     #[test]

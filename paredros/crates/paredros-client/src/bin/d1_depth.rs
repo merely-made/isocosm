@@ -80,7 +80,7 @@ struct DepthApp {
     frames: u64,
     captured: bool,
     frame_us: Vec<u64>,
-    last_trace: Option<isometer_lens::BrickDiagnostics>,
+    last_trace: Option<isometer::lens::BrickDiagnostics>,
     judged: Option<JudgedFrame>,
 }
 
@@ -487,7 +487,7 @@ fn report(
     probe: &Probe,
     judged: &JudgedFrame,
     frame_us: &[u64],
-    trace: Option<isometer_lens::BrickDiagnostics>,
+    trace: Option<isometer::lens::BrickDiagnostics>,
 ) {
     let capture = &judged.capture;
     let path = PathBuf::from(CAPTURE);
@@ -538,7 +538,7 @@ fn report(
         gate: "D1",
         vessel: "paredros",
         mechanism: "renderling raster first with stored Depth32Float; \
-                    modulus::BRICK_DDA_WGSL via isometer_lens::BrickTracer::encode_with_depth \
+                    modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer::encode_with_depth \
                     writes frag_depth from the shared clip_from_world under LessEqual",
         adapter: &live.adapter,
         size: SIZE,

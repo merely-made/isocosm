@@ -13,12 +13,12 @@
 //! whole point of the cohesion contract this gate is proving.
 
 #[cfg(feature = "r1-proof")]
-use isometer_core::ground::Ground;
+use isometer::core::ground::Ground;
 #[cfg(feature = "r1-proof")]
-use isometer_lens::{
+use isometer::lens::{
     BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, CritterPose, Grade, TraceCamera,
 };
-use isometer_render::geometry::Vertex as MeshVertex;
+use isometer::render::geometry::Vertex as MeshVertex;
 #[cfg(feature = "r1-proof")]
 use modulus::BrickMap;
 use netrender::{

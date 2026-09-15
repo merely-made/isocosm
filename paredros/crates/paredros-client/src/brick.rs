@@ -6,7 +6,7 @@
 
 //! Paredros's Ground source binding for the shared brick ABI.
 
-use isometer_core::ground::Ground;
+use isometer::core::ground::Ground;
 use modulus::{BrickMap, BrickMapError, BrickProjectionRevision};
 
 pub(crate) fn from_ground(ground: &Ground) -> Result<BrickMap, BrickMapError> {

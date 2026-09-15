@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Native input receipt for Paredros's bounded timed limb action.
-use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer::core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
 use paredros_client::body_sheet::Hud;
 use paredros_client::gpu::Composer;
 use paredros_identity::Tick;
@@ -198,7 +198,7 @@ impl App {
             tick,
             subject: target,
             item: target_item.id,
-            part: isometer_core::PartId(2),
+            part: isometer::core::PartId(2),
             revision: paredros_identity::BodyRevisionId(0),
         })
         .unwrap();
@@ -306,7 +306,7 @@ impl App {
     fn smoke_sequence(&mut self) {
         self.move_player([1, 0, 0]);
         assert!(self.action.prepare(self.attack_direction).is_ok());
-        assert!(self.action.join(isometer_core::PartId(2)).is_ok());
+        assert!(self.action.join(isometer::core::PartId(2)).is_ok());
         let start = self.action.action().unwrap().last_tick;
         assert_eq!(self.action.charge(Tick(start.0 + 1)).unwrap().len(), 2);
         assert_eq!(self.action.charge(Tick(start.0 + 2)).unwrap().len(), 2);
@@ -366,7 +366,7 @@ impl App {
             game.current_anatomy(player)
                 .unwrap()
                 .document
-                .part(isometer_core::PartId(1))
+                .part(isometer::core::PartId(1))
                 .unwrap()
                 .severed
         );
@@ -494,7 +494,7 @@ impl App {
         };
     }
     fn join_limb(&mut self) {
-        self.status = match self.action.join(isometer_core::PartId(2)) {
+        self.status = match self.action.join(isometer::core::PartId(2)) {
             Ok(()) => vec!["Joined limb part 2 into authoritative action.".into()],
             Err(e) => vec![format!("Limb join failed: {e:?}")],
         };

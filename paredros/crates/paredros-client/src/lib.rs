@@ -31,9 +31,8 @@ pub mod crossing;
 pub mod frame_health;
 pub mod gpu;
 pub mod probe;
-// The scene producer traces terrain through mesocosm-lens, which this crate
-// carries behind `r1-proof` (a default feature).
-#[cfg(feature = "r1-proof")]
+// The scene producer traces terrain through `isometer::lens`, which the family
+// facade carries unconditionally, so the module is unconditional too.
 pub mod producer;
 #[cfg(feature = "v1-proof")]
 pub mod residency;

@@ -17,7 +17,7 @@
 
 use std::time::Instant;
 
-use isometer_core::PartId;
+use isometer::core::PartId;
 use paredros_world::timed_action::Direction;
 
 use super::super::{CHARGE_INTERVAL, SessionApp};
