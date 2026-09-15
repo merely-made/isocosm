@@ -570,6 +570,22 @@ through traits stays the first Mesocosm slice; experience follows it.
    epochs, and discovery and deed manners need no bearing trait at all.
    Finding 3 is answered by the game's own loop rather than by a rule.
 
+## Rulings on the bench's four choices (Mark, 2026-09-15)
+
+1. **An embodied glyph draws before it is experienced.** Expression is
+   visible on the body from birth; experience is the journey's separate
+   record and gates ascension, not display. Section 4's sentence that an
+   embodied-but-unexperienced glyph draws nothing is withdrawn.
+2. **The placeholder expression table stands** (reshape from intake and
+   fix, reach from contract and sense, guard from secrete) until the
+   catalogue and the authored set replace it.
+3. **One bearing part per mark, chosen by record ordinal across the
+   bearing parts**, so marks spread over what expresses the glyph.
+4. **An anchored mark keeps the anchor's centre and axes and takes only
+   the bench's existing display raise**, cleared a hair along the normal
+   and lifted in world up, since a mark flush to its face is occluded by
+   its own body.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.
