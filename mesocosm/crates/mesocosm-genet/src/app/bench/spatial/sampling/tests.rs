@@ -3,8 +3,8 @@
 
 use super::*;
 use isometer::{PartAddress, SubjectKey};
+use isometer_mesh::BodyDependencyRevision;
 use mesocosm_core::{PartId, effect_experiment::Glyph};
-use mesocosm_mesh::BodyDependencyRevision;
 
 const BOUNDS: ([f32; 3], [f32; 3]) = ([-10., -4., -8.], [12., 16., 10.]);
 fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {

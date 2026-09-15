@@ -181,6 +181,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "isometer-mesh"
+version = "0.0.1"
+dependencies = [
+ "blake3",
+ "isometer-core",
+ "postcard",
+ "serde",
+ "wing-formats",
+]
+
+[[package]]
 name = "isometry-campaign"
 version = "0.1.0"
 dependencies = [
@@ -259,17 +270,6 @@ dependencies = [
  "serde",
  "wing-formats",
  "wing-functions",
-]
-
-[[package]]
-name = "mesocosm-mesh"
-version = "0.0.1"
-dependencies = [
- "blake3",
- "isometer-core",
- "postcard",
- "serde",
- "wing-formats",
 ]
 
 [[package]]
@@ -510,10 +510,10 @@ dependencies = [
 name = "wing-integration"
 version = "0.0.1"
 dependencies = [
+ "isometer-mesh",
  "isometry-campaign",
  "isometry-voxel",
  "mesocosm-core",
- "mesocosm-mesh",
 ]
 
 [[package]]

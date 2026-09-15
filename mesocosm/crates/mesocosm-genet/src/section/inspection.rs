@@ -10,9 +10,9 @@
 //! spatial request writes to disk, and the world lookup an adapter does
 //! before the scene sees a body.
 
-use mesocosm_core::{OrganismId, PartId, World};
-use mesocosm_mesh::BodyDependencyRevision;
 use isometer::{BodyPickError, PartAddress, SceneVolumes};
+use isometer_mesh::BodyDependencyRevision;
+use mesocosm_core::{OrganismId, PartId, World};
 
 use super::Section;
 use super::bodies::{key, organism_of};
@@ -120,7 +120,7 @@ impl Section {
     pub fn presentation_bounds(
         &mut self,
         organism: &mesocosm_core::Organism,
-        volumes: &mesocosm_mesh::VolumeMap,
+        volumes: &isometer_mesh::VolumeMap,
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
         self.scene
@@ -146,7 +146,7 @@ impl Section {
         &mut self,
         pick: BodyPick,
         world: &World,
-        volumes: &mesocosm_mesh::VolumeMap,
+        volumes: &isometer_mesh::VolumeMap,
     ) -> bool {
         self.scene.query_generation() == Some(pick.frame)
             && self.validate_selection(pick.selection, world, volumes)
@@ -178,7 +178,7 @@ impl Section {
         &mut self,
         selection: BodySelection,
         world: &World,
-        volumes: &mesocosm_mesh::VolumeMap,
+        volumes: &isometer_mesh::VolumeMap,
     ) -> bool {
         if self.body_mode != super::BodyMode::Voxels {
             return false;
@@ -213,7 +213,7 @@ impl Section {
     pub fn glyph_anchors(
         &mut self,
         organism: &mesocosm_core::Organism,
-        volumes: &mesocosm_mesh::VolumeMap,
+        volumes: &isometer_mesh::VolumeMap,
         selected: Option<BodySelection>,
     ) -> Result<Vec<isometer::GlyphAnchor>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);

@@ -28,7 +28,7 @@ pub mod composite;
 pub mod geometry;
 pub mod live_body;
 
-use mesocosm_mesh::BodyMesh;
+use isometer_mesh::BodyMesh;
 use wgpu::util::DeviceExt;
 
 pub use camera::Camera;

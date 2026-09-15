@@ -11,7 +11,7 @@
 //! nothing computed here ever goes back to the core.
 
 use bytemuck::{Pod, Zeroable};
-use mesocosm_mesh::{BodyMesh, place_point};
+use isometer_mesh::{BodyMesh, place_point};
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Pod, Zeroable)]
@@ -251,7 +251,7 @@ fn append_body(out: &mut Vec<Vertex>, item: &SceneItem) {
 mod tests {
     use super::*;
     use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
-    use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
+    use isometer_mesh::{Volume, VolumeMap, mesh_body};
 
     fn source() -> VolumeMap {
         let mut map = VolumeMap::new();

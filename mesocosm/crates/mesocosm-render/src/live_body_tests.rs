@@ -6,7 +6,7 @@
 
 use super::*;
 use isometer_core::{PartId, VolumeRef};
-use mesocosm_mesh::{Volume, place_point};
+use isometer_mesh::{Volume, place_point};
 
 fn gpu() -> Option<crate::Renderer> {
     match crate::Renderer::headless(16, 16) {
@@ -77,7 +77,7 @@ fn clear(
 
 #[test]
 fn one_greedy_cube_keeps_six_quads_of_triangles() {
-    let mesh = mesocosm_mesh::mesh_volume(&Volume::solid([4, 3, 2], 7));
+    let mesh = isometer_mesh::mesh_volume(&Volume::solid([4, 3, 2], 7));
     assert_eq!(part_vertices(&mesh).len(), 36);
 }
 

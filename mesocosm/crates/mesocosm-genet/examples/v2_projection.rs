@@ -24,6 +24,7 @@ fn main() {
 mod native {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
+    use isometer_mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
     use mesocosm_core::{
         BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
         snapshot, world::organism_extent,
@@ -32,7 +33,6 @@ mod native {
     use mesocosm_lens::{
         BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
     };
-    use mesocosm_mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
     use serde::Serialize;
 
     const SIDE: u32 = 256;
@@ -264,8 +264,8 @@ mod native {
     }
 
     fn changed_mesh_parts(
-        before: &mesocosm_mesh::BodyMesh,
-        after: &mesocosm_mesh::BodyMesh,
+        before: &isometer_mesh::BodyMesh,
+        after: &isometer_mesh::BodyMesh,
     ) -> Vec<PartId> {
         let before = before
             .placements

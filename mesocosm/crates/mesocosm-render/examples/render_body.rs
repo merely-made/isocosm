@@ -15,8 +15,8 @@
 
 use std::path::{Path, PathBuf};
 
+use isometer_mesh::{Volume, VolumeMap, mesh_body};
 use mesocosm_core::{Intent, OrganismId, Outcome, PartId, Placement, VolumeRef, World, Yaw};
-use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
 use mesocosm_render::{Camera, Renderer};
 
 const SIZE: u32 = 512;

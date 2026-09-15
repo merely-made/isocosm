@@ -15,7 +15,7 @@
 //! Regenerate with:
 //!
 //! ```text
-//! cargo run -p mesocosm-mesh --example emit_profile
+//! cargo run -p isometer-mesh --example emit_profile
 //! ```
 //!
 //! then copy `fixtures/critter.body` into isometry's
@@ -27,7 +27,7 @@ use std::{fs, path::PathBuf};
 use isometer_core::{
     Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
 };
-use mesocosm_mesh::{BodyProfile, Volume, VolumeMap};
+use isometer_mesh::{BodyProfile, Volume, VolumeMap};
 
 fn main() {
     let (body, volumes) = grown();

@@ -20,9 +20,9 @@ resolver = "2"
 # a product world does not appear in its graph, and since the core split there
 # is no product crate left in it at all.
 isometer-core = { path = "crates/isometer-core" }
-# The projection seam: `VolumeSource`, `VolumeMap`, `Volume`. Declared by
-# relative path, as `mesocosm-mesh` already declares `wing-formats`.
-mesocosm-mesh = { path = "../../mesocosm/crates/mesocosm-mesh" }
+# The projection seam: `VolumeSource`, `VolumeMap`, `Volume`. A member of this
+# workspace since the move, beside the core.
+isometer-mesh = { path = "crates/isometer-mesh" }
 # The tracer's camera and its standing wall. One on-disk crate, one version.
 mesocosm-lens = { path = "../../mesocosm/crates/mesocosm-lens" }
 # The body renderer's world cut interval, instance draw and part queries.

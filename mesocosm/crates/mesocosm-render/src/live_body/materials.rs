@@ -23,7 +23,7 @@ pub const TISSUE_CHANNELS: u8 = 5;
 /// One material allocation summarized for one addressed part.
 ///
 /// `material` is a neutral channel index below [`TISSUE_CHANNELS`], in the
-/// same plain-`u8` grammar as `mesocosm_mesh`'s `MATERIAL_*` voxel codes. The
+/// same plain-`u8` grammar as `isometer_mesh`'s `MATERIAL_*` voxel codes. The
 /// renderer gives each channel a mark colour and nothing else: what a channel
 /// *means* is the producer's vocabulary, and the producer owns the mapping.
 ///

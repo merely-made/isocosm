@@ -10,11 +10,11 @@
 //! New host sessions admit a generated content pack before founding; see
 //! `app/content.rs`. The core carries addresses and biological envelopes.
 
+use isometer_mesh::{Volume, VolumeMap};
 use mesocosm_core::{
     Crossing, Founding, Intent, OrganismId, PartId, Placement, Role, Verdict, VolumeRef, World,
     world::organism_extent,
 };
-use mesocosm_mesh::{Volume, VolumeMap};
 
 pub fn volumes() -> VolumeMap {
     let mut map = VolumeMap::new();
@@ -174,7 +174,7 @@ pub fn reachable(world: &World) -> Option<OrganismId> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_mesh::{VolumeSource, flatten};
+    use isometer_mesh::{VolumeSource, flatten};
 
     #[test]
     fn food_controls_skip_targets_the_controlled_ports_do_not_admit() {
@@ -246,7 +246,7 @@ mod tests {
     fn the_fixture_resolves_every_volume_a_world_mints() {
         let volumes = volumes();
         let world = World::new(7, 40);
-        assert!(mesocosm_mesh::mesh_body(world.body().unwrap(), &volumes).is_ok());
+        assert!(isometer_mesh::mesh_body(world.body().unwrap(), &volumes).is_ok());
         for organism in &world.organisms {
             assert!(volumes.volume(organism.volume()).is_some());
         }

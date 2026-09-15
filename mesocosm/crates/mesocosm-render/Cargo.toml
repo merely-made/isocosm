@@ -12,7 +12,7 @@ publish = false
 [dependencies]
 # Part ids, quarter turns and content addresses, from the family floor.
 isometer-core = { workspace = true }
-mesocosm-mesh = { workspace = true }
+isometer-mesh = { workspace = true }
 wgpu = { workspace = true }
 bytemuck = { version = "1", features = ["derive"] }
 glam = "0.30"

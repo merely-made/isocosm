@@ -84,8 +84,8 @@
 //! rather than the played one, which is what makes the inspector and the three
 //! verbs one tool: what the tile is showing is what the key acts on.
 
+use isometer_mesh::VolumeMap;
 use mesocosm_core::{Intent, Placement, World};
-use mesocosm_mesh::VolumeMap;
 use mesocosm_runtime::Checkpoint;
 use winit::keyboard::{Key, NamedKey};
 

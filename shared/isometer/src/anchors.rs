@@ -8,7 +8,7 @@
 //! hidden by another part or terrain. The depth renderer owns that occlusion.
 
 use isometer_core::PartId;
-use mesocosm_mesh::{BodyDependencyRevision, BodyMesh};
+use isometer_mesh::{BodyDependencyRevision, BodyMesh};
 use mesocosm_render::live_body::{LiveBody, posed_quad};
 
 use crate::bodies::{BodyLayer, PartAddress, SceneBody, SceneVolumes, SubjectKey, posed};

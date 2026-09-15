@@ -12,7 +12,7 @@
 //! tokens behind a [`SubjectKey`] and hands this layer one slice per frame.
 
 use isometer_core::{BodyDocument, PartId};
-use mesocosm_mesh::{BodyDependencyRevision, BodyMesh, LiveBodyProjector, MeshError, VolumeMap};
+use isometer_mesh::{BodyDependencyRevision, BodyMesh, LiveBodyProjector, MeshError, VolumeMap};
 use mesocosm_render::live_body::{LiveBody, LiveBodyRenderer};
 
 use crate::camera::{SlabCamera, SlabWindow};

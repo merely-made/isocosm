@@ -12,8 +12,8 @@
 use super::*;
 use crate::camera::Cutaway;
 use isometer_core::VolumeRef;
+use isometer_mesh::{BodyMesh, Volume};
 use mesocosm_lens::FRAME_FORMAT;
-use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};
 
 const WIDTH: u32 = 128;

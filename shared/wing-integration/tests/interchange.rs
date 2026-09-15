@@ -4,13 +4,13 @@
 //! vessels only to exercise bytes at their public boundary; neither product
 //! gains a dependency on the other.
 
+use isometer_mesh::{BodyProfile, Volume, VolumeMap};
 use isometry_campaign::{Arrival, ChronicleError};
 use isometry_voxel::{BakeParams, BodyError, BodyProfile as TabletopBodyProfile, bake_facing};
 use mesocosm_core::{
     Attachment, BodyDocument, Chronicle, Consequence, Deed, Origin, PartId, Provenance, SpeciesId,
     VolumeRef, Yaw,
 };
-use mesocosm_mesh::{BodyProfile, Volume, VolumeMap};
 
 /// The retained v0 artifact protects persisted data. The live producer test
 /// below protects the producer-reader seam when either side changes.

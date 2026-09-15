@@ -8,8 +8,8 @@
 //! bodies do. One truth, two consumers, no conversion layer beyond a
 //! byte copy into `Volume`'s layout.
 
+use isometer_mesh::{Volume, mesh_volume};
 use mesocosm_core::places::{BRICK, Ground, Places};
-use mesocosm_mesh::{Volume, mesh_volume};
 
 /// A brick's materials as a mesh volume. The brick is y-major (y, z, x);
 /// `Volume::get(x, y, z)` indexes x + y*sx + z*sx*sy, so this walks the

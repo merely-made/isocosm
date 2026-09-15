@@ -26,7 +26,7 @@
 use std::collections::{BTreeMap, btree_map::Entry};
 
 use isometer_core::{BodyDocument, VolumeRef};
-use mesocosm_mesh::{Volume, VolumeMap, VolumeSource};
+use isometer_mesh::{Volume, VolumeMap, VolumeSource};
 
 /// One solid box per volume reference a set of documents addresses.
 #[derive(Clone, Debug, Default)]

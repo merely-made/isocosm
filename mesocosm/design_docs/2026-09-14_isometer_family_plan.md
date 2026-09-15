@@ -668,3 +668,20 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   under paredros/. Their product-side switch to isometer-core runs in
   parallel in paredros-world and paredros-client source and dependency
   rows, committed by pathspec on their side.
+- **2026-09-15, step 7 done.** mesocosm-mesh is `shared/isometer/crates/
+  isometer-mesh`, moved by rename with source verbatim beyond the import
+  prefix; its manifest keeps mesocosm-core as a dev-dependency by path for
+  the generation fixtures and restates no patch table, since the family
+  workspace root carries it. The central `[workspace.dependencies]` row in
+  mesocosm/Cargo.toml is `isometer-mesh`, so lens, render and genet
+  renamed their keys too; shared/isometer and wing-integration point at
+  the new path, and wing-integration's tracked lock renames the package
+  block only. Paredros's one row is flipped in the working tree and
+  committed by the Paredros session with its own manifest edits, since
+  that file is dirty on their side. Gates: the sensor content-address pin
+  in the moved crate, the six core pins, all 32 spatial-coverage captures
+  and 15 acceptance captures byte-identical to the 2026-09-14 set and to
+  step 6's run. Green: isometer 28, isometer-core 32, isometer-mesh 60 +
+  4 + 2, mesocosm check, core suites, render 32 + 5, lens 56, runtime 44,
+  genet 154, wing-integration check, root check with the root lock
+  unchanged.

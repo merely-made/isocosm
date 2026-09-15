@@ -18,7 +18,7 @@ use glam::Mat4;
 #[cfg(test)]
 use isometer_core::Yaw;
 use isometer_core::{PartId, VolumeRef};
-use mesocosm_mesh::{BodyMesh, PartMesh};
+use isometer_mesh::{BodyMesh, PartMesh};
 use wgpu::util::DeviceExt;
 
 use crate::geometry::{Vertex, face_shade, material_colour};

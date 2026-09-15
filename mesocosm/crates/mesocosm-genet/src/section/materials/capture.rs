@@ -4,8 +4,8 @@
 //! GPU evidence using the same material adapter and cached renderer as play.
 
 use crate::section::{CameraMode, bodies::clip_from_world};
+use isometer_mesh::{LiveBodyProjector, VolumeMap};
 use mesocosm_core::{Founding, OrganismId, World};
-use mesocosm_mesh::{LiveBodyProjector, VolumeMap};
 use mesocosm_render::{LiveBody, LiveBodyRenderer, Renderer};
 
 #[path = "family.rs"]

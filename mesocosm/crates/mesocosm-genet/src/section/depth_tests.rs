@@ -1,9 +1,9 @@
+use isometer_mesh::{BodyMesh, Volume};
 use mesocosm_core::places::{Ground, Places};
 use mesocosm_core::{PartId, VolumeRef};
 use mesocosm_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, FRAME_FORMAT, Grade, TraceCamera,
 };
-use mesocosm_mesh::{BodyMesh, Volume};
 use mesocosm_render::{LiveBody, LiveBodyRenderer};
 
 use super::bodies::clip_from_world;

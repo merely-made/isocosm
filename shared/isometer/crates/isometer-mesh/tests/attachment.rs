@@ -15,10 +15,10 @@
 //! stays a judgment for the windowed host. What they do establish is that
 //! everything the screen would need is derivable, deterministic, and cheap.
 
+use isometer_mesh::{Volume, VolumeMap, mesh_body};
 use mesocosm_core::{
     Intent, Origin, Outcome, PartId, Placement, STARVED_UPKEEP_TICKS, VolumeRef, World, Yaw,
 };
-use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
 
 /// Volumes for the fixture: a body, and one for every primitive tag the world
 /// may mint. Developmental roles now choose their volume vocabulary from the

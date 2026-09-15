@@ -6,7 +6,7 @@
 
 use super::*;
 use isometer_core::{VolumeRef, Yaw};
-use mesocosm_mesh::Volume;
+use isometer_mesh::Volume;
 
 const SUBJECT: SubjectKey = SubjectKey(3);
 const REVISION: BodyDependencyRevision = BodyDependencyRevision(11);

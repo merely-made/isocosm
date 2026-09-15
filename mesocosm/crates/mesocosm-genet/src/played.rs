@@ -28,8 +28,8 @@
 
 use std::path::{Path, PathBuf};
 
+use isometer_mesh::VolumeMap;
 use mesocosm_core::{Intent, Placement, World};
-use mesocosm_mesh::VolumeMap;
 use mesocosm_runtime::{Checkpoint, Occasion, Runtime};
 use serde::{Deserialize, Serialize};
 

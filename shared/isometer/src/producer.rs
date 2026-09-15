@@ -41,7 +41,7 @@ pub const SCENE_ENCODING: SourceEncoding = SourceEncoding::Srgb;
 /// One body's contribution to the skip signature.
 ///
 /// `revision` is the host's own geometry revision rather than a projected
-/// [`BodyDependencyRevision`](mesocosm_mesh::BodyDependencyRevision), so
+/// [`BodyDependencyRevision`](isometer_mesh::BodyDependencyRevision), so
 /// comparing a frame costs no projection: a host that changes an anatomy
 /// changes this number.
 #[derive(Clone, Copy, Debug, PartialEq)]

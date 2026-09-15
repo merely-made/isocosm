@@ -24,7 +24,7 @@
 //! noise to re-capture; it is the receipt doing its job.
 //!
 //! Pins that already exist elsewhere, and are not duplicated here:
-//! `mesocosm-mesh`'s `content_tests.rs` pins the blake3 content address of the
+//! `isometer-mesh`'s `content_tests.rs` pins the blake3 content address of the
 //! v1 sensor fixture volume as a literal hex digest (`content_ref` is private
 //! to that crate, and blake3 is not a dependency of this one); its `profile.rs`
 //! suite pins `PROFILE_SCHEMA`/`PROFILE_VERSION` round trips and the framed
@@ -94,7 +94,7 @@ fn deterministic_world_state_hash_is_pinned() {
 
 #[test]
 fn body_profile_schema_and_version_are_pinned() {
-    // `mesocosm-mesh` re-exports these as `PROFILE_SCHEMA` / `PROFILE_VERSION`.
+    // `isometer-mesh` re-exports these as `PROFILE_SCHEMA` / `PROFILE_VERSION`.
     assert_eq!(wing_formats::BODY_SCHEMA, "mesocosm.body/v0");
     assert_eq!(wing_formats::BODY_VERSION, 0u16);
     assert_eq!(wing_formats::BODY_MAGIC, *b"MESOBODY");

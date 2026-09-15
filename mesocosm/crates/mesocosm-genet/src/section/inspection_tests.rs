@@ -4,8 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
+use isometer_mesh::VolumeMap;
 use mesocosm_core::PartId;
-use mesocosm_mesh::VolumeMap;
 use mesocosm_render::{RenderError, Renderer};
 
 use super::bodies::{HostBodies, key};
@@ -29,7 +29,7 @@ fn prepare(
     layer: &mut BodyLayer,
     host: &mut HostBodies,
     world: &World,
-    volumes: &mesocosm_mesh::VolumeMap,
+    volumes: &isometer_mesh::VolumeMap,
 ) {
     let none: Vec<Vec<mesocosm_render::PartMaterial>> =
         world.organisms.iter().map(|_| Vec::new()).collect();
@@ -56,7 +56,7 @@ fn validate(
     layer: &mut BodyLayer,
     host: &HostBodies,
     world: &World,
-    volumes: &mesocosm_mesh::VolumeMap,
+    volumes: &isometer_mesh::VolumeMap,
     address: PartAddress,
 ) -> bool {
     let id = super::bodies::organism_of(address.subject);

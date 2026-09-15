@@ -21,7 +21,6 @@ members = [
     "crates/mesocosm-core",
     "crates/mesocosm-genet",
     "crates/mesocosm-lens",
-    "crates/mesocosm-mesh",
     "crates/mesocosm-phenotype",
     "crates/mesocosm-render",
     "crates/mesocosm-runtime",
@@ -92,12 +91,13 @@ mesquite = { git = "https://github.com/merely-made/mere.git", rev = "3675a3528f7
 netrender = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
 paint_list_api = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
 paint_list_render = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
-# The isometer family's floor, declared once so every consumer in this
-# workspace resolves the one on-disk crate.
+# The isometer family, declared once so every consumer in this workspace
+# resolves the one on-disk crate. The family lives in `shared/isometer` and
+# carries its own workspace; these rows are the only way into it.
 isometer-core = { path = "../shared/isometer/crates/isometer-core", version = "0.1.0" }
+isometer-mesh = { path = "../shared/isometer/crates/isometer-mesh", version = "0.0.1" }
 mesocosm-core = { path = "crates/mesocosm-core", version = "0.0.1" }
 mesocosm-lens = { path = "crates/mesocosm-lens", version = "0.0.1" }
-mesocosm-mesh = { path = "crates/mesocosm-mesh", version = "0.0.1" }
 mesocosm-phenotype = { path = "crates/mesocosm-phenotype", version = "0.0.1" }
 mesocosm-render = { path = "crates/mesocosm-render", version = "0.0.1" }
 mesocosm-genet = { path = "crates/mesocosm-genet", version = "0.0.1" }

@@ -16,7 +16,7 @@
 //! nothing rendered is worse than no test.
 
 use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
-use mesocosm_mesh::{Volume, VolumeMap, mesh_body};
+use isometer_mesh::{Volume, VolumeMap, mesh_body};
 use mesocosm_render::{Camera, RenderError, Renderer};
 
 const SIZE: u32 = 256;
@@ -66,7 +66,7 @@ fn a_body_actually_draws() {
 #[test]
 fn an_empty_scene_is_blank() {
     let Some(renderer) = renderer() else { return };
-    let mesh = mesocosm_mesh::BodyMesh::default();
+    let mesh = isometer_mesh::BodyMesh::default();
     let frame = renderer.render(&mesh, &Camera::default()).unwrap();
     assert!(
         frame.is_blank(),

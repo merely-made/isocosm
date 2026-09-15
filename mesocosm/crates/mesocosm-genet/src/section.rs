@@ -97,7 +97,7 @@ pub struct Pan {
 #[derive(Clone, Copy)]
 pub struct SectionFrame<'a> {
     pub world: &'a World,
-    pub volumes: &'a mesocosm_mesh::VolumeMap,
+    pub volumes: &'a isometer_mesh::VolumeMap,
     pub ground: &'a Ground,
     /// The host's drain of the world's changed bricks. The slots they map to
     /// are the only region the tracer re-uploads, so a carve costs its own

@@ -3,8 +3,8 @@
 
 use std::{cell::RefCell, rc::Rc};
 
+use isometer_mesh::VolumeMap;
 use mesocosm_core::{OrganismId, PartId, history::History};
-use mesocosm_mesh::VolumeMap;
 use mesocosm_views::PartInspection;
 
 use super::{super::creator::Creator, producer::BenchProducer};
