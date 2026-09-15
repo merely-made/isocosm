@@ -62,7 +62,10 @@ cargo test --workspace --all-features        # default features skip the campaig
 
 ## License
 
-MIT OR Apache-2.0.
+MIT OR Apache-2.0 for the tabletop crates in this workspace, with one
+exception: `crates/isometry-voxel` is MPL-2.0 (ruled 2026-09-14, ahead of
+its fold into the isometer family's mesh component). Mesocosm, Paredros and
+the shared wing crates carry their own licence files.
 
 ---
 
