@@ -113,14 +113,20 @@ pub(super) fn nearby_indexes(
 /// consumers carry sense organs, 99% of them, and the clamp threw away every
 /// voxel the derivation gave them (sensory span 12, derived 12, reach 8,
 /// answer 8). Sight is a sensory reading; clamping it by an actuator span is
-/// reading the wrong tissue. The far tier still answers `reach`, unchanged,
-/// because out there the search span *is* the whole model.
+/// reading the wrong tissue.
 ///
 /// Nothing loses horizon: for a blind body the answer is `NEAR_SIGHT_RANGE`
 /// exactly, and it was `min(reach, NEAR_SIGHT_RANGE)` before — so only bodies
 /// with anatomy to read gain anything.
+///
+/// **A far body reads the same sight** (ruled by Mark 2026-09-16, after soil
+/// cycle plan S1). It answered `reach` and [`can_perceive_position`] let it
+/// see the whole enclosure, which cost nothing while far bodies bounced and
+/// let far grazing strip the producers once S1 let them arrive. A body now
+/// sees as far whatever its tier; only a graph-only fixture's near body, with
+/// no ground to see across, still answers `reach`.
 pub(super) fn sight_range(organism: &Organism, reach: i32, ground: Option<&Ground>) -> i32 {
-    if organism.tier == Tier::Near && ground.is_some() {
+    if sighted(organism, ground) {
         sight_for_body(
             NEAR_SIGHT_RANGE,
             organism.sensor_span(),
@@ -129,6 +135,14 @@ pub(super) fn sight_range(organism: &Organism, reach: i32, ground: Option<&Groun
     } else {
         reach
     }
+}
+
+/// Whether this body searches by sight: every far body, and every near body on
+/// grown ground. Every search and feeding rule keys on this rather than on the
+/// tier (ruling 7), so the far tier's differences stay geometric. A graph-only
+/// fixture's near body has no ground to see across and keeps the reach model.
+pub(super) fn sighted(organism: &Organism, ground: Option<&Ground>) -> bool {
+    organism.tier == Tier::Far || ground.is_some()
 }
 
 /// The heading a hungry body takes when it can resolve nothing at all. (TD11)
@@ -156,10 +170,10 @@ pub(super) fn sight_range(organism: &Organism, reach: i32, ground: Option<&Groun
 /// whose remove has already halved away to nothing, count as ordinary pasture —
 /// the same reading the bite makes.
 ///
-/// **One voxel, as the random step was.** The caller walks the heading with a
-/// single `grounded_step`, not the pursuit budget: a body with nothing in sight
-/// is nearly out of reserve, and the pursuit budget charged it several
-/// milligrams a tick to search. Measured on the way in — seed 1's decomposers
+/// **One voxel, as the random step was.** The caller walks the heading one
+/// voxel (a grounded step near, a column step far), not the pursuit budget: a
+/// body with nothing in sight is nearly out of reserve, and the pursuit budget
+/// charged it several milligrams a tick to search. Measured on the way in — seed 1's decomposers
 /// scavenged 4,220 mg against TD10's 197,347 and were gone by tick 200.
 ///
 /// Returns `None` when the richest bucket is the one the body is standing in
@@ -282,6 +296,10 @@ pub(super) fn can_perceive(
     )
 }
 
+/// Whether `target` is in sight. Near sight is `spot_for`: a Chebyshev cap,
+/// stance to stance and height included, then a ray through the bricks. The
+/// far tier has no bricks to cast through, so it keeps the cap alone, in the
+/// same metric (see [`sight_range`]).
 pub(super) fn can_perceive_position(
     organism: &Organism,
     observer_shape: WalkerShape,
@@ -299,6 +317,7 @@ pub(super) fn can_perceive_position(
             target,
             range,
         ),
-        _ => true,
+        (Tier::Far, _) => super::chebyshev(organism.position, target) <= range,
+        (Tier::Near, None) => true,
     }
 }

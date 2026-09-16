@@ -22,10 +22,13 @@
 //! surface where there is ground, as the old hop's arrival did. Every far
 //! position is therefore a legal stance, which is all a later promotion to
 //! near needs; nothing else is carried between ticks.
+//!
+//! This walk is the far tier's only geometry. Where a body goes is near's rule
+//! (ruling 7): a hungry far body with nothing in sight takes one voxel of this
+//! walk up the forage gradient or on near's random wander (`movement::forage`).
 
-use super::{chebyshev, diffuse, surface_stance};
+use super::{chebyshev, surface_stance};
 use crate::places::{Ground, Places, WalkerShape};
-use crate::rng::Rng;
 
 /// One tick's travel from `from` toward `toward`, spending at most `budget`
 /// voxels and stopping once within `stop_within` of it.
@@ -74,23 +77,6 @@ pub(super) fn walk(
         }
     }
     at
-}
-
-/// A hungry far body with nothing to reach for: one voxel toward a
-/// neighbouring place, drawn as the old hop drew it.
-///
-/// One, not the pursuit budget: that is the near wander's size, for the reason
-/// `perception::forage_gradient` records (TD11 measured the pursuit budget
-/// spending hungry bodies with nothing in sight to death).
-pub(super) fn wander(
-    places: &Places,
-    ground: Option<&Ground>,
-    shape: WalkerShape,
-    from: [i32; 3],
-    rng: &mut Rng,
-) -> [i32; 3] {
-    let heading = diffuse(places, from, rng);
-    walk(places, ground, shape, from, heading, 1, None)
 }
 
 #[cfg(test)]

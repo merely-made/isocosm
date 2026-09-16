@@ -7,7 +7,7 @@
 //! What far-tier travel has to keep true. (soil cycle plan S1)
 
 use super::*;
-use crate::body::{SpeciesId, VolumeRef};
+use crate::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 use crate::development::PartPalette;
 use crate::flow::Process;
 use crate::history::Event;
@@ -16,6 +16,7 @@ use crate::organism::ecology::{dispersal_for, is_hungry, step_with_places};
 use crate::organism::{Kingdom, Organism, OrganismId};
 use crate::places::{PlaceId, Soil, Tier};
 use crate::process::BodyProcesses;
+use crate::rng::Rng;
 use crate::{Intent, World};
 
 const WALKER: OrganismId = OrganismId(0);
@@ -45,6 +46,39 @@ fn walker(at: [i32; 3], energy_mg: u64) -> Organism {
     body.tier = Tier::Far;
     body.energy_mg = energy_mg;
     body
+}
+
+/// The walker with eight of the palette's `[1, 1, 1]` sensors on its root.
+///
+/// A far body targets only what is in sight (Mark's ruling after S1), and a
+/// blind walker's sight is inside its own bite, so a walk longer than one
+/// step needs eyes to start. Sensors do not contract: reach and budget stay.
+fn sighted(mut body: Organism) -> Organism {
+    let root = body.body().root;
+    for i in 0..8 {
+        body.phenotype
+            .attach(
+                VolumeRef::from_tag(16),
+                1,
+                [1, 1, 1],
+                Attachment {
+                    parent: root,
+                    offset: [0, 0, 3 + 2 * i],
+                    yaw: Yaw::Zero,
+                },
+                Provenance::founding(),
+            )
+            .expect("a sensor attaches to the root");
+    }
+    body
+}
+
+/// How far `body` sees, and the distance its approach stops at.
+fn sight_and_range(body: &Organism) -> (i32, i32) {
+    (
+        super::super::perception::sight_range(body, 0, None),
+        body.body().reach() + crate::organism::ecology::movement::GRAZE_RANGE,
+    )
 }
 
 /// Far prey that stays put: an unlimbed consumer is sessile (TD8).
@@ -104,25 +138,33 @@ fn alive(world: &[Organism], id: OrganismId) -> bool {
 #[test]
 fn a_far_body_in_its_targets_place_closes_on_it_and_stays_there() {
     // The bounce §2.6 measured: every neighbour is one hop from the target's
-    // place, so the old hop always left it. Walker and prey start at opposite
-    // edges of the middle place.
+    // place, so the old hop always left it. The prey stands at the middle
+    // place's edge; the walker starts back from it toward the far corner, as
+    // far as its sight allows and still inside the place.
     let places = enclosure();
     let home = Some(PlaceId(4));
-    let edge = |dx: i32, dz: i32| {
-        let mut at = centre(&places, 4);
-        while places.at([at[0] + dx, 0, at[2] + dz]) == home {
-            at = [at[0] + dx, 0, at[2] + dz];
-        }
-        at
-    };
-    let target = edge(1, 0);
-    let mut world = vec![walker(edge(-1, -1), 5_000), prey(target)];
-    let range = world[0].body().reach() + crate::organism::ecology::movement::GRAZE_RANGE;
+    let mut target = centre(&places, 4);
+    while places.at([target[0] + 1, 0, target[2]]) == home {
+        target[0] += 1;
+    }
+    let mut body = sighted(walker(target, 5_000));
+    let (sight, range) = sight_and_range(&body);
+    while chebyshev(body.position, target) < sight {
+        let [x, _, z] = body.position;
+        let Some(next) = [[x - 1, 0, z - 1], [x - 1, 0, z]]
+            .into_iter()
+            .find(|at| places.at(*at) == home)
+        else {
+            break;
+        };
+        body.position = next;
+    }
+    let mut world = vec![body, prey(target)];
     let budget = dispersal_for(&world[0]) as i32;
     let start = chebyshev(world[0].position, target);
     assert!(
-        start > range + budget,
-        "the fixture starts out of reach: {start}"
+        start > range + budget && start <= sight,
+        "the fixture starts out of reach and in sight: {start}, sight {sight}"
     );
     let mut ground = soil();
 
@@ -189,15 +231,18 @@ fn a_step_that_would_leave_the_targets_place_slides_along_it() {
 #[test]
 fn no_far_body_moves_more_than_its_dispersal_budget() {
     let places = enclosure();
-    let (start, across) = (centre(&places, 0), centre(&places, 8));
+    let start = centre(&places, 0);
     let mut ground = soil();
 
-    // With a target across the enclosure a walker spends exactly its budget,
+    // With a target at the edge of sight a walker spends exactly its budget,
     // sated or hungry, and pays exactly what it moved.
     for (energy_mg, hungry) in [(5_000, false), (0, true)] {
-        let mut world = vec![walker(start, energy_mg), prey(across)];
+        let body = sighted(walker(start, energy_mg));
+        let (sight, range) = sight_and_range(&body);
+        let mut world = vec![body, prey([start[0] + sight, 0, start[2]])];
         assert_eq!(is_hungry(&world[0]), hungry);
         let budget = dispersal_for(&world[0]);
+        assert!(sight > range + budget as i32, "sight {sight}");
         let moved = tick(&mut world, &places, &mut ground, WALKER);
         assert_eq!(chebyshev(moved.from, moved.to), budget as i32);
         assert_eq!(moved.paid_mg, u64::from(budget));
@@ -210,22 +255,54 @@ fn no_far_body_moves_more_than_its_dispersal_budget() {
     assert_eq!(chebyshev(moved.from, moved.to), 1);
     assert_eq!(moved.paid_mg, 1);
 
-    // A far producer creeps nowhere, however hungry.
+    // A hungry far producer creeps one voxel, as a near one does (ruling 7),
+    // though its dispersal budget is nothing: the creep is its whole travel.
     let mut plant = organism(Kingdom::Producer, 300);
     (plant.tier, plant.energy_mg, plant.position) = (Tier::Far, 0, start);
     let mut world = vec![plant];
     assert_eq!(dispersal_for(&world[0]), 0);
     assert!(is_hungry(&world[0]));
     let moved = tick(&mut world, &places, &mut ground, OrganismId(0));
-    assert_eq!((moved.to, moved.paid_mg), (moved.from, 0));
+    assert_eq!((chebyshev(moved.from, moved.to), moved.paid_mg), (1, 1));
 }
 
 #[test]
 fn a_far_body_reaches_another_place_over_several_ticks() {
+    // Along the diagonal-first path from place 0's centre toward place 8's: the
+    // walker stands short of the first voxel of another place, and the prey
+    // stands far enough past it that the approach stops inside the prey's
+    // place, all within the walker's sight.
     let places = enclosure();
-    let (start, target) = (centre(&places, 0), centre(&places, 8));
-    let mut world = vec![walker(start, 5_000), prey(target)];
+    let (from, across) = (centre(&places, 0), centre(&places, 8));
+    let body = sighted(walker(from, 5_000));
+    let (sight, range) = sight_and_range(&body);
+    let mut path = vec![from];
+    while path.len() < 400 {
+        let at = *path.last().unwrap();
+        path.push([
+            at[0] + (across[0] - at[0]).signum(),
+            0,
+            at[2] + (across[2] - at[2]).signum(),
+        ]);
+    }
+    let border = path
+        .iter()
+        .position(|at| places.at(*at) != places.at(from))
+        .expect("the path leaves place 0");
+    let past = usize::try_from(range + 1).unwrap();
+    let back = usize::try_from(sight).unwrap() - past;
+    let (start, target) = (path[border - back], path[border + past]);
+    assert!(
+        path[border..=border + past]
+            .iter()
+            .all(|at| places.at(*at) == places.at(target)),
+        "the prey's place runs back to the border"
+    );
+    let mut body = body;
+    body.position = start;
+    let mut world = vec![body, prey(target)];
     let budget = dispersal_for(&world[0]) as i32;
+    assert_eq!(chebyshev(start, target), sight, "in sight");
     let mut ground = soil();
 
     let mut ticks = 0;
