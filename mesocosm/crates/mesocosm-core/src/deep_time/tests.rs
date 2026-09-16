@@ -4,9 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
+use std::collections::BTreeSet;
+
 use super::*;
+use crate::places::Tier;
 use crate::rules::{DeepTimeSpan, WorldRules};
 use crate::state_hash;
+use crate::{Organism, OrganismId, Stage};
 
 /// Twenty-tick epochs keep a debug build fast; the span is the world's rule,
 /// set here the way a generation door sets it.
@@ -72,9 +76,10 @@ fn deep_time_is_deterministic() {
     assert_eq!(handover, again_handover);
 }
 
-/// The body is let go before the first tick, and the run is exactly released
-/// control followed by the runtime's own loop: idle, record, drain, reckon on
-/// the tick that closes an epoch.
+/// The body is let go before the first tick, every tier freezes far in the
+/// same moment, and the run is otherwise exactly released control followed
+/// by the runtime's own loop: idle, record, drain, reckon on the tick that
+/// closes an epoch.
 #[test]
 fn the_controlled_body_is_released_for_the_run() {
     let mut world = spanned(7, BRISK, 2);
@@ -90,6 +95,7 @@ fn the_controlled_body_is_released_for_the_run() {
     assert_eq!(world.control_lost(), None, "and letting go was not a loss");
 
     by_hand.release_control();
+    by_hand.freeze_tiers_far();
     let mut by_hand_history = History::new();
     for _ in 0..2 {
         reckon_next_boundary(&mut by_hand, &mut by_hand_history);
@@ -172,5 +178,94 @@ fn the_ceiling_allows_one_budget_past_the_span() {
     assert_eq!(
         ceiling(EpochRule::Timed { ticks: u64::MAX }, u32::MAX),
         Ok(u64::MAX)
+    );
+}
+
+/// Ruled 2026-09-16: with no player, no body is near anyone. Every mature
+/// founder is pushed past its own gestation gate first, so the run is all but
+/// guaranteed to breed at least one newcomer — the case the freeze at release
+/// alone cannot cover, since a newborn inherits its parent's tier rather than
+/// reading one off a focus that does not exist.
+#[test]
+fn deep_time_leaves_every_living_organism_far_including_the_newly_born() {
+    let mut world = spanned(7, BRISK, 2);
+    for organism in world.organisms.iter_mut() {
+        if organism.stage == Stage::Mature {
+            organism.since_offspring = u32::MAX;
+        }
+    }
+    let before: BTreeSet<OrganismId> = world.living().map(|o| o.id).collect();
+
+    let mut history = History::new();
+    world.run_deep_time(&mut history).unwrap();
+
+    let after: Vec<&Organism> = world.living().collect();
+    let newcomers = after.iter().filter(|o| !before.contains(&o.id)).count();
+    assert!(
+        newcomers > 0,
+        "fixture must breed at least one newcomer to exercise inheritance"
+    );
+    assert!(
+        after.iter().all(|o| o.tier == Tier::Far),
+        "every living organism, inherited or original, runs the far tier"
+    );
+}
+
+/// A span does not merely leave the near tier where it stood; it levels a
+/// mixed enclosure down to nothing but far.
+#[test]
+fn a_world_mixed_near_and_far_ends_with_none_near() {
+    let mut world = spanned(7, BRISK, 2);
+    for (index, organism) in world.organisms.iter_mut().enumerate() {
+        organism.tier = if index % 2 == 0 {
+            Tier::Near
+        } else {
+            Tier::Far
+        };
+    }
+    assert!(
+        world.living().any(|o| o.tier == Tier::Near),
+        "fixture must start with some bodies near"
+    );
+    assert!(
+        world.living().any(|o| o.tier == Tier::Far),
+        "fixture must start with some bodies far"
+    );
+
+    let mut history = History::new();
+    world.run_deep_time(&mut history).unwrap();
+
+    assert!(
+        world.living().all(|o| o.tier == Tier::Far),
+        "deep time levels every body to the far tier"
+    );
+}
+
+/// Deep time's freeze is not a standing rule: the ordinary tier update
+/// resumes the moment a focus exists again, promoting bodies around whoever
+/// took control, the same way `mesocosm-runtime`'s trial fixture inhabits a
+/// world after core's own deep time.
+#[test]
+fn taking_control_after_deep_time_resumes_tiers_around_the_heir() {
+    let mut world = spanned(7, BRISK, 2);
+    let mut history = History::new();
+    world.run_deep_time(&mut history).unwrap();
+    assert!(
+        world.living().all(|o| o.tier == Tier::Far),
+        "deep time leaves the whole enclosure far"
+    );
+
+    let heir = world
+        .living()
+        .map(|organism| organism.id)
+        .find(|id| world.is_eligible(*id))
+        .expect("a playable critter survived deep time");
+    world.apply(Intent::TakeControl { organism: heir });
+    for _ in 0..2 {
+        world.apply(Intent::Idle);
+    }
+    assert!(
+        world.living().any(|o| o.tier == Tier::Near),
+        "the ordinary tier update resumes around the new focus"
     );
 }

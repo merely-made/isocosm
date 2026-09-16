@@ -117,6 +117,12 @@ impl World {
             epochs => {
                 let max_ticks = ceiling(rules.epoch, epochs)?;
                 self.release_control();
+                // No focus, no near tier, for the whole span (ruled by the
+                // project owner, 2026-09-16): the ordinary tier update never
+                // runs with nobody controlled, so without this every body
+                // would keep whatever tier it held at release instead of
+                // running the far ecology like everyone else.
+                self.freeze_tiers_far();
                 max_ticks
             },
         };

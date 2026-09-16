@@ -94,6 +94,9 @@ extracted after two real consumers and never declared in advance
     size per seed (R3). Compaction gets its own ruling once measured.
 18. **Both products' terminology is updated now** (R4) to the history organ,
     the three generation buckets and deep time.
+19. **Everything runs far during deep time.** With no hand there is no
+    focus; frozen tiers would let the bodies near the released founder, and
+    their descendants, run a different ecology from everyone else (§2.5).
 
 **Standing rulings this plan inherits, not restates.**
 
@@ -471,11 +474,50 @@ stays at the tier it had when control was released. The second is a
 simulation difference, not an ecological one, and could bias which lines
 survive.
 
-**Open before D7b.** Whether frozen tiers are an artifact deep time must
-remove; what the heir entry offers when the player's line is extinct, given
-ruling 7 ("if that line died out, the draft offers a surviving one") and
-ruling 15's create path "within the evolved line"; and where a created
-critter's founding matter comes from when the local patch is exhausted.
+**Ruled 2026-09-16 (Mark): everything runs far during deep time** (ruling
+19). Measured again with every body far, same door and span:
+
+| Seed | Living | Lineages alive | Player's line | Candidates drafted | Seconds |
+| --- | --- | --- | --- | --- | --- |
+| 7 | 862 | 1 and 4 | survives | 4 | 28.3 |
+| 1 | 624 | 2 | extinct | 0 of 128 attempts | 15.7 |
+| 42 | 1,046 | 1, 2 and 4 | survives | 4 | 29.6 |
+
+So the frozen tiers were changing who survived. Ruling 7 already answers an
+extinct line: the draft offers a surviving one.
+
+**Where the matter went.** Asked about founding matter, Mark asked back:
+"Isn't the role of micro and myco to refresh the soil through death and
+decomposition?" `matter_ledger_probe` reads the enclosure's matter at each
+epoch (the chosen body entered first, then six epochs of deep time, every
+body far):
+
+| Seed | Soil at start | Soil at epoch 6 | Carrion at epoch 6 | Decomposers alive |
+| --- | --- | --- | --- | --- |
+| 7 | 2,145,253 mg | 135,980 mg | 644,337 mg in 203 bodies | 2 at start, 0 from epoch 1 |
+| 1 | 1,894,285 mg | 221,688 mg | 453,998 mg in 167 bodies | 2 at start, 0 from epoch 1 |
+| 42 | 2,253,059 mg | 1,132,267 mg | 321,747 mg in 535 bodies | 2 at start, 0 from epoch 1 |
+
+**The decomposers starve in the first epoch on every seed**, frozen tiers or
+far, and consumers go with them on seeds 7 and 1. Nothing returns the
+carrion, so on seed 7 carrion holds 30% of all matter by epoch 6 and the soil
+keeps 6%; the matter near the draft's place falls to 29-79 mg on seeds 7
+and 1. The empty draft is a symptom of a broken soil cycle, not of crowding.
+
+**This is a known open ruling, not something deep time introduced.** The
+open rulings register's item 2 (`2026-08-29_open_rulings_register.md:63-76`)
+records decomposers starving beside 12-15 standing corpses: "the binding
+constraint is `DECOMPOSE_RANGE` and the search, not the yield", with no
+options named, and quadrupling the decay yield did not rescue them. The
+scale plan found decomposers surviving to the horizon in 6 of 10 seeds once
+the enclosure gave them room (`2026-08-29_scale_plan.md:415-424`). The
+generation door's foundation is 24 founders in the small habitat. Deep time
+makes the failure decisive: six epochs without decomposers lock a fifth to
+a third of the enclosure's matter in carcasses.
+
+**Open before D7b's create path.** Whether decomposer reach is ruled and
+fixed first, since creation needs soil and the soil needs decomposers;
+inhabiting a living critter needs no founding matter and does not wait on it.
 
 ---
 
@@ -771,6 +813,12 @@ world-history Law C test.
   hold with no value edited, the core suite is 746 before and after, and in
   the main tree the pins, record tests, reckoning test and a Paredros
   workspace check all pass.
+- **2026-09-16.** Ruling 19 landed: `World::run_deep_time` sets every
+  living body far after releasing control (`freeze_tiers_far`), since no
+  focus exists to update tiers and offspring inherit their parent's. Taking
+  control afterwards makes bodies near again. 760 core tests; pins hold.
+  `matter_ledger_probe` added. §2.5 records both measurements and the
+  decomposer finding.
 - **2026-09-16.** D7a landed. `DeepTimeSpan` joins `WorldRules` (digest and
   serde default zero); `World::run_deep_time` releases control through a
   crate-internal door that leaves `control_lost` alone, then drives

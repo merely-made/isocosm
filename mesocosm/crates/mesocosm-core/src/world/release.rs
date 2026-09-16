@@ -11,6 +11,7 @@
 //! to ask for it and nothing a trace should record.
 
 use super::World;
+use crate::places::Tier;
 
 impl World {
     /// Lets go of the played body and leaves it living in its line.
@@ -28,6 +29,24 @@ impl World {
     /// `unlocked` and `frontier` stay too: letting go unearns nothing.
     pub(crate) fn release_control(&mut self) {
         self.controlled = None;
+    }
+
+    /// Sets every living organism to [`Tier::Far`].
+    ///
+    /// **Ruled by the project owner, 2026-09-16: everything runs the far
+    /// tier during deep time.** With no hand there is no focus, so the
+    /// ordinary tier update (`organism::ecology`, gated on
+    /// `World::position`) never runs once control is released, and tiers
+    /// would otherwise sit frozen wherever they stood at release —
+    /// whoever was near the released body, and every line descended from
+    /// them, running a different tier than the rest of the enclosure for
+    /// the whole span. Offspring inherit a parent's tier
+    /// (`organism::ecology::breeding::bear`), so this one reset is enough:
+    /// nothing else can promote a body back to near while no focus exists.
+    pub(crate) fn freeze_tiers_far(&mut self) {
+        for organism in self.organisms.iter_mut().filter(|o| o.is_alive()) {
+            organism.tier = Tier::Far;
+        }
     }
 }
 
