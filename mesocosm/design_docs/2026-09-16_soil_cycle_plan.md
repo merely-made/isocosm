@@ -36,6 +36,11 @@ Answering §2.6 of the isoscape family plan.
 4. **Supply, all four:** carrion decay proportional to mass as a declared
    world rule; more founding decomposers; decomposers founded where corpses
    fall; and sessile or creeping decomposers.
+5. **Dispersal beyond creeping, for decomposers and producers alike.**
+   "There should be additional dispersal methods other than creeping for
+   both myco and flora." Fungi and plants spread by more than a body inching
+   across the ground. (In this plan "producers" and "plants", since the bare
+   word *flora* is reserved platform-side; see `mesocosm/CLAUDE.md`.)
 
 ## 1. What the steps start from
 
@@ -76,7 +81,7 @@ measurement of one does not depend on the other.
 | **S4** | Carrion decay proportional to mass, a declared world rule in `WorldRules` and its digest (ruling 4); the world-state pin moves once, with its reason | `rules.rs`, `flows/returns.rs`, `ecology.rs` | sonnet |
 | **S5** | Founding: a sense organ for fauna, a decomposer floor at the door, and decomposers placed where corpses will fall (rulings 3 and 4) | `world/genesis.rs`, the drawn founding | opus |
 | **S6** | Soil scent: decaying carrion deposits typed matter that spreads, and scavengers follow its gradient (ruling 3) | `flows/returns.rs`, `perception.rs`, `places/soil.rs` | opus |
-| **S7** | Sessile and creeping decomposers (ruling 4), under the reading §3 asks Mark to confirm | `rates.rs`, `movement.rs` | sonnet |
+| **S7** | Sessile and creeping decomposers (ruling 4), and dispersal beyond creeping for decomposers and producers (ruling 5), under the reading and the methods §3 asks Mark to choose | `rates.rs`, `movement.rs`, reproduction placement | opus |
 | **S8** | Re-measure deep time and the matter ledger on all three seeds; hand D7b a world with a working soil cycle | measurement only | orchestrator |
 
 ## 3. Decisions still Mark's
@@ -85,6 +90,12 @@ measurement of one does not depend on the other.
   ruling 3 improved walking ones. Proposed reading: both forms exist, set by
   the body. A decomposer drawn without locomotion machinery is sessile and
   creeps when hungry, as producers do; a limbed one walks, with S3's reach.
+- **S7's dispersal methods.** Ruling 5 asks for more than creeping and
+  names none. Where offspring land is set at birth in
+  `organism/ecology/breeding.rs`, so propagules that land away from the
+  parent (spores, seeds carried by wind, water or animals, runners) are
+  reproduction placement, while creeping is body movement. S7 opens with an
+  assessment of which methods the simulation can carry and brings them.
 - **S4's rate.** Decay proportional to mass needs a value; S4 measures
   candidates and brings them.
 - **S5's numbers.** The decomposer floor, the sense organ's form and the
