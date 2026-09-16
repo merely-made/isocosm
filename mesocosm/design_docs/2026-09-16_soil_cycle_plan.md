@@ -182,6 +182,85 @@ it quickly enough, which S4 addresses.
 
 Whether any absent mechanism joins this plan is Mark's.
 
+## 3b. M1 and M2 assessed (2026-09-16)
+
+An Opus agent assessed both read-only after S1, with a new instrument,
+`mesocosm-core/examples/response_probe.rs`, whose positive control
+reproduces the readings fixture (234 producers at tick 2,000, seed 7, 200
+founders). The orchestrator verified the code claims marked and reran the
+collapse. Paths under `mesocosm-core/src/`.
+
+**The enclosure collapses on every seed at 200 founders.** Seed 7:
+producers 234 at tick 2,000, **0 by 3,600**; consumers peak at 185 at 3,200,
+**0 by 4,000** (verified). Seed 42 loses producers by 3,000 and consumers by
+3,500; seed 1's consumers peak at 166 at 4,000 and are gone by 6,000. The
+2,000-tick fixtures sit mid-overshoot.
+
+**M1, the functional response as it stands.** A body takes **one bite or
+nothing per tick** (verified, `organism/ecology.rs:341-350`): the allometric
+`feeding_rate_for_body` capped by room in the body, with nothing reading
+food density. Measured per consumer per tick against producers within the
+8-voxel sight floor:
+
+| Producers in sight | Grazing mg per consumer-tick | Meals per consumer-tick |
+| --- | --- | --- |
+| 0.23 | 3.15 | 0.15 |
+| 0.71 | 6.45 | 0.34 |
+| 1.75 | 10.00 | 0.65 |
+| 3.12 | 9.15 | 0.60 |
+
+So it **already saturates, a Holling type II**, with half-saturation near
+half a producer in sight, and the enclosure lives on the plateau. There is
+no low-density arm: at a quarter of a producer in sight, grazing is still a
+founder's whole upkeep, so it never releases and producers reach zero. The
+one-meal rule is never binding (meals per consumer-tick peak at 0.74).
+Satiation partly exists and binds for about half the consumers at tick
+2,200-2,400, but room reopens by a tick's upkeep every tick, so a sated
+consumer grazes at its rent instead of stopping.
+
+**M1 options.** Handling time (a per-meal delay on `Organism`, adds replayed
+state) lowers the plateau, which the measurement says is not where the
+problem is. A satiation gate (`intake_room_mg`, `organism/ledger.rs:48-51`)
+is already partly there. A **low-density refuge** (food below a local
+density or size is not perceived, `movement/choice.rs:49-55`, or not
+admitted, `ecology.rs:341-366`; Holling type III, the refuge that
+stabilizes Rosenzweig-MacArthur) is absent and is the only option that
+changes the left end of the curve. The evidence favours the refuge.
+
+**M2, density as it stands.** The crowd map counts **every living body**
+per 8-voxel cell (verified, `ecology.rs:232-236`), and only producers read
+it: income divided by the cell's count, floored at rent, as a request on
+the soil (verified, `:316-331`). It was scoped to producers because TD6
+measured that a closed matter budget bounds a stand's mass and not its
+number (`2026-08-29_terrarium_dynamics_plan.md:1733-1743`); consumers were
+never asked. Two findings: consumers and decomposers standing in a cell
+shade its producers, contributing up to about 17% of the throttle; and the
+plan's earlier text calling `Pressure::Crowding` the mechanism was wrong,
+that is authored profile data nothing reads.
+
+**Blooms overshoot without ever looking crowded.** Consumers go 29 to 185
+while consumers per occupied cell stay between 1.2 and 1.9; the bloom is
+occupied cells (23 to 103), not packing. Local packing appears only at tick
+2,800, when producers are already falling. **Any density term on the
+8-voxel cell would have been silent through the whole bloom.**
+
+**M2 options.** Crowding on rent (`rates.rs:340-349`); on reproduction
+(`organism.rs:478-483`, `breeding.rs:60-65`); a per-cell birth ceiling
+(`breeding.rs:120-140`, Gause's K, Wa-Tor occupancy); or **interference**,
+feeding efficiency falling with neighbours on the bite (`ecology.rs:342-346`;
+Beddington-DeAngelis), which attaches to the flat per-capita grazing the
+measurement shows driving the collapse. Whichever is chosen, the
+neighbourhood it reads should be the bite's own (`GRAZE_RANGE + reach`, or
+the 4-voxel sensory buckets), not the crowding cell. The evidence ranks M1
+as the binding constraint and M2 the weaker step for this collapse.
+
+**Decisions that are Mark's:** which M1 term, what a refuge keys on and its
+threshold, whether M1 may add replayed state to `Organism`, and whether its
+success is judged at 2,000 ticks or at the 4,000-tick horizon; which M2
+term, what neighbourhood it reads, whether decomposers get it, whether
+non-producers keep shading producers, and whether M2 waits for M1 measured
+alone.
+
 ## 4. Done conditions
 
 1. **S1.** A far body in its target's place approaches the target and does
@@ -248,6 +327,8 @@ Whether any absent mechanism joins this plan is Mark's.
   their own line (150,757 of 157,626 mg far predation, seed 7, 200
   founders); the readings pair and the embodied round still fail. Rulings 7
   and 8 followed; parity dispatched.
+- **2026-09-16.** M1 and M2 assessed (§3b), `response_probe.rs` added;
+  their rulings wait on S2's table so Mark is asked once.
 - **2026-09-16.** S1 landed on main as a merge of the held branch after
   parity and the re-pins made it green, with the full gates rerun in the
   main tree.
