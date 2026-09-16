@@ -223,11 +223,14 @@ and the brick map for revision-driven rebuilds.
   path dependencies; **isomere** is the wing-unique GUI layer, scene and
   host chrome, overlays, graphs and other applications of cambium that
   belong to the wing and not one product. Both crates.io-free at the ruling.
-- **hagioglyph**: glyphs that vary over time by world criteria, a canon
-  revision driven by a world period or a promoted event, with acquisitions
-  keeping their founding evidence under the revision they were acquired in.
-  A Paredros lane under the remembrance plan once isometer lands, so marks
-  in the scene have a depth to sit on. crates.io-free at the ruling.
+- **hagioglyph**: at this ruling, glyphs that vary over time by world
+  criteria, a canon revision driven by a world period or a promoted event,
+  with acquisitions keeping their founding evidence under the revision they
+  were acquired in. **Widened 2026-09-15 (Mark):** the word now names the
+  whole divinity organ (general model §7.4); the time-varying glyph is "the
+  canon revision", G5, landed as remembrance stage F3b5. A Paredros lane
+  under the remembrance plan once isometer lands, so marks in the scene
+  have a depth to sit on. crates.io-free at the ruling.
 
 ## Retiring the body sheet (2026-09-15)
 

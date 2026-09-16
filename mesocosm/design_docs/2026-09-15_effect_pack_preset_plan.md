@@ -501,7 +501,9 @@ only on the tick and the integer record, never on frame count. The preset
 therefore replays through **Step world**, not **Play world**, and the
 scenario must say so.
 
-**R7. Hagioglyph revision stamps the preset must honour.** G5 is already in
+**R7. Canon revision stamps (G5) the preset must honour.** (Relabeled
+2026-09-15: hagioglyph now names the whole divinity organ, §7.4; the
+time-varying glyph is G5's canon revision.) G5 is already in
 the kernel: `Acquisition`/`GrantRecord.canon_revision` (`journey.rs:61,73`),
 `grant_at_revision` refusing a revision older than founding
 (`journey.rs:258-260`), `from_snapshot` back-filling `0` to founding

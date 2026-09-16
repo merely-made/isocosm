@@ -369,12 +369,17 @@ Done-conditions:
 - Tests prove that retelling alone cannot mutate terrain or create a procedural
   event, while an accepted condition can produce the documented manifestation.
 
-## Stage F3b5: hagioglyph, glyphs that vary over time by world criteria
+## Stage F3b5: canon revision, glyphs that vary over time by world criteria
+
+**Terminology, 2026-09-15.** This stage was founded under the name
+"hagioglyph". Mark ruled that day that hagioglyph names the whole divinity
+organ (general model §7.4), so this stage's subject is now called the canon
+revision, G5; the receipts below keep their original file names.
 
 **Assessment, 2026-09-14 (ruled as a lane by Mark; not started).** A
-hagioglyph is a base glyph whose live meaning follows a canon revision the
-world publishes, while every acquisition keeps the meaning it was acquired
-under. The kernel already has the pieces: `Canon::shuffled(seed, revision)`
+glyph under revision is a base glyph whose live meaning follows a canon
+revision the world publishes, while every acquisition keeps the meaning it
+was acquired under. The kernel already has the pieces: `Canon::shuffled(seed, revision)`
 makes a new monotonic revision that permutes the correspondence without
 breaking its one-to-one mapping, and a `Journey` embeds its founding canon.
 What it lacks is any record of which revision an acquisition was accepted

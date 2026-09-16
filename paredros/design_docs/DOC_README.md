@@ -65,7 +65,9 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
 - [Memory and remembrance](2026-09-09_memory_and_remembrance_plan.md):
   observer-relative answers, personal preferences, bounded recall, durable
   history, checkpoint/retention strategy and Hagiograph; planned, with a measured
-  20,004-intent equipment-history save baseline. Stage F3b5 hagioglyph landed
+  20,004-intent equipment-history save baseline. Stage F3b5, the canon
+  revision (founded as "hagioglyph"; that word names the whole divinity
+  organ since 2026-09-15, general model §7.4), landed
   2026-09-14: canon revisions in accepted history with period, promotion and
   authored causes, founding versus live glyph effects in the reading and the
   session journal, and GameSave version 7.

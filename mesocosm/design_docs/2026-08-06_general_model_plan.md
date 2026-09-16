@@ -905,7 +905,10 @@ critter and constructed forms early; a large catalogue can follow.
 
 ### 7.4 Glyph canon, the journey, and divinity (2026-09-13)
 
-**Status: G1/G2 implemented and tested; G3/G4 open, 2026-09-13.** Mark
+**Status: G1/G2 implemented and tested; G3/G4 open, 2026-09-13; G5 landed
+in Paredros 2026-09-14; G6 and G7 ruled 2026-09-15, not started.** On
+2026-09-15 Mark ruled that **hagioglyph** names this whole organ, the journey
+to divinity, and that **impresa** names the association organ (G7). Mark
 explicitly authorized a module usable by Mesocosm, Paredros, and Isometry.
 Sharing this bounded machinery proceeds now; sharing the products' entire
 rule evaluators is not required. The journey to divinity itself becomes the
@@ -953,6 +956,93 @@ only the live effect of an owned glyph follows the current revision, so the
 same glyph acquired at different times can carry different costs. The kernel
 gains the revision stamp and a correspondence diff between two revisions;
 Paredros is the first consumer, under its remembrance plan's stage F3b5.
+
+**Hagioglyph names the organ (Mark, 2026-09-15).** Until this ruling the
+word named only G5's time-varying glyph. It now names the whole of this
+section's machinery: the canon, the journey, ascension, the chosen referent
+and its periods, and the revisions above. This mirrors **hagiograph**, which
+names the memorial organ rather than one memorial. A glyph under G5 is "a
+glyph under revision" or "the live effect"; F3b5 in Paredros and R7 in the
+effect pack preset plan are relabeled accordingly. The dependency stays
+one-way: a hagiograph promotion is one cause of a canon revision, so the
+divinity organ consumes the memorial organ and never the reverse. Crate
+naming follows the ledger's tier rule; `shared/wing-glyphs` keeps its plain
+name as the kernel under the organ.
+
+**G6, chains and standing (Mark, 2026-09-15).** Effects compose into
+chains, and the invoker's standing with a glyph is a per-individual,
+per-glyph pair of ledgers, affinity and resistance, moved only by accepted
+events under stated decay policies.
+
+- A chain is a typed admission, the way the trophic grammar admits intake:
+  links must be compatible by behaviour kind and receiver class, which the
+  glyph experiment already requires before marks form strings, and chain
+  length is a configured bound. Products adjudicate; the kernel owns the
+  chain grammar and its receipts.
+- A link's success reads affinity minus resistance and chain length, drawn
+  from the seeded integer stream so replay holds. Success falls with chain
+  length; a failure is an accepted event, never a silent roll.
+- A failure raises the invoker's resistance to that glyph, capped, with a
+  decay policy stated per world, so no run of ill luck locks a glyph for
+  ever. Resistance is symmetric standing: it also applies against that
+  glyph arriving from outside, so a failure becomes a defense.
+- Affinity rises through the journey (provenance, successful invocations)
+  and raises magnitude, including the self-targeted side effects an effect
+  pack declares. High affinity is therefore dangerous when the side effects
+  are unmanaged. Decay is evaluated lazily from the last event tick, never
+  per tick, so it is deterministic and costs nothing at rest. Caps, decay
+  and side-effect routing are explicit world policy, per the period rule
+  above: no hidden bonuses.
+
+**G7, impresa, the association organ (Mark, 2026-09-15).** "A god's
+associations are their impresa, but other things could have theirs too."
+Anything pointable, a glyph, a critter, a borg, a character, a faction, a
+place, an item, a lot of nis, bears an impresa: the record of what it has
+come to be associated with, and what has lapsed, over time. Plural imprese.
+The expression table above is one static association, glyph to trait; the
+impresa generalizes it across subjects and history.
+
+- **One record type.** Subject identity, object identity, a kind, the canon
+  revision, the cause receipt, the tick, and whether the record associates
+  or lapses. Every record cites an accepted event; nothing is inferred from
+  a name. Disassociation is a record, never a deletion.
+- **Three readings of one record.** The accepted record is fact. An
+  observer's held associations are belief, kept in the memory and belief
+  layer Paredros already has, free to diverge from fact; reputation is
+  belief. The hagiograph's promotions of associations that met a condition
+  are legend. No reading is a second authority.
+- **Kinds are a world-configured closed set**, seeded from claim, discover,
+  experience, embody, invoke, defeat, and extended by packs the way the
+  canon is; directional, subject to object. A lapse by decay is a record
+  emitted at settlement, like a period.
+- **Consequential records never compact.** A record cited by a later
+  accepted event, by a god's ascension basis or by a faction's stance is
+  retained; the rest fall under the retention budgets and compaction the
+  owners paragraph already anticipates.
+- **Cross-vessel, imprese travel as records**, which satisfies
+  choices-not-morphology and pointable inheritance; each vessel maps kinds
+  to its own meaning.
+- **Home.** A plain `wing-` crate beside `wing-glyphs` owns the record type
+  and its validation only; products own storage in their accepted history
+  and derive per-subject and per-glyph readings as projections. Extraction
+  into mere's linked-data edges, whose evidence-sense vocabulary landed on
+  2026-09-15, waits for two consumers, and the kinds are designed so that
+  projection stays possible. Prior art to read before the kinds are ruled:
+  Dwarf Fortress legends mode and Caves of Qud's sultan histories. The
+  Nemesis boundary stands: remembered grudges are fine, rival promotion
+  hierarchies are not.
+
+**Done when (G6):** a two-link chain on compatible declarations admits and
+an incompatible one refuses by name; success, failure and the resulting
+resistance change replay identically from a restored save; resistance
+decays to its floor on a stated policy and blocks an incoming effect of the
+same glyph in the meantime; a high-affinity invocation reports its declared
+side effect on the invoker. **Done when (G7):** two vessels append imprese
+for one identity through the shared record type without sharing a world;
+a lapse and a re-association on the same pair are both pointable with their
+causes; the belief reading of a faction diverges from fact after a witnessed
+event and reconciles on a recorded one; a consequential record survives a
+compaction that removes an unreferenced one.
 
 **G5 amended, hagioglyph is the organ (Mark, 2026-09-15).** The paragraph
 above names one mechanism, a glyph whose live meaning follows a published
