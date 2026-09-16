@@ -6,19 +6,86 @@
 //! Projections only: nothing here applies an intent or mutates the model, so a
 //! panel can be rebuilt any number of times per frame without touching the
 //! world. The subject sheet is `SubjectSheet::from_input` over the played
-//! subject's admitted anatomy, exactly as `body_sheet::equipment_session`
-//! builds one, but read from this session rather than that private fixture.
+//! subject's admitted anatomy.
+//!
+//! [`subject_sheet`] is the surviving copy of that projection. The body
+//! sheet's private `EquipmentSession` built the same one over its own Keeper
+//! fixture, and was retired with it (M5 of the isomere plan); its four
+//! projection claims — a geometry-preserving sheet with no invented
+//! abilities, a stale anatomy that stays inspectable and says so, a
+//! reconciled severance that shows, and a dead subject that says so — moved
+//! into this module's tests, against this session's own world. The world
+//! rules underneath them are proved where they are owned, in
+//! `paredros-world/tests/equipment.rs`.
 
 use isometer::core::PartId;
 use paredros_identity::SubjectId;
 use paredros_world::CanonRevisionCause;
 use paredros_world::glyphs::ProvenanceKind;
 use paredros_world::{
-    AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, ItemKind, ItemLocation, MOTION_SCALE,
-    SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
+    AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, GameState, ItemKind, ItemLocation,
+    MOTION_SCALE, SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
 };
 
 use super::SessionApp;
+
+/// One subject's sheet: admitted anatomy, no invented abilities.
+///
+/// `actions` and `resources` are cleared because this fixture teaches no
+/// techniques, so an action row here would be a claim the world does not make.
+/// Staleness and death stay as blockers. `selected_part` is what the sheet
+/// highlights, and nothing else reaches the projection.
+pub(super) fn subject_sheet(
+    game: &GameState,
+    subject: SubjectId,
+    selected_part: Option<PartId>,
+) -> Option<SubjectSheet> {
+    let record = game.anatomies().get(subject)?;
+    let body = game.bodies().get(subject)?;
+    let knowledge = TechniqueKnowledge {
+        subject,
+        learned: Vec::new(),
+    };
+    let inputs = TechniqueInputs {
+        occupied_parts: Vec::new(),
+        part_capabilities: Vec::new(),
+        equipment: Vec::new(),
+        resources: Vec::new(),
+        environment: ArrestFallEnvironment {
+            support_present: false,
+            support_distance_voxels: 0,
+            arrest_load_mg: 0,
+            support_load_capacity_mg: 0,
+            adhesive_surface: AdhesiveSurface::Unsuitable,
+            adhesive_resource: AdhesiveResource::Exhausted,
+        },
+    };
+    let mut sheet = SubjectSheet::from_input(SubjectSheetInput {
+        subject,
+        revision: record.revision,
+        current_revision: body.revision,
+        body: &record.document,
+        knowledge: &knowledge,
+        inputs: &inputs,
+        part_names: paredros_world::fixtures::three_lives::PART_NAMES,
+        selected_part,
+    });
+    sheet.actions.clear();
+    sheet.resources.clear();
+    sheet.global_blockers.clear();
+    if record.revision != body.revision {
+        sheet.global_blockers.push(format!(
+            "Detailed anatomy revision {} is stale; current body revision is {}. Reconcile before attaching equipment.",
+            record.revision.0, body.revision.0
+        ));
+    }
+    if !body.alive() {
+        sheet
+            .global_blockers
+            .push("The played subject is dead; this sheet is read-only.".to_owned());
+    }
+    Some(sheet)
+}
 
 /// One carried or worn item, as the equipment panel lists it.
 pub(super) struct Carried {
@@ -29,63 +96,16 @@ pub(super) struct Carried {
 }
 
 impl SessionApp {
-    /// The played subject's sheet: admitted anatomy, no invented abilities.
-    ///
-    /// `actions` and `resources` are cleared for the same reason
-    /// `equipment_session::sheet` clears them: this fixture teaches no
-    /// techniques, so an action row here would be a claim the world does not
-    /// make. Staleness and death stay as blockers.
+    /// The played subject's sheet, with this session's own selection.
     pub(super) fn sheet(&self) -> Option<SubjectSheet> {
         let model = self.model.borrow();
-        let game = model.game();
         let played = model.played();
-        let record = game.anatomies().get(played)?;
-        let body = game.bodies().get(played)?;
-        let knowledge = TechniqueKnowledge {
-            subject: played,
-            learned: Vec::new(),
-        };
-        let inputs = TechniqueInputs {
-            occupied_parts: Vec::new(),
-            part_capabilities: Vec::new(),
-            equipment: Vec::new(),
-            resources: Vec::new(),
-            environment: ArrestFallEnvironment {
-                support_present: false,
-                support_distance_voxels: 0,
-                arrest_load_mg: 0,
-                support_load_capacity_mg: 0,
-                adhesive_surface: AdhesiveSurface::Unsuitable,
-                adhesive_resource: AdhesiveResource::Exhausted,
-            },
-        };
-        let mut sheet = SubjectSheet::from_input(SubjectSheetInput {
-            subject: played,
-            revision: record.revision,
-            current_revision: body.revision,
-            body: &record.document,
-            knowledge: &knowledge,
-            inputs: &inputs,
-            part_names: paredros_world::fixtures::three_lives::PART_NAMES,
-            selected_part: self
-                .selected
+        subject_sheet(
+            model.game(),
+            played,
+            self.selected
                 .and_then(|(subject, part)| (subject == played).then_some(part)),
-        });
-        sheet.actions.clear();
-        sheet.resources.clear();
-        sheet.global_blockers.clear();
-        if record.revision != body.revision {
-            sheet.global_blockers.push(format!(
-                "Detailed anatomy revision {} is stale; current body revision is {}. Reconcile before attaching equipment.",
-                record.revision.0, body.revision.0
-            ));
-        }
-        if !body.alive() {
-            sheet
-                .global_blockers
-                .push("The played subject is dead; this sheet is read-only.".to_owned());
-        }
-        Some(sheet)
+        )
     }
 
     /// Everything the played subject carries or wears.
@@ -354,5 +374,113 @@ fn describe_cause(cause: &CanonRevisionCause) -> String {
         } => format!("period {metric_id} ended tick {}", end_tick.0),
         CanonRevisionCause::Promotion { promotion_id, .. } => format!("promotion {promotion_id}"),
         CanonRevisionCause::Authored { label } => format!("authored {label}"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use paredros_identity::BodyRevisionId;
+    use paredros_world::GameIntent;
+    use paredros_world::fixtures::session as session_fixture;
+
+    /// The session's own world, detached from its `Session` so a test can
+    /// apply the world facts the projection has to survive.
+    fn played_game() -> (GameState, SubjectId) {
+        let fixture = session_fixture::timed_action_world();
+        let played = fixture.keeper;
+        (fixture.action.session().game().clone(), played)
+    }
+
+    fn fall(game: &mut GameState, subject: SubjectId, distance: i32) {
+        let tick = game.next_tick();
+        game.apply(GameIntent::Fall {
+            tick,
+            subject,
+            distance,
+        })
+        .expect("a fall is an accepted world fact");
+    }
+
+    #[test]
+    fn the_sheet_keeps_admitted_geometry_without_inventing_abilities() {
+        let (game, played) = played_game();
+        let admitted = game.anatomies().get(played).expect("admitted anatomy");
+        let sheet = subject_sheet(&game, played, None).expect("sheet for the played subject");
+
+        assert_eq!(sheet.subject, played);
+        assert_eq!(sheet.revision, admitted.revision);
+        assert_eq!(sheet.parts.len(), admitted.document.parts.len());
+        assert!(sheet.parts.iter().all(|part| part.bounds.is_some()));
+        assert!(sheet.parts.iter().all(|part| part.capabilities.is_empty()));
+        assert!(sheet.learned.is_empty());
+        assert!(sheet.actions.is_empty());
+        assert!(sheet.resources.is_empty());
+        assert!(sheet.global_blockers.is_empty());
+    }
+
+    #[test]
+    fn a_stale_anatomy_stays_inspectable_and_says_so() {
+        let (mut game, played) = played_game();
+        fall(&mut game, played, 5);
+        let body = game.bodies().get(played).expect("body");
+        assert!(body.alive());
+        assert_ne!(
+            body.revision,
+            game.anatomies().get(played).expect("anatomy").revision
+        );
+
+        let before = game.state_hash().expect("hash");
+        let sheet = subject_sheet(&game, played, None).expect("sheet");
+        assert_eq!(game.state_hash().expect("hash"), before);
+        assert!(!sheet.parts.is_empty());
+        assert!(sheet.parts.iter().all(|part| part.bounds.is_some()));
+        assert!(
+            sheet
+                .global_blockers
+                .iter()
+                .any(|line| line.contains("stale"))
+        );
+    }
+
+    #[test]
+    fn a_reconciled_severance_shows_on_the_sheet_and_clears_the_blocker() {
+        let (mut game, played) = played_game();
+        let old = game.bodies().get(played).expect("body").revision;
+        fall(&mut game, played, 5);
+        let tick = game.next_tick();
+        game.apply(GameIntent::ReconcileAnatomy {
+            tick,
+            subject: played,
+            from_revision: old,
+            revision: BodyRevisionId(old.0 + 1),
+            severed_parts: vec![PartId(1)],
+        })
+        .expect("the injury cut's reconciliation is accepted");
+
+        let sheet = subject_sheet(&game, played, None).expect("sheet");
+        assert!(
+            sheet
+                .parts
+                .iter()
+                .any(|part| part.id == PartId(1) && part.severed)
+        );
+        assert!(sheet.global_blockers.is_empty());
+    }
+
+    #[test]
+    fn a_dead_subject_stays_inspectable_and_says_so() {
+        let (mut game, played) = played_game();
+        fall(&mut game, played, 200);
+        assert!(!game.bodies().get(played).expect("body").alive());
+
+        let sheet = subject_sheet(&game, played, None).expect("sheet");
+        assert!(!sheet.parts.is_empty());
+        assert!(
+            sheet
+                .global_blockers
+                .iter()
+                .any(|line| line.contains("dead"))
+        );
     }
 }

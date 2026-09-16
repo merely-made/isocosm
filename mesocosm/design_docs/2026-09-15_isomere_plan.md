@@ -368,3 +368,40 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   golden played trace is recorded as a finding and left, in the played
   slice plan's findings where that receipt lives, rather than re-recorded
   now.
+- **2026-09-15, M5 landed.** Paredros's netrender-drawn `body_sheet` is
+  gone: 3,020 lines across nine module files and a binary, net -2,610
+  after what was re-homed. Its GUI half, the list, selection, focus,
+  scroll, keyboard navigation, buttons, hit testing, two text wrappers
+  and the panels themselves, is what the session host has done in
+  Cambium since P2, so it was deleted rather than moved. Its product
+  half survived in three pieces: the sheet projection was already
+  written twice, so the session's panels keep the surviving copy as a
+  free `subject_sheet` over the game state, a subject and a selected
+  part, with the four projection claims now tested against the session's
+  own world; the six world-rule claims stay at their owner in
+  `paredros-world`'s equipment tests, where they always were; and
+  `equipment_store` moved up to the client crate unchanged, its
+  roundtrip test rebuilt over the session fixture. The timed-action
+  scene and one of the two parley loaders moved to that binary's own
+  hud, its only remaining consumer. §2.2's schematic slot is **not**
+  filled and will not be by this milestone: the schematic is stroked
+  paths in a netrender scene and the session is a document, so carrying
+  it is a rewrite in another medium. It is recorded as the one
+  capability the retirement costs, beside the two-process persistence
+  receipt, whose unit-tier claim is kept. The rationale lives in
+  Paredros's genet document host plan, which already carried the
+  retirement as an open decision; that repo has no home for retired
+  code. Receipts: 41 isomere tests and 49 with the host feature;
+  Paredros check clean but for a pre-existing dead-code warning behind a
+  proof feature, 23 lib tests (45 less the 24 body-sheet tests, plus the
+  2 store tests kept), 4 new session-bin tests, 6 timed-action tests,
+  acceptance ok and the failure scenario exit 1, with 6 of 6 captures
+  matching the M4 set to within the two recorded flickers and every
+  receipt field identical. Newly recorded: on 1 run in 20 the final
+  capture came back with the document scrolled 96 logical pixels,
+  content identical; 19 M5 runs and 17 runs of the pre-change binary, 4
+  of them under load, did not reproduce it. A scroll-position race at
+  capture time, not a layout change. **Open for Mark:** `equipment_store`
+  now has no caller. Its discipline is an immutable series of published
+  saves and the session writes one mutable save, so which one a Paredros
+  save is remains a ruling; both stand until it is made.

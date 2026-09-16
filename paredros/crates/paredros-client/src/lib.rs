@@ -24,10 +24,12 @@
 //!
 //! [`places`]: mesocosm_core::places
 
-pub mod body_sheet;
 #[cfg(feature = "r1-proof")]
 mod brick;
 pub mod crossing;
+// Immutable equipment saves, kept when the body sheet that owned them was
+// retired (M5 of the isomere plan). Product state, not GUI machinery.
+pub mod equipment_store;
 pub mod frame_health;
 pub mod gpu;
 pub mod probe;

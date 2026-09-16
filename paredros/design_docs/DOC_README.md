@@ -81,6 +81,10 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   acceptance scenario, and Paredros as the second wing-glyphs consumer.
   The shared-depth scene crate (`wing-scene`) is Mesocosm's lane; P1 is
   the duplicate to retire onto it. Physical input acceptance remains open.
+  The plan also carries the **body sheet's retirement rationale**
+  (2026-09-15, the isomere plan's M5): what the netrender-drawn
+  `body_sheet` was, why a second GUI toolkit existed, what replaced each of
+  its capabilities, and what was deliberately not carried over.
 
 **Current design focus, 2026-09-08:** the founding plan's
 [borg generation and character-sheet proposal](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
@@ -106,6 +110,11 @@ save/reopen/load check with reviewed composited captures. The private Cargo
 cache bypassed shared-cache contention. Physical save/load input acceptance
 remains open because the computer-use helper timed out. Startup and exit do
 not automatically load or save. `PAREDROS_EQUIPMENT_SAVES` selects storage.
+**Retired 2026-09-15:** every surface in the last four sentences was the
+netrender-drawn `body_sheet`, which the `session` document host now covers.
+The bin, its window and its two-process persistence check are gone; the
+rationale is in the genet document host plan and the store survives as
+`paredros_client::equipment_store`.
 Current world saves use version 5, read versions 3 and 4, and reject versions 1 and 2.
 The execution plan
 records the independent G/release crossing

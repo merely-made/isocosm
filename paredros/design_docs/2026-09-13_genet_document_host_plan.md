@@ -30,7 +30,7 @@ archives them.
 | Piece | Where | State |
 | --- | --- | --- |
 | Connected session driven by keyboard and mouse | `paredros-client` `timed_action` bin | Text HUD only; movement, strikes, injury, rest, dressing pickup, save/load |
-| Subject sheet and equipment panels | `paredros-client::body_sheet` | Private `EquipmentSession` with fixed subject 1 |
+| Subject sheet and equipment panels | `paredros-client::body_sheet` | *Retired 2026-09-15; see "Retiring the body sheet" below.* Was a private `EquipmentSession` with fixed subject 1 |
 | Rendered world | `room` bin over the S0 `Probe` | Renderling; no `GameState` |
 | Terrain tracer with orthographic slab camera | `mesocosm-lens` | Shared; Paredros already binds it under `r1-proof` |
 | Live body renderer, depth-attached, cached geometry | `mesocosm-render::live_body` | Shared; renderling-free |
@@ -229,6 +229,88 @@ and the brick map for revision-driven rebuilds.
   A Paredros lane under the remembrance plan once isometer lands, so marks
   in the scene have a depth to sit on. crates.io-free at the ruling.
 
+## Retiring the body sheet (2026-09-15)
+
+M5 of the
+[isomere plan](../../mesocosm/design_docs/2026-09-15_isomere_plan.md). This is
+the rationale the archive convention asks for. There is no home for retired
+*code* in this repository — `design_docs/archive_docs/<date>/` takes retired
+documents, and git history keeps everything else — so the body sheet is
+deleted and this section is what it leaves behind.
+
+**What it was.** `paredros-client::body_sheet`, 2,388 lines across nine files,
+plus a 632-line `body_sheet` binary. It presented two things in one window:
+an authored read-only comparison of the three-lives fixture (three lives, a
+parts list or an exploded body diagram, an action-binding list and a
+scrolling inspection column), and a live equipment session — one owned
+`GameState` with a named Keeper, two carried dressings, an admitted anatomy,
+and Attach/Detach/Save/Load. `C` switched between them.
+
+**Why a second GUI toolkit existed.** It was written in August 2026, before
+Paredros reached Cambium: the only surface available was `netrender::Scene`,
+so every widget had to be drawn. `body_sheet` therefore grew a list, a
+selection, a focus ring, scrolling, keyboard navigation, buttons, hit
+testing, text wrapping at two different widths, and a parley font loader — a
+GUI toolkit, in a game client, addressed in absolute logical pixels. P2
+landed the real one: the `session` bin is a Cambium document over the same
+`GameState`, and the 2026-09-15 wing inventory named this the largest
+duplicate in the three products.
+
+**What replaced each capability.**
+
+| Body sheet | Now |
+| --- | --- |
+| Parts palette, selection, focus, keyboard navigation, hit testing | `isomere::examiner` chips in the session's subject sheet panel |
+| Inspection column, its text wrapping and scrolling | `isomere::examiner` reading rows, laid out by the document |
+| Buttons and their hit rectangles | Cambium `button` elements with the host's own pointer routing |
+| Attach / Detach | The session's equipment panel, `SessionApp::attach` / `detach`, the same `GameIntent`s |
+| The sheet projection (`equipment_session::sheet`) | `bin/session/panels.rs::subject_sheet`, which was already the same projection |
+| Equipment persistence (`equipment_store`) | `paredros_client::equipment_store`, moved unchanged |
+| `Hud::timed_scene` and the parley loader | `bin/timed_action/hud.rs`, moved to its one remaining consumer |
+| Panels drawn as rectangles, the 1280x720 logical frame | The document's own sheet and layout |
+
+The equipment session's world-rule claims — attachment and detachment through
+recorded intents, an atomic refusal, replay stability, a stale anatomy that
+refuses a new attachment, a reconciliation that severs a part and releases
+its dressing, a dead subject that cannot equip — were always proved twice.
+They are owned by `paredros-world/tests/equipment.rs` and stay there. Its
+four *projection* claims moved into `bin/session/panels.rs`'s tests, over
+this session's own world rather than the private Keeper fixture.
+
+**What was deliberately not carried over.**
+
+- **The exploded body schematic** (`schematic.rs`, 419 lines): a projection
+  of real part bounds onto an isometric plane, with overlap displacement,
+  parent lines, severed crosses and incorporated diamonds. It is drawn with
+  `Scene::push_shape_stroked`, and the session is a DOM document, so carrying
+  it is a rewrite in another medium, not a move. `isomere::ExaminerModel`
+  keeps its `schematic` slot open for whoever writes it; the session passes
+  `None` today, and the sheet's per-part reading carries the same bounds as
+  text. This is the one real capability the retirement costs.
+- **The authored three-lives comparison mode.** It compared three fixture
+  lives side by side and read out their action bindings, learned techniques
+  and resources. `paredros-world/tests/three_lives.rs` still proves the
+  projection; nothing presents it. It was a read-only inspection of a fixture,
+  not a product surface.
+- **`EquipmentSession`'s load guard.** `load_bytes` refused a save whose
+  genesis intents, generated world, subject name, body revision or anatomy
+  document were not the Keeper fixture's. Those guarded a fixture's identity,
+  not a product rule; the fixture is gone. The version-rejection half of the
+  claim is owned by `paredros-world/tests/equipment.rs`.
+- **The two-process persistence receipt** (`bin/body_sheet/persistence_smoke.rs`
+  and `testing/equipment-persistence/`): one process attached and saved, a
+  second loaded and drew it. Its unit-tier claim — a published save restores
+  the same accepted game, attachment included — is kept as
+  `equipment_store::tests::disk_roundtrip_restores_attachment_into_a_fresh_game`
+  over the session's own world. That a *second process* reads it is no longer
+  proved anywhere; that is a stated cost, and the kept artifacts under
+  `testing/equipment-persistence/` are the last evidence of it.
+
+**Open, for Mark.** `equipment_store` now has no caller. Its discipline is an
+immutable series of published saves; the session's `save()` writes one
+mutable `session.save` through a pending-then-rename path. Which one a
+Paredros save is, is a ruling, not a retirement decision, so both stand.
+
 ## Ownership and verification
 
 Terra and Luna are the implementation lanes Mark chose. Each runs on opus,
@@ -269,7 +351,10 @@ creator files are owned by a concurrent lane and are never swept.
   retarget is a Paredros lane once that API is messaged over.
 - **Retirements.** When P2 covers them, the timed-action bin and the
   body sheet's private `EquipmentSession` are candidates for archival with
-  rationale. Neither is retired by this plan.
+  rationale. Neither is retired by this plan. *The body sheet was retired
+  2026-09-15 under the isomere plan's M5, with the rationale recorded above;
+  the timed-action bin stands, and now owns the netrender text HUD the body
+  sheet used to lend it.*
 - **Hybrid focus policy** and the other open decisions in the presentation
   plan stay Mesocosm's.
 - **isometer-core (ruled 2026-09-14).** Mark chose the physical split:

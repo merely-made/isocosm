@@ -4,9 +4,9 @@
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
+use super::hud::{Hud, LOGICAL_SIZE};
 use super::{App, Live, view::AppView};
 use netrender::{Compositor, PresentedFrame, Scene, SurfaceKey};
-use paredros_client::body_sheet::{Hud, LOGICAL_SIZE};
 use paredros_client::gpu::{self, Composer};
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;

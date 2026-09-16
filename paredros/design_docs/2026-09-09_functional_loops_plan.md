@@ -30,7 +30,7 @@ them through actual operations rather than adding a catalog before its verbs.
 | --- | --- | --- |
 | `paredros-world::GameState` | Coordinates world, movement, bodies, admitted anatomy, items, intents and events | Continuous contact effects and terrain work must enter this accepted history |
 | `ContactWorld` | Fixed-step movement, board handling, attack/brace, integrity and grip/reach impairment; its own save | Bind runtime bodies to subjects and consume one durable body outcome |
-| `EquipmentSession` | Authored subject, two dressings, attach/detach and restricted replay save | Safe stale/dead inspection first; host-selected subject and general session later |
+| ~~`EquipmentSession`~~ → the `session` host | *Retired 2026-09-15 with the body sheet* (rationale in the [genet document host plan](2026-09-13_genet_document_host_plan.md)). Its join landed: the host-selected played subject, attach/detach and stale/dead inspection are the session's own, over one `Session` rather than an authored fixture | Nothing from this row; the store it saved through survives as `paredros_client::equipment_store` with no caller |
 | `Simulation` | Needs, navigation, population and autonomous actions over `GameState` | Controlled-subject scheduling and coordinated real work |
 | `Projects` | Durable `Visit` goals | Material, repair, treatment and cooperation goals |
 | `Society` / `EpistemicLog` | Agreements, deeds, observations, reports and corrections | Belief- and norm-supported answers; bounded recall |

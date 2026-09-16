@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Native input receipt for Paredros's bounded timed limb action.
+use self::hud::Hud;
 use isometer::core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
-use paredros_client::body_sheet::Hud;
 use paredros_client::gpu::Composer;
 use paredros_identity::Tick;
 use paredros_world::fixtures::three_lives;
@@ -29,6 +29,8 @@ use winit::{
 mod actions;
 #[path = "host.rs"]
 mod host;
+#[path = "hud.rs"]
+mod hud;
 #[path = "support.rs"]
 mod support;
 #[cfg(test)]

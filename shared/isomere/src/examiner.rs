@@ -122,7 +122,12 @@ pub struct ExaminerModel<'a, State, Action> {
     /// The reading column, as name-value pairs in order.
     pub readings: Vec<(String, String)>,
     /// A slot under the reading for a product's own drawing of the selected
-    /// part. `body_sheet`'s schematic is the one waiting for it (M5).
+    /// part. No product fills it yet. M5 was expected to bring Paredros's
+    /// body-sheet schematic here and did not: that schematic is drawn into a
+    /// netrender scene with stroked paths, so moving it into a DOM slot is a
+    /// rewrite in another medium rather than a move, and it was retired with
+    /// the rest of the body sheet instead. The slot stands for whoever draws
+    /// one next.
     pub schematic: Option<Child<State, Action>>,
     /// The container's `class`. `None` is no class at all, which is what the
     /// bench's bare `aside` carries; the session passes `panel`.
