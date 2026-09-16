@@ -716,3 +716,13 @@ world-history Law C test.
   hagiograph rescoped, its plan opened). D2 to D4 dispatched to Sonnet agents
   in parallel: the hagiograph's record, feat rule and deep-time seam in mere,
   and the runtime's continued clock in Mesocosm.
+- **2026-09-16.** D2 and D3 landed in mere (`53648d3a`, pushed): `Record`,
+  `Mark`, `reckon` with `took` and `feat`, and the `Epochal` seam with `run`;
+  21 tests, clippy, rustfmt and a wasm32 check clean on rerun; the record
+  reproduces `WorldRecord`'s postcard bytes. D4 landed in Mesocosm: a runtime
+  built from a world with its history starts `epoch_seen` at the world's
+  epoch, and `Trial::with_past` accepts a baseline with its history,
+  including one standing on a boundary, while `Trial::new` keeps its
+  refusals; replay code moved verbatim to `runtime/replay.rs` to stay under
+  the line ceiling; 56 unit tests on rerun (79 with integration tests, as
+  the agent ran them).

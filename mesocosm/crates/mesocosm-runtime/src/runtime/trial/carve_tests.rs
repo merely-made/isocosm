@@ -114,7 +114,7 @@ fn mixed_idle_and_carve_trace_matches_ordinary_runtime_and_exact_reset() {
         Intent::Idle,
     ];
     let mut trial = Trial::new(&source).unwrap();
-    let mut ordinary = driver(&source);
+    let mut ordinary = driver(&source, &History::new());
     let mut batches = Vec::new();
     for intent in &trace {
         assert!(match *intent {

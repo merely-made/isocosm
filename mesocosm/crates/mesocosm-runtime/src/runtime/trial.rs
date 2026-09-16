@@ -7,6 +7,8 @@
 //! Runtime receipt and never commits its result back to the specimen.
 
 use super::Runtime;
+#[cfg(test)]
+use super::deep_time_world;
 use crate::Checkpoint;
 use mesocosm_core::flow::{Account, Process, RecordedFlow};
 use mesocosm_core::{History, Intent, OrganismId, Outcome, World, history::Event, state_hash};
@@ -91,6 +93,11 @@ pub struct TrialActivity {
 
 pub struct Trial {
     baseline: World,
+    /// What `baseline` carries in from before this trial: empty for a fresh
+    /// admitted world, deep time's own log for a world built by
+    /// [`Trial::with_past`]. Kept beside `baseline` so `reset` rebuilds the
+    /// runtime with both, not just the world.
+    baseline_history: History,
     runtime: Runtime,
     steps: u32,
     /// `MAX_TRIAL_STEPS` for every trial a product builds. Only a test sets
@@ -105,11 +112,35 @@ pub struct Trial {
 impl Trial {
     /// The bench currently supplies fresh admitted worlds. A later snapshot
     /// needs its runtime checkpoint/history too, so refuse it rather than
-    /// silently reconstructing a missing decision or past.
+    /// silently reconstructing a missing decision or past. A world with a
+    /// real past goes through [`Trial::with_past`] instead.
     pub fn new(source: &World) -> Result<Self, String> {
         if source.tick != 0 || source.epoch != 0 || source.at_boundary() {
             return Err("specimen trial requires a fresh tick-zero world".into());
         }
+        Self::from_baseline(source, History::new())
+    }
+
+    /// A trial over a baseline that already has a past: deep time's
+    /// handover, not a fresh admitted world (D4). Accepts a world standing
+    /// anywhere past tick zero, including exactly on an epoch boundary,
+    /// provided `history` is the record that got it there. An empty history
+    /// paired with a world already in motion is refused, the same way
+    /// [`Trial::new`] refuses a bare snapshot: replay would have nothing to
+    /// reckon the world's own epoch against.
+    pub fn with_past(source: &World, history: &History) -> Result<Self, String> {
+        let has_past = source.tick != 0 || source.epoch != 0 || source.at_boundary();
+        if has_past && history.is_empty() {
+            return Err(
+                "specimen trial requires the baseline's history for a world past tick zero".into(),
+            );
+        }
+        Self::from_baseline(source, history.clone())
+    }
+
+    /// What both entry points share: a living controlled body, and the
+    /// exact baseline — world and history both — that `reset` rebuilds from.
+    fn from_baseline(source: &World, baseline_history: History) -> Result<Self, String> {
         if source.controlled().is_none_or(|body| !body.is_alive()) {
             return Err("specimen trial requires a living controlled body".into());
         }
@@ -117,9 +148,10 @@ impl Trial {
         // exactly; the ordinary runtime absorbs them on its first step, while
         // the activity projection below excludes Born and other founding facts.
         let baseline = source.clone();
-        let runtime = driver(&baseline);
+        let runtime = driver(&baseline, &baseline_history);
         Ok(Self {
             baseline,
+            baseline_history,
             runtime,
             steps: 0,
             ceiling: MAX_TRIAL_STEPS,
@@ -209,7 +241,7 @@ impl Trial {
     }
 
     pub fn reset(&mut self) {
-        self.runtime = driver(&self.baseline);
+        self.runtime = driver(&self.baseline, &self.baseline_history);
         self.steps = 0;
         self.activities.clear();
         self.uptakes.clear();
@@ -350,10 +382,12 @@ impl Trial {
     }
 }
 
-fn driver(baseline: &World) -> Runtime {
+fn driver(baseline: &World, history: &History) -> Runtime {
     // Runtime's legacy seed/count fields are deliberately unexposed here.
-    // The owned baseline is this trial's exact and only reconstruction source.
-    let mut runtime = Runtime::from_world(baseline.clone(), 0, 0, 1);
+    // The owned baseline is this trial's exact and only reconstruction source,
+    // and its history rides beside it so a trial with a past reckons and
+    // replays the same way a fresh one does.
+    let mut runtime = Runtime::from_world_with_history(baseline.clone(), history.clone(), 0, 0, 1);
     runtime.trial_flows = Some(Vec::new());
     runtime
 }

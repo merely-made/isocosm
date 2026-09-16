@@ -40,7 +40,7 @@ fn exact_baseline_reset_and_idle_replay_preserve_world_and_activity() {
 fn activity_is_a_reading_of_ordinary_runtime_history_once_per_successful_step() {
     let source = World::new(42, 60);
     let mut trial = Trial::with_ceiling(&source, Trial::SHORT).unwrap();
-    let mut ordinary = driver(&trial.baseline);
+    let mut ordinary = driver(&trial.baseline, &History::new());
     let mut seen = std::collections::BTreeSet::new();
     let mut kinds = [0; 2];
     while trial.step() {
@@ -143,7 +143,7 @@ fn advanced_worlds_are_refused_instead_of_losing_runtime_context() {
 fn uptake_matches_actual_soil_transfers_and_replays_without_touching_history() {
     let source = World::new(7, 60);
     let mut trial = Trial::with_ceiling(&source, Trial::SHORT).unwrap();
-    let mut ordinary = driver(&source);
+    let mut ordinary = driver(&source, &History::new());
     let mut observed = Vec::new();
     let mut ids = std::collections::BTreeSet::new();
     let mut total = 0;
@@ -242,7 +242,7 @@ fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_in
     let source = World::new(7, 60);
     let ordinary = Runtime::new(7, 60, 1);
     assert!(ordinary.trial_flows.is_none());
-    let mut runtime = driver(&source);
+    let mut runtime = driver(&source, &History::new());
     runtime.queue(Intent::TakeControl {
         organism: OrganismId(999999),
     });
@@ -264,6 +264,107 @@ fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_in
             assert_eq!(activity.record, *record);
         }
     }
+}
+
+/// D4: a trial built over a baseline with a past — deep time's handover, not
+/// a fresh admitted world — carries that past through `reset` exactly as it
+/// carries the world, and replays to the same state hash, history and
+/// activities.
+#[test]
+fn with_past_resets_and_replays_to_the_same_state() {
+    let (world, history) = deep_time_world(7, 60, 20, 2);
+    let mut trial = Trial::with_past(&world, &history).unwrap();
+    assert_eq!(trial.baseline_hash(), state_hash(&world));
+    assert_eq!(
+        trial.history(),
+        &history,
+        "the baseline's past rides in with the world"
+    );
+
+    let steps = 30;
+    let mut batches = Vec::new();
+    for _ in 0..steps {
+        assert!(trial.step());
+        batches.push(trial.activities().to_vec());
+    }
+    let first_hash = trial.state_hash();
+    let first_history = trial.history().clone();
+
+    trial.reset();
+    assert_eq!(trial.state_hash(), trial.baseline_hash());
+    assert_eq!(
+        trial.history(),
+        &history,
+        "reset returns to the carried-in past, not an empty one"
+    );
+
+    let mut replay = Vec::new();
+    for _ in 0..steps {
+        assert!(trial.step());
+        replay.push(trial.activities().to_vec());
+    }
+    assert_eq!(batches, replay);
+    assert_eq!(trial.state_hash(), first_hash);
+    assert_eq!(trial.history(), &first_history);
+}
+
+/// `Trial::with_past` accepts exactly the shape deep time hands over: a world
+/// standing on an epoch boundary, which `Trial::new` refuses outright.
+#[test]
+fn with_past_accepts_a_world_standing_on_a_boundary() {
+    let (world, history) = deep_time_world(7, 60, 20, 2);
+    assert!(
+        world.at_boundary(),
+        "fixture stops exactly where deep time left it"
+    );
+    assert!(Trial::with_past(&world, &history).is_ok());
+}
+
+/// `Trial::new` keeps refusing a world past tick zero. `Trial::with_past`
+/// refuses the same world too, unless it is handed the history that got it
+/// there — an empty history paired with a world already in motion would
+/// leave replay with nothing to reckon the world's own epoch against.
+#[test]
+fn with_past_refuses_an_empty_history_and_new_still_refuses_the_world() {
+    let (world, history) = deep_time_world(7, 60, 20, 2);
+    assert!(
+        Trial::new(&world).is_err(),
+        "Trial::new's refusal of a world past tick zero is unchanged"
+    );
+    assert!(
+        Trial::with_past(&world, &History::new()).is_err(),
+        "an empty history cannot stand in for a world already in motion"
+    );
+    assert!(Trial::with_past(&world, &history).is_ok());
+}
+
+/// Activity sequence numbers are ordinals into the trial's *complete*
+/// history, baseline included — never a per-trial count starting at zero —
+/// so each one still indexes the matching entry once a baseline history is
+/// non-empty.
+#[test]
+fn with_past_activity_sequence_numbers_index_the_full_history() {
+    let (world, history) = deep_time_world(7, 60, 20, 2);
+    let baseline_len = history.len();
+    assert!(baseline_len > 0, "fixture must actually carry a past");
+    let mut trial = Trial::with_past(&world, &history).unwrap();
+    assert_eq!(trial.history().len(), baseline_len);
+
+    let mut checked = 0;
+    for _ in 0..30 {
+        assert!(trial.step());
+        for activity in trial.activities() {
+            assert!(
+                activity.sequence as usize >= baseline_len,
+                "an activity this trial recorded cannot fall inside deep time's own past"
+            );
+            let recorded = &trial.history().log().entries()[activity.sequence as usize];
+            assert_eq!(recorded.tick, activity.tick);
+            assert_eq!(recorded.record, activity.event);
+            checked += 1;
+        }
+    }
+    assert!(checked > 0, "fixture must exercise at least one activity");
 }
 
 /// The positive control for the raised ceiling: a trial at the shipped

@@ -377,6 +377,43 @@ fn manual_stepping_matches_clocked_stepping() {
     assert_eq!(clocked, manual);
 }
 
+/// D4: a runtime built from a world with a past starts `epoch_seen` at the
+/// world's own epoch, so the boundary deep time already closed (the world
+/// arrives standing at it) is not reckoned a second time — and the runtime
+/// still reckons, once, the very next boundary it crosses itself.
+#[test]
+fn a_runtime_built_from_a_world_with_a_past_only_reckons_a_boundary_it_crosses_itself() {
+    let epoch_ticks = 20;
+    let (world, history) = deep_time_world(11, 24, epoch_ticks, 2);
+    assert!(
+        world.at_boundary(),
+        "deep time hands over standing at the boundary it closed"
+    );
+    let handed_over_epoch = world.epoch;
+
+    let mut rt = Runtime::from_world_with_history(world, history, 11, 24, 60);
+    assert!(rt.reckoning().is_empty(), "nothing reckoned yet");
+    assert_eq!(rt.world().epoch, handed_over_epoch);
+
+    // The boundary deep time already closed is not reckoned again: ticking
+    // through the rest of the new epoch, short of its own budget, changes
+    // neither the epoch nor the still-empty reckoning.
+    assert_eq!(rt.step(epoch_ticks - 1), epoch_ticks - 1);
+    assert!(
+        rt.reckoning().is_empty(),
+        "no boundary has fallen inside a tick this runtime took"
+    );
+    assert_eq!(rt.world().epoch, handed_over_epoch);
+
+    // The next boundary, the runtime's own, reckons exactly once.
+    assert_eq!(rt.step(1), 1);
+    assert!(
+        !rt.reckoning().is_empty(),
+        "the runtime reckoned the boundary it just crossed"
+    );
+    assert_eq!(rt.world().epoch, handed_over_epoch + 1);
+}
+
 /// DT2's determinism receipt, DT1's stated in the same terms: watching a body
 /// reduces the stream the readings already reduce and writes nothing back, so
 /// a run with an inspector on it and one without are the same world.
