@@ -881,6 +881,126 @@ before quoting it in a green claim.
    manner; the journey snapshot and its `motif()` groups; and the regenerated
    `testing/glyphs/journey.json` with both world hashes unmoved.
 
+## Rulings on the slice's scope (Mark, 2026-09-16)
+
+Asked after G6 and G7 landed, since §9 was written before both.
+
+1. **The impresa record type is founded first, then experience.** The plain
+   `wing-` crate G7 rules carries the record type and its validation only, so
+   the experience slice writes conforming records from its first commit rather
+   than re-authoring `journey.json` twice.
+2. **The journey stays authoritative; the impresa record is parallel.**
+   Ownership, completion and ascension keep reading the journey exactly as the
+   kernel does today. The impresa record is emitted alongside, citing the same
+   cause receipt, and is what other subjects and other vessels read. Two
+   records, one cause, and nothing that exists has to migrate.
+3. **Standing lands as affinity only.** Affinity rises through the journey,
+   which already happens on grants, and scales the magnitude `EffectPackTable`
+   resolves. Resistance and G6's chain grammar wait for invocation, which does
+   not exist in Mesocosm and is Paredros's ground first.
+4. **E2 is answered by a reframing**, which §9.8 below works out: a deed must
+   be significant, consumption is a tracked statistic rather than a world
+   event, and a statistic gates an event rather than being one.
+
+## 9.8 A deed must be significant, and the tree already measures that
+
+**Mark's answer on E2 (2026-09-16), which is a reframing rather than one of
+the three options offered.** Consumption is not just a matter of "consume" or
+"uptake": a deed should be significant, and a trigger that fires constantly is
+not rare no matter where the bar is set. Raising a floor is not sufficient,
+because a producer taking up soil every living tick crosses any floor
+eventually. Consumption can be a **tracked statistic that gates an event**,
+but it should not itself be a world event.
+
+**The general rule this settles.** A deed verb must name something **rare by
+construction, not by threshold**. That invalidates most of §9.1's verb list,
+which was built by reading `history.rs` for accepted events and taking them
+all. Re-sorted against the rule:
+
+| §9.1 verb | What it actually is | Where it goes |
+| --- | --- | --- |
+| `mesocosm:fed` | constant, every meal | statistic: `Predation`, and `Growth` |
+| `mesocosm:took` (uptake) | constant, every living tick | statistic: `Growth` |
+| `mesocosm:moved` | constant | statistic: `Spread` |
+| `mesocosm:carved` | frequent, player-driven | statistic: `Construction` |
+| `mesocosm:grew` | frequent | statistic: `Growth` |
+| `mesocosm:severed` | seldom | occasion, stays a deed |
+| `mesocosm:died` | once per life | occasion, stays a deed |
+| `mesocosm:grafted` | seldom | occasion, stays a deed |
+
+**So a deed has two sources, not one.**
+
+1. **Occasion** — an accepted event rare by its nature: severed, died,
+   grafted, and later inherited, expressed, speciated. Matched as §9.1
+   proposed, verb plus floor plus qualifier. This half is unchanged.
+2. **Feat** — a **reading that took the record**. The constant acts are
+   statistics, and the milestone crossing is the significant event. Matched
+   as a `(Feat, Scale)` pair with an optional floor, not as a verb.
+
+**The second source is built, and was built for exactly this.** `score::readings`
+(`score.rs:66`) derives every figure **from the log when the epoch ends, never
+as a counter the simulation maintains** — its own stated discipline. `World::reckon`
+(`world/adapt.rs:215-222`) notes each reading into `WorldRecord`, and each
+`Reading` comes back carrying `took`, whether it was unprecedented
+(`record.rs:152-172`). `Feat` is `Growth, Predation, Symbiosis, Endurance,
+Spread, Construction`; `Scale` is `Local, Regional, Worldwide`. The record is a
+join-semilattice, so it merges across forked worlds without a protocol, which
+is what a cross-vessel deed needs. `tests/reckoning.rs` runs a real enclosure
+against it.
+
+**This is also the hagiograph's own feed.** `took == true` is "unprecedented",
+which is the first word of what the hagiograph promotes. So the deed tier and
+the promotion tier read one signal, and there is no second event log.
+
+**Mark's example lands in this vocabulary.** "Killed something with fire and
+found this glyph" is a `Predation` feat taken at some scale, conjoined with a
+`Borne` or `Embodied` encounter of the fire glyph — not a `mesocosm:fed`
+matcher with a qualifier. Two glyphs with different meanings pick different
+feats, which is the axis §9.1 was missing.
+
+### R5 was stale, and the real blocker is a number
+
+**The hagiograph lane is not blocked in the runtime.** §3.4 and R5 say
+`Runtime::end_epoch` has one caller and it is a unit test, so `world.epoch`
+never leaves 0. That described a **manual door that has since been removed**
+(`world/adapt.rs:50`, `world/dev/tests.rs:125`). Today the world ends its own
+epochs on its own budget (PE3, `world.rs:544-549`), `DEFAULT_EPOCH_TICKS` is
+**1,000** (`rules.rs:53`), and `reckon_if_ended` runs in both the driven step
+path and the replay path (`runtime.rs:131`, `:367`, `:557`) so the two cannot
+diverge. A real Mesocosm run reckons.
+
+**The blocker is that the glyph experiment's only host cannot reach a
+boundary.** `MAX_TRIAL_STEPS` is **128** (`trial.rs:16`) against an epoch of
+**1,000** ticks, so a `Trial` stops 872 ticks short of its first reckoning,
+every time, and the bench's own status line says `N of 128 ticks`
+(`bench/trial.rs:529`). The feat tier is therefore unreachable inside the
+trial as it stands, while the occasion tier is reachable today.
+
+Three ways out, with their costs, for Mark:
+
+- **Raise the trial's ceiling past 1,000.** Honest, and it contradicts what
+  the trial is for: a bounded, disposable run (`trial.rs:4-7`). A 1,000-step
+  trial at bench frame rates is a different instrument.
+- **Give the trial a shorter epoch rule.** `World::with_rules(...ending(
+  EpochRule::Timed { ticks }))` exists (`rules.rs:268`) and keeps the process
+  digest. But the epoch rule is in the world rules a save cites, so the world
+  digest moves, and with it the state hash — the **six byte pins** and both
+  hashes in `journey.json` would all have to be re-pinned in the same commit.
+- **Feed the feat tier from the Runtime, not the Trial.** The reckoning is
+  already the Runtime's (`Runtime::reckoning()`), so the trial would gain a
+  `reckonings()` accessor beside `uptakes()` and pass it to the evaluator as
+  the third accepted source. Costs nothing and moves no hash — but inside a
+  128-step trial the list is simply always empty, so the tier is built,
+  tested at the core and runtime level, and dark in the bench until one of
+  the first two also happens.
+
+**Recommended: the third, then the second.** Build the feat tier against the
+Runtime's reckoning where it is already correct, prove it in
+`mesocosm-core` and `mesocosm-runtime` tests that drive a real 1,000-tick
+world, and leave the bench's trial showing the occasion tier only. Re-pinning
+six byte pins to shorten the trial's epoch is a separate, revertible commit
+that can follow once the tier is green.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.
