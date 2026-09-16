@@ -110,6 +110,42 @@ measurement of one does not depend on the other.
   them arrive, far grazing overwhelms producers (Findings). Whether to limit
   far perception, re-pin the tests, or retune consumer pressure is Mark's.
 
+## 3a. What classic ecology says is missing (audit, 2026-09-16)
+
+Mark asked: "Perhaps we should consider complex cellular automata sims, for
+balance ideas. We missing stuff?" A Sonnet agent audited the tree read-only
+against the mechanisms the classic models rely on; the orchestrator checked
+the claims marked (verified). Paths under `mesocosm-core/src/`.
+
+| Mechanism | In Mesocosm | Where | Classic model |
+| --- | --- | --- | --- |
+| Consumer functional response: satiation, handling time, low-density refuge, prey switching | **Partial**: a per-tick bite capped by room in the body; nothing responds to how scarce the food has become | `organism/ecology/rates.rs:220-258`, `ecology.rs:303,342-347,386-391` | Holling type II; a type III refuge stabilizes Rosenzweig-MacArthur |
+| Density dependence | **Partial**: crowding throttles and thins producers only | `ecology.rs:222-236,316-330`, `rates.rs:57-68` | Verhulst logistic; Gause |
+| Allee effects, minimum viable population | **Absent** (verified): reproduction reads only the individual's own stage, gestation and mass | `organism.rs:478-483` | Allee; mate-finding models |
+| Dormancy and propagule banks | **Absent**: no seed, spore or cyst stage | `organism.rs` `Stage` | Cohen's bet-hedging; Chesson's storage effect |
+| Immigration and rescue | **Absent**: nothing adds organisms after genesis except births | `world/genesis.rs`, `breeding.rs` | Island biogeography; the rescue effect |
+| Locality of interaction | **Near present, far broken**: far perception sees the whole enclosure | `movement/perception.rs:302` | Wa-Tor; spatial rock-paper-scissors |
+| Disturbance | **Absent** in the simulation; world profiles describe freezes and floods as authored prose kept off the wire | `pressure.rs:38-46` (verified), `:268` | Forest-fire model; intermediate disturbance |
+| Seasons and pulses | **Absent**: producer income is a function of mass alone | `rates.rs:188-190` | Sugarscape seasons |
+| Microbial loop | **Present** (verified): a background soil process turns typed matter untyped every tick, beside organisms | `places/soil/mineralization.rs:16-47`, `ecology.rs:590` | Microbial loop |
+| Enrichment | **Untested**: starting soil is a fixed 100 mg per column | `world/genesis.rs:40,488` | Rosenzweig's paradox of enrichment |
+| Self-regulating feedback on growth conditions | **Absent** | none found | Daisyworld |
+| Adaptation | **Inert in deep time** (verified): an unplayed line weighs only inherited or discovered candidates, discovery is played-only, so an enclosure nobody plays has empty rounds | `world/adapt.rs:62-68` | Red Queen; evolutionary rescue |
+
+**The audit's ranking of causes for today's measurements:** far perception
+(being addressed now); no functional response, so grazing never eases as
+food thins; no density dependence above producers, so blooms overshoot;
+enrichment and disturbance unaddressed; and adaptation absent from every
+headless run measured, which makes those runs a lower bound.
+
+**Two corrections this forces on earlier text.** The isoscape plan's D7a
+report said lineage 1 "takes its own adaptation turns" in deep time: it does,
+and they are empty. And "micro and myco" already has its micro half in the
+tree as mineralization; what is missing is the carrion-to-soil step feeding
+it quickly enough, which S4 addresses.
+
+Whether any absent mechanism joins this plan is Mark's.
+
 ## 4. Done conditions
 
 1. **S1.** A far body in its target's place approaches the target and does
