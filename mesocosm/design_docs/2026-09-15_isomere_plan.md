@@ -442,3 +442,16 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   workspace root checks only the two-line root package and never
   touches the client, so the receipt list must name the client
   explicitly.
+- **2026-09-16, Mark deferred all of M6 with the migration.** M6 is the
+  dev tile as a frisket pane and one receipts panel shown in all three
+  hosts. Both halves touch Mesocosm's main binary, whose host migration
+  was deferred on 2026-09-15: its dev tile is drawn by the chrome, so it
+  cannot become a document pane without that move, and a receipts panel
+  in "all three hosts" with the bench standing in for the main binary
+  would not be the lane as written. So M6 waits whole for the round
+  that moves Mesocosm's main binary, and lands the panel in all three
+  real hosts at once. isomere is therefore closed at M5 for this round:
+  the shared sheet, the viewport card, the examiner, the journal, the
+  status and help lines with a declared keymap, and the host assembly,
+  consumed by Paredros and Isometry, with Paredros's netrender body sheet
+  retired.

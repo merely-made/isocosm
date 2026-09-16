@@ -452,6 +452,37 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
 
 ## Findings
 
+- **2026-09-16, a request from Mark to this family's owner: page the
+  brick map or raise its cap.** Isometry's board now draws through the
+  family (the board-on-isometer plan, `design_docs/` at the Isometry
+  root, B1 to B5). Mark ruled the cliff height by subdividing a tile into
+  five voxels across and two to an elevation step, which is what the
+  2:1 lens needs from a cubic ground, and that brings
+  `modulus::MAX_BRICKS` of 2,047 into view: a flat board fits at 70 tiles
+  square (1,936 bricks) and refuses at 72 (2,116). Isometry's own
+  campaign generator authors boards to an edge of 256, which would need
+  about twelve times the cap. Mark's ruling of 2026-09-16 is that the
+  authored limit stays at 256 and the cap is this family's to solve,
+  by paging bricks or by a larger cap; Isometry adds an author-facing
+  warning meanwhile, and keeps its DOM board as the only arm for large
+  maps until this lands. Two related gaps make the refusal worse than it
+  needs to be: a ground is grown before its brick map is built, so a
+  board past the cap pays the whole regrow and is then refused, and
+  nothing reports a brick budget ahead of growth, so a host cannot warn
+  before the cost.
+- **2026-09-16, a correctness bug found by that consumer, not an
+  improvement.** `GroundTerrain` stamps the frame with
+  `Ground::revision()`, which a grown ground never moves off zero, so the
+  tracer's residency holds the revision and silently skips every upload
+  after the first. Any host that regrows rather than carves sees its
+  terrain edits never reach a pixel. Isometry's B4 lane proved it with a
+  positive control in the same run and works around it with its own
+  terrain source. Either the terrain should take a host revision or its
+  doc should say it is for carving hosts only. The rest of what that
+  consumer found, eleven improvements from a private conversion
+  constructor to a missing material write, is in that plan's §6 rather
+  than repeated here.
+
 - 2026-09-14: the three components form a chain, not a cycle — mesh below
   render, lens beside both, and **no component depends on isometer**
   (`mesocosm-render/Cargo.toml:14`, `mesocosm-lens/Cargo.toml:34-35` is a
