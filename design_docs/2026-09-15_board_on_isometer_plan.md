@@ -192,6 +192,16 @@ with the family's receipts unchanged; then the board.
 - No producer-side pixel scaling (I3) and no camera presets (I5).
 - The bake's four facings versus the scene's continuous yaw: the recipe's
   `Clip` vocabulary is reserved but empty.
+- Found by B5, 2026-09-16, with the cap measured: a ground is grown before
+  its brick map is built, so a board past `MAX_BRICKS` pays the whole regrow
+  (695 ms debug, 79 ms release at 70 by 70) and *then* is refused. Nothing asks
+  "will this fit" ahead of the growth, and nothing reports a brick budget, so
+  a host cannot warn an author before the board is unusable. Nor does the
+  family publish the bytes one brick uploads: a host pricing a board has to
+  divide a tracer receipt by its own brick count to find 1,016. And §8's
+  measurement of the grow — 4 to 9 ms release, 36 ms debug, for the demo's
+  121 by 121 columns — is the price of `Ground` having no material write, paid
+  in full on every one-tile tint.
 - Found by B1, 2026-09-15: `Ground` has no public material-at-voxel
   accessor, so a consumer re-derives the brick and local index by hand;
   a `material(&self, at)` beside `solid` would retire that copy. The
@@ -209,6 +219,121 @@ with the family's receipts unchanged; then the board.
 - No Isometry-side document cited the L4 done condition before this plan.
 - `isometry-runtime`, which holds the earlier fixed-isometric GPU tenant,
   is excluded from the root workspace and untouched by this plan.
+
+## 8. The scene board's cost model (B5, 2026-09-16)
+
+One place for what the scene board costs, pulled together from B4, the
+subdivision and B5's own measurements, each re-taken rather than carried.
+
+**The instrument, stated once.** Windows laptop; the repo's unoptimised `dev`
+and `test` profiles (the six packages at `opt-level = 2` in the root manifest;
+`isometry-views` and the isometer family are not among them). Headed figures
+come from `ISOMETRY_PROFILE=1` on the demo map at device scale 2, interface
+zoom 0.917, producer render scale 2, with `ISOMETRY_OVERLAY_SELFTEST=1` armed
+so the app keeps redrawing a board on which nothing changes; the frames counted
+are the ones before the self-test fires, less the first three and the capture
+frame. Headless figures are one `BoardSource` frame into a 640 by 480 pane at
+render scale 1. **Slot and byte counts are deterministic and do not move with
+the build; every timing does** — which is why the build is named here and was
+not named in the entries this section corrects. Where a timing is worth having
+in both, the release figure is given beside the debug one:
+`tests/scaled_world.rs` already says why ("release matters: debug timings are
+dominated by unoptimized BTreeMap walks"), and the regrow is exactly such a
+walk.
+
+### A steady frame, both arms, same machine and map
+
+Medians over the steady window, in milliseconds
+(`Code/testing/isometry/scene-board-profile/`):
+
+| phase | DOM board, n = 66 | scene board, n = 183 |
+| --- | --- | --- |
+| **total** | **32.16** (p25 31.73, p75 32.82, p95 33.36, 31.02 to 35.18) | **12.50** (p25 11.82, p75 13.91, p95 16.77, 10.75 to 20.76) |
+| emit | 10.50 | 2.26 |
+| a11y | 13.03 | 2.48 |
+| raster | 6.71 | 5.53 |
+| relayout | 0.33 | 0.09 |
+| present | 0.19 | 0.24 |
+| producer | no producer | 0.05 |
+| staging / stages | 0 / 0 | 0 / **0** |
+
+The scene board's steady frame is 2.6 times cheaper, and the saving is not in
+the renderer: `raster` is within 1.2 ms. It is `emit` and `a11y` — building and
+projecting 632 boxes — which is what a board element costs when nothing about
+it has changed. `stages = 0` is the producer skipping: with the signature
+unmoved the scene is never re-traced, so a still board's whole scene cost is
+the 0.05 ms signature check.
+
+### What a change costs
+
+| change | ground | GPU upload | source |
+| --- | --- | --- | --- |
+| nothing moves | none | 0 bytes | measured, B4's receipt re-run |
+| a pan | none | 0 bytes; one re-traced frame, 2.57 ms headless | **measured, B5** |
+| a token step | none | 0 bytes; one re-traced frame, 2.64 ms headless | **measured, B5** |
+| one elevation edit | regrow + diff 0.54 ms | 4 slots, 2,064 bytes of the map's 264,192 | measured, matches B4 exactly |
+| one tile tint | regrow + diff 0.54 ms | 4 slots, 2,064 bytes | measured, B5 |
+| the whole overlay set | regrow + diff 0.55 ms | 50 slots of 260 bricks | measured, matches B4 |
+| a focus elevation on | regrow + filtered rebuild 5.90 ms debug | one full map, 263,168 bytes | upload matches B4 to the byte; its 0.25 ms is not a debug figure |
+| a focus elevation off | regrow + rebuild 2.53 ms | one full map | measured, B5 |
+| the regrow itself, demo map | **36 ms debug, 4 to 9 ms release** | — | **measured, B5** |
+
+A pan and a token step are the two cheapest things a session does and they cost
+the ground nothing: the camera and a body pose are signature fields, so the
+price is one re-traced frame and no upload at all. Everything else is the
+regrow, and the regrow is the model's whole weight — `Ground` exposes no
+material write (§6), so a one-tile tint raises 33,000 voxels again.
+
+Two cautions about that number, both found by measuring it repeatedly. It is
+build-dominated: 35.98 ms debug against 3.99 ms release for the same bare
+grow. And a single sample is not a number at all — the first grow in a fresh
+release process read 45.27 ms where the *larger* 30 by 30 board read 7.55 ms a
+moment later. Quote the regrow with a build and a warm process, or do not
+quote it.
+
+One dead path found while measuring: `BoardGround::sync` has a branch for "the
+focus moved but the revision did not", which cannot fire, because `Overlays`
+carries the focus and so a focus change always moves the view's revision. It
+costs nothing and it is this crate's, not isometer's.
+
+### The ceiling, and the worst case the repo can produce
+
+`modulus::MAX_BRICKS` is 2,047. Walked rather than quoted, on `synth_map`:
+
+| board | bricks | brick bytes | regrow, debug | regrow, release |
+| --- | --- | --- | --- | --- |
+| demo 24 by 24 (the app's own map, and `maps/demo_skirmish.json`) | 260 | 258 KiB | 36 ms | 4 to 9 ms |
+| synth 30 by 30 (`ISOMETRY_SYNTH`'s default stress board) | 400 | 396 KiB | 98 ms | 8 ms |
+| 64 by 64 | 1,600 | 1,587 KiB | 568 ms | 65 ms |
+| **70 by 70 — the largest square board with a scene arm** | 1,936 | 1,920 KiB | 695 ms | 79 ms |
+| 72 by 72 | refused at 2,116 bricks | — | — | — |
+
+§6's "roughly 70 tiles square" is confirmed to the tile: 70 fits, 72 refuses.
+The worst case that matters is not any of these, though — it is
+`isometry_campaign::MAX_GENERATED_MAP_EDGE`, which is **256**. The substrate's
+own map generator will author a board three and a half times past the edge
+where the scene board stops having a brick map at all, and nothing warns the
+author. That is the fact §5 decision 4 is held open on.
+
+### Figures carried in this plan that needed a build to mean anything
+
+Every slot and byte figure re-measured to the byte. Every timing needed its
+build named before it could be compared at all:
+
+- the subdivision entry's "the grow 0.04 to **1.40 ms**" and "**17 ms** at 64
+  by 64", and B4's "the grow itself is unchanged at **1.1 ms**" — 36 ms and
+  568 ms in the debug build, 4 to 9 ms and 65 ms in release. Release accounts
+  for a factor of nine of it and warm-up for much of the rest, so these were
+  release figures; they are not reachable in the build the plan's frame and
+  element receipts are taken in. B4's *own* headed captures under
+  `Code/testing/isometry/scene-board-overlays/` read 35 to 40 ms beside the
+  entry that said 1.1, which is the same gap seen from the other side.
+- B4's "a focus elevation is **0.25 ms** and one full upload" — the upload is
+  exact to the byte; the filtered rebuild is 5.90 ms debug, and was not
+  re-taken in release.
+
+The Progress entries are left as written, because a progress entry records what
+a lane saw. This section is the current one, and it names its build.
 
 ## Progress
 
@@ -470,3 +595,63 @@ with the family's receipts unchanged; then the board.
   behind the flag, without that standing as a commitment to keep them.
   The switch is re-decided when isometer's owner rules on paging or a
   larger cap, and the cap is recorded in §6 for exactly that.
+- **2026-09-16, B5 landed.** The scene board's frame profile stands beside the
+  DOM board's on one machine, one map, one window and one set of conditions:
+  **12.50 ms median against 32.16 ms**, over 183 and 66 steady frames, and the
+  2.6x is not the renderer. `raster` differs by 1.2 ms; what moves is `emit`,
+  10.50 to 2.26, and the accessibility projection, 13.03 to 2.48 over 111 nodes
+  against 744. That is what 632 boxes cost on a frame none of them changed on.
+  On such a frame the producer stages nothing, so the scene's whole cost is a
+  0.05 ms signature check. §8 holds the table and the rest of the cost model.
+  The control has **not** drifted: the DOM arm's census reads 631 elements
+  beside the one marker the old metric counted with them, which is §1's 632 to
+  the element, and the atlas receipt re-run here reads pointer 1.961 ms median
+  against §1's 1.9. §1's "M4 layout median 36.8 ms" has no twin on this machine
+  and never did — it was a Mac on a preserved older closure that re-resolved
+  style and re-laid text on every drag step; the same test here resolves no
+  style, lays out no text, and reads 0.172 ms.
+  The element receipt is three tests rather than a number: a walk of the
+  `.board` containers by class over the retained tree the shipping host laid
+  out, naming what it counts — `tile`, `tile-face`, `fog-shroud`, `prop`,
+  `token` and the `beat` wrapper each sprite rides — and what it allows, B4's
+  ground markers and the one leaf. The DOM arm is the positive control in the
+  same process at 635 unfogged and 226 shrouded; the scene arm is 0 and 0. It
+  needs no adapter, so unlike B3's set it runs everywhere, and the fog arm is
+  there because a shroud is the class most likely to come back by accident.
+  The headed line now says the same thing per frame and names its container:
+  `board census in .board: ground 0, props 0, tokens 0 = 0 board elements;
+  allowed beside them: markers 1, scene leaves 1`, unchanged after the overlay
+  self-test puts every overlay on the board.
+  What the captures show beside the numbers: the arms agree on the water's and
+  the stone path's bounding boxes to a pixel and on the board's span to one, so
+  B4's drawing fix holds. Three things the scene arm still does not draw, all
+  previously recorded and all confirmed: props, the `alt` checkerboard shade,
+  and the DOM's `:hover` tile highlight, which B3 left half restored and which
+  a board with no per-tile element cannot have at all. One thing not previously
+  said: the tracer shades a top face, so an overlay tint on the scene board is
+  about 9% darker than the same hex on the DOM board (`#ffd766` arrives as
+  231, 196, 92). And B4's one-pixel column is in **both** arms again, at
+  physical x 1878 where B4 read logical 1024, so it tracks the window rather
+  than a coordinate — which confirms rather than weakens B4's correction.
+  Every slot and byte figure the plan carries reproduced exactly; not one
+  timing did, and §8 now gives each with its build. The subdivision's grow of
+  1.40 ms and 17 ms at 64 by 64, and B4's "unchanged at 1.1 ms", are release
+  figures: debug reads 36 ms and 568 ms, release 4 to 9 ms and 65 ms, and
+  `tests/scaled_world.rs` already warned that a debug timing over these
+  BTreeMap walks misreports the ratio. B4's own headed captures read 35 to
+  40 ms beside the entry that said 1.1, which is the same gap from the other
+  side. B4's 0.25 ms focus change is 5.90 ms here, its upload exact to the
+  byte. A single grow sample turns out not to be a number at all — a fresh
+  release process read 45.27 ms for the demo and 7.55 ms for a *larger* board
+  moments later. Two costs the plan had never priced: a pan and a token step
+  each cost the ground nothing and upload nothing, and are one re-traced frame.
+  The cap is walked rather than quoted — 70 by 70 fits at 1,936 bricks, 72 by
+  72 refuses at 2,116 — and the number beside it is
+  `isometry_campaign::MAX_GENERATED_MAP_EDGE`, **256**: the substrate's own
+  generator will author a board three and a half times past the edge where the
+  scene board stops having a brick map, with nothing to warn the author. Per
+  the ruling above, B5 stops at the measurement: nothing is archived, the
+  flag's default is untouched, the private flat-ground arm stands, and both
+  boards stay. One seam moved: `edit_tests`'s fixture is now `scene/harness.rs`
+  so the cost receipts drive the same board rather than a second copy of it.
+  109 views tests, 405 across the workspace.

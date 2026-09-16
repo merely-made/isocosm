@@ -20,6 +20,11 @@
 //! The grid under all of it was subdivided on 2026-09-15 by Mark's cliff-height
 //! ruling: [`VOXELS_PER_TILE`] voxels to a tile and [`VOXELS_PER_STEP`] to an
 //! elevation step, so a cube grid can hold a step shallower than a tile.
+//!
+//! B5 adds no drawing, only measurement: `cost_tests` prices the things that
+//! are not edits — a still board, a pan, a token step — and walks the brick cap
+//! the plan's open decision turns on, over the fixture `harness` now holds for
+//! it and `edit_tests` both.
 
 mod board;
 mod ground;
@@ -31,7 +36,11 @@ mod view;
 mod world;
 
 #[cfg(test)]
+mod cost_tests;
+#[cfg(test)]
 mod edit_tests;
+#[cfg(test)]
+mod harness;
 #[cfg(test)]
 mod parity_tests;
 #[cfg(test)]

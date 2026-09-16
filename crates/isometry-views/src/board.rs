@@ -156,21 +156,79 @@ mod tokens;
 use menu::context_menu_overlay;
 use tiles::{ground_tiles, prop_tiles};
 use tokens::{marker_el, token_el};
+/// What the `.board` containers hold this frame, counted off the vectors the
+/// passes actually returned rather than re-derived from the map (B5).
+///
+/// `markers` and `leaves` are the two allowed inhabitants: B4 brought the two
+/// ground markers back as DOM on both arms, and the scene arm's one
+/// `custom_leaf` is the board itself. Everything else is a *board element* in
+/// §1's sense — one box per tile, exposed face, shroud, prop or token — and
+/// the flag's claim is that [`Self::elements`] goes to zero.
+///
+/// These are the container's own children, which is what §1's figure counted:
+/// a token is one entry here and two boxes in the tree, since the sprite rides
+/// a beat wrapper. `isometry-genet`'s `board_census` walks the laid-out subtree
+/// instead and so reads four higher on the DOM arm; both are zero under the
+/// flag, which is the claim either way.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+struct BoardCensus {
+    /// Ground tiles, their exposed cliff faces and their fog shrouds.
+    ground: usize,
+    props: usize,
+    tokens: usize,
+    markers: usize,
+    leaves: usize,
+}
+
+impl BoardCensus {
+    /// The count B5 drives to zero. §1's 632 is this plus the marker standing
+    /// beside it, which the metric this replaced counted in with the rest.
+    fn elements(&self) -> usize {
+        self.ground + self.props + self.tokens
+    }
+
+    /// One line for `ISOMETRY_PROFILE`, naming what was counted and what is
+    /// allowed to be there, so the number cannot be read as more than it is.
+    fn line(&self) -> String {
+        format!(
+            "board census in .board: ground {}, props {}, tokens {} = {} board elements; \
+             allowed beside them: markers {}, scene leaves {}",
+            self.ground,
+            self.props,
+            self.tokens,
+            self.elements(),
+            self.markers,
+            self.leaves,
+        )
+    }
+}
+
 /// Every element inside `.board`: ground, props, the two markers and the
 /// tokens, in paint order. The DOM board's whole content, lifted out of
 /// [`board_root`] so the scene board can stand in one place.
-fn board_elements(ui: &UiState) -> Vec<UiChild> {
-    let mut layers: Vec<UiChild> = ground_tiles(ui);
-    layers.extend(prop_tiles(ui));
-    layers.extend(marker_elements(ui));
-    layers.extend(
-        ui.map
-            .tokens
-            .iter()
-            .filter(|t| ui.token_visible(t))
-            .map(|t| token_el(ui, t)),
-    );
-    layers
+fn board_elements(ui: &UiState) -> (Vec<UiChild>, BoardCensus) {
+    let ground = ground_tiles(ui);
+    let props = prop_tiles(ui);
+    let markers = marker_elements(ui);
+    let tokens: Vec<UiChild> = ui
+        .map
+        .tokens
+        .iter()
+        .filter(|t| ui.token_visible(t))
+        .map(|t| token_el(ui, t))
+        .collect();
+    let census = BoardCensus {
+        ground: ground.len(),
+        props: props.len(),
+        tokens: tokens.len(),
+        markers: markers.len(),
+        leaves: 0,
+    };
+    let mut layers: Vec<UiChild> = ground;
+    layers.extend(props);
+    layers.extend(markers);
+    layers.extend(tokens);
+    (layers, census)
 }
 
 /// The two ground markers: green under the selected token, gold under whoever
@@ -248,17 +306,17 @@ pub fn board_root(ui: &UiState) -> UiChild {
     // gestures — is the same tree either way. B4 brings the markers back over
     // the leaf in a container of their own, because the leaf sits at the pane
     // origin and a marker is placed in the board's panned space.
-    let layers: Vec<UiChild> = if ui.scene_board {
-        vec![scene_leaf(ui)]
+    let (layers, mut census) = if ui.scene_board {
+        (
+            vec![scene_leaf(ui)],
+            BoardCensus {
+                leaves: 1,
+                ..BoardCensus::default()
+            },
+        )
     } else {
         board_elements(ui)
     };
-    // Windowing metric: with `ISOMETRY_PROFILE` on, report how many
-    // elements the viewport emits. It should stay bounded by the pane, not
-    // grow with the board (see the windowing plan).
-    if std::env::var_os("ISOMETRY_PROFILE").is_some() {
-        eprintln!("[isometry] board elements emitted: {}", layers.len());
-    }
     // The scene carries the pan in its own camera, so the container that
     // carries it for the DOM board sits at the pane's origin instead.
     let (camx, camy) = if ui.scene_board {
@@ -275,12 +333,20 @@ pub fn board_root(ui: &UiState) -> UiChild {
         // The markers stand in the board's own panned space, so they ride a
         // second container that carries the pan the leaf hands to its camera.
         let markers = marker_elements(ui);
+        census.markers = markers.len();
         if !markers.is_empty() {
             pane_children.push(Box::new(el("div", markers).attr("class", "board").attr(
                 "style",
                 format!("left: {}px; top: {}px;", ui.camera.0, ui.camera.1),
             )));
         }
+    }
+    // Windowing metric turned census (B5): with `ISOMETRY_PROFILE` on, say
+    // what the board containers hold and what is allowed to be there. The
+    // element count should stay bounded by the pane rather than grow with the
+    // board (the windowing plan), and under the flag it should be zero.
+    if std::env::var_os("ISOMETRY_PROFILE").is_some() {
+        eprintln!("[isometry] {}", census.line());
     }
     if let Some(overlay) = crate::character::character_overlay(ui) {
         pane_children.push(overlay);

@@ -78,6 +78,9 @@ mod adjudicate;
 mod atlas_labels;
 mod atlas_motion;
 mod boot;
+// B5's element receipt: what the board container holds, by class, on both arms.
+#[cfg(test)]
+mod board_census;
 mod campaign_store;
 mod catalog;
 mod cleromancy_selection;

@@ -19,128 +19,18 @@
 //!
 //! Without an adapter every receipt here skips **loudly**.
 
-use isometer::lens::{BrickMap, Grade};
-use isometer::{
-    FrameRequest, GroundTerrain, Scene, SceneFrame, SceneHost, SceneSource, SceneVolumes, VolumeMap,
-};
-use isometry_core::TileCoord;
+//! The fixture the receipts run on moved to [`super::harness`] when B5's cost
+//! receipts needed the same one; nothing about what they assert changed.
 
-use super::board::{BoardPick, BoardSource};
+use isometer::lens::{BrickMap, Grade};
+use isometer::{GroundTerrain, Scene, SceneFrame, SceneHost, SceneVolumes, VolumeMap};
+
+use super::board::BoardPick;
+use super::harness::{Board, PANE, board_or_skip, device, flat_tile};
 use super::terrain::MapTerrain;
-use super::view::BoardView;
 use super::world::BoardWorld;
 use crate::demo::demo_map;
 use crate::state::UiState;
-
-const PANE: (f32, f32) = (640.0, 480.0);
-
-fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
-    pollster::block_on(adapter.request_device(&Default::default())).ok()
-}
-
-/// A board drawn through the shipping path: one `UiState`, the snapshot it
-/// syncs into, and the source over it.
-struct Board {
-    device: wgpu::Device,
-    queue: wgpu::Queue,
-    ui: UiState,
-    handle: super::view::BoardHandle,
-    source: BoardSource,
-}
-
-impl Board {
-    fn new() -> Option<Self> {
-        let (device, queue) = device()?;
-        let map = demo_map();
-        let mut ui = UiState::new(map);
-        ui.viewport = PANE;
-        let centre = (
-            ui.map.ground.width() as i32 / 2,
-            ui.map.ground.height() as i32 / 2,
-        );
-        let (x, y) = ui.geo.tile_to_screen(centre, 0);
-        ui.camera = (PANE.0 / 2.0 - x, PANE.1 / 2.0 - y);
-        let mut view = BoardView::new(ui.map.clone());
-        view.sync(&ui);
-        let handle = view.into_handle();
-        let source = BoardSource::new(handle.clone());
-        Some(Self {
-            device,
-            queue,
-            ui,
-            handle,
-            source,
-        })
-    }
-
-    /// Pushes the state into the snapshot and draws one frame, the way the
-    /// host's own `SceneBoard::sync` plus the producer do.
-    fn draw(&mut self) {
-        self.handle.borrow_mut().sync(&self.ui);
-        let request = FrameRequest {
-            device: &self.device,
-            queue: &self.queue,
-            size: [PANE.0 as u32, PANE.1 as u32],
-            aspect: PANE.0 / PANE.1,
-            color: None,
-            needs_frame: true,
-            render_scale: 1,
-        };
-        self.source
-            .frame(&request)
-            .expect("the scene board draws one frame");
-        self.device
-            .poll(wgpu::PollType::wait_indefinitely())
-            .expect("the frame completes");
-    }
-
-    /// What the tracer did with the terrain on the last frame.
-    fn terrain(&self) -> isometer::lens::BrickDiagnostics {
-        self.source
-            .terrain_diagnostics()
-            .expect("a drawn frame leaves a terrain receipt")
-    }
-
-    /// What the last ground change cost this crate.
-    fn cost(&self) -> super::ground::GroundCost {
-        self.source.ground_cost().expect("the board grew a ground")
-    }
-
-    fn pick(&self, px: f32, py: f32) -> Option<BoardPick> {
-        self.source
-            .pick([2.0 * px / PANE.0 - 1.0, 1.0 - 2.0 * py / PANE.1])
-    }
-}
-
-macro_rules! board_or_skip {
-    ($what:literal) => {
-        match Board::new() {
-            Some(board) => board,
-            None => {
-                eprintln!(
-                    "SKIPPED: no wgpu adapter on this machine, so no frame is drawn and {} \
-                     asserts nothing.",
-                    $what
-                );
-                return;
-            },
-        }
-    };
-}
-
-/// A flat tile the demo map carries, for an edit to land on.
-fn flat_tile(ui: &UiState) -> TileCoord {
-    ui.map
-        .ground
-        .iter()
-        .find(|(col, row, kind)| {
-            kind.0 != 0 && *ui.map.elevation.get(*col, *row).unwrap_or(&0) == 0
-        })
-        .map(|(col, row, _)| (col as i32, row as i32))
-        .expect("the demo map has flat ground")
-}
 
 /// One elevation edit uploads its own bricks and not the board's.
 #[test]
