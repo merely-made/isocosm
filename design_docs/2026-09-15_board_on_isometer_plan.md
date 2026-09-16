@@ -323,3 +323,24 @@ with the family's receipts unchanged; then the board.
   height. And the soft edges above want I3's owner before B5 records the
   pixel grid as landed, since at scale 2 with a fractional fit the
   nearest upscale looks resampled once more by the compositor.
+- **2026-09-15, Mark ruled the cliff height: subdivide the voxel grid.**
+  B2 found the scene's cliffs standing 2.45 times the DOM board's,
+  because a voxel is a cube: one elevation step is one world unit and
+  projects 19.6 px under the 2:1 dimetric, where the DOM's step is 8 px
+  against a 16 px tile. The wanted height per step is 8/19.6, or 0.408
+  world units, which a cubic ground at one voxel per tile cannot
+  express. The ruling is a finer grid rather than a non-cubic ground or
+  a rebased look: **a tile is 5 voxels across and an elevation step is 2
+  voxels tall**, a ratio of 0.400 that projects 7.84 px, within a fifth
+  of a pixel of the DOM's step and within two thirds of a pixel over the
+  demo map's full height range. The cost is 25 times the columns, which
+  a 24 by 24 map absorbs at 120 by 120, and the gain is sub-tile terrain
+  detail the voxel-sourced appearance can use later. The alternatives
+  and why they lost: a world scale in y on the ground would keep the
+  column count but makes voxels non-cubic, which the tracer's stepping
+  assumes, so it is a change to the family's floor and its owner's to
+  make; and accepting the taller cliffs would have moved the shipped
+  look off the GBA-era shallow step that CLAUDE.md names as the target.
+  This revises B1's one-voxel-per-height-unit convention and B2's camera
+  and probe grid, and it lands as its own lane before B5 records the
+  pixel grid.
