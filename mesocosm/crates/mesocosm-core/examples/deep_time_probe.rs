@@ -6,12 +6,14 @@
 //! boundary, what the ecology came to and how many readings beat a mark that
 //! stood before that reckoning.
 //!
-//! Usage: deep_time_probe [seed] [organisms] [epochs] [bare|foundation]
+//! Usage: deep_time_probe [seed] [organisms] [epochs] [bare|foundation|door]
 //! `bare` is `World::new`; `foundation` is the generation door's played world,
-//! with its drawn soil pattern and the first admitted candidate entered.
+//! with its drawn soil pattern and the first admitted candidate entered;
+//! `door` prepares through the generation door with `epochs` as the request's
+//! deep-time span (D7a) and reports the handover.
 
 use mesocosm_core::world::generation::Request;
-use mesocosm_core::{Founding, History, Intent, World};
+use mesocosm_core::{DeepTimeSpan, Founding, History, Intent, World};
 use std::collections::BTreeSet;
 use std::time::Instant;
 
@@ -23,6 +25,9 @@ fn main() {
     let seed = args.first().copied().unwrap_or(7);
     let organisms = args.get(1).copied().unwrap_or(60) as u32;
     let epochs = args.get(2).copied().unwrap_or(8);
+    if std::env::args().any(|a| a == "door") {
+        return door(seed, organisms, epochs as u32);
+    }
     let foundation = std::env::args().any(|a| a == "foundation");
 
     let mut world = if foundation {
@@ -86,5 +91,38 @@ fn main() {
         "total_secs {:.1} history_entries {}",
         started.elapsed().as_secs_f64(),
         history.len()
+    );
+}
+
+/// One generation-door preparation with a deep-time span: wall time, the
+/// handed-over world and the past it carries.
+fn door(seed: u64, organisms: u32, epochs: u32) {
+    let started = Instant::now();
+    let prepared = Request {
+        seed,
+        organisms,
+        deep_time: DeepTimeSpan { epochs },
+        ..Request::default()
+    }
+    .prepare(Founding::Drawn.palette())
+    .expect("a prepared habitat");
+    let secs = started.elapsed().as_secs_f64();
+    let world = prepared.habitat_world();
+    let species: BTreeSet<_> = world.living().map(|o| o.species).collect();
+    println!("seed={seed} organisms={organisms} span={epochs} world=door");
+    println!(
+        "tick {} epoch {} at_boundary {} living {} species {} history_entries {} filled {} candidates {} secs {secs:.1}",
+        world.tick,
+        world.epoch,
+        world.at_boundary(),
+        world.living().count(),
+        species.len(),
+        prepared.history().len(),
+        world.record().filled(),
+        prepared.draft().candidates.len(),
+    );
+    println!(
+        "lineages {species:?} rejected {:?}",
+        prepared.draft().rejected
     );
 }

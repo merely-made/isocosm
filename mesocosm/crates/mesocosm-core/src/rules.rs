@@ -176,6 +176,30 @@ impl EpochRule {
     }
 }
 
+/// How many epochs a world lives through before anyone steps in. (D7a)
+///
+/// **A world rule, never a constant** (isoscape family plan, rulings 5 and
+/// 16): the span is part of the rules digest, so a save or a replay cites the
+/// past it was handed, and whatever varies it later sets it here. Zero is the
+/// bare world's span, because deep time is a property of generated worlds and
+/// not of the bare constructor (§2.3). Mesocosm's own type rather than
+/// `hagiograph::DeepTime`, which does not derive the ordering and hashing
+/// `WorldRules` does; [`From`] hands the hagiograph its form.
+#[derive(
+    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
+pub struct DeepTimeSpan {
+    pub epochs: u32,
+}
+
+impl From<DeepTimeSpan> for hagiograph::DeepTime {
+    fn from(span: DeepTimeSpan) -> Self {
+        Self {
+            epochs: span.epochs,
+        }
+    }
+}
+
 /// A content address for one complete admitted ruleset.
 #[derive(
     Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
@@ -218,6 +242,9 @@ pub struct WorldRules {
     /// Cumulative disfavoured tissue allowance and the incoming graft's cost.
     #[serde(default = "crate::graft::compatibility::Compatibility::legacy_disabled")]
     pub graft_compatibility: crate::graft::compatibility::Compatibility,
+    /// The epochs this world ran before handover. See [`DeepTimeSpan`].
+    #[serde(default)]
+    pub deep_time: DeepTimeSpan,
 }
 
 fn default_score_ticks() -> u64 {
@@ -241,6 +268,7 @@ impl Default for WorldRules {
             trophic_grammar: 0,
             soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
             graft_compatibility: crate::graft::compatibility::Compatibility::legacy_disabled(),
+            deep_time: DeepTimeSpan::default(),
         }
     }
 }
@@ -261,6 +289,8 @@ impl WorldRules {
             trophic_grammar: TROPHIC_GRAMMAR_REVISION,
             soil_mineralization_mg_per_column_per_tick: default_soil_mineralization(),
             graft_compatibility: crate::graft::compatibility::Compatibility::native(),
+            // No past: a generated world's span is set by its generation door.
+            deep_time: DeepTimeSpan::default(),
         }
     }
 
@@ -294,6 +324,7 @@ impl WorldRules {
                 .to_le_bytes(),
         );
         bytes.extend_from_slice(&self.graft_compatibility.digest().to_le_bytes());
+        bytes.extend_from_slice(&self.deep_time.epochs.to_le_bytes());
         crate::snapshot::hash_bytes(&bytes)
     }
 }
@@ -366,6 +397,29 @@ mod tests {
             let decoded: WorldRules =
                 crate::snapshot::decode(&crate::snapshot::encode(&configured).unwrap()).unwrap();
             assert_eq!(decoded, configured);
+        }
+    }
+
+    /// The deep-time span is zero unless a world is given one, saved, digested,
+    /// and handed to the hagiograph as the same count. (D7a)
+    #[test]
+    fn the_deep_time_span_is_zero_by_default_saved_and_digested() {
+        assert_eq!(WorldRules::native().deep_time.epochs, 0);
+        assert_eq!(WorldRules::default().deep_time.epochs, 0);
+        let native = WorldRules::native();
+        for epochs in [1, 6, u32::MAX] {
+            let spanned = WorldRules {
+                deep_time: DeepTimeSpan { epochs },
+                ..native
+            };
+            assert_ne!(spanned.digest(), native.digest(), "a span is rule-bearing");
+            let decoded: WorldRules =
+                crate::snapshot::decode(&crate::snapshot::encode(&spanned).unwrap()).unwrap();
+            assert_eq!(decoded, spanned);
+            assert_eq!(
+                hagiograph::DeepTime::from(spanned.deep_time),
+                hagiograph::DeepTime { epochs }
+            );
         }
     }
 

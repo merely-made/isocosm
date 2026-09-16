@@ -23,6 +23,9 @@
 //! that makes the change and with the reason written down. A failing pin is not
 //! noise to re-capture; it is the receipt doing its job.
 //!
+//! Format changes since capture: the world state hash moved once for step D7a
+//! (the deep-time rules field); its test says why.
+//!
 //! Pins that already exist elsewhere, and are not duplicated here:
 //! `isometer-mesh`'s `content_tests.rs` pins the blake3 content address of the
 //! v1 sensor fixture volume as a literal hex digest (`content_ref` is private
@@ -42,7 +45,7 @@ use mesocosm_core::{
 ///
 /// Note the committed receipt `mesocosm/testing/glyphs/journey.json` records
 /// `765c055b377dfb62` for the same world. That receipt is stale — running the
-/// example at e088d7e prints `df397e7c183eec55`, the value pinned below — and
+/// example at e088d7e prints `df397e7c183eec55`, the value first pinned below — and
 /// is the same class of fixture drift the plan's §5 risk 1 records for
 /// `structure-cli.scenario`. The pin records what the tree does today, which is
 /// what the move has to preserve.
@@ -83,11 +86,16 @@ fn fixture_body() -> BodyDocument {
     body
 }
 
+/// **Re-pinned once, 2026-09-16, for isoscape family plan step D7a**: the
+/// deep-time span joined `WorldRules`, and postcard writes every rules field,
+/// so every world gained one byte (a zero span). Was `df397e7c183eec55`;
+/// removing that one byte from today's snapshot reproduces it exactly. No
+/// other pin in this file moved.
 #[test]
 fn deterministic_world_state_hash_is_pinned() {
     assert_eq!(
         format!("{:016x}", state_hash(&journey_world())),
-        "df397e7c183eec55",
+        "88662e9be82d7bef",
         "seed 0 at tick 0 is glyph_journey's baseline world"
     );
 }

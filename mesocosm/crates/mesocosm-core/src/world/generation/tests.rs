@@ -172,9 +172,9 @@ fn varying_bodies_preserves_habitat_and_locked_criteria() {
     let mut request = Request::default();
     request.criteria.role = Some(Kingdom::Consumer);
     request.criteria.movement_organs = Some(true);
-    let (first, first_world) = request.draft_world(palette()).unwrap();
+    let (first, first_world, _) = request.draft_world(palette()).unwrap();
     request.variation = 1;
-    let (second, second_world) = request.draft_world(palette()).unwrap();
+    let (second, second_world, _) = request.draft_world(palette()).unwrap();
     assert_eq!(first.habitat, second.habitat);
     assert_eq!(state_hash(&first_world), state_hash(&second_world));
     assert_ne!(first.candidates, second.candidates);
@@ -236,7 +236,7 @@ fn entry_conserves_budget_and_runs_through_save_and_replay() {
         request: Request::default(),
         candidate: 1,
     };
-    let (_, provisional) = selection.request.draft_world(palette()).unwrap();
+    let (_, provisional, _) = selection.request.draft_world(palette()).unwrap();
     let mut world = selection.enter(palette()).unwrap();
     let matter = world.total_matter_mg();
     assert_eq!(matter, provisional.total_matter_mg());
@@ -409,4 +409,77 @@ fn habitat_criteria_validate_versions_and_distribution() {
         request.version = version;
         assert!(request.validate().is_err());
     }
+}
+
+/// D7a: a span runs deep time on the foundation, the draft meets the world it
+/// handed over, and entry refuses by name because a world with a past is
+/// entered as an heir, which is D7b. Three founders keep a thousand-tick epoch
+/// cheap in a debug build.
+#[test]
+fn a_spanned_request_prepares_a_handed_over_foundation_and_refuses_entry() {
+    let request = Request {
+        organisms: 3,
+        deep_time: DeepTimeSpan { epochs: 1 },
+        ..Request::default()
+    };
+    let prepared = request.prepare(palette()).unwrap();
+    let foundation = prepared.habitat_world();
+    assert_eq!(foundation.rules().deep_time, request.deep_time);
+    assert_eq!(foundation.epoch, 1);
+    assert!(foundation.at_boundary(), "handed over on the boundary");
+    assert_eq!(foundation.tick, crate::rules::DEFAULT_EPOCH_TICKS);
+    assert_eq!(foundation.controlled_id(), None, "no hand in deep time");
+    assert!(!prepared.history().is_empty(), "the past rides on Prepared");
+
+    let draft = prepared.draft();
+    assert!(!draft.candidates.is_empty(), "{:?}", draft.rejected);
+    assert_eq!(draft, &request.preview(palette()).unwrap());
+    let fresh = Request {
+        deep_time: DeepTimeSpan::default(),
+        ..request.clone()
+    }
+    .preview(palette())
+    .unwrap();
+    assert_eq!(draft.habitat, fresh.habitat, "the habitat is laid first");
+    assert_ne!(
+        draft.candidates, fresh.candidates,
+        "and candidates meet the soil the past left"
+    );
+
+    let refused = Err(Error::HeirEntryNotBuilt { epochs: 1 });
+    assert_eq!(prepared.enter(0), refused);
+    assert_eq!(prepared.enter(usize::MAX), refused);
+    assert_eq!(prepared.enter_proportion(0, 0, 0), refused);
+    assert_eq!(
+        prepared.observe(0, 1).map(|_| ()),
+        refused.map(|_: World| ())
+    );
+}
+
+/// A request saved before the span existed decodes to a zero span and founds
+/// the world it always did: no past, founders' births still pending, and
+/// entry exactly as a fresh selection's.
+#[test]
+fn a_request_without_a_span_founds_the_world_it_did() {
+    let mut saved = serde_json::to_value(Request::default()).unwrap();
+    assert!(saved.as_object_mut().unwrap().remove("deep_time").is_some());
+    let request: Request = serde_json::from_value(saved).unwrap();
+    assert_eq!(request, Request::default());
+
+    let prepared = request.prepare(palette()).unwrap();
+    let foundation = prepared.habitat_world();
+    assert!(prepared.history().is_empty());
+    assert_eq!((foundation.tick, foundation.epoch), (0, 0));
+    assert!(foundation.controlled_id().is_some());
+    assert_eq!(foundation.events().len(), request.organisms as usize + 1);
+    let expected = Selection {
+        request,
+        candidate: 1,
+    }
+    .enter(palette())
+    .unwrap();
+    assert_eq!(
+        state_hash(&prepared.enter(1).unwrap()),
+        state_hash(&expected)
+    );
 }

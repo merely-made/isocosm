@@ -8,11 +8,13 @@
 use serde::{Deserialize, Serialize};
 
 use super::{ENCLOSURE, Founding, World};
+use crate::deep_time::DeepTimeError;
 use crate::matter::Material;
 use crate::places::{PlaceId, Soil, surface_stance_for};
+use crate::rules::DeepTimeSpan;
 use crate::{
-    BodyDocument, BodyPhenotype, InitialTissueRecipe, Kingdom, PartPalette, Recipe, Rng, Soma,
-    SpeciesId, Symmetry,
+    BodyDocument, BodyPhenotype, History, InitialTissueRecipe, Kingdom, PartPalette, Recipe, Rng,
+    Soma, SpeciesId, Symmetry,
 };
 
 /// Bump when seed streams, admission, or founding interpretation change.
@@ -83,6 +85,10 @@ pub struct Request {
     pub soil_pattern: SoilPattern,
     /// Minimum successful cardinal terrain steps from the starting stance.
     pub min_open_steps: u8,
+    /// Epochs the foundation lives through before candidates are drafted.
+    /// (D7a) Zero, the default, founds the world a request without it did, so
+    /// interpretation is unchanged and `VERSION` is not bumped.
+    pub deep_time: DeepTimeSpan,
 }
 
 impl Default for Request {
@@ -101,6 +107,7 @@ impl Default for Request {
             fixed_body: None,
             soil_pattern: SoilPattern::Patches,
             min_open_steps: 0,
+            deep_time: DeepTimeSpan::default(),
         }
     }
 }
@@ -115,7 +122,10 @@ pub struct Selection {
 /// Immutable admitted candidates and founding context for disposable previews.
 pub struct Prepared {
     draft: Draft,
+    /// Handed over by deep time when the request carries a span.
     foundation: World,
+    /// What the foundation lived through; empty for a zero span.
+    history: History,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -154,7 +164,17 @@ pub enum Error {
     Version(u32),
     Invalid(&'static str),
     Development(String),
-    CandidateUnavailable { requested: usize, available: usize },
+    CandidateUnavailable {
+        requested: usize,
+        available: usize,
+    },
+    /// The foundation's deep time refused to run.
+    DeepTime(DeepTimeError),
+    /// A foundation with a past is entered as heir to a line that lived
+    /// through it, which is D7b's door and not built yet.
+    HeirEntryNotBuilt {
+        epochs: u32,
+    },
 }
 
 impl Request {
@@ -224,15 +244,19 @@ impl Request {
     }
 
     pub fn preview(&self, palette: PartPalette) -> Result<Draft, Error> {
-        self.draft_world(palette).map(|(draft, _)| draft)
+        self.draft_world(palette).map(|(draft, ..)| draft)
     }
 
     pub fn prepare(&self, palette: PartPalette) -> Result<Prepared, Error> {
         self.draft_world(palette)
-            .map(|(draft, foundation)| Prepared { draft, foundation })
+            .map(|(draft, foundation, history)| Prepared {
+                draft,
+                foundation,
+                history,
+            })
     }
 
-    fn draft_world(&self, palette: PartPalette) -> Result<(Draft, World), Error> {
+    fn draft_world(&self, palette: PartPalette) -> Result<(Draft, World, History), Error> {
         self.validate()?;
         let mut world =
             World::founded_with_palette(self.seed, self.organisms, Founding::Drawn, palette)
@@ -262,6 +286,11 @@ impl Request {
                 );
             }
         }
+        // Deep time, after the habitat is laid and before anything is drafted,
+        // so candidates meet the soil and occupancy the past left (§2.4).
+        world.rules.deep_time = self.deep_time;
+        let mut history = History::new();
+        world.run_deep_time(&mut history).map_err(Error::DeepTime)?;
         let centre = habitat[self.place as usize].centre;
         let mut draft = Draft {
             request: self.clone(),
@@ -280,7 +309,7 @@ impl Request {
                     draft.rejected.insert(reason.into(), 1);
                 },
             }
-            return Ok((draft, world));
+            return Ok((draft, world, history));
         }
         while draft.attempted < self.attempts && draft.candidates.len() < self.candidates as usize {
             draft.attempted += 1;
@@ -308,7 +337,7 @@ impl Request {
                 Err(reason) => *draft.rejected.entry(reason.into()).or_default() += 1,
             }
         }
-        Ok((draft, world))
+        Ok((draft, world, history))
     }
 
     fn candidate(
@@ -357,7 +386,13 @@ impl Request {
         if body.parts.len() > self.criteria.max_parts as usize {
             return Err("part constraint");
         }
-        let mut organism = world.organisms[0].clone();
+        // Any roster member serves: only the swapped-in phenotype is read. A
+        // foundation deep time emptied has none, and offers no candidate.
+        let mut organism = world
+            .organisms
+            .first()
+            .ok_or("no roster left to measure the body against")?
+            .clone();
         organism.phenotype = BodyPhenotype::seed(body.clone());
         if organism.kingdom() != role {
             return Err("realized trophic role differs");
@@ -417,7 +452,13 @@ impl Prepared {
         &self.draft
     }
 
+    /// The past deep time gave the foundation, which a baseline carries.
+    pub fn history(&self) -> &History {
+        &self.history
+    }
+
     pub fn enter(&self, index: usize) -> Result<World, Error> {
+        self.without_past()?;
         let candidate = self
             .draft
             .candidates
@@ -427,6 +468,16 @@ impl Prepared {
                 available: self.draft.candidates.len(),
             })?;
         self.enter_admitted(candidate)
+    }
+
+    /// Entering swaps a body into organism 0 of lineage 1 at tick zero, which
+    /// is only today's entry while the foundation has no past. Checked first on
+    /// both public doors that enter, so `observe` refuses through `enter`.
+    fn without_past(&self) -> Result<(), Error> {
+        match self.foundation.rules().deep_time.epochs {
+            0 => Ok(()),
+            epochs => Err(Error::HeirEntryNotBuilt { epochs }),
+        }
     }
 
     fn enter_admitted(&self, candidate: &Candidate) -> Result<World, Error> {

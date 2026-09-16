@@ -43,6 +43,7 @@
 
 pub mod axis;
 pub mod cohort;
+pub mod deep_time;
 pub mod development;
 pub mod discovery;
 pub mod effect_experiment;
@@ -94,6 +95,7 @@ pub use isometer_core::{anatomy, body, plan, wire};
 pub use axis::{Appendage, AppendageStep, ChainFacing, Recipe, Soma, Tagma, Unspeakable};
 pub use chronicle::{Chronicle, Consequence, Deed, PartOrigin, generate};
 pub use cohort::{Cohort, CohortKey, CohortMember};
+pub use deep_time::DeepTimeError;
 pub use development::{
     DevelopmentError, PALETTE_SHAPES, PartPalette, PartTemplate, RoleShapes, develop_body,
     minimum_body_mass_mg,
@@ -131,7 +133,7 @@ pub use program::{
 };
 pub use record::{Feat, Mark, Scale, WorldRecord};
 pub use rng::Rng;
-pub use rules::{RulesetDigest, TROPHIC_GRAMMAR_REVISION, WorldRules};
+pub use rules::{DeepTimeSpan, RulesetDigest, TROPHIC_GRAMMAR_REVISION, WorldRules};
 pub use score::{Reading, readings};
 pub use snapshot::{SnapshotError, restore, restore_under, snapshot, state_hash};
 pub use species::{InitialTissueRecipe, Lineages, Species, TissueRecipeError};

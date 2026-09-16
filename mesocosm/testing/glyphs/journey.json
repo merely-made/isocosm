@@ -12,7 +12,7 @@
           "removed": 15
         }
       },
-      "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
+      "evidence": "mesocosm.trial/88662e9be82d7bef/21120e290608508e/history/1",
       "glyph": "demo:earth",
       "kind": "carved",
       "outcome": "acquired",
@@ -21,7 +21,7 @@
     }
   ],
   "actor": 0,
-  "baseline_hash": "df397e7c183eec55",
+  "baseline_hash": "88662e9be82d7bef",
   "carve_target": [
     0,
     12,
@@ -30,7 +30,7 @@
   "divine_power_minted": false,
   "effect_reference_executed": false,
   "experience_awarded_by_world": false,
-  "final_world_hash": "2dc9e1470df7c7c4",
+  "final_world_hash": "2598d7fd6de08086",
   "measurement": {
     "end_tick": 4,
     "metric_id": "demo:seed-0-actor-0-removed-voxels-v1",
@@ -72,7 +72,7 @@
         "policy": "RequireOwnedBase",
         "provenance": {
           "context": "Carved; organism=0",
-          "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
+          "evidence": "mesocosm.trial/88662e9be82d7bef/21120e290608508e/history/1",
           "kind": "Event"
         },
         "tick": 0
@@ -88,7 +88,7 @@
           "life": 1,
           "provenance": {
             "context": "Carved; organism=0",
-            "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
+            "evidence": "mesocosm.trial/88662e9be82d7bef/21120e290608508e/history/1",
             "kind": "Event"
           },
           "tick": 0
@@ -121,7 +121,7 @@
           "policy": "RequireOwnedBase",
           "provenance": {
             "context": "Carved; organism=0",
-            "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
+            "evidence": "mesocosm.trial/88662e9be82d7bef/21120e290608508e/history/1",
             "kind": "Event"
           },
           "tick": 0
@@ -167,7 +167,7 @@
             "policy": "RequireOwnedBase",
             "provenance": {
               "context": "Carved; organism=0",
-              "evidence": "mesocosm.trial/df397e7c183eec55/dcec6cbff2f6ba1a/history/1",
+              "evidence": "mesocosm.trial/88662e9be82d7bef/21120e290608508e/history/1",
               "kind": "Event"
             },
             "tick": 0

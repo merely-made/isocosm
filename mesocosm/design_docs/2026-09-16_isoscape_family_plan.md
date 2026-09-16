@@ -447,6 +447,36 @@ Replay is settled by ruling 13. Two questions in that list remain, and §5
 asks them: what the heir's body is paid from and what it is to its line, and
 whether the first slice compacts the history it carries.
 
+### 2.5 What deep time handed over (measured after D7a)
+
+Through the generation door with a six-epoch span, 24 founders, release
+build, reproduced by the orchestrator with `deep_time_probe ... door`:
+
+| Seed | Living | Lineages alive | Candidates drafted | Seconds | History |
+| --- | --- | --- | --- | --- | --- |
+| 7 | 900 | 4 | 0 of 128 attempts | 22.8 | 51,432 |
+| 1 | 599 | 2 | 0 of 128 attempts | 15.6 | 17,110 |
+| 42 | 1,287 | 2 and 4 | 4 | 16.1 | 314,575 |
+
+**The player's line, lineage 1, died out on all three seeds.** On seeds 7
+and 1 every draft attempt was refused for "insufficient local founding
+matter for body and reserve": the patch's matter is held in the living.
+
+**Compare §2.1's runs**, the same foundations with the played critter idling
+under a hand: seed 7 kept two lineages to epoch 8 and lineage 1 among them.
+Two things differ with no hand, and the measurements do not yet separate
+them. The released body and its line take their own adaptation turns. And
+**with no focus the ecology skips its near/far tier updates**, so every body
+stays at the tier it had when control was released. The second is a
+simulation difference, not an ecological one, and could bias which lines
+survive.
+
+**Open before D7b.** Whether frozen tiers are an artifact deep time must
+remove; what the heir entry offers when the player's line is extinct, given
+ruling 7 ("if that line died out, the draft offers a surviving one") and
+ruling 15's create path "within the evolved line"; and where a created
+critter's founding matter comes from when the local patch is exhausted.
+
 ---
 
 ## 3. Family layout
@@ -591,8 +621,8 @@ the same finished step, can run in parallel.
 | **D4.** The continued clock in the runtime: a runtime built from a world with a past carries its history and starts `epoch_seen` at the world's epoch; the trial accepts a baseline world with its history and replays it exactly; `Trial::new` keeps refusing a past with no history | `mesocosm-runtime` | nothing | sonnet |
 | **D5.** The advance-to-boundary control, ruled 2026-09-16: one bench action steps the trial until the next epoch boundary, a checkpoint or the ceiling, with probe fields for the epoch and the last boundary tick | `mesocosm-genet` bench | nothing | sonnet |
 | **D6.** Mesocosm reads the hagiograph's record: `WorldRecord` becomes Mesocosm's axis set over the moved mechanism, re-exported at its old paths; the six byte pins hold | `mesocosm-core` | D2 pushed and pinned | sonnet |
-| **D7a.** Deep time in Mesocosm: `WorldRules` gains the span (bare worlds zero, the generated preset six, never a constant; **the six byte pins and both journey hashes re-pin once**, since postcard writes every rules field); `World` implements `Epochal` with no hand; the generation door runs deep time on the foundation and drafts against the handed-over world; generation `VERSION` 4 to 5 | `mesocosm-core` | D3, D4, D6 | opus |
-| **D7b.** The heir's entry, ruling 15: **inhabit** a living critter of a surviving line; **create** a new critter within the evolved line, paid from local soil, leaving the line's program as deep time left it; and **align**, an explicit act that makes a created critter's recipe its line's program | `mesocosm-core`, creator in genet | D7a | opus |
+| **D7a.** Deep time in Mesocosm: `WorldRules` gains the span (bare worlds and requests zero, never a constant; **the world-state pin and the journey hashes re-pin once**, since postcard writes every rules field); `World` runs deep time with no hand through the hagiograph's seam; the generation door runs it on the foundation and drafts against the handed-over world, and refuses entry into a world with a past until D7b. **No `VERSION` bump**: a request without the span founds the same world. **Landed 2026-09-16** | `mesocosm-core` | D3, D4, D6 | opus |
+| **D7b.** The heir's entry, ruling 15: **inhabit** a living critter of a surviving line; **create** a new critter within the evolved line, paid from local soil, leaving the line's program as deep time left it; and **align**, an explicit act that makes a created critter's recipe its line's program. The generated preset's span of six (ruling 16) turns on here, once entry works. **Blocked on §2.5's questions** | `mesocosm-core`, creator in genet | D7a, §2.5 | opus |
 | **D8.** The baseline save carries the history whole, with a size receipt per seed (ruling 17) | `mesocosm-runtime`, genet | D7a | sonnet |
 | **D9.** The bench readout: each deep-time boundary's population, species and feats, from the handover receipt | `mesocosm-genet` | D5, D7a | sonnet |
 | **D10.** Law C for world history in Mesocosm: a generated world's events and marks cannot be told from a played run's | `mesocosm-core` tests | D7a | sonnet |
@@ -741,3 +771,17 @@ world-history Law C test.
   hold with no value edited, the core suite is 746 before and after, and in
   the main tree the pins, record tests, reckoning test and a Paredros
   workspace check all pass.
+- **2026-09-16.** D7a landed. `DeepTimeSpan` joins `WorldRules` (digest and
+  serde default zero); `World::run_deep_time` releases control through a
+  crate-internal door that leaves `control_lost` alone, then drives
+  `hagiograph::run`, with a ceiling of span plus one epochs of ticks and a
+  named refusal for rules that never close an epoch; `Request.deep_time`
+  makes `prepare` run it and keep the history on `Prepared`, and every
+  entry door refuses with `HeirEntryNotBuilt` for a non-zero span. Only the
+  world-state pin moved, `df397e7c183eec55` to `88662e9be82d7bef`, and
+  removing the one new zero byte reproduces the old hash; journey hashes
+  moved with it. Core 746 to 757 tests, runtime 79 to 80, all workspaces
+  compile. The plan's row had said the generated preset six and a `VERSION`
+  bump; the orchestrator's brief deferred the preset to D7b and kept
+  `VERSION` 4, and the row now says so. §2.5 records what the handover
+  produced.

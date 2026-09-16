@@ -367,6 +367,62 @@ fn with_past_activity_sequence_numbers_index_the_full_history() {
     assert!(checked > 0, "fixture must exercise at least one activity");
 }
 
+/// D7a: core's own deep time, not the fixture, feeds a trial. Deep time hands
+/// over with no hand, and a trial needs a living body, so the world is first
+/// inhabited by one ordinary `TakeControl` tick recorded the way a runtime
+/// records one; choosing that body is D7b's heir entry, not this step's.
+#[test]
+fn a_world_after_core_deep_time_trials_without_reckoning_and_replays() {
+    let source = World::new(7, 60);
+    let rules = source.rules();
+    let mut world = source.with_rules(mesocosm_core::WorldRules {
+        epoch: mesocosm_core::rules::EpochRule::Timed { ticks: 20 },
+        deep_time: mesocosm_core::DeepTimeSpan { epochs: 2 },
+        ..rules
+    });
+    let mut history = History::new();
+    let handover = world.run_deep_time(&mut history).unwrap();
+    assert!(
+        Trial::with_past(&world, &history).is_err(),
+        "deep time hands over with nobody in the world"
+    );
+
+    let heir = world
+        .living()
+        .map(|organism| organism.id)
+        .find(|id| world.is_eligible(*id))
+        .expect("a playable critter survived deep time");
+    world.apply(Intent::TakeControl { organism: heir });
+    history.record_all(world.drain_events());
+    drop(world.drain_flows());
+    assert_eq!(world.epoch, handover.to_epoch, "inhabiting closed no epoch");
+
+    let mut trial = Trial::with_past(&world, &history).unwrap();
+    assert!(trial.step());
+    assert_eq!(trial.world().epoch, handover.to_epoch);
+    assert!(
+        trial.runtime.reckoning().is_empty(),
+        "the first tick reckons nothing deep time already reckoned"
+    );
+    let mut taken = 1;
+    while taken < 15 && trial.step() {
+        taken += 1;
+    }
+    let (hash, past) = (trial.state_hash(), trial.history().clone());
+
+    trial.reset();
+    assert_eq!(
+        trial.history(),
+        &history,
+        "reset returns to the handed-over past"
+    );
+    for _ in 0..taken {
+        assert!(trial.step());
+    }
+    assert_eq!(trial.state_hash(), hash);
+    assert_eq!(trial.history(), &past);
+}
+
 /// The positive control for the raised ceiling: a trial at the shipped
 /// ceiling reaches the world's own first epoch boundary, where the reckoning
 /// feats are read from happens, and runs on past it. 128 stopped 872 ticks

@@ -131,6 +131,7 @@ impl Prepared {
         round: u64,
         alternative: usize,
     ) -> Result<World, Error> {
+        self.without_past()?;
         let options = self.proportions(index, round)?;
         let option = options
             .get(alternative)
