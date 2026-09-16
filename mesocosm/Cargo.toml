@@ -34,6 +34,11 @@ muniment = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4
 # as a derived view over accepted ground revisions without acquiring a physics
 # backend.
 nisus = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+# The history organ: the generic mark record `mesocosm-core::record` now
+# builds on (isoscape family plan, rulings 8-10, step D6). Pinned at its own
+# mere revision, apart from the family rev above, until a deliberate whole-mere
+# bump (isoscape family plan §4).
+hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "53648d3acf51fe72e37f7f57687b70c4ef0ca961" }
 # The shared tactile runtime: bodies, voxel collision, and spatial queries
 # with Rapier private inside it. Mesocosm consumes advice through Conatus ids
 # and arrays only; the T1 adapter in mesocosm-runtime is its product home.

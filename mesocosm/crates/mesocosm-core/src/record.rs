@@ -4,54 +4,25 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! What a world has seen, and what it remembers of who did it.
+//! Mesocosm's axis set over the hagiograph's standing record.
 //!
-//! Significance is **abnormality measured against the world's own record**, so
-//! there has to be a record. This is the smallest one that answers the
-//! question, and its shape was chosen for a property that turns out to matter
-//! more than its size.
+//! [`Feat`] and [`Scale`] are this game's own vocabulary: six kinds of thing a
+//! lineage can do, at three scales. `Symbiosis` and `Construction` stay
+//! untouched today, deliberately — nothing in the simulation yet gives to
+//! another creature or changes the enclosure itself, and `score.rs` (which
+//! computes the readings [`World::reckon`](crate::world::World::reckon) notes
+//! here) explains why that is worth leaving unwritten rather than noted as a
+//! zero.
 //!
-//! # It merges without a protocol
-//!
-//! Worlds fork, graft, and combine, so two records will need joining. This one
-//! joins by taking the higher mark per axis, and that operation is
-//! **commutative, associative, and idempotent**. Those three together make it a
-//! join-semilattice, which means peers can hand each other records in any
-//! order, twice, interleaved, and still converge. No coordination, no merge
-//! protocol, no last-writer-wins.
-//!
-//! That is why this is a few integers rather than a search index. A text index
-//! can be merged but its relevance stops meaning the same thing; a vector index
-//! merges only if both sides embedded with the same model, which is the
-//! ruleset-binding problem wearing a hat. **Mergeability is the requirement
-//! that picks the structure**, not size.
-//!
-//! It is also the one place the wing's guidance actually calls for a
-//! conflict-free type: introduce one only where a domain proves it needs
-//! mergeable concurrent values. This domain proves it, and it is the trivial
-//! case.
-//!
-//! # Thresholds forget, holders are retold
-//!
-//! A pure maximum forgets *who*. Beating a record would erase the name of
-//! whoever held it, which is exactly the fact loss that makes a history feel
-//! fake.
-//!
-//! So a [`Mark`] keeps both: the threshold as a maximum, and the holders of
-//! *that* threshold as a set. Ties union, a higher mark replaces, and the set
-//! stays small on its own without an arbitrary cap. Remembering every past
-//! holder forever is the unbounded version, and it is the tulpa selector's
-//! problem rather than this type's: the journal holds everything, tulpa holds what
-//! is retold. Same rule, world scale.
-//!
-//! # What this does not answer
-//!
-//! Abnormality is a lookup: *has anyone reached this*. Significance in the
-//! fuller sense is a traversal: *what later depended on this*, which is
-//! the journal's causal graph. Two questions, two structures, deliberately.
+//! The mechanism lives in [`hagiograph`], mere's history organ, since the
+//! isoscape family plan (rulings 8 to 10): the join-semilattice merge, the
+//! rule that a mark keeps its holders rather than forgetting who, and the
+//! abnormality query itself. [`WorldRecord`] is a thin newtype over
+//! [`hagiograph::Record`] keyed by `(Feat, Scale)` and
+//! [`SpeciesId`](crate::body::SpeciesId), `#[serde(transparent)]` so its
+//! postcard bytes are the inner record's own.
 
-use std::collections::{BTreeMap, BTreeSet};
-
+use hagiograph::Record;
 use serde::{Deserialize, Serialize};
 
 use crate::body::SpeciesId;
@@ -96,44 +67,14 @@ pub enum Scale {
     Worldwide,
 }
 
-/// A high-water mark, and who stands at it.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Mark {
-    /// The highest anyone has reached. Integer, like everything the simulation
-    /// decides, so two worlds compare exactly.
-    pub high: i64,
-    /// Who reached it. Ties share the mark; being beaten gives it up.
-    pub holders: BTreeSet<SpeciesId>,
-}
-
-impl Mark {
-    fn new(high: i64, by: SpeciesId) -> Self {
-        Self {
-            high,
-            holders: BTreeSet::from([by]),
-        }
-    }
-
-    /// Joins another mark into this one.
-    ///
-    /// The whole semilattice, in one match. A higher mark wins outright, an
-    /// equal one shares, and the operation does not care which side it was
-    /// called on or how many times.
-    fn join(&mut self, other: &Mark) {
-        match other.high.cmp(&self.high) {
-            std::cmp::Ordering::Greater => *self = other.clone(),
-            std::cmp::Ordering::Equal => self.holders.extend(other.holders.iter().copied()),
-            std::cmp::Ordering::Less => {},
-        }
-    }
-}
+/// A high-water mark, and who stands at it. The hagiograph's generic mark,
+/// fixed to this game's holder type.
+pub type Mark = hagiograph::Mark<SpeciesId>;
 
 /// Everything a world has seen, keyed by what and how far.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldRecord {
-    /// Ordered, so iteration and serialization are deterministic.
-    marks: BTreeMap<(Feat, Scale), Mark>,
-}
+#[serde(transparent)]
+pub struct WorldRecord(Record<(Feat, Scale), SpeciesId>);
 
 impl WorldRecord {
     pub fn new() -> Self {
@@ -142,7 +83,7 @@ impl WorldRecord {
 
     /// The standing mark for one axis, if anyone has set one.
     pub fn standing(&self, feat: Feat, scale: Scale) -> Option<&Mark> {
-        self.marks.get(&(feat, scale))
+        self.0.standing(&(feat, scale))
     }
 
     /// Whether this would be the first, or the best, anyone has managed.
@@ -150,8 +91,7 @@ impl WorldRecord {
     /// **The abnormality query.** One comparison, which is the whole reason
     /// the record is a handful of integers rather than an index.
     pub fn is_unprecedented(&self, feat: Feat, scale: Scale, value: i64) -> bool {
-        self.standing(feat, scale)
-            .is_none_or(|mark| value > mark.high)
+        self.0.is_unprecedented(&(feat, scale), value)
     }
 
     /// Whether anyone has ever done this at all, at any magnitude.
@@ -159,17 +99,12 @@ impl WorldRecord {
     /// A goal generator wants this: "something no species on the planet has
     /// done" is a different question from "more than anyone has done."
     pub fn untouched(&self, feat: Feat, scale: Scale) -> bool {
-        self.standing(feat, scale).is_none()
+        self.0.untouched(&(feat, scale))
     }
 
     /// Records what a lineage did. Returns whether it took the record.
     pub fn note(&mut self, feat: Feat, scale: Scale, value: i64, by: SpeciesId) -> bool {
-        let took = self.is_unprecedented(feat, scale, value);
-        self.marks
-            .entry((feat, scale))
-            .and_modify(|mark| mark.join(&Mark::new(value, by)))
-            .or_insert_with(|| Mark::new(value, by));
-        took
+        self.0.note((feat, scale), value, by)
     }
 
     /// Joins another world's record into this one.
@@ -177,17 +112,12 @@ impl WorldRecord {
     /// Order-independent and repeatable, so a moot can fold records from peers
     /// as they arrive without sequencing them.
     pub fn merge(&mut self, other: &WorldRecord) {
-        for (axis, mark) in &other.marks {
-            self.marks
-                .entry(*axis)
-                .and_modify(|mine| mine.join(mark))
-                .or_insert_with(|| mark.clone());
-        }
+        self.0.merge(&other.0);
     }
 
     /// Axes anyone has reached, in a deterministic order.
     pub fn axes(&self) -> impl Iterator<Item = (Feat, Scale)> + '_ {
-        self.marks.keys().copied()
+        self.0.axes().copied()
     }
 
     /// How much of the possible record this world has filled.
@@ -196,12 +126,14 @@ impl WorldRecord {
     /// which is the storyteller's actual brief: keep this below one by opening
     /// possibility rather than by manufacturing calamity.
     pub fn filled(&self) -> usize {
-        self.marks.len()
+        self.0.filled()
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use std::collections::BTreeSet;
+
     use super::*;
 
     const A: SpeciesId = SpeciesId(1);

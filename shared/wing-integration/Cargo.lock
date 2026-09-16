@@ -112,6 +112,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e0f1c7c3a72c66fd80abe965175f7523475c0489a87d3ff9d6e8c87d87a9d2d"
 
 [[package]]
+name = "hagiograph"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/mere.git?rev=53648d3acf51fe72e37f7f57687b70c4ef0ca961#53648d3acf51fe72e37f7f57687b70c4ef0ca961"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "hash32"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -204,6 +212,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 name = "mesocosm-core"
 version = "0.0.1"
 dependencies = [
+ "hagiograph",
  "isometer-core",
  "muniment",
  "nisus",
@@ -211,12 +220,13 @@ dependencies = [
  "serde",
  "wing-formats",
  "wing-functions",
+ "wing-glyphs",
 ]
 
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/mere.git?rev=3675a3528f750ec121cd603aca5e7fc2c73dc7fa#3675a3528f750ec121cd603aca5e7fc2c73dc7fa"
+source = "git+https://github.com/merely-made/mere.git?rev=876320fddd4cecddab8080d5decf2b5d8568d47e#876320fddd4cecddab8080d5decf2b5d8568d47e"
 dependencies = [
  "async-trait",
  "blake3",
@@ -227,7 +237,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?rev=3675a3528f750ec121cd603aca5e7fc2c73dc7fa#3675a3528f750ec121cd603aca5e7fc2c73dc7fa"
+source = "git+https://github.com/merely-made/mere.git?rev=876320fddd4cecddab8080d5decf2b5d8568d47e#876320fddd4cecddab8080d5decf2b5d8568d47e"
 dependencies = [
  "serde",
 ]
@@ -398,6 +408,14 @@ name = "wing-functions"
 version = "0.1.0"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "wing-glyphs"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

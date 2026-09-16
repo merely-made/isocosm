@@ -726,3 +726,18 @@ world-history Law C test.
   refusals; replay code moved verbatim to `runtime/replay.rs` to stay under
   the line ceiling; 56 unit tests on rerun (79 with integration tests, as
   the agent ran them).
+- **2026-09-16.** D5 landed (`cbf343c`): Advance to boundary steps a trial a
+  hundred ticks a frame to its next boundary; probe fields `trial-epoch`,
+  `trial-last-boundary-tick`, `trial-advancing`; `trial-boundary.scenario`
+  reaches ticks 1,000 and 2,000 with no checkpoint. Review found the last
+  boundary noted only during an advance run, fixed before commit. Spatial
+  coverage byte-identical over 32 captures. The three saved comparisons in
+  `receipts/2026-09-13/integrated-world` no longer load: their hashes predate
+  the two `WorldRules` fields added that evening (`c2a26c2`, `2594031`).
+- **2026-09-16.** D6 landed: `WorldRecord` is a transparent newtype over
+  `hagiograph::Record<(Feat, Scale), SpeciesId>`, `Mark` a type alias, every
+  method delegating with its signature unchanged; the hagiograph is pinned
+  alone at mere `53648d3a`. Built in an isolated worktree; the six byte pins
+  hold with no value edited, the core suite is 746 before and after, and in
+  the main tree the pins, record tests, reckoning test and a Paredros
+  workspace check all pass.

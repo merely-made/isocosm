@@ -25,6 +25,7 @@ serde = { workspace = true }
 postcard = { workspace = true }
 muniment = { workspace = true }
 nisus = { workspace = true }
+hagiograph = { workspace = true }
 
 [dev-dependencies]
 serde_json = "1"
