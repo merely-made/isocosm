@@ -97,6 +97,10 @@ extracted after two real consumers and never declared in advance
 19. **Everything runs far during deep time.** With no hand there is no
     focus; frozen tiers would let the bodies near the released founder, and
     their descendants, run a different ecology from everyone else (§2.5).
+20. **Decomposer reach first.** The open rulings register's item 2 is
+    assessed, ruled and fixed, and deep time re-measured, before any of the
+    heir entry is built: the soil cycle is a prerequisite for handing over a
+    living world, not a later lane.
 
 **Standing rulings this plan inherits, not restates.**
 
@@ -515,9 +519,9 @@ generation door's foundation is 24 founders in the small habitat. Deep time
 makes the failure decisive: six epochs without decomposers lock a fifth to
 a third of the enclosure's matter in carcasses.
 
-**Open before D7b's create path.** Whether decomposer reach is ruled and
-fixed first, since creation needs soil and the soil needs decomposers;
-inhabiting a living critter needs no founding matter and does not wait on it.
+**Ruled: decomposer reach first** (ruling 20). All of D7b waits for item 2
+to be assessed, ruled and fixed, and for deep time to be re-measured on a
+working soil cycle. The assessment is in progress.
 
 ---
 
@@ -664,7 +668,7 @@ the same finished step, can run in parallel.
 | **D5.** The advance-to-boundary control, ruled 2026-09-16: one bench action steps the trial until the next epoch boundary, a checkpoint or the ceiling, with probe fields for the epoch and the last boundary tick | `mesocosm-genet` bench | nothing | sonnet |
 | **D6.** Mesocosm reads the hagiograph's record: `WorldRecord` becomes Mesocosm's axis set over the moved mechanism, re-exported at its old paths; the six byte pins hold | `mesocosm-core` | D2 pushed and pinned | sonnet |
 | **D7a.** Deep time in Mesocosm: `WorldRules` gains the span (bare worlds and requests zero, never a constant; **the world-state pin and the journey hashes re-pin once**, since postcard writes every rules field); `World` runs deep time with no hand through the hagiograph's seam; the generation door runs it on the foundation and drafts against the handed-over world, and refuses entry into a world with a past until D7b. **No `VERSION` bump**: a request without the span founds the same world. **Landed 2026-09-16** | `mesocosm-core` | D3, D4, D6 | opus |
-| **D7b.** The heir's entry, ruling 15: **inhabit** a living critter of a surviving line; **create** a new critter within the evolved line, paid from local soil, leaving the line's program as deep time left it; and **align**, an explicit act that makes a created critter's recipe its line's program. The generated preset's span of six (ruling 16) turns on here, once entry works. **Blocked on §2.5's questions** | `mesocosm-core`, creator in genet | D7a, §2.5 | opus |
+| **D7b.** The heir's entry, ruling 15: **inhabit** a living critter of a surviving line; **create** a new critter within the evolved line, paid from local soil, leaving the line's program as deep time left it; and **align**, an explicit act that makes a created critter's recipe its line's program. The generated preset's span of six (ruling 16) turns on here, once entry works. **Waits on decomposer reach (ruling 20)** | `mesocosm-core`, creator in genet | D7a, §2.5 | opus |
 | **D8.** The baseline save carries the history whole, with a size receipt per seed (ruling 17) | `mesocosm-runtime`, genet | D7a | sonnet |
 | **D9.** The bench readout: each deep-time boundary's population, species and feats, from the handover receipt | `mesocosm-genet` | D5, D7a | sonnet |
 | **D10.** Law C for world history in Mesocosm: a generated world's events and marks cannot be told from a played run's | `mesocosm-core` tests | D7a | sonnet |
