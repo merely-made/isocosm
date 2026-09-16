@@ -521,7 +521,75 @@ a third of the enclosure's matter in carcasses.
 
 **Ruled: decomposer reach first** (ruling 20). All of D7b waits for item 2
 to be assessed, ruled and fixed, and for deep time to be re-measured on a
-working soil cycle. The assessment is in progress.
+working soil cycle.
+
+### 2.6 Decomposer reach, assessed (2026-09-16)
+
+An Opus agent assessed register item 2 read-only, with a new instrument,
+`mesocosm-core/examples/decomposer_probe.rs`, that steps a door world's first
+epoch tick by tick and follows every founding decomposer. It reproduces deep
+time from public API and matches `run_deep_time` on state hash and history
+(positive control, six runs). The orchestrator verified the code claims
+below in the tree and reran seed 42 in all three arms with the same death
+ticks.
+
+**A correction first.** Every founder starts near
+(`world/genesis.rs:401`). So when ruling 19 was asked, the frozen tiers on a
+fresh foundation were **all near**, uniform, not "the bodies near the
+released founder" as the question put it. The survival difference that
+measurement showed came from far-tier movement, below, not from favouring a
+position. Ruling 19 is therefore resting on a wrong premise and goes back to
+Mark.
+
+**What kills decomposers in deep time: far-tier movement, not reach.**
+
+- A far body moves by `graph_step` (`organism/ecology/movement.rs:566-582`):
+  it jumps to the centre of the neighbouring place with the fewest hops to
+  its target's place. **A body already in its target's place always leaves
+  it**, since every neighbour is one hop away, and comes back next tick.
+- The jump is 39 to 111 voxels in one tick, paid by `pay_travel`
+  (`flows/returns.rs:55-73`) **from body substance**, not reserve.
+- Far bodies perceive every carrion in the enclosure
+  (`movement/perception.rs:302`), so they always have a target to bounce at.
+
+Measured, 24 founders: every founding decomposer dies at tick 4 to 36, on a
+tick it hopped, never having been hungry. Seed 42's pair alternate between
+place 1, which holds the carrion 33 voxels from its centre, and place 0,
+until dead. The same hops wear walking consumers to nothing (3 and 4 of 6 on
+seeds 7 and 1), and **they happen in ordinary play to bodies far from the
+player**: under a hand, seed 7's decomposer #20 died of a 92-voxel hop at
+tick 6.
+
+**Without far tiers they still starve in epoch 1, later**, at tick 16 to 380:
+
+| Cause | Where in the tree |
+| --- | --- |
+| **Density**: 2 founding decomposers in 16,641 columns, 38 times sparser than the density the terrarium rounds were tuned at | `world/generation.rs:103`, `world/genesis.rs:520-545` |
+| **Early supply**: 45 to 936 mg of corpse in the first 400 ticks on seeds 7 and 1, against about 2,800 mg of rent for two decomposers | measured |
+| **Approach**: a near decomposer walking to seen carrion stops at a grazer's bite range, `reach + GRAZE_RANGE`, so every move is one voxel | `movement.rs:551-553` |
+| **Bite**: `DECOMPOSE_RANGE` is a flat 6, with no reach term, while consumers bite at `GRAZE_RANGE + reach` | `movement.rs:39,55,103-116` |
+| **Sight**: no founding decomposer measured has a sense part, so near sight is 8 voxels | `rates.rs:287-290` |
+
+**Carrion returns slowly without decomposers**: 1 mg every
+`CARRION_DECAY_TICKS = 4` ticks per corpse, whatever its mass
+(`rates.rs:89-94`), about 250 mg per corpse per epoch; epoch 1 returned 1.5
+to 18% of the corpse mass made.
+
+**History.** Item 2 was never ruled; `DECOMPOSE_RANGE` is still 6. In the
+tuned-density bare-constructor worlds it was superseded by TD8's longer
+carrion, S1's room and TD11's gradient. In door worlds it reopens in the
+form above.
+
+**Options, from the assessment** (codes used in the question to Mark): O1
+fix far-tier movement (no bounce inside the target's place, a per-tick
+dispersal budget, or travel paid reserve-first), or revisit ruling 19; O2
+the bite reads the body's reach; O3 scavengers spend their dispersal budget
+closing on carrion; O4 a guaranteed sense organ at founding, or a soil scent
+from typed decay; O5 a sessile or creeping decomposer, or the multi-anchor
+network the founding plan intended (blocked on the representation ruling in
+the playable ecology plan); O6 carrion decay proportional to mass as a
+declared world rule; O7 more decomposers founded, or founded where corpses
+will fall.
 
 ---
 
@@ -817,6 +885,10 @@ world-history Law C test.
   hold with no value edited, the core suite is 746 before and after, and in
   the main tree the pins, record tests, reckoning test and a Paredros
   workspace check all pass.
+- **2026-09-16.** Decomposer reach assessed (§2.6), with
+  `decomposer_probe.rs`. Far-tier movement, not reach, kills decomposers in
+  deep time and far bodies in ordinary play; ruling 19's premise was wrong
+  and returns to Mark.
 - **2026-09-16.** Ruling 19 landed: `World::run_deep_time` sets every
   living body far after releasing control (`freeze_tiers_far`), since no
   focus exists to update tiers and offspring inherit their parent's. Taking
