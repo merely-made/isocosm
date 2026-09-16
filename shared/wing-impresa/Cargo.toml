@@ -1,0 +1,14 @@
+[package]
+name = "wing-impresa"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "Validated association records for anything pointable, and their lapses"
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+[workspace]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
