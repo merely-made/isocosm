@@ -586,6 +586,17 @@ through traits stays the first Mesocosm slice; experience follows it.
    and lifted in world up, since a mark flush to its face is occluded by
    its own body.
 
+## Ruling on the organ name (Mark, 2026-09-15)
+
+**Hagioglyph is the organ**, not the revision mechanism. Everything this
+plan and the kernel hold, canon, expression, journey, experience and the
+standing ledgers still to be ruled, is the hagioglyph; a glyph whose live
+meaning follows a published revision is a **canon revision**, the narrow
+sense G5 first used the word for. Recorded as the G5 amendment in the
+general model plan; the Paredros uses relabel on that side. Nothing in
+code changes: `wing-glyphs` stays the kernel and the readings stay the
+consumers.
+
 ## 9. The experience slice
 
 **Assessment, 2026-09-15**, against the ruling above: a glyph is experienced

@@ -954,6 +954,20 @@ same glyph acquired at different times can carry different costs. The kernel
 gains the revision stamp and a correspondence diff between two revisions;
 Paredros is the first consumer, under its remembrance plan's stage F3b5.
 
+**G5 amended, hagioglyph is the organ (Mark, 2026-09-15).** The paragraph
+above names one mechanism, a glyph whose live meaning follows a published
+canon revision. That mechanism is now called **canon revision**, after the
+kernel's `canon_revision` stamp and `Canon::correspondence_diff`, and no
+longer owns the word. **Hagioglyph** is the wing's glyph organ as a whole:
+the canon and its revisions, expression through traits, the journey,
+experience, standing (affinity and resistance, to be ruled) and ascension,
+with `wing-glyphs` as its kernel and each product's glyph reading as a
+consumer. The dependency arrow is unchanged: hagiograph promotes, a canon
+revision follows, the hagioglyph reads it. Paredros's stage F3b5, its
+document-host glossary line and the `paredros-world` glyph reading's
+module comment carry the narrow sense and relabel to canon revision on
+the Paredros side.
+
 #### An individual has a journey, not just an inventory
 
 Record original acquisition order, incarnation, simulation tick, and accepted
