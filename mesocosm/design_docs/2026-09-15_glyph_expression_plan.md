@@ -1089,10 +1089,13 @@ control that does not exist.
    carries the assessment; the experience slice resumes on top of it.
    **Then ruled further the same day:** worldgen belongs in **isoscape**
    (banked for worldgen 2026-09-15), and the isoscape family is planned
-   before anything is founded. Deep time is a member of that family, with a
-   fixed span in the world rules, the clock continued rather than rebased,
-   and the player entering as heir to a line that lived through it. The
-   isoscape family plan carries those rulings and the measurements.
+   before anything is founded. Deep time has a fixed span in the world
+   rules, the clock continued rather than rebased, and the player entering as
+   heir to a line that lived through it. **Deep time belongs to the
+   hagiograph**, ruled the history organ and kept in mere's eidetic core, not
+   to isoscape. The
+   [isoscape family plan](2026-09-16_isoscape_family_plan.md) carries those
+   rulings and the measurements.
 5. **The bench gains an advance-to-boundary control**, so a scenario reaches
    an epoch boundary in one action instead of waiting on Play.
 
