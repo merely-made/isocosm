@@ -1001,6 +1001,76 @@ world, and leave the bench's trial showing the occasion tier only. Re-pinning
 six byte pins to shorten the trial's epoch is a separate, revertible commit
 that can follow once the tier is green.
 
+**Ruled otherwise (Mark, 2026-09-16): raise the trial's ceiling past 1,000.**
+No rule and no digest change, so no pin moves. Built as `MAX_TRIAL_STEPS =
+3_000`, one starter's lifespan, the figure `DEFAULT_EPOCH_TICKS` is already
+defined against (`rules.rs:47-49`).
+
+What raising it cost, measured: seven runtime tests ran a trial until it
+refused and one compared the whole history on every step, so at 3,000 the
+debug suite stopped finishing. A test-only `Trial::with_ceiling` holds those
+seven at `Trial::SHORT`, the 128 they were written against, and the 50 tests
+pass, in 50 seconds while a peer session's build shared the machine. A new positive control drives a real
+trial to its first boundary: it arrives at exactly step 1,000, the runtime has
+reckoned, **no checkpoint holds the trial there**, and the next step advances.
+It is slow in a debug build, a thousand real ticks.
+
+No bench scenario plays a trial to its end or asserts the ceiling; all five
+trial scenarios pause or step explicitly. The bench's status line now reads
+`of 3000 ticks`.
+
+### A fresh world's first reckoning is not significant either
+
+**Measured 2026-09-16**, seed 7, 60 organisms, the trial's first boundary at
+tick 1,000: **21 readings, 14 took the record.** The same failure the deed
+restructure exists to avoid, one level up: a trigger that fires for most
+things is not rare.
+
+Two causes, both in the tree as built:
+
+- **The record starts empty** (`WorldRecord::new()` at genesis,
+  `world/genesis.rs:490`), and `is_unprecedented` is true on any axis nobody
+  holds (`record.rs:152-155`). So the first reading on every axis takes it.
+  Species 1 took `Spread / Local` with a value of **1**, one place reached.
+- **`reckon` notes readings one at a time** (`world/adapt.rs:215-222`), so a
+  later reading at the same boundary takes the record only as a running
+  maximum over the ones noted before it. On `Spread / Worldwide`, species 2
+  took it at 5, species 3 at 6, species 5 tied at 6 and did not, species 7
+  took it at 8 and species 8 did not at 7. Which of two lineages at one
+  boundary "took" it depends on species order, which is not a fact about
+  either of them.
+
+So `Reading::took` is the right signal for an epoch-boundary screen, which is
+what it was built for, and **not yet a feat**. Every trial starts from a fresh
+world (`trial.rs`, tick zero required), so inside a trial the first boundary
+is always this one. The feat rule is Mark's; four readings, which compose:
+
+- **A. Beat a standing mark.** A feat is a reading above the mark as it stood
+  **before this reckoning**. A first mark on an empty axis is never a feat, so
+  nothing at a fresh world's first boundary is one, and two lineages that
+  both beat an older mark at one boundary are both feats, independent of
+  order. This is `record.rs`'s own premise: significance is abnormality
+  against the world's record, "so there has to be a record". Inside a trial
+  the first feat is possible at tick 2,000, which the 3,000 ceiling allows.
+- **B. Keep `took`, excluding first marks.** Same exclusion as A, but a
+  same-boundary beat still counts only as a running maximum in reading order.
+  Smallest change; keeps the order dependence.
+- **C. A beaten mark by a stated margin.** A, plus a per-condition floor on
+  how far past the standing mark. Answers "one lineage edged it by one"; it
+  is also the raise-the-bar move E2 already judged insufficient on its own.
+- **D. First touch as its own, rarer feat.** `untouched` (`record.rs:161`)
+  answers "has anyone ever", which the record's docs call a different
+  question from "more than anyone". Degenerate in a fresh world for the same
+  reason, and the rarest feat there is in a world with history: `Symbiosis`
+  and `Construction` are never noted today (`score.rs`), so touching either
+  would be a first for any world.
+
+**A bench consequence.** Under A, showing a feat means a trial reaching tick
+2,000, and Play runs a trial at ten ticks a second (`bench/trial.rs`,
+`advance`), so a scenario would wait 200 seconds. Step 7's scenario then needs
+a way to advance the trial to a boundary in one action, which is a bench
+control that does not exist.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.

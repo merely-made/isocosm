@@ -13,7 +13,21 @@ use mesocosm_core::{History, Intent, OrganismId, Outcome, World, history::Event,
 use serde::Serialize;
 use std::collections::BTreeMap;
 
-pub const MAX_TRIAL_STEPS: u32 = 128;
+/// How long a trial may run.
+///
+/// **One starter's lifespan** — the 3,000 ticks `rules::DEFAULT_EPOCH_TICKS`
+/// measures itself against, so a trial is bounded by one body's life rather
+/// than by a round number. Raised from 128 by Mark on 2026-09-16.
+///
+/// 128 was under the epoch's own 1,000-tick budget, so a trial stopped 872
+/// ticks short of its first reckoning, every time. That put every **feat**
+/// out of reach: a deed is significant, and the significant half of the deed
+/// vocabulary is read from the reckoning, which only exists once an epoch has
+/// closed. A trial now reaches that boundary and runs past it; room for three
+/// is the point, since a fresh world's first reckoning sets marks on an empty
+/// record rather than beating them. A birth or death under the hand still
+/// stops a trial, because a trial never answers a checkpoint.
+pub const MAX_TRIAL_STEPS: u32 = 3_000;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -79,6 +93,9 @@ pub struct Trial {
     baseline: World,
     runtime: Runtime,
     steps: u32,
+    /// `MAX_TRIAL_STEPS` for every trial a product builds. Only a test sets
+    /// it lower, through `with_ceiling`, so it survives `reset`.
+    ceiling: u32,
     activities: Vec<TrialActivity>,
     uptakes: Vec<TrialUptake>,
     carves: Vec<TrialCarve>,
@@ -105,11 +122,31 @@ impl Trial {
             baseline,
             runtime,
             steps: 0,
+            ceiling: MAX_TRIAL_STEPS,
             activities: Vec::new(),
             uptakes: Vec::new(),
             carves: Vec::new(),
             glyphs: None,
         })
+    }
+
+    /// A trial that refuses past `ceiling` steps rather than the shipped one.
+    ///
+    /// **For tests that run a trial to its end.** They were written against a
+    /// ceiling of 128: they step until refused, assert the refusal changes
+    /// nothing, reset and replay to the end again, and some compare the whole
+    /// history on every step. Against the 3,000-step ceiling that is 23 times
+    /// the ticks, quadratic where history is compared, in a debug build. A
+    /// short ceiling keeps what each of them proves and costs what it did.
+    /// The ceiling every run-to-the-end test was written against.
+    #[cfg(test)]
+    pub(crate) const SHORT: u32 = 128;
+
+    #[cfg(test)]
+    pub(crate) fn with_ceiling(source: &World, ceiling: u32) -> Result<Self, String> {
+        let mut trial = Self::new(source)?;
+        trial.ceiling = ceiling.min(MAX_TRIAL_STEPS);
+        Ok(trial)
     }
 
     /// Opt into the gameplay-data experiment before any tick. Invalid rules
@@ -214,7 +251,7 @@ impl Trial {
     }
 
     fn apply_one(&mut self, intent: Intent) -> bool {
-        if self.steps >= MAX_TRIAL_STEPS || self.checkpoint().is_some() {
+        if self.steps >= self.ceiling || self.checkpoint().is_some() {
             return false;
         }
         let before: BTreeMap<_, _> = self

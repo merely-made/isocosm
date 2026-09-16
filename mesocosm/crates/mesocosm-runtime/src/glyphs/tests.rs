@@ -162,7 +162,7 @@ fn invalid_rules_and_late_enable_preserve_existing_configuration() {
 fn movement_and_feeding_rules_consume_actual_actor_events_only() {
     let world = World::new(42, 60);
     for kind in [AcceptedKind::Moved, AcceptedKind::Fed] {
-        let mut scout = Trial::new(&world).unwrap();
+        let mut scout = Trial::with_ceiling(&world, Trial::SHORT).unwrap();
         let organism = loop {
             assert!(
                 scout.step(),
@@ -181,7 +181,7 @@ fn movement_and_feeding_rules_consume_actual_actor_events_only() {
                 break actor;
             }
         };
-        let mut trial = Trial::new(&world).unwrap();
+        let mut trial = Trial::with_ceiling(&world, Trial::SHORT).unwrap();
         trial.enable_glyphs(rules(organism, kind)).unwrap();
         while trial.step() {}
         let expected: Vec<_> = trial
@@ -445,7 +445,7 @@ fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
 /// assumed. Nothing here relocates a body or synthesizes a flow.
 fn uptake_fixture() -> (World, OrganismId) {
     let world = World::new(7, 60);
-    let mut scout = Trial::new(&world).unwrap();
+    let mut scout = Trial::with_ceiling(&world, Trial::SHORT).unwrap();
     let mut takers = BTreeSet::new();
     while scout.step() {
         for record in scout.uptakes() {
@@ -474,7 +474,7 @@ fn uptake_fixture() -> (World, OrganismId) {
 #[test]
 fn a_producer_that_only_takes_up_soil_acquires_through_uptake() {
     let (world, organism) = uptake_fixture();
-    let mut trial = Trial::new(&world).unwrap();
+    let mut trial = Trial::with_ceiling(&world, Trial::SHORT).unwrap();
     trial
         .enable_glyphs(rules(organism, AcceptedKind::Uptake))
         .unwrap();

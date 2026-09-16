@@ -7,7 +7,7 @@ use super::*;
 fn exact_baseline_reset_and_idle_replay_preserve_world_and_activity() {
     let source = World::new(7, 60);
     let original = state_hash(&source);
-    let mut trial = Trial::new(&source).unwrap();
+    let mut trial = Trial::with_ceiling(&source, Trial::SHORT).unwrap();
     assert_eq!(trial.baseline_hash(), original);
     assert_eq!(trial.state_hash(), original);
     assert_eq!(trial.world(), &source);
@@ -39,7 +39,7 @@ fn exact_baseline_reset_and_idle_replay_preserve_world_and_activity() {
 #[test]
 fn activity_is_a_reading_of_ordinary_runtime_history_once_per_successful_step() {
     let source = World::new(42, 60);
-    let mut trial = Trial::new(&source).unwrap();
+    let mut trial = Trial::with_ceiling(&source, Trial::SHORT).unwrap();
     let mut ordinary = driver(&trial.baseline);
     let mut seen = std::collections::BTreeSet::new();
     let mut kinds = [0; 2];
@@ -142,7 +142,7 @@ fn advanced_worlds_are_refused_instead_of_losing_runtime_context() {
 #[test]
 fn uptake_matches_actual_soil_transfers_and_replays_without_touching_history() {
     let source = World::new(7, 60);
-    let mut trial = Trial::new(&source).unwrap();
+    let mut trial = Trial::with_ceiling(&source, Trial::SHORT).unwrap();
     let mut ordinary = driver(&source);
     let mut observed = Vec::new();
     let mut ids = std::collections::BTreeSet::new();
@@ -264,4 +264,38 @@ fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_in
             assert_eq!(activity.record, *record);
         }
     }
+}
+
+/// The positive control for the raised ceiling: a trial at the shipped
+/// ceiling reaches the world's own first epoch boundary, where the reckoning
+/// feats are read from happens, and runs on past it. 128 stopped 872 ticks
+/// short. Slow in a debug build, since it is a thousand real ticks.
+///
+/// A trial never answers a checkpoint, so a birth or death under the hand
+/// before the boundary would stop it first; this names the occasion if so.
+/// The boundary itself opens none for a trial, measured 2026-09-16.
+#[test]
+fn a_trial_at_the_shipped_ceiling_reaches_the_first_epoch_boundary() {
+    let source = World::new(7, 60);
+    let mut trial = Trial::new(&source).unwrap();
+    while trial.world().epoch == 0 {
+        if !trial.step() {
+            panic!(
+                "trial stopped at step {} of {MAX_TRIAL_STEPS}, epoch 0, checkpoint {:?}",
+                trial.steps(),
+                trial.checkpoint().map(|c| (c.tick, c.occasion))
+            );
+        }
+    }
+    assert_eq!(
+        u64::from(trial.steps()),
+        mesocosm_core::rules::DEFAULT_EPOCH_TICKS,
+        "the boundary falls on the epoch's own budget"
+    );
+    assert!(
+        !trial.runtime.reckoning().is_empty(),
+        "the runtime reckoned the epoch the trial just closed"
+    );
+    assert!(trial.checkpoint().is_none(), "the boundary holds no trial");
+    assert!(trial.step(), "and the trial runs on past it");
 }
