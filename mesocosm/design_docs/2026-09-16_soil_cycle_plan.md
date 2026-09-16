@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-16
 
-**Status, 2026-09-16:** S1 built and held on the local branch
-`soil-cycle-s1-held` (`1c03c5d`), not on main: it breaks five existing tests
-because far consumers now reach food. Its next move is Mark's (§3). Opened from the
+**Status, 2026-09-16:** S1 landed on main (`ca836e0`, merged from
+`soil-cycle-s1-held` once green). S2, deep time measured near against far,
+is next. Opened from the
 [isoscape family plan](2026-09-16_isoscape_family_plan.md) ruling 20 and its
 §2.6 assessment. Deep time's heir entry (D7b) waits on this plan.
 
@@ -54,10 +54,22 @@ Answering §2.6 of the isoscape family plan.
    sight left far consumers eating their own line: 150.8 g of 157.6 g of far
    predation on seed 7 at 200 founders, because a far body with only kin in
    sight had no kin-skipping gradient to follow.
+   *Prior art, recorded 2026-09-16 from Mark's reading of Veloren:* RTSim
+   reached the same rule. Its distant simulation keeps the rules and reduces
+   the update rate, in plain ID-addressed tables rather than the gameplay
+   ECS, with an explicit authority boundary between the two
+   (https://docs.veloren.net/veloren_rtsim/). When the scale plan's cohort
+   rung is taken up, that is the discipline to copy: reduce the rate, never
+   the rules.
 8. **Classic stabilizing mechanisms join this plan** (§3a), each assessed
    and measured before code: a consumer functional response; density limits
    above producers; dormancy, rescue and Allee effects; and disturbance,
    seasons and a sweep of starting soil richness.
+9. **Re-pins for S1, ruled:** the two readings tests take newly measured
+   quiet seeds against the unchanged warning threshold, and the embodied
+   round test follows the line its fixture matures rather than whichever
+   line commits first.
+
 
 ## 1. What the steps start from
 
@@ -217,12 +229,28 @@ Whether any absent mechanism joins this plan is Mark's.
 ## Progress
 
 - **2026-09-16.** Plan written; S1 dispatched.
+- **2026-09-16, parity (S1c).** Near and far differed in thirteen places;
+  five were rules and were brought to parity (target choice and fauna
+  policy, sighting memory, the hunger gradient, the wander, producer creep),
+  the rest geometry and kept. Seed 7 at 200 founders: own-line far predation
+  150,757 to 3,101 mg, producers at tick 2,000 47 to 234, cost per body-tick
+  11.9-12.9 µs against main's 10.7-11.3. Deep-time decomposers still die in
+  the first epoch. A far newborn keeps its raw scatter column rather than a
+  ground stance (`breeding.rs:165-170`), noted and left.
+- **2026-09-16, re-pins.** Quiet seeds measured 1-40 plus the old four:
+  seed 7 peaks at 94 ticks and 99 at 116, both over the threshold; the list
+  became 1, 18, 31, 36, 555 and the control arm seed 31 (neutral 0,
+  stressed 166). The round test reads `round.turn(grown)`, the line the
+  fixture matured. Core 773, runtime 80, pins hold.
 - **2026-09-16.** Far sight limited on the held branch (uncommitted there):
   far bodies see `sight_for_body` as near bodies do, by distance without a
   ray. Two of the five failing tests pass unchanged; far consumers then ate
   their own line (150,757 of 157,626 mg far predation, seed 7, 200
   founders); the readings pair and the embodied round still fail. Rulings 7
   and 8 followed; parity dispatched.
+- **2026-09-16.** S1 landed on main as a merge of the held branch after
+  parity and the re-pins made it green, with the full gates rerun in the
+  main tree.
 - **2026-09-16.** S1 built by an Opus agent, which stopped at done condition
   1 rather than edit the five failing tests. Verified by the orchestrator:
   the eight new tests pass and exactly those five fail. Main is kept green:

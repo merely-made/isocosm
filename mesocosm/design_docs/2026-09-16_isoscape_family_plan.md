@@ -697,6 +697,14 @@ but not ruled. The two readings meet if **isoscape owns the seeded pipeline
 and its per-vessel presets, calling terrain models that sit beside
 isometer's seam and deep time in the hagiograph.**
 
+**Prior art to read before W3, added 2026-09-16 from Mark's reading of
+Veloren:** its world pre-generation settles drainage, routes, settlements
+and ecological distributions before any local terrain is materialized, and
+local detail then fulfils those constraints, which is ruling 7's hybrid
+worldgen at Veloren's scale; and its "no invisible walls" test (move the
+dangerous creature, remove the supporting terrain, interrupt the ritual)
+is a done-condition shape for whether generated systems compose.
+
 **What it adds that this plan lacked.**
 
 - **The prefix as a wing rule, not a Mesocosm one.** The tabletop already
