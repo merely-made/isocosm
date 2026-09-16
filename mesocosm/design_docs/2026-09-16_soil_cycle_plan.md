@@ -2,7 +2,9 @@
 
 **Date:** 2026-09-16
 
-**Status, 2026-09-16:** plan; step S1 dispatched. Opened from the
+**Status, 2026-09-16:** S1 built and held on the local branch
+`soil-cycle-s1-held` (`1c03c5d`), not on main: it breaks five existing tests
+because far consumers now reach food. Its next move is Mark's (§3). Opened from the
 [isoscape family plan](2026-09-16_isoscape_family_plan.md) ruling 20 and its
 §2.6 assessment. Deep time's heir entry (D7b) waits on this plan.
 
@@ -101,6 +103,12 @@ measurement of one does not depend on the other.
 - **S5's numbers.** The decomposer floor, the sense organ's form and the
   placement rule each need a value; S5 measures and brings them.
 - **Ruling 19**, after S2.
+- **What S1 uncovered: far bodies see everything.** Far perception returns
+  true for any position in the enclosure (`movement/perception.rs:302`), so
+  a far consumer targets food anywhere. While far movement was broken that
+  cost nothing, because far bodies bounced instead of arriving. Once S1 lets
+  them arrive, far grazing overwhelms producers (Findings). Whether to limit
+  far perception, re-pin the tests, or retune consumer pressure is Mark's.
 
 ## 4. Done conditions
 
@@ -121,8 +129,36 @@ measurement of one does not depend on the other.
 
 ## Findings
 
-- **2026-09-16.** Opened with §2.6's evidence; nothing new yet.
+- **2026-09-16.** Opened with §2.6's evidence.
+- **2026-09-16, S1.** Far bodies now step straight toward their target, one
+  column at a time on the ground's surface, within `dispersal_for` counted
+  in three dimensions from where the tick began, never farther from the
+  target and never out of the target's place once inside it; travel is paid
+  per voxel moved (`movement/far.rs`, new; `graph_step` removed). The far
+  wander is one voxel, as the near wander is, and a far body stops
+  approaching at `reach + GRAZE_RANGE`, as a near body does. Eight new tests
+  pass, including cohort conservation and determinism on generated ground;
+  the six pins hold.
+- **2026-09-16, S1's effect on decomposers in deep time** (24 founders):
+  every founding decomposer now dies at tick 16 to 310, never on a tick it
+  jumped, instead of tick 4 to 36; scavenging in the epoch rises from 18 to
+  306 mg on seed 7 and from 0 to 1,165 mg on seed 42, and stays about 45 mg
+  on seed 1. None is alive at epoch 6 on any seed, before or after.
+- **2026-09-16, S1's effect on grazing.** Five existing tests fail, each
+  because far consumers now reach food: `world/generation/tests.rs:341` and
+  `:376` (the habitat trials' subject is eaten early), `tests/embodied/round.rs:174`
+  (a different line wins the round), and the runtime's two readings tests,
+  where seed 7 with 200 founders over 2,000 ticks goes from far grazing
+  49,812 mg to 519,330 mg, far scavenging 180 mg to 121,622 mg, and
+  producers 472 (917,431 mg) to **6** (17,418 mg). Far moves went from 1,665
+  averaging about 42 voxels to 19,671 averaging about 1.6. The old values
+  were measured against the broken movement.
 
 ## Progress
 
 - **2026-09-16.** Plan written; S1 dispatched.
+- **2026-09-16.** S1 built by an Opus agent, which stopped at done condition
+  1 rather than edit the five failing tests. Verified by the orchestrator:
+  the eight new tests pass and exactly those five fail. Main is kept green:
+  S1 is committed on the local branch `soil-cycle-s1-held` and main's tree
+  restored.
