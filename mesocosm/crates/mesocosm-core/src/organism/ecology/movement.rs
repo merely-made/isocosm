@@ -26,6 +26,7 @@ use crate::process::{BodyProcesses, FeedingMode, NisKind};
 use crate::rng::Rng;
 use std::cmp::Reverse;
 
+mod far;
 mod perception;
 
 pub(super) use perception::{CarrionTarget, LivingTarget, carrion_cells, living_cells};
@@ -360,7 +361,8 @@ fn remembered_target(
 }
 
 /// Moves an organism toward the affordance it currently needs. Near bodies
-/// move by legal integer steps; far bodies traverse one place-graph edge.
+/// move by legal integer steps; far bodies by column steps within the same
+/// budget (`far`, soil cycle plan S1).
 #[allow(clippy::too_many_arguments)]
 pub(super) fn disperse(
     organism: &mut Organism,
@@ -438,10 +440,15 @@ pub(super) fn disperse(
         organism.position
     } else if let Some(target) = target {
         if organism.tier == Tier::Far {
-            let next = graph_step(places, organism.position, target);
-            ground
-                .and_then(|ground| surface_stance(ground, shape, next))
-                .unwrap_or(next)
+            far::walk(
+                places,
+                ground,
+                shape,
+                organism.position,
+                target,
+                dispersal_for(organism),
+                Some(organism.body().reach() + GRAZE_RANGE),
+            )
         } else if let Some(ground) = ground {
             walk_grounded(organism, ground, shape, target, pursuing_memory)
         } else {
@@ -459,17 +466,14 @@ pub(super) fn disperse(
         // `preferred_target`, so this branch is its entire travel budget: one
         // grounded voxel, only while its reserve is under `HUNGRY_UPKEEP_TICKS`
         // of rent, paid for in substance like every other step. A creeping body
-        // never takes the place-graph hop below — a stand spreads out of its
-        // own shade at the speed of growth, it does not relocate to the next
-        // place — and with no ground under it there is nothing to creep across.
+        // never takes the far wander below — a stand spreads out of its own
+        // shade at the speed of growth, it does not head for the next place —
+        // and with no ground under it there is nothing to creep across.
         let creeping = organism.actuator_span() == 0;
         if creeping && (organism.tier == Tier::Far || ground.is_none()) {
             organism.position
         } else if organism.tier == Tier::Far {
-            let next = diffuse(places, organism.position, rng);
-            ground
-                .and_then(|ground| surface_stance(ground, shape, next))
-                .unwrap_or(next)
+            far::wander(places, ground, shape, organism.position, rng)
         } else if let Some(ground) = ground {
             // **Hunger follows a gradient** (TD11), and it is exactly the same
             // *one* grounded voxel the random wander took — the direction
@@ -563,24 +567,8 @@ fn integer_step(from: [i32; 3], to: [i32; 3]) -> [i32; 3] {
     ]
 }
 
-fn graph_step(places: &Places, position: [i32; 3], target: [i32; 3]) -> [i32; 3] {
-    let Some(current) = places.at(position) else {
-        return integer_step(position, target);
-    };
-    let Some(goal) = places.at(target) else {
-        return integer_step(position, target);
-    };
-    let Some(next) = places
-        .neighbours(current)
-        .iter()
-        .filter_map(|id| places.get(*id))
-        .min_by_key(|place| places.hops(place.id, goal).unwrap_or(u32::MAX))
-    else {
-        return integer_step(position, target);
-    };
-    [next.centre[0], position[1], next.centre[1]]
-}
-
+/// A neighbouring place's centre, drawn at random: the graph-only near
+/// wander's destination, and the far wander's heading.
 fn diffuse(places: &Places, position: [i32; 3], rng: &mut Rng) -> [i32; 3] {
     let Some(current) = places.at(position) else {
         return position;

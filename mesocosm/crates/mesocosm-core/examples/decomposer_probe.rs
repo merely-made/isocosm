@@ -72,6 +72,9 @@ struct Track {
     last: [i32; 3],
     moves: u32,
     travelled: u64,
+    largest_move: u64,
+    budget: u64,
+    last_move: Option<(u64, u64)>,
     closing: u32,
     visited: BTreeSet<[i32; 3]>,
     places: BTreeSet<u16>,
@@ -87,6 +90,15 @@ struct Track {
     closest: Option<i32>,
     pre: Option<([i32; 3], Option<i32>, usize, u64)>,
     target: Option<[i32; 3]>,
+}
+
+/// `rates::dispersal_for` with the hunger bonus taken, the most a body may
+/// move in one tick; zero for a body with nothing that contracts.
+fn hungry_budget(actuator_span: u32) -> u64 {
+    match actuator_span {
+        0 => 0,
+        span => u64::from((span / 4).max(1)) + 1,
+    }
 }
 
 fn nearest(at: [i32; 3], carrion: &[(u32, [i32; 3], u64)]) -> Option<i32> {
@@ -206,6 +218,7 @@ fn run(seed: u64, organisms: u32, mode: &str) {
                 id: o.id.0,
                 start: o.position,
                 last: o.position,
+                budget: hungry_budget(o.actuator_span()),
                 ..Track::default()
             }
         })
@@ -229,6 +242,8 @@ fn run(seed: u64, organisms: u32, mode: &str) {
     let mut max_standing = 0usize;
     let mut made_by_century: BTreeMap<u64, BTreeMap<&str, (u32, u64)>> = BTreeMap::new();
     let mut travel_by: BTreeMap<&str, (u32, u64)> = BTreeMap::new();
+    // Moves beyond the hungry dispersal budget, and the largest single move.
+    let mut over_budget_by: BTreeMap<&str, (u32, u64)> = BTreeMap::new();
     let mut spent_alive_by: BTreeMap<&str, u32> = BTreeMap::new();
     let carrion_now = |world: &World| -> Vec<(u32, [i32; 3], u64)> {
         world
@@ -258,6 +273,13 @@ fn run(seed: u64, organisms: u32, mode: &str) {
             .iter()
             .filter(|o| o.is_alive())
             .map(|o| (o.id.0, kingdom_name(o.kingdom())))
+            .collect();
+        // Read before the tick: a body its travel spends to nothing leaves the roster.
+        let spans: BTreeMap<u32, u32> = world
+            .organisms
+            .iter()
+            .filter(|o| o.is_alive())
+            .map(|o| (o.id.0, o.actuator_span()))
             .collect();
         let carrion = carrion_now(&world);
         max_standing = max_standing.max(carrion.len());
@@ -319,14 +341,21 @@ fn run(seed: u64, organisms: u32, mode: &str) {
                     }
                 },
                 Event::Moved { organism, from, to } => {
+                    let voxels = chebyshev(from, to) as u64;
                     if let Some(k) = kingdoms.get(&organism.0) {
                         let entry = travel_by.entry(k).or_default();
                         entry.0 += 1;
-                        entry.1 += chebyshev(from, to) as u64;
+                        entry.1 += voxels;
+                        let span = spans.get(&organism.0).copied().unwrap_or(0);
+                        let over = over_budget_by.entry(k).or_default();
+                        over.0 += u32::from(voxels > hungry_budget(span));
+                        over.1 = over.1.max(voxels);
                     }
                     if let Some(t) = tracks.iter_mut().find(|t| t.id == organism.0) {
                         t.moves += 1;
-                        t.travelled += chebyshev(from, to) as u64;
+                        t.travelled += voxels;
+                        t.largest_move = t.largest_move.max(voxels);
+                        t.last_move = Some((envelope.tick, voxels));
                         t.visited.insert(to);
                         t.last = to;
                         let before = nearest(from, &carrion);
@@ -378,8 +407,14 @@ fn run(seed: u64, organisms: u32, mode: &str) {
                         } else {
                             "aged"
                         };
+                        let moved = match t.last_move {
+                            Some((tick, voxels)) if tick == envelope.tick => {
+                                format!("moved {voxels} voxels that tick")
+                            },
+                            _ => "did not move that tick".to_string(),
+                        };
                         t.death = Some(format!(
-                            "tick {} cause {cause} (corpse {} mg, age {}), carrion standing {n}, \
+                            "tick {} cause {cause} (corpse {} mg, age {}), {moved}, carrion standing {n}, \
                              nearest carrion {d:?} voxels, at {pos:?}",
                             envelope.tick,
                             o.biomass_mg(),
@@ -442,10 +477,12 @@ fn run(seed: u64, organisms: u32, mode: &str) {
     for t in &tracks {
         println!("-- decomposer #{}", t.id);
         println!(
-            "   moved {} times, {} voxels travelled, net {} from start, {} distinct stances, \
-             places {:?}, moves closing on nearest carrion {}",
+            "   moved {} times, {} voxels travelled, largest move {} (hungry budget {}), net {} from \
+             start, {} distinct stances, places {:?}, moves closing on nearest carrion {}",
             t.moves,
             t.travelled,
+            t.largest_move,
+            t.budget,
             chebyshev(t.start, t.last),
             t.visited.len(),
             t.places,
@@ -478,7 +515,8 @@ fn run(seed: u64, organisms: u32, mode: &str) {
         "epoch summary: corpses standing at start {}, distinct corpses seen {}, max standing {}, \
          standing at end {} ({} mg), deaths by kingdom {:?} ({} mg of corpse made), \
          births by kingdom {:?}, scavenged {} mg, carrion decayed to soil {} mg; \
-         spent while alive (biomass 0, no corpse) by kingdom {:?}, moves (count, voxels) by kingdom {:?}",
+         spent while alive (biomass 0, no corpse) by kingdom {:?}, moves (count, voxels) by kingdom {:?}, \
+         moves over the hungry budget and largest move by kingdom {:?}",
         start_carrion.len(),
         corpses.len(),
         max_standing,
@@ -490,7 +528,8 @@ fn run(seed: u64, organisms: u32, mode: &str) {
         scavenged,
         decayed,
         spent_alive_by,
-        travel_by
+        travel_by,
+        over_budget_by
     );
     println!("corpses made per 100 ticks (kingdom: count, mg): {made_by_century:?}");
     println!("stepped epoch wall time {stepped_ms} ms (instrumented, release)");

@@ -348,8 +348,9 @@ pub(crate) fn upkeep_for_body(
         + three_quarter_power(mass_mg) * (priced + secretory_mg) / (UPKEEP_SCALE * ceiling)
 }
 
-/// One graph step's dispersal budget. Contractile geometry gives larger bodies
-/// more options, while hunger makes leaving an exhausted place worthwhile.
+/// One tick's dispersal budget: a near body's grounded steps, and the voxels a
+/// far body may move (S1). Contractile geometry gives larger bodies more
+/// options, while hunger makes leaving an exhausted place worthwhile.
 ///
 /// **No actuator, no travel** (TD8). This read `locomotion()`, which floors the
 /// span at one for the drive selector's arithmetic, so a body that drew no
