@@ -1071,6 +1071,31 @@ is always this one. The feat rule is Mark's; four readings, which compose:
 a way to advance the trial to a boundary in one action, which is a bench
 control that does not exist.
 
+### Rulings on the feat rule and pre-history (Mark, 2026-09-16)
+
+1. **A feat beats a standing mark**, the mark as it stood before this
+   reckoning. A first mark on an empty axis is never a feat, and two lineages
+   that both beat an older mark at one boundary are both feats.
+2. **The record is not empty at the start, because history does not start
+   when you step in.** "The world's event log should be prefilled with basic
+   events to overcome, due to worldgen." This applies the wing's standing rule
+   (founding record: player histories displace generated history; phenotype
+   contract C5: generated history cannot overwrite accepted events) to the
+   world record.
+3. **Pre-history is simulated deep time**: genesis runs the generated ecology
+   and hands over what it came to, rather than deriving marks by formula or
+   authoring a baseline table.
+4. **Pre-history is built first and this slice waits for it.** Its own plan
+   carries the assessment; the experience slice resumes on top of it.
+   **Then ruled further the same day:** worldgen belongs in **isoscape**
+   (banked for worldgen 2026-09-15), and the isoscape family is planned
+   before anything is founded. Deep time is a member of that family, with a
+   fixed span in the world rules, the clock continued rather than rebased,
+   and the player entering as heir to a line that lived through it. The
+   isoscape family plan carries those rulings and the measurements.
+5. **The bench gains an advance-to-boundary control**, so a scenario reaches
+   an epoch boundary in one action instead of waiting on Play.
+
 ## Findings (2026-09-15)
 
 Measured in the tree today; the rest are cited inline above.
