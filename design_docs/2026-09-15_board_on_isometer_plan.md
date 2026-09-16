@@ -413,3 +413,50 @@ with the family's receipts unchanged; then the board.
   so the nearest upscale is resampled once more. The pick is unaffected,
   since it reads the frame's own camera, so a click always lands where
   the user sees. A one-line change, and the next drawing lane's.
+- **2026-09-16, B4 landed.** The board's overlays are terrain materials:
+  the palette I1 gave the tracer now carries the tile kinds, the six
+  state tints beside them and a shrouded twin of both, so reach, path,
+  selection, templates, doors and encounter sites tint a tile's top
+  voxel and remembered ground stays legible under the same translucent
+  black the shroud rule composites. Unexplored ground reports the void
+  and lays nothing, as the DOM emits no element. Markers came back as
+  DOM in a container carrying the pan, which only works because the
+  drawing defect went first: the camera no longer sees the texture at
+  all, and the scene board's span is 1440 px against the DOM's 1441
+  where it had been 1.0897 times too large and overflowed the pane. The
+  pane's own near-black ground replaced the tracer's sky through the
+  terrain appearance; transparency is not expressible, since the tracer
+  writes alpha 1 on a no-hit pixel. An edit reaches the frame as slots
+  through this crate's own terrain source, and the reason it needed one
+  is a bug shown rather than argued: the shared `GroundTerrain` stamps
+  `Ground::revision()`, which a grown ground never moves off zero, so
+  the tracer skipped the upload and **B2's terrain edits never reached a
+  pixel** unless the brick extents moved. The receipt drives B2's exact
+  path with a positive control in the same run and reads back revision
+  unchanged, zero bytes. One elevation edit is now 4 slots and 2,064
+  bytes against the whole map's 264,192; the whole overlay change is 50
+  bricks of 260; a still frame is nothing. The grow itself is unchanged
+  at 1.1 ms and unavoidable, because `Ground` exposes no way to write
+  one voxel's material. A focus elevation is a filtered rebuild, 0.25 ms
+  and one full upload, and it cuts pieces by omission rather than by the
+  cutaway, because a plane laid on the ground a focus keeps takes every
+  token standing on it off at the ankles. Two corrections to earlier
+  entries: the one-pixel column is **not the scene board's**, sitting at
+  logical x 1024 in both arms and in every capture since B2, so it is a
+  host paint seam below this crate; and B2's "three pixels soft" is one
+  blended pixel in 595 of 600 rows, caused by the pane's fractional
+  physical origin rather than by the render scale, with the DOM arm
+  softer still at two. Props and the checkerboard shade are the visible
+  gaps left: the alt shade is a second colour per kind that the material
+  channel has no slot for. 105 views tests, 398 across the workspace.
+- **Found by B4, 2026-09-16, for §6.** `Ground` has no public material
+  write: `place` is private, `carve` writes only air, so a host that
+  authors terrain regrows the whole ground for a one-tile tint. The
+  filtered rebuild's closure can only zero a material, never recolour
+  one, forcing the same regrow. `GroundTerrain` is unusable by any host
+  that regrows rather than carves, per the revision bug above; it should
+  take a host revision or its doc should say carve only. The tracer
+  writes alpha 1 on a no-hit pixel, so a scene cannot leave its
+  background transparent for the pane to show through. And the frame's
+  dirty set has no companion for "the brick set itself moved", so a host
+  must detect that and rebuild whole.

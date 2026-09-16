@@ -38,9 +38,10 @@ pub use projection::{
     tile_board_score,
 };
 pub use scene::{
-    BOARD_SCENE_LEAF_KEY, BoardHandle, BoardPick, BoardProducer, BoardSource, BoardView,
-    BoardWorld, ELEVATION_PX, MapTerrain, SEA_LEVEL, ScenePick, TokenBodies, VOID_SURFACE,
-    VOXELS_PER_STEP, VOXELS_PER_TILE, WORLD_PX, elevation_px, owner_tint, surface_of,
+    BOARD_SCENE_LEAF_KEY, BoardGround, BoardHandle, BoardPalette, BoardPick, BoardProducer,
+    BoardSource, BoardTerrain, BoardView, BoardWorld, ELEVATION_PX, GroundCost, MapTerrain,
+    Overlays, SEA_LEVEL, ScenePick, Tint, TokenBodies, VOID_SURFACE, VOXELS_PER_STEP,
+    VOXELS_PER_TILE, WORLD_PX, elevation_px, focus_top, material_of, owner_tint, surface_of,
     terrain_palette, world_px, yaw_of,
 };
 pub use state::{

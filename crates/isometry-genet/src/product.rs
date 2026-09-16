@@ -101,7 +101,13 @@ impl Product for Isometry {
     }
 
     fn after_frame(&mut self, ctx: &mut Ctx<'_>) {
-        self.0.borrow_mut().drive_selftests(ctx);
+        let mut app = self.0.borrow_mut();
+        app.drive_selftests(ctx);
+        // The ground is brought up to date inside the producer's own draw, so
+        // what an edit cost is only knowable once the frame is behind us.
+        if let Some(board) = app.scene_board.as_mut() {
+            board.report_ground();
+        }
     }
 
     /// The session actor woke us: drain what it sent, on the UI thread, in one

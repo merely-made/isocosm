@@ -12,28 +12,40 @@
 //! the frame the scene actually drew rather than through a flat-ground
 //! inverse.
 //!
+//! B4 adds what the board has to *say* about its tiles. [`overlay`] carries the
+//! DOM board's state tints and its fog into the terrain palette, [`ground`]
+//! keeps the grown ground current and uploads only the bricks a change
+//! touched, and [`view`] holds the snapshot both read.
+//!
 //! The grid under all of it was subdivided on 2026-09-15 by Mark's cliff-height
 //! ruling: [`VOXELS_PER_TILE`] voxels to a tile and [`VOXELS_PER_STEP`] to an
 //! elevation step, so a cube grid can hold a step shallower than a tile.
 
 mod board;
+mod ground;
+mod overlay;
 mod pick;
 mod terrain;
 mod tokens;
+mod view;
 mod world;
 
+#[cfg(test)]
+mod edit_tests;
 #[cfg(test)]
 mod parity_tests;
 #[cfg(test)]
 mod terrain_tests;
+#[cfg(test)]
+mod world_tests;
 
-pub use board::{
-    BOARD_SCENE_LEAF_KEY, BoardHandle, BoardPick, BoardProducer, BoardSource, BoardView,
-};
+pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
+pub use ground::{BoardGround, BoardTerrain, GroundCost};
+pub use overlay::{BoardPalette, Overlays, Tint, terrain_palette};
 pub use pick::ScenePick;
 pub use terrain::{
-    MapTerrain, SEA_LEVEL, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, surface_of,
-    terrain_palette,
+    MapTerrain, SEA_LEVEL, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, material_of, surface_of,
 };
 pub use tokens::{TokenBodies, owner_tint, yaw_of};
-pub use world::{BoardWorld, ELEVATION_PX, WORLD_PX, elevation_px, world_px};
+pub use view::{BoardHandle, BoardView};
+pub use world::{BoardWorld, ELEVATION_PX, WORLD_PX, elevation_px, focus_top, world_px};

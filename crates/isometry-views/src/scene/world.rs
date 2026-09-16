@@ -18,7 +18,11 @@
 //!
 //! and then the row axis and the tile height fall out with it. [`WORLD_PX`] is
 //! that `k`. An orthographic frame of height `h` pixels shows `h / k` world
-//! units, which is [`half_height`](BoardWorld::camera)'s whole content.
+//! units, which is [`half_height`](BoardWorld::camera)'s whole content — and
+//! `h` is the *pane's* height, never the texture's, because the texture is
+//! presented into the whole pane at whatever internal resolution it was drawn
+//! at. B4 took the texture back out of the camera; before that the board drew
+//! `render_scale / (device * zoom)` times the DOM board's size.
 //!
 //! **The elevation step.** The same derivation puts a world `+y` unit at
 //! `k cos(30)` pixels up the screen, so an elevation step of
@@ -158,39 +162,66 @@ impl BoardWorld {
     /// The camera for one board pane: the DOM board's pan and viewport, read
     /// as a dimetric slab over the same world.
     ///
-    /// `size` is the texture the scene draws into and `pane` the pane's own
-    /// logical box, which are the same numbers at render scale 1 and differ by
-    /// exactly the scale otherwise. `camera` is the state's own board-origin
-    /// offset inside the pane.
+    /// `pane` is the pane's own logical box and `camera` the state's own
+    /// board-origin offset inside it. **Both halves of the framing come off
+    /// the pane, and the texture is not an input at all** — B3 found the half
+    /// height taken from the texture instead, which is the pane times the
+    /// device scale times the zoom over the render scale. That ratio is one
+    /// only when device times zoom is already whole, so at a fractional zoom
+    /// the board drew 1.09 times the DOM board's size. The whole texture is
+    /// presented into the whole pane whatever its own size, so the pane is the
+    /// only box a world-to-pixel scale can be read off.
     ///
     /// [`Cutaway::Bounds`] is the map's own box, grown by a tile on every side
     /// so a token standing at the edge is not clipped by the ground it stands
-    /// on. Nothing outside the box can reach a pixel anyway; the cut is what
-    /// keeps a later focus elevation (B4) a change of one field.
+    /// on. Nothing outside the box can reach a pixel anyway; its ceiling is
+    /// where a focus elevation cuts the bodies the filtered ground no longer
+    /// holds up.
     pub fn camera(
         &self,
         geo: &IsoGeometry,
         camera: (f32, f32),
         pane: (f32, f32),
-        size: [u32; 2],
+        focus: Option<i32>,
     ) -> Option<SlabCamera> {
         let centre = self.ground_point(geo, (pane.0 / 2.0 - camera.0, pane.1 / 2.0 - camera.1));
         // One scene pixel is one board pixel: the frame shows as many world
-        // units as it has pixels, over the projection's own scale.
-        let half_height = size[1].max(1) as f32 / (2.0 * world_px(geo));
-        let aspect = size[0].max(1) as f32 / size[1].max(1) as f32;
+        // units as the pane has pixels, over the projection's own scale.
+        let half_height = pane.1.max(1.0) / (2.0 * world_px(geo));
+        let aspect = pane.0.max(1.0) / pane.1.max(1.0);
         let tile = VOXELS_PER_TILE as f32;
         // Deep enough that the slab reaches the whole map from any centre
         // inside it, with the ceiling and a few tiles of margin on top.
         let depth = 4.0 * (self.extent as f32 + self.ceiling + 8.0 * tile);
         let reach = self.extent as f32 + tile;
+        let ceiling = match focus {
+            // A focus keeps the ground at or below it, and the pieces standing
+            // *on* it: the cut clears a body's own height above the top face,
+            // because a plane laid on that face would slice every token on it
+            // off at the ankles. What is above the focus is kept out by not
+            // being drawn — the filtered map for the ground, and the body
+            // filter in `board` for the tokens — rather than by this box.
+            Some(focus) => focus_top(focus) + BODY_HEADROOM,
+            None => self.ceiling + 4.0 * tile,
+        };
         Some(
             SlabCamera::dimetric_2_1(centre, half_height, aspect, depth)?.with_cutaway(Some(
                 Cutaway::Bounds {
                     min: [-reach, -2.0 * tile, -reach],
-                    max: [reach, self.ceiling + 4.0 * tile, reach],
+                    max: [reach, ceiling, reach],
                 },
             )),
         )
     }
 }
+
+/// World y of the top face of a focus elevation: the highest ground a focus
+/// keeps, which is the plane every kept piece stands on.
+pub fn focus_top(elevation: i32) -> f32 {
+    (elevation * VOXELS_PER_STEP) as f32 + GROUND_TOP
+}
+
+/// World units a focused cut clears above the ground it keeps: three tiles,
+/// which is far more than the shipped rig's own height and still a fraction of
+/// a board's.
+const BODY_HEADROOM: f32 = 3.0 * VOXELS_PER_TILE as f32;

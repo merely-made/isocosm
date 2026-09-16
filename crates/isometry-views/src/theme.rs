@@ -4,11 +4,16 @@
 //! `image-rendering: pixelated` engine seam opens, probe P1).
 
 mod kinds;
-mod watchtower;
+mod overlays;
 mod tokens;
+mod watchtower;
 
-pub(crate) use kinds::{BASE_TILE_KINDS, WATCHTOWER_TILE_KINDS, tile_kind_css};
 pub use kinds::tile_kind_colour;
+pub(crate) use kinds::{BASE_TILE_KINDS, WATCHTOWER_TILE_KINDS, tile_kind_css};
+// The scene board spends a material on each of these (B4).
+#[cfg(test)]
+pub(crate) use overlays::SHROUD;
+pub(crate) use overlays::{PANE_GROUND, TILE_TINTS, hex_rgb, shrouded};
 // The scene board draws the same rig these rules bake (B2).
 pub(crate) use tokens::token_recipes;
 

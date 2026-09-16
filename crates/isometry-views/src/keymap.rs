@@ -66,6 +66,8 @@ pub enum BoardKey {
     Whisper,
     Face,
     FogView,
+    /// Step the focus elevation up one, then off (B4).
+    Focus,
     EndTurn,
     Undo,
     Redo,
@@ -109,6 +111,7 @@ pub static KEYMAP: LazyLock<Keymap<'static, Press, BoardKey>> = LazyLock::new(||
             BoardKey::EndTurn,
         ),
         Binding::one("f", "fog view", Press::plain("f"), BoardKey::FogView),
+        Binding::one("c", "focus height", Press::plain("c"), BoardKey::Focus),
         // Below the crib: the two lane openers and the history chord, which the
         // panel's own buttons already say.
         Binding::one(">", "command line", Press::plain(">"), BoardKey::Command),
@@ -144,6 +147,7 @@ mod tests {
             (Press::plain("w"), BoardKey::Whisper),
             (Press::plain("r"), BoardKey::Face),
             (Press::plain("f"), BoardKey::FogView),
+            (Press::plain("c"), BoardKey::Focus),
             (Press::Named(NamedPress::Enter), BoardKey::EndTurn),
             (Press::ctrl("z"), BoardKey::Undo),
             (Press::ctrl("y"), BoardKey::Redo),
@@ -157,6 +161,6 @@ mod tests {
             None,
             "a chord the declaration never claimed is not the plain key"
         );
-        assert_eq!(KEYMAP.presses().count(), 11);
+        assert_eq!(KEYMAP.presses().count(), 12);
     }
 }

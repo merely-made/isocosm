@@ -301,6 +301,11 @@ struct App {
     /// leave the selection and the menu standing for a capture.
     select_selftest: bool,
     select_fired: bool,
+    /// `ISOMETRY_OVERLAY_SELFTEST`: B4's headed receipt. Lay the board's
+    /// overlays on — tints, or fog, or a focus elevation, by the flag's own
+    /// value — and leave them standing for a capture.
+    overlay_selftest: Option<selftest::OverlayArm>,
+    overlay_fired: bool,
     /// `ISOMETRY_COMBAT_SELFTEST`: drive a short adjudicated exchange on boot.
     combat_selftest: bool,
     /// Swings left to throw, when the last one landed, and whether the winner

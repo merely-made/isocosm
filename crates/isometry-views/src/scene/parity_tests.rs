@@ -32,9 +32,10 @@ use std::rc::Rc;
 use isometer::FrameRequest;
 use isometry_core::IsoGeometry;
 
-use super::board::{BoardPick, BoardProducer, BoardSource, BoardView};
+use super::board::{BoardPick, BoardProducer, BoardSource};
 use super::pick::ScenePick;
 use super::terrain::{VOXELS_PER_STEP, VOXELS_PER_TILE};
+use super::view::BoardView;
 use super::world::{elevation_px, world_px};
 use crate::demo::demo_map;
 use crate::state::UiState;

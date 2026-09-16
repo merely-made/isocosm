@@ -134,6 +134,9 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
         // a player's view (and drives single-window fog verification without a
         // session).
         BoardKey::FogView => runner.update(|ui| ui.cycle_viewer()),
+        // Step the focus elevation up one, then off: the scene board draws
+        // only what stands at or below it (B4).
+        BoardKey::Focus => runner.update(|ui| ui.cycle_focus_elevation()),
         BoardKey::EndTurn => runner.update(|ui| ui.end_turn()),
         BoardKey::Undo => runner.update(|ui| ui.undo()),
         BoardKey::Redo => runner.update(|ui| ui.redo()),
@@ -502,6 +505,7 @@ impl App {
             || (self.whisper_selftest && !self.whisper_fired)
             || (self.turns_selftest && !self.turns_fired)
             || (self.select_selftest && !self.select_fired)
+            || (self.overlay_selftest.is_some() && !self.overlay_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
             || (self.combat_selftest && !(self.combat_swings == 0 && self.combat_emoted))
     }
@@ -519,6 +523,7 @@ impl App {
         self.maybe_whisper_selftest(ctx);
         self.maybe_turns_selftest(ctx);
         self.maybe_select_selftest(ctx);
+        self.maybe_overlay_selftest(ctx);
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }

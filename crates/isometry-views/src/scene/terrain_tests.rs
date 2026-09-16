@@ -3,9 +3,9 @@
 //! `VOXELS_PER_STEP` voxels tall, and the material palette agrees with the
 //! stylesheet it was built from.
 
+use super::overlay::terrain_palette;
 use super::terrain::{
     MapTerrain, SEA_LEVEL, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, material_of, surface_of,
-    terrain_palette,
 };
 use isometer_core::ground::{BRICK, Ground};
 use isometry_core::{MapDocument, TileKindId};

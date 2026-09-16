@@ -33,12 +33,20 @@
 //! since material 0 is air and palette entry 0 is the unknown colour. Props
 //! are not terrain: voxel-recipe props become bodies in a later lane, and
 //! [`MapTerrain::prop_count`] is all this adapter says about them.
+//!
+//! **Overlays (B4).** A cell the board is saying something about — reach,
+//! path, selection, a template, a door, an encounter site — takes an overlay
+//! material on its **top voxel only**, so the tint covers the diamond the DOM
+//! board tints and leaves the cliff faces below it the colour of the ground
+//! they are cut from. Remembered ground takes the shrouded twin of whatever it
+//! would otherwise wear, and ground the viewer has never seen reports the void
+//! and lays nothing, exactly as the DOM board emits no element for it. The
+//! layout of all of that is [`super::overlay`]'s; this file only reads it.
 
 use isometer_core::ground::{Ground, MAX_MATERIAL, Terrain};
-use isometer_lens::{MAX_TERRAIN_MATERIALS, TerrainPalette};
 use isometry_core::{MapDocument, TileKindId};
 
-use crate::theme::tile_kind_colour;
+use super::overlay::{BoardPalette, Overlays};
 
 /// Voxels along one side of a tile. Ruled 2026-09-15 with [`VOXELS_PER_STEP`].
 ///
@@ -84,10 +92,18 @@ pub struct MapTerrain<'a> {
     extent: i32,
     /// Map cell of the tile whose low corner is terrain column `(0, 0)`.
     origin: (i32, i32),
+    /// What the board is saying about its tiles, or nothing.
+    overlays: Option<&'a Overlays>,
+    palette: BoardPalette,
 }
 
 impl<'a> MapTerrain<'a> {
     pub fn new(map: &'a MapDocument) -> Self {
+        Self::with_overlays(map, None)
+    }
+
+    /// The same terrain with the board's state tints and fog applied.
+    pub fn with_overlays(map: &'a MapDocument, overlays: Option<&'a Overlays>) -> Self {
         let (w, h) = (map.ground.width() as i32, map.ground.height() as i32);
         let origin = (w / 2, h / 2);
         // The bound must reach both ends of both axes, not just the wider one,
@@ -103,6 +119,8 @@ impl<'a> MapTerrain<'a> {
             map,
             extent,
             origin,
+            overlays,
+            palette: BoardPalette::of(map),
         }
     }
 
@@ -130,18 +148,36 @@ impl<'a> MapTerrain<'a> {
             .then_some((col as u32, row as u32))
     }
 
-    /// The material for a column: its ground kind plus one, or air where the
-    /// column is empty or off the map.
-    pub fn material(&self, x: i32, z: i32) -> u8 {
-        self.cell(x, z)
-            .and_then(|(col, row)| self.map.ground.get(col, row).copied())
-            .map(material_of)
-            .unwrap_or(0)
+    /// The material for a column at `depth` voxels below its own surface: the
+    /// ground kind plus one, the overlay tint on the top voxel, and the
+    /// shrouded twin of either over remembered ground.
+    pub fn material(&self, x: i32, z: i32, depth: i32) -> u8 {
+        let Some((col, row)) = self.cell(x, z) else {
+            return 0;
+        };
+        let Some(kind) = self.map.ground.get(col, row).copied() else {
+            return 0;
+        };
+        let at = (col as i32, row as i32);
+        let mut material = material_of(kind);
+        if let Some(overlays) = self.overlays {
+            // The tint is the top face's, as the DOM board tints the diamond
+            // and not the cliff below it.
+            if depth == 0 {
+                if let Some(tint) = overlays.tint(at) {
+                    material = self.palette.tint_material(tint);
+                }
+            }
+            if overlays.dim.contains(&at) {
+                material = self.palette.shrouded_material(material);
+            }
+        }
+        material
     }
 
     /// Raises the map's ground, materials and all.
     pub fn grow(&self) -> Ground {
-        Ground::grow_with(self, self.extent, |x, z, _depth| self.material(x, z))
+        Ground::grow_with(self, self.extent, |x, z, depth| self.material(x, z, depth))
     }
 
     /// How many cells carry a prop. Props themselves are a later lane's.
@@ -162,6 +198,15 @@ impl Terrain for MapTerrain<'_> {
     fn surface(&self, _extent: i32, x: i32, z: i32) -> i32 {
         match self.cell(x, z) {
             Some((col, row)) if self.map.ground.get(col, row).is_some_and(|k| k.0 != 0) => {
+                // Never seen is not drawn: the DOM board emits no element for
+                // an unexplored tile, so the scene lays no voxel and the pane
+                // shows through the same way.
+                if self
+                    .overlays
+                    .is_some_and(|o| o.hidden.contains(&(col as i32, row as i32)))
+                {
+                    return VOID_SURFACE;
+                }
                 surface_of(self.map.elevation.get(col, row).copied().unwrap_or(0) as i32)
             },
             _ => VOID_SURFACE,
@@ -179,19 +224,4 @@ pub fn material_of(kind: TileKindId) -> u8 {
         kind.0
     );
     material.min(MAX_MATERIAL as usize) as u8
-}
-
-/// The map's material palette, built from the tileset stylesheet's own colours.
-///
-/// Entry 0 is the unknown colour, which is black: a kind the stylesheet does
-/// not colour reads as the same nothing an empty column does, rather than as a
-/// plausible material. Kinds past the table's 64 entries are dropped, which is
-/// the same bound [`material_of`] clamps at.
-pub fn terrain_palette(map: &MapDocument) -> TerrainPalette {
-    let mut colours = vec![[0.0, 0.0, 0.0]];
-    for kind in &map.tile_kinds {
-        colours.push(tile_kind_colour(kind).unwrap_or([0.0, 0.0, 0.0]));
-    }
-    colours.truncate(MAX_TERRAIN_MATERIALS);
-    TerrainPalette::new(colours)
 }

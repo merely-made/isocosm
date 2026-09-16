@@ -162,24 +162,7 @@ use tokens::{marker_el, token_el};
 fn board_elements(ui: &UiState) -> Vec<UiChild> {
     let mut layers: Vec<UiChild> = ground_tiles(ui);
     layers.extend(prop_tiles(ui));
-    // Markers and tokens follow fog: a marker only shows on a token the
-    // viewer can currently see.
-    let marker_shown = |id: isometry_core::TokenId| {
-        ui.map
-            .token(id)
-            .map(|t| ui.token_visible(t))
-            .unwrap_or(false)
-    };
-    if let Some(id) = ui.selected_token {
-        if marker_shown(id) {
-            layers.extend(marker_el(ui, id, "marker marker-select"));
-        }
-    }
-    if let Some(active) = ui.turns.active() {
-        if marker_shown(active) {
-            layers.extend(marker_el(ui, active, "marker marker-turn"));
-        }
-    }
+    layers.extend(marker_elements(ui));
     layers.extend(
         ui.map
             .tokens
@@ -188,6 +171,36 @@ fn board_elements(ui: &UiState) -> Vec<UiChild> {
             .map(|t| token_el(ui, t)),
     );
     layers
+}
+
+/// The two ground markers: green under the selected token, gold under whoever
+/// is up. They follow fog — a marker only shows on a token the viewer can
+/// currently see — and a focus elevation, which cuts the piece they belong to.
+///
+/// §3 keeps markers DOM on both boards, so this is the whole of what the scene
+/// arm still emits inside `.board`.
+fn marker_elements(ui: &UiState) -> Vec<UiChild> {
+    let shown = |id: isometry_core::TokenId| {
+        ui.map.token(id).is_some_and(|token| {
+            ui.token_visible(token)
+                && ui.focus_elevation.is_none_or(|focus| {
+                    i32::from(
+                        *ui.map
+                            .elevation
+                            .get(token.at.0.max(0) as u32, token.at.1.max(0) as u32)
+                            .unwrap_or(&0),
+                    ) <= focus
+                })
+        })
+    };
+    let mut out: Vec<UiChild> = Vec::new();
+    if let Some(id) = ui.selected_token.filter(|id| shown(*id)) {
+        out.extend(marker_el(ui, id, "marker marker-select"));
+    }
+    if let Some(active) = ui.turns.active().filter(|id| shown(*id)) {
+        out.extend(marker_el(ui, active, "marker marker-turn"));
+    }
+    out
 }
 
 /// The board pane's scene leaf: the whole board as one producer-backed image,
@@ -232,9 +245,9 @@ pub fn board_root(ui: &UiState) -> UiChild {
     // B2: behind `ISOMETRY_SCENE_BOARD` the board pane carries one scene leaf
     // instead of one element per tile, prop, marker and token. Everything
     // outside the `.board` container — the side panel, the overlays, the
-    // gestures — is the same tree either way. Markers and the context menu
-    // stay DOM but are B3's to bring back over the leaf, so nothing is emitted
-    // beside it yet and the pane shows exactly what the scene drew.
+    // gestures — is the same tree either way. B4 brings the markers back over
+    // the leaf in a container of their own, because the leaf sits at the pane
+    // origin and a marker is placed in the board's panned space.
     let layers: Vec<UiChild> = if ui.scene_board {
         vec![scene_leaf(ui)]
     } else {
@@ -258,6 +271,17 @@ pub fn board_root(ui: &UiState) -> UiChild {
             .attr("class", "board")
             .attr("style", format!("left: {camx}px; top: {camy}px;")),
     )];
+    if ui.scene_board {
+        // The markers stand in the board's own panned space, so they ride a
+        // second container that carries the pan the leaf hands to its camera.
+        let markers = marker_elements(ui);
+        if !markers.is_empty() {
+            pane_children.push(Box::new(el("div", markers).attr("class", "board").attr(
+                "style",
+                format!("left: {}px; top: {}px;", ui.camera.0, ui.camera.1),
+            )));
+        }
+    }
     if let Some(overlay) = crate::character::character_overlay(ui) {
         pane_children.push(overlay);
     }

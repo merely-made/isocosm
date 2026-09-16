@@ -203,6 +203,34 @@ impl UiState {
             .unwrap_or(false)
     }
 
+    /// Step the focus elevation up one, then off (B4).
+    ///
+    /// A cutaway rather than a mode: the board draws everything at or below
+    /// the focus and cuts what stands over it, so the DM can see the floor of
+    /// a keep without unbuilding it. The cycle starts at the map's lowest
+    /// painted height and ends past its tallest, which is the whole board
+    /// again — so the key is its own way out and no control is needed to
+    /// escape it. Only the scene board reads it; the DOM board draws whatever
+    /// it always drew.
+    pub fn cycle_focus_elevation(&mut self) {
+        let tallest = self
+            .map
+            .elevation
+            .iter()
+            .map(|(_, _, e)| *e as i32)
+            .max()
+            .unwrap_or(0);
+        self.focus_elevation = match self.focus_elevation {
+            None => Some(0),
+            Some(focus) if focus >= tallest => None,
+            Some(focus) => Some(focus + 1),
+        };
+        self.status = match self.focus_elevation {
+            Some(focus) => format!("focus: height {focus} and below"),
+            None => "focus: the whole board".to_owned(),
+        };
+    }
+
     /// Every door tile on the active map, for the board to render.
     pub fn door_tiles(&self) -> HashSet<TileCoord> {
         let Some(active) = &self.active_map else {

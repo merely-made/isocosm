@@ -119,6 +119,10 @@ pub struct UiState {
     /// under the flag means no frame has been drawn yet, which reads as "the
     /// pointer is over nothing" rather than as a guess.
     pub board_pick: Option<ScenePick>,
+    /// The highest elevation the board draws; everything above it is cut away
+    /// (B4). `None` draws the whole board. On the scene board this is the keep
+    /// predicate over the grown ground; the DOM board does not read it.
+    pub focus_elevation: Option<i32>,
     pub selected: Option<TileCoord>,
     pub mode: EditMode,
     /// Palette selection painted by `PaintGround` / `PaintProp` / `Fill`.
@@ -436,6 +440,7 @@ impl UiState {
             viewport: (0.0, 0.0),
             scene_board: false,
             board_pick: None,
+            focus_elevation: None,
             selected: None,
             mode: EditMode::Select,
             brush: TileKindId(1),

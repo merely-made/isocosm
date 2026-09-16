@@ -14,8 +14,11 @@ use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
 
 use super::*;
 
+pub(crate) use overlays::OverlayArm;
+
 mod adjudicate;
 mod board;
+mod overlays;
 mod session;
 mod surfaces;
 mod watchtower;

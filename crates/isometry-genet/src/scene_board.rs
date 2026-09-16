@@ -26,7 +26,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use isometry_views::{BoardHandle, BoardProducer, BoardSource, BoardView, ScenePick, UiState};
+use isometry_views::{
+    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ScenePick, UiState,
+};
 
 use crate::Ctx;
 
@@ -46,6 +48,9 @@ pub(crate) struct SceneBoard {
     /// all. A scene board that quietly draws nothing is the failure this
     /// guards against.
     reported: Option<String>,
+    /// The last ground change reported under `ISOMETRY_PROFILE`, so a still
+    /// board says nothing and an edit says what it cost (B4).
+    costed: Option<GroundCost>,
 }
 
 impl SceneBoard {
@@ -59,6 +64,7 @@ impl SceneBoard {
             producer: Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(view)))),
             scale: 1,
             reported: None,
+            costed: None,
         }
     }
 
@@ -77,6 +83,26 @@ impl SceneBoard {
     /// rather than reading a snapshot that is a frame stale by construction.
     pub(crate) fn pick(&self) -> ScenePick {
         ScenePick::new(self.producer.clone())
+    }
+
+    /// What the last ground change cost, said once per change under
+    /// `ISOMETRY_PROFILE`.
+    ///
+    /// Called *after* the frame rather than in [`Self::sync`], because the
+    /// ground is brought up to date inside the producer's own draw: asked
+    /// before it, a sync would always report the change before last, and a
+    /// board that then parks would never say what the last edit cost.
+    pub(crate) fn report_ground(&mut self) {
+        if std::env::var_os("ISOMETRY_PROFILE").is_none() {
+            return;
+        }
+        let cost = self.producer.borrow().source().ground_cost();
+        if self.costed != cost {
+            self.costed = cost;
+            if let Some(cost) = cost {
+                eprintln!("[isometry] scene board ground: {}", cost.line());
+            }
+        }
     }
 
     /// Per frame: take the board's state and set the pixel grid.

@@ -1,36 +1,42 @@
-//! The scene board: the map and its tokens as one `isometer` frame.
+//! The scene board: the map, its overlays and its tokens as one `isometer`
+//! frame.
 //!
-//! This is B2's whole product side. [`BoardView`] is the snapshot the host
-//! pushes each frame — the map, the pan, the pane and the projection — and
-//! [`BoardSource`] is the [`SceneSource`] over it: B1's terrain adapter grown
-//! into a `Ground` and uploaded as a `BrickMap`, its tile kinds bound through
-//! `set_terrain_palette`, one live body per token from the DOM board's own
-//! recipes, and the dimetric camera [`super::world`] derives from the board's
-//! own pan.
+//! [`BoardView`](super::view::BoardView) is the snapshot the host pushes each
+//! frame ([`super::view`])
+//! and [`BoardSource`] is the [`SceneSource`] over it: B1's terrain adapter
+//! grown into a `Ground` and bound as a `BrickMap`, its tile kinds and B4's
+//! state tints bound through `set_terrain_palette`, one live body per token
+//! from the DOM board's own recipes, and the dimetric camera [`super::world`]
+//! derives from the board's own pan.
+//!
+//! **The background.** The tracer paints a pale sky where no brick is hit, and
+//! the DOM board shows the pane's own near-black ground there. A
+//! `TerrainAppearance` whose sky and underground are that same ground is all
+//! it takes to agree — the palette I1 bound outranks the appearance's three
+//! material colours, so nothing else about the frame changes. Transparency
+//! would be the honest answer and is not available: the tracer writes alpha 1
+//! on a no-hit pixel (§6).
 //!
 //! **What the source does not own.** The skip, the render scale and the leaf's
-//! output contract are `SceneProducer`'s; selection, overlays, markers and the
-//! context menu are B3 and B4 and stay on the DOM exactly as they are. The
-//! source answers [`BoardSource::pick`] so the parity gate can ask it which
-//! tile a pixel shows, and nothing routes a pointer through it yet.
+//! output contract are `SceneProducer`'s; markers and the context menu stay
+//! DOM, as §3 rules.
 
-use std::cell::RefCell;
 use std::collections::BTreeSet;
-use std::rc::Rc;
 
-use isometer::core::ground::Ground;
-use isometer::lens::{BrickMap, Grade};
+use isometer::lens::{BrickDiagnostics, Grade, TerrainAppearance};
 use isometer::{
-    BodySignature, FrameRequest, GroundTerrain, Pick, Pose, Scene, SceneBody, SceneFrame,
-    SceneHost, SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    BodySignature, FrameRequest, Pick, Pose, Scene, SceneBody, SceneFrame, SceneHost,
+    SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
     TerrainSource,
 };
-use isometry_core::{IsoGeometry, MapDocument, TileCoord, Token, TokenId};
+use isometry_core::{MapDocument, TileCoord, Token, TokenId};
 
+use super::ground::{BoardGround, GroundCost};
+use super::overlay::terrain_palette;
 use super::tokens::{TokenBodies, owner_tint, yaw_of};
+use super::view::BoardHandle;
 use super::world::BoardWorld;
-use super::{MapTerrain, terrain_palette};
-use crate::state::UiState;
+use crate::theme::{PANE_GROUND, hex_rgb};
 
 /// The producer key the board pane's scene leaf is registered under. Shared so
 /// the view's `custom_leaf` and the host's `register` name one leaf, exactly as
@@ -51,6 +57,26 @@ fn board_grade() -> Grade {
     }
 }
 
+/// The pane's own ground, painted where no brick is hit.
+///
+/// The three material colours are never read: I1's palette outranks them in
+/// `material_colour`, and every voxel the board lays is a palette material. So
+/// this entry is about the *background* alone, and both of its branches — the
+/// sky above the classifying plane and the underground below it — are the one
+/// colour the `.pane` rule carries.
+fn board_appearance() -> TerrainAppearance {
+    let ground = hex_rgb(PANE_GROUND);
+    TerrainAppearance {
+        soil: ground,
+        rock: ground,
+        unknown: ground,
+        sky: ground,
+        underground: ground,
+        section_centre: [0.0; 3],
+        clearing_y: 0.0,
+    }
+}
+
 /// Isometry keeps no host presentation beside the scene: no capsule roster and
 /// no substitute for a body that would not project.
 struct PlainHost;
@@ -60,8 +86,8 @@ impl SceneHost for PlainHost {}
 ///
 /// A tile hit carries more than the DOM board's inverse can: which voxel of
 /// the column the ray met, and whether it met the top face or an exposed side.
-/// B3 will want both — a click on a cliff face is a click on the tile above
-/// it, not on the one the face belongs to — and the parity gate turns on the
+/// B3 wants both — a click on a cliff face is a click on the tile above it,
+/// not on the one the face belongs to — and the parity gate turns on the
 /// distinction, because the side faces are geometry the DOM board only draws
 /// where an elevation step exposes one.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -76,67 +102,17 @@ pub enum BoardPick {
     },
 }
 
-/// The board as the producer sees it: a snapshot the host pushes, because the
-/// producer is called from the host's own loop and cannot borrow the runner's
-/// state while it is doing so.
-pub struct BoardView {
-    pub map: MapDocument,
-    pub geo: IsoGeometry,
-    /// Board-origin offset inside the pane, logical px.
-    pub camera: (f32, f32),
-    /// The board pane's logical size, logical px.
-    pub pane: (f32, f32),
-    /// Bumped whenever the ground, the elevation or the tile kinds move, so
-    /// the terrain is regrown exactly then.
-    terrain_revision: u64,
-}
-
-/// The shared handle. Cheap to clone; every clone sees one snapshot.
-pub type BoardHandle = Rc<RefCell<BoardView>>;
-
-impl BoardView {
-    pub fn new(map: MapDocument) -> Self {
-        Self {
-            map,
-            geo: IsoGeometry::default(),
-            camera: (0.0, 0.0),
-            pane: (0.0, 0.0),
-            terrain_revision: 1,
-        }
-    }
-
-    pub fn into_handle(self) -> BoardHandle {
-        Rc::new(RefCell::new(self))
-    }
-
-    /// Takes the board's current state. The terrain revision moves only for
-    /// the three layers the ground is grown from — a token step or a pan is
-    /// not a regrow — and the map is cloned only when one of them differs, so
-    /// an ordinary frame copies nothing.
-    pub fn sync(&mut self, ui: &UiState) {
-        self.geo = ui.geo;
-        self.camera = ui.camera;
-        self.pane = ui.viewport;
-        let terrain_moved = self.map.ground != ui.map.ground
-            || self.map.elevation != ui.map.elevation
-            || self.map.tile_kinds != ui.map.tile_kinds;
-        if terrain_moved || self.map.tokens != ui.map.tokens || self.map.props != ui.map.props {
-            self.map = ui.map.clone();
-        }
-        if terrain_moved {
-            self.terrain_revision += 1;
-        }
-    }
-}
-
 /// One board snapshot as an [`isometer::SceneSource`].
 pub struct BoardSource {
     view: BoardHandle,
     tokens: TokenBodies,
     scene: Option<Scene>,
     scene_size: [u32; 2],
-    /// The grown ground and the revision it was grown from.
-    ground: Option<(Ground, u64)>,
+    /// The grown ground and everything about keeping it current.
+    ground: Option<BoardGround>,
+    /// The palette the bound table was built for, so a kind added to the map
+    /// rebinds it and an ordinary frame does not.
+    palette_revision: Option<usize>,
     world: Option<BoardWorld>,
     /// Subjects whose recipe colour table is already registered on the body
     /// layer. A table is per subject and survives frames, so it is set once.
@@ -157,6 +133,7 @@ impl BoardSource {
             scene: None,
             scene_size: [0; 2],
             ground: None,
+            palette_revision: None,
             world: None,
             palettes: BTreeSet::new(),
             placeholders: 0,
@@ -177,12 +154,24 @@ impl BoardSource {
         self.world
     }
 
+    /// What the last ground change cost.
+    pub fn ground_cost(&self) -> Option<GroundCost> {
+        self.ground.as_ref().map(BoardGround::cost)
+    }
+
+    /// The tracer's own receipt for the last drawn frame: what the terrain
+    /// change actually cost the GPU, rather than what this crate believes it
+    /// asked for.
+    pub fn terrain_diagnostics(&self) -> Option<BrickDiagnostics> {
+        self.scene.as_ref()?.terrain_diagnostics()
+    }
+
     /// What the last drawn frame shows at normalized clip coordinates.
     ///
     /// A body pick is the token whose [`SubjectKey`] it carries; a terrain hit
     /// is the tile its entered voxel belongs to, through B1's convention, and
     /// `None` off the map. This is the scene half of the parity gate, and the
-    /// seam B3 will route the pointer through.
+    /// seam B3 routes the pointer through.
     pub fn pick(&self, ndc: [f32; 2]) -> Option<BoardPick> {
         let scene = self.scene.as_ref()?;
         let world = self.world?;
@@ -204,6 +193,9 @@ impl BoardSource {
     }
 
     /// The camera a request would draw with, and the world it is drawn in.
+    ///
+    /// The texture is not an input: the pane is the only box the world-to-pixel
+    /// scale can be read off, whatever internal resolution the scene draws at.
     fn framing(&mut self, request: &FrameRequest<'_>) -> Option<(SlabCamera, BoardWorld)> {
         let view = self.view.borrow();
         let world = BoardWorld::new(&view.map);
@@ -214,7 +206,7 @@ impl BoardSource {
         } else {
             (request.size[0] as f32, request.size[1] as f32)
         };
-        let camera = world.camera(&view.geo, view.camera, pane, request.size)?;
+        let camera = world.camera(&view.geo, view.camera, pane, view.overlays.focus)?;
         Some((camera, world))
     }
 
@@ -230,6 +222,7 @@ impl BoardSource {
                     size[1],
                 )?);
                 self.ground = None;
+                self.palette_revision = None;
                 self.palettes.clear();
             },
             Some(scene) if self.scene_size != size => scene.resize(size[0], size[1]),
@@ -239,21 +232,23 @@ impl BoardSource {
         Ok(())
     }
 
-    /// Grows the ground and binds the tile-kind palette when the map's terrain
-    /// layers have moved, and never otherwise.
+    /// Brings the ground and the material palette up to the snapshot.
     fn ensure_terrain(&mut self, revision: u64) -> Result<(), String> {
-        if self.ground.as_ref().is_some_and(|(_, at)| *at == revision) {
-            return Ok(());
-        }
         let view = self.view.borrow();
-        let ground = MapTerrain::new(&view.map).grow();
-        let scene = self.scene.as_mut().ok_or("the scene was not built")?;
-        scene.set_terrain_map(
-            BrickMap::from_ground(&ground).map_err(|error| format!("brick map: {error}"))?,
-        );
-        scene.set_terrain_palette(Some(terrain_palette(&view.map)));
-        drop(view);
-        self.ground = Some((ground, revision));
+        match &mut self.ground {
+            Some(ground) => ground.sync(&view.map, &view.overlays, revision)?,
+            None => self.ground = Some(BoardGround::new(&view.map, &view.overlays, revision)?),
+        }
+        // The table is a function of the map's kinds alone: the tints and the
+        // shrouded half are fixed blocks past them.
+        if self.palette_revision != Some(view.map.tile_kinds.len()) {
+            self.palette_revision = Some(view.map.tile_kinds.len());
+            let palette = terrain_palette(&view.map);
+            self.scene
+                .as_mut()
+                .ok_or("the scene was not built")?
+                .set_terrain_palette(Some(palette));
+        }
         Ok(())
     }
 }
@@ -299,6 +294,7 @@ impl SceneSource for BoardSource {
             .map
             .tokens
             .iter()
+            .filter(|token| !view.overlays.cuts(&view.map, token))
             .map(|token| {
                 let (pose, scale) = pose_of(&self.tokens, &view.map, &world, token);
                 BodySignature {
@@ -319,11 +315,12 @@ impl SceneSource for BoardSource {
             size: request.size,
             render_scale: request.render_scale,
             camera: Some(camera),
-            terrain_revision: self.ground.as_ref().map(|(ground, _)| ground.revision()),
+            // The board's own revision, which moves for a paint, an elevation
+            // edit and every overlay. The ground's would not: growth is not an
+            // edit, so `Ground::revision` stays zero for the board's lifetime.
+            terrain_revision: Some(view.terrain_revision()),
             bodies,
-            // The terrain snapshot the ground is grown from: a paint that
-            // changes no token still redraws.
-            host: vec![view.terrain_revision],
+            host: Vec::new(),
         })
     }
 
@@ -333,7 +330,7 @@ impl SceneSource for BoardSource {
             .ok_or("the board cannot frame this pane")?;
         self.world = Some(world);
         self.ensure_scene(request)?;
-        let revision = self.view.borrow().terrain_revision;
+        let revision = self.view.borrow().terrain_revision();
         self.ensure_terrain(revision)?;
 
         // A token's recipe colour table is per subject and survives frames, so
@@ -360,6 +357,11 @@ impl SceneSource for BoardSource {
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
+            // Unexplored ground draws nothing, and neither does a piece
+            // standing on it or above a focus elevation.
+            if held.overlays.cuts(&held.map, token) {
+                continue;
+            }
             let (body, placeholder) = self.tokens.body(&token.sprite);
             missing += usize::from(placeholder);
             let (pose, scale) = pose_of(&self.tokens, &held.map, &world, token);
@@ -375,11 +377,12 @@ impl SceneSource for BoardSource {
             });
         }
         self.placeholders = missing;
-        let Some((ground, _)) = &self.ground else {
+        let Some(ground) = &self.ground else {
             self.scene = Some(scene);
             return Err("the board grew no ground".into());
         };
-        let terrain = GroundTerrain(ground);
+        let terrain = ground.terrain();
+        let dirty = ground.dirty();
         let mut encoder = request
             .device
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -392,9 +395,9 @@ impl SceneSource for BoardSource {
                 bodies: &bodies,
                 volumes: SceneVolumes::Voxels(&self.tokens.volumes),
                 terrain: Some(&terrain as &dyn TerrainSource),
-                dirty: &[],
+                dirty,
                 grade: board_grade(),
-                terrain_appearance: None,
+                terrain_appearance: Some(board_appearance()),
                 body_budget: BODY_BUDGET,
                 capsules: None,
             },
@@ -410,6 +413,10 @@ impl SceneSource for BoardSource {
         // retirement is the only thing that releases it.
         result?;
         request.queue.submit(Some(encoder.finish()));
+        // The frame carried the change, so the next one carries nothing.
+        if let Some(ground) = &mut self.ground {
+            ground.uploaded();
+        }
         Ok(Some(view))
     }
 
@@ -430,6 +437,7 @@ impl SceneSource for BoardSource {
         self.scene = None;
         self.scene_size = [0; 2];
         self.ground = None;
+        self.palette_revision = None;
         self.palettes.clear();
     }
 }

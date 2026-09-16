@@ -38,14 +38,5 @@ pub fn tile_kind_colour(kind: &str) -> Option<[f32; 3]> {
         .iter()
         .chain(WATCHTOWER_TILE_KINDS)
         .find(|(k, _, _)| *k == kind)
-        .map(|(_, base, _)| hex_rgb(base))
-}
-
-/// `#rrggbb` to components in 0..1. Anything else reads black.
-fn hex_rgb(hex: &str) -> [f32; 3] {
-    let digits = hex.strip_prefix('#').unwrap_or(hex);
-    let byte = |i: usize| {
-        u8::from_str_radix(digits.get(i..i + 2).unwrap_or("00"), 16).unwrap_or(0) as f32 / 255.0
-    };
-    [byte(0), byte(2), byte(4)]
+        .map(|(_, base, _)| super::overlays::hex_rgb(base))
 }
