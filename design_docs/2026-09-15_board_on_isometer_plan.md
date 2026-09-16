@@ -460,3 +460,13 @@ with the family's receipts unchanged; then the board.
   background transparent for the pane to show through. And the frame's
   dirty set has no companion for "the brick set itself moved", so a host
   must detect that and rebuild whole.
+- **2026-09-16, Mark ruled the DOM board's fate: decide later.** §5
+  decision 4 is deliberately held open until the family's brick cap is
+  resolved. The two facts that moved it: a board past roughly 70 tiles
+  square refuses its brick map at `modulus::MAX_BRICKS` of 2,047, where
+  the DOM board has no such limit, and the DOM board is the only arm
+  that works on a machine with no usable adapter. So B5 records the
+  frame profile and the element count and stops there; both boards stay,
+  behind the flag, without that standing as a commitment to keep them.
+  The switch is re-decided when isometer's owner rules on paging or a
+  larger cap, and the cap is recorded in §6 for exactly that.
