@@ -108,11 +108,21 @@ fn an_unplayed_line_takes_its_turn_at_the_boundary_and_its_next_birth_expresses(
         }
     }
 
-    let Some(changed) = round.changes().next() else {
-        panic!("no unplayed line took the gland: {round:?}");
-    };
-    let line = changed.lineage;
-    let revision = changed.committed.expect("committed");
+    // Follow the line the fixture matured, not whichever line happened to
+    // commit first. With far-tier movement now at parity with near's search
+    // and feeding rules (soil cycle plan rulings 6 and 7), a faster-growing
+    // line can out-earn and commit before `grown` does, so `round.changes()
+    // .next()` no longer names the line this fixture set up to test — it
+    // named line 9, which then raised no birth in the 80-tick window below.
+    // `grown` is the line the fixture actually matured above; asking the
+    // round what *it* decided is the fixture's own setup, not a guess.
+    let line = grown;
+    let turn = round
+        .turn(line)
+        .expect("the matured line had a candidate to weigh");
+    let revision = turn
+        .committed
+        .expect("the matured line committed the gland");
     assert_eq!(
         world
             .lineages()
