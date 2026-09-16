@@ -100,18 +100,40 @@ fn the_windows_stay_bounded_however_long_the_run() {
 
 /// The seed the paired arms run.
 ///
-/// Chosen for the property [`QUIET_SEEDS`] asserts of it and of three others —
+/// Chosen for the property [`QUIET_SEEDS`] asserts of it and of four others —
 /// an untouched enclosure that holds its stand for the whole run — and the
 /// assertion is what keeps the choice honest: if this world ever starts
 /// declining on its own, these fail loudly instead of quietly passing.
-const ARM_SEED: u64 = 7;
+///
+/// **Re-pinned 2026-09-16.** Was seed 7, chosen against the tier where a far
+/// body could see food but could not reach it. Soil cycle plan rulings 6 and
+/// 7 brought far-tier search and feeding to parity with near's, so far
+/// consumers now reach what they see; under that ecology seed 7's own
+/// untouched enclosure peaks at a 94-tick shortfall streak, over
+/// [`mesocosm_core::WARN_AFTER_TICKS`] (60), and can no longer serve as a
+/// neutral control — the control arm below asserts the untouched enclosure
+/// never reads short at all. Measured against the current ecology
+/// (`arm(seed, false)` / `arm(seed, true)`, [`ARM_FOUNDERS`] founders,
+/// [`ARM_TICKS`] ticks): seed 31 never reads short untouched and reaches a
+/// 166-tick shortfall streak when stressed, well past the threshold.
+const ARM_SEED: u64 = 31;
 
 /// Seeds whose untouched enclosure holds its stand across [`ARM_TICKS`].
 ///
 /// These control fixtures may show short transient dips, but none reaches
 /// [`mesocosm_core::WARN_AFTER_TICKS`]. Under TG1, seed 555 reaches 14 short
 /// ticks and recovers before the 60-tick warning threshold.
-const QUIET_SEEDS: [u64; 4] = [1, 7, 99, 555];
+///
+/// **Re-pinned 2026-09-16.** Was `[1, 7, 99, 555]`, chosen before far-tier
+/// search and feeding reached parity with near's (soil cycle plan rulings 6
+/// and 7). Under the current ecology seed 7 peaks at 94 and seed 99 at 116,
+/// both over the 60-tick threshold, so they no longer hold their stand.
+/// Seeds 1 and 555 still do and are kept; measured over a candidate range
+/// (`arm(seed, false)`, [`ARM_FOUNDERS`] founders, [`ARM_TICKS`] ticks),
+/// three seeds replace the dropped two and lengthen the list: seed 31 never
+/// reads short at all, seed 18 peaks at 26, and seed 36 at 14 — seed 1 peaks
+/// at 42 and seed 555 at 45.
+const QUIET_SEEDS: [u64; 5] = [1, 18, 31, 36, 555];
 
 /// Founders per arm, and how long each runs. Two thousand ticks is the horizon
 /// the threshold was measured over.
