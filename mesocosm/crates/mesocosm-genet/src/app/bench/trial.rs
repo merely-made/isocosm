@@ -11,6 +11,7 @@ use cambium::{clickable, el, focusable, text};
 use isometer::GlyphAnchor;
 use mesocosm_core::{PartId, World, effect_pack::Amount, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
+mod boundary;
 mod carving;
 mod journey;
 mod uptake;
@@ -30,6 +31,7 @@ pub(super) struct WorldTrial {
     pub driver: Trial,
     carving: carving::Carving,
     journey: journey::Binding,
+    boundary: boundary::Boundary,
     pub playing: bool,
     pub marks: Vec<SpatialGlyph>,
     /// The bearing part each mark asked to sit on, index-aligned with
@@ -68,6 +70,7 @@ impl WorldTrial {
             driver,
             carving: carving::Carving::new(),
             journey: journey::Binding::new(),
+            boundary: boundary::Boundary::new(),
             playing: false,
             marks: Vec::new(),
             mark_anchors: Vec::new(),
@@ -99,6 +102,7 @@ impl WorldTrial {
         true
     }
     fn consume_step(&mut self) {
+        self.boundary.note_step(&self.driver);
         for activity in self.driver.activities() {
             match activity.event {
                 Event::Moved { .. } => self.moved += 1,
@@ -282,9 +286,34 @@ impl WorldTrial {
         }
         changed
     }
+    /// Arms an advance-to-boundary run at the trial's current epoch (D5).
+    fn start_advance_to_boundary(&mut self) {
+        self.boundary.start(&self.driver);
+    }
+    /// One frame's worth of an advance-to-boundary run: up to
+    /// `boundary::STEP_BUDGET` ordinary idle steps, applied directly rather
+    /// than gated by Play's wall-clock rate, so a 1,000-tick epoch finishes
+    /// in a handful of frames. `Boundary::observe` is consulted after every
+    /// attempted step, successful or refused, so the run stops the instant
+    /// its epoch has risen or a step refuses, exactly as it would mid-chunk.
+    fn advance_boundary_chunk(&mut self) -> bool {
+        if !self.boundary.advancing() {
+            return false;
+        }
+        let mut changed = false;
+        for _ in 0..boundary::STEP_BUDGET {
+            changed |= self.step();
+            self.boundary.observe(&self.driver);
+            if !self.boundary.advancing() {
+                break;
+            }
+        }
+        changed
+    }
     fn reset(&mut self) {
         self.driver.reset();
         self.carving.reset();
+        self.boundary.reset(&self.driver);
         self.playing = false;
         self.marks.clear();
         self.mark_anchors.clear();
@@ -385,6 +414,7 @@ impl WorldTrial {
             ),
         ];
         fields.extend(self.carving.probe_fields());
+        fields.extend(self.boundary.probe_fields(&self.driver));
         fields.push((
             "trial-trace",
             serde_json::to_string(self.driver.trace()).expect("trace serializes"),
@@ -412,6 +442,19 @@ impl Specimen {
             self.changed();
         }
     }
+    pub fn trial_advancing(&self) -> bool {
+        self.trial.as_ref().is_some_and(|t| t.boundary.advancing())
+    }
+    pub fn advance_trial_boundary(&mut self) {
+        if self
+            .trial
+            .as_mut()
+            .is_some_and(WorldTrial::advance_boundary_chunk)
+        {
+            self.selected = None;
+            self.changed();
+        }
+    }
 }
 impl Bench {
     pub fn start_trial(&mut self) {
@@ -434,6 +477,10 @@ impl Bench {
     fn step_trial(&mut self) {
         let mut m = self.model.borrow_mut();
         if let Some(t) = &mut m.trial {
+            // An advance-to-boundary run already owns the stepping this frame.
+            if t.boundary.advancing() {
+                return;
+            }
             t.playing = false;
             if t.step() {
                 m.selected = None;
@@ -443,10 +490,20 @@ impl Bench {
     }
     fn play_trial(&mut self) {
         if let Some(t) = &mut self.model.borrow_mut().trial {
-            if t.driver.steps() < MAX_TRIAL_STEPS && t.driver.checkpoint().is_none() {
+            if !t.boundary.advancing()
+                && t.driver.steps() < MAX_TRIAL_STEPS
+                && t.driver.checkpoint().is_none()
+            {
                 t.playing = true;
                 t.last = Instant::now();
             }
+        }
+    }
+    fn advance_to_boundary(&mut self) {
+        let mut m = self.model.borrow_mut();
+        if let Some(t) = &mut m.trial {
+            t.playing = false;
+            t.start_advance_to_boundary();
         }
     }
     fn marker_height(&mut self) {
@@ -519,13 +576,15 @@ pub(super) fn view(state: &Bench) -> Child {
         "Stopped at a world checkpoint"
     } else if trial.driver.steps() >= MAX_TRIAL_STEPS {
         "Trial limit reached"
+    } else if trial.boundary.advancing() {
+        "Advancing to boundary"
     } else if trial.playing {
         "Playing"
     } else {
         "Paused"
     };
     Box::new(el("section",(
-        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button(if trial.show_uptake { "Hide uptake" } else { "Show uptake" },Bench::toggle_uptake_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
+        el("div",vec![button("Step world",Bench::step_trial),button("Play world",Bench::play_trial),button("Advance to boundary",Bench::advance_to_boundary),button("Pause world",|s|s.model.borrow_mut().pause_trial()),button(if trial.show_marks { "Hide activity" } else { "Show activity" },Bench::toggle_trial_marks),button(if trial.show_uptake { "Hide uptake" } else { "Show uptake" },Bench::toggle_uptake_marks),button("Mark height",Bench::marker_height),button("Mark size",Bench::marker_size),button("Reset world",Bench::reset_trial),button("Exit world trial",Bench::exit_trial)]).attr("class","toolbar"),
         el("p",text(format!("{status} / {} of {MAX_TRIAL_STEPS} ticks / {} movements, {} meals, {} uptake transfers / {} activity marks / height {} / size {}",trial.driver.steps(),trial.moved,trial.fed,trial.uptake_count,trial.marks.len(),trial.marker_height,trial.marker_size))),
         el("p",text("Recorded movement, feeding and soil uptake, with adjustable organism-level markers. The trial leaves saved generation unchanged.")),
         carving::view(state),

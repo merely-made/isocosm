@@ -1,0 +1,31 @@
+wait 1200
+assert snap ready == yes
+click role:button World trial
+settle 3
+assert snap trial-active == true
+assert snap trial-epoch == 0
+assert snap trial-last-boundary-tick == none
+assert snap trial-advancing == false
+click role:button Advance to boundary
+wait 600
+assert snap trial-advancing == false
+assert snap trial-checkpoint == false
+assert snap trial-epoch == 1
+assert snap trial-steps == 1000
+assert snap trial-last-boundary-tick == 1000
+capture boundary-1
+click role:button Advance to boundary
+wait 600
+assert snap trial-advancing == false
+assert snap trial-checkpoint == false
+assert snap trial-epoch == 2
+assert snap trial-steps == 2000
+assert snap trial-last-boundary-tick == 2000
+click role:button Reset world
+settle 3
+assert snap trial-epoch == 0
+assert snap trial-steps == 0
+assert snap trial-last-boundary-tick == none
+assert snap trial-advancing == false
+capture reset
+assert snap error == none

@@ -73,6 +73,10 @@ impl mesquite::Product for BenchProduct {
         Some(
             model.creator.pending
                 || capture_pending
+                // An advance-to-boundary run in progress, so a scenario's
+                // `wait` after pressing the button holds for it rather than
+                // racing a fixed frame count.
+                || model.trial_advancing()
                 || (state.visible
                     && !state.effects.open
                     && scene.section.is_none()

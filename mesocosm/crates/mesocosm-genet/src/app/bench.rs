@@ -176,6 +176,12 @@ pub fn run_inputs(
             {
                 ctx.runner.update(|s| s.model.borrow_mut().advance_trial());
             }
+            if !ctx.runner.state().effects.open
+                && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().trial_advancing()
+            {
+                ctx.runner.update(|s| s.model.borrow_mut().advance_trial_boundary());
+            }
             ctx.runner.state().effects.sync(ctx.leaves);
             let pending = ctx.runner.state().model.borrow().creator.pending;
             if pending {
@@ -204,6 +210,7 @@ pub fn run_inputs(
             state.model.borrow().creator.pending
                 || (state.effects.open && state.effects.playing)
                 || (state.visible && !state.effects.open && state.model.borrow().trial_playing())
+                || (state.visible && !state.effects.open && state.model.borrow().trial_advancing())
                 || (state.visible
                     && !state.effects.open
                     && state.model.borrow().trial.is_none()
