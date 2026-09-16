@@ -69,7 +69,7 @@ pub enum BoardPick {
     Token(TokenId),
     Tile {
         at: TileCoord,
-        /// The height unit of the voxel the ray entered.
+        /// The height unit the voxel the ray entered belongs to.
         elevation: i32,
         /// The hit was on the column's top face rather than on a side.
         top: bool,
@@ -196,7 +196,7 @@ impl BoardSource {
                     .in_bounds(col, row)
                     .then_some(BoardPick::Tile {
                         at: (col, row),
-                        elevation: hit.voxel[1],
+                        elevation: world.elevation_of_voxel(hit.voxel),
                         top: hit.normal[1] > 0.5,
                     })
             },

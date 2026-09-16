@@ -344,3 +344,39 @@ with the family's receipts unchanged; then the board.
   This revises B1's one-voxel-per-height-unit convention and B2's camera
   and probe grid, and it lands as its own lane before B5 records the
   pixel grid.
+- **2026-09-15, the voxel subdivision landed.** `VOXELS_PER_TILE` = 5
+  and `VOXELS_PER_STEP` = 2 carry the cliff-height ruling, with the
+  derivation in their doc so the next reader sees why 5 and 2: under the
+  2:1 dimetric a world unit of height rises by `cos 30` where a tile is
+  `sqrt 2` wide, so with `t` voxels to a tile the step that matches the
+  DOM's 8 px against its 16 px tile is `t * 0.4082`; at `t` = 1 that
+  wants 0.408 of a cube and cannot have it, and at `t` = 5 it wants
+  2.041, so 2 gives 7.84 px. A cell's 5 by 5 footprint takes its
+  material, the surface of elevation `e` is `2e+1`, sea level and the
+  void rescale, and a void column still lays nothing. The world mapping
+  follows: 4.53 px per voxel, 7.84 px per step, and B2's half-open
+  column against a diamond about a point is the same correction at the
+  new size. A token's scale gained the tile's width in voxels, so its
+  on-screen size is pixel-identical to B2's capture. The parity gate
+  passes at the new scale: of 256 probes, 104 land on flat top faces and
+  the two paths name the same tile 104 times, with side faces down from
+  18 to 7 because the rim is a step rather than a whole tile. A new
+  receipt pins the ratio in pixels, 7.838 against the DOM's 8.0 with
+  0.647 px of drift over the demo map's four steps, so 5 and 2 cannot
+  change silently. Measured in the capture, the cliff face is 16
+  physical px against a 32 px tile where the DOM's is 14.7 against 29.3,
+  both exactly half a tile, where B2's stood at 1.22 tiles. Cost,
+  measured: the demo's columns go 625 to 14,641, solid voxels 660 to
+  33,000, the grow 0.04 to 1.40 ms, bricks 16 to 260, the upload 128 to
+  258 KiB, since the atlas allocates in 128 KiB rows. B2's open visual
+  list is unchanged. 87 views tests, 375 across the workspace.
+- **Found by the subdivision, 2026-09-15, for §6 and for Mark.**
+  `modulus::MAX_BRICKS` is 2,047, so a board past roughly 70 tiles
+  square now refuses its brick map where before the subdivision the same
+  cap sat near 360 tiles square; a 96 by 96 map already fails at 3,600
+  bricks. The demo, the watchtower and the 30 by 30 stress board are far
+  inside it, but a large authored map is not, and isometer has no paging
+  or capacity path wired into its ground terrain. Separately,
+  `Ground::surface` searches a fixed band of 24 voxels, which at 2
+  voxels per step is a height limit of 11 elevation units expressed in
+  the wrong unit; it is a helper the receipts use, not the render path.

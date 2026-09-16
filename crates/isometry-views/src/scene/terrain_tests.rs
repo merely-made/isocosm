@@ -1,7 +1,12 @@
-//! B1's receipts: the grown ground agrees with the map at every cell, and the
-//! material palette agrees with the stylesheet it was built from.
+//! B1's receipts at the subdivided scale: the grown ground agrees with the map
+//! over every cell's whole `VOXELS_PER_TILE` footprint, an elevation step is
+//! `VOXELS_PER_STEP` voxels tall, and the material palette agrees with the
+//! stylesheet it was built from.
 
-use super::terrain::{MapTerrain, SEA_LEVEL, VOID_SURFACE, material_of, terrain_palette};
+use super::terrain::{
+    MapTerrain, SEA_LEVEL, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, material_of, surface_of,
+    terrain_palette,
+};
 use isometer_core::ground::{BRICK, Ground};
 use isometry_core::{MapDocument, TileKindId};
 
@@ -19,46 +24,89 @@ fn material_at(ground: &Ground, at: [i32; 3]) -> u8 {
     })
 }
 
-/// Every painted cell's surface is its elevation and every voxel under it
-/// carries the cell's kind. The whole map is inside the grown extent.
+/// Every voxel of every painted cell's footprint stands at that cell's surface
+/// and carries that cell's kind. The whole map is inside the grown extent.
 fn check_every_cell(map: &MapDocument) {
     let terrain = MapTerrain::new(map);
     let ground = terrain.grow();
     assert_eq!(ground.extent(), terrain.extent());
     for (col, row, kind) in map.ground.iter() {
-        let (x, z) = terrain.column(col, row);
-        assert!(
-            x.abs() <= terrain.extent() && z.abs() <= terrain.extent(),
-            "cell ({col}, {row}) fell outside the extent"
-        );
-        assert_eq!(terrain.cell(x, z), Some((col, row)), "round trip");
+        let (x0, z0) = terrain.column(col, row);
         let elevation = *map.elevation.get(col, row).unwrap() as i32;
-        if kind.0 == 0 {
-            assert_eq!(ground.surface(x, z), None, "empty cell ({col}, {row})");
-            continue;
-        }
-        assert_eq!(
-            ground.surface(x, z),
-            Some(elevation),
-            "surface at ({col}, {row})"
-        );
+        let top = surface_of(elevation);
         let expected = material_of(*kind);
-        for y in 0..=elevation {
-            assert_eq!(
-                material_at(&ground, [x, y, z]),
-                expected,
-                "material at ({col}, {row}) y {y}"
-            );
+        // The whole footprint, not just its low corner: the subdivision's own
+        // claim is that a cell owns 5 by 5 columns of one material.
+        for dz in 0..VOXELS_PER_TILE {
+            for dx in 0..VOXELS_PER_TILE {
+                let (x, z) = (x0 + dx, z0 + dz);
+                assert!(
+                    x.abs() <= terrain.extent() && z.abs() <= terrain.extent(),
+                    "cell ({col}, {row}) +({dx}, {dz}) fell outside the extent"
+                );
+                assert_eq!(terrain.cell(x, z), Some((col, row)), "round trip");
+                if kind.0 == 0 {
+                    assert_eq!(ground.surface(x, z), None, "empty cell ({col}, {row})");
+                    continue;
+                }
+                assert_eq!(
+                    ground.surface(x, z),
+                    Some(top),
+                    "surface at ({col}, {row}) +({dx}, {dz})"
+                );
+                for y in 0..=top {
+                    assert_eq!(
+                        material_at(&ground, [x, y, z]),
+                        expected,
+                        "material at ({col}, {row}) +({dx}, {dz}) y {y}"
+                    );
+                }
+                assert_eq!(material_at(&ground, [x, top + 1, z]), 0, "air above");
+            }
         }
-        assert_eq!(material_at(&ground, [x, elevation + 1, z]), 0, "air above");
     }
+}
+
+/// The ruled grid itself: a tile is five voxels across, a step two tall, and
+/// every other number here is derived from the pair.
+#[test]
+fn the_ruled_grid_is_five_voxels_to_a_tile_and_two_to_a_step() {
+    assert_eq!((VOXELS_PER_TILE, VOXELS_PER_STEP), (5, 2));
+    assert_eq!(surface_of(0), 1, "a flat cell is two voxels deep");
+    assert_eq!(surface_of(3) - surface_of(2), VOXELS_PER_STEP);
+    // A step of ground is shorter than a tile is wide; that is the point.
+    assert!(VOXELS_PER_STEP < VOXELS_PER_TILE);
+}
+
+/// A neighbouring cell one elevation step up stands exactly two voxels higher,
+/// so the cliff between them is a two-voxel face rather than a five-voxel one.
+#[test]
+fn one_elevation_step_is_two_voxels_of_cliff() {
+    let mut map = MapDocument::new("step", 2, 1);
+    let grass = map.intern_tile_kind("grass");
+    map.ground.set(0, 0, grass);
+    map.ground.set(1, 0, grass);
+    map.elevation.set(1, 0, 1);
+    let terrain = MapTerrain::new(&map);
+    let ground = terrain.grow();
+    let (low, z) = terrain.column(0, 0);
+    let (high, _) = terrain.column(1, 0);
+    assert_eq!(high - low, VOXELS_PER_TILE, "tiles are five columns apart");
+    assert_eq!(ground.surface(low, z), Some(surface_of(0)));
+    assert_eq!(ground.surface(high, z), Some(surface_of(1)));
+    assert_eq!(
+        ground.surface(high, z).unwrap() - ground.surface(low, z).unwrap(),
+        VOXELS_PER_STEP
+    );
 }
 
 #[test]
 fn the_demo_map_grows_a_ground_that_matches_it() {
     let map = demo_map();
     check_every_cell(&map);
-    assert_eq!(MapTerrain::new(&map).extent(), 12, "a 24x24 map centres");
+    // 24 tiles centred on 12 reach voxel columns -60 ..= 59, so the square
+    // bound is 60: five times the old extent of 12.
+    assert_eq!(MapTerrain::new(&map).extent(), 60, "a 24x24 map centres");
 }
 
 #[test]
@@ -119,20 +167,32 @@ fn empty_and_off_map_columns_sit_below_sea_level() {
 
     assert_eq!(ground.sea_level, SEA_LEVEL);
     assert!(VOID_SURFACE < SEA_LEVEL, "the void is under the water line");
+    assert!(VOID_SURFACE < 0, "and so lays nothing at all");
 
     let off = terrain.extent();
     assert_eq!(terrain.cell(off, off), None, "the corner is off the map");
     assert_eq!(ground.surface(off, off), None, "and holds no voxel");
     assert_eq!(material_at(&ground, [off, 0, off]), 0);
 
-    // An empty cell inside the map is the same void.
+    // An empty cell inside the map is the same void, over its whole footprint.
     let (x, z) = terrain.column(0, 0);
-    assert_eq!(ground.surface(x, z), None);
+    for dz in 0..VOXELS_PER_TILE {
+        for dx in 0..VOXELS_PER_TILE {
+            assert_eq!(ground.surface(x + dx, z + dz), None);
+        }
+    }
 
-    // The one painted cell stands alone at its elevation.
+    // The one painted cell stands alone at its elevation, corner to corner.
     let (x, z) = terrain.column(1, 1);
-    assert_eq!(ground.surface(x, z), Some(3));
-    assert_eq!(material_at(&ground, [x, 3, z]), material_of(grass));
+    let top = surface_of(3);
+    assert_eq!(ground.surface(x, z), Some(top));
+    assert_eq!(material_at(&ground, [x, top, z]), material_of(grass));
+    let far = VOXELS_PER_TILE - 1;
+    assert_eq!(
+        material_at(&ground, [x + far, top, z + far]),
+        material_of(grass),
+        "the far corner of the same cell"
+    );
 }
 
 /// Props are counted here and adapted in a later lane.

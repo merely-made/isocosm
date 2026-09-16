@@ -39,8 +39,9 @@ pub use projection::{
 };
 pub use scene::{
     BOARD_SCENE_LEAF_KEY, BoardHandle, BoardPick, BoardProducer, BoardSource, BoardView,
-    BoardWorld, ELEVATION_PX, MapTerrain, SEA_LEVEL, TokenBodies, VOID_SURFACE, WORLD_PX,
-    owner_tint, terrain_palette, world_px, yaw_of,
+    BoardWorld, ELEVATION_PX, MapTerrain, SEA_LEVEL, TokenBodies, VOID_SURFACE, VOXELS_PER_STEP,
+    VOXELS_PER_TILE, WORLD_PX, elevation_px, owner_tint, surface_of, terrain_palette, world_px,
+    yaw_of,
 };
 pub use state::{
     ActionRow, BOARD_UNIT, CharacterCreateRequest, CompendiumTab, EditMode, FactionMoveRow,

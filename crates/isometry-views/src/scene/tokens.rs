@@ -8,10 +8,13 @@
 //! counted, rather than a silently missing piece on the board.
 //!
 //! **Scale.** A recipe is authored in its own voxels; the board's unit is the
-//! tile. The rig is stood [`FOOTPRINT`] of a tile wide, which puts the shipped
-//! 8-voxel hero at three quarters of a diamond and its 12-voxel height at
-//! about 22 screen pixels against the DOM sprite's 36. Sprite-for-sprite size
-//! parity is not B2's (the renderers differ); standing inside its own tile is.
+//! tile, which the subdivision ruling made [`VOXELS_PER_TILE`] world units
+//! wide. The rig is stood [`FOOTPRINT`] of a tile wide either way, which puts
+//! the shipped 8-voxel hero at three quarters of a diamond and its 12-voxel
+//! height at about 22 screen pixels against the DOM sprite's 36 — the same
+//! pixels as before the subdivision, because a tile is still a tile.
+//! Sprite-for-sprite size parity is not B2's (the renderers differ); standing
+//! inside its own tile is.
 
 use std::collections::BTreeMap;
 
@@ -22,6 +25,7 @@ use isometer::{PaletteColour, TokenBody, VolumeMap, material_colours};
 use isometer_core::SpeciesId;
 use isometry_core::Facing;
 
+use super::terrain::VOXELS_PER_TILE;
 use crate::theme::token_recipes;
 
 /// A token's footprint as a fraction of a tile's diagonal.
@@ -102,11 +106,13 @@ impl TokenBodies {
             .unwrap_or_else(|| material_colours(&Palette::new(vec![PLACEHOLDER_COLOUR])))
     }
 
-    /// The scale that stands `sprite` [`FOOTPRINT`] of a tile wide.
+    /// The scale that stands `sprite` [`FOOTPRINT`] of a tile wide. A tile is
+    /// [`VOXELS_PER_TILE`] world units, so the on-screen size is what it was
+    /// before the grid was subdivided.
     pub fn scale(&self, sprite: &str) -> f32 {
         let size = self.body(sprite).0.size();
         let widest = size[0].max(size[2]).max(1) as f32;
-        FOOTPRINT / widest
+        FOOTPRINT * VOXELS_PER_TILE as f32 / widest
     }
 }
 

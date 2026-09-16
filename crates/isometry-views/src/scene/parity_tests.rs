@@ -17,12 +17,18 @@
 //! identical by construction (`world.rs`) and nothing excuses a mismatch — and
 //! the elevated probes are counted and reported.
 //!
-//! Without an adapter the test skips **loudly** and asserts nothing.
+//! **The ruled ratio.** The gate above only sees flat ground, so it cannot
+//! catch a change to the subdivision itself. `the_ruled_elevation_step_projects_
+//! the_doms_own_step` pins it directly, in pixels, and needs no adapter.
+//!
+//! Without an adapter the probe tests skip **loudly** and assert nothing.
 
 use isometer::FrameRequest;
 use isometry_core::IsoGeometry;
 
 use super::board::{BoardPick, BoardSource, BoardView};
+use super::terrain::{VOXELS_PER_STEP, VOXELS_PER_TILE};
+use super::world::{elevation_px, world_px};
 use crate::demo::demo_map;
 
 /// The pane the probe grid is laid over, in logical px, and the texture the
@@ -178,4 +184,44 @@ fn every_demo_token_draws_from_its_own_recipe() {
         0,
         "every demo sprite is in the recipe table"
     );
+}
+
+/// The cliff-height ruling, in pixels rather than in voxels.
+///
+/// Mark ruled 5 voxels to a tile and 2 to an elevation step on 2026-09-15
+/// because that ratio projects within a fifth of a pixel of the DOM board's
+/// own `elev_step`. This is that claim, asserted: change either constant and
+/// this fails before anything reaches a capture. A tile's own width is pinned
+/// beside it, since the ratio is only right if the denominator is.
+#[test]
+fn the_ruled_elevation_step_projects_the_doms_own_step() {
+    let geo = IsoGeometry::default();
+    let step = elevation_px(&geo);
+    let tile = world_px(&geo) * VOXELS_PER_TILE as f32 * std::f32::consts::SQRT_2;
+    eprintln!(
+        "ruled grid {VOXELS_PER_TILE} voxels/tile, {VOXELS_PER_STEP} voxels/step: a step \
+         projects {step:.3} px against the DOM's {:.1}, a tile {tile:.3} px against {:.1}",
+        geo.elev_step, geo.tile_w
+    );
+    assert!(
+        (step - geo.elev_step).abs() < 1.0,
+        "an elevation step projects {step} px, the DOM board's is {}",
+        geo.elev_step
+    );
+    assert!(
+        (tile - geo.tile_w).abs() < 0.01,
+        "a tile projects {tile} px wide, the DOM board's is {}",
+        geo.tile_w
+    );
+    // And the error must not accumulate past a pixel over a real board: the
+    // demo map's crown stands four steps up.
+    let ceiling = demo_map()
+        .elevation
+        .iter()
+        .map(|(_, _, e)| *e)
+        .max()
+        .unwrap_or(0) as f32;
+    let drift = (step - geo.elev_step).abs() * ceiling;
+    eprintln!("over the demo map's {ceiling} steps the two paths drift {drift:.3} px");
+    assert!(drift < 1.0, "the full height range drifts {drift} px");
 }
