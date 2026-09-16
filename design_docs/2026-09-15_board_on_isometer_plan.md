@@ -380,3 +380,36 @@ with the family's receipts unchanged; then the board.
   `Ground::surface` searches a fixed band of 24 voxels, which at 2
   voxels per step is a height limit of 11 elevation units expressed in
   the wrong unit; it is a helper the receipts use, not the render path.
+- **2026-09-15, B3 landed.** A press, a click, a drag and a hover resolve
+  through `UiState::board_at`, one resolver with two arms: the scene
+  pick, a borrow of the host's producer asked at the moment the gesture
+  runs rather than a snapshot that would be a frame stale by
+  construction, and with the flag off the flat inverse. The scene arm
+  dispatches the click the leaf cannot dispatch for itself, in the DOM
+  elements' own two forms and in their order, so the drag still records
+  what the press applied; the nine modes, the local and remote branches
+  and every rule about what a click means are untouched. Both geometric
+  fallbacks are retired: the token candidate's mode gate was policy and
+  moved into the press, and the flat inverse's arithmetic is a private
+  arm that B5 retires with the DOM board. What made that safe is a
+  receipt over one real frame: 104 flat probes agree 104 of 104, and
+  every raised probe the two differ on has the DOM naming the tile
+  behind the one you see, asserted rather than excused. Host routing,
+  zoom and watchtower pass in both arms at 10 each; under the flag eight
+  receipts skip loudly because they measure per-tile DOM boxes or need a
+  producer a windowless harness never drives, and the scene arm has its
+  own five, the clip receipt included, each asserting the tile-element
+  count at zero beside it. Hover is half restored: a captured drag and
+  leaving the leaf reach it, free hover waits on the shared host, which
+  routes no hover move and publishes no cursor position. 90 views tests,
+  383 across the workspace.
+- **Found by B3, 2026-09-15: the scene board draws too large.**
+  `BoardWorld::camera` takes its centre from the pane but its half
+  height from the texture, and the texture is the pane times device
+  times zoom over the render scale. That ratio is 1 only when device
+  times zoom is already whole, so on this laptop the scene board draws
+  1.090 times the DOM board's size, measured at 1.10 across the demo
+  map's 24-tile span. It is also B2's soft edges: the fit is fractional,
+  so the nearest upscale is resampled once more. The pick is unaffected,
+  since it reads the frame's own camera, so a click always lands where
+  the user sees. A one-line change, and the next drawing lane's.

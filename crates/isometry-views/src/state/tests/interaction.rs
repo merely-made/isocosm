@@ -109,8 +109,12 @@ fn drag_move_routes_out_in_remote_mode() {
     assert_eq!(ui.net_outbox.len(), 1);
 }
 
+/// B3 retired `token_drag_candidate`: the pick says what is under the pointer
+/// and [`UiState::board_press`] holds the mode gate that decides whether it is
+/// a grab. This is that pair, on the DOM board's arm of the resolver.
 #[test]
-fn token_drag_candidate_finds_a_token_in_select_mode_only() {
+fn a_press_grabs_a_token_in_select_mode_only() {
+    use crate::scene::BoardPick;
     use isometry_core::TokenId;
     let mut ui = UiState::new(demo_map());
     // Pointer over knight 1's tile (10, 14), in the pane's own coordinates;
@@ -118,12 +122,21 @@ fn token_drag_candidate_finds_a_token_in_select_mode_only() {
     let (sx, sy) = ui.geo.tile_to_screen((10, 14), 0);
     let on_token = (sx + ui.camera.0, sy + ui.camera.1);
     assert_eq!(ui.mode, EditMode::Select);
-    assert_eq!(ui.token_drag_candidate(on_token), Some(TokenId(1)));
-    // An empty tile, or any non-Select mode, yields nothing.
+    assert_eq!(ui.board_at(on_token), Some(BoardPick::Token(TokenId(1))));
+    ui.board_press(on_token);
+    assert_eq!(ui.drag_token, Some(TokenId(1)));
+    // An empty tile is a tile pick, so nothing is grabbed there.
     let (ex, ey) = ui.geo.tile_to_screen((0, 0), 0);
-    assert_eq!(ui.token_drag_candidate((ex, ey)), None);
+    assert!(matches!(
+        ui.board_at((ex, ey)),
+        Some(BoardPick::Tile { .. })
+    ));
+    ui.board_press((ex, ey));
+    assert_eq!(ui.drag_token, None);
+    // And Play movement stays the gated click-a-reach-tile path.
     ui.mode = EditMode::Play;
-    assert_eq!(ui.token_drag_candidate(on_token), None);
+    ui.board_press(on_token);
+    assert_eq!(ui.drag_token, None);
 }
 
 #[test]

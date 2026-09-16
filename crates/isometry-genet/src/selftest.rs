@@ -15,6 +15,7 @@ use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
 use super::*;
 
 mod adjudicate;
+mod board;
 mod session;
 mod surfaces;
 mod watchtower;

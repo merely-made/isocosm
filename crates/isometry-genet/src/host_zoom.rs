@@ -31,6 +31,8 @@ const DEVICE_SCALE: f32 = 2.0;
 fn board(window: (f32, f32), fit: bool) -> BoardHarness {
     let mut ui = UiState::new(demo_map());
     ui.camera = (420.0, 140.0);
+    // Both arms from one fixture, as in `host_routing`.
+    ui.scene_board = crate::scene_board::enabled();
     let mut hooks = inert_hooks();
     hooks.key_intercept = Box::new(hooks::key_intercept);
     hooks.focused_text = Box::new(hooks::focused_text);
@@ -60,6 +62,23 @@ fn board(window: (f32, f32), fit: bool) -> BoardHarness {
     });
     harness.relayout();
     harness
+}
+
+/// Whether this receipt measures the DOM board's own boxes, which under
+/// `ISOMETRY_SCENE_BOARD` do not exist: decision 2 of the board plan moved the
+/// pixel grid off `board_scale` and onto the producer's render scale, so on the
+/// scene board the crispness these assert is in the renderer rather than in a
+/// laid-out tile. `scene_board::SceneBoard::sync` owns the scale there, and
+/// B5 records it beside the frame profile.
+fn dom_board_only(what: &str) -> bool {
+    if !crate::scene_board::enabled() {
+        return false;
+    }
+    eprintln!(
+        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} measures the DOM board's tile box; the \
+         scene board's pixel grid is the producer's render scale."
+    );
+    true
 }
 
 /// The painted box of the first element carrying `class`.
@@ -223,6 +242,9 @@ fn the_side_panel_fits_the_design_height() {
 /// would seam exactly where a tile would not.
 #[test]
 fn rounding_lands_the_board_on_whole_device_pixels() {
+    if dom_board_only("rounding_lands_the_board_on_whole_device_pixels") {
+        return;
+    }
     let mut harness = board(SHORT_WINDOW, true);
     let grid = (DEVICE_SCALE, harness.ui_zoom());
     harness.update(|ui| ui.set_pixel_grid(grid));
@@ -292,6 +314,9 @@ fn the_pixel_grid_is_inert_at_zoom_one() {
 /// path rather than by writing the flag.
 #[test]
 fn the_panel_toggle_relayouts_the_board() {
+    if dom_board_only("the_panel_toggle_relayouts_the_board") {
+        return;
+    }
     let mut harness = board(SHORT_WINDOW, true);
     assert!(harness.state().integer_pixel_rounding, "on by default");
     let (_, _, rounded_w, _) = rect(&harness, "tile");
@@ -330,6 +355,9 @@ fn the_panel_toggle_relayouts_the_board() {
 /// paint still agree, which they do by construction: one `geo`.
 #[test]
 fn a_click_still_lands_on_the_tile_under_it_at_a_fractional_zoom() {
+    if dom_board_only("a_click_still_lands_on_the_tile_under_it_at_a_fractional_zoom") {
+        return;
+    }
     let mut harness = board(SHORT_WINDOW, true);
     assert!(
         harness.state().board_scale != 1.0,

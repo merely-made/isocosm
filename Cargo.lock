@@ -4378,6 +4378,7 @@ dependencies = [
  "cleromancy",
  "genet-scripted-dom",
  "isomere",
+ "isometer",
  "isometry-campaign",
  "isometry-core",
  "isometry-system",
@@ -4392,6 +4393,7 @@ dependencies = [
  "sprigging",
  "taproot",
  "tokio",
+ "wgpu",
 ]
 
 [[package]]

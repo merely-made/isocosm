@@ -205,13 +205,23 @@ fn scene_leaf(ui: &UiState) -> UiChild {
     } else {
         (SCENE_FALLBACK.0, SCENE_FALLBACK.1)
     };
-    Box::new(
+    // The leaf's own hover is the one crossing the tree can still report on a
+    // board with no per-tile elements: the pointer leaving it. Enter carries no
+    // position (the shared host zeroes hover coordinates and routes no Move),
+    // so entering says nothing and only the Leave is acted on — it clears a
+    // path preview that would otherwise hang where the cursor left the board.
+    Box::new(on_hover(
         custom_leaf::<UiState, ()>(crate::scene::BOARD_SCENE_LEAF_KEY, w as u32, h as u32)
             .attr("id", "scene-board")
             .attr("class", "scene-board")
             .attr("role", "img")
             .attr("aria-label", format!("Scene board: {}", ui.map.name)),
-    )
+        |ui: &mut UiState, event: HoverEvent| {
+            if event.phase == HoverPhase::Leave {
+                ui.hover_tile_enter(None);
+            }
+        },
+    ))
 }
 
 /// The leaf's box before the host has reported a pane, in logical px.
@@ -307,9 +317,9 @@ fn board_pane(children: Vec<UiChild>) -> UiChild {
             (PointerPhase::Down, PointerButton::Primary) => {
                 if std::env::var_os("ISOMETRY_PROFILE").is_some() {
                     eprintln!(
-                        "[isometry] board press at {:?} tile {:?}",
+                        "[isometry] board press at {:?} shows {:?}",
                         event.local,
-                        ui.tile_at_pane(event.local)
+                        ui.board_at(event.local)
                     );
                 }
                 ui.board_press(event.local);

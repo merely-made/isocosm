@@ -16,6 +16,8 @@ use cambium::{
     CommandState, DisclosureState, SelectionItem, SelectionState, Slider, TabStrip, TextInput,
 };
 
+use crate::scene::{BoardPick, ScenePick};
+
 /// Fixed side-panel width in logical px (CSS `.side` width plus its padding).
 /// Board gestures no longer need it — they hang off the pane, so the panel is
 /// excluded by construction — but the host still sizes the board's viewport
@@ -111,6 +113,12 @@ pub struct UiState {
     /// leaf instead of one element per tile and token (B2). Host-set once at
     /// boot; off is the shipped DOM board, unchanged.
     pub scene_board: bool,
+    /// The drawn frame the board's gestures resolve through (B3). The host
+    /// sets it beside [`Self::scene_board`] and only then, so the DOM board
+    /// keeps the geometric inverse and the scene board never uses one. `None`
+    /// under the flag means no frame has been drawn yet, which reads as "the
+    /// pointer is over nothing" rather than as a guess.
+    pub board_pick: Option<ScenePick>,
     pub selected: Option<TileCoord>,
     pub mode: EditMode,
     /// Palette selection painted by `PaintGround` / `PaintProp` / `Fill`.
@@ -427,6 +435,7 @@ impl UiState {
             camera: (0.0, 0.0),
             viewport: (0.0, 0.0),
             scene_board: false,
+            board_pick: None,
             selected: None,
             mode: EditMode::Select,
             brush: TileKindId(1),

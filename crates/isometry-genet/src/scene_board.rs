@@ -26,7 +26,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use isometry_views::{BoardHandle, BoardProducer, BoardSource, BoardView, UiState};
+use isometry_views::{BoardHandle, BoardProducer, BoardSource, BoardView, ScenePick, UiState};
 
 use crate::Ctx;
 
@@ -67,6 +67,16 @@ impl SceneBoard {
     /// is registered.
     pub(crate) fn producer(&self) -> Rc<RefCell<BoardProducer>> {
         self.producer.clone()
+    }
+
+    /// The board's gestures, handed the frame the producer last drew (B3).
+    ///
+    /// The view layer owns every rule about what a press means; what it cannot
+    /// own is the producer, which lives in the host's registry. So the state
+    /// carries this borrow of it and asks at the moment the gesture runs,
+    /// rather than reading a snapshot that is a frame stale by construction.
+    pub(crate) fn pick(&self) -> ScenePick {
+        ScenePick::new(self.producer.clone())
     }
 
     /// Per frame: take the board's state and set the pixel grid.

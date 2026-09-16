@@ -18,6 +18,20 @@ type WatchtowerHarness = Harness<UiState, Logic, UiChild>;
 
 const WINDOW: (f32, f32) = (1_100.0, 820.0);
 
+/// Whether this receipt reads the DOM board's own elements, which under
+/// `ISOMETRY_SCENE_BOARD` the pane does not emit. Says so and asserts nothing;
+/// `super::scene_routing` is the scene arm's set.
+fn dom_board_only(what: &str) -> bool {
+    if !crate::scene_board::enabled() {
+        return false;
+    }
+    eprintln!(
+        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} reads per-tile board elements; the scene \
+         board emits none."
+    );
+    true
+}
+
 #[test]
 fn campaign_creation_places_the_selected_party_on_the_overmap() {
     for viewer in [None, Some("player")] {
@@ -84,6 +98,9 @@ fn map_only_campaign_creation_does_not_require_a_regional_party() {
 
 #[test]
 fn generated_forest_sites_reach_the_native_board() {
+    if dom_board_only("generated_forest_sites_reach_the_native_board") {
+        return;
+    }
     let (mut harness, app) = watchtower();
     harness.update(|ui| ui.start_generator("watchtower"));
     harness.after_dispatch();
@@ -119,6 +136,9 @@ fn generated_forest_sites_reach_the_native_board() {
 
 #[test]
 fn board_tile_clips_its_hit_area_to_the_visible_diamond() {
+    if dom_board_only("board_tile_clips_its_hit_area_to_the_visible_diamond") {
+        return;
+    }
     let mut map = isometry_core::MapDocument::new("one tile", 1, 1);
     map.tile_kinds.push("grass".to_owned());
     map.ground.set(0, 0, isometry_core::TileKindId(1));
@@ -155,6 +175,7 @@ fn watchtower() -> (WatchtowerHarness, Rc<RefCell<App>>) {
     let mut ui = UiState::new(demo_map());
     ui.viewport = (WINDOW.0 - PANEL_W, WINDOW.1);
     ui.camera = (ui.viewport.0 / 2.0, 110.0);
+    ui.scene_board = crate::scene_board::enabled();
     ui.generator_choices = app.generator_catalog.choices();
     assert!(
         ui.generator_choices
@@ -247,12 +268,17 @@ fn watchtower_preview_commit_projects_inhabitants_and_reopens_checkpoint() {
         harness.state().turns.entries().contains(&TokenId(1)),
         "the generated hero is also in the live turn list"
     );
-    assert!(
-        harness.with_dom(|dom| {
-            !taproot::matching(dom, &Selector::class("token-tower-beast")).is_empty()
-        }),
-        "the projected board renders the creature's pack sprite class"
-    );
+    // The DOM board's pack sprite class. The scene board draws the same
+    // recipe as a live body instead, which `isometry_views`'s own
+    // `every_demo_token_draws_from_its_own_recipe` is the receipt for.
+    if !harness.state().scene_board {
+        assert!(
+            harness.with_dom(|dom| {
+                !taproot::matching(dom, &Selector::class("token-tower-beast")).is_empty()
+            }),
+            "the projected board renders the creature's pack sprite class"
+        );
+    }
 
     assert_eq!(
         harness

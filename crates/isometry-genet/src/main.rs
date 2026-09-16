@@ -94,6 +94,8 @@ mod net;
 mod overmap;
 mod product;
 mod scene_board;
+#[cfg(test)]
+mod scene_routing;
 mod selection_rows;
 mod selftest;
 mod sheets;
@@ -294,6 +296,11 @@ struct App {
     /// host's own laid-out geometry and leave the collapsed panel for capture.
     turns_selftest: bool,
     turns_fired: bool,
+    /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
+    /// and right-press a token, both through the board's own pointer path, and
+    /// leave the selection and the menu standing for a capture.
+    select_selftest: bool,
+    select_fired: bool,
     /// `ISOMETRY_COMBAT_SELFTEST`: drive a short adjudicated exchange on boot.
     combat_selftest: bool,
     /// Swings left to throw, when the last one landed, and whether the winner

@@ -345,7 +345,11 @@ pub(crate) fn init(
     // field. With it unset nothing below is built and the DOM board stands.
     if scene_board::enabled() {
         ui.scene_board = true;
-        app.scene_board = Some(scene_board::SceneBoard::new(&ui));
+        let board = scene_board::SceneBoard::new(&ui);
+        // B3: the board's gestures resolve through the frame this producer
+        // draws. Set here, beside the flag, so the DOM board never carries one.
+        ui.board_pick = Some(board.pick());
+        app.scene_board = Some(board);
     }
 
     Init {
@@ -497,6 +501,7 @@ impl App {
             || (self.compendium_selftest && !self.compendium_fired)
             || (self.whisper_selftest && !self.whisper_fired)
             || (self.turns_selftest && !self.turns_fired)
+            || (self.select_selftest && !self.select_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
             || (self.combat_selftest && !(self.combat_swings == 0 && self.combat_emoted))
     }
@@ -513,6 +518,7 @@ impl App {
         self.maybe_compendium_selftest(ctx);
         self.maybe_whisper_selftest(ctx);
         self.maybe_turns_selftest(ctx);
+        self.maybe_select_selftest(ctx);
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }

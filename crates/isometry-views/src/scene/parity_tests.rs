@@ -4,9 +4,12 @@
 //! B2's done-condition is not byte parity — the renderers differ — it is that
 //! the same tiles are selectable. So this drives one real scene frame over the
 //! demo map, then walks a grid of pane pixels asking both paths what is under
-//! each: the DOM's [`IsoGeometry::screen_to_tile`] inverse (through the same
-//! `tile_at_pane` arithmetic the board uses) and the scene's `Scene::pick`
-//! terrain hit mapped back through B1's coordinate convention.
+//! each: the DOM's [`IsoGeometry::screen_to_tile`] inverse (the geometric
+//! fallback B3 retired, arithmetic for arithmetic) and the scene's
+//! `Scene::pick` terrain hit mapped back through B1's coordinate convention.
+//!
+//! B3 added a third receipt below, on the resolver the gestures actually call:
+//! two `UiState`s over one frame, one with a `ScenePick` and one without.
 //!
 //! **Where the two are allowed to differ.** The DOM's inverse is flat-ground
 //! picking, documented as such: a click on a raised tile's top face resolves to
@@ -23,13 +26,18 @@
 //!
 //! Without an adapter the probe tests skip **loudly** and assert nothing.
 
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use isometer::FrameRequest;
 use isometry_core::IsoGeometry;
 
-use super::board::{BoardPick, BoardSource, BoardView};
+use super::board::{BoardPick, BoardProducer, BoardSource, BoardView};
+use super::pick::ScenePick;
 use super::terrain::{VOXELS_PER_STEP, VOXELS_PER_TILE};
 use super::world::{elevation_px, world_px};
 use crate::demo::demo_map;
+use crate::state::UiState;
 
 /// The pane the probe grid is laid over, in logical px, and the texture the
 /// scene draws into: render scale 1, so they are the same numbers.
@@ -224,4 +232,129 @@ fn the_ruled_elevation_step_projects_the_doms_own_step() {
     let drift = (step - geo.elev_step).abs() * ceiling;
     eprintln!("over the demo map's {ceiling} steps the two paths drift {drift:.3} px");
     assert!(drift < 1.0, "the full height range drifts {drift} px");
+}
+
+/// The retirement's own receipt (B3): the two arms of `UiState::board_at`
+/// answer the same thing where the DOM board is not wrong by construction.
+///
+/// B3 retired `tile_at_pane` and `token_drag_candidate` as reachable paths on
+/// the scene board. What made that safe is this: one `UiState` with a
+/// [`ScenePick`] over a real frame and one without, over the same map, camera
+/// and pane, asked the same pane-local points. On flat ground they agree tile
+/// for tile. Where they differ — a raised top face — **the scene is right**:
+/// it names the tile you can see, and the DOM's flat-ground inverse names the
+/// tile behind it, as `tile_at_pane` documented of itself. So the mismatches
+/// are counted and their direction is asserted, rather than excused.
+#[test]
+fn both_arms_of_the_resolver_name_the_same_tile_on_flat_ground() {
+    let Some((device, queue)) = device() else {
+        eprintln!(
+            "SKIPPED: no wgpu adapter, so no frame is drawn and the resolver receipt \
+             asserts nothing."
+        );
+        return;
+    };
+    let map = demo_map();
+    let geo = IsoGeometry::default();
+    let camera = centred(&geo, &map);
+
+    let mut view = BoardView::new(map.clone());
+    view.geo = geo;
+    view.camera = camera;
+    view.pane = PANE;
+    let producer = Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(
+        view.into_handle(),
+    ))));
+    let request = FrameRequest {
+        device: &device,
+        queue: &queue,
+        size: [PANE.0 as u32, PANE.1 as u32],
+        aspect: PANE.0 / PANE.1,
+        color: None,
+        needs_frame: true,
+        render_scale: 1,
+    };
+    <BoardSource as isometer::SceneSource>::frame(producer.borrow_mut().source_mut(), &request)
+        .expect("the scene board draws one frame");
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("the frame completes");
+
+    let board = |scene: bool| {
+        let mut ui = UiState::new(map.clone());
+        ui.geo = geo;
+        ui.camera = camera;
+        ui.viewport = PANE;
+        if scene {
+            ui.scene_board = true;
+            ui.board_pick = Some(ScenePick::new(producer.clone()));
+        }
+        ui
+    };
+    let (dom, scene) = (board(false), board(true));
+
+    let (mut agreed, mut raised, mut tokens, mut faces) = (0, 0, 0, 0);
+    let (mut differed, mut behind) = (0, 0);
+    let mut disagreed = Vec::new();
+    for iy in 0..PROBES {
+        for ix in 0..PROBES {
+            let px = (ix as f32 + 0.5) * PANE.0 / PROBES as f32;
+            let py = (iy as f32 + 0.5) * PANE.1 / PROBES as f32;
+            match scene.board_at((px, py)) {
+                None => {},
+                Some(BoardPick::Token(id)) => {
+                    tokens += 1;
+                    // A body pick is identity the DOM's inverse cannot reach
+                    // at all; what must hold is that it names a live token.
+                    assert!(map.token(id).is_some(), "the pick named a live token");
+                },
+                Some(BoardPick::Tile { at, elevation, top }) if top && elevation == 0 => {
+                    if dom.tile_at((px, py)) == Some(at) {
+                        agreed += 1;
+                    } else {
+                        disagreed.push((px, py, dom.tile_at((px, py)), at));
+                    }
+                },
+                Some(BoardPick::Tile { at, top, .. }) => {
+                    if !top {
+                        faces += 1;
+                        continue;
+                    }
+                    raised += 1;
+                    let Some(dom_at) = dom.tile_at((px, py)) else {
+                        continue;
+                    };
+                    if dom_at == at {
+                        continue;
+                    }
+                    // The documented direction. A raised tile is drawn higher
+                    // up the screen than its own flat position, and screen y
+                    // grows with `col + row`, so a flat inverse of a pixel on
+                    // its top face lands on a tile further back: a strictly
+                    // smaller sum. Anything else is not the known limitation.
+                    differed += 1;
+                    behind += usize::from(dom_at.0 + dom_at.1 < at.0 + at.1);
+                },
+            }
+        }
+    }
+    eprintln!(
+        "resolver arms over {PROBES}x{PROBES} probes: {agreed} flat tiles agreed, \
+         {raised} raised tops of which {differed} differ ({behind} with the DOM naming \
+         a tile behind the visible one), {faces} side faces, {tokens} token picks"
+    );
+    assert!(
+        agreed >= 80,
+        "the probe grid must land on flat ground: {agreed}"
+    );
+    assert!(
+        disagreed.is_empty(),
+        "{} flat probes disagree: {:?}",
+        disagreed.len(),
+        &disagreed[..disagreed.len().min(8)]
+    );
+    assert_eq!(
+        behind, differed,
+        "every raised probe the two arms differ on must be the DOM naming a tile behind"
+    );
 }

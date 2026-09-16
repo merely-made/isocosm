@@ -160,6 +160,8 @@ impl App {
             whisper_selftest: std::env::var_os("ISOMETRY_WHISPER_SELFTEST").is_some(),
             whisper_fired: false,
             turns_selftest: std::env::var_os("ISOMETRY_TURNS_SELFTEST").is_some(),
+            select_selftest: std::env::var_os("ISOMETRY_SELECT_SELFTEST").is_some(),
+            select_fired: false,
             turns_fired: false,
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,

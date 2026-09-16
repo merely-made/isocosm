@@ -42,6 +42,9 @@ fn board() -> BoardHarness {
     // to the window; leaving it at `(0, 0)` would give that layer no area and
     // quietly prove nothing.
     ui.viewport = (WINDOW.0 - isometry_views::PANEL_W, WINDOW.1);
+    // Both arms from one fixture: `ISOMETRY_SCENE_BOARD=1 cargo test` runs
+    // every receipt below on the scene board, and the ones that cannot say so.
+    ui.scene_board = crate::scene_board::enabled();
     let mut hooks = inert_hooks();
     hooks.key_intercept = Box::new(hooks::key_intercept);
     hooks.focused_text = Box::new(hooks::focused_text);
@@ -84,7 +87,37 @@ fn tile_point(harness: &BoardHarness, at: TileCoord) -> (f32, f32) {
         .get(at.0.max(0) as u32, at.1.max(0) as u32)
         .unwrap_or(&0) as i32;
     let (sx, sy) = ui.geo.tile_to_screen(at, elevation);
+    // On the scene board the container sits at the pane's origin and the pan
+    // lives in the scene's own camera instead of the container's inline
+    // `left`/`top`, so the offset has to be added back here. Same point on the
+    // screen either way, which is what lets one receipt drive both arms.
+    let (ox, oy) = if ui.scene_board {
+        (ox + ui.camera.0, oy + ui.camera.1)
+    } else {
+        (ox, oy)
+    };
     (ox + sx, oy + sy)
+}
+
+/// Whether this receipt is the DOM board's own and cannot run under
+/// `ISOMETRY_SCENE_BOARD`.
+///
+/// Two things stop one: under the flag the pane carries a single
+/// `custom_leaf` and no per-tile elements at all, so a receipt that measures a
+/// tile's box or reads a class off one has nothing to read; and [`Harness`] is
+/// windowless, so it drives no producer and the scene's pick has no frame to
+/// answer from. Both are stated out loud and the receipt asserts nothing.
+/// [`super::scene_routing`] is the scene arm's own set, which draws a real
+/// frame first.
+fn dom_board_only(what: &str) -> bool {
+    if !crate::scene_board::enabled() {
+        return false;
+    }
+    eprintln!(
+        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} is the DOM board's receipt; \
+         `scene_routing` is the scene arm's."
+    );
+    true
 }
 
 /// The `class` of whatever the pointer is over.
@@ -112,6 +145,9 @@ fn class_at(harness: &mut BoardHarness, x: f32, y: f32) -> String {
 /// that the click reached whichever one it was.
 #[test]
 fn a_click_on_a_tile_selects_it() {
+    if dom_board_only("a_click_on_a_tile_selects_it") {
+        return;
+    }
     let mut harness = board();
     let (x, y) = tile_point(&harness, (2, 2));
     assert!(class_at(&mut harness, x, y).starts_with("tile "));
@@ -141,6 +177,9 @@ fn a_click_on_a_tile_selects_it() {
 /// press would capture, marked `Secondary`, and captures nothing.
 #[test]
 fn a_right_click_on_a_token_opens_its_menu() {
+    if dom_board_only("a_right_click_on_a_token_opens_its_menu") {
+        return;
+    }
     let mut harness = board();
     let knight = harness
         .state()
@@ -243,9 +282,21 @@ fn the_board_screen_lays_out_where_the_gestures_expect() {
         (isometry_views::PANEL_W, 1_100.0 - isometry_views::PANEL_W),
         "the pane takes the rest, so pane-local coordinates start at the panel's edge"
     );
-    let (_, _, tile_w, tile_h) = rect("tile");
-    let geo = &harness.state().geo;
-    assert_eq!((tile_w, tile_h), (geo.tile_w, geo.tile_h));
+    // The board's own content is the one half that differs between the arms:
+    // a diamond at the projection's size, or one leaf filling the pane.
+    if harness.state().scene_board {
+        let (_, _, leaf_w, leaf_h) = rect("scene-board");
+        assert_eq!(
+            (leaf_w, leaf_h),
+            harness.state().viewport,
+            "the scene leaf is the pane, which is what makes pane-local pixels \
+             the image's own"
+        );
+    } else {
+        let (_, _, tile_w, tile_h) = rect("tile");
+        let geo = &harness.state().geo;
+        assert_eq!((tile_w, tile_h), (geo.tile_w, geo.tile_h));
+    }
 }
 
 // ---------- M3: the text lanes, through the host's own key path ----------
@@ -387,6 +438,23 @@ fn assert_focused_field_is_drawn(harness: &BoardHarness, lane: &str) {
 
 // ---------- M3 follow-ons: menu dismissal, and drags through overlays ----------
 
+/// Open the knight's menu at a window point.
+///
+/// On the DOM board that is the right press itself. On the scene board it is
+/// the state call the right press ends in, because this harness draws no frame
+/// for the pick to read — `scene_routing` proves the press half on a real one.
+/// What is under test here is the *dismissal*, and that is the same overlay
+/// either way.
+fn open_token_menu(harness: &mut BoardHarness, x: f32, y: f32) {
+    if harness.state().scene_board {
+        harness
+            .update(move |ui| ui.open_context_menu(TokenId(1), (x - isometry_views::PANEL_W, y)));
+        harness.relayout();
+    } else {
+        harness.right_click_at(x, y);
+    }
+}
+
 /// A press outside the open token menu closes it — including a press on the
 /// side panel, which is the regression the migration left behind when the old
 /// host's left-click-off branch went away with `input.rs`.
@@ -407,7 +475,7 @@ fn a_press_outside_the_token_menu_closes_it() {
     let (x, y) = tile_point(&harness, knight);
 
     // A press on the side panel: the half that used to work and stopped.
-    harness.right_click_at(x, y);
+    open_token_menu(&mut harness, x, y);
     assert!(harness.state().context_menu.is_some());
     let (panel_x, panel_y) = harness
         .resolve(&Selector::class("side-title"))
@@ -424,7 +492,7 @@ fn a_press_outside_the_token_menu_closes_it() {
     );
 
     // And Escape, with nothing else armed to claim it.
-    harness.right_click_at(x, y);
+    open_token_menu(&mut harness, x, y);
     assert!(harness.state().context_menu.is_some());
     harness.press_key(&KeyPress::named(NamedKey::Escape));
     assert!(
@@ -443,6 +511,9 @@ fn a_press_outside_the_token_menu_closes_it() {
 /// board entirely.
 #[test]
 fn a_press_inside_an_overlay_does_not_reach_the_board() {
+    if dom_board_only("a_press_inside_an_overlay_does_not_reach_the_board") {
+        return;
+    }
     let mut harness = board();
     harness.update(|ui| {
         ui.mode = isometry_views::EditMode::PaintGround;
@@ -454,7 +525,7 @@ fn a_press_inside_an_overlay_does_not_reach_the_board() {
         .expect("the compendium panel has a laid-out box");
     let pane = (x - isometry_views::PANEL_W, y);
     assert!(
-        harness.state().tile_at_pane(pane).is_some(),
+        harness.state().tile_at(pane).is_some(),
         "the point sits over the board as well as over the panel"
     );
 
@@ -472,7 +543,7 @@ fn a_press_inside_an_overlay_does_not_reach_the_board() {
     harness.press_at(x, y);
     assert_eq!(
         harness.state().drag_tile,
-        harness.state().tile_at_pane(pane),
+        harness.state().tile_at(pane),
         "with nothing over it, the press paints the tile beneath"
     );
 }
