@@ -43,6 +43,21 @@ Answering §2.6 of the isoscape family plan.
    both myco and flora." Fungi and plants spread by more than a body inching
    across the ground. (In this plan "producers" and "plants", since the bare
    word *flora* is reserved platform-side; see `mesocosm/CLAUDE.md`.)
+6. **Far perception is limited to sight, as near bodies' is** (after S1
+   showed whole-enclosure far perception overgrazing producers once far
+   bodies could arrive).
+7. **The far tier runs near's rules with cheaper geometry.** Every near
+   search and feeding rule (sight, the hunger gradients, approach, the
+   budget, the wander) applies to far bodies; far differs only in having no
+   ray casts and no brick kinematics. S1 lands once that parity holds, with
+   every remaining test change named and measured. Ruled after limiting far
+   sight left far consumers eating their own line: 150.8 g of 157.6 g of far
+   predation on seed 7 at 200 founders, because a far body with only kin in
+   sight had no kin-skipping gradient to follow.
+8. **Classic stabilizing mechanisms join this plan** (§3a), each assessed
+   and measured before code: a consumer functional response; density limits
+   above producers; dormancy, rescue and Allee effects; and disturbance,
+   seasons and a sweep of starting soil richness.
 
 ## 1. What the steps start from
 
@@ -77,14 +92,23 @@ measurement of one does not depend on the other.
 
 | Step | Builds | Where | Model |
 | --- | --- | --- | --- |
-| **S1** | Far-tier movement (ruling 1): no bounce inside the target's place; at most the dispersal budget per tick, paid per voxel moved | `organism/ecology/movement.rs` | opus |
+| **S1** | Far-tier movement and perception at parity with near (rulings 1, 6, 7): no bounce inside the target's place; the dispersal budget per tick, paid per voxel moved; sight as near; every near search and feeding rule, without ray casts or bricks | `organism/ecology/movement.rs`, `movement/perception.rs`, `movement/far.rs` | opus |
 | **S2** | Deep time near and far, measured after S1 on seeds 7, 1 and 42 over six epochs: survival by kingdom, soil, carrion, wall time. Ruling 19 goes back to Mark with the numbers | measurement only | orchestrator |
 | **S3** | The scavenger's bite reads its reach, and a scavenger closing on carrion spends its dispersal budget (ruling 3) | `movement.rs` | sonnet |
 | **S4** | Carrion decay proportional to mass, a declared world rule in `WorldRules` and its digest (ruling 4); the world-state pin moves once, with its reason | `rules.rs`, `flows/returns.rs`, `ecology.rs` | sonnet |
 | **S5** | Founding: a sense organ for fauna, a decomposer floor at the door, and decomposers placed where corpses will fall (rulings 3 and 4) | `world/genesis.rs`, the drawn founding | opus |
 | **S6** | Soil scent: decaying carrion deposits typed matter that spreads, and scavengers follow its gradient (ruling 3) | `flows/returns.rs`, `perception.rs`, `places/soil.rs` | opus |
 | **S7** | Sessile and creeping decomposers (ruling 4), and dispersal beyond creeping for decomposers and producers (ruling 5), under the reading and the methods §3 asks Mark to choose | `rates.rs`, `movement.rs`, reproduction placement | opus |
+| **M1** | Consumer functional response (ruling 8): assess handling time, satiation and a low-density refuge against the tree and the measurements, then build what Mark rules | `organism/ecology.rs`, `rates.rs` | opus |
+| **M2** | Density limits above producers (ruling 8): assess, then build | `organism/ecology.rs`, `rates.rs` | opus |
+| **M3** | Dormancy, rescue and Allee effects (ruling 8), together with S7's propagules, since spores and seeds are both | `breeding.rs`, `organism.rs` stages | opus |
+| **M4** | Disturbance and seasons from the world profiles, and a sweep of starting soil richness (ruling 8) | `pressure.rs`, `rules.rs`, genesis | opus |
 | **S8** | Re-measure deep time and the matter ledger on all three seeds; hand D7b a world with a working soil cycle | measurement only | orchestrator |
+
+**Order.** S1 (parity), S2 (near against far deep time), then M1 and M2,
+which the audit ranks as the likeliest causes of overshoot and overgrazing,
+then S3 to S6, then S7 with M3, then M4, then S8. Each assessment step
+brings its options to Mark before code.
 
 ## 3. Decisions still Mark's
 
@@ -193,6 +217,12 @@ Whether any absent mechanism joins this plan is Mark's.
 ## Progress
 
 - **2026-09-16.** Plan written; S1 dispatched.
+- **2026-09-16.** Far sight limited on the held branch (uncommitted there):
+  far bodies see `sight_for_body` as near bodies do, by distance without a
+  ray. Two of the five failing tests pass unchanged; far consumers then ate
+  their own line (150,757 of 157,626 mg far predation, seed 7, 200
+  founders); the readings pair and the embodied round still fail. Rulings 7
+  and 8 followed; parity dispatched.
 - **2026-09-16.** S1 built by an Opus agent, which stopped at done condition
   1 rather than edit the five failing tests. Verified by the orchestrator:
   the eight new tests pass and exactly those five fail. Main is kept green:
