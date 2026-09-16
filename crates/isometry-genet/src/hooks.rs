@@ -1,17 +1,23 @@
-//! Isometry's half of the shared host: `init` plus the seven hooks.
+//! Isometry's half of the shared host: `init`, the key intercept, and the
+//! per-frame work the assembly cannot know about.
 //!
 //! The host calls `init` once, after the window exists and before the first
-//! frame, and hands back a runner over what it returns. Everything after that
-//! is a hook: a plain closure over the `Rc<RefCell<App>>` this module builds
-//! them from. Nothing here knows about winit, wgpu, netrender or a layout
-//! engine — the boundary the migration bought.
+//! frame, and hands back a runner over what it returns. Nothing here knows
+//! about winit, wgpu, netrender or a layout engine — the boundary the
+//! migration bought.
+//!
+//! M4 of the isomere plan took the seven closures this module used to build:
+//! they are `isomere::host::Assembly` over the [`Isometry`] product impl now,
+//! and what is left here is what the assembly cannot fill. [`App::frame_tick`]
+//! is the frame hook's isometry half, [`key_intercept`] the keyboard policy,
+//! [`focused_text`] the text seam, and `init` the boot the host calls once.
+//!
+//! [`Isometry`]: crate::product::Isometry
 
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use cambium_genet_winit_host::{
-    CloseDisposition, HostHooks, HostWake, HostWindow, Init, Key, KeyPress, NamedKey,
-};
+use cambium_genet_winit_host::{HostWake, HostWindow, Init, Key, KeyPress, NamedKey};
 
 use isometry_views::{BoardKey, NamedPress, Press};
 
@@ -481,7 +487,7 @@ impl App {
     /// A still board parks on `Wait`, which blocks until input arrives, so an
     /// armed selftest would never reach its own deadline. Asking for frames is
     /// how the shared host's hook says the same thing the old `WaitUntil` did.
-    fn selftests_pending(&self) -> bool {
+    pub(crate) fn selftests_pending(&self) -> bool {
         (self.travel_selftest && !self.travel_fired)
             || (self.cmd_selftest && !self.cmd_fired)
             || (self.watchtower_selftest && !self.watchtower_fired)
@@ -496,7 +502,7 @@ impl App {
     }
 
     /// Run every armed self-test driver. Each one waits out its own warm-up.
-    fn drive_selftests(&mut self, ctx: &mut Ctx<'_>) {
+    pub(crate) fn drive_selftests(&mut self, ctx: &mut Ctx<'_>) {
         self.maybe_combat_selftest(ctx);
         self.maybe_travel_selftest(ctx);
         self.maybe_cmd_selftest(ctx);
@@ -513,62 +519,29 @@ impl App {
     }
 }
 
-/// Isometry's seven closures over one shared `App`.
-pub(crate) fn hooks(app: &Rc<RefCell<App>>) -> HostHooks<UiState, Logic, UiChild> {
-    let frame_app = app.clone();
-    let dispatch_app = app.clone();
-    let after_frame_app = app.clone();
-    let wake_app = app.clone();
-    HostHooks {
-        frame: Box::new(move |ctx: &mut Ctx<'_>| {
-            let mut app = frame_app.borrow_mut();
-            // Before the viewport: culling measures the pane against the board
-            // geometry, and the two must agree on the same frame.
-            app.sync_board_scale(ctx);
-            app.sync_viewport(ctx);
-            let atlas_moving = app.drive_atlas_motion(ctx);
-            app.sync_overmap_leaf(ctx);
-            // After the viewport: the scene's camera is framed by the pane the
-            // two calls above just settled.
-            if let Some(mut board) = app.scene_board.take() {
-                board.sync(ctx);
-                app.scene_board = Some(board);
-            }
-            let selftests_pending = app.selftests_pending();
-            app.capture.arm(ctx, !selftests_pending);
-            let beating = app.drive_beats(ctx);
-            beating || selftests_pending || atlas_moving
-        }),
-        after_dispatch: Box::new(move |ctx: &mut Ctx<'_>| {
-            dispatch_app.borrow_mut().after_dispatch(ctx);
-        }),
-        after_frame: Box::new(move |ctx: &mut Ctx<'_>| {
-            let mut app = after_frame_app.borrow_mut();
-            app.drive_selftests(ctx);
-            if app.profile {
-                if let Some(profile) = ctx.frame_profile {
-                    eprintln!("[isometry] frame {}", profile.summary());
-                }
-            }
-        }),
-        // The session actor woke us: drain what it sent, on the UI thread, in
-        // one turn. The pumps that used to ride a 10Hz idle tick ride this
-        // instead, because a wake is exactly the moment they have work.
-        after_wake: Box::new(move |ctx: &mut Ctx<'_>| {
-            let mut app = wake_app.borrow_mut();
-            if app.net.is_none() {
-                return;
-            }
-            app.pump_net(ctx);
-            app.pump_sheets(ctx);
-            app.pump_generators(ctx);
-            app.pump_storylets(ctx);
-            app.refresh_source_history(ctx);
-        }),
-        // Nothing here outlives the window: the campaign checkpoint is written
-        // on an explicit save, and the session actor dies with the process.
-        close_request: Box::new(|_ctx, _request| CloseDisposition::Exit),
-        focused_text: Box::new(focused_text),
-        key_intercept: Box::new(key_intercept),
+/// The frame hook's isometry half, in the order the old closure ran it.
+///
+/// M4 moved the seven closures into `isomere::host::Assembly`; what the
+/// assembly cannot know is this — the pane, the board's pixel grid, the atlas
+/// motion, the overmap leaf, the scene board's snapshot and the beat hold.
+/// Producer registration and capture arming used to sit in the middle of it
+/// and are the assembly's now, on either side of this call.
+impl App {
+    pub(crate) fn frame_tick(&mut self, ctx: &mut Ctx<'_>) -> bool {
+        // Before the viewport: culling measures the pane against the board
+        // geometry, and the two must agree on the same frame.
+        self.sync_board_scale(ctx);
+        self.sync_viewport(ctx);
+        let atlas_moving = self.drive_atlas_motion(ctx);
+        self.sync_overmap_leaf(ctx);
+        // After the viewport: the scene's camera is framed by the pane the
+        // two calls above just settled.
+        if let Some(mut board) = self.scene_board.take() {
+            board.sync(ctx);
+            self.scene_board = Some(board);
+        }
+        let selftests_pending = self.selftests_pending();
+        let beating = self.drive_beats(ctx);
+        beating || selftests_pending || atlas_moving
     }
 }

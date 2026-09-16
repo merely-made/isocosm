@@ -8,9 +8,10 @@ repository = "https://github.com/merely-made/isometry"
 publish = false
 
 # Its own workspace, like `shared/isometer` and the other `shared/` path
-# crates, and excluded from the Isometry root workspace beside them. The root
-# pins mere at a different revision, so pulling this crate into it would fork
-# the cambium family.
+# crates, and excluded from the Isometry root workspace beside them, so each
+# product resolves its own graph. The root is on the same mere revision this
+# crate is, which is what lets `isometry-genet` name the host types at all; an
+# earlier note here claimed otherwise and was wrong (corrected 2026-09-15).
 [workspace]
 
 [features]

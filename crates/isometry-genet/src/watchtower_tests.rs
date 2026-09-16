@@ -176,7 +176,10 @@ fn watchtower() -> (WatchtowerHarness, Rc<RefCell<App>>) {
             fonts: Vec::new(),
             images: Vec::new(),
         },
-        hooks::hooks(&app),
+        // M4: the seven closures are the shared assembly's over the product
+        // impl. No capture policy here — the harness has no surface to read
+        // back, exactly as the old `capture.arm` no-opped without a directory.
+        isomere::host::Assembly::new(crate::product::Isometry(app.clone())).hooks(),
     );
     harness.layout_at(WINDOW.0, WINDOW.1);
     (harness, app)

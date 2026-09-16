@@ -87,7 +87,7 @@ mod tests {
     use isometry_campaign::{EntropyTape, GeneratorRequest};
     use isometry_system::{GeneratorCatalog, GeneratorLimits};
 
-    use crate::generator_pack_roots;
+    use crate::boot::generator_pack_roots;
 
     #[test]
     fn receipt_selects_a_real_loaded_generator_before_the_existing_preview_call() {

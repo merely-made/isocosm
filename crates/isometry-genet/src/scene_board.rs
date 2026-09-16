@@ -4,8 +4,13 @@
 //! `isometry-views` owns everything about how the board draws through the
 //! shared scene. What is left for the host is what only a host can do: read
 //! the environment flag once, push the board's current state into the snapshot
-//! the producer reads, choose the integer pixel grid the scene renders on, and
-//! register the producer against the leaf key the view emits.
+//! the producer reads, and choose the integer pixel grid the scene renders on.
+//!
+//! **Registration moved out in M4.** Hanging a producer on a leaf key is the
+//! one thing every wing host did identically, so `isomere::host::Assembly`
+//! does it now, from the product impl's `viewport_keys` and `producer`. This
+//! module hands the producer over through [`SceneBoard::producer`] and keeps
+//! the two things that are about the board rather than about hosting it.
 //!
 //! **The pixel grid.** Decision 2 of the plan moved integer scaling off the
 //! DOM's `board_scale` and onto the producer's render scale. The scale is the
@@ -21,9 +26,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use isometry_views::{
-    BOARD_SCENE_LEAF_KEY, BoardHandle, BoardProducer, BoardSource, BoardView, UiState,
-};
+use isometry_views::{BoardHandle, BoardProducer, BoardSource, BoardView, UiState};
 
 use crate::Ctx;
 
@@ -37,7 +40,6 @@ pub(crate) fn enabled() -> bool {
 pub(crate) struct SceneBoard {
     view: BoardHandle,
     producer: Rc<RefCell<BoardProducer>>,
-    registered: bool,
     scale: u32,
     /// The last error printed, so a frame that keeps failing says so once
     /// rather than once per frame — and a frame that starts failing says so at
@@ -55,14 +57,19 @@ impl SceneBoard {
         Self {
             view: view.clone(),
             producer: Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(view)))),
-            registered: false,
             scale: 1,
             reported: None,
         }
     }
 
-    /// Per frame: take the board's state, set the pixel grid, and register the
-    /// producer once the document has a leaf to hang it on.
+    /// The producer the assembly registers against the board's leaf key.
+    /// Cheap: the handle is an `Rc`, and the assembly asks only until the key
+    /// is registered.
+    pub(crate) fn producer(&self) -> Rc<RefCell<BoardProducer>> {
+        self.producer.clone()
+    }
+
+    /// Per frame: take the board's state and set the pixel grid.
     pub(crate) fn sync(&mut self, ctx: &mut Ctx<'_>) {
         self.view.borrow_mut().sync(ctx.runner.state());
         let device = ctx
@@ -79,12 +86,6 @@ impl SceneBoard {
                 "[isometry] scene board render scale {scale} (device {device}, zoom {})",
                 ctx.ui_zoom
             );
-        }
-        if !self.registered && !ctx.producers.contains(BOARD_SCENE_LEAF_KEY) {
-            ctx.producers
-                .register(BOARD_SCENE_LEAF_KEY, self.producer.clone(), &["color"])
-                .expect("the board document owns one producer key");
-            self.registered = true;
         }
         let error = self.producer.borrow().last_error().map(str::to_owned);
         if self.reported != error {

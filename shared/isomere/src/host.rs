@@ -185,6 +185,16 @@ pub trait Product: Sized + 'static {
         None
     }
 
+    /// Whether this product's view has an error line at all.
+    ///
+    /// `false` skips the whole comparison below. A product with nowhere to put
+    /// the error would otherwise call `runner.update` with nothing to write,
+    /// rebuilding its retained tree and asking for a redraw on every frame an
+    /// error stood — an idle loop bought for a string nobody can read.
+    /// Isometry is that product: its scene board reports a producer refusal as
+    /// a stderr line and its side panel has no error element.
+    const PUBLISHES_ERROR: bool = true;
+
     /// The error line currently on screen, so an unchanged one rebuilds
     /// nothing.
     fn published_error(state: &Self::State) -> Option<&str> {
@@ -358,6 +368,9 @@ impl<P: Product> Assembly<P> {
     /// it. An unchanged string is not written: writing it would rebuild the
     /// retained tree for nothing.
     fn publish(&mut self, ctx: &mut Ctx<'_, P>) {
+        if !P::PUBLISHES_ERROR {
+            return;
+        }
         let error = self.error(ctx);
         if P::published_error(ctx.runner.state()) == error.as_deref() {
             return;

@@ -25,6 +25,11 @@ sceno = { workspace = true }
 # gone from this manifest. They still arrive transitively; reaching around the
 # host to name them again would put the duplication straight back.
 cambium-genet-winit-host = { workspace = true }
+# M4 of the isomere plan: the wing's host assembly. `host` is off by default in
+# isomere because it drags wgpu in and `isometry-views` consumes the crate only
+# to emit elements; this is the consumer that turns it on. It brought the
+# bounded capture policy with it, which is why `png` is no longer named below.
+isomere = { workspace = true, features = ["host"] }
 sprigging = { workspace = true }
 layout-dom-api = { workspace = true }
 genet-scripted-dom = { workspace = true }
@@ -33,9 +38,6 @@ serde = { workspace = true }
 muniment = { workspace = true, features = ["redb"] }
 armillary = { workspace = true }
 pollster = "0.4"
-# ISOMETRY_CAPTURE_DIR self-capture (headed-verify receipts without
-# screen grabs, which lose to overlapping windows).
-png = "0.17"
 ab_glyph = "0.2"
 
 [dev-dependencies]

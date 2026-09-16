@@ -405,3 +405,40 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   now has no caller. Its discipline is an immutable series of published
   saves and the session writes one mutable save, so which one a Paredros
   save is remains a ruling; both stand until it is made.
+- **2026-09-15, M4 landed in full.** Isometry's host is the shared
+  assembly plus an 80-line product impl. The hand-written hooks function
+  is gone; what is left in `hooks.rs` is the frame tick, the pane, the
+  board's pixel grid, the atlas motion, the overmap leaf, the scene
+  board's snapshot and the beat hold, with producer registration and
+  capture arming on either side of it in the assembly. Isometry's
+  `capture.rs` was the source of `isomere::host::Capture` in the
+  Paredros half and is now deleted and consumed back under the same two
+  environment variables and the same file name, which two tests guard
+  because every headed receipt ever taken names them; the PNG dependency
+  left the manifest with it. B2's scene leaf is the product's viewport
+  key and producer rather than a registration inside the board's sync,
+  and `NoProducer` went unused as a result. One addition to isomere:
+  `Product::PUBLISHES_ERROR`, default true, because Isometry's DOM has
+  no error element and publishing into nothing would have rebuilt the
+  retained tree once a frame for as long as an error stood. `main.rs`
+  was at the 600-line ceiling, so `boot.rs` took the seam the file
+  already had, everything that runs before a window exists, leaving
+  main at 432 and hooks at 547. Three behaviour changes, all inert:
+  registration moved ahead of the frame tick, a close request now asks
+  for one redraw as the window closes, and capture arming runs after the
+  beats rather than before. Receipts: workspace check clean with the
+  baseline's four pre-existing warnings and nothing new; 372 tests
+  before and after, host routing 10, zoom 10 and watchtower 11
+  unchanged, the two capture tests replaced one for one; 41 isomere
+  tests and 50 with the host feature; Paredros re-verified under the
+  changed isomere. Headed captures four times a side in both arms, DOM
+  and scene board: final captures byte-identical to baseline runs, with
+  the only variation one pixel at (926, 843) that takes both values
+  inside the baseline set too. Two corrections for §3: the winit host
+  does not re-export `RootView`, so isomere names rootstock as well and
+  a one-line upstream re-export would retire that; and isomere's
+  manifest comment claiming the root pinned a different mere revision
+  was wrong and is fixed. Also found: `cargo check` at the Paredros
+  workspace root checks only the two-line root package and never
+  touches the client, so the receipt list must name the client
+  explicitly.

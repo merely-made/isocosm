@@ -4281,6 +4281,9 @@ name = "isomere"
 version = "0.1.0"
 dependencies = [
  "cambium",
+ "cambium-genet-winit-host",
+ "cambium-rootstock",
+ "mesquite",
  "tinct",
 ]
 
@@ -4374,6 +4377,7 @@ dependencies = [
  "cambium-genet-winit-host",
  "cleromancy",
  "genet-scripted-dom",
+ "isomere",
  "isometry-campaign",
  "isometry-core",
  "isometry-system",
@@ -4381,7 +4385,6 @@ dependencies = [
  "isonetry",
  "layout-dom-api",
  "muniment",
- "png 0.17.16",
  "pollster",
  "sceno",
  "serde",
@@ -5177,6 +5180,20 @@ source = "git+https://github.com/merely-made/mere.git?rev=876320fddd4cecddab8080
 dependencies = [
  "anymore",
  "tracing",
+]
+
+[[package]]
+name = "mesquite"
+version = "0.1.0"
+source = "git+https://github.com/merely-made/mere.git?rev=876320fddd4cecddab8080d5decf2b5d8568d47e#876320fddd4cecddab8080d5decf2b5d8568d47e"
+dependencies = [
+ "cambium",
+ "cambium-rootstock",
+ "genet-scripted-dom",
+ "png 0.17.16",
+ "serde",
+ "serde_json",
+ "taproot",
 ]
 
 [[package]]

@@ -115,3 +115,28 @@ fn defaults_claim_no_leaf_and_no_close() {
     );
     assert!(!Silent.profiling());
 }
+
+/// A product with nowhere to put the error line, which is Isometry's shape:
+/// its scene board reports a producer refusal on stderr and its side panel has
+/// no error element.
+struct Mute;
+
+impl Product for Mute {
+    type State = Quiet;
+    type Logic = Logic;
+    type View = Child;
+    type Producer = NoProducer;
+
+    const LOG_PREFIX: &'static str = "isomere-test";
+    const PUBLISHES_ERROR: bool = false;
+}
+
+#[test]
+fn a_product_publishes_the_error_line_unless_it_says_otherwise() {
+    // The default is to publish, because two of the three wing hosts do.
+    assert!(Silent::PUBLISHES_ERROR);
+    // Opting out is what stops the assembly calling `runner.update` with
+    // nothing to write, once per frame, for as long as an error stands.
+    assert!(!Mute::PUBLISHES_ERROR);
+    let _hooks = Assembly::new(Mute).hooks();
+}
