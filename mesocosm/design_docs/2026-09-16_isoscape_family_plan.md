@@ -79,6 +79,21 @@ extracted after two real consumers and never declared in advance
 14. **Deep time goes first, with a bench readout** of each boundary's
     population and feats. The relief lab opens the terrain and world lane
     afterwards; retuning relief or soil then means re-measuring the span.
+15. **The heir is a choice, not one path** (answering R1, tentative in
+    Mark's words: "All three are valuable. Probably looks like: Inhabit
+    critter | Create new critter -> Align lineage with new critter?"). At
+    entry the player either **inhabits a living critter** of a surviving
+    line, or **creates a new critter** within the line deep time evolved;
+    a created critter may then **align its lineage with itself**, which is
+    today's redefinition of the line's program made an explicit act rather
+    than a side effect of entering.
+16. **Six epochs for now, and the span must vary** (R2: "This is gonna need
+    to vary, so keep that in mind"). The span is a world rule, never a
+    constant; six is only the generated preset's current value.
+17. **The first slice carries deep time's history whole** and receipts its
+    size per seed (R3). Compaction gets its own ruling once measured.
+18. **Both products' terminology is updated now** (R4) to the history organ,
+    the three generation buckets and deep time.
 
 **Standing rulings this plan inherits, not restates.**
 
@@ -576,10 +591,11 @@ the same finished step, can run in parallel.
 | **D4.** The continued clock in the runtime: a runtime built from a world with a past carries its history and starts `epoch_seen` at the world's epoch; the trial accepts a baseline world with its history and replays it exactly; `Trial::new` keeps refusing a past with no history | `mesocosm-runtime` | nothing | sonnet |
 | **D5.** The advance-to-boundary control, ruled 2026-09-16: one bench action steps the trial until the next epoch boundary, a checkpoint or the ceiling, with probe fields for the epoch and the last boundary tick | `mesocosm-genet` bench | nothing | sonnet |
 | **D6.** Mesocosm reads the hagiograph's record: `WorldRecord` becomes Mesocosm's axis set over the moved mechanism, re-exported at its old paths; the six byte pins hold | `mesocosm-core` | D2 pushed and pinned | sonnet |
-| **D7.** Deep time in Mesocosm: `WorldRules` gains the span (bare worlds zero; **the six byte pins and both journey hashes re-pin once**, since postcard writes every rules field); `World` implements `Epochal` with no hand; the generation door runs deep time on the foundation, drafts against the handed-over world and enters as heir; generation `VERSION` 4 to 5 | `mesocosm-core` | D3, D4, D6, §5 answers | opus |
-| **D8.** The baseline save carries the history, with a size receipt per seed | `mesocosm-runtime`, genet | D7 | sonnet |
-| **D9.** The bench readout: each deep-time boundary's population, species and feats, from the handover receipt | `mesocosm-genet` | D5, D7 | sonnet |
-| **D10.** Law C for world history in Mesocosm: a generated world's events and marks cannot be told from a played run's | `mesocosm-core` tests | D7 | sonnet |
+| **D7a.** Deep time in Mesocosm: `WorldRules` gains the span (bare worlds zero, the generated preset six, never a constant; **the six byte pins and both journey hashes re-pin once**, since postcard writes every rules field); `World` implements `Epochal` with no hand; the generation door runs deep time on the foundation and drafts against the handed-over world; generation `VERSION` 4 to 5 | `mesocosm-core` | D3, D4, D6 | opus |
+| **D7b.** The heir's entry, ruling 15: **inhabit** a living critter of a surviving line; **create** a new critter within the evolved line, paid from local soil, leaving the line's program as deep time left it; and **align**, an explicit act that makes a created critter's recipe its line's program | `mesocosm-core`, creator in genet | D7a | opus |
+| **D8.** The baseline save carries the history whole, with a size receipt per seed (ruling 17) | `mesocosm-runtime`, genet | D7a | sonnet |
+| **D9.** The bench readout: each deep-time boundary's population, species and feats, from the handover receipt | `mesocosm-genet` | D5, D7a | sonnet |
+| **D10.** Law C for world history in Mesocosm: a generated world's events and marks cannot be told from a played run's | `mesocosm-core` tests | D7a | sonnet |
 
 **Cross-repository pinning.** The Mesocosm workspace takes mere by one git
 rev (`mesocosm/Cargo.toml:31-47`, rev `876320fd`). Bumping that rev pulls
@@ -604,23 +620,25 @@ hagiograph's rule over a record deep time filled.
 
 ## 5. Risks and decisions for Mark
 
-**Asked before D7.**
+**Asked before D7, answered 2026-09-16 as rulings 15 to 18.**
 
-- **R1. What is the heir's body to its line, and what pays for it?** Today
-  the chosen body replaces a provisional founder and is paid from the local
-  soil patch. After deep time, lineage 1 has living members. The body could
-  be a new member founded from the soil, the offspring of a living member
-  paid by the parent, or no new body at all, with the player inhabiting a
-  living member.
-- **R2. The span for generated worlds.** Six epochs is where feats turned
-  rare on all three measured seeds (§2.1), at 22 to 38 seconds in release.
-- **R3. Compaction in the first slice.** Ruling 13 carries the history; the
-  measured prefix is 48,000 to 314,000 entries. The first slice can carry it
-  whole with a size receipt, leaving compaction to its own ruling, or compact
-  from the start.
-- **R4. Terminology.** `mesocosm/CLAUDE.md` and `paredros/CLAUDE.md` still
-  describe the hagiograph as the memorial organ only. Editing a CLAUDE.md is
-  Mark's to approve.
+- **R1. The heir.** Found while asking: entering today also **overwrites
+  lineage 1's program** with the candidate's recipe
+  (`generation.rs:450-452`), which after deep time would erase what the line
+  evolved. Answered by ruling 15, which makes that overwrite an explicit
+  "align" act.
+- **R2. The span.** Six for now, varying later (ruling 16).
+- **R3. Compaction.** Carried whole first (ruling 17).
+- **R4. Terminology.** Updated now (ruling 18).
+
+**Still open.**
+
+- **What varies the span.** Ruling 16 says it must vary and not how: per
+  preset, per world condition, or per period. D7a keeps it a world rule so
+  any of those can set it.
+- **Inhabiting at entry and succession.** Inhabiting a living critter at
+  entry resembles succession after a death; whether they share one door is
+  D7b's to propose.
 
 **Risks.**
 
@@ -651,9 +669,13 @@ hagiograph's rule over a record deep time filled.
 5. One bench action advances a trial to its next boundary, stated in probe
    fields, with the trial scenarios passing unweakened.
 6. A generated world arrives past its span with its first played reckoning
-   judged against a non-empty record; the player enters as heir under R1's
-   answer; the pins re-pin once, in the commit that adds the span, with the
-   reason stated.
+   judged against a non-empty record; the pins re-pin once, in the commit
+   that adds the span, with the reason stated; no code path treats six epochs
+   as a constant.
+6b. A player can enter a handed-over world by inhabiting a living critter or
+   by creating one within the evolved line, and can align a created critter's
+   line only through the explicit act, with the line's program otherwise
+   unchanged from what deep time left.
 7. A save carries the baseline and its history, with bytes receipted per
    seed.
 8. The bench shows each deep-time boundary's population, species and feats.
@@ -690,3 +712,7 @@ world-history Law C test.
 - **2026-09-16.** Tabletop and Paredros mapped; the hagiograph ruled the
   history organ; a second opinion checked and reconciled; rulings 11 to 14;
   layout, move order and done conditions written.
+- **2026-09-16.** Rulings 15 to 18. D1 landed in mere (`4a895c5e`: the
+  hagiograph rescoped, its plan opened). D2 to D4 dispatched to Sonnet agents
+  in parallel: the hagiograph's record, feat rule and deep-time seam in mere,
+  and the runtime's continued clock in Mesocosm.

@@ -64,11 +64,18 @@ architecture that Paredros and Isometry also depend on.
   leading candidate if a unit word is wanted. Do not spend it without asking.
 - **fili**: lineage across worlds (forks, campaign descent, cross-moot
   grafts). Not event history, not in-world biological descent.
-- **hagiograph**: the memorial subsystem. It promotes unprecedented,
-  legendary, and narratively significant events out of the timeline to be
-  handled by the rest of the stack's procedural voxel engine. This is what
-  design docs before 2026-09-02 call "tulpa" in its old, memorial sense; that
-  sense is retired. Authorized by Mark, 2026-09-02.
+- **hagiograph**: the history organ, rescoped by Mark 2026-09-16 and kept in
+  mere's eidetic core (`mere/crates/eidetic/hagiograph`). It judges which
+  events were significant, through standing marks along this game's feats and
+  scales and the feat rule (a feat beats a mark that stood before the
+  reckoning); it gives a generated world its past through **deep time**,
+  which runs this game's own simulation for a span set in the world rules
+  before anyone steps in; and later it promotes, retells and memorializes,
+  handing memorials to the stack's procedural voxel engine. Storage of what
+  happened stays in the history log. History is the third of three generation
+  buckets: terrain models beside isometer's seam, world generation in
+  isoscape, history here (isoscape family plan). Named 2026-09-02; design docs
+  before then call it "tulpa" in a retired, memorial sense.
 - **tulpa**: gemot's federated adapter-training lane (personal LoRA). Not the
   memorial organ; see **hagiograph** above. Renamed 2026-09-02; do not use
   it in the old sense going forward.

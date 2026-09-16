@@ -123,9 +123,15 @@ architecture in the sibling repo at
 - **succession**: play continuing through another subject after death. An
   existing connected creature and a newly generated outsider are both valid.
 - **fili**: lineage across worlds. Not event history.
-- **hagiograph**: the legend and memorial organ, named 2026-09-02. Its Mere
-  crate is currently a reservation; Paredros's memory/remembrance plan scopes
-  its first consumer. Older documents used `tulpa` for this meaning.
+- **hagiograph**: the history organ, rescoped 2026-09-16 and kept in Mere's
+  eidetic core. It judges which events were significant through standing
+  marks and feats, gives a generated world its past through **deep time** (a
+  run of the world's own simulation before anyone steps in), and later owns
+  retelling, remembrance and manifestation, which is this game's lane H.
+  Storage of what happened stays in the deed and event journals. Paredros's
+  memory/remembrance plan scopes its first consumer; the wing's isoscape
+  family plan holds the rulings. Older documents used `tulpa` for the
+  memorial sense.
 - **tulpa**: Gemot's federated adapter-training lane; not the memorial organ.
 
 Do not coin new names for these concepts mid-session. Naming rounds are
