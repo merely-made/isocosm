@@ -35,7 +35,10 @@ regression the seam had introduced on unsized form controls is repaired;
 genet's seam acceptance is complete. T4 (netrender `06f3a12f4`): a fragment
 placed inside a clip, opacity or filter layer retains, and the clip-wrapped
 L0a rerun takes the 200,000-rectangle cell from 40.5-52.0 ms to 8.8-9.6 ms.
-T4's path is live in Cambium's Rootstock but has no Cambium-host receipt yet.
+T4 is not yet reachable from Cambium: a 2026-09-16 headless host receipt in
+mere found Rootstock registers custom leaves as retained fragments but its
+emitter never places them, so no Cambium document exercises T4 until that
+wiring is completed (`Code/testing/mere/cambium_t4_receipt_20260916/`).
 The bench's remaining dependencies are unchanged: Mere's producer lifecycle,
 picking/accessibility and update-cost receipts.
 
