@@ -16,8 +16,28 @@ input; its qualified native receipt is below. The standalone probes did not
 require viewport embedding, style mapping or picking. The bench reuses
 Mesocosm's creator and shared-depth section; visible disposable trials follow
 in Bench C. General CSS 3D, the large-DOM first-frame gate and retained
-planar fragment repair remain independent work, not prerequisites for that
-bench. See [the assessed slices](#specimen-bench-prerequisites-2026-09-13).
+planar fragment repair were independent work, not prerequisites for that
+bench; all three have since landed (see the 2026-09-16 addendum below).
+See [the assessed slices](#specimen-bench-prerequisites-2026-09-13).
+
+**Status addendum, 2026-09-16:** genet's four lanes and their receipts are
+recorded in `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`, which owns them; this plan cites, not copies.
+T1 (genet `d61978378c1`): CSS Transforms Level 2 parses, computes and lowers
+to the shared paint matrix; a three-part rigid body rendered through Ortet
+agrees with `isometer-mesh`'s bake silhouette on 98.73% of the union with no
+pixel more than one pixel out; an individual `rotate` animates one part's yaw
+with the parent matrix unchanged. T2 (genet `b3250d3d91b`): the first-frame
+quadratic is gone, exponent 2.16 to 1.17, 50,000 positioned elements 1,172 s
+to 7.68 s; the 1 s bound is not reached and its residual is attributed to the
+cascade. T3 (genet `cd54b1ef086`, `0b49031f1d7`): the host mutation
+instrument reports work apart from presentation wait, and a hit-test
+regression the seam had introduced on unsized form controls is repaired;
+genet's seam acceptance is complete. T4 (netrender `06f3a12f4`): a fragment
+placed inside a clip, opacity or filter layer retains, and the clip-wrapped
+L0a rerun takes the 200,000-rectangle cell from 40.5-52.0 ms to 8.8-9.6 ms.
+T4's path is live in Cambium's Rootstock but has no Cambium-host receipt yet.
+The bench's remaining dependencies are unchanged: Mere's producer lifecycle,
+picking/accessibility and update-cost receipts.
 
 **Owns:** how the three vessels present voxel worlds and bodies through the
 web engine, and the unification of Isometry, Paredros, and Mesocosm on one
@@ -240,8 +260,8 @@ CSS Transforms Level 2: `matrix3d`, `translate3d`, `rotate3d`, `scale3d`,
 `backface-visibility`, 3D `transform-origin`, and the individual `translate`,
 `rotate`, `scale` properties. Lowering projects each element to netrender's
 existing column-major 4x4 `Transform` and z-sorts within a 3D rendering
-context. Netrender's `Transform` is ready; nothing in Livery parses these
-today.
+context. Netrender's `Transform` was ready; Livery parsed none of these until
+genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum above).
 
 Founded in genet on 2026-09-12 as
 `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`
@@ -249,7 +269,8 @@ with three lanes: T1 the transforms above; T2 first-frame style and layout
 scaling, linear and about two orders cheaper per element, plus phase timing
 behind a flag; T3 a host-side DOM mutation harness with real timing and the
 scene viewport used by L5 (T3 revised after rulings 13–15). Ruling 11 names
-the three engine consumers; T1 and T2 remain independent of the first bench.
+the three engine consumers; T1 and T2 remained independent of the first
+bench, and both landed 2026-09-15.
 The L0b attribution of the superlinear first frame
 lives at `Code/testing/wing/l0b_first_frame_attribution.md` and seeds T2.
 
@@ -1181,10 +1202,10 @@ The two immediate probes, Bench A and Bench B's bounded native integration
 are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
 bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;
 dense/layered fixtures and three bounded generated worlds now have receipts;
-scaled ecological scenes and application working limits remain open. T1 general
-CSS 3D, T2's large-element sweep, T4 planar
-retention, the L2 crate merger, portable body v1 and a general audio framework
-do not block these slices.
+scaled ecological scenes and application working limits remain open. The L2
+crate merger, portable body v1 and a general audio framework do not block
+these slices; genet T1, T2 and netrender T4 landed 2026-09-15/16 and were
+never gates for them.
 
 **Soundscape and effects:** use Bench C's accepted movement, feeding, carving
 and life-cycle activity plus habitat state. Tapping is not the causal model.
@@ -1416,7 +1437,9 @@ consumer. That edit is genet's, in the same session the lane opens.
 ## Open decisions for Mark
 
 - Hybrid switch policy: which bodies count as "in focus" for live
-  fragment-backed parts while genet's T2 is open.
+  fragment-backed parts. Raised while genet's T2 was open; T2 landed
+  2026-09-15 with the quadratic removed and 50,000 elements at 7.68 s, so
+  the policy is now a quality choice rather than a scaling necessity.
 - Whether the tracer keeps the Mesocosm section by default or the section
   also moves to tile layers once L4 lands.
 - Whether L6's GPU bake targets the enhanced capability profile only, with
