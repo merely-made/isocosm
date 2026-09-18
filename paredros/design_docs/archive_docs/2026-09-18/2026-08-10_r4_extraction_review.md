@@ -153,3 +153,29 @@ R4's done-condition is met: every seam is either extracted with its
 consumers named (identity, promoted in place; tenancy, named to
 netrender with both consumers listed) or declined in writing (grammar,
 place identity, mesh already shared).
+
+## Retired 2026-09-18
+
+**W1 verdict: retire.** Evaluated against the [wing design record](../../../../mesocosm/design_docs/2026-09-18_wing_design_plan.md) and
+recorded in [2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3; accepted by Mark under the record's ruling 31 of 2026-09-18,
+which takes W1's recommendations in full.
+
+**Why.** Tier: stack. The record contradicts this review at §4.1 and
+§4.2. Ruling 3 promoted `paredros-identity` to the wing identity crate,
+where §4.1 puts identity in dramatis (record ruling 34 moves it there
+under W3); ruling 1's one extracted seam is netrender tenancy for a
+renderling tenant, and L7 retires renderling. Its license line is stale
+besides: ruling 3 recorded MIT OR Apache-2.0, and the crate is MPL-2.0
+since the 2026-09-03 posture ruling.
+
+**What survives.** The target was wrong and the code is fine. Netrender's
+`TenantNeeds` and `boot_shared`/`boot_on`, with the documented tenancy
+contract and the deduplicated inter-stage-variable minimum, stand one
+tier as the record reads them: stack hosting, owned by netrender and
+consumed by whatever a product hosts. `paredros-identity` stands as
+Paredros overlay ids — `SubjectId`, `BodyRevisionId`, the facet stores,
+the control pointer — until dramatis takes the sim's provenance noun
+under W3. Rulings 2, 4 and 5 (mesh already shared, the consequence
+grammar refused on principle, place identity joining by the pipeline)
+are unaffected and survive as decisions.

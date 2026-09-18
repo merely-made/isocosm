@@ -4,6 +4,13 @@
 route, plan placement, pin alignment and the GlyphCSS prior-art row were each
 ruled explicitly.
 
+**W1, 2026-09-18:** keep. Tier: stack rendering plus Paredros chrome.
+Right tier, landed, and the only Paredros plan whose done-conditions come
+from the product's own session; owes L7 a Paredros lane. Evaluated against
+the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
+
 **Owns:** how Paredros presents one played session through genet and
 netrender, with movement, combat, equipment and inspection all reading the
 same `GameState`. This is the Paredros consumer of Mesocosm's

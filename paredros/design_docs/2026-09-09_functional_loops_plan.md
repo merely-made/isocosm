@@ -6,6 +6,15 @@ are implemented, along with B3 treatment and J1b fractional terrain motion.
 The native client uses the same movement, injury and inventory owners. Broader
 contact mechanics, construction and full adventure coordination remain open.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim bodies and places, Paredros
+verbs. T2 and the B and J lanes are the strongest live lanes; the place
+rung under them is the wrong one, cheaper to correct before T lands.
+Rewrite is a lane under the record's W2 or W3; until it lands this plan's
+done-conditions are not authoritative. Evaluated against the wing design
+record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
+
 ## Direction
 
 Build systems that produce situations. A curated encounter is optional content,

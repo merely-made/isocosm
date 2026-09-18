@@ -5,9 +5,10 @@
 **Status, 2026-09-18:** all three products evaluated, fifty-seven
 documents, and **Mark accepted every recommendation the same day**
 (record ruling 31): 30 keep, 22 rewrite, 6 retire, counted from the tables. §4's
-open items are ruled in the record's §9 (rulings 32 to 34). Application
-in progress: each plan gets its one line and the six retirements move to
-their archives, one product at a time. Read-only evaluations; nothing in any plan has been
+open items are ruled in the record's §9 (rulings 32 to 34). Applied in full on 2026-09-18: every plan carries its one line, the six
+retirements sit in each product's archive folder for the day with their
+surviving code named, and the three indexes are consistent with their
+directories. Read-only evaluations; nothing in any plan has been
 edited by this document's lanes.
 
 **Owns:** W1 of the

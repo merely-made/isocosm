@@ -12,7 +12,7 @@ S0-S3 remain landed foundation receipts, with their stated headed judgments
 still open. They do not define a required entourage, sortie loop, or camera.
 **R4 was decided and executed
 2026-08-10**: see
-[the extraction review](2026-08-10_r4_extraction_review.md). The former
+[the extraction review](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). The former
 S4-S6 future gate line is superseded by the fundamental layers in §4. The
 [founding plan](2026-07-30_paredros_founding_plan.md)
 remains the charter. Its 2026-08-13 rulings now bind here: one named life in a
@@ -20,6 +20,14 @@ persistent generated world; allies are contingent; control changes through
 death, an explicit world event, or an optional player rule; culture has
 pointable causes; free roster control remains forbidden. Its phase section is
 superseded by this plan.
+
+**W1, 2026-09-18:** rewrite. Tier: mixed. F0 to F8 are the right layers;
+the ordering is product-first and the receipts are fixtures. Rewrite is a
+lane under the record's W2 or W3; until it lands this plan's
+done-conditions are not authoritative. Evaluated against the wing design
+record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
 
 **Functional-loop direction, 2026-09-09:** the
 [functional loops and wiring plan](2026-09-09_functional_loops_plan.md) owns
@@ -1327,7 +1335,7 @@ play, and subjective traversal acceptance remain unclaimed.
   trigger. Done when the seam is either extracted with two consumers
   named, or explicitly declined in writing.
   **DECIDED 2026-08-10**: see
-  [the extraction review](2026-08-10_r4_extraction_review.md). Tenancy
+  [the extraction review](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). Tenancy
   pushed up to netrender (landed there 2026-08-10), identity promoted in
   place, grammar refused on principle, the adventure-mode frame adopted
   symmetrically.

@@ -8,6 +8,15 @@ the memory model, its evidence links, bounded recall, and promotion records.
 The adjacent contracts are [world conditions](2026-09-09_world_conditions_plan.md)
 and [functional loops](2026-09-09_functional_loops_plan.md).
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim record and Paredros recall.
+Bounded recall, the cache and semantic-forgetting split and the checkpoint
+design survive; its save-growth baseline is a single fixture and says so.
+Rewrite is a lane under the record's W2 or W3; until it lands this plan's
+done-conditions are not authoritative. Evaluated against the wing design
+record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
+
 ## Scope and design position
 
 Paredros needs a memory of particular people and events that can affect an

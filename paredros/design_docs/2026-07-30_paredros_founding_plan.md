@@ -8,6 +8,14 @@ laws, and the wing vocabulary live in the wing founding record at
 by path because relative links do not cross repos). They are not repeated
 here.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim world rules and generation,
+plus the overlay. Split the world half into the sim; second person,
+standing agreements and place lineage stand. Rewrite is a lane under the
+record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
+
 ---
 
 ## 1. The game
@@ -576,7 +584,7 @@ the proof pair, not before.
   wing's heaviest renderer requirement (close camera, 3D), so it does *not*
   simply inherit Mesocosm's lane — Mesocosm is proposed at 2.5D. Renderers are
   per-vessel by rule; see
-  `mesocosm/design_docs/2026-07-30_engine_and_render_lane_landscape.md` §5.
+  `mesocosm/design_docs/archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md` §5.
   A heavier engine (Fyrox ships the only Rust scene editor) is a live option
   here precisely because it need not be shared. *(Superseded 2026-08-2x:
   Paredros landed on the shared hybrid stack — brick raymarch through

@@ -6,6 +6,15 @@ different worlds; it does not make a shared games-wing rules engine. Wing-wide
 identity and pipeline vocabulary remain at
 `mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
 
+**W1, 2026-09-18:** rewrite. Tier: sim, §3.3 first shape and fields,
+written as product-owned. Only the tier is wrong; the best answer in the
+wing to §9.7. Rewrite is a lane under the record's W2 or W3; until it
+lands this plan's done-conditions are not authoritative. Ruled 2026-09-18
+(record ruling 32): its schema founds the sim's process definition and its
+stop rule is lifted. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§3.
+
 Wing-wide procedural composition scoping lives in
 `mesocosm/design_docs/2026-08-06_general_model_plan.md` §7.1 (2026-09-09):
 multiple causal families, explicit couplings, and variation in laws,

@@ -163,7 +163,7 @@ does not impose its attributes, skill points, or action rules on the other games
 ### Each vessel is a mode of the same peopled history
 
 **Ruled 2026-08-10 (Mark),** during the R4 extraction review
-(`paredros/design_docs/2026-08-10_r4_extraction_review.md`), and recorded
+(`paredros/design_docs/archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md`), and recorded
 symmetrically rather than one-directionally: no vessel is the primary one.
 
 - **Isometry** is the fortress and atlas mode: care for a squad and a map,

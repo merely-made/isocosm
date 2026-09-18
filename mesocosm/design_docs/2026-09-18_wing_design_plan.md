@@ -2,9 +2,10 @@
 
 **Date:** 2026-09-18
 
-**Status, 2026-09-18:** design record, for Mark's reading. Nothing in it is
-implemented against; the first phase is the evaluation of every active plan
-in the wing against it. No lane runs until that evaluation is ruled.
+**Status, 2026-09-18:** design record, ruled through W1. W0 is ruled (rulings
+1 to 34, with the founding record and the three product descriptions amended
+to it); W1 is evaluated, ruled and applied for all three products. W2, the
+sim's own plan, is next and is design work, not lanes.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -851,7 +852,8 @@ carries the rulings as they are made.
 - **W0, this record ruled.** Done when Mark has read it, the §9 decisions
   are taken or explicitly deferred, and the record is committed with its
   index row.
-- **W1, every active plan evaluated.** Done when each active plan in the
+- **W1, every active plan evaluated.** Landed 2026-09-18: 61 rows, 30 keep,
+  22 rewrite, 6 retire, 3 surfaced; applied to every plan and index. Done when each active plan in the
   three products' indexes carries one line against this record, keep,
   rewrite or retire, with the tier it belongs to and the assumption it
   rests on that this record confirms or contradicts. The board-on-isometer
@@ -923,6 +925,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: W1 applied to all three products (200bec7, 37aa580 and the
+  Paredros commit): every plan carries its line, six retirements archived,
+  indexes consistent. The founding record and the three descriptions
+  amended in Mark's words (d64e710). W1 closed.
 - 2026-09-18: rulings 31 to 34 recorded: W1 accepted in full, the
   process definition founded from the world-conditions schema, the
   founding record and CLAUDE.md amendments drafted in §9.11 for Mark's
