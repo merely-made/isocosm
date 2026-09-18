@@ -3,8 +3,11 @@
 **Date:** 2026-09-18
 
 **Status, 2026-09-18:** all three products evaluated, fifty-seven
-documents; rulings on keep, rewrite and retire are Mark's and are recorded
-here as they are made. See §4 for what is left to rule. Read-only evaluations; nothing in any plan has been
+documents, and **Mark accepted every recommendation the same day**
+(record ruling 31): thirty keep, twenty-one rewrite, six retire. §4's
+open items are ruled in the record's §9 (rulings 32 to 34). Application
+in progress: each plan gets its one line and the six retirements move to
+their archives, one product at a time. Read-only evaluations; nothing in any plan has been
 edited by this document's lanes.
 
 **Owns:** W1 of the

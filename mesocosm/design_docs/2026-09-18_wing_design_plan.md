@@ -175,6 +175,21 @@ what later sections derive from.
     same lane,** blitz and formal-web specifically, with servo, Firefox,
     WebKit, Chrome and the webviews as the more sophisticated efforts
     with a few key architectural distinctions. Ruled 2026-09-18.
+31. **W1's recommendations are accepted in full:** thirty keep,
+    twenty-one rewrite, six retire, as the evaluations document lists
+    them. Ruled 2026-09-18. The rewrites are lanes under W2 and W3, not
+    this ruling.
+32. **The sim's process definition is founded from Paredros's
+    world-conditions schema,** its stop rule lifted, with Law A's record
+    fields added; Mesocosm's `ProcessDef` shapes become expressions in
+    it. Ruled 2026-09-18.
+33. **The founding record and Mesocosm's CLAUDE.md are amended** to this
+    record: the schedule-and-verbs clause and the platform-first line.
+    Drafts are in §9.11; the edits are Mark's to commit. Ruled
+    2026-09-18.
+34. **dramatis absorbs paredros-identity under W3:** its types move to
+    the stack's trust plane and the sim's provenance noun, and Paredros
+    consumes them back. Ruled 2026-09-18.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -443,8 +458,18 @@ the render tier, generated from the sim's part tree and read back from
 imports, so skins, textures and animation channels are ordinary glTF
 content rather than a second body kind. Voxel parts become glTF meshes
 through the greedy quads isometer-mesh already builds. The renderer sits
-behind the scene contract and is swappable. The candidate tenant is
-kiss3d, whose 0.46 of 2026-08-15 sits on wgpu
+behind the scene contract and is swappable. The tenant is kiss3d,
+**checked 2026-09-18 from its published 0.46.0 source:** its context is
+initialised from an existing instance, device, queue, adapter and surface
+format (`src/context/context.rs:48`), and it renders to offscreen colour
+and depth buffers a caller can hand on
+(`src/resource/framebuffer_manager.rs:10-88`), which is the tenant shape
+netrender composition needs. Its context is a thread-local singleton, one
+per thread, which fits the kernel owning the GPU on one thread. It also
+carries a hardware ray tracer behind wgpu's experimental ray-query
+feature (`src/renderer/raytracer/`, `src/window/wgpu_canvas.rs:49-63`),
+which bears on rulings 22's shadows and global illumination. Earlier
+draft text follows for the record of what was checked and when: kiss3d, whose 0.46 of 2026-08-15 sits on wgpu
 30, the wing's own, with gltf, image and winit 0.30 as its dependencies,
 all already in the wing; the one objection still standing unchecked is the
 landscape doc's, that its constructors create their own device where
@@ -729,9 +754,10 @@ still open under it.
    glTF as the one body model at the render tier, generated from the
    tree (ruling 26); kiss3d provided it composes, behind a swappable
    scene contract (ruling 27); salva as the water with the field as the
-   record (ruling 28). **Open:** whether kiss3d 0.46 takes an external
-   device, which decides tenant versus donor, and is the composition test
-   ruling 27 names.
+   record (ruling 28). **Closed 2026-09-18:** kiss3d 0.46 takes an
+   external device and renders offscreen (§4.2), so it is a tenant, and
+   ruling 27's composition test is met on paper; the running proof is
+   W3's.
 6. **Which game first.** Answered: the sim gets a bench, and ruled
    further the same day: **one bench** with lanes for the sim (processes
    and effects including magic), the world, specimens, items and effects,
@@ -772,8 +798,31 @@ still open under it.
     `PROJECT_DESCRIPTION.md` files "the world's biota speciating on its
     own whether or not anyone is playing" under Speculative, which is §2's
     definition of the sim, and says the vessels share no schedule or
-    verbs. Amending the founding record and the CLAUDE.md line is Mark's
-    edit; this record does not claim precedence over them until he does.
+    verbs. **Ruled 2026-09-18 (ruling 33): amend both.** Drafts for
+    Mark's reading and commit, since the founding record is wing law and
+    the CLAUDE.md is his:
+
+    *Founding record §1, replacing "they do not share a genre, a schedule,
+    or their verbs":* "They share a world substrate, a lineage model, a
+    trust plane, one clock and the simulator's own verbs, which each game
+    reaches as handles; they do not share a genre, and each owns the verbs
+    it lays on top. (Amended 2026-09-18; the wing design record, rulings 3
+    and 10.)"
+
+    *Founding record §6, replacing "the platform is extracted from shipped
+    games, never built platform-first":* "The simulator and the stack are
+    designed from the games' systems in combination and tested by seeded
+    draws from the generator; a game is an overlay designed against them.
+    Nothing is declared representative by being built small first.
+    (Amended 2026-09-18; the wing design record, §2 and §6.)"
+
+    *`mesocosm/CLAUDE.md`, Important Don'ts, the federation line:* keep
+    "Do not build the federation platform first" as written, since it is
+    about federation and not the sim, and add after it: "The simulator is
+    the exception by ruling of 2026-09-18: it is designed from the games'
+    systems in combination, not extracted from a shipped game. See the
+    wing design record." The `PROJECT_DESCRIPTION.md` restatements remain
+    Mark's own words.
 8. **Components.** Answered in part: audio from woodshed (cpal, hound,
    symphonia and midir are already in the family); text and fonts from
    genet's text stack (parley for layout under the standards review's S9
@@ -874,6 +923,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 31 to 34 recorded: W1 accepted in full, the
+  process definition founded from the world-conditions schema, the
+  founding record and CLAUDE.md amendments drafted in §9.11 for Mark's
+  commit, and paredros-identity to dramatis under W3. kiss3d checked from
+  source and found to compose. W1's application begins, one product at a
+  time.
 - 2026-09-18: rulings 26 to 30 recorded: glTF generated from the tree as
   the one render model; kiss3d if it composes, renderer swappable; salva
   with the field as the record; desktop first-class and the web a tier
