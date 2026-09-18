@@ -20,7 +20,7 @@ begins with repository version `0.0.2`.
 identified reusable library crate could be licensed `MIT OR Apache-2.0`
 once its reusable boundary was real; `crates/paredros-identity` held that
 status, promoted to the wing's identity crate by the R4 extraction review
-(`design_docs/2026-08-10_r4_extraction_review.md`). Mark ruled 2026-09-03
+(`design_docs/archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md`). Mark ruled 2026-09-03
 that a promoted library stays MPL-2.0 like the rest of the wing instead —
 the license posture brief's platform default
 (`mere/design_docs/2026-08-22_license_posture_brief.md`) leaves no boundary
