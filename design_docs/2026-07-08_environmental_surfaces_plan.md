@@ -12,6 +12,14 @@ Emerged from a 2026-07-08 conversation referencing Larian (Divinity: Original
 Sin, Baldur's Gate 3) and Owlcat (Pathfinder: Kingmaker) environmental
 systems.
 
+**W1, 2026-09-18:** rewrite. Tier: sim, agentless processes, written as one
+product's tile layer. Nothing landed; the cheapest correction and the first
+input to W2. Rewrite is a lane under the record's W2 or W3; until it lands
+this plan's done-conditions are not authoritative. Evaluated against the wing
+design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 **Thesis:** the ground can hold state (fire, water, grease, ice, poison, ...)
 that spreads, interacts, and affects tokens. It fits isometry's
 substrate/system split cleanly: the substrate owns that surfaces *exist*,

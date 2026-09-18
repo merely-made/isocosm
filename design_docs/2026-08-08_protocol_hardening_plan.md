@@ -10,6 +10,11 @@ before their archival. The adjudication plan's law is untouched and
 governs here: **the system rules once; every peer applies, never
 re-derives.**
 
+**W1, 2026-09-18:** keep. Tier: stack, networking and receipts. H2 is the only
+open gate. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## 1. The violation
 
 `Traveled { token }` (roadmap C-series) makes every peer derive the

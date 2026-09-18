@@ -21,6 +21,14 @@ land.
 (the arrangement register), mesocosm's minimap (`mesocosm-views`, the first
 Hulls consumer and the working example to follow).
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim place graph and game overlay.
+The source-time half is the record's own model and is worth more than the
+presentation half. Rewrite is a lane under the record's W2 or W3; until it
+lands this plan's done-conditions are not authoritative. Evaluated against the
+wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ---
 
 ## 1. What this is

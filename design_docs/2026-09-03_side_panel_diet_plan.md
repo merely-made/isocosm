@@ -8,6 +8,12 @@ needed, so Turns now collapses. Founded when host UI zoom (genet's
 `2026-09-03_host_ui_zoom_plan.md`, Z5) measured the side panel at 1038
 logical pixels against a declared design height of 820.
 
+**W1, 2026-09-18:** keep. Tier: game overlay. Cuts landed; restate the target
+as reachable at the smallest supported display. Evaluated against the wing
+design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 **Related:** the [genet host migration plan](2026-09-02_genet_host_migration_plan.md)
 (M3 moved the text lanes and added the `px grid` row; its 2026-09-03
 Progress records the fold); genet's host UI zoom plan (the fit that makes

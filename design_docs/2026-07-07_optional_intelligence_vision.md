@@ -3,6 +3,11 @@
 **Date:** 2026-07-07
 **Status:** vision record, **parked (audit 2026-08-08)**: refresh authority and model assumptions only when activated. Capture-now, not a build commitment. Horizon: post-keystone. Depends on the widened schema/Lua ABI and the generators lane. Recorded so the shape is not lost; explicitly not sequenced ahead of viewport windowing. Companion to [2026-07-07_next_horizons_landscape.md](archive_docs/2026-08-08/2026-07-07_next_horizons_landscape.md).
 
+**W1, 2026-09-18:** keep, parked. Tier: mixed. Name esp when activated.
+Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ---
 
 ## 0. Framing and the substrate invariants

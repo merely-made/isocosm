@@ -133,7 +133,7 @@ with the renderer receipt feature.
 **Open behind existing prerequisites.** The current Isometry desktop host still
 targets Genet's deleted compatibility layout cone. That migration is broader
 than this profile and is not smuggled into R0/R1. It is now the
-[genet host migration plan](2026-09-02_genet_host_migration_plan.md)
+[genet host migration plan](../../2026-09-02_genet_host_migration_plan.md)
 (2026-09-02). Protocol hardening H2 also
 remains first in the repository's audit order.
 
@@ -242,3 +242,19 @@ contract is smaller than both product-local profiles.
   allocation into a configurable isometric marker texture and through
   Netrender's same-device compositor. Default profile tests remain GPU-free;
   desktop host adoption and the second-consumer challenge remain open.
+
+## Retired 2026-09-18
+
+**W1 verdict: retire.** Evaluated against the [wing design record](../../../mesocosm/design_docs/2026-09-18_wing_design_plan.md) and recorded
+in [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) §1;
+accepted by Mark under the record's ruling 31 of 2026-09-18, which takes
+W1's recommendations in full.
+
+**Why.** Tier: stack rendering, wrongly product-owned. The record
+contradicts this plan at §4.2 and §2 — a product owns no renderer — so what
+it builds is a second renderer for the same board.
+
+**What survives.** Two pieces of landed code stand: the map-and-token to
+body binding table, and the accepted-event mirror into conatus. Under the
+record they belong to the stack tier, as a stack adapter, not to a
+product-owned runtime.

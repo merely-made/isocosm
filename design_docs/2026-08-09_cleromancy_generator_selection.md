@@ -1,5 +1,10 @@
 # Cleromancy generator selection
 
+**W1, 2026-09-18:** keep. Tier: stack, generation. Not listed in the root
+index, an index defect. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## Decision
 
 Use Cleromancy only to choose one already-loaded Isometry generator before

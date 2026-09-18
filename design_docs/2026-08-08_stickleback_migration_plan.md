@@ -7,6 +7,11 @@ earlier tiers (host-owned private stores, peer-side Lua revalidation,
 regenerated secrets, commit-reveal mechanics) are **superseded by this
 plan** and stamped so at the source.
 
+**W1, 2026-09-18:** keep. Tier: stack, branching. Sovereignty over a shared
+carrier. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## 1. The debt
 
 Live `campaign_sync.rs` (isonetry) still assembles `LogSync` and

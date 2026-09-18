@@ -4,6 +4,13 @@
 watchtower as the first playable procedural place, with Luna/Terra agents
 and permission to improve shared stack utilities when a concrete need emerges.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim generation and game overlay.
+Only the terrain premise fails. Rewrite is a lane under the record's W2 or W3;
+until it lands this plan's done-conditions are not authoritative. Evaluated
+against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## Purpose
 
 Connect generation, inhabited maps, voxel appearance and ordinary session

@@ -21,6 +21,11 @@ load-bearing), [optional_intelligence_vision](2026-07-07_optional_intelligence_v
 (capabilities as the one collaboration primitive; cross-repo,
 `repos/personae/design_docs/2026-07-08_personae_across_the_suite.md`).
 
+**W1, 2026-09-18:** keep. Tier: stack, federation. The gate is why §5 can stay
+open safely. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 **Thesis:** a campaign is a signed multi-writer space; a combat exchange may
 still need a temporary sequencer. Consistency is chosen per domain type rather
 than imposed campaign-wide. p2panda supplies signed per-author logs and sync;

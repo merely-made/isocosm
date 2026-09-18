@@ -4,6 +4,15 @@
 
 **Status:** assessment, for Mark's sign-off. No code moved, no commit.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, stack rendering and game overlay.
+The lanes landed and the code is good; the done-conditions were parity with
+the DOM board and a constant, and §3.6 rewrites the geometry under them.
+Rewrite is a lane under the record's W2 or W3; until it lands this plan's
+done-conditions are not authoritative. Evaluated against the wing design
+record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 **Owns:** drawing Isometry's board through the wing's shared scene, `isometer`,
 instead of one DOM element per tile, prop and token, while keeping the locked
 2:1 isometric lens, the tileset-as-stylesheet contract, and every tile and

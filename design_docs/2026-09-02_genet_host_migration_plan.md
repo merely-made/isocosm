@@ -2,7 +2,12 @@
 
 **Status:** M0 through M4 landed and committed (2026-09-03). §6 closed for genet and isometry; mere's pin is blocked on another session's migration and woodshed's bump stays deferred, both recorded in Progress. Founded from the 2026-09-02 wing assessment. First in the audit order ahead of protocol H2, because nothing headed could be receipted until the desktop built.
 
-**Related:** the [runtime profile plan](2026-08-23_runtime_profile_plan.md)
+**W1, 2026-09-18:** keep. Tier: stack, hosting. Exactly §2's boundary.
+Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
+**Related:** the [runtime profile plan](archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md)
 (its R2 desktop gate waits on this), the
 [perf and cambification plan](2026-07-20_perf_and_cambification_plan.md)
 (its one live item, the search and whisper text lanes, closes here), and

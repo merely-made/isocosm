@@ -7,6 +7,11 @@ open residues live here until each is picked up or declined. Items are
 as identified by the wing audit; **verify against the archived source
 when picking one up.**
 
+**W1, 2026-09-18:** keep. Tier: method. W1 produces more of these. Evaluated
+against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## Residues by source
 
 - **Bootstrap plan**: the unmet headed and network receipts (headed

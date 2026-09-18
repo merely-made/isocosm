@@ -4,6 +4,11 @@
 home for the Isometry tabletop, Mesocosm, and Paredros. Package names, product
 behaviour, licenses, source histories and existing uncommitted work survive.
 
+**W1, 2026-09-18:** keep. Tier: stack. Published and done; decides nothing
+about the world. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
 ## Scope and layout
 
 Keep the tabletop in the existing root workspace. Import Mesocosm under
