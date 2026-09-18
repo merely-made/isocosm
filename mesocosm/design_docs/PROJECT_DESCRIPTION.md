@@ -48,19 +48,22 @@ niche, for a survival strategy in a strange place.
 ## Where it sits
 
 Vessel 1 of a three-game wing that shares a world substrate, a lineage model,
-and a trust plane — engine organs are shared where they stay verb-neutral —
-but shares no genre, schedule, or verbs: Mesocosm (first person), Paredros
-(second person), Isometry (third person). Mesocosm is
-standalone-complete; inheritance into the others is enrichment, never
-homework.
+a trust plane, one clock and the simulator's own verbs, reached as handles
+— engine organs are shared where they stay verb-neutral — but shares no
+genre and owns the verbs it lays on top: Mesocosm (first person), Paredros
+(second person), Isometry (third person). The world's biota speciates on
+its own whether or not anyone is playing: that is the simulator the wing
+runs beneath every game (the wing design record, 2026-09-18), not
+speculation, so unclaimed lineages exist to be met, adopted, or competed
+with. Mesocosm is standalone-complete; inheritance into the others is
+enrichment, never homework.
 
 See [`2026-07-30_games_wing_founding.md`](2026-07-30_games_wing_founding.md).
 
 ## Speculative
 
 Not planned, recorded only as direction: co-op branching, where two players
-steer one lineage's split; stranger-critter capsules arriving asynchronously
-in single-player worlds (the NetHack bones-file lineage, at world
-granularity); and the world's biota speciating on its own whether or not
-anyone is playing, so unclaimed lineages exist to be met, adopted, or
-competed with.
+steer one lineage's split; and stranger-critter capsules arriving
+asynchronously in single-player worlds (the NetHack bones-file lineage, at
+world granularity). The biota speciating with nobody playing moved out of
+this section on 2026-09-18: it is the simulator, above.

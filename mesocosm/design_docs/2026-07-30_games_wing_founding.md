@@ -17,9 +17,18 @@ it does not report implementation or replace domain plans' validation gates.
 
 ## 1. What this is
 
-Three games that are one wing. They share a world substrate, a lineage
-model, and a trust plane; they do not share a genre, a schedule, or their
-verbs.
+Three games that are one wing. These three games are different ways of
+looking at the same simulated world, across branching timelines and divine
+destinies; the mechanisms of the roguelike, the adventure RPG and the
+tabletop become how you interact with the sim. They share a world
+substrate, a lineage model, a trust plane, one clock and the simulator's
+own verbs, which each game reaches as handles; they do not share a genre,
+and each owns the verbs it lays on top.
+
+**Amended 2026-09-18** in Mark's words, per the
+[wing design record](2026-09-18_wing_design_plan.md) (rulings 1, 3 and
+10). As founded this read "they do not share a genre, a schedule, or their
+verbs".
 
 **The engine clause, narrowed 2026-08-05.** As founded this read "they do
 not share an engine". The clause was guarding against coupling-as-obligation
@@ -1012,9 +1021,15 @@ and the week moved under it:
 - Still genuinely missing, unchanged: real-time netcode and
   settlement/production simulation (now Paredros S5's charge).
 
-**Discipline:** the platform is extracted from shipped games, never built
-platform-first. Mesocosm is a *candidate* for that proof, not yet a real
-second consumer.
+**Discipline (amended 2026-09-18):** the simulator and the stack are
+designed from the games' systems in combination and tested by seeded draws
+from the generator; a game is an overlay designed against them. Nothing is
+declared representative by being built small first. As founded this read
+"the platform is extracted from shipped games, never built platform-first;
+Mesocosm is a *candidate* for that proof, not yet a real second consumer";
+see the [wing design record](2026-09-18_wing_design_plan.md) §2 and §6.
+The federation platform, as distinct from the simulator, is still
+extracted from shipped games (`mesocosm/CLAUDE.md`, Important Don'ts).
 
 ---
 
@@ -1082,8 +1097,10 @@ consumers exist.
 postcard payload, because a decoder cannot reach a field whose layout just
 changed. The pack envelope itself is deliberately not wired yet: a pack carries
 content-addressed blobs, and these are what goes inside one. Wiring the envelope
-means depending on eidetic, and the platform is extracted from shipped games
-rather than built before them.
+means depending on eidetic, and, as this record stood when written, the
+platform was extracted from shipped games rather than built before them
+(amended 2026-09-18: the simulator is designed first, and the envelope's
+wiring is a stack matter under the wing design record's W3).
 
 One rule the round trip added: **a verb two games both act on is a contract, not
 vocabulary.** A game's own verbs are opaque and may carry any payload; a shared

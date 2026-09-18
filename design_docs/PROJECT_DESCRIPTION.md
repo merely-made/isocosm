@@ -23,20 +23,24 @@ their own campaigns.
    authors sign independent operations that converge through p2panda. A hosted
    combat can still use one temporary sequencer over p2p transport. Holding
    that role does not make the peer the campaign owner.
-2. **Battle-scale maps, sculpted.** Lodis-scale boards (roughly 15x15 to
-   30x30) with per-tile height as a first-class editing brush. Elevation,
+2. **Maps at every scope, sculpted.** Think tactically in terms of
+   Tactics Ogre-scale tight battlemaps and sprawling area maps, navigating
+   to and from them through region and world maps. Same world, different
+   scopes. Per-tile height is a first-class editing brush, and elevation,
    facing, and turn order are substrate features because the reference
-   games treat them as terrain, not rules.
+   games treat them as terrain, not rules. (Restated by Mark 2026-09-18;
+   the earlier "roughly 15x15 to 30x30" was a view, not a limit.)
 3. **Modding is folders and stylesheets.** A tileset is sprites plus a
    manifest; appearance binds through CSS class vocabulary; a campaign
    can reskin the world without touching the app.
 4. **Systems are plugins.** Character and item definitions are schemas;
-   derived stats and dice behavior are scripts (rhai). The substrate
+   derived stats and dice behavior are scripts (Lua, via piccolo). The substrate
    tracks geometry and turns, never hit points. 5e SRD (CC-BY-4.0) and
    Pathfinder 2e (ORC) are the first-party system candidates.
-5. **Players eventually join from a browser.** The genet-web lane makes
-   a no-install player client plausible from the same codebase. Native DM
-   app first.
+5. **Desktop first; the web a supported tier.** The same codebase serves
+   a no-install player client through genet's web lane, with a stated
+   floor for what degrades there (wing design record, ruling 29). Native
+   DM app first.
 
 ## Feature sketch (unplanned items are aspirational)
 
