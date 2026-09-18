@@ -191,6 +191,21 @@ what later sections derive from.
 34. **dramatis absorbs paredros-identity under W3:** its types move to
     the stack's trust plane and the sim's provenance noun, and Paredros
     consumes them back. Ruled 2026-09-18.
+35. **Each game foregrounds one rung of the agent ladder; the others are
+    simmed and weakly expressed.** In Mark's words, 2026-09-18: "the
+    primary pillar for mesocosm is the critter being refined over the ages
+    according to your play preference. So in that sense, I would be more
+    interested in the wildlife than the ecology. Similarly for paredros,
+    what named entities do is probably most interesting compared to what
+    critters and polities do. And characters, partisan, friendly,
+    antagonistic, and otherwise factional or unaligned, have the most
+    importance in isometry's polities, but the polities themselves set
+    narrative stakes (sidequests, alignment, arcs, npcs, access to
+    resources). But each of those layers can be simmed and weakly
+    expressed even when they aren't the primary concern." This is the
+    founding record's critter, borg, character continuity read as the
+    games' domains: Mesocosm plays the critter and its lineage, Paredros
+    the borg and its factions, Isometry the character inside its polities.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -647,7 +662,25 @@ This is a W2 requirement.
 
 A game is an overlay: a domain, an ensemble rule, mechanics, controls, a
 perspective and a timescale (ruling 6). Its verbs are its own; the sim's
-verbs it reaches as handles (ruling 10). What each game's profile contains
+verbs it reaches as handles (ruling 10).
+
+The domain is a rung of the agent ladder, refined by play, with every other
+rung simmed in the background and weakly expressed in the foreground
+(ruling 35). The founding record's continuity of critter, borg and
+character (§1, "The continuity: critter, borg, character") is the same
+creature at three levels of identity, and the three games are those three
+levels:
+
+| Game | Foregrounded rung | Refined by play | Weakly expressed |
+| --- | --- | --- | --- |
+| Mesocosm | the critter and its lineage | the critter, over the ages, according to play preference | the ecology as weather, prey and competitors; society and polities as distant pressures that can still influence events |
+| Paredros | the borg, a named creature, and its factions | what named entities do; the coterie, the party, the base | the ecology as wildlife and land; polities as the powers that shape the region |
+| Isometry | the character inside its polities | characters partisan, friendly, antagonistic, factional or unaligned | polities set the narrative stakes (sidequests, alignment, arcs, non-player characters, access to resources); the ecology as terrain and encounter |
+
+"Weakly expressed" is a requirement on the sim, not on the game: every rung
+must be able to run at background fidelity and surface as effects,
+encounters, pressures and stakes in a game that does not play it. What that
+requires of each rung is a W2 question. What each game's profile contains
 is that game's design and not this record's. Two questions belong to the
 overlay tier and are left open here: who resolves an event when a DM and
 the sim both could, and where a foreground game's rules stop and the sim's
@@ -925,6 +958,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 35 recorded, each game's foregrounded rung in Mark's
+  words, mapped to the founding record's critter, borg, character
+  continuity in §5. The prior-art brief for the sim written the same day.
 - 2026-09-18: W1 applied to all three products (200bec7, 37aa580 and the
   Paredros commit): every plan carries its line, six retirements archived,
   indexes consistent. The founding record and the three descriptions
