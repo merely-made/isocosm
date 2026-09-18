@@ -152,9 +152,29 @@ what later sections derive from.
     Haddadi) is the architectural reference. Ruled 2026-09-18.
 25. **Skinning, textures and animation are not ruled out for the wing.**
     The rigid-parts rule is Mesocosm's voxel body model, where a part
-    carries colour per voxel and animates by pose; an imported mesh body
-    is a second body kind beside it. Ruled 2026-09-18 in conversation
-    ("feels rough to be so limited"); the second body kind is W3 work.
+    carries colour per voxel and animates by pose. Ruled 2026-09-18 in
+    conversation ("feels rough to be so limited"); superseded the same
+    day by ruling 26 on the model.
+26. **glTF is the body's render, animation and interchange model,
+    generated from the part tree.** "The tree is data, seems to not be
+    the correct render/animation/interchange model." The sim's body stays
+    a part tree; a projection generates glTF from it, and an imported
+    glTF's node hierarchy is read into a tree the same way. One body kind
+    at the render tier, not two. Ruled 2026-09-18.
+27. **kiss3d, provided it composes with the stack,** and **the renderer
+    is swappable** behind the scene contract, so a 2D game from the sim,
+    or renderling and nexus far later, remain possible. Ruled 2026-09-18.
+28. **Water is salva, and nondeterministic water is legitimate when a
+    field directs it,** because water worlds must be possible and because
+    outcomes read the field, not the particles. Ruled 2026-09-18; the
+    technical reading is in §4.6.
+29. **Desktop first-class; the web a supported tier with a stated floor.**
+    Ruled 2026-09-18 ("agreed, I suppose"), replacing ruling 19's
+    first-class web.
+30. **genet's references are the other Rust and browser engines in the
+    same lane,** blitz and formal-web specifically, with servo, Firefox,
+    WebKit, Chrome and the webviews as the more sophisticated efforts
+    with a few key architectural distinctions. Ruled 2026-09-18.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -381,7 +401,7 @@ Read from each crate's own description on 2026-09-18, not from memory.
 | Rendering | isometer | The scene: terrain tracer, body renderer, depth join, picking, glyph batch | `shared/isometer`, Isometry root |
 | Rendering | netrender | Composition of rendered textures with the document's paint stream | `repos/netrender` |
 | Rendering | wgpu | The device | crates.io |
-| Hosting and interface | genet | The document host: window, input routing, layout | `repos/genet` |
+| Hosting and interface | genet | The document host: window, input routing, layout. References by ruling 30: blitz and formal-web specifically; servo, Firefox, WebKit, Chrome and the webviews as the same lane with a few key architectural distinctions. Owes the full W3C animation surface (ruling 24) | `repos/genet` |
 | Hosting and interface | cambium | The element layer, under isomere by ruling 16 | mere `cambium` |
 | Hosting and interface | isomere | The wing GUI: sheet, panels, keymap, host assembly | `shared/isomere` |
 | Receipts and driving | taproot, mesquite | The scenario driver and the scenario lane with captures, receipts and exit codes | genet, mere `cambium/mesquite` |
@@ -417,10 +437,14 @@ place is not one thing:
 - Composition: netrender stages the scene's colour view as an external
   image in the document's paint stream.
 
-What renderling had that nothing now has is now ruled wanted (rulings 22
-and 25): every lighting row in §4.6, and mesh bodies with skins and
-textures imported from glTF as a second body kind beside voxel bodies. The
-candidate donor or tenant is kiss3d, whose 0.46 of 2026-08-15 sits on wgpu
+What renderling had that nothing now has is now ruled wanted (rulings 22,
+26 and 27): every lighting row in §4.6, and glTF as the one body model at
+the render tier, generated from the sim's part tree and read back from
+imports, so skins, textures and animation channels are ordinary glTF
+content rather than a second body kind. Voxel parts become glTF meshes
+through the greedy quads isometer-mesh already builds. The renderer sits
+behind the scene contract and is swappable. The candidate tenant is
+kiss3d, whose 0.46 of 2026-08-15 sits on wgpu
 30, the wing's own, with gltf, image and winit 0.30 as its dependencies,
 all already in the wing; the one objection still standing unchecked is the
 landscape doc's, that its constructors create their own device where
@@ -509,11 +533,8 @@ Below the downlevel tier is wgpu's WebGL2 fallback, which as recalled and
 not re-read carries no compute and no storage buffers at all; the tracer
 survives there because it reads textures, and nothing else GPU-side does.
 
-**Posture, recommended 2026-09-18 and awaiting Mark's ruling** (he asked
-whether to lift the first-class constraint or treat the web as a floor,
-and whether billboard sprites would be the cheaper answer): cross-platform
-desktop first-class, the web a supported tier with a stated floor per
-tier. The renderer's floor is the baked sprite over a heightfield, which
+**Posture, ruled 2026-09-18 (ruling 29):** cross-platform desktop
+first-class, the web a supported tier with a stated floor per tier. The renderer's floor is the baked sprite over a heightfield, which
 the wing already has, since the bake is a projection of the same voxel
 bodies and the presentation plan already named it the far tier of a
 hybrid; billboards are not an alternative to voxels but what voxels look
@@ -545,7 +566,7 @@ Pulley, which the script substrate plan already prefers.
 | Ambient occlusion | None | Per-vertex voxel occlusion as Minecraft's smooth lighting; screen-space for bodies | Not planned |
 | Global illumination | None | Voxel cone tracing (Crassin 2011) uses the voxel world as its structure | Not planned |
 | Point lights, day and night | None | Any deferred renderer; torches and time of day are sim fields already | Fields plane |
-| Transparency and water | None; the tracer writes alpha 1 | Order-independent transparency; a water plane traced separately. For the sim's water, the cellular-automaton form Dwarf Fortress, Minecraft and Terraria use is an agentless process on the volume, deterministic and cheap; shallow water on the surface rung for rivers and floods; dimforge's salva (0.10, 2026-08) is particle fluid for foreground effects only, since a GPU form is not deterministic across hardware and the replay hashes cannot tolerate it | §4.3 finding; ruling 22 |
+| Transparency and water | None; the tracer writes alpha 1 | Ruled 2026-09-18 (ruling 28): dimforge's salva (0.10, 2026-08) is the water, because water worlds must be possible. The technical reading Mark asked for: nondeterministic water is legitimate exactly when no outcome-bearing fact reads it. The wing already has that two-tier rule from the nexus ruling of 2026-08-06, which bars a nondeterministic tier from outcomes. So the field is the record: depth, current and level per place, held deterministically, which is what a creature's position, a drowning or a flood is computed from; and the particles are what the field looks like up close, driven by it and never feeding back except through the field's own coarse readings. "Voxels as a wave" is the right picture at the surface rung, where the shallow-water equations are literally a wave model, a height and a velocity per cell, cheap and deterministic; in the volume, water is a material whose fill and drain is an agentless process; and salva is the near-tier particle form of the same field. On one machine with a fixed step and one binary, salva is deterministic; across machines it is not guaranteed, which is why it stays on the ambience side of the line | §4.3 finding; rulings 22 and 28 |
 | Textures on parts | None, palette only by ruling | glTF materials | Rigid-parts ruling |
 | Skinning and animation | Scene bodies: per-part rigid pose from the sim. Document: genet Livery parses `@keyframes`, `animation-*` and `transition-*` with a host-driven clock, which the effect packs' beats already ride; the Web Animations API is deferred | kiss3d's skinning, glTF animation | Rigid-parts ruling; genet's CSS animations plan (2026-07-09); kiss3d ruled a donor for AOV ids only |
 | glTF import | None; bodies come from voxel recipes | The gltf crate; kiss3d | Not planned |
@@ -567,7 +588,13 @@ has already decided the levers:
 - **Rayon** is the in-unit data-parallel lever on native. On the web it
   becomes a Worker pool only under a nightly, atomics, shared-memory build
   behind cross-origin isolation headers, which the brief hard-gates as a
-  PWA-only path; without that it runs serially.
+  PWA-only path; without that it runs serially. Re-checked 2026-09-18 at
+  Mark's question: still true. The shim's README says WebAssembly thread
+  support "is still only available in nightly", was last tested against
+  nightly-2025-11-15 with `-Zbuild-std`, and rustc's own target page for
+  wasm32-unknown-unknown still routes atomics through `-Zbuild-std`. The
+  browser path has not moved; the runtime-side threads target for
+  Wasmtime is a separate matter and not the browser's.
 - **The Scene is the serialization seam** between a worker and the main
   thread; the encoder exists and its per-frame cost was measured small.
 - **Wasmtime** is the mod and extension runtime, ahead-of-time by
@@ -691,20 +718,20 @@ still open under it.
    Rhai. mere's own topology brief already names piccolo as the
    modding-Lua option.
 4. **The web floor.** The limits are in §4.5. Ruled first-class on
-   2026-09-18, then reopened by Mark the same day as possibly "an insane
-   constraint": lift it, treat the web as a floor, or go to billboard
-   sprites. §4.5 carries the recommendation, desktop first-class and the
-   web a tier with a stated floor whose renderer floor is the existing
-   bake. **Open:** Mark's ruling.
+   2026-09-18, reopened the same day, and **ruled again as ruling 29:**
+   desktop first-class, the web a tier with a stated floor whose renderer
+   floor is the existing bake.
 5. **Renderling's parts.** §4.6 is the inventory. Mark noted that genet's
    animation work is done; it is the document half of the animation row,
    CSS animations and transitions in Livery, and scene bodies animate by
    per-part pose from the sim, so nothing renderling had for animation is
-   missing. **Ruled 2026-09-18:** all five lighting rows (ruling 22),
-   glTF mesh bodies as a second body kind with skins and textures (ruling
-   25), and water as a cellular-automaton process with particle fluid for
-   effects only (§4.6). **Open:** whether kiss3d 0.46 takes an external
-   device, which decides tenant versus donor.
+   missing. **Ruled 2026-09-18:** all five lighting rows (ruling 22);
+   glTF as the one body model at the render tier, generated from the
+   tree (ruling 26); kiss3d provided it composes, behind a swappable
+   scene contract (ruling 27); salva as the water with the field as the
+   record (ruling 28). **Open:** whether kiss3d 0.46 takes an external
+   device, which decides tenant versus donor, and is the composition test
+   ruling 27 names.
 6. **Which game first.** Answered: the sim gets a bench, and ruled
    further the same day: **one bench** with lanes for the sim (processes
    and effects including magic), the world, specimens, items and effects,
@@ -847,6 +874,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 26 to 30 recorded: glTF generated from the tree as
+  the one render model; kiss3d if it composes, renderer swappable; salva
+  with the field as the record; desktop first-class and the web a tier
+  with a floor; genet's reference set. Rayon on the web re-checked and
+  still nightly-only.
 - 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.
