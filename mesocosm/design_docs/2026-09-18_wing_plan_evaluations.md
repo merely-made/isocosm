@@ -4,7 +4,7 @@
 
 **Status, 2026-09-18:** all three products evaluated, fifty-seven
 documents, and **Mark accepted every recommendation the same day**
-(record ruling 31): thirty keep, twenty-one rewrite, six retire. §4's
+(record ruling 31): 30 keep, 22 rewrite, 6 retire, counted from the tables. §4's
 open items are ruled in the record's §9 (rulings 32 to 34). Application
 in progress: each plan gets its one line and the six retirements move to
 their archives, one product at a time. Read-only evaluations; nothing in any plan has been
@@ -193,8 +193,7 @@ record's corrections from this evaluation were folded the same day (§3.3,
 
 ## 4. What W1 leaves for Mark
 
-Across the three products: fifty-seven documents read; thirty keep,
-twenty-one rewrite, six retire. The retirements: runtime profile
+Across the three products: 61 rows, counted from the tables above rather than by hand (a 2026-09-18 correction; the first summary said fifty-seven and twenty-one): 30 keep, 22 rewrite, 6 retire, 3 surfaced to Mark as maintainer-owned. Isometry 9/4/1, Mesocosm 19/13/4, Paredros 2/5/1, as keep, rewrite and retire. The retirements: runtime profile
 (Isometry); engine and render lane landscape, execution waves, open
 rulings register, effect pack preset (Mesocosm); R4 extraction review
 (Paredros). Every retirement names surviving code and its tier. The

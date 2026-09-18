@@ -15,6 +15,12 @@ life; see the [playable ecology plan](2026-08-31_playable_ecology_plan.md) secti
 ruling 4 and the [elements and traits memo](2026-08-29_elements_and_traits_memo.md)
 sections 1, 2, 4, 5 and 7.
 
+**W1, 2026-09-18:** keep. Tier: sim, §3.3 first shape. Restate the gates;
+the grammar is the best sim work in the repo. Evaluated against the wing
+design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **The words, ruled by Mark 2026-09-04.** **nis**: the provenance-bearing living
 substance, matter typed by the line it came from, kingdom first then lineage.
 One form for singular and plural, from *nisus*, striving. Matter fully returned

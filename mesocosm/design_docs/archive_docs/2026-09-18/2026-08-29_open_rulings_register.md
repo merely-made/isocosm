@@ -3,7 +3,7 @@
 **Status: historical register snapshot, partially superseded; refreshed
 2026-08-31.** Do not use this file as the current execution order. TD8 through
 TD11 and DC1 through DC4 closed or reframed several entries after the snapshot,
-and the [playable ecology plan](2026-08-31_playable_ecology_plan.md) now owns
+and the [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) now owns
 the integration chain. Source plans remain authoritative.
 
 This was a worklist, not a plan. Its numbered entries are retained as a dated
@@ -222,7 +222,7 @@ S1 does not choose between them, only that one must happen before zoom.
 
 **Ruled by Mark, 2026-09-02: far bodies go to silhouettes** rather than
 raising the capsule caps; it lands with S4 zoom. See the
-[default creatures plan](2026-08-30_default_creatures_plan.md) §3.3 and §7
+[default creatures plan](../../2026-08-30_default_creatures_plan.md) §3.3 and §7
 question 10 for how this composes with that plan's own capsule-budget note.
 
 **Blocks.** S4 — zoom cannot mean anything while the roster is clipped.
@@ -1071,3 +1071,19 @@ slice arrives. Listed here verbatim rather than re-litigated.
   assert).
 - Section picking.
 - Banked names deme and borg.
+
+## Retired 2026-09-18
+
+**W1 verdict: retire.** Evaluated against the [wing design record](../../2026-09-18_wing_design_plan.md) and
+recorded in [2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
+§2; accepted by Mark under the record's ruling 31 of 2026-09-18,
+which takes W1's recommendations in full.
+
+**Why.** Tier: method, historical. The register says of itself "It will
+go stale" (`:15`) and it has: it is self-superseded, and every live
+entry in it now has an owning plan.
+
+**What survives.** Nothing in code; this was a worklist. Its live
+entries survive in the owning source plans, which the record keeps as
+the authority, and it is retained here as a dated map of the questions
+active on 2026-08-29.

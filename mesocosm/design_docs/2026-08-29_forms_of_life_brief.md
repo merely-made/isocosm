@@ -5,6 +5,11 @@ round.** Mark has reaffirmed the product direction that animal-, plant-,
 fungal-, and microbial-scale critters belong in the playable roster. The four
 stages, their order, and their representation choices remain unruled.
 
+**W1, 2026-09-18:** keep. Tier: sim. Hand the representation question to W2.
+Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **2026-08-31 integration boundary.** Different forms may receive different
 controllers, but every controller proposes intentions to the same matter,
 energy, space, body, relationship, and history authority. Before a true

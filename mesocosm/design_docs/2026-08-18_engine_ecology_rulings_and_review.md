@@ -7,6 +7,11 @@ authority for the shared-device seam and the completed A-F proofs. This
 document records the consequences of those decisions, corrects the
 overclaims that accumulated in discussion, and names the next proof gates.
 
+**W1, 2026-09-18:** keep. Tier: method and stack. W1 produces more of these.
+Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The short conclusion is that the architecture survives review. Its useful
 shape is a record with several projections, one shared GPU allocation path,
 a hybrid renderer, and deterministic resolution around learned or evolved

@@ -11,6 +11,12 @@ about how a form of life is **acquired**, what it **costs**, and how one
 organism **reads** another. It does not restate the companion — where the two
 touch, this brief cites it and moves on.
 
+**W1, 2026-09-18:** keep. Tier: mixed, sim relations and overlay unlocks.
+The edge is the sim's; unlock evidence is Mesocosm's. Evaluated against the
+wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **2026-08-31 acquisition ruling.** Eating may provide material, donor
 provenance, and evidence, but a food category does not directly award its
 matching trait category. Discovery may instead cite survival through stress,

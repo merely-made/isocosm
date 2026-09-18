@@ -4,10 +4,17 @@
 2026-09-07 after a source/plan review; the first joint Mesocosm habitat/body
 slice is locally verified.** Existing product receipt statuses
 remain attached to their dated entries below. Successor to the
-[execution waves plan](2026-07-31_execution_waves_plan.md), demoted to
+[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md), demoted to
 Wave 1/2 history by the audit. The governing plans own the *what*; this
 owns dependencies and integration order. Detailed design and evidence live
 in the owning plans; this ledger supplies the cross-plan map.
+
+**W1, 2026-09-18:** rewrite. Tier: method, ordering. Six good lanes in the
+wrong sequence. Rewrite is a lane under the record's W2 or W3; until it
+lands this plan's done-conditions are not authoritative. Evaluated against
+the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
 
 The founding condition remains causal: another run should pull product work.
 It does not make one product slice a prerequisite for reusable mechanics whose

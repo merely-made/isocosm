@@ -14,6 +14,13 @@ the TD series in
 §"The series closes here". This plan owns the *body* half of that ruling; the
 update stage is the other half and is not this plan.
 
+**W1, 2026-09-18:** rewrite. Tier: Mesocosm overlay, its ensemble. Restate
+the gates as draws; the archetypes are good overlay content. Rewrite is a
+lane under the record's W2 or W3; until it lands this plan's done-conditions
+are not authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 ---
 
 ## 0. The ruling

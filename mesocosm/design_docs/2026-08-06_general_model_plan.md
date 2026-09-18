@@ -9,6 +9,14 @@ owns world substrate, and the
 [mesocosm founding plan](2026-07-30_mesocosm_founding_plan.md), which owns
 the epoch loop.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim causal grammar and wing organ.
+Split: E0 to E4 are sim; §7.4's hagioglyph is a wing organ no single game
+owns. Rewrite is a lane under the record's W2 or W3; until it lands this
+plan's done-conditions are not authoritative. Evaluated against the wing
+design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Scoping update, 2026-09-09:** §7.1 documents multiple interacting
 fantastical systems and procedural variation across worlds. §7.2 records
 the subsequent open discussion of body/item grammars, magic anatomy,

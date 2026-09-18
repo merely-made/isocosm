@@ -3,6 +3,11 @@
 **Status: first slice implemented, reviewed and committed, 2026-09-09.** Authorized first implementation slice
 following the general model discussion sections 7.2 and 7.3.
 
+**W1, 2026-09-18:** keep. Tier: sim. Index defect: filed below the Archive
+heading. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 ## Scope and ownership
 
 One shared pure Rust evaluator lives in `shared/wing-functions/`. Its standalone

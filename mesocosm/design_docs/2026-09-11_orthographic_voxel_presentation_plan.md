@@ -20,6 +20,11 @@ planar fragment repair were independent work, not prerequisites for that
 bench; all three have since landed (see the 2026-09-16 addendum below).
 See [the assessed slices](#specimen-bench-prerequisites-2026-09-13).
 
+**W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the
+product bench W4 lifts out. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Status addendum, 2026-09-16:** genet's four lanes and their receipts are
 recorded in `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`, which owns them; this plan cites, not copies.
 T1 (genet `d61978378c1`): CSS Transforms Level 2 parses, computes and lowers

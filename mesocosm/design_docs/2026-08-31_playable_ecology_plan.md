@@ -10,6 +10,13 @@ unlock conditions extend beyond a linear eating tree; world criteria shape
 generated biology; and animal-, plant-, fungal-, and microbial-scale critters
 belong in the playable roster.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim and Mesocosm overlay. Split PE
+lanes by tier; the sim half is W2's largest input. Rewrite is a lane under
+the record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 This plan owns the **integration contract and full-game proof**: how the
 existing body, ecology, history, lineage, generation, scale, and presentation
 lanes compose into Mesocosm rather than remaining separate demonstrations. It

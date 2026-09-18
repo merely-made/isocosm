@@ -6,6 +6,13 @@ findings argue for S3 first; that order remains unruled. This lane is not the
 next product slice. The [playable ecology plan](2026-08-31_playable_ecology_plan.md)
 consumes cohort scale and zoom at PE6.**
 
+**W1, 2026-09-18:** rewrite. Tier: sim, §3.5. S3 is the wing's only measured
+route to hundreds of thousands of things. Rewrite is a lane under the
+record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The ruling, in Mark's words: "scale is remarkable to behold, a feature in
 its own right! a large scale intelligible terrarium-esque world generator,
 that scales from the immediate scale to huge scale through the magic of

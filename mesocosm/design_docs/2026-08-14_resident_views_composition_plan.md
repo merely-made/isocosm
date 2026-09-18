@@ -16,6 +16,12 @@ is Burn-addressable state while remaining voxel-authoritative state.
 Burn does not import voxels into a second world representation; every
 consumer receives a resident view of the same facts.
 
+**W1, 2026-09-18:** keep. Tier: stack, rendering and compute.
+`ResidentChunk` is §4.1's seam. Evaluated against the wing design record;
+see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The platform half of this ruling (lanes are program shapes, the
 allocator direction, the resident-views law, the tensor-bundle plane
 taxonomy) lives in mere

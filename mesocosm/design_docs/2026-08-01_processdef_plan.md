@@ -11,6 +11,13 @@ acquired only through the temporary `Intent::Rearrange` editor operation.
 PD3's pack admission is next. No pack loader or Mesocosm Piccolo host exists
 yet. PD0 and the PD1a allocation design pass are complete.**
 
+**W1, 2026-09-18:** rewrite. Tier: sim, §3.3 first shape. Answers §9.7 with
+evidence. Rewrite is a lane under the record's W2 or W3; until it lands this
+plan's done-conditions are not authoritative. Evaluated against the wing
+design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 This plan owns Mesocosm's extensible process vocabulary, developmental
 expression boundary, content-pack shape, and Piccolo proof. The
 [phenotype plan](2026-07-31_phenotype_plan.md) continues to own body and

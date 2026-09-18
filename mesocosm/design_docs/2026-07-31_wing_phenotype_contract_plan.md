@@ -8,6 +8,13 @@ remain the portable-body gates. This plan specifies what body identity means acr
 Mesocosm, Paredros, and Isometry. It does not give the games one capability
 system, runtime, renderer, or biological simulation.
 
+**W1, 2026-09-18:** rewrite. Tier: stack formats and sim nouns. v1
+unimplemented, so the correction is free. Rewrite is a lane under the
+record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The [games wing founding record](2026-07-30_games_wing_founding.md) remains
 authority for settled laws. Mesocosm's local body rules live in the
 [phenotype plan](2026-07-31_phenotype_plan.md). The

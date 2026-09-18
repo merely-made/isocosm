@@ -175,9 +175,9 @@ what later sections derive from.
     same lane,** blitz and formal-web specifically, with servo, Firefox,
     WebKit, Chrome and the webviews as the more sophisticated efforts
     with a few key architectural distinctions. Ruled 2026-09-18.
-31. **W1's recommendations are accepted in full:** thirty keep,
-    twenty-one rewrite, six retire, as the evaluations document lists
-    them. Ruled 2026-09-18. The rewrites are lanes under W2 and W3, not
+31. **W1's recommendations are accepted in full,** row by row as the
+    evaluations document's tables list them: 30 keep, 22 rewrite,
+    6 retire, 3 surfaced (counts corrected on application). Ruled 2026-09-18. The rewrites are lanes under W2 and W3, not
     this ruling.
 32. **The sim's process definition is founded from Paredros's
     world-conditions schema,** its stop rule lifted, with Law A's record
@@ -911,8 +911,8 @@ No code lane runs before W1 is ruled.
 - 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
   rewrites, one retirement, ten keeps; three corrections to this record
   folded in (§3.6, §4.3, §7). Rulings pending.
-- 2026-09-18: W1 evaluated Mesocosm: thirty-three plans, twelve rewrites,
-  four retirements, seventeen keeps; five corrections folded in (§3.3,
+- 2026-09-18: W1 evaluated Mesocosm: 37 rows, 13 rewrites,
+  4 retirements, 19 keeps (counts corrected from the table on application); five corrections folded in (§3.3,
   §3.4, §3.7, §4.3, W4) and the founding-record disagreements raised as
   §9.11. The evaluations moved to their own document. Rulings pending.
 - 2026-09-18: W1 evaluated Paredros: nine documents, five rewrites, one

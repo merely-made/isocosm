@@ -11,6 +11,12 @@ priority: "slices that shape the world and ecosystem dynamics... that's my
 priority" and "let's make the terrarium/ant farm compelling on its own and
 then let the player considerations step into that."
 
+**W1, 2026-09-18:** keep. Tier: Mesocosm overlay, timescale. Its
+milligram-conserved soil, body and carrion cycle is sim (§3.3 second shape)
+and should be cited there. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The diagnosis this plan answers (played slice plan, 2026-08-29 findings):
 the first playtest's whole arc — budget gone in 3 seconds, death of old age
 at 17, population 61 → 8,155 — was the ecology's tick-tuned life-history

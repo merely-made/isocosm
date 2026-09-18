@@ -4,12 +4,19 @@
 2026-08-04/05 engine rumination. The G labels below record the order in which
 the substrate was assembled. They are historical indexing, not current
 acceptance gates. Sibling to the
-[render lane landscape](2026-07-30_engine_and_render_lane_landscape.md),
+[render lane landscape](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md),
 which owns renderer research and the V-gates, and subordinate to the
-[execution waves plan](2026-07-31_execution_waves_plan.md) for ordering.
+[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) for ordering.
 This plan owns the world substrate: the place graph, volumetric truth, the
 two-scale execution substrate, and the composed slice that proves them
 together.
+
+**W1, 2026-09-18:** rewrite. Tier: sim, §3.7. The sim's spatial half; W2
+cannot be founded on an undecided answer here. Rewrite is a lane under the
+record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
 
 ## 0. Rulings this plan rests on (2026-08-05)
 

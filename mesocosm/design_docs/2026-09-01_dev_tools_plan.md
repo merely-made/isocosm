@@ -5,6 +5,13 @@ complete.** Both §4 decisions ruled and built. DT4 folded the bespoke replay
 and demo harness into genet-probe's `Automatable`/`Driveable`/`Scenario`, and
 reconciled the epoch boundary's two disagreeing doors into one on the way.
 
+**W1, 2026-09-18:** rewrite. Tier: stack, becoming the bench. The tools are
+right; their home is a tier down. Rewrite is a lane under the record's W2 or
+W3; until it lands this plan's done-conditions are not authoritative.
+Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Follow-on integration, 2026-09-04:** DT1-DT4 completion does not include
 screen-to-part selection. The
 [phenotype plan section 8, VB3](2026-07-31_phenotype_plan.md#vb3-point-to-the-body-and-read-what-happened)

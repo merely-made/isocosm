@@ -4,6 +4,15 @@
 **Status:** First slice landed (adapter + leaf, tested). Host embedding open.
 Amended 2026-08-29 (§6): the textless guard was lane discipline, not a text ban.
 Route B's own subject — the between-epochs screen — landed 2026-09-02 (§7).
+
+**W1, 2026-09-18:** rewrite. Tier: game overlay over stack. Adapter-first
+posture confirmed by §4.1; only the minimap's source rung changes. Rewrite
+is a lane under the record's W2 or W3; until it lands this plan's
+done-conditions are not authoritative. Evaluated against the wing design
+record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Companions:** mere's projection proofs plan (arrangement register; P4),
 isometry's `2026-08-02_overmap_presentation_plan.md` (the second Hulls
 consumer), the epoch boundary plan (places, §12).

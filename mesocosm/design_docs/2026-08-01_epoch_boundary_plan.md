@@ -10,6 +10,14 @@ speciation and life-stage plasticity remain design or unwired. The 2026-08-31
 reproduction direction is recorded in section 0; earlier rulings are Mark's from the dialogue through 2026-08-03 and
 are marked where the reasoning is mine.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim record and Mesocosm board.
+Only the significance test and its owner fail; the board, the reckoning and
+speciation as an act stand. Rewrite is a lane under the record's W2 or W3;
+until it lands this plan's done-conditions are not authoritative. Evaluated
+against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 This owns what happens *between* epochs: how a run is judged, how a lineage
 splits, what a player may aim at, and why a young critter is different from an
 old one. The [phenotype plan](2026-07-31_phenotype_plan.md) owns bodies and

@@ -12,6 +12,11 @@ blueprints. Answers Mark's 2026-09-04 framing at the foot of the
 [trophic grammar plan](2026-09-04_trophic_grammar_plan.md) §4: "make beginning
 body types; start investigating a beginning set of traits."
 
+**W1, 2026-09-18:** keep. Tier: mixed. Independently produced the
+thirty-shape receipt. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 A trait here is what the expression plan proved it is in the data: **an
 expressed site, `(PartId, ProcessRef)`** (`phenotype/mosaic.rs:68-77`). The
 catalogue is the set of definitions a world admits. Nothing below coins a name.

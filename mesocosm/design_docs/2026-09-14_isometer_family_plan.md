@@ -9,6 +9,11 @@ bumps, and step 8 of
 (Paredros's P1 retarget). Consumes, and does not restate, that plan's
 inventory of `Section`.
 
+**W1, 2026-09-18:** keep. Tier: stack, rendering. Owes W3 the terrain
+y-scale. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Owns:** turning `mesocosm-lens`, `mesocosm-render` and `mesocosm-mesh` from
 Mesocosm-owned path dependencies into isometer's component crates; the
 mesocosm-core back-dependency each of them carries today and where each type

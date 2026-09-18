@@ -5,6 +5,11 @@ each vessel is, plus the camera and presentation decisions the founding
 record deliberately left open ("camera distance is not person"; §8's
 dimensionality carry). Wing-level: sibling repos cite this, never copy it.
 
+**W1, 2026-09-18:** keep. Tier: game overlays. Add the grid line ruling 18
+settles. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The founding record's laws are untouched: care granularity is the
 invariant, person is agency rather than camera, home persons stay
 first/second/third for Mesocosm/Paredros/Isometry.

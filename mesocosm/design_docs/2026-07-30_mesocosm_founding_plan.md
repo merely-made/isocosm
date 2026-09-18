@@ -19,6 +19,14 @@ games wing. Shared architecture, the three pipeline laws, and the wing vocabular
 live in [the games wing founding record](2026-07-30_games_wing_founding.md)
 and are not repeated here.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim world grammar and game
+overlay. Split the world half into the sim; keep metabolize, the epoch loop
+and care for a species. Rewrite is a lane under the record's W2 or W3; until
+it lands this plan's done-conditions are not authoritative. Evaluated
+against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 ---
 
 ## 1. The game

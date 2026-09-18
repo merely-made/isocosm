@@ -11,6 +11,12 @@ the full record. Companion to
 [traits and perception](2026-08-29_traits_and_perception_brief.md); it does not
 restate them. Claims checked against `1b08f6c`.
 
+**W1, 2026-09-18:** keep. Tier: sim, fields. "No fields in PE4's first
+world" is a deferral the base profile cannot keep. Evaluated against the
+wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **2026-08-31 boundary.** A world first realizes the laws, materials, fields,
 and schedules that make biological options useful or impossible; generated
 developmental candidates then draw from that realized vocabulary. Mechanical

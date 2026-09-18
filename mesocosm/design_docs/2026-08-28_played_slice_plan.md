@@ -8,6 +8,11 @@ slice of Mesocosm a hand actually plays: the live epoch as the ruled terrarium
 section with direct control of your organism. Renderer ruled: the brick-traced
 side-on section.
 
+**W1, 2026-09-18:** keep. Tier: game overlay. A playtest of product content
+is a done-condition §6 allows. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 The rulings this plan executes, cited not restated: the terrarium section
 and direct control (`2026-08-18_vessel_briefs_and_presentation.md` §2), the
 Rain-World pull-back with camera-is-not-the-person, control as a recorded

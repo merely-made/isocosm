@@ -7,6 +7,11 @@ L9 in [the orthographic voxel presentation plan](2026-09-11_orthographic_voxel_p
 whose six done conditions are restated in §7 as tests and receipts. The lane's
 sequencing precondition is met: `shared/wing-scenario` landed at cc7828f.
 
+**W1, 2026-09-18:** keep. Tier: stack, rendering. One misfiled module set.
+Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Owns:** the move of Mesocosm's shared-depth scene out of `mesocosm-genet`
 into the Isometry path crate `shared/isometer`, the product-neutral input
 contract that replaces `mesocosm_core::World`, and the order of steps that

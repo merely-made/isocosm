@@ -9,6 +9,11 @@ D, by Mark's ruling of the same day
 ([glyph expression plan](2026-09-15_glyph_expression_plan.md), rulings on the
 feat rule and pre-history).
 
+**W1, 2026-09-18:** keep. Tier: sim and stack generation. Index defect:
+absent from the index. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Owns:** the line between the three generation buckets Mark framed on
 2026-09-16 (terrain in isometer, world in isoscape, history in the
 hagiograph); the wing's world generation as a crate family named
@@ -509,7 +514,7 @@ keeps 6%; the matter near the draft's place falls to 29-79 mg on seeds 7
 and 1. The empty draft is a symptom of a broken soil cycle, not of crowding.
 
 **This is a known open ruling, not something deep time introduced.** The
-open rulings register's item 2 (`2026-08-29_open_rulings_register.md:63-76`)
+open rulings register's item 2 (`archive_docs/2026-09-18/2026-08-29_open_rulings_register.md:63-76`)
 records decomposers starving beside 12-15 standing corpses: "the binding
 constraint is `DECOMPOSE_RANGE` and the search, not the yield", with no
 options named, and quadrupling the decay yield did not rescue them. The

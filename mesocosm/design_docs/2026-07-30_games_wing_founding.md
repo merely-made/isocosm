@@ -684,7 +684,7 @@ A vessel may absolutely have its own renderer, event loop, ECS, camera, or
 physics dimensionality. What it may never do is mint a second, private answer
 to *who this creature is, where it came from, and what happened to it*. The
 sharing rules per layer are tabulated in the
-[engine and render lane landscape](2026-07-30_engine_and_render_lane_landscape.md)
+[engine and render lane landscape](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md)
 §5, and the shared organ that follows from them is planned in the
 [body pipeline plan](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md).
 
@@ -1043,7 +1043,7 @@ rather than agreeing types. Two schemas ride one framing: `mesocosm.body/v0`
 carries appearance to `isometry-voxel`, and `mesocosm.chronicle/v0` carries the
 record to `isometry-campaign` and back. Neither repo depends on the other.
 Receipts and findings in the
-[execution waves plan](2026-07-31_execution_waves_plan.md) §1.4 and §2.4.
+[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.4 and §2.4.
 
 Three things the build settled that this section had not:
 
@@ -1161,7 +1161,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    a `LICENSES.md` scope record so the permissive library texts cannot be
    mistaken for a dual license on MPL game code.
 2. **Render and engine stack.** Given its own research doc:
-   [`2026-07-30_engine_and_render_lane_landscape.md`](2026-07-30_engine_and_render_lane_landscape.md).
+   [`2026-07-30_engine_and_render_lane_landscape.md`](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md).
    The earlier framing here (Bevy versus custom wgpu) was a false binary and
    is superseded. Short version: Fyrox is the forkable engine and the only
    Rust one with an editor; "custom" is an **assembly over an existing host
@@ -1198,7 +1198,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    rust-gpu requirement rather than on staleness; vello stays a live option if
    the look settles 2.5D, since it has no depth buffer and would change the
    rendering approach rather than the host. Reasons and costs in the
-   [execution waves plan](2026-07-31_execution_waves_plan.md) §1.3.
+   [execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.3.
 
    **Paredros is not bound by this.** Renderers are per-vessel, and a close
    camera with real lighting is the case where an engine, or Renderling, would

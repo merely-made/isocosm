@@ -8,6 +8,11 @@ is next. Opened from the
 [isoscape family plan](2026-09-16_isoscape_family_plan.md) ruling 20 and its
 §2.6 assessment. Deep time's heir entry (D7b) waits on this plan.
 
+**W1, 2026-09-18:** keep. Tier: sim, §3.3 second shape. Index defect: absent
+from the index. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 **Owns:** making the enclosure's matter cycle work in the worlds the
 generation door hands over: far-tier movement, how decomposers reach, sense
 and eat carrion, how carrion returns matter with or without them, and how

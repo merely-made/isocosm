@@ -2,11 +2,17 @@
 
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Supersedes the acquiring-act axis of the
-[effect pack preset plan](2026-09-15_effect_pack_preset_plan.md) §3 and its
+[effect pack preset plan](archive_docs/2026-09-18/2026-09-15_effect_pack_preset_plan.md) §3 and its
 rulings 2, 5 and 6. That plan's shared declaration (`wing-glyphs/src/pack.rs`),
 `mesocosm-core`'s execution table, the bench's journey binding, the read-only
 invariant, the amount curve and the probe fields are kept and reworked here;
 its steps 0 to 3 stay the record of what landed.
+
+**W1, 2026-09-18:** keep. Tier: mixed, sim canon and overlay embodiment.
+Canon and expression table are the sim's; the part-to-process binding is
+Mesocosm's. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
 
 Implements the next move under general model
 [§7.4](2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13),

@@ -16,6 +16,14 @@ The [ProcessDef plan](2026-08-01_processdef_plan.md) owns the extensible
 process vocabulary, developmental expression ABI, Piccolo host, and pack
 proofs. This document continues to own what those processes mean to a body.
 
+**W1, 2026-09-18:** rewrite. Tier: mixed, sim bodies, overlay capability,
+stack rendering. The body noun is the sim's; the capability fold is
+Mesocosm's; the VB lanes are isometer's. Rewrite is a lane under the
+record's W2 or W3; until it lands this plan's done-conditions are not
+authoritative. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
 ---
 
 ## 1. The original hole (historical; P1-P4 below record its closure)

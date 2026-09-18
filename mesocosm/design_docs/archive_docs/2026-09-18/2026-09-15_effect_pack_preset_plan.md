@@ -2,11 +2,11 @@
 
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Implements gate **G3** of the
-[general model plan §7.4](2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
+[general model plan §7.4](../../2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
 ("admit a default effect pack and two contrasting journey rules through
 product adjudication") as one replayable specimen-bench preset, over the
 bench and trial the
-[presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#bench-c-visible-disposable-world-trial)
+[presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md#bench-c-visible-disposable-world-trial)
 already owns. Ruled by Mark, 2026-09-15.
 
 ## 0. The slice
@@ -467,8 +467,8 @@ number in this plan is checked against a stale claim.
 `structure-cli.scenario` fails at HEAD on a generated-start hash
 (`50e8f3a3a6b6d22d` expected, `8d1d3676ecf24452` got); `population.scenario`
 fails and flakes identically at HEAD. Both are in the
-[isometer extraction plan](2026-09-14_isometer_extraction_plan.md) steps 5
-and 7 and the [family plan](2026-09-14_isometer_family_plan.md) risk 1.
+[isometer extraction plan](../../2026-09-14_isometer_extraction_plan.md) steps 5
+and 7 and the [family plan](../../2026-09-14_isometer_family_plan.md) risk 1.
 Neither gates this lane, but both must be **named as excluded** in every
 green claim rather than passed over — R1 shows worldgen has in fact moved,
 so one of these may stop being upstream fixture drift.
@@ -604,7 +604,7 @@ experiencing the glyph is the main thing, that a glyph is *had* rather than
 performed, and that a critter's access is **embodied** — a trait or part bears
 it. That replaces the acquiring act with the **bearer** as the journey-rule
 axis, so **§3 in full and rulings 2, 5 and 6 above are superseded** by the
-[glyph expression plan](2026-09-15_glyph_expression_plan.md). The rest of this
+[glyph expression plan](../../2026-09-15_glyph_expression_plan.md). The rest of this
 plan — §§0-2 and 4-8, and rulings 1, 3, 4 and 7 — remains the record of steps 0
 to 3, which landed. The new plan says file by file what is kept, reworked or
 retired; nothing landed is discarded, and `Acquiring` becomes `Bearer`.
@@ -658,3 +658,20 @@ Verified in the tree today; the rest are cited inline above.
   uptake mass reaches the feeding pole (ruling 3); a sustained lifetime
   runs 8 to 16 ticks by amount with the caller retiring on a gap. The
   default effect id is `mesocosm:reshape-reference`, following the demo.
+
+## Retired 2026-09-18
+
+**W1 verdict: retire.** Evaluated against the [wing design record](../../2026-09-18_wing_design_plan.md) and
+recorded in [2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
+§2; accepted by Mark under the record's ruling 31 of 2026-09-18,
+which takes W1's recommendations in full.
+
+**Why.** Tier: mixed. The plan is superseded on its own account by the
+[glyph expression plan](../../2026-09-15_glyph_expression_plan.md),
+which replaces its acquiring-act axis, and its done-condition is one
+fixture, which §6 does not allow as a done-condition.
+
+**What survives.** Two pieces of landed code stand: `wing-glyphs/src/pack.rs`,
+the shared declaration, which is sim under the record, and
+`mesocosm-core/src/effect_pack.rs`, the execution table, which is
+Mesocosm overlay.

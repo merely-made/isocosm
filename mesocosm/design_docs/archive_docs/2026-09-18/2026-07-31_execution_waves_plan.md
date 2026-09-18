@@ -11,7 +11,7 @@ current chains are:
   (place-graph lane), with F0-F5 exploratory.
 
 Wave 1/2 content below is preserved as history. The successor is the
-[dependency ledger](2026-08-07_dependency_ledger.md).
+[dependency ledger](../../2026-08-07_dependency_ledger.md).
 
 **Status: in progress, 2026-08-01.** **Wave 1 is complete**: core, runtime,
 mesher, renderer, a windowed host, and the Isometry projection, with every
@@ -24,11 +24,11 @@ constraints that only appear once the order is fixed.
 
 Governing plans, which own the *what*:
 
-- [body pipeline and host probe](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) — the shared organ, the body document, R-phases
-- [Mesocosm founding plan](2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
-- [games wing founding record](2026-07-30_games_wing_founding.md) — the laws, and the proof pair as the next architectural threshold
-- [phenotype plan](2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
-- [wing phenotype contract](2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
+- [body pipeline and host probe](../2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) — the shared organ, the body document, R-phases
+- [Mesocosm founding plan](../../2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
+- [games wing founding record](../../2026-07-30_games_wing_founding.md) — the laws, and the proof pair as the next architectural threshold
+- [phenotype plan](../../2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
+- [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
 
 ---
 
@@ -345,7 +345,7 @@ incorporation, and a metabolic budget.
 
 #### Phenotype gate inside 2.1, **ACTIVE 2026-07-31**
 
-The [phenotype plan](2026-07-31_phenotype_plan.md) supplies the dependency
+The [phenotype plan](../../2026-07-31_phenotype_plan.md) supplies the dependency
 order. P0 through P2 have now removed the special played-body model and proven
 one embodied consequence. P2's deferred biomass and upkeep account landed in
 `d9af641`; body v1 still waits on the later local proofs.
@@ -421,7 +421,7 @@ structural: **every pressure has a trait that answers it, and income is flat and
 uncontested, so every lineage eventually solves its world and then stops.** Nothing
 in the model can make a lineage lose.
 
-Open question 3 in the [founding plan](2026-07-30_mesocosm_founding_plan.md) framed
+Open question 3 in the [founding plan](../../2026-07-30_mesocosm_founding_plan.md) framed
 extinction as emergent-preferred with evented pressure "only to keep worlds from
 settling". **The lab says emergent extinction does not arise on its own under these
 conditions**, so that "only" is doing more work than it looked like. Two candidate
@@ -782,3 +782,19 @@ round-trip:
   PD1b. Founders and offspring realize recipes under the world's snapshotted
   palette, returned chronicles regrow through the same developer, and
   incorporation remains somatic growth during an epoch.
+
+## Retired 2026-09-18
+
+**W1 verdict: retire.** Evaluated against the [wing design record](../../2026-09-18_wing_design_plan.md) and
+recorded in [2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
+§2; accepted by Mark under the record's ruling 31 of 2026-09-18,
+which takes W1's recommendations in full.
+
+**Why.** Tier: method, ordering. The record contradicts this plan at
+§11, which sets W0 to W5 as the wing's order, and the plan was
+already demoted to Wave 1/2 history by its own audit of 2026-08-07.
+
+**What survives.** Wave 1's landed work stands as landed: `mesocosm-core`
+owning state while hosts only project, the Genet host, and the Isometry
+projection coupling by data rather than types. Under the record the
+ordering it carried is method, and §11 replaces it.
