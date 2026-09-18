@@ -242,13 +242,23 @@ definition space holds thirty distinct rule shapes, and the trait catalogue
 plan reached the same count independently. It carries no scarcity, no cost,
 no foregone and no cause-link. Either it is widened to Law A's record or
 the base profile takes a new definition; that is §9.7, now with evidence.
+The strongest existing candidate for the new definition is Paredros's
+world-conditions schema (world conditions plan, 2026-09-09): typed
+conditions, operations, relations and invariants under a content-addressed
+rules revision, carrying scarcity, cost and provenance, unimplemented, and
+forbidden from promotion by its own stop rule, which is one ruling to
+lift (found 2026-09-18 by W1).
 
 ### 3.4 The record
 
 The hagiograph judges what is significant by novelty, quality and relevance
 (ruling 4), the same test at every rung. Storage stays in journals. The
-organ is live and consumed, not pending: mesocosm-core depends on
-hagiograph, muniment and nisus, its `WorldRecord` is a newtype over
+organ is live and consumed by one product, not pending and not yet
+wing-wide: mesocosm-core depends on hagiograph, muniment and nisus, while
+paredros-world carries none of them and its nearest thing is a
+per-event-kind glyph grant table with no significance gate
+(`paredros-world/src/glyphs.rs:233,357-372`; noted 2026-09-18 by W1).
+mesocosm-core its `WorldRecord` is a newtype over
 `hagiograph::Record` (`record.rs:17-23`), and deep time runs through
 `hagiograph::{DeepTime, Handover}` (`deep_time.rs:21`). What its current
 significance test lacks is the relevance gate: today it is abnormality
@@ -364,6 +374,7 @@ Read from each crate's own description on 2026-09-18, not from memory.
 | Generation | esp | mere's portable model-execution seam, with Burn under it | mere `intel/esp` |
 | Generation | cleromancy | Deterministic and cast readings with replayable receipts: the seeded draw with a receipt that ruling 15 needs | `repos/cleromancy` |
 | Trust plane | dramatis | The cast list: personae for one's own faces and keys, gaz for who one knows, gazette for resolution | mere `dramatis` |
+| Trust plane, unresolved | paredros-identity | Ruled "the wing's identity crate" on 2026-08-10 and consumed by nothing outside Paredros since; `SubjectId`, body revisions, facets and the control pointer are the sim's provenance noun. Either dramatis absorbs it under W3 or the promotion is withdrawn (raised 2026-09-18 by W1) | `paredros/crates/paredros-identity` |
 | Persistence | eidetic | The durable-memory family: muniment for slots, blobs and journals; chartulary for the content-addressed container graph with lineage; hagiograph for the history organ | mere `eidetic` |
 | Branching and federation | moot | gemot for a moot's lifecycle and replication over p2panda; moothold for federation. The branchable-world model is this | mere `moot` |
 | Networking | murm | Invitation-scoped peer conversation with signed per-author logs and a WebRTC carrier; iroh is the other carrier | mere `murm` |
@@ -372,8 +383,13 @@ Read from each crate's own description on 2026-09-18, not from memory.
 
 ### 4.2 What replaced renderling
 
-Renderling is retired: the presentation plan's L7 (2026-09-11) has it exit
-Paredros, and "nothing new is built on renderling". What stands in its
+Renderling is retired by ruling, not yet in the tree: the presentation
+plan's L7 (2026-09-11) has it exit Paredros and "nothing new is built on
+renderling", but `paredros-client` still takes it unconditionally by a
+machine-local path (`paredros-client/Cargo.toml:66`), the Paredros
+workspace patches `spirv-std`, `craballoc` and `crabslab` solely for it,
+and L7's done-condition, a client that builds with no renderling
+dependency, is unmet (corrected 2026-09-18 by W1). What stands in its
 place is not one thing:
 
 - Bodies: `isometer-render`, a small flat-shaded palette-quad renderer over
@@ -400,10 +416,16 @@ model beyond one sun and a rim, and textured or skinned parts.
   reads. Mesocosm's core uses nisus for body volumes through
   `voxel_profile` and `Ground` for terrain. The wing's don'ts forbid
   exactly this duplication. (Narrowed 2026-09-18 by W1.)
-- **A revision that never moves.** isometer's `GroundTerrain` stamps
-  `Ground::revision()`, which a grown ground never advances, so the tracer
-  silently skips every upload after the first for any host that regrows
-  rather than carves. Found by Isometry's B4 lane with a positive control.
+- **A revision that never moves for regrowing hosts.** isometer's
+  `GroundTerrain` stamps `Ground::revision()`, which only `carve` advances
+  (`isometer-core/src/ground.rs:374`) and `grow` resets to zero
+  (`:210-211`), so the tracer silently skips every upload after the first
+  for any host that regrows rather than carves. Found by Isometry's B4
+  lane with a positive control. Paredros is the one live consumer where
+  the mechanism works, because its world carves (`paredros-world/src/world.rs:195`)
+  and its producer keys the rebuild on the revision
+  (`producer/source.rs:275`); the fix is scoped to regrowing hosts
+  (narrowed 2026-09-18 by W1).
 - **No brick-level skipping.** modulus's traversal steps voxel by voxel
   through empty bricks with a loop cap of 1,024, so a tall world walks
   hundreds of air voxels per pixel and can fail to reach the ground. The
@@ -411,13 +433,19 @@ model beyond one sun and a rim, and textured or skinned parts.
 - **A budget constant read as a limit.** `modulus::MAX_BRICKS` is 2,047,
   from three atlas layout constants sized to Paredros's one-megabyte
   residency experiment. Paging already exists (`with_capacity`,
-  `retarget`) and Paredros runs it; isometer-lens wraps both
-  (`bricks.rs:95,105`, receipted at `tracer_tests.rs:665`). The scene
-  board reaches the cap routinely and never calls the wrap: it builds
-  through `from_ground_keys` and `from_ground_filtered`
+  `retarget`) and isometer-lens wraps both (`bricks.rs:95,105`, receipted
+  at `tracer_tests.rs:665`). **No production scene in the wing reaches
+  it.** Paredros's paging has exactly two callers, the `v1` and `v1b`
+  receipt bins behind non-default features
+  (`paredros-client/src/bin/v1_residency.rs:53`, `v1b_residency.rs:48`);
+  its shipped session host rebuilds the whole ground on every revision
+  through `BrickMap::from_ground` (`producer/source.rs:275-280`). The
+  scene board reaches the cap routinely and builds through
+  `from_ground_keys` and `from_ground_filtered`
   (`crates/isometry-views/src/scene/ground.rs:244,247`). So sizing the
-  store to the card is a board lane as well as isometer's. (Corrected
-  2026-09-18 by W1; the first draft said no scene reached it.)
+  store to the card is a lane in every consumer as well as isometer's.
+  (Corrected twice on 2026-09-18 by W1; the first draft said no scene
+  reached the cap and that Paredros ran the paging.)
 - **Two scripting engines.** piccolo Lua in isometry-system and
   mesocosm-phenotype; Rhai in numen. Which is the wing's authoring language
   is a §9 question.
@@ -524,7 +552,7 @@ begin. Both are inside a branch, so they do not touch the base profile.
 | The tracer builds each ray in world space and hands it to a traversal that accepts any direction, so a per-brick or per-axis scale is a multiply on entry, not a rewrite | Read in `tracer.wgsl` and `brick_dda.wgsl`, 2026-09-17; not run. W1 confirmed no such scale exists today (`body.rs:33` is the only scale, isotropic, per body) | Design claim; the addition is owed under W3 |
 | modulus steps voxel by voxel with a 1,024 loop cap and no brick-level skip | Read in `brick_dda.wgsl`, 2026-09-17 | Checked |
 | `MAX_BRICKS` is three layout constants; `with_capacity` and `retarget` exist and Paredros uses them | Read in modulus `lib.rs` and Paredros `residency.rs`, 2026-09-17 | Checked |
-| Renderling is retired; isometer-render depends on wgpu only | Read in L7 and `isometer-render/Cargo.toml`, 2026-09-18 | Checked |
+| Renderling is retired; isometer-render depends on wgpu only | Read in L7 and `isometer-render/Cargo.toml`, 2026-09-18. W1 found the check too narrow: `paredros-client` still depends on renderling unconditionally and L7 is unmet | Checked for isometer-render; wrong as a wing claim, corrected in §4.2 |
 | nisus has per-cell edits and dirty regions and `Ground` does not use it | Read in nisus `lib.rs` and isometer-core manifest, 2026-09-18 | Checked |
 | WebGPU compatibility tier caps 3D textures at 256 a side | From the wgpu limits tables, 2026-09-17 | Unchecked against the spec text |
 | RimWorld derives regions and rooms from cells and runs temperature and pathing over them | Prior-art memory | Unchecked |
@@ -732,6 +760,10 @@ No code lane runs before W1 is ruled.
   four retirements, seventeen keeps; five corrections folded in (§3.3,
   §3.4, §3.7, §4.3, W4) and the founding-record disagreements raised as
   §9.11. The evaluations moved to their own document. Rulings pending.
+- 2026-09-18: W1 evaluated Paredros: nine documents, five rewrites, one
+  retirement, three keeps; six corrections folded in (§3.3, §3.4, §4.1,
+  §4.2, §4.3 twice, §7). W1's reading is complete for all three
+  products; the rulings are Mark's.
 - 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.

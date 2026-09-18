@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-18
 
-**Status, 2026-09-18:** Isometry root and Mesocosm evaluated; Paredros
-next. Rulings on keep, rewrite and retire are Mark's and are recorded here
-as they are made. Read-only evaluations; nothing in any plan has been
+**Status, 2026-09-18:** all three products evaluated, fifty-seven
+documents; rulings on keep, rewrite and retire are Mark's and are recorded
+here as they are made. See §4 for what is left to rule. Read-only evaluations; nothing in any plan has been
 edited by this document's lanes.
 
 **Owns:** W1 of the
@@ -130,3 +130,81 @@ The three the lane would act on first: the place-graph engine plan
 rewrite, the ProcessDef rewrite, the scale plan rewrite. The record's
 corrections from this evaluation were folded the same day (§3.3, §3.4,
 §3.7, §4.3, W4, §9.11).
+
+## 3. Paredros, 2026-09-18
+
+Read-only evaluation of every active document in Paredros's index against
+the record. Nine documents; no archive exists. The index lists four plans
+only in prose rather than in its table, an index-shape defect under
+DOC_POLICY §6. Rulings are Mark's; recommendations are the lane's.
+
+| Plan | Tier | Record says | Recommended | Why |
+| --- | --- | --- | --- | --- |
+| DOC_POLICY | method | Confirmed, §6 | keep | Canonical core plus a three-line addendum |
+| PROJECT_DESCRIPTION | game overlay | Confirmed as §5's overlay (pillars 1 to 3); contradicted twice: pillar 3 states the sim's definition as a Paredros pillar (`:34-36`), and "no genre, schedule, or verbs" (`:50-53`) is §9.11; its Speculative row describes ruling 7's branching as unplanned | surface to Mark | Maintainer-owned |
+| Founding plan (2026-07-30) | mixed, sim world rules and generation, plus the overlay | Confirmed as the overlay by the care-granularity canary and ruling 6; contradicted by §2 where it owns world-rule generation (`:307-340`), where the world comes from (`:554-563`) and a per-vessel renderer (`:583-592`) | rewrite | Split the world half into the sim; second person, standing agreements and place lineage stand |
+| Execution plan (2026-08-07) | mixed | Contradicted, §3.5 and §6: F2 closes "other lives" on a step that ticks every living member every round (`simulation.rs:119-124,129`) with residents capped at sixteen a site (`population.rs:17-18`); §11 reorders it; S0's frame spans name no build; the workspace runs a nonstandard dev profile (`paredros/Cargo.toml:50-51`) | rewrite | F0 to F8 are the right layers; the ordering is product-first and the receipts are fixtures |
+| R4 extraction review (2026-08-10) | stack | Contradicted, §4.1 and §4.2: names paredros-identity the wing identity crate where §4.1 puts identity in dramatis, and its one extracted seam is netrender tenancy for a renderling tenant L7 retires; its license line is stale (the crate is MPL-2.0) | retire | Target wrong, code fine: netrender's `TenantNeeds` and `boot_shared` survive as stack hosting; paredros-identity stands as overlay ids until dramatis takes them |
+| Functional loops (2026-09-09) | mixed, sim bodies and places, Paredros verbs | Contradicted, §3.7 and ruling 14: every place fact is Mesocosm's heightfield partition (`world.rs:119`, `sites.rs:126-128`); also §3.5 per the execution row. Confirmed: T2 is §4.3's one-edit-all-consumers rule and ruling 12 | rewrite | T2 and the B and J lanes are the strongest live lanes; the place rung under them is the wrong one, cheaper to correct before T lands |
+| World conditions (2026-09-09) | sim, §3.3 first shape and fields, written as product-owned | Contradicted, §2 and §3.3: its condition, operation, relation and invariant schema under a content-addressed rules revision (`:65-123`) is the sim's process definition, and its own stop rule forbids promoting it (`:443-444`) | rewrite | Only the tier is wrong; the best answer in the wing to §9.7 |
+| Memory and remembrance (2026-09-09) | mixed, sim record and Paredros recall | Contradicted by receipt: calls the hagiograph "a name reservation, no implementation" (`:42-44`) where it is 831 lines live in mesocosm-core; models reach as per-subject observation admission (`:97-100`) where §3.4 makes it a field on the place graph | rewrite | Bounded recall, the cache and semantic-forgetting split and the checkpoint design survive; its save-growth baseline is a single fixture and says so |
+| Genet document host (2026-09-13) | stack rendering plus Paredros chrome | Confirmed, §4.1 and §4.2; contradicted as a fact by §4.3: renderling is still an unconditional dependency (`paredros-client/Cargo.toml:66`) and two parley loaders remain; its Pins section is stale | keep | Right tier, landed, and the only Paredros plan whose done-conditions come from the product's own session; owes L7 a Paredros lane |
+
+### 3.1 Sim versus Paredros overlay
+
+`paredros-world` becomes `paredros-core` under §9.1, and it is not one
+tier and not one authority: `contact` is a second fixed-step body world
+with its own save, which the functional loops plan's own finding records.
+
+| Crate or module | Tier | Why |
+| --- | --- | --- |
+| `paredros-world::{world, sites}` | sim | Space at the place rung; needs re-derivation from the volume per §3.7 |
+| `paredros-world::{bodies, anatomy, motion, movement, movement_profile}` | sim | The Bodies noun, already product-neutral over isometer-core |
+| `paredros-world::items` | sim | A body without agency |
+| `paredros-world::{population, projects, simulation, simulation_record}` | sim | Runs with nobody playing, literally (`simulation.rs:119-121`); owes §3.5 a due-event queue in place of the round |
+| `paredros-world::{state, transitions}` | sim grammar, overlay vocabulary | The subject-addressed intent and event log is §3.3's record shape; the admitted verbs are Paredros's |
+| `paredros-world::navigation` | overlay | §3.8: the sim never pathfinds an individual; correctly derived and absent from saves |
+| `paredros-world::{combat, timed_action}` | overlay | Paredros's verbs; the sim records that a blow landed, not how |
+| `paredros-world::contact` | overlay, and a duplicate | A second fixed-step body world; conatus owns that tier |
+| `paredros-world::{equipment, subject_sheet, technique}` | overlay | Paredros's reading of sim facts |
+| `paredros-world::glyphs` | overlay reading over a sim vocabulary | wing-glyphs is the sim's; the per-event grant table is Paredros's and carries no significance gate |
+| `paredros-world::fixtures` | test data | Seed 7 and a default world of side 8, extent 64: a chosen size, §6 |
+| `paredros-social::{deed, epistemic, relation}` | sim | The record and its observer scoping; §3.4's journal half |
+| `paredros-social::{offer, agreement, willing, society, response, companion, settlement, settling}` | overlay | Companions as peers, confidence bands, refusal |
+| `paredros-sortie` | overlay, superseded | Retired authority by its own plan |
+| `paredros-identity` | sim provenance, misfiled as a product crate | §3.1's Provenance noun; §4.1 puts identity in dramatis |
+| `paredros-client::{producer, scene, gpu, frame_health}` | stack rendering, product-owned | A thin scene source over isometer; right shape, wrong owner for the camera preset and palette |
+| `paredros-client::{residency, brick}` | stack rendering | The paging isometer-lens wraps; used only by two opt-in receipt bins |
+| `paredros-client::bin/{session, timed_action}` | overlay | Real-time pause and play, the charge grammar, panel chrome; where the wall clock is (`model.rs:66-67`, `actions.rs:94-130`) |
+| `paredros-client::bin/{room, d1_depth, crossing, v1 residency}` | stack receipts, renderling-bound | L7's retirement set |
+
+The three the lane would act on first: the world conditions rewrite,
+since it answers §9.7 with a schema better than a widened ProcessDef and
+its promotion costs one ruling and no code; the functional loops rewrite,
+since its lanes are live and about to bind navigation, contact and
+rendering to the wrong place rung; and an L7 lane under the genet document
+host plan, dropping the unconditional renderling row and pointing the
+producer at the paging, which closes two record corrections at once. The
+record's corrections from this evaluation were folded the same day (§3.3,
+§3.4, §4.1, §4.2, §4.3 twice, §7).
+
+## 4. What W1 leaves for Mark
+
+Across the three products: fifty-seven documents read; thirty keep,
+twenty-one rewrite, six retire. The retirements: runtime profile
+(Isometry); engine and render lane landscape, execution waves, open
+rulings register, effect pack preset (Mesocosm); R4 extraction review
+(Paredros). Every retirement names surviving code and its tier. The
+rewrites all share one of three causes: the plan owns a sim-tier subject
+as one product's feature, its done-conditions are fixtures or chosen
+sizes, or its place rung is a heightfield partition where the record wants
+volume-derived nodes.
+
+Beyond the rows, the record now carries for Mark's ruling: §9.7, the
+process definition, with the world-conditions schema as the strongest
+candidate; §9.9, three PROJECT_DESCRIPTION contradictions per product;
+§9.10, the vertical scale; §9.11, the founding record's three
+disagreements; and the paredros-identity promotion under §4.1. No plan
+has been edited by W1. When the rulings are made, each plan gets its one
+line, retirements move to `archive_docs/<date>/` with rationale, and W2
+begins from the two sim-versus-overlay splits.
