@@ -274,11 +274,22 @@ not in a renderer.
 Cell size (ruling 13) is arbitrary within one rule: **power-of-two ratios
 of one base unit,** chosen per chunk. Bricks stay eight cubed; a ray walks
 each brick in that brick's own scale. Raymarching has no seams at
-resolution changes. Every alignment problem in the board-on-isometer work
-came from a five-to-two ratio, not from density. With a base unit of 7.5
-inches a five-foot tile is exactly one brick face; the vertical scale is a
-separate free parameter because the tracer scales rays anyway. The base
-unit itself is a §9 decision.
+resolution changes. The five-to-two ratio caused its own alignment work;
+the two alignment defects the board plan recorded, the half-voxel centre
+offset and the camera's texture-sized half height, predate it and were
+fixed independently (corrected 2026-09-18 by W1). With a base unit of 7.5
+inches a five-foot tile is exactly one brick face.
+
+The vertical scale is **not** free today. isometer-lens has no terrain
+scale; its only scale is one isotropic float per body placement
+(`isometer-lens/src/body.rs:33`). The tracer builds rays in world space and
+hands them to a traversal that accepts any direction, so a y-scale on the
+terrain is a small addition, but it is an addition to the family's floor,
+owed under W3. Without it the power-of-two rule cannot reproduce the
+shipped step: 8 px on a 16 px tile at eight voxels across wants 3.27
+voxels, which no integer gives. So either the step becomes four voxels of
+eight, half a tile, and the shipped look changes, or the tracer gains the
+y-scale. That choice is a §9 decision beside the base unit.
 
 Size bounds, corrected from the earlier numbers that were wrong (the
 one-megabyte and 128 MiB figures were a budget constant and an arithmetic
@@ -376,8 +387,13 @@ model beyond one sun and a rim, and textured or skinned parts.
 - **A budget constant read as a limit.** `modulus::MAX_BRICKS` is 2,047,
   from three atlas layout constants sized to Paredros's one-megabyte
   residency experiment. Paging already exists (`with_capacity`,
-  `retarget`) and Paredros runs it; isometer wraps it and no scene reaches
-  it.
+  `retarget`) and Paredros runs it; isometer-lens wraps both
+  (`bricks.rs:95,105`, receipted at `tracer_tests.rs:665`). The scene
+  board reaches the cap routinely and never calls the wrap: it builds
+  through `from_ground_keys` and `from_ground_filtered`
+  (`crates/isometry-views/src/scene/ground.rs:244,247`). So sizing the
+  store to the card is a board lane as well as isometer's. (Corrected
+  2026-09-18 by W1; the first draft said no scene reached it.)
 - **Two scripting engines.** piccolo Lua in isometry-system and
   mesocosm-phenotype; Rhai in numen. Which is the wing's authoring language
   is a §9 question.
@@ -481,7 +497,7 @@ begin. Both are inside a branch, so they do not touch the base profile.
 
 | Claim | Status | How |
 | --- | --- | --- |
-| The tracer builds each ray in world space and hands it to a traversal that accepts any direction, so a per-brick scale is a multiply on entry, not a rewrite | Read in `tracer.wgsl` and `brick_dda.wgsl`, 2026-09-17; not run | Unchecked at runtime |
+| The tracer builds each ray in world space and hands it to a traversal that accepts any direction, so a per-brick or per-axis scale is a multiply on entry, not a rewrite | Read in `tracer.wgsl` and `brick_dda.wgsl`, 2026-09-17; not run. W1 confirmed no such scale exists today (`body.rs:33` is the only scale, isotropic, per body) | Design claim; the addition is owed under W3 |
 | modulus steps voxel by voxel with a 1,024 loop cap and no brick-level skip | Read in `brick_dda.wgsl`, 2026-09-17 | Checked |
 | `MAX_BRICKS` is three layout constants; `with_capacity` and `retarget` exist and Paredros uses them | Read in modulus `lib.rs` and Paredros `residency.rs`, 2026-09-17 | Checked |
 | Renderling is retired; isometer-render depends on wgpu only | Read in L7 and `isometer-render/Cargo.toml`, 2026-09-18 | Checked |
@@ -567,6 +583,21 @@ still open under it.
    follows it.
 7. **`ProcessDef` as the base profile's process definition.** Not yet
    answered.
+9. **`PROJECT_DESCRIPTION.md` at the Isometry root contradicts the
+   record and the repo,** found by W1 and maintainer-owned, so surfaced
+   rather than edited: pillar 4 says rules are Rhai scripts where §9.3 and
+   the repo's own CLAUDE.md say piccolo; pillar 5 says players
+   "eventually" join from a browser where ruling 19 makes the web
+   first-class; and pillar 2 states the product's board scale as roughly
+   15 by 15 to 30 by 30, against a live generator edge of 256 and against
+   Mark's stated scope of 2026-09-16 (a castle with tunnels and levels, a
+   region, a mile-square world). §6 wants done-conditions from the
+   product's stated scale, and the product's stated scale is stale.
+   **Open:** Mark restates pillar 2, or the record's scale is the one he
+   stated in conversation.
+10. **The vertical scale and the shipped step** (from §3.6): four voxels
+    of eight and a changed look, or a y-scale added to the tracer under
+    W3.
 8. **Components.** Answered in part: audio from woodshed (cpal, hound,
    symphonia and midir are already in the family); text and fonts from
    genet's text stack (parley for layout under the standards review's S9
@@ -583,7 +614,42 @@ still open under it.
    across the stack, so isomere's keymap moves down a tier; and the
    concretization of each choice above in its owner's plan.
 
-## 10. Phases and done-conditions
+## 10. W1 evaluations
+
+### 10.1 Isometry root, 2026-09-18
+
+Read-only evaluation of every active plan in the tabletop's index against
+this record. Rulings on keep, rewrite and retire are Mark's; the
+recommendations are the lane's.
+
+| Plan | Tier | Record says | Recommended | Why |
+| --- | --- | --- | --- | --- |
+| Board on isometer (2026-09-15) | mixed, stack rendering and game overlay | Contradicted: §8 rows 5 and 6, §6, §2; confirmed in part by §4.1, §4.2, §4.3 | rewrite | The lanes landed and the code is good; the done-conditions were parity with the DOM board and a constant, and §3.6 rewrites the geometry under them |
+| Games wing consolidation (2026-09-09) | stack | Confirmed, §4.1 | keep | Published and done; decides nothing about the world |
+| Watchtower (2026-09-05) | mixed, sim generation and game overlay | W6's height-field premise contradicted by ruling 12 and §3.6; its seeded-pack discipline is ruling 15 confirmed | rewrite | Only the terrain premise fails |
+| Side panel diet (2026-09-03) | game overlay | Unaddressed; its done-condition is a chosen size, §6's failure mode by the letter | keep | Cuts landed; restate the target as reachable at the smallest supported display |
+| Genet host migration (2026-09-02) | stack, hosting | Confirmed, §4.1 | keep | Exactly §2's boundary |
+| Runtime profile (2026-08-23) | stack rendering, wrongly product-owned | Contradicted: §4.2 and §2, a product owns no renderer | retire | A second renderer for the same board. Surviving code: the map-and-token to body binding table and the accepted-event mirror into conatus, as a stack adapter |
+| Protocol hardening (2026-08-08) | stack, networking and receipts | Confirmed, §3.8 and Law A | keep | H2 is the only open gate |
+| Stickleback migration (2026-08-08) | stack, branching | Confirmed, §4.1 and ruling 7 | keep | Sovereignty over a shared carrier |
+| Extracted receipts (2026-08-08) | method | Confirmed, §6 | keep | W1 produces more of these |
+| Overmap presentation (2026-08-02) | mixed, sim place graph and game overlay | Contradicted on authored positions by §3.7 and ruling 14; source-time as a feature confirmed as §3.4's reach field | rewrite | The source-time half is the record's own model and is worth more than the presentation half |
+| Shared authority (2026-07-09) | stack, federation | Confirmed, §2; §5 reopens the DM question under its gate | keep | The gate is why §5 can stay open safely |
+| Environmental surfaces (2026-07-08) | sim, agentless processes, written as one product's tile layer | Contradicted: §3.3, §3.1, ruling 12; also names a crate that moved on 2026-09-15 | rewrite | Nothing landed; the cheapest correction and the first input to W2 |
+| Optional intelligence vision (2026-07-07) | mixed | Confirmed, §1 and §4.1's esp row | keep, parked | Name esp when activated |
+| Cleromancy generator selection (2026-08-09) | stack, generation | Confirmed, §4.1: ruling 15 already implemented | keep | Not listed in the root index, an index defect |
+| PROJECT_DESCRIPTION | game overlay | Confirmed as the source §6 wants, and contradicted three ways inside itself, §9.9 | surface to Mark | Maintainer-owned |
+
+The uncommitted work in the tabletop tree from the board plan's last lane
+splits: the revision-and-state ordering fix in `BoardGround::sync`, the
+body skip over missing ground and `MapTerrain::size` are real fixes of
+§4.3's stale-terrain family and stand under any ruling; the budget module,
+its tests, the generator warning, the self-test arm and the modulus
+dependency, about 780 lines, are machinery for a limit §8 says should not
+exist. The three the lane would act on first: the board plan rewrite, the
+runtime profile retirement, the environmental surfaces rewrite.
+
+## 11. Phases and done-conditions
 
 - **W0, this record ruled.** Done when Mark has read it, the §9 decisions
   are taken or explicitly deferred, and the record is committed with its
@@ -627,11 +693,25 @@ No code lane runs before W1 is ruled.
   generation; re-placed under the trust plane.
 - 2026-09-18: nisus exists in conatus with the single-voxel write and dirty
   regions that isometer's `Ground` lacks.
+- 2026-09-18, from W1 on the tabletop: the scene board reaches the brick
+  cap and never calls isometer-lens's paging wrap; the two recorded
+  alignment defects predate the subdivision; isometer-lens has no terrain
+  scale and the power-of-two rule cannot reproduce the shipped step
+  without one; `GroundTerrain::revision()` still returns a grown ground's
+  zero (`shared/isometer/src/scene/terrain.rs:52`,
+  `isometer-core/src/ground.rs:211`) and only `carve` advances it, so the
+  stale-terrain bug is unfixed upstream and Isometry carries a local
+  workaround; PROJECT_DESCRIPTION's pillar 2 scale of 15 by 15 to 30 by 30
+  is the product's stated scale and every size the board argument turned
+  on was a crate constant.
 
 ## Progress
 
 - 2026-09-18: record written from the 2026-09-17 and 2026-09-18
   conversation.
+- 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
+  rewrites, one retirement, ten keeps; three corrections to this record
+  folded in (§3.6, §4.3, §7). Rulings pending.
 - 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.
