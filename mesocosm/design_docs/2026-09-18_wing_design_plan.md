@@ -140,6 +140,21 @@ what later sections derive from.
 21. **Gamepads are a genet and standards concern** to be addressed, and
     **keymapping is a capability wanted across the stack**, not only in
     isomere. Ruled 2026-09-18.
+22. **Lighting, all five rows wanted:** shadows, ambient occlusion, global
+    illumination, point lights with day and night, and transparency with
+    water. Ruled 2026-09-18.
+23. **The terrain gets a per-axis scale,** y and z as well as x, under W3
+    ("add the y scale. hell, why not a z scale too"), and **paging is fixed
+    one way or another** in every consumer. Ruled 2026-09-18.
+24. **genet implements the full W3C animation surface,** the Web Animations
+    API included; the earlier deferral was a stopgap from the stylo
+    migration and never a design choice. formal-web (gterzian and Taym
+    Haddadi) is the architectural reference. Ruled 2026-09-18.
+25. **Skinning, textures and animation are not ruled out for the wing.**
+    The rigid-parts rule is Mesocosm's voxel body model, where a part
+    carries colour per voxel and animates by pose; an imported mesh body
+    is a second body kind beside it. Ruled 2026-09-18 in conversation
+    ("feels rough to be so limited"); the second body kind is W3 work.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -402,9 +417,16 @@ place is not one thing:
 - Composition: netrender stages the scene's colour view as an external
   image in the document's paint stream.
 
-What renderling had that nothing now has, and whether the wing wants it, is
-a §9 question: glTF import for bodies from outside the wing, a lighting
-model beyond one sun and a rim, and textured or skinned parts.
+What renderling had that nothing now has is now ruled wanted (rulings 22
+and 25): every lighting row in §4.6, and mesh bodies with skins and
+textures imported from glTF as a second body kind beside voxel bodies. The
+candidate donor or tenant is kiss3d, whose 0.46 of 2026-08-15 sits on wgpu
+30, the wing's own, with gltf, image and winit 0.30 as its dependencies,
+all already in the wing; the one objection still standing unchecked is the
+landscape doc's, that its constructors create their own device where
+netrender composition needs the shared one. If 0.46 takes an external
+device it is a tenant; if not, it is the donor for a skinned-mesh pass in
+isometer-render, and the gltf crate is the loader either way.
 
 ### 4.3 Findings against the stack, 2026-09-16 to 2026-09-18
 
@@ -487,6 +509,20 @@ Below the downlevel tier is wgpu's WebGL2 fallback, which as recalled and
 not re-read carries no compute and no storage buffers at all; the tracer
 survives there because it reads textures, and nothing else GPU-side does.
 
+**Posture, recommended 2026-09-18 and awaiting Mark's ruling** (he asked
+whether to lift the first-class constraint or treat the web as a floor,
+and whether billboard sprites would be the cheaper answer): cross-platform
+desktop first-class, the web a supported tier with a stated floor per
+tier. The renderer's floor is the baked sprite over a heightfield, which
+the wing already has, since the bake is a projection of the same voxel
+bodies and the presentation plan already named it the far tier of a
+hybrid; billboards are not an alternative to voxels but what voxels look
+like from the cheapest seat. A traced scene is not too expensive for the
+web once brick-level skipping exists and the internal resolution is low,
+which the board's render scale already gives. The sim's web floor is one
+thread and four gigabytes, met by scaling shard count down (§4.7), not by
+a different design. The document layer is web-native regardless.
+
 The web's other floors, none of them GPU: 32-bit wasm memory is 4 GiB
 and the 64-bit form is only recently shipping; threads need cross-origin
 isolation headers for shared memory, so the sim is single-threaded by
@@ -509,7 +545,7 @@ Pulley, which the script substrate plan already prefers.
 | Ambient occlusion | None | Per-vertex voxel occlusion as Minecraft's smooth lighting; screen-space for bodies | Not planned |
 | Global illumination | None | Voxel cone tracing (Crassin 2011) uses the voxel world as its structure | Not planned |
 | Point lights, day and night | None | Any deferred renderer; torches and time of day are sim fields already | Fields plane |
-| Transparency and water | None; the tracer writes alpha 1 | Order-independent transparency; a water plane traced separately | §4.3 finding |
+| Transparency and water | None; the tracer writes alpha 1 | Order-independent transparency; a water plane traced separately. For the sim's water, the cellular-automaton form Dwarf Fortress, Minecraft and Terraria use is an agentless process on the volume, deterministic and cheap; shallow water on the surface rung for rivers and floods; dimforge's salva (0.10, 2026-08) is particle fluid for foreground effects only, since a GPU form is not deterministic across hardware and the replay hashes cannot tolerate it | §4.3 finding; ruling 22 |
 | Textures on parts | None, palette only by ruling | glTF materials | Rigid-parts ruling |
 | Skinning and animation | Scene bodies: per-part rigid pose from the sim. Document: genet Livery parses `@keyframes`, `animation-*` and `transition-*` with a host-driven clock, which the effect packs' beats already ride; the Web Animations API is deferred | kiss3d's skinning, glTF animation | Rigid-parts ruling; genet's CSS animations plan (2026-07-09); kiss3d ruled a donor for AOV ids only |
 | glTF import | None; bodies come from voxel recipes | The gltf crate; kiss3d | Not planned |
@@ -518,6 +554,41 @@ Pulley, which the script substrate plan already prefers.
 | Labels and text in scene | DOM overlays through isomere | | isomere plan |
 | Picking | Bodies and terrain hits through the scene | | I2 of the board plan |
 | Post-processing | The grade: fog, quantiser | | Grade pass |
+
+### 4.7 Parallelism and processes
+
+Read from mere's substrate parallelism composition brief (2026-06-21) and
+cross-platform parallelism strategy (2026-06-19) on 2026-09-18. The stack
+has already decided the levers:
+
+- **armillary** is the actor kernel: a non-sendable host kernel that
+  alone owns the GPU, and sendable actors, thread-per-actor or pooled,
+  one per unit of work.
+- **Rayon** is the in-unit data-parallel lever on native. On the web it
+  becomes a Worker pool only under a nightly, atomics, shared-memory build
+  behind cross-origin isolation headers, which the brief hard-gates as a
+  PWA-only path; without that it runs serially.
+- **The Scene is the serialization seam** between a worker and the main
+  thread; the encoder exists and its per-frame cost was measured small.
+- **Wasmtime** is the mod and extension runtime, ahead-of-time by
+  preference, with OS subprocesses for hostile content (script substrate
+  plan, completed 2026-07-03).
+
+What that means for the sim, and what preparing ahead of time looks like
+(Mark, 2026-09-18: "I would not like to find myself unable to leverage
+modern hardware effectively like RimWorld"):
+
+- **The sim is sharded by the place graph.** Each shard is an armillary
+  actor with its own due-event queue over its places; agentless field
+  passes run data-parallel over places with Rayon inside a shard.
+- **Determinism is the constraint,** the one RimWorld never met and
+  Factorio did: fixed shard assignment and an ordered merge of cross-shard
+  effects per tick, or the replay hashes break. The merge is designed
+  before the shards are.
+- **On the web** the sim runs in one Worker, co-located with its script
+  host as the brief already decided, and scales down by shard count.
+
+This is a W2 requirement.
 
 ## 5. The games
 
@@ -619,15 +690,21 @@ still open under it.
    which point numen gains a Lua front end rather than the wing gaining
    Rhai. mere's own topology brief already names piccolo as the
    modding-Lua option.
-4. **The web floor.** The limits are in §4.5. **Ruled 2026-09-18:
-   first-class for the whole wing**, so those limits bind every tier.
+4. **The web floor.** The limits are in §4.5. Ruled first-class on
+   2026-09-18, then reopened by Mark the same day as possibly "an insane
+   constraint": lift it, treat the web as a floor, or go to billboard
+   sprites. §4.5 carries the recommendation, desktop first-class and the
+   web a tier with a stated floor whose renderer floor is the existing
+   bake. **Open:** Mark's ruling.
 5. **Renderling's parts.** §4.6 is the inventory. Mark noted that genet's
    animation work is done; it is the document half of the animation row,
    CSS animations and transitions in Livery, and scene bodies animate by
    per-part pose from the sim, so nothing renderling had for animation is
-   missing. **Open:** which of the lighting rows the wing wants: shadows,
-   occlusion, global illumination, point lights and day-night,
-   transparency and water; and glTF import.
+   missing. **Ruled 2026-09-18:** all five lighting rows (ruling 22),
+   glTF mesh bodies as a second body kind with skins and textures (ruling
+   25), and water as a cellular-automaton process with particle fluid for
+   effects only (§4.6). **Open:** whether kiss3d 0.46 takes an external
+   device, which decides tenant versus donor.
 6. **Which game first.** Answered: the sim gets a bench, and ruled
    further the same day: **one bench** with lanes for the sim (processes
    and effects including magic), the world, specimens, items and effects,
@@ -647,9 +724,11 @@ still open under it.
    product's stated scale, and the product's stated scale is stale.
    **Open:** Mark restates pillar 2, or the record's scale is the one he
    stated in conversation.
-10. **The vertical scale and the shipped step** (from §3.6): four voxels
-    of eight and a changed look, or a y-scale added to the tracer under
-    W3.
+10. **The vertical scale and the shipped step** (from §3.6). **Ruled
+    2026-09-18: a per-axis scale, y and z as well as x, added to the
+    tracer under W3** (ruling 23), so the shipped step is reproduced
+    exactly and the base unit need not be cubic. Paging is fixed in every
+    consumer under the same ruling.
 11. **The founding record disagrees with this record in three places,**
     found by W1, and both are wing-level, so which yields is Mark's. (a)
     The founding record's §1 says the vessels "do not share a genre, a
@@ -764,6 +843,10 @@ No code lane runs before W1 is ruled.
   retirement, three keeps; six corrections folded in (§3.3, §3.4, §4.1,
   §4.2, §4.3 twice, §7). W1's reading is complete for all three
   products; the rulings are Mark's.
+- 2026-09-18: rulings 22 to 25 recorded (lighting, per-axis scale and
+  paging, full W3C animation in genet, mesh bodies as a second kind);
+  §4.7 parallelism added as a W2 requirement from the stack's June
+  briefs; the web posture reopened with a recommendation in §4.5.
 - 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.
