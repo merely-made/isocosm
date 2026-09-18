@@ -233,14 +233,26 @@ Three shapes, and no fourth found yet:
   polity collapsing into factions. These name what dissolves and what is
   founded, and they are the events the hagiograph most often keeps.
 
-Mesocosm's `ProcessDef` (processdef plan, 2026-08-01) is a candidate for the
-first shape's definition; whether it is verb-neutral enough to be the base
-profile's is a §9 decision.
+Mesocosm's `ProcessDef` (processdef plan, 2026-08-01) is **not** the first
+shape's definition as it stands, by receipt: its digest covers namespace,
+name, `expressed_by` and `seeding` and nothing else
+(`mesocosm-core/src/process.rs:391-403`), `expressed_by` is a subset of
+four roles and `seeding` has two values (`:350-358`), so the whole
+definition space holds thirty distinct rule shapes, and the trait catalogue
+plan reached the same count independently. It carries no scarcity, no cost,
+no foregone and no cause-link. Either it is widened to Law A's record or
+the base profile takes a new definition; that is §9.7, now with evidence.
 
 ### 3.4 The record
 
 The hagiograph judges what is significant by novelty, quality and relevance
-(ruling 4), the same test at every rung. Storage stays in journals. An
+(ruling 4), the same test at every rung. Storage stays in journals. The
+organ is live and consumed, not pending: mesocosm-core depends on
+hagiograph, muniment and nisus, its `WorldRecord` is a newtype over
+`hagiograph::Record` (`record.rs:17-23`), and deep time runs through
+`hagiograph::{DeepTime, Handover}` (`deep_time.rs:21`). What its current
+significance test lacks is the relevance gate: today it is abnormality
+against the world record alone (`history.rs:40-42`). An
 event's reach is a field on the place graph: seeded where it happened,
 spreading along routes and carriers, decaying with time and slower with
 significance, re-seeded when the hagiograph retells it (ruling 5). A
@@ -315,6 +327,14 @@ so it can never disagree with the bricks. Above the near rung, where bricks
 do not exist, the graph is the terrain: derived candidate locations,
 asserted when persisted (ruling 14).
 
+That is the design, not the practice. What Mesocosm does today
+(corrected 2026-09-18 by W1): `Places::grown` derives links from an
+integer heightfield (`mesocosm-core/src/places/relief.rs:7-13,26-32`), the
+node set is a fixed three-by-three partition at any enclosure size
+(`world.rs:90`), `Places::at` is a two-dimensional nearest-centre scan that
+ignores height (`places.rs:170-181`), and interiors are asserted counts
+(`places/grown.rs:39-45`). Volume-derived nodes are unbuilt work under W2.
+
 ### 3.8 What the sim never does
 
 It never renders, takes input, runs a camera or a turn order. It never knows
@@ -373,9 +393,13 @@ model beyond one sun and a rim, and textured or skinned parts.
 ### 4.3 Findings against the stack, 2026-09-16 to 2026-09-18
 
 - **Two voxel chunk mechanisms.** conatus's nisus has per-cell edits and
-  dirty regions; isometer-core's `Ground` has neither, and it is the one
-  the renderer reads. Mesocosm's core uses nisus for body volumes and
-  `Ground` for terrain. The wing's don'ts forbid exactly this duplication.
+  dirty regions; isometer-core's `Ground` has a dirty-brick queue
+  (`ground.rs:388`), a revision (`:381`) and a private cell write used only
+  by `carve` (`:357-379`), but no additive public write, which is why a
+  grown ground never advances its revision. It is the one the renderer
+  reads. Mesocosm's core uses nisus for body volumes through
+  `voxel_profile` and `Ground` for terrain. The wing's don'ts forbid
+  exactly this duplication. (Narrowed 2026-09-18 by W1.)
 - **A revision that never moves.** isometer's `GroundTerrain` stamps
   `Ground::revision()`, which a grown ground never advances, so the tracer
   silently skips every upload after the first for any host that regrows
@@ -598,6 +622,24 @@ still open under it.
 10. **The vertical scale and the shipped step** (from §3.6): four voxels
     of eight and a changed look, or a y-scale added to the tracer under
     W3.
+11. **The founding record disagrees with this record in three places,**
+    found by W1, and both are wing-level, so which yields is Mark's. (a)
+    The founding record's §1 says the vessels "do not share a genre, a
+    schedule, or their verbs"; rulings 3 and 10 give them one clock and a
+    sim that has verbs the games reach as handles. The 2026-08-05 engine
+    clause narrowed sharing for organs only and left schedule and verbs
+    untouched. (b) Its §6 says "the platform is extracted from shipped
+    games, never built platform-first", repeated in `mesocosm/CLAUDE.md`,
+    against §11's W2 to W4 preceding W5; Mark's diagnosis of 2026-09-17
+    already rejected that frame for the sim ("the guts here are intended
+    to arise from combinations of game systems. It never made any sense
+    that they would emerge instead of being designed"), so the amendment
+    is recording a ruling already made. (c) Mesocosm's
+    `PROJECT_DESCRIPTION.md` files "the world's biota speciating on its
+    own whether or not anyone is playing" under Speculative, which is §2's
+    definition of the sim, and says the vessels share no schedule or
+    verbs. Amending the founding record and the CLAUDE.md line is Mark's
+    edit; this record does not claim precedence over them until he does.
 8. **Components.** Answered in part: audio from woodshed (cpal, hound,
    symphonia and midir are already in the family); text and fonts from
    genet's text stack (parley for layout under the standards review's S9
@@ -616,38 +658,10 @@ still open under it.
 
 ## 10. W1 evaluations
 
-### 10.1 Isometry root, 2026-09-18
-
-Read-only evaluation of every active plan in the tabletop's index against
-this record. Rulings on keep, rewrite and retire are Mark's; the
-recommendations are the lane's.
-
-| Plan | Tier | Record says | Recommended | Why |
-| --- | --- | --- | --- | --- |
-| Board on isometer (2026-09-15) | mixed, stack rendering and game overlay | Contradicted: §8 rows 5 and 6, §6, §2; confirmed in part by §4.1, §4.2, §4.3 | rewrite | The lanes landed and the code is good; the done-conditions were parity with the DOM board and a constant, and §3.6 rewrites the geometry under them |
-| Games wing consolidation (2026-09-09) | stack | Confirmed, §4.1 | keep | Published and done; decides nothing about the world |
-| Watchtower (2026-09-05) | mixed, sim generation and game overlay | W6's height-field premise contradicted by ruling 12 and §3.6; its seeded-pack discipline is ruling 15 confirmed | rewrite | Only the terrain premise fails |
-| Side panel diet (2026-09-03) | game overlay | Unaddressed; its done-condition is a chosen size, §6's failure mode by the letter | keep | Cuts landed; restate the target as reachable at the smallest supported display |
-| Genet host migration (2026-09-02) | stack, hosting | Confirmed, §4.1 | keep | Exactly §2's boundary |
-| Runtime profile (2026-08-23) | stack rendering, wrongly product-owned | Contradicted: §4.2 and §2, a product owns no renderer | retire | A second renderer for the same board. Surviving code: the map-and-token to body binding table and the accepted-event mirror into conatus, as a stack adapter |
-| Protocol hardening (2026-08-08) | stack, networking and receipts | Confirmed, §3.8 and Law A | keep | H2 is the only open gate |
-| Stickleback migration (2026-08-08) | stack, branching | Confirmed, §4.1 and ruling 7 | keep | Sovereignty over a shared carrier |
-| Extracted receipts (2026-08-08) | method | Confirmed, §6 | keep | W1 produces more of these |
-| Overmap presentation (2026-08-02) | mixed, sim place graph and game overlay | Contradicted on authored positions by §3.7 and ruling 14; source-time as a feature confirmed as §3.4's reach field | rewrite | The source-time half is the record's own model and is worth more than the presentation half |
-| Shared authority (2026-07-09) | stack, federation | Confirmed, §2; §5 reopens the DM question under its gate | keep | The gate is why §5 can stay open safely |
-| Environmental surfaces (2026-07-08) | sim, agentless processes, written as one product's tile layer | Contradicted: §3.3, §3.1, ruling 12; also names a crate that moved on 2026-09-15 | rewrite | Nothing landed; the cheapest correction and the first input to W2 |
-| Optional intelligence vision (2026-07-07) | mixed | Confirmed, §1 and §4.1's esp row | keep, parked | Name esp when activated |
-| Cleromancy generator selection (2026-08-09) | stack, generation | Confirmed, §4.1: ruling 15 already implemented | keep | Not listed in the root index, an index defect |
-| PROJECT_DESCRIPTION | game overlay | Confirmed as the source §6 wants, and contradicted three ways inside itself, §9.9 | surface to Mark | Maintainer-owned |
-
-The uncommitted work in the tabletop tree from the board plan's last lane
-splits: the revision-and-state ordering fix in `BoardGround::sync`, the
-body skip over missing ground and `MapTerrain::size` are real fixes of
-§4.3's stale-terrain family and stand under any ruling; the budget module,
-its tests, the generator warning, the self-test arm and the modulus
-dependency, about 780 lines, are machinery for a limit §8 says should not
-exist. The three the lane would act on first: the board plan rewrite, the
-runtime profile retirement, the environmental surfaces rewrite.
+The evaluations of every active plan against this record live in
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md),
+one section per product, so this record stays the design and that document
+carries the rulings as they are made.
 
 ## 11. Phases and done-conditions
 
@@ -672,7 +686,9 @@ runtime profile retirement, the environmental surfaces rewrite.
   processes and effects including magic, the world, specimens, items and
   effects, so that a draw from the generator's declared space can be run,
   replayed and reviewed in any of them without any game. The specimen
-  bench is the first lane and already exists.
+  bench is the first lane to lift: today it is a lane of Mesocosm's product
+  host (`mesocosm-genet/src/app/bench/`), not headless and not game-free,
+  so it does not yet satisfy this condition (corrected 2026-09-18 by W1).
 - **W5, the first game overlay.** Done when a game has a profile designed
   to §5 as a core implementing the overlay contract, and a played loop with
   receipts drawn from the generator.
@@ -712,6 +728,10 @@ No code lane runs before W1 is ruled.
 - 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
   rewrites, one retirement, ten keeps; three corrections to this record
   folded in (§3.6, §4.3, §7). Rulings pending.
+- 2026-09-18: W1 evaluated Mesocosm: thirty-three plans, twelve rewrites,
+  four retirements, seventeen keeps; five corrections folded in (§3.3,
+  §3.4, §3.7, §4.3, W4) and the founding-record disagreements raised as
+  §9.11. The evaluations moved to their own document. Rulings pending.
 - 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.
