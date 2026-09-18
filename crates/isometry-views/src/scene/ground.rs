@@ -27,6 +27,15 @@
 //! `BrickMap::from_ground_filtered` and one full upload per change. A filtered
 //! map cannot take slot refreshes, because a slot would be refilled from the
 //! unfiltered ground, so with a focus on every ground change is a rebuild.
+//!
+//! **A map whose brick map will not build** — `modulus::MAX_BRICKS` is what a
+//! wide board meets — is held as an empty board rather than recorded as a
+//! revision the ground never bound a map for. Recorded first, the next frame
+//! saw the revision it had asked for, built nothing, and the tracer kept the
+//! *previous* map's bricks under the new map's camera while the error cleared.
+//! Held, the ground is empty, the bound map is the empty one, the board draws
+//! nothing, and [`BoardGround::refusal`] carries the build's own error until a
+//! map that builds replaces it.
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;
@@ -88,6 +97,8 @@ pub struct BoardGround {
     /// map for the one it holds.
     projection: u64,
     cost: GroundCost,
+    /// The error the map on the board failed to build with, while it stands.
+    refusal: Option<String>,
 }
 
 impl BoardGround {
@@ -108,6 +119,7 @@ impl BoardGround {
             dirty: Vec::new(),
             rebuilt: RefCell::new(None),
             projection: 0,
+            refusal: None,
         };
         board.rebuild()?;
         Ok(board)
@@ -115,6 +127,13 @@ impl BoardGround {
 
     pub fn revision(&self) -> u64 {
         self.revision
+    }
+
+    /// Why the board is not showing the map it was asked for: the error its
+    /// brick map failed to build with. `None` while the map on the board is the
+    /// one it was asked for.
+    pub fn refusal(&self) -> Option<&str> {
+        self.refusal.as_deref()
     }
 
     pub fn ground(&self) -> &Ground {
@@ -147,6 +166,12 @@ impl BoardGround {
     /// Brings the ground up to `revision`, regrowing and diffing only when the
     /// board has actually moved. A focus change alone re-filters the map
     /// without touching the ground.
+    ///
+    /// The revision is recorded **after** the map for it is built, never
+    /// before: a build that fails leaves no map bound, and a recorded revision
+    /// would send the next frame down the early return above with the previous
+    /// map still on the tracer. A failed build is held instead, by
+    /// [`Self::refuse`].
     pub fn sync(
         &mut self,
         map: &MapDocument,
@@ -155,18 +180,41 @@ impl BoardGround {
     ) -> Result<(), String> {
         let focus_moved = self.focus != overlays.focus;
         if self.revision == revision && !focus_moved {
+            // A held refusal stands here too: the board has already taken this
+            // revision, and regrowing the map that would not build costs the
+            // whole grow again for the same failure.
             return Ok(());
         }
+        let was_refused = self.refusal.is_some();
         self.focus = overlays.focus;
-        if self.revision == revision {
+        let built = if self.revision == revision && !was_refused {
             // The ground stands; only what is kept of it changed.
             self.cost = GroundCost {
                 bricks: self.ground.brick_count(),
                 ..GroundCost::default()
             };
-            return self.rebuild();
+            self.rebuild()
+        } else {
+            self.regrow(map, overlays, focus_moved)
+        };
+        match built {
+            Ok(()) => {
+                self.revision = revision;
+                self.refusal = None;
+                Ok(())
+            },
+            Err(error) => self.refuse(revision, error),
         }
-        self.revision = revision;
+    }
+
+    /// Raises the whole ground for a board that moved and binds the map for it,
+    /// as slot refreshes where the brick set held still.
+    fn regrow(
+        &mut self,
+        map: &MapDocument,
+        overlays: &Overlays,
+        focus_moved: bool,
+    ) -> Result<(), String> {
         let started = Instant::now();
         let grown = MapTerrain::with_overlays(map, Some(overlays)).grow();
         let grow = started.elapsed();
@@ -194,6 +242,24 @@ impl BoardGround {
             },
             _ => self.rebuild(),
         }
+    }
+
+    /// Holds a map whose brick map would not build as an empty board, carrying
+    /// the build's own error until a map that builds replaces it.
+    ///
+    /// The revision is taken here too, but only behind a map that *did* build —
+    /// the empty one — so the board stands at the new revision showing nothing
+    /// rather than the map before it, and the frames after it cost nothing. The
+    /// next move of the board, or a focus that keeps fewer bricks, is what
+    /// replaces it.
+    fn refuse(&mut self, revision: u64, error: String) -> Result<(), String> {
+        self.ground = Ground::default();
+        self.dirty.clear();
+        self.cost = GroundCost::default();
+        self.rebuild()?;
+        self.revision = revision;
+        self.refusal = Some(error);
+        Ok(())
     }
 
     /// Builds the map the next frame binds: the whole ground, or what a focus

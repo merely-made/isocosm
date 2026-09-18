@@ -8,6 +8,11 @@
 //! the claim is what the GPU was actually asked to do, not what this crate
 //! believes it asked for.
 //!
+//! `a_map_whose_brick_map_will_not_build_holds_the_board_empty` is the same
+//! claim about a *failed* change: the revision is recorded behind the build,
+//! not ahead of it, so a map the lens refuses leaves none of the previous
+//! map's terrain standing under the new map's camera.
+//!
 //! They also *show* the thing B2 could not have known was wrong, rather than
 //! asserting it: `the_shared_ground_terrain_would_have_skipped_the_upload`
 //! drives the path B2 took — a regrown `Ground` bound through
@@ -29,7 +34,7 @@ use super::board::BoardPick;
 use super::harness::{Board, PANE, board_or_skip, device, flat_tile};
 use super::terrain::MapTerrain;
 use super::world::BoardWorld;
-use crate::demo::demo_map;
+use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
 /// One elevation edit uploads its own bricks and not the board's.
@@ -325,4 +330,79 @@ fn the_shared_ground_terrain_would_have_skipped_the_upload() {
         "the tracer held the map it already had, so the edit never reached a pixel"
     );
     assert_eq!(second.brick_upload_bytes, 0);
+}
+
+/// A grid of pane pixels across the whole board area.
+fn probes() -> impl Iterator<Item = (f32, f32)> {
+    (1..8).flat_map(|row| {
+        (1..8).map(move |col| (PANE.0 * col as f32 / 8.0, PANE.1 * row as f32 / 8.0))
+    })
+}
+
+/// How many probes land on something the last frame drew.
+fn hits(board: &Board) -> usize {
+    probes()
+        .filter(|(x, y)| board.pick(*x, *y).is_some())
+        .count()
+}
+
+/// A map the lens will not build a brick map for holds the board empty, and
+/// leaves none of the previous map's terrain under the new map's camera.
+///
+/// No budget is counted ahead of the build: `modulus::BrickMap` caps a map at
+/// `MAX_BRICKS` (2,047) and a 96 by 96 board needs some thousands, so the
+/// `BrickMap::from_ground_keys` the rebuild already runs refuses it on its own.
+/// What this asserts is the **ordering** around that refusal. Before the fix
+/// the ground took the new revision with no map built for it, so the frame
+/// after the failure returned `Ok` through `sync`'s early return, the tracer
+/// recognised the map it already held, and the demo board's terrain stood under
+/// the wide map's camera while the error cleared.
+///
+/// The demo board either side of it is the positive control, in the same run:
+/// the probes that meet terrain before the switch meet it again after.
+#[test]
+fn a_map_whose_brick_map_will_not_build_holds_the_board_empty() {
+    let mut board = board_or_skip!("the refused-switch receipt");
+    board.draw();
+    let before = hits(&board);
+    let bricks = board.cost().bricks;
+    assert!(before > 0, "the demo board is drawn: the positive control");
+    assert_eq!(board.refusal(), None, "and nothing is refused about it");
+
+    board.ui.map = synth_map(96, 96);
+    for frame in 1..=3 {
+        board.draw();
+        let why = board
+            .refusal()
+            .unwrap_or_else(|| panic!("frame {frame}: the wide map is refused, and says why"));
+        assert!(
+            why.contains("brick map"),
+            "frame {frame}: the lens's own error is carried, not invented: {why}"
+        );
+        assert_eq!(
+            board.cost().bricks,
+            0,
+            "frame {frame}: the board is held empty"
+        );
+        assert_eq!(
+            hits(&board),
+            0,
+            "frame {frame}: the demo map's terrain is not drawn under the new map"
+        );
+    }
+
+    // A map that builds replaces it and is drawn again.
+    board.ui.map = demo_map();
+    board.draw();
+    assert_eq!(board.refusal(), None);
+    assert_eq!(
+        board.cost().bricks,
+        bricks,
+        "the demo ground is grown again"
+    );
+    assert_eq!(
+        hits(&board),
+        before,
+        "and every probe that met it before meets it now"
+    );
 }

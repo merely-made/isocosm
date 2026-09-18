@@ -100,6 +100,11 @@ impl Board {
         self.source.ground_cost().expect("the board grew a ground")
     }
 
+    /// Why the board is not drawing the map it was asked for, if it is not.
+    pub(super) fn refusal(&self) -> Option<String> {
+        self.source.refusal().map(str::to_owned)
+    }
+
     pub(super) fn pick(&self, px: f32, py: f32) -> Option<BoardPick> {
         self.source
             .pick([2.0 * px / PANE.0 - 1.0, 1.0 - 2.0 * py / PANE.1])

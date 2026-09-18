@@ -664,3 +664,17 @@ a lane saw. This section is the current one, and it names its build.
   boards stay. One seam moved: `edit_tests`'s fixture is now `scene/harness.rs`
   so the cost receipts drive the same board rather than a second copy of it.
   109 views tests, 405 across the workspace.
+- **2026-09-18, the stale-terrain fix landed; the map-size machinery was
+  dropped.** The map-size warning lane of 2026-09-16 found that a map
+  whose brick map failed to build left the previous map's terrain drawn
+  under the new map's camera with the error cleared, because the ground's
+  sync recorded the revision before the build. The fix records the
+  revision only after the build succeeds, and a refused map empties the
+  ground and holds its error until a map that builds replaces it; a
+  receipt drives it through the brick library's own natural refusal of a
+  96 by 96 map, with a positive control in the same run, and was proved
+  by reverting the fix and watching it fail. The rest of that lane, a
+  brick budget derived from the cap, a generator warning, a self-test arm
+  and a modulus dependency, about 780 lines, was dropped by Mark's ruling
+  of 2026-09-18: the wing design record retires the cap as a limit, and
+  this plan is under rewrite. 110 views tests, 408 across the workspace.

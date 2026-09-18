@@ -159,6 +159,12 @@ impl BoardSource {
         self.ground.as_ref().map(BoardGround::cost)
     }
 
+    /// Why the board's current map is not drawn: the error its brick map failed
+    /// to build with. `None` while it is drawn, and before the first frame.
+    pub fn refusal(&self) -> Option<&str> {
+        self.ground.as_ref().and_then(BoardGround::refusal)
+    }
+
     /// The tracer's own receipt for the last drawn frame: what the terrain
     /// change actually cost the GPU, rather than what this crate believes it
     /// asked for.
@@ -354,12 +360,14 @@ impl SceneSource for BoardSource {
         // comes out of the source for the encode and goes straight back.
         let mut scene = self.scene.take().ok_or("the scene was not built")?;
         let held = self.view.borrow();
+        let refused = self.refusal().is_some();
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
             // Unexplored ground draws nothing, and neither does a piece
-            // standing on it or above a focus elevation.
-            if held.overlays.cuts(&held.map, token) {
+            // standing on it or above a focus elevation, nor any piece of a
+            // map the board refused: there is no ground to stand it on.
+            if refused || held.overlays.cuts(&held.map, token) {
                 continue;
             }
             let (body, placeholder) = self.tokens.body(&token.sprite);

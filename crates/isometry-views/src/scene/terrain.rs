@@ -129,6 +129,11 @@ impl<'a> MapTerrain<'a> {
         self.extent
     }
 
+    /// The map's width and height in tiles.
+    pub fn size(&self) -> (u32, u32) {
+        (self.map.ground.width(), self.map.ground.height())
+    }
+
     /// The terrain column at a map cell's low corner. The cell owns the
     /// [`VOXELS_PER_TILE`] square running `+x` and `+z` from here.
     pub fn column(&self, col: u32, row: u32) -> (i32, i32) {
