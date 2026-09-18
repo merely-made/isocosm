@@ -206,6 +206,31 @@ what later sections derive from.
     founding record's critter, borg, character continuity read as the
     games' domains: Mesocosm plays the critter and its lineage, Paredros
     the borg and its factions, Isometry the character inside its polities.
+36. **What a creature carries at each level of identity,** in Mark's
+    words, 2026-09-18, the first W2 answer. *Critter:* "genotype
+    (collection of traits in relation. We wanted to use a mosaic scene for
+    this before, but I'm open to whatever) and phenotype (conditioned
+    genetic expression (so depending on the circumstances, condition,
+    status, and activity, the critter's body may express different
+    abilities. Like when it is malnourished, maybe a carnivore becomes an
+    omnivore, or a cannibal, or when in the presence of the moon, you turn
+    into a werebeast). My thinking is, you have traits that might have
+    adjacency effects or process conditions like jokers in Balatro, but
+    the phenotype is kinda your hand to play with, except you have
+    unconditional and conditional abilities. Oh, and kingdom, which is
+    kinda like class." *Borg:* "when a critter becomes sapient, they also
+    get the ability to name stuff, which makes it a borg. That's a
+    baseline ability for borgs, along with relationships; even a
+    nonsapient critter can become a borg in that regard. Borgs make me
+    think: interactable, possessed of a disposition, and capable of
+    remembering. But borgs also inherit the genotype and phenotypical
+    expression of their lineage. They are harder to collapse into
+    cohorts, being more individual." *Character:* "Characters emerge as
+    borgs contingent upon the group, the polity, the collective, even if
+    by absence. They're meant to be defined according to the tabletop
+    system, but should also be resolvable as a critter and individual
+    (borg)." Mark added: "I feel like I missed some things"; §3.2.1
+    carries the answer and the gaps as open questions.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -282,6 +307,90 @@ methodology.
 
 Consequence for the scheduler: things with methodology get due events;
 relations, records and fields cost nothing on their own.
+
+### 3.2.1 The creature at three levels of identity
+
+From ruling 36, with what the wing already holds cited beside it. This is
+the first piece of W2's schema and is open where marked.
+
+**Critter.** Kingdom, which is class: the founding plan's three lineage
+strategies, producer, consumer and decomposer, and the top of the
+provenance typing nis already carries. Genotype: traits in relation, with
+adjacency effects and process conditions, the shape of Balatro's jokers;
+the earlier form of this is the allocation mosaic ruled 2026-08-01 in the
+processdef plan, an authoritative graph of capacity cells per part where
+sites occupying adjacent cells cooperate, interfere or hybridise, and Mark
+is open to another form. Phenotype: conditioned expression of the
+genotype, the critter's hand to play, with unconditional and conditional
+abilities that depend on circumstance, condition, status and activity (a
+malnourished carnivore becomes an omnivore or a cannibal; the moon makes a
+werebeast). Biology's names for this are phenotypic plasticity and
+reaction norms, and polyphenism for the discrete cases: a locust turns
+gregarious under crowding, an aphid grows wings, an ant larva becomes a
+queen. The epoch boundary plan's ruling that plasticity is a life stage
+that youth pays for is one conditional expression already ruled.
+
+**Borg.** A critter that can name things, which is sapience, or that has
+relationships, which a non-sapient critter can have too: interactable,
+possessed of a disposition, capable of remembering. It inherits its
+lineage's genotype and expression. Harder to collapse into a cohort,
+being more individual. Naming is an act of assertion under §1: a borg is a
+source of asserted facts in the record, which is why it cannot be
+re-derived from a distribution the way a critter can.
+
+**Character.** A borg contingent on a group, a polity or a collective,
+even by absence. Defined by the tabletop system's schema, and resolvable
+as a borg and as a critter.
+
+**What the record's own structure says a creature must also carry, put to
+Mark as questions rather than filled in (open, 2026-09-18):**
+
+1. *State.* Condition and status are inputs to expression; what is the
+   state itself? The conserved material ledger Mesocosm keeps (reserve,
+   mass, what the body is made of), injuries, age and stage. Dynamic
+   Energy Budget theory's reserve, structure and maturity are the model
+   shape. Is state one thing at every level, or does a character's sheet
+   hold a second, system-defined state beside the sim's?
+2. *Methodology.* Ruling 9 says a thing has state because it decides. How
+   does each level decide? A critter by drives, a borg by disposition,
+   memory, relationships and goals, a character by the system's rules and
+   a player or a DM. The agent literature draws exactly this line:
+   reactive agents, then belief-desire-intention agents (Bratman 1987; Rao
+   and Georgeff 1995), then normative agents with roles and institutions.
+   Is that the line, and is a borg's disposition the personality model
+   (the five-factor axes Talk of the Town and Prom Week use) or something
+   of the wing's own?
+3. *History against memory.* Every critter has a history, the deviation
+   record §1 keeps whether or not it can recall anything. Only a borg has
+   memory, what it knows, which is the reach field's foreground half plus
+   what it witnessed. Is that the distinction, so that remembering is a
+   borg's phenotype ability over a record every level already has?
+4. *Holding.* A critter holds only what its body holds, kleptoplasty
+   included; a borg holds items; a character has an inventory by the
+   system. Is holding one relation at all three levels, and does an item
+   held by a critter count as incorporated rather than owned?
+5. *Place.* Where it is, its home, its territory, its membership in a
+   settlement. Position is a fact; is home a relation of the borg level,
+   and territory of the faction?
+6. *Standing.* A character's rank, alignment and reputation inside its
+   polity, and a borg's reputation among those who know of it, which is
+   the reach of its deeds. Is standing the character-level addition, the
+   way naming is the borg-level one?
+7. *Senses.* What a creature can perceive is a phenotype ability, and it
+   bounds what a borg can witness and remember. Confirm it sits in the
+   phenotype rather than beside it.
+8. *Death and what persists.* At each level, what survives the body: the
+   record always; a borg's memory only if retold or divine; a character's
+   sheet as an asserted fact. Is the "one life makes it real" pillar the
+   character's, the borg's, or both?
+9. *Divinity.* The chain of heirs, the avatar, the motif. Is divine a
+   fourth level above character, or a status any level can reach, since
+   a critter can become a primordial being by the vessel briefs' own hook?
+10. *Reproduction and inheritance.* How genotype passes, and where the
+    lineage's adaptation program sits relative to the individual's
+    phenotype. The playable ecology plan makes reproduction the
+    individual checkpoint; confirm that is the critter level's own
+    transition.
 
 ### 3.3 Processes
 
@@ -958,6 +1067,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 36 recorded, the creature at three levels of
+  identity in Mark's words, with §3.2.1 carrying the answer, the wing's
+  existing vocabulary beside it and ten open questions.
 - 2026-09-18: ruling 35 recorded, each game's foregrounded rung in Mark's
   words, mapped to the founding record's critter, borg, character
   continuity in §5. The prior-art brief for the sim written the same day.
