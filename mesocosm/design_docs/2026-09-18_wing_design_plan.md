@@ -384,6 +384,13 @@ what later sections derive from.
     constitutionally, not derived, in addition to the factions within
     them. Divinity blends effects and acts through their journey to
     choose a domain; some effects lend themselves to certain acts."
+52. **The referent by tier, and impact against frequency.** Mark,
+    2026-09-18: "choosing a referent is a privilege of the greater
+    divinities and greater avatars, but even they are subject to the
+    frequency of process constraint. However, a rare process may be
+    mitigated if it is high impact... like if the outcome of the effect
+    being applied is unprecedented, or causes something significant to
+    happen."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -629,7 +636,8 @@ all from the journey and the acts:
 | --- | --- | --- |
 | Tier, how it can end | the forms sacrificed | 44, 46 |
 | Domain, what it is of | the means by which those forms were acquired, blended with the effects they bore; named freely at ascension, the name deciding nothing | 47, 49 |
-| Power, how strong it is | how often the process its effect is borne on happens in the world | 49 |
+| Power, how strong it is | how often the process its effect is borne on happens in the world, weighted by the significance of what it causes: a rare process is mitigated when its outcomes are unprecedented or cause something significant, which is the hagiograph's own test of ruling 4 applied to power | 49, 52 |
+| Referent, what is measured | fixed as the domain's effect for a demigod and an avatar; chosen, per §7.4, by a greater avatar or a greater divinity, who are still bound by frequency and impact | 52 |
 
 "You have to be careful": a god of a rare effect is a weak god. The other
 road to long life is anatomy rather than provenance: a vampire, a lich, a
@@ -662,13 +670,14 @@ it decides, and its constitution is asserted state. So alignment is
 derived at the sophont and faction rungs and asserted at the polity rung,
 and the derivation rule holds at each.
 
-**One tension, for Mark.** The general model plan's §7.4 says a god
-*chooses* its referent, the source and measurement period of its power,
-before each period. Ruling 49 says power is borne on the frequency of the
-domain's process. Either the referent is chosen among the effects the
-domain blends and measured as their processes' frequency, which keeps
-both, or the referent is simply the domain's effect and §7.4's choice
-narrows to the period. Which is a §9 decision.
+**The tension with §7.4, resolved by ruling 52.** Choosing a referent is
+a privilege of the two greater tiers; a demigod's and an avatar's referent
+is the domain's effect. Every tier is bound by the frequency of the
+process its power is borne on, and frequency is weighted by impact: a
+rare process is mitigated when applying its effect is unprecedented or
+causes something significant, so the hagiograph's significance test
+enters divine power as its second factor. §7.4's period mechanics stand
+unchanged for whichever referent applies.
 
 **Two axes (ruling 45, proposed and then agreed the same day):** Mark's
 "0th tier" and "4th tier" are the two ends of one axis that is not the
@@ -1457,10 +1466,9 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
-13. **The referent of divine power** (§3.2.1, ruling 49 against the
-    general model plan's §7.4): chosen among the domain's effects and
-    measured as their processes' frequency, or simply the domain's effect
-    with only the period chosen.
+13. **The referent of divine power:** **ruled, ruling 52.** Fixed as the
+    domain's effect for the lower tiers, chosen by the greater tiers, all
+    bound by frequency weighted by impact.
 12. **Rulesets over the sim** (§5.1): (a) **ruled, ruling 41:** world
     effects and game rulesets are one language at two scopes,
     world-founding and play, both packs lowered to rulesets recorded by
@@ -1612,6 +1620,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 52 recorded, the referent as a privilege of the
+  greater tiers and power as frequency weighted by significance; §9.13
+  closed.
 - 2026-09-18: rulings 49 to 51 recorded: the three quantities of a
   divinity, tier from forms, domain from means and effects, power from
   process frequency; a tenet as a process-to-effect relation with opinion
