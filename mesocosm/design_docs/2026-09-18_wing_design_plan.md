@@ -257,6 +257,19 @@ what later sections derive from.
     of body concern matters less the more factions and polities there
     are; people figure out the essentials and it becomes produced,
     commoditized, etc." Ruled 2026-09-18.
+39. **Kingdom is class, and scale is orthogonal to it.** Mark, 2026-09-18:
+    beside plant, animal and fungus, "playing as germs (micro: still at
+    animal scale, perhaps like a paint that can spread, inhabit a creature,
+    might die or thrive from being outside, spreads depending on
+    substrate, a bit like being a plant but in a creature, and decomposes
+    corpses), and huge creatures (macro) existing too. I actually love the
+    notion of the lion turtles from Avatar." Consequences in §3.2.1.
+40. **The licence rule for rulesets:** "As long as someone won't sue me or
+    hate on me for putting the ruleset in my game, I'm happy to include
+    it." Ruled 2026-09-18. Applied the same day by reading the licences
+    (§5.1): Daggerheart's is a no, Lancer's is a yes with attribution,
+    ICON and CAIN have no licence for implementation and are a question to
+    Massif Press.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -367,6 +380,24 @@ re-derived from a distribution the way a critter can.
 **Character.** A borg contingent on a group, a polity or a collective,
 even by absence. Defined by the tabletop system's schema, and resolvable
 as a borg and as a critter.
+
+**Kingdom and scale (ruling 39).** Kingdom is class and is a trophic
+strategy: producer, consumer, decomposer, as the founding plan ruled. Scale
+is a separate axis: micro, meso, macro. A germ is a decomposer or parasite
+at the micro scale whose body is not a part tree but a spread, a field
+over a substrate or a host, that thrives or dies by what it lies on and
+decomposes corpses; the founding plan's fungus, "networked, patient,
+spreading through the dead", already needed that body form, and the taste
+record's intelligent fungus is a colony played as an individual. A macro
+creature is a body large enough to be terrain, a lion turtle: its volume
+is walkable, places are derived on it, and it is at once a creature on
+the agent ladder and a place on the space ladder, which ruling 11's "a
+world that may be an entity" already allows at the largest scale.
+Consequence for the body noun: a body is a part tree (animal), a spread
+over a substrate (germ, fungus, colony), or a terrain-body (macro), and
+the three body forms share the ledger and the record but not the part
+model. Open: whether a spread is a body at all or a field with a lineage
+attached, which decides whether a germ has a phenotype in the same sense.
 
 **What the record's own structure says a creature must also carry, put to
 Mark as questions rather than filled in (open, 2026-09-18):**
@@ -914,13 +945,51 @@ same for general game playing, and rules-as-code projects, Catala and
 OpenFisca, bind many jurisdictions' law to one engine, which is the same
 problem with higher stakes. All from general knowledge, unverified.
 
-**Licensing, checked 2026-09-18.** The 5e SRD is CC BY 4.0 and Pathfinder
-2e is ORC, the two the tabletop's CLAUDE.md permits. The Daggerheart SRD
-is published under the Darrington Press Community Gaming License, read
-from daggerheart.com today, which is its own licence rather than Creative
-Commons and needs a ruling before anything ships against it. Powered by
-the Apocalypse is a design framework whose mechanics are not the text;
-GURPS is not open. "POTA" in Mark's list is read as PbtA.
+**Licensing, checked 2026-09-18 against the licence texts,** under
+ruling 40's rule that a ruleset is in if nobody will sue or hate on the
+wing for it.
+
+- **5e SRD, CC BY 4.0; Pathfinder 2e, ORC.** In, as the tabletop's
+  CLAUDE.md already permits.
+- **Daggerheart: out under its licence.** The Darrington Press Community
+  Gaming License 2.0 (26 August 2026, read from the PDF) grants Public
+  Game Content only in "Permitted Formats", which it defines as print and
+  digital print, streaming, podcasts, and virtual tabletops it has
+  whitelisted for non-commercial use only, and states that the term
+  "excludes, without limitation, film, television, video games, and any
+  other audiovisual medium not expressly permitted"; "video games" also
+  appear in its list of Prohibited Content. A game of the wing is a video
+  game, so Daggerheart's mechanics cannot ship in it without a separate
+  licence from Darrington Press. The SRD can still be read as prior art
+  for the binding language, which the taxonomy above does.
+- **Lancer: in, with attribution.** Massif Press's Lancer Third Party
+  License, read from massifpress.com: "You may use the mechanics of Core
+  Lancer, Lancer: Battlegroup, or any other Lancer product as the base for
+  your system, setting, or game", for sale or free, with no art or text,
+  no logos, no claim of affiliation, the stated acknowledgement and the
+  copyright line in the product, and no content directing hate at
+  protected groups. COMP/CON, Massif's own character tool, is GPL-3 and
+  reads Lancer's data from an open repository, so software implementation
+  is the established practice. Lancer brings to the binding language what
+  the d20 family lacks: accuracy and difficulty as d6 pools modifying a
+  d20, pilot triggers resolved in bands at 10 and 17, popcorn initiative
+  alternating sides, heat, structure and stress as three readings of one
+  body, sizes occupying tiles, and a mech as a body the pilot occupies,
+  which is a body inside a body and the sim's holding relation at its
+  strongest.
+- **ICON and CAIN: unlicensed for implementation; ask.** ICON's page
+  grants only "download or distribute it as long as you don't modify the
+  credits page", for a free playtest of a future project; CAIN's page
+  states no licence at all. Mechanics as such are not copyrightable, but
+  ruling 40's second clause, being hated on, is exactly the risk of
+  implementing a designer's playtest without asking. Tom Bloom's
+  community is one Mark listens in on, so the ask is cheap and the
+  answer may be a licence like Lancer's. ICON brings a tactical and a
+  narrative layer usable separately; CAIN brings d6 dice pools counting
+  successes against a pressure track, a third resolution family.
+- **Powered by the Apocalypse** is a design framework; its moves and
+  bands are mechanics, not text, and the wing writes its own. **GURPS** is
+  not open. "POTA" in Mark's list is read as PbtA.
 
 **Where to start.** Not by binding five systems. The vocabulary above is
 the binding language; the existing seam covers the d20 family; the next
@@ -1065,13 +1134,14 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
-12. **Rulesets over the sim** (§5.1), three rulings: (a) world effects and
-    game rulesets are one language at two scopes, world-founding and play,
-    both packs lowered to rulesets recorded by digest; (b) the next
-    ruleset consumer after the d20 family, a PbtA-shaped system or
-    Daggerheart; (c) whether the Daggerheart SRD's Community Gaming
-    License is acceptable to ship against, since the tabletop's CLAUDE.md
-    permits only CC BY and ORC content today.
+12. **Rulesets over the sim** (§5.1): (a) **open,** world effects and
+    game rulesets as one language at two scopes, world-founding and play,
+    both packs lowered to rulesets recorded by digest; (b) **open,** the
+    next ruleset consumer after the d20 family: a PbtA-shaped system, or
+    Lancer, which is licensed and brings pools, popcorn initiative and
+    bodies inside bodies; (c) **closed by ruling 40 and the licence
+    text:** Daggerheart is out, Lancer is in with attribution, ICON and
+    CAIN are a question to Massif Press.
 11. **The founding record disagrees with this record in three places,**
     found by W1, and both are wing-level, so which yields is Mark's. (a)
     The founding record's §1 says the vessels "do not share a genre, a
@@ -1214,6 +1284,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 39 and 40 recorded: kingdom as class with scale
+  orthogonal, germs as spreads and macro creatures as terrain-bodies; and
+  the licence rule, applied by reading the Daggerheart, Lancer, ICON and
+  CAIN licence texts.
 - 2026-09-18: §5.1 written, rulesets over the sim: the existing system
   plugin seam read as the binding that exists, the taxonomy of what
   varies across five rulesets and what is common, world effects as
