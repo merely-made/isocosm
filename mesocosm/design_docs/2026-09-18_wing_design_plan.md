@@ -419,6 +419,22 @@ what later sections derive from.
     reach of its deeds among those who know of it (§3.4); and its rank,
     which a polity asserts: a title, an office, a membership. Mark,
     2026-09-19: "Yeah, sounds about right."
+57. **Two doors: reproduction rerolls expression, the epoch boundary
+    changes the lineage; NPC lineages adapt there by default and so does
+    yours.** Mark, 2026-09-19: "the question is how do npc lineages
+    optimize themselves? Seems we need them to adapt at the epoch
+    boundary, for clarity. And then that is the default autopilot for
+    your own, too, with some optionality." On what a lineage measures
+    itself against: "Something that might shed light on criteria
+    organisms could measure themselves against on the metaorganism level
+    (lineage): https://ptree.org/about/methods.html." And: "There should
+    be a bit of a lottery with phenotypic expression, rerolled at
+    reproduction, depending on the heterogeneity of your genes; lineage
+    gene/trait change should be more like continental drift or switching
+    jokers in balatro (you don't do it in a round, you do it in the shop,
+    in between rounds...). But hey, you can always branch or fork off,
+    provided you have a plan to grow your branch and compete or cooperate
+    with the originating lineage."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -844,11 +860,48 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    branch after ascendance, reachable by anything, enacted by a wish with
    the world's strength. The chain of heirs and the avatar are how a
    divine thing is embodied in play afterwards; their design is W2's.
-10. *Reproduction and inheritance.* How genotype passes, and where the
-    lineage's adaptation program sits relative to the individual's
-    phenotype. The playable ecology plan makes reproduction the
-    individual checkpoint; confirm that is the critter level's own
-    transition.
+10. *Reproduction and inheritance.* **Answered, ruling 57.** Two doors,
+    which are the two checkpoints the playable ecology plan already names.
+    *Reproduction*, the individual checkpoint: the genotype passes and the
+    phenotype's expression is rerolled, a lottery whose spread is the
+    heterogeneity of the genes, so a homogeneous lineage breeds true and a
+    mixed one surprises. *The epoch boundary*, the lineage checkpoint: the
+    genotype itself changes, slowly, like continental drift, and only in
+    the shop between rounds, never during a life; Balatro's jokers are
+    switched in the shop, not in a hand. NPC lineages optimise themselves
+    at that boundary, and that same adaptation is the default autopilot
+    for the player's lineage, with optionality where play chooses. So
+    play refines both, and through both doors: the critter through the
+    life it lives and the expression it was dealt, the lineage through
+    the boundary. Branching is a rung transition of §3.3's third shape: a
+    lineage may fork, provided the branch has a plan to grow and to
+    compete or cooperate with the lineage it left, which is the epoch
+    boundary plan's speciation-as-an-act with its condition named.
+
+    *What a lineage measures itself against.* Mark pointed at Ptree
+    (ptree.org, methods read 2026-09-19), a reference that makes
+    biological records from many sources comparable: forty-one properties
+    of an organism or group, twenty-four categorical and seventeen
+    numerical, among them nutrition as nine feeding categories, setting as
+    seven environments, position, movement, growth form, persistence,
+    organisation, organism mass distinct from offspring mass, and a
+    tolerated temperature range distinct from an optimum, each defined by
+    the biological question it answers and each interpretation keeping
+    the evidence behind it; its front page adds habitat, climate, depth,
+    pH, reproduction, longevity, body form and senses to the list. Three
+    things to take. First, that vocabulary is a candidate far-rung
+    representation of a lineage: a cohort is a property vector, and the
+    epoch boundary moves it, which is §3.5's aggregation given real axes
+    and the trait catalogue plan a species tier to sit under. Second,
+    Ptree's own reading up its trees is the ladder as a working interface:
+    "species records become distributions as you move up the tree", with
+    medians, quartiles and whiskers, and a group's mix of feeding
+    strategies shown as proportions, which is exactly how a cohort should
+    read to a player and how a lineage should compare itself with
+    another. Third, Ptree's discipline that an inference keeps
+    its original premise and an entailment carries a basis is the record's
+    own rule for derived readings, already stated for glyph affinities in
+    the general model plan's §7.4, applied to biology.
 
 ### 3.3 Processes
 
@@ -1682,6 +1735,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 57 recorded, the two doors of inheritance, NPC
+  lineages adapting at the epoch boundary as the player's autopilot,
+  branching with a plan, and Ptree's property vocabulary read as the
+  far-rung representation of a lineage.
 - 2026-09-19: ruling 56 recorded, standing as alignment, reputation and
   rank; the character level adds no new kind to the schema.
 - 2026-09-19: ruling 55 recorded, one memory graded over one history;
