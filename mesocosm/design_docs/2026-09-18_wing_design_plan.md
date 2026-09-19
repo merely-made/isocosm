@@ -391,6 +391,17 @@ what later sections derive from.
     mitigated if it is high impact... like if the outcome of the effect
     being applied is unprecedented, or causes something significant to
     happen."
+53. **Holding.** Mark, 2026-09-18: "The squirrels in my backyard tell me
+    critters can gather, and can hold depending on their biology (big
+    cheeks, pouch, pocket space if eldritch or whatever) but have very
+    limited capacity and no tool use ability. A sophont is a critter but
+    smart, they use items and carry gear, so they can have an inventory
+    limited by their gear instead of their biology. A mech being a borg
+    with capacity just contains its pilot, who 'possesses' the mech; its
+    'biology' is its construction, which need not be mechanical and inert
+    or nonsentient/nonsapient. Any sophont, faction, polity can have
+    possessions; a critter can collect, hide items, and use them as
+    needed, but they don't really own them."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -758,10 +769,22 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    memory, what it knows, which is the reach field's foreground half plus
    what it witnessed. Is that the distinction, so that remembering is a
    borg's phenotype ability over a record every level already has?
-4. *Holding.* A critter holds only what its body holds, kleptoplasty
-   included; a borg holds items; a character has an inventory by the
-   system. Is holding one relation at all three levels, and does an item
-   held by a critter count as incorporated rather than owned?
+4. *Holding.* **Answered, ruling 53.** Two relations, not one.
+   *Containment* is physical and derived: a body holds what its capacity
+   holds, and capacity is biology for a critter (cheeks, a pouch, an
+   eldritch pocket), construction for a construct (a mech contains its
+   pilot), and gear for a sophont, whose inventory is limited by what it
+   carries rather than by its body, because it is a critter that is smart
+   enough to use tools. Incorporation, kleptoplasty, is containment that
+   becomes anatomy. *Possession* is asserted: a sophont, a faction or a
+   polity can own, because each can assert, and a critter cannot; it
+   collects, hides and uses, and what it holds is a fact of position and
+   capacity, never a claim. So the pilot possesses the mech that contains
+   it, and the mech, a construct, need not be inert or non-sapient, which
+   is ruling 45's two axes at work: made, and possibly a person. Under
+   the derivation rule containment is derived from the bodies and
+   possession is an asserted fact in the record, which is why theft is an
+   event and a squirrel's cache is not.
 5. *Place.* Where it is, its home, its territory, its membership in a
    settlement. Position is a fact; is home a relation of the borg level,
    and territory of the faction?
@@ -1620,6 +1643,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 53 recorded, holding as two relations, containment
+  derived from capacity and possession asserted by those who can assert.
 - 2026-09-18: ruling 52 recorded, the referent as a privilege of the
   greater tiers and power as frequency weighted by significance; §9.13
   closed.
