@@ -298,6 +298,13 @@ what later sections derive from.
     mean that and instead make the 2nd tier something more... like a
     person? Or a sapient?" §3.2.1 carries the reading and the naming
     question.
+43. **How a divine thing is present, and how it ends.** Mark, 2026-09-18:
+    "something divine could have an omnipresent instance, where there is
+    one, and it's the same anywhere and everywhere. It could also
+    participate in a cycle of reincarnation/recreation, destroyed only
+    through prophesied conditions related to its ascent. So maybe you get
+    the chain of avatars, maybe you get the one true god of lightning,
+    maybe you get a worldtree that the world depends on and likewise."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -423,6 +430,30 @@ world-scale, such as gathering and invoking the world's whole glyph
 canon. That answers question 8 for the top: what persists past a body is
 the record always, a borg's memory only if retold, a character's sheet as
 an asserted fact, and a divine thing entirely, as provenance.
+
+**Presence and ending (ruling 43).** The ascent writes two terms into the
+world's rules beside the divine thing's identity: how it is present, and
+how it can end. Presence has at least three modes. *Omnipresent:* one
+instance, the same anywhere and everywhere, which in the sim is a
+world-scope field or process rather than a body, the one true god of
+lightning being a condition every place carries. *Reincarnating:* a cycle
+of recreation, the chain of avatars, which is a lineage whose program
+re-founds the divine thing on each death, a rung transition the world's
+rules guarantee. *Fixed:* a body or a place the world depends on, a
+worldtree, which is a terrain-body under ruling 39 with the world's own
+processes bound to it. Ending is by prophesied conditions related to the
+ascent: the only transition that can remove a divine thing is one whose
+preconditions were asserted when it rose, so a prophecy is a rule in the
+provenance root, checkable like any other, and "destroyed only through
+prophesied conditions" is the derivation rule's guarantee that nothing
+derived can erase what was asserted at the root. Prior art, unverified:
+Dominions' pretender gods embodied as units and recalled after death;
+Elden Ring's Erdtree as a place the world depends on; Dark Souls' First
+Flame as a cycle; Pratchett's small gods, whose strength is belief, for
+"a wish with the world's strength"; Cultist Simulator's ascensions as
+the enactment. Open: what the wish is, who may make it, what it consumes,
+and whether the presence mode and the end conditions are chosen by the
+wisher, dictated by the glyphs invoked, or drawn.
 
 **A reading, proposed 2026-09-18 and not yet ruled:** Mark's "0th tier"
 and "4th tier" are the two ends of one axis that is not the identity
@@ -1359,6 +1390,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 43 recorded, a divine thing's presence modes and
+  prophesied ending, read as terms the ascent writes into the world's
+  rules.
 - 2026-09-18: ruling 42 recorded, divinity as intrinsic provenance and
   constructs as a tier, with the provenance-axis reading proposed and the
   second tier's word put to Mark's naming round.
