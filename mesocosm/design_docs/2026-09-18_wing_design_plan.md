@@ -407,7 +407,9 @@ what later sections derive from.
     presence and defense. Even just being named is enough to be able to
     'have' a home, because that is a feature of sapience, but that's a
     one sided assertion from the sapient to the sentient; otherwise,
-    you're just living where you can, as a critter."
+    you're just living where you can, as a critter." And the sentence
+    that states it: "a human can give a dog a home, but they can't make
+    the dog own the home."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
