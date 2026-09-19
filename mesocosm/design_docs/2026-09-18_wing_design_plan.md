@@ -325,6 +325,27 @@ what later sections derive from.
     trait. So depending on if you represent, or learned, or acquired the
     gnostic knowledge of the world in the glyphs, you get more leverage
     out of the ascension, grades per glyph."
+47. **Sacrifice is destruction, and the domain of a divinity is how its
+    forms were acquired.** Mark, 2026-09-18: "Maybe destroying a thing
+    counts as sacrificing it? Like you could literally carve each world
+    glyph into a stick, burn all the sticks, and become a demigod of...
+    carving from that, but you could also be killed just as easily. If you
+    just bought all of the glyphs, you'd be a demigod of... buying, the
+    dominant action for how you got the items. If you could figure out a
+    way to destroy your memories of the glyphs as a sacrifice, you could
+    become a god of memorizing. It's like, how did you acquire the form
+    that was sacrificed/destroyed? What's the mix of forms you're
+    sacrificing, because you could also mix items, skills, and your own
+    body."
+48. **Divine places, placement, rooms and alignment.** Mark, 2026-09-18:
+    "For a place, all the glyphs existing there is enough to make it a
+    divine environment; a glyph being in a place has an influence on the
+    place, so how durable the glyph's placement is matters, along with the
+    quality of the placement (when we get to buildings and rooms, we
+    should be able to evaluate the type and impressiveness of a room like
+    rimworld? And an alignment system, where things can relate to the
+    glyphs/symbols/factions/polities positively and/or negatively
+    depending on tenets associated with effects?)"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -516,6 +537,47 @@ which. Still open: whether the presence mode of ruling 43, omnipresent,
 reincarnating or fixed, is dictated by the tier, chosen by the wisher
 within it, or follows the referent; Mark's answer of 2026-09-18 addressed
 the grade rather than the mode, so the mode stays with the organ's plan.
+
+**Sacrifice and domain (ruling 47).** To sacrifice a form is to destroy
+it: burn the carved sticks, spend the bought items, unmake the embodied
+trait, and, if a way can be found, destroy the memory. The **tier** is the
+aggregate grade of the forms destroyed (ruling 46). The **domain**, what
+the divinity is *of*, is the dominant means by which those forms were
+acquired, read off the journey: carve the glyphs into sticks and burn
+them and you are a demigod of carving; buy them all and you are a demigod
+of buying; destroy your memories of them and you are a god of memorizing.
+The mix of forms may be mixed, items, skills and the body together, so a
+divinity's domain is a distribution over acquisition means rather than
+one word, and the journey's recorded means, ability, trait, technique,
+item, bond, quest, event, or a mod-defined category per §7.4, is exactly
+the evidence it reads. This resolves the general model plan's
+"same collection, different divinities" into a rule: forms decide the
+tier, means decide the domain. Memory is thereby a fourth bearer form
+beside item, technique and trait, the one a sophont has and a critter
+does not, and its sacrifice is forgetting.
+
+**Divine places, placement and alignment (ruling 48).** A place ascends
+without sacrifice: all the glyphs existing there is enough to make it a
+divine environment, so a place's ascent is by presence rather than by
+destruction, which answers the carving question above. A glyph placed
+somewhere influences the place, and the strength of that influence is
+the placement's durability and quality. That makes placement a reading
+over the place rung: when buildings and rooms exist, a room has a type and
+an impressiveness, evaluated as RimWorld evaluates its rooms from space,
+wealth, beauty and cleanliness. And an **alignment system**: any thing
+may relate positively or negatively to a glyph, a symbol, a faction or a
+polity, according to **tenets** associated with effects. In the record's
+terms a tenet is a rule a faction or polity holds that reads events and
+effects in the record as approval or disapproval, and alignment is the
+derived valence of the relation, never asserted, which is Law A's chain
+from choices to values to ethos to faction with the reading rule named.
+Prior art, unverified: RimWorld's Ideology, where memes yield precepts
+that turn events into approval and mood; Dwarf Fortress's civilization
+values and ethics; Crusader Kings III's religious tenets, whose word this
+is; and Cultist Simulator's aspects as the affinities of things to
+principles. Tenets are a W2 question for the faction and polity rungs:
+who holds them, whether a sophont may hold its own, and how a glyph
+placed in a room reads under them.
 
 **Two axes (ruling 45, proposed and then agreed the same day):** Mark's
 "0th tier" and "4th tier" are the two ends of one axis that is not the
@@ -1455,6 +1517,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 47 and 48 recorded: sacrifice as destruction with
+  forms deciding the tier and acquisition means deciding the domain,
+  memory as a fourth bearer form; divine places by presence, placement as
+  a reading with durability and quality, rooms evaluated as RimWorld
+  does, and alignment by tenets as a derived valence, with prior art.
 - 2026-09-18: ruling 46 recorded, grades per glyph by the form sacrificed,
   item, learned, embodied, aggregated to the tier of godhood; presence
   mode left to the organ's plan.
