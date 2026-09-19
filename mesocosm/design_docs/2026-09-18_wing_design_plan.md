@@ -410,6 +410,10 @@ what later sections derive from.
     you're just living where you can, as a critter." And the sentence
     that states it: "a human can give a dog a home, but they can't make
     the dog own the home."
+55. **One memory, graded, over one history.** Asked on 2026-09-18 whether
+    a critter's memory of habit and habitat and a sophont's memory of
+    events are two things or one at different ends, Mark ruled "the
+    latter" (2026-09-19).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -778,8 +782,14 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    "capable of remembering" for a borg is knowledge of events, which
    ruling 47 made a bearer form a sophont can sacrifice. Every level has
    a history, the deviation record §1 keeps whether or not anything can
-   recall it. **Open:** confirm the two memories are two things, a
-   critter's habit and a sophont's knowledge, over one history.
+   recall it. **Answered, ruling 55:** one memory, graded, over one
+   history. Memory is a phenotype ability with a range: at the low end
+   habit and habitat, places and what worked there; at the high end
+   knowledge of events with error, which reach carries between sophonts
+   and which can be sacrificed as a bearer form. Where a creature sits on
+   that range is its phenotype's business, not its tier's, so a sophont is
+   a critter whose memory reaches the top of the range along with its
+   naming and tool use, and there is no second kind of memory to model.
 4. *Holding.* **Answered, ruling 53.** Two relations, not one.
    *Containment* is physical and derived: a body holds what its capacity
    holds, and capacity is biology for a critter (cheeks, a pouch, an
@@ -1664,6 +1674,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 55 recorded, one memory graded over one history;
+  §3.2.1's third question closed.
 - 2026-09-18: ruling 54 recorded, place as the same split as holding,
   presence and defence derived below the assertion line and home,
   property, ground and borders asserted above it, with naming as the act
