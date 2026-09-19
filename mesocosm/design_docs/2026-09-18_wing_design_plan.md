@@ -435,6 +435,14 @@ what later sections derive from.
     in between rounds...). But hey, you can always branch or fork off,
     provided you have a plan to grow your branch and compete or cooperate
     with the originating lineage."
+58. **A spread is a body; a fungus is one body and a germ is many.**
+    Mark, 2026-09-19: "For fungus, one body, even separate. Germs are
+    many bodies. You literally burn generations spreading as germs,
+    letting you revise your genes on the fly depending on
+    host/environment, a unique micro advantage. And myco have longer
+    life, but they are distributed, collective organisms; there is no
+    individual, only the instance of the whole, like the fungelganger in
+    nethermurk" (a reference of Mark's, not read here).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -769,8 +777,19 @@ world that may be an entity" already allows at the largest scale.
 Consequence for the body noun: a body is a part tree (animal), a spread
 over a substrate (germ, fungus, colony), or a terrain-body (macro), and
 the three body forms share the ledger and the record but not the part
-model. Open: whether a spread is a body at all or a field with a lineage
-attached, which decides whether a germ has a phenotype in the same sense.
+model. **Ruled 2026-09-19 (ruling 58): a spread is a body,** and the
+kingdom decides how many. A fungus is one body even when its patches are
+separate: a distributed, collective organism with a long life, in which
+there is no individual, only the instance of the whole, so its regions are
+its parts and splitting it does not make two of it. A germ is many bodies:
+a population of tiny lives turning over so fast that a played germ burns
+generations while spreading, and revises its genes on the fly according
+to host and environment. That is the unique micro advantage, and in the
+record's terms it is the two doors of ruling 57 merging: for a germ the
+epoch boundary comes every generation, the shop is open during the round,
+and to play a germ is to play the lineage directly. Both kingdoms have a
+genotype and a phenotype in the animal's sense; what differs is the count
+of bodies one identity spans.
 
 **What the record's own structure says a creature must also carry, put to
 Mark as questions rather than filled in (open, 2026-09-18):**
@@ -1735,6 +1754,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 58 recorded, spreads as bodies, a fungus one and a
+  germ many, with the two doors merging at micro scale.
 - 2026-09-19: ruling 57 recorded, the two doors of inheritance, NPC
   lineages adapting at the epoch boundary as the player's autopilot,
   branching with a plan, and Ptree's property vocabulary read as the
