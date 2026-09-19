@@ -476,6 +476,11 @@ what later sections derive from.
     a clone. And isometry, death is understood to be a state that could
     almost be defeated if only we know more of the sciences and magics...
     revivify, resurrection, wishes..."
+62. **The significant dead go to the planes after life, and summoning
+    them back is a costly possibility.** Mark, 2026-09-19: "things that
+    die that are significant should go to the planes after life, right?
+    So being summoned back from there sorta makes sense as a possible,
+    costly thing to do." And: "Let's keep going down. Let's plan it all."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -951,6 +956,21 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    corrects the earlier reading from "you are one": the pillar is not
    Paredros's alone; finality is the sim's, and each game chooses what it
    does about it.
+
+   *Where the dead are (ruling 62).* Significant things that die go to
+   the planes after life: a plane is a world in relation to this one
+   under ruling 11, and the hagiograph's kept dead reside there as
+   entities rather than as lines in a journal, so the retold subset has a
+   place and legends have an address. Re-embodiment is then summoning
+   back from a plane, possible and costly, and a resurrection needs the
+   dead's plane reachable and the dead willing, which is where the
+   sciences and magics earn their price. Which plane receives a thing is a
+   natural job for its alignment (ruling 51), the way the older tabletop
+   cosmologies send a soul to the plane of its alignment as a petitioner.
+   Prior art, unverified: Planescape and the D&D outer planes with their
+   petitioners and the raise-dead rule that the soul must be willing;
+   Hades, where the dead are the cast; Spiritfarer and Pyre for passage as
+   the game.
 9. *Divinity.* **Answered, ruling 42:** neither a fourth level nor a
    status but promotion into the world's provenance, present in every
    branch after ascendance, reachable by anything, enacted by a wish with
@@ -1843,6 +1863,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 62 recorded, the significant dead residing on the
+  planes after life and summoning as costly re-embodiment; W2 continues
+  down into the faction and polity rung at Mark's word.
 - 2026-09-19: ruling 61 recorded, death final in the sim with each
   game's trick over it, Mesocosm's cohort, Paredros's non-fungible
   companions, Isometry's reversal by rules; the earlier reading of the
