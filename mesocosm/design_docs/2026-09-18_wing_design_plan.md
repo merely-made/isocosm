@@ -346,6 +346,44 @@ what later sections derive from.
     rimworld? And an alignment system, where things can relate to the
     glyphs/symbols/factions/polities positively and/or negatively
     depending on tenets associated with effects?)"
+49. **The domain is named freely; the acts fuel it; power is the
+    frequency of the domain's process; anatomy is the other road to long
+    life.** Mark, 2026-09-18: "you can name your domain when you ascend.
+    Because what your domain is remains rooted in what you did to get the
+    form of glyph that was sacrificed, the name isn't what matters nor
+    what determines what fuels your divinity, which are the acts. But how
+    do the glyphs and their effects relate to the processes? Simple: the
+    processes that lead to the effects are more aligned with the effect
+    when they lead to the effect happening more. So a glyph representing
+    slicing would be aligned with things that produce the slicing effect.
+    Same with burning, persuading, forgetting, lightening, flying,
+    protecting, healing... really any effect we can describe that is
+    recognized as fundamental to the world by the world, and thus given
+    its own characteristic manifestation (a glyph). You're not gonna be a
+    strong god if the process your power (effect) is borne on doesn't
+    happen often. So you have to be careful. But there are other options,
+    like becoming a vampire, a lich, fey, eldritch... but those revolve
+    around instantiating particular anatomies, magical, conditional
+    (phylactery) or otherwise."
+50. **A tenet.** Mark, 2026-09-18: "A tenet ought to be that relation:
+    that process yields that effect, and here's our opinion of that, and
+    the trust people have in it for their survival/fulfillment
+    (expectations: maybe people come to expect certain outcomes depending
+    on how things turned out in the past, and that's a cohort opinion
+    with variance possible? Idk. Feels a little complex, and we're missing
+    attitude towards how things happened)".
+51. **Who holds tenets, and how alignment is taken at each rung.** Mark,
+    2026-09-18: "Factions align with tenets, multiple, through a weighting
+    of each sophont's own alignments by each sophont's respective faction
+    influence. The things a sophont does can align them with one of the
+    many domains, tenets, or pursuits of the world. If you do a lot of
+    killing, perhaps a god of war will like you because they align with
+    the glyphs of slicing, piercing, and bludgeoning, and perhaps you come
+    to represent the act of killing in the manner you favor, which people
+    do or don't like. Polities do align with tenets too, but
+    constitutionally, not derived, in addition to the factions within
+    them. Divinity blends effects and acts through their journey to
+    choose a domain; some effects lend themselves to certain acts."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -578,6 +616,59 @@ is; and Cultist Simulator's aspects as the affinities of things to
 principles. Tenets are a W2 question for the faction and polity rungs:
 who holds them, whether a sophont may hold its own, and how a glyph
 placed in a room reads under them.
+
+**Glyphs, effects, processes and the three quantities of a divinity
+(ruling 49).** A glyph is an effect the world recognises as fundamental
+and gives its own manifestation: slicing, burning, persuading, forgetting,
+lightening, flying, protecting, healing. A process is aligned with an
+effect to the degree it produces that effect, which is a frequency read
+off the record, never asserted. A divinity then has three quantities,
+all from the journey and the acts:
+
+| Quantity | Comes from | Ruling |
+| --- | --- | --- |
+| Tier, how it can end | the forms sacrificed | 44, 46 |
+| Domain, what it is of | the means by which those forms were acquired, blended with the effects they bore; named freely at ascension, the name deciding nothing | 47, 49 |
+| Power, how strong it is | how often the process its effect is borne on happens in the world | 49 |
+
+"You have to be careful": a god of a rare effect is a weak god. The other
+road to long life is anatomy rather than provenance: a vampire, a lich, a
+fey or an eldritch thing instantiates a particular anatomy, magical or
+conditional as a phylactery is, and that is ruling 7's longevity by
+traits and ruling 39's body forms, not divinity.
+
+**A tenet (ruling 50), and the gap Mark named.** A tenet is the relation
+that a process yields an effect, together with the holder's opinion of
+that and the trust the holder places in it for survival or fulfilment,
+where trust is an expectation formed from how things turned out before,
+held at the cohort rung as a distribution with variance and at the near
+rung per sophont. Mark noted the definition is "missing attitude towards
+how things happened". Ruling 47 already carries that dimension: the
+journey records the *means* of every act as well as its effect, so a
+tenet reads pairs of means and effect, not effects alone, and "killing in
+the manner you favor" is a tenet's opinion of a means. The three parts
+are then: a process-to-effect relation, an opinion of the effect and of
+the means, and a trust with variance.
+
+**Alignment by rung (ruling 51).** A sophont's alignment is derived from
+its acts: what it does aligns it with domains, tenets and pursuits, and a
+god of war aligns with slicing, piercing and bludgeoning and so with a
+sophont who kills. A faction's alignment is derived as the weighting of
+its members' alignments by each member's influence in the faction, which
+is exactly the relational entity of ruling 8 with the weights named. A
+polity's alignment is asserted, constitutional, in addition to the
+factions within it, which is exactly ruling 9: a polity has state because
+it decides, and its constitution is asserted state. So alignment is
+derived at the sophont and faction rungs and asserted at the polity rung,
+and the derivation rule holds at each.
+
+**One tension, for Mark.** The general model plan's §7.4 says a god
+*chooses* its referent, the source and measurement period of its power,
+before each period. Ruling 49 says power is borne on the frequency of the
+domain's process. Either the referent is chosen among the effects the
+domain blends and measured as their processes' frequency, which keeps
+both, or the referent is simply the domain's effect and §7.4's choice
+narrows to the period. Which is a §9 decision.
 
 **Two axes (ruling 45, proposed and then agreed the same day):** Mark's
 "0th tier" and "4th tier" are the two ends of one axis that is not the
@@ -1366,6 +1457,10 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
+13. **The referent of divine power** (§3.2.1, ruling 49 against the
+    general model plan's §7.4): chosen among the domain's effects and
+    measured as their processes' frequency, or simply the domain's effect
+    with only the period chosen.
 12. **Rulesets over the sim** (§5.1): (a) **ruled, ruling 41:** world
     effects and game rulesets are one language at two scopes,
     world-founding and play, both packs lowered to rulesets recorded by
@@ -1517,6 +1612,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 49 to 51 recorded: the three quantities of a
+  divinity, tier from forms, domain from means and effects, power from
+  process frequency; a tenet as a process-to-effect relation with opinion
+  and trust, its missing attitude to means supplied by ruling 47;
+  alignment derived at the sophont and faction rungs and constitutional
+  at the polity rung. One tension with §7.4's chosen referent raised.
 - 2026-09-18: rulings 47 and 48 recorded: sacrifice as destruction with
   forms deciding the tier and acquisition means deciding the domain,
   memory as a fourth bearer form; divine places by presence, placement as
