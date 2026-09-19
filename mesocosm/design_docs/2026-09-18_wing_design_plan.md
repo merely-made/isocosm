@@ -319,6 +319,12 @@ what later sections derive from.
     made-by-a-maker kind, the divine the intrinsic kind, and neither is a
     rung of the identity ladder. For the second identity level's word he
     finds sophont and denizen both good; the choice is still his.
+46. **Grades per glyph by the form sacrificed.** Mark, 2026-09-18: "I was
+    just thinking of like assigning a point tier to what form of glyph is
+    sacrificed for ascension. Item vs technique/skill/ability vs embodied
+    trait. So depending on if you represent, or learned, or acquired the
+    gnostic knowledge of the world in the glyphs, you get more leverage
+    out of the ascension, grades per glyph."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -491,12 +497,25 @@ are an ordering of ruling 43's ending terms:
 
 So the end conditions are dictated by the journey, not chosen. What the
 god chooses, per §7.4, is its referent, the source and measurement period
-of its power. Still open: whether the presence mode of ruling 43,
-omnipresent, reincarnating or fixed, is likewise dictated by the tier,
-chosen by the wisher within the tier, or follows the referent; and how
-"the most difficult conditions" grade, which is the hagioglyph organ's to
-define under this rule. A place can ascend because it can bear carvings,
-which is how a worldtree becomes divine without ever being a borg.
+of its power.
+
+**How the grade is taken (ruling 46).** Each glyph sacrificed at ascension
+scores by the form that bore it: an item held, the lowest, for a glyph
+acquired; a technique, skill or ability, the middle, for one learned; an
+embodied trait, the highest, for one represented in the body. The tier of
+godhood is the aggregate of those grades across the canon. That is the
+glyph expression ruling of 2026-09-15 read as a scale: a glyph is had by
+a trait or part, by an item, or by a carving, and the forms now rank. Two
+consequences. Mesocosm's critters, who can only embody, take the highest
+grade per glyph, so the wildlife route to divinity is the strongest one,
+which suits the vessel briefs' primordial-name hook. And a carving cannot
+be sacrificed, so a place's ascent either counts its carvings without
+consuming them, which suits a worldtree keeping its marks, or a place
+ascends by another party's sacrifice on it; the hagioglyph organ decides
+which. Still open: whether the presence mode of ruling 43, omnipresent,
+reincarnating or fixed, is dictated by the tier, chosen by the wisher
+within it, or follows the referent; Mark's answer of 2026-09-18 addressed
+the grade rather than the mode, so the mode stays with the organ's plan.
 
 **Two axes (ruling 45, proposed and then agreed the same day):** Mark's
 "0th tier" and "4th tier" are the two ends of one axis that is not the
@@ -1436,6 +1455,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 46 recorded, grades per glyph by the form sacrificed,
+  item, learned, embodied, aggregated to the tier of godhood; presence
+  mode left to the organ's plan.
 - 2026-09-18: ruling 45 recorded, the provenance and identity axes
   agreed; the second tier's word narrowed to sophont or denizen.
 - 2026-09-18: ruling 44 recorded, the tiers of godhood as the quality of
