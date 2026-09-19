@@ -468,6 +468,14 @@ what later sections derive from.
     directives as that sophont to your friends and that can work a bit
     like directing mesocosm's critters, with an opinion modifier for
     command/request efficacy? So the systems compose, it seems to me."
+61. **Death is final across the board; each game has its own trick.**
+    Mark, 2026-09-19: "death is final across the board, but mesocosm's
+    trick is that you have extra lives because of your cohort, paredros's
+    is that you do too, but that those lives are even less fungible
+    because no individual can really 1:1 replace another unless they're
+    a clone. And isometry, death is understood to be a state that could
+    almost be defeated if only we know more of the sciences and magics...
+    revivify, resurrection, wishes..."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -925,15 +933,24 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    for the abilities' planners, behaviour trees, goal-oriented action
    planning and hierarchical task networks, which are the procedural
    planning and execution Mark names.
-8. *Death and what persists.* **Answered, rulings 42 and 60:** the record
-   always; a borg's memory only if retold; a character's sheet as an
-   asserted fact; a divine thing entirely, as provenance. "One life makes
-   it real" is the sophont's pillar and Paredros's game, "you are one";
-   Mesocosm's run is a lineage across lives, and a tabletop character's
-   death is as final as its system and its table rule, with the taste
-   record's line standing that the weight of a death scales with the
-   investment in it. Recorded from Mark's "you are one" rather than a
-   direct ruling; he may correct it.
+8. *Death and what persists.* **Answered, rulings 42 and 61.** In the
+   sim a body's death is final, everywhere; what persists is the record
+   always, a sophont's memory only if retold, a character's sheet as an
+   asserted fact, and a divine thing entirely, as provenance. Each
+   overlay then has its own trick over that one death, and the trick is
+   its foregrounded rung. Mesocosm: extra lives through the cohort, the
+   lineage's other members, who are fungible enough that the run goes on.
+   Paredros: extra lives through companions, who are not fungible, since
+   no individual can replace another one for one unless it is a clone,
+   which is the founding record's "they can replace you" with its cost
+   named. Isometry: death is understood as a state that could almost be
+   defeated with more of the sciences and magics, revivify, resurrection,
+   wishes, so reversal is a process a ruleset or a world's magic provides,
+   which in the sim is re-embodiment, the same transition an avatar's
+   reincarnation uses, bought by rules rather than earned by ascent. That
+   corrects the earlier reading from "you are one": the pillar is not
+   Paredros's alone; finality is the sim's, and each game chooses what it
+   does about it.
 9. *Divinity.* **Answered, ruling 42:** neither a fourth level nor a
    status but promotion into the world's provenance, present in every
    branch after ascendance, reachable by anything, enacted by a wish with
@@ -1826,6 +1843,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 61 recorded, death final in the sim with each
+  game's trick over it, Mesocosm's cohort, Paredros's non-fungible
+  companions, Isometry's reversal by rules; the earlier reading of the
+  pillar corrected.
 - 2026-09-19: ruling 60 recorded, driving as Paredros's mode with
   directing composed on top through opinion-modified directives to
   companions; §9.14 closed, and the last of §3.2.1's ten questions with
