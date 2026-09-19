@@ -414,6 +414,11 @@ what later sections derive from.
     a critter's memory of habit and habitat and a sophont's memory of
     events are two things or one at different ends, Mark ruled "the
     latter" (2026-09-19).
+56. **Standing is three things the record already has.** A sophont's
+    alignment, derived from its acts (ruling 51); its reputation, the
+    reach of its deeds among those who know of it (§3.4); and its rank,
+    which a polity asserts: a title, an office, a membership. Mark,
+    2026-09-19: "Yeah, sounds about right."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -819,10 +824,13 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    relations of its own beyond position: derived presence below the
    assertion line, asserted claim above it, and naming as the act that
    lets a sophont extend claims over critters and places alike.
-6. *Standing.* A character's rank, alignment and reputation inside its
-   polity, and a borg's reputation among those who know of it, which is
-   the reach of its deeds. Is standing the character-level addition, the
-   way naming is the borg-level one?
+6. *Standing.* **Answered, ruling 56.** Three things the record already
+   has: alignment derived from acts, reputation as the reach of deeds,
+   rank asserted by a polity. The character level therefore adds nothing
+   new to the schema: a character is a sophont with an asserted rank
+   inside a polity, and "contingent on the group, even by absence" is a
+   rank of none. What the tabletop system adds is its reading of that
+   sophont (ruling 38), not a new kind of thing.
 7. *Senses.* What a creature can perceive is a phenotype ability, and it
    bounds what a borg can witness and remember. Confirm it sits in the
    phenotype rather than beside it.
@@ -1674,6 +1682,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 56 recorded, standing as alignment, reputation and
+  rank; the character level adds no new kind to the schema.
 - 2026-09-19: ruling 55 recorded, one memory graded over one history;
   §3.2.1's third question closed.
 - 2026-09-18: ruling 54 recorded, place as the same split as holding,
