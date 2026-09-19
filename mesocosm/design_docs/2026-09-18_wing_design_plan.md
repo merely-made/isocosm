@@ -270,6 +270,21 @@ what later sections derive from.
     (§5.1): Daggerheart's is a no, Lancer's is a yes with attribution,
     ICON and CAIN have no licence for implementation and are a question to
     Massif Press.
+41. **One language at two scopes, ruled; effects from world composition
+    deferred; the space scope is the extension Lancer waits on.** Mark,
+    2026-09-18: "Agreed. I would also expect more general effects through
+    world composition, but that seems like an additional difficulty. I
+    would love to expand into a space scope and support lancer there;
+    feels hard to do it without that thesis, but seems like a natural
+    extension!" So world rules and game rulesets are one binding language
+    at world-founding and play scopes (§9.12a closed). A third source of
+    world-scope rules, effects entailed by a world's composition under
+    ruling 11 (a ring's gravity, a core's magnetosphere, a thin veil
+    between realms), is recorded as a later difficulty rather than part of
+    the language now. The space scope, worlds in relation to each other,
+    is a desired extension of the sim and Lancer is its natural ruleset;
+    neither is in this round, so the next ruleset consumer for the
+    tabletop stays a PbtA-shaped system (§9.12b narrowed).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1134,14 +1149,15 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
-12. **Rulesets over the sim** (§5.1): (a) **open,** world effects and
-    game rulesets as one language at two scopes, world-founding and play,
-    both packs lowered to rulesets recorded by digest; (b) **open,** the
-    next ruleset consumer after the d20 family: a PbtA-shaped system, or
-    Lancer, which is licensed and brings pools, popcorn initiative and
-    bodies inside bodies; (c) **closed by ruling 40 and the licence
-    text:** Daggerheart is out, Lancer is in with attribution, ICON and
-    CAIN are a question to Massif Press.
+12. **Rulesets over the sim** (§5.1): (a) **ruled, ruling 41:** world
+    effects and game rulesets are one language at two scopes,
+    world-founding and play, both packs lowered to rulesets recorded by
+    digest; effects entailed by world composition are a later difficulty.
+    (b) **narrowed by ruling 41:** the next ruleset consumer after the d20
+    family is a PbtA-shaped system; Lancer waits on the space scope, a
+    desired extension of the sim that is not in this round. (c) **closed
+    by ruling 40 and the licence text:** Daggerheart is out, Lancer is in
+    with attribution, ICON and CAIN are a question to Massif Press.
 11. **The founding record disagrees with this record in three places,**
     found by W1, and both are wing-level, so which yields is Mark's. (a)
     The founding record's §1 says the vessels "do not share a genre, a
@@ -1284,6 +1300,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 41 recorded: one language at two scopes, effects
+  from world composition deferred, the space scope as the extension
+  Lancer waits on.
 - 2026-09-18: rulings 39 and 40 recorded: kingdom as class with scale
   orthogonal, germs as spreads and macro creatures as terrain-bodies; and
   the licence rule, applied by reading the Daggerheart, Lancer, ICON and
