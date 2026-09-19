@@ -443,6 +443,25 @@ what later sections derive from.
     life, but they are distributed, collective organisms; there is no
     individual, only the instance of the whole, like the fungelganger in
     nethermurk" (a reference of Mark's, not read here).
+59. **Play is directing, not driving; a creature's senses are its own.**
+    Mark, 2026-09-19, asked about senses: "How do you perceive and react
+    to the world without fauna sense organs, like most critters? And
+    that's not a limitation that should be imposed on the player; playing
+    blind or with no audio because it's diegetic sucks. Rather, perhaps
+    literally the critter you play has its own perceptions it can suggest
+    to you, which it would be acting on if it were on autopilot... but
+    then that opens up, like, that play isn't direct, but rather
+    directing, more like rimworld with colonists you schedule than like
+    vagante or rain world with a creature you control through a hostile
+    environment. I kinda fuck with that more, honestly. Hell, those same
+    abilities to direct one or a cohort of critters would then be useful
+    for paredros too. Perhaps we can take inspiration from pet systems,
+    work schedulers, desire paths...? And provide different things to
+    schedule depending on your biology? Like embodied abilities with
+    procedural planning and execution to 'em, like foraging for an
+    herbivore, or hunting for a predator, or scavenging...? Idk. All I
+    know is, it's a terrarium, behavior I shape is more interesting than
+    just making things do things outright usually."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -866,9 +885,40 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    inside a polity, and "contingent on the group, even by absence" is a
    rank of none. What the tabletop system adds is its reading of that
    sophont (ruling 38), not a new kind of thing.
-7. *Senses.* What a creature can perceive is a phenotype ability, and it
-   bounds what a borg can witness and remember. Confirm it sits in the
-   phenotype rather than beside it.
+7. *Senses.* **Answered, ruling 59, and it answered more than senses.**
+   A creature's senses are a phenotype ability and are the creature's
+   own: the sim's creature perceives with what its body has, and acts on
+   that when on autopilot. They are never imposed on the player as a
+   limitation of the interface; playing blind because a mole is blind is
+   refused. Instead the played creature surfaces its perceptions as
+   suggestions, what it would act on if left alone. Which turns play from
+   driving into **directing**: the player shapes the creature's behaviour,
+   schedules, priorities and standing orders over its own methodology
+   (ruling 37's reactive and belief-desire-intention agents), the way
+   RimWorld's colonists are scheduled rather than steered, and the same
+   directing serves one creature or a cohort, in Mesocosm and in
+   Paredros alike. What there is to direct depends on biology: embodied
+   abilities that carry their own procedural planning and execution,
+   foraging for an herbivore, hunting for a predator, scavenging, and
+   the player composes and prioritises them. Consequences for the
+   record: the player's handles (ruling 10) are directives over
+   processes the creature already runs, so the sim's agent and the
+   played creature are one mechanism and the NPC autopilot of ruling 57
+   is the same code with nobody directing; the overlay's controls (§5)
+   are the directive vocabulary, not actuation; and a creature's
+   perceptions are a reading the overlay may show, which is how a mole's
+   world is playable. Prior art, unverified: RimWorld's work priorities
+   and schedules and Dwarf Fortress's labours; The Sims' autonomy under
+   direction; Majesty and Dungeon Keeper for indirect control, where the
+   player posts wants and the creatures choose; Black & White's creature,
+   taught by reward and punishment, which is behaviour shaping in
+   Skinner's sense literally; Pikmin for directing a cohort; Creatures'
+   Norns, who learn; pet systems from Nintendogs to Tamagotchi; desire
+   paths, which are stigmergy, a field over the place graph laid down by
+   traffic, so the ant trail and the desire path are one process; and
+   for the abilities' planners, behaviour trees, goal-oriented action
+   planning and hierarchical task networks, which are the procedural
+   planning and execution Mark names.
 8. *Death and what persists.* **Answered in part, ruling 42:** the record
    always; a borg's memory only if retold; a character's sheet as an
    asserted fact; a divine thing entirely, as provenance. Still open:
@@ -1600,6 +1650,15 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
+14. **Directing against driving** (ruling 59 against the taste record):
+    the founding record's integrated tastes prize skill-based real-time
+    action for Paredros, Mount & Blade's timing and Sword Hero's
+    directional combat, and real time with pause. Ruling 59 makes
+    Mesocosm's play directing. Open: whether directing is Mesocosm's mode
+    and driving Paredros's, both everywhere as settings per the
+    configurability doctrine, or directing the default with driving a
+    handle a sophont's overlay may open, so that a fight is fought and a
+    week is scheduled.
 13. **The referent of divine power:** **ruled, ruling 52.** Fixed as the
     domain's effect for the lower tiers, chosen by the greater tiers, all
     bound by frequency weighted by impact.
@@ -1754,6 +1813,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 59 recorded, play as directing rather than driving,
+  senses as the creature's own and surfaced as suggestions, the played
+  creature and the NPC autopilot as one mechanism, with prior art; one
+  tension with the taste record's skill-based action raised as §9.14.
 - 2026-09-19: ruling 58 recorded, spreads as bodies, a fungus one and a
   germ many, with the two doors merging at micro scale.
 - 2026-09-19: ruling 57 recorded, the two doors of inheritance, NPC
