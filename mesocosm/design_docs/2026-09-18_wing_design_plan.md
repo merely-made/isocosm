@@ -305,6 +305,13 @@ what later sections derive from.
     through prophesied conditions related to its ascent. So maybe you get
     the chain of avatars, maybe you get the one true god of lightning,
     maybe you get a worldtree that the world depends on and likewise."
+44. **The quality of divinity is the quality of the journey.** Mark,
+    2026-09-18: "perhaps the quality of divinity you can attain is related
+    to your journey. If you fulfill the most difficult conditions for
+    acquiring each glyph, you can reach tiers of godhood, like one
+    immortal but vulnerable life (demigod), reincarnation on death
+    (avatar) and immortality otherwise (avatar+), straight up unable to
+    be killed immortality (greater divinity)."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -451,9 +458,38 @@ Dominions' pretender gods embodied as units and recalled after death;
 Elden Ring's Erdtree as a place the world depends on; Dark Souls' First
 Flame as a cycle; Pratchett's small gods, whose strength is belief, for
 "a wish with the world's strength"; Cultist Simulator's ascensions as
-the enactment. Open: what the wish is, who may make it, what it consumes,
-and whether the presence mode and the end conditions are chosen by the
-wisher, dictated by the glyphs invoked, or drawn.
+the enactment.
+
+**The wish, and the tiers (ruling 44, with what §7.4 of the general model
+plan already rules).** The wish is the ascension the glyph organ already
+defines: you must have the glyphs to ascend using them; a glyph is had, by
+a trait or part in a critter, by an item a borg may hold and sacrifice at
+ascension, or by a carving on a place or thing that cannot be sacrificed;
+and every glyph must have been experienced, through conditions that
+trigger off the log of significant events. An individual has a journey,
+the accepted order of every acquisition with its means and evidence, and
+the ascension basis retains the exact grant prefix at first ascension. The
+general model plan already says the same collection produces different
+divinities according to how each glyph was acquired. Ruling 44 grades
+that: the tier of godhood reached is a function of how difficult the
+acquisition conditions fulfilled were, across the canon, and the tiers
+are an ordering of ruling 43's ending terms:
+
+| Tier | Body | Identity |
+| --- | --- | --- |
+| Demigod | ageless but vulnerable | one life; ends at death |
+| Avatar | vulnerable | reincarnates on death |
+| Avatar, greater | ageless, vulnerable | reincarnates on death |
+| Greater divinity | cannot be killed | ends only by prophecy |
+
+So the end conditions are dictated by the journey, not chosen. What the
+god chooses, per §7.4, is its referent, the source and measurement period
+of its power. Still open: whether the presence mode of ruling 43,
+omnipresent, reincarnating or fixed, is likewise dictated by the tier,
+chosen by the wisher within the tier, or follows the referent; and how
+"the most difficult conditions" grade, which is the hagioglyph organ's to
+define under this rule. A place can ascend because it can bear carvings,
+which is how a worldtree becomes divine without ever being a borg.
 
 **A reading, proposed 2026-09-18 and not yet ruled:** Mark's "0th tier"
 and "4th tier" are the two ends of one axis that is not the identity
@@ -1390,6 +1426,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 44 recorded, the tiers of godhood as the quality of
+  the journey, read against the general model plan's §7.4 and the glyph
+  expression ruling of 2026-09-15.
 - 2026-09-18: ruling 43 recorded, a divine thing's presence modes and
   prophesied ending, read as terms the ascent writes into the world's
   rules.
