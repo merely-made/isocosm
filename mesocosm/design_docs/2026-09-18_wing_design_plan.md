@@ -822,7 +822,114 @@ levels:
 "Weakly expressed" is a requirement on the sim, not on the game: every rung
 must be able to run at background fidelity and surface as effects,
 encounters, pressures and stakes in a game that does not play it. What that
-requires of each rung is a W2 question. What each game's profile contains
+requires of each rung is a W2 question.
+
+### 5.1 Rulesets over the sim
+
+Mark's question of 2026-09-18: "how do you make one sim be useful to both
+a srd, pf2e, daggerheart, PbtA, GURPS, etc. ruleset? maybe we taxonomize
+each, consider them each a language we have to make bindings to the sim
+for?" And his addendum: "perhaps it's worthwhile to think of some world
+effects as like rulesets for mesocosm and/or paredros?" This section is
+the assessment; the rulings it needs are in §9.12.
+
+**The seam that exists.** Isometry's system plugin (`crates/isometry-system`,
+read 2026-09-18) is already a binding of the shape Mark describes: a system
+is a schema of fields, derived values as Lua functions of the sheet, and
+actions as a dice expression plus a Lua bonus; an adjudicated action names
+a target and asks the script how well it landed as a **degree of success**,
+-1 to 2, scales its effect by degree, and resolves into typed deltas,
+conditions, forced movement, beats and defeats that the substrate obeys
+without knowing what a hit point is. A Pathfinder 2e skeleton is the second
+ruleset and "the reason the action spec has to generalize": degrees of
+success came from it. So the two-consumer test has been run once, inside
+the d20 family, and the seam held.
+
+**What varies across the rulesets Mark named,** from general knowledge of
+each system (unverified against their texts today):
+
+| Concern | 5e SRD | Pathfinder 2e | Daggerheart | Powered by the Apocalypse | GURPS |
+| --- | --- | --- | --- | --- | --- |
+| Resolution | d20 plus modifier against a number | the same with four degrees | two d12, Hope and Fear, against a number, the higher die a twist | 2d6 plus stat in three bands, 6 or less, 7 to 9, 10 or more | 3d6 roll under a skill, margin of success |
+| Turn structure | action, bonus, reaction, movement per turn, initiative | three actions per turn, initiative | no initiative; a spotlight passes, Fear buys the GM's turn | conversational, no turns; the GM moves when the fiction demands | one-second turns with manoeuvres |
+| State reading | hit points | hit points | hit points, stress, hope | harm as clocks | hit points, fatigue, injury |
+| Sheet | class, species, feats, spell slots | ancestry, class, feats, three-action abilities | class, domain cards, experiences | a playbook of moves | points bought into skills and advantages |
+| Progression | levels | levels | levels | marked experience | points |
+| The GM's side | rulings | rulings | GM moves bought with Fear | GM moves on a miss or a lull, principles | rulings |
+
+**What is common,** which is the binding language's vocabulary:
+
+- A **check** is a situation plus a stat turned into an **outcome band with
+  a margin and a twist**: fail, partial, success, critical, plus how far
+  and whether a complication rides along. PbtA's three bands, Pathfinder's
+  four degrees, Daggerheart's success-with-Fear and GURPS's margin are all
+  readings of that one shape, and the existing degree ladder is most of it.
+  The sim records the band, never the dice.
+- A **reading** turns the one ledger into what the system shows and rules
+  on: hit points, stress, harm clocks, exhaustion (ruling 38).
+- A **sheet** is a bundle of **grants**: abilities, modifiers, resources
+  and recognitions (what counts as food, a weapon, a spell), which is the
+  shape wing-glyphs already uses for glyph grants.
+- **Turn structure** is the overlay's timescale (ruling 6), not the sim's;
+  a ruleset chooses initiative, three actions, a spotlight or no turns.
+- **GM moves** are rules that prompt the world on a miss or a lull; under
+  the sim they are processes the ruleset registers, which is the same
+  shape as the hagiograph retelling and the third process shape founding
+  something.
+
+**A ruleset is therefore a language with bindings,** as Mark said: a pack
+of schema plus piccolo Lua over a bindings interface whose vocabulary is
+the list above. The sim never sees the ruleset; it exposes situations, the
+ledger and the record, and accepts outcomes as asserted facts and effects
+on the ledger.
+
+**World effects are rulesets at world scope.** Mark's addendum, and the
+wing already does it in two places: Mesocosm's process definitions ship as
+a data-only pack, are lowered to a ruleset, and a world records that
+ruleset by digest (processdef plan, PD3); Paredros's world-conditions
+schema carries a content-addressed rules revision (ruling 32). Dwarf
+Fortress's raws are the shipped precedent: the definitions of creatures,
+materials and reactions are data, mods change them, and a world locks its
+raws at generation. So there are two scopes of one language: world rules,
+bound when a world is founded and inherited by every game played in it
+(magic and glyphs, suggested anatomy, constraints, what the moon does),
+and game rulesets, bound when a game is played over it. Both are packs,
+both lower to rulesets, both are recorded by digest. This answers W2's
+first question: what may a ruleset add or forbid is exactly what a
+world-scope pack may, and neither may override the ledger, the record or
+the derivation rule.
+
+**Prior art for one engine over many rulesets.** Fantasy Grounds is the
+closest: a CoreRPG base ruleset with 5e, Pathfinder, GURPS and dozens of
+others layered on it, written in Lua. Foundry VTT is a system-agnostic core
+of documents and a data model with hundreds of community systems as data
+plus automation. Roll20 is sheets as templates with scripted workers.
+Owlcat's engine has shipped both Pathfinder 1e and the Warhammer 40,000
+roleplaying rules from one data-driven core. Among video games otherwise,
+an engine binds one system, Infinity Engine to AD&D, Neverwinter Nights to
+3e, Solasta and Baldur's Gate 3 to 5e, Temple of Elemental Evil to 3.5.
+Outside games, Ludii runs hundreds of board games from one description
+language of shared atoms, the Stanford Game Description Language does the
+same for general game playing, and rules-as-code projects, Catala and
+OpenFisca, bind many jurisdictions' law to one engine, which is the same
+problem with higher stakes. All from general knowledge, unverified.
+
+**Licensing, checked 2026-09-18.** The 5e SRD is CC BY 4.0 and Pathfinder
+2e is ORC, the two the tabletop's CLAUDE.md permits. The Daggerheart SRD
+is published under the Darrington Press Community Gaming License, read
+from daggerheart.com today, which is its own licence rather than Creative
+Commons and needs a ruling before anything ships against it. Powered by
+the Apocalypse is a design framework whose mechanics are not the text;
+GURPS is not open. "POTA" in Mark's list is read as PbtA.
+
+**Where to start.** Not by binding five systems. The vocabulary above is
+the binding language; the existing seam covers the d20 family; the next
+consumer should be the one most unlike it, a PbtA-shaped system with
+bands, moves, no turns and GM moves, because it stresses turn structure
+and the GM's side, which the degree ladder never touched. Daggerheart
+adds the twist die and the Fear economy and is the other candidate,
+licence permitting. Two consumers of different families is the wing's own
+rule, and it has been met for one family only. What each game's profile contains
 is that game's design and not this record's. Two questions belong to the
 overlay tier and are left open here: who resolves an event when a DM and
 the sim both could, and where a foreground game's rules stop and the sim's
@@ -958,6 +1065,13 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
+12. **Rulesets over the sim** (§5.1), three rulings: (a) world effects and
+    game rulesets are one language at two scopes, world-founding and play,
+    both packs lowered to rulesets recorded by digest; (b) the next
+    ruleset consumer after the d20 family, a PbtA-shaped system or
+    Daggerheart; (c) whether the Daggerheart SRD's Community Gaming
+    License is acceptable to ship against, since the tabletop's CLAUDE.md
+    permits only CC BY and ORC content today.
 11. **The founding record disagrees with this record in three places,**
     found by W1, and both are wing-level, so which yields is Mark's. (a)
     The founding record's §1 says the vessels "do not share a genre, a
@@ -1100,6 +1214,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: §5.1 written, rulesets over the sim: the existing system
+  plugin seam read as the binding that exists, the taxonomy of what
+  varies across five rulesets and what is common, world effects as
+  rulesets at world scope per Mark's addendum, prior art, and the
+  Daggerheart licence checked. Three rulings put to Mark as §9.12.
 - 2026-09-18: rulings 37 and 38 recorded: methodology by tier as the
   agent literature's, the borg line as Dwarf Fortress's historical
   figures, disposition as five factors plus event-caused traits; and
