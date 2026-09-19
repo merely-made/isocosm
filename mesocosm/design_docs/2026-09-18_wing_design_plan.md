@@ -519,8 +519,12 @@ player's own faces, and the two would be confused at the trust plane;
 *sapient* as a noun is plain, used that way in the genre, and collides
 with nothing in the wing; *sophont*, Poul Anderson's coinage for any
 being of person-level mind regardless of species, is exact and
-distinctive but obscure; *denizen* the taste record already uses for
-companions admitted to a settlement. The working vocabulary is Mark's
+distinctive but obscure; *denizen* is spent: mere's TERMINOLOGY ruled it on 2026-07-17 as the
+platform's umbrella word for anything admitted to act through the gate, a
+personae identity holding a grant with the right to petition, covering
+human moot peers, servitors and scenario runners (checked 2026-09-18; the
+servitor crate's actors are denizens), so a second in-world sense would
+collide the way *flora* would. *Sophont* appears nowhere in the workspace. The working vocabulary is Mark's
 naming round; the record uses "borg" until he rules, and the founding
 record's continuity, Mesocosm's CLAUDE.md terminology and ruling 35's
 table all change with it.
