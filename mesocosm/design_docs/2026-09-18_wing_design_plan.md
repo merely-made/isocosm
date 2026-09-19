@@ -285,6 +285,19 @@ what later sections derive from.
     is a desired extension of the sim and Lancer is its natural ruleset;
     neither is in this round, so the next ruleset consumer for the
     tabletop stays a PbtA-shaped system (§9.12b narrowed).
+42. **Divinity is intrinsic provenance; constructs are a tier; the second
+    tier's word is in question.** Mark, 2026-09-18: "To become divine is
+    to become intrinsic to the provenance of the world; once something
+    becomes divine, no matter the fork or branch, the divine should be
+    there by default post its ascendance. Anything should be able to
+    become divine, even a place or items; it's more like 0th tier, the
+    hall of fame, even beyond the legendary for a world. It is typically
+    the outcome of a wish with the world's strength (like collect the
+    glyphs for the world and invoke them all, maybe more?). Constructs are
+    an attractive 4th tier to me, but heh, maybe I should change 'borg' to
+    mean that and instead make the 2nd tier something more... like a
+    person? Or a sapient?" §3.2.1 carries the reading and the naming
+    question.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -396,6 +409,49 @@ re-derived from a distribution the way a critter can.
 even by absence. Defined by the tabletop system's schema, and resolvable
 as a borg and as a critter.
 
+**Divinity and provenance (ruling 42).** Divinity is not a rung of the
+agent ladder and not a mere status: it is promotion into the world's
+provenance itself. Under §1 a world is a seed, its rules and its asserted
+facts, and a branch inherits all three; a divine thing is an asserted fact
+moved into that root, which is why it is present in every fork after its
+ascendance by default, and why anything can hold it, a creature, a place
+or an item. It sits beyond the hagiograph's top rank: the hagiograph
+judges what is unprecedented, legendary or narratively significant, but
+divinity is *enacted*, the outcome of a wish with the world's strength,
+which is a rung transition of §3.3's third shape whose cost is
+world-scale, such as gathering and invoking the world's whole glyph
+canon. That answers question 8 for the top: what persists past a body is
+the record always, a borg's memory only if retold, a character's sheet as
+an asserted fact, and a divine thing entirely, as provenance.
+
+**A reading, proposed 2026-09-18 and not yet ruled:** Mark's "0th tier"
+and "4th tier" are the two ends of one axis that is not the identity
+ladder. Provenance has three kinds: born of a lineage (a critter), made by
+a maker (a construct: a golem, a mech, an automaton, a raised corpse),
+and intrinsic to the world (the divine). Identity has three levels:
+unnamed, named and sapient, and factional. The two are orthogonal, so a
+construct may be a person (an android), a divine thing may be a place,
+and Lancer's mech is a construct held by a person. That keeps the ladder
+at three levels and gives constructs and the divine a home without
+making either a rung. If Mark prefers constructs as a literal fourth tier
+the ladder still holds; the axis reading is the tidier one.
+
+**The word for the second tier (open).** Mark proposes moving "borg" to
+mean construct, which suits its Gotcha Force loan (those borgs are toy
+constructs) and honours the CLAUDE.md warning that the word never passed
+the usual checks, and asks what the named, sapient tier is called instead.
+Candidates by register, none checked beyond that: *person* is plain and
+the doctrine's default, but sits beside mere's *personae*, which are the
+player's own faces, and the two would be confused at the trust plane;
+*sapient* as a noun is plain, used that way in the genre, and collides
+with nothing in the wing; *sophont*, Poul Anderson's coinage for any
+being of person-level mind regardless of species, is exact and
+distinctive but obscure; *denizen* the taste record already uses for
+companions admitted to a settlement. The working vocabulary is Mark's
+naming round; the record uses "borg" until he rules, and the founding
+record's continuity, Mesocosm's CLAUDE.md terminology and ruling 35's
+table all change with it.
+
 **Kingdom and scale (ruling 39).** Kingdom is class and is a trophic
 strategy: producer, consumer, decomposer, as the founding plan ruled. Scale
 is a separate axis: micro, meso, macro. A germ is a decomposer or parasite
@@ -458,13 +514,16 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 7. *Senses.* What a creature can perceive is a phenotype ability, and it
    bounds what a borg can witness and remember. Confirm it sits in the
    phenotype rather than beside it.
-8. *Death and what persists.* At each level, what survives the body: the
-   record always; a borg's memory only if retold or divine; a character's
-   sheet as an asserted fact. Is the "one life makes it real" pillar the
-   character's, the borg's, or both?
-9. *Divinity.* The chain of heirs, the avatar, the motif. Is divine a
-   fourth level above character, or a status any level can reach, since
-   a critter can become a primordial being by the vessel briefs' own hook?
+8. *Death and what persists.* **Answered in part, ruling 42:** the record
+   always; a borg's memory only if retold; a character's sheet as an
+   asserted fact; a divine thing entirely, as provenance. Still open:
+   whether "one life makes it real" is the character's pillar, the borg's,
+   or both.
+9. *Divinity.* **Answered, ruling 42:** neither a fourth level nor a
+   status but promotion into the world's provenance, present in every
+   branch after ascendance, reachable by anything, enacted by a wish with
+   the world's strength. The chain of heirs and the avatar are how a
+   divine thing is embodied in play afterwards; their design is W2's.
 10. *Reproduction and inheritance.* How genotype passes, and where the
     lineage's adaptation program sits relative to the individual's
     phenotype. The playable ecology plan makes reproduction the
@@ -1300,6 +1359,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 42 recorded, divinity as intrinsic provenance and
+  constructs as a tier, with the provenance-axis reading proposed and the
+  second tier's word put to Mark's naming round.
 - 2026-09-18: ruling 41 recorded: one language at two scopes, effects
   from world composition deferred, the space scope as the extension
   Lancer waits on.
