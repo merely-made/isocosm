@@ -312,6 +312,13 @@ what later sections derive from.
     immortal but vulnerable life (demigod), reincarnation on death
     (avatar) and immortality otherwise (avatar+), straight up unable to
     be killed immortality (greater divinity)."
+45. **Provenance and identity are two axes.** Mark, 2026-09-18: "I agree
+    with the provenance and identity axes." Provenance is born of a
+    lineage, made by a maker, or intrinsic to the world; identity is
+    unnamed, named and sapient, or factional. Constructs are the
+    made-by-a-maker kind, the divine the intrinsic kind, and neither is a
+    rung of the identity ladder. For the second identity level's word he
+    finds sophont and denizen both good; the choice is still his.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -491,17 +498,16 @@ chosen by the wisher within the tier, or follows the referent; and how
 define under this rule. A place can ascend because it can bear carvings,
 which is how a worldtree becomes divine without ever being a borg.
 
-**A reading, proposed 2026-09-18 and not yet ruled:** Mark's "0th tier"
-and "4th tier" are the two ends of one axis that is not the identity
-ladder. Provenance has three kinds: born of a lineage (a critter), made by
+**Two axes (ruling 45, proposed and then agreed the same day):** Mark's
+"0th tier" and "4th tier" are the two ends of one axis that is not the
+identity ladder. Provenance has three kinds: born of a lineage (a critter), made by
 a maker (a construct: a golem, a mech, an automaton, a raised corpse),
 and intrinsic to the world (the divine). Identity has three levels:
 unnamed, named and sapient, and factional. The two are orthogonal, so a
 construct may be a person (an android), a divine thing may be a place,
 and Lancer's mech is a construct held by a person. That keeps the ladder
 at three levels and gives constructs and the divine a home without
-making either a rung. If Mark prefers constructs as a literal fourth tier
-the ladder still holds; the axis reading is the tidier one.
+making either a rung. Agreed by Mark as ruling 45.
 
 **The word for the second tier (open).** Mark proposes moving "borg" to
 mean construct, which suits its Gotcha Force loan (those borgs are toy
@@ -1426,6 +1432,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 45 recorded, the provenance and identity axes
+  agreed; the second tier's word narrowed to sophont or denizen.
 - 2026-09-18: ruling 44 recorded, the tiers of godhood as the quality of
   the journey, read against the general model plan's §7.4 and the glyph
   expression ruling of 2026-09-15.
