@@ -462,6 +462,12 @@ what later sections derive from.
     herbivore, or hunting for a predator, or scavenging...? Idk. All I
     know is, it's a terrarium, behavior I shape is more interesting than
     just making things do things outright usually."
+60. **Driving is Paredros; directing composes on top of it.** Mark,
+    2026-09-19: "Driving is paredros. You're one sophont, with
+    relationships sure, but you are one. I'm just saying you can give
+    directives as that sophont to your friends and that can work a bit
+    like directing mesocosm's critters, with an opinion modifier for
+    command/request efficacy? So the systems compose, it seems to me."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -919,11 +925,15 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    for the abilities' planners, behaviour trees, goal-oriented action
    planning and hierarchical task networks, which are the procedural
    planning and execution Mark names.
-8. *Death and what persists.* **Answered in part, ruling 42:** the record
+8. *Death and what persists.* **Answered, rulings 42 and 60:** the record
    always; a borg's memory only if retold; a character's sheet as an
-   asserted fact; a divine thing entirely, as provenance. Still open:
-   whether "one life makes it real" is the character's pillar, the borg's,
-   or both.
+   asserted fact; a divine thing entirely, as provenance. "One life makes
+   it real" is the sophont's pillar and Paredros's game, "you are one";
+   Mesocosm's run is a lineage across lives, and a tabletop character's
+   death is as final as its system and its table rule, with the taste
+   record's line standing that the weight of a death scales with the
+   investment in it. Recorded from Mark's "you are one" rather than a
+   direct ruling; he may correct it.
 9. *Divinity.* **Answered, ruling 42:** neither a fourth level nor a
    status but promotion into the world's provenance, present in every
    branch after ascendance, reachable by anything, enacted by a wish with
@@ -1650,15 +1660,18 @@ still open under it.
     tracer under W3** (ruling 23), so the shipped step is reproduced
     exactly and the base unit need not be cubic. Paging is fixed in every
     consumer under the same ruling.
-14. **Directing against driving** (ruling 59 against the taste record):
-    the founding record's integrated tastes prize skill-based real-time
-    action for Paredros, Mount & Blade's timing and Sword Hero's
-    directional combat, and real time with pause. Ruling 59 makes
-    Mesocosm's play directing. Open: whether directing is Mesocosm's mode
-    and driving Paredros's, both everywhere as settings per the
-    configurability doctrine, or directing the default with driving a
-    handle a sophont's overlay may open, so that a fight is fought and a
-    week is scheduled.
+14. **Directing against driving:** **ruled, ruling 60.** Directing is
+    Mesocosm's mode over its critter and its cohort. Driving is
+    Paredros's, because you are one sophont, and the taste record's
+    skill-based action stands; directing composes on top of it as the
+    directives that sophont gives its companions, whose efficacy is
+    modified by their opinion of it. That is Paredros's first pillar,
+    peers you address rather than units you command, given its
+    mechanism: a directive to a peer is a request, and ruling 51's
+    alignment and ruling 37's disposition set how far it is honoured.
+    Isometry's turns are their own mode. The overlay contract therefore
+    carries both a directive vocabulary and, where the overlay opens it,
+    actuation of one body.
 13. **The referent of divine power:** **ruled, ruling 52.** Fixed as the
     domain's effect for the lower tiers, chosen by the greater tiers, all
     bound by frequency weighted by impact.
@@ -1813,6 +1826,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-19: ruling 60 recorded, driving as Paredros's mode with
+  directing composed on top through opinion-modified directives to
+  companions; §9.14 closed, and the last of §3.2.1's ten questions with
+  it.
 - 2026-09-19: ruling 59 recorded, play as directing rather than driving,
   senses as the creature's own and surfaced as suggestions, the played
   creature and the NPC autopilot as one mechanism, with prior art; one
