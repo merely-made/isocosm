@@ -402,6 +402,12 @@ what later sections derive from.
     or nonsentient/nonsapient. Any sophont, faction, polity can have
     possessions; a critter can collect, hide items, and use them as
     needed, but they don't really own them."
+54. **Place.** Mark, 2026-09-18: "a critter has habitats, habits,
+    memories, but not really a home that it possesses except through
+    presence and defense. Even just being named is enough to be able to
+    'have' a home, because that is a feature of sapience, but that's a
+    one sided assertion from the sapient to the sentient; otherwise,
+    you're just living where you can, as a critter."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -764,11 +770,14 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    Crusader Kings does. The borg line is Dwarf Fortress's historical
    figure rule: a critter becomes a borg when it does something the record
    keeps, or is named or related, not only when it becomes an antagonist.
-3. *History against memory.* Every critter has a history, the deviation
-   record §1 keeps whether or not it can recall anything. Only a borg has
-   memory, what it knows, which is the reach field's foreground half plus
-   what it witnessed. Is that the distinction, so that remembering is a
-   borg's phenotype ability over a record every level already has?
+3. *History against memory.* Partly answered by ruling 54, which gives
+   critters memories beside habitats and habits, so a critter's memory is
+   of places and what worked there, habit and habitat, while ruling 36's
+   "capable of remembering" for a borg is knowledge of events, which
+   ruling 47 made a bearer form a sophont can sacrifice. Every level has
+   a history, the deviation record §1 keeps whether or not anything can
+   recall it. **Open:** confirm the two memories are two things, a
+   critter's habit and a sophont's knowledge, over one history.
 4. *Holding.* **Answered, ruling 53.** Two relations, not one.
    *Containment* is physical and derived: a body holds what its capacity
    holds, and capacity is biology for a critter (cheeks, a pouch, an
@@ -785,9 +794,19 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    the derivation rule containment is derived from the bodies and
    possession is an asserted fact in the record, which is why theft is an
    event and a squirrel's cache is not.
-5. *Place.* Where it is, its home, its territory, its membership in a
-   settlement. Position is a fact; is home a relation of the borg level,
-   and territory of the faction?
+5. *Place.* **Answered, ruling 54.** The same split as holding. A
+   critter has habitats, habits and memories, and its territory is
+   presence and defence, a derived fact of where it is and what it
+   fights for; it lives where it can. A home is possessed, so it is an
+   asserted relation available to sapience: a sophont has a home, and if
+   it can own, property, a faction has ground, a polity has borders, each
+   an asserted claim. A named critter can "have" a home, but that is a
+   one-sided assertion from the sophont who named it about the sentient
+   thing it named, which is the first case in the record of an asserter
+   asserting facts about something that cannot assert. So place has no
+   relations of its own beyond position: derived presence below the
+   assertion line, asserted claim above it, and naming as the act that
+   lets a sophont extend claims over critters and places alike.
 6. *Standing.* A character's rank, alignment and reputation inside its
    polity, and a borg's reputation among those who know of it, which is
    the reach of its deeds. Is standing the character-level addition, the
@@ -1643,6 +1662,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: ruling 54 recorded, place as the same split as holding,
+  presence and defence derived below the assertion line and home,
+  property, ground and borders asserted above it, with naming as the act
+  that extends a sophont's claims over critters and places.
 - 2026-09-18: ruling 53 recorded, holding as two relations, containment
   derived from capacity and possession asserted by those who can assert.
 - 2026-09-18: ruling 52 recorded, the referent as a privilege of the
