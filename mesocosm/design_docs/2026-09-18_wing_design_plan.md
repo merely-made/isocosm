@@ -231,6 +231,32 @@ what later sections derive from.
     system, but should also be resolvable as a critter and individual
     (borg)." Mark added: "I feel like I missed some things"; §3.2.1
     carries the answer and the gaps as open questions.
+37. **Methodology by tier, and the borg line.** Ruled 2026-09-18: the
+    agent literature's tiering stands as the sim's, reactive agents for
+    critters, belief-desire-intention agents for borgs, normative agents
+    for characters ("I cannot believe the agent literature agrees with
+    the tiering... sounds good"). The borg line is drawn Dwarf Fortress's
+    way, a creature becoming an individually kept, named figure when it
+    does something the record keeps or is named or related, "better than
+    Nemesis if you ask me": the wing does not solely care about developing
+    relationships with antagonists. Disposition is the five-factor axes,
+    and "a significant event causing a personality trait sounds cool
+    too".
+38. **State is one ledger, read more coarsely up the levels, and the
+    coarsening is provided by the collective.** In Mark's words: "most of
+    that stuff matters for critters trying to manage a nutrition budget
+    and interact with the ecology. There should be some of that in
+    paredros and isometry, but abstracted to less and less specific
+    criteria. I think you should be able to die of not getting an
+    essential nutrient in mesocosm, and you could die of starvation
+    generally in paredros, and you can be debuffed for not eating in
+    isometry (like according to the tabletop rules), but dying of scurvy
+    in a dnd game feels bizarre, right? just not part of the rules; you
+    just eat what is recognized as food, you can express the need to
+    sleep in terms of exhaustion, for example. just feels like that sort
+    of body concern matters less the more factions and polities there
+    are; people figure out the essentials and it becomes produced,
+    commoditized, etc." Ruled 2026-09-18.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -345,21 +371,28 @@ as a borg and as a critter.
 **What the record's own structure says a creature must also carry, put to
 Mark as questions rather than filled in (open, 2026-09-18):**
 
-1. *State.* Condition and status are inputs to expression; what is the
-   state itself? The conserved material ledger Mesocosm keeps (reserve,
-   mass, what the body is made of), injuries, age and stage. Dynamic
-   Energy Budget theory's reserve, structure and maturity are the model
-   shape. Is state one thing at every level, or does a character's sheet
-   hold a second, system-defined state beside the sim's?
-2. *Methodology.* Ruling 9 says a thing has state because it decides. How
-   does each level decide? A critter by drives, a borg by disposition,
-   memory, relationships and goals, a character by the system's rules and
-   a player or a DM. The agent literature draws exactly this line:
-   reactive agents, then belief-desire-intention agents (Bratman 1987; Rao
-   and Georgeff 1995), then normative agents with roles and institutions.
-   Is that the line, and is a borg's disposition the personality model
-   (the five-factor axes Talk of the Town and Prom Week use) or something
-   of the wing's own?
+1. *State.* **Answered, ruling 38.** State is one ledger in the sim, the
+   conserved material ledger Mesocosm keeps with injuries, age and stage
+   (Dynamic Energy Budget theory's reserve, structure and maturity as the
+   model shape), and each level reads it more coarsely: a critter can die
+   of a missing essential nutrient, a borg of starvation generally, a
+   character is debuffed for not eating under its system's rules and
+   expresses sleep as exhaustion. A character's sheet is not a second
+   state; it is the system's coarse reading of the one ledger, and the
+   system decides what counts as food. The coarsening is diegetic: the
+   more factions and polities there are, the more the essentials are
+   produced and commoditised, so the collective's processes provision the
+   individual and the fine detail stops mattering. That makes provisioning
+   a process of the faction and polity rungs whose output is the coarse
+   reading the higher levels use, and it is what "weakly expressed"
+   (ruling 35) means for the ecology in Paredros and Isometry.
+2. *Methodology.* **Answered, ruling 37.** Reactive agents for critters,
+   belief-desire-intention agents for borgs, normative agents with roles
+   and institutions for characters. A borg's disposition is the
+   five-factor axes, and significant events may also cause traits, as
+   Crusader Kings does. The borg line is Dwarf Fortress's historical
+   figure rule: a critter becomes a borg when it does something the record
+   keeps, or is named or related, not only when it becomes an antagonist.
 3. *History against memory.* Every critter has a history, the deviation
    record §1 keeps whether or not it can recall anything. Only a borg has
    memory, what it knows, which is the reach field's foreground half plus
@@ -1067,6 +1100,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-18: rulings 37 and 38 recorded: methodology by tier as the
+  agent literature's, the borg line as Dwarf Fortress's historical
+  figures, disposition as five factors plus event-caused traits; and
+  state as one ledger read more coarsely up the levels, the coarsening
+  provisioned by the collective. §3.2.1's first two questions closed.
 - 2026-09-18: ruling 36 recorded, the creature at three levels of
   identity in Mark's words, with §3.2.1 carrying the answer, the wing's
   existing vocabulary beside it and ten open questions.
