@@ -481,6 +481,31 @@ what later sections derive from.
     die that are significant should go to the planes after life, right?
     So being summoned back from there sorta makes sense as a possible,
     costly thing to do." And: "Let's keep going down. Let's plan it all."
+63. **A faction acts by consent, peer to peer; a polity adds a constitution
+    on top; forms of governance are ranked by alignment.** Mark, 2026-09-20:
+    "my instinct: factions take collective action by organizing into
+    teams/parties through the general methods of communication available to
+    all sophonts and additionally those they each align with individually.
+    so like if someone wants to do something you do, probably they work
+    together. or if you really care about someone, you probably would be
+    willing to join them in an act you wouldn't otherwise. so reputation and
+    alignment feel useful there, for determining which action to follow, and
+    factions favor peer to peer decision-making along with a few general
+    protocols for cases that peer to peer agreement cannot emerge (if
+    everyone has different alignments, if nobody has an actionable
+    opinion...?). but polities have additional methods on top of that,
+    which, like an arbitration agreement in a TOS, are part of the deal.
+    whether factions or polities share decision-making protocols isn't the
+    point; a faction is not oriented towards a constitution and thus lives
+    and dies with consent in a way a polity kinda doesn't. this allows a
+    polity to assume more hierarchal structures, more distributed
+    structures, more complicated societies!" And: "i think all forms of
+    governance that can be associated with acts or qualifiable parties
+    should be considered. so like the way people solve their problems feeds
+    their alignments which prompt their collective action methodology? maybe
+    a rogue really believes in kleptocracy, but nobody else does, but they
+    believe in individualism, so their support goes there next... like
+    preference-ordered rank choice voting for the sim?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -553,7 +578,8 @@ place or an idea, and its action is theirs; a party is a faction defined by
 a person. A polity has a collective action methodology and so has state of
 its own, over many factions. A lineage is a historical entity of kith and
 kin: a record, not a decider. A settlement is a faction until it acquires a
-methodology.
+methodology, which ruling 63 sharpens to a constitution: a faction has a way
+of acting together too, by consent, and §3.2.2 holds the difference.
 
 Consequence for the scheduler: things with methodology get due events;
 relations, records and fields cost nothing on their own.
@@ -1018,6 +1044,125 @@ Mark as questions rather than filled in (open, 2026-09-18):**
     its original premise and an entailment carries a basis is the record's
     own rule for derived readings, already stated for glyph affinities in
     the general model plan's §7.4, applied to biology.
+
+### 3.2.2 Factions and polities
+
+From ruling 63. Open where marked, and every *reading* below is this
+record's, for Mark to reject.
+
+**The line between them moves from methodology to constitution.** Ruling 8
+said a settlement is a faction until it has a methodology. Ruling 63
+sharpens it: a faction has a way of acting together too, but that way is its
+members' consent and nothing else, so it "lives and dies with consent". A
+polity adds methods that are "part of the deal", as an arbitration clause is
+part of a terms of service: they bind a member who did not agree to this
+decision, because the member agreed to the deal, or was born into it. Under
+the derivation rule that is the same split as holding, place and alignment.
+A faction's collective action is *derived* from its members' own decisions,
+and the faction still has no state of its own. A polity's is *asserted*, a
+constitution in the record, which is the state ruling 9 gave it. The
+scheduler consequence of §3.2 stands: a faction costs nothing on its own,
+since joining is a due event of the sophont who joins, and a polity's
+procedures are due events of the polity.
+
+**How a faction acts.** Someone proposes an act; others join or do not;
+those who join are a party for that act, ruling 8's faction defined by a
+person. A sophont joins for the two reasons Mark named. It wants the act
+itself, which is its alignment read against the act's means and effect
+(rulings 50 and 51). Or it cares for the proposer enough to join an act it
+would not otherwise, which is its opinion of that sophont and that sophont's
+reputation (ruling 56). The second is ruling 60's opinion modifier on a
+directive, met from the other side: a player's directive to a companion and
+one sophont's proposal to another are the same event, so directing,
+companions and faction action are one mechanism. A proposal travels by the
+means of communication all sophonts share and by those the proposer and the
+hearer each align with, which makes reach (§3.4) the gate on who can be
+asked at all. Where peer to peer agreement cannot emerge, everyone
+differently aligned or nobody holding an actionable opinion, "a few general
+protocols" apply. *Reading:* because they are general they belong to the
+world's ruleset (ruling 41) and not to the faction, which keeps the faction
+stateless. **Open:** which protocols.
+
+**Already in code, checked 2026-09-20.** Paredros's `paredros-social` is
+this model at the scale of two. Standing is folded from the deed log as
+trust and affinity and carries the deeds behind it (`relation.rs:25-66`).
+Willingness is three gates, can I do it, would I risk that for you, is it
+more than I would bear, answered by a refusal about the work, a refusal
+about the asker, or a counteroffer (`willing.rs:7-23`). A settlement is
+homes offered under agreements, with residence derived from agreement state:
+"Ending the agreement *is* moving out" (`settlement.rs:10-14`), which is a
+faction living and dying with consent. What it lacks against ruling 63 is
+the first reason to join: nothing in the crate reads the act against the
+asked sophont's own alignment (no alignment, tenet or value appears in its
+source), only the asker's standing and the danger. The tabletop's
+`isometry-campaign` holds the opposite end: a faction turn that draws one of
+five verbs per faction from an entropy tape (`faction.rs:40-57`,
+`:104-110`), deciding for the faction from outside with no members in view.
+Under ruling 63 that tick is a far-rung stand-in to be re-derived from
+members, not the model.
+
+**What a form of governance is.** Mark: "all forms of governance that can be
+associated with acts or qualifiable parties should be considered."
+*Reading:* a form is a pair, who qualifies to decide and by what act the
+decision is made. Qualification is a predicate over what the record already
+holds for an entity: standing in its three parts (ruling 56), possessions
+(ruling 53), body and age, lineage, provenance. Rule by the wealthy, the
+old, the strong, the ordained, the well born, the divine, everyone, or
+whoever the lot falls on is then one shape with a different predicate. The
+deciding act is a process of §3.3's first shape: voting, fighting, buying,
+divining, inheriting, taking. Both halves are vocabulary the sim has, so
+forms are data to be authored and generated, never an enum.
+
+**How a form is chosen: ranked preference, derived from alignment.** "The
+way people solve their problems feeds their alignments which prompt their
+collective action methodology." A form of governance is a means of deciding,
+and ruling 50's tenets already hold opinions of means, so a sophont's
+ranking of forms falls out of its alignment with no new machinery: the rogue
+who solves problems by taking ranks rule by taking first and individualism
+next. Support then transfers down each ranking until a form holds, Mark's
+"preference-ordered rank choice voting for the sim": the rogue's first
+choice has no other supporters, so their support goes to their second.
+*Reading:* this is the sim's mechanism for which form emerges, weighted by
+influence exactly as ruling 51 weights a faction's alignment, and not
+necessarily an election anyone in the world holds. It runs at the rung
+transition that founds a polity (§3.3), and its winner is asserted as the
+constitution. At the cohort rung the ballots are ruling 50's distributions,
+so the count runs over blocs and not heads. Ties break on the seed.
+
+**What follows, unruled.** After founding, the constitution is asserted and
+stays put while its members' derived preference keeps moving, so the
+distance between the two is a quantity the record can read at any time;
+ruling 51 already keeps a polity's constitutional alignment "in addition to
+the factions within" it. That gap is the natural candidate for legitimacy,
+and for what drives reform, secession and §3.3's "a polity collapsing into
+factions". **Open:** what holds a polity when consent does not, and what
+ends it.
+
+**Prior art.** Known literature first. Crawford and Ostrom's grammar of
+institutions (1995) writes any institutional statement as attributes,
+deontic, aim, conditions, or else: which qualified party must, may or must
+not do which act under which conditions, on pain of what. It classes
+statements by what they carry: a shared strategy has no deontic, a norm has
+no "or else", a rule has all five. That is ruling 63's line drawn by someone
+else, factions running on strategies and norms and polities on rules, and
+the grammar is a candidate syntax for a constitution in ruling 41's binding
+language. Ostrom's three levels of rules, operational, collective-choice and
+constitutional, name what a polity adds. Hirschman's *Exit, Voice, and
+Loyalty* (1970) is "lives and dies with consent": a faction's members hold
+exit, and a polity raises the cost of exit and so must channel voice.
+Weber's three grounds of authority, traditional, charismatic and legal, line
+up with lineage, reputation and rank. For the fallback protocols the
+multi-agent literature has the contract net (Smith, 1980) for allocating a
+task among willing peers, and joint intentions (Cohen and Levesque) and
+SharedPlans (Grosz and Kraus) for what a party commits to. Instant-runoff
+counting is the transfer Mark described; it is known to be non-monotonic,
+which a sim can live with. From memory of games, unverified: Crusader Kings
+III's factions are coalitions a vassal joins by opinion of the liege, acting
+once their combined strength passes a threshold, and its feudal contracts
+are a literal deal; Victoria 3's interest groups carry ideologies that rank
+laws and weigh in by clout, with legitimacy as a number; Dwarf Fortress's
+entity positions attach responsibilities to appointed, elected or inherited
+offices.
 
 ### 3.3 Processes
 
@@ -1863,6 +2008,14 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 63 recorded and §3.2.2 added: a faction acts by consent
+  and is derived, a polity adds an asserted constitution, a form of
+  governance is a qualifying predicate and a deciding act, and forms are
+  chosen by influence-weighted ranked preference derived from alignment.
+  Checked against `paredros-social`, which is the consent model at the scale
+  of two without alignment, and `isometry-campaign`'s faction turn, which is
+  a far-rung stand-in. Open: the fallback protocols, and what holds and ends
+  a polity.
 - 2026-09-19: ruling 62 recorded, the significant dead residing on the
   planes after life and summoning as costly re-embodiment; W2 continues
   down into the faction and polity rung at Mark's word.
