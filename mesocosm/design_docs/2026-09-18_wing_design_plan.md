@@ -526,6 +526,13 @@ what later sections derive from.
     people agree they do. Perhaps because their political context changed,
     or because everyone who knew about it died, or the methods, goals,
     and/or means became pointless".
+66. **Any means may stand behind a constitution; short of death, a polity's
+    condition may change automatically.** Asked on 2026-09-20 what stands
+    behind a constitution in the sim, "force, faith, money, habit, a god?",
+    Mark: "Any of 'em". And, on this record's first reading of collapse
+    (corrected by ruling 65): "I would be ok with a polity automatically
+    becoming suppressed or inactive or superseded or subordinated to a
+    faction."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1067,7 +1074,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 
 ### 3.2.2 Factions and polities
 
-From rulings 63 to 65. Open where marked, and every *reading* below is
+From rulings 63 to 66. Open where marked, and every *reading* below is
 this record's, for Mark to reject.
 
 **The line between them moves from methodology to constitution.** Ruling 8
@@ -1157,7 +1164,9 @@ asserts. Ruling 38 already made provisioning a process of the faction and
 polity rungs, the collective feeding the individual, and what is provided
 can be withheld. Everything the record lets a polity assert it can also
 revoke: rank, office and membership (ruling 56), property (ruling 53), home
-and borders (ruling 54). Force is one more means and not the defining one.
+and borders (ruling 54). Force is one more means and not the defining one,
+and ruling 66 closes the list by leaving it open: force, faith, money, habit,
+a god, "any of 'em".
 So the "or else" of a rule is an ordinary process of §3.3's first shape,
 with a cost to the polity that applies it, and a guild that bars a smith
 from the forge and a crown that sends soldiers are the same shape. "Related
@@ -1177,22 +1186,22 @@ at any time; ruling 51 already keeps a polity's constitutional alignment "in
 addition to the factions within" it. Enforcement is what holds that gap
 open.
 
-**Dormancy and death (ruling 65), correcting this record.** The first draft
+**Inactivity and death (ruling 65), correcting this record.** The first draft
 of the paragraph above read failed enforcement as the polity falling back to
 a faction by itself. Mark ruled otherwise. A polity that lacks support for
 its operations "essentially does nothing", and it dies "only when people
 agree" it has. So a polity has three conditions, not two: *active*, with
-support enough to operate; *dormant*, asserted in the record and doing
-nothing; and *dead*, by agreement. That is the derivation rule kept honest:
+support enough to operate; *inactive*, ruling 66's word, asserted in the
+record and doing nothing; and *dead*, by agreement. That is the derivation rule kept honest:
 a constitution is an asserted fact, and an asserted fact stands until
 another assertion ends it, never because a derived quantity fell. It also
 names what is scarce to a polity in Mark's own word: **support**. The
-scheduler consequence is free: a dormant polity has no due events and costs
+scheduler consequence is free: an inactive polity has no due events and costs
 nothing, as a faction does.
 
 Mark gives three causes for the agreement. *The political context changed*,
 which for a contingent polity is its host changing or falling, so ruling
-64's cascade makes polities dormant and leaves their ending to those who
+64's cascade makes polities inactive and leaves their ending to those who
 belong to them. *Everyone who knew about it died*, which is ruling 5 applied
 to polities: memory is not global, things can be forgotten, and a polity
 lives in those who know of it, so its existence has a reach like any event's
@@ -1201,12 +1210,50 @@ means became pointless*, which also says what a polity is made of: goals,
 its focus (ruling 64); methods, how it decides (ruling 63); and means, how
 it operates and enforces (ruling 64). §3.3's "a polity collapsing into
 factions" is then the rung transition that records an agreed death, the
-factions having been there all along. *Reading:* a dormant polity can be
+factions having been there all along. *Reading:* an inactive polity can be
 revived by whoever brings it support, since nothing ended it, which is the
 pretender, the government in exile and the restored order. **Open:** whether
 a constitution borne by an item, a charter, keeps a polity from being
 forgotten when its last knower dies; who must agree, and by what count; and
 reform and secession.
+
+**Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
+death for agreement. Ruling 66 lets everything short of it happen
+"automatically", and names four conditions a polity can fall into.
+*Reading,* each as something the record can already tell:
+
+- *Inactive:* it lacks support for its operations and does nothing (ruling
+  65).
+- *Suppressed:* it has support, and another's enforcement stops it
+  operating: the banned guild, the occupied town, the outlawed church. Its
+  members can still act as a faction, by consent and in secret, which is the
+  underground.
+- *Superseded:* another polity now binds the acts that were its focus, and
+  that one's enforcement works: the new guild, the conqueror's law, the
+  successor state.
+- *Subordinated to a faction:* its methods still run and their outcome is
+  one faction's will, because that faction fills the party qualified to
+  decide (ruling 63) or holds the means. This inverts ruling 8's composition
+  for as long as it lasts, the part commanding the whole: the cabal behind
+  the throne, the machine that owns the council.
+
+So the two halves of the derivation rule sit on one entity. That a polity
+exists is an asserted fact, ended only by agreement. What condition it is in
+is derived, read from support, from whose enforcement prevails over its
+focus, and from who fills its deciding party, and it changes with no
+assertion at all. The conditions are not exclusive, since a polity can be
+superseded and subordinated at once, and each is reversible while the polity
+is not dead. **Open:** whether more conditions are wanted, and what a
+subordinating faction can and cannot make the polity do.
+
+Prior art for ruling 66, known. The League of Nations shows both rulings in
+one life: inactive through the war, superseded by the United Nations in
+1945, and dead only when its own Assembly voted to dissolve it in April
+1946. Solidarity in Poland was suppressed in 1981, persisted underground,
+and returned in 1989. For subordination: Michels's iron law of oligarchy
+(1911), that organisations come to be run by a few whatever their
+constitutions say; Stigler on regulatory capture (1971); and the
+state-capture literature after Hellman, Jones and Kaufmann (2000).
 
 Prior art for ruling 65, known. Searle's *The Construction of Social
 Reality* (1995): an institutional fact exists by collective acceptance and
@@ -2136,6 +2183,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 66 recorded: any means may stand behind a constitution,
+  and a polity may automatically become suppressed, inactive, superseded or
+  subordinated to a faction. §3.2.2 now holds existence as asserted and
+  condition as derived, and takes Mark's "inactive" in place of this
+  record's "dormant". Open: further conditions, and the limits of a
+  subordinating faction.
 - 2026-09-20: ruling 65 recorded, correcting this record's reading of
   collapse: a polity without support goes dormant and does nothing, and dies
   only by agreement, for a changed context, for being forgotten, or for
