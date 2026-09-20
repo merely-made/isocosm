@@ -552,6 +552,15 @@ what later sections derive from.
     own alignment/values? And then derive goals from that, like individuals
     have? If an institution outlived its use, why would it want to continue
     if it didn't find a new use? Polities change like that".
+69. **What is of note persists; the rest is regenerated. "Of note" is a tier
+    between the soup and legend, for every kind of thing.** Asked what makes
+    a location a place and what keeps it the same place, Mark, 2026-09-20:
+    "I feel like if something of note happens there, then it persists;
+    otherwise it can be regenerated from the same basic facts. Note that
+    denizen is now a term for an entity of note. There should be similar
+    terms for locations, possibly more..." And: "Like, a tier between
+    primordial sim soup things generate from and legendary things. Just
+    stuff of note".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1488,6 +1497,68 @@ the foreground, where a realized creature or character adds what it
 personally witnessed, which is its own deviation record. Forgetting is
 decay; legend decays slowest.
 
+### 3.4.1 Three tiers of keeping
+
+From ruling 69. The middle tier is Mark's "tier between primordial sim soup
+things generate from and legendary things. Just stuff of note", and it holds
+for every kind of thing the sim has:
+
+| Tier | What is stored | What puts a thing there | Rulings |
+| --- | --- | --- | --- |
+| The soup | nothing of its own: the seed, the rules and the basic facts it regenerates from; populations as distributions, locations as derived nodes | nothing; it is the default of §1 and §3.5 | 69 |
+| Of note | the thing itself, individually: its asserted facts and its deviation record | something of note happened to it or there, a relationship holds it, or someone designated it | 69 |
+| Legendary | the record of it, never lossy, retold and memorialised; the significant dead on the planes | the hagiograph's test, unprecedented, legendary or narratively significant, by novelty, quality and relevance | 4, 62 |
+
+The middle gate is lower than the hagiograph's and is not the hagiograph's.
+For an inhabitant the middle tier is the **denizen**, by the terminology
+supersession of 2026-09-20, an inhabitant remembered individually "because
+history, relationships, or explicit designation makes it matter". Ruling 69
+gives a location the same rule: "if something of note happens there, then it
+persists; otherwise it can be regenerated from the same basic facts." So
+what asserts a place is an event. Naming it, claiming it and building on it
+are not separate routes; they are events of note like any other. *Reading,
+for Mark to reject:* this is the derivation rule with a name on it. §1
+already stores deviations and derives the rest, so a thing is of note
+exactly when regenerating it would lose something, and the middle tier is
+the set of things that carry a deviation record. **Open:** whether a thing
+of note can lapse back into the soup, since ruling 5 lets things be
+forgotten and only the legendary tier is never lossy.
+
+**Already in code, checked 2026-09-20.** Paredros's
+`paredros-world/src/sites.rs` holds the two lower tiers for places. A
+`SlotId` is "a structural address. Its occupant may change without changing
+its containment or routes" (`:19-25`). A `Site` sits in a slot with a kind,
+wilds, settlement, ruin, encounter or dungeon, and a source that is either
+`Generated` or `Inherited(HistoryFactId)` (`:46-67`): regenerable, or kept
+and pointing at the fact that keeps it. That also answers "what keeps it the
+same place" as the code stands: the slot. A razed castle is the same slot
+with the kind ruin, and "changing a site's meaning cannot move it
+accidentally" (`:69-70`). What the slot rests on is mesocosm-core's
+`PlaceId`, a fixed partition today (§3.7), so the address survives because
+the geometry is never re-derived. Under volume-derived nodes a place of note
+needs an anchor that re-derivation maps onto and cannot erase. **Open:**
+what that anchor is when the ground itself moves.
+
+**The words.** "Denizen is now a term for an entity of note. There should be
+similar terms for locations, possibly more." Naming is Mark's round and
+nothing is coined here; this is what the wing already holds, checked
+2026-09-20. The founding record's frame already pairs the three: "people
+(subjects and their deeds), things (relics with provenance), and places
+(sites with history)" (`2026-07-30_games_wing_founding.md:185-187`), so
+*site* and *relic* are its words for a place and a thing with history, and
+Paredros's `Site` is live code. *Site* collides inside the wing: it also
+names a location on a body in Mesocosm's phenotype
+(`mesocosm-core/src/phenotype/mosaic.rs:50,68`) and in
+`shared/wing-functions/src/generation.rs:21,29`, and the tabletop's overmap
+has an `AtlasSite`. For events the hagiograph's *feat* and *mark* are words
+of the top tier, a feat being what beats a standing mark, while Paredros's
+*deed*, a recorded act with a doer (`paredros-social/src/deed.rs`), is the
+nearest thing the wing has to an act of note. On crates.io, exact names, the
+only registry checked: taken are site, landmark, relic, locus, haunt, locale
+and keepsake; free are stead, feat and heirloom. The kinds that may want a
+middle-tier word are the inhabitant, which has one, the place, the thing,
+the event, and perhaps the group and the lineage.
+
 ### 3.5 Holding hundreds of thousands of things
 
 - Aggregate what isn't foregrounded: a population is a distribution, and
@@ -2279,6 +2350,14 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 69 recorded and §3.4.1 added: three tiers of keeping,
+  the soup, things of note and legend, for every kind of thing, with a
+  location persisting when something of note happens there. Checked against
+  Paredros's `sites.rs`, whose slot and `Generated` or `Inherited` source
+  are the two lower tiers already, and against the founding record's "relics
+  with provenance" and "sites with history". Open: lapsing back into the
+  soup, the anchor of a place when the ground moves, and the middle-tier
+  words, which are Mark's naming round.
 - 2026-09-20: ruling 68 recorded: a polity's goals derived from its own
   alignment as an individual's are, no built-in will to continue, goal
   change as finding a new use, and revival of an inactive polity ruled.
