@@ -533,6 +533,12 @@ what later sections derive from.
     (corrected by ruling 65): "I would be ok with a polity automatically
     becoming suppressed or inactive or superseded or subordinated to a
     faction."
+67. **Polities under no host are a faction among themselves.** Put to Mark
+    on 2026-09-20 as a corollary of rulings 63 and 64: "polities dealing
+    with each other under no host have only consent, so among themselves
+    they are a faction. A treaty is then Paredros's standing agreement at
+    scale, until an empire, a church or a federation hosts them." Mark:
+    "Also i agree with this."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1074,7 +1080,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 
 ### 3.2.2 Factions and polities
 
-From rulings 63 to 66. Open where marked, and every *reading* below is
+From rulings 63 to 67. Open where marked, and every *reading* below is
 this record's, for Mark to reject.
 
 **The line between them moves from methodology to constitution.** Ruling 8
@@ -1297,6 +1303,35 @@ not a command", which its holder may decline "when its premises have
 changed" (`paredros-social/src/agreement.rs:14-17`), and nothing stands
 behind it but the two names on it; a durable agreement in ruling 64's sense
 is that same record with a polity's enforcement behind it.
+
+**Polities among themselves (ruling 67).** Polities under no host have only
+consent between them, so among themselves they are a faction, and a treaty
+is a standing agreement at scale: it holds while both keep to it, and "what
+it rested on changed" ends it, in the words Paredros's agreement already has
+for that ending (`paredros-social/src/agreement.rs:48`). That widens ruling
+8, whose faction was "comprised of many creatures": a faction's members are
+whatever can consent, sophonts or polities. Everything ruling 63 gave a
+faction then applies with polities as the members. One proposes an act and
+others join, for the act itself, read against their constitutional alignment
+(ruling 51), or for the proposer, read as their opinion of it and its
+reputation; those who join are a party for that act, which is an alliance, a
+coalition or a trade league. And the way up is the same rung transition: a
+faction of polities that founds a constitution with means behind it has made
+a host, an empire, a church or a federation, by ruling 63's ranked
+preference with polities casting the ballots. So composition is one
+recursion in both directions, consent below every constitution and consent
+again above it, and the sim needs no separate model of diplomacy.
+
+Prior art for ruling 67, known. Waltz's *Theory of International Politics*
+(1979) makes anarchy, the absence of any authority above states, the
+defining condition of their relations, and Bull's *The Anarchical Society*
+(1977) adds that they keep norms anyway, which is Ostrom's norm, a statement
+with no "or else", at the scale of polities. Axelrod (1984) and Keohane
+(1984) are why agreements hold there regardless: reciprocity, reputation and
+the shadow of the future, which are ruling 56's reputation and ruling 50's
+trust. The Hanseatic League is the case in one body: towns and merchant
+guilds in league without a sovereign, deciding in a diet, and enforcing by
+exclusion from the trade.
 
 **Prior art for ruling 64,** known literature. North (1990) defines
 institutions as the humanly devised constraints on interaction and makes
@@ -2183,6 +2218,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 67 recorded: polities under no host are a faction among
+  themselves and a treaty is a standing agreement at scale, which widens
+  ruling 8's faction to any members that can consent and makes a federation
+  the same rung transition as a founding. No separate model of diplomacy.
 - 2026-09-20: ruling 66 recorded: any means may stand behind a constitution,
   and a polity may automatically become suppressed, inactive, superseded or
   subordinated to a faction. §3.2.2 now holds existence as asserted and
