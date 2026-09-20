@@ -506,6 +506,20 @@ what later sections derive from.
     a rogue really believes in kleptocracy, but nobody else does, but they
     believe in individualism, so their support goes there next... like
     preference-ordered rank choice voting for the sim?"
+64. **A polity's state needs efficacious means of enforcement, not
+    necessarily violent; a polity has a focus, not a size; polities may be
+    contingent on polities, and that is building on an institution.** Mark,
+    2026-09-20: "With the polity's state, there must be a means of enforcing
+    that state. That need not be violence; one can imagine a polity that
+    enforces its collectively decided state through the provision of the
+    requirements for life, and through self defense, but whatever the means
+    (likely multiple), they must be efficacious. And probably it would be
+    related to the political system, the acts within. Not every polity is a
+    town or a nation. A polity focused on blacksmithing would be a
+    blacksmith's guild, no? And some polities may indeed be contingent upon
+    others, like factions comprised a polity. If you can make a durable
+    agreement that works within another polity, congrats, you've built on an
+    institution".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1047,8 +1061,8 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 
 ### 3.2.2 Factions and polities
 
-From ruling 63. Open where marked, and every *reading* below is this
-record's, for Mark to reject.
+From rulings 63 and 64. Open where marked, and every *reading* below is
+this record's, for Mark to reject.
 
 **The line between them moves from methodology to constitution.** Ruling 8
 said a settlement is a faction until it has a methodology. Ruling 63
@@ -1129,14 +1143,83 @@ transition that founds a polity (§3.3), and its winner is asserted as the
 constitution. At the cohort rung the ballots are ruling 50's distributions,
 so the count runs over blocs and not heads. Ties break on the seed.
 
-**What follows, unruled.** After founding, the constitution is asserted and
-stays put while its members' derived preference keeps moving, so the
-distance between the two is a quantity the record can read at any time;
-ruling 51 already keeps a polity's constitutional alignment "in addition to
-the factions within" it. That gap is the natural candidate for legitimacy,
-and for what drives reform, secession and §3.3's "a polity collapsing into
-factions". **Open:** what holds a polity when consent does not, and what
-ends it.
+**Enforcement (ruling 64).** A polity's asserted state needs means of
+enforcing it, likely several, and they "must be efficacious". They need not
+be violent: Mark names the provision of the requirements for life, and self
+defence. *Reading:* a polity enforces with what it provides and what it
+asserts. Ruling 38 already made provisioning a process of the faction and
+polity rungs, the collective feeding the individual, and what is provided
+can be withheld. Everything the record lets a polity assert it can also
+revoke: rank, office and membership (ruling 56), property (ruling 53), home
+and borders (ruling 54). Force is one more means and not the defining one.
+So the "or else" of a rule is an ordinary process of §3.3's first shape,
+with a cost to the polity that applies it, and a guild that bars a smith
+from the forge and a crown that sends soldiers are the same shape. "Related
+to the political system, the acts within": the act by which a form decides
+(ruling 63) suggests the means by which it enforces, so rule by buying
+withholds pay, rule by divining withholds rites, and rule by fighting
+fights. **Open:** whether that link is a default the generator uses or a
+constraint the sim holds.
+
+**Efficacy is read, never asserted.** *Reading:* whether a means is
+efficacious is a track record, how often applying it produced compliance,
+which is ruling 50's trust, "expectations" formed from "how things turned
+out in the past", held about the constitution as about any tenet. That gives
+the second half of the question an answer without new machinery. After
+founding, the constitution is asserted and stays put while its members'
+derived preference keeps moving, so the distance between the two can be read
+at any time; ruling 51 already keeps a polity's constitutional alignment "in
+addition to the factions within" it. Enforcement is what holds that gap
+open. A polity whose means have stopped working is living on consent alone,
+and by ruling 63 a thing that lives on consent alone is a faction, so §3.3's
+"a polity collapsing into factions" is not a separate mechanism: it is what
+the record says once enforcement has failed. **Open:** reform and secession,
+and whether collapse is a threshold or a slide.
+
+**A polity has a focus, not a size.** "Not every polity is a town or a
+nation. A polity focused on blacksmithing would be a blacksmith's guild." So
+scale is orthogonal to the polity rung, as ruling 58 made it orthogonal to
+kingdom, and what a polity has instead is a focus: the acts its constitution
+binds, by whom, and where. A guild binds the acts of a craft, a town the
+acts within a place, a church the acts of a faith, a company the acts of a
+trade. In the grammar of institutions that is the attributes, the aim and
+the conditions of its rules, so jurisdiction is a predicate over acts and
+needs no territory. It also says what each polity can withhold: the guild
+the forge, the mark and the apprentices, the town the ground.
+
+**Contingent polities, and the institution.** "Some polities may indeed be
+contingent upon others, like factions comprised a polity. If you can make a
+durable agreement that works within another polity, congrats, you've built
+on an institution." So composition recurses: factions comprise a polity
+(ruling 8), and polities may sit inside polities. *Reading:* what makes the
+host an institution is that an agreement made under it holds without its
+parties enforcing it themselves, and contingency is borrowed enforcement:
+the guild's "or else" is backed by the town's courts, the town's by the
+crown. Two consequences. A contingent polity is cheap to found, because it
+need not bring means of its own, which is why a settled world grows
+institutions and a wild one does not. And when a host fails, everything
+contingent on it must find means of its own or fall back to a faction, so
+collapse cascades, and those are events the hagiograph keeps. Checked
+2026-09-20: Paredros's standing agreement is the consent-only form, "still
+not a command", which its holder may decline "when its premises have
+changed" (`paredros-social/src/agreement.rs:14-17`), and nothing stands
+behind it but the two names on it; a durable agreement in ruling 64's sense
+is that same record with a polity's enforcement behind it.
+
+**Prior art for ruling 64,** known literature. North (1990) defines
+institutions as the humanly devised constraints on interaction and makes
+third-party enforcement the thing that lets strangers keep agreements, which
+is Mark's institution. Greif's Maghribi traders, and Milgrom, North and
+Weingast on the law merchant (1990), are enforcement without violence or a
+state, by reputation and exclusion from the trade, which is the guild.
+Ostrom's design principles for lasting commons (1990) include monitoring,
+graduated sanctions, recognition of the right to organise by an outside
+authority, and nested enterprises, the last two being the contingent polity.
+Etzioni's three kinds of compliance, coercive, remunerative and normative
+(1961), and Mann's four sources of social power, ideological, economic,
+military and political (1986), are ready taxonomies of means. Weber's state,
+a monopoly of legitimate force over a territory, is the narrow case ruling
+64 declines to make the definition.
 
 **Prior art.** Known literature first. Crawford and Ostrom's grammar of
 institutions (1995) writes any institutional statement as attributes,
@@ -2008,6 +2091,15 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 64 recorded into §3.2.2: enforcement as what a polity
+  provides and asserts and can therefore withhold and revoke, efficacy read
+  as ruling 50's trust, collapse as what the record says once enforcement
+  fails, a polity's focus as a predicate over acts with scale orthogonal,
+  and contingent polities as borrowed enforcement with cascading failure.
+  Checked against Paredros's standing agreement, the consent-only form.
+  Open: whether the link from deciding act to means is a default or a
+  constraint, reform and secession, and whether collapse is a threshold or a
+  slide.
 - 2026-09-20: ruling 63 recorded and §3.2.2 added: a faction acts by consent
   and is derived, a polity adds an asserted constitution, a form of
   governance is a qualifying predicate and a deciding act, and forms are
