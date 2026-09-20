@@ -520,6 +520,12 @@ what later sections derive from.
     others, like factions comprised a polity. If you can make a durable
     agreement that works within another polity, congrats, you've built on an
     institution".
+65. **A polity without support does nothing; it dies only when people agree
+    it has.** Mark, 2026-09-20: "when a polity lacks support to do its
+    operations, then it essentially does nothing. But they only die when
+    people agree they do. Perhaps because their political context changed,
+    or because everyone who knew about it died, or the methods, goals,
+    and/or means became pointless".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1061,7 +1067,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 
 ### 3.2.2 Factions and polities
 
-From rulings 63 and 64. Open where marked, and every *reading* below is
+From rulings 63 to 65. Open where marked, and every *reading* below is
 this record's, for Mark to reject.
 
 **The line between them moves from methodology to constitution.** Ruling 8
@@ -1164,17 +1170,56 @@ constraint the sim holds.
 **Efficacy is read, never asserted.** *Reading:* whether a means is
 efficacious is a track record, how often applying it produced compliance,
 which is ruling 50's trust, "expectations" formed from "how things turned
-out in the past", held about the constitution as about any tenet. That gives
-the second half of the question an answer without new machinery. After
+out in the past", held about the constitution as about any tenet. After
 founding, the constitution is asserted and stays put while its members'
 derived preference keeps moving, so the distance between the two can be read
 at any time; ruling 51 already keeps a polity's constitutional alignment "in
 addition to the factions within" it. Enforcement is what holds that gap
-open. A polity whose means have stopped working is living on consent alone,
-and by ruling 63 a thing that lives on consent alone is a faction, so §3.3's
-"a polity collapsing into factions" is not a separate mechanism: it is what
-the record says once enforcement has failed. **Open:** reform and secession,
-and whether collapse is a threshold or a slide.
+open.
+
+**Dormancy and death (ruling 65), correcting this record.** The first draft
+of the paragraph above read failed enforcement as the polity falling back to
+a faction by itself. Mark ruled otherwise. A polity that lacks support for
+its operations "essentially does nothing", and it dies "only when people
+agree" it has. So a polity has three conditions, not two: *active*, with
+support enough to operate; *dormant*, asserted in the record and doing
+nothing; and *dead*, by agreement. That is the derivation rule kept honest:
+a constitution is an asserted fact, and an asserted fact stands until
+another assertion ends it, never because a derived quantity fell. It also
+names what is scarce to a polity in Mark's own word: **support**. The
+scheduler consequence is free: a dormant polity has no due events and costs
+nothing, as a faction does.
+
+Mark gives three causes for the agreement. *The political context changed*,
+which for a contingent polity is its host changing or falling, so ruling
+64's cascade makes polities dormant and leaves their ending to those who
+belong to them. *Everyone who knew about it died*, which is ruling 5 applied
+to polities: memory is not global, things can be forgotten, and a polity
+lives in those who know of it, so its existence has a reach like any event's
+(§3.4), and agreement among nobody is agreement. *The methods, goals and/or
+means became pointless*, which also says what a polity is made of: goals,
+its focus (ruling 64); methods, how it decides (ruling 63); and means, how
+it operates and enforces (ruling 64). §3.3's "a polity collapsing into
+factions" is then the rung transition that records an agreed death, the
+factions having been there all along. *Reading:* a dormant polity can be
+revived by whoever brings it support, since nothing ended it, which is the
+pretender, the government in exile and the restored order. **Open:** whether
+a constitution borne by an item, a charter, keeps a polity from being
+forgotten when its last knower dies; who must agree, and by what count; and
+reform and secession.
+
+Prior art for ruling 65, known. Searle's *The Construction of Social
+Reality* (1995): an institutional fact exists by collective acceptance and
+only while accepted, "X counts as Y in context C", which is "they only die
+when people agree they do" as philosophy. In law, desuetude: English and
+American statutes do not lapse by disuse and stand until repealed, while
+civil-law traditions let them lapse, so both answers have been lived under
+and Mark's is the first. In history: the Holy Roman Empire, long inert,
+ended by a formal act in 1806; the Order of Malta, a polity recognised
+without territory; titular sees, offices kept for dioceses that no longer
+operate; pretenders and governments in exile. From memory of games,
+unverified: Crusader Kings III's titles exist de jure whether or not anyone
+holds them and are created and destroyed by explicit acts.
 
 **A polity has a focus, not a size.** "Not every polity is a town or a
 nation. A polity focused on blacksmithing would be a blacksmith's guild." So
@@ -2091,6 +2136,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 65 recorded, correcting this record's reading of
+  collapse: a polity without support goes dormant and does nothing, and dies
+  only by agreement, for a changed context, for being forgotten, or for
+  having become pointless. A polity is goals, methods and means, and what is
+  scarce to it is support. Open: charters as bearers, who must agree, reform
+  and secession.
 - 2026-09-20: ruling 64 recorded into §3.2.2: enforcement as what a polity
   provides and asserts and can therefore withhold and revoke, efficacy read
   as ruling 50's trust, collapse as what the record says once enforcement
