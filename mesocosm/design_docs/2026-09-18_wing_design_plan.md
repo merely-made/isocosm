@@ -539,6 +539,19 @@ what later sections derive from.
     they are a faction. A treaty is then Paredros's standing agreement at
     scale, until an empire, a church or a federation hosts them." Mark:
     "Also i agree with this."
+68. **A polity's goals are derived from its own alignment, as an
+    individual's are; it has no will to continue beyond finding a new use;
+    an inactive polity can be revived.** On the reading that an inactive
+    polity "can be revived by whoever brings it support, since nothing ended
+    it", with the pretender, the government in exile and the restored order
+    as examples, and on leaving open the charter, who must agree to a death,
+    and reform and secession, Mark, 2026-09-20: "Agreed with these." Asked
+    where a polity's goals come from and whether they change: "Well, why
+    would a sophont become a blacksmith? Seems like there's no one clear cut
+    answer besides to consider a polity sort of a collective entity with its
+    own alignment/values? And then derive goals from that, like individuals
+    have? If an institution outlived its use, why would it want to continue
+    if it didn't find a new use? Polities change like that".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1080,7 +1093,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
 
 ### 3.2.2 Factions and polities
 
-From rulings 63 to 67. Open where marked, and every *reading* below is
+From rulings 63 to 68. Open where marked, and every *reading* below is
 this record's, for Mark to reject.
 
 **The line between them moves from methodology to constitution.** Ruling 8
@@ -1216,9 +1229,10 @@ means became pointless*, which also says what a polity is made of: goals,
 its focus (ruling 64); methods, how it decides (ruling 63); and means, how
 it operates and enforces (ruling 64). §3.3's "a polity collapsing into
 factions" is then the rung transition that records an agreed death, the
-factions having been there all along. *Reading:* an inactive polity can be
+factions having been there all along. **Ruled, ruling 68:** an inactive polity can be
 revived by whoever brings it support, since nothing ended it, which is the
-pretender, the government in exile and the restored order. **Open:** whether
+pretender, the government in exile and the restored order. **Open,** and agreed
+open by ruling 68: whether
 a constitution borne by an item, a charter, keeps a polity from being
 forgotten when its last knower dies; who must agree, and by what count; and
 reform and secession.
@@ -1284,6 +1298,57 @@ trade. In the grammar of institutions that is the attributes, the aim and
 the conditions of its rules, so jurisdiction is a predicate over acts and
 needs no territory. It also says what each polity can withhold: the guild
 the forge, the mark and the apprentices, the town the ground.
+
+**A polity's goals (ruling 68).** Mark answered the question with one: "why
+would a sophont become a blacksmith?" There is "no one clear cut answer", so
+none is built in. A polity is "sort of a collective entity with its own
+alignment/values", and its goals are derived from that, "like individuals
+have". So goals are neither fixed at founding nor stored. A polity is an
+agent at its own rung with a sophont's shape under ruling 37: what it knows,
+what it values and what it lacks yield what it pursues, and its methods
+(ruling 63) stand where a sophont's deliberation would, turning a pursuit
+into an operation. What it lacks is support (ruling 65), as a sophont lacks
+food. One derivation serves both rungs, which is ruling 10 again, and it
+means the work of designing how a sophont's goals come from its values is
+done once for both.
+
+**No will to continue is built in.** "If an institution outlived its use,
+why would it want to continue if it didn't find a new use? Polities change
+like that." A polity whose use is gone finds a new one, or it becomes
+pointless, and a pointless polity is one people agree is dead (ruling 65).
+*Reading:* where an institution is seen clinging on, that is derived and
+needs no drive of its own. The members it provisions support it for their
+own reasons, and the sharpest case is ruling 66's subordination: an
+institution that "wants to continue" is one subordinated to the faction of
+its own officers, who want their provision to continue. That is Michels's
+oligarchy with nothing added to the polity.
+
+*Reading, on how the change happens.* Ruling 51 made a polity's alignment
+constitutional, asserted. But a polity also acts, and its acts are in the
+record, so an alignment can be derived for it exactly as ruling 51 derives a
+sophont's. A polity then has two: the one it professes, asserted in its
+constitution, and the one it practises, derived from what it does. "Polities
+change like that" is the practised one moving first, as the polity takes up
+what its members and its circumstances bring it, with reform as the
+constitution catching up. That gives the record two readable distances for
+any polity, constitution against members' preference (above) and professed
+against practised, and both bear on support. **Open:** whether both are
+kept, and reform itself.
+
+Prior art for ruling 68, known. Sills's *The Volunteers* (1957) named goal
+succession from the March of Dimes, founded against polio, which found a new
+use once the vaccine made the old one pointless; Zald and Denton (1963)
+traced the YMCA from evangelism to general service. The opposite, goal
+displacement, where keeping the organisation going becomes the goal, is
+Merton's (1940) and Michels's, and is the drive ruling 68 declines to build
+in and the reading above derives. Barnard (1938) and March and Simon (1958)
+give support its accounting: an organisation persists while the inducements
+it offers are worth the contributions it asks. Hannan and Freeman (1977) are
+the caution, that most organisations do not adapt and are replaced instead,
+so the bench should see both outcomes. In history the London livery
+companies, the Blacksmiths' among them, outlived the regulation of their
+crafts and found charitable and ceremonial uses, and the Order of St John
+went from hospital to military order to sovereign charity.
 
 **Contingent polities, and the institution.** "Some polities may indeed be
 contingent upon others, like factions comprised a polity. If you can make a
@@ -2218,6 +2283,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 68 recorded: a polity's goals derived from its own
+  alignment as an individual's are, no built-in will to continue, goal
+  change as finding a new use, and revival of an inactive polity ruled.
+  Readings flagged: clinging on as subordination to the faction of a
+  polity's own officers, and professed against practised alignment. The
+  faction and polity rung's big picture is closed; its open details stay
+  listed in §3.2.2 for the W2 sim plan.
 - 2026-09-20: ruling 67 recorded: polities under no host are a faction among
   themselves and a treaty is a standing agreement at scale, which widens
   ruling 8's faction to any members that can consent and makes a federation
