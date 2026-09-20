@@ -89,7 +89,7 @@ dependencies while the execution plan retains F0-F8 semantic milestones:
   its capabilities, and what was deliberately not carried over.
 
 **Current design focus, 2026-09-08:** the founding plan's
-[borg generation and character-sheet proposal](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
+[denizen generation and character-sheet proposal](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
 specifies classless capabilities, historically transmitted traditions,
 alternative anatomical technique bindings, deliberate learning, and inventory
 mapped to the body. The first implementation slice is an authored three-lives

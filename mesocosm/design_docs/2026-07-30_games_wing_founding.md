@@ -346,7 +346,7 @@ over a graph), and the idea became this. The wing has vocabulary for exactly
 that shape — **dead is dead, lineage persists**, and what remains when nobody
 carried the line is a **tulpa**. Meerkat is one.
 
-### The continuity: critter, borg, character
+### The continuity: critter, denizen, character
 
 **Ruled 2026-07-31 by Mark**, and it is the sharpest statement of the wing's
 thesis so far:
@@ -355,30 +355,40 @@ thesis so far:
 > make incidentally, by playing Mesocosm. A **character** is a
 > *faction-associated* borg — something you make by playing Paredros.
 
+**Terminology supersession, 2026-09-20.** The quoted 2026-07-31 ruling is
+preserved as the historical record. Its current second tier is **denizen**:
+an inhabitant the simulation remembers individually because history,
+relationships, or explicit designation makes it matter. Earned notability
+does not require sapience, a name, a faction, or costly foreground simulation.
+`borg` remains only in historical material while the separate proposal to use
+it for constructs remains unresolved. The platform admission term is now
+**participant**, reserving the `denizen` crate name and concept for this
+simulation tier without creating a crate or moving Servitor implementation.
+
 The force of it is what it does *not* require. There is no conversion step, no
 promotion pipeline, no second representation. Each vessel adds exactly one
 thing to an artifact that already exists:
 
 | Vessel | Adds | The thing it makes |
 | ------ | ---- | ------------------ |
-| Mesocosm | a **name** | a borg, out of a critter |
-| Paredros | a **faction** | a character, out of a borg |
+| Mesocosm | remembered history, relationship, or explicit designation | a denizen, out of a critter |
+| Paredros | a **faction** | a character, out of a denizen |
 | Isometry | a **history** | a legend, out of a character |
 
-**Naming is the whole promotion.** A critter is a member of a species; a borg
-is a particular one you can refer to. That is also exactly what the deed log
-does — an anonymous organism accumulates a record, and at some point the record
-is *of somebody*. This is why the founding plan's death ruling works: what
-survives is a line and a memory, and a memory has to be a memory *of* someone.
+**Individual remembrance is the whole promotion.** A critter is a member of a
+species; a denizen is a particular inhabitant the simulation retains. That can
+come from a deed, relationship, explicit designation, or name. This is why the
+founding plan's death ruling works: what survives is a line and a memory, and a
+memory can be of an inhabitant even when it lacks sapience or a name.
 
 **Incidentally is doing real work in that sentence.** You do not go to Mesocosm
-to make a borg. You play an ecology, and some critter of yours survives long
-enough, does something particular enough, and accrues enough record that it
-stops being a statistic. The naming is *earned by play* rather than chosen at a
-character creator, which is the partial-authorship ruling arriving at the level
-of identity rather than morphology.
+to make a denizen. You play an ecology, and some critter of yours survives long
+enough, does something particular enough, gains a relationship, or is explicitly
+designated so it stops being a statistic. The notability is *earned by play*
+rather than chosen at a character creator, which is the partial-authorship
+ruling arriving at the level of identity rather than morphology.
 
-**And a faction is a relationship, not a property.** A borg becomes a character
+**And a faction is a relationship, not a property.** A denizen becomes a character
 by being *of* somewhere and *among* someone — which is precisely Paredros'
 second person, and precisely why that vessel is the one that mints characters.
 You cannot be a colleague alone.
@@ -843,7 +853,7 @@ them apart structurally. Only the player can, by pointing.
 **The moot is the world. A game is one participant and lens upon it.**
 
 This lands on the existing stack without force. "Participant" is the gate
-vocabulary (denizen / petition / grant); "lens" is the ortet/ramet
+vocabulary (participant / petition / grant); "lens" is the ortet/ramet
 vocabulary. A game walks the participant gate like any other outsider and
 renders the world through its own lens. A game's presence in a moot is
 **pack-shaped**: schema plus scripts plus a capability manifest, which is
@@ -977,7 +987,7 @@ overstated it, and the correction matters.
   canvas, `isometry-voxel` recipe-not-image appearance, and signed
   multi-writer P2P sessions. C7 factions **landed 2026-07-17/18** once the
   moot/murm rebase cleared.
-- Participant gate: denizen / petition / grant / pack / mod, with servitor as
+- Participant gate: participant / petition / grant / pack / mod, with servitor as
   the installed-helper case.
 
 **Not ready, stated honestly:**
@@ -1126,8 +1136,8 @@ maintainer's manual step.
 | **metabolize** | Mesocosm's single verb: world into self, self into world. |
 | **fili** | Lineage across worlds. Reserved in `mere/design_docs/TERMINOLOGY.md` for moot ancestry, forks, and genealogy. Not event history, not content descent. |
 | **tulpa** | The legend and memorial organ: what memory makes of history, sustained by continued attention. Proposed 2026-07-30, crates.io free, **lexicon inscription still pending the maintainer's ruling.** |
-| **borg** *(provisional)* | A **named** critter — the concept ruled 2026-07-31, the word not yet cleared. Made incidentally by playing Mesocosm: a critter accrues enough record to stop being a statistic. Carries a Gotcha Force loan and an IP shadow; see open question 3. |
-| **character** | A **faction-associated** borg, made by playing Paredros. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
+| **denizen** | An inhabitant individually remembered by simulation because history, relationships, or explicit designation makes it matter. Earned notability does not require sapience, a name, a faction, or costly foreground simulation. The `denizen` crate name and concept are reserved for this tier; no crate or Servitor move follows from that reservation. Supersedes the provisional `borg` term on 2026-09-20. |
+| **character** | A **faction-associated** denizen, made by playing Paredros. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
 | **deme** | Banked, unspent. Biology's local interbreeding population; the leading candidate for Mesocosm's unit word if one is wanted. |
 
 Also banked clean and unspent: **coppice**, **diaspore**, **holobiont**.
@@ -1211,15 +1221,13 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    `character`, which is also already Isometry's word for the same artifact —
    agreement across two vessels rather than a coinage.
 
-   **What is still open is the word "borg", not the concept.** The concept is
-   now ruled and load-bearing: the wing needs a noun for *a critter that has a
-   name*. The word carries a Gotcha Force loan and an IP shadow, and that
-   caution has not been withdrawn — this repo's `CLAUDE.md` still lists borg
-   under terms not to use. Treat "borg" as **provisional shorthand for a ruled
-   concept** until it survives the usual crates.io, game, studio, and
-   trademark checks or a replacement is chosen. **deme** is banked and is not
-   a candidate here: it names a population, and this concept names an
-   individual.
+   **Superseded for terminology 2026-09-20.** The current load-bearing noun is
+   **denizen**: a simulation-remembered inhabitant whose history,
+   relationships, or explicit designation makes it matter. It need not be
+   sapient, named, faction-associated, or costly to simulate. The proposed
+   reassignment of `borg` to the construct axis remains unresolved. **deme**
+   remains banked and is not a candidate here: it names a population, and this
+   concept names an individual.
 
    The battle-frame noun — the machine a character pilots, if Paredros keeps
    the Gotcha Force silhouette — remains genuinely unnamed and is a separate

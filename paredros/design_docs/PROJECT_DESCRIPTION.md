@@ -62,7 +62,7 @@ See `mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
 
 Not planned, recorded only as direction: co-op with shared burdens rather
 than shared targets; companions who travel to other players' settlements as
-admitted denizens; settlements exporting as playable Isometry campaigns where
+admitted participants; settlements exporting as playable Isometry campaigns where
 the dead appear as named figures. Worlds that branch and continue are no
 longer direction but the rule (the wing design record, ruling 7); what stays
 speculative here is the co-op and the travel.

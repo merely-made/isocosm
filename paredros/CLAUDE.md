@@ -102,18 +102,19 @@ architecture in the sibling repo at
 
 - **critter**: the plain organism word, wing-wide.
 - **character**: **this game's unit word, ruled 2026-07-31.** A
-  faction-association added to a borg, which is itself a name added to a
-  critter — `character(borg(critter))`, which this repo's founding plan
+  faction-association added to a denizen, which is itself an individually
+  remembered inhabitant — `character(denizen(critter))`, which this repo's founding plan
   already described as one stable subject with independently versioned
   profile references. Not a coinage: Isometry uses `character` for the same
   artifact, so the two vessels agree rather than each inventing a word. A
   faction is a *relationship*, not a property, which is why the second-person
   vessel is the one that mints characters.
-- **borg** *(provisional word, ruled concept)*: a **named** critter, made
-  incidentally by playing Mesocosm. The concept is settled; the word still
-  carries a Gotcha Force loan and an IP shadow and has not passed the usual
-  checks. Prefer `character` here — borg is Mesocosm's output, not this
-  game's. See the wing founding record §1 and open question 3.
+- **denizen**: an inhabitant the simulation remembers individually because
+  history, relationships, or explicit designation makes it matter. Its earned
+  notability needs neither sapience, name, faction nor costly foreground
+  simulation. This current term supersedes `borg` on 2026-09-20; historical
+  rulings retain the old word with supersession pointers. See the wing
+  founding record §1 and open question 3.
 - **The battle-frame noun** — the machine a character pilots, if this game
   keeps the Gotcha Force silhouette — **remains unnamed.** It is a separate
   question from the unit word, and not a gap to fill casually.

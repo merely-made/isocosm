@@ -652,17 +652,19 @@ gregarious under crowding, an aphid grows wings, an ant larva becomes a
 queen. The epoch boundary plan's ruling that plasticity is a life stage
 that youth pays for is one conditional expression already ruled.
 
-**Borg.** A critter that can name things, which is sapience, or that has
-relationships, which a non-sapient critter can have too: interactable,
-possessed of a disposition, capable of remembering. It inherits its
-lineage's genotype and expression. Harder to collapse into a cohort,
-being more individual. Naming is an act of assertion under §1: a borg is a
-source of asserted facts in the record, which is why it cannot be
-re-derived from a distribution the way a critter can.
+**Denizen.** An inhabitant the simulation remembers individually because
+history, relationships, or explicit designation makes it matter. A
+lineage-born denizen inherits its lineage's genotype and expression; other
+provenance still has the same remembrance tier. A denizen is harder to collapse
+into a cohort, being more individual. Earned notability does not require sapience, a name, a
+faction, or costly foreground simulation. A denizen can therefore be a
+non-sapient critter with a remembered relationship or event. This current
+definition supersedes the provisional `borg` definition on 2026-09-20; the
+dated rulings that use `borg` remain historical records.
 
-**Character.** A borg contingent on a group, a polity or a collective,
+**Character.** A denizen contingent on a group, a polity or a collective,
 even by absence. Defined by the tabletop system's schema, and resolvable
-as a borg and as a critter.
+as a denizen and as a critter.
 
 **Divinity and provenance (ruling 42).** Divinity is not a rung of the
 agent ladder and not a mere status: it is promotion into the world's
@@ -676,7 +678,7 @@ divinity is *enacted*, the outcome of a wish with the world's strength,
 which is a rung transition of §3.3's third shape whose cost is
 world-scale, such as gathering and invoking the world's whole glyph
 canon. That answers question 8 for the top: what persists past a body is
-the record always, a borg's memory only if retold, a character's sheet as
+the record always, a denizen's memory only if retold, a character's sheet as
 an asserted fact, and a divine thing entirely, as provenance.
 
 **Presence and ending (ruling 43).** The ascent writes two terms into the
@@ -852,25 +854,17 @@ and Lancer's mech is a construct held by a person. That keeps the ladder
 at three levels and gives constructs and the divine a home without
 making either a rung. Agreed by Mark as ruling 45.
 
-**The word for the second tier (open).** Mark proposes moving "borg" to
-mean construct, which suits its Gotcha Force loan (those borgs are toy
-constructs) and honours the CLAUDE.md warning that the word never passed
-the usual checks, and asks what the named, sapient tier is called instead.
-Candidates by register, none checked beyond that: *person* is plain and
-the doctrine's default, but sits beside mere's *personae*, which are the
-player's own faces, and the two would be confused at the trust plane;
-*sapient* as a noun is plain, used that way in the genre, and collides
-with nothing in the wing; *sophont*, Poul Anderson's coinage for any
-being of person-level mind regardless of species, is exact and
-distinctive but obscure; *denizen* is spent: mere's TERMINOLOGY ruled it on 2026-07-17 as the
-platform's umbrella word for anything admitted to act through the gate, a
-personae identity holding a grant with the right to petition, covering
-human moot peers, servitors and scenario runners (checked 2026-09-18; the
-servitor crate's actors are denizens), so a second in-world sense would
-collide the way *flora* would. *Sophont* appears nowhere in the workspace. The working vocabulary is Mark's
-naming round; the record uses "borg" until he rules, and the founding
-record's continuity, Mesocosm's CLAUDE.md terminology and ruling 35's
-table all change with it.
+**Terminology supersession (2026-09-20).** The prior naming round is closed:
+**denizen** is the second simulation tier, an inhabitant individually
+remembered because history, relationships, or explicit designation makes it
+matter. It does not imply sapience, a name, a faction, or expensive simulation.
+The platform admission sense previously carried by *denizen* is now
+**participant**: an identity holding a grant with the right to petition,
+including human moot peers, servitors, and scenario runners. The `denizen`
+crate name and concept are reserved for the simulation tier; this does not
+create that crate or move Servitor implementation. The 2026-09-18 proposal to
+move `borg` to the construct axis remains an unresolved proposal, not a
+ruling. Its dated wording is superseded here; historical quotations retain it.
 
 **Kingdom and scale (ruling 39).** Kingdom is class and is a trophic
 strategy: producer, consumer, decomposer, as the founding plan ruled. Scale
@@ -908,7 +902,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    conserved material ledger Mesocosm keeps with injuries, age and stage
    (Dynamic Energy Budget theory's reserve, structure and maturity as the
    model shape), and each level reads it more coarsely: a critter can die
-   of a missing essential nutrient, a borg of starvation generally, a
+   of a missing essential nutrient, a denizen of starvation generally, a
    character is debuffed for not eating under its system's rules and
    expresses sleep as exhaustion. A character's sheet is not a second
    state; it is the system's coarse reading of the one ledger, and the
@@ -920,16 +914,17 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    reading the higher levels use, and it is what "weakly expressed"
    (ruling 35) means for the ecology in Paredros and Isometry.
 2. *Methodology.* **Answered, ruling 37.** Reactive agents for critters,
-   belief-desire-intention agents for borgs, normative agents with roles
-   and institutions for characters. A borg's disposition is the
-   five-factor axes, and significant events may also cause traits, as
-   Crusader Kings does. The borg line is Dwarf Fortress's historical
-   figure rule: a critter becomes a borg when it does something the record
-   keeps, or is named or related, not only when it becomes an antagonist.
+   belief-desire-intention agents for denizens when their chosen fidelity
+   needs them, normative agents with roles and institutions for characters.
+   A denizen's disposition is the five-factor axes when represented, and
+   significant events may also cause traits, as Crusader Kings does. The denizen
+   line is Dwarf Fortress's historical-figure rule: a critter becomes a denizen
+   when it does something the record keeps, is named, is related, or is
+   explicitly designated, not only when it becomes an antagonist.
 3. *History against memory.* Partly answered by ruling 54, which gives
    critters memories beside habitats and habits, so a critter's memory is
    of places and what worked there, habit and habitat, while ruling 36's
-   "capable of remembering" for a borg is knowledge of events, which
+   "capable of remembering" for a denizen is knowledge of events, which
    ruling 47 made a bearer form a sophont can sacrifice. Every level has
    a history, the deviation record §1 keeps whether or not anything can
    recall it. **Answered, ruling 55:** one memory, graded, over one
@@ -1822,15 +1817,16 @@ verbs it reaches as handles (ruling 10).
 
 The domain is a rung of the agent ladder, refined by play, with every other
 rung simmed in the background and weakly expressed in the foreground
-(ruling 35). The founding record's continuity of critter, borg and
-character (§1, "The continuity: critter, borg, character") is the same
+(ruling 35). The founding record's current continuity of critter, denizen and
+character (§1, "The continuity: critter, borg, character," superseded for
+terminology on 2026-09-20) is the same
 creature at three levels of identity, and the three games are those three
 levels:
 
 | Game | Foregrounded rung | Refined by play | Weakly expressed |
 | --- | --- | --- | --- |
 | Mesocosm | the critter and its lineage | the critter, over the ages, according to play preference | the ecology as weather, prey and competitors; society and polities as distant pressures that can still influence events |
-| Paredros | the borg, a named creature, and its factions | what named entities do; the coterie, the party, the base | the ecology as wildlife and land; polities as the powers that shape the region |
+| Paredros | the denizen, an individually remembered inhabitant, and its factions | what remembered entities do; the coterie, the party, the base | the ecology as wildlife and land; polities as the powers that shape the region |
 | Isometry | the character inside its polities | characters partisan, friendly, antagonistic, factional or unaligned | polities set the narrative stakes (sidequests, alignment, arcs, non-player characters, access to resources); the ecology as terrain and encounter |
 
 "Weakly expressed" is a requirement on the sim, not on the game: every rung
@@ -2373,6 +2369,9 @@ No code lane runs before W1 is ruled.
   mode left to the organ's plan.
 - 2026-09-18: ruling 45 recorded, the provenance and identity axes
   agreed; the second tier's word narrowed to sophont or denizen.
+- 2026-09-20: terminology supersession recorded: `denizen` is the individually
+  remembered simulation tier; the platform admission term is `participant`.
+  The proposed `borg`-to-construct reassignment remains open.
 - 2026-09-18: ruling 44 recorded, the tiers of godhood as the quality of
   the journey, read against the general model plan's §7.4 and the glyph
   expression ruling of 2026-09-15.

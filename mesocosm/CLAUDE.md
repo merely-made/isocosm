@@ -46,14 +46,13 @@ architecture that Paredros and Isometry also depend on.
 
 - **critter**: the plain organism word, wing-wide, and the default. Not
   "creature".
-- **borg** *(provisional word, ruled concept)*: a **named** critter. Ruled
-  2026-07-31 — a critter is an organism, a borg is a named critter made
-  incidentally by playing Mesocosm, a character is a faction-associated borg
-  made by playing Paredros. The **concept** is settled and load-bearing; the
-  **word** still carries a Gotcha Force loan and an IP shadow and has not
-  passed the usual checks. Use `critter` for organisms generally and reach for
-  borg only where the naming is the point. Do not treat this as clearance to
-  title anything Borg. See the wing founding record §1 and open question 3.
+- **denizen**: an inhabitant the simulation remembers individually because
+  history, relationships, or explicit designation makes it matter. Earned
+  notability does not require sapience, a name, a faction, or costly
+  foreground simulation. This is the current simulation tier, superseding
+  the provisional `borg` term on 2026-09-20; reserve the `denizen` crate name
+  and concept for this tier. Historical rulings and quotes retain `borg` with
+  supersession pointers. See the wing founding record §1 and open question 3.
 - **animula**: the played soul — the little soul that guests in a body,
   across generations. In-product term only. **Never title anything Animula**;
   ANIMULA NOOK is a live Tencent mark in Class 9 game software.
@@ -92,6 +91,19 @@ architecture that Paredros and Isometry also depend on.
   part layer of composition. The apothecaries' weight of twenty grains, free
   on crates.io, only a plural board-game mark nearby. Ruled by Mark
   2026-09-04 with nis.
+- **hagioglyph**: the divinity organ, ruled 2026-09-15: the glyph canon, the
+  journey, ascension, the chosen referent and its periods, and canon
+  revisions. Mirrors hagiograph, which it consumes (a promotion is one cause
+  of a revision) and never feeds. A glyph whose live effect follows a
+  revision is "a glyph under revision" or "the canon revision", not a
+  hagioglyph. Kernel: `shared/wing-glyphs`. General model §7.4.
+- **impresa** (plural imprese): the association organ, ruled 2026-09-15.
+  What any pointable thing, a glyph, a critter, a denizen, a character, a
+  faction, a place, an item, a lot of nis, has come to be associated with
+  and what has lapsed, as records citing accepted events, read as fact,
+  belief or legend. "A god's associations are their impresa, but other
+  things could have theirs too." General model §7.4, G7. Crate name stays
+  plain per the naming ledger's tier rule.
 
 Do not coin new names for these concepts mid-session. Naming rounds are
 deliberate here: candidates get crates.io, game, studio, and trademark checks
