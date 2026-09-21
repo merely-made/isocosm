@@ -645,6 +645,14 @@ what later sections derive from.
     "The two bindings does seem appropriate, too, though. Honestly if there
     is no cost on mobile or the web, i could see myself preferring to use
     the best capabilities available to improve performance".
+78. **A clean boundary either way.** Mark, 2026-09-21: "there are perhaps
+    parts that would be good to componentize and parts that might not be. So
+    further optimization is possible. But the lack of a clear boundary would
+    bite in the future, whereas performance will generally improve with
+    newer hardware. So i favor a clean boundary either way. Would total
+    componetization cause us to have ridiculous workarounds and inefficient
+    methods, or does it buy architectural ergonomics that are as valuable as
+    the performance the clean boundary costs?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2591,7 +2599,7 @@ mechanics, and are orders of magnitude, not receipts.
 | Cost | Size | Basis |
 | --- | --- | --- |
 | Compute inside a component | roughly 1.2 to 2.5 times native on compute-bound code | web sources read 2026-09-21: one 2026 survey of runtimes puts Wasmtime at 2.41 times native on its suite, others claim 75 to 85 per cent of native; Cranelift is not LLVM and SIMD stops at 128 bits |
-| Lost shared-memory parallelism | the largest, and structural | a component is single-threaded with its own memory, and WASI 0.3.0 adds async, not threads; Rayon inside a shard goes, and parallelism comes only from an instance per core with halos copied each tick |
+| Lost shared-memory parallelism | structural; its size is unknown (first written here as "the largest", withdrawn under ruling 78: shared-nothing shards scale with cores, so what is lost is convenience and halo copies, whose size depends on how well the place graph shards) | a component is single-threaded with its own memory, and WASI 0.3.0 adds async, not threads; Rayon inside a shard goes, and parallelism comes only from an instance per core with halos copied each tick |
 | Crossing the boundary | small if batched, ruinous if chatty | a call is tens of nanoseconds before its payload, and lists and strings are copied and allocated on the far side; ten thousand events a tick is well under a millisecond, a hundred thousand calls a tick is most of a frame |
 | Views for rendering | paid per change, never per frame | a snapshot cannot be borrowed across the boundary, so terrain and bodies cross as diffs of what is dirty, which the design wants anyway |
 | The web | the slowest path for everything | Wasmtime does not run in a browser; mere names jco, "later", and says packs "degrade to rungs 1-2 content there"; a componentised sim would cross through JavaScript glue on every call |
@@ -2635,6 +2643,50 @@ before believing any number here, with one small probe under W2: the same
 two workloads, a field pass over places and a due-event queue, built
 natively and as a Wasmtime component, run on seeded draws, reporting compute
 ratio, cost per crossing and cost per kilobyte.
+
+**Would it force ridiculous workarounds (ruling 78)?** Mark rules for "a
+clean boundary either way", because "the lack of a clear boundary would bite
+in the future, whereas performance will generally improve with newer
+hardware", and asks whether total componentisation buys ergonomics worth
+what it costs. First a distinction the question folds together: the clean
+boundary and the component are two things. The boundary is §5.2's
+discipline, and natively it costs almost nothing, a snapshot where a borrow
+would do and values where a reference would do, both of which replay and
+threads want anyway. The component is one binding of that boundary, and it
+is the binding that costs.
+
+| What total componentisation would force | How bad |
+| --- | --- |
+| Boundaries drawn by who owns memory, not by concept. Each component has its own memory, so the terrain volume and the big field arrays live in one component and everything else gets copies, diffs or chatty accessors. The result is a few large components, not many small ones | the real design distortion |
+| All parallelism as instances with halos exchanged each tick, domain decomposition where native code writes a parallel iterator | well understood and more code; it also forces the ordered merge §4.7 wants designed first, which is a gain |
+| Flat interfaces. WIT has no generics, no closures and no recursive values (mere's own WIT notes "WIT value types are not recursive" and flattens its tree to parent ids), so distributions, process definitions and graphs cross as records and handles with conversion code on both sides | friction, not distortion |
+| Two toolchains, slower builds, and debugging and profiling across a guest boundary | friction, improving |
+| The small platforms: an interpreter for everything on iOS, glue on every crossing on the web (above) | the worst of it |
+| A constant factor on compute everywhere | real, and the part newer hardware does absorb |
+
+| What it would buy | Obtainable without it? |
+| --- | --- |
+| A boundary that cannot be eroded, since no pointer can cross | yes: the contract as its own crate of value types, the sim's internals private behind it, and the component binding kept building and passing the same conformance suite in CI, so the second binding is the boundary's standing proof |
+| Floating point that is bit-identical across peers' machines, which replay hashes and the moot need | yes with discipline: one software `libm` everywhere and no platform intrinsics |
+| Sandboxing, capability grants, crash isolation, hot reload, any language | only for what is actually a component, which is why rung 3 exists |
+| Location transparency: a shard that can run on a thread, a Worker, a subprocess or a peer | yes: armillary's actors already exchange `Send` values, and the contract's values serialise |
+
+*Verdict, Mark's to rule.* Not ridiculous, and not worth it applied totally.
+Nothing on the first list is absurd; each is a known pattern. But the
+distortion is real, the small platforms are the worst of it, and nearly
+everything on the second list can be had while shipping native, provided the
+component binding is kept alive as a tested second binding and never allowed
+to rot. One caution on the premise: newer hardware mostly adds cores, not
+single-thread speed, so it absorbs a constant factor and rewards whatever
+scales across cores, which shared-nothing shards do under either binding.
+"Parts that would be good to componentize and parts that might not be" then
+has a rule of thumb, call frequency times data volume. Cold and narrow goes
+behind a component when it wants to be pluggable: generators, a ruleset's
+foreground resolver, a director, format adapters, the hagiograph's
+retelling. Hot or wide stays native: field passes, the due-event loop, graph
+derivation, the record's commit path, anything feeding the tracer. The W2
+probe of this section measures the constant, so the line can be moved later
+on a receipt.
 
 ## 6. Method
 
@@ -2932,6 +2984,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 78 recorded: a clean boundary either way. §5.4 extended
+  to answer whether total componentisation forces ridiculous workarounds:
+  the boundary and the component separated, what it would force and what it
+  would buy tabled, a verdict that it is neither ridiculous nor worth it
+  totally, a rule of thumb for which parts to componentise, and the
+  component binding kept green in CI as the boundary's proof. The earlier
+  "largest" claim about lost parallelism withdrawn as unknown.
 - 2026-09-21: ruling 76 recorded, Mark's clarification that the
   interoperation question was about the layer underneath the sim. §5.3 added
   from a read of mere: armillary's kernel and actors, the script substrate's
