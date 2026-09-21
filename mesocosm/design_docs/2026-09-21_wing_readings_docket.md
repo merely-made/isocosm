@@ -1,7 +1,7 @@
 # Wing design record: readings docket
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
-day; two held; D21 to D23 opened since.** It gathered every reading, recommendation and verdict the
+day; two held; D21 to D24 opened since.** It gathered every reading, recommendation and verdict the
 [wing design record](2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
@@ -37,6 +37,7 @@ processes declarative (D17); and what survives the boundary review cheaply
 | D21 | Secrets (§3.4, under ruling 87): what makes a secret is the taboo on telling, a tenet and a norm; its leverage is what release would do to the subject's standing; telling is Paredros's willingness rule with the taboo's sanction as the danger, personality being its thresholds and not a fourth factor; the regime is an explicit set of knowers holding notes, as Paredros's epistemic log already is; a secret ends when a telling seeds the reach field and it becomes a rumour | secrets need no new machinery: tenets, standing, the willingness rule, notes and the reach field | accept |
 | D22 | Realignment (§3.9, under ruling 90) is ruling 57's epoch boundary at the scale of a world and a rung transition of §3.3; since Mark's example also changes the foregrounded scope, a realignment may add nesting steps as well as change the rules | one mechanism for a lineage's shop, a world's change of ruleset and a change of scope | accept |
 | D23 | History (§3.9, under ruling 91): going back is the log replayed to then, with checkpoints at epoch boundaries and the oldest coarsened first; going back and editing asserts a fact in the past and so makes a branch, never a rewrite; "not overwhelm" is the three tiers of keeping used as the timeline's interface, legend first, things of note on zooming in, the ambient lifted where someone looks | the founder's timeline and a moot's branching are one thing, and no history viewer needs its own model | accept |
+| D24 | Nesting and scope are two things (§3.7.1, under ruling 92): nesting is the sim's, scale-free and with no named tiers beyond ruling 72's nouns; a scope is a game's window over it, an extent and a grain with the game's grid projected, belonging to the overlay with perspective; Isometry has four scopes, Mesocosm its enclosure, Paredros a continuous one; ruling 74's "good defaults" are Isometry's overlay's | founding supplies no scopes, only kinds of location that say what they open into; scopes are W5's | accept |
 
 ## Held
 

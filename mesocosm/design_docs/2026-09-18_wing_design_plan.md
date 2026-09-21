@@ -729,6 +729,13 @@ what later sections derive from.
     with, right? Stands to reason we'd take care to not overwhelm the client
     with information, but kinda offer them the opportunity to zoom in and
     edit stuff".
+92. **The named scopes must not hardcode Isometry's paradigm into the sim.**
+    Mark, 2026-09-21, on this record's "Founding supplies only the
+    vocabulary: which kinds of step exist, and the default scopes of world,
+    region, area and battlemap": "I wonder about that, 'cause it sounds like
+    hardcoding an isometry paradigm into the sim. Like does mesocosm or
+    paredros need those distinctions? Does each game get a different
+    tiering? Or does each tier mean different things to different games?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2200,6 +2207,42 @@ repeated. It is also §3.1's ladder made honest, since "the far rung is what
 the near rung looks like from far enough away" describes a step and never
 said how many there are.
 
+**Nesting is the sim's; scopes are a game's (ruling 92), correcting this
+record.** Mark is right that the record had put an Isometry paradigm into
+the sim. World, region, area and battlemap are Isometry's second pillar,
+"Maps at every scope, sculpted... Same world, different scopes"
+(`design_docs/PROJECT_DESCRIPTION.md:26-29`), and the pillar's own word is
+*scope*. The record conflated two things. *Answer to ruling 92's questions,
+docketed as D24:*
+
+- *Nesting* is the world's and the sim's: a node opening into a finer map,
+  allocated as locations are generated (ruling 88), free of scale and with
+  no named tiers at all. The only spatial nouns the sim has are Mark's own
+  from ruling 72: the world map, the site, the region, the location, and the
+  volume under them.
+- *A scope* is a game's: the window it frames over that nesting to play in,
+  an extent and a grain with the game's grid projected over it (ruling 18).
+  It sits with perspective in ruling 6's list of what foregrounding chooses,
+  so it belongs to the overlay and W5, not to founding.
+- *Each game has its own scopes over the one world.* Isometry has its four.
+  Mesocosm has one, the enclosure, "larger than a microcosm, smaller than
+  the world", which "names the scale of the enclosure"
+  (`mesocosm/design_docs/PROJECT_DESCRIPTION.md:17-19`), and perhaps the
+  world map at a lineage's grain when deep time is watched. Paredros has a
+  continuous one, "settlements, dungeons, ruins, underground regions, and
+  the open world" walked without a cut
+  (`paredros/design_docs/PROJECT_DESCRIPTION.md:11-12`). The same node can
+  be a terrarium to one game, a dungeon to another and a battlemap to the
+  third, which is the pillar's sentence taken literally.
+- So: neither of the other games needs those distinctions; each game gets
+  its own scopes; and the tiers do not mean different things to different
+  games, because the sim has no tiers to mean anything. Ruling 74's "good
+  defaults" then reads as the defaults of Isometry's overlay. What a ruleset
+  may still fix is grain, its tile as a power of two of the base unit
+  (§9.2), which is ruling 41's play scope and not the world's. What founding
+  supplies for nesting is only the kinds of location, as data, each saying
+  what it opens into.
+
 *Reading, accepted by Mark 2026-09-21 (D15):* what one step has to say, so that steps
 compose. *Down*, how the finer map is generated from the node above it: its
 terrain, biome, conditions and seed, the "same basic facts" of ruling 69, so
@@ -2295,9 +2338,11 @@ because every volume in the world is a power-of-two multiple of it (ruling
 becomes possible, as a realignment and never as an edit. *The nesting* this
 record listed wrongly. It wrote that "a world's stack of levels is data set
 at its founding", and ruling 88 corrects it: nesting is "dynamically
-allocated as locations are generated". What founding supplies is the
-vocabulary, which kinds of step exist and the default scopes of ruling 74;
-the instances are allocated when a location is generated or first realised,
+allocated as locations are generated". What founding supplies is only the
+kinds of location, as data, each saying what it opens into; this record
+first added "the default scopes of ruling 74" here, which ruling 92 caught
+as Isometry's paradigm, and scopes are a game's and not the world's
+(§3.7.1). The instances are allocated when a location is generated or first realised,
 by what the location is, a dungeon opening into floors and a ship into
 decks, and an unvisited one allocates nothing (accepted reading D15). §3.7.1
 is amended to match.
@@ -3336,6 +3381,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 92 recorded, Mark catching an Isometry paradigm in the
+  sim. §3.7.1 corrected: nesting is the sim's, scale-free and unnamed, and
+  scopes are a game's, belonging to the overlay with perspective; world,
+  region, area and battlemap are Isometry's second pillar, Mesocosm's scope
+  is its enclosure and Paredros's is continuous, each checked against its
+  product description. §3.9 corrected to match. The answer is docketed as
+  D24.
 - 2026-09-21: rulings 88 to 91 recorded and §3.9 added, the generator rung
   in outline. Nesting is allocated as locations are generated, correcting
   this record's "set at its founding". Founding is a short flow of crucial
