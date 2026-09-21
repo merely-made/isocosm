@@ -1,7 +1,7 @@
 # Wing design record: readings docket
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
-day; two held.** It gathered every reading, recommendation and verdict the
+day; two held; D21 opened since.** It gathered every reading, recommendation and verdict the
 [wing design record](2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
@@ -29,6 +29,12 @@ nesting step declares down, up, across and ratio (D15); a critter's acts
 reach the world on it as environment (D16); lifting and restriction, with
 processes declarative (D17); and what survives the boundary review cheaply
 (D18).
+
+## Open
+
+| # | Reading | If accepted | Suggest |
+| --- | --- | --- | --- |
+| D21 | Secrets (§3.4, under ruling 87): what makes a secret is the taboo on telling, a tenet and a norm; its leverage is what release would do to the subject's standing; telling is Paredros's willingness rule with the taboo's sanction as the danger, personality being its thresholds and not a fourth factor; the regime is an explicit set of knowers holding notes, as Paredros's epistemic log already is; a secret ends when a telling seeds the reach field and it becomes a rumour | secrets need no new machinery: tenets, standing, the willingness rule, notes and the reach field | accept |
 
 ## Held
 

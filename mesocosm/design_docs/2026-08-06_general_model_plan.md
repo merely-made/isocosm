@@ -1433,7 +1433,11 @@ profile in advance; the sequence now follows the evaluator rule.
   is closed today (`deny_unknown_fields`, schema version 1) and holds to
   "transcription and never inference", which authored text is not. Owed
   here: whether the text is an optional field on the record or a sibling
-  record beside it, and the version bump either way.
+  record beside it, and the version bump either way. **Updated the same
+  day, ruling 85:** Mark proposes "closed subset, open superset". The
+  closed `Record` stays as it is and a note is an open envelope around it in
+  the storing product, so nothing is owed in this crate beyond, at most, a
+  world adding a kind for a player's own jotting.
 
 - **2026-09-13, glyph ownership inventory:** `shared/wing-functions` owns
   resource routing; `shared/wing-formats` owns primitive framed records.

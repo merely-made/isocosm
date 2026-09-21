@@ -686,6 +686,17 @@ what later sections derive from.
     spread? is there a way to do that cheaply and distributionally, so that
     we can resolve how a person learned a thing without mapping each step
     ahead of time necessarily? is that the best way?"
+85. **For the impresa: a closed subset inside an open superset.** Mark,
+    2026-09-21, on where the freeform text goes: "For impresa... closed
+    subset, open superset?"
+86. **The five points of how knowledge resolves are agreed.** Mark,
+    2026-09-21: "And agreed on the five points!"
+87. **A secret is valuable, leverage, kept by a taboo; telling it turns on
+    relation, opinion and goals, and perhaps personality.** Mark,
+    2026-09-21: "A secret is valuable... it is tremendous leverage, often,
+    or there wouldn't be rules against its propagation. So for relation,
+    opinion, and goals to factor in makes sense to me. I wonder about
+    personality, too." And then: "Or perhaps not rule, but 'taboo'".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1672,7 +1683,7 @@ the foreground, where a realized creature or character adds what it
 personally witnessed, which is its own deviation record. Forgetting is
 decay; legend decays slowest.
 
-**How knowledge resolves (recommendation on ruling 84, Mark's to rule).**
+**How knowledge resolves (ruling 84; the five points agreed, ruling 86).**
 Mark asks for information spread modelled "cheaply and distributionally",
 with "how a person learned a thing" resolved "without mapping each step
 ahead of time", and whether that is the best way. It is, for the background,
@@ -1712,8 +1723,55 @@ and the record already holds every part of it.
    is a location full of them; and rank, which opens a polity's records. All
    three are things the sim already has. The one case a field serves badly
    is a secret, known to three people and no distribution at all; that is a
-   set of notes spreading along relations and not places, and is left
-   **open**.
+   set of notes spreading along relations and not places, taken up under
+   ruling 87 below.
+
+**Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
+often, or there wouldn't be rules against its propagation", the word then
+corrected to "not rule, but 'taboo'"; and whether one is told turns on
+"relation, opinion, and goals", with personality wondered about. *Reading,
+docketed as D21:*
+
+- *What makes a secret* is the taboo and not the information. In the
+  record's terms a taboo is a tenet (ruling 50) holding a strongly negative
+  opinion of an act, here the telling; in the accepted classes of §3.2.2 it
+  is a norm, a "must not" with no formal "or else", whose sanction is
+  reputational. So a faction can keep secrets with no polity behind it, and
+  a polity may add a rule on top.
+- *Why it is leverage.* Reputation is the reach of one's deeds among those
+  who know of them (ruling 56). A secret is a deed whose reach is being held
+  down, and its value is what releasing it would do to its subject's
+  standing among those who would learn it, which their tenets already say.
+- *Telling is a choice under scarcity by a knower,* and the wing has the
+  rule for it: Paredros's willingness gates, would I risk that for you, is
+  it more than I would bear (§3.2.2), with the taboo's sanction as the
+  danger and the hearer as the asker. Relation and opinion are its trust and
+  affinity; goals are what telling buys. Personality is not a fourth factor
+  but the thresholds: that rule already reads `bearable(affinity, caution)`
+  as "3 + affinity / 2 - caution" (`paredros-social/src/willing.rs:40-42`),
+  caution selling what affection buys, and ruling 37's five factors supply
+  such terms.
+- *The regime is notes, not a field.* A secret is an explicit set of
+  knowers, each holding a note. Paredros holds this regime already, checked
+  2026-09-21: an "append-only, observer-scoped record of claims about
+  accepted deeds" whose evidence is "a direct sighting or an addressed
+  transmission" (`paredros-social/src/epistemic.rs:7-11,37-43`).
+- *A secret ends by leaking.* The moment a telling seeds the reach field at
+  a place it is a rumour, and points 1 to 3 take over. That is ruling 75's
+  transition from the few to the many, run once.
+
+Prior art for ruling 87, known. Simmel's "The Sociology of Secrecy and of
+Secret Societies" (1906) treats the secret as a social form that binds those
+who share it. Arrow's information paradox (1962) is why secrets trade badly:
+a buyer cannot value one without learning it. Dunbar (2004) reads gossip as
+how groups police their members, which is ruling 64's enforcement by
+reputation seen from the other side: rumour is the channel by which a norm
+with no "or else" is enforced, and a secret is the move against it. From
+memory of games, unverified: Crusader Kings III keeps each secret as a set
+of named knowers and turns an exposed or threatened one into a hook, which
+is leverage as a mechanic; Caves of Qud trades secrets as goods. From memory
+of personality research, unverified: a tendency to gossip goes with
+extraversion and against agreeableness and honesty.
 
 Prior art, known. Kingman's coalescent (1982) is the proof that this is
 sound and not a shortcut: population genetics samples the genealogy of only
@@ -1784,7 +1842,17 @@ what the stack has, and §9.8 already names knot-editor for editable text.
 record type is closed today (`deny_unknown_fields`, schema version 1) and
 holds to "transcription and never inference", which authored free text is
 not, so whether the text is an optional field on the record or a sibling
-beside it is the owner's decision.
+beside it is the owner's decision. **Ruling 85 proposes the answer:**
+"closed subset, open superset". Checked against the crate, it fits its own
+doctrine: `wing-impresa` is "the record type and its validation only" and "a
+product owns storage" (`src/lib.rs:9-11`). So the closed record stays
+exactly as it is, the validated core of every note, and a note is an open
+envelope around it, held by whoever stores it, carrying the freeform djot
+text and whatever else a product adds. Authored text never enters the
+kernel, "transcription and never inference" holds, and no schema bump is
+owed. A note a player jots with no event behind it still has a closed core:
+the jotting is the accepted event, under a kind the world adds to its kind
+set, which the crate already lets a world do.
 
 **The ambient tier (ruling 70).** The soup "is equivalent to the ambient
 tier, the background of information generated by an engine and localized to
@@ -3149,6 +3217,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: rulings 85 to 87 recorded. The impresa keeps its closed record
+  as the core of an open note envelope, which fits the crate's own doctrine
+  and owes no schema bump; the owner's finding updated. The five points of
+  how knowledge resolves are agreed. Secrets: valuable, leverage, kept by a
+  taboo, told on relation, opinion and goals; a reading docketed as D21,
+  with Paredros's willingness rule and epistemic log checked as the existing
+  mechanism and regime, and personality read as that rule's thresholds.
 - 2026-09-21: rulings 81 to 84 recorded. Asserting a constitution is the
   polity's definitive act. The note is the impresa record with a freeform
   djot field beside the generated details; knot-editor and `knot-document`
