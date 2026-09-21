@@ -25,14 +25,14 @@ them carrying later ones (review of 2026-09-21, §5.2).
 | D5 | Whether a means is efficacious is ruling 50's trust, a track record read from the record | efficacy is never asserted; the gap between a constitution and its members' preference is readable | accept |
 | D6 | Ruling 66's four conditions are each read off the record: inactive (no support), suppressed (another's enforcement stops it, members go underground as a faction), superseded (another polity binds its focus), subordinated (a faction fills its deciding party or holds its means) | conditions overlap and reverse while the polity lives | accept |
 | D7 | An institution seen clinging on is one subordinated to the faction of its own officers | no built-in will to continue, per ruling 68, and the appearance is still explained | accept |
-| D8 | A polity has two alignments, the one it professes in its constitution and the one it practises, derived from its acts; change is the practised one moving first and reform catching up | two readable gaps per polity; the most speculative item here, and more bookkeeping | park |
+| D8 | ~~A polity has two alignments, professed and practised~~ | **Ruled 2026-09-21, ruling 79, replacing the reading:** "just like factions and individuals, a polity has its own alignment from its acts." One alignment; the comparison that matters is against its factions' and individuals' | closed |
 | D9 | What makes a host an institution is that agreements under it hold without their parties enforcing them; contingency is borrowed enforcement, cheap to found, and a host's failure cascades | settled worlds grow institutions and wild ones do not | accept |
 
 ## Keeping (§3.4.1)
 
 | # | Reading | If accepted | Suggest |
 | --- | --- | --- | --- |
-| D10 | "Of note" is the derivation rule with a name: a thing is of note exactly when regenerating it would lose something | no separate notability score for the middle tier | amend: "carries a deviation that has not been folded back", since a grazed meadow deviates and is folded at once |
+| D10 | ~~"Of note" is the derivation rule with a name~~ | **Ruled 2026-09-21, ruling 80, replacing the reading:** it is "like literally a note on the site/item/entity", made by the sim "in the way a player would too". Follow-on, open: whether that note is the `wing-impresa` record | closed, one follow-on |
 | D11 | Collection is roots and reachability; collecting folds a thing back into its distribution, conserving counts and losing only deviations; the safety test is that nothing reachable from a player could tell it from its regenerated self | the invalidation criteria Mark called crucial get a shape, not yet their values | accept |
 | D12 | A thing of note sheds in steps: the individual, then a stub (kind, lineage, faction, name), then the event alone; events name participants by stub | a participant can be collected without breaking the event that mentions it | accept |
 | D13 | The of-note tier is one module of the sim, not a crate per word (recommendation) | `denizen` stays a reserved name, not a crate to build | accept |
@@ -56,8 +56,8 @@ them carrying later ones (review of 2026-09-21, §5.2).
 | # | Reading | If accepted | Suggest |
 | --- | --- | --- | --- |
 | D18 | What survives the review cheaply: ruling 78 as a discipline; two bindings as an intent, the component binding built when the first rung 3 consumer exists; a byte round-trip test and a dependency-direction rule in place of a second runtime; the probe and `libm` as notes | no Wasmtime, no CI duty, nothing owed before W5 | accept |
-| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff | it is the overlay contract's first draft | hold for W5 |
-| D20 | Who may direct which entity as a provider over `mere-capability`'s order | one authority algebra across the stack | hold for W3, beside ruling 34 |
+| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff | it is the overlay contract's first draft | hold for W5 (Mark, 2026-09-21: "idk!") |
+| D20 | Who may direct which entity as a provider over `mere-capability`'s order | one authority algebra across the stack | hold for W3, beside ruling 34 (Mark, 2026-09-21: "idk!") |
 
 ## Open questions parked in the record, not on this docket
 

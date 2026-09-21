@@ -653,6 +653,20 @@ what later sections derive from.
     componetization cause us to have ridiculous workarounds and inefficient
     methods, or does it buy architectural ergonomics that are as valuable as
     the performance the clean boundary costs?"
+79. **A polity has its own alignment from its acts, as factions and
+    individuals do.** On docket D8, Mark, 2026-09-21: "i think the idea is
+    that you want to let the polity determine what it stands for by
+    collective/hierarchal decision and actions, but also to compare that
+    against the alignments of the factions, individuals, which also takes
+    into account the acts of those entities. between the two of them, the
+    second is really what the sim's other entity tiers provides, and the
+    first is a repeat of that theme. it's more accurate to say: just like
+    factions and individuals, a polity has its own alignment from its acts."
+80. **"Of note" is literal: a note on the thing, made by the sim as a player
+    would make one.** On docket D10, Mark, 2026-09-21: "i think of it as
+    like literally a note on the site/item/entity. the sim just makes notes
+    in the way a player would too, generating the note from the event/thing
+    that makes it 'of note.'" On D19 and D20: "idk!", so both stay held.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -933,7 +947,9 @@ polity's alignment is asserted, constitutional, in addition to the
 factions within it, which is exactly ruling 9: a polity has state because
 it decides, and its constitution is asserted state. So alignment is
 derived at the sophont and faction rungs and asserted at the polity rung,
-and the derivation rule holds at each.
+and the derivation rule holds at each. **Amended by ruling 79:** a polity's
+alignment is derived from its acts too, its decisions among them; the
+constitution remains an asserted fact (§3.2.2).
 
 **The tension with §7.4, resolved by ruling 52.** Choosing a referent is
 a privilege of the two greater tiers; a demigod's and an avatar's referent
@@ -1419,17 +1435,22 @@ institution that "wants to continue" is one subordinated to the faction of
 its own officers, who want their provision to continue. That is Michels's
 oligarchy with nothing added to the polity.
 
-*Reading, on how the change happens.* Ruling 51 made a polity's alignment
-constitutional, asserted. But a polity also acts, and its acts are in the
-record, so an alignment can be derived for it exactly as ruling 51 derives a
-sophont's. A polity then has two: the one it professes, asserted in its
-constitution, and the one it practises, derived from what it does. "Polities
-change like that" is the practised one moving first, as the polity takes up
-what its members and its circumstances bring it, with reform as the
-constitution catching up. That gives the record two readable distances for
-any polity, constitution against members' preference (above) and professed
-against practised, and both bear on support. **Open:** whether both are
-kept, and reform itself.
+**A polity's alignment (ruling 79), replacing this record's reading of two
+alignments.** The record had read a polity as holding two, one professed in
+its constitution and one practised. Mark ruled it simpler: "just like
+factions and individuals, a polity has its own alignment from its acts." A
+polity decides "what it stands for by collective/hierarchal decision and
+actions", and deciding is acting, so its decisions, the adopting of a
+constitution among them, are acts in the record like any others and its
+alignment is derived from them. One alignment, one derivation, the same at
+every rung, "a repeat of that theme". What is worth comparing is that
+alignment "against the alignments of the factions, individuals" within it,
+which the other tiers already provide; that one distance is the legitimacy
+gap of the paragraphs above. This amends ruling 51's "constitutionally, not
+derived" in Mark's own later words: the constitution stays an asserted fact,
+and the alignment read from a polity's acts is derived. "Polities change
+like that" is then a polity's acts drifting and its alignment with them.
+**Open:** reform itself.
 
 Prior art for ruling 68, known. Sills's *The Volunteers* (1957) named goal
 succession from the March of Dimes, founded against polio, which found a new
@@ -1649,12 +1670,30 @@ history, relationships, or explicit designation makes it matter". Ruling 69
 gives a location the same rule: "if something of note happens there, then it
 persists; otherwise it can be regenerated from the same basic facts." So
 what asserts a place is an event. Naming it, claiming it and building on it
-are not separate routes; they are events of note like any other. *Reading,
-for Mark to reject:* this is the derivation rule with a name on it. §1
-already stores deviations and derives the rest, so a thing is of note
-exactly when regenerating it would lose something, and the middle tier is
-the set of things that carry a deviation record. Whether a thing of note
-can lapse is **answered, ruling 70**, below.
+are not separate routes; they are events of note like any other. This
+record then read "of note" as the derivation rule renamed, a thing being of
+note when it carries a deviation. **Replaced by ruling 80:** it is "like
+literally a note on the site/item/entity. the sim just makes notes in the
+way a player would too, generating the note from the event/thing that makes
+it 'of note.'" So the unit of the middle tier is a note: it sits on a thing,
+it is generated from the event that occasioned it, and the sim and a player
+write the same kind. A thing is of note while it bears one. Whether a thing
+of note can lapse is **answered, ruling 70**, below.
+
+**Already in code, checked 2026-09-21.** The wing has an organ of almost
+exactly this shape. `shared/wing-impresa` holds "what a pointable thing has
+come to be associated with, and what has lapsed, over time", for "a glyph, a
+critter, a borg, a character, a faction, a place, an item and a lot of
+matter" alike (`src/lib.rs:4-7`). Its one record type names a subject and an
+object, a kind from an open set seeded with claim, discover, experience,
+embody, invoke and defeat, the tick, a stance of `Associate` or `Lapse`, and
+a `cause` that is "the evidence string of the accepted event this record
+cites", and "every field is what an accepted event already knew, so writing
+one is transcription and never inference" (`src/impresa.rs:35-57`,
+`src/kinds.rs:16-23`). That is a note generated from the event that makes a
+thing of note, with lapsing built in. **Open, for Mark:** whether ruling
+80's note *is* the impresa record, which would make the middle tier the set
+of things bearing a live impresa, or a plainer thing beside it.
 
 **The ambient tier (ruling 70).** The soup "is equivalent to the ambient
 tier, the background of information generated by an engine and localized to
@@ -3019,6 +3058,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: rulings 79 and 80 recorded from the docket. D8 is replaced: a
+  polity has one alignment, derived from its acts as everyone's is, which
+  amends ruling 51's "not derived". D10 is replaced: of note is a literal
+  note on the thing, written by the sim as a player would write one;
+  `wing-impresa` checked and found to be nearly that record already, the
+  identity left open for Mark. D19 and D20 stay held.
 - 2026-09-21: the [readings docket](2026-09-21_wing_readings_docket.md)
   opened at Mark's word: twenty of this record's own readings,
   recommendations and verdicts gathered for ruling in one pass, each with
