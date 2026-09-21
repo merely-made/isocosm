@@ -1942,8 +1942,9 @@ and the graph of sites never changes topology in play. The purpose is
 "strange scenarios like a world resting on a critter", which the record can
 already say: a macro creature is a terrain-body (ruling 39, and ruling 43's
 worldtree), so a world resting on a critter is a world map whose graph of
-sites is laid over a body, and what the critter does, walking, turning,
-sleeping, dying, reaches the world as its environment. That is a reason
+sites is laid over a body. *Reading, flagged 2026-09-21 (docket D16):* what
+the critter does, walking, turning, sleeping, dying, reaches the world as
+its environment. That is a reason
 beyond the sphere for holding the map as adjacency: a body's surface is no
 regular grid at all.
 
@@ -3018,6 +3019,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: the [readings docket](2026-09-21_wing_readings_docket.md)
+  opened at Mark's word: twenty of this record's own readings,
+  recommendations and verdicts gathered for ruling in one pass, each with
+  its consequence and a suggestion, and the open questions listed as parked.
+  One reading that had gone unflagged, the critter's acts reaching its world
+  as environment, is flagged in §3.7.1.
 - 2026-09-21: §5.2 to §5.4 reviewed at Mark's word and held. Sized against
   what exists: no sim crate, no overlay trait, no CI here, Wasmtime in no
   wing lockfile, and mere's two-world binding at 3,371 lines of Rust. The
