@@ -574,6 +574,17 @@ what later sections derive from.
     used. Things can indeed return to the soup by being made irrelevant to
     the player in some manner; that's garbage collection, right? So the
     criteria for invalidation is crucial..."
+71. **The roots of collection are the entities players care about, and
+    examination counts as play; collection is graded, down to just the
+    event.** Asked who "the player" is that a thing must become irrelevant
+    to, Mark, 2026-09-20: "The players of any of the three games, when the
+    sim is applied to them, have effectively selected/created entities they
+    care about. With nobody playing, you only render things with the upmost
+    detail when you're examining them anyway, so it's basically the same. I
+    think it's like garbage collecting the world pool in rimworld, right?
+    You wouldn't trash a colonist's relative that has appeared before. But
+    you would trash most of a raider that got killed with little incident;
+    at a certain point just the event."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1578,11 +1589,56 @@ within reach (§3.4), or a cause-link. Unreached, it is collectible, and
 collecting it folds it back into the distribution it was realised from, so
 counts and masses stay conserved and only its deviations are lost. The test
 that makes this safe is observational: collect only what nothing reachable
-from a player could tell apart from its regenerated self. **Open, and
-crucial:** the criteria themselves; who "the player" is in a world with
-several players and branches, and in a world running with nobody playing;
-and whether collection must be deterministic across peers, which replay and
-the moot both suggest it must.
+from a player could tell apart from its regenerated self. Who "the player"
+is was **answered by ruling 71**, below. **Open, and crucial:** the rest of
+the criteria, and whether collection must be deterministic across peers,
+which replay and the moot both suggest it must.
+
+**The roots, and graded collection (ruling 71).** The roots are care. "The
+players of any of the three games, when the sim is applied to them, have
+effectively selected/created entities they care about": the lineage and its
+critters in Mesocosm, the one sophont and those it knows in Paredros, the
+characters and what the table authored in Isometry. With nobody playing
+nothing changes, because "you only render things with the upmost detail when
+you're examining them anyway": examination is the root when nobody plays, so
+the bench's observer, a deep-time run's handover and a player are one thing
+to the collector, whoever is attending. Several players in one world are
+then several sets of roots, and a thing is kept while any of them reaches
+it.
+
+Mark's two cases set the shape. "You wouldn't trash a colonist's relative
+that has appeared before": kept by a relation to something cared about
+**and** by having appeared. Both halves matter. A relative who has never
+appeared carries no deviation and is regenerated on demand from the relation
+itself, which is the observational test of the reading above at work. "You
+would trash most of a raider that got killed with little incident; at a
+certain point just the event": collection is graded, never all or nothing.
+*Reading:* a thing of note sheds in steps, the full individual, then a stub,
+what an event needs to name its participant (a kind, a lineage, a faction, a
+name if it had one), then the event alone. So events are the floor of the
+middle tier, and they refer to their participants by stub, never by a live
+individual, so that a participant can be collected without breaking the
+event that mentions it. **Open:** whether an event of note itself lapses in
+the end, as ruling 5's forgetting suggests, with legend the only floor that
+never gives way; and what "little incident" measures, which is presumably
+the same novelty, quality and relevance at a lower bar.
+
+Prior art for ruling 71, checked 2026-09-20 from web search summaries of the
+Steam Workshop pages for Better GC (id 2982026860) and RuntimeGC (id
+962732083), the decompiled source itself not read. RimWorld's `WorldPawnGC`
+keeps world pawns that are important, a faction leader, a kidnapped or
+quest-reserved pawn, a caravan member, a pawn whose corpse is on a map, and
+keeps any pawn with a relation to another or an appearance in a log or a
+used tale; the rest are discarded, and kept pawns that need no simulation
+are *mothballed*, held without ticking, which is this record's idle thing
+that costs nothing. Its known failure is the caution for the criteria:
+because any relation pins a pawn for good, long saves are reported to
+accumulate some two thousand uncollectible pawns, and mods exist only to
+collect harder. Mark's grading, most of the raider and then just the event,
+is the fix RimWorld lacks. From memory, unverified: RimWorld's tales keep a
+snapshot of each pawn they mention, so a tale survives its pawn's discard,
+and its tale kinds are volatile, expirable and permanent, which would be the
+three tiers again under other names.
 
 Prior art for ruling 70. Known: tracing collection is exactly roots and
 reachability, and the generational hypothesis, that most objects die young,
@@ -2449,6 +2505,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-20: ruling 71 recorded into §3.4.1: the roots of collection are
+  the entities players care about, examination standing in for play when
+  nobody plays; collection is graded from the individual to a stub to the
+  event alone. RimWorld's `WorldPawnGC` checked by web search: important and
+  related pawns kept, the unsimulated mothballed, and relations pinning
+  pawns for good as its known failure. Open: whether events of note lapse,
+  and what "little incident" measures.
 - 2026-09-20: ruling 70 recorded into §3.4.1: the soup as the ambient tier,
   checked against woodshed's ambient context boundary and mere's living
   backdrop; return to the soup as garbage collection, with a roots and
