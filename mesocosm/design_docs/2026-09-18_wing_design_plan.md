@@ -602,6 +602,10 @@ what later sections derive from.
     location but from which locations could be generated according to their
     terrain, biome as the characteristic environmental pattern for a site,
     environment meaning the weather and climate conditions".
+73. **A world has one shape, any shape.** Mark, 2026-09-21, on ruling 72's
+    "any shape works": "i mean a world could be any shape, but just one. Not
+    like switch between them. I mean to enable strange scenarios like a
+    world resting on a critter".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1843,6 +1847,18 @@ yet of note, so the word spans the ambient and of-note tiers and the keeping
 tier says which. A highway is a location that is also a route, a long thin
 extent over many sites, so the graph's edges can be places of note too.
 
+**One shape per world (ruling 73).** "A world could be any shape, but just
+one. Not like switch between them." So the shape is a fact of the world's
+founding, set once with the seed and the world-founding ruleset (ruling 41),
+and the graph of sites never changes topology in play. The purpose is
+"strange scenarios like a world resting on a critter", which the record can
+already say: a macro creature is a terrain-body (ruling 39, and ruling 43's
+worldtree), so a world resting on a critter is a world map whose graph of
+sites is laid over a body, and what the critter does, walking, turning,
+sleeping, dying, reaches the world as its environment. That is a reason
+beyond the sphere for holding the map as adjacency: a body's surface is no
+regular grid at all.
+
 **Any shape.** A world map that may be a sphere, a ring, a cube, a spire or
 a wheel cannot be an array with a wrap rule; it is a graph of sites with
 adjacency, which §3.7 already says of every rung above the bricks. Known
@@ -2599,6 +2615,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 73 recorded: a world has one shape, fixed at its
+  founding, any shape being allowed so that a world can rest on a critter,
+  which is ruling 39's terrain-body carrying a world map.
 - 2026-09-21: ruling 72 recorded and §3.7.1 added: the place words in Mark's
   definitions, site joining §3.1's ladder, location as the word for a place
   of note at any extent, wilderness as the ambient tier for places, biome
