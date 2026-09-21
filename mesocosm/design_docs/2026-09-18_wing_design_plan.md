@@ -2459,6 +2459,38 @@ begin. Both are inside a branch, so they do not touch the base profile.
 
 ### 5.2 The boundary between the sim and a game (recommendation, unruled)
 
+**Review, 2026-09-21, at Mark's word: "This ruling feels particularly
+contentious, so let's review what it would cost and if we've overextended
+ourselves a bit in the brainstorming."** §5.2 to §5.4 are held. Only ruling
+78, a clean boundary, is ruled in them. Sized against what exists:
+
+| Proposed commitment | What exists today | What it would cost |
+| --- | --- | --- |
+| The overlay contract as its own crate of value types | no sim crate and no overlay trait; the wing's only `Product` trait is isomere's GUI host (`shared/isomere/src/host.rs:135`) | little, if the contract is shaped that way when it is first written, which is W5's work and not W2's |
+| A component binding kept green in CI | no CI in this repository; Wasmtime in none of the wing's three lockfiles; mere's binding for two narrow worlds is 3,371 lines of Rust and 193 of WIT | thousands of lines, a heavy dependency mere's own plan calls "an unmade dependency decision", a CI system, and rework on every contract change during the phases when the contract changes most |
+| The sim reached through mere's gate | a gate for chartulary graph edits | withdrawn above |
+| A W2 probe of the component constant | nothing | a lane with its own toolchain, useful only if componentisation is live |
+| One software `libm` everywhere | unknown | nothing until peers verify each other's replays |
+
+*Finding.* Yes, overextended, in three ways. A question about the layer
+under the sim was answered and then turned into standing commitments, a
+second binding and a CI duty, for a contract that does not exist over a sim
+that has no schema; W2's done-condition is that schema, its process
+definitions, the record and reach, and a generator, and the overlay is W5.
+One reading was asserted from a summary and did not survive reading the
+code. And the record has been growing faster than it can be ruled: 1,275
+lines since ruling 62, with fifteen flagged readings, three recommendations
+and twelve open markers waiting on Mark, some of them carrying later ones.
+
+*What survives cheaply, Mark's to rule.* Ruling 78 alone, as a design
+discipline. Two bindings as an intent and not a duty: native first, the
+component binding built when the first rung 3 consumer exists, the contract
+shaped so that day needs no redesign. For erosion, a test and not a runtime:
+every contract type round-trips through bytes, which replay and the network
+need anyway and which proves no pointer crosses, and the contract crate may
+not depend on the sim's internals. The probe and `libm` are notes for the
+day they matter. All of it belongs to W5 and W3, not to W2.
+
 Mark asked, in ruling 75, what good interoperation between the sim and the
 game layer should be for efficiency, and whether it should be organised as
 WASI, wasm and WIT processes are, with workers and a thread pool. This is
@@ -2573,18 +2605,20 @@ The rungs differ in runtime and never in what they are allowed to do, which
 the gate decides. And mere already says of the tabletop: "Isometry campaign
 packs ride these same rails (same envelope, isometry's own world inside)."
 
-*Reading, for Mark to reject.* The sim's intent boundary of §5.2 and mere's
-participant gate are one shape: something holding a scoped capability
-proposes, a gate validates, and the change is applied as an attributed,
-revision-checked commit (`mere/crates/servitor/src/lib.rs`). So the sim
-should be reached through that gate and not grow a second one, which is the
-stack's own rule against a duplicate run at one problem. A player, a mod, a
-director and whoever holds edit mode at the table are then all participants
-petitioning the sim, and who may direct which entity is a capability scope
-over entities, which the capability crate's partial order of `Power`,
-`Scope` and `Facet` can already express. That is also where ruling 34 put
-identity: dramatis absorbs it under W3. Authority resolves one way, game to
-gate to sim to record, and events and views flow back.
+*Reading, withdrawn in part on 2026-09-21.* This record first read the sim's
+intent boundary and mere's participant gate as one shape and said the sim
+"should be reached through that gate". That was written from a summary of
+`servitor/src/lib.rs` without reading the gate. Read since
+(`mere/crates/servitor/src/gate.rs:7-29`): a petition is "a batch of
+`EditSpec`s against its nested graph", checked for scope over node ids and
+facets, and committed by chartulary's `commit_batch`. It is a gate for edits
+to a participant's chartulary graph at a person's pace. The sim's state is
+not a chartulary graph, and Mesocosm's CLAUDE.md forbids describing world
+nouns as chartulary-typed, so the gate itself does not fit and the claim is
+withdrawn. What may carry over is narrower: `mere-capability` is described
+as the "shared capability algebra for Mere authority providers", so who may
+direct which entity could be a provider over its `Power`, `Scope` and
+`Facet` order. That is a question for W3 beside ruling 34, not a finding.
 
 ### 5.4 What total componentisation would cost
 
@@ -2984,6 +3018,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: §5.2 to §5.4 reviewed at Mark's word and held. Sized against
+  what exists: no sim crate, no overlay trait, no CI here, Wasmtime in no
+  wing lockfile, and mere's two-world binding at 3,371 lines of Rust. The
+  reading that the sim is reached through mere's gate is withdrawn after
+  reading `gate.rs`, which gates chartulary graph edits. Finding:
+  overextended; what survives cheaply is ruling 78 as a discipline, two
+  bindings as an intent, and a round-trip test in place of a second runtime.
 - 2026-09-21: ruling 78 recorded: a clean boundary either way. §5.4 extended
   to answer whether total componentisation forces ridiculous workarounds:
   the boundary and the component separated, what it would force and what it
