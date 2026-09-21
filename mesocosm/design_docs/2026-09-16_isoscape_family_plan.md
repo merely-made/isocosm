@@ -852,6 +852,15 @@ world-history Law C test.
 
 ## Findings
 
+- **2026-09-21, from the wing design record's rulings 91 and 93.** Mark
+  ruled that deep time is the same sim for the whole wing, that the founder
+  chooses how much history, and that the generated timeline can be gone back
+  into. D7a's deep time is that today for one enclosure: "one idle tick at a
+  time, with no hand, no checkpoint"
+  (`mesocosm-core/src/deep_time.rs:10-12`). Two things owed before it serves
+  a world of many sites over centuries: an aggregate form of the run, under
+  the record's ruling 75, in place of near-rung idle ticks; and checkpoints
+  at epoch boundaries, which going back to a prior state would replay from.
 - **2026-09-16.** `WorldRules` is serialized positionally with postcard in the
   world snapshot, so adding the deep-time span moves every world's bytes, as
   each earlier rules field did (`rules.rs:197-221`).

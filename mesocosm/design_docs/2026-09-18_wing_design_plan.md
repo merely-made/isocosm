@@ -736,6 +736,9 @@ what later sections derive from.
     hardcoding an isometry paradigm into the sim. Like does mesocosm or
     paredros need those distinctions? Does each game get a different
     tiering? Or does each tier mean different things to different games?"
+93. **Deep time is the same sim.** Asked whether a world's past is run by
+    the same sim at a coarser grain or written by a separate history
+    generator, Mark, 2026-09-21: "Same sim".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2397,6 +2400,23 @@ branching a moot does. "Not overwhelm" is the three tiers of keeping used as
 an interface: the timeline shows legend first, things of note on zooming in,
 and the ambient only where someone looks, lifted on demand.
 
+**Deep time (ruling 93): "Same sim".** A world's past is the sim run forward
+from a bare world for the span its founder chose (ruling 91), and no
+separate history generator exists. What follows from rulings already made,
+and adds nothing: deep time is the sim with nobody attending, so by ruling
+71 nothing is foregrounded and by ruling 75 everything runs in the
+aggregate, which is what makes a long past affordable; the wild events and
+catastrophes of ruling 91 come from the world's own rules and need no
+authoring; and every past state is reachable by replay (D23). Mesocosm does
+this today, checked 2026-09-21: its deep time is "Mesocosm's own simulation,
+one idle tick at a time, with no hand, no checkpoint and no answer to any
+question", so that "a generated past is made of the same stuff as a played
+one (Law C)" (`mesocosm-core/src/deep_time.rs:7-14`). Two things in that
+sentence do not scale to the wing and are filed with the isoscape family
+plan, which owns deep time: it ticks the near rung one idle tick at a time,
+where a world of many sites over centuries needs ruling 75's aggregate form,
+and it keeps no checkpoint, which going back into a timeline would want.
+
 Prior art for rulings 89 to 91. Known: the Forgotten Realms realigned one
 world to new rulesets three times by exactly Mark's method, an in-world
 upheaval and a jump in the timeline, the Time of Troubles for the second
@@ -3381,6 +3401,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 93 recorded: deep time is the same sim, with no
+  separate history generator. §3.9 notes what already follows from rulings
+  71, 75 and 91, and that Mesocosm's deep time is this today at the scale of
+  an enclosure; two scaling findings filed with the isoscape family plan.
 - 2026-09-21: ruling 92 recorded, Mark catching an Isometry paradigm in the
   sim. §3.7.1 corrected: nesting is the sim's, scale-free and unnamed, and
   scopes are a game's, belonging to the overlay with perspective; world,
