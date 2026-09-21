@@ -606,6 +606,12 @@ what later sections derive from.
     "any shape works": "i mean a world could be any shape, but just one. Not
     like switch between them. I mean to enable strange scenarios like a
     world resting on a critter".
+74. **Nesting is one composable, expandable mechanism; world, region, area
+    and battlemap are its defaults.** Asked whether the nesting of maps is
+    one mechanism repeated or a fixed set of levels, Mark, 2026-09-21: "I
+    think it would be cool if the mechanism was composable and expandable
+    instead of the order and tiering of the nesting being predetermined. But
+    yeah, those are good defaults."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1866,8 +1872,37 @@ mathematics bears on one case: no grid of hexagons closes a sphere, and a
 geodesic grid does it with exactly twelve pentagons among the hexagons, so
 "hexes" holds as a projection over most of a spherical map and not as its
 storage. **Open:** how large a site is, in voxels and against the paged
-chunk of W3; and how the nesting goes, since a location may be a "nested
-region within a world map site".
+chunk of W3. How the nesting goes is **answered, ruling 74**, below.
+
+**Nesting is one composable mechanism (ruling 74).** "Composable and
+expandable instead of the order and tiering of the nesting being
+predetermined", with Isometry's scopes, world, region, area and battlemap,
+as "good defaults". So there is one step, a node of a map opening into a
+finer map, and a world's stack of levels is data set at its founding (ruling
+41), never code. That is the wing's most load-bearing rule applied to maps,
+"do not let a stage grow its own engine" (Mesocosm's CLAUDE.md, the
+anti-Spore insurance): no level has rules of its own, only the one step
+repeated. It is also §3.1's ladder made honest, since "the far rung is what
+the near rung looks like from far enough away" describes a step and never
+said how many there are.
+
+*Reading, for Mark to reject:* what one step has to say, so that steps
+compose. *Down*, how the finer map is generated from the node above it: its
+terrain, biome, conditions and seed, the "same basic facts" of ruling 69, so
+an unvisited interior costs nothing. *Up*, how the finer map reads from
+above: its state summarised as the node's conditions, which is the
+derivation rule's far rung. *Across*, how adjacency crosses the boundary, so
+that leaving a nested map by its east edge arrives in the neighbouring
+node's map and a route is one path through several levels. *Ratio*, how much
+finer, which for volumes is ruling 13's power of two and for graphs is free.
+The last step is the one that meets the volume, where a node's map is bricks
+and no longer sites; by ruling 74 its size is a world's setting with a
+default, not a constant. Expandable means steps can be added at either end
+or in the middle without touching the others: a system above the world for
+the space scope (ruling 41's Lancer), the planes beside it (ruling 62), a
+dungeon's floors or a ship's decks inside a location, and a body as a map,
+which is both the world resting on a critter (ruling 73) and the germ's
+world inside its host (ruling 39).
 
 **Already in code, checked 2026-09-21.** Each product holds a piece. The
 tabletop's overmap projects a region as a grid of `AtlasTerrainCell`s whose
@@ -1884,7 +1919,28 @@ derived from relief over a fixed three-by-three partition (§3.7). The words
 are crossed against ruling 72: Paredros's `SlotId` is Mark's site and its
 `Site` is Mark's location, and the tabletop's `AtlasSite` is a location too.
 Bringing the code's words to ruling 72's is a lane under W2 and W3 beside
-the body-site rename of §3.4.1, not an edit.
+the body-site rename of §3.4.1, not an edit. Against ruling 74 the tabletop
+nests in two fixed steps: the overmap is "the party's pointcrawl", a graph of
+places and routes drawn "above the tactical maps"
+(`isometry-views/src/overmap.rs:1-10`), a region projects to the atlas grid,
+and a `WorldPlace` may name the `map` it opens into. The steps are real and
+their order is code, which is what ruling 74 asks to become data.
+
+Prior art for ruling 74, known. OGC's IndoorGML standard is nearest: space
+as cells with a graph of nodes and relations over them, and a multi-layered
+space model in which separate layers of cells are joined by inter-layer
+connections, so nesting and crossing are data in an open format.
+Hierarchical pathfinding (HPA*, Botea, Mueller and Schaeffer, 2004) builds a
+graph over clusters of a finer graph with entrances as edges, to any number
+of levels, which is the *across* and *up* of a step as an algorithm. Pixar's
+USD, now an open standard, composes nested scenes by reference and loads a
+payload only on demand, which is composition and paging in one mechanism.
+Harel's statecharts (1987) are the formal case for nesting that composes.
+The tabletop practice is a hexcrawl holding a pointcrawl holding a dungeon's
+rooms, stacked as the campaign needs. The cautions are the fixed stacks:
+Spore's stages, each with its own engine, and, from memory and unverified,
+Dwarf Fortress's world, region and embark, and Caves of Qud's world,
+parasang and zone.
 
 Prior art for ruling 72. Known: the tabletop hexcrawl, from the *Outdoor
 Survival* map of original D&D to the West Marches, is this model played by
@@ -2615,6 +2671,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 74 recorded into §3.7.1: nesting as one composable,
+  expandable step with a world's stack of levels as founding data and
+  Isometry's four scopes as the default; a reading of what one step must
+  say, down, up, across and ratio, flagged; the tabletop's two fixed steps
+  checked as the code that would become data. Open: the size of a site
+  against the paged chunk.
 - 2026-09-21: ruling 73 recorded: a world has one shape, fixed at its
   founding, any shape being allowed so that a world can rest on a critter,
   which is ruling 39's terrain-body carrying a world map.
