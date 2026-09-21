@@ -585,6 +585,23 @@ what later sections derive from.
     You wouldn't trash a colonist's relative that has appeared before. But
     you would trash most of a raider that got killed with little incident;
     at a certain point just the event."
+72. **The place words: a world map is a grid of sites in any shape; region,
+    location, wilderness, biome and environment defined.** Asked whether a
+    place's kind is stored or read, Mark, 2026-09-21: "I guess i envisioned
+    a grid of sites comprising a world map, in any number of shapes (sphere,
+    ring, plane, cube, spire, wheel, any shape works for me), each with
+    their own terrain and biome (mountainous, valley, island, tundra,
+    tropical), region as an area of sites on the world map, a location as a
+    known, remarkable, interesting, or potential site (it has additional
+    modifiers/conditions compared to wilderness) or nested region within a
+    world map site (of which there are many kinds? Like a settlement, a
+    dungeon, a city, a trading outpost, a fort, a defensive gate, a highway,
+    waaay more... and they can occupy multiple hexes but be considered the
+    same location, kinda like civ cities? Ruins could come from sites and
+    locations being reused...), wilderness as sites and areas without a
+    location but from which locations could be generated according to their
+    terrain, biome as the characteristic environmental pattern for a site,
+    environment meaning the weather and climate conditions".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -640,7 +657,7 @@ in §3.2 that some rungs are relations and some are agents with state.
 | Noun | Ladder, near to far | Notes |
 | --- | --- | --- |
 | Bodies (agents) | creature, faction, polity, lineage | Ruling 8; lineage is provenance and orthogonal in time |
-| Space (places) | cell, region, continent, world, system | Rulings 11, 12; region is terrain |
+| Space (places) | cell, site, region, continent, world, system | Rulings 11, 12, 72; a site is one cell of the world map, a region is an area of sites and is terrain, and a location is a place of note at any extent (§3.7.1) |
 | Fields | conditions on places; effects left by processes; reach of events | Ruling 5; world state is not a kind, it is the fields a place carries |
 | Time | the due-event clock; deep time before handover; branches | Rulings 3, 7 |
 | Provenance | seed, deviations, asserted facts, the significant record | §1; ruling 4 |
@@ -1714,6 +1731,12 @@ the inhabitant, the place, the thing, the event. Reserving the name
 `denizen` on crates.io is a separate act and needs a real publish, per the
 naming ledger.
 
+*Ruling 72 settles the place words.* A place of note is a **location**, and
+a **site** is one cell of the world map (§3.7.1). So the collision to clear
+is between the world-map site and Mesocosm's body site, and Paredros's
+`Site` and the tabletop's `AtlasSite` both name what ruling 72 calls a
+location.
+
 ### 3.5 Holding hundreds of thousands of things
 
 - Aggregate what isn't foregrounded: a population is a distribution, and
@@ -1787,6 +1810,77 @@ node set is a fixed three-by-three partition at any enclosure size
 (`world.rs:90`), `Places::at` is a two-dimensional nearest-centre scan that
 ignores height (`places.rs:170-181`), and interiors are asserted counts
 (`places/grown.rs:39-45`). Volume-derived nodes are unbuilt work under W2.
+
+### 3.7.1 The world map: sites, regions and locations
+
+From ruling 72, whose definitions are kept whole in the first column.
+
+| Word | Mark's definition | In this record's terms |
+| --- | --- | --- |
+| World map | "a grid of sites comprising a world map, in any number of shapes (sphere, ring, plane, cube, spire, wheel, any shape works for me)" | §3.7's graph at the rung above the bricks. Sites are its nodes and the shape is its topology, so it is held as adjacency and never as a two-dimensional array; the tile's shape stays a projection (ruling 18) |
+| Site | one cell of that grid, "each with their own terrain and biome (mountainous, valley, island, tundra, tropical)" | the address, and the unit that generation and paging work in; its volume is grown from its terrain, its biome and the seed |
+| Region | "an area of sites on the world map" | a set of sites; terrain, not an entity (ruling 8) |
+| Location | "a known, remarkable, interesting, or potential site (it has additional modifiers/conditions compared to wilderness) or nested region within a world map site"; "they can occupy multiple hexes but be considered the same location, kinda like civ cities" | the place of note of ruling 69, and the word for it: an extent with identity, from part of one site to many sites, carrying modifiers and conditions that wilderness lacks |
+| Wilderness | "sites and areas without a location but from which locations could be generated according to their terrain" | the ambient tier for places (ruling 70), holding ruling 14's derived candidate locations |
+| Biome | "the characteristic environmental pattern for a site" | a reading, a pattern over conditions, not a stored fact |
+| Environment | "the weather and climate conditions" | fields on places (§3.1), moved by agentless processes (§3.3) |
+| Ruin | "Ruins could come from sites and locations being reused" | a reading over history: what an earlier location left under or beside a later one |
+
+**What follows.** *Site* joins §3.1's ladder between the cell and the
+region. A location's kinds are many and open, "a settlement, a dungeon, a
+city, a trading outpost, a fort, a defensive gate, a highway, waaay more",
+so they are data to be authored and generated and never an enum, as forms of
+governance are (§3.2.2). *Reading, for Mark to reject,* on the question that
+was asked: Mark calls a biome "the characteristic environmental pattern",
+which makes it something read off a site's conditions, and a location's kind
+reads the same way, the characteristic pattern of what is built there, who
+is there and what it is used for, with ruin as the clearest case since it
+"could come from sites and locations being reused". What is stored for a
+location is then its extent, its modifiers and conditions, what happened
+there and who claims it; the kind is how that reads. A location may be only
+"potential", which is ruling 14's candidate, derived from terrain and not
+yet of note, so the word spans the ambient and of-note tiers and the keeping
+tier says which. A highway is a location that is also a route, a long thin
+extent over many sites, so the graph's edges can be places of note too.
+
+**Any shape.** A world map that may be a sphere, a ring, a cube, a spire or
+a wheel cannot be an array with a wrap rule; it is a graph of sites with
+adjacency, which §3.7 already says of every rung above the bricks. Known
+mathematics bears on one case: no grid of hexagons closes a sphere, and a
+geodesic grid does it with exactly twelve pentagons among the hexagons, so
+"hexes" holds as a projection over most of a spherical map and not as its
+storage. **Open:** how large a site is, in voxels and against the paged
+chunk of W3; and how the nesting goes, since a location may be a "nested
+region within a world map site".
+
+**Already in code, checked 2026-09-21.** Each product holds a piece. The
+tabletop's overmap projects a region as a grid of `AtlasTerrainCell`s whose
+`kind` is a string from "the open tile vocabulary", with `AtlasSite`s, each
+"a geographic site area" with a cell `footprint`, and routes between them
+(`isometry-views/src/overmap/atlas.rs:20-38`); its campaign world keeps a
+`WorldPlace` with a name, tags, an optional map and an optional position
+(`isometry-campaign/src/world/types.rs:78-92`). That is a location over
+several cells with open kinds, already. Paredros has the stable address and
+the two keeping tiers (§3.4.1), with a closed enum of five kinds and a
+surface and underground `Layer`, which is one fixed case of a nested region
+(`paredros-world/src/sites.rs:13-17,46-53`). Mesocosm has the place graph
+derived from relief over a fixed three-by-three partition (§3.7). The words
+are crossed against ruling 72: Paredros's `SlotId` is Mark's site and its
+`Site` is Mark's location, and the tabletop's `AtlasSite` is a location too.
+Bringing the code's words to ruling 72's is a lane under W2 and W3 beside
+the body-site rename of §3.4.1, not an edit.
+
+Prior art for ruling 72. Known: the tabletop hexcrawl, from the *Outdoor
+Survival* map of original D&D to the West Marches, is this model played by
+hand, a hex as the site, a keyed hex as a location, and unkeyed wilderness
+generating encounters and places from tables by terrain type; Whittaker's
+biome diagram (1975) reads a biome off temperature and precipitation, which
+is a biome as a pattern over environment; Civilization's cities spreading
+over several hexes are Mark's own reference. From memory of games,
+unverified: Dwarf Fortress's world is a grid of region tiles each with a
+biome, and its *sites*, its word for what ruling 72 calls locations, span
+one or more tiles with a local map nested inside; Caves of Qud nests zones
+inside world-map tiles and keeps only the zones a player has touched.
 
 ### 3.8 What the sim never does
 
@@ -2505,6 +2599,14 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 72 recorded and §3.7.1 added: the place words in Mark's
+  definitions, site joining §3.1's ladder, location as the word for a place
+  of note at any extent, wilderness as the ambient tier for places, biome
+  and ruin as readings. Checked against the tabletop's overmap, which
+  already has multi-cell sites with open kinds, Paredros's `sites.rs` and
+  Mesocosm's place graph; the code's words are crossed against the ruling's
+  and the renames are a lane. Open: the size of a site and how the nesting
+  goes.
 - 2026-09-20: ruling 71 recorded into §3.4.1: the roots of collection are
   the entities players care about, examination standing in for play when
   nobody plays; collection is graded from the individual to a stub to the
