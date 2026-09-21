@@ -612,6 +612,25 @@ what later sections derive from.
     think it would be cool if the mechanism was composable and expandable
     instead of the order and tiering of the nesting being predetermined. But
     yeah, those are good defaults."
+75. **Background and foreground agree; the background is cheaper by
+    aggregation; losses at transitions preserve similitude; things of no
+    note are fungible, behind a configurable buffer.** Asked whether one
+    process definition is run two ways and whether the two must agree, Mark,
+    2026-09-21: "I would expect the background to be cheaper through
+    aggregation and not needing to process some foreground info. I figure
+    that just processing thousands of decisions/entities or orders of
+    magnitude less aggregates of either would require that. I think the
+    background and foreground of the sim should agree... losses should be
+    managed between transitions in a manner that preserves similitude.
+    Generated assets being a placeholder meant to be reified/supplanted by
+    the player, things of no note are fungible, as needed for the system's
+    constraints. Now, if you have a very capable system and want to increase
+    the buffer of stuff before things are funged, for a feeling of
+    consistency, then that should be possible too. But what do you think a
+    good sim/game layer interoperation should be, for good efficiency?
+    Should this be organized in the manner that wasi/wasm/wit processes are,
+    like with workers and a thread pool... and have i properly understood
+    your point?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1526,6 +1545,47 @@ rules revision, carrying scarcity, cost and provenance, unimplemented, and
 forbidden from promotion by its own stop rule, which is one ruling to
 lift (found 2026-09-18 by W1).
 
+**One definition, run two ways (ruling 75).** A process is executed for the
+one in the foreground, step by step with a receipt, and applied to the many
+in the background as a rate over a distribution, which is "cheaper through
+aggregation and not needing to process some foreground info". The two
+"should agree", and "losses should be managed between transitions in a
+manner that preserves similitude". What licenses the aggregate is ruling
+75's other half: "things of no note are fungible", interchangeable, so a
+cohort may be counted and need not be listed, and a generated thing is "a
+placeholder meant to be reified/supplanted by the player". How long a
+realised thing lingers before it is funged is a host's setting, "if you have
+a very capable system and want to increase the buffer of stuff before things
+are funged, for a feeling of consistency", which is ruling 71's collector
+given a budget.
+
+*Reading, for Mark to reject.* The two transitions have names in the
+multiscale literature. *Lifting* takes an aggregate to individuals: sample
+from the distribution, conditioned on every asserted fact, from the seed, so
+the same place lifts the same way twice. *Restriction* takes individuals to
+an aggregate: conserve the accounts, counts, mass, energy, which the
+world-conditions schema already keeps distinct, and fold what deviated into
+the distribution's parameters. Similitude is then two checks the bench can
+run on seeded draws (ruling 15): restricting what was just lifted returns
+the aggregate it came from, and a population run each way ends in the same
+statistics. It also puts a requirement on the definition itself. A process
+must be declarative enough for its aggregate form to be derived from the one
+definition, typed inputs, costs, effects and rates, which the schema's
+operation is ("a typed operation cannot execute arbitrary script") and an
+opaque script is not: a script can only be executed, never integrated. So
+ruling 32's choice is what makes ruling 75 possible, piccolo authors and
+lowers to definitions, and scripted hooks run only in the foreground.
+
+Prior art for ruling 75, known. Gillespie's stochastic simulation algorithm
+executes every event exactly, and his tau-leaping (2001) jumps over many
+events at once by drawing their counts, with the same statistics, which is
+the foreground and the background of one definition. Kevrekidis's
+equation-free method is where *lifting* and *restriction* are named.
+Cautions, from memory of games and unverified: the X series resolves combat
+differently in and out of the player's sector and players exploit the
+difference, and S.T.A.L.K.E.R.'s A-Life switches between an offline and an
+online model with visible seams.
+
 ### 3.4 The record
 
 The hagiograph judges what is significant by novelty, quality and relevance
@@ -2375,6 +2435,72 @@ overlay tier and are left open here: who resolves an event when a DM and
 the sim both could, and where a foreground game's rules stop and the sim's
 begin. Both are inside a branch, so they do not touch the base profile.
 
+### 5.2 The boundary between the sim and a game (recommendation, unruled)
+
+Mark asked, in ruling 75, what good interoperation between the sim and the
+game layer should be for efficiency, and whether it should be organised as
+WASI, wasm and WIT processes are, with workers and a thread pool. This is
+this record's recommendation and is Mark's to rule.
+
+1. **Grain before mechanism.** The cost of a boundary is how often it is
+   crossed and how much is copied each time, so the contract is coarse:
+   batches per tick, never a call per entity.
+
+2. **In: intents.** A game never writes sim state. It submits intents
+   stamped for a tick: directives, and where the overlay opens it, the
+   actuation of one body (§9.14). Intents are the sim's only
+   nondeterministic input, so they are also the replay log and the network
+   protocol, which both products already practise: the tabletop's
+   DM-authority ordered event log and Paredros's fixed input trace with
+   save, reload and replay.
+
+3. **Out: events and views.** Events are the sim's receipts and record
+   entries, streamed by subscription. Views are a read-only snapshot of tick
+   N, read by the renderer and the interface while the sim computes N+1, so
+   neither waits on the other and nothing is locked; isometer's Scene is
+   already that seam for rendering (§4.7).
+
+4. **One attention set per player.** The roots of ruling 71, what a player
+   cares about, are also what is simulated at full detail and what is
+   subscribed to. One set drives the collector, the foreground and the event
+   stream.
+
+5. **The resolution handoff.** §3.8 already says the foreground game
+   resolves a blow by its own rules or the background resolves it by
+   outcome. So when an operation touches something foregrounded the sim asks
+   the overlay to resolve it and takes back an outcome in the sim's own
+   terms, which must pass the sim's invariants, the accounts conserved;
+   otherwise the sim resolves it by rate. That the two agree is ruling 75,
+   owed by the ruleset and checked on the bench.
+
+6. **WIT as the discipline, with two bindings.** Shape the contract the way
+   WIT forces: values copied, opaque handles minted by the host, no pointer
+   into sim memory, capabilities by grant. Mere's script substrate already
+   practises it: "Values are copied across the boundary; no language-native
+   object graph crosses it", and an ungranted capability is unlinked and
+   unreachable (`mere/crates/script/wit/world.wit`, checked 2026-09-21).
+   Bind that one contract twice: natively, as the trait of §9.1, for the
+   three first-party cores in one address space; and as a component world on
+   Wasmtime for mods and third-party overlays. The same discipline is what
+   lets the boundary cross a Worker on the web, a peer on the network and a
+   replay file unchanged.
+
+7. **Not WIT between the sim and its own cores, and not the component as the
+   unit of the sim's parallelism.** Every call across a component boundary
+   copies its values, which suits a batch of events per tick and would ruin
+   a query per entity. And the component model's concurrency, checked
+   2026-09-21, is native async: WASI 0.3.0 shipped on 2026-06-11 with `async
+   func`, `stream` and `future`, first implemented as final in Wasmtime 46,
+   with threads and zero-copy named as later work. So parallelism stays as
+   §4.7 has it, shards of the place graph as armillary actors, Rayon inside
+   a shard, an ordered merge between them. Components fit that as many
+   single-threaded instances, one per shard, fed their shard's inputs in
+   order. The answer to the question as asked is yes to the shape, shared
+   nothing between shards and across the boundary with shared memory only
+   inside a shard, and no to wasm as the literal mechanism between the sim
+   and the first-party games. Wasm's determinism, no clock and no thread
+   unless granted, is an asset for the mods that do run in it.
+
 ## 6. Method
 
 - **Targets are draws.** A receipt is a seeded draw from the generator's
@@ -2671,6 +2797,16 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 75 recorded into §3.3: one process definition run two
+  ways that agree, fungibility as what licenses the aggregate, a
+  configurable buffer before funging, and a reading of the two transitions
+  as lifting and restriction with similitude checked on the bench; the
+  declarative schema of ruling 32 noted as what makes an aggregate form
+  derivable. §5.2 added as an unruled recommendation on the boundary between
+  the sim and a game: intents in, events and views out, one attention set, a
+  resolution handoff, and WIT as the contract's discipline with a native
+  binding for first-party cores and a component binding for mods. WASI
+  0.3.0's status and mere's script WIT world checked.
 - 2026-09-21: ruling 74 recorded into §3.7.1: nesting as one composable,
   expandable step with a world's stack of levels as founding data and
   Isometry's four scopes as the default; a reading of what one step must
