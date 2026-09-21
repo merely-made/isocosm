@@ -631,6 +631,20 @@ what later sections derive from.
     Should this be organized in the manner that wasi/wasm/wit processes are,
     like with workers and a thread pool... and have i properly understood
     your point?"
+76. **The interoperation question was about the layer underneath the sim;
+    and total componentisation is worth costing.** Mark, 2026-09-21, on
+    §5.2's reading of his question: "Not everywhere, i was thinking like the
+    layer underneath the sim, like w/rt our existing work, armillary, places
+    where we instantiated that boundary for future modularity (plugins,
+    expansion packs, mods, themes), and how the total stack resolves
+    foreground -> background -> infrastructure." And then: "Architecturally,
+    that is an interesting proposal. How bad would the total
+    componetization's runtime cost be?"
+77. **Two bindings, and the best capabilities each platform has, if that
+    costs nothing on mobile or the web.** Mark, 2026-09-21, on §5.2's fork:
+    "The two bindings does seem appropriate, too, though. Honestly if there
+    is no cost on mobile or the web, i could see myself preferring to use
+    the best capabilities available to improve performance".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2440,7 +2454,9 @@ begin. Both are inside a branch, so they do not touch the base profile.
 Mark asked, in ruling 75, what good interoperation between the sim and the
 game layer should be for efficiency, and whether it should be organised as
 WASI, wasm and WIT processes are, with workers and a thread pool. This is
-this record's recommendation and is Mark's to rule.
+this record's recommendation and is Mark's to rule. Ruling 76 then said the
+question was about the layer underneath the sim, which §5.3 answers; what
+follows here is the boundary above it and stands as written.
 
 1. **Grain before mechanism.** The cost of a boundary is how often it is
    crossed and how much is copied each time, so the contract is coarse:
@@ -2500,6 +2516,125 @@ this record's recommendation and is Mark's to rule.
    inside a shard, and no to wasm as the literal mechanism between the sim
    and the first-party games. Wasm's determinism, no clock and no thread
    unless granted, is an asset for the mods that do run in it.
+
+### 5.3 How the stack resolves: foreground, background, infrastructure
+
+From ruling 76. Read 2026-09-21 in mere: armillary's README and founding
+proposal, the script substrate's WIT package and hosts, the participant gate
+and packs plan, the capability crate and servitor.
+
+| Layer | What it is | Where it runs | How it talks |
+| --- | --- | --- | --- |
+| Foreground, a game | an overlay (ruling 6); it resolves what is foregrounded by its ruleset | input, interface and rendering on armillary's single-threaded kernel, which alone owns the window and the GPU; game logic beside it | intents down, events and views up (§5.2) |
+| Background, the sim | the world running with nobody playing | shards of the place graph, each an armillary actor on the pool, Rayon inside a shard (§4.7) | an ordered merge between shards; receipts to the record |
+| Infrastructure, the stack | armillary's kernel, actors, pool and generation stamps; eidetic's journals and hagiograph; the script substrate; the gate and the capability algebra; isometer and netrender; moot and murm | each where mere already puts it | `Send` messages between actors; petitions through the gate |
+
+**Armillary.** "A single-threaded host kernel owns the canonical state (the
+document model, the GPU device, the window); actors run off-thread and talk
+to it only by `Send` message" (`mere/crates/armillary/README.md`). A marker
+type makes moving the kernel to another thread a compile error, the pool
+keeps the thread count at peak concurrent actors, and generation stamps let
+the kernel drop work that returns stale. Its consumers today are canvas,
+seiche, crawl, esp and fetch. Its founding proposal says nothing on
+determinism or an ordered merge, so §4.7's merge is the sim's to add, not
+armillary's to supply.
+
+**Where the boundary has already been instantiated.** The script substrate
+is one WIT package, `mere:script@0.1.0`, with two worlds: `app-core` imports
+`log`, `caps` and `actions`, and `document-core` imports `log`, `caps`,
+`net` and `document-host`; each exports activate, an event handler and
+deactivate (`mere/crates/script/wit/world.wit`). A host grants capabilities
+per instance and "unimported means unreachable, enforced at instantiation".
+A script instance is not an actor of its own: it is "a `!Send` subsystem
+built inside the content actor's existing `spawn_on` run closure" (document
+script substrate plan, archived 2026-07-03). The extension ladder is the
+participant gate and packs plan's **power ladder**
+(`2026-07-17_participant_gate_packs_plan.md`, §3), where a *pack* is a
+bundle of rungs 1 and 2 and a *mod* is rung 3 and past:
+
+| Rung | Form, in mere's words | Runtime | Web | What the wing puts there |
+| --- | --- | --- | --- | --- |
+| 1 | "Action macro / scenario data" | none | yes | themes (mere's theme files are serde data with no code), and every open set this record has called data and never an enum: kinds of location, forms of governance, trait catalogues, glyph canons |
+| 2 | "piccolo/rhai script" | a script engine | yes | rulesets and world-founding packs, authored in piccolo and lowered to definitions by digest (ruling 41), so the sim evaluates them natively |
+| 3 | "wasm component" | "wasmtime (native), jco later" | "later" | new code from outside: a resolver, a generator, a director |
+| 4 | "native crate" | compiled in | not distributable | the three first-party cores |
+
+The line that matters most is under that table in mere: "Every rung emits
+the same proposals through the same gate and surfaces in the same palette."
+The rungs differ in runtime and never in what they are allowed to do, which
+the gate decides. And mere already says of the tabletop: "Isometry campaign
+packs ride these same rails (same envelope, isometry's own world inside)."
+
+*Reading, for Mark to reject.* The sim's intent boundary of §5.2 and mere's
+participant gate are one shape: something holding a scoped capability
+proposes, a gate validates, and the change is applied as an attributed,
+revision-checked commit (`mere/crates/servitor/src/lib.rs`). So the sim
+should be reached through that gate and not grow a second one, which is the
+stack's own rule against a duplicate run at one problem. A player, a mod, a
+director and whoever holds edit mode at the table are then all participants
+petitioning the sim, and who may direct which entity is a capability scope
+over entities, which the capability crate's partial order of `Power`,
+`Scope` and `Facet` can already express. That is also where ruling 34 put
+identity: dramatis absorbs it under W3. Authority resolves one way, game to
+gate to sim to record, and events and views flow back.
+
+### 5.4 What total componentisation would cost
+
+From ruling 76's second question. In the power ladder's terms, total
+componentisation is moving the three first-party cores, and perhaps the sim,
+from rung 4 to rung 3. **None of this is measured in this stack.** Mere's
+own script substrate plan lists "the per-interaction serialization tax" as
+"high it is real; unquantified" and says "measure before assuming the
+boundary is free". The sizes below are from outside sources and known
+mechanics, and are orders of magnitude, not receipts.
+
+| Cost | Size | Basis |
+| --- | --- | --- |
+| Compute inside a component | roughly 1.2 to 2.5 times native on compute-bound code | web sources read 2026-09-21: one 2026 survey of runtimes puts Wasmtime at 2.41 times native on its suite, others claim 75 to 85 per cent of native; Cranelift is not LLVM and SIMD stops at 128 bits |
+| Lost shared-memory parallelism | the largest, and structural | a component is single-threaded with its own memory, and WASI 0.3.0 adds async, not threads; Rayon inside a shard goes, and parallelism comes only from an instance per core with halos copied each tick |
+| Crossing the boundary | small if batched, ruinous if chatty | a call is tens of nanoseconds before its payload, and lists and strings are copied and allocated on the far side; ten thousand events a tick is well under a millisecond, a hundred thousand calls a tick is most of a frame |
+| Views for rendering | paid per change, never per frame | a snapshot cannot be borrowed across the boundary, so terrain and bodies cross as diffs of what is dirty, which the design wants anyway |
+| The web | the slowest path for everything | Wasmtime does not run in a browser; mere names jco, "later", and says packs "degrade to rungs 1-2 content there"; a componentised sim would cross through JavaScript glue on every call |
+
+So with a coarse contract the copies are not what hurts. What hurts is
+paying one and a half to two times on exactly the part of the program whose
+throughput matters, deep time and the background, and giving up Rayon inside
+a shard, in exchange for sandboxing code the wing wrote itself. The
+sandbox's value is for code it did not write, which is rung 3 already.
+
+**On the web and on mobile (ruling 77).** Mark leans to the two bindings,
+"if there is no cost on mobile or the web", preferring "the best
+capabilities available to improve performance". The condition holds for
+first-party code and fails only for rung 3, checked 2026-09-21:
+
+| Platform | Native binding: the cores and the sim | Component binding: rung 3 mods |
+| --- | --- | --- |
+| Desktop | direct calls in one address space; actors and Rayon | Wasmtime with Cranelift, ahead of time by preference |
+| Web | the same direct calls: the app, its cores and the sim are one wasm module in the browser, so the first-party boundary is free there too. What the web costs is the browser's wasm speed, and Rayon running serially without the nightly, cross-origin-isolated build (§4.7); both are paid whatever the binding | none until jco: mere says "jco later", and packs "degrade to rungs 1-2 content there" |
+| iOS | direct calls at native speed | no compiling on the device, since iOS gives third-party apps no writable-executable memory; Wasmtime falls back to its Pulley interpreter, of which its own documentation says "a performance penalty should be expected" (web search summaries, 2026-09-21) |
+| Android | direct calls at native speed | not checked |
+| Mobile or web as a lens | mere's platform adapter has them as thin clients over p2p, "scores out, scene diffs back, intents through the participant gate", which is §5.2's contract crossing a network with no sim on the device | the host's business, not the lens's |
+
+So two bindings cost first-party code nothing anywhere, because the native
+binding is Rust calling Rust, inside the browser's module as much as on a
+desktop. What the small platforms cost falls on rung 3 alone, and rungs 1
+and 2, data and piccolo, run everywhere. It is also the strongest argument
+against total componentisation: on iOS it would put the whole sim under an
+interpreter, and on the web behind glue. "The best capabilities available"
+is then a tier per platform under one contract, which is how ruling 19's
+floor for the web already reads: actors and Rayon on a desktop, one Worker
+on the web, an interpreter only for outside code where a platform forbids
+compiling it. Mobile is not yet a ruled target of the wing.
+
+*Recommendation, Mark's to rule.* Keep the first-party cores and the sim at
+rung 4, and keep §5.2's discipline so that the choice stays late-binding: a
+contract shaped as WIT forces can be bound as a component on any day without
+redesign, so the architectural value of the proposal is kept and its runtime
+cost is not paid until something needs the sandbox. And take mere's advice
+before believing any number here, with one small probe under W2: the same
+two workloads, a field pass over places and a due-event queue, built
+natively and as a Wasmtime component, run on seeded draws, reporting compute
+ratio, cost per crossing and cost per kilobyte.
 
 ## 6. Method
 
@@ -2797,6 +2932,18 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 76 recorded, Mark's clarification that the
+  interoperation question was about the layer underneath the sim. §5.3 added
+  from a read of mere: armillary's kernel and actors, the script substrate's
+  two WIT worlds and its host inside the content actor, and the participant
+  gate and packs plan's four-rung power ladder, with the wing's content
+  placed on it and a reading that the sim is reached through mere's gate and
+  grows no second one. §5.4 added on the cost of total componentisation,
+  unmeasured in this stack, with outside figures, a recommendation to stay
+  at rung 4 under a WIT-shaped contract, and a probe proposed under W2.
+  Ruling 77 recorded, Mark leaning to the two bindings if they cost nothing
+  on mobile or the web, with the platforms checked: free for first-party
+  code everywhere, and the cost falling on rung 3 alone.
 - 2026-09-21: ruling 75 recorded into §3.3: one process definition run two
   ways that agree, fungibility as what licenses the aggregate, a
   configurable buffer before funging, and a reading of the two transitions
