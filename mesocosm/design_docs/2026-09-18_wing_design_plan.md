@@ -667,6 +667,25 @@ what later sections derive from.
     like literally a note on the site/item/entity. the sim just makes notes
     in the way a player would too, generating the note from the event/thing
     that makes it 'of note.'" On D19 and D20: "idk!", so both stay held.
+81. **Asserting a constitution is itself an act, the definitive one.** On
+    ruling 79, Mark, 2026-09-21: "isn't asserting a constitution of a polity
+    itself an act? indeed, a definitive one."
+82. **The note is the impresa record, with a freeform text field beside the
+    generated details.** Mark, 2026-09-21: "i'm alright with the impresa
+    record! ah, but... maybe a lil markdown/djot/gemtxt/txt-formatted
+    (sounds like a setting, i guess i'd prefer djot) field, wysiwyg for just
+    freeform notes? if we can enumerate the generated details, sure, lovely,
+    but something simple, accessible, and interpretable is also nice."
+83. **The rest of the docket is accepted.** Mark, 2026-09-21: "also, i
+    accept the rest." That is docket items D1 to D7, D9 and D11 to D18 as
+    suggested; each is marked accepted where it sits in §3 and §5, and D19
+    and D20 stay held.
+84. **Information spread is to be modelled, cheaply and distributionally,
+    with how a person learned a thing resolved on demand.** Asked what a
+    thing knows, Mark, 2026-09-21: "didn't we want to model information
+    spread? is there a way to do that cheaply and distributionally, so that
+    we can resolve how a person learned a thing without mapping each step
+    ahead of time necessarily? is that the best way?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1237,7 +1256,7 @@ means of communication all sophonts share and by those the proposer and the
 hearer each align with, which makes reach (§3.4) the gate on who can be
 asked at all. Where peer to peer agreement cannot emerge, everyone
 differently aligned or nobody holding an actionable opinion, "a few general
-protocols" apply. *Reading:* because they are general they belong to the
+protocols" apply. *Reading, accepted by Mark 2026-09-21 (D1):* because they are general they belong to the
 world's ruleset (ruling 41) and not to the faction, which keeps the faction
 stateless. **Open:** which protocols.
 
@@ -1261,7 +1280,7 @@ members, not the model.
 
 **What a form of governance is.** Mark: "all forms of governance that can be
 associated with acts or qualifiable parties should be considered."
-*Reading:* a form is a pair, who qualifies to decide and by what act the
+*Reading, accepted by Mark 2026-09-21 (D2):* a form is a pair, who qualifies to decide and by what act the
 decision is made. Qualification is a predicate over what the record already
 holds for an entity: standing in its three parts (ruling 56), possessions
 (ruling 53), body and age, lineage, provenance. Rule by the wealthy, the
@@ -1280,7 +1299,7 @@ who solves problems by taking ranks rule by taking first and individualism
 next. Support then transfers down each ranking until a form holds, Mark's
 "preference-ordered rank choice voting for the sim": the rogue's first
 choice has no other supporters, so their support goes to their second.
-*Reading:* this is the sim's mechanism for which form emerges, weighted by
+*Reading, accepted by Mark 2026-09-21 (D3):* this is the sim's mechanism for which form emerges, weighted by
 influence exactly as ruling 51 weights a faction's alignment, and not
 necessarily an election anyone in the world holds. It runs at the rung
 transition that founds a polity (§3.3), and its winner is asserted as the
@@ -1290,7 +1309,7 @@ so the count runs over blocs and not heads. Ties break on the seed.
 **Enforcement (ruling 64).** A polity's asserted state needs means of
 enforcing it, likely several, and they "must be efficacious". They need not
 be violent: Mark names the provision of the requirements for life, and self
-defence. *Reading:* a polity enforces with what it provides and what it
+defence. *Reading, accepted by Mark 2026-09-21 (D4):* a polity enforces with what it provides and what it
 asserts. Ruling 38 already made provisioning a process of the faction and
 polity rungs, the collective feeding the individual, and what is provided
 can be withheld. Everything the record lets a polity assert it can also
@@ -1307,7 +1326,7 @@ withholds pay, rule by divining withholds rites, and rule by fighting
 fights. **Open:** whether that link is a default the generator uses or a
 constraint the sim holds.
 
-**Efficacy is read, never asserted.** *Reading:* whether a means is
+**Efficacy is read, never asserted.** *Reading, accepted by Mark 2026-09-21 (D5):* whether a means is
 efficacious is a track record, how often applying it produced compliance,
 which is ruling 50's trust, "expectations" formed from "how things turned
 out in the past", held about the constitution as about any tenet. After
@@ -1352,7 +1371,7 @@ reform and secession.
 **Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
 death for agreement. Ruling 66 lets everything short of it happen
 "automatically", and names four conditions a polity can fall into.
-*Reading,* each as something the record can already tell:
+*Reading, accepted by Mark 2026-09-21 (D6),* each as something the record can already tell:
 
 - *Inactive:* it lacks support for its operations and does nothing (ruling
   65).
@@ -1428,7 +1447,7 @@ done once for both.
 why would it want to continue if it didn't find a new use? Polities change
 like that." A polity whose use is gone finds a new one, or it becomes
 pointless, and a pointless polity is one people agree is dead (ruling 65).
-*Reading:* where an institution is seen clinging on, that is derived and
+*Reading, accepted by Mark 2026-09-21 (D7):* where an institution is seen clinging on, that is derived and
 needs no drive of its own. The members it provisions support it for their
 own reasons, and the sharpest case is ruling 66's subordination: an
 institution that "wants to continue" is one subordinated to the faction of
@@ -1450,7 +1469,9 @@ gap of the paragraphs above. This amends ruling 51's "constitutionally, not
 derived" in Mark's own later words: the constitution stays an asserted fact,
 and the alignment read from a polity's acts is derived. "Polities change
 like that" is then a polity's acts drifting and its alignment with them.
-**Open:** reform itself.
+Ruling 81 confirms the reading in Mark's words: asserting a constitution is
+"itself an act... indeed, a definitive one", so a polity's first and
+weightiest act is the one that founds it. **Open:** reform itself.
 
 Prior art for ruling 68, known. Sills's *The Volunteers* (1957) named goal
 succession from the March of Dimes, founded against polio, which found a new
@@ -1471,7 +1492,7 @@ went from hospital to military order to sovereign charity.
 contingent upon others, like factions comprised a polity. If you can make a
 durable agreement that works within another polity, congrats, you've built
 on an institution." So composition recurses: factions comprise a polity
-(ruling 8), and polities may sit inside polities. *Reading:* what makes the
+(ruling 8), and polities may sit inside polities. *Reading, accepted by Mark 2026-09-21 (D9):* what makes the
 host an institution is that an agreement made under it holds without its
 parties enforcing it themselves, and contingency is borrowed enforcement:
 the guild's "or else" is backed by the town's courts, the town's by the
@@ -1602,7 +1623,7 @@ a very capable system and want to increase the buffer of stuff before things
 are funged, for a feeling of consistency", which is ruling 71's collector
 given a budget.
 
-*Reading, for Mark to reject.* The two transitions have names in the
+*Reading, accepted by Mark 2026-09-21 (D17).* The two transitions have names in the
 multiscale literature. *Lifting* takes an aggregate to individuals: sample
 from the distribution, conditioned on every asserted fact, from the seed, so
 the same place lifts the same way twice. *Restriction* takes individuals to
@@ -1651,6 +1672,63 @@ the foreground, where a realized creature or character adds what it
 personally witnessed, which is its own deviation record. Forgetting is
 decay; legend decays slowest.
 
+**How knowledge resolves (recommendation on ruling 84, Mark's to rule).**
+Mark asks for information spread modelled "cheaply and distributionally",
+with "how a person learned a thing" resolved "without mapping each step
+ahead of time", and whether that is the best way. It is, for the background,
+and the record already holds every part of it.
+
+1. *The field stores arrivals, not histories.* For an event that spreads,
+   each place it reaches keeps three numbers: when it arrived, from which
+   neighbouring place or carrier kind, and at what strength. Reach at any
+   later time is that strength under ruling 5's decay, computed and never
+   stored, and a field that has decayed everywhere is collected like
+   anything else (ruling 70). A legendary event keeps a floor of being known
+   everywhere and needs no per-place entries.
+
+2. *Whether someone knows is a seeded draw.* For a background entity the
+   chance is the reach at the places it has been while it was there, shaped
+   by its exposure and by how much the event matters to it, its relations
+   and alignment. The draw is seeded by the entity and the event, so the
+   same question gets the same answer every time it is asked. A traveller
+   knows more than the town because the places it has been are part of the
+   draw.
+
+3. *How they learned it is sampled backward, on demand.* The arrival entries
+   are a tree back to where the event happened. Asked how someone knows, the
+   sim walks it, "by the trade road from the coast, from a carrier at the
+   market", and lifts (D17) a teller out of the carrier cohort only if
+   someone needs to meet them. Nothing is mapped ahead of time, and the
+   answer agrees with what a forward simulation would have produced.
+
+4. *Once resolved for something cared about, it is a note.* The answer
+   becomes an impresa record on the knower, its `discover` kind citing the
+   event (ruling 82), so it cannot change under a player's eyes. That is
+   ruling 75's pattern again: fields for the fungible many, notes for the
+   few.
+
+5. *Who knows more than their place:* carriers, who have been elsewhere;
+   bearers, since a book or a charter is an item bearing notes and a library
+   is a location full of them; and rank, which opens a polity's records. All
+   three are things the sim already has. The one case a field serves badly
+   is a secret, known to three people and no distribution at all; that is a
+   set of notes spreading along relations and not places, and is left
+   **open**.
+
+Prior art, known. Kingman's coalescent (1982) is the proof that this is
+sound and not a shortcut: population genetics samples the genealogy of only
+the individuals it cares about, backward in time, and the result is
+statistically identical to simulating the whole population forward. The same
+trick answers a lifted denizen's ancestry. The Daley-Kendall rumour model
+(1964) and metapopulation epidemic models are the forward half, compartments
+per place with mixing inside and carriers between, which is a field on a
+place graph; epidemiology's transmission trees are the arrival entries.
+Hybrid stochastic simulation, exact for small counts and leaping for large,
+is the two regimes. From memory of games, unverified: Dwarf Fortress tracks
+rumours per historical figure with who heard what from whom, the explicit
+and costly form, and Crusader Kings III keeps each secret as a set of named
+knowers, which is the regime for secrets.
+
 ### 3.4.1 Three tiers of keeping
 
 From ruling 69. The middle tier is Mark's "tier between primordial sim soup
@@ -1691,9 +1769,22 @@ a `cause` that is "the evidence string of the accepted event this record
 cites", and "every field is what an accepted event already knew, so writing
 one is transcription and never inference" (`src/impresa.rs:35-57`,
 `src/kinds.rs:16-23`). That is a note generated from the event that makes a
-thing of note, with lapsing built in. **Open, for Mark:** whether ruling
-80's note *is* the impresa record, which would make the middle tier the set
-of things bearing a live impresa, or a plainer thing beside it.
+thing of note, with lapsing built in. **Answered, ruling 82:** the note is
+the impresa record, so the middle tier is the set of things bearing a live
+impresa and collection is lapsing; and beside "the generated details", where
+they can be enumerated, Mark wants a freeform text field, "something
+simple, accessible, and interpretable", its format a setting with djot
+preferred, edited what-you-see. Checked 2026-09-21: djot is already the
+stack's document format and the editor exists. `knot-document` is a
+"Djot-first local document authority and reusable Knot surface" and
+knot-editor is a "files-in-place, local-first Djot editor" that also reads
+Scrolltext and Gemtext, so both the preference and the setting are met by
+what the stack has, and §9.8 already names knot-editor for editable text.
+*Finding for the organ's owner,* filed in the general model plan: the
+record type is closed today (`deny_unknown_fields`, schema version 1) and
+holds to "transcription and never inference", which authored free text is
+not, so whether the text is an optional field on the record or a sibling
+beside it is the owner's decision.
 
 **The ambient tier (ruling 70).** The soup "is equivalent to the ambient
 tier, the background of information generated by an engine and localized to
@@ -1725,7 +1816,7 @@ not "silently evict" (`:322-331`). In the sim's terms: the ambient is
 evictable, the asserted and the foregrounded are protected, and a thing that
 comes back is regenerated at the same address from the same basic facts.
 
-*Reading, for Mark to reject, since he called the criteria crucial.* Taking
+*Reading, accepted by Mark 2026-09-21 (D11).* Taking
 "garbage collection" at its word gives the criteria a shape: roots and
 reachability. The roots are what is relevant to a player: the foreground,
 and what the played entity is, holds, knows and is related to; every
@@ -1761,7 +1852,7 @@ appeared carries no deviation and is regenerated on demand from the relation
 itself, which is the observational test of the reading above at work. "You
 would trash most of a raider that got killed with little incident; at a
 certain point just the event": collection is graded, never all or nothing.
-*Reading:* a thing of note sheds in steps, the full individual, then a stub,
+*Reading, accepted by Mark 2026-09-21 (D12):* a thing of note sheds in steps, the full individual, then a stub,
 what an event needs to name its participant (a kind, a lineage, a faction, a
 name if it had one), then the event alone. So events are the floor of the
 middle tier, and they refer to their participants by stub, never by a live
@@ -1851,7 +1942,7 @@ spends on its engine organs; *locus*, genetics' word for a position;
 which would suit the proposed and declared forms.
 
 "Does this need to be a crate, or can it be a component of the wing?"
-*Recommendation, Mark's to rule:* a component, one module of the sim, and
+*Recommendation, accepted by Mark 2026-09-21 (D13):* a component, one module of the sim, and
 not a crate per word. The three tiers are one mechanism over every kind of
 thing, and the invalidation criteria are one policy, so a `denizen` crate
 beside a place crate and a thing crate would hold the same keeping machinery
@@ -1961,7 +2052,7 @@ From ruling 72, whose definitions are kept whole in the first column.
 region. A location's kinds are many and open, "a settlement, a dungeon, a
 city, a trading outpost, a fort, a defensive gate, a highway, waaay more",
 so they are data to be authored and generated and never an enum, as forms of
-governance are (§3.2.2). *Reading, for Mark to reject,* on the question that
+governance are (§3.2.2). *Reading, accepted by Mark 2026-09-21 (D14),* on the question that
 was asked: Mark calls a biome "the characteristic environmental pattern",
 which makes it something read off a site's conditions, and a location's kind
 reads the same way, the characteristic pattern of what is built there, who
@@ -1981,7 +2072,7 @@ and the graph of sites never changes topology in play. The purpose is
 "strange scenarios like a world resting on a critter", which the record can
 already say: a macro creature is a terrain-body (ruling 39, and ruling 43's
 worldtree), so a world resting on a critter is a world map whose graph of
-sites is laid over a body. *Reading, flagged 2026-09-21 (docket D16):* what
+sites is laid over a body. *Reading, accepted by Mark 2026-09-21 (D16):* what
 the critter does, walking, turning, sleeping, dying, reaches the world as
 its environment. That is a reason
 beyond the sphere for holding the map as adjacency: a body's surface is no
@@ -2008,7 +2099,7 @@ repeated. It is also §3.1's ladder made honest, since "the far rung is what
 the near rung looks like from far enough away" describes a step and never
 said how many there are.
 
-*Reading, for Mark to reject:* what one step has to say, so that steps
+*Reading, accepted by Mark 2026-09-21 (D15):* what one step has to say, so that steps
 compose. *Down*, how the finer map is generated from the node above it: its
 terrain, biome, conditions and seed, the "same basic facts" of ruling 69, so
 an unvisited interior costs nothing. *Up*, how the finer map reads from
@@ -2522,7 +2613,7 @@ code. And the record has been growing faster than it can be ruled: 1,275
 lines since ruling 62, with fifteen flagged readings, three recommendations
 and twelve open markers waiting on Mark, some of them carrying later ones.
 
-*What survives cheaply, Mark's to rule.* Ruling 78 alone, as a design
+*What survives cheaply, accepted by Mark 2026-09-21 (D18).* Ruling 78 alone, as a design
 discipline. Two bindings as an intent and not a duty: native first, the
 component binding built when the first rung 3 consumer exists, the contract
 shaped so that day needs no redesign. For erosion, a test and not a runtime:
@@ -2708,7 +2799,7 @@ floor for the web already reads: actors and Rayon on a desktop, one Worker
 on the web, an interpreter only for outside code where a platform forbids
 compiling it. Mobile is not yet a ruled target of the wing.
 
-*Recommendation, Mark's to rule.* Keep the first-party cores and the sim at
+*Recommendation, carried by D18 as accepted 2026-09-21.* Keep the first-party cores and the sim at
 rung 4, and keep §5.2's discipline so that the choice stays late-binding: a
 contract shaped as WIT forces can be bound as a component on any day without
 redesign, so the architectural value of the proposal is kept and its runtime
@@ -2745,7 +2836,7 @@ is the binding that costs.
 | Sandboxing, capability grants, crash isolation, hot reload, any language | only for what is actually a component, which is why rung 3 exists |
 | Location transparency: a shard that can run on a thread, a Worker, a subprocess or a peer | yes: armillary's actors already exchange `Send` values, and the contract's values serialise |
 
-*Verdict, Mark's to rule.* Not ridiculous, and not worth it applied totally.
+*Verdict, carried by D18 as accepted 2026-09-21.* Not ridiculous, and not worth it applied totally.
 Nothing on the first list is absurd; each is a known pattern. But the
 distortion is real, the small platforms are the worst of it, and nearly
 everything on the second list can be had while shipping native, provided the
@@ -3058,6 +3149,16 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: rulings 81 to 84 recorded. Asserting a constitution is the
+  polity's definitive act. The note is the impresa record with a freeform
+  djot field beside the generated details; knot-editor and `knot-document`
+  checked as the stack's existing djot authority, and a finding filed with
+  the impresa's owner. The rest of the docket accepted, sixteen readings
+  marked where they sit, D19 and D20 held. On ruling 84, a recommendation in
+  §3.4 for how knowledge resolves: arrival entries per place, a seeded draw
+  for who knows, backward sampling for how they learned it, a note once it
+  matters, with the coalescent as the proof that backward sampling agrees
+  with forward simulation. Secrets left open.
 - 2026-09-21: rulings 79 and 80 recorded from the docket. D8 is replaced: a
   polity has one alignment, derived from its acts as everyone's is, which
   amends ruling 51's "not derived". D10 is replaced: of note is a literal

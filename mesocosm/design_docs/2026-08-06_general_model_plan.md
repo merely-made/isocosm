@@ -1423,6 +1423,18 @@ profile in advance; the sequence now follows the evaluator rule.
 
 ## Findings
 
+- **2026-09-21, from the wing design record's rulings 80 and 82:** the sim's
+  middle tier of keeping, "of note", is ruled to be a literal note on a
+  thing, and the note is ruled to be the impresa record, so a thing is of
+  note while it bears a live impresa and collection is lapsing. Mark also
+  wants a freeform text field beside the generated details, format a
+  setting, djot preferred, edited what-you-see; knot-editor and
+  `knot-document` are the stack's djot authority. `wing-impresa`'s `Record`
+  is closed today (`deny_unknown_fields`, schema version 1) and holds to
+  "transcription and never inference", which authored text is not. Owed
+  here: whether the text is an optional field on the record or a sibling
+  record beside it, and the version bump either way.
+
 - **2026-09-13, glyph ownership inventory:** `shared/wing-functions` owns
   resource routing; `shared/wing-formats` owns primitive framed records.
   Neither supplies acquisition history or divine progression. Mesocosm's
