@@ -697,6 +697,38 @@ what later sections derive from.
     or there wouldn't be rules against its propagation. So for relation,
     opinion, and goals to factor in makes sense to me. I wonder about
     personality, too." And then: "Or perhaps not rule, but 'taboo'".
+88. **Nesting is allocated as locations are generated, not fixed at
+    founding.** Mark, 2026-09-21, on this record's list of what founding
+    fixes: "Elaborate on the last two points. Shouldn't the nesting be
+    dynamically allocated as locations are generated?"
+89. **Founding is a short flow of crucial details and a seed; authoring is
+    as deep as anyone likes, and authored content fills or displaces
+    generated content; a world editor is owed.** Mark, 2026-09-21: "I feel
+    like there'd probably be a basic flow where someone picks the crucial
+    world details in addition to the seed. I'm mentally envisioning
+    rimworld's world generation as a reference, i suppose, but with more
+    than spheroid worlds." And: "I would love for people to be able to
+    author as much of the world as they would like, or apply a set of
+    compatible adventure packs to be integrated into the world to ensure the
+    narrative hooks are intrinsically available... but that's a world(s)
+    editor, which i guess we have to make? Ok. But yeah, authored content
+    should fill blank content or displace generated content to the extent
+    people are willing to do so."
+90. **A world is realigned to another ruleset by a generative round that
+    advances time.** Mark, 2026-09-21: "I would imagine that worlds can be
+    converted to align with different rulesets by having them go through
+    another generative round advancing time and realigning the world to a
+    new ruleset (e.g. from hexploration to freeform piloting of a ship in a
+    planet's orbit, or some other abstraction)..."
+91. **How much history is the founder's choice; the generated timeline can
+    be gone back into; the client is not overwhelmed and may zoom in and
+    edit.** Mark, 2026-09-21: "How much history is a complexity and size
+    issue. People pick how much to simulate dwarf fortress too, but even
+    stopping the possibility of wiild events and catastrophes, we're also
+    generating a timeline one could go back in time to prior worldstates
+    with, right? Stands to reason we'd take care to not overwhelm the client
+    with information, but kinda offer them the opportunity to zoom in and
+    edit stuff".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2159,8 +2191,9 @@ chunk of W3. How the nesting goes is **answered, ruling 74**, below.
 expandable instead of the order and tiering of the nesting being
 predetermined", with Isometry's scopes, world, region, area and battlemap,
 as "good defaults". So there is one step, a node of a map opening into a
-finer map, and a world's stack of levels is data set at its founding (ruling
-41), never code. That is the wing's most load-bearing rule applied to maps,
+finer map, and the kinds of step a world has are data from its founding
+(ruling 41), never code, while the steps themselves are allocated as
+locations are generated (amended by ruling 88, §3.9). That is the wing's most load-bearing rule applied to maps,
 "do not let a stage grow its own engine" (Mesocosm's CLAUDE.md, the
 anti-Spore insurance): no level has rules of its own, only the one step
 repeated. It is also §3.1's ladder made honest, since "the far rung is what
@@ -2244,6 +2277,92 @@ a single blow. It records that a wolf killed a deer and that a duke fell in
 battle; the foreground game resolved both by its own rules, or the
 background resolved them by outcome without playing them out. It never
 decides what is fun. Mark: "sounds pretty right to me."
+
+### 3.9 Founding a world
+
+From rulings 88 to 91. This is the generator rung of W2, in outline.
+
+**What founding fixes, and the two points Mark asked about.** Founding is "a
+basic flow where someone picks the crucial world details in addition to the
+seed", with RimWorld's world generation as the reference "but with more than
+spheroid worlds" (ruling 89). What cannot be left to later is short: the
+seed; the world's one shape (ruling 73); the world-founding ruleset (ruling
+41); and the base unit. *The base unit* is §9.2's ruling: "the sim's length
+unit is a real length; a world sets its base voxel as a real length and a
+ruleset sets its tile as a power of two of it." It is fixed at founding
+because every volume in the world is a power-of-two multiple of it (ruling
+13), so changing it would re-cut every brick; under ruling 90 even that
+becomes possible, as a realignment and never as an edit. *The nesting* this
+record listed wrongly. It wrote that "a world's stack of levels is data set
+at its founding", and ruling 88 corrects it: nesting is "dynamically
+allocated as locations are generated". What founding supplies is the
+vocabulary, which kinds of step exist and the default scopes of ruling 74;
+the instances are allocated when a location is generated or first realised,
+by what the location is, a dungeon opening into floors and a ship into
+decks, and an unvisited one allocates nothing (accepted reading D15). §3.7.1
+is amended to match.
+
+**Authoring (ruling 89).** "Authored content should fill blank content or
+displace generated content to the extent people are willing to do so." That
+is the founding record's third pipeline law, player history displaces
+procedural content and never gates it, applied to the founder. Under the
+derivation rule it needs no mechanism of its own: an authored thing is an
+asserted fact, and the generator derives only what nobody asserted. A
+"compatible adventure pack" is a rung 1 or 2 pack (§5.3) whose content
+asserts locations, factions and hooks where the world meets its
+requirements. Checked 2026-09-21, the tabletop already has the shape: a
+storylet carries `StoryletRequirements`, faction tags, hidden facts and
+world laws that must hold, and role slots to be filled from the world
+(`isometry-campaign/src/world/types.rs:151-165`), and its faction turn is
+proposed and then previewed, edited and committed by whoever holds edit mode
+(`faction.rs:12-13`), which is generated content offered for displacement.
+"That's a world(s) editor, which i guess we have to make? Ok." **Open:**
+where it lives. The tabletop is already a map editor and a campaign world
+with proposal and commit, and W4's one bench "is also the dev tools";
+whether the world editor is one of those, both, or a third thing is Mark's.
+
+**Realignment (ruling 90).** A world is converted to another ruleset "by
+having them go through another generative round advancing time and
+realigning the world to a new ruleset". The world-conditions schema already
+demands exactly this of any change of rules: "A rules revision cannot
+reinterpret a past accepted event. Conversion is a new, explicit event with
+both old and new revisions recorded"
+(`paredros/design_docs/2026-09-09_world_conditions_plan.md`, core invariant
+4). Advancing time is what makes the seams honest: whatever the new ruleset
+cannot express is accounted for by the years that passed, as ruling 38 made
+the coarsening of needs diegetic. *Reading, docketed as D22:* realignment is
+ruling 57's epoch boundary at the scale of a world, the shop between rounds,
+and it is a rung transition of §3.3; Mark's example, from hex exploration to
+piloting a ship in orbit, is also a change of foregrounded scope under
+ruling 74, so a realignment may add steps to the nesting as well as change
+the rules.
+
+**History (ruling 91).** How much past a world is given is the founder's
+choice, "a complexity and size issue", as in Dwarf Fortress. The generated
+timeline is one "one could go back in time to prior worldstates with", and
+the client is not to be overwhelmed but offered "the opportunity to zoom in
+and edit stuff". *Reading, docketed as D23:* going back is cheap because of
+the derivation rule. A world is its seed, its rules and its asserted facts,
+and the sim is deterministic, so the state at any past time is that log
+replayed to then, with checkpoints at epoch boundaries bounding the cost and
+the oldest coarsened first under ruling 70's buffer. Going back *and
+editing* is asserting a fact in the past, which makes a branch (ruling 7),
+never a rewrite, so the timeline a founder edits is the same thing as the
+branching a moot does. "Not overwhelm" is the three tiers of keeping used as
+an interface: the timeline shows legend first, things of note on zooming in,
+and the ambient only where someone looks, lifted on demand.
+
+Prior art for rulings 89 to 91. Known: the Forgotten Realms realigned one
+world to new rulesets three times by exactly Mark's method, an in-world
+upheaval and a jump in the timeline, the Time of Troubles for the second
+edition, the Spellplague with nearly a century skipped for the fourth, and
+the Second Sundering for the fifth. Paradox's converters carry one world
+from Crusader Kings to Europa Universalis and onward, a realignment between
+rulesets at a date where one game's span ends and the next begins. From
+memory of games, unverified: RimWorld's founding asks for a seed, coverage,
+rainfall, temperature, population and factions; Dwarf Fortress lets the
+founder choose the length of history among world size, civilisations, sites
+and savagery, and its legends mode is a timeline to browse and not to edit.
 
 ## 4. The stack
 
@@ -3217,6 +3336,17 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: rulings 88 to 91 recorded and §3.9 added, the generator rung
+  in outline. Nesting is allocated as locations are generated, correcting
+  this record's "set at its founding". Founding is a short flow of crucial
+  details and a seed; authored content fills or displaces generated content,
+  checked against the tabletop's storylet requirements and its proposed and
+  committed faction turn; a world editor is owed and where it lives is open.
+  A world is realigned to another ruleset by a generative round that
+  advances time, which the world-conditions schema's fourth invariant
+  already demands of any change of rules. How much history is the founder's
+  choice, and the timeline can be gone back into. Readings docketed as D22
+  and D23.
 - 2026-09-21: rulings 85 to 87 recorded. The impresa keeps its closed record
   as the core of an open note envelope, which fits the crate's own doctrine
   and owes no schema bump; the owner's finding updated. The five points of
