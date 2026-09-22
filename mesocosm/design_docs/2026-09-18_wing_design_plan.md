@@ -831,6 +831,14 @@ what later sections derive from.
      we design a magic system generator that can feed into the divinity
      system without hardcoding assumptions? I'm ok with changing the
      divinity system to fit"
+102. **A world's magic, like its other characteristics, is suggested from
+     the seed, configurable, and either a static profile or fluid over time
+     under conditions.** Mark, 2026-09-22: "I think it ought to be a bit
+     like ideology in rimworld. People should be able to set a static
+     profile or let the world change with time (with conditions, like no
+     magic or magic to start or no apocalypses or banned traits). But a
+     suggested set from the seed is a fine default that could then be
+     configured, much like the world's other characteristics."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2807,6 +2815,11 @@ by what the location is, a dungeon opening into floors and a ship into
 decks, and an unvisited one allocates nothing (accepted reading D15). §3.7.1
 is amended to match.
 
+**Every world trait, the same way (ruling 102).** What the short flow shows
+is the seed's suggestion for each trait of the world's genotype, magic among
+them, and each is configurable, marked static or fluid, and bounded by
+conditions (§3.10).
+
 **Authoring (ruling 89).** "Authored content should fill blank content or
 displace generated content to the extent people are willing to do so." That
 is the founding record's third pipeline law, player history displaces
@@ -2952,6 +2965,29 @@ test, which is why it is rare and why divinity feeds on it (ruling 52, a
 rare process mitigated by impact). Different representations follow from the
 manifestation axis and the canon's expression tables: two worlds' magic can
 look and play differently while the sim runs one mechanism.
+
+**Where a world's magic comes from (ruling 102).** All three, in Mark's
+order: "a suggested set from the seed is a fine default", "that could then
+be configured", and thereafter "a static profile or let the world change
+with time (with conditions...)", "a bit like ideology in rimworld". And not
+for magic alone: "much like the world's other characteristics". So every
+trait of the world's genotype (§3.10) is founded the same way, drawn from
+the seed, shown in ruling 89's short flow, overridden where the founder
+likes, and carrying two settings: *static* or *fluid*, that is whether
+ruling 90's realignment may change it at an epoch boundary; and
+*conditions*, which are founder assertions over the generator that bind the
+fluid case. Mark's examples place themselves: "no magic" and "magic to
+start" fix the presence and the timing of a trait; "banned traits" remove
+entries from the catalogue the roster draws on; "no apocalypses" bars a
+class of ruling 91's wild events, which are rung transitions and agentless
+processes of §3.3. Under the derivation rule a condition is an asserted fact
+about the world's genotype, and a fluid world's traits then drift within
+what was asserted, as a lineage does inside its constraints. That is ruling
+89's "authored content fills blank content or displaces generated content"
+applied to the world's own traits, with the seed as the generated content.
+Prior art, from memory and unverified: RimWorld's Ideology lets a player
+author a belief system in full or take a generated one, and choose it fixed
+or *fluid*, developing through play, which is the pair of settings here.
 
 **Feeding divinity without hardcoding.** Divinity reads a magic system
 through three things it already reads: effects, as glyphs in the canon;
@@ -3950,6 +3986,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 102 recorded into §3.10 and §3.9: a world's magic, like
+  every trait of its genotype, is suggested from the seed, configured in the
+  founding flow, and set static or fluid under founder conditions; Mark's
+  examples placed as assertions over the generator.
 - 2026-09-22: ruling 101 recorded and §3.10 added: the world has a lineage
   under ruling 57, its genotype the world-founding ruleset (canon, kinds of
   nis, schema), its boundary a realignment, its forks branches, planes and
