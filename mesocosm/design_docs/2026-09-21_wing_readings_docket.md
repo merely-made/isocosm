@@ -1,7 +1,7 @@
 # Wing design record: readings docket
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
-day; two held; D21 to D27 opened since.** It gathered every reading, recommendation and verdict the
+day; two held; D21 to D28 opened since.** It gathered every reading, recommendation and verdict the
 [wing design record](2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
@@ -41,6 +41,7 @@ processes declarative (D17); and what survives the boundary review cheaply
 | D25 | Needs, value and exchange (§3.3.1, under ruling 94): value is a reading over supply, capability and need at a place, a price is that reading at a market, money is an asserted claim a polity stands behind or consent among takers; why people act is answered per tier, a critter by a need crossing a threshold, a denizen by a desire chosen under beliefs and values, a character by obligation as well; trade in the aggregate is flow along routes down a price gradient, the same diffusion as reach, with foreground exchanges as the lifted case | no price is stored, no economy model of its own; exchange is an authored operation over the schema's distinct accounts | accept |
 | D26 | Acting and crafting (§3.3.1, under ruling 95): crafting is the first process shape with matter among its inputs, the wing's verb pointed outward; a sophont scores an act by need, trust that it works and approval of its means and effect, the tenet from the actor's side, so acts suit abilities and beliefs; what is made is scored the same way and bears its maker; a fungible act folds into the cohort and leaves no note; a fey mood is a need raised by a rare precondition; a recipe is a process definition, other triggered acts are preconditions. (Three placements corrected by ruling 96: materials, hybridising and the skill half of "grinding".) | no crafting system of its own; open: improving items, what a technique is made of | accept |
 | D27 | Quality (§3.3.1, under ruling 96) as affordance and not a number: a weapon's sort, material, make and condition resolve into which techniques it affords a wielder of a given skill, read by the strike system that already resolves a hit's quality geometrically; "better" is a short list of affordances, no weapon is unswingable, and improvement is a recipe over the item, with a blade of note affording a technique of its own | no stat tiers; techniques gated by affordance within a sort, as Mark proposed | accept |
+| D28 | Materials are the roster (§3.3.1, under ruling 97): a material's properties are its lineage's traits read as Ptree's property vector; its interactions are the effects a nis of that lineage produces and suffers, never a table of pairs; knowing what a thing is made of is a note on a lineage, so recipes and techniques name lineages and a sophont without the note cannot use the material; scarcity is a critter's abundance and extinction ends a material; a shape crosses games as an item bearing its lineage's nis | no material table anywhere; open: whether the coarse reading of a lineage's traits as material satisfies Law A, and whether iron is untyped stock or a mineral kingdom | accept |
 
 ## Held
 

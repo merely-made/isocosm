@@ -787,6 +787,12 @@ what later sections derive from.
     what is 'better'? Tiers could gate techniques, within a bucket... and if
     you can improve your sword over time, that feels fairer than 'can't
     swing that sword, it's too shitty' too..."
+97. **The materials of a world are its critters, across all the kingdoms.**
+    Mark, 2026-09-22, on the question of the typology of kinds of nis:
+    "whoa, so like, whatever critters exist, across all the kingdoms, those
+    are the things stuff can be made of??? holy shit. that's way better than
+    steel! it gives you a reason to learn the ecology, what stuff is,
+    familiarize yourself with things to see what you can use... oh my god"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1880,6 +1886,70 @@ precondition of any operation, so a vow, a grudge, a pilgrimage or a duel is
 a triggered need of the fey mood's kind. **Open:** how a skill accumulates
 and whether it decays; improving an item; what a technique is made of, which
 the hagioglyph organ's plan owns.
+
+**Materials are the roster (ruling 97).** The typology of kinds of nis is
+the world's roster of lineages, and so the materials of a world are the
+critters that live or lived in it. That is the nis ruling of 2026-09-02 read
+from the other end: matter is typed "kingdom first (flora, fauna, myco,
+micro...) and lineage under it", "with the type vocabulary world-derived
+from the roster rather than an authored element table" (playable ecology
+plan §6, ruling 4). No material table exists anywhere in the wing, and none
+is to be written. *Reading, docketed as D28:*
+
+- *A material's properties are its lineage's traits.* Ruling 57 already
+  reads a lineage as a property vector, Ptree's vocabulary of mass, growth
+  form, persistence, tolerated temperature and the rest, and the trait
+  catalogue is where such properties live. So hardness, weight, edge and
+  wear are readings of the lineage that a lot of nis came from, the way the
+  strike system reads geometry, and D27's material axis of quality is the
+  lineage.
+- *Interactions are effects.* Ruling 49 makes an effect a glyph and a
+  process aligned with an effect by how often it yields it. A material's
+  interactions are then which effects a nis of that lineage produces and
+  suffers: wood burns, shell turns a cut, a mycelium holds water. "Fire
+  against wood" is burning applied to nis of one lineage, with the outcome
+  read from that lineage's traits and the record, never from a table of
+  pairs.
+- *Learning the ecology is the note machinery.* What a thing is made of is
+  knowledge: a note (ruling 80, impresa `discover`) on a lineage, held by
+  whoever has met it, and a recipe or a technique (ruling 96) names lineages
+  or kinds. A sophont with no note on a lineage cannot use it, and denizens
+  learn as players do, so a foreign material is one the town's smiths have
+  no note on. That is Mark's "reason to learn the ecology" as mechanism: to
+  "familiarize yourself with things to see what you can use".
+- *Scarcity and provenance are now literally ecological.* Ruling 94's
+  scarcity of a material is the abundance of a critter at a place; a rare
+  material is a rare critter, and an extinction ends a material. Nis carries
+  where it came from, so a sword carries its lineage, and a lineage refined
+  in Mesocosm over the ages is a material in Paredros and Isometry. That
+  gives Law A's line "shapes become relics of factions" its literal
+  mechanism: a shape crosses as an item bearing the lineage's nis.
+- *Check against Law A,* left **open** for Mark. The founding record says
+  what crosses games is "choices under scarcity, not morphology", with the
+  boundary that "morphology still matters enormously within Mesocosm, where
+  the simulation reads the body directly". Here morphology matters in the
+  other games as material. The reading that keeps Law A is that what crosses
+  is an item and its lineage's provenance, and the material properties are
+  ruling 38's coarse far-rung reading of the lineage's traits, not the body;
+  whether that satisfies the law is Mark's to say.
+- *Inert matter,* left **open**. Today typed stock is `Material::{Untyped,
+  Producer, Consumer, Decomposer}` over four counters
+  (`mesocosm-core/src/matter/stock.rs:20-25,76`), and the nis ruling makes
+  matter "fully returned to soil" untyped stock. Iron, stone and clay are
+  either that floor, so that "way better than steel" means steel is the
+  exception with few properties and no lineage, or kinds of nis of a mineral
+  kingdom, which ruling 39's terrain-body and ruling 73's world on a critter
+  would allow. That is the next question.
+
+Prior art for ruling 97. Known: Monster Hunter is this loop as a shipped
+game, study a creature, hunt it, and craft armour and weapons from its
+parts, each set named for the creature, so learning the ecology is the
+progression; and for most of human history the toolkit was organisms, bone,
+antler, sinew, hide, gut, horn, shell, wood and silk, a bow being yew, horn
+and sinew, with stone and metal the late exceptions. From memory of games,
+unverified: Dwarf Fortress gives each creature its own bone, shell, leather
+and silk beside stone and metal; Valheim's materials come from each biome's
+creatures; Kenshi's from its fauna.
 
 **Quality (ruling 96).** "Is each sword, axe, and dagger the same?" Mark
 asks what meaningful variation there can be "given the directional
@@ -3678,6 +3748,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 97 recorded: the materials of a world are its critters
+  across all the kingdoms, which is the nis ruling of 2026-09-02 read from
+  the other end. §3.3.1 gains the reading, docketed as D28: properties are
+  the lineage's traits, interactions are effects, learning the ecology is
+  the note machinery, scarcity and provenance are ecological. Open: the
+  check against Law A, and inert matter.
 - 2026-09-22: ruling 96 recorded, correcting three placements in §3.3.1: nis
   and scruple are a scale and the materials question is the typology of
   kinds of nis and their interactions, three kinds today; abilities, skills
