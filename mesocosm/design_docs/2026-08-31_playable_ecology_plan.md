@@ -877,6 +877,16 @@ receipt; a platform-shaped possibility does not reorder PE0-PE7.
 
 ## 8. Findings
 
+- **2026-09-22, from the wing design record's rulings 97 to 99:** Mark ruled
+  that the materials of a world are its critters across all the kingdoms,
+  and that the world is itself an entity made of stuff, the basic macro
+  kingdom and the root of every provenance. Two consequences for this plan's
+  ruling 4: "matter fully returned to soil has lost its nis and is untyped
+  stock" becomes "has returned to the world's nis", so `Material::Untyped`
+  (`mesocosm-core/src/matter/stock.rs:20-25`) is the world's kind rather
+  than no kind, and a world's own kinds of nis, its geology, are typed under
+  it as a lineage's are. Mesocosm's `CLAUDE.md` terminology line for nis
+  carries the old wording and is Mark's to amend.
 - **2026-08-31, history seam:** `crates/mesocosm-core/src/history.rs` records
   causal subjects but carries no general tick, place, process, or resource-delta
   envelope. It is suited to sparse biography and insufficient by itself for

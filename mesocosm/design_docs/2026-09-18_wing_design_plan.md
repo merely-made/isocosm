@@ -793,6 +793,19 @@ what later sections derive from.
     are the things stuff can be made of??? holy shit. that's way better than
     steel! it gives you a reason to learn the ecology, what stuff is,
     familiarize yourself with things to see what you can use... oh my god"
+98. **The world is an entity made of stuff, a world-class entity, the basic
+    macro kingdom; stuff can be made out of the world, even critters.**
+    Mark, 2026-09-22, on inert matter: "although, presumably the world has
+    to be made of stuff that isn't critter, like bedrock... but maybe we can
+    resolve this in the same matter. i keep saying i want a world built on a
+    critter to be possible. why don't we just make the world an entity made
+    out of stuff, too? a special sort of entity, world-class. and that's the
+    basic macro kingdom. then stuff can be made out of the world, even
+    critters!"
+99. **What kind of entity a world is stays open to the world.** Mark,
+    2026-09-22: "maybe the world is inert, or sentient, or a sophont, or a
+    god, or a turtle, or whatever. maybe it's flora, or fauna. maybe it's
+    dead. who knows!"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1694,7 +1707,9 @@ Three shapes, and no fourth found yet:
   to a polity's levy.
 - **Agentless processes**, for what happens to the world: weather, decay,
   growth, erosion, fire, spread. A rule over conditions on places, running
-  with nobody choosing.
+  with nobody choosing. Under ruling 98 these are the world entity's own
+  processes, its metabolism (§3.3.1), and where the world is a critter or
+  a sophont they are chosen.
 - **Rung transitions**, for what happens to the agent set: a faction
   founding a polity, a lineage splitting, a settlement incorporated, a
   polity collapsing into factions. These name what dissolves and what is
@@ -1932,14 +1947,69 @@ is to be written. *Reading, docketed as D28:*
   is an item and its lineage's provenance, and the material properties are
   ruling 38's coarse far-rung reading of the lineage's traits, not the body;
   whether that satisfies the law is Mark's to say.
-- *Inert matter,* left **open**. Today typed stock is `Material::{Untyped,
-  Producer, Consumer, Decomposer}` over four counters
-  (`mesocosm-core/src/matter/stock.rs:20-25,76`), and the nis ruling makes
-  matter "fully returned to soil" untyped stock. Iron, stone and clay are
-  either that floor, so that "way better than steel" means steel is the
-  exception with few properties and no lineage, or kinds of nis of a mineral
-  kingdom, which ruling 39's terrain-body and ruling 73's world on a critter
-  would allow. That is the next question.
+- *Inert matter,* **answered by ruling 98.** The world is itself an entity
+  made of stuff, "a special sort of entity, world-class", and "the basic
+  macro kingdom". So bedrock, iron, clay, water and air are nis whose
+  provenance is the world, and there is no untyped floor: the nis ruling's
+  "matter fully returned to soil has lost its nis and is untyped stock" is
+  amended to "has returned to the world's nis", a finding filed with the
+  playable ecology plan, which owns it, against `Material::Untyped`
+  (`mesocosm-core/src/matter/stock.rs:20-25`). Everything then has a
+  provenance and the root of every provenance is the world, which is what
+  ruling 42 already says of divinity, "intrinsic to the provenance of the
+  world", and what ruling 43's worldtree, "with the world's own processes
+  bound to it", assumed.
+
+**The world as an entity (rulings 98 and 99).** *Reading, docketed as D29.*
+The world is one more entity on the ladders the record already has, at the
+root. Its kind is open to the world: "maybe the world is inert, or sentient,
+or a sophont, or a god, or a turtle, or whatever. maybe it's flora, or
+fauna. maybe it's dead." Each of those is a position on a ruled axis, so
+nothing new is needed to say it:
+
+| "The world is..." | In the record's terms |
+| --- | --- |
+| inert | a body without agency, as an item is (§3.1); no methodology, so no state of its own (ruling 9) |
+| sentient, a turtle, flora or fauna | a critter of the world's kingdom at the macro scale, the terrain-body of ruling 39, and ruling 73's world resting on a critter is then the world entity itself |
+| a sophont | the same, with naming and memory; it can assert, own and hold tenets, and be petitioned |
+| a god | ruling 42's divinity, and the natural case, since the world is already the provenance root every ascent is promoted into |
+| dead | ruling 61's finality with ruling 62's residence: a dead world is one whose entity is on the planes, its body still the ground |
+
+What that buys, each from a ruling already made. *Agentless processes have a
+body.* §3.3's second shape, weather, decay, erosion, fire, is the world
+entity's own metabolism, Mesocosm's one verb at the root: "world into self,
+self into world" is now literal at both ends, and when the world is a
+critter or a sophont its acts are those same processes chosen. *Geology is
+anatomy.* A world's stuff is its parts, so the body pipeline's parts and
+scruples describe a crust, a vein of ore, an aquifer, and a world's kinds of
+nis are its own trait catalogue, which is the material typology ruling 97
+asked for at the root. *Constructs close the loop.* "Stuff can be made out
+of the world, even critters": a golem or an automaton is ruling 45's
+construct with the world's nis as its matter, and every producer already
+makes its own nis out of the world's. *Divinity and the planes line up.* A
+god is intrinsic to the world's provenance because the world is the entity
+whose provenance that is, and a plane, a world in relation (ruling 11), is
+another such entity. *Founding chooses or draws it.* What kind of entity the
+world is belongs to the short flow of ruling 89 beside seed, shape and
+ruleset, or to the seed if left blank, which is the strange-scenario knob
+Mark keeps asking for, "a world built on a critter", given a home.
+
+**Open.** Ruling 39 called the world's scale *macro* and ruling 98 calls the
+world "the basic macro kingdom", so whether every macro terrain-body, the
+lion turtle among them, is of the world's kingdom or may be macro fauna on
+its own is Mark's to say; and whether a planetary system (ruling 11) is an
+entity above the world in the same way.
+
+Prior art for rulings 98 and 99, known. Norse creation makes the world from
+the body of the giant Ymir, his flesh the earth, his bones the mountains,
+his blood the sea, and the Chinese Pangu and the Babylonian Tiamat are the
+same myth, which is "stuff can be made out of the world" with the world a
+dead critter. Discworld's Great A'Tuin is the world on a turtle, and
+Lovelock's Gaia hypothesis is the world as one self-regulating organism, the
+sentient case argued in earnest. From memory of games, unverified: Noita
+gives every pixel a material with interactions, living and inert in one
+system, and Dwarf Fortress's stone layers carry material properties as its
+creatures' tissues do.
 
 Prior art for ruling 97. Known: Monster Hunter is this loop as a shipped
 game, study a creature, hunt it, and craft armour and weapons from its
@@ -3748,6 +3818,15 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: rulings 98 and 99 recorded: the world is an entity made of
+  stuff, the basic macro kingdom and the root of every provenance, and what
+  kind of entity it is stays open to the world. Inert matter closed: no
+  untyped floor, and the nis ruling's "untyped stock" amended to the world's
+  nis, a finding filed with the playable ecology plan. §3.3.1 gains the
+  reading, docketed as D29, with each of Mark's kinds of world placed on a
+  ruled axis, agentless processes as the world's metabolism, and geology as
+  anatomy. Open: whether every macro terrain-body is of the world's kingdom,
+  and whether a planetary system is an entity above the world.
 - 2026-09-22: ruling 97 recorded: the materials of a world are its critters
   across all the kingdoms, which is the nis ruling of 2026-09-02 read from
   the other end. §3.3.1 gains the reading, docketed as D28: properties are
