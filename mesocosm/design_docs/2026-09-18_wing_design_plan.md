@@ -839,6 +839,15 @@ what later sections derive from.
      magic or magic to start or no apocalypses or banned traits). But a
      suggested set from the seed is a fine default that could then be
      configured, much like the world's other characteristics."
+103. **The sim knows the parts of an arc and lets entities pursue
+     consequential goals for real reasons; the game makes the statement; the
+     world is a bit like RimWorld's storyteller.** Mark, 2026-09-22: "Might
+     even think of the world as a bit like rimworld's storyteller... I think
+     the sim has to be aware of the constituent parts of an arc. I think the
+     sim has to enable entities to determine and pursue consequential goals
+     for themselves for real reasons, and in the sim's terms. But the game
+     is what takes that vocab and makes a coherent game statement out of it.
+     So both, with the second being what gives the first its shape."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3014,6 +3023,68 @@ world's secrets and spheres, and later versions its magic, per world; Noita
 composes spells as programs on a wand, process-oriented magic as play; Mage:
 the Ascension's spheres are an effect-oriented canon.
 
+### 3.11 Arcs and the storyteller
+
+From ruling 103: "both, with the second being what gives the first its
+shape". *Reading, docketed as D31.*
+
+**The sim's half: the parts.** Every constituent part of an arc is a thing
+the sim already has, so the sim is "aware of the constituent parts" without
+any arc type of its own:
+
+| Part of an arc | In the sim's terms | Ruling |
+| --- | --- | --- |
+| A goal | a need, a desire chosen under beliefs and values, or an obligation, by tier; a polity's from its alignment | §3.3.1, 68 |
+| Consequential | achieving it would be an event of note or of legend, by the hagiograph's test | 4, 69 |
+| Real reasons | the score of the act, need times trust times approval, and nothing else | D26 |
+| Pursuit | choices under scarcity, each with its foregone and its cause-link | Law A, 10 |
+| Obstacles | scarcity, other agents' goals, enforcement, taboo | 94, 63, 64, 87 |
+| Stakes | what is foregone, and standing at risk | Law A, 56 |
+| Turning points | events of note and rung transitions | 69, §3.3 |
+| Ending | the goal met, abandoned, or its holder dead or dissolved | 61, 65 |
+
+An arc is then a thread in the record: the cause-links from a goal's
+adoption to its ending, and a *consequential* goal is one whose adoption
+leaves a note (ruling 80; wing-glyphs already carries `Quest` among its
+journey provenances, `journey.rs:18`), so it survives collection while it is
+pursued. The sim stores intentions as agent state (ruling 9) and notes on
+the consequential ones; it never stores an arc, which is derived, as
+significance is.
+
+**The game's half: the statement.** "The game is what takes that vocab and
+makes a coherent game statement out of it." An overlay reads threads out of
+the record, chooses which to foreground, and names them, which is what §3.8
+already reserves to it: the sim "never decides what is fun". Each product
+has its reading. The tabletop's storylets carry requirements over factions,
+hidden facts and world laws, with role slots filled from the world (§3.9),
+and ruling 3 binds Isometry to arcs and narratives. Paredros owes its
+"legibility surface" as day-one work (its CLAUDE.md). Mesocosm's statement
+is the epoch review. The vocabulary is the same for all three; the statement
+differs.
+
+**The storyteller is the world entity's agency.** "Might even think of the
+world as a bit like rimworld's storyteller." Under rulings 98 and 99 the
+world is an entity whose kind is open, and an inert world's processes fall
+from rates while a sentient, sophont or divine world *chooses* its agentless
+processes (§3.3). So a storyteller is a world given a disposition (ruling
+37's five factors) and goals (ruling 68), directing its own weather, plagues
+and wild events toward what it wants, and a founder sets it in ruling 102's
+flow, static or fluid, with conditions such as "no apocalypses" bounding it.
+RimWorld's storytellers are then three dispositions of a world; the wing's
+are drawn, configured, and may be gods.
+
+Prior art for ruling 103, known. RimWorld's storyteller and Left 4 Dead's AI
+Director are the pacing case, an agent scheduling incidents against the
+state of play, which here becomes the world's own agency. Dwarf Fortress's
+legends mode is the reading case, arcs found after the fact in an event log.
+The story-sifting literature, Ryan's work on curating simulated storyworlds
+and Kreminski's Felt, makes the game's half a query: patterns over a
+simulation's event log that pick out threads worth telling, which is exactly
+an overlay reading arcs from the record. Bremond's elementary sequence, a
+possibility, its actualisation and its outcome, is the arc in three parts,
+the same three the table above opens and closes with. Failbetter's storylets
+are the tabletop's own word.
+
 ## 4. The stack
 
 ### 4.1 Placement
@@ -3986,6 +4057,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 103 recorded and §3.11 added: the sim holds every part
+  of an arc as things it already has, goals by tier, consequence by the
+  hagiograph's test, reasons by the act's score, pursuit as cause-linked
+  choices, endings by death and dissolution; an arc is a derived thread in
+  the record and a consequential goal leaves a note; the game reads and
+  names threads, each product its own way; the storyteller is the world
+  entity's agency, a disposition and goals set at founding. Docketed as D31.
 - 2026-09-22: ruling 102 recorded into §3.10 and §3.9: a world's magic, like
   every trait of its genotype, is suggested from the seed, configured in the
   founding flow, and set static or fluid under founder conditions; Mark's
