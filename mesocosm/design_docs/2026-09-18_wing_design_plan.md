@@ -810,6 +810,27 @@ what later sections derive from.
      left open.** Mark, 2026-09-22: "world is a kingdom, the scale is macro.
      this leaves open meso (small moon? satellite? asteroid? ship?) and
      micro worlds :3"
+101. **The world has traits and its timeline is a lineage; the world should
+     be generative; glyphs are broad; a magic system generator is wanted
+     that feeds divinity without hardcoded assumptions.** Mark, 2026-09-22:
+     "I was thinking that the world could have traits, and a world's
+     timeline could be like a lineage, which could grow new traits (or like,
+     the catalog each world's critters can draw upon, including glyphs,
+     world conditions from which effects, processes, and activities are
+     derived? Could that work... like how could the world be generative for
+     activities, tenets, abilities, and other such stuff happening in the
+     world? We could type things to provide general logical patterns of
+     interaction... but what else), fork into different realms, physical
+     worlds (split into/create other planets). Also, I view glyphs as a
+     broad thing, i think. Believe we did some thinking on how magic could
+     manifest in and through world processes and critter anatomy, allow
+     rules to be bent, etc. and visually/mechanically i'd love to see
+     different representations of magic t. The rules we figured out for it
+     could very well map to a broader set of magical systems (unconditional,
+     anatomically-gated, process or effect oriented, cyclical, idk). How do
+     we design a magic system generator that can feed into the divinity
+     system without hardcoding assumptions? I'm ok with changing the
+     divinity system to fit"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2865,6 +2886,98 @@ rainfall, temperature, population and factions; Dwarf Fortress lets the
 founder choose the length of history among world size, civilisations, sites
 and savagery, and its legends mode is a timeline to browse and not to edit.
 
+### 3.10 The world's lineage and the magic generator
+
+From ruling 101. Every clause of Mark's first sentence is already held by a
+ruling, and the magic generator is a reading, docketed as D30.
+
+**The world has a lineage.** Under rulings 98 to 100 the world is an entity
+of a kingdom, so ruling 57 applies to it whole. A lineage is provenance
+orthogonal in time, with two doors: reproduction rerolls expression, and the
+epoch boundary changes the genotype. A world's genotype is its traits, which
+is exactly "the catalog each world's critters can draw upon": the
+world-founding ruleset of ruling 41, made of the glyph canon, where each
+glyph is bound to an effect and a variant is a base with modifiers under a
+revision (`wing-glyphs/src/canon.rs:35-66`); the world's kinds of nis, its
+geology (ruling 97); and the conditions, operations, relations and
+invariants of the schema (ruling 32). Its expression is the roster and the
+history that unfold from it under the seed. Its epoch boundary is ruling
+90's realignment, the shop between rounds where a world "could grow new
+traits" (D22). To "fork into different realms" is ruling 7's branching and
+ruling 11's planes, worlds in relation; to "split into/create other planets"
+is §3.3's lineage-splitting transition at the world rung, and under ruling
+100 the child may be meso, a moon calved from a planet.
+
+**How the world is generative.** Mark's "we could type things to provide
+general logical patterns of interaction... but what else". Four sources, all
+in the record. *Typing* is the schema's four kinds, and generation composes
+operations from the canon's effects, the world's kinds of nis and its
+conditions under its invariants; the general model plan's operator
+vocabulary, strengthen, transform, instantiate, project, puppet and the
+rest, is a composition algebra proposed for exactly this (§7.4, "operator
+composition"). *Bodies* generate abilities, since an ability is what anatomy
+affords (ruling 96) and a body requirement "resolves to a currently live,
+revision-scoped part address". *Need* generates activities, since an act is
+what addresses a need under scarcity (rulings 94 and 95), so a world with a
+need grows the activity that meets it. *The record* is the "what else": by
+ruling 49 a process is aligned to an effect by how often it yields it, the
+hagiograph promotes, and the hagioglyph revises the canon, so what a world's
+history does feeds back into what it recognises; a tenet (ruling 50) is a
+process-to-effect pair with an opinion, so a world generates its tenets from
+the pairs its history exhibits and the alignments of those who watched. The
+catalogue is the generator's first half and history is its second.
+
+**A magic system is a world trait, described on six axes.** "Glyphs are a
+broad thing", and the rules already figured for magic "could very well map
+to a broader set of magical systems". A generated magic system is one trait
+of the world's genotype, drawn at founding or grown at a boundary, and it is
+described by axes that are each a dimension the record already has:
+
+| Axis | Values, Mark's and the record's | Where it already lives |
+| --- | --- | --- |
+| Source, where the power comes from | the world's own fields (a storm, a heat gradient, a seam of its nis), the caster's anatomy, a bearer (an item, a technique, a trait), a god, the record's frequency | the world-conditions plan's `accumulate`, from "a declared emitter or environmental condition... or an organism's organ"; rulings 42, 47, 49 |
+| Gate, who may | unconditional; anatomically gated, a part; acquired, a glyph on a journey; skill gated, a technique (ruling 96); social, a tenet or a taboo (ruling 87); placed, a divine environment (ruling 48) | wing-glyphs' `ProvenanceKind::{Ability, Trait, Technique, Item, Bond, Quest, Event, Custom}` is this list in code (`journey.rs:12-22`) |
+| Orientation | process oriented, bending how a process runs, its rate, its preconditions, its interruption; or effect oriented, yielding a glyph's effect outright | ruling 10 against ruling 49; an `OperationDef`'s preconditions against its transforms |
+| Cost and breach | which account pays, matter, energy, charge, attention, time or social obligation; and which invariant, if any, the system may suspend, at what price and leaving what residue | the schema's core invariant 2 and its declared byproducts and `RiskOutcome` |
+| Rhythm | cyclical, by a phase, a season or a referent period; continuous; once | §7.4's periods; ruling 52 |
+| Manifestation | how it shows and is sensed | ruling 49's "characteristic manifestation"; wing-glyphs' `ExpressionTable`; the world-conditions plan's "sensing is its own operation" |
+
+"Bends the rules" gets its definition from the cost axis: a magic system
+declares which of the world's invariants it may suspend, under what gate, at
+what price, leaving what residue. Ordinary magic suspends none; it is an
+operation with an unusual effect, and fire from a glyph is the same burning
+as fire from a torch, arrived at otherwise. Rule-bending magic suspends one,
+and the breach is an event the record keeps under ruling 4's "unprecedented"
+test, which is why it is rare and why divinity feeds on it (ruling 52, a
+rare process mitigated by impact). Different representations follow from the
+manifestation axis and the canon's expression tables: two worlds' magic can
+look and play differently while the sim runs one mechanism.
+
+**Feeding divinity without hardcoding.** Divinity reads a magic system
+through three things it already reads: effects, as glyphs in the canon;
+acquisition, as the journey with its means (ruling 47); and frequency in the
+record (rulings 49 and 52). A generated system that declares its effects as
+glyphs, its gate as journey provenance and runs as processes feeds divinity
+unchanged. What changes, as Mark allows: ruling 47's fixed ladder of forms,
+item under technique under embodied trait with memory a fourth, becomes the
+gate axis of the world's magic, so the tiers of godhood a world affords are
+the forms its magic lets a sophont bear and sacrifice. A world whose magic
+is unconditional offers nothing to sacrifice and so no ascent by sacrifice,
+only ruling 43's enactment; an anatomically gated one offers the highest
+form first. The ladder is derived from the world's magic and no longer
+fixed, and ruling 44's "quality of the journey" stands as the measure.
+
+Prior art for ruling 101, known. Ars Magica's hermetic grammar composes
+every effect from five techniques and ten forms, the typed-composition
+answer to "what else" as a shipped rules system. GURPS Thaumatology is a
+magic-system generator in print, building systems from choices about source,
+cost, gate and rhythm. Sanderson's laws hold that a magic's limits and
+costs, not its powers, make it interesting, which is the cost axis as
+doctrine. From memory of games, unverified: Dwarf Fortress generates each
+world's secrets and spheres, and later versions its magic, per world; Noita
+composes spells as programs on a wand, process-oriented magic as play; Mage:
+the Ascension's spheres are an effect-oriented canon.
+
 ## 4. The stack
 
 ### 4.1 Placement
@@ -3837,6 +3950,16 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 101 recorded and §3.10 added: the world has a lineage
+  under ruling 57, its genotype the world-founding ruleset (canon, kinds of
+  nis, schema), its boundary a realignment, its forks branches, planes and
+  calved worlds; the world generative through typing, bodies, need and the
+  record; a magic system as a world trait on six axes, source, gate,
+  orientation, cost and breach, rhythm and manifestation, each an existing
+  dimension, with "bends the rules" defined as a declared suspension of an
+  invariant; divinity fed through effects, journey and frequency unchanged,
+  and ruling 47's ladder of forms derived from the gate axis. Docketed as
+  D30.
 - 2026-09-22: ruling 100 recorded: world is a kingdom and its scale is
   macro, with meso and micro worlds open. The lion turtle question dissolves
   under ruling 39's orthogonal axes; Mesocosm's enclosure read as a meso
