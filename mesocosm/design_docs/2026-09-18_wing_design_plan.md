@@ -806,6 +806,10 @@ what later sections derive from.
     2026-09-22: "maybe the world is inert, or sentient, or a sophont, or a
     god, or a turtle, or whatever. maybe it's flora, or fauna. maybe it's
     dead. who knows!"
+100. **World is a kingdom; its scale is macro; meso and micro worlds are
+     left open.** Mark, 2026-09-22: "world is a kingdom, the scale is macro.
+     this leaves open meso (small moon? satellite? asteroid? ship?) and
+     micro worlds :3"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1124,7 +1128,9 @@ ruling. Its dated wording is superseded here; historical quotations retain it.
 
 **Kingdom and scale (ruling 39).** Kingdom is class and is a trophic
 strategy: producer, consumer, decomposer, as the founding plan ruled. Scale
-is a separate axis: micro, meso, macro. A germ is a decomposer or parasite
+is a separate axis: micro, meso, macro. Ruling 100 adds *world* as a
+kingdom, the root of provenance, at macro scale by default and open at meso
+and micro (§3.3.1). A germ is a decomposer or parasite
 at the micro scale whose body is not a part tree but a spread, a field
 over a substrate or a host, that thrives or dies by what it lies on and
 decomposes corpses; the founding plan's fungus, "networked, patient,
@@ -1994,11 +2000,24 @@ world is belongs to the short flow of ruling 89 beside seed, shape and
 ruleset, or to the seed if left blank, which is the strange-scenario knob
 Mark keeps asking for, "a world built on a critter", given a home.
 
-**Open.** Ruling 39 called the world's scale *macro* and ruling 98 calls the
-world "the basic macro kingdom", so whether every macro terrain-body, the
-lion turtle among them, is of the world's kingdom or may be macro fauna on
-its own is Mark's to say; and whether a planetary system (ruling 11) is an
-entity above the world in the same way.
+**World is a kingdom, and scale stays orthogonal (ruling 100).** Ruling 39's
+two axes hold: *world* joins flora, fauna, myco and micro as a kingdom, and
+a world's scale is macro, "the basic" case, with meso and micro worlds left
+open: "small moon? satellite? asteroid? ship?" *Reading, added to D29.* The
+lion turtle question dissolves: kingdom being class and scale orthogonal, a
+lion turtle is macro fauna, and a world resting on a critter is a
+world-kingdom entity resting on macro fauna, unless a founder makes the
+critter the world itself (ruling 99). The three scales of the world kingdom
+are ecology's own words, microcosm, mesocosm and macrocosm, and Mesocosm's
+enclosure is by its own description "larger than a microcosm, smaller than
+the world": the game's terrarium is a meso world, and the germ's host of
+ruling 39 is a micro one. A ship as a meso world is ruling 45's construct of
+the world's kingdom, with its own nis, its own fields of air and warmth, its
+own nesting into decks (ruling 74), and the vessel of ruling 90's orbit
+example and ruling 41's space scope; it rests on or within a macro world as
+a critter does. **Open:** whether a planetary system (ruling 11) is an
+entity of the world kingdom at a scale above macro, which ruling 39's three
+scales do not name, and so whether a sun has a provenance.
 
 Prior art for rulings 98 and 99, known. Norse creation makes the world from
 the body of the giant Ymir, his flesh the earth, his bones the mountains,
@@ -3818,6 +3837,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 100 recorded: world is a kingdom and its scale is
+  macro, with meso and micro worlds open. The lion turtle question dissolves
+  under ruling 39's orthogonal axes; Mesocosm's enclosure read as a meso
+  world by its own description and a ship as a meso world of the construct
+  kind. Open: a planetary system as a scale above macro.
 - 2026-09-22: rulings 98 and 99 recorded: the world is an entity made of
   stuff, the basic macro kingdom and the root of every provenance, and what
   kind of entity it is stays open to the world. Inert matter closed: no
