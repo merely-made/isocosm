@@ -762,6 +762,31 @@ what later sections derive from.
     question of materials, rarities, recipes, technique, skill, hybridizing
     abilities or items, improving abilities and items, and triggered
     conditions for other sorts of acts beyond crafting".
+96. **Abilities, skills and techniques defined; kleptoplasty is conditional;
+    nis is a scale, not a material; the question was quality, not rarity.**
+    Mark, 2026-09-22: "I'm not sure kleptoplasty is as important as it once
+    was (conditional, probably not everything can do it even), but i do like
+    the idea of hybridizing abilities after learning enough." On materials:
+    "Nis and scruples aren't a material any more than a generic 'atom' is.
+    They're more like a scale, no? The more interesting question for
+    materials is not 'everything is nis or collections of nis,' but rather
+    the typology of kinds of nis and their interactions". On capabilities:
+    "Abilities are just things an entity can do, roughly analogous to object
+    and basic interactions. Skills are like professions and components of
+    classes, utilitarian, practiced, experience-accumulating pursuits
+    (smithing, fishing, farming, swordplay, pyromancy, etc.). A technique is
+    an ability with a skill precondition. You can share techniques if both
+    parties have the necessary skills." On rarity: "fair enough. 'It's rare
+    because there's not a lot of it around here,' ok, but like, that's not
+    was I was getting at. I was trying to get at quality. Is each sword,
+    axe, and dagger the same? What sort of meaningful quality variation can
+    exist between them, given the directional combat/strike quality system?
+    Mount and blade provided distinctions between sorts and qualities of
+    weapons... but through stats and tiers. Is that a good method, or are
+    there alternatives that require less number comparison to figure out
+    what is 'better'? Tiers could gate techniques, within a bucket... and if
+    you can improve your sword over time, that feels fairer than 'can't
+    swing that sword, it's too shitty' too..."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1823,18 +1848,93 @@ byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26:*
   with its cause named, and it also gives Mark's "wild events" of ruling 91
   a personal scale.
 
-*Mark's open list, placed.* Materials are nis and scruple, matter typed by
-provenance and a part's measured mix, ruled 2026-09-04. Rarity is ruling
-94's scarcity at a place, derived and never a tag on the item. A recipe is a
-process definition with matter among its commitments, data under ruling 41.
-A technique is ruling 47's middle form, a capability that is knowledge
-rather than body, so it can be taught, written and sacrificed. Hybridising
-abilities is kleptoplasty; hybridising items is a recipe with an item as an
-input. Triggered conditions beyond crafting are preconditions of any
-operation, so a vow, a grudge, a pilgrimage or a duel is a triggered need of
-the same kind as the fey mood. **Open:** skill, meaning how a capability
-grows in one sophont rather than a cohort; improving an item; and what
-exactly a technique is made of, which the hagioglyph organ's plan owns.
+*Mark's open list, placed, and corrected by ruling 96.* Three of this
+record's placements were wrong. **Materials:** nis and scruple are not
+materials, "any more than a generic 'atom' is. They're more like a scale":
+nis is matter typed by provenance and scruple a part's measured mix, the two
+rungs matter is read at, and the material question is "the typology of kinds
+of nis and their interactions". Checked 2026-09-22, that typology is three
+kinds today, `NisKind::{Producer, Consumer, Decomposer}`
+(`mesocosm-core/src/process.rs:172-176`), the trophic strategies, and
+nothing about how kinds interact beyond who may eat what. **Open:** the
+typology of kinds and their interactions, which is the sim's materials
+question. **Capabilities:** an *ability* is a thing an entity can do,
+"roughly analogous to object and basic interactions"; a *skill* is a
+profession or a component of a class, "utilitarian, practiced,
+experience-accumulating": smithing, fishing, farming, swordplay, pyromancy;
+a *technique* is "an ability with a skill precondition", and "you can share
+techniques if both parties have the necessary skills". So a skill is the
+thing that accumulates, which answers half of the open question below:
+repetition of a skill does accumulate in one sophont, and what folds into
+the cohort under ruling 75 is the unnoted act, not the practice. That also
+refines ruling 47's middle form: what is sacrificed there is a technique or
+a skill, and a technique is what is taught, since sharing one needs the
+skill on both sides. **Hybridising:** kleptoplasty is conditional, "probably
+not everything can do it", and not the mechanism; hybridising abilities is
+what a sophont does "after learning enough", which under the definitions
+above is a technique whose precondition is more than one skill. **Rarity**
+stands as scarcity, but the question Mark asked was *quality*, taken up
+below. A recipe is a process definition with matter among its commitments,
+data under ruling 41; a triggered condition beyond crafting is a
+precondition of any operation, so a vow, a grudge, a pilgrimage or a duel is
+a triggered need of the fey mood's kind. **Open:** how a skill accumulates
+and whether it decays; improving an item; what a technique is made of, which
+the hagioglyph organ's plan owns.
+
+**Quality (ruling 96).** "Is each sword, axe, and dagger the same?" Mark
+asks what meaningful variation there can be "given the directional
+combat/strike quality system", whether Mount & Blade's stats and tiers are a
+good method or there is one with "less number comparison", and notes that
+tiers could gate techniques within a bucket and that improving a sword over
+time is fairer than "can't swing that sword". *Recommendation, docketed as
+D27, Mark's to rule.* Quality as **affordance**, not as a number: what a
+weapon lets its wielder do, read by the strike system, and never a stat to
+compare.
+
+- *What already varies.* Checked 2026-09-22: Paredros resolves a strike
+  geometrically, a swept volume against a body's part bounds with line of
+  sight through the ground, and the hit's `quality` is the overlap
+  (`paredros-world/src/combat.rs:53-60,218-232`, `combat/precision.rs`);
+  harm is a base plus that quality. So the system already reads a strike's
+  quality off geometry, and a weapon's shape, reach and sweep are already
+  inputs it could vary on with no numbers added. Body and part vary too.
+- *Four sources of variation, all already in the record.* Sort: the shape,
+  which sets which strikes exist at all, thrust, cut, chop, hook, reach.
+  Material: ruling 96's typology of kinds, which sets what a blade does
+  against what, edge against flesh, weight against armour, and how it wears.
+  Make: the maker's skill and the act it came from (ruling 95), so a
+  well-made blade has its balance and edge where its sort wants them and a
+  poor one does not. Condition: what has happened to it since, wear,
+  notches, a reforging, notes of ruling 80.
+- *Read as affordance.* Those four resolve into which techniques the weapon
+  affords, which is Mark's "tiers could gate techniques, within a bucket"
+  made the whole model: a sword of a given sort and make lets a swordsman of
+  a given skill perform some techniques cleanly, some poorly, and some not
+  at all, with the geometry doing the work. "Better" is then answered the
+  way a player answers it in a game with movesets rather than stats: this
+  blade takes the drawing cut, that one will not hold an edge, and one
+  glance at a short list of affordances says so. No comparison of numbers,
+  and no weapon a skilled hand cannot swing, only ones that afford less.
+- *Improvement is fair because it is an act.* Improving a sword over time is
+  a recipe with the item as an input (ruling 95), sharpening, rebalancing,
+  reforging with a better material, so an item improves by the same process
+  shape as anything else, and a sword that has done things of note carries
+  notes that may afford a technique of its own, which is how a named blade
+  comes to be. That is the fairer path Mark wants: no gate, a journey, for
+  the sword as for its wielder.
+
+Prior art for the quality question. Known: Mount & Blade is Mark's
+reference, sorts and qualities as stats and tiers, the method to improve on.
+From memory of games, unverified: Dark Souls answers "better" by movesets
+per weapon class and upgrades the one weapon you carry, which is affordance
+plus improvement; Elden Ring lets techniques be attached to a weapon;
+Brogue's whole progression is enchanting one chosen item, the strongest case
+that improving what you have feels fairer than replacing it; Monster Hunter
+shows sharpness as a gauge that wears and is honed, condition without a
+number; Dwarf Fortress crosses a quality grade with material properties, so
+a masterwork copper sword and a plain steel one differ in kind and not on
+one axis; Kingdom Come: Deliverance wears and sharpens weapons at a
+grindstone.
 Checked 2026-09-22: Paredros's `Work` is a craft, a grade and a danger, over
 a closed `Craft` of five (`offer.rs:9-12`, `companion.rs:24-30`), which is
 capability as a level and not yet as a journey; wing-glyphs' `Acquisition`
@@ -3578,6 +3678,15 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 96 recorded, correcting three placements in §3.3.1: nis
+  and scruple are a scale and the materials question is the typology of
+  kinds of nis and their interactions, three kinds today; abilities, skills
+  and techniques defined in Mark's words, a skill being what accumulates in
+  one sophont; kleptoplasty conditional and hybridising a technique with
+  more than one skill as precondition. Quality answered as affordance read
+  by the strike system, which already resolves a hit's quality
+  geometrically, with improvement as a recipe over the item; docketed as
+  D27.
 - 2026-09-22: ruling 95 recorded into §3.3.1: acting is analogous to
   crafting and crafting is incorporating materials into an act, which is
   Mesocosm's one verb pointed outward; the link from capability to need and
