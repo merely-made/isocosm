@@ -848,6 +848,16 @@ what later sections derive from.
      for themselves for real reasons, and in the sim's terms. But the game
      is what takes that vocab and makes a coherent game statement out of it.
      So both, with the second being what gives the first its shape."
+104. **Time in a shared world: asynchronous play merged like git, or a clock
+     that runs only when played; Mark leans to the second and asks.** Mark,
+     2026-09-22: "It would be nice if people could play together
+     asynchronously, like i advance the world on my own, then you do on your
+     own, then we merge like git when we when we wanna play together
+     synchronously. If the conflicts aren't foregrounded material, then it
+     should be fine right? Or should it be more like, whoever opens it has
+     started the clock, and people can review what happened since, but time
+     proceeds when the game is played. That feels more honest, predictable,
+     and easy, but eh."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2414,8 +2424,9 @@ counts and masses stay conserved and only its deviations are lost. The test
 that makes this safe is observational: collect only what nothing reachable
 from a player could tell apart from its regenerated self. Who "the player"
 is was **answered by ruling 71**, below. **Open, and crucial:** the rest of
-the criteria, and whether collection must be deterministic across peers,
-which replay and the moot both suggest it must.
+the criteria. Whether collection must be deterministic across peers is
+answered by §3.12's recommendation, D32, if accepted: it must, because a
+merge replays.
 
 **The roots, and graded collection (ruling 71).** The roots are care. "The
 players of any of the three games, when the sim is applied to them, have
@@ -3084,6 +3095,68 @@ an overlay reading arcs from the record. Bremond's elementary sequence, a
 possibility, its actualisation and its outcome, is the arc in three parts,
 the same three the table above opens and closes with. Failbetter's storylets
 are the tabletop's own word.
+
+### 3.12 Time in a shared world
+
+From ruling 104, a question put back to Mark with this record's
+recommendation, docketed as D32.
+
+**What the record already settles.** Worlds are forkable and branchable,
+like a moot (ruling 7), and a world is its seed, its rules and its asserted
+facts, with everything else derived (§1). So two players who advance a world
+separately hold two branches, and a merge is a merge of two logs of intents,
+never of two world states. That is why Mark's "if the conflicts aren't
+foregrounded material, then it should be fine" is nearly right and can be
+made exact: the ambient tier is regenerated from the merged facts and can
+never conflict (rulings 69 and 70); only asserted facts and notes can, and a
+conflict is exactly an intent that, replayed into the merged history, an
+invariant refuses, the world-conditions schema's `Refused` (§3.3). Merging
+is then the tabletop's proposal and commit at the scale of a branch, and it
+respects the wing's standing rule against speculative CRDTs: intents are
+additive, the sim is the materialiser, and refusal is the conflict rule
+(Mesocosm's CLAUDE.md). Synchronous play stays what Isometry already has,
+one authority and an ordered event log.
+
+**What no merge can do.** Two branches that advanced different spans do not
+merge. A branch that ran a century and one that ran a day cannot be unioned
+in time order without the day player's intents landing a century in the
+past, and the day player's sophont is dead in the other branch by ruling 61.
+Bringing them together is ruling 90's realignment, a generative round
+advancing the short branch, and that is a founding-scale act with consent,
+not a merge. So the honest rule is not a simplification of the git rule; it
+is what the git rule needs underneath it, since a shared trunk gives every
+merge a common span.
+
+| Option | What it is | What it costs |
+| --- | --- | --- |
+| A. Trunk and branches | a shared world's clock proceeds only when played, by whoever is playing; anyone may play a branch offline and later propose it back; a merge is a replay of the union of intents in time order, and a refusal on replay is a conflict for whoever holds edit mode | replay must be deterministic across peers; refusals need an interface |
+| B. Merge only | every player advances a private branch and worlds meet only by merging | branches that advanced different spans cannot merge, only realign, so players at different timescales never meet |
+| C. Trunk only | one clock, advanced by whoever plays, no offline branches | no asynchronous play; a century player and a day player cannot share a world at all |
+
+*Recommendation:* **A.** It keeps Mark's "honest, predictable, and easy" as
+the trunk's rule and his asynchronous play as branches, and each half is
+machinery already ruled or built. "Whoever opens it has started the clock"
+is ruling 71's examination counting as play; "people can review what
+happened since" is D23's timeline read through the three tiers of keeping,
+legend first. Advancing the trunk past what another player's foreground can
+bear, a century over a sophont's life, is a proposal needing that player's
+consent (ruling 63, the players a faction) or a branch. Whether a shared
+world may also run unattended at a rate, a moot's server as the storyteller
+(§3.11), is one more founder setting in ruling 102's flow, off by default.
+Two things follow. Collection must be deterministic across peers, which
+closes §3.4.1's open item: a merge that replays must reproduce, so what is
+funged and when is a function of the seed and the log and never of the
+machine. And branches are cheap because the ambient is free: a branch stores
+only its intents and the notes they made.
+
+Prior art for ruling 104. Known: git is Mark's own reference, and the stack
+already carries weave, an entity-level merge driver for code, which is the
+same idea, merge by the thing and not by the line; play-by-mail and
+Civilization's play-by-cloud are the honest rule, time proceeding when
+played; Animal Crossing is the other rule, the world moving while the player
+is away; mere's deterministic replay brief (2026-07-31) records that
+state-as-fold and capture-and-replay have been the stack's doctrine since
+2026-07-02, which is what makes merge-as-replay possible at all.
 
 ## 4. The stack
 
@@ -4057,6 +4130,14 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 104 recorded and §3.12 added, time in a shared world: a
+  merge is a merge of intent logs, never of states, with the ambient
+  regenerated and a refusal on replay the only conflict; branches of
+  different spans cannot merge, only realign; three options tabled with A
+  recommended, a trunk whose clock runs only when played plus branches
+  merged by replay, with consent for advancing past another player's
+  foreground. Determinism of collection across peers follows. Docketed as
+  D32.
 - 2026-09-22: ruling 103 recorded and §3.11 added: the sim holds every part
   of an arc as things it already has, goals by tier, consequence by the
   hagiograph's test, reasons by the act's score, pursuit as cause-linked
