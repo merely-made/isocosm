@@ -858,6 +858,14 @@ what later sections derive from.
      started the clock, and people can review what happened since, but time
      proceeds when the game is played. That feels more honest, predictable,
      and easy, but eh."
+105. **Option A is ruled; related worlds should share a context without
+     merging, as branched worldlines or as neighbours in a celestial
+     neighbourhood.** Mark, 2026-09-22: "A, then. And also... it would be
+     nice if we could put two worlds in a shared context without entirely
+     merging them... like two worldlines with a shared history that
+     branched, or for entirely different worlds, they could become a
+     neighboring world in the celestial neighborhood...? That way you could
+     manage a set of related worlds".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3149,6 +3157,53 @@ funged and when is a function of the seed and the log and never of the
 machine. And branches are cheap because the ambient is free: a branch stores
 only its intents and the notes they made.
 
+**Related worlds (ruling 105).** Option A is ruled, and Mark asks for a
+shared context over worlds that are not merged: "two worldlines with a
+shared history that branched", or "entirely different worlds" made
+neighbours "in the celestial neighborhood", so that "you could manage a set
+of related worlds". *Reading, docketed as D33.* Two relations, both already
+in the record, and neither merges anything: each world keeps its own log and
+its own played clock, and what crosses between them is things with
+provenance.
+
+- *Descent.* Branched worldlines are the world kingdom's lineage tree
+  (ruling 101): siblings share a common prefix of the log up to the branch
+  point, so the legend from before it is one legend cited by both, and the
+  histories after it diverge. Mesocosm's terminology already names this:
+  *fili*, "lineage across worlds (forks, campaign descent, cross-moot
+  grafts)", which is the record of descent between worlds and nothing else.
+- *Neighbourhood.* Unrelated worlds are placed in relation by assertion at
+  the rung above the world, ruling 11's planetary system and the planes as
+  "worlds in relation", with ruling 74's nesting composing upward, "a system
+  above the world for the space scope". A neighbourhood is then a set of
+  worlds with routes between them, a ship's passage or a portal to a plane,
+  and a crossing is a rung transition recorded in both logs: a departure
+  with provenance in one and an arrival in the other, which is what ruling
+  7's creative mode does by hand and what ruling 62's summoning does for the
+  dead. What arrives carries its home world's nis, so under ruling 97 a
+  thing from a neighbouring world is made of a lineage this world never had,
+  which is where exotic materials come from.
+- *Managing the set.* Worlds under no host are, by ruling 67, a faction
+  among themselves: the relation holds by the consent of their owners and
+  each keeps its own clock. That is the moot's shape, and its federation
+  tiers are already the stack's way to hold a set of related worlds; ruling
+  100's open item, whether a system is an entity of the world kingdom at a
+  scale above macro, is then the question of whether a neighbourhood may be
+  given a host, a sun with a provenance and a founding ruleset of its own,
+  and stays open. **Open:** whether worlds in one neighbourhood share one
+  played clock, which a traveller's continuous time seems to require, or
+  convert between clocks at each crossing.
+
+Prior art for ruling 105, known: git's forks and remotes, Mark's own figure,
+are descent and neighbourhood exactly, shared history without merging and
+unrelated repositories placed in relation; Planescape's planes joined by
+portals with Sigil as the hub, and Spelljammer's crystal spheres crossed by
+ship, are the two kinds of neighbourhood in one tabletop tradition; Outer
+Wilds is a neighbourhood on one clock, a whole system as a single playable
+place; Kerbal Space Program is one a ship crosses. From memory, unverified:
+Magic: The Gathering's planeswalking is a multiverse of worlds in relation
+with no shared history.
+
 Prior art for ruling 104. Known: git is Mark's own reference, and the stack
 already carries weave, an entity-level merge driver for code, which is the
 same idea, merge by the thing and not by the line; play-by-mail and
@@ -4130,6 +4185,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 105 recorded: option A ruled, and related worlds read
+  into §3.12 as two relations that merge nothing, descent as the world
+  kingdom's lineage tree with fili as its record, and neighbourhood as
+  worlds in relation at the rung above with crossings recorded in both logs;
+  a set of related worlds is a faction of worlds, the moot's shape. Open:
+  one clock per neighbourhood or conversion at crossings. Docketed as D33.
 - 2026-09-22: ruling 104 recorded and §3.12 added, time in a shared world: a
   merge is a merge of intent logs, never of states, with the ambient
   regenerated and a refusal on replay the only conflict; branches of
