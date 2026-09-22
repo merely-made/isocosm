@@ -747,6 +747,21 @@ what later sections derive from.
     are likely to do (predilection, personality?). But why do people take
     certain actions? Needs, like sims? And at the sim layer, how's that
     aggregate to give trade trends?"
+95. **Taking an action is analogous to crafting; crafting is incorporating
+    materials into an act; values, abilities and needs shape what is made; a
+    fey mood may be a triggered need.** Mark, 2026-09-22: "How do we link
+    capabilities to need and value so that people will take actions suited
+    for their abilities and beliefs to address their needs? I posit that
+    maybe taking those actions is analogous to a crafting process, and the
+    actual crafting process should be like incorporating materials into
+    that. So your values, your abilities, and your needs should shape items
+    you decide to make, like other processes! That way, a rare confluence of
+    circumstances and ability can be like a fey mood, and people don't just
+    churn out weapons to level up and game an rng producer. Maybe even a fey
+    mood can be a unique triggered need?" And: "There's also then the
+    question of materials, rarities, recipes, technique, skill, hybridizing
+    abilities or items, improving abilities and items, and triggered
+    conditions for other sorts of acts beyond crafting".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1762,6 +1777,82 @@ record; and their restriction back is a stock changing hands. Provisioning
 (ruling 38) is a polity running this flow on purpose toward its members, and
 a shortage is a stock at zero with need still rising, which is the event the
 hagiograph may keep.
+
+**Acting and crafting (ruling 95).** Mark posits that taking an action "is
+analogous to a crafting process", and that crafting proper is "incorporating
+materials into that". The wing's one verb already says this: Mesocosm's
+*metabolize*, "world into self, self into world". An act is the verb;
+crafting is the verb pointed outward, matter incorporated into an act and an
+item left behind, as kleptoplasty is the verb pointed inward. So crafting is
+not a fourth process shape. It is the first shape with matter among its
+inputs, and the schema's operation already has the slot: its commitments
+include "item, matter, energy, time", its transforms are typed, and a
+byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26:*
+
+- *The link Mark asks for is the tenet, from the actor's side.* A sophont
+  chooses among the acts it could take by three readings the record already
+  makes: whether the act addresses a need it has (§3.3.1), whether it has
+  the capability, which is ruling 50's *trust* that the process yields the
+  effect, and whether its alignment approves the means and the effect,
+  ruling 50's *opinion*. Paredros's willingness rule is the same three gates
+  asked of oneself: can I, will it work, do I want to (`willing.rs:7-23`).
+  So people take actions suited to their abilities and beliefs because the
+  score of an act is need times trust times approval, and every factor is
+  derived.
+- *What gets made is shaped the same way.* An item is the outcome of an act,
+  so it is chosen by the same score: a smith who needs to eat and values
+  generosity forges the plough the village lacks (ruling 94's scarcity) and
+  not the hundredth sword. And an item bears its making: nis is matter typed
+  by provenance, and a made thing keeps the maker, the materials and the act
+  in its record, as ruling 53's construct keeps its maker.
+- *Nobody churns weapons to level up,* for a reason the tiers of keeping
+  already give. A fungible act is folded into the cohort's distribution
+  (ruling 75), so a hundred identical swords move the smiths' competence at
+  the world's rate and leave no note; only an act of note leaves a note on
+  the maker (ruling 80, impresa `experience`) and on the thing. The journey
+  of ruling 47 records means, not counts. Grinding therefore produces
+  aggregate competence and never a legend, and a legend comes only from a
+  rare confluence.
+- *A fey mood is a triggered need.* Yes, and it is the same machinery with a
+  rare trigger: a confluence of circumstances (a glyph placed nearby, ruling
+  48; an unprecedented event reaching the sophont, §3.4; a material of note
+  in hand) raises a need whose only satisfier is one act, in the
+  world-conditions schema's terms a precondition met rarely and a commitment
+  of attention that will not release; the act's outcome passes the
+  hagiograph's test on novelty alone. That is Dwarf Fortress's strange mood
+  with its cause named, and it also gives Mark's "wild events" of ruling 91
+  a personal scale.
+
+*Mark's open list, placed.* Materials are nis and scruple, matter typed by
+provenance and a part's measured mix, ruled 2026-09-04. Rarity is ruling
+94's scarcity at a place, derived and never a tag on the item. A recipe is a
+process definition with matter among its commitments, data under ruling 41.
+A technique is ruling 47's middle form, a capability that is knowledge
+rather than body, so it can be taught, written and sacrificed. Hybridising
+abilities is kleptoplasty; hybridising items is a recipe with an item as an
+input. Triggered conditions beyond crafting are preconditions of any
+operation, so a vow, a grudge, a pilgrimage or a duel is a triggered need of
+the same kind as the fey mood. **Open:** skill, meaning how a capability
+grows in one sophont rather than a cohort; improving an item; and what
+exactly a technique is made of, which the hagioglyph organ's plan owns.
+Checked 2026-09-22: Paredros's `Work` is a craft, a grade and a danger, over
+a closed `Craft` of five (`offer.rs:9-12`, `companion.rs:24-30`), which is
+capability as a level and not yet as a journey; wing-glyphs' `Acquisition`
+keeps glyph, provenance, tick, life and canon revision (`journey.rs:51-63`),
+the shape a technique's record would take.
+
+Prior art for ruling 95, known. Dwarf Fortress's strange mood is the
+reference Mark names: a rare state that seizes a dwarf, demands particular
+materials, and yields an artifact or a breakdown, with the artifact kept
+forever, which is a triggered need, a recipe with preconditions, and the
+hagiograph in one mechanic (its details from memory, unverified). Ingold's
+*Making* (2013) argues that making is a correspondence between maker,
+material and act rather than the imposing of a form, which is crafting as
+incorporation. Utility-based AI and GOAP choose acts by scored needs against
+capabilities, the same score as the tenet from the actor's side. From memory
+of games, unverified: Skyrim's smithing is the churn Mark rejects, a hundred
+iron daggers levelling a skill; Kenshi and Mount & Blade level by use with
+diminishing returns, a middle case.
 
 **Already in code, checked 2026-09-21.** Both products hold the bottom tier.
 Mesocosm keeps a conserved material ledger and reads starvation from it
@@ -3487,6 +3578,14 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 95 recorded into §3.3.1: acting is analogous to
+  crafting and crafting is incorporating materials into an act, which is
+  Mesocosm's one verb pointed outward; the link from capability to need and
+  value is the tenet read from the actor's side, need times trust times
+  approval; nobody churns weapons because fungible acts fold into the
+  cohort; a fey mood is a triggered need with a rare precondition. Mark's
+  open list placed against existing rulings, with skill, improving items and
+  the substance of a technique left open. Docketed as D26.
 - 2026-09-21: ruling 94 recorded and §3.3.1 added: value as a reading over
   scarcity, capability and need, money as an asserted claim; why people act
   answered at ruling 37's three tiers, needs at the bottom, values from
