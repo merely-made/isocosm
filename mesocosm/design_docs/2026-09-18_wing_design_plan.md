@@ -739,6 +739,14 @@ what later sections derive from.
 93. **Deep time is the same sim.** Asked whether a world's past is run by
     the same sim at a coarser grain or written by a separate history
     generator, Mark, 2026-09-21: "Same sim".
+94. **Value bears on scarcity, capability and material need; need is derived
+    from alignment, acts and predilection.** Asked how things are exchanged
+    and what value is, Mark, 2026-09-21: "Items, value, crafting, services,
+    should bear relation to scarcity, capability, and material need. Need
+    can be derived from a part of alignment, the stuff people do (acts) and
+    are likely to do (predilection, personality?). But why do people take
+    certain actions? Needs, like sims? And at the sim layer, how's that
+    aggregate to give trade trends?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1702,6 +1710,84 @@ Cautions, from memory of games and unverified: the X series resolves combat
 differently in and out of the player's sector and players exploit the
 difference, and S.T.A.L.K.E.R.'s A-Life switches between an offline and an
 online model with visible seams.
+
+### 3.3.1 Needs, value and exchange
+
+From ruling 94. Mark's two questions, why people act and how that aggregates
+into trade, are answered here as a reading, docketed as D25, built from
+rulings already made.
+
+**Value (ruling 94).** Items, value, crafting and services "bear relation to
+scarcity, capability, and material need". In the record's terms those are
+the three inputs of §3.3's first shape: scarcity is the supply at a place,
+capability is who can make or do the thing (a phenotype ability, a craft, a
+technique of ruling 47), and need is demand. So value is derived and never
+stored, a reading over supply, capability and need at a place and a time,
+and a price is that reading at a market, one place where exchange processes
+concentrate. Money is then an item whose only use is to be exchanged, which
+makes it an asserted claim of the kind ruling 64 lets a polity stand behind,
+or ruling 67's consent among those who take it, and never a primitive of the
+sim.
+
+**Why people act: needs, but at three tiers.** "Needs, like sims?" Yes at
+the bottom and not only that. Ruling 37 already tiers the methodology, and
+each tier answers the question its own way:
+
+| Tier | Why it acts | What it wants |
+| --- | --- | --- |
+| Critter, reactive | a need crosses a threshold and the matching ability runs: forage, hunt, flee, rest | the body's ledger (ruling 38): Mesocosm's nutrition budget in full, Paredros's `Needs { hunger, fatigue }` today (`paredros-world/src/bodies.rs:46-49`) |
+| Denizen, belief-desire-intention | a desire is chosen among several by what it believes and what it values, and pursued as an intention through several acts | the ledger's needs, plus wants derived from alignment (ruling 51): comfort, standing, safety, company, the things its tenets approve |
+| Character, normative | a role or an institution asks it: an office, an oath, a contract, a levy | the above, plus obligations asserted by its polity (ruling 56's rank) |
+
+Mark's derivation of need holds at all three: need is read from "a part of
+alignment" (what a sophont values), "the stuff people do (acts)" (its
+record, so a smith needs iron because it smiths) and "are likely to do
+(predilection, personality?)", where predilection is ruling 37's disposition
+setting the thresholds, as it does for telling secrets (D21). This is the
+Sims' model made honest: the Sims has one tier of needs with a utility curve
+each; the wing has needs at the bottom and values and obligations above, all
+three derived from state the record keeps.
+
+**How it aggregates into trade trends.** Ruling 75's aggregate form, applied
+to exchange. A cohort at a place is a distribution over needs and
+capabilities, so its demand for a good is a rate, and the place's supply is
+a stock moved by production, consumption and carriage. Exchange in the
+aggregate is then flow along the graph's routes (§3.7) from where a thing is
+cheap to where it is dear, at a rate set by the price difference less the
+cost of travel, which is the same diffusion the record already uses for
+reach, temperature and plague, with a gradient in price instead of
+concentration. A trade trend is that flow read over time. Foreground
+exchanges are the lifted case: one sophont, one price, a receipt in the
+record; and their restriction back is a stock changing hands. Provisioning
+(ruling 38) is a polity running this flow on purpose toward its members, and
+a shortage is a stock at zero with need still rising, which is the event the
+hagiograph may keep.
+
+**Already in code, checked 2026-09-21.** Both products hold the bottom tier.
+Mesocosm keeps a conserved material ledger and reads starvation from it
+(ruling 38); Paredros keeps `Needs` on the body and `party_resources` as
+named stores per owner in the tabletop
+(`isometry-campaign/src/world/types.rs:60-64`), with "the system decides
+what a store is worth". No product derives a price or moves goods along
+routes, and the world-conditions schema keeps matter, energy, charge,
+attention, time and social obligation as distinct accounts that "an
+operation cannot exchange without an authored transform", so an exchange is
+an authored operation over those accounts and never an implicit conversion.
+
+Prior art for ruling 94, known. Maslow's hierarchy is the Sims' needs and
+the popular reference; the more exact one is Max-Neef's matrix of nine needs
+against four satisfiers, where a need is universal and its satisfiers are
+cultural, which is ruling 38's "the system decides what counts as food"
+generalised. For the tiers, BDI is Bratman's and the Sims' needs are
+Maslow's; for the aggregate, gravity models of trade (Tinbergen, 1962) make
+flow proportional to the two sizes over the distance, and Ricardo's
+comparative advantage is why capability differences make trade at all. From
+memory of games, unverified: Dwarf Fortress derives value from material and
+quality with a civilisation's preferences, and its caravans are trade as
+carriage; the X series and EVE Online run supply and demand per station with
+prices read off stock; Victoria 3 pools goods per market with prices moving
+on the balance of buy and sell orders; RimWorld's price per item is a base
+times a trader's markup and a settlement's biome.
 
 ### 3.4 The record
 
@@ -3401,6 +3487,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-21: ruling 94 recorded and §3.3.1 added: value as a reading over
+  scarcity, capability and need, money as an asserted claim; why people act
+  answered at ruling 37's three tiers, needs at the bottom, values from
+  alignment above, obligations from rank at the top; trade trends as ruling
+  75's aggregate, flow along routes down a price gradient, the same
+  diffusion as reach. Checked: Mesocosm's ledger, Paredros's `Needs`, the
+  tabletop's stores, and the schema's distinct accounts. Docketed as D25.
 - 2026-09-21: ruling 93 recorded: deep time is the same sim, with no
   separate history generator. §3.9 notes what already follows from rulings
   71, 75 and 91, and that Mesocosm's deep time is this today at the scale of
