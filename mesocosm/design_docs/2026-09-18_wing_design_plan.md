@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-18
 
-*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT with Isometry as its subtitle, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
 **Status, 2026-09-18:** design record, ruled through W1. W0 is ruled (rulings
 1 to 34, with the founding record and the three product descriptions amended
@@ -924,7 +924,19 @@ what later sections derive from.
      0.0.1 the same day, and the rename is the [family rename
      plan](2026-09-22_family_rename_plan.md). Where this record says
      "isotropy" it means the sim, now Isocosm; where it says "Paredros" it
-     means Eponym; the tabletop keeps Isometry as its subtitle.
+     means Eponym. (The clause first written here, "the tabletop keeps
+     Isometry as its subtitle", was this record's inference and not Mark's
+     word; ruling 111 settles it.)
+111. **Isometry is retired as a product word and kept as the plain technical
+     prefix of the tabletop's crates.** Put to Mark on 2026-09-22 as three
+     options after this record's author had inferred, without a ruling, that
+     Isometry survived as the tabletop's subtitle: A, the subtitle; B,
+     retired as a product word and kept as a technical one, the tabletop
+     being Isocosm: VTT only and the `isometry-*` crates keeping their
+     prefix as a plain description; C, retired everywhere. Mark: "b.
+     although, you know, i did once wonder if there were an appropriate bird
+     name for the wing". The bird is a musing, not a reopening; Isocosm
+     stands.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4271,6 +4283,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 111 recorded: Isometry retired as a product word and
+  kept as the crates' technical prefix; ruling 110's inferred subtitle
+  clause corrected; the names line under nine documents amended; the rename
+  plan's R3 repointed at the peer's `wing-sim` crate.
 - 2026-09-22: ruling 110 recorded: Isocosm for the family and the sim,
   Isocosm: VTT for the tabletop, Eponym for the second-person game; the
   three reservations published; the family rename plan written and indexed.

@@ -22,9 +22,9 @@ and the naming ledger's family naming round of 2026-09-22.
 | Thing | Before | After | Crate | Status |
 | --- | --- | --- | --- | --- |
 | The family | the games wing | **Isocosm** | `isocosm` 0.0.1, reserved 2026-09-22 | ruled 110 |
-| The sim | isotropy (ruling 17) | **Isocosm** | `isocosm` | ruled 110; ruling 17 superseded |
+| The sim | isotropy (ruling 17) | **Isocosm** | `isocosm` is the reservation; the implementing crate is `shared/wing-sim`, plain by the stack's tier rule | ruled 110; ruling 17 superseded |
 | The second-person game | Paredros | **Eponym**, "Isocosm: Eponym" | `eponym` 0.0.1, reserved 2026-09-22; `paredros` 0.0.1 stays as history | ruled 109 |
-| The tabletop | Isometry | **Isocosm: VTT**, also "Isocosm: Isometry" | `isocosm-vtt` 0.0.1, reserved 2026-09-22; the `isometry-*` crates keep their names | ruled 110 |
+| The tabletop | Isometry | **Isocosm: VTT**; Isometry retired as a product word | `isocosm-vtt` 0.0.1, reserved 2026-09-22; the `isometry-*` crates keep their prefix as a plain technical description | ruled 110, 111 |
 | The ecological roguelike | Mesocosm | "Isocosm: Mesocosm" | `mesocosm`, unchanged | ruled 110 |
 | The bridging organ | isostasy | isostasy | none yet | unchanged by this round |
 
@@ -42,7 +42,7 @@ word, with drafts prepared here; and the naming ledger records each step.
 | `paredros-*` crate references | fixture 24, client 17, identity 11, social 8, world 7, sortie 5, session 3, timed 1 | package names, path dependencies, `use` lines, test names |
 | Paredros workspace | `paredros/` root package plus five member crates | the root package is the reservation, at local 0.0.2 |
 | "isotropy" outside the design record set | one live crate, `shared/isotropy/`, its bench binary and tests, and a path dependency from `mesocosm-genet` | a peer session's active work as of 22:36 on 2026-09-22; not touched here |
-| "Isometry" as the tabletop's name | everywhere: the repository name, root `README.md`, root `CLAUDE.md`, `PROJECT_DESCRIPTION.md`, the root Cargo workspace, `scripts/wing.ps1`, seven `isometry-*` crates | the word stays as the tabletop's subtitle and the crates' prefix; what changes is the product's lead name and the family's |
+| "Isometry" as the tabletop's name | everywhere: the repository name, root `README.md`, root `CLAUDE.md`, `PROJECT_DESCRIPTION.md`, the root Cargo workspace, `scripts/wing.ps1`, seven `isometry-*` crates | the product word is retired (ruling 111); the crates keep the prefix as a plain technical description; the repository name is R5's question |
 
 ## 3. Phases and done-conditions
 
@@ -69,14 +69,13 @@ word, with drafts prepared here; and the naming ledger records each step.
   references; recorded receipts in `design_docs/` keep their historical
   names.
 - **R3, the sim crate.** Completed by its owning session, alongside the first
-  tested implementation. Done when the crate the peer session is building
-  as `shared/isotropy/` is `shared/isocosm/`, package `isocosm` at a version
-  above the reservation, its binary and tests renamed, and its consumers
-  repointed; coordinated with that session rather than done over it, and
-  not before it lands.
+  tested implementation, as `shared/wing-sim/`, plain by the stack's tier
+  rule, with Isocosm as the name of what it implements. Done when no
+  "isotropy" remains in its identifiers or its consumers.
 - **R4, the tabletop.** Done when the root `README.md`, `CLAUDE.md` and
-  the tabletop's product identity say Isocosm: VTT with Isometry as the
-  subtitle and the `isometry-*` crates unchanged; when `isocosm-vtt` is the
+  the tabletop's product identity say Isocosm: VTT, with Isometry retired
+  as a product word and the `isometry-*` crates unchanged as plain
+  technical names; when `isocosm-vtt` is the
   tabletop's reservation package at a version above 0.0.1; and when the
   `isometry` crate on crates.io, reserved 2026-07-14 as "A pixel-art,
   peer-to-peer virtual tabletop", has a decision recorded (§4).
@@ -125,18 +124,20 @@ each other; R3 when the peer's crate lands; R5 last.
   true until R2 and R3.
 - **2026-09-22, drafts for the six maintainer-owned files,** each a
   replacement for one passage, for Mark's word:
-1. *Root `CLAUDE.md`, Project Identity, first sentence:* "**Isocosm: VTT**,
-  called Isometry within the family, is a pixel-art isometric virtual
-  tabletop over the Isocosm simulator: a P2P map editor and turn-based play
-  substrate for D&D, Pathfinder, and other systems." And under the umbrella
-  heading, after "This Git repository contains three products": "The family
-  is Isocosm; the products are Isocosm: VTT (Isometry), Isocosm: Mesocosm
-  and Isocosm: Eponym, over one simulator."
+1. *Root `CLAUDE.md`, Project Identity, first sentence:* "**Isocosm: VTT**
+  (formerly Isometry; renamed 2026-09-22, wing design record rulings 110
+  and 111) is a pixel-art isometric virtual tabletop over the Isocosm
+  simulator: a P2P map editor and turn-based play substrate for D&D,
+  Pathfinder, and other systems. Its crates keep the `isometry-` prefix as
+  a plain technical name." And under the umbrella heading, after "This Git
+  repository contains three products": "The family is Isocosm; the
+  products are Isocosm: VTT, Isocosm: Mesocosm and Isocosm: Eponym, over
+  one simulator."
 2. *Root `design_docs/PROJECT_DESCRIPTION.md`, the lead:* the same first
   sentence as above, with the existing pillars unchanged.
 3. *`mesocosm/CLAUDE.md`, the vessel line:* "Vessel 1 of the Isocosm family,
-  Mesocosm (first person), Eponym (second person) and Isometry, the VTT
-  (third person), over one simulator, Isocosm, sharing a world substrate, a
+  Mesocosm (first person), Eponym (second person) and the VTT (third
+  person), over one simulator, Isocosm, sharing a world substrate, a
   lineage model, and a trust plane."
 4. *`mesocosm/design_docs/PROJECT_DESCRIPTION.md`:* "Paredros" to "Eponym"
   wherever it appears, and the family named as in draft 3.
@@ -172,3 +173,6 @@ each other; R3 when the peer's crate lands; R5 last.
   landed the same day.
 - 2026-09-22: R1 landed at Mark's word ("Sure"): nine documents renamed in
   the present tense, drafts for the six maintainer-owned files filed.
+- 2026-09-22: ruling 111 (option B) applied: Isometry retired as a product
+  word; the names line, the names table, R4 and two drafts amended; R3's
+  wording brought to the owning session's `wing-sim`.

@@ -1,6 +1,6 @@
 # Wing design record: readings docket
 
-*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT with Isometry as its subtitle, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
 day; two held; D21 to D33 opened since and ruled 2026-09-22, D32 by ruling 105 and the rest by ruling 106.** It gathered every reading, recommendation and verdict the
