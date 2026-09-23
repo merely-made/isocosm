@@ -7,6 +7,12 @@
 to it); W1 is evaluated, ruled and applied for all three products. W2, the
 sim's own plan, is next and is design work, not lanes.
 
+**Status, 2026-09-22:** rulings run to 105. W2 is drafted as the
+[sim plan](2026-09-22_sim_plan.md), a schema and definitions compiled from
+this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
+beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
+the readings the plan depends on, and no lane is open.
+
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
 to; the method by which claims reach rulings and receipts reach plans; and
@@ -4122,7 +4128,9 @@ carries the rulings as they are made.
 - **W2, the sim's design.** Done when the base profile has its own plan
   under this record, with the taxonomy of §3 as a schema, the three process
   shapes as definitions, the record and reach field specified, and a
-  generator whose declared space is the source of every receipt.
+  generator whose declared space is the source of every receipt. Drafted
+  2026-09-22 as the [sim plan](2026-09-22_sim_plan.md): met on paper, and
+  done when the docket items its §8 lists are ruled or moved.
 - **W3, the stack re-derived.** Done when each stack component's plan
   states what it takes from the sim's nouns and nothing from any product's
   data, and the §4.3 findings are lanes in their owners' plans.
@@ -4185,6 +4193,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: at Mark's word ("proceed!"), the sim plan drafted from rulings
+  1 to 105 as W2's plan, and the session notes written as a secondary
+  reference preserving the discussion; both indexed. This record's status
+  updated; §11's W2 now points at the plan.
 - 2026-09-22: ruling 105 recorded: option A ruled, and related worlds read
   into §3.12 as two relations that merge nothing, descent as the world
   kingdom's lineage tree with fili as its record, and neighbourhood as
