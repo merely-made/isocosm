@@ -1,7 +1,9 @@
 # The Games Wing: Founding Record
 
+*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT with Isometry as its subtitle, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+
 **Status: founding record, 2026-07-30.** Wing-level. Owns the shared
-architecture, laws, and vocabulary for Mesocosm, Paredros, and Isometry.
+architecture, laws, and vocabulary for Mesocosm, Eponym, and Isometry.
 Vessel-specific design lives in each repo's own founding plan. This document
 is cited by `paredros/design_docs/` and should be cited rather than copied.
 
@@ -43,13 +45,13 @@ governs content inheritance across games, not code or format sharing. See
 | Game | Person | Relationship | Design consequence |
 | ---- | ------ | ------------ | ------------------ |
 | **Mesocosm** | First | I am this body | Movement, consumption, perception, damage, feeding, and growth are experienced directly. |
-| **Paredros** | Second | I live with you | Companions can be addressed, persuaded, equipped, and helped. They remain peers, and they can replace you. |
+| **Eponym** | Second | I live with you | Companions can be addressed, persuaded, equipped, and helped. They remain peers, and they can replace you. |
 | **Isometry** | Third | They occupy the world | Characters become groups, factions, visible pieces in a shared tactical and historical account. |
 
 **Person is agency, not camera.** Ruled 2026-07-30 after the two vocabularies
 collided in a render doc. "Second person" says companions are peers you
 address rather than units you command; it says nothing about where the camera
-sits, and Paredros may well use a close camera. When discussing renderers, say
+sits, and Eponym may well use a close camera. When discussing renderers, say
 **camera distance**; reserve *person* for agency.
 
 ### The wing's question is continuity under transformation
@@ -59,7 +61,7 @@ sharing an engine":
 
 - **Mesocosm** asks whether a creature remains itself as its body and
   capacities change.
-- **Paredros** asks whether a community remains itself as control, bodies,
+- **Eponym** asks whether a community remains itself as control, bodies,
   and generations change.
 - **Isometry** asks whether a campaign remains itself across adjudication,
   authors, imports, and revisions.
@@ -79,7 +81,7 @@ asked about them**.
 Four facts stay separate across the wing so the question stays askable:
 **subject, body, role, lineage.** The phenotype contract already separates
 subject, body revision, and biological line; **role** (office, standing in
-a community) joins them as the fourth, first needed by Paredros
+a community) joins them as the fourth, first needed by Eponym
 succession. A subject can inhabit a revised body, hold or lose a role,
 descend from a lineage, or surrender player control without becoming a
 different person, which is what unlocks succession, development, imports,
@@ -98,13 +100,13 @@ the fantastical direction (general model plan, F-gates).
 Any of the three games may be played at any supported point in a world's
 history. Their characteristic historical settings differ: Mesocosm naturally
 foregrounds early ecological history, when most subjects are critters;
-Paredros foregrounds pre-civilization and the emergence of kin, kith, camps,
+Eponym foregrounds pre-civilization and the emergence of kin, kith, camps,
 colonies, and bases; Isometry foregrounds worlds where civilizations and their
 institutions have become dominant. These are historical emphases, not required
 stages, population-type restrictions, or a mandatory export sequence.
 
 Late Mesocosm can concern organisms in cultivated soil, infrastructure,
-domesticated populations, or ruins. Late Paredros can concern one life among
+domesticated populations, or ruins. Late Eponym can concern one life among
 powerful institutions. Early Isometry can concern the collective activity of
 a small founding group. Each keeps its own care granularity and admits the
 mechanisms it supports. An unsupported ruleset is an explicit compatibility
@@ -155,7 +157,7 @@ World generation should produce working transmission paths and local variants,
 not merely random school names. Player histories displace generated history;
 playing the earlier games is never required to obtain a rich lineage or culture.
 
-Paredros's proposed RPG and character-sheet design lives in
+Eponym's proposed RPG and character-sheet design lives in
 `paredros/design_docs/2026-07-30_paredros_founding_plan.md`, under
 "Borg generation, techniques, and the character sheet". That product proposal
 does not impose its attributes, skill points, or action rules on the other games.
@@ -168,7 +170,7 @@ symmetrically rather than one-directionally: no vessel is the primary one.
 
 - **Isometry** is the fortress and atlas mode: care for a squad and a map,
   prepared ahead, adjudicated in turns.
-- **Paredros** is the adventure mode: the same world's people met one at a
+- **Eponym** is the adventure mode: the same world's people met one at a
   time, embodied, negotiated.
 - **Mesocosm** is the ecology beneath both: the world that produces the
   people in the first place.
@@ -187,7 +189,7 @@ What the frame decides, and why it is here rather than only in the review:
   provenance), and **places** (sites with history). They cross by the three
   pipeline laws of §3, as choices under scarcity with pointable inheritance.
   Kinematics, tile-and-turn adjudication, renderers, and control schemes do
-  not cross, ever. Paredros walking Mesocosm's voxels and Isometry baking
+  not cross, ever. Eponym walking Mesocosm's voxels and Isometry baking
   voxels to sprites are the same source becoming two lenses, not one lens
   borrowed.
 - **Platform organs go up, not sideways.** Where two vessels need the same
@@ -203,13 +205,13 @@ What the frame decides, and why it is here rather than only in the review:
 ### Isometry as an umbrella home (2026-09-09 discussion)
 
 **Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
-the repository home for Mesocosm and Paredros to make interdependency easier,
+the repository home for Mesocosm and Eponym to make interdependency easier,
 and explicitly welcomes use of all three projects. Distinguish repository
 organization, library dependency direction, and product runtime integration.
 One repository can contain three independently runnable applications and
 shared game-domain libraries without requiring one running world instance.
 
-The live dependency shape already includes direct Paredros dependencies on
+The live dependency shape already includes direct Eponym dependencies on
 Mesocosm core, mesh, render and optional lens crates. Isometry separately owns
 a bounded generator runtime, typed proposals, campaign item state and system
 plugins that should be assessed for reuse before recreating equivalent
@@ -257,7 +259,7 @@ So the invariant is the thesis, not the grammar:
 
 > **Care granularity must not drift. Person may.**
 
-Mesocosm is care for a **species**, Paredros for **individuals**, Isometry for
+Mesocosm is care for a **species**, Eponym for **individuals**, Isometry for
 a **community**. That survives camera and control changes in a way person
 does not — XCOM is third person at individual granularity, Mount & Blade is
 first person at community granularity. Person was a convenient proxy for
@@ -266,11 +268,11 @@ granularity, and it should be used as a design lens rather than a fence.
 ### The three guardrails that replace the prohibition
 
 The old rule did earn its keep: it resolved where Gotcha Force belongs and it
-kept Paredros' settlement layer light. Those wins are preserved by three
+kept Eponym' settlement layer light. Those wins are preserved by three
 narrower rules.
 
 1. **Each vessel has a home person** — its default, its center of gravity, the
-   one you inhabit continuously. Mesocosm's home is first, Paredros' second,
+   one you inhabit continuously. Mesocosm's home is first, Eponym' second,
    Isometry's third. A shift is a departure you return from.
 2. **Shifts are bounded and diegetic.** Earned, framed, and temporary, not a
    second mode of equal weight with its own menu.
@@ -296,12 +298,12 @@ by the care-granularity rule; each still has to pass the three guardrails.
   drifting second person. Under the care rule it is **niche construction**,
   which is the literal win condition. The prohibition was forbidding the
   mechanic that best expresses the vessel's own thesis.
-- **Configure, don't command** (Paredros). Standing behaviour negotiated with
+- **Configure, don't command** (Eponym). Standing behaviour negotiated with
   a peer in advance, in the FFXII gambit shape. Categorically different from
   puppeteering in the moment: you agree how someone acts rather than driving
   them. Preserves "peers, not units" while giving the player real leverage,
   and it is a better answer than the deployment queue alone.
-- **Tag-in** (Paredros). Crystal Chronicles and Gotcha Force both let you
+- **Tag-in** (Eponym). Crystal Chronicles and Gotcha Force both let you
   *become* another body. That is succession in miniature, and succession is
   already ruled — becoming a companion temporarily is the same mechanic as
   becoming one permanently.
@@ -353,7 +355,7 @@ thesis so far:
 
 > A **critter** is an organism. A **borg** is a *named* critter — something you
 > make incidentally, by playing Mesocosm. A **character** is a
-> *faction-associated* borg — something you make by playing Paredros.
+> *faction-associated* borg — something you make by playing Eponym.
 
 **Terminology supersession, 2026-09-20.** The quoted 2026-07-31 ruling is
 preserved as the historical record. Its current second tier is **denizen**:
@@ -372,7 +374,7 @@ thing to an artifact that already exists:
 | Vessel | Adds | The thing it makes |
 | ------ | ---- | ------------------ |
 | Mesocosm | remembered history, relationship, or explicit designation | a denizen, out of a critter |
-| Paredros | a **faction** | a character, out of a denizen |
+| Eponym | a **faction** | a character, out of a denizen |
 | Isometry | a **history** | a legend, out of a character |
 
 **Individual remembrance is the whole promotion.** A critter is a member of a
@@ -389,7 +391,7 @@ rather than chosen at a character creator, which is the partial-authorship
 ruling arriving at the level of identity rather than morphology.
 
 **And a faction is a relationship, not a property.** A denizen becomes a character
-by being *of* somewhere and *among* someone — which is precisely Paredros'
+by being *of* somewhere and *among* someone — which is precisely Eponym'
 second person, and precisely why that vessel is the one that mints characters.
 You cannot be a colleague alone.
 
@@ -462,7 +464,7 @@ vision. It is the material-language lodestar rather than a core-loop template:
   remember, and care about.
 
 This does not make a voxel grid shared simulation authority. Mesocosm's body
-graph and developmental recipe, Paredros' close presentation, and Isometry's
+graph and developmental recipe, Eponym' close presentation, and Isometry's
 sprite projection remain sovereign representations. The wing-level target is
 the perceptual continuity: each vessel should make the same buildable,
 damageable material history recognizable through its own lens.
@@ -605,7 +607,7 @@ already counts. Factions can be authored; gods and named individuals can create
 the occasion for one. Group types differ by capabilities and situation, such
 as maintaining a base, holding bordered territory, or being bound to a biome
 like dryads in a forest, rather than headcount alone. Party to base to polity
-is a Paredros ambition; it would overextend Mesocosm's care for a lineage.
+is a Eponym ambition; it would overextend Mesocosm's care for a lineage.
 
 **Sound effects first; music responsive to play.** FX matter more to Mark than
 a soundtrack. Material, footing, impact, damage, distance, and threats are
@@ -656,7 +658,7 @@ world operations are particularly interesting mod contributions.
 **Where these directions meet current work.** Vessel mechanics and receipts
 stay in their domain plans. Mesocosm's
 [playable ecology plan](2026-08-31_playable_ecology_plan.md) owns embodied
-discovery and lineage development. Paredros's
+discovery and lineage development. Eponym's
 `paredros/design_docs/2026-09-09_functional_loops_plan.md`,
 `paredros/design_docs/2026-09-09_world_conditions_plan.md`, and
 `paredros/design_docs/2026-09-09_memory_and_remembrance_plan.md` are locally
@@ -673,7 +675,7 @@ retain the distinct game and presentation directions.
 ## 2. The lifecycle
 
 Genesis (Mesocosm) produces critters. Critters graduate into lives
-(Paredros). Lives accumulate into settlements. Settlements export as
+(Eponym). Lives accumulate into settlements. Settlements export as
 campaigns (Isometry). Worlds fork, graft, and federate.
 
 **Spore's stages are the known failure mode**: five shallow genres sharing
@@ -699,7 +701,7 @@ sharing rules per layer are tabulated in the
 [body pipeline plan](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md).
 
 Consequently: **"shared world model" is too strong** — Mesocosm's live
-ecology, Paredros' settlement, and Isometry's campaign state will never be one
+ecology, Eponym' settlement, and Isometry's campaign state will never be one
 in-memory model. They append compatible facts to one world. The shared thing
 is the **world identity and fact substrate**.
 
@@ -739,7 +741,7 @@ provenance and causal history in the most literal sense the wing has. So the
 
 **The fold is rules.** What capability falls out of an anatomy is exactly the
 kind of thing each vessel decides for itself, like a renderer or a camera.
-Mesocosm folds reach and upkeep out of geometry; Paredros folds a chassis into
+Mesocosm folds reach and upkeep out of geometry; Eponym folds a chassis into
 manipulation; Isometry folds nothing at all.
 
 Isometry is the interesting case and its own law already answers it: *the
@@ -751,7 +753,7 @@ plugin that cares about limbs interprets it.
 
 #### The mind is not in the tree
 
-Paredros already ruled the carve-out, before this rule existed: *skills are
+Eponym already ruled the carve-out, before this rule existed: *skills are
 use-based, accrued to the mind, surviving reassembly, so limb loss never costs
 skill* (the Kenshi rule). That stands, and it generalises.
 
@@ -840,7 +842,7 @@ structural, not motivational.
 > gates it.
 
 Each vessel is standalone-complete: Mesocosm's win condition references no
-later game, Paredros is fully playable on RNG worlds, Isometry already
+later game, Eponym is fully playable on RNG worlds, Isometry already
 stands alone. Inheritance is enrichment. The proof pair (§6) must
 demonstrate displacement explicitly: import a played critter and an RNG
 critter through the same profile and confirm the consuming game cannot tell
@@ -900,7 +902,7 @@ subject has one stable identity and independently versioned profile facets:
 | Profile | Owns |
 | ------- | ---- |
 | Critter | metabolism, body topology, traits, biological descent, incorporated-part provenance |
-| Paredros character | continuity of person, skills, affinities, personality, trust, history, relationships |
+| Eponym character | continuity of person, skills, affinities, personality, trust, history, relationships |
 | Place | buildings, inhabitants, dependencies, deeds, accumulated customs and institutions |
 | Isometry participant/faction | campaign role, authority, allegiance, ethos, public history |
 
@@ -1029,7 +1031,7 @@ and the week moved under it:
 - The ecology gained E0-E4 implementation slices (general model plan;
   acceptance gates open).
 - Still genuinely missing, unchanged: real-time netcode and
-  settlement/production simulation (now Paredros S5's charge).
+  settlement/production simulation (now Eponym S5's charge).
 
 **Discipline (amended 2026-09-18):** the simulator and the stack are
 designed from the games' systems in combination and tested by seeded draws
@@ -1129,7 +1131,7 @@ maintainer's manual step.
 | Word | Role |
 | ---- | ---- |
 | **Mesocosm** | Vessel 1. Ecology's mid-scale enclosed experimental ecosystem. The simulated enclosure is mesoscopic even when a playable one-trait critter is cellular; each generational run is one experiment in it. |
-| **Paredros** | Vessel 2. "The one who sits beside": the Greek Magical Papyri's acquired companion, and in classical civic use an assessor seated beside a magistrate. A colleague, not a servant. |
+| **Eponym** | Vessel 2. "The one who sits beside": the Greek Magical Papyri's acquired companion, and in classical civic use an assessor seated beside a magistrate. A colleague, not a servant. |
 | **critter** | The plain organism word, wing-wide. |
 | **animula** | The played soul in Mesocosm: Hadrian's *animula vagula blandula, hospes comesque corporis*, the little soul that guests in a body. In-product term only — **ANIMULA NOOK** is a live Tencent mark in Class 9 game software, so the word must never title a game. |
 | **kleptoplasty** | The incorporation mechanic. Real biology: an organism eats algae and retains the functional chloroplasts. |
@@ -1137,7 +1139,7 @@ maintainer's manual step.
 | **fili** | Lineage across worlds. Reserved in `mere/design_docs/TERMINOLOGY.md` for moot ancestry, forks, and genealogy. Not event history, not content descent. |
 | **tulpa** | The legend and memorial organ: what memory makes of history, sustained by continued attention. Proposed 2026-07-30, crates.io free, **lexicon inscription still pending the maintainer's ruling.** |
 | **denizen** | An inhabitant individually remembered by simulation because history, relationships, or explicit designation makes it matter. Earned notability does not require sapience, a name, a faction, or costly foreground simulation. The `denizen` crate name and concept are reserved for this tier; no crate or Servitor move follows from that reservation. Supersedes the provisional `borg` term on 2026-09-20. |
-| **character** | A **faction-associated** denizen, made by playing Paredros. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
+| **character** | A **faction-associated** denizen, made by playing Eponym. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
 | **deme** | Banked, unspent. Biology's local interbreeding population; the leading candidate for Mesocosm's unit word if one is wanted. |
 
 Also banked clean and unspent: **coppice**, **diaspore**, **holobiont**.
@@ -1185,7 +1187,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    — the restated law binds world identity, provenance, and causal history,
    not the pixels — so splitting the bet is live.
 
-   Carries Mark's proposed dimensionality (Mesocosm 2 or 2.5D, Paredros a
+   Carries Mark's proposed dimensionality (Mesocosm 2 or 2.5D, Eponym a
    close camera, Isometry a distant one) with two flags: **camera distance is
    not person** (say close camera, never "first-person Paredros"), and **a 3D
    Isometry contradicts a standing ruling in that repo**, which needs its own
@@ -1194,8 +1196,8 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    **Closed 2026-08-18.** The camera decisions are ruled in
    [the vessel briefs and presentation record](2026-08-18_vessel_briefs_and_presentation.md):
    Mesocosm is a side-on terrarium section with a trait-graph board for
-   the epoch review; Paredros is third-person 3D on one continuous
-   Kenshi-style zoom, with first person composable as a Paredros-only
+   the epoch review; Eponym is third-person 3D on one continuous
+   Kenshi-style zoom, with first person composable as a Eponym-only
    setting under the guardrails; Isometry stays isometric. Person and
    care rulings here are untouched.
 
@@ -1210,14 +1212,14 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    rendering approach rather than the host. Reasons and costs in the
    [execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.3.
 
-   **Paredros is not bound by this.** Renderers are per-vessel, and a close
+   **Eponym is not bound by this.** Renderers are per-vessel, and a close
    camera with real lighting is the case where an engine, or Renderling, would
    earn its keep.
-3. **Paredros' unit word — resolved 2026-07-31, though not as this question
-   assumed.** It had "borg" pencilled in as Paredros' word. Mark's continuity
-   ruling (§1) puts borg in *Mesocosm's* output and gives Paredros
+3. **Eponym' unit word — resolved 2026-07-31, though not as this question
+   assumed.** It had "borg" pencilled in as Eponym' word. Mark's continuity
+   ruling (§1) puts borg in *Mesocosm's* output and gives Eponym
    **character**: a critter is an organism, a borg is a named critter, a
-   character is a faction-associated borg. So Paredros' unit word is
+   character is a faction-associated borg. So Eponym' unit word is
    `character`, which is also already Isometry's word for the same artifact —
    agreement across two vessels rather than a coinage.
 
@@ -1229,7 +1231,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    remains banked and is not a candidate here: it names a population, and this
    concept names an individual.
 
-   The battle-frame noun — the machine a character pilots, if Paredros keeps
+   The battle-frame noun — the machine a character pilots, if Eponym keeps
    the Gotcha Force silhouette — remains genuinely unnamed and is a separate
    question from the unit word.
 4. **Hagiograph's inscription and shape** (named tulpa in this section's old
@@ -1303,7 +1305,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    roster, which is befriending a goblin or taming a dog, and which Isometry
    already implements as `convince`. Detail in the Mesocosm founding plan.
 10. **Run rhythm across the wing** (2026-07-30). Mesocosm runs generations,
-    Paredros runs expeditions against a settlement that keeps (the Heroes of
+    Eponym runs expeditions against a settlement that keeps (the Heroes of
     Hammerwatch shape), Isometry runs campaigns. One rhythm, three scales,
     and it delivers the sortie-and-return through-line under half the
     influence set. It also produced the wing's first concrete co-op design:

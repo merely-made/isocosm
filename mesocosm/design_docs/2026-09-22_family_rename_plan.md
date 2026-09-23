@@ -2,9 +2,12 @@
 
 **Date:** 2026-09-22
 
-**Status, 2026-09-22:** plan. R0 landed the same day: the name reservations
+**Status, 2026-09-22:** in progress. R0 landed: the name reservations
 `eponym`, `isocosm` and `isocosm-vtt` are published on crates.io at 0.0.1.
-Nothing in the tree is renamed yet; every later phase is a lane Mark opens.
+R1 landed the same evening: the wing's documents use the new names in the
+present tense, and the drafts for the six maintainer-owned files are in
+Findings for Mark's word. No code is renamed yet; R2 to R5 are lanes Mark
+opens.
 
 **Owns:** the renaming of the wing's products and the sim to the names
 ruled on 2026-09-22 (wing design record, rulings 109 and 110), across
@@ -101,6 +104,42 @@ each other; R3 when the peer's crate lands; R5 last.
 
 ## Findings
 
+- **2026-09-22, R1 landed.** Nine documents renamed in the present tense by
+  one rule: "Paredros" to "Eponym" and "isotropy" to "Isocosm" outside
+  double quotes, outside code spans and outside the record's §0, with a
+  names line under each document's date. Counts before and after: the wing
+  design record 71 to 15 (the remainder are §0's verbatim rulings and
+  quotations), the founding record 43 to 2, Mesocosm's index 18 to 1,
+  Paredros's index 13 to 1, the rest under ten. Lowercase paths such as
+  `paredros/crates/...` and `shared/isotropy` are untouched because they are
+  true until R2 and R3.
+- **2026-09-22, drafts for the six maintainer-owned files,** each a
+  replacement for one passage, for Mark's word:
+1. *Root `CLAUDE.md`, Project Identity, first sentence:* "**Isocosm: VTT**,
+  called Isometry within the family, is a pixel-art isometric virtual
+  tabletop over the Isocosm simulator: a P2P map editor and turn-based play
+  substrate for D&D, Pathfinder, and other systems." And under the umbrella
+  heading, after "This Git repository contains three products": "The family
+  is Isocosm; the products are Isocosm: VTT (Isometry), Isocosm: Mesocosm
+  and Isocosm: Eponym, over one simulator."
+2. *Root `design_docs/PROJECT_DESCRIPTION.md`, the lead:* the same first
+  sentence as above, with the existing pillars unchanged.
+3. *`mesocosm/CLAUDE.md`, the vessel line:* "Vessel 1 of the Isocosm family,
+  Mesocosm (first person), Eponym (second person) and Isometry, the VTT
+  (third person), over one simulator, Isocosm, sharing a world substrate, a
+  lineage model, and a trust plane."
+4. *`mesocosm/design_docs/PROJECT_DESCRIPTION.md`:* "Paredros" to "Eponym"
+  wherever it appears, and the family named as in draft 3.
+5. *`paredros/CLAUDE.md`, the title and identity:* "CLAUDE.md, Eponym
+  Repository Role"; "**Eponym** (formerly Paredros; renamed 2026-09-22, wing
+  design record ruling 109) is a second-person action RPG in a persistent
+  generated world." Plus one sentence under the location note: "The
+  directory and crates keep the `paredros` name until the rename lane's R2
+  lands." The vessel line as in draft 3, with Eponym as vessel 2.
+6. *`paredros/design_docs/PROJECT_DESCRIPTION.md`, the lead:* "Eponym
+  (formerly Paredros) is a second-person action RPG in a persistent
+  generated world."
+
 - **2026-09-22:** the paredros reservation is the `paredros/` workspace
   root package (`paredros/Cargo.toml`, local 0.0.2, published 0.0.1), with
   a doc-only `src/lib.rs` and a README; the new reservations copy that
@@ -118,3 +157,5 @@ each other; R3 when the peer's crate lands; R5 last.
 
 - 2026-09-22: plan written at Mark's word ("Let's plan the rename too"); R0
   landed the same day.
+- 2026-09-22: R1 landed at Mark's word ("Sure"): nine documents renamed in
+  the present tense, drafts for the six maintainer-owned files filed.

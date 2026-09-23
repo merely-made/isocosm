@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-18
 
+*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT with Isometry as its subtitle, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+
 **Status, 2026-09-18:** brief, for Mark's reading before W2 opens. Nothing
 here is a ruling; it is the references the wing already gives, mapped to the
 simulator's design questions, plus references it has not considered, each
@@ -34,7 +36,7 @@ reading it or its developers' own account, not by playing it.
 | Dwarf Fortress | founding record, Law B, isoscape plan | §3.4, §3.6, generation, the overlay contract | Worldgen then centuries of history before play; one world played as fortress, adventurer and legends viewer; rumours spreading by witnesses; z-levels viewed one at a time, which is the focus cut. The strongest existing proof that one sim can be played several ways |
 | Rain World | ruling 9, tastes | Mesocosm's overlay; §3.5 | Creatures with their own lives and indifference to the player. Also, as generally described, a two-tier creature simulation: full physics in the visited room, an abstract simulation of creatures moving between rooms elsewhere, which is the record's background and foreground in one shipped game |
 | Caves of Qud | ruling 9, tastes | §3.4, factions, generation | Generated history, sultans, cults and factions with reputations; history that the world then references in its own text |
-| Kenshi | vessel briefs, tastes | Paredros's overlay; §3.2 | A world with no protagonist: factions, bases and economies that carry on; long unattended stretches |
+| Kenshi | vessel briefs, tastes | Eponym's overlay; §3.2 | A world with no protagonist: factions, bases and economies that carry on; long unattended stretches |
 | RimWorld | tastes | Overlay pacing; §4.7 as the counter-example | Needs and moods as utility, a storyteller pacing events, real time with pause. Its single-threaded tick is the thing the record's §4.7 exists to avoid |
 | Mount & Blade | tastes | §3.2 polities, the overlay contract | Kingdoms, lords and armies moving on a live campaign map with battles as instances: two scopes of one world, and polities that change without the player |
 | Rogue Legacy | founding record | Lineage | The generational loop the wing was founded on |
@@ -104,7 +106,7 @@ Models to read, all checkable by author and year:
 | Crusader Kings II and III | Character-driven politics: opinions, schemes, secrets, claims, councils; a polity as the sum of its characters' methods | §3.2 collective action methodology; §3.4 secrets as partial knowledge |
 | King of Dragon Pass, Six Ages | The player is a clan; a ring of advisors argues; decisions are collective and mythic. The cleanest shipped picture of "a thing has state because it has a way of deciding" | Ruling 9 |
 | Shadows of Doubt | A city whose citizens have routines, jobs, homes and knowledge; the game is reading evidence of what they did. A knowledge graph as the world | §3.4's reach; §3.7 |
-| Watch Dogs Legion | Every citizen recruitable and playable, each with a generated life | Paredros's "they can replace you" |
+| Watch Dogs Legion | Every citizen recruitable and playable, each with a generated life | Eponym's "they can replace you" |
 | Wildermyth; Massive Chalice | Heroes who age, marry, have children and become legends or monsters across a campaign of decades or centuries | Lineage across epochs; divinity by legend |
 | Prom Week, Comme il Faut (McCoy, Mateas et al., 2010) | A social physics: rules over social state that fire as moves | §3.3's first shape for social processes |
 | Versu (Evans and Short, 2013) | Social practices as first-class objects that characters enter and leave; conversation as practice | The same, with dialogue |

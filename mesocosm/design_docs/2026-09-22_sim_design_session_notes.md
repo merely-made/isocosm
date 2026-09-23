@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-22
 
+*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT with Isometry as its subtitle, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+
 **What this is.** A reference preserving the conversation in which the
 wing's simulator was designed from the top down, at Mark's word ("preserve
 the notes of this discussion in a secondary reference file"). It records
@@ -100,7 +102,7 @@ record's §0; D-numbers to the docket.
 
 Sixty-one rows across the three products: thirty keep, twenty-two rewrite,
 six retire, three surfaced. Mark: "Accept all recommendations" (31). The
-process definition is founded from Paredros's world-conditions schema (32).
+process definition is founded from Eponym's world-conditions schema (32).
 The founding record and Mesocosm's CLAUDE.md are amended (33), and the
 three PROJECT_DESCRIPTIONs, in Mark's words ("These three games are
 different ways of looking at the same simulated world..."; "Think
@@ -112,7 +114,7 @@ absorbs paredros-identity under W3 (34). Retired plans moved to
 
 | Question | Answer | Produced |
 | --- | --- | --- |
-| What does each game foreground? | Mesocosm the critter refined over the ages; Paredros what named entities do; Isometry characters inside polities; each layer simmed and weakly expressed elsewhere (35) | The foregrounded-rung table |
+| What does each game foreground? | Mesocosm the critter refined over the ages; Eponym what named entities do; Isometry characters inside polities; each layer simmed and weakly expressed elsewhere (35) | The foregrounded-rung table |
 | What does a creature carry at each level? | Genotype, phenotype, kingdom; naming, relationships, disposition, memory; contingency on a group (36) | §3.2.1 and ten open questions |
 | Methodology by tier? | The agent literature's tiering, reactive, BDI, normative; the Dwarf Fortress line for named figures; five-factor disposition (37) | Ruling 37 |
 | What is state at each tier? | One ledger read more coarsely; "dying of scurvy in a dnd game feels bizarre"; provisioning by the collective (38) | Ruling 38 |
@@ -120,7 +122,7 @@ absorbs paredros-identity under W3 (34). Retired plans moved to
 | Rulesets? | The licence rule (40); one language at two scopes (41) | §5.1, licences read: Daggerheart out, Lancer in, ICON and CAIN to ask |
 | Holding, place, memory, standing? | Containment derived, possession asserted (53); a critter lives where it can, "a human can give a dog a home" (54); one memory graded (55); standing is alignment, reputation, rank (56) | Questions 3 to 6 closed |
 | Reproduction and inheritance? | Two doors: reproduction rerolls, the epoch boundary changes the lineage; Ptree as the measure (57) | Question 10 closed |
-| Senses? | Play is directing, not driving; the critter's senses are its own (59); driving is Paredros with directing composed on top (60) | §9.14 |
+| Senses? | Play is directing, not driving; the critter's senses are its own (59); driving is Eponym with directing composed on top (60) | §9.14 |
 | Death? | Final across the board, each game with its trick (61); the significant dead go to the planes, summoning is costly (62) | Question 8 closed |
 
 ### 3.4 W2, divinity and tenets: 2026-09-18
@@ -158,7 +160,7 @@ Checked: `paredros-social` is the consent model at the scale of two;
 | Nesting fixed at founding? | "Shouldn't the nesting be dynamically allocated as locations are generated?" (88) | Correction |
 | Scopes? | "it sounds like hardcoding an isometry paradigm into the sim" (92) | Correction; D24 |
 
-Checked: Paredros's `sites.rs` holds the slot and the two lower tiers; the
+Checked: Eponym's `sites.rs` holds the slot and the two lower tiers; the
 tabletop's overmap has multi-cell sites with open kinds; `wing-impresa` is
 nearly the note already.
 
@@ -203,7 +205,7 @@ place with the correction dated.
 | --- | --- |
 | The tracer assumed cubes | It builds world-space rays; the claim was never checked |
 | A 128 MiB texture bound | An arithmetic error; video memory is the bound |
-| Paging was the biggest change | It existed in modulus and Paredros already |
+| Paging was the biggest change | It existed in modulus and Eponym already |
 | Renderling was current | Retired by ruling, still a dependency of `paredros-client` |
 | Daggerheart's SRD is CC-BY | It is DPCGL 2.0 and excludes video games |
 | A polity whose enforcement fails drops to a faction by itself | It goes inactive and dies only by agreement (65) |
@@ -218,15 +220,15 @@ place with the correction dated.
 | Grinding folds into the cohort, so nothing accumulates | A skill accumulates in one sophont; only the unnoted act folds (96) |
 | Nesting is set at founding | Allocated as locations are generated (88) |
 | Founding supplies the default scopes | Scopes are a game's; the sim's nesting has no named tiers (92) |
-| "Denizen" as a title for Paredros | Taken: a live Steam life simulator; kept as the tier word |
+| "Denizen" as a title for Eponym | Taken: a live Steam life simulator; kept as the tier word |
 
 ## 5. Naming decided or opened during the session
 
 | Word | Disposition | Where recorded |
 | --- | --- | --- |
-| isotropy | the sim; crates.io free, other registries unchecked | ruling 17, naming ledger |
+| Isocosm | the sim; crates.io free, other registries unchecked | ruling 17, naming ledger |
 | isostasy | bridging effects between layers; same status | ruling 17 |
-| denizen | the individually remembered tier, superseding borg (2026-09-20, in a peer session); the platform sense became participant; killed as a product title | Mesocosm and Paredros CLAUDE.md; naming ledger |
+| denizen | the individually remembered tier, superseding borg (2026-09-20, in a peer session); the platform sense became participant; killed as a product title | Mesocosm and Eponym CLAUDE.md; naming ledger |
 | sophont | working word for a sapient critter; a different axis from notability | ruling 45 |
 | borg to construct | an unruled proposal | record §3.2.1 |
 | site, location, region, wilderness, biome, environment | ruled in Mark's definitions | ruling 72 |
@@ -240,7 +242,7 @@ At the session's end on 2026-09-22 Mark accepted the docket's D21 to D31
 and D33 as suggested (ruling 106), keeping D19 and D20 held for W5 and W3;
 confirmed and extended the change to ruling 47 (107), grading an offering
 by the depth of the entity's relation to that magic in its story; had the
-two `mesocosm/CLAUDE.md` amendments applied; and ruled that isotropy and
+two `mesocosm/CLAUDE.md` amendments applied; and ruled that Isocosm and
 isostasy, both found as game titles, are internal names and no conflict
 (108). Still open: the parked questions in the sim plan's §8, the naming
 items above, the question to Massif Press, which he will ask on Discord,
