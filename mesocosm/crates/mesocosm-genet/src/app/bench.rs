@@ -20,6 +20,7 @@ mod population;
 mod probe;
 mod producer;
 mod spatial;
+mod sim;
 mod state;
 mod structure_controls;
 mod trial;
@@ -131,6 +132,7 @@ pub fn run_inputs(
         comparison: None,
     }));
     let mut generation = generation_controls::Controls::new(&model.borrow());
+    let simulation = sim::Panel::new(model.borrow().creator.request.seed);
     if let Some(saved) = &restore {
         generation.size = saved.size;
         generation.base = saved
@@ -155,6 +157,12 @@ pub fn run_inputs(
     let close_lane = lane.clone();
     let hooks: HostHooks<Bench, Logic, Child> = HostHooks {
         frame: Box::new(|ctx| {
+            if ctx.runner.state().sim.open {
+                if ctx.runner.state().sim.playing {
+                    ctx.runner.update(|s| s.sim_step());
+                }
+                return ctx.runner.state().sim.playing;
+            }
             if ctx.runner.state().effects.open && ctx.runner.state().effects.playing {
                 ctx.runner.update(|s| s.effects.advance());
             }
@@ -285,6 +293,7 @@ pub fn run_inputs(
                 restore,
                 generation,
                 effects: effect,
+                sim: simulation,
             },
             logic: view::root as Logic,
             sheet: view::SHEET.clone(),

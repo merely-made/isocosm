@@ -1,0 +1,505 @@
+{
+  "version": 1,
+  "master_seed": 1790133116439677600,
+  "domain": "alternating unary reservoir networks and shared-resource ecological compartments; 1..8 sites, 1..6 lineages, 16..128 initial members, 2..4 accounts/lineage; changing observed identities; no spatial-contact claim",
+  "comparisons": [
+    {
+      "founding": {
+        "seed": 6073991932155691794,
+        "sites": 3,
+        "population": 114,
+        "lineages": 1,
+        "cohort_size": 28,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "cc46ead4dff458f0247d2384f3af69b2f6dbd8f696f996486326b9c1466c7bd1",
+      "matter": 18032,
+      "individuals": {
+        "evaluations": 23775,
+        "represented": 23775,
+        "accepted": 13195,
+        "blocked": 10580
+      },
+      "grouped": {
+        "evaluations": 2212,
+        "represented": 23775,
+        "accepted": 13195,
+        "blocked": 10580
+      },
+      "final_groups": 17
+    },
+    {
+      "founding": {
+        "seed": 12269073081994525962,
+        "sites": 3,
+        "population": 103,
+        "lineages": 4,
+        "cohort_size": 31,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "2b64ebe1cc5ca59d7bc474c4ed61f03f4157060716ac680ec3192f8a09e772cd",
+      "matter": 8179,
+      "individuals": {
+        "evaluations": 74481,
+        "represented": 74481,
+        "accepted": 3341,
+        "blocked": 71140
+      },
+      "grouped": {
+        "evaluations": 74481,
+        "represented": 74481,
+        "accepted": 3341,
+        "blocked": 71140
+      },
+      "final_groups": 137
+    },
+    {
+      "founding": {
+        "seed": 10146482935815297209,
+        "sites": 2,
+        "population": 112,
+        "lineages": 5,
+        "cohort_size": 18,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "864782ff15717798e863e4cb48296761299cd29537750dcb336c3f1640c7b162",
+      "matter": 10532,
+      "individuals": {
+        "evaluations": 38682,
+        "represented": 38682,
+        "accepted": 7048,
+        "blocked": 31634
+      },
+      "grouped": {
+        "evaluations": 4577,
+        "represented": 38682,
+        "accepted": 7048,
+        "blocked": 31634
+      },
+      "final_groups": 19
+    },
+    {
+      "founding": {
+        "seed": 17198732366273245365,
+        "sites": 6,
+        "population": 78,
+        "lineages": 4,
+        "cohort_size": 6,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "1e5eb3d5130dc06844815182b4d7d3aff2dc9fcff85d3a4214ca4d5d9d49677c",
+      "matter": 6292,
+      "individuals": {
+        "evaluations": 41645,
+        "represented": 41645,
+        "accepted": 2354,
+        "blocked": 39291
+      },
+      "grouped": {
+        "evaluations": 41645,
+        "represented": 41645,
+        "accepted": 2354,
+        "blocked": 39291
+      },
+      "final_groups": 109
+    },
+    {
+      "founding": {
+        "seed": 5592074159208150137,
+        "sites": 2,
+        "population": 49,
+        "lineages": 5,
+        "cohort_size": 21,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "6bb0ea62ee258bacc13d13f6c0d474815d80ff1f9d8d8e1c0c1d32ea5d318a71",
+      "matter": 7035,
+      "individuals": {
+        "evaluations": 17927,
+        "represented": 17927,
+        "accepted": 3206,
+        "blocked": 14721
+      },
+      "grouped": {
+        "evaluations": 3428,
+        "represented": 17927,
+        "accepted": 3206,
+        "blocked": 14721
+      },
+      "final_groups": 15
+    },
+    {
+      "founding": {
+        "seed": 3975056113899582267,
+        "sites": 4,
+        "population": 86,
+        "lineages": 4,
+        "cohort_size": 8,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "77e4831d01bffeb5b52475ab1c3fc5261d6b9501435e0e7ef7698e4696864fa5",
+      "matter": 6870,
+      "individuals": {
+        "evaluations": 59570,
+        "represented": 59570,
+        "accepted": 3089,
+        "blocked": 56481
+      },
+      "grouped": {
+        "evaluations": 59570,
+        "represented": 59570,
+        "accepted": 3089,
+        "blocked": 56481
+      },
+      "final_groups": 127
+    },
+    {
+      "founding": {
+        "seed": 306429637537706650,
+        "sites": 3,
+        "population": 17,
+        "lineages": 3,
+        "cohort_size": 6,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "3e6663416eda24915af5e58de4a60d1b463c94aaf72a1808061ab62b623f0c24",
+      "matter": 1918,
+      "individuals": {
+        "evaluations": 3582,
+        "represented": 3582,
+        "accepted": 1235,
+        "blocked": 2347
+      },
+      "grouped": {
+        "evaluations": 1392,
+        "represented": 3582,
+        "accepted": 1235,
+        "blocked": 2347
+      },
+      "final_groups": 11
+    },
+    {
+      "founding": {
+        "seed": 10854490887649216681,
+        "sites": 2,
+        "population": 42,
+        "lineages": 6,
+        "cohort_size": 4,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "96114d4e391f50703d452a090f07d82eff34877d8aaf7ce1278c15ba20e232f2",
+      "matter": 3339,
+      "individuals": {
+        "evaluations": 48542,
+        "represented": 48542,
+        "accepted": 1264,
+        "blocked": 47278
+      },
+      "grouped": {
+        "evaluations": 48542,
+        "represented": 48542,
+        "accepted": 1264,
+        "blocked": 47278
+      },
+      "final_groups": 59
+    },
+    {
+      "founding": {
+        "seed": 8343568588993512443,
+        "sites": 4,
+        "population": 39,
+        "lineages": 2,
+        "cohort_size": 19,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "ae18e44443e6b038f63cceaeae267760a594bc836766c0201616193faaa8d001",
+      "matter": 4113,
+      "individuals": {
+        "evaluations": 7143,
+        "represented": 7143,
+        "accepted": 5662,
+        "blocked": 1481
+      },
+      "grouped": {
+        "evaluations": 1844,
+        "represented": 7143,
+        "accepted": 5662,
+        "blocked": 1481
+      },
+      "final_groups": 16
+    },
+    {
+      "founding": {
+        "seed": 16211833196170101711,
+        "sites": 8,
+        "population": 75,
+        "lineages": 1,
+        "cohort_size": 26,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "21700cfe5386953ee7adbf741d3c3a657fa679022d3f488f402ac02de35b1aca",
+      "matter": 6091,
+      "individuals": {
+        "evaluations": 22338,
+        "represented": 22338,
+        "accepted": 3592,
+        "blocked": 18746
+      },
+      "grouped": {
+        "evaluations": 22338,
+        "represented": 22338,
+        "accepted": 3592,
+        "blocked": 18746
+      },
+      "final_groups": 98
+    },
+    {
+      "founding": {
+        "seed": 11529076587641629325,
+        "sites": 6,
+        "population": 92,
+        "lineages": 2,
+        "cohort_size": 20,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "93390d7a31aebd4b5d0b5555aa919eafbb62ad3ce4070373d442ce53ef1f0e97",
+      "matter": 7504,
+      "individuals": {
+        "evaluations": 18710,
+        "represented": 18710,
+        "accepted": 7658,
+        "blocked": 11052
+      },
+      "grouped": {
+        "evaluations": 2093,
+        "represented": 18710,
+        "accepted": 7658,
+        "blocked": 11052
+      },
+      "final_groups": 18
+    },
+    {
+      "founding": {
+        "seed": 3888783956397867284,
+        "sites": 5,
+        "population": 95,
+        "lineages": 5,
+        "cohort_size": 28,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "2f4192ba52ebdeca14208819de5b8f29ee5cf77fd276469855cf9e6c3c7691ca",
+      "matter": 7600,
+      "individuals": {
+        "evaluations": 48639,
+        "represented": 48639,
+        "accepted": 2092,
+        "blocked": 46547
+      },
+      "grouped": {
+        "evaluations": 48639,
+        "represented": 48639,
+        "accepted": 2092,
+        "blocked": 46547
+      },
+      "final_groups": 112
+    },
+    {
+      "founding": {
+        "seed": 6971991644963460643,
+        "sites": 4,
+        "population": 60,
+        "lineages": 3,
+        "cohort_size": 4,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "b8327572ed24927ce8c689a5dc73dc8d8b6cda954ffd3954a61d788c7187cfe2",
+      "matter": 5676,
+      "individuals": {
+        "evaluations": 14304,
+        "represented": 14304,
+        "accepted": 3808,
+        "blocked": 10496
+      },
+      "grouped": {
+        "evaluations": 4865,
+        "represented": 14304,
+        "accepted": 3808,
+        "blocked": 10496
+      },
+      "final_groups": 29
+    },
+    {
+      "founding": {
+        "seed": 3598115039429578254,
+        "sites": 7,
+        "population": 90,
+        "lineages": 1,
+        "cohort_size": 23,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "5662208e8c57ad559582633f3b716494b19474bffc3e08bf3528a42d8f959ac7",
+      "matter": 7254,
+      "individuals": {
+        "evaluations": 13161,
+        "represented": 13161,
+        "accepted": 2992,
+        "blocked": 10169
+      },
+      "grouped": {
+        "evaluations": 13161,
+        "represented": 13161,
+        "accepted": 2992,
+        "blocked": 10169
+      },
+      "final_groups": 151
+    },
+    {
+      "founding": {
+        "seed": 4576887358701994620,
+        "sites": 5,
+        "population": 38,
+        "lineages": 4,
+        "cohort_size": 25,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "e019f466862d4738396380e2f34b451498e1a5af632313f4a0fcb5a2ee4b4e95",
+      "matter": 5101,
+      "individuals": {
+        "evaluations": 15039,
+        "represented": 15039,
+        "accepted": 2613,
+        "blocked": 12426
+      },
+      "grouped": {
+        "evaluations": 3059,
+        "represented": 15039,
+        "accepted": 2613,
+        "blocked": 12426
+      },
+      "final_groups": 17
+    },
+    {
+      "founding": {
+        "seed": 3096374121037366070,
+        "sites": 7,
+        "population": 91,
+        "lineages": 2,
+        "cohort_size": 16,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "ticks": 64,
+      "checkpoints_checked": 64,
+      "final_hash": "a3990588288ba2d53e957dbc6c875cf7b267c96db9351a46fa3975a72fd97f99",
+      "matter": 7303,
+      "individuals": {
+        "evaluations": 31355,
+        "represented": 31355,
+        "accepted": 3158,
+        "blocked": 28197
+      },
+      "grouped": {
+        "evaluations": 31355,
+        "represented": 31355,
+        "accepted": 3158,
+        "blocked": 28197
+      },
+      "final_groups": 114
+    }
+  ],
+  "saved_replays": 16,
+  "refusal_checks": 16
+}

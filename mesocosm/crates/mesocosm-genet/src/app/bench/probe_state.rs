@@ -16,6 +16,16 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         !model.creator.pending && model.creator.prepared.is_some() && model.creator.count() > 0;
     let yes = |value| if value { "yes" } else { "no" };
     let mut snapshot = ProbeSnapshot::default()
+        .with_field("sim-open", yes(state.sim.open))
+        .with_field("sim-tick", state.sim.session.as_ref().map_or(0, |s| s.sim.state().tick).to_string())
+        .with_field("sim-hash", state.sim.session.as_ref().map_or(String::new(), |s| s.sim.state_hash()))
+        .with_field("sim-entities", state.sim.session.as_ref().map_or(0, |s| s.sim.state().population.count()).to_string())
+        .with_field("sim-notes", state.sim.session.as_ref().map_or(0, |s| s.sim.state().notes.len()).to_string())
+        .with_field("sim-notice", state.sim.notice.clone())
+        .with_field("sim-proposal", yes(state.sim.proposal.is_some()))
+        .with_field("sim-compared", state.sim.compared.map_or("none", yes))
+        .with_field("sim-ecology", yes(state.sim.ecology))
+        .with_field("sim-matter", state.sim.session.as_ref().map_or(0, |s|s.sim.matter()).to_string())
         .with_field("notice", state.notice.clone())
         .with_field("seed", model.creator.request.seed.to_string())
         .with_field("variation", model.creator.request.variation.to_string())

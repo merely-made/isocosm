@@ -1,0 +1,37 @@
+wait 1200
+assert snap ready == yes
+click role:button Simulation
+settle 2
+click .sim-population
+input-text 48
+click .sim-sites
+input-text 3
+click .sim-lineages
+input-text 3
+click role:button Ecology world
+settle 2
+assert snap sim-ecology == yes
+assert snap sim-entities == 51
+remember founded
+click .sim-ticks-per-step
+input-text 32
+click role:button Step sim
+settle 2
+assert snap sim-tick == 32
+same founded sim-matter
+more founded sim-notes
+click role:button Compare individual replay
+assert snap sim-compared == yes
+click role:button Save sim
+settle 2
+capture ecology-played
+click .sim-population
+input-text invalid
+remember played
+click role:button Found world
+same played sim-hash
+click role:button Load sim
+settle 2
+same played sim-hash
+click role:button Compare individual replay
+assert snap sim-compared == yes

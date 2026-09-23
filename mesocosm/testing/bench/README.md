@@ -1,5 +1,29 @@
 # Native specimen bench checks
 
+## Isocosm simulation
+
+Choose **Simulation** to found and run a world through `shared/isocosm`.
+**Reservoir world** and **Ecology world** select two generator families;
+seed, population, sites, lineages and ticks per step are editable. Inspection,
+remembering, reproduction and record reckoning are logged sim commands.
+**Compare individual replay** verifies the saved history through the other
+execution mode. **Branch world**, **Preview merge** and **Apply reviewed
+merge** retain both played worlds until a proposal is accepted.
+
+```powershell
+cargo run -p mesocosm-genet -- --bench --seed 1 --frames 1800 --scenario testing/bench/sim.scenario --receipt <output>/sim.json --capture <output>/sim.png
+cargo run -p mesocosm-genet -- --bench --seed 1 --frames 1800 --scenario testing/bench/sim-ecology.scenario --receipt <output>/ecology.json --capture <output>/ecology.png
+```
+
+The first scenario checks inspection, paid birth, save/restore, branching and
+merge acceptance. The second edits founding parameters, runs ecology for an
+epoch, checks matter conservation and cross-mode replay, then verifies an
+invalid founding leaves the played world intact. Both use native controls.
+The core's [README](../../../shared/isocosm/README.md) names the implemented
+behavior and the remaining sim-plan work.
+
+## Specimen checks
+
 Run from the Mesocosm workspace. Use Cargo to select the current executable;
 this machine's configured target directory differs from `mesocosm/target`.
 

@@ -86,6 +86,7 @@ pub(super) struct Bench {
     pub restore: Option<super::comparison::SavedComparison>,
     pub generation: super::generation_controls::Controls,
     pub effects: super::effects::Effects,
+    pub sim: super::sim::Panel,
 }
 
 impl Bench {

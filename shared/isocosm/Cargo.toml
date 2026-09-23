@@ -1,0 +1,18 @@
+[package]
+name = "isocosm"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "Deterministic world processes, populations, records and generated histories"
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+[workspace]
+
+[dependencies]
+serde = { version = "1", features = ["derive", "rc"] }
+serde_json = "1"
+sha2 = "0.10"
+wing-impresa = { path = "../wing-impresa" }
+wing-glyphs = { path = "../wing-glyphs" }
+hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "53648d3acf51fe72e37f7f57687b70c4ef0ca961" }

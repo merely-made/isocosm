@@ -1,0 +1,48 @@
+wait 1200
+assert snap ready == yes
+remember specimen-start
+click role:button Simulation
+settle 3
+assert snap sim-open == yes
+assert snap sim-tick == 0
+assert snap sim-entities == 262
+click role:button Inspect individual
+capture sim-founded
+click role:button Step sim
+click role:button Step sim
+settle 3
+assert snap sim-tick == 2
+click role:button Remember individual
+settle 2
+assert snap sim-notes == 2
+click role:button Reproduce
+settle 2
+assert snap sim-entities == 263
+remember sim-played
+click role:button Compare individual replay
+settle 2
+assert snap sim-compared == yes
+same sim-played sim-hash
+click role:button Save sim
+settle 2
+click role:button Step sim
+assert snap sim-tick == 3
+click role:button Load sim
+settle 2
+same sim-played sim-hash
+assert snap sim-tick == 2
+click role:button Branch world
+settle 2
+click role:button Remember individual
+click role:button Preview merge
+settle 2
+assert snap sim-proposal == yes
+click role:button Apply reviewed merge
+settle 2
+click role:button Compare individual replay
+assert snap sim-compared == yes
+capture sim-played
+click role:button Back to specimen
+settle 3
+assert snap sim-open == no
+same specimen-start hash

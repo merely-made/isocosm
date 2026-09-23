@@ -78,6 +78,7 @@ impl mesquite::Product for BenchProduct {
                 // racing a fixed frame count.
                 || model.trial_advancing()
                 || (state.visible
+                    && !state.sim.open
                     && !state.effects.open
                     && scene.section.is_none()
                     && scene.population_stats.is_none()

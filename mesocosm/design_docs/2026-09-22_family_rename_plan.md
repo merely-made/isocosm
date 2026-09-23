@@ -6,8 +6,9 @@
 `eponym`, `isocosm` and `isocosm-vtt` are published on crates.io at 0.0.1.
 R1 landed the same evening: the wing's documents use the new names in the
 present tense, and the drafts for the six maintainer-owned files are in
-Findings for Mark's word. No code is renamed yet; R2 to R5 are lanes Mark
-opens.
+Findings for Mark's word. R3 is completed within the sim's own implementation
+change: `shared/isocosm`, package `isocosm` 0.1.0, and its native bench
+consumer. R2, R4 and R5 remain lanes Mark opens.
 
 **Owns:** the renaming of the wing's products and the sim to the names
 ruled on 2026-09-22 (wing design record, rulings 109 and 110), across
@@ -67,7 +68,8 @@ word, with drafts prepared here; and the naming ledger records each step.
   and receipt file names that carry "paredros" are renamed with their
   references; recorded receipts in `design_docs/` keep their historical
   names.
-- **R3, the sim crate.** Done when the crate the peer session is building
+- **R3, the sim crate.** Completed by its owning session, alongside the first
+  tested implementation. Done when the crate the peer session is building
   as `shared/isotropy/` is `shared/isocosm/`, package `isocosm` at a version
   above the reservation, its binary and tests renamed, and its consumers
   repointed; coordinated with that session rather than done over it, and
@@ -103,6 +105,14 @@ each other; R3 when the peer's crate lands; R5 last.
    directly is a sequencing choice for whoever opens R2 and W3.
 
 ## Findings
+
+- **2026-09-22, R3:** the owning sim session incorporated ruling 110 before
+  landing its work. The temporary `shared/isotropy` and `shared/wing-sim`
+  paths became `shared/isocosm`, package `isocosm` 0.1.0. Its binary is
+  `isocosm-bench`; tests and `mesocosm-genet` consume `isocosm`. The crate
+  compiles independently and the native bench scenarios exercise its real
+  consumer. This is local implementation, not a new crates.io publication.
+  The earlier measurements below retain their historical paths.
 
 - **2026-09-22, R1 landed.** Nine documents renamed in the present tense by
   one rule: "Paredros" to "Eponym" and "isotropy" to "Isocosm" outside
@@ -154,6 +164,9 @@ each other; R3 when the peer's crate lands; R5 last.
   side holds a mark. Subtitling the tabletop under Isocosm is the response.
 
 ## Progress
+
+- 2026-09-22: R3 folded into the owning sim session's first implementation;
+  core, binary, tests, native consumer and current indexes use Isocosm.
 
 - 2026-09-22: plan written at Mark's word ("Let's plan the rename too"); R0
   landed the same day.

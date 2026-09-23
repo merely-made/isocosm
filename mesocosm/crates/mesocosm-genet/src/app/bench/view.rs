@@ -20,6 +20,9 @@ fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
 }
 
 pub(super) fn root(state: &Bench) -> Child {
+    if state.sim.open {
+        return super::sim::view(state);
+    }
     if state.model.borrow().population.is_some() {
         return super::population::view(state);
     }
@@ -159,6 +162,7 @@ pub(super) fn root(state: &Bench) -> Child {
         )
     };
     let mut controls = vec![
+        button("Simulation", Bench::open_sim),
         button("World trial", Bench::start_trial),
         button("Effects experiment", |s| {
             s.effects.open = !s.effects.open;
@@ -351,6 +355,23 @@ aside { width:300px; padding:20px; background:var(--isomere-panel); border:1px s
 .world-trial .toolbar { margin:0; }
 .trial .viewport { height:calc(100vh - 680px); min-height:180px; }
 .generating .viewport { height:180px; min-height:180px; }
+.sim h1 { font-size:24px; margin:0 0 6px; }
+.sim > p { margin:8px 0; font-size:13px; }
+.sim .toolbar { gap:6px; margin:6px 0; align-items:flex-end; }
+.sim button { padding:6px 8px; font-size:12px; }
+.sim label { font-size:12px; }
+.sim .generation-input { width:110px; padding:4px; overflow:hidden; }
+.sim .generation-input input { white-space:pre; height:20px; overflow:hidden; }
+.sim .sim-saved-world-path { width:320px; }
+.sim-columns { display:flex; gap:12px; align-items:flex-start; margin:10px 0; }
+.sim-sites { display:flex; flex-wrap:wrap; gap:8px; flex:3; }
+.sim-site { box-sizing:border-box; width:calc(50% - 4px); min-width:0; padding:8px; border:1px solid var(--isomere-button-border); background:var(--isomere-panel); }
+.sim-site h3 { font-size:15px; margin:0 0 4px; }
+.sim-site p { font-size:12px; margin:4px 0; }
+.sim-detail { flex:2; min-width:240px; padding:12px; background:var(--isomere-panel); }
+.sim-detail h2 { font-size:18px; margin:0 0 8px; }
+.sim-detail pre { white-space:pre-wrap; overflow-wrap:anywhere; font:12px monospace; }
+.sim #sim-notice { white-space:pre-wrap; overflow-wrap:anywhere; font:12px monospace; }
 "#;
 
 /// The bench's sheet: isomere's shared rules under this product's palette and

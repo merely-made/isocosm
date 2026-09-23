@@ -24,6 +24,7 @@ mesocosm-views = { workspace = true }
 # The shared glyph kernel: the canon the bench's journey preset declares and
 # the declaration half of the effect pack. Data only; execution is core's.
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
+isocosm = { path = "../../../shared/isocosm" }
 netrender = { workspace = true }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
