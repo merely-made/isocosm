@@ -133,7 +133,9 @@ what later sections derive from.
 17. **The sim is isotropy; bridging effects between the layers is
     isostasy.** Ruled 2026-09-18 after the crates.io check in §9.1; the
     remaining registries are still to be checked before either is banked
-    the ledger's way, and claim needs a real publish.
+    the ledger's way, and claim needs a real publish. **Superseded for the
+    sim's name by ruling 109 (2026-09-22): the sim is Isometry.** Where
+    this record says "isotropy" it means the sim.
 18. **A game's grid is a projection.** The sim's volume is cubic; a tile
     with three, four or six sides is a region of voxels its overlay lays
     over that volume, the way a circle is in any voxel game. Ruled
@@ -894,6 +896,25 @@ what later sections derive from.
      no conflict.** Mark, 2026-09-22: "you can apply the claude edits. i
      suppose i'll ask in the discord. as for isotropy and isostasy, i'm not
      trying to make those game names... so what's the conflict?"
+109. **The second-person game is Eponym; Isometry names the sim and the
+     family; the tabletop is Isometry: VTT.** Mark, 2026-09-22, at the end
+     of a naming round (receipts in the naming ledger): "Eponym is pretty
+     great! Accepted!" And: "I'm unsure isometry came after their game (when
+     did we reserve the crate?)... and subtitling it would probably work to
+     make it clear. Isometry: VTT is fine for the vtt, Isometry: Eponym,
+     Isometry: Mesocosm, and Isometry itself can just be the sim instead of
+     those two alternates. So you get isometry, isometry-vtt, mesocosm, and
+     eponym." This supersedes ruling 17's name for the sim: isotropy is no
+     longer the sim's name, and isostasy's status follows the same round.
+     Checked the same day: the Isometry repository was bootstrapped
+     2026-07-05 and the `isometry` crate reserved 2026-07-14; Dark Mode
+     Games' Isometry announced its beta on 2026-07-06 after "roughly three
+     months of work", so their project is the older by a few months and the
+     crate is ours; neither holds a mark. The renames, Paredros to Eponym
+     across crates and docs and the tabletop's package to `isometry-vtt`,
+     are a lane and not an edit. Then, before the family word was banked:
+     "Alternatively, isocosm!" Eponym stands; the family and sim word is
+     between Isometry and Isocosm until Mark picks.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4240,6 +4261,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 109 recorded: Eponym is the second-person game's name,
+  Isometry names the sim and the family, the tabletop is Isometry: VTT;
+  ruling 17 superseded for the sim's name. The renames are a lane, sized at
+  210 files and 1,589 mentions of Paredros across the repository.
 - 2026-09-22: rulings 106 to 108 recorded. The docket's D21 to D31 and D33
   accepted, D19 and D20 held; the change to ruling 47 confirmed and
   extended, the grade of a sacrifice now the depth of the entity's relation
