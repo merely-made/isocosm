@@ -1,7 +1,7 @@
 # Wing design record: readings docket
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
-day; two held; D21 to D33 opened since.** It gathered every reading, recommendation and verdict the
+day; two held; D21 to D33 opened since and ruled 2026-09-22, D32 by ruling 105 and the rest by ruling 106.** It gathered every reading, recommendation and verdict the
 [wing design record](2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
@@ -13,6 +13,8 @@ held items are ruled or moved into their phases' plans.
 | D1 to D7, D9, D11 to D18 | 83, accepted as suggested | "also, i accept the rest." |
 | D8, two alignments | 79 and 81, replacing the reading | "just like factions and individuals, a polity has its own alignment from its acts"; "isn't asserting a constitution of a polity itself an act? indeed, a definitive one." |
 | D10, of note as the derivation rule | 80 and 82, replacing the reading | "like literally a note on the site/item/entity"; "i'm alright with the impresa record!", with a freeform djot field beside the generated details |
+| D21 to D31, D33 (opened 2026-09-21 and 2026-09-22) | 106, accepted as suggested, 2026-09-22; D30's change to ruling 47 confirmed and extended by ruling 107 | "accept all as suggested." |
+| D32, time in a shared world | 105, option A | "A, then." |
 
 Each accepted reading is marked where it sits in the record's §3 and §5.
 What they were, for the archive: the fallback protocols belong to the
@@ -30,7 +32,9 @@ reach the world on it as environment (D16); lifting and restriction, with
 processes declarative (D17); and what survives the boundary review cheaply
 (D18).
 
-## Open
+## Ruled 2026-09-22, for the archive
+
+The items as they stood when accepted:
 
 | # | Reading | If accepted | Suggest |
 | --- | --- | --- | --- |

@@ -236,12 +236,15 @@ place with the correction dated.
 
 ## 6. What the session left open
 
-The docket's D19 and D20 (held) and D21 to D31 and D33 (open); the parked
-questions listed at the foot of the docket and in the sim plan's §8; the
-naming items above; and Mark's own to-dos: the `mesocosm/CLAUDE.md`
-amendments (the founding line under ruling 33, the nis line under ruling
-98), the tabletop's pillar 2 scale, the question to Massif Press about
-ICON and CAIN, and confirming the change to ruling 47's ladder of forms.
+At the session's end on 2026-09-22 Mark accepted the docket's D21 to D31
+and D33 as suggested (ruling 106), keeping D19 and D20 held for W5 and W3;
+confirmed and extended the change to ruling 47 (107), grading an offering
+by the depth of the entity's relation to that magic in its story; had the
+two `mesocosm/CLAUDE.md` amendments applied; and ruled that isotropy and
+isostasy, both found as game titles, are internal names and no conflict
+(108). Still open: the parked questions in the sim plan's §8, the naming
+items above, the question to Massif Press, which he will ask on Discord,
+and the `denizen` crate's publish.
 
 ## 7. Lessons for the next session
 

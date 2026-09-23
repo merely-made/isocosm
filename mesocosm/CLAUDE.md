@@ -82,7 +82,10 @@ architecture that Paredros and Isometry also depend on.
   typed by provenance, kingdom first and lineage under it. One form for
   singular and plural. From nisus, striving: a nis is a lot of matter that
   still bears its line's endeavour, and matter fully returned to soil has
-  lost its nis and is untyped stock. Ruled by Mark 2026-09-04 after a
+  returned to the world's nis (ruling 98 of the wing design record,
+  2026-09-22: the world is itself an entity of the world kingdom and the
+  root of every provenance, so there is no untyped matter). Ruled by Mark
+  2026-09-04 after a
   naming round (figment failed: Rocket's config crate, a live Bedtime
   Digital title, and the wrong sense). See the
   [playable ecology plan](design_docs/2026-08-31_playable_ecology_plan.md)
@@ -168,6 +171,9 @@ Do not copy it into Paredros or Isometry.
   extracted after two real consumers, never declared in advance.
 - **Do not build the federation platform first.** It is extracted from
   shipped games. Mesocosm is a candidate for that proof, not yet a consumer.
+  The simulator is the exception by ruling of 2026-09-18: it is designed
+  from the games' systems in combination, not extracted from a shipped game.
+  See the wing design record.
 - Do not add rollback netcode or a universal CRDT world state speculatively.
   Signed multi-writer authoring is already real in Isometry and is permitted:
   additive operations converge without erasing concurrent claims. Each domain

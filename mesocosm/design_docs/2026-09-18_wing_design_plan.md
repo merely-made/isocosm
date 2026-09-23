@@ -872,6 +872,28 @@ what later sections derive from.
      branched, or for entirely different worlds, they could become a
      neighboring world in the celestial neighborhood...? That way you could
      manage a set of related worlds".
+106. **The docket's remaining items are accepted as suggested.** Mark,
+     2026-09-22: "accept all as suggested." D21 to D31 and D33 accepted, D19
+     and D20 kept held for W5 and W3.
+107. **The change to ruling 47 is agreed; a sacrifice's grade is the depth
+     of the entity's relation to that magic in its story; collecting all the
+     magics is favoured, as a setting.** Mark, 2026-09-22: "agreed. hmm. if
+     i were going to determine the significance of a thing relative to an
+     entity, i'd probably ask how many things its related to in their story.
+     so maybe that entity's relations to the use of the given facet/bit of
+     the world's magic is how we could judge the quality of the offering in
+     the divinity evaluation. that way, even if someone only used one sort
+     of magic, but they used it religiously and accomplished great things
+     with it, then they could still achieve greater divinity. now whether
+     you just need to pass a threshold of magical potency or still need to
+     collect all the magics, perhaps that can be a setting too. but i do
+     favor collecting all the magics, even trinkets plus your main magic.
+     links ya to the world."
+108. **CLAUDE.md edits applied; Massif Press to be asked on Discord;
+     isotropy and isostasy are not game names, so the title collisions are
+     no conflict.** Mark, 2026-09-22: "you can apply the claude edits. i
+     suppose i'll ask in the discord. as for isotropy and isostasy, i'm not
+     trying to make those game names... so what's the conflict?"
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1066,6 +1088,22 @@ which. Still open: whether the presence mode of ruling 43, omnipresent,
 reincarnating or fixed, is dictated by the tier, chosen by the wisher
 within it, or follows the referent; Mark's answer of 2026-09-18 addressed
 the grade rather than the mode, so the mode stays with the organ's plan.
+
+**The grade, amended by ruling 107.** Ruling 46 graded a sacrificed glyph by
+the form that bore it. Ruling 107 adds the second factor and makes the
+ladder of forms derived, as D30 proposed: the forms a world offers are
+whatever bearer forms its magic systems' gate axis admits, plus memory
+always, ranked as ruling 46 ranks them; and the *quality of the offering* is
+the depth of the entity's relation to that facet of the world's magic in its
+story, "how many things it's related to". In the record's terms that is the
+count of notes and cause-links joining the entity to uses of that facet, the
+same reachability ruling 71 collects by, read from the impresa and the
+journey. So one magic "used religiously" with great things accomplished by
+it grades as high as a wide collection, and a trinket used once grades as a
+trinket. Whether ascension needs a threshold of potency or the whole canon
+is a world setting in ruling 102's flow; the favoured default is the whole
+canon, "even trinkets plus your main magic", because it "links ya to the
+world".
 
 **Sacrifice and domain (ruling 47).** To sacrifice a form is to destroy
 it: burn the carved sticks, spend the bought items, unmake the embodied
@@ -1843,7 +1881,7 @@ online model with visible seams.
 ### 3.3.1 Needs, value and exchange
 
 From ruling 94. Mark's two questions, why people act and how that aggregates
-into trade, are answered here as a reading, docketed as D25, built from
+into trade, are answered here as a reading, docketed as D25, accepted 2026-09-22, built from
 rulings already made.
 
 **Value (ruling 94).** Items, value, crafting and services "bear relation to
@@ -1901,7 +1939,7 @@ item left behind, as kleptoplasty is the verb pointed inward. So crafting is
 not a fourth process shape. It is the first shape with matter among its
 inputs, and the schema's operation already has the slot: its commitments
 include "item, matter, energy, time", its transforms are typed, and a
-byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26:*
+byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26, accepted 2026-09-22:*
 
 - *The link Mark asks for is the tenet, from the actor's side.* A sophont
   chooses among the acts it could take by three readings the record already
@@ -1977,7 +2015,7 @@ from the other end: matter is typed "kingdom first (flora, fauna, myco,
 micro...) and lineage under it", "with the type vocabulary world-derived
 from the roster rather than an authored element table" (playable ecology
 plan §6, ruling 4). No material table exists anywhere in the wing, and none
-is to be written. *Reading, docketed as D28:*
+is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
 
 - *A material's properties are its lineage's traits.* Ruling 57 already
   reads a lineage as a property vector, Ptree's vocabulary of mass, growth
@@ -2028,7 +2066,7 @@ is to be written. *Reading, docketed as D28:*
   world", and what ruling 43's worldtree, "with the world's own processes
   bound to it", assumed.
 
-**The world as an entity (rulings 98 and 99).** *Reading, docketed as D29.*
+**The world as an entity (rulings 98 and 99).** *Reading, docketed as D29, accepted 2026-09-22.*
 The world is one more entity on the ladders the record already has, at the
 root. Its kind is open to the world: "maybe the world is inert, or sentient,
 or a sophont, or a god, or a turtle, or whatever. maybe it's flora, or
@@ -2065,7 +2103,7 @@ Mark keeps asking for, "a world built on a critter", given a home.
 **World is a kingdom, and scale stays orthogonal (ruling 100).** Ruling 39's
 two axes hold: *world* joins flora, fauna, myco and micro as a kingdom, and
 a world's scale is macro, "the basic" case, with meso and micro worlds left
-open: "small moon? satellite? asteroid? ship?" *Reading, added to D29.* The
+open: "small moon? satellite? asteroid? ship?" *Reading, added to D29, accepted 2026-09-22.* The
 lion turtle question dissolves: kingdom being class and scale orthogonal, a
 lion turtle is macro fauna, and a world resting on a critter is a
 world-kingdom entity resting on macro fauna, unless a founder makes the
@@ -2270,7 +2308,7 @@ and the record already holds every part of it.
 often, or there wouldn't be rules against its propagation", the word then
 corrected to "not rule, but 'taboo'"; and whether one is told turns on
 "relation, opinion, and goals", with personality wondered about. *Reading,
-docketed as D21:*
+docketed as D21, accepted 2026-09-22:*
 
 - *What makes a secret* is the taboo and not the information. In the
   record's terms a taboo is a tenet (ruling 50) holding a strongly negative
@@ -2715,7 +2753,7 @@ the sim. World, region, area and battlemap are Isometry's second pillar,
 "Maps at every scope, sculpted... Same world, different scopes"
 (`design_docs/PROJECT_DESCRIPTION.md:26-29`), and the pillar's own word is
 *scope*. The record conflated two things. *Answer to ruling 92's questions,
-docketed as D24:*
+docketed as D24, accepted 2026-09-22:*
 
 - *Nesting* is the world's and the sim's: a node opening into a finer map,
   allocated as locations are generated (ruling 88), free of scale and with
@@ -2882,7 +2920,7 @@ both old and new revisions recorded"
 (`paredros/design_docs/2026-09-09_world_conditions_plan.md`, core invariant
 4). Advancing time is what makes the seams honest: whatever the new ruleset
 cannot express is accounted for by the years that passed, as ruling 38 made
-the coarsening of needs diegetic. *Reading, docketed as D22:* realignment is
+the coarsening of needs diegetic. *Reading, docketed as D22, accepted 2026-09-22:* realignment is
 ruling 57's epoch boundary at the scale of a world, the shop between rounds,
 and it is a rung transition of §3.3; Mark's example, from hex exploration to
 piloting a ship in orbit, is also a change of foregrounded scope under
@@ -2893,7 +2931,7 @@ the rules.
 choice, "a complexity and size issue", as in Dwarf Fortress. The generated
 timeline is one "one could go back in time to prior worldstates with", and
 the client is not to be overwhelmed but offered "the opportunity to zoom in
-and edit stuff". *Reading, docketed as D23:* going back is cheap because of
+and edit stuff". *Reading, docketed as D23, accepted 2026-09-22:* going back is cheap because of
 the derivation rule. A world is its seed, its rules and its asserted facts,
 and the sim is deterministic, so the state at any past time is that log
 replayed to then, with checkpoints at epoch boundaries bounding the cost and
@@ -2936,7 +2974,7 @@ and savagery, and its legends mode is a timeline to browse and not to edit.
 ### 3.10 The world's lineage and the magic generator
 
 From ruling 101. Every clause of Mark's first sentence is already held by a
-ruling, and the magic generator is a reading, docketed as D30.
+ruling, and the magic generator is a reading, docketed as D30, accepted 2026-09-22.
 
 **The world has a lineage.** Under rulings 98 to 100 the world is an entity
 of a kingdom, so ruling 57 applies to it whole. A lineage is provenance
@@ -3051,7 +3089,7 @@ the Ascension's spheres are an effect-oriented canon.
 ### 3.11 Arcs and the storyteller
 
 From ruling 103: "both, with the second being what gives the first its
-shape". *Reading, docketed as D31.*
+shape". *Reading, docketed as D31, accepted 2026-09-22.*
 
 **The sim's half: the parts.** Every constituent part of an arc is a thing
 the sim already has, so the sim is "aware of the constituent parts" without
@@ -3167,7 +3205,7 @@ only its intents and the notes they made.
 shared context over worlds that are not merged: "two worldlines with a
 shared history that branched", or "entirely different worlds" made
 neighbours "in the celestial neighborhood", so that "you could manage a set
-of related worlds". *Reading, docketed as D33.* Two relations, both already
+of related worlds". *Reading, docketed as D33, accepted 2026-09-22.* Two relations, both already
 in the record, and neither merges anything: each world keeps its own log and
 its own played clock, and what crosses between them is things with
 provenance.
@@ -3959,6 +3997,13 @@ still open under it.
    mesquite's `Product`. **Ruled 2026-09-18: isotropy** for the sim, and
    **isostasy** for whatever bridges effects between the layers. Games,
    studios and marks remain to be checked before banking; claim by publish.
+   **Checked 2026-09-22 by web search:** isotropy is a 2015 iOS puzzle game
+   (Dmitriy Prikhodko) and Isotropic Games a placeholder studio site;
+   isostasy is a live Steam title, an NES-style Metroidvania by Gravel
+   Studios. Mark, ruling 108: neither word is to be a game name, so there is
+   no conflict; both are banked as internal names for the sim and the
+   bridging organ and never as product titles. Trademark registers were not
+   searched. Claim by publish stands.
 2. **The base unit and tile geometry.** Answered: the base scale is
    configurable for other rulesets, since five feet is one game's number;
    and a tile may have a configurable number of sides. Ruled here in
@@ -4018,8 +4063,10 @@ still open under it.
    Mark's stated scope of 2026-09-16 (a castle with tunnels and levels, a
    region, a mile-square world). §6 wants done-conditions from the
    product's stated scale, and the product's stated scale is stale.
-   **Open:** Mark restates pillar 2, or the record's scale is the one he
-   stated in conversation.
+   **Closed 2026-09-18, marked so 2026-09-22:** Mark restated pillar 2
+   ("Maps at every scope, sculpted... Same world, different scopes") and the
+   file notes that the earlier 15 by 15 to 30 by 30 "was a view, not a
+   limit"; this item stayed marked open by error until the to-do review.
 10. **The vertical scale and the shipped step** (from §3.6). **Ruled
     2026-09-18: a per-axis scale, y and z as well as x, added to the
     tracer under W3** (ruling 23), so the shipped step is reproduced
@@ -4193,6 +4240,13 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: rulings 106 to 108 recorded. The docket's D21 to D31 and D33
+  accepted, D19 and D20 held; the change to ruling 47 confirmed and
+  extended, the grade of a sacrifice now the depth of the entity's relation
+  to that magic in its story, with the whole canon the favoured default and
+  a threshold a setting; the two `mesocosm/CLAUDE.md` amendments applied at
+  Mark's word; isotropy and isostasy banked as internal names after the
+  registries showed both as game titles; §9.9 closed as stale.
 - 2026-09-22: at Mark's word ("proceed!"), the sim plan drafted from rulings
   1 to 105 as W2's plan, and the session notes written as a secondary
   reference preserving the discussion; both indexed. This record's status
