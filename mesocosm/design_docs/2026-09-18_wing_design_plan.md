@@ -915,6 +915,14 @@ what later sections derive from.
      are a lane and not an edit. Then, before the family word was banked:
      "Alternatively, isocosm!" Eponym stands; the family and sim word is
      between Isometry and Isocosm until Mark picks.
+110. **The family and the sim are Isocosm; the tabletop is Isocosm: VTT; the
+     rename is planned.** Mark, 2026-09-22: "Let's do it, isocosm, eponym,
+     isocosm-vtt, etc. Let's plan the rename too". The reservations
+     `eponym`, `isocosm` and `isocosm-vtt` were published to crates.io at
+     0.0.1 the same day, and the rename is the [family rename
+     plan](2026-09-22_family_rename_plan.md). Where this record says
+     "isotropy" it means the sim, now Isocosm; where it says "Paredros" it
+     means Eponym; the tabletop keeps Isometry as its subtitle.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4261,6 +4269,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-22: ruling 110 recorded: Isocosm for the family and the sim,
+  Isocosm: VTT for the tabletop, Eponym for the second-person game; the
+  three reservations published; the family rename plan written and indexed.
 - 2026-09-22: ruling 109 recorded: Eponym is the second-person game's name,
   Isometry names the sim and the family, the tabletop is Isometry: VTT;
   ruling 17 superseded for the sim's name. The renames are a lane, sized at
