@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 137. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 138. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1225,6 +1225,14 @@ what later sections derive from.
      generator suggests means from the way of deciding, and a polity may
      enforce by any means it has: a theocracy that fines, a merchant
      republic with an army.
+138. **Deadlock is per act, not a condition.** Put to Mark on 2026-09-24,
+     from §3.2.2's open "whether more conditions are wanted", with ruling
+     133's deadlock as the candidate: is a deadlocked polity a fifth
+     condition beside inactive, suppressed, superseded and subordinated?
+     Three options were put: its own condition; inactive; or per act only.
+     Mark: "Per act only." So deadlock blocks one act at a time, the
+     polity stays active for everything its group does agree on, and the
+     conditions stay four.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1988,7 +1996,9 @@ subordinating faction can and cannot make the polity do. *Reading, from
 ruling 134, put to Mark on 2026-09-24 without objection:* a subordinating
 faction can make the polity do whatever its own way of deciding can do,
 since it acts through that way, and can change its constitution only by
-the amendment rule; whether more conditions are wanted stays open.
+the amendment rule. *Ruled 2026-09-24 (ruling 138):* the one further
+candidate, ruling 133's deadlock, is per act and not a condition, so the
+conditions stay four until a new candidate is found.
 
 Prior art for ruling 66, known. The League of Nations shows both rulings in
 one life: inactive through the war, superseded by the United Nations in
@@ -4775,6 +4785,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 138 recorded: deadlock is per act, not a condition;
+  the conditions stay four, and §3.2.2's open questions are all ruled or
+  read.
 - 2026-09-24: rulings 136 and 137 recorded: a polity dies by its own
   dissolution or when nothing holds it; the way of deciding suggests the
   means by default. The subordinating faction's limits recorded as a
