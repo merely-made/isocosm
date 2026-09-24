@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 122. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 123. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1094,6 +1094,14 @@ what later sections derive from.
      it, it turns with its seasons and ages, and it changes in its shop
      between rounds. Leaving out the second reads as: its people move it
      only through what they do to it, never by what they are.
+123. **Harm is both vigour and wounds.** Put to Mark on 2026-09-24,
+     returning to the fight after ruling 116: when a blow lands, what does
+     it change in the body? Three options were put: the part it hits, a
+     wound to one part of the body's tree; a pool of vigour, the reserve of
+     fight left in the body, closest to hit points; or both. Mark: "Both."
+     So a blow drains vigour first and wounds a part when it lands hard or
+     the vigour is gone; vigour comes back with rest, and wounds heal
+     slowly, or never.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2497,6 +2505,20 @@ resource-holding potential (Parker, 1974); red deer stags roaring, then
 walking in parallel, and fighting only when closely matched (Clutton-Brock
 and colleagues, 1979); the sequential assessment model (Enquist and Leimar,
 1983).
+
+**Harm (ruling 123).** When a contest does reach blows, a blow drains vigour
+first and wounds a part of the body's tree when it lands hard or the vigour
+is gone; vigour comes back with rest, and wounds heal slowly, or never. Both
+are written to the one ledger of ruling 38. *Reading, not ruled:* vigour is
+the fight's short draw on the body, read against the fatigue and reserve
+the ledger already keeps, and a wound is a loss in a part's structure, so a
+cut leg slows and a lost eye blinds by what the part tree no longer
+affords; a side that runs out of vigour is a side that breaks (ruling 116);
+and a ruleset's hit points calibrate against vigour more than wounds, since
+5e's own text treats hit points as durability, will and luck rather than
+flesh. Prior art, known: vitality and wound points (the d20 Star Wars
+roleplaying game, 2000, later a D&D variant); RimWorld and Dwarf Fortress,
+which wound parts and keep no pool.
 
 ### 3.4 The record
 
@@ -4556,6 +4578,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 123 recorded: harm is vigour, drained first and
+  restored by rest, and wounds to parts, slow to heal or permanent. §3.3.1
+  gains a harm paragraph with one flagged reading and its prior art.
 - 2026-09-24: ruling 122 recorded: a fluid world's temperament moves with
   what happens to it, its own cycles and its epoch boundary, not with its
   people's temperament; §3.11 gains the note for rulings 120 to 122.
