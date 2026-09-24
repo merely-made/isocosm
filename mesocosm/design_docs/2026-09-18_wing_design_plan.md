@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 120. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 121. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1062,6 +1062,24 @@ what later sections derive from.
      "Founders only." So the world's disposition seeds the first lineages;
      after that, dispositions are inherited and lived, and the world's
      pull fades.
+121. **The world shapes its people's dispositions through trait and
+     through condition; people drift from the world's temperament, and the
+     world's temperament may not be static either.** Put to Mark on
+     2026-09-24, following ruling 120: ruling 119 drew the belief baseline
+     from the world's disposition and ruling 120 has the world seed only
+     the founders; does the belief baseline fade the same way? Two options
+     were put: fades too, or stays pinned. Mark: "I think it seeds
+     disposition and such things partially through trait, and partially
+     through condition, right? Like is it a world of scarce or abundant
+     resources, does the world have intentions, what are the world's
+     cyclical processes, what is the world made of… i agree that a world's
+     people can drift from their world's temperament, and a world's
+     temperament is possibly not a static thing either. Should it not
+     change…?" So the direct seeding is the founders' (ruling 120), the
+     world's conditions keep shaping how its people turn out, and the
+     baseline for weighing beliefs is the population's own, free to drift.
+     Whether and how the world's temperament changes is his question, put
+     back to him.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1450,7 +1468,10 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    significant events may also cause traits, as Crusader Kings does. (Ruled
    2026-09-24, ruling 120: a disposition is inherited through the lineage
    and lived; the world entity's disposition seeds only the first
-   lineages, and its pull fades after.) The denizen
+   lineages, and its direct pull fades after. Ruling 121: the world keeps
+   shaping its people through condition, scarcity or plenty, its
+   intentions, its cycles, what it is made of, and they may drift from its
+   temperament.) The denizen
    line is Dwarf Fortress's historical-figure rule: a critter becomes a denizen
    when it does something the record keeps, is named, is related, or is
    explicitly designated, not only when it becomes an antagonist.
@@ -2562,7 +2583,10 @@ drawn from the world entity's disposition (rulings 98 and 103): a world's
 temperament is its believers' normal way. The sim's default is a neutral
 median, "the world's normal way" when nothing sets it otherwise, which is
 presumably what a world without a disposition of its own takes, since
-ruling 103 gives one only to an agentive world.
+ruling 103 gives one only to an agentive world. *Refined by rulings 120 and
+121:* the baseline is the population's own aggregate, seeded from the
+world's disposition in the first lineages and moved after by what the
+world's conditions make of its people, so it drifts.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -4510,6 +4534,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 121 recorded: the world shapes its people through
+  trait and condition, they drift from its temperament, and its
+  temperament may change; ruling 120's note and ruling 119's paragraph
+  refined to match.
 - 2026-09-24: ruling 120 recorded: the world's disposition seeds the first
   lineages only; dispositions are inherited and lived after. §3.2.1's
   methodology answer gains the note.
