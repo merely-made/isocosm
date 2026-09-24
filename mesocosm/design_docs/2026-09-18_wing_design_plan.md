@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 128. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 129. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1143,6 +1143,16 @@ what later sections derive from.
      real consumers, never declared in advance" contradicts the sim plan's
      S1. Mark: "Amend it." The line now carries the simulator's exception,
      the way the federation line does.
+129. **A thing stays of note only while some mind remembers it or some
+     bearer records it.** Put to Mark on 2026-09-24, from ruling 127:
+     ruling 80 has the sim write notes "the way a player would", and a
+     note now fades at the rate its holder's memory sets; when the sim
+     notes a place, an item or an entity, whose memory is that note? Three
+     options were put: whoever remembers it; the world's own memory; or
+     kept like a player's journal, never fading. Mark: "Whoever remembers
+     it." So each mind's copy fades at its own rate, a bearer's lasts with
+     the bearer, and when the last copy is gone the thing returns to the
+     ambient; legend never fades.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2876,7 +2886,15 @@ the same novelty, quality and relevance at a lower bar. *Ruled 2026-09-24
 the holder's memory sets, "in dnd terms, intelligence", ruling 55's graded
 memory; a note kept on a bearer, a journal, a notebook, a diary, does not
 fade and lasts as long as the bearer does; legend never fades. "Little
-incident" stays open.
+incident" stays open. *Ruled 2026-09-24 (ruling 129):* the note's holders
+are whoever remembers the thing and whatever records it, each mind's copy
+fading at its own rate; when the last is gone, the thing returns to the
+ambient. So the middle tier is the world's own: of note means remembered in
+the world or written down in it. *Reading, not ruled:* this makes the
+observational test safe by construction for the world's minds, since what
+no mind or bearer holds, nothing in the world can tell from its regenerated
+self; a relation still keeps a thing's stub while it names it; and players
+are the case left open, since a player remembers outside the world.
 
 Prior art for ruling 71, checked 2026-09-20 from web search summaries of the
 Steam Workshop pages for Better GC (id 2982026860) and RuntimeGC (id
@@ -4634,6 +4652,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 129 recorded: a thing is of note only while some mind
+  remembers it or some bearer records it. §3.4.1 gains it with one flagged
+  reading, and players are left as the open case.
 - 2026-09-24: rulings 127 and 128 recorded: everything fades at the
   holder's memory's rate, physical notes and legend excepted, answering
   half of §3.4.1's open item; and Mesocosm's CLAUDE.md amended so its
