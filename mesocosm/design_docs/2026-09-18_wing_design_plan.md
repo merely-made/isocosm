@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 154. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 156. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1363,6 +1363,19 @@ what later sections derive from.
      now, or keep it held for W5? Mark: "Rule it." So §5.2's points 2 to 5
      stand as the contract's shape, and W5 designs the details against
      them.
+155. **What a Mesocosm player plays depends on the lineage's traits.** Put
+     to Mark on 2026-09-24, from ruling 152 against ruling 59's "direct one
+     or a cohort of critters": what does a Mesocosm player play? Two
+     options were put: one critter, the cohort following it in the world;
+     or the cohort as one entity. Mark: "Your relation to other critters in
+     your lineage depends on your traits. In the most extreme cases, other
+     critters in your lineage can be ecological competitors or direct
+     extensions of your own critter (fungus monocreature, swarmlike
+     entities like germs, etc.)"
+156. **A DM may take up any unclaimed entity to play, and may edit the
+     world.** Put to Mark on 2026-09-24, from ruling 152: what can a DM do
+     from outside the world? Three options were put: play any NPC; edit,
+     not direct; or both. Mark: "Both."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1736,7 +1749,12 @@ record's terms it is the two doors of ruling 57 merging: for a germ the
 epoch boundary comes every generation, the shop is open during the round,
 and to play a germ is to play the lineage directly. Both kingdoms have a
 genotype and a phenotype in the animal's sense; what differs is the count
-of bodies one identity spans.
+of bodies one identity spans. *Ruled 2026-09-24 (ruling 155):* so what a
+Mesocosm player plays follows from its traits. A player directs only who
+they play (ruling 152), and a critter's relation to the rest of its lineage
+depends on its traits: at one extreme its kin are its ecological
+competitors, at the other they are extensions of its own critter, a fungus
+monocreature or a swarm of germs, which a player directs whole.
 
 **What the record's own structure says a creature must also carry, put to
 Mark as questions rather than filled in (open, 2026-09-18):**
@@ -4451,7 +4469,8 @@ follows here is the boundary above it and stands as written.
    point by ruling 114, and with points 2 to 4 as the contract's shape by
    ruling 154. Point 2's directives are narrowed by rulings 152 and 153: a
    player directs only the entity they play, and two players may direct
-   the same one. Points 1, 6 and 7 stay as D18 left them.)
+   the same one; a DM may take up any unclaimed entity to play and may
+   edit the world (ruling 156). Points 1, 6 and 7 stay as D18 left them.)
 
 6. **WIT as the discipline, with two bindings.** Shape the contract the way
    WIT forces: values copied, opaque handles minted by the host, no pointer
@@ -4954,6 +4973,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 155 and 156 recorded: what a Mesocosm player plays
+  follows its lineage's traits, kin ranging from competitors to extensions
+  of its own critter; a DM may take up any unclaimed entity to play and may
+  edit. §3.2.1's body forms and §5.2 follow.
 - 2026-09-24: rulings 151 to 154 recorded: owning a person is slavery, a
   tenet; a player directs only who they play, and two may direct the same
   entity; D19's contract ruled. §3.1's note and §5.2 follow, and the
