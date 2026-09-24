@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 144. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 146. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1287,6 +1287,19 @@ what later sections derive from.
      own; or inhabited, a mind moving into it, a bound spirit, a soul in a
      phylactery, one of the dead summoned into a vessel. Mark picked all
      three.
+145. **A sophont item acts through its wielder, by its own powers, and can
+     take over.** Put to Mark on 2026-09-24, following ruling 144: how
+     does a sophont item act in the world? Three options were put, to pick
+     all that should be possible: through its wielder, directing whoever
+     holds it, weighed by the wielder's opinion of it (ruling 60), the
+     wielder free to refuse; by its own powers, as far as its body and
+     magic allow; and taking over, a strong enough item possessing its
+     wielder, the reverse of ruling 53's pilot possessing the mech. Mark
+     picked all three.
+146. **A sophont item is never owned.** Put to Mark on 2026-09-24: can a
+     sophont item be owned? Three options were put: like any item; only by
+     agreement; or never owned. Mark: "Never owned." So it can be held but
+     never owned; it is a companion, and it can own things itself.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1353,7 +1366,10 @@ bends the rules the others run under (ruling 10). (Ruled 2026-09-24, ruling
 144: an item can also be a sophont, made so by its maker, awakened by its
 story, or inhabited by a mind that moves into it; then it has agency, and
 its provenance stays a maker's or its own story's while its identity is a
-sophont's, ruling 45's two axes.)
+sophont's, ruling 45's two axes. Rulings 145 and 146: it acts through its
+wielder, by its own powers, and when strong enough by taking its wielder
+over; and it is never owned, only held, and can own things itself. Whether
+the same holds for every sophont is not ruled.)
 
 ### 3.2 Agents and state
 
@@ -4858,6 +4874,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 145 and 146 recorded: a sophont item acts through
+  its wielder, by its own powers, and can take over; it is never owned.
+  §3.1's line on items gains them.
 - 2026-09-24: ruling 144 recorded at Mark's prompt: an item can be a
   sophont, made so, awakened by its story, or inhabited. §3.1's line on
   items gains it.
