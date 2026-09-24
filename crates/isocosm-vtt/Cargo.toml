@@ -1,0 +1,12 @@
+[package]
+name = "isocosm-vtt"
+version = "0.0.2"
+edition = "2024"
+license = "MPL-2.0"
+description = "Name reservation. Isocosm: VTT is the pixel-art, peer-to-peer virtual tabletop of the Isocosm family, over the Isocosm simulator; implemented by the isometry-* crates."
+repository = "https://github.com/merely-made/isometry"
+readme = "README.md"
+keywords = ["vtt", "tabletop", "isometric", "p2p", "game"]
+categories = ["games"]
+
+[dependencies]

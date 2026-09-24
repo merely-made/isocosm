@@ -2,7 +2,9 @@
 
 ## Umbrella repository (2026-09-09)
 
-This Git repository contains three products. The tabletop uses the root Cargo
+This Git repository contains three products. The family is Isocosm; the
+products are Isocosm: VTT, Isocosm: Mesocosm and Isocosm: Eponym, over one
+simulator (wing design record, rulings 110 and 111, 2026-09-22). The tabletop uses the root Cargo
 workspace; Mesocosm uses `mesocosm/`; Eponym uses `eponym/`. Read each
 product's `CLAUDE.md` before editing it. Licenses remain unchanged; Eponym's
 native package is now `eponym-client`. Build workspaces remain separate to preserve source/patch policy.
@@ -24,8 +26,11 @@ it first when starting any session.
 
 ## Project Identity
 
-**Isometry** is a pixel-art isometric virtual tabletop: a P2P map editor
-and turn-based play substrate for D&D, Pathfinder, and other systems. The
+**Isocosm: VTT** (formerly Isometry; renamed 2026-09-22, wing design record
+rulings 110 and 111) is a pixel-art isometric virtual tabletop over the
+Isocosm simulator: a P2P map editor and turn-based play substrate for D&D,
+Pathfinder, and other systems. Its crates keep the `isometry-` prefix as a
+plain technical name. The
 DM prepares maps ahead of time and hosts a session; players join over p2p
 and move through the maps in turns. The look and feel target is GBA-era
 tactics games (Tactics Ogre: The Knight of Lodis, Final Fantasy Tactics

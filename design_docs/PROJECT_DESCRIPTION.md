@@ -1,11 +1,15 @@
-# Isometry
+# Isocosm: VTT
 
-**Status:** first cut authored 2026-07-05 from the founding design session.
+**Status:** first cut authored 2026-07-05 from the founding design session;
+renamed from Isometry on 2026-09-22 (wing design record, rulings 110 and 111),
+with the pillars unchanged.
 This file is maintainer-owned per DOC_POLICY §6; edit freely, Mark.
 
 ## What it is
 
-Isometry is a pixel-art isometric virtual tabletop. A group co-owns a signed,
+Isocosm: VTT (formerly Isometry) is a pixel-art isometric virtual tabletop
+over the Isocosm simulator. Its crates keep the `isometry-` prefix as a plain
+technical name. A group co-owns a signed,
 local-first campaign space and may run play through a traditional hosted
 tactical session or a shared-authority policy. It is a substrate for tabletop
 systems (D&D, Pathfinder, others), not a game with rules of its own.

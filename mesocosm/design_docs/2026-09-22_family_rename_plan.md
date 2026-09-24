@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-22
 
-**Status, 2026-09-24:** in progress. R2 landed 2026-09-24: `paredros/` is
+**Status, 2026-09-24:** in progress; R4 landed 2026-09-24 (Progress). R2 landed 2026-09-24: `paredros/` is
 `eponym/`, the root package is `eponym` 0.0.2, the five member crates are
 `eponym-*`, and the eponym workspace's test count matches its pre-rename
 baseline (which was already red; see Findings). R0 landed: the name reservations
@@ -97,7 +97,8 @@ each other; R3 when the peer's crate lands; R5 last.
    reservation and describes the tabletop. Options: keep it as a second
    reservation for the tabletop beside `isocosm-vtt`; repoint its
    description to the family; or leave it untouched as history. Leaving it
-   is the default.
+   is the default. **Taken as the default under R4, 2026-09-24:** left
+   untouched at 0.0.1 as history; Mark may repoint it later.
 2. **The repository name** (R5). Renaming aligns the umbrella with the
    family word; not renaming keeps every existing link and pin valid.
 3. **The six maintainer-owned files.** Drafts arrive under R1's Findings
@@ -248,3 +249,8 @@ each other; R3 when the peer's crate lands; R5 last.
   pre-existing sortie receipts), 3 ignored, over 48 test binaries;
   `cargo check --workspace --all-targets` clean but for the one pre-existing
   warning; root `--all-features --all-targets` and Mesocosm checks pass.
+- 2026-09-24: R4 landed: drafts 1 to 4 applied to the root `CLAUDE.md` and
+  `PROJECT_DESCRIPTION.md` and to Mesocosm's, at Mark's word;
+  `crates/isocosm-vtt` added to the tabletop workspace as its reservation
+  package at 0.0.2 with the Isometry clause removed, and published; the
+  `isometry` crate left as history (decision 1, default).

@@ -8,6 +8,7 @@ members = [
     "crates/isometry-genet",
     "crates/isonetry",
     "crates/isometry-system",
+    "crates/isocosm-vtt",
 ]
 exclude = ["crates/isometry-runtime", "mesocosm", "eponym", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
 

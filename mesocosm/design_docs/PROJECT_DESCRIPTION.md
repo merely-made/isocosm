@@ -47,11 +47,12 @@ niche, for a survival strategy in a strange place.
 
 ## Where it sits
 
-Vessel 1 of a three-game wing that shares a world substrate, a lineage model,
+Vessel 1 of the Isocosm family, over one simulator, Isocosm, that shares a
+world substrate, a lineage model,
 a trust plane, one clock and the simulator's own verbs, reached as handles
 — engine organs are shared where they stay verb-neutral — but shares no
-genre and owns the verbs it lays on top: Mesocosm (first person), Paredros
-(second person), Isometry (third person). The world's biota speciates on
+genre and owns the verbs it lays on top: Mesocosm (first person), Eponym
+(second person), the VTT (third person). The world's biota speciates on
 its own whether or not anyone is playing: that is the simulator the wing
 runs beneath every game (the wing design record, 2026-09-18), not
 speculation, so unclaimed lineages exist to be met, adopted, or competed

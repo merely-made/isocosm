@@ -27,9 +27,9 @@ by biomass. Rogue Legacy's generational loop pointed at an ecosystem
 rather than a castle. See
 `design_docs/2026-08-18_vessel_briefs_and_presentation.md`.
 
-Vessel 1 of a three-game wing — Mesocosm (first person), Paredros (second
-person), Isometry (third person) — that shares a world substrate, a lineage
-model, and a trust plane. Sharing engine organs is encouraged where the
+Vessel 1 of the Isocosm family, Mesocosm (first person), Eponym (second
+person) and the VTT (third person), over one simulator, Isocosm, sharing a
+world substrate, a lineage model, and a trust plane. Sharing engine organs is encouraged where the
 organ stays verb-neutral (ruled 2026-08-05); the vessels still do not share
 a genre, a schedule, or their verbs.
 
