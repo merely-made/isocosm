@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 146. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 150. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1300,6 +1300,35 @@ what later sections derive from.
      sophont item be owned? Three options were put: like any item; only by
      agreement; or never owned. Mark: "Never owned." So it can be held but
      never owned; it is a companion, and it can own things itself.
+147. **A site and a paged chunk are independent.** Put to Mark on
+     2026-09-24, from §3.7.1's open "how large a site is, in voxels and
+     against the paged chunk": how does a site, the world map's unit,
+     relate to a paged chunk, the store's unit? Two options were put:
+     independent, or one site paging as one chunk. Mark: "Independent." So
+     a site is the unit for generating and playing, a chunk the unit for
+     paging, and a site spans as many chunks as its volume needs.
+148. **When a location's ground changes or moves, its kind decides what
+     it follows.** Put to Mark on 2026-09-24, from §3.7.1's open anchor of
+     a place when the ground itself moves: eroded, flooded, carried off on
+     a giant's back, what does the location follow? Four options were put:
+     its site; its ground; its people and works; or its kind deciding.
+     Mark: "Its kind decides." So a camp follows its people, a ruin its
+     ground, a battlefield its site.
+149. **Neighbouring worlds keep their own clocks and are synced at
+     crossings.** Put to Mark on 2026-09-24, from §3.12's open question:
+     do neighbouring worlds share one played clock? Three options were
+     put: one clock; separate clocks, a crossing converting and a
+     traveller perhaps arriving in the neighbour's past or future; or
+     synced at crossings. Mark: "Synced at crossings." So each world keeps
+     its own clock until something crosses, and the crossing brings the
+     two into step, as realignment does.
+150. **A planetary system can be a host.** Put to Mark on 2026-09-24,
+     from ruling 100's open item and §3.12: can a planetary system be an
+     entity in its own right, a host for its worlds? Three options were
+     put: yes, a host; just relations; or the founder's choice. Mark:
+     "Yes, a host." So a system is an entity above the world, a sun with a
+     provenance and founding ruleset of its own, hosting its worlds as a
+     polity hosts others.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3161,7 +3190,9 @@ accidentally" (`:69-70`). What the slot rests on is mesocosm-core's
 `PlaceId`, a fixed partition today (§3.7), so the address survives because
 the geometry is never re-derived. Under volume-derived nodes a place of note
 needs an anchor that re-derivation maps onto and cannot erase. **Open:**
-what that anchor is when the ground itself moves.
+what that anchor is when the ground itself moves. *Ruled 2026-09-24
+(ruling 148):* the location's kind decides: a camp follows its people, a
+ruin its ground, a battlefield its site.
 
 **The words.** "Denizen is now a term for an entity of note. There should be
 similar terms for locations, possibly more." Naming is Mark's round and
@@ -3347,7 +3378,10 @@ mathematics bears on one case: no grid of hexagons closes a sphere, and a
 geodesic grid does it with exactly twelve pentagons among the hexagons, so
 "hexes" holds as a projection over most of a spherical map and not as its
 storage. **Open:** how large a site is, in voxels and against the paged
-chunk of W3. How the nesting goes is **answered, ruling 74**, below.
+chunk of W3. *Ruled 2026-09-24 (ruling 147):* independent. A site is the
+unit for generating and playing and a chunk the unit for paging, so a site
+spans as many chunks as its volume needs, its size in voxels following from
+the world's base unit and settings. How the nesting goes is **answered, ruling 74**, below.
 
 **Nesting is one composable mechanism (ruling 74).** "Composable and
 expandable instead of the order and tiering of the nesting being
@@ -3868,7 +3902,11 @@ provenance.
   given a host, a sun with a provenance and a founding ruleset of its own,
   and stays open. **Open:** whether worlds in one neighbourhood share one
   played clock, which a traveller's continuous time seems to require, or
-  convert between clocks at each crossing.
+  convert between clocks at each crossing. *Ruled 2026-09-24 (rulings 149
+  and 150):* each world keeps its own clock and a crossing brings the two
+  into step, as realignment does; and a system can be a host, a sun with
+  a provenance and founding ruleset of its own, hosting its worlds as a
+  polity hosts others.
 
 Prior art for ruling 105, known: git's forks and remotes, Mark's own figure,
 are descent and neighbourhood exactly, shared history without merging and
@@ -4874,6 +4912,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 147 to 150 recorded: a site and a paged chunk are
+  independent; a location's kind decides what it follows when its ground
+  moves; neighbouring worlds sync their clocks at crossings; a system can
+  be a host. §3.7.1's and §3.12's open items are ruled.
 - 2026-09-24: rulings 145 and 146 recorded: a sophont item acts through
   its wielder, by its own powers, and can take over; it is never owned.
   §3.1's line on items gains them.
