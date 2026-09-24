@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 131. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 132. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1171,6 +1171,14 @@ what later sections derive from.
      mattered to them; it was intense; it kept happening. Mark picked all
      four. So a little incident is one that was none of these to anyone
      who saw it, and no mind keeps it.
+132. **An unpractised skill decays slowly, to a floor it never drops
+     below.** Put to Mark on 2026-09-24, from ruling 127's "everything
+     fades" and the open question of whether a skill decays: does that
+     include skills, the practised crafts a sophont gets better at? Three
+     options were put: skills fade too, at the mind's memory rate; skills
+     keep; or slowly, to a floor. Mark: "Slowly, to a floor." So a craft
+     left unpractised slips toward a floor it never loses, and doing is
+     kept better than knowing.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2314,7 +2322,13 @@ data under ruling 41; a triggered condition beyond crafting is a
 precondition of any operation, so a vow, a grudge, a pilgrimage or a duel is
 a triggered need of the fey mood's kind. **Open:** how a skill accumulates
 and whether it decays; improving an item; what a technique is made of, which
-the hagioglyph organ's plan owns.
+the hagioglyph organ's plan owns. *Ruled 2026-09-24 (ruling 132), the
+decay:* an unpractised skill decays slowly toward a floor it never drops
+below, so doing is kept better than knowing, which fades at the mind's
+memory rate under ruling 127. Prior art, known: procedural memory outlasts
+declarative memory, and skill-retention studies find that unpractised skill
+decays with time. From memory of games, unverified: RimWorld decays only
+high skills when they go unpractised.
 
 **Materials are the roster (ruling 97).** The typology of kinds of nis is
 the world's roster of lineages, and so the materials of a world are the
@@ -4685,6 +4699,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 132 recorded: an unpractised skill decays slowly to
+  a floor; §3.3.1's open line on skill decay is ruled.
 - 2026-09-24: ruling 131 recorded: a mind remembers what was new, what
   mattered, what was intense and what kept happening; "little incident" is
   none of these, closing §3.4.1's open item.
