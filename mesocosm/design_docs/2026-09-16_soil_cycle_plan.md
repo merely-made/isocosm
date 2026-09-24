@@ -285,6 +285,13 @@ alone.
 
 ## Findings
 
+- **2026-09-24, S2's probe found untracked.** `crates/mesocosm-
+  core/examples/deep_time_arms_probe.rs` had sat untracked in the tree since
+  2026-09-16: the S2 measurement, the far arm as `World::run_deep_time` per
+  epoch and the near arm with the played hand released by editing
+  `controlled` out of the postcard snapshot. It compiles (`cargo check
+  --example deep_time_arms_probe`, 2026-09-24) and was committed as found,
+  unrun; S2's table is still owed by whoever runs it.
 - **2026-09-16.** Opened with §2.6's evidence.
 - **2026-09-16, S1.** Far bodies now step straight toward their target, one
   column at a time on the ground's surface, within `dispersal_for` counted
