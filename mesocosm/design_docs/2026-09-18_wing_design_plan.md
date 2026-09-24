@@ -15,9 +15,10 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 114. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 115. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
-agree with, and ruling 114 holds every game's ruleset to the same test.
+agree with, ruling 114 holds every game's ruleset to the same test, and
+ruling 115 makes competition a choice.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -996,6 +997,18 @@ what later sections derive from.
      and never a seam. This rules the agreement half of §5.2's resolution
      handoff, held under D19, and reverses the sim plan's "owed by the
      definitions and not by any game".
+115. **Competition: each side chooses.** Put to Mark on 2026-09-24, after
+     ruling 114 left the sim owing a model of a fight and the aggregation
+     research had found shared-resource competition to be a world rule
+     rather than an optimization: when two want the same thing and there
+     isn't enough (the last of the food, a den, a mate, a throne), what
+     decides who gets it? Three options were put: contest, the
+     better-placed side taking it; scramble, the shortfall shared out; or
+     each side choosing. Mark: "Each side chooses." So each party's
+     methodology picks contest, yield, share or trade, the sim resolves
+     the choices, and whether a lineage leans to contest or scramble is a
+     trait. A fight is what a contest becomes; how it resolves is the next
+     question.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2362,6 +2375,24 @@ carriage; the X series and EVE Online run supply and demand per station with
 prices read off stock; Victoria 3 pools goods per market with prices moving
 on the balance of buy and sell orders; RimWorld's price per item is a base
 times a trader's markup and a settlement's biome.
+
+**Competition (ruling 115).** When two want the same thing and there isn't
+enough, the last of the food, a den, a mate, a throne, each side chooses:
+its methodology picks contest, yield, share or trade, and the sim resolves
+what was chosen. Trade is exchange (ruling 94); a share splits the thing; a
+yield hands it over; a contest is a fight, whose resolution is the sim's own
+outcome model under ruling 114 and is not yet designed. For a critter the
+choice is reactive, so whether a lineage leans to contest or scramble is a
+trait that moves at the epoch boundary (ruling 57); a denizen or sophont
+scores it like any act, by need, trust and approval (D26), with its
+disposition and its opinion of the other. This is the competition semantics
+the [aggregation research](2026-09-22_aggregation_research.md) found missing
+for shared resources, and it makes the mix a population statistic: a crowd's
+share of contests follows from how its members lean. Prior art, known:
+Nicholson's scramble and contest competition (1954), under which scramble
+tends to boom and crash and contest to hold a population steady; Maynard
+Smith and Price's hawk and dove (1973), where the mix of fighters and
+yielders is itself what evolves.
 
 ### 3.4 The record
 
@@ -4373,6 +4404,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 115 recorded: competition by choice, contest, yield,
+  share or trade, with a lineage's leaning a trait. §3.3.1 gains its
+  paragraph and the sim plan's §3.2 a competing instance.
 - 2026-09-24: ruling 114 recorded: rulesets calibrate to the sim's
   background outcome model, ruling 113's test applied at the game
   boundary. §3.8 and §5.2's point 5 given the ruling, D19 annotated, and
