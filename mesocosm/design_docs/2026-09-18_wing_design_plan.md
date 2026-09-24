@@ -15,10 +15,11 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 116. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 117. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
-agree with, ruling 114 holds every game's ruleset to the same test, and
-rulings 115 and 116 make competition a choice and most contests bloodless.
+agree with, ruling 114 holds every game's ruleset to the same test, rulings
+115 and 116 make competition a choice and most contests bloodless, and
+ruling 117 lets any belief be wrong.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -1016,6 +1017,20 @@ what later sections derive from.
      most never reach blows. Mark: "Most never reach blows." So the sides
      size each other up first, by display or bluff, and most contests end
      there; only close matches escalate, and then one side breaks.
+117. **Any belief can be wrong, through wrong or stale information, and
+     entities act on what they believe.** Mark, 2026-09-24, on ruling
+     116's bluff: "Deception potentially leads people to make the wrong
+     judgment?" Put to him as whether things in the sim should be able to
+     believe what isn't true and act on it, with three options: any belief
+     can be wrong; only by deceit; only in the moment. Mark: "Any belief
+     can be wrong." So a belief can be false through deceit, honest
+     mistake, or a rumour that changes as it is retold, entities act on
+     what they believe, and reach carries versions of an event, not only
+     how strongly it arrived. And, while it was being recorded: "Allows
+     for bluffing, being underestimated, but mechanic… perhaps something
+     like charisma in dnd terms, posing as an action to
+     intimidate/persuade/deceive? But in the sim's terms, it's 'wrong'
+     information or stale information, i suppose".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2478,6 +2493,22 @@ and the record already holds every part of it.
    is a secret, known to three people and no distribution at all; that is a
    set of notes spreading along relations and not places, taken up under
    ruling 87 below.
+
+*Ruled 2026-09-24 (ruling 117): a belief can be wrong.* The five points
+resolve whether someone knows; ruling 117 adds that what they know may be
+false, and that they act on it. In Mark's terms it is "'wrong' information
+or stale information". Wrong information arrives false, by deceit, honest
+mistake, or a retelling that changed it, so the field carries versions of an
+event and an arrival entry names the version that arrived. Stale information
+arrived true and has been overtaken since: every belief is dated by its
+arrival and the world may have moved on, which is the field's own delay and
+needs nothing new stored. *Reading, not ruled:* posing, Mark's "posing as an
+action to intimidate/persuade/deceive", is an act of the first shape whose
+outcome is a belief in whoever receives it; to intimidate is to pose
+strength, to persuade is to move a belief or an opinion, and to deceive is
+to plant a false one; ruling 116's bluff is posing inside a contest; and a
+ruleset's charisma is its reading of the actor's capacity for posing,
+calibrated under ruling 114.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -4424,6 +4455,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 117 recorded: any belief can be wrong, wrong or stale,
+  and entities act on what they believe; reach carries versions. §3.4's
+  knowledge resolution gains the ruling and one flagged reading (posing as
+  an act, a ruleset's charisma as its reading).
 - 2026-09-24: ruling 116 recorded: most contests never reach blows; the
   sides size each other up by display or bluff, and close matches escalate
   until one side breaks. §3.3.1 gains a contests paragraph with one reading
