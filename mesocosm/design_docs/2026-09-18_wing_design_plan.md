@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 150. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 154. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1329,6 +1329,40 @@ what later sections derive from.
      "Yes, a host." So a system is an entity above the world, a sun with a
      provenance and founding ruleset of its own, hosting its worlds as a
      polity hosts others.
+151. **Owning a person is slavery, and treating people as chattel is
+     itself a tenet.** Put to Mark on 2026-09-24: ruling 146 says a sophont
+     item is never owned; does that hold for every sophont? Two options
+     were put: every sophont, a polity's claim of people as property
+     staying a claim and its enforcement and never possession; or items
+     only, the rest following each world's rules. Mark: "If a person is
+     owned, that's slavery. Treating people like chattel is a tenet
+     itself, no? And it's clear people might differ depending on it's
+     slavery by whether if they're the same kind of thing as the
+     enslaved." So whether a person may be owned is a tenet (ruling 50),
+     held or rejected by sophonts, factions and polities like any other,
+     and how one judges a slavery turns on whether one is the same kind of
+     thing as the enslaved.
+152. **Outside the world, a player directs only who they play.** Put to
+     Mark on 2026-09-24, from held item D20: outside the world, who may a
+     player direct, given that inside it anyone can ask anyone through the
+     entity they play, weighed by opinion under ruling 60? Three options
+     were put: only who they play; also what is bound to them; or that
+     plus edit mode directing whatever no player is bound to. Mark: "Only
+     who they play." So everything else is asked in the world, through the
+     entity a player plays, and D20's provider over `mere-capability`
+     implements that in W3.
+153. **Two players may direct the same entity.** Put to Mark on
+     2026-09-24, co-op being a core taste in every vessel: can two players
+     direct the same entity? Three options were put: yes, both, the
+     entity weighing conflicting directives by its opinion of each; one at
+     a time; or no. Mark: "Yes, both."
+154. **D19's contract is ruled.** Put to Mark on 2026-09-24: D19's
+     contract, a game submitting intents, the sim returning events and a
+     read-only view of each tick, and outcomes a game settles coming back
+     through the handoff, follows from rulings 104, 113 and 114; rule it
+     now, or keep it held for W5? Mark: "Rule it." So §5.2's points 2 to 5
+     stand as the contract's shape, and W5 designs the details against
+     them.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1397,8 +1431,13 @@ story, or inhabited by a mind that moves into it; then it has agency, and
 its provenance stays a maker's or its own story's while its identity is a
 sophont's, ruling 45's two axes. Rulings 145 and 146: it acts through its
 wielder, by its own powers, and when strong enough by taking its wielder
-over; and it is never owned, only held, and can own things itself. Whether
-the same holds for every sophont is not ruled.)
+over; and it is never owned, only held, and can own things itself. Ruling
+151: for any person, owning one is slavery, and treating people as chattel
+is itself a tenet, held or rejected, and judged by whether one is the same
+kind of thing as the enslaved. *Reading, not ruled:* the two agree, since
+the record never holds a person as plain property; where a person is
+"owned", that is slavery, a claim upheld by those who hold the tenet and
+enforced like any polity's means.)
 
 ### 3.2 Agents and state
 
@@ -4409,7 +4448,10 @@ follows here is the boundary above it and stands as written.
    terms, which must pass the sim's invariants, the accounts conserved;
    otherwise the sim resolves it by rate. That the two agree is ruling 75,
    owed by the ruleset and checked on the bench. (Ruled 2026-09-24 for this
-   point alone, by ruling 114; the rest of §5.2 stays held.)
+   point by ruling 114, and with points 2 to 4 as the contract's shape by
+   ruling 154. Point 2's directives are narrowed by rulings 152 and 153: a
+   player directs only the entity they play, and two players may direct
+   the same one. Points 1, 6 and 7 stay as D18 left them.)
 
 6. **WIT as the discipline, with two bindings.** Shape the contract the way
    WIT forces: values copied, opaque handles minted by the host, no pointer
@@ -4912,6 +4954,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 151 to 154 recorded: owning a person is slavery, a
+  tenet; a player directs only who they play, and two may direct the same
+  entity; D19's contract ruled. §3.1's note and §5.2 follow, and the
+  docket's held items are both ruled.
 - 2026-09-24: rulings 147 to 150 recorded: a site and a paged chunk are
   independent; a location's kind decides what it follows when its ground
   moves; neighbouring worlds sync their clocks at crossings; a system can

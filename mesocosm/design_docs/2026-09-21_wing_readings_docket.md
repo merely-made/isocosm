@@ -54,12 +54,15 @@ The items as they stood when accepted:
 | D32 | Time in a shared world (§3.12, under ruling 104), option A recommended: a shared trunk whose clock proceeds only when played, started by whoever opens it, with the timeline reviewable through the tiers of keeping; branches for asynchronous play, merged by replaying the union of intents in time order, the ambient regenerated and a refusal on replay the only conflict, resolved by whoever holds edit mode; branches of different spans realign rather than merge; advancing the trunk past another player's foreground needs consent; unattended running is a founder setting, off by default | no CRDT world state, no real-time threat by default, collection deterministic across peers | ruled A, ruling 105 |
 | D33 | Related worlds (§3.12, under ruling 105): descent is the world kingdom's lineage tree, siblings sharing a common log prefix and one legend before the branch, with fili as the record; neighbourhood is worlds in relation at the rung above, with routes and crossings recorded as departures and arrivals in both logs, arrivals carrying their home world's nis; a set of related worlds is a faction of worlds held by consent, the moot's shape; neither relation merges anything | exotic materials from neighbouring worlds; the moot's federation tiers as the manager of a world set; open: one clock per neighbourhood, and a system as a hosted neighbourhood | accept |
 
-## Held
+## Held, then ruled 2026-09-24
 
 | # | Reading | Held for | Mark |
 | --- | --- | --- | --- |
-| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff (since ruled in part: the handoff's agreement by ruling 114, and what was watched logged by ruling 113; the shape stays held) | W5, the first game overlay | "idk!" |
-| D20 | Who may direct which entity as a provider over `mere-capability`'s order | W3, beside ruling 34 | "idk!" |
+| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff | W5, the first game overlay | "idk!", then ruled by 154 ("Rule it"), with the handoff's agreement by 114 and what was watched logged by 113; W5 designs the details |
+| D20 | Who may direct which entity as a provider over `mere-capability`'s order | W3, beside ruling 34 | "idk!", then the rule itself ruled by 152 ("Only who they play") and 153 (two players may direct one entity); the provider stays W3's to build |
+
+No item is held. By the rule this docket opened with, it is ready to be
+archived.
 
 ## Open questions parked in the record, not on this docket
 
