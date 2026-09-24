@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 133. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 135. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1191,6 +1191,25 @@ what later sections derive from.
      Polities' collective processes, insofar as they vest ultimate
      authority in a group rather than an individual, do gate polity acts
      on disagreements."
+134. **A constitution changes by the polity's own way or its amendment
+     rule; force outside the constitution founds a new polity and never
+     takes over the old.** Put to Mark on 2026-09-24, from §3.2.2's open
+     "reform": how can a polity's constitution be changed? Three routes
+     were put, to pick every one that should exist: by its own way of
+     deciding; by its amendment rule; by force. Mark: "By its own way, By
+     its amendment rule, For force, unless that is literally ruled by the
+     constitution, circumventing a political process with violence can
+     only lead to a new polity, not taking over the old one. So a faction
+     wanting the full sweep of a nation's power needs to acquire it
+     legitimately or claim it quickly after the dissolution of the
+     previous polity."
+135. **Secession is the seceders' own act.** Put to Mark on 2026-09-24:
+     can members leave a polity and take part of it with them, a town, a
+     province, a guild chapter? Three options were put: only if it
+     agrees; by their own act; or only what is theirs. Mark: "By their
+     own act." So the seceders act as a faction and found their own
+     polity, and the old one may accept it or contest it, the contest
+     running like any other (rulings 115 and 116).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1906,7 +1925,17 @@ reform and secession. *Reading, from ruling 129, put to Mark on 2026-09-24
 without objection:* the charter question is answered, since a charter is a
 bearer and a thing stays of note while some bearer records it; a polity
 whose last knower dies survives in its charter, and whoever finds it can
-revive the polity under ruling 68.
+revive the polity under ruling 68. *Ruled 2026-09-24 (rulings 134 and
+135), reform and secession:* a constitution changes by the polity's own way
+of deciding or by its amendment rule. Force outside the constitution, unless
+the constitution itself rules force legitimate, founds a new polity and never
+takes over the old one, so a faction wanting a nation's full power acquires
+it legitimately or claims it quickly after the old polity dissolves.
+Secession is the seceders' own act, a faction founding its own polity, which
+the old one may accept or contest. *Reading, not ruled:* the old polity
+outlives the coup that circumvents it, as ruling 66's suppressed or
+superseded, and ruling 68's government in exile is exactly the polity a
+coup could not take; the "who must agree" to a polity's death stays open.
 
 **Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
 death for agreement. Ruling 66 lets everything short of it happen
@@ -4722,6 +4751,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 134 and 135 recorded: reform by the polity's own
+  way or amendment rule, force outside the constitution founding a new
+  polity; secession by the seceders' own act. §3.2.2 gains them with one
+  flagged reading on the government in exile.
 - 2026-09-24: ruling 133 recorded: factions fall back on their preferred
   way and are never gated by disagreement; polities vesting authority in a
   group are. §3.2.2's "which protocols" is ruled, and its charter question
