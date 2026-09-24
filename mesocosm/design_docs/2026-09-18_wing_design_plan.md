@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 140. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 143. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1254,6 +1254,29 @@ what later sections derive from.
      spectrum between that and a normal base world which matches a
      ruleset is probably good". Where a world sits on that spectrum reads
      as a founding setting, as its magic is (ruling 102).
+141. **A skill rises by doing, being taught, studying and breakthroughs.**
+     Put to Mark on 2026-09-24, from §3.3.1's open "how a skill
+     accumulates": what raises a skill? Four options were put, to pick all
+     that should: doing it, harder or riskier work teaching more; being
+     taught by someone more skilled; studying from bearers, books, manuals,
+     a master's notes; and breakthroughs, a fey mood, a near-death, a
+     masterwork. Mark picked all four.
+142. **Techniques are both discovered and invented.** Put to Mark on
+     2026-09-24, from the open "what a technique is made of": where do new
+     techniques come from? Three options were put: invented, a skilled
+     practitioner combining effects it knows into one nobody had; found in
+     the world's canon; or both. Mark: "Both." So the canon holds known
+     techniques to be found, and masters can invent new ones beyond it,
+     which spread by teaching and by bearers.
+143. **An item's improvement is limited by its maker's skill and its
+     story, not its material.** Put to Mark on 2026-09-24, from the open
+     "improving an item": what limits how far an item can be improved?
+     Four options were put, to pick all that should: its material, the
+     lineage's traits a ceiling; the maker's skill; its story, an item of
+     note growing with what it has been through; or nothing. Mark picked
+     the maker's skill and its story. So only a better maker takes an item
+     further, an item of note grows with its deeds as well as its work,
+     and its material is no ceiling.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2435,7 +2458,16 @@ below, so doing is kept better than knowing, which fades at the mind's
 memory rate under ruling 127. Prior art, known: procedural memory outlasts
 declarative memory, and skill-retention studies find that unpractised skill
 decays with time. From memory of games, unverified: RimWorld decays only
-high skills when they go unpractised.
+high skills when they go unpractised. *Ruled 2026-09-24 (rulings 141 to
+143), the rest:* a skill rises by doing, harder or riskier work teaching
+more, by being taught, by studying from bearers, and by breakthroughs, a fey
+mood among them. Techniques are both found in the canon and invented beyond
+it by masters, spreading by teaching and by bearers; what a technique is
+made of beyond that stays with the hagioglyph organ's plan. An item is
+improved only as far as its maker's skill and its story allow, and its
+material is no ceiling. *Reading, not ruled:* an invented technique that
+spreads far or becomes legend is a candidate for the canon's next revision,
+which is how the canon grows.
 
 **Materials are the roster (ruling 97).** The typology of kinds of nis is
 the world's roster of lineages, and so the materials of a world are the
@@ -4812,6 +4844,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 141 to 143 recorded: a skill rises four ways;
+  techniques are found and invented; improvement is limited by the maker's
+  skill and the item's story. §3.3.1's crafting open line is ruled but for
+  the substance of a technique, with one flagged reading on the canon.
 - 2026-09-24: Law A's materials amendment applied at Mark's word ("Apply
   both as drafted") to the founding record and Mesocosm's CLAUDE.md.
 - 2026-09-24: rulings 139 and 140 recorded: Law A to be amended for
