@@ -4206,7 +4206,8 @@ still open under it.
    register of three layers adapting; isoform is one gene expressed as many
    forms, the register of one sim played many ways; Isocosm is the same in
    every direction. Also ruled in shape: `paredros-world` becomes
-   `paredros-core`, and the three product cores are defined in one standard
+   `paredros-core` (after ruling 109, `eponym-world` becomes
+   `eponym-core`; Mark, 2026-09-24: "Yes"), and the three product cores are defined in one standard
    way that plugs into the sim; that standard is the game-overlay contract
    of §5, a trait each core implements against the sim, in the spirit of
    mesquite's `Product`. **Ruled 2026-09-18: Isocosm** for the sim, and
@@ -4476,6 +4477,10 @@ No code lane runs before W1 is ruled.
   corrected twice in place (the buffer is the world's, not the host's;
   tau-leaping is approximate) and given the ruling; the sim plan's §1,
   §2.1, §2.8, §5.1 and §5.5 follow it.
+- 2026-09-24: the family rename landed in the tree (R2, R4, R5): the GitHub
+  repository is `merely-made/isocosm`, every `repository` field follows, the
+  root README presents the family, Eponym's own maintainer-owned files are
+  finished, and the future core is `eponym-core` (§9.1).
 - 2026-09-24: ruling 112 recorded: Mesocosm keeps its name after a round,
   paracosm walled, Eponym stays; the family stands as rulings 110 and 111
   left it. Reservations for hagiograph, redshank and ortet claimed.

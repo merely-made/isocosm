@@ -1,19 +1,31 @@
-# Isometry
+# Isocosm
 
-This repository is also home to [Mesocosm](mesocosm/README.md) and
-[Eponym](eponym/README.md) (formerly Paredros). The three products keep
-separate Cargo workspaces; Eponym's packages took the `eponym` name on
-2026-09-24. Start with the [wing documentation index](design_docs/DOC_README.md).
+One simulated world, played three ways. This repository holds the Isocosm
+simulator and the three games built over it, each in its own Cargo
+workspace:
 
-From this directory, select a product with `./scripts/wing.ps1 isometry test`,
-`./scripts/wing.ps1 mesocosm test`, or `./scripts/wing.ps1 eponym test`.
-Additional arguments are passed to Cargo, for example `-p mesocosm-core --lib`.
-On other platforms, run Cargo from the corresponding product directory;
-tabletop-only local overrides can be supplied with Cargo's `--config` option.
+| Product | Where | What it is |
+| --- | --- | --- |
+| **Isocosm** | `shared/isocosm` | the simulator: a configurable world, history and entity generator that runs whether or not anyone is playing |
+| **Isocosm: VTT** | the root workspace, `crates/isometry-*` | a pixel-art isometric virtual tabletop with peer-to-peer play (formerly Isometry; the crates keep the prefix as a plain technical name) |
+| **Isocosm: Mesocosm** | [`mesocosm/`](mesocosm/README.md) | an ecological roguelike of lineages: you are a critter in a small world of anything, refined over the ages |
+| **Isocosm: Eponym** | [`eponym/`](eponym/README.md) | a second-person action RPG: you name one creature and live that life among peers (formerly Paredros) |
 
-Use the canonical product directories under Isometry. The former standalone
-checkout paths have been retired; each product's `build.ps1` also forwards
-to the root dispatcher.
+The wing's design lives in [design_docs/](design_docs/DOC_README.md) and
+`mesocosm/design_docs/`, where the
+[wing design record](mesocosm/design_docs/2026-09-18_wing_design_plan.md)
+and the [sim plan](mesocosm/design_docs/2026-09-22_sim_plan.md) sit. The
+family took these names on 2026-09-22 (rulings 109 to 112 of the record).
+
+From this directory, select a product with `./scripts/wing.ps1 isometry test`
+(the VTT keeps `isometry` as its product key), `./scripts/wing.ps1 mesocosm
+test`, or `./scripts/wing.ps1 eponym test`. Additional arguments are passed
+to Cargo, for example `-p mesocosm-core --lib`. On other platforms, run
+Cargo from the corresponding product directory; tabletop-only local
+overrides can be supplied with Cargo's `--config` option. Each product's
+`build.ps1` also forwards to the root dispatcher.
+
+## Isocosm: VTT
 
 A pixel-art isometric virtual tabletop. One player preps maps and hosts; the
 group joins peer-to-peer and plays in turns. GBA-tactics look (2:1 diamond
@@ -23,11 +35,11 @@ game rules arrive as schema-plus-Lua plugins, and the substrate only knows
 tiles, tokens, turns, facing, and elevation.
 
 <p align="center">
-  <img src="assets/screenshots/battlemap-demo.png" alt="Isometry painted battlemap with terrain, tokens, and turn order" width="900"><br>
+  <img src="assets/screenshots/battlemap-demo.png" alt="The VTT's painted battlemap with terrain, tokens, and turn order" width="900"><br>
   <sub>A painted battlemap with terrain, tokens, editing tools, and turn order in view.</sub>
 </p>
 
-## Status (2026-08-12)
+### Status (2026-08-12)
 
 Pre-release; the full game loop runs. Built in Rust on the Merely stack
 (Cambium, genet-layout, netrender); no published releases yet.
@@ -51,7 +63,7 @@ protocol hardening (overmap travel as one resolved payload with a two-peer
 receipt), then migrate campaign sync onto the shared replicated-space
 runtime; the overmap presentation plan stays active.
 
-## Use
+### Use
 
 ```sh
 cargo run -p isometry-genet                  # desktop app
@@ -62,7 +74,7 @@ cargo run -p isometry-genet -- --campaign <name>   # restore a campaign checkpoi
 cargo test --workspace --all-features        # default features skip the campaign networking lanes
 ```
 
-## License
+### License
 
 MIT OR Apache-2.0 for the tabletop crates in this workspace. The voxel bake
 that was `crates/isometry-voxel` was relicensed MPL-2.0 on 2026-09-14 and

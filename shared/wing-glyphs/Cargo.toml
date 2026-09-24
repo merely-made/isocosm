@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
 description = "Validated glyph canons and individual acquisition journeys"
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 [workspace]

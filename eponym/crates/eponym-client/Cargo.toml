@@ -4,7 +4,7 @@ version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
 description = "Eponym native client: rendering, input, inspection surfaces, and retained S0 room probes."
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 [lib]

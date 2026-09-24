@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-22
 
-**Status, 2026-09-24:** in progress; R4 landed 2026-09-24 (Progress). R2 landed 2026-09-24: `paredros/` is
+**Status, 2026-09-24:** landed: R0 to R5 done (Progress). What remains is the runtime strings Mark chose to leave, and the `paredros` crate kept for a future use. R2 landed 2026-09-24: `paredros/` is
 `eponym/`, the root package is `eponym` 0.0.2, the five member crates are
 `eponym-*`, and the eponym workspace's test count matches its pre-rename
 baseline (which was already red; see Findings). R0 landed: the name reservations
@@ -101,6 +101,8 @@ each other; R3 when the peer's crate lands; R5 last.
    untouched at 0.0.1 as history; Mark may repoint it later.
 2. **The repository name** (R5). Renaming aligns the umbrella with the
    family word; not renaming keeps every existing link and pin valid.
+   **Taken 2026-09-24: renamed.** `merely-made/isometry` is
+   `merely-made/isocosm`; GitHub redirects the old name.
 3. **The six maintainer-owned files.** Drafts arrive under R1's Findings
    for his word.
 4. **`paredros-identity` under ruling 34.** It is to be absorbed by dramatis
@@ -254,3 +256,12 @@ each other; R3 when the peer's crate lands; R5 last.
   `crates/isocosm-vtt` added to the tabletop workspace as its reservation
   package at 0.0.2 with the Isometry clause removed, and published; the
   `isometry` crate left as history (decision 1, default).
+- 2026-09-24: R5 landed at Mark's word: the GitHub repository renamed to
+  `merely-made/isocosm` with its description set to the family's; the local
+  remote repointed; every `repository` field in the tree's manifests and
+  READMEs rewritten; the root README rewritten to present the family with
+  the VTT as one section; the org profile README and the mer3ly.net site
+  content updated in their own repositories the same day. The checkout
+  directory stays `repos/isometry`, since local paths are not the
+  repository's name. Eponym's leftover prose finished and `eponym-core`
+  ruled, beside R5.

@@ -41,7 +41,7 @@ under near-tier kinematics, a fixed input trace with save/reload/replay, and
 a headed run presenting netrender's composed master with a renderling room
 in it. Its default `r1-proof` profile runs the real room and perspective
 camera through the shared brick DDA, now owned by Mere's `conatus-brick`
-(pinned by rev); Paredros constructs the shared `BrickMap` from its own
+(pinned by rev); Eponym constructs the shared `BrickMap` from its own
 Ground binding. Three further gates landed as opt-in bins: `v1_residency`
 (continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth composed
 with renderling, D1), and `v1b_residency` (the stable capacity-fixed
@@ -131,7 +131,7 @@ architecture in the sibling repo at
   marks and feats, gives a generated world its past through **deep time** (a
   run of the world's own simulation before anyone steps in), and later owns
   retelling, remembrance and manifestation, which is this game's lane H.
-  Storage of what happened stays in the deed and event journals. Paredros's
+  Storage of what happened stays in the deed and event journals. Eponym's
   memory/remembrance plan scopes its first consumer; the wing's isoscape
   family plan holds the rulings. Older documents used `tulpa` for the
   memorial sense.
@@ -187,7 +187,7 @@ it here.
 
 - **Do not add real-time puppeteering of a party.** This is the scope canary,
   narrowed 2026-07-30 when the wing replaced person purity with care
-  granularity (wing founding record §1). Paredros is care for **individuals**;
+  granularity (wing founding record §1). Eponym is care for **individuals**;
   drift means care widening to a squad you administer, which is Isometry's
   granularity. Permitted: *configure, don't command* (standing behaviour
   agreed in advance, which a peer may refuse). Tag-in may exist as an optional

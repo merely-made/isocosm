@@ -4,7 +4,7 @@ version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
 description = "The wing's body renderer: turns meshed bodies into frames on wgpu. Headless-first, so 'the part is visible' is a test rather than an opinion."
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 # wgpu is restated here in full rather than inherited: this crate is a member

@@ -10,7 +10,7 @@ and underground places. Allies are useful but not required, and never units
 in a party.
 
 Design lives in the umbrella repository:
-<https://github.com/merely-made/isometry>.
+<https://github.com/merely-made/isocosm>.
 
 ## Status (2026-09-13)
 

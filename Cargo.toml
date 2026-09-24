@@ -37,7 +37,7 @@ opt-level = 2
 edition = "2021"
 license = "MIT OR Apache-2.0"
 authors = ["Mark <sgt.mark3@gmail.com>"]
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 rust-version = "1.80"
 
 [workspace.dependencies]

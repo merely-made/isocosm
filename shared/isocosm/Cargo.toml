@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
 description = "Deterministic world processes, populations, records and generated histories"
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 [workspace]

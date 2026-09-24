@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
 description = "The wing's shared orthographic slab scene: one camera, one cut, one depth, and the product-neutral body inputs that feed them."
-repository = "https://github.com/merely-made/isometry"
+repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 # Its own workspace, like the other `shared/` path crates, and excluded from

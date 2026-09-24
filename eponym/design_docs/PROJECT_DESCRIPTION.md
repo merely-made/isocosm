@@ -1,4 +1,4 @@
-# Paredros — Project Description
+# Eponym — Project Description
 
 > **Drafted 2026-07-30; revised by instruction 2026-08-13.** Per DOC_POLICY
 > §6 this file is maintainer-owned; assistants should not edit it without
@@ -35,7 +35,7 @@ magistrate. A colleague, not a servant. Colleagues also succeed to office.
    structures, histories, and cultures continue whether or not the player has
    recruited, visited, or even discovered them. That continuing is the wing's
    simulator, which runs beneath every game (the wing design record,
-   2026-09-18); Paredros's pillar is that its people are met as peers inside
+   2026-09-18); Eponym's pillar is that its people are met as peers inside
    it.
 4. **Legible or it isn't real.** Depth nobody notices is procedural noise, so
    the surface that shows why two characters are close ships with the
@@ -53,8 +53,8 @@ magistrate. A colleague, not a servant. Colleagues also succeed to office.
 Vessel 2 of a three-game wing that shares a world substrate, a lineage model,
 a trust plane, one clock and the simulator's own verbs, reached as handles
 — engine organs are shared where they stay verb-neutral — but no genre, and
-each owns the verbs it lays on top: Mesocosm (first person), Paredros
-(second person), Isometry (third person).
+each owns the verbs it lays on top: Mesocosm (first person), Eponym
+(second person), the VTT (third person).
 
 See `mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
 
