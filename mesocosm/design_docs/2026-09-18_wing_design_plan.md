@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 121. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 122. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1080,6 +1080,20 @@ what later sections derive from.
      baseline for weighing beliefs is the population's own, free to drift.
      Whether and how the world's temperament changes is his question, put
      back to him.
+122. **A fluid world's temperament is moved by what happens to it, by its
+     own cycles, and at its epoch boundary, not by its people's
+     temperament.** Ruling 121's "Should it not change…?" was answered from
+     ruling 102 and §3.11: every world characteristic is a static profile
+     or fluid over time under conditions, the storyteller's disposition
+     included, so a founder may pin it. Put to Mark on 2026-09-24: when a
+     world's temperament is fluid, what moves it? Four options were put,
+     to pick all that should: what happens to it; what its people are; its
+     own cycles; its epoch boundary. Mark picked what happens to it, its
+     own cycles and its epoch boundary, and left out what its people are.
+     So an age of war can embitter a world and an age of plenty mellow
+     it, it turns with its seasons and ages, and it changes in its shop
+     between rounds. Leaving out the second reads as: its people move it
+     only through what they do to it, never by what they are.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3428,6 +3442,14 @@ flow, static or fluid, with conditions such as "no apocalypses" bounding it.
 RimWorld's storytellers are then three dispositions of a world; the wing's
 are drawn, configured, and may be gods.
 
+*Ruled 2026-09-24 (rulings 120 to 122).* The storyteller's disposition
+seeds its first lineages directly and shapes its people after only through
+condition (rulings 120 and 121). When fluid, the disposition itself is moved
+by what happens to the world, by its own cycles and at its epoch boundary,
+and not by its people's temperament (ruling 122): an age of war can
+embitter a world and an age of plenty mellow it, and its people move it only
+by what they do to it.
+
 Prior art for ruling 103, known. RimWorld's storyteller and Left 4 Dead's AI
 Director are the pacing case, an agent scheduling incidents against the
 state of play, which here becomes the world's own agency. Dwarf Fortress's
@@ -4534,6 +4556,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 122 recorded: a fluid world's temperament moves with
+  what happens to it, its own cycles and its epoch boundary, not with its
+  people's temperament; §3.11 gains the note for rulings 120 to 122.
 - 2026-09-24: ruling 121 recorded: the world shapes its people through
   trait and condition, they drift from its temperament, and its
   temperament may change; ruling 120's note and ruling 119's paragraph
