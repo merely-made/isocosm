@@ -159,9 +159,10 @@ Do not copy it into Paredros or Isometry.
 ## Important Don'ts
 
 - **Do not violate the three pipeline laws** (games wing founding record §3).
-  What crosses between games is choices under scarcity, not morphology;
-  inheritance must be pointable; player history displaces procedural content
-  and never gates it.
+  What crosses between games is choices under scarcity, not morphology, save
+  that a lineage's traits cross as material (amended 2026-09-24); inheritance
+  must be pointable; player history displaces procedural content and never
+  gates it.
 - **Do not let a stage grow its own engine.** All stages are rule-dressings
   over one substrate. This is the anti-Spore insurance and the wing's single
   most load-bearing rule.

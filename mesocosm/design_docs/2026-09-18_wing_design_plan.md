@@ -1241,7 +1241,9 @@ what later sections derive from.
      materials as the exception, a lineage's traits travelling as what
      things are made of, beside "shapes become relics"; or keep them
      apart. Mark: "Amend Law A." The amendment's wording is drafted for his
-     word before it touches the founding record.
+     word before it touches the founding record. Shown the draft, Mark:
+     "Apply both as drafted", so it stands in the founding record's Law A
+     and in Mesocosm's CLAUDE.md pipeline-laws line.
 140. **A world's materials lie on a spectrum, from a normal base that
      matches a ruleset to completely generated.** Put to Mark on
      2026-09-24: are a world's own materials, its rock, metal, water and
@@ -2482,7 +2484,8 @@ is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
   whether that satisfies the law is Mark's to say. *Ruled 2026-09-24
   (ruling 139):* amend Law A. Materials are named as the exception, a
   lineage's traits travelling as what things are made of, beside "shapes
-  become relics"; the wording is drafted for Mark's word.
+  become relics"; applied at Mark's word to the founding record's Law A and
+  Mesocosm's CLAUDE.md the same day.
 - *Inert matter,* **answered by ruling 98.** The world is itself an entity
   made of stuff, "a special sort of entity, world-class", and "the basic
   macro kingdom". So bedrock, iron, clay, water and air are nis whose
@@ -4809,6 +4812,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: Law A's materials amendment applied at Mark's word ("Apply
+  both as drafted") to the founding record and Mesocosm's CLAUDE.md.
 - 2026-09-24: rulings 139 and 140 recorded: Law A to be amended for
   materials, its wording drafted for Mark's word; a world's materials on a
   spectrum from a ruleset's normal base to completely generated. §3.3.1's

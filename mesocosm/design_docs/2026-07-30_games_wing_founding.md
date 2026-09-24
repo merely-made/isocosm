@@ -817,6 +817,14 @@ simultaneously a morphological act and a value statement. Shapes do not
 become factions; shapes become **relics** of factions, and values become the
 factions themselves.
 
+**Materials (amended 2026-09-24; wing design record, rulings 97 and 139).**
+Materials are the exception: what things are made of travels. A world's
+materials are its lineages, so a lineage's traits cross games as the stuff
+things are made of. An item made in one game carries its lineage's nis into
+the next, and its hardness, edge and weight come from that lineage's traits.
+Shapes still become relics and never factions; a lineage's traits travel
+only as material.
+
 ### Law B — Inheritance must be pointable
 
 Dwarf Fortress depth that nobody notices reads as procedural noise. Each
