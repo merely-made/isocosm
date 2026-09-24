@@ -265,3 +265,8 @@ each other; R3 when the peer's crate lands; R5 last.
   directory stays `repos/isometry`, since local paths are not the
   repository's name. Eponym's leftover prose finished and `eponym-core`
   ruled, beside R5.
+- 2026-09-24: the site deployed green at merelyllc.com c1b8ab1 after two
+  smoke fixes (the headed smoke still named mesocosm as its text-first
+  profile and carried the old projection counts; retinue and the measured
+  counts took their place). Live: `mer3ly.net/projects/isocosm/` serves
+  the Isocosm profile; `/projects/mesocosm/` is 404, as intended.
