@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 135. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 137. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1210,6 +1210,21 @@ what later sections derive from.
      own act." So the seceders act as a faction and found their own
      polity, and the old one may accept it or contest it, the contest
      running like any other (rulings 115 and 116).
+136. **A polity dies by either route: its own dissolution, or when nothing
+     holds it any more.** Put to Mark on 2026-09-24, from §3.2.2's open
+     "who must agree": a polity dies only when people agree it has (ruling
+     65); who has to agree? Three options were put: its own way,
+     dissolution decided like reform; whoever still holds it, dying when
+     no member keeps it, no mind remembers it and no bearer records it; or
+     either route. Mark: "Either route."
+137. **The way of deciding suggests the means of enforcing by default and
+     never binds them.** Put to Mark on 2026-09-24, from §3.2.2's open
+     link between a polity's deciding act and its means: rule by buying
+     withholds pay, rule by divining withholds rites, rule by fighting
+     fights; is that link a default or a rule? Mark: "A default." So the
+     generator suggests means from the way of deciding, and a polity may
+     enforce by any means it has: a theocracy that fines, a merchant
+     republic with an army.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1879,7 +1894,9 @@ to the political system, the acts within": the act by which a form decides
 (ruling 63) suggests the means by which it enforces, so rule by buying
 withholds pay, rule by divining withholds rites, and rule by fighting
 fights. **Open:** whether that link is a default the generator uses or a
-constraint the sim holds.
+constraint the sim holds. *Ruled 2026-09-24 (ruling 137):* a default. The
+generator suggests means from the way of deciding, and a polity may enforce
+by any means it has.
 
 **Efficacy is read, never asserted.** *Reading, accepted by Mark 2026-09-21 (D5):* whether a means is
 efficacious is a track record, how often applying it produced compliance,
@@ -1935,7 +1952,10 @@ Secession is the seceders' own act, a faction founding its own polity, which
 the old one may accept or contest. *Reading, not ruled:* the old polity
 outlives the coup that circumvents it, as ruling 66's suppressed or
 superseded, and ruling 68's government in exile is exactly the polity a
-coup could not take; the "who must agree" to a polity's death stays open.
+coup could not take. *Ruled 2026-09-24 (ruling 136), who must agree to a
+death:* either route. A polity may dissolve itself by its own way of
+deciding or its amendment rule, or it dies when nothing holds it any more,
+no member keeping it, no mind remembering it and no bearer recording it.
 
 **Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
 death for agreement. Ruling 66 lets everything short of it happen
@@ -1964,7 +1984,11 @@ focus, and from who fills its deciding party, and it changes with no
 assertion at all. The conditions are not exclusive, since a polity can be
 superseded and subordinated at once, and each is reversible while the polity
 is not dead. **Open:** whether more conditions are wanted, and what a
-subordinating faction can and cannot make the polity do.
+subordinating faction can and cannot make the polity do. *Reading, from
+ruling 134, put to Mark on 2026-09-24 without objection:* a subordinating
+faction can make the polity do whatever its own way of deciding can do,
+since it acts through that way, and can change its constitution only by
+the amendment rule; whether more conditions are wanted stays open.
 
 Prior art for ruling 66, known. The League of Nations shows both rulings in
 one life: inactive through the war, superseded by the United Nations in
@@ -4751,6 +4775,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 136 and 137 recorded: a polity dies by its own
+  dissolution or when nothing holds it; the way of deciding suggests the
+  means by default. The subordinating faction's limits recorded as a
+  reading from ruling 134, unobjected.
 - 2026-09-24: rulings 134 and 135 recorded: reform by the polity's own
   way or amendment rule, force outside the constitution founding a new
   polity; secession by the seceders' own act. §3.2.2 gains them with one
