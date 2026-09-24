@@ -15,11 +15,11 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 117. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 118. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
-ruling 117 lets any belief be wrong.
+rulings 117 and 118 let any belief be wrong and say what makes one take.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -1031,6 +1031,19 @@ what later sections derive from.
      like charisma in dnd terms, posing as an action to
      intimidate/persuade/deceive? But in the sim's terms, it's 'wrong'
      information or stale information, i suppose".
+118. **Whether a belief takes: what the receiver can check, who's telling,
+     what it wants to hear, and how it's told, all four.** Put to Mark on
+     2026-09-24, following ruling 117: when someone is shown or told
+     something, what decides whether they believe it? Four options were
+     put, to pick all that should count: what they can check, evidence
+     outweighing what is told, so a lie lasts only where it cannot be
+     checked and a stale belief falls when fresher news arrives; who's
+     telling, trust in the teller by the receiver's opinion of them, their
+     reputation and rank; what they want to hear, fit with the receiver's
+     tenets, loyalties and hopes; and how it's told, the teller's practised
+     skill to intimidate, persuade or deceive, which a ruleset reads as
+     charisma. Mark picked all four. How they are weighed against each
+     other is the next question.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2509,6 +2522,18 @@ strength, to persuade is to move a belief or an opinion, and to deceive is
 to plant a false one; ruling 116's bluff is posing inside a contest; and a
 ruleset's charisma is its reading of the actor's capacity for posing,
 calibrated under ruling 114.
+
+*Ruled 2026-09-24 (ruling 118): what makes a belief take.* Four things
+count, and all four were ruled in: what the receiver can check, since
+evidence outweighs what is told, so a lie lasts only where it cannot be
+checked and a stale belief falls when fresher news arrives; who is telling,
+the receiver's trust in the teller by its opinion of them, their reputation
+and their rank; what it wants to hear, the claim's fit with its tenets,
+loyalties and hopes; and how it is told, the teller's practised skill in
+ruling 96's sense, which a ruleset reads as charisma. How the four are
+weighed when they pull apart is open. Prior art, known: source credibility
+(Hovland and Weiss, 1951); motivated reasoning (Kunda, 1990); Bayesian
+updating as the evidence term alone.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -4456,6 +4481,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 118 recorded: a belief takes by what the receiver can
+  check, who is telling, what it wants to hear and how it is told, all
+  four; §3.4 gains the paragraph with its prior art. The weighing is open.
 - 2026-09-24: ruling 117 recorded: any belief can be wrong, wrong or stale,
   and entities act on what they believe; reach carries versions. §3.4's
   knowledge resolution gains the ruling and one flagged reading (posing as
