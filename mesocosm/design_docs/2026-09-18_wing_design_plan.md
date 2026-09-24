@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 119. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 120. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1054,6 +1054,14 @@ what later sections derive from.
      Mark: "Both. World baselines can be more like aggregate baselines
      drawn from the world entity disposition? Then a neutral median
      default for the sim is the world's normal way".
+120. **The world's disposition seeds the founders only.** Put to Mark on
+     2026-09-24, following ruling 119: is the world entity's disposition
+     the baseline for every inhabitant's disposition, not just for how
+     they weigh beliefs? Three options were put: every disposition, the
+     world's pull continuing; founders only; or only belief. Mark:
+     "Founders only." So the world's disposition seeds the first lineages;
+     after that, dispositions are inherited and lived, and the world's
+     pull fades.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1439,7 +1447,10 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    belief-desire-intention agents for denizens when their chosen fidelity
    needs them, normative agents with roles and institutions for characters.
    A denizen's disposition is the five-factor axes when represented, and
-   significant events may also cause traits, as Crusader Kings does. The denizen
+   significant events may also cause traits, as Crusader Kings does. (Ruled
+   2026-09-24, ruling 120: a disposition is inherited through the lineage
+   and lived; the world entity's disposition seeds only the first
+   lineages, and its pull fades after.) The denizen
    line is Dwarf Fortress's historical-figure rule: a critter becomes a denizen
    when it does something the record keeps, is named, is related, or is
    explicitly designated, not only when it becomes an antagonist.
@@ -4499,6 +4510,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 120 recorded: the world's disposition seeds the first
+  lineages only; dispositions are inherited and lived after. §3.2.1's
+  methodology answer gains the note.
 - 2026-09-24: ruling 119 recorded: the four are weighed by each entity's
   disposition around a world baseline drawn from the world entity's own,
   a neutral median by default; §3.4 gains the paragraph.
