@@ -13,7 +13,7 @@ what was named, and what was left open. It is not an authority: Mark's
 words are quoted verbatim as numbered rulings in the
 [wing design record](2026-09-18_wing_design_plan.md) §0, the readings this
 record's author added are on the
-[readings docket](2026-09-21_wing_readings_docket.md), and the compiled
+[readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md), and the compiled
 result is the [sim plan](2026-09-22_sim_plan.md). Where this file and those
 disagree, they win.
 

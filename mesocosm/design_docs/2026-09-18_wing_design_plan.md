@@ -12,7 +12,7 @@ sim's own plan, is next and is design work, not lanes.
 **Status, 2026-09-22:** rulings run to 105. W2 is drafted as the
 [sim plan](2026-09-22_sim_plan.md), a schema and definitions compiled from
 this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
-beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
+beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
 **Status, 2026-09-24:** rulings run to 156. The sim plan's implementation
@@ -4973,6 +4973,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: the readings docket archived at Mark's word ("Archive it") to
+  `archive_docs/2026-09-24/`, nothing held; links to it repaired here, in
+  the sim plan, the session notes and the doc index.
 - 2026-09-24: rulings 155 and 156 recorded: what a Mesocosm player plays
   follows its lineage's traits, kin ranging from competitors to extensions
   of its own critter; a DM may take up any unclaimed entity to play and may
@@ -5231,7 +5234,7 @@ No code lane runs before W1 is ruled.
   note on the thing, written by the sim as a player would write one;
   `wing-impresa` checked and found to be nearly that record already, the
   identity left open for Mark. D19 and D20 stay held.
-- 2026-09-21: the [readings docket](2026-09-21_wing_readings_docket.md)
+- 2026-09-21: the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md)
   opened at Mark's word: twenty of this record's own readings,
   recommendations and verdicts gathered for ruling in one pass, each with
   its consequence and a suggestion, and the open questions listed as parked.

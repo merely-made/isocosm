@@ -2,9 +2,13 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
+**Archived 2026-09-24** at Mark's word ("Archive it"): nothing is held. D19
+was ruled by ruling 154, and D20's rule by rulings 152 and 153, its provider
+left to W3. The record and the sim plan carry every ruling.
+
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
 day; two held; D21 to D33 opened since and ruled 2026-09-22, D32 by ruling 105 and the rest by ruling 106.** It gathered every reading, recommendation and verdict the
-[wing design record](2026-09-18_wing_design_plan.md) had flagged as its own,
+[wing design record](../../2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
 
