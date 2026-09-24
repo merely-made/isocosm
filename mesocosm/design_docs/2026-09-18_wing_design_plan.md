@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 132. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 133. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1179,6 +1179,18 @@ what later sections derive from.
      keep; or slowly, to a floor. Mark: "Slowly, to a floor." So a craft
      left unpractised slips toward a floor it never loses, and doing is
      kept better than knowing.
+133. **Factions are never gated by disagreement; a polity is, where its
+     ultimate authority is vested in a group.** Put to Mark on 2026-09-24,
+     from §3.2.2's open "which protocols": when a faction can't agree,
+     everyone wanting something different or nobody caring enough to act,
+     what should a world's ruleset let happen? Three options were put, to
+     pick all that should be available: nothing happens; they split; or
+     their preferred way, the members falling back on the way of deciding
+     their alignments rank highest, held for that one decision. Mark:
+     "Their preferred way, Factions shouldn't be gated by disagreement.
+     Polities' collective processes, insofar as they vest ultimate
+     authority in a group rather than an individual, do gate polity acts
+     on disagreements."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1775,7 +1787,14 @@ asked at all. Where peer to peer agreement cannot emerge, everyone
 differently aligned or nobody holding an actionable opinion, "a few general
 protocols" apply. *Reading, accepted by Mark 2026-09-21 (D1):* because they are general they belong to the
 world's ruleset (ruling 41) and not to the faction, which keeps the faction
-stateless. **Open:** which protocols.
+stateless. **Open:** which protocols. *Ruled 2026-09-24 (ruling 133):* a
+faction is never gated by disagreement. Those who join an act are its party
+and act, and where the faction must decide as one, its members fall back on
+their preferred way, the way of deciding their alignments rank highest,
+counted as at a founding and held for that one decision. A polity is
+different: where its form vests ultimate authority in a group rather than
+an individual, its acts are gated on that group's disagreement, so a council
+can deadlock where a monarch cannot.
 
 **Already in code, checked 2026-09-20.** Eponym's `eponym-social` is
 this model at the scale of two. Standing is folded from the deed log as
@@ -1883,7 +1902,11 @@ pretender, the government in exile and the restored order. **Open,** and agreed
 open by ruling 68: whether
 a constitution borne by an item, a charter, keeps a polity from being
 forgotten when its last knower dies; who must agree, and by what count; and
-reform and secession.
+reform and secession. *Reading, from ruling 129, put to Mark on 2026-09-24
+without objection:* the charter question is answered, since a charter is a
+bearer and a thing stays of note while some bearer records it; a polity
+whose last knower dies survives in its charter, and whoever finds it can
+revive the polity under ruling 68.
 
 **Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
 death for agreement. Ruling 66 lets everything short of it happen
@@ -4699,6 +4722,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 133 recorded: factions fall back on their preferred
+  way and are never gated by disagreement; polities vesting authority in a
+  group are. §3.2.2's "which protocols" is ruled, and its charter question
+  answered as a reading from ruling 129.
 - 2026-09-24: ruling 132 recorded: an unpractised skill decays slowly to
   a floor; §3.3.1's open line on skill decay is ruled.
 - 2026-09-24: ruling 131 recorded: a mind remembers what was new, what
