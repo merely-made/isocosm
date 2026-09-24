@@ -15,10 +15,10 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 115. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 116. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, and
-ruling 115 makes competition a choice.
+rulings 115 and 116 make competition a choice and most contests bloodless.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -1009,6 +1009,13 @@ what later sections derive from.
      the choices, and whether a lineage leans to contest or scramble is a
      trait. A fight is what a contest becomes; how it resolves is the next
      question.
+116. **Most contests never reach blows.** Put to Mark on 2026-09-24,
+     following ruling 115: once both sides choose to contest, what ends
+     the fight? Three options were put: one side breaks, will deciding as
+     the fight goes; one side is spent, the fight running mechanically; or
+     most never reach blows. Mark: "Most never reach blows." So the sides
+     size each other up first, by display or bluff, and most contests end
+     there; only close matches escalate, and then one side breaks.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2393,6 +2400,19 @@ Nicholson's scramble and contest competition (1954), under which scramble
 tends to boom and crash and contest to hold a population steady; Maynard
 Smith and Price's hawk and dove (1973), where the mix of fighters and
 yielders is itself what evolves.
+
+**Contests (ruling 116).** Most contests never reach blows: the sides size
+each other up first, by display or bluff, and most end there; only close
+matches escalate, and then one side breaks. *Reading, not ruled:* what a
+side sizes up is what it can perceive of the other, its body, gear, numbers
+and display, and what it knows of it, reputation arriving through the reach
+field as ruling 56's standing, so a thing with a fearsome name wins most of
+its contests before they start; a bluff is a display beyond what stands
+behind it, and it holds until a close match calls it. Prior art, known:
+resource-holding potential (Parker, 1974); red deer stags roaring, then
+walking in parallel, and fighting only when closely matched (Clutton-Brock
+and colleagues, 1979); the sequential assessment model (Enquist and Leimar,
+1983).
 
 ### 3.4 The record
 
@@ -4404,6 +4424,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 116 recorded: most contests never reach blows; the
+  sides size each other up by display or bluff, and close matches escalate
+  until one side breaks. §3.3.1 gains a contests paragraph with one reading
+  flagged (what is sized up, reputation included) and its prior art.
 - 2026-09-24: ruling 115 recorded: competition by choice, contest, yield,
   share or trade, with a lineage's leaning a trait. §3.3.1 gains its
   paragraph and the sim plan's §3.2 a competing instance.
