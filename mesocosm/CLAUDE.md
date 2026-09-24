@@ -168,7 +168,10 @@ Do not copy it into Paredros or Isometry.
 - **Do not describe world nouns as "chartulary-typed."** Chartulary is
   generic (containers, facets, nesting, attributed edits). Factions, places,
   characters, and history are Isometry types today. A portable profile is
-  extracted after two real consumers, never declared in advance.
+  extracted after two real consumers, never declared in advance. The
+  simulator is the exception by ruling of 2026-09-18, as in the federation
+  line below: its schema of world nouns is designed from the games' systems
+  in combination (the sim plan's S1), and this rule still holds elsewhere.
 - **Do not build the federation platform first.** It is extracted from
   shipped games. Mesocosm is a candidate for that proof, not yet a consumer.
   The simulator is the exception by ruling of 2026-09-18: it is designed
