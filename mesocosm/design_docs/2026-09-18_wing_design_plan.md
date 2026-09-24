@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 143. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 144. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1277,6 +1277,16 @@ what later sections derive from.
      the maker's skill and its story. So only a better maker takes an item
      further, an item of note grows with its deeds as well as its work,
      and its material is no ceiling.
+144. **An item can be a sophont: made so, awakened by its story, or
+     inhabited.** Mark, 2026-09-24, while ruling 143 was being recorded:
+     "We should also probably consider items that are sophont". Put to him
+     as how an item comes to be a sophont, three routes to pick every one
+     that should exist: made so, its maker building a mind into it, ruling
+     45's construct that happens to be a sophont; awakened by its story,
+     an item of note that has been through enough growing a mind of its
+     own; or inhabited, a mind moving into it, a bound spirit, a soul in a
+     phylactery, one of the dead summoned into a vessel. Mark picked all
+     three.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1339,7 +1349,11 @@ in §3.2 that some rungs are relations and some are agents with state.
 
 Things and magic sit inside these: an item is a body without agency and a
 relic per Law A; a glyph is magic's vocabulary and magic is a process that
-bends the rules the others run under (ruling 10).
+bends the rules the others run under (ruling 10). (Ruled 2026-09-24, ruling
+144: an item can also be a sophont, made so by its maker, awakened by its
+story, or inhabited by a mind that moves into it; then it has agency, and
+its provenance stays a maker's or its own story's while its identity is a
+sophont's, ruling 45's two axes.)
 
 ### 3.2 Agents and state
 
@@ -4844,6 +4858,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 144 recorded at Mark's prompt: an item can be a
+  sophont, made so, awakened by its story, or inhabited. §3.1's line on
+  items gains it.
 - 2026-09-24: rulings 141 to 143 recorded: a skill rises four ways;
   techniques are found and invented; improvement is limited by the maker's
   skill and the item's story. §3.3.1's crafting open line is ruled but for
