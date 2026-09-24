@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 138. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 140. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1233,6 +1233,25 @@ what later sections derive from.
      Mark: "Per act only." So deadlock blocks one act at a time, the
      polity stays active for everything its group does agree on, and the
      conditions stay four.
+139. **Law A is amended for materials.** Put to Mark on 2026-09-24, from
+     D28's check left open for him: does materials-as-lineages satisfy Law
+     A, which says morphology doesn't travel between games as foreign rule
+     authority? Three options were put: it satisfies Law A, what crosses
+     being an item bearing its lineage's provenance; amend Law A, naming
+     materials as the exception, a lineage's traits travelling as what
+     things are made of, beside "shapes become relics"; or keep them
+     apart. Mark: "Amend Law A." The amendment's wording is drafted for his
+     word before it touches the founding record.
+140. **A world's materials lie on a spectrum, from a normal base that
+     matches a ruleset to completely generated.** Put to Mark on
+     2026-09-24: are a world's own materials, its rock, metal, water and
+     air, generated per world, or drawn from a base every world shares?
+     Three options were put: generated per world; a shared base; or base
+     plus variants. Mark: "Base, variants, and generated. I would straight
+     up love to have a completely randomized generated world, but a
+     spectrum between that and a normal base world which matches a
+     ruleset is probably good". Where a world sits on that spectrum reads
+     as a founding setting, as its magic is (ruling 102).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2460,7 +2479,10 @@ is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
   other games as material. The reading that keeps Law A is that what crosses
   is an item and its lineage's provenance, and the material properties are
   ruling 38's coarse far-rung reading of the lineage's traits, not the body;
-  whether that satisfies the law is Mark's to say.
+  whether that satisfies the law is Mark's to say. *Ruled 2026-09-24
+  (ruling 139):* amend Law A. Materials are named as the exception, a
+  lineage's traits travelling as what things are made of, beside "shapes
+  become relics"; the wording is drafted for Mark's word.
 - *Inert matter,* **answered by ruling 98.** The world is itself an entity
   made of stuff, "a special sort of entity, world-class", and "the basic
   macro kingdom". So bedrock, iron, clay, water and air are nis whose
@@ -2497,7 +2519,9 @@ critter or a sophont its acts are those same processes chosen. *Geology is
 anatomy.* A world's stuff is its parts, so the body pipeline's parts and
 scruples describe a crust, a vein of ore, an aquifer, and a world's kinds of
 nis are its own trait catalogue, which is the material typology ruling 97
-asked for at the root. *Constructs close the loop.* "Stuff can be made out
+asked for at the root. (Ruled 2026-09-24, ruling 140: that catalogue lies
+on a spectrum, from a normal base world that matches a ruleset, through a
+base with variants, to a completely generated one.) *Constructs close the loop.* "Stuff can be made out
 of the world, even critters": a golem or an automaton is ruling 45's
 construct with the world's nis as its matter, and every producer already
 makes its own nis out of the world's. *Divinity and the planes line up.* A
@@ -4785,6 +4809,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 139 and 140 recorded: Law A to be amended for
+  materials, its wording drafted for Mark's word; a world's materials on a
+  spectrum from a ruleset's normal base to completely generated. §3.3.1's
+  Law A check and the world's kinds follow.
 - 2026-09-24: ruling 138 recorded: deadlock is per act, not a condition;
   the conditions stay four, and §3.2.2's open questions are all ruled or
   read.
