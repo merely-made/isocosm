@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 123. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 124. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1102,6 +1102,17 @@ what later sections derive from.
      So a blow drains vigour first and wounds a part when it lands hard or
      the vigour is gone; vigour comes back with rest, and wounds heal
      slowly, or never.
+124. **The first scale target is a region; larger scales are not
+     precluded.** Put to Mark on 2026-09-24, after the finding that the
+     generator's declared space had parameters and no ranges and that no
+     phase measured §3.5's scale: at its largest, what world should a
+     seeded draw be able to run on his laptop? Three options were put: a
+     region, hundreds of sites, tens of thousands of critters, hundreds of
+     them named, a century of history in a few minutes; a continent,
+     thousands of sites, hundreds of thousands of things, a millennium in
+     minutes; or a whole world, millions of things, ages of history,
+     overnight if need be. Mark: "We can start with the region, not
+     precluding the larger scales of course."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2938,6 +2949,12 @@ location.
 Memory is not the constraint at this scale; processing is, and the four
 rules make it proportional to what is happening.
 
+*Ruled 2026-09-24 (ruling 124): the first target is a region.* At its
+largest, a seeded draw runs a region on Mark's laptop: hundreds of sites,
+tens of thousands of critters, hundreds of them named, a century of history
+in a few minutes. The continent this section's title claims, and a whole
+world, are later targets and not precluded.
+
 ### 3.6 Terrain
 
 The near rung is a volume with an interior, destructible and constructible,
@@ -4299,7 +4316,7 @@ on a receipt.
 | RimWorld derives regions and rooms from cells and runs temperature and pathing over them | Prior-art memory | Unchecked |
 | petgraph carries connected components, Dijkstra, A*, k-shortest paths, dominators, min cut and subgraph isomorphism | Prior-art memory; version in chartulary not read | Unchecked |
 | Basic Fantasy RPG's line is CC BY-SA since 2023 | Prior-art memory | Unchecked |
-| Storage and processing scale as §3.5 claims at hundreds of thousands of entities | Argument from the derivation rule, not measured | Unchecked |
+| Storage and processing scale as §3.5 claims at hundreds of thousands of entities | Argument from the derivation rule, not measured | Unchecked; the first measured target is a region (ruling 124), a done-condition of the sim plan's S5 |
 
 ## 8. The contradictions of 2026-09-16, and what resolves each
 
@@ -4578,6 +4595,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 124 recorded: the first scale target is a region on
+  Mark's laptop, larger scales not precluded. §3.5 and §7's scale row gain
+  it; the sim plan's S5 measures it.
 - 2026-09-24: ruling 123 recorded: harm is vigour, drained first and
   restored by rest, and wounds to parts, slow to heal or permanent. §3.3.1
   gains a harm paragraph with one flagged reading and its prior art.
