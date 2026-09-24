@@ -15,9 +15,9 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 113. The sim plan's implementation
-lane is open in `shared/isocosm`, and ruling 113 sets what its background
-must agree with.
+**Status, 2026-09-24:** rulings run to 114. The sim plan's implementation
+lane is open in `shared/isocosm`; ruling 113 sets what its background must
+agree with, and ruling 114 holds every game's ruleset to the same test.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -983,6 +983,19 @@ what later sections derive from.
      only, Mark: "Accept as recommended." This settles §3.3's "a host's
      setting" against §3.12's "never of the machine" in the second's
      favour, and gives the aggregation research its acceptance criterion.
+114. **A game's ruleset is held to ruling 113's test: rulesets calibrate to
+     the sim.** Put to Mark on 2026-09-24: two armies meet and a duke
+     falls; at a VTT table 5e resolves the battle, and with nobody playing
+     the sim resolves it as an outcome; should a game's ruleset be held to
+     the same test as the sim's own two ways? Three options were put:
+     rulesets calibrate, the table is canon, or a world setting. Mark:
+     "Rulesets calibrate." So the sim owns the background's outcome model,
+     and each ruleset, reading the ledger as its sheet (ruling 38) and
+     given the same situation with no player choices, must match it in
+     distribution, checked on the bench; what players choose is an input
+     and never a seam. This rules the agreement half of §5.2's resolution
+     handoff, held under D19, and reverses the sim plan's "owed by the
+     definitions and not by any game".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2972,6 +2985,14 @@ battle; the foreground game resolved both by its own rules, or the
 background resolved them by outcome without playing them out. It never
 decides what is fun. Mark: "sounds pretty right to me."
 
+*Ruled 2026-09-24 (ruling 114):* the two resolutions agree. The
+background's outcome model is the sim's, and a game's ruleset resolving the
+same situation with no player choices matches it in distribution, ruling
+113's test, checked on the bench through the ruleset's reading of the
+ledger as its sheet. What players choose is an input, never a seam. So the
+sim owes a background outcome model for every kind of outcome a ruleset
+resolves, a fight among them.
+
 ### 3.9 Founding a world
 
 From rulings 88 to 91. This is the generator rung of W2, in outline.
@@ -3849,7 +3870,8 @@ follows here is the boundary above it and stands as written.
    the overlay to resolve it and takes back an outcome in the sim's own
    terms, which must pass the sim's invariants, the accounts conserved;
    otherwise the sim resolves it by rate. That the two agree is ruling 75,
-   owed by the ruleset and checked on the bench.
+   owed by the ruleset and checked on the bench. (Ruled 2026-09-24 for this
+   point alone, by ruling 114; the rest of §5.2 stays held.)
 
 6. **WIT as the discipline, with two bindings.** Shape the contract the way
    WIT forces: values copied, opaque handles minted by the host, no pointer
@@ -4351,6 +4373,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 114 recorded: rulesets calibrate to the sim's
+  background outcome model, ruling 113's test applied at the game
+  boundary. §3.8 and §5.2's point 5 given the ruling, D19 annotated, and
+  the sim plan's §3.5 and §5.5 follow it.
 - 2026-09-24: ruling 113 recorded: similitude. The noted run individually,
   the fungible agree in distribution over what later processes read, what
   was watched is logged, and exact agreement is a world setting. §3.3

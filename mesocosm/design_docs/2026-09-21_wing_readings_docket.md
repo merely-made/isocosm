@@ -58,7 +58,7 @@ The items as they stood when accepted:
 
 | # | Reading | Held for | Mark |
 | --- | --- | --- | --- |
-| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff | W5, the first game overlay | "idk!" |
+| D19 | §5.2's contract shape: intents in, events and views out, one attention set per player, a resolution handoff (since ruled in part: the handoff's agreement by ruling 114, and what was watched logged by ruling 113; the shape stays held) | W5, the first game overlay | "idk!" |
 | D20 | Who may direct which entity as a provider over `mere-capability`'s order | W3, beside ruling 34 | "idk!" |
 
 ## Open questions parked in the record, not on this docket
