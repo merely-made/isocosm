@@ -4,7 +4,7 @@
 //! M0's done-condition, as tests.
 //!
 //! The two seed sets below are **pinned fixtures**, not the products' own
-//! definitions: they are the hex the Mesocosm bench sheet and the Paredros
+//! definitions: they are the hex the Mesocosm bench sheet and the Eponym
 //! session sheet carried on 2026-09-15, the day the sheet was promoted. Their
 //! job is to fail if derivation ever stops reproducing that day's colours,
 //! which is the condition the capture sets rest on. The products keep their
@@ -55,7 +55,7 @@ fn bench_seeds() -> Seeds {
     }
 }
 
-/// Paredros's session: a dark instrument palette.
+/// Eponym's session: a dark instrument palette.
 fn session_seeds() -> Seeds {
     Seeds {
         background: hex("#1b1d21"),

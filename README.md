@@ -1,11 +1,12 @@
 # Isometry
 
 This repository is also home to [Mesocosm](mesocosm/README.md) and
-[Paredros](paredros/README.md). The three products retain their package names
-and separate Cargo workspaces. Start with the [wing documentation index](design_docs/DOC_README.md).
+[Eponym](eponym/README.md) (formerly Paredros). The three products keep
+separate Cargo workspaces; Eponym's packages took the `eponym` name on
+2026-09-24. Start with the [wing documentation index](design_docs/DOC_README.md).
 
 From this directory, select a product with `./scripts/wing.ps1 isometry test`,
-`./scripts/wing.ps1 mesocosm test`, or `./scripts/wing.ps1 paredros test`.
+`./scripts/wing.ps1 mesocosm test`, or `./scripts/wing.ps1 eponym test`.
 Additional arguments are passed to Cargo, for example `-p mesocosm-core --lib`.
 On other platforms, run Cargo from the corresponding product directory;
 tabletop-only local overrides can be supplied with Cargo's `--config` option.
@@ -66,7 +67,7 @@ cargo test --workspace --all-features        # default features skip the campaig
 MIT OR Apache-2.0 for the tabletop crates in this workspace. The voxel bake
 that was `crates/isometry-voxel` was relicensed MPL-2.0 on 2026-09-14 and
 folded into the MPL-2.0 `isometer-mesh` on 2026-09-15, so the exception is
-now simply the wing's own licence. Mesocosm, Paredros and the shared wing
+now simply the wing's own licence. Mesocosm, Eponym and the shared wing
 crates carry their own licence files.
 
 ---

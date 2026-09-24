@@ -6,7 +6,7 @@
 //! The 2026-09-15 inventory found the same card three times: a `custom_leaf`
 //! with `role="img"` and a label, inside a `.scene-card` container, with an
 //! optional overlay over it and an error line under the column. The Mesocosm
-//! bench and the Paredros session wrote it twice in the same shape with
+//! bench and the Eponym session wrote it twice in the same shape with
 //! different words; this module is that shape once.
 //!
 //! **What crosses the boundary is a leaf key, not a scene.** [`ViewportCard`]

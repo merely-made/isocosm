@@ -12,7 +12,8 @@ about the world. Evaluated against the wing design record; see
 ## Scope and layout
 
 Keep the tabletop in the existing root workspace. Import Mesocosm under
-`mesocosm/` and Paredros under `paredros/`. Initially retain their Cargo
+`mesocosm/` and Paredros under `paredros/` (renamed `eponym/` by the family
+rename's R2, 2026-09-24). Initially retain their Cargo
 workspace roots: repository consolidation can land without changing dependency
 resolution, root patches, profiles or product semantics. A single Cargo
 workspace is a subsequent integration choice, not a prerequisite for atomic

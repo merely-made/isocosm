@@ -131,28 +131,28 @@ Five further couplings are not `World` but are equally product-bound:
 - `appearance.rs:60` calls `crate::app::look_of(organism)` — the host's kingdom
   palette. Becomes a caller-supplied `tint: [f32; 3]` per body (Paredros
   already supplies `Appearance::played`/`other`,
-  `paredros-client/src/producer/bodies.rs:199-203`).
+  `eponym-client/src/producer/bodies.rs:199-203`).
 - `bodies.rs:359` `materials::project(&organism.phenotype, world.ruleset())` —
   Mesocosm's process mosaic. `materials.rs` stays in mesocosm-genet and the
   adapter hands the resulting `Vec<PartMaterial>` in per body. Paredros has no
   phenotype and supplies an empty slice
-  (`paredros-client/src/producer.rs:38-39`).
+  (`eponym-client/src/producer.rs:38-39`).
 - `bodies.rs:504` `body_origin(organism, scale, grounded)` reads
   `organism.position` (`[i32;3]`) and `body().aabb()`. The neutral form is a
   continuous `position: [f32;3]` plus a `ground_anatomy: bool`; Paredros
   already computes feet from `MotionPose` at `MOTION_SCALE`
   (`producer/bodies.rs:185-192`).
 - `SectionFrame::ground: &Ground` — `mesocosm_core::places::Ground`. **Both
-  products already use this exact type**: `paredros_world::World::ground`
+  products already use this exact type**: `eponym_world::World::ground`
   returns `&mesocosm_core::places::Ground`
-  (`paredros/crates/paredros-world/src/world.rs:157`, importing it at line 7).
+  (`eponym/crates/eponym-world/src/world.rs:157`, importing it at line 7).
   It is a `mesocosm_core` type but not `World`, so it satisfies the lane's
   prohibition. It is still wrapped behind a trait (§3) so Isometry's map can be
   a third source without a fourth producer.
 - `LiveBodyProjection.organism: OrganismId` (`mesocosm-mesh/src/live.rs:43`)
   and `MeshError::EmptyBodyProjection { organism }`. `OrganismId(pub u32)`
   (`mesocosm-core/src/organism.rs:44`) against Paredros's
-  `SubjectId(pub u64)` (`paredros-identity/src/lib.rs:40`). See §6, risk 1.
+  `SubjectId(pub u64)` (`eponym-identity/src/lib.rs:40`). See §6, risk 1.
 
 ---
 
@@ -370,7 +370,7 @@ supplies, per frame:
 
 ### What Paredros's P1 producer supplies
 
-`SceneModel` (`paredros-client/src/producer/handle.rs:54`) keeps `camera`,
+`SceneModel` (`eponym-client/src/producer/handle.rs:54`) keeps `camera`,
 `appearance`, `terrain` and `follow_centre` and gains a `SceneSource` impl:
 `game.bodies().all().filter(alive)` becomes `SceneBody` with
 `SubjectKey(subject.0)`, `&record.document`, a `Pose` from `MotionPose` over
@@ -386,17 +386,17 @@ volumes from `DeclaredExtentVolumes::from_documents(.., BODY_MATERIAL)`;
 
 | Dependency | Mesocosm | Paredros | One version? |
 | --- | --- | --- | --- |
-| `mesocosm-lens` — `BrickTracer`, `BrickMap`, `TraceCamera`, `SlabWall`, `Grade`, `FRAME_FORMAT` | path (`mesocosm/Cargo.toml:89`) | path `../../../mesocosm/…`, **optional**, behind `r1-proof` (`paredros-client/Cargo.toml:41`, `:19`) | Yes — one on-disk crate. isometer declares it by relative path, as `mesocosm-mesh` already declares `wing-formats`. |
+| `mesocosm-lens` — `BrickTracer`, `BrickMap`, `TraceCamera`, `SlabWall`, `Grade`, `FRAME_FORMAT` | path (`mesocosm/Cargo.toml:89`) | path `../../../mesocosm/…`, **optional**, behind `r1-proof` (`eponym-client/Cargo.toml:41`, `:19`) | Yes — one on-disk crate. isometer declares it by relative path, as `mesocosm-mesh` already declares `wing-formats`. |
 | `mesocosm-render` — `LiveBodyRenderer`, `LiveBody`, `ClipSlab`, `PartMaterial`, `pick_bodies`, `body_bounds`, `posed_quad` | path (`:93`) | path, not optional (`:43`) | Yes |
 | `mesocosm-mesh` — `LiveBodyProjector`, `mesh_body`, `VolumeSource`, `VolumeMap`, `Volume`, `BodyDependencyRevision` | path (`:91`) | path (`:42`) | Yes |
-| `mesocosm-core`, **not `World`** — `BodyDocument`, `PartId`, `VolumeRef`, `places::Ground`, `effect_experiment::Glyph` | path (`:88`) | path (`:40`); `paredros-world` takes it too (`paredros-world/Cargo.toml:17`) | Yes. lens, mesh and render all depend on it already, so it is unavoidable and is the de-facto shared body-document crate. |
-| `wgpu` | workspace `30`, backends named (`mesocosm/Cargo.toml:116-125`) | `30`, same backend list (`paredros-client/Cargo.toml:57`) | Yes, one major. isometer declares `version = "30", default-features = false, features = ["std", "wgsl"]` and leaves backends to the leaf binaries. |
-| `cambium-rootstock` — `TextureProducer`, `ProducedTexture`, `ProducerContext`, `SourceAlpha`, `SourceEncoding` | mere `4f4de1d0` (`mesocosm/Cargo.toml:64`) | mere `4f4de1d0` (`paredros/Cargo.toml:68`) | Yes, identical rev; `shared/wing-scenario/Cargo.toml` pins the same. |
+| `mesocosm-core`, **not `World`** — `BodyDocument`, `PartId`, `VolumeRef`, `places::Ground`, `effect_experiment::Glyph` | path (`:88`) | path (`:40`); `eponym-world` takes it too (`eponym-world/Cargo.toml:17`) | Yes. lens, mesh and render all depend on it already, so it is unavoidable and is the de-facto shared body-document crate. |
+| `wgpu` | workspace `30`, backends named (`mesocosm/Cargo.toml:116-125`) | `30`, same backend list (`eponym-client/Cargo.toml:57`) | Yes, one major. isometer declares `version = "30", default-features = false, features = ["std", "wgsl"]` and leaves backends to the leaf binaries. |
+| `cambium-rootstock` — `TextureProducer`, `ProducedTexture`, `ProducerContext`, `SourceAlpha`, `SourceEncoding` | mere `4f4de1d0` (`mesocosm/Cargo.toml:64`) | mere `4f4de1d0` (`eponym/Cargo.toml:68`) | Yes, identical rev; `shared/wing-scenario/Cargo.toml` pins the same. |
 | `netrender` | — | — | **Not needed.** `Section` never names netrender; the host imports `display_texture()` into netrender's graph (`app/frame.rs:342`). |
 | `modulus` | workspace | optional under `r1-proof` | Transitive under `mesocosm-lens`; no direct row. |
 
 **Product-crate check.** No proposed dependency reaches `mesocosm-runtime`,
-`mesocosm-genet`, `mesocosm-views`, `paredros-world`, `paredros-identity` or
+`mesocosm-genet`, `mesocosm-views`, `eponym-world`, `eponym-identity` or
 `isometry-core`. The only `mesocosm_core` items named are `BodyDocument`,
 `PartId`, `VolumeRef`, `places::Ground` and `effect_experiment::Glyph`;
 `World`, `Organism`, `OrganismId`, `BodyPhenotype`, `process::Registry` and
@@ -425,7 +425,7 @@ Each step ends with `cargo check --workspace --all-features --all-targets` and
    stay in mesocosm-genet and produce a `forward` vector; the `View` internals
    (`trace`, `matrix`, `clip`, `reach`, `window`) become `SlabCamera` methods.
    Move `mesocosm_mesh::VolumeSource` re-export plus the new
-   `DeclaredExtentVolumes`, lifted from `paredros-client/src/producer/bodies.rs:210-237`.
+   `DeclaredExtentVolumes`, lifted from `eponym-client/src/producer/bodies.rs:210-237`.
    Nothing consumes it yet. Camera parity is proved by the 11 tests from
    `camera.rs` and `view.rs` re-pointed at `SlabCamera`.
 2. **Move the body layer.** `src/bodies.rs` ← `section/bodies.rs` minus the
@@ -460,7 +460,7 @@ Each step ends with `cargo check --workspace --all-features --all-targets` and
    `SceneProducer`. `bench/producer.rs`'s `TextureProducer` impl
    (`app/bench/producer.rs:354-385`) becomes a `SceneSource` impl; its
    sRGB-to-linear tint conversion (`:361-367`) stays in the bench.
-8. **Paredros retargets.** `paredros-client/src/producer/{camera,bodies,scene}.rs`
+8. **Paredros retargets.** `eponym-client/src/producer/{camera,bodies,scene}.rs`
    deleted; `handle.rs` gains the `SceneSource` impl; the eight GPU tests in
    `producer/tests.rs` re-point at `SceneProducer` and
    `SceneProducer::presented_camera()` in place of `presented_view()`.
@@ -566,7 +566,7 @@ Restating L9's six conditions against tests that exist or must be written.
    *Must be written:* a pure test in isometer building a `SceneFrame` from
    two hand-made `BodyDocument`s with no product crate in scope, asserting the
    crate's `deny` list holds — `cargo tree -p isometer` shows no
-   `mesocosm-runtime`, `mesocosm-genet`, `paredros-world`, `paredros-identity`
+   `mesocosm-runtime`, `mesocosm-genet`, `eponym-world`, `eponym-identity`
    or `isometry-core`; and a `DeclaredExtentVolumes` test asserting one solid
    per addressed tag at `half_extent * 2` and a counted conflict when one tag
    is declared at two extents (ported from Paredros's declared limit in
@@ -607,7 +607,7 @@ Restating L9's six conditions against tests that exist or must be written.
    check, both test suites, Mesocosm's `acceptance` and `spatial-coverage`
    scenarios rerun with captures compared against 2026-09-13, Paredros's eight
    GPU tests green against `isometer::SceneProducer`, and
-   `paredros-client/src/producer/{camera,bodies,scene}.rs` deleted.
+   `eponym-client/src/producer/{camera,bodies,scene}.rs` deleted.
 
 ## Findings
 
@@ -615,7 +615,7 @@ Restating L9's six conditions against tests that exist or must be written.
 - 2026-09-14: `section::pose_of` and `section::roster_of` have no caller
   outside the module; only the `_scaled` pair is live (`app/frame.rs:170,197`).
 - 2026-09-14: both products already share `mesocosm_core::places::Ground`
-  (`paredros-world/src/world.rs:7,157`), so terrain needs no new format.
+  (`eponym-world/src/world.rs:7,157`), so terrain needs no new format.
 - 2026-09-14: `mesocosm_mesh::VolumeSource` already exists
   (`mesocosm-mesh/src/volume.rs:110`); the declared-extent fallback is a new
   impl of it, not a new trait.
@@ -792,7 +792,7 @@ Restating L9's six conditions against tests that exist or must be written.
   failure and smoke scenarios pass there; its final capture differs from
   the previous run only in the terrain faces the tracer floor lifted, and
   the pick now consults terrain. The crate's sources reference no
-  `mesocosm_core::World`, `paredros_world` or `isometry_core` item (grep
+  `mesocosm_core::World`, `eponym_world` or `isometry_core` item (grep
   on closing: 0). The only product coupling left is the family's,
   `mesocosm-core`'s neutral types, which the isometer family plan owns.
   All six done conditions hold; the presentation plan's L9 is closed.

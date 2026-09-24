@@ -4,7 +4,7 @@
 //! The rules the products' sheets already agree on, plus the sizes they do
 //! not.
 //!
-//! The 2026-09-15 inventory found the Mesocosm bench sheet and the Paredros
+//! The 2026-09-15 inventory found the Mesocosm bench sheet and the Eponym
 //! session sheet to be the same sheet rule for rule and in the same order;
 //! only colours, four font sizes and three box numbers differed. [`shared`]
 //! is that sheet with every difference lifted into a custom property, and

@@ -490,7 +490,7 @@ interacting fantastical systems, with different realizations across worlds.
 The earlier impossible-ecology direction remains a useful starting family;
 it does not exclude deliberate magic, ritual, or spellcraft from this session.
 The charge-and-sympathetic-link example in
-`paredros/design_docs/2026-09-09_world_conditions_plan.md` is one candidate,
+`eponym/design_docs/2026-09-09_world_conditions_plan.md` is one candidate,
 not the universal model or a selected implementation gate.
 
 The earlier claims that sympathetic magic is nearly free, that a cost formula
@@ -1062,7 +1062,7 @@ experience, standing (affinity and resistance, to be ruled) and ascension,
 with `wing-glyphs` as its kernel and each product's glyph reading as a
 consumer. The dependency arrow is unchanged: hagiograph promotes, a canon
 revision follows, the hagioglyph reads it. Paredros's stage F3b5, its
-document-host glossary line and the `paredros-world` glyph reading's
+document-host glossary line and the `eponym-world` glyph reading's
 module comment carry the narrow sense and relabel to canon revision on
 the Paredros side.
 

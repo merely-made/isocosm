@@ -5,7 +5,7 @@
 //! it (M2 of the isomere plan).
 //!
 //! The 2026-09-15 inventory found this panel three times. Two of them are the
-//! same panel: the Paredros session's subject sheet and the Mesocosm bench's
+//! same panel: the Eponym session's subject sheet and the Mesocosm bench's
 //! parts examiner are both a heading, a `.parts` palette of focusable
 //! `button.part` chips with a selected and a state class, and a `.reading`
 //! column of `.field` / `.field-name` / `.field-value` rows. Isometry's
@@ -122,7 +122,7 @@ pub struct ExaminerModel<'a, State, Action> {
     /// The reading column, as name-value pairs in order.
     pub readings: Vec<(String, String)>,
     /// A slot under the reading for a product's own drawing of the selected
-    /// part. No product fills it yet. M5 was expected to bring Paredros's
+    /// part. No product fills it yet. M5 was expected to bring Eponym's
     /// body-sheet schematic here and did not: that schematic is drawn into a
     /// netrender scene with stroked paths, so moving it into a DOM slot is a
     /// rewrite in another medium rather than a move, and it was retired with

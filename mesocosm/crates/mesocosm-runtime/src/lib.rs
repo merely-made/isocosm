@@ -19,7 +19,7 @@
 //! a divergence is attributable.
 //!
 //! This is also the extraction candidate named in the body pipeline plan: if
-//! Paredros ever wants it, it gets renamed and lifted with two real consumers
+//! Eponym ever wants it, it gets renamed and lifted with two real consumers
 //! justifying the move. Until then it stays here and stays small.
 //!
 //! # Frame delivery does not reach the simulation

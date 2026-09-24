@@ -6,7 +6,7 @@
 
 This is the canonical repository entry index. The tabletop documents remain
 here; [Mesocosm's product index](../mesocosm/design_docs/DOC_README.md) and
-[Eponym's product index](../paredros/design_docs/DOC_README.md) retain their
+[Eponym's product index](../eponym/design_docs/DOC_README.md) retain their
 local document catalogues. Shared wing design lives once in the imported
 [founding record](../mesocosm/design_docs/2026-07-30_games_wing_founding.md),
 with [magic and generator discussions](../mesocosm/design_docs/2026-08-06_general_model_plan.md).

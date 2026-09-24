@@ -216,7 +216,7 @@ advances projection identity, fully republishes 795,144 bytes with zero texture
 or bind-group creation, and is followed by an upload-silent frame. D1's
 depth join and T1's terrarium picking receipts live in the engine review
 §5 (D1's headed half in
-`paredros/design_docs/2026-08-07_paredros_execution_plan.md`). V1b
+`eponym/design_docs/2026-08-07_paredros_execution_plan.md`). V1b
 (2026-08-26) closed incremental `ResidentChunk` publication and
 allocator-observed bytes: one capacity-fixed cache with per-brick
 retargets and a tracer-validated lease epoch (engine review §5 V1b).
@@ -236,7 +236,7 @@ the ecology's acceptance gates stop moving under it).
 
 ## Paredros lane
 
-The [execution plan](../../paredros/design_docs/2026-08-07_paredros_execution_plan.md)
+The [execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
 orders itself. S0-S3 are foundation receipts; F0-F2 are closed, F3 is active,
 and F3a is landed. Its opt-in traversal/residency code now handles equal-sized
 travel through product-owned projection revision, with headless and headed

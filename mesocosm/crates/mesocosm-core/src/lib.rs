@@ -78,8 +78,8 @@ pub mod chronicle;
 // `body.rs`, `anatomy.rs`, `plan.rs`, `wire.rs`, the brick ground and the
 // codec seam moved to `isometer-core` (family plan step 6, 2026-09-14). Every
 // moved item is re-exported here at the path it had before the move, so
-// `mesocosm-runtime`, `mesocosm-views`, `mesocosm-genet`, `paredros-world`,
-// `paredros-social`, `paredros-sortie` and `wing-integration` name it exactly
+// `mesocosm-runtime`, `mesocosm-views`, `mesocosm-genet`, `eponym-world`,
+// `eponym-social`, `eponym-sortie` and `wing-integration` name it exactly
 // as they did. `places::{AIR, BRICK, Brick, Ground, ROCK, SOIL, SURFACE_BAND}`
 // and `snapshot::{encode, decode, hash_bytes}` are restated in their own
 // modules for the same reason.

@@ -10,7 +10,7 @@
 //! What lives here is the geometry every vessel agrees on — where the camera
 //! is, how far it reaches, what it culls against, and how a body document's
 //! volumes are resolved. What does not live here is any product's world:
-//! Mesocosm's `CameraMode` presets, Paredros's `CameraPolicy` and Isometry's
+//! Mesocosm's `CameraMode` presets, Eponym's `CameraPolicy` and Isometry's
 //! board all stay in their own hosts and hand this crate a forward vector.
 //!
 //! See `mesocosm/design_docs/2026-09-14_isometer_extraction_plan.md`.

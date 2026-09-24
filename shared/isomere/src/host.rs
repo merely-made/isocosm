@@ -97,7 +97,7 @@ impl TextureProducer for NoProducer {
 ///
 /// The two calls all three products already make on `mesquite::Lane`, named as
 /// a trait so the assembly never has to name the lane's own product type. A
-/// host with two lanes — Paredros's scripted smoke and its driven acceptance —
+/// host with two lanes — Eponym's scripted smoke and its driven acceptance —
 /// hands over two, and a host with none hands over none.
 pub trait ScenarioLane<P: Product> {
     /// Tick the lane on a presented frame.

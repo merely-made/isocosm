@@ -5,7 +5,7 @@
 **Status: founding record, 2026-07-30.** Wing-level. Owns the shared
 architecture, laws, and vocabulary for Mesocosm, Eponym, and Isometry.
 Vessel-specific design lives in each repo's own founding plan. This document
-is cited by `paredros/design_docs/` and should be cited rather than copied.
+is cited by `eponym/design_docs/` and should be cited rather than copied.
 
 The initial record was ruled in conversation on 2026-07-29 and 2026-07-30;
 later amendments carry their own dates. Claims about the existing stack are
@@ -158,14 +158,14 @@ not merely random school names. Player histories displace generated history;
 playing the earlier games is never required to obtain a rich lineage or culture.
 
 Eponym's proposed RPG and character-sheet design lives in
-`paredros/design_docs/2026-07-30_paredros_founding_plan.md`, under
+`eponym/design_docs/2026-07-30_paredros_founding_plan.md`, under
 "Borg generation, techniques, and the character sheet". That product proposal
 does not impose its attributes, skill points, or action rules on the other games.
 
 ### Each vessel is a mode of the same peopled history
 
 **Ruled 2026-08-10 (Mark),** during the R4 extraction review
-(`paredros/design_docs/archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md`), and recorded
+(`eponym/design_docs/archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md`), and recorded
 symmetrically rather than one-directionally: no vessel is the primary one.
 
 - **Isometry** is the fortress and atlas mode: care for a squad and a map,
@@ -198,7 +198,7 @@ What the frame decides, and why it is here rather than only in the review:
   The R4 review's first ruling applies this to renderer tenancy.
 - **What must be recognizable gets a shared name; what must be judged does
   not.** Identity is one vocabulary across the wing (the four facts above,
-  `paredros-identity` promoted 2026-08-10). The consequence grammar is
+  `eponym-identity` promoted 2026-08-10). The consequence grammar is
   deliberately *not* shared as a library: one grammar, sovereign evaluators
   per vessel, per the general model's evaluator rule.
 
@@ -659,9 +659,9 @@ world operations are particularly interesting mod contributions.
 stay in their domain plans. Mesocosm's
 [playable ecology plan](2026-08-31_playable_ecology_plan.md) owns embodied
 discovery and lineage development. Eponym's
-`paredros/design_docs/2026-09-09_functional_loops_plan.md`,
-`paredros/design_docs/2026-09-09_world_conditions_plan.md`, and
-`paredros/design_docs/2026-09-09_memory_and_remembrance_plan.md` are locally
+`eponym/design_docs/2026-09-09_functional_loops_plan.md`,
+`eponym/design_docs/2026-09-09_world_conditions_plan.md`, and
+`eponym/design_docs/2026-09-09_memory_and_remembrance_plan.md` are locally
 drafted planning locations, inspected 2026-09-09, for action loops, environmental
 laws, and remembered social consequences respectively; they are not completion
 receipts for this taste record. Isometry's own rulesets decide item and surface

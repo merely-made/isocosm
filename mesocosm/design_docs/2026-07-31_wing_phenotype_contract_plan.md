@@ -359,8 +359,8 @@ ancestry; neither operation is implemented as a flat star rebuild.
   `mesocosm-core/src/chronicle.rs::CHRONICLE_VERSION` remain 0.
   `isometry/crates/isometry-voxel/src/body.rs` still mirrors the v0 body.
   The existing projection round trip cannot identify a portable body revision.
-- **2026-09-07:** `paredros/crates/paredros-identity/src/lib.rs` has subject
-  and body-revision ids. Its `paredros-world/src/technique.rs` offers one
+- **2026-09-07:** `eponym/crates/eponym-identity/src/lib.rs` has subject
+  and body-revision ids. Its `eponym-world/src/technique.rs` offers one
   concrete `ArrestFall` query, with grip and adhesion readings;
   `subject_sheet.rs` projects those answers. The working-tree `anatomy.rs`
   admits bounded revision-addressed snapshots and reconciles severed parts,

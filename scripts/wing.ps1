@@ -1,8 +1,8 @@
 # Parse the positional product ourselves so Cargo flags such as -p cannot
 # bind to a PowerShell parameter abbreviation.
 $Product = if ($args.Count -gt 0) { $args[0] } else { '' }
-if ($Product -notin @('isometry', 'mesocosm', 'paredros', 'formats', 'integration')) {
-    throw 'Usage: wing.ps1 <isometry|mesocosm|paredros|formats|integration> [cargo arguments]'
+if ($Product -notin @('isometry', 'mesocosm', 'eponym', 'formats', 'integration')) {
+    throw 'Usage: wing.ps1 <isometry|mesocosm|eponym|formats|integration> [cargo arguments]'
 }
 $CargoArguments = @($args | Select-Object -Skip 1)
 

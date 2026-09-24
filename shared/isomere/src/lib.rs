@@ -74,7 +74,7 @@
 //!
 //! ## M3: the journal, the status lines and the help line
 //!
-//! [`journal`] is the ordered rows Paredros's acquisition journal and
+//! [`journal`] is the ordered rows Eponym's acquisition journal and
 //! Mesocosm's trait board each wrote by hand — a headline with a mark, a
 //! founding line that never moves, and a live line that only shows when the
 //! reading has diverged — over a summary line. [`status`] is the lines nobody

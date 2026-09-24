@@ -74,7 +74,7 @@ execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan
 ## Rulings (Mark, 2026-09-11)
 
 1. **Paredros is orthographic.** A true isometric game. This closes the camera
-   question the [Paredros execution plan](../../paredros/design_docs/2026-08-07_paredros_execution_plan.md)
+   question the [Paredros execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
    left open until the spatial laws could judge it, and it retires the
    Barony/Delver close-perspective reference lane. Camera is not person:
    Paredros stays second person in agency.
@@ -399,7 +399,7 @@ appearance crate plus DOM. The `d1_depth` receipt is retired with rationale,
 since the join it proved is replaced by L3 interleave. The renderling fork,
 spirv-std pins, and crabslab fork leave the Paredros manifest.
 
-**Done when:** `paredros-client` builds with no renderling dependency; the S0
+**Done when:** `eponym-client` builds with no renderling dependency; the S0
 replay hash is unchanged; the room composes through the same layers as
 Mesocosm's section; the probes that still want renderling are archived, not
 patched.
@@ -1326,7 +1326,7 @@ Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
 shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
 23 files, 31 references to `mesocosm_core::World`) is the only implementation
 of tracer plus live bodies plus glyphs on one depth attachment; Paredros's
-document-host plan (`paredros/design_docs/2026-09-13_genet_document_host_plan.md`,
+document-host plan (`eponym/design_docs/2026-09-13_genet_document_host_plan.md`,
 lane P1) was building a second producer over the same two renderers because
 `Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
 be a third. That is the duplicate-runs-at-one-problem case the consolidation
@@ -1358,7 +1358,7 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
    state and framing, never GPU code.
 6. Mesocosm's bench and section acceptance stay green through the adapter;
    Paredros's P1 retargets to the crate and retires its local producer; the
-   crate has no dependency on `mesocosm_core::World`, `paredros_world`, or
+   crate has no dependency on `mesocosm_core::World`, `eponym_world`, or
    `isometry_core`.
 
 **Sequencing:** starts after the wing-scenario extraction lands, since both

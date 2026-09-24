@@ -107,7 +107,7 @@ The founding record and Mesocosm's CLAUDE.md are amended (33), and the
 three PROJECT_DESCRIPTIONs, in Mark's words ("These three games are
 different ways of looking at the same simulated world..."; "Think
 tactically in terms of Tactics Ogre-scale tight battlemaps..."). dramatis
-absorbs paredros-identity under W3 (34). Retired plans moved to
+absorbs eponym-identity under W3 (34). Retired plans moved to
 `archive_docs/2026-09-18/` in each product with rationale.
 
 ### 3.3 W2, the creature: 2026-09-18 to 2026-09-19
@@ -146,7 +146,7 @@ absorbs paredros-identity under W3 (34). Retired plans moved to
 | Polities among themselves? | A faction; a treaty is a standing agreement at scale (67) | Ruling 67 |
 | Where do goals come from? | From its own alignment, as individuals'; no will to continue beyond a new use (68); asserting a constitution is itself an act (81) | D7; two alignments withdrawn (79) |
 
-Checked: `paredros-social` is the consent model at the scale of two;
+Checked: `eponym-social` is the consent model at the scale of two;
 `isometry-campaign`'s faction turn is a far-rung stand-in.
 
 ### 3.6 W2, keeping and places: 2026-09-20 to 2026-09-21
@@ -206,7 +206,7 @@ place with the correction dated.
 | The tracer assumed cubes | It builds world-space rays; the claim was never checked |
 | A 128 MiB texture bound | An arithmetic error; video memory is the bound |
 | Paging was the biggest change | It existed in modulus and Eponym already |
-| Renderling was current | Retired by ruling, still a dependency of `paredros-client` |
+| Renderling was current | Retired by ruling, still a dependency of `eponym-client` |
 | Daggerheart's SRD is CC-BY | It is DPCGL 2.0 and excludes video games |
 | A polity whose enforcement fails drops to a faction by itself | It goes inactive and dies only by agreement (65) |
 | "Dormant" | Mark's word is "inactive" (66) |

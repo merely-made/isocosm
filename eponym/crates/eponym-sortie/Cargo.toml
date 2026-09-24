@@ -1,0 +1,20 @@
+[package]
+name = "eponym-sortie"
+version = "0.0.1"
+edition = "2024"
+license = "MPL-2.0"
+description = "S3, the joint receipt: one sortie and return, where willingness and embodiment meet."
+repository = "https://github.com/merely-made/isometry"
+publish = false
+
+# The one crate allowed to read both owners. The execution plan's two-owners
+# rule keeps social willingness and combat execution apart; S3 is where they
+# meet, so this crate depends on both and neither depends back. The world and
+# kinematics come through eponym-client exactly as S0 consumes them (which
+# brings the render stack along in the build; the sim here never touches it).
+[dependencies]
+eponym-identity = { version = "0.0.1", path = "../eponym-identity" }
+eponym-social = { version = "0.0.1", path = "../eponym-social" }
+eponym-client = { version = "0.0.1", path = "../eponym-client" }
+mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }

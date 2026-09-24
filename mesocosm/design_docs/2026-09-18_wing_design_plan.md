@@ -1541,7 +1541,7 @@ protocols" apply. *Reading, accepted by Mark 2026-09-21 (D1):* because they are 
 world's ruleset (ruling 41) and not to the faction, which keeps the faction
 stateless. **Open:** which protocols.
 
-**Already in code, checked 2026-09-20.** Eponym's `paredros-social` is
+**Already in code, checked 2026-09-20.** Eponym's `eponym-social` is
 this model at the scale of two. Standing is folded from the deed log as
 trust and affinity and carries the deeds behind it (`relation.rs:25-66`).
 Willingness is three gates, can I do it, would I risk that for you, is it
@@ -1784,7 +1784,7 @@ contingent on it must find means of its own or fall back to a faction, so
 collapse cascades, and those are events the hagiograph keeps. Checked
 2026-09-20: Eponym's standing agreement is the consent-only form, "still
 not a command", which its holder may decline "when its premises have
-changed" (`paredros-social/src/agreement.rs:14-17`), and nothing stands
+changed" (`eponym-social/src/agreement.rs:14-17`), and nothing stands
 behind it but the two names on it; a durable agreement in ruling 64's sense
 is that same record with a polity's enforcement behind it.
 
@@ -1792,7 +1792,7 @@ is that same record with a polity's enforcement behind it.
 consent between them, so among themselves they are a faction, and a treaty
 is a standing agreement at scale: it holds while both keep to it, and "what
 it rested on changed" ends it, in the words Eponym's agreement already has
-for that ending (`paredros-social/src/agreement.rs:48`). That widens ruling
+for that ending (`eponym-social/src/agreement.rs:48`). That widens ruling
 8, whose faction was "comprised of many creatures": a faction's members are
 whatever can consent, sophonts or polities. Everything ruling 63 gave a
 faction then applies with polities as the members. One proposes an act and
@@ -1957,7 +1957,7 @@ each tier answers the question its own way:
 
 | Tier | Why it acts | What it wants |
 | --- | --- | --- |
-| Critter, reactive | a need crosses a threshold and the matching ability runs: forage, hunt, flee, rest | the body's ledger (ruling 38): Mesocosm's nutrition budget in full, Eponym's `Needs { hunger, fatigue }` today (`paredros-world/src/bodies.rs:46-49`) |
+| Critter, reactive | a need crosses a threshold and the matching ability runs: forage, hunt, flee, rest | the body's ledger (ruling 38): Mesocosm's nutrition budget in full, Eponym's `Needs { hunger, fatigue }` today (`eponym-world/src/bodies.rs:46-49`) |
 | Denizen, belief-desire-intention | a desire is chosen among several by what it believes and what it values, and pursued as an intention through several acts | the ledger's needs, plus wants derived from alignment (ruling 51): comfort, standing, safety, company, the things its tenets approve |
 | Character, normative | a role or an institution asks it: an office, an oath, a contract, a levy | the above, plus obligations asserted by its polity (ruling 56's rank) |
 
@@ -2208,7 +2208,7 @@ compare.
 - *What already varies.* Checked 2026-09-22: Eponym resolves a strike
   geometrically, a swept volume against a body's part bounds with line of
   sight through the ground, and the hit's `quality` is the overlap
-  (`paredros-world/src/combat.rs:53-60,218-232`, `combat/precision.rs`);
+  (`eponym-world/src/combat.rs:53-60,218-232`, `combat/precision.rs`);
   harm is a base plus that quality. So the system already reads a strike's
   quality off geometry, and a weapon's shape, reach and sweep are already
   inputs it could vary on with no numbers added. Body and part vary too.
@@ -2300,9 +2300,9 @@ The hagiograph judges what is significant by novelty, quality and relevance
 (ruling 4), the same test at every rung. Storage stays in journals. The
 organ is live and consumed by one product, not pending and not yet
 wing-wide: mesocosm-core depends on hagiograph, muniment and nisus, while
-paredros-world carries none of them and its nearest thing is a
+eponym-world carries none of them and its nearest thing is a
 per-event-kind glyph grant table with no significance gate
-(`paredros-world/src/glyphs.rs:233,357-372`; noted 2026-09-18 by W1).
+(`eponym-world/src/glyphs.rs:233,357-372`; noted 2026-09-18 by W1).
 mesocosm-core its `WorldRecord` is a newtype over
 `hagiograph::Record` (`record.rs:17-23`), and deep time runs through
 `hagiograph::{DeepTime, Handover}` (`deep_time.rs:21`). What its current
@@ -2381,14 +2381,14 @@ docketed as D21, accepted 2026-09-22:*
   danger and the hearer as the asker. Relation and opinion are its trust and
   affinity; goals are what telling buys. Personality is not a fourth factor
   but the thresholds: that rule already reads `bearable(affinity, caution)`
-  as "3 + affinity / 2 - caution" (`paredros-social/src/willing.rs:40-42`),
+  as "3 + affinity / 2 - caution" (`eponym-social/src/willing.rs:40-42`),
   caution selling what affection buys, and ruling 37's five factors supply
   such terms.
 - *The regime is notes, not a field.* A secret is an explicit set of
   knowers, each holding a note. Eponym holds this regime already, checked
   2026-09-21: an "append-only, observer-scoped record of claims about
   accepted deeds" whose evidence is "a direct sighting or an addressed
-  transmission" (`paredros-social/src/epistemic.rs:7-11,37-43`).
+  transmission" (`eponym-social/src/epistemic.rs:7-11,37-43`).
 - *A secret ends by leaking.* The moment a telling seeds the reach field at
   a place it is a rumour, and points 1 to 3 take over. That is ruling 75's
   transition from the few to the many, run once.
@@ -2595,7 +2595,7 @@ edits, the oldest lapsing first; and Dwarf Fortress, which never culls its
 historical figures, is the caution about what permanence costs.
 
 **Already in code, checked 2026-09-20.** Eponym's
-`paredros-world/src/sites.rs` holds the two lower tiers for places. A
+`eponym-world/src/sites.rs` holds the two lower tiers for places. A
 `SlotId` is "a structural address. Its occupant may change without changing
 its containment or routes" (`:19-25`). A `Site` sits in a slot with a kind,
 wilds, settlement, ruin, encounter or dungeon, and a source that is either
@@ -2622,7 +2622,7 @@ names a location on a body in Mesocosm's phenotype
 `shared/wing-functions/src/generation.rs:21,29`, and the tabletop's overmap
 has an `AtlasSite`. For events the hagiograph's *feat* and *mark* are words
 of the top tier, a feat being what beats a standing mark, while Eponym's
-*deed*, a recorded act with a doer (`paredros-social/src/deed.rs`), is the
+*deed*, a recorded act with a doer (`eponym-social/src/deed.rs`), is the
 nearest thing the wing has to an act of note. On crates.io, exact names, the
 only registry checked: taken are site, landmark, relic, locus, haunt, locale
 and keepsake; free are stead, feat and heirloom. The kinds that may want a
@@ -2826,7 +2826,7 @@ docketed as D24, accepted 2026-09-22:*
   world map at a lineage's grain when deep time is watched. Eponym has a
   continuous one, "settlements, dungeons, ruins, underground regions, and
   the open world" walked without a cut
-  (`paredros/design_docs/PROJECT_DESCRIPTION.md:11-12`). The same node can
+  (`eponym/design_docs/PROJECT_DESCRIPTION.md:11-12`). The same node can
   be a terrarium to one game, a dungeon to another and a battlemap to the
   third, which is the pillar's sentence taken literally.
 - So: neither of the other games needs those distinctions; each game gets
@@ -2866,7 +2866,7 @@ tabletop's overmap projects a region as a grid of `AtlasTerrainCell`s whose
 several cells with open kinds, already. Eponym has the stable address and
 the two keeping tiers (§3.4.1), with a closed enum of five kinds and a
 surface and underground `Layer`, which is one fixed case of a nested region
-(`paredros-world/src/sites.rs:13-17,46-53`). Mesocosm has the place graph
+(`eponym-world/src/sites.rs:13-17,46-53`). Mesocosm has the place graph
 derived from relief over a fixed three-by-three partition (§3.7). The words
 are crossed against ruling 72: Eponym's `SlotId` is Mark's site and its
 `Site` is Mark's location, and the tabletop's `AtlasSite` is a location too.
@@ -2972,7 +2972,7 @@ realigning the world to a new ruleset". The world-conditions schema already
 demands exactly this of any change of rules: "A rules revision cannot
 reinterpret a past accepted event. Conversion is a new, explicit event with
 both old and new revisions recorded"
-(`paredros/design_docs/2026-09-09_world_conditions_plan.md`, core invariant
+(`eponym/design_docs/2026-09-09_world_conditions_plan.md`, core invariant
 4). Advancing time is what makes the seams honest: whatever the new ruleset
 cannot express is accounted for by the years that passed, as ruling 38 made
 the coarsening of needs diegetic. *Reading, docketed as D22, accepted 2026-09-22:* realignment is
@@ -3331,7 +3331,7 @@ Read from each crate's own description on 2026-09-18, not from memory.
 | Generation | esp | mere's portable model-execution seam, with Burn under it | mere `intel/esp` |
 | Generation | cleromancy | Deterministic and cast readings with replayable receipts: the seeded draw with a receipt that ruling 15 needs | `repos/cleromancy` |
 | Trust plane | dramatis | The cast list: personae for one's own faces and keys, gaz for who one knows, gazette for resolution | mere `dramatis` |
-| Trust plane, unresolved | paredros-identity | Ruled "the wing's identity crate" on 2026-08-10 and consumed by nothing outside Eponym since; `SubjectId`, body revisions, facets and the control pointer are the sim's provenance noun. Either dramatis absorbs it under W3 or the promotion is withdrawn (raised 2026-09-18 by W1) | `paredros/crates/paredros-identity` |
+| Trust plane, unresolved | eponym-identity | Ruled "the wing's identity crate" on 2026-08-10 and consumed by nothing outside Eponym since; `SubjectId`, body revisions, facets and the control pointer are the sim's provenance noun. Either dramatis absorbs it under W3 or the promotion is withdrawn (raised 2026-09-18 by W1) | `eponym/crates/eponym-identity` |
 | Persistence | eidetic | The durable-memory family: muniment for slots, blobs and journals; chartulary for the content-addressed container graph with lineage; hagiograph for the history organ | mere `eidetic` |
 | Branching and federation | moot | gemot for a moot's lifecycle and replication over p2panda; moothold for federation. The branchable-world model is this | mere `moot` |
 | Networking | murm | Invitation-scoped peer conversation with signed per-author logs and a WebRTC carrier; iroh is the other carrier | mere `murm` |
@@ -3342,8 +3342,8 @@ Read from each crate's own description on 2026-09-18, not from memory.
 
 Renderling is retired by ruling, not yet in the tree: the presentation
 plan's L7 (2026-09-11) has it exit Eponym and "nothing new is built on
-renderling", but `paredros-client` still takes it unconditionally by a
-machine-local path (`paredros-client/Cargo.toml:66`), the Eponym
+renderling", but `eponym-client` still takes it unconditionally by a
+machine-local path (`eponym-client/Cargo.toml:66`), the Eponym
 workspace patches `spirv-std`, `craballoc` and `crabslab` solely for it,
 and L7's done-condition, a client that builds with no renderling
 dependency, is unmet (corrected 2026-09-18 by W1). What stands in its
@@ -3400,7 +3400,7 @@ isometer-render, and the gltf crate is the loader either way.
   (`:210-211`), so the tracer silently skips every upload after the first
   for any host that regrows rather than carves. Found by Isometry's B4
   lane with a positive control. Eponym is the one live consumer where
-  the mechanism works, because its world carves (`paredros-world/src/world.rs:195`)
+  the mechanism works, because its world carves (`eponym-world/src/world.rs:195`)
   and its producer keys the rebuild on the revision
   (`producer/source.rs:275`); the fix is scoped to regrowing hosts
   (narrowed 2026-09-18 by W1).
@@ -3415,7 +3415,7 @@ isometer-render, and the gltf crate is the loader either way.
   at `tracer_tests.rs:665`). **No production scene in the wing reaches
   it.** Eponym's paging has exactly two callers, the `v1` and `v1b`
   receipt bins behind non-default features
-  (`paredros-client/src/bin/v1_residency.rs:53`, `v1b_residency.rs:48`);
+  (`eponym-client/src/bin/v1_residency.rs:53`, `v1b_residency.rs:48`);
   its shipped session host rebuilds the whole ground on every revision
   through `BrickMap::from_ground` (`producer/source.rs:275-280`). The
   scene board reaches the cap routinely and builds through
@@ -4011,7 +4011,7 @@ on a receipt.
 | The tracer builds each ray in world space and hands it to a traversal that accepts any direction, so a per-brick or per-axis scale is a multiply on entry, not a rewrite | Read in `tracer.wgsl` and `brick_dda.wgsl`, 2026-09-17; not run. W1 confirmed no such scale exists today (`body.rs:33` is the only scale, isotropic, per body) | Design claim; the addition is owed under W3 |
 | modulus steps voxel by voxel with a 1,024 loop cap and no brick-level skip | Read in `brick_dda.wgsl`, 2026-09-17 | Checked |
 | `MAX_BRICKS` is three layout constants; `with_capacity` and `retarget` exist and Eponym uses them | Read in modulus `lib.rs` and Eponym `residency.rs`, 2026-09-17 | Checked |
-| Renderling is retired; isometer-render depends on wgpu only | Read in L7 and `isometer-render/Cargo.toml`, 2026-09-18. W1 found the check too narrow: `paredros-client` still depends on renderling unconditionally and L7 is unmet | Checked for isometer-render; wrong as a wing claim, corrected in §4.2 |
+| Renderling is retired; isometer-render depends on wgpu only | Read in L7 and `isometer-render/Cargo.toml`, 2026-09-18. W1 found the check too narrow: `eponym-client` still depends on renderling unconditionally and L7 is unmet | Checked for isometer-render; wrong as a wing claim, corrected in §4.2 |
 | nisus has per-cell edits and dirty regions and `Ground` does not use it | Read in nisus `lib.rs` and isometer-core manifest, 2026-09-18 | Checked |
 | WebGPU compatibility tier caps 3D textures at 256 a side | From the wgpu limits tables, 2026-09-17 | Unchecked against the spec text |
 | RimWorld derives regions and rooms from cells and runs temperature and pathing over them | Prior-art memory | Unchecked |
@@ -4561,7 +4561,7 @@ No code lane runs before W1 is ruled.
   and is derived, a polity adds an asserted constitution, a form of
   governance is a qualifying predicate and a deciding act, and forms are
   chosen by influence-weighted ranked preference derived from alignment.
-  Checked against `paredros-social`, which is the consent model at the scale
+  Checked against `eponym-social`, which is the consent model at the scale
   of two without alignment, and `isometry-campaign`'s faction turn, which is
   a far-rung stand-in. Open: the fallback protocols, and what holds and ends
   a polity.
@@ -4657,7 +4657,7 @@ No code lane runs before W1 is ruled.
 - 2026-09-18: rulings 31 to 34 recorded: W1 accepted in full, the
   process definition founded from the world-conditions schema, the
   founding record and CLAUDE.md amendments drafted in §9.11 for Mark's
-  commit, and paredros-identity to dramatis under W3. kiss3d checked from
+  commit, and eponym-identity to dramatis under W3. kiss3d checked from
   source and found to compose. W1's application begins, one product at a
   time.
 - 2026-09-18: rulings 26 to 30 recorded: glTF generated from the tree as

@@ -5,14 +5,14 @@
 //! (M3 of the isomere plan).
 //!
 //! The 2026-09-15 inventory found this panel three times under three names:
-//! Paredros's acquisition journal (`.glyphs` of `.glyph` rows under
+//! Eponym's acquisition journal (`.glyphs` of `.glyph` rows under
 //! `#journal-summary`), Isometry's message log, and Mesocosm's review rows.
 //! Two of them turned out to be the same three lines in the same order — a
 //! headline with a mark beside it, a founding line that never moves, and a
 //! line that only shows when the live reading has diverged from the founding
 //! one:
 //!
-//! | | Paredros | Mesocosm's board |
+//! | | Eponym | Mesocosm's board |
 //! | --- | --- | --- |
 //! | headline | the canon's display mark | the candidate's name |
 //! | mark | the glyph id | the proposal sources |

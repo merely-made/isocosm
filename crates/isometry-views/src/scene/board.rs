@@ -279,7 +279,7 @@ fn pose_of(
     let aabb = tokens.body(&token.sprite).0.document.aabb();
     // `grounded` stands the document's floor on `position[1]`; the horizontal
     // half has no shared spelling, so the volume's own centre comes off the
-    // position, as Paredros's source does it.
+    // position, as Eponym's source does it.
     let centred = |axis: usize| feet[axis] - (aabb.min[axis] + aabb.max[axis]) as f32 * 0.5 * scale;
     (
         Pose {

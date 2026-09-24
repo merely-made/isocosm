@@ -31,7 +31,7 @@ impl BrickMap {
     }
 
     /// Builds a bounded presentation map at an explicit product projection
-    /// revision. Selection remains Paredros or Mesocosm policy.
+    /// revision. Selection remains Eponym or Mesocosm policy.
     pub fn from_ground_keys(
         ground: &Ground,
         projection_revision: BrickProjectionRevision,

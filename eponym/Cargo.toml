@@ -1,0 +1,83 @@
+[package]
+name = "eponym"
+version = "0.0.2"
+edition = "2024"
+license = "MPL-2.0"
+description = "Name reservation. Eponym is a second-person action RPG in a persistent generated world: you name one creature and live that life among peers who can outlive you and take your place."
+repository = "https://github.com/merely-made/isometry"
+readme = "README.md"
+keywords = ["game", "rpg", "companions", "simulation", "generated"]
+categories = ["games"]
+exclude = ["design_docs/"]
+
+# Own workspace root. The reservation package plus the crates that have split
+# out so far.
+#
+# Game and application crates use MPL-2.0. A promoted reusable library also
+# stays MPL-2.0 (ruled 2026-09-03, retiring the 2026-07-31 clause that let a
+# proven boundary take MIT OR Apache-2.0): see LICENSES.md.
+[workspace]
+members = [
+    "crates/eponym-identity",
+    "crates/eponym-client",
+    "crates/eponym-social",
+    "crates/eponym-sortie",
+    "crates/eponym-world",
+]
+
+# renderling is a rust-gpu consumer: it wants the shader toolchain's spirv-std
+# and the crabslab fork the local renderling checkout is built against. Without
+# these three the tenant renderer does not resolve. Same set the mesocosm-side
+# device-unity probe used.
+[patch.crates-io]
+spirv-std = { git = "https://github.com/rust-gpu/rust-gpu.git", rev = "05b34493ce661dccd6694cf58afc13e3c8f7a7e0" }
+craballoc = { path = "../../../crates/crabslab/crates/craballoc" }
+crabslab = { path = "../../../crates/crabslab/crates/crabslab" }
+# The renderer graph may resolve vello from crates.io, and
+# upstream vello 0.10 still requires wgpu 29. Without this the graph carries
+# two wgpu majors and netrender's vello rasterizer stops type-checking
+# against this workspace's wgpu 30. Retires when a wgpu-30 vello ships.
+vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
+# Genet's vendored layout and IPC. `[patch]` does not inherit through a git
+# dep, so a consumer of genet-livery restates these at the same genet revision
+# the workspace dependencies pin (plan P0). No parley or fontique row: genet
+# published its forks as `genet-parley` and `genet-fontique` at 5ae30cad, so
+# genet.git answers to neither name and such a row would fail resolution;
+# genet-livery reaches the fork by path inside the git checkout.
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d", version = "=0.14.0" }
+ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
+
+# The probe builds a lot of shader and rasterizer code. Unoptimized debug
+# builds render a frame slowly enough to misread as a hang.
+[profile.dev]
+opt-level = 1
+
+# Renderer source is selected once for this product; use the same immutable
+# family revision as the other games and their Mere/Genet host dependencies.
+[workspace.dependencies]
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+netrender = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
+netrender_text = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
+
+# The document-host lane (P0 of the genet document host plan). Every row
+# below matches Mesocosm's revision for its git family, so the graph holds
+# one identity per family: cargo keys a git source by URL plus reference,
+# and a second reference would be a second crate identity of one commit.
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+sprigging = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+# Named `genet-probe` until genet 7baa554c (2026-09-14).
+taproot = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
+# The scenario lane the session acceptance run is built on. It was this
+# repository's `shared/wing-scenario` until mere took it into the cambium
+# family as `mesquite` (mere 3675a352, 2026-09-14), so it is a mere.git pin at
+# the family rev like every other cambium row above.
+mesquite = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+genet-livery = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
+genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
+paint_list_api = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
+paint_list_render = { git = "https://github.com/merely-made/netrender.git", rev = "3961aca919f707ab09a786379eb4ce8bb121258e" }
+
+[dependencies]

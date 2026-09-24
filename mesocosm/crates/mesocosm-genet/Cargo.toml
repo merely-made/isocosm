@@ -51,7 +51,7 @@ workbench = { workspace = true }
 # the family rev like every other cambium edge.
 mesquite = { workspace = true }
 # The shared orthographic slab scene (L9, plan of 2026-09-14): the camera, its
-# cut and its cull window, so Mesocosm's `CameraMode` presets and Paredros's
+# cut and its cull window, so Mesocosm's `CameraMode` presets and Eponym's
 # `CameraPolicy` are presets over one set of numbers rather than two. Since the
 # facade landed (family plan step 10) this one row also carries the family:
 # the traced main view is `isometer::lens`, the HUD's backdrop renderer is

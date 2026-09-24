@@ -2,13 +2,16 @@
 
 **Date:** 2026-09-22
 
-**Status, 2026-09-22:** in progress. R0 landed: the name reservations
+**Status, 2026-09-24:** in progress. R2 landed 2026-09-24: `paredros/` is
+`eponym/`, the root package is `eponym` 0.0.2, the five member crates are
+`eponym-*`, and the eponym workspace's test count matches its pre-rename
+baseline (which was already red; see Findings). R0 landed: the name reservations
 `eponym`, `isocosm` and `isocosm-vtt` are published on crates.io at 0.0.1.
 R1 landed the same evening: the wing's documents use the new names in the
 present tense, and the drafts for the six maintainer-owned files are in
 Findings for Mark's word. R3 is completed within the sim's own implementation
 change: `shared/isocosm`, package `isocosm` 0.1.0, and its native bench
-consumer. R2, R4 and R5 remain lanes Mark opens.
+consumer. R4 and R5 remain lanes Mark opens.
 
 **Owns:** the renaming of the wing's products and the sim to the names
 ruled on 2026-09-22 (wing design record, rulings 109 and 110), across
@@ -105,6 +108,66 @@ each other; R3 when the peer's crate lands; R5 last.
 
 ## Findings
 
+- **2026-09-24, R2: the baseline was red before the rename.** On the
+  unrenamed tree, `cargo check --workspace --all-targets` passed with one
+  dead-code warning (`retarget_from_ground`, now
+  `eponym/crates/eponym-client/src/brick.rs:28`), but `cargo test --workspace`
+  failed in `paredros-sortie`'s `tests/sortie.rs`. With `--no-fail-fast` it
+  reported 230 passed, 2 failed, 3 ignored:
+  `an_injury_persists_as_a_body_revision_fact` and
+  `a_tag_in_occurs_mid_action_under_the_pact`. At the coordinator's word the
+  done-condition became "the same counts and the same two failures". Filed
+  with the likely cause (mesocosm-core's 2026-09-16 ecology commits shifting
+  the grown terrain the sortie scenes rely on) in the
+  [execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
+  §6 for a separate lane.
+- **2026-09-24, R2: what was renamed and what was kept.** Renamed: the
+  directory; the five crates' directories, package names, path dependencies,
+  `use` lines and crate references; the root package (`eponym` 0.0.2, the
+  published reservation's description, keywords and `lib.rs` doc, whose last
+  paragraph now names the `eponym-*` crates as the implementation); the root
+  workspace's `exclude`; `scripts/wing.ps1`, `scripts/audit-source-identity.ps1`
+  and `eponym/build.ps1`; `paredros/` paths and `paredros-<crate>` names in
+  documents outside `archive_docs/` and outside the wing design record's §0;
+  and the product name in code comments, manifest descriptions, window titles
+  and GPU labels. No crate named `paredros-fixture`, `paredros-session` or
+  `paredros-timed` exists: those are runtime strings, and the only files whose
+  names carry "paredros" are the two dated plans, which keep their names.
+  **Kept, as runtime interfaces that recorded receipts depend on,** and left
+  for Mark: the `PAREDROS_*` environment variables, the `paredros-fixture:`
+  glyph namespace (in the 2026-09-14 acceptance receipts, asserted by
+  `eponym/testing/session/acceptance.scenario` and isomere's journal test),
+  the `Code/testing/paredros` capture directory, receipt fields
+  `vessel: "paredros"`, the `paredros.session/` event URIs, the
+  `paredros-session` probe kind and temp-directory names. The eponym
+  `Cargo.lock` is gitignored, so no lock change is committed.
+- **2026-09-24, R2: departures and open names.** (a) The `paredros-room`
+  precedent kept old package names in dated verification entries; R2
+  followed its brief instead and rewrote `paredros-<crate>` in dated commands
+  too, so they run today. Lines whose subject is a dated rename (the
+  2026-09-13 client rename, the 2026-09-09 import under `paredros/`) keep the
+  old name with a pointer to R2. (b) §4 decision 4 was taken as "rename
+  first": `paredros-identity` is `eponym-identity`, and absorption into
+  dramatis under W3 is unchanged. (c) The wing design record's ruling that
+  `paredros-world` becomes `paredros-core` (§9.1, and the evaluations' §3.1)
+  is kept as spoken; whether the future core is `eponym-core` is Mark's
+  word. (d) Draft 5 was applied without its sentence about the directory
+  keeping its name until R2, and draft 6 changed only the lead sentence, so
+  the prose "Paredros" remains in the rest of `eponym/CLAUDE.md` and
+  `eponym/design_docs/PROJECT_DESCRIPTION.md` (three in each besides the
+  drafts' "formerly", the latter's title included), both maintainer-owned. Across current Markdown outside this plan, 438
+  capitalised "Paredros" remain in 53 files, mostly Eponym's own dated plans; R2 changed
+  paths and crate names there, not prose.
+- **2026-09-24, R2 residue:** the done-condition's grep (`paredros`,
+  case-sensitive, in `.md`, `.toml`, `.rs` and `.ps1` outside `target` and
+  `archive_docs/`) returns 221 lines: 35 in this plan; 8 in the wing design
+  record's §0; 15 citing the two dated plan file names; 34 naming the
+  historical `paredros-room`; 86 runtime interfaces kept as above (25 glyph
+  namespace, 32 capture paths, 29 other strings, labels and temp names); 3
+  on the old reservation and repository locations; and 40 dated history
+  lines (gate lists reading "paredros check", cargo-home and log names, the
+  rename pointers, the word's etymology, the ruled `paredros-core`).
+
 - **2026-09-22, R3:** the owning sim session incorporated ruling 110 before
   landing its work. The temporary `shared/isotropy` and `shared/wing-sim`
   paths became `shared/isocosm`, package `isocosm` 0.1.0. Its binary is
@@ -179,3 +242,9 @@ each other; R3 when the peer's crate lands; R5 last.
 - 2026-09-24: ruling 112: Mesocosm keeps its name and Eponym stays, so the
   names table is final; hagiograph, redshank and ortet claimed on crates.io
   at Mark's word, beside the family's three.
+- 2026-09-24: R2 landed at the coordinator's word: `paredros/` to `eponym/`,
+  five crates to `eponym-*`, root package `eponym` 0.0.2. Baseline and final
+  alike: `cargo test --workspace --no-fail-fast` 230 passed, 2 failed (the two
+  pre-existing sortie receipts), 3 ignored, over 48 test binaries;
+  `cargo check --workspace --all-targets` clean but for the one pre-existing
+  warning; root `--all-features --all-targets` and Mesocosm checks pass.

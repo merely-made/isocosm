@@ -20,7 +20,7 @@ use crate::scene::{GroundTerrain, SceneFrame, SceneHost, TerrainSource};
 use crate::volumes::DeclaredExtentVolumes;
 
 const SIZE: u32 = 33;
-/// The forward `CameraMode::Side` produces, and Paredros's level default.
+/// The forward `CameraMode::Side` produces, and Eponym's level default.
 const SIDE: [f32; 3] = [0.0, 0.0, -1.0];
 
 /// Odd, so the centre pixel is exactly NDC `[0, 0]` and the pixel and clip
@@ -342,7 +342,7 @@ fn a_pick_over_open_ground_names_the_cell_under_the_pixel() {
     assert_eq!(stepped, hit.voxel);
     assert_eq!(hit.brick, hit.voxel.map(|v| v.div_euclid(8) as i16));
 
-    // Paredros's narrower query is untouched: no body, so no pick.
+    // Eponym's narrower query is untouched: no body, so no pick.
     assert_eq!(scene.pick_ndc([0.0; 2]).unwrap(), None);
     assert_eq!(
         scene.pick_at_pixel([ISO_SIZE / 2, ISO_SIZE / 2]).unwrap(),

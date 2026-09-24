@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
-    [ValidateSet('isometry', 'mesocosm', 'paredros')]
+    [ValidateSet('isometry', 'mesocosm', 'eponym')]
     [string[]] $Scope,
 
     # Use this with one explicit workspace-root manifest instead of -Scope. It is
@@ -55,7 +55,7 @@ $scriptRoot = Split-Path -Parent $PSScriptRoot
 $manifestByScope = [ordered]@{
     isometry = Join-Path $scriptRoot 'Cargo.toml'
     mesocosm = Join-Path $scriptRoot 'mesocosm/Cargo.toml'
-    paredros = Join-Path $scriptRoot 'paredros/Cargo.toml'
+    eponym = Join-Path $scriptRoot 'eponym/Cargo.toml'
 }
 
 if ($ManifestPath) {
@@ -64,7 +64,7 @@ if ($ManifestPath) {
     }
     $manifests = [ordered]@{ explicit = (Resolve-Path -LiteralPath $ManifestPath).Path }
 } else {
-    if (-not $Scope) { $Scope = @('isometry', 'mesocosm', 'paredros') }
+    if (-not $Scope) { $Scope = @('isometry', 'mesocosm', 'eponym') }
     $manifests = [ordered]@{}
     foreach ($name in $Scope) {
         $manifests[$name] = (Resolve-Path -LiteralPath $manifestByScope[$name]).Path

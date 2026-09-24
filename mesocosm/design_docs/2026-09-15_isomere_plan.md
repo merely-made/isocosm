@@ -33,7 +33,7 @@ except as the thing they migrate off.
 ## 1. What the inventory found
 
 Read-only survey of 2026-09-15 over mesocosm-genet, mesocosm-views,
-paredros-client, isometry-views and isometry-genet, against mere's cambium
+eponym-client, isometry-views and isometry-genet, against mere's cambium
 family at 876320fd.
 
 **The same panels exist three times under three names.**
@@ -384,7 +384,7 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   free `subject_sheet` over the game state, a subject and a selected
   part, with the four projection claims now tested against the session's
   own world; the six world-rule claims stay at their owner in
-  `paredros-world`'s equipment tests, where they always were; and
+  `eponym-world`'s equipment tests, where they always were; and
   `equipment_store` moved up to the client crate unchanged, its
   roundtrip test rebuilt over the session fixture. The timed-action
   scene and one of the two parley loaders moved to that binary's own

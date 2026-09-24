@@ -7,7 +7,7 @@
 //! One set of camera numbers for terrain rays, raster depth and body culling.
 //!
 //! [`SlabCamera`] is an orthographic slab with a free forward vector. A host's
-//! named views — Mesocosm's seven `CameraMode` presets, Paredros's
+//! named views — Mesocosm's seven `CameraMode` presets, Eponym's
 //! `CameraPolicy` — are presets over it: they choose a forward, and everything
 //! downstream (the tracer's camera, the raster matrix, the body cut interval,
 //! the cull window) is derived here so the four cannot disagree.

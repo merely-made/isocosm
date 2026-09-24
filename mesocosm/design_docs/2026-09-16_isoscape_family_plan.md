@@ -182,7 +182,7 @@ generation** (habitat, soil pattern, the foundation) and **life generation**
 panel, `generate-start`, `generation_content`, `played.rs`, `main.rs`) and
 `mesocosm-runtime`. The relief and grown places already have a **second
 consumer**: Paredros's client carves its room into a grown Mesocosm hillside
-(`paredros-client/src/room.rs`, `residency.rs`, `probe.rs`,
+(`eponym-client/src/room.rs`, `residency.rs`, `probe.rs`,
 `bin/d1_depth.rs`). §1.3 maps that side.
 
 ### 1.2 The tabletop
@@ -251,13 +251,13 @@ and campaign proposal types" (`design_docs/2026-09-09_games_wing_consolidation_p
 
 ### 1.3 Paredros
 
-Verified 2026-09-16. `paredros-world` (11,508 lines in all) takes
+Verified 2026-09-16. `eponym-world` (11,508 lines in all) takes
 `mesocosm-core`, `isometer-core`, `wing-functions`, `wing-glyphs`, `conatus`
-and `paredros-identity` (`paredros-world/Cargo.toml`, `[dependencies]`). Its
+and `eponym-identity` (`eponym-world/Cargo.toml`, `[dependencies]`). Its
 generation is four calls, in order, and the first two are not Paredros's:
 
 1. **`Places::grown(seed, side, extent)`**, Mesocosm's grown place graph over
-   Mesocosm's relief (`paredros-world/src/world.rs:119`, importing
+   Mesocosm's relief (`eponym-world/src/world.rs:119`, importing
    `mesocosm_core::places::{Grown, Places}` at `:9`).
 2. **`Ground::grow(&grown, extent)`**, isometer-core's brick container filled
    through the `Terrain` seam, which `Grown` implements in Mesocosm
@@ -279,7 +279,7 @@ its regrow-and-replay persistence (`simulation.rs`, 471;
 **So the top-down skeleton already has two consumers**, Mesocosm and
 Paredros, reaching it through `mesocosm-core`, which the Paredros guidance
 calls "current shared-organ evidence, not settled permanent ownership"
-(`paredros/CLAUDE.md`).
+(`eponym/CLAUDE.md`).
 
 ### 1.4 Where the three already meet
 
@@ -629,7 +629,7 @@ hagioglyph. So I figure the hagiograph bucket is more open than we planned."
   ordinary event history. That is a `muniment::Journal`"
   (`mere/crates/eidetic/hagiograph/README.md`, a 26-line reservation).
 - **Paredros's lane H**: retelling, remembrance, significance and
-  manifestation proposals (`paredros/design_docs/2026-09-09_functional_loops_plan.md:54`).
+  manifestation proposals (`eponym/design_docs/2026-09-09_functional_loops_plan.md:54`).
 
 **What has been taken from it since.** The **hagioglyph** took the divinity
 half on 2026-09-15: the canon, the journey, ascension, **the chosen referent

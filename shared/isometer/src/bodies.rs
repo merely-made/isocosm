@@ -30,7 +30,7 @@ pub(crate) use placement::{body_origin, depth_target, distance, intersects};
 
 /// A host's identity for one drawn body.
 ///
-/// 64 bits, so Paredros's `SubjectId(u64)` fits without narrowing and
+/// 64 bits, so Eponym's `SubjectId(u64)` fits without narrowing and
 /// Mesocosm's `OrganismId(u32)` widens losslessly. The scene never interprets
 /// it; it only carries it back out of a pick.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

@@ -7,7 +7,7 @@
 //! The declared-extent volume fallback.
 //!
 //! **Declared limit.** An anatomy may address volumes by [`VolumeRef`] and
-//! carry no voxel data at all — every Paredros body today, and any product
+//! carry no voxel data at all — every Eponym body today, and any product
 //! whose bodies are boxes before they are sculpture. Each intact part is then
 //! drawn as one [`Volume::solid`] of the part's own declared extent
 //! (`half_extent * 2`) in a single neutral material. A part's shape is its
@@ -19,7 +19,7 @@
 //! share the first box. That is counted by [`DeclaredExtentVolumes::conflicts`]
 //! rather than drawn wrong silently.
 //!
-//! Lifted from `paredros-client/src/producer/bodies.rs` as part of the
+//! Lifted from `eponym-client/src/producer/bodies.rs` as part of the
 //! isometer extraction; the producer keeps its own `BODY_MATERIAL` choice,
 //! because the palette is presentation.
 

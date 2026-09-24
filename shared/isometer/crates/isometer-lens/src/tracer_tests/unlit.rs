@@ -11,7 +11,7 @@
 //! channel at or above `0.2`, and the per-channel ladder's first rung needs
 //! exactly that — so every such face quantised to pure black, under every
 //! phase of the ordered dither. Mesocosm's oblique happens to lean onto lit
-//! faces and never showed it; Paredros's default camera leans the other way
+//! faces and never showed it; Eponym's default camera leans the other way
 //! and showed a black notch where the ground should be.
 //!
 //! The fix is a floor in the quantiser rather than a brighter ambient: a found
@@ -326,7 +326,7 @@ fn walk(map: &BrickMap, camera: TraceCamera) -> Vec<Classified> {
 /// ambient-lit face to black, so a black pixel here would be black under all
 /// sixteen.
 ///
-/// The control is in the same run: the Paredros forward has to actually put
+/// The control is in the same run: the Eponym forward has to actually put
 /// ambient-lit ground on the screen, or the assertion is about an empty set.
 #[test]
 fn no_ground_pixel_grades_to_black_under_either_forward() {

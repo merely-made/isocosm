@@ -27,7 +27,7 @@ truth, Paredros's P1 retarget, Isometry's board, and **isomere** — see §0.
 
 ## 0. The isomere boundary
 
-Mark ruled two names on 2026-09-14 (`paredros/design_docs/2026-09-13_genet_document_host_plan.md:176-189`).
+Mark ruled two names on 2026-09-14 (`eponym/design_docs/2026-09-13_genet_document_host_plan.md:176-189`).
 **isometer** is the game-world scene family: the slab camera, the depth join,
 voxel volumes, meshes, the body renderer, the brick tracer — everything that
 answers "what is in the world and where does it land on this raster".
@@ -60,9 +60,9 @@ and isometer sits on all three. **No component depends on isometer**, which is
 what makes the family shape available without inverting anything.
 
 Consumers: `mesocosm-genet` takes all three plus isometer
-(`mesocosm-genet/Cargo.toml:24-26,56`); `paredros-client` takes render and
+(`mesocosm-genet/Cargo.toml:24-26,56`); `eponym-client` takes render and
 mesh unconditionally and lens optionally behind `r1-proof`
-(`paredros-client/Cargo.toml:41-43,19`); `shared/wing-integration` takes mesh
+(`eponym-client/Cargo.toml:41-43,19`); `shared/wing-integration` takes mesh
 (`:15`); `mesocosm-runtime` and `mesocosm-views` take only core.
 **Isometry's own crates take none of them** — the root workspace's grep for
 `mesocosm-` returns nothing but the `exclude` line (`Cargo.toml:13`).
@@ -82,7 +82,7 @@ constants (`MAX_CAPSULES`, `MAX_ROSTER`, `MAX_ROSTER_CAPSULES`, `Grade`,
 `TerrainAppearance`, `Flight`, `CritterPose`), plus `pub mod bricks/critter/maps`.
 Of that, mesocosm-genet uses `BrickDiagnostics`, `BrickTracer`, `MAX_CAPSULES`,
 `MAX_ROSTER`, `MAX_ROSTER_CAPSULES`, `SlabWall`, `TerrainAppearance` and
-`TraceCamera::orthographic_slab`; paredros-client uses `BrickDiagnostics`,
+`TraceCamera::orthographic_slab`; eponym-client uses `BrickDiagnostics`,
 `BrickTracer`, `BrickTracer::encode_with_depth`, `CritterPose`, `TraceCamera`;
 isometer uses `BrickMap`, `BrickRayError`, `BrickRayHit`, `FRAME_FORMAT`,
 `Grade::retro`, `TraceCamera::orthographic_slab`. **Nobody outside the crate
@@ -95,7 +95,7 @@ helpers (`SceneItem`, `Vertex`, `build_scene_vertices`, `build_vertices`,
 `LiveBodyError`, `LiveBodyRenderer`, `PartMaterial`); and `BACKGROUND`,
 `RenderError`, `Frame`, `Renderer`. mesocosm-genet uses `Camera::default`,
 `PartMaterial`, `RenderError::NoAdapter`, `composite::Composite`,
-`live_body::LiveBodyError`; paredros-client uses `ClipSlab`,
+`live_body::LiveBodyError`; eponym-client uses `ClipSlab`,
 `geometry::Vertex`, `live_body::{LiveBody, pick_bodies}`; isometer uses
 `ClipSlab`, `PartMaterial`, `composite::Composite` and
 `live_body::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad}`.
@@ -111,7 +111,7 @@ wire profile (`BodyProfile`, `PROFILE_SCHEMA`, `PROFILE_VERSION`,
 `ProfileError`) and the volume seam (`Volume`, `VolumeError`, `VolumeMap`,
 `VolumeSource`). mesocosm-genet uses `BodyDependencyRevision`, `BodyMesh`,
 `ContentPack`, `ContentPack::generate`, `VolumeMap`, `mesh_body`;
-paredros-client uses `MeshError`, `mesh_body`, `place_point`; isometer uses
+eponym-client uses `MeshError`, `mesh_body`, `place_point`; isometer uses
 `BodyDependencyRevision`, `Volume` and the `VolumeSource`/`VolumeMap` re-export.
 
 ### 1.3 The mesocosm-core back-dependency, site by site
@@ -148,7 +148,7 @@ Each type, its meaning, and where it should land:
 | `BodyDocument` | `body.rs:211` | Yes — already the wing's shared organ; Paredros stores one per subject with no Mesocosm world anywhere | `isometer-core` |
 | `Provenance`, `Origin` | `body.rs:106,94` | Yes — lineage of a *part*, not of an organism | `isometer-core` |
 | `PartOrigin` | `chronicle` re-export | Yes — a part's authored/incorporated flag on the wire profile | `isometer-core` |
-| `places::Ground`, `places::BRICK` | `places/bricks.rs:68` | Yes — a sparse voxel field with revisions. Both products already share it (`paredros-world/src/world.rs:7,157`) | `isometer-core` |
+| `places::Ground`, `places::BRICK` | `places/bricks.rs:68` | Yes — a sparse voxel field with revisions. Both products already share it (`eponym-world/src/world.rs:7,157`) | `isometer-core` |
 | `snapshot::{encode, hash_bytes}`, `wire` | `core/src/snapshot.rs`, `wire.rs` | Yes — postcard framing and blake3 hashing, no world semantics | `isometer-core` |
 | `Role`, `classify` | `plan.rs:82,110` | Yes — shape classification from a half-extent | `isometer-core` |
 | `PartTemplate`, `RoleShapes`, `PartPalette` | `development.rs:39,59,117` | **Mixed** — the vocabulary is neutral, the defaults are Mesocosm's development model | Mesocosm-owned adapter: `isometer-mesh::ContentPack::generate` takes them as arguments; see §4 step 3 |
@@ -200,7 +200,7 @@ shared/isometer/                  one Cargo workspace, MPL-2.0, publish = false
 - **Resolution, today.** Every product resolves the family by path inside this
   one repository: Mesocosm through `mesocosm/Cargo.toml`'s
   `[workspace.dependencies]` rows, Paredros through
-  `paredros-client/Cargo.toml:41-43`, and Isometry's board through a path into
+  `eponym-client/Cargo.toml:41-43`, and Isometry's board through a path into
   `shared/isometer` once it exists. The family keeps its own `[workspace]` and
   its own restated `[patch.crates-io]` and stays in the root workspace's
   `exclude` list (root `Cargo.toml:13`) — **because the root pins mere at
@@ -256,11 +256,11 @@ floor fix lands (uncommitted in `src/tracer.wgsl` and `tracer_tests.rs` as of
 this writing); the mesquite and taproot pin bumps land in mesocosm and
 paredros; and the extraction plan's step 8, Paredros's P1 retarget onto
 `isometer::SceneProducer`, lands. Nothing below starts while `tracer.wgsl` or
-`paredros-client/src/producer/` is dirty.
+`eponym-client/src/producer/` is dirty.
 
 Each step ends green in **all three** product workspaces:
 `cargo check --workspace --all-features --all-targets` and `cargo test` in
-`mesocosm/`, `paredros/` and the Isometry root, plus `cargo test` in
+`mesocosm/`, `eponym/` and the Isometry root, plus `cargo test` in
 `shared/isometer`. Steps 1-5 move no crate and are each revertible by one
 `git revert`.
 
@@ -304,20 +304,20 @@ Each step ends green in **all three** product workspaces:
    `shared/isometer/crates/isometer-core`. `mesocosm-core` gains a dependency
    on it and **re-exports every moved item at its current path**, so
    `mesocosm_core::BodyDocument` and `mesocosm_core::places::Ground` still
-   resolve for `mesocosm-runtime`, `mesocosm-views`, `paredros-world`,
-   `paredros-social`, `paredros-sortie` and `wing-integration` — none of those
+   resolve for `mesocosm-runtime`, `mesocosm-views`, `eponym-world`,
+   `eponym-social`, `eponym-sortie` and `wing-integration` — none of those
    change a line. Done when the state hash, every snapshot receipt and
    `BodyProfile`'s `PROFILE_SCHEMA` bytes are unchanged (§6).
 7. **Rename and move mesh.** `git mv mesocosm/crates/mesocosm-mesh
    shared/isometer/crates/isometer-mesh`, package renamed, imports rewritten
    `mesocosm_core::` → `isometer_core::` for the moved types. Path rows updated
-   in `mesocosm/Cargo.toml:90`, `paredros-client/Cargo.toml:42`,
+   in `mesocosm/Cargo.toml:90`, `eponym-client/Cargo.toml:42`,
    `wing-integration/Cargo.toml:15`, `shared/isometer/Cargo.toml:23` and
    `mesocosm-render/Cargo.toml:14`. **Source is otherwise verbatim.**
 8. **Rename and move render.** Same shape; `mesocosm/Cargo.toml:92`,
-   `paredros-client/Cargo.toml:43`, `shared/isometer/Cargo.toml:27`. Verbatim.
+   `eponym-client/Cargo.toml:43`, `shared/isometer/Cargo.toml:27`. Verbatim.
 9. **Rename and move lens.** Same shape; `mesocosm/Cargo.toml:89`,
-   `paredros-client/Cargo.toml:41`, `shared/isometer/Cargo.toml:25`. Verbatim,
+   `eponym-client/Cargo.toml:41`, `shared/isometer/Cargo.toml:25`. Verbatim,
    minus what steps 1 and 4 already removed. `mesocosm-lens`'s `conatus`,
    `modulus` and optional `burn` rows come with it and are restated against the
    family's own mere pin.
@@ -325,7 +325,7 @@ Each step ends green in **all three** product workspaces:
     `pub use isometer_{core,lens,mesh,render} as {core,lens,mesh,render}`.
     Products may then drop their individual path rows and take `isometer`
     alone; Mesocosm and Paredros do so in this step, which is where
-    `paredros-client`'s `r1-proof` optional-lens gate retires for good.
+    `eponym-client`'s `r1-proof` optional-lens gate retires for good.
 11. **L2: merge `isometry-voxel` into `isometer-mesh`.** Recipe, palette,
     `bake_facing`, `bake_strip`, `Sheet`, `Voxels`, `Rgb` and the `vox` ingest
     behind a default-off feature; the two `BodyProfile` encodings reconciled to
@@ -370,7 +370,7 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
    changes ground pixels, so every capture receipt this plan compares against
    must be regenerated after it lands and before step 1.
 3. **Paredros's P1 retarget is in flight against isometer.** Extraction step 8
-   deletes `paredros-client/src/producer/{camera,bodies,scene}.rs` and
+   deletes `eponym-client/src/producer/{camera,bodies,scene}.rs` and
    re-points eight GPU tests at `SceneProducer`. Steps 7-10 here rewrite the
    same manifest's rows `:41-43`. Running them concurrently churns Paredros
    twice and makes any failure ambiguous between the two lanes. Sequence, do
@@ -416,7 +416,7 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
    the family's CI lane asserting `cargo tree -p isometer-lens`,
    `-p isometer-render`, `-p isometer-mesh` and `-p isometer-core` name none of
    `mesocosm-core`, `mesocosm-runtime`, `mesocosm-genet`, `mesocosm-views`,
-   `paredros-world`, `paredros-identity`, `paredros-client` or `isometry-core`.
+   `eponym-world`, `eponym-identity`, `eponym-client` or `isometry-core`.
    This generalises the extraction plan's condition 1, which asserted the same
    list for `isometer` alone.
 2. **The hash and the wire are unmoved.** *Exists:* `state_hash`
@@ -435,10 +435,10 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
    extraction plan compared all 32 viewports against byte-for-byte.
    *Receipt:* the same 32 viewports byte-identical after step 10, against a
    baseline regenerated after risk 2's shader fix lands.
-4. **paredros-client builds against the family with unchanged receipts.**
+4. **eponym-client builds against the family with unchanged receipts.**
    *Exists:* 45 client, 132 world and 6 native tests, the session smoke, and
    the eight GPU tests in `producer/tests.rs`. *Receipt:* all green after step
-   10 with `paredros-client/Cargo.toml` naming `isometer` and nothing else from
+   10 with `eponym-client/Cargo.toml` naming `isometer` and nothing else from
    the family, and with the `r1-proof` optional-lens feature deleted.
 5. **Isometry builds against the family.** *Must be written:* the Isometry
    root workspace takes `isometer` by path and its existing suite stays green —
@@ -665,8 +665,8 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   lib.rs 48; 32 tests; dependencies wing-formats, serde, postcard only;
   `cargo tree` names no product crate). mesocosm-core depends on it and
   re-exports every moved item at its old path, so mesocosm-runtime,
-  mesocosm-views, mesocosm-genet, paredros-world, paredros-social,
-  paredros-sortie and wing-integration compile unchanged; paredros-world's
+  mesocosm-views, mesocosm-genet, eponym-world, eponym-social,
+  eponym-sortie and wing-integration compile unchanged; eponym-world's
   tests pass with no Paredros edit. lens, render, mesh and isometer take
   isometer-core; isometer names mesocosm-core nowhere; the three
   components keep it as a dev-dependency only, for the generation
@@ -692,17 +692,17 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   core entered its graph, and two stale mere lines refreshed to 3675a352,
   drift left by the umbrella repin, recorded rather than reverted.
 - **2026-09-14, step 6 gate closed on the Paredros side.** At 5dfc721,
-  with no Paredros edit: paredros-world 143 tests including motion_compat's
+  with no Paredros edit: eponym-world 143 tests including motion_compat's
   real v3 and v4 archive restores and the v5 and v6 save-restore tests,
-  paredros-client 45 lib tests with the eight GPU receipts, session
+  eponym-client 45 lib tests with the eight GPU receipts, session
   acceptance ok in 106 frames; byte-identity holds on every restored
   fixture (Paredros's state hash is not versioned by its save header, so
   the restores are the pin). Steps 7 to 9 are pre-agreed with the Paredros
   session: this lane changes only the three mesocosm-lens, -render and
-  -mesh path rows in paredros-client/Cargo.toml, one per step, runs the
+  -mesh path rows in eponym-client/Cargo.toml, one per step, runs the
   Paredros workspace check before each commit, and touches nothing else
-  under paredros/. Their product-side switch to isometer-core runs in
-  parallel in paredros-world and paredros-client source and dependency
+  under eponym/. Their product-side switch to isometer-core runs in
+  parallel in eponym-world and eponym-client source and dependency
   rows, committed by pathspec on their side.
 - **2026-09-15, step 7 done.** mesocosm-mesh is `shared/isometer/crates/
   isometer-mesh`, moved by rename with source verbatim beyond the import
@@ -739,7 +739,7 @@ defaults to its callers); `isometry-voxel` (dissolves into `isometer-mesh`).
   ground, pass. Green: isometer 28, isometer-core 32, isometer-mesh 60 +
   4 + 2, isometer-render 32 + 5, isometer-lens 56 single-threaded,
   mesocosm check, runtime 44, genet 154, wing-integration check, root
-  check with the root lock unchanged. A `paredros-client` feature still
+  check with the root lock unchanged. A `eponym-client` feature still
   gates the optional lens (`r1-proof`); step 10 retires it on the
   Paredros side.
 - **2026-09-15, step 10 done.** The facade re-exports the family:

@@ -326,7 +326,7 @@ pillars through renderling over the raymarched room and judged projected
 point probes on the RTX 4060 — raster covering rock where nearer, the floor
 covering a buried pillar base, a wholly sunken pillar invisible, with a
 positive control in the same frame and the replay hash unchanged. Receipt at
-`paredros/design_docs/2026-08-07_paredros_execution_plan.md` §3 D1 and
+`eponym/design_docs/2026-08-07_paredros_execution_plan.md` §3 D1 and
 `Code/testing/paredros/d1_depth.{json,png}`.
 
 One durable caution: the stage *replaces* its depth texture on size or
@@ -731,7 +731,7 @@ application being active. Existing license notices remain part of any extraction
    This is a missing contract, not another duplicated generator. The
    [body contract](2026-07-31_wing_phenotype_contract_plan.md) already identifies
    v0's missing subject, revision, parent links and scoped part addresses.
-   Paredros `paredros-world/src/anatomy.rs:13` now admits a Mesocosm body with
+   Paredros `eponym-world/src/anatomy.rs:13` now admits a Mesocosm body with
    subject/revision identity; the tabletop receives a flattened appearance.
    Advance the existing v1 gates after the byte-compatible extraction.
    Then use one forest/watchtower fixture to require all three adapters to
@@ -788,7 +788,7 @@ live writer-reader proof and later the common-world fixture. Report per-product
 default, all-feature, replay and headed results separately. A green unit suite
 must not stand in for another port's consumer or a physical presentation test.
 
-Ground generation is already reused: Paredros `paredros-world/src/world.rs:118`
+Ground generation is already reused: Paredros `eponym-world/src/world.rs:118`
 calls Mesocosm `Places::grown` and `Ground::grow`. Sparse-brick carriage/DDA
 already uses Mere `modulus` in both games. Conatus already owns reusable spatial
 realization. Paredros's remaining Ground-to-ContactWorld join is product work,
