@@ -937,6 +937,18 @@ what later sections derive from.
      although, you know, i did once wonder if there were an appropriate bird
      name for the wing". The bird is a musing, not a reopening; Isocosm
      stands.
+112. **Mesocosm keeps its name; Eponym stays; the family is settled.** On
+     2026-09-23 Mark reopened Mesocosm's name ("a little terrarium of
+     anything kinda outstrips it") and two batches were checked (coppice,
+     landrace, holobiont, ontogeny and sere the survivors, in the naming
+     ledger). On 2026-09-24 his feeling settled: "isocosm for the sim,
+     great. mesocosm for the critter game, great. instead of eponym.
+     paracosm!" Paracosm was checked and walled (a taken engine crate, a
+     registered class 9 mark, two label albums), and on the options for
+     eponym: "Meh. Eponym for now." So the family stands as ruled 110 and
+     111: Isocosm the sim and the family, Isocosm: VTT, Isocosm: Mesocosm,
+     Isocosm: Eponym. The reservations claimed at his word on 2026-09-24,
+     hagiograph, redshank and ortet, are in the ledger.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4283,6 +4295,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 112 recorded: Mesocosm keeps its name after a round,
+  paracosm walled, Eponym stays; the family stands as rulings 110 and 111
+  left it. Reservations for hagiograph, redshank and ortet claimed.
 - 2026-09-22: ruling 111 recorded: Isometry retired as a product word and
   kept as the crates' technical prefix; ruling 110's inferred subtitle
   clause corrected; the names line under nine documents amended; the rename

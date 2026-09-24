@@ -176,3 +176,6 @@ each other; R3 when the peer's crate lands; R5 last.
 - 2026-09-22: ruling 111 (option B) applied: Isometry retired as a product
   word; the names line, the names table, R4 and two drafts amended; R3's
   wording brought to the owning session's `wing-sim`.
+- 2026-09-24: ruling 112: Mesocosm keeps its name and Eponym stays, so the
+  names table is final; hagiograph, redshank and ortet claimed on crates.io
+  at Mark's word, beside the family's three.
