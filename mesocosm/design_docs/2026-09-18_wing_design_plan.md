@@ -15,11 +15,12 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 118. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 119. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
-rulings 117 and 118 let any belief be wrong and say what makes one take.
+rulings 117 to 119 let any belief be wrong, say what makes one take and
+how that is weighed.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -1044,6 +1045,15 @@ what later sections derive from.
      skill to intimidate, persuade or deceive, which a ruleset reads as
      charisma. Mark picked all four. How they are weighed against each
      other is the next question.
+119. **Both: each entity's disposition shifts a world baseline, and the
+     baseline is drawn from the world entity's disposition, a neutral
+     median by default.** Put to Mark on 2026-09-24, following ruling 118:
+     when the four pull different ways, what sets how much each counts?
+     Three options were put: their disposition; the world's rules; or
+     both, a baseline set at founding and each disposition shifting it.
+     Mark: "Both. World baselines can be more like aggregate baselines
+     drawn from the world entity disposition? Then a neutral median
+     default for the sim is the world's normal way".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2531,9 +2541,17 @@ the receiver's trust in the teller by its opinion of them, their reputation
 and their rank; what it wants to hear, the claim's fit with its tenets,
 loyalties and hopes; and how it is told, the teller's practised skill in
 ruling 96's sense, which a ruleset reads as charisma. How the four are
-weighed when they pull apart is open. Prior art, known: source credibility
-(Hovland and Weiss, 1951); motivated reasoning (Kunda, 1990); Bayesian
-updating as the evidence term alone.
+weighed when they pull apart is ruling 119. Prior art, known: source
+credibility (Hovland and Weiss, 1951); motivated reasoning (Kunda, 1990);
+Bayesian updating as the evidence term alone.
+
+*Ruled 2026-09-24 (ruling 119): how the four are weighed.* Each entity's
+disposition shifts a world baseline, and the baseline is an aggregate one
+drawn from the world entity's disposition (rulings 98 and 103): a world's
+temperament is its believers' normal way. The sim's default is a neutral
+median, "the world's normal way" when nothing sets it otherwise, which is
+presumably what a world without a disposition of its own takes, since
+ruling 103 gives one only to an agentive world.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -4481,6 +4499,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 119 recorded: the four are weighed by each entity's
+  disposition around a world baseline drawn from the world entity's own,
+  a neutral median by default; §3.4 gains the paragraph.
 - 2026-09-24: ruling 118 recorded: a belief takes by what the receiver can
   check, who is telling, what it wants to hear and how it is told, all
   four; §3.4 gains the paragraph with its prior art. The weighing is open.
