@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 124. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 126. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1113,6 +1113,22 @@ what later sections derive from.
      minutes; or a whole world, millions of things, ages of history,
      overnight if need be. Mark: "We can start with the region, not
      precluding the larger scales of course."
+125. **Noting and promotion belong to the world; collection and merging
+     belong to the record.** Put to Mark on 2026-09-24, from the review's
+     finding that the sim plan's table of world transitions listed noting,
+     collection, promotion to legend and merging branches beside death and
+     founding a polity: are they events in the world, or work done on the
+     record about it? Three options were put: record work; world events;
+     or a split, noting and promotion the world's, since something became
+     remarkable, and collection and merging the record's. Mark: "Split."
+126. **A fork founds a new world; a branch is the same world played apart
+     and merged back.** Put to Mark on 2026-09-24: ruling 7 says worlds
+     are "forkable and branchable"; should a fork be the new world that
+     never merges back, and a branch the same world played apart and
+     merged back by replay? Mark: "Yes, fork and branch." So a fork founds
+     a world with its own history from that point, related by descent
+     (D33), and a branch is ruling 104's play branch. D23's edit to the
+     past, which may never rewrite, reads as a fork.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2044,7 +2060,10 @@ Three shapes, and no fourth found yet:
 - **Rung transitions**, for what happens to the agent set: a faction
   founding a polity, a lineage splitting, a settlement incorporated, a
   polity collapsing into factions. These name what dissolves and what is
-  founded, and they are the events the hagiograph most often keeps.
+  founded, and they are the events the hagiograph most often keeps. (Ruled
+  2026-09-24, ruling 125: noting and promotion to legend are the world's;
+  collection and merging branches are work on the record, not
+  transitions.)
 
 Mesocosm's `ProcessDef` (processdef plan, 2026-08-01) is **not** the first
 shape's definition as it stands, by receipt: its digest covers namespace,
@@ -3281,8 +3300,9 @@ the derivation rule. A world is its seed, its rules and its asserted facts,
 and the sim is deterministic, so the state at any past time is that log
 replayed to then, with checkpoints at epoch boundaries bounding the cost and
 the oldest coarsened first under ruling 70's buffer. Going back *and
-editing* is asserting a fact in the past, which makes a branch (ruling 7),
-never a rewrite, so the timeline a founder edits is the same thing as the
+editing* is asserting a fact in the past, which makes a fork (ruling 7;
+named by ruling 126, since a branch merges back and this may not), never a
+rewrite, so the timeline a founder edits is the same thing as the
 branching a moot does. "Not overwhelm" is the three tiers of keeping used as
 an interface: the timeline shows legend first, things of note on zooming in,
 and the ambient only where someone looks, lifted on demand.
@@ -3563,9 +3583,9 @@ in the record, and neither merges anything: each world keeps its own log and
 its own played clock, and what crosses between them is things with
 provenance.
 
-- *Descent.* Branched worldlines are the world kingdom's lineage tree
-  (ruling 101): siblings share a common prefix of the log up to the branch
-  point, so the legend from before it is one legend cited by both, and the
+- *Descent.* Forked worldlines (ruling 126's fork) are the world kingdom's
+  lineage tree (ruling 101): siblings share a common prefix of the log up
+  to the fork, so the legend from before it is one legend cited by both, and the
   histories after it diverge. Mesocosm's terminology already names this:
   *fili*, "lineage across worlds (forks, campaign descent, cross-moot
   grafts)", which is the record of descent between worlds and nothing else.
@@ -4595,6 +4615,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 125 and 126 recorded: noting and promotion are the
+  world's, collection and merging the record's; a fork founds a new world
+  and a branch merges back. §3.3's rung transitions, §3.9's editing of the
+  past and §3.12's descent follow.
 - 2026-09-24: ruling 124 recorded: the first scale target is a region on
   Mark's laptop, larger scales not precluded. §3.5 and §7's scale row gain
   it; the sim plan's S5 measures it.
