@@ -15,6 +15,10 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
+**Status, 2026-09-24:** rulings run to 113. The sim plan's implementation
+lane is open in `shared/isocosm`, and ruling 113 sets what its background
+must agree with.
+
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
 to; the method by which claims reach rulings and receipts reach plans; and
@@ -949,6 +953,36 @@ what later sections derive from.
      111: Isocosm the sim and the family, Isocosm: VTT, Isocosm: Mesocosm,
      Isocosm: Eponym. The reservations claimed at his word on 2026-09-24,
      hagiograph, redshank and ortet, are in the ledger.
+113. **Similitude: the noted always run as individuals; the fungible agree
+     in distribution over whatever a later process reads; what was watched
+     is logged; exact agreement is a world setting, statistical the
+     default.** Put to Mark on 2026-09-24, after the [aggregation
+     research](2026-09-22_aggregation_research.md) found that its lossless
+     runner cut evaluations 5.93 times in independent worlds and not at all
+     in ecological ones: run one world twice from one seed, with a village
+     of 300 going into a hard winter, watched once with every person run
+     and unwatched once with the village run as a crowd; what has to come
+     out the same? Mark: "not certain! recommendations?" This record's
+     recommendation had five points. Anything of note never runs as a
+     crowd. The fungible agree in distribution and not in identity: the
+     same toll, falling the same way across everything a later process
+     reads (age, role, condition, beliefs, factional blocs), within a
+     stated tolerance, "who" being undefined for the fungible until someone
+     looks. The test is collection's observational test run forward in
+     time: nothing that reads the world afterwards, a player, a process or
+     the hagiograph, can tell which way the winter ran beyond chance,
+     checked on the bench over seeded draws run both ways, which rules out
+     the X series's systematic difference between modes while allowing
+     different samples. What was watched goes in the log, since watching
+     changes which individuals exist in detail and a replay must know it,
+     ruling 71's "examination counts as play" taken literally. Exact
+     agreement is a world setting, the lossless runner its mode and the
+     reference every approximation is tested against, and ruling 75's
+     buffer is this knob, held in the world's rules and never by the host.
+     Put back as three options, accept, exact by default, or distribution
+     only, Mark: "Accept as recommended." This settles §3.3's "a host's
+     setting" against §3.12's "never of the machine" in the second's
+     favour, and gives the aggregation research its acceptance criterion.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1901,10 +1935,12 @@ manner that preserves similitude". What licenses the aggregate is ruling
 75's other half: "things of no note are fungible", interchangeable, so a
 cohort may be counted and need not be listed, and a generated thing is "a
 placeholder meant to be reified/supplanted by the player". How long a
-realised thing lingers before it is funged is a host's setting, "if you have
+realised thing lingers before it is funged is a world setting, "if you have
 a very capable system and want to increase the buffer of stuff before things
 are funged, for a feeling of consistency", which is ruling 71's collector
-given a budget.
+given a budget. (Corrected 2026-09-24 by ruling 113 from "a host's
+setting": the buffer changes what is funged, so it lives in the world's
+rules and replays with the log.)
 
 *Reading, accepted by Mark 2026-09-21 (D17).* The two transitions have names in the
 multiscale literature. *Lifting* takes an aggregate to individuals: sample
@@ -1923,10 +1959,30 @@ opaque script is not: a script can only be executed, never integrated. So
 ruling 32's choice is what makes ruling 75 possible, piccolo authors and
 lowers to definitions, and scripted hooks run only in the foreground.
 
+*Ruled 2026-09-24 (ruling 113).* What the two ways must agree on. Anything
+of note runs individually, watched or not, so only the fungible are ever
+run as a crowd, and they agree in distribution rather than identity: the
+same toll, falling the same way across whatever a later process reads. The
+first check above is a consistency check and no more; restriction returning
+its aggregate says nothing about the evolution that follows (the
+[aggregation research](2026-09-22_aggregation_research.md), reading
+Kevrekidis). The second is the test, and it is collection's observational
+test run forward in time: the distribution of everything a later process, a
+player or the hagiograph can read is the same either way beyond chance, over
+seeded draws run both ways, within the world's stated tolerance. Means and
+totals are not enough, since two crowds with equal total energy can hold
+different numbers of the starving, the research's counterexample. What a
+player watched is an intent in the log, because watching decides which
+individuals exist in detail. A world founded exact runs the lossless runner
+throughout and pays for it wherever members interact.
+
 Prior art for ruling 75, known. Gillespie's stochastic simulation algorithm
 executes every event exactly, and his tau-leaping (2001) jumps over many
-events at once by drawing their counts, with the same statistics, which is
-the foreground and the background of one definition. Kevrekidis's
+events at once by drawing their counts, approximately, with first-order
+consistency and an approximation error (corrected 2026-09-24 from "with the
+same statistics", after the aggregation research's reading of Rathinam,
+Petzold, Cao and Gillespie), which is the foreground and the background of
+one definition. Kevrekidis's
 equation-free method is where *lifting* and *restriction* are named.
 Cautions, from memory of games and unverified: the X series resolves combat
 differently in and out of the player's sector and players exploit the
@@ -4295,6 +4351,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 113 recorded: similitude. The noted run individually,
+  the fungible agree in distribution over what later processes read, what
+  was watched is logged, and exact agreement is a world setting. §3.3
+  corrected twice in place (the buffer is the world's, not the host's;
+  tau-leaping is approximate) and given the ruling; the sim plan's §1,
+  §2.1, §2.8, §5.1 and §5.5 follow it.
 - 2026-09-24: ruling 112 recorded: Mesocosm keeps its name after a round,
   paracosm walled, Eponym stays; the family stands as rulings 110 and 111
   left it. Reservations for hagiograph, redshank and ortet claimed.
