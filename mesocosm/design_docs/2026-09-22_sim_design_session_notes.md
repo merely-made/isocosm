@@ -1,7 +1,7 @@
 # The sim design sessions, 2026-09-16 to 2026-09-24: notes
 
-**Date:** 2026-09-22. **Extended 2026-09-24** with the refinement session,
-§8, at Mark's word ("Record session notes").
+**Date:** 2026-09-22. **Extended 2026-09-24 and 2026-09-25** with the
+refinement session, §8, at Mark's word ("Record session notes").
 
 *Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
@@ -262,14 +262,15 @@ and the `denizen` crate's publish.
   review of 2026-09-21 is the case to remember.
 - Findings go to the owner's plan the same day.
 
-## 8. The refinement session, 2026-09-22 to 2026-09-24
+## 8. The refinement session, 2026-09-22 to 2026-09-25
 
 Mark asked for a verdict on the plan and these notes ("we get a good design
 out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 157 were all given on 2026-09-24.
+113 to 173 were given on 2026-09-24 and 174 to 196 on 2026-09-25, the last
+of them ending in W5's plan.
 
 ### 8.1 How it started
 
@@ -338,10 +339,27 @@ worlds, none in ecological ones.
 | | Who may a player direct? Two at once? D19? | only who they play; "Yes, both"; "Rule it" | 152 to 154 |
 | | What a Mesocosm player plays; what a DM may do | by the lineage's traits; "Both" | 155, 156 |
 | Naming | The thing, event and body-site words | relic, tale, tract | 157 |
+| Mood and breaks | What is mood made of; kept or read? | memory, needs and situation, with personality traits proposed by Mark; "Read, with kept strain" | 158, 159 |
+| | Traits and the five factors; what a break does; does it spread? | "Traits on the factors"; all four; "It doesn't" | 160 to 162 |
+| | Down or up; what sets bearing | traits, the moment, chance; traits, support, history | 163, 164 |
+| Culture | What is a culture; do languages divide? | "Read, named when noted"; "Languages divide" | 165, 166 |
+| | Descent, names, spread | "Like lineages"; tongue, tales, namer; contact, prestige, imposition, drift | 167 to 169 |
+| | Art and ritual (offered as a thread) | "I view art and ritual as crafts" | 170 |
+| Technology | What is it; ages; invention | "Both"; read and named, capped, able to realign, "the epochs of cultures/society"; need, contact, temperament, mastery | 171 to 173 |
+| W5, Mesocosm | Which game first; control; directives; obedience | "Mesocosm"; "Directing, as ruled"; all four; "By its bond" | 174 to 177 |
+| | The bond across generations; the start | three options, seeded by default; from habitability onward | 178, 179 |
+| | Truth; collapse; unplayed lineages | creative and survival; local or global, never the end; they adapt, inherit and develop against the web | 180 to 182 |
+| | At a birth; creative mode | "Parent by default"; "See only" | 183, 184 |
+| | One sim; the ceiling; the plan's decisions | "Isocosm absorbs"; "decompose them under the 600 Loc limit"; only on Isocosm, record earlier, retire the slice | 192 to 196 |
+| W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
+| W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
 Administrative: ruling 128 amended Mesocosm's CLAUDE.md portable-profile
 line; the readings docket was archived to `archive_docs/2026-09-24/` once
-nothing was held; relic, tale and tract joined Mesocosm's terminology.
+nothing was held; relic, tale and tract joined Mesocosm's terminology; Law
+A was amended for materials at Mark's word; and the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) was drafted as
+W5, its M0 done the same day.
 
 ### 8.4 What was got wrong, and corrected
 
@@ -356,14 +374,18 @@ nothing was held; relic, tale and tract joined Mesocosm's terminology.
 | The review's "the CLAUDE.md amendment is unlanded" | Overtaken the same day, when ruling 108 applied it |
 | A progress line naming the next question | Changed to "open" when Mark's message redirected the thread |
 | A commit staging a moved file's old path | Staged nothing; redone with the new path |
+| An accidental tap, "Inherited only", on unplayed lineages | Corrected by Mark the same turn; his correction is ruling 182, and the tap is not recorded as his answer |
+| The played slice plan's direct control, kept by W1 the day before ruling 60 | Superseded by ruling 175, with dated notes in the plan, the vessel briefs and the index |
 
 ### 8.5 What the session left open
 
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
-occurrences; D20's provider over `mere-capability`, W3's to build; and
-W5's contract details against ruling 154. Mark chose mood and breaks as the
-next territory.
+occurrences; D20's provider over `mere-capability`, W3's to build; the
+overlay plan's M1 to M4, proposed and not opened; what measures a collapse
+as local or global, the playable ecology plan's to specify; and plans of
+their own for Eponym's and the VTT's overlays, whose shapes are ruled in
+the record's §5.6 and §5.7.
 
 ### 8.6 Lessons for the next session
 
@@ -377,3 +399,8 @@ next territory.
 - A message sent mid-turn is the answer's context: quote it in the ruling.
 - Peers commit into the same files: check the tree before each commit,
   stage by pathspec, and never name a moved file's old path.
+- A tapped answer can be an accident. When Mark corrects one, the
+  correction is the ruling, and the record says the tap was withdrawn.
+- Read the plans a new thread consumes before asking: the played slice's
+  direct control was a contradiction already in the tree, found only when
+  W5 opened.
