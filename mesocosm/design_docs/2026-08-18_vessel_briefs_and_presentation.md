@@ -85,7 +85,11 @@ section with direct control of your organism; the end-of-epoch review
 is the trait graph itself as a diagram board, adjacency spatially
 legible because adjacency is the mechanic, with the body-plan
 projection as the compile step. This extends the 2026-08-06 Rain World
-pull-back ruling and closes it.
+pull-back ruling and closes it. (Superseded for control: the wing design
+record's ruling 60 made directing Mesocosm's mode on 2026-09-19, and ruling
+175 applied it to the first overlay on 2026-09-25, so the live epoch
+directs the organism rather than controlling it directly. The terrarium
+section stands.)
 
 Home person stays first (agency: you are the critter); the camera is
 not the person.

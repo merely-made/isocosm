@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 174. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 175. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1500,6 +1500,16 @@ what later sections derive from.
      put: Mesocosm, whose foregrounded critter and lineage the Isocosm core
      already runs and whose bench is the core's first host; Eponym; or the
      VTT. Mark: "Mesocosm."
+175. **The first Mesocosm overlay directs, as ruling 60 has it; the played
+     slice's direct control is rewritten.** Put to Mark on 2026-09-25, from
+     the finding that the played slice plan gives direct control of the
+     organism, an intent over `World.controlled`, while ruling 60 made
+     directing Mesocosm's mode the day after W1 kept that plan: for the
+     first overlay's played loop, directing as ruled, directing with a
+     hands-on mode for moments like a hunt, or the slice's direct control
+     first? Mark: "Directing, as ruled." So the critter acts on its own
+     needs and senses, which suggest to the player, and the player shapes
+     it with standing orders and priorities.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5124,7 +5134,8 @@ carries the rulings as they are made.
 - **W5, the first game overlay.** Done when a game has a profile designed
   to §5 as a core implementing the overlay contract, and a played loop with
   receipts drawn from the generator. **Ruled 2026-09-24 (ruling 174):
-  Mesocosm goes first.**
+  Mesocosm goes first,** and its played loop directs, as ruling 60 has it
+  (ruling 175, 2026-09-25).
 
 No code lane runs before W1 is ruled.
 
@@ -5173,6 +5184,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: ruling 175 recorded: the first Mesocosm overlay directs, and
+  the played slice's direct control is rewritten; the played slice plan,
+  the vessel briefs and the doc index carry dated notes.
 - 2026-09-24: ruling 174 recorded: Mesocosm is the first game overlay;
   §11's W5 carries it. Found the same turn: the played slice plan's direct
   control of the organism predates ruling 60's directing as Mesocosm's

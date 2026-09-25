@@ -1,5 +1,10 @@
 # Played Slice Plan (2026-08-28)
 
+**Status, 2026-09-25: under rewrite for control.** The wing design record's
+ruling 175 makes directing the first Mesocosm overlay's control, as ruling 60
+ruled Mesocosm's mode on 2026-09-19, so this slice's direct control of the
+organism is to be rewritten. W1's keep of 2026-09-18 predates ruling 60.
+
 **Status: in progress, refreshed 2026-08-31. PS0 and PS1 landed mechanically
 and were playtested; their vitals, terrarium-dynamics, roster, and default-body
 follow-ups have also landed through DC4. PS2 is now decomposed by the
@@ -149,6 +154,16 @@ adaptation — remains unwired and is PE3's.
 
 ## Findings
 
+- **2026-09-25, the control model is superseded.** This slice executes
+  direct control of the organism (the vessel briefs' §2 and P1's
+  `World.controlled`). Ruling 60 of the wing design record made directing
+  Mesocosm's mode on 2026-09-19, and ruling 175 applied it to the first
+  overlay's played loop on 2026-09-25: the critter acts on its own needs
+  and senses, which suggest to the player, and the player shapes it with
+  standing orders and priorities. The terrarium section and the receipts
+  stand. On the reading of rulings 59 and 175, metabolize stays the
+  critter's one verb, performed by its own methodology under directing
+  rather than driven by the player's hand.
 - **2026-09-15, the golden trace is stale and stays that way for now.**
   `ps1_played.trace.json` records trophic grammar revision 0 and this
   build is at revision 8, so `--replay` refuses it. That takes
