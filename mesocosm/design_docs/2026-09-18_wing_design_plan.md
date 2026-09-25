@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 189. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 191. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1606,6 +1606,19 @@ what later sections derive from.
      refused on a world; allowed and flagged; or the DM's choice. Mark:
      "We should maybe consider allowing it debug, or experimental (with a
      warning)".
+190. **An adventure pack whose requirements the world lacks waits, or the
+     GM forces it.** Put to Mark on 2026-09-25: an adventure pack names
+     what it needs from a world, a ruin, a faction at war, a missing heir;
+     what if the world doesn't have it? Three options were put: the pack
+     waits, dormant until the world meets it; the DM forces it, asserting
+     its content and displacing generated content (ruling 89); or the
+     world bends at founding. Mark: "Wait or the gm forces it".
+191. **The VTT offers the sim's running arcs to the DM as suggested
+     hooks.** Put to Mark on 2026-09-25: the sim knows the parts of the
+     arcs it is running (ruling 103); does the VTT offer them to the DM?
+     Three options were put: as suggested hooks, which the DM may take up,
+     drop or reshape; on request; or not at all. Mark: "As suggested
+     hooks."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5018,7 +5031,7 @@ creative modes hold as in Mesocosm: survival shows what the creature one
 lives knows, its diegetic notes included, and creative shows the truth and
 is where tag-in lives (ruling 187).
 
-### 5.7 The VTT's overlay (rulings 188 and 189)
+### 5.7 The VTT's overlay (rulings 188 to 191)
 
 The VTT's product description holds its profile: a substrate for tabletop
 systems over the Isocosm sim, systems as plugins, the substrate tracking
@@ -5033,6 +5046,18 @@ rate on (rulings 104 and 105); players see what their characters know and
 the DM sees the truth, survival and creative split by role. *Reading, not
 ruled:* with the sim off there is no background to agree with, so any
 ruleset plays there and calibration does not apply.
+
+An adventure pack whose requirements the world lacks waits, dormant until
+the world meets them, or the GM forces it, asserting its content over what
+was generated (ruling 190). The VTT offers the arcs the sim is running to
+the DM as suggested hooks, to take up, drop or reshape (ruling 191).
+*Readings put to Mark on 2026-09-25 without objection:* a campaign starts
+from a drawn world or from the DM's own maps and packs, authored content
+filling or displacing generated content (ruling 89), or with the sim off
+(ruling 188); player characters are contingent on groups "even if by
+absence" (ruling 36), members or outsiders like anyone, where they start
+being the DM's setup; and the DM's prep is world editing, the world
+editor's (rulings 89, 156 and 184).
 
 ## 6. Method
 
@@ -5344,6 +5369,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 190 and 191 recorded: an unmet adventure pack waits
+  or the GM forces it; the sim's arcs reach the DM as suggested hooks.
+  §5.7 gains them and three readings put without objection.
 - 2026-09-25: rulings 188 and 189 recorded for the VTT's overlay: the sim
   may be switched off; an uncalibrated ruleset plays only in a debug or
   experimental mode, with a warning. §5.7 added, with two readings put
