@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 187. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 189. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1595,6 +1595,17 @@ what later sections derive from.
      to Mark on 2026-09-25: do rulings 180 and 184 hold for Eponym? Two
      options were put: the same, creative also being where tag-in lives;
      or survival only. Mark: "The same."
+188. **A VTT campaign may run with the sim off.** Put to Mark on
+     2026-09-25, opening the VTT's overlay: can a campaign run with the sim
+     switched off, as a plain board with no world beneath? Three options
+     were put: always a world; sim off allowed; or a dial of how much the
+     world moves on its own. Mark: "Sim off allowed."
+189. **An uncalibrated ruleset may play in a debug or experimental mode,
+     with a warning.** Put to Mark on 2026-09-25: what happens to a system
+     plugin that cannot pass ruling 114's check? Three options were put:
+     refused on a world; allowed and flagged; or the DM's choice. Mark:
+     "We should maybe consider allowing it debug, or experimental (with a
+     warning)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5007,6 +5018,22 @@ creative modes hold as in Mesocosm: survival shows what the creature one
 lives knows, its diegetic notes included, and creative shows the truth and
 is where tag-in lives (ruling 187).
 
+### 5.7 The VTT's overlay (rulings 188 and 189)
+
+The VTT's product description holds its profile: a substrate for tabletop
+systems over the Isocosm sim, systems as plugins, the substrate tracking
+geometry and turns and never a hit point. A campaign may switch the sim off
+and play as a plain tabletop (ruling 188). A system plugin that cannot pass
+ruling 114's calibration may still play in a debug or experimental mode,
+with a warning (ruling 189). *Readings put to Mark on 2026-09-25 without
+objection:* a campaign's time passes as the table plays, downtime the DM
+declares running the sim forward as deep time does, with the players'
+consent, and between sessions only if the founder turned the unattended
+rate on (rulings 104 and 105); players see what their characters know and
+the DM sees the truth, survival and creative split by role. *Reading, not
+ruled:* with the sim off there is no background to agree with, so any
+ruleset plays there and calibration does not apply.
+
 ## 6. Method
 
 - **Targets are draws.** A receipt is a seeded draw from the generator's
@@ -5317,6 +5344,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 188 and 189 recorded for the VTT's overlay: the sim
+  may be switched off; an uncalibrated ruleset plays only in a debug or
+  experimental mode, with a warning. §5.7 added, with two readings put
+  without objection, time and sight, and one flagged.
 - 2026-09-25: rulings 185 to 187 recorded for Eponym's overlay: co-op each
   their own; the player chooses a bonded companion to become at a death;
   the same survival and creative modes. §5.6 added. The playable ecology
