@@ -51,6 +51,7 @@ struct Design {
     lineage_sweep: Vec<u32>,
     lineage_sweep_population: u64,
     history_population: u64,
+    history_cohort_size: u64,
     history_ticks: u64,
     history_wall_cap_micros: u64,
     largest: Founding,
@@ -114,11 +115,15 @@ fn run() -> Result<(), String> {
     let mut output = None;
     let mut pilot = false;
     let mut extend = false;
+    let mut living = false;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--pilot" => pilot = true,
             // Two larger rungs for every ladder, one draw each, no stop rule.
             "--extend" => extend = true,
+            // The history run alone, members placed one by one: cohorts of 32
+            // each crowd one site, and those worlds died out.
+            "--living" => living = true,
             "--seed" => {
                 master = args
                     .next()
@@ -132,7 +137,9 @@ fn run() -> Result<(), String> {
     eprintln!("Scale receipt: master seed {master}");
     let design = Design {
         // Doubling from 256 inside the generator's domain, which ends at 1,000,000.
-        ladder_sizes: if pilot {
+        ladder_sizes: if living {
+            vec![]
+        } else if pilot {
             vec![64, 128]
         } else if extend {
             vec![2048, 4096]
@@ -159,6 +166,7 @@ fn run() -> Result<(), String> {
         },
         lineage_sweep_population: if pilot { 64 } else { 1024 },
         history_population: if pilot { 64 } else { 1024 },
+        history_cohort_size: if living { 1 } else { 32 },
         history_ticks: if pilot { 16 } else { 512 },
         history_wall_cap_micros: 1_200_000_000,
         largest: Founding {
@@ -169,7 +177,7 @@ fn run() -> Result<(), String> {
             cohort_size: 32,
             ..Founding::default()
         },
-        note: "Ladders double the population at fixed sites, lineages and cohort size; each size runs the same drawn worlds in both modes. A ladder stops after the first size whose mean tick exceeds the stated time. The lineage sweep holds population and sites. The history run is one long ecology draw in the grouped mode hosts use. The largest admitted worlds are generated and costed, not advanced. An extension run adds two larger rungs to every ladder, one draw each, with no stop rule and nothing else.",
+        note: "Ladders double the population at fixed sites, lineages and cohort size; each size runs the same drawn worlds in both modes. A ladder stops after the first size whose mean tick exceeds the stated time. The lineage sweep holds population and sites. The history run is one long ecology draw in the grouped mode hosts use. The largest admitted worlds are generated and costed, not advanced. An extension run adds two larger rungs to every ladder, one draw each, with no stop rule and nothing else. A living run is the history run alone with members placed one by one.",
     };
     let heap_control = heap::control();
     eprintln!("heap control passed: {}", heap_control.passed);
@@ -217,7 +225,7 @@ fn run() -> Result<(), String> {
         }
     }
     for ecology in [false, true] {
-        for &l in design.lineage_sweep.iter().filter(|_| !extend) {
+        for &l in design.lineage_sweep.iter().filter(|_| !extend && !living) {
             for k in 0..design.seeds_per_point {
                 let domain = [u64::from(ecology), u64::from(l), k];
                 let seed = isocosm::draw(master, "scale-lineages", &domain);
@@ -235,13 +243,17 @@ fn run() -> Result<(), String> {
     if !extend {
         let seed = isocosm::draw(master, "scale-history", &[0]);
         let n = design.history_population;
-        let f = base(seed, n, design.ladder_lineages, true, design.ladder_sites);
+        let f = Founding {
+            cohort_size: design.history_cohort_size,
+            ..base(seed, n, design.ladder_lineages, true, design.ladder_sites)
+        };
         let (ticks, cap) = (design.history_ticks, design.history_wall_cap_micros);
-        let p = point("history", f, Execution::Grouped, ticks, cap)?;
-        eprintln!("history: {} ticks, stopped {:?}", p.ticks_run, p.stopped);
+        let tag = if living { "living" } else { "history" };
+        let p = point(tag, f, Execution::Grouped, ticks, cap)?;
+        eprintln!("{tag}: {} ticks, stopped {:?}", p.ticks_run, p.stopped);
         points.push(p);
     }
-    if !pilot && !extend {
+    if !pilot && !extend && !living {
         for ecology in [false, true] {
             let f = Founding {
                 ecology,
