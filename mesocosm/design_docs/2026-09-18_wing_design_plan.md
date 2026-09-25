@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 175. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 177. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1510,6 +1510,18 @@ what later sections derive from.
      first? Mark: "Directing, as ruled." So the critter acts on its own
      needs and senses, which suggest to the player, and the player shapes
      it with standing orders and priorities.
+176. **A Mesocosm player directs with priorities, places, stances and
+     nudges.** Put to Mark on 2026-09-25: what does a Mesocosm player
+     direct with? Four options were put, to pick all that should be in the
+     vocabulary: priorities among needs and abilities; places to range,
+     avoid and make home, the desire paths of ruling 59; stances, bold or
+     cautious and contest, yield or share; and nudges, one-off suggestions
+     the critter weighs. Mark picked all four.
+177. **A critter follows its player's directing by its bond.** Put to Mark
+     on 2026-09-25: does your own critter always follow your directing?
+     Three options were put: within its body; when its needs allow; or by
+     its bond, built from how well your orders have served it, as ruling
+     60 weighs directives by opinion. Mark: "By its bond."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4874,6 +4886,21 @@ derivation, the record's commit path, anything feeding the tracer. The W2
 probe of this section measures the constant, so the line can be moved later
 on a receipt.
 
+### 5.5 The first overlay: Mesocosm (rulings 174 to 177)
+
+W5 is Mesocosm's (ruling 174). Its domain is the critter and its lineage
+(ruling 35), what it plays follows the lineage's traits (ruling 155), and
+its played loop directs, as ruling 60 made its mode (ruling 175): the
+critter acts on its own needs and senses, which suggest to the player, and
+the player shapes it. The player directs with priorities among needs and
+abilities, with places to range, avoid and make home, with stances such as
+bold or cautious and whether to contest, yield or share, and with nudges,
+one-off suggestions the critter weighs like any other (ruling 176). The
+critter follows by its bond, built from how well the player's orders have
+served it, ruling 60's opinion weighting turned on the player (ruling 177).
+The played slice's direct control is rewritten to match; its terrarium
+section and receipts stand.
+
 ## 6. Method
 
 - **Targets are draws.** A receipt is a seeded draw from the generator's
@@ -5184,6 +5211,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 176 and 177 recorded: the directive vocabulary and
+  the bond. §5.5 added for the first overlay, gathering rulings 174 to 177.
 - 2026-09-25: ruling 175 recorded: the first Mesocosm overlay directs, and
   the played slice's direct control is rewritten; the played slice plan,
   the vessel briefs and the doc index carry dated notes.

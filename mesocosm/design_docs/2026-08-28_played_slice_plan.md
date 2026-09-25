@@ -163,7 +163,10 @@ adaptation — remains unwired and is PE3's.
   standing orders and priorities. The terrarium section and the receipts
   stand. On the reading of rulings 59 and 175, metabolize stays the
   critter's one verb, performed by its own methodology under directing
-  rather than driven by the player's hand.
+  rather than driven by the player's hand. Rulings 176 and 177, the same
+  day: the player directs with priorities, places, stances and nudges, and
+  the critter follows by its bond, built from how well the player's orders
+  have served it. The wing design record's §5.5 gathers them.
 - **2026-09-15, the golden trace is stale and stays that way for now.**
   `ps1_played.trace.json` records trophic grammar revision 0 and this
   build is at revision 8, so `--replay` refuses it. That takes
