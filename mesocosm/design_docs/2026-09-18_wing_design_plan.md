@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 156. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 157. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1376,6 +1376,16 @@ what later sections derive from.
      world.** Put to Mark on 2026-09-24, from ruling 152: what can a DM do
      from outside the world? Three options were put: play any NPC; edit,
      not direct; or both. Mark: "Both."
+157. **A thing of note is a relic, an event of note a tale, and
+     Mesocosm's body site a tract.** Put to Mark on 2026-09-24 as the
+     of-note naming round open since ruling 69, places of note being
+     locations and entities of note denizens: what is the word for a thing
+     of note, for an event of note, and, to free *site* for the world map,
+     for Mesocosm's body site, one expressed process on a patch of a part's
+     tissue? Options were put for each: relic, heirloom or none; tale,
+     deed or none; tract, situs or keeping *site*. Mark picked relic, tale
+     and tract. The body-site rename is a lane, about 104 occurrences in
+     26 files by the 2026-09-20 count.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3262,7 +3272,11 @@ Eponym's `Site` is live code. *Site* collides inside the wing: it also
 names a location on a body in Mesocosm's phenotype
 (`mesocosm-core/src/phenotype/mosaic.rs:50,68`) and in
 `shared/wing-functions/src/generation.rs:21,29`, and the tabletop's overmap
-has an `AtlasSite`. For events the hagiograph's *feat* and *mark* are words
+has an `AtlasSite`. (Ruled 2026-09-24, ruling 157: a thing of note is a
+*relic*, the founding record's own word; an event of note is a *tale*, and
+tales fade where legends do not; and Mesocosm's body site becomes a
+*tract*, freeing *site* for the world map, the rename a lane. Eponym's
+*deed* stays its record of an act.) For events the hagiograph's *feat* and *mark* are words
 of the top tier, a feat being what beats a standing mark, while Eponym's
 *deed*, a recorded act with a doer (`eponym-social/src/deed.rs`), is the
 nearest thing the wing has to an act of note. On crates.io, exact names, the
@@ -4973,6 +4987,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 157 recorded: relic, tale and tract, closing the
+  of-note naming round; the body-site rename is a lane.
 - 2026-09-24: the readings docket archived at Mark's word ("Archive it") to
   `archive_docs/2026-09-24/`, nothing held; links to it repaired here, in
   the sim plan, the session notes and the doc index.
