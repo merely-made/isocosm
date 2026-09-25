@@ -53,6 +53,18 @@ architecture that Paredros and Isometry also depend on.
   the provisional `borg` term on 2026-09-20; reserve the `denizen` crate name
   and concept for this tier. Historical rulings and quotes retain `borg` with
   supersession pointers. See the wing founding record §1 and open question 3.
+- **relic**: a thing of note, an item some mind remembers or some bearer
+  records; the founding record's "things (relics with provenance)" and Law
+  A's "shapes become relics". Ruled 2026-09-24 (wing design record ruling
+  157).
+- **tale**: an event of note, one some mind remembers and tells; tales fade
+  and legends do not. Ruled 2026-09-24 (ruling 157). Eponym's `deed` stays
+  its record of an act.
+- **tract**: one expressed process on a patch of a part's tissue, the body
+  sense of what the code still calls a site; *site* now means one cell of
+  the world map. Ruled 2026-09-24 (ruling 157); until the rename lane lands,
+  `Site` and `SiteId` in `mesocosm-core/src/phenotype/mosaic.rs` carry the
+  old word.
 - **animula**: the played soul — the little soul that guests in a body,
   across generations. In-product term only. **Never title anything Animula**;
   ANIMULA NOOK is a live Tencent mark in Class 9 game software.

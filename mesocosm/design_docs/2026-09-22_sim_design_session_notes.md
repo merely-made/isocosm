@@ -1,6 +1,7 @@
-# The sim design session, 2026-09-16 to 2026-09-22: notes
+# The sim design sessions, 2026-09-16 to 2026-09-24: notes
 
-**Date:** 2026-09-22
+**Date:** 2026-09-22. **Extended 2026-09-24** with the refinement session,
+§8, at Mark's word ("Record session notes").
 
 *Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
@@ -260,3 +261,119 @@ and the `denizen` crate's publish.
 - A question about one layer is not licence to commit to another; the
   review of 2026-09-21 is the case to remember.
 - Findings go to the owner's plan the same day.
+
+## 8. The refinement session, 2026-09-22 to 2026-09-24
+
+Mark asked for a verdict on the plan and these notes ("we get a good design
+out of these days of q&a brainstorming?"). After a detour into the family
+rename, which he closed ("forget about the rename. the sim design and the
+wing design is more important"), he asked to be questioned, "ask me
+questions, refine refine", then "put the question to me directly". Rulings
+113 to 157 were all given on 2026-09-24.
+
+### 8.1 How it started
+
+The review found the backbone sound: the derivation rule, state following
+methodology, the tiers of keeping, materials as the roster, and time as a
+played trunk. It found the hard mechanism thin. Nothing owed agreement for
+outcomes a game resolves; the cohort was not in the schema; the claim that
+an aggregate form is derivable rested on one table row; collection
+determinism had two holes, the funging buffer called a host's setting and
+what players examined never logged; shape three mixed world events with
+record work; "branch" meant two things; and no phase measured the scale the
+record claims. A peer session's aggregation research, landed meanwhile,
+confirmed the cohort and derivability findings from primary sources and
+built only exact grouping: 5.93 times fewer evaluations in independent
+worlds, none in ecological ones.
+
+### 8.2 The method as practised
+
+- Each question put directly as a choice, with the consequences named in
+  each option, one to four at a time. Mark picked, wrote his own answer, or
+  asked for a recommendation.
+- Asked for a recommendation once (ruling 113), the assistant gave one as a
+  reading with its consequences, and it became a ruling only at his word.
+- Answers derivable from rulings already made went to Mark as readings he
+  could object to, not as questions: the charter (from 129) and a
+  subordinating faction's limits (from 134).
+- A message Mark sent while a ruling was being recorded was quoted in the
+  ruling it shaped (117, 144).
+- Each ruling was recorded in the record's §0 and where it sits, carried
+  into the sim plan, and committed and pushed by pathspec the same turn, at
+  Mark's word ("Commit and push").
+- Wing law and CLAUDE.md changed only on his explicit word, the Law A
+  amendment shown as a draft first.
+
+### 8.3 The sequence
+
+| Thread | Question | Answer | Ruling |
+| --- | --- | --- | --- |
+| Sim and games | One world run twice, a village watched once and run as a crowd once: what must come out the same? | "not certain! recommendations?", then the recommendation accepted: the noted run individually, the fungible agree in distribution over what later processes read, what was watched is logged, exact is a world setting | 113 |
+| | Is a game's ruleset held to the same test? | "Rulesets calibrate" | 114 |
+| Conflict | When two want one scarce thing, what decides? | "Each side chooses" | 115 |
+| | What ends a fight? | "Most never reach blows" | 116 |
+| | What does a blow change? | "Both", vigour and wounds | 123 |
+| Belief | Can things believe what isn't true? | "Any belief can be wrong", wrong or stale | 117 |
+| | What decides whether a belief takes? | all four: evidence, trust, fit, skill | 118 |
+| | How are they weighed? | "Both", a world baseline shifted by disposition | 119 |
+| | Does the world's disposition set every inhabitant's? | "Founders only" | 120 |
+| | Does the belief baseline fade too? | through trait and condition; people drift; "Should it not change…?" | 121 |
+| | What moves a fluid world's temperament? | events, its cycles, its epoch boundary | 122 |
+| Scale and structure | The largest world a draw runs on the laptop? | "start with the region" | 124 |
+| | Noting, collection, promotion, merging: world or record? | "Split" | 125 |
+| | Fork and branch? | "Yes, fork and branch" | 126 |
+| Keeping | Does a note lapse? | "Everything fades", by intelligence; physical notes don't | 127 |
+| | Whose memory is a note on a place? | "Whoever remembers it" | 129 |
+| | What keeps a thing of note for a player? | who they play and what they pin; Eponym's notes diegetic | 130 |
+| | What makes a mind remember? | all four: new, relevant, intense, repeated | 131 |
+| Skills and items | Does a skill fade? | "Slowly, to a floor" | 132 |
+| | What raises a skill; where do techniques come from; what limits improvement? | all four; both; the maker's skill and the item's story | 141 to 143 |
+| | Items that are sophont (Mark's prompt) | made so, awakened, inhabited; they act three ways; never owned | 144 to 146 |
+| Politics | When a faction can't agree? | its preferred way; factions never gated, group-vested polities are | 133 |
+| | Reform; secession; death; means; deadlock | lawful routes, force founding a new polity; the seceders' own act; either route; a default; per act | 134 to 138 |
+| Materials | Does materials-as-lineages satisfy Law A? | "Amend Law A", applied as drafted | 139 |
+| | A world's own materials? | a spectrum from a ruleset's base to fully generated | 140 |
+| Space and worlds | Site and chunk; a location's anchor; clocks; systems | independent; by its kind; synced at crossings; a host | 147 to 150 |
+| Held items | Is every sophont unowned? | owning a person is slavery, a tenet judged by kinship | 151 |
+| | Who may a player direct? Two at once? D19? | only who they play; "Yes, both"; "Rule it" | 152 to 154 |
+| | What a Mesocosm player plays; what a DM may do | by the lineage's traits; "Both" | 155, 156 |
+| Naming | The thing, event and body-site words | relic, tale, tract | 157 |
+
+Administrative: ruling 128 amended Mesocosm's CLAUDE.md portable-profile
+line; the readings docket was archived to `archive_docs/2026-09-24/` once
+nothing was held; relic, tale and tract joined Mesocosm's terminology.
+
+### 8.4 What was got wrong, and corrected
+
+| Claim | Correction |
+| --- | --- |
+| The funging buffer is "a host's setting" (record §3.3) | It is the world's, in its rules and its log (113) |
+| Tau-leaping gives "the same statistics" (record §3.3) | Approximately, with first-order consistency and an error (the aggregation research) |
+| Similitude is "owed by the definitions and not by any game" (sim plan §5.5) | Rulesets owe it too (114) |
+| Collection, noting, promotion and merging are world transitions (sim plan §3.4) | Noting and promotion are the world's; collection and merging the record's (125) |
+| "Branch" for both a new world and a play branch | Fork and branch (126) |
+| An item is "a body without agency" | Unless it is a sophont (144) |
+| The review's "the CLAUDE.md amendment is unlanded" | Overtaken the same day, when ruling 108 applied it |
+| A progress line naming the next question | Changed to "open" when Mark's message redirected the thread |
+| A commit staging a moved file's old path | Staged nothing; redone with the new path |
+
+### 8.5 What the session left open
+
+The substance of a technique, which the hagioglyph organ's plan owns; the
+tract rename in Mesocosm's phenotype code, a lane of about 104
+occurrences; D20's provider over `mere-capability`, W3's to build; and
+W5's contract details against ruling 154. Mark chose mood and breaks as the
+next territory.
+
+### 8.6 Lessons for the next session
+
+- Put the question directly, as a choice whose options name their
+  consequences. The options are the answer's space, not a proposal, and
+  Mark's own words beat them.
+- Give a recommendation only when asked, as a reading, and rule it only at
+  his word.
+- Send a derivable answer to Mark as a reading he can object to, not as
+  another question.
+- A message sent mid-turn is the answer's context: quote it in the ruling.
+- Peers commit into the same files: check the tree before each commit,
+  stage by pathspec, and never name a moved file's old path.
