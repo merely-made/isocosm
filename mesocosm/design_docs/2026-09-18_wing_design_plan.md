@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 159. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 162. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1405,6 +1405,26 @@ what later sections derive from.
      strain." So mood is derived on demand from its sources, while strain
      builds as a kept level whenever mood stays low, and only rest or
      relief bleeds it off.
+160. **Personality traits sit on the five factors.** Put to Mark on
+     2026-09-24, from ruling 158 against ruling 37: how do personality
+     traits stand to the five-factor disposition? Three options were put:
+     traits on the factors; traits replacing them; or the factors as
+     traits. Mark: "Traits on the factors." So the five factors stay the
+     continuous temperament, and personality traits are discrete features
+     grown on top, their seeds drawn from the factors.
+161. **Past what it can bear, a mind stops heeding, acts out, or rises,
+     and the break leaves a mark.** Put to Mark on 2026-09-24: what
+     happens when strain passes what a mind can bear? Four options were
+     put, to pick all that should: it stops heeding directives until it
+     recovers; it acts out, a break drawn from its traits and situation;
+     it may rise instead, a breakthrough such as the fey mood or a last
+     stand; and it leaves a mark, seeding or feeding a personality trait.
+     Mark picked all four.
+162. **Breaking does not spread.** Put to Mark on 2026-09-24: does
+     breaking spread from one mind to others? Two options were put: it
+     spreads, a panic or a riot running through a crowd; or it doesn't.
+     Mark: "It doesn't." So each mind breaks alone, and a riot is many
+     minds breaking for the same reasons.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1817,7 +1837,8 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    their own, inherited in seed form and grown by acts that feed them, each
    compounding modifiers on other mental and physical aspects, some
    precluding an aspect of play for a bonus, as RimWorld's Brawler does.
-   How they stand to the five factors is put to Mark.) The denizen
+   Ruling 160: they sit on the five factors, which stay the continuous
+   temperament, their seeds drawn from the factors.) The denizen
    line is Dwarf Fortress's historical-figure rule: a critter becomes a denizen
    when it does something the record keeps, is named, is related, or is
    explicitly designated, not only when it becomes an antagonist.
@@ -2906,8 +2927,13 @@ how intense and how good or bad they were and fading as they fade (ruling
 127), from what it needs, and from what it is living through, its vigour,
 wounds, danger, company and place. Strain is kept: it builds on the ledger
 while mood stays low, as vigour drains in a fight, and only rest or relief
-bleeds it off. Its personality traits (ruling 158) modify both. What happens
-when strain passes what a mind can bear is the next question. Prior art,
+bleeds it off. Its personality traits (ruling 158) modify both. *Ruled
+2026-09-24 (rulings 161 and 162):* past what a mind can bear, it stops
+heeding directives and follows its own needs until it recovers, acts out in
+a break drawn from its traits and situation, or rises instead, a
+breakthrough such as the fey mood or a last stand; and a break leaves a
+mark, seeding or feeding a personality trait. Breaking does not spread: each
+mind breaks alone, so a riot is many minds breaking for the same reasons. Prior art,
 known: RimWorld's mood as a sum of timed thoughts with break thresholds and
 inspirations; Dwarf Fortress's accumulated stress, its tantrums, and its
 strange moods, the fey mood of ruling 95; Darkest Dungeon's stress meter,
@@ -5023,6 +5049,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 160 to 162 recorded: personality traits sit on the
+  five factors; a break stops heeding, acts out or rises, and leaves a
+  mark; breaking does not spread. §3.2.1's disposition note and §3.3.1's
+  mood paragraph follow.
 - 2026-09-24: rulings 158 and 159 recorded: mood fed by memory, needs and
   situation, with personality traits a class of their own; mood read and
   strain kept. §3.3.1 gains a mood and strain paragraph with its prior art,
