@@ -13,6 +13,7 @@ pub mod generate;
 mod genesis;
 pub mod history;
 pub mod population;
+pub mod probe;
 mod queries;
 pub mod reach;
 pub mod rules;
