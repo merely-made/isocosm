@@ -3,38 +3,37 @@
 
 //! Mesocosm's side of the overlay contract (Mesocosm overlay plan §3; wing
 //! design record §5.5): a player directs only the entity they play, never
-//! drives it (rulings 152, 175). The directive vocabulary is four kinds —
-//! priorities, places, stances and nudges (ruling 176) — beside the player's
-//! own acts (ruling 202), the checkpoint answers and the dev intents below. See the crate README for the table
-//! mapping every one of `mesocosm-core`'s sixteen `Intent` variants onto
-//! this module.
+//! drives it (rulings 152, 175). Of ruling 176's four kinds of directive the
+//! player sends only the nudge, a click drawing the critter's attention
+//! (ruling 214); the sim grows the standing three from the nudges' history
+//! (ruling 216). Beside it sit the player's own acts (ruling 202), the
+//! checkpoint answers and the dev intents. See the crate README for the
+//! table mapping every one of `mesocosm-core`'s sixteen `Intent` variants
+//! onto this module.
 
 mod act;
 mod checkpoint;
 mod dev;
-mod directive;
 mod handoff;
+mod nudge;
 
 pub use act::{PlayerAct, PlayerActKind};
 pub use checkpoint::{
     BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, RevisionAnswer,
 };
 pub use dev::{DevIntent, WorldPoint};
-pub use directive::{
-    Boldness, CompetitorStance, Directive, DirectiveKind, Nudge, Places, Priorities, PriorityKey,
-    Stances,
-};
 pub use handoff::MesocosmHandoff;
+pub use nudge::{ActKey, Nudge, NudgeMeaning, NudgeTarget};
 
 use serde::{Deserialize, Serialize};
 
 use crate::{HandoffEnvelope, IntentEnvelope};
 
-/// Everything a Mesocosm host may send the sim: a directive, a player's own
-/// act, a checkpoint answer, or a dev intent (never play; see [`DevIntent`]).
+/// Everything a Mesocosm host may send the sim: a nudge, a player's own act,
+/// a checkpoint answer, or a dev intent (never play; see [`DevIntent`]).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum MesocosmIntent {
-    Directive(Directive),
+    Nudge(Nudge),
     Act(PlayerAct),
     Checkpoint(CheckpointAnswer),
     Dev(DevIntent),

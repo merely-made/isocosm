@@ -61,12 +61,14 @@ executed. The slice's control is directing, never driving (rulings 60 and
   Its senses suggest to the player and never impose (ruling 59). The first
   playtest already showed this half: the ecology moved the critter while no
   keypress did (Findings, 2026-08-28).
-- **The player directs** (ruling 176) with priorities among needs and
-  abilities; places to range, avoid and make home, each a node of the place
-  graph (ruling 205); stances, bold or cautious and contest, yield or share;
-  and nudges, one-off suggestions the critter weighs, today "go there" and
-  "eat that" in the contract. They direct only the entity they play, one
-  critter or its kin directed whole (rulings 152, 155).
+- **The player directs by click** (rulings 176, 214): a click draws the
+  critter's attention to a place or a thing, and the critter decides what
+  to do about it; a right click picks another meaning, one of its own acts
+  toward the target. No click warns (ruling 215). Places to range, avoid
+  and make home, priorities and stances are never set: they grow from that
+  attention as desire paths (ruling 216). The player directs only the
+  entity they play, one critter or its kin directed whole (rulings 152,
+  155).
 - **The critter follows by its bond** (ruling 177), built from how well the
   player's orders have served it. Whether the bond passes to the next of
   the lineage is a world setting, seeded by the lineage by default
@@ -85,7 +87,7 @@ executed. The slice's control is directing, never driving (rulings 60 and
 **What changes.** The keys no longer move the critter or feed it. WASD, E,
 Space and Q were `Move`, `Metabolize`, `Deposit` and `Carve` intents over
 `World.controlled`; under directing those are the critter's own acts. The
-trace records the player's directives, acts and checkpoint answers instead,
+trace records the player's nudges, acts and checkpoint answers instead,
 as `shared/isocosm-overlay`'s `MesocosmIntent` envelopes stamped by tick,
 and it still replays to the identical state hash, headed and headless.
 
@@ -98,14 +100,17 @@ the minimap, the vitals chrome, and the receipts' discipline.
 194); nothing of it is prototyped on this host. This plan retires into that
 one when M3 lands (ruling 196).
 
-**Open, for Mark:** how a player gives directives in the section without a
-menu, since the vessel briefs keep play "experienced directly, never
-through a menu": marking a place to range, avoid or make home, setting a
-priority or a stance, and giving a nudge. These are presentation rulings
-the M3 host needs.
+**Answered 2026-09-25 (rulings 214 to 216):** how a player gives
+directives in the section without a menu, since the vessel briefs keep
+play "experienced directly, never through a menu". By pointing: a click
+draws the critter's attention, a right click picks another meaning, no
+click warns, and the standing orders grow from that attention. How the
+right click's meanings are shown is still open, for Mark with the M3
+host.
 
 **Done when** the overlay plan's M3 is: a played critter acts on its own
-needs, senses and mood under the four kinds of directive, its bond moves
+needs, senses and mood under the player's nudges, its range, home,
+priorities and stances grow from that attention, its bond moves
 with outcomes and passes across generations as the world setting says, its
 suggestions surface, and a seeded run replays to the same hash.
 
@@ -318,6 +323,9 @@ adaptation — remains unwired and is PE3's.
   the bare lineage roster.
 
 ## Progress
+
+- **2026-09-25:** the input answered (rulings 214 to 216): directing by
+  click, with the standing orders grown from attention.
 
 - **2026-09-25:** control rewritten for directing at Mark's word (ruling
   199): the section "Control: directing" states the model, what changes

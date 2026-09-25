@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 213, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 216, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1531,7 +1531,9 @@ what later sections derive from.
      vocabulary: priorities among needs and abilities; places to range,
      avoid and make home, the desire paths of ruling 59; stances, bold or
      cautious and contest, yield or share; and nudges, one-off suggestions
-     the critter weighs. Mark picked all four.
+     the critter weighs. Mark picked all four. **How, by rulings 214 to
+     216:** the player gives the nudge by click, and the other three grow
+     from the nudges' history as desire paths.
 177. **A critter follows its player's directing by its bond.** Put to Mark
      on 2026-09-25: does your own critter always follow your directing?
      Three options were put: within its body; when its needs allow; or by
@@ -1825,6 +1827,39 @@ what later sections derive from.
      what they pin, what they examine and the game's own care, with record
      entries reaching the played entity, and in survival mode only what the
      played critter can know (ruling 180).
+214. **A click draws the critter's attention; attending is the default, and
+     a right click picks another meaning.** Put to Mark on 2026-09-25, from
+     the played slice plan's open question of how a player gives directives
+     without a menu. Mark: "Could you click somewhere to draw attention to a
+     place or thing?" Put back as what a click asks of the critter: attend
+     to this, one nudge whose answer the critter decides by its needs,
+     senses and mood, weighed by its bond; or a meaning set by the target, a
+     place meaning go and food meaning eat. Mark: "Attend to this is
+     default; pick alt meanings by right click". So a click on a place or a
+     thing is a nudge (ruling 176) to attend to it, which the critter
+     answers by its own lights and weighs by its bond (ruling 177), and a
+     right click picks a more particular meaning. *Reading, not ruled:*
+     those meanings are the critter's own acts toward the target, what its
+     biology can do with it (ruling 59), and each is still a nudge the
+     critter weighs.
+215. **A click never warns.** Put to Mark on 2026-09-25, with 214: can a
+     click warn as well as invite, by a second gesture, or does the critter
+     read the pointing through its own sense of the thing? Mark: "One
+     gesture only." So no gesture warns: the critter reads what it is shown
+     by its own sense of it, and avoidance comes from its experience and its
+     stance.
+216. **Standing orders grow from attention.** Put to Mark on 2026-09-25,
+     with 214: where do the standing orders come from, places to range and
+     make home, priorities and stances: grown from attention, set at the
+     review between rounds, or grown and adjustable there? Mark: "Grown
+     from attention." So they are the desire paths of ruling 59: where the
+     player's attention keeps leading and the critter keeps thriving
+     becomes its range and its home, and what the player keeps pointing at
+     rises among its priorities. The player sets none of them directly, so
+     the only directive a player sends is the nudge. *Reading, not ruled:*
+     stances grow the same way, from how the encounters the player's
+     attention led it into turned out, and places to avoid from what went
+     badly there (215).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5601,6 +5636,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 214 to 216 recorded, answering how a player directs
+  without a menu: a click draws the critter's attention to a place or a
+  thing, attending by default and another meaning by right click; no click
+  warns; and the standing orders grow from attention as desire paths. The
+  contract narrows to match: a Mesocosm player sends nudges, never
+  priorities, places or stances.
 - 2026-09-25: rulings 210 to 213 recorded, typing the attention set of
   §5.2's point 4 for the overlay plan's M1: pins are any pointable thing,
   an attended group runs its noted members exactly and the rest as a crowd,

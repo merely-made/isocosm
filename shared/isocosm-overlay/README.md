@@ -31,8 +31,9 @@ cargo test --manifest-path shared/isocosm-overlay/Cargo.toml
   envelope names the participant who submitted it and carries either an
   attention change, which every game shares, or the game's own intent.
 - `src/mesocosm/` is Mesocosm's vocabulary, the first game's module (Mesocosm
-  overlay plan §3; wing design record §5.5): directives, the player's own
-  acts, checkpoint answers and dev intents. A second game's overlay adds a
+  overlay plan §3; wing design record §5.5): the nudge, which is the one
+  directive a player sends (rulings 214 to 216), the player's own acts,
+  checkpoint answers and dev intents. A second game's overlay adds a
   sibling module here, not changes to the core.
 - `tests/core_roundtrip.rs` and `tests/mesocosm_roundtrip.rs` byte-round-trip
   every type in the crate through `serde_json`, the format `shared/isocosm`
@@ -53,8 +54,8 @@ replaced option and put to Mark; the wing design record carries his answers.
    attention set (the record's §5.2 point 4, in the contract's shape since
    ruling 154), typed in `src/attention.rs` under rulings 210 to 213. Nobody
    subscribes separately; the placeholder topic set is gone.
-3. **How a PLACES directive names a location** (ruling 205): an opaque handle
-   to a node of the place graph (rulings 72, 147). Dev intents keep raw
+3. **How a place is named** (ruling 205): an opaque handle to a node of the
+   place graph (rulings 72, 147), as a nudge's target is. Dev intents keep raw
    coordinates (`WorldPoint`), since they reach the grid directly.
 
 ## The attention set
@@ -86,15 +87,15 @@ and the readings below settle each one.
 
 | `Intent` variant | Under directing | Maps to |
 | --- | --- | --- |
-| `Move` | the critter's own act | directed through `Places` (range) and `Priorities`; no contract type |
-| `Metabolize` | the critter's own act | the one verb, directed through `Priorities` and `Nudge::EatThat`; no contract type |
+| `Move` | the critter's own act | shaped by nudges, its range grown from them (ruling 216); no contract type |
+| `Metabolize` | the critter's own act | the one verb; a nudge to attend to food, or a right click's act on it (ruling 214); no contract type |
 | `Consume` | the critter's own act | taking an organ off a carcass; no contract type |
 | `Graft` | the critter's own act | incorporation, gated by traits; no contract type |
 | `Deposit` | the critter's own act | no contract type |
-| `Carve` | the critter's own act | den-making toward `Places::home`; no contract type |
+| `Carve` | the critter's own act | den-making where its home has grown (ruling 216); no contract type |
 | `Idle` | loses its role | directing has no per-tick request to do nothing |
 | `Speciate` | the player's act (ruling 202) | `MesocosmIntent::Act(PlayerAct { kind: PlayerActKind::Speciate { name }, .. })` |
-| `Express` | the critter's own development (ruling 202) | chosen by its methodology and steered by `Priorities`; no contract type |
+| `Express` | the critter's own development (ruling 202) | chosen by its methodology, its priorities grown from attention (ruling 216); no contract type |
 | `TakeControl` | checkpoint | at a birth, `Birth(BirthAnswer::TakeOffspring)`; at a death, `Death(DeathAnswer { next })` |
 | `Resume` | checkpoint | at a birth, `Birth(BirthAnswer::KeepParent)`, the default (ruling 183) |
 | `Revise` | checkpoint | `EpochReview(RevisionAnswer)`, the review's committed revision |
@@ -104,7 +105,7 @@ and the readings below settle each one.
 | `PlaceMatter` | dev | `DevIntent::PlaceMatter` |
 
 The seven driving intents become the critter's own acts, chosen by its
-methodology and shaped by directives, and only `Idle` loses its role
+methodology and shaped by nudges, and only `Idle` loses its role
 outright. That split is the overlay plan's reading, confirmed here intent by
 intent; it is not a ruling.
 

@@ -5,10 +5,9 @@
 //! same format as `core_roundtrip.rs`.
 
 use isocosm_overlay::mesocosm::{
-    BirthAnswer, Boldness, CheckpointAnswer, CheckpointAnswerKind, CompetitorStance, DeathAnswer,
-    DevIntent, Directive, DirectiveKind, MesocosmHandoff, MesocosmIntent, MesocosmIntentEnvelope,
-    Nudge, Places, PlayerAct, PlayerActKind, Priorities, PriorityKey, RevisionAnswer, Stances,
-    WorldPoint,
+    ActKey, BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, DevIntent,
+    MesocosmHandoff, MesocosmIntent, MesocosmIntentEnvelope, Nudge, NudgeMeaning, NudgeTarget,
+    PlayerAct, PlayerActKind, RevisionAnswer, WorldPoint,
 };
 use isocosm_overlay::{
     CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick,
@@ -29,75 +28,22 @@ fn entity(id: u64) -> EntityHandle {
 }
 
 #[test]
-fn priorities_roundtrip() {
-    roundtrips(&Priorities::default());
-    roundtrips(&Priorities {
-        order: vec![
-            PriorityKey("need:hunger".into()),
-            PriorityKey("ability:graft".into()),
-        ],
-    });
-}
-
-#[test]
-fn places_roundtrip() {
-    roundtrips(&Places::default());
-    roundtrips(&Places {
-        range: vec![PlaceHandle(1), PlaceHandle(2)],
-        avoid: vec![PlaceHandle(3)],
-        home: Some(PlaceHandle(1)),
-    });
-}
-
-#[test]
-fn stances_roundtrip() {
-    for boldness in [Boldness::Bold, Boldness::Cautious] {
-        for competitor in [
-            CompetitorStance::Contest,
-            CompetitorStance::Yield,
-            CompetitorStance::Share,
-        ] {
-            roundtrips(&Stances {
-                boldness,
-                competitor,
-            });
-        }
+fn nudge_roundtrips_every_target_and_meaning() {
+    for target in [
+        NudgeTarget::Place(PlaceHandle(4)),
+        NudgeTarget::Thing(entity(5)),
+    ] {
+        roundtrips(&Nudge {
+            entity: entity(1),
+            target,
+            meaning: NudgeMeaning::Attend,
+        });
+        roundtrips(&Nudge {
+            entity: entity(1),
+            target,
+            meaning: NudgeMeaning::Act(ActKey("eat".into())),
+        });
     }
-}
-
-#[test]
-fn nudge_roundtrips_both_kinds() {
-    roundtrips(&Nudge::GoTo(PlaceHandle(4)));
-    roundtrips(&Nudge::EatThat(entity(5)));
-}
-
-#[test]
-fn directive_roundtrips_every_kind() {
-    roundtrips(&Directive {
-        entity: entity(1),
-        kind: DirectiveKind::Priorities(Priorities {
-            order: vec![PriorityKey("need:hunger".into())],
-        }),
-    });
-    roundtrips(&Directive {
-        entity: entity(1),
-        kind: DirectiveKind::Places(Places {
-            range: vec![PlaceHandle(2)],
-            avoid: vec![],
-            home: None,
-        }),
-    });
-    roundtrips(&Directive {
-        entity: entity(1),
-        kind: DirectiveKind::Stances(Stances {
-            boldness: Boldness::Bold,
-            competitor: CompetitorStance::Yield,
-        }),
-    });
-    roundtrips(&Directive {
-        entity: entity(1),
-        kind: DirectiveKind::Nudge(Nudge::EatThat(entity(6))),
-    });
 }
 
 #[test]
@@ -154,9 +100,10 @@ fn dev_intent_roundtrips_all_four() {
 
 #[test]
 fn mesocosm_intent_roundtrips_every_variant() {
-    roundtrips(&MesocosmIntent::Directive(Directive {
+    roundtrips(&MesocosmIntent::Nudge(Nudge {
         entity: entity(1),
-        kind: DirectiveKind::Nudge(Nudge::GoTo(PlaceHandle(1))),
+        target: NudgeTarget::Place(PlaceHandle(1)),
+        meaning: NudgeMeaning::Attend,
     }));
     roundtrips(&MesocosmIntent::Act(PlayerAct {
         entity: entity(1),
@@ -174,9 +121,10 @@ fn mesocosm_intent_roundtrips_every_variant() {
 #[test]
 fn mesocosm_intent_is_dev_matches_the_dev_variant_only() {
     assert!(
-        !MesocosmIntent::Directive(Directive {
+        !MesocosmIntent::Nudge(Nudge {
             entity: entity(1),
-            kind: DirectiveKind::Nudge(Nudge::GoTo(PlaceHandle(1))),
+            target: NudgeTarget::Place(PlaceHandle(1)),
+            meaning: NudgeMeaning::Attend,
         })
         .is_dev()
     );

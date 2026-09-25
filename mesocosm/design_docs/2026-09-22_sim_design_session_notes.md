@@ -270,9 +270,9 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24 and 174 to 213 on 2026-09-25, the last
-of them answering the consistency pass and the two lanes' forks, and typing
-the attention set.
+113 to 173 were given on 2026-09-24 and 174 to 216 on 2026-09-25, the last
+of them answering the consistency pass and the two lanes' forks, typing
+the attention set, and settling the input by click.
 
 ### 8.1 How it started
 
@@ -359,6 +359,7 @@ worlds, none in ecological ones.
 | | Speciate and Express; the tick; subscription; places | "Split them"; "Newtype over u64"; "Type the attention set"; "Place-graph handle" | 202 to 205 |
 | | Feeding under scarcity; the crowd; the readings; the tolerance | "Pairwise encounters"; "Exact-state histogram"; "The rules' thresholds"; "0.2, with controls" | 206 to 209 |
 | | The attention set: pins, groups, examining, the stream | "Any pointable thing"; "Noted exact, rest crowd"; asked which is more co-op friendly, then "In view, up close"; leaning to "detailed but less", then "What's attended" | 210 to 213 |
+| | The input: the click; warning; standing orders | "Could you click somewhere to draw attention to a place or thing?", then "Attend to this is default; pick alt meanings by right click"; "One gesture only"; "Grown from attention" | 214 to 216 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -398,7 +399,7 @@ The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
 occurrences; D20's provider over `mere-capability`, W3's to build; the
 overlay plan's M2 to M4, proposed and not opened, M1 being done; the S2 probe, being built under rulings 206
-to 209; the played slice plan's control rewrite (199); what measures a collapse
+to 209; how a right click's meanings are shown (214); what measures a collapse
 as local or global, the playable ecology plan's to specify; and plans of
 their own for Eponym's and the VTT's overlays, whose shapes are ruled in
 the record's §5.6 and §5.7.

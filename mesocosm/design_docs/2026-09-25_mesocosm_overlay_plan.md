@@ -48,7 +48,7 @@ Ruling 6's six parts.
 | Domain | the critter and its lineage, refined over the ages; what a player plays follows the lineage's traits, kin ranging from ecological competitors to extensions of one's own critter, a fungus monocreature or a swarm of germs directed whole | 35, 58, 155 |
 | Ensemble | the roster of relevant critters in the region the lineage inhabits | 6, 124 |
 | Mechanics | metabolize, the one verb, performed by the critter itself; incorporation where its traits allow; contests sized up and seldom reaching blows; harm as vigour and wounds; mood read and strain kept, a break going down or up | 38, 96, 115, 116, 123, 158 to 164 |
-| Controls | directing, never driving: priorities, places, stances and nudges, which the critter weighs by its bond; its senses suggest | 59, 60, 175 to 178 |
+| Controls | directing, never driving: a click draws the critter's attention to a place or a thing, attending by default and another meaning by right click, and never warns; places, priorities and stances grow from that attention as desire paths; the critter weighs each nudge by its bond, and its senses suggest | 59, 60, 175 to 178, 214 to 216 |
 | Perspective | the terrarium section at a shallow oblique, the review as the trait graph board; survival shows what the played critter knows, creative shows the truth and edits nothing | vessel briefs §2, 180, 184 |
 | Timescale | epochs: a round under a versioned epoch rule, then the boundary, where every lineage adapts and the player's is revised in the shop; the start chosen from the world's habitability for the critter onward | 57, 179, 182; the playable ecology plan's `EpochRule` |
 
@@ -59,9 +59,11 @@ Ruling 6's six parts.
    the world's habitability for their critter, or with as much deep time
    added as they like (ruling 179), deep time being the same sim (ruling 93).
 2. **The round.** The critter acts on its own needs, senses and mood; the
-   player directs with priorities, places, stances and nudges (ruling 176),
-   and the critter weighs them by its bond, which moves with how well the
-   orders served it (ruling 177). At a birth the player keeps the parent by
+   player directs by clicking to draw its attention to a place or a thing,
+   a right click picking another meaning (rulings 176, 214), and the
+   critter weighs each nudge by its bond, which moves with how well the
+   orders served it (ruling 177); its range, home, priorities and stances
+   grow from that attention (ruling 216). At a birth the player keeps the parent by
    default and may take the offspring (ruling 183); at a death the cohort is
    the pool of further lives (ruling 61), and the bond passes as the world
    setting says, seeded by the lineage by default (ruling 178).
@@ -87,7 +89,7 @@ settles come back through the handoff.
 
 | Direction | Mesocosm's side | Rests on |
 | --- | --- | --- |
-| In: directives | priorities, places, stances and nudges, stamped for a tick, a newtype over the sim's count, for the entity the player plays, one critter or its kin directed whole; places named by a place-graph handle | 152, 155, 176, 177, 203, 205 |
+| In: nudges | a click drawing the critter's attention to a place or a thing, attending or a right click's act, stamped for a tick, a newtype over the sim's count, for the entity the player plays, one critter or its kin directed whole; places named by a place-graph handle. The standing orders are grown, never sent | 152, 155, 176, 177, 203, 205, 214 to 216 |
 | In: the player's acts | splitting the played line and naming it; the name is the doing | 202 |
 | In: checkpoint answers | at a birth, keep the parent or take the offspring; at a death, the next life taken up from the cohort (*a reading of 61 and 178*); at the boundary, the review's revision | 57, 61, 178, 183 |
 | In: dev intents | end the epoch, force a birth, kill, place matter; the dev tools plan's, never play | playable ecology plan §6 q2 |
@@ -169,7 +171,8 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   longer owns it. Lands under the sim plan's S1 and S2.
 - **M3, directing on Isocosm,** built only there, with no prototype on the
   current host (194). Done when a played critter acts on its own
-  needs, senses and mood under the four kinds of directive, its bond moves
+  needs, senses and mood under the player's nudges, its range, home,
+  priorities and stances grow from that attention, its bond moves
   with outcomes and passes across generations as the world setting says,
   its suggestions surface, and a seeded run replays to the same hash. When
   M3 lands, the played slice plan retires into this plan (196).
@@ -221,6 +224,12 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-25: rulings 214 to 216 settle the input: a click draws the
+  critter's attention, a right click picks another meaning, no click
+  warns, and the standing orders grow from attention. The contract
+  narrows to match: `MesocosmIntent::Nudge` replaces the four directive
+  kinds, the priorities, places and stances becoming the sim's to grow in
+  M3. Nineteen tests pass.
 - 2026-09-25: M1 done. The attention set is typed in `isocosm-overlay`
   under rulings 210 to 213: who the participant plays, what they pin,
   the region they examine up close, and the game's own care, changed only

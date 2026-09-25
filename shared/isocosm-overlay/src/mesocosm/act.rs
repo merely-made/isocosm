@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::handle::EntityHandle;
 
 /// An act the player takes themselves, beside directing (ruling 202): not a
-/// standing order the critter weighs, and not an answer to a checkpoint.
+/// nudge the critter weighs, and not an answer to a checkpoint.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PlayerAct {
     pub entity: EntityHandle,
