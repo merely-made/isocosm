@@ -2,7 +2,8 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-25:** plan, proposed and not opened. Drafted at Mark's
+**Status, 2026-09-25:** plan; M0 done the same day (rulings 194 to 196),
+M1 to M4 proposed and not opened. Drafted at Mark's
 word ("Draft the Mesocosm plan") from the
 [wing design record](2026-09-18_wing_design_plan.md)'s rulings on the
 overlay, 174 to 193, gathered in its §5.5, and from Mesocosm's existing
@@ -139,22 +140,26 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 15).
 
 - **M0, the profile ruled.** Done when §6's decisions are taken; everything
-  else in §1 to §4 rests on rulings already made.
+  else in §1 to §4 rests on rulings already made. **Done 2026-09-25**
+  (rulings 194 to 196).
 - **M1, the contract's Mesocosm side.** Done when the directives,
   checkpoint answers and dev intents exist as contract types in a crate
   that depends on nothing sim-internal, every type round-trips through
   bytes (D18), and each of today's sixteen intents is mapped as §3 splits
   them.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
-  order §6 settles. Each is done when the family runs in Isocosm under its
+  order ruled (195): matter and processes, bodies, the record, places,
+  lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
   process definitions, conserves its accounts and replays identically, its
   `mesocosm-core` tests are ported or replaced by draws, every moved file
   is within the 600-line ceiling (ruling 193), and `mesocosm-core` no
   longer owns it. Lands under the sim plan's S1 and S2.
-- **M3, directing on Isocosm.** Done when a played critter acts on its own
+- **M3, directing on Isocosm,** built only there, with no prototype on the
+  current host (194). Done when a played critter acts on its own
   needs, senses and mood under the four kinds of directive, its bond moves
   with outcomes and passes across generations as the world setting says,
-  its suggestions surface, and a seeded run replays to the same hash.
+  its suggestions surface, and a seeded run replays to the same hash. When
+  M3 lands, the played slice plan retires into this plan (196).
 - **M4, the played loop.** Done when, from a seed nobody chose and a start
   the player picked, the headed host plays three epochs end to end on
   Isocosm: rounds under directing, a birth keeping the parent by default,
@@ -169,15 +174,16 @@ needs all of M2 and M3.
 
 ## 6. Decisions for Mark
 
-1. **Directing before absorption, or after.** Prototype directing on the
-   current host over `mesocosm-core` now, for early feel at the cost of a
-   throwaway adapter, or build it only on Isocosm once M2's first families
-   land.
-2. **The absorption order.** Proposed: matter and processes, then bodies,
-   places, lineages and the boundary, the record, and effects, since each
-   leans on the ones before it.
-3. **The played slice plan's future.** Retire it into this plan when M3
-   lands, or keep it as the host's own plan.
+All three taken on 2026-09-25, the day the plan was drafted.
+
+1. **Directing before absorption, or after.** Ruled 194: only on Isocosm,
+   once M2's first families have moved; no throwaway adapter.
+2. **The absorption order.** Proposed as matter and processes, bodies,
+   places, lineages and the boundary, the record, and effects. Ruled 195:
+   the record moves ahead of places, so replay and save are on Isocosm
+   sooner.
+3. **The played slice plan's future.** Ruled 196: it retires into this
+   plan when M3 lands.
 
 ## Findings
 
@@ -192,5 +198,7 @@ needs all of M2 and M3.
 
 ## Progress
 
+- 2026-09-25: M0 done: §6's three decisions ruled (194 to 196). M1 to M4
+  proposed; no lane open.
 - 2026-09-25: plan drafted at Mark's word from rulings 174 to 193 and
   Mesocosm's plans. No lane open.

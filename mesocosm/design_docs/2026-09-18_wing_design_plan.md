@@ -15,8 +15,8 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 193, and W5 is drafted as the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md). The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 196, and W5 is drafted as the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1636,6 +1636,21 @@ what later sections derive from.
      free to decompose them under the 600 Loc limit". So every family that
      moves into Isocosm is split as it goes, along seams the code already
      has.
+194. **Directing is built only on Isocosm.** Put to Mark on 2026-09-25, the
+     Mesocosm overlay plan's first decision: prototype directing on the
+     current host over `mesocosm-core` now, or build it only on Isocosm
+     once the first families have moved? Mark: "Only on Isocosm."
+195. **The record moves ahead of places.** Put to Mark on 2026-09-25, the
+     plan's second decision, the proposed order being matter and
+     processes, bodies, places, lineages and the boundary, the record, and
+     effects: keep it, or move the record ahead of places so replay and
+     save are on Isocosm sooner? Mark: "Record earlier." So the order is
+     matter and processes, bodies, the record, places, lineages and the
+     boundary, then effects.
+196. **The played slice plan retires into W5.** Put to Mark on 2026-09-25,
+     the plan's third decision: retire the played slice plan into the
+     overlay plan when M3 lands, or keep it as the host's own? Mark:
+     "Retire into W5."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5392,6 +5407,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 194 to 196 recorded, the overlay plan's three
+  decisions: directing only on Isocosm; the record moved ahead of places;
+  the played slice plan to retire into W5 when M3 lands. M0 is done.
 - 2026-09-25: rulings 192 and 193 recorded: Isocosm absorbs
   `mesocosm-core`, and moved modules are decomposed under the 600-line
   ceiling. W5 drafted at Mark's word as the Mesocosm overlay plan; §5.5

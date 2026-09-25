@@ -4,6 +4,9 @@
 ruling 175 makes directing the first Mesocosm overlay's control, as ruling 60
 ruled Mesocosm's mode on 2026-09-19, so this slice's direct control of the
 organism is to be rewritten. W1's keep of 2026-09-18 predates ruling 60.
+The rewrite is the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s
+M3, built only on Isocosm (ruling 194), and this plan retires into that one
+when M3 lands (ruling 196).
 
 **Status: in progress, refreshed 2026-08-31. PS0 and PS1 landed mechanically
 and were playtested; their vitals, terrarium-dynamics, roster, and default-body
