@@ -1,12 +1,13 @@
 # Played Slice Plan (2026-08-28)
 
-**Status, 2026-09-25: under rewrite for control.** The wing design record's
-ruling 175 makes directing the first Mesocosm overlay's control, as ruling 60
-ruled Mesocosm's mode on 2026-09-19, so this slice's direct control of the
-organism is to be rewritten. W1's keep of 2026-09-18 predates ruling 60.
-The rewrite is the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s
-M3, built only on Isocosm (ruling 194), and this plan retires into that one
-when M3 lands (ruling 196).
+**Status, 2026-09-25: control rewritten for directing.** The wing design
+record's ruling 175 makes directing the first Mesocosm overlay's control,
+as ruling 60 ruled Mesocosm's mode on 2026-09-19, and at Mark's word
+(ruling 199) this slice's control is rewritten now, in the section
+"Control: directing" below. W1's keep of 2026-09-18 predates ruling 60.
+The build is the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s
+M3, only on Isocosm (ruling 194), and this plan retires into that one when
+M3 lands (ruling 196).
 
 **Status: in progress, refreshed 2026-08-31. PS0 and PS1 landed mechanically
 and were playtested; their vitals, terrarium-dynamics, roster, and default-body
@@ -29,6 +30,8 @@ intent over `World.controlled` (`2026-07-31_phenotype_plan.md`, P1 and the
 (`2026-08-02_views_founding_plan.md`), and metabolize as the single direct
 verb (founding plan). The slice depends on no open gate: PD1b/PD2 upgrade
 feeding's authority, not playability, and E1's interim feeding is landed.
+Direct control, `World.controlled` as the player's hand, and metabolize as
+a direct verb are superseded by directing; see "Control: directing".
 
 **D5 (burn vs incorporate) was deliberately not in the slice, and is now
 closed.** Its doc named it the recommended first playable proof, but Mark
@@ -45,6 +48,66 @@ intent dropped its route accordingly, which also means a replay cannot
 disagree about a decision it never carried. See
 `2026-08-29_terrarium_dynamics_plan.md` §TD4 and its ruling "Income: the body
 routes it".
+
+## Control: directing (rewritten 2026-09-25)
+
+Ruling 199 rewrites this slice's control now, ahead of the build. The phases
+below keep their receipts as the record of the direct control they
+executed. The slice's control is directing, never driving (rulings 60 and
+175):
+
+- **The critter acts on its own.** Its needs, senses and mood choose what it
+  does, metabolizing included, by its own methodology (rulings 158, 175).
+  Its senses suggest to the player and never impose (ruling 59). The first
+  playtest already showed this half: the ecology moved the critter while no
+  keypress did (Findings, 2026-08-28).
+- **The player directs** (ruling 176) with priorities among needs and
+  abilities; places to range, avoid and make home, each a node of the place
+  graph (ruling 205); stances, bold or cautious and contest, yield or share;
+  and nudges, one-off suggestions the critter weighs, today "go there" and
+  "eat that" in the contract. They direct only the entity they play, one
+  critter or its kin directed whole (rulings 152, 155).
+- **The critter follows by its bond** (ruling 177), built from how well the
+  player's orders have served it. Whether the bond passes to the next of
+  the lineage is a world setting, seeded by the lineage by default
+  (ruling 178).
+- **The player's own act** is splitting the line and naming it (ruling
+  202). Expressing a discovered candidate is the critter's own
+  development, no longer the player's to press.
+- **The checkpoints stay the player's.** At a birth they keep the parent by
+  default and may take the offspring (ruling 183); at a death they take up
+  the next of the lineage from the cohort (rulings 61, 178); at the
+  boundary comes the review (ruling 57). PE1's `Resume` and `TakeControl`
+  answers carry over as checkpoint answers.
+- **Two modes:** survival shows what the played critter knows, and creative
+  shows the truth and edits nothing (rulings 180, 184).
+
+**What changes.** The keys no longer move the critter or feed it. WASD, E,
+Space and Q were `Move`, `Metabolize`, `Deposit` and `Carve` intents over
+`World.controlled`; under directing those are the critter's own acts. The
+trace records the player's directives, acts and checkpoint answers instead,
+as `shared/isocosm-overlay`'s `MesocosmIntent` envelopes stamped by tick,
+and it still replays to the identical state hash, headed and headless.
+
+**What stands.** The terrarium section, the brick tracer over the live
+world, the slab camera following the played critter as presentation only,
+the minimap, the vitals chrome, and the receipts' discipline.
+
+**Where it is built.** Only on Isocosm, as the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s M3 (ruling
+194); nothing of it is prototyped on this host. This plan retires into that
+one when M3 lands (ruling 196).
+
+**Open, for Mark:** how a player gives directives in the section without a
+menu, since the vessel briefs keep play "experienced directly, never
+through a menu": marking a place to range, avoid or make home, setting a
+priority or a stance, and giving a nudge. These are presentation rulings
+the M3 host needs.
+
+**Done when** the overlay plan's M3 is: a played critter acts on its own
+needs, senses and mood under the four kinds of directive, its bond moves
+with outcomes and passes across generations as the world setting says, its
+suggestions surface, and a seeded run replays to the same hash.
 
 ## PS0 — revive the hand
 
@@ -255,6 +318,11 @@ adaptation — remains unwired and is PE3's.
   the bare lineage roster.
 
 ## Progress
+
+- **2026-09-25:** control rewritten for directing at Mark's word (ruling
+  199): the section "Control: directing" states the model, what changes
+  and what stands, and leaves the input design open for Mark. The phases'
+  receipts stand as history; the build is the overlay plan's M3.
 
 - **2026-09-01:** PS2's individual half landed as PE1 — the reproduction
   checkpoint, the succession path, and the host composition around both. The
