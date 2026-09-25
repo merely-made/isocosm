@@ -11,6 +11,7 @@ cargo test --manifest-path shared/isocosm/Cargo.toml
 cargo run --manifest-path shared/isocosm/Cargo.toml --bin isocosm-bench -- --ecology --population 48 --sites 3 --lineages 3 --ticks 64 --output world.json
 cargo run --manifest-path shared/isocosm/Cargo.toml --bin isocosm-bench -- --draws 16 --ticks 64 --output draws.json
 cargo run --release --manifest-path shared/isocosm/Cargo.toml --bin isocosm-scale -- --output scale.json
+cargo run --release --manifest-path shared/isocosm/Cargo.toml --bin isocosm-probe -- --draws 1000 --output probe.json
 ```
 
 `isocosm-scale` times drawn worlds by size through the host API, one tick at a
@@ -18,6 +19,15 @@ time, and records evaluations, stored groups, history growth and heap for each.
 It counts heap with an allocator wrapper local to that binary; the library has
 no `unsafe`. Its seeds come from one master seed, printed and saved like the
 bench's. Run it in release: debug timings say nothing about scale.
+
+`isocosm-probe` runs ruling 113's check on ruling 115's competing instance,
+feeding when food is short, over drawn worlds of the `probe` module's domain.
+Each world runs four ways: twice through the exact individual runner, once as
+a crowd, and once as a crowd that averages reserves. Readings are derived from
+the definitions; each gets a difference test and an equivalence test against
+its bound, Holm-corrected. `--density` runs only the exact and crowd arms, to
+measure savings without a verdict; `--members LO HI` overrides the domain's
+members per site and lineage.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
@@ -53,6 +63,15 @@ founding parameters accompany its realized rules and topology.
   and epoch hashes. Loading replays and verifies them, including across
   execution modes. Branches retain their source. Merge returns a reviewable
   proposal and reports changed accepted outcomes as well as refusals.
+- A world may carry a dynamics seed apart from its founding seed, so one
+  founded world can run under independent draws. Absent, it is the world seed,
+  and such worlds serialize and hash as before it existed.
+- The `probe` module runs ruling 115's competition, pairwise contest, share
+  and yield, both member by member through the interpreter and as a crowd:
+  counts per exact state, advanced by integer count draws that follow the
+  member-by-member round's distribution. The process language cannot yet
+  express a competition, so its definition and the world's per-reading
+  similitude bounds sit beside the core rules in `ProbeWorld`.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does
@@ -95,3 +114,14 @@ periodic process is evaluated for every member. The dead stay stored and each
 noted event keeps an arrival at every site it reached, so ticks grow dearer as
 history accumulates. Founding in cohorts of 32 puts each cohort on one site,
 and those ecology worlds died out without a birth.
+
+The probe's certified receipt, `probe.json` in the same directory, drew 1,000
+worlds. In each, the crowd stayed within 0.2 Kolmogorov-Smirnov distance of the
+exact individual runner on all 16 readings the definitions yield, and no
+difference was detected beyond chance. The exact runner against itself passed
+the same test, and a crowd that averages reserves failed the starvation
+readings. The crowd used 11 times fewer evaluations there; across the density
+ladder, 6 to 40 times fewer as members per site and lineage rose from 32 to
+512. Its count draws are exact in distribution, so the receipt certifies this
+reduction's implementation and the instrument, not an approximation's error,
+and only for this one process.

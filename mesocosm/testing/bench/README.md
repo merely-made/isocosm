@@ -32,6 +32,13 @@ those three. `viability.json` and `ablation-matter.json` are diagnostics: which
 founding keeps the ecology family reproducing, and what one per-evaluation
 cost amounts to. `source.json` names the commit behind each.
 
+`isocosm-probe` runs ruling 113's check on ruling 115's competition for food,
+the exact individual runner against a crowd. Its certified receipt is
+`probe.json` in the same directory, with density-ladder receipts beside it and
+their own `probe-source.json`. `verify.py` recomputes every distance and
+equivalence verdict from the raw per-draw readings, independently of the Rust
+check, and re-runs the difference tests with its own permutations.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

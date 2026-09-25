@@ -1,0 +1,116 @@
+{
+  "date": "2026-09-25",
+  "kind": "isocosm-probe",
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "profile": "release",
+  "source_blobs": {
+    "shared/isocosm/Cargo.lock": "42f7bd0cc2e8b749c1e2ba4b85c1e0e38c16de5b",
+    "shared/isocosm/Cargo.toml": "ac6baf8a2ea6f73283cda0c02efdfb9adf3410b4",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "5ddf8bba763e2c191ecc471755aa57e21ce38978",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "ea7abe56c7ef4f66c4628b4f84263b956984fb64",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "97e3a9ee78d13cb9e9065348f46cd8c0f727e900",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/ecology.rs": "619af0eb3132079ddecfcdae39142025c9997ba6",
+    "shared/isocosm/src/execute.rs": "b4f710b59a306131086cf660b36e39be25dec452",
+    "shared/isocosm/src/generate.rs": "db8f380c2396aead6edcdd9f00072a05af539159",
+    "shared/isocosm/src/genesis.rs": "baae423fd6fda957628cf785bdc9363d7124f378",
+    "shared/isocosm/src/history.rs": "0c36acc2fa2fa4c333db00bdf38acae37af3564a",
+    "shared/isocosm/src/lib.rs": "b9f7b9d6280f1b2627f861324ecaba0b27f1bc72",
+    "shared/isocosm/src/population.rs": "b557c7f455af8403d859ffaba838c88491b6d04e",
+    "shared/isocosm/src/probe/aggregate.rs": "45a91c239585081eef22cc982fcdbcc3b816f82a",
+    "shared/isocosm/src/probe/check.rs": "b3018ab5ed3978a9d953b25d1671c16f04b5b76e",
+    "shared/isocosm/src/probe/crowd.rs": "92fa156d7417ce7f5c31965995eff1dc26648b27",
+    "shared/isocosm/src/probe/draws.rs": "c3a77a21238ef02c6e5abdd56086bddd9ae586c6",
+    "shared/isocosm/src/probe/exact.rs": "f4cd36ddfc34433df8b7e8d2246774e9921f61be",
+    "shared/isocosm/src/probe/found.rs": "6f8c85f4b9ca5230f087e99e40bfb4298497ed61",
+    "shared/isocosm/src/probe/mod.rs": "d3f2d85e1ffb08dae067554ee9a81bfb99597752",
+    "shared/isocosm/src/probe/readings.rs": "9fc7d60f139031e0076f57d528ed480ccf9a7b02",
+    "shared/isocosm/src/probe/tests.rs": "5eb713ab1eaff91d0aa1785470d9a0af52315090",
+    "shared/isocosm/src/queries.rs": "97831ddc30bab291f5373557297505a2ca95be03",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules.rs": "bc60623fef91b45548dc6d273ccdc83693b1b923",
+    "shared/isocosm/src/schema.rs": "6c752ffbf4fe95fb709c3be320255f0c9654aa23",
+    "shared/isocosm/src/simulation.rs": "1e60a5f2d31702e8e3308048b5b32efa62beb9f2",
+    "shared/isocosm/src/validation.rs": "a27d1e40920f59cefb9cb2bbc32616107f3d5d18",
+    "shared/isocosm/tests/probe.rs": "10bdd359235ea4a8784ae9a2d43a59847977929b",
+    "shared/isocosm/tests/sim.rs": "283951e1634842944ddd49856987f1ee18a38230"
+  },
+  "machine": {
+    "model": "ASUSTeK ROG Zephyrus G14 GA402XV, the laptop ruling 124 names",
+    "cpu": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics, 8 cores, 16 threads, 4.0 GHz max",
+    "memory_bytes": 33515835392,
+    "os": "Windows 11 Home Insider Preview 10.0.26220",
+    "load": "Shared machine: other sessions ran throughout, and each arm runs on one thread. Whole-machine CPU load samples in percent, 0.4 s apart: before the certified run 54, 64, 48, 16, 23; after it 62, 82, 59, 45, 62. Wall times carry this noise; evaluation counts do not."
+  },
+  "rulings": {
+    "1": "Contest: pairwise encounters. Hungry members pair at random; a contester takes the ration from a yielder or a sharer; two sharers split it; two contesters size each other up by body reserve and only a close match escalates, at a cost to both; margin and cost are world data drawn per seed; escalation costs body reserve until vigour is in the ledger; trade waits.",
+    "2": "Crowd model: exact-state histogram keyed by what the rules read, random count draws each round, coarsening a field only where the rules show it is safe; run at a density with real crowds; report savings in evaluations.",
+    "3": "Readings: the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything an inspection shows.",
+    "4 and 5": "Each reading has its own bound, held in the world's rules and first set at 0.2 Kolmogorov-Smirnov distance; a difference test and an equivalence test, corrected across readings; a positive control (the exact runner against itself) and a negative control (a crowd that averages reserves, which must fail the starvation check); the dynamics seed accepted for the positive control."
+  },
+  "readings_of_the_rulings": [
+    "Members choose by their lineage's leaning trait: contest-leaning members contest, the rest share; yielding is the smaller contester's answer to sizing up.",
+    "When food is short every pair gets one ration before any pair gets two, so each pair on one ration is two wanting one scarce thing; an odd member left unpaired goes without.",
+    "An escalated fight goes to the larger reserve, which outlasts the other; an exact tie goes to a seeded coin.",
+    "The fight cost is capped at what a member holds; sharers take half a ration each and an odd unit stays at the site.",
+    "The only coarsening in the crowd's key is dropping zero ledger entries, which no query and no inspection can tell from absent ones. Every other field an inspection shows stays in the key.",
+    "The pairing draw is exact in distribution (an integer draw of a uniform random matching's pair counts), so the crowd carries no approximation in distribution; it differs from the exact runner only in identity, which ruling 113 permits.",
+    "The competition definition and the per-reading bounds sit beside the core rules in the probe world, because putting either in the core Rules would be a schema change beyond the authorized dynamics seed."
+  ],
+  "runs": [
+    {
+      "file": "probe.json",
+      "purpose": "certification",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --draws 1000 --permutations 1999 --output probe.json",
+      "master_seed": 1790374338361785300,
+      "master_seed_origin": "system clock at start, printed before the run",
+      "started": "2026-09-25T18:12-04:00",
+      "seconds": 3378,
+      "commit": "494dda5",
+      "executable_sha256": "263549ba424e5b92c27fca2d2fe39c4c4175b7bfe34b47579d583dd866c7271e",
+      "estimate_before_starting": "a 32-draw pilot at this domain projected 4,066 s for 1,000 draws, under the two-hour stop point"
+    },
+    {
+      "files": [
+        "probe-density-32.json",
+        "probe-density-64.json",
+        "probe-density-128.json",
+        "probe-density-256.json",
+        "probe-density-512.json"
+      ],
+      "purpose": "savings by density, exact and crowd arms only, eight draws per rung, no verdict",
+      "command": "for each M in 32 64 128 256 512: shared/isocosm/target/release/isocosm-probe.exe --density --draws 8 --members M M --output probe-density-M.json",
+      "master_seeds": {
+        "32": 1790377839682902100,
+        "64": 1790377843217264600,
+        "128": 1790377853948359100,
+        "256": 1790377878787469800,
+        "512": 1790377975733075100
+      },
+      "master_seed_origin": "system clock at the start of each rung",
+      "commit": "494dda5",
+      "executable_sha256": "263549ba424e5b92c27fca2d2fe39c4c4175b7bfe34b47579d583dd866c7271e"
+    },
+    {
+      "file": "probe-verify.txt",
+      "purpose": "independent recomputation of probe.json's statistics",
+      "command": "python verify.py probe.json 1999"
+    }
+  ],
+  "checks": [
+    "cargo test --manifest-path shared/isocosm/Cargo.toml --offline --locked: 27 passed, 0 failed (15 earlier integration tests, 1 dynamics-seed test, 5 probe unit tests, 6 probe integration tests)",
+    "cargo clippy --manifest-path shared/isocosm/Cargo.toml --offline --locked --all-targets -- -D warnings: clean",
+    "rustfmt --check with the repository's rustfmt.toml over the crate: clean",
+    "cargo check -p mesocosm-genet --all-features --all-targets --offline (mesocosm workspace, against this worktree's isocosm): passes, no warnings",
+    "The dynamics seed changes nothing for existing worlds: the scale pilot rerun on master seed 1790357350335206000 reproduced every deterministic field, final state hashes included",
+    "Without shortage, nothing in the round is random, and the crowd equals the exact runner reading for reading (integration test, four drawn worlds)",
+    "The count-level executor moves a bin exactly as the interpreter moves each of its members (unit test); the matching draw follows enumerated probabilities (unit test)",
+    "probe.json: the exact arm rerun gives an identical state hash, and collecting after each tick changes no outcome",
+    "verify.py at 1,999 of its own permutations: every distance and equivalence verdict matches probe.json, and every difference verdict agrees; at 499 permutations one borderline negative-control reading (inspect:place, Holm p 0.094 in the receipt) crossed 0.05, as permutation noise near the threshold would"
+  ],
+  "scope": "One coupled process, feeding when food is short under rulings 115 and 116, in a declared probe domain: two lineages, one or two well-mixed sites, 64 to 128 members per site and lineage for certification, 24 ticks, readings after the last tick. The result certifies the crowd's implementation and the instrument for this process; it does not qualify an approximation, since the count draws are exact in distribution, and it does not extend to other processes, births, movement, or social reads."
+}
