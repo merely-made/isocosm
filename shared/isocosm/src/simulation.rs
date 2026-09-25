@@ -15,12 +15,23 @@ pub enum Execution {
 pub struct Genesis {
     pub version: u32,
     pub seed: u64,
+    /// Seeds how the world unfolds, apart from how it was founded, so one
+    /// founded world can run under independent draws. Absent means the world
+    /// seed, and absent worlds serialize exactly as before it existed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dynamics: Option<u64>,
     pub founding: Option<crate::Founding>,
     pub world: WorldTraits,
     pub rules: Rules,
     pub lineages: BTreeMap<Key, Lineage>,
     pub sites: BTreeMap<Id, Site>,
     pub population: Population,
+}
+
+impl Genesis {
+    pub fn dynamics_seed(&self) -> u64 {
+        self.dynamics.unwrap_or(self.seed)
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -332,7 +343,7 @@ impl Simulation {
             ));
         }
         Ok(crate::draw(
-            self.genesis.seed,
+            self.genesis.dynamics_seed(),
             &format!("knowing:{}", event.id),
             &[entity],
         ) % 1_000_000

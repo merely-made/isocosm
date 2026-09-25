@@ -110,7 +110,8 @@ impl Simulation {
             return receipt;
         }
         let risky = definition.risk.as_ref().is_some_and(|r| {
-            crate::draw(self.genesis.seed, &id, &[actor]) % 1_000_000 < u64::from(r.per_million)
+            crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
+                < u64::from(r.per_million)
         });
         let outcomes = if risky {
             &definition.risk.as_ref().unwrap().effects

@@ -359,6 +359,7 @@ impl Founding {
         let mut genesis = Genesis {
             version: crate::VERSION,
             seed: self.seed,
+            dynamics: None,
             founding: Some(self.clone()),
             rules,
             lineages,

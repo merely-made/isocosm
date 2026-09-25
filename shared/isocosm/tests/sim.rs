@@ -238,6 +238,18 @@ fn branches_preserve_played_worlds_and_surface_changed_accepted_outcomes() {
 }
 
 #[test]
+fn dynamics_seed_is_absent_unless_set_and_defaults_to_the_world_seed() {
+    let g = founding(3).generate().unwrap();
+    assert_eq!(g.dynamics_seed(), g.seed);
+    // Worlds without one serialize, and so hash, as before the field existed.
+    assert!(!serde_json::to_string(&g).unwrap().contains("\"dynamics\""));
+    let mut set = g.clone();
+    set.dynamics = Some(g.seed ^ 1);
+    assert_eq!(set.dynamics_seed(), g.seed ^ 1);
+    assert_ne!(isocosm::digest(&set), isocosm::digest(&g));
+}
+
+#[test]
 fn operation_budget_failure_is_transactionally_inert() {
     let mut genesis = founding(91).generate().unwrap();
     genesis.rules.limits.events_per_advance = 1;
