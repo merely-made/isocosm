@@ -14,14 +14,15 @@ plan's own is flagged as one. No lane runs until Mark opens it.
 **Owns:** Mesocosm's profile as a game over the Isocosm sim (the record's
 §5); the Mesocosm side of the overlay contract (ruling 154); the played loop
 W5 names; and the order in which `mesocosm-core`'s simulation moves into
-Isocosm for this overlay's needs (ruling 192). **Does not own:** the sim,
+Isocosm for this overlay's needs (rulings 192 and 195). **Does not own:** the sim,
 whose schema, process definitions, record and generator the
 [sim plan](2026-09-22_sim_plan.md) owns, so every move lands under its
 phases; the bench (W4); the other overlays (the record's §5.6 and §5.7); or
 naming. **Consumes:** the record; the sim plan and the
 [aggregation research](2026-09-22_aggregation_research.md); the
-[played slice plan](2026-08-28_played_slice_plan.md), under rewrite for
-control (ruling 175); the
+[played slice plan](2026-08-28_played_slice_plan.md), its control
+rewritten for directing (rulings 175 and 199) and retiring into this plan
+at M3 (196); the
 [playable ecology plan](2026-08-31_playable_ecology_plan.md), whose open
 rulings are now answered (rulings 180 to 183 and two readings); the
 [epoch boundary plan](2026-08-01_epoch_boundary_plan.md); and the
@@ -85,7 +86,7 @@ settles come back through the handoff.
 
 | Direction | Mesocosm's side | Rests on |
 | --- | --- | --- |
-| In: directives | priorities, places, stances and nudges, stamped for a tick, for the one critter the player plays | 152, 176, 177 |
+| In: directives | priorities, places, stances and nudges, stamped for a tick, for the entity the player plays, one critter or its kin directed whole | 152, 155, 176, 177 |
 | In: checkpoint answers | at a birth, keep the parent or take the offspring; at the boundary, the review's revision | 57, 183 |
 | In: dev intents | end the epoch, force a birth, kill, place matter; the dev tools plan's, never play | playable ecology plan §6 q2 |
 | Out: events | receipts and record entries by subscription; in survival mode, only what the played critter can know | 113, 117, 180 |

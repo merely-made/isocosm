@@ -227,10 +227,10 @@ place with the correction dated.
 
 | Word | Disposition | Where recorded |
 | --- | --- | --- |
-| Isocosm | the sim; crates.io free, other registries unchecked | ruling 17, naming ledger |
+| isotropy | the sim; crates.io free, other registries unchecked; superseded by Isocosm (110 to 112) | ruling 17, naming ledger |
 | isostasy | bridging effects between layers; same status | ruling 17 |
-| denizen | the individually remembered tier, superseding borg (2026-09-20, in a peer session); the platform sense became participant; killed as a product title | Mesocosm and Eponym CLAUDE.md; naming ledger |
-| sophont | working word for a sapient critter; a different axis from notability | ruling 45 |
+| denizen | the individually remembered tier, superseding borg (2026-09-20, in a peer session); the platform sense became participant; killed as a product title; amended 2026-09-25 to a named entity, the tier being of note (200) | Mesocosm and Eponym CLAUDE.md; naming ledger |
+| sophont | working word for a sapient critter; a different axis from notability; settled 2026-09-25 as the term of art, every sophont a denizen (200) | rulings 45, 200 |
 | borg to construct | an unruled proposal | record §3.2.1 |
 | site, location, region, wilderness, biome, environment | ruled in Mark's definitions | ruling 72 |
 | Mesocosm's body "site" | wants an anatomical word; candidates surfaced, none coined | naming ledger |
@@ -243,11 +243,12 @@ At the session's end on 2026-09-22 Mark accepted the docket's D21 to D31
 and D33 as suggested (ruling 106), keeping D19 and D20 held for W5 and W3;
 confirmed and extended the change to ruling 47 (107), grading an offering
 by the depth of the entity's relation to that magic in its story; had the
-two `mesocosm/CLAUDE.md` amendments applied; and ruled that Isocosm and
+two `mesocosm/CLAUDE.md` amendments applied; and ruled that isotropy and
 isostasy, both found as game titles, are internal names and no conflict
 (108). Still open: the parked questions in the sim plan's §8, the naming
 items above, the question to Massif Press, which he will ask on Discord,
-and the `denizen` crate's publish.
+and the `denizen` crate's publish. *(The publish was struck on 2026-09-25
+by ruling 201.)*
 
 ## 7. Lessons for the next session
 
@@ -269,8 +270,8 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24 and 174 to 197 on 2026-09-25, the last
-of them ruling W5's plan and naming its contract crate.
+113 to 173 were given on 2026-09-24 and 174 to 209 on 2026-09-25, the last
+of them answering the consistency pass and the two lanes' forks.
 
 ### 8.1 How it started
 
@@ -352,6 +353,10 @@ worlds, none in ecological ones.
 | | At a birth; creative mode | "Parent by default"; "See only" | 183, 184 |
 | | One sim; the ceiling; the plan's decisions | "Isocosm absorbs"; "decompose them under the 600 Loc limit"; only on Isocosm, record earlier, retire the slice | 192 to 196 |
 | | The contract crate | "One shared crate"; "isocosm-overlay" | 197 |
+| The pass and the lanes | The pass's bookkeeping; its dated lines; the slice plan | "Apply as proposed"; "Restore isotropy"; "Yes, rewrite it now" | 198, 199 |
+| | The identity words; the organ crates | "Denizen as the umbrella word, sophont as term of art for sapient entities", "Denizen = named entity", then noted as identified and named as denizen; a denizen crate only for a good reason | 200, 201 |
+| | Speciate and Express; the tick; subscription; places | "Split them"; "Newtype over u64"; "Type the attention set"; "Place-graph handle" | 202 to 205 |
+| | Feeding under scarcity; the crowd; the readings; the tolerance | "Pairwise encounters"; "Exact-state histogram"; "The rules' thresholds"; "0.2, with controls" | 206 to 209 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -363,7 +368,9 @@ A was amended for materials at Mark's word; and the
 W5, its M0 done the same day. Then, at Mark's word, work went parallel:
 the overlay plan's M1 and an S2 probe of the sim plan opened as lanes, and a
 read-only consistency pass over the record and the plans went to the RPG
-systems session.
+systems session. Its thirty items were each confirmed against the files and
+applied at Mark's word (198), and Mesocosm's CLAUDE.md denizen line was
+rewritten, with a sophont line added, at his word (200).
 
 ### 8.4 What was got wrong, and corrected
 
@@ -380,14 +387,17 @@ systems session.
 | A commit staging a moved file's old path | Staged nothing; redone with the new path |
 | An accidental tap, "Inherited only", on unplayed lineages | Corrected by Mark the same turn; his correction is ruling 182, and the tap is not recorded as his answer |
 | The played slice plan's direct control, kept by W1 the day before ruling 60 | Superseded by ruling 175, with dated notes in the plan, the vessel briefs and the index |
+| The rename's R1 put Isocosm into lines dated 2026-09-18, so the record said Isocosm was ruled that day and is a 2015 iOS puzzle game | Isotropy restored in the dated lines, here and in the record and the sim plan (198) |
+| `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
 
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
 occurrences; D20's provider over `mere-capability`, W3's to build; the
-overlay plan's M1, open in a lane, and M2 to M4, proposed and not opened;
-the S2 probe and the consistency pass, open; what measures a collapse
+overlay plan's M1, open, with the attention set to type (204), and M2 to
+M4, proposed and not opened; the S2 probe, being built under rulings 206
+to 209; the played slice plan's control rewrite (199); what measures a collapse
 as local or global, the playable ecology plan's to specify; and plans of
 their own for Eponym's and the VTT's overlays, whose shapes are ruled in
 the record's §5.6 and §5.7.

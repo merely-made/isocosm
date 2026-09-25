@@ -46,13 +46,19 @@ architecture that Paredros and Isometry also depend on.
 
 - **critter**: the plain organism word, wing-wide, and the default. Not
   "creature".
-- **denizen**: an inhabitant the simulation remembers individually because
-  history, relationships, or explicit designation makes it matter. Earned
-  notability does not require sapience, a name, a faction, or costly
-  foreground simulation. This is the current simulation tier, superseding
-  the provisional `borg` term on 2026-09-20; reserve the `denizen` crate name
-  and concept for this tier. Historical rulings and quotes retain `borg` with
-  supersession pointers. See the wing founding record §1 and open question 3.
+- **denizen**: a named entity. An entity of note, one the simulation
+  identifies and remembers individually, becomes a denizen when people name
+  it, as they need to refer to it. Naming requires sapience, so every
+  sophont is a denizen, but a denizen need not be a sophont. Ruled
+  2026-09-25 (wing design record ruling 200), amending the 2026-09-20
+  line that made denizen the of-note tier's word and implied no name; the
+  tier is "of note". Notability itself still needs no sapience, name,
+  faction or costly foreground simulation. It supersedes the provisional
+  `borg`; historical rulings and quotes keep `borg` with supersession
+  pointers. A `denizen` crate needs a reason beyond a sim component, such
+  as carrying entity information into other contexts (ruling 201).
+- **sophont**: the term of art for a sapient entity; every sophont is a
+  denizen (ruling 200).
 - **relic**: a thing of note, an item some mind remembers or some bearer
   records; the founding record's "things (relics with provenance)" and Law
   A's "shapes become relics". Ruled 2026-09-24 (wing design record ruling

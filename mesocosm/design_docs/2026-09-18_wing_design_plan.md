@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-18
 
-*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+*Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
 
 **Status, 2026-09-18:** design record, ruled through W1. W0 is ruled (rulings
 1 to 34, with the founding record and the three product descriptions amended
@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 197, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 209, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 done
 and M1 in progress. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -43,7 +43,7 @@ for "Burn proposes, the record disposes"; the
 [isoscape family plan](2026-09-16_isoscape_family_plan.md) for the
 generation bucket; the
 [board-on-isometer plan](../../design_docs/2026-09-15_board_on_isometer_plan.md)
-at the Isometry root as the worked example of a plan designed to the wrong
+at the repository root as the worked example of a plan designed to the wrong
 target.
 
 **Why this exists.** On 2026-09-16 the board-on-isometer plan's targets were
@@ -145,14 +145,16 @@ what later sections derive from.
     isostasy.** Ruled 2026-09-18 after the crates.io check in §9.1; the
     remaining registries are still to be checked before either is banked
     the ledger's way, and claim needs a real publish. **Superseded for the
-    sim's name by ruling 109 (2026-09-22): the sim is Isometry.** Where
+    sim's name by rulings 109 and 110 (2026-09-22): the sim is Isocosm.** Where
     this record says "isotropy" it means the sim.
 18. **A game's grid is a projection.** The sim's volume is cubic; a tile
     with three, four or six sides is a region of voxels its overlay lays
     over that volume, the way a circle is in any voxel game. Ruled
     2026-09-18 ("hex as projection").
 19. **The web is first-class** for the whole wing. Ruled 2026-09-18; the
-    limits in §4.5 are therefore every tier's limits.
+    limits in §4.5 are therefore every tier's limits. **Replaced the same
+    day by ruling 29: desktop first-class, the web a supported tier with a
+    stated floor.**
 20. **One bench for everything generated and reviewed:** the sim bench for
     processes and effects including magic, the world bench, the specimen
     bench, the item bench, the effect bench, as lanes of one bench, which is
@@ -338,6 +340,8 @@ what later sections derive from.
     made-by-a-maker kind, the divine the intrinsic kind, and neither is a
     rung of the identity ladder. For the second identity level's word he
     finds sophont and denizen both good; the choice is still his.
+    **Settled by ruling 200:** sophont is the term of art for a sapient
+    entity, and a denizen is a named entity; every sophont is a denizen.
 46. **Grades per glyph by the form sacrificed.** Mark, 2026-09-18: "I was
     just thinking of like assigning a point tier to what form of glyph is
     sacrificed for ascension. Item vs technique/skill/ability vs embodied
@@ -403,6 +407,8 @@ what later sections derive from.
     constitutionally, not derived, in addition to the factions within
     them. Divinity blends effects and acts through their journey to
     choose a domain; some effects lend themselves to certain acts."
+    **Amended by ruling 79:** a polity's alignment is derived from its acts
+    too, its decisions among them.
 52. **The referent by tier, and impact against frequency.** Mark,
     2026-09-18: "choosing a referent is a privilege of the greater
     divinities and greater avatars, but even they are subject to the
@@ -544,7 +550,9 @@ what later sections derive from.
     operations, then it essentially does nothing. But they only die when
     people agree they do. Perhaps because their political context changed,
     or because everyone who knew about it died, or the methods, goals,
-    and/or means became pointless".
+    and/or means became pointless". **Extended by ruling 136:** a polity
+    dies by either route, its own dissolution or nothing holding it any
+    more.
 66. **Any means may stand behind a constitution; short of death, a polity's
     condition may change automatically.** Asked on 2026-09-20 what stands
     behind a constitution in the sim, "force, faith, money, habit, a god?",
@@ -630,7 +638,8 @@ what later sections derive from.
     one mechanism repeated or a fixed set of levels, Mark, 2026-09-21: "I
     think it would be cool if the mechanism was composable and expandable
     instead of the order and tiering of the nesting being predetermined. But
-    yeah, those are good defaults."
+    yeah, those are good defaults." **Qualified by ruling 92:** the four
+    are the VTT overlay's default scopes, not levels the sim hardcodes.
 75. **Background and foreground agree; the background is cheaper by
     aggregation; losses at transitions preserve similitude; things of no
     note are fungible, behind a configurable buffer.** Asked whether one
@@ -686,6 +695,7 @@ what later sections derive from.
     like literally a note on the site/item/entity. the sim just makes notes
     in the way a player would too, generating the note from the event/thing
     that makes it 'of note.'" On D19 and D20: "idk!", so both stay held.
+    **Both since ruled: D19 by ruling 154, D20 by ruling 152.**
 81. **Asserting a constitution is itself an act, the definitive one.** On
     ruling 79, Mark, 2026-09-21: "isn't asserting a constitution of a polity
     itself an act? indeed, a definitive one."
@@ -887,7 +897,8 @@ what later sections derive from.
      manage a set of related worlds".
 106. **The docket's remaining items are accepted as suggested.** Mark,
      2026-09-22: "accept all as suggested." D21 to D31 and D33 accepted, D19
-     and D20 kept held for W5 and W3.
+     and D20 kept held for W5 and W3. **Both since ruled: D19 by ruling
+     154, D20 by ruling 152.**
 107. **The change to ruling 47 is agreed; a sacrifice's grade is the depth
      of the entity's relation to that magic in its story; collecting all the
      magics is favoured, as a setting.** Mark, 2026-09-22: "agreed. hmm. if
@@ -925,7 +936,8 @@ what later sections derive from.
      across crates and docs and the tabletop's package to `isometry-vtt`,
      are a lane and not an edit. Then, before the family word was banked:
      "Alternatively, isocosm!" Eponym stands; the family and sim word is
-     between Isometry and Isocosm until Mark picks.
+     between Isometry and Isocosm until Mark picks. **Superseded the same
+     day by rulings 110 and 111.**
 110. **The family and the sim are Isocosm; the tabletop is Isocosm: VTT; the
      rename is planned.** Mark, 2026-09-22: "Let's do it, isocosm, eponym,
      isocosm-vtt, etc. Let's plan the rename too". The reservations
@@ -1511,7 +1523,8 @@ what later sections derive from.
      hands-on mode for moments like a hunt, or the slice's direct control
      first? Mark: "Directing, as ruled." So the critter acts on its own
      needs and senses, which suggest to the player, and the player shapes
-     it with standing orders and priorities.
+     it with standing orders and priorities. **The rewrite is owed now,
+     and the plan retires into W5 at M3 (rulings 196 and 199).**
 176. **A Mesocosm player directs with priorities, places, stances and
      nudges.** Put to Mark on 2026-09-25: what does a Mesocosm player
      direct with? Four options were put, to pick all that should be in the
@@ -1660,6 +1673,116 @@ what later sections derive from.
      "isocosm-overlay". So it sits in `shared/`, game-neutral, with
      Mesocosm's directives as its first game's module and Eponym and the
      VTT to add theirs.
+198. **The consistency pass is applied, and a dated line keeps its date's
+     words.** Put to Mark on 2026-09-25, with the RPG systems session's
+     read-only pass over this record, the sim plan and the overlay plan at
+     commit 0f249ae: thirty items, each checked against the files. Its
+     bookkeeping items, where a later ruling superseded an earlier one
+     without a note, a number was mis-cited, a status or names line had
+     gone stale, or an old word stood in present prose, each carried one
+     fix: apply as proposed, or walk through them? Mark: "Apply as
+     proposed." And item 10, where the rename's R1 (commit f4689b7) had put
+     Isocosm into lines dated 2026-09-18, so that §9.1 said Isocosm was
+     ruled that day and is a 2015 iOS puzzle game: restore isotropy, or
+     keep Isocosm with a note? Mark: "Restore isotropy." So a dated line
+     keeps the words of its date, as a verbatim ruling keeps its own, and a
+     later name reaches it only as a note.
+199. **The played slice plan's control is rewritten now, and the plan still
+     retires into W5 at M3.** Put to Mark on 2026-09-25, from the pass's
+     item 8: ruling 175 says the slice's direct control is rewritten, and
+     ruling 196 retires the plan when M3 lands; does the plan still owe a
+     rewrite before M3? Mark: "Yes, rewrite it now." So its control is
+     rewritten for directing (rulings 175 to 178) ahead of M3, and at M3 the
+     whole plan retires into the overlay plan.
+200. **Of note is identified, a denizen is named, and a sophont is
+     sapient.** Put to Mark on 2026-09-25, from the pass's item 9: is
+     sophont settled as the second identity word, which ruling 45 left to
+     him? Mark: "Denizen as the umbrella word, sophont as term of art for
+     sapient entities", and then, "Denizen = named entity". Asked how that
+     meets the 2026-09-20 line that a denizen implies no name: "Noted means
+     identified, naming requires sapience, denizen = named, so every
+     sophont is a denizen but not every denizen has to be a sophont. Of
+     note then naturally transitions into named as people need to refer to
+     the entity of note". So the words are three steps. An entity of note
+     is one the sim identifies; it becomes a denizen when people name it,
+     as they need to refer to it; a sophont is a sapient entity, and every
+     sophont is a denizen. The tier is "of note", and denizen no longer
+     names it. At his word ("Amend as drafted"), Mesocosm's CLAUDE.md
+     denizen line is rewritten to match and a sophont line added.
+201. **The organ words are components, not crates, and a `denizen` crate
+     needs a reason of its own.** Mark, 2026-09-24, in the RPG systems
+     session, on hagioglyph, impresa, denizen, isoscape and isostasy: "Ehh,
+     the organ words can be rendered as components in the repo. They
+     needn't be crates." Put to him on 2026-09-25, from the pass's item 20:
+     does that also drop publishing a `denizen` crate to reserve the name?
+     Mark: "We need a good reason for a denizen crate. If it's just a
+     component in the sim engine, nah. But if it is a way to
+     transfer/import/export entity information and use it in different,
+     potentially embedded contexts, that could be good". So no crate is
+     published for an organ word, and a `denizen` crate is made only if it
+     becomes the way entity information moves between contexts.
+202. **Speciating stays the player's act; expressing becomes the
+     critter's own.** Put to Mark on 2026-09-25, from M1, where
+     `mesocosm-core`'s `Speciate`, splitting the played line and naming it,
+     and `Express`, spending this body's development on a discovered
+     candidate now, fit neither a checkpoint nor the review: both at the
+     boundary, both the player's mid-round, both the critter's own, or
+     split? Mark: "Split them." So a player may split their line and name
+     it, "the name is the doing", as a player's act beside directives and
+     checkpoint answers; and expressing a candidate is the critter's own
+     development, chosen by its methodology and steered by priorities.
+203. **The tick stamp is a newtype over the sim's count.** Put to Mark on
+     2026-09-25, the first of three forks from building M1: a newtype over
+     `u64`, a plain `u64` as the sim uses, or an epoch and an offset, a
+     structure the sim does not store? Mark: "Newtype over u64."
+204. **Subscription derives from the attention set, whose type M1
+     designs.** Put to Mark on 2026-09-25, the second fork: §5.2's point 4,
+     in the contract's shape since ruling 154, has one attention set per
+     player drive the collector, the foreground and the event stream, but
+     the set has no type. Until it has one, does the contract carry
+     explicit topic keys or a structured filter, or does M1 type the
+     attention set? Mark: "Type the attention set." So M1 is not done
+     until the attention set has its type and subscription derives from it.
+205. **A PLACES directive names a node of the place graph.** Put to Mark on
+     2026-09-25, the third fork: an opaque handle to a place-graph node
+     (rulings 72, 147), a site, or raw coordinates? Mark: "Place-graph
+     handle." Dev intents keep raw coordinates, since they reach the grid
+     directly.
+206. **When food is short, the sim resolves the crowd's choices in
+     pairwise encounters.** Put to Mark on 2026-09-25, from the sim plan's
+     S2 probe, which stopped at its first fork on finding no exact
+     reference for feeding under scarcity, an eater taking the first
+     eligible target in id order: pairwise encounters, a ranking at each
+     site, or arrivals in turn? Mark: "Pairwise encounters." So hungry
+     members meet in random pairs. A contester takes the ration from a
+     yielder or a sharer, two sharers split it, and two contesters size
+     each other up by body reserve, only a close match escalating, at a
+     cost to both (rulings 115, 116). The margin and the cost are world
+     data drawn per seed; escalation costs body reserve until vigour is in
+     the ledger (ruling 123); and trade waits for something to trade.
+207. **The crowd runner keeps a histogram of exact states.** Put to Mark
+     on 2026-09-25, with 206: a histogram of exact states, coarsened
+     states, moment closure, or super-individuals? Mark: "Exact-state
+     histogram." So members are grouped by their exact state as the rules
+     read it, with random count draws each round, and the pairing draw is
+     the only approximation; a field is coarsened only where the rules show
+     it safe, and savings are reported in evaluations.
+208. **What later processes read is the rules' own thresholds.** Put to
+     Mark on 2026-09-25, from ruling 113's test: the fungible must agree in
+     distribution over what later processes read, so what counts, counts
+     and one starvation threshold, the rules' thresholds, or the full
+     distribution? Mark: "The rules' thresholds." So the readings are
+     every threshold the process definitions query, read mechanically from
+     them, plus a distribution per field for anything an inspection shows.
+209. **The first tolerance is 0.2 per reading, certified with controls.**
+     Put to Mark on 2026-09-25, with 208: a first bound of 0.2 or 0.1? Mark:
+     "0.2, with controls." So each reading's bound sits in the world's
+     rules, first at 0.2 (Kolmogorov-Smirnov distance) and tightened once
+     the core's overheads are fixed. Agreement is tested for both
+     difference and equivalence, corrected across readings, beside a
+     positive control, the exact runner against itself under a dynamics
+     seed kept apart from the founding seed, and a negative control, a
+     crowd that averages reserves, which must fail the starvation check.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1717,7 +1840,7 @@ in §3.2 that some rungs are relations and some are agents with state.
 | Bodies (agents) | creature, faction, polity, lineage | Ruling 8; lineage is provenance and orthogonal in time |
 | Space (places) | cell, site, region, continent, world, system | Rulings 11, 12, 72; a site is one cell of the world map, a region is an area of sites and is terrain, and a location is a place of note at any extent (§3.7.1) |
 | Fields | conditions on places; effects left by processes; reach of events | Ruling 5; world state is not a kind, it is the fields a place carries |
-| Time | the due-event clock; deep time before handover; branches | Rulings 3, 7 |
+| Time | the due-event clock; deep time before handover; forks and branches | Rulings 3, 7, 126 |
 | Provenance | seed, deviations, asserted facts, the significant record | §1; ruling 4 |
 
 Things and magic sit inside these: an item is a body without agency and a
@@ -1761,7 +1884,7 @@ provenance typing nis already carries. Genotype: traits in relation, with
 adjacency effects and process conditions, the shape of Balatro's jokers;
 the earlier form of this is the allocation mosaic ruled 2026-08-01 in the
 processdef plan, an authoritative graph of capacity cells per part where
-sites occupying adjacent cells cooperate, interfere or hybridise, and Mark
+tracts (ruling 157) occupying adjacent cells cooperate, interfere or hybridise, and Mark
 is open to another form. Phenotype: conditioned expression of the
 genotype, the critter's hand to play, with unconditional and conditional
 abilities that depend on circumstance, condition, status and activity (a
@@ -1780,7 +1903,11 @@ into a cohort, being more individual. Earned notability does not require sapienc
 faction, or costly foreground simulation. A denizen can therefore be a
 non-sapient critter with a remembered relationship or event. This current
 definition supersedes the provisional `borg` definition on 2026-09-20; the
-dated rulings that use `borg` remain historical records.
+dated rulings that use `borg` remain historical records. **Amended by ruling
+200 (2026-09-25):** an entity of note is one the sim identifies, and it
+becomes a denizen when people name it, as they need to refer to it. Naming
+requires sapience, so every sophont is a denizen and a denizen need not be a
+sophont; notability itself still needs no name. The tier is of note.
 
 **Character.** A denizen contingent on a group, a polity or a collective,
 even by absence. Defined by the tabletop system's schema, and resolvable
@@ -1789,8 +1916,9 @@ as a denizen and as a critter.
 **Divinity and provenance (ruling 42).** Divinity is not a rung of the
 agent ladder and not a mere status: it is promotion into the world's
 provenance itself. Under §1 a world is a seed, its rules and its asserted
-facts, and a branch inherits all three; a divine thing is an asserted fact
-moved into that root, which is why it is present in every fork after its
+facts, and a fork or a branch inherits all three; a divine thing is an
+asserted fact moved into that root, which is why it is present in every fork
+and branch after its
 ascendance by default, and why anything can hold it, a creature, a place
 or an item. It sits beyond the hagiograph's top rank: the hagiograph
 judges what is unprecedented, legendary or narratively significant, but
@@ -1826,7 +1954,7 @@ the enactment.
 **The wish, and the tiers (ruling 44, with what §7.4 of the general model
 plan already rules).** The wish is the ascension the glyph organ already
 defines: you must have the glyphs to ascend using them; a glyph is had, by
-a trait or part in a critter, by an item a borg may hold and sacrifice at
+a trait or part in a critter, by an item a sophont may hold and sacrifice at
 ascension, or by a carving on a place or thing that cannot be sacrificed;
 and every glyph must have been experienced, through conditions that
 trigger off the log of significant events. An individual has a journey,
@@ -2003,6 +2131,9 @@ crate name and concept are reserved for the simulation tier; this does not
 create that crate or move Servitor implementation. The 2026-09-18 proposal to
 move `borg` to the construct axis remains an unresolved proposal, not a
 ruling. Its dated wording is superseded here; historical quotations retain it.
+**Amended 2026-09-25 by ruling 200:** the tier is of note, an entity the sim
+identifies; a denizen is a named entity, named as people need to refer to
+it, and every sophont is one.
 
 **Kingdom and scale (ruling 39).** Kingdom is class and is a trophic
 strategy: producer, consumer, decomposer, as the founding plan ruled. Scale
@@ -2057,7 +2188,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    individual and the fine detail stops mattering. That makes provisioning
    a process of the faction and polity rungs whose output is the coarse
    reading the higher levels use, and it is what "weakly expressed"
-   (ruling 35) means for the ecology in Eponym and Isometry.
+   (ruling 35) means for the ecology in Eponym and the VTT.
 2. *Methodology.* **Answered, ruling 37.** Reactive agents for critters,
    belief-desire-intention agents for denizens when their chosen fidelity
    needs them, normative agents with roles and institutions for characters.
@@ -2171,7 +2302,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    Eponym: extra lives through companions, who are not fungible, since
    no individual can replace another one for one unless it is a clone,
    which is the founding record's "they can replace you" with its cost
-   named. Isometry: death is understood as a state that could almost be
+   named. The VTT: death is understood as a state that could almost be
    defeated with more of the sciences and magics, revivify, resurrection,
    wishes, so reversal is a process a ruleset or a world's magic provides,
    which in the sim is re-embodiment, the same transition an avatar's
@@ -2196,7 +2327,7 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    the game.
 9. *Divinity.* **Answered, ruling 42:** neither a fourth level nor a
    status but promotion into the world's provenance, present in every
-   branch after ascendance, reachable by anything, enacted by a wish with
+   fork and branch after ascendance, reachable by anything, enacted by a wish with
    the world's strength. The chain of heirs and the avatar are how a
    divine thing is embodied in play afterwards; their design is W2's.
 10. *Reproduction and inheritance.* **Answered, ruling 57.** Two doors,
@@ -2845,7 +2976,7 @@ techniques if both parties have the necessary skills". So a skill is the
 thing that accumulates, which answers half of the open question below:
 repetition of a skill does accumulate in one sophont, and what folds into
 the cohort under ruling 75 is the unnoted act, not the practice. That also
-refines ruling 47's middle form: what is sacrificed there is a technique or
+refines the middle form of rulings 46 and 47: what is sacrificed there is a technique or
 a skill, and a technique is what is taught, since sharing one needs the
 skill on both sides. **Hybridising:** kleptoplasty is conditional, "probably
 not everything can do it", and not the mechanism; hybridising abilities is
@@ -2929,7 +3060,7 @@ is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
   scarcity of a material is the abundance of a critter at a place; a rare
   material is a rare critter, and an extinction ends a material. Nis carries
   where it came from, so a sword carries its lineage, and a lineage refined
-  in Mesocosm over the ages is a material in Eponym and Isometry. That
+  in Mesocosm over the ages is a material in Eponym and the VTT. That
   gives Law A's line "shapes become relics of factions" its literal
   mechanism: a shape crosses as an item bearing the lineage's nis.
 - *Check against Law A,* left **open** for Mark. The founding record says
@@ -3402,7 +3533,9 @@ for every kind of thing the sim has:
 The middle gate is lower than the hagiograph's and is not the hagiograph's.
 For an inhabitant the middle tier is the **denizen**, by the terminology
 supersession of 2026-09-20, an inhabitant remembered individually "because
-history, relationships, or explicit designation makes it matter". Ruling 69
+history, relationships, or explicit designation makes it matter". (Amended
+by ruling 200: the tier is of note, and an inhabitant of note becomes a
+denizen once people name it.) Ruling 69
 gives a location the same rule: "if something of note happens there, then it
 persists; otherwise it can be regenerated from the same basic facts." So
 what asserts a place is an event. Naming it, claiming it and building on it
@@ -3506,7 +3639,7 @@ merge replays.
 players of any of the three games, when the sim is applied to them, have
 effectively selected/created entities they care about": the lineage and its
 critters in Mesocosm, the one sophont and those it knows in Eponym, the
-characters and what the table authored in Isometry. With nobody playing
+characters and what the table authored in the VTT. With nobody playing
 nothing changes, because "you only render things with the upmost detail when
 you're examining them anyway": examination is the root when nobody plays, so
 the bench's observer, a deep-time run's handover and a player are one thing
@@ -3652,13 +3785,15 @@ beside a place crate and a thing crate would hold the same keeping machinery
 three times. Nothing consumes the of-note tier without the sim, which is the
 usual reason for a crate boundary. It can still be built to be tested and
 swapped alone behind its own seam inside the sim. The kinds are then data:
-the inhabitant, the place, the thing, the event. Reserving the name
-`denizen` on crates.io is a separate act and needs a real publish, per the
-naming ledger.
+the inhabitant, the place, the thing, the event. No crate is published
+for the name: the organ words are components, and a `denizen` crate is made
+only if it becomes the way entity information moves between contexts
+(ruling 201).
 
 *Ruling 72 settles the place words.* A place of note is a **location**, and
 a **site** is one cell of the world map (§3.7.1). So the collision to clear
-is between the world-map site and Mesocosm's body site, and Eponym's
+is between the world-map site and Mesocosm's body site, now the tract
+(ruling 157), and Eponym's
 `Site` and the tabletop's `AtlasSite` both name what ruling 72 calls a
 location.
 
@@ -3749,7 +3884,7 @@ From ruling 72, whose definitions are kept whole in the first column.
 | Word | Mark's definition | In this record's terms |
 | --- | --- | --- |
 | World map | "a grid of sites comprising a world map, in any number of shapes (sphere, ring, plane, cube, spire, wheel, any shape works for me)" | §3.7's graph at the rung above the bricks. Sites are its nodes and the shape is its topology, so it is held as adjacency and never as a two-dimensional array; the tile's shape stays a projection (ruling 18) |
-| Site | one cell of that grid, "each with their own terrain and biome (mountainous, valley, island, tundra, tropical)" | the address, and the unit that generation and paging work in; its volume is grown from its terrain, its biome and the seed |
+| Site | one cell of that grid, "each with their own terrain and biome (mountainous, valley, island, tundra, tropical)" | the address, and the unit that generation and play work in, paging being the chunk's (ruling 147); its volume is grown from its terrain, its biome and the seed |
 | Region | "an area of sites on the world map" | a set of sites; terrain, not an entity (ruling 8) |
 | Location | "a known, remarkable, interesting, or potential site (it has additional modifiers/conditions compared to wilderness) or nested region within a world map site"; "they can occupy multiple hexes but be considered the same location, kinda like civ cities" | the place of note of ruling 69, and the word for it: an extent with identity, from part of one site to many sites, carrying modifiers and conditions that wilderness lacks |
 | Wilderness | "sites and areas without a location but from which locations could be generated according to their terrain" | the ambient tier for places (ruling 70), holding ruling 14's derived candidate locations |
@@ -3801,7 +3936,7 @@ the world's base unit and settings. How the nesting goes is **answered, ruling 7
 
 **Nesting is one composable mechanism (ruling 74).** "Composable and
 expandable instead of the order and tiering of the nesting being
-predetermined", with Isometry's scopes, world, region, area and battlemap,
+predetermined", with the VTT's scopes, world, region, area and battlemap,
 as "good defaults". So there is one step, a node of a map opening into a
 finer map, and the kinds of step a world has are data from its founding
 (ruling 41), never code, while the steps themselves are allocated as
@@ -3813,8 +3948,8 @@ the near rung looks like from far enough away" describes a step and never
 said how many there are.
 
 **Nesting is the sim's; scopes are a game's (ruling 92), correcting this
-record.** Mark is right that the record had put an Isometry paradigm into
-the sim. World, region, area and battlemap are Isometry's second pillar,
+record.** Mark is right that the record had put a VTT paradigm into
+the sim. World, region, area and battlemap are the VTT's second pillar,
 "Maps at every scope, sculpted... Same world, different scopes"
 (`design_docs/PROJECT_DESCRIPTION.md:26-29`), and the pillar's own word is
 *scope*. The record conflated two things. *Answer to ruling 92's questions,
@@ -3829,7 +3964,7 @@ docketed as D24, accepted 2026-09-22:*
   an extent and a grain with the game's grid projected over it (ruling 18).
   It sits with perspective in ruling 6's list of what foregrounding chooses,
   so it belongs to the overlay and W5, not to founding.
-- *Each game has its own scopes over the one world.* Isometry has its four.
+- *Each game has its own scopes over the one world.* The VTT has its four.
   Mesocosm has one, the enclosure, "larger than a microcosm, smaller than
   the world", which "names the scale of the enclosure"
   (`mesocosm/design_docs/PROJECT_DESCRIPTION.md:17-19`), and perhaps the
@@ -3842,7 +3977,7 @@ docketed as D24, accepted 2026-09-22:*
 - So: neither of the other games needs those distinctions; each game gets
   its own scopes; and the tiers do not mean different things to different
   games, because the sim has no tiers to mean anything. Ruling 74's "good
-  defaults" then reads as the defaults of Isometry's overlay. What a ruleset
+  defaults" then reads as the defaults of the VTT's overlay. What a ruleset
   may still fix is grain, its tile as a power of two of the base unit
   (§9.2), which is ruling 41's play scope and not the world's. What founding
   supplies for nesting is only the kinds of location, as data, each saying
@@ -3954,7 +4089,7 @@ at its founding", and ruling 88 corrects it: nesting is "dynamically
 allocated as locations are generated". What founding supplies is only the
 kinds of location, as data, each saying what it opens into; this record
 first added "the default scopes of ruling 74" here, which ruling 92 caught
-as Isometry's paradigm, and scopes are a game's and not the world's
+as the VTT's paradigm, and scopes are a game's and not the world's
 (§3.7.1). The instances are allocated when a location is generated or first realised,
 by what the location is, a dungeon opening into floors and a ship into
 decks, and an unvisited one allocates nothing (accepted reading D15). §3.7.1
@@ -4062,7 +4197,7 @@ geology (ruling 97); and the conditions, operations, relations and
 invariants of the schema (ruling 32). Its expression is the roster and the
 history that unfold from it under the seed. Its epoch boundary is ruling
 90's realignment, the shop between rounds where a world "could grow new
-traits" (D22). To "fork into different realms" is ruling 7's branching and
+traits" (D22). To "fork into different realms" is ruling 7's forking (ruling 126) and
 ruling 11's planes, worlds in relation; to "split into/create other planets"
 is §3.3's lineage-splitting transition at the world rung, and under ruling
 100 the child may be meso, a moon calved from a planet.
@@ -4140,7 +4275,7 @@ through three things it already reads: effects, as glyphs in the canon;
 acquisition, as the journey with its means (ruling 47); and frequency in the
 record (rulings 49 and 52). A generated system that declares its effects as
 glyphs, its gate as journey provenance and runs as processes feeds divinity
-unchanged. What changes, as Mark allows: ruling 47's fixed ladder of forms,
+unchanged. What changes, as Mark allows: the fixed ladder of forms of rulings 46 and 47,
 item under technique under embodied trait with memory a fourth, becomes the
 gate axis of the world's magic, so the tiers of godhood a world affords are
 the forms its magic lets a sophont bear and sacrifice. A world whose magic
@@ -4194,7 +4329,7 @@ the record, chooses which to foreground, and names them, which is what §3.8
 already reserves to it: the sim "never decides what is fun". Each product
 has its reading. The tabletop's storylets carry requirements over factions,
 hidden facts and world laws, with role slots filled from the world (§3.9),
-and ruling 3 binds Isometry to arcs and narratives. Eponym owes its
+and ruling 3 binds the VTT to arcs and narratives. Eponym owes its
 "legibility surface" as day-one work (its CLAUDE.md). Mesocosm's statement
 is the epoch review. The vocabulary is the same for all three; the statement
 differs.
@@ -4248,7 +4383,7 @@ invariant refuses, the world-conditions schema's `Refused` (§3.3). Merging
 is then the tabletop's proposal and commit at the scale of a branch, and it
 respects the wing's standing rule against speculative CRDTs: intents are
 additive, the sim is the materialiser, and refusal is the conflict rule
-(Mesocosm's CLAUDE.md). Synchronous play stays what Isometry already has,
+(Mesocosm's CLAUDE.md). Synchronous play stays what the VTT already has,
 one authority and an ordered event log.
 
 **What no merge can do.** Two branches that advanced different spans do not
@@ -4351,7 +4486,7 @@ Read from each crate's own description on 2026-09-18, not from memory.
 
 | Tier | Component | What it is | Where |
 | --- | --- | --- | --- |
-| Rendering | isometer | The scene: terrain tracer, body renderer, depth join, picking, glyph batch | `shared/isometer`, Isometry root |
+| Rendering | isometer | The scene: terrain tracer, body renderer, depth join, picking, glyph batch | `shared/isometer`, the repository root |
 | Rendering | netrender | Composition of rendered textures with the document's paint stream | `repos/netrender` |
 | Rendering | wgpu | The device | crates.io |
 | Hosting and interface | genet | The document host: window, input routing, layout. References by ruling 30: blitz and formal-web specifically; servo, Firefox, WebKit, Chrome and the webviews as the same lane with a few key architectural distinctions. Owes the full W3C animation surface (ruling 24) | `repos/genet` |
@@ -4362,7 +4497,7 @@ Read from each crate's own description on 2026-09-18, not from memory.
 | Generation | esp | mere's portable model-execution seam, with Burn under it | mere `intel/esp` |
 | Generation | cleromancy | Deterministic and cast readings with replayable receipts: the seeded draw with a receipt that ruling 15 needs | `repos/cleromancy` |
 | Trust plane | dramatis | The cast list: personae for one's own faces and keys, gaz for who one knows, gazette for resolution | mere `dramatis` |
-| Trust plane, unresolved | eponym-identity | Ruled "the wing's identity crate" on 2026-08-10 and consumed by nothing outside Eponym since; `SubjectId`, body revisions, facets and the control pointer are the sim's provenance noun. Either dramatis absorbs it under W3 or the promotion is withdrawn (raised 2026-09-18 by W1) | `eponym/crates/eponym-identity` |
+| Trust plane | eponym-identity | Ruled "the wing's identity crate" on 2026-08-10 and consumed by nothing outside Eponym since; `SubjectId`, body revisions, facets and the control pointer are the sim's provenance noun. Dramatis absorbs it under W3 (ruling 34; raised 2026-09-18 by W1) | `eponym/crates/eponym-identity` |
 | Persistence | eidetic | The durable-memory family: muniment for slots, blobs and journals; chartulary for the content-addressed container graph with lineage; hagiograph for the history organ | mere `eidetic` |
 | Branching and federation | moot | gemot for a moot's lifecycle and replication over p2panda; moothold for federation. The branchable-world model is this | mere `moot` |
 | Networking | murm | Invitation-scoped peer conversation with signed per-author logs and a WebRTC carrier; iroh is the other carrier | mere `murm` |
@@ -4597,8 +4732,8 @@ levels:
 | Game | Foregrounded rung | Refined by play | Weakly expressed |
 | --- | --- | --- | --- |
 | Mesocosm | the critter and its lineage | the critter, over the ages, according to play preference | the ecology as weather, prey and competitors; society and polities as distant pressures that can still influence events |
-| Eponym | the denizen, an individually remembered inhabitant, and its factions | what remembered entities do; the coterie, the party, the base | the ecology as wildlife and land; polities as the powers that shape the region |
-| Isometry | the character inside its polities | characters partisan, friendly, antagonistic, factional or unaligned | polities set the narrative stakes (sidequests, alignment, arcs, non-player characters, access to resources); the ecology as terrain and encounter |
+| Eponym | the denizen, a named inhabitant (ruling 200), and its factions | what remembered entities do; the coterie, the party, the base | the ecology as wildlife and land; polities as the powers that shape the region |
+| The VTT | the character inside its polities | characters partisan, friendly, antagonistic, factional or unaligned | polities set the narrative stakes (sidequests, alignment, arcs, non-player characters, access to resources); the ecology as terrain and encounter |
 
 "Weakly expressed" is a requirement on the sim, not on the game: every rung
 must be able to run at background fidelity and surface as effects,
@@ -4614,7 +4749,7 @@ for?" And his addendum: "perhaps it's worthwhile to think of some world
 effects as like rulesets for mesocosm and/or paredros?" This section is
 the assessment; the rulings it needs are in §9.12.
 
-**The seam that exists.** Isometry's system plugin (`crates/isometry-system`,
+**The seam that exists.** The VTT's system plugin (`crates/isometry-system`,
 read 2026-09-18) is already a binding of the shape Mark describes: a system
 is a schema of fields, derived values as Lua functions of the sheet, and
 actions as a dice expression plus a Lua bonus; an adjudicated action names
@@ -4750,16 +4885,19 @@ adds the twist die and the Fear economy and is the other candidate,
 licence permitting. Two consumers of different families is the wing's own
 rule, and it has been met for one family only. What each game's profile contains
 is that game's design and not this record's. Two questions belong to the
-overlay tier and are left open here: who resolves an event when a DM and
-the sim both could, and where a foreground game's rules stop and the sim's
-begin. Both are inside a branch, so they do not touch the base profile.
+overlay tier: who resolves an event when a DM and the sim both could, and
+where a foreground game's rules stop and the sim's begin. Both are inside a
+branch, so they do not touch the base profile, and rulings 114, 154, 156,
+188 and 189 answer them.
 
-### 5.2 The boundary between the sim and a game (recommendation, unruled)
+### 5.2 The boundary between the sim and a game (ruled in part)
 
 **Review, 2026-09-21, at Mark's word: "This ruling feels particularly
 contentious, so let's review what it would cost and if we've overextended
 ourselves a bit in the brainstorming."** §5.2 to §5.4 are held. Only ruling
-78, a clean boundary, is ruled in them. Sized against what exists:
+78, a clean boundary, is ruled in them. *(Since then, rulings 114 and 154
+ruled §5.2's points 2 to 5 on 2026-09-24, and points 1, 6 and 7 stand as D18
+left them; see point 5's note.)* Sized against what exists:
 
 | Proposed commitment | What exists today | What it would cost |
 | --- | --- | --- |
@@ -4965,7 +5103,7 @@ desktop. What the small platforms cost falls on rung 3 alone, and rungs 1
 and 2, data and piccolo, run everywhere. It is also the strongest argument
 against total componentisation: on iOS it would put the whole sim under an
 interpreter, and on the web behind glue. "The best capabilities available"
-is then a tier per platform under one contract, which is how ruling 19's
+is then a tier per platform under one contract, which is how ruling 29's
 floor for the web already reads: actors and Rayon on a desktop, one Worker
 on the web, an interpreter only for outside code where a platform forbids
 compiling it. Mobile is not yet a ruled target of the wing.
@@ -5040,7 +5178,8 @@ bold or cautious and whether to contest, yield or share, and with nudges,
 one-off suggestions the critter weighs like any other (ruling 176). The
 critter follows by its bond, built from how well the player's orders have
 served it, ruling 60's opinion weighting turned on the player (ruling 177).
-The played slice's direct control is rewritten to match; its terrarium
+The played slice's direct control is rewritten to match, now (ruling
+199), and the plan retires into W5 when M3 lands (ruling 196); its terrarium
 section and receipts stand. Whether the bond carries across generations is
 a setting with three choices, starting fresh, seeded by the lineage, or the
 lineage's own, seeded by default (ruling 178). The player chooses when to
@@ -5141,7 +5280,7 @@ editor's (rulings 89, 156 and 184).
 | --- | --- |
 | Shared organs extracted from one product's path and shaped by it; the second consumer's plan titled "what isometer offers" | §2's tier test and §6: the stack is designed from the sim's nouns, never from a product's data |
 | Two grains, a six-inch voxel world and a five-foot sprite grid, sharing one scene | §3.6: one base unit, power-of-two ratios per chunk; a tile is a brick face |
-| Two theories of appearance in Isometry, stylesheet and voxel-sourced, with the colour table now generating the CSS | Open: a game-overlay question (§5), to be ruled in Isometry's own plan |
+| Two theories of appearance in the VTT, stylesheet and voxel-sourced, with the colour table now generating the CSS | Open: a game-overlay question (§5), to be ruled in the VTT's own plan |
 | Substrate everywhere, play nowhere; receipts about picking called "playable" | §6: done-conditions from content and scale; the games tier is where play is designed |
 | The DOM board and the scene board as two boards | §3.6 and §3.7: the map's height-and-kind is a far-rung view; one renderer over the sim's terrain ladder |
 | A brick cap treated as a wall; a warning built for a limit that should not exist | §4.3: a budget constant; the store is sized to the card and paged |
@@ -5155,27 +5294,29 @@ still open under it.
 1. **The sim's home and name.** Answered: not isoscape, which is
    generation alone. Mark offered **isosim**. Candidates checked on
    crates.io the same day: isosim free, isostasy free, isogloss free,
-   isoform free, Isocosm free, isohyet and isopleth free, isochron taken
+   isoform free, isotropy free, isohyet and isopleth free, isochron taken
    (a cron engine). Only crates.io was checked; games, studios and marks
    were not, so none is banked yet. Registers: isosim is plain and says
    what it is; isostasy is the equilibrium the crust seeks under load, the
    register of three layers adapting; isoform is one gene expressed as many
-   forms, the register of one sim played many ways; Isocosm is the same in
+   forms, the register of one sim played many ways; isotropy is the same in
    every direction. Also ruled in shape: `paredros-world` becomes
    `paredros-core` (after ruling 109, `eponym-world` becomes
    `eponym-core`; Mark, 2026-09-24: "Yes"), and the three product cores are defined in one standard
    way that plugs into the sim; that standard is the game-overlay contract
    of §5, a trait each core implements against the sim, in the spirit of
-   mesquite's `Product`. **Ruled 2026-09-18: Isocosm** for the sim, and
+   mesquite's `Product`. **Ruled 2026-09-18: isotropy** for the sim, and
    **isostasy** for whatever bridges effects between the layers. Games,
    studios and marks remain to be checked before banking; claim by publish.
-   **Checked 2026-09-22 by web search:** Isocosm is a 2015 iOS puzzle game
+   **Checked 2026-09-22 by web search:** isotropy is a 2015 iOS puzzle game
    (Dmitriy Prikhodko) and Isotropic Games a placeholder studio site;
    isostasy is a live Steam title, an NES-style Metroidvania by Gravel
    Studios. Mark, ruling 108: neither word is to be a game name, so there is
    no conflict; both are banked as internal names for the sim and the
    bridging organ and never as product titles. Trademark registers were not
-   searched. Claim by publish stands.
+   searched. Claim by publish stands. **Superseded on 2026-09-22 by
+   rulings 109 to 112:** the sim and the family are Isocosm. These dated
+   lines keep isotropy, restored by ruling 198.
 2. **The base unit and tile geometry.** Answered: the base scale is
    configurable for other rulesets, since five feet is one game's number;
    and a tile may have a configurable number of sides. Ruled here in
@@ -5223,8 +5364,8 @@ still open under it.
    and effects including magic), the world, specimens, items and effects,
    which is also the dev tools. W4 is that bench; the first game overlay
    follows it.
-7. **`ProcessDef` as the base profile's process definition.** Not yet
-   answered.
+7. **`ProcessDef` as the base profile's process definition.** Answered,
+   ruling 32.
 9. **`PROJECT_DESCRIPTION.md` at the Isometry root contradicts the
    record and the repo,** found by W1 and maintainer-owned, so surfaced
    rather than edited: pillar 4 says rules are Rhai scripts where §9.3 and
@@ -5348,8 +5489,9 @@ carries the rulings as they are made.
   under this record, with the taxonomy of §3 as a schema, the three process
   shapes as definitions, the record and reach field specified, and a
   generator whose declared space is the source of every receipt. Drafted
-  2026-09-22 as the [sim plan](2026-09-22_sim_plan.md): met on paper, and
-  done when the docket items its §8 lists are ruled or moved.
+  2026-09-22 as the [sim plan](2026-09-22_sim_plan.md): met on paper, the
+  docket items its §8 lists being ruled or moved (ruling 106; D19 and D20
+  by rulings 154 and 152).
 - **W3, the stack re-derived.** Done when each stack component's plan
   states what it takes from the sim's nouns and nothing from any product's
   data, and the §4.3 findings are lanes in their owners' plans.
@@ -5369,7 +5511,8 @@ carries the rulings as they are made.
   [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), phases M0
   to M4, proposed and not opened.
 
-No code lane runs before W1 is ruled.
+No code lane ran before W1 was ruled; the sim's lane opened after it, on
+2026-09-22.
 
 ## Findings
 
@@ -5416,6 +5559,17 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 198 to 209 recorded. The RPG systems session's
+  read-only consistency pass came back with thirty items, each confirmed
+  against the files, and was applied at Mark's word (198): notes where later
+  rulings had superseded earlier ones, citations, stale status and names
+  lines, fork and branch, tract, sophont, and the VTT for Isometry in
+  present prose; the dated §9.1 lines and two Progress entries got isotropy
+  back. Its items 8, 9 and 20 became rulings 199 to 201, and ruling 200 is
+  carried into the Denizen paragraph, the terminology supersession, §3.4.1
+  and §5's table; Mesocosm's CLAUDE.md denizen line was rewritten and a
+  sophont line added at his word. M1's forks became rulings 202 to 205, and
+  the S2 probe's first fork rulings 206 to 209.
 - 2026-09-25: ruling 197 recorded: the contract is one shared crate,
   `isocosm-overlay`. At Mark's word, two lanes opened in parallel: the sim
   plan's S2 probe (a scale baseline, then one statistical reduction checked
@@ -5621,7 +5775,7 @@ No code lane runs before W1 is ruled.
   extended, the grade of a sacrifice now the depth of the entity's relation
   to that magic in its story, with the whole canon the favoured default and
   a threshold a setting; the two `mesocosm/CLAUDE.md` amendments applied at
-  Mark's word; Isocosm and isostasy banked as internal names after the
+  Mark's word; isotropy and isostasy banked as internal names after the
   registries showed both as game titles; §9.9 closed as stale.
 - 2026-09-22: at Mark's word ("proceed!"), the sim plan drafted from rulings
   1 to 105 as W2's plan, and the session notes written as a secondary
@@ -5972,6 +6126,6 @@ No code lane runs before W1 is ruled.
   with the field as the record; desktop first-class and the web a tier
   with a floor; genet's reference set. Rayon on the web re-checked and
   still nightly-only.
-- 2026-09-18: Mark answered §9: Isocosm and isostasy named, hex as
+- 2026-09-18: Mark answered §9: isotropy and isostasy named, hex as
   projection, web first-class, one bench, gamepads to genet, keymapping
   across the stack. Open: lighting parts, `ProcessDef`, localization.
