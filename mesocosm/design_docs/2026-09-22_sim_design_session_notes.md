@@ -269,8 +269,8 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24 and 174 to 196 on 2026-09-25, the last
-of them ending in W5's plan.
+113 to 173 were given on 2026-09-24 and 174 to 197 on 2026-09-25, the last
+of them ruling W5's plan and naming its contract crate.
 
 ### 8.1 How it started
 
@@ -351,6 +351,7 @@ worlds, none in ecological ones.
 | | Truth; collapse; unplayed lineages | creative and survival; local or global, never the end; they adapt, inherit and develop against the web | 180 to 182 |
 | | At a birth; creative mode | "Parent by default"; "See only" | 183, 184 |
 | | One sim; the ceiling; the plan's decisions | "Isocosm absorbs"; "decompose them under the 600 Loc limit"; only on Isocosm, record earlier, retire the slice | 192 to 196 |
+| | The contract crate | "One shared crate"; "isocosm-overlay" | 197 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -359,7 +360,10 @@ line; the readings docket was archived to `archive_docs/2026-09-24/` once
 nothing was held; relic, tale and tract joined Mesocosm's terminology; Law
 A was amended for materials at Mark's word; and the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) was drafted as
-W5, its M0 done the same day.
+W5, its M0 done the same day. Then, at Mark's word, work went parallel:
+the overlay plan's M1 and an S2 probe of the sim plan opened as lanes, and a
+read-only consistency pass over the record and the plans went to the RPG
+systems session.
 
 ### 8.4 What was got wrong, and corrected
 
@@ -382,7 +386,8 @@ W5, its M0 done the same day.
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
 occurrences; D20's provider over `mere-capability`, W3's to build; the
-overlay plan's M1 to M4, proposed and not opened; what measures a collapse
+overlay plan's M1, open in a lane, and M2 to M4, proposed and not opened;
+the S2 probe and the consistency pass, open; what measures a collapse
 as local or global, the playable ecology plan's to specify; and plans of
 their own for Eponym's and the VTT's overlays, whose shapes are ruled in
 the record's §5.6 and §5.7.

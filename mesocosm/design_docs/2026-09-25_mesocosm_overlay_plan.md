@@ -3,7 +3,8 @@
 **Date:** 2026-09-25
 
 **Status, 2026-09-25:** plan; M0 done the same day (rulings 194 to 196),
-M1 to M4 proposed and not opened. Drafted at Mark's
+M1 opened at Mark's word and in progress, M2 to M4 proposed and not
+opened. Drafted at Mark's
 word ("Draft the Mesocosm plan") from the
 [wing design record](2026-09-18_wing_design_plan.md)'s rulings on the
 overlay, 174 to 193, gathered in its §5.5, and from Mesocosm's existing
@@ -142,9 +143,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 - **M0, the profile ruled.** Done when §6's decisions are taken; everything
   else in §1 to §4 rests on rulings already made. **Done 2026-09-25**
   (rulings 194 to 196).
-- **M1, the contract's Mesocosm side.** Done when the directives,
-  checkpoint answers and dev intents exist as contract types in a crate
-  that depends on nothing sim-internal, every type round-trips through
+- **M1, the contract's Mesocosm side.** In one shared crate,
+  `shared/isocosm-overlay`, game-neutral, with Mesocosm's vocabulary as its
+  first game's module (ruling 197). Done when the directives, checkpoint
+  answers and dev intents exist as contract types in that crate, which
+  depends on nothing sim-internal, every type round-trips through
   bytes (D18), and each of today's sixteen intents is mapped as §3 splits
   them.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
@@ -198,6 +201,10 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-25: M1 opened at Mark's word as a parallel lane beside the sim
+  plan's S2 probe: the contract crate `shared/isocosm-overlay` (ruling 197),
+  built by a Sonnet subagent in its own worktree, to be reviewed, tested in
+  the foreground and merged here by pathspec.
 - 2026-09-25: M0 done: §6's three decisions ruled (194 to 196). M1 to M4
   proposed; no lane open.
 - 2026-09-25: plan drafted at Mark's word from rulings 174 to 193 and

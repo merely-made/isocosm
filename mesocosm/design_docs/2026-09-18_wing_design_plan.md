@@ -15,8 +15,9 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 196, and W5 is drafted as the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 done. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 197, and W5 is drafted as the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 done
+and M1 in progress. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1651,6 +1652,14 @@ what later sections derive from.
      the plan's third decision: retire the played slice plan into the
      overlay plan when M3 lands, or keep it as the host's own? Mark:
      "Retire into W5."
+197. **The overlay contract is one shared crate, `isocosm-overlay`.** Put
+     to Mark on 2026-09-25, opening M1: does the contract crate live as one
+     shared crate, as Mesocosm's own first, or as a shared core plus
+     Mesocosm's vocabulary? Mark: "One shared crate." And its name, from
+     `isocosm-contract`, `wing-overlay` or `isocosm-overlay`: Mark:
+     "isocosm-overlay". So it sits in `shared/`, game-neutral, with
+     Mesocosm's directives as its first game's module and Eponym and the
+     VTT to add theirs.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5407,6 +5416,12 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: ruling 197 recorded: the contract is one shared crate,
+  `isocosm-overlay`. At Mark's word, two lanes opened in parallel: the sim
+  plan's S2 probe (a scale baseline, then one statistical reduction checked
+  by ruling 113's test) and the overlay plan's M1 (the contract crate); and
+  a read-only consistency pass over this record and the plans, pinned to
+  commit 0f249ae, handed to the RPG systems session.
 - 2026-09-25: rulings 194 to 196 recorded, the overlay plan's three
   decisions: directing only on Isocosm; the record moved ahead of places;
   the played slice plan to retire into W5 when M3 lands. M0 is done.
