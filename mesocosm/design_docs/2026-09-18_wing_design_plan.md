@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 157. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 159. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1386,6 +1386,25 @@ what later sections derive from.
      deed or none; tract, situs or keeping *site*. Mark picked relic, tale
      and tract. The body-site rename is a lane, about 104 occurrences in
      26 files by the 2026-09-20 count.
+158. **A mind's mood is fed by what it remembers, needs and lives
+     through; personality traits are a class of traits of their own.** Put
+     to Mark on 2026-09-24, opening mood and breaks: what is a mind's mood
+     made of? Four options were put, to pick all that should feed it: what
+     it remembers, the tales it holds by intensity and valence; what it
+     needs; what it is living through; and its disposition as a baseline.
+     Mark picked the first three and, in place of the fourth: "was
+     figuring we could have a special class of traits, personality traits;
+     inheritable in a seed form, developable if you take actions that feed
+     the trait; compounding +/- modifiers to other mental/physical aspects
+     as they develop... some maybe preclude aspects of play for special
+     bonuses? (like brawler in rimworld) idk. i like being able to invest
+     in traits with significant activity".
+159. **Mood is read; strain is kept.** Put to Mark on 2026-09-24: is mood
+     kept, or read? Three options were put: read, never kept; kept as a
+     level, as vigour is; or read, with strain kept. Mark: "Read, with kept
+     strain." So mood is derived on demand from its sources, while strain
+     builds as a kept level whenever mood stays low, and only rest or
+     relief bleeds it off.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -1794,7 +1813,11 @@ Mark as questions rather than filled in (open, 2026-09-18):**
    lineages, and its direct pull fades after. Ruling 121: the world keeps
    shaping its people through condition, scarcity or plenty, its
    intentions, its cycles, what it is made of, and they may drift from its
-   temperament.) The denizen
+   temperament. Ruling 158: personality traits are a class of traits of
+   their own, inherited in seed form and grown by acts that feed them, each
+   compounding modifiers on other mental and physical aspects, some
+   precluding an aspect of play for a bonus, as RimWorld's Brawler does.
+   How they stand to the five factors is put to Mark.) The denizen
    line is Dwarf Fortress's historical-figure rule: a critter becomes a denizen
    when it does something the record keeps, is named, is related, or is
    explicitly designated, not only when it becomes an antagonist.
@@ -2876,6 +2899,19 @@ and a ruleset's hit points calibrate against vigour more than wounds, since
 flesh. Prior art, known: vitality and wound points (the d20 Star Wars
 roleplaying game, 2000, later a D&D variant); RimWorld and Dwarf Fortress,
 which wound parts and keep no pool.
+
+**Mood and strain (rulings 158 and 159).** A mind's mood is read, never
+stored: it comes from what the mind remembers, the tales it holds weighed by
+how intense and how good or bad they were and fading as they fade (ruling
+127), from what it needs, and from what it is living through, its vigour,
+wounds, danger, company and place. Strain is kept: it builds on the ledger
+while mood stays low, as vigour drains in a fight, and only rest or relief
+bleeds it off. Its personality traits (ruling 158) modify both. What happens
+when strain passes what a mind can bear is the next question. Prior art,
+known: RimWorld's mood as a sum of timed thoughts with break thresholds and
+inspirations; Dwarf Fortress's accumulated stress, its tantrums, and its
+strange moods, the fey mood of ruling 95; Darkest Dungeon's stress meter,
+ending in an affliction or a virtue.
 
 ### 3.4 The record
 
@@ -4987,6 +5023,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 158 and 159 recorded: mood fed by memory, needs and
+  situation, with personality traits a class of their own; mood read and
+  strain kept. §3.3.1 gains a mood and strain paragraph with its prior art,
+  and §3.2.1's disposition note the traits.
 - 2026-09-24: ruling 157 recorded: relic, tale and tract, closing the
   of-note naming round; the body-site rename is a lane.
 - 2026-09-24: the readings docket archived at Mark's word ("Archive it") to
