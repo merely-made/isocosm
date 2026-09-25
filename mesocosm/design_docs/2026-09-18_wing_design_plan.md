@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 177. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 179. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1522,6 +1522,19 @@ what later sections derive from.
      Three options were put: within its body; when its needs allow; or by
      its bond, built from how well your orders have served it, as ruling
      60 weighs directives by opinion. Mark: "By its bond."
+178. **Whether the bond carries across generations is a setting, seeded
+     by default.** Put to Mark on 2026-09-25: when your critter dies and
+     you take up the next of your lineage (ruling 61), does the bond carry
+     over? Three options were put: it starts fresh; it is seeded by the
+     lineage, inherited in seed form as personality traits are; or it is
+     the lineage's, carrying whole. Mark: "All three should be options; my
+     default would be seeded".
+179. **A Mesocosm player chooses when to start, from the world's
+     habitability for their critter onward.** Put to Mark on 2026-09-25:
+     does the first played loop start in a world with a past, deep time
+     first or a bare world first? Mark: "You may choose to start at the
+     start of the world's habitability for your critter, or add as much
+     time as you'd like".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4886,7 +4899,7 @@ derivation, the record's commit path, anything feeding the tracer. The W2
 probe of this section measures the constant, so the line can be moved later
 on a receipt.
 
-### 5.5 The first overlay: Mesocosm (rulings 174 to 177)
+### 5.5 The first overlay: Mesocosm (rulings 174 to 179)
 
 W5 is Mesocosm's (ruling 174). Its domain is the critter and its lineage
 (ruling 35), what it plays follows the lineage's traits (ruling 155), and
@@ -4899,7 +4912,11 @@ one-off suggestions the critter weighs like any other (ruling 176). The
 critter follows by its bond, built from how well the player's orders have
 served it, ruling 60's opinion weighting turned on the player (ruling 177).
 The played slice's direct control is rewritten to match; its terrarium
-section and receipts stand.
+section and receipts stand. Whether the bond carries across generations is
+a setting with three choices, starting fresh, seeded by the lineage, or the
+lineage's own, seeded by default (ruling 178). The player chooses when to
+start: at the start of the world's habitability for their critter, or with
+as much deep time added as they like (ruling 179).
 
 ## 6. Method
 
@@ -5211,6 +5228,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 178 and 179 recorded: the bond across generations a
+  setting, seeded by default; the player's start chosen from the world's
+  habitability for their critter onward. §5.5 carries both.
 - 2026-09-25: rulings 176 and 177 recorded: the directive vocabulary and
   the bond. §5.5 added for the first overlay, gathering rulings 174 to 177.
 - 2026-09-25: ruling 175 recorded: the first Mesocosm overlay directs, and
