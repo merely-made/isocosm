@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 166. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 169. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1449,6 +1449,23 @@ what later sections derive from.
      names only, languages as the generated flavour of names; or no
      languages. Mark: "Languages divide." So telling, posing and exchange
      across tongues come harder, and interpreters matter.
+167. **Tongues and cultures descend like lineages.** Put to Mark on
+     2026-09-24: do tongues and cultures descend like lineages? Three
+     options were put: like lineages, splitting into dialects when their
+     speakers part and drifting over deep time; fixed per people; or
+     generated with no descent. Mark: "Like lineages."
+168. **Names come from the tongue, from tales, and from the namer.** Put to
+     Mark on 2026-09-24: how are names made? Three options were put, to
+     pick all that should: from the tongue, generated from a language's
+     sounds and words; from tales, epithets earned by deeds and stories;
+     and given by the namer, ruling 36's naming being a sapient's own act.
+     Mark picked all three.
+169. **Culture spreads by contact, prestige and imposition, and drifts
+     apart out of touch.** Put to Mark on 2026-09-24: how does culture
+     spread between peoples? Four options were put, to pick all that
+     should: contact, neighbours growing alike faster the more they share;
+     prestige, copying those admired or powerful; imposition by a polity's
+     means; and drift apart when out of touch. Mark picked all four.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3084,7 +3101,15 @@ ruled:* a tale that crosses a tongue is retold, so translation is one more
 way a belief goes wrong under ruling 117. Prior art, known: Axelrod's
 dissemination of culture (1997), where neighbours who already share traits
 converge further; Dwarf Fortress's generated languages and Ultima Ratio
-Regum's generated cultures.
+Regum's generated cultures. *Ruled 2026-09-24 (rulings 167 to 169):* tongues
+and cultures descend like lineages, splitting into dialects when their
+speakers part and drifting over deep time, so languages have family trees
+as critters do; names come from a tongue's sounds and words, from tales as
+epithets, and from whoever names a thing; and culture spreads by contact,
+faster between peoples who already share much, by prestige, and by
+imposition, and drifts apart where peoples are out of touch. Prior art for
+descent, known: historical linguistics' family trees, and phylogenetic
+methods now borrowed from biology to build them.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -5092,6 +5117,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 167 to 169 recorded: tongues and cultures descend
+  like lineages; names from the tongue, tales and the namer; culture
+  spreads by contact, prestige and imposition and drifts apart.
 - 2026-09-24: rulings 165 and 166 recorded: culture read from its people
   and named when noted; languages divide. §3.4 gains a culture and
   language paragraph with one flagged reading and its prior art.
