@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::handle::{EntityHandle, PlaceHandle};
 
-/// A standing order for the one critter a player plays, in force until
-/// replaced (ruling 176). Distinct from a [`Nudge`], which is a one-off the
+/// A standing order for the entity a player plays, one critter or its kin
+/// directed whole (rulings 152, 155), in force until replaced (ruling 176). Distinct from a [`Nudge`], which is a one-off the
 /// critter merely weighs.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Directive {

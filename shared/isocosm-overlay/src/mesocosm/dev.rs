@@ -8,8 +8,7 @@ use crate::handle::EntityHandle;
 /// A raw world coordinate, `[x, y, z]` in the sim's voxel grid. Dev intents
 /// reach the grid directly (mesocosm-core's own `PlaceMatter` and the
 /// `OffGrid` rejection already do), unlike a play-time [`super::Places`]
-/// directive, which never names a location this way — see the crate
-/// README's "Open forks" for that distinction.
+/// directive, which names a place-graph node (ruling 205).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WorldPoint(pub [i32; 3]);
 

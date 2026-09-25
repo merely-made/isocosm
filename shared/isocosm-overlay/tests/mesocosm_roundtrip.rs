@@ -5,9 +5,10 @@
 //! same format as `core_roundtrip.rs`.
 
 use isocosm_overlay::mesocosm::{
-    BirthAnswer, Boldness, CheckpointAnswer, CheckpointAnswerKind, CompetitorStance, DevIntent,
-    Directive, DirectiveKind, MesocosmHandoff, MesocosmIntent, MesocosmIntentEnvelope, Nudge,
-    Places, Priorities, PriorityKey, RevisionAnswer, Stances, WorldPoint,
+    BirthAnswer, Boldness, CheckpointAnswer, CheckpointAnswerKind, CompetitorStance, DeathAnswer,
+    DevIntent, Directive, DirectiveKind, MesocosmHandoff, MesocosmIntent, MesocosmIntentEnvelope,
+    Nudge, Places, PlayerAct, PlayerActKind, Priorities, PriorityKey, RevisionAnswer, Stances,
+    WorldPoint,
 };
 use isocosm_overlay::{CandidateHandle, EntityHandle, PlaceHandle, Tick};
 use serde::{Deserialize, Serialize};
@@ -98,7 +99,17 @@ fn directive_roundtrips_every_kind() {
 }
 
 #[test]
-fn checkpoint_answer_roundtrips_birth_and_epoch_review() {
+fn player_act_roundtrips_speciate() {
+    roundtrips(&PlayerAct {
+        entity: entity(1),
+        kind: PlayerActKind::Speciate {
+            name: "the long-armed".into(),
+        },
+    });
+}
+
+#[test]
+fn checkpoint_answer_roundtrips_birth_death_and_epoch_review() {
     roundtrips(&CheckpointAnswer {
         entity: entity(1),
         kind: CheckpointAnswerKind::Birth(BirthAnswer::KeepParent),
@@ -106,6 +117,10 @@ fn checkpoint_answer_roundtrips_birth_and_epoch_review() {
     roundtrips(&CheckpointAnswer {
         entity: entity(1),
         kind: CheckpointAnswerKind::Birth(BirthAnswer::TakeOffspring),
+    });
+    roundtrips(&CheckpointAnswer {
+        entity: entity(1),
+        kind: CheckpointAnswerKind::Death(DeathAnswer { next: entity(2) }),
     });
     roundtrips(&CheckpointAnswer {
         entity: entity(1),
@@ -141,6 +156,12 @@ fn mesocosm_intent_roundtrips_every_variant() {
         entity: entity(1),
         kind: DirectiveKind::Nudge(Nudge::GoTo(PlaceHandle(1))),
     }));
+    roundtrips(&MesocosmIntent::Act(PlayerAct {
+        entity: entity(1),
+        kind: PlayerActKind::Speciate {
+            name: "the long-armed".into(),
+        },
+    }));
     roundtrips(&MesocosmIntent::Checkpoint(CheckpointAnswer {
         entity: entity(1),
         kind: CheckpointAnswerKind::Birth(BirthAnswer::KeepParent),
@@ -154,6 +175,15 @@ fn mesocosm_intent_is_dev_matches_the_dev_variant_only() {
         !MesocosmIntent::Directive(Directive {
             entity: entity(1),
             kind: DirectiveKind::Nudge(Nudge::GoTo(PlaceHandle(1))),
+        })
+        .is_dev()
+    );
+    assert!(
+        !MesocosmIntent::Act(PlayerAct {
+            entity: entity(1),
+            kind: PlayerActKind::Speciate {
+                name: "the long-armed".into(),
+            },
         })
         .is_dev()
     );

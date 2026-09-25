@@ -86,10 +86,11 @@ settles come back through the handoff.
 
 | Direction | Mesocosm's side | Rests on |
 | --- | --- | --- |
-| In: directives | priorities, places, stances and nudges, stamped for a tick, for the entity the player plays, one critter or its kin directed whole | 152, 155, 176, 177 |
-| In: checkpoint answers | at a birth, keep the parent or take the offspring; at the boundary, the review's revision | 57, 183 |
+| In: directives | priorities, places, stances and nudges, stamped for a tick, a newtype over the sim's count, for the entity the player plays, one critter or its kin directed whole; places named by a place-graph handle | 152, 155, 176, 177, 203, 205 |
+| In: the player's acts | splitting the played line and naming it; the name is the doing | 202 |
+| In: checkpoint answers | at a birth, keep the parent or take the offspring; at a death, the next life taken up from the cohort (*a reading of 61 and 178*); at the boundary, the review's revision | 57, 61, 178, 183 |
 | In: dev intents | end the epoch, force a birth, kill, place matter; the dev tools plan's, never play | playable ecology plan §6 q2 |
-| Out: events | receipts and record entries by subscription; in survival mode, only what the played critter can know | 113, 117, 180 |
+| Out: events | receipts and record entries, by a subscription derived from the player's attention set, whose type M1 designs; in survival mode, only what the played critter can know | 113, 117, 180, 204 |
 | Out: views | a read-only view of each tick for the terrarium section and the review board | 154 |
 | Handoff | empty | *reading below* |
 
@@ -99,13 +100,16 @@ revision the sim admits at the boundary, so nothing reaches the handoff
 unless a later rule adds a game-resolved outcome.
 
 **The intents today.** `mesocosm-core`'s `Intent`
-(`src/world/intent.rs:74`) holds sixteen variants. *Reading, not ruled,
-confirmed intent by intent in M1:* under directing they split three ways.
-`Move`, `Metabolize`, `Consume`, `Graft`, `Deposit`, `Carve` and `Idle`, a
-tick advanced without acting, are driving, and become the critter's own
-acts, chosen by its methodology, or lose their role. `Speciate`, `Express`,
-`Revise`, `Resume` and `TakeControl` answer checkpoints and the review, and
-stay. `EndEpoch`, `ForceBirth`, `Kill` and `PlaceMatter` are dev intents.
+(`src/world/intent.rs:74`) holds sixteen variants, mapped one by one in
+`shared/isocosm-overlay`'s README. `Move`, `Metabolize`, `Consume`,
+`Graft`, `Deposit` and `Carve` were driving and become the critter's own
+acts, chosen by its methodology, and `Idle`, a tick advanced without
+acting, loses its role; that split is a reading, not ruled. `Speciate`
+stays the player's act and `Express` becomes the critter's own
+development (ruling 202). `TakeControl` and `Resume` answer the birth
+checkpoint, `TakeControl` also the death checkpoint (a reading of rulings
+61 and 178), and `Revise` the review. `EndEpoch`, `ForceBirth`, `Kill` and
+`PlaceMatter` are dev intents.
 
 ## 4. Absorption: `mesocosm-core` into Isocosm
 
@@ -146,11 +150,13 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   (rulings 194 to 196).
 - **M1, the contract's Mesocosm side.** In one shared crate,
   `shared/isocosm-overlay`, game-neutral, with Mesocosm's vocabulary as its
-  first game's module (ruling 197). Done when the directives, checkpoint
-  answers and dev intents exist as contract types in that crate, which
-  depends on nothing sim-internal, every type round-trips through
-  bytes (D18), and each of today's sixteen intents is mapped as §3 splits
-  them.
+  first game's module (ruling 197). Done when the directives, the player's
+  acts, checkpoint answers and dev intents exist as contract types in that
+  crate, which depends on nothing sim-internal, every type round-trips
+  through bytes (D18), each of today's sixteen intents is mapped as §3
+  splits them, and the attention set has its type, with subscription
+  derived from it (ruling 204). **In progress:** all but the attention set
+  landed on 2026-09-25.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
@@ -199,9 +205,26 @@ All three taken on 2026-09-25, the day the plan was drafted.
 - **2026-09-25:** `Intent` at `mesocosm-core/src/world/intent.rs:74` holds
   the sixteen variants §3 names; the driving seven assume direct control,
   which ruling 175 retires for play.
+- **2026-09-25, M1's crate:** `shared/isocosm-overlay` depends only on
+  `serde`, with `serde_json` for its tests. Its crate root is the wing's
+  game-neutral core (the tick, opaque handles, intent and handoff envelopes
+  generic over a game's vocabulary, event records and the view handle) and
+  `src/mesocosm/` the first game's module; Mesocosm's handoff is an
+  uninhabited type, so the empty handoff is checked rather than asserted.
+  Twenty-one tests round-trip every type through bytes. Building it stopped
+  at three forks (rulings 203 to 205) and found `Speciate` and `Express`
+  fitting no checkpoint (ruling 202). Review found its README claiming a
+  0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
 
+- 2026-09-25: M1's crate landed on main: Lane B's `shared/isocosm-overlay`,
+  reviewed, its tests rerun, and fixed on merge for rulings 202 to 205: the
+  player's acts carry `Speciate`, `Express` has no contract type, the death
+  checkpoint names the next life (a reading of rulings 61 and 178), the tick
+  and the place handle are ruled, and the explicit topic set is marked a
+  placeholder for the attention set. M1 stays open until the attention set
+  has its type (ruling 204).
 - 2026-09-25: M1 opened at Mark's word as a parallel lane beside the sim
   plan's S2 probe: the contract crate `shared/isocosm-overlay` (ruling 197),
   built by a Sonnet subagent in its own worktree, to be reviewed, tested in

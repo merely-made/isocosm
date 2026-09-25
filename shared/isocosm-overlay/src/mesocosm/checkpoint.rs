@@ -5,9 +5,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::handle::{CandidateHandle, EntityHandle};
 
-/// An answer to one of Mesocosm's two checkpoints (overlay plan §3): at a
-/// birth, keep the parent or take the offspring; at the epoch boundary, the
-/// review's committed revision.
+/// An answer to one of Mesocosm's checkpoints (overlay plan §3): at a birth,
+/// keep the parent or take the offspring; at a death, the next life taken up;
+/// at the epoch boundary, the review's committed revision.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CheckpointAnswer {
     pub entity: EntityHandle,
@@ -17,6 +17,7 @@ pub struct CheckpointAnswer {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CheckpointAnswerKind {
     Birth(BirthAnswer),
+    Death(DeathAnswer),
     EpochReview(RevisionAnswer),
 }
 
@@ -28,6 +29,15 @@ pub enum CheckpointAnswerKind {
 pub enum BirthAnswer {
     KeepParent,
     TakeOffspring,
+}
+
+/// At a death: the next of the lineage the player takes up, from the cohort
+/// that is the pool of further lives (rulings 61, 178). `entity` on the
+/// enclosing [`CheckpointAnswer`] names the one who died. A reading, not a
+/// ruling: there is no answer that lets the line go, since none is ruled.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DeathAnswer {
+    pub next: EntityHandle,
 }
 
 /// At the epoch boundary: the candidate the review committed as this line's

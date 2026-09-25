@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 /// A tick of the sim's clock. Intents are stamped for one; a view and a
 /// handoff outcome each name the one they belong to.
 ///
-/// **Provisional, not ruled** (see the crate README's "Open forks"): a
-/// newtype over the sim's own flat monotonic counter (`isocosm::schema::Tick
-/// = u64`, not depended on here). Epoch boundaries are a rule over this
+/// A newtype over the sim's own flat monotonic counter
+/// (`isocosm::schema::Tick = u64`, not depended on here), ruled 2026-09-25
+/// (wing design record ruling 203). Epoch boundaries are a rule over this
 /// count, not a field of it, matching how the sim already derives them.
 #[derive(
     Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,

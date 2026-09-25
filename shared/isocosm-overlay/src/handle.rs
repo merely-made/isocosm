@@ -12,9 +12,8 @@ pub struct EntityHandle(pub u64);
 /// An opaque reference to a place: a node of the sim's place graph (wing
 /// design record rulings 72, 147), such as a range, a boundary or a home.
 ///
-/// **Provisional, not ruled** (see the crate README's "Open forks"): a
-/// site reference or raw coordinates are the other live options for how a
-/// PLACES directive names a location.
+/// A PLACES directive names a location this way, never by site or by
+/// coordinates (ruling 205).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct PlaceHandle(pub u64);
 

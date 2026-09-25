@@ -16,11 +16,10 @@ pub struct EventTopic(pub String);
 
 /// What a game is telling the sim it wants to hear about.
 ///
-/// **Provisional, not ruled** (see the crate README's "Open forks"): this is
-/// the simplest shape, an explicit topic set. The wing design record's "one
-/// attention set per player" (§5.2 point 4) suggests subscription may
-/// instead be *derived* from that set rather than named separately; the
-/// attention set itself has no type yet.
+/// **A placeholder.** Subscription derives from the player's attention set
+/// (wing design record §5.2 point 4; ruling 204), whose type M1 designs.
+/// Until it exists this explicit topic set stands in, to be replaced rather
+/// than extended.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EventSubscription {
     pub topics: BTreeSet<EventTopic>,
