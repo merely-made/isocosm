@@ -832,10 +832,24 @@ have measured receipts.
    `discoveries` and nothing there proposes a new one — so an enclosure nobody
    has played holds nothing for any line to weigh and its rounds are empty. The
    per-body accumulator is still not built, and acquisition is still open.
+
+   **Ruled 2026-09-25 (wing design record ruling 182):** unplayed lineages
+   adapt, inherit and develop, so they acquire new developmental vocabulary
+   too, weighing their adaptation against the rest of the trophic web; that
+   is what an epoch is about, beside individual variance. The per-body
+   accumulator and acquisition are now owed rather than open.
 6. How much ecology truth is available during live play, and how much becomes
-   available only during epoch review or postmortem?
+   available only during epoch review or postmortem? **Ruled 2026-09-25
+   (ruling 180):** a mode. Survival shows what the played critter knows;
+   creative shows the truth; both are needed, debugging among the reasons.
 7. What exact recoverability condition makes a trophic collapse terminal in
    the game, as distinct from the population instrument's test verdict?
+   **Ruled 2026-09-25 (ruling 181):** none is terminal; as in RimWorld, play
+   goes on after a loss. A collapse may be local or global: after a local
+   one the player can start again elsewhere, even with their lineage if it
+   survives, or their critter can help the world recover as far as its
+   abilities allow. What measures a collapse as local or global stays this
+   plan's to specify.
 8. When the scale lane resumes, does S3's correctness and cohort work precede
    S2's wider resident window?
 

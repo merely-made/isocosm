@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 179. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 182. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1535,6 +1535,38 @@ what later sections derive from.
      first or a bare world first? Mark: "You may choose to start at the
      start of the world's habitability for your critter, or add as much
      time as you'd like".
+180. **What a Mesocosm player sees is a mode: survival shows what the
+     critter knows, creative shows the truth.** Put to Mark on 2026-09-25,
+     from the playable ecology plan's open ruling 6: how much of the
+     ecology's truth does a Mesocosm player see during live play, versus
+     at the epoch review? Three options were put: what it knows; truth at
+     the review; or truth anytime. Mark: "Creative vs survival mode, if you
+     ask me. Both worthy and necessary, debug-wise."
+181. **A trophic collapse may be local or global, and losing is not the
+     end.** Put to Mark on 2026-09-25, from the playable ecology plan's
+     open ruling 7: what makes a trophic collapse terminal in the game?
+     Three options were put: producers gone; no return within a stated
+     span; or a world setting. Mark: "Like rimworld, you can keep going
+     after you lose, to see what happens. There's also a question of a
+     trophic collapse being local or global". And, the same turn: "if a
+     trophic collapse isn't everywhere, you can probably start again
+     somewhere else, perhaps even with your lineage if it's still there. Or
+     you know, perhaps your critter can help the world by doing something
+     to regrow producers or fix the problem. Depends on their ability."
+182. **Unplayed lineages adapt, inherit and develop, weighing their
+     adaptation against the rest of the web; that is what an epoch is
+     about.** Put to Mark on 2026-09-25, from the playable ecology plan's
+     open ruling 5: do unplayed lineages discover new developmental
+     vocabulary, or only weigh what is inherited or already discovered?
+     Two options were put: the same evidence rules as the player's, or
+     inherited only. Mark's tap on "Inherited only" was accidental, by his
+     word the same turn, and his answer is: "unplayed lineages also adapt,
+     inherit, and develop. And they should weigh their adaptation against
+     the rest of the troposphere. I think that's what the epoch should be
+     about, aside from changes in gameplay that might randomly occur
+     (individual variance?)". Asked whether "troposphere" meant the rest of
+     the trophic web, the ecosystem the lineage lives in, Mark: "That is
+     correct".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4899,7 +4931,7 @@ derivation, the record's commit path, anything feeding the tracer. The W2
 probe of this section measures the constant, so the line can be moved later
 on a receipt.
 
-### 5.5 The first overlay: Mesocosm (rulings 174 to 179)
+### 5.5 The first overlay: Mesocosm (rulings 174 to 182)
 
 W5 is Mesocosm's (ruling 174). Its domain is the critter and its lineage
 (ruling 35), what it plays follows the lineage's traits (ruling 155), and
@@ -4917,6 +4949,18 @@ a setting with three choices, starting fresh, seeded by the lineage, or the
 lineage's own, seeded by default (ruling 178). The player chooses when to
 start: at the start of the world's habitability for their critter, or with
 as much deep time added as they like (ruling 179).
+
+What the player sees is a mode (ruling 180): survival shows what the played
+critter knows, creative shows the truth, and both are needed, debugging
+among the reasons. A trophic collapse may be local or global, and losing is
+not the end (ruling 181): play can go on to see what happens; after a
+local collapse the player can start again elsewhere, even with their
+lineage if it survives, or their critter can help the world recover,
+regrowing producers or fixing the cause as far as its abilities allow. At
+the epoch boundary every lineage, played or not, adapts, inherits and
+develops, weighing its adaptation against the rest of the trophic web
+(ruling 182); that is what an epoch is about, beside the individual
+variance of expression rerolled at reproduction (ruling 57).
 
 ## 6. Method
 
@@ -5228,6 +5272,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 180 to 182 recorded, answering the playable ecology
+  plan's open rulings 5 to 7: survival and creative modes; collapse local
+  or global and never the end; unplayed lineages adapt, inherit and
+  develop against the web. An accidental tap on "Inherited only" was
+  corrected by Mark the same turn and is not recorded as his answer.
 - 2026-09-25: rulings 178 and 179 recorded: the bond across generations a
   setting, seeded by default; the player's start chosen from the world's
   habitability for their critter onward. §5.5 carries both.
