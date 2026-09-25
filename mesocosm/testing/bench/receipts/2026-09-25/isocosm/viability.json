@@ -1,0 +1,80 @@
+{
+  "date": "2026-09-25",
+  "kind": "isocosm-ecology-viability",
+  "question": "Does the ecology family keep reproducing at the history run's density of four members per site?",
+  "master_seed": 1790360498407111500,
+  "master_seed_origin": "system clock at start; draw k uses master + k",
+  "command": "shared/isocosm/target/release/isocosm-bench.exe --ecology --seed SEED --population 256 --sites 64 --lineages 8 --cohort-size C --ticks 96 --output NUL",
+  "script": "#!/usr/bin/env bash\n# Does the ecology family sustain births? Unselected seeds from the clock,\n# four draws per cohort size, 256 members over 64 sites, 8 lineages, 96 ticks.\n# Births = final stored entities - founding members - one world body per site.\nset -euo pipefail\nbench=\"$1\"\nmaster=$(date +%s%N)\necho \"master $master\"\nfor cohort in 32 1; do\n  for k in 0 1 2 3; do\n    seed=$((master + k))\n    line=$(\"$bench\" --ecology --seed \"$seed\" --population 256 --sites 64 --lineages 8 \\\n      --cohort-size \"$cohort\" --ticks 96 --output NUL 2>&1)\n    entities=$(echo \"$line\" | grep -o '[0-9]* entities' | grep -o '[0-9]*')\n    echo \"cohort $cohort seed $seed entities $entities births $((entities - 256 - 64))\"\n  done\ndone\n",
+  "births_rule": "stored entities after 96 ticks, less the 256 founders and one world body for each of the 64 sites; the dead stay stored, so this counts births",
+  "rows": [
+    {
+      "cohort_size": 32,
+      "seed": 1790360498407111500,
+      "stored_entities": 320,
+      "births": 0
+    },
+    {
+      "cohort_size": 32,
+      "seed": 1790360498407111501,
+      "stored_entities": 320,
+      "births": 0
+    },
+    {
+      "cohort_size": 32,
+      "seed": 1790360498407111502,
+      "stored_entities": 320,
+      "births": 0
+    },
+    {
+      "cohort_size": 32,
+      "seed": 1790360498407111503,
+      "stored_entities": 320,
+      "births": 0
+    },
+    {
+      "cohort_size": 1,
+      "seed": 1790360498407111500,
+      "stored_entities": 629,
+      "births": 309
+    },
+    {
+      "cohort_size": 1,
+      "seed": 1790360498407111501,
+      "stored_entities": 559,
+      "births": 239
+    },
+    {
+      "cohort_size": 1,
+      "seed": 1790360498407111502,
+      "stored_entities": 563,
+      "births": 243
+    },
+    {
+      "cohort_size": 1,
+      "seed": 1790360498407111503,
+      "stored_entities": 607,
+      "births": 287
+    }
+  ],
+  "summary": {
+    "1": {
+      "draws": 4,
+      "births": [
+        309,
+        239,
+        243,
+        287
+      ]
+    },
+    "32": {
+      "draws": 4,
+      "births": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

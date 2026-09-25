@@ -1,0 +1,1837 @@
+{
+  "version": 1,
+  "kind": "isocosm-scale",
+  "master_seed": 1790359248610411800,
+  "pilot": false,
+  "design": {
+    "ladder_sizes": [
+      2048,
+      4096
+    ],
+    "ladder_sites": 256,
+    "ladder_lineages": 8,
+    "cohort_size": 32,
+    "ticks_per_point": 8,
+    "seeds_per_point": 1,
+    "ladder_stops_after_mean_tick_micros": 18446744073709551615,
+    "point_wall_cap_micros": 600000000,
+    "lineage_sweep": [
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "lineage_sweep_population": 1024,
+    "history_population": 1024,
+    "history_ticks": 512,
+    "history_wall_cap_micros": 1200000000,
+    "largest": {
+      "seed": 9430537244122587202,
+      "sites": 256,
+      "population": 1000000,
+      "lineages": 32,
+      "cohort_size": 32,
+      "stock_min": 8,
+      "stock_max": 64,
+      "period_max": 5,
+      "base_unit_micrometres": 1000,
+      "ecology": false
+    },
+    "note": "Ladders double the population at fixed sites, lineages and cohort size; each size runs the same drawn worlds in both modes. A ladder stops after the first size whose mean tick exceeds the stated time. The lineage sweep holds population and sites. The history run is one long ecology draw in the grouped mode hosts use. The largest admitted worlds are generated and costed, not advanced. An extension run adds two larger rungs to every ladder, one draw each, with no stop rule and nothing else."
+  },
+  "heap_control": {
+    "allocated_bytes": 67108864,
+    "live_rise_bytes": 67108864,
+    "live_fall_bytes": 67108864,
+    "passed": true
+  },
+  "points": [
+    {
+      "run": "extension",
+      "family": "reservoir",
+      "mode": "grouped",
+      "founding": {
+        "seed": 13002733550584148657,
+        "sites": 256,
+        "population": 2048,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "generate_micros": 1101,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 25193,
+      "median_tick_micros": 23814,
+      "evaluations_per_tick": 512,
+      "heap_peak_bytes": 2378002,
+      "heap_live_end_bytes": 981524,
+      "distinct_states": 320,
+      "distinct_read_states": 320,
+      "final_hash": "98dad97cebfe36ef144786c53a4195016ecdcef136272eecf46969643f003c0d",
+      "components": {
+        "clone_micros": 177,
+        "matter_micros": 6,
+        "state_hash_micros": 593
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 841,
+          "evaluations": 0,
+          "represented": 0,
+          "accepted": 0,
+          "blocked": 0,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 980692
+        },
+        {
+          "tick": 2,
+          "micros": 17247,
+          "evaluations": 512,
+          "represented": 16384,
+          "accepted": 2336,
+          "blocked": 14048,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981108
+        },
+        {
+          "tick": 3,
+          "micros": 61238,
+          "evaluations": 640,
+          "represented": 12544,
+          "accepted": 1504,
+          "blocked": 11040,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981108
+        },
+        {
+          "tick": 4,
+          "micros": 24045,
+          "evaluations": 768,
+          "represented": 24576,
+          "accepted": 3360,
+          "blocked": 21216,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981108
+        },
+        {
+          "tick": 5,
+          "micros": 7917,
+          "evaluations": 256,
+          "represented": 8192,
+          "accepted": 1024,
+          "blocked": 7168,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981108
+        },
+        {
+          "tick": 6,
+          "micros": 65943,
+          "evaluations": 1152,
+          "represented": 28928,
+          "accepted": 3840,
+          "blocked": 25088,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981524
+        },
+        {
+          "tick": 7,
+          "micros": 506,
+          "evaluations": 0,
+          "represented": 0,
+          "accepted": 0,
+          "blocked": 0,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981524
+        },
+        {
+          "tick": 8,
+          "micros": 23814,
+          "evaluations": 768,
+          "represented": 24576,
+          "accepted": 3232,
+          "blocked": 21344,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 981524
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "reservoir",
+      "mode": "grouped",
+      "founding": {
+        "seed": 4755436001700513330,
+        "sites": 256,
+        "population": 4096,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "generate_micros": 941,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 61373,
+      "median_tick_micros": 61155,
+      "evaluations_per_tick": 1328,
+      "heap_peak_bytes": 3104211,
+      "heap_live_end_bytes": 1272210,
+      "distinct_states": 384,
+      "distinct_read_states": 384,
+      "final_hash": "f0727de5114b0d03beeaed3953470a9057e917cbf51b292579e77f27cecb7e94",
+      "components": {
+        "clone_micros": 181,
+        "matter_micros": 13,
+        "state_hash_micros": 861
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 30532,
+          "evaluations": 768,
+          "represented": 24576,
+          "accepted": 3008,
+          "blocked": 21568,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1271378
+        },
+        {
+          "tick": 2,
+          "micros": 39857,
+          "evaluations": 1024,
+          "represented": 32768,
+          "accepted": 3968,
+          "blocked": 28800,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1271794
+        },
+        {
+          "tick": 3,
+          "micros": 103335,
+          "evaluations": 1536,
+          "represented": 41216,
+          "accepted": 5280,
+          "blocked": 35936,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1271794
+        },
+        {
+          "tick": 4,
+          "micros": 63858,
+          "evaluations": 1664,
+          "represented": 53248,
+          "accepted": 6336,
+          "blocked": 46912,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1271794
+        },
+        {
+          "tick": 5,
+          "micros": 50573,
+          "evaluations": 1408,
+          "represented": 45056,
+          "accepted": 4864,
+          "blocked": 40192,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1271794
+        },
+        {
+          "tick": 6,
+          "micros": 114381,
+          "evaluations": 1792,
+          "represented": 49408,
+          "accepted": 5888,
+          "blocked": 43520,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1272210
+        },
+        {
+          "tick": 7,
+          "micros": 27294,
+          "evaluations": 768,
+          "represented": 24576,
+          "accepted": 2432,
+          "blocked": 22144,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1272210
+        },
+        {
+          "tick": 8,
+          "micros": 61155,
+          "evaluations": 1664,
+          "represented": 53248,
+          "accepted": 6016,
+          "blocked": 47232,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1272210
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "reservoir",
+      "mode": "individuals",
+      "founding": {
+        "seed": 13002733550584148657,
+        "sites": 256,
+        "population": 2048,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "generate_micros": 677,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 6790260,
+      "median_tick_micros": 4518690,
+      "evaluations_per_tick": 14400,
+      "heap_peak_bytes": 19942373,
+      "heap_live_end_bytes": 5326403,
+      "distinct_states": 320,
+      "distinct_read_states": 320,
+      "final_hash": "98dad97cebfe36ef144786c53a4195016ecdcef136272eecf46969643f003c0d",
+      "components": {
+        "clone_micros": 2264,
+        "matter_micros": 201,
+        "state_hash_micros": 5092
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 724,
+          "evaluations": 0,
+          "represented": 0,
+          "accepted": 0,
+          "blocked": 0,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 980692
+        },
+        {
+          "tick": 2,
+          "micros": 2741824,
+          "evaluations": 16384,
+          "represented": 16384,
+          "accepted": 2336,
+          "blocked": 14048,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 1529,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 3647398
+        },
+        {
+          "tick": 3,
+          "micros": 4518690,
+          "evaluations": 12544,
+          "represented": 12544,
+          "accepted": 1504,
+          "blocked": 11040,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 1746,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 4114915
+        },
+        {
+          "tick": 4,
+          "micros": 16454644,
+          "evaluations": 24576,
+          "represented": 24576,
+          "accepted": 3360,
+          "blocked": 21216,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5364011
+        },
+        {
+          "tick": 5,
+          "micros": 3796220,
+          "evaluations": 8192,
+          "represented": 8192,
+          "accepted": 1024,
+          "blocked": 7168,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5360563
+        },
+        {
+          "tick": 6,
+          "micros": 15181384,
+          "evaluations": 28928,
+          "represented": 28928,
+          "accepted": 3840,
+          "blocked": 25088,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5336747
+        },
+        {
+          "tick": 7,
+          "micros": 6665,
+          "evaluations": 0,
+          "represented": 0,
+          "accepted": 0,
+          "blocked": 0,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5336747
+        },
+        {
+          "tick": 8,
+          "micros": 11621934,
+          "evaluations": 24576,
+          "represented": 24576,
+          "accepted": 3232,
+          "blocked": 21344,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5326403
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "reservoir",
+      "mode": "individuals",
+      "founding": {
+        "seed": 4755436001700513330,
+        "sites": 256,
+        "population": 4096,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": false
+      },
+      "generate_micros": 740,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 71732478,
+      "median_tick_micros": 74959278,
+      "evaluations_per_tick": 40512,
+      "heap_peak_bytes": 38255580,
+      "heap_live_end_bytes": 9987280,
+      "distinct_states": 384,
+      "distinct_read_states": 384,
+      "final_hash": "f0727de5114b0d03beeaed3953470a9057e917cbf51b292579e77f27cecb7e94",
+      "components": {
+        "clone_micros": 5528,
+        "matter_micros": 732,
+        "state_hash_micros": 12718
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 7084162,
+          "evaluations": 24576,
+          "represented": 24576,
+          "accepted": 3008,
+          "blocked": 21568,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 2306,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5506543
+        },
+        {
+          "tick": 2,
+          "micros": 43020377,
+          "evaluations": 32768,
+          "represented": 32768,
+          "accepted": 3968,
+          "blocked": 28800,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 2709,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 6387425
+        },
+        {
+          "tick": 3,
+          "micros": 120295248,
+          "evaluations": 41216,
+          "represented": 41216,
+          "accepted": 5280,
+          "blocked": 35936,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 10041936
+        },
+        {
+          "tick": 4,
+          "micros": 115805083,
+          "evaluations": 53248,
+          "represented": 53248,
+          "accepted": 6336,
+          "blocked": 46912,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 9996920
+        },
+        {
+          "tick": 5,
+          "micros": 124565688,
+          "evaluations": 45056,
+          "represented": 45056,
+          "accepted": 4864,
+          "blocked": 40192,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 9979776
+        },
+        {
+          "tick": 6,
+          "micros": 74959278,
+          "evaluations": 49408,
+          "represented": 49408,
+          "accepted": 5888,
+          "blocked": 43520,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 10001072
+        },
+        {
+          "tick": 7,
+          "micros": 26162070,
+          "evaluations": 24576,
+          "represented": 24576,
+          "accepted": 2432,
+          "blocked": 22144,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 9997624
+        },
+        {
+          "tick": 8,
+          "micros": 61967925,
+          "evaluations": 53248,
+          "represented": 53248,
+          "accepted": 6016,
+          "blocked": 47232,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 9987280
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "ecology",
+      "mode": "grouped",
+      "founding": {
+        "seed": 6835479139246022287,
+        "sites": 256,
+        "population": 2048,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "generate_micros": 1771,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 4181745,
+      "median_tick_micros": 4077734,
+      "evaluations_per_tick": 51680,
+      "heap_peak_bytes": 12095438,
+      "heap_live_end_bytes": 1383158,
+      "distinct_states": 324,
+      "distinct_read_states": 324,
+      "final_hash": "ea464ffb33af395224eb659f1d6b77f061bf616ef35634b40b830c7514e87dd3",
+      "components": {
+        "clone_micros": 467,
+        "matter_micros": 35,
+        "state_hash_micros": 972
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 576093,
+          "evaluations": 32768,
+          "represented": 32768,
+          "accepted": 0,
+          "blocked": 32768,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1222374
+        },
+        {
+          "tick": 2,
+          "micros": 4392641,
+          "evaluations": 38912,
+          "represented": 38912,
+          "accepted": 1024,
+          "blocked": 37888,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1222790
+        },
+        {
+          "tick": 3,
+          "micros": 1813268,
+          "evaluations": 80086,
+          "represented": 80086,
+          "accepted": 324,
+          "blocked": 79762,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 326,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 1304071
+        },
+        {
+          "tick": 4,
+          "micros": 4037533,
+          "evaluations": 38836,
+          "represented": 38836,
+          "accepted": 1020,
+          "blocked": 37816,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 326,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 1303700
+        },
+        {
+          "tick": 5,
+          "micros": 9052720,
+          "evaluations": 49056,
+          "represented": 49056,
+          "accepted": 2044,
+          "blocked": 47012,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 326,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 1303700
+        },
+        {
+          "tick": 6,
+          "micros": 8596849,
+          "evaluations": 86062,
+          "represented": 86062,
+          "accepted": 1344,
+          "blocked": 84718,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 330,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 1384265
+        },
+        {
+          "tick": 7,
+          "micros": 907125,
+          "evaluations": 48960,
+          "represented": 48960,
+          "accepted": 0,
+          "blocked": 48960,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 330,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 1383158
+        },
+        {
+          "tick": 8,
+          "micros": 4077734,
+          "evaluations": 38760,
+          "represented": 38760,
+          "accepted": 1016,
+          "blocked": 37744,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 330,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 1383158
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "ecology",
+      "mode": "grouped",
+      "founding": {
+        "seed": 7276310015251897900,
+        "sites": 256,
+        "population": 4096,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "generate_micros": 1360,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 18156589,
+      "median_tick_micros": 15536443,
+      "evaluations_per_tick": 102447,
+      "heap_peak_bytes": 24651330,
+      "heap_live_end_bytes": 3158707,
+      "distinct_states": 402,
+      "distinct_read_states": 402,
+      "final_hash": "7b75626d16294ffcb1aedd75761bc0c46c949a89395e57bd3c40d10a015dc0fc",
+      "components": {
+        "clone_micros": 1725,
+        "matter_micros": 89,
+        "state_hash_micros": 5331
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 1665554,
+          "evaluations": 65536,
+          "represented": 65536,
+          "accepted": 0,
+          "blocked": 65536,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 383,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1509687
+        },
+        {
+          "tick": 2,
+          "micros": 13632452,
+          "evaluations": 77824,
+          "represented": 77824,
+          "accepted": 1632,
+          "blocked": 76192,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 383,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1510103
+        },
+        {
+          "tick": 3,
+          "micros": 12060319,
+          "evaluations": 159430,
+          "represented": 159430,
+          "accepted": 908,
+          "blocked": 158522,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 437,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 2408436
+        },
+        {
+          "tick": 4,
+          "micros": 15536443,
+          "evaluations": 76988,
+          "represented": 76988,
+          "accepted": 1588,
+          "blocked": 75400,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 437,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 2400705
+        },
+        {
+          "tick": 5,
+          "micros": 42075864,
+          "evaluations": 97248,
+          "represented": 97248,
+          "accepted": 4052,
+          "blocked": 93196,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 437,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 2400705
+        },
+        {
+          "tick": 6,
+          "micros": 34829038,
+          "evaluations": 169954,
+          "represented": 169954,
+          "accepted": 2490,
+          "blocked": 167464,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 478,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 3173430
+        },
+        {
+          "tick": 7,
+          "micros": 3884420,
+          "evaluations": 96336,
+          "represented": 96336,
+          "accepted": 0,
+          "blocked": 96336,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 478,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 3158707
+        },
+        {
+          "tick": 8,
+          "micros": 21568622,
+          "evaluations": 76266,
+          "represented": 76266,
+          "accepted": 1550,
+          "blocked": 74716,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 478,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 3158707
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "ecology",
+      "mode": "individuals",
+      "founding": {
+        "seed": 6835479139246022287,
+        "sites": 256,
+        "population": 2048,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "generate_micros": 1464,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 10282601,
+      "median_tick_micros": 10212009,
+      "evaluations_per_tick": 51680,
+      "heap_peak_bytes": 21070732,
+      "heap_live_end_bytes": 5741507,
+      "distinct_states": 324,
+      "distinct_read_states": 324,
+      "final_hash": "ea464ffb33af395224eb659f1d6b77f061bf616ef35634b40b830c7514e87dd3",
+      "components": {
+        "clone_micros": 2281,
+        "matter_micros": 200,
+        "state_hash_micros": 6770
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 971954,
+          "evaluations": 32768,
+          "represented": 32768,
+          "accepted": 0,
+          "blocked": 32768,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 320,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1222374
+        },
+        {
+          "tick": 2,
+          "micros": 6118429,
+          "evaluations": 38912,
+          "represented": 38912,
+          "accepted": 1024,
+          "blocked": 37888,
+          "alive": 2048,
+          "stored_members": 2304,
+          "groups": 1312,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 3419894
+        },
+        {
+          "tick": 3,
+          "micros": 11439043,
+          "evaluations": 80086,
+          "represented": 80086,
+          "accepted": 324,
+          "blocked": 79762,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 1374,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 3636643
+        },
+        {
+          "tick": 4,
+          "micros": 8008292,
+          "evaluations": 38836,
+          "represented": 38836,
+          "accepted": 1020,
+          "blocked": 37816,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 1374,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 3625928
+        },
+        {
+          "tick": 5,
+          "micros": 12234754,
+          "evaluations": 49056,
+          "represented": 49056,
+          "accepted": 2044,
+          "blocked": 47012,
+          "alive": 2044,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 4,
+          "notes": 4,
+          "arrivals": 1024,
+          "heap_live_bytes": 5692937
+        },
+        {
+          "tick": 6,
+          "micros": 24005769,
+          "evaluations": 86062,
+          "represented": 86062,
+          "accepted": 1344,
+          "blocked": 84718,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 5756502
+        },
+        {
+          "tick": 7,
+          "micros": 9270561,
+          "evaluations": 48960,
+          "represented": 48960,
+          "accepted": 0,
+          "blocked": 48960,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 5755395
+        },
+        {
+          "tick": 8,
+          "micros": 10212009,
+          "evaluations": 38760,
+          "represented": 38760,
+          "accepted": 1016,
+          "blocked": 37744,
+          "alive": 2040,
+          "stored_members": 2304,
+          "groups": 2304,
+          "events": 8,
+          "notes": 8,
+          "arrivals": 2048,
+          "heap_live_bytes": 5741507
+        }
+      ]
+    },
+    {
+      "run": "extension",
+      "family": "ecology",
+      "mode": "individuals",
+      "founding": {
+        "seed": 7276310015251897900,
+        "sites": 256,
+        "population": 4096,
+        "lineages": 8,
+        "cohort_size": 32,
+        "stock_min": 8,
+        "stock_max": 64,
+        "period_max": 5,
+        "base_unit_micrometres": 1000,
+        "ecology": true
+      },
+      "generate_micros": 1215,
+      "ticks_run": 8,
+      "stopped": null,
+      "mean_tick_micros": 32819430,
+      "median_tick_micros": 34412303,
+      "evaluations_per_tick": 102447,
+      "heap_peak_bytes": 44537102,
+      "heap_live_end_bytes": 11704815,
+      "distinct_states": 402,
+      "distinct_read_states": 402,
+      "final_hash": "7b75626d16294ffcb1aedd75761bc0c46c949a89395e57bd3c40d10a015dc0fc",
+      "components": {
+        "clone_micros": 5709,
+        "matter_micros": 519,
+        "state_hash_micros": 14248
+      },
+      "per_tick": [
+        {
+          "tick": 1,
+          "micros": 1768952,
+          "evaluations": 65536,
+          "represented": 65536,
+          "accepted": 0,
+          "blocked": 65536,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 384,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 1511351
+        },
+        {
+          "tick": 2,
+          "micros": 15690510,
+          "evaluations": 77824,
+          "represented": 77824,
+          "accepted": 1632,
+          "blocked": 76192,
+          "alive": 4096,
+          "stored_members": 4352,
+          "groups": 1965,
+          "events": 0,
+          "notes": 0,
+          "arrivals": 0,
+          "heap_live_bytes": 5000343
+        },
+        {
+          "tick": 3,
+          "micros": 34412303,
+          "evaluations": 159430,
+          "represented": 159430,
+          "accepted": 908,
+          "blocked": 158522,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 2430,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 6827246
+        },
+        {
+          "tick": 4,
+          "micros": 18394859,
+          "evaluations": 76988,
+          "represented": 76988,
+          "accepted": 1588,
+          "blocked": 75400,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 2430,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 6805723
+        },
+        {
+          "tick": 5,
+          "micros": 47528671,
+          "evaluations": 97248,
+          "represented": 97248,
+          "accepted": 4052,
+          "blocked": 93196,
+          "alive": 4052,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 44,
+          "notes": 44,
+          "arrivals": 11264,
+          "heap_live_bytes": 11063309
+        },
+        {
+          "tick": 6,
+          "micros": 76847304,
+          "evaluations": 169954,
+          "represented": 169954,
+          "accepted": 2490,
+          "blocked": 167464,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 11736778
+        },
+        {
+          "tick": 7,
+          "micros": 31665008,
+          "evaluations": 96336,
+          "represented": 96336,
+          "accepted": 0,
+          "blocked": 96336,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 11722055
+        },
+        {
+          "tick": 8,
+          "micros": 36247834,
+          "evaluations": 76266,
+          "represented": 76266,
+          "accepted": 1550,
+          "blocked": 74716,
+          "alive": 4014,
+          "stored_members": 4352,
+          "groups": 4352,
+          "events": 82,
+          "notes": 82,
+          "arrivals": 20992,
+          "heap_live_bytes": 11704815
+        }
+      ]
+    }
+  ],
+  "fits": [
+    {
+      "family": "reservoir",
+      "mode": "grouped",
+      "quantity": "mean_tick_seconds",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.2845811767627553,
+      "coefficient": 1.404778202768798e-6,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          0.19316679180990645
+        ],
+        [
+          20000,
+          0.4705761724982892
+        ],
+        [
+          50000,
+          1.5269196272870704
+        ],
+        [
+          100000,
+          3.719749068609911
+        ],
+        [
+          1000000,
+          71.62997844391751
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "grouped",
+      "quantity": "mean_tick_seconds_top3",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.2845811767627553,
+      "coefficient": 1.404778202768798e-6,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          0.19316679180990645
+        ],
+        [
+          20000,
+          0.4705761724982892
+        ],
+        [
+          50000,
+          1.5269196272870704
+        ],
+        [
+          100000,
+          3.719749068609911
+        ],
+        [
+          1000000,
+          71.62997844391751
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "grouped",
+      "quantity": "heap_peak_bytes",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 0.38447669553869174,
+      "coefficient": 126789.42072485441,
+      "r_squared": 0.9999999999999998,
+      "predicted": [
+        [
+          10000,
+          4375118.292697921
+        ],
+        [
+          20000,
+          5711219.053009255
+        ],
+        [
+          50000,
+          8123206.196471623
+        ],
+        [
+          100000,
+          10603921.287852317
+        ],
+        [
+          1000000,
+          25700595.76826421
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "grouped",
+      "quantity": "evaluations_per_tick",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.3750394313469263,
+      "coefficient": 0.014323881067173833,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          4531.254255138886
+        ],
+        [
+          20000,
+          11752.940724266497
+        ],
+        [
+          50000,
+          41431.413387752196
+        ],
+        [
+          100000,
+          107462.72847448238
+        ],
+        [
+          1000000,
+          2548574.2712591104
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "individuals",
+      "quantity": "mean_tick_seconds",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 3.4010877479287833,
+      "coefficient": 3.713322539039426e-11,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          1493.1851611486036
+        ],
+        [
+          20000,
+          15774.045724614223
+        ],
+        [
+          50000,
+          355936.05553059705
+        ],
+        [
+          100000,
+          3760117.4730798826
+        ],
+        [
+          1000000,
+          9468673932.230139
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "individuals",
+      "quantity": "mean_tick_seconds_top3",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 3.4010877479287833,
+      "coefficient": 3.713322539039426e-11,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          1493.1851611486036
+        ],
+        [
+          20000,
+          15774.045724614223
+        ],
+        [
+          50000,
+          355936.05553059705
+        ],
+        [
+          100000,
+          3760117.4730798826
+        ],
+        [
+          1000000,
+          9468673932.230139
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "individuals",
+      "quantity": "heap_peak_bytes",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 0.939833105842622,
+      "coefficient": 15405.624974712608,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          88513954.67323177
+        ],
+        [
+          20000,
+          169796877.94016272
+        ],
+        [
+          50000,
+          401723182.7943331
+        ],
+        [
+          100000,
+          770628117.1876214
+        ],
+        [
+          1000000,
+          6709311511.303819
+        ]
+      ]
+    },
+    {
+      "family": "reservoir",
+      "mode": "individuals",
+      "quantity": "evaluations_per_tick",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.4922804982113056,
+      "coefficient": 0.16478944122875144,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          153479.8527903724
+        ],
+        [
+          20000,
+          431789.985850248
+        ],
+        [
+          50000,
+          1694769.6587550698
+        ],
+        [
+          100000,
+          4767951.973297601
+        ],
+        [
+          1000000,
+          148119545.37591606
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "grouped",
+      "quantity": "mean_tick_seconds",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 2.1183162000465705,
+      "coefficient": 4.0449547222277696e-7,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          120.2758583201104
+        ],
+        [
+          20000,
+          522.222021223312
+        ],
+        [
+          50000,
+          3637.6251877065433
+        ],
+        [
+          100000,
+          15794.092052297709
+        ],
+        [
+          1000000,
+          2074010.0901424575
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "grouped",
+      "quantity": "mean_tick_seconds_top3",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 2.1183162000465705,
+      "coefficient": 4.0449547222277696e-7,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          120.2758583201104
+        ],
+        [
+          20000,
+          522.222021223312
+        ],
+        [
+          50000,
+          3637.6251877065433
+        ],
+        [
+          100000,
+          15794.092052297709
+        ],
+        [
+          1000000,
+          2074010.0901424575
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "grouped",
+      "quantity": "heap_peak_bytes",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.0272024725191058,
+      "coefficient": 4799.713175866733,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          61663074.59821873
+        ],
+        [
+          20000,
+          125673563.92842542
+        ],
+        [
+          50000,
+          322113474.2518301
+        ],
+        [
+          100000,
+          656489293.8336223
+        ],
+        [
+          1000000,
+          6989242682.534318
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "grouped",
+      "quantity": "evaluations_per_tick",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 0.9871997627577103,
+      "coefficient": 27.821360367459384,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          247273.40699197582
+        ],
+        [
+          20000,
+          490178.38092312263
+        ],
+        [
+          50000,
+          1211156.9765147488
+        ],
+        [
+          100000,
+          2400917.158920407
+        ],
+        [
+          1000000,
+          23311860.640903838
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "individuals",
+      "quantity": "mean_tick_seconds",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.6743449400263601,
+      "coefficient": 0.000029362594913334115,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          146.27637653435661
+        ],
+        [
+          20000,
+          466.8767464888473
+        ],
+        [
+          50000,
+          2165.1654269468204
+        ],
+        [
+          100000,
+          6910.653750748608
+        ],
+        [
+          1000000,
+          326485.6321589212
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "individuals",
+      "quantity": "mean_tick_seconds_top3",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.6743449400263601,
+      "coefficient": 0.000029362594913334115,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          146.27637653435661
+        ],
+        [
+          20000,
+          466.8767464888473
+        ],
+        [
+          50000,
+          2165.1654269468204
+        ],
+        [
+          100000,
+          6910.653750748608
+        ],
+        [
+          1000000,
+          326485.6321589212
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "individuals",
+      "quantity": "heap_peak_bytes",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 1.0797672515190007,
+      "coefficient": 5600.334684072772,
+      "r_squared": 1.0000000000000002,
+      "predicted": [
+        [
+          10000,
+          116757016.23672254
+        ],
+        [
+          20000,
+          246788727.6697638
+        ],
+        [
+          50000,
+          663755157.1136827
+        ],
+        [
+          100000,
+          1402975992.2625456
+        ],
+        [
+          1000000,
+          16858444128.739124
+        ]
+      ]
+    },
+    {
+      "family": "ecology",
+      "mode": "individuals",
+      "quantity": "evaluations_per_tick",
+      "sizes": [
+        2048,
+        4096
+      ],
+      "exponent": 0.9871997627577103,
+      "coefficient": 27.821360367459384,
+      "r_squared": 1.0,
+      "predicted": [
+        [
+          10000,
+          247273.40699197582
+        ],
+        [
+          20000,
+          490178.38092312263
+        ],
+        [
+          50000,
+          1211156.9765147488
+        ],
+        [
+          100000,
+          2400917.158920407
+        ],
+        [
+          1000000,
+          23311860.640903838
+        ]
+      ]
+    }
+  ]
+}

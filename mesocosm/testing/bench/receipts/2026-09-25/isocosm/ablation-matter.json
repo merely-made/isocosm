@@ -1,0 +1,162 @@
+{
+  "date": "2026-09-25",
+  "kind": "isocosm-scale-ablation",
+  "question": "How much of an ecology tick is the whole-world matter total that apply computes before every evaluation, including the evaluations a requirement then refuses?",
+  "world": {
+    "founding": {
+      "seed": 10038609299997128519,
+      "sites": 256,
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "stock_min": 8,
+      "stock_max": 64,
+      "period_max": 5,
+      "base_unit_micrometres": 1000,
+      "ecology": true
+    },
+    "mode": "individuals",
+    "ticks": 16,
+    "drawn_from": "scale.json, the ecology ladder's first draw at 1,024 members (master seed 1790357406088610700)",
+    "state_hash_in_scale_json": "456e461020bde7cea2b6ae5bae3bd2df3b512c45d9ee8db8832a0b3548e6b4ba"
+  },
+  "patch_committed": false,
+  "patch": "diff --git a/shared/isocosm/src/execute.rs b/shared/isocosm/src/execute.rs\nindex 9fcb6e6..61f4ee4 100644\n--- a/shared/isocosm/src/execute.rs\n+++ b/shared/isocosm/src/execute.rs\n@@ -13,7 +13,6 @@ impl Simulation {\n         cause: Option<Key>,\n         count: u64,\n     ) -> Receipt {\n-        let before = self.matter();\n         let id = format!(\n             \"event:{}\",\n             crate::digest(&(\n@@ -37,8 +36,8 @@ impl Simulation {\n             facts_read: vec![],\n             effects: vec![],\n             outcome: Outcome::Accepted,\n-            matter_before: before,\n-            matter_after: before,\n+            matter_before: 0,\n+            matter_after: 0,\n         };\n         let Some(definition) = self.genesis.rules.processes.get(process).cloned() else {\n             receipt.outcome = Outcome::Refused(format!(\"unknown process {process}\"));\n@@ -98,6 +97,9 @@ impl Simulation {\n             })\n             .map(|p| p.id.clone())\n             .collect();\n+        let before = self.matter();\n+        receipt.matter_before = before;\n+        receipt.matter_after = before;\n         let mut staged = self.clone();\n         // Single writes split before mutation. Bulk writes preserve one interval.\n         if count == 1 {\n",
+  "patch_effect": "The matter total is computed once an evaluation has passed its requirements, just before staging, instead of first. State behaviour is unchanged; receipts of evaluations refused before staging carry zero matter fields, and the scheduler discards those receipts.",
+  "driver": "//! Diagnostic: time one drawn ecology world, 16 ticks, individual mode.\n//! Built once against the core as committed and once against a local patch;\n//! the final state hash must match, only the time may differ.\nuse isocosm::{Execution, Founding, Session};\nuse std::time::Instant;\n\nfn main() {\n    let seed: u64 = std::env::args().nth(1).expect(\"seed\").parse().expect(\"integer seed\");\n    let founding = Founding {\n        seed,\n        sites: 256,\n        population: 1024,\n        lineages: 8,\n        cohort_size: 32,\n        ecology: true,\n        ..Founding::default()\n    };\n    let mut session = Session::new(founding.generate().unwrap(), Execution::Individuals).unwrap();\n    let mut ticks = Vec::new();\n    let mut evaluations = 0;\n    for _ in 0..16 {\n        let t = Instant::now();\n        evaluations += session.advance(1).unwrap().evaluations;\n        ticks.push(t.elapsed().as_micros() as u64);\n    }\n    let mean = ticks.iter().sum::<u64>() / ticks.len() as u64;\n    println!(\n        \"{{\\\"seed\\\":{seed},\\\"mean_tick_micros\\\":{mean},\\\"evaluations\\\":{evaluations},\\\"tick_micros\\\":{ticks:?},\\\"state_hash\\\":\\\"{}\\\"}}\",\n        session.sim.state_hash()\n    );\n}\n",
+  "driver_note": "A scratch program outside the repository, built twice in release against shared/isocosm: once as committed, once with the patch applied to the worktree and then reverted. Arms alternate so load drift reaches both.",
+  "runs": [
+    {
+      "round": 1,
+      "arm": "baseline",
+      "result": {
+        "seed": 10038609299997128519,
+        "mean_tick_micros": 2925440,
+        "evaluations": 446720,
+        "tick_micros": [
+          214612,
+          725951,
+          1523827,
+          802778,
+          2749164,
+          5001401,
+          2824668,
+          2167792,
+          4377559,
+          4744271,
+          1703806,
+          5098559,
+          1383194,
+          3621634,
+          7831833,
+          2035992
+        ],
+        "state_hash": "456e461020bde7cea2b6ae5bae3bd2df3b512c45d9ee8db8832a0b3548e6b4ba"
+      }
+    },
+    {
+      "round": 1,
+      "arm": "patched",
+      "result": {
+        "seed": 10038609299997128519,
+        "mean_tick_micros": 454546,
+        "evaluations": 446720,
+        "tick_micros": [
+          20380,
+          131600,
+          216641,
+          172803,
+          791196,
+          748427,
+          36109,
+          346255,
+          435567,
+          1334893,
+          28992,
+          776966,
+          25116,
+          461658,
+          1408379,
+          337755
+        ],
+        "state_hash": "456e461020bde7cea2b6ae5bae3bd2df3b512c45d9ee8db8832a0b3548e6b4ba"
+      }
+    },
+    {
+      "round": 2,
+      "arm": "baseline",
+      "result": {
+        "seed": 10038609299997128519,
+        "mean_tick_micros": 3296884,
+        "evaluations": 446720,
+        "tick_micros": [
+          222919,
+          746226,
+          1468545,
+          891937,
+          2713528,
+          4389486,
+          2138409,
+          2124746,
+          5205177,
+          5913202,
+          1785299,
+          6530278,
+          2268649,
+          4060747,
+          8984950,
+          3306046
+        ],
+        "state_hash": "456e461020bde7cea2b6ae5bae3bd2df3b512c45d9ee8db8832a0b3548e6b4ba"
+      }
+    },
+    {
+      "round": 2,
+      "arm": "patched",
+      "result": {
+        "seed": 10038609299997128519,
+        "mean_tick_micros": 845671,
+        "evaluations": 446720,
+        "tick_micros": [
+          23846,
+          157920,
+          281665,
+          203855,
+          1224534,
+          1332101,
+          66604,
+          903665,
+          783271,
+          2449063,
+          42575,
+          1664757,
+          39771,
+          935658,
+          2676776,
+          744675
+        ],
+        "state_hash": "456e461020bde7cea2b6ae5bae3bd2df3b512c45d9ee8db8832a0b3548e6b4ba"
+      }
+    }
+  ],
+  "summary": {
+    "baseline_mean_tick_seconds": [
+      2.92544,
+      3.296884
+    ],
+    "patched_mean_tick_seconds": [
+      0.454546,
+      0.845671
+    ],
+    "speedup_by_round": [
+      6.435960276847668,
+      3.8985421044354127
+    ],
+    "state_hash_identical_in_all_runs": true,
+    "state_hash_matches_scale_json": true,
+    "evaluations_identical_in_all_runs": true,
+    "evaluations": [
+      446720
+    ]
+  }
+}

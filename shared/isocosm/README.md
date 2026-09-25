@@ -10,7 +10,14 @@ Run from the repository root:
 cargo test --manifest-path shared/isocosm/Cargo.toml
 cargo run --manifest-path shared/isocosm/Cargo.toml --bin isocosm-bench -- --ecology --population 48 --sites 3 --lineages 3 --ticks 64 --output world.json
 cargo run --manifest-path shared/isocosm/Cargo.toml --bin isocosm-bench -- --draws 16 --ticks 64 --output draws.json
+cargo run --release --manifest-path shared/isocosm/Cargo.toml --bin isocosm-scale -- --output scale.json
 ```
+
+`isocosm-scale` times drawn worlds by size through the host API, one tick at a
+time, and records evaluations, stored groups, history growth and heap for each.
+It counts heap with an allocator wrapper local to that binary; the library has
+no `unsafe`. Its seeds come from one master seed, printed and saved like the
+bench's. Run it in release: debug timings say nothing about scale.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
@@ -77,3 +84,14 @@ Transaction staging copies mutable state. Grouping reduces interpreter calls
 for independent processes, but gives no general time or memory bound as a
 world diversifies. The [aggregation research](../../mesocosm/design_docs/2026-09-22_aggregation_research.md)
 separates exact equivalence from possible approximate reductions.
+
+Measured on 2026-09-25, in the receipts under
+`mesocosm/testing/bench/receipts/2026-09-25/isocosm/`: time per tick grows
+about with the square of the population at the largest sizes run, because
+every evaluation first totals matter over the whole stored world and every
+accepted one clones the whole simulation, reach field included. At eight
+lineages about 98% of ecology evaluations end without effect, since every
+periodic process is evaluated for every member. The dead stay stored and each
+noted event keeps an arrival at every site it reached, so ticks grow dearer as
+history accumulates. Founding in cohorts of 32 puts each cohort on one site,
+and those ecology worlds died out without a birth.

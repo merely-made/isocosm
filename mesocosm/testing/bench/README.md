@@ -22,6 +22,16 @@ invalid founding leaves the played world intact. Both use native controls.
 The core's [README](../../../shared/isocosm/README.md) names the implemented
 behavior and the remaining sim-plan work.
 
+The core's own `isocosm-scale` binary measures what it runs by size, outside
+this host: time per tick, evaluations, stored groups, history growth and heap,
+for both generator families and both execution modes, with fitted scaling
+curves. Its receipts are in `receipts/2026-09-25/isocosm/`: `scale.json`, its
+larger rungs in `scale-extension.json`, a living history in
+`scale-living.json`, and `analyze.py`, which rederives `analysis.json` from
+those three. `viability.json` and `ablation-matter.json` are diagnostics: which
+founding keeps the ecology family reproducing, and what one per-evaluation
+cost amounts to. `source.json` names the commit behind each.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;
