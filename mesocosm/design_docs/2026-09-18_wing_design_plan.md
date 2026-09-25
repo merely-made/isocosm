@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 170. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 172. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1471,6 +1471,24 @@ what later sections derive from.
      "whether sophonts make art and hold rites, and what those do", Mark:
      "I view art and ritual as crafts. A craft/pursuit can be
      politicized/ritualized too. Let's proceed to tech".
+171. **Technology is both a world's generated tree and what is known.** Put
+     to Mark on 2026-09-24, opening technology: what is technology in the
+     sim? Three options were put: what is known, read from the techniques
+     and recipes minds and bearers hold, a tree emerging from their
+     preconditions; an authored or generated tree peoples climb; or both,
+     a world's generated tree setting what can be known and what is known
+     read from minds and bearers. Mark: "Both." Put with it as a reading
+     from rulings 129 and 142, unobjected: a technique no mind or bearer
+     holds is lost, and can be found again.
+172. **Ages are read and named, capped by the founder, can realign the
+     world, and are the epochs of cultures and society.** Put to Mark on
+     2026-09-24: does a world have ages of technology? Four options were
+     put, to pick all that should hold: read and named, a reading of what
+     the peoples of a time commonly know; world epochs, turning at the
+     world's epoch boundaries; a founder's cap on how far technology can
+     go; and ages that realign the world to a new scope. Mark picked the
+     first, third and fourth and, in place of the second: "Ages are the
+     epochs of cultures/society."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2690,6 +2708,19 @@ takes it as its focus (ruling 64's guild), and ritualized when a tenet
 attaches an obligation or a taboo to its performance; a work of art that
 depicts a tale is a bearer of that tale, and keeps it of note under ruling
 129.
+
+**Technology (rulings 171 and 172).** A world's generated tree sets what can
+be known, and what is known is read from the techniques and recipes that
+minds and bearers hold; a technique no mind or bearer holds is lost, and can
+be found again (a reading from rulings 129 and 142, put to Mark without
+objection). An age of technology is an epoch of a culture or society, read
+from what its peoples commonly know and named when noted, as a culture is;
+the founder may cap how far technology can go, as a world's magic is set
+(ruling 102); and an age that reaches a new scale can realign the world to
+a new scope (rulings 41 and 90), as spaceflight would open the space scope.
+Prior art, known: Civilization's authored tech tree as the climbed case,
+and the idea of recipe preconditions as an emergent tree, which is what
+crafting games' recipe graphs already are.
 
 **Materials are the roster (ruling 97).** The typology of kinds of nis is
 the world's roster of lineages, and so the materials of a world are the
@@ -5128,6 +5159,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 171 and 172 recorded: technology is a generated tree
+  and what is known, lost arts a reading; ages are epochs of cultures and
+  society, read and named, capped by the founder, able to realign. §3.3.1
+  gains a technology paragraph.
 - 2026-09-24: ruling 170 recorded: art and ritual are crafts, any craft or
   pursuit can be politicized or ritualized; §3.3.1's crafting note gains it
   with one flagged reading.
