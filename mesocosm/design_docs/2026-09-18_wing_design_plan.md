@@ -15,7 +15,8 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 191. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 193, and W5 is drafted as the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md). The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1619,6 +1620,22 @@ what later sections derive from.
      Three options were put: as suggested hooks, which the DM may take up,
      drop or reshape; on request; or not at all. Mark: "As suggested
      hooks."
+192. **Isocosm absorbs mesocosm-core; the first overlay plays on
+     Isocosm.** Put to Mark on 2026-09-25, before drafting the Mesocosm
+     overlay plan, with the sizes measured: `mesocosm-core` 44,901 lines
+     holding the live ecology, bodies, matter, places, deep time and
+     record; `shared/isocosm` 3,208 lines, used only by the bench; how do
+     they become one sim, as the rule against a stage growing its own
+     engine requires? Three options were put: Isocosm absorbs,
+     mesocosm-core's sim moving in piece by piece re-expressed in its
+     process definitions (ruling 32), Mesocosm's own core shrinking to
+     directing, presentation and the review; mesocosm-core becomes the
+     sim; or a bridge now and convergence later. Mark: "Isocosm absorbs."
+193. **Moved modules are decomposed under the 600-line ceiling.** Mark,
+     2026-09-25, while the Mesocosm overlay plan was being drafted: "Feel
+     free to decompose them under the 600 Loc limit". So every family that
+     moves into Isocosm is split as it goes, along seams the code already
+     has.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4983,7 +5000,11 @@ derivation, the record's commit path, anything feeding the tracer. The W2
 probe of this section measures the constant, so the line can be moved later
 on a receipt.
 
-### 5.5 The first overlay: Mesocosm (rulings 174 to 184)
+### 5.5 The first overlay: Mesocosm (rulings 174 to 184, 192 and 193)
+
+The [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) compiles
+this section, with rulings 192 and 193 on `mesocosm-core`'s absorption into
+Isocosm, into W5's phases.
 
 W5 is Mesocosm's (ruling 174). Its domain is the critter and its lineage
 (ruling 35), what it plays follows the lineage's traits (ruling 155), and
@@ -5320,7 +5341,9 @@ carries the rulings as they are made.
   to §5 as a core implementing the overlay contract, and a played loop with
   receipts drawn from the generator. **Ruled 2026-09-24 (ruling 174):
   Mesocosm goes first,** and its played loop directs, as ruling 60 has it
-  (ruling 175, 2026-09-25).
+  (ruling 175, 2026-09-25). Planned as the
+  [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), phases M0
+  to M4, proposed and not opened.
 
 No code lane runs before W1 is ruled.
 
@@ -5369,6 +5392,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 192 and 193 recorded: Isocosm absorbs
+  `mesocosm-core`, and moved modules are decomposed under the 600-line
+  ceiling. W5 drafted at Mark's word as the Mesocosm overlay plan; §5.5
+  and §11 link it.
 - 2026-09-25: rulings 190 and 191 recorded: an unmet adventure pack waits
   or the GM forces it; the sim's arcs reach the DM as suggested hooks.
   §5.7 gains them and three readings put without objection.
