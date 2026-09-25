@@ -15,9 +15,9 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 209, and W5 is drafted as the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 done
-and M1 in progress. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 213, and W5 is drafted as the
+[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
+M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1783,6 +1783,48 @@ what later sections derive from.
      positive control, the exact runner against itself under a dynamics
      seed kept apart from the founding seed, and a negative control, a
      crowd that averages reserves, which must fail the starvation check.
+210. **A player may pin any pointable thing.** Put to Mark on 2026-09-25,
+     typing the attention set (ruling 204): what can a player pin, which
+     ruling 130 keeps on the player's account? Three options were put: any
+     pointable thing, entities and places, or entities only. Mark: "Any
+     pointable thing." So entities, places, items, lineages, factions and
+     events, anything that can have an impresa, can be pinned.
+211. **An attended group runs its noted members exactly and the rest as a
+     crowd.** Put to Mark on 2026-09-25, with 210: when what a player cares
+     about is a group, such as Mesocosm's lineage, does every member run
+     exactly, grouped without loss, or do the noted run individually and
+     the fungible as a crowd, like the rest of the world? Mark: "Noted
+     exact, rest crowd." So caring for a group keeps it, its noted members
+     run as individuals (ruling 113), and its fungible members run as a
+     crowd within the world's tolerance.
+212. **Examining is what the view shows up close.** Put to Mark on
+     2026-09-25, with 210: what counts as examining, which ruling 71 makes
+     play and ruling 113 logs: everything in view, what the view shows at
+     full detail, or what the player inspects? Mark asked which is more
+     co-op friendly: "My impulse was everything, but are there arguments
+     for syncing worldstate that would argue for the other two?" Answered
+     from the record's sync, where intents are the log and peers replay
+     (§5.2 point 2; ruling 104's merges): the grain costs no bandwidth, but
+     every peer runs the union of all foregrounds, merges conflict over
+     foregrounded material, everything in view would put camera moves in
+     the log, and what is inspected breaks views that draw individuals. Put
+     back with that and, at his asking, a recommendation, Mark: "In view, up
+     close." So what the view shows at full detail, the terrarium section or
+     a battlemap, is watched and runs in detail, and the watch is logged
+     when that region changes; far views, an overmap or the minimap, stay
+     crowd, and the camera stays presentation inside a region.
+213. **A player's event stream carries what is attended.** Put to Mark on
+     2026-09-25, with 212: events touching anything in the attention set,
+     or everything the collector keeps from it? Mark: "Depends on the co-op
+     consideration. I don't know which is a simpler regime to synchronize:
+     detailed but less, or everything and compressible... i lean to the
+     former". Answered that under replay the stream never crosses the
+     network, each peer deriving its own player's stream from the shared
+     sim, so the smaller stream wins locally too. Put back, Mark: "What's
+     attended." So a stream carries events touching who the player plays,
+     what they pin, what they examine and the game's own care, with record
+     entries reaching the played entity, and in survival mode only what the
+     played critter can know (ruling 180).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5559,6 +5601,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 210 to 213 recorded, typing the attention set of
+  §5.2's point 4 for the overlay plan's M1: pins are any pointable thing,
+  an attended group runs its noted members exactly and the rest as a crowd,
+  examining is what the view shows up close, and a stream carries what is
+  attended. M1 is done.
 - 2026-09-25: rulings 198 to 209 recorded. The RPG systems session's
   read-only consistency pass came back with thirty items, each confirmed
   against the files, and was applied at Mark's word (198): notes where later

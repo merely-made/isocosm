@@ -10,7 +10,9 @@ use isocosm_overlay::mesocosm::{
     Nudge, Places, PlayerAct, PlayerActKind, Priorities, PriorityKey, RevisionAnswer, Stances,
     WorldPoint,
 };
-use isocosm_overlay::{CandidateHandle, EntityHandle, PlaceHandle, Tick};
+use isocosm_overlay::{
+    CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick,
+};
 use serde::{Deserialize, Serialize};
 
 fn roundtrips<T>(value: &T)
@@ -194,7 +196,8 @@ fn mesocosm_intent_is_dev_matches_the_dev_variant_only() {
 fn mesocosm_intent_envelope_roundtrips() {
     let envelope: MesocosmIntentEnvelope = MesocosmIntentEnvelope {
         tick: Tick(7),
-        intent: MesocosmIntent::Dev(DevIntent::EndEpoch),
+        participant: ParticipantHandle(1),
+        intent: Intent::Game(MesocosmIntent::Dev(DevIntent::EndEpoch)),
     };
     roundtrips(&envelope);
 }

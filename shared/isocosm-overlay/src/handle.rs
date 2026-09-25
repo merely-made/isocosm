@@ -22,3 +22,21 @@ pub struct PlaceHandle(pub u64);
 /// answer at the epoch boundary.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct CandidateHandle(pub u64);
+
+/// An opaque reference to a participant: an identity holding a grant with
+/// the right to petition (the terminology supersession of 2026-09-20), such
+/// as a player, a servitor or a scenario runner. Each has one attention set.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub struct ParticipantHandle(pub u64);
+
+/// An opaque reference to a lineage.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub struct LineageHandle(pub u64);
+
+/// An opaque reference to a faction, a polity among them.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub struct FactionHandle(pub u64);
+
+/// An opaque reference to an event in the record.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub struct EventHandle(pub u64);

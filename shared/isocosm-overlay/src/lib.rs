@@ -3,7 +3,8 @@
 
 //! The overlay contract between a game and the Isocosm sim (wing design
 //! record ruling 154): a game submits intents stamped for a tick, the sim
-//! returns events by subscription and a read-only view of each tick, and
+//! returns events, each participant's stream derived from their attention
+//! set, and a read-only view of each tick, and
 //! outcomes a game settles itself come back through the handoff in the
 //! sim's own terms.
 //!
@@ -18,6 +19,7 @@
 //! holds the first game's vocabulary; a second game's overlay would add a
 //! sibling module here, not change these.
 
+mod attention;
 mod event;
 mod handle;
 mod handoff;
@@ -27,9 +29,13 @@ mod view;
 
 pub mod mesocosm;
 
-pub use event::{EventRecord, EventSubscription, EventTopic};
-pub use handle::{CandidateHandle, EntityHandle, PlaceHandle};
+pub use attention::{AttentionChange, AttentionSet, Pointable};
+pub use event::{EventRecord, EventTopic};
+pub use handle::{
+    CandidateHandle, EntityHandle, EventHandle, FactionHandle, LineageHandle, ParticipantHandle,
+    PlaceHandle,
+};
 pub use handoff::HandoffEnvelope;
-pub use intent::IntentEnvelope;
+pub use intent::{Intent, IntentEnvelope};
 pub use tick::Tick;
 pub use view::ViewHandle;

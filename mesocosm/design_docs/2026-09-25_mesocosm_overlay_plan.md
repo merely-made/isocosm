@@ -3,7 +3,8 @@
 **Date:** 2026-09-25
 
 **Status, 2026-09-25:** plan; M0 done the same day (rulings 194 to 196),
-M1 opened at Mark's word and in progress, M2 to M4 proposed and not
+M1 done the same day (rulings 197, 202 to 205, 210 to 213), M2 to M4
+proposed and not
 opened. Drafted at Mark's
 word ("Draft the Mesocosm plan") from the
 [wing design record](2026-09-18_wing_design_plan.md)'s rulings on the
@@ -90,7 +91,8 @@ settles come back through the handoff.
 | In: the player's acts | splitting the played line and naming it; the name is the doing | 202 |
 | In: checkpoint answers | at a birth, keep the parent or take the offspring; at a death, the next life taken up from the cohort (*a reading of 61 and 178*); at the boundary, the review's revision | 57, 61, 178, 183 |
 | In: dev intents | end the epoch, force a birth, kill, place matter; the dev tools plan's, never play | playable ecology plan §6 q2 |
-| Out: events | receipts and record entries, by a subscription derived from the player's attention set, whose type M1 designs; in survival mode, only what the played critter can know | 113, 117, 180, 204 |
+| In: attention changes | pin or unpin any pointable thing; examine the region the view shows up close, or stop | 113, 130, 210, 212 |
+| Out: events | receipts and record entries, each participant's stream derived from their attention set: what is attended; in survival mode, only what the played critter can know | 113, 117, 180, 204, 213 |
 | Out: views | a read-only view of each tick for the terrarium section and the review board | 154 |
 | Handoff | empty | *reading below* |
 
@@ -155,8 +157,9 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   crate, which depends on nothing sim-internal, every type round-trips
   through bytes (D18), each of today's sixteen intents is mapped as §3
   splits them, and the attention set has its type, with subscription
-  derived from it (ruling 204). **In progress:** all but the attention set
-  landed on 2026-09-25.
+  derived from it (ruling 204). **Done 2026-09-25:** the attention set
+  typed under rulings 210 to 213. The sim's side of it, holding each set and
+  deriving each stream, is built with M2 and M3.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
@@ -218,6 +221,13 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-25: M1 done. The attention set is typed in `isocosm-overlay`
+  under rulings 210 to 213: who the participant plays, what they pin,
+  the region they examine up close, and the game's own care, changed only
+  by attention-change intents; the topic subscription is gone, each
+  stream derived from its set. Two readings with it: the envelope names
+  the submitting participant (rulings 152, 153), and the survival filter
+  applies where a stream is derived (ruling 180). Twenty-three tests pass.
 - 2026-09-25: M1's crate landed on main: Lane B's `shared/isocosm-overlay`,
   reviewed, its tests rerun, and fixed on merge for rulings 202 to 205: the
   player's acts carry `Speciate`, `Express` has no contract type, the death

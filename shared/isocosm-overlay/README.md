@@ -2,7 +2,8 @@
 
 The overlay contract between a game and the Isocosm sim (wing design record
 ruling 154): a game submits **intents** stamped for a tick; the sim returns
-**events** (receipts and record entries, by subscription) and a read-only
+**events** (receipts and record entries, each participant's stream derived
+from their attention set) and a read-only
 **view** of each tick; outcomes a game settles itself come back through the
 **handoff** in the sim's own terms and must pass the sim's invariants.
 
@@ -23,14 +24,16 @@ cargo test --manifest-path shared/isocosm-overlay/Cargo.toml
 
 ## Layout
 
-- The crate root (`src/tick.rs`, `handle.rs`, `intent.rs`, `event.rs`,
-  `view.rs`, `handoff.rs`) is the wing-level core: the tick stamp, opaque
-  handles, the generic intent envelope, event subscription and event record
-  types, the view handle, and the generic handoff envelope. All game-neutral.
+- The crate root (`src/tick.rs`, `handle.rs`, `intent.rs`, `attention.rs`,
+  `event.rs`, `view.rs`, `handoff.rs`) is the wing-level core: the tick stamp,
+  opaque handles, the intent envelope, the attention set, the event record,
+  the view handle, and the generic handoff envelope. All game-neutral. An
+  envelope names the participant who submitted it and carries either an
+  attention change, which every game shares, or the game's own intent.
 - `src/mesocosm/` is Mesocosm's vocabulary, the first game's module (Mesocosm
   overlay plan §3; wing design record §5.5): directives, the player's own
-  acts, checkpoint answers and dev intents. A second game's overlay adds a sibling module here, not
-  changes to the core.
+  acts, checkpoint answers and dev intents. A second game's overlay adds a
+  sibling module here, not changes to the core.
 - `tests/core_roundtrip.rs` and `tests/mesocosm_roundtrip.rs` byte-round-trip
   every type in the crate through `serde_json`, the format `shared/isocosm`
   already saves and replays with (`serde_json::to_vec` / `from_slice`,
@@ -46,13 +49,34 @@ replaced option and put to Mark; the wing design record carries his answers.
 1. **The tick stamp's type** (ruling 203): a newtype, `struct Tick(pub u64)`,
    over the sim's flat count. Epoch boundaries stay a rule over that count
    (`Session::advance`, `shared/isocosm/src/history.rs`), not a field of it.
-2. **Event subscription** (ruling 204): derived from the player's attention
-   set (the record's §5.2 point 4, in the contract's shape since ruling 154),
-   whose type M1 designs. `EventSubscription`'s explicit topic set is a
-   placeholder until then, to be replaced rather than extended.
+2. **Event subscription** (ruling 204): derived from the participant's
+   attention set (the record's §5.2 point 4, in the contract's shape since
+   ruling 154), typed in `src/attention.rs` under rulings 210 to 213. Nobody
+   subscribes separately; the placeholder topic set is gone.
 3. **How a PLACES directive names a location** (ruling 205): an opaque handle
    to a node of the place graph (rulings 72, 147). Dev intents keep raw
    coordinates (`WorldPoint`), since they reach the grid directly.
+
+## The attention set
+
+One per participant, whether a player, a servitor or a scenario runner, and
+at once the collector's roots, the foreground that runs in detail, and the
+source of the participant's event stream (§5.2 point 4). It holds who they
+play, what they pin, which may be any pointable thing (ruling 210), the
+region their view shows up close (ruling 212), and the game's own care,
+derived by the sim from the game's profile, where a group keeps its noted
+members exact and runs the rest as a crowd (ruling 211). A game changes it
+only through attention changes, which are intents and so logged (ruling
+113); the examined region changes only when the up-close view moves to
+another, so the camera stays presentation inside a region. Each peer derives
+its own participant's stream of what is attended from the shared sim, so the
+stream never crosses the network (ruling 213).
+
+Two readings sit under it, not rulings: the envelope names the participant,
+since ruling 152 has the sim check that a player directs only who they play
+while ruling 153 lets two direct one entity; and the survival filter, only
+what the played critter can know (ruling 180), is applied where the stream
+is derived.
 
 ## Mapping `mesocosm-core`'s sixteen `Intent` variants
 

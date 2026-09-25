@@ -14,8 +14,9 @@
 use std::collections::BTreeSet;
 
 use isocosm_overlay::{
-    CandidateHandle, EntityHandle, EventRecord, EventSubscription, EventTopic, HandoffEnvelope,
-    IntentEnvelope, PlaceHandle, Tick, ViewHandle,
+    AttentionChange, AttentionSet, CandidateHandle, EntityHandle, EventHandle, EventRecord,
+    EventTopic, FactionHandle, HandoffEnvelope, Intent, IntentEnvelope, LineageHandle,
+    ParticipantHandle, PlaceHandle, Pointable, Tick, ViewHandle,
 };
 use serde::{Deserialize, Serialize};
 
@@ -51,28 +52,64 @@ fn handles_roundtrip() {
     roundtrips(&EntityHandle(7));
     roundtrips(&PlaceHandle(9));
     roundtrips(&CandidateHandle(11));
+    roundtrips(&ParticipantHandle(13));
+    roundtrips(&LineageHandle(15));
+    roundtrips(&FactionHandle(17));
+    roundtrips(&EventHandle(19));
 }
 
 #[test]
-fn intent_envelope_roundtrips_a_generic_payload() {
+fn intent_envelope_roundtrips_a_generic_payload_and_attention() {
     roundtrips(&IntentEnvelope {
         tick: Tick(3),
-        intent: DummyPayload::Ping,
+        participant: ParticipantHandle(1),
+        intent: Intent::Game(DummyPayload::Ping),
     });
     roundtrips(&IntentEnvelope {
         tick: Tick(4),
-        intent: DummyPayload::Value(42),
+        participant: ParticipantHandle(2),
+        intent: Intent::Game(DummyPayload::Value(42)),
+    });
+    roundtrips(&IntentEnvelope::<DummyPayload> {
+        tick: Tick(5),
+        participant: ParticipantHandle(1),
+        intent: Intent::Attention(AttentionChange::Examine(PlaceHandle(3))),
     });
 }
 
 #[test]
-fn event_topic_and_subscription_roundtrip() {
+fn event_topic_roundtrips() {
     roundtrips(&EventTopic("mesocosm:born".into()));
-    let mut topics = BTreeSet::new();
-    topics.insert(EventTopic("mesocosm:born".into()));
-    topics.insert(EventTopic("mesocosm:died".into()));
-    roundtrips(&EventSubscription { topics });
-    roundtrips(&EventSubscription::default());
+}
+
+#[test]
+fn attention_changes_roundtrip() {
+    for pointable in [
+        Pointable::Entity(EntityHandle(1)),
+        Pointable::Place(PlaceHandle(2)),
+        Pointable::Lineage(LineageHandle(3)),
+        Pointable::Faction(FactionHandle(4)),
+        Pointable::Event(EventHandle(5)),
+    ] {
+        roundtrips(&AttentionChange::Pin(pointable));
+        roundtrips(&AttentionChange::Unpin(pointable));
+    }
+    roundtrips(&AttentionChange::Examine(PlaceHandle(6)));
+    roundtrips(&AttentionChange::StopExamining);
+}
+
+#[test]
+fn attention_set_roundtrips() {
+    roundtrips(&AttentionSet::default());
+    roundtrips(&AttentionSet {
+        played: BTreeSet::from([EntityHandle(1), EntityHandle(2)]),
+        pinned: BTreeSet::from([
+            Pointable::Place(PlaceHandle(3)),
+            Pointable::Event(EventHandle(4)),
+        ]),
+        examined: Some(PlaceHandle(3)),
+        care: BTreeSet::from([Pointable::Lineage(LineageHandle(5))]),
+    });
 }
 
 #[test]
