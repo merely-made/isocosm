@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 164. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 166. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1437,6 +1437,18 @@ what later sections derive from.
      should: its traits; its support, company, faith, a home and what it
      believes in; and what it has been through, strain survived hardening
      it and past breaks scarring it. Mark picked all three.
+165. **A culture is read from its people, and named when noted.** Put to
+     Mark on 2026-09-24, opening language and culture: what is a culture
+     in the sim? Three options were put: read from people, with no state
+     of its own; a thing of its own, kept like a polity without a
+     constitution; or read, and named and remembered once minds hold it as
+     a thing. Mark: "Read, named when noted."
+166. **Languages divide.** Put to Mark on 2026-09-24: do sophonts speak
+     languages that can divide them? Three options were put: languages
+     divide, understanding needing a shared tongue learned like a skill;
+     names only, languages as the generated flavour of names; or no
+     languages. Mark: "Languages divide." So telling, posing and exchange
+     across tongues come harder, and interpreters matter.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -3060,6 +3072,19 @@ ruling 103 gives one only to an agentive world. *Refined by rulings 120 and
 121:* the baseline is the population's own aggregate, seeded from the
 world's disposition in the first lineages and moved after by what the
 world's conditions make of its people, so it drifts.
+
+**Culture and language (rulings 165 and 166).** A culture is read from its
+people: what a population shares in tenets, taboos, customs, ways of deciding
+and words, read off its members as a faction's alignment is, with no state of
+its own. Once minds hold it as a thing it is named and remembered, as a place
+becomes a location (ruling 129). Languages divide: understanding needs a
+shared tongue, learned like a skill (ruling 96), so telling, posing and
+exchange across tongues come harder, and interpreters matter. *Reading, not
+ruled:* a tale that crosses a tongue is retold, so translation is one more
+way a belief goes wrong under ruling 117. Prior art, known: Axelrod's
+dissemination of culture (1997), where neighbours who already share traits
+converge further; Dwarf Fortress's generated languages and Ultima Ratio
+Regum's generated cultures.
 
 **Secrets (ruling 87).** "A secret is valuable... it is tremendous leverage,
 often, or there wouldn't be rules against its propagation", the word then
@@ -5067,6 +5092,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 165 and 166 recorded: culture read from its people
+  and named when noted; languages divide. §3.4 gains a culture and
+  language paragraph with one flagged reading and its prior art.
 - 2026-09-24: rulings 163 and 164 recorded: down or up by traits, the
   moment and chance; bearing by traits, support and history. The mood and
   breaks thread is closed.
