@@ -366,6 +366,13 @@ does not require sapience, a name, a faction, or costly foreground simulation.
 it for constructs remains unresolved. The platform admission term is now
 **participant**, reserving the `denizen` crate name and concept for this
 simulation tier without creating a crate or moving Servitor implementation.
+**Amended 2026-09-25 (wing design record ruling 200).** A denizen is now a
+*named* entity, which returns to the 2026-07-31 ruling's word: an entity of
+note is one the sim identifies, and it becomes a denizen when people name it,
+as they need to refer to it. Naming requires sapience, so every sophont is a
+denizen, while a named critter need not be sapient. The tier is of note, and
+notability itself still needs no name. A `denizen` crate is made only if it
+becomes the way entity information moves between contexts (ruling 201).
 
 The force of it is what it does *not* require. There is no conversion step, no
 promotion pipeline, no second representation. Each vessel adds exactly one
@@ -1146,7 +1153,7 @@ maintainer's manual step.
 | **metabolize** | Mesocosm's single verb: world into self, self into world. |
 | **fili** | Lineage across worlds. Reserved in `mere/design_docs/TERMINOLOGY.md` for moot ancestry, forks, and genealogy. Not event history, not content descent. |
 | **tulpa** | The legend and memorial organ: what memory makes of history, sustained by continued attention. Proposed 2026-07-30, crates.io free, **lexicon inscription still pending the maintainer's ruling.** |
-| **denizen** | An inhabitant individually remembered by simulation because history, relationships, or explicit designation makes it matter. Earned notability does not require sapience, a name, a faction, or costly foreground simulation. The `denizen` crate name and concept are reserved for this tier; no crate or Servitor move follows from that reservation. Supersedes the provisional `borg` term on 2026-09-20. |
+| **denizen** | An inhabitant individually remembered by simulation because history, relationships, or explicit designation makes it matter. Earned notability does not require sapience, a name, a faction, or costly foreground simulation. The `denizen` crate name and concept are reserved for this tier; no crate or Servitor move follows from that reservation. Supersedes the provisional `borg` term on 2026-09-20. Amended 2026-09-25 (wing design record ruling 200): a denizen is a named entity, the tier being of note; the crate waits for a reason of its own (ruling 201). |
 | **character** | A **faction-associated** denizen, made by playing Eponym. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
 | **deme** | Banked, unspent. Biology's local interbreeding population; the leading candidate for Mesocosm's unit word if one is wanted. |
 
@@ -1238,6 +1245,8 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    reassignment of `borg` to the construct axis remains unresolved. **deme**
    remains banked and is not a candidate here: it names a population, and this
    concept names an individual.
+   **Amended 2026-09-25 (wing design record ruling 200):** a denizen is a
+   named entity, the tier being of note.
 
    The battle-frame noun — the machine a character pilots, if Eponym keeps
    the Gotcha Force silhouette — remains genuinely unnamed and is a separate
