@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 184. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 187. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1579,6 +1579,22 @@ what later sections derive from.
      2026-09-25: does creative mode (ruling 180) also let the player change
      the world? Two options were put: see and edit; or see only, editing
      belonging to the world editor (ruling 89). Mark: "See only."
+185. **Eponym's co-op is each player living their own creature.** Put to
+     Mark on 2026-09-25, opening Eponym's overlay: what does co-op look
+     like, given that ruling 153 lets two players direct one entity? Three
+     options were put: each their own; one life, shared; or both as a
+     setting. Mark: "Each their own."
+186. **At a death in Eponym, the player chooses who to become, among
+     bonded companions.** Put to Mark on 2026-09-25: when the creature you
+     live dies and a companion becomes the one you play, who decides which
+     companion? Three options were put: the player chooses, among
+     companions with a bond to the one who died; the closest bond; or
+     whoever takes up the role by the world's rules. Mark: "The player
+     chooses."
+187. **Survival and creative modes hold for Eponym as for Mesocosm.** Put
+     to Mark on 2026-09-25: do rulings 180 and 184 hold for Eponym? Two
+     options were put: the same, creative also being where tag-in lives;
+     or survival only. Mark: "The same."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4976,6 +4992,21 @@ develops, weighing its adaptation against the rest of the trophic web
 (ruling 182); that is what an epoch is about, beside the individual
 variance of expression rerolled at reproduction (ruling 57).
 
+### 5.6 Eponym's overlay (rulings 185 to 187)
+
+Eponym's own plans already hold most of its profile: one named creature,
+driven, until death (ruling 60); companions configured in advance and never
+commanded, peers who may refuse; succession, "Death, and a companion
+becomes the played character"; and no real-time puppeteering of a party.
+Three things were ruled against today's rulings. Co-op is each player
+living their own named creature in the same world, peers to each other as
+to anyone (ruling 185), so ruling 153's shared directing is not Eponym's
+co-op shape. At a death, the player chooses who to become, among
+companions with a bond to the one who died (ruling 186). Survival and
+creative modes hold as in Mesocosm: survival shows what the creature one
+lives knows, its diegetic notes included, and creative shows the truth and
+is where tag-in lives (ruling 187).
+
 ## 6. Method
 
 - **Targets are draws.** A receipt is a seeded draw from the generator's
@@ -5286,6 +5317,11 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 185 to 187 recorded for Eponym's overlay: co-op each
+  their own; the player chooses a bonded companion to become at a death;
+  the same survival and creative modes. §5.6 added. The playable ecology
+  plan's open ruling 8 answered by a reading put without objection: cohort
+  correctness (S3) before a wider resident window (S2).
 - 2026-09-25: rulings 183 and 184 recorded: the parent kept at a birth by
   default; creative mode sees and does not edit. The playable ecology
   plan's open rulings 1 and 3 are closed, 3 by a reading from rulings 58

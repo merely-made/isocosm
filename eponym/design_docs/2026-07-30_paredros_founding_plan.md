@@ -628,7 +628,9 @@ a trusted companion within an existing agreement without friction, and can
 explain why each interaction had a different weight.
 
 ### P2 — Succession
-Death, and a companion becomes the played character.
+Death, and a companion becomes the played character. (Ruled 2026-09-25,
+wing design record ruling 186: the player chooses which, among companions
+with a bond to the one who died.)
 
 **Done when** the first succession lands and the player minds who they
 became.

@@ -860,7 +860,11 @@ have measured receipts.
    abilities allow. What measures a collapse as local or global stays this
    plan's to specify.
 8. When the scale lane resumes, does S3's correctness and cohort work precede
-   S2's wider resident window?
+   S2's wider resident window? **Answered 2026-09-25 as a reading put to
+   Mark without objection:** S3 first. The wing design record's ruling 113
+   makes agreement in distribution the acceptance test, and the aggregation
+   research found the current cohort insufficient for threshold processes,
+   so a wider resident window first would scale a known fault.
 
 None blocks founding PE0. Question 1 still blocks the reproduction default;
 question 2 is ruled and realized, so what it blocked is now only PE3b's review;
