@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 162. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 164. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1425,6 +1425,18 @@ what later sections derive from.
      spreads, a panic or a riot running through a crowd; or it doesn't.
      Mark: "It doesn't." So each mind breaks alone, and a riot is many
      minds breaking for the same reasons.
+163. **Whether a break goes down or up turns on traits, the moment and
+     chance.** Put to Mark on 2026-09-24: when strain breaks a mind, what
+     decides whether it breaks down or rises? Three options were put, to
+     pick all that should count: its traits; the moment, what is at stake
+     and who depends on it; and chance, a seeded draw weighted by the rest.
+     Mark picked all three.
+164. **What a mind can bear is set by its traits, its support and what it
+     has been through.** Put to Mark on 2026-09-24: what sets how much
+     strain a mind can bear? Three options were put, to pick all that
+     should: its traits; its support, company, faith, a home and what it
+     believes in; and what it has been through, strain survived hardening
+     it and past breaks scarring it. Mark picked all three.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2933,7 +2945,13 @@ heeding directives and follows its own needs until it recovers, acts out in
 a break drawn from its traits and situation, or rises instead, a
 breakthrough such as the fey mood or a last stand; and a break leaves a
 mark, seeding or feeding a personality trait. Breaking does not spread: each
-mind breaks alone, so a riot is many minds breaking for the same reasons. Prior art,
+mind breaks alone, so a riot is many minds breaking for the same reasons.
+*Ruled 2026-09-24 (rulings 163 and 164):* whether a break goes down or up
+turns on the mind's traits, the moment, what is at stake and who depends on
+it, and a seeded draw weighted by both; and what a mind can bear is set by
+its traits, its support, company, faith, a home and what it believes in,
+and what it has been through, strain survived hardening it and past breaks
+scarring it. Prior art,
 known: RimWorld's mood as a sum of timed thoughts with break thresholds and
 inspirations; Dwarf Fortress's accumulated stress, its tantrums, and its
 strange moods, the fey mood of ruling 95; Darkest Dungeon's stress meter,
@@ -5049,6 +5067,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: rulings 163 and 164 recorded: down or up by traits, the
+  moment and chance; bearing by traits, support and history. The mood and
+  breaks thread is closed.
 - 2026-09-24: rulings 160 to 162 recorded: personality traits sit on the
   five factors; a break stops heeding, acts out or rises, and leaves a
   mark; breaking does not spread. §3.2.1's disposition note and §3.3.1's
