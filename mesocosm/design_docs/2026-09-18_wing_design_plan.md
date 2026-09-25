@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 169. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 170. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1466,6 +1466,11 @@ what later sections derive from.
      should: contact, neighbours growing alike faster the more they share;
      prestige, copying those admired or powerful; imposition by a polity's
      means; and drift apart when out of touch. Mark picked all four.
+170. **Art and ritual are crafts, and any craft or pursuit can be
+     politicized or ritualized.** Offered on 2026-09-24 as a next thread,
+     "whether sophonts make art and hold rites, and what those do", Mark:
+     "I view art and ritual as crafts. A craft/pursuit can be
+     politicized/ritualized too. Let's proceed to tech".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2678,7 +2683,13 @@ made of beyond that stays with the hagioglyph organ's plan. An item is
 improved only as far as its maker's skill and its story allow, and its
 material is no ceiling. *Reading, not ruled:* an invented technique that
 spreads far or becomes legend is a candidate for the canon's next revision,
-which is how the canon grows.
+which is how the canon grows. *Ruled 2026-09-24 (ruling 170):* art and
+ritual are crafts, and any craft or pursuit can be politicized or
+ritualized. *Reading, not ruled:* a pursuit is politicized when a polity
+takes it as its focus (ruling 64's guild), and ritualized when a tenet
+attaches an obligation or a taboo to its performance; a work of art that
+depicts a tale is a bearer of that tale, and keeps it of note under ruling
+129.
 
 **Materials are the roster (ruling 97).** The typology of kinds of nis is
 the world's roster of lineages, and so the materials of a world are the
@@ -5117,6 +5128,9 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 170 recorded: art and ritual are crafts, any craft or
+  pursuit can be politicized or ritualized; §3.3.1's crafting note gains it
+  with one flagged reading.
 - 2026-09-24: rulings 167 to 169 recorded: tongues and cultures descend
   like lineages; names from the tongue, tales and the namer; culture
   spreads by contact, prestige and imposition and drifts apart.
