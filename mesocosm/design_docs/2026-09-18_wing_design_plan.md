@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 182. The sim plan's implementation
+**Status, 2026-09-25:** rulings run to 184. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1567,6 +1567,18 @@ what later sections derive from.
      (individual variance?)". Asked whether "troposphere" meant the rest of
      the trophic web, the ecosystem the lineage lives in, Mark: "That is
      correct".
+183. **At a birth, the player keeps the parent by default.** Put to Mark on
+     2026-09-25, from the playable ecology plan's open ruling 1: when your
+     critter reproduces, do you keep playing the parent or move to the
+     offspring? Three options were put: choose each time; parent by
+     default; or offspring by default. Mark: "Parent by default." So the
+     player keeps the parent unless they take the offspring, and the
+     choice can be taken back, which is the placeholder the plan already
+     built.
+184. **Creative mode shows the truth and does not edit.** Put to Mark on
+     2026-09-25: does creative mode (ruling 180) also let the player change
+     the world? Two options were put: see and edit; or see only, editing
+     belonging to the world editor (ruling 89). Mark: "See only."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4931,7 +4943,7 @@ derivation, the record's commit path, anything feeding the tracer. The W2
 probe of this section measures the constant, so the line can be moved later
 on a receipt.
 
-### 5.5 The first overlay: Mesocosm (rulings 174 to 182)
+### 5.5 The first overlay: Mesocosm (rulings 174 to 184)
 
 W5 is Mesocosm's (ruling 174). Its domain is the critter and its lineage
 (ruling 35), what it plays follows the lineage's traits (ruling 155), and
@@ -4952,7 +4964,9 @@ as much deep time added as they like (ruling 179).
 
 What the player sees is a mode (ruling 180): survival shows what the played
 critter knows, creative shows the truth, and both are needed, debugging
-among the reasons. A trophic collapse may be local or global, and losing is
+among the reasons; creative mode sees and does not edit, which is the world
+editor's (ruling 184). At a birth the player keeps the parent by default,
+and may take the offspring instead (ruling 183). A trophic collapse may be local or global, and losing is
 not the end (ruling 181): play can go on to see what happens; after a
 local collapse the player can start again elsewhere, even with their
 lineage if it survives, or their critter can help the world recover,
@@ -5272,6 +5286,10 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 183 and 184 recorded: the parent kept at a birth by
+  default; creative mode sees and does not edit. The playable ecology
+  plan's open rulings 1 and 3 are closed, 3 by a reading from rulings 58
+  and 155 put without objection.
 - 2026-09-25: rulings 180 to 182 recorded, answering the playable ecology
   plan's open rulings 5 to 7: survival and creative modes; collapse local
   or global and never the end; unplayed lineages adapt, inherit and

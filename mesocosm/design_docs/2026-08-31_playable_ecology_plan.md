@@ -760,7 +760,10 @@ have measured receipts.
    recorded intents (`Intent::Resume` and `Intent::TakeControl`) — and stands a
    placeholder default in for the ruling: `Checkpoint::default_answer` continues
    the parent, because that is the only answer that can be taken back. It is one
-   function, and ruling otherwise is a one-line change there.
+   function, and ruling otherwise is a one-line change there. **Ruled
+   2026-09-25 (wing design record ruling 183): parent by default.** The
+   placeholder stands as the ruled default; the player may take the
+   offspring instead.
 2. ~~What deterministic condition ends an epoch? Timer, world condition,
    lineage event, configurable rule, or a composition of them?~~ **Ruled by
    Mark, 2026-09-01: three separate rules, each a versioned world rule, not a
@@ -785,6 +788,12 @@ have measured receipts.
    same rule. It is a dev tool and never play.
 3. Are fungal networks, clonal stands, and microbial colonies genuine
    multi-anchor subjects or connected local critters at the first proof?
+   **Answered 2026-09-25 as a reading from the wing design record's rulings
+   58 and 155, put to Mark without objection:** a fungus or a clonal stand is
+   one body even where its patches are separate, and a microbial colony is
+   many bodies a player directs whole, so both are genuine multi-anchor
+   subjects in design. Whether the first proof builds them so, or stands in
+   connected local critters for now, is this plan's scope call.
 4. ~~Which generated-material scheme from the elements memo is the first one
    built?~~ **Ruled by Mark, 2026-09-02: matter is typed by provenance.** A
    milligram carries where it came from, kingdom first (flora, fauna, myco,
