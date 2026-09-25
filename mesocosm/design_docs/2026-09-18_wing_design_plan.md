@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-24:** rulings run to 172. The sim plan's implementation
+**Status, 2026-09-24:** rulings run to 173. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
 115 and 116 make competition a choice and most contests bloodless, and
@@ -1489,6 +1489,12 @@ what later sections derive from.
      go; and ages that realign the world to a new scope. Mark picked the
      first, third and fourth and, in place of the second: "Ages are the
      epochs of cultures/society."
+173. **Invention is driven by need, contact, temperament and mastery.** Put
+     to Mark on 2026-09-24: what drives invention, a master going beyond
+     the canon (ruling 142)? Four options were put, to pick all that
+     should: need; contact, ideas combining when peoples meet; temperament,
+     curious and open minds; and mastery, deep skill making breakthroughs
+     possible. Mark picked all four.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -2718,6 +2724,8 @@ from what its peoples commonly know and named when noted, as a culture is;
 the founder may cap how far technology can go, as a world's magic is set
 (ruling 102); and an age that reaches a new scale can realign the world to
 a new scope (rulings 41 and 90), as spaceflight would open the space scope.
+Invention, a master going beyond the canon, is driven by need, by contact
+between peoples, by temperament and by mastery (ruling 173).
 Prior art, known: Civilization's authored tech tree as the climbed case,
 and the idea of recipe preconditions as an emergent tree, which is what
 crafting games' recipe graphs already are.
@@ -5159,6 +5167,8 @@ No code lane runs before W1 is ruled.
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-24: ruling 173 recorded: invention driven by need, contact,
+  temperament and mastery; the technology thread is closed.
 - 2026-09-24: rulings 171 and 172 recorded: technology is a generated tree
   and what is known, lost arts a reading; ages are epochs of cultures and
   society, read and named, capped by the founder, able to realign. §3.3.1
