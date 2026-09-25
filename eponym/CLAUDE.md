@@ -104,19 +104,24 @@ architecture in the sibling repo at
 
 - **critter**: the plain organism word, wing-wide.
 - **character**: **this game's unit word, ruled 2026-07-31.** A
-  faction-association added to a denizen, which is itself an individually
-  remembered inhabitant — `character(denizen(critter))`, which this repo's founding plan
+  faction-association added to a denizen, which is itself a named entity
+  (ruling 200) — `character(denizen(critter))`, which this repo's founding plan
   already described as one stable subject with independently versioned
   profile references. Not a coinage: Isometry uses `character` for the same
   artifact, so the two vessels agree rather than each inventing a word. A
   faction is a *relationship*, not a property, which is why the second-person
   vessel is the one that mints characters.
-- **denizen**: an inhabitant the simulation remembers individually because
-  history, relationships, or explicit designation makes it matter. Its earned
-  notability needs neither sapience, name, faction nor costly foreground
-  simulation. This current term supersedes `borg` on 2026-09-20; historical
-  rulings retain the old word with supersession pointers. See the wing
-  founding record §1 and open question 3.
+- **denizen**: a named entity. An entity of note, one the simulation
+  identifies and remembers individually, becomes a denizen when people
+  name it, as they need to refer to it. Naming requires sapience, so
+  every sophont is a denizen, but a denizen need not be a sophont (wing
+  design record ruling 200, 2026-09-25, amending the 2026-09-20 line).
+  The tier is "of note", and notability itself needs no name. This term
+  supersedes `borg`; historical rulings retain the old word with
+  supersession pointers. See the wing founding record §1 and open
+  question 3.
+- **sophont**: the term of art for a sapient entity; every sophont is a
+  denizen (ruling 200).
 - **The battle-frame noun** — the machine a character pilots, if this game
   keeps the Gotcha Force silhouette — **remains unnamed.** It is a separate
   question from the unit word, and not a gap to fill casually.
