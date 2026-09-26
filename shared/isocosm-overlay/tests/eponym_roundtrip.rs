@@ -5,15 +5,14 @@
 //! same format as `core_roundtrip.rs` and `mesocosm_roundtrip.rs`.
 
 use isocosm_overlay::eponym::{
-    ActKey, ActTarget, Actuation, Blow, Claim, CreativeIntent, EponymHandoff,
-    EponymHandoffEnvelope, EponymIntent, EponymIntentEnvelope, FirstLife, Harm, LifeCheckpoint,
-    LifeChoice, Manner, Motion, PartHandle, PlayerAct, PlayerActKind, Proposal, StartTime,
-    Succession, Successor, Telling, Term, TermSide, TimedAct, WorkKey, WorldPoint, Wound,
-    WoundSeverity,
+    ActTarget, Actuation, Blow, Claim, CreativeIntent, EponymHandoff, EponymHandoffEnvelope,
+    EponymIntent, EponymIntentEnvelope, FirstLife, LifeCheckpoint, LifeChoice, Manner, Motion,
+    PlayerAct, PlayerActKind, Proposal, StartTime, Succession, Successor, Telling, Term, TermSide,
+    TimedAct, WorkKey,
 };
 use isocosm_overlay::{
-    EntityHandle, EventHandle, Intent, LineageHandle, ParticipantHandle, PlaceHandle, Pointable,
-    Tick,
+    ActKey, EntityHandle, EventHandle, Harm, Intent, LineageHandle, PartHandle, ParticipantHandle,
+    PlaceHandle, Pointable, Tick, WorldPoint, Wound, WoundSeverity,
 };
 use serde::{Deserialize, Serialize};
 

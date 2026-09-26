@@ -24,10 +24,10 @@ mod handoff;
 mod telling;
 
 pub use act::{PlayerAct, PlayerActKind};
-pub use actuation::{ActKey, ActTarget, Actuation, Motion, TimedAct, WorldPoint};
+pub use actuation::{ActTarget, Actuation, Motion, TimedAct};
 pub use ask::{Proposal, Term, TermSide, WorkKey};
 pub use checkpoint::{FirstLife, LifeCheckpoint, LifeChoice, StartTime, Succession, Successor};
-pub use handoff::{Blow, EponymHandoff, Harm, PartHandle, Wound, WoundSeverity};
+pub use handoff::{Blow, EponymHandoff};
 pub use telling::{Claim, Manner, Telling};
 
 use serde::{Deserialize, Serialize};

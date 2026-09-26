@@ -19,11 +19,14 @@
 //! [`eponym`] and [`vtt`] hold the three games' vocabularies, each a sibling
 //! module that changes nothing here (ruling 197).
 
+mod act_key;
 mod attention;
 mod event;
 mod handle;
 mod handoff;
+mod harm;
 mod intent;
+mod point;
 mod tick;
 mod view;
 
@@ -31,6 +34,7 @@ pub mod eponym;
 pub mod mesocosm;
 pub mod vtt;
 
+pub use act_key::ActKey;
 pub use attention::{AttentionChange, AttentionSet, Pointable};
 pub use event::{EventRecord, EventTopic};
 pub use handle::{
@@ -38,6 +42,8 @@ pub use handle::{
     PlaceHandle,
 };
 pub use handoff::HandoffEnvelope;
+pub use harm::{Harm, PartHandle, Wound, WoundSeverity};
 pub use intent::{Intent, IntentEnvelope};
+pub use point::WorldPoint;
 pub use tick::Tick;
 pub use view::ViewHandle;

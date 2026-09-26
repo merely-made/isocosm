@@ -21,9 +21,9 @@ pub use act::{PlayerAct, PlayerActKind};
 pub use checkpoint::{
     BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, RevisionAnswer,
 };
-pub use dev::{DevIntent, WorldPoint};
+pub use dev::DevIntent;
 pub use handoff::MesocosmHandoff;
-pub use nudge::{ActKey, Nudge, NudgeMeaning, NudgeTarget};
+pub use nudge::{Nudge, NudgeMeaning, NudgeTarget};
 
 use serde::{Deserialize, Serialize};
 

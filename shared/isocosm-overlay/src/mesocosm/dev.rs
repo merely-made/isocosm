@@ -3,18 +3,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::handle::EntityHandle;
-
-/// A raw world coordinate, `[x, y, z]` in the sim's voxel grid. Dev intents
-/// reach the grid directly (mesocosm-core's own `PlaceMatter` and the
-/// `OffGrid` rejection already do), unlike a play-time [`super::Nudge`],
-/// which names a place-graph node (ruling 205).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldPoint(pub [i32; 3]);
+use crate::{EntityHandle, WorldPoint};
 
 /// A dev tool, never play (dev tools plan §2; mesocosm-core's DT3). Applied,
 /// refused and recorded like any other intent; a receipt labels a run that
-/// used one as assisted.
+/// used one as assisted. `PlaceMatter` reaches the grid directly by a raw
+/// [`WorldPoint`] (mesocosm-core's own `PlaceMatter` and the `OffGrid`
+/// rejection already do), unlike a play-time [`super::Nudge`], which names a
+/// place-graph node (ruling 205).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DevIntent {
     EndEpoch,

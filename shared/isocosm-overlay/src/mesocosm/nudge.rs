@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::handle::{EntityHandle, PlaceHandle};
+use crate::{ActKey, EntityHandle, PlaceHandle};
 
 /// The one directive a Mesocosm player gives: a click that draws the played
 /// critter's attention to a place or a thing (rulings 176, 214). The critter
@@ -40,9 +40,3 @@ pub enum NudgeMeaning {
     /// still weighs the nudge.
     Act(ActKey),
 }
-
-/// An act named by opaque key. The vocabulary is the ruleset's, the same way
-/// the sim names processes by string key (`isocosm::schema::Key`, not
-/// depended on here).
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct ActKey(pub String);

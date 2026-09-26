@@ -5,14 +5,13 @@
 //! same format as `core_roundtrip.rs` and `mesocosm_roundtrip.rs`.
 
 use isocosm_overlay::vtt::{
-    ActionKey, Assertion, Calibration, Cell, CellEdit, Condition, Fact, Harm, HookIntent, MapEdit,
-    NewCharacter, Pace, PartHandle, RequestId, Resolved, RulesetKey, TableAct, TableActKind,
-    TableBatch, TimeIntent, Transfer, Travel, VttHandoff, VttHandoffEnvelope, VttIntent,
-    VttIntentEnvelope, WorldPoint, Wound, WoundSeverity,
+    Assertion, Calibration, Cell, CellEdit, Condition, Fact, HookIntent, MapEdit, NewCharacter,
+    Pace, RequestId, Resolved, RulesetKey, TableAct, TableActKind, TableBatch, TimeIntent,
+    Transfer, Travel, VttHandoff, VttHandoffEnvelope, VttIntent, VttIntentEnvelope,
 };
 use isocosm_overlay::{
-    EntityHandle, EventHandle, FactionHandle, Intent, ParticipantHandle, PlaceHandle, Pointable,
-    Tick,
+    ActKey, EntityHandle, EventHandle, FactionHandle, Harm, Intent, PartHandle, ParticipantHandle,
+    PlaceHandle, Pointable, Tick, WorldPoint, Wound, WoundSeverity,
 };
 use serde::{Deserialize, Serialize};
 
@@ -46,14 +45,14 @@ fn batch() -> TableBatch {
             TableAct {
                 actor: entity(1),
                 kind: TableActKind::Act {
-                    action: ActionKey("attack".into()),
+                    action: ActKey("attack".into()),
                     target: Some(entity(9)),
                 },
             },
             TableAct {
                 actor: entity(2),
                 kind: TableActKind::Act {
-                    action: ActionKey("perception".into()),
+                    action: ActKey("perception".into()),
                     target: None,
                 },
             },
@@ -76,7 +75,7 @@ fn resolved(calibration: Calibration) -> Resolved {
         ruleset: RulesetKey("pf2e".into()),
         actor: entity(1),
         target: entity(9),
-        action: ActionKey("attack".into()),
+        action: ActKey("attack".into()),
         harm: Harm {
             vigour_drained: 7,
             wounds: vec![Wound {

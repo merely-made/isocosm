@@ -3,8 +3,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::table::{Cell, WorldPoint};
-use crate::{FactionHandle, ParticipantHandle, PlaceHandle, Pointable};
+use super::table::Cell;
+use crate::{FactionHandle, ParticipantHandle, PlaceHandle, Pointable, WorldPoint};
 
 /// What the DM asserts from edit mode, which is the world editor's (rulings
 /// 89, 156, 184): each an asserted fact in the record (the record's §1),

@@ -14,9 +14,10 @@
 use std::collections::BTreeSet;
 
 use isocosm_overlay::{
-    AttentionChange, AttentionSet, CandidateHandle, EntityHandle, EventHandle, EventRecord,
-    EventTopic, FactionHandle, HandoffEnvelope, Intent, IntentEnvelope, LineageHandle,
-    ParticipantHandle, PlaceHandle, Pointable, Tick, ViewHandle,
+    ActKey, AttentionChange, AttentionSet, CandidateHandle, EntityHandle, EventHandle, EventRecord,
+    EventTopic, FactionHandle, HandoffEnvelope, Harm, Intent, IntentEnvelope, LineageHandle,
+    PartHandle, ParticipantHandle, PlaceHandle, Pointable, Tick, ViewHandle, WorldPoint, Wound,
+    WoundSeverity,
 };
 use serde::{Deserialize, Serialize};
 
@@ -141,4 +142,32 @@ fn handoff_envelope_roundtrips_a_generic_outcome() {
         subject: EntityHandle(2),
         outcome: DummyPayload::Value(9),
     });
+}
+
+/// The shapes lifted from the game modules on 2026-09-26: a voxel point, an
+/// act key, and harm in the sim's terms (ruling 123).
+#[test]
+fn lifted_shapes_roundtrip() {
+    roundtrips(&WorldPoint([i32::MIN, 0, i32::MAX]));
+    roundtrips(&ActKey("strike".into()));
+    roundtrips(&PartHandle(21));
+    for severity in [
+        WoundSeverity::Minor,
+        WoundSeverity::Serious,
+        WoundSeverity::Crippling,
+        WoundSeverity::Severed,
+    ] {
+        roundtrips(&Wound {
+            part: PartHandle(1),
+            severity,
+        });
+    }
+    roundtrips(&Harm {
+        vigour_drained: 14,
+        wounds: vec![Wound {
+            part: PartHandle(3),
+            severity: WoundSeverity::Crippling,
+        }],
+    });
+    assert!(WoundSeverity::Minor < WoundSeverity::Severed);
 }

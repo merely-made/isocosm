@@ -3,8 +3,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::table::{ActionKey, Cell};
-use crate::EntityHandle;
+use super::table::Cell;
+use crate::{ActKey, EntityHandle, Harm};
 
 /// The VTT's handoff vocabulary: a ruleset's resolved action in the sim's
 /// terms (rulings 114, 123, 154). The dice and the beats stay at the table,
@@ -28,7 +28,9 @@ pub struct Resolved {
     pub ruleset: RulesetKey,
     pub actor: EntityHandle,
     pub target: EntityHandle,
-    pub action: ActionKey,
+    /// The ruleset's own key for the action (`isometry-system`'s
+    /// `ActionDef::key`).
+    pub action: ActKey,
     pub harm: Harm,
     /// Put out of play by the rules, so the substrate skips their turns and
     /// refuses them as targets.
@@ -82,35 +84,3 @@ pub enum Calibration {
     Calibrated,
     Uncalibrated,
 }
-
-/// Harm in the sim's terms (ruling 123): vigour drained first, and wounds to
-/// parts of the body's tree when a blow lands hard or the vigour is gone. A
-/// ruleset's hit points calibrate against vigour more than wounds (the
-/// record's §3.3.1). Eponym's module carries the same shape; a core `Harm`
-/// is a candidate change put to Mark, not made (ruling 197).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Harm {
-    pub vigour_drained: u64,
-    pub wounds: Vec<Wound>,
-}
-
-/// A wound to one part.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Wound {
-    pub part: PartHandle,
-    pub severity: WoundSeverity,
-}
-
-/// How badly a part is wounded, from a loss that heals to a part severed.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum WoundSeverity {
-    Minor,
-    Serious,
-    Crippling,
-    Severed,
-}
-
-/// An opaque reference to one part of a body's tree, minted by the sim.
-/// Defined here rather than in the core for the same reason as [`Harm`].
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct PartHandle(pub u64);

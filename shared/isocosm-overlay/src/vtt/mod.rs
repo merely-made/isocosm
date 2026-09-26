@@ -23,12 +23,9 @@ mod time;
 mod travel;
 
 pub use assertion::{Assertion, CellEdit, Fact, MapEdit, NewCharacter};
-pub use handoff::{
-    Calibration, Condition, Harm, PartHandle, RequestId, Resolved, RulesetKey, Transfer,
-    VttHandoff, Wound, WoundSeverity,
-};
+pub use handoff::{Calibration, Condition, RequestId, Resolved, RulesetKey, Transfer, VttHandoff};
 pub use hook::HookIntent;
-pub use table::{ActionKey, Cell, TableAct, TableActKind, TableBatch, WorldPoint};
+pub use table::{Cell, TableAct, TableActKind, TableBatch};
 pub use time::TimeIntent;
 pub use travel::{Pace, Travel};
 

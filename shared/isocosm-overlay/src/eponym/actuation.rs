@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{EntityHandle, PlaceHandle};
+use crate::{ActKey, EntityHandle, PlaceHandle, WorldPoint};
 
 /// The actuation of one body for one tick (wing design record §5.2 point 2
 /// and §9.14; ruling 60): what the game-side motion and contact solver,
@@ -37,13 +37,6 @@ pub struct Motion {
     pub fell: u32,
 }
 
-/// A raw world coordinate `[x, y, z]` in the sim's voxel grid. The same shape
-/// as Mesocosm's `WorldPoint`, defined again here rather than lifted, since a
-/// game's overlay adds a sibling module and changes nothing in the core
-/// (ruling 197); a core `WorldPoint` is a candidate change put to Mark.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldPoint(pub [i32; 3]);
-
 /// A timed act the body begins, a strike, a brace, a grip, an anchor, a use,
 /// named by the ruleset's opaque key, at a target if it has one. What the
 /// body can do is what its anatomy affords (rulings 59, 96).
@@ -60,9 +53,3 @@ pub enum ActTarget {
     Thing(EntityHandle),
     Place(PlaceHandle),
 }
-
-/// An act named by opaque key; the vocabulary is the ruleset's, as the sim
-/// names processes by string key. Mesocosm's `ActKey` is the same shape, kept
-/// in its own module for the same reason as [`WorldPoint`].
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct ActKey(pub String);

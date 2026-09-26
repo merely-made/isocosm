@@ -5,12 +5,12 @@
 //! same format as `core_roundtrip.rs`.
 
 use isocosm_overlay::mesocosm::{
-    ActKey, BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, DevIntent,
-    MesocosmHandoff, MesocosmIntent, MesocosmIntentEnvelope, Nudge, NudgeMeaning, NudgeTarget,
-    PlayerAct, PlayerActKind, RevisionAnswer, WorldPoint,
+    BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, DevIntent, MesocosmHandoff,
+    MesocosmIntent, MesocosmIntentEnvelope, Nudge, NudgeMeaning, NudgeTarget, PlayerAct,
+    PlayerActKind, RevisionAnswer,
 };
 use isocosm_overlay::{
-    CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick,
+    ActKey, CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick, WorldPoint,
 };
 use serde::{Deserialize, Serialize};
 

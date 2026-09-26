@@ -236,19 +236,15 @@ table confirms each.
 | `TimeAdvanced` | time | `TimeIntent::Downtime { ticks }`, run when every player's `TimeIntent::Consent` has named it (ruling 246) |
 | `CharacterCreated` | assertion | `Assertion::Character(NewCharacter)` (ruling 36) |
 
-## Shapes defined twice, a fork for Mark
+## Shapes lifted to the core, 2026-09-26
 
-Three shapes appear in more than one game module because a game's overlay
-adds a sibling module and changes nothing in the core (ruling 197), and
-lifting them is a core change the E1 and V1 lanes were not given:
-
-- `WorldPoint([i32; 3])`, a raw voxel coordinate, in `mesocosm`, `eponym`
-  and `vtt`;
-- `ActKey(String)` in `mesocosm` and `eponym`, and `ActionKey(String)` in
-  `vtt`, an act named by the ruleset's opaque key;
-- `Harm`, `Wound`, `WoundSeverity` and `PartHandle`, harm in the sim's terms
-  (ruling 123), in `eponym` and `vtt`.
-
-Each is a few lines and byte-identical across modules. Lifting them to the
-crate root is one small commit once Mark rules it; until then a change to one
-must be made to all.
+E1 and V1 first defined three shapes in more than one game module, since a
+game's overlay adds a sibling module and changes nothing in the core (ruling
+197). At Mark's word the same day they were lifted to the crate root, where
+every game reads them: `WorldPoint([i32; 3])` (`src/point.rs`), a raw voxel
+coordinate that had appeared in all three modules; `ActKey(String)`
+(`src/act_key.rs`), an act named by the ruleset's opaque key, which had
+appeared in all three, the VTT's as `ActionKey`; and `Harm`, `Wound`,
+`WoundSeverity` and `PartHandle` (`src/harm.rs`), harm in the sim's terms
+(ruling 123), which Eponym's and the VTT's handoffs had each carried. The
+game modules import them and define nothing of their own.
