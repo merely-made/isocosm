@@ -343,7 +343,7 @@ mod tests {
     fn the_same_geometry_reads_differently_under_its_declared_port() {
         let mut body = body();
         let mouth = bear(&mut body, [2, 1, 1], [0, -3, 0]);
-        let mut grazer = grown(&body);
+        let grazer = grown(&body);
         let mut predator = grown(&body);
         let intake = Registry::native().of_native(Process::Intake).reference();
         assert!(predator.declare_port(
