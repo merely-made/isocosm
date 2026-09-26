@@ -200,11 +200,12 @@ fn tissue_mg(
         return 0;
     };
     let cells: u64 = mosaic
-        .sites()
+        .tracts()
         .iter()
-        .filter(|site| site.process == process)
-        .map(|site| {
-            site.cells
+        .filter(|tract| tract.process == process)
+        .map(|tract| {
+            tract
+                .cells
                 .iter()
                 .filter(|cell| mosaic.is_living(**cell))
                 .count() as u64

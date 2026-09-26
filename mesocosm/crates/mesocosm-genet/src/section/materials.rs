@@ -39,14 +39,14 @@ pub(super) fn project(phenotype: &BodyPhenotype, registry: &Registry) -> Vec<Par
             continue;
         }
         let mut counts = BTreeMap::new();
-        for site in mosaic.sites() {
+        for tract in mosaic.tracts() {
             let Some(process) = registry
-                .resolve(site.process)
+                .resolve(tract.process)
                 .and_then(|definition| definition.native)
             else {
                 continue;
             };
-            let living = site
+            let living = tract
                 .cells
                 .iter()
                 .filter(|cell| mosaic.is_living(**cell))

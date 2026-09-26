@@ -28,7 +28,7 @@ use isometer::mesh::{Volume, VolumeMap, mesh_body};
 use isometer::render::{Camera, Renderer, SceneItem};
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Intent, Kingdom,
-    Organism, OrganismId, Outcome, PartId, Process, ProposedSite, Provenance, Registry, SpeciesId,
+    Organism, OrganismId, Outcome, PartId, Process, ProposedTract, Provenance, Registry, SpeciesId,
     Stage, Trend, VolumeRef, World, Yaw,
 };
 
@@ -245,7 +245,7 @@ fn donor(world: &mut World) -> (PartId, PartId) {
         expect: corpse.phenotype.digest(),
         source: Arrangement::Direct,
         parts: vec![frond],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part: frond,
             process: Registry::native().of_native(Process::Secrete).reference(),
             cells: (0..capacity).map(|cell| CellId(cell as u16)).collect(),

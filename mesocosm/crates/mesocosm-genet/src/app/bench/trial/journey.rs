@@ -216,7 +216,7 @@ impl Binding {
 
     /// Every glyph the bound body currently embodies. The reading is the
     /// runtime's and it is `&`-only in both directions: asking cannot express
-    /// anything, and a drawn mark cannot put a site on a part.
+    /// anything, and a drawn mark cannot put a tract on a part.
     pub(super) fn embodied(&self, driver: &Trial) -> Vec<String> {
         driver.glyphs().map_or_else(Vec::new, |reading| {
             reading
@@ -226,7 +226,7 @@ impl Binding {
         })
     }
 
-    /// The living parts whose sites express the preset's base glyph, in part
+    /// The living parts whose tracts express the preset's base glyph, in part
     /// order. Empty when nothing embodies it, which is the same answer as
     /// "there is no face to anchor to".
     pub(super) fn expressing_parts(&self, driver: &Trial) -> Vec<PartId> {
