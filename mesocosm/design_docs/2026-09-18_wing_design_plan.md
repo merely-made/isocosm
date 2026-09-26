@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 296, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 300, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2488,6 +2488,36 @@ what later sections derive from.
      default budget of 8 MiB, 32 MiB, or as the texture allows? Mark: "8
      MiB." So a host asks for up to 16,383 bricks by default, enough for a
      1920 by 1080 pane over the 256-tile relief board, 6,391 with its margin.
+297. **hagiograph folds into the whole-mere bump.** Put to Mark on
+     2026-09-26, from the pin bump's assessment: hagiograph was pinned apart,
+     at `53648d3a` in `mesocosm` and `shared/isocosm`, "until a deliberate
+     whole-mere bump", which ruling 292 is; fold it in, or keep it apart?
+     Mark: "Fold it in."
+298. **Cleromancy is an optional feature of the VTT's host, off by
+     default.** Put to Mark on 2026-09-26, from the bump's finding that the
+     host depends on cleromancy unconditionally while cleromancy still pins
+     the old mere and genet. Mark asked: "Isometry-genet is a stale name if
+     I've ever heard one. Why do we depend on cleromancy? We probably
+     shouldn't; it's meant to be extra flavor on top of the sim's
+     self-sufficient processes, not a crucial dependency like mere." Answered
+     that one module uses it to seal a GM's disclosed generator choice, the
+     VTT keeping entropy, preview and commit. Put back, optional off by
+     default or removed? Mark: "Optional, off by default." Without it the
+     choice uses the VTT's own seeded draw, and cleromancy aligns in its own
+     repository on its own schedule.
+299. **`isometry-runtime` retires.** Put to Mark on 2026-09-26, the bump
+     finding the crate pinning an old conatus: "What is that needed for?
+     Also, stale name". Answered that it is the leftover of the runtime
+     profile plan ruling 31 retired, a second renderer for the board, excluded
+     from the workspace and referenced by nothing, whose binding table and
+     event mirror were to survive one tier down as a stack adapter. Put back,
+     retire it or keep it parked? Mark: "Retire the crate." Whether those two
+     pieces reached the stack is checked as it goes.
+300. **The VTT's crates keep their prefix.** Put to Mark on 2026-09-26, after
+     he called `isometry-genet` a stale name: rename the VTT's crates after
+     the bump, during it, or keep ruling 111's `isometry-` prefix? Mark: "Eh.
+     If they're within the ambit of isocosm vtt, then fair enough." So ruling
+     111 stands.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6273,6 +6303,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 297 to 300 recorded, from the pin bump's assessment:
+  hagiograph folds into the bump; cleromancy becomes an optional feature of
+  the VTT's host, off by default; `isometry-runtime` retires; and the VTT's
+  crates keep their prefix. mere's fix and atlas limits landed on mere's main
+  at 668854c9, merged rather than rebased so the conatus plan's cited
+  commits hold; isometry's pins move there with genet `1b62fd0b` and
+  netrender `aba7d837`, which must move with it.
 - 2026-09-26: rulings 293 to 296 recorded: per-group phases in the
   foreground only; feeding across the prey's matter, once a period, by a
   weighted draw; mere's atlas sized by host-filled limits; and an 8 MiB
