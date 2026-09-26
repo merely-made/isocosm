@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-25:** plan; E0 to E4 proposed and not opened. Drafted at
+**Status, 2026-09-26:** plan; E0 to E4 proposed and not opened. Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -11,8 +11,10 @@ contract's rulings (197, 203 to 205, 210 to 213), and Eponym's own plans. It
 mirrors the [Mesocosm overlay plan](../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before E0 closes; one is taken, ruling 231 placing
-this overlay side by side with the VTT's after Mesocosm's M3.
+§6's decisions are his before E0 closes; five are taken, ruling 231 placing
+this overlay side by side with the VTT's after Mesocosm's M3, and rulings
+232 to 235 settling the handoff, the solver's home, the start in time and
+how a first life begins.
 
 **Owns:** Eponym's profile as a game over the Isocosm sim (the record's §5);
 the Eponym side of the overlay contract (ruling 154), a module beside
@@ -62,16 +64,19 @@ Ruling 6's six parts.
 | Mechanics | driving one body in real time, its acts resolved by what the body affords; asks to peers as proposals a peer weighs by its opinion of the asker and may refuse or counter; telling and hearing, with beliefs that can be wrong; building and crafting as embodied acts that incorporate matter; harm as vigour and wounds to the body's tree; fights sized up first and, when they escalate, strain against bearing; skills raised by doing, teaching, study and breakthroughs; secrets kept by taboo | 60, 63, 87, 95, 96, 115, 116, 117, 118, 123, 141, 142, 221 to 223 |
 | Controls | driving: the actuation of one body, which the contract opens to this game alone; directives to companions compose on top as proposals weighed by opinion, never orders; the player directs only who they play; naming; notes written in the world; pins, and the region the view shows up close | 60, 130, 152, 168, 210, 212; the record's §5.2 point 2 and §9.14; the founding plan's "Leverage without command" |
 | Perspective | third person on one continuous zoom, near acts, mid leads, far plans, with first person a setting; survival shows what the creature one lives knows, its diegetic notes included, creative shows the truth and is where tag-in lives; the legibility surface ships with the simulation, not after it | vessel briefs §2; 187; PROJECT_DESCRIPTION pillar 4 |
-| Timescale | the moment: one life lived in real time until death, then succession; the world's clock proceeds while played, deep time before it; where in that time a life begins is §6 decision 2 | vessel briefs §2 ("the rhyme"); 61, 93, 104, 105, 186 |
+| Timescale | the moment: one life lived in real time until death, then succession; the world's clock proceeds while played, deep time before it; where in that time a life begins is the player's pick, with the default once settlements stand | vessel briefs §2 ("the rhyme"); 61, 93, 104, 105, 186, 234 |
 
 ## 2. The played loop
 
 1. **Founding.** A seeded draw from the generator's declared space, the
    region being its first edge (ruling 124). Eponym needs sapient people and
    society (ruling 3), so the draw carries deep time enough for settlements
-   to stand (rulings 91, 93); how much, and how the first life begins, are
-   §6's decisions 2 and 3. *Reading, not ruled:* the founding flow's
-   history parameter (sim plan §5.1) is where that span is set.
+   to stand (rulings 91, 93). Where in that time the life begins is the
+   player's pick, with the default once settlements stand (ruling 234), and
+   how it begins is the player's call among three: an arriving outsider, a
+   birth into one of the world's lineages, or a denizen of the drawn world
+   (ruling 235). *Reading, not ruled:* the founding flow's history
+   parameter (sim plan §5.1) is where that span is set.
 2. **The life.** The player drives one body (ruling 60): its motion, its
    timed acts, what it observes. Its needs move the one ledger (ruling 38)
    and its acts score by need, trust and approval (ruling 95, D26). An ask
@@ -95,7 +100,7 @@ Ruling 6's six parts.
    consequences remain, and the world keeps what it remembers of the dead
    (ruling 129). The player chooses who to become among the companions with
    a bond to the one who died (ruling 186); the case with no such companion
-   is §6 decision 3. Tag-in lives in creative mode only (ruling 187).
+   is §6 decision 3's open half. Tag-in lives in creative mode only (ruling 187).
 4. **Co-op.** Each player lives their own named creature in the same world,
    peers to each other as to anyone (ruling 185); ruling 153's shared
    directing is not Eponym's shape. Whether E4 plays it over the network is
@@ -115,17 +120,17 @@ opens it, the actuation of one body", and §9.14 names driving as Eponym's
 
 | Direction | Eponym's side | Rests on |
 | --- | --- | --- |
-| In: actuation | the played body's motion input and timed acts, a batch of its fixed-step frames stamped for one tick, targets named by entity handle and places by place-graph handle; the one body the participant plays, never a second | 60, 152, 203, 205; §5.2 points 1 and 2, §9.14; *how the frames cross and where the solver runs is §6 decision 1* |
+| In: actuation | the played body's acts for one tick: the accepted transition its fixed-step motion and contact solver, run on the game side over the stack's conatus, produced for that tick, with its timed acts, targets named by entity handle and places by place-graph handle; the one body the participant plays, never a second | 60, 152, 203, 205, 233; §5.2 points 1 and 2, §9.14 |
 | In: asks | a proposal to one peer: the work, the terms, the danger; the sim answers by that peer's methodology weighed by its opinion of the asker; a standing agreement is a proposal accepted once and held | 60, 63, 67 |
 | In: tellings | a claim told to one hearer; what is told may be false, and the hearer takes it by what it can check, who is telling, what it wants to hear and how it is told | 87, 117, 118; *posing to intimidate, persuade or deceive is the record's flagged reading in §3.4, §6 decision 5* |
 | In: the player's acts | naming the creature one lives and what it meets, the name being the doing; writing a note, a bearer in the world | 36, 168, 130, 127 |
-| In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead | 61, 186; §6 decision 3 for the case with none |
+| In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead | 61, 186; §6 decision 3's open half for the case with none |
 | In: creative | tag-in to a companion and tag-out to home, in creative mode only | 187; `eponym-identity`'s `ControlIntent::{TagIn, TagOut}` |
 | In: attention changes | pin or unpin any pointable thing; the up-close region as the zoom nears a place | 210, 212 |
 | In: dev intents | none: the crossing fixture's body presets are receipts, not play (*a reading*) | |
 | Out: events | the stream derived from the attention set: what touches the sophont one lives, what it pins, the region it examines; in survival only what it can know, its diegetic notes included; the legibility surface reads this stream | 187, 204, 213 |
 | Out: views | the near rung around the played body for the follow camera at every zoom; far zooms read the crowd | 154, 212 |
-| Handoff | Eponym's blows: today the foreground resolves a strike geometrically and hands back harm in the sim's terms, vigour drained and wounds to parts, which must pass the sim's invariants and agree with the sim's own fight in distribution; whether this handoff stays or empties is §6 decision 1 | 114, 123, 154; the record's §3.8 |
+| Handoff | Eponym's blows: the foreground resolves each strike geometrically and hands the harm back in the sim's terms, vigour drained and wounds to parts, which must pass the sim's invariants and agree with the sim's own fight in distribution; the handoff is inhabited | 114, 123, 154, 232; the record's §3.8 |
 
 *Reading, not ruled:* Eponym's willingness rule, three gates in order, can I
 do it, would I risk that for you, is it more than I would bear
@@ -141,8 +146,8 @@ counteroffer are the three ways the score falls short.
 in E1:* under driving they split four ways. `Move`, `Observe`, `Take`,
 `Eat`, `Rest`, `Wait`, `AdvanceMotion`, `ConfigureMovementProfile`,
 `AttachItem` and `DetachItem` are the body's acts and become actuation;
-`ResolveVolley` is the handoff's outcome or the sim's own fight, by §6
-decision 1; `Name` is the player's act. `Generate`, `Fall`, `AdmitAnatomy`,
+`ResolveVolley` is the handoff's outcome (ruling 232); `Name` is the
+player's act. `Generate`, `Fall`, `AdmitAnatomy`,
 `ReconcileAnatomy` and `Carve` are the sim's own: lifting a body from the
 roster (ruling 75), a consequence of motion, the body's revisions as the
 record's facts, and a world edit asserted by an act; `InheritSite` is
@@ -167,8 +172,8 @@ rule (`eponym/CLAUDE.md`), split along seams the code already has.
 | Family | Modules, lines | Destination in Isocosm |
 | --- | --- | --- |
 | Bodies, needs and holding | `anatomy` 536, `subject_sheet` 482, `items` 323, `bodies` 234, `movement_profile` 162, `equipment` 41 | the critter: part tree, the one ledger with needs, injuries and revisions, gear-limited holding (rulings 36, 38, 53); the sim plan's §2.3 |
-| Motion and contact | `contact` 1,029, `timed_action` 690, `movement` 350, `motion` 293, `navigation` 256 | the near rung's kinematics over the stack's conatus, with the accepted transition the sim's and navigation staying derived advice; where the solver runs is §6 decision 1 |
-| Fights and technique | `combat` 812, `technique` 799 | the competing instance and harm (rulings 115, 116, 123, 221 to 223), quality as affordance (ruling 96, D27), abilities, skills and techniques (rulings 96, 141 to 143); the strike resolver's fate is §6 decision 1 |
+| Motion and contact | `contact` 1,029, `timed_action` 690, `movement` 350, `motion` 293, `navigation` 256 | does not move: the solver runs on the game side over the stack's conatus (ruling 233), only the accepted transition for each tick crosses, as the intent, and navigation stays derived advice |
+| Fights and technique | `combat` 812, `technique` 799 | the competing instance and harm (rulings 115, 116, 123, 221 to 223), quality as affordance (ruling 96, D27), abilities, skills and techniques (rulings 96, 141 to 143); the strike resolver stays in the foreground and hands its harm back (ruling 232) |
 | Places and edits | `world` 272, `sites` 211 | the place graph: a `SlotId` is the record's site and a `Site` its location (rulings 72, 147; the record's §3.7.1); carve and inherit as asserted facts (§1, ruling 89) |
 | Lives and rounds | `simulation` 471, `population` 245, `projects` 220, `simulation_record` 177 | the denizen's methodology (ruling 37), needs and the act score (ruling 95, D26), deep time (ruling 93), the record |
 | Glyphs and canon | `glyphs` 949 | the world's canon and the hagioglyph organ (ruling 101; sim plan §2.7), beside `wing-glyphs` |
@@ -199,7 +204,7 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 - **E1, the contract's Eponym side.** Done when `src/eponym/` exists in
   `shared/isocosm-overlay` (ruling 197) with actuation, asks, tellings, the
   player's acts, the death checkpoint, creative's tag-in and the handoff's
-  vocabulary as §3 and §6 decision 1 settle them; every type round-trips
+  vocabulary as §3 has them under rulings 232 and 233; every type round-trips
   through bytes and the crate still depends on nothing sim-internal (D18);
   and each of today's seventeen game intents, two world intents and four
   control intents is mapped as §3 splits them.
@@ -235,8 +240,9 @@ The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
 
 ## 6. Decisions for Mark
 
-One taken, the seventh, on 2026-09-25. Each other is a fork this plan found
-and did not settle.
+Five taken on 2026-09-25: the seventh by ruling 231, the first and second and
+the first half of the third by rulings 232 to 235. The rest are forks this
+plan found and did not settle.
 
 1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
    foreground strike system keeps resolving them geometrically and hands
@@ -248,18 +254,29 @@ and did not settle.
    the intent; or the sim's own process, fed the input frames. The record's
    §3.8 says the sim never resolves a single blow and §5.2 point 1 says the
    contract is batches per tick, never a call per entity; the two halves
-   decide what a batch carries.
+   decide what a batch carries. **Ruled 232 and 233 (2026-09-25):
+   "Foreground hands back" and "Game side."** Eponym's strike system
+   resolves each blow geometrically and hands the harm back through the
+   handoff, vigour drained and wounds to parts, calibrated to the sim's
+   fight (rulings 114, 123, 154); the solver runs on the game side over the
+   stack's conatus, and the accepted transition for each tick crosses as
+   the intent.
 2. **The start in time.** Eponym needs society (ruling 3): how much deep
    time a draw carries before the first life, and where the player may begin
    in it: from the world's habitability for the creature onward, as ruling
-   179 gives Mesocosm, or only where settlements already stand.
+   179 gives Mesocosm, or only where settlements already stand. **Ruled 234
+   (2026-09-25): "Player's pick, society default."**
 3. **The first life and the outsider.** How the first life begins: a newly
    generated outsider arriving, a birth into one of the world's lineages, or
    a choice among the drawn world's denizens; and at a death with no
    bonded companion (ruling 186), the execution plan's F8 fallback, a
    generated outsider so lack of allies never ends the world, or another
    rule; and whether an answer that lets the line end exists at all, which
-   Mesocosm's contract has none of.
+   Mesocosm's contract has none of. **Ruled 235 (2026-09-25) for the first
+   half: "Any, player's call."** A first life may begin as an arriving
+   outsider, as a birth into one of the world's lineages, or as a denizen
+   of the drawn world. The other two halves, a death with no bonded
+   companion and whether any answer lets the line end, stay open.
 4. **Absorption, its order, and where driving is built.** Whether Isocosm
    absorbs `eponym-world`'s and `eponym-social`'s simulation as ruling 192
    had it absorb `mesocosm-core`; the order, proposed as bodies, places,
@@ -302,6 +319,12 @@ and did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 232 to 235, ruled 2026-09-25 and recorded at 0e63438,
+  mark §6's decisions 1 and 2 and the first half of 3: the foreground hands
+  blows back through an inhabited handoff, the solver runs on the game side
+  with the accepted transition crossing per tick, the start in time is the
+  player's pick with society the default, and how a first life begins is the
+  player's call among three. §1, §2, §3, §4 and §5 follow.
 - 2026-09-25: ruling 231 marks §6's decision 7: Eponym's and the VTT's
   overlays go side by side after Mesocosm's M3, each on its own plan. The
   record links this plan from its §5.6 and §11 (aa354f3).
