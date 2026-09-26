@@ -11,10 +11,12 @@ contract's rulings (197, 203 to 205, 210 to 213), and Eponym's own plans. It
 mirrors the [Mesocosm overlay plan](../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before E0 closes; five are taken, ruling 231 placing
-this overlay side by side with the VTT's after Mesocosm's M3, and rulings
+§6's decisions are his before E0 closes; five of seven are taken: ruling 231
+placing this overlay side by side with the VTT's after Mesocosm's M3, rulings
 232 to 235 settling the handoff, the solver's home, the start in time and
-how a first life begins.
+how a first life begins, and rulings 238 and 239 the death with no bonded
+companion and absorption, with driving built only on Isocosm. Posing and
+co-op in E4 remain.
 
 **Owns:** Eponym's profile as a game over the Isocosm sim (the record's §5);
 the Eponym side of the overlay contract (ruling 154), a module beside
@@ -99,8 +101,9 @@ Ruling 6's six parts.
 3. **Death and succession.** Death is final (ruling 61); the body and the
    consequences remain, and the world keeps what it remembers of the dead
    (ruling 129). The player chooses who to become among the companions with
-   a bond to the one who died (ruling 186); the case with no such companion
-   is §6 decision 3's open half. Tag-in lives in creative mode only (ruling 187).
+   a bond to the one who died (ruling 186); with no such companion the
+   player takes up another life in that world, any of ruling 235's three, or
+   goes to a new world (ruling 238). Tag-in lives in creative mode only (ruling 187).
 4. **Co-op.** Each player lives their own named creature in the same world,
    peers to each other as to anyone (ruling 185); ruling 153's shared
    directing is not Eponym's shape. Whether E4 plays it over the network is
@@ -124,7 +127,7 @@ opens it, the actuation of one body", and §9.14 names driving as Eponym's
 | In: asks | a proposal to one peer: the work, the terms, the danger; the sim answers by that peer's methodology weighed by its opinion of the asker; a standing agreement is a proposal accepted once and held | 60, 63, 67 |
 | In: tellings | a claim told to one hearer; what is told may be false, and the hearer takes it by what it can check, who is telling, what it wants to hear and how it is told | 87, 117, 118; *posing to intimidate, persuade or deceive is the record's flagged reading in §3.4, §6 decision 5* |
 | In: the player's acts | naming the creature one lives and what it meets, the name being the doing; writing a note, a bearer in the world | 36, 168, 130, 127 |
-| In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead | 61, 186; §6 decision 3's open half for the case with none |
+| In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead; with none, another life in that world, any of ruling 235's three, or a new world | 61, 186, 235, 238 |
 | In: creative | tag-in to a companion and tag-out to home, in creative mode only | 187; `eponym-identity`'s `ControlIntent::{TagIn, TagOut}` |
 | In: attention changes | pin or unpin any pointable thing; the up-close region as the zoom nears a place | 210, 212 |
 | In: dev intents | none: the crossing fixture's body presets are receipts, not play (*a reading*) | |
@@ -163,8 +166,9 @@ contract replaces: intents are the replay log (the record's §5.2 point 2).
 The record's §2 test puts whatever runs with nobody playing in the sim, and
 `eponym-world`'s `Simulation` advances every living subject with "no
 observer, camera, selected subject, or control identity" (execution plan
-F2). Ruling 192 ruled the same absorption for Mesocosm; for Eponym it is §6
-decision 4, and the table below is what it would move. `eponym-world` is
+F2). Ruling 192 ruled the same absorption for Mesocosm and ruling 239 rules it
+for Eponym, in the order bodies, places, lives and rounds, standing and asks,
+knowledge, glyphs, then fights and technique; the table below is what moves. `eponym-world` is
 11,508 lines of source and `eponym-social` 2,747; every family that moves
 is decomposed under the 600-line ceiling as it goes, this repository's own
 rule (`eponym/CLAUDE.md`), split along seams the code already has.
@@ -209,13 +213,15 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   and each of today's seventeen game intents, two world intents and four
   control intents is mapped as §3 splits them.
 - **E2, absorption by family.** One sub-phase per family of §4, in the order
-  §6 decision 4 rules. Each is done when the family runs in Isocosm under
+  ruled (239): bodies, places, lives and rounds, standing and asks,
+  knowledge, glyphs, then fights and technique. Each is done when the family runs in Isocosm under
   its process definitions, conserves its accounts and replays identically,
   its Eponym tests are ported or replaced by draws, every moved file is
   within the 600-line ceiling, and `eponym-world` or `eponym-social` no
   longer owns it. Lands under the sim plan's S1 to S3, the knowledge family
   under S3.
-- **E3, driving on Isocosm.** Where it is built is §6 decision 4. Done when a
+- **E3, driving on Isocosm,** built only there, with no prototype over
+  today's `Session` (ruling 239). Done when a
   played sophont is driven on Isocosm, its acts resolved by what its body
   affords; an ask is refused about the work, refused about the asker and
   countered, each with its premises pointable; a note written is later found
@@ -240,9 +246,10 @@ The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
 
 ## 6. Decisions for Mark
 
-Five taken on 2026-09-25: the seventh by ruling 231, the first and second and
-the first half of the third by rulings 232 to 235. The rest are forks this
-plan found and did not settle.
+Five of seven taken: the seventh by ruling 231 and the first and second by
+rulings 232 to 235 on 2026-09-25, the third's last half and the fourth by
+rulings 238 and 239 on 2026-09-26. The fifth and sixth are forks this plan
+found and did not settle.
 
 1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
    foreground strike system keeps resolving them geometrically and hands
@@ -275,14 +282,23 @@ plan found and did not settle.
    Mesocosm's contract has none of. **Ruled 235 (2026-09-25) for the first
    half: "Any, player's call."** A first life may begin as an arriving
    outsider, as a birth into one of the world's lineages, or as a denizen
-   of the drawn world. The other two halves, a death with no bonded
-   companion and whether any answer lets the line end, stay open.
+   of the drawn world. **Ruled 238 (2026-09-26) for the rest: "Player's
+   call."** With no bonded companion the player takes up another life in
+   that world, any of the three, or goes to a new world, as ruling 229
+   gives Mesocosm. *Reading recorded with it, not ruled:* going to a new
+   world is how a line ends in one, so no separate answer lets the line
+   end.
 4. **Absorption, its order, and where driving is built.** Whether Isocosm
    absorbs `eponym-world`'s and `eponym-social`'s simulation as ruling 192
    had it absorb `mesocosm-core`; the order, proposed as bodies, places,
    lives and rounds, standing and asks, knowledge, glyphs, then fights and
    technique; and whether driving is built only on Isocosm, as ruling 194
-   had Mesocosm's directing, or first over today's `Session`.
+   had Mesocosm's directing, or first over today's `Session`. **Ruled 239
+   (2026-09-26): "Only on Isocosm."** Isocosm absorbs `eponym-world`'s and
+   `eponym-social`'s simulation as ruling 192 had it absorb
+   `mesocosm-core`, in the order proposed, and driving is built only on
+   Isocosm, with no prototype over `Session`, as ruling 194 had Mesocosm's
+   directing.
 5. **Posing.** The record's §3.4 flags posing, to intimidate, persuade or
    deceive, as a reading of ruling 117 and not a ruling. Eponym is the game
    that needs it in play. Rule it, so E1 carries a posing intent, or leave it
@@ -319,6 +335,12 @@ plan found and did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 238 and 239, recorded at e460014, close §6's decision
+  3 and rule decision 4: at a death with no bonded companion the player
+  takes up another life in that world or goes to a new one, and going to a
+  new world is how a line ends, a reading recorded with the ruling; Isocosm
+  absorbs Eponym's simulation in the order proposed, and driving is built
+  only on Isocosm. §2, §3, §4 and §5 follow. Posing and co-op in E4 remain.
 - 2026-09-26: rulings 232 to 235, ruled 2026-09-25 and recorded at 0e63438,
   mark §6's decisions 1 and 2 and the first half of 3: the foreground hands
   blows back through an inhabited handoff, the solver runs on the game side
