@@ -12,7 +12,7 @@
 use crate::{
     Result,
     meaning::{self, Named, Parties, Scene, credit, debit, value},
-    rules::{Binding, Effect, Process, Query},
+    rules::{Binding, Effect, Need, Process, Query},
     schema::*,
 };
 
@@ -26,16 +26,31 @@ fn no_relations(_: &Key) -> Result<bool> {
     Err("the crowd keeps no relations".into())
 }
 
-/// What a query reads of one member's state at a site, or of the site alone.
-pub(super) fn holds(q: &Query, e: Option<&Entity>, site: &Site, tick: Tick) -> Result<bool> {
-    let scene = Scene {
-        actor: e,
-        target: Named::Unnamed,
-        site: Some(site),
-        tick,
-        related: &no_relations,
-    };
-    Ok(meaning::read(q, &scene)?.0)
+/// What one member, or a site alone, shows a query.
+pub(super) struct Seen<'a> {
+    pub member: Option<&'a Entity>,
+    pub site: &'a Site,
+    pub tick: Tick,
+    pub needs: &'a [Need],
+}
+
+impl Seen<'_> {
+    fn scene(&self) -> Scene<'_> {
+        Scene {
+            actor: self.member,
+            target: Named::Unnamed,
+            site: Some(self.site),
+            tick: self.tick,
+            related: &no_relations,
+            needs: self.needs,
+        }
+    }
+    pub(super) fn holds(&self, q: &Query) -> Result<bool> {
+        Ok(meaning::read(q, &self.scene())?.0)
+    }
+    pub(super) fn mood(&self) -> Result<i64> {
+        meaning::mood(&self.scene())
+    }
 }
 
 /// The crowd's parties: one state's members and their site.
@@ -104,10 +119,14 @@ fn identity_bound(p: &Process) -> bool {
             | Query::Account { who, .. }
             | Query::Below { who, .. }
             | Query::Part { who, .. } => target(who),
-            Query::Age { .. } | Query::Condition { .. } => false,
+            Query::Age { .. }
+            | Query::Condition { .. }
+            | Query::Mood { .. }
+            | Query::MoodBelow { .. } => false,
         })
 }
 
+/// A mood's needs may read the site's conditions, so it counts as a read.
 fn reads_site(q: &Query) -> bool {
     matches!(
         q,
@@ -118,6 +137,8 @@ fn reads_site(q: &Query) -> bool {
             who: Binding::Place,
             ..
         } | Query::Condition { .. }
+            | Query::Mood { .. }
+            | Query::MoodBelow { .. }
     )
 }
 
@@ -140,6 +161,24 @@ fn writes_site(e: &Effect) -> bool {
     )
 }
 
+/// Whether `p` reads nothing of the site and takes nothing from it, so what
+/// it makes of a member does not depend on the site.
+pub(super) fn site_free(p: &Process) -> bool {
+    let takes = |e: &Effect| {
+        matches!(
+            e,
+            Effect::Transfer {
+                from: Binding::Place,
+                ..
+            } | Effect::Transform {
+                who: Binding::Place,
+                ..
+            }
+        )
+    };
+    !p.requires.iter().any(reads_site) && !p.commitments.iter().chain(&p.effects).any(takes)
+}
+
 /// Applies `p` to `count` members sharing state `e` at `site`. `Ok(None)` is
 /// the core's blocked outcome and changes nothing; on success the site is
 /// updated and the members' new state returned.
@@ -149,6 +188,7 @@ pub(super) fn apply(
     site: &mut Site,
     count: u64,
     tick: Tick,
+    needs: &[Need],
 ) -> Result<Option<Entity>> {
     if identity_bound(p) {
         return Err(format!(
@@ -161,9 +201,15 @@ pub(super) fn apply(
         // Each member would read the site after the last one wrote it.
         return Err(format!("{} reads a site it writes", p.id));
     }
+    let seen = Seen {
+        member: Some(e),
+        site: &*site,
+        tick,
+        needs,
+    };
     for q in &p.requires {
         // A query that errs blocks, as it does in the core.
-        if !holds(q, Some(e), site, tick).unwrap_or(false) {
+        if !seen.holds(q).unwrap_or(false) {
             return Ok(None);
         }
     }

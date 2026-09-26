@@ -3,14 +3,20 @@
 
 //! The reference: the core's exact individual runner. Its own scheduler runs
 //! the periodic processes member by member; the competition round then
-//! executes every member's act through the same interpreter. Collecting
-//! after each tick regroups equal neighbours in storage and changes no
-//! outcome.
+//! executes every member's act through the same interpreter, a fight's
+//! rounds included. Collecting after each tick regroups equal neighbours in
+//! storage and changes no outcome.
 
-use super::{Competition, ProbeWorld, Side, allocate, draws::Stream, resolve};
+use super::{
+    Competition, Meeting, ProbeWorld, allocate,
+    draws::Stream,
+    fight::{Ground, Sides, fight},
+    meet,
+};
 use crate::meaning::value;
 use crate::{
     Execution, Result, Simulation,
+    rules::Mind,
     schema::*,
     simulation::{Outcome, Work},
 };
@@ -25,13 +31,14 @@ pub fn run_exact(world: &ProbeWorld, dynamics: u64, collect: bool) -> Result<Exa
     genesis.dynamics = Some(dynamics);
     let mut sim = Simulation::new(genesis, Execution::Individuals)?;
     let mut work = Work::default();
+    let (c, mind) = (world.competition()?, world.mind()?);
     for _ in 0..world.ticks {
         let scheduled = sim.advance(1)?;
         work.evaluations += scheduled.evaluations;
         work.represented += scheduled.represented;
         work.accepted += scheduled.accepted;
         work.blocked += scheduled.blocked;
-        round(&mut sim, world.competition()?, dynamics, &mut work)?;
+        round(&mut sim, c, mind, dynamics, &mut work)?;
         if collect {
             sim.collect();
         }
@@ -40,7 +47,7 @@ pub fn run_exact(world: &ProbeWorld, dynamics: u64, collect: bool) -> Result<Exa
 }
 
 /// Every act the round decides must be accepted: the allocation never
-/// promises food the site lacks, nor a cost a member cannot pay.
+/// promises food the site lacks, nor a fight a cost a member cannot pay.
 fn act(sim: &mut Simulation, id: Id, process: &str, work: &mut Work) -> Result<()> {
     let receipt = sim.execute(id, None, process, None);
     work.evaluations += 1;
@@ -52,7 +59,30 @@ fn act(sim: &mut Simulation, id: Id, process: &str, work: &mut Work) -> Result<(
     Ok(())
 }
 
-fn round(sim: &mut Simulation, c: &Competition, dynamics: u64, work: &mut Work) -> Result<()> {
+/// Two members fighting in the world itself.
+struct Pair<'a> {
+    sim: &'a mut Simulation,
+    ids: [Id; 2],
+    work: &'a mut Work,
+}
+
+impl Sides for Pair<'_> {
+    fn act(&mut self, side: usize, process: &str) -> Result<()> {
+        act(self.sim, self.ids[side], process, self.work)
+    }
+    fn member(&self, side: usize) -> &Entity {
+        let e = self.sim.state().population.get(self.ids[side]);
+        e.expect("fighting members exist")
+    }
+}
+
+fn round(
+    sim: &mut Simulation,
+    c: &Competition,
+    mind: &Mind,
+    dynamics: u64,
+    work: &mut Work,
+) -> Result<()> {
     let tick = sim.state().tick;
     let sites: Vec<Id> = sim.state().sites.keys().copied().collect();
     for site in sites {
@@ -71,7 +101,8 @@ fn round(sim: &mut Simulation, c: &Competition, dynamics: u64, work: &mut Work) 
                 hungry.extend((first..first + group.count).map(|id| (id, k)));
             }
         }
-        let food = value(&sim.state().sites[&site].accounts, &c.food);
+        let ground = sim.state().sites[&site].clone();
+        let food = value(&ground.accounts, &c.food);
         let Some(a) = allocate(hungry.len() as u64, food / c.ration) else {
             for &(id, k) in &hungry {
                 act(sim, id, &c.kinds[k].eat, work)?;
@@ -85,38 +116,38 @@ fn round(sim: &mut Simulation, c: &Competition, dynamics: u64, work: &mut Work) 
         }
         let contested = &hungry[doubles..doubles + 2 * a.contested as usize];
         for pair in contested.chunks_exact(2) {
-            let side = |(id, k): (Id, usize)| {
-                let e = sim
-                    .state()
-                    .population
-                    .get(id)
-                    .expect("hungry member exists");
-                Side {
-                    contest: e.traits.contains(&c.contest),
-                    body: value(&e.accounts, &c.kinds[k].body),
-                }
+            let ids = [pair[0].0, pair[1].0];
+            let kinds = [&c.kinds[pair[0].1], &c.kinds[pair[1].1]];
+            let member = |sim: &Simulation, side: usize| {
+                let e = sim.state().population.get(ids[side]);
+                e.expect("hungry member exists").clone()
             };
-            let result = resolve(c, side(pair[0]), side(pair[1]));
-            for (j, &(id, k)) in pair.iter().enumerate() {
-                for _ in 0..result.pay[j] {
-                    act(sim, id, &c.kinds[k].strain, work)?;
-                }
-            }
-            let gain = if result.tie {
-                let coin = crate::draw(dynamics, "probe-tie", &[tick, pair[0].0, pair[1].0]);
-                if coin.is_multiple_of(2) {
-                    [c.ration, 0]
-                } else {
-                    [0, c.ration]
-                }
-            } else {
-                result.gain
+            let (a, b) = (member(sim, 0), member(sim, 1));
+            let contest = [a.traits.contains(&c.contest), b.traits.contains(&c.contest)];
+            let reserve = [
+                value(&a.accounts, &kinds[0].body),
+                value(&b.accounts, &kinds[1].body),
+            ];
+            let gain = match meet(c, contest, reserve) {
+                Meeting::Settled(gain) => gain,
+                Meeting::Fight => {
+                    let seed = crate::draw(dynamics, "probe-fight", &[tick, ids[0], ids[1]]);
+                    let ground = Ground {
+                        site: &ground,
+                        tick,
+                    };
+                    let mut sides = Pair { sim, ids, work };
+                    let f = fight(c, mind, kinds, &ground, &mut sides, &mut Stream::new(seed))?;
+                    let mut gain = [0; 2];
+                    gain[f.winner] = c.ration;
+                    gain
+                },
             };
-            for (j, &(id, k)) in pair.iter().enumerate() {
-                if gain[j] == c.ration {
-                    act(sim, id, &c.kinds[k].eat, work)?;
-                } else if gain[j] > 0 {
-                    act(sim, id, &c.kinds[k].share, work)?;
+            for side in 0..2 {
+                if gain[side] == c.ration {
+                    act(sim, ids[side], &kinds[side].eat, work)?;
+                } else if gain[side] > 0 {
+                    act(sim, ids[side], &kinds[side].share, work)?;
                 }
             }
         }

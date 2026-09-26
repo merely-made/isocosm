@@ -7,11 +7,15 @@ use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
-    Matter { lineage: Key },
+    Matter {
+        lineage: Key,
+    },
     Energy,
     Attention,
     Time,
     Obligation,
+    /// A mind's kept strain (ruling 159).
+    Strain,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -59,6 +63,15 @@ pub enum Query {
     },
     Related {
         kind: Key,
+    },
+    /// The actor's mood, read from the world's needs (ruling 227), is at
+    /// least `at_least`.
+    Mood {
+        at_least: i64,
+    },
+    /// The actor's mood is below `amount`.
+    MoodBelow {
+        amount: i64,
     },
 }
 
@@ -118,6 +131,13 @@ pub enum Effect {
         axis: Key,
         account: Key,
     },
+    /// A body's kept level eases by up to `amount`, never below nothing:
+    /// strain bleeding off (ruling 159).
+    Ease {
+        who: Binding,
+        key: Key,
+        amount: u64,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -161,11 +181,15 @@ pub struct Competitor {
     pub hungry: Query,
     pub eat: Key,
     pub share: Key,
-    pub strain: Key,
+    /// One unit of reserve spent in a fight, and the strain it costs.
+    pub spend: Key,
 }
 
 /// Ruling 115: members wanting one scarce thing at a site, each side's own
 /// way of deciding picking contest or share, the sim resolving the choices.
+/// Two contesters size each other up and only a close match escalates
+/// (ruling 116), into rounds that strain both sides against their bearing
+/// (rulings 221 to 223).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Competition {
     /// The site account contended for.
@@ -173,9 +197,45 @@ pub struct Competition {
     pub ration: u64,
     /// The leaning trait: members that carry it contest, the rest share.
     pub contest: Key,
+    /// The widest gap in standing that still reads as a close match.
     pub margin: u64,
+    /// Reserve the side losing an exchange spends, capped at what it holds.
     pub cost: u64,
+    /// The act each side takes for each round: the round's strain.
+    pub round: Key,
+    /// Per mille, the chance an exchange goes against the side standing
+    /// higher.
+    pub upset: u32,
+    /// How far a break up raises its side's standing, or a break down
+    /// lowers it, for the rest of the fight (ruling 222).
+    pub advantage: u64,
     pub kinds: Vec<Competitor>,
+}
+
+/// A need, as the core has needs now (ruling 227): members carrying every
+/// one of `traits` for whom `query` holds have their mood moved by `weight`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Need {
+    pub traits: BTreeSet<Key>,
+    pub query: Query,
+    pub weight: i64,
+}
+
+/// What the core reads of a mind now. Mood is read from needs and never
+/// kept; strain is kept in its account (rulings 158, 159 and 227). A mind
+/// bears strain up to its bearing, set by its traits (ruling 164); past it,
+/// it breaks, up with the chance its traits and the moment give (ruling 163).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Mind {
+    pub strain: Key,
+    pub needs: Vec<Need>,
+    pub bearing: i64,
+    pub bearing_traits: BTreeMap<Key, i64>,
+    /// Per mille chance that a break goes up.
+    pub rise: i64,
+    pub rise_traits: BTreeMap<Key, i64>,
+    /// The moment: per mille added to the rise for each point of mood.
+    pub stake: i64,
 }
 
 /// Ruling 113's tolerance: each reading's Kolmogorov-Smirnov distance
@@ -216,6 +276,10 @@ pub struct Rules {
     /// Absent in worlds that state none.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub similitude: Option<Similitude>,
+    /// What the core reads of minds (rulings 221 and 227). Absent in worlds
+    /// without one, which serialize and hash as before it existed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mind: Option<Mind>,
 }
 
 impl Rules {
@@ -256,6 +320,8 @@ impl Process {
                             who: Binding::Actor,
                             ..
                         }
+                        | Query::Mood { .. }
+                        | Query::MoodBelow { .. }
                 )
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {
@@ -268,6 +334,10 @@ impl Process {
                         who: Binding::Actor,
                         ..
                     } | Effect::Practice { .. }
+                        | Effect::Ease {
+                            who: Binding::Actor,
+                            ..
+                        }
                 )
             })
     }

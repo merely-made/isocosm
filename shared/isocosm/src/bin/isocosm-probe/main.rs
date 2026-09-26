@@ -179,7 +179,18 @@ fn run() -> Result<(), String> {
         match &infos {
             None => infos = Some(these),
             Some(first) if keys(first) != keys(&these) => {
-                return Err(format!("draw {k} reads differently from draw 0"));
+                let (a, b) = (keys(first), keys(&these));
+                let only = |x: &[(String, u32)], y: &[(String, u32)]| {
+                    x.iter()
+                        .filter(|r| !y.contains(r))
+                        .map(|r| r.0.clone())
+                        .collect::<Vec<_>>()
+                };
+                return Err(format!(
+                    "draw {k} reads differently from draw 0: only in draw 0 {:?}, only in draw {k} {:?}",
+                    only(&a, &b),
+                    only(&b, &a)
+                ));
             },
             Some(_) => {},
         }

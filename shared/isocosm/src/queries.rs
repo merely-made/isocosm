@@ -44,6 +44,7 @@ impl Simulation {
             site: self.state.sites.get(&place),
             tick: self.state.tick,
             related: &related,
+            needs: crate::meaning::needs(&self.genesis.rules),
         };
         let (yes, reading) = crate::meaning::read(query, &scene)?;
         if yes {

@@ -5,20 +5,22 @@
 //! ways under ruling 113: member by member through the core's exact
 //! individual runner, and as a crowd, an exact-state histogram advanced by
 //! random count draws. The competition's definition and the similitude
-//! bounds live in the world's rules (ruling 218); the rounds that resolve a
-//! competition live here until the core's scheduler runs them.
+//! bounds live in the world's rules (ruling 218), beside the mind its fights
+//! strain (rulings 221 and 227); the rounds that resolve a competition live
+//! here until the core's scheduler runs them.
 
 mod aggregate;
 pub mod check;
 mod crowd;
 mod draws;
 mod exact;
+pub mod fight;
 mod found;
 pub mod readings;
 #[cfg(test)]
 mod tests;
 
-pub use crate::rules::{Competition, Competitor, Similitude};
+pub use crate::rules::{Competition, Competitor, Mind, Need, Similitude};
 pub use crowd::{Crowd, Variant};
 pub use exact::{ExactRun, run_exact};
 pub use found::ProbeFounding;
@@ -49,47 +51,35 @@ impl ProbeWorld {
             .as_ref()
             .ok_or_else(|| "the world states no similitude".into())
     }
+    pub fn mind(&self) -> Result<&Mind> {
+        self.genesis
+            .rules
+            .mind
+            .as_ref()
+            .ok_or_else(|| "the world has no mind".into())
+    }
 }
 
-/// One side of a contested pair, as the rules read it.
+/// How a contested ration first falls between two sides (ruling 206):
+/// sharers split it, a contester takes it from a sharer, and two contesters
+/// size each other up by reserve, only a close match escalating to a fight.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Side {
-    pub contest: bool,
-    pub body: u64,
+pub enum Meeting {
+    /// Each side takes its gain.
+    Settled([u64; 2]),
+    Fight,
 }
 
-/// What one contested ration does to each side. On an exact tie a seeded
-/// coin gives the ration to one side; `gain` is then empty.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Resolution {
-    pub gain: [u64; 2],
-    pub pay: [u64; 2],
-    pub tie: bool,
-}
-
-pub fn resolve(c: &Competition, a: Side, b: Side) -> Resolution {
+pub fn meet(c: &Competition, contest: [bool; 2], reserve: [u64; 2]) -> Meeting {
     let r = c.ration;
-    let (gain, pay, tie) = match (a.contest, b.contest) {
-        (false, false) => ([r / 2, r / 2], [0, 0], false),
-        (true, false) => ([r, 0], [0, 0], false),
-        (false, true) => ([0, r], [0, 0], false),
-        (true, true) => {
-            // Sizing up settles all but close matches; an escalated fight
-            // costs both, and the side with more reserve outlasts the other.
-            let pay = if a.body.abs_diff(b.body) > c.margin {
-                [0, 0]
-            } else {
-                [c.cost.min(a.body), c.cost.min(b.body)]
-            };
-            let gain = match a.body.cmp(&b.body) {
-                std::cmp::Ordering::Greater => [r, 0],
-                std::cmp::Ordering::Less => [0, r],
-                std::cmp::Ordering::Equal => [0, 0],
-            };
-            (gain, pay, a.body == b.body)
-        },
-    };
-    Resolution { gain, pay, tie }
+    match contest {
+        [false, false] => Meeting::Settled([r / 2, r / 2]),
+        [true, false] => Meeting::Settled([r, 0]),
+        [false, true] => Meeting::Settled([0, r]),
+        [true, true] if reserve[0].abs_diff(reserve[1]) <= c.margin => Meeting::Fight,
+        [true, true] if reserve[0] > reserve[1] => Meeting::Settled([r, 0]),
+        [true, true] => Meeting::Settled([0, r]),
+    }
 }
 
 /// How a short site's rations fall over its hungry members once they are

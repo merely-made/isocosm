@@ -69,15 +69,26 @@ founding parameters accompany its realized rules and topology.
 - A world may carry a dynamics seed apart from its founding seed, so one
   founded world can run under independent draws. Absent, it is the world seed,
   and such worlds serialize and hash as before it existed.
+- A world may carry a mind (rulings 159, 164 and 227). Mood is read from the
+  needs its rules declare, each a query on the member and a weight, and is
+  never kept; strain is kept in a strain account. The rules' own processes
+  build strain while mood reads low and ease it off while it does not. A mind
+  bears strain up to a bearing set by its traits. Worlds without a mind
+  serialize and hash as before.
 - The `probe` module runs ruling 115's competition, pairwise contest, share
   and yield, both member by member through the interpreter and as a crowd:
   counts per exact state, advanced by integer count draws that follow the
-  member-by-member round's distribution. Both read queries and apply effects
-  through the interpreter's own meanings, written once. A competition's
-  definition and the per-reading similitude bounds are part of the world's
-  rules and its rules digest; worlds without them serialize and hash as
-  before. The rounds that resolve a competition still run in the probe, not
-  the core's scheduler.
+  member-by-member round's distribution. Two contesters who size each other
+  up as a close match fight in rounds (rulings 221 to 223). The side standing
+  lower loses each exchange unless an upset turns it; both take the round's
+  strain, and the loser spends reserve, which strains it more. A side past
+  its bearing breaks once, up or down by its traits, its mood and a draw,
+  and its standing shifts for the rest of the fight. The fight ends when a
+  side is spent or, sized up again, outmatched. Both runners fight through
+  one function and apply effects through the interpreter's own meanings.
+  A competition's definition and the per-reading similitude bounds are part
+  of the world's rules and its rules digest. The rounds that resolve a
+  competition still run in the probe, not the core's scheduler.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does

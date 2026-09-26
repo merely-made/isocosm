@@ -251,6 +251,7 @@ impl Founding {
             collection_buffer: 16,
             competitions: BTreeMap::new(),
             similitude: None,
+            mind: None,
         };
         let mut sites = BTreeMap::new();
         for i in 0..u64::from(self.sites) {

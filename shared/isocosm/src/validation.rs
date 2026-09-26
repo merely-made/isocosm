@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{Result, meaning::mass, rules::*};
+use crate::{Result, meaning::mass, rules::*, schema::Key};
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -40,9 +40,63 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::Related { kind } if !rules.relations.contains(kind) => {
             return Err(format!("unknown relation {kind}"));
         },
+        Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
+            return Err("mood is read only in a world with a mind".into());
+        },
         _ => (),
     }
     Ok(())
+}
+
+fn traits(rules: &Rules, keys: impl IntoIterator<Item = impl AsRef<str>>) -> Result<()> {
+    for k in keys {
+        if !rules.traits.contains(k.as_ref()) {
+            return Err(format!("unknown trait {}", k.as_ref()));
+        }
+    }
+    Ok(())
+}
+
+/// A mind keeps strain in a strain account, and reads its needs only from
+/// the member itself and its site's conditions, so a mood can never read a
+/// mood and every mood reads alike across a cohort.
+fn mind(rules: &Rules) -> Result<()> {
+    let Some(m) = &rules.mind else {
+        return Ok(());
+    };
+    if rules.accounts.get(&m.strain) != Some(&AccountKind::Strain) {
+        return Err(format!("{} is not a strain account", m.strain));
+    }
+    for need in &m.needs {
+        traits(rules, &need.traits)?;
+        query(rules, &need.query)?;
+        let own = matches!(
+            need.query,
+            Query::Alive(Binding::Actor)
+                | Query::Trait {
+                    who: Binding::Actor,
+                    ..
+                }
+                | Query::Account {
+                    who: Binding::Actor,
+                    ..
+                }
+                | Query::Below {
+                    who: Binding::Actor,
+                    ..
+                }
+                | Query::Age { .. }
+                | Query::Condition { .. }
+                | Query::Part {
+                    who: Binding::Actor,
+                    ..
+                }
+        );
+        if !own {
+            return Err("a need reads only its member and its site's conditions".into());
+        }
+    }
+    traits(rules, m.bearing_traits.keys().chain(m.rise_traits.keys()))
 }
 
 fn matter(rules: &Rules, value: &str) -> Result<()> {
@@ -53,24 +107,35 @@ fn matter(rules: &Rules, value: &str) -> Result<()> {
 }
 
 /// Ruling 218: a competition refers only to what the rules declare, and a
-/// bound never exceeds certainty.
+/// bound never exceeds certainty. Its fights strain minds (ruling 221), so
+/// it needs the world's mind, and every lost exchange costs reserve, so
+/// every fight ends.
 fn competitions(rules: &Rules) -> Result<()> {
     for (id, c) in &rules.competitions {
         key(id)?;
         matter(rules, &c.food)?;
-        if c.ration == 0 || c.kinds.is_empty() || !rules.traits.contains(&c.contest) {
+        if c.ration == 0
+            || c.cost == 0
+            || c.upset > 1000
+            || c.kinds.is_empty()
+            || !rules.traits.contains(&c.contest)
+        {
             return Err(format!("invalid competition {id}"));
         }
+        if rules.mind.is_none() {
+            return Err(format!("{id} fights, and fights need the world's mind"));
+        }
+        let process = |p: &Key| match rules.processes.contains_key(p) {
+            true => Ok(()),
+            false => Err(format!("{id} names an unknown process {p}")),
+        };
+        process(&c.round)?;
         for kind in &c.kinds {
-            if !rules.traits.contains(&kind.identity) {
-                return Err(format!("unknown trait {}", kind.identity));
-            }
+            traits(rules, [&kind.identity])?;
             matter(rules, &kind.body)?;
             query(rules, &kind.hungry)?;
-            for process in [&kind.eat, &kind.share, &kind.strain] {
-                if !rules.processes.contains_key(process) {
-                    return Err(format!("{id} names an unknown process {process}"));
-                }
+            for p in [&kind.eat, &kind.share, &kind.spend] {
+                process(p)?;
             }
         }
     }
@@ -180,9 +245,18 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
                         return Err("recorded feats require a causal event".into());
                     }
                 },
+                // Easing a level destroys what it takes, so it never takes
+                // matter, and only bodies keep levels.
+                Effect::Ease { who, key, .. } => {
+                    account(rules, key)?;
+                    if matter(rules, key).is_ok() || *who == Binding::Place {
+                        return Err(format!("{id} eases what cannot be eased"));
+                    }
+                },
                 _ => (),
             }
         }
     }
+    mind(rules)?;
     competitions(rules)
 }

@@ -2,9 +2,14 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The probe's declared domain. Every quantity a world's rules hold is drawn
-//! from its seed within the stated ranges, the margin and the cost included.
-//! Food regrows from site soil; upkeep and fight costs return body to it, so
-//! matter cycles. The lineage count is fixed so every draw reads alike.
+//! from its seed within the stated ranges, the fight's and the mind's
+//! included. Food regrows from site soil; upkeep and fight costs return body
+//! to it, so matter cycles. The lineage count is fixed so every draw reads
+//! alike.
+
+mod mind;
+
+pub use mind::{MindFounding, STRAIN};
 
 use super::{Competition, Competitor, ProbeWorld, Similitude};
 use crate::{
@@ -27,9 +32,19 @@ pub struct ProbeFounding {
     /// A member is hungry while its body is below this.
     pub hunger: [u64; 2],
     pub margin: [u64; 2],
+    /// Reserve spent by the side losing an exchange.
     pub cost: [u64; 2],
+    /// Per mille, the chance an exchange goes against the side standing
+    /// higher.
+    pub upset: [u64; 2],
+    /// Standing a break adds or takes for the rest of a fight.
+    pub advantage: [u64; 2],
+    /// Strain each side takes per round, and per unit of reserve spent.
+    pub round_strain: [u64; 2],
+    pub spend_strain: [u64; 2],
     /// Food regrown per tick at a site, per mille of the site's founders.
     pub regrowth: [u64; 2],
+    pub mind: MindFounding,
     pub bound_per_mille: u32,
 }
 
@@ -48,7 +63,12 @@ impl Default for ProbeFounding {
             hunger: [3, 6],
             margin: [0, 2],
             cost: [1, 2],
+            upset: [0, 400],
+            advantage: [1, 3],
+            round_strain: [1, 3],
+            spend_strain: [0, 2],
             regrowth: [300, 900],
+            mind: MindFounding::default(),
             bound_per_mille: 200,
         }
     }
@@ -82,6 +102,18 @@ fn spend(body: &str) -> Vec<Effect> {
     ]
 }
 
+/// Strain taken in a fight; nothing when the draw gave none.
+fn strain(amount: u64) -> Vec<Effect> {
+    if amount == 0 {
+        return vec![];
+    }
+    vec![Effect::Transform {
+        who: Binding::Actor,
+        take: BTreeMap::new(),
+        give: BTreeMap::from([(STRAIN.into(), amount)]),
+    }]
+}
+
 fn feed(body: &str, amount: u64) -> Vec<Effect> {
     vec![
         Effect::Transfer {
@@ -111,12 +143,19 @@ impl ProbeFounding {
             self.hunger,
             self.margin,
             self.cost,
+            self.upset,
+            self.advantage,
+            self.round_strain,
+            self.spend_strain,
             self.regrowth,
         ];
         if ranges.iter().any(|r| r[0] > r[1])
+            || !self.mind.valid()
             || self.sites[0] == 0
             || self.ration[0] < 2
             || self.hunger[0] == 0
+            || self.cost[0] == 0
+            || self.upset[1] > 1000
             || self.lineages == 0
             || self.cohort == 0
             || self.ticks == 0
@@ -129,6 +168,9 @@ impl ProbeFounding {
         let hunger = self.pick("probe-hunger", 0, self.hunger);
         let margin = self.pick("probe-margin", 0, self.margin);
         let cost = self.pick("probe-cost", 0, self.cost);
+        let upset = self.pick("probe-upset", 0, self.upset) as u32;
+        let advantage = self.pick("probe-advantage", 0, self.advantage);
+        let spend_strain = self.pick("probe-spend-strain", 0, self.spend_strain);
         let per_site: Vec<u64> = (0..self.lineages)
             .map(|i| self.pick("probe-members", u64::from(i), self.members))
             .collect();
@@ -147,6 +189,7 @@ impl ProbeFounding {
                     lineage: "world:ground".into(),
                 },
             ),
+            (STRAIN.into(), AccountKind::Strain),
         ]);
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
@@ -237,8 +280,10 @@ impl ProbeFounding {
                 feed(&body, ration / 2),
             );
             share.requires.push(own.clone());
-            let mut strain = process(&format!("probe:strain-{i}"), Shape::Choice, spend(&body));
-            strain.requires.extend([own, account(&body, 1)]);
+            let mut fought = spend(&body);
+            fought.extend(strain(spend_strain));
+            let mut spent = process(&format!("probe:spend-{i}"), Shape::Choice, fought);
+            spent.requires.extend([own, account(&body, 1)]);
             kinds.push(Competitor {
                 identity,
                 body: body.clone(),
@@ -249,11 +294,24 @@ impl ProbeFounding {
                 },
                 eat: eat.id.clone(),
                 share: share.id.clone(),
-                strain: strain.id.clone(),
+                spend: spent.id.clone(),
             });
-            for p in [upkeep, starve, eat, share, strain] {
+            for p in [upkeep, starve, eat, share, spent] {
                 processes.insert(p.id.clone(), p);
             }
+        }
+        let minds: Vec<mind::Kind> = kinds
+            .iter()
+            .map(|k| mind::Kind {
+                identity: &k.identity,
+                body: &k.body,
+            })
+            .collect();
+        let (mind, keeping) = self.mind.draw(self.seed, &minds, hunger);
+        let round_strain = self.pick("probe-round-strain", 0, self.round_strain);
+        let round = process("probe:round", Shape::Choice, strain(round_strain));
+        for p in keeping.into_iter().chain([round]) {
+            processes.insert(p.id.clone(), p);
         }
         let rules = Rules {
             version: crate::VERSION,
@@ -282,6 +340,9 @@ impl ProbeFounding {
                     contest: "leaning:contest".into(),
                     margin,
                     cost,
+                    round: "probe:round".into(),
+                    upset,
+                    advantage,
                     kinds,
                 },
             )]),
@@ -289,6 +350,7 @@ impl ProbeFounding {
                 default_bound: self.bound_per_mille,
                 bounds: BTreeMap::new(),
             }),
+            mind: Some(mind),
         };
         let mut site_map = BTreeMap::new();
         let mut population = Population::default();

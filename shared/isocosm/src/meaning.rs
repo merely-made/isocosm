@@ -8,10 +8,15 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Effect, Query, Rules},
+    rules::{AccountKind, Binding, Effect, Need, Query, Rules},
     schema::*,
 };
 use std::collections::BTreeMap;
+
+/// The needs a world's minds read their mood from; none without a mind.
+pub(crate) fn needs(rules: &Rules) -> &[Need] {
+    rules.mind.as_ref().map_or(&[], |m| &m.needs)
+}
 
 pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
@@ -58,6 +63,7 @@ pub(crate) struct Scene<'a> {
     pub site: Option<&'a Site>,
     pub tick: Tick,
     pub related: &'a dyn Fn(&Key) -> Result<bool>,
+    pub needs: &'a [Need],
 }
 
 impl<'a> Scene<'a> {
@@ -123,7 +129,28 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = (s.related)(kind)?;
             (v, v.to_string())
         },
+        Query::Mood { at_least } => {
+            let v = mood(s)?;
+            (v >= *at_least, v.to_string())
+        },
+        Query::MoodBelow { amount } => {
+            let v = mood(s)?;
+            (v < *amount, v.to_string())
+        },
     })
+}
+
+/// The actor's mood, read and never kept: the weights of the needs that
+/// hold for it (ruling 227).
+pub(crate) fn mood(s: &Scene) -> Result<i64> {
+    let actor = s.body(Binding::Actor)?;
+    let mut total = 0i64;
+    for need in s.needs {
+        if need.traits.iter().all(|t| actor.traits.contains(t)) && read(&need.query, s)?.0 {
+            total = total.checked_add(need.weight).ok_or("mood overflow")?;
+        }
+    }
+    Ok(total)
 }
 
 /// The states an effect writes. A crowd's parties stand for every member of
@@ -160,8 +187,15 @@ pub(crate) fn effect(p: &mut impl Parties, e: &Effect) -> Option<Result<()>> {
             .body(Binding::Actor)
             .and_then(|b| practice(b, key, *amount)),
         Effect::Death => p.body(Binding::Actor).map(|b| b.alive = false),
+        Effect::Ease { who, key, amount } => p.body(*who).map(|b| ease(b, key, *amount)),
         _ => return None,
     })
+}
+
+fn ease(e: &mut Entity, key: &str, amount: u64) {
+    if let Some(v) = e.accounts.get_mut(key) {
+        *v -= (*v).min(amount);
+    }
 }
 
 fn transform(p: &mut impl Parties, who: Binding, take: &Ledger, give: &Ledger) -> Result<()> {

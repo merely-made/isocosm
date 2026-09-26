@@ -5,14 +5,14 @@
 //! identities (ruling 113: "who" is undefined until someone looks). Each
 //! process applies once per state. The round's randomness is drawn as counts
 //! with the distribution the member-by-member round has: which members land
-//! in each segment, then the pair types of a uniform random matching.
+//! in each segment, then the pair types of a uniform random matching, then
+//! each fight between two states.
+
+mod round;
 
 use super::{
-    Competition, ProbeWorld, Side,
+    Competition, Mind, ProbeWorld,
     aggregate::{self, normalize},
-    allocate,
-    draws::Stream,
-    resolve,
 };
 use crate::{
     Result,
@@ -36,6 +36,7 @@ pub enum Variant {
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
     competition: &'w Competition,
+    mind: &'w Mind,
     dynamics: u64,
     variant: Variant,
     matter: u128,
@@ -43,14 +44,6 @@ pub struct Crowd<'w> {
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
     pub work: Work,
-}
-
-/// Members of one bin that meet one outcome in the round.
-struct Fate {
-    bin: usize,
-    count: u64,
-    pay: u64,
-    gain: u64,
 }
 
 impl<'w> Crowd<'w> {
@@ -62,6 +55,7 @@ impl<'w> Crowd<'w> {
         let mut crowd = Self {
             world,
             competition: world.competition()?,
+            mind: world.mind()?,
             dynamics,
             variant,
             matter: 0,
@@ -159,7 +153,7 @@ impl<'w> Crowd<'w> {
                 .sites
                 .get_mut(&e.place)
                 .ok_or("a bin at an unknown site")?;
-            match aggregate::apply(p, &e, site, n, self.tick)? {
+            match aggregate::apply(p, &e, site, n, self.tick, &self.mind.needs)? {
                 Some(next) => {
                     self.work.accepted += n;
                     self.moved(&e, next, n);
@@ -179,60 +173,10 @@ impl<'w> Crowd<'w> {
             .ok_or("a bin at an unknown site")?;
         self.work.evaluations += 1;
         self.work.represented += n;
-        let next = aggregate::apply(p, e, site, n, self.tick)?
+        let next = aggregate::apply(p, e, site, n, self.tick, &self.mind.needs)?
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)
-    }
-
-    fn round(&mut self) -> Result<()> {
-        let c: &Competition = self.competition;
-        let sites: Vec<Id> = self.sites.keys().copied().collect();
-        for site in sites {
-            let mut hungry: Vec<(Entity, u64, usize)> = Vec::new();
-            for (e, &n) in &self.bins {
-                if !e.alive || e.place != site {
-                    continue;
-                }
-                let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
-                    continue;
-                };
-                if aggregate::holds(&c.kinds[k].hungry, Some(e), &self.sites[&site], self.tick)? {
-                    hungry.push((e.clone(), n, k));
-                }
-            }
-            let counts: Vec<u64> = hungry.iter().map(|h| h.1).collect();
-            let food = value(&self.sites[&site].accounts, &c.food);
-            let fates = match allocate(counts.iter().sum(), food / c.ration) {
-                None => (0..hungry.len())
-                    .map(|bin| Fate {
-                        bin,
-                        count: counts[bin],
-                        pay: 0,
-                        gain: c.ration,
-                    })
-                    .collect(),
-                Some(a) => {
-                    let seed = crate::draw(self.dynamics, "probe-crowd", &[self.tick, site]);
-                    fates(c, &hungry, &counts, a, &mut Stream::new(seed))
-                },
-            };
-            for fate in fates {
-                let (e, _, k) = &hungry[fate.bin];
-                let kind = &c.kinds[*k];
-                let mut state = e.clone();
-                for _ in 0..fate.pay {
-                    state = self.act(&state, &kind.strain, fate.count)?;
-                }
-                if fate.gain == c.ration {
-                    state = self.act(&state, &kind.eat, fate.count)?;
-                } else if fate.gain > 0 {
-                    state = self.act(&state, &kind.share, fate.count)?;
-                }
-                self.moved(e, state, fate.count);
-            }
-        }
-        Ok(())
     }
 
     fn average(&mut self) {
@@ -263,85 +207,19 @@ impl<'w> Crowd<'w> {
                     self.bins.remove(e);
                 }
             }
-            let (base, extra) = (total / n, total % n);
-            for (reserve, count) in [(base + 1, extra), (base, n - extra)] {
-                if count > 0 {
-                    let mut e = members[0].0.clone();
-                    e.accounts.insert(body.clone(), reserve);
-                    *self.bins.entry(normalize(e)).or_default() += count;
+            // Each member keeps everything but its reserve.
+            let (base, mut extra) = (total / n, total % n);
+            for (e, m) in members {
+                let high = extra.min(m);
+                extra -= high;
+                for (reserve, count) in [(base + 1, high), (base, m - high)] {
+                    if count > 0 {
+                        let mut e = e.clone();
+                        e.accounts.insert(body.clone(), reserve);
+                        *self.bins.entry(normalize(e)).or_default() += count;
+                    }
                 }
             }
         }
     }
-}
-
-/// Draws the round's outcomes by count: the members of each bin that land in
-/// the doubles and contested segments, the pair types among the contested,
-/// and a coin per exact tie between different bins.
-fn fates(
-    c: &Competition,
-    hungry: &[(Entity, u64, usize)],
-    counts: &[u64],
-    a: super::Allocation,
-    s: &mut Stream,
-) -> Vec<Fate> {
-    let doubles = s.split(counts, 2 * a.doubles);
-    let rest: Vec<u64> = counts.iter().zip(&doubles).map(|(n, d)| n - d).collect();
-    let contested = s.split(&rest, 2 * a.contested);
-    let mut out: Vec<Fate> = doubles
-        .iter()
-        .enumerate()
-        .filter(|(_, d)| **d > 0)
-        .map(|(bin, &count)| Fate {
-            bin,
-            count,
-            pay: 0,
-            gain: c.ration,
-        })
-        .collect();
-    let side = |bin: usize| {
-        let (e, _, k) = &hungry[bin];
-        Side {
-            contest: e.traits.contains(&c.contest),
-            body: value(&e.accounts, &c.kinds[*k].body),
-        }
-    };
-    for ((i, j), n) in s.matching(&contested) {
-        let r = resolve(c, side(i), side(j));
-        let wins = if !r.tie {
-            None
-        } else if i == j {
-            Some(n)
-        } else {
-            Some((0..n).filter(|_| s.coin()).count() as u64)
-        };
-        let mut push = |bin, count, pay, gain| {
-            if count > 0 {
-                out.push(Fate {
-                    bin,
-                    count,
-                    pay,
-                    gain,
-                });
-            }
-        };
-        match wins {
-            None => {
-                push(i, n, r.pay[0], r.gain[0]);
-                push(j, n, r.pay[1], r.gain[1]);
-            },
-            // A pair within one bin has a winner and a loser from it.
-            Some(w) if i == j => {
-                push(i, w, r.pay[0], c.ration);
-                push(i, n, r.pay[0], 0);
-            },
-            Some(w) => {
-                push(i, w, r.pay[0], c.ration);
-                push(i, n - w, r.pay[0], 0);
-                push(j, n - w, r.pay[1], c.ration);
-                push(j, w, r.pay[1], 0);
-            },
-        }
-    }
-    out
 }

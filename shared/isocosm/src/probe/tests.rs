@@ -4,13 +4,16 @@
 use super::{aggregate, draws::Stream, *};
 use crate::{Execution, Simulation, simulation::Outcome};
 
-fn competition(margin: u64, cost: u64) -> Competition {
+fn competition(margin: u64) -> Competition {
     Competition {
         food: "world:food".into(),
         ration: 4,
         contest: "leaning:contest".into(),
         margin,
-        cost,
+        cost: 1,
+        round: "probe:round".into(),
+        upset: 0,
+        advantage: 1,
         kinds: vec![],
     }
 }
@@ -61,25 +64,25 @@ fn allocation_spreads_the_shortfall_over_pairs() {
 }
 
 #[test]
-fn contested_rations_follow_the_ruling() {
-    let c = competition(1, 2);
+fn meetings_follow_the_ruling() {
+    let c = competition(1);
     let (contest, share) = (true, false);
-    let side = |contest, body| Side { contest, body };
     // Two sharers split the ration.
-    let r = resolve(&c, side(share, 3), side(share, 1));
-    assert_eq!((r.gain, r.pay, r.tie), ([2, 2], [0, 0], false));
+    assert_eq!(meet(&c, [share, share], [3, 1]), Meeting::Settled([2, 2]));
     // A contester takes it from a sharer, whatever their reserves.
-    let r = resolve(&c, side(share, 9), side(contest, 1));
-    assert_eq!((r.gain, r.pay), ([0, 4], [0, 0]));
+    assert_eq!(meet(&c, [share, contest], [9, 1]), Meeting::Settled([0, 4]));
     // Sizing up: a clear gap ends it at display, and the smaller yields.
-    let r = resolve(&c, side(contest, 5), side(contest, 2));
-    assert_eq!((r.gain, r.pay, r.tie), ([4, 0], [0, 0], false));
-    // A close match escalates, both pay, the larger reserve outlasts.
-    let r = resolve(&c, side(contest, 2), side(contest, 3));
-    assert_eq!((r.gain, r.pay, r.tie), ([0, 4], [2, 2], false));
-    // Cost is capped at what a side holds; an exact tie goes to a coin.
-    let r = resolve(&c, side(contest, 1), side(contest, 1));
-    assert_eq!((r.gain, r.pay, r.tie), ([0, 0], [1, 1], true));
+    assert_eq!(
+        meet(&c, [contest, contest], [5, 2]),
+        Meeting::Settled([4, 0])
+    );
+    assert_eq!(
+        meet(&c, [contest, contest], [2, 5]),
+        Meeting::Settled([0, 4])
+    );
+    // A close match, an exact one included, escalates to a fight.
+    assert_eq!(meet(&c, [contest, contest], [2, 3]), Meeting::Fight);
+    assert_eq!(meet(&c, [contest, contest], [1, 1]), Meeting::Fight);
 }
 
 #[test]
@@ -144,19 +147,22 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         .unwrap()
         .clone();
     let mut site = sim.state().sites[&entity.place].clone();
-    for process in [&kind.eat, &kind.strain] {
-        let p = &world.genesis.rules.processes[process];
+    let round = world.competition().unwrap().round.clone();
+    let needs = &world.mind().unwrap().needs;
+    let processes = [&kind.eat, &kind.spend, &round, "mind:strain", "mind:relief"];
+    for process in processes.map(String::from) {
+        let p = &world.genesis.rules.processes[&process];
         let before = site.clone();
-        let moved = aggregate::apply(p, &entity, &mut site, count, 1)
-            .unwrap()
-            .unwrap();
+        let moved = aggregate::apply(p, &entity, &mut site, count, 1, needs).unwrap();
         for id in first..first + count {
+            let outcome = sim.execute(id, None, &process, None).outcome;
+            let Some(moved) = &moved else {
+                assert!(matches!(outcome, Outcome::Blocked(_)), "{process}");
+                continue;
+            };
+            assert_eq!(outcome, Outcome::Accepted, "{process}");
             assert_eq!(
-                sim.execute(id, None, process, None).outcome,
-                Outcome::Accepted
-            );
-            assert_eq!(
-                aggregate::normalize(sim.state().population.get(id).unwrap().clone()),
+                &aggregate::normalize(sim.state().population.get(id).unwrap().clone()),
                 moved
             );
         }
