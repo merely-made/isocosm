@@ -264,7 +264,7 @@ fn a_pack_expression_appears_beside_the_discovered_proposal_and_is_marked() {
     assert_eq!(sources, [Source::Discovery, Source::Authored]);
     for proposed in &row.sources {
         assert_eq!(proposed.refused, None, "neither refused: {proposed:?}");
-        let (part, cells) = proposed.site.expect("each proposes a site");
+        let (part, cells) = proposed.tract.expect("each proposes a tract");
         assert!(cells > 0, "on real tissue");
         assert!(
             world

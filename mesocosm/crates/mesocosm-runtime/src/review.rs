@@ -71,7 +71,7 @@ pub struct Proposed {
     pub source: Source,
     /// The part it would land on and the tissue it would claim. `None` when it
     /// proposes nothing, which is a real answer rather than a failure.
-    pub site: Option<(u32, u32)>,
+    pub tract: Option<(u32, u32)>,
     /// Why it proposes nothing, by name.
     pub refused: Option<String>,
 }
@@ -179,15 +179,15 @@ fn sources_for(
         match world.candidate_proposal(condition, Arrangement::Automatic) {
             Some(proposal) => Proposed {
                 source: Source::Discovery,
-                site: proposal
-                    .sites
+                tract: proposal
+                    .tracts
                     .last()
-                    .map(|site| (site.part.0, site.cells.len() as u32)),
+                    .map(|tract| (tract.part.0, tract.cells.len() as u32)),
                 refused: None,
             },
             None => Proposed {
                 source: Source::Discovery,
-                site: None,
+                tract: None,
                 refused: Some("nowhere on this body to put it".to_owned()),
             },
         },
@@ -245,7 +245,7 @@ impl Authored {
 
     /// What each declared script proposes for one candidate.
     ///
-    /// A script that returns no site is one that does not apply here — a
+    /// A script that returns no tract is one that does not apply here — a
     /// candidate whose process it does not author, or a body it will not put
     /// one on — so it contributes no row rather than an empty one. That is what
     /// "if no pack expression applies, the row simply has one source" means.
@@ -261,10 +261,10 @@ impl Authored {
             let proposed = match Runner::load(source, self.policy)
                 .and_then(|mut runner| runner.propose(&request, &entropy))
             {
-                Ok(proposal) => match proposal.sites.first() {
-                    Some(site) => Proposed {
+                Ok(proposal) => match proposal.tracts.first() {
+                    Some(tract) => Proposed {
                         source: Source::Authored,
-                        site: Some((site.part, site.cells)),
+                        tract: Some((tract.part, tract.cells)),
                         refused: None,
                     },
                     // Declined rather than refused: this script does not author
@@ -273,7 +273,7 @@ impl Authored {
                 },
                 Err(refused) => Proposed {
                     source: Source::Authored,
-                    site: None,
+                    tract: None,
                     refused: Some(refused.words()),
                 },
             };

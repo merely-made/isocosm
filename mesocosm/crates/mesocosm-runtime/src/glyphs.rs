@@ -172,7 +172,7 @@ impl GlyphReading {
     ///
     /// The world arrives by reference rather than being held: the reading is
     /// a disposable trial's record and must not own or outlive world state,
-    /// and the registry the sites resolve against is the world's own ruleset.
+    /// and the registry the tracts resolve against is the world's own ruleset.
     /// A body that is absent or no longer alive bears nothing.
     pub fn embodied_glyphs(&self, world: &World, table: &ExpressionTable) -> BTreeSet<GlyphId> {
         world
