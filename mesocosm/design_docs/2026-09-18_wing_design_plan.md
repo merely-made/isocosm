@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 283, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 287, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2405,6 +2405,32 @@ what later sections derive from.
      density, one lineage outcompeting the web, and a top consumer or key
      producer removed come first, and meteor, drought, flood and fire follow
      once the gate's criteria stand, to test the web's resilience as a whole.
+284. **An advance's limit guards work, not ticks.** Put to Mark on
+     2026-09-26, from the scheduler index's report: at a minute's unit a
+     century is 52.6 million ticks against a default advance limit of
+     100,000, while the due-event queue skips idle time; guard work, raise the
+     tick limit, or run many advances? Mark: "Work, not ticks." So the limit
+     guards evaluations, and an advance may span any stretch of idle time.
+285. **The budget counts the members an evaluation stands for.** Put to Mark
+     on 2026-09-26, with 284: individual mode evaluates a cohort member by
+     member, so a history that fits a budget grouped can exceed it
+     individually, as seven saves showed; count members, or let a budget
+     belong to its mode? Mark: "Count members." So a budget means the same in
+     both modes.
+286. **Due events are kept per group.** Put to Mark on 2026-09-26, with 284:
+     84 to 96% of the remaining evaluations did nothing, death and age
+     processes visiting every member each period to be blocked by thresholds,
+     and ruling 258 had left per-entity queues for before M2's first
+     receipts: due events per group, per entity, or not yet? Mark: "Due
+     events per group." So a group knows when its next threshold falls due,
+     an age at death or a reserve running out, and is scheduled for then;
+     grouping is kept, and the changed results are certified again.
+287. **Each consumer lineage has one feeding process, choosing among its
+     prey.** Put to Mark on 2026-09-26, with 284: the ecology generator made
+     one feeding process per pair of predator and prey lineages, so feeding
+     multiplied with lineages; one per consumer, or keep the pairs? Mark:
+     "One per consumer." Its choice among prey is the definition's target
+     selection.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6190,6 +6216,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 284 to 287 recorded, from the scheduler index's
+  report (merged at 6ba01e9): an advance's limit guards work, not ticks;
+  the budget counts the members an evaluation stands for; due events are
+  kept per group; and one feeding process per consumer lineage. The
+  unit is stored as microseconds (`Rules.tick_microseconds`), as a
+  reading.
 - 2026-09-26: ruling 283 recorded: the first disturbances are disease, an
   overperformer and a keystone lost, catastrophe following to test the
   web's resilience as a whole.
