@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The clock: due processes over the groups that could match them (rulings
-//! 258 and 259), and the unit a tick counts (rulings 256 and 257).
+//! 258, 259, 285 and 286), advances limited by work and not ticks (284), and
+//! the unit a tick counts (rulings 256 and 257).
 
 use isocosm::{
     Execution, Founding, Simulation, population::Population, rules::*, schema::*,
@@ -202,4 +203,114 @@ fn the_clock_counts_a_minute_unless_the_world_states_its_unit() {
     // A tick of no time is refused.
     round.tick_microseconds = Some(0);
     assert!(round.validate().is_err());
+}
+
+/// One site, the world's body, then one cohort of three born at tick zero
+/// holding four of soil, with `processes` as the only due ones.
+fn cohort(processes: Vec<Process>) -> Genesis {
+    let mut g = Founding {
+        seed: 6,
+        sites: 1,
+        population: 3,
+        lineages: 1,
+        cohort_size: 3,
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    g.rules.processes.retain(|_, p| p.period.is_none());
+    for p in processes {
+        g.rules.processes.insert(p.id.clone(), p);
+    }
+    g
+}
+
+fn due(id: &str, priority: i32, requires: Vec<Query>, effects: Vec<Effect>) -> Process {
+    Process {
+        id: id.into(),
+        shape: Shape::Choice,
+        requires,
+        commitments: vec![],
+        effects,
+        risk: None,
+        target: None,
+        period: Some(1),
+        priority,
+        need_account: None,
+        need_below: 0,
+        glyphs: BTreeSet::new(),
+        invariants: BTreeSet::new(),
+        note: false,
+    }
+}
+
+fn practise(key: &str) -> Effect {
+    Effect::Practice {
+        key: key.into(),
+        amount: 1,
+    }
+}
+
+fn skill(sim: &Simulation, id: Id, key: &str) -> u64 {
+    let e = sim.state().population.get(id).unwrap();
+    e.skills.get(key).copied().unwrap_or(0)
+}
+
+#[test]
+fn a_group_is_visited_when_it_comes_of_age_and_not_before() {
+    let grown = due(
+        "test:grown",
+        0,
+        vec![Query::Alive(Binding::Actor), Query::Age { at_least: 5 }],
+        vec![practise("skill:grown")],
+    );
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        let mut sim = Simulation::new(cohort(vec![grown.clone()]), mode).unwrap();
+        // Too young for four ticks: nothing is evaluated, not even blocked.
+        assert_eq!(sim.advance(4).unwrap().represented, 0, "{mode:?}");
+        let work = sim.advance(1).unwrap();
+        assert_eq!((work.represented, work.accepted), (3, 3), "{mode:?}");
+        assert!((1..=3).all(|id| skill(&sim, id, "skill:grown") == 1));
+    }
+}
+
+#[test]
+fn a_reserve_running_out_is_seen_in_the_same_tick() {
+    let soil = "world:soil";
+    let drain = due(
+        "test:drain",
+        0,
+        vec![Query::Account {
+            who: Binding::Actor,
+            key: soil.into(),
+            at_least: 1,
+        }],
+        vec![Effect::Transfer {
+            from: Binding::Actor,
+            to: Binding::Place,
+            account: soil.into(),
+            amount: 1,
+        }],
+    );
+    let starve = due(
+        "test:starve",
+        1,
+        vec![Query::Below {
+            who: Binding::Actor,
+            key: soil.into(),
+            amount: 1,
+        }],
+        vec![practise("skill:starved")],
+    );
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        let mut sim = Simulation::new(cohort(vec![drain.clone(), starve.clone()]), mode).unwrap();
+        let members: Vec<u64> = (0..6)
+            .map(|_| sim.advance(1).unwrap().represented)
+            .collect();
+        // Four ticks drain the soil, the fourth leaving none, when starving
+        // runs for the first time, after the drain in the same tick; from
+        // then on only starving runs.
+        assert_eq!(members, [3, 3, 3, 6, 3, 3], "{mode:?}");
+        assert!((1..=3).all(|id| skill(&sim, id, "skill:starved") == 3));
+    }
 }

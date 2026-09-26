@@ -138,12 +138,13 @@ impl<'w> Crowd<'w> {
 
     /// The core scheduler's pass, one evaluation per state instead of per
     /// member. States reached during the pass are not evaluated again, and a
-    /// state without a trait the process requires is not evaluated at all.
+    /// state the process's gates keep out, as the core files them, is not
+    /// evaluated at all.
     fn scheduled(&mut self, p: &Process) -> Result<()> {
-        let traits = crate::schedule::required(p);
+        let gates = crate::schedule::Gates::of(p);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         for (e, n) in snapshot {
-            if !e.alive || !crate::schedule::carries(&e, &traits) {
+            if !e.alive || !gates.open(&e, self.tick) {
                 continue;
             }
             if p.shape == Shape::Agentless {
