@@ -14,12 +14,17 @@ use isometer::{FrameRequest, SceneSource};
 use isometry_core::TileCoord;
 
 use super::board::{BoardPick, BoardSource};
+use super::ground::BoardGround;
 use super::view::BoardHandle;
 use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
 /// The pane every receipt draws into, logical px.
 pub(super) const PANE: (f32, f32) = (640.0, 480.0);
+
+/// The board pane of B5's headed session, logical px: 1,782 by 1,504 physical
+/// at device scale 2 and interface zoom 0.917.
+pub(super) const HEADED_PANE: (f32, f32) = (972.0, 820.0);
 
 /// The stress board with relief: `synth_map`'s ground and pieces, every tile
 /// raised in steps of 0 to 7, so its bricks stand two layers tall.
@@ -119,9 +124,26 @@ impl Board {
         self.source.ground_cost().expect("the board grew a ground")
     }
 
+    /// The board's ground: its columns and the bricks the scene holds.
+    pub(super) fn ground(&self) -> &BoardGround {
+        self.source.ground().expect("a drawn board read its ground")
+    }
+
     pub(super) fn pick(&self, px: f32, py: f32) -> Option<BoardPick> {
         self.source
             .pick([2.0 * px / self.pane.0 - 1.0, 1.0 - 2.0 * py / self.pane.1])
+    }
+
+    /// The pane this board draws into.
+    pub(super) fn pane(&self) -> (f32, f32) {
+        self.pane
+    }
+
+    /// The camera the last frame was drawn with.
+    pub(super) fn camera(&self) -> isometer::SlabCamera {
+        self.source
+            .presented_camera()
+            .expect("a drawn board has a camera")
     }
 }
 

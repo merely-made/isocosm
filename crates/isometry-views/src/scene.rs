@@ -50,6 +50,8 @@ mod edit_tests;
 #[cfg(test)]
 mod harness;
 #[cfg(test)]
+mod paging_tests;
+#[cfg(test)]
 mod parity_tests;
 #[cfg(test)]
 mod terrain_tests;
