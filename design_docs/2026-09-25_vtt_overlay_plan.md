@@ -12,7 +12,8 @@ repository's plans. It mirrors the
 [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before V0 closes.
+§6's decisions are his before V0 closes; one is taken, ruling 231 placing
+this overlay side by side with Eponym's after Mesocosm's M3.
 
 **Owns:** the VTT's profile as a game over the Isocosm sim (the record's
 §5); the VTT side of the overlay contract (ruling 154), a module beside
@@ -50,8 +51,8 @@ From the record's §11, W5 is done for a game when it has:
 2. a core implementing the overlay contract (§3);
 3. a played loop with receipts drawn from the generator (§2, phase V4).
 
-Ruling 174 made Mesocosm the first overlay; whether the VTT or Eponym goes
-second is not ruled (§6 decision 8).
+Ruling 174 made Mesocosm the first overlay; the VTT's and Eponym's go side by
+side after Mesocosm's M3, each on its own plan (ruling 231, §6 decision 8).
 
 ## 1. The profile
 
@@ -227,9 +228,13 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 
 V1 and V2 run side by side; V3 needs V1 and V2's world; V4 needs all three.
 
+The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
+(ruling 231).
+
 ## 6. Decisions for Mark
 
-None taken. Each is a fork this plan found and did not settle.
+One taken, the eighth, on 2026-09-25. Each other is a fork this plan found
+and did not settle.
 
 1. **The battlemap under the sim.** When the sim is on, a battlemap is the
    DM's authored map asserted over the site's volume (ruling 89), a
@@ -261,8 +266,9 @@ None taken. Each is a fork this plan found and did not settle.
    over the same history, or switching it on founds a world from that point
    (ruling 126).
 8. **Which overlay is W5's second.** Ruling 174 put Mesocosm first and
-   nothing orders the VTT and Eponym; the same question sits in the Eponym
-   plan's §6.
+   nothing ordered the VTT and Eponym; the same question sat in the Eponym
+   plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
+   after Mesocosm's M3, each on its own plan.
 
 ## Findings
 
@@ -296,6 +302,9 @@ None taken. Each is a fork this plan found and did not settle.
 
 ## Progress
 
+- 2026-09-25: ruling 231 marks §6's decision 8: the VTT's and Eponym's
+  overlays go side by side after Mesocosm's M3, each on its own plan. The
+  record links this plan from its §5.7 and §11 (aa354f3).
 - 2026-09-25: plan drafted at Mark's word ("Overlay plans to RPG") from the
   record's §5.7, rulings 114, 154, 188 to 191 and the contract's rulings,
   the system-plugin crate and this repository's plans. V0 to V4 proposed;

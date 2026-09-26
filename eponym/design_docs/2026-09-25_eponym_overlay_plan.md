@@ -11,7 +11,8 @@ contract's rulings (197, 203 to 205, 210 to 213), and Eponym's own plans. It
 mirrors the [Mesocosm overlay plan](../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before E0 closes.
+§6's decisions are his before E0 closes; one is taken, ruling 231 placing
+this overlay side by side with the VTT's after Mesocosm's M3.
 
 **Owns:** Eponym's profile as a game over the Isocosm sim (the record's §5);
 the Eponym side of the overlay contract (ruling 154), a module beside
@@ -47,8 +48,8 @@ From the record's §11, W5 is done for a game when it has:
 2. a core implementing the overlay contract (§3);
 3. a played loop with receipts drawn from the generator (§2, phase E4).
 
-Ruling 174 made Mesocosm the first overlay; whether Eponym or the VTT goes
-second is not ruled (§6 decision 7).
+Ruling 174 made Mesocosm the first overlay; Eponym's and the VTT's go side by
+side after Mesocosm's M3, each on its own plan (ruling 231, §6 decision 7).
 
 ## 1. The profile
 
@@ -229,9 +230,13 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 E1 and E2 run side by side; E3 needs E2's bodies, places, lives and asks;
 E4 needs all of E2 and E3.
 
+The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
+(ruling 231).
+
 ## 6. Decisions for Mark
 
-None taken. Each is a fork this plan found and did not settle.
+One taken, the seventh, on 2026-09-25. Each other is a fork this plan found
+and did not settle.
 
 1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
    foreground strike system keeps resolving them geometrically and hands
@@ -269,8 +274,9 @@ None taken. Each is a fork this plan found and did not settle.
    Whether E4's done-condition includes two peers over the session lane, or
    single-player first as the founding plan parked real-time co-op netcode.
 7. **Which overlay is W5's second.** Ruling 174 put Mesocosm first and
-   nothing orders Eponym and the VTT; the same question sits in the VTT
-   plan's §6.
+   nothing ordered Eponym and the VTT; the same question sat in the VTT
+   plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
+   after Mesocosm's M3, each on its own plan.
 
 ## Findings
 
@@ -296,6 +302,9 @@ None taken. Each is a fork this plan found and did not settle.
 
 ## Progress
 
+- 2026-09-25: ruling 231 marks §6's decision 7: Eponym's and the VTT's
+  overlays go side by side after Mesocosm's M3, each on its own plan. The
+  record links this plan from its §5.6 and §11 (aa354f3).
 - 2026-09-25: plan drafted at Mark's word ("Overlay plans to RPG") from the
   record's §5.6, rulings 60, 130, 152 to 156, 185 to 187 and the contract's
   rulings, Eponym's plans and its code. E0 to E4 proposed; no lane open;
