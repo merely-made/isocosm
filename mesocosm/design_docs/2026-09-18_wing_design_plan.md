@@ -5951,6 +5951,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: the body-site renames finished on main: tract across
+  Mesocosm's phenotype code and `wing-functions` (23147d1 to ad65eb2, old
+  serialized names still read under ruling 224), then attachment and situs
+  for the two senses the first pass left (1dfb399 to 8d27687, rulings 251
+  and 252); *site* now keeps only the world map's meaning in that code. S2's
+  checkpoint 2 landed too (e8a55b1), and Lane A writes checkpoint 3's plan
+  for the thirty shapes before any code.
 - 2026-09-26: rulings 254 and 255 recorded: the contract's shared shapes
   live once in its core, lifted by the RPG systems session at 269ffc5, E1
   and V1 having landed at 1996ecc; and raw receipts live out of tree, the
