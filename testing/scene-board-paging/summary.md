@@ -12,14 +12,14 @@ one column per tile, diffs them and remakes the held bricks it touched.
 
 | build | board | pane | before: regrow + diff, ms | now: columns + diff + fill, ms | frame, ms | slots | upload, bytes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| debug | flat | harness | 28,299.78 | 22.11 | 42.77 | 3.5 | 1,806 |
-| debug | flat | headed | 28,299.78 | 22.77 | 48.24 | 4.0 | 2,064 |
-| debug | relief | harness | 61,605.73 | 15.43 | 28.45 | 8.0 | 4,128 |
-| debug | relief | headed | 61,605.73 | 11.83 | 27.48 | 8.0 | 4,128 |
-| release | flat | harness | 496.20 | 0.73 | 1.50 | 3.5 | 1,806 |
-| release | flat | headed | 496.20 | 0.78 | 2.01 | 4.0 | 2,064 |
-| release | relief | harness | 1,257.77 | 0.71 | 1.54 | 8.0 | 4,128 |
-| release | relief | headed | 1,257.77 | 0.87 | 2.49 | 8.0 | 4,128 |
+| debug | flat | harness | 12,141.16 | 10.78 | 16.63 | 3.5 | 1,806 |
+| debug | flat | headed | 12,141.16 | 10.77 | 19.36 | 4.0 | 2,064 |
+| debug | relief | harness | 30,081.46 | 10.62 | 17.42 | 8.0 | 4,128 |
+| debug | relief | headed | 30,081.46 | 10.74 | 22.56 | 8.0 | 4,128 |
+| release | flat | harness | 366.57 | 0.64 | 1.50 | 3.5 | 1,806 |
+| release | flat | headed | 366.57 | 0.74 | 2.60 | 4.0 | 2,064 |
+| release | relief | harness | 914.43 | 0.59 | 1.55 | 8.0 | 4,128 |
+| release | relief | headed | 914.43 | 0.77 | 2.92 | 8.0 | 4,128 |
 
 ## One raise, one pan
 
@@ -29,51 +29,143 @@ stands, rebuilds whenever the framing shrinks.
 
 | build | board | pane | kind | n | columns + diff + fill, ms | frame, ms | loaded | retargets | hold rebuilds | upload, bytes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| debug | flat | harness | raise | 6 | 24.22 | 40.09 | 0.0 | 0 | 0 | 774 |
-| debug | flat | harness | pan | 12 | 0.25 | 31.75 | 24.0 | 10 | 2 | 20,752 |
-| debug | flat | headed | raise | 6 | 24.21 | 48.70 | 0.0 | 0 | 0 | 1,032 |
-| debug | flat | headed | pan | 12 | 0.56 | 82.18 | 40.0 | 8 | 4 | 37,380 |
-| debug | relief | harness | raise | 6 | 14.57 | 37.03 | 2.5 | 4 | 0 | 32,256 |
-| debug | relief | harness | pan | 12 | 9.08 | 39.45 | 1023.0 | 3 | 9 | 1,076,224 |
-| debug | relief | headed | raise | 6 | 11.95 | 26.96 | 0.0 | 0 | 0 | 2,064 |
-| debug | relief | headed | pan | 12 | 0.61 | 51.37 | 55.0 | 12 | 0 | 64,072 |
-| release | flat | harness | raise | 6 | 0.68 | 1.42 | 0.0 | 0 | 0 | 774 |
-| release | flat | harness | pan | 12 | 0.02 | 1.21 | 24.0 | 10 | 2 | 20,752 |
-| release | flat | headed | raise | 6 | 0.78 | 1.95 | 0.0 | 0 | 0 | 1,032 |
-| release | flat | headed | pan | 12 | 0.03 | 2.32 | 40.0 | 8 | 4 | 37,380 |
-| release | relief | harness | raise | 6 | 0.81 | 2.37 | 2.5 | 4 | 0 | 32,256 |
-| release | relief | harness | pan | 12 | 1.08 | 3.49 | 1023.0 | 3 | 9 | 1,076,224 |
-| release | relief | headed | raise | 6 | 0.84 | 2.35 | 0.0 | 0 | 0 | 2,064 |
-| release | relief | headed | pan | 12 | 0.06 | 2.90 | 55.0 | 12 | 0 | 64,072 |
+| debug | flat | harness | raise | 6 | 10.76 | 18.90 | 0.0 | 0 | 0 | 774 |
+| debug | flat | harness | pan | 12 | 0.12 | 12.11 | 24.0 | 10 | 2 | 29,960 |
+| debug | flat | headed | raise | 6 | 10.32 | 21.36 | 0.0 | 0 | 0 | 1,032 |
+| debug | flat | headed | pan | 12 | 0.23 | 23.67 | 40.0 | 8 | 4 | 56,392 |
+| debug | relief | harness | raise | 6 | 10.33 | 25.52 | 1.5 | 5 | 0 | 29,952 |
+| debug | relief | harness | pan | 12 | 6.72 | 26.44 | 1023.0 | 3 | 9 | 1,086,992 |
+| debug | relief | headed | raise | 6 | 10.22 | 23.79 | 0.0 | 0 | 0 | 2,064 |
+| debug | relief | headed | pan | 12 | 0.38 | 32.89 | 55.0 | 12 | 0 | 83,648 |
+| release | flat | harness | raise | 6 | 0.58 | 1.38 | 0.0 | 0 | 0 | 774 |
+| release | flat | harness | pan | 12 | 0.02 | 1.33 | 24.0 | 10 | 2 | 29,960 |
+| release | flat | headed | raise | 6 | 0.84 | 2.51 | 0.0 | 0 | 0 | 1,032 |
+| release | flat | headed | pan | 12 | 0.03 | 2.85 | 40.0 | 8 | 4 | 56,392 |
+| release | relief | harness | raise | 6 | 0.69 | 1.95 | 1.5 | 5 | 0 | 29,952 |
+| release | relief | harness | pan | 12 | 0.68 | 2.89 | 1023.0 | 3 | 9 | 1,086,992 |
+| release | relief | headed | raise | 6 | 0.82 | 2.74 | 0.0 | 0 | 0 | 2,064 |
+| release | relief | headed | pan | 12 | 0.06 | 3.36 | 55.0 | 12 | 0 | 83,648 |
 
 ## What the frame holds
 
 | build | board | pane | bricks on the board | resident | capacity | past the atlas | first frame, ms | first fill, ms |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| debug | flat | harness | 25600 | 682 to 720 | 2047 | 0 | 274.52 | 8.50 |
-| debug | flat | headed | 25600 | 1554 to 1613 | 2047 | 0 | 320.23 | 28.38 |
-| debug | relief | harness | 39482 | 1008 to 1132 | 2047 | 0 | 158.80 | 8.89 |
-| debug | relief | headed | 39482 | 2047 to 2047 | 2047 | 457 | 185.48 | 18.72 |
-| release | flat | harness | 25600 | 682 to 720 | 2047 | 0 | 32.62 | 0.46 |
-| release | flat | headed | 25600 | 1554 to 1613 | 2047 | 0 | 28.94 | 1.30 |
-| release | relief | harness | 39482 | 1008 to 1132 | 2047 | 0 | 24.31 | 0.97 |
-| release | relief | headed | 39482 | 2047 to 2047 | 2047 | 457 | 28.64 | 2.02 |
+| debug | flat | harness | 25600 | 682 to 720 | 2047 | 0 | 111.57 | 3.89 |
+| debug | flat | headed | 25600 | 1554 to 1613 | 2047 | 0 | 126.00 | 8.80 |
+| debug | relief | harness | 39482 | 1008 to 1132 | 2047 | 0 | 114.72 | 7.54 |
+| debug | relief | headed | 39482 | 2047 to 2047 | 2047 | 457 | 148.98 | 15.31 |
+| release | flat | harness | 25600 | 682 to 720 | 2047 | 0 | 20.45 | 0.37 |
+| release | flat | headed | 25600 | 1554 to 1613 | 2047 | 0 | 24.86 | 0.82 |
+| release | relief | harness | 39482 | 1008 to 1132 | 2047 | 0 | 22.82 | 0.86 |
+| release | relief | headed | 39482 | 2047 to 2047 | 2047 | 457 | 23.55 | 1.51 |
 
-## Headed: a steady frame, beside B5
+## What each spare layer of headroom costs
+
+The pointer volume reserves brick layers above the board's tallest tile,
+so an edit that lifts it into them retargets rather than rebuilding the
+map. The default, one spare layer, is provisional: Mark takes it back with
+these numbers. A spare layer widens the volume a little as well as raising
+it, because the camera leans. The pointer volume is uploaded whole with
+every retarget, so its bytes are also what each pan uploads before its
+bricks. The atlas does not move with the headroom.
+
+| board | pane | headroom | reserved layers | pointer extent | pointer, bytes | per layer, bytes | atlas, bytes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| demo | harness | 0 | 0 to 1 | 16 by 2 by 16 | 2,048 | - | 1,048,576 |
+| demo | harness | 1 | 0 to 2 | 16 by 3 by 16 | 3,072 | +1,024 | 1,048,576 |
+| demo | harness | 2 | 0 to 3 | 16 by 4 by 16 | 4,096 | +1,024 | 1,048,576 |
+| demo | harness | 3 | 0 to 4 | 16 by 5 by 16 | 5,120 | +1,024 | 1,048,576 |
+| demo | headed | 0 | 0 to 1 | 16 by 2 by 16 | 2,048 | - | 1,048,576 |
+| demo | headed | 1 | 0 to 2 | 16 by 3 by 16 | 3,072 | +1,024 | 1,048,576 |
+| demo | headed | 2 | 0 to 3 | 16 by 4 by 16 | 4,096 | +1,024 | 1,048,576 |
+| demo | headed | 3 | 0 to 4 | 16 by 5 by 16 | 5,120 | +1,024 | 1,048,576 |
+| flat | harness | 0 | 0 to 0 | 46 by 1 by 46 | 8,464 | - | 1,048,576 |
+| flat | harness | 1 | 0 to 1 | 47 by 2 by 47 | 17,672 | +9,208 | 1,048,576 |
+| flat | harness | 2 | 0 to 2 | 48 by 3 by 48 | 27,648 | +9,976 | 1,048,576 |
+| flat | harness | 3 | 0 to 3 | 49 by 4 by 49 | 38,416 | +10,768 | 1,048,576 |
+| flat | headed | 0 | 0 to 0 | 65 by 1 by 65 | 16,900 | - | 1,048,576 |
+| flat | headed | 1 | 0 to 1 | 67 by 2 by 67 | 35,912 | +19,012 | 1,048,576 |
+| flat | headed | 2 | 0 to 2 | 68 by 3 by 68 | 55,488 | +19,576 | 1,048,576 |
+| flat | headed | 3 | 0 to 3 | 69 by 4 by 69 | 76,176 | +20,688 | 1,048,576 |
+| relief | harness | 0 | 0 to 1 | 47 by 2 by 47 | 17,672 | - | 1,048,576 |
+| relief | harness | 1 | 0 to 2 | 48 by 3 by 48 | 27,648 | +9,976 | 1,048,576 |
+| relief | harness | 2 | 0 to 3 | 49 by 4 by 49 | 38,416 | +10,768 | 1,048,576 |
+| relief | harness | 3 | 0 to 4 | 51 by 5 by 51 | 52,020 | +13,604 | 1,048,576 |
+| relief | headed | 0 | 0 to 1 | 67 by 2 by 67 | 35,912 | - | 1,048,576 |
+| relief | headed | 1 | 0 to 2 | 68 by 3 by 68 | 55,488 | +19,576 | 1,048,576 |
+| relief | headed | 2 | 0 to 3 | 69 by 4 by 69 | 76,176 | +20,688 | 1,048,576 |
+| relief | headed | 3 | 0 to 4 | 70 by 5 by 70 | 98,000 | +21,824 | 1,048,576 |
+
+## Headed: a steady frame, host against host
 
 The shipping host in the dev build at device scale 2, interface zoom
 0.917 and render scale 2, as B5 measured (`headed.py` has the window).
-B5's scene board read 12.50 ms (p25 11.82, p75 13.91, p95 16.77) over
-183 frames of the demo board; the demo session here is its control.
+B5's scene board read 12.50 ms over 183 frames of the demo board. The
+hosts ran back to back in the order listed, each more than once and
+interleaved, so every host has samples from across one window of the
+machine's load, and each session's demo control shows what that load was.
 
-| session | n | total, ms | p25 | p75 | p95 | range | emit | a11y | raster | producer | stages |
+| host | session | n | total, ms | p25 | p75 | p95 | range | emit | a11y | raster | producer |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| headed-demo | 153 | 13.34 | 12.66 | 14.15 | 15.41 | 11.57 to 19.23 | 2.45 | 2.73 | 5.83 | 0.05 | 0 |
-| headed-256 | 124 | 19.09 | 18.64 | 19.75 | 22.41 | 16.95 to 26.37 | 3.16 | 3.72 | 6.51 | 2.82 | 0 |
+| 1-31370bf | headed-demo | 195 | 12.63 | 12.27 | 13.35 | 14.78 | 11.32 to 17.37 | 2.35 | 2.52 | 5.65 | 0.05 |
+| 1-31370bf | headed-256 | 140 | 18.22 | 17.89 | 18.54 | 19.22 | 16.57 to 20.54 | 2.90 | 3.59 | 6.20 | 2.80 |
+| 2-c6fb846 | headed-demo | 205 | 12.29 | 11.94 | 12.72 | 13.39 | 10.57 to 17.23 | 2.31 | 2.49 | 5.49 | 0.02 |
+| 2-c6fb846 | headed-256 | 166 | 15.34 | 15.03 | 15.71 | 16.40 | 14.30 to 16.85 | 3.00 | 3.62 | 6.09 | 0.03 |
+| 3-3312d08 | headed-demo | 208 | 12.12 | 11.78 | 12.50 | 13.34 | 10.28 to 14.52 | 2.32 | 2.47 | 5.43 | 0.02 |
+| 3-3312d08 | headed-256 | 171 | 15.02 | 14.58 | 15.41 | 15.79 | 13.09 to 17.33 | 2.89 | 3.51 | 5.99 | 0.03 |
+| 4-31370bf | headed-demo | 227 | 11.49 | 11.17 | 11.89 | 12.66 | 10.42 to 23.14 | 2.10 | 2.27 | 5.12 | 0.04 |
+| 4-31370bf | headed-256 | 139 | 17.62 | 16.92 | 18.81 | 20.45 | 15.65 to 21.62 | 2.85 | 3.44 | 6.19 | 2.70 |
+| 5-c6fb846 | headed-demo | 229 | 11.29 | 11.07 | 11.77 | 12.35 | 10.29 to 15.41 | 2.13 | 2.29 | 5.07 | 0.02 |
+| 5-c6fb846 | headed-256 | 183 | 13.96 | 13.64 | 14.28 | 14.96 | 12.97 to 16.43 | 2.67 | 3.28 | 5.59 | 0.03 |
+| 6-3312d08 | headed-demo | 219 | 11.97 | 11.58 | 12.34 | 13.00 | 10.40 to 13.98 | 2.21 | 2.44 | 5.36 | 0.02 |
+| 6-3312d08 | headed-256 | 169 | 15.06 | 14.79 | 15.33 | 15.95 | 13.73 to 16.60 | 2.96 | 3.53 | 6.02 | 0.03 |
 
 What the ground cost in each session, as the host printed it:
 
-- `headed-demo`, first frame: columns 0.10 ms, diff 0.00 ms, a new board; fill 1.30 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
-- `headed-demo`, the self-test's overlays: columns 0.29 ms, diff 0.12 ms, 103 tiles; fill 0.24 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
-- `headed-256`, first frame: columns 10.11 ms, diff 0.00 ms, a new board; fill 5.15 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
-- `headed-256`, the self-test's overlays: columns 34.05 ms, diff 1.13 ms, 32 tiles; fill 0.11 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `1-31370bf headed-demo`, first frame: columns 0.09 ms, diff 0.00 ms, a new board; fill 1.32 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `1-31370bf headed-demo`, the self-test's overlays: columns 0.30 ms, diff 0.14 ms, 103 tiles; fill 0.26 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `1-31370bf headed-256`, first frame: columns 9.68 ms, diff 0.00 ms, a new board; fill 5.02 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `1-31370bf headed-256`, the self-test's overlays: columns 32.40 ms, diff 1.14 ms, 32 tiles; fill 0.11 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `2-c6fb846 headed-demo`, first frame: columns 0.11 ms, diff 0.00 ms, a new board; fill 1.21 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `2-c6fb846 headed-demo`, the self-test's overlays: columns 0.29 ms, diff 0.14 ms, 103 tiles; fill 0.26 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `2-c6fb846 headed-256`, first frame: columns 9.91 ms, diff 0.00 ms, a new board; fill 4.74 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `2-c6fb846 headed-256`, the self-test's overlays: columns 32.00 ms, diff 1.13 ms, 32 tiles; fill 0.11 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `3-3312d08 headed-demo`, first frame: columns 0.10 ms, diff 0.00 ms, a new board; fill 1.48 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `3-3312d08 headed-demo`, the self-test's overlays: columns 0.29 ms, diff 0.15 ms, 103 tiles; fill 0.26 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `3-3312d08 headed-256`, first frame: columns 9.93 ms, diff 0.00 ms, a new board; fill 4.78 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `3-3312d08 headed-256`, the self-test's overlays: columns 32.55 ms, diff 1.13 ms, 32 tiles; fill 0.11 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `4-31370bf headed-demo`, first frame: columns 0.09 ms, diff 0.00 ms, a new board; fill 1.16 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `4-31370bf headed-demo`, the self-test's overlays: columns 0.29 ms, diff 0.16 ms, 103 tiles; fill 0.25 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `4-31370bf headed-256`, first frame: columns 19.23 ms, diff 0.00 ms, a new board; fill 6.16 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `4-31370bf headed-256`, the self-test's overlays: columns 31.27 ms, diff 1.07 ms, 32 tiles; fill 0.10 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `5-c6fb846 headed-demo`, first frame: columns 0.08 ms, diff 0.00 ms, a new board; fill 1.17 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `5-c6fb846 headed-demo`, the self-test's overlays: columns 0.27 ms, diff 0.12 ms, 103 tiles; fill 0.24 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `5-c6fb846 headed-256`, first frame: columns 9.40 ms, diff 0.00 ms, a new board; fill 4.55 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `5-c6fb846 headed-256`, the self-test's overlays: columns 30.97 ms, diff 1.35 ms, 32 tiles; fill 0.13 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+- `6-3312d08 headed-demo`, first frame: columns 0.09 ms, diff 0.00 ms, a new board; fill 1.26 ms, whole map (first); resident 260 of 2047 (+260 -0, 0 refreshed, 0 past the atlas)
+- `6-3312d08 headed-demo`, the self-test's overlays: columns 0.27 ms, diff 0.12 ms, 103 tiles; fill 0.24 ms, 50 slots; resident 260 of 2047 (+0 -0, 50 refreshed, 0 past the atlas)
+- `6-3312d08 headed-256`, first frame: columns 13.69 ms, diff 0.00 ms, a new board; fill 4.87 ms, whole map (first); resident 1005 of 2047 (+1005 -0, 0 refreshed, 0 past the atlas)
+- `6-3312d08 headed-256`, the self-test's overlays: columns 30.71 ms, diff 1.07 ms, 32 tiles; fill 0.10 ms, 22 slots; resident 1005 of 2047 (+0 -0, 22 refreshed, 0 past the atlas)
+
+## The same picture
+
+Each 256 capture with its self-test's hover target and the headroom it
+drew with (`none` predates the setting). The self-test hovers the first
+of the tiles tied on `col + row` that a `HashMap` yields, which differs
+between processes, so pictures compare within one target. Identical
+pixels encode to identical bytes here, so equal hashes are equal pictures;
+where PIL is present, the pixels that differ from the target's first
+capture are counted.
+
+| target | headroom | run | capture sha256 | pixels unlike the first |
+| --- | --- | --- | --- | --- |
+| (4, 5) | none | `host-2-c6fb846/headed-256` | `3aac8291eab2400f` | 0 |
+| (4, 5) | none | `host-5-c6fb846/headed-256` | `3aac8291eab2400f` | 0 |
+| (4, 5) | 0 | `headroom-check/final-headroom-0-run-3` | `3aac8291eab2400f` | 0 |
+| (4, 5) | 0 | `headroom-check/final-headroom-0-run-4` | `3aac8291eab2400f` | 0 |
+| (4, 5) | 1 | `host-3-3312d08/headed-256` | `080556e2b4a3d23a` | 356 |
+| (5, 4) | none | `host-1-31370bf/headed-256` | `2e59478eb02aae54` | 0 |
+| (5, 4) | none | `host-4-31370bf/headed-256` | `2e59478eb02aae54` | 0 |
+| (5, 4) | 0 | `headroom-check/final-headroom-0-run-1` | `2e59478eb02aae54` | 0 |
+| (5, 4) | 0 | `headroom-check/final-headroom-0-run-2` | `2e59478eb02aae54` | 0 |
+| (5, 4) | 1 | `host-6-3312d08/headed-256` | `3791168b2bd77685` | 356 |

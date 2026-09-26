@@ -1,21 +1,25 @@
 """Run the scene board's paging receipts and summarise them (ruling 255).
 
-Runs `paging_receipts_at_256` from `crates/isometry-views` in the debug and
-release builds, keeps each raw log out of tree, and writes the summary and the
-raw-receipt manifest beside this script:
+Runs `paging_receipts_at_256` and `paging_receipts_headroom` from
+`crates/isometry-views` in the debug and release builds, keeps each raw log
+out of tree, and writes the summary and the raw-receipt manifest beside this
+script:
 
     python testing/scene-board-paging/receipts.py [--out DIR] [--builds debug,release]
+        [--host NAME=EXE ...]
     python testing/scene-board-paging/receipts.py --summarise-only [--out DIR]
-    python testing/scene-board-paging/receipts.py --summarise-only --headed-exe EXE
 
-`--headed-exe` also runs the two headed sessions `headed.py` describes, with
-the shipping host binary EXE, before summarising; it needs a desktop session.
+Each `--host` runs the two headed sessions `headed.py` describes with one
+shipping host binary, into `DIR/host-<n>-<NAME>`, in the order given; it needs
+a desktop session.
 
-DIR defaults to ~/Code/testing/isometry/receipts/2026-09-26/scene-board-paging,
-the machine's out-of-tree receipt directory. `--summarise-only` rebuilds the
-summary from logs already there, so a copy checked against RAW_RECEIPTS.md can
-be summarised again without re-running anything. Each log opens with the
-commit, command and compiler that produced it.
+DIR defaults to ~/Code/testing/isometry/receipts/2026-09-26/scene-board-paging/
+<commit>, the machine's out-of-tree receipt directory with one folder per
+round, so a round never overwrites the files an earlier manifest hashed.
+`--summarise-only` rebuilds the summary from logs already there, so a copy
+checked against RAW_RECEIPTS.md can be summarised again without re-running
+anything. Each log opens with the commit, command and compiler that produced
+it.
 """
 
 import argparse
@@ -31,7 +35,7 @@ import headed
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-DEFAULT_OUT = (
+RECEIPTS = (
     pathlib.Path.home() / "Code" / "testing" / "isometry" / "receipts" / "2026-09-26"
     / "scene-board-paging"
 )
@@ -49,7 +53,7 @@ def run(build: str, out: pathlib.Path) -> pathlib.Path:
     command = ["cargo", "test", "-p", "isometry-views", "--lib"]
     if build == "release":
         command.append("--release")
-    command += ["paging_receipts_at_256", "--", "--ignored", "--nocapture", "--test-threads=1"]
+    command += ["paging_receipts", "--", "--ignored", "--nocapture", "--test-threads=1"]
     header = NEWLINE.join([
         f"# commit {output(['git', 'rev-parse', 'HEAD'])}",
         f"# build {build}: {' '.join(command)}",
@@ -92,9 +96,10 @@ def ms(value) -> str:
 
 def summarise(rows: list[dict]) -> str:
     base = {(r["build"], r["board"]): r for r in rows if r["kind"] == "baseline"}
+    spare = [r for r in rows if r["kind"] == "headroom" and r["build"] == "release"]
     groups = defaultdict(list)
     for r in rows:
-        if r["kind"] != "baseline":
+        if r["kind"] not in ("baseline", "headroom"):
             groups[(r["build"], r["board"], r["pane"], r["kind"])].append(r)
     keys = sorted({k[:3] for k in groups})
     work = lambda r: r["columns_ms"] + r["diff_ms"] + r["fill_ms"]  # noqa: E731
@@ -175,14 +180,51 @@ def summarise(rows: list[dict]) -> str:
             f"| {first[0]['capacity']} | {max(r['overflow'] for r in held)} "
             f"| {ms(first[0]['draw_ms'])} | {ms(first[0]['fill_ms'])} |"
         )
-    return NEWLINE.join(out) + NEWLINE
+    return NEWLINE.join(out + headroom(spare)) + NEWLINE
+
+
+def headroom(rows: list[dict]) -> list[str]:
+    """What each spare layer costs the pointer volume. The counts are the
+    build's and not the machine's, so one build's rows stand for both."""
+    if not rows:
+        return []
+    out = [
+        "",
+        "## What each spare layer of headroom costs",
+        "",
+        "The pointer volume reserves brick layers above the board's tallest tile,",
+        "so an edit that lifts it into them retargets rather than rebuilding the",
+        "map. The default, one spare layer, is provisional: Mark takes it back with",
+        "these numbers. A spare layer widens the volume a little as well as raising",
+        "it, because the camera leans. The pointer volume is uploaded whole with",
+        "every retarget, so its bytes are also what each pan uploads before its",
+        "bricks. The atlas does not move with the headroom.",
+        "",
+        "| board | pane | headroom | reserved layers | pointer extent | pointer, bytes"
+        " | per layer, bytes | atlas, bytes |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    previous = {}
+    for r in sorted(rows, key=lambda r: (r["board"], r["pane"], r["headroom"])):
+        key = (r["board"], r["pane"])
+        step = r["pointer_bytes"] - previous[key] if key in previous else None
+        previous[key] = r["pointer_bytes"]
+        extent = " by ".join(str(axis) for axis in r["extent"])
+        low, top = r["reserved"]
+        out.append(
+            f"| {r['board']} | {r['pane']} | {r['headroom']} | {low} to {top} | {extent} "
+            f"| {r['pointer_bytes']:,} | {'-' if step is None else f'+{step:,}'} "
+            f"| {r['atlas_bytes']:,} |"
+        )
+    return out
 
 
 def is_headed(path: pathlib.Path) -> bool:
-    return path.parent.name in headed.SESSIONS
+    return path.parent.name in headed.SESSIONS or path.parent.parent.name == "headroom-check"
 
 
-def manifest(logs: list[pathlib.Path]) -> str:
+def manifest(out: pathlib.Path, logs: list[pathlib.Path]) -> str:
+    round_name = out.name
     headless = {provenance(log) for log in logs if not is_headed(log)}
     commits = ", ".join(f"`{commit}`" for commit in sorted(headless))
     lines = [
@@ -190,11 +232,23 @@ def manifest(logs: list[pathlib.Path]) -> str:
         "",
         "Under ruling 255 of the wing design record, the raw logs of the scene",
         "board's paging receipts live outside the repository, in",
-        "`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/` on the",
-        "machine that ran them. The summary (`summary.md`) and the script that runs",
-        "the receipts and rebuilds the summary (`receipts.py`) stay here. Check a",
-        "copy against its hash, then `python receipts.py --summarise-only --out",
-        "<dir>` rebuilds the summary from it.",
+        f"`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/{round_name}/`",
+        "on the machine that ran them; paths below are relative to that folder. The",
+        "summary (`summary.md`) and the scripts that run the receipts and rebuild the",
+        "summary (`receipts.py`, `headed.py`) stay here. Check a copy against its",
+        "hash, then `python receipts.py --summarise-only --out <dir>` rebuilds the",
+        "summary from it. An earlier round's files stay where they were, hashed by",
+        "the manifest committed with that round.",
+        *(
+            [
+                "",
+                "`set-aside-noisy-window/` beside these holds a first headed round taken",
+                "while other lanes loaded the machine, its demo controls reading up to",
+                "16.08 ms. It is kept, and not summarised; the rounds below replaced it.",
+            ]
+            if (out / "set-aside-noisy-window").is_dir()
+            else []
+        ),
         "",
         f"Source: commit {commits}, test `paging_receipts_at_256` in",
         "`crates/isometry-views/src/scene/paging_tests.rs`, run with",
@@ -207,31 +261,36 @@ def manifest(logs: list[pathlib.Path]) -> str:
     ]
     for log in logs:
         digest = hashlib.sha256(log.read_bytes()).hexdigest()
-        name = f"{log.parent.name}/{log.name}" if is_headed(log) else log.name
+        name = log.relative_to(out).as_posix()
         lines.append(f"| `{name}` | {log.stat().st_size:,} | `{digest}` |")
     return NEWLINE.join(lines) + NEWLINE
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--out", type=pathlib.Path, default=DEFAULT_OUT)
+    parser.add_argument("--out", type=pathlib.Path)
     parser.add_argument("--builds", default="debug,release")
     parser.add_argument("--summarise-only", action="store_true")
-    parser.add_argument("--headed-exe", type=pathlib.Path)
+    parser.add_argument("--host", action="append", default=[], metavar="NAME=EXE")
     args = parser.parse_args()
+    if args.out is None:
+        args.out = RECEIPTS / output(["git", "rev-parse", "--short", "HEAD"])
     args.out.mkdir(parents=True, exist_ok=True)
     builds = args.builds.split(",")
     if args.summarise_only:
         logs = [args.out / f"{build}.log" for build in builds]
     else:
         logs = [run(build, args.out) for build in builds]
-    if args.headed_exe:
-        headed.run(args.headed_exe.resolve(), args.out, output(["git", "rev-parse", "HEAD"]), ROOT)
+    for index, host in enumerate(args.host, start=1):
+        name, exe = host.split("=", 1)
+        headed.run(pathlib.Path(exe).resolve(), args.out / f"host-{index}-{name}", name, ROOT)
     rows = [row for log in logs for row in records(log)]
-    summary = summarise(rows) + headed.section(args.out)
+    summary = summarise(rows) + headed.section(args.out) + headed.pictures(args.out)
     (HERE / "summary.md").write_text(summary, encoding="utf-8", newline=NEWLINE)
     raw = logs + headed.files(args.out)
-    (HERE / "RAW_RECEIPTS.md").write_text(manifest(raw), encoding="utf-8", newline=NEWLINE)
+    (HERE / "RAW_RECEIPTS.md").write_text(
+        manifest(args.out, raw), encoding="utf-8", newline=NEWLINE
+    )
     print(f"{len(rows)} receipts from {', '.join(str(log) for log in logs)}")
 
 

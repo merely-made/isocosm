@@ -1,10 +1,13 @@
 """The headed half of the paging receipts: B5's frame profile, taken again.
 
-Two sessions of the shipping host, each left to run 25 seconds and stopped:
-`headed-demo`, the demo board under the flag as B5 measured it, which is the
-same-session control against B5's 12.50 ms; and `headed-256`, the 256 by 256
-stress board (`ISOMETRY_SYNTH=256`). Both arm the overlay self-test, so the
-host keeps drawing a still board until the test fires at three seconds.
+Each host binary runs two sessions of the shipping host, each left to run 25
+seconds and stopped: `headed-demo`, the demo board under the flag as B5
+measured it, and `headed-256`, the 256 by 256 stress board
+(`ISOMETRY_SYNTH=256`). Both arm the overlay self-test, so the host keeps
+drawing a still board until the test fires at three seconds. Hosts built at
+several commits run back to back and interleaved, so a before and an after
+share one window of the machine's load; the demo session is each run's own
+control for what that load was.
 
 The window is B5's: the frames before the self-test fires, less the first
 three and any frame that captured. Each session keeps its `stderr.log`, its
@@ -44,6 +47,7 @@ def source(directory: pathlib.Path, exe: pathlib.Path, commit: str, synth) -> No
 
 
 def run(exe: pathlib.Path, out: pathlib.Path, commit: str, cwd: pathlib.Path) -> None:
+    """Both sessions of one host binary, into `out/<session>`."""
     for name, synth in SESSIONS.items():
         directory = out / name
         directory.mkdir(parents=True, exist_ok=True)
@@ -55,6 +59,7 @@ def run(exe: pathlib.Path, out: pathlib.Path, commit: str, cwd: pathlib.Path) ->
             "ISOMETRY_CAPTURE_DIR": str(directory),
         })
         env.pop("ISOMETRY_SYNTH", None)
+        env.pop("ISOMETRY_SCENE_HEADROOM", None)
         if synth:
             env["ISOMETRY_SYNTH"] = synth
         with open(directory / "stderr.log", "wb") as err, open(directory / "stdout.log", "wb") as log:
@@ -92,45 +97,124 @@ def profile(log: pathlib.Path) -> dict:
     }
 
 
+def hosts(out: pathlib.Path) -> list[pathlib.Path]:
+    """The host runs under `out`, in the order they ran."""
+    return sorted(path for path in out.glob("host-*") if path.is_dir())
+
+
 def section(out: pathlib.Path) -> str:
-    runs = {name: out / name / "stderr.log" for name in SESSIONS}
-    runs = {name: log for name, log in runs.items() if log.exists()}
+    runs = [host for host in hosts(out) if any((host / s / "stderr.log").exists() for s in SESSIONS)]
     if not runs:
         return ""
     lines = [
         "",
-        "## Headed: a steady frame, beside B5",
+        "## Headed: a steady frame, host against host",
         "",
         "The shipping host in the dev build at device scale 2, interface zoom",
         "0.917 and render scale 2, as B5 measured (`headed.py` has the window).",
-        "B5's scene board read 12.50 ms (p25 11.82, p75 13.91, p95 16.77) over",
-        "183 frames of the demo board; the demo session here is its control.",
+        "B5's scene board read 12.50 ms over 183 frames of the demo board. The",
+        "hosts ran back to back in the order listed, each more than once and",
+        "interleaved, so every host has samples from across one window of the",
+        "machine's load, and each session's demo control shows what that load was.",
         "",
-        "| session | n | total, ms | p25 | p75 | p95 | range | emit | a11y | raster | producer"
-        " | stages |",
+        "| host | session | n | total, ms | p25 | p75 | p95 | range | emit | a11y | raster"
+        " | producer |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
-    for name, log in runs.items():
-        run = profile(log)
-        m = run["median"]
-        lines.append(
-            f"| {name} | {run['n']} | {m['total']:.2f} | {run['p25']:.2f} | {run['p75']:.2f} "
-            f"| {run['p95']:.2f} | {run['low']:.2f} to {run['high']:.2f} | {m['emit']:.2f} "
-            f"| {m['a11y']:.2f} | {m['raster']:.2f} | {m['producer']:.2f} | {run['stages']} |"
-        )
+    for host in runs:
+        for name in SESSIONS:
+            log = host / name / "stderr.log"
+            if not log.exists():
+                continue
+            run = profile(log)
+            m = run["median"]
+            lines.append(
+                f"| {host.name.removeprefix('host-')} | {name} | {run['n']} | {m['total']:.2f} "
+                f"| {run['p25']:.2f} | {run['p75']:.2f} | {run['p95']:.2f} "
+                f"| {run['low']:.2f} to {run['high']:.2f} | {m['emit']:.2f} | {m['a11y']:.2f} "
+                f"| {m['raster']:.2f} | {m['producer']:.2f} |"
+            )
     lines += ["", "What the ground cost in each session, as the host printed it:", ""]
-    for name, log in runs.items():
-        run = profile(log)
-        lines.append(f"- `{name}`, first frame: {run['first']}")
-        lines.append(f"- `{name}`, the self-test's overlays: {run['overlays']}")
+    for host in runs:
+        for name in SESSIONS:
+            log = host / name / "stderr.log"
+            if log.exists():
+                run = profile(log)
+                label = f"{host.name.removeprefix('host-')} {name}"
+                lines.append(f"- `{label}`, first frame: {run['first']}")
+                lines.append(f"- `{label}`, the self-test's overlays: {run['overlays']}")
     return NEWLINE.join(lines) + NEWLINE
+
+
+def checks(out: pathlib.Path) -> list[pathlib.Path]:
+    """Extra 256 sessions run beside the hosts, such as a setting's control."""
+    return sorted(path for path in (out / "headroom-check").glob("*") if path.is_dir())
 
 
 def files(out: pathlib.Path) -> list[pathlib.Path]:
     found = []
-    for name in SESSIONS:
+    runs = [host / name for host in hosts(out) for name in SESSIONS] + checks(out)
+    for run in runs:
         for leaf in ("stderr.log", "isometry_capture.png", "source.txt"):
-            path = out / name / leaf
+            path = run / leaf
             if path.exists():
                 found.append(path)
     return found
+
+
+def pictures(out: pathlib.Path) -> str:
+    """Which 256 captures are the same picture. The self-test hovers the
+    first of the tiles tied on `col + row` that a `HashMap` yields, which moves
+    between processes, so captures are compared within one hover target."""
+    runs = [host / "headed-256" for host in hosts(out)] + checks(out)
+    rows = []
+    for run in runs:
+        capture, log = run / "isometry_capture.png", run / "stderr.log"
+        if not (capture.exists() and log.exists()):
+            continue
+        text = log.read_text(encoding="utf-8", errors="replace")
+        target = re.search(r"path to (\(\d+, \d+\))", text)
+        asked = re.search(r"scene board headroom (\d+) layers", text)
+        commit = (run / "source.txt").read_text(encoding="utf-8").split()[1]
+        headroom = asked.group(1) if asked else ("none" if commit in PRE_HEADROOM else "1")
+        digest = hashlib.sha256(capture.read_bytes()).hexdigest()[:16]
+        rows.append((target.group(1) if target else "?", headroom, run, digest))
+    if not rows:
+        return ""
+    lines = [
+        "",
+        "## The same picture",
+        "",
+        "Each 256 capture with its self-test's hover target and the headroom it",
+        "drew with (`none` predates the setting). The self-test hovers the first",
+        "of the tiles tied on `col + row` that a `HashMap` yields, which differs",
+        "between processes, so pictures compare within one target. Identical",
+        "pixels encode to identical bytes here, so equal hashes are equal pictures;",
+        "where PIL is present, the pixels that differ from the target's first",
+        "capture are counted.",
+        "",
+        "| target | headroom | run | capture sha256 | pixels unlike the first |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    reference = {}
+    for target, headroom, run, digest in sorted(rows, key=lambda r: (r[0], r[1] != "none", str(r[2]))):
+        first = reference.setdefault(target, run / "isometry_capture.png")
+        label = run.relative_to(out).as_posix()
+        lines.append(
+            f"| {target} | {headroom} | `{label}` | `{digest}` "
+            f"| {unlike(first, run / 'isometry_capture.png')} |"
+        )
+    return NEWLINE.join(lines) + NEWLINE
+
+
+PRE_HEADROOM = {"31370bf", "c6fb846"}
+
+
+def unlike(first: pathlib.Path, other: pathlib.Path) -> str:
+    try:
+        import numpy
+        from PIL import Image
+    except ImportError:
+        return "-"
+    load = lambda path: numpy.asarray(Image.open(path).convert("RGB")).astype(int)  # noqa: E731
+    return f"{int((numpy.abs(load(first) - load(other)).sum(axis=2) > 0).sum()):,}"
