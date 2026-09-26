@@ -69,6 +69,68 @@ fn failed_second_effect_rolls_back_first_effect_and_identity_split() {
 }
 
 #[test]
+fn a_failed_act_keeps_none_of_its_notes_children_or_relations() {
+    let mut genesis = founding(12).generate().unwrap();
+    let p = genesis.rules.processes.get_mut("sim:birth").unwrap();
+    p.effects.extend([
+        Effect::Note {
+            kind: "sim:observed".into(),
+            text: "Seen before the failure.".into(),
+            lifetime: None,
+        },
+        Effect::Birth {
+            provision: BTreeMap::from([("world:soil".into(), 1)]),
+        },
+        Effect::Transfer {
+            from: Binding::Actor,
+            to: Binding::Place,
+            account: "world:soil".into(),
+            amount: 999,
+        },
+    ]);
+    let mut sim = Simulation::new(genesis, Execution::Individuals).unwrap();
+    let before = sim.state_hash();
+    let population = sim.state().population.clone();
+    let r = sim.execute(3, None, "sim:birth", None);
+    assert_eq!(
+        r.outcome,
+        Outcome::Blocked("insufficient world:soil".into())
+    );
+    assert_eq!(r.matter_before, sim.matter());
+    assert_eq!(sim.state_hash(), before);
+    assert_eq!(sim.state().population, population);
+    assert!(sim.state().notes.is_empty() && sim.state().relations.is_empty());
+}
+
+#[test]
+fn a_record_is_judged_against_an_earlier_one_in_the_same_act() {
+    let mut genesis = founding(13).generate().unwrap();
+    for site in genesis.sites.values_mut() {
+        site.accounts.insert("world:soil".into(), 10);
+    }
+    let p = genesis.rules.processes.get_mut("sim:reckon").unwrap();
+    // The first reading sets the mark; the second, one more, beats it.
+    p.effects.extend([
+        Effect::Transfer {
+            from: Binding::Place,
+            to: Binding::Actor,
+            account: "world:soil".into(),
+            amount: 1,
+        },
+        Effect::Record {
+            axis: "feat:reserve".into(),
+            account: "world:soil".into(),
+        },
+    ]);
+    let mut sim = Simulation::new(genesis, Execution::Individuals).unwrap();
+    let r = sim.execute(3, None, "sim:reckon", None);
+    assert_eq!(r.outcome, Outcome::Accepted);
+    assert!(sim.state().events[&r.id].legend);
+    let mark = sim.state().record.standing(&"feat:reserve".into()).unwrap();
+    assert_eq!((mark.high, mark.holders.len()), (5, 1));
+}
+
+#[test]
 fn shared_transfer_conserves_counts_and_prevents_negative_stock() {
     let mut sim = Simulation::new(founding(9).generate().unwrap(), Execution::Grouped).unwrap();
     let mass = sim.matter();

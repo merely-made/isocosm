@@ -8,13 +8,23 @@
 
 use crate::{
     Result,
-    rules::{Binding, Effect, Query},
+    rules::{AccountKind, Binding, Effect, Query, Rules},
     schema::*,
 };
 use std::collections::BTreeMap;
 
 pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
+}
+
+/// The matter a ledger holds: its entries in accounts the rules declare
+/// matter, whatever lineage they belong to.
+pub(crate) fn mass(ledger: &Ledger, rules: &Rules) -> u128 {
+    ledger
+        .iter()
+        .filter(|(k, _)| matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. })))
+        .map(|(_, v)| u128::from(*v))
+        .sum()
 }
 
 pub(crate) fn debit(ledger: &mut Ledger, key: &str, amount: u64) -> Result<()> {

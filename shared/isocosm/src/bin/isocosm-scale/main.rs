@@ -8,6 +8,7 @@
 
 mod heap;
 mod point;
+mod remeasure;
 
 use isocosm::{Execution, Founding};
 use point::{Point, family, point};
@@ -116,8 +117,13 @@ fn run() -> Result<(), String> {
     let mut pilot = false;
     let mut extend = false;
     let mut living = false;
+    let mut again: Vec<String> = vec![];
+    let mut kind = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            // Re-run an earlier receipt's points, optionally one family's.
+            "--remeasure" => again.push(args.next().ok_or("--remeasure needs a path")?),
+            "--family" => kind = Some(args.next().ok_or("--family needs a name")?),
             "--pilot" => pilot = true,
             // Two larger rungs for every ladder, one draw each, no stop rule.
             "--extend" => extend = true,
@@ -133,6 +139,10 @@ fn run() -> Result<(), String> {
             "--output" => output = Some(args.next().ok_or("--output needs a path")?),
             _ => return Err(format!("unknown argument {arg}")),
         }
+    }
+    if !again.is_empty() {
+        let receipt = remeasure::run(&again, kind)?;
+        return write(&receipt, output);
     }
     eprintln!("Scale receipt: master seed {master}");
     let design = Design {
@@ -326,7 +336,11 @@ fn run() -> Result<(), String> {
         points,
         fits,
     };
-    let json = serde_json::to_string_pretty(&receipt).map_err(|e| e.to_string())?;
+    write(&receipt, output)
+}
+
+fn write(receipt: &impl Serialize, output: Option<String>) -> Result<(), String> {
+    let json = serde_json::to_string_pretty(receipt).map_err(|e| e.to_string())?;
     match output {
         Some(path) => std::fs::write(path, json).map_err(|e| e.to_string())?,
         None => println!("{json}"),

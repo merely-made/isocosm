@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{Result, rules::*, schema::*};
+use crate::{Result, meaning::mass, rules::*};
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -151,16 +151,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
                         account(rules, a)?;
                     }
                     // Matter remains matter even for transforms between provenance kinds.
-                    let mass = |ledger: &Ledger| -> u128 {
-                        ledger
-                            .iter()
-                            .filter(|(a, _)| {
-                                matches!(rules.accounts.get(*a), Some(AccountKind::Matter { .. }))
-                            })
-                            .map(|(_, v)| u128::from(*v))
-                            .sum()
-                    };
-                    if mass(take) != mass(give) {
+                    if mass(take, rules) != mass(give, rules) {
                         return Err(format!("unbalanced matter transform: {id}"));
                     }
                 },

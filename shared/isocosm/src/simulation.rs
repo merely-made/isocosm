@@ -92,6 +92,11 @@ pub struct Simulation {
     pub(crate) state: State,
     pub(crate) mode: Execution,
     pub(crate) revision: Key,
+    /// The world's matter, summed once at founding. Only an accepted act
+    /// writes a ledger, and the interpreter refuses any act that would
+    /// change this sum, so receipts read it here rather than re-summing the
+    /// whole world for every act.
+    pub(crate) conserved: u128,
 }
 
 impl Simulation {
@@ -114,11 +119,13 @@ impl Simulation {
             events: BTreeMap::new(),
             reach: Reach::default(),
         };
+        let conserved = matter(&state, &genesis.rules);
         Ok(Self {
             genesis: std::sync::Arc::new(genesis),
             state,
             mode,
             revision,
+            conserved,
         })
     }
     pub fn state(&self) -> &State {
@@ -317,8 +324,19 @@ impl Simulation {
     }
     pub fn knows(&self, entity: Id, event: &str) -> Result<bool> {
         let e = self.state.population.get(entity).ok_or("unknown entity")?;
+        self.known(entity, e, &[], event)
+    }
+    /// Whether member `entity`, in state `e`, knows `event`, counting notes
+    /// an act has staged but not yet committed.
+    pub(crate) fn known(
+        &self,
+        entity: Id,
+        e: &Entity,
+        staged: &[Note],
+        event: &str,
+    ) -> Result<bool> {
         let event = self.state.events.get(event).ok_or("unknown event")?;
-        if self.state.notes.iter().any(|n| {
+        if self.state.notes.iter().chain(staged).any(|n| {
             n.core.subject == format!("entity:{entity}")
                 && n.core.object == event.id
                 && n.core.kind == "sim:discover"
@@ -382,13 +400,32 @@ impl Simulation {
         expires: Option<Tick>,
         cause: Key,
     ) -> Result<()> {
-        if self.state.notes.len() >= self.genesis.rules.limits.notes {
+        self.room(self.state.notes.len())?;
+        let note = self.note(subject, object, kind, djot, expires, cause)?;
+        self.state.notes.push(note);
+        Ok(())
+    }
+    /// Whether the note budget holds one more beside the `held` already kept.
+    pub(crate) fn room(&self, held: usize) -> Result<()> {
+        if held >= self.genesis.rules.limits.notes {
             return Err("note budget exhausted".into());
         }
+        Ok(())
+    }
+    /// A note as the world records it now.
+    pub(crate) fn note(
+        &self,
+        subject: Id,
+        object: Key,
+        kind: &str,
+        djot: String,
+        expires: Option<Tick>,
+        cause: Key,
+    ) -> Result<Note> {
         if !self.genesis.rules.note_kinds.contains(kind) {
             return Err("unknown note kind".into());
         }
-        self.state.notes.push(Note {
+        Ok(Note {
             core: wing_impresa::Record {
                 subject: format!("entity:{subject}"),
                 object,
@@ -401,18 +438,12 @@ impl Simulation {
             djot,
             extra: BTreeMap::new(),
             expires,
-        });
-        Ok(())
+        })
     }
 }
 
 pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
-    let mass = |a: &Ledger| -> u128 {
-        a.iter()
-            .filter(|(k, _)| matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. })))
-            .map(|(_, v)| u128::from(*v))
-            .sum()
-    };
+    let mass = |a: &Ledger| crate::meaning::mass(a, rules);
     state
         .population
         .groups

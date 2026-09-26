@@ -17,49 +17,6 @@ impl Simulation {
             Binding::Place => Err("place is not a body".into()),
         }
     }
-    pub(crate) fn ledger(
-        &self,
-        actor: Id,
-        target: Option<Id>,
-        place: Id,
-        binding: Binding,
-    ) -> Result<&Ledger> {
-        if binding == Binding::Place {
-            return Ok(&self.state.sites.get(&place).ok_or("site missing")?.accounts);
-        }
-        let id = self.bound(actor, target, binding)?;
-        Ok(&self
-            .state
-            .population
-            .get(id)
-            .ok_or("body missing")?
-            .accounts)
-    }
-    pub(crate) fn ledger_mut(
-        &mut self,
-        actor: Id,
-        target: Option<Id>,
-        place: Id,
-        binding: Binding,
-    ) -> Result<&mut Ledger> {
-        if binding == Binding::Place {
-            return Ok(&mut self
-                .state
-                .sites
-                .get_mut(&place)
-                .ok_or("site missing")?
-                .accounts);
-        }
-        let id = self.bound(actor, target, binding)?;
-        Ok(&mut self
-            .state
-            .population
-            .groups
-            .get_mut(&id)
-            .ok_or("body binding changed")?
-            .entity
-            .accounts)
-    }
     pub(crate) fn query(
         &self,
         actor: Id,

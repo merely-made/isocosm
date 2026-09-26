@@ -16,7 +16,7 @@ use super::{
 };
 use crate::{
     Result,
-    meaning::value,
+    meaning::{mass, value},
     rules::{Process, Shape},
     schema::*,
     simulation::Work,
@@ -86,13 +86,13 @@ impl<'w> Crowd<'w> {
         let members: u128 = self
             .bins
             .iter()
-            .map(|(e, &n)| aggregate::matter(&e.accounts, rules) * u128::from(n))
+            .map(|(e, &n)| mass(&e.accounts, rules) * u128::from(n))
             .sum();
         members
             + self
                 .sites
                 .values()
-                .map(|s| aggregate::matter(&s.accounts, rules))
+                .map(|s| mass(&s.accounts, rules))
                 .sum::<u128>()
     }
 

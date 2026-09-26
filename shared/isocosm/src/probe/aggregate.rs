@@ -12,7 +12,7 @@
 use crate::{
     Result,
     meaning::{self, Named, Parties, Scene, credit, debit, value},
-    rules::{AccountKind, Binding, Effect, Process, Query, Rules},
+    rules::{Binding, Effect, Process, Query},
     schema::*,
 };
 
@@ -184,12 +184,4 @@ pub(super) fn apply(
     }
     *site = place;
     Ok(Some(normalize(member)))
-}
-
-pub(super) fn matter(ledger: &Ledger, rules: &Rules) -> u128 {
-    ledger
-        .iter()
-        .filter(|(k, _)| matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. })))
-        .map(|(_, v)| u128::from(*v))
-        .sum()
 }

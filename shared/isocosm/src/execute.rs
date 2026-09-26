@@ -1,14 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{
-    Result,
-    meaning::{self, Parties, credit, debit},
-    rules::*,
-    schema::*,
-    simulation::*,
-};
-use std::collections::{BTreeMap, BTreeSet};
+use crate::{rules::*, schema::*, simulation::*, stage::Staged};
 
 impl Simulation {
     pub(crate) fn apply(
@@ -19,7 +12,7 @@ impl Simulation {
         cause: Option<Key>,
         count: u64,
     ) -> Receipt {
-        let before = self.matter();
+        let before = self.conserved;
         let id = format!(
             "event:{}",
             crate::digest(&(
@@ -46,7 +39,10 @@ impl Simulation {
             matter_before: before,
             matter_after: before,
         };
-        let Some(definition) = self.genesis.rules.processes.get(process).cloned() else {
+        // The definition is read from the shared genesis while the world is
+        // written.
+        let genesis = std::sync::Arc::clone(&self.genesis);
+        let Some(definition) = genesis.rules.processes.get(process) else {
             receipt.outcome = Outcome::Refused(format!("unknown process {process}"));
             return receipt;
         };
@@ -70,7 +66,7 @@ impl Simulation {
             return receipt;
         };
         let place = entity.place;
-        if definition.target.is_some() && !self.target_matches(actor, target, &definition) {
+        if definition.target.is_some() && !self.target_matches(actor, target, definition) {
             receipt.outcome = Outcome::Blocked("no target satisfies the declared scope".into());
             return receipt;
         }
@@ -90,8 +86,7 @@ impl Simulation {
                 },
             }
         }
-        receipt.foregone = self
-            .genesis
+        receipt.foregone = genesis
             .rules
             .processes
             .values()
@@ -104,17 +99,15 @@ impl Simulation {
             })
             .map(|p| p.id.clone())
             .collect();
-        let mut staged = self.clone();
-        // Single writes split before mutation. Bulk writes preserve one interval.
-        if count == 1 {
-            staged.state.population.lift(actor).unwrap();
-        }
-        if let Some(target) = target
-            && let Err(why) = staged.state.population.lift(target)
-        {
-            receipt.outcome = Outcome::Blocked(why);
-            return receipt;
-        }
+        // Writes go to a stage of what the act binds, never to the world,
+        // until every check below has passed.
+        let mut stage = match self.stage(actor, target, place, count) {
+            Ok(stage) => stage,
+            Err(why) => {
+                receipt.outcome = Outcome::Blocked(why);
+                return receipt;
+            },
+        };
         let risky = definition.risk.as_ref().is_some_and(|r| {
             crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
                 < u64::from(r.per_million)
@@ -124,15 +117,14 @@ impl Simulation {
         } else {
             &definition.effects
         };
-        let effects: Vec<_> = definition
-            .commitments
-            .iter()
-            .chain(outcomes)
-            .cloned()
-            .collect();
+        let effects: Vec<&Effect> = definition.commitments.iter().chain(outcomes).collect();
         let mut legend = false;
+        let mut staged = Staged {
+            sim: self,
+            stage: &mut stage,
+        };
         for effect in &effects {
-            match staged.effect(actor, target, place, effect, &id) {
+            match staged.effect(effect, &id) {
                 Ok(feat) => legend |= feat,
                 Err(why) => {
                     receipt.outcome = Outcome::Blocked(why);
@@ -140,18 +132,18 @@ impl Simulation {
                 },
             }
         }
-        let after = staged.matter();
-        if before != after {
+        // Only what the act bound can have changed, so weighing it alone
+        // decides whether the world's matter would change.
+        if self.moves_matter(&stage) {
             receipt.outcome = Outcome::Refused("matter invariant would be violated".into());
             return receipt;
         }
-        let Some(next) = staged.state.next_action.checked_add(count) else {
+        let Some(next) = self.state.next_action.checked_add(count) else {
             receipt.outcome = Outcome::Refused("action sequence exhausted".into());
             return receipt;
         };
-        staged.state.next_action = next;
         if definition.note {
-            if staged.state.events.len() >= staged.genesis.rules.limits.history {
+            if self.state.events.len() >= genesis.rules.limits.history {
                 receipt.outcome = Outcome::Refused("event budget exhausted".into());
                 return receipt;
             }
@@ -162,228 +154,24 @@ impl Simulation {
                 subject: actor,
                 process: process.into(),
                 cause,
-                strength: self.genesis.rules.field.strength,
+                strength: genesis.rules.field.strength,
                 legend,
             };
-            if let Err(why) = staged.state.reach.seed(&event, &staged.state.sites) {
-                receipt.outcome = Outcome::Refused(why);
-                return receipt;
-            }
-            staged.state.events.insert(id.clone(), event);
-            if let Err(why) = staged.add_note(
-                actor,
-                id,
-                "sim:act",
-                String::new(),
-                None,
-                receipt.id.clone(),
-            ) {
+            if let Err(why) = self.stage_event(&mut stage, event) {
                 receipt.outcome = Outcome::Refused(why);
                 return receipt;
             }
         }
-        receipt.effects = effects;
-        receipt.matter_after = after;
+        receipt.effects = effects.into_iter().cloned().collect();
         if risky {
             receipt.outcome = Outcome::RiskOutcome;
         }
-        self.state = staged.state;
+        self.commit(stage, next);
+        debug_assert_eq!(
+            self.matter(),
+            self.conserved,
+            "an accepted act changed the world's matter"
+        );
         receipt
-    }
-    fn effect(
-        &mut self,
-        actor: Id,
-        target: Option<Id>,
-        place: Id,
-        e: &Effect,
-        cause: &str,
-    ) -> Result<bool> {
-        let mut parties = Bound {
-            sim: self,
-            actor,
-            target,
-            place,
-        };
-        if let Some(done) = meaning::effect(&mut parties, e) {
-            done?;
-            return Ok(false);
-        }
-        match e {
-            Effect::Relate { kind, present } => {
-                let relation = Relation {
-                    subject: actor,
-                    kind: kind.clone(),
-                    object: target.ok_or("target required")?,
-                };
-                if *present {
-                    self.state.relations.insert(relation);
-                } else {
-                    self.state.relations.remove(&relation);
-                }
-            },
-            Effect::Move { destination } => {
-                if !self.state.sites[&place]
-                    .routes
-                    .iter()
-                    .any(|r| r.to == *destination)
-                {
-                    return Err("no route to destination".into());
-                }
-                let entity = &mut self.state.population.groups.get_mut(&actor).unwrap().entity;
-                if entity.arrived < self.state.tick {
-                    entity.visits.push(Visit {
-                        place,
-                        from: entity.arrived,
-                        until: self.state.tick,
-                    });
-                }
-                entity.place = *destination;
-                entity.arrived = self.state.tick;
-            },
-            Effect::Note {
-                kind,
-                text,
-                lifetime,
-            } => {
-                let expires = lifetime
-                    .map(|t| self.state.tick.checked_add(t).ok_or("note expiry overflow"))
-                    .transpose()?;
-                self.add_note(
-                    actor,
-                    format!("site:{place}"),
-                    kind,
-                    text.clone(),
-                    expires,
-                    cause.into(),
-                )?;
-            },
-            Effect::Birth { provision } => {
-                if self.state.population.count() >= self.genesis.rules.limits.entities {
-                    return Err("population limit".into());
-                }
-                let mut child = self.state.population.get(actor).unwrap().clone();
-                child.accounts = provision.clone();
-                child.born = self.state.tick;
-                child.arrived = self.state.tick;
-                child.visits.clear();
-                child.skills = BTreeMap::new();
-                child.provenance = Provenance::Born(child.lineage.clone());
-                for (key, value) in provision {
-                    debit(
-                        self.ledger_mut(actor, target, place, Binding::Actor)?,
-                        key,
-                        *value,
-                    )?;
-                }
-                let id = self.state.population.insert(child, 1)?;
-                self.state.relations.insert(Relation {
-                    subject: id,
-                    object: actor,
-                    kind: "sim:parent".into(),
-                });
-            },
-            Effect::Tell { event } => {
-                if !self.knows(actor, event)? {
-                    return Err("actor does not know this event".into());
-                }
-                let target = target.ok_or("hearer required")?;
-                self.add_note(
-                    target,
-                    event.clone(),
-                    "sim:discover",
-                    String::new(),
-                    None,
-                    cause.into(),
-                )?;
-            },
-            Effect::FoundPolity {
-                governance,
-                focus,
-                support,
-            } => {
-                let mut members = BTreeSet::from([actor]);
-                if let Some(target) = target {
-                    members.insert(target);
-                }
-                if self.state.polities.contains_key(&actor) {
-                    return Err("founder already has a polity".into());
-                }
-                self.state.polities.insert(
-                    actor,
-                    Polity {
-                        constitution: Constitution {
-                            members,
-                            governance: governance.clone(),
-                            focus: focus.clone(),
-                            support_account: support.clone(),
-                            host: None,
-                            founded_by: cause.into(),
-                        },
-                        accounts: BTreeMap::new(),
-                        ended_by: None,
-                    },
-                );
-            },
-            Effect::Record { axis, account } => {
-                let value = self
-                    .ledger(actor, target, place, Binding::Actor)?
-                    .get(account)
-                    .copied()
-                    .unwrap_or(0);
-                let value =
-                    i64::try_from(value).map_err(|_| "record reading exceeds signed range")?;
-                return Ok(self.state.record.reckon(&[hagiograph::Entry {
-                    axis: axis.clone(),
-                    value,
-                    holder: actor,
-                }])[0]
-                    .feat);
-            },
-            // Every other effect has its meaning in `meaning::effect`.
-            _ => unreachable!("shared effects return above"),
-        }
-        Ok(false)
-    }
-}
-
-/// One member's bindings in the staged world: the individual runner's
-/// parties for the shared effect meanings.
-struct Bound<'a> {
-    sim: &'a mut Simulation,
-    actor: Id,
-    target: Option<Id>,
-    place: Id,
-}
-
-impl Parties for Bound<'_> {
-    fn reach(&mut self, who: Binding) -> Result<()> {
-        self.sim
-            .ledger_mut(self.actor, self.target, self.place, who)
-            .map(|_| ())
-    }
-    fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        debit(
-            self.sim
-                .ledger_mut(self.actor, self.target, self.place, who)?,
-            key,
-            amount,
-        )
-    }
-    fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        credit(
-            self.sim
-                .ledger_mut(self.actor, self.target, self.place, who)?,
-            key,
-            amount,
-        )
-    }
-    fn body(&mut self, who: Binding) -> Result<&mut Entity> {
-        let id = self.sim.bound(self.actor, self.target, who)?;
-        let group = self.sim.state.population.groups.get_mut(&id);
-        Ok(&mut group.ok_or("body missing")?.entity)
-    }
-    fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
-        let site = self.sim.state.sites.get_mut(&self.place);
-        meaning::shift(&mut site.ok_or("site missing")?.conditions, key, delta, 1)
     }
 }
