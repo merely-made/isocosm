@@ -203,7 +203,9 @@ impl BoardSource {
     /// scale can be read off, whatever internal resolution the scene draws at.
     fn framing(&mut self, request: &FrameRequest<'_>) -> Option<(SlabCamera, BoardWorld)> {
         let view = self.view.borrow();
-        let world = BoardWorld::new(&view.map);
+        // The snapshot keeps the tallest tile current, so a signature check
+        // does not scan the grid for it.
+        let world = BoardWorld::with_tallest(&view.map, view.tallest());
         // Until the host reports a pane, the texture's own size is the pane:
         // the first frame then frames the board rather than nothing.
         let pane = if view.pane.0 > 0.0 && view.pane.1 > 0.0 {

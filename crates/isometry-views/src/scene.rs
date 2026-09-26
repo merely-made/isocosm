@@ -56,6 +56,8 @@ mod parity_tests;
 #[cfg(test)]
 mod terrain_tests;
 #[cfg(test)]
+mod view_tests;
+#[cfg(test)]
 mod world_tests;
 
 pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
