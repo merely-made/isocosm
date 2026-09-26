@@ -1,0 +1,147 @@
+{
+  "kind": "isocosm-differential",
+  "note": "The same driver source (differential-drive.rs of 2026-09-26) built against the core before ruling 258 (be9d863) and after it (the commit scheduler-source.json names), run on the same arguments. The old logs are the ones checkpoints 1 and 2 kept as baselines; the core before this change reproduced all three byte for byte. An advance's work prints its evaluations, the members they represent, acceptances and blocks; since ruling 259 an evaluation that would be blocked by a missing trait is not made, so each line is compared with evaluations, represented and blocked set apart, and acceptances kept. The fuzz runs carry no operation budget beyond the default; the tight sessions run under small ones, so a new baseline is expected there, and its summary says where each session first diverges and why. Logs are not kept; their digests are.",
+  "fuzz": [
+    {
+      "command": "drive fuzz 7 24 400",
+      "old": "fuzz-old.txt",
+      "new": "fuzz-index7.txt",
+      "lines": [
+        9648,
+        9648
+      ],
+      "sha256": [
+        "a6245eb330dcc2488d6d41d72349346e7af564112a8155985c7abad2568d8c65",
+        "ff4043d79376957dcfbf2f6137a69b970db1931722f5ced7f5ed83365b10fee9"
+      ],
+      "byte_identical": false,
+      "identical_apart_from_evaluation_counts": true,
+      "lines_differing_apart_from_evaluation_counts": 0,
+      "first_difference": null,
+      "work_totals": {
+        "old": {
+          "evaluations": 264143,
+          "represented": 267513,
+          "accepted": 76382,
+          "blocked": 191131
+        },
+        "new": {
+          "evaluations": 140936,
+          "represented": 142453,
+          "accepted": 76382,
+          "blocked": 66071
+        }
+      }
+    },
+    {
+      "command": "drive fuzz 11 60 1500",
+      "old": "fuzz-old-11.txt",
+      "new": "fuzz-index11.txt",
+      "lines": [
+        90120,
+        90120
+      ],
+      "sha256": [
+        "b95cffe950d030ddf574cf7a5968552b2bc947ff797a6b72e1f37c8a1e787b55",
+        "027bd67faf1122dcbe97268b96e16d4f45272aa6f018659f5b1fad907467a7fe"
+      ],
+      "byte_identical": false,
+      "identical_apart_from_evaluation_counts": true,
+      "lines_differing_apart_from_evaluation_counts": 0,
+      "first_difference": null,
+      "work_totals": {
+        "old": {
+          "evaluations": 2065613,
+          "represented": 2076435,
+          "accepted": 524379,
+          "blocked": 1552056
+        },
+        "new": {
+          "evaluations": 1006790,
+          "represented": 1014645,
+          "accepted": 524379,
+          "blocked": 490266
+        }
+      }
+    }
+  ],
+  "tight": {
+    "command": "drive tight 13 48 600",
+    "old": "tight-old.txt",
+    "new": "tight-index.txt",
+    "lines": [
+      28896,
+      28896
+    ],
+    "sha256": [
+      "0882e3e5122b18f8115d7fe970ae5b31a890a8a8bf2ff8b85ffa964efe5d8ed5",
+      "d0bc33d2b111520c195f8c338cf650c11ada7a975d34f6a4e383a05f68c10645"
+    ],
+    "byte_identical": false,
+    "identical_apart_from_evaluation_counts": false,
+    "lines_differing_apart_from_evaluation_counts": 17435,
+    "first_difference": {
+      "line": 610,
+      "old": "1.6 advance 5 Err(\"advance exceeds configured operation budget; use shorter advances\") e87e59e99ec9063114e049ec19703fd4de1cfafe367f00e46752c502571565f5 groups 15 checkpoints 0",
+      "new": "1.6 advance 5 Ok(Work { evaluations: 283, represented: 283, accepted: 103, blocked: 180 }) 67877eab808f94da09f4ce3a47bd7c2331bd342f1aae80d557ffbdd4fb82c814 groups 21 checkpoints 0"
+    },
+    "work_totals": {
+      "old": {
+        "evaluations": 91360,
+        "represented": 96387,
+        "accepted": 45275,
+        "blocked": 51112
+      },
+      "new": {
+        "evaluations": 131323,
+        "represented": 138123,
+        "accepted": 89900,
+        "blocked": 48223
+      }
+    },
+    "baseline": {
+      "worlds": 48,
+      "identical_apart_from_counts": 16,
+      "first_difference_causes": {
+        "an advance the old budget refused runs": 24,
+        "refused on both sides, the world unchanged; now by the session's sum over epochs": 8
+      },
+      "advances": {
+        "old": {
+          "refused": 2748,
+          "accepted": 660
+        },
+        "new": {
+          "refused": 2305,
+          "accepted": 1103
+        }
+      },
+      "loads": {
+        "old": {
+          "Ok": 42,
+          "Err: advance exceeds configured operation budget; use shorter advances": 6
+        },
+        "new": {
+          "Ok": 44,
+          "Err: advance exceeds configured operation budget; use shorter advances": 4
+        }
+      },
+      "loads_failing": {
+        "old": [
+          2,
+          6,
+          14,
+          18,
+          26,
+          34
+        ],
+        "new": [
+          6,
+          26,
+          34,
+          42
+        ]
+      }
+    }
+  }
+}

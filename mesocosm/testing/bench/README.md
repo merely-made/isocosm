@@ -63,6 +63,17 @@ sets each point beside checkpoint 1's time. `differential.json`, with its driver
 `differential-drive.rs`, compares the core before checkpoint 1 with the final
 one. `checkpoint-2-source.json` names the commit behind each run.
 
+The same directory holds the scheduler index of ruling 258, which has a due
+process visit only the groups carrying the traits it requires.
+`scheduler-lineages.json` sets the lineage sweep, re-measured on the core
+before and after, point beside point; `scheduler_lineages.py` rebuilds it from
+the raw re-measures, which live out of tree with their hashes in
+`RAW_RECEIPTS.md`. `scheduler-differential.json` compares the driver's logs
+before and after with the evaluation counts ruling 259 changes set apart
+(`compare_logs.py`), and explains the budgeted sessions' new baseline
+(`tight_baseline.py`). `scheduler-source.json` names the commits, commands
+and checks.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

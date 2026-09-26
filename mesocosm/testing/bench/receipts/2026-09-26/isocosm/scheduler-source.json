@@ -1,0 +1,136 @@
+{
+  "date": "2026-09-26",
+  "kind": "isocosm-scheduler-index",
+  "commit": "fa32e20a7f352ea0a7f784981d3a6d590f650a12",
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "profile": "release",
+  "source_blobs": {
+    "shared/isocosm/Cargo.lock": "42f7bd0cc2e8b749c1e2ba4b85c1e0e38c16de5b",
+    "shared/isocosm/Cargo.toml": "ac6baf8a2ea6f73283cda0c02efdfb9adf3410b4",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "1958dfc1c6c065c27e84343ebf793de65948aaa8",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "6021819003c9cf72cad6cf5b103cd0dc65e8f37d",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "c9d9b16f6ed2cfa845bd8914cfce83dce0463d23",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/bin/isocosm-scale/remeasure.rs": "c421706ca764658b863cc717fb8b04954d0fa2e8",
+    "shared/isocosm/src/ecology.rs": "619af0eb3132079ddecfcdae39142025c9997ba6",
+    "shared/isocosm/src/execute.rs": "a35c1c4eae788bc28cfd6a34fc4a5a78f9b3d4b1",
+    "shared/isocosm/src/generate.rs": "d34e050ee5e67813de35340e02fdd49a12dea586",
+    "shared/isocosm/src/genesis.rs": "baae423fd6fda957628cf785bdc9363d7124f378",
+    "shared/isocosm/src/history.rs": "99f5866fe9d9b8dc8cdc0ede7b1b06c1f599d309",
+    "shared/isocosm/src/journal.rs": "5bfb06be8310d19b89531dc671f1c46b7ea8784a",
+    "shared/isocosm/src/lib.rs": "1fdd7901a32520ed7005cbfeeeae78f3830f0e72",
+    "shared/isocosm/src/meaning.rs": "11ff0bd5b1cbce70c16a44be4dde2c116f46f047",
+    "shared/isocosm/src/population.rs": "93e7ec790f8a7daebab3e4d518a6482fe7a36a6f",
+    "shared/isocosm/src/probe/aggregate.rs": "dd7e24bd7ada54f1f1a65ce70f56b0ee48c32c8c",
+    "shared/isocosm/src/probe/check.rs": "b3018ab5ed3978a9d953b25d1671c16f04b5b76e",
+    "shared/isocosm/src/probe/crowd/mod.rs": "506493f5e178ff635de38aa146c7e55b7e4b957f",
+    "shared/isocosm/src/probe/crowd/round.rs": "0d7fb920a8326d5181fb8fb7b49b87d79eb7040f",
+    "shared/isocosm/src/probe/draws.rs": "d4ea12b8114f907bdecbfae156a6b1aa6712d297",
+    "shared/isocosm/src/probe/exact.rs": "e881aad6e31f715a483442a2695e827661c5af80",
+    "shared/isocosm/src/probe/fight.rs": "3e45721fa02effbd686e19270733604d07859106",
+    "shared/isocosm/src/probe/fight/tests.rs": "438c6804907a55bddcd2ff1d095fd94bab56014c",
+    "shared/isocosm/src/probe/found/contested.rs": "3e1d089559215d5b9585356bc3268bbcc4a33091",
+    "shared/isocosm/src/probe/found/mind.rs": "db72dd051d5934d8d473a2f9214db26c375097fb",
+    "shared/isocosm/src/probe/found/mod.rs": "e86adac8684d4ea7358560a8e8fb82476a26f380",
+    "shared/isocosm/src/probe/mod.rs": "011aad37ff4732689d35df54c5badc335e521248",
+    "shared/isocosm/src/probe/readings.rs": "2715db39de7ecc306f2a12c70bdea1e22df71558",
+    "shared/isocosm/src/probe/settle.rs": "5cd64effda488ac15e9b5e24d6d5c4effa2674b0",
+    "shared/isocosm/src/probe/settle/tests.rs": "fc9d5d7a5e54727479d7577fe4104e3f68fa03c2",
+    "shared/isocosm/src/probe/tests.rs": "c7c632f86489b1db9da8f7bba699817a2c146718",
+    "shared/isocosm/src/queries.rs": "d5adae870aa6f59f9a8f1c7ffc8aaf63551ce8a3",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules.rs": "49bdd14aa81bd53a6178b17b9d3376166e86dbb0",
+    "shared/isocosm/src/schedule.rs": "0f96198fc66a465d25ece88be5785659814a8d80",
+    "shared/isocosm/src/schema.rs": "6c752ffbf4fe95fb709c3be320255f0c9654aa23",
+    "shared/isocosm/src/simulation.rs": "08286b0d77f05ce4d3aacbfd1f9c8b464f8aac2b",
+    "shared/isocosm/src/stage.rs": "723928046d223d226bd00213b677635b0d2bac29",
+    "shared/isocosm/src/targets.rs": "88ba31937a9f15af37772a56909e5d197798ff6f",
+    "shared/isocosm/src/validation.rs": "e90fc581a407bf64033693f0e4373352150c4441",
+    "shared/isocosm/tests/mind.rs": "bb665ac1e6f72da8fd0bf49d4eb74f76ee51126b",
+    "shared/isocosm/tests/probe.rs": "6ec0590f435e251555f452759cfc814bbbd7d54f",
+    "shared/isocosm/tests/schedule.rs": "ef5ac3c95d51caf70186c14fd0c65a496c85259f",
+    "shared/isocosm/tests/sim.rs": "8b1f542e6312262da1191daaddeab87c485a3ae0"
+  },
+  "executables_sha256": {
+    "isocosm-probe": "0d2869c75d793b8ff77bc194e14a165bd22c5035c1a82a0a91429a11fbe9edd4",
+    "isocosm-scale": "c7586586505b7bc6038de10144cd9c2d0a8512527dbb0ed6187c6df580929fc6"
+  },
+  "machine": {
+    "model": "ASUSTeK ROG Zephyrus G14 GA402XV, the laptop ruling 124 names",
+    "cpu": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics, 8 cores, 16 threads, 4.0 GHz max",
+    "os": "Windows 11 Home Insider Preview 10.0.26220"
+  },
+  "commits": {
+    "be9d863": "the core before this step: checkpoint 2's, with rulings 256 to 261 recorded",
+    "fa32e20": "ruling 258: a due process evaluated only against groups carrying the traits it requires, filed as acts commit, a pass still seeing groups as they stood when it began; ruling 259: the operation budget counts only the evaluations that run; rulings 256 and 257: Rules.tick_microseconds, absent meaning a minute; isocosm-scale --remeasure reports evaluations apart and takes --run"
+  },
+  "machine_load": "Shared machine: another session was compiling throughout (five rustc processes at the first sample). Each run here is single-threaded. Whole-machine CPU load in percent, sampled 0.4 s apart just before the lineage timings: 74, 62, 79, 68, 74; just after them: 56, 63, 62, 71, 71. So the two cores ran in turn, three rounds each, and each point's time is its fastest round. Evaluation counts and hashes carry no noise.",
+  "runs": [
+    {
+      "files": [
+        "scheduler-lineages.json",
+        "scheduler_lineages.py",
+        "trim_lineages.py"
+      ],
+      "raw_out_of_tree": [
+        "scale-lineages.json",
+        "remeasure-lineages-before-1.json",
+        "remeasure-lineages-after-1.json",
+        "remeasure-lineages-before-2.json",
+        "remeasure-lineages-after-2.json",
+        "remeasure-lineages-before-3.json",
+        "remeasure-lineages-after-3.json"
+      ],
+      "purpose": "ruling 258's done-condition: the lineage ladder re-measured, the core before the change against the core after it, on the same draws",
+      "commands": [
+        "python trim_lineages.py receipts/2026-09-25/isocosm/scale.json scale-lineages.json (the lineage sweep's 20 points alone; scale.json sha256 332c295d89ab710b887ba4620b10aa4ff1023d5e39c308de21db2815921e4679)",
+        "then three rounds, each: isocosm-scale.exe of be9d863 (sha256 23d0b92f5d3c354ada9d80d45bae087611e18629f2adb2d29484ca8512f17b88) --remeasure scale-lineages.json --output remeasure-lineages-before-N.json, then isocosm-scale.exe of this commit --remeasure scale-lineages.json --output remeasure-lineages-after-N.json",
+        "python scheduler_lineages.py scheduler-lineages.json remeasure-lineages-before-1.json remeasure-lineages-after-1.json ... (the three rounds in turn)"
+      ],
+      "seeds": "the step-1 points' own foundings and seeds, from the clock at step 1 (master seed 1790357406088610700); re-using them is what makes the worlds the same draws",
+      "commits": [
+        "be9d863",
+        "fa32e20"
+      ],
+      "result": "every run of every point identical to step 1 and the final hashes equal across cores; ecology evaluations per tick 5,596 to 2,822 at 2 lineages, 27,856 to 3,391 at 8 and 219,408 to 7,457 at 32; ecology ticks 11.85 to 9.60 ms at 2 lineages, 38.41 to 12.90 ms at 8 and 196.17 to 22.49 ms at 32 (8.7 times); the reservoir family, which evaluates little, 1.1 to 1.4 times"
+    },
+    {
+      "raw_out_of_tree": [
+        "remeasure-ecology-258.json"
+      ],
+      "purpose": "every unbudgeted scale run identical: the 30 ecology points of step 1, as checkpoint 2 re-measured them, run again on this commit",
+      "command": "shared/isocosm/target/release/isocosm-scale.exe --remeasure scale.json --remeasure scale-extension.json --remeasure scale-living.json --family ecology --output remeasure-ecology-258.json (the three sources from receipts/2026-09-25/isocosm/)",
+      "seeds": "the step-1 points' own foundings and seeds (master seeds 1790357406088610700, 1790359248610411800 and 1790360974575170100)",
+      "commit": "fa32e20",
+      "result": "all 30 points identical to step 1 apart from the counts ruling 259 changes; evaluations 21,226,580 to 2,063,704 over the points' ticks (10.3 times fewer); 23.47 s of tick time against checkpoint 2's 35.75 s, on a machine loaded differently"
+    },
+    {
+      "files": [
+        "scheduler-differential.json",
+        "compare_logs.py",
+        "tight_baseline.py",
+        "scheduler_differential.py",
+        "differential-drive.rs"
+      ],
+      "purpose": "ruling 258's rule, results identical: every receipt and state hash of random acts, advances, inspections, learnings and collections, and of sessions under tight budgets, the core before the change against the core after it",
+      "command": "differential-drive.rs (unchanged since checkpoint 2) built as the only binary of a scratch crate depending on isocosm by path, on the tree at be9d863 and on this commit; then `drive fuzz 7 24 400`, `drive fuzz 11 60 1500` and `drive tight 13 48 600` on each; the core at be9d863 reproduced checkpoint 2's kept baselines byte for byte, which are compared here",
+      "result": "fuzz 7 and fuzz 11, 99,684 operations over 84 worlds without an operation budget: every line identical once evaluations, represented and blocked are set apart, acceptances unchanged (76,382 and 524,379), evaluations 264,143 to 140,936 and 2,065,613 to 1,006,790; the 48 budgeted tight sessions take a new baseline: 16 identical apart from counts, 24 first differ where an advance the old budget refused now runs, 8 where a refusal on both sides leaves the world unchanged but is now found by the session's sum over epochs; advances accepted 660 to 1,103 of 3,408"
+    }
+  ],
+  "checks": [
+    "cargo test --manifest-path shared/isocosm/Cargo.toml --offline --locked at fa32e20: 51 passed, 0 failed (17 unit, 3 mind, 7 probe integration, 4 schedule, 20 core integration); debug builds check every pass against a full scan, both that no group it went past carried the traits and that every span it read is the span the group had when the pass began",
+    "controls: with the filing no longer kept current as acts commit, the debug check fired and, in release, the test of a member gaining a required trait during the pass failed ([1, 1, 1, 0, 0, 0] against [1, 1, 1, 1, 1, 0]); with split spans no longer kept, the debug check fired; both restored",
+    "cargo clippy --manifest-path shared/isocosm/Cargo.toml --offline --locked --all-targets -- -D warnings: clean; cargo fmt --check: clean; the largest source file 490 lines",
+    "cargo check -p mesocosm-genet --all-features --all-targets --offline (mesocosm workspace, against this worktree's isocosm at fa32e20): passes, no warnings",
+    "debug build of the driver at fa32e20: `drive tight 13 48 600` byte-identical to the release build's log, and `drive fuzz 11 20 1500` to the release log's first 20 worlds, every check live",
+    "scale pilot, master seed 1790357350335206000: every field as in the step-1 pilot apart from evaluations, represented and blocked; evaluations 74,712 to 9,824",
+    "probe pilot, --seed 20260926 --draws 16 --permutations 199, with and without --water: draws, readings, comparisons, verdicts, density and checks identical to 76ab646's; savings differ only in the evaluation counts and ratios and the `approximate` field added at ac76e8b; exact-arm evaluations 412,327 to 286,988 with food and 555,279 to 373,688 with water, acceptances unchanged",
+    "the six tight-budget saves that failed to load in the other mode (worlds 2, 6, 14, 18, 26 and 34): 2, 14 and 18 now load; 6, 26 and 34 still fail, and 42, whose new baseline accepted longer advances, now fails as well. All seven are grouped sessions loaded in the individual mode, which evaluates cohorts member by member, so a history a budget allowed grouped can exceed it replayed individually: the budget counts evaluations, and those differ by mode",
+    "the clock's unit: absent from every generated world's rules, serializing and hashing as before (the fuzz and pilot hashes, which fold the rules revision, are unchanged); a stated unit round-trips through bytes and changes the revision; a unit of zero is refused"
+  ],
+  "scope": "Step 0 of the checkpoint-3 plan, as ruled: the trait index (258), the budget (259) and the clock's unit (256 and 257). Not built: per-entity due-event queues, which 258 leaves for decision before M2's first receipts; any reading of the unit by the scheduler, periods staying counts of ticks; steps 1 to 5 of the plan."
+}

@@ -1,0 +1,720 @@
+{
+  "kind": "isocosm-scheduler-lineages",
+  "note": "The lineage sweep of receipts/2026-09-25/isocosm/scale.json (1,024 members in cohorts of 32 over 256 sites, 16 ticks grouped, two draws per lineage count, both families), re-measured on the core before ruling 258 (be9d863) and after it, in turn, three rounds each on a shared machine; each point's time is its fastest round on each core. Identical to step 1 is each run's own comparison with that receipt: final state hash, per-tick acceptances, members, groups, events, notes and arrivals, and distinct states. Evaluations are those counted: before, every due process against every living group; after, only against groups carrying the traits it requires.",
+  "rounds": 3,
+  "all_identical": true,
+  "summary": [
+    {
+      "family": "ecology",
+      "lineages": 2,
+      "mean_tick_ms": [
+        11.85,
+        9.6
+      ],
+      "speedup": 1.23,
+      "evaluations_per_tick": [
+        5596,
+        2822
+      ]
+    },
+    {
+      "family": "ecology",
+      "lineages": 4,
+      "mean_tick_ms": [
+        20.51,
+        10.74
+      ],
+      "speedup": 1.91,
+      "evaluations_per_tick": [
+        12119,
+        3081
+      ]
+    },
+    {
+      "family": "ecology",
+      "lineages": 8,
+      "mean_tick_ms": [
+        38.41,
+        12.9
+      ],
+      "speedup": 2.98,
+      "evaluations_per_tick": [
+        27856,
+        3391
+      ]
+    },
+    {
+      "family": "ecology",
+      "lineages": 16,
+      "mean_tick_ms": [
+        79.24,
+        15.41
+      ],
+      "speedup": 5.14,
+      "evaluations_per_tick": [
+        74154,
+        4806
+      ]
+    },
+    {
+      "family": "ecology",
+      "lineages": 32,
+      "mean_tick_ms": [
+        196.17,
+        22.49
+      ],
+      "speedup": 8.72,
+      "evaluations_per_tick": [
+        219408,
+        7457
+      ]
+    },
+    {
+      "family": "reservoir",
+      "lineages": 2,
+      "mean_tick_ms": [
+        1.23,
+        1.15
+      ],
+      "speedup": 1.07,
+      "evaluations_per_tick": [
+        171,
+        124
+      ]
+    },
+    {
+      "family": "reservoir",
+      "lineages": 4,
+      "mean_tick_ms": [
+        1.49,
+        1.2
+      ],
+      "speedup": 1.25,
+      "evaluations_per_tick": [
+        209,
+        110
+      ]
+    },
+    {
+      "family": "reservoir",
+      "lineages": 8,
+      "mean_tick_ms": [
+        3.79,
+        2.89
+      ],
+      "speedup": 1.31,
+      "evaluations_per_tick": [
+        513,
+        138
+      ]
+    },
+    {
+      "family": "reservoir",
+      "lineages": 16,
+      "mean_tick_ms": [
+        5.12,
+        3.69
+      ],
+      "speedup": 1.39,
+      "evaluations_per_tick": [
+        768,
+        123
+      ]
+    },
+    {
+      "family": "reservoir",
+      "lineages": 32,
+      "mean_tick_ms": [
+        9.36,
+        7.53
+      ],
+      "speedup": 1.24,
+      "evaluations_per_tick": [
+        1510,
+        130
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "family": "ecology",
+      "lineages": 2,
+      "seed": 1030023970163841509,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          11507,
+          14257,
+          12132
+        ],
+        [
+          13850,
+          10783,
+          9371
+        ]
+      ],
+      "mean_tick_micros": [
+        11507,
+        9371
+      ],
+      "speedup": 1.227937253228044,
+      "evaluations_per_tick": [
+        5621,
+        2838
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 2,
+      "seed": 11214623003492539097,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          13082,
+          14715,
+          12193
+        ],
+        [
+          14465,
+          10562,
+          9827
+        ]
+      ],
+      "mean_tick_micros": [
+        12193,
+        9827
+      ],
+      "speedup": 1.240765238628269,
+      "evaluations_per_tick": [
+        5570,
+        2806
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 4,
+      "seed": 10394634971050142570,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          20831,
+          23004,
+          20145
+        ],
+        [
+          13136,
+          12396,
+          10609
+        ]
+      ],
+      "mean_tick_micros": [
+        20145,
+        10609
+      ],
+      "speedup": 1.8988594589499481,
+      "evaluations_per_tick": [
+        12119,
+        3078
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 4,
+      "seed": 14530337309673376763,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          20879,
+          23001,
+          22465
+        ],
+        [
+          16543,
+          10873,
+          11225
+        ]
+      ],
+      "mean_tick_micros": [
+        20879,
+        10873
+      ],
+      "speedup": 1.9202611974616022,
+      "evaluations_per_tick": [
+        12119,
+        3084
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 8,
+      "seed": 5302297231892970553,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          39553,
+          44758,
+          42347
+        ],
+        [
+          18833,
+          14275,
+          13695
+        ]
+      ],
+      "mean_tick_micros": [
+        39553,
+        13695
+      ],
+      "speedup": 2.888134355604235,
+      "evaluations_per_tick": [
+        27792,
+        3410
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 8,
+      "seed": 12405364538841246400,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          37270,
+          41846,
+          42902
+        ],
+        [
+          18593,
+          12857,
+          12099
+        ]
+      ],
+      "mean_tick_micros": [
+        37270,
+        12099
+      ],
+      "speedup": 3.080419869410695,
+      "evaluations_per_tick": [
+        27920,
+        3372
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 16,
+      "seed": 4779845211227078039,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          79664,
+          84275,
+          84589
+        ],
+        [
+          23819,
+          16278,
+          15689
+        ]
+      ],
+      "mean_tick_micros": [
+        79664,
+        15689
+      ],
+      "speedup": 5.077697750015934,
+      "evaluations_per_tick": [
+        73993,
+        4529
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 16,
+      "seed": 15552035275372534308,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          78817,
+          86059,
+          80287
+        ],
+        [
+          34809,
+          16097,
+          15133
+        ]
+      ],
+      "mean_tick_micros": [
+        78817,
+        15133
+      ],
+      "speedup": 5.208286526134937,
+      "evaluations_per_tick": [
+        74315,
+        5082
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 32,
+      "seed": 12654255925397769279,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          522386,
+          216819,
+          193325
+        ],
+        [
+          37078,
+          20868,
+          25247
+        ]
+      ],
+      "mean_tick_micros": [
+        193325,
+        20868
+      ],
+      "speedup": 9.26418439716312,
+      "evaluations_per_tick": [
+        219408,
+        7792
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "ecology",
+      "lineages": 32,
+      "seed": 13174708945357475198,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          299894,
+          211842,
+          199018
+        ],
+        [
+          53421,
+          24114,
+          28023
+        ]
+      ],
+      "mean_tick_micros": [
+        199018,
+        24114
+      ],
+      "speedup": 8.253213900638633,
+      "evaluations_per_tick": [
+        219408,
+        7122
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 2,
+      "seed": 1669009011918740267,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          1715,
+          1386,
+          1669
+        ],
+        [
+          3223,
+          1413,
+          1280
+        ]
+      ],
+      "mean_tick_micros": [
+        1386,
+        1280
+      ],
+      "speedup": 1.0828125,
+      "evaluations_per_tick": [
+        206,
+        140
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 2,
+      "seed": 17935249858246731670,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          1074,
+          1268,
+          1265
+        ],
+        [
+          2810,
+          1158,
+          1025
+        ]
+      ],
+      "mean_tick_micros": [
+        1074,
+        1025
+      ],
+      "speedup": 1.0478048780487805,
+      "evaluations_per_tick": [
+        136,
+        108
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 4,
+      "seed": 12646044360536536465,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          1818,
+          1843,
+          1717
+        ],
+        [
+          3299,
+          1360,
+          1297
+        ]
+      ],
+      "mean_tick_micros": [
+        1717,
+        1297
+      ],
+      "speedup": 1.3238242097147264,
+      "evaluations_per_tick": [
+        224,
+        114
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 4,
+      "seed": 16817413707439224231,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          1573,
+          1449,
+          1272
+        ],
+        [
+          3024,
+          1158,
+          1093
+        ]
+      ],
+      "mean_tick_micros": [
+        1272,
+        1093
+      ],
+      "speedup": 1.1637694419030191,
+      "evaluations_per_tick": [
+        194,
+        105
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 8,
+      "seed": 1281700308945888978,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          3759,
+          3096,
+          3509
+        ],
+        [
+          6587,
+          2442,
+          2489
+        ]
+      ],
+      "mean_tick_micros": [
+        3096,
+        2442
+      ],
+      "speedup": 1.2678132678132679,
+      "evaluations_per_tick": [
+        464,
+        133
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 8,
+      "seed": 14909352394236528445,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          6738,
+          4983,
+          4490
+        ],
+        [
+          7489,
+          4419,
+          3345
+        ]
+      ],
+      "mean_tick_micros": [
+        4490,
+        3345
+      ],
+      "speedup": 1.3423019431988041,
+      "evaluations_per_tick": [
+        562,
+        144
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 16,
+      "seed": 871248321163103945,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          6963,
+          5468,
+          5613
+        ],
+        [
+          7781,
+          5236,
+          3892
+        ]
+      ],
+      "mean_tick_micros": [
+        5468,
+        3892
+      ],
+      "speedup": 1.4049331963001028,
+      "evaluations_per_tick": [
+        762,
+        123
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 16,
+      "seed": 2491256933571530815,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          4769,
+          4885,
+          4869
+        ],
+        [
+          6732,
+          4210,
+          3491
+        ]
+      ],
+      "mean_tick_micros": [
+        4769,
+        3491
+      ],
+      "speedup": 1.3660842165568605,
+      "evaluations_per_tick": [
+        774,
+        123
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 32,
+      "seed": 10435296798158090541,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          11973,
+          10871,
+          9914
+        ],
+        [
+          13843,
+          8847,
+          7844
+        ]
+      ],
+      "mean_tick_micros": [
+        9914,
+        7844
+      ],
+      "speedup": 1.2638959714431413,
+      "evaluations_per_tick": [
+        1588,
+        129
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    },
+    {
+      "family": "reservoir",
+      "lineages": 32,
+      "seed": 11256974812441101798,
+      "ticks": 16,
+      "mean_tick_micros_by_round": [
+        [
+          8799,
+          9837,
+          9020
+        ],
+        [
+          12199,
+          7841,
+          7225
+        ]
+      ],
+      "mean_tick_micros": [
+        8799,
+        7225
+      ],
+      "speedup": 1.217854671280277,
+      "evaluations_per_tick": [
+        1432,
+        130
+      ],
+      "final_hash_equal": true,
+      "identical_to_step_1": true
+    }
+  ]
+}

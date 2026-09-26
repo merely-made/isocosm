@@ -52,8 +52,15 @@ founding parameters accompany its realized rules and topology.
   its references and material balance. A rejected transition changes nothing,
   including identity grouping and earlier effects within that transition.
 - A stable clock and ordered due-process queue drive choices, agentless
-  processes and transitions. Configured operation, history and population
-  limits refuse work atomically. They do not discard history to fit a budget.
+  processes and transitions. A tick counts a unit of world time the world's
+  rules may state, a minute by default, and process periods are read in it;
+  anything finer is the foreground game's (rulings 256 and 257). A due
+  process visits only the stored groups carrying the traits it requires of
+  its actor, filed as acts commit, and still sees groups as they stood when
+  its pass began (ruling 258). Configured operation, history and population
+  limits refuse work atomically; the operation budget counts only the
+  evaluations that run (ruling 259). They do not discard history to fit a
+  budget.
 - Populations retain complete per-member states as counted identity intervals.
   Only statically independent unary effects can run once for an interval.
   Shared resources, target selection, risk, parentage and public events use
@@ -157,10 +164,19 @@ world before each advance. The same points ran again on 2026-09-26
 (`remeasure-237.json` in that day's receipts) with every hash and count
 unchanged, 2.2 times faster over all than at checkpoint 1 and 4 times at 4,096
 members individually, and took about 1.1 to 1.9 microseconds per evaluation
-at 2,048 and 4,096 members in both modes. At eight lineages about 98% of
-ecology evaluations end without effect, since every periodic process is
-evaluated for every member. The dead stay stored and each noted event keeps an
-arrival at every site it reached, so ticks grow dearer as history accumulates.
+at 2,048 and 4,096 members in both modes. Every due process was still
+evaluated for every living group, so evaluations grew with lineages, and at
+eight lineages about 98% of ecology evaluations ended without effect. Ruling
+258 has a due process visit only the groups carrying the traits it requires.
+On the lineage sweep at 1,024 members (`scheduler-lineages.json` in the same
+day's receipts), ecology evaluations per tick fell from 219,408 to 7,457 at 32
+lineages and ticks from 196 to 22 ms, with every hash unchanged. What still
+grows with lineages is the ecology generator's one feeding process per pair of
+lineages. Of the evaluations that remain, 84 to 96% still end without effect:
+a lineage's own processes, death and age among them, run for each of its
+members on their periods, and their other requirements are mostly unmet. The
+dead stay stored and each noted event keeps an arrival at every site it
+reached, so ticks grow dearer as history accumulates.
 Founding in cohorts of 32 puts each cohort on one site, and those ecology
 worlds died out without a birth.
 
