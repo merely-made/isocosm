@@ -67,10 +67,13 @@ architecture that Paredros and Isometry also depend on.
   and legends do not. Ruled 2026-09-24 (ruling 157). Eponym's `deed` stays
   its record of an act.
 - **tract**: one expressed process on a patch of a part's tissue, the body
-  sense of what the code still calls a site; *site* now means one cell of
-  the world map. Ruled 2026-09-24 (ruling 157); until the rename lane lands,
-  `Site` and `SiteId` in `mesocosm-core/src/phenotype/mosaic.rs` carry the
-  old word.
+  sense of what the code called a site; *site* now means one cell of the
+  world map. Ruled 2026-09-24 (ruling 157); the rename landed 2026-09-26,
+  `Tract` and `TractId`, with old serialized names still read (ruling 224).
+- **attachment**: the point where an incoming part joins a body, in growth
+  or a graft (`growth::attachment()`). Ruled 2026-09-26 (ruling 251).
+- **situs**: an organ's position in a body plan's template, a (tagma,
+  segment) coordinate. Ruled 2026-09-26 (ruling 252).
 - **animula**: the played soul — the little soul that guests in a body,
   across generations. In-product term only. **Never title anything Animula**;
   ANIMULA NOOK is a live Tencent mark in Class 9 game software.
