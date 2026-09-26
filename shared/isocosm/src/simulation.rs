@@ -97,6 +97,8 @@ pub struct Simulation {
     /// change this sum, so receipts read it here rather than re-summing the
     /// whole world for every act.
     pub(crate) conserved: u128,
+    /// Groups filed for target searches, kept only during an advance.
+    pub(crate) targets: Option<crate::targets::Targets>,
 }
 
 impl Simulation {
@@ -126,6 +128,7 @@ impl Simulation {
             mode,
             revision,
             conserved,
+            targets: None,
         })
     }
     pub fn state(&self) -> &State {
@@ -190,6 +193,32 @@ impl Simulation {
             }
         }
         let mut work = Work::default();
+        let targeted = self
+            .genesis
+            .rules
+            .processes
+            .values()
+            .any(|p| p.period.is_some() && p.target.is_some());
+        if targeted {
+            self.targets = Some(crate::targets::Targets::new(&self.state.population));
+        }
+        let work = self.scheduled(queue, end, &mut work).map(|()| work);
+        self.targets = None;
+        let work = work?;
+        self.state.tick = end;
+        if self.mode == Execution::Grouped {
+            let roots = self.kept();
+            self.state.population.restrict(&roots);
+        }
+        Ok(work)
+    }
+    /// Runs every due process in order of due tick, priority and identity.
+    fn scheduled(
+        &mut self,
+        mut queue: BTreeSet<(Tick, i32, Key)>,
+        end: Tick,
+        work: &mut Work,
+    ) -> Result<()> {
         while let Some((due, priority, id)) = queue.pop_first() {
             self.state.tick = due;
             let process = self.genesis.rules.processes[&id].clone();
@@ -247,12 +276,7 @@ impl Simulation {
                 queue.insert((next, priority, id));
             }
         }
-        self.state.tick = end;
-        if self.mode == Execution::Grouped {
-            let roots = self.kept();
-            self.state.population.restrict(&roots);
-        }
-        Ok(work)
+        Ok(())
     }
     pub fn inspect(&mut self, id: Id) -> Result<()> {
         self.state.population.lift(id)?;

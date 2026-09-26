@@ -73,35 +73,4 @@ impl Simulation {
                 .as_ref()
                 .is_none_or(|lineage| lineage == &b.lineage)
     }
-    pub(crate) fn choose_target(&self, actor: Id, p: &Process) -> Option<Id> {
-        p.target.as_ref()?;
-        let entity = self.state.population.get(actor)?;
-        // Reject an ineligible actor before searching the population for food.
-        // This is only a read shortcut; apply still checks every requirement.
-        if p.requires.iter().any(|q| {
-            matches!(q, Query::Trait {who:Binding::Actor,key}
-            if !entity.traits.contains(key))
-        }) {
-            return None;
-        }
-        let place = entity.place;
-        for (&first, group) in &self.state.population.groups {
-            let candidate = if first == actor {
-                first.checked_add(1)?
-            } else {
-                first
-            };
-            if candidate >= first + group.count {
-                continue;
-            }
-            if self.target_matches(actor, Some(candidate), p)
-                && p.requires
-                    .iter()
-                    .all(|q| self.query(actor, Some(candidate), place, q).is_ok())
-            {
-                return Some(candidate);
-            }
-        }
-        None
-    }
 }

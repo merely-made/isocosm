@@ -21,6 +21,7 @@ pub mod rules;
 pub mod schema;
 pub mod simulation;
 mod stage;
+mod targets;
 mod validation;
 
 pub use generate::Founding;

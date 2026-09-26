@@ -116,10 +116,40 @@ impl Simulation {
         Ok(())
     }
 
+    /// The stored groups an act can change, by first identity: each lifted
+    /// member's group and the pieces lifting leaves, the cohort that acts as
+    /// one, and the children's new groups.
+    fn reaches(&self, stage: &Stage) -> Vec<Id> {
+        let groups = &self.state.population.groups;
+        let mut firsts = Vec::new();
+        let mut lifted = |id: Id| {
+            firsts.extend(groups.range(..=id).next_back().map(|(f, _)| *f));
+            firsts.extend([id, id + 1]);
+        };
+        if stage.count == 1 {
+            lifted(stage.actor);
+        }
+        if let Some(target) = stage.target {
+            lifted(target);
+        }
+        firsts.push(stage.actor);
+        let next = self.state.population.next_id;
+        firsts.extend((0..stage.births.len() as u64).map(|k| next + k));
+        firsts
+    }
+
     /// Writes an accepted act. Identities split as the whole copy split them
     /// before its first write: the actor alone unless it acts for its
     /// cohort, then the target.
     pub(crate) fn commit(&mut self, stage: Stage, next_action: u64) {
+        let reached = self.targets.is_some().then(|| self.reaches(&stage));
+        self.write(stage, next_action);
+        if let (Some(t), Some(firsts)) = (&mut self.targets, reached) {
+            t.touch(&self.state.population, firsts);
+        }
+    }
+
+    fn write(&mut self, stage: Stage, next_action: u64) {
         let s = &mut self.state;
         if stage.count == 1 {
             s.population.lift(stage.actor).expect("the actor exists");
