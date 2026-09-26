@@ -19,7 +19,7 @@ use crate::organism::OrganismId;
 use crate::phenotype::Refusal;
 use crate::process::Unmet;
 
-/// How an incorporated part finds its site.
+/// How an incorporated part finds its attachment.
 ///
 /// A **policy**, not a destination. Placing a part explicitly is a different
 /// way of growing, not a different thing to do with a meal, and folding it in
@@ -29,8 +29,8 @@ pub enum Placement {
     /// The body plan decides. **The default**: growth is automatic and
     /// symmetric, and the player shapes the plan rather than the placement.
     Planned,
-    /// An explicit site. The editor path: total control is possible, but it is
-    /// never the resting state.
+    /// An explicit attachment. The editor path: total control is possible,
+    /// but it is never the resting state.
     Explicit {
         parent: PartId,
         offset: [i32; 3],

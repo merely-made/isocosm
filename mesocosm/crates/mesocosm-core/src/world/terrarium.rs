@@ -183,7 +183,7 @@ impl World {
         let species = world.organisms[recipient_index].species;
         let bulk = palette.mass.default;
 
-        // A normal generated body can leave no plan-resolved landing site for
+        // A normal generated body can leave no plan-resolved attachment for
         // a compact branch. This recipient is deliberately small, while still
         // using the normal consumer constructor and the caller's vocabulary.
         let recipient = Organism::founding(

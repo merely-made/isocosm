@@ -14,9 +14,9 @@
 //!   and not a severed part: a severed part's milligrams have already left the
 //!   conservation account, so taking one would create matter. Live
 //!   dismemberment is a further gate and is not this proof's.
-//! - **whether it fits.** The branch root takes an ordinary plan-resolved site,
-//!   and the whole arriving branch has to clear the parts already there and
-//!   still leave a body that stands on this ground.
+//! - **whether it fits.** The branch root takes an ordinary plan-resolved
+//!   attachment, and the whole arriving branch has to clear the parts already
+//!   there and still leave a body that stands on this ground.
 //! - **the terms.** This world's affinity table returns a verdict for the
 //!   donor's tissue domain into the recipient's, and that verdict decides
 //!   whether a *carry* is feasible at all and what a feasible one lands with.
@@ -355,21 +355,21 @@ impl World {
         };
         // The plan sited the branch's box; the root is offset from its centre
         // by however far off-centre the root sits inside its own branch.
-        let mut site = crate::growth::attachment(&growth);
-        site.offset = [0, 1, 2].map(|axis| site.offset[axis] - centre[axis]);
+        let mut attachment = crate::growth::attachment(&growth);
+        attachment.offset = [0, 1, 2].map(|axis| attachment.offset[axis] - centre[axis]);
         let (id, position, energy_mg) = (me.id, me.position, me.energy_mg);
 
         // A candidate, so a refusal costs nothing. One clone of one body at a
         // deliberate moment, the same discipline the developmental verb uses.
         let mut candidate = me.phenotype.clone();
-        let graftage = match candidate.receive(self.ruleset(), &branch, site, self.epoch, lowering)
-        {
-            Ok(graftage) => graftage,
-            Err(refusal) => return Err(Rejection::Refused(refusal)),
-        };
+        let graftage =
+            match candidate.receive(self.ruleset(), &branch, attachment, self.epoch, lowering) {
+                Ok(graftage) => graftage,
+                Err(refusal) => return Err(Rejection::Refused(refusal)),
+            };
         // A branch is placed by its root and shaped by its own joints, so
-        // clearing the root's site is not enough: every arriving part has to
-        // clear what was already there.
+        // clearing the root's attachment is not enough: every arriving part
+        // has to clear what was already there.
         if !clears(candidate.body(), &graftage.parts) {
             return Err(Rejection::NoRoom);
         }
@@ -402,7 +402,7 @@ impl World {
                 crossing,
                 verdict,
                 compatibility,
-                attachment: site,
+                attachment,
                 phenotype: candidate,
                 root: graftage.root,
                 parts: graftage.parts,
@@ -420,7 +420,7 @@ impl World {
 ///
 /// Flush placement makes touching parts exactly adjacent rather than
 /// overlapping, so this is the same strict comparison `growth` uses, asked of
-/// the whole branch instead of one site.
+/// the whole branch instead of one attachment.
 ///
 /// **Pairs inside the branch are skipped on purpose.** The branch was a
 /// disjoint piece of a real body a moment ago and it arrives rigid, joint for

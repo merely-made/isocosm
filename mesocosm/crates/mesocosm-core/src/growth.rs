@@ -29,8 +29,9 @@ pub struct Growth {
 
 /// Finds where a part of the given size should attach, by the body's plan.
 ///
-/// Candidate sites are generated from existing parts, tried in the plan's
-/// facing order, and rejected if they would overlap anything already there.
+/// Candidate attachments are generated from existing parts, tried in the
+/// plan's facing order, and rejected if they would overlap anything already
+/// there.
 /// Returns `None` when nothing fits, which the caller reports as a rejection
 /// rather than forcing a part into occupied space.
 pub fn resolve(body: &BodyDocument, half_extent: [i32; 3]) -> Option<Growth> {
@@ -53,7 +54,7 @@ pub fn resolve(body: &BodyDocument, half_extent: [i32; 3]) -> Option<Growth> {
             }
 
             // A bilateral plan means what it says: if the mirror will not fit,
-            // this is not a site for a pair, so keep looking rather than
+            // this is not an attachment for a pair, so keep looking rather than
             // growing a single lopsided limb. Best-effort mirroring drifts a
             // body sideways one failed pair at a time.
             let mirror = if body.plan.mirrors(facing) {

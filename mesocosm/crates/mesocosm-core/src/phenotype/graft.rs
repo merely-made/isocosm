@@ -17,7 +17,7 @@
 //!    offsets and yaws are preserved and its parents are rewritten as they
 //!    attach, so the branch arrives shaped the way it grew;
 //! 4. the graft root attaches to one destination part — the caller resolves
-//!    that site through the ordinary body plan;
+//!    that attachment through the ordinary body plan;
 //! 5. every destination part retains its source address —
 //!    `Origin::Incorporated { from_species, from_part }` names **that part's**
 //!    donor id, not the branch root's and not the donor's root.
@@ -57,8 +57,8 @@ mod stock_tests;
 pub struct Cutting {
     /// The donor-local id this came off.
     pub source: PartId,
-    /// The donor-local parent. `None` for the branch root, whose new site the
-    /// recipient's own plan decides.
+    /// The donor-local parent. `None` for the branch root, whose new
+    /// attachment the recipient's own plan decides.
     pub source_parent: Option<PartId>,
     pub volume: crate::body::VolumeRef,
     pub mass_mg: u64,
