@@ -231,6 +231,11 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-26: rulings 262, 263 and 267 bear on M2: a vertical probe before
+  the order from bodies onward is taken as fixed; each family built and
+  certified in Isocosm, `mesocosm-core`'s copies retiring together at M3;
+  and each family's level of the web kept alive by persistence, turnover,
+  collapse and response to an intervention.
 - 2026-09-26: ruling 260 stages viability with M2: each family is done
   only when the level of the web it enables stays alive in most draws.
   Ruling 258 lands the scheduler's trait index before M2, and Lane A's

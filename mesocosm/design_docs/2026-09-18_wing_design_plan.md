@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 261, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 267, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1784,6 +1784,9 @@ what later sections derive from.
      distribution? Mark: "The rules' thresholds." So the readings are
      every threshold the process definitions query, read mechanically from
      them, plus a distribution per field for anything an inspection shows.
+     *Reading, 2026-09-26, not ruled:* the check compares readings one at a
+     time, so any conjunction of thresholds one rule tests together, hungry
+     and strained say, is a reading of its own.
 209. **The first tolerance is 0.2 per reading, certified with controls.**
      Put to Mark on 2026-09-25, with 208: a first bound of 0.2 or 0.1? Mark:
      "0.2, with controls." So each reading's bound sits in the world's
@@ -2223,6 +2226,59 @@ what later sections derive from.
      where effects commute, by lossless grouping, and where they share
      resources, targets or relationships it is a rate model per site and
      lineage, calibrated against the exact runner on the bench.
+262. **A vertical probe comes before the order from bodies onward is taken
+     as fixed.** Put to Mark on 2026-09-26, from S2's checkpoint 3 plan for
+     the thirty shapes: keep ruling 195's order with no probe, run the five
+     used mechanics over a minimal allocated body exact against crowd with
+     controls first, or move one whole body module first? Mark: "Vertical
+     probe first." So the probe shows which extensions the mechanics need and
+     whether the crowd still finds identical members once bodies carry cells,
+     and the order from bodies on is confirmed after it.
+263. **Each family is built and certified in Isocosm, and `mesocosm-core`'s
+     copies retire together at M3.** Put to Mark on 2026-09-26, with 262: how
+     is "`mesocosm-core` no longer owns it" met while Mesocosm's consumers
+     still use the core: build and retire together, consume Isocosm's types
+     per family, or move matter and processes with bodies? Mark: "Build,
+     retire together." The duplication is temporary and no adapter is built.
+264. **Part roles are open keys in the world's rules with a default set, and
+     that set is examined before it is fixed.** Put to Mark on 2026-09-26,
+     with 262: part roles from `isometer-core`'s closed four, open keys, or
+     open keys with the four as the default? Mark: "i feel like we're missing
+     many default part roles, but 1 sounds right. i don't mind isometer
+     depending on a basic set of archetypal parts satisfying each of the many
+     roles. limb, mass, sensor, plate, neurology, structure, idk. just feels
+     underexamined". Told that the code's four roles are shapes, lump, rod,
+     sheet and point, while a part's function comes from the processes it
+     expresses, so that neurology and structure are functions, and asked
+     which axis wants more: Mark: "Examine first." A survey of both axes, in
+     the code and in biology, comes back to him before the default set is
+     ruled.
+265. **The thirty shapes are expressed as data with the used mechanics, and
+     the definition widens with the fields the probe proves.** Put to Mark on
+     2026-09-26, with 262: the shapes as data (X1), those plus the extensions
+     the five used mechanics need (X2 to X6), or wider still with the trait
+     catalogue's fields? Mark asked for the third's case: "what's the
+     argument for option 3? any drawbacks? otherwise, that's how I lean".
+     Answered that widening makes traits differ in what they do rather than
+     in name and lets packs define real processes as data, at the cost of
+     every new field entering every world's digest, design surface ahead of
+     the probe's evidence, and an overlap with composing tracts on a body;
+     and offered widening with the fields the probe proves. Mark: "Wider,
+     fields from the probe."
+266. **Rate models take over where grouping stops paying.** Put to Mark on
+     2026-09-26, from a second review, which found that the certified crowd
+     handled a shared resource's competition exactly in distribution: move
+     ruling 261's line from "shares resources, targets or relationships"?
+     Mark: "Where grouping stops paying." So the exact crowd runs wherever it
+     still finds identical members, shared-resource competition included, as
+     certified, and calibrated rate models take the ground where diverse
+     bodies and relationships defeat grouping. This amends 261.
+267. **A level of the web stays alive by four measures.** Put to Mark on
+     2026-09-26, from the second review's caution that births balancing deaths
+     could certify a lifeless world: ruling 260's "stays alive in most draws",
+     by births balancing deaths, or by persistence, turnover, collapse and the
+     web's response to an intervention? Mark: "The four measures." Each has a
+     bound in the world's rules.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6008,6 +6064,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 262 to 267 recorded, from S2's checkpoint 3 plan and
+  a second review: a vertical probe before the order from bodies on is
+  fixed; families built in Isocosm with `mesocosm-core`'s copies retiring
+  together at M3; part roles open keys with a default set, examined first;
+  the thirty shapes as data with the used mechanics, the definition widened
+  by what the probe proves; rate models where grouping stops paying,
+  amending 261; and a web kept alive by persistence, turnover, collapse
+  and its response to an intervention. A reading joins 208: any
+  conjunction of thresholds one rule tests together is a reading of its
+  own, since the check compares readings one at a time.
 - 2026-09-26: rulings 256 to 261 recorded, from an outside review of the
   sim that Mark brought in: the clock counts a fine unit, a minute by
   default, each process on its own period; the scheduler indexes processes
