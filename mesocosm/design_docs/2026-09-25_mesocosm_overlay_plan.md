@@ -175,7 +175,9 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   is within the 600-line ceiling (ruling 193), `mesocosm-core` no longer
   owns it, and the level of the web it enables stays alive in most draws:
   producers alone, then with consumers, then with decomposers closing the
-  loop (ruling 260). Lands under the sim plan's S1 and S2.
+  loop (ruling 260), measured by persistence, turnover, collapse and the
+  web's response to an intervention (267): disease, an overperforming
+  lineage, or a keystone lost (283). Lands under the sim plan's S1 and S2.
 - **M3, directing on Isocosm,** built only there, with no prototype on the
   current host (194). Done when a played critter acts on its own
   needs, senses and mood under the player's nudges, its range, home,

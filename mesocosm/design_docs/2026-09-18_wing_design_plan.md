@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 282, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 283, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2395,6 +2395,16 @@ what later sections derive from.
      terrain; note it for V2 or open a lane? Mark: "Open a lane now." It
      works within this repository, and stops if the cap in mere's `modulus`
      would have to change.
+283. **The first disturbances are disease, an overperformer and a keystone
+     lost; catastrophe follows.** Put to Mark on 2026-09-26: which
+     disturbances the sim models first, serving both as the viability gate's
+     interventions (ruling 267) and, at scale, as ruling 226's world threats:
+     disease, catastrophe, an overperformer, a keystone lost? Mark: "Disease,
+     An overperformer, A keystone lost, Catastrophe later, to test the
+     criteria of systemic resilience". So a pathogen spreading by contact and
+     density, one lineage outcompeting the web, and a top consumer or key
+     producer removed come first, and meteor, drought, flood and fire follow
+     once the gate's criteria stand, to test the web's resilience as a whole.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6180,6 +6190,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: ruling 283 recorded: the first disturbances are disease, an
+  overperformer and a keystone lost, catastrophe following to test the
+  web's resilience as a whole.
 - 2026-09-26: rulings 279 to 282 recorded: the far rungs parked; a doc lane
   for the rewrite debt, taken by the RPG systems session; the anatomy brief
   after the probe; and a lane wiring paging into the VTT's scene board, run
