@@ -9,13 +9,14 @@
 
 use super::{
     Competition, ProbeWorld, Side,
-    aggregate::{self, normalize, value},
+    aggregate::{self, normalize},
     allocate,
     draws::Stream,
     resolve,
 };
 use crate::{
     Result,
+    meaning::value,
     rules::{Process, Shape},
     schema::*,
     simulation::Work,
@@ -195,7 +196,7 @@ impl<'w> Crowd<'w> {
                 let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
                     continue;
                 };
-                if aggregate::holds(&c.kinds[k].hungry, e, &self.sites[&site], self.tick)? {
+                if aggregate::holds(&c.kinds[k].hungry, Some(e), &self.sites[&site], self.tick)? {
                     hungry.push((e.clone(), n, k));
                 }
             }

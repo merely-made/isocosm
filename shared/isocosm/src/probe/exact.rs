@@ -7,7 +7,8 @@
 //! after each tick regroups equal neighbours in storage and changes no
 //! outcome.
 
-use super::{Competition, ProbeWorld, Side, aggregate::value, allocate, draws::Stream, resolve};
+use super::{Competition, ProbeWorld, Side, allocate, draws::Stream, resolve};
+use crate::meaning::value;
 use crate::{
     Execution, Result, Simulation,
     schema::*,

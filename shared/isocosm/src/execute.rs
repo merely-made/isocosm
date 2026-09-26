@@ -1,7 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{Result, rules::*, schema::*, simulation::*};
+use crate::{
+    Result,
+    meaning::{self, Parties, credit, debit},
+    rules::*,
+    schema::*,
+    simulation::*,
+};
 use std::collections::{BTreeMap, BTreeSet};
 
 impl Simulation {
@@ -192,44 +198,17 @@ impl Simulation {
         e: &Effect,
         cause: &str,
     ) -> Result<bool> {
+        let mut parties = Bound {
+            sim: self,
+            actor,
+            target,
+            place,
+        };
+        if let Some(done) = meaning::effect(&mut parties, e) {
+            done?;
+            return Ok(false);
+        }
         match e {
-            Effect::Transfer {
-                from,
-                to,
-                account,
-                amount,
-            } => {
-                debit(
-                    self.ledger_mut(actor, target, place, *from)?,
-                    account,
-                    *amount,
-                )?;
-                credit(
-                    self.ledger_mut(actor, target, place, *to)?,
-                    account,
-                    *amount,
-                )?;
-            },
-            Effect::Transform { who, take, give } => {
-                let ledger = self.ledger_mut(actor, target, place, *who)?;
-                for (key, amount) in take {
-                    debit(ledger, key, *amount)?;
-                }
-                for (key, amount) in give {
-                    credit(ledger, key, *amount)?;
-                }
-            },
-            Effect::Condition { key, delta } => {
-                let slot = self
-                    .state
-                    .sites
-                    .get_mut(&place)
-                    .unwrap()
-                    .conditions
-                    .entry(key.clone())
-                    .or_default();
-                *slot = slot.checked_add(*delta).ok_or("condition overflow")?;
-            },
             Effect::Relate { kind, present } => {
                 let relation = Relation {
                     subject: actor,
@@ -241,38 +220,6 @@ impl Simulation {
                 } else {
                     self.state.relations.remove(&relation);
                 }
-            },
-            Effect::Trait { who, key, present } => {
-                let id = self.bound(actor, target, *who)?;
-                let entity = &mut self
-                    .state
-                    .population
-                    .groups
-                    .get_mut(&id)
-                    .ok_or("body missing")?
-                    .entity;
-                if *present {
-                    entity.traits.insert(key.clone());
-                } else {
-                    entity.traits.remove(key);
-                }
-                entity.body_revision = entity
-                    .body_revision
-                    .checked_add(1)
-                    .ok_or("body revision overflow")?;
-            },
-            Effect::Practice { key, amount } => {
-                let slot = self
-                    .state
-                    .population
-                    .groups
-                    .get_mut(&actor)
-                    .unwrap()
-                    .entity
-                    .skills
-                    .entry(key.clone())
-                    .or_default();
-                *slot = slot.checked_add(*amount).ok_or("skill overflow")?;
             },
             Effect::Move { destination } => {
                 if !self.state.sites[&place]
@@ -335,15 +282,6 @@ impl Simulation {
                     kind: "sim:parent".into(),
                 });
             },
-            Effect::Death => {
-                self.state
-                    .population
-                    .groups
-                    .get_mut(&actor)
-                    .unwrap()
-                    .entity
-                    .alive = false;
-            },
             Effect::Tell { event } => {
                 if !self.knows(actor, event)? {
                     return Err("actor does not know this event".into());
@@ -401,22 +339,51 @@ impl Simulation {
                 }])[0]
                     .feat);
             },
+            // Every other effect has its meaning in `meaning::effect`.
+            _ => unreachable!("shared effects return above"),
         }
         Ok(false)
     }
 }
 
-fn debit(ledger: &mut Ledger, key: &str, amount: u64) -> Result<()> {
-    let slot = ledger.entry(key.into()).or_default();
-    *slot = slot
-        .checked_sub(amount)
-        .ok_or_else(|| format!("insufficient {key}"))?;
-    Ok(())
+/// One member's bindings in the staged world: the individual runner's
+/// parties for the shared effect meanings.
+struct Bound<'a> {
+    sim: &'a mut Simulation,
+    actor: Id,
+    target: Option<Id>,
+    place: Id,
 }
-fn credit(ledger: &mut Ledger, key: &str, amount: u64) -> Result<()> {
-    let slot = ledger.entry(key.into()).or_default();
-    *slot = slot
-        .checked_add(amount)
-        .ok_or_else(|| format!("account overflow: {key}"))?;
-    Ok(())
+
+impl Parties for Bound<'_> {
+    fn reach(&mut self, who: Binding) -> Result<()> {
+        self.sim
+            .ledger_mut(self.actor, self.target, self.place, who)
+            .map(|_| ())
+    }
+    fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        debit(
+            self.sim
+                .ledger_mut(self.actor, self.target, self.place, who)?,
+            key,
+            amount,
+        )
+    }
+    fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        credit(
+            self.sim
+                .ledger_mut(self.actor, self.target, self.place, who)?,
+            key,
+            amount,
+        )
+    }
+    fn body(&mut self, who: Binding) -> Result<&mut Entity> {
+        let id = self.sim.bound(self.actor, self.target, who)?;
+        let group = self.sim.state.population.groups.get_mut(&id);
+        Ok(&mut group.ok_or("body missing")?.entity)
+    }
+    fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
+        let site = self.sim.state.sites.get_mut(&self.place);
+        meaning::shift(&mut site.ok_or("site missing")?.conditions, key, delta, 1)
+    }
 }

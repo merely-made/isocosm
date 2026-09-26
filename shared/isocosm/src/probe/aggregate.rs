@@ -1,78 +1,111 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! A process definition applied to every member of a bin at once: the
-//! aggregate form of the sim plan's §3.1. Queries mean what the core's
-//! interpreter means by them. Anything identity-dependent (risk, targets,
-//! noted events) is refused, as is a site debit that would cover only some
-//! of the bin, since a crowd has no member order to ration by.
+//! A process applied to every member of a state at once, the aggregate form
+//! of the sim plan's §3.1. What queries read and effects do is `meaning`'s,
+//! shared with the individual runner. What is the crowd's own: it refuses
+//! anything that depends on identity (risk, targets, relations, noted
+//! events), a site ledger carries every member of the state, and a site
+//! debit that would cover only some of them is refused, since a crowd has no
+//! member order to ration by.
 
 use crate::{
     Result,
+    meaning::{self, Named, Parties, Scene, credit, debit, value},
     rules::{AccountKind, Binding, Effect, Process, Query, Rules},
     schema::*,
 };
 
-/// Zero entries dropped: no query or inspection tells absent from zero.
+/// Zero entries dropped: no query and no inspection tells absent from zero.
 pub(super) fn normalize(mut e: Entity) -> Entity {
     e.accounts.retain(|_, v| *v != 0);
     e
 }
 
-pub(super) fn value(ledger: &Ledger, key: &str) -> u64 {
-    ledger.get(key).copied().unwrap_or(0)
+fn no_relations(_: &Key) -> Result<bool> {
+    Err("the crowd keeps no relations".into())
 }
 
-fn ledger<'a>(who: &Binding, e: &'a Entity, site: &'a Site) -> Result<&'a Ledger> {
-    match who {
-        Binding::Actor => Ok(&e.accounts),
-        Binding::Place => Ok(&site.accounts),
-        Binding::Target => Err("the crowd has no targets".into()),
+/// What a query reads of one member's state at a site, or of the site alone.
+pub(super) fn holds(q: &Query, e: Option<&Entity>, site: &Site, tick: Tick) -> Result<bool> {
+    let scene = Scene {
+        actor: e,
+        target: Named::Unnamed,
+        site: Some(site),
+        tick,
+        related: &no_relations,
+    };
+    Ok(meaning::read(q, &scene)?.0)
+}
+
+/// The crowd's parties: one state's members and their site.
+struct Bin<'a> {
+    member: &'a mut Entity,
+    site: &'a mut Site,
+    count: u64,
+    contended: bool,
+}
+
+impl Parties for Bin<'_> {
+    fn reach(&mut self, who: Binding) -> Result<()> {
+        match who {
+            Binding::Target => Err("the crowd has no targets".into()),
+            _ => Ok(()),
+        }
+    }
+    fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        match who {
+            Binding::Actor => debit(&mut self.member.accounts, key, amount),
+            Binding::Place => {
+                let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
+                let have = value(&self.site.accounts, key);
+                // Enough for all, or not enough for one: every member fares
+                // alike. Anything between would feed some in identity order.
+                if have >= total || have < amount {
+                    debit(&mut self.site.accounts, key, total)
+                } else {
+                    self.contended = true;
+                    Err(format!("contended site debit of {key}"))
+                }
+            },
+            Binding::Target => Err("the crowd has no targets".into()),
+        }
+    }
+    fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        match who {
+            Binding::Actor => credit(&mut self.member.accounts, key, amount),
+            Binding::Place => {
+                let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
+                credit(&mut self.site.accounts, key, total)
+            },
+            Binding::Target => Err("the crowd has no targets".into()),
+        }
+    }
+    fn body(&mut self, who: Binding) -> Result<&mut Entity> {
+        match who {
+            Binding::Actor => Ok(self.member),
+            _ => Err("the crowd binds only the actor's body".into()),
+        }
+    }
+    fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
+        meaning::shift(&mut self.site.conditions, key, delta, self.count)
     }
 }
 
-pub(super) fn holds(q: &Query, e: &Entity, site: &Site, tick: Tick) -> Result<bool> {
-    let actor = |b: &Binding| match b {
-        Binding::Actor => Ok(()),
-        other => Err(format!("the crowd reads no {other:?} body")),
-    };
-    Ok(match q {
-        Query::Alive(b) => {
-            actor(b)?;
-            e.alive
-        },
-        Query::Trait { who, key } => {
-            actor(who)?;
-            e.traits.contains(key)
-        },
-        Query::Account { who, key, at_least } => value(ledger(who, e, site)?, key) >= *at_least,
-        Query::Below { who, key, amount } => value(ledger(who, e, site)?, key) < *amount,
-        Query::Age { at_least } => tick.saturating_sub(e.born) >= *at_least,
-        Query::Condition { key, at_least } => {
-            site.conditions.get(key).is_some_and(|v| v >= at_least)
-        },
-        other => return Err(format!("the crowd cannot read {other:?}")),
-    })
-}
-
-/// A query that reads only the site, answered for the site alone.
-pub(super) fn site_holds(q: &Query, site: &Site) -> Result<bool> {
-    Ok(match q {
-        Query::Account {
-            who: Binding::Place,
-            key,
-            at_least,
-        } => value(&site.accounts, key) >= *at_least,
-        Query::Below {
-            who: Binding::Place,
-            key,
-            amount,
-        } => value(&site.accounts, key) < *amount,
-        Query::Condition { key, at_least } => {
-            site.conditions.get(key).is_some_and(|v| v >= at_least)
-        },
-        other => return Err(format!("{other:?} reads more than a site")),
-    })
+fn identity_bound(p: &Process) -> bool {
+    let target = |b: &Binding| *b == Binding::Target;
+    p.risk.is_some()
+        || p.target.is_some()
+        || p.note
+        || p.requires.iter().any(|q| match q {
+            Query::Related { .. } => true,
+            Query::Alive(b) => target(b),
+            Query::Trait { who, .. }
+            | Query::Account { who, .. }
+            | Query::Below { who, .. }
+            | Query::Part { who, .. } => target(who),
+            Query::Age { .. } | Query::Condition { .. } => false,
+        })
 }
 
 fn reads_site(q: &Query) -> bool {
@@ -88,55 +121,23 @@ fn reads_site(q: &Query) -> bool {
     )
 }
 
-/// One member's worth from the member, or every member's from the site.
-/// False is the core's blocked outcome: the member is short, or the site
-/// cannot cover even one member, so every member of the bin fails alike.
-fn take(
-    who: &Binding,
-    e: &mut Entity,
-    site: &mut Site,
-    key: &str,
-    amount: u64,
-    count: u64,
-) -> Result<bool> {
-    let (ledger, total) = match who {
-        Binding::Actor => (&mut e.accounts, amount),
-        Binding::Place => (
-            &mut site.accounts,
-            amount.checked_mul(count).ok_or("amount overflow")?,
-        ),
-        Binding::Target => return Err("the crowd has no targets".into()),
-    };
-    let have = value(ledger, key);
-    if have >= total {
-        ledger.insert(key.into(), have - total);
-        Ok(true)
-    } else if have < amount {
-        Ok(false)
-    } else {
-        Err(format!("contended site debit of {key}"))
-    }
-}
-
-fn give(
-    who: &Binding,
-    e: &mut Entity,
-    site: &mut Site,
-    key: &str,
-    amount: u64,
-    count: u64,
-) -> Result<()> {
-    let (ledger, total) = match who {
-        Binding::Actor => (&mut e.accounts, amount),
-        Binding::Place => (
-            &mut site.accounts,
-            amount.checked_mul(count).ok_or("amount overflow")?,
-        ),
-        Binding::Target => return Err("the crowd has no targets".into()),
-    };
-    let slot = ledger.entry(key.into()).or_default();
-    *slot = slot.checked_add(total).ok_or("account overflow")?;
-    Ok(())
+fn writes_site(e: &Effect) -> bool {
+    matches!(
+        e,
+        Effect::Condition { .. }
+            | Effect::Transfer {
+                to: Binding::Place,
+                ..
+            }
+            | Effect::Transfer {
+                from: Binding::Place,
+                ..
+            }
+            | Effect::Transform {
+                who: Binding::Place,
+                ..
+            }
+    )
 }
 
 /// Applies `p` to `count` members sharing state `e` at `site`. `Ok(None)` is
@@ -149,75 +150,36 @@ pub(super) fn apply(
     count: u64,
     tick: Tick,
 ) -> Result<Option<Entity>> {
-    if p.risk.is_some() || p.target.is_some() || p.note {
+    if identity_bound(p) {
         return Err(format!(
             "{} depends on identity; it runs individually",
             p.id
         ));
     }
-    let writes_site = p.commitments.iter().chain(&p.effects).any(|effect| {
-        matches!(
-            effect,
-            Effect::Condition { .. }
-                | Effect::Transfer {
-                    to: Binding::Place,
-                    ..
-                }
-                | Effect::Transfer {
-                    from: Binding::Place,
-                    ..
-                }
-                | Effect::Transform {
-                    who: Binding::Place,
-                    ..
-                }
-        )
-    });
-    if count > 1 && writes_site && p.requires.iter().any(reads_site) {
+    let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
+    if count > 1 && effects.iter().any(|e| writes_site(e)) && p.requires.iter().any(reads_site) {
         // Each member would read the site after the last one wrote it.
         return Err(format!("{} reads a site it writes", p.id));
     }
     for q in &p.requires {
-        if !holds(q, e, site, tick)? {
+        // A query that errs blocks, as it does in the core.
+        if !holds(q, Some(e), site, tick).unwrap_or(false) {
             return Ok(None);
         }
     }
     let (mut member, mut place) = (e.clone(), site.clone());
-    for effect in p.commitments.iter().chain(&p.effects) {
-        match effect {
-            Effect::Transfer {
-                from,
-                to,
-                account,
-                amount,
-            } => {
-                if !take(from, &mut member, &mut place, account, *amount, count)? {
-                    return Ok(None);
-                }
-                give(to, &mut member, &mut place, account, *amount, count)?;
-            },
-            Effect::Transform {
-                who,
-                take: t,
-                give: g,
-            } => {
-                for (key, amount) in t {
-                    if !take(who, &mut member, &mut place, key, *amount, count)? {
-                        return Ok(None);
-                    }
-                }
-                for (key, amount) in g {
-                    give(who, &mut member, &mut place, key, *amount, count)?;
-                }
-            },
-            Effect::Condition { key, delta } => {
-                let times = i64::try_from(count).map_err(|e| e.to_string())?;
-                let total = delta.checked_mul(times).ok_or("condition overflow")?;
-                let slot = place.conditions.entry(key.clone()).or_default();
-                *slot = slot.checked_add(total).ok_or("condition overflow")?;
-            },
-            Effect::Death => member.alive = false,
-            other => return Err(format!("the crowd cannot apply {other:?}")),
+    let mut bin = Bin {
+        member: &mut member,
+        site: &mut place,
+        count,
+        contended: false,
+    };
+    for effect in effects {
+        match meaning::effect(&mut bin, effect) {
+            None => return Err(format!("the crowd cannot apply {effect:?}")),
+            Some(Ok(())) => {},
+            Some(Err(why)) if bin.contended => return Err(format!("{}: {why}", p.id)),
+            Some(Err(_)) => return Ok(None),
         }
     }
     *site = place;

@@ -286,7 +286,7 @@ pub fn evaluate(
                 for &(e, n) in members {
                     let site = sites.get(&e.place).ok_or("a member at an unknown site")?;
                     if selector.iter().all(|t| e.traits.contains(t))
-                        && aggregate::holds(query, e, site, tick)?
+                        && aggregate::holds(query, Some(e), site, tick)?
                     {
                         total += n;
                     }
@@ -296,7 +296,7 @@ pub fn evaluate(
             Probe::Sites { query } => {
                 let mut total = 0;
                 for site in sites.values() {
-                    total += u64::from(aggregate::site_holds(query, site)?);
+                    total += u64::from(aggregate::holds(query, None, site, tick)?);
                 }
                 total
             },
@@ -309,7 +309,7 @@ pub fn evaluate(
                     Field::Place => e.place,
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
-                    Field::Account(k) => aggregate::value(&e.accounts, k),
+                    Field::Account(k) => crate::meaning::value(&e.accounts, k),
                 }
             },
         });
