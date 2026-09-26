@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 248, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 252, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2114,6 +2114,34 @@ what later sections derive from.
      still write its facts as notes, so the sim can be switched on later over
      the same history, or does switching it on found a world from that point
      (ruling 126)? Mark: "Writes notes."
+249. **The bench calibrates Pathfinder 2e first.** Put to Mark on
+     2026-09-26, from the VTT overlay plan's decision 6: which ruleset the
+     bench calibrates first against the sim's fight at the first tolerance
+     (ruling 209), the 5e SRD content pack in the repository or Pathfinder
+     2e's skeleton? Mark: "Pathfinder 2e first."
+250. **An uncalibrated campaign warns when it opens and marks its
+     receipts.** Put to Mark on 2026-09-26, with 249: what does the table see
+     of ruling 189's debug or experimental mode, a warning when the campaign
+     opens with every receipt and save marked uncalibrated, or a standing
+     banner as well? Mark: "Warn at open, mark receipts."
+251. **Where an incoming part attaches is its attachment.** Put to Mark on
+     2026-09-26, from the tract rename lane (ruling 224), which left alone a
+     sense of *site* that is neither the world map's cell nor the tract: the
+     point where an incoming part attaches to a body in growth or a graft
+     (`growth::attachment()`, "landing site"). Attachment, placement, or
+     tract? Mark: "Attachment."
+252. **An organ's position in a body plan's template is its situs.** Put to
+     Mark on 2026-09-26, with 251: an organ's position in a plan's template,
+     a (tagma, segment) coordinate, the archetype's "organ sites": slot,
+     tract, or named when the bodies family moves in M2? Mark: "Situs.
+     Latin, anatomical, no conflict. Good?" Checked the same day: anatomy's
+     word for where an organ lies, as in situs solitus, the organs' ordinary
+     arrangement; among the anatomical candidates §3.4.1 listed when tract
+     was chosen (ruling 157); used nowhere in the code; an in-sim word and
+     not a crate, so the tier rule asks no registry check, though crates.io's
+     `situs` is free; its other common sense, the legal situs of property,
+     lies far from this domain. So *situs* it is, and with 251, *site* keeps
+     only the world map's meaning.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -4106,7 +4134,9 @@ that fit the sense, none checked or coined: *organ*, which the wing also
 spends on its engine organs; *locus*, genetics' word for a position;
 *situs*, anatomy's Latin for where an organ lies; and *anlage* or
 *primordium*, embryology's words for the tissue an organ develops from,
-which would suit the proposed and declared forms.
+which would suit the proposed and declared forms. *Ruled since:* tract for
+the expressed process (ruling 157), attachment for where an incoming part
+joins (251), and situs for an organ's position in a plan's template (252).
 
 "Does this need to be a crate, or can it be a component of the wing?"
 *Recommendation, accepted by Mark 2026-09-21 (D13):* a component, one module of the sim, and
@@ -5897,6 +5927,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 249 to 252 recorded: the bench calibrates Pathfinder
+  2e first; an uncalibrated campaign warns when it opens and marks its
+  receipts; and the two senses of *site* the tract rename left alone become
+  attachment, where an incoming part joins, and situs, an organ's position in
+  a plan's template. The tract rename itself landed on main (23147d1 to
+  ad65eb2), published by a peer session's push while its verification on
+  main was still running.
 - 2026-09-26: rulings 245 to 248 recorded, the VTT overlay plan's decisions
   3, 4, 5 and 7: sharing a character and the DM playing the unclaimed on by
   default; downtime by each player's yes; the tape-drawn faction turn
