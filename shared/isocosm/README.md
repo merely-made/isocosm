@@ -86,9 +86,14 @@ founding parameters accompany its realized rules and topology.
   and its standing shifts for the rest of the fight. The fight ends when a
   side is spent or, sized up again, outmatched. Both runners fight through
   one function and apply effects through the interpreter's own meanings.
-  A competition's definition and the per-reading similitude bounds are part
-  of the world's rules and its rules digest. The rounds that resolve a
-  competition still run in the probe, not the core's scheduler.
+  A world's competitions are keyed by the site account each contests
+  (ruling 236) and run at once in a tick (ruling 240): each resolves against
+  its members' state at the tick's start, fights on copies, and at the
+  tick's end each member's rounds, reserve spent (capped at what it holds)
+  and winnings settle in one order. `isocosm-probe --water` has every world
+  contest water as well as food. The definitions and the per-reading
+  similitude bounds are part of the world's rules and its rules digest. The
+  rounds still run in the probe, not the core's scheduler.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does

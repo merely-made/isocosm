@@ -20,8 +20,8 @@ pub const STRAIN: &str = "mind:strain";
 /// content zero: a member's mood is minus the weights of its needs.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MindFounding {
-    /// Mood lost while hungry, while at low reserve, and while starving,
-    /// one tick from death.
+    /// Mood lost while wanting a contested thing, drawn for each, while at
+    /// low reserve, and while starving, one tick from death.
     pub hungry: [u64; 2],
     pub low: [u64; 2],
     pub starving: [u64; 2],
@@ -62,10 +62,12 @@ impl Default for MindFounding {
     }
 }
 
-/// One competing kind as the mind reads it.
+/// One competing kind as the mind reads it: its reserve, and what it wants
+/// of each contested thing.
 pub(super) struct Kind<'a> {
     pub identity: &'a str,
     pub body: &'a str,
+    pub wants: Vec<Query>,
 }
 
 fn below(key: &str, amount: u64) -> Query {
@@ -108,11 +110,10 @@ impl MindFounding {
             let span = r[1].abs_diff(r[0]) + 1;
             r[0].saturating_add_unsigned(crate::draw(seed, domain, &[i]) % span)
         };
-        let weight = |domain: &str, r: [u64; 2]| -(pick(domain, 0, r) as i64);
-        let (hungry, low, starving) = (
-            weight("mind-hungry", self.hungry),
-            weight("mind-low", self.low),
-            weight("mind-starving", self.starving),
+        let weight = |domain: &str, i: u64, r: [u64; 2]| -(pick(domain, i, r) as i64);
+        let (low, starving) = (
+            weight("mind-low", 0, self.low),
+            weight("mind-starving", 0, self.starving),
         );
         // Low reserve lies between starving and hunger.
         let reserve = pick("mind-reserve", 0, [2, hunger.max(2)]);
@@ -121,11 +122,12 @@ impl MindFounding {
         let mut rise_traits = BTreeMap::new();
         for (i, k) in kinds.iter().enumerate() {
             let own = BTreeSet::from([k.identity.to_string()]);
-            for (query, weight) in [
-                (below(k.body, hunger), hungry),
-                (below(k.body, reserve), low),
-                (below(k.body, 2), starving),
-            ] {
+            let wanting = k.wants.iter().enumerate().map(|(j, want)| {
+                let w = weight("mind-want", j as u64, self.hungry);
+                (want.clone(), w)
+            });
+            let reserves = [(below(k.body, reserve), low), (below(k.body, 2), starving)];
+            for (query, weight) in wanting.collect::<Vec<_>>().into_iter().chain(reserves) {
                 needs.push(Need {
                     traits: own.clone(),
                     query,

@@ -11,7 +11,7 @@
 mod round;
 
 use super::{
-    Competition, Mind, ProbeWorld,
+    Mind, ProbeWorld,
     aggregate::{self, normalize},
 };
 use crate::{
@@ -35,10 +35,11 @@ pub enum Variant {
 
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
-    competition: &'w Competition,
     mind: &'w Mind,
     dynamics: u64,
     variant: Variant,
+    /// Draw the competitions in reverse order, to show it changes nothing.
+    reversed: bool,
     matter: u128,
     pub tick: Tick,
     pub sites: BTreeMap<Id, Site>,
@@ -54,10 +55,10 @@ impl<'w> Crowd<'w> {
         }
         let mut crowd = Self {
             world,
-            competition: world.competition()?,
             mind: world.mind()?,
             dynamics,
             variant,
+            reversed: false,
             matter: 0,
             tick: 0,
             sites: world.genesis.sites.clone(),
@@ -73,6 +74,12 @@ impl<'w> Crowd<'w> {
             self.step()?;
         }
         Ok(self)
+    }
+
+    #[cfg(test)]
+    pub(super) fn reversed(mut self) -> Self {
+        self.reversed = true;
+        self
     }
 
     fn total_matter(&self) -> u128 {
@@ -180,10 +187,10 @@ impl<'w> Crowd<'w> {
     }
 
     fn average(&mut self) {
-        let c = self.competition;
+        let kinds = self.world.kinds();
         let mut classes: BTreeMap<(usize, Id), Vec<(Entity, u64)>> = BTreeMap::new();
         for (e, &n) in &self.bins {
-            let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
+            let Some(k) = kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
                 continue;
             };
             if e.alive {
@@ -194,7 +201,7 @@ impl<'w> Crowd<'w> {
             }
         }
         for ((k, _), members) in classes {
-            let body = &c.kinds[k].body;
+            let body = &kinds[k].body;
             let n: u64 = members.iter().map(|m| m.1).sum();
             let total: u64 = members
                 .iter()

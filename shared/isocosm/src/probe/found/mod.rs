@@ -3,10 +3,11 @@
 
 //! The probe's declared domain. Every quantity a world's rules hold is drawn
 //! from its seed within the stated ranges, the fight's and the mind's
-//! included. Food regrows from site soil; upkeep and fight costs return body
-//! to it, so matter cycles. The lineage count is fixed so every draw reads
-//! alike.
+//! included. A world contests food, and water too when `water` is set, each
+//! keyed by its site account (ruling 236). The lineage count is fixed so
+//! every draw reads alike.
 
+mod contested;
 mod mind;
 
 pub use mind::{MindFounding, STRAIN};
@@ -15,6 +16,7 @@ use super::{Competition, Competitor, ProbeWorld, Similitude};
 use crate::{
     Result, generate::process, population::Population, rules::*, schema::*, simulation::Genesis,
 };
+use contested::{FOOD, Thing, WATER};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -28,8 +30,12 @@ pub struct ProbeFounding {
     /// Members per site and lineage.
     pub members: [u64; 2],
     pub cohort: u64,
+    /// Contest water as well as food.
+    pub water: bool,
+    /// Each contested thing's ration, drawn for each.
     pub ration: [u64; 2],
-    /// A member is hungry while its body is below this.
+    /// A member wants a contested thing while its store of it is below
+    /// this, drawn for each.
     pub hunger: [u64; 2],
     pub margin: [u64; 2],
     /// Reserve spent by the side losing an exchange.
@@ -42,7 +48,8 @@ pub struct ProbeFounding {
     /// Strain each side takes per round, and per unit of reserve spent.
     pub round_strain: [u64; 2],
     pub spend_strain: [u64; 2],
-    /// Food regrown per tick at a site, per mille of the site's founders.
+    /// Each thing regrown per tick at a site, per mille of the site's
+    /// founders, drawn for each.
     pub regrowth: [u64; 2],
     pub mind: MindFounding,
     pub bound_per_mille: u32,
@@ -59,6 +66,7 @@ impl Default for ProbeFounding {
             // at a cost the exact runner can repeat a thousand times.
             members: [64, 128],
             cohort: 16,
+            water: false,
             ration: [2, 4],
             hunger: [3, 6],
             margin: [0, 2],
@@ -78,56 +86,18 @@ fn set(values: &[String]) -> BTreeSet<Key> {
     values.iter().cloned().collect()
 }
 
-fn account(key: &str, at_least: u64) -> Query {
-    Query::Account {
-        who: Binding::Actor,
-        key: key.into(),
-        at_least,
+fn matter(lineage: &str) -> AccountKind {
+    AccountKind::Matter {
+        lineage: lineage.into(),
     }
 }
 
-fn spend(body: &str) -> Vec<Effect> {
-    vec![
-        Effect::Transform {
-            who: Binding::Actor,
-            take: BTreeMap::from([(body.into(), 1)]),
-            give: BTreeMap::from([("world:soil".into(), 1)]),
-        },
-        Effect::Transfer {
-            from: Binding::Actor,
-            to: Binding::Place,
-            account: "world:soil".into(),
-            amount: 1,
-        },
-    ]
-}
-
-/// Strain taken in a fight; nothing when the draw gave none.
-fn strain(amount: u64) -> Vec<Effect> {
-    if amount == 0 {
-        return vec![];
-    }
-    vec![Effect::Transform {
-        who: Binding::Actor,
-        take: BTreeMap::new(),
-        give: BTreeMap::from([(STRAIN.into(), amount)]),
-    }]
-}
-
-fn feed(body: &str, amount: u64) -> Vec<Effect> {
-    vec![
-        Effect::Transfer {
-            from: Binding::Place,
-            to: Binding::Actor,
-            account: "world:food".into(),
-            amount,
-        },
-        Effect::Transform {
-            who: Binding::Actor,
-            take: BTreeMap::from([("world:food".into(), amount)]),
-            give: BTreeMap::from([(body.into(), amount)]),
-        },
-    ]
+/// One contested thing as drawn for a world.
+struct Drawn {
+    thing: &'static Thing,
+    ration: u64,
+    want: u64,
+    regrowth: u64,
 }
 
 impl ProbeFounding {
@@ -135,7 +105,7 @@ impl ProbeFounding {
         range[0] + crate::draw(self.seed, domain, &[i]) % (range[1] - range[0] + 1)
     }
 
-    pub fn generate(&self) -> Result<ProbeWorld> {
+    fn valid(&self) -> bool {
         let ranges = [
             self.sites,
             self.members,
@@ -149,46 +119,50 @@ impl ProbeFounding {
             self.spend_strain,
             self.regrowth,
         ];
-        if ranges.iter().any(|r| r[0] > r[1])
-            || !self.mind.valid()
-            || self.sites[0] == 0
-            || self.ration[0] < 2
-            || self.hunger[0] == 0
-            || self.cost[0] == 0
-            || self.upset[1] > 1000
-            || self.lineages == 0
-            || self.cohort == 0
-            || self.ticks == 0
-            || self.bound_per_mille > 1000
-        {
+        ranges.iter().all(|r| r[0] <= r[1])
+            && self.mind.valid()
+            && self.sites[0] > 0
+            && self.ration[0] >= 2
+            && self.hunger[0] > 0
+            && self.cost[0] > 0
+            && self.upset[1] <= 1000
+            && self.lineages > 0
+            && self.cohort > 0
+            && self.ticks > 0
+            && self.bound_per_mille <= 1000
+    }
+
+    pub fn generate(&self) -> Result<ProbeWorld> {
+        if !self.valid() {
             return Err("probe founding outside its declared domain".into());
         }
         let sites = self.pick("probe-sites", 0, self.sites);
-        let ration = self.pick("probe-ration", 0, self.ration);
-        let hunger = self.pick("probe-hunger", 0, self.hunger);
-        let margin = self.pick("probe-margin", 0, self.margin);
-        let cost = self.pick("probe-cost", 0, self.cost);
-        let upset = self.pick("probe-upset", 0, self.upset) as u32;
-        let advantage = self.pick("probe-advantage", 0, self.advantage);
-        let spend_strain = self.pick("probe-spend-strain", 0, self.spend_strain);
         let per_site: Vec<u64> = (0..self.lineages)
             .map(|i| self.pick("probe-members", u64::from(i), self.members))
             .collect();
         let founders: u64 = per_site.iter().sum();
-        let regrowth = (self.pick("probe-regrowth", 0, self.regrowth) * founders).div_ceil(1000);
+        let things: &[&'static Thing] = if self.water {
+            &[&FOOD, &WATER]
+        } else {
+            &[&FOOD]
+        };
+        let drawn: Vec<Drawn> = things
+            .iter()
+            .enumerate()
+            .map(|(j, &thing)| {
+                let j = j as u64;
+                let per_mille = self.pick("probe-regrowth", j, self.regrowth);
+                Drawn {
+                    thing,
+                    ration: self.pick("probe-ration", j, self.ration),
+                    want: self.pick("probe-hunger", j, self.hunger),
+                    regrowth: (per_mille * founders).div_ceil(1000),
+                }
+            })
+            .collect();
+        let spend_strain = self.pick("probe-spend-strain", 0, self.spend_strain);
         let mut accounts = BTreeMap::from([
-            (
-                "world:soil".into(),
-                AccountKind::Matter {
-                    lineage: "world:ground".into(),
-                },
-            ),
-            (
-                "world:food".into(),
-                AccountKind::Matter {
-                    lineage: "world:ground".into(),
-                },
-            ),
+            ("world:soil".into(), matter("world:ground")),
             (STRAIN.into(), AccountKind::Strain),
         ]);
         let mut lineages = BTreeMap::from([(
@@ -202,27 +176,15 @@ impl ProbeFounding {
         )]);
         let mut traits = set(&["leaning:contest".into(), "leaning:scramble".into()]);
         let mut processes = BTreeMap::new();
-        let mut kinds = Vec::new();
-        let mut regrow = process(
-            "probe:regrow",
-            Shape::Agentless,
-            vec![Effect::Transform {
-                who: Binding::Place,
-                take: BTreeMap::from([("world:soil".into(), regrowth)]),
-                give: BTreeMap::from([("world:food".into(), regrowth)]),
-            }],
-        );
-        regrow.requires.push(Query::Account {
-            who: Binding::Place,
-            key: "world:soil".into(),
-            at_least: regrowth,
-        });
-        regrow.period = Some(1);
-        regrow.priority = -1;
-        processes.insert(regrow.id.clone(), regrow);
+        let mut kinds: Vec<Vec<Competitor>> = drawn.iter().map(|_| vec![]).collect();
+        let mut minds = Vec::new();
+        for d in &drawn {
+            accounts.insert(d.thing.key.into(), matter("world:ground"));
+            let p = contested::regrow(d.thing, d.regrowth);
+            processes.insert(p.id.clone(), p);
+        }
         for i in 0..self.lineages {
             let identity = format!("ability:probe-{i}");
-            let body = format!("matter:{i}-0");
             let lineage = format!("lineage:{i}");
             let leaning =
                 if crate::draw(self.seed, "probe-leaning", &[u64::from(i)]).is_multiple_of(2) {
@@ -230,12 +192,9 @@ impl ProbeFounding {
                 } else {
                     "leaning:scramble"
                 };
-            accounts.insert(
-                body.clone(),
-                AccountKind::Matter {
-                    lineage: lineage.clone(),
-                },
-            );
+            for d in &drawn {
+                accounts.insert(contested::store(i, d.thing.store), matter(&lineage));
+            }
             traits.insert(identity.clone());
             lineages.insert(
                 lineage,
@@ -246,73 +205,68 @@ impl ProbeFounding {
                     kingdom: "kingdom:fauna".into(),
                 },
             );
-            let own = Query::Trait {
-                who: Binding::Actor,
-                key: identity.clone(),
-            };
-            let mut upkeep = process(&format!("probe:upkeep-{i}"), Shape::Choice, spend(&body));
-            upkeep.requires.extend([own.clone(), account(&body, 1)]);
-            upkeep.period = Some(1);
-            let mut starve = process(
-                &format!("probe:starve-{i}"),
-                Shape::Transition,
-                vec![Effect::Death],
-            );
-            starve.requires.extend([
-                own.clone(),
-                Query::Below {
-                    who: Binding::Actor,
-                    key: body.clone(),
-                    amount: 1,
-                },
-            ]);
-            starve.period = Some(1);
-            starve.priority = 1;
-            let mut eat = process(
-                &format!("probe:eat-{i}"),
-                Shape::Choice,
-                feed(&body, ration),
-            );
-            eat.requires.push(own.clone());
-            let mut share = process(
-                &format!("probe:share-{i}"),
-                Shape::Choice,
-                feed(&body, ration / 2),
-            );
-            share.requires.push(own.clone());
-            let mut fought = spend(&body);
-            fought.extend(strain(spend_strain));
-            let mut spent = process(&format!("probe:spend-{i}"), Shape::Choice, fought);
-            spent.requires.extend([own, account(&body, 1)]);
-            kinds.push(Competitor {
-                identity,
-                body: body.clone(),
-                hungry: Query::Below {
-                    who: Binding::Actor,
-                    key: body,
-                    amount: hunger,
-                },
-                eat: eat.id.clone(),
-                share: share.id.clone(),
-                spend: spent.id.clone(),
-            });
-            for p in [upkeep, starve, eat, share, spent] {
+            let takes: Vec<(&Thing, u64)> = drawn.iter().map(|d| (d.thing, d.ration)).collect();
+            let made = contested::lineage(i, &takes, spend_strain);
+            let body = contested::store(i, 0);
+            let mut wants = Vec::new();
+            for (j, d) in drawn.iter().enumerate() {
+                let want = contested::below(&contested::store(i, d.thing.store), d.want);
+                wants.push(want.clone());
+                kinds[j].push(Competitor {
+                    identity: identity.clone(),
+                    body: body.clone(),
+                    hungry: want,
+                    eat: format!("probe:{}-{i}", d.thing.take),
+                    share: format!("probe:{}-{i}", d.thing.half),
+                    spend: made.spend.clone(),
+                });
+            }
+            minds.push((identity, body, wants));
+            for p in made.processes {
                 processes.insert(p.id.clone(), p);
             }
         }
-        let minds: Vec<mind::Kind> = kinds
+        let minds: Vec<mind::Kind> = minds
             .iter()
-            .map(|k| mind::Kind {
-                identity: &k.identity,
-                body: &k.body,
+            .map(|(identity, body, wants)| mind::Kind {
+                identity,
+                body,
+                wants: wants.clone(),
             })
             .collect();
-        let (mind, keeping) = self.mind.draw(self.seed, &minds, hunger);
+        let (mind, keeping) = self.mind.draw(self.seed, &minds, drawn[0].want);
         let round_strain = self.pick("probe-round-strain", 0, self.round_strain);
-        let round = process("probe:round", Shape::Choice, strain(round_strain));
+        let round = process(
+            "probe:round",
+            Shape::Choice,
+            contested::strain(round_strain),
+        );
         for p in keeping.into_iter().chain([round]) {
             processes.insert(p.id.clone(), p);
         }
+        let (margin, cost) = (
+            self.pick("probe-margin", 0, self.margin),
+            self.pick("probe-cost", 0, self.cost),
+        );
+        let upset = self.pick("probe-upset", 0, self.upset) as u32;
+        let advantage = self.pick("probe-advantage", 0, self.advantage);
+        let competitions = drawn
+            .iter()
+            .zip(kinds)
+            .map(|(d, kinds)| {
+                let c = Competition {
+                    ration: d.ration,
+                    contest: "leaning:contest".into(),
+                    margin,
+                    cost,
+                    round: "probe:round".into(),
+                    upset,
+                    advantage,
+                    kinds,
+                };
+                (d.thing.key.to_string(), c)
+            })
+            .collect();
         let rules = Rules {
             version: crate::VERSION,
             accounts,
@@ -332,64 +286,14 @@ impl ProbeFounding {
             },
             epoch_ticks: 32,
             collection_buffer: 0,
-            competitions: BTreeMap::from([(
-                "probe:feeding".into(),
-                Competition {
-                    food: "world:food".into(),
-                    ration,
-                    contest: "leaning:contest".into(),
-                    margin,
-                    cost,
-                    round: "probe:round".into(),
-                    upset,
-                    advantage,
-                    kinds,
-                },
-            )]),
+            competitions,
             similitude: Some(Similitude {
                 default_bound: self.bound_per_mille,
                 bounds: BTreeMap::new(),
             }),
             mind: Some(mind),
         };
-        let mut site_map = BTreeMap::new();
-        let mut population = Population::default();
-        for s in 0..sites {
-            site_map.insert(
-                s,
-                Site {
-                    terrain_seed: crate::draw(self.seed, "probe-terrain", &[s]),
-                    conditions: BTreeMap::new(),
-                    accounts: BTreeMap::from([
-                        (
-                            "world:soil".into(),
-                            regrowth * self.pick("probe-soil", s, [2, 4]),
-                        ),
-                        (
-                            "world:food".into(),
-                            self.pick("probe-food", s, [0, regrowth]),
-                        ),
-                    ]),
-                    routes: vec![],
-                },
-            );
-            population.insert(member(&lineages, "world:ground", s, BTreeMap::new()), 1)?;
-        }
-        let mut cohort = 0;
-        for s in 0..sites {
-            for (i, &n) in per_site.iter().enumerate() {
-                let (lineage, body) = (format!("lineage:{i}"), format!("matter:{i}-0"));
-                let mut left = n;
-                while left > 0 {
-                    let count = left.min(self.cohort);
-                    let reserve = self.pick("probe-body", cohort, [1, hunger + ration]);
-                    let ledger = BTreeMap::from([(body.clone(), reserve)]);
-                    population.insert(member(&lineages, &lineage, s, ledger), count)?;
-                    left -= count;
-                    cohort += 1;
-                }
-            }
-        }
+        let (site_map, population) = self.found(&drawn, &lineages, sites, &per_site)?;
         let genesis = Genesis {
             version: crate::VERSION,
             seed: self.seed,
@@ -406,6 +310,58 @@ impl ProbeFounding {
             genesis,
             ticks: self.ticks,
         })
+    }
+
+    /// The sites, with soil for every regrowth and some of each thing, and
+    /// the founders, in cohorts at every site.
+    fn found(
+        &self,
+        drawn: &[Drawn],
+        lineages: &BTreeMap<Key, Lineage>,
+        sites: u64,
+        per_site: &[u64],
+    ) -> Result<(BTreeMap<Id, Site>, Population)> {
+        let soil: u64 = drawn.iter().map(|d| d.regrowth).sum();
+        let mut site_map = BTreeMap::new();
+        let mut population = Population::default();
+        for s in 0..sites {
+            let mut accounts = BTreeMap::from([(
+                "world:soil".into(),
+                soil * self.pick("probe-soil", s, [2, 4]),
+            )]);
+            for (j, d) in drawn.iter().enumerate() {
+                let domain = if j == 0 { "probe-food" } else { "probe-water" };
+                accounts.insert(d.thing.key.into(), self.pick(domain, s, [0, d.regrowth]));
+            }
+            let site = Site {
+                terrain_seed: crate::draw(self.seed, "probe-terrain", &[s]),
+                conditions: BTreeMap::new(),
+                accounts,
+                routes: vec![],
+            };
+            site_map.insert(s, site);
+            population.insert(member(lineages, "world:ground", s, BTreeMap::new()), 1)?;
+        }
+        let mut cohort = 0;
+        for s in 0..sites {
+            for (i, &n) in per_site.iter().enumerate() {
+                let lineage = format!("lineage:{i}");
+                let mut left = n;
+                while left > 0 {
+                    let count = left.min(self.cohort);
+                    let mut ledger = BTreeMap::new();
+                    for (j, d) in drawn.iter().enumerate() {
+                        let domain = if j == 0 { "probe-body" } else { "probe-store" };
+                        let held = self.pick(domain, cohort, [1, d.want + d.ration]);
+                        ledger.insert(contested::store(i as u32, d.thing.store), held);
+                    }
+                    population.insert(member(lineages, &lineage, s, ledger), count)?;
+                    left -= count;
+                    cohort += 1;
+                }
+            }
+        }
+        Ok((site_map, population))
     }
 }
 

@@ -108,9 +108,10 @@ fn readings_come_from_the_definitions() {
     let w = world(2);
     let derived = readings::derive(&w);
     let keys: Vec<&str> = derived.iter().map(|r| r.key.as_str()).collect();
-    for kind in &w.competition().unwrap().kinds {
+    for kind in w.kinds() {
         assert!(keys.contains(&format!("alive:{}", kind.identity).as_str()));
-        assert!(keys.contains(&format!("probe:feeding#hungry:{}", kind.identity).as_str()));
+        assert!(keys.contains(&format!("world:food#hungry:{}", kind.identity).as_str()));
+        assert!(keys.contains(&format!("past-bearing:{}", kind.identity).as_str()));
     }
     let starvation: Vec<&str> = derived
         .iter()
@@ -140,33 +141,39 @@ fn the_competition_and_its_bounds_are_rules_the_world_admits() {
         edit(&mut g.rules);
         g.validate().unwrap_err()
     };
-    let feeding = "probe:feeding";
+    let food = "world:food";
     assert!(
-        refused(&|r| r.competitions.get_mut(feeding).unwrap().kinds[0].eat = "probe:none".into())
+        refused(&|r| r.competitions.get_mut(food).unwrap().kinds[0].eat = "probe:none".into())
             .contains("unknown process")
     );
+    // A competition is keyed by the matter it contests (ruling 236).
     assert!(
-        refused(&|r| r.competitions.get_mut(feeding).unwrap().food = "absent:food".into())
-            .contains("not a matter account")
+        refused(&|r| {
+            let c = r.competitions.remove(food).unwrap();
+            r.competitions.insert("mind:strain".into(), c);
+        })
+        .contains("not a matter account")
     );
     assert!(
         refused(&|r| r.similitude.as_mut().unwrap().default_bound = 1001)
             .contains("exceeds certainty")
     );
-    let mut two = w.clone();
-    let c = two.genesis.rules.competitions[feeding].clone();
-    two.genesis
-        .rules
-        .competitions
-        .insert("probe:other".into(), c);
-    assert!(two.competition().is_err());
+    // A lineage fights with one reserve, spent one way, everywhere.
+    assert!(
+        refused(&|r| {
+            let mut c = r.competitions[food].clone();
+            c.kinds[0].spend = "probe:upkeep-0".into();
+            r.competitions.insert("world:soil".into(), c);
+        })
+        .contains("fights differently across competitions")
+    );
 }
 
 #[test]
 fn averaging_flattens_reserves_within_each_lineage_and_site() {
     let w = world(8);
     let crowd = Crowd::new(&w, 3, Variant::Averaged).unwrap().run().unwrap();
-    for kind in &w.competition().unwrap().kinds {
+    for kind in w.kinds() {
         for site in crowd.sites.keys() {
             let bodies: Vec<u64> = crowd
                 .bins

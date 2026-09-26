@@ -1,13 +1,15 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Ruling 115's competing instance for feeding when food is short, run two
-//! ways under ruling 113: member by member through the core's exact
-//! individual runner, and as a crowd, an exact-state histogram advanced by
-//! random count draws. The competition's definition and the similitude
-//! bounds live in the world's rules (ruling 218), beside the mind its fights
-//! strain (rulings 221 and 227); the rounds that resolve a competition live
-//! here until the core's scheduler runs them.
+//! Ruling 115's competing instances, feeding when food is short and any
+//! other scarce thing a world contests, run two ways under ruling 113:
+//! member by member through the core's exact individual runner, and as a
+//! crowd, an exact-state histogram advanced by random count draws. The
+//! competitions and the similitude bounds live in the world's rules (ruling
+//! 218), beside the mind their fights strain (rulings 221 and 227). The
+//! rounds that resolve them live here until the core's scheduler runs them:
+//! every competition at once, each against the tick's start, settled at its
+//! end (ruling 240).
 
 mod aggregate;
 pub mod check;
@@ -17,6 +19,7 @@ mod exact;
 pub mod fight;
 mod found;
 pub mod readings;
+pub mod settle;
 #[cfg(test)]
 mod tests;
 
@@ -27,6 +30,7 @@ pub use found::ProbeFounding;
 
 use crate::{Result, schema::*, simulation::Genesis};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProbeWorld {
@@ -35,14 +39,20 @@ pub struct ProbeWorld {
 }
 
 impl ProbeWorld {
-    /// The world's one competition. How several would interact within a
-    /// round is not designed, so the probe refuses more than one.
-    pub fn competition(&self) -> Result<&Competition> {
-        let mut all = self.genesis.rules.competitions.values();
-        match (all.next(), all.next()) {
-            (Some(c), None) => Ok(c),
-            _ => Err("the probe runs worlds with exactly one competition".into()),
+    /// The world's competitions, by what each contests.
+    pub fn competitions(&self) -> &BTreeMap<Key, Competition> {
+        &self.genesis.rules.competitions
+    }
+    /// Each competing kind once, as the competitions name it; a lineage
+    /// fights the same way in every competition it enters.
+    pub fn kinds(&self) -> Vec<&Competitor> {
+        let mut kinds: Vec<&Competitor> = Vec::new();
+        for kind in self.competitions().values().flat_map(|c| &c.kinds) {
+            if !kinds.iter().any(|k| k.identity == kind.identity) {
+                kinds.push(kind);
+            }
         }
+        kinds
     }
     pub fn similitude(&self) -> Result<&Similitude> {
         self.genesis

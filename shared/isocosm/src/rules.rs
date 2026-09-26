@@ -189,11 +189,12 @@ pub struct Competitor {
 /// way of deciding picking contest or share, the sim resolving the choices.
 /// Two contesters size each other up and only a close match escalates
 /// (ruling 116), into rounds that strain both sides against their bearing
-/// (rulings 221 to 223).
+/// (rulings 221 to 223). A world's competitions are keyed by the site
+/// account each contests (ruling 236); they run at once in a tick, each
+/// against its members' state at the tick's start, and settle at its end
+/// (ruling 240).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Competition {
-    /// The site account contended for.
-    pub food: Key,
     pub ration: u64,
     /// The leaning trait: members that carry it contest, the rest share.
     pub contest: Key,
@@ -268,8 +269,9 @@ pub struct Rules {
     pub limits: Limits,
     pub epoch_ticks: Tick,
     pub collection_buffer: Tick,
-    /// Ruling 218: the world's competitions, by id. Worlds without any
-    /// serialize, and so hash, as before the field existed.
+    /// Rulings 218 and 236: the world's competitions, by the site account
+    /// each contests. Worlds without any serialize, and so hash, as before
+    /// the field existed.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub competitions: BTreeMap<Key, Competition>,
     /// Ruling 218: the bounds a crowd must keep its readings within.

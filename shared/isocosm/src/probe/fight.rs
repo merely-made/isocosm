@@ -11,9 +11,19 @@
 //! both size each other up again, and one outmatched by more than the margin
 //! yields.
 
-use super::{Competition, Competitor, aggregate::Seen, draws::Stream};
-use crate::{Result, meaning::value, rules::Mind, schema::*};
-use std::cmp::Ordering;
+use super::{
+    Competition, Competitor,
+    aggregate::{self, Seen},
+    draws::Stream,
+};
+use crate::{
+    Result,
+    meaning::value,
+    rules::{Mind, Rules},
+    schema::*,
+    simulation::Work,
+};
+use std::{cmp::Ordering, collections::BTreeMap};
 
 #[cfg(test)]
 mod tests;
@@ -23,6 +33,52 @@ pub(super) trait Sides {
     /// Takes one act for one side through the interpreter's meanings.
     fn act(&mut self, side: usize, process: &str) -> Result<()>;
     fn member(&self, side: usize) -> &Entity;
+}
+
+/// What an act makes of a state, as far as a round has needed to know.
+pub(super) type Known = BTreeMap<(Entity, Key), Entity>;
+
+/// Two members fighting as copies of their states at the tick's start
+/// (ruling 240), whatever they take settled only at its end. The crowd
+/// remembers what each act makes of a state; the exact runner works each
+/// act out again.
+pub(super) struct Copies<'a> {
+    pub states: [Entity; 2],
+    pub known: Option<&'a mut Known>,
+    pub rules: &'a Rules,
+    pub ground: &'a Ground<'a>,
+    pub work: &'a mut Work,
+}
+
+impl Sides for Copies<'_> {
+    fn act(&mut self, side: usize, process: &str) -> Result<()> {
+        let key = (self.states[side].clone(), process.to_string());
+        if let Some(next) = self.known.as_ref().and_then(|k| k.get(&key)) {
+            self.states[side] = next.clone();
+            return Ok(());
+        }
+        let p = &self.rules.processes[process];
+        // Only an act whose meaning does not depend on the site can be
+        // taken apart from it.
+        if !aggregate::site_free(p) {
+            return Err(format!("{process} reads the site; a fight cannot take it"));
+        }
+        self.work.evaluations += 1;
+        self.work.represented += 1;
+        let mut site = self.ground.site.clone();
+        let needs = crate::meaning::needs(self.rules);
+        let next = aggregate::apply(p, &key.0, &mut site, 1, self.ground.tick, needs)?
+            .ok_or_else(|| format!("{process} was blocked in a fight"))?;
+        self.work.accepted += 1;
+        self.states[side] = next.clone();
+        if let Some(known) = self.known.as_mut() {
+            known.insert(key, next);
+        }
+        Ok(())
+    }
+    fn member(&self, side: usize) -> &Entity {
+        &self.states[side]
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]

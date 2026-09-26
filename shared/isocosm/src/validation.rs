@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use crate::{Result, meaning::mass, rules::*, schema::Key};
+use std::collections::BTreeMap;
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -107,13 +108,27 @@ fn matter(rules: &Rules, value: &str) -> Result<()> {
 }
 
 /// Ruling 218: a competition refers only to what the rules declare, and a
-/// bound never exceeds certainty. Its fights strain minds (ruling 221), so
-/// it needs the world's mind, and every lost exchange costs reserve, so
-/// every fight ends.
+/// bound never exceeds certainty. It is keyed by the matter it contests
+/// (ruling 236). Its fights strain minds (ruling 221), so it needs the
+/// world's mind, and every lost exchange costs reserve, so every fight
+/// ends. A lineage fights with one reserve and one way of spending it in
+/// every competition it enters, so what a tick's fights cost together
+/// settles the same whatever order the competitions are read in (ruling
+/// 240).
 fn competitions(rules: &Rules) -> Result<()> {
+    let mut fighting: BTreeMap<&Key, (&Key, &Key)> = BTreeMap::new();
     for (id, c) in &rules.competitions {
         key(id)?;
-        matter(rules, &c.food)?;
+        matter(rules, id)?;
+        for kind in &c.kinds {
+            let reserve = (&kind.body, &kind.spend);
+            if *fighting.entry(&kind.identity).or_insert(reserve) != reserve {
+                return Err(format!(
+                    "{} fights differently across competitions",
+                    kind.identity
+                ));
+            }
+        }
         if c.ration == 0
             || c.cost == 0
             || c.upset > 1000

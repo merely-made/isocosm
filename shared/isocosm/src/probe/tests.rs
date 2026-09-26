@@ -6,7 +6,6 @@ use crate::{Execution, Simulation, simulation::Outcome};
 
 fn competition(margin: u64) -> Competition {
     Competition {
-        food: "world:food".into(),
         ration: 4,
         contest: "leaning:contest".into(),
         margin,
@@ -138,16 +137,14 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         .find(|(_, g)| g.entity.kingdom != "kingdom:world" && g.count > 1)
         .unwrap();
     let (entity, count) = (group.entity.clone(), group.count);
-    let kind = world
-        .competition()
-        .unwrap()
+    let kind = world.competitions()["world:food"]
         .kinds
         .iter()
         .find(|k| entity.traits.contains(&k.identity))
         .unwrap()
         .clone();
     let mut site = sim.state().sites[&entity.place].clone();
-    let round = world.competition().unwrap().round.clone();
+    let round = world.competitions()["world:food"].round.clone();
     let needs = &world.mind().unwrap().needs;
     let processes = [&kind.eat, &kind.spend, &round, "mind:strain", "mind:relief"];
     for process in processes.map(String::from) {

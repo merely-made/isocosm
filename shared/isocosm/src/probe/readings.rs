@@ -153,8 +153,8 @@ fn threshold(selector: &[Key], q: &Query) -> Option<Probe> {
 }
 
 pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
-    let competitions = &world.genesis.rules.competitions;
-    let kinds = || competitions.values().flat_map(|c| &c.kinds);
+    let competitions = world.competitions();
+    let kinds = world.kinds();
     let mut out: Vec<Reading> = Vec::new();
     // One reading per threshold of each definition. Thresholds that happen to
     // coincide in one drawn world stay apart, so every world of a domain
@@ -169,7 +169,7 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
             });
         }
     };
-    for kind in kinds() {
+    for kind in &kinds {
         let probe = Probe::Alive {
             identity: kind.identity.clone(),
         };
@@ -211,16 +211,14 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
                 query: kind.hungry.clone(),
             };
             push(format!("{id}#hungry:{}", kind.identity), id, probe, false);
-            let probe = Probe::PastBearing {
-                identity: kind.identity.clone(),
-            };
-            push(
-                format!("{id}#past-bearing:{}", kind.identity),
-                id,
-                probe,
-                false,
-            );
         }
+    }
+    for kind in &kinds {
+        let probe = Probe::PastBearing {
+            identity: kind.identity.clone(),
+        };
+        let key = format!("past-bearing:{}", kind.identity);
+        push(key, "mind", probe, false);
     }
     if let Some(mind) = &world.genesis.rules.mind {
         for (j, need) in mind.needs.iter().enumerate() {
@@ -271,12 +269,13 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
         .collect();
     read.extend(needs.flat_map(|n| &n.traits).map(|t| format!("trait:{t}")));
     // A competition pairs within a site, reads the leaning and sizes up by
-    // body, and rations the site's food; its fights read strain against
-    // bearing, and the traits that set bearing and the way a break goes.
-    for c in rules.competitions.values() {
+    // body, and rations what the site holds of what it contests; its fights
+    // read strain against bearing, and the traits that set bearing and the
+    // way a break goes.
+    for (contested, c) in &rules.competitions {
         read.insert("place".into());
         read.insert(format!("trait:{}", c.contest));
-        read.insert(format!("site:{}", c.food));
+        read.insert(format!("site:{contested}"));
         read.extend(c.kinds.iter().map(|k| format!("account:{}", k.body)));
     }
     if let Some(m) = rules

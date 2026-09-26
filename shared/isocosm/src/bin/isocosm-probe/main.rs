@@ -6,7 +6,8 @@
 //! reading by reading. Clocks live here, in the host; the sim reads none.
 //! Worlds and dynamics seeds follow from one master seed, chosen from the
 //! system clock before the run unless `--seed` is given. `--density` runs
-//! only the exact and crowd arms, to measure savings without a verdict.
+//! only the exact and crowd arms, to measure savings without a verdict;
+//! `--water` has every world contest water as well as food.
 
 mod report;
 
@@ -93,6 +94,7 @@ struct Options {
     project: Option<u64>,
     members: Option<[u64; 2]>,
     density: bool,
+    water: bool,
 }
 
 fn options() -> Result<Options, String> {
@@ -108,6 +110,7 @@ fn options() -> Result<Options, String> {
         project: None,
         members: None,
         density: false,
+        water: false,
     };
     while let Some(arg) = args.next() {
         let mut number = || -> Result<u64, String> {
@@ -122,6 +125,8 @@ fn options() -> Result<Options, String> {
             "--project" => o.project = Some(number()?),
             "--members" => o.members = Some([number()?, number()?]),
             "--density" => o.density = true,
+            // Contest water as well as food: two competitions a tick.
+            "--water" => o.water = true,
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
             _ => return Err(format!("unknown argument {arg}")),
         }
@@ -131,7 +136,10 @@ fn options() -> Result<Options, String> {
 
 fn run() -> Result<(), String> {
     let o = options()?;
-    let mut domain = ProbeFounding::default();
+    let mut domain = ProbeFounding {
+        water: o.water,
+        ..ProbeFounding::default()
+    };
     if let Some(members) = o.members {
         domain.members = members;
     }

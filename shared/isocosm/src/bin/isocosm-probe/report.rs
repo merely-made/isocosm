@@ -9,7 +9,7 @@ use isocosm::{
         check::{Comparison, Settings},
         readings::{Probe, Reading},
     },
-    rules::Query,
+    rules::{Effect, Process, Query, Shape},
     schema::Key,
 };
 use serde::Serialize;
@@ -33,6 +33,16 @@ pub struct Arm {
     pub readings: Vec<u64>,
 }
 
+/// One contested thing as a drawn world holds it.
+#[derive(Serialize)]
+pub struct Contested {
+    pub key: Key,
+    pub ration: u64,
+    /// The first lineage's threshold of wanting it.
+    pub want: u64,
+    pub regrowth: u64,
+}
+
 #[derive(Serialize)]
 pub struct Draw {
     pub k: u64,
@@ -40,18 +50,17 @@ pub struct Draw {
     pub sites: usize,
     pub members: u64,
     pub leanings: Vec<Key>,
-    pub ration: u64,
-    pub hunger: u64,
+    pub contested: Vec<Contested>,
     pub margin: u64,
     pub cost: u64,
-    pub regrowth: u64,
+    pub upset: u32,
+    pub advantage: u64,
     pub arms: Vec<Arm>,
 }
 
 impl Draw {
     pub fn new(k: u64, seed: u64, world: &ProbeWorld) -> Result<Self, String> {
         let g = &world.genesis;
-        let c = world.competition()?;
         let leaning = |identity: &str| {
             g.lineages
                 .values()
@@ -65,20 +74,43 @@ impl Draw {
             Query::Account { at_least, .. } => *at_least,
             _ => 0,
         };
+        // What regrows a thing is the agentless process that makes it.
+        let regrowth = |key: &Key| {
+            let makes = |p: &&Process| {
+                p.shape == Shape::Agentless
+                    && p.effects.iter().any(
+                        |e| matches!(e, Effect::Transform { give, .. } if give.contains_key(key)),
+                    )
+            };
+            let p = g.rules.processes.values().find(makes);
+            p.and_then(|p| p.requires.last()).map_or(0, threshold)
+        };
+        let contested = world
+            .competitions()
+            .iter()
+            .map(|(key, c)| Contested {
+                key: key.clone(),
+                ration: c.ration,
+                want: c.kinds.first().map_or(0, |k| threshold(&k.hungry)),
+                regrowth: regrowth(key),
+            })
+            .collect();
+        let first = world
+            .competitions()
+            .values()
+            .next()
+            .ok_or("no competition")?;
         Ok(Self {
             k,
             seed,
             sites: g.sites.len(),
             members: g.population.count() - g.sites.len() as u64,
-            leanings: c.kinds.iter().map(|k| leaning(&k.identity)).collect(),
-            ration: c.ration,
-            hunger: c.kinds.first().map_or(0, |k| threshold(&k.hungry)),
-            margin: c.margin,
-            cost: c.cost,
-            regrowth: g.rules.processes["probe:regrow"]
-                .requires
-                .last()
-                .map_or(0, threshold),
+            leanings: world.kinds().iter().map(|k| leaning(&k.identity)).collect(),
+            contested,
+            margin: first.margin,
+            cost: first.cost,
+            upset: first.upset,
+            advantage: first.advantage,
             arms: vec![],
         })
     }

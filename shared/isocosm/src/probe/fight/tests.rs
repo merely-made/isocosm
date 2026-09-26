@@ -36,14 +36,14 @@ fn world(edit: impl Fn(&mut Competition, &mut Mind)) -> ProbeWorld {
     .generate()
     .unwrap();
     let rules = &mut w.genesis.rules;
-    let c = rules.competitions.get_mut("probe:feeding").unwrap();
+    let c = rules.competitions.get_mut("world:food").unwrap();
     edit(c, rules.mind.as_mut().unwrap());
     w
 }
 
 /// A member of kind 0 that contests, with the given reserve and strain.
 fn member(w: &ProbeWorld, reserve: u64, strain: u64) -> Entity {
-    let c = w.competition().unwrap();
+    let c = &w.competitions()["world:food"];
     let group = w.genesis.population.groups.values();
     let mut e = group
         .map(|g| g.entity.clone())
@@ -56,7 +56,7 @@ fn member(w: &ProbeWorld, reserve: u64, strain: u64) -> Entity {
 }
 
 fn run(w: &ProbeWorld, reserves: [u64; 2], strains: [u64; 2], seed: u64) -> (Fight, [Entity; 2]) {
-    let c = w.competition().unwrap();
+    let c = &w.competitions()["world:food"];
     let states = [0, 1].map(|x| member(w, reserves[x], strains[x]));
     let mut sides = Plain { world: w, states };
     let site = w.genesis.sites[&0].clone();
@@ -71,13 +71,13 @@ fn run(w: &ProbeWorld, reserves: [u64; 2], strains: [u64; 2], seed: u64) -> (Fig
 }
 
 fn reserve(w: &ProbeWorld, e: &Entity) -> u64 {
-    value(&e.accounts, &w.competition().unwrap().kinds[0].body)
+    value(&e.accounts, &w.competitions()["world:food"].kinds[0].body)
 }
 
 #[test]
 fn fights_end_when_a_side_yields_or_is_spent() {
     let w = world(|_, _| {});
-    let c = w.competition().unwrap();
+    let c = &w.competitions()["world:food"];
     for seed in 0..300 {
         let reserves = [1 + seed % 7, 1 + (seed / 7) % 7];
         let (f, [a, b]) = run(&w, reserves, [seed % 5, seed % 3], seed);
@@ -178,7 +178,7 @@ fn strain_grows_by_the_round_and_by_what_is_spent() {
             })
             .sum()
     };
-    let c = w.competition().unwrap();
+    let c = &w.competitions()["world:food"];
     let (round, spend) = (per(&c.round), per(&c.kinds[0].spend));
     for seed in 0..100 {
         let (f, states) = run(&w, [5, 5], [1, 2], seed);
