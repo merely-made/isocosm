@@ -225,11 +225,9 @@ fn severing_removes_the_allocation_and_its_consequence_together() {
     let explained = phenotype.explain(limb).expect("still addressable");
     assert!(!explained.living);
     assert_eq!(explained.tracts.len(), 1);
+    let tract = &explained.tracts[0];
     assert_eq!(
-        explained.tracts[0]
-            .named
-            .as_ref()
-            .map(|id| id.name.as_str()),
+        tract.named.as_ref().map(|id| id.name.as_str()),
         Some("contract")
     );
 }
@@ -320,11 +318,7 @@ fn a_part_cannot_acquire_a_capability_by_editing_a_number() {
     // shape, and a different part.
     let (mut phenotype, [_, _, frond]) = critter();
     let mut proposal = arrange(&phenotype, Aim::Spare);
-    for tract in proposal
-        .tracts
-        .iter_mut()
-        .filter(|tract| tract.part == frond)
-    {
+    for tract in proposal.tracts.iter_mut().filter(|t| t.part == frond) {
         tract.process = reference(Process::Contract);
     }
 
@@ -424,11 +418,7 @@ fn an_invalid_multipart_development_leaves_everything_unchanged() {
     // all lands. Partial acceptance would make a receipt ambiguous.
     let (mut phenotype, [_, _, frond]) = critter();
     let mut proposal = arrange(&phenotype, Aim::Spare);
-    for tract in proposal
-        .tracts
-        .iter_mut()
-        .filter(|tract| tract.part == frond)
-    {
+    for tract in proposal.tracts.iter_mut().filter(|t| t.part == frond) {
         tract.cells = vec![CellId(0), CellId(8)];
     }
     let before = crate::snapshot::encode(&phenotype).unwrap();
