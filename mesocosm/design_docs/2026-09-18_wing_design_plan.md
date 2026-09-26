@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 292, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 296, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2457,6 +2457,37 @@ what later sections derive from.
      manifests to mere's current main, 233 commits on? Mark: "mere's current
      main." So the pin bump adapts isometry to those commits, and follows the
      fix onto mere's main.
+293. **Per-group phases run in the foreground; the background keeps a shared
+     grid.** Put to Mark on 2026-09-26, from ruling 286 as built, which left
+     results identical by visiting a group only once it is ready, while each
+     process kept its period grid: that, or per-group phases, each group on
+     its own clock? Mark: "Per group phases if they are in the foreground or
+     nearby, baseline as built?" Answered yes: members in the foreground and
+     nearby run as individuals anyway (rulings 113, 212), so phases there cost
+     no grouping. They come with the sim's attention sets.
+294. **A consumer eats across its prey's matter, once a period, choosing its
+     prey by a weighted draw.** Put to Mark on 2026-09-26, from ruling 287's
+     fork, one feeding process being unable to name one account to take
+     from: what is eaten, how often, and how prey is chosen? Mark: "Drawn
+     across its matter", "Once per period", "Weighted draw". So up to n of
+     the chosen prey's matter is drawn proportionally from all its accounts
+     and credited to the eater (X4 with R1's digestion); a consumer feeds
+     once a period, the certification showing the new balance; and its prey
+     is a seeded draw weighted by what each eligible prey holds.
+295. **mere's atlas is sized by limits the host fills in.** Put to Mark on
+     2026-09-26, from the mere lane's assessment for ruling 289: a plain-data
+     `AtlasLimits`, the 3D texture dimension and an atlas byte budget, filled
+     from the device's enforced limits, so `modulus` stays GPU-free; a brick
+     count rounded up to whole rows; the 16 by 16 grid kept, rows growing;
+     `MAX_BRICKS` kept as the default's cap of 2,047 so existing callers are
+     unchanged; no limits-aware `from_keys` yet. Mark: "Accept the shape." The
+     retarget fix lands beside it, with `modulus`'s tests moved out of its
+     777-line `lib.rs` into a sibling file ("Keep it").
+296. **The host's atlas budget defaults to 8 MiB.** Put to Mark on
+     2026-09-26, with 295, video memory being unreportable in wgpu: a
+     default budget of 8 MiB, 32 MiB, or as the texture allows? Mark: "8
+     MiB." So a host asks for up to 16,383 bricks by default, enough for a
+     1920 by 1080 pane over the 256-tile relief board, 6,391 with its margin.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6242,6 +6273,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 293 to 296 recorded: per-group phases in the
+  foreground only; feeding across the prey's matter, once a period, by a
+  weighted draw; mere's atlas sized by host-filled limits; and an 8 MiB
+  default budget. The mere lane fixed the retarget defect (three tests
+  failing before, passing after; the paging probe clean) and builds the
+  limits beside it.
 - 2026-09-26: rulings 288 to 292 recorded, from the paging lane's forks: mere
   fixed first; the atlas sized to the card; the board's CPU side paged too;
   residency by the view in an isometer helper; and isometry's pins moved to
