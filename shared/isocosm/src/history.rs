@@ -86,9 +86,6 @@ impl Session {
             .tick
             .checked_add(ticks)
             .ok_or("clock overflow")?;
-        if ticks > self.sim.genesis.rules.limits.advance_ticks {
-            return Err("advance budget".into());
-        }
         // The world keeps what the advance changes and puts it back if any
         // part is refused, as a copy of the whole session once did.
         let checkpoints = self.checkpoints.len();
@@ -112,7 +109,8 @@ impl Session {
             work.represented += next.represented;
             work.accepted += next.accepted;
             work.blocked += next.blocked;
-            if work.evaluations > self.sim.genesis.rules.limits.events_per_advance as u64 {
+            // The budget counts members (ruling 285), the same in both modes.
+            if work.represented > self.sim.genesis.rules.limits.events_per_advance as u64 {
                 return Err("advance exceeds configured operation budget".into());
             }
             if boundary.is_multiple_of(epoch) {
@@ -126,9 +124,7 @@ impl Session {
     }
     fn replay_until(&mut self, tick: Tick) -> Result<()> {
         while self.sim.state.tick < tick {
-            let mut step = (tick - self.sim.state.tick)
-                .min(self.sim.genesis.rules.limits.advance_ticks)
-                .min(self.sim.genesis.rules.epoch_ticks);
+            let mut step = (tick - self.sim.state.tick).min(self.sim.genesis.rules.epoch_ticks);
             loop {
                 match self.advance(step) {
                     Ok(_) => break,

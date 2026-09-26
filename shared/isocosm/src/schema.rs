@@ -191,9 +191,13 @@ pub struct Limits {
     pub sites: usize,
     pub processes: usize,
     pub operations: usize,
+    /// The work an advance may do: the members its evaluations stand for,
+    /// the same grouped and individually (rulings 259 and 285).
     pub events_per_advance: usize,
     pub notes: usize,
     pub history: usize,
+    /// Retired by ruling 284, which limits an advance's work and not its
+    /// ticks. Kept so saved worlds keep their digest; nothing reads it.
     pub advance_ticks: u64,
 }
 

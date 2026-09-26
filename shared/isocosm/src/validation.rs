@@ -170,7 +170,6 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         || rules.limits.events_per_advance == 0
         || rules.limits.operations == 0
         || rules.limits.entities == 0
-        || rules.limits.advance_ticks == 0
         || rules.processes.len() > rules.limits.processes
     {
         return Err("invalid rules limits".into());

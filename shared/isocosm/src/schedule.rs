@@ -5,8 +5,9 @@
 //! priority and identity, each over the stored groups as they stood when its
 //! pass began. A process visits only the groups carrying every trait it
 //! requires of its actor, filed as acts commit (ruling 258): any other group
-//! would be blocked, so passing it by changes nothing but the count, and the
-//! operation budget counts only the evaluations that run (ruling 259).
+//! would be blocked, so passing it by changes nothing but the count. The
+//! operation budget counts only the evaluations that run (ruling 259), by
+//! the members each stands for (ruling 285).
 
 use crate::{
     Result,
@@ -326,7 +327,10 @@ impl Simulation {
             if !entity.is_some_and(|e| carries(e, traits)) {
                 continue;
             }
-            if work.evaluations >= self.genesis.rules.limits.events_per_advance as u64 {
+            // The budget counts the members an evaluation stands for (ruling
+            // 285), so a budget means the same grouped and individually.
+            let limit = self.genesis.rules.limits.events_per_advance as u64;
+            if work.represented.saturating_add(multiplicity) > limit {
                 return Err(
                     "advance exceeds configured operation budget; use shorter advances".into(),
                 );

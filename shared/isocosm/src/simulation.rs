@@ -175,10 +175,9 @@ impl Simulation {
     ) -> Receipt {
         self.apply(actor, target, process, cause, 1)
     }
+    /// Advances `ticks` of world time. Only the work is limited (ruling
+    /// 284): idle time between due events costs nothing, however long.
     pub fn advance(&mut self, ticks: Tick) -> Result<Work> {
-        if ticks > self.genesis.rules.limits.advance_ticks {
-            return Err("advance exceeds configured tick budget".into());
-        }
         let end = self
             .state
             .tick

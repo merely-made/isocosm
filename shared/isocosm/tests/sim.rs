@@ -337,7 +337,7 @@ fn a_refused_advance_puts_back_everything_it_changed() {
     for mode in [Execution::Individuals, Execution::Grouped] {
         // A budget the first tick fits and the second overruns part way.
         let mut first = Simulation::new(genesis.clone(), mode).unwrap();
-        let budget = first.advance(1).unwrap().evaluations as usize + 1;
+        let budget = first.advance(1).unwrap().represented as usize + 1;
         let mut tight = genesis.clone();
         tight.rules.limits.events_per_advance = budget;
         let mut sim = Simulation::new(tight.clone(), mode).unwrap();

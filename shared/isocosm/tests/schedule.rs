@@ -129,9 +129,8 @@ fn a_member_without_a_required_trait_is_not_evaluated() {
     }
 }
 
-#[test]
-fn a_budget_of_exactly_the_evaluations_that_run_is_enough() {
-    let genesis = Founding {
+fn budgeted() -> Genesis {
+    Founding {
         seed: 91,
         sites: 3,
         population: 24,
@@ -140,20 +139,45 @@ fn a_budget_of_exactly_the_evaluations_that_run_is_enough() {
         ..Default::default()
     }
     .generate()
-    .unwrap();
+    .unwrap()
+}
+
+#[test]
+fn a_budget_counts_the_members_that_run_and_means_the_same_in_both_modes() {
+    let genesis = budgeted();
+    let mut members = BTreeSet::new();
     for mode in [Execution::Individuals, Execution::Grouped] {
         let mut first = Simulation::new(genesis.clone(), mode).unwrap();
-        let ran = first.advance(1).unwrap().evaluations as usize;
+        let work = first.advance(3).unwrap();
+        members.insert(work.represented);
+        let ran = work.represented as usize;
         assert!(ran > 0);
         let mut exact = genesis.clone();
         exact.rules.limits.events_per_advance = ran;
         let mut sim = Simulation::new(exact.clone(), mode).unwrap();
-        sim.advance(1).unwrap();
+        sim.advance(3).unwrap();
         // The same world, apart from the budget in its rules.
         assert!(sim.state() == first.state(), "{mode:?}");
         exact.rules.limits.events_per_advance = ran - 1;
         let mut short = Simulation::new(exact, mode).unwrap();
-        assert!(short.advance(1).is_err(), "{mode:?}");
+        assert!(short.advance(3).is_err(), "{mode:?}");
+    }
+    assert_eq!(members.len(), 1, "the modes count the same members");
+}
+
+#[test]
+fn an_advance_spans_any_idle_time_its_work_allows() {
+    let mut genesis = budgeted();
+    // Ruling 284 retired the tick limit; nothing reads it now.
+    genesis.rules.limits.advance_ticks = 10;
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        let mut long = Simulation::new(genesis.clone(), mode).unwrap();
+        long.advance(50).unwrap();
+        let mut steps = Simulation::new(genesis.clone(), mode).unwrap();
+        for _ in 0..5 {
+            steps.advance(10).unwrap();
+        }
+        assert_eq!(long.state_hash(), steps.state_hash(), "{mode:?}");
     }
 }
 
