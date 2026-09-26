@@ -73,6 +73,12 @@ pub enum Query {
     MoodBelow {
         amount: i64,
     },
+    /// A body holds at least `at_least` matter, over every matter account it
+    /// keeps (ruling 287).
+    Holds {
+        who: Binding,
+        at_least: u64,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -138,6 +144,14 @@ pub enum Effect {
         key: Key,
         amount: u64,
     },
+    /// Eating (ruling 287): up to `amount` of a body's matter, drawn from
+    /// all its matter accounts in proportion, largest remainders first in
+    /// key order, and credited to the actor's own `into` account.
+    Eat {
+        from: Binding,
+        amount: u64,
+        into: Key,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -151,6 +165,15 @@ pub struct Target {
     pub same_place: bool,
     pub alive: Option<bool>,
     pub lineage: Option<Key>,
+    /// Any of these lineages (ruling 287); empty bounds nothing. Absent in
+    /// selectors that name none, which serialize as before it existed.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub among: BTreeSet<Key>,
+    /// The target is drawn, seeded and keyed by the act, weighted by the
+    /// matter each eligible candidate holds, instead of taken first in
+    /// identity order (ruling 287).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub weighted: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -337,6 +360,10 @@ impl Process {
                         }
                         | Query::Mood { .. }
                         | Query::MoodBelow { .. }
+                        | Query::Holds {
+                            who: Binding::Actor,
+                            ..
+                        }
                 )
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {

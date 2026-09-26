@@ -12,7 +12,7 @@
 use crate::{
     Result,
     meaning::{self, Named, Parties, Scene, credit, debit, value},
-    rules::{Binding, Effect, Need, Process, Query},
+    rules::{Binding, Effect, Process, Query, Rules},
     schema::*,
 };
 
@@ -31,7 +31,7 @@ pub(super) struct Seen<'a> {
     pub member: Option<&'a Entity>,
     pub site: &'a Site,
     pub tick: Tick,
-    pub needs: &'a [Need],
+    pub rules: &'a Rules,
 }
 
 impl Seen<'_> {
@@ -42,7 +42,7 @@ impl Seen<'_> {
             site: Some(self.site),
             tick: self.tick,
             related: &no_relations,
-            needs: self.needs,
+            rules: self.rules,
         }
     }
     pub(super) fn holds(&self, q: &Query) -> Result<bool> {
@@ -118,7 +118,8 @@ fn identity_bound(p: &Process) -> bool {
             Query::Trait { who, .. }
             | Query::Account { who, .. }
             | Query::Below { who, .. }
-            | Query::Part { who, .. } => target(who),
+            | Query::Part { who, .. }
+            | Query::Holds { who, .. } => target(who),
             Query::Age { .. }
             | Query::Condition { .. }
             | Query::Mood { .. }
@@ -134,6 +135,9 @@ fn reads_site(q: &Query) -> bool {
             who: Binding::Place,
             ..
         } | Query::Below {
+            who: Binding::Place,
+            ..
+        } | Query::Holds {
             who: Binding::Place,
             ..
         } | Query::Condition { .. }
@@ -188,7 +192,7 @@ pub(super) fn apply(
     site: &mut Site,
     count: u64,
     tick: Tick,
-    needs: &[Need],
+    rules: &Rules,
 ) -> Result<Option<Entity>> {
     if identity_bound(p) {
         return Err(format!(
@@ -205,7 +209,7 @@ pub(super) fn apply(
         member: Some(e),
         site: &*site,
         tick,
-        needs,
+        rules,
     };
     for q in &p.requires {
         // A query that errs blocks, as it does in the core.

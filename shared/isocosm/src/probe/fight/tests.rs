@@ -18,8 +18,8 @@ impl Sides for Plain<'_> {
     fn act(&mut self, side: usize, process: &str) -> Result<()> {
         let p = &self.world.genesis.rules.processes[process];
         let mut site = self.world.genesis.sites[&0].clone();
-        let needs = &self.world.mind()?.needs;
-        let next = aggregate::apply(p, &self.states[side], &mut site, 1, 1, needs)?;
+        let rules = &self.world.genesis.rules;
+        let next = aggregate::apply(p, &self.states[side], &mut site, 1, 1, rules)?;
         self.states[side] = next.ok_or("blocked")?;
         Ok(())
     }
@@ -63,6 +63,7 @@ fn run(w: &ProbeWorld, reserves: [u64; 2], strains: [u64; 2], seed: u64) -> (Fig
     let ground = Ground {
         site: &site,
         tick: 1,
+        rules: &w.genesis.rules,
     };
     let kinds = [&c.kinds[0], &c.kinds[0]];
     let mind = w.mind().unwrap();
@@ -202,7 +203,7 @@ fn mood_is_read_from_needs_and_moves_the_way_a_break_goes() {
             member: Some(&e),
             site,
             tick: 1,
-            needs: &mind.needs,
+            rules: &w.genesis.rules,
         };
         seen.mood().unwrap()
     };

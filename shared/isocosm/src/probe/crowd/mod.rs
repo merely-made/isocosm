@@ -141,7 +141,7 @@ impl<'w> Crowd<'w> {
     /// state the process's gates keep out, as the core files them, is not
     /// evaluated at all.
     fn scheduled(&mut self, p: &Process) -> Result<()> {
-        let gates = crate::schedule::Gates::of(p);
+        let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         for (e, n) in snapshot {
             if !e.alive || !gates.open(&e, self.tick) {
@@ -166,7 +166,7 @@ impl<'w> Crowd<'w> {
                 .sites
                 .get_mut(&e.place)
                 .ok_or("a bin at an unknown site")?;
-            match aggregate::apply(p, &e, site, n, self.tick, &self.mind.needs)? {
+            match aggregate::apply(p, &e, site, n, self.tick, &self.world.genesis.rules)? {
                 Some(next) => {
                     self.work.accepted += n;
                     self.moved(&e, next, n);
@@ -186,7 +186,7 @@ impl<'w> Crowd<'w> {
             .ok_or("a bin at an unknown site")?;
         self.work.evaluations += 1;
         self.work.represented += n;
-        let next = aggregate::apply(p, e, site, n, self.tick, &self.mind.needs)?
+        let next = aggregate::apply(p, e, site, n, self.tick, &world.genesis.rules)?
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)

@@ -66,8 +66,7 @@ impl Sides for Copies<'_> {
         self.work.evaluations += 1;
         self.work.represented += 1;
         let mut site = self.ground.site.clone();
-        let needs = crate::meaning::needs(self.rules);
-        let next = aggregate::apply(p, &key.0, &mut site, 1, self.ground.tick, needs)?
+        let next = aggregate::apply(p, &key.0, &mut site, 1, self.ground.tick, self.rules)?
             .ok_or_else(|| format!("{process} was blocked in a fight"))?;
         self.work.accepted += 1;
         self.states[side] = next.clone();
@@ -130,6 +129,7 @@ pub fn rise(mind: &Mind, e: &Entity, mood: i64) -> u64 {
 pub(super) struct Ground<'a> {
     pub site: &'a Site,
     pub tick: Tick,
+    pub rules: &'a Rules,
 }
 
 fn reserve(sides: &impl Sides, kinds: [&Competitor; 2], side: usize) -> u64 {
@@ -194,7 +194,7 @@ pub(super) fn fight(
                 member: Some(e),
                 site: ground.site,
                 tick: ground.tick,
-                needs: &mind.needs,
+                rules: ground.rules,
             };
             let up = s.below(1000) < rise(mind, e, seen.mood()?);
             breaks[side] = Some(up);

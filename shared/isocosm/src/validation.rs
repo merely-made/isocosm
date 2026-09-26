@@ -92,6 +92,10 @@ fn mind(rules: &Rules) -> Result<()> {
                     who: Binding::Actor,
                     ..
                 }
+                | Query::Holds {
+                    who: Binding::Actor,
+                    ..
+                }
         );
         if !own {
             return Err("a need reads only its member and its site's conditions".into());
@@ -268,6 +272,15 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
                     account(rules, key)?;
                     if matter(rules, key).is_ok() || *who == Binding::Place {
                         return Err(format!("{id} eases what cannot be eased"));
+                    }
+                },
+                // The target is eaten into the eater's own matter; a site or
+                // the eater itself is not eaten, and a meal of nothing is no
+                // meal.
+                Effect::Eat { from, amount, into } => {
+                    matter(rules, into)?;
+                    if *from != Binding::Target || *amount == 0 {
+                        return Err(format!("{id} eats what cannot be eaten"));
                     }
                 },
                 _ => (),

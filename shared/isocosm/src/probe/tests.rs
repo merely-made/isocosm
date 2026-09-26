@@ -185,12 +185,12 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         .clone();
     let mut site = sim.state().sites[&entity.place].clone();
     let round = world.competitions()["world:food"].round.clone();
-    let needs = &world.mind().unwrap().needs;
+    let rules = &world.genesis.rules;
     let processes = [&kind.eat, &kind.spend, &round, "mind:strain", "mind:relief"];
     for process in processes.map(String::from) {
         let p = &world.genesis.rules.processes[&process];
         let before = site.clone();
-        let moved = aggregate::apply(p, &entity, &mut site, count, 1, needs).unwrap();
+        let moved = aggregate::apply(p, &entity, &mut site, count, 1, rules).unwrap();
         for id in first..first + count {
             let outcome = sim.execute(id, None, &process, None).outcome;
             let Some(moved) = &moved else {

@@ -37,7 +37,7 @@ impl Simulation {
                 && due <= end
             {
                 queue.insert((due, p.priority, p.id.clone()));
-                let gates = Gates::of(p);
+                let gates = Gates::of(p, &self.genesis.rules);
                 if !gates.none() {
                     gated.insert(p.id.clone(), gates);
                 }

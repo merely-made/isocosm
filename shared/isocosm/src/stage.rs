@@ -412,6 +412,19 @@ impl Staged<'_> {
                 self.stage.marks.push((axis.clone(), value));
                 return Ok(standing.is_some_and(|h| value > h));
             },
+            // Eating binds another body, so it is applied here; what a meal
+            // takes is `meaning::share`'s.
+            Effect::Eat { from, amount, into } => {
+                let rules = &sim.genesis.rules;
+                let taken = meaning::share(&*self.ledger(*from)?, rules, *amount);
+                let source = self.ledger(*from)?;
+                let mut total = 0u64;
+                for (key, value) in &taken {
+                    debit(source, key, *value)?;
+                    total = total.checked_add(*value).ok_or("meal overflow")?;
+                }
+                credit(self.ledger(Binding::Actor)?, into, total)?;
+            },
             // Every other effect has its meaning in `meaning::effect`.
             _ => unreachable!("shared effects return above"),
         }

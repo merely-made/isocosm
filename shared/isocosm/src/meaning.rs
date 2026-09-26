@@ -63,7 +63,7 @@ pub(crate) struct Scene<'a> {
     pub site: Option<&'a Site>,
     pub tick: Tick,
     pub related: &'a dyn Fn(&Key) -> Result<bool>,
-    pub needs: &'a [Need],
+    pub rules: &'a Rules,
 }
 
 impl<'a> Scene<'a> {
@@ -137,6 +137,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = mood(s)?;
             (v < *amount, v.to_string())
         },
+        Query::Holds { who, at_least } => {
+            let v = mass(s.ledger(*who)?, s.rules);
+            (v >= u128::from(*at_least), v.to_string())
+        },
     })
 }
 
@@ -145,12 +149,49 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
 pub(crate) fn mood(s: &Scene) -> Result<i64> {
     let actor = s.body(Binding::Actor)?;
     let mut total = 0i64;
-    for need in s.needs {
+    for need in needs(s.rules) {
         if need.traits.iter().all(|t| actor.traits.contains(t)) && read(&need.query, s)?.0 {
             total = total.checked_add(need.weight).ok_or("mood overflow")?;
         }
     }
     Ok(total)
+}
+
+/// What eating `amount` takes of a ledger's matter (ruling 287): each
+/// matter account's exact share floored, the units left over going to the
+/// largest remainders, ties in key order. Takes it all when it holds less.
+pub(crate) fn share(ledger: &Ledger, rules: &Rules, amount: u64) -> Ledger {
+    let matter: Vec<(&Key, u64)> = ledger
+        .iter()
+        .filter(|(k, v)| {
+            **v > 0 && matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. }))
+        })
+        .map(|(k, v)| (k, *v))
+        .collect();
+    let total: u128 = matter.iter().map(|(_, v)| u128::from(*v)).sum();
+    let wanted = u128::from(amount).min(total);
+    if wanted == total {
+        return matter.into_iter().map(|(k, v)| (k.clone(), v)).collect();
+    }
+    let mut taken: Vec<(Key, u64, u128)> = matter
+        .iter()
+        .map(|(k, v)| {
+            let product = u128::from(*v) * wanted;
+            ((*k).clone(), (product / total) as u64, product % total)
+        })
+        .collect();
+    let assigned: u128 = taken.iter().map(|t| u128::from(t.1)).sum();
+    let mut order: Vec<usize> = (0..taken.len()).collect();
+    // A stable sort keeps key order among equal remainders.
+    order.sort_by(|a, b| taken[*b].2.cmp(&taken[*a].2));
+    for &i in order.iter().take((wanted - assigned) as usize) {
+        taken[i].1 += 1;
+    }
+    taken
+        .into_iter()
+        .filter(|t| t.1 > 0)
+        .map(|(k, v, _)| (k, v))
+        .collect()
 }
 
 /// The states an effect writes. A crowd's parties stand for every member of

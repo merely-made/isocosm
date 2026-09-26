@@ -135,7 +135,11 @@ fn threshold(selector: &[Key], q: &Query) -> Option<Probe> {
         }
         | Query::Age { .. }
         | Query::Mood { .. }
-        | Query::MoodBelow { .. } => Probe::Members {
+        | Query::MoodBelow { .. }
+        | Query::Holds {
+            who: Binding::Actor,
+            ..
+        } => Probe::Members {
             selector: selector.to_vec(),
             query: q.clone(),
         },
@@ -144,6 +148,10 @@ fn threshold(selector: &[Key], q: &Query) -> Option<Probe> {
             ..
         }
         | Query::Below {
+            who: Binding::Place,
+            ..
+        }
+        | Query::Holds {
             who: Binding::Place,
             ..
         }
@@ -265,6 +273,10 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::Part { .. } => "parts".into(),
             Query::Related { kind } => format!("relation:{kind}"),
             Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),
+            Query::Holds { who, .. } => match who {
+                Binding::Place => "site:matter".into(),
+                _ => "matter".into(),
+            },
         })
         .collect();
     read.extend(needs.flat_map(|n| &n.traits).map(|t| format!("trait:{t}")));
@@ -346,12 +358,12 @@ pub fn evaluate(
     inspected: Option<&Entity>,
 ) -> Result<Vec<u64>> {
     let lineages: Vec<&Key> = world.genesis.lineages.keys().collect();
-    let needs = crate::meaning::needs(&world.genesis.rules);
+    let rules = &world.genesis.rules;
     let seen = |member, site| Seen {
         member,
         site,
         tick,
-        needs,
+        rules,
     };
     let mut values = Vec::with_capacity(readings.len());
     for r in readings {

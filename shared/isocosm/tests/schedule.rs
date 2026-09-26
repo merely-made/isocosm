@@ -72,6 +72,8 @@ fn rousing() -> Genesis {
             same_place: true,
             alive: Some(true),
             lineage: Some("lineage:1".into()),
+            among: BTreeSet::new(),
+            weighted: false,
         }),
         period: Some(1),
         priority: 0,

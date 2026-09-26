@@ -166,48 +166,42 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             grow.priority = 0;
             g.rules.processes.insert(grow.id.clone(), grow);
         } else {
-            for j in 0..founding.lineages {
-                if i == j || (i % 3 == 1 && j % 3 != 0) {
-                    continue;
-                }
-                let food = format!("matter:{j}-0");
-                let mut feed = process(
-                    &format!("ecology:feed-{i}-{j}"),
-                    Shape::Choice,
-                    vec![
-                        Effect::Transfer {
-                            from: Binding::Target,
-                            to: Binding::Actor,
-                            account: food.clone(),
-                            amount: 1,
-                        },
-                        Effect::Transform {
-                            who: Binding::Actor,
-                            take: BTreeMap::from([(food.clone(), 1)]),
-                            give: BTreeMap::from([(body.clone(), 1)]),
-                        },
-                    ],
-                );
-                feed.requires.extend([
-                    Query::Trait {
-                        who: Binding::Actor,
-                        key: own.clone(),
-                    },
-                    Query::Account {
-                        who: Binding::Target,
-                        key: food,
-                        at_least: 1,
-                    },
-                ]);
-                feed.target = Some(Target {
-                    same_place: true,
-                    alive: Some(i % 3 == 1),
-                    lineage: Some(format!("lineage:{j}")),
-                });
-                feed.period = Some(3);
-                feed.priority = 10;
-                g.rules.processes.insert(feed.id.clone(), feed);
-            }
+            // One feeding process per consumer (ruling 287), choosing among
+            // its prey by a draw weighted by what each holds: consumers eat
+            // living producers, decomposers the dead of every other lineage.
+            let prey = (0..founding.lineages)
+                .filter(|&j| i != j && (i % 3 != 1 || j % 3 == 0))
+                .map(|j| format!("lineage:{j}"))
+                .collect();
+            let mut feed = process(
+                &format!("ecology:feed-{i}"),
+                Shape::Choice,
+                vec![Effect::Eat {
+                    from: Binding::Target,
+                    amount: 1,
+                    into: body.clone(),
+                }],
+            );
+            feed.requires.extend([
+                Query::Trait {
+                    who: Binding::Actor,
+                    key: own.clone(),
+                },
+                Query::Holds {
+                    who: Binding::Target,
+                    at_least: 1,
+                },
+            ]);
+            feed.target = Some(Target {
+                same_place: true,
+                alive: Some(i % 3 == 1),
+                lineage: None,
+                among: prey,
+                weighted: true,
+            });
+            feed.period = Some(3);
+            feed.priority = 10;
+            g.rules.processes.insert(feed.id.clone(), feed);
         }
         g.lineages
             .get_mut(&lineage)

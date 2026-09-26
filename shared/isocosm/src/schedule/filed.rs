@@ -3,11 +3,11 @@
 
 //! Which stored groups each due process could run for. A process's gates
 //! are what it requires of its actor's own state: traits, being alive,
-//! account thresholds and an age. A group passes or fails them until an act
-//! changes it, except its age, which comes due at a tick known in advance
-//! (ruling 286). So each group is filed as ready for the processes whose
-//! gates it passes, again whenever an act commits to it, and a group still
-//! too young is kept on a timer for the tick it comes of age.
+//! account and holdings thresholds, and an age. A group passes or fails them
+//! until an act changes it, except its age, which comes due at a tick known
+//! in advance (ruling 286). So each group is filed as ready for the
+//! processes whose gates it passes, again whenever an act commits to it, and
+//! a group still too young is kept on a timer for the tick it comes of age.
 
 use crate::{meaning::value, population::Population, rules::*, schema::*};
 use std::collections::{BTreeMap, BTreeSet};
@@ -19,11 +19,20 @@ pub(crate) struct Gates {
     alive: bool,
     at_least: Vec<(Key, u64)>,
     below: Vec<(Key, u64)>,
+    /// Matter held over every matter account, and the accounts that count.
+    holds: u64,
+    matter: BTreeSet<Key>,
     age: Tick,
 }
 
+/// The matter a ledger holds in `matter`'s accounts, as `mass` reads it.
+fn held(ledger: &Ledger, matter: &BTreeSet<Key>) -> u128 {
+    let v = ledger.iter().filter(|(k, _)| matter.contains(*k));
+    v.map(|(_, v)| u128::from(*v)).sum()
+}
+
 impl Gates {
-    pub(crate) fn of(p: &Process) -> Self {
+    pub(crate) fn of(p: &Process, rules: &Rules) -> Self {
         let mut g = Self::default();
         for q in &p.requires {
             match q {
@@ -45,8 +54,19 @@ impl Gates {
                     amount,
                 } => g.below.push((key.clone(), *amount)),
                 Query::Age { at_least } => g.age = g.age.max(*at_least),
+                Query::Holds {
+                    who: Binding::Actor,
+                    at_least,
+                } => g.holds = g.holds.max(*at_least),
                 _ => {},
             }
+        }
+        if g.holds > 0 {
+            let matter = rules.accounts.iter().filter_map(|(k, kind)| match kind {
+                AccountKind::Matter { .. } => Some(k.clone()),
+                _ => None,
+            });
+            g.matter = matter.collect();
         }
         g
     }
@@ -65,6 +85,7 @@ impl Gates {
                 .iter()
                 .all(|(k, v)| value(&e.accounts, k) >= *v)
             && self.below.iter().all(|(k, v)| value(&e.accounts, k) < *v)
+            && (self.holds == 0 || held(&e.accounts, &self.matter) >= u128::from(self.holds))
     }
 
     /// Whether `e` passes every gate at `tick`, as the requirements read it.

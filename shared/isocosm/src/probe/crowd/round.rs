@@ -178,7 +178,7 @@ impl Crowd<'_> {
                         member: Some(e),
                         site: &ground,
                         tick: self.tick,
-                        needs: &mind.needs,
+                        rules,
                     };
                     if seen.holds(&c.kinds[k].hungry)? {
                         hungry.push((e.clone(), n, k));
@@ -204,6 +204,7 @@ impl Crowd<'_> {
                             ground: Ground {
                                 site: &ground,
                                 tick: self.tick,
+                                rules,
                             },
                             how: self.counts(),
                         };

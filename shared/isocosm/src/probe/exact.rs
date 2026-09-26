@@ -140,7 +140,11 @@ fn round(
                     Meeting::Fight => {
                         let domain = format!("probe-fight:{key}");
                         let seed = crate::draw(dynamics, &domain, &[tick, ids[0], ids[1]]);
-                        let ground = Ground { site: ground, tick };
+                        let ground = Ground {
+                            site: ground,
+                            tick,
+                            rules,
+                        };
                         let mut sides = Copies {
                             states,
                             known: None,
