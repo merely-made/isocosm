@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 278
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 282
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -378,6 +378,7 @@ worlds, none in ecological ones.
 | | The probe; the handover; part roles; the thirty shapes; the hybrid's line; alive | "Vertical probe first"; "Build, retire together"; "Examine first"; asked for option 3's case, then "Wider, fields from the probe"; "Where grouping stops paying"; "The four measures" | 262 to 267 |
 | | Amounts; shared ground; the flow record; dev matter; pressures; readings | "2, but with a default set of expressions that are easy to group and to calibrate?"; scramble if they cannot decide, compete if they can; "Buffered outside state"; "A dev source"; "Founding presets"; "Accept all four" | 268 to 273 |
 | | Merge; motion; shapes; functions; one catalogue | the player chooses among fork, merge and tale; "Measure option 1 first"; "Add tube, branch, shell, joint"; organ systems riffed from functions; "One catalogue" | 274 to 278 |
+| | Far rungs; rewrite debt; anatomy brief; board paging | "Park explicitly"; "A doc lane clears it"; "After the probe"; "Open a lane now" | 279 to 282 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
