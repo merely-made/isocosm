@@ -12,11 +12,14 @@ repository's plans. It mirrors the
 [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before V0 closes; three are taken, ruling 231 placing
-this overlay side by side with Eponym's after Mesocosm's M3, and rulings 243
-and 244 settling the battlemap under the sim, projected from the generated
-volume with the DM's map an edit over it, and moves within it reaching the
-sim as per-tick batches.
+§6's decisions are his before V0 closes; seven of eight are taken: ruling 231
+placing this overlay side by side with Eponym's after Mesocosm's M3, rulings
+243 and 244 settling the battlemap under the sim, projected from the
+generated volume with the DM's map an edit over it, and moves within it
+reaching the sim as per-tick batches, and rulings 245 to 248 sharing a
+character on by default, every player's yes to downtime, the faction turn
+retiring at V2 with absorption ruled, and a sim-off campaign writing its
+facts as notes. The first calibration remains.
 
 **Owns:** the VTT's profile as a game over the Isocosm sim (the record's
 §5); the VTT side of the overlay contract (ruling 154), a module beside
@@ -66,7 +69,7 @@ Ruling 6's six parts.
 | Domain | the character inside its polities: a denizen with a faction association, partisan, friendly, antagonistic, factional or unaligned, and the polities that set the stakes, sidequests, alignment, arcs, access to resources | 35, 36, 56, 200; the record's §5 |
 | Ensemble | the campaign's cast: the table's characters and what the table authored, the denizens of the places the party reaches, its factions and polities; at a battlemap, the tokens present | 6, 71; the record's §3.4.1 |
 | Mechanics | a ruleset's: checks as outcome bands with a margin and a twist, sheets as grants, the one ledger read as the sheet, GM moves as processes the ruleset registers; the substrate's geometry and turns, never a hit point; rulesets calibrate to the sim, an uncalibrated one plays in a debug or experimental mode with a warning, and a campaign may switch the sim off; death reversible by rules and magics as re-embodiment, summoning from the planes costly | 38, 41, 61, 62, 114, 188, 189; the record's §5.1; PROJECT_DESCRIPTION pillar 4 |
-| Controls | the DM's edit mode: proposes, previews and commits; edits the world and plays any unclaimed entity; declares downtime with the players' consent; forces a pack the world does not meet; takes up, drops or reshapes a hook; the players': their characters' acts on the board, each directing only who they play, two able to direct one; pins of any pointable thing; the battlemap as the region examined up close | 104, 105, 152, 153, 156, 190, 191, 210, 212 |
+| Controls | the DM's edit mode: proposes, previews and commits; edits the world and plays any unclaimed entity, on by default at every table; declares downtime with every player's yes; forces a pack the world does not meet; takes up, drops or reshapes a hook; the players': their characters' acts on the board, each directing only who they play, two able to direct one, on by default; pins of any pointable thing; the battlemap as the region examined up close | 104, 105, 152, 153, 156, 190, 191, 210, 212, 245, 246 |
 | Perspective | the locked isometric 2D lens, 2:1 diamond tiles and sculpted elevation; scopes over the one world, world, region, area and battlemap, the VTT's own and never the sim's; players see what their characters know and the DM sees the truth, survival and creative split by role | 18, 74, 92; vessel briefs §2; the record's §5.7 readings; PROJECT_DESCRIPTION pillar 2 |
 | Timescale | the turn, in the initiative modes a ruleset chooses; the campaign's time passes as the table plays; downtime runs the sim forward as deep time does, with the players' consent; between sessions only if the founder turned the unattended rate on | 6, 93, 104, 105; the record's §5.7 readings; vessel briefs §2 ("the rhyme") |
 
@@ -91,13 +94,14 @@ Ruling 6's six parts.
    outcome in the sim's terms (rulings 114, 154). The DM commits facts and
    edits the world (ruling 156), reveals secrets (ruling 87) and plays any
    entity no player holds (ruling 156).
-3. **Downtime.** The DM declares it and the players consent, since
-   advancing the trunk past what another's foreground can bear is a
-   proposal needing consent (rulings 104, 105); the sim runs forward as
-   deep time does (ruling 93). Factions act from their members (ruling 63),
-   so the tape-drawn faction turn the substrate runs today is the far-rung
-   stand-in the record's §3.2.2 names, and the "meanwhile" the table reads
-   is the record's events reaching its characters (rulings 5, 84). The sim
+3. **Downtime.** The DM declares it and every player says yes (ruling
+   246), since advancing the trunk past what another's foreground can bear
+   is a proposal needing consent (rulings 104, 105); the sim runs forward
+   as deep time does (ruling 93). Factions act from their members (ruling
+   63), so the tape-drawn faction turn the substrate runs today is the
+   far-rung stand-in the record's §3.2.2 names, retired at V2 once the sim's
+   factions run (ruling 247), and the "meanwhile" the table reads is the
+   record's events reaching its characters (rulings 5, 84). The sim
    offers the arcs it is running as suggested hooks (rulings 103, 191).
 4. **Travel.** A party moves across the place graph (rulings 72, 205); what
    it knows of the overmap is what its characters know, arrived by reach and
@@ -106,9 +110,11 @@ Ruling 6's six parts.
    rules, revivify, resurrection and wishes as re-embodiment bought by rules,
    and summoning back from the planes as a costly possibility (rulings 61,
    62).
-6. **Sim off.** The plain tabletop as it plays today (ruling 188); with no
+6. **Sim off.** The plain tabletop as it plays today (ruling 188), its
+   downtime the table's own (a reading recorded with ruling 247); with no
    background to agree with, calibration does not apply (the record's §5.7
-   reading).
+   reading); its facts are still written as notes, so the sim can be
+   switched on later over the same history (ruling 248).
 
 ## 3. The core and the contract
 
@@ -123,9 +129,9 @@ changing nothing in the core.
 
 | Direction | The VTT's side | Rests on |
 | --- | --- | --- |
-| In: table acts | an adjudicated action, actor, action key and target; a move within the battlemap, reaching the sim as a per-tick batch so the character's place in the site follows its token; batched per tick, never a call per token; a player's acts for the characters they play, two players able to share one, the DM for any unclaimed; stances and emotes stay the table's (*a reading, from the events split below*) | 152, 153, 154, 244; the record's §5.2 point 1 |
+| In: table acts | an adjudicated action, actor, action key and target; a move within the battlemap, reaching the sim as a per-tick batch so the character's place in the site follows its token; batched per tick, never a call per token; a player's acts for the characters they play, two players able to share one and the DM playing any unclaimed, both on by default at every table; stances and emotes stay the table's (*a reading, from the events split below*) | 152, 153, 154, 244, 245; the record's §5.2 point 1 |
 | In: assertions | a fact committed, a secret revealed, a world edit, a character created, a storylet's effects applied, a pack forced over generated content; the DM's edit mode is the world editor's | 89, 156, 184, 190 |
-| In: time | downtime declared for a span, with the players' consent; the campaign's sim switched off or on | 104, 105, 188 |
+| In: time | downtime declared for a span, with every player's yes; the campaign's sim switched off or on, a sim-off campaign still writing its facts as notes so the sim can be switched on later over the same history | 104, 105, 188, 246, 248 |
 | In: travel | a party's move to a place-graph node, and its pace | 72, 205 |
 | In: hooks | a running arc taken up, dropped or reshaped | 103, 191 |
 | In: attention changes | pin or unpin any pointable thing; examine the battlemap the view shows up close, the overmap staying a far view | 210, 212 |
@@ -165,16 +171,16 @@ The record's §2 test puts whatever runs with nobody playing in the sim, and
 the substrate's own doctrine keeps geometry and turns here and rules in
 plugins (`CLAUDE.md`). `isometry-campaign` is 4,234 lines of source and is
 where this product simulates a world: factions that act between scenes,
-places and routes, characters, laws, history, secrets. It is what moves.
-Whether Isocosm absorbs it as ruling 192 had it absorb `mesocosm-core` is
-§6 decision 5's larger half; every family that moves is decomposed under the
-600-line ceiling as it goes, this repository's own rule (`CLAUDE.md`), split
-along seams the code already has.
+places and routes, characters, laws, history, secrets. It is what moves,
+and ruling 247 has Isocosm absorb it as ruling 192 had it absorb
+`mesocosm-core`, in the order below; every family that moves is decomposed
+under the 600-line ceiling as it goes, this repository's own rule
+(`CLAUDE.md`), split along seams the code already has.
 
 | Family | Modules, lines | Destination in Isocosm |
 | --- | --- | --- |
 | The campaign world | `world` 1,223 | factions and polities derived from their members (rulings 63 to 68); places and routes as the place graph (ruling 72); characters as denizens with a faction (rulings 36, 200); laws as world-scope rules (ruling 41); history as the record (the record's §3.4); storylets as a pack's requirements and role slots (rulings 89, 190); a party's known places as knowledge (ruling 84) and its stores as the ledger (ruling 38) |
-| The faction turn | `faction` 459 | faction acts derived from members and the world's seed (rulings 15, 63); the entropy tape's far-rung stand-in retires when the sim is on, §6 decision 5 |
+| The faction turn | `faction` 459 | faction acts derived from members and the world's seed (rulings 15, 63); the entropy tape's far-rung stand-in retires entirely at V2, once the sim's factions run (ruling 247) |
 | Facts and items | `item` 311, `fact` 78 | notes and secrets (rulings 80, 87); items bearing their provenance, a hidden modifier a note revealed, an item of note a relic (rulings 143, 157) |
 | Generator and packs | `generator` 491, `pack` 340 | the generator's declared space (sim plan §5, ruling 89) and packs as authored content (rulings 89, 190); cleromancy's selection stays host-local by its own decision record |
 | Campaign maps | `map` 258 | the battlemap as a projection of a site's generated volume with the DM's map an edit over it (rulings 12, 18, 89, 243), and its transitions as nesting steps (ruling 74) |
@@ -212,8 +218,8 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   history from the sim; an authored pack displaces generated content where
   the world meets its requirements and waits where it does not, until the
   GM forces it (rulings 89, 190); a declared downtime advances the sim with
-  the players' consent and the factions act from their members, the
-  entropy-tape faction turn no longer running when the sim is on; the arcs
+  every player's yes (ruling 246) and the factions act from their members,
+  the entropy-tape faction turn retired (ruling 247); the arcs
   the sim runs reach the DM as hooks (ruling 191); a party's overmap is what
   its characters know (ruling 84); and the campaign replays to the same
   hash. Lands under the sim plan's S1, S3 and S5.
@@ -224,13 +230,15 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   distribution as the sim's own (rulings 115, 116, 123, 221 to 223) within
   the world's tolerance (ruling 209), and a ruleset that fails it plays only
   in a debug or experimental mode with a warning (ruling 189); a campaign
-  with the sim off plays as today (ruling 188); and a death at the table is
+  with the sim off plays as today, its downtime the table's own, and still
+  writes its facts as notes so the sim can be switched on later over the
+  same history (rulings 188, 248); and a death at the table is
   reversed by the rules as re-embodiment (rulings 61, 62).
 - **V4, the played loop.** Done when, from a seed nobody chose, a campaign
   hosted by one DM and joined by one player over the session lane plays
   three sessions with downtime between them on Isocosm: a battlemap fight
-  resolved by the ruleset, a downtime in which factions act and the DM takes
-  up a hook, a travel that reveals what the characters know, a death
+  resolved by the ruleset, a downtime every player agreed to, in which factions act and the DM
+  takes up a hook, a travel that reveals what the characters know, a death
   reversed by rules, and facts the DM committed; players see what their
   characters know and the DM the truth; the receipts replay on both peers to
   the same hash; and the fungible agree in distribution within the world's
@@ -243,9 +251,9 @@ The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
 
 ## 6. Decisions for Mark
 
-Three taken: the eighth by ruling 231 on 2026-09-25, the first and second by
-rulings 243 and 244 on 2026-09-26. The rest are forks this plan found and
-did not settle.
+Seven of eight taken: the eighth by ruling 231 on 2026-09-25; the first to
+fifth and the seventh by rulings 243 to 248 on 2026-09-26. The sixth is the
+fork this plan found and did not settle.
 
 1. **The battlemap under the sim.** When the sim is on, a battlemap is the
    DM's authored map asserted over the site's volume (ruling 89), a
@@ -265,15 +273,23 @@ did not settle.
    per tick and never a call per token.
 3. **Sharing a character.** Two players directing one character (ruling
    153) and the DM playing any unclaimed one (ruling 156): both on by
-   default at the table, or the DM's campaign setting.
+   default at the table, or the DM's campaign setting. **Ruled 245
+   (2026-09-26): "On by default."** Both are on at every table unless
+   turned off.
 4. **Consent to downtime.** The players' consent (rulings 63, 104, 105)
    gathered how at the table: each player's yes, a majority as the shared
    authority plan's Tier 3 table actions, or the DM's declaration with a
-   veto.
+   veto. **Ruled 246 (2026-09-26): "Each player's yes."** Downtime needs
+   every player's consent.
 5. **The faction turn's fate, and absorption.** The tape-drawn faction turn
    retires at V2 for the sim's factions, or stays as the sim-off campaign's
    downtime; and whether Isocosm absorbs `isometry-campaign`'s world as
    ruling 192 had it absorb `mesocosm-core`, in the order proposed in §4.
+   **Ruled 247 (2026-09-26): "Retires at V2."** Isocosm absorbs
+   `isometry-campaign`'s world in §4's order, and the tape-drawn faction
+   turn retires entirely once the sim's factions run. *Reading recorded with
+   it, not ruled:* a sim-off campaign's downtime is then the table's own, as
+   the plain tabletop plays today (ruling 188).
 6. **The first calibration.** Which ruleset the bench calibrates first, the
    5e SRD in the repository or Pathfinder 2e's skeleton, against the sim's
    fight at the first tolerance (ruling 209); and what a debug or
@@ -281,7 +297,9 @@ did not settle.
 7. **A sim-off campaign's record.** Whether a campaign played with the sim
    off still writes its facts as notes, so the sim can be switched on later
    over the same history, or switching it on founds a world from that point
-   (ruling 126).
+   (ruling 126). **Ruled 248 (2026-09-26): "Writes notes."** A campaign
+   played with the sim off still writes its facts as notes, so the sim can
+   be switched on later over the same history.
 8. **Which overlay is W5's second.** Ruling 174 put Mesocosm first and
    nothing ordered the VTT and Eponym; the same question sat in the Eponym
    plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
@@ -319,6 +337,13 @@ did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 245 to 248, recorded at de68795, take §6's decisions
+  3, 4, 5 and 7: sharing a character and the DM playing the unclaimed are on
+  by default, downtime needs every player's yes, Isocosm absorbs
+  `isometry-campaign`'s world in §4's order and the tape-drawn faction turn
+  retires at V2, with a sim-off campaign's downtime the table's own as a
+  reading recorded with the ruling, and a sim-off campaign still writes its
+  facts as notes. §1 to §5 follow. The first calibration remains.
 - 2026-09-26: rulings 243 and 244, recorded at ed20550, take §6's decisions
   1 and 2: with the sim on, a battlemap is projected from the generated
   volume in the game's grid with the DM's map an edit over it, and moves
