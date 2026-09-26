@@ -26,7 +26,7 @@ mod tests;
 pub use crate::rules::{Competition, Competitor, Mind, Need, Similitude};
 pub use crowd::{Crowd, Variant};
 pub use exact::{ExactRun, run_exact};
-pub use found::ProbeFounding;
+pub use found::{PredatorFounding, ProbeFounding};
 
 use crate::{Result, schema::*, simulation::Genesis};
 use serde::{Deserialize, Serialize};

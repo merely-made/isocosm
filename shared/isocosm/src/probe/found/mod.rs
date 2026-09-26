@@ -9,8 +9,10 @@
 
 mod contested;
 mod mind;
+mod predator;
 
 pub use mind::{MindFounding, STRAIN};
+pub use predator::PredatorFounding;
 
 use super::{Competition, Competitor, ProbeWorld, Similitude};
 use crate::{
@@ -52,6 +54,10 @@ pub struct ProbeFounding {
     /// founders, drawn for each.
     pub regrowth: [u64; 2],
     pub mind: MindFounding,
+    /// A lineage that hunts the others (ruling 287), none unless set.
+    /// Domains without one serialize as before it existed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub predators: Option<PredatorFounding>,
     pub bound_per_mille: u32,
 }
 
@@ -77,6 +83,7 @@ impl Default for ProbeFounding {
             spend_strain: [0, 2],
             regrowth: [300, 900],
             mind: MindFounding::default(),
+            predators: None,
             bound_per_mille: 200,
         }
     }
@@ -130,6 +137,7 @@ impl ProbeFounding {
             && self.cohort > 0
             && self.ticks > 0
             && self.bound_per_mille <= 1000
+            && self.predators.as_ref().is_none_or(PredatorFounding::valid)
     }
 
     pub fn generate(&self) -> Result<ProbeWorld> {
@@ -226,6 +234,26 @@ impl ProbeFounding {
                 processes.insert(p.id.clone(), p);
             }
         }
+        let hunters = self.predators.as_ref().map(|p| {
+            let hunters = p.draw(|domain, range| self.pick(domain, 0, range), self.lineages);
+            let identity = hunters.identity();
+            let lineage = format!("lineage:{}", hunters.lineage);
+            accounts.insert(contested::store(hunters.lineage, 0), matter(&lineage));
+            traits.insert(identity.clone());
+            lineages.insert(
+                lineage,
+                Lineage {
+                    parent: None,
+                    revision: 1,
+                    traits: set(&[identity]),
+                    kingdom: "kingdom:fauna".into(),
+                },
+            );
+            for p in hunters.processes() {
+                processes.insert(p.id.clone(), p);
+            }
+            hunters
+        });
         let minds: Vec<mind::Kind> = minds
             .iter()
             .map(|(identity, body, wants)| mind::Kind {
@@ -281,7 +309,9 @@ impl ProbeFounding {
                 legend_floor: 250_000,
             },
             limits: Limits {
-                entities: 1 + sites + sites * founders,
+                entities: 1
+                    + sites
+                    + sites * (founders + hunters.as_ref().map_or(0, |h| h.per_site)),
                 ..Limits::default()
             },
             epoch_ticks: 32,
@@ -294,7 +324,8 @@ impl ProbeFounding {
             mind: Some(mind),
             tick_microseconds: None,
         };
-        let (site_map, population) = self.found(&drawn, &lineages, sites, &per_site)?;
+        let (site_map, population) =
+            self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
         let genesis = Genesis {
             version: crate::VERSION,
             seed: self.seed,
@@ -321,6 +352,7 @@ impl ProbeFounding {
         lineages: &BTreeMap<Key, Lineage>,
         sites: u64,
         per_site: &[u64],
+        hunters: Option<&predator::Hunters>,
     ) -> Result<(BTreeMap<Id, Site>, Population)> {
         let soil: u64 = drawn.iter().map(|d| d.regrowth).sum();
         let mut site_map = BTreeMap::new();
@@ -360,6 +392,22 @@ impl ProbeFounding {
                     left -= count;
                     cohort += 1;
                 }
+            }
+        }
+        // Hunters come after every other member, so founding them leaves
+        // the rest of the world as it was.
+        let mut cohort = 0;
+        for s in 0..sites {
+            let Some(h) = hunters else { break };
+            let lineage = format!("lineage:{}", h.lineage);
+            let mut left = h.per_site;
+            while left > 0 {
+                let count = left.min(self.cohort);
+                let held = self.pick("probe-hunter-body", cohort, [1, h.appetite + h.bite]);
+                let ledger = BTreeMap::from([(contested::store(h.lineage, 0), held)]);
+                population.insert(member(lineages, &lineage, s, ledger), count)?;
+                left -= count;
+                cohort += 1;
             }
         }
         Ok((site_map, population))

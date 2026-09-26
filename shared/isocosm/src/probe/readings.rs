@@ -101,7 +101,8 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
                 who: Binding::Actor,
                 key,
                 ..
-            } => {
+            }
+            | Effect::Eat { into: key, .. } => {
                 accounts.insert(key.clone());
             },
             _ => {},
@@ -280,6 +281,17 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
         })
         .collect();
     read.extend(needs.flat_map(|n| &n.traits).map(|t| format!("trait:{t}")));
+    // A selector reads its target's place, life and lineage, and a drawn
+    // one what the target holds (ruling 287).
+    for t in rules.processes.values().filter_map(|p| p.target.as_ref()) {
+        let reads = [
+            (t.same_place, "place"),
+            (t.alive.is_some(), "alive"),
+            (t.lineage.is_some() || !t.among.is_empty(), "lineage"),
+            (t.weighted, "matter"),
+        ];
+        read.extend(reads.iter().filter(|r| r.0).map(|r| r.1.to_string()));
+    }
     // A competition pairs within a site, reads the leaning and sizes up by
     // body, and rations what the site holds of what it contests; its fights
     // read strain against bearing, and the traits that set bearing and the

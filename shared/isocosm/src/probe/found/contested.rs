@@ -135,24 +135,35 @@ pub(super) struct Acts {
     pub spend: Key,
 }
 
-pub(super) fn lineage(i: u32, things: &[(&Thing, u64)], spend_strain: u64) -> Acts {
-    let identity = format!("ability:probe-{i}");
-    let body = store(i, 0);
-    let own = Query::Trait {
+/// What a member of lineage `i` requires of itself: its lineage's identity.
+pub(super) fn own(i: u32) -> Query {
+    Query::Trait {
         who: Binding::Actor,
-        key: identity,
-    };
+        key: format!("ability:probe-{i}"),
+    }
+}
+
+/// Keeping a body: a unit spent every tick, and death without one.
+pub(super) fn keeping(i: u32) -> [Process; 2] {
+    let body = store(i, 0);
     let mut upkeep = process(&format!("probe:upkeep-{i}"), Shape::Choice, spend(&body));
-    upkeep.requires.extend([own.clone(), account(&body, 1)]);
+    upkeep.requires.extend([own(i), account(&body, 1)]);
     upkeep.period = Some(1);
     let mut starve = process(
         &format!("probe:starve-{i}"),
         Shape::Transition,
         vec![Effect::Death],
     );
-    starve.requires.extend([own.clone(), below(&body, 1)]);
+    starve.requires.extend([own(i), below(&body, 1)]);
     starve.period = Some(1);
     starve.priority = 1;
+    [upkeep, starve]
+}
+
+pub(super) fn lineage(i: u32, things: &[(&Thing, u64)], spend_strain: u64) -> Acts {
+    let body = store(i, 0);
+    let own = own(i);
+    let [upkeep, starve] = keeping(i);
     let mut fought = spend(&body);
     fought.extend(strain(spend_strain));
     let mut spent = process(&format!("probe:spend-{i}"), Shape::Choice, fought);

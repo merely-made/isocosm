@@ -15,12 +15,13 @@ use isocosm::{
 use serde::Serialize;
 use std::collections::BTreeSet;
 
-pub const ARMS: [&str; 5] = [
+pub const ARMS: [&str; 6] = [
     "exact",
     "exact-control",
     "crowd",
     "crowd-averaged",
     "crowd-approximate",
+    "crowd-unweighted",
 ];
 
 #[derive(Serialize)]
@@ -36,7 +37,15 @@ pub struct Arm {
     pub stored: usize,
     pub alive: u64,
     pub alive_states: usize,
+    /// Crowds only: hunting passes where the prey ran out part way through
+    /// hunters sharing one state, so that which of them ate changed nothing.
+    #[serde(skip_serializing_if = "is_zero")]
+    pub shortfalls: u64,
     pub readings: Vec<u64>,
+}
+
+fn is_zero(n: &u64) -> bool {
+    *n == 0
 }
 
 /// One contested thing as a drawn world holds it.
@@ -61,7 +70,49 @@ pub struct Draw {
     pub cost: u64,
     pub upset: u32,
     pub advantage: u64,
+    /// With predators: the hunters as drawn.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub predation: Option<Predation>,
     pub arms: Vec<Arm>,
+}
+
+/// A world's hunters: how many in all, what each eats at a time, and the
+/// body below which it hunts.
+#[derive(Serialize)]
+pub struct Predation {
+    pub hunters: u64,
+    pub bite: u64,
+    pub appetite: u64,
+}
+
+fn predation(world: &ProbeWorld) -> Option<Predation> {
+    let g = &world.genesis;
+    let p = g
+        .rules
+        .processes
+        .values()
+        .find(|p| p.target.as_ref().is_some_and(|t| t.weighted))?;
+    let bite = p.effects.iter().find_map(|e| match e {
+        Effect::Eat { amount, .. } => Some(*amount),
+        _ => None,
+    });
+    let appetite = p.requires.iter().find_map(|q| match q {
+        Query::Below { amount, .. } => Some(*amount),
+        _ => None,
+    });
+    let own = p.requires.iter().find_map(|q| match q {
+        Query::Trait { key, .. } => Some(key),
+        _ => None,
+    })?;
+    let groups = g.population.groups.values();
+    let hunters = groups
+        .filter(|c| c.entity.traits.contains(own))
+        .map(|c| c.count);
+    Some(Predation {
+        hunters: hunters.sum(),
+        bite: bite?,
+        appetite: appetite?,
+    })
 }
 
 impl Draw {
@@ -117,6 +168,7 @@ impl Draw {
             cost: first.cost,
             upset: first.upset,
             advantage: first.advantage,
+            predation: predation(world),
             arms: vec![],
         })
     }
@@ -174,6 +226,7 @@ static MISSING: Arm = Arm {
     stored: 0,
     alive: 0,
     alive_states: 0,
+    shortfalls: 0,
     readings: Vec::new(),
 };
 
@@ -294,6 +347,10 @@ pub struct Verdicts {
     pub negative_control_failed_starvation_check: bool,
     pub negative_control_detected_starvation_difference: bool,
     pub starvation_readings: Vec<Key>,
+    /// With predators: whether the check told the draw's control, prey
+    /// drawn by members alone, from the exact runner.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub draw_control_detected: Option<bool>,
 }
 
 impl Verdicts {
@@ -314,6 +371,10 @@ impl Verdicts {
             negative_control_failed_starvation_check: negative.iter().any(|(d, c)| *d || !*c),
             negative_control_detected_starvation_difference: negative.iter().any(|(d, _)| *d),
             starvation_readings: starvation,
+            draw_control_detected: comparisons
+                .iter()
+                .find(|c| c.name.ends_with("(draw control)"))
+                .map(|c| c.different),
         }
     }
     pub fn summary(&self) -> String {
@@ -324,7 +385,9 @@ impl Verdicts {
             self.main_different,
             self.positive_control_pass,
             self.negative_control_detected_starvation_difference
-        )
+        ) + &self
+            .draw_control_detected
+            .map_or(String::new(), |d| format!(", draw control detected {d}"))
     }
 }
 
@@ -334,7 +397,7 @@ pub struct Checks {
     pub collect_changes_no_outcome: bool,
 }
 
-pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds.";
+pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds. With predators, the exact arms draw each hunter's prey by the core's weighted draw as its scheduler reaches the hunter; the crowds draw a prey state per hunting member, weighted by its members times what each holds, and the unweighted crowd, the draw's control, by its members alone.";
 
 #[derive(Serialize)]
 pub struct Receipt {

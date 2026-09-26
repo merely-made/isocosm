@@ -8,6 +8,7 @@
 //! in each segment, then the pair types of a uniform random matching, then
 //! each fight between two states.
 
+mod hunt;
 mod round;
 
 use super::{
@@ -34,6 +35,9 @@ pub enum Variant {
     /// The histogram with ruling 220's approximate pairing draw: each count
     /// of the round taken in one step near its mean and variance.
     Approximate,
+    /// The draw's negative control (ruling 287): each hunter's prey drawn
+    /// by its members alone, as if every prey held alike.
+    Unweighted,
 }
 
 pub struct Crowd<'w> {
@@ -48,6 +52,9 @@ pub struct Crowd<'w> {
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
     pub work: Work,
+    /// Hunting passes at a site where the prey ran out part way through
+    /// hunters sharing one state.
+    pub shortfalls: u64,
 }
 
 impl<'w> Crowd<'w> {
@@ -67,6 +74,7 @@ impl<'w> Crowd<'w> {
             sites: world.genesis.sites.clone(),
             bins,
             work: Work::default(),
+            shortfalls: 0,
         };
         crowd.matter = crowd.total_matter();
         Ok(crowd)
@@ -139,10 +147,12 @@ impl<'w> Crowd<'w> {
     /// The core scheduler's pass, one evaluation per state instead of per
     /// member. States reached during the pass are not evaluated again, and a
     /// state the process's gates keep out, as the core files them, is not
-    /// evaluated at all.
+    /// evaluated at all. A process drawing its target by weight hunts.
     fn scheduled(&mut self, p: &Process) -> Result<()> {
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
+        let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
+        let mut hunters = Vec::new();
         for (e, n) in snapshot {
             if !e.alive || !gates.open(&e, self.tick) {
                 continue;
@@ -160,6 +170,10 @@ impl<'w> Crowd<'w> {
             {
                 continue;
             }
+            if hunting {
+                hunters.push((e, n));
+                continue;
+            }
             self.work.evaluations += 1;
             self.work.represented += n;
             let site = self
@@ -173,6 +187,9 @@ impl<'w> Crowd<'w> {
                 },
                 None => self.work.blocked += n,
             }
+        }
+        if hunting {
+            self.hunt(p, hunters)?;
         }
         Ok(())
     }

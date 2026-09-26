@@ -7,14 +7,16 @@
 //! Worlds and dynamics seeds follow from one master seed, chosen from the
 //! system clock before the run unless `--seed` is given. `--density` runs
 //! only the exact and crowd arms, to measure savings without a verdict;
-//! `--water` has every world contest water as well as food; `--approximate`
-//! adds a fifth arm, the crowd with ruling 220's approximate pairing draw,
-//! checked against the exact runner and against the exact crowd.
+//! `--water` has every world contest water as well as food; `--predators`
+//! adds a lineage hunting the others by ruling 287's weighted draw;
+//! `--approximate` adds a fifth arm, the crowd with ruling 220's approximate
+//! pairing draw, checked against the exact runner and against the exact
+//! crowd.
 
 mod report;
 
 use isocosm::probe::{
-    Crowd, ProbeFounding, ProbeWorld, Variant,
+    Crowd, PredatorFounding, ProbeFounding, ProbeWorld, Variant,
     check::{self, Settings},
     readings::{self, Reading},
     run_exact,
@@ -41,6 +43,7 @@ fn arm(
                   members: &[(&isocosm::schema::Entity, u64)],
                   work: &isocosm::simulation::Work,
                   stored,
+                  shortfalls,
                   values| {
         let (alive, alive_states) = readings::alive_states(members);
         Arm {
@@ -54,6 +57,7 @@ fn arm(
             stored,
             alive,
             alive_states,
+            shortfalls,
             readings: values,
         }
     };
@@ -65,12 +69,13 @@ fn arm(
         let inspected = readings::inspect(&members, inspect);
         let values = readings::evaluate(derived, world, &members, &s.sites, s.tick, inspected)?;
         let stored = s.population.groups.len() - s.sites.len();
-        Ok(finish(micros, &members, &run.work, stored, values))
+        Ok(finish(micros, &members, &run.work, stored, 0, values))
     } else {
         let variant = match index {
             2 => Variant::Histogram,
             3 => Variant::Averaged,
-            _ => Variant::Approximate,
+            4 => Variant::Approximate,
+            _ => Variant::Unweighted,
         };
         let crowd = Crowd::new(world, dynamics, variant)?.run()?;
         let micros = start.elapsed().as_micros() as u64;
@@ -84,7 +89,15 @@ fn arm(
             crowd.tick,
             inspected,
         )?;
-        Ok(finish(micros, &members, &crowd.work, members.len(), values))
+        let shortfalls = crowd.shortfalls;
+        Ok(finish(
+            micros,
+            &members,
+            &crowd.work,
+            members.len(),
+            shortfalls,
+            values,
+        ))
     }
 }
 
@@ -98,6 +111,7 @@ struct Options {
     density: bool,
     crowds: bool,
     water: bool,
+    predators: bool,
     approximate: bool,
 }
 
@@ -116,6 +130,7 @@ fn options() -> Result<Options, String> {
         density: false,
         crowds: false,
         water: false,
+        predators: false,
         approximate: false,
     };
     while let Some(arg) = args.next() {
@@ -136,6 +151,8 @@ fn options() -> Result<Options, String> {
             "--crowds" => o.crowds = true,
             // Contest water as well as food: two competitions a tick.
             "--water" => o.water = true,
+            // A lineage that hunts the others: ruling 287's weighted draw.
+            "--predators" => o.predators = true,
             "--approximate" => o.approximate = true,
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
             _ => return Err(format!("unknown argument {arg}")),
@@ -148,6 +165,7 @@ fn run() -> Result<(), String> {
     let o = options()?;
     let mut domain = ProbeFounding {
         water: o.water,
+        predators: o.predators.then(PredatorFounding::default),
         ..ProbeFounding::default()
     };
     if let Some(members) = o.members {
@@ -163,6 +181,11 @@ fn run() -> Result<(), String> {
     if o.approximate || o.crowds {
         arms.push(4);
     }
+    // The draw's control runs beside a verdict, wherever there are hunters.
+    let draw_control = o.predators && !o.density && !o.crowds;
+    if draw_control {
+        arms.push(5);
+    }
     eprintln!(
         "Probe receipt: master seed {}, {} draws, arms {arms:?}",
         o.master, o.draws
@@ -173,7 +196,7 @@ fn run() -> Result<(), String> {
         seed: isocosm::draw(o.master, "probe-check", &[]),
     };
     let began = Instant::now();
-    let mut rows: [Vec<Vec<u64>>; 5] = Default::default();
+    let mut rows: [Vec<Vec<u64>>; 6] = Default::default();
     let mut infos: Option<Vec<ReadingInfo>> = None;
     let mut read_set = None;
     let mut out: Vec<Draw> = Vec::new();
@@ -262,7 +285,7 @@ fn run() -> Result<(), String> {
         .filter(|r| r.starvation)
         .map(|r| r.key.clone())
         .collect();
-    let [exact, control, crowd, averaged, approximate] = rows;
+    let [exact, control, crowd, averaged, approximate, unweighted] = rows;
     let mut comparisons = Vec::new();
     let mut verdicts = None;
     if !o.density && !o.crowds {
@@ -283,6 +306,15 @@ fn run() -> Result<(), String> {
                 settings,
             ),
         ];
+        if draw_control {
+            comparisons.push(check::compare(
+                "exact against unweighted crowd (draw control)",
+                &bounds,
+                &exact,
+                &unweighted,
+                settings,
+            ));
+        }
         verdicts = Some(Verdicts::new(&comparisons, starvation));
     }
     if o.approximate && !o.crowds {

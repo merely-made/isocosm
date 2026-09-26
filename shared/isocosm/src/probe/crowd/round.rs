@@ -140,7 +140,7 @@ impl Crowd<'_> {
     fn counts(&self) -> Counts {
         match self.variant {
             Variant::Approximate => Counts::Near,
-            Variant::Histogram | Variant::Averaged => Counts::Exact,
+            Variant::Histogram | Variant::Averaged | Variant::Unweighted => Counts::Exact,
         }
     }
 
