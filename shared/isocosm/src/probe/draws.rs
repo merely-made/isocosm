@@ -5,34 +5,22 @@
 //! from `crate::draw`, so a round's draws follow from the dynamics seed.
 //! The exact count draws walk member by member; the near ones (ruling 220's
 //! approximate pairing draw) take each count in one step from a normal
-//! draw matching its mean and variance, so their cost does not grow with
-//! the members counted.
+//! draw matching its mean and variance, so their cost grows with the
+//! categories counted and not with the members.
 
 use std::collections::BTreeMap;
 
 /// Fixed-point scale of the near draws: 16 fractional bits.
 const ONE: i128 = 1 << 16;
 
+/// The square root of three in fixed point.
+const ROOT_THREE: i128 = 113_512;
+
 /// How a crowd draws its counts: exactly, member by member, or near.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum Counts {
     Exact,
     Near,
-}
-
-/// The integer square root, rounded down.
-fn isqrt(n: u128) -> u128 {
-    if n < 2 {
-        return n;
-    }
-    let mut x = 1u128 << (n.ilog2() / 2 + 1);
-    loop {
-        let y = (x + n / x) / 2;
-        if y >= x {
-            return x;
-        }
-        x = y;
-    }
 }
 
 /// SplitMix64: wrapping integer arithmetic only.
@@ -118,15 +106,20 @@ impl Stream {
         }
     }
     /// A standard normal draw in fixed point, approximated by the sum of
-    /// twelve uniforms less six (Irwin-Hall), exact in integers.
+    /// four uniforms, the four sixteen-bit lanes of one draw, centred and
+    /// scaled to unit variance (Irwin-Hall), exact in integers.
     fn normal(&mut self) -> i128 {
-        let sum: i128 = (0..12).map(|_| i128::from(self.below(1 << 16))).sum();
-        sum - 6 * ONE
+        let x = self.next();
+        let sum: i128 = (0..4)
+            .map(|lane| i128::from((x >> (16 * lane)) & 0xFFFF))
+            .sum();
+        // Each lane stands for the middle of its step: (u + 1/2) / 2^16.
+        (sum + 2 - 2 * ONE) * ROOT_THREE / ONE
     }
     /// An integer near a count with the given mean and variance, both in
     /// fixed point, rounded and kept within `[lo, hi]`.
     fn near(&mut self, mean: i128, variance: i128, lo: u64, hi: u64) -> u64 {
-        let sd = isqrt((variance.max(0) as u128) * (ONE as u128)) as i128;
+        let sd = ((variance.max(0) as u128) * (ONE as u128)).isqrt() as i128;
         let x = mean + sd * self.normal() / ONE;
         let rounded = (x + ONE / 2).div_euclid(ONE);
         rounded.clamp(i128::from(lo), i128::from(hi)) as u64

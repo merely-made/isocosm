@@ -96,6 +96,7 @@ struct Options {
     project: Option<u64>,
     members: Option<[u64; 2]>,
     density: bool,
+    crowds: bool,
     water: bool,
     approximate: bool,
 }
@@ -113,6 +114,7 @@ fn options() -> Result<Options, String> {
         project: None,
         members: None,
         density: false,
+        crowds: false,
         water: false,
         approximate: false,
     };
@@ -129,6 +131,9 @@ fn options() -> Result<Options, String> {
             "--project" => o.project = Some(number()?),
             "--members" => o.members = Some([number()?, number()?]),
             "--density" => o.density = true,
+            // The crowd arms alone, exact and approximate, for their times
+            // at densities the exact runner is too slow to reach often.
+            "--crowds" => o.crowds = true,
             // Contest water as well as food: two competitions a tick.
             "--water" => o.water = true,
             "--approximate" => o.approximate = true,
@@ -148,12 +153,14 @@ fn run() -> Result<(), String> {
     if let Some(members) = o.members {
         domain.members = members;
     }
-    let mut arms: Vec<usize> = if o.density {
+    let mut arms: Vec<usize> = if o.crowds {
+        vec![2]
+    } else if o.density {
         vec![0, 2]
     } else {
         vec![0, 1, 2, 3]
     };
-    if o.approximate {
+    if o.approximate || o.crowds {
         arms.push(4);
     }
     eprintln!(
@@ -219,7 +226,7 @@ fn run() -> Result<(), String> {
             rows[index].push(a.readings.clone());
             draw.arms.push(a);
         }
-        if k == 0 {
+        if k == 0 && !o.crowds {
             let dynamics = draw.arms[0].dynamics;
             let reference = run_exact(&world, dynamics, true)?.sim.state_hash();
             checks.exact_rerun_identical =
@@ -258,7 +265,7 @@ fn run() -> Result<(), String> {
     let [exact, control, crowd, averaged, approximate] = rows;
     let mut comparisons = Vec::new();
     let mut verdicts = None;
-    if !o.density {
+    if !o.density && !o.crowds {
         comparisons = vec![
             check::compare("exact against crowd", &bounds, &exact, &crowd, settings),
             check::compare(
@@ -278,7 +285,7 @@ fn run() -> Result<(), String> {
         ];
         verdicts = Some(Verdicts::new(&comparisons, starvation));
     }
-    if o.approximate {
+    if o.approximate && !o.crowds {
         comparisons.push(check::compare(
             "exact against approximate crowd",
             &bounds,
@@ -286,6 +293,8 @@ fn run() -> Result<(), String> {
             &approximate,
             settings,
         ));
+    }
+    if o.approximate || o.crowds {
         comparisons.push(check::compare(
             "crowd against approximate crowd",
             &bounds,
@@ -305,7 +314,9 @@ fn run() -> Result<(), String> {
     );
     let receipt = Receipt {
         version: isocosm::VERSION,
-        kind: if o.density {
+        kind: if o.crowds {
+            "isocosm-probe-crowds"
+        } else if o.density {
             "isocosm-probe-density"
         } else {
             "isocosm-probe"

@@ -162,8 +162,23 @@ impl Spread {
     }
 }
 
+/// An arm a run left out reads as nothing done.
+static MISSING: Arm = Arm {
+    arm: "missing",
+    dynamics: 0,
+    micros: 0,
+    evaluations: 0,
+    represented: 0,
+    accepted: 0,
+    blocked: 0,
+    stored: 0,
+    alive: 0,
+    alive_states: 0,
+    readings: Vec::new(),
+};
+
 fn find<'a>(d: &'a Draw, name: &str) -> &'a Arm {
-    d.arms.iter().find(|a| a.arm == name).expect("arm ran")
+    d.arms.iter().find(|a| a.arm == name).unwrap_or(&MISSING)
 }
 
 #[derive(Serialize)]
