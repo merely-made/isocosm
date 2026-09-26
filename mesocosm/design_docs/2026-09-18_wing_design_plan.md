@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 216, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 223, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1032,6 +1032,9 @@ what later sections derive from.
      most never reach blows. Mark: "Most never reach blows." So the sides
      size each other up first, by display or bluff, and most contests end
      there; only close matches escalate, and then one side breaks.
+     **Refined by rulings 221 to 223:** an escalated fight builds strain
+     against bearing, a break shifts the advantage without deciding, and
+     the fight ends when a side yields on re-sizing or is spent.
 117. **Any belief can be wrong, through wrong or stale information, and
      entities act on what they believe.** Mark, 2026-09-24, on ruling
      116's bluff: "Deception potentially leads people to make the wrong
@@ -1860,6 +1863,62 @@ what later sections derive from.
      stances grow the same way, from how the encounters the player's
      attention led it into turned out, and places to avoid from what went
      badly there (215).
+217. **The larger reserve does not win an escalated fight; the probe's
+     other readings stand.** Put to Mark on 2026-09-25, with the S2 probe's
+     four readings of ruling 206: each member's choice follows its lineage's
+     leaning, contest-leaners contesting and the rest sharing, and yielding
+     is the smaller contester's answer to sizing up; every pair gets one
+     ration before any gets two, an odd member going without; an escalated
+     fight goes to the larger reserve, a tie to a seeded coin; and a fight's
+     cost is capped at what a member holds, sharers taking half each. Accept
+     all four, revisit the fight, or walk through each? Mark: "Revisit the
+     fight." So the first, second and fourth stand as readings of ruling
+     206, and the fight is reworked around strain (rulings 221 to 223).
+218. **Each reading's bound and the competition's definition sit in the
+     world's rules.** Put to Mark on 2026-09-25, from the probe's deviation:
+     it kept both beside the core's `Rules`, moving them in being a schema
+     change; move both in now, or wait for S1? Mark: "Move both in now."
+219. **The interpreter's meanings exist once.** Put to Mark on 2026-09-25:
+     the probe's `aggregate.rs` restates the interpreter's query and effect
+     meanings for counts of members, the core refusing counted shared
+     writes by design; fold both into shared functions now, or during M2?
+     Mark: "Fold now." So the crowd and the individual runner call the same
+     code.
+220. **S2 next: qualify an approximation, cut the exact runner's cost, and
+     express the thirty shapes.** Put to Mark on 2026-09-25, to pick any: a
+     cheaper, approximate pairing draw certified by the same check, so an
+     approximation's error is measured; the staging clones and whole-world
+     matter totals that make the exact runner quadratic; the thirty
+     `ProcessDef` shapes in the process definition, S2's own
+     done-condition; or pausing S2 for M2. Mark picked the first three.
+221. **In an escalated fight, strain builds against bearing, and cost adds
+     to it.** Put to Mark on 2026-09-25, reworking the fight (217), the core
+     having no strain yet: each round adds strain to both sides and the
+     first past its bearing breaks; or the same, with what a round costs
+     each side adding to its strain? Mark: "Strain vs bearing, plus cost."
+     So each round of escalation adds strain to both sides, and what the
+     round costs a side, reserve spent and wounds, adds more, so the side
+     losing the exchange strains faster. A side whose strain passes its
+     bearing breaks. Bearing is set by traits (ruling 164), with support and
+     history joining when the core has them, and strain is kept, bleeding
+     off only with rest or relief (ruling 159). This is the core's first
+     strain.
+222. **A break in a fight advantages or disadvantages; it decides
+     nothing.** Put to Mark on 2026-09-25, with 221: in a fight, does a
+     break down yield and a break up prevail, or does any break yield?
+     Mark: "Breaking up advantages, breaking down disadvantages. No auto
+     win or lose". So a break up gives its side an advantage in the rounds
+     that follow and a break down a disadvantage, the direction turning on
+     traits, the moment and a seeded draw (ruling 163), and neither ends the
+     fight.
+223. **A fight ends when a side yields on re-sizing or is spent, whichever
+     comes first.** Put to Mark on 2026-09-25, with 222: if a break only
+     shifts the advantage, what ends a fight: re-sizing, being spent, or
+     whichever first? Mark: "Whichever first." So after each round both
+     sides size each other up again with the new advantage, and one that
+     now reads itself outmatched yields (ruling 116); or a side whose
+     vigour, its reserve until vigour is in the ledger (ruling 123), runs
+     out is spent.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5636,6 +5695,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 217 to 223 recorded, from the S2 probe's certified
+  check: its readings of ruling 206 stand but the fight's; the bounds and
+  the competition move into the world's rules; the interpreter's meanings
+  are folded to exist once; S2 next qualifies an approximation, cuts the
+  exact runner's cost and expresses the thirty shapes; and a fight builds
+  strain against bearing, breaks shift the advantage, and it ends on
+  re-sizing or being spent. Lane A resumes on them at Mark's word.
 - 2026-09-25: rulings 214 to 216 recorded, answering how a player directs
   without a menu: a click draws the critter's attention to a place or a
   thing, attending by default and another meaning by right click; no click
