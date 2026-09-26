@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 252, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 253, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2142,6 +2142,13 @@ what later sections derive from.
      `situs` is free; its other common sense, the legal situs of property,
      lies far from this domain. So *situs* it is, and with 251, *site* keeps
      only the world map's meaning.
+253. **Eponym's and the VTT's contract phases open now.** Put to Mark on
+     2026-09-26, both new plans having every fork ruled and ruling 231
+     having them proceed after Mesocosm's M3: open their contract phases, E1
+     and V1, the `eponym/` and `vtt/` modules in `isocosm-overlay`, now, or
+     hold until M3? Mark: "Open E1 and V1 now." So the RPG systems session
+     builds both modules now, proving early that the contract carries three
+     games; everything else in both plans still waits for M3 (231).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5927,6 +5934,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: ruling 253 recorded: E1 and V1, the contract modules of the
+  Eponym and VTT overlay plans, open now, the RPG systems session building
+  them on its own branch for review; the rest of both plans waits for M3.
+  Both plans' §6 decisions are all ruled (231 to 235, 238, 239, 241 to 250).
 - 2026-09-26: rulings 249 to 252 recorded: the bench calibrates Pathfinder
   2e first; an uncalibrated campaign warns when it opens and marks its
   receipts; and the two senses of *site* the tract rename left alone become
