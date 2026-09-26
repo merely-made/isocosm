@@ -7,18 +7,10 @@
 //! Receipts for paged terrain, on the CPU: which bricks a frame names, and
 //! what the brick map holds after each retarget, rebuild and refresh.
 
-use std::cell::RefCell;
-use std::collections::{BTreeMap, BTreeSet};
-use std::ops::Range;
+use std::collections::BTreeMap;
 
-use isometer_core::ground::BRICK;
-use isometer_lens::{BrickMap, BrickProjectionRevision};
-
-use super::residency::{
-    BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, framed_bricks,
-};
-use super::terrain::{TerrainRefresh, TerrainSource};
-use crate::camera::SlabCamera;
+use super::paging::span_of;
+use super::*;
 
 /// A heightfield `side` columns each way from the origin, stepped so its
 /// bricks stand one and two layers tall, with columns an edit can reset.
@@ -232,7 +224,7 @@ fn the_extent_holds_every_framing_as_the_camera_pans() {
         let centre = [step as f32 * 3.7 - 70.0, 40.0 - step as f32 * 2.9];
         let framed = frame(&hills, centre);
         assert_eq!(framed.extent, extent, "{centre:?}: a pan does not move it");
-        let span = super::residency::span_of(&framed.keys);
+        let span = span_of(&framed.keys);
         assert!(
             (0..3).all(|axis| span[axis] <= extent[axis]),
             "{centre:?}: {span:?} past {extent:?}"

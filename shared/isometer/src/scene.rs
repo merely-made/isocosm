@@ -27,8 +27,6 @@ use crate::query::PresentedFrame;
 #[cfg(test)]
 mod palette_tests;
 mod residency;
-#[cfg(test)]
-mod residency_tests;
 mod terrain;
 pub use residency::{
     BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencyStats,
