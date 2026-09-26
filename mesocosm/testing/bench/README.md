@@ -31,6 +31,13 @@ larger rungs in `scale-extension.json`, a living history in
 those three. `viability.json` and `ablation-matter.json` are diagnostics: which
 founding keeps the ecology family reproducing, and what one per-evaluation
 cost amounts to. `source.json` names the commit behind each.
+`remeasure-ecology.json` runs those receipts' ecology points again after the
+core stopped cloning the world and summing its matter for every act: the same
+draws, every hash and count unchanged, and each point's speedup.
+`differential.json`, with its driver `differential-drive.rs`, compares every
+receipt and state hash of random acts on the core as it was before that
+change and the two preceding it, and as it is after them.
+`remeasure-source.json` names their commits.
 
 `isocosm-probe` runs ruling 113's check on ruling 115's competition for food,
 the exact individual runner against a crowd. Its certified receipt is

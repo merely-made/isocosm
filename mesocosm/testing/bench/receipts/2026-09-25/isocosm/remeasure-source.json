@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-25",
+  "kind": "isocosm-checkpoint-1",
+  "commit": "d12e430ba967404c9157a25b4d455a79018cad63",
+  "commits": {
+    "fdd67b9": "ruling 219: the query and effect meanings folded into shared functions",
+    "7e5877d": "ruling 218: the competition and its similitude bounds moved into the world's rules",
+    "d12e430": "the cost cuts: an act stages only what it binds, and receipts read matter from a conserved total; the re-measure option"
+  },
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "profile": "release",
+  "source_blobs": {
+    "shared/isocosm/Cargo.lock": "42f7bd0cc2e8b749c1e2ba4b85c1e0e38c16de5b",
+    "shared/isocosm/Cargo.toml": "ac6baf8a2ea6f73283cda0c02efdfb9adf3410b4",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "456de793c95c27f162ae3c44fd0b988dccc67a88",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "bcdcc135318e289749f49f35feaa7c39cce0b07f",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "f7096676f0a074a28f324f8a8cf79612e0c31a4a",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/bin/isocosm-scale/remeasure.rs": "2832a316f27e97eb5e323584c1b3765fe87f48ba",
+    "shared/isocosm/src/ecology.rs": "619af0eb3132079ddecfcdae39142025c9997ba6",
+    "shared/isocosm/src/execute.rs": "a35c1c4eae788bc28cfd6a34fc4a5a78f9b3d4b1",
+    "shared/isocosm/src/generate.rs": "aa1a9471cb17b3f972f234a715c093272efa5b28",
+    "shared/isocosm/src/genesis.rs": "baae423fd6fda957628cf785bdc9363d7124f378",
+    "shared/isocosm/src/history.rs": "0c36acc2fa2fa4c333db00bdf38acae37af3564a",
+    "shared/isocosm/src/lib.rs": "706ec24670dbe4c5a3e0938c31d934132d4f162b",
+    "shared/isocosm/src/meaning.rs": "7e00cfc48472efce10d9625199594f48879949fb",
+    "shared/isocosm/src/population.rs": "b557c7f455af8403d859ffaba838c88491b6d04e",
+    "shared/isocosm/src/probe/aggregate.rs": "4be43f3b35311e283bb7f6eea3caeb2bb86aa249",
+    "shared/isocosm/src/probe/check.rs": "b3018ab5ed3978a9d953b25d1671c16f04b5b76e",
+    "shared/isocosm/src/probe/crowd.rs": "237a7bef5bf78fd3d9eb60a2a19ed3c788c8b3e6",
+    "shared/isocosm/src/probe/draws.rs": "c3a77a21238ef02c6e5abdd56086bddd9ae586c6",
+    "shared/isocosm/src/probe/exact.rs": "704e2c47bd327c819de4ba129454fc902d11dd03",
+    "shared/isocosm/src/probe/found.rs": "4fbb4230113bfdb4e8f9bf775e934fb2c8d2c371",
+    "shared/isocosm/src/probe/mod.rs": "a431db2d62016c453534aa2c69b3fd88baba706c",
+    "shared/isocosm/src/probe/readings.rs": "109f3f527e730525887b47c253758c2541a3c466",
+    "shared/isocosm/src/probe/tests.rs": "d2c10f27fec9b6c42ad86dc15134a57dc02f9f65",
+    "shared/isocosm/src/queries.rs": "75e45b4d7f029ad354d957320b9380ac27e565ae",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules.rs": "4d53cb1431df0b9393e5f599048efdb2beef8d56",
+    "shared/isocosm/src/schema.rs": "6c752ffbf4fe95fb709c3be320255f0c9654aa23",
+    "shared/isocosm/src/simulation.rs": "8d6b9b23cbd3cc45893d0bb255be7eca03868483",
+    "shared/isocosm/src/stage.rs": "9619f1348b7fa432cb11b3c8d095bfc41ee98b91",
+    "shared/isocosm/src/validation.rs": "ff80af3f7e94c6caf7bf5233226fc0448352783d",
+    "shared/isocosm/tests/probe.rs": "74f184fc87fb220b8de8094357665df18c77431f",
+    "shared/isocosm/tests/sim.rs": "5aabbd5fa3e305a31d377ba61d164b640e9892f5"
+  },
+  "scale_executable_sha256": "b4ab9d11a972eefa1c778255cfa80851d85f08045c4edb1317967884b4bc50fb",
+  "probe_executable_sha256": "9ad27377e608e8767c842d3bad75ff90063642a9e2d69f5f01ec70a3286d962e",
+  "machine": {
+    "model": "ASUSTeK ROG Zephyrus G14 GA402XV, the laptop ruling 124 names",
+    "cpu": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics, 8 cores, 16 threads, 4.0 GHz max",
+    "os": "Windows 11 Home Insider Preview 10.0.26220",
+    "load": "Shared machine; each point runs on one thread. Whole-machine CPU load samples in percent, 0.4 s apart, just after the re-measure: 22, 26, 34, 22, 43. The step-1 receipts ran under similar sharing. Wall times carry this noise; evaluation counts and hashes do not."
+  },
+  "runs": [
+    {
+      "file": "remeasure-ecology.json",
+      "purpose": "time the step-1 ecology points again on the same draws, after the cost cuts",
+      "command": "shared/isocosm/target/release/isocosm-scale.exe --remeasure scale.json --remeasure scale-extension.json --remeasure scale-living.json --family ecology --output remeasure-ecology.json",
+      "seeds": "the step-1 points' own foundings and seeds, which came from the clock at step 1 (master seeds 1790357406088610700, 1790359248610411800 and 1790360974575170100); re-using them is what makes the worlds the same",
+      "commit": "d12e430",
+      "points": 30,
+      "all_identical": true,
+      "tick_seconds_before": 3081.1,
+      "tick_seconds_after": 77.1,
+      "overall_speedup": 40.0,
+      "speedup_min_median_max": [
+        12.2,
+        21.3,
+        113.2
+      ],
+      "controls": [
+        "positive: the pilot receipt of step 1 (seed 1790357350335206000, written by the pre-fold core) re-measured identical on every point, both families",
+        "negative: a copy of that receipt with one final hash, one per-tick group count and one per-tick note count altered was re-measured; exactly those three points came out not identical, naming the altered field"
+      ]
+    },
+    {
+      "files": [
+        "differential.json",
+        "differential-drive.rs"
+      ],
+      "purpose": "results identical: every receipt and state hash of random acts, advances, inspections, learnings and collections, the pre-fold core against the current one",
+      "command": "differential-drive.rs built as the only binary of a scratch crate depending on isocosm by path, once on the tree at 810d213 and once at d12e430; then `drive fuzz 7 24 400`, `drive fuzz 11 60 1500` and `drive probe 20260925 6` on each",
+      "result": "fuzz logs byte-identical: 99,684 operations over 84 worlds, of them 85,686 random acts covering 461 distinct process and outcome pairs, 84 opening acts, and 13,914 advances, collections, inspections and learnings; probe exact runs identical in state apart from the rules revision, which changed in 7e5877d because the rules now hold the competition"
+    }
+  ],
+  "checks": [
+    "cargo test --manifest-path shared/isocosm/Cargo.toml --offline --locked: 32 passed, 0 failed (6 unit, 7 probe integration, 19 core integration); debug builds assert after every accepted act that the world's matter equals the conserved total",
+    "cargo clippy --manifest-path shared/isocosm/Cargo.toml --offline --locked --all-targets -- -D warnings: clean; cargo fmt: clean",
+    "cargo check -p mesocosm-genet --all-features --all-targets --offline (mesocosm workspace, against this worktree's isocosm at d12e430): passes, no warnings",
+    "scale pilot, master seed 1790357350335206000: every deterministic field and final hash as in the step-1 pilot, after each of the three commits",
+    "probe pilot, --seed 20260925 --draws 6 --permutations 199: every arm's readings, work counts, comparisons and verdicts as at 494dda5, after each commit; the two hungry readings are renamed probe:feeding#hungry:<kind> with the competition as their source since 7e5877d; exact-arm wall time for the six draws 18.96 s at 494dda5, 0.54 s at d12e430"
+  ],
+  "scope": "Checkpoint 1 of the batch ruled 217 to 223: the three changes that must leave results identical. The re-measure times only the ecology family's step-1 points; the reservoir family and the largest-world costing were not re-run."
+}

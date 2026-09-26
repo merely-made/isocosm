@@ -19,6 +19,9 @@ time, and records evaluations, stored groups, history growth and heap for each.
 It counts heap with an allocator wrapper local to that binary; the library has
 no `unsafe`. Its seeds come from one master seed, printed and saved like the
 bench's. Run it in release: debug timings say nothing about scale.
+`--remeasure RECEIPT` (repeatable, with `--family` to narrow) runs an earlier
+receipt's points again on the same draws and reports, point by point, the
+speedup and whether every deterministic field came out as before.
 
 `isocosm-probe` runs ruling 113's check on ruling 115's competing instance,
 feeding when food is short, over drawn worlds of the `probe` module's domain.
@@ -102,21 +105,29 @@ capped integer strength summed over residence ticks; it is an explicit first
 law, not a calibrated social model. The backward arrival path is inspectable;
 it does not yet materialize a carrier or teller.
 
-Transaction staging copies mutable state. Grouping reduces interpreter calls
-for independent processes, but gives no general time or memory bound as a
-world diversifies. The [aggregation research](../../mesocosm/design_docs/2026-09-22_aggregation_research.md)
+An act stages copies of only what it binds, its bodies and its site, and
+lists what it adds; the world is written once the act is accepted. Receipts
+read the world's matter from a total summed at founding, which every accepted
+act conserves. Grouping reduces interpreter calls for independent processes,
+but gives no general time or memory bound as a world diversifies. The
+[aggregation research](../../mesocosm/design_docs/2026-09-22_aggregation_research.md)
 separates exact equivalence from possible approximate reductions.
 
-Measured on 2026-09-25, in the receipts under
-`mesocosm/testing/bench/receipts/2026-09-25/isocosm/`: time per tick grows
-about with the square of the population at the largest sizes run, because
-every evaluation first totals matter over the whole stored world and every
-accepted one clones the whole simulation, reach field included. At eight
-lineages about 98% of ecology evaluations end without effect, since every
-periodic process is evaluated for every member. The dead stay stored and each
-noted event keeps an arrival at every site it reached, so ticks grow dearer as
-history accumulates. Founding in cohorts of 32 puts each cohort on one site,
-and those ecology worlds died out without a birth.
+The first baseline, measured on 2026-09-25 in the receipts under
+`mesocosm/testing/bench/receipts/2026-09-25/isocosm/`, found time per tick
+growing about with the square of the population at the largest sizes run,
+because every evaluation first totalled matter over the whole stored world and
+every accepted one cloned the whole simulation, reach field included. With
+both costs cut, the baseline's 30 ecology points ran again on the same draws
+(`remeasure-ecology.json`) with every hash and count unchanged, 12 to 113
+times faster per tick, 40 times over all. Time per evaluation still rises
+slowly with size, from about 3 to 4 microseconds grouped and 4 to 8
+individually as members double from 2,048 to 4,096. At eight lineages about
+98% of ecology evaluations end without effect, since every periodic process is
+evaluated for every member. The dead stay stored and each noted event keeps an
+arrival at every site it reached, so ticks grow dearer as history accumulates.
+Founding in cohorts of 32 puts each cohort on one site, and those ecology
+worlds died out without a birth.
 
 The probe's certified receipt, `probe.json` in the same directory, drew 1,000
 worlds. In each, the crowd stayed within 0.2 Kolmogorov-Smirnov distance of the
