@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-25:** plan; V0 to V4 proposed and not opened. Drafted at
+**Status, 2026-09-26:** plan; V0 to V4 proposed and not opened. Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -12,8 +12,11 @@ repository's plans. It mirrors the
 [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before V0 closes; one is taken, ruling 231 placing
-this overlay side by side with Eponym's after Mesocosm's M3.
+§6's decisions are his before V0 closes; three are taken, ruling 231 placing
+this overlay side by side with Eponym's after Mesocosm's M3, and rulings 243
+and 244 settling the battlemap under the sim, projected from the generated
+volume with the DM's map an edit over it, and moves within it reaching the
+sim as per-tick batches.
 
 **Owns:** the VTT's profile as a game over the Isocosm sim (the record's
 §5); the VTT side of the overlay contract (ruling 154), a module beside
@@ -78,8 +81,12 @@ Ruling 6's six parts.
    36), members or outsiders like anyone, where they start being the DM's
    setup (the record's §5.7 readings).
 2. **The scene.** At a battlemap, the region the view shows up close and so
-   the region that runs in detail (ruling 212), the table plays by its
-   ruleset: moves, stances, emotes, and adjudicated actions. An action
+   the region that runs in detail (ruling 212), projected from the site's
+   generated volume in the game's grid with the DM's map an edit over it
+   (ruling 243), the table plays by its ruleset: moves, stances, emotes, and
+   adjudicated actions. Moves within the battlemap reach the sim as per-tick
+   batches, so a character's place in the site follows its token (ruling
+   244). An action
    resolves once, by the ruleset, and comes back through the handoff as an
    outcome in the sim's terms (rulings 114, 154). The DM commits facts and
    edits the world (ruling 156), reveals secrets (ruling 87) and plays any
@@ -116,7 +123,7 @@ changing nothing in the core.
 
 | Direction | The VTT's side | Rests on |
 | --- | --- | --- |
-| In: table acts | an adjudicated action, actor, action key and target; a move on the board; a stance or an emote; batched per tick, never a call per token; a player's acts for the characters they play, two players able to share one, the DM for any unclaimed | 152, 153, 154; the record's §5.2 point 1; *which of these reach the sim is §6 decision 2* |
+| In: table acts | an adjudicated action, actor, action key and target; a move within the battlemap, reaching the sim as a per-tick batch so the character's place in the site follows its token; batched per tick, never a call per token; a player's acts for the characters they play, two players able to share one, the DM for any unclaimed; stances and emotes stay the table's (*a reading, from the events split below*) | 152, 153, 154, 244; the record's §5.2 point 1 |
 | In: assertions | a fact committed, a secret revealed, a world edit, a character created, a storylet's effects applied, a pack forced over generated content; the DM's edit mode is the world editor's | 89, 156, 184, 190 |
 | In: time | downtime declared for a span, with the players' consent; the campaign's sim switched off or on | 104, 105, 188 |
 | In: travel | a party's move to a place-graph node, and its pace | 72, 205 |
@@ -124,7 +131,7 @@ changing nothing in the core.
 | In: attention changes | pin or unpin any pointable thing; examine the battlemap the view shows up close, the overmap staying a far view | 210, 212 |
 | In: dev intents | none of its own: the DM's edit mode is play at the table (156); a debug or experimental campaign is a setting with a warning (189) | 156, 189 |
 | Out: events | each participant's stream: the DM's the truth, a player's what their characters know; record entries reaching the characters, faction acts, and arcs offered as hooks | 84, 191, 204, 213 |
-| Out: views | the examined site's near rung for the battlemap, projected as the game's grid; the overmap's far view read from the crowd | 12, 18, 212; *what the battlemap is under the sim is §6 decision 1* |
+| Out: views | the examined site's near rung for the battlemap, projected from the generated volume in the game's grid, with the DM's map an edit over it; the overmap's far view read from the crowd | 12, 18, 89, 212, 243 |
 | Handoff | the ruleset's resolved action in the sim's terms: vigour drained and wounds to parts, a defeat or a death, a condition applied or cleared, a displacement within the site, an item transferred; passing the sim's invariants, the accounts conserved; calibrated under 114 or flagged under 189 | 114, 123, 154, 189 |
 
 *Reading, not ruled:* `ActionResolved`'s fields, a request id, the rolls,
@@ -137,10 +144,13 @@ representational by the protocol's own word.
 (`src/protocol.rs:299`) holds twenty-three variants, six of them the
 substrate's `SessionEvent` map mutations and twelve the campaign's
 `WorldEvent`. *Reading, not ruled, confirmed variant by variant in V1:* they
-split three ways. `Map`, the turn order's `TurnAdd`, `TurnRemove`,
-`TurnAdvance` and `TurnSetOrder`, `Rolled`, `SheetSet`, `Emoted`,
-`StanceSet`, `MapStored`, `MapActivated` and `Generation` stay the table's,
-geometry, turns, dice and sheets the sim never knows (the record's §3.8).
+split as follows. `Map`'s token moves reach the sim as per-tick batches
+(ruling 244) and its tile and elevation edits are the DM's map as an edit
+over the generated volume (ruling 243); the turn order's `TurnAdd`,
+`TurnRemove`, `TurnAdvance` and `TurnSetOrder`, `Rolled`, `SheetSet`,
+`Emoted`, `StanceSet`, `MapStored`, `MapActivated` and `Generation` stay
+the table's, turns, dice, sheets and beats the sim never knows (the
+record's §3.8).
 `ActionResolved` and `ConditionSet` are the handoff. `Fact`,
 `CharacterCreated`, `ItemModifierRevealed` and `World`'s factions, places,
 characters, routes, laws, history and storylets are assertions; `World`'s
@@ -167,7 +177,7 @@ along seams the code already has.
 | The faction turn | `faction` 459 | faction acts derived from members and the world's seed (rulings 15, 63); the entropy tape's far-rung stand-in retires when the sim is on, §6 decision 5 |
 | Facts and items | `item` 311, `fact` 78 | notes and secrets (rulings 80, 87); items bearing their provenance, a hidden modifier a note revealed, an item of note a relic (rulings 143, 157) |
 | Generator and packs | `generator` 491, `pack` 340 | the generator's declared space (sim plan §5, ruling 89) and packs as authored content (rulings 89, 190); cleromancy's selection stays host-local by its own decision record |
-| Campaign maps | `map` 258 | the battlemap as a projection of a site's volume and its transitions as nesting steps (rulings 12, 18, 74); §6 decision 1 |
+| Campaign maps | `map` 258 | the battlemap as a projection of a site's generated volume with the DM's map an edit over it (rulings 12, 18, 89, 243), and its transitions as nesting steps (ruling 74) |
 | Chronicle | `chronicle` 380 | arrivals from other games as crossings and descent (rulings 105, 126); `wing-formats` keeps the wire |
 | Construction | `construction` 284 | world edits as asserted facts (the record's §1) |
 | Store and proposals | `store` 200, `collaboration` 160 | the intent log and branches: a proposal's `Branch` mode is ruling 126's branch at campaign scale (the record's §5.2 point 2) |
@@ -193,8 +203,8 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   else in §1 to §4 rests on rulings already made.
 - **V1, the contract's VTT side.** Done when `src/vtt/` exists in
   `shared/isocosm-overlay` (ruling 197) with the table's acts, assertions,
-  time, travel, hooks and the handoff's outcome vocabulary as §3 and §6
-  decisions 1 and 2 settle them; every type round-trips through bytes and
+  time, travel, hooks and the handoff's outcome vocabulary as §3 has them
+  under rulings 243 and 244; every type round-trips through bytes and
   the crate still depends on nothing sim-internal (D18); and each of today's
   twenty-three replicated events is mapped as §3 splits them.
 - **V2, the campaign over a drawn world.** Done when a campaign founded from
@@ -233,19 +243,26 @@ The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
 
 ## 6. Decisions for Mark
 
-One taken, the eighth, on 2026-09-25. Each other is a fork this plan found
-and did not settle.
+Three taken: the eighth by ruling 231 on 2026-09-25, the first and second by
+rulings 243 and 244 on 2026-09-26. The rest are forks this plan found and
+did not settle.
 
 1. **The battlemap under the sim.** When the sim is on, a battlemap is the
    DM's authored map asserted over the site's volume (ruling 89), a
    projection of the generated volume in the game's grid (rulings 12, 18),
    or both, the map an edit over what was generated. The board-on-isometer
-   plan's held scene board is where either is drawn.
+   plan's held scene board is where either is drawn. **Ruled 243
+   (2026-09-26): "Both: an edit."** With the sim on, a battlemap is
+   projected from the generated volume in the game's grid (rulings 12, 18),
+   with the DM's map as an edit over it (ruling 89).
 2. **The table's grain.** Which board events reach the sim: only outcomes,
    assertions and travel, with a token's position on the board the table's
    own; or moves within a battlemap too, as per-tick batches, so the
    character's place in the site follows the token. §5.2 point 1 sets the
-   grain coarse either way.
+   grain coarse either way. **Ruled 244 (2026-09-26): "Moves too."** Moves
+   within a battlemap reach the sim as per-tick batches, so a character's
+   place in the site follows its token; the contract stays coarse, batches
+   per tick and never a call per token.
 3. **Sharing a character.** Two players directing one character (ruling
    153) and the DM playing any unclaimed one (ruling 156): both on by
    default at the table, or the DM's campaign setting.
@@ -302,6 +319,11 @@ and did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 243 and 244, recorded at ed20550, take §6's decisions
+  1 and 2: with the sim on, a battlemap is projected from the generated
+  volume in the game's grid with the DM's map an edit over it, and moves
+  within a battlemap reach the sim as per-tick batches, so a character's
+  place in the site follows its token. §2, §3, §4 and §5 follow.
 - 2026-09-25: ruling 231 marks §6's decision 8: the VTT's and Eponym's
   overlays go side by side after Mesocosm's M3, each on its own plan. The
   record links this plan from its §5.7 and §11 (aa354f3).

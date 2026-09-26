@@ -2,7 +2,8 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-26:** plan; E0 to E4 proposed and not opened. Drafted at
+**Status, 2026-09-26:** plan; E0 done 2026-09-26, its seven decisions ruled
+(231 to 235, 238, 239, 241 and 242); E1 to E4 proposed and not opened. Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -10,13 +11,13 @@ with the Simulation design review session, from the
 contract's rulings (197, 203 to 205, 210 to 213), and Eponym's own plans. It
 mirrors the [Mesocosm overlay plan](../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
-of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before E0 closes; five of seven are taken: ruling 231
-placing this overlay side by side with the VTT's after Mesocosm's M3, rulings
-232 to 235 settling the handoff, the solver's home, the start in time and
-how a first life begins, and rulings 238 and 239 the death with no bonded
-companion and absorption, with driving built only on Isocosm. Posing and
-co-op in E4 remain.
+of this plan's own is flagged as one. No lane runs until Mark opens it. §6's
+seven decisions are taken: ruling 231 placing this overlay side by side with
+the VTT's after Mesocosm's M3, rulings 232 to 235 settling the handoff, the
+solver's home, the start in time and how a first life begins, rulings 238
+and 239 the death with no bonded companion and absorption with driving built
+only on Isocosm, and rulings 241 and 242 posing as a telling's manner and
+two peers in E4.
 
 **Owns:** Eponym's profile as a game over the Isocosm sim (the record's §5);
 the Eponym side of the overlay contract (ruling 154), a module beside
@@ -88,7 +89,9 @@ Ruling 6's six parts.
    holds until its premises change (rulings 63, 67; the founding plan's
    "Offers become standing agreements"). Telling plants a note on the hearer
    or leaks into the reach field (ruling 87); what is told may be false and
-   takes by four things (rulings 117, 118). Building and crafting are the
+   takes by four things (rulings 117, 118), and posing, to intimidate,
+   persuade or deceive, is the telling's manner, the fourth of them (ruling
+   241). Building and crafting are the
    one verb pointed outward, items bearing their maker and materials
    (ruling 95), and a carve in the ground is an asserted fact (the record's
    §1, ruling 89). A fight is sized up first, most ending there (ruling
@@ -106,8 +109,8 @@ Ruling 6's six parts.
    goes to a new world (ruling 238). Tag-in lives in creative mode only (ruling 187).
 4. **Co-op.** Each player lives their own named creature in the same world,
    peers to each other as to anyone (ruling 185); ruling 153's shared
-   directing is not Eponym's shape. Whether E4 plays it over the network is
-   §6 decision 6.
+   directing is not Eponym's shape. E4 plays it over the session lane, two
+   peers in one world (ruling 242).
 5. **Modes.** Survival and creative (ruling 187), chosen by the player;
    creative is also where debugging reads the truth.
 
@@ -125,7 +128,7 @@ opens it, the actuation of one body", and §9.14 names driving as Eponym's
 | --- | --- | --- |
 | In: actuation | the played body's acts for one tick: the accepted transition its fixed-step motion and contact solver, run on the game side over the stack's conatus, produced for that tick, with its timed acts, targets named by entity handle and places by place-graph handle; the one body the participant plays, never a second | 60, 152, 203, 205, 233; §5.2 points 1 and 2, §9.14 |
 | In: asks | a proposal to one peer: the work, the terms, the danger; the sim answers by that peer's methodology weighed by its opinion of the asker; a standing agreement is a proposal accepted once and held | 60, 63, 67 |
-| In: tellings | a claim told to one hearer; what is told may be false, and the hearer takes it by what it can check, who is telling, what it wants to hear and how it is told | 87, 117, 118; *posing to intimidate, persuade or deceive is the record's flagged reading in §3.4, §6 decision 5* |
+| In: tellings | a claim told to one hearer, with its manner: posing to intimidate, persuade or deceive is how a claim is told, the fourth thing the hearer weighs, carried on the telling and never an intent of its own; what is told may be false, and the hearer takes it by what it can check, who is telling, what it wants to hear and how it is told; display and bluff in a contest stay sizing up | 87, 116, 117, 118, 241 |
 | In: the player's acts | naming the creature one lives and what it meets, the name being the doing; writing a note, a bearer in the world | 36, 168, 130, 127 |
 | In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead; with none, another life in that world, any of ruling 235's three, or a new world | 61, 186, 235, 238 |
 | In: creative | tag-in to a companion and tag-out to home, in creative mode only | 187; `eponym-identity`'s `ControlIntent::{TagIn, TagOut}` |
@@ -204,7 +207,8 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 15).
 
 - **E0, the profile ruled.** Done when §6's decisions are taken; everything
-  else in §1 to §4 rests on rulings already made.
+  else in §1 to §4 rests on rulings already made. **Done 2026-09-26**
+  (rulings 231 to 235, 238, 239, 241 and 242).
 - **E1, the contract's Eponym side.** Done when `src/eponym/` exists in
   `shared/isocosm-overlay` (ruling 197) with actuation, asks, tellings, the
   player's acts, the death checkpoint, creative's tag-in and the handoff's
@@ -233,8 +237,10 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   the player picked, the headed host lives one named life end to end on
   Isocosm: a home made or joined, asks agreed and refused, a fight, notes
   written and found, a death and a succession, then the successor's life
-  continuing in the same history; survival and creative modes both work;
-  the receipts replay to the same hash; and the fungible agree in
+  continuing in the same history; two players' creatures live in one world
+  over the session lane, peers to each other (rulings 185, 242); survival
+  and creative modes both work; the receipts replay on both peers to the
+  same hash; and the fungible agree in
   distribution within the world's stated tolerance (ruling 113). This is
   W5's done-condition for Eponym.
 
@@ -246,10 +252,10 @@ The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
 
 ## 6. Decisions for Mark
 
-Five of seven taken: the seventh by ruling 231 and the first and second by
-rulings 232 to 235 on 2026-09-25, the third's last half and the fourth by
-rulings 238 and 239 on 2026-09-26. The fifth and sixth are forks this plan
-found and did not settle.
+All seven taken: the seventh by ruling 231 and the first and second by
+rulings 232 to 235 on 2026-09-25; the third's last half, the fourth, the
+fifth and the sixth by rulings 238, 239, 241 and 242 on 2026-09-26. E0 is
+done on paper; opening E1 is Mark's.
 
 1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
    foreground strike system keeps resolving them geometrically and hands
@@ -302,10 +308,14 @@ found and did not settle.
 5. **Posing.** The record's §3.4 flags posing, to intimidate, persuade or
    deceive, as a reading of ruling 117 and not a ruling. Eponym is the game
    that needs it in play. Rule it, so E1 carries a posing intent, or leave it
-   out of E1.
+   out of E1. **Ruled 241 (2026-09-26): "A telling's manner."** Posing is
+   how a claim is told, the fourth thing a hearer weighs (ruling 118),
+   carried on the telling and not an intent of its own; display and bluff
+   in a contest stay sizing up (ruling 116).
 6. **Co-op in E4.** Each player their own creature is ruled (ruling 185).
    Whether E4's done-condition includes two peers over the session lane, or
    single-player first as the founding plan parked real-time co-op netcode.
+   **Ruled 242 (2026-09-26): "Two peers in E4."**
 7. **Which overlay is W5's second.** Ruling 174 put Mesocosm first and
    nothing ordered Eponym and the VTT; the same question sat in the VTT
    plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
@@ -335,6 +345,10 @@ found and did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 241 and 242, recorded at ed20550, take §6's last two
+  decisions: posing is a telling's manner, carried on the telling and never
+  an intent of its own, and E4 plays two peers over the session lane. E0 is
+  done, all seven decisions ruled; §2, §3 and §5 follow.
 - 2026-09-26: rulings 238 and 239, recorded at e460014, close §6's decision
   3 and rule decision 4: at a death with no bonded companion the player
   takes up another life in that world or goes to a new one, and going to a
