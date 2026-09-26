@@ -172,8 +172,10 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
   process definitions, conserves its accounts and replays identically, its
   `mesocosm-core` tests are ported or replaced by draws, every moved file
-  is within the 600-line ceiling (ruling 193), and `mesocosm-core` no
-  longer owns it. Lands under the sim plan's S1 and S2.
+  is within the 600-line ceiling (ruling 193), `mesocosm-core` no longer
+  owns it, and the level of the web it enables stays alive in most draws:
+  producers alone, then with consumers, then with decomposers closing the
+  loop (ruling 260). Lands under the sim plan's S1 and S2.
 - **M3, directing on Isocosm,** built only there, with no prototype on the
   current host (194). Done when a played critter acts on its own
   needs, senses and mood under the player's nudges, its range, home,
@@ -229,6 +231,11 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-26: ruling 260 stages viability with M2: each family is done
+  only when the level of the web it enables stays alive in most draws.
+  Ruling 258 lands the scheduler's trait index before M2, and Lane A's
+  checkpoint 3 plan for matter and processes, the first family, is with
+  Mark.
 - 2026-09-25: rulings 225 to 230 settle the played loop's collapse and
   ends (§2 step 4) and the right click's ring of acts (§1); ruling 231
   puts Eponym's and the VTT's overlays, planned the same day, side by

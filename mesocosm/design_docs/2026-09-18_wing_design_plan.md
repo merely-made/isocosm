@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 255, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 261, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2166,6 +2166,63 @@ what later sections derive from.
      "Keep raw out of tree." *Reading, not ruled:* the repository keeps a
      manifest naming each raw file's out-of-tree path and hash, so a copy can
      be checked; receipts already committed stay where they are.
+256. **The sim's clock counts a fine unit, and each process runs on its own
+     period.** Put to Mark on 2026-09-26, from an outside review's first
+     finding: nothing said what a tick is in world time, so ruling 124's
+     region, a century in a few minutes, could neither pass nor fail, a tick
+     owing 3 s if ticks are years and 8.2 ms if days. A fine unit with a
+     period per process, a day, or a world setting? Mark: "A fine unit,
+     periods per process." So each process carries its period in world time,
+     feeding daily, lineages yearly, polities by season; the due-event queue
+     skips idle time; and ruling 124's target reads as a century of world
+     time at those periods.
+257. **The clock's unit is a world setting, a minute by default.** Put to
+     Mark on 2026-09-26, with 256: a second, a minute, or a world setting?
+     Mark: "World setting, a minute default (a round in d&d and a few other
+     systems)". *Reading, not ruled:* anything finer than a world's unit, a
+     six-second round in newer tabletop systems or Eponym's real time, is the
+     foreground game's to resolve, as rulings 232 and 233 and the VTT's
+     handoff already have it.
+258. **The scheduler indexes processes by the traits they require now;
+     queuing due events per entity is decided before M2's first receipts.**
+     Put to Mark on 2026-09-26, from the review's second finding, confirmed
+     in the code (`simulation.rs:251-261`) and the receipts: each due process
+     was evaluated against every living group, so at 1,024 members the
+     evaluations per tick grew from 5,621 with 2 lineages to 219,408 with 32,
+     about 15 to 250 ms, 98% of them doing nothing, against the record's "an
+     idle thing costs nothing". Fix now with results identical, or during M2?
+     Mark: "Fix now, results identical." Asked which part, the trait index
+     being byte-identical while per-entity queues reorder acts within a tick
+     and change every result: Mark: "Index now, per-entity later."
+259. **The operation budget counts only the evaluations that run.** Put to
+     Mark on 2026-09-26, with 258: the budget counts evaluations, so skipping
+     blocked ones changes what a budget allows; count the skipped too, staying
+     byte-identical everywhere, or count only what runs, re-baselining
+     budgeted sessions? Mark: "Count only what runs." So budgeted sessions take
+     a new baseline, and six tight-budget saves that failed to load in the
+     other mode are checked again.
+260. **Viability gates are staged with the absorption, family by family.**
+     Put to Mark on 2026-09-26, from the review's fourth finding, that no
+     phase gates on behaviour while no core the wing has run keeps an ecology
+     alive: one gate before any absorption, or keep the ruled order? Mark
+     asked: "Conceptually, is the ecology able to be balanced before the
+     things to balance are in play? I guess the first balance is between
+     producers and consumers..." Answered that today's core holds only a toy
+     web, so one gate before absorption would certify the toy, and that the
+     balance can be staged with the families that bring its mechanics:
+     producers alone, then with consumers, then with decomposers closing the
+     loop. Put back, Mark: "Staged, per family." So each of M2's families is
+     done only when the level of the web it enables stays alive in most
+     draws.
+261. **The background is hybrid: derived where effects commute, a calibrated
+     rate model where they do not.** Put to Mark on 2026-09-26, from the
+     review's third finding, that exact grouping folds only identical members
+     and the crowd's savings fell from 11 to 2.4 times once strain was
+     per-member state: what produces the background, ruling 113 staying the
+     check? Mark: "Hybrid." So the background is derived from the definition
+     where effects commute, by lossless grouping, and where they share
+     resources, targets or relationships it is a rate model per site and
+     lineage, calibrated against the exact runner on the bench.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5951,6 +6008,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 256 to 261 recorded, from an outside review of the
+  sim that Mark brought in: the clock counts a fine unit, a minute by
+  default, each process on its own period; the scheduler indexes processes
+  by required traits now, per-entity queues decided before M2's first
+  receipts; the budget counts only what runs; viability gates are staged
+  with the absorption, family by family; and the background is hybrid,
+  derived where effects commute and a calibrated rate model where they do
+  not. The review's other findings, the near rung's motion, the far rungs'
+  standing, merge by replay's player-facing side and the rewrite debt, are
+  put to Mark in turn.
 - 2026-09-26: the body-site renames finished on main: tract across
   Mesocosm's phenotype code and `wing-functions` (23147d1 to ad65eb2, old
   serialized names still read under ruling 224), then attachment and situs
