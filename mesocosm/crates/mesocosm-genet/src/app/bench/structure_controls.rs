@@ -78,6 +78,6 @@ pub(super) fn view(state: &Bench) -> Child {
         el("div", layouts).attr("class", "toolbar"),
         el("div", organs).attr("class", "toolbar"),
         el("div", (el("div", counts).attr("class", "toolbar"), el("div", lengths).attr("class", "toolbar"))).attr("class", "generation-options"),
-        el("p", text("Structural stretches; feeding supports and paired organs add parts. Length bounds segments per stretch. Bare sites retain feeding organs. Radial branches use cardinal directions. Leaves selects Producer.")),
+        el("p", text("Structural stretches; feeding supports and paired organs add parts. Length bounds segments per stretch. Bare situs retain feeding organs. Radial branches use cardinal directions. Leaves selects Producer.")),
     )).attr("class", "structure-controls"))
 }
