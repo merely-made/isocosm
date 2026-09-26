@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 300, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 307, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2518,6 +2518,54 @@ what later sections derive from.
      the bump, during it, or keep ruling 111's `isometry-` prefix? Mark: "Eh.
      If they're within the ambit of isocosm vtt, then fair enough." So ruling
      111 stands.
+301. **Until the atlas is sized to the card, a frame's overflow drops the
+     bricks farthest from its centre, the margin's first.** Put to Mark on
+     2026-09-26, from Lane E's paging report: a frame that shows more bricks
+     than the 2,047 the atlas holds, as the relief board does at the headed
+     pane, loses its outer ring; keep the lane's interim rule, or keep what
+     is nearest the camera? Mark: "Keep it." The dropped bricks are counted,
+     and the rule lapses when the card-sized atlas lands with the pin bump
+     (ruling 289).
+302. **The pointer volume reserves headroom above the board's tallest
+     point.** Put to Mark on 2026-09-26, with 301: the volume's height
+     follows the terrain, so an edit that lifts the tallest point into a new
+     brick layer rebuilds the map whole, a 1 MiB upload; accept the rare
+     rebuild, or size the volume with a spare layer or two? Mark: "Reserve
+     headroom." Only an edit past the headroom rebuilds. *Reading, not
+     ruled:* the spare count is a setting, one layer by default until its
+     memory cost comes back to Mark.
+303. **The board's tallest elevation is cached, not scanned.** Put to Mark
+     on 2026-09-26, with 301: Lane E found `BoardWorld::new` scanning the
+     whole elevation grid on every signature check, 2.73 ms a frame at 256
+     by 256; fix it now or later? Mark: "Fix it now." The cache is kept
+     whenever the map changes, a lowered tallest tile included, and results
+     stay identical.
+304. **The check is made to see prey choice, by a reading and by the
+     domain.** Put to Mark on 2026-09-26, from Lane A's checkpoint 4, which
+     certified hunting exact against crowd on every reading, 34 of 34 with
+     food and 44 of 44 with water, while a crowd drawing prey the wrong way,
+     by headcount rather than by holdings, was caught on one reading with
+     food and none with water: add a reading of prey choice, strengthen
+     predation in the domain, both, or accept the gap? Mark: "Both." So a
+     reading shows which prey were taken, the domain is one where the choice
+     moves outcomes, and the check certifies again before Part A merges.
+305. **The hunting domain's ranges widen.** Put to Mark on 2026-09-26, with
+     304: Lane A set 4 to 16 hunters per site, bites of 1 to 2 and an
+     appetite of 3 to 6 itself; keep them or widen them? Mark: "Widen them."
+     The ranges chosen come back to him with the result.
+306. **Hunting's shortage moves to ruling 269's scramble in Part B.** Put to
+     Mark on 2026-09-26, with 304: when prey run out part way through a
+     site's hunters the lowest identities still eat first, the one place
+     identity order decides an outcome, and the crowd matches only because a
+     site's hunters start as one group; switch to 269's proportional
+     scramble in Part B, or before Part A merges? Mark: "In Part B." Part A
+     merges with identity order and the case counted, 6 draws in 1,000 with
+     food and 3 with water.
+307. **The draw control stays in the check.** Put to Mark on 2026-09-26,
+     with 304: Lane A added the crowd drawing prey by headcount as a control
+     arm of its own accord; keep it or keep the check to the arms the
+     rulings named? Mark: "Keep it." It is the control that shows whether
+     the check sees prey choice at all.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6303,6 +6351,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 301 to 307 recorded, from Lane E's paging report and
+  Lane A's checkpoint 4: a frame's overflow drops the bricks farthest from
+  its centre until the card-sized atlas lands; the pointer volume reserves
+  headroom; the board's tallest elevation is cached; the check is made to
+  see prey choice by a new reading and a wider hunting domain, and keeps
+  the draw control that found the gap; and hunting's shortage moves to
+  ruling 269's scramble in Part B. The doc lane's first seven rewrites
+  (ruling 280) landed the same day, two lines of the dev tools rewrite
+  brought to rulings 285 and 271 on review.
 - 2026-09-26: rulings 297 to 300 recorded, from the pin bump's assessment:
   hagiograph folds into the bump; cleromancy becomes an optional feature of
   the VTT's host, off by default; `isometry-runtime` retires; and the VTT's

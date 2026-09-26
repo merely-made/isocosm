@@ -707,3 +707,11 @@ a lane saw. This section is the current one, and it names its build.
   move to mere's current main, and the board lane builds the CPU-side paging
   and the view-driven residency helper meanwhile, keeping any shrinking
   retarget off paths a user can reach until the pin moves.
+- **2026-09-26, paging built on `lane-e-paging`, merging after two
+  additions.** A 256 by 256 board renders, flat and in relief, and a
+  click at 256 fell from 496 to 1,258 ms to under a millisecond in
+  release. Mark ruled the lane's three items (rulings 301 to 303): its
+  interim overflow rule stands until the card-sized atlas lands, the
+  pointer volume reserves headroom above the tallest point, and the
+  board's tallest elevation is cached rather than scanned each frame.
+  The lane adds the last two before the branch merges.

@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 300
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 307
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -384,6 +384,8 @@ worlds, none in ecological ones.
 | | The board's paging: mere's defect; the cap; the CPU side; residency; the pin | "Fix mere first"; "Card-sized cap"; "Page it too"; "View, isometer helper"; "mere's current main" | 288 to 292 |
 | | Phases; feeding; the atlas's limits; its budget | "Per group phases if they are in the foreground or nearby, baseline as built?"; drawn across its matter, once a period, a weighted draw; "Accept the shape"; "8 MiB" | 293 to 296 |
 | | hagiograph; cleromancy; the old runtime; crate names | "Fold it in"; asked why the VTT depends on cleromancy, then "Optional, off by default"; asked what the runtime is for, then "Retire the crate"; "If they're within the ambit of isocosm vtt, then fair enough" | 297 to 300 |
+| | Paging's overflow; the pointer volume's height; the elevation scan | "Keep it"; "Reserve headroom"; "Fix it now" | 301 to 303 |
+| | Prey choice; the hunting ranges; hunting's shortage; the draw control | "Both"; "Widen them"; "In Part B"; "Keep it" | 304 to 307 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
