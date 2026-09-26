@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 253, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 255, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2149,6 +2149,23 @@ what later sections derive from.
      hold until M3? Mark: "Open E1 and V1 now." So the RPG systems session
      builds both modules now, proving early that the contract carries three
      games; everything else in both plans still waits for M3 (231).
+254. **The contract's shared shapes live once, in its core.** Put to Mark on
+     2026-09-26, here and in the RPG systems session: E1 and V1 left
+     `WorldPoint` in three game modules, the act key in three, and `Harm`,
+     `Wound`, `WoundSeverity` and `PartHandle` in two, byte-identical; lift
+     them into the crate's shared core, or leave the copies? Mark: "Lift to
+     the core now", and in the RPG systems session, "I don't mind lifting
+     either." Done there at 269ffc5: `point.rs`, `act_key.rs`, the VTT's
+     `ActionKey` renamed, and `harm.rs` are core exports, and no game module
+     defines its own.
+255. **Raw receipts live out of tree; the repository keeps their summaries,
+     sources and scripts.** Put to Mark on 2026-09-26, S2's checkpoint 2
+     bringing 14 MB of raw JSON against a repository pack of 9 MB: commit
+     them as they are, gzipped, or keep the raw files out of tree in
+     `Code/testing/isometry/`, committing the summaries and scripts? Mark:
+     "Keep raw out of tree." *Reading, not ruled:* the repository keeps a
+     manifest naming each raw file's out-of-tree path and hash, so a copy can
+     be checked; receipts already committed stay where they are.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5934,6 +5951,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 254 and 255 recorded: the contract's shared shapes
+  live once in its core, lifted by the RPG systems session at 269ffc5, E1
+  and V1 having landed at 1996ecc; and raw receipts live out of tree, the
+  repository keeping summaries, sources, scripts and a manifest of hashes.
 - 2026-09-26: ruling 253 recorded: E1 and V1, the contract modules of the
   Eponym and VTT overlay plans, open now, the RPG systems session building
   them on its own branch for review; the rest of both plans waits for M3.
