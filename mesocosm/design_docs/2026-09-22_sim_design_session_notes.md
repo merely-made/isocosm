@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24 and 174 to 223 on 2026-09-25, the last
+113 to 173 were given on 2026-09-24 and 174 to 231 on 2026-09-25, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -362,6 +362,9 @@ worlds, none in ecological ones.
 | | The input: the click; warning; standing orders | "Could you click somewhere to draw attention to a place or thing?", then "Attend to this is default; pick alt meanings by right click"; "One gesture only"; "Grown from attention" | 214 to 216 |
 | | The probe's readings; into `Rules`; the duplication; S2 next | "Revisit the fight"; "Move both in now"; "Fold now"; an approximation, the cost, the thirty shapes | 217 to 220 |
 | | The fight: strain; a break's direction; the end | "Strain vs bearing, plus cost"; "Breaking up advantages, breaking down disadvantages. No auto win or lose"; "Whichever first" | 221 to 223 |
+| | The tract rename's wire | "New wire, old accepted" | 224 |
+| | Collapse; regions; mood; the right click | "A level gone"; regions linked to the world's biomass, spilling and merging; "Needs now"; "A ring of acts" | 225 to 228 |
+| | The world's ends; W5's second | "Either, player's call"; "Done, but watchable"; "Side by side" | 229 to 231 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -401,10 +404,9 @@ The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
 occurrences; D20's provider over `mere-capability`, W3's to build; the
 overlay plan's M2 to M4, proposed and not opened, M1 being done; the S2 probe, being built under rulings 206
-to 209; how a right click's meanings are shown (214); what measures a collapse
-as local or global, the playable ecology plan's to specify; and plans of
-their own for Eponym's and the VTT's overlays, whose shapes are ruled in
-the record's §5.6 and §5.7.
+to 209; the threats that could collapse a world, which Mark left open
+(226); and the §6 forks of Eponym's and the VTT's overlay plans, drafted
+the same day by the RPG systems session.
 
 ### 8.6 Lessons for the next session
 

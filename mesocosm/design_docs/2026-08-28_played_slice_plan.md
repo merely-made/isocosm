@@ -104,9 +104,9 @@ one when M3 lands (ruling 196).
 directives in the section without a menu, since the vessel briefs keep
 play "experienced directly, never through a menu". By pointing: a click
 draws the critter's attention, a right click picks another meaning, no
-click warns, and the standing orders grow from that attention. How the
-right click's meanings are shown is still open, for Mark with the M3
-host.
+click warns, and the standing orders grow from that attention. A right
+click shows the critter's acts toward the target as a ring around the
+cursor (ruling 228).
 
 **Done when** the overlay plan's M3 is: a played critter acts on its own
 needs, senses and mood under the player's nudges, its range, home,

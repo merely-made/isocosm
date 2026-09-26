@@ -48,7 +48,7 @@ Ruling 6's six parts.
 | Domain | the critter and its lineage, refined over the ages; what a player plays follows the lineage's traits, kin ranging from ecological competitors to extensions of one's own critter, a fungus monocreature or a swarm of germs directed whole | 35, 58, 155 |
 | Ensemble | the roster of relevant critters in the region the lineage inhabits | 6, 124 |
 | Mechanics | metabolize, the one verb, performed by the critter itself; incorporation where its traits allow; contests sized up and seldom reaching blows; harm as vigour and wounds; mood read and strain kept, a break going down or up | 38, 96, 115, 116, 123, 158 to 164 |
-| Controls | directing, never driving: a click draws the critter's attention to a place or a thing, attending by default and another meaning by right click, and never warns; places, priorities and stances grow from that attention as desire paths; the critter weighs each nudge by its bond, and its senses suggest | 59, 60, 175 to 178, 214 to 216 |
+| Controls | directing, never driving: a click draws the critter's attention to a place or a thing, attending by default and another meaning by right click, shown as a ring of acts, and never warns; places, priorities and stances grow from that attention as desire paths; the critter weighs each nudge by its bond, and its senses suggest | 59, 60, 175 to 178, 214 to 216, 228 |
 | Perspective | the terrarium section at a shallow oblique, the review as the trait graph board; survival shows what the played critter knows, creative shows the truth and edits nothing | vessel briefs §2, 180, 184 |
 | Timescale | epochs: a round under a versioned epoch rule, then the boundary, where every lineage adapts and the player's is revised in the shop; the start chosen from the world's habitability for the critter onward | 57, 179, 182; the playable ecology plan's `EpochRule` |
 
@@ -77,7 +77,12 @@ Ruling 6's six parts.
    end (ruling 181): play goes on to see what happens; after a local one the
    player can start again elsewhere, even with their lineage if it
    survives, or their critter can help the world recover as far as its
-   abilities allow.
+   abilities allow. A region has collapsed when one of its trophic levels is
+   gone (ruling 225); regions are ecological, following the world's
+   biomass and merging as it falls, so a global collapse is the one
+   region's (226). When the player's lineage ends they pick another here or
+   a new world, their call (229); a total collapse ends the world as a
+   game, and it stays watchable (230).
 5. **Modes.** Survival and creative (rulings 180 and 184), chosen by the
    player; creative is also where debugging reads the truth.
 
@@ -224,6 +229,10 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-25: rulings 225 to 230 settle the played loop's collapse and
+  ends (§2 step 4) and the right click's ring of acts (§1); ruling 231
+  puts Eponym's and the VTT's overlays, planned the same day, side by
+  side after M3.
 - 2026-09-25: rulings 214 to 216 settle the input: a click draws the
   critter's attention, a right click picks another meaning, no click
   warns, and the standing orders grow from attention. The contract

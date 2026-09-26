@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 224, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 231, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1573,6 +1573,11 @@ what later sections derive from.
      somewhere else, perhaps even with your lineage if it's still there. Or
      you know, perhaps your critter can help the world by doing something
      to regrow producers or fix the problem. Depends on their ability."
+     **Refined by rulings 225, 226, 229 and 230:** a region collapses when
+     a trophic level is gone there; regions are ecological and merge as
+     the world's biomass falls, so a global collapse is the one region's;
+     a player whose lineage ends picks another here or a new world; and a
+     total collapse ends the world as a game, still watchable.
 182. **Unplayed lineages adapt, inherit and develop, weighing their
      adaptation against the rest of the web; that is what an epoch is
      about.** Put to Mark on 2026-09-25, from the playable ecology plan's
@@ -1927,6 +1932,68 @@ what later sections derive from.
      old word? Mark: "New wire, old accepted." So new data is written with
      tract, old data still loads through aliases, and hashes of newly
      written data change.
+225. **A region has collapsed when one of its trophic levels is gone.** Put
+     to Mark on 2026-09-25, from ruling 181's open item, what measures a
+     collapse: in one region, its producers gone, any trophic level gone, or
+     its living biomass below a floor? Mark: "A level gone." So a region has
+     collapsed when producers, consumers or decomposers (ruling 39) are
+     empty there.
+226. **Ecological regions follow the world's biomass; a collapse is global
+     when the world has become one region.** Put to Mark on 2026-09-25, with
+     225: when is a collapse global, everywhere, when no refuge is in reach,
+     or past a share of regions set in the world's rules? Mark: "The number
+     of regions should be linked to the total world biomass: each trophic
+     level fills its slot in a region until it reads as over capacity, then
+     they spill/move to a new one. If you move into a region with lots of
+     creatures on your trophic level, be prepared to compete for their
+     position, basically. And so when we say everywhere, really if the
+     total biomass goes down enough, everywhere is one huge region.
+     Geographic concerns do matter, but if we're talking about the movement
+     and ecology of the critters, then i would expect that we would see such
+     a collapse spread depending on the cause... i wonder what threats of
+     that scale are. A pandemic? Meteor? Polities killing the world? One
+     overperforming lineage? Magic shenanigans? Idk. I do know that the
+     world isn't done until your lineage is done and you need to pick a new
+     one, or until the world's ecology is collapsed entirely." So the
+     ecological region is not ruling 72's geographic one: each trophic level
+     fills its slot in a region until it reads as over capacity, then spills
+     into a new region, and a newcomer to a region full of its own level
+     competes for their place. As the world's biomass falls the regions
+     merge, until everywhere is one region, and a collapse there (225) is
+     global. A collapse spreads by its cause; what threatens at that scale,
+     a pandemic, a meteor, polities killing the world, one overperforming
+     lineage or magic, is open. The world's ends are rulings 229 and 230.
+227. **The core reads mood from needs now.** Put to Mark on 2026-09-25, as
+     Lane A gives the core its first strain, from fights: should the core
+     read mood from needs now, so hunger and wounds build strain too, or
+     should strain come from fights only until S1 designs the mind's schema?
+     Mark: "Needs now." So mood is read from a member's needs as the core has
+     them, low reserve, hunger and starvation, and wounds once they exist;
+     strain builds whenever that mood stays low (ruling 159), fights adding
+     theirs; memory and situation, mood's other sources (ruling 158), wait
+     for S1.
+228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
+     does a right click show its meanings (ruling 214): a ring of acts around
+     the cursor, a cycle in place, or the critter's glance surfacing glyphs
+     on the target? Mark: "A ring of acts." So the critter's possible acts
+     toward the target appear around the cursor, and a click picks one.
+229. **When a player's lineage ends, they pick another here or a new world,
+     their call.** Put to Mark on 2026-09-25, from 226's "the world isn't
+     done until your lineage is done and you need to pick a new one": pick
+     another lineage in the same world, a new world, or either? Mark:
+     "Either, player's call."
+230. **A total collapse ends the world as a game, and it stays watchable.**
+     Put to Mark on 2026-09-25, from 226's "or until the world's ecology is
+     collapsed entirely", ruling 181 having had no collapse end play: after a
+     total collapse, is the world done but watchable, or done and closed?
+     Mark: "Done, but watchable." So ruling 181's play going on after a loss
+     holds, and a total collapse is the one loss that ends the game while the
+     world can still be watched.
+231. **Eponym's and the VTT's overlays go side by side after Mesocosm's.**
+     Put to Mark on 2026-09-25, from the §6 both new overlay plans share:
+     which overlay is W5's second, Eponym, the VTT, or both side by side?
+     Mark: "Side by side." So both proceed after Mesocosm's M3, each on its
+     own plan.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5346,7 +5413,8 @@ variance of expression rerolled at reproduction (ruling 57).
 
 ### 5.6 Eponym's overlay (rulings 185 to 187)
 
-Eponym's own plans already hold most of its profile: one named creature,
+The [Eponym overlay plan](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) compiles this section, with rulings 60, 130
+and 152 to 156, into W5's phases. Eponym's own plans already hold most of its profile: one named creature,
 driven, until death (ruling 60); companions configured in advance and never
 commanded, peers who may refuse; succession, "Death, and a companion
 becomes the played character"; and no real-time puppeteering of a party.
@@ -5361,7 +5429,8 @@ is where tag-in lives (ruling 187).
 
 ### 5.7 The VTT's overlay (rulings 188 to 191)
 
-The VTT's product description holds its profile: a substrate for tabletop
+The [VTT overlay plan](../../design_docs/2026-09-25_vtt_overlay_plan.md) compiles this section, with rulings 114, 154
+and 189, into W5's phases. The VTT's product description holds its profile: a substrate for tabletop
 systems over the Isocosm sim, systems as plugins, the substrate tracking
 geometry and turns and never a hit point. A campaign may switch the sim off
 and play as a plain tabletop (ruling 188). A system plugin that cannot pass
@@ -5653,7 +5722,12 @@ carries the rulings as they are made.
   Mesocosm goes first,** and its played loop directs, as ruling 60 has it
   (ruling 175, 2026-09-25). Planned as the
   [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), phases M0
-  to M4, proposed and not opened.
+  to M4, M0 and M1 done on 2026-09-25 and M2 to M4 proposed. Eponym's and
+  the VTT's overlays were planned on 2026-09-25 as the
+  [Eponym overlay plan](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), E0 to E4,
+  and the [VTT overlay plan](../../design_docs/2026-09-25_vtt_overlay_plan.md), V0 to
+  V4, proposed and not opened; they go side by side after Mesocosm's M3
+  (ruling 231).
 
 No code lane ran before W1 was ruled; the sim's lane opened after it, on
 2026-09-22.
@@ -5703,6 +5777,29 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 225 to 231 recorded. A region collapses when a
+  trophic level is gone there; ecological regions follow the world's
+  biomass and merge as it falls, so a global collapse is the one region's;
+  the core reads mood from needs now; a right click shows a ring of acts;
+  a player whose lineage ends picks another here or a new world; a total
+  collapse ends the world as a game, still watchable; and Eponym's and the
+  VTT's overlays go side by side after Mesocosm's M3.
+- 2026-09-25: W5's other two overlay plans drafted at Mark's word ("Overlay
+  plans to RPG") by the RPG systems session, in parallel with this one:
+  Eponym's at `eponym/design_docs/2026-09-25_eponym_overlay_plan.md` (phases
+  E0 to E4) from §5.6, rulings 60, 130, 152 to 156 and 185 to 187, and the
+  VTT's at `design_docs/2026-09-25_vtt_overlay_plan.md` (phases V0 to V4)
+  from §5.7, rulings 114, 154 and 188 to 191. Each mirrors the Mesocosm
+  overlay plan's shape, cites its rulings, flags its readings, maps the
+  product's intents or events onto `isocosm-overlay` and tables what
+  Isocosm would absorb; neither is opened. Their §6 forks await Mark: for
+  Eponym the handoff for blows and the motion solver's home, the start in
+  time, the first life and the outsider, absorption and where driving is
+  built, posing, co-op in E4; for the VTT the battlemap under the sim, the
+  table's grain, sharing a character, consent to downtime, the faction
+  turn's fate and absorption, the first calibration, a sim-off campaign's
+  record. Which goes second was ruled side by side (231). §5.6, §5.7 and
+  §11 link them.
 - 2026-09-25: ruling 224 recorded: the tract rename writes the new word
   and still reads the old. At Mark's word ("Feel free to parallelize the
   workload. Or coordinate with the rpg systems agent"), three more lanes

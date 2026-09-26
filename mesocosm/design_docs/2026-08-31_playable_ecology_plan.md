@@ -858,7 +858,12 @@ have measured receipts.
    one the player can start again elsewhere, even with their lineage if it
    survives, or their critter can help the world recover as far as its
    abilities allow. What measures a collapse as local or global stays this
-   plan's to specify.
+   plan's to specify. **Specified 2026-09-25 (rulings 225, 226, 229,
+   230):** a region has collapsed when one of its trophic levels is gone;
+   regions are ecological, following the world's biomass and merging as it
+   falls, so a global collapse is the whole world's one region; a player
+   whose lineage ends picks another here or a new world; and a total
+   collapse ends the world as a game, still watchable.
 8. When the scale lane resumes, does S3's correctness and cohort work precede
    S2's wider resident window? **Answered 2026-09-25 as a reading put to
    Mark without objection:** S3 first. The wing design record's ruling 113
