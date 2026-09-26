@@ -29,8 +29,8 @@ mod palette_tests;
 mod residency;
 mod terrain;
 pub use residency::{
-    BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencyStats,
-    framed_bricks,
+    BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencySettings,
+    ResidencyStats, framed_bricks,
 };
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
 

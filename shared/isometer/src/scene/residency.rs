@@ -47,7 +47,7 @@ mod paging;
 mod tests;
 
 pub use framing::{FramedBricks, framed_bricks};
-pub use paging::{PagedTerrain, Rebuild, Residency, ResidencyStats};
+pub use paging::{PagedTerrain, Rebuild, Residency, ResidencySettings, ResidencyStats};
 
 /// Bytes in one brick: eight cubed.
 pub const BRICK_BYTES: usize = (BRICK * BRICK * BRICK) as usize;

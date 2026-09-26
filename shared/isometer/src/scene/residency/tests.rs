@@ -27,6 +27,12 @@ impl Hills {
         }
     }
 
+    /// The tallest surface any column stands at: the stepped field tops out
+    /// at 11, and an edit can lift a column past it.
+    fn tallest(&self) -> i32 {
+        self.edits.values().copied().chain([11]).max().unwrap_or(11)
+    }
+
     fn surface(&self, x: i32, z: i32) -> i32 {
         if x < -self.side || x >= self.side || z < -self.side || z >= self.side {
             return -1;
@@ -49,7 +55,7 @@ impl BrickSource for Hills {
         let key = |v: i32| v.div_euclid(BRICK) as i16;
         Some([
             [key(-self.side), 0, key(-self.side)],
-            [key(self.side - 1), key(20), key(self.side - 1)],
+            [key(self.side - 1), key(self.tallest()), key(self.side - 1)],
         ])
     }
 
@@ -219,11 +225,16 @@ fn overflow_drops_the_margin_before_the_frame() {
 #[test]
 fn the_extent_holds_every_framing_as_the_camera_pans() {
     let hills = Hills::new();
-    let extent = frame(&hills, [0.0, 0.0]).extent;
+    let extent_of = |framed: &FramedBricks| framed.extent(framed.layers().expect("terrain"));
+    let extent = extent_of(&frame(&hills, [0.0, 0.0]));
     for step in 0..40 {
         let centre = [step as f32 * 3.7 - 70.0, 40.0 - step as f32 * 2.9];
         let framed = frame(&hills, centre);
-        assert_eq!(framed.extent, extent, "{centre:?}: a pan does not move it");
+        assert_eq!(
+            extent_of(&framed),
+            extent,
+            "{centre:?}: a pan does not move it"
+        );
         let span = span_of(&framed.keys);
         assert!(
             (0..3).all(|axis| span[axis] <= extent[axis]),
@@ -261,7 +272,7 @@ fn pan(hills: &Hills, from: [f32; 2], shrink: bool) -> [f32; 2] {
 #[test]
 fn a_pan_retargets_and_the_map_reads_the_source() {
     let hills = Hills::new();
-    let residency = RefCell::new(Residency::new(8));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
     let from = [0.0, 0.0];
     let first = frame(&hills, from);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -305,7 +316,7 @@ fn a_pan_retargets_and_the_map_reads_the_source() {
 #[test]
 fn a_shrinking_selection_rebuilds_packed_and_edits_still_land() {
     let mut hills = Hills::new();
-    let residency = RefCell::new(Residency::new(8));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
     let from = [0.0, 0.0];
     let first = frame(&hills, from);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -330,8 +341,9 @@ fn a_shrinking_selection_rebuilds_packed_and_edits_still_land() {
 
     // The control: the same two selections straight through modulus.
     let hills = Hills::new();
+    let extent = first.extent(first.layers().expect("terrain"));
     let mut raw =
-        BrickMap::with_capacity(BrickProjectionRevision(1), 8, first.extent).expect("a raw map");
+        BrickMap::with_capacity(BrickProjectionRevision(1), 8, extent).expect("a raw map");
     let made = |framed: &FramedBricks| -> Vec<Vec<u8>> {
         framed.keys.iter().map(|key| hills.brick(*key)).collect()
     };
@@ -373,7 +385,7 @@ fn a_shrinking_selection_rebuilds_packed_and_edits_still_land() {
 #[test]
 fn an_edit_to_an_absent_brick_lands_when_it_returns() {
     let mut hills = Hills::new();
-    let residency = RefCell::new(Residency::new(8));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
     let home = [0.0, 0.0];
     let first = frame(&hills, home);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -413,7 +425,7 @@ fn an_edit_to_an_absent_brick_lands_when_it_returns() {
 #[test]
 fn a_requested_rebuild_replaces_the_map() {
     let hills = Hills::new();
-    let residency = RefCell::new(Residency::new(8));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
     let framed = frame(&hills, [0.0, 0.0]);
     let mut map = PagedTerrain::new(&residency, &hills, &framed, 1)
         .brick_map()
@@ -432,11 +444,153 @@ fn a_requested_rebuild_replaces_the_map() {
 
 #[test]
 fn the_capacity_is_the_atlas_modulus_builds() {
-    for rows in 1..=8 {
-        let map = BrickMap::with_capacity(BrickProjectionRevision(0), rows, [1, 1, 1])
+    let rows = |rows| {
+        Residency::new(ResidencySettings {
+            rows,
+            ..ResidencySettings::default()
+        })
+        .capacity()
+    };
+    for count in 1..=8 {
+        let map = BrickMap::with_capacity(BrickProjectionRevision(0), count, [1, 1, 1])
             .expect("a capacity map");
-        assert_eq!(Residency::new(rows).capacity(), map.capacity());
+        assert_eq!(rows(count), map.capacity());
     }
-    assert_eq!(Residency::new(0).capacity(), Residency::new(1).capacity());
-    assert_eq!(Residency::new(99).capacity(), Residency::new(8).capacity());
+    assert_eq!(rows(0), rows(1));
+    assert_eq!(rows(99), rows(8));
+    assert_eq!(
+        Residency::new(ResidencySettings::default()).capacity(),
+        rows(8),
+        "the default is every row modulus allows"
+    );
+}
+
+/// The column at the frame's centre, raised to `surface`, and every brick
+/// its column holds up to that height, for the edit's dirty list.
+fn lift(hills: &mut Hills, surface: i32) -> Vec<[i16; 3]> {
+    hills.edits.insert((3, 4), surface);
+    (0..=surface.div_euclid(BRICK) as i16)
+        .map(|layer| [0, layer, 0])
+        .collect()
+}
+
+/// Headroom: a pointer volume reserving spare layers takes an edit that lifts
+/// the terrain's tallest point into them as a retarget, and only an edit past
+/// them rebuilds. The control is the same edits with no headroom, where the
+/// first one already rebuilds.
+#[test]
+fn an_edit_within_the_headroom_retargets_and_one_past_it_rebuilds() {
+    for headroom in [1, 0] {
+        let mut hills = Hills::new();
+        let settings = ResidencySettings {
+            headroom,
+            ..ResidencySettings::default()
+        };
+        let residency = RefCell::new(Residency::new(settings));
+        let first = frame(&hills, [0.0, 0.0]);
+        assert_eq!(first.layers(), Some([0, 1]), "the field stands two layers");
+        let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
+            .brick_map()
+            .expect("the first map");
+        let reserved = residency.borrow().stats().reserved;
+        assert_eq!(reserved, [0, 1 + headroom as i16], "headroom {headroom}");
+
+        // Into the next layer: surface 20 is layer 2.
+        let dirty = lift(&mut hills, 20);
+        let next = frame(&hills, [0.0, 0.0]);
+        assert_eq!(next.layers(), Some([0, 2]));
+        let refresh = step(&residency, &mut map, &hills, &next, &dirty);
+        let stats = residency.borrow().stats();
+        if headroom == 0 {
+            assert_eq!(
+                refresh,
+                TerrainRefresh::Full,
+                "no headroom: the control rebuilds"
+            );
+            assert_eq!(stats.rebuilt, Some(Rebuild::Headroom));
+            assert_reads(&map, &residency.borrow(), &hills);
+            continue;
+        }
+        assert!(
+            matches!(refresh, TerrainRefresh::Slots(_)),
+            "within the headroom"
+        );
+        assert_eq!(stats.rebuilt, None);
+        assert!(
+            residency.borrow().resident().contains(&[0, 2, 0]),
+            "the new layer's brick is held"
+        );
+        assert_eq!(stats.extent, residency.borrow().stats().extent);
+        assert_reads(&map, &residency.borrow(), &hills);
+
+        // Lowered again: nothing rebuilds for height. The layer-2 brick is
+        // gone, so the framing shrinks, and while the hold stands that alone
+        // rebuilds, at the same reserve.
+        let dirty = lift(&mut hills, 5);
+        let lowered = frame(&hills, [0.0, 0.0]);
+        step(&residency, &mut map, &hills, &lowered, &dirty);
+        let stats = residency.borrow().stats();
+        assert!(
+            matches!(stats.rebuilt, None | Some(Rebuild::Shrink)),
+            "lowering is never a height rebuild: {:?}",
+            stats.rebuilt
+        );
+        assert_eq!(stats.reserved, [0, 2]);
+        assert_reads(&map, &residency.borrow(), &hills);
+
+        // Past the headroom: surface 28 is layer 3.
+        let dirty = lift(&mut hills, 28);
+        let past = frame(&hills, [0.0, 0.0]);
+        assert_eq!(past.layers(), Some([0, 3]));
+        let refresh = step(&residency, &mut map, &hills, &past, &dirty);
+        assert_eq!(refresh, TerrainRefresh::Full);
+        let stats = residency.borrow().stats();
+        assert_eq!(stats.rebuilt, Some(Rebuild::Headroom));
+        assert_eq!(
+            stats.reserved,
+            [0, 4],
+            "rebuilt with the headroom above the new top"
+        );
+        assert_reads(&map, &residency.borrow(), &hills);
+    }
+}
+
+/// New settings rebuild the map at them, and the headroom reserves pointer
+/// layers above the terrain across and up: the camera leans, so a taller slab
+/// is seen over a wider stretch of ground.
+#[test]
+fn settings_rebuild_the_map_at_their_headroom() {
+    let hills = Hills::new();
+    let residency = RefCell::new(Residency::new(ResidencySettings {
+        headroom: 0,
+        ..ResidencySettings::default()
+    }));
+    let framed = frame(&hills, [0.0, 0.0]);
+    let mut map = PagedTerrain::new(&residency, &hills, &framed, 1)
+        .brick_map()
+        .expect("the first map");
+    let bare = map.pointer_extent();
+    residency
+        .borrow_mut()
+        .set_settings(ResidencySettings::default());
+    assert_eq!(
+        step(&residency, &mut map, &hills, &framed, &[]),
+        TerrainRefresh::Full
+    );
+    assert_eq!(residency.borrow().stats().rebuilt, Some(Rebuild::Requested));
+    let spare = map.pointer_extent();
+    assert_eq!(spare[1], bare[1] + 1, "one more layer up");
+    assert!(spare[0] >= bare[0] && spare[2] >= bare[2]);
+    assert_eq!(
+        step(&residency, &mut map, &hills, &framed, &[]),
+        TerrainRefresh::Current,
+        "the same settings again change nothing"
+    );
+    residency
+        .borrow_mut()
+        .set_settings(ResidencySettings::default());
+    assert_eq!(
+        step(&residency, &mut map, &hills, &framed, &[]),
+        TerrainRefresh::Current
+    );
 }

@@ -9,16 +9,57 @@
 use super::*;
 
 /// What one camera frames of a terrain.
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct FramedBricks {
     /// The framed bricks, sorted, without repeats, never past the capacity.
     pub keys: Vec<[i16; 3]>,
     /// Framed bricks dropped because the atlas could not hold them.
     pub overflow: usize,
-    /// A pointer extent holding any framing by a camera of this size,
-    /// wherever it stands, so a map built at it is retargeted rather than
-    /// rebuilt until the camera's size or the terrain's height moves.
-    pub extent: [u32; 3],
+    /// The window the columns were searched over, which [`Self::extent`]
+    /// sizes a pointer volume from.
+    search: Option<SlabWindow>,
+    /// The terrain's key box when it was framed.
+    bounds: Option<[[i16; 3]; 2]>,
+}
+
+impl FramedBricks {
+    /// The terrain's lowest and highest brick layer when it was framed.
+    pub fn layers(&self) -> Option<[i16; 2]> {
+        self.bounds.map(|[low, high]| [low[1], high[1]])
+    }
+
+    /// A pointer extent holding any framing by a camera of this size, wherever
+    /// it stands, of terrain between brick layers `low` and `top`: the search
+    /// window's region at that height, measured with the window stood at its
+    /// mid-height so a pan does not move it, a brick of slack for where the
+    /// region's edges fall on the grid, and never wider than the terrain.
+    ///
+    /// Height matters across as well as up: the camera leans, so a taller slab
+    /// is seen over a wider stretch of ground. A volume sized for layers above
+    /// the terrain's tallest point is therefore sized for them both ways.
+    pub fn extent(&self, [low, top]: [i16; 2]) -> [u32; 3] {
+        let height = (i32::from(top) - i32::from(low) + 1).max(1) as u32;
+        let (Some(search), Some([least, most])) = (self.search, self.bounds) else {
+            return [1, height, 1];
+        };
+        let span = |axis: usize| (i32::from(most[axis]) - i32::from(least[axis]) + 1).max(1) as u32;
+        let edge = BRICK as f32;
+        let slab = [f32::from(low) * edge, (f32::from(top) + 1.0) * edge];
+        let standing = SlabWindow {
+            centre: [0.0, (slab[0] + slab[1]) / 2.0, 0.0],
+            ..search
+        };
+        let region = region(standing, slab);
+        let across = |horizontal: usize, axis: usize| {
+            region
+                .map(|[near, far]| far[horizontal] - near[horizontal])
+                .filter(|width| width.is_finite())
+                .map_or(span(axis), |width| {
+                    ((width / edge).floor() as u32 + 3).clamp(1, span(axis))
+                })
+        };
+        [across(0, 0), height, across(1, 2)]
+    }
 }
 
 /// The bricks `camera` can show of `source`: those whose screen box overlaps
@@ -32,11 +73,7 @@ pub fn framed_bricks(
     capacity: usize,
 ) -> FramedBricks {
     let Some([low, high]) = source.bounds() else {
-        return FramedBricks {
-            keys: Vec::new(),
-            overflow: 0,
-            extent: [1; 3],
-        };
+        return FramedBricks::default();
     };
     let edge = BRICK as f32;
     let slab = [f32::from(low[1]) * edge, (f32::from(high[1]) + 1.0) * edge];
@@ -49,13 +86,14 @@ pub fn framed_bricks(
         half: [0, 1, 2].map(|axis| window.half[axis] + 2.0 * frame.spread[axis]),
         ..window
     };
-    let extent = extent_of(search, slab, low, high);
+    let unframed = FramedBricks {
+        keys: Vec::new(),
+        overflow: 0,
+        search: Some(search),
+        bounds: Some([low, high]),
+    };
     let Some([near, far]) = region(search, slab) else {
-        return FramedBricks {
-            keys: Vec::new(),
-            overflow: 0,
-            extent,
-        };
+        return unframed;
     };
     let key = |value: f32| (value / edge).floor() as i32;
     let columns = |axis: usize, horizontal: usize| {
@@ -84,7 +122,7 @@ pub fn framed_bricks(
     FramedBricks {
         keys,
         overflow,
-        extent,
+        ..unframed
     }
 }
 
@@ -194,26 +232,4 @@ fn region(window: SlabWindow, slab: [f32; 2]) -> Option<[[f32; 2]; 2]> {
         }
     }
     (low[0] <= high[0] && low[1] <= high[1]).then_some([low, high])
-}
-
-/// The pointer extent any framing by this window's size fits in: its region
-/// measured with the window stood at the slab's mid-height, so the answer
-/// does not move as the camera pans, one brick of slack for where a region's
-/// edges fall on the grid, and never more than the terrain's own key box.
-fn extent_of(window: SlabWindow, slab: [f32; 2], low: [i16; 3], high: [i16; 3]) -> [u32; 3] {
-    let span = |axis: usize| (i32::from(high[axis]) - i32::from(low[axis]) + 1).max(1) as u32;
-    let standing = SlabWindow {
-        centre: [0.0, (slab[0] + slab[1]) / 2.0, 0.0],
-        ..window
-    };
-    let region = region(standing, slab);
-    let across = |horizontal: usize, axis: usize| {
-        region
-            .map(|[near, far]| far[horizontal] - near[horizontal])
-            .filter(|width| width.is_finite())
-            .map_or(span(axis), |width| {
-                ((width / BRICK as f32).floor() as u32 + 3).clamp(1, span(axis))
-            })
-    };
-    [across(0, 0), span(1), across(1, 2)]
 }

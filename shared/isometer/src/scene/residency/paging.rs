@@ -8,15 +8,45 @@
 
 use super::*;
 
+/// How a residency sizes its map. Both are the host's to choose.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ResidencySettings {
+    /// Rows of atlas slots, 256 bricks to a row, up to [`MAX_ATLAS_SLOTS_Y`],
+    /// all the pinned modulus allows.
+    pub rows: u32,
+    /// Spare brick layers the pointer volume keeps above the terrain's
+    /// tallest point. An edit that lifts it no further than this retargets;
+    /// one past it rebuilds the map whole. Each layer costs the volume one more
+    /// layer of `x * z` pointers, four bytes apiece and re-uploaded with every
+    /// retarget, and each traced ray up to a brick's height of empty steps.
+    pub headroom: u32,
+}
+
+impl Default for ResidencySettings {
+    /// Every row the pinned modulus allows, and one spare layer. The one layer
+    /// is provisional: a first guess, taken back to Mark with what each layer
+    /// costs.
+    fn default() -> Self {
+        Self {
+            rows: MAX_ATLAS_SLOTS_Y,
+            headroom: 1,
+        }
+    }
+}
+
 /// Why a residency replaced its map whole rather than retargeting it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Rebuild {
     /// The first map, or one the scene lost.
     First,
-    /// The host asked: something about every brick changed at once.
+    /// The host asked: something about every brick changed at once, or the
+    /// settings moved.
     Requested,
-    /// The camera's size, or the terrain's height, moved the pointer extent.
+    /// The camera's size moved the pointer extent, or the framed bricks
+    /// outgrew it.
     Extent,
+    /// The terrain rose past the layers the pointer volume reserved for it.
+    Headroom,
     /// The selection shrank, and the hold rebuilds rather than retarget.
     Shrink,
 }
@@ -40,6 +70,21 @@ pub struct ResidencyStats {
     pub rebuilt: Option<Rebuild>,
     /// The pointer extent the map is built at.
     pub extent: [u32; 3],
+    /// The lowest and highest brick layer that extent holds: the terrain's,
+    /// and the headroom above it.
+    pub reserved: [i16; 2],
+}
+
+/// What a map's pointer volume was built to hold.
+#[derive(Clone, Copy, Debug)]
+struct Reserve {
+    /// The terrain's layers and the headroom above them.
+    layers: [i16; 2],
+    /// The extent those layers take under the camera the map was built for;
+    /// a camera of another size gives another.
+    sized: [u32; 3],
+    /// The extent the map was built at: `sized`, widened to the framed keys.
+    held: [u32; 3],
 }
 
 /// A paged terrain's standing state: which bricks its map holds, the
@@ -47,37 +92,48 @@ pub struct ResidencyStats {
 /// is the scene's.
 #[derive(Debug)]
 pub struct Residency {
-    rows: u32,
+    settings: ResidencySettings,
     resident: BTreeSet<[i16; 3]>,
     projection: u64,
-    /// The framing extent the map was built for, and the extent it was built
-    /// at, which also holds the keys that were framed then.
-    built_for: Option<[u32; 3]>,
-    held: [u32; 3],
+    /// What the bound map was sized for; `None` when it was built over no
+    /// terrain at all.
+    reserve: Option<Reserve>,
     rebuild: bool,
     stats: ResidencyStats,
     changes: u64,
 }
 
 impl Residency {
-    /// A residency over `rows` rows of atlas slots, clamped to what modulus
-    /// allows at the pinned revision, [`MAX_ATLAS_SLOTS_Y`].
-    pub fn new(rows: u32) -> Self {
+    /// A residency sized by `settings`, its rows clamped to what modulus
+    /// allows at the pinned revision.
+    pub fn new(settings: ResidencySettings) -> Self {
         Self {
-            rows: rows.clamp(1, MAX_ATLAS_SLOTS_Y),
+            settings: clamped(settings),
             resident: BTreeSet::new(),
             projection: 0,
-            built_for: None,
-            held: [1; 3],
+            reserve: None,
             rebuild: false,
             stats: ResidencyStats::default(),
             changes: 0,
         }
     }
 
+    pub fn settings(&self) -> ResidencySettings {
+        self.settings
+    }
+
+    /// New settings rebuild the map at them on the next frame.
+    pub fn set_settings(&mut self, settings: ResidencySettings) {
+        let settings = clamped(settings);
+        if settings != self.settings {
+            self.settings = settings;
+            self.rebuild = true;
+        }
+    }
+
     /// Bricks the atlas holds: every slot but the reserved air slot.
     pub fn capacity(&self) -> usize {
-        (ATLAS_SLOTS_X * self.rows * ATLAS_SLOTS_Z - 1) as usize
+        (ATLAS_SLOTS_X * self.settings.rows * ATLAS_SLOTS_Z - 1) as usize
     }
 
     /// The bricks the map holds.
@@ -108,17 +164,29 @@ impl Residency {
         BrickProjectionRevision(self.projection)
     }
 
-    /// A fresh map at a fresh extent, holding the framed bricks.
+    /// A fresh map at a fresh extent, holding the framed bricks, its pointer
+    /// volume reserving the headroom above the terrain.
     fn build(
         &mut self,
         source: &dyn BrickSource,
         framed: &FramedBricks,
         why: Rebuild,
     ) -> Result<BrickMap, String> {
-        let spanned = span_of(&framed.keys);
-        let extent = [0, 1, 2].map(|axis| framed.extent[axis].max(spanned[axis]));
+        let headroom = i16::try_from(self.settings.headroom).unwrap_or(i16::MAX);
+        let reserve = framed.layers().map(|[low, top]| {
+            let layers = [low, top.saturating_add(headroom)];
+            let sized = framed.extent(layers);
+            let spanned = span_of(&framed.keys);
+            let held = [0, 1, 2].map(|axis| sized[axis].max(spanned[axis]));
+            Reserve {
+                layers,
+                sized,
+                held,
+            }
+        });
+        let extent = reserve.map_or([1; 3], |reserve| reserve.held);
         let start = self.next_projection();
-        let mut map = BrickMap::with_capacity(start, self.rows, extent)
+        let mut map = BrickMap::with_capacity(start, self.settings.rows, extent)
             .map_err(|error| format!("paged brick map: {error}"))?;
         let bytes = fill(source, &framed.keys);
         let revision = self.next_projection();
@@ -136,10 +204,10 @@ impl Residency {
             overflow: framed.overflow,
             rebuilt: Some(why),
             extent,
+            reserved: reserve.map_or([0; 2], |reserve| reserve.layers),
         };
         self.resident = resident;
-        self.built_for = Some(framed.extent);
-        self.held = extent;
+        self.reserve = reserve;
         self.rebuild = false;
         self.changes += 1;
         Ok(map)
@@ -155,13 +223,10 @@ impl Residency {
         framed: &FramedBricks,
         dirty: &[[i16; 3]],
     ) -> Result<TerrainRefresh, String> {
-        let spanned = span_of(&framed.keys);
         let why = if self.rebuild {
             Some(Rebuild::Requested)
-        } else if self.built_for != Some(framed.extent)
-            || (0..3).any(|axis| spanned[axis] > self.held[axis])
-        {
-            Some(Rebuild::Extent)
+        } else if let Some(why) = self.outgrown(framed) {
+            Some(why)
         } else if framed.keys.len() < self.resident.len() {
             // The hold: see the module header. After the pin bump this arm
             // goes, and a shrinking selection retargets like any other.
@@ -174,10 +239,14 @@ impl Residency {
             return Ok(TerrainRefresh::Full);
         }
 
+        let (extent, reserved) = self
+            .reserve
+            .map_or(([1; 3], [0; 2]), |reserve| (reserve.held, reserve.layers));
         let mut stats = ResidencyStats {
             capacity: self.capacity(),
             overflow: framed.overflow,
-            extent: self.held,
+            extent,
+            reserved,
             ..ResidencyStats::default()
         };
         let mut slots = Vec::new();
@@ -225,6 +294,32 @@ impl Residency {
         slots.sort_unstable();
         slots.dedup();
         Ok(TerrainRefresh::Slots(slots))
+    }
+
+    /// Why the bound map can no longer hold this framing, if it cannot: the
+    /// terrain rose past the reserved layers, the camera changed size, or the
+    /// framed bricks spread wider than the volume. Lowering the terrain never
+    /// rebuilds; the reserve holds more headroom until the next build.
+    fn outgrown(&self, framed: &FramedBricks) -> Option<Rebuild> {
+        let layers = framed.layers()?;
+        let Some(reserve) = self.reserve else {
+            return Some(Rebuild::Headroom);
+        };
+        if layers[0] < reserve.layers[0] || layers[1] > reserve.layers[1] {
+            return Some(Rebuild::Headroom);
+        }
+        let spanned = span_of(&framed.keys);
+        let camera_moved = framed.extent(reserve.layers) != reserve.sized;
+        (camera_moved || (0..3).any(|axis| spanned[axis] > reserve.held[axis]))
+            .then_some(Rebuild::Extent)
+    }
+}
+
+/// Settings with their rows inside what modulus allows.
+fn clamped(settings: ResidencySettings) -> ResidencySettings {
+    ResidencySettings {
+        rows: settings.rows.clamp(1, MAX_ATLAS_SLOTS_Y),
+        ..settings
     }
 }
 
