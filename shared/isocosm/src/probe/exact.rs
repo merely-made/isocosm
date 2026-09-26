@@ -31,7 +31,7 @@ pub fn run_exact(world: &ProbeWorld, dynamics: u64, collect: bool) -> Result<Exa
         work.represented += scheduled.represented;
         work.accepted += scheduled.accepted;
         work.blocked += scheduled.blocked;
-        round(&mut sim, &world.competition, dynamics, &mut work)?;
+        round(&mut sim, world.competition()?, dynamics, &mut work)?;
         if collect {
             sim.collect();
         }

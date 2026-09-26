@@ -96,7 +96,8 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
 }
 
 pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
-    let c = &world.competition;
+    let competitions = &world.genesis.rules.competitions;
+    let kinds = || competitions.values().flat_map(|c| &c.kinds);
     let mut out: Vec<Reading> = Vec::new();
     let mut push = |key: String, source: &str, probe: Probe, starvation: bool| {
         if !out.iter().any(|r| r.probe == probe) {
@@ -108,7 +109,7 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
             });
         }
     };
-    for kind in &c.kinds {
+    for kind in kinds() {
         let probe = Probe::Alive {
             identity: kind.identity.clone(),
         };
@@ -164,17 +165,14 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
             push(format!("{}#{j}", p.id), &p.id, probe, death);
         }
     }
-    for kind in &c.kinds {
-        let probe = Probe::Members {
-            selector: vec![kind.identity.clone()],
-            query: kind.hungry.clone(),
-        };
-        push(
-            format!("compete:hungry:{}", kind.identity),
-            "competition",
-            probe,
-            false,
-        );
+    for (id, c) in competitions {
+        for kind in &c.kinds {
+            let probe = Probe::Members {
+                selector: vec![kind.identity.clone()],
+                query: kind.hungry.clone(),
+            };
+            push(format!("{id}#hungry:{}", kind.identity), id, probe, false);
+        }
     }
     for field in inspected(world) {
         let key = format!("inspect:{}", name(&field));
@@ -186,14 +184,18 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
 /// What the rules read of a member or a site; the crowd keys its bins by
 /// these and by whatever an inspection shows.
 pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
-    let c = &world.competition;
+    let competitions = &world.genesis.rules.competitions;
     let queries = world
         .genesis
         .rules
         .processes
         .values()
         .flat_map(|p| &p.requires)
-        .chain(c.kinds.iter().map(|k| &k.hungry));
+        .chain(
+            competitions
+                .values()
+                .flat_map(|c| c.kinds.iter().map(|k| &k.hungry)),
+        );
     let mut read: BTreeSet<String> = queries
         .map(|q| match q {
             Query::Alive(_) => "alive".into(),
@@ -208,12 +210,14 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::Related { kind } => format!("relation:{kind}"),
         })
         .collect();
-    // The competition pairs within a site, reads the leaning and sizes up
-    // by body, and rations the site's food.
-    read.insert("place".into());
-    read.insert(format!("trait:{}", c.contest));
-    read.insert(format!("site:{}", c.food));
-    read.extend(c.kinds.iter().map(|k| format!("account:{}", k.body)));
+    // A competition pairs within a site, reads the leaning and sizes up by
+    // body, and rations the site's food.
+    for c in competitions.values() {
+        read.insert("place".into());
+        read.insert(format!("trait:{}", c.contest));
+        read.insert(format!("site:{}", c.food));
+        read.extend(c.kinds.iter().map(|k| format!("account:{}", k.body)));
+    }
     read
 }
 

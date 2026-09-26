@@ -151,6 +151,50 @@ pub struct Process {
     pub note: bool,
 }
 
+/// One competing lineage in a competition: how its members are told apart,
+/// what they grow into, when they want the resource, and the acts the
+/// competition executes for them.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Competitor {
+    pub identity: Key,
+    pub body: Key,
+    pub hungry: Query,
+    pub eat: Key,
+    pub share: Key,
+    pub strain: Key,
+}
+
+/// Ruling 115: members wanting one scarce thing at a site, each side's own
+/// way of deciding picking contest or share, the sim resolving the choices.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Competition {
+    /// The site account contended for.
+    pub food: Key,
+    pub ration: u64,
+    /// The leaning trait: members that carry it contest, the rest share.
+    pub contest: Key,
+    pub margin: u64,
+    pub cost: u64,
+    pub kinds: Vec<Competitor>,
+}
+
+/// Ruling 113's tolerance: each reading's Kolmogorov-Smirnov distance
+/// between the two ways, per mille, within its own bound.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Similitude {
+    pub default_bound: u32,
+    pub bounds: BTreeMap<Key, u32>,
+}
+
+impl Similitude {
+    pub fn bound(&self, reading: &str) -> u32 {
+        self.bounds
+            .get(reading)
+            .copied()
+            .unwrap_or(self.default_bound)
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Rules {
     pub version: u32,
@@ -164,6 +208,14 @@ pub struct Rules {
     pub limits: Limits,
     pub epoch_ticks: Tick,
     pub collection_buffer: Tick,
+    /// Ruling 218: the world's competitions, by id. Worlds without any
+    /// serialize, and so hash, as before the field existed.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub competitions: BTreeMap<Key, Competition>,
+    /// Ruling 218: the bounds a crowd must keep its readings within.
+    /// Absent in worlds that state none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub similitude: Option<Similitude>,
 }
 
 impl Rules {

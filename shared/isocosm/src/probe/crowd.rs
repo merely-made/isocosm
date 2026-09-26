@@ -35,6 +35,7 @@ pub enum Variant {
 
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
+    competition: &'w Competition,
     dynamics: u64,
     variant: Variant,
     matter: u128,
@@ -53,13 +54,14 @@ struct Fate {
 }
 
 impl<'w> Crowd<'w> {
-    pub fn new(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Self {
+    pub fn new(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Result<Self> {
         let mut bins = BTreeMap::new();
         for group in world.genesis.population.groups.values() {
             *bins.entry(normalize(group.entity.clone())).or_default() += group.count;
         }
         let mut crowd = Self {
             world,
+            competition: world.competition()?,
             dynamics,
             variant,
             matter: 0,
@@ -69,7 +71,7 @@ impl<'w> Crowd<'w> {
             work: Work::default(),
         };
         crowd.matter = crowd.total_matter();
-        crowd
+        Ok(crowd)
     }
 
     pub fn run(mut self) -> Result<Self> {
@@ -184,8 +186,7 @@ impl<'w> Crowd<'w> {
     }
 
     fn round(&mut self) -> Result<()> {
-        let world = self.world;
-        let c: &Competition = &world.competition;
+        let c: &Competition = self.competition;
         let sites: Vec<Id> = self.sites.keys().copied().collect();
         for site in sites {
             let mut hungry: Vec<(Entity, u64, usize)> = Vec::new();
@@ -235,8 +236,7 @@ impl<'w> Crowd<'w> {
     }
 
     fn average(&mut self) {
-        let world = self.world;
-        let c = &world.competition;
+        let c = self.competition;
         let mut classes: BTreeMap<(usize, Id), Vec<(Entity, u64)>> = BTreeMap::new();
         for (e, &n) in &self.bins {
             let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity)) else {

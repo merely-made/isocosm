@@ -250,6 +250,16 @@ fn dynamics_seed_is_absent_unless_set_and_defaults_to_the_world_seed() {
 }
 
 #[test]
+fn rules_without_a_competition_serialize_and_hash_as_before() {
+    let g = founding(3).generate().unwrap();
+    let json = serde_json::to_string(&g.rules).unwrap();
+    assert!(!json.contains("\"competitions\"") && !json.contains("\"similitude\""));
+    // Rules saved before the fields existed lack both, and still load.
+    let back: isocosm::rules::Rules = serde_json::from_str(&json).unwrap();
+    assert_eq!(back.revision(), g.rules.revision());
+}
+
+#[test]
 fn operation_budget_failure_is_transactionally_inert() {
     let mut genesis = founding(91).generate().unwrap();
     genesis.rules.limits.events_per_advance = 1;

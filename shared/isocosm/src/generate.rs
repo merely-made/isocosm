@@ -249,6 +249,8 @@ impl Founding {
             },
             epoch_ticks: 32,
             collection_buffer: 16,
+            competitions: BTreeMap::new(),
+            similitude: None,
         };
         let mut sites = BTreeMap::new();
         for i in 0..u64::from(self.sites) {

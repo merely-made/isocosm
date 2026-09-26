@@ -69,9 +69,12 @@ founding parameters accompany its realized rules and topology.
 - The `probe` module runs ruling 115's competition, pairwise contest, share
   and yield, both member by member through the interpreter and as a crowd:
   counts per exact state, advanced by integer count draws that follow the
-  member-by-member round's distribution. The process language cannot yet
-  express a competition, so its definition and the world's per-reading
-  similitude bounds sit beside the core rules in `ProbeWorld`.
+  member-by-member round's distribution. Both read queries and apply effects
+  through the interpreter's own meanings, written once. A competition's
+  definition and the per-reading similitude bounds are part of the world's
+  rules and its rules digest; worlds without them serialize and hash as
+  before. The rounds that resolve a competition still run in the probe, not
+  the core's scheduler.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does

@@ -69,7 +69,7 @@ fn arm(
         } else {
             Variant::Averaged
         };
-        let crowd = Crowd::new(world, dynamics, variant).run()?;
+        let crowd = Crowd::new(world, dynamics, variant)?.run()?;
         let micros = start.elapsed().as_micros() as u64;
         let members = readings::crowd_members(&crowd);
         let inspected = readings::inspect(&members, inspect);
@@ -166,9 +166,10 @@ fn run() -> Result<(), String> {
         }
         .generate()?;
         let derived = readings::derive(&world);
+        let similitude = world.similitude()?;
         let these: Vec<ReadingInfo> = derived
             .iter()
-            .map(|r| ReadingInfo::new(r, world.similitude.bound(&r.key)))
+            .map(|r| ReadingInfo::new(r, similitude.bound(&r.key)))
             .collect();
         let keys = |v: &[ReadingInfo]| {
             v.iter()
@@ -183,7 +184,7 @@ fn run() -> Result<(), String> {
             Some(_) => {},
         }
         read_set.get_or_insert_with(|| readings::read_set(&world));
-        let mut draw = Draw::new(k, seed, &world);
+        let mut draw = Draw::new(k, seed, &world)?;
         for &index in &arms {
             let dynamics = isocosm::draw(o.master, "probe-dynamics", &[k, index as u64]);
             let a = arm(&world, &derived, index, dynamics)

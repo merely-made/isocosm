@@ -6,7 +6,7 @@
 //! Food regrows from site soil; upkeep and fight costs return body to it, so
 //! matter cycles. The lineage count is fixed so every draw reads alike.
 
-use super::{Competition, Kind, ProbeWorld, Similitude};
+use super::{Competition, Competitor, ProbeWorld, Similitude};
 use crate::{
     Result, generate::process, population::Population, rules::*, schema::*, simulation::Genesis,
 };
@@ -239,7 +239,7 @@ impl ProbeFounding {
             share.requires.push(own.clone());
             let mut strain = process(&format!("probe:strain-{i}"), Shape::Choice, spend(&body));
             strain.requires.extend([own, account(&body, 1)]);
-            kinds.push(Kind {
+            kinds.push(Competitor {
                 identity,
                 body: body.clone(),
                 hungry: Query::Below {
@@ -274,6 +274,21 @@ impl ProbeFounding {
             },
             epoch_ticks: 32,
             collection_buffer: 0,
+            competitions: BTreeMap::from([(
+                "probe:feeding".into(),
+                Competition {
+                    food: "world:food".into(),
+                    ration,
+                    contest: "leaning:contest".into(),
+                    margin,
+                    cost,
+                    kinds,
+                },
+            )]),
+            similitude: Some(Similitude {
+                default_bound: self.bound_per_mille,
+                bounds: BTreeMap::new(),
+            }),
         };
         let mut site_map = BTreeMap::new();
         let mut population = Population::default();
@@ -327,18 +342,6 @@ impl ProbeFounding {
         genesis.validate()?;
         Ok(ProbeWorld {
             genesis,
-            competition: Competition {
-                food: "world:food".into(),
-                ration,
-                contest: "leaning:contest".into(),
-                margin,
-                cost,
-                kinds,
-            },
-            similitude: Similitude {
-                default_bound: self.bound_per_mille,
-                bounds: BTreeMap::new(),
-            },
             ticks: self.ticks,
         })
     }

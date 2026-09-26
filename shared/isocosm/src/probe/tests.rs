@@ -136,7 +136,8 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         .unwrap();
     let (entity, count) = (group.entity.clone(), group.count);
     let kind = world
-        .competition
+        .competition()
+        .unwrap()
         .kinds
         .iter()
         .find(|k| entity.traits.contains(&k.identity))

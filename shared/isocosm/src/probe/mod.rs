@@ -4,9 +4,9 @@
 //! Ruling 115's competing instance for feeding when food is short, run two
 //! ways under ruling 113: member by member through the core's exact
 //! individual runner, and as a crowd, an exact-state histogram advanced by
-//! random count draws. The process language cannot yet express a
-//! competition, so its definition and the world's similitude bounds sit
-//! beside the core rules in `ProbeWorld` until S2 moves them in.
+//! random count draws. The competition's definition and the similitude
+//! bounds live in the world's rules (ruling 218); the rounds that resolve a
+//! competition live here until the core's scheduler runs them.
 
 mod aggregate;
 pub mod check;
@@ -18,64 +18,37 @@ pub mod readings;
 #[cfg(test)]
 mod tests;
 
+pub use crate::rules::{Competition, Competitor, Similitude};
 pub use crowd::{Crowd, Variant};
 pub use exact::{ExactRun, run_exact};
 pub use found::ProbeFounding;
 
-use crate::{rules::Query, schema::*, simulation::Genesis};
+use crate::{Result, schema::*, simulation::Genesis};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-
-/// One competing lineage: how its members are told apart, what they eat
-/// into, when they are hungry, and the acts the competition executes.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Kind {
-    pub identity: Key,
-    pub body: Key,
-    pub hungry: Query,
-    pub eat: Key,
-    pub share: Key,
-    pub strain: Key,
-}
-
-/// Ruling 115 for food: hungry members pair at random; a contester takes the
-/// ration from a sharer or from a rival that yields on sizing up; sharers
-/// split it; a close match between contesters escalates at a cost to both,
-/// paid from body reserve until vigour is in the ledger. Trade waits.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Competition {
-    pub food: Key,
-    pub ration: u64,
-    /// The leaning trait: members that carry it contest, the rest share.
-    pub contest: Key,
-    pub margin: u64,
-    pub cost: u64,
-    pub kinds: Vec<Kind>,
-}
-
-/// Ruling 113's tolerance: every reading's Kolmogorov-Smirnov distance
-/// between the two ways, per mille, within its own bound.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Similitude {
-    pub default_bound: u32,
-    pub bounds: BTreeMap<Key, u32>,
-}
-
-impl Similitude {
-    pub fn bound(&self, reading: &str) -> u32 {
-        self.bounds
-            .get(reading)
-            .copied()
-            .unwrap_or(self.default_bound)
-    }
-}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProbeWorld {
     pub genesis: Genesis,
-    pub competition: Competition,
-    pub similitude: Similitude,
     pub ticks: Tick,
+}
+
+impl ProbeWorld {
+    /// The world's one competition. How several would interact within a
+    /// round is not designed, so the probe refuses more than one.
+    pub fn competition(&self) -> Result<&Competition> {
+        let mut all = self.genesis.rules.competitions.values();
+        match (all.next(), all.next()) {
+            (Some(c), None) => Ok(c),
+            _ => Err("the probe runs worlds with exactly one competition".into()),
+        }
+    }
+    pub fn similitude(&self) -> Result<&Similitude> {
+        self.genesis
+            .rules
+            .similitude
+            .as_ref()
+            .ok_or_else(|| "the world states no similitude".into())
+    }
 }
 
 /// One side of a contested pair, as the rules read it.

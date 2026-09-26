@@ -27,6 +27,61 @@ fn account(rules: &Rules, value: &str) -> Result<()> {
     }
 }
 
+fn query(rules: &Rules, q: &Query) -> Result<()> {
+    match q {
+        Query::Account { key, .. } => account(rules, key)?,
+        Query::Below { key, .. } => account(rules, key)?,
+        Query::Condition { key, .. } if !rules.conditions.contains(key) => {
+            return Err(format!("unknown condition {key}"));
+        },
+        Query::Trait { key, .. } if !rules.traits.contains(key) => {
+            return Err(format!("unknown trait {key}"));
+        },
+        Query::Related { kind } if !rules.relations.contains(kind) => {
+            return Err(format!("unknown relation {kind}"));
+        },
+        _ => (),
+    }
+    Ok(())
+}
+
+fn matter(rules: &Rules, value: &str) -> Result<()> {
+    match rules.accounts.get(value) {
+        Some(AccountKind::Matter { .. }) => Ok(()),
+        _ => Err(format!("{value} is not a matter account")),
+    }
+}
+
+/// Ruling 218: a competition refers only to what the rules declare, and a
+/// bound never exceeds certainty.
+fn competitions(rules: &Rules) -> Result<()> {
+    for (id, c) in &rules.competitions {
+        key(id)?;
+        matter(rules, &c.food)?;
+        if c.ration == 0 || c.kinds.is_empty() || !rules.traits.contains(&c.contest) {
+            return Err(format!("invalid competition {id}"));
+        }
+        for kind in &c.kinds {
+            if !rules.traits.contains(&kind.identity) {
+                return Err(format!("unknown trait {}", kind.identity));
+            }
+            matter(rules, &kind.body)?;
+            query(rules, &kind.hungry)?;
+            for process in [&kind.eat, &kind.share, &kind.strain] {
+                if !rules.processes.contains_key(process) {
+                    return Err(format!("{id} names an unknown process {process}"));
+                }
+            }
+        }
+    }
+    if let Some(s) = &rules.similitude
+        && (s.default_bound > 1000 || s.bounds.values().any(|b| *b > 1000))
+    {
+        return Err("a similitude bound exceeds certainty".into());
+    }
+    Ok(())
+}
+
 pub(crate) fn rules(rules: &Rules) -> Result<()> {
     if rules.version != crate::VERSION {
         return Err("unsupported rules version".into());
@@ -86,20 +141,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             }
         }
         for q in &p.requires {
-            match q {
-                Query::Account { key, .. } => account(rules, key)?,
-                Query::Below { key, .. } => account(rules, key)?,
-                Query::Condition { key, .. } if !rules.conditions.contains(key) => {
-                    return Err(format!("unknown condition {key}"));
-                },
-                Query::Trait { key, .. } if !rules.traits.contains(key) => {
-                    return Err(format!("unknown trait {key}"));
-                },
-                Query::Related { kind } if !rules.relations.contains(kind) => {
-                    return Err(format!("unknown relation {kind}"));
-                },
-                _ => (),
-            }
+            query(rules, q)?;
         }
         for e in effects {
             match e {
@@ -151,5 +193,5 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             }
         }
     }
-    Ok(())
+    competitions(rules)
 }

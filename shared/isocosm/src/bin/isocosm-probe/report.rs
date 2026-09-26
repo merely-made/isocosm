@@ -49,9 +49,9 @@ pub struct Draw {
 }
 
 impl Draw {
-    pub fn new(k: u64, seed: u64, world: &ProbeWorld) -> Self {
+    pub fn new(k: u64, seed: u64, world: &ProbeWorld) -> Result<Self, String> {
         let g = &world.genesis;
-        let c = &world.competition;
+        let c = world.competition()?;
         let leaning = |identity: &str| {
             g.lineages
                 .values()
@@ -65,7 +65,7 @@ impl Draw {
             Query::Account { at_least, .. } => *at_least,
             _ => 0,
         };
-        Self {
+        Ok(Self {
             k,
             seed,
             sites: g.sites.len(),
@@ -80,7 +80,7 @@ impl Draw {
                 .last()
                 .map_or(0, threshold),
             arms: vec![],
-        }
+        })
     }
 }
 

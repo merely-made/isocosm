@@ -28,7 +28,7 @@ fn values(world: &isocosm::probe::ProbeWorld, arm: &str, dynamics: u64) -> Vec<u
         } else {
             Variant::Averaged
         };
-        let crowd = Crowd::new(world, dynamics, variant).run().unwrap();
+        let crowd = Crowd::new(world, dynamics, variant).unwrap().run().unwrap();
         let members = readings::crowd_members(&crowd);
         let inspected = readings::inspect(&members, dynamics);
         readings::evaluate(
@@ -61,7 +61,7 @@ fn drawn_probe_worlds_run_both_ways_and_conserve_matter() {
         assert_eq!(run.sim.state().tick, w.ticks);
         // The crowd checks its own total every tick and fails if it moves.
         for variant in [Variant::Histogram, Variant::Averaged] {
-            let crowd = Crowd::new(&w, seed, variant).run().unwrap();
+            let crowd = Crowd::new(&w, seed, variant).unwrap().run().unwrap();
             assert_eq!(crowd.tick, w.ticks);
         }
     }
@@ -108,9 +108,9 @@ fn readings_come_from_the_definitions() {
     let w = world(2);
     let derived = readings::derive(&w);
     let keys: Vec<&str> = derived.iter().map(|r| r.key.as_str()).collect();
-    for kind in &w.competition.kinds {
+    for kind in &w.competition().unwrap().kinds {
         assert!(keys.contains(&format!("alive:{}", kind.identity).as_str()));
-        assert!(keys.contains(&format!("compete:hungry:{}", kind.identity).as_str()));
+        assert!(keys.contains(&format!("probe:feeding#hungry:{}", kind.identity).as_str()));
     }
     let starvation: Vec<&str> = derived
         .iter()
@@ -130,10 +130,43 @@ fn readings_come_from_the_definitions() {
 }
 
 #[test]
+fn the_competition_and_its_bounds_are_rules_the_world_admits() {
+    let w = world(4);
+    let json = serde_json::to_string(&w.genesis.rules).unwrap();
+    let back: isocosm::rules::Rules = serde_json::from_str(&json).unwrap();
+    assert_eq!(back, w.genesis.rules);
+    let refused = |edit: &dyn Fn(&mut isocosm::rules::Rules)| {
+        let mut g = w.genesis.clone();
+        edit(&mut g.rules);
+        g.validate().unwrap_err()
+    };
+    let feeding = "probe:feeding";
+    assert!(
+        refused(&|r| r.competitions.get_mut(feeding).unwrap().kinds[0].eat = "probe:none".into())
+            .contains("unknown process")
+    );
+    assert!(
+        refused(&|r| r.competitions.get_mut(feeding).unwrap().food = "absent:food".into())
+            .contains("not a matter account")
+    );
+    assert!(
+        refused(&|r| r.similitude.as_mut().unwrap().default_bound = 1001)
+            .contains("exceeds certainty")
+    );
+    let mut two = w.clone();
+    let c = two.genesis.rules.competitions[feeding].clone();
+    two.genesis
+        .rules
+        .competitions
+        .insert("probe:other".into(), c);
+    assert!(two.competition().is_err());
+}
+
+#[test]
 fn averaging_flattens_reserves_within_each_lineage_and_site() {
     let w = world(8);
-    let crowd = Crowd::new(&w, 3, Variant::Averaged).run().unwrap();
-    for kind in &w.competition.kinds {
+    let crowd = Crowd::new(&w, 3, Variant::Averaged).unwrap().run().unwrap();
+    for kind in &w.competition().unwrap().kinds {
         for site in crowd.sites.keys() {
             let bodies: Vec<u64> = crowd
                 .bins
