@@ -27,6 +27,7 @@
 //! it and `edit_tests` both.
 
 mod board;
+mod columns;
 mod ground;
 mod overlay;
 mod pick;
@@ -35,6 +36,8 @@ mod tokens;
 mod view;
 mod world;
 
+#[cfg(test)]
+mod columns_tests;
 #[cfg(test)]
 mod cost_tests;
 #[cfg(test)]
@@ -49,6 +52,7 @@ mod terrain_tests;
 mod world_tests;
 
 pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
+pub use columns::{BoardBricks, ColumnChange, TileColumns};
 pub use ground::{BoardGround, BoardTerrain, GroundCost};
 pub use overlay::{BoardPalette, Overlays, Tint, terrain_palette};
 pub use pick::ScenePick;

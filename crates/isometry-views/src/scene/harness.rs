@@ -15,11 +15,23 @@ use isometry_core::TileCoord;
 
 use super::board::{BoardPick, BoardSource};
 use super::view::BoardHandle;
-use crate::demo::demo_map;
+use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
 /// The pane every receipt draws into, logical px.
 pub(super) const PANE: (f32, f32) = (640.0, 480.0);
+
+/// The stress board with relief: `synth_map`'s ground and pieces, every tile
+/// raised in steps of 0 to 7, so its bricks stand two layers tall.
+pub(super) fn relief_map(edge: u32) -> isometry_core::MapDocument {
+    let mut map = synth_map(edge, edge);
+    for row in 0..edge {
+        for col in 0..edge {
+            map.elevation.set(col, row, ((col / 6 + row / 9) % 8) as u8);
+        }
+    }
+    map
+}
 
 pub(super) fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
