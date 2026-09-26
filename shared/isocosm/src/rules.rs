@@ -282,11 +282,24 @@ pub struct Rules {
     /// without one, which serialize and hash as before it existed.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mind: Option<Mind>,
+    /// The clock's unit (rulings 256 and 257): the world time one tick
+    /// counts, in microseconds, in which process periods are read; anything
+    /// finer is the foreground game's to resolve. Absent means a minute, and
+    /// worlds without it serialize and hash as before it existed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tick_microseconds: Option<u64>,
 }
+
+/// The clock's unit where a world states none: a minute (ruling 257).
+pub const DEFAULT_TICK_MICROSECONDS: u64 = 60_000_000;
 
 impl Rules {
     pub fn revision(&self) -> Key {
         crate::digest(self)
+    }
+    /// The world time one tick counts, in microseconds.
+    pub fn tick_microseconds(&self) -> u64 {
+        self.tick_microseconds.unwrap_or(DEFAULT_TICK_MICROSECONDS)
     }
     pub fn validate(&self) -> crate::Result<()> {
         crate::validation::rules(self)

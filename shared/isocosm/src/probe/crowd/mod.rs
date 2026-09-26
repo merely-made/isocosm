@@ -137,11 +137,13 @@ impl<'w> Crowd<'w> {
     }
 
     /// The core scheduler's pass, one evaluation per state instead of per
-    /// member. States reached during the pass are not evaluated again.
+    /// member. States reached during the pass are not evaluated again, and a
+    /// state without a trait the process requires is not evaluated at all.
     fn scheduled(&mut self, p: &Process) -> Result<()> {
+        let traits = crate::schedule::required(p);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         for (e, n) in snapshot {
-            if !e.alive {
+            if !e.alive || !crate::schedule::carries(&e, &traits) {
                 continue;
             }
             if p.shape == Shape::Agentless {

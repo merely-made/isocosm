@@ -3,7 +3,9 @@
 
 //! Re-runs the points of earlier receipts: the same drawn worlds, modes and
 //! tick counts, so a change to the core is timed against its predecessor on
-//! identical work. Every deterministic field must come out as it was.
+//! identical work. Every deterministic field of the world must come out as it
+//! was. Evaluations, and the members they represent and find blocked, are
+//! reported apart: ruling 259 counts only the evaluations that run.
 
 use super::point::{Point, point};
 use isocosm::{Execution, Founding};
@@ -26,9 +28,10 @@ pub(super) struct Comparison {
     before_mean_tick_micros: u64,
     after_mean_tick_micros: u64,
     speedup: f64,
-    evaluations_per_tick: u64,
-    /// Final state hash, per-tick work, stored groups, events, notes and
-    /// arrivals, and distinct states, all as before.
+    before_evaluations_per_tick: u64,
+    after_evaluations_per_tick: u64,
+    /// Final state hash, per-tick acceptances, members, stored groups,
+    /// events, notes and arrivals, and distinct states, all as before.
     identical: bool,
     differing: Vec<String>,
 }
@@ -39,6 +42,7 @@ pub(super) struct Remeasure {
     kind: &'static str,
     sources: Vec<(String, u64)>,
     family: Option<String>,
+    run: Option<String>,
     note: &'static str,
     comparisons: Vec<Comparison>,
     points: Vec<Point>,
@@ -52,10 +56,11 @@ fn tag(run: &str) -> &'static str {
         .unwrap_or("remeasure")
 }
 
-/// The fields that must not change, with timings and heap left out.
+/// The fields that must not change, with timings, heap and the counts of
+/// evaluations left out.
 fn deterministic(point: &Value) -> Value {
     let mut p = point.clone();
-    let fields = ["final_hash", "ticks_run", "evaluations_per_tick"];
+    let fields = ["final_hash", "ticks_run"];
     let mut kept: serde_json::Map<String, Value> = fields
         .iter()
         .chain(&["distinct_states", "distinct_read_states"])
@@ -67,8 +72,15 @@ fn deterministic(point: &Value) -> Value {
         .into_iter()
         .map(|mut row| {
             if let Some(r) = row.as_object_mut() {
-                r.remove("micros");
-                r.remove("heap_live_bytes");
+                for key in [
+                    "micros",
+                    "heap_live_bytes",
+                    "evaluations",
+                    "represented",
+                    "blocked",
+                ] {
+                    r.remove(key);
+                }
             }
             row
         })
@@ -77,7 +89,11 @@ fn deterministic(point: &Value) -> Value {
     Value::Object(kept)
 }
 
-pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure, String> {
+pub(super) fn run(
+    paths: &[String],
+    family: Option<String>,
+    only: Option<String>,
+) -> Result<Remeasure, String> {
     let mut sources = Vec::new();
     let mut comparisons = Vec::new();
     let mut points = Vec::new();
@@ -91,7 +107,11 @@ pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure,
         {
             let ticks = old["ticks_run"].as_u64().unwrap_or(0);
             let kind = old["family"].as_str().unwrap_or_default();
-            if ticks == 0 || family.as_deref().is_some_and(|f| f != kind) {
+            let run = old["run"].as_str().unwrap_or_default();
+            if ticks == 0
+                || family.as_deref().is_some_and(|f| f != kind)
+                || only.as_deref().is_some_and(|r| r != run)
+            {
                 continue;
             }
             let founding: Founding =
@@ -100,7 +120,6 @@ pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure,
                 Some("individuals") => Execution::Individuals,
                 _ => Execution::Grouped,
             };
-            let run = old["run"].as_str().unwrap_or_default();
             let new = point(tag(run), founding.clone(), mode, ticks, WALL_CAP_MICROS)?;
             let after = serde_json::to_value(&new).map_err(|e| e.to_string())?;
             let (before, after) = (deterministic(old), deterministic(&after));
@@ -115,11 +134,13 @@ pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure,
                 old["mean_tick_micros"].as_u64().unwrap_or(0),
                 new.mean_tick_micros,
             );
+            let before_evaluations = old["evaluations_per_tick"].as_u64().unwrap_or(0);
             eprintln!(
-                "{run} {} n={} l={}: {old_mean} -> {new_mean} us per tick, identical {}",
+                "{run} {} n={} l={}: {old_mean} -> {new_mean} us per tick, {before_evaluations} -> {} evaluations per tick, identical {}",
                 old["mode"],
                 founding.population,
                 founding.lineages,
+                new.evaluations_per_tick,
                 differing.is_empty()
             );
             comparisons.push(Comparison {
@@ -134,7 +155,8 @@ pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure,
                 before_mean_tick_micros: old_mean,
                 after_mean_tick_micros: new_mean,
                 speedup: old_mean as f64 / new_mean.max(1) as f64,
-                evaluations_per_tick: old["evaluations_per_tick"].as_u64().unwrap_or(0),
+                before_evaluations_per_tick: before_evaluations,
+                after_evaluations_per_tick: new.evaluations_per_tick,
                 identical: differing.is_empty(),
                 differing,
             });
@@ -146,7 +168,8 @@ pub(super) fn run(paths: &[String], family: Option<String>) -> Result<Remeasure,
         kind: "isocosm-scale-remeasure",
         sources,
         family,
-        note: "Each point of the named receipts is run again: the same founding, seed, mode and tick count, so the worlds are the same draws. The earlier mean tick is the receipt's; the later is this run's. Identical means the final state hash, every per-tick count and the distinct states match the earlier point.",
+        run: only,
+        note: "Each point of the named receipts is run again: the same founding, seed, mode and tick count, so the worlds are the same draws. The earlier mean tick is the receipt's; the later is this run's. Identical means the final state hash, the per-tick acceptances, members, stored groups, events, notes and arrivals, and the distinct states match the earlier point. Evaluations per tick are stated before and after, not compared: since ruling 259 they count only the evaluations that run.",
         comparisons,
         points,
     })

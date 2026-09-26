@@ -292,6 +292,7 @@ impl ProbeFounding {
                 bounds: BTreeMap::new(),
             }),
             mind: Some(mind),
+            tick_microseconds: None,
         };
         let (site_map, population) = self.found(&drawn, &lineages, sites, &per_site)?;
         let genesis = Genesis {

@@ -99,6 +99,11 @@ pub struct Simulation {
     pub(crate) conserved: u128,
     /// Groups filed for target searches, kept only during an advance.
     pub(crate) targets: Option<crate::targets::Targets>,
+    /// Groups filed by the traits due processes require, kept only during
+    /// an advance.
+    pub(crate) filed: Option<crate::schedule::Filed>,
+    /// The due process's pass under way, if any.
+    pub(crate) pass: Option<crate::schedule::Pass>,
     /// What the advance under way has changed, to put back if it is refused.
     pub(crate) journal: Option<crate::journal::Journal>,
 }
@@ -131,6 +136,8 @@ impl Simulation {
             revision,
             conserved,
             targets: None,
+            filed: None,
+            pass: None,
             journal: None,
         })
     }
@@ -201,111 +208,6 @@ impl Simulation {
         if !accepted {
             journal.rollback(&mut self.state);
         }
-    }
-    fn advance_to(&mut self, end: Tick) -> Result<Work> {
-        let mut queue = BTreeSet::new();
-        for p in self.genesis.rules.processes.values() {
-            if let Some(period) = p.period
-                && let Some(due) = self
-                    .state
-                    .tick
-                    .checked_add(period - self.state.tick % period)
-                && due <= end
-            {
-                queue.insert((due, p.priority, p.id.clone()));
-            }
-        }
-        let mut work = Work::default();
-        let targeted = self
-            .genesis
-            .rules
-            .processes
-            .values()
-            .any(|p| p.period.is_some() && p.target.is_some());
-        if targeted {
-            self.targets = Some(crate::targets::Targets::new(&self.state.population));
-        }
-        let work = self.scheduled(queue, end, &mut work).map(|()| work);
-        self.targets = None;
-        let work = work?;
-        self.state.tick = end;
-        if self.mode == Execution::Grouped {
-            let roots = self.kept();
-            let population = &mut self.state.population;
-            match &mut self.journal {
-                Some(j) => {
-                    population.restrict_logged(&roots, &mut |first, was| j.group(first, was))
-                },
-                None => population.restrict(&roots),
-            }
-        }
-        Ok(work)
-    }
-    /// Runs every due process in order of due tick, priority and identity.
-    fn scheduled(
-        &mut self,
-        mut queue: BTreeSet<(Tick, i32, Key)>,
-        end: Tick,
-        work: &mut Work,
-    ) -> Result<()> {
-        while let Some((due, priority, id)) = queue.pop_first() {
-            self.state.tick = due;
-            let process = self.genesis.rules.processes[&id].clone();
-            let groups: Vec<_> = self
-                .state
-                .population
-                .groups
-                .iter()
-                .map(|(&first, g)| (first, g.count))
-                .collect();
-            for (first, count) in groups {
-                let Some(entity) = self.state.population.get(first) else {
-                    continue;
-                };
-                if !entity.alive {
-                    continue;
-                }
-                if process.shape == Shape::Agentless {
-                    if entity.kingdom != "kingdom:world" {
-                        continue;
-                    }
-                } else if entity.method == Method::Inert {
-                    continue;
-                }
-                if process.need_account.as_ref().is_some_and(|a| {
-                    entity.accounts.get(a).copied().unwrap_or(0) >= process.need_below
-                }) {
-                    continue;
-                }
-                let bulk = self.mode == Execution::Grouped && process.bulk_safe();
-                let calls = if bulk { 1 } else { count };
-                if work.evaluations.saturating_add(calls)
-                    > self.genesis.rules.limits.events_per_advance as u64
-                {
-                    return Err(
-                        "advance exceeds configured operation budget; use shorter advances".into(),
-                    );
-                }
-                for offset in 0..calls {
-                    let multiplicity = if bulk { count } else { 1 };
-                    let actor = first + offset;
-                    let target = self.choose_target(actor, &process);
-                    let r = self.apply(actor, target, &id, None, multiplicity);
-                    work.evaluations += 1;
-                    work.represented += multiplicity;
-                    if matches!(r.outcome, Outcome::Accepted | Outcome::RiskOutcome) {
-                        work.accepted += multiplicity;
-                    } else {
-                        work.blocked += multiplicity;
-                    }
-                }
-            }
-            let next = due.checked_add(process.period.unwrap());
-            if let Some(next) = next.filter(|next| *next <= end) {
-                queue.insert((next, priority, id));
-            }
-        }
-        Ok(())
     }
     pub fn inspect(&mut self, id: Id) -> Result<()> {
         self.state.population.lift(id)?;

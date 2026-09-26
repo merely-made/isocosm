@@ -119,11 +119,14 @@ fn run() -> Result<(), String> {
     let mut living = false;
     let mut again: Vec<String> = vec![];
     let mut kind = None;
+    let mut only = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             // Re-run an earlier receipt's points, optionally one family's.
             "--remeasure" => again.push(args.next().ok_or("--remeasure needs a path")?),
             "--family" => kind = Some(args.next().ok_or("--family needs a name")?),
+            // Narrow a re-measure to one run: ladder, lineages, history...
+            "--run" => only = Some(args.next().ok_or("--run needs a name")?),
             "--pilot" => pilot = true,
             // Two larger rungs for every ladder, one draw each, no stop rule.
             "--extend" => extend = true,
@@ -141,7 +144,7 @@ fn run() -> Result<(), String> {
         }
     }
     if !again.is_empty() {
-        let receipt = remeasure::run(&again, kind)?;
+        let receipt = remeasure::run(&again, kind, only)?;
         return write(&receipt, output);
     }
     eprintln!("Scale receipt: master seed {master}");

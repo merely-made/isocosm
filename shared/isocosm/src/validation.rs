@@ -175,6 +175,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     {
         return Err("invalid rules limits".into());
     }
+    if rules.tick_microseconds == Some(0) {
+        return Err("the clock's unit must be some time".into());
+    }
     if rules.field.strength > 1_000_000
         || rules.field.legend_floor > 1_000_000
         || rules.field.decay_per_tick == 0

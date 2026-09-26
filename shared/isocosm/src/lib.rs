@@ -19,6 +19,7 @@ pub mod probe;
 mod queries;
 pub mod reach;
 pub mod rules;
+mod schedule;
 pub mod schema;
 pub mod simulation;
 mod stage;

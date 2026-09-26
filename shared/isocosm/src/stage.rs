@@ -150,11 +150,20 @@ impl Simulation {
     /// before its first write: the actor alone unless it acts for its
     /// cohort, then the target.
     pub(crate) fn commit(&mut self, stage: Stage, next_action: u64) {
-        let reached = if self.targets.is_some() || self.journal.is_some() {
+        let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() {
             self.reaches(&stage)
         } else {
             vec![]
         };
+        if let Some(pass) = &mut self.pass {
+            let population = &self.state.population;
+            if stage.count == 1 {
+                pass.lifting(population, stage.actor);
+            }
+            if let Some(target) = stage.target {
+                pass.lifting(population, target);
+            }
+        }
         if let Some(j) = &mut self.journal {
             let s = &self.state;
             j.groups(&s.population, &reached);
@@ -176,7 +185,10 @@ impl Simulation {
         }
         self.write(stage, next_action);
         if let Some(t) = &mut self.targets {
-            t.touch(&self.state.population, reached);
+            t.touch(&self.state.population, reached.iter().copied());
+        }
+        if let Some(f) = &mut self.filed {
+            f.touch(&self.state.population, reached);
         }
     }
 
