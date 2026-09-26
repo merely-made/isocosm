@@ -40,9 +40,9 @@ pub use projection::{
 pub use scene::{
     BOARD_SCENE_LEAF_KEY, BoardBricks, BoardGround, BoardHandle, BoardPalette, BoardPick,
     BoardProducer, BoardSource, BoardView, BoardWorld, ColumnChange, ELEVATION_PX, GroundCost,
-    MapTerrain, Overlays, RESIDENCY_MARGIN, SEA_LEVEL, ScenePick, TileColumns, Tint, TokenBodies,
-    VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, WORLD_PX, elevation_px, focus_top, material_of,
-    owner_tint, surface_of, terrain_palette, world_px, yaw_of,
+    MapTerrain, Overlays, RESIDENCY_MARGIN, ResidencySettings, SEA_LEVEL, ScenePick, TileColumns,
+    Tint, TokenBodies, VOID_SURFACE, VOXELS_PER_STEP, VOXELS_PER_TILE, WORLD_PX, elevation_px,
+    focus_top, material_of, owner_tint, surface_of, terrain_palette, world_px, yaw_of,
 };
 pub use state::{
     ActionRow, BOARD_UNIT, CharacterCreateRequest, CompendiumTab, EditMode, FactionMoveRow,

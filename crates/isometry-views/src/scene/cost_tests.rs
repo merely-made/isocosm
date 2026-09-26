@@ -160,7 +160,7 @@ fn what_reading_the_ground_costs_beside_raising_it() {
 /// harness's pane on the map's centre tile.
 fn first_map(map: &MapDocument) -> (BoardGround, usize, usize) {
     let ui = UiState::new(map.clone());
-    let ground = BoardGround::new(&ui.map, &Overlays::of(&ui), 1);
+    let ground = BoardGround::new(&ui.map, &Overlays::of(&ui), 1, Default::default());
     let centre = (
         map.ground.width() as i32 / 2,
         map.ground.height() as i32 / 2,

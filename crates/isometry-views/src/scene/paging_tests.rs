@@ -7,22 +7,29 @@
 //! reached, and that an edit made while its bricks were away is on the board
 //! when they come back.
 //!
+//! Headroom (2026-09-26, Mark: "Reserve headroom"): the pointer volume keeps
+//! spare brick layers above the board's tallest tile, so raising a tile into
+//! them retargets and only raising one past them rebuilds the map whole.
+//!
 //! `paging_receipts_at_256` is the cost receipt the lane's summary is built
-//! from. It is ignored by default, because its baseline raises a 256 by 256
-//! ground the old way, which is a minute in the debug build; the script in
-//! `testing/scene-board-paging/` runs it in both builds.
+//! from, and `paging_receipts_headroom` what each spare layer costs. Both are
+//! ignored by default, because the first's baseline raises a 256 by 256 ground
+//! the old way, which is a minute in the debug build; the script in
+//! `testing/scene-board-paging/` runs them in both builds.
 
 use std::collections::BTreeSet;
 use std::time::Instant;
 
 use isometer::core::ground::Ground;
+use isometer::{Rebuild, ResidencySettings, TerrainSource};
 
 use super::board::BoardPick;
+use super::ground::BoardGround;
 use super::harness::{Board, HEADED_PANE, PANE, relief_map};
 use super::overlay::Overlays;
 use super::terrain::MapTerrain;
 use super::world::BoardWorld;
-use crate::demo::synth_map;
+use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
 fn sized_or_skip(map: isometry_core::MapDocument, pane: (f32, f32), what: &str) -> Option<Board> {
@@ -299,6 +306,141 @@ fn paging_receipts_at_256() {
                     board.ui.camera.1 -= 16.0;
                 }
                 measure(&mut board, "pan");
+            }
+        }
+    }
+}
+
+/// Headroom over real frames: raising the tile at the pane's centre into the
+/// spare layer above the demo board's hill retargets, raising it past that
+/// layer rebuilds the map whole, and with no headroom the first raise already
+/// rebuilds, which is the control.
+#[test]
+fn a_raise_within_the_headroom_retargets_and_one_past_it_rebuilds() {
+    for headroom in [1, 0] {
+        let Some(mut board) = sized_or_skip(demo_map(), PANE, "the headroom receipt") else {
+            return;
+        };
+        board.set_residency(ResidencySettings {
+            headroom,
+            ..ResidencySettings::default()
+        });
+        board.draw();
+        assert_eq!(
+            board.cost().residency.reserved,
+            [0, 1 + headroom as i16],
+            "the demo's hill tops out in layer 1"
+        );
+        let Some(BoardPick::Tile { at, .. }) = board.pick(PANE.0 / 2.0, PANE.1 / 2.0) else {
+            panic!("the pane's centre shows a tile");
+        };
+
+        // Elevation 8 lays its top voxel at 17, in layer 2.
+        board.ui.map.elevation.set(at.0 as u32, at.1 as u32, 8);
+        board.draw();
+        let raised = board.cost();
+        eprintln!(
+            "headroom {headroom}, {at:?} raised into layer 2: {}",
+            raised.line()
+        );
+        if headroom == 0 {
+            assert_eq!(
+                raised.residency.rebuilt,
+                Some(Rebuild::Headroom),
+                "the control"
+            );
+            assert!(board.terrain().full_map_upload);
+            continue;
+        }
+        assert_eq!(raised.residency.rebuilt, None, "within the headroom");
+        assert!(!board.terrain().full_map_upload);
+        assert!(
+            raised.residency.loaded > 0,
+            "the new layer came in as a retarget"
+        );
+        let world = BoardWorld::new(&board.ui.map);
+        let top = world.stand(at, 8);
+        let pixel = board
+            .camera()
+            .pixel_of(top, [PANE.0 as u32, PANE.1 as u32])
+            .expect("the raised top is on screen");
+        assert!(
+            matches!(
+                board.pick(pixel[0] as f32 + 0.5, pixel[1] as f32 + 0.5),
+                Some(BoardPick::Tile { at: hit, elevation: 8, top: true }) if hit == at
+            ),
+            "the raised tile is drawn at its new height"
+        );
+
+        // Elevation 12 lays its top voxel at 25, in layer 3: past the headroom.
+        board.ui.map.elevation.set(at.0 as u32, at.1 as u32, 12);
+        board.draw();
+        let past = board.cost().residency;
+        assert_eq!(past.rebuilt, Some(Rebuild::Headroom));
+        assert_eq!(
+            past.reserved,
+            [0, 4],
+            "rebuilt with the headroom above the new top"
+        );
+        assert!(board.terrain().full_map_upload);
+    }
+}
+
+/// What each spare layer of headroom costs the pointer volume, at the demo
+/// board and at 256 by 256, flat and with relief, in the harness pane and B5's
+/// headed pane: one line per board, pane and headroom.
+#[test]
+#[ignore = "the receipts script runs this"]
+fn paging_receipts_headroom() {
+    let build = if cfg!(debug_assertions) {
+        "debug"
+    } else {
+        "release"
+    };
+    for (board_name, map) in [
+        ("demo", demo_map()),
+        ("flat", synth_map(256, 256)),
+        ("relief", relief_map(256)),
+    ] {
+        let ui = UiState::new(map.clone());
+        let overlays = Overlays::of(&ui);
+        let centre = (
+            map.ground.width() as i32 / 2,
+            map.ground.height() as i32 / 2,
+        );
+        let (x, y) = ui.geo.tile_to_screen(centre, 0);
+        for (pane_name, pane) in [("harness", PANE), ("headed", HEADED_PANE)] {
+            let camera = BoardWorld::new(&map)
+                .camera(&ui.geo, (pane.0 / 2.0 - x, pane.1 / 2.0 - y), pane, None)
+                .expect("the board frames the pane");
+            for headroom in 0..=3 {
+                let settings = ResidencySettings {
+                    headroom,
+                    ..ResidencySettings::default()
+                };
+                let mut ground = BoardGround::new(&ui.map, &overlays, 1, settings);
+                let (extent, atlas) = {
+                    let bricks = ground.bricks();
+                    let framed = ground.framed(camera, &bricks);
+                    let built = ground
+                        .terrain(&bricks, &framed)
+                        .brick_map()
+                        .expect("a paged map");
+                    (built.pointer_extent(), built.atlas().len())
+                };
+                // Taken as a frame would take it, so the reserve is on the cost.
+                ground.uploaded(std::time::Duration::ZERO);
+                let pointers: u64 = extent.iter().map(|axis| u64::from(*axis)).product();
+                println!(
+                    "[paging-receipt] {}",
+                    serde_json::json!({
+                        "build": build, "board": board_name, "pane": pane_name,
+                        "kind": "headroom", "headroom": headroom,
+                        "reserved": ground.cost().residency.reserved,
+                        "extent": extent, "pointer_bytes": pointers * 4,
+                        "atlas_bytes": atlas,
+                    })
+                );
             }
         }
     }

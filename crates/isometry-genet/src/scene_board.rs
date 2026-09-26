@@ -19,6 +19,10 @@
 //! the producer presents each of those pixels as one square block, which is
 //! the GBA crispness pillar expressed in the renderer rather than in CSS.
 //!
+//! **Headroom.** `ISOMETRY_SCENE_HEADROOM=<layers>` sets the spare brick
+//! layers the scene board's pointer volume keeps above the board's tallest
+//! tile; unset, the residency's own default of one, which is provisional.
+//!
 //! Nothing here runs unless the flag is set. With it unset the producer is
 //! never built, the leaf is never registered, and every existing receipt sees
 //! the board it always saw.
@@ -27,7 +31,8 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use isometry_views::{
-    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ScenePick, UiState,
+    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ResidencySettings, ScenePick,
+    UiState,
 };
 
 use crate::Ctx;
@@ -53,6 +58,18 @@ pub(crate) struct SceneBoard {
     costed: Option<GroundCost>,
 }
 
+/// The residency settings the environment asks for: the default, with
+/// `ISOMETRY_SCENE_HEADROOM` overriding its spare layers when it parses.
+fn residency() -> ResidencySettings {
+    let mut settings = ResidencySettings::default();
+    let asked = std::env::var("ISOMETRY_SCENE_HEADROOM").ok();
+    if let Some(layers) = asked.and_then(|value| value.trim().parse().ok()) {
+        settings.headroom = layers;
+        eprintln!("[isometry] scene board headroom {layers} layers");
+    }
+    settings
+}
+
 impl SceneBoard {
     /// Builds the producer over a first snapshot of the board.
     pub(crate) fn new(ui: &UiState) -> Self {
@@ -61,7 +78,9 @@ impl SceneBoard {
         let view = board.into_handle();
         Self {
             view: view.clone(),
-            producer: Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(view)))),
+            producer: Rc::new(RefCell::new(BoardProducer::new(
+                BoardSource::new(view).with_residency(residency()),
+            ))),
             scale: 1,
             reported: None,
             costed: None,

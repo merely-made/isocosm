@@ -25,8 +25,8 @@ use std::collections::BTreeSet;
 
 use isometer::lens::{BrickDiagnostics, Grade, TerrainAppearance};
 use isometer::{
-    BodySignature, FrameRequest, Pick, Pose, Scene, SceneBody, SceneFrame, SceneHost,
-    SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    BodySignature, FrameRequest, Pick, Pose, ResidencySettings, Scene, SceneBody, SceneFrame,
+    SceneHost, SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
     TerrainSource,
 };
 use isometry_core::{MapDocument, TileCoord, Token, TokenId};
@@ -110,6 +110,8 @@ pub struct BoardSource {
     scene_size: [u32; 2],
     /// The grown ground and everything about keeping it current.
     ground: Option<BoardGround>,
+    /// How the ground's brick map is sized; the host's to choose.
+    residency: ResidencySettings,
     /// The palette the bound table was built for, so a kind added to the map
     /// rebinds it and an ordinary frame does not.
     palette_revision: Option<usize>,
@@ -137,7 +139,26 @@ impl BoardSource {
             world: None,
             palettes: BTreeSet::new(),
             placeholders: 0,
+            residency: ResidencySettings::default(),
         }
+    }
+
+    /// The same source with its brick map sized by `settings`.
+    pub fn with_residency(mut self, settings: ResidencySettings) -> Self {
+        self.set_residency(settings);
+        self
+    }
+
+    /// Sizes the brick map by `settings` from the next frame on.
+    pub fn set_residency(&mut self, settings: ResidencySettings) {
+        self.residency = settings;
+        if let Some(ground) = &mut self.ground {
+            ground.set_residency(settings);
+        }
+    }
+
+    pub fn residency(&self) -> ResidencySettings {
+        self.residency
     }
 
     pub fn view(&self) -> &BoardHandle {
@@ -244,7 +265,14 @@ impl BoardSource {
         let view = self.view.borrow();
         match &mut self.ground {
             Some(ground) => ground.sync(&view.map, &view.overlays, revision),
-            None => self.ground = Some(BoardGround::new(&view.map, &view.overlays, revision)),
+            None => {
+                self.ground = Some(BoardGround::new(
+                    &view.map,
+                    &view.overlays,
+                    revision,
+                    self.residency,
+                ))
+            },
         }
         // The table is a function of the map's kinds alone: the tints and the
         // shrouded half are fixed blocks past them.

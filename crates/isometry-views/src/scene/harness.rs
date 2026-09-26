@@ -129,6 +129,11 @@ impl Board {
         self.source.ground().expect("a drawn board read its ground")
     }
 
+    /// Sizes the board's brick map by `settings` from the next frame on.
+    pub(super) fn set_residency(&mut self, settings: isometer::ResidencySettings) {
+        self.source.set_residency(settings);
+    }
+
     pub(super) fn pick(&self, px: f32, py: f32) -> Option<BoardPick> {
         self.source
             .pick([2.0 * px / self.pane.0 - 1.0, 1.0 - 2.0 * py / self.pane.1])
