@@ -21,6 +21,11 @@
 //! the frame's centre go first, the margin's before the frame's own, and are
 //! counted as [`FramedBricks::overflow`].
 //!
+//! **Headroom.** The pointer volume holds the terrain's layers and
+//! [`ResidencySettings::headroom`] spare ones above them, sized across as well
+//! as up, so an edit that lifts the terrain into them retargets and only one
+//! past them rebuilds the map ([`Rebuild::Headroom`]).
+//!
 //! **The hold.** modulus at the pinned revision bounds a slot by the number of
 //! keys rather than by the atlas, so after a retarget that shrinks the
 //! selection a kept brick can sit in a slot past that number: the GPU still
