@@ -117,14 +117,14 @@ pub struct GlandWords {
 /// holds and what the gland holds, because the difference is the thing a
 /// player can act on — walk to better ground, or enrich this one.
 pub fn gland_words(gland: &Gland) -> GlandWords {
-    let tissue = match (gland.sites.first(), gland.lost.first()) {
+    let tissue = match (gland.tracts.first(), gland.lost.first()) {
         (Some((part, cells)), _) => format!("{cells} cells of part {}", part.0),
         // Severing took the tissue and the consequence together; the branch
         // can still say what it used to do.
         (None, Some(part)) => format!("gone with part {}", part.0),
         (None, None) => "none".to_string(),
     };
-    let sting = if gland.sites.is_empty() {
+    let sting = if gland.tracts.is_empty() {
         "nothing left to sting with".to_string()
     } else if gland.charged {
         format!("{} mg a bite", gland.potency_mg)
@@ -151,7 +151,7 @@ pub fn discovery_words(discovery: &Discovery) -> DiscoveryWords {
     let grants = format!(
         "{} on {}{}",
         process_word(discovery.candidate.process),
-        site_word(discovery.candidate.site),
+        tract_word(discovery.candidate.tract),
         // Inheritance is a separate fact from expression, so it is a separate
         // clause: this body may develop it, and its descendants may be born
         // with the shape to.
@@ -211,8 +211,8 @@ fn process_word(process: mesocosm_core::ProcessRef) -> String {
         .unwrap_or_else(|| "an unknown process".to_string())
 }
 
-fn site_word(site: mesocosm_core::Role) -> &'static str {
-    match site {
+fn tract_word(tract: mesocosm_core::Role) -> &'static str {
+    match tract {
         mesocosm_core::Role::Mass => "bulk",
         mesocosm_core::Role::Limb => "a limb",
         mesocosm_core::Role::Plate => "a plate",
@@ -255,7 +255,7 @@ pub fn vitals_of(
             graft.parts.iter().any(|part| {
                 phenotype
                     .explain(*part)
-                    .is_some_and(|read| read.living && !read.sites.is_empty())
+                    .is_some_and(|read| read.living && !read.tracts.is_empty())
             })
         });
         graft_words(graft, expressing)
@@ -364,7 +364,7 @@ pub fn refusal_words(rejection: &Rejection) -> &'static str {
         // in the outcome either way, because PD1b made the refusal order part
         // of the contract and a receipt has to be able to name it.
         Rejection::Refused(refusal) => match refusal {
-            Refusal::SiteMismatch { .. } => "that shape does not do that",
+            Refusal::TractMismatch { .. } => "that shape does not do that",
             Refusal::Disconnected(_) => "an organ is one piece of tissue",
             Refusal::Overlap { .. } => "that tissue is taken",
             Refusal::SeveredPart(_) => "that branch is gone",

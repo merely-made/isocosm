@@ -61,7 +61,7 @@ pub struct Follow {
     pub discovered: String,
     /// How many living parts the body has.
     pub parts: String,
-    /// One line per part shown: its role, its half-extent, and its sites.
+    /// One line per part shown: its role, its half-extent, and its tracts.
     pub part_rows: Vec<(String, String)>,
     /// Living parts the tile had no room for.
     pub more_parts: usize,
@@ -186,7 +186,7 @@ fn part_rows(organism: &Organism) -> Vec<(String, String)> {
                     "{} {} — {}",
                     role_word(classify(part.half_extent)),
                     extent_words(part.half_extent),
-                    site_words(organism, part.id),
+                    tract_words(organism, part.id),
                 ),
             )
         })
@@ -195,7 +195,7 @@ fn part_rows(organism: &Organism) -> Vec<(String, String)> {
 
 /// A part's role, in the plain word for the shape.
 ///
-/// Distinct from the vitals panel's own site wording ("bulk", "a limb"), which
+/// Distinct from the vitals panel's own tract wording ("bulk", "a limb"), which
 /// says where a candidate could *go*; this names what a part **is**.
 pub fn role_word(role: Role) -> &'static str {
     match role {
@@ -216,23 +216,23 @@ fn extent_words(half_extent: [i32; 3]) -> String {
 /// whose `named` is `None` exactly when this world's ruleset does not hold the
 /// definition — the missing-ruleset diagnostic, said rather than papered over
 /// with a similar local name.
-fn site_words(organism: &Organism, part: PartId) -> String {
+fn tract_words(organism: &Organism, part: PartId) -> String {
     let Some(explanation) = organism.phenotype.explain(part) else {
         return "no mosaic".to_string();
     };
-    if explanation.sites.is_empty() {
-        return "no sites".to_string();
+    if explanation.tracts.is_empty() {
+        return "no tracts".to_string();
     }
     explanation
-        .sites
+        .tracts
         .iter()
-        .map(|site| {
-            let name = site
+        .map(|tract| {
+            let name = tract
                 .named
                 .as_ref()
                 .map(|id| id.name.clone())
                 .unwrap_or_else(|| "an unknown process".to_string());
-            format!("{name} on {} cells", site.cells)
+            format!("{name} on {} cells", tract.cells)
         })
         .collect::<Vec<_>>()
         .join(", ")

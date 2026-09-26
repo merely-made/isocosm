@@ -93,7 +93,7 @@ fn a_warning_carries_its_evidence_and_only_arrives_when_it_is_true() {
 fn the_gland_reads_differently_in_each_of_its_four_states() {
     let part = mesocosm_core::PartId(3);
     let allocated = Gland {
-        sites: vec![(part, 5)],
+        tracts: vec![(part, 5)],
         cells: 5,
         potency_mg: 115,
         ground_mg: 206,
@@ -123,7 +123,7 @@ fn the_gland_reads_differently_in_each_of_its_four_states() {
     // Severed: the consequence is gone, and the branch still says what it
     // used to do.
     let lost = Gland {
-        sites: Vec::new(),
+        tracts: Vec::new(),
         cells: 0,
         potency_mg: 0,
         rent_mg: 0,
@@ -212,7 +212,7 @@ fn a_meal_that_taught_nothing_still_says_what_it_offered_and_what_refused() {
 #[test]
 fn a_development_that_would_not_validate_says_why_in_plain_words() {
     assert_eq!(
-        refusal_words(&Rejection::Refused(Refusal::SiteMismatch {
+        refusal_words(&Rejection::Refused(Refusal::TractMismatch {
             part: mesocosm_core::PartId(0),
             process: mesocosm_core::ProcessRef {
                 definition: mesocosm_core::DefinitionDigest(1),

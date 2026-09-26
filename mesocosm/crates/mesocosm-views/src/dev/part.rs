@@ -47,15 +47,15 @@ pub fn part_of(
         return unavailable("the selected part has no reading");
     };
     let actual: Vec<String> = explanation
-        .sites
+        .tracts
         .iter()
-        .map(|site| {
-            let name = site
+        .map(|tract| {
+            let name = tract
                 .named
                 .as_ref()
                 .map(|id| id.name.clone())
                 .unwrap_or_else(|| "unknown process".into());
-            bounded(&format!("{name} ({})", cause_words(site.cause)))
+            bounded(&format!("{name} ({})", cause_words(tract.cause)))
         })
         .collect();
     let process = format!(

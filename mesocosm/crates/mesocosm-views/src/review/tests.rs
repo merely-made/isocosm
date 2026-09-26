@@ -100,7 +100,7 @@ fn an_untakeable_candidate_carries_its_reason() {
         &offer(
             Some(2),
             0,
-            Some(Untakeable::Unexpressed(Unexpressed::NoSite {
+            Some(Untakeable::Unexpressed(Unexpressed::NoTract {
                 role: Role::Plate,
             })),
         ),

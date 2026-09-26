@@ -45,7 +45,7 @@ fn fixture() -> (World, OrganismId, PartId) {
 }
 
 #[test]
-fn reading_distinguishes_actual_sites_from_unknown_dormant_allocations() {
+fn reading_distinguishes_actual_tracts_from_unknown_dormant_allocations() {
     let (world, organism, part) = fixture();
     let reading = part_of(&world, organism, part, &History::new())
         .reading
@@ -56,7 +56,7 @@ fn reading_distinguishes_actual_sites_from_unknown_dormant_allocations() {
     if !reading.process.contains("actual: none") {
         assert!(
             reading.process.contains("("),
-            "actual sites carry their cause"
+            "actual tracts carry their cause"
         );
     }
     assert!(reading.donor == "founding tissue");

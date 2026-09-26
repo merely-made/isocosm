@@ -160,16 +160,16 @@ fn every_field_on_the_panel_equals_the_core_reading_it_came_from() {
             )),
             "the half-extent is the part's own: {value}"
         );
-        // The sites are the phenotype's explanation of that part, cell counts
+        // The tracts are the phenotype's explanation of that part, cell counts
         // and all.
         let explained = organism
             .phenotype
             .explain(part.id)
             .expect("a living part has a mosaic");
-        for site in &explained.sites {
+        for tract in &explained.tracts {
             assert!(
-                value.contains(&format!("on {} cells", site.cells)),
-                "site cell count missing from {value}"
+                value.contains(&format!("on {} cells", tract.cells)),
+                "tract cell count missing from {value}"
             );
         }
     }
