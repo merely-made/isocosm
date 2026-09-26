@@ -12,6 +12,7 @@ mod execute;
 pub mod generate;
 mod genesis;
 pub mod history;
+mod journal;
 mod meaning;
 pub mod population;
 pub mod probe;

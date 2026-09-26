@@ -332,6 +332,32 @@ fn operation_budget_failure_is_transactionally_inert() {
 }
 
 #[test]
+fn a_refused_advance_puts_back_everything_it_changed() {
+    let genesis = founding(91).generate().unwrap();
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        // A budget the first tick fits and the second overruns part way.
+        let mut first = Simulation::new(genesis.clone(), mode).unwrap();
+        let budget = first.advance(1).unwrap().evaluations as usize + 1;
+        let mut tight = genesis.clone();
+        tight.rules.limits.events_per_advance = budget;
+        let mut sim = Simulation::new(tight.clone(), mode).unwrap();
+        let before = sim.state().clone();
+        assert!(sim.advance(4).is_err());
+        assert!(sim.state() == &before, "{mode:?}");
+        // A session refused in a later epoch keeps only what came before.
+        tight.rules.epoch_ticks = 1;
+        let mut session = Session::new(tight, mode).unwrap();
+        session.advance(1).unwrap();
+        let kept = (session.sim.state_hash(), session.checkpoints.clone());
+        assert!(session.advance(4).is_err());
+        assert_eq!(
+            (session.sim.state_hash(), session.checkpoints.clone()),
+            kept
+        );
+    }
+}
+
+#[test]
 fn conservation_does_not_suffice_to_merge_different_starvation_states() {
     let mut a = founding(18).generate().unwrap().population;
     let mut b = a.clone();

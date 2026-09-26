@@ -121,10 +121,17 @@ impl Simulation {
     /// one, and the children's new groups.
     fn reaches(&self, stage: &Stage) -> Vec<Id> {
         let groups = &self.state.population.groups;
-        let mut firsts = Vec::new();
+        let mut firsts = vec![stage.actor];
+        // Lifting a member out of its group rewrites the group's first entry
+        // and adds entries for the member and for the rest of the group.
         let mut lifted = |id: Id| {
-            firsts.extend(groups.range(..=id).next_back().map(|(f, _)| *f));
-            firsts.extend([id, id + 1]);
+            if let Some((&first, group)) = groups.range(..=id).next_back() {
+                firsts.push(first);
+                firsts.push(id);
+                if id + 1 < first + group.count {
+                    firsts.push(id + 1);
+                }
+            }
         };
         if stage.count == 1 {
             lifted(stage.actor);
@@ -132,9 +139,10 @@ impl Simulation {
         if let Some(target) = stage.target {
             lifted(target);
         }
-        firsts.push(stage.actor);
         let next = self.state.population.next_id;
         firsts.extend((0..stage.births.len() as u64).map(|k| next + k));
+        firsts.sort_unstable();
+        firsts.dedup();
         firsts
     }
 
@@ -142,10 +150,33 @@ impl Simulation {
     /// before its first write: the actor alone unless it acts for its
     /// cohort, then the target.
     pub(crate) fn commit(&mut self, stage: Stage, next_action: u64) {
-        let reached = self.targets.is_some().then(|| self.reaches(&stage));
+        let reached = if self.targets.is_some() || self.journal.is_some() {
+            self.reaches(&stage)
+        } else {
+            vec![]
+        };
+        if let Some(j) = &mut self.journal {
+            let s = &self.state;
+            j.groups(&s.population, &reached);
+            if stage.site.is_some() {
+                j.site(stage.place, &s.sites[&stage.place]);
+            }
+            for (relation, _) in &stage.relations {
+                j.relation(relation, s.relations.contains(relation));
+            }
+            for (id, _) in &stage.polities {
+                j.polity(*id);
+            }
+            if !stage.marks.is_empty() {
+                j.record(&s.record);
+            }
+            if let Some((event, _)) = &stage.event {
+                j.event(&event.id);
+            }
+        }
         self.write(stage, next_action);
-        if let (Some(t), Some(firsts)) = (&mut self.targets, reached) {
-            t.touch(&self.state.population, firsts);
+        if let Some(t) = &mut self.targets {
+            t.touch(&self.state.population, reached);
         }
     }
 

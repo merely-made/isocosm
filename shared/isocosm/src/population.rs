@@ -76,7 +76,21 @@ impl Population {
         Ok(&mut self.groups.get_mut(&id).unwrap().entity)
     }
     pub fn restrict(&mut self, protected: &BTreeSet<Id>) {
+        self.restrict_logged(protected, &mut |_, _| {});
+    }
+    /// Restricts, first showing `log` every group it is about to change, by
+    /// first identity, as it stands; a group not yet there shows as `None`.
+    pub(crate) fn restrict_logged(
+        &mut self,
+        protected: &BTreeSet<Id>,
+        log: &mut dyn FnMut(Id, Option<&Cohort>),
+    ) {
         for &id in protected {
+            if let Some((&first, _)) = self.groups.range(..=id).next_back() {
+                for key in [first, id, id.saturating_add(1)] {
+                    log(key, self.groups.get(&key));
+                }
+            }
             let _ = self.lift(id);
         }
         let mut merged: BTreeMap<Id, Cohort> = BTreeMap::new();
@@ -87,6 +101,8 @@ impl Population {
                 && !protected.contains(&previous)
                 && !protected.contains(&first)
             {
+                log(previous, Some(last));
+                log(first, Some(&group));
                 merged.get_mut(&previous).unwrap().count += group.count;
                 continue;
             }

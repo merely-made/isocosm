@@ -89,13 +89,25 @@ impl Session {
         if ticks > self.sim.genesis.rules.limits.advance_ticks {
             return Err("advance budget".into());
         }
-        let mut candidate = self.clone();
+        // The world keeps what the advance changes and puts it back if any
+        // part is refused, as a copy of the whole session once did.
+        let checkpoints = self.checkpoints.len();
+        let outer = self.sim.begin();
+        let work = self.epochs(end);
+        self.sim.finish(outer, work.is_ok());
+        if work.is_err() {
+            self.checkpoints.truncate(checkpoints);
+        }
+        work
+    }
+    /// Advances to `end` epoch by epoch, checkpointing each boundary.
+    fn epochs(&mut self, end: Tick) -> Result<Work> {
         let mut work = Work::default();
         let epoch = self.sim.genesis.rules.epoch_ticks;
-        while candidate.sim.state.tick < end {
-            let now = candidate.sim.state.tick;
+        while self.sim.state.tick < end {
+            let now = self.sim.state.tick;
             let boundary = now.checked_add(epoch - now % epoch).unwrap_or(end).min(end);
-            let next = candidate.sim.advance(boundary - now)?;
+            let next = self.sim.advance(boundary - now)?;
             work.evaluations += next.evaluations;
             work.represented += next.represented;
             work.accepted += next.accepted;
@@ -103,14 +115,13 @@ impl Session {
             if work.evaluations > self.sim.genesis.rules.limits.events_per_advance as u64 {
                 return Err("advance exceeds configured operation budget".into());
             }
-            if boundary % epoch == 0 {
-                candidate.checkpoints.push(Checkpoint {
+            if boundary.is_multiple_of(epoch) {
+                self.checkpoints.push(Checkpoint {
                     tick: boundary,
-                    state_hash: candidate.sim.state_hash(),
+                    state_hash: self.sim.state_hash(),
                 });
             }
         }
-        *self = candidate;
         Ok(work)
     }
     fn replay_until(&mut self, tick: Tick) -> Result<()> {

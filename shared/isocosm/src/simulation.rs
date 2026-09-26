@@ -99,6 +99,8 @@ pub struct Simulation {
     pub(crate) conserved: u128,
     /// Groups filed for target searches, kept only during an advance.
     pub(crate) targets: Option<crate::targets::Targets>,
+    /// What the advance under way has changed, to put back if it is refused.
+    pub(crate) journal: Option<crate::journal::Journal>,
 }
 
 impl Simulation {
@@ -129,6 +131,7 @@ impl Simulation {
             revision,
             conserved,
             targets: None,
+            journal: None,
         })
     }
     pub fn state(&self) -> &State {
@@ -174,10 +177,30 @@ impl Simulation {
             .tick
             .checked_add(ticks)
             .ok_or("clock exhausted")?;
-        let mut candidate = self.clone();
-        let work = candidate.advance_to(end)?;
-        *self = candidate;
-        Ok(work)
+        let outer = self.begin();
+        let work = self.advance_to(end);
+        self.finish(outer, work.is_ok());
+        work
+    }
+    /// Starts keeping what the world changes, unless an outer advance
+    /// already is; says whether this call started it.
+    pub(crate) fn begin(&mut self) -> bool {
+        let fresh = self.journal.is_none();
+        if fresh {
+            self.journal = Some(crate::journal::Journal::new(&self.state));
+        }
+        fresh
+    }
+    /// Stops keeping, if `outer` started it, putting the world back unless
+    /// the advance was accepted.
+    pub(crate) fn finish(&mut self, outer: bool, accepted: bool) {
+        if !outer {
+            return;
+        }
+        let journal = self.journal.take().expect("an advance under way");
+        if !accepted {
+            journal.rollback(&mut self.state);
+        }
     }
     fn advance_to(&mut self, end: Tick) -> Result<Work> {
         let mut queue = BTreeSet::new();
@@ -208,7 +231,13 @@ impl Simulation {
         self.state.tick = end;
         if self.mode == Execution::Grouped {
             let roots = self.kept();
-            self.state.population.restrict(&roots);
+            let population = &mut self.state.population;
+            match &mut self.journal {
+                Some(j) => {
+                    population.restrict_logged(&roots, &mut |first, was| j.group(first, was))
+                },
+                None => population.restrict(&roots),
+            }
         }
         Ok(work)
     }
