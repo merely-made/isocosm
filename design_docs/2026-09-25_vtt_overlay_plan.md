@@ -3,7 +3,9 @@
 **Date:** 2026-09-25
 
 **Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
-(231 and 243 to 250); V1 to V4 proposed and not opened. Drafted at
+(231 and 243 to 250); V1 done 2026-09-26, opened by ruling 253 as a
+contract module only; V2 to V4 proposed and not opened, waiting on
+Mesocosm's M3 (ruling 231). Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -215,7 +217,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   time, travel, hooks and the handoff's outcome vocabulary as §3 has them
   under rulings 243 and 244; every type round-trips through bytes and
   the crate still depends on nothing sim-internal (D18); and each of today's
-  twenty-three replicated events is mapped as §3 splits them.
+  twenty-three replicated events is mapped as §3 splits them. **Done
+  2026-09-26** (ruling 253): `src/vtt/` landed on main at 1996ecc with ten
+  round-trip tests and the README's mapping table, and the shapes it shared
+  with Eponym's module, a voxel point, an act key and harm, were lifted to
+  the crate root at 269ffc5 at Mark's word.
 - **V2, the campaign over a drawn world.** Done when a campaign founded from
   a seeded draw takes its places, routes, factions, characters, laws and
   history from the sim; an authored pack displaces generated content where
@@ -345,6 +351,12 @@ V1 is Mark's.
 
 ## Progress
 
+- 2026-09-26: V1 done. Ruling 253 opened E1 and V1 as contract modules
+  only; `src/vtt/` was built in a worktree, reviewed and merged by the
+  Simulation design review session (main 1996ecc), then the shapes shared
+  with Eponym's module were lifted to the crate root at Mark's word
+  (269ffc5). fmt, clippy and 43 tests clean. Everything from V2 on waits
+  for Mesocosm's M3 (ruling 231).
 - 2026-09-26: rulings 249 and 250, recorded at 4de670a, take §6's last
   decision: the bench calibrates Pathfinder 2e's skeleton first, and an
   uncalibrated campaign warns when it opens and marks every receipt and save,

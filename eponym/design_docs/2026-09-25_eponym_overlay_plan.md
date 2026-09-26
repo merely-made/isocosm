@@ -3,7 +3,9 @@
 **Date:** 2026-09-25
 
 **Status, 2026-09-26:** plan; E0 done 2026-09-26, its seven decisions ruled
-(231 to 235, 238, 239, 241 and 242); E1 to E4 proposed and not opened. Drafted at
+(231 to 235, 238, 239, 241 and 242); E1 done 2026-09-26, opened by ruling
+253 as a contract module only; E2 to E4 proposed and not opened, waiting on
+Mesocosm's M3 (ruling 231). Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -150,9 +152,10 @@ counteroffer are the three ways the score falls short.
 (`src/world.rs:33`) two, and `eponym-identity`'s `ControlIntent`
 (`src/control.rs:24`) four. *Reading, not ruled, confirmed intent by intent
 in E1:* under driving they split four ways. `Move`, `Observe`, `Take`,
-`Eat`, `Rest`, `Wait`, `AdvanceMotion`, `ConfigureMovementProfile`,
-`AttachItem` and `DetachItem` are the body's acts and become actuation;
-`ResolveVolley` is the handoff's outcome (ruling 232); `Name` is the
+`Eat`, `Rest`, `Wait`, `AdvanceMotion`, `AttachItem` and `DetachItem` are
+the body's acts and become actuation; `ConfigureMovementProfile` is the
+game-side solver's own setting (ruling 233), with no contract type, as E1
+found; `ResolveVolley` is the handoff's outcome (ruling 232); `Name` is the
 player's act. `Generate`, `Fall`, `AdmitAnatomy`,
 `ReconcileAnatomy` and `Carve` are the sim's own: lifting a body from the
 roster (ruling 75), a consequence of motion, the body's revisions as the
@@ -215,7 +218,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   vocabulary as §3 has them under rulings 232 and 233; every type round-trips
   through bytes and the crate still depends on nothing sim-internal (D18);
   and each of today's seventeen game intents, two world intents and four
-  control intents is mapped as §3 splits them.
+  control intents is mapped as §3 splits them. **Done 2026-09-26** (ruling
+  253): `src/eponym/` landed on main at 1996ecc with thirteen round-trip
+  tests and the README's mapping table, and the shapes it shared with the
+  VTT's module, a voxel point, an act key and harm, were lifted to the crate
+  root at 269ffc5 at Mark's word.
 - **E2, absorption by family.** One sub-phase per family of §4, in the order
   ruled (239): bodies, places, lives and rounds, standing and asks,
   knowledge, glyphs, then fights and technique. Each is done when the family runs in Isocosm under
@@ -345,6 +352,13 @@ done on paper; opening E1 is Mark's.
 
 ## Progress
 
+- 2026-09-26: E1 done. Ruling 253 opened E1 and V1 as contract modules
+  only; `src/eponym/` was built in a worktree, reviewed and merged by the
+  Simulation design review session (main 1996ecc), then the shapes shared
+  with the VTT's module were lifted to the crate root at Mark's word
+  (269ffc5). fmt, clippy and 43 tests clean. One refinement of §3's
+  reading: `ConfigureMovementProfile` is the game-side solver's own.
+  Everything from E2 on waits for Mesocosm's M3 (ruling 231).
 - 2026-09-26: rulings 241 and 242, recorded at ed20550, take §6's last two
   decisions: posing is a telling's manner, carried on the telling and never
   an intent of its own, and E4 plays two peers over the session lane. E0 is
