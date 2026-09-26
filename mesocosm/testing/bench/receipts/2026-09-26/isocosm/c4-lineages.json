@@ -1,0 +1,752 @@
+{
+ "kind": "isocosm-lineage-sweep-287",
+ "note": "Each pair is [after ruling 286, after ruling 287], the same 20 points of the step-1 lineage sweep (1,024 members, 16 ticks, grouped) re-measured on each core. Evaluations per tick are the scheduler's; accepted per tick counts members; the blocked share is the members evaluated whose act was blocked. Identical means as step 1 in every deterministic field but the evaluation counts.",
+ "sources": {
+  "c4-remeasure-lineages-286.json": "5cb7578d593803b77c4b142b1d46c45512582e9650e04cda3df5525a6ca439b1",
+  "c4-remeasure-lineages.json": "35dc047248a161bb863b88b52e1b5b0391523b7f3eebcdbc2b68d4d249076f06"
+ },
+ "summary": [
+  {
+   "family": "reservoir",
+   "lineages": 2,
+   "evaluations_per_tick": [
+    121,
+    121
+   ],
+   "accepted_per_tick": [
+    1415.0,
+    1415.0
+   ],
+   "blocked_share_percent": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "lineages": 4,
+   "evaluations_per_tick": [
+    108,
+    108
+   ],
+   "accepted_per_tick": [
+    990.0,
+    990.0
+   ],
+   "blocked_share_percent": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "lineages": 8,
+   "evaluations_per_tick": [
+    135.5,
+    135.5
+   ],
+   "accepted_per_tick": [
+    1875.0,
+    1875.0
+   ],
+   "blocked_share_percent": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "lineages": 16,
+   "evaluations_per_tick": [
+    118,
+    118
+   ],
+   "accepted_per_tick": [
+    1312.0,
+    1312.0
+   ],
+   "blocked_share_percent": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "lineages": 32,
+   "evaluations_per_tick": [
+    126,
+    126
+   ],
+   "accepted_per_tick": [
+    1571.0,
+    1571.0
+   ],
+   "blocked_share_percent": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "ecology",
+   "lineages": 2,
+   "evaluations_per_tick": [
+    667,
+    673
+   ],
+   "accepted_per_tick": [
+    450.84,
+    454.56
+   ],
+   "blocked_share_percent": [
+    [
+     34.6,
+     30.3
+    ],
+    [
+     34.7,
+     30.2
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "lineages": 4,
+   "evaluations_per_tick": [
+    916,
+    679
+   ],
+   "accepted_per_tick": [
+    442.34,
+    444.19
+   ],
+   "blocked_share_percent": [
+    [
+     52.7,
+     50.8
+    ],
+    [
+     35.7,
+     33.4
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "lineages": 8,
+   "evaluations_per_tick": [
+    1220.5,
+    682
+   ],
+   "accepted_per_tick": [
+    448.38,
+    449.78
+   ],
+   "blocked_share_percent": [
+    [
+     63.2,
+     63.4
+    ],
+    [
+     32.9,
+     35.2
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "lineages": 16,
+   "evaluations_per_tick": [
+    2645.5,
+    640
+   ],
+   "accepted_per_tick": [
+    384.28,
+    387.06
+   ],
+   "blocked_share_percent": [
+    [
+     83.6,
+     87.0
+    ],
+    [
+     38.4,
+     40.6
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "lineages": 32,
+   "evaluations_per_tick": [
+    5281,
+    631
+   ],
+   "accepted_per_tick": [
+    346.65,
+    346.65
+   ],
+   "blocked_share_percent": [
+    [
+     92.3,
+     94.5
+    ],
+    [
+     40.7,
+     49.6
+    ]
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  }
+ ],
+ "points": [
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 2,
+   "seed": 17935249858246731670,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    107,
+    107
+   ],
+   "accepted_per_tick": [
+    964.0,
+    964.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 2,
+   "seed": 1669009011918740267,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    135,
+    135
+   ],
+   "accepted_per_tick": [
+    1866.0,
+    1866.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 4,
+   "seed": 16817413707439224231,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    104,
+    104
+   ],
+   "accepted_per_tick": [
+    866.0,
+    866.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 4,
+   "seed": 12646044360536536465,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    112,
+    112
+   ],
+   "accepted_per_tick": [
+    1114.0,
+    1114.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 8,
+   "seed": 1281700308945888978,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    130,
+    130
+   ],
+   "accepted_per_tick": [
+    1708.0,
+    1708.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 8,
+   "seed": 14909352394236528445,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    141,
+    141
+   ],
+   "accepted_per_tick": [
+    2042.0,
+    2042.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 16,
+   "seed": 871248321163103945,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    116,
+    116
+   ],
+   "accepted_per_tick": [
+    1258.0,
+    1258.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 16,
+   "seed": 2491256933571530815,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    120,
+    120
+   ],
+   "accepted_per_tick": [
+    1366.0,
+    1366.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 32,
+   "seed": 10435296798158090541,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    126,
+    126
+   ],
+   "accepted_per_tick": [
+    1568.0,
+    1568.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "reservoir",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 32,
+   "seed": 11256974812441101798,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    126,
+    126
+   ],
+   "accepted_per_tick": [
+    1574.0,
+    1574.0
+   ],
+   "blocked_share_percent": [
+    0.0,
+    0.0
+   ],
+   "identical_to_step_1": [
+    true,
+    true
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 2,
+   "seed": 1030023970163841509,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    673,
+    676
+   ],
+   "accepted_per_tick": [
+    440.56,
+    441.62
+   ],
+   "blocked_share_percent": [
+    34.6,
+    34.7
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 2,
+   "seed": 11214623003492539097,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    661,
+    670
+   ],
+   "accepted_per_tick": [
+    461.12,
+    467.5
+   ],
+   "blocked_share_percent": [
+    30.3,
+    30.2
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 4,
+   "seed": 10394634971050142570,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    913,
+    676
+   ],
+   "accepted_per_tick": [
+    432.06,
+    434.44
+   ],
+   "blocked_share_percent": [
+    52.7,
+    35.7
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 4,
+   "seed": 14530337309673376763,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    919,
+    682
+   ],
+   "accepted_per_tick": [
+    452.62,
+    453.94
+   ],
+   "blocked_share_percent": [
+    50.8,
+    33.4
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 8,
+   "seed": 5302297231892970553,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    1245,
+    688
+   ],
+   "accepted_per_tick": [
+    458.56,
+    461.38
+   ],
+   "blocked_share_percent": [
+    63.2,
+    32.9
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 8,
+   "seed": 12405364538841246400,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    1196,
+    676
+   ],
+   "accepted_per_tick": [
+    438.19,
+    438.19
+   ],
+   "blocked_share_percent": [
+    63.4,
+    35.2
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 16,
+   "seed": 4779845211227078039,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    2374,
+    640
+   ],
+   "accepted_per_tick": [
+    389.94,
+    394.19
+   ],
+   "blocked_share_percent": [
+    83.6,
+    38.4
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 16,
+   "seed": 15552035275372534308,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    2917,
+    640
+   ],
+   "accepted_per_tick": [
+    378.62,
+    379.94
+   ],
+   "blocked_share_percent": [
+    87.0,
+    40.6
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 32,
+   "seed": 13174708945357475198,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    4946,
+    646
+   ],
+   "accepted_per_tick": [
+    383.0,
+    383.0
+   ],
+   "blocked_share_percent": [
+    92.3,
+    40.7
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  },
+  {
+   "family": "ecology",
+   "mode": "grouped",
+   "population": 1024,
+   "lineages": 32,
+   "seed": 12654255925397769279,
+   "ticks": 16,
+   "evaluations_per_tick": [
+    5616,
+    616
+   ],
+   "accepted_per_tick": [
+    310.31,
+    310.31
+   ],
+   "blocked_share_percent": [
+    94.5,
+    49.6
+   ],
+   "identical_to_step_1": [
+    true,
+    false
+   ]
+  }
+ ]
+}

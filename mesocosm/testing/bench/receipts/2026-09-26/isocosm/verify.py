@@ -25,6 +25,7 @@ pairs = {
     "exact against averaged crowd (negative control)": ("exact", "crowd-averaged"),
     "exact against approximate crowd": ("exact", "crowd-approximate"),
     "crowd against approximate crowd": ("crowd", "crowd-approximate"),
+    "exact against unweighted crowd (draw control)": ("exact", "crowd-unweighted"),
 }
 
 

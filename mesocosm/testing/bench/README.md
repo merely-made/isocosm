@@ -74,6 +74,23 @@ before and after with the evaluation counts ruling 259 changes set apart
 (`tight_baseline.py`). `scheduler-source.json` names the commits, commands
 and checks.
 
+Checkpoint 4, rulings 284 to 287, is in the same directory under `c4-`: an
+advance limited by its work rather than its ticks, the budget counting the
+members an evaluation stands for, groups filed as ready for a process by its
+own thresholds, and feeding by a draw weighted by what each prey holds. The
+certified check ran again with a lineage hunting the others by that draw,
+with food and with water; `c4-probe-predators-verify.txt` and
+`c4-probe-predators-water-verify.txt` are `verify.py`'s output on the two raw
+receipts, which live out of tree with the rest of the checkpoint's raw runs,
+their hashes in `RAW_RECEIPTS.md`. `c4-density.json` is the density ladder
+with hunters and without, written by `c4_density.py`; `c4-lineages.json` sets
+the lineage sweep after ruling 286 beside it after ruling 287
+(`lineages_287.py`); `c4-differential.json` compares the driver's logs after
+each (`differential-drive-287.rs`); and `c4-boundary.txt` records how often
+prey ran out part way through a site's hunters, measured with an instrumented
+copy of the core (`boundary_setup.py`, `boundary-measure.rs`).
+`checkpoint-4-source.json` names the commits, commands and checks.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

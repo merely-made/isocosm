@@ -31,12 +31,14 @@ the definitions; each gets a difference test and an equivalence test against
 its bound, Holm-corrected. `--density` runs only the exact and crowd arms, to
 measure savings without a verdict; `--members LO HI` overrides the domain's
 members per site and lineage; `--water` has every world contest water as well
-as food. `--approximate` adds a fifth arm, a crowd whose round takes each
-count, the segments, the pairing and the settling alike, in one step near its
-mean and variance instead of member by member (ruling 220), checked against
-the exact runner and against the exact crowd. `--crowds` runs those two
-crowds alone, to time them at densities the exact runner is too slow to
-reach.
+as food; `--predators` adds a lineage that hunts the others by ruling 287's
+weighted draw and, beside a verdict, a crowd that draws prey by members alone,
+the draw's control. `--approximate` adds a fifth arm, a crowd whose round
+takes each count, the segments, the pairing and the settling alike, in one
+step near its mean and variance instead of member by member (ruling 220),
+checked against the exact runner and against the exact crowd. `--crowds` runs
+those two crowds alone, to time them at densities the exact runner is too slow
+to reach.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
@@ -54,22 +56,34 @@ founding parameters accompany its realized rules and topology.
 - A stable clock and ordered due-process queue drive choices, agentless
   processes and transitions. A tick counts a unit of world time the world's
   rules may state, a minute by default, and process periods are read in it;
-  anything finer is the foreground game's (rulings 256 and 257). A due
-  process visits only the stored groups carrying the traits it requires of
-  its actor, filed as acts commit, and still sees groups as they stood when
-  its pass began (ruling 258). Configured operation, history and population
-  limits refuse work atomically; the operation budget counts only the
-  evaluations that run (ruling 259). They do not discard history to fit a
-  budget.
+  anything finer is the foreground game's (rulings 256 and 257). A due process
+  visits only the stored groups ready for it: carrying the traits it requires
+  of its actor (ruling 258) and passing its thresholds on the actor's own
+  accounts, holdings and age, each group filed again as acts commit to it and
+  one too young kept on a timer for the tick it comes of age (ruling 286). A
+  pass still sees groups as they stood when it began. An advance is limited by
+  its work, not by the ticks it spans (ruling 284). Configured operation,
+  history and population limits refuse work atomically; the operation budget
+  counts the members each evaluation that runs stands for (rulings 259 and
+  285), so a budget means the same grouped and individually. They do not
+  discard history to fit a budget.
 - Populations retain complete per-member states as counted identity intervals.
   Only statically independent unary effects can run once for an interval.
   Shared resources, target selection, risk, parentage and public events use
-  individual execution in identity order. Inspection lifts an identity;
-  restriction merges only exactly equal states after the collection buffer.
+  individual execution in identity order. A target selector may name a set of
+  lineages and draw its target (ruling 287): seeded and keyed by the act, each
+  member it accepts weighted by the matter it holds, and counted per member,
+  so the grouped and individual runners draw the same one. Inspection lifts an
+  identity; restriction merges only exactly equal states after the collection
+  buffer.
 - The reservoir generator varies independent metabolic networks. The ecology
   generator adds shared soil, producers, consumers, decomposers, paid births,
-  starvation and age death. Sites are explicitly well-mixed compartments.
-  These are testable law families, not the full authored ecology.
+  starvation and age death. Each consumer and decomposer feeds through one
+  process, once a period (ruling 287): it eats a unit of a prey drawn among
+  its prey lineages by what each holds, the meal taken from every matter
+  account the prey holds in proportion and credited to the eater's own body.
+  Sites are explicitly well-mixed compartments. These are testable law
+  families, not the full authored ecology.
 - Notes use the Impresa causal core with a Djot/open-data envelope. Events
   spread along directed routes. Deterministic knowing integrates past
   residence and decaying reach; learning fixes a note. Hagiograph judges
@@ -91,22 +105,29 @@ founding parameters accompany its realized rules and topology.
 - The `probe` module runs ruling 115's competition, pairwise contest, share
   and yield, both member by member through the interpreter and as a crowd:
   counts per exact state, advanced by integer count draws that follow the
-  member-by-member round's distribution. Two contesters who size each other
-  up as a close match fight in rounds (rulings 221 to 223). The side standing
+  member-by-member round's distribution. Two contesters who size each other up
+  as a close match fight in rounds (rulings 221 to 223). The side standing
   lower loses each exchange unless an upset turns it; both take the round's
-  strain, and the loser spends reserve, which strains it more. A side past
-  its bearing breaks once, up or down by its traits, its mood and a draw,
-  and its standing shifts for the rest of the fight. The fight ends when a
-  side is spent or, sized up again, outmatched. Both runners fight through
-  one function and apply effects through the interpreter's own meanings.
-  A world's competitions are keyed by the site account each contests
-  (ruling 236) and run at once in a tick (ruling 240): each resolves against
-  its members' state at the tick's start, fights on copies, and at the
-  tick's end each member's rounds, reserve spent (capped at what it holds)
-  and winnings settle in one order. `isocosm-probe --water` has every world
-  contest water as well as food. The definitions and the per-reading
-  similitude bounds are part of the world's rules and its rules digest. The
-  rounds still run in the probe, not the core's scheduler.
+  strain, and the loser spends reserve, which strains it more. A side past its
+  bearing breaks once, up or down by its traits, its mood and a draw, and its
+  standing shifts for the rest of the fight. The fight ends when a side is
+  spent or, sized up again, outmatched. Both runners fight through one
+  function and apply effects through the interpreter's own meanings. A world's
+  competitions are keyed by the site account each contests (ruling 236) and
+  run at once in a tick (ruling 240): each resolves against its members' state
+  at the tick's start, fights on copies, and at the tick's end each member's
+  rounds, reserve spent (capped at what it holds) and winnings settle in one
+  order. `isocosm-probe --water` has every world contest water as well as
+  food. The definitions and the per-reading similitude bounds are part of the
+  world's rules and its rules digest. The rounds still run in the probe, not
+  the core's scheduler. With `--predators` a lineage hunts the others through
+  the core's scheduler, each prey drawn by ruling 287's weighted draw; the
+  crowd draws a prey state per hunting member, weighted by its members times
+  what each holds, which is the core's draw in distribution. Only prey holding
+  a whole bite are taken, so the order hunters come in changes nothing until
+  the prey run out part way through a site's hunters. The core then feeds the
+  first in identity order, which the crowd matches when those hunters share
+  one state and refuses when they do not.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does
@@ -163,22 +184,27 @@ costs left, the target search across the whole population and the copy of the
 world before each advance. The same points ran again on 2026-09-26
 (`remeasure-237.json` in that day's receipts) with every hash and count
 unchanged, 2.2 times faster over all than at checkpoint 1 and 4 times at 4,096
-members individually, and took about 1.1 to 1.9 microseconds per evaluation
-at 2,048 and 4,096 members in both modes. Every due process was still
-evaluated for every living group, so evaluations grew with lineages, and at
-eight lineages about 98% of ecology evaluations ended without effect. Ruling
-258 has a due process visit only the groups carrying the traits it requires.
-On the lineage sweep at 1,024 members (`scheduler-lineages.json` in the same
-day's receipts), ecology evaluations per tick fell from 219,408 to 7,457 at 32
-lineages and ticks from 196 to 22 ms, with every hash unchanged. What still
-grows with lineages is the ecology generator's one feeding process per pair of
-lineages. Of the evaluations that remain, 84 to 96% still end without effect:
-a lineage's own processes, death and age among them, run for each of its
-members on their periods, and their other requirements are mostly unmet. The
-dead stay stored and each noted event keeps an arrival at every site it
-reached, so ticks grow dearer as history accumulates.
-Founding in cohorts of 32 puts each cohort on one site, and those ecology
-worlds died out without a birth.
+members individually, and took about 1.1 to 1.9 microseconds per evaluation at
+2,048 and 4,096 members in both modes. Every due process was still evaluated
+for every living group, so evaluations grew with lineages, and at eight
+lineages about 98% of ecology evaluations ended without effect. Ruling 258 has
+a due process visit only the groups carrying the traits it requires. On the
+lineage sweep at 1,024 members (`scheduler-lineages.json` in the same day's
+receipts), ecology evaluations per tick fell from 219,408 to 7,457 at 32
+lineages and ticks from 196 to 22 ms, with every hash unchanged. Ruling 286
+then filed each group as ready for a process once it passes the process's own
+thresholds, a young one on a timer: on the same sweep, every hash unchanged,
+ecology evaluations per tick fell to 667 at 2 lineages, 1,221 at 8 and 5,281
+at 32. What still grew with lineages was the generator's one feeding process
+per pair of lineages, whose searches mostly found no target. Ruling 287 gave
+each consumer one, drawing among its prey (`c4-lineages.json`, checkpoint 4):
+evaluations per tick are now 673 at 2 lineages, 682 at 8 and 631 at 32, and
+the share of the members evaluated whose act ended without effect is 41 to 50%
+at 32 lineages, against 92 to 95% before. The ecology's results change with
+its feeding; the reservoir family's do not. The dead stay stored and each
+noted event keeps an arrival at every site it reached, so ticks grow dearer as
+history accumulates. Founding in cohorts of 32 puts each cohort on one site,
+and those ecology worlds died out without a birth.
 
 The probe's first certified receipt, `probe.json` of 2026-09-25, drew 1,000
 worlds. In each, the crowd stayed within 0.2 Kolmogorov-Smirnov distance of the
@@ -216,3 +242,26 @@ draws each), it ran 1.02, 1.10 and 1.33 times faster than the exact crowd
 from 512, 2,048 and 8,192 members per site and lineage, so at these densities
 the count draws are a small part of the crowd's time. The receipt qualifies
 the draw only at the density it ran at.
+
+Under rulings 284 to 287 the check ran again on 2026-09-26 (checkpoint 4, the
+`c4-` receipts of that day) with `--predators`, every world founding a lineage
+that hunts the others by ruling 287's weighted draw. With food contested
+(`c4-probe-predators.json`), all 34 readings were certified within their
+bounds, the largest distance 0.038, and no difference was detected; with water
+as well (`c4-probe-predators-water.json`), all 44 were, the largest 0.037. In
+both, the exact runner passed against itself and the averaged crowd failed the
+starvation readings. A crowd drawing prey by members alone, the draw's
+control, was told from the exact runner on one reading with food, the members
+holding strain, at a distance of 0.029, and on none with water, where the
+smallest corrected p was 0.11: the readings see how prey are chosen only
+faintly. Prey ran out part way through a site's hunters in 6 of the crowd's
+1,000 food draws and 3 of its water draws, each time among hunters in one
+state, so no draw was refused. The crowd used 4.3 and 2.0 times fewer
+evaluations and ran 10.5 and 5.9 times faster. On the density ladder
+(`c4-density.json`, eight draws a rung) it used 3.4 to 4.1 times fewer
+evaluations from 32 to 128 members per site and lineage and 14 times fewer at
+256 and 512 with hunters, and 4.6 to 14 times fewer without. These sit below
+checkpoint 1's 6 to 40 because since rulings 258 and 286 neither runner
+evaluates the members a process's gates keep out, which were most of the exact
+runner's evaluations. Without hunters, the 16-draw pilots at a fixed seed read
+exactly as checkpoint 2's.

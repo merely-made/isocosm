@@ -1,0 +1,360 @@
+{
+ "kind": "isocosm-probe-density-ladder",
+ "rows": [
+  {
+   "file": "c4-density-32.json",
+   "sha256": "f99f306ad8d55be8164e6acc05249469d011dc26f4a6f41087ae225a14532d44",
+   "master_seed": 1790462146257160100,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    32,
+    32
+   ],
+   "predators": {
+    "hunters": [
+     4,
+     16
+    ],
+    "bite": [
+     1,
+     2
+    ],
+    "appetite": [
+     3,
+     6
+    ]
+   },
+   "water": false,
+   "exact_evaluations": 29515,
+   "crowd_evaluations": 7738,
+   "evaluation_ratio": 3.81,
+   "per_draw_evaluation_ratio": {
+    "min": 1.97,
+    "median": 4.99,
+    "max": 6.25
+   },
+   "exact_seconds": 0.36,
+   "crowd_seconds": 0.044,
+   "wall_ratio": 8.3,
+   "alive_per_state_end": {
+    "min": 0.0,
+    "median": 2.1,
+    "max": 8.8
+   },
+   "shortfalls": 2
+  },
+  {
+   "file": "c4-density-plain-32.json",
+   "sha256": "9d31f2824656646c9ddfaf8883b211623701a5e9152e2b10de09e596919f902d",
+   "master_seed": 1790462182955237600,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    32,
+    32
+   ],
+   "predators": null,
+   "water": false,
+   "exact_evaluations": 28976,
+   "crowd_evaluations": 5435,
+   "evaluation_ratio": 5.33,
+   "per_draw_evaluation_ratio": {
+    "min": 2.26,
+    "median": 6.89,
+    "max": 13.62
+   },
+   "exact_seconds": 0.25,
+   "crowd_seconds": 0.024,
+   "wall_ratio": 10.1,
+   "alive_per_state_end": {
+    "min": 3.1,
+    "median": 7.9,
+    "max": 17.2
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-64.json",
+   "sha256": "db35b751df4d66bd1f4fba3388c19ca89c8c10c94e52fa9186069d25b847bd16",
+   "master_seed": 1790462146809515600,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    64,
+    64
+   ],
+   "predators": {
+    "hunters": [
+     4,
+     16
+    ],
+    "bite": [
+     1,
+     2
+    ],
+    "appetite": [
+     3,
+     6
+    ]
+   },
+   "water": false,
+   "exact_evaluations": 64507,
+   "crowd_evaluations": 19045,
+   "evaluation_ratio": 3.39,
+   "per_draw_evaluation_ratio": {
+    "min": 2.01,
+    "median": 3.36,
+    "max": 6.48
+   },
+   "exact_seconds": 0.91,
+   "crowd_seconds": 0.113,
+   "wall_ratio": 8.1,
+   "alive_per_state_end": {
+    "min": 1.5,
+    "median": 4.7,
+    "max": 13.9
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-plain-64.json",
+   "sha256": "270296619a3c3e1fd476f1c5918a689be3a68745bd789a15a2d61d90f234c39a",
+   "master_seed": 1790462183335191800,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    64,
+    64
+   ],
+   "predators": null,
+   "water": false,
+   "exact_evaluations": 52496,
+   "crowd_evaluations": 11292,
+   "evaluation_ratio": 4.65,
+   "per_draw_evaluation_ratio": {
+    "min": 1.96,
+    "median": 5.55,
+    "max": 21.8
+   },
+   "exact_seconds": 0.49,
+   "crowd_seconds": 0.049,
+   "wall_ratio": 10.0,
+   "alive_per_state_end": {
+    "min": 2.1,
+    "median": 5.9,
+    "max": 24.0
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-128.json",
+   "sha256": "7f4e350a5cb9341d20bf4a4781dcedc9255a1a753a7a884309cfeb3573b2b3f4",
+   "master_seed": 1790462148299381300,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    128,
+    128
+   ],
+   "predators": {
+    "hunters": [
+     4,
+     16
+    ],
+    "bite": [
+     1,
+     2
+    ],
+    "appetite": [
+     3,
+     6
+    ]
+   },
+   "water": false,
+   "exact_evaluations": 119314,
+   "crowd_evaluations": 29259,
+   "evaluation_ratio": 4.08,
+   "per_draw_evaluation_ratio": {
+    "min": 2.17,
+    "median": 6.65,
+    "max": 22.96
+   },
+   "exact_seconds": 1.67,
+   "crowd_seconds": 0.157,
+   "wall_ratio": 10.6,
+   "alive_per_state_end": {
+    "min": 1.8,
+    "median": 7.2,
+    "max": 37.0
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-plain-128.json",
+   "sha256": "5241ee562fe2da670d19774e75716b72a7a036a35813d337cf7b0b806ca5035b",
+   "master_seed": 1790462184047969300,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    128,
+    128
+   ],
+   "predators": null,
+   "water": false,
+   "exact_evaluations": 161678,
+   "crowd_evaluations": 22608,
+   "evaluation_ratio": 7.15,
+   "per_draw_evaluation_ratio": {
+    "min": 3.3,
+    "median": 11.73,
+    "max": 28.33
+   },
+   "exact_seconds": 1.5,
+   "crowd_seconds": 0.096,
+   "wall_ratio": 15.7,
+   "alive_per_state_end": {
+    "min": 4.9,
+    "median": 14.4,
+    "max": 33.1
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-256.json",
+   "sha256": "0ab7cccdb9fb1c20fde4e4dc7010da2eea1fdcf9337063c9afd776c2d77bd480",
+   "master_seed": 1790462157401148900,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    256,
+    256
+   ],
+   "predators": {
+    "hunters": [
+     4,
+     16
+    ],
+    "bite": [
+     1,
+     2
+    ],
+    "appetite": [
+     3,
+     6
+    ]
+   },
+   "water": false,
+   "exact_evaluations": 205501,
+   "crowd_evaluations": 14797,
+   "evaluation_ratio": 13.89,
+   "per_draw_evaluation_ratio": {
+    "min": 7.5,
+    "median": 16.68,
+    "max": 25.21
+   },
+   "exact_seconds": 2.6,
+   "crowd_seconds": 0.084,
+   "wall_ratio": 31.1,
+   "alive_per_state_end": {
+    "min": 10.4,
+    "median": 36.0,
+    "max": 54.4
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-plain-256.json",
+   "sha256": "a27152e58c9794507db03a63f11f624391c4bb750cdcb73d2c8393c5fa92cee5",
+   "master_seed": 1790462186607420800,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    256,
+    256
+   ],
+   "predators": null,
+   "water": false,
+   "exact_evaluations": 219866,
+   "crowd_evaluations": 23701,
+   "evaluation_ratio": 9.28,
+   "per_draw_evaluation_ratio": {
+    "min": 2.74,
+    "median": 10.96,
+    "max": 52.69
+   },
+   "exact_seconds": 2.08,
+   "crowd_seconds": 0.11,
+   "wall_ratio": 18.9,
+   "alive_per_state_end": {
+    "min": 2.3,
+    "median": 20.4,
+    "max": 61.8
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-512.json",
+   "sha256": "8c36feb8c437ed0d546d530480a6502b90fd046a88468c12e1d8f8674b5821fc",
+   "master_seed": 1790462160952247700,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    512,
+    512
+   ],
+   "predators": {
+    "hunters": [
+     4,
+     16
+    ],
+    "bite": [
+     1,
+     2
+    ],
+    "appetite": [
+     3,
+     6
+    ]
+   },
+   "water": false,
+   "exact_evaluations": 410680,
+   "crowd_evaluations": 28669,
+   "evaluation_ratio": 14.32,
+   "per_draw_evaluation_ratio": {
+    "min": 8.48,
+    "median": 15.26,
+    "max": 20.32
+   },
+   "exact_seconds": 5.48,
+   "crowd_seconds": 0.181,
+   "wall_ratio": 30.3,
+   "alive_per_state_end": {
+    "min": 7.8,
+    "median": 51.3,
+    "max": 72.7
+   },
+   "shortfalls": 0
+  },
+  {
+   "file": "c4-density-plain-512.json",
+   "sha256": "1718a71dfba25a14ac27bd77bdfd947204d459789c41d7cea51d591db9b4787c",
+   "master_seed": 1790462189589238800,
+   "draws": 8,
+   "members_per_site_and_lineage": [
+    512,
+    512
+   ],
+   "predators": null,
+   "water": false,
+   "exact_evaluations": 550110,
+   "crowd_evaluations": 39163,
+   "evaluation_ratio": 14.05,
+   "per_draw_evaluation_ratio": {
+    "min": 8.5,
+    "median": 14.14,
+    "max": 24.39
+   },
+   "exact_seconds": 5.36,
+   "crowd_seconds": 0.188,
+   "wall_ratio": 28.5,
+   "alive_per_state_end": {
+    "min": 11.6,
+    "median": 32.5,
+    "max": 72.2
+   },
+   "shortfalls": 0
+  }
+ ]
+}

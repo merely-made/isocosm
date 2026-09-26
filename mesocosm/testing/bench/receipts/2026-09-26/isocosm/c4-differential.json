@@ -1,0 +1,126 @@
+{
+ "kind": "isocosm-differential-287",
+ "driver": "differential-drive.rs with the one target selector it builds read from JSON, so it builds against the core before ruling 287 added fields to the selector and after (drive3.rs, kept beside it as differential-drive-287.rs)",
+ "driver_reproduces_the_old_on_the_core_before_part_a": [
+  {
+   "command": "drive fuzz 7 24 400",
+   "byte_identical": true,
+   "sha256": "ff4043d79376957dcfbf2f6137a69b970db1931722f5ced7f5ed83365b10fee9"
+  },
+  {
+   "command": "drive fuzz 11 60 1500",
+   "byte_identical": true,
+   "sha256": "027bd67faf1122dcbe97268b96e16d4f45272aa6f018659f5b1fad907467a7fe"
+  },
+  {
+   "command": "drive tight 13 48 600",
+   "byte_identical": true,
+   "sha256": "b47729aa065e2c3f9b59144250a4ad3bdbc2790cc5bbaa84a41e401bf08c46c2"
+  }
+ ],
+ "note": "The driver makes odd worlds ecology worlds and even ones reservoir worlds. Ruling 287 changes only the ecology's feeding, so its rules and results. The ecology worlds left identical are exactly those founded with one lineage, a producer alone, which has no feeding process (recomputed from the driver's draws); every ecology world with a consumer or decomposer changed.",
+ "runs": [
+  {
+   "command": "drive fuzz 7 24 400",
+   "after_286": {
+    "file": "a-due-fuzz7.txt",
+    "sha256": "b2f40f3c039e4eab7aa6027e7ed94dabb668b1cc77b20830e49db12461edac61"
+   },
+   "after_287": {
+    "file": "d3-new-fuzz7.txt",
+    "sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9"
+   },
+   "worlds": 24,
+   "reservoir_worlds_identical": "12 of 12",
+   "ecology_worlds_identical": "3 of 12",
+   "differing_worlds": [
+    3,
+    5,
+    9,
+    11,
+    13,
+    17,
+    19,
+    21,
+    23
+   ]
+  },
+  {
+   "command": "drive fuzz 11 60 1500",
+   "after_286": {
+    "file": "a-due-fuzz11.txt",
+    "sha256": "f5e570e149ccdea358faa57b08262b304e1a7ccbb679269783b770c165aee7f1"
+   },
+   "after_287": {
+    "file": "d3-new-fuzz11.txt",
+    "sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b"
+   },
+   "worlds": 60,
+   "reservoir_worlds_identical": "30 of 30",
+   "ecology_worlds_identical": "4 of 30",
+   "differing_worlds": [
+    1,
+    3,
+    5,
+    7,
+    9,
+    13,
+    15,
+    19,
+    21,
+    23,
+    25,
+    27,
+    31,
+    33,
+    35,
+    37,
+    39,
+    41,
+    43,
+    45,
+    47,
+    49,
+    53,
+    55,
+    57,
+    59
+   ]
+  },
+  {
+   "command": "drive tight 13 48 600",
+   "after_286": {
+    "file": "a-due-tight.txt",
+    "sha256": "6e1bf561942c9d4697f3d445ef8a139462f336b7566e75b373dee48d35ba2396"
+   },
+   "after_287": {
+    "file": "d3-new-tight.txt",
+    "sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54"
+   },
+   "worlds": 48,
+   "reservoir_worlds_identical": "24 of 24",
+   "ecology_worlds_identical": "7 of 24",
+   "differing_worlds": [
+    1,
+    3,
+    5,
+    7,
+    13,
+    17,
+    19,
+    21,
+    23,
+    29,
+    31,
+    33,
+    35,
+    37,
+    43,
+    45,
+    47
+   ],
+   "saves_failing_to_load_in_the_other_mode": [],
+   "saves_failing_to_load_in_their_own_mode": []
+  }
+ ]
+}
