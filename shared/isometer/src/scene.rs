@@ -26,7 +26,14 @@ use crate::query::PresentedFrame;
 
 #[cfg(test)]
 mod palette_tests;
+mod residency;
+#[cfg(test)]
+mod residency_tests;
 mod terrain;
+pub use residency::{
+    BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencyStats,
+    framed_bricks,
+};
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
 
 /// Captures and the display twin are written in this format regardless of any
