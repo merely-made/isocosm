@@ -61,7 +61,7 @@ fn leaf_chain() -> Vec<AppendageStep> {
 }
 
 /// Five broad leaves sit at distinct, connected branch endpoints. Branches
-/// vary only through the trunk; every leaf site remains one fixed segment.
+/// vary only through the trunk; every leaf situs remains one fixed segment.
 pub fn producer_shrub() -> Recipe {
     let mut recipe = Recipe::of(vec![
         Tagma::bare(5).with_shapes(0, 0),
@@ -107,7 +107,7 @@ pub fn producer_shrub() -> Recipe {
 }
 
 /// The branching browser's head, neck, eyes, and tail remain intact. Three
-/// fixed leg sites are separated by real bare backbone runs longer than a foot.
+/// fixed leg situs are separated by real bare backbone runs longer than a foot.
 pub fn consumer_browser() -> Recipe {
     let mut recipe = Recipe::of(vec![
         Tagma::new(1, Appendage::Mouth).with_shapes(SHAPE_SLIM, SHAPE_CROP),

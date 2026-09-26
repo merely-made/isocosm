@@ -54,8 +54,8 @@ impl Archetype {
         }
     }
 
-    /// Starting references retain all their authored organ sites. Ordinary
-    /// development can omit a site; generation rejects that draw rather than
+    /// Starting references retain all their authored organ situs. Ordinary
+    /// development can omit a situs; generation rejects that draw rather than
     /// changing the developmental rules for existing lineages.
     pub(super) fn accepts(self, soma: &Soma) -> bool {
         soma.absent.is_empty()
@@ -103,7 +103,7 @@ impl Anatomy {
             .with_layout(self.layout)
             .with_appendage_chains(self.chains);
         // Generation varies the authored counts. Admission separately rejects
-        // Soma draws that omit an organ site through Archetype::accepts.
+        // Soma draws that omit an organ situs through Archetype::accepts.
         recipe.variance = 0;
         recipe
     }

@@ -39,7 +39,7 @@ fn starts_replay_vary_and_develop_with_their_declared_ecology() {
 }
 
 #[test]
-fn limb_sites_and_branching_distinguish_the_starting_anatomies() {
+fn limb_situs_and_branching_distinguish_the_starting_anatomies() {
     for seed in 0..16 {
         for kind in [Archetype::Raccoon, Archetype::Cat, Archetype::Horse] {
             let recipe = kind.generate(&mut Rng::from_seed(seed));
