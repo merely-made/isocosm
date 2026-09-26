@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 244
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 248
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -370,6 +370,7 @@ worlds, none in ecological ones.
 | | Competitions; the two costs; no companion; absorption | "Design sharing now", then "One per tick, by need"; "Cut both"; "Player's call"; "Only on Isocosm" | 236 to 239 |
 | | Sharing, reopened for performance | "is it better to allow for concurrent competitions, performance-wise?", then "Concurrent, settled at end" | 240 |
 | W5, the other two plans | Posing; co-op in E4; the battlemap; the table's grain | "A telling's manner"; "Two peers in E4"; "Both: an edit"; "Moves too" | 241 to 244 |
+| | Sharing at the table; downtime; the faction turn; a sim-off record | "On by default"; "Each player's yes"; "Retires at V2"; "Writes notes" | 245 to 248 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

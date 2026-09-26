@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 244, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 248, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2092,6 +2092,28 @@ what later sections derive from.
      too, as per-tick batches, so a character's place in the site follows
      its token? Mark: "Moves too." The contract stays coarse, batches per
      tick and never a call per token (§5.2 point 1).
+245. **At a VTT table, sharing a character and the DM playing the unclaimed
+     are on by default.** Put to Mark on 2026-09-26, from the VTT overlay
+     plan's decision 3: two players directing one character (ruling 153) and
+     the DM playing any unclaimed one (ruling 156), on by default, or each a
+     campaign setting the DM chooses? Mark: "On by default."
+246. **Downtime needs each player's yes.** Put to Mark on 2026-09-26, from
+     decision 4: the players' consent to downtime (rulings 63, 104, 105)
+     gathered as each player's yes, a majority, or the DM's declaration with
+     a veto? Mark: "Each player's yes."
+247. **The tape-drawn faction turn retires at V2.** Put to Mark on
+     2026-09-26, from decision 5: with Isocosm absorbing
+     `isometry-campaign`'s world as it did Mesocosm's and Eponym's (rulings
+     192, 239), does the faction turn stay as a sim-off campaign's downtime,
+     or retire entirely once the sim's factions run? Mark: "Retires at V2."
+     So the absorption stands in the plan's §4 order and the faction turn
+     retires. *Reading, not ruled:* a sim-off campaign's downtime is then the
+     table's own, as the plain tabletop plays today (ruling 188).
+248. **A sim-off campaign still writes its facts as notes.** Put to Mark on
+     2026-09-26, from decision 7: does a campaign played with the sim off
+     still write its facts as notes, so the sim can be switched on later over
+     the same history, or does switching it on found a world from that point
+     (ruling 126)? Mark: "Writes notes."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5875,6 +5897,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 245 to 248 recorded, the VTT overlay plan's decisions
+  3, 4, 5 and 7: sharing a character and the DM playing the unclaimed on by
+  default; downtime by each player's yes; the tape-drawn faction turn
+  retiring at V2, the absorption standing; and a sim-off campaign still
+  writing its facts as notes.
 - 2026-09-26: rulings 241 to 244 recorded: posing is a telling's manner;
   Eponym's E4 plays two peers; with the sim on, a battlemap is projected from
   the generated volume with the DM's map an edit over it; and moves within a
