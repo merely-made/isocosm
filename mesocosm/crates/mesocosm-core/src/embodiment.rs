@@ -6,21 +6,21 @@
 
 //! Which glyphs a body embodies: the Mesocosm half of the expression table.
 //!
-//! **A trait is an expressed site**, `(PartId, ProcessRef)`. Nothing else in
+//! **A trait is an expressed tract**, `(PartId, ProcessRef)`. Nothing else in
 //! the tree is both borne by a part and rule-bearing, and Mark's ruling — a
 //! trait or part bears the glyph — lands exactly on that pair.
 //!
 //! # Pure reading
 //!
 //! The set of glyphs a body embodies is a function of its **living, attached
-//! parts and their expressed sites**, and of nothing else. No stored field,
+//! parts and their expressed tracts**, and of nothing else. No stored field,
 //! no event, no journey, no `World`. Everything here takes `&` and returns a
 //! new value, so a host that draws an embodied mark cannot express one.
 //!
 //! # Embodiment reads the phenotype, never the document
 //!
 //! [`BodyDocument::processes`](crate::process) answers from geometry;
-//! [`BodyPhenotype::allocations`] answers from expressed sites. A development
+//! [`BodyPhenotype::allocations`] answers from expressed tracts. A development
 //! that moves tissue makes the two disagree **by design**, and only the
 //! phenotype's is the record of expression. That is why every function here
 //! takes a [`BodyPhenotype`], and why the tests assert the disagreement.
@@ -43,11 +43,11 @@ use crate::process::Registry;
 
 /// Every glyph this body currently embodies.
 ///
-/// A glyph is embodied when a **living, attached part bears a site whose
+/// A glyph is embodied when a **living, attached part bears a tract whose
 /// process expresses it**. Several traits may express one glyph, and any one
 /// of them is enough: the table's rule is disjunction.
 ///
-/// A site whose definition this world's registry does not hold contributes
+/// A tract whose definition this world's registry does not hold contributes
 /// nothing. `None` from [`Registry::resolve`] is a real answer and is never
 /// substituted for a similar local definition.
 pub fn embodied(
@@ -69,8 +69,8 @@ pub fn embodied(
 pub fn expressed_traits(phenotype: &BodyPhenotype, registry: &Registry) -> BTreeSet<String> {
     let mut found = BTreeSet::new();
     for (_, mosaic) in phenotype.allocations() {
-        for site in mosaic.sites() {
-            if let Some(def) = registry.resolve(site.process) {
+        for tract in mosaic.tracts() {
+            if let Some(def) = registry.resolve(tract.process) {
                 found.insert(def.id.qualified());
             }
         }
@@ -78,7 +78,7 @@ pub fn expressed_traits(phenotype: &BodyPhenotype, registry: &Registry) -> BTree
     found
 }
 
-/// The living parts whose sites express this glyph, in part order.
+/// The living parts whose tracts express this glyph, in part order.
 ///
 /// **What bears it**, which is what a mark needs to sit on the face of the
 /// part that expresses it rather than at a body centroid. Empty when the
@@ -93,8 +93,8 @@ pub fn bearing_parts(
     phenotype
         .allocations()
         .filter(|(_, mosaic)| {
-            mosaic.sites().iter().any(|site| {
-                registry.resolve(site.process).is_some_and(|def| {
+            mosaic.tracts().iter().any(|tract| {
+                registry.resolve(tract.process).is_some_and(|def| {
                     table
                         .glyphs_of(&def.id.qualified())
                         .iter()

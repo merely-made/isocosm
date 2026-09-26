@@ -19,7 +19,7 @@
 //!
 //! # A complete desired state, not a series of drags
 //!
-//! A proposal names the parts it rewrites and the complete set of sites each
+//! A proposal names the parts it rewrites and the complete set of tracts each
 //! should end up with, so it is order-independent and a stale one is
 //! refusable: it carries the digest of the phenotype it was authored against,
 //! and a phenotype that moved underneath it refuses rather than applying a
@@ -32,7 +32,7 @@
 //! which is what keeps a multi-part development from half-landing.
 
 use super::BodyPhenotype;
-use super::mosaic::{CellId, MAX_SITES, Mosaic, SiteId};
+use super::mosaic::{CellId, MAX_TRACTS, Mosaic, TractId};
 use crate::body::PartId;
 use crate::plan::classify;
 use crate::process::{ProcessRef, Registry};
@@ -46,9 +46,9 @@ pub enum Arrangement {
     Automatic,
 }
 
-/// One site a proposal wants to exist.
+/// One tract a proposal wants to exist.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct ProposedSite {
+pub struct ProposedTract {
     pub part: PartId,
     pub process: ProcessRef,
     /// Existing cell ids, sorted and deduplicated.
@@ -62,9 +62,9 @@ pub struct AllocationProposal {
     pub expect: u64,
     pub source: Arrangement,
     /// The parts this proposal rewrites, sorted and deduplicated. A part named
-    /// here with no site in `sites` is being cleared.
+    /// here with no tract in `tracts` is being cleared.
     pub parts: Vec<PartId>,
-    pub sites: Vec<ProposedSite>,
+    pub tracts: Vec<ProposedTract>,
 }
 
 /// What a validated proposal commits. Independent of who proposed it.
@@ -73,8 +73,8 @@ pub struct Instruction {
     /// The phenotype revision this development created.
     pub revision: u32,
     pub parts: Vec<PartId>,
-    /// Every site that now exists on a rewritten part, in commit order.
-    pub sites: Vec<(PartId, SiteId, ProcessRef)>,
+    /// Every tract that now exists on a rewritten part, in commit order.
+    pub tracts: Vec<(PartId, TractId, ProcessRef)>,
     /// What it cost, in cells whose **expression** changed: tissue that now
     /// does something other than what it did, free tissue included.
     ///
@@ -120,16 +120,18 @@ pub enum Refusal {
     UnorderedParts,
     NoSuchPart(PartId),
     SeveredPart(PartId),
-    /// A site addresses a part the proposal did not claim.
+    /// A tract addresses a part the proposal did not claim.
     UnclaimedPart(PartId),
     /// This world's ruleset does not hold that definition. Never substituted.
     UnknownProcess(ProcessRef),
     /// A part of this shape does not express that process.
-    SiteMismatch {
+    #[serde(alias = "SiteMismatch")]
+    TractMismatch {
         part: PartId,
         process: ProcessRef,
     },
-    EmptySite(PartId),
+    #[serde(alias = "EmptySite")]
+    EmptyTract(PartId),
     UnorderedCells(PartId),
     NoSuchCell {
         part: PartId,
@@ -140,14 +142,15 @@ pub enum Refusal {
         part: PartId,
         cell: CellId,
     },
-    /// Two sites claim the same cell.
+    /// Two tracts claim the same cell.
     Overlap {
         part: PartId,
         cell: CellId,
     },
-    /// A site's cells are not one connected region.
+    /// A tract's cells are not one connected region.
     Disconnected(PartId),
-    TooManySites(PartId),
+    #[serde(alias = "TooManySites")]
+    TooManyTracts(PartId),
 }
 
 /// What an automatic arrangement is trying to achieve.
@@ -171,7 +174,7 @@ pub enum Aim {
 /// `develop` as a hand-drawn one, so nothing here can be a second biology.
 pub fn arrange(phenotype: &BodyPhenotype, aim: Aim) -> AllocationProposal {
     let mut parts = Vec::new();
-    let mut sites = Vec::new();
+    let mut tracts = Vec::new();
     for (part, mosaic) in phenotype.allocations() {
         parts.push(part);
         // The seeding rule, asked rather than reimplemented, so an automatic
@@ -180,21 +183,21 @@ pub fn arrange(phenotype: &BodyPhenotype, aim: Aim) -> AllocationProposal {
         let source = match aim {
             Aim::Express => {
                 fresh = Mosaic::seed(phenotype.body().part(part).expect("a living part"));
-                fresh.sites()
+                fresh.tracts()
             },
-            Aim::Spare => mosaic.sites(),
+            Aim::Spare => mosaic.tracts(),
         };
-        for site in source {
+        for tract in source {
             let cells: Vec<CellId> = match aim {
-                Aim::Express => site.cells.clone(),
+                Aim::Express => tract.cells.clone(),
                 // The least tissue that still expresses it: one cell, and the
                 // lowest id so the answer is deterministic rather than
                 // whichever the iteration happened to reach.
-                Aim::Spare => site.cells.iter().copied().take(1).collect(),
+                Aim::Spare => tract.cells.iter().copied().take(1).collect(),
             };
-            sites.push(ProposedSite {
+            tracts.push(ProposedTract {
                 part,
-                process: site.process,
+                process: tract.process,
                 cells,
             });
         }
@@ -203,11 +206,11 @@ pub fn arrange(phenotype: &BodyPhenotype, aim: Aim) -> AllocationProposal {
         expect: phenotype.digest(),
         source: Arrangement::Automatic,
         parts,
-        sites,
+        tracts,
     }
 }
 
-/// One part's complete desired allocation: what each site expresses, and on
+/// One part's complete desired allocation: what each tract expresses, and on
 /// which cells.
 pub(super) type Rewrite = Vec<(ProcessRef, Vec<CellId>)>;
 
@@ -260,9 +263,9 @@ pub(super) fn validate(
             return Err(Refusal::SeveredPart(*part));
         }
     }
-    for site in &proposal.sites {
-        if !proposal.parts.contains(&site.part) {
-            return Err(Refusal::UnclaimedPart(site.part));
+    for tract in &proposal.tracts {
+        if !proposal.parts.contains(&tract.part) {
+            return Err(Refusal::UnclaimedPart(tract.part));
         }
     }
 
@@ -276,26 +279,26 @@ pub(super) fn validate(
         let role = classify(body.part(*part).expect("checked above").half_extent);
         let mut claimed: Vec<CellId> = Vec::new();
         let mut desired = Vec::new();
-        for site in proposal.sites.iter().filter(|site| site.part == *part) {
-            let Some(def) = registry.resolve(site.process) else {
-                return Err(Refusal::UnknownProcess(site.process));
+        for tract in proposal.tracts.iter().filter(|tract| tract.part == *part) {
+            let Some(def) = registry.resolve(tract.process) else {
+                return Err(Refusal::UnknownProcess(tract.process));
             };
             // Shape gates expression. This is where "a part cannot acquire a
             // capability by editing a number" is actually enforced: to make a
             // plate contract you would have to make it a limb.
             if !def.admits(role) {
-                return Err(Refusal::SiteMismatch {
+                return Err(Refusal::TractMismatch {
                     part: *part,
-                    process: site.process,
+                    process: tract.process,
                 });
             }
-            if site.cells.is_empty() {
-                return Err(Refusal::EmptySite(*part));
+            if tract.cells.is_empty() {
+                return Err(Refusal::EmptyTract(*part));
             }
-            if site.cells.windows(2).any(|pair| pair[0] >= pair[1]) {
+            if tract.cells.windows(2).any(|pair| pair[0] >= pair[1]) {
                 return Err(Refusal::UnorderedCells(*part));
             }
-            for cell in &site.cells {
+            for cell in &tract.cells {
                 if !mosaic.holds(*cell) {
                     return Err(Refusal::NoSuchCell {
                         part: *part,
@@ -316,20 +319,20 @@ pub(super) fn validate(
                 }
                 claimed.push(*cell);
             }
-            if !mosaic.connected(&site.cells) {
+            if !mosaic.connected(&tract.cells) {
                 return Err(Refusal::Disconnected(*part));
             }
-            desired.push((site.process, site.cells.clone()));
+            desired.push((tract.process, tract.cells.clone()));
         }
-        if desired.len() > MAX_SITES {
-            return Err(Refusal::TooManySites(*part));
+        if desired.len() > MAX_TRACTS {
+            return Err(Refusal::TooManyTracts(*part));
         }
         // What changed hands: every cell that ends up expressing something
         // other than what it expressed in the mosaic this proposal was
         // authored against — freed and newly occupied tissue included.
         let mut changed = 0u32;
         for cell in mosaic.cells() {
-            let was = mosaic.site_of(cell).map(|site| site.process);
+            let was = mosaic.tract_of(cell).map(|tract| tract.process);
             let now = desired
                 .iter()
                 .find(|(_, cells)| cells.contains(&cell))

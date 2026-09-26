@@ -19,8 +19,8 @@ fn cites(n: u64) -> Citation {
     }
 }
 
-fn site(cells: u32) -> DeclaredSite {
-    DeclaredSite {
+fn tract(cells: u32) -> DeclaredTract {
+    DeclaredTract {
         role: Role::Plate,
         process: Registry::native().of_native(Process::Secrete).reference(),
         cells,
@@ -43,10 +43,10 @@ fn a_second_commit_appends_and_names_its_parent() {
     // Epoch-boundary plan §2: every committed adaptation creates an immutable
     // child revision, and nothing edits the parent.
     let mut program = Program::default();
-    let first = program.commit(cites(1), vec![site(5)], 100);
+    let first = program.commit(cites(1), vec![tract(5)], 100);
     let before = program.get(first).cloned().expect("committed");
 
-    let second = program.commit(cites(2), vec![site(3)], 200);
+    let second = program.commit(cites(2), vec![tract(3)], 200);
     assert_ne!(first, second);
     assert_eq!(program.len(), 2);
     assert_eq!(
@@ -65,33 +65,33 @@ fn a_second_commit_appends_and_names_its_parent() {
 
 #[test]
 fn a_revision_digest_is_over_what_it_rules() {
-    // Two lines that agree about a name and disagree about the sites cannot
+    // Two lines that agree about a name and disagree about the tracts cannot
     // agree about a revision, which is `ConditionId`'s discipline one scale up.
     let mut wide = Program::default();
     let mut narrow = Program::default();
-    wide.commit(cites(1), vec![site(5)], 10);
-    narrow.commit(cites(1), vec![site(1)], 10);
+    wide.commit(cites(1), vec![tract(5)], 10);
+    narrow.commit(cites(1), vec![tract(1)], 10);
     assert_ne!(wide.digest(), narrow.digest());
 
     // And the tick it was committed on is not rule-bearing: the same program
     // committed later is the same program.
     let mut later = Program::default();
-    later.commit(cites(1), vec![site(5)], 9_999);
+    later.commit(cites(1), vec![tract(5)], 9_999);
     assert_eq!(wide.digest(), later.digest());
 }
 
 #[test]
-fn a_declared_site_is_a_candidates_three_rule_bearing_fields() {
+fn a_declared_tract_is_a_candidates_three_rule_bearing_fields() {
     // No second vocabulary: committing reads what the discovery already
     // granted, and cannot state a cell address or a price.
     let candidate = crate::discovery::Candidate {
         process: Registry::native().of_native(Process::Secrete).reference(),
-        site: Role::Plate,
+        tract: Role::Plate,
         cells: 5,
         word: Some(crate::axis::Appendage::Plate),
     };
-    let declared = DeclaredSite::of(&candidate);
-    assert_eq!(declared.role, candidate.site);
+    let declared = DeclaredTract::of(&candidate);
+    assert_eq!(declared.role, candidate.tract);
     assert_eq!(declared.process, candidate.process);
     assert_eq!(declared.cells, candidate.cells);
 }
@@ -116,7 +116,7 @@ fn the_ground_charges_what_a_line_grows() {
 #[test]
 fn a_program_round_trips() {
     let mut program = Program::default();
-    program.commit(cites(4), vec![site(2)], 7);
+    program.commit(cites(4), vec![tract(2)], 7);
     let bytes = crate::snapshot::encode(&program).unwrap();
     assert_eq!(crate::snapshot::decode::<Program>(&bytes).unwrap(), program);
 }

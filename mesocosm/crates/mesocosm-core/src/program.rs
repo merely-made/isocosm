@@ -11,7 +11,7 @@
 //! **Ruled by Mark, 2026-08-03** (phenotype plan §3): the adaptation editor may
 //! arrange a candidate body, but a lineage commits a **developmental program**,
 //! never the candidate's literal allocation mosaic. So a [`Revision`] states
-//! *declared sites* — a part role, an admitted definition, and a bounded number
+//! *declared tracts* — a part role, an admitted definition, and a bounded number
 //! of cells — and never a cell address or a body snapshot. Two descendants of
 //! one revision may realize differently under different materials or grounds,
 //! and that variance is expression of one inherited program rather than an
@@ -34,7 +34,7 @@
 //!
 //! What a body does with no program at all — allocation seeded from geometry —
 //! *is* the founding revision. It has no parent, cites no discovery, and
-//! declares no site, so writing it down would put a record in every snapshot
+//! declares no tract, so writing it down would put a record in every snapshot
 //! for the absence of one. [`Program::current`] answers `None` for it, and
 //! nothing a world serializes moves until a line actually commits.
 //!
@@ -92,16 +92,16 @@ impl Citation {
     }
 }
 
-/// One site a descendant of this line is born expressing.
+/// One tract a descendant of this line is born expressing.
 ///
 /// **A role, not a part.** A program cannot name part 3, because the descendant
 /// that grows under it has not been developed yet and its part 3 is nobody's to
-/// predict. What it names is the shape the site needs, which is exactly what
+/// predict. What it names is the shape the tract needs, which is exactly what
 /// [`Candidate`] names and what [`ProcessDef::admits`] gates.
 ///
 /// [`ProcessDef::admits`]: crate::process::ProcessDef::admits
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DeclaredSite {
+pub struct DeclaredTract {
     /// The shape a part must classify as to carry it.
     pub role: Role,
     /// The exact admitted definition, as a content address.
@@ -111,8 +111,8 @@ pub struct DeclaredSite {
     pub cells: u32,
 }
 
-impl DeclaredSite {
-    /// The declared site a discovered candidate amounts to.
+impl DeclaredTract {
+    /// The declared tract a discovered candidate amounts to.
     ///
     /// **The same three rule-bearing fields**, which is why committing a
     /// revision needs no second vocabulary: a [`Candidate`] is already *which
@@ -121,13 +121,13 @@ impl DeclaredSite {
     /// *shape* and belongs to the recipe rather than to allocation.
     pub fn of(candidate: &Candidate) -> Self {
         Self {
-            role: candidate.site,
+            role: candidate.tract,
             process: candidate.process,
             cells: candidate.cells,
         }
     }
 
-    /// The candidate this declared site proposes as.
+    /// The candidate this declared tract proposes as.
     ///
     /// **The same proposal construction `candidate_proposal` uses**, so a
     /// descendant expressing its line's program and a player expressing a
@@ -135,7 +135,7 @@ impl DeclaredSite {
     fn candidate(&self, cells: u32) -> Candidate {
         Candidate {
             process: self.process,
-            site: self.role,
+            tract: self.role,
             cells,
             word: None,
         }
@@ -156,10 +156,11 @@ pub struct Revision {
     /// The discovery this revision was committed against.
     pub cites: Citation,
     /// What a descendant is born expressing.
-    pub sites: Vec<DeclaredSite>,
+    #[serde(alias = "sites")]
+    pub tracts: Vec<DeclaredTract>,
     /// The tick it was committed on.
     pub founded: u64,
-    /// Over the parent link, the citation and every declared site. Identity,
+    /// Over the parent link, the citation and every declared tract. Identity,
     /// so two worlds cannot hold the same revision and disagree about it.
     pub digest: u64,
 }
@@ -169,7 +170,7 @@ impl Revision {
         id: RevisionId,
         parent: Option<RevisionId>,
         cites: &Citation,
-        sites: &[DeclaredSite],
+        tracts: &[DeclaredTract],
     ) -> u64 {
         let mut bytes = Vec::new();
         bytes.extend_from_slice(&id.0.to_le_bytes());
@@ -182,10 +183,10 @@ impl Revision {
         }
         bytes.extend_from_slice(&cites.condition.0.to_le_bytes());
         bytes.extend_from_slice(&cites.discovery.to_le_bytes());
-        for site in sites {
-            bytes.push(site.role as u8);
-            bytes.extend_from_slice(&site.process.definition.0.to_le_bytes());
-            bytes.extend_from_slice(&site.cells.to_le_bytes());
+        for tract in tracts {
+            bytes.push(tract.role as u8);
+            bytes.extend_from_slice(&tract.process.definition.0.to_le_bytes());
+            bytes.extend_from_slice(&tract.cells.to_le_bytes());
         }
         crate::snapshot::hash_bytes(&bytes)
     }
@@ -247,15 +248,15 @@ impl Program {
     /// Appends a revision. **The only mutation this type has**: nothing edits
     /// one in place, and nothing removes one, so descent through a program is
     /// as durable as descent through the lineage tree.
-    pub fn commit(&mut self, cites: Citation, sites: Vec<DeclaredSite>, at: u64) -> RevisionId {
+    pub fn commit(&mut self, cites: Citation, tracts: Vec<DeclaredTract>, at: u64) -> RevisionId {
         let id = RevisionId(self.committed.len() as u32);
         let parent = self.committed.last().map(|revision| revision.id);
-        let digest = Revision::digest_of(id, parent, &cites, &sites);
+        let digest = Revision::digest_of(id, parent, &cites, &tracts);
         self.committed.push(Revision {
             id,
             parent,
             cites,
-            sites,
+            tracts,
             founded: at,
             digest,
         });
@@ -279,14 +280,14 @@ pub struct Conditions {
 }
 
 impl Conditions {
-    /// How much of a declared site this ground can charge.
+    /// How much of a declared tract this ground can charge.
     ///
     /// **The dormancy rule, asked one step earlier.**
     /// [`Organism::charged_mg`](crate::Organism::charged_mg) says an acquired
     /// process works only where the column could replace what it holds; a line
-    /// founding on ground that could never charge the site it declares grows a
+    /// founding on ground that could never charge the tract it declares grows a
     /// token one instead of a dead one. Nothing here is tuned: the threshold
-    /// *is* the site's own price, `cells * cell_mg`.
+    /// *is* the tract's own price, `cells * cell_mg`.
     pub fn affords(&self, declared: u32, cell_mg: u64) -> u32 {
         if self.ground_mg >= u64::from(declared) * cell_mg {
             declared
@@ -333,8 +334,9 @@ pub struct Filial {
 pub enum Unexpressed {
     /// This body has no living part of the declared shape. The ordinary case:
     /// a bulk consumer has nowhere to put a gland until it grows a plate.
-    NoSite { role: Role },
-    /// The revision declares no site at all.
+    #[serde(alias = "NoSite")]
+    NoTract { role: Role },
+    /// The revision declares no tract at all.
     ///
     /// Unreachable through [`World::revise`](crate::World), which refuses to
     /// commit one — and present because a decoded program is not this code's
@@ -352,7 +354,7 @@ impl Unexpressed {
     /// The refusal in the plain sentence a receipt prints.
     pub fn words(&self) -> String {
         match *self {
-            Unexpressed::NoSite { role } => {
+            Unexpressed::NoTract { role } => {
                 format!("nowhere on this body is a {}", role_word(role))
             },
             Unexpressed::Nothing => "the revision declares nothing".to_owned(),
@@ -453,14 +455,15 @@ pub fn express(
     let mut cost_cells = 0u32;
     let mut cost_mg = 0u64;
 
-    for site in &revision.sites {
-        let part = site_on(&candidate, site.role).ok_or(Unexpressed::NoSite { role: site.role })?;
+    for tract in &revision.tracts {
+        let part =
+            tract_on(&candidate, tract.role).ok_or(Unexpressed::NoTract { role: tract.role })?;
         let cell_mg = candidate.cell_mg(part);
-        let cells = conditions.affords(site.cells, cell_mg);
-        let proposal = site
+        let cells = conditions.affords(tract.cells, cell_mg);
+        let proposal = tract
             .candidate(cells)
             .propose(&candidate, Arrangement::Automatic)
-            .ok_or(Unexpressed::NoSite { role: site.role })?;
+            .ok_or(Unexpressed::NoTract { role: tract.role })?;
         let development = candidate
             .develop(registry, &proposal)
             .map_err(Unexpressed::Refused)?;
@@ -492,7 +495,7 @@ pub fn express(
 /// The same rule [`Candidate::propose`] picks with, asked here so the price can
 /// be read before the proposal is built. Two answers to *which part* would be
 /// two biologies, so this is the only one.
-fn site_on(phenotype: &BodyPhenotype, role: Role) -> Option<PartId> {
+fn tract_on(phenotype: &BodyPhenotype, role: Role) -> Option<PartId> {
     let body = phenotype.body();
     phenotype.allocations().map(|(part, _)| part).find(|part| {
         body.part(*part)

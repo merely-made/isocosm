@@ -364,7 +364,7 @@ fn a_filially_expressed_birth_reconciles_to_the_milligram() {
     // milligrams: what it pays leaves its own reserve and lands in the column
     // under it, because nothing evaporates (TD6). `stepped` reconciles every
     // account against the stream on every tick below, so the claim this test
-    // adds on top is the narrower one — the child's expressed sites cost
+    // adds on top is the narrower one — the child's expressed tracts cost
     // exactly what the flow record says, and exactly what the record of the
     // birth says they cost.
     let mut world = World::new(4_242, 24);
@@ -421,7 +421,7 @@ fn a_filially_expressed_birth_reconciles_to_the_milligram() {
     world.apply(Intent::Idle);
     assert!(world.at_boundary());
 
-    // A line whose descendants grow the shape the declared site needs.
+    // A line whose descendants grow the shape the declared tract needs.
     world.lineages_mut().set_recipe(
         species,
         mesocosm_core::Recipe::of(vec![mesocosm_core::Tagma::new(

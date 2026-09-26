@@ -9,7 +9,7 @@
 //! # There is no capacity scalar
 //!
 //! PD1a removed it. **Structural capacity is the number of living cells**, and
-//! a site's allocation is the disjoint set of cells it occupies, so occupied
+//! a tract's allocation is the disjoint set of cells it occupies, so occupied
 //! plus free equals capacity by construction rather than by two integers
 //! agreeing. Conservation is countable, and [`Mosaic::conserves`] counts it.
 //!
@@ -45,11 +45,11 @@ use crate::process::{IntakePort, ProcessRef, Registry};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct CellId(pub u16);
 
-/// A site's address inside one part's mosaic. Stable, never reused.
+/// A tract's address inside one part's mosaic. Stable, never reused.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct SiteId(pub u16);
+pub struct TractId(pub u16);
 
-/// Why a site is where it is.
+/// Why a tract is where it is.
 ///
 /// Provenance for the expression itself, distinct from the part's own
 /// [`Provenance`](crate::body::Provenance), which says where the tissue came
@@ -65,12 +65,12 @@ pub enum Expressed {
 
 /// One expressed process: what it is, and which tissue it occupies.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Site {
-    pub id: SiteId,
+pub struct Tract {
+    pub id: TractId,
     /// The exact admitted definition. Resolved through a [`Registry`]; never
     /// substituted when the registry does not hold it.
     pub process: ProcessRef,
-    /// The cells it occupies: sorted, disjoint from every other site on this
+    /// The cells it occupies: sorted, disjoint from every other tract on this
     /// part, and a connected subgraph.
     pub cells: Vec<CellId>,
     pub cause: Expressed,
@@ -93,12 +93,12 @@ pub const MAX_AXIS_CELLS: i32 = 4;
 /// two would eventually disagree.
 pub const MAX_CELLS: u32 = (MAX_AXIS_CELLS * MAX_AXIS_CELLS * MAX_AXIS_CELLS) as u32;
 
-/// The most sites one part may carry at once.
+/// The most tracts one part may carry at once.
 ///
 /// A bound on the graph rather than a balance number: the whole native
-/// vocabulary is four processes, and a part that claimed eight sites would be
+/// vocabulary is four processes, and a part that claimed eight tracts would be
 /// proposing something the explanation path cannot render.
-pub const MAX_SITES: usize = 8;
+pub const MAX_TRACTS: usize = 8;
 
 /// One part's finite process capacity, and what occupies it.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -108,10 +108,12 @@ pub struct Mosaic {
     /// Cells that irreversible loss took, sorted. They stay addressable so an
     /// injury is still explainable; they are not capacity.
     lost: Vec<CellId>,
-    /// Occupied regions, ordered by site id.
-    sites: Vec<Site>,
-    /// The next site ordinal. Ids are never reused within a part.
-    next_site: u16,
+    /// Occupied regions, ordered by tract id.
+    #[serde(alias = "sites")]
+    tracts: Vec<Tract>,
+    /// The next tract ordinal. Ids are never reused within a part.
+    #[serde(alias = "next_site")]
+    next_tract: u16,
     /// The part's declared intake admission. Kept beside allocation so a
     /// graft, loss and snapshot carry it with the named anatomy.
     #[serde(default)]
@@ -125,7 +127,7 @@ impl Mosaic {
     /// The mosaic a part's geometry seeds.
     ///
     /// **Whole-part expression.** Today's rule is exactly "this shape does
-    /// this thing", so its honest lowering gives the seeded site every cell
+    /// this thing", so its honest lowering gives the seeded tract every cell
     /// the part has and leaves nothing free. A part therefore arrives fully
     /// committed, and the first developmental event that wants a second
     /// process has to take tissue off the first. That is the intended
@@ -138,9 +140,9 @@ impl Mosaic {
         let role = classify(part.half_extent);
         let registry = Registry::native();
 
-        let mut sites = Vec::new();
-        let mut next_site = 0u16;
-        // The **seeding** rule, not the site requirement. Since PD2 a plate
+        let mut tracts = Vec::new();
+        let mut next_tract = 0u16;
+        // The **seeding** rule, not the tract requirement. Since PD2 a plate
         // admits two definitions and grows one, so asking the wrong question
         // here would hand every plate in the world a gland it never paid for.
         let expressed: Vec<ProcessRef> = registry.seeds(role).map(|def| def.reference()).collect();
@@ -162,21 +164,21 @@ impl Mosaic {
                 if cells.is_empty() {
                     continue;
                 }
-                sites.push(Site {
-                    id: SiteId(next_site),
+                tracts.push(Tract {
+                    id: TractId(next_tract),
                     process: *process,
                     cells,
                     cause: Expressed::Geometry,
                 });
-                next_site += 1;
+                next_tract += 1;
             }
         }
 
         Self {
             dims,
             lost: Vec::new(),
-            sites,
-            next_site,
+            tracts,
+            next_tract,
             port: IntakePort::none(),
             scruple: Stock::single(Material::Untyped, part.mass_mg),
         }
@@ -214,11 +216,11 @@ impl Mosaic {
         self.extent() - self.lost.len() as u32
     }
 
-    /// How many living cells are occupied by a site.
+    /// How many living cells are occupied by a tract.
     pub fn occupied(&self) -> u32 {
-        self.sites
+        self.tracts
             .iter()
-            .flat_map(|site| site.cells.iter())
+            .flat_map(|tract| tract.cells.iter())
             .filter(|cell| self.is_living(**cell))
             .count() as u32
     }
@@ -228,8 +230,8 @@ impl Mosaic {
         self.capacity() - self.occupied()
     }
 
-    pub fn sites(&self) -> &[Site] {
-        &self.sites
+    pub fn tracts(&self) -> &[Tract] {
+        &self.tracts
     }
 
     pub fn port(&self) -> IntakePort {
@@ -245,9 +247,9 @@ impl Mosaic {
         self.port = port;
     }
 
-    /// The site occupying a cell, if any.
-    pub fn site_of(&self, cell: CellId) -> Option<&Site> {
-        self.sites.iter().find(|site| site.cells.contains(&cell))
+    /// The tract occupying a cell, if any.
+    pub fn tract_of(&self, cell: CellId) -> Option<&Tract> {
+        self.tracts.iter().find(|tract| tract.cells.contains(&cell))
     }
 
     /// A cell's living neighbours in the graph, in id order.
@@ -284,7 +286,7 @@ impl Mosaic {
 
     /// Whether a set of cells forms one connected region.
     ///
-    /// The property a site must satisfy: an organ is a piece of tissue, not a
+    /// The property a tract must satisfy: an organ is a piece of tissue, not a
     /// scatter of cells that happen to share a name.
     pub fn connected(&self, cells: &[CellId]) -> bool {
         let Some(first) = cells.first() else {
@@ -312,11 +314,11 @@ impl Mosaic {
     /// PD0 spent a migration removing.
     pub fn conserves(&self) -> bool {
         let mut seen = Vec::new();
-        for site in &self.sites {
-            if site.cells.is_empty() {
+        for tract in &self.tracts {
+            if tract.cells.is_empty() {
                 return false;
             }
-            for cell in &site.cells {
+            for cell in &tract.cells {
                 if !self.is_living(*cell) || seen.contains(cell) {
                     return false;
                 }
@@ -326,7 +328,7 @@ impl Mosaic {
         self.occupied() + self.free() == self.capacity()
     }
 
-    /// Takes cells irreversibly, and deactivates any site left without a
+    /// Takes cells irreversibly, and deactivates any tract left without a
     /// valid connected subgraph.
     ///
     /// Not reached by ordinary play in this slice — shrinkage and sub-part
@@ -339,25 +341,25 @@ impl Mosaic {
             }
         }
         self.lost.sort_unstable();
-        let mut sites = std::mem::take(&mut self.sites);
-        for site in sites.iter_mut() {
-            site.cells.retain(|cell| self.is_living(*cell));
+        let mut tracts = std::mem::take(&mut self.tracts);
+        for tract in tracts.iter_mut() {
+            tract.cells.retain(|cell| self.is_living(*cell));
         }
-        // A site that no longer owns a connected region is deactivated
+        // A tract that no longer owns a connected region is deactivated
         // deterministically rather than left holding a scatter.
-        sites.retain(|site| !site.cells.is_empty() && self.connected(&site.cells));
-        self.sites = sites;
+        tracts.retain(|tract| !tract.cells.is_empty() && self.connected(&tract.cells));
+        self.tracts = tracts;
     }
 
-    /// Replaces every site on this part. Only [`super::develop`] calls it,
+    /// Replaces every tract on this part. Only [`super::develop`] calls it,
     /// and only after the validator has accepted the whole proposal.
-    pub(super) fn rewrite(&mut self, sites: super::develop::Rewrite, revision: u32) {
-        self.sites = sites
+    pub(super) fn rewrite(&mut self, tracts: super::develop::Rewrite, revision: u32) {
+        self.tracts = tracts
             .into_iter()
             .map(|(process, cells)| {
-                let id = SiteId(self.next_site);
-                self.next_site += 1;
-                Site {
+                let id = TractId(self.next_tract);
+                self.next_tract += 1;
+                Tract {
                     id,
                     process,
                     cells,

@@ -31,7 +31,7 @@ use super::gland::{frond_on, gland};
 
 /// A recipe whose bodies grow one plate: the only shape that admits a gland.
 ///
-/// The declared site names a *shape*, so what a descendant needs is a body
+/// The declared tract names a *shape*, so what a descendant needs is a body
 /// plan that grows one — which is PE2's residue answered: a bulk consumer has
 /// nowhere to put a gland until its line grows a plate.
 fn plate_recipe() -> Recipe {
@@ -267,7 +267,7 @@ fn a_child_with_nowhere_to_put_it_is_born_anyway_and_the_record_says_why() {
     assert_eq!(why.0, revision, "which revision");
     assert_eq!(
         why.1,
-        mesocosm_core::Unexpressed::NoSite {
+        mesocosm_core::Unexpressed::NoTract {
             role: mesocosm_core::Role::Plate
         },
         "and why, by name"

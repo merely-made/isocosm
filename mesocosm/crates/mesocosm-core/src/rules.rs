@@ -26,7 +26,7 @@
 //! # What is rule-bearing
 //!
 //! Everything [`Registry::digest`](crate::process::Registry::digest) folds,
-//! and nothing else. Each definition contributes its identity, its site
+//! and nothing else. Each definition contributes its identity, its tract
 //! requirement and its seeding; the set is folded in sorted order, so neither
 //! the order a pack declared its files in nor a definition's plain label,
 //! explanation text or native binding can move this number.

@@ -146,7 +146,7 @@ fn one_validator_serves_the_player_and_the_game() {
     let mut game_refused = world.controlled().unwrap().phenotype.clone();
     let mut hand_refused = game_refused.clone();
     let mut bad_game = arrange(&game_refused, Aim::Spare);
-    bad_game.sites[0].cells.clear();
+    bad_game.tracts[0].cells.clear();
     let bad_hand = AllocationProposal {
         source: Arrangement::Direct,
         ..bad_game.clone()

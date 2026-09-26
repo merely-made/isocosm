@@ -43,7 +43,7 @@
 //! A severed part's mosaic stays addressable through [`BodyPhenotype::mosaic`]
 //! so an injury is still explainable, and is excluded from
 //! [`BodyPhenotype::allocations`] so it cannot contribute. Historical cells and
-//! sites remain readable; they are not capacity and they express nothing.
+//! tracts remain readable; they are not capacity and they express nothing.
 
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -58,10 +58,10 @@ pub mod mosaic;
 pub mod substance;
 
 pub use develop::{
-    Aim, AllocationProposal, Arrangement, Development, Instruction, ProposedSite, Refusal, arrange,
+    Aim, AllocationProposal, Arrangement, Development, Instruction, ProposedTract, Refusal, arrange,
 };
 pub use graft::{Branch, Cutting, Graftage, Lowering};
-pub use mosaic::{CellId, Expressed, MAX_CELLS, MAX_SITES, Mosaic, Site, SiteId};
+pub use mosaic::{CellId, Expressed, MAX_CELLS, MAX_TRACTS, Mosaic, Tract, TractId};
 pub use substance::{AttachStockError, StockMassError, SubstanceError};
 
 /// One critter's anatomy and its process allocation, as one transactional
@@ -130,8 +130,9 @@ impl BodyPhenotype {
         let port = mosaic.port();
         port.support()
             .is_some_and(|support| {
-                mosaic.sites().iter().any(|site| {
-                    site.process == support && site.cells.iter().any(|cell| mosaic.is_living(*cell))
+                mosaic.tracts().iter().any(|tract| {
+                    tract.process == support
+                        && tract.cells.iter().any(|cell| mosaic.is_living(*cell))
                 })
             })
             .then_some(port)
@@ -233,7 +234,7 @@ impl BodyPhenotype {
     /// seeding rule, and the receipts assert that it does.
     pub fn expresses(&self, process: ProcessRef) -> bool {
         self.allocations()
-            .any(|(_, mosaic)| mosaic.sites().iter().any(|site| site.process == process))
+            .any(|(_, mosaic)| mosaic.tracts().iter().any(|tract| tract.process == process))
     }
 
     /// Whether one living part has tissue allocated to a definition.
@@ -246,7 +247,7 @@ impl BodyPhenotype {
         self.body.is_living(part)
             && self
                 .mosaic(part)
-                .is_some_and(|mosaic| mosaic.sites().iter().any(|site| site.process == process))
+                .is_some_and(|mosaic| mosaic.tracts().iter().any(|tract| tract.process == process))
     }
 
     /// What one cell of a part's tissue is worth, in milligrams.
@@ -287,10 +288,12 @@ impl BodyPhenotype {
         self.allocations()
             .map(|(part, mosaic)| {
                 let cells: u64 = mosaic
-                    .sites()
+                    .tracts()
                     .iter()
-                    .filter(|site| site.process == gland)
-                    .map(|site| site.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u64)
+                    .filter(|tract| tract.process == gland)
+                    .map(|tract| {
+                        tract.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u64
+                    })
                     .sum();
                 cells * self.cell_mg(part)
             })
@@ -307,10 +310,12 @@ impl BodyPhenotype {
         self.allocations()
             .filter_map(|(part, mosaic)| {
                 let cells: u32 = mosaic
-                    .sites()
+                    .tracts()
                     .iter()
-                    .filter(|site| site.process == gland)
-                    .map(|site| site.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u32)
+                    .filter(|tract| tract.process == gland)
+                    .map(|tract| {
+                        tract.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u32
+                    })
                     .sum();
                 (cells > 0).then_some((part, cells))
             })
@@ -331,7 +336,7 @@ impl BodyPhenotype {
             .filter(|part| part.severed)
             .filter(|part| {
                 self.mosaic(part.id)
-                    .is_some_and(|m| m.sites().iter().any(|site| site.process == gland))
+                    .is_some_and(|m| m.tracts().iter().any(|tract| tract.process == gland))
             })
             .map(|part| part.id)
             .collect()
@@ -347,9 +352,9 @@ impl BodyPhenotype {
     pub fn expressing(&self, process: ProcessRef) -> impl Iterator<Item = PartId> + '_ {
         self.allocations().filter_map(move |(part, mosaic)| {
             mosaic
-                .sites()
+                .tracts()
                 .iter()
-                .any(|site| site.process == process)
+                .any(|tract| tract.process == process)
                 .then_some(part)
         })
     }
@@ -362,8 +367,8 @@ impl BodyPhenotype {
     pub fn expressed(&self) -> Vec<(ProcessRef, Expressed)> {
         let mut found: Vec<(ProcessRef, Expressed)> = self
             .allocations()
-            .flat_map(|(_, mosaic)| mosaic.sites())
-            .map(|site| (site.process, site.cause))
+            .flat_map(|(_, mosaic)| mosaic.tracts())
+            .map(|tract| (tract.process, tract.cause))
             .collect();
         found.sort_unstable();
         found.dedup();
@@ -384,17 +389,17 @@ impl BodyPhenotype {
             living: self.body.is_living(part),
             capacity: mosaic.capacity(),
             free: mosaic.free(),
-            sites: mosaic
-                .sites()
+            tracts: mosaic
+                .tracts()
                 .iter()
-                .map(|site| SiteReading {
-                    id: site.id,
-                    process: site.process,
+                .map(|tract| TractReading {
+                    id: tract.id,
+                    process: tract.process,
                     // `None` is the missing-ruleset diagnostic, not a licence
                     // to name a similar local process instead.
-                    named: registry.resolve(site.process).map(|def| def.id.clone()),
-                    cells: site.cells.len() as u32,
-                    cause: site.cause,
+                    named: registry.resolve(tract.process).map(|def| def.id.clone()),
+                    cells: tract.cells.len() as u32,
+                    cause: tract.cause,
                 })
                 .collect(),
         })
@@ -470,12 +475,12 @@ impl BodyPhenotype {
     ) -> Result<Development, Refusal> {
         let validated = develop::validate(registry, self, proposal)?;
         let revision = self.revision + 1;
-        let mut sites = Vec::new();
+        let mut tracts = Vec::new();
         for (part, desired) in validated.rewrites {
             let mosaic = &mut self.mosaics[part.0 as usize];
             mosaic.rewrite(desired, revision);
-            for site in mosaic.sites() {
-                sites.push((part, site.id, site.process));
+            for tract in mosaic.tracts() {
+                tracts.push((part, tract.id, tract.process));
             }
         }
         self.revision = revision;
@@ -487,7 +492,7 @@ impl BodyPhenotype {
             instruction: Instruction {
                 revision,
                 parts: proposal.parts.clone(),
-                sites,
+                tracts,
                 cost_cells: validated.cost_cells,
                 cost_by_part: validated.cost_by_part,
                 digest: self.digest(),
@@ -526,17 +531,17 @@ impl<'de> Deserialize<'de> for BodyPhenotype {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Explanation {
     pub part: PartId,
-    /// `false` for a severed part, whose sites are history.
+    /// `false` for a severed part, whose tracts are history.
     pub living: bool,
     pub capacity: u32,
     pub free: u32,
-    pub sites: Vec<SiteReading>,
+    pub tracts: Vec<TractReading>,
 }
 
 /// One expressed process, explained.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct SiteReading {
-    pub id: SiteId,
+pub struct TractReading {
+    pub id: TractId,
     pub process: ProcessRef,
     /// The qualified id, when this world's ruleset holds the definition.
     /// `None` is the missing-ruleset diagnostic.

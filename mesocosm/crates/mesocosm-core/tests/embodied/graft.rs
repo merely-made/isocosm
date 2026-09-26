@@ -18,7 +18,7 @@
 
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Expressed, Intent,
-    Kingdom, Organism, OrganismId, Origin, Outcome, PartId, Process, ProcessRef, ProposedSite,
+    Kingdom, Organism, OrganismId, Origin, Outcome, PartId, Process, ProcessRef, ProposedTract,
     Provenance, Registry, Rejection, SpeciesId, Stage, Verdict, VolumeRef, World, Yaw,
 };
 
@@ -135,13 +135,13 @@ fn donor(world: &mut World) -> (PartId, PartId) {
         expect: corpse.phenotype.digest(),
         source: Arrangement::Direct,
         parts: vec![frond],
-        sites: vec![
-            ProposedSite {
+        tracts: vec![
+            ProposedTract {
                 part: frond,
                 process: fixing(),
                 cells: kept,
             },
-            ProposedSite {
+            ProposedTract {
                 part: frond,
                 process: gland(),
                 cells: taken,
@@ -299,9 +299,9 @@ fn a_native_carry_lands_a_functioning_branch() {
         .phenotype
         .mosaic(frond)
         .unwrap()
-        .sites()
+        .tracts()
         .iter()
-        .map(|site| (site.process, site.cells.clone()))
+        .map(|tract| (tract.process, tract.cells.clone()))
         .collect();
     assert_eq!(world.controlled().unwrap().phenotype.secretory_mg(), 0);
 
@@ -322,23 +322,23 @@ fn a_native_carry_lands_a_functioning_branch() {
     let landed: Vec<(ProcessRef, Vec<CellId>)> = phenotype
         .mosaic(root)
         .unwrap()
-        .sites()
+        .tracts()
         .iter()
-        .map(|site| (site.process, site.cells.clone()))
+        .map(|tract| (tract.process, tract.cells.clone()))
         .collect();
     assert_eq!(
         landed, donor_cells,
         "cell for cell, which is what carrying an arrangement means"
     );
-    // The sites are the graft's, not this body's geometry talking: the
+    // The tracts are the graft's, not this body's geometry talking: the
     // development that placed them says which revision they arrived on.
     assert!(
         phenotype
             .mosaic(root)
             .unwrap()
-            .sites()
+            .tracts()
             .iter()
-            .all(|site| matches!(site.cause, Expressed::Arranged { .. })),
+            .all(|tract| matches!(tract.cause, Expressed::Arranged { .. })),
         "a carried arrangement was arranged, and the record says so"
     );
     assert!(phenotype.conserves());
@@ -380,7 +380,7 @@ fn a_cross_domain_carry_lands_a_visibly_incompatible_branch() {
         explained.free, explained.capacity,
         "every cell of it is free, which is what needing an adapter looks like"
     );
-    assert!(explained.sites.is_empty());
+    assert!(explained.tracts.is_empty());
     assert_eq!(phenotype.secretory_mg(), 0, "the gland did not come across");
 
     // And it is repairable: an adapter is an ordinary development on ordinary
@@ -391,7 +391,7 @@ fn a_cross_domain_carry_lands_a_visibly_incompatible_branch() {
         expect: world.phenotype().unwrap().digest(),
         source: Arrangement::Direct,
         parts: vec![root],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part: root,
             process: gland(),
             cells: (0..capacity).map(|i| CellId(i as u16)).collect(),
@@ -440,7 +440,10 @@ fn severing_the_graft_takes_the_whole_imported_branch_and_still_explains_it() {
         .expect("a severed part still explains");
     assert!(!explained.living);
     assert!(
-        explained.sites.iter().any(|site| site.process == gland()),
+        explained
+            .tracts
+            .iter()
+            .any(|tract| tract.process == gland()),
         "that branch is where the sting was"
     );
     assert!(phenotype.conserves());

@@ -33,7 +33,7 @@
 use mesocosm_core::BodyOrgans;
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, ConditionId, Intent, Outcome, PartId,
-    Process, ProcessRef, ProposedSite, Provenance, Refusal, Registry, VolumeRef, World, Yaw,
+    Process, ProcessRef, ProposedTract, Provenance, Refusal, Registry, VolumeRef, World, Yaw,
 };
 
 use super::discovery::{endure, hunger};
@@ -118,15 +118,15 @@ fn split(world: &World, part: PartId, cells: u32) -> AllocationProposal {
     let taken: Vec<CellId> = (capacity - cells..capacity)
         .map(|i| CellId(i as u16))
         .collect();
-    let mut sites = Vec::new();
+    let mut tracts = Vec::new();
     if !kept.is_empty() {
-        sites.push(ProposedSite {
+        tracts.push(ProposedTract {
             part,
             process: fixing(),
             cells: kept,
         });
     }
-    sites.push(ProposedSite {
+    tracts.push(ProposedTract {
         part,
         process: gland(),
         cells: taken,
@@ -135,7 +135,7 @@ fn split(world: &World, part: PartId, cells: u32) -> AllocationProposal {
         expect: phenotype.digest(),
         source: Arrangement::Direct,
         parts: vec![part],
-        sites,
+        tracts,
     }
 }
 
@@ -208,7 +208,7 @@ fn the_tissue_has_to_come_off_something() {
     ));
     let mosaic = world.phenotype().unwrap().mosaic(part).unwrap();
     assert_eq!(mosaic.free(), 0, "and it still has nothing spare");
-    assert_eq!(mosaic.sites().len(), 2, "it does two things now");
+    assert_eq!(mosaic.tracts().len(), 2, "it does two things now");
     assert_eq!(world.gland().unwrap().cells, gland_cells());
 }
 
@@ -254,7 +254,7 @@ fn a_part_still_cannot_acquire_a_capability_by_editing_a_number() {
         expect: world.phenotype().unwrap().digest(),
         source: Arrangement::Direct,
         parts: vec![root],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part: root,
             process: gland(),
             cells: vec![CellId(0)],
@@ -263,7 +263,7 @@ fn a_part_still_cannot_acquire_a_capability_by_editing_a_number() {
     assert!(
         matches!(
             develop_played(&mut world, &proposal),
-            Err(Refusal::SiteMismatch { .. })
+            Err(Refusal::TractMismatch { .. })
         ),
         "bulk is not a shape that secretes"
     );
@@ -273,7 +273,7 @@ fn a_part_still_cannot_acquire_a_capability_by_editing_a_number() {
 #[test]
 fn a_refusal_names_its_boundary_and_moves_nothing() {
     // PD1b made the boundary the answer rather than a single word, and both of
-    // these are proposals no door could carry now: a site that is not one
+    // these are proposals no door could carry now: a tract that is not one
     // piece of tissue, and a definition this world's ruleset does not hold.
     // The refusal still names which.
     let mut world = fronded_world(4_242);
@@ -283,7 +283,7 @@ fn a_refusal_names_its_boundary_and_moves_nothing() {
         expect: before.digest(),
         source: Arrangement::Direct,
         parts: vec![part],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part,
             process,
             cells,
@@ -336,7 +336,7 @@ fn the_development_is_located_paid_for_and_on_the_record() {
 
     // Located: on a named part, and the reading says which.
     assert_eq!(on, part);
-    assert_eq!(world.gland().unwrap().sites, vec![(part, gland_cells())]);
+    assert_eq!(world.gland().unwrap().tracts, vec![(part, gland_cells())]);
     // Charged: the cells whose expression changed, priced in that part's own
     // tissue. The candidate's cells changed hands, and nothing else did.
     assert_eq!(cost_mg, u64::from(gland_cells()) * cell_mg);

@@ -58,7 +58,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::axis::Appendage;
 use crate::body::{PartId, SpeciesId};
-use crate::phenotype::{AllocationProposal, Arrangement, BodyPhenotype, CellId, ProposedSite};
+use crate::phenotype::{AllocationProposal, Arrangement, BodyPhenotype, CellId, ProposedTract};
 use crate::plan::{Role, classify};
 use crate::process::ProcessRef;
 
@@ -226,12 +226,13 @@ impl Rule {
 pub struct Candidate {
     /// The exact admitted definition this would express.
     pub process: ProcessRef,
-    /// The shape a site must be. **A parameter, not an authority**: the one
+    /// The shape a tract must be. **A parameter, not an authority**: the one
     /// validator checks it through [`ProcessDef::admits`], and this is what a
     /// proposal builder aims at.
     ///
     /// [`ProcessDef::admits`]: crate::process::ProcessDef::admits
-    pub site: Role,
+    #[serde(alias = "site")]
+    pub tract: Role,
     /// How much tissue the proposal would take.
     pub cells: u32,
     /// The word this adds to the line's lexicon, when it adds one.
@@ -266,7 +267,7 @@ impl Candidate {
         // answer is deterministic rather than whichever iteration reached it.
         let (part, mosaic) = phenotype.allocations().find(|(part, _)| {
             body.part(*part)
-                .is_some_and(|found| classify(found.half_extent) == self.site)
+                .is_some_and(|found| classify(found.half_extent) == self.tract)
         })?;
 
         // The high end of the lattice. A suffix of the row-major order is a
@@ -280,10 +281,10 @@ impl Candidate {
         let taken: Vec<CellId> = living[living.len() - take..].to_vec();
 
         // A complete desired state for the part: what the rest of it keeps
-        // doing, plus the new site. Anything left with no cells is cleared.
-        let mut sites: Vec<ProposedSite> = Vec::new();
-        for site in mosaic.sites() {
-            let kept: Vec<CellId> = site
+        // doing, plus the new tract. Anything left with no cells is cleared.
+        let mut tracts: Vec<ProposedTract> = Vec::new();
+        for tract in mosaic.tracts() {
+            let kept: Vec<CellId> = tract
                 .cells
                 .iter()
                 .copied()
@@ -292,21 +293,24 @@ impl Candidate {
             if kept.is_empty() {
                 continue;
             }
-            sites.push(ProposedSite {
+            tracts.push(ProposedTract {
                 part,
-                process: site.process,
+                process: tract.process,
                 cells: kept,
             });
         }
-        match sites.iter_mut().find(|site| site.process == self.process) {
+        match tracts
+            .iter_mut()
+            .find(|tract| tract.process == self.process)
+        {
             // Already expressed here: widen it rather than proposing a second
-            // site for the same definition.
+            // tract for the same definition.
             Some(existing) => {
                 existing.cells.extend(taken);
                 existing.cells.sort_unstable();
                 existing.cells.dedup();
             },
-            None => sites.push(ProposedSite {
+            None => tracts.push(ProposedTract {
                 part,
                 process: self.process,
                 cells: taken,
@@ -317,7 +321,7 @@ impl Candidate {
             expect: phenotype.digest(),
             source,
             parts: vec![part],
-            sites,
+            tracts,
         })
     }
 }
@@ -470,7 +474,7 @@ fn digest_of(id: ConditionId, candidate: &Candidate, evidence: &Evidence, tick: 
     let mut bytes = Vec::new();
     bytes.extend_from_slice(&id.0.to_le_bytes());
     bytes.extend_from_slice(&candidate.process.definition.0.to_le_bytes());
-    bytes.push(candidate.site as u8);
+    bytes.push(candidate.tract as u8);
     bytes.extend_from_slice(&candidate.cells.to_le_bytes());
     match *evidence {
         Evidence::Meal {

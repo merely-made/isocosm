@@ -347,14 +347,14 @@ impl World {
     ///
     /// `None` when the played critter has never had one, which is every body
     /// a world founds — nothing seeds a gland. The other three states are all
-    /// `Some`, and are told apart by the fields: allocated (`sites` non-empty),
-    /// charged or dry (`charged`), and lost with its branch (`sites` empty and
+    /// `Some`, and are told apart by the fields: allocated (`tracts` non-empty),
+    /// charged or dry (`charged`), and lost with its branch (`tracts` empty and
     /// `lost` not).
     pub fn gland(&self) -> Option<Gland> {
         let me = self.controlled()?;
-        let sites = me.phenotype.glands();
+        let tracts = me.phenotype.glands();
         let lost = me.phenotype.lost_glands();
-        if sites.is_empty() && lost.is_empty() {
+        if tracts.is_empty() && lost.is_empty() {
             return None;
         }
         let potency_mg = me.phenotype.secretory_mg();
@@ -373,8 +373,8 @@ impl World {
                     me.mass_ceiling_mg(),
                     0,
                 )),
-            cells: sites.iter().map(|(_, cells)| cells).sum(),
-            sites,
+            cells: tracts.iter().map(|(_, cells)| cells).sum(),
+            tracts,
             lost,
             potency_mg,
             ground_mg,
@@ -457,7 +457,7 @@ impl World {
 pub struct Gland {
     /// The living parts carrying secretory tissue, and how many cells each.
     /// Empty once the branch is gone.
-    pub sites: Vec<(crate::body::PartId, u32)>,
+    pub tracts: Vec<(crate::body::PartId, u32)>,
     /// Cells across all of them: the tissue this body is spending on poison
     /// instead of on what the part used to do.
     pub cells: u32,

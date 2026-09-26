@@ -5,7 +5,7 @@
 //! Run with `cargo run -p mesocosm-core --example inspect_body_functions`.
 use mesocosm_core::{PartPalette, functions, world::generation::Request};
 use std::collections::BTreeSet;
-use wing_functions::generation::{BodySite, Form, GeneratorSettings, SiteRole};
+use wing_functions::generation::{BodyTract, Form, GeneratorSettings, TractRole};
 use wing_functions::{Operator, PartRef, WorldRules};
 
 fn main() {
@@ -25,23 +25,23 @@ fn main() {
     let parts: Vec<_> = body.living().map(|p| p.id).collect();
     assert!(
         parts.len() >= 4,
-        "this inspection profile requires four sites"
+        "this inspection profile requires four tracts"
     );
     // An explicit inspection profile. Material/tissue admission is subsequent
     // construction work; the sampler must not infer magical tissue from shape.
-    let sites: Vec<_> = parts
+    let tracts: Vec<_> = parts
         .iter()
         .enumerate()
-        .map(|(i, p)| BodySite {
+        .map(|(i, p)| BodyTract {
             part: PartRef {
                 subject: 1,
                 part: p.0,
             },
             role: match i {
-                0 => SiteRole::Source,
-                1 => SiteRole::Store,
-                2 => SiteRole::Gate,
-                _ => SiteRole::Actuator,
+                0 => TractRole::Source,
+                1 => TractRole::Store,
+                2 => TractRole::Gate,
+                _ => TractRole::Actuator,
             },
         })
         .collect();
@@ -50,7 +50,7 @@ fn main() {
         max_actuators: 4.min(parts.len() as u32 - 3),
         ..GeneratorSettings::default()
     };
-    let batch = functions::generate_for_body(1, &body, 7, &settings, &sites).unwrap();
+    let batch = functions::generate_for_body(1, &body, 7, &settings, &tracts).unwrap();
     let candidate = &batch
         .candidates
         .first()

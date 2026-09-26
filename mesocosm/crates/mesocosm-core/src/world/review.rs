@@ -59,7 +59,7 @@ use crate::body::SpeciesId;
 use crate::discovery::ConditionId;
 use crate::organism::Organism;
 use crate::organism::ecology::{BIRTH_SCATTER, OFFSPRING_COST};
-use crate::program::{Citation, Conditions, DeclaredSite, Founder, Unexpressed};
+use crate::program::{Citation, Conditions, DeclaredTract, Founder, Unexpressed};
 use crate::species::Species;
 
 use super::{Score, World};
@@ -185,7 +185,7 @@ impl World {
     /// ecology plan PE3, ruled by Mark 2026-09-02). A preview used to declare
     /// the column the parent was standing on, and a body that had stood still
     /// for a hundred ticks had returned its upkeep into exactly that column —
-    /// so the table quoted five cells of a site where the descendant, landing
+    /// so the table quoted five cells of a tract where the descendant, landing
     /// up to [`BIRTH_SCATTER`] voxels away on ordinary soil, could afford one.
     /// The dormancy rule was doing its job; the quote was still a number the
     /// game would not charge.
@@ -366,7 +366,7 @@ impl World {
         let mut proposed = line.clone();
         proposed.commit(
             Citation::of(discovery),
-            vec![DeclaredSite::of(&discovery.candidate)],
+            vec![DeclaredTract::of(&discovery.candidate)],
             self.tick,
         );
         Ok(proposed)

@@ -36,7 +36,7 @@ pub enum SnapshotError {
     /// refuse explicitly rather than continue against whatever biology this
     /// build happens to hold: the bodies in the save cite definition digests,
     /// and a ruleset that does not hold them would resolve `None` on every
-    /// site and quietly simulate a body that expresses nothing.
+    /// tract and quietly simulate a body that expresses nothing.
     Ruleset {
         expected: crate::rules::RulesetDigest,
         found: crate::rules::RulesetDigest,

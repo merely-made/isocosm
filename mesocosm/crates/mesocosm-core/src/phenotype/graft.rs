@@ -39,7 +39,7 @@
 //! [`AllocationProposal`]: super::AllocationProposal
 
 use super::mosaic::{CellId, Mosaic};
-use super::{AllocationProposal, Arrangement, BodyPhenotype, ProposedSite, Refusal};
+use super::{AllocationProposal, Arrangement, BodyPhenotype, ProposedTract, Refusal};
 use crate::body::{Attachment, Origin, PartId, Provenance, SpeciesId};
 use crate::process::{IntakePort, ProcessRef};
 
@@ -68,8 +68,8 @@ pub struct Cutting {
     /// The joint this part had inside the branch: offset and yaw, preserved
     /// exactly. `None` for the branch root.
     pub joint: Option<Attachment>,
-    /// What the donor had allocated here, in site order.
-    pub sites: Vec<(ProcessRef, Vec<CellId>)>,
+    /// What the donor had allocated here, in tract order.
+    pub tracts: Vec<(ProcessRef, Vec<CellId>)>,
     /// The donor's declared intake admission, carried even if its current
     /// allocation is later adapted or temporarily inactive.
     pub port: IntakePort,
@@ -225,10 +225,10 @@ impl BodyPhenotype {
                     stock: *mosaic.scruple(),
                     half_extent: part.half_extent,
                     joint: inside.then_some(part.attachment).flatten(),
-                    sites: mosaic
-                        .sites()
+                    tracts: mosaic
+                        .tracts()
                         .iter()
-                        .map(|site| (site.process, site.cells.clone()))
+                        .map(|tract| (tract.process, tract.cells.clone()))
                         .collect(),
                     port: mosaic.port(),
                 })
@@ -309,7 +309,7 @@ impl BodyPhenotype {
             self.declare_port(id, cutting.port);
         }
 
-        let sites = self.arriving_sites(branch, &parts, lowering);
+        let tracts = self.arriving_tracts(branch, &parts, lowering);
         let proposal = AllocationProposal {
             expect: self.digest(),
             // A graft is the game arranging tissue, not a hand drawing it. The
@@ -317,7 +317,7 @@ impl BodyPhenotype {
             // a property rather than a promise.
             source: Arrangement::Automatic,
             parts: parts.clone(),
-            sites,
+            tracts,
         };
         let development = self.develop(registry, &proposal)?;
         // **PD2's price, one part at a time.** A cell is worth what its own
@@ -339,22 +339,22 @@ impl BodyPhenotype {
         })
     }
 
-    /// The sites an arriving branch proposes, by how it is being lowered.
-    fn arriving_sites(
+    /// The tracts an arriving branch proposes, by how it is being lowered.
+    fn arriving_tracts(
         &self,
         branch: &Branch,
         parts: &[PartId],
         lowering: Lowering,
-    ) -> Vec<ProposedSite> {
-        let mut sites = Vec::new();
+    ) -> Vec<ProposedTract> {
+        let mut tracts = Vec::new();
         for (cutting, part) in branch.parts.iter().zip(parts) {
             match lowering {
                 // Nothing proposed for a part that is still claimed is how the
                 // validator is told to clear it.
                 Lowering::Adapted => {},
                 Lowering::Carried => {
-                    for (process, cells) in &cutting.sites {
-                        sites.push(ProposedSite {
+                    for (process, cells) in &cutting.tracts {
+                        tracts.push(ProposedTract {
                             part: *part,
                             process: *process,
                             cells: cells.clone(),
@@ -368,16 +368,16 @@ impl BodyPhenotype {
                     let Some(found) = self.body().part(*part) else {
                         continue;
                     };
-                    for site in Mosaic::seed(found).sites() {
-                        sites.push(ProposedSite {
+                    for tract in Mosaic::seed(found).tracts() {
+                        tracts.push(ProposedTract {
                             part: *part,
-                            process: site.process,
-                            cells: site.cells.clone(),
+                            process: tract.process,
+                            cells: tract.cells.clone(),
                         });
                     }
                 },
             }
         }
-        sites
+        tracts
     }
 }

@@ -273,7 +273,7 @@ fn a_rule_bearing_byte_changes_the_digest() {
     assert_ne!(
         Registry::admit(moved).expect("no collision").digest(),
         registry.digest(),
-        "one definition's site requirement is the whole ruleset's business"
+        "one definition's tract requirement is the whole ruleset's business"
     );
 
     let mut reordered: Vec<ProcessDef> = registry.all().cloned().collect();

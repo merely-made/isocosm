@@ -64,10 +64,10 @@ fn geometry_seeds_the_allocation_it_used_to_only_answer() {
         (frond, Process::Fix),
     ] {
         let mosaic = phenotype.mosaic(part).expect("a living part has a mosaic");
-        let sites: Vec<ProcessRef> = mosaic.sites().iter().map(|site| site.process).collect();
-        assert_eq!(sites, vec![reference(process)], "{part:?}");
+        let tracts: Vec<ProcessRef> = mosaic.tracts().iter().map(|tract| tract.process).collect();
+        assert_eq!(tracts, vec![reference(process)], "{part:?}");
         assert_eq!(
-            mosaic.sites()[0].cause,
+            mosaic.tracts()[0].cause,
             Expressed::Geometry,
             "and its shape is why"
         );
@@ -86,12 +86,12 @@ fn a_declared_port_waits_for_its_supporting_process_to_be_expressed() {
         "the fixing frond is active"
     );
 
-    let cells = phenotype.mosaic(frond).unwrap().sites()[0].cells.clone();
+    let cells = phenotype.mosaic(frond).unwrap().tracts()[0].cells.clone();
     let secrete = AllocationProposal {
         expect: phenotype.digest(),
         source: Arrangement::Direct,
         parts: vec![frond],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part: frond,
             process: reference(Process::Secrete),
             cells: cells.clone(),
@@ -109,7 +109,7 @@ fn a_declared_port_waits_for_its_supporting_process_to_be_expressed() {
         expect: phenotype.digest(),
         source: Arrangement::Direct,
         parts: vec![frond],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part: frond,
             process: reference(Process::Fix),
             cells,
@@ -126,7 +126,7 @@ fn a_declared_port_waits_for_its_supporting_process_to_be_expressed() {
 
 #[test]
 fn a_seeded_part_arrives_fully_committed() {
-    // The honest lowering of "this shape does this thing": the seeded site
+    // The honest lowering of "this shape does this thing": the seeded tract
     // takes every cell, so a second process has to be paid for out of the
     // first rather than out of free tissue nobody had to earn.
     let (phenotype, _) = critter();
@@ -197,7 +197,7 @@ fn attaching_seeds_the_new_part_in_the_same_operation() {
     let mosaic = phenotype.mosaic(eye).expect("seeded with the part");
     assert_eq!(mosaic.capacity(), 1, "a sensor is one cell of tissue");
     assert_eq!(
-        mosaic.sites()[0].process,
+        mosaic.tracts()[0].process,
         reference(Process::Sense),
         "and it senses because of its shape"
     );
@@ -224,9 +224,12 @@ fn severing_removes_the_allocation_and_its_consequence_together() {
     // the branch used to do.
     let explained = phenotype.explain(limb).expect("still addressable");
     assert!(!explained.living);
-    assert_eq!(explained.sites.len(), 1);
+    assert_eq!(explained.tracts.len(), 1);
     assert_eq!(
-        explained.sites[0].named.as_ref().map(|id| id.name.as_str()),
+        explained.tracts[0]
+            .named
+            .as_ref()
+            .map(|id| id.name.as_str()),
         Some("contract")
     );
 }
@@ -288,8 +291,8 @@ fn direct_and_automatic_earn_the_same_refusal() {
 
     // A cell the limb does not have. Invalid whoever drew it.
     let mut by_game = arrange(&automatic, Aim::Spare);
-    for site in by_game.sites.iter_mut().filter(|site| site.part == limb) {
-        site.cells = vec![CellId(99)];
+    for tract in by_game.tracts.iter_mut().filter(|tract| tract.part == limb) {
+        tract.cells = vec![CellId(99)];
     }
     let by_hand = AllocationProposal {
         source: Arrangement::Direct,
@@ -317,15 +320,19 @@ fn a_part_cannot_acquire_a_capability_by_editing_a_number() {
     // shape, and a different part.
     let (mut phenotype, [_, _, frond]) = critter();
     let mut proposal = arrange(&phenotype, Aim::Spare);
-    for site in proposal.sites.iter_mut().filter(|site| site.part == frond) {
-        site.process = reference(Process::Contract);
+    for tract in proposal
+        .tracts
+        .iter_mut()
+        .filter(|tract| tract.part == frond)
+    {
+        tract.process = reference(Process::Contract);
     }
 
     assert_eq!(
         phenotype
             .develop(Registry::native(), &proposal)
             .unwrap_err(),
-        Refusal::SiteMismatch {
+        Refusal::TractMismatch {
             part: frond,
             process: reference(Process::Contract)
         }
@@ -370,23 +377,23 @@ fn every_refusal_names_the_boundary_that_failed() {
     assert_eq!(
         refuse(&mut phenotype, &|p| p.parts.retain(|part| *part != limb)),
         Refusal::UnclaimedPart(limb),
-        "a site cannot touch a part the proposal did not claim"
+        "a tract cannot touch a part the proposal did not claim"
     );
     assert_eq!(
-        refuse(&mut phenotype, &|p| p.sites[0].cells.clear()),
-        Refusal::EmptySite(root)
+        refuse(&mut phenotype, &|p| p.tracts[0].cells.clear()),
+        Refusal::EmptyTract(root)
     );
     assert_eq!(
-        refuse(&mut phenotype, &|p| p.sites[0].cells =
+        refuse(&mut phenotype, &|p| p.tracts[0].cells =
             vec![CellId(2), CellId(0)]),
         Refusal::UnorderedCells(root)
     );
-    // Two sites on one part claiming the same cell. Occupancy is disjoint or
+    // Two tracts on one part claiming the same cell. Occupancy is disjoint or
     // it is not occupancy.
     assert_eq!(
         refuse(&mut phenotype, &|p| {
-            let doubled = p.sites[0].clone();
-            p.sites.push(doubled);
+            let doubled = p.tracts[0].clone();
+            p.tracts.push(doubled);
         }),
         Refusal::Overlap {
             part: root,
@@ -417,8 +424,12 @@ fn an_invalid_multipart_development_leaves_everything_unchanged() {
     // all lands. Partial acceptance would make a receipt ambiguous.
     let (mut phenotype, [_, _, frond]) = critter();
     let mut proposal = arrange(&phenotype, Aim::Spare);
-    for site in proposal.sites.iter_mut().filter(|site| site.part == frond) {
-        site.cells = vec![CellId(0), CellId(8)];
+    for tract in proposal
+        .tracts
+        .iter_mut()
+        .filter(|tract| tract.part == frond)
+    {
+        tract.cells = vec![CellId(0), CellId(8)];
     }
     let before = crate::snapshot::encode(&phenotype).unwrap();
 
@@ -439,7 +450,7 @@ fn an_unknown_definition_is_refused_rather_than_substituted() {
     let foreign = ProcessRef {
         definition: crate::process::DefinitionDigest(0xdead_beef),
     };
-    proposal.sites[0].process = foreign;
+    proposal.tracts[0].process = foreign;
 
     assert_eq!(
         phenotype
@@ -490,8 +501,8 @@ fn rearrangement_is_ordered_and_on_the_record() {
         "the record names the arrangement it created"
     );
     for (_, mosaic) in phenotype.allocations() {
-        for site in mosaic.sites() {
-            assert_eq!(site.cause, Expressed::Arranged { revision: 1 });
+        for tract in mosaic.tracts() {
+            assert_eq!(tract.cause, Expressed::Arranged { revision: 1 });
         }
     }
 
@@ -545,20 +556,20 @@ fn the_mosaic_and_the_geometry_reading_agree() {
             if crate::plan::classify(part.half_extent) != role {
                 continue;
             }
-            let sites: Vec<ProcessRef> = phenotype
+            let tracts: Vec<ProcessRef> = phenotype
                 .mosaic(part.id)
                 .unwrap()
-                .sites()
+                .tracts()
                 .iter()
-                .map(|site| site.process)
+                .map(|tract| tract.process)
                 .collect();
-            assert_eq!(sites, expected, "{role:?} on {:?}", part.id);
+            assert_eq!(tracts, expected, "{role:?} on {:?}", part.id);
         }
     }
 }
 
 #[test]
-fn irreversible_loss_takes_capacity_and_the_site_with_it() {
+fn irreversible_loss_takes_capacity_and_the_tract_with_it() {
     // Not reached by play yet; the rule lives with the mosaic so the first
     // caller does not have to invent it.
     let (phenotype, [_, limb, _]) = critter();
@@ -570,8 +581,8 @@ fn irreversible_loss_takes_capacity_and_the_site_with_it() {
     assert_eq!(mosaic.capacity(), 3, "a lost cell is not capacity");
     assert!(mosaic.conserves());
     assert!(
-        mosaic.sites().is_empty(),
-        "and a site cut in two owns no connected region"
+        mosaic.tracts().is_empty(),
+        "and a tract cut in two owns no connected region"
     );
 }
 
@@ -583,10 +594,10 @@ fn an_explanation_names_the_definition_the_tissue_expresses() {
     assert!(reading.living);
     assert_eq!(reading.capacity, 8);
     assert_eq!(reading.free, 0);
-    assert_eq!(reading.sites.len(), 1);
-    assert_eq!(reading.sites[0].cells, 8);
+    assert_eq!(reading.tracts.len(), 1);
+    assert_eq!(reading.tracts[0].cells, 8);
     assert_eq!(
-        reading.sites[0]
+        reading.tracts[0]
             .named
             .as_ref()
             .map(|id| (id.namespace.as_str(), id.name.as_str())),
@@ -595,3 +606,4 @@ fn an_explanation_names_the_definition_the_tissue_expresses() {
 }
 
 mod stock;
+mod wire_compat;

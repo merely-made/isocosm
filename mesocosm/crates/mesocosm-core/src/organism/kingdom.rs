@@ -109,7 +109,7 @@ impl Kingdom {
     /// used to ask whether a plate was held up; it now asks whether the plate
     /// held up is allocated to fixing, because a development can take that
     /// tissue away. PD1b named this reading as the one that only becomes a
-    /// different answer when something can move a site, and PD2 is that
+    /// different answer when something can move a tract, and PD2 is that
     /// something. Every body that has never developed answers exactly as
     /// before, which is what the parity receipt asserts.
     pub fn of(phenotype: &BodyPhenotype) -> Self {

@@ -103,7 +103,7 @@ impl Condition {
         bytes.push(0);
         bytes.extend_from_slice(&rule_bytes(self.rule));
         bytes.extend_from_slice(&self.grants.process.definition.0.to_le_bytes());
-        bytes.push(self.grants.site as u8);
+        bytes.push(self.grants.tract as u8);
         bytes.extend_from_slice(&self.grants.cells.to_le_bytes());
         bytes.push(self.grants.word.map(|word| word as u8 + 1).unwrap_or(0));
         ConditionId(crate::snapshot::hash_bytes(&bytes))
@@ -153,7 +153,7 @@ pub fn conditions() -> [Condition; 2] {
             },
             grants: Candidate {
                 process: registry.of_native(Process::Secrete).reference(),
-                site: Role::Plate,
+                tract: Role::Plate,
                 cells: GLAND_CELLS,
                 // Nothing new to say: a plate is already innate to nobody, and
                 // the line learns the *word* for one through the meal route
@@ -173,7 +173,7 @@ pub fn conditions() -> [Condition; 2] {
             },
             grants: Candidate {
                 process: registry.of_native(Process::Fix).reference(),
-                site: Role::Plate,
+                tract: Role::Plate,
                 cells: FROND_CELLS,
                 word: Some(Appendage::Plate),
             },

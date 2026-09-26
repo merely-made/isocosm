@@ -17,7 +17,7 @@
 //!
 //! The discovery the line came to, and nothing a host said. A [`Candidate`]
 //! already names *which admitted process, on what shape, at what bounded
-//! capacity* — the three rule-bearing fields a declared site holds — so
+//! capacity* — the three rule-bearing fields a declared tract holds — so
 //! committing needs no second vocabulary and a host cannot smuggle a cell
 //! address or a price through the door.
 //!
@@ -30,7 +30,7 @@ use crate::discovery::ConditionId;
 use crate::flow::Envelope;
 use crate::history::Event;
 use crate::organism::OrganismId;
-use crate::program::{Citation, DeclaredSite, RevisionId};
+use crate::program::{Citation, DeclaredTract, RevisionId};
 
 use super::World;
 
@@ -128,13 +128,13 @@ impl World {
             return Err(Unrevised::Nothing);
         }
 
-        let sites = vec![DeclaredSite::of(&discovery.candidate)];
+        let tracts = vec![DeclaredTract::of(&discovery.candidate)];
         let tick = self.tick;
         let revision = self
             .lineages
             .get_mut(species)
             .expect("checked above")
-            .commit(Citation::of(&discovery), sites, tick);
+            .commit(Citation::of(&discovery), tracts, tick);
 
         // The record, at the commit point, for both doors. `records::event_for`
         // is the played door's writer and would leave an unplayed revision

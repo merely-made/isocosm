@@ -158,7 +158,7 @@ fn branched_carcass(
         expect: corpse.phenotype.digest(),
         source: mesocosm_core::Arrangement::Direct,
         parts: vec![frond],
-        sites: vec![mesocosm_core::ProposedSite {
+        tracts: vec![mesocosm_core::ProposedTract {
             part: frond,
             process: mesocosm_core::Registry::native()
                 .of_native(mesocosm_core::Process::Secrete)

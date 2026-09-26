@@ -56,7 +56,7 @@ fn contract() -> ProcessRef {
 /// **The validator is what survived PD3's deletion.** `Intent::Rearrange` is
 /// gone and `Intent::Express` names a discovered condition rather than an
 /// arrangement, so a claim about a body a host could never author — a whole
-/// frond turned to poison, a gland asked for on bulk, a site that is not one
+/// frond turned to poison, a gland asked for on bulk, a tract that is not one
 /// connected region — is made here, at the boundary that actually decides it.
 /// A claim about what a development *costs* goes through the door.
 fn develop_played(

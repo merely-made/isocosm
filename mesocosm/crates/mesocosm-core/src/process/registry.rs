@@ -163,7 +163,7 @@ impl Registry {
 
     /// **The seeding rule**: the definitions growing this shape expresses.
     ///
-    /// Not the same question as [`ProcessDef::admits`], which is the site
+    /// Not the same question as [`ProcessDef::admits`], which is the tract
     /// requirement a proposal must satisfy. A plate is admitted for two
     /// definitions and grows one.
     pub fn seeds(&self, role: Role) -> impl Iterator<Item = &ProcessDef> {

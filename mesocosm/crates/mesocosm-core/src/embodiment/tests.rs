@@ -88,7 +88,7 @@ fn glyphs(set: &BTreeSet<GlyphId>) -> Vec<&str> {
 }
 
 #[test]
-fn founding_anatomy_embodies_exactly_the_glyphs_its_seeded_sites_express() {
+fn founding_anatomy_embodies_exactly_the_glyphs_its_seeded_tracts_express() {
     let (phenotype, frond) = producer();
     let registry = Registry::native();
     let table = table();
@@ -127,7 +127,7 @@ fn founding_anatomy_embodies_exactly_the_glyphs_its_seeded_sites_express() {
     }
     assert_eq!(phenotype.digest(), before);
 
-    // A registry that does not hold a site's definition contributes nothing,
+    // A registry that does not hold a tract's definition contributes nothing,
     // rather than the nearest local definition.
     let empty = Registry::admit(Vec::new()).unwrap();
     assert!(embodied(&phenotype, &empty, &table).is_empty());
@@ -221,14 +221,14 @@ fn severing_drops_the_tombstoned_parts_contribution_while_its_mosaic_still_answe
     assert_eq!(glyphs(&after), [EARTH], "the frond stopped fixing");
     assert!(bearing_parts(&phenotype, registry, &table, SUN).is_empty());
 
-    // The injury is still explainable: the mosaic answers, and its site is
+    // The injury is still explainable: the mosaic answers, and its tract is
     // still readable. It is history, and it expresses nothing.
     let mosaic = phenotype.mosaic(frond).expect("a severed mosaic stays");
     assert!(
         mosaic
-            .sites()
+            .tracts()
             .iter()
-            .any(|site| registry.resolve(site.process).unwrap().id.qualified() == "mesocosm:fix"),
+            .any(|tract| registry.resolve(tract.process).unwrap().id.qualified() == "mesocosm:fix"),
         "what this branch used to do is still on the record"
     );
     assert!(!phenotype.body().is_living(frond));

@@ -329,7 +329,7 @@ pub struct DefinitionDigest(pub u64);
 /// **Only the digest travels, and PD3 deliberately kept it that way.** PD1b's
 /// note anticipated this record widening to carry the qualified id once packs
 /// minted owned ones, and PD3 minted them without widening it: a string on
-/// every allocated site would grow every mosaic in every snapshot, and the
+/// every allocated tract would grow every mosaic in every snapshot, and the
 /// digest already recovers the id through [`Registry::resolve`] — which
 /// answers `None` rather than the nearest local definition, which is the whole
 /// point of a content address.
@@ -372,7 +372,7 @@ pub struct ProcessDef {
     /// declare it. `None` is the ordinary answer for anything a pack mints
     /// that the engine has no native binding for.
     pub native: Option<Process>,
-    /// The roles whose shape may express this process: the **site
+    /// The roles whose shape may express this process: the **tract
     /// requirement**, and what [`ProcessDef::admits`] answers.
     pub expressed_by: Vec<Role>,
     /// Whether growing one of those shapes also grows this process.
@@ -380,7 +380,7 @@ pub struct ProcessDef {
 }
 
 impl ProcessDef {
-    /// Digest over the rule-bearing bytes: identity, site requirement, and
+    /// Digest over the rule-bearing bytes: identity, tract requirement, and
     /// whether geometry grows it.
     ///
     /// **Exactly four things, and nothing else.** A definition's plain label,
@@ -416,7 +416,7 @@ impl ProcessDef {
 
     /// Whether a part of this shape may express this process.
     ///
-    /// The site requirement, and the reason a part cannot acquire a
+    /// The tract requirement, and the reason a part cannot acquire a
     /// capability by editing a number: allocation can only put a process
     /// where the geometry already expresses it, so changing what a part does
     /// still means changing what a part *is*.

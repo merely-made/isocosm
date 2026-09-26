@@ -197,7 +197,7 @@ fn coming_through_a_stress_unlocks_a_candidate_with_no_meal_in_it() {
     // The realized candidate reference, its parameters, and a digest over all
     // of it: what the execution boundary asks be recorded.
     assert_eq!(discovery.candidate.process, gland_ref());
-    assert_eq!(discovery.candidate.site, Role::Plate);
+    assert_eq!(discovery.candidate.tract, Role::Plate);
     assert!(discovery.candidate.cells > 0);
     assert_ne!(discovery.digest, 0);
 
@@ -301,7 +301,10 @@ fn the_discovered_candidate_is_located_paid_for_useful_dormant_and_lost_with_its
 
     // Useful: the tissue is where the reading says, and it stings.
     let reading = world.gland().expect("it has one now");
-    assert_eq!(reading.sites, vec![(part, hunger_condition().grants.cells)]);
+    assert_eq!(
+        reading.tracts,
+        vec![(part, hunger_condition().grants.cells)]
+    );
     assert!(reading.charged, "charged by its own spoil, as PD2 found");
     assert!(reading.rent_mg > 0, "and it costs rent from here on");
 
@@ -329,7 +332,7 @@ fn the_discovered_candidate_is_located_paid_for_useful_dormant_and_lost_with_its
         .phenotype
         .sever(part);
     let gone = world.gland().expect("the loss is still readable");
-    assert!(gone.sites.is_empty());
+    assert!(gone.tracts.is_empty());
     assert_eq!(gone.rent_mg, 0);
     assert_eq!(gone.lost, vec![part]);
     // And the discovery outlives the branch: what a line came to is not undone
@@ -360,7 +363,7 @@ fn direct_and_automatic_fixtures_lower_the_same_candidate_the_same_way() {
         .candidate_proposal(hunger(), Arrangement::Automatic)
         .expect("the same proposal, differently authored");
     assert_eq!(direct.parts, automatic.parts);
-    assert_eq!(direct.sites, automatic.sites);
+    assert_eq!(direct.tracts, automatic.tracts);
     assert_eq!(direct.expect, automatic.expect);
 
     let mut by_hand = world.phenotype().unwrap().clone();

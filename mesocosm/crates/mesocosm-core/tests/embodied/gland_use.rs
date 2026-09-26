@@ -20,7 +20,7 @@
 
 use mesocosm_core::{
     AllocationProposal, Arrangement, Attachment, CellId, Intent, Organism, OrganismId, Outcome,
-    PartId, Placement, ProposedSite, Provenance, Refusal, Stage, VolumeRef, World, Yaw,
+    PartId, Placement, ProposedTract, Provenance, Refusal, Stage, VolumeRef, World, Yaw,
 };
 
 use super::develop_played;
@@ -72,7 +72,7 @@ fn armed_neighbour(world: &mut World, cells: u32) -> OrganismId {
             expect: prey.phenotype.digest(),
             source: Arrangement::Direct,
             parts: vec![part],
-            sites: vec![ProposedSite {
+            tracts: vec![ProposedTract {
                 part,
                 process: gland(),
                 cells: (capacity - cells..capacity)
@@ -236,7 +236,7 @@ fn severing_the_frond_takes_the_bite_and_the_rent_with_it() {
     }
 
     let after = world.gland().expect("the loss is still readable");
-    assert!(after.sites.is_empty(), "nothing expresses it any more");
+    assert!(after.tracts.is_empty(), "nothing expresses it any more");
     assert_eq!(after.cells, 0);
     assert_eq!(after.potency_mg, 0);
     assert_eq!(after.rent_mg, 0, "and it stopped costing rent");
@@ -263,9 +263,9 @@ fn severing_the_frond_takes_the_bite_and_the_rent_with_it() {
     assert!(!explanation.living);
     assert!(
         explanation
-            .sites
+            .tracts
             .iter()
-            .any(|site| site.named.as_ref().map(|id| id.name.as_str()) == Some("secrete")),
+            .any(|tract| tract.named.as_ref().map(|id| id.name.as_str()) == Some("secrete")),
         "the lost branch can still name what it did: {explanation:?}"
     );
 }
@@ -296,7 +296,7 @@ fn a_severed_frond_is_not_somewhere_a_development_can_put_anything() {
         expect: world.phenotype().unwrap().digest(),
         source: Arrangement::Direct,
         parts: vec![part],
-        sites: vec![ProposedSite {
+        tracts: vec![ProposedTract {
             part,
             process: gland(),
             cells: vec![CellId(0)],

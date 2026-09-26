@@ -22,20 +22,21 @@ pub fn live_parts(subject: u64, body: &BodyDocument) -> BTreeSet<PartRef> {
         .collect()
 }
 
-/// Bind a generated network to admitted sites of the current body. Site roles
-/// come from an authored construction rule, not guesses based on part order.
+/// Bind a generated network to admitted tracts of the current body. Tract
+/// roles come from an authored construction rule, not guesses based on part
+/// order.
 pub fn generate_for_body(
     subject: u64,
     body: &BodyDocument,
     seed: u64,
     settings: &wing_functions::generation::GeneratorSettings,
-    sites: &[wing_functions::generation::BodySite],
+    tracts: &[wing_functions::generation::BodyTract],
 ) -> Result<wing_functions::generation::GenerationBatch, PartRef> {
     let live = live_parts(subject, body);
-    if let Some(site) = sites.iter().find(|site| !live.contains(&site.part)) {
-        return Err(site.part);
+    if let Some(tract) = tracts.iter().find(|tract| !live.contains(&tract.part)) {
+        return Err(tract.part);
     }
-    Ok(wing_functions::generation::generate(seed, settings, sites))
+    Ok(wing_functions::generation::generate(seed, settings, tracts))
 }
 
 #[cfg(test)]

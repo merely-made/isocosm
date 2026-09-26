@@ -113,7 +113,7 @@ fn an_untakeable_candidate_stays_on_the_table_with_its_reason() {
 
     assert_eq!(
         offer.why_not,
-        Some(Untakeable::Unexpressed(Unexpressed::NoSite {
+        Some(Untakeable::Unexpressed(Unexpressed::NoTract {
             role: Role::Plate
         })),
         "a founder of a bulk line grows no plate"
@@ -215,7 +215,7 @@ fn the_price_is_the_filial_cost_the_birth_then_pays() {
     // enriched is out of every birth's reach and out of the quote. What is left
     // varies by a few milligrams — no ground in a world that has been ticked is
     // uniform, since rent, decay and percolation move columns everywhere — but
-    // not by enough to buy a further cell of the site, and cells are the grain
+    // not by enough to buy a further cell of the tract, and cells are the grain
     // `Conditions::affords` charges in. So the quote and the charge come back
     // one number. The equality on genuinely uniform ground is pinned at tick
     // zero, in `src/world/review/tests.rs`; the companion below is the case
@@ -250,7 +250,7 @@ fn richer_ground_under_the_parent_does_not_inflate_the_quote() {
     // `richer_ground_under_the_parent_quotes_more_than_a_dispersed_birth_pays`,
     // and it receipted exactly that: a preview declared the column its parent
     // stood on, a hundred ticks of enduring had returned that body's upkeep
-    // into it, and the table therefore quoted five cells of a site where the
+    // into it, and the table therefore quoted five cells of a tract where the
     // descendant — dispersing onto ordinary soil — could afford one. The
     // dormancy rule was doing its job and the quote was still a number the game
     // would not charge.

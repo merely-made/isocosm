@@ -39,7 +39,7 @@ impl World {
     /// starvation line so the body survives while the real `World::apply`
     /// path records the crossing. Only after that authored prehistory does
     /// this fixture attach the caller's admitted plate, leaving the body with
-    /// a legal site for the discovered gland.
+    /// a legal tract for the discovered gland.
     pub fn expression_practice(
         seed: u64,
         founding: Founding,
@@ -101,7 +101,7 @@ impl World {
             "authored prehistory discovers hunger"
         );
 
-        // The body earns its expression site only after discovery. Pay for the
+        // The body earns its expression tract only after discovery. Pay for the
         // authored plate out of its existing body mass, as graft-practice does
         // for its donor branch, and then re-author the final footing.
         let plate = palette.plate.default;

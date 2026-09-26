@@ -87,7 +87,7 @@ fn a_condition_unrelated_to_food_grants_a_candidate() {
         Registry::native().of_native(Process::Secrete).reference(),
         "the exact admitted definition, not a name"
     );
-    assert_eq!(discovery.candidate.site, Role::Plate);
+    assert_eq!(discovery.candidate.tract, Role::Plate);
     assert!(discovery.digest != 0);
     assert_eq!(
         name_of(discovery.condition),

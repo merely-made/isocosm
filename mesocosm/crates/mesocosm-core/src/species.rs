@@ -93,7 +93,7 @@ pub struct Species {
     pub domain: crate::graft::Domain,
     /// What this line's descendants are born expressing. (P4/PD5)
     ///
-    /// **Heritable, immutable, append-only.** A revision states declared sites
+    /// **Heritable, immutable, append-only.** A revision states declared tracts
     /// rather than a body snapshot, so two descendants of one program may
     /// realize differently; a fork inherits the whole program, because
     /// splitting a line is a commitment rather than a fresh start. Empty is
@@ -124,10 +124,10 @@ impl Species {
     pub(crate) fn commit(
         &mut self,
         cites: crate::program::Citation,
-        sites: Vec<crate::program::DeclaredSite>,
+        tracts: Vec<crate::program::DeclaredTract>,
         at: u64,
     ) -> crate::program::RevisionId {
-        self.program.commit(cites, sites, at)
+        self.program.commit(cites, tracts, at)
     }
 
     /// One founder, realized from this line's recipe and developed under its
