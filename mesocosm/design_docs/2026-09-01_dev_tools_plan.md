@@ -193,16 +193,18 @@ depended on the host being a game.
   DT4's rule holds: no second harness, a missing verb is reported to the
   owner, not built here.
 - *What a step is.* DT1 steps ticks. Under rulings 284 to 286 an advance's
-  limit guards work, not ticks: the budget counts evaluations, an advance may
-  span any stretch of idle time, and due events are kept per group. So the
+  limit guards work, not ticks: the budget counts the members an evaluation
+  stands for, the same in both modes (285), an advance may span any stretch
+  of idle time, and due events are kept per group. So the
   bench's step is an advance bounded by work, and its panel reads world time
   in the clock's own unit, a minute by default (ruling 257), rather than a
   tick count.
 - *What a force is.* DT3's four intents stay the ordinary transactions they
   call; on the sim a placed lot of matter is an asserted fact (record §1,
-  ruling 89) typed by provenance as nis (ruling 98), a forced birth and a dev
-  kill are the sim's own processes, and the receipt's `dev_intents` count
-  labels the run exactly as now.
+  ruling 89) typed by provenance as nis (ruling 98) that enters from a dev
+  source outside the conserved total, as DT3's `Account::Dev` does now
+  (ruling 271); a forced birth and a dev kill are the sim's own processes,
+  and the receipt's `dev_intents` count labels the run exactly as now.
 - *Who is followed.* DT2 follows a critter; the bench follows any entity at
   any rung, reading the sim's nouns, and examining what the view shows up
   close is an intent in the log (rulings 71, 113, 212), so a followed
