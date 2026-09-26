@@ -2,7 +2,8 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-26:** plan; V0 to V4 proposed and not opened. Drafted at
+**Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
+(231 and 243 to 250); V1 to V4 proposed and not opened. Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
 [wing design record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
@@ -12,14 +13,15 @@ repository's plans. It mirrors the
 [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
-§6's decisions are his before V0 closes; seven of eight are taken: ruling 231
-placing this overlay side by side with Eponym's after Mesocosm's M3, rulings
-243 and 244 settling the battlemap under the sim, projected from the
-generated volume with the DM's map an edit over it, and moves within it
-reaching the sim as per-tick batches, and rulings 245 to 248 sharing a
-character on by default, every player's yes to downtime, the faction turn
-retiring at V2 with absorption ruled, and a sim-off campaign writing its
-facts as notes. The first calibration remains.
+§6's eight decisions are taken: ruling 231 placing this overlay side by side
+with Eponym's after Mesocosm's M3, rulings 243 and 244 settling the battlemap
+under the sim, projected from the generated volume with the DM's map an edit
+over it, and moves within it reaching the sim as per-tick batches, rulings
+245 to 248 sharing a character on by default, every player's yes to
+downtime, the faction turn retiring at V2 with absorption ruled, and a
+sim-off campaign writing its facts as notes, and rulings 249 and 250
+Pathfinder 2e calibrated first and an uncalibrated campaign warning at open
+with its receipts marked.
 
 **Owns:** the VTT's profile as a game over the Isocosm sim (the record's
 §5); the VTT side of the overlay contract (ruling 154), a module beside
@@ -68,7 +70,7 @@ Ruling 6's six parts.
 | --- | --- | --- |
 | Domain | the character inside its polities: a denizen with a faction association, partisan, friendly, antagonistic, factional or unaligned, and the polities that set the stakes, sidequests, alignment, arcs, access to resources | 35, 36, 56, 200; the record's §5 |
 | Ensemble | the campaign's cast: the table's characters and what the table authored, the denizens of the places the party reaches, its factions and polities; at a battlemap, the tokens present | 6, 71; the record's §3.4.1 |
-| Mechanics | a ruleset's: checks as outcome bands with a margin and a twist, sheets as grants, the one ledger read as the sheet, GM moves as processes the ruleset registers; the substrate's geometry and turns, never a hit point; rulesets calibrate to the sim, an uncalibrated one plays in a debug or experimental mode with a warning, and a campaign may switch the sim off; death reversible by rules and magics as re-embodiment, summoning from the planes costly | 38, 41, 61, 62, 114, 188, 189; the record's §5.1; PROJECT_DESCRIPTION pillar 4 |
+| Mechanics | a ruleset's: checks as outcome bands with a margin and a twist, sheets as grants, the one ledger read as the sheet, GM moves as processes the ruleset registers; the substrate's geometry and turns, never a hit point; rulesets calibrate to the sim, Pathfinder 2e first, an uncalibrated one plays in a debug or experimental mode that warns when the campaign opens and marks every receipt and save, and a campaign may switch the sim off; death reversible by rules and magics as re-embodiment, summoning from the planes costly | 38, 41, 61, 62, 114, 188, 189, 249, 250; the record's §5.1; PROJECT_DESCRIPTION pillar 4 |
 | Controls | the DM's edit mode: proposes, previews and commits; edits the world and plays any unclaimed entity, on by default at every table; declares downtime with every player's yes; forces a pack the world does not meet; takes up, drops or reshapes a hook; the players': their characters' acts on the board, each directing only who they play, two able to direct one, on by default; pins of any pointable thing; the battlemap as the region examined up close | 104, 105, 152, 153, 156, 190, 191, 210, 212, 245, 246 |
 | Perspective | the locked isometric 2D lens, 2:1 diamond tiles and sculpted elevation; scopes over the one world, world, region, area and battlemap, the VTT's own and never the sim's; players see what their characters know and the DM sees the truth, survival and creative split by role | 18, 74, 92; vessel briefs §2; the record's §5.7 readings; PROJECT_DESCRIPTION pillar 2 |
 | Timescale | the turn, in the initiative modes a ruleset chooses; the campaign's time passes as the table plays; downtime runs the sim forward as deep time does, with the players' consent; between sessions only if the founder turned the unattended rate on | 6, 93, 104, 105; the record's §5.7 readings; vessel briefs §2 ("the rhyme") |
@@ -135,10 +137,10 @@ changing nothing in the core.
 | In: travel | a party's move to a place-graph node, and its pace | 72, 205 |
 | In: hooks | a running arc taken up, dropped or reshaped | 103, 191 |
 | In: attention changes | pin or unpin any pointable thing; examine the battlemap the view shows up close, the overmap staying a far view | 210, 212 |
-| In: dev intents | none of its own: the DM's edit mode is play at the table (156); a debug or experimental campaign is a setting with a warning (189) | 156, 189 |
+| In: dev intents | none of its own: the DM's edit mode is play at the table (156); a debug or experimental campaign is a setting that warns when it opens and marks every receipt and save uncalibrated, with no standing banner (189, 250) | 156, 189, 250 |
 | Out: events | each participant's stream: the DM's the truth, a player's what their characters know; record entries reaching the characters, faction acts, and arcs offered as hooks | 84, 191, 204, 213 |
 | Out: views | the examined site's near rung for the battlemap, projected from the generated volume in the game's grid, with the DM's map an edit over it; the overmap's far view read from the crowd | 12, 18, 89, 212, 243 |
-| Handoff | the ruleset's resolved action in the sim's terms: vigour drained and wounds to parts, a defeat or a death, a condition applied or cleared, a displacement within the site, an item transferred; passing the sim's invariants, the accounts conserved; calibrated under 114 or flagged under 189 | 114, 123, 154, 189 |
+| Handoff | the ruleset's resolved action in the sim's terms: vigour drained and wounds to parts, a defeat or a death, a condition applied or cleared, a displacement within the site, an item transferred; passing the sim's invariants, the accounts conserved; calibrated under 114, Pathfinder 2e first, or marked uncalibrated under 189 and 250 | 114, 123, 154, 189, 249, 250 |
 
 *Reading, not ruled:* `ActionResolved`'s fields, a request id, the rolls,
 sheet deltas, beats, the defeated, the displaced and the conditions, are the
@@ -206,7 +208,8 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 15).
 
 - **V0, the profile ruled.** Done when §6's decisions are taken; everything
-  else in §1 to §4 rests on rulings already made.
+  else in §1 to §4 rests on rulings already made. **Done 2026-09-26**
+  (rulings 231 and 243 to 250).
 - **V1, the contract's VTT side.** Done when `src/vtt/` exists in
   `shared/isocosm-overlay` (ruling 197) with the table's acts, assertions,
   time, travel, hooks and the handoff's outcome vocabulary as §3 has them
@@ -225,11 +228,12 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   hash. Lands under the sim plan's S1, S3 and S5.
 - **V3, the table over the sim.** Done when an adjudicated action at a
   battlemap returns through the handoff and passes the sim's invariants
-  (ruling 154); the bench check of ruling 114 runs over seeded draws for the
-  first-party ruleset, a fight with no player choices resolving in the same
-  distribution as the sim's own (rulings 115, 116, 123, 221 to 223) within
-  the world's tolerance (ruling 209), and a ruleset that fails it plays only
-  in a debug or experimental mode with a warning (ruling 189); a campaign
+  (ruling 154); the bench check of ruling 114 runs over seeded draws for Pathfinder
+  2e's skeleton first (ruling 249), a fight with no player choices resolving
+  in the same distribution as the sim's own (rulings 115, 116, 123, 221 to
+  223) within the world's tolerance (ruling 209), and a ruleset that fails
+  it plays only in a debug or experimental mode that warns when the campaign
+  opens and marks every receipt and save uncalibrated (rulings 189, 250); a campaign
   with the sim off plays as today, its downtime the table's own, and still
   writes its facts as notes so the sim can be switched on later over the
   same history (rulings 188, 248); and a death at the table is
@@ -251,9 +255,9 @@ The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
 
 ## 6. Decisions for Mark
 
-Seven of eight taken: the eighth by ruling 231 on 2026-09-25; the first to
-fifth and the seventh by rulings 243 to 248 on 2026-09-26. The sixth is the
-fork this plan found and did not settle.
+All eight taken: the eighth by ruling 231 on 2026-09-25; the first to
+seventh by rulings 243 to 250 on 2026-09-26. V0 is done on paper; opening
+V1 is Mark's.
 
 1. **The battlemap under the sim.** When the sim is on, a battlemap is the
    DM's authored map asserted over the site's volume (ruling 89), a
@@ -293,7 +297,11 @@ fork this plan found and did not settle.
 6. **The first calibration.** Which ruleset the bench calibrates first, the
    5e SRD in the repository or Pathfinder 2e's skeleton, against the sim's
    fight at the first tolerance (ruling 209); and what a debug or
-   experimental campaign shows the table (ruling 189).
+   experimental campaign shows the table (ruling 189). **Ruled 249 and 250
+   (2026-09-26): "Pathfinder 2e first" and "Warn at open, mark
+   receipts."** The bench calibrates Pathfinder 2e's skeleton first; an
+   uncalibrated campaign warns when it opens and marks every receipt and
+   save uncalibrated, with no standing banner.
 7. **A sim-off campaign's record.** Whether a campaign played with the sim
    off still writes its facts as notes, so the sim can be switched on later
    over the same history, or switching it on founds a world from that point
@@ -337,6 +345,11 @@ fork this plan found and did not settle.
 
 ## Progress
 
+- 2026-09-26: rulings 249 and 250, recorded at 4de670a, take §6's last
+  decision: the bench calibrates Pathfinder 2e's skeleton first, and an
+  uncalibrated campaign warns when it opens and marks every receipt and save,
+  with no standing banner. V0 is done, all eight decisions ruled; §1, §3 and
+  §5 follow.
 - 2026-09-26: rulings 245 to 248, recorded at de68795, take §6's decisions
   3, 4, 5 and 7: sharing a character and the DM playing the unclaimed are on
   by default, downtime needs every player's yes, Isocosm absorbs
