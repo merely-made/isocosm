@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 235, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 239, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2018,6 +2018,38 @@ what later sections derive from.
      arriving, a birth into one of the world's lineages, a named creature
      chosen among the drawn world's denizens, or any, the player's call?
      Mark: "Any, player's call."
+236. **Competitions are keyed by what is contested, and share a round one
+     per member per tick, by need.** Put to Mark on 2026-09-26, from S2's
+     checkpoint 1, which stored competitions as a map keyed by id, ruling 115
+     naming many scarce things, while the probe refused a world with more than
+     one: keep the map and design sharing later, design it now, or one per
+     world? Mark: "Design sharing now." Asked how: one per tick by need, all a
+     member needs with costs adding, or as the world's rules say? Mark: "One
+     per tick, by need." So each member enters only the competition for its
+     most pressing need that tick, set by its needs and priorities, and each
+     competition resolves over its own entrants.
+237. **The exact runner's two remaining growing costs are cut.** Put to Mark
+     on 2026-09-26: each feeding evaluation searching the whole population
+     for a target, and each advance cloning the whole world; cut both, under
+     the same rule as before, results byte-identical by the differential
+     driver, or leave them? Mark: "Cut both."
+238. **At an Eponym death with no bonded companion, what follows is the
+     player's call.** Put to Mark on 2026-09-26, from the Eponym overlay
+     plan's decision 3: an outsider arriving, the execution plan's F8
+     fallback; the player's call, as ruling 229 gives Mesocosm; or the line
+     ending, watchable? Mark: "Player's call." So the player takes up
+     another life in that world, any of ruling 235's three, or goes to a new
+     world. *Reading, not ruled:* going to a new world is how a line ends in
+     one, so the plan needs no separate answer that lets it end.
+239. **Isocosm absorbs Eponym's simulation, and driving is built only on
+     Isocosm.** Put to Mark on 2026-09-26, from the plan's decision 4: with
+     Isocosm absorbing `eponym-world`'s and `eponym-social`'s simulation as
+     ruling 192 had it absorb `mesocosm-core`, in the plan's order (bodies,
+     places, lives and rounds, standing and asks, knowledge, glyphs, then
+     fights and technique), is driving built only on Isocosm, as ruling 194
+     had Mesocosm's directing, or first over today's `Session`? Mark: "Only
+     on Isocosm." So the absorption goes in that order, and driving has no
+     prototype over `Session`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5801,6 +5833,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 236 to 239 recorded: competitions share a round one
+  per member per tick, by need; the exact runner's two remaining growing
+  costs are cut; at an Eponym death with no bonded companion, the player's
+  call; and Isocosm absorbs Eponym's simulation, driving built only there.
 - 2026-09-25: rulings 232 to 235 recorded, the Eponym overlay plan's first
   four decisions: blows resolved in the foreground and handed back; the
   motion and contact solver on the game side; where a first life begins in
