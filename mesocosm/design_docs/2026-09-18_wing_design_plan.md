@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 267, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 278, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2279,6 +2279,100 @@ what later sections derive from.
      by births balancing deaths, or by persistence, turnover, collapse and the
      web's response to an intervention? Mark: "The four measures." Each has a
      bound in the world's rules.
+268. **Computed amounts are bounded expression trees, with a default set
+     easy to group and calibrate.** Put to Mark on 2026-09-26, from S2's
+     checkpoint 3 plan, decision 5: linear in one reading, clamped, with a
+     draw term; a bounded expression tree; or named native formulas? Mark:
+     "2, but with a default set of expressions that are easy to group and to
+     calibrate?" So a world may author a bounded expression tree, and the
+     default expressions are ones the crowd groups and the bench calibrates
+     easily. *Reading, not ruled:* the linear, clamped form with a draw term
+     is among the defaults.
+269. **Shared ground is scrambled for by what cannot decide and competed for
+     by what can.** Put to Mark on 2026-09-26, from decision 6, ruling 266
+     keeping the exact crowd while grouping pays: a shared site resource
+     under shortage resolved by a competition, a proportional scramble, or
+     one by one in identity order? Mark: "a proportional scramble if these
+     creatures are not sentient, a competition if they are. like if they're
+     dumb they're just gonna try to take what they can; if they've got some
+     decision making capability, that resolves with a competition!"
+     *Reading, not ruled:* decision-making capability is a methodology that
+     chooses (ruling 37), so producers and other purely reactive members
+     scramble in proportion, and members that choose compete under rulings
+     115, 236 and 240.
+270. **The flow record is buffered outside state.** Put to Mark on
+     2026-09-26, from decision 7: each tick's matter receipts, reconciling
+     every compartment, buffered outside the state hash, kept in state under
+     the history cap, or no stream? Mark: "Buffered outside state."
+271. **Matter a dev places comes from a dev source.** Put to Mark on
+     2026-09-26, from decision 8: a dev intent placing matter breaks the
+     conservation invariant; a dev source outside the conserved total,
+     creative mode only, or refused? Mark: "A dev source." So it enters from
+     outside the conserved total, as Mesocosm's DT3 does, and the run is
+     labelled assisted.
+272. **Pressure profiles become founding presets.** Put to Mark on
+     2026-09-26, from decision 9: `mesocosm-core`'s pressure profiles, which
+     nothing in the sim reads: founding presets, authoring reference, or
+     retired? Mark: "Founding presets."
+273. **Checkpoint 3's four readings stand.** Put to Mark on 2026-09-26: R1,
+     untyped matter becomes the world's own, living matter accounts typed by
+     lineage, digestion yielding the eater's matter; R2, a shape's identity is
+     its set of roles; R3, a native reading of a member's own state runs in
+     the crowd per exact state, so only opaque run-time scripts stay
+     foreground-only; R4, until bodies move, seeding's only consumer is the
+     founding generator. Mark: "Accept all four."
+274. **At a merge that changes lived outcomes, the player chooses.** Put to
+     Mark on 2026-09-26, from both reviews: a merge by replay can change
+     outcomes a player already lived through; show and choose, lived history
+     holds, or the replay wins, remembered? Mark: "show and choose: keep your
+     own fork, the replay adjusts around lived outcomes (merge), or the
+     replay wins and the lived outcome is a tale. how about that?" Answered
+     that the three are ones the sim already has, a fork (ruling 126), lived
+     outcomes asserted so the replay works around them, and a tale (ruling
+     157), and that two players' lived histories can collide. *Reading, not
+     ruled:* when they do, each keeps their own fork by default.
+275. **Before motion is assigned, the sim resolving fine position up close is
+     measured.** Put to Mark on 2026-09-26, from both reviews: who owns a
+     nearby critter's movement, contact and pose? Mark: "i worry 1 would be
+     too expensive for the sim. if so, 2". Answered that with a minute clock
+     (257) the sim resolving it means a finer sub-clock inside the region
+     examined up close, the cost he worried about, and that 257's reading
+     already gives what is finer than the unit to the foreground game. Put
+     back, record the foreground game's positions or measure first? Mark:
+     "Measure option 1 first." *Reading, not ruled:* the measurement waits
+     until the vertical probe (262) gives Isocosm minimal bodies.
+276. **Shapes are eight: lump, rod, sheet, point, tube, branch, shell and
+     joint.** Put to Mark on 2026-09-26, from the survey of both axes that
+     ruling 264 asked for: keep the four read from geometry, add joint and
+     tube, or add tube, branch, shell and joint? Mark: "Add tube, branch,
+     shell, joint." So the classifier reads hollowness, branching and
+     enclosure as well as extents.
+277. **A body's functions assemble into organ systems, and new systems are
+     riffed from them.** Put to Mark on 2026-09-26, with 276: which functions
+     join contract, intake, sense, fix and secrete: structure and control,
+     metabolism, life cycle, handling? Mark picked all four and said:
+     "honestly i was thinking of the main organ systems of the body, like the
+     integumentary (is that right?), respiratory, circulatory, digestive,
+     neurological, reproductive, the kinds of sensation, things
+     humans/fauna don't have, etc.. if we can assemble those buckets out of
+     functions like the ones you propose, i'm alright with that, i guess i
+     just figured take the big approach and then try figuring out parts and
+     then riff new ones and mix existing ones to make new forms/systems...
+     might make sense for new-looking forms of life that still are
+     biologically reasonable. i don't have great specifics though." So the
+     model has three levels. Organ systems: integumentary, which is right,
+     the body's covering; respiratory, circulatory, digestive, nervous,
+     reproductive; the senses; and systems fauna lack. Functions assemble
+     them: the five, plus support, conduct, gate, store, circulate, respire,
+     excrete, reproduce, grip and adhesion, each carried by the shapes it
+     names. Parts are shapes expressing functions. The generator riffs new
+     systems by mixing functions, for new-looking life that stays
+     biologically reasonable.
+278. **The function vocabularies become one catalogue in the sim.** Put to
+     Mark on 2026-09-26, from the survey, which found four that never meet,
+     Mesocosm's processes, `wing-functions`' kinds, Eponym's grip and
+     adhesion, and its contact probe's impairments: one catalogue every game
+     reads, or separate for now? Mark: "One catalogue."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6064,6 +6158,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 268 to 278 recorded: checkpoint 3's remaining
+  decisions (bounded expression trees with easy defaults; shared ground
+  scrambled for by what cannot decide and competed for by what can; the
+  flow record outside state; a dev source for placed matter; pressure
+  profiles as founding presets; its four readings); both reviews' merge and
+  motion (the player chooses at a merge; fine position up close measured
+  before motion is assigned); and the anatomy survey's outcome (eight
+  shapes, functions assembled into organ systems and riffed into new ones,
+  one function catalogue in the sim).
 - 2026-09-26: rulings 262 to 267 recorded, from S2's checkpoint 3 plan and
   a second review: a vertical probe before the order from bodies on is
   fixed; families built in Isocosm with `mesocosm-core`'s copies retiring

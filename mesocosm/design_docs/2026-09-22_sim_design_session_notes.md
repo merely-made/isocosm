@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 267
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 278
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -376,6 +376,8 @@ worlds, none in ecological ones.
 | | Duplicated shapes; raw receipts | "Lift to the core now"; "Keep raw out of tree" | 254, 255 |
 | The outside review | The tick; its unit; the scheduler; the budget; viability; the background | "A fine unit, periods per process"; "World setting, a minute default"; "Index now, per-entity later"; "Count only what runs"; asked whether an ecology can balance before its parts exist, then "Staged, per family"; "Hybrid" | 256 to 261 |
 | | The probe; the handover; part roles; the thirty shapes; the hybrid's line; alive | "Vertical probe first"; "Build, retire together"; "Examine first"; asked for option 3's case, then "Wider, fields from the probe"; "Where grouping stops paying"; "The four measures" | 262 to 267 |
+| | Amounts; shared ground; the flow record; dev matter; pressures; readings | "2, but with a default set of expressions that are easy to group and to calibrate?"; scramble if they cannot decide, compete if they can; "Buffered outside state"; "A dev source"; "Founding presets"; "Accept all four" | 268 to 273 |
+| | Merge; motion; shapes; functions; one catalogue | the player chooses among fork, merge and tale; "Measure option 1 first"; "Add tube, branch, shell, joint"; organ systems riffed from functions; "One catalogue" | 274 to 278 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
