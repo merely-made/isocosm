@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 239, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 240, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2027,7 +2027,8 @@ what later sections derive from.
      member needs with costs adding, or as the world's rules say? Mark: "One
      per tick, by need." So each member enters only the competition for its
      most pressing need that tick, set by its needs and priorities, and each
-     competition resolves over its own entrants.
+     competition resolves over its own entrants. **Amended by ruling 240:**
+     competitions run concurrently in a tick and settle at its end.
 237. **The exact runner's two remaining growing costs are cut.** Put to Mark
      on 2026-09-26: each feeding evaluation searching the whole population
      for a target, and each advance cloning the whole world; cut both, under
@@ -2050,6 +2051,22 @@ what later sections derive from.
      had Mesocosm's directing, or first over today's `Session`? Mark: "Only
      on Isocosm." So the absorption goes in that order, and driving has no
      prototype over `Session`.
+240. **Competitions run concurrently in a tick and settle at its end.**
+     Reopened by Mark on 2026-09-26, after ruling 236: "Although i imagine
+     that might slow things down... is it better to allow for concurrent
+     competitions, performance-wise?" Answered that one per tick was the
+     cheaper of the options first put, and that costs carrying from one
+     competition into the next was the slow one, since it splits groups of
+     identical members mid-tick and forces the competitions into order; that
+     competitions run at once, each against the member's state at the tick's
+     start with the costs summed at its end, cost no more; and that one per
+     tick costs dynamics rather than compute, a member needing food and a den
+     waiting a tick for the second. Put back with that and, at his asking, a
+     recommendation, Mark: "Concurrent, settled at end." So a member enters
+     every competition it needs in a tick, each resolving against its state
+     at the tick's start, and the costs, reserve spent and strain, are summed
+     and applied at the tick's end, capped at what it holds. This amends
+     236's one per tick; its map keyed by what is contested stands.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5833,6 +5850,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: ruling 240 recorded, amending 236 at Mark's asking:
+  competitions run concurrently in a tick, each against the member's state
+  at its start, and settle at its end, no costlier than one per tick.
 - 2026-09-26: rulings 236 to 239 recorded: competitions share a round one
   per member per tick, by need; the exact runner's two remaining growing
   costs are cut; at an Eponym death with no bonded companion, the player's
