@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 287, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 292, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2431,6 +2431,32 @@ what later sections derive from.
      multiplied with lineages; one per consumer, or keep the pairs? Mark:
      "One per consumer." Its choice among prey is the definition's target
      selection.
+288. **mere's retarget defect is fixed first.** Put to Mark on 2026-09-26,
+     from the paging lane's assessment: after a retarget that shrinks the
+     resident selection, `modulus` can leave a kept brick in a slot past the
+     resident count, so its refresh panics and picks pass through visible
+     ground; work around it here and fix mere next, fix mere first, or stay
+     out of mere? Mark: "Fix mere first." A lane fixes it in its own worktree
+     of mere, off `origin/main`, before any paging is wired here.
+289. **mere's atlas is sized to the card.** Put to Mark on 2026-09-26, with
+     288: the resident cap of 2,047 bricks does not cover a 256-tile board
+     with relief in the headed pane; a card-sized cap, or 2,047 for now?
+     Mark: "Card-sized cap." It rides with the defect's fix.
+290. **The board's CPU side is paged too.** Put to Mark on 2026-09-26, with
+     288: every overlay change regrows the whole map, seconds a click at 256;
+     page it too, computing bricks from the map on demand, or atlas only?
+     Mark: "Page it too."
+291. **Residency follows the view, in an isometer helper.** Put to Mark on
+     2026-09-26, with 288: which bricks are loaded, and where the code lives?
+     Mark: "View, isometer helper." So the bricks overlapping the pane plus a
+     one-brick margin, a pure function of view and map; the mechanics in a
+     product-neutral helper in `shared/isometer`, the board's rule in the VTT.
+292. **Isometry pins mere's current main.** Put to Mark on 2026-09-26, with
+     288, the fix and the cap touching only `conatus`, unchanged since the pin
+     of 2026-09-15: pin a patch commit on the old rev, or move the six
+     manifests to mere's current main, 233 commits on? Mark: "mere's current
+     main." So the pin bump adapts isometry to those commits, and follows the
+     fix onto mere's main.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6216,6 +6242,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 288 to 292 recorded, from the paging lane's forks: mere
+  fixed first; the atlas sized to the card; the board's CPU side paged too;
+  residency by the view in an isometer helper; and isometry's pins moved to
+  mere's current main. A mere lane and the board lane run in parallel.
 - 2026-09-26: rulings 284 to 287 recorded, from the scheduler index's
   report (merged at 6ba01e9): an advance's limit guards work, not ticks;
   the budget counts the members an evaluation stands for; due events are

@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 287
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 292
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -381,6 +381,7 @@ worlds, none in ecological ones.
 | | Far rungs; rewrite debt; anatomy brief; board paging | "Park explicitly"; "A doc lane clears it"; "After the probe"; "Open a lane now" | 279 to 282 |
 | | The first disturbances | "Disease, An overperformer, A keystone lost, Catastrophe later, to test the criteria of systemic resilience" | 283 |
 | | Advance limits; the budget; due events; feeding | "Work, not ticks"; "Count members"; "Due events per group"; "One per consumer" | 284 to 287 |
+| | The board's paging: mere's defect; the cap; the CPU side; residency; the pin | "Fix mere first"; "Card-sized cap"; "Page it too"; "View, isometer helper"; "mere's current main" | 288 to 292 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

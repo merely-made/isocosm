@@ -228,6 +228,28 @@ with the family's receipts unchanged; then the board.
 - No Isometry-side document cited the L4 done condition before this plan.
 - `isometry-runtime`, which holds the earlier fixed-isometric GPU tenant,
   is excluded from the root workspace and untouched by this plan.
+- **2026-09-26, a paging assessment (Lane E, ruling 282):** paging already
+  exists at the pinned mere and is wired nowhere here. `modulus`'s
+  `BrickMap::with_capacity`, `retarget` and `refresh` page a fixed-capacity
+  atlas, `isometer-lens` wraps them (`bricks.rs:95,105`), and the tracer
+  uploads only newly loaded slots (`tracer/residency.rs:97-161`, receipt at
+  `tracer_tests.rs:665`), so the board can page inside this repository.
+  Three facts bound it. The resident cap stays 2,047 bricks: in the headed
+  pane (972 by 820) a flat 256-tile board needs 1,345 visible bricks and
+  fits, one with 0 to 7 relief needs 2,063 and does not. A defect in
+  `modulus` at 876320fd, unchanged on mere's main: after a retarget that
+  shrinks the selection, a kept brick can hold a slot past the resident
+  count, so its refresh panics and picks pass through visible ground
+  (`modulus/src/lib.rs:424-433`); Eponym's V1b carries it latently, never
+  editing or picking. And the CPU regrow: every overlay change regrows the
+  whole map, 0.4 to 2.8 s a click in release at 256 (single samples), which
+  paging the atlas does not touch. Mark ruled on 2026-09-26 (wing design
+  record, rulings 288 to 292): fix mere first, size the atlas to the card,
+  page the CPU side too, select residency by the view's footprint in an
+  isometer helper, and move isometry's pins to mere's current main. The
+  assessment's raw files are out of tree in
+  `Code/testing/isometry/paging-assessment-2026-09-26/`. §5's decision 4
+  stays open; it now turns on those rulings landing.
 
 ## 8. The scene board's cost model (B5, 2026-09-16)
 
@@ -678,3 +700,10 @@ a lane saw. This section is the current one, and it names its build.
   and a modulus dependency, about 780 lines, was dropped by Mark's ruling
   of 2026-09-18: the wing design record retires the cap as a limit, and
   this plan is under rewrite. 110 views tests, 408 across the workspace.
+- **2026-09-26, paging opened and assessed.** Ruling 282 opened a lane to
+  wire paging into the scene board; it stopped at forks after assessing, and
+  Mark ruled them the same day (rulings 288 to 292, §7). A mere lane fixes
+  the retarget defect and sizes the atlas to the card, isometry's pins then
+  move to mere's current main, and the board lane builds the CPU-side paging
+  and the view-driven residency helper meanwhile, keeping any shrinking
+  retarget off paths a user can reach until the pin moves.
