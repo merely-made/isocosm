@@ -10,11 +10,18 @@ speciation and life-stage plasticity remain design or unwired. The 2026-08-31
 reproduction direction is recorded in section 0; earlier rulings are Mark's from the dialogue through 2026-08-03 and
 are marked where the reasoning is mine.
 
-**W1, 2026-09-18:** rewrite. Tier: mixed, sim record and Mesocosm board.
-Only the significance test and its owner fail; the board, the reckoning and
-speciation as an act stand. Rewrite is a lane under the record's W2 or W3;
-until it lands this plan's done-conditions are not authoritative. Evaluated
-against the wing design record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as mixed, sim record and Mesocosm board,
+and found one contradiction: §3 judges significance as abnormality against
+the world record alone, where the record's ruling 4 gates promotion on
+novelty, quality **and relevance**, and the organ that judges is the
+hagiograph, which has since moved to mere (`WorldRecord` is a newtype over
+`hagiograph::Record`, `record.rs`; `history.rs` still holds only the
+abnormality lookup). The board, the reckoning and speciation as an act
+stand, the last two confirmed by rulings 57 and 202. This pass adds the
+record's test and its owner to §3, marks the boundary's sim side where the
+overlay plan now owns it (§11, §12), and supersedes the word `borg` (ruling
+200); its done-conditions are authoritative again. The evaluation stays in
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
@@ -72,6 +79,10 @@ similarity metric crosses a line.
 Note what this rhymes with, because it is the same rule one level up: **a borg
 is a named critter.** Naming promotes an individual out of being a statistic;
 naming promotes a line out of being a variation. One mechanic, two scales.
+*(2026-09-26: the word is now **denizen**, a named entity, wing design
+record ruling 200; `borg` was provisional and this plan keeps it where it was
+written. The rhyme holds as stated, and ruling 202 confirms the player's
+half: speciating stays the player's act, "the name is the doing".)*
 
 The alternative most prior art uses is a divergence threshold: Thrive
 auto-speciates when a population's traits drift far enough. That produces
@@ -173,6 +184,30 @@ not there to hurt the player, it is there to make the record incomplete again.
 That reframing also decides a question the founding plan left open: prefer
 **endogenous** transitions, because they are the world making its own record
 incomplete. Exogenous disturbance is the tool for when it stops doing so.
+
+### The record's test, and who applies it (2026-09-26)
+
+The wing design record's ruling 4 keeps this section's principle and widens
+its test: what is never lossy is the record of significant events, judged
+"unprecedented, legendary, or narratively significant, same test
+everywhere", and the promotion gates are **novelty, quality and relevance**.
+Abnormality against the record is the novelty gate. Quality and relevance
+are the two this plan did not name, and the code does not apply either:
+`history.rs` states the abnormality lookup as the whole of significance
+(checked 2026-09-18 by W1, and again today). Relevance is what stops a
+world's ten-thousandth unprecedented-but-trivial feat from being a tale.
+
+The organ that judges is the **hagiograph**, in mere's eidetic family
+(record §3.4; the isoscape family plan's rulings 8 to 10). Section 9's
+world record is already a thin newtype over `hagiograph::Record`, and deep
+time runs through `hagiograph::{DeepTime, Handover}`, so the mechanism this
+plan built has moved a tier down, as §6 foresaw ("one selector at two
+scales"). What stays Mesocosm's is the axis set of §3, `Feat` and `Scale`,
+this game's own vocabulary over the shared organ. The missing relevance
+gate is a finding for the isoscape family plan (sim plan §4), not for this
+one; the storyteller's brief above is unchanged and is now the record's own
+(§3.11: consequential means "an event of note or of legend, by the
+hagiograph's test").
 
 ---
 
@@ -449,6 +484,19 @@ would have made the name metadata rather than the deed.
 **NPC speciation.** An unplayed lineage splits on a significant event, and
 significance still needs scoring, which needs places. The player half stands
 alone because naming needs nothing but a player.
+
+**Where this lands now (2026-09-26).** The wing design record's §3.2.1 names
+this plan's speciation-as-an-act as a rung transition of the sim's third
+process shape, "provided the branch has a plan to grow and to compete or
+cooperate with the lineage it left", so the condition on an unplayed split
+is named there and waits for the sim, not for this plan. Unplayed lineages
+adapt, inherit and develop, weighing their adaptation against the rest of
+the trophic web (ruling 182), which `World::adapt_round` does in initiative
+order today; the Mesocosm overlay plan's M2 moves the lineages-and-boundary
+family onto Isocosm, and its M4 plays boundaries "where every lineage adapts
+against the web". The player's split stays a player's act beside directives
+and checkpoint answers (ruling 202), carried as `Speciate` in the overlay
+contract's Mesocosm module.
 ---
 
 ## 12. Places, and the reckoning all four pieces were for
@@ -550,6 +598,19 @@ executable.
   deliberately has no name field yet.
 - **NPC speciation**, which was waiting on scoring, is now only waiting on the
   rule for what counts as significant enough to split a line.
+
+**The places this section built are the practice, not the design
+(2026-09-26).** The wing design record's §3.7 makes a place a node derived
+from the volume, a connected component of air, and the sim plan's §2.2 holds
+the world map as adjacency; the nearest-site partition, the fixed grid and
+the height-blind `Places::at` above are what W1 corrected as Mesocosm's
+current practice. `Scale`, `spread` and the high-water range read the same
+over derived places, so nothing in the reckoning changes shape; the source
+moves under the overlay plan's M2 (places family). The two "events carry no
+place / no tick" gaps close there too: the sim's events are stamped (ruling
+203) and sited, and an event's reach is a field on that graph (rulings 5,
+84). Naming a place is ruling 200's promotion, a location asserted when
+noted (sim plan §2.2), and the events of note become tales (ruling 157).
 ---
 
 ## 7. Stop rules
@@ -568,7 +629,9 @@ executable.
 - Do not make plasticity free. Youth buys change with capability.
 - Do not store a temperament. It is a fold over substrate and history.
 - Do not grow the event log without a selector; that is the tulpa mechanic and
-  it is load-bearing rather than decorative.
+  it is load-bearing rather than decorative. *(The selector is the
+  hagiograph, and its gates are novelty, quality and relevance, ruling 4;
+  noted 2026-09-26.)*
 - Do not make the world record answer traversal questions. Abnormality is a
   lookup; what-depended-on-this is the causal log.
 - Do not note a zero. `untouched` answers "has anyone ever", and a zero mark
@@ -605,6 +668,15 @@ executable.
    but persistent and asynchronous play still needs a standing rule. Requiring
    every historical inhabitant would freeze old lineages; treating silence as
    consent would rewrite somebody else's continuation.
+
+*Standing of these on 2026-09-26:* question 2 has its condition named by the
+record (§3.2.1, an unplayed branch needs a plan to grow and to compete or
+cooperate) and its name is a denizen-style promotion (ruling 200) still
+unruled for lineages; questions 3, 5 and 6 are open and the record does not
+decide them; question 4's remainder is one conditional expression the
+record's §3.2.1 already lists as ruled, "plasticity is a life stage that
+youth pays for", with the price still flat. Goals (§4) have no ruling in the
+record beyond §3.11's reading of what a goal is in the sim's terms.
 
 ---
 
@@ -669,6 +741,12 @@ executable.
   descendant will express one literal phenotype.
 
 ## Progress
+
+- **2026-09-26: rewritten to the wing design record** under ruling 280's doc
+  lane. §3 gains the record's three gates and names the hagiograph as the
+  organ that judges; §11 and §12 mark what has moved to the sim and the
+  overlay plan's M2; `borg` is superseded by denizen (ruling 200) with the
+  dated text kept. No ruling in the dialogue sections changed.
 
 - **2026-09-02 (PE3b):** §3's reckoning becomes the review's evidence, on a
   screen. `World::offers` puts every candidate the played line could commit on

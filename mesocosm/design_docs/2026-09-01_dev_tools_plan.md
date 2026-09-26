@@ -5,10 +5,15 @@ complete.** Both §4 decisions ruled and built. DT4 folded the bespoke replay
 and demo harness into genet-probe's `Automatable`/`Driveable`/`Scenario`, and
 reconciled the epoch boundary's two disagreeing doors into one on the way.
 
-**W1, 2026-09-18:** rewrite. Tier: stack, becoming the bench. The tools are
-right; their home is a tier down. Rewrite is a lane under the record's W2 or
-W3; until it lands this plan's done-conditions are not authoritative.
-Evaluated against the wing design record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as stack, becoming the bench, and found
+one contradiction, of placement: DT1 to DT4 landed inside the product host,
+`mesocosm-genet`, where the record's W4 wants one bench, "which is also the
+dev tools", running the sim headless under a seed with receipts and without
+any game. The tools are right; their home is a tier down. §6 says what
+moves and what stays; DT1 to DT4's done-conditions are authoritative again
+as the record of what landed, and the lift is W4's lane. The evaluation
+stays in
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
@@ -159,6 +164,56 @@ of them. Each phase is one agent round on a non-Fable model.
 - No dev-only physics or dev-only rules: a forced birth is the ordinary birth.
 - No new harness where genet-probe already has the verb.
 
+## 6. The tools' home under the record (2026-09-26)
+
+The wing design record's W4 (§11) is done "when one bench, which is also the
+dev tools, runs the sim headless under a seed with receipts and has lanes for
+processes and effects including magic, the world, specimens, items and
+effects, so that a draw from the generator's declared space can be run,
+replayed and reviewed in any of them without any game." Everything this plan
+built is that bench's, and all of it lives in the product host today:
+`app/devtime.rs`, `app/devworld.rs`, `app/follow.rs` and `app/drive.rs` in
+`mesocosm-genet`, beside the specimen bench in `app/bench/`, which the record
+names as the first lane to lift for the same reason.
+
+**What stands, as the bench's principles.** §2 whole: dev tools as ordinary
+chrome in the cambium lane; the two kinds of dev action, host-only pacing
+that never reaches the trace and world-changing intents that always do, with
+no third kind; no reading the lane invents; consolidate into the stack; a
+receipt that says `assisted`. §5's stop rules stand with them. None of these
+depended on the host being a game.
+
+**What moves.**
+
+- *The host.* The bench runs Isocosm headless, game-free, under a seed, and
+  the twelve verbs reach it through the scenario driver. The record's
+  placement table (§4.1) names taproot and mesquite as the scenario driver
+  and the scenario lane with captures, receipts and exit codes; genet-probe's
+  `act`, `wait`, `assert` and `capture` are the verbs this plan spoke, and
+  DT4's rule holds: no second harness, a missing verb is reported to the
+  owner, not built here.
+- *What a step is.* DT1 steps ticks. Under rulings 284 to 286 an advance's
+  limit guards work, not ticks: the budget counts evaluations, an advance may
+  span any stretch of idle time, and due events are kept per group. So the
+  bench's step is an advance bounded by work, and its panel reads world time
+  in the clock's own unit, a minute by default (ruling 257), rather than a
+  tick count.
+- *What a force is.* DT3's four intents stay the ordinary transactions they
+  call; on the sim a placed lot of matter is an asserted fact (record §1,
+  ruling 89) typed by provenance as nis (ruling 98), a forced birth and a dev
+  kill are the sim's own processes, and the receipt's `dev_intents` count
+  labels the run exactly as now.
+- *Who is followed.* DT2 follows a critter; the bench follows any entity at
+  any rung, reading the sim's nouns, and examining what the view shows up
+  close is an intent in the log (rulings 71, 113, 212), so a followed
+  specimen is foregrounded by that act.
+
+**What this plan does not do.** It does not carry the lift. That is W4's own
+lane, planned when the bench is founded; until then the product host keeps
+its twelve verbs, and the Mesocosm overlay plan's M2 to M4 use them there.
+When the bench holds every verb this plan named, headless and game-free, this
+plan retires into the bench's plan with a pointer, per policy.
+
 ## Findings
 
 - **2026-09-01:** the stack has automation (genet-probe), layout (workbench)
@@ -224,6 +279,8 @@ of them. Each phase is one agent round on a non-Fable model.
 
 ## Progress
 
+- **2026-09-26: rewritten to the wing design record** under ruling 280's doc
+  lane; §6 is the whole change. DT1 to DT4 and their receipts are untouched.
 - **2026-09-01:** assessment written from a read-only inventory of mesocosm,
   isometry, genet, cambium and mere, verified against file paths above. No
   code dispatched.

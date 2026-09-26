@@ -21,13 +21,22 @@ land.
 (the arrangement register), mesocosm's minimap (`mesocosm-views`, the first
 Hulls consumer and the working example to follow).
 
-**W1, 2026-09-18:** rewrite. Tier: mixed, sim place graph and game overlay.
-The source-time half is the record's own model and is worth more than the
-presentation half. Rewrite is a lane under the record's W2 or W3; until it
-lands this plan's done-conditions are not authoritative. Evaluated against the
-wing design record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as mixed, sim place graph and game
+overlay, and found it contradicted on one point and confirmed on the
+other. Contradicted: §3.1 sites the hulls on the overmap nodes' authored
+`at` positions, where the record's §3.7 and its ruling 14 derive places
+from the volume and hold the world map as adjacency, hexes and node
+positions being a projection over it (sim plan §2.2; rulings 72, 73, 18).
+Confirmed: source-time as a feature is the record's own model, the reach
+field of §3.4 and the sim plan's §4 (rulings 5, 84, 117). This pass rewrites
+the sources (§3.1, §3.5, §4) and leaves the presentation as planned; its
+done-conditions are authoritative again. The evaluation stays in
 [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
-§1.
+§1. The overmap is a far view (ruling 212): it reads the crowd, so what
+lands here is presentation over the sim's readings, and what the campaign
+takes from the sim lands under the
+[VTT overlay plan](2026-09-25_vtt_overlay_plan.md)'s V2.
 
 ---
 
@@ -73,6 +82,15 @@ discovered sites, painted under the existing nodes and edges.
   `at` positions; bounds fit the discovered extent with a margin. Only
   discovered nodes are sites: the unfound map is not drawn, and a cell for
   an unfound site would leak its existence.
+  **Rewritten 2026-09-26:** the sites are the world map's own nodes, held
+  as adjacency (sim plan §2.2, rulings 72 and 73), and their positions come
+  from the projection the overmap already solves, never from an authored
+  coordinate (ruling 14; the 2026-08-08 audit's second prerequisite said
+  the same from the presentation side). "Discovered" is what the party's
+  characters know by reach, possibly wrong (rulings 84, 117; VTT overlay
+  plan §3 point 4 and V2), the DM seeing the truth; `party_known` is the
+  seam that reading replaces. The leak rule stands unchanged: a cell is
+  drawn only for a site the party knows.
 - **Meaning is per-vessel** (ruled 2026-08-02): isometry tints by
   campaign facts it already owns. First cut: faction control where a
   faction claim exists, biome/terrain kind otherwise, neutral where neither.
@@ -124,6 +142,28 @@ the first cut if the precise test fights the DOM.
 - Do not block on Mosaic/Atlas. They are reserved arrangements with their
   own future consumers (inventories; geographic). This plan is Hulls only.
 
+### 3.5 Source-time, on the reach field (added 2026-09-26)
+
+The product direction recorded 2026-08-08, the overmap viewed from
+historical standpoints, is what the record's reach field already holds
+(record §3.4; sim plan §4; rulings 5, 84, 86, 117). Each place an event
+reaches keeps its arrival: the tick, the source it came by, its strength
+and **the version that arrived**. So the four readings the direction named
+are four questions to one field, none of them a second store:
+
+| Reading | The question |
+| --- | --- |
+| what was believed then | which version had reached the party's places at that tick, by the arrival entries |
+| what the table knows now | the same at the present tick, decayed under the world's rule, the legend floor included |
+| what was retconned | the difference between a held version and the record's, a belief being dated by its arrival (117) |
+| which map version a character possessed | a bearer (a map, a charter) holding a version at a tick, the record's "more than the place" |
+
+Nothing here is built by this plan. The field is the sim's (sim plan S1,
+S3); the overmap consumes it as a far view through the VTT's side of the
+overlay contract at V2. What this plan owns is drawing those readings with
+the same hull and backdrop machinery, a standpoint being one more input to
+the adapter.
+
 ## 4. Done conditions
 
 - The overmap swatch shows territory cells around discovered sites, tinted
@@ -135,6 +175,12 @@ the first cut if the precise test fights the DOM.
   (type names stay `sceno::`) untouched and passing.
 - A headed scenario screenshot in `Code/testing/isometry/` showing the
   upgraded overmap, per the screenshots harness convention.
+- **Added 2026-09-26:** the sites and their discovery come from the sim's
+  place graph and reach field through the overlay contract (VTT overlay plan
+  V2), not from authored `at` positions or `party_known`; the campaign the
+  screenshot shows is a draw under a seed nobody chose (ruling 15); and one
+  capture shows the overmap from a past standpoint differing from the
+  present one on at least one site's version (§3.5).
 
 ## 5. Open questions (ask Mark, do not decide unilaterally)
 
@@ -144,3 +190,7 @@ the first cut if the precise test fights the DOM.
    boundary) or faded?
 3. Baked map thumbnails as region backdrops: worth it now, or after the
    wash proves the layering?
+
+All three still open on 2026-09-26; none is decided by the record. Question
+2 gains a fact: an undiscovered edge is a site no version has reached, so
+"fog" is the reach field's zero, and the choice is only how to paint it.

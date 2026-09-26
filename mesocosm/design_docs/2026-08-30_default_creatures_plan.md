@@ -14,10 +14,13 @@ the TD series in
 §"The series closes here". This plan owns the *body* half of that ruling; the
 update stage is the other half and is not this plan.
 
-**W1, 2026-09-18:** rewrite. Tier: Mesocosm overlay, its ensemble. Restate
-the gates as draws; the archetypes are good overlay content. Rewrite is a
-lane under the record's W2 or W3; until it lands this plan's done-conditions
-are not authoritative. Evaluated against the wing design record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as the Mesocosm overlay's ensemble and
+found its gates contradicted by ruling 15, tests are draws, not picks: they
+are stated over "seeds 1–10" and a chosen capsule budget. The archetypes are
+good overlay content. §6 now opens with the gates restated as draws, and
+§6.6 says where the roster lands over the sim; the gates are authoritative
+again as read there. The evaluation stays in
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
@@ -532,6 +535,22 @@ draw one, is Mark's.
 
 ## 6. Slices, with done-conditions
 
+**The gates, read as draws (2026-09-26; ruling 15).** Every "seed 1–10",
+"ten seeds" and "ten-seed instrument" below names the fixed list the slices
+were verified on, and that list stays what it was as a record of what
+landed. As a gate it is read as **ten seeds drawn from the generator's
+declared space under a seed nobody chose**, with the list recorded in the
+receipt, because a hand-chosen instance proves nothing about the space; this
+plan's own thirty-seed finding (§Findings, 2026-09-04, Q10: "both walls of
+the corridor were measured on ten lucky seeds") is the case in point. The bit-identical and
+kingdom-reads-its-tier assertions hold over any draw or they do not hold.
+DC3's capsule budget is a measured bound, the downlevel limit the headed run
+confirms, not a number picked; the gate on it is that a body pushed past it
+is **reported**, over draws. "Pyramid intact (610/229/77)" is the founding's
+authored shape and stays a fixture assertion, since founding is asserted
+(sim plan §2.8), and the one condition no draw supplies is still the last:
+Mark looks at captures and calls them critters.
+
 Each slice lands with a receipt in `Code/testing/mesocosm/` and re-recorded
 fixtures. Conservation (`cargo test -p mesocosm-core --test matter`) is the gate
 on every one of them, at any part scale.
@@ -645,6 +664,28 @@ Both §4.3 blockers were ruled the day the plan landed:
 The slice order gains a step: the unbinding is DC1.5 — after the palette
 widens and before any archetype is authored, since every archetype's
 recipe depends on which anatomy makes it what it is.
+
+## 6.6 Where the roster lands over the sim (2026-09-26)
+
+The archetypes are the Mesocosm overlay's **ensemble**, "the roster of
+relevant critters in the region the lineage inhabits" (Mesocosm overlay plan
+§2; rulings 6, 124): authored content the overlay founds a world with, not a
+sim noun. Their anatomy is re-founded when the bodies family moves onto
+Isocosm (overlay plan M2, its bodies family: `organism`, `phenotype`,
+`development`, `axis`, `growth`, `graft`), under the record's body model as
+ruled on 2026-09-26: eight shapes read from geometry, lump, rod, sheet,
+point, tube, branch, shell and joint (ruling 276); functions assembling into
+organ systems, new systems riffed from them (277); one function catalogue
+every game reads (278), which retires this plan's `Sense`/`Contract`/`Fix`
+/`Secrete` process list as Mesocosm's private vocabulary while keeping what it
+names; and the anatomy brief written after the vertical probe (281). §6.5's
+two rulings, mouth geometry and kingdom read off feeding anatomy, are
+readings over that catalogue and stand. The part-scale arithmetic (§2) and
+the render budget (§3) are the overlay's and the renderer's respectively and
+move with their owners; CP1's camera prototype is presentation and is
+unaffected. This plan does not carry the re-founding; it records what the
+roster must still satisfy when it lands there: every fauna body senses and
+contracts, the kingdom floor holds, and the captures read as critters.
 
 ## 7. Open questions — Mark's
 
@@ -1494,6 +1535,11 @@ recipe depends on which anatomy makes it what it is.
   into a fixing part. `growth.rs`, `world/act.rs::land`, `chronicle.rs`.
 
 ## Progress
+
+- **2026-09-26: rewritten to the wing design record** under ruling 280's doc
+  lane. §6 opens with the gates read as draws (ruling 15) and §6.6 says where
+  the roster lands over the sim (rulings 276 to 278, 281; overlay plan M2). No
+  slice, finding or receipt was altered.
 
 - **2026-09-04 (DC4, Q9): the measured three-camera slice.** The instrument
   Mark's 2026-09-02 ruling asked for, and nothing beyond it. `--camera` is a

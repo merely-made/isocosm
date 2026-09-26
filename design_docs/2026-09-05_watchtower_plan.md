@@ -4,10 +4,16 @@
 watchtower as the first playable procedural place, with Luna/Terra agents
 and permission to improve shared stack utilities when a concrete need emerges.
 
-**W1, 2026-09-18:** rewrite. Tier: mixed, sim generation and game overlay.
-Only the terrain premise fails. Rewrite is a lane under the record's W2 or W3;
-until it lands this plan's done-conditions are not authoritative. Evaluated
-against the wing design record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as mixed, sim generation and game
+overlay, and found one contradiction: W6's premise that the board is a
+height field, where the record's ruling 12 and §3.6 make the near rung a
+volume with an interior and the height-and-kind-per-cell the VTT holds a
+far-rung view of it. Its seeded-pack discipline (W2) is ruling 15
+confirmed. The gates below stand as the receipts they were, every one
+verified on the height-field board; the section "Under the wing design
+record" says what each becomes over the sim, and the done-conditions are
+authoritative again for what they claim. The evaluation stays in
 [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
@@ -160,6 +166,44 @@ for reuse, not an already-verified Signalman atlas integration. The local receip
 is `Code/testing/isometry/atlas-2026-09-09.md`; its final native PNG verifies the
 forest backdrop, known location fields, readable labels, and return controls.
 
+## Under the wing design record (2026-09-26)
+
+What each gate's subject becomes now that the record stands over it. Nothing
+here reopens a verified receipt; it says where the next version of each
+lands.
+
+- **The board is a far view of a volume (rulings 12, 13; §3.6).** "The first
+  board uses the existing height field" was true of the practice and is not
+  the design: the tower, its approach and Bellwood Reach are sites whose
+  volumes are grown from terrain, biome and seed (sim plan §2.2), and the
+  height-and-kind grid the board draws is the far rung of that volume. W6's
+  lookout visibility is then a line-of-sight reading over bricks, the same
+  reading Mesocosm's body-derived sight already takes, and "height-field
+  visibility, not voxel volume ray tracing" names the receipt that was taken,
+  not the rule. The board over the sim's volume is the VTT overlay plan's
+  battlemap view (its §4, "projected from the generated volume in the game's
+  grid", landing across V2 and V3) and the held
+  [board-on-isometer plan](2026-09-15_board_on_isometer_plan.md), with
+  paging wired first (rulings 282, 288 to 292).
+- **Seeds are draws (ruling 15).** W2's "repeated seeds replay, different
+  seeds vary the place" is the record's own test; seed 91 in the network
+  harness and the Ash and Bells pack are fixtures, and a receipt drawn from
+  the generator's declared space under a seed nobody chose is what the sim
+  plan's S5 asks of the next one.
+- **Discovery is knowledge by reach (rulings 84, 117).** W8's hidden sites,
+  W9's "the party discovers only the starting place and its adjacent routes"
+  and W10's regional state are the `party_known` seam; over the sim a party
+  knows what its characters know, arrived by reach and possibly wrong, and
+  the DM sees the truth (VTT overlay plan §3 point 4, V2). The atlas's
+  "filters fields by party knowledge" is the same seam on the presentation
+  side, and the [overmap presentation plan](2026-08-02_overmap_presentation_plan.md)
+  §3.5 says how source-time reads off the reach field's arrival entries.
+- **The overmap stays a far view (ruling 212)** and the battlemap is what
+  the view shows up close; nothing on the atlas realizes an individual.
+- **Words.** `borgs` below is superseded by **denizen**, a named entity
+  (ruling 200); Paredros is Eponym and Isometry is the VTT (rulings 109 to
+  111). The dated text keeps its words.
+
 ## Shared-world direction
 
 Mark approved the next proof as one created character, one creature and their
@@ -204,6 +248,9 @@ to Mere when a second consumer proves the shared contract.
 
 ## Progress
 
+- **2026-09-26: rewritten to the wing design record** under ruling 280's doc
+  lane; the section "Under the wing design record" is the whole change. No
+  gate or receipt was altered.
 - **2026-09-08, interaction lag investigation:** The M4 debug-build native
   drag harness measures 30 real graph-pointer steps: pointer median 1.622 ms,
   explicit post-dispatch 0.950 ms, and relayout 235.421 ms (p95 239.164 ms).

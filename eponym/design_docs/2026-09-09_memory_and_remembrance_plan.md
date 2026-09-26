@@ -8,14 +8,21 @@ the memory model, its evidence links, bounded recall, and promotion records.
 The adjacent contracts are [world conditions](2026-09-09_world_conditions_plan.md)
 and [functional loops](2026-09-09_functional_loops_plan.md).
 
-**W1, 2026-09-18:** rewrite. Tier: mixed, sim record and Paredros recall.
-Bounded recall, the cache and semantic-forgetting split and the checkpoint
-design survive; its save-growth baseline is a single fixture and says so.
-Rewrite is a lane under the record's W2 or W3; until it lands this plan's
-done-conditions are not authoritative. Evaluated against the wing design
-record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as mixed, sim record and Paredros
+recall, and found it contradicted by receipt in two places: it calls the
+hagiograph "a name reservation" with "no implementation" where the organ is
+live in mere's eidetic family (831 lines: the standing record, the
+reckoning and deep time) and consumed by mesocosm-core; and it models reach
+as per-subject observation admission where the record's §3.4 makes an
+event's reach a field on the place graph and a background entity's knowing
+a seeded draw over it. Bounded recall, the cache and semantic-forgetting
+split and the checkpoint design survive. The section "Under the wing design
+record" says what each stage becomes; done-conditions are authoritative
+again for the foreground half they describe, and the background half is the
+sim's. The evaluation stays in
 [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
-§3.
+§3. Paredros is Eponym since ruling 109; the dated text keeps its words.
 
 ## Scope and design position
 
@@ -51,6 +58,13 @@ Existing facts verified on 2026-09-09:
 - `mere/crates/eidetic/hagiograph` is a name reservation. Its README and
   library docs define a view over ordinary history containing retold legends,
   memorials, epithets, and manifestations. It has no implementation.
+  *(Corrected 2026-09-26: this was stale when written. The crate holds the
+  standing record with its join-semilattice merge, the reckoning and deep
+  time, 831 lines; mesocosm-core's `WorldRecord` is a newtype over
+  `hagiograph::Record` and its deep time runs through
+  `hagiograph::{DeepTime, Handover}`; no Eponym crate depends on it yet.
+  Retelling, remembrance and manifestation, this plan's lane H, are the
+  organ's later half and remain unbuilt. Wing design record §3.4.)*
 
 Proposed by this plan:
 
@@ -460,6 +474,57 @@ A formatter pass at the workspace level reflowed files other lanes own and
 was reverted; `cargo fmt --check` fails at HEAD for the combat files, which
 their owner will meet when they next format.
 
+## Under the wing design record (2026-09-26)
+
+The record and the [sim plan](../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+§4 split what this plan treated as one problem into two regimes, and every
+stage above lands on one side or the other.
+
+**The background is a field, not an observation log.** An event's reach is a
+field on the place graph: seeded where it happened, spreading along routes
+and carriers, decaying with time and slower with significance, re-seeded
+when the hagiograph retells it (ruling 5). Whether a background entity
+knows a thing is a seeded draw over the reach at the places it has been,
+shaped by exposure and by how much it matters to it; how it learned is
+sampled backward through the arrival tree on demand; once resolved for
+something cared about it becomes a note on the knower (rulings 84, 86). Any
+belief can be wrong, and reach carries versions of an event, each dated by
+its arrival (ruling 117). Secrets are the other regime: explicit knowers
+holding notes along relations, and a leak seeds the field (ruling 87). So
+F3b1's "an affected subject gets an event observation only when policy
+permits it" is the foreground's rule only: a realized creature adds what it
+personally witnessed as its own deviation record (record §3.4), and the
+observer-scoped epistemic log is where that lives. Nothing per-subject is
+simulated for the crowd.
+
+**Forgetting is decay.** A note held in a mind fades unless renewed, at the
+rate that mind's memory sets, and one kept on a bearer lasts as long as the
+bearer does (sim plan §2.8; rulings 129, 131). F3b2's split between semantic
+forgetting and cache eviction survives with the first half named by the sim:
+semantic forgetting is that decay, recorded as the record's keeping tiers
+(ambient, of note, legend; ruling 69), and eviction stays a residency fact
+that changes no decision. Bounded recall is the foreground's budget over the
+notes a played sophont holds.
+
+**Promotion is the hagiograph's test.** F3b4's promotion policy is ruling 4:
+novelty, quality and relevance, "same test everywhere", judged by the organ
+in mere; a legend is never lossy and needs no reach entries (sim plan §4,
+legend floor). Retelling re-seeds the field. Manifestation stays a proposal
+consumed by whoever owns world conditions, as F3b4 has it; the hagiograph
+hands memorials to the stack's procedural voxel engine (repo `CLAUDE.md`).
+
+**Where the stages land.** The [Eponym overlay plan](2026-09-25_eponym_overlay_plan.md)
+cites this plan for lanes M and H. Its E2 knowledge family absorbs
+`epistemic` (570 lines) as notes on knowers, reports and corrections under
+the sim plan's S3, with the secrets regime; E3 has "a note written is later
+found by another" and "survival shows only what the creature knows" (ruling
+187, diegetic notes in Eponym per ruling 130). The save strategy and its
+checkpoint design are Eponym's own until the sim's record replaces the
+`GameState` histories they measure, and the baseline below is one fixture,
+as it says; the measurement gate's populations are draws under seeds nobody
+chose (ruling 15) when it runs. F3b5 landed before this pass and is
+unaffected.
+
 ## Open decisions and risks
 
 Choose initial salience inputs from event/deed facts and retelling counts before
@@ -488,6 +553,11 @@ Hagiograph is still an unimplemented Mere reservation. These are inspected
 seams, not landed memory behavior.
 
 ## Progress
+
+**2026-09-26.** Rewritten to the wing design record under ruling 280's doc
+lane: the hagiograph fact corrected in place, and the section "Under the wing
+design record" added. No stage's text was altered; no implementation
+occurred.
 
 **2026-09-09.** Plan drafted from the live Paredros social/world code,
 Mesocosm memorial terminology, and the Hagiograph reservation. Linked from the

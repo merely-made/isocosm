@@ -5,11 +5,15 @@
 Amended 2026-08-29 (§6): the textless guard was lane discipline, not a text ban.
 Route B's own subject — the between-epochs screen — landed 2026-09-02 (§7).
 
-**W1, 2026-09-18:** rewrite. Tier: game overlay over stack. Adapter-first
-posture confirmed by §4.1; only the minimap's source rung changes. Rewrite
-is a lane under the record's W2 or W3; until it lands this plan's
-done-conditions are not authoritative. Evaluated against the wing design
-record; see
+**Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
+W1 (2026-09-18) evaluated this plan as a game overlay over the stack and
+found one contradiction: the minimap binds to `Places::at`, a
+two-dimensional nearest-centre scan, where the record's §3.7 derives places
+from the volume as connected components of air and, above the near rung,
+makes the graph the terrain (ruling 14). The adapter-first posture is the
+record's own (§4.1). This pass changes the minimap's source rung (§2, §5)
+and leaves the rest as it landed; its done-conditions are authoritative
+again. The evaluation stays in
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
@@ -59,6 +63,24 @@ consumer), the epoch boundary plan (places, §12).
 solver are the same nearest-site rule, so a sampled position lands in the
 scene cell of exactly the place the simulation says it is in. The minimap
 draws the world's own regions, not a cartographer's approximation.
+
+**The source rung, 2026-09-26.** The test's principle stands: a minimap cell
+is the place the sim says, never a cartographer's guess. Its mechanism does
+not. The record's §3.7 makes a place a node derived from the volume, a
+connected component of air with edges where passages join, and the sim
+plan's §2.2 holds the world map as adjacency, hexes and cells being a
+projection over it (rulings 14, 72, 73). `Places::at` is a two-dimensional
+nearest-centre scan that ignores height and a fixed three-by-three
+partition (the record's §3.7, corrected by W1), so the Hulls solver agrees
+with it only because both are the same approximation. When the place graph
+is derived from the volume (the Mesocosm overlay plan's M2, its places
+family), the adapter discloses the derived places' own footprints as the
+regions and the solver partitions nothing; the congruence test then asserts
+that every sampled position lands in the cell of the place the graph holds
+it in. Nothing in `leaf.rs` changes, which is what adapter-first bought.
+The minimap is a far view (ruling 212): it reads the crowd and never
+realizes an individual, so dominance per region is a reading over the
+region's biomass, as `dominant_lineages` already has it.
 
 ## 3. The hosts are staged (Mark, 2026-08-02)
 
@@ -170,6 +192,12 @@ Two colour-space facts the capture chain forced into the open:
 - Dominance shifts on screen when the ecology shifts (verifiable with a
   scenario run: two captures, different holders).
 - ~~A `testing/mesocosm/` capture showing it~~ **done**: `14_minimap.png`.
+- **Added 2026-09-26:** the minimap's regions are the place graph's own
+  nodes once places derive from the volume (Mesocosm overlay plan M2, places
+  family; sim plan §2.2), the congruence test rewritten to that source and
+  green, and `Places::at` no longer read by `mesocosm-views`. The scenario
+  for the two captures above is a draw under a seed nobody chose, not a
+  picked instance (ruling 15).
 
 ## 6. Amendment: the guard was lane discipline (2026-08-29, Mark)
 
@@ -211,4 +239,7 @@ decision rather than a technical requirement.
   texture composited over the game's own frame, the same path the vitals panel
   and the minimap take, and genet owning the window remains a scope decision
   rather than a technical requirement.
+- **2026-09-26: rewritten to the wing design record** under ruling 280's doc
+  lane. The one change is the minimap's source rung (§2, §5); the adapter,
+  the leaf, the staged hosts and the 2026-08-29 amendment stand as written.
 
