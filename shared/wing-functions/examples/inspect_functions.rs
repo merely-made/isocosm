@@ -3,37 +3,37 @@
 
 use std::collections::BTreeSet;
 use wing_functions::{
-    BodySite, GeneratorSettings, Operator, PartRef, PreviewSettings, SiteRole, WorldRules,
+    BodyTract, GeneratorSettings, Operator, PartRef, PreviewSettings, TractRole, WorldRules,
     generate, preview_techniques,
 };
 
 fn main() {
-    let mut sites = vec![
-        BodySite {
+    let mut tracts = vec![
+        BodyTract {
             part: PartRef {
                 subject: 1,
                 part: 0,
             },
-            role: SiteRole::Source,
+            role: TractRole::Source,
         },
-        BodySite {
+        BodyTract {
             part: PartRef {
                 subject: 1,
                 part: 1,
             },
-            role: SiteRole::Store,
+            role: TractRole::Store,
         },
-        BodySite {
+        BodyTract {
             part: PartRef {
                 subject: 1,
                 part: 2,
             },
-            role: SiteRole::Gate,
+            role: TractRole::Gate,
         },
     ];
-    sites.extend((3..7).map(|part| BodySite {
+    tracts.extend((3..7).map(|part| BodyTract {
         part: PartRef { subject: 1, part },
-        role: SiteRole::Actuator,
+        role: TractRole::Actuator,
     }));
     let settings = GeneratorSettings::default();
     let rules = WorldRules {
@@ -46,8 +46,8 @@ fn main() {
     };
     let mut output = Vec::new();
     for seed in 0..50_u64 {
-        let batch = generate(seed, &settings, &sites);
-        let live: BTreeSet<_> = sites.iter().map(|s| s.part).collect();
+        let batch = generate(seed, &settings, &tracts);
+        let live: BTreeSet<_> = tracts.iter().map(|s| s.part).collect();
         let mut forms = Vec::new();
         for candidate in &batch.candidates {
             let before = preview_techniques(

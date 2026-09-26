@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Seeded functional blueprints. The caller supplies the body's part sites.
+//! Seeded functional blueprints. The caller supplies the body's part tracts.
 use crate::{
     Edge, Evaluation, EvaluationRequest, FunctionalNetwork, Node, NodeId, NodeKind, Operator,
     PartRef, WorldRules,
@@ -18,7 +18,7 @@ pub enum Form {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
-pub enum SiteRole {
+pub enum TractRole {
     Source,
     Store,
     Gate,
@@ -26,9 +26,9 @@ pub enum SiteRole {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-pub struct BodySite {
+pub struct BodyTract {
     pub part: PartRef,
-    pub role: SiteRole,
+    pub role: TractRole,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -113,7 +113,7 @@ impl Default for PreviewSettings {
 
 /// Generate one deterministic candidate for each admitted form. Part identities
 /// are opaque and remain owned by the body/document adapter.
-pub fn generate(seed: u64, settings: &GeneratorSettings, sites: &[BodySite]) -> GenerationBatch {
+pub fn generate(seed: u64, settings: &GeneratorSettings, tracts: &[BodyTract]) -> GenerationBatch {
     let mut batch = GenerationBatch {
         settings: settings.clone(),
         seed,
@@ -134,10 +134,10 @@ pub fn generate(seed: u64, settings: &GeneratorSettings, sites: &[BodySite]) -> 
         });
         return batch;
     }
-    if sites.len() > 256 || settings.max_actuators > 61 {
+    if tracts.len() > 256 || settings.max_actuators > 61 {
         batch.rejected.push(Rejection {
             form: Form::Creature,
-            reason: "body site or actuator bound exceeds supported network size".into(),
+            reason: "body tract or actuator bound exceeds supported network size".into(),
         });
         return batch;
     }
@@ -151,7 +151,7 @@ pub fn generate(seed: u64, settings: &GeneratorSettings, sites: &[BodySite]) -> 
             continue;
         }
         let candidate_seed = splitmix(seed ^ form_tag(form));
-        match build(candidate_seed, form, settings, sites) {
+        match build(candidate_seed, form, settings, tracts) {
             Ok(blueprint) => batch.candidates.push(Candidate {
                 blueprint,
                 rejections: Vec::new(),
@@ -166,7 +166,7 @@ fn build(
     seed: u64,
     form: Form,
     s: &GeneratorSettings,
-    sites: &[BodySite],
+    tracts: &[BodyTract],
 ) -> Result<GeneratedBlueprint, String> {
     if s.min_actuators == 0 || s.min_actuators > s.max_actuators {
         return Err("actuator range is unordered".into());
@@ -177,28 +177,28 @@ fn build(
     if s.max_actuators > 61 {
         return Err("actuator maximum exceeds network node bound".into());
     }
-    let mut seen_sites = BTreeSet::new();
-    for site in sites {
-        if !seen_sites.insert((site.part, site.role as u8)) {
-            return Err("duplicate body site".into());
+    let mut seen_tracts = BTreeSet::new();
+    for tract in tracts {
+        if !seen_tracts.insert((tract.part, tract.role as u8)) {
+            return Err("duplicate body tract".into());
         }
     }
-    let mut sources = sites
+    let mut sources = tracts
         .iter()
-        .filter(|x| x.role == SiteRole::Source)
+        .filter(|x| x.role == TractRole::Source)
         .map(|x| x.part);
-    let source = sources.next().ok_or("missing source site")?;
-    let store = sites
+    let source = sources.next().ok_or("missing source tract")?;
+    let store = tracts
         .iter()
-        .find(|x| x.role == SiteRole::Store)
+        .find(|x| x.role == TractRole::Store)
         .map(|x| x.part);
-    let gate = sites
+    let gate = tracts
         .iter()
-        .find(|x| x.role == SiteRole::Gate)
+        .find(|x| x.role == TractRole::Gate)
         .map(|x| x.part);
-    let mut actuators: Vec<_> = sites
+    let mut actuators: Vec<_> = tracts
         .iter()
-        .filter(|x| x.role == SiteRole::Actuator)
+        .filter(|x| x.role == TractRole::Actuator)
         .map(|x| x.part)
         .collect();
     let want = match form {
@@ -208,17 +208,17 @@ fn build(
         },
     };
     if want < s.min_actuators || want > s.max_actuators {
-        return Err("actuator range cannot be realized by supplied sites".into());
+        return Err("actuator range cannot be realized by supplied tracts".into());
     }
     actuators.truncate(want as usize);
     if actuators.len() != want as usize {
         return Err(format!(
-            "need {want} actuator sites, found {}",
+            "need {want} actuator tracts, found {}",
             actuators.len()
         ));
     }
-    let store = store.ok_or("missing store site")?;
-    let gate = gate.ok_or("missing gate site")?;
+    let store = store.ok_or("missing store tract")?;
+    let gate = gate.ok_or("missing gate tract")?;
     let mut nodes = vec![
         Node {
             id: NodeId(0),
