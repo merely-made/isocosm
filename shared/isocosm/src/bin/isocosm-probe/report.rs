@@ -15,7 +15,13 @@ use isocosm::{
 use serde::Serialize;
 use std::collections::BTreeSet;
 
-pub const ARMS: [&str; 4] = ["exact", "exact-control", "crowd", "crowd-averaged"];
+pub const ARMS: [&str; 5] = [
+    "exact",
+    "exact-control",
+    "crowd",
+    "crowd-averaged",
+    "crowd-approximate",
+];
 
 #[derive(Serialize)]
 pub struct Arm {
@@ -171,12 +177,43 @@ pub struct Savings {
     pub exact_micros: u64,
     pub crowd_micros: u64,
     pub wall_ratio: f64,
+    /// With the approximate pairing draw: its crowd's evaluations and time,
+    /// and how much faster it ran than the exact runner and the exact crowd.
+    pub approximate: Option<Approximate>,
+}
+
+#[derive(Serialize)]
+pub struct Approximate {
+    pub evaluations: u64,
+    pub micros: u64,
+    pub wall_ratio_to_exact: f64,
+    pub wall_ratio_to_crowd: f64,
+    pub per_draw_wall_ratio_to_crowd: Spread,
 }
 
 impl Savings {
     pub fn new(draws: &[Draw]) -> Self {
         let total =
             |name: &str, f: fn(&Arm) -> u64| draws.iter().map(|d| f(find(d, name))).sum::<u64>();
+        let ran = |name: &str| draws.iter().all(|d| d.arms.iter().any(|a| a.arm == name));
+        let approximate = ran("crowd-approximate").then(|| {
+            let micros = total("crowd-approximate", |a| a.micros);
+            Approximate {
+                evaluations: total("crowd-approximate", |a| a.evaluations),
+                micros,
+                wall_ratio_to_exact: total("exact", |a| a.micros) as f64 / micros.max(1) as f64,
+                wall_ratio_to_crowd: total("crowd", |a| a.micros) as f64 / micros.max(1) as f64,
+                per_draw_wall_ratio_to_crowd: Spread::of(
+                    draws
+                        .iter()
+                        .map(|d| {
+                            find(d, "crowd").micros as f64
+                                / find(d, "crowd-approximate").micros.max(1) as f64
+                        })
+                        .collect(),
+                ),
+            }
+        });
         let (exact, crowd) = (
             total("exact", |a| a.evaluations),
             total("crowd", |a| a.evaluations),
@@ -201,6 +238,7 @@ impl Savings {
             exact_micros,
             crowd_micros,
             wall_ratio: exact_micros as f64 / crowd_micros.max(1) as f64,
+            approximate,
         }
     }
 }
@@ -281,7 +319,7 @@ pub struct Checks {
     pub collect_changes_no_outcome: bool,
 }
 
-pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner with the probe's competition round executed through the same interpreter; the crowd is the exact-state histogram with count draws; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications: one per member in the exact arms, one per state in the crowd.";
+pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds.";
 
 #[derive(Serialize)]
 pub struct Receipt {

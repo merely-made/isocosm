@@ -102,6 +102,46 @@ fn matching_draws_follow_enumerated_probabilities() {
 }
 
 #[test]
+fn near_draws_keep_every_count_and_follow_the_exact_moments() {
+    let mut s = Stream::new(13);
+    // Splits keep their totals and bounds, and centre where the urn does.
+    let counts = [40, 0, 120, 30, 10];
+    let mut first = 0u64;
+    for _ in 0..2000 {
+        let split = s.split_near(&counts, 80);
+        assert_eq!(split.iter().sum::<u64>(), 80);
+        assert!(split.iter().zip(&counts).all(|(t, c)| t <= c));
+        first += split[0];
+    }
+    // Expected 80 * 40 / 200 = 16 per draw.
+    assert!((31_000..=33_000).contains(&first), "{first}");
+    assert_eq!(s.split_near(&counts, 200), counts.to_vec());
+    // Matchings pair every member, and a category keeps to itself about
+    // r(r-1)/(2(R-1)) pairs: 100 * 99 / (2 * 399) = 12.4 of 100 members,
+    // with a variance of about 7.0 in a uniform matching.
+    let mut within = Vec::new();
+    for _ in 0..2000 {
+        let m = s.matching_near(&[100, 300]);
+        let used = |bin: usize| -> u64 {
+            m.iter()
+                .map(|(&(i, j), &n)| n * (u64::from(i == bin) + u64::from(j == bin)))
+                .sum()
+        };
+        assert_eq!((used(0), used(1)), (100, 300));
+        within.push(m.get(&(0, 0)).copied().unwrap_or(0) as f64);
+    }
+    let mean = within.iter().sum::<f64>() / 2000.0;
+    let variance = within.iter().map(|w| (w - mean).powi(2)).sum::<f64>() / 1999.0;
+    assert!((12.0..=12.8).contains(&mean), "{mean}");
+    assert!((5.5..=8.5).contains(&variance), "{variance}");
+    // Where the exact draw has no choice, neither has the near one.
+    for _ in 0..50 {
+        let m = s.matching_near(&[3, 1]);
+        assert_eq!(m, [((0, 0), 1), ((0, 1), 1)].into_iter().collect());
+    }
+}
+
+#[test]
 fn count_splits_keep_totals_and_follow_the_urn() {
     let mut s = Stream::new(11);
     let counts = [5, 0, 12, 3];

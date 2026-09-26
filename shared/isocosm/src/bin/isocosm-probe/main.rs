@@ -7,7 +7,9 @@
 //! Worlds and dynamics seeds follow from one master seed, chosen from the
 //! system clock before the run unless `--seed` is given. `--density` runs
 //! only the exact and crowd arms, to measure savings without a verdict;
-//! `--water` has every world contest water as well as food.
+//! `--water` has every world contest water as well as food; `--approximate`
+//! adds a fifth arm, the crowd with ruling 220's approximate pairing draw,
+//! checked against the exact runner and against the exact crowd.
 
 mod report;
 
@@ -65,10 +67,10 @@ fn arm(
         let stored = s.population.groups.len() - s.sites.len();
         Ok(finish(micros, &members, &run.work, stored, values))
     } else {
-        let variant = if index == 2 {
-            Variant::Histogram
-        } else {
-            Variant::Averaged
+        let variant = match index {
+            2 => Variant::Histogram,
+            3 => Variant::Averaged,
+            _ => Variant::Approximate,
         };
         let crowd = Crowd::new(world, dynamics, variant)?.run()?;
         let micros = start.elapsed().as_micros() as u64;
@@ -95,6 +97,7 @@ struct Options {
     members: Option<[u64; 2]>,
     density: bool,
     water: bool,
+    approximate: bool,
 }
 
 fn options() -> Result<Options, String> {
@@ -111,6 +114,7 @@ fn options() -> Result<Options, String> {
         members: None,
         density: false,
         water: false,
+        approximate: false,
     };
     while let Some(arg) = args.next() {
         let mut number = || -> Result<u64, String> {
@@ -127,6 +131,7 @@ fn options() -> Result<Options, String> {
             "--density" => o.density = true,
             // Contest water as well as food: two competitions a tick.
             "--water" => o.water = true,
+            "--approximate" => o.approximate = true,
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
             _ => return Err(format!("unknown argument {arg}")),
         }
@@ -143,11 +148,14 @@ fn run() -> Result<(), String> {
     if let Some(members) = o.members {
         domain.members = members;
     }
-    let arms: Vec<usize> = if o.density {
+    let mut arms: Vec<usize> = if o.density {
         vec![0, 2]
     } else {
         vec![0, 1, 2, 3]
     };
+    if o.approximate {
+        arms.push(4);
+    }
     eprintln!(
         "Probe receipt: master seed {}, {} draws, arms {arms:?}",
         o.master, o.draws
@@ -158,7 +166,7 @@ fn run() -> Result<(), String> {
         seed: isocosm::draw(o.master, "probe-check", &[]),
     };
     let began = Instant::now();
-    let mut rows: [Vec<Vec<u64>>; 4] = Default::default();
+    let mut rows: [Vec<Vec<u64>>; 5] = Default::default();
     let mut infos: Option<Vec<ReadingInfo>> = None;
     let mut read_set = None;
     let mut out: Vec<Draw> = Vec::new();
@@ -247,11 +255,11 @@ fn run() -> Result<(), String> {
         .filter(|r| r.starvation)
         .map(|r| r.key.clone())
         .collect();
-    let (comparisons, verdicts) = if o.density {
-        (vec![], None)
-    } else {
-        let [exact, control, crowd, averaged] = rows;
-        let comparisons = vec![
+    let [exact, control, crowd, averaged, approximate] = rows;
+    let mut comparisons = Vec::new();
+    let mut verdicts = None;
+    if !o.density {
+        comparisons = vec![
             check::compare("exact against crowd", &bounds, &exact, &crowd, settings),
             check::compare(
                 "exact against exact (positive control)",
@@ -268,9 +276,24 @@ fn run() -> Result<(), String> {
                 settings,
             ),
         ];
-        let verdicts = Verdicts::new(&comparisons, starvation);
-        (comparisons, Some(verdicts))
-    };
+        verdicts = Some(Verdicts::new(&comparisons, starvation));
+    }
+    if o.approximate {
+        comparisons.push(check::compare(
+            "exact against approximate crowd",
+            &bounds,
+            &exact,
+            &approximate,
+            settings,
+        ));
+        comparisons.push(check::compare(
+            "crowd against approximate crowd",
+            &bounds,
+            &crowd,
+            &approximate,
+            settings,
+        ));
+    }
     let savings = Savings::new(&out);
     let density = Density::new(&out);
     eprintln!(

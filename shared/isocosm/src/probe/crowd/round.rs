@@ -16,12 +16,12 @@ use super::{
         Allocation, Competition, Meeting,
         aggregate::Seen,
         allocate,
-        draws::Stream,
+        draws::{Counts, Stream},
         fight::{Copies, Ground, Known, fight},
         meet,
         settle::{Take, settlement},
     },
-    Crowd,
+    Crowd, Variant,
 };
 use crate::{
     Result,
@@ -42,6 +42,7 @@ struct Contest<'a> {
     rules: &'a Rules,
     hungry: &'a [(Entity, u64, usize)],
     ground: Ground<'a>,
+    how: Counts,
 }
 
 impl Contest<'_> {
@@ -56,9 +57,9 @@ impl Contest<'_> {
         work: &mut Work,
     ) -> Result<Takes> {
         let counts: Vec<u64> = self.hungry.iter().map(|h| h.1).collect();
-        let doubles = s.split(&counts, 2 * a.doubles);
+        let doubles = s.split_by(self.how, &counts, 2 * a.doubles);
         let rest: Vec<u64> = counts.iter().zip(&doubles).map(|(n, d)| n - d).collect();
-        let contested = s.split(&rest, 2 * a.contested);
+        let contested = s.split_by(self.how, &rest, 2 * a.contested);
         let mut out = Takes::new();
         let mut push = |bin: usize, take: Take, count: u64| {
             if count > 0 && !take.is_nothing() {
@@ -70,7 +71,7 @@ impl Contest<'_> {
         for (bin, &count) in doubles.iter().enumerate() {
             push(bin, Take::gained(ration), count);
         }
-        for ((i, j), n) in s.matching(&contested) {
+        for ((i, j), n) in s.matching_by(self.how, &contested) {
             let bins = [i, j];
             let kinds = bins.map(|b| &self.c.kinds[self.hungry[b].2]);
             let states = bins.map(|b| &self.hungry[b].0);
@@ -108,6 +109,7 @@ fn cross(
     key: &Key,
     labels: &[(Take, u64)],
     s: &mut Stream,
+    how: Counts,
 ) -> Vec<(BTreeMap<Key, Take>, u64)> {
     let mut pool: Vec<u64> = labels.iter().map(|l| l.1).collect();
     let mut out = Vec::new();
@@ -116,7 +118,7 @@ fn cross(
         let split = if m == left {
             pool.clone()
         } else {
-            s.split(&pool, m)
+            s.split_by(how, &pool, m)
         };
         for (j, &k) in split.iter().enumerate() {
             if k == 0 {
@@ -134,6 +136,14 @@ fn cross(
 }
 
 impl Crowd<'_> {
+    /// The approximate crowd draws its counts near; the others exactly.
+    fn counts(&self) -> Counts {
+        match self.variant {
+            Variant::Approximate => Counts::Near,
+            Variant::Histogram | Variant::Averaged => Counts::Exact,
+        }
+    }
+
     pub(super) fn round(&mut self) -> Result<()> {
         let world = self.world;
         let mut order: Vec<&Key> = world.competitions().keys().collect();
@@ -195,6 +205,7 @@ impl Crowd<'_> {
                                 site: &ground,
                                 tick: self.tick,
                             },
+                            how: self.counts(),
                         };
                         let mut known = Known::new();
                         let mut s = Stream::new(seed);
@@ -233,7 +244,7 @@ impl Crowd<'_> {
                 };
                 let taking: u64 = labels.iter().map(|l| l.1).sum();
                 labels.push((Take::default(), n - taking));
-                cells = cross(cells, key, &labels, &mut s);
+                cells = cross(cells, key, &labels, &mut s, self.counts());
             }
             for (takes, m) in cells {
                 let mut state = e.clone();

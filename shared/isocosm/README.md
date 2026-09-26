@@ -30,7 +30,11 @@ a crowd, and once as a crowd that averages reserves. Readings are derived from
 the definitions; each gets a difference test and an equivalence test against
 its bound, Holm-corrected. `--density` runs only the exact and crowd arms, to
 measure savings without a verdict; `--members LO HI` overrides the domain's
-members per site and lineage.
+members per site and lineage; `--water` has every world contest water as well
+as food. `--approximate` adds a fifth arm, a crowd whose round takes each
+count, the segments, the pairing and the settling alike, in one step near its
+mean and variance instead of member by member (ruling 220), checked against
+the exact runner and against the exact crowd.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved

@@ -23,10 +23,10 @@ fn values(world: &isocosm::probe::ProbeWorld, arm: &str, dynamics: u64) -> Vec<u
         let s = run.sim.state();
         readings::evaluate(&derived, world, &members, &s.sites, s.tick, inspected).unwrap()
     } else {
-        let variant = if arm == "crowd" {
-            Variant::Histogram
-        } else {
-            Variant::Averaged
+        let variant = match arm {
+            "crowd" => Variant::Histogram,
+            "approximate" => Variant::Approximate,
+            _ => Variant::Averaged,
         };
         let crowd = Crowd::new(world, dynamics, variant).unwrap().run().unwrap();
         let members = readings::crowd_members(&crowd);
@@ -60,7 +60,7 @@ fn drawn_probe_worlds_run_both_ways_and_conserve_matter() {
         assert_eq!(run.sim.matter(), before);
         assert_eq!(run.sim.state().tick, w.ticks);
         // The crowd checks its own total every tick and fails if it moves.
-        for variant in [Variant::Histogram, Variant::Averaged] {
+        for variant in [Variant::Histogram, Variant::Averaged, Variant::Approximate] {
             let crowd = Crowd::new(&w, seed, variant).unwrap().run().unwrap();
             assert_eq!(crowd.tick, w.ticks);
         }
@@ -94,10 +94,13 @@ fn without_shortage_the_crowd_is_the_exact_runner() {
         founding.seed = seed;
         let w = founding.generate().unwrap();
         let derived = readings::derive(&w);
-        let (exact, crowd) = (values(&w, "exact", 1), values(&w, "crowd", 2));
-        for (r, (x, y)) in derived.iter().zip(exact.iter().zip(&crowd)) {
-            if !matches!(r.probe, Probe::Inspect { .. }) {
-                assert_eq!(x, y, "{} in world {seed}", r.key);
+        let exact = values(&w, "exact", 1);
+        for arm in ["crowd", "approximate"] {
+            let crowd = values(&w, arm, 2);
+            for (r, (x, y)) in derived.iter().zip(exact.iter().zip(&crowd)) {
+                if !matches!(r.probe, Probe::Inspect { .. }) {
+                    assert_eq!(x, y, "{} in world {seed}, {arm}", r.key);
+                }
             }
         }
     }

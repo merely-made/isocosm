@@ -31,6 +31,9 @@ pub enum Variant {
     /// The negative control: after each round every lineage's reserves at a
     /// site are replaced by their average, conserving the total.
     Averaged,
+    /// The histogram with ruling 220's approximate pairing draw: each count
+    /// of the round taken in one step near its mean and variance.
+    Approximate,
 }
 
 pub struct Crowd<'w> {
