@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 240, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 244, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2067,6 +2067,31 @@ what later sections derive from.
      at the tick's start, and the costs, reserve spent and strain, are summed
      and applied at the tick's end, capped at what it holds. This amends
      236's one per tick; its map keyed by what is contested stands.
+241. **Posing is a telling's manner.** Put to Mark on 2026-09-26, from the
+     Eponym overlay plan's decision 5: posing to intimidate, persuade or
+     deceive, his own idea at ruling 117 and flagged since as a reading, is a
+     telling's manner, an act of its own covering wordless display and bluff
+     too, or left out of E1? Mark: "A telling's manner." So posing is how a
+     claim is told, the fourth thing a hearer weighs (ruling 118), carried
+     on the telling and not as an intent of its own; display and bluff in a
+     contest stay sizing up (ruling 116).
+242. **Eponym's E4 plays two peers.** Put to Mark on 2026-09-26, from
+     decision 6: each player living their own creature being ruled (185),
+     does E4's done-condition include two players over the session lane, or
+     single-player first, as the founding plan parked real-time co-op
+     netcode? Mark: "Two peers in E4."
+243. **With the sim on, a battlemap is projected from the generated volume,
+     the DM's map an edit over it.** Put to Mark on 2026-09-26, from the VTT
+     overlay plan's decision 1: the DM's own map asserted over the site's
+     volume (ruling 89), a projection of the generated volume in the game's
+     grid (rulings 12, 18), or both, the map an edit over what was generated?
+     Mark: "Both: an edit."
+244. **Moves within a battlemap reach the sim.** Put to Mark on 2026-09-26,
+     from the VTT plan's decision 2: only outcomes, assertions and travel,
+     a token's position staying the table's, or moves within a battlemap
+     too, as per-tick batches, so a character's place in the site follows
+     its token? Mark: "Moves too." The contract stays coarse, batches per
+     tick and never a call per token (§5.2 point 1).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5850,6 +5875,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 241 to 244 recorded: posing is a telling's manner;
+  Eponym's E4 plays two peers; with the sim on, a battlemap is projected from
+  the generated volume with the DM's map an edit over it; and moves within a
+  battlemap reach the sim. The RPG systems session marks them in its plans.
 - 2026-09-26: ruling 240 recorded, amending 236 at Mark's asking:
   competitions run concurrently in a tick, each against the member's state
   at its start, and settle at its end, no costlier than one per tick.
