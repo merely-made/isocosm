@@ -1,0 +1,1540 @@
+{
+  "version": 1,
+  "kind": "isocosm-probe-crowds",
+  "master_seed": 1790403596222244200,
+  "arms": [
+    "crowd",
+    "crowd-approximate"
+  ],
+  "domain": {
+    "seed": 1,
+    "ticks": 24,
+    "lineages": 2,
+    "sites": [
+      1,
+      2
+    ],
+    "members": [
+      2048,
+      4096
+    ],
+    "cohort": 16,
+    "water": false,
+    "ration": [
+      2,
+      4
+    ],
+    "hunger": [
+      3,
+      6
+    ],
+    "margin": [
+      0,
+      2
+    ],
+    "cost": [
+      1,
+      2
+    ],
+    "upset": [
+      0,
+      400
+    ],
+    "advantage": [
+      1,
+      3
+    ],
+    "round_strain": [
+      1,
+      3
+    ],
+    "spend_strain": [
+      0,
+      2
+    ],
+    "regrowth": [
+      300,
+      900
+    ],
+    "mind": {
+      "hungry": [
+        1,
+        3
+      ],
+      "low": [
+        1,
+        3
+      ],
+      "starving": [
+        2,
+        5
+      ],
+      "low_mood": [
+        1,
+        4
+      ],
+      "build": [
+        1,
+        3
+      ],
+      "bleed": [
+        1,
+        3
+      ],
+      "bearing": [
+        4,
+        16
+      ],
+      "lineage_bearing": [
+        -3,
+        3
+      ],
+      "leaning_bearing": [
+        -2,
+        2
+      ],
+      "rise": [
+        250,
+        750
+      ],
+      "lineage_rise": [
+        -150,
+        150
+      ],
+      "leaning_rise": [
+        -100,
+        100
+      ],
+      "stake": [
+        -60,
+        60
+      ]
+    },
+    "bound_per_mille": 200
+  },
+  "settings": {
+    "alpha": 0.05,
+    "permutations": 199,
+    "seed": 6365265785156798320
+  },
+  "read_set": [
+    "account:matter:0-0",
+    "account:matter:1-0",
+    "account:mind:strain",
+    "alive",
+    "mood",
+    "place",
+    "site:world:food",
+    "site:world:soil",
+    "trait:ability:probe-0",
+    "trait:ability:probe-1",
+    "trait:leaning:contest",
+    "trait:leaning:scramble"
+  ],
+  "readings": [
+    {
+      "key": "alive:ability:probe-0",
+      "source": "competition",
+      "probe": {
+        "Alive": {
+          "identity": "ability:probe-0"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "alive:ability:probe-1",
+      "source": "competition",
+      "probe": {
+        "Alive": {
+          "identity": "ability:probe-1"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind:relief#1",
+      "source": "mind:relief",
+      "probe": {
+        "Members": {
+          "selector": [],
+          "query": {
+            "Mood": {
+              "at_least": -3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind:relief#2",
+      "source": "mind:relief",
+      "probe": {
+        "Members": {
+          "selector": [],
+          "query": {
+            "Account": {
+              "who": "Actor",
+              "key": "mind:strain",
+              "at_least": 1
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind:strain#1",
+      "source": "mind:strain",
+      "probe": {
+        "Members": {
+          "selector": [],
+          "query": {
+            "MoodBelow": {
+              "amount": -3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:regrow#1",
+      "source": "probe:regrow",
+      "probe": {
+        "Sites": {
+          "query": {
+            "Account": {
+              "who": "Place",
+              "key": "world:soil",
+              "at_least": 3382
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:spend-0#2",
+      "source": "probe:spend-0",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Account": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "at_least": 1
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:spend-1#2",
+      "source": "probe:spend-1",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Account": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "at_least": 1
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:starve-0#2",
+      "source": "probe:starve-0",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "amount": 1
+            }
+          }
+        }
+      },
+      "starvation": true,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:starve-1#2",
+      "source": "probe:starve-1",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "amount": 1
+            }
+          }
+        }
+      },
+      "starvation": true,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:upkeep-0#2",
+      "source": "probe:upkeep-0",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Account": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "at_least": 1
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "probe:upkeep-1#2",
+      "source": "probe:upkeep-1",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Account": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "at_least": 1
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "world:food#hungry:ability:probe-0",
+      "source": "world:food",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "world:food#hungry:ability:probe-1",
+      "source": "world:food",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "past-bearing:ability:probe-0",
+      "source": "mind",
+      "probe": {
+        "PastBearing": {
+          "identity": "ability:probe-0"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "past-bearing:ability:probe-1",
+      "source": "mind",
+      "probe": {
+        "PastBearing": {
+          "identity": "ability:probe-1"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:0",
+      "source": "mind#need:0",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:1",
+      "source": "mind#need:1",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:2",
+      "source": "mind#need:2",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-0"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:0-0",
+              "amount": 2
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:3",
+      "source": "mind#need:3",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:4",
+      "source": "mind#need:4",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "amount": 3
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "mind#need:5",
+      "source": "mind#need:5",
+      "probe": {
+        "Members": {
+          "selector": [
+            "ability:probe-1"
+          ],
+          "query": {
+            "Below": {
+              "who": "Actor",
+              "key": "matter:1-0",
+              "amount": 2
+            }
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:lineage",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": "Lineage"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:place",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": "Place"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:alive",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": "Alive"
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:account:matter:0-0",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": {
+            "Account": "matter:0-0"
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:account:matter:1-0",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": {
+            "Account": "matter:1-0"
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:account:mind:strain",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": {
+            "Account": "mind:strain"
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:account:world:food",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": {
+            "Account": "world:food"
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    },
+    {
+      "key": "inspect:account:world:soil",
+      "source": "inspection",
+      "probe": {
+        "Inspect": {
+          "field": {
+            "Account": "world:soil"
+          }
+        }
+      },
+      "starvation": false,
+      "bound_per_mille": 200
+    }
+  ],
+  "verdicts": null,
+  "comparisons": [
+    {
+      "name": "crowd against approximate crowd",
+      "draws": 4,
+      "settings": {
+        "alpha": 0.05,
+        "permutations": 199,
+        "seed": 6365265785156798320
+      },
+      "readings": [
+        {
+          "key": "alive:ability:probe-0",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2759.5,
+          "mean_b": 2768.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "alive:ability:probe-1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2502.5,
+          "mean_b": 2495.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind:relief#1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 4116.5,
+          "mean_b": 4126.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind:relief#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 6030.75,
+          "mean_b": 6020.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind:strain#1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 6867.75,
+          "mean_b": 6857.5,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:regrow#1",
+          "bound": 0.2,
+          "distance": 0.0,
+          "mean_a": 1.75,
+          "mean_b": 1.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:spend-0#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2759.5,
+          "mean_b": 2768.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:spend-1#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2502.5,
+          "mean_b": 2495.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:starve-0#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2814.75,
+          "mean_b": 2805.5,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:starve-1#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2907.5,
+          "mean_b": 2914.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:upkeep-0#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2759.5,
+          "mean_b": 2768.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "probe:upkeep-1#2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2502.5,
+          "mean_b": 2495.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "world:food#hungry:ability:probe-0",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3388.0,
+          "mean_b": 3390.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "world:food#hungry:ability:probe-1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3479.75,
+          "mean_b": 3467.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "past-bearing:ability:probe-0",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 960.75,
+          "mean_b": 968.0,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "past-bearing:ability:probe-1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 946.0,
+          "mean_b": 938.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:0",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3388.0,
+          "mean_b": 3390.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:1",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3388.0,
+          "mean_b": 3390.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:2",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2814.75,
+          "mean_b": 2805.5,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:3",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3479.75,
+          "mean_b": 3467.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:4",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 3479.75,
+          "mean_b": 3467.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "mind#need:5",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2907.5,
+          "mean_b": 2914.75,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:lineage",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 0.0,
+          "mean_b": 0.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:place",
+          "bound": 0.2,
+          "distance": 0.5,
+          "mean_a": 0.0,
+          "mean_b": 0.5,
+          "p_difference": 0.455,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:alive",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 0.5,
+          "mean_b": 0.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:account:matter:0-0",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 2.5,
+          "mean_b": 1.5,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:account:matter:1-0",
+          "bound": 0.2,
+          "distance": 0.0,
+          "mean_a": 0.0,
+          "mean_b": 0.0,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:account:mind:strain",
+          "bound": 0.2,
+          "distance": 0.25,
+          "mean_a": 6.0,
+          "mean_b": 3.25,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:account:world:food",
+          "bound": 0.2,
+          "distance": 0.0,
+          "mean_a": 0.0,
+          "mean_b": 0.0,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        },
+        {
+          "key": "inspect:account:world:soil",
+          "bound": 0.2,
+          "distance": 0.0,
+          "mean_a": 0.0,
+          "mean_b": 0.0,
+          "p_difference": 1.0,
+          "p_difference_holm": 1.0,
+          "detected": false,
+          "p_equivalence": 1.0,
+          "p_equivalence_holm": 1.0,
+          "certified": false
+        }
+      ],
+      "equivalent": false,
+      "different": false,
+      "pass": false
+    }
+  ],
+  "savings": {
+    "exact_evaluations": 0,
+    "crowd_evaluations": 47759,
+    "evaluation_ratio": 0.0,
+    "per_draw_evaluation_ratio": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "exact_represented": 0,
+    "crowd_represented": 4030243,
+    "exact_micros": 0,
+    "crowd_micros": 349806,
+    "wall_ratio": 0.0,
+    "approximate": {
+      "evaluations": 46747,
+      "micros": 317560,
+      "wall_ratio_to_exact": 0.0,
+      "wall_ratio_to_crowd": 1.1015430154931352,
+      "per_draw_wall_ratio_to_crowd": {
+        "min": 0.9679244466561371,
+        "median": 1.2121779397999901,
+        "max": 1.6259961799380886
+      }
+    }
+  },
+  "density": {
+    "founders": {
+      "min": 6149.0,
+      "median": 12764.0,
+      "max": 13954.0
+    },
+    "alive_end": {
+      "min": 2499.0,
+      "median": 6281.0,
+      "max": 7620.0
+    },
+    "alive_per_state_end": {
+      "min": 38.44615384615385,
+      "median": 387.3333333333333,
+      "max": 523.4166666666666
+    },
+    "exact_groups_stored_end": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "crowd_bins_end": {
+      "min": 38.0,
+      "median": 83.0,
+      "max": 110.0
+    }
+  },
+  "checks": {
+    "exact_rerun_identical": false,
+    "collect_changes_no_outcome": false
+  },
+  "note": "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds.",
+  "draws": [
+    {
+      "k": 0,
+      "seed": 7995159757869063002,
+      "sites": 2,
+      "members": 11070,
+      "leanings": [
+        "leaning:contest",
+        "leaning:scramble"
+      ],
+      "contested": [
+        {
+          "key": "world:food",
+          "ration": 3,
+          "want": 3,
+          "regrowth": 3382
+        }
+      ],
+      "margin": 0,
+      "cost": 2,
+      "upset": 347,
+      "advantage": 1,
+      "arms": [
+        {
+          "arm": "crowd",
+          "dynamics": 2345678725128497388,
+          "micros": 47667,
+          "evaluations": 5930,
+          "represented": 1074252,
+          "accepted": 256953,
+          "blocked": 817299,
+          "stored": 38,
+          "alive": 6281,
+          "alive_states": 12,
+          "readings": [
+            3546,
+            2735,
+            6281,
+            3020,
+            4789,
+            2,
+            3546,
+            2735,
+            2738,
+            2051,
+            3546,
+            2735,
+            2738,
+            2051,
+            0,
+            0,
+            2738,
+            2738,
+            2738,
+            2051,
+            2051,
+            2051,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "crowd-approximate",
+          "dynamics": 8205628307022374748,
+          "micros": 41421,
+          "evaluations": 5377,
+          "represented": 1075632,
+          "accepted": 255768,
+          "blocked": 819864,
+          "stored": 36,
+          "alive": 6311,
+          "alive_states": 12,
+          "readings": [
+            3579,
+            2732,
+            6311,
+            2990,
+            4759,
+            2,
+            3579,
+            2732,
+            2705,
+            2054,
+            3579,
+            2732,
+            2705,
+            2054,
+            0,
+            0,
+            2705,
+            2705,
+            2705,
+            2054,
+            2054,
+            2054,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "k": 1,
+      "seed": 2020674393246851032,
+      "sites": 1,
+      "members": 6149,
+      "leanings": [
+        "leaning:scramble",
+        "leaning:contest"
+      ],
+      "contested": [
+        {
+          "key": "world:food",
+          "ration": 3,
+          "want": 6,
+          "regrowth": 3075
+        }
+      ],
+      "margin": 2,
+      "cost": 1,
+      "upset": 191,
+      "advantage": 2,
+      "arms": [
+        {
+          "arm": "crowd",
+          "dynamics": 5119403348559452485,
+          "micros": 178946,
+          "evaluations": 25924,
+          "represented": 530349,
+          "accepted": 161575,
+          "blocked": 368774,
+          "stored": 110,
+          "alive": 2499,
+          "alive_states": 65,
+          "readings": [
+            1232,
+            1267,
+            2499,
+            3188,
+            3650,
+            1,
+            1232,
+            1267,
+            2503,
+            1147,
+            1232,
+            1267,
+            2503,
+            1147,
+            0,
+            7,
+            2503,
+            2503,
+            2503,
+            1147,
+            1147,
+            1147,
+            0,
+            0,
+            1,
+            8,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "crowd-approximate",
+          "dynamics": 12553009737633434050,
+          "micros": 184876,
+          "evaluations": 25565,
+          "represented": 530163,
+          "accepted": 161575,
+          "blocked": 368588,
+          "stored": 110,
+          "alive": 2482,
+          "alive_states": 64,
+          "readings": [
+            1201,
+            1281,
+            2482,
+            3173,
+            3667,
+            1,
+            1201,
+            1281,
+            2534,
+            1133,
+            1201,
+            1281,
+            2534,
+            1133,
+            0,
+            7,
+            2534,
+            2534,
+            2534,
+            1133,
+            1133,
+            1133,
+            0,
+            0,
+            1,
+            6,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "k": 2,
+      "seed": 11905978943953401189,
+      "sites": 2,
+      "members": 12764,
+      "leanings": [
+        "leaning:contest",
+        "leaning:scramble"
+      ],
+      "contested": [
+        {
+          "key": "world:food",
+          "ration": 3,
+          "want": 5,
+          "regrowth": 2866
+        }
+      ],
+      "margin": 2,
+      "cost": 2,
+      "upset": 208,
+      "advantage": 2,
+      "arms": [
+        {
+          "arm": "crowd",
+          "dynamics": 11427590453165135779,
+          "micros": 73818,
+          "evaluations": 9750,
+          "represented": 989722,
+          "accepted": 255258,
+          "blocked": 734464,
+          "stored": 42,
+          "alive": 4648,
+          "alive_states": 12,
+          "readings": [
+            2417,
+            2231,
+            4648,
+            6442,
+            8116,
+            2,
+            2417,
+            2231,
+            3043,
+            5073,
+            2417,
+            2231,
+            3043,
+            5073,
+            0,
+            0,
+            3043,
+            3043,
+            3043,
+            5073,
+            5073,
+            5073,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "crowd-approximate",
+          "dynamics": 14981272762555280426,
+          "micros": 60897,
+          "evaluations": 9643,
+          "represented": 988303,
+          "accepted": 254716,
+          "blocked": 733587,
+          "stored": 44,
+          "alive": 4643,
+          "alive_states": 12,
+          "readings": [
+            2423,
+            2220,
+            4643,
+            6447,
+            8121,
+            2,
+            2423,
+            2220,
+            3037,
+            5084,
+            2423,
+            2220,
+            3037,
+            5084,
+            0,
+            0,
+            3037,
+            3037,
+            3037,
+            5084,
+            5084,
+            5084,
+            1,
+            1,
+            0,
+            0,
+            0,
+            10,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "k": 3,
+      "seed": 17859434500414788463,
+      "sites": 2,
+      "members": 13954,
+      "leanings": [
+        "leaning:scramble",
+        "leaning:scramble"
+      ],
+      "contested": [
+        {
+          "key": "world:food",
+          "ration": 3,
+          "want": 3,
+          "regrowth": 3810
+        }
+      ],
+      "margin": 0,
+      "cost": 1,
+      "upset": 132,
+      "advantage": 1,
+      "arms": [
+        {
+          "arm": "crowd",
+          "dynamics": 4919499278305305785,
+          "micros": 49375,
+          "evaluations": 6155,
+          "represented": 1435920,
+          "accepted": 580865,
+          "blocked": 855055,
+          "stored": 83,
+          "alive": 7620,
+          "alive_states": 36,
+          "readings": [
+            3843,
+            3777,
+            3038,
+            11473,
+            10916,
+            2,
+            3843,
+            3777,
+            2975,
+            3359,
+            3843,
+            3777,
+            5268,
+            5648,
+            3843,
+            3777,
+            5268,
+            5268,
+            2975,
+            5648,
+            5648,
+            3359,
+            0,
+            0,
+            1,
+            2,
+            0,
+            20,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "crowd-approximate",
+          "dynamics": 2918941033716174735,
+          "micros": 30366,
+          "evaluations": 6162,
+          "represented": 1435732,
+          "accepted": 580745,
+          "blocked": 854987,
+          "stored": 82,
+          "alive": 7620,
+          "alive_states": 36,
+          "readings": [
+            3872,
+            3748,
+            3071,
+            11473,
+            10883,
+            2,
+            3872,
+            3748,
+            2946,
+            3388,
+            3872,
+            3748,
+            5285,
+            5598,
+            3872,
+            3748,
+            5285,
+            5285,
+            2946,
+            5598,
+            5598,
+            3388,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

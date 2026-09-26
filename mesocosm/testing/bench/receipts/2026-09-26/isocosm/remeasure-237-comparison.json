@@ -1,0 +1,588 @@
+{
+  "kind": "isocosm-remeasure-237-comparison",
+  "note": "Each step-1 ecology point's mean tick as checkpoint 1 re-measured it (remeasure-ecology.json of 2026-09-25, at d12e430) and as it re-measured after ruling 237's two cuts. Identical is against the step-1 receipt: the final state hash, every per-tick count and the distinct states.",
+  "points": 30,
+  "tick_seconds": {
+    "checkpoint_1": 77.05,
+    "after_237": 35.75
+  },
+  "overall_speedup": 2.16,
+  "speedup_min_median_max": [
+    0.95,
+    1.6,
+    3.96
+  ],
+  "all_identical_to_step_1": true,
+  "rows": [
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 256,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 6898877643425465348,
+      "ticks": 16,
+      "evaluations_per_tick": 7040,
+      "checkpoint_1_mean_tick_micros": 10783,
+      "after_237_mean_tick_micros": 8720,
+      "speedup": 1.2365825688073395,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.5316761363636364,
+        1.2386363636363635
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 256,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 9501005625705404887,
+      "ticks": 16,
+      "evaluations_per_tick": 7040,
+      "checkpoint_1_mean_tick_micros": 11257,
+      "after_237_mean_tick_micros": 8332,
+      "speedup": 1.351056168987038,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.599005681818182,
+        1.1835227272727273
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 512,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 17986844567079418633,
+      "ticks": 16,
+      "evaluations_per_tick": 14000,
+      "checkpoint_1_mean_tick_micros": 19426,
+      "after_237_mean_tick_micros": 16098,
+      "speedup": 1.2067337557460553,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.3875714285714287,
+        1.149857142857143
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 512,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 11133498039694957076,
+      "ticks": 16,
+      "evaluations_per_tick": 13874,
+      "checkpoint_1_mean_tick_micros": 20000,
+      "after_237_mean_tick_micros": 16471,
+      "speedup": 1.2142553579017668,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.4415453366008362,
+        1.1871846619576185
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 10038609299997128519,
+      "ticks": 16,
+      "evaluations_per_tick": 27920,
+      "checkpoint_1_mean_tick_micros": 43033,
+      "after_237_mean_tick_micros": 31721,
+      "speedup": 1.3566091863434317,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.5412965616045846,
+        1.1361389684813754
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 7348937498132728118,
+      "ticks": 16,
+      "evaluations_per_tick": 27920,
+      "checkpoint_1_mean_tick_micros": 46433,
+      "after_237_mean_tick_micros": 31417,
+      "speedup": 1.477957793551262,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.6630730659025788,
+        1.1252507163323782
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 2048,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 18321326428303959052,
+      "ticks": 16,
+      "evaluations_per_tick": 55005,
+      "checkpoint_1_mean_tick_micros": 155599,
+      "after_237_mean_tick_micros": 62401,
+      "speedup": 2.4935337574718353,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        2.828815562221616,
+        1.1344605035905826
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "grouped",
+      "population": 2048,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 14181394823608237278,
+      "ticks": 16,
+      "evaluations_per_tick": 55261,
+      "checkpoint_1_mean_tick_micros": 161164,
+      "after_237_mean_tick_micros": 84235,
+      "speedup": 1.913266456935953,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        2.916414831436275,
+        1.5243119017028284
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 256,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 6898877643425465348,
+      "ticks": 16,
+      "evaluations_per_tick": 7040,
+      "checkpoint_1_mean_tick_micros": 21983,
+      "after_237_mean_tick_micros": 11121,
+      "speedup": 1.9767107274525673,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.1225852272727272,
+        1.5796875
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 256,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 9501005625705404887,
+      "ticks": 16,
+      "evaluations_per_tick": 7040,
+      "checkpoint_1_mean_tick_micros": 24697,
+      "after_237_mean_tick_micros": 10872,
+      "speedup": 2.271615158204562,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.508096590909091,
+        1.544318181818182
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 512,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 17986844567079418633,
+      "ticks": 16,
+      "evaluations_per_tick": 14000,
+      "checkpoint_1_mean_tick_micros": 40342,
+      "after_237_mean_tick_micros": 24813,
+      "speedup": 1.6258412928706727,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        2.8815714285714287,
+        1.772357142857143
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 512,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 11133498039694957076,
+      "ticks": 16,
+      "evaluations_per_tick": 13874,
+      "checkpoint_1_mean_tick_micros": 46807,
+      "after_237_mean_tick_micros": 25486,
+      "speedup": 1.8365769442046613,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.373720628513767,
+        1.8369612224304455
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 10038609299997128519,
+      "ticks": 16,
+      "evaluations_per_tick": 27920,
+      "checkpoint_1_mean_tick_micros": 125047,
+      "after_237_mean_tick_micros": 44654,
+      "speedup": 2.8003538316836116,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        4.4787607449856734,
+        1.5993553008595989
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "ladder",
+      "mode": "individuals",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 7348937498132728118,
+      "ticks": 16,
+      "evaluations_per_tick": 27920,
+      "checkpoint_1_mean_tick_micros": 132319,
+      "after_237_mean_tick_micros": 47204,
+      "speedup": 2.8031310905855436,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        4.739219197707737,
+        1.6906876790830945
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 2,
+      "cohort_size": 32,
+      "seed": 1030023970163841509,
+      "ticks": 16,
+      "evaluations_per_tick": 5621,
+      "checkpoint_1_mean_tick_micros": 17491,
+      "after_237_mean_tick_micros": 15121,
+      "speedup": 1.15673566563058,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.11172389254581,
+        2.6900907311866216
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 2,
+      "cohort_size": 32,
+      "seed": 11214623003492539097,
+      "ticks": 16,
+      "evaluations_per_tick": 5570,
+      "checkpoint_1_mean_tick_micros": 23123,
+      "after_237_mean_tick_micros": 14411,
+      "speedup": 1.6045381999861217,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        4.151346499102334,
+        2.587253141831239
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 4,
+      "cohort_size": 32,
+      "seed": 10394634971050142570,
+      "ticks": 16,
+      "evaluations_per_tick": 12119,
+      "checkpoint_1_mean_tick_micros": 37271,
+      "after_237_mean_tick_micros": 24634,
+      "speedup": 1.5129901761792643,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.075418763924416,
+        2.032675963363314
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 4,
+      "cohort_size": 32,
+      "seed": 14530337309673376763,
+      "ticks": 16,
+      "evaluations_per_tick": 12119,
+      "checkpoint_1_mean_tick_micros": 29435,
+      "after_237_mean_tick_micros": 21225,
+      "speedup": 1.3868080094228503,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        2.4288307616139946,
+        1.751382127238221
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 5302297231892970553,
+      "ticks": 16,
+      "evaluations_per_tick": 27792,
+      "checkpoint_1_mean_tick_micros": 47507,
+      "after_237_mean_tick_micros": 49974,
+      "speedup": 0.9506343298515227,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.7093767990788715,
+        1.7981433506044906
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 12405364538841246400,
+      "ticks": 16,
+      "evaluations_per_tick": 27920,
+      "checkpoint_1_mean_tick_micros": 54246,
+      "after_237_mean_tick_micros": 46739,
+      "speedup": 1.1606153319497636,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.9429083094555875,
+        1.6740329512893983
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 16,
+      "cohort_size": 32,
+      "seed": 4779845211227078039,
+      "ticks": 16,
+      "evaluations_per_tick": 73993,
+      "checkpoint_1_mean_tick_micros": 120076,
+      "after_237_mean_tick_micros": 97747,
+      "speedup": 1.2284366783635303,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.6228021569607936,
+        1.3210303677374886
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 16,
+      "cohort_size": 32,
+      "seed": 15552035275372534308,
+      "ticks": 16,
+      "evaluations_per_tick": 74315,
+      "checkpoint_1_mean_tick_micros": 145932,
+      "after_237_mean_tick_micros": 91980,
+      "speedup": 1.5865622961513373,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.9636950817466192,
+        1.2377043665478034
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 32,
+      "cohort_size": 32,
+      "seed": 13174708945357475198,
+      "ticks": 16,
+      "evaluations_per_tick": 219408,
+      "checkpoint_1_mean_tick_micros": 351218,
+      "after_237_mean_tick_micros": 265686,
+      "speedup": 1.3219288935058677,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.6007529351710057,
+        1.2109221176985343
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "lineages",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 32,
+      "cohort_size": 32,
+      "seed": 12654255925397769279,
+      "ticks": 16,
+      "evaluations_per_tick": 219408,
+      "checkpoint_1_mean_tick_micros": 323471,
+      "after_237_mean_tick_micros": 248391,
+      "speedup": 1.3022653799855872,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        1.474289907387151,
+        1.1320963684095384
+      ]
+    },
+    {
+      "source": "scale.json",
+      "run": "history",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 504716842071549647,
+      "ticks": 512,
+      "evaluations_per_tick": 2344,
+      "checkpoint_1_mean_tick_micros": 43012,
+      "after_237_mean_tick_micros": 11704,
+      "speedup": 3.6749829118250172,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        18.349829351535835,
+        4.993174061433447
+      ]
+    },
+    {
+      "source": "scale-extension.json",
+      "run": "extension",
+      "mode": "grouped",
+      "population": 2048,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 6835479139246022287,
+      "ticks": 8,
+      "evaluations_per_tick": 51680,
+      "checkpoint_1_mean_tick_micros": 152283,
+      "after_237_mean_tick_micros": 89361,
+      "speedup": 1.7041326753281634,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        2.946652476780186,
+        1.7291215170278638
+      ]
+    },
+    {
+      "source": "scale-extension.json",
+      "run": "extension",
+      "mode": "grouped",
+      "population": 4096,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 7276310015251897900,
+      "ticks": 8,
+      "evaluations_per_tick": 102447,
+      "checkpoint_1_mean_tick_micros": 389378,
+      "after_237_mean_tick_micros": 183457,
+      "speedup": 2.1224483121385394,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        3.8007750348960925,
+        1.7907503391997814
+      ]
+    },
+    {
+      "source": "scale-extension.json",
+      "run": "extension",
+      "mode": "individuals",
+      "population": 2048,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 6835479139246022287,
+      "ticks": 8,
+      "evaluations_per_tick": 51680,
+      "checkpoint_1_mean_tick_micros": 213523,
+      "after_237_mean_tick_micros": 84957,
+      "speedup": 2.5133067316407125,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        4.1316369969040245,
+        1.64390479876161
+      ]
+    },
+    {
+      "source": "scale-extension.json",
+      "run": "extension",
+      "mode": "individuals",
+      "population": 4096,
+      "lineages": 8,
+      "cohort_size": 32,
+      "seed": 7276310015251897900,
+      "ticks": 8,
+      "evaluations_per_tick": 102447,
+      "checkpoint_1_mean_tick_micros": 769439,
+      "after_237_mean_tick_micros": 194307,
+      "speedup": 3.959913950603941,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        7.510605483811141,
+        1.8966587601393892
+      ]
+    },
+    {
+      "source": "scale-living.json",
+      "run": "living",
+      "mode": "grouped",
+      "population": 1024,
+      "lineages": 8,
+      "cohort_size": 1,
+      "seed": 4895165386864189804,
+      "ticks": 92,
+      "evaluations_per_tick": 19723,
+      "checkpoint_1_mean_tick_micros": 116273,
+      "after_237_mean_tick_micros": 49454,
+      "speedup": 2.351134387511627,
+      "identical_to_step_1": true,
+      "micros_per_evaluation": [
+        5.895299903665771,
+        2.50742787608376
+      ]
+    }
+  ]
+}

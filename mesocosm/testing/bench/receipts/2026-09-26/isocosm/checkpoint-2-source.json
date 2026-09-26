@@ -1,0 +1,452 @@
+{
+  "date": "2026-09-26",
+  "kind": "isocosm-checkpoint-2",
+  "commit": "afdecf0e2fe8fcc190ceda73cd0cbbb8e570177f",
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "profile": "release",
+  "source_blobs": {
+    "shared/isocosm/Cargo.lock": "42f7bd0cc2e8b749c1e2ba4b85c1e0e38c16de5b",
+    "shared/isocosm/Cargo.toml": "ac6baf8a2ea6f73283cda0c02efdfb9adf3410b4",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "1958dfc1c6c065c27e84343ebf793de65948aaa8",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "6021819003c9cf72cad6cf5b103cd0dc65e8f37d",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "f7096676f0a074a28f324f8a8cf79612e0c31a4a",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/bin/isocosm-scale/remeasure.rs": "2832a316f27e97eb5e323584c1b3765fe87f48ba",
+    "shared/isocosm/src/ecology.rs": "619af0eb3132079ddecfcdae39142025c9997ba6",
+    "shared/isocosm/src/execute.rs": "a35c1c4eae788bc28cfd6a34fc4a5a78f9b3d4b1",
+    "shared/isocosm/src/generate.rs": "f2c64071cc8cd519382218bf2ee9319caf81cae0",
+    "shared/isocosm/src/genesis.rs": "baae423fd6fda957628cf785bdc9363d7124f378",
+    "shared/isocosm/src/history.rs": "99f5866fe9d9b8dc8cdc0ede7b1b06c1f599d309",
+    "shared/isocosm/src/journal.rs": "5bfb06be8310d19b89531dc671f1c46b7ea8784a",
+    "shared/isocosm/src/lib.rs": "6c9e2a268d3aae2250a3e8ec06020803991177d2",
+    "shared/isocosm/src/meaning.rs": "11ff0bd5b1cbce70c16a44be4dde2c116f46f047",
+    "shared/isocosm/src/population.rs": "93e7ec790f8a7daebab3e4d518a6482fe7a36a6f",
+    "shared/isocosm/src/probe/aggregate.rs": "dd7e24bd7ada54f1f1a65ce70f56b0ee48c32c8c",
+    "shared/isocosm/src/probe/check.rs": "b3018ab5ed3978a9d953b25d1671c16f04b5b76e",
+    "shared/isocosm/src/probe/crowd/mod.rs": "ef6690bd4c20059aa791f09e418fc2c529ebec93",
+    "shared/isocosm/src/probe/crowd/round.rs": "0d7fb920a8326d5181fb8fb7b49b87d79eb7040f",
+    "shared/isocosm/src/probe/draws.rs": "d4ea12b8114f907bdecbfae156a6b1aa6712d297",
+    "shared/isocosm/src/probe/exact.rs": "e881aad6e31f715a483442a2695e827661c5af80",
+    "shared/isocosm/src/probe/fight.rs": "3e45721fa02effbd686e19270733604d07859106",
+    "shared/isocosm/src/probe/fight/tests.rs": "438c6804907a55bddcd2ff1d095fd94bab56014c",
+    "shared/isocosm/src/probe/found/contested.rs": "3e1d089559215d5b9585356bc3268bbcc4a33091",
+    "shared/isocosm/src/probe/found/mind.rs": "db72dd051d5934d8d473a2f9214db26c375097fb",
+    "shared/isocosm/src/probe/found/mod.rs": "9784068f2e4bbbdaa2d1b85be6b1410cefc13ca6",
+    "shared/isocosm/src/probe/mod.rs": "011aad37ff4732689d35df54c5badc335e521248",
+    "shared/isocosm/src/probe/readings.rs": "2715db39de7ecc306f2a12c70bdea1e22df71558",
+    "shared/isocosm/src/probe/settle.rs": "5cd64effda488ac15e9b5e24d6d5c4effa2674b0",
+    "shared/isocosm/src/probe/settle/tests.rs": "fc9d5d7a5e54727479d7577fe4104e3f68fa03c2",
+    "shared/isocosm/src/probe/tests.rs": "c7c632f86489b1db9da8f7bba699817a2c146718",
+    "shared/isocosm/src/queries.rs": "d5adae870aa6f59f9a8f1c7ffc8aaf63551ce8a3",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules.rs": "7966de6d9d28787aff735755fe755a07c31eeddd",
+    "shared/isocosm/src/schema.rs": "6c752ffbf4fe95fb709c3be320255f0c9654aa23",
+    "shared/isocosm/src/simulation.rs": "1ab3223c0f670c0cb1376c2f2ea0e4fbc9825d5d",
+    "shared/isocosm/src/stage.rs": "3e7958e67a919e1eae482e8371c4b3bd9fe6d7fd",
+    "shared/isocosm/src/targets.rs": "88ba31937a9f15af37772a56909e5d197798ff6f",
+    "shared/isocosm/src/validation.rs": "dfaf6d39192453b034c890790cd7aeede92100f4",
+    "shared/isocosm/tests/mind.rs": "bb665ac1e6f72da8fd0bf49d4eb74f76ee51126b",
+    "shared/isocosm/tests/probe.rs": "6ec0590f435e251555f452759cfc814bbbd7d54f",
+    "shared/isocosm/tests/sim.rs": "8b1f542e6312262da1191daaddeab87c485a3ae0"
+  },
+  "executables_sha256": {
+    "isocosm-probe": "86f60480dc6b80102a7a1d174e5fceed96a2da3075c5a751ab30b974d9b5eea1",
+    "isocosm-scale": "929b7ecf23068d13f1379236bd6760375d55f1fb3fe02f1f98e63ecc61614ea8"
+  },
+  "machine": {
+    "model": "ASUSTeK ROG Zephyrus G14 GA402XV, the laptop ruling 124 names",
+    "cpu": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics, 8 cores, 16 threads, 4.0 GHz max",
+    "os": "Windows 11 Home Insider Preview 10.0.26220"
+  },
+  "commits": {
+    "a4be119": "item 4, rulings 221 to 223 and 227: the fight in rounds of strain against bearing, a break up or down that shifts standing, yield at re-sizing or on being spent; mood read from the needs a world's mind declares, strain kept in a strain account and built and eased by processes the world's rules declare",
+    "bf66976": "ruling 237, first cut: a scheduled act with a target looks for it among the stored groups filed by place and lineage, kept current as acts commit, instead of across the whole population",
+    "16609fb": "ruling 237, second cut: an advance journals the first state of whatever it changes and rolls a refusal back from the journal, instead of cloning the world before it begins",
+    "76ab646": "rulings 236 and 240: competitions keyed by the contested site account, run at once in a tick against its start and settled at its end, costs summed and capped at holdings; the probe's refusal of a second competition lifted; --water",
+    "ac76e8b": "item 6: ruling 220's approximate pairing draw as a crowd variant; --approximate",
+    "afdecf0": "the near draws made cheaper, one stream draw per normal and an integer square root; --crowds"
+  },
+  "machine_load": "Shared machine: other sessions built crates and ran their tests on it during these runs. Each run here is single-threaded. Whole-machine CPU load in percent, sampled 0.4 s apart just before the re-measure: 57, 37, 32, 28, 18; just after it: 61, 28, 51, 60, 62. Wall times carry this noise; evaluation counts, readings and hashes do not.",
+  "runs": [
+    {
+      "file": "probe.json",
+      "purpose": "item 5: ruling 113's certified check again, under the fight in rounds (rulings 221 to 223) with strain from needs (ruling 227)",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --draws 1000 --permutations 1999 --output probe.json",
+      "seeds": "master seed 1790401407594105800, taken from the clock before the run; worlds, dynamics and the check's permutations follow from it",
+      "commit": "76ab646",
+      "executable_sha256": "not recorded at the run; the binary was built from this commit",
+      "draws": 1000,
+      "readings": 30,
+      "members_per_site_and_lineage": [
+        64,
+        128
+      ],
+      "verdicts": {
+        "main_pass": true,
+        "main_equivalent": true,
+        "main_different": false,
+        "positive_control_pass": true,
+        "negative_control_failed_starvation_check": true,
+        "negative_control_detected_starvation_difference": true,
+        "starvation_readings": [
+          "probe:starve-0#2",
+          "probe:starve-1#2"
+        ]
+      },
+      "comparisons": {
+        "exact against crowd": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:account:mind:strain",
+            0.052,
+            0.2
+          ]
+        },
+        "exact against exact (positive control)": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:account:mind:strain",
+            0.037,
+            0.2
+          ]
+        },
+        "exact against averaged crowd (negative control)": {
+          "equivalent": false,
+          "different": true,
+          "certified": "5/30",
+          "detected": 25,
+          "largest_distance": [
+            "past-bearing:ability:probe-1",
+            0.317,
+            0.2
+          ]
+        }
+      },
+      "evaluation_ratio": 6.5,
+      "wall_ratio": 12.54,
+      "alive_per_state_end_median": 9.75,
+      "checks": {
+        "exact_rerun_identical": true,
+        "collect_changes_no_outcome": true
+      },
+      "verify": {
+        "file": "probe-verify.txt",
+        "distances_and_equivalence_matched": true,
+        "difference_verdicts_disagreeing": 0
+      }
+    },
+    {
+      "file": "probe-water.json",
+      "purpose": "rulings 236 and 240: every world contests water as well as food, two competitions a tick settled at its end; the crowd against the exact runner there",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --water --draws 1000 --permutations 1999 --output probe-water.json",
+      "seeds": "master seed 1790402066577217100, taken from the clock before the run; worlds, dynamics and the check's permutations follow from it",
+      "commit": "ac76e8b",
+      "executable_sha256": "ebb75322be4cff787d9f9ff5bd933363672e654808a615b3a0774d2a39d63bdc",
+      "draws": 1000,
+      "readings": 40,
+      "members_per_site_and_lineage": [
+        64,
+        128
+      ],
+      "verdicts": {
+        "main_pass": true,
+        "main_equivalent": true,
+        "main_different": false,
+        "positive_control_pass": true,
+        "negative_control_failed_starvation_check": true,
+        "negative_control_detected_starvation_difference": true,
+        "starvation_readings": [
+          "probe:starve-0#2",
+          "probe:starve-1#2"
+        ]
+      },
+      "comparisons": {
+        "exact against crowd": {
+          "equivalent": true,
+          "different": false,
+          "certified": "40/40",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:account:mind:strain",
+            0.032,
+            0.2
+          ]
+        },
+        "exact against exact (positive control)": {
+          "equivalent": true,
+          "different": false,
+          "certified": "40/40",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:account:matter:1-1",
+            0.026,
+            0.2
+          ]
+        },
+        "exact against averaged crowd (negative control)": {
+          "equivalent": false,
+          "different": true,
+          "certified": "12/40",
+          "detected": 32,
+          "largest_distance": [
+            "alive:ability:probe-1",
+            0.263,
+            0.2
+          ]
+        }
+      },
+      "evaluation_ratio": 2.44,
+      "wall_ratio": 5.99,
+      "alive_per_state_end_median": 2.12,
+      "checks": {
+        "exact_rerun_identical": true,
+        "collect_changes_no_outcome": true
+      },
+      "verify": {
+        "file": "probe-water-verify.txt",
+        "distances_and_equivalence_matched": true,
+        "difference_verdicts_disagreeing": 0
+      }
+    },
+    {
+      "file": "probe-approximate.json",
+      "purpose": "item 6: ruling 220's approximate pairing draw qualified by the same check at 512 to 1,024 members per site and lineage, against the exact runner and against the exact crowd",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --approximate --members 512 1024 --draws 1000 --permutations 1999 --output probe-approximate.json",
+      "seeds": "master seed 1790403628639628200, taken from the clock before the run; worlds, dynamics and the check's permutations follow from it",
+      "commit": "afdecf0",
+      "executable_sha256": "86f60480dc6b80102a7a1d174e5fceed96a2da3075c5a751ab30b974d9b5eea1",
+      "draws": 1000,
+      "readings": 30,
+      "members_per_site_and_lineage": [
+        512,
+        1024
+      ],
+      "verdicts": {
+        "main_pass": true,
+        "main_equivalent": true,
+        "main_different": false,
+        "positive_control_pass": true,
+        "negative_control_failed_starvation_check": true,
+        "negative_control_detected_starvation_difference": true,
+        "starvation_readings": [
+          "probe:starve-0#2",
+          "probe:starve-1#2"
+        ]
+      },
+      "comparisons": {
+        "exact against crowd": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:lineage",
+            0.041,
+            0.2
+          ]
+        },
+        "exact against exact (positive control)": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:account:matter:0-0",
+            0.022,
+            0.2
+          ]
+        },
+        "exact against averaged crowd (negative control)": {
+          "equivalent": false,
+          "different": true,
+          "certified": "5/30",
+          "detected": 26,
+          "largest_distance": [
+            "past-bearing:ability:probe-0",
+            0.349,
+            0.2
+          ]
+        },
+        "exact against approximate crowd": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:place",
+            0.036,
+            0.2
+          ]
+        },
+        "crowd against approximate crowd": {
+          "equivalent": true,
+          "different": false,
+          "certified": "30/30",
+          "detected": 0,
+          "largest_distance": [
+            "inspect:lineage",
+            0.058,
+            0.2
+          ]
+        }
+      },
+      "evaluation_ratio": 22.71,
+      "wall_ratio": 36.26,
+      "alive_per_state_end_median": 56.44,
+      "checks": {
+        "exact_rerun_identical": true,
+        "collect_changes_no_outcome": true
+      },
+      "verify": {
+        "file": "probe-approximate-verify.txt",
+        "distances_and_equivalence_matched": true,
+        "difference_verdicts_disagreeing": 0
+      },
+      "approximate": {
+        "evaluations": 10182296,
+        "evaluations_exact_and_crowd": [
+          232596242,
+          10243526
+        ],
+        "wall_ratio_to_exact": 36.16,
+        "wall_ratio_to_crowd": 0.997,
+        "per_draw_wall_ratio_to_crowd": {
+          "min": 0.183,
+          "median": 1.014,
+          "max": 3.064
+        }
+      }
+    },
+    {
+      "files": [
+        "probe-crowds-512.json",
+        "probe-crowds-2048.json",
+        "probe-crowds-8192.json"
+      ],
+      "purpose": "item 6: the two crowds alone, exact and approximate count draws, timed where the exact runner is too slow to reach; no verdict",
+      "timings": [
+        {
+          "file": "probe-crowds-512.json",
+          "command": "shared/isocosm/target/release/isocosm-probe.exe --crowds --members 512 1024 --draws 4 --permutations 199 --output probe-crowds-512.json",
+          "seeds": "master seed 1790403595296574400, from the clock",
+          "commit": "afdecf0",
+          "executable_sha256": "86f60480dc6b80102a7a1d174e5fceed96a2da3075c5a751ab30b974d9b5eea1",
+          "crowd_seconds": 0.42,
+          "approximate_seconds": 0.411,
+          "ratio": 1.02,
+          "evaluations": [
+            68024,
+            66600
+          ],
+          "alive_per_state_end": [
+            10.5,
+            136.6,
+            8.4,
+            30.5
+          ]
+        },
+        {
+          "file": "probe-crowds-2048.json",
+          "command": "shared/isocosm/target/release/isocosm-probe.exe --crowds --members 2048 4096 --draws 4 --permutations 199 --output probe-crowds-2048.json",
+          "seeds": "master seed 1790403596222244200, from the clock",
+          "commit": "afdecf0",
+          "executable_sha256": "86f60480dc6b80102a7a1d174e5fceed96a2da3075c5a751ab30b974d9b5eea1",
+          "crowd_seconds": 0.35,
+          "approximate_seconds": 0.318,
+          "ratio": 1.1,
+          "evaluations": [
+            47759,
+            46747
+          ],
+          "alive_per_state_end": [
+            523.4,
+            38.4,
+            387.3,
+            211.7
+          ]
+        },
+        {
+          "file": "probe-crowds-8192.json",
+          "command": "shared/isocosm/target/release/isocosm-probe.exe --crowds --members 8192 16384 --draws 4 --permutations 199 --output probe-crowds-8192.json",
+          "seeds": "master seed 1790403596972856700, from the clock",
+          "commit": "afdecf0",
+          "executable_sha256": "86f60480dc6b80102a7a1d174e5fceed96a2da3075c5a751ab30b974d9b5eea1",
+          "crowd_seconds": 1.086,
+          "approximate_seconds": 0.816,
+          "ratio": 1.33,
+          "evaluations": [
+            128941,
+            128696
+          ],
+          "alive_per_state_end": [
+            143.8,
+            361.0,
+            346.8,
+            291.7
+          ]
+        }
+      ]
+    },
+    {
+      "files": [
+        "remeasure-237.json",
+        "remeasure-237-comparison.json"
+      ],
+      "purpose": "ruling 237: time the step-1 ecology points again on the same draws after the two cuts, with every deterministic field compared against step 1; the comparison sets each point beside checkpoint 1's re-measure (remeasure-ecology.json of 2026-09-25, at d12e430)",
+      "command": "shared/isocosm/target/release/isocosm-scale.exe --remeasure scale.json --remeasure scale-extension.json --remeasure scale-living.json --family ecology --output remeasure-237.json (the three sources from receipts/2026-09-25/isocosm/); then remeasure_237.py remeasure-ecology.json remeasure-237.json remeasure-237-comparison.json",
+      "seeds": "the step-1 points' own foundings and seeds, which came from the clock at step 1 (master seeds 1790357406088610700, 1790359248610411800 and 1790360974575170100); re-using them is what makes the worlds the same",
+      "commit": "afdecf0",
+      "points": 30,
+      "all_identical_to_step_1": true,
+      "tick_seconds_checkpoint_1": 77.05,
+      "tick_seconds_after_237": 35.75,
+      "overall_speedup_over_checkpoint_1": 2.16,
+      "speedup_min_median_max": [
+        0.95,
+        1.6,
+        3.96
+      ],
+      "micros_per_evaluation_at_4096": {
+        "grouped": [
+          3.8,
+          1.79
+        ],
+        "individuals": [
+          7.51,
+          1.9
+        ]
+      }
+    },
+    {
+      "files": [
+        "differential.json",
+        "differential-drive.rs"
+      ],
+      "purpose": "ruling 237's rule, results byte-identical: every receipt and state hash of random acts, advances, inspections, learnings, releases and collections, and of sessions under tight budgets, the core before checkpoint 1 against the final one",
+      "command": "differential-drive.rs built as the only binary of a scratch crate depending on isocosm by path, once on the tree at 810d213 and once at afdecf0; then `drive fuzz 7 24 400`, `drive fuzz 11 60 1500` and `drive tight 13 48 600` on each",
+      "result": "all three logs byte-identical: 99,684 fuzz operations over 84 worlds, and 48 tight sessions of 600 steps with 3,408 advances, 2,748 of them refused part way and rolled back; 42 saves load in the other execution mode and 6 do not, on both cores alike (see checks)"
+    }
+  ],
+  "checks": [
+    "cargo test --manifest-path shared/isocosm/Cargo.toml --offline --locked at afdecf0: 47 passed, 0 failed (17 unit, 3 mind, 7 probe integration, 20 core integration); debug builds assert after every accepted act that the world's matter equals the conserved total, that the filed target search finds what the full search finds, and that a rolled-back advance equals a full copy of the world before it",
+    "cargo clippy --manifest-path shared/isocosm/Cargo.toml --offline --locked --all-targets -- -D warnings: clean; cargo fmt --check: clean; every source file under 600 lines",
+    "cargo check -p mesocosm-genet --all-features --all-targets --offline (mesocosm workspace, against this worktree's isocosm at afdecf0): passes, no warnings",
+    "scale pilot, master seed 1790357350335206000: every deterministic field and final hash as in the step-1 pilot written by the pre-fold core, after a4be119, bf66976, 16609fb, 76ab646 and afdecf0",
+    "probe pilot, --seed 20260926 --draws 16 --permutations 199: every deterministic field identical across ruling 237's cuts (a4be119, bf66976, 16609fb); and between 76ab646 and afdecf0, with and without --water, apart from the savings field `approximate`, added in ac76e8b and null when that arm does not run",
+    "the old core's fuzz logs regenerated from the current driver source: byte-identical to the baselines, so both sides of the differential come from the same driver",
+    "debug build of the driver at afdecf0, `drive tight 13 48 600`: log byte-identical to the old core's, with every rollback checked against a full copy and every filed target search against the full search; `drive fuzz 11 20 1500` in debug at bf66976 matched the first 20 worlds of the old core's log",
+    "verify.py on probe.json, probe-water.json and probe-approximate.json, 1,999 permutations each: every distance and equivalence verdict recomputed and matched; every difference verdict agreed",
+    "finding, not changed: 6 of the 48 tight sessions save a history that the other execution mode refuses to load (advance exceeds configured operation budget), because the operation budget counts evaluations, which differ by mode; the core before checkpoint 1 does the same"
+  ],
+  "scope": "Checkpoint 2 of the batch ruled 217 to 240: item 4 (the fight under rulings 221 to 223, with strain from needs under ruling 227), ruling 237's two cost cuts, rulings 236 and 240 (competitions keyed by what they contest, run at once and settled at the tick's end), item 5 (the certified check under the new fight) and item 6 (the approximate pairing draw). The re-measure times only the ecology family's step-1 points. The approximate draw was certified at 512 to 1,024 members per site and lineage only; below that, where its normal approximation is coarsest, and at 2,048 and above, where it begins to save time, it is unchecked."
+}

@@ -46,6 +46,23 @@ their own `probe-source.json`. `verify.py` recomputes every distance and
 equivalence verdict from the raw per-draw readings, independently of the Rust
 check, and re-runs the difference tests with its own permutations.
 
+`receipts/2026-09-26/isocosm/` holds checkpoint 2 of the batch ruled 217 to
+240. `probe.json` is the certified check again, under the fight in rounds of
+rulings 221 to 223 and the mind of ruling 227. `probe-water.json` contests
+water as well as food, two competitions a tick settled at its end (rulings 236
+and 240). `probe-approximate.json` adds the crowd with ruling 220's
+approximate pairing draw, at 512 to 1,024 members per site and lineage, and
+the `probe-crowds-*.json` receipts time the two crowds alone at higher
+densities. Each `*-verify.txt` is `verify.py`'s output on its receipt.
+Under ruling 255 the three large raw receipts, `probe.json`,
+`probe-water.json` and `probe-approximate.json`, live out of tree; their
+path and hashes are in that directory's `RAW_RECEIPTS.md`.
+`remeasure-237.json` runs the step-1 ecology points again after ruling 237's
+two cuts, and `remeasure-237-comparison.json`, written by `remeasure_237.py`,
+sets each point beside checkpoint 1's time. `differential.json`, with its driver
+`differential-drive.rs`, compares the core before checkpoint 1 with the final
+one. `checkpoint-2-source.json` names the commit behind each run.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

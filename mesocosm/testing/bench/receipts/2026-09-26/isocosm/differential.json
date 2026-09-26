@@ -1,0 +1,60 @@
+{
+  "kind": "isocosm-differential",
+  "note": "The same driver source (differential-drive.rs) built twice, against the core at 810d213 (before checkpoint 1's fold, rules move and stage) and at the final commit of checkpoint 2, and run on the same arguments. Fuzz lines hold every receipt as JSON, the state hash after every operation, the stored group count and the world's matter, plus each world's final hash and next identity; its worlds are drawn from both generator families with extra processes that reach every effect, binding and failure path the interpreter has, a third under tight note, history and population limits, each in one execution mode. The tight scenario plays 48 worlds through sessions under small operation budgets, so most advances are refused part way and must leave the world as it was; it logs each command's result, the state hash, the stored groups and the checkpoint count after every step, and ends each world by saving it and loading the save in the other execution mode. The driver's probe mode is not compared here: the probe's fight and settlement changed by ruling (221 to 223, 227, 236 and 240), so its runs differ from the old core's by design, and ruling 237's cuts were checked on the probe by its 16-draw pilot instead. Logs are not kept; their digests are.",
+  "fuzz": [
+    {
+      "command": "drive fuzz 7 24 400",
+      "worlds": 24,
+      "operations": 9624,
+      "lines": [
+        9648,
+        9648
+      ],
+      "sha256": [
+        "a6245eb330dcc2488d6d41d72349346e7af564112a8155985c7abad2568d8c65",
+        "a6245eb330dcc2488d6d41d72349346e7af564112a8155985c7abad2568d8c65"
+      ],
+      "identical": true
+    },
+    {
+      "command": "drive fuzz 11 60 1500",
+      "worlds": 60,
+      "operations": 90060,
+      "lines": [
+        90120,
+        90120
+      ],
+      "sha256": [
+        "b95cffe950d030ddf574cf7a5968552b2bc947ff797a6b72e1f37c8a1e787b55",
+        "b95cffe950d030ddf574cf7a5968552b2bc947ff797a6b72e1f37c8a1e787b55"
+      ],
+      "identical": true
+    }
+  ],
+  "tight": {
+    "command": "drive tight 13 48 600",
+    "worlds": 48,
+    "steps_per_world": 600,
+    "advances": {
+      "refused": 2748,
+      "accepted": 660
+    },
+    "loads_in_other_mode": {
+      "Ok": 42,
+      "Err": 6
+    },
+    "load_refusals": {
+      "advance exceeds configured operation budget; use shorter advances": 6
+    },
+    "same_counts_on_old_core": true,
+    "lines": [
+      28896,
+      28896
+    ],
+    "sha256": [
+      "0882e3e5122b18f8115d7fe970ae5b31a890a8a8bf2ff8b85ffa964efe5d8ed5",
+      "0882e3e5122b18f8115d7fe970ae5b31a890a8a8bf2ff8b85ffa964efe5d8ed5"
+    ],
+    "identical": true
+  }
+}

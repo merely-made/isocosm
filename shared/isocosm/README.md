@@ -34,7 +34,9 @@ members per site and lineage; `--water` has every world contest water as well
 as food. `--approximate` adds a fifth arm, a crowd whose round takes each
 count, the segments, the pairing and the settling alike, in one step near its
 mean and variance instead of member by member (ruling 220), checked against
-the exact runner and against the exact crowd.
+the exact runner and against the exact crowd. `--crowds` runs those two
+crowds alone, to time them at densities the exact runner is too slow to
+reach.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
@@ -128,8 +130,15 @@ it does not yet materialize a carrier or teller.
 An act stages copies of only what it binds, its bodies and its site, and
 lists what it adds; the world is written once the act is accepted. Receipts
 read the world's matter from a total summed at founding, which every accepted
-act conserves. Grouping reduces interpreter calls for independent processes,
-but gives no general time or memory bound as a world diversifies. The
+act conserves. During an advance, a scheduled act with a target looks for it
+only among the stored groups filed at the place and under the lineage its
+selector could match, an index kept current as acts commit; and the advance
+journals the first state of whatever it changes, so a refused advance is
+undone from the journal instead of from a copy of the world taken before it
+began (ruling 237). Debug builds check the first against the full search and
+the second against a full copy. Grouping reduces interpreter calls for
+independent processes, but gives no general time or memory bound as a world
+diversifies. The
 [aggregation research](../../mesocosm/design_docs/2026-09-22_aggregation_research.md)
 separates exact equivalence from possible approximate reductions.
 
@@ -140,16 +149,22 @@ because every evaluation first totalled matter over the whole stored world and
 every accepted one cloned the whole simulation, reach field included. With
 both costs cut, the baseline's 30 ecology points ran again on the same draws
 (`remeasure-ecology.json`) with every hash and count unchanged, 12 to 113
-times faster per tick, 40 times over all. Time per evaluation still rises
-slowly with size, from about 3 to 4 microseconds grouped and 4 to 8
-individually as members double from 2,048 to 4,096. At eight lineages about
-98% of ecology evaluations end without effect, since every periodic process is
+times faster per tick, 40 times over all. Time per evaluation still rose
+slowly with size then, from about 3 to 4 microseconds grouped and 4 to 8
+individually as members doubled from 2,048 to 4,096. Ruling 237 cut the two
+costs left, the target search across the whole population and the copy of the
+world before each advance. The same points ran again on 2026-09-26
+(`remeasure-237.json` in that day's receipts) with every hash and count
+unchanged, 2.2 times faster over all than at checkpoint 1 and 4 times at 4,096
+members individually, and took about 1.1 to 1.9 microseconds per evaluation
+at 2,048 and 4,096 members in both modes. At eight lineages about 98% of
+ecology evaluations end without effect, since every periodic process is
 evaluated for every member. The dead stay stored and each noted event keeps an
 arrival at every site it reached, so ticks grow dearer as history accumulates.
 Founding in cohorts of 32 puts each cohort on one site, and those ecology
 worlds died out without a birth.
 
-The probe's certified receipt, `probe.json` in the same directory, drew 1,000
+The probe's first certified receipt, `probe.json` of 2026-09-25, drew 1,000
 worlds. In each, the crowd stayed within 0.2 Kolmogorov-Smirnov distance of the
 exact individual runner on all 16 readings the definitions yield, and no
 difference was detected beyond chance. The exact runner against itself passed
@@ -159,3 +174,29 @@ ladder, 6 to 40 times fewer as members per site and lineage rose from 32 to
 512. Its count draws are exact in distribution, so the receipt certifies this
 reduction's implementation and the instrument, not an approximation's error,
 and only for this one process.
+
+Under the fight in rounds and the mind (rulings 221 to 223 and 227), the check
+ran again on 2026-09-26, in `mesocosm/testing/bench/receipts/2026-09-26/isocosm/`.
+With food contested (`probe.json`), all 30 readings were certified within
+their bounds, the largest distance 0.052 on an inspected member's strain, and
+no difference was detected. With water contested as well (`probe-water.json`,
+two competitions a tick), all 40 were, the largest 0.032. In both, the exact
+runner passed against itself and the averaged crowd failed the starvation
+readings. The crowd used 6.5 and 2.4 times fewer evaluations and ran 12.5 and
+6.0 times faster; with two competitions a tick, members spread over more
+states, a median of 2.1 alive members per state at the end against 9.8.
+
+`probe-approximate.json` qualifies ruling 220's approximate pairing draw at
+512 to 1,024 members per site and lineage, eight times the probe's default,
+where the median state held 56 alive members at the end. Against the exact
+runner all 30 readings were certified, the largest distance 0.036 beside the
+exact crowd's 0.041 and the exact runner's own 0.022, and none differed after
+correction; against the exact crowd, all 30 again, the largest 0.058. The
+largest distances fell on single inspected members. It saved nothing there:
+the exact crowd already used 23 times fewer evaluations than the exact runner
+and ran 36 times faster, and the approximate crowd took the same evaluations
+and the same time, each within 1%. Timed alone (`probe-crowds-*.json`, four
+draws each), it ran 1.02, 1.10 and 1.33 times faster than the exact crowd
+from 512, 2,048 and 8,192 members per site and lineage, so at these densities
+the count draws are a small part of the crowd's time. The receipt qualifies
+the draw only at the density it ran at.
