@@ -1,352 +1,264 @@
-//! The board's ground: grown, diffed, filtered, and handed to the scene as a
-//! terrain source (B4).
+//! The board's ground: one column per tile, diffed per tile, and paged into the
+//! scene by what the frame shows (2026-09-26).
 //!
-//! B2 grew a whole `Ground` on every change and bound the brick map it built
-//! from it with `set_terrain_map`, which is a full 258 KiB upload for a
-//! one-tile edit. Two things were wrong with that beyond the cost.
+//! **What this replaced.** B4 raised a whole `Ground` from the map on every
+//! change, diffed it against the held one and uploaded the bricks that
+//! differed; B5 measured that regrow as the scene board's whole weight, and a
+//! board past `modulus::MAX_BRICKS` (2,047) refused its brick map outright.
+//! Now [`TileColumns`] reads the map as one record per tile, a change is the
+//! tiles whose records moved, and the scene holds only the bricks the frame
+//! shows, made from the records on demand.
 //!
-//! **The revision never moved.** [`isometer::GroundTerrain`] stamps a frame
-//! with `Ground::revision()`, and a *grown* ground's revision is zero by
-//! construction — growth is the world's starting fact, not an edit, so only
-//! `carve` ever bumps it. The tracer's residency skips an upload whose
-//! revision and projection both match what it holds, so a board that regrows
-//! rather than carves cannot use `GroundTerrain` at all. [`BoardTerrain`] is
-//! this crate's own [`TerrainSource`]: the same slot refresh, stamped with the
-//! *view's* revision, which moves whenever the board does.
+//! **Which bricks.** Mark's ruling of 2026-09-26: every brick whose screen box
+//! overlaps the pane grown by one brick, a pure function of the view and the
+//! map. That is [`isometer::framed_bricks`] with [`RESIDENCY_MARGIN`] over an
+//! atlas of [`MAX_ATLAS_SLOTS_Y`] rows, 2,047 bricks until the family's atlas
+//! is sized to the card. Retargeting, refreshing, rebuilding, and the hold on
+//! a shrinking selection are isometer's [`Residency`].
 //!
-//! **Nothing said what had changed.** [`Ground::drain_dirty`] is the seam the
-//! slot upload reads, and growth clears it. So a regrow's changed bricks are
-//! found by comparing the new ground's bricks against the held one's, which
-//! costs one pass over 133 KiB and turns a full upload into a handful of
-//! slots. Where the brick *set* moves — an edit that raises ground past a
-//! brick boundary — there are no slots to refresh into, so the map is rebuilt
-//! whole and says so.
+//! **The revision.** The tracer skips an upload whose revision and projection
+//! both match what it holds, so a frame is stamped with the *view's* revision,
+//! which moves on every edit and overlay. B4 found why: a grown `Ground`'s own
+//! revision never moves off zero, so `GroundTerrain` skipped every edit. The
+//! residency moves the projection revision itself when the framed bricks do.
 //!
-//! **The focus elevation** is §2's keep predicate over the grown ground,
-//! rebuilt on focus change as Mesocosm's terrarium does: one
-//! `BrickMap::from_ground_filtered` and one full upload per change. A filtered
-//! map cannot take slot refreshes, because a slot would be refilled from the
-//! unfiltered ground, so with a focus on every ground change is a rebuild.
-//!
-//! **A map whose brick map will not build** — `modulus::MAX_BRICKS` is what a
-//! wide board meets — is held as an empty board rather than recorded as a
-//! revision the ground never bound a map for. Recorded first, the next frame
-//! saw the revision it had asked for, built nothing, and the tracer kept the
-//! *previous* map's bricks under the new map's camera while the error cleared.
-//! Held, the ground is empty, the bound map is the empty one, the board draws
-//! nothing, and [`BoardGround::refusal`] carries the build's own error until a
-//! map that builds replaces it.
+//! **A focus elevation** is a ceiling on the columns. A new ceiling touches
+//! every brick at once, so the map is rebuilt whole rather than refreshed.
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 use std::time::{Duration, Instant};
 
-use isometer::core::ground::Ground;
-use isometer::lens::{BrickMap, BrickProjectionRevision};
-use isometer::{TerrainRefresh, TerrainSource};
+use isometer::core::ground::BRICK;
+use isometer::lens::bricks::MAX_ATLAS_SLOTS_Y;
+use isometer::{FramedBricks, PagedTerrain, Residency, ResidencyStats, SlabCamera, framed_bricks};
 use isometry_core::MapDocument;
 
+use super::columns::{BoardBricks, TileColumns};
 use super::overlay::Overlays;
-use super::terrain::{MapTerrain, surface_of};
+use super::terrain::surface_of;
 
-/// What the last ground change cost, for the profile line and the receipts.
+/// The ruled margin around the pane: one brick edge in world units, which is
+/// 36 px at the shipped 32 by 16 tile.
+pub const RESIDENCY_MARGIN: f32 = BRICK as f32;
+
+/// What the last change to the board's ground cost, for the profile line and
+/// the receipts.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct GroundCost {
-    /// Raising the whole ground from the map. Paid on every change, because
-    /// `Ground` exposes no way to write one voxel's material (see §6).
-    pub grow: Duration,
-    /// Comparing the new bricks against the held ones.
+    /// Reading the map into one column per tile, where the regrow stood.
+    pub columns: Duration,
+    /// Comparing the new columns with the held ones.
     pub diff: Duration,
-    /// Rebuilding the brick map, when the brick set moved or a focus is on.
-    pub rebuild: Duration,
-    /// Bricks the change touched, or `None` where the map was rebuilt whole.
+    /// Tiles the change touched; `None` for a new board.
+    pub tiles: Option<usize>,
+    /// Making the bricks the frame loaded or refreshed.
+    pub fill: Duration,
+    /// Slots the tracer was handed; `None` where the map was rebuilt whole.
     pub slots: Option<usize>,
-    /// Bricks the ground holds.
-    pub bricks: usize,
+    /// The bricks the scene holds after the change.
+    pub residency: ResidencyStats,
 }
 
 impl GroundCost {
     /// One line for the profile, in the shape the other board timers print in.
     pub fn line(&self) -> String {
-        let what = match self.slots {
-            Some(slots) => format!("{slots} slots"),
-            None => "whole map".to_owned(),
+        let ms = |time: Duration| time.as_secs_f32() * 1e3;
+        let tiles = match self.tiles {
+            Some(tiles) => format!("{tiles} tiles"),
+            None => "a new board".to_owned(),
         };
+        let upload = match (self.slots, self.residency.rebuilt) {
+            (Some(slots), _) => format!("{slots} slots"),
+            (None, Some(why)) => format!("whole map ({})", format!("{why:?}").to_lowercase()),
+            (None, None) => "whole map".to_owned(),
+        };
+        let held = self.residency;
         format!(
-            "grow {:.2} ms, diff {:.2} ms, rebuild {:.2} ms, {what} of {} bricks",
-            self.grow.as_secs_f32() * 1e3,
-            self.diff.as_secs_f32() * 1e3,
-            self.rebuild.as_secs_f32() * 1e3,
-            self.bricks,
+            "columns {:.2} ms, diff {:.2} ms, {tiles}; fill {:.2} ms, {upload}; resident {} of {} \
+             (+{} -{}, {} refreshed, {} past the atlas)",
+            ms(self.columns),
+            ms(self.diff),
+            ms(self.fill),
+            held.resident,
+            held.capacity,
+            held.loaded,
+            held.evicted,
+            held.refreshed,
+            held.overflow,
         )
     }
 }
 
-/// The grown ground, the change awaiting upload, and what it cost.
+/// A change read before the frame, waiting for the frame that uploads it.
+#[derive(Clone, Copy, Debug, Default)]
+struct Pending {
+    columns: Duration,
+    diff: Duration,
+    tiles: Option<usize>,
+}
+
+/// The board's ground: its columns, the bricks a change touched, and the
+/// residency the scene's brick map follows.
 pub struct BoardGround {
-    ground: Ground,
-    /// The board revision the ground was grown from.
+    columns: TileColumns,
+    /// The board revision the columns were read at.
     revision: u64,
-    /// The focus elevation the bound map was filtered at.
+    /// The focus elevation the columns are cut at.
     focus: Option<i32>,
-    /// Bricks changed since the last successful frame.
+    /// Bricks changed since the last frame reached the screen, sorted.
     dirty: Vec<[i16; 3]>,
-    /// A map this crate built itself, awaiting the scene's next refresh.
-    rebuilt: RefCell<Option<BrickMap>>,
-    /// Bumped per wholesale rebuild, so the tracer never mistakes a rebuilt
-    /// map for the one it holds.
-    projection: u64,
+    residency: RefCell<Residency>,
+    /// The residency's change count when the cost was last taken.
+    seen: u64,
+    pending: Option<Pending>,
     cost: GroundCost,
-    /// The error the map on the board failed to build with, while it stands.
-    refusal: Option<String>,
 }
 
 impl BoardGround {
-    /// Raises the ground for a board and binds its first map.
-    pub fn new(map: &MapDocument, overlays: &Overlays, revision: u64) -> Result<Self, String> {
+    /// Reads a board's columns. Its bricks are made when a frame asks.
+    pub fn new(map: &MapDocument, overlays: &Overlays, revision: u64) -> Self {
         let started = Instant::now();
-        let ground = MapTerrain::with_overlays(map, Some(overlays)).grow();
-        let grow = started.elapsed();
-        let mut board = Self {
-            cost: GroundCost {
-                grow,
-                bricks: ground.brick_count(),
-                ..GroundCost::default()
-            },
-            ground,
+        let columns = TileColumns::of(map, overlays);
+        Self {
+            pending: Some(Pending {
+                columns: started.elapsed(),
+                ..Pending::default()
+            }),
+            columns,
             revision,
             focus: overlays.focus,
             dirty: Vec::new(),
-            rebuilt: RefCell::new(None),
-            projection: 0,
-            refusal: None,
-        };
-        board.rebuild()?;
-        Ok(board)
+            residency: RefCell::new(Residency::new(MAX_ATLAS_SLOTS_Y)),
+            seen: 0,
+            cost: GroundCost::default(),
+        }
     }
 
     pub fn revision(&self) -> u64 {
         self.revision
     }
 
-    /// Why the board is not showing the map it was asked for: the error its
-    /// brick map failed to build with. `None` while the map on the board is the
-    /// one it was asked for.
-    pub fn refusal(&self) -> Option<&str> {
-        self.refusal.as_deref()
-    }
-
-    pub fn ground(&self) -> &Ground {
-        &self.ground
-    }
-
     pub fn cost(&self) -> GroundCost {
         self.cost
     }
 
-    /// The bricks the next frame must upload.
+    /// Bricks the atlas holds.
+    pub fn capacity(&self) -> usize {
+        self.residency.borrow().capacity()
+    }
+
+    /// The bricks the scene's map holds.
+    pub fn resident(&self) -> BTreeSet<[i16; 3]> {
+        self.residency.borrow().resident().clone()
+    }
+
+    /// The bricks the next frame must remake, where it holds them.
     pub fn dirty(&self) -> &[[i16; 3]] {
         &self.dirty
     }
 
+    /// The columns as a brick source, cut at the focus.
+    pub fn bricks(&self) -> BoardBricks<'_> {
+        BoardBricks::new(&self.columns, self.focus.map(surface_of))
+    }
+
+    /// The board's rule: every brick whose screen box overlaps the pane grown
+    /// by [`RESIDENCY_MARGIN`], as many as the atlas holds.
+    pub fn framed(&self, camera: SlabCamera, bricks: &BoardBricks<'_>) -> FramedBricks {
+        framed_bricks(camera, RESIDENCY_MARGIN, bricks, self.capacity())
+    }
+
     /// The terrain source for one frame.
-    pub fn terrain(&self) -> BoardTerrain<'_> {
-        BoardTerrain {
-            ground: &self.ground,
-            revision: self.revision,
-            rebuilt: &self.rebuilt,
-        }
+    pub fn terrain<'a>(
+        &'a self,
+        bricks: &'a BoardBricks<'a>,
+        framed: &'a FramedBricks,
+    ) -> PagedTerrain<'a> {
+        PagedTerrain::new(&self.residency, bricks, framed, self.revision)
     }
 
-    /// A frame reached the screen: the change it carried is uploaded.
-    pub fn uploaded(&mut self) {
-        self.dirty.clear();
-    }
-
-    /// Brings the ground up to `revision`, regrowing and diffing only when the
-    /// board has actually moved. A focus change alone re-filters the map
-    /// without touching the ground.
-    ///
-    /// The revision is recorded **after** the map for it is built, never
-    /// before: a build that fails leaves no map bound, and a recorded revision
-    /// would send the next frame down the early return above with the previous
-    /// map still on the tracer. A failed build is held instead, by
-    /// [`Self::refuse`].
-    pub fn sync(
-        &mut self,
-        map: &MapDocument,
-        overlays: &Overlays,
-        revision: u64,
-    ) -> Result<(), String> {
+    /// Brings the columns up to `revision`, reading and diffing only when the
+    /// board has actually moved. A change of board, or of focus, asks the
+    /// residency for a whole new map.
+    pub fn sync(&mut self, map: &MapDocument, overlays: &Overlays, revision: u64) {
         let focus_moved = self.focus != overlays.focus;
         if self.revision == revision && !focus_moved {
-            // A held refusal stands here too: the board has already taken this
-            // revision, and regrowing the map that would not build costs the
-            // whole grow again for the same failure.
-            return Ok(());
+            return;
         }
-        let was_refused = self.refusal.is_some();
-        self.focus = overlays.focus;
-        let built = if self.revision == revision && !was_refused {
-            // The ground stands; only what is kept of it changed.
-            self.cost = GroundCost {
-                bricks: self.ground.brick_count(),
-                ..GroundCost::default()
-            };
-            self.rebuild()
-        } else {
-            self.regrow(map, overlays, focus_moved)
-        };
-        match built {
-            Ok(()) => {
-                self.revision = revision;
-                self.refusal = None;
-                Ok(())
-            },
-            Err(error) => self.refuse(revision, error),
-        }
-    }
-
-    /// Raises the whole ground for a board that moved and binds the map for it,
-    /// as slot refreshes where the brick set held still.
-    fn regrow(
-        &mut self,
-        map: &MapDocument,
-        overlays: &Overlays,
-        focus_moved: bool,
-    ) -> Result<(), String> {
         let started = Instant::now();
-        let grown = MapTerrain::with_overlays(map, Some(overlays)).grow();
-        let grow = started.elapsed();
-
+        let columns = TileColumns::of(map, overlays);
+        let read = started.elapsed();
         let started = Instant::now();
-        let change = compare(&self.ground, &grown);
+        let change = columns.changed(&self.columns);
         let diff = started.elapsed();
-        self.ground = grown;
-        self.cost = GroundCost {
-            grow,
-            diff,
-            bricks: self.ground.brick_count(),
-            ..GroundCost::default()
+        let tiles = match change {
+            Some(change) => {
+                let mut dirty: BTreeSet<_> = self.dirty.iter().copied().collect();
+                dirty.extend(change.bricks);
+                self.dirty = dirty.into_iter().collect();
+                Some(change.tiles)
+            },
+            None => {
+                self.dirty.clear();
+                self.residency.borrow_mut().rebuild();
+                None
+            },
         };
-
-        match change {
-            // A filtered map holds no slot a ground brick could be refreshed
-            // into, so a focus turns every change into a rebuild — and so does
-            // *leaving* one, whose bound map is still the filtered one however
-            // little the ground itself moved.
-            Change::Slots(keys) if self.focus.is_none() && !focus_moved => {
-                self.cost.slots = Some(keys.len());
-                self.dirty = keys;
-                Ok(())
-            },
-            _ => self.rebuild(),
+        if focus_moved {
+            self.residency.borrow_mut().rebuild();
         }
-    }
-
-    /// Holds a map whose brick map would not build as an empty board, carrying
-    /// the build's own error until a map that builds replaces it.
-    ///
-    /// The revision is taken here too, but only behind a map that *did* build —
-    /// the empty one — so the board stands at the new revision showing nothing
-    /// rather than the map before it, and the frames after it cost nothing. The
-    /// next move of the board, or a focus that keeps fewer bricks, is what
-    /// replaces it.
-    fn refuse(&mut self, revision: u64, error: String) -> Result<(), String> {
-        self.ground = Ground::default();
-        self.dirty.clear();
-        self.cost = GroundCost::default();
-        self.rebuild()?;
+        self.columns = columns;
         self.revision = revision;
-        self.refusal = Some(error);
-        Ok(())
+        self.focus = overlays.focus;
+        self.pending = Some(Pending {
+            columns: read,
+            diff,
+            tiles,
+        });
     }
 
-    /// Builds the map the next frame binds: the whole ground, or what a focus
-    /// elevation keeps of it.
-    fn rebuild(&mut self) -> Result<(), String> {
-        let started = Instant::now();
-        self.projection += 1;
-        let revision = BrickProjectionRevision(self.projection);
-        let map = match self.focus {
-            None => BrickMap::from_ground_keys(&self.ground, revision, self.ground.keys()),
-            Some(focus) => {
-                let ceiling = surface_of(focus);
-                BrickMap::from_ground_filtered(&self.ground, revision, |at, _| at[1] <= ceiling)
-            },
-        }
-        .map_err(|error| format!("brick map: {error}"))?;
-        self.cost.rebuild = started.elapsed();
+    /// A frame reached the screen: the change it carried is uploaded, and
+    /// what it cost, if it changed anything, is taken. `fill` is the time the
+    /// frame spent making bricks.
+    pub fn uploaded(&mut self, fill: Duration) {
         self.dirty.clear();
-        *self.rebuilt.borrow_mut() = Some(map);
-        Ok(())
-    }
-}
-
-/// What one regrow did to the brick set.
-enum Change {
-    /// These bricks hold different bytes; every one of them already has a slot.
-    Slots(Vec<[i16; 3]>),
-    /// The brick set itself moved, so the map has no slot to refresh into.
-    Structure,
-}
-
-/// The bricks that differ between two grounds.
-///
-/// `Ground::drain_dirty` would say this for an *edited* ground; a regrown one
-/// clears it, so the comparison stands in. Whole-brick byte equality, which is
-/// 512 bytes per brick and 133 KiB for the demo board.
-fn compare(before: &Ground, after: &Ground) -> Change {
-    let held: BTreeSet<[i16; 3]> = before.keys().collect();
-    let grown: BTreeSet<[i16; 3]> = after.keys().collect();
-    if held != grown {
-        return Change::Structure;
-    }
-    let raw = |ground: &Ground, key| {
-        ground
-            .brick_materials(key)
-            .map(|(brick, _)| brick.raw().to_vec())
-    };
-    Change::Slots(
-        held.into_iter()
-            .filter(|key| raw(before, *key) != raw(after, *key))
-            .collect(),
-    )
-}
-
-/// The board's ground as a scene terrain: slot refreshes stamped with the
-/// board's own revision, plus the wholesale map a focus change hands over.
-pub struct BoardTerrain<'a> {
-    ground: &'a Ground,
-    revision: u64,
-    rebuilt: &'a RefCell<Option<BrickMap>>,
-}
-
-impl TerrainSource for BoardTerrain<'_> {
-    /// The **view's** revision, not the ground's. See the module header: a
-    /// grown ground's own revision never moves, and the tracer would skip
-    /// every upload after the first.
-    fn revision(&self) -> u64 {
-        self.revision
-    }
-
-    fn brick_map(&self) -> Result<BrickMap, String> {
-        self.rebuilt
-            .borrow_mut()
-            .take()
-            .ok_or_else(|| "the board built no brick map".to_string())
-    }
-
-    fn refresh(&self, map: &mut BrickMap, dirty: &[[i16; 3]]) -> Result<TerrainRefresh, String> {
-        if let Some(rebuilt) = self.rebuilt.borrow_mut().take() {
-            *map = rebuilt;
-            return Ok(TerrainRefresh::Full);
+        let residency = self.residency.borrow();
+        let moved = residency.changes() != self.seen;
+        self.seen = residency.changes();
+        if !moved && self.pending.is_none() {
+            return;
         }
-        if dirty.is_empty() {
-            return Ok(TerrainRefresh::Current);
-        }
-        map.refresh(self.ground, dirty.iter().copied())
-            .map(TerrainRefresh::Slots)
-            .map_err(|error| error.to_string())
+        // Without a pending read the change was the camera's: no tile moved.
+        let pending = self.pending.take().unwrap_or(Pending {
+            tiles: Some(0),
+            ..Pending::default()
+        });
+        let last = residency.stats();
+        let (slots, stats) = if moved {
+            let slots = last
+                .rebuilt
+                .is_none()
+                .then_some(last.loaded + last.refreshed);
+            (slots, last)
+        } else {
+            // An edit the frame holds no brick of: nothing moved residency.
+            let still = ResidencyStats {
+                resident: last.resident,
+                capacity: last.capacity,
+                overflow: last.overflow,
+                extent: last.extent,
+                ..ResidencyStats::default()
+            };
+            (Some(0), still)
+        };
+        self.cost = GroundCost {
+            columns: pending.columns,
+            diff: pending.diff,
+            tiles: pending.tiles,
+            fill,
+            slots,
+            residency: stats,
+        };
     }
 }

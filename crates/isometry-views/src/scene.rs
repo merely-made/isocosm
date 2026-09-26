@@ -25,6 +25,11 @@
 //! are not edits — a still board, a pan, a token step — and walks the brick cap
 //! the plan's open decision turns on, over the fixture `harness` now holds for
 //! it and `edit_tests` both.
+//!
+//! Paging (2026-09-26) replaces the grown ground: [`columns`] reads the map as
+//! one record per tile and makes any brick from them on demand, and [`ground`]
+//! holds only the bricks the frame shows, through isometer's residency, so a
+//! board past the atlas's 2,047 bricks draws rather than refusing its map.
 
 mod board;
 mod columns;
@@ -53,7 +58,7 @@ mod world_tests;
 
 pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
 pub use columns::{BoardBricks, ColumnChange, TileColumns};
-pub use ground::{BoardGround, BoardTerrain, GroundCost};
+pub use ground::{BoardGround, GroundCost, RESIDENCY_MARGIN};
 pub use overlay::{BoardPalette, Overlays, Tint, terrain_palette};
 pub use pick::ScenePick;
 pub use terrain::{

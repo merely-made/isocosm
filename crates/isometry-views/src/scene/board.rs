@@ -159,10 +159,9 @@ impl BoardSource {
         self.ground.as_ref().map(BoardGround::cost)
     }
 
-    /// Why the board's current map is not drawn: the error its brick map failed
-    /// to build with. `None` while it is drawn, and before the first frame.
-    pub fn refusal(&self) -> Option<&str> {
-        self.ground.as_ref().and_then(BoardGround::refusal)
+    /// The board's ground, once a frame has read it.
+    pub fn ground(&self) -> Option<&BoardGround> {
+        self.ground.as_ref()
     }
 
     /// The tracer's own receipt for the last drawn frame: what the terrain
@@ -242,8 +241,8 @@ impl BoardSource {
     fn ensure_terrain(&mut self, revision: u64) -> Result<(), String> {
         let view = self.view.borrow();
         match &mut self.ground {
-            Some(ground) => ground.sync(&view.map, &view.overlays, revision)?,
-            None => self.ground = Some(BoardGround::new(&view.map, &view.overlays, revision)?),
+            Some(ground) => ground.sync(&view.map, &view.overlays, revision),
+            None => self.ground = Some(BoardGround::new(&view.map, &view.overlays, revision)),
         }
         // The table is a function of the map's kinds alone: the tints and the
         // shrouded half are fixed blocks past them.
@@ -360,14 +359,13 @@ impl SceneSource for BoardSource {
         // comes out of the source for the encode and goes straight back.
         let mut scene = self.scene.take().ok_or("the scene was not built")?;
         let held = self.view.borrow();
-        let refused = self.refusal().is_some();
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
             // Unexplored ground draws nothing, and neither does a piece
-            // standing on it or above a focus elevation, nor any piece of a
-            // map the board refused: there is no ground to stand it on.
-            if refused || held.overlays.cuts(&held.map, token) {
+            // standing on it or above a focus elevation: there is no ground
+            // to stand it on.
+            if held.overlays.cuts(&held.map, token) {
                 continue;
             }
             let (body, placeholder) = self.tokens.body(&token.sprite);
@@ -387,9 +385,14 @@ impl SceneSource for BoardSource {
         self.placeholders = missing;
         let Some(ground) = &self.ground else {
             self.scene = Some(scene);
-            return Err("the board grew no ground".into());
+            return Err("the board read no ground".into());
         };
-        let terrain = ground.terrain();
+        // The bricks this frame shows, made from the columns as the scene
+        // asks for them: the residency retargets to them, and remakes the
+        // held ones an edit touched.
+        let bricks = ground.bricks();
+        let framed = ground.framed(camera, &bricks);
+        let terrain = ground.terrain(&bricks, &framed);
         let dirty = ground.dirty();
         let mut encoder = request
             .device
@@ -413,6 +416,7 @@ impl SceneSource for BoardSource {
         );
         drop(bodies);
         drop(held);
+        let fill = bricks.fill_time();
         // The encoded twin: the leaf declares `SCENE_ENCODING`, so the
         // compositor samples these bytes directly.
         let view = scene.encoded_view().clone();
@@ -423,7 +427,7 @@ impl SceneSource for BoardSource {
         request.queue.submit(Some(encoder.finish()));
         // The frame carried the change, so the next one carries nothing.
         if let Some(ground) = &mut self.ground {
-            ground.uploaded();
+            ground.uploaded(fill);
         }
         Ok(Some(view))
     }
