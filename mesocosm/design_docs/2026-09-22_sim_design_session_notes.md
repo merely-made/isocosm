@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24 and 174 to 231 on 2026-09-25, the last
+113 to 173 were given on 2026-09-24 and 174 to 235 on 2026-09-25, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -365,6 +365,7 @@ worlds, none in ecological ones.
 | | The tract rename's wire | "New wire, old accepted" | 224 |
 | | Collapse; regions; mood; the right click | "A level gone"; regions linked to the world's biomass, spilling and merging; "Needs now"; "A ring of acts" | 225 to 228 |
 | | The world's ends; W5's second | "Either, player's call"; "Done, but watchable"; "Side by side" | 229 to 231 |
+| W5, Eponym's plan | Blows; the solver; the start; the first life | "Foreground hands back"; "Game side"; "Player's pick, society default"; "Any, player's call" | 232 to 235 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

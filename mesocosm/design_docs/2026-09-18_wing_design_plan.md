@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 231, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 235, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1994,6 +1994,30 @@ what later sections derive from.
      which overlay is W5's second, Eponym, the VTT, or both side by side?
      Mark: "Side by side." So both proceed after Mesocosm's M3, each on its
      own plan.
+232. **Eponym's blows are resolved in the foreground and handed back.** Put
+     to Mark on 2026-09-25, from the Eponym overlay plan's §6 decision 1:
+     Eponym's strike system resolves each blow geometrically and hands the
+     harm back through the handoff in the sim's terms, calibrated to the
+     sim's fight (ruling 114); or the sim's own contest runs at foreground
+     fidelity, Eponym supplying the actuation alone? Mark: "Foreground hands
+     back." So Eponym's handoff carries vigour drained and wounds to parts,
+     which must pass the sim's invariants and agree with the sim's own fight
+     in distribution (rulings 114, 123, 154), as the record's §3.8 has it.
+233. **Eponym's motion and contact solver runs on the game side.** Put to
+     Mark on 2026-09-25, from the same decision's second half: on the game
+     side over the stack's conatus, the accepted transition for each tick
+     crossing as the intent, or in the sim, fed the input frames? Mark:
+     "Game side."
+234. **Where a first Eponym life begins in time is the player's pick, with
+     society the default.** Put to Mark on 2026-09-25, from decision 2: from
+     the world's habitability for the creature onward, as ruling 179 gives
+     Mesocosm, only once settlements stand, or the player's pick with the
+     second as the default? Mark: "Player's pick, society default."
+235. **How a first Eponym life begins is the player's call among three.**
+     Put to Mark on 2026-09-25, from decision 3: a newly generated outsider
+     arriving, a birth into one of the world's lineages, a named creature
+     chosen among the drawn world's denizens, or any, the player's call?
+     Mark: "Any, player's call."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5777,6 +5801,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: rulings 232 to 235 recorded, the Eponym overlay plan's first
+  four decisions: blows resolved in the foreground and handed back; the
+  motion and contact solver on the game side; where a first life begins in
+  time the player's pick, society by default; and how it begins, any of
+  three, the player's call. The RPG systems session marks them in its plan.
 - 2026-09-25: rulings 225 to 231 recorded. A region collapses when a
   trophic level is gone there; ecological regions follow the world's
   biomass and merge as it falls, so a global collapse is the one region's;
