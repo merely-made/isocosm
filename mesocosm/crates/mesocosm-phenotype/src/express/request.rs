@@ -38,7 +38,7 @@ impl Trigger {
 
 /// One admitted definition, as an author sees it.
 ///
-/// Identity, site requirement and seeding — the same three things the digest
+/// Identity, tract requirement and seeding — the same three things the digest
 /// folds. A script is shown what a definition *rules*, never a native binding
 /// or a label, because neither is rule-bearing.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -52,11 +52,11 @@ pub struct Definition {
     pub seeding: String,
 }
 
-/// One site a part already expresses.
+/// One tract a part already expresses.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct SiteView {
+pub struct TractView {
     /// `namespace:name`, or `unknown` when this world's ruleset no longer holds
-    /// the definition the site cites. Never the nearest local one.
+    /// the definition the tract cites. Never the nearest local one.
     pub process: String,
     pub cells: u32,
 }
@@ -74,7 +74,8 @@ pub struct PartView {
     /// **not** so an author can set it: the host prices the accepted proposal
     /// itself (plan §4, "the proposal does not choose its own cost").
     pub cell_mg: u64,
-    pub sites: Vec<SiteView>,
+    #[serde(alias = "sites")]
+    pub tracts: Vec<TractView>,
 }
 
 /// One quantized world reading a script may branch on.
@@ -222,17 +223,17 @@ fn parts_of(registry: &Registry, phenotype: &BodyPhenotype) -> Vec<PartView> {
             cells: mosaic.cells().count() as u32,
             free: mosaic.free(),
             cell_mg: phenotype.cell_mg(part),
-            sites: mosaic
-                .sites()
+            tracts: mosaic
+                .tracts()
                 .iter()
-                .map(|site| SiteView {
+                .map(|tract| TractView {
                     // `None` is the missing-ruleset diagnostic, not a licence
                     // to name a similar local definition instead.
                     process: registry
-                        .resolve(site.process)
+                        .resolve(tract.process)
                         .map(|def| def.id.qualified())
                         .unwrap_or_else(|| "unknown".to_owned()),
-                    cells: site.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u32,
+                    cells: tract.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u32,
                 })
                 .collect(),
         })

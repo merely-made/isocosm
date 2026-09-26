@@ -18,7 +18,7 @@
 //!
 //! # Lowering is deterministic, and the script does not choose it
 //!
-//! A part's requested sites take tissue from the high end of its lattice
+//! A part's requested tracts take tissue from the high end of its lattice
 //! downward, in the order the script listed them, each run contiguous — the
 //! same suffix rule
 //! [`Candidate::propose`](mesocosm_core::Candidate) already relies on, and for
@@ -29,7 +29,7 @@
 
 use mesocosm_core::{
     AllocationProposal, Arrangement, BodyPhenotype, CellId, PartId, ProcessId, ProcessRef,
-    ProposedSite, Registry,
+    ProposedTract, Registry,
 };
 use serde::{Deserialize, Serialize};
 
@@ -53,7 +53,8 @@ pub struct Expression {
 /// author would like to have happen, on its way to the one validator.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Proposal {
-    pub sites: Vec<Expression>,
+    #[serde(alias = "sites")]
+    pub tracts: Vec<Expression>,
 }
 
 /// Lowers an authored proposal into the ordinary
@@ -63,7 +64,7 @@ pub struct Proposal {
 /// the validator. It resolves ids against **this world's** ruleset, lays out
 /// tissue deterministically, and hands over a complete desired state. It
 /// decides nothing else: whether a plate may carry a gland, whether the
-/// phenotype moved, whether a site is connected and whether the body can afford
+/// phenotype moved, whether a tract is connected and whether the body can afford
 /// it are all the validator's and the door's, and asking them twice is how two
 /// biologies start.
 pub fn lower(
@@ -75,16 +76,16 @@ pub fn lower(
     // requires a canonical claim, and sorting here rather than refusing means
     // an author writes what they mean instead of learning an ordering rule.
     // The order *within* a part is the script's and is kept, because that is
-    // what decides which tissue each site gets.
+    // what decides which tissue each tract gets.
     let mut parts: Vec<PartId> = proposal
-        .sites
+        .tracts
         .iter()
-        .map(|site| PartId(site.part))
+        .map(|tract| PartId(tract.part))
         .collect();
     parts.sort_unstable();
     parts.dedup();
 
-    let mut sites: Vec<ProposedSite> = Vec::new();
+    let mut tracts: Vec<ProposedTract> = Vec::new();
     for part in &parts {
         // A part this body does not have at all. A part it *has and severed*
         // is not this refusal: the validator owns `SeveredPart`, and one
@@ -94,10 +95,10 @@ pub fn lower(
         };
         let living_cells: Vec<CellId> = mosaic.cells().collect();
         let asked: u32 = proposal
-            .sites
+            .tracts
             .iter()
-            .filter(|site| site.part == part.0)
-            .map(|site| site.cells)
+            .filter(|tract| tract.part == part.0)
+            .map(|tract| tract.cells)
             .fold(0u32, u32::saturating_add);
         if asked as usize > living_cells.len() {
             return Err(Refused::TooMuchTissue {
@@ -110,13 +111,13 @@ pub fn lower(
         // Hand out from the top down, in the order the script listed them.
         let mut taken: Vec<CellId> = Vec::new();
         let mut requested: Vec<(ProcessRef, Vec<CellId>)> = Vec::new();
-        for site in proposal.sites.iter().filter(|site| site.part == part.0) {
-            let process = resolve(registry, &site.process)?;
+        for tract in proposal.tracts.iter().filter(|tract| tract.part == part.0) {
+            let process = resolve(registry, &tract.process)?;
             let remaining = &living_cells[..living_cells.len() - taken.len()];
-            let run: Vec<CellId> = remaining[remaining.len() - site.cells as usize..].to_vec();
+            let run: Vec<CellId> = remaining[remaining.len() - tract.cells as usize..].to_vec();
             taken.extend(run.iter().copied());
-            // A definition named twice on one part is one widened site, not two
-            // sites for one process — the same reading `Candidate::propose`
+            // A definition named twice on one part is one widened tract, not two
+            // tracts for one process — the same reading `Candidate::propose`
             // takes, and the only one the mosaic can hold.
             match requested.iter_mut().find(|(held, _)| *held == process) {
                 Some((_, cells)) => cells.extend(run),
@@ -126,14 +127,14 @@ pub fn lower(
 
         // **What the part already does keeps its place in the list**, and the
         // script's additions go after it. Not cosmetic: the validator hands out
-        // site ids in proposal order, so a different order is a different
+        // tract ids in proposal order, so a different order is a different
         // committed mosaic — and this is the order `Candidate::propose` builds,
         // which is what makes the authored and the native proposal lower to one
         // instruction rather than to two that merely look alike. Anything left
         // with no cells is dropped, which is how the validator is told to clear
         // it.
         let mut claimed: Vec<(ProcessRef, Vec<CellId>)> = mosaic
-            .sites()
+            .tracts()
             .iter()
             .filter_map(|existing| {
                 let kept: Vec<CellId> = existing
@@ -155,7 +156,7 @@ pub fn lower(
         for (process, mut cells) in claimed {
             cells.sort_unstable();
             cells.dedup();
-            sites.push(ProposedSite {
+            tracts.push(ProposedTract {
                 part: *part,
                 process,
                 cells,
@@ -171,7 +172,7 @@ pub fn lower(
         // sources over one authority already say.
         source: Arrangement::Automatic,
         parts,
-        sites,
+        tracts,
     })
 }
 

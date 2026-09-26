@@ -47,7 +47,9 @@
 //!
 //! `request` is a table (see [`Request`]); `entropy` is an array of
 //! [`DRAWS`] integers the host drew and wrote down; `proposal` is
-//! `{ sites = { { part = <id>, process = "<namespace>:<name>", cells = <n> } } }`.
+//! `{ tracts = { { part = <id>, process = "<namespace>:<name>", cells = <n> } } }`
+//! (a script still written against the old vocabulary may return `sites`
+//! instead, and is read exactly the same way).
 //!
 //! # Refusals name the boundary
 //!
@@ -65,7 +67,7 @@ mod runner;
 
 pub use fixture::Fixture;
 pub use proposal::{Expression, Proposal, lower};
-pub use request::{Ambient, Definition, PartView, Request, SiteView, Trigger};
+pub use request::{Ambient, Definition, PartView, Request, TractView, Trigger};
 pub use runner::Runner;
 
 use mesocosm_core::{PartId, Refusal};

@@ -198,7 +198,7 @@ fn endure(world: &mut World, ticks: u64) {
 fn lua_proposes_the_same_accepted_allocation_as_the_native_fixture() {
     // **The parity claim, twice over.** First that the two proposals lower to
     // the same allocation, then that the one validator turns both into the
-    // same instruction — same revision, same sites, same cost, same resulting
+    // same instruction — same revision, same tracts, same cost, same resulting
     // digest. Anything less would leave "the same allocation" meaning "looked
     // similar".
     let registry = Arc::new(packed());
@@ -221,7 +221,7 @@ fn lua_proposes_the_same_accepted_allocation_as_the_native_fixture() {
         .propose(&context(&phenotype, RICH_GROUND), &entropy)
         .expect("the script proposes");
     assert_eq!(
-        proposal.sites,
+        proposal.tracts,
         vec![Expression {
             part: part.0,
             process: gland().qualified(),
@@ -232,7 +232,7 @@ fn lua_proposes_the_same_accepted_allocation_as_the_native_fixture() {
 
     let authored = lower(&registry, &phenotype, &proposal).expect("it lowers");
     assert_eq!(
-        authored.sites, native.sites,
+        authored.tracts, native.tracts,
         "the same complete desired state"
     );
     assert_eq!(authored.parts, native.parts);
@@ -243,7 +243,7 @@ fn lua_proposes_the_same_accepted_allocation_as_the_native_fixture() {
     let gamed = by_game.develop(&registry, &native).expect("valid");
     assert_eq!(
         scripted.instruction, gamed.instruction,
-        "one validator, one instruction: revision, sites, cost and digest all"
+        "one validator, one instruction: revision, tracts, cost and digest all"
     );
     assert_eq!(scripted.instruction.cost_cells, 5);
     assert_eq!(by_script, by_game, "and the same body afterwards");
@@ -381,11 +381,11 @@ fn contrasting_developmental_contexts_grow_different_phenotypes_from_one_plan() 
         .expect("the lean fixture holds");
 
     assert_eq!(
-        rich.expected.sites[0].cells, 5,
+        rich.expected.tracts[0].cells, 5,
         "rich ground charges a gland"
     );
     assert_eq!(
-        lean.expected.sites[0].cells, 1,
+        lean.expected.tracts[0].cells, 1,
         "lean ground charges a token one, and the frond keeps fixing"
     );
 

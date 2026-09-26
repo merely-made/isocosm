@@ -11,7 +11,7 @@
 //! there is a test for each:
 //!
 //! 1. the definition admitted out of `packs/mesocosm/processes/secrete.json`
-//!    is the definition `mesocosm-core` holds — same site requirement, same
+//!    is the definition `mesocosm-core` holds — same tract requirement, same
 //!    seeding, same content address, so every allocation already citing it
 //!    resolves against the packed ruleset unchanged;
 //! 2. a body driven through the packed reference reaches PD2's four states —
@@ -239,7 +239,7 @@ fn the_packed_definition_reaches_pd2s_four_states_through_the_packed_door() {
     // **Useful.** The tissue is where the reading says, it stings, and it
     // costs rent from here on.
     let reading = world.gland().expect("it has one now");
-    assert_eq!(reading.sites, vec![(part, candidate.cells)]);
+    assert_eq!(reading.tracts, vec![(part, candidate.cells)]);
     assert!(reading.charged);
     assert!(reading.rent_mg > 0);
     assert!(
@@ -271,7 +271,7 @@ fn the_packed_definition_reaches_pd2s_four_states_through_the_packed_door() {
         .phenotype
         .sever(part);
     let gone = world.gland().expect("the loss is still readable");
-    assert!(gone.sites.is_empty());
+    assert!(gone.tracts.is_empty());
     assert_eq!(gone.rent_mg, 0);
     assert_eq!(gone.lost, vec![part]);
 }

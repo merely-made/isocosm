@@ -12,7 +12,7 @@
 -- free to refuse everything below.
 --
 -- Nothing here is hardcoded that the request already says. The definition's
--- own site requirement decides which shape to look for, the part's own cell
+-- own tract requirement decides which shape to look for, the part's own cell
 -- price decides whether the ground can charge what is being asked for, and the
 -- candidate list decides whether this line may ask at all.
 
@@ -34,10 +34,10 @@ function express(request, entropy)
         end
     end
     if not granted then
-        return { sites = {} }
+        return { tracts = {} }
     end
 
-    -- The site requirement, read off the admitted definition rather than
+    -- The tract requirement, read off the admitted definition rather than
     -- assumed. If this world admits the gland on some other shape, this script
     -- follows it there.
     local wants = nil
@@ -47,7 +47,7 @@ function express(request, entropy)
         end
     end
     if wants == nil then
-        return { sites = {} }
+        return { tracts = {} }
     end
 
     -- The first part of that shape, in part order, so the answer does not
@@ -59,7 +59,7 @@ function express(request, entropy)
         end
     end
     if target == nil then
-        return { sites = {} }
+        return { tracts = {} }
     end
 
     -- **The developmental context that actually decides the phenotype.** A
@@ -77,7 +77,7 @@ function express(request, entropy)
     end
 
     return {
-        sites = {
+        tracts = {
             { part = target.part, process = GLAND, cells = cells },
         },
     }

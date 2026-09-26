@@ -17,7 +17,7 @@
 
 use piccolo::{Context, Table, Value};
 
-use super::request::{Ambient, Definition, PartView, Request, SiteView};
+use super::request::{Ambient, Definition, PartView, Request, TractView};
 use super::{Expression, Policy, Proposal, Refused};
 
 // ---------------------------------------------------------------------------
@@ -98,14 +98,14 @@ fn part_table<'gc>(ctx: Context<'gc>, part: &PartView) -> Table<'gc> {
     set(table, ctx, "cells", i64::from(part.cells));
     set(table, ctx, "free", i64::from(part.free));
     set(table, ctx, "cell_mg", clamp(part.cell_mg));
-    let sites = Table::new(&ctx);
-    for (index, SiteView { process, cells }) in part.sites.iter().enumerate() {
-        let site = Table::new(&ctx);
-        put_str(ctx, site, "process", process);
-        set(site, ctx, "cells", i64::from(*cells));
-        set(sites, ctx, index as i64 + 1, site);
+    let tracts = Table::new(&ctx);
+    for (index, TractView { process, cells }) in part.tracts.iter().enumerate() {
+        let tract = Table::new(&ctx);
+        put_str(ctx, tract, "process", process);
+        set(tract, ctx, "cells", i64::from(*cells));
+        set(tracts, ctx, index as i64 + 1, tract);
     }
-    set(table, ctx, "sites", sites);
+    set(table, ctx, "tracts", tracts);
     table
 }
 
@@ -122,11 +122,16 @@ pub(super) fn proposal_of<'gc>(
     let table = as_table(value, "proposal")?;
     depth_ok(table, 0, policy)?;
 
-    let sites = match table.get(ctx, "sites") {
-        Value::Nil => return Ok(Proposal::default()),
-        found => as_table(found, "proposal.sites")?,
+    // New scripts return `tracts`; a script still written against the old
+    // vocabulary returns `sites`, and is read exactly the same way.
+    let (key, tracts) = match table.get(ctx, "tracts") {
+        Value::Nil => match table.get(ctx, "sites") {
+            Value::Nil => return Ok(Proposal::default()),
+            found => ("proposal.sites", as_table(found, "proposal.sites")?),
+        },
+        found => ("proposal.tracts", as_table(found, "proposal.tracts")?),
     };
-    let entries = sites.length();
+    let entries = tracts.length();
     if entries > policy.max_entries as i64 {
         return Err(Refused::Collection {
             entries: entries.max(0) as usize,
@@ -136,18 +141,20 @@ pub(super) fn proposal_of<'gc>(
 
     let mut out = Vec::new();
     for index in 1..=entries {
-        let site = as_table(sites.get(ctx, index), "proposal.sites[]")?;
+        let tract = as_table(tracts.get(ctx, index), &format!("{key}[]"))?;
         out.push(Expression {
-            part: u32::try_from(integer(ctx, site, "part")?).map_err(|_| Refused::Malformed {
+            part: u32::try_from(integer(ctx, tract, "part")?).map_err(|_| Refused::Malformed {
                 why: "part is not a part address".to_owned(),
             })?,
-            process: text(ctx, site, "process")?,
-            cells: u32::try_from(integer(ctx, site, "cells")?).map_err(|_| Refused::Malformed {
-                why: "cells is not a cell count".to_owned(),
+            process: text(ctx, tract, "process")?,
+            cells: u32::try_from(integer(ctx, tract, "cells")?).map_err(|_| {
+                Refused::Malformed {
+                    why: "cells is not a cell count".to_owned(),
+                }
             })?,
         });
     }
-    Ok(Proposal { sites: out })
+    Ok(Proposal { tracts: out })
 }
 
 /// Walks the returned table to prove it does not nest past the policy.

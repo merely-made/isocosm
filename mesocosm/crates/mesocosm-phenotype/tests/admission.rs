@@ -170,7 +170,7 @@ fn one_rule_bearing_byte_moves_the_ruleset_digest() {
             GLAND.replace("\"acquired\"", "\"geometry\""),
         ),
         (
-            "the site requirement",
+            "the tract requirement",
             GLAND.replace("[\"plate\"]", "[\"limb\"]"),
         ),
         ("the name", GLAND.replace("\"secrete\"", "\"secreted\"")),
@@ -364,7 +364,7 @@ fn a_pack_that_declares_nothing_is_refused() {
 
 #[test]
 fn a_definition_no_shape_can_express_is_refused() {
-    let scratch = Scratch::new("no_site");
+    let scratch = Scratch::new("no_tract");
     scratch.write(
         "processes/secrete.json",
         &GLAND.replace("[\"plate\"]", "[]"),
@@ -372,7 +372,7 @@ fn a_definition_no_shape_can_express_is_refused() {
     scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
     assert!(matches!(
         admit_dir(scratch.path()),
-        Err(Admission::NoSite { .. })
+        Err(Admission::NoTract { .. })
     ));
 }
 

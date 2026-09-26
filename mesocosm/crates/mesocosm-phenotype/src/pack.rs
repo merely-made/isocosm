@@ -65,7 +65,7 @@ pub struct Manifest {
 pub struct ProcessFile {
     pub namespace: String,
     pub name: String,
-    /// The shapes that may express it: the site requirement. Rule-bearing.
+    /// The shapes that may express it: the tract requirement. Rule-bearing.
     pub expressed_by: Vec<String>,
     /// `geometry` or `acquired`. Rule-bearing — a world whose plates grew
     /// glands is a different world.
@@ -83,7 +83,7 @@ pub struct ProcessFile {
 ///
 /// A closed set on purpose. A pack cannot mint a shape: the roles are what
 /// [`classify`](mesocosm_core::classify) produces out of geometry, and a
-/// definition that could name a fifth would be a site requirement no part
+/// definition that could name a fifth would be a tract requirement no part
 /// could ever satisfy.
 pub fn role_of(word: &str) -> Option<Role> {
     match word {

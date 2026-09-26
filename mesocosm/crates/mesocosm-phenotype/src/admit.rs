@@ -10,7 +10,7 @@
 //!
 //! A pack admits completely or not at all. Half a biology is not a smaller
 //! biology, it is a different one: a body that cites a definition the partial
-//! admission dropped would resolve `None` on every site it occupies, and a
+//! admission dropped would resolve `None` on every tract it occupies, and a
 //! world would run something nobody authored.
 //!
 //! # Deterministic, and independent of the disk
@@ -68,12 +68,12 @@ pub enum Admission {
     /// An empty namespace or name. A pack-qualified id is what stops a friendly
     /// name colliding, so half of one is refused.
     UnqualifiedId { path: String },
-    /// A site requirement naming a shape this build does not hold.
+    /// A tract requirement naming a shape this build does not hold.
     UnknownRole { path: String, word: String },
     /// A seeding rule this build does not hold.
     UnknownSeeding { path: String, word: String },
     /// A definition that no shape can express.
-    NoSite { path: String },
+    NoTract { path: String },
     /// A pack declaring nothing.
     EmptyPack { root: String },
 }
@@ -102,7 +102,7 @@ impl Admission {
             Admission::UnknownSeeding { path, word } => {
                 format!("{path} names a seeding rule this world does not hold: {word}")
             },
-            Admission::NoSite { path } => format!("{path} names no shape that could express it"),
+            Admission::NoTract { path } => format!("{path} names no shape that could express it"),
             Admission::EmptyPack { root } => format!("{root} declares no definitions"),
         }
     }
@@ -276,7 +276,7 @@ fn lower(relative: &str, file: &ProcessFile) -> Result<ProcessDef, Admission> {
         });
     }
     if file.expressed_by.is_empty() {
-        return Err(Admission::NoSite {
+        return Err(Admission::NoTract {
             path: relative.to_string(),
         });
     }

@@ -44,7 +44,7 @@ fn an_unknown_id_refuses_cleanly() {
     let proposal = propose(
         &format!(
             r#"function express(request, entropy)
-                 return {{ sites = {{ {{ part = {}, process = "reef:filter", cells = 2 }} }} }}
+                 return {{ tracts = {{ {{ part = {}, process = "reef:filter", cells = 2 }} }} }}
                end"#,
             part.0
         ),
@@ -72,7 +72,7 @@ fn an_invalid_part_refuses_cleanly() {
     let (phenotype, _) = body_plan();
     let proposal = propose(
         r#"function express(request, entropy)
-             return { sites = { { part = 99, process = "mesocosm:secrete", cells = 1 } } }
+             return { tracts = { { part = 99, process = "mesocosm:secrete", cells = 1 } } }
            end"#,
         Policy::default(),
     )
@@ -95,11 +95,11 @@ fn excessive_output_refuses_cleanly() {
     };
     let refusal = propose(
         r#"function express(request, entropy)
-             local sites = {}
+             local tracts = {}
              for i = 1, 12 do
-               sites[i] = { part = 1, process = "mesocosm:secrete", cells = 1 }
+               tracts[i] = { part = 1, process = "mesocosm:secrete", cells = 1 }
              end
-             return { sites = sites }
+             return { tracts = tracts }
            end"#,
         policy,
     )
@@ -121,11 +121,11 @@ fn an_overlong_collection_refuses_cleanly() {
     };
     let refusal = propose(
         r#"function express(request, entropy)
-             local sites = {}
+             local tracts = {}
              for i = 1, 9 do
-               sites[i] = { part = 1, process = "mesocosm:secrete", cells = 1 }
+               tracts[i] = { part = 1, process = "mesocosm:secrete", cells = 1 }
              end
-             return { sites = sites }
+             return { tracts = tracts }
            end"#,
         policy,
     )
@@ -176,13 +176,13 @@ fn a_malformed_proposal_refuses_cleanly() {
 #[test]
 fn the_validator_still_owns_its_own_boundaries() {
     // **One developmental authority.** A script may ask for a gland on the
-    // bulk root; the site requirement is not restated at this door, it is
+    // bulk root; the tract requirement is not restated at this door, it is
     // refused where every other proposal source is refused.
     let registry = Arc::new(packed());
     let (phenotype, _) = body_plan();
     let proposal = propose(
         r#"function express(request, entropy)
-             return { sites = { { part = 0, process = "mesocosm:secrete", cells = 1 } } }
+             return { tracts = { { part = 0, process = "mesocosm:secrete", cells = 1 } } }
            end"#,
         Policy::default(),
     )
@@ -190,7 +190,7 @@ fn the_validator_still_owns_its_own_boundaries() {
     let allocation = lower(&registry, &phenotype, &proposal).expect("it lowers");
     let mut candidate = phenotype.clone();
     match candidate.develop(&registry, &allocation) {
-        Err(mesocosm_core::Refusal::SiteMismatch { part, .. }) => {
+        Err(mesocosm_core::Refusal::TractMismatch { part, .. }) => {
             assert_eq!(part, mesocosm_core::PartId(0), "a bulk root is not a plate")
         },
         other => panic!("{other:?}"),
@@ -207,7 +207,7 @@ fn a_stale_ruleset_refuses_at_the_one_validator() {
     let (phenotype, part) = body_plan();
     let full = Arc::new(packed());
     let proposal = Proposal {
-        sites: vec![Expression {
+        tracts: vec![Expression {
             part: part.0,
             process: gland().qualified(),
             cells: 5,
@@ -301,7 +301,7 @@ fn lua_has_no_world_mutation_path() {
           if load ~= nil then reachable = reachable + 1 end
           if package ~= nil then reachable = reachable + 1 end
           if debug ~= nil then reachable = reachable + 1 end
-          return { sites = { { part = reachable, process = "probe", cells = 0 } } }
+          return { tracts = { { part = reachable, process = "probe", cells = 0 } } }
         end
         "#,
         Policy::default(),
@@ -312,7 +312,7 @@ fn lua_has_no_world_mutation_path() {
         .propose(&context(&phenotype, RICH_GROUND), &Entropy::from_seed(1))
         .expect("the probe runs");
     assert_eq!(
-        probe.sites[0].part, 0,
+        probe.tracts[0].part, 0,
         "neither math.random nor math.randomseed survives Runner::load, \
          so a script has no randomness of its own"
     );
@@ -386,5 +386,39 @@ fn a_script_cannot_express_what_the_line_has_not_come_to() {
     assert_eq!(
         phenotype.clone().develop(&registry, &allocation),
         Err(mesocosm_core::Refusal::NothingProposed)
+    );
+}
+
+// ---------------------------------------------------------------------------
+// 6. Old wire, new tract: a script still speaking `sites` still works
+// ---------------------------------------------------------------------------
+
+#[test]
+fn a_script_still_returning_sites_is_read_the_same_as_tracts() {
+    // Ruling 224: new data is written with `tract`, and old is still accepted.
+    // A pack author's script is exactly that "old data" — a file already on
+    // disk, unedited — so a script that still says `sites` must propose the
+    // same thing as one written against the new word.
+    let old = propose(
+        r#"function express(request, entropy)
+             return { sites = { { part = 0, process = "mesocosm:secrete", cells = 3 } } }
+           end"#,
+        Policy::default(),
+    )
+    .expect("an old-vocabulary script still loads and runs");
+    let new = propose(
+        r#"function express(request, entropy)
+             return { tracts = { { part = 0, process = "mesocosm:secrete", cells = 3 } } }
+           end"#,
+        Policy::default(),
+    )
+    .expect("the new-vocabulary script runs");
+    assert_eq!(
+        old, new,
+        "the old `sites` key and the new `tracts` key read to the same proposal"
+    );
+    assert_eq!(
+        old.tracts[0].cells, 3,
+        "and the field lands where new code reads it"
     );
 }
