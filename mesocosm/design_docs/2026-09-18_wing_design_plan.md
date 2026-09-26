@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-25:** rulings run to 223, and W5 is drafted as the
+**Status, 2026-09-25:** rulings run to 224, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -1919,6 +1919,14 @@ what later sections derive from.
      now reads itself outmatched yields (ruling 116); or a side whose
      vigour, its reserve until vigour is in the ledger (ruling 123), runs
      out is spent.
+224. **The tract rename writes the new word and still reads the old.** Put
+     to Mark on 2026-09-25, opening ruling 157's rename lane beside Lane A:
+     the body-site types are serialized, so what happens on disk: the code
+     renamed with the wire keeping "site"; "tract" written and "site" still
+     accepted on read; or a clean break, re-recording whatever carries the
+     old word? Mark: "New wire, old accepted." So new data is written with
+     tract, old data still loads through aliases, and hashes of newly
+     written data change.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5695,6 +5703,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-25: ruling 224 recorded: the tract rename writes the new word
+  and still reads the old. At Mark's word ("Feel free to parallelize the
+  workload. Or coordinate with the rpg systems agent"), three more lanes
+  beside Lane A: the tract rename, by a Sonnet subagent in its own
+  worktree; the Eponym and VTT overlay plans, by the RPG systems session in
+  their own files; and refinement of open items here.
 - 2026-09-25: rulings 217 to 223 recorded, from the S2 probe's certified
   check: its readings of ruling 206 stand but the fight's; the bounds and
   the competition move into the world's rules; the interpreter's meanings
