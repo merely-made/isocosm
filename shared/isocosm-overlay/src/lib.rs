@@ -15,9 +15,9 @@
 //! design record §5.2 point 6). A game crate depends on this crate and on
 //! the sim; this crate depends on neither.
 //!
-//! The types at the crate root are wing-level and game-neutral. [`mesocosm`]
-//! holds the first game's vocabulary; a second game's overlay would add a
-//! sibling module here, not change these.
+//! The types at the crate root are wing-level and game-neutral. [`mesocosm`],
+//! [`eponym`] and [`vtt`] hold the three games' vocabularies, each a sibling
+//! module that changes nothing here (ruling 197).
 
 mod attention;
 mod event;
@@ -27,7 +27,9 @@ mod intent;
 mod tick;
 mod view;
 
+pub mod eponym;
 pub mod mesocosm;
+pub mod vtt;
 
 pub use attention::{AttentionChange, AttentionSet, Pointable};
 pub use event::{EventRecord, EventTopic};
