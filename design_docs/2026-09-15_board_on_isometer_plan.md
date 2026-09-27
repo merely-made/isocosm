@@ -854,3 +854,25 @@ a lane saw. This section is the current one, and it names its build.
   campaign data. Restore it on restart and enforce current device bounds
   when applying it. Verify a restart roundtrip and missing/malformed data;
   allocation policy remains open while GPU-copy costs are measured.
+- **2026-09-27, atlas replacement measured for 370.** The test-only probe
+  on Lane E `3375a36` verifies unchanged slot coordinates while atlas rows
+  grow, and complete destination readback matches after GPU copying plus
+  uploads of new/edited bricks. Missing-copy and missing-patch controls
+  both produce wrong bytes. On the RTX 4060 Laptop (Vulkan 610.88), ten
+  measured runs after two warmups, with order rotated, give median
+  allocation-through-completion CPU times of 0.198/0.589 ms for full
+  uploads at 260→700 and 2,504→5,000 bricks; bulk old-atlas GPU copies plus
+  changed uploads take 0.325/3.310 ms, and copying individual retained
+  slots takes 1.301/10.945 ms. Bulk copying reduces CPU bytes from
+  524,288→225,792 and 3,145,728→1,278,464. Peak old+new texture payload is
+  786,432 and 4,456,448 bytes. The full path has one upload/submission;
+  bulk has five/fourteen changed-box writes and two submissions. These
+  include completion waits, are not GPU timestamps, omit a production
+  growth integration, and do not control unrelated machine load. They
+  establish feasibility and this implementation's cost, not an inherent
+  speed ranking for every batched copy design or a frame-time guarantee.
+  Raw samples and controls live in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-replacement/`.
+  Allocation has been put back to Mark: upfront budget (recommended),
+  growth with full uploads, or a more tightly batched copy measurement
+  before deciding. No allocation policy is inferred from the inquiry.

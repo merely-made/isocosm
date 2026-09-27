@@ -6868,6 +6868,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 370's copy premise tested on Lane E `3375a36`:
+  retained GPU data can survive row growth, verified by full readback and
+  missing-copy/patch controls. In two local cases bulk GPU copy reduces
+  CPU bytes but takes longer than full uploads; the board plan records
+  timing, submission-count and machine-load limits. Allocation question
+  reopened with measured options, still unanswered.
 - 2026-09-27: ruling 372 adds per-device local persistence to the atlas
   budget. Lane E owns the small host preference store and restart tests;
   campaign storage stays separate. Independent review confirms the omitted

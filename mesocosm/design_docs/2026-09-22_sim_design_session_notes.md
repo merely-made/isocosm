@@ -490,6 +490,12 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, allocation evidence.** The replacement probe answers 370:
+GPU copies can preserve unchanged residents, but the measured two-submit
+path is slower than full uploads in both cases despite lower CPU bytes.
+The question is put back with an option to measure tighter batching;
+allocation remains open. The board plan keeps the numbers and limits.
+
 **2026-09-27, flow answer.** Ruling 371 requires the per-tick API before
 checkpoint 5 acceptance. Allocation remains under inquiry (370); the
 budget's local persistence is a new follow-up because the host currently
