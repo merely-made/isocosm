@@ -497,6 +497,16 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, text checkpoint and numerical stop.** Lane L implemented both
+379 corrections and reports 867 passing CPU tests, with two detected broken
+controls; root verified all 71 raw hashes. Independent review and Isometry
+consumer verification remain. Lane M stopped at two finite Seiche GPU parity
+failures, one at 1.9973466 against the unchanged 0.001 limit. The next
+diagnostic compares pre.2 with identical finite/length checks, preserving
+primary WIP. No new ruling, relaxed tolerance or migration acceptance is
+inferred from the failure. Other completed matrix receipts remain qualified
+to their tested source; remaining GPU/nested/headed gates stay open.
+
 **2026-09-27, dependency checkpoint accepted.** Lane M S5-S8 passes
 root and independent review. The root lock has 1,657 packages from a fresh
 1,648 baseline; Git identities are fixed, one wgpu remains, and the checked

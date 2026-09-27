@@ -7019,6 +7019,19 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane L's combined bounds fixes are pushed at `367626ad`
+  (tested code `9b730e7b`). Six combined fixtures pass, both independent
+  reverted-hunk controls fail, and the qualified Livery/Buckram aggregate
+  is 867 passes with six existing ignored tests. Root checked all 71 raw
+  receipt hashes. Independent source/test review and a coherent Isometry
+  consumer gate remain required; no fresh browser or WPT acceptance is
+  claimed. Lane M stopped at two finite Seiche GPU parity failures:
+  node-exclusion relative error 1.9973466 exceeds the unchanged 0.001 limit.
+  Nine native and 19 wasm rows, Distillery/Djinn, whole workspace and Numen
+  GPU passed; eight locks resolved, with their builds still pending.
+  A bounded pre.2 comparison with identical test hardening is released;
+  production changes, tolerance changes and migration acceptance remain
+  stopped. Mere main `f4f61d6c` carries documentation only.
 - 2026-09-27: Lane M's S5-S8 checkpoint `5accdcb8` is accepted by root
   and independent review. Root verified 520 source and 34 evidence hashes,
   recomputed the lock's 1,648 to 1,657 packages (92 added, 83 removed,
