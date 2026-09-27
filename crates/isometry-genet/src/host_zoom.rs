@@ -433,10 +433,12 @@ fn collapse_turns(harness: &mut BoardHarness) {
 /// The panel diet's cut 5, landed: Turns collapses, and the column shortens by
 /// the whole section.
 ///
-/// Expanded is **796** — the exact figure the diet left behind, so the widget
-/// costs nothing to a table that never touches it: the trigger occupies the row
-/// the `.side-heading` div occupied, to the pixel. Collapsed is **551**, which
-/// is the 258 px section (245 of it, the rest being the trigger row that stays)
+/// Expanded is **768**. The diet left 796; genet `6afb472a` builds line boxes
+/// with each font metric rounded, as Chromium does, which took 28 px out of the
+/// column's text rows (2026-09-26, ruling 329). The widget still costs nothing
+/// to a table that never touches it: the trigger occupies the row the
+/// `.side-heading` div occupied, to the pixel. Collapsed is **533**, which is
+/// the 247 px section (235 of it, the rest being the trigger row that stays)
 /// off the bottom of a 200px column.
 ///
 /// The hidden panel is asserted to have *no painted box at all*, not merely a
@@ -451,14 +453,14 @@ fn collapsing_turns_takes_the_section_off_the_panel() {
     assert_eq!(harness.ui_zoom(), 1.0, "the plan's figure is a zoom-1 one");
     let expanded = panel_bottom(&harness);
     assert!(
-        (expanded - 796.0).abs() < 0.5,
-        "expanded is the figure the diet already had: {expanded}"
+        (expanded - 768.0).abs() < 0.5,
+        "expanded is the rounded line boxes' figure: {expanded}"
     );
 
     collapse_turns(&mut harness);
     let collapsed = panel_bottom(&harness);
     assert!(
-        (collapsed - 551.0).abs() < 0.5,
+        (collapsed - 533.0).abs() < 0.5,
         "collapsed drops the whole section: {collapsed}"
     );
 
@@ -533,27 +535,27 @@ fn a_turn_row_inside_the_disclosure_still_selects_its_token() {
 ///
 /// | state | expanded | collapsed |
 /// | --- | ---: | ---: |
-/// | composing a 19-character whisper | 823 | 578 |
-/// | target pick armed | 831 | 586 |
+/// | composing a 19-character whisper | 790 | 555 |
+/// | target pick armed | 802 | 567 |
 ///
-/// Expanded, both are the figures the diet's table already recorded and both
-/// still overrun the 820 design — by 3 and 11. That is the honest reading of
-/// this cut: opening expanded by default means it does not close them on its
-/// own. What it adds is that one click now does, with room to spare rather than
-/// the 69 px §3.5 projected, because the cut took the whole 258 px section
-/// rather than collapsing the initiative list to its current entry.
+/// The diet recorded 823/578 and 831/586, both expanded figures over the 820
+/// design, until genet `6afb472a` rounded each line box's metrics as Chromium
+/// does (2026-09-26, ruling 329). Expanded, both now fit inside the design:
+/// composing is inside the 800 target as well, a target pick 2 px over it.
+/// Collapsing still takes the whole 247 px section rather than the 69 px §3.5
+/// projected for collapsing the initiative list to its current entry.
 #[test]
 fn collapsing_turns_brings_the_transient_states_inside_the_design() {
     let mut composing = composing_a_whisper(DESIGN_SIZE);
     let open = panel_bottom(&composing);
     assert!(
-        (open - 823.0).abs() < 0.5,
-        "composing is the diet's figure, still over the design: {open}"
+        (open - 790.0).abs() < 0.5,
+        "composing fits the design expanded: {open}"
     );
     collapse_turns(&mut composing);
     let shut = panel_bottom(&composing);
     assert!(
-        (shut - 578.0).abs() < 0.5 && shut <= 800.0,
+        (shut - 555.0).abs() < 0.5 && shut <= 800.0,
         "and collapsed it is well inside the 800 target: {shut}"
     );
 
@@ -563,13 +565,13 @@ fn collapsing_turns_brings_the_transient_states_inside_the_design() {
     assert!(picking.state().picking_target());
     let open = panel_bottom(&picking);
     assert!(
-        (open - 831.0).abs() < 0.5,
-        "a target pick is the diet's figure too: {open}"
+        (open - 802.0).abs() < 0.5,
+        "a target pick fits the design expanded: {open}"
     );
     collapse_turns(&mut picking);
     let shut = panel_bottom(&picking);
     assert!(
-        (shut - 586.0).abs() < 0.5 && shut <= 800.0,
+        (shut - 567.0).abs() < 0.5 && shut <= 800.0,
         "and collapsed it is inside as well: {shut}"
     );
 }
