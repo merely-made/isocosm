@@ -32,13 +32,14 @@ its bound, Holm-corrected. `--density` runs only the exact and crowd arms, to
 measure savings without a verdict; `--members LO HI` overrides the domain's
 members per site and lineage; `--water` has every world contest water as well
 as food; `--predators` adds a lineage that hunts the others by ruling 287's
-weighted draw and, beside a verdict, a crowd that draws prey by members alone,
-the draw's control. `--approximate` adds a fifth arm, a crowd whose round
-takes each count, the segments, the pairing and the settling alike, in one
-step near its mean and variance instead of member by member (ruling 220),
-checked against the exact runner and against the exact crowd. `--crowds` runs
-those two crowds alone, to time them at densities the exact runner is too slow
-to reach.
+weighted draw, a reading of where each hunt's draw took its meals, and, beside
+a verdict, a crowd that draws prey by members alone, the draw's control. A
+draw a crowd refuses is recorded and left out of that arm's comparisons.
+`--approximate` adds a fifth arm, a crowd whose round takes each count, the
+segments, the pairing and the settling alike, in one step near its mean and
+variance instead of member by member (ruling 220), checked against the exact
+runner and against the exact crowd. `--crowds` runs those two crowds alone, to
+time them at densities the exact runner is too slow to reach.
 
 Omit `--seed` for an unselected seed, printed before a draw run and saved in
 its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
@@ -75,7 +76,10 @@ founding parameters accompany its realized rules and topology.
   member it accepts weighted by the matter it holds, and counted per member,
   so the grouped and individual runners draw the same one. Inspection lifts an
   identity; restriction merges only exactly equal states after the collection
-  buffer.
+  buffer. A host may watch a process: each accepted scheduled act of it is
+  kept, with the matter its target held as the act began, until the host takes
+  them. Watching changes nothing the world does, and a refused advance takes
+  its acts back.
 - The reservoir generator varies independent metabolic networks. The ecology
   generator adds shared soil, producers, consumers, decomposers, paid births,
   starvation and age death. Each consumer and decomposer feeds through one
@@ -121,13 +125,15 @@ founding parameters accompany its realized rules and topology.
   food. The definitions and the per-reading similitude bounds are part of the
   world's rules and its rules digest. The rounds still run in the probe, not
   the core's scheduler. With `--predators` a lineage hunts the others through
-  the core's scheduler, each prey drawn by ruling 287's weighted draw; the
-  crowd draws a prey state per hunting member, weighted by its members times
-  what each holds, which is the core's draw in distribution. Only prey holding
-  a whole bite are taken, so the order hunters come in changes nothing until
-  the prey run out part way through a site's hunters. The core then feeds the
-  first in identity order, which the crowd matches when those hunters share
-  one state and refuses when they do not.
+  the core's scheduler, each prey drawn by ruling 287's weighted draw, and its
+  prey carry fat nothing but a hunt takes, so they differ in what they hold.
+  The crowd draws a prey state per hunting member, weighted by its members
+  times what each holds, which is the core's draw in distribution; both
+  runners report each meal, and the check reads what the prey held as each
+  began. Only prey holding a whole bite are taken, so the order hunters come
+  in changes nothing until the prey run out part way through a site's hunters.
+  The core then feeds the first in identity order, which the crowd matches
+  when those hunters share one state and refuses when they do not.
 
 `Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
 advance the clock explicitly. Views read `Simulation::state`; drawing does
@@ -265,3 +271,23 @@ checkpoint 1's 6 to 40 because since rulings 258 and 286 neither runner
 evaluates the members a process's gates keep out, which were most of the exact
 runner's evaluations. Without hunters, the 16-draw pilots at a fixed seed read
 exactly as checkpoint 2's.
+
+Mark then asked that the check see which prey a hunt takes, and that the
+domain let that choice move outcomes (checkpoint 4b, the `c4b-` receipts of
+the same day). A host can now watch a process's accepted scheduled acts, and
+the check reads, for each hunt, what its prey held as each meal began. Hunting
+widened to 12 to 48 hunters per site, bites of 2 to 6 and appetites of 2 to
+12, and every prey cohort carries 0 to 48 fat that only a hunt takes. With
+food (`c4b-probe-predators.json`), all 37 readings were certified within their
+bounds and none differed, the largest distance 0.038; with water
+(`c4b-probe-predators-water.json`), all 47, the largest 0.036. The exact
+runner passed against itself and the averaged crowd failed the starvation
+readings. The draw's control was told from the exact runner on the new reading
+at a distance of 0.44 in both, its prey holding 27.5 against 31.9 at a meal
+with food and 30.3 against 34.7 with water, and on 16 other readings with food
+and 7 with water, among them the prey alive and starved at the end: a draw by
+headcount left 2 to 3.5 fewer prey of a lineage alive. Prey ran out part way
+through a site's hunters in 2 of the crowd's 1,000 draws with food and 1 with
+water, each time among hunters in one state, and no crowd refused a draw. The
+crowd used 2.5 and 1.6 times fewer evaluations and ran 5.5 and 4.6 times
+faster, less than before, as fat spreads prey over more states.

@@ -1,0 +1,231 @@
+{
+  "date": "2026-09-26",
+  "kind": "isocosm-checkpoint-4b",
+  "commit": "e29c3387b9c009a363ea01db03be7922ceef103b",
+  "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "profile": "release",
+  "source_blobs": {
+    "shared/isocosm/Cargo.lock": "42f7bd0cc2e8b749c1e2ba4b85c1e0e38c16de5b",
+    "shared/isocosm/Cargo.toml": "ac6baf8a2ea6f73283cda0c02efdfb9adf3410b4",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "6b3924c01353c2b0031da56a282d0d0e4a7c381f",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "e38cf4d3139ff870b4cfd029c381af6458b0736c",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "c9d9b16f6ed2cfa845bd8914cfce83dce0463d23",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/bin/isocosm-scale/remeasure.rs": "c421706ca764658b863cc717fb8b04954d0fa2e8",
+    "shared/isocosm/src/ecology.rs": "1adc9dea917ea5a65aa201e76ced4786d2c7962e",
+    "shared/isocosm/src/execute.rs": "a35c1c4eae788bc28cfd6a34fc4a5a78f9b3d4b1",
+    "shared/isocosm/src/generate.rs": "d34e050ee5e67813de35340e02fdd49a12dea586",
+    "shared/isocosm/src/genesis.rs": "fb64b18014cb707cb13e0a64f78e1920a167104d",
+    "shared/isocosm/src/history.rs": "fec6dabfc70ce39131598a638df95e0ced999b58",
+    "shared/isocosm/src/journal.rs": "5bfb06be8310d19b89531dc671f1c46b7ea8784a",
+    "shared/isocosm/src/lib.rs": "2d441e8b14f2f5a446920531747d2f6ab8663fd3",
+    "shared/isocosm/src/meaning.rs": "28a6d0714f4c50151174fb4102068c57d0574757",
+    "shared/isocosm/src/population.rs": "93e7ec790f8a7daebab3e4d518a6482fe7a36a6f",
+    "shared/isocosm/src/probe/aggregate.rs": "deb68b83d7d94096ae09d16b4512ee6f311f3091",
+    "shared/isocosm/src/probe/check.rs": "b3018ab5ed3978a9d953b25d1671c16f04b5b76e",
+    "shared/isocosm/src/probe/crowd/hunt.rs": "14c81d90f7aef3d637189996084e28c7dbfe1f70",
+    "shared/isocosm/src/probe/crowd/hunt/tests.rs": "f94bf1432aaf87bcff7f11df13ae347e24141d45",
+    "shared/isocosm/src/probe/crowd/mod.rs": "183121fc7f3bedddfdd573be575c92f717961d04",
+    "shared/isocosm/src/probe/crowd/round.rs": "6af7f438ff03c4e3c12ace5c32d440c6ff075162",
+    "shared/isocosm/src/probe/draws.rs": "d4ea12b8114f907bdecbfae156a6b1aa6712d297",
+    "shared/isocosm/src/probe/exact.rs": "25669fbf286e5dc0e96f5f4acc9bec0465ebe078",
+    "shared/isocosm/src/probe/fight.rs": "ff9f8685cd324492711bee9c64523c90076f8f91",
+    "shared/isocosm/src/probe/fight/tests.rs": "a946cfe1f02cbb0a89880e76c6cfad5490c1debc",
+    "shared/isocosm/src/probe/found/contested.rs": "7fb35675b240596602c303eae09ae191ace3392c",
+    "shared/isocosm/src/probe/found/mind.rs": "db72dd051d5934d8d473a2f9214db26c375097fb",
+    "shared/isocosm/src/probe/found/mod.rs": "ce0be08a5fc9fdd70eac83ff823e5ca4d0dc71c3",
+    "shared/isocosm/src/probe/found/predator.rs": "ade58ddb9a944e18e24ae65d82925f351cc0d430",
+    "shared/isocosm/src/probe/mod.rs": "2e47a42e48ae937b5585a811319b1bf43776cb31",
+    "shared/isocosm/src/probe/readings.rs": "9023e5df5ae811370c3d0e3dc0121e10b3c29028",
+    "shared/isocosm/src/probe/settle.rs": "5cd64effda488ac15e9b5e24d6d5c4effa2674b0",
+    "shared/isocosm/src/probe/settle/tests.rs": "e45b657c39dbc61462bae66d87515332ebb716b7",
+    "shared/isocosm/src/probe/tests.rs": "1fd0e15e5b1081e56ee9afe57bb8cbe9e2089dcf",
+    "shared/isocosm/src/queries.rs": "587ed3daf2b2246f2a8cbda425381b59ae8e0b0b",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules.rs": "6f1dc8df17b062364c83ea6ef23ddfe806c69e45",
+    "shared/isocosm/src/schedule/filed.rs": "0e018a14490da32a3f5ff93f1b4e943230444644",
+    "shared/isocosm/src/schedule/mod.rs": "a0bcdf39b90a99b3ba592bd6a02272f01742c9eb",
+    "shared/isocosm/src/schedule/pass.rs": "307d5b24f4809c8ade75652f34a05c3e9b3f5e9d",
+    "shared/isocosm/src/schema.rs": "e45bde0c3b166b42e54f10a47101173029d561f6",
+    "shared/isocosm/src/simulation.rs": "e944dca7304935104d6ba024b45a7feec0b39d15",
+    "shared/isocosm/src/stage.rs": "41918e3df3abc5ee6d1e955cb3b6456aeb0e1ecd",
+    "shared/isocosm/src/targets.rs": "a9b4d838f87299928970da4be4f1311d359ed40f",
+    "shared/isocosm/src/validation.rs": "13238158df45124dbadbc04503da7f51b7922c18",
+    "shared/isocosm/src/watch.rs": "35faf5d586a3b1395564d70d032b39d8f415b921",
+    "shared/isocosm/tests/feeding.rs": "bebb447bae76a09f85f97dc75ac3b5adc6ade0a1",
+    "shared/isocosm/tests/mind.rs": "bb665ac1e6f72da8fd0bf49d4eb74f76ee51126b",
+    "shared/isocosm/tests/probe.rs": "b4055d7e2b6643486999752a54193209f0b88d50",
+    "shared/isocosm/tests/schedule.rs": "7f084a0d92f445820b53d045b6de0c2aa7b4ee18",
+    "shared/isocosm/tests/sim.rs": "3b49108c9db609f34a8825ec9f0f0352c75cefb8"
+  },
+  "executables_sha256": {
+    "isocosm-probe": "82998a0f5d6a13e419858eefc3ffaa85c1eec4ab04f2d3e1c52d84b43c6452c9",
+    "isocosm-scale": "708af29157fb19af87f3f17e444e4b75d5de425deb5c48c4f40cd3f8568dbb86"
+  },
+  "machine": {
+    "model": "ASUSTeK ROG Zephyrus G14 GA402XV, the laptop ruling 124 names",
+    "cpu": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics, 8 cores, 16 threads, 4.0 GHz max",
+    "os": "Windows 11 Home Insider Preview 10.0.26220"
+  },
+  "asked": "Mark's answers on checkpoint 4, relayed: a reading that sees prey choice directly, and a domain where the choice moves outcomes (both); widen the hunting ranges; identity order when prey run out part way stays as built and counted until Part B; keep the draw control as the positive control for prey choice",
+  "commits": {
+    "bb35ecc": "checkpoint 4, the base of this step",
+    "e29c338": "the core's watch (a host names processes; each accepted scheduled act of one is kept with the matter its target held as the act began; watching changes nothing, a refused advance takes its acts back); a reading for each hunt, the matter its prey held as each meal began, on average in hundredths, the exact runner's from the watch and the crowd's from its own draws; the hunting domain widened, with prey fat and hunters founded alike at each site; the check records a draw a crowd refuses and leaves it out of that arm's comparisons, and verify.py pairs draws the same way"
+  },
+  "domain": {
+    "before": {
+      "hunters": [
+        4,
+        16
+      ],
+      "bite": [
+        1,
+        2
+      ],
+      "appetite": [
+        3,
+        6
+      ],
+      "fat": "none"
+    },
+    "certified": {
+      "hunters": [
+        12,
+        48
+      ],
+      "bite": [
+        2,
+        6
+      ],
+      "appetite": [
+        2,
+        12
+      ],
+      "fat": [
+        0,
+        48
+      ]
+    },
+    "why": {
+      "hunters": "both ends up threefold: against 128 to 256 prey per site, a twentieth to over a third of their headcount hunting, so meals are many enough for where they fall to show",
+      "bite": "2 to 6 against prey bodies of 1 to 10, so a meal is a real share of a lean body and taking it from the wrong prey costs a life",
+      "appetite": "2 to 12, wider both ways: from hunters that eat only when nearly spent to hunters that eat nearly every tick",
+      "fat": "each prey cohort carries 0 to 48 fat that only a hunt takes. Both prey lineages share their wants and rations, so their bodies settle in a narrow band and a draw by holdings barely differs from one by headcount; fat spreads holdings from about 1 to nearly 60. A draw by holdings takes mostly fat from fat prey, sparing bodies; a draw by headcount takes body from lean prey too, so the choice moves who starves. The upper end of 48 rather than 24 keeps shortages near zero outside the averaged crowd (c4b-boundary.txt)",
+      "hunters founded alike": "a site's hunters are founded in one state, so which of them come first matters to nothing until prey run out part way through them"
+    }
+  },
+  "runs": [
+    {
+      "file": "c4b-probe-predators.json (raw, out of tree); c4b-probe-predators-verify.txt",
+      "purpose": "the certified check with food under the wider domain and the prey-choice reading; the draw control as the positive control for prey choice",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --predators --draws 1000 --permutations 1999 --output c4b-probe-predators.json",
+      "seeds": "master seed 1790467589082594100, taken from the clock before the run",
+      "commit": "e29c338",
+      "executable_sha256": "82998a0f5d6a13e419858eefc3ffaa85c1eec4ab04f2d3e1c52d84b43c6452c9",
+      "draws": 1000,
+      "readings": 37,
+      "verdicts": {
+        "main_pass": true,
+        "main_equivalent": true,
+        "main_different": false,
+        "positive_control_pass": true,
+        "negative_control_detected_starvation_difference": true,
+        "draw_control_detected": true
+      },
+      "comparisons": {
+        "exact against crowd": "certified 37/37, detected 0, largest distance 0.038 (inspect:account:matter:1-2); the new reading at 0.020, means 31.92 and 31.88",
+        "exact against exact (positive control)": "certified 37/37, detected 0, largest 0.038 (inspect:account:matter:0-2); the new reading at 0.027",
+        "exact against averaged crowd (negative control)": "certified 13/37, detected 27, largest 0.281 (past-bearing:ability:probe-0); every prey starvation reading detected; the new reading at 0.212",
+        "exact against unweighted crowd (draw control)": "detected on 17 of 37 readings. probe:hunt-2#meal-holdings at distance 0.444, means 31.92 and 27.48, Holm p 0.0185 (the floor for 1,999 permutations over 37 readings); at the same floor alive, spend and upkeep of both prey lineages, starve-0 and starve-1, mind:relief#1, mind:strain#1 and mind needs 1, 2, 4 and 5; past-bearing:ability:probe-1 at 0.022 and world:food#hungry:ability:probe-1 at 0.0315. The prey alive at the end: 73.95 against 70.78 for lineage 0, 73.31 against 69.83 for lineage 1"
+      },
+      "evaluation_ratio": 2.46,
+      "wall_ratio": 5.46,
+      "alive_per_state_end_median": 2.26,
+      "shortfalls": "prey ran out part way, all among alike hunters: 3 passes in 2 draws of the crowd, 65 in 33 of the averaged crowd, 1 in 1 of the unweighted crowd",
+      "refused": "none",
+      "checks": {
+        "exact_rerun_identical": true,
+        "collect_changes_no_outcome": true
+      },
+      "verify": "every distance and equivalence verdict recomputed and matched; one difference verdict of 148 disagreed, in the draw control: mind#need:3, Holm p 0.080 in the receipt against 0.0500 recomputed, detected by the recomputation only"
+    },
+    {
+      "file": "c4b-probe-predators-water.json (raw, out of tree); c4b-probe-predators-water-verify.txt",
+      "purpose": "the same with water contested as well",
+      "command": "shared/isocosm/target/release/isocosm-probe.exe --predators --water --draws 1000 --permutations 1999 --output c4b-probe-predators-water.json",
+      "seeds": "master seed 1790468246462277000, taken from the clock before the run",
+      "commit": "e29c338",
+      "executable_sha256": "82998a0f5d6a13e419858eefc3ffaa85c1eec4ab04f2d3e1c52d84b43c6452c9",
+      "draws": 1000,
+      "readings": 47,
+      "verdicts": {
+        "main_pass": true,
+        "main_equivalent": true,
+        "main_different": false,
+        "positive_control_pass": true,
+        "negative_control_detected_starvation_difference": true,
+        "draw_control_detected": true
+      },
+      "comparisons": {
+        "exact against crowd": "certified 47/47, detected 0, largest distance 0.036 (inspect:account:matter:0-2); the new reading at 0.022, means 34.68 and 34.68",
+        "exact against exact (positive control)": "certified 47/47, detected 0, largest 0.027 (alive:ability:probe-0); the new reading at 0.016",
+        "exact against averaged crowd (negative control)": "certified 21/47, detected 34, largest 0.255 (alive:ability:probe-1); every prey starvation reading detected; the new reading at 0.179",
+        "exact against unweighted crowd (draw control)": "detected on 8 of 47 readings. probe:hunt-2#meal-holdings at distance 0.438, means 34.68 and 30.34, Holm p 0.0235 (the floor for 1,999 permutations over 47 readings); at the same floor alive, starve and upkeep of prey lineage 1 and mind#need:7; at 0.042 mind:strain#1, probe:spend-1#2 and probe:starve-0#2. The prey of lineage 1 alive at the end: 66.02 against 63.82"
+      },
+      "evaluation_ratio": 1.64,
+      "wall_ratio": 4.55,
+      "alive_per_state_end_median": 1.59,
+      "shortfalls": "all among alike hunters: 1 pass in 1 draw of the crowd, 24 in 14 of the averaged crowd, 1 in 1 of the unweighted crowd",
+      "refused": "none",
+      "checks": {
+        "exact_rerun_identical": true,
+        "collect_changes_no_outcome": true
+      },
+      "verify": "every distance and equivalence verdict recomputed and matched; one difference verdict of 188 disagreed, in the draw control: mind#need:3, Holm p 0.0585 in the receipt against 0.041 recomputed, detected by the recomputation only"
+    },
+    {
+      "files": [
+        "c4b-boundary.txt",
+        "boundary_setup2.py",
+        "boundary-measure-4b.rs"
+      ],
+      "purpose": "the shortage case recounted under the wider domains tried, before the certified runs: how often prey run out part way through a site's hunters, and how often among hunters in more than one state, which the crowd refuses",
+      "commands": [
+        "python boundary_setup2.py <worktree>/shared <scratch>/shared, then boundary-measure-4b.rs built against the instrumented copy",
+        "boundary 20260930 1000 food 12 48 2 6 2 12 0 24; boundary 20260930 1000 food 8 32 2 4 2 10 0 32; boundary 20260930 1000 food 12 48 2 6 2 12 0 48; boundary 20260930 1000 water 12 48 2 6 2 12 0 48"
+      ],
+      "result": "with fat 0 to 24 the crowd would have refused 2 draws in 1,000 and the averaged crowd 7; with fat 0 to 48, the certified domain, the exact runner met prey running out part way in 1 draw with food and none with water, the crowd in 1 each, the unweighted crowd in none, and only the averaged crowd met unlike hunters short of prey, in 3 draws with food"
+    },
+    {
+      "files": [
+        "c4b-probe-pilot-16.json and c4b-probe-pilot-water-16.json (raw, out of tree)",
+        "same_but_time.py"
+      ],
+      "purpose": "the probe without hunters is unchanged by this step",
+      "commands": [
+        "isocosm-probe.exe --draws 16 --permutations 199 --seed 20260926, with and without --water",
+        "python same_but_time.py c4-probe-pilot-16.json c4b-probe-pilot-16.json, and the water pair"
+      ],
+      "commit": "e29c338",
+      "result": "equal to checkpoint 4's pilots in every field but wall time, evaluation counts included"
+    }
+  ],
+  "checks": [
+    "cargo test --manifest-path shared/isocosm/Cargo.toml --offline --locked at e29c338: 68 passed, 0 failed (19 unit, 10 feeding, 3 mind, 9 probe integration, 7 schedule, 20 core integration)",
+    "controls, each restored: a refused advance keeping its watched acts, and the watch reading its target's matter after the act, each failed the watch test; the crowd logging a meal's matter after the bite, and the exact runner not watching its hunts, each failed both hunt tests",
+    "the hunt tests check that each runner's meals report what the prey held as each began, against the analytic cases: 6, 5 or 4 over the three ends of the 3, 3, 1 table",
+    "cargo clippy --manifest-path shared/isocosm/Cargo.toml --offline --locked --all-targets -- -D warnings: clean; cargo fmt --check: clean; the largest source file 500 lines (src/stage.rs)",
+    "cargo check -p mesocosm-genet --all-features --all-targets --offline (mesocosm workspace, against this worktree's isocosm) at e29c338: passes, no warnings",
+    "verify.py as changed reproduces checkpoint 4's c4-probe-predators-verify.txt byte for byte"
+  ],
+  "findings": [
+    "The draw control is now detected, on the new reading decisively (distance 0.44 with food and with water) and on 16 and 7 readings besides: under a draw by headcount 2 to 3.5 fewer prey of a lineage are alive at the end.",
+    "Prey ran out part way through a site's hunters in 2 and 1 of the crowd's draws, always among alike hunters; no arm refused a draw, so the change that keeps a refusal on record was not exercised in the certified runs. The averaged crowd, the negative control, which starves prey hardest, is where refusals appeared in the measurement.",
+    "The crowd's savings fell to 2.5 and 1.6 times fewer evaluations, as fat spreads prey over more states."
+  ],
+  "scope": "Checkpoint 4b: the prey-choice reading, the wider hunting domain, the certified check with food and with water under both, and the shortage recount. Identity order when prey run out part way stays as built and counted, for Part B's proportional scramble (ruling 269)."
+}

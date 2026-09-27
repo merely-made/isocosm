@@ -91,6 +91,16 @@ prey ran out part way through a site's hunters, measured with an instrumented
 copy of the core (`boundary_setup.py`, `boundary-measure.rs`).
 `checkpoint-4-source.json` names the commits, commands and checks.
 
+Checkpoint 4b is beside it under `c4b-`: a reading of what each hunt's prey
+held as its meals began, and a wider hunting domain in which prey carry fat
+that only a hunt takes. `c4b-probe-predators-verify.txt` and
+`c4b-probe-predators-water-verify.txt` are `verify.py`'s output on the two raw
+certified receipts, which live out of tree, hashed in `RAW_RECEIPTS.md`.
+`c4b-boundary.txt` records how often prey ran out part way through a site's
+hunters in the domains tried, measured with an instrumented copy of the core
+(`boundary_setup2.py`, `boundary-measure-4b.rs`), and why the certified one
+was chosen. `checkpoint-4b-source.json` names the commit, commands and checks.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

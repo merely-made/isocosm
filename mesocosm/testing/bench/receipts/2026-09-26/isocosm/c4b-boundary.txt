@@ -1,0 +1,70 @@
+Where prey ran out part way through a pass of hunters under checkpoint 4b's
+wider hunting domains, measured before the certified runs, and how often the
+crowd would have refused a draw because those hunters were in more than one
+state.
+
+How: `boundary_setup2.py` copied the core and probe as they stood just
+before e29c338 into a scratch tree and instrumented the copy; they differ from
+that commit only in the probe binary's handling of refused draws, which the
+measurer does not use, and the default fat, which it sets explicitly. Its core logs
+every weighted target search: the tick, the actor's place, the process,
+whether a target was found, and what the actor holds. A pass at a site where
+some hunters found prey and some found none is a shortage. Its crowd logs
+each shortage with the number of hunting states there, and where the real
+crowd would refuse (more than one state) it feeds the first hunters in bin
+order so the run goes on. `boundary-measure-4b.rs` draws worlds and dynamics
+seeds as the probe binary does (master seed 20260930, 1,000 draws) and runs
+the exact runner and three crowds on each. "More than one state" counts the
+shortages the crowd refuses.
+
+Four domains were measured. Each widens checkpoint 4's (hunters 4-16 per
+site, bites 1-2, appetites 3-6, no fat) at both ends:
+
+  A  hunters 12-48, bites 2-6, appetites 2-12, fat 0-24, food
+  B  hunters  8-32, bites 2-4, appetites 2-10, fat 0-32, food
+  C  hunters 12-48, bites 2-6, appetites 2-12, fat 0-48, food
+  C  the same with water
+
+Shortage events (draws with one; events among hunters in more than one state)
+
+             exact            crowd            averaged           unweighted
+  A food     97 (41; 0)       89 (38; 2)      329 (138; 7)       66 (32; 0)
+  B food      5  (3; 0)        3  (2; 0)       24  (15; 0)        2  (1; 0)
+  C food      2  (1; 0)        1  (1; 0)       67  (29; 3)        0  (0; 0)
+  C water     0  (0; 0)        1  (1; 0)       24  (16; 0)        0  (0; 0)
+
+Domain C is the one certified. With fat up to 24 (A), prey that starve out of
+their competitions leave too little behind for the hunters at many sites, and
+after a first shortage has split a site's hunters into the fed and the unfed,
+a second can find both hungry: the crowd would have refused 2 draws in 1,000
+and the averaged crowd 7. Fat up to 48 (C) keeps A's hunters, bites and
+appetites while leaving prey enough to eat nearly everywhere. B, narrower at
+every end, shorts as rarely as C. In C only the averaged crowd, the negative
+control, which starves prey hardest, met unlike hunters short of prey (3
+draws in 1,000 with food). A refused draw is kept on record in the receipt
+and left out of that arm's comparisons; in the certified runs no arm refused
+a draw.
+
+master 20260930, draws 1000, water false, domain PredatorFounding { hunters: [12, 48], bite: [2, 6], appetite: [2, 12], fat: [0, 24] }, exact hunting passes 11111
+averaged   boundary events   329, draws with one  138 of 1000, with hunters in more than one state     7
+crowd      boundary events    89, draws with one   38 of 1000, with hunters in more than one state     2
+exact      boundary events    97, draws with one   41 of 1000, with hunters in more than one state     0
+unweighted boundary events    66, draws with one   32 of 1000, with hunters in more than one state     0
+
+master 20260930, draws 1000, water false, domain PredatorFounding { hunters: [8, 32], bite: [2, 4], appetite: [2, 10], fat: [0, 32] }, exact hunting passes 13811
+averaged   boundary events    24, draws with one   15 of 1000, with hunters in more than one state     0
+crowd      boundary events     3, draws with one    2 of 1000, with hunters in more than one state     0
+exact      boundary events     5, draws with one    3 of 1000, with hunters in more than one state     0
+unweighted boundary events     2, draws with one    1 of 1000, with hunters in more than one state     0
+
+master 20260930, draws 1000, water false, domain PredatorFounding { hunters: [12, 48], bite: [2, 6], appetite: [2, 12], fat: [0, 48] }, exact hunting passes 11011
+averaged   boundary events    67, draws with one   29 of 1000, with hunters in more than one state     3
+crowd      boundary events     1, draws with one    1 of 1000, with hunters in more than one state     0
+exact      boundary events     2, draws with one    1 of 1000, with hunters in more than one state     0
+unweighted boundary events     0, draws with one    0 of 1000, with hunters in more than one state     0
+
+master 20260930, draws 1000, water true, domain PredatorFounding { hunters: [12, 48], bite: [2, 6], appetite: [2, 12], fat: [0, 48] }, exact hunting passes 11011
+averaged   boundary events    24, draws with one   16 of 1000, with hunters in more than one state     0
+crowd      boundary events     1, draws with one    1 of 1000, with hunters in more than one state     0
+exact      boundary events     0, draws with one    0 of 1000, with hunters in more than one state     0
+unweighted boundary events     0, draws with one    0 of 1000, with hunters in more than one state     0

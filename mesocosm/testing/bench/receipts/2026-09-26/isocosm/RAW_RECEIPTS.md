@@ -75,3 +75,18 @@ and on step 1's.
 | `cp2-probe-pilot-water-16.json` | 134,818 | `bfcd6de6e75e59ca930b730379aa3e6257c47426ecb648a5f62454cc2204155a` |
 | `c4-scale-pilot.json` | 47,071 | `691ec13c4aac8f9bd45246a62457dd4e19034b905a37558d00edb2467ad40814` |
 | `step1-scale-pilot.json` | 47,184 | `f3f5e007b9e54640962af564f6a7a940f686542118918dac371ebcb7814a423e` |
+
+Checkpoint 4b, the prey-choice reading and the wider hunting domain, added
+the two certified checks, recomputed by `python verify.py <copy> 1999` into
+`c4b-*-verify.txt` here, and the probe's pilots without hunters at seed
+20260926 on this checkpoint's core, which `python same_but_time.py
+c4-probe-pilot-16.json c4b-probe-pilot-16.json` (and the water pair) finds
+equal to checkpoint 4's in every field but wall time.
+`checkpoint-4b-source.json` names the commit and command behind each.
+
+| File | Bytes | SHA-256 |
+| --- | --- | --- |
+| `c4b-probe-predators.json` | 5,319,471 | `fd4af6d9ebb1c838732d1d74dd3911a6a5f5a7c1354d46b1dab3b522f5d0dfbe` |
+| `c4b-probe-predators-water.json` | 6,264,177 | `7f100271163334ad7c6153728362d0315211649d883c6fd7cb76d1c32bbf5a29` |
+| `c4b-probe-pilot-16.json` | 108,268 | `f926d57f1a3dfde4a64715b12ce73f6d5a54c8dec38cce0fc9d8f1059b3f1f76` |
+| `c4b-probe-pilot-water-16.json` | 135,314 | `614ef2e68ce5261c9f130eda3d90885258e7eadb10838ada55637a87f64349c8` |
