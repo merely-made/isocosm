@@ -742,3 +742,10 @@ a lane saw. This section is the current one, and it names its build.
   frame. isometer will call modulus's CPU walk rather than copy it
   (ruling 361), and the start clamps into the box (362). Paging merges
   once that reaches isometry's pins.
+- **2026-09-27, traversal repin authorized with coordination (ruling 365).**
+  Mere's remote main is now `7bb5bfda`, containing Lane K's fix. Isometry
+  still pins `0418391f`. Mark authorized the separate traversal repin with
+  "You can repin but communicate with the isocosm agent". Identifying and
+  contacting that agent remain prerequisites; the repin, picture receipts
+  and paging merge are still pending. Genet's text fix and burn pre.4 follow
+  separately.

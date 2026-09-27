@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 364, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 365, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2972,6 +2972,15 @@ what later sections derive from.
      that, or have the generator copy them now? Mark: "Keep as built." Were
      the defaults implicit, growing the set later (281) would change what old
      worlds mean without changing their digest.
+
+365. **The traversal repin proceeds with coordination.** Asked whether to
+     repin isometry for the traversal fix now, leaving genet's text fix and
+     burn pre.4 for later, or bundle all three, Mark answered: "You can repin
+     but communicate with the isocosm agent". The 2026-09-27 handoff carried
+     this answer unrecorded. The repin targets mere `7bb5bfda`; genet and
+     netrender stay at their current pins. *Reading, not ruled:* the agent
+     may mean Lane A (sim Part B) or the RPG session; its identity and the
+     requested coordination remain unresolved before the repin proceeds.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6745,6 +6754,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 365 recorded from the session handoff: proceed with
+  the traversal repin after communicating with the isocosm agent. The
+  intended agent still needs identification; the repin has not landed.
 - 2026-09-18: record written from the 2026-09-17 and 2026-09-18
   conversation.
 - 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
