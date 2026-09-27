@@ -221,6 +221,40 @@ fn the_statistics_detect_what_they_should() {
     assert!(apart.different && !apart.equivalent && !apart.pass);
 }
 
+#[test]
+fn a_crowd_under_certification_may_refuse_one_draw_in_a_hundred() {
+    let settings = Settings {
+        alpha: 0.05,
+        permutations: 199,
+        seed: 1,
+    };
+    let readings = [("r".to_string(), 200)];
+    let exact: Vec<Option<Vec<u64>>> = (0..1000).map(|k| Some(vec![k % 9])).collect();
+    // The crowd reads as the exact runner does, but for the draws it refused.
+    let run = |refused: usize, bounded: bool| {
+        let crowd: Vec<_> = (exact.iter().enumerate())
+            .map(|(k, row)| row.clone().filter(|_| k >= refused))
+            .collect();
+        check::compare_runs("r", &readings, &exact, &crowd, settings, bounded)
+    };
+    // Ten of a thousand is within the bound, and the draws refused are left
+    // out of the readings.
+    let within = run(10, true);
+    assert!(within.pass && within.equivalent && !within.different);
+    assert_eq!(within.draws, 990);
+    let r = within.refusals.unwrap();
+    assert_eq!((r.refused, r.of, r.within), (10, 1000, true));
+    // Eleven is past it, and fails a comparison that otherwise passes.
+    let past = run(11, true);
+    assert!(past.equivalent && !past.different && !past.pass);
+    assert!(!past.refusals.unwrap().within);
+    // A control's refusals are recorded with no bound.
+    let control = run(11, false);
+    assert!(control.pass);
+    let r = control.refusals.unwrap();
+    assert_eq!((r.refused, r.bound_per_mille, r.within), (11, None, true));
+}
+
 fn hunted(seed: u64, water: bool) -> isocosm::probe::ProbeWorld {
     ProbeFounding {
         seed,

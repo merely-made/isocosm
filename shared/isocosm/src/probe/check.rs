@@ -7,7 +7,10 @@
 //! The difference test permutes arm labels within each drawn world, which is
 //! exact for paired draws and for tied, discrete readings. The equivalence
 //! test certifies distance below the reading's bound by the DKW-Massart
-//! inequality applied to each arm. Both families are Holm-corrected.
+//! inequality applied to each arm. Both families are Holm-corrected. A draw
+//! an arm refused has no readings there and is left out of the comparison;
+//! a crowd under certification that refuses more than one draw in a hundred
+//! fails it, and a control's refusals are recorded with no bound.
 
 use super::draws::Stream;
 use crate::schema::Key;
@@ -35,6 +38,32 @@ pub struct Settings {
     pub seed: u64,
 }
 
+/// The most draws, per mille of those it ran, a crowd under certification
+/// may refuse (Mark, checkpoint 4b).
+pub const REFUSAL_BOUND_PER_MILLE: usize = 10;
+
+/// The draws the second arm of a comparison refused, of those it ran.
+#[derive(Clone, Debug, Serialize)]
+pub struct Refusals {
+    pub refused: usize,
+    pub of: usize,
+    /// Absent for a control, whose refusals are only recorded.
+    pub bound_per_mille: Option<usize>,
+    pub within: bool,
+}
+
+impl Refusals {
+    pub fn new(refused: usize, of: usize, bounded: bool) -> Self {
+        let bound = bounded.then_some(REFUSAL_BOUND_PER_MILLE);
+        Self {
+            refused,
+            of,
+            bound_per_mille: bound,
+            within: bound.is_none_or(|b| refused * 1000 <= b * of),
+        }
+    }
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct Comparison {
     pub name: String,
@@ -45,6 +74,9 @@ pub struct Comparison {
     pub equivalent: bool,
     /// Some reading's difference detected beyond chance.
     pub different: bool,
+    /// Where the arms could refuse draws: how many the second refused.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub refusals: Option<Refusals>,
     pub pass: bool,
 }
 
@@ -171,6 +203,32 @@ pub fn compare(
         readings: rows,
         equivalent,
         different,
+        refusals: None,
         pass: equivalent && !different,
     }
+}
+
+/// Compares two arms whose draws either may have refused (`None`), over the
+/// draws both ran to the end. With `bounded`, the second is a crowd under
+/// certification, and the comparison fails if it refused more than
+/// `REFUSAL_BOUND_PER_MILLE` of its draws; otherwise the refusals are only
+/// recorded.
+pub fn compare_runs(
+    name: &str,
+    readings: &[(Key, u32)],
+    a: &[Option<Vec<u64>>],
+    b: &[Option<Vec<u64>>],
+    settings: Settings,
+    bounded: bool,
+) -> Comparison {
+    let (x, y): (Vec<Vec<u64>>, Vec<Vec<u64>>) = a
+        .iter()
+        .zip(b)
+        .filter_map(|(a, b)| Some((a.clone()?, b.clone()?)))
+        .unzip();
+    let mut c = compare(name, readings, &x, &y, settings);
+    let refusals = Refusals::new(b.iter().filter(|r| r.is_none()).count(), b.len(), bounded);
+    c.pass &= refusals.within;
+    c.refusals = Some(refusals);
+    c
 }

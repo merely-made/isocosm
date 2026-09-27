@@ -34,7 +34,9 @@ members per site and lineage; `--water` has every world contest water as well
 as food; `--predators` adds a lineage that hunts the others by ruling 287's
 weighted draw, a reading of where each hunt's draw took its meals, and, beside
 a verdict, a crowd that draws prey by members alone, the draw's control. A
-draw a crowd refuses is recorded and left out of that arm's comparisons.
+draw a crowd refuses is recorded and left out of that arm's comparisons, and a
+crowd under certification that refuses more than one draw in a hundred fails
+its comparison; a control's refusals are recorded with no bound.
 `--approximate` adds a fifth arm, a crowd whose round takes each count, the
 segments, the pairing and the settling alike, in one step near its mean and
 variance instead of member by member (ruling 220), checked against the exact

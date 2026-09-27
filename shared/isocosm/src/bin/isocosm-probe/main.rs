@@ -293,26 +293,30 @@ fn run() -> Result<(), String> {
         .filter(|r| r.starvation)
         .map(|r| r.key.clone())
         .collect();
-    let [exact, control, crowd, averaged, approximate, unweighted] = rows;
-    // Each comparison reads the draws both its arms ran to the end.
-    let compare = |name: &str, a: &[Option<Vec<u64>>], b: &[Option<Vec<u64>>]| {
-        let (x, y): (Vec<Vec<u64>>, Vec<Vec<u64>>) = a
-            .iter()
-            .zip(b)
-            .filter_map(|(a, b)| Some((a.clone()?, b.clone()?)))
-            .unzip();
-        check::compare(name, &bounds, &x, &y, settings)
+    let [exact, rerun, crowd, averaged, approximate, unweighted] = rows;
+    // Each comparison reads the draws both its arms ran to the end. A crowd
+    // under certification may refuse at most one draw in a hundred; the
+    // controls' refusals are only recorded.
+    let compare = |name: &str, a: &[Option<Vec<u64>>], b: &[Option<Vec<u64>>], bounded| {
+        check::compare_runs(name, &bounds, a, b, settings, bounded)
     };
+    let (certified, control) = (true, false);
     let mut comparisons = Vec::new();
     let mut verdicts = None;
     if !o.density && !o.crowds {
         comparisons = vec![
-            compare("exact against crowd", &exact, &crowd),
-            compare("exact against exact (positive control)", &exact, &control),
+            compare("exact against crowd", &exact, &crowd, certified),
+            compare(
+                "exact against exact (positive control)",
+                &exact,
+                &rerun,
+                control,
+            ),
             compare(
                 "exact against averaged crowd (negative control)",
                 &exact,
                 &averaged,
+                control,
             ),
         ];
         if draw_control {
@@ -320,6 +324,7 @@ fn run() -> Result<(), String> {
                 "exact against unweighted crowd (draw control)",
                 &exact,
                 &unweighted,
+                control,
             ));
         }
         verdicts = Some(Verdicts::new(&comparisons, starvation));
@@ -329,6 +334,7 @@ fn run() -> Result<(), String> {
             "exact against approximate crowd",
             &exact,
             &approximate,
+            certified,
         ));
     }
     if o.approximate || o.crowds {
@@ -336,6 +342,7 @@ fn run() -> Result<(), String> {
             "crowd against approximate crowd",
             &crowd,
             &approximate,
+            certified,
         ));
     }
     // Savings and density come from the draws no arm refused.
