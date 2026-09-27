@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 373 on 2026-09-27, the last
+on 2026-09-26 and 353 to 374 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -456,6 +456,7 @@ label remains as the dated record of how they were presented.
 | Sim flow handoff | Until drained with host draining each tick, or a required per-tick API? | "Require a per-tick handoff API before accepting checkpoint 5." | 371 |
 | Budget persistence | Small local per-device preference store, or session-only setting? | "Save the atlas budget locally per device; add a small local preference store (recommended)." | 372 |
 | Allocation after measurement | Upfront budget, growth with full uploads, or tighter batched copying measurement? | "Measure a more tightly batched GPU-copy path before deciding; keep allocation open." | 373 |
+| Allocation after tighter batching | Upfront budget, growth with full uploads, or further copy research? | "Agreed. The numbers have spoken." Accepts upfront allocation. | 374 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -490,6 +491,12 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27, allocation decided.** Ruling 374 accepts allocating the
+chosen budget upfront, after the reviewed tighter-batching experiment.
+The configurable, persistent per-device budget and current omitted count
+stand. Lane E proceeds through remaining integration gates; budget changes
+rebuild the atlas, while ordinary population changes do not grow it.
 
 **2026-09-27, tighter batching measured.** Ruling 373's experiment is
 complete: the new batched copy improves the larger replacement, but full

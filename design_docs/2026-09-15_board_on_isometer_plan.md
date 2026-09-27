@@ -920,3 +920,12 @@ a lane saw. This section is the current one, and it names its build.
   tested, so this is not an optimized-copy lower bound. The next question
   offers upfront allocation (recommended), row growth with full uploads,
   or further copy research while allocation stays open.
+
+- **2026-09-27, upfront allocation ruled (374).** Mark accepted allocating
+  the chosen budget upfront: "Agreed. The numbers have spoken." This closes
+  the allocation inquiry and measurement gate in 370/373. Keep the 8 MiB
+  default, device bounds, live rebuild on budget change and local per-device
+  persistence under 369/372, plus current omission reporting under 368.
+  Ordinary terrain population changes use the existing fixed capacity;
+  production row growth is not part of this implementation. Lane E must
+  finish the consumer, cost and headed receipts before integration.

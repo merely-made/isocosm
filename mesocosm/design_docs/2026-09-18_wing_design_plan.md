@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 373, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 374, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3112,6 +3112,27 @@ what later sections derive from.
      growth. *Reading, not ruled:* compare one ordered submission combining
      retained texture copying and staged changed-data copies, counting CPU
      preparation and completion, with readback and fault controls.
+
+374. **Allocate the chosen terrain atlas budget upfront.** Asked on
+     2026-09-27: "Which allocation policy should paging use? Independent
+     review confirms the new batched copy works, but full uploads remain
+     faster: 0.191/0.598 ms versus 0.348/1.584 ms across the two growth
+     cases, with 30 measured samples each. Upfront allocation uses the
+     chosen budget (8 MiB by default); growing by rows starts the 260-brick
+     demo at 256 KiB but introduces texture replacements. These local
+     timings exclude rendering and are not frame-time guarantees."
+     Options, recommended first: (A) "Allocate the chosen budget upfront;
+     avoid growth replacements (recommended)." (B) "Grow by rows and fully
+     upload on replacement; trade occasional replacement work for lower
+     initial memory." (C) "Keep allocation open and investigate reusable
+     staging or another copy design before choosing." Mark answered
+     verbatim: "Agreed. The numbers have spoken." This accepts the
+     recommendation, closing the allocation question opened in 370 and
+     held open for measurement by 373. The budget remains configurable,
+     default 8 MiB and bounded by the device (369), persisted locally per
+     device (372). A changed budget still rebuilds the atlas; filling its
+     available capacity does not trigger growth. Copy experiments remain
+     research evidence, with their stated timing and hardware limits.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6885,6 +6906,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 374 accepts upfront allocation of the chosen budget.
+  Lane E resumes final consumer, cost and headed integration gates before
+  merging paging; current dependency pins and checkpoint 5 are preserved.
 - 2026-09-27: ruling 373's tighter-batched probe completed on Lane E
   `e69e1df`, receipt head `0ad455c`. Root recomputed the raw statistics and
   verified the receipt hashes: full / batched medians are 0.191 / 0.348 ms
