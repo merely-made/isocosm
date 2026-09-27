@@ -128,6 +128,21 @@ vertical probe certifies them, and the flow record and the dev source are the
 core's alone. `checkpoint-5-source.json` names the commits, commands, checks
 and the two source tests not ported.
 
+**2026-09-27, ruling 371 follow-up:** the flow record now returns owned
+moves for one explicit tick or one host command; the until-drained queue is
+removed. `c5-per-tick-draws.rs` and `c5_per_tick_summary.py` produce
+`c5-per-tick.json`: 1,000 worlds, 95,824 handoffs in each mode, every ledger
+reconciled, every mode comparison agreed, and 158,312 earlier-tick injection
+controls detected. All historical final states and issued matter match.
+Explicit one-tick collection changes cohort batching, so flow-row counts are
+not claimed byte-identical to the old multi-tick run. The four unrecorded
+regression logs still match all 128,676 historical lines. Two deliberate
+core faults, retaining old moves and dropping a move, make the flow tests
+fail. `checkpoint-5-per-tick-source.json` records the source and qualified
+checks; `PER_TICK_RAW_RECEIPTS.md` hashes the complete fresh raw/log files.
+Reserve physiology, filial development cost and checkpoint 6 remain outside
+this receipt. The historical checkpoint-5 artifacts above retain their words.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

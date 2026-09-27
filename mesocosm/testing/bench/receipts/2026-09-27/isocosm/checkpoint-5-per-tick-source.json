@@ -1,0 +1,346 @@
+{
+  "date": "2026-09-27",
+  "kind": "checkpoint-5-per-tick-handoff-source",
+  "ruling": 371,
+  "source_commit": "41d30b66055268b7f9e524042c02df2ad3169b97",
+  "merged_main": "6a576c7",
+  "merge_commit": "45ade707c32dddd989cff2f4fbda9c5d229df6ab",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "hagiograph_mere_rev": "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7",
+  "CARGO_BUILD_JOBS": 4,
+  "source_blobs": {
+    "mesocosm/testing/bench/receipts/2026-09-27/isocosm/c5-per-tick-draws.rs": "1a1b8413688e76ad2511b0457c0060bd9f9b881f",
+    "mesocosm/testing/bench/receipts/2026-09-27/isocosm/c5_per_tick_summary.py": "ffcf137798bd867eb6275e0cea65f51e4bf50e09",
+    "shared/isocosm/.gitignore": "b83d22266ac8aa2f8df2edef68082c789727841d",
+    "shared/isocosm/Cargo.lock": "11da8532fe6c1362d4a573f1ca35b9d45ae011d3",
+    "shared/isocosm/Cargo.toml": "00be0f5e1e70f48d60c9420e92d7d56ae6ed3cbe",
+    "shared/isocosm/README.md": "db6cc35bde61e572dc4eb47b9c0a54fe4da6808f",
+    "shared/isocosm/src/aggregate.rs": "6674e7099336ee3dac35ef6445c1f1979fee754f",
+    "shared/isocosm/src/bench.rs": "f5cbdaaec3489b1cfbd84422563660e56ff027b4",
+    "shared/isocosm/src/bin/isocosm-bench.rs": "da286ee6400b2d10ece2664092dc66fbe8b4e179",
+    "shared/isocosm/src/bin/isocosm-probe/main.rs": "1cf596e0c72592026a91cad57cc92f09ed3240dd",
+    "shared/isocosm/src/bin/isocosm-probe/report.rs": "7cb5e2999760d7687730dcbb1af0707c9acc61c4",
+    "shared/isocosm/src/bin/isocosm-scale/heap.rs": "7df8b56bc43415dc8d962a21d8031b500d684e55",
+    "shared/isocosm/src/bin/isocosm-scale/main.rs": "c9d9b16f6ed2cfa845bd8914cfce83dce0463d23",
+    "shared/isocosm/src/bin/isocosm-scale/point.rs": "a5b2e91aafc523c1366da917064c428447de4816",
+    "shared/isocosm/src/bin/isocosm-scale/remeasure.rs": "c421706ca764658b863cc717fb8b04954d0fa2e8",
+    "shared/isocosm/src/dev.rs": "5d312f59f5f33e8e498aa650cbc241546cdbbc59",
+    "shared/isocosm/src/diffusion/mod.rs": "9d034006e612e005ef28da4d6d3200da798d2e3f",
+    "shared/isocosm/src/diffusion/scalar_reference.rs": "3aeb48cd1cb3acd1fc9dd5a167325c3404f47db3",
+    "shared/isocosm/src/diffusion/tests.rs": "4dcbd9f3e55183489db03805fe762fc896ec468f",
+    "shared/isocosm/src/ecology.rs": "e9c84dcedea264455cd4711b99e19041eb203a9c",
+    "shared/isocosm/src/execute.rs": "ac2f739ad414467e1cbe9690c13c5d8e93a15111",
+    "shared/isocosm/src/flows.rs": "5082247517e32bc6e809cf9d4170196e6a995cc6",
+    "shared/isocosm/src/generate.rs": "3b34cec1f015b92aab8fb4d0456e9f134c296461",
+    "shared/isocosm/src/genesis.rs": "564908c7c002370ffe21cdf494d675ee0f830ffe",
+    "shared/isocosm/src/history.rs": "70f7d4be797398db31c3deef913ef6c6192e9f69",
+    "shared/isocosm/src/journal.rs": "5bfb06be8310d19b89531dc671f1c46b7ea8784a",
+    "shared/isocosm/src/lib.rs": "9d7953df55c2713b892e504013306acb67181422",
+    "shared/isocosm/src/meaning/mod.rs": "28dd80086067cf2afb3a8056456b8b456df39ad0",
+    "shared/isocosm/src/meaning/tests.rs": "599ef020e416a35a64747d63115e956aead474e9",
+    "shared/isocosm/src/population.rs": "93e7ec790f8a7daebab3e4d518a6482fe7a36a6f",
+    "shared/isocosm/src/probe/aggregate.rs": "d44f511217a3ca0bbdbc0e73957660c332d87768",
+    "shared/isocosm/src/probe/check.rs": "ee4d10e0f9ed3a0b2e9ceefeafe6a72df2c7e46f",
+    "shared/isocosm/src/probe/crowd/hunt.rs": "68f7590a3cc7cbf11b6712d3512074b4917f3725",
+    "shared/isocosm/src/probe/crowd/hunt/tests.rs": "f94bf1432aaf87bcff7f11df13ae347e24141d45",
+    "shared/isocosm/src/probe/crowd/mod.rs": "af29c1df5d2ccb069edbae02aaa750492bd7b019",
+    "shared/isocosm/src/probe/crowd/round.rs": "6af7f438ff03c4e3c12ace5c32d440c6ff075162",
+    "shared/isocosm/src/probe/draws.rs": "d4ea12b8114f907bdecbfae156a6b1aa6712d297",
+    "shared/isocosm/src/probe/exact.rs": "09b904adcbcb6e0c3e0b384a380b2489f4930905",
+    "shared/isocosm/src/probe/fight.rs": "ff9f8685cd324492711bee9c64523c90076f8f91",
+    "shared/isocosm/src/probe/fight/tests.rs": "a946cfe1f02cbb0a89880e76c6cfad5490c1debc",
+    "shared/isocosm/src/probe/found/contested.rs": "9ac72b559f0dc414928a75b8ee6f51e49da06a4b",
+    "shared/isocosm/src/probe/found/mind.rs": "2063cefbf49d7c8bfefaa74eb22fe5a5638d7038",
+    "shared/isocosm/src/probe/found/mod.rs": "3bf38ee0968d5a45be2512a0b6df12e4c4f25e5c",
+    "shared/isocosm/src/probe/found/predator.rs": "f43375a054d4e8d6b7332bc4b708fcb07db3a4d0",
+    "shared/isocosm/src/probe/mod.rs": "2e47a42e48ae937b5585a811319b1bf43776cb31",
+    "shared/isocosm/src/probe/readings.rs": "1ba99206a47588fa72112087cf7d4a8997a74cbd",
+    "shared/isocosm/src/probe/settle.rs": "5cd64effda488ac15e9b5e24d6d5c4effa2674b0",
+    "shared/isocosm/src/probe/settle/tests.rs": "e45b657c39dbc61462bae66d87515332ebb716b7",
+    "shared/isocosm/src/probe/tests.rs": "1fd0e15e5b1081e56ee9afe57bb8cbe9e2089dcf",
+    "shared/isocosm/src/queries.rs": "06c47e033e946489921c8d59219fb69936b3d4fe",
+    "shared/isocosm/src/reach.rs": "97fffa4a3beed529c744f061f774c0e9d9aa7b67",
+    "shared/isocosm/src/rules/body.rs": "186cf00bd853a8125f90a68e0a6be9f6caabaa87",
+    "shared/isocosm/src/rules/competition.rs": "5d244e82cf4487f1c93c8bf0bb2c370cc81e38b4",
+    "shared/isocosm/src/rules/mind.rs": "6a7a469fd40746b97fc30cd6ec0469c8da8d9734",
+    "shared/isocosm/src/rules/mod.rs": "1c28041d5e1fbade927b22d96922b2419646231f",
+    "shared/isocosm/src/schedule/filed.rs": "015ae1f3b77a3b027ac1194547592561fad098b2",
+    "shared/isocosm/src/schedule/mod.rs": "856b1252090e6a30a67b3cd1c4668e908ec7770f",
+    "shared/isocosm/src/schedule/pass.rs": "307d5b24f4809c8ade75652f34a05c3e9b3f5e9d",
+    "shared/isocosm/src/schema.rs": "5b1646f362429871efe62f7e9256100d1b7a3a54",
+    "shared/isocosm/src/simulation.rs": "34961b0071a5dff3db275620ada0f257d2523e32",
+    "shared/isocosm/src/stage/mod.rs": "4155174835dd133cbc05f6ca2b4dc920c8b0d742",
+    "shared/isocosm/src/stage/staged.rs": "272cf3039aaeef509e24b346b7dc158817e3f8ff",
+    "shared/isocosm/src/stage/tests.rs": "44b67dc7aab70a06152fe179445456db68d4b33a",
+    "shared/isocosm/src/targets.rs": "133e3dfbb56d870db433d10be3b80181c578d1d6",
+    "shared/isocosm/src/validation/body.rs": "ad394418e855a6967f9795b62494e8f7dee8540c",
+    "shared/isocosm/src/validation/conversion.rs": "54676bf3d896fd5b75ee69edd36370f28b3da74c",
+    "shared/isocosm/src/validation/mod.rs": "77e909493a29c551e98527710bf4a832370cf661",
+    "shared/isocosm/src/watch.rs": "35faf5d586a3b1395564d70d032b39d8f415b921",
+    "shared/isocosm/tests/conversions.rs": "ec8190e842d1efefdac08037ebd73502ec3ac737",
+    "shared/isocosm/tests/data/pre-causation-world.json": "33545a6caab6747b77b704390bc59cafdd754c73",
+    "shared/isocosm/tests/feeding.rs": "0fca92838c8685fba2dc16e979c3037275cc2847",
+    "shared/isocosm/tests/flows.rs": "5d8fe05bc3faff3c02241016d20675c6a9f3718f",
+    "shared/isocosm/tests/flows/draws.rs": "d7dea239df299d8efbff515a641eec87f6573493",
+    "shared/isocosm/tests/flows/handoff.rs": "b89e213113ae76450715a5d5593de1dbeea308a9",
+    "shared/isocosm/tests/flows/receipts.rs": "2ca98984b39e111acbb9ad284ece2389cb5929c1",
+    "shared/isocosm/tests/mind.rs": "e056b5284ab5dc43714d9e06f1b460f77a21c998",
+    "shared/isocosm/tests/parts.rs": "a8648f006df7d5e0eb487d549acaae7acc541943",
+    "shared/isocosm/tests/probe.rs": "f78d347abddccd7b07d325f086e4556846db5f69",
+    "shared/isocosm/tests/schedule.rs": "996c959965cc6725dc741c537c769a773e8677fd",
+    "shared/isocosm/tests/shapes.rs": "90d992e362057a8acf355a03ba2d4d7e32039f36",
+    "shared/isocosm/tests/sim.rs": "1dd0a6d9f7ff6d88862e7db15a042e7f0748859e"
+  },
+  "api": [
+    "Session::advance_tick_with_flows() -> Result<FlowResult<Work>>",
+    "Session::command_with_flows(Command) -> Result<FlowResult<String>>"
+  ],
+  "semantics": "Recording is opt-in for one call. Each result owns its moves and names exactly one tick. Commands hand off immediately at their current tick; advances complete exactly one tick. Existing unrecorded multi-tick advances stay atomic. A failed recorded tick rolls back and returns no result. Recording and moves do not survive the call.",
+  "tests": {
+    "passed": 111,
+    "failed": 0,
+    "new_handoff_tests": 3,
+    "flow_tests": 18,
+    "qualification": "The 111-test full gate ran before a one-line Rust 1.98 Clippy compatibility edit from chunks_exact(2) to as_chunks::<2>().0 in probe/exact.rs. Final-source Clippy and the 10 probe tests ran after that edit; fresh differential receipts also use final source. The source_sha256 map describes final source.",
+    "final_clippy": "passed, all targets, -D warnings",
+    "fmt": "passed"
+  },
+  "controls": {
+    "original_source_sha256": "3650dfe83159db63794e6f4c7be133460558c78c60064c623651829b11acd2ab",
+    "restored_exactly": true,
+    "controls": [
+      {
+        "fault": "retained-moves",
+        "source_change": "let flows = self.sim.flows.flows.clone();",
+        "test": "handoff::successive_results_reconcile_without_accumulating_or_mixing_ticks",
+        "exit_status": 101,
+        "log": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-control-retained-moves.log",
+        "log_sha256": "1041c8d1b684bf2b9794997518ee1466c3a83226054e4b580e50606c4667812f"
+      },
+      {
+        "fault": "missing-move",
+        "source_change": "let mut flows = std::mem::take(&mut self.sim.flows).flows; flows.pop();",
+        "test": "the_record_accounts_for_every_ledger_across_a_run",
+        "exit_status": 101,
+        "log": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-control-missing-move.log",
+        "log_sha256": "0952ce2ff1753e2ee79c6085ac6df4ca658e7cc98f66567c6f6a208993e2751d"
+      }
+    ]
+  },
+  "draws": {
+    "kind": "isocosm-checkpoint-5-per-tick-handoff",
+    "ruling": 371,
+    "master_seed": 1790490907209296200,
+    "drawn_steps_per_world": 60,
+    "draws": 1000,
+    "modes_agree_every_handoff": 1000,
+    "every_ledger_reconciled_every_handoff": 1000,
+    "matter_founded_plus_issued_every_handoff": 1000,
+    "handoffs_per_mode": 95824,
+    "tick_controls_both_modes": 158312,
+    "draws_with_tick_controls": 1000,
+    "flows_individual": 2521166,
+    "flows_grouped": 2333489,
+    "cohort_flows": 63260,
+    "historical_final_states_and_issue_match": 1000,
+    "draws_with_changed_flow_counts": 980,
+    "flow_count_reading": "Each explicit one-tick transaction applies the existing cohort collection at its end. Cohort batching may differ from the historical one-to-three-tick calls; every per-member ledger reconciles and final states/issued matter match.",
+    "fresh_raw_sha256": "94c06799a12b5daeb94abb9aaef82f241bf98b2e42125a365307534a9b88095a",
+    "historical_raw_sha256": "e9600f075c515d598599c9f89d4c09753cab67fcfc70f82eae04e6bf67193057",
+    "scope": "Per-tick/command handoff and ledger reconciliation. Reserve physiology, filial development cost and checkpoint 6 are outside this receipt."
+  },
+  "differential": [
+    {
+      "command": [
+        "C:\\t\\cargo-targets\\isometry\\sim\\c5-per-tick-differential.exe",
+        "fuzz",
+        "7",
+        "24",
+        "400"
+      ],
+      "exit_status": 0,
+      "stdout": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-fuzz-7.stdout.log",
+      "stdout_sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+      "normalized_sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+      "expected_sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+      "lines": 9648,
+      "expected_lines": 9648,
+      "stderr": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-fuzz-7.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\t\\cargo-targets\\isometry\\sim\\c5-per-tick-differential.exe",
+        "fuzz",
+        "11",
+        "60",
+        "1500"
+      ],
+      "exit_status": 0,
+      "stdout": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-fuzz-11.stdout.log",
+      "stdout_sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+      "normalized_sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+      "expected_sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+      "lines": 90120,
+      "expected_lines": 90120,
+      "stderr": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-fuzz-11.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\t\\cargo-targets\\isometry\\sim\\c5-per-tick-differential.exe",
+        "tight",
+        "13",
+        "48",
+        "600"
+      ],
+      "exit_status": 0,
+      "stdout": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-tight-13.stdout.log",
+      "stdout_sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54",
+      "normalized_sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54",
+      "expected_sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54",
+      "lines": 28896,
+      "expected_lines": 28896,
+      "stderr": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-tight-13.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\t\\cargo-targets\\isometry\\sim\\c5-per-tick-differential.exe",
+        "probe",
+        "20260927",
+        "12"
+      ],
+      "exit_status": 0,
+      "stdout": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-probe-20260927.stdout.log",
+      "stdout_sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224",
+      "normalized_sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224",
+      "expected_sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224",
+      "lines": 12,
+      "expected_lines": 12,
+      "stderr": "C:\\Users\\mark_\\Code\\testing\\isometry\\receipts\\2026-09-27\\isocosm\\per-tick-differential-probe-20260927.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "raw_directory": "Code/testing/isometry/receipts/2026-09-27/isocosm/",
+  "raw_files": {
+    "c5-per-tick-differential-build.log": {
+      "bytes": 659,
+      "sha256": "63506d1539543a076a2a80a0c1838b68c06d478ee3d67894db71d48eeab06d68"
+    },
+    "c5-per-tick-draws-build.log": {
+      "bytes": 647,
+      "sha256": "9f80ad4e42d5828402d21cfce293e37e8f2a50cec8b0a093c7a3ae5055ae7847"
+    },
+    "c5-per-tick-flows.jsonl": {
+      "bytes": 431516,
+      "sha256": "94c06799a12b5daeb94abb9aaef82f241bf98b2e42125a365307534a9b88095a"
+    },
+    "c5-per-tick-flows.stderr.log": {
+      "bytes": 32,
+      "sha256": "87100a4055e9d085255c2b5350617b30a4a047bcd66c233485de80e1fd7291d5"
+    },
+    "per-tick-clippy-final.log": {
+      "bytes": 479,
+      "sha256": "238d57800300905c2ec60e0f84f2191cab13368ed4fb092591faa9cc8a775aeb"
+    },
+    "per-tick-clippy.log": {
+      "bytes": 1984,
+      "sha256": "eb035cd703008f09708ae8898e9f7e509abb547e630a04f1eddd48d9e0b3f04d"
+    },
+    "per-tick-control-missing-move.log": {
+      "bytes": 1510,
+      "sha256": "0952ce2ff1753e2ee79c6085ac6df4ca658e7cc98f66567c6f6a208993e2751d"
+    },
+    "per-tick-control-retained-moves.log": {
+      "bytes": 1387,
+      "sha256": "1041c8d1b684bf2b9794997518ee1466c3a83226054e4b580e50606c4667812f"
+    },
+    "per-tick-differential-fuzz-11.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "per-tick-differential-fuzz-11.stdout.log": {
+      "bytes": 50404929,
+      "sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b"
+    },
+    "per-tick-differential-fuzz-7.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "per-tick-differential-fuzz-7.stdout.log": {
+      "bytes": 5697880,
+      "sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9"
+    },
+    "per-tick-differential-probe-20260927.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "per-tick-differential-probe-20260927.stdout.log": {
+      "bytes": 4045,
+      "sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224"
+    },
+    "per-tick-differential-runs.json": {
+      "bytes": 3493,
+      "sha256": "81950cb7a32024809008d913237afa94c720e8fa487e2e6ee8413c350b2f7d37"
+    },
+    "per-tick-differential-tight-13.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "per-tick-differential-tight-13.stdout.log": {
+      "bytes": 13807289,
+      "sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54"
+    },
+    "per-tick-draw-run.json": {
+      "bytes": 578,
+      "sha256": "291d722388f1e82e0d8a60ace5fb1669b2f3bebbab7f152f61f2f040625acd31"
+    },
+    "per-tick-driver-builds.json": {
+      "bytes": 1802,
+      "sha256": "4cc35f4f8072124bac4e20d8f2c2f7578432e1707eed69aeb5d7a71b283a4a8d"
+    },
+    "per-tick-flow-tests-development.log": {
+      "bytes": 2165,
+      "sha256": "b6689ff126dfcd1a51b46b1a41073eb508acbf37f2956ddee2a472237babc0b2"
+    },
+    "per-tick-fmt.log": {
+      "bytes": 197,
+      "sha256": "7d85ed00a8b85c5025113190584ad4e163063f92030f4c7dfc0eb02ab492c7b7"
+    },
+    "per-tick-gates.json": {
+      "bytes": 12687,
+      "sha256": "93ba009892c8dfd842b404c66db6b606a43f5615f05b37399f2c9551ec370156"
+    },
+    "per-tick-mutation-controls.json": {
+      "bytes": 1060,
+      "sha256": "477e551c2a309381914601cfe63f69bfb416b00140a9a432758d2ecf95d6c670"
+    },
+    "per-tick-probe-final.log": {
+      "bytes": 1299,
+      "sha256": "2dca58ffa59dd432278467fb762c34286e7be2380674a92bccf4254d5a8add3f"
+    },
+    "per-tick-release.log": {
+      "bytes": 1603,
+      "sha256": "bd198e49e671537ad27922293e850f8ff530a847bccd867416ada8f83078422f"
+    },
+    "per-tick-summary.log": {
+      "bytes": 1753,
+      "sha256": "872b040b8c2bfa77ae8914609413ad4985e0a7d9e1fed0353d6a356d4261eb0d"
+    },
+    "per-tick-test.log": {
+      "bytes": 11299,
+      "sha256": "8a10a4bd7ff33acd0448b3013b95e7d6138ddec8efdbf09fdda998fc3d848fdd"
+    }
+  },
+  "evidence": "Complete fresh stdout/stderr retained for the revised 1000-world flow run, four differential runs, test/check gates and deliberately failing controls. Summary recomputed by c5_per_tick_summary.py. Historical raw receipts and historical driver unchanged.",
+  "excluded": [
+    "Separate reserve physiology and its rejection test",
+    "Filial development cost",
+    "Checkpoint 6 vertical ecology and classifier work",
+    "Fresh 1000-draw catalogue rerun: unaffected catalogue remains covered by the existing audited receipt and full unit/integration suite",
+    "Native/headed and GPU evidence"
+  ],
+  "integration": "Lane branch only; main integration belongs to the coordinator after independent review."
+}
