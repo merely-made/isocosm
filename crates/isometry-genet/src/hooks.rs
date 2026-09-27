@@ -252,7 +252,10 @@ pub(crate) fn init(
     app.last_viewport = ui.viewport;
     if app.terrain_receipt.is_some() {
         // The overflow receipt must frame the interior, not the boot corner.
-        let centre = (ui.map.ground.width() as i32 / 2, ui.map.ground.height() as i32 / 2);
+        let centre = (
+            ui.map.ground.width() as i32 / 2,
+            ui.map.ground.height() as i32 / 2,
+        );
         let (x, y) = ui.geo.tile_to_screen(centre, 0);
         ui.camera = (ui.viewport.0 / 2.0 - x, ui.viewport.1 / 2.0 - y);
     }
@@ -509,7 +512,9 @@ impl App {
     /// armed selftest would never reach its own deadline. Asking for frames is
     /// how the shared host's hook says the same thing the old `WaitUntil` did.
     pub(crate) fn selftests_pending(&self) -> bool {
-        self.terrain_receipt.as_ref().is_some_and(|receipt| !receipt.done())
+        self.terrain_receipt
+            .as_ref()
+            .is_some_and(|receipt| !receipt.done())
             || (self.travel_selftest && !self.travel_fired)
             || (self.cmd_selftest && !self.cmd_fired)
             || (self.watchtower_selftest && !self.watchtower_fired)
