@@ -815,6 +815,10 @@ a lane saw. This section is the current one, and it names its build.
   lengths are checked at 2,677,120 bytes. Complete stdout, stderr and
   source/compiler provenance are in
   `Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+  The separate f64-camera diagnostic still differs at 68 texels for both
+  fixed maps: zero headroom moves is not universal pixel exactness. The
+  lane's receipt annotation is pushed at `fffee6a`; its tested code remains
+  `e688a5e`.
   The earlier passing attempt without the empty-terrain control is retained
   separately as `lane-e-traversal-band-gate`; it is not the final gate.
   This verifies the declared traversal frame, not moving bodies/contact or
