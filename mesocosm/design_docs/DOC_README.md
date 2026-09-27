@@ -15,6 +15,9 @@ any other index and is updated in the same session as any doc change.
 
 ## Working principles for AI assistants
 
+- Follow the question, ruling and verification method restated by Mark on
+  2026-09-27 in [session notes §8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
+  Its proposed refinements remain readings until ruled.
 - Read `../CLAUDE.md` first for repo role, terminology, and don'ts.
 - Verify claims against the codebase and the sibling repos, not doc-to-doc
   consistency. This wing's founding record was corrected once already for

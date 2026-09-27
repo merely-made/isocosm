@@ -308,6 +308,48 @@ worlds, none in ecological ones.
 - Wing law and CLAUDE.md changed only on his explicit word, the Law A
   amendment shown as a draft first.
 
+#### 2026-09-27 annotation: the method carried into the new session
+
+Mark supplied the following working method and invited its preservation and
+improvement. This annotation supplements the dated account above.
+
+1. Design moves in rounds of up to four multiple-choice questions. Each
+   question gives its evidence in one or two sentences with concrete
+   numbers, then two to four options stating their commitments, with the
+   assistant's recommendation first. A free-form answer may reframe the
+   question: answer what Mark actually asked before putting it back.
+2. Every design answer becomes a numbered ruling in the design record,
+   preserving the question as put, its options, Mark's words verbatim and
+   what follows. Anything inferred beyond those words is **Reading, not
+   ruled**. Dated text keeps its words; changes are dated annotations or new
+   rulings naming what they amend.
+3. Rulings and all affected documents move together in the same turn: the
+   record, plans, session notes and index. Commit by path and push each
+   batch so the documentation agrees with the tree.
+4. Evidence precedes the question: read code, measure and verify lane
+   claims before presenting them. Reopen a ruling when evidence conflicts
+   with it, including conflicts with another repository's plan. The prior
+   checks caught the founding plan's six citers, the binding plan's changed
+   premise and ruling 322's conflict with mere's D1.
+5. Lanes receive briefs quoting their rulings, done-conditions and rules,
+   and stop at checkpoints. A choice with more than one defensible answer
+   comes back as a fork for the next question round.
+6. Nothing reaches main unverified. Verify a lane in its own worktree:
+   tests, recomputed receipts, checked hashes and controls that must fail
+   when the relevant behavior is deliberately broken. An absence counts
+   only when a positive control in the same run demonstrates detection.
+
+**Proposed refinements, 2026-09-27. Reading, not ruled:**
+
+- Give evidence its source revision and status: measured in this run,
+  independently checked, reported by a lane, or still unknown. Use numbers
+  where supported; never invent precision to fill the question format.
+- Order forks by dependencies and say exactly what each answer unblocks.
+  Keep unrelated work moving while a required decision remains open.
+- Name the fault a control detects and retain both outcomes in the same
+  receipt: the working case passes, the deliberately broken case fails.
+  Treat a negative result as evidence only within that demonstrated scope.
+
 ### 8.3 The sequence
 
 | Thread | Question | Answer | Ruling |

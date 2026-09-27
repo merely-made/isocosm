@@ -30,6 +30,11 @@ to; the method by which claims reach rulings and receipts reach plans; and
 the order in which the wing's existing plans are re-read, kept, rewritten or
 retired against this record.
 
+**Method annotation, 2026-09-27:** Mark restated the question, ruling and
+verification method and invited improvements. The preserved method and
+explicitly unruled refinements are in the [session notes,
+§8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
+
 **Does not own:** any tier's internal design below the level ruled here, any
 product's verbs, the hagiograph's implementation (mere's eidetic family), or
 naming. Names for anything founded under this record go through Mark's
@@ -2981,6 +2986,13 @@ what later sections derive from.
      netrender stay at their current pins. *Reading, not ruled:* the agent
      may mean Lane A (sim Part B) or the RPG session; its identity and the
      requested coordination remain unresolved before the repin proceeds.
+
+     **2026-09-27 annotation:** the handoff preserves the question as
+     "repin isometry now for the traversal fix, with genet's fix and pre.4
+     in a later repin, or wait and bundle all three?" Its two alternatives
+     are (1) repin traversal now and defer genet/pre.4, or (2) wait and
+     bundle all three. Separate original option labels and recommendation
+     order were not preserved in the handoff; they are not reconstructed.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6754,6 +6766,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: the working method preserved in session notes §8.2, with
+  proposed refinements explicitly unruled; ruling 365 annotated with the
+  question and alternatives recoverable from the handoff.
 - 2026-09-27: ruling 365 recorded from the session handoff: proceed with
   the traversal repin after communicating with the isocosm agent. The
   intended agent still needs identification; the repin has not landed.
