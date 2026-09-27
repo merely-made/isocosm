@@ -114,7 +114,7 @@ checksum = "3e0f1c7c3a72c66fd80abe965175f7523475c0489a87d3ff9d6e8c87d87a9d2d"
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?rev=53648d3acf51fe72e37f7f57687b70c4ef0ca961#53648d3acf51fe72e37f7f57687b70c4ef0ca961"
+source = "git+https://github.com/merely-made/mere.git?rev=668854c9184fecd3f9bfffd7e325aad0ab36036d#668854c9184fecd3f9bfffd7e325aad0ab36036d"
 dependencies = [
  "serde",
 ]
