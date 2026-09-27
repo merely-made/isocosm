@@ -6999,6 +6999,17 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane L's bounded CPU refresh passes three tests at
+  `42f19cfca16`, including 33 Lato sizes. Arial 16px text measures 17px
+  within an 18px line. Root verified ten raw receipt hashes and five
+  source/lock/font hashes under
+  `testing/genet/receipts/2026-09-27/text-fragment` (workspace testing root).
+  Source inspection confirms explicit-height text and inline decoration
+  still use line-based bounds. Their runtime fixtures, a fresh browser
+  comparison, WPT transitions and the historical 187-row Isometry receipt
+  remain unverified. A scope question is pending: correct both bounds
+  before merging, or merge normal text and defer them. No new ruling or
+  implementation authorization follows from this evidence refresh.
 - 2026-09-27: Lane M's guard checkpoint `65129b98` passes after seven
   exact registry archives were fetched under 378 and independently hashed.
   The actual helper passes all nine tests; removing only service equality

@@ -496,6 +496,15 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, fresh text evidence.** Lane L passes three existing CPU tests,
+including 33 Lato sizes; Arial 16px text measures 17px within an 18px line.
+Root checked ten raw receipt hashes and five source/lock/font hashes.
+Explicit-height text and inline decoration still use line-based bounds by
+source inspection, without fresh measured fixtures for either. The scope
+question is pending: correct both before merging, or merge normal text and
+defer them. Historical browser measurements, WPT transitions and the old
+187-row Isometry receipt have not been refreshed. No new ruling is inferred.
+
 **2026-09-27, guard checkpoint verified.** Nine tests pass. Deliberately
 removing service equality yields seven passes and exactly two service
 failures; restoring the reviewed source returns nine passes. Root and
