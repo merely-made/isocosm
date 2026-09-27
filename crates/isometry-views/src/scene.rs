@@ -42,6 +42,8 @@ mod view;
 mod world;
 
 #[cfg(test)]
+mod band_tests;
+#[cfg(test)]
 mod columns_tests;
 #[cfg(test)]
 mod cost_tests;

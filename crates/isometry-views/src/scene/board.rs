@@ -50,7 +50,7 @@ const BODY_BUDGET: usize = 256;
 
 /// The board draws flat colour: no palette starving, no dither, and the fog
 /// pushed past the far wall so a tile's kind colour is its own.
-fn board_grade() -> Grade {
+pub(super) fn board_grade() -> Grade {
     Grade {
         fog_start: 1.0,
         ..Grade::clay()
@@ -64,7 +64,7 @@ fn board_grade() -> Grade {
 /// this entry is about the *background* alone, and both of its branches — the
 /// sky above the classifying plane and the underground below it — are the one
 /// colour the `.pane` rule carries.
-fn board_appearance() -> TerrainAppearance {
+pub(super) fn board_appearance() -> TerrainAppearance {
     let ground = hex_rgb(PANE_GROUND);
     TerrainAppearance {
         soil: ground,
@@ -79,7 +79,7 @@ fn board_appearance() -> TerrainAppearance {
 
 /// Isometry keeps no host presentation beside the scene: no capsule roster and
 /// no substitute for a body that would not project.
-struct PlainHost;
+pub(super) struct PlainHost;
 impl SceneHost for PlainHost {}
 
 /// What one pixel of the scene board shows.
