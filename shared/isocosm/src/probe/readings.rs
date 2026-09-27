@@ -96,6 +96,7 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
                 who: Binding::Actor,
                 take,
                 give,
+                ..
             } => accounts.extend(take.keys().chain(give.keys()).cloned()),
             Effect::Transfer {
                 from, to, account, ..
@@ -274,6 +275,13 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
         .chain(needs.clone().map(|n| &n.query));
     let mut read: BTreeSet<String> = queries
         .map(|q| match q {
+            // Whatever reads a part reads the parts a member keeps.
+            Query::Alive(Binding::Part)
+            | Query::Trait {
+                who: Binding::Part, ..
+            }
+            | Query::Part { .. }
+            | Query::Expresses { .. } => "parts".into(),
             Query::Alive(_) => "alive".into(),
             Query::Trait { key, .. } => format!("trait:{key}"),
             Query::Account { who, key, .. } | Query::Below { who, key, .. } => match who {
@@ -282,7 +290,6 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             },
             Query::Age { .. } => "born".into(),
             Query::Condition { key, .. } => format!("site-condition:{key}"),
-            Query::Part { .. } => "parts".into(),
             Query::Related { kind } => format!("relation:{kind}"),
             Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),
             Query::Holds { who, .. } => match who {

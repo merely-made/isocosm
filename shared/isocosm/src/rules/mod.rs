@@ -5,6 +5,15 @@ use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod body;
+mod competition;
+mod mind;
+
+pub(crate) use body::expressing;
+pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
+pub use competition::{Competition, Competitor, Similitude};
+pub use mind::{Mind, Need};
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
     Matter {
@@ -19,7 +28,7 @@ pub enum AccountKind {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Shape {
+pub enum Causation {
     Choice,
     Agentless,
     Transition,
@@ -30,6 +39,9 @@ pub enum Binding {
     Actor,
     Target,
     Place,
+    /// The actor's part the process's `Expresses` requirement binds
+    /// (ruling 338). A part has traits and life but keeps no ledger.
+    Part,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -79,6 +91,12 @@ pub enum Query {
         who: Binding,
         at_least: u64,
     },
+    /// The actor has a live part expressing `function` (ruling 338). A
+    /// process requires at most one, and binds the lowest-numbered such part
+    /// as `Binding::Part`; its receipt reads that part's address.
+    Expresses {
+        function: Key,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -94,6 +112,11 @@ pub enum Effect {
         who: Binding,
         take: Ledger,
         give: Ledger,
+        /// The kind of conversion it declares, checked against that kind
+        /// (rulings 342 and 357); undeclared transforms pass as before, and
+        /// serialize as they did.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        conversion: Option<Conversion>,
     },
     Condition {
         key: Key,
@@ -154,6 +177,20 @@ pub enum Effect {
     },
 }
 
+/// The conversions a transform may declare (rulings 342 and 357). World
+/// matter is matter of a lineage of the world's kingdom (rulings 98 and 100);
+/// all other matter is living.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Conversion {
+    /// World matter into the body's own lineage's: whatever synthesizes is a
+    /// producer.
+    Synthesis,
+    /// Living matter into the eater's own lineage's.
+    Digestion,
+    /// Living matter back into the world's.
+    Mineralization,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Risk {
     pub per_million: u32,
@@ -179,7 +216,10 @@ pub struct Target {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Process {
     pub id: Key,
-    pub shape: Shape,
+    /// A process's causal kind (ruling 340), saved as `shape`, the name
+    /// it had before part shapes took it, so old worlds load.
+    #[serde(rename = "shape")]
+    pub causation: Causation,
     pub requires: Vec<Query>,
     pub commitments: Vec<Effect>,
     pub effects: Vec<Effect>,
@@ -192,91 +232,6 @@ pub struct Process {
     pub glyphs: BTreeSet<Key>,
     pub invariants: BTreeSet<Key>,
     pub note: bool,
-}
-
-/// One competing lineage in a competition: how its members are told apart,
-/// what they grow into, when they want the resource, and the acts the
-/// competition executes for them.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Competitor {
-    pub identity: Key,
-    pub body: Key,
-    pub hungry: Query,
-    pub eat: Key,
-    pub share: Key,
-    /// One unit of reserve spent in a fight, and the strain it costs.
-    pub spend: Key,
-}
-
-/// Ruling 115: members wanting one scarce thing at a site, each side's own
-/// way of deciding picking contest or share, the sim resolving the choices.
-/// Two contesters size each other up and only a close match escalates
-/// (ruling 116), into rounds that strain both sides against their bearing
-/// (rulings 221 to 223). A world's competitions are keyed by the site
-/// account each contests (ruling 236); they run at once in a tick, each
-/// against its members' state at the tick's start, and settle at its end
-/// (ruling 240).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Competition {
-    pub ration: u64,
-    /// The leaning trait: members that carry it contest, the rest share.
-    pub contest: Key,
-    /// The widest gap in standing that still reads as a close match.
-    pub margin: u64,
-    /// Reserve the side losing an exchange spends, capped at what it holds.
-    pub cost: u64,
-    /// The act each side takes for each round: the round's strain.
-    pub round: Key,
-    /// Per mille, the chance an exchange goes against the side standing
-    /// higher.
-    pub upset: u32,
-    /// How far a break up raises its side's standing, or a break down
-    /// lowers it, for the rest of the fight (ruling 222).
-    pub advantage: u64,
-    pub kinds: Vec<Competitor>,
-}
-
-/// A need, as the core has needs now (ruling 227): members carrying every
-/// one of `traits` for whom `query` holds have their mood moved by `weight`.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Need {
-    pub traits: BTreeSet<Key>,
-    pub query: Query,
-    pub weight: i64,
-}
-
-/// What the core reads of a mind now. Mood is read from needs and never
-/// kept; strain is kept in its account (rulings 158, 159 and 227). A mind
-/// bears strain up to its bearing, set by its traits (ruling 164); past it,
-/// it breaks, up with the chance its traits and the moment give (ruling 163).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Mind {
-    pub strain: Key,
-    pub needs: Vec<Need>,
-    pub bearing: i64,
-    pub bearing_traits: BTreeMap<Key, i64>,
-    /// Per mille chance that a break goes up.
-    pub rise: i64,
-    pub rise_traits: BTreeMap<Key, i64>,
-    /// The moment: per mille added to the rise for each point of mood.
-    pub stake: i64,
-}
-
-/// Ruling 113's tolerance: each reading's Kolmogorov-Smirnov distance
-/// between the two ways, per mille, within its own bound.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Similitude {
-    pub default_bound: u32,
-    pub bounds: BTreeMap<Key, u32>,
-}
-
-impl Similitude {
-    pub fn bound(&self, reading: &str) -> u32 {
-        self.bounds
-            .get(reading)
-            .copied()
-            .unwrap_or(self.default_bound)
-    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -311,6 +266,14 @@ pub struct Rules {
     /// worlds without it serialize and hash as before it existed.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tick_microseconds: Option<u64>,
+    /// The shapes a world's parts take (rulings 264 and 276): open keys,
+    /// the eight of `default_shapes` when a world adopts them. Worlds naming
+    /// none serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub shapes: BTreeSet<Key>,
+    /// The function catalogue (rulings 278, 338 and 339), by function.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub functions: BTreeMap<Key, Function>,
 }
 
 /// The clock's unit where a world states none: a minute (ruling 257).
@@ -330,8 +293,18 @@ impl Rules {
 }
 
 impl Process {
+    /// The function whose part this process binds: its `Expresses`
+    /// requirement, if it has one.
+    pub fn expresses(&self) -> Option<&Key> {
+        self.requires.iter().find_map(|q| match q {
+            Query::Expresses { function } => Some(function),
+            _ => None,
+        })
+    }
+
     /// Conservative executable proof of independence. No shared writes, targets,
-    /// identity draws, ancestry or public events can hide inside a batch.
+    /// identity draws, ancestry or public events can hide inside a batch. The
+    /// bound part is the actor's own, alike across a cohort.
     pub fn bulk_safe(&self) -> bool {
         self.risk.is_none()
             && self.target.is_none()
@@ -339,9 +312,9 @@ impl Process {
             && self.requires.iter().all(|q| {
                 matches!(
                     q,
-                    Query::Alive(Binding::Actor)
+                    Query::Alive(Binding::Actor | Binding::Part)
                         | Query::Trait {
-                            who: Binding::Actor,
+                            who: Binding::Actor | Binding::Part,
                             ..
                         }
                         | Query::Account {
@@ -364,6 +337,7 @@ impl Process {
                             who: Binding::Actor,
                             ..
                         }
+                        | Query::Expresses { .. }
                 )
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {
@@ -373,7 +347,7 @@ impl Process {
                         who: Binding::Actor,
                         ..
                     } | Effect::Trait {
-                        who: Binding::Actor,
+                        who: Binding::Actor | Binding::Part,
                         ..
                     } | Effect::Practice { .. }
                         | Effect::Ease {

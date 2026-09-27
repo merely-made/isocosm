@@ -269,7 +269,7 @@ impl ProbeFounding {
         let round_strain = self.pick("probe-round-strain", 0, self.round_strain);
         let round = process(
             "probe:round",
-            Shape::Choice,
+            Causation::Choice,
             contested::strain(round_strain),
         );
         for p in keeping.into_iter().chain([round]) {
@@ -326,6 +326,8 @@ impl ProbeFounding {
             }),
             mind: Some(mind),
             tick_microseconds: None,
+            shapes: BTreeSet::new(),
+            functions: BTreeMap::new(),
         };
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;

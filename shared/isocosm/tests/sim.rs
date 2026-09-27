@@ -218,6 +218,7 @@ fn rules_admission_rejects_unknown_and_unbalanced_transforms() {
         who: Binding::Actor,
         take: BTreeMap::new(),
         give: BTreeMap::from([("world:soil".into(), 1)]),
+        conversion: None,
     }];
     assert!(g.validate().unwrap_err().contains("unbalanced"));
     g.rules.processes.get_mut("sim:give").unwrap().effects = vec![Effect::Condition {

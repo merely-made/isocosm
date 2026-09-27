@@ -876,3 +876,14 @@ a lane saw. This section is the current one, and it names its build.
   Allocation has been put back to Mark: upfront budget (recommended),
   growth with full uploads, or a more tightly batched copy measurement
   before deciding. No allocation policy is inferred from the inquiry.
+
+- **2026-09-27, tighter batching requested (373).** Measure one ordered
+  submission for retained GPU copying and staged changed-data transfers
+  before choosing allocation. Independent review confirmed the first
+  experiment's feasibility and timings, with qualifications: byte savings
+  are logical upload payload, not measured bus traffic; the full baseline
+  includes empty capacity; identical unedited brick values do not detect
+  wrong source coordinates; and ten samples do not establish stable tails.
+  The next fixture must distinguish keys/voxels and detect wrong offsets.
+  CPU map generation, pointer/bind-group recreation and rendering remain
+  outside the bounded replacement timing unless separately measured.

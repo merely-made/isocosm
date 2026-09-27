@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 372, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 373, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3095,6 +3095,23 @@ what later sections derive from.
      *Reading, not ruled:* persist the requested preference and apply the
      current device's enforced bounds when using it; missing or malformed
      local data falls back to the ruled default without changing campaigns.
+
+373. **Measure a more tightly batched GPU-copy path before choosing
+     allocation.** Asked on 2026-09-27: "Given the measured replacement
+     cost, which allocation path should paging take? Full uploads took
+     0.198/0.589 ms in the two growth cases; the tested GPU-copy path took
+     0.325/3.310 ms while sending 57–59% fewer CPU bytes. These are local
+     medians, not worst-case frame guarantees." Options, recommended first:
+     (A) "Allocate the chosen budget upfront; avoid growth events and keep
+     the tested copy approach as research (recommended)." (B) "Grow by rows
+     with full uploads for now; accept occasional replacement costs to use
+     less initial memory." (C) "Measure a more tightly batched GPU-copy path
+     before deciding; keep allocation open." Mark selected verbatim:
+     "Measure a more tightly batched GPU-copy path before deciding; keep
+     allocation open." This opens a bounded measurement, not production
+     growth. *Reading, not ruled:* compare one ordered submission combining
+     retained texture copying and staged changed-data copies, counting CPU
+     preparation and completion, with readback and fault controls.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6868,6 +6885,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: checkpoint 5 integrated from Lane A `5ba6fae`, including
+  371's per-tick API. Root and independent review verified 81 source blobs,
+  27 raw receipts, the 1,000-world summary and 128,676 differential lines.
+  Final-source 111 tests and Mesocosm's all-feature/all-target check pass on
+  Rust 1.98.1; the merge preserves tested source and pins. The sim plan
+  excludes reserve physiology and checkpoint 6. Ruling 373 opens tighter
+  batching measurements while allocation stays open.
 - 2026-09-27: ruling 370's copy premise tested on Lane E `3375a36`:
   retained GPU data can survive row growth, verified by full readback and
   missing-copy/patch controls. In two local cases bulk GPU copy reduces

@@ -8,10 +8,10 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Effect, Need, Query, Rules},
+    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Rules, expressing},
     schema::*,
 };
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// The needs a world's minds read their mood from; none without a mind.
 pub(crate) fn needs(rules: &Rules) -> &[Need] {
@@ -60,6 +60,8 @@ pub(crate) enum Named<'a> {
 pub(crate) struct Scene<'a> {
     pub actor: Option<&'a Entity>,
     pub target: Named<'a>,
+    /// The actor's part the process binds, if it binds one.
+    pub part: Option<Id>,
     pub site: Option<&'a Site>,
     pub tick: Tick,
     pub related: &'a dyn Fn(&Key) -> Result<bool>,
@@ -76,7 +78,14 @@ impl<'a> Scene<'a> {
                 Named::Found(e) => Ok(e),
             },
             Binding::Place => Err("place is not a body".into()),
+            Binding::Part => Err("a part is not a body".into()),
         }
+    }
+    /// The bound part, as the actor holds it.
+    fn part(&self) -> Result<&'a Part> {
+        let id = self.part.ok_or("no part is bound")?;
+        let actor = self.body(Binding::Actor)?;
+        Ok(actor.parts.get(&id).ok_or("bound part missing")?)
     }
     fn ledger(&self, b: Binding) -> Result<&'a Ledger> {
         match b {
@@ -89,8 +98,19 @@ impl<'a> Scene<'a> {
 /// Whether a query holds, and the reading a receipt records for it.
 pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
     Ok(match q {
+        Query::Alive(Binding::Part) => {
+            let v = !s.part()?.severed;
+            (v, v.to_string())
+        },
         Query::Alive(b) => {
             let v = s.body(*b)?.alive;
+            (v, v.to_string())
+        },
+        Query::Trait {
+            who: Binding::Part,
+            key,
+        } => {
+            let v = s.part()?.traits.contains(key);
             (v, v.to_string())
         },
         Query::Trait { who, key } => {
@@ -140,6 +160,17 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
         Query::Holds { who, at_least } => {
             let v = mass(s.ledger(*who)?, s.rules);
             (v >= u128::from(*at_least), v.to_string())
+        },
+        // The address a receipt carries: which part, at which revision.
+        Query::Expresses { function } => {
+            let actor = s.body(Binding::Actor)?;
+            match expressing(actor, function) {
+                Some(id) => (
+                    true,
+                    format!("part {id} at revision {}", actor.body_revision),
+                ),
+                None => (false, "no live part".into()),
+            }
         },
     })
 }
@@ -204,6 +235,8 @@ pub(crate) trait Parties {
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn body(&mut self, who: Binding) -> Result<&mut Entity>;
+    /// The actor's body and the part the process binds in it.
+    fn part(&mut self) -> Result<(&mut Entity, Id)>;
     /// Moves a condition at the site.
     fn shift(&mut self, key: &str, delta: i64) -> Result<()>;
 }
@@ -211,7 +244,7 @@ pub(crate) trait Parties {
 /// The effects both runners apply. The others write the world's records,
 /// relations, notes, births, polities and legend, which only the individual
 /// runner keeps; `None` hands those back to it.
-pub(crate) fn effect(p: &mut impl Parties, e: &Effect) -> Option<Result<()>> {
+pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<Result<()>> {
     Some(match e {
         Effect::Transfer {
             from,
@@ -221,8 +254,18 @@ pub(crate) fn effect(p: &mut impl Parties, e: &Effect) -> Option<Result<()>> {
         } => p
             .take(*from, account, *amount)
             .and_then(|()| p.give(*to, account, *amount)),
-        Effect::Transform { who, take, give } => transform(p, *who, take, give),
+        Effect::Transform {
+            who,
+            take,
+            give,
+            conversion,
+        } => transform(p, rules, *who, (take, give), *conversion),
         Effect::Condition { key, delta } => p.shift(key, *delta),
+        Effect::Trait {
+            who: Binding::Part,
+            key,
+            present,
+        } => p.part().and_then(|(b, id)| mark_part(b, id, key, *present)),
         Effect::Trait { who, key, present } => p.body(*who).and_then(|b| mark(b, key, *present)),
         Effect::Practice { key, amount } => p
             .body(Binding::Actor)
@@ -239,8 +282,28 @@ fn ease(e: &mut Entity, key: &str, amount: u64) {
     }
 }
 
-fn transform(p: &mut impl Parties, who: Binding, take: &Ledger, give: &Ledger) -> Result<()> {
+/// A transform takes and gives on one ledger. A declared synthesis or
+/// digestion gives only the body's own lineage's matter (ruling 357);
+/// admission has checked the rest of what each conversion takes and gives.
+fn transform(
+    p: &mut impl Parties,
+    rules: &Rules,
+    who: Binding,
+    (take, give): (&Ledger, &Ledger),
+    conversion: Option<Conversion>,
+) -> Result<()> {
     p.reach(who)?;
+    if let Some(kind @ (Conversion::Synthesis | Conversion::Digestion)) = conversion {
+        let own = p.body(who)?.lineage.clone();
+        let foreign = give.keys().find(|k| {
+            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage }) if *lineage == own)
+        });
+        if let Some(key) = foreign {
+            return Err(format!(
+                "{kind:?} gives {key}, which is not {own}'s own matter"
+            ));
+        }
+    }
     for (key, amount) in take {
         p.take(who, key, *amount)?;
     }
@@ -250,17 +313,32 @@ fn transform(p: &mut impl Parties, who: Binding, take: &Ledger, give: &Ledger) -
     Ok(())
 }
 
-fn mark(e: &mut Entity, key: &str, present: bool) -> Result<()> {
+fn set(traits: &mut BTreeSet<Key>, key: &str, present: bool) {
     if present {
-        e.traits.insert(key.into());
+        traits.insert(key.into());
     } else {
-        e.traits.remove(key);
+        traits.remove(key);
     }
+}
+
+fn revise(e: &mut Entity) -> Result<()> {
     e.body_revision = e
         .body_revision
         .checked_add(1)
         .ok_or("body revision overflow")?;
     Ok(())
+}
+
+fn mark(e: &mut Entity, key: &str, present: bool) -> Result<()> {
+    set(&mut e.traits, key, present);
+    revise(e)
+}
+
+/// A part's trait changes its body, so the body's revision moves.
+fn mark_part(e: &mut Entity, part: Id, key: &str, present: bool) -> Result<()> {
+    let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
+    set(&mut p.traits, key, present);
+    revise(e)
 }
 
 fn practice(e: &mut Entity, key: &str, amount: u64) -> Result<()> {
@@ -282,3 +360,6 @@ pub(crate) fn shift(
     *slot = slot.checked_add(total).ok_or("condition overflow")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests;

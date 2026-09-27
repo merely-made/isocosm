@@ -67,6 +67,7 @@ fn spend(from: &str) -> Vec<Effect> {
             who: Binding::Actor,
             take: BTreeMap::from([(from.into(), 1)]),
             give: BTreeMap::from([("world:soil".into(), 1)]),
+            conversion: None,
         },
         Effect::Transfer {
             from: Binding::Actor,
@@ -86,6 +87,7 @@ pub(super) fn strain(amount: u64) -> Vec<Effect> {
         who: Binding::Actor,
         take: BTreeMap::new(),
         give: BTreeMap::from([(STRAIN.into(), amount)]),
+        conversion: None,
     }]
 }
 
@@ -102,6 +104,7 @@ fn feed(thing: &Thing, store: &str, amount: u64) -> Vec<Effect> {
             who: Binding::Actor,
             take: BTreeMap::from([(thing.key.into(), amount)]),
             give: BTreeMap::from([(store.into(), amount)]),
+            conversion: None,
         },
     ]
 }
@@ -110,11 +113,12 @@ fn feed(thing: &Thing, store: &str, amount: u64) -> Vec<Effect> {
 pub(super) fn regrow(thing: &Thing, amount: u64) -> Process {
     let mut p = process(
         thing.regrow,
-        Shape::Agentless,
+        Causation::Agentless,
         vec![Effect::Transform {
             who: Binding::Place,
             take: BTreeMap::from([("world:soil".into(), amount)]),
             give: BTreeMap::from([(thing.key.into(), amount)]),
+            conversion: None,
         }],
     );
     p.requires.push(Query::Account {
@@ -146,12 +150,16 @@ pub(super) fn own(i: u32) -> Query {
 /// Keeping a body: a unit spent every tick, and death without one.
 pub(super) fn keeping(i: u32) -> [Process; 2] {
     let body = store(i, 0);
-    let mut upkeep = process(&format!("probe:upkeep-{i}"), Shape::Choice, spend(&body));
+    let mut upkeep = process(
+        &format!("probe:upkeep-{i}"),
+        Causation::Choice,
+        spend(&body),
+    );
     upkeep.requires.extend([own(i), account(&body, 1)]);
     upkeep.period = Some(1);
     let mut starve = process(
         &format!("probe:starve-{i}"),
-        Shape::Transition,
+        Causation::Transition,
         vec![Effect::Death],
     );
     starve.requires.extend([own(i), below(&body, 1)]);
@@ -166,7 +174,7 @@ pub(super) fn lineage(i: u32, things: &[(&Thing, u64)], spend_strain: u64) -> Ac
     let [upkeep, starve] = keeping(i);
     let mut fought = spend(&body);
     fought.extend(strain(spend_strain));
-    let mut spent = process(&format!("probe:spend-{i}"), Shape::Choice, fought);
+    let mut spent = process(&format!("probe:spend-{i}"), Causation::Choice, fought);
     spent.requires.extend([own.clone(), account(&body, 1)]);
     let spend_id = spent.id.clone();
     let mut processes = vec![upkeep, starve, spent];
@@ -175,14 +183,14 @@ pub(super) fn lineage(i: u32, things: &[(&Thing, u64)], spend_strain: u64) -> Ac
         for (name, amount) in [(thing.take, ration), (thing.half, ration / 2)] {
             let mut p = process(
                 &format!("probe:{name}-{i}"),
-                Shape::Choice,
+                Causation::Choice,
                 feed(thing, &fed, amount),
             );
             p.requires.push(own.clone());
             processes.push(p);
         }
         if thing.store > 0 {
-            let mut dry = process(&format!("probe:dry-{i}"), Shape::Choice, spend(&fed));
+            let mut dry = process(&format!("probe:dry-{i}"), Causation::Choice, spend(&fed));
             dry.requires.extend([own.clone(), account(&fed, 1)]);
             dry.period = Some(1);
             processes.push(dry);

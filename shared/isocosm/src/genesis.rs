@@ -48,6 +48,7 @@ impl Genesis {
                 return Err("unknown lineage trait".into());
             }
         }
+        crate::validation::conversions(&self.rules, &self.lineages)?;
         for process in self.rules.processes.values() {
             if process.target.as_ref().is_some_and(|t| {
                 (t.lineage.iter().chain(&t.among)).any(|l| !self.lineages.contains_key(l))
@@ -98,6 +99,7 @@ impl Genesis {
                 if part.traits.iter().any(|t| !self.rules.traits.contains(t)) {
                     return Err("unknown part trait".into());
                 }
+                crate::validation::part(&self.rules, part)?;
                 let mut seen = BTreeSet::from([id]);
                 let mut parent = part.parent;
                 while let Some(p) = parent {

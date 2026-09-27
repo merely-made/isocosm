@@ -15,13 +15,23 @@ impl Simulation {
             Binding::Actor => Ok(actor),
             Binding::Target => target.ok_or("target is required".into()),
             Binding::Place => Err("place is not a body".into()),
+            Binding::Part => Err("a part is not a body".into()),
         }
     }
+    /// The part `p` binds in `actor`: its lowest-numbered live part
+    /// expressing the function `p` requires (ruling 338).
+    pub(crate) fn bind_part(&self, actor: Id, p: &Process) -> Option<Id> {
+        let function = p.expresses()?;
+        expressing(self.state.population.get(actor)?, function)
+    }
+    /// Reads `query` for an act by `actor`, with `part` the part its process
+    /// binds.
     pub(crate) fn query(
         &self,
         actor: Id,
         target: Option<Id>,
         place: Id,
+        part: Option<Id>,
         query: &Query,
     ) -> Result<String> {
         let related = |kind: &Key| -> Result<bool> {
@@ -41,6 +51,7 @@ impl Simulation {
                     .get(id)
                     .map_or(Named::Missing, Named::Found),
             },
+            part,
             site: self.state.sites.get(&place),
             tick: self.state.tick,
             related: &related,

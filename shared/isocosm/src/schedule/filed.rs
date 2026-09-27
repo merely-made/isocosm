@@ -3,7 +3,8 @@
 
 //! Which stored groups each due process could run for. A process's gates
 //! are what it requires of its actor's own state: traits, being alive,
-//! account and holdings thresholds, and an age. A group passes or fails them
+//! account and holdings thresholds, a live part expressing a function, and
+//! an age. A group passes or fails them
 //! until an act changes it, except its age, which comes due at a tick known
 //! in advance (ruling 286). So each group is filed as ready for the
 //! processes whose gates it passes, again whenever an act commits to it, and
@@ -22,6 +23,8 @@ pub(crate) struct Gates {
     /// Matter held over every matter account, and the accounts that count.
     holds: u64,
     matter: BTreeSet<Key>,
+    /// Functions a live part must express (ruling 338).
+    expresses: BTreeSet<Key>,
     age: Tick,
 }
 
@@ -58,6 +61,9 @@ impl Gates {
                     who: Binding::Actor,
                     at_least,
                 } => g.holds = g.holds.max(*at_least),
+                Query::Expresses { function } => {
+                    g.expresses.insert(function.clone());
+                },
                 _ => {},
             }
         }
@@ -86,6 +92,7 @@ impl Gates {
                 .all(|(k, v)| value(&e.accounts, k) >= *v)
             && self.below.iter().all(|(k, v)| value(&e.accounts, k) < *v)
             && (self.holds == 0 || held(&e.accounts, &self.matter) >= u128::from(self.holds))
+            && self.expresses.iter().all(|f| expressing(e, f).is_some())
     }
 
     /// Whether `e` passes every gate at `tick`, as the requirements read it.

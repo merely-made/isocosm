@@ -161,17 +161,18 @@ impl MindFounding {
         let low_mood = -(pick("mind-low-mood", 0, self.low_mood) as i64);
         let mut build = process(
             "mind:strain",
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Transform {
                 who: Binding::Actor,
                 take: BTreeMap::new(),
                 give: BTreeMap::from([(STRAIN.into(), pick("mind-build", 0, self.build))]),
+                conversion: None,
             }],
         );
         build.requires.push(Query::MoodBelow { amount: low_mood });
         let mut bleed = process(
             "mind:relief",
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Ease {
                 who: Binding::Actor,
                 key: STRAIN.into(),
