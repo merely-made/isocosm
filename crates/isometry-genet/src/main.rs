@@ -113,6 +113,7 @@ mod selftest;
 mod sheets;
 mod source_time;
 mod storylets;
+mod terrain_preferences;
 #[cfg(test)]
 mod watchtower_tests;
 

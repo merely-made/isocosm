@@ -56,6 +56,7 @@ pub(crate) struct SceneBoard {
     /// The last ground change reported under `ISOMETRY_PROFILE`, so a still
     /// board says nothing and an edit says what it cost (B4).
     costed: Option<GroundCost>,
+    preferences: crate::terrain_preferences::Preferences,
 }
 
 /// The residency settings the environment asks for: the default, with
@@ -71,8 +72,9 @@ fn residency() -> ResidencySettings {
 }
 
 impl SceneBoard {
-    /// Builds the producer over a first snapshot of the board.
-    pub(crate) fn new(ui: &UiState) -> Self {
+    /// Restores the local terrain budget and builds the first board snapshot.
+    pub(crate) fn new(ui: &mut UiState) -> Self {
+        let preferences = crate::terrain_preferences::Preferences::local(ui);
         let mut board = BoardView::new(ui.map.clone());
         board.sync(ui);
         let view = board.into_handle();
@@ -84,6 +86,7 @@ impl SceneBoard {
             scale: 1,
             reported: None,
             costed: None,
+            preferences,
         }
     }
 
@@ -104,18 +107,30 @@ impl SceneBoard {
         ScenePick::new(self.producer.clone())
     }
 
-    /// What the last ground change cost, said once per change under
-    /// `ISOMETRY_PROFILE`.
+    /// Reports current omissions/device bounds to the panel and, under
+    /// `ISOMETRY_PROFILE`, what the last ground change cost.
     ///
     /// Called *after* the frame rather than in [`Self::sync`], because the
     /// ground is brought up to date inside the producer's own draw: asked
     /// before it, a sync would always report the change before last, and a
     /// board that then parks would never say what the last edit cost.
-    pub(crate) fn report_ground(&mut self) {
+    pub(crate) fn report_ground(&mut self, ctx: &mut Ctx<'_>) {
+        let source = self.producer.borrow();
+        let cost = source.source().ground_cost();
+        if let Some(limit) = source.source().atlas_device_budget() {
+            let omitted = cost.map_or(0, |cost| cost.residency.overflow);
+            let current = &ctx.runner.state().terrain_settings;
+            if current.device_budget != Some(limit) || current.omitted != omitted {
+                ctx.runner
+                    .update(|ui| ui.terrain_settings.report(limit, omitted));
+                if let Some(window) = ctx.window {
+                    window.request_redraw();
+                }
+            }
+        }
         if std::env::var_os("ISOMETRY_PROFILE").is_none() {
             return;
         }
-        let cost = self.producer.borrow().source().ground_cost();
         if self.costed != cost {
             self.costed = cost;
             if let Some(cost) = cost {
@@ -124,8 +139,23 @@ impl SceneBoard {
         }
     }
 
+    /// Save a changed user request at dispatch, before a window can close.
+    pub(crate) fn save_preferences(&mut self, ctx: &mut Ctx<'_>) {
+        if let Err(error) = self.preferences.save_changed(ctx.runner.state()) {
+            eprintln!("[isometry] could not save terrain memory preference: {error}");
+            ctx.runner.update(|ui| {
+                ui.status = format!("Terrain memory applies this session; saving failed: {error}")
+            });
+        }
+    }
+
     /// Per frame: take the board's state and set the pixel grid.
     pub(crate) fn sync(&mut self, ctx: &mut Ctx<'_>) {
+        self.save_preferences(ctx);
+        self.producer
+            .borrow_mut()
+            .source_mut()
+            .set_atlas_budget(ctx.runner.state().terrain_settings.budget_bytes());
         self.view.borrow_mut().sync(ctx.runner.state());
         let device = ctx
             .window

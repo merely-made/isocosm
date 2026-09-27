@@ -13,12 +13,14 @@
 //! overlaps the pane grown by one brick, a pure function of the view and the
 //! map. That is [`isometer::framed_bricks`] with [`RESIDENCY_MARGIN`], held
 //! in an atlas as large as the scene's card allows (rulings 289 and 296): the
-//! device's 3D texture edge under the tracer's 8 MiB budget, 16,383 bricks on
+//! device's 3D texture edge under the default 8 MiB budget, 16,383 bricks on
 //! any card whose edge reaches 512 texels. The host chooses the headroom, one
 //! spare brick layer above the board's tallest tile by default, so an edit
 //! that lifts it one layer retargets rather than rebuilding. The one layer is
 //! provisional, with what each costs in `testing/scene-board-paging/`.
 //! Retargeting, refreshing and rebuilding are isometer's [`Residency`].
+//! Rulings 368/369 (2026-09-27) retain the existing centre-first selection
+//! with a current omitted count and allow a device-bounded local budget.
 //!
 //! **The revision.** The tracer skips an upload whose revision and projection
 //! both match what it holds, so a frame is stamped with the *view's* revision,
@@ -174,6 +176,11 @@ impl BoardGround {
     /// The card the atlas is sized to.
     pub fn limits(&self) -> AtlasLimits {
         self.residency.borrow().limits()
+    }
+
+    /// Changes the atlas budget at the next frame, preserving pointer sizing.
+    pub fn set_limits(&mut self, limits: AtlasLimits) {
+        self.residency.borrow_mut().set_limits(limits);
     }
 
     /// The bricks the scene's map holds.

@@ -67,7 +67,9 @@ mod play;
 mod rows;
 mod session;
 mod source_time;
+mod terrain;
 pub use overmap_motion::{OvermapMotionState, OvermapMotionTick};
+pub use terrain::TerrainSettings;
 mod surfaces;
 
 use rows::Step;
@@ -113,6 +115,7 @@ pub struct UiState {
     /// leaf instead of one element per tile and token (B2). Host-set once at
     /// boot; off is the shipped DOM board, unchanged.
     pub scene_board: bool,
+    pub terrain_settings: TerrainSettings,
     /// The drawn frame the board's gestures resolve through (B3). The host
     /// sets it beside [`Self::scene_board`] and only then, so the DOM board
     /// keeps the geometric inverse and the scene board never uses one. `None`
@@ -439,6 +442,7 @@ impl UiState {
             camera: (0.0, 0.0),
             viewport: (0.0, 0.0),
             scene_board: false,
+            terrain_settings: TerrainSettings::default(),
             board_pick: None,
             focus_elevation: None,
             selected: None,

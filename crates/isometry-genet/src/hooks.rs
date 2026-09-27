@@ -348,7 +348,7 @@ pub(crate) fn init(
     // field. With it unset nothing below is built and the DOM board stands.
     if scene_board::enabled() {
         ui.scene_board = true;
-        let board = scene_board::SceneBoard::new(&ui);
+        let board = scene_board::SceneBoard::new(&mut ui);
         // B3: the board's gestures resolve through the frame this producer
         // draws. Set here, beside the flag, so the DOM board never carries one.
         ui.board_pick = Some(board.pick());

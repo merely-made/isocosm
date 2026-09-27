@@ -132,6 +132,14 @@ impl Residency {
         self.limits
     }
 
+    /// A changed atlas budget or device limit rebuilds on the next frame.
+    pub fn set_limits(&mut self, limits: AtlasLimits) {
+        if self.limits != limits {
+            self.limits = limits;
+            self.rebuild = true;
+        }
+    }
+
     /// Bricks the atlas holds: every slot the limits allow but the reserved
     /// air slot.
     pub fn capacity(&self) -> usize {

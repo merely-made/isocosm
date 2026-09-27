@@ -11,6 +11,7 @@ use isometry_core::{TemplateKind, TileKindId, TokenId};
 
 use crate::board::UiChild;
 use crate::state::UiState;
+mod terrain;
 
 fn next_template_kind(k: TemplateKind) -> TemplateKind {
     let i = TemplateKind::ALL.iter().position(|&x| x == k).unwrap_or(0);
@@ -259,14 +260,11 @@ fn styled_action_button(
     ))
 }
 
-/// The board's pixel-grid setting, the one board *preference* the panel
-/// carries.
+/// The board's pixel-grid setting, kept beside the Map controls.
 ///
-/// Isometry has no settings surface to hang it on: `theme` is a stylesheet
-/// rather than a preference, nothing else on [`UiState`] is user-configurable,
-/// and mere's configuration-ownership pattern (a settings umbrella projected
-/// through a contract) has no counterpart here because isometry persists no
-/// application settings at all. So it sits with the other Map verbs, and it is
+/// There is no settings umbrella. The terrain memory preference added on
+/// 2026-09-27 has its own row below these verbs; pixel rounding still lasts
+/// for this session. This toggle sits with the other Map verbs, and it is
 /// keyboard-free on purpose: the single-letter vocabulary is small and spent.
 /// `px-grid` is the class the harness receipt targets it by.
 ///
@@ -484,6 +482,7 @@ pub fn side_panel(ui: &UiState) -> UiChild {
             )
             .attr("class", "btn-row map-row"),
         ),
+        terrain::controls(ui),
         Box::new(el("div", text("Tokens")).attr("class", "side-heading")),
         Box::new(
             el(

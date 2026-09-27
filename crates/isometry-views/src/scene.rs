@@ -58,6 +58,8 @@ mod paging_tests;
 #[cfg(test)]
 mod parity_tests;
 #[cfg(test)]
+mod settings_tests;
+#[cfg(test)]
 mod terrain_tests;
 #[cfg(test)]
 mod view_tests;

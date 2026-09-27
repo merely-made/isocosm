@@ -113,6 +113,7 @@ pub struct BoardSource {
     /// How the ground's pointer volume is sized; the host's to choose. The
     /// atlas is the scene's card.
     residency: ResidencySettings,
+    atlas_budget: u64,
     /// The palette the bound table was built for, so a kind added to the map
     /// rebinds it and an ordinary frame does not.
     palette_revision: Option<usize>,
@@ -141,6 +142,7 @@ impl BoardSource {
             palettes: BTreeSet::new(),
             placeholders: 0,
             residency: ResidencySettings::default(),
+            atlas_budget: isometer::lens::ATLAS_BUDGET_BYTES,
         }
     }
 
@@ -160,6 +162,24 @@ impl BoardSource {
 
     pub fn residency(&self) -> ResidencySettings {
         self.residency
+    }
+
+    /// The host's atlas-only budget. Device bounds still apply; pointer
+    /// storage remains separate. A changed value rebuilds on the next frame.
+    pub fn set_atlas_budget(&mut self, bytes: u64) {
+        self.atlas_budget = bytes.max(128 * 1024);
+    }
+
+    /// Maximum atlas payload on the scene's actual device, once acquired.
+    pub fn atlas_device_budget(&self) -> Option<u64> {
+        let mut limits = self.scene.as_ref()?.atlas_limits();
+        limits.max_atlas_bytes = u64::MAX;
+        let bricks = limits.max_bricks();
+        Some(if bricks == 0 {
+            0
+        } else {
+            (bricks as u64 + 1) * 512
+        })
     }
 
     pub fn view(&self) -> &BoardHandle {
@@ -264,14 +284,20 @@ impl BoardSource {
     /// Brings the ground and the material palette up to the snapshot. A new
     /// ground's atlas is as large as the scene's card allows.
     fn ensure_terrain(&mut self, revision: u64) -> Result<(), String> {
-        let limits = self
+        let mut limits = self
             .scene
             .as_ref()
             .ok_or("the scene was not built")?
             .atlas_limits();
+        limits.max_atlas_bytes = self
+            .atlas_budget
+            .min(self.atlas_device_budget().unwrap_or(0));
         let view = self.view.borrow();
         match &mut self.ground {
-            Some(ground) => ground.sync(&view.map, &view.overlays, revision),
+            Some(ground) => {
+                ground.set_limits(limits);
+                ground.sync(&view.map, &view.overlays, revision);
+            },
             None => {
                 self.ground = Some(BoardGround::new(
                     &view.map,
@@ -363,7 +389,7 @@ impl SceneSource for BoardSource {
             // edit, so `Ground::revision` stays zero for the board's lifetime.
             terrain_revision: Some(view.terrain_revision()),
             bodies,
-            host: Vec::new(),
+            host: vec![u64::from(self.residency.headroom), self.atlas_budget],
         })
     }
 
