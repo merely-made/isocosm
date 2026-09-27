@@ -65,16 +65,10 @@ impl App {
                 return;
             }
             let choices = self.generator_catalog.choices();
-            match crate::cleromancy_selection::select_generator(&choices, &request) {
+            match crate::generator_selection::select_generator(&choices, &request) {
                 Ok(selection) => {
                     let choice_index = selection.choice_index;
-                    let choice_name = choices[choice_index].name.clone();
-                    let receipt_digest = selection
-                        .reading
-                        .receipt
-                        .derivation_digest
-                        .clone()
-                        .unwrap_or_else(|| "unavailable".to_owned());
+                    let status = selection.status(&choices[choice_index].name);
                     self.last_generator_selection = Some(selection);
                     {
                         let runner = &mut *ctx.runner;
@@ -84,11 +78,9 @@ impl App {
                             ui.generator_locks.clear();
                             ui.generator_open = true;
                             // This is intentionally the existing host action:
-                            // Cleromancy chooses a declaration, never an output.
+                            // the choice picks a declaration, never an output.
                             ui.generation_request = Some(GenerationRequest::Generate);
-                            ui.status = format!(
-                                "receipt chose {choice_name} ({receipt_digest}); generating preview"
-                            );
+                            ui.status = status;
                         });
                     }
                 },
