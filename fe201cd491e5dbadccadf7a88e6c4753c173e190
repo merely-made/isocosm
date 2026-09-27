@@ -1,0 +1,1 @@
+Correction: with the feature on, 41 mere, genet and netrender packages are duplicated in the root graph (cargo tree -d --all-features), not "some thirty".
