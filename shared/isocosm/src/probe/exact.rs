@@ -137,7 +137,7 @@ fn round(
                 take(id, key, Take::gained(c.ration));
             }
             let contested = &hungry[doubles..doubles + 2 * a.contested as usize];
-            for pair in contested.chunks_exact(2) {
+            for pair in contested.as_chunks::<2>().0 {
                 let ids = [pair[0].0, pair[1].0];
                 let kinds = [&c.kinds[pair[0].1], &c.kinds[pair[1].1]];
                 let states = [0, 1].map(|x| {

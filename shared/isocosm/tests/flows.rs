@@ -15,7 +15,7 @@
 
 use isocosm::{
     Execution, Founding, Session,
-    flows::{Flow, Holder, MadeBy},
+    flows::{Flow, FlowResult, Holder, MadeBy},
     history::Command,
     rules::*,
     schema::*,
@@ -25,6 +25,8 @@ use std::collections::{BTreeMap, BTreeSet};
 
 #[path = "flows/draws.rs"]
 mod draws;
+#[path = "flows/handoff.rs"]
+mod handoff;
 #[path = "flows/receipts.rs"]
 mod receipts;
 
@@ -102,11 +104,19 @@ fn reconcile(before: &Books, after: &Books, flows: &[Flow], at: &str) -> Result<
 fn stepped<T>(
     session: &mut Session,
     at: &str,
-    step: impl FnOnce(&mut Session) -> T,
+    step: impl FnOnce(&mut Session) -> FlowResult<T>,
 ) -> (T, Vec<Flow>) {
     let before = books(session);
-    let out = step(session);
-    let flows = session.sim.take_flows();
+    let FlowResult {
+        tick,
+        result: out,
+        flows,
+    } = step(session);
+    assert_eq!(tick, session.sim.state().tick);
+    assert!(
+        flows.iter().all(|flow| flow.tick == tick),
+        "mixed ticks {at}"
+    );
     if let Err(why) = reconcile(&before, &books(session), &flows, at) {
         panic!("{why}");
     }
@@ -129,10 +139,8 @@ fn ecology(seed: u64) -> Genesis {
     .unwrap()
 }
 
-fn kept(g: Genesis, mode: Execution) -> Session {
-    let mut session = Session::new(g, mode).unwrap();
-    session.sim.keep_flows();
-    session
+fn new_session(g: Genesis, mode: Execution) -> Session {
+    Session::new(g, mode).unwrap()
 }
 
 fn made_by(flows: &[Flow]) -> BTreeSet<String> {
@@ -150,13 +158,13 @@ fn the_record_accounts_for_every_ledger_across_a_run() {
     // modes run in step, and each tick's record claims the same moves in both.
     let mut seen = BTreeSet::new();
     for seed in [1u64, 7, 4_242] {
-        let mut one = kept(ecology(seed), Execution::Individuals);
-        let mut all = kept(ecology(seed), Execution::Grouped);
+        let mut one = new_session(ecology(seed), Execution::Individuals);
+        let mut all = new_session(ecology(seed), Execution::Grouped);
         let matter = one.sim.matter();
         for tick in 1..=120 {
             let at = format!("on tick {tick} of seed {seed}");
-            let (_, a) = stepped(&mut one, &at, |s| s.advance(1).unwrap());
-            let (_, b) = stepped(&mut all, &at, |s| s.advance(1).unwrap());
+            let (_, a) = stepped(&mut one, &at, |s| s.advance_tick_with_flows().unwrap());
+            let (_, b) = stepped(&mut all, &at, |s| s.advance_tick_with_flows().unwrap());
             assert_eq!(claimed(&a), claimed(&b), "{at}");
             assert_eq!(one.sim.state_hash(), all.sim.state_hash(), "{at}");
             assert_eq!(one.sim.matter(), matter);
@@ -216,7 +224,7 @@ fn act(actor: Id, target: Option<Id>, process: &str) -> Command {
 
 #[test]
 fn the_record_accounts_for_acts_and_commands_too() {
-    let mut session = kept(ecology(11), Execution::Grouped);
+    let mut session = new_session(ecology(11), Execution::Grouped);
     let (producer, consumer) = neighbours(&session, "lineage:0", "lineage:1");
     let place = Command::PlaceMatter {
         site: 0,
@@ -233,7 +241,9 @@ fn the_record_accounts_for_acts_and_commands_too() {
     let mut moved = 0;
     for (step, command) in trace.into_iter().enumerate() {
         let at = format!("after command {step}");
-        let (outcome, flows) = stepped(&mut session, &at, |s| s.command(command).unwrap());
+        let (outcome, flows) = stepped(&mut session, &at, |s| {
+            s.command_with_flows(command).unwrap()
+        });
         assert!(
             !outcome.contains("Blocked") && !outcome.contains("Refused"),
             "{at}: {outcome}"
@@ -245,9 +255,11 @@ fn the_record_accounts_for_acts_and_commands_too() {
 
 #[test]
 fn every_flow_is_stamped_with_the_tick_it_happened_on() {
-    let mut session = kept(ecology(7), Execution::Grouped);
+    let mut session = new_session(ecology(7), Execution::Grouped);
     for _ in 0..30 {
-        let (_, flows) = stepped(&mut session, "while stamping", |s| s.advance(1).unwrap());
+        let (_, flows) = stepped(&mut session, "while stamping", |s| {
+            s.advance_tick_with_flows().unwrap()
+        });
         let tick = session.sim.state().tick;
         assert!(
             flows.iter().all(|f| f.tick == tick),
@@ -257,37 +269,36 @@ fn every_flow_is_stamped_with_the_tick_it_happened_on() {
 }
 
 #[test]
-fn taking_the_record_is_not_a_world_change() {
-    let mut drained = kept(ecology(4_242), Execution::Grouped);
-    let mut never = Session::new(ecology(4_242), Execution::Grouped).unwrap();
-    let mut took = 0;
-    for _ in 0..40 {
-        drained.advance(1).unwrap();
-        never.advance(1).unwrap();
-        took += drained.sim.take_flows().len();
-        assert_eq!(drained.sim.state_hash(), never.sim.state_hash());
+fn requesting_the_record_is_not_a_world_change() {
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        let mut recorded = new_session(ecology(4_242), mode);
+        let mut ordinary = recorded.clone();
+        let mut moved = 0;
+        for _ in 0..40 {
+            let result = recorded.advance_tick_with_flows().unwrap();
+            let ordinary_work = ordinary.advance(1).unwrap();
+            moved += result.flows.len();
+            assert_eq!(recorded.sim.state_hash(), ordinary.sim.state_hash());
+            assert_eq!(result.result, ordinary_work);
+        }
+        assert!(moved > 0, "the comparison exercised real moves");
     }
-    assert!(took > 0, "there was something to take");
-    assert!(never.sim.take_flows().is_empty(), "nothing is kept unasked");
-    let before = drained.sim.state_hash();
-    drained.sim.take_flows();
-    assert_eq!(drained.sim.state_hash(), before);
 }
 
 #[test]
 fn a_saved_world_does_not_carry_the_record() {
-    let mut session = kept(ecology(4_242), Execution::Grouped);
-    session.advance(5).unwrap();
+    let mut session = new_session(ecology(4_242), Execution::Grouped);
+    let mut unrecorded = session.clone();
+    let mut returned = vec![];
+    for _ in 0..5 {
+        returned.push(session.advance_tick_with_flows().unwrap());
+        unrecorded.advance(1).unwrap();
+    }
+    assert!(returned.iter().any(|r| !r.flows.is_empty()));
     let holding = serde_json::to_string(&session.save()).unwrap();
-    assert!(
-        !session.sim.take_flows().is_empty(),
-        "the advance had moves to leave out"
-    );
-    let empty = serde_json::to_string(&session.save()).unwrap();
-    assert_eq!(holding, empty);
-    let mut unkept = Session::new(ecology(4_242), Execution::Grouped).unwrap();
-    unkept.advance(5).unwrap();
-    assert_eq!(serde_json::to_string(&unkept.save()).unwrap(), holding);
+    drop(returned);
+    assert_eq!(serde_json::to_string(&session.save()).unwrap(), holding);
+    assert_eq!(serde_json::to_string(&unrecorded.save()).unwrap(), holding);
 }
 
 /// **A birth reconciles to the unit.** Every unit of matter the child holds
@@ -302,10 +313,11 @@ fn a_birth_reconciles_to_the_unit() {
         .unwrap()
         .accounts
         .insert("matter:1-0".into(), 500);
-    session = kept(g, Execution::Individuals);
+    session = new_session(g, Execution::Individuals);
     let child = session.sim.state().population.next_id;
     let (outcome, flows) = stepped(&mut session, "at the birth", |s| {
-        s.command(act(parent, None, "ecology:birth-1")).unwrap()
+        s.command_with_flows(act(parent, None, "ecology:birth-1"))
+            .unwrap()
     });
     assert!(outcome.contains("Accepted"), "{outcome}");
     let born = session
@@ -338,12 +350,10 @@ fn a_birth_reconciles_to_the_unit() {
 #[test]
 fn the_check_catches_a_move_the_record_did_not_make() {
     // The positive control: a mutation the record did not claim.
-    let mut session = kept(ecology(1), Execution::Grouped);
+    let mut session = new_session(ecology(1), Execution::Grouped);
     session.advance(3).unwrap();
-    session.sim.take_flows();
     let before = books(&session);
-    session.advance(1).unwrap();
-    let flows = session.sim.take_flows();
+    let flows = session.advance_tick_with_flows().unwrap().flows;
     let honest = books(&session);
     reconcile(&before, &honest, &flows, "on an honest tick").expect("the tick reconciles");
     let mut doctored = honest.clone();
@@ -362,7 +372,7 @@ fn the_check_catches_a_move_the_record_did_not_make() {
 /// and what it has issued is the sum of the moves out of it (ruling 344).
 #[test]
 fn a_placement_is_in_the_record_and_the_issue_is_the_sum_of_its_moves() {
-    let mut session = kept(ecology(3), Execution::Individuals);
+    let mut session = new_session(ecology(3), Execution::Individuals);
     let placements = [(400, 0), (75, 2)];
     let mut flows = vec![];
     for (amount, site) in placements {
@@ -371,9 +381,21 @@ fn a_placement_is_in_the_record_and_the_issue_is_the_sum_of_its_moves() {
             account: "world:soil".into(),
             amount,
         };
-        flows.extend(stepped(&mut session, "placing", |s| s.command(place).unwrap()).1);
+        flows.extend(
+            stepped(&mut session, "placing", |s| {
+                s.command_with_flows(place).unwrap()
+            })
+            .1,
+        );
     }
-    flows.extend(stepped(&mut session, "after", |s| s.advance(2).unwrap()).1);
+    for _ in 0..2 {
+        flows.extend(
+            stepped(&mut session, "after", |s| {
+                s.advance_tick_with_flows().unwrap()
+            })
+            .1,
+        );
+    }
     let from_dev = flows.iter().filter(|f| f.from.0 == Holder::Dev);
     let issued: u128 = from_dev.clone().map(|f| u128::from(f.amount)).sum();
     assert_eq!(issued, session.sim.issued());
@@ -399,16 +421,16 @@ fn an_accepted_act_is_in_the_record_and_a_refused_one_is_not() {
     greedy.target = None;
     greedy.effects = vec![give.effects[0].clone(), overdraw];
     g.rules.processes.insert(greedy.id.clone(), greedy);
-    let mut session = kept(g, Execution::Grouped);
+    let mut session = new_session(g, Execution::Grouped);
     let (producer, consumer) = neighbours(&session, "lineage:0", "lineage:1");
     let (outcome, flows) = stepped(&mut session, "blocked", |s| {
-        s.command(act(producer, Some(consumer), "test:overdraw"))
+        s.command_with_flows(act(producer, Some(consumer), "test:overdraw"))
             .unwrap()
     });
     assert!(outcome.contains("Blocked"), "{outcome}");
     assert!(flows.is_empty(), "a blocked act moves nothing");
     let (outcome, flows) = stepped(&mut session, "accepted", |s| {
-        s.command(act(producer, Some(consumer), "sim:give"))
+        s.command_with_flows(act(producer, Some(consumer), "sim:give"))
             .unwrap()
     });
     assert!(outcome.contains("Accepted"), "{outcome}");
@@ -416,15 +438,32 @@ fn an_accepted_act_is_in_the_record_and_a_refused_one_is_not() {
     // An advance refused part way is put back, and takes its moves with it.
     let mut tight = ecology(5);
     tight.rules.limits.events_per_advance = 25;
-    let mut session = kept(tight, Execution::Individuals);
-    let hash = session.sim.state_hash();
-    assert!(
-        session.advance(40).is_err(),
-        "the budget refuses the advance"
-    );
-    assert_eq!(session.sim.state_hash(), hash);
-    assert!(
-        session.sim.take_flows().is_empty(),
-        "a refused advance leaves no moves"
-    );
+    for process in tight.rules.processes.values_mut() {
+        if process.period.is_some() {
+            process.period = Some(1);
+        }
+    }
+    for mode in [Execution::Individuals, Execution::Grouped] {
+        let mut session = new_session(tight.clone(), mode);
+        let hash = session.sim.state_hash();
+        assert!(
+            session.advance_tick_with_flows().is_err(),
+            "the budget refuses the advance"
+        );
+        assert_eq!(session.sim.state_hash(), hash);
+        let result = session
+            .command_with_flows(Command::PlaceMatter {
+                site: 0,
+                account: "world:soil".into(),
+                amount: 7,
+            })
+            .unwrap();
+        assert_eq!(result.tick, 0);
+        assert_eq!(
+            result.flows.len(),
+            1,
+            "a refused tick leaks no moves into the next call"
+        );
+        assert_eq!(result.flows[0].amount, 7);
+    }
 }

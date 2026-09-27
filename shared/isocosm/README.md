@@ -117,13 +117,21 @@ founding parameters accompany its realized rules and topology.
   issued is kept beside the world and recomputed on replay, every receipt
   carries it beside the conserved totals once it is not nothing, and the
   history labels the run assisted.
-- A host may keep the flow record (rulings 270, 345 and 359): every matter
-  move an accepted act makes, from holder and account to holder and account,
-  what each member moved and the members the act stood for, with the act's
-  process, or the command for the dev source's placements. Kept outside the
-  world's state and taken when wanted, it reaches no hash or save; a blocked
-  act or an advance put back leaves none, and every member's and site's
-  ledgers reconcile with it in both modes.
+- A host requests the flow record for one tick or command (rulings 270,
+  345, 359 and 371). `Session::advance_tick_with_flows()` advances exactly
+  one tick; `Session::command_with_flows(command)` acts at the current tick.
+  Both return `FlowResult { tick, result, flows }`: every accepted matter
+  move, its holders and accounts, amount per member, member count and process
+  or dev-placement command. Recording is opt-in for that call only, outside
+  state, hashes and saves. Results are owned by the caller; successive calls
+  cannot accumulate or repeat previous moves. Empty ticks return an empty
+  record. A failed tick rolls back under the existing one-tick transaction
+  and returns an error, with no flow result; blocked acts return their
+  outcome with no moves. Recorded runs across several ticks explicitly call
+  the API once per tick, each call its own transaction. Ordinary
+  `advance(ticks)` retains its unrecorded, whole-span transaction. Every
+  member's and site's ledgers reconcile in both execution modes. This
+  replaces the checkpoint-5 `keep_flows`/`take_flows` queue.
 - Notes use the Impresa causal core with a Djot/open-data envelope. Events
   spread along directed routes. Deterministic knowing integrates past
   residence and decaying reach; learning fixes a note. Hagiograph judges

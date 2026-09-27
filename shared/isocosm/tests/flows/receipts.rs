@@ -118,7 +118,7 @@ const ACTS: [(Id, Option<Id>, &str); 4] = [
 
 #[test]
 fn a_chain_from_the_world_through_three_lineages_and_back_reconciles() {
-    let mut session = kept(chain(), Execution::Grouped);
+    let mut session = new_session(chain(), Execution::Grouped);
     let world = |s: &Session| -> u128 {
         let e = |id| {
             s.sim
@@ -135,7 +135,7 @@ fn a_chain_from_the_world_through_three_lineages_and_back_reconciles() {
     let (start, mut moves) = (world(&session), vec![]);
     for (actor, target, process) in ACTS {
         let (outcome, flows) = stepped(&mut session, process, |s| {
-            s.command(act(actor, target, process)).unwrap()
+            s.command_with_flows(act(actor, target, process)).unwrap()
         });
         assert!(outcome.contains("Accepted"), "{process}: {outcome}");
         moves.extend(flows);
@@ -156,10 +156,10 @@ fn a_chain_from_the_world_through_three_lineages_and_back_reconciles() {
 /// keeps its account on both sides.
 #[test]
 fn transfers_between_bodies_keep_their_accounts() {
-    let mut session = kept(chain(), Execution::Individuals);
+    let mut session = new_session(chain(), Execution::Individuals);
     for (actor, target, process) in &ACTS[..2] {
         let (_, flows) = stepped(&mut session, process, |s| {
-            s.command(act(*actor, *target, process)).unwrap()
+            s.command_with_flows(act(*actor, *target, process)).unwrap()
         });
         for f in flows.iter().filter(|f| f.from.0 != f.to.0) {
             assert_eq!(f.from.1, f.to.1, "{f:?}");
@@ -172,10 +172,12 @@ fn transfers_between_bodies_keep_their_accounts() {
 /// must not pass, though a check of totals alone would.
 #[test]
 fn a_relabel_is_caught_though_the_total_matter_holds() {
-    let mut session = kept(chain(), Execution::Grouped);
+    let mut session = new_session(chain(), Execution::Grouped);
     let before = books(&session);
-    session.command(act(1, None, "test:fix")).unwrap();
-    let flows = session.sim.take_flows();
+    let flows = session
+        .command_with_flows(act(1, None, "test:fix"))
+        .unwrap()
+        .flows;
     let honest = books(&session);
     reconcile(&before, &honest, &flows, "after fixing").unwrap();
     let mut relabelled = honest.clone();
@@ -191,12 +193,13 @@ fn a_relabel_is_caught_though_the_total_matter_holds() {
 /// naming the wrong holder, or none at all, must not pass.
 #[test]
 fn a_record_missing_a_move_or_naming_the_wrong_holder_is_caught() {
-    let mut session = kept(chain(), Execution::Grouped);
+    let mut session = new_session(chain(), Execution::Grouped);
     session.command(act(1, None, "test:fix")).unwrap();
-    session.sim.take_flows();
     let before = books(&session);
-    session.command(act(2, Some(1), "test:graze")).unwrap();
-    let flows = session.sim.take_flows();
+    let flows = session
+        .command_with_flows(act(2, Some(1), "test:graze"))
+        .unwrap()
+        .flows;
     let after = books(&session);
     reconcile(&before, &after, &flows, "after grazing").unwrap();
     let mut misplaced = flows.clone();

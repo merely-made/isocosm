@@ -4,15 +4,17 @@
 //! The flow record (rulings 270, 345 and 359): every matter move an accepted
 //! act makes, from holder and account to holder and account, with what each
 //! member moved, the members the act stood for, and what made the move. A
-//! host asks for it, as for the watch; it is kept outside the world's state,
-//! so it never reaches a hash or a save, and handed over when taken. An act
-//! that is not accepted leaves no flow, and an advance put back takes its
-//! flows with it.
+//! host asks for one tick or one command (ruling 371); its moves are handed
+//! over in that call's result, outside the world's state, hash and save.
+//! Recording never stays on between calls. An act that is not accepted
+//! leaves no flow, and a tick put back hands over no result.
 
 use crate::{
+    Result,
+    history::{Command, Session},
     rules::{AccountKind, Binding, Effect, Rules},
     schema::*,
-    simulation::Simulation,
+    simulation::{Simulation, Work},
 };
 use serde::{Deserialize, Serialize};
 
@@ -49,6 +51,48 @@ pub struct Flow {
     pub count: u64,
 }
 
+/// One completed tick or command and every matter move it made. Commands
+/// remain at their current tick; an advance returns the tick it completed.
+/// The caller owns the moves: retaining this result cannot make a later
+/// result repeat them. An empty `flows` still identifies the completed tick.
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[must_use]
+pub struct FlowResult<T> {
+    pub tick: Tick,
+    pub result: T,
+    pub flows: Vec<Flow>,
+}
+
+impl Session {
+    /// Advances exactly one tick and returns its matter moves, when asked.
+    /// The existing one-tick transaction and work budget apply: an error
+    /// rolls back the tick and returns no record. For several recorded ticks,
+    /// call again after handling each result; each call is its own transaction.
+    /// Ordinary `advance(ticks)` remains unrecorded and atomic over its span.
+    pub fn advance_tick_with_flows(&mut self) -> Result<FlowResult<Work>> {
+        self.with_flows(|session| session.advance(1))
+    }
+
+    /// Runs a host command and hands over its moves at the current tick.
+    /// Several commands at one tick yield separate, non-overlapping results.
+    /// A refused act has an outcome but no moves; a failed command returns
+    /// its existing error. Neither recording nor moves survive the call.
+    pub fn command_with_flows(&mut self, command: Command) -> Result<FlowResult<String>> {
+        self.with_flows(|session| session.command(command))
+    }
+
+    fn with_flows<T>(&mut self, run: impl FnOnce(&mut Self) -> Result<T>) -> Result<FlowResult<T>> {
+        self.sim.flows.keeping = true;
+        let result = run(self);
+        let flows = std::mem::take(&mut self.sim.flows).flows;
+        result.map(|result| FlowResult {
+            tick: self.sim.state.tick,
+            result,
+            flows,
+        })
+    }
+}
+
 /// One move an act stages, before it is known to be accepted.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Leg {
@@ -66,17 +110,6 @@ pub(crate) struct Flows {
 }
 
 impl Simulation {
-    /// Keeps every matter move from now on, until taken.
-    pub fn keep_flows(&mut self) {
-        self.flows.keeping = true;
-    }
-
-    /// The moves kept since the last call, in the order they were made.
-    pub fn take_flows(&mut self) -> Vec<Flow> {
-        self.flows.kept = 0;
-        std::mem::take(&mut self.flows.flows)
-    }
-
     pub(crate) fn flowing(&self) -> bool {
         self.flows.keeping
     }

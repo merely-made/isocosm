@@ -136,17 +136,25 @@ fn command(seed: u64, step: u64, session: &Session) -> Option<Command> {
 /// A draw run in one mode: each step's state hash and the moves its record
 /// claims, and every flow it recorded.
 fn run(seed: u64, mode: Execution) -> (Vec<(Key, Books)>, Vec<Flow>) {
-    let mut session = kept(declared(seed), mode);
+    let mut session = new_session(declared(seed), mode);
     let founded = session.sim.matter();
     let (mut steps, mut all) = (vec![], vec![]);
     for step in 0..STEPS {
         let at = format!("at step {step} of seed {seed} ({mode:?})");
         let drawn = command(seed, step, &session);
         let ticks = 1 + isocosm::draw(seed, "ticks", &[step]) % 3;
-        let (_, flows) = stepped(&mut session, &at, |s| match drawn {
-            None => s.advance(ticks).map(|_| ()),
-            Some(c) => s.command(c).map(|_| ()),
-        });
+        let flows = match drawn {
+            None => {
+                let mut flows = vec![];
+                for _ in 0..ticks {
+                    flows.extend(
+                        stepped(&mut session, &at, |s| s.advance_tick_with_flows().unwrap()).1,
+                    );
+                }
+                flows
+            },
+            Some(c) => stepped(&mut session, &at, |s| s.command_with_flows(c).unwrap()).1,
+        };
         let issued = session.sim.issued();
         assert_eq!(session.sim.matter(), founded + issued, "{at}");
         steps.push((session.sim.state_hash(), claimed(&flows)));
@@ -190,11 +198,10 @@ fn draws_reconcile_every_ledger_in_both_modes() {
 #[test]
 fn a_draw_missing_one_move_does_not_reconcile() {
     // The draws' positive control: the same step with one move dropped.
-    let mut session = kept(declared(345_000), Execution::Grouped);
+    let mut session = new_session(declared(345_000), Execution::Grouped);
     let (before, flows) = loop {
         let before = books(&session);
-        session.advance(1).unwrap();
-        let flows = session.sim.take_flows();
+        let flows = session.advance_tick_with_flows().unwrap().flows;
         if flows.len() > 1 {
             break (before, flows);
         }
