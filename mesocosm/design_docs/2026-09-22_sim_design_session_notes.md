@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 337
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 345
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -394,6 +394,8 @@ worlds, none in ecological ones.
 | | The bump's target; Eponym's CLAUDE.md; genet's rows | "Retarget to mere's main now"; "Amend as drafted"; "Bump now, fix genet next" | 327 to 329 |
 | | T2: authority; fan-out; colliders; navigation; first receipt; its plan | "nisus grows into it"; "A revision log"; "conatus carries the source stamp"; "Stamp each query"; "Inside mere, then Mesocosm"; "A lane in conatus's §2" | 330 to 335 |
 | | The traversal; paging's merge | "Fix it in mere"; "After the fix" | 336, 337 |
+| | Part B: shape requirement; catalogue; the name; seeding | "On the function catalogue"; "The five in use"; "Rename the process one"; "Grown and Acquired" | 338 to 341 |
+| | Conversions; diffusion; the dev source; the flow record | "Check declared ones"; "A kernel now, wired later"; "In the history"; "Every move, when asked" | 342 to 345 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

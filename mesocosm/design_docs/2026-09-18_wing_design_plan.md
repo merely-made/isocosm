@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 337, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 345, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2804,6 +2804,60 @@ what later sections derive from.
 337. **Paging merges after the traversal fix.** Put to Mark on 2026-09-26,
      with 336: merge now at headroom 1, now at headroom 0, or after the fix?
      Mark: "After the fix."
+338. **A process's shape requirement and seeding live on the function
+     catalogue.** Put to Mark on 2026-09-26, from Lane A's Part B, whose
+     step 1 was planned before rulings 276 to 278 put shapes and functions
+     on parts under one catalogue: on the catalogue, on the process
+     definition, or both? Mark: "On the function catalogue." Each function
+     lists the shapes that admit it and its seeding, parts express
+     functions, and a process requires a live part expressing a function,
+     bound to the lowest-numbered one that qualifies. The thirty shapes of
+     the old plan become every non-empty set of the eight shapes times
+     seeding, 510 in all, and step 1 covers them.
+339. **The catalogue starts with the five functions in use.** Put to Mark on
+     2026-09-26, with 338: the five, all fifteen of ruling 277, or those
+     with the other vocabularies folded in? Mark: "The five in use."
+     Contract, intake, sense, fix and secrete, rods contracting, lumps
+     taking in, points sensing, sheets fixing, and sheets secreting when
+     acquired; the keys stay open, the rest arriving with the anatomy brief
+     (281) and the probe's evidence.
+340. **The process's causal kind gives up the name `Shape`.** Put to Mark on
+     2026-09-26, with 338: `isocosm::rules::Shape`, a process's causal kind
+     (choice, agentless, transition), collides with ruling 276's part
+     shapes; rename the process one, or qualify the part noun? Mark: "Rename
+     the process one." *Reading, not ruled:* it becomes `Causation`, the
+     name offered, its saved field keeping the name `shape` so old worlds
+     load.
+341. **Seeding's two values are Grown and Acquired.** Put to Mark on
+     2026-09-26, with 338: Grown and Acquired, or Mesocosm's Geometry and
+     Acquired? Mark: "Grown and Acquired." *Reading, not ruled:* the names
+     put with it stand, `Binding::Part`, the catalogue `functions` in the
+     world's rules, and a part's `shape` and `functions`.
+342. **Declared conversions are checked.** Put to Mark on 2026-09-26, with
+     338: the sim admits any mass-balanced transform while Mesocosm admits
+     three, synthesis, digestion into the eater's own matter, and
+     mineralization; check declared conversions, record the kind and refuse
+     nothing, or refuse all else? Mark: "Check declared ones." A transform
+     declaring a conversion kind is checked against the three, and the rest
+     pass as before, the certified probe's grazing and drinking included.
+343. **Diffusion is ported as a kernel now and wired later.** Put to Mark on
+     2026-09-26, with 338: Mesocosm spreads soil matter over a square grid of
+     columns while the sim's sites form a route graph; a kernel now wired
+     later, along site routes now, or left to places? Mark: "A kernel now,
+     wired later." It is wired when the places family decides whether
+     columns are sites.
+344. **The dev source's issue and the assisted label live in the history.**
+     Put to Mark on 2026-09-26, with ruling 271: in the history, in the
+     world's state, or both? Mark: "In the history." The command in the log
+     is the record, the world hashes as the matter it holds, as Mesocosm's
+     DT3 does, and receipts show the issued amount beside the conserved
+     total.
+345. **The flow record holds every move, when asked.** Put to Mark on
+     2026-09-26, with ruling 270: every move switched on when wanted, every
+     move always on, or a net change per tick? Mark: "Every move, when
+     asked." Each accepted act's matter moves, from, to, amount and the
+     members it stands for, handed over each tick, every ledger reconciling
+     from it in both runners.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6594,6 +6648,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 338 to 345 recorded, Part B's forks: shape
+  requirements and seeding on the function catalogue, which starts with
+  the five functions in use; the process's causal kind renamed from
+  `Shape`; seeding's values Grown and Acquired; declared conversions
+  checked; diffusion ported as a kernel and wired later; the dev source's
+  issue in the history; and a flow record of every move, when asked.
 - 2026-09-26: rulings 330 to 337 recorded: T2's six forks from Lane J's
   assessment (nisus grows into the voxel authority; a revision log fans
   one edit out; conatus carries the source's stamp, the barrier staying
