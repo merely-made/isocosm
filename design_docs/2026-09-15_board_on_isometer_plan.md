@@ -715,3 +715,11 @@ a lane saw. This section is the current one, and it names its build.
   pointer volume reserves headroom above the tallest point, and the
   board's tallest elevation is cached rather than scanned each frame.
   The lane adds the last two before the branch merges.
+- **2026-09-26, paging's second round.** The three rulings are built on
+  `lane-e-paging`: the tallest elevation is cached, the producer phase at
+  256 falling from 2.8 to 0.03 ms and the headed frame from about 18 to
+  15 ms; headroom is a setting, one spare layer by default,
+  provisionally; and the overflow rule stands. One spare layer changes
+  356 pixels of the 256 board where headroom 0 is byte-identical, so the
+  cause is found before the branch merges (ruling 318), and the overlay
+  self-test's tie is broken with it (325).

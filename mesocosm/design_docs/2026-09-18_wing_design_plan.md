@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 315, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 326, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2625,6 +2625,94 @@ what later sections derive from.
      under way; keep it until S2 lands, archive it now, or rewrite it to
      evaluator ownership? Mark: "Archive now." So §3.1 and this record cite
      the archived copy, and its Eponym-owned sections go with it.
+316. **The 4b hunting domain stands, prey fat included.** Put to Mark on
+     2026-09-26, from Lane A's checkpoint 4b under ruling 305: 12 to 48
+     hunters per site against 128 to 256 prey, bites of 2 to 6 on prey
+     bodies of 1 to 10, an appetite of 2 to 12, and a new prey fat of 0 to
+     48 per prey group taken only by hunting, added because prey settled at
+     nearly one weight, so a draw by holdings barely differed from one by
+     headcount. With them the prey-choice reading caught the wrong-way crowd
+     at a distance of 0.44, and hunting certified on 37 of 37 readings with
+     food and 47 of 47 with water. Accept the ranges or send them back?
+     Mark: "Accept them."
+317. **A refused draw is recorded and left out, and the check fails past a
+     1% bound.** Put to Mark on 2026-09-26, with 316: when the crowd cannot
+     group a hunt, prey running out part way through hunters in different
+     states, it refuses the draw; checkpoint 4 aborted the check on one
+     refusal, and 4b records it and leaves the draw out of that arm's
+     comparisons, which could let a crowd that refuses often still pass;
+     record with a bound, record and leave out, or abort? Mark: "Record,
+     with a bound." The check fails if an arm under test refuses more than
+     1% of its draws. *Reading, not ruled:* the arm under test is the crowd
+     being certified, and the controls record their refusals unbounded.
+318. **The headroom's picture change is explained before paging merges.**
+     Put to Mark on 2026-09-26, from Lane E's second round: with one spare
+     layer the 256 board changes in 356 pixels, 0.011%, two 3-pixel bands
+     where edge pixels land one step aside, while headroom 0 is
+     byte-identical to before and the demo board is unchanged; each spare
+     layer costs about 20 KB of pointer volume at the headed pane,
+     re-uploaded on every pan that changes the held bricks. Find the cause
+     first, merge at a default of 0, or merge at 1? Mark: "Find the cause
+     first." A fix in isometer's tracer or mere's traversal comes back to
+     him.
+319. **The side panel's shrink at the new pins is measured against its text
+     before its figures move.** Put to Mark on 2026-09-26, from Lane G's
+     report: at the new pins two root tests fail because the side panel
+     measures shorter, 796 to 768 px expanded, each row about a pixel
+     shorter, `.side-line` rows 15 px around 16 px text with no line height
+     of their own, so genet's default line height changed between the pins;
+     compare the rows against their text at both pins first, or update the
+     figures? Mark: "Compare first." If genet's default now falls below the
+     text, it is a genet regression, brought to him before genet is touched.
+320. **The sim core keeps an observation hook.** Put to Mark on 2026-09-26,
+     from checkpoint 4b: to read prey choice in the exact runner, Lane A
+     added `Simulation::watch(process)`, which keeps each accepted act of a
+     process with the matter its target held as the act began until
+     `take_watched()`, changes nothing the world does, and drops the watched
+     acts of a refused advance; keep the hook, carry the holdings in the
+     act's event, or snapshot in the probe? Mark: "Keep the hook."
+321. **Isometry's toolchain moves to mere's, 1.98.1, with the pin bump.** Put
+     to Mark on 2026-09-26, from Lane G's report: mere moved to Rust 1.98.1
+     while isometry's `rust-toolchain.toml`, "pinned to match mere's", stayed
+     at 1.97.1, on which everything still builds; match mere in the bump's
+     merge, or stay and reword? Mark: "Match mere, with the bump."
+322. **mere's conatus pins burn and cubecl exactly.** Put to Mark on
+     2026-09-26, with 321: isometer's all-features build fails on a fresh
+     lock, before the bump and after, because conatus asks for burn
+     ^0.22.0-pre.2 and cubecl ^0.11.0-pre.2, and a caret on a pre-release
+     admits pre.4, which conatus's `resident` module does not compile
+     against; exact pins in mere, an exact pin in isometer-lens, or
+     isometer's lock committed? Mark: "Exact pins in mere." *Reading, not
+     ruled:* isometry's pins move to the mere revision that carries them.
+323. **With Cleromancy off, `>choose` seeds its draw from the command.** Put
+     to Mark on 2026-09-26, with 321: the VTT's own seeded draw of ruling
+     298 takes the command's seed and domain, so a command always makes the
+     same choice, or the host's generation tape? Mark: "The command's seed."
+     So the choice replays from the command alone, as Cleromancy's derived
+     selection does.
+324. **One binding adapter is planned now for Mesocosm's critters and the
+     VTT's tokens.** Put to Mark on 2026-09-26, from Lane G's check under
+     ruling 299: neither of `isometry-runtime`'s pieces, the binding table
+     of tokens to conatus bodies and the mirror turning accepted map events
+     into commands, reached the stack; isometer names no conatus body and
+     conatus keeps durable bindings outside it, while Mesocosm's
+     `TactileWorld` maps critters to conatus bodies itself. Plan one adapter
+     now, build it now, or let them go? Mark: "Plan it now." An assessment
+     takes the retired pieces, readable at f15fd43, and `TactileWorld` as
+     input, and the adapter is built when he says.
+325. **The overlay self-test's tie is broken by coordinate, with the paging
+     merge.** Put to Mark on 2026-09-26, from Lane E's second round:
+     `crates/isometry-genet/src/selftest/overlays.rs` picks its hover tile by
+     the largest key over a hash map in which two tiles tie, so its path
+     overlay differs between runs; fix it with the paging merge, or leave
+     it? Mark: "Fix it with paging."
+326. **Functional loops' T2 is assessed before it is built.** Put to Mark on
+     2026-09-26, with ruling 314: T2, one edit reaching colliders,
+     navigation and render through revisioned dirty regions, is stack work
+     in mere's conatus and nisus (§4.3); assess first, build now, or wait
+     until Eponym needs construction? Mark: "Assess first." A lane maps
+     what conatus and nisus already do and what T2 needs, and comes back
+     with forks before any edit to mere.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6410,6 +6498,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 316 to 326 recorded, from the lanes' reports:
+  checkpoint 4b's hunting domain accepted, refused draws recorded under a
+  1% bound, and the sim core's observation hook kept; paging's headroom
+  picture change explained before it merges, with the overlay self-test's
+  tie broken alongside; the side panel's shrink at the new pins measured
+  against its text before its figures move; the toolchain moved to mere's
+  1.98.1 with the bump, burn and cubecl pinned exactly in mere, and
+  `>choose` seeded from the command with Cleromancy off; one binding
+  adapter planned for critters and tokens; and functional loops' T2
+  assessed before it is built.
 - 2026-09-26: rulings 308 to 315 recorded, the doc lane's eight forks:
   Mesocosm's founding plan archived once its Tone section and the epoch
   loop's turn structure move into the overlay plan; the ProcessDef plan
