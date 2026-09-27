@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 377 on 2026-09-27, the last
+on 2026-09-26 and 353 to 378 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -460,6 +460,7 @@ label remains as the dated record of how they were presented.
 | Pre.4 persistence | Disable with a manifest-only patch, keep persistence, or measure Unix first? | "I accept your two recommendations. Wow. Much larger dependency count than I figured." Disable; amend 355 and retire the identity helper. | 375 |
 | Distillery migration gates | Full verification, defer two-peer, or compilation/lease only? | Same answer verbatim as 375. Full gates, with a separate fixture repair verified on pre.2 first. | 376 |
 | Pre.4 allocation guard | Preserve five comparisons or add service identity? | "Add service ID as a sixth comparison; also verify the new rejection case before proceeding." | 377 |
+| Pre.4 missing dependencies | Allow needed crates.io downloads, only the first missing package, or remain offline? | "Ok." Accepts needed downloads for the pinned migration, recording them and preserving Git pins. | 378 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -494,6 +495,12 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27, downloads authorized.** Ruling 378 permits crates.io
+dependencies needed for the pinned migration, recording downloads and
+preserving Git revisions. Lane M resumes the guard checkpoint. Tests and
+the deliberately broken service comparison still need execution evidence;
+the approval does not change the full migration acceptance gates.
 
 **2026-09-27, first migration checkpoint.** The repaired remote fixture
 passes its locked pre.2 baseline, independently checked. The runtime and

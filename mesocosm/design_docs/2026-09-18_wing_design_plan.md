@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 377, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 378, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3202,6 +3202,30 @@ what later sections derive from.
      differs, and show that deliberately removing the service predicate
      makes the rejection check fail. Never submit the artificial mismatched
      handle to a GPU client; the control exercises the guard itself.
+
+378. **Allow needed crates.io downloads for the pinned pre.4 migration.**
+     Asked on 2026-09-27: "May Lane M download missing crates.io
+     dependencies for the pinned pre.4 migration? The first concrete miss
+     is cubecl-spirv 0.11.0-pre.4, required to resolve an optional
+     dependency before the new guard can compile. The migration plan's
+     §13.13 currently requires staying offline and returning with a bounded
+     request when a package is missing." Options, recommended first:
+     (A) "Allow crates.io downloads needed for this pinned migration;
+     record them and keep existing Git revisions fixed (recommended)."
+     (B) "Allow only cubecl-spirv 0.11.0-pre.4 now; ask again if another
+     package is missing." (C) "Keep execution offline; preserve the
+     prepared patches and stop before the guard build." The final direct
+     question was: "May I download the crates.io dependencies needed for
+     this pinned migration?" with the recommendation: "I recommend
+     allowing that, recording downloads and preserving Git pins."
+     Mark answered verbatim: "Ok." This accepts A and resolves S0-9 for
+     the pinned migration: fetch required crates.io dependencies, record
+     their versions and integrity evidence, and preserve existing Git
+     revisions. It does not authorize unrelated upgrades or upstream
+     communication. *Reading, not ruled:* use Cargo-managed cache fills
+     for concrete misses, then return to offline/locked execution; retain
+     original failures and source/hash-qualified test receipts. Ruling
+     377's service rejection and deliberate fault control remain required.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6975,6 +6999,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 378 permits required crates.io downloads for the
+  pinned pre.4 migration, with download records and unchanged Git revisions.
+  Lane M resumes the guard checkpoint; this approval is not a test result.
 - 2026-09-27: Mere's plan/index carry 375–377 at main `844affce`.
   Lane M's separate fixture prerequisite `43c50fc6` passes both locked
   pre.2 builds; root verified 496 source hashes and the final log hash.
