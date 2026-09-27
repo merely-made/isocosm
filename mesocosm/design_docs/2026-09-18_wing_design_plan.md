@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 307, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 315, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2566,6 +2566,65 @@ what later sections derive from.
      arm of its own accord; keep it or keep the check to the arms the
      rulings named? Mark: "Keep it." It is the control that shows whether
      the check sees prey choice at all.
+308. **Mesocosm's founding plan is archived once its Tone section and the
+     epoch loop's turn structure are carried into the overlay plan.** Put to
+     Mark on 2026-09-26, the doc lane's (ruling 280) first fork: the plan's
+     world half is the sim's and its game half confirmed, while six live docs
+     cite it, two as the owner of the epoch loop's turn structure and two for
+     its Tone section and pillar 5, the Tone section existing nowhere else;
+     archive it after carrying those over, keep it as Mesocosm's charter, or
+     rewrite it to the game half? Mark: "Archive, carry over." So the
+     Mesocosm overlay plan becomes Mesocosm's charter and the six citations
+     repoint.
+309. **The ProcessDef plan is archived.** Put to Mark on 2026-09-26, the
+     second fork: ruling 32 makes its thirty shapes expressions in the sim's
+     process definition (sim plan §3.1), and the overlay plan's M2 starts
+     with matter and processes; archive it, rewrite it as Mesocosm's
+     expressions, or keep it until M2's first family lands? Mark: "Archive."
+     It points to §3.1 and M2, and the five plans citing it repoint.
+310. **The general model's wing organs move to a plan of their own, and the
+     rest is archived.** Put to Mark on 2026-09-26, the third fork: §1 to §6
+     and E0 to E4 are the sim's, and the live part is §7.4 onward, the
+     hagioglyph and impresa organs, gates G5 to G7 and the impresa finding
+     of 2026-09-21; split the organs out, keep the plan as their home, or
+     archive it whole? Mark: "Split out the organs." A new dated wing-organs
+     plan carries §7.4, the G gates and the finding, and citations of §7
+     repoint to it.
+311. **The dependency ledger is archived; the order lives in the record
+     alone.** Put to Mark on 2026-09-26, the fourth fork: the ledger orders
+     work product-first where §11 orders it W0 to W5, sim first, and each
+     overlay plan carries its own phases; archive and repoint, rewrite it
+     under W0 to W5, or keep it with a header? Mark: "Archive and repoint."
+     The plans citing it as ordering authority repoint to §11 and the
+     overlay plans' phases.
+312. **Environmental surfaces is rewritten as a short VTT note.** Put to
+     Mark on 2026-09-26, the fifth fork: the plan is one product's tile
+     layer, where the sim holds environment as a field on places moved by
+     processes with no agent (sim plan §2.4, ruling 12); archive it with
+     pointers, or rewrite it as a note on what a ruleset reads from the
+     environment field on a battlemap? Mark: "Rewrite as a VTT note."
+313. **Eponym's execution plan retires into the Eponym overlay plan now.**
+     Put to Mark on 2026-09-26, the sixth fork: its F0 to F8 layers map one
+     to one onto E2's families, while its order is product-first and its
+     receipts are fixtures; keep it and retire it at E3, retire it into the
+     overlay plan now, or rewrite its §4? Mark: "Retire into the overlay
+     plan now." F3 to F8 map onto E2's families in a table in the overlay
+     plan, and the plan is archived with a pointer. The line in
+     `eponym/CLAUDE.md` that names it "the executable plan" changes, its
+     wording going to Mark before the edit.
+314. **Functional loops' T2 goes ahead now; T1 and T3 wait for E2's
+     families.** Put to Mark on 2026-09-26, the seventh fork: when does the
+     T lane run against E2's order, T2 now with T1 and T3 after, all of it
+     after places, or all of it now? Mark: "T2 now, T1 and T3 later." T2,
+     one edit reaching every spatial consumer, is the stack's and reads no
+     place node; T1 and T3, custody, storage and projects, wait for E2's
+     bodies-and-holding and lives-and-rounds families.
+315. **World conditions is archived now.** Put to Mark on 2026-09-26, the
+     eighth fork: ruling 32 founds the sim's process definition on it and
+     the sim plan's §3.1 takes eight of its twelve parts by name, with S2
+     under way; keep it until S2 lands, archive it now, or rewrite it to
+     evaluator ownership? Mark: "Archive now." So §3.1 and this record cite
+     the archived copy, and its Eponym-owned sections go with it.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6351,6 +6410,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 308 to 315 recorded, the doc lane's eight forks:
+  Mesocosm's founding plan archived once its Tone section and the epoch
+  loop's turn structure move into the overlay plan; the ProcessDef plan
+  and the dependency ledger archived, their citations repointed; the
+  general model's wing organs split into a plan of their own, the rest
+  archived; environmental surfaces rewritten as a VTT note; Eponym's
+  execution plan retired into its overlay plan now; functional loops' T2
+  going ahead, T1 and T3 waiting for E2's families; and world conditions
+  archived now.
 - 2026-09-26: rulings 301 to 307 recorded, from Lane E's paging report and
   Lane A's checkpoint 4: a frame's overflow drops the bricks farthest from
   its centre until the card-sized atlas lands; the pointer volume reserves

@@ -270,7 +270,7 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 307
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 315
 on 2026-09-26, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
@@ -386,6 +386,8 @@ worlds, none in ecological ones.
 | | hagiograph; cleromancy; the old runtime; crate names | "Fold it in"; asked why the VTT depends on cleromancy, then "Optional, off by default"; asked what the runtime is for, then "Retire the crate"; "If they're within the ambit of isocosm vtt, then fair enough" | 297 to 300 |
 | | Paging's overflow; the pointer volume's height; the elevation scan | "Keep it"; "Reserve headroom"; "Fix it now" | 301 to 303 |
 | | Prey choice; the hunting ranges; hunting's shortage; the draw control | "Both"; "Widen them"; "In Part B"; "Keep it" | 304 to 307 |
+| | The doc lane's forks: founding; ProcessDef; general model; dependency ledger | "Archive, carry over"; "Archive"; "Split out the organs"; "Archive and repoint" | 308 to 311 |
+| | Surfaces; execution plan; functional loops; world conditions | "Rewrite as a VTT note"; "Retire into the overlay plan now"; "T2 now, T1 and T3 later"; "Archive now" | 312 to 315 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
