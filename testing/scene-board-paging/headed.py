@@ -28,17 +28,45 @@ FIELD = re.compile(r"([a-z][a-z0-9-]*)=(\d+)(?:us)?")
 PHASES = ["total", "emit", "a11y", "raster", "relayout", "present", "producer"]
 
 
-def source(directory: pathlib.Path, exe: pathlib.Path, commit: str, synth) -> None:
-    digest = hashlib.sha256(exe.read_bytes()).hexdigest()
+def session(
+    exe: pathlib.Path,
+    directory: pathlib.Path,
+    commit: str,
+    cwd: pathlib.Path,
+    synth,
+    headroom=None,
+    seconds: int = 25,
+) -> None:
+    """One run of the shipping host, stopped after `seconds`, into `directory`."""
+    directory.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ)
+    env.update({
+        "ISOMETRY_SCENE_BOARD": "1",
+        "ISOMETRY_PROFILE": "1",
+        "ISOMETRY_OVERLAY_SELFTEST": "1",
+        "ISOMETRY_CAPTURE_DIR": str(directory),
+    })
+    env.pop("ISOMETRY_SYNTH", None)
+    env.pop("ISOMETRY_SCENE_HEADROOM", None)
     switches = "ISOMETRY_SCENE_BOARD=1 ISOMETRY_PROFILE=1 ISOMETRY_OVERLAY_SELFTEST=1"
     if synth:
+        env["ISOMETRY_SYNTH"] = synth
         switches += f" ISOMETRY_SYNTH={synth}"
+    if headroom is not None:
+        env["ISOMETRY_SCENE_HEADROOM"] = str(headroom)
+        switches += f" ISOMETRY_SCENE_HEADROOM={headroom}"
+    with open(directory / "stderr.log", "wb") as err, open(directory / "stdout.log", "wb") as log:
+        process = subprocess.Popen([str(exe)], cwd=cwd, env=env, stdout=log, stderr=err)
+        time.sleep(seconds)
+        process.kill()
+        process.wait()
+    digest = hashlib.sha256(exe.read_bytes()).hexdigest()
     (directory / "source.txt").write_text(
         NEWLINE.join([
             f"commit {commit}",
             f"binary {exe.name} sha256 {digest}",
             f"switches {switches} ISOMETRY_CAPTURE_DIR=<this directory>",
-            "run 25 s, then stopped",
+            f"run {seconds} s, then stopped",
             "",
         ]),
         encoding="utf-8",
@@ -49,25 +77,14 @@ def source(directory: pathlib.Path, exe: pathlib.Path, commit: str, synth) -> No
 def run(exe: pathlib.Path, out: pathlib.Path, commit: str, cwd: pathlib.Path) -> None:
     """Both sessions of one host binary, into `out/<session>`."""
     for name, synth in SESSIONS.items():
-        directory = out / name
-        directory.mkdir(parents=True, exist_ok=True)
-        env = dict(os.environ)
-        env.update({
-            "ISOMETRY_SCENE_BOARD": "1",
-            "ISOMETRY_PROFILE": "1",
-            "ISOMETRY_OVERLAY_SELFTEST": "1",
-            "ISOMETRY_CAPTURE_DIR": str(directory),
-        })
-        env.pop("ISOMETRY_SYNTH", None)
-        env.pop("ISOMETRY_SCENE_HEADROOM", None)
-        if synth:
-            env["ISOMETRY_SYNTH"] = synth
-        with open(directory / "stderr.log", "wb") as err, open(directory / "stdout.log", "wb") as log:
-            process = subprocess.Popen([str(exe)], cwd=cwd, env=env, stdout=log, stderr=err)
-            time.sleep(25)
-            process.kill()
-            process.wait()
-        source(directory, exe, commit, synth)
+        session(exe, out / name, commit, cwd, synth)
+
+
+def check(
+    exe: pathlib.Path, directory: pathlib.Path, commit: str, cwd: pathlib.Path, headroom: int
+) -> None:
+    """The 256 session at `headroom`: a control for the pictures, not timed."""
+    session(exe, directory, commit, cwd, SESSIONS["headed-256"], headroom, seconds=12)
 
 
 def profile(log: pathlib.Path) -> dict:
@@ -163,9 +180,9 @@ def files(out: pathlib.Path) -> list[pathlib.Path]:
 
 
 def pictures(out: pathlib.Path) -> str:
-    """Which 256 captures are the same picture. The self-test hovers the
-    first of the tiles tied on `col + row` that a `HashMap` yields, which moves
-    between processes, so captures are compared within one hover target."""
+    """Which 256 captures are the same picture, compared within one hover
+    target: before 7bd7ee6 the self-test hovered whichever tied tile a
+    `HashMap` yielded first, which moved between processes."""
     runs = [host / "headed-256" for host in hosts(out)] + checks(out)
     rows = []
     for run in runs:
@@ -186,12 +203,11 @@ def pictures(out: pathlib.Path) -> str:
         "## The same picture",
         "",
         "Each 256 capture with its self-test's hover target and the headroom it",
-        "drew with (`none` predates the setting). The self-test hovers the first",
-        "of the tiles tied on `col + row` that a `HashMap` yields, which differs",
-        "between processes, so pictures compare within one target. Identical",
-        "pixels encode to identical bytes here, so equal hashes are equal pictures;",
-        "where PIL is present, the pixels that differ from the target's first",
-        "capture are counted.",
+        "drew with (`none` predates the setting). The self-test settles a tie on",
+        "`col + row` by coordinate since 7bd7ee6, so every capture here hovers one",
+        "target; pictures compare within it. Identical pixels encode to identical",
+        "bytes here, so equal hashes are equal pictures; where PIL is present, the",
+        "pixels that differ from the target's first capture are counted.",
         "",
         "| target | headroom | run | capture sha256 | pixels unlike the first |",
         "| --- | --- | --- | --- | --- |",

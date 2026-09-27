@@ -6,12 +6,13 @@ out of tree, and writes the summary and the raw-receipt manifest beside this
 script:
 
     python testing/scene-board-paging/receipts.py [--out DIR] [--builds debug,release]
-        [--host NAME=EXE ...]
+        [--host NAME=EXE ...] [--check NAME=EXE=LAYERS ...]
     python testing/scene-board-paging/receipts.py --summarise-only [--out DIR]
 
 Each `--host` runs the two headed sessions `headed.py` describes with one
 shipping host binary, into `DIR/host-<n>-<NAME>`, in the order given; it needs
-a desktop session.
+a desktop session. Each `--check` runs the 256 session once more at that
+headroom, into `DIR/headroom-check/headroom-<LAYERS>-run-<n>`, after the hosts.
 
 DIR defaults to ~/Code/testing/isometry/receipts/2026-09-26/scene-board-paging/
 <commit>, the machine's out-of-tree receipt directory with one folder per
@@ -137,11 +138,11 @@ def summarise(rows: list[dict]) -> str:
         "## One raise, one pan",
         "",
         "A raise lifts one tile a step. A pan moves the camera a tile across or",
-        "half a tile down: it reads nothing, and it retargets, or, while the hold",
-        "stands, rebuilds whenever the framing shrinks.",
+        "half a tile down: it reads nothing and retargets, a shrinking framing",
+        "included, and rebuilds only when the camera outgrows the pointer volume.",
         "",
         "| build | board | pane | kind | n | columns + diff + fill, ms | frame, ms"
-        " | loaded | retargets | hold rebuilds | upload, bytes |",
+        " | loaded | retargets | rebuilds | upload, bytes |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for build, board, pane in keys:
@@ -152,12 +153,12 @@ def summarise(rows: list[dict]) -> str:
             retargets = sum(
                 1 for r in sample if r["rebuilt"] is None and r["loaded"] + r["evicted"] > 0
             )
-            holds = sum(1 for r in sample if r["rebuilt"] == "shrink")
+            rebuilds = sum(1 for r in sample if r["rebuilt"] is not None)
             out.append(
                 f"| {build} | {board} | {pane} | {kind} | {len(sample)} "
                 f"| {ms(median(map(work, sample)))} "
                 f"| {ms(median(r['draw_ms'] for r in sample))} "
-                f"| {median(r['loaded'] for r in sample)} | {retargets} | {holds} "
+                f"| {median(r['loaded'] for r in sample)} | {retargets} | {rebuilds} "
                 f"| {median(r['upload_bytes'] for r in sample):,.0f} |"
             )
     out += [
@@ -272,6 +273,7 @@ def main() -> None:
     parser.add_argument("--builds", default="debug,release")
     parser.add_argument("--summarise-only", action="store_true")
     parser.add_argument("--host", action="append", default=[], metavar="NAME=EXE")
+    parser.add_argument("--check", action="append", default=[], metavar="NAME=EXE=LAYERS")
     args = parser.parse_args()
     if args.out is None:
         args.out = RECEIPTS / output(["git", "rev-parse", "--short", "HEAD"])
@@ -284,6 +286,11 @@ def main() -> None:
     for index, host in enumerate(args.host, start=1):
         name, exe = host.split("=", 1)
         headed.run(pathlib.Path(exe).resolve(), args.out / f"host-{index}-{name}", name, ROOT)
+    for index, check in enumerate(args.check, start=1):
+        name, rest = check.split("=", 1)
+        exe, layers = rest.rsplit("=", 1)
+        directory = args.out / "headroom-check" / f"headroom-{layers}-run-{index}"
+        headed.check(pathlib.Path(exe).resolve(), directory, name, ROOT, int(layers))
     rows = [row for log in logs for row in records(log)]
     summary = summarise(rows) + headed.section(args.out) + headed.pictures(args.out)
     (HERE / "summary.md").write_text(summary, encoding="utf-8", newline=NEWLINE)
