@@ -834,3 +834,12 @@ a lane saw. This section is the current one, and it names its build.
   fallback needs a same-keys/different-overflow reporting test. The current
   host sets headroom at construction, and `ResidencyStats` describes the
   last change, so these findings do not establish a current host regression.
+- **2026-09-27, overflow and budget setting ruled (368, 369).** The existing
+  centre-first dropping rule becomes a standing fallback, amending 301;
+  the host reports the current omitted-brick count, including changes that
+  leave retained keys unchanged. The player gets a device-bounded atlas
+  budget setting, 8 MiB by default, whose changes rebuild the atlas. Lane E
+  implements these with focused reporting and producer-invalidation tests.
+  Upfront allocation versus growth remains unanswered, as does sim flow
+  retention. Eponym's actual-device-limit propagation proceeds separately
+  under existing ruling 295, preserving its own budget.

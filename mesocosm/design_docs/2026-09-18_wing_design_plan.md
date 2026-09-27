@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 367, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 369, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3013,6 +3013,38 @@ what later sections derive from.
      over orchestration, preserving lane work and verification checkpoints.
      *Reading, not ruled:* this authorizes the traversal repin and lane
      coordination; unresolved design forks still come back to Mark.
+
+368. **Centre-first overflow remains, with the current omitted count.**
+     Asked on 2026-09-27: "1. When visible terrain exceeds the atlas budget,
+     what should happen? The card-sized atlas holds 16,383 bricks; the
+     measured large-board views need 2,413–2,504. Ruling 301 made centre-first
+     dropping temporary, so keeping it for future overflow needs an
+     amendment." Options, recommended first: (A) "Keep the nearest terrain
+     and report the current number of omitted bricks, amending 301
+     (recommended)." (B) "Refuse the frame with a capacity error rather than
+     omit terrain." Mark selected verbatim: "Keep the nearest terrain and
+     report the current number of omitted bricks, amending 301
+     (recommended)." This amends 301's expiry at card sizing. The count must
+     describe the current frame even when the retained keys do not change.
+     *Reading, not ruled:* "nearest" retains the existing centre-first
+     ordering identified in the question; it does not replace it with a
+     different camera-distance rule. The review's stale-count case needs
+     a regression test with unchanged keys and changing omitted counts.
+
+369. **The host exposes a device-bounded atlas budget setting.** Asked on
+     2026-09-27: "2. Should the player be able to change the terrain atlas
+     budget? The host currently fixes it at 8 MiB, although the library
+     accepts other budgets. A live setting also needs a rebuild that cannot
+     be skipped as an unchanged frame." Options, recommended first: (A)
+     "Expose a setting, default 8 MiB, bounded by device limits; changing it
+     rebuilds the atlas (recommended)." (B) "Keep the host fixed at 8 MiB for
+     this slice; only library callers can choose another budget." Mark
+     selected verbatim: "Expose a setting, default 8 MiB, bounded by device
+     limits; changing it rebuilds the atlas (recommended)." The player can
+     change the budget and the next frame must reflect it. Allocation
+     upfront versus growth remains a separate unanswered question.
+     *Reading, not ruled:* use the existing host preference machinery and
+     test one rebuild after a settings change, then an unchanged-frame skip.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6786,6 +6818,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: rulings 368 and 369 answer the first two paging questions:
+  standing centre-first overflow with a current omitted-brick count,
+  amending 301, and a live device-bounded budget defaulting to 8 MiB.
+  Lane E implements them with tests for unchanged retained keys and the
+  producer's settings-change skip. Allocation and sim flow retention remain
+  open. Mark invited ongoing coordination with the independent review chat.
 - 2026-09-27: paging's release traversal gate passes on Lane E `e688a5e`
   after main's repin: old-walk control 330 moved pixels, fixed CPU/GPU zero;
   both GPU terrain frames differ from the empty control at 669,280 pixels.

@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 367 on 2026-09-27, the last
+on 2026-09-26 and 353 to 369 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -450,6 +450,8 @@ label remains as the dated record of how they were presented.
 | | Repin the traversal fix now or bundle it with genet and pre.4? | "You can repin but communicate with the isocosm agent"; the intended agent remains unresolved | 365 |
 | Method | Evidence status; dependency-ordered questions; fault-specific controls, offered as three additions | "Sounds good! Shall we proceed? Or would you like to review/audit first?" | 366 |
 | Coordination | Lane A, the RPG session or both before repinning? | "Ah, the rpg session isn’t active now. But you can orchestrate the repin/rest" | 367 |
+| Paging overflow | Standing nearest-terrain fallback with a current omitted count, or capacity error? | "Keep the nearest terrain and report the current number of omitted bricks, amending 301 (recommended)." | 368 |
+| Paging budget | Live device-bounded 8 MiB default, or fixed host budget? | "Expose a setting, default 8 MiB, bounded by device limits; changing it rebuilds the atlas (recommended)." | 369 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -484,6 +486,12 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27, next answers.** Rulings 368 and 369 settle standing counted
+overflow and a live budget setting. Allocation and sim flow retention remain
+open. Mark explicitly invited continued questions and coordination with the
+independent review chat; its next read-only pass checks the reserve-path
+reading before checkpoint 5 integration.
 
 **2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
 367, with the checks and picture receipts recorded in the board plan.
