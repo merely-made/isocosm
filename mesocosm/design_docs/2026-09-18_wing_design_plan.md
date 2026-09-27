@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 345, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 371, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -29,6 +29,11 @@ and three game overlays; the rules that decide which tier a thing belongs
 to; the method by which claims reach rulings and receipts reach plans; and
 the order in which the wing's existing plans are re-read, kept, rewritten or
 retired against this record.
+
+**Method annotation, 2026-09-27:** Mark restated the question, ruling and
+verification method and invited improvements. The preserved method and
+explicitly unruled refinements are in the [session notes,
+§8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
 
 **Does not own:** any tier's internal design below the level ruled here, any
 product's verbs, the hagiograph's implementation (mere's eidetic family), or
@@ -2858,6 +2863,223 @@ what later sections derive from.
      asked." Each accepted act's matter moves, from, to, amount and the
      members it stands for, handed over each tick, every ledger reconciling
      from it in both runners.
+346. **The body-binding shape is documented in conatus's docs now and built
+     later; each product keeps its own table meanwhile.** Put to Mark on
+     2026-09-26, from Lane I's assessment under ruling 324, which found the
+     premise shifted: the board plan's live bodies are tokens drawn as
+     isometer meshes, not conatus bodies, and isometer answers pointer picks
+     itself, so no code queries a bound conatus body today, while tokens in
+     a volume battlemap (243), critters in the terrarium and Eponym's solver
+     (233) would. Design the shared mechanism anyway, document the shape
+     only, or retire `TactileWorld`'s critter half? Mark: "Document the
+     shape only." Asked how that sits with 348 and 349, Mark confirmed the
+     reading: the common shape goes into conatus's docs now, saying where
+     the module will live and how it works once built; nothing is built, and
+     each product keeps its own table until he says.
+347. **isometer alone answers a pointer pick.** Put to Mark on 2026-09-26,
+     with 346: isometer only, conatus through the bindings as T1 was ruled,
+     or both? Mark: "isometer only." The player clicks what was drawn, and
+     isometer answers per part and per frame, as the VTT board already does;
+     the bindings answer other queries.
+348. **The binding module, when built, lives in mere's conatus, generic over
+     the key.** Put to Mark on 2026-09-26, with 346: conatus, a new crate
+     under `shared/`, isometer, or `mesocosm-runtime`? Mark: "A module in
+     mere's conatus." Three mere doc passages are amended with the shape,
+     one of them the line placing bindings "not to Conatus".
+349. **It binds bodies only, on a world shared with T2's terrain collider.**
+     Put to Mark on 2026-09-26, with 346: bodies on a borrowed world, bodies
+     on its own world, or bodies and terrain? Mark: "Bodies only, shared
+     world." Terrain arrives through T2's one path (rulings 330 to 335).
+350. **Accepted state arrives both whole and per key.** Put to Mark on
+     2026-09-26, with 346: a whole-set reconcile and per-key set and remove,
+     reconcile only, or per key only? Mark: "Both." The reconcile is the cold
+     rebuild and carries the VTT's per-event accepted map; per-key updates
+     carry a critter changing alone; cold and incremental must agree.
+351. **A moved body keeps its id.** Put to Mark on 2026-09-26, with 346: move
+     it and keep its id, respawning only when the entity's shape revision
+     changes, or always respawn? Mark: "Move it, keep its id."
+352. **conatus gains a query-refresh call.** Put to Mark on 2026-09-26, with
+     346: conatus's queries miss a topology change until the world steps, so
+     `TactileWorld` and Eponym each run a tiny step; a refresh call in
+     conatus, the tiny step kept, or left to the world's owner? Mark: "A
+     refresh call in conatus." It is a small mere edit, independent of the
+     bindings, that both workarounds become.
+353. **Burn moves to pre.4 with exact pins, superseding the pre.3 repin and
+     D1's carets.** Put to Mark on 2026-09-27, after ruling 322 was reopened
+     and he asked whether pre.4 lets everything move to it. Lane H found the
+     whole family published pre.4 on 2026-09-22, with no stable 0.22 yet; in
+     mere only conatus breaks, about 18 mechanical lines in three files, and
+     isometer-lens needs two; Distillery and its lease tests pass;
+     cubek-reduce's and burn-remote's patches carry, burn-cubecl's needs a
+     hand rebase and cubecl-runtime's can go; and pre.3 with carets would not
+     fix isometer, a caret on pre.3 admitting pre.4. Pre.4 exact, pre.3
+     exact, pre.2 exact in mere, or wait for stable? Mark: "Pre.4, exact
+     pins." `=0.22.0-pre.4`, `=0.11.0-pre.4` and `=0.3.0-pre.4`; the parked
+     pre.3 repin's commits guide the rebase. This answers ruling 322.
+354. **No stopgap pin in isometer-lens.** Put to Mark on 2026-09-27, with
+     353: pin burn at pre.2 in isometer-lens until the migration lands, or
+     not? Mark: "No stopgap." isometer's all-features build stays broken on
+     a fresh lock until then.
+355. **mere's cubecl-runtime patch retires.** Put to Mark on 2026-09-27,
+     with 353: pre.4 makes each allocation's identity public, if hidden from
+     the docs; retire the patch or carry it re-pointed? Mark: "Retire it."
+     burn-cubecl's guard compares the public id, and Knot's need to patch
+     cubecl-runtime goes with it.
+356. **turso is settled in the migration.** Put to Mark on 2026-09-27, with
+     353: pre.4 brings in turso, a pre-release database, through cubecl's
+     default `persistence` feature, drifting by caret in every GPU build;
+     settle it in the migration, commit mere's lock again, or let it drift?
+     Mark: "Settle it in the migration." The lane checks whether
+     `persistence` can be turned off, which drops turso, and brings the
+     answer back before anything is committed.
+357. **A declared synthesis produces the actor's own lineage's matter.** Put
+     to Mark on 2026-09-27, from Part B's step 2 under ruling 342: the sim's
+     core has no notion of a producer; the actor's own lineage, a flora
+     kingdom, or kingdoms the rules declare? Mark: "The actor's own
+     lineage." Whatever has a synthesis process is a producer, mirroring
+     digestion, and no producer classification enters the core.
+358. **A dev placement may fill any declared matter account.** Put to Mark
+     on 2026-09-27, with 357: any declared matter account, or world matter
+     only? Mark: "Any declared matter account." Mesocosm's overlay chooses
+     soil.
+359. **Each flow names the process that moved it.** Put to Mark on
+     2026-09-27, with 357: add the act's process as the reason, or leave it
+     out as ruling 345 had it? Mark: "Add the process."
+360. **Part shapes take their own key prefix.** Put to Mark on 2026-09-27,
+     with 357: X1 keyed part shapes as `shape:*`, the namespace the world's
+     own `shape:graph` uses; separate them or share it? Mark: "Part shapes
+     get their own prefix." *Reading, not ruled:* `part-shape:*`, the
+     example offered.
+361. **isometer calls modulus's CPU walk instead of copying it.** Put to
+     Mark on 2026-09-27, from Lane K's traversal fix under ruling 336, each
+     crossing now computed as the boundary less the eye over the direction,
+     which removed every fault and every headroom move on the VTT board
+     frame, on the CPU and four GPU setups, for 0.02 to 0.08 ms a frame:
+     isometer's GPU path includes modulus's shader, but its CPU pick path is
+     a hand copy; call modulus's walk, or keep the copy? Mark: "Call
+     modulus's walk." modulus makes its exact CPU mirror public and isometer
+     wraps it.
+362. **The traversal's start clamps into the box.** Put to Mark on
+     2026-09-27, with 361: the shader's 1e-4 start offset is too small in
+     f32 beyond t of about 1,000, so a first-voxel hit reports its entry face
+     and the GPU and CPU disagree which, on 3,754 to 4,093 of 98,304 stress
+     rays and none on the board; clamp the start voxel into the box, report
+     the entry face, or leave it? Mark: "Adopt the clamp." It lands with the
+     traversal fix.
+363. **T2 is built after the pre.4 migration.** Put to Mark on 2026-09-27,
+     with ruling 335: after the migration, now, or when Mesocosm needs it?
+     Mark: "After the pre.4 migration." The traversal fix, the migration and
+     T2 all touch conatus, so they land in turn.
+364. **X1's defaults are copied in explicitly.** Put to Mark on 2026-09-27,
+     from Part B's step 1: the eight shapes and five functions are constants
+     a world copies in, the generator not yet copying them, and the crowd
+     refuses a process binding a part until the probe certifies it; keep
+     that, or have the generator copy them now? Mark: "Keep as built." Were
+     the defaults implicit, growing the set later (281) would change what old
+     worlds mean without changing their digest.
+
+365. **The traversal repin proceeds with coordination.** Asked whether to
+     repin isometry for the traversal fix now, leaving genet's text fix and
+     burn pre.4 for later, or bundle all three, Mark answered: "You can repin
+     but communicate with the isocosm agent". The 2026-09-27 handoff carried
+     this answer unrecorded. The repin targets mere `7bb5bfda`; genet and
+     netrender stay at their current pins. *Reading, not ruled:* the agent
+     may mean Lane A (sim Part B) or the RPG session; its identity and the
+     requested coordination remain unresolved before the repin proceeds.
+
+     **2026-09-27 annotation:** the handoff preserves the question as
+     "repin isometry now for the traversal fix, with genet's fix and pre.4
+     in a later repin, or wait and bundle all three?" Its two alternatives
+     are (1) repin traversal now and defer genet/pre.4, or (2) wait and
+     bundle all three. Separate original option labels and recommendation
+     order were not preserved in the handoff; they are not reconstructed.
+
+366. **The three method refinements are accepted.** On 2026-09-27 the
+     assistant offered three additions: distinguish measured evidence from
+     lane reports and unknowns; order questions by what their answers
+     unblock; name each control's detectable fault and retain passing and
+     deliberately failing results. These were offered together, not as
+     mutually exclusive options. Mark: "Sounds good! Shall we proceed? Or
+     would you like to review/audit first?" The additions supplement the
+     preserved method in session notes §8.2. *Reading, not ruled:* the
+     assistant chose a narrow traversal audit before the already-authorized
+     repin. This answer does not identify ruling 365's coordination target.
+
+367. **The new session orchestrates the repin and remaining lanes.** Asked
+     which agent ruling 365 meant, with Lane A, the RPG session or both as
+     the alternatives, Mark answered on 2026-09-27: "Ah, the rpg session
+     isn’t active now. But you can orchestrate the repin/rest". This
+     supersedes the waiting coordination step in 365: the new session takes
+     over orchestration, preserving lane work and verification checkpoints.
+     *Reading, not ruled:* this authorizes the traversal repin and lane
+     coordination; unresolved design forks still come back to Mark.
+
+368. **Centre-first overflow remains, with the current omitted count.**
+     Asked on 2026-09-27: "1. When visible terrain exceeds the atlas budget,
+     what should happen? The card-sized atlas holds 16,383 bricks; the
+     measured large-board views need 2,413–2,504. Ruling 301 made centre-first
+     dropping temporary, so keeping it for future overflow needs an
+     amendment." Options, recommended first: (A) "Keep the nearest terrain
+     and report the current number of omitted bricks, amending 301
+     (recommended)." (B) "Refuse the frame with a capacity error rather than
+     omit terrain." Mark selected verbatim: "Keep the nearest terrain and
+     report the current number of omitted bricks, amending 301
+     (recommended)." This amends 301's expiry at card sizing. The count must
+     describe the current frame even when the retained keys do not change.
+     *Reading, not ruled:* "nearest" retains the existing centre-first
+     ordering identified in the question; it does not replace it with a
+     different camera-distance rule. The review's stale-count case needs
+     a regression test with unchanged keys and changing omitted counts.
+
+369. **The host exposes a device-bounded atlas budget setting.** Asked on
+     2026-09-27: "2. Should the player be able to change the terrain atlas
+     budget? The host currently fixes it at 8 MiB, although the library
+     accepts other budgets. A live setting also needs a rebuild that cannot
+     be skipped as an unchanged frame." Options, recommended first: (A)
+     "Expose a setting, default 8 MiB, bounded by device limits; changing it
+     rebuilds the atlas (recommended)." (B) "Keep the host fixed at 8 MiB for
+     this slice; only library callers can choose another budget." Mark
+     selected verbatim: "Expose a setting, default 8 MiB, bounded by device
+     limits; changing it rebuilds the atlas (recommended)." The player can
+     change the budget and the next frame must reflect it. Allocation
+     upfront versus growth remains a separate unanswered question.
+     *Reading, not ruled:* use the existing host preference machinery and
+     test one rebuild after a settings change, then an unchanged-frame skip.
+
+370. **Atlas allocation is reopened around preserving resident GPU data.**
+     Asked on 2026-09-27: "3. Should the atlas allocate its full budget
+     immediately? The branch allocates all 8 MiB; the small demo's 260
+     bricks fit in two 128 KiB rows. Growing later saves initial memory but
+     requires replacing the texture and uploading all retained bricks
+     again." Options, recommended first: (A) "Allocate the chosen budget
+     upfront, keeping texture dimensions and slots stable (recommended)."
+     (B) "Allocate occupied rows initially and grow up to the chosen budget,
+     with replacement and full re-upload." Mark asked: "How costly is
+     replacing the texture and uploading only the retained bricks that
+     change? Is that possible?" This is a request to examine the premise,
+     not a selection of either allocation policy. The assistant's initial
+     answer: a new texture may receive unchanged residents through a GPU
+     copy and only new or edited data through CPU uploads, with both
+     textures alive during transfer. *Reading, not ruled:* verify the
+     current layout and measure that alternative before putting the choice
+     back. Allocation remains open; 368 and 369 proceed independently.
+
+371. **Checkpoint 5 requires a per-tick flow handoff API.** Asked on
+     2026-09-27: "4. How should requested sim flow records be handed over?
+     Checkpoint 5 passes 108 tests and keeps every requested move until the
+     caller drains the queue, without a cap. Your ruling 345 says ‘Every
+     move, when asked’; handing records over each tick was the plan's
+     reading." Options, recommended first: (A) "Keep records until drained;
+     live hosts drain each tick, with no silent dropping (recommended)."
+     (B) "Require a per-tick handoff API before accepting checkpoint 5."
+     Mark selected verbatim: "Require a per-tick handoff API before accepting
+     checkpoint 5." The per-tick handoff is now required, rather than an
+     assumed host convention. Recording remains opt-in under 345 and every
+     requested move must be represented. Checkpoint 5's previously audited
+     implementation does not satisfy this new acceptance condition yet.
+     *Reading, not ruled:* the lane chooses a minimal explicit API and proves
+     that successive tick results cannot accumulate or mix records, in both
+     execution modes, with ledger reconciliation retained.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6631,6 +6853,52 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 371 requires a per-tick flow handoff before accepting
+  checkpoint 5. Lane A must implement and reverify it; the earlier until-
+  drained reading is not accepted. Atlas allocation remains under inquiry
+  (370); whether the newly ruled budget setting persists locally is asked
+  separately after finding no application preference store.
+- 2026-09-27: ruling 370 preserves Mark's question about GPU-preserving
+  atlas growth. The offered full re-upload premise is under investigation;
+  allocation is not selected. A bounded comparison may inform the next
+  question without implementing production growth.
+- 2026-09-27: rulings 368 and 369 answer the first two paging questions:
+  standing centre-first overflow with a current omitted-brick count,
+  amending 301, and a live device-bounded budget defaulting to 8 MiB.
+  Lane E implements them with tests for unchanged retained keys and the
+  producer's settings-change skip. Allocation and sim flow retention remain
+  open. Mark invited ongoing coordination with the independent review chat.
+- 2026-09-27: paging's release traversal gate passes on Lane E `e688a5e`
+  after main's repin: old-walk control 330 moved pixels, fixed CPU/GPU zero;
+  both GPU terrain frames differ from the empty control at 669,280 pixels.
+  Complete logs are retained. The board plan records two source-reviewed
+  follow-ups for live settings invalidation and current overflow reporting.
+  Policy answers and remaining integration receipts still precede merge;
+  no new ruling or production change follows from this gate.
+- 2026-09-27: traversal repin applied under 361, 362, 365 and 367: all
+  seven mere manifests at `7bb5bfda`, the CPU ray wrapper calling modulus,
+  root 397 tests and shared isometer 280 tests passing, all-feature host
+  checks passing, and fresh Eponym depth and Mesocosm body pictures kept.
+  The board plan's dated entry gives controls, evidence paths and source
+  audit limits. Lane A checkpoint 5 is independently audited but unmerged,
+  with the sim plan recording the retained evidence and its limits.
+  Paging's three policy choices and sim flow retention are put to Mark;
+  the pre.4 and text forks follow. Genet main has diverged from Lane L and
+  contains concurrent edits, so the handoff's fast-forward instruction is
+  stale; reconciliation and fresh verification precede integration.
+- 2026-09-27: ruling 367 transfers repin and remaining-lane orchestration
+  to the new session because the RPG session is inactive. The coordination
+  hold in 365 is superseded; verification and unresolved design forks stay.
+- 2026-09-27: ruling 366 accepts the three method refinements: evidence
+  status, questions ordered by dependencies, and fault-specific controls
+  with passing and deliberately failing outcomes. Traversal audit opened;
+  ruling 365's agent identity remains unresolved.
+- 2026-09-27: the working method preserved in session notes §8.2, with
+  proposed refinements explicitly unruled; ruling 365 annotated with the
+  question and alternatives recoverable from the handoff.
+- 2026-09-27: ruling 365 recorded from the session handoff: proceed with
+  the traversal repin after communicating with the isocosm agent. The
+  intended agent still needs identification; the repin has not landed.
 - 2026-09-18: record written from the 2026-09-17 and 2026-09-18
   conversation.
 - 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
@@ -6648,6 +6916,22 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-27: the pin bump landed on main: mere 0418391f, genet 0cf4f30b and
+  netrender c8c09f16, the toolchain at 1.98.1, the hagiograph folded into
+  the family rev, Cleromancy optional and off by default, `isometry-runtime`
+  retired, and the side panel's figures moved (rulings 292, 297 to 300,
+  321, 323, 327, 329). Verified in all eight workspaces before merging.
+- 2026-09-27: rulings 346 to 364 recorded: the body-binding shape
+  documented in conatus's docs and built later, isometer answering picks,
+  a conatus home generic over the key, bodies only on T2's shared world,
+  reconcile and per-key updates, ids kept across moves and a query-refresh
+  call in conatus; burn moving to pre.4 with exact pins, answering 322,
+  with no stopgap, the cubecl-runtime patch retired and turso settled in
+  the migration; Part B's synthesis into the actor's own lineage, dev
+  placement into any declared matter account, each flow naming its
+  process and part shapes under their own prefix; isometer calling
+  modulus's CPU walk and the traversal's start clamped; T2 built after
+  the migration; and X1's defaults copied in explicitly.
 - 2026-09-26: rulings 338 to 345 recorded, Part B's forks: shape
   requirements and seeding on the function catalogue, which starts with
   the five functions in use; the process's causal kind renamed from

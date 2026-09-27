@@ -7,6 +7,12 @@ index, an index defect. Evaluated against the wing design record; see
 
 ## Decision
 
+*(2026-09-26: Cleromancy is now an optional host feature, off by default,
+wing design record ruling 298; with it off, `>choose` picks by the VTT's own
+seeded draw from the command's seed and domain, ruling 323, so a command
+always makes the same choice. The decision below holds when the feature is
+on.)*
+
 Use Cleromancy only to choose one already-loaded Isometry generator before
 the normal host-side preview call. This is a local GM action, entered as:
 

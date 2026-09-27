@@ -83,7 +83,16 @@ mod boot;
 mod board_census;
 mod campaign_store;
 mod catalog;
+// The GM's `>choose`: Cleromancy's sealed reading behind the `cleromancy`
+// feature, the VTT's own seeded draw otherwise.
+#[cfg(feature = "cleromancy")]
 mod cleromancy_selection;
+#[cfg(feature = "cleromancy")]
+use cleromancy_selection as generator_selection;
+#[cfg(not(feature = "cleromancy"))]
+mod seeded_selection;
+#[cfg(not(feature = "cleromancy"))]
+use seeded_selection as generator_selection;
 mod dispatch;
 mod generators;
 mod hooks;
@@ -329,10 +338,10 @@ struct App {
     generation_tape: EntropyTape,
     generation_ordinal: u64,
     generator_catalog: GeneratorCatalog,
-    /// The last Cleromancy-backed generator choice. This remains a host-local
-    /// receipt: previews and commits continue through their normal Isometry
-    /// path, while campaign state never contains this selection record.
-    last_generator_selection: Option<cleromancy_selection::GeneratorSelection>,
+    /// The last `>choose` generator choice. This remains a host-local record:
+    /// previews and commits continue through their normal Isometry path,
+    /// while campaign state never contains this selection record.
+    last_generator_selection: Option<generator_selection::GeneratorSelection>,
     /// The real faction moves behind the downtime surface's display rows,
     /// index-aligned with them. The DM strikes rows in the view; on commit the
     /// host keeps the moves whose row survived. Rolled from `generation_tape`.

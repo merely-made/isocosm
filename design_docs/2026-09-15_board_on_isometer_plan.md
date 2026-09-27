@@ -225,6 +225,8 @@ with the family's receipts unchanged; then the board.
 - The family-plan risk that the Isometry root pins an older mere is closed
   as of 2026-09-15: root, isometer and both products share mere 876320fd and
   genet 5ae30cad.
+  *(2026-09-27: all moved together to mere 0418391f, genet 0cf4f30b and netrender c8c09f16, with the toolchain
+  at 1.98.1 (wing design record rulings 292, 297 to 300, 321, 327).)*
 - No Isometry-side document cited the L4 done condition before this plan.
 - `isometry-runtime`, which holds the earlier fixed-isometric GPU tenant,
   is excluded from the root workspace and untouched by this plan.
@@ -237,7 +239,9 @@ with the family's receipts unchanged; then the board.
   Three facts bound it. The resident cap stays 2,047 bricks: in the headed
   pane (972 by 820) a flat 256-tile board needs 1,345 visible bricks and
   fits, one with 0 to 7 relief needs 2,063 and does not. A defect in
-  `modulus` at 876320fd, unchanged on mere's main: after a retarget that
+  `modulus` at 876320fd, unchanged on mere's main *(fixed there on
+  2026-09-26 at 668854c9, ruling 288, and pinned here from 2026-09-27)*:
+  after a retarget that
   shrinks the selection, a kept brick can hold a slot past the resident
   count, so its refresh panics and picks pass through visible ground
   (`modulus/src/lib.rs:424-433`); Eponym's V1b carries it latently, never
@@ -731,3 +735,117 @@ a lane saw. This section is the current one, and it names its build.
   texels and headroom 1 at 531, so neither picture is exact
   (`testing/scene-board-paging/bands.md` on the branch). Mark ruled the
   fix into mere (ruling 336) and paging's merge after it (337).
+- **2026-09-27, the traversal fixed in mere, on a branch.** Lane K's
+  `dda-precision` computes each crossing as the boundary less the eye
+  over the direction: on this board's frame no fault and no headroom
+  move remain, on the CPU and four GPU setups, for 0.02 to 0.08 ms a
+  frame. isometer will call modulus's CPU walk rather than copy it
+  (ruling 361), and the start clamps into the box (362). Paging merges
+  once that reaches isometry's pins.
+- **2026-09-27, traversal repin authorized with coordination (ruling 365).**
+  Mere's remote main is now `7bb5bfda`, containing Lane K's fix. Isometry
+  still pins `0418391f`. Mark authorized the separate traversal repin with
+  "You can repin but communicate with the isocosm agent". Identifying and
+  contacting that agent remain prerequisites; the repin, picture receipts
+  and paging merge are still pending. Genet's text fix and burn pre.4 follow
+  separately.
+- **2026-09-27, pre-repin audit, partial.** At isometry `a9409e0` and mere
+  `7bb5bfda`, all 30 files in
+  `Code/testing/mere/receipts/2026-09-27/dda-precision/SHA256SUMS` matched
+  their SHA-256 entries. The manifest itself hashes to
+  `df10dc7594331a5ac3b9d694dc2c83915af3f1dcb767afc3c608428203be4d3f`.
+  Source inspection confirmed the same-run accumulated-walk control in
+  `modulus/src/traversal_tests.rs`: 330 and 660 moved pixels at one and
+  two headroom layers, versus zero required from the fixed CPU walk.
+  These counts were not recomputed in this audit: the fresh locked,
+  offline modulus test invocation waited on another session's Cargo
+  package-cache lock and was stopped before compiling. No new target was
+  created. GPU receipt files were integrity-checked, not rerun.
+  The repin interval also includes `a464dc2a`, which updates Knot's two
+  dependency revisions; consumer checks must cover that resolution change.
+  Lane A's `shared/isocosm/Cargo.toml` still pins hagiograph at `53648d3a`,
+  whereas main pins `0418391f`. That manifest and lock need coordination
+  before repinning to `7bb5bfda`; the pins remain unchanged.
+- **2026-09-27, orchestration resumed (ruling 367).** The RPG session is
+  inactive; Mark authorized this session to orchestrate the repin and
+  remaining lanes. The coordination hold above is superseded. Traversal
+  verification and the CPU wrapper change proceed, with independent audits
+  of sim Part B, paging and the queued pre.4/text forks. Unresolved design
+  choices remain with Mark.
+- **2026-09-27, traversal repin verified and applied.** Seven manifests
+  now pin mere `7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7`; the three
+  tracked lockfiles change only that revision. Genet and netrender stay
+  at `0cf4f30b` and `c8c09f16`. Isometer's `trace_ray` delegates traversal
+  to modulus, retaining ray validation, normalization, world-space hit
+  reporting and exhaustion errors (361). The added boundary-start test
+  hits voxel 262143 from coordinate 262144 at distance 0.0001 (362).
+  At the repin source based on main `0f3cc37`, root tests pass 397 with
+  three intentional ignores; shared isometer passes 280 with one ignored
+  doc test. Lens library clippy passes with warnings denied. Root,
+  Mesocosm and Eponym all-features/all-targets checks pass, offline and
+  locked; main's Isocosm Part A passes 69 tests and wing-integration four.
+  Modulus passes 26 tests; its separately rerun receipt measures
+  zero fixed-walk faults over 669,280 board rays at each of three headroom
+  settings, against the same-run old-walk control's 2, 332 and 662 faults
+  and 330/660 moved pixels. These are fresh CPU measurements; the four
+  archived GPU setups above remain integrity-checked historical evidence.
+  Fresh lens GPU tests execute with visible terrain and occlusion controls.
+  Eponym's headed D1 passes 64 frames and probes 9/9, 9/9, 0/9, 0/9,
+  independently recomputed from its PNG; the picture is byte-identical
+  to the preserved August 26 picture. Mesocosm's DC4 example records all
+  16 body cuts and a contact sheet, visually reviewed as capture evidence.
+  Logs, metadata and pictures are under
+  `Code/testing/isometry/receipts/2026-09-27/traversal-repin/`.
+  The default source audit has zero duplicate families. All features
+  retains 41 under ruling 298's optional Cleromancy exception: comparing
+  Lane E's pre-repin closure gives the same 125 family identities after
+  normalizing the mere revision; removing only Cleromancy gives zero.
+  Paging is still unmerged: its diagnostic had no assertions, so a bounded
+  gate patch is prepared on Lane E, requiring the old-walk control to move
+  330 pixels, the fixed CPU/GPU pictures to move zero, and GPU acquisition
+  to succeed. It must run against this repin. Overflow after card sizing,
+  the host's budget setting and upfront versus growing allocation await
+  Mark; Eponym's actual device limits are already required by ruling 295.
+- **2026-09-27, paging's traversal gate passes after the repin.** Lane E
+  merged main `b4db31d` without conflicts; tested source `e688a5e` adds
+  assertions and a same-run empty-terrain GPU control. With Rust 1.98.1,
+  the locked offline release gate passes: the old walker moves 330 pixels,
+  the fixed CPU and GPU each move zero, and each of the two terrain frames
+  differs from the empty-terrain frame at all 669,280 pixels. Capture
+  lengths are checked at 2,677,120 bytes. Complete stdout, stderr and
+  source/compiler provenance are in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+  The separate f64-camera diagnostic still differs at 68 texels for both
+  fixed maps: zero headroom moves is not universal pixel exactness. The
+  lane's receipt annotation is pushed at `fffee6a`; its tested code remains
+  `e688a5e`.
+  The earlier passing attempt without the empty-terrain control is retained
+  separately as `lane-e-traversal-band-gate`; it is not the final gate.
+  This verifies the declared traversal frame, not moving bodies/contact or
+  a combined simulated-scene budget. Paging remains unmerged pending the
+  three policy answers and remaining integration receipts.
+  A separate read-only review, confirmed against source at `1bbdf4f`,
+  identified two policy-linked follow-ups, not reproduced runtime failures:
+  `BoardSource::set_residency` changes settings but its input signature does
+  not, so the producer can skip the requested rebuild when `needs_frame`
+  is false; and `Residency::update` returns `Current` before publishing a
+  changed overflow count if the retained keys and dirty set stay unchanged.
+  Live settings need a producer-level change/rebuild/skip test; a counted
+  fallback needs a same-keys/different-overflow reporting test. The current
+  host sets headroom at construction, and `ResidencyStats` describes the
+  last change, so these findings do not establish a current host regression.
+- **2026-09-27, overflow and budget setting ruled (368, 369).** The existing
+  centre-first dropping rule becomes a standing fallback, amending 301;
+  the host reports the current omitted-brick count, including changes that
+  leave retained keys unchanged. The player gets a device-bounded atlas
+  budget setting, 8 MiB by default, whose changes rebuild the atlas. Lane E
+  implements these with focused reporting and producer-invalidation tests.
+  Upfront allocation versus growth remains unanswered, as does sim flow
+  retention. Eponym's actual-device-limit propagation proceeds separately
+  under existing ruling 295, preserving its own budget.
+- **2026-09-27, allocation premise reopened (370).** Mark asked whether a
+  replacement texture can retain unchanged bricks while uploading only
+  changes, and what it costs. Allocation remains open. Inspect and compare
+  GPU copying with full CPU re-upload, including temporary coexistence of
+  old/new textures and preservation of slot addresses. No growth policy is
+  authorized by the question alone.

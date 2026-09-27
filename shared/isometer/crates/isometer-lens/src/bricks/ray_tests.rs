@@ -131,3 +131,15 @@ fn rounded_boundary_start_does_not_wrap_to_the_opposite_brick() {
             .is_none()
     );
 }
+
+#[test]
+fn rounded_boundary_start_is_clamped_to_the_near_voxel() {
+    let scene = map(&[([262_143, 0, 0], 9)]);
+    let hit = scene
+        .trace_ray([262_144.0, 0.5, 0.5], [-1.0, 0.0, 0.0], 1.0)
+        .unwrap()
+        .unwrap();
+    assert_eq!((hit.voxel, hit.material), ([262_143, 0, 0], 9));
+    assert_eq!(hit.normal, [0.0, 1.0, 0.0]);
+    assert_eq!(hit.distance, 0.0001);
+}

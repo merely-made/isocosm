@@ -97,7 +97,7 @@ impl App {
             "[isometry] cmd selftest: receipt selection = {:?}",
             self.last_generator_selection
                 .as_ref()
-                .map(|selection| (&selection.reading.candidate_id, &selection.reading.receipt))
+                .map(|selection| (selection.candidate_id(), selection.receipt()))
         );
         {
             let runner = &mut *ctx.runner;

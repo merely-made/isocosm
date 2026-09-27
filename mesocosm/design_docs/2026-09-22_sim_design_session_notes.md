@@ -270,8 +270,8 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 345
-on 2026-09-26, the last
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
+on 2026-09-26 and 353 to 371 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -307,6 +307,53 @@ worlds, none in ecological ones.
   Mark's word ("Commit and push").
 - Wing law and CLAUDE.md changed only on his explicit word, the Law A
   amendment shown as a draft first.
+
+#### 2026-09-27 annotation: the method carried into the new session
+
+Mark supplied the following working method and invited its preservation and
+improvement. This annotation supplements the dated account above.
+
+1. Design moves in rounds of up to four multiple-choice questions. Each
+   question gives its evidence in one or two sentences with concrete
+   numbers, then two to four options stating their commitments, with the
+   assistant's recommendation first. A free-form answer may reframe the
+   question: answer what Mark actually asked before putting it back.
+2. Every design answer becomes a numbered ruling in the design record,
+   preserving the question as put, its options, Mark's words verbatim and
+   what follows. Anything inferred beyond those words is **Reading, not
+   ruled**. Dated text keeps its words; changes are dated annotations or new
+   rulings naming what they amend.
+3. Rulings and all affected documents move together in the same turn: the
+   record, plans, session notes and index. Commit by path and push each
+   batch so the documentation agrees with the tree.
+4. Evidence precedes the question: read code, measure and verify lane
+   claims before presenting them. Reopen a ruling when evidence conflicts
+   with it, including conflicts with another repository's plan. The prior
+   checks caught the founding plan's six citers, the binding plan's changed
+   premise and ruling 322's conflict with mere's D1.
+5. Lanes receive briefs quoting their rulings, done-conditions and rules,
+   and stop at checkpoints. A choice with more than one defensible answer
+   comes back as a fork for the next question round.
+6. Nothing reaches main unverified. Verify a lane in its own worktree:
+   tests, recomputed receipts, checked hashes and controls that must fail
+   when the relevant behavior is deliberately broken. An absence counts
+   only when a positive control in the same run demonstrates detection.
+
+**Proposed refinements, 2026-09-27. Reading, not ruled:**
+
+- Give evidence its source revision and status: measured in this run,
+  independently checked, reported by a lane, or still unknown. Use numbers
+  where supported; never invent precision to fill the question format.
+- Order forks by dependencies and say exactly what each answer unblocks.
+  Keep unrelated work moving while a required decision remains open.
+- Name the fault a control detects and retain both outcomes in the same
+  receipt: the working case passes, the deliberately broken case fails.
+  Treat a negative result as evidence only within that demonstrated scope.
+
+**Acceptance annotation, 2026-09-27 (ruling 366):** Mark answered the three
+refinements, "Sounds good! Shall we proceed? Or would you like to
+review/audit first?" The refinements above are now accepted. Their proposal
+label remains as the dated record of how they were presented.
 
 ### 8.3 The sequence
 
@@ -396,6 +443,17 @@ worlds, none in ecological ones.
 | | The traversal; paging's merge | "Fix it in mere"; "After the fix" | 336, 337 |
 | | Part B: shape requirement; catalogue; the name; seeding | "On the function catalogue"; "The five in use"; "Rename the process one"; "Grown and Acquired" | 338 to 341 |
 | | Conversions; diffusion; the dev source; the flow record | "Check declared ones"; "A kernel now, wired later"; "In the history"; "Every move, when asked" | 342 to 345 |
+| | Bindings: premise; picking; home; world; updates; ids; refresh | "Document the shape only" (reading confirmed); "isometer only"; "A module in mere's conatus"; "Bodies only, shared world"; "Both"; "Move it, keep its id"; "A refresh call in conatus" | 346 to 352 |
+| | Burn: pre.4; the stopgap; the cubecl patch; turso | asked whether pre.4 lets everything move, then "Pre.4, exact pins"; "No stopgap"; "Retire it"; "Settle it in the migration" | 353 to 356 |
+| | Part B: synthesis; dev placement; flow reason; shape keys | "The actor's own lineage"; "Any declared matter account"; "Add the process"; "Part shapes get their own prefix" | 357 to 360 |
+| | The CPU walk; the start offset; T2's timing; X1's defaults | "Call modulus's walk"; "Adopt the clamp"; "After the pre.4 migration"; "Keep as built" | 361 to 364 |
+| | Repin the traversal fix now or bundle it with genet and pre.4? | "You can repin but communicate with the isocosm agent"; the intended agent remains unresolved | 365 |
+| Method | Evidence status; dependency-ordered questions; fault-specific controls, offered as three additions | "Sounds good! Shall we proceed? Or would you like to review/audit first?" | 366 |
+| Coordination | Lane A, the RPG session or both before repinning? | "Ah, the rpg session isn’t active now. But you can orchestrate the repin/rest" | 367 |
+| Paging overflow | Standing nearest-terrain fallback with a current omitted count, or capacity error? | "Keep the nearest terrain and report the current number of omitted bricks, amending 301 (recommended)." | 368 |
+| Paging budget | Live device-bounded 8 MiB default, or fixed host budget? | "Expose a setting, default 8 MiB, bounded by device limits; changing it rebuilds the atlas (recommended)." | 369 |
+| Atlas allocation | Upfront allocation, or growth with full re-upload? | "How costly is replacing the texture and uploading only the retained bricks that change? Is that possible?" Allocation remains open while the premise is checked. | 370 |
+| Sim flow handoff | Until drained with host draining each tick, or a required per-tick API? | "Require a per-tick handoff API before accepting checkpoint 5." | 371 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -430,6 +488,32 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27, flow answer.** Ruling 371 requires the per-tick API before
+checkpoint 5 acceptance. Allocation remains under inquiry (370); the
+budget's local persistence is a new follow-up because the host currently
+has no application preference store. The reserve-path reading is under
+independent review.
+
+**2026-09-27, next answers.** Rulings 368 and 369 settle standing counted
+overflow and a live budget setting. Allocation and sim flow retention remain
+open. Mark explicitly invited continued questions and coordination with the
+independent review chat; its next read-only pass checks the reserve-path
+reading before checkpoint 5 integration.
+
+**2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
+367, with the checks and picture receipts recorded in the board plan.
+Paging's strengthened release gate then passed on its branch, including
+the old-walk fault control and a same-run empty-terrain GPU control; its
+policy questions and remaining integration checks still precede merge.
+Checkpoint 5 was independently audited on Lane A, still unmerged; the sim
+plan distinguishes preserved raw evidence from fresh output compared in
+memory. Three paging policy questions and flow retention are awaiting
+Mark. The remaining reserve-path reading, pre.4 setup and two text forks
+follow. Eponym's device-limit propagation was already ruled (295), so it
+returns to implementation rather than another vote. Genet's text branch
+and main have diverged, and main is dirty; the old fast-forward instruction
+cannot be used. No new design ruling follows from these audit findings.
 
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104

@@ -3,10 +3,12 @@
 //!
 //! Cleromancy seals the choice. Isometry still owns pack execution, entropy,
 //! preview, and commit; this module never writes campaign state or evaluates a
-//! generator.
+//! generator. Built only with the host's `cleromancy` feature; the default
+//! build takes `seeded_selection` instead.
 
 use cleromancy::{
-    Candidate, ContextSnapshot, DerivedSelection, Field, Reading, ReadingEngine, UNIFORM_RULE,
+    Candidate, ContextSnapshot, DerivedSelection, Field, Reading, ReadingEngine, Receipt,
+    UNIFORM_RULE,
 };
 use isometry_campaign::{GenValue, GeneratorChoice, GeneratorLockPreset};
 use serde::Serialize;
@@ -25,6 +27,27 @@ pub(crate) struct GeneratorSelection {
     pub context: ContextSnapshot,
     pub field: Field,
     pub reading: Reading,
+}
+
+impl GeneratorSelection {
+    pub(crate) fn candidate_id(&self) -> &str {
+        &self.reading.candidate_id
+    }
+
+    /// The sealed receipt that replays this choice.
+    pub(crate) fn receipt(&self) -> &Receipt {
+        &self.reading.receipt
+    }
+
+    pub(crate) fn status(&self, choice_name: &str) -> String {
+        let digest = self
+            .reading
+            .receipt
+            .derivation_digest
+            .as_deref()
+            .unwrap_or("unavailable");
+        format!("receipt chose {choice_name} ({digest}); generating preview")
+    }
 }
 
 #[derive(Serialize)]

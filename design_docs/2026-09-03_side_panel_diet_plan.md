@@ -6,7 +6,10 @@ target pick). The recorded stop is lifted: cambium's `disclosure` became
 generic over its content's state on 2026-09-03, which is exactly what cut 5
 needed, so Turns now collapses. Founded when host UI zoom (genet's
 `2026-09-03_host_ui_zoom_plan.md`, Z5) measured the side panel at 1038
-logical pixels against a declared design height of 820.
+logical pixels against a declared design height of 820. **2026-09-26:**
+every figure below moved with genet's rounded line boxes, and both
+transient states now fit the design expanded; see
+[Rounded line boxes](#rounded-line-boxes-2026-09-26) (ruling 329).
 
 **W1, 2026-09-18:** keep. Tier: game overlay. Cuts landed; restate the target
 as reachable at the smallest supported display. Evaluated against the wing
@@ -195,6 +198,10 @@ trigger occupies the row the `.side-heading` div occupied. Collapsed it is
 hides on a click and comes back on the next one, which is the one place
 §3.5 allows hiding.
 
+*2026-09-26: the figures in this section and the two below moved with
+genet's rounded line boxes, and the transient states no longer overrun the
+design; see [Rounded line boxes](#rounded-line-boxes-2026-09-26).*
+
 **The transient states still overrun the design, and the hint line is why.**
 §2 states the target for "every section in its default state", which is the
 796 above. Measured on the same board in the two states cut 4 keeps the
@@ -295,6 +302,43 @@ tall as it was open, and the cut would be a no-op that measured like a win.
 `collapsing_turns_takes_the_section_off_the_panel` asserts the hidden
 panel's `painted_rect` is `None` for exactly that reason.
 
+### Rounded line boxes (2026-09-26)
+
+Same instrument as cut 5 (the harness on the demo skirmish at zoom 1.0 in a
+1100x820 window, `host_zoom::panel_bottom`), at mere `0418391f` and genet
+`0cf4f30b`, the pins ruling 292 moved the VTT to:
+
+| State | expanded | collapsed | freed |
+| --- | ---: | ---: | ---: |
+| Idle (the plan's target) | **768** (was 796) | **533** (was 551) | 235 |
+| Composing a 19-character whisper | **790** (was 823) | **555** (was 578) | 235 |
+| Target pick armed | **802** (was 831) | **567** (was 586) | 235 |
+
+Nothing in the panel changed; genet's line boxes did. Genet `6afb472a`
+(2026-09-25) builds each line box per CSS 2.1 10.8 and gives
+`line-height: normal` Chromium's rounding, each font metric rounded before
+they add, where Livery used to lay a line out at Parley's line height. The
+panel's rows set no line height, so each text row the receipt below
+measures lost a pixel: a `.side-line` 16 to 15, a `.side-heading` and the
+Turns trigger 13 to 12, the 12 px `.roll-line` and `.side-status` 15 to 14.
+Turns is a 247 px section now, 235 of it freed on collapse.
+
+**The transient states no longer overrun the design.** Expanded, composing
+ends at 790 and a target pick at 802, both inside 820 with the column's
+14 px of padding; composing is inside the 800 target too, a target pick
+2 px over it. The claims above that they overrun it stand as what was
+measured on 2026-09-03 and 2026-09-04.
+
+What the move broke is recorded rather than fixed here. Genet's text
+fragment still carries Parley's line extent, so each of those rows now
+paints a text box 1 px taller than itself (16 in 15 at 13 px, 13 in 12 at
+11 px). `host_zoom::text_rows::every_side_panel_text_row_holds_its_text`
+measures it: at the old pins every row holds, box equal to text; at these,
+13 rows per state are short. Mark ruled 329 of the wing design record: "Bump
+now, fix genet next". The receipt is ignored until genet's text fragment
+takes the line box's rounded metrics, and runs again then; the two
+`host_zoom` figure receipts carry the new values.
+
 ## Progress
 
 - **2026-09-03.** Plan founded; design height 820 with a panel diet chosen
@@ -390,3 +434,14 @@ panel's `painted_rect` is `None` for exactly that reason.
   inspection confirms the `[+] Turns` collapsed state
   and the full remaining panel inside the frame. The default remains expanded;
   changing that is still the product choice above.
+- **2026-09-26, every figure re-measured under genet's rounded line boxes.**
+  The VTT's move to mere's main (ruling 292, retargeted to mere `0418391f`
+  and genet `0cf4f30b`) shortened the panel with no change to it: 796, 823
+  and 831 expanded became 768, 790 and 802, and 551, 578 and 586 collapsed
+  became 533, 555 and 567, so both transients now fit the design without a
+  click; see the dated Findings section above. Mark ruled 329: "Bump now,
+  fix genet next". `collapsing_turns_takes_the_section_off_the_panel` and
+  `collapsing_turns_brings_the_transient_states_inside_the_design` carry
+  the new figures; the new `host_zoom::text_rows` receipt, which records the
+  one-pixel text overhang the move introduced, is ignored until the genet fix
+  lands and then runs again.

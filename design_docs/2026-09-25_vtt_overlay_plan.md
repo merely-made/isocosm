@@ -202,7 +202,10 @@ sight and narration, none of which the sim runs (the record's §3.8), its
 envelopes between peers; `isometry-views` (14,890), `isometry-genet`
 (9,253) and `isometry-graphshell` (573), presentation and host; and
 `isometry-runtime` (1,308), whose plan retired on 2026-09-18 and whose
-binding table survives one tier down as a stack adapter.
+binding table survives one tier down as a stack adapter. *(2026-09-27: the
+crate retired, ruling 299, and neither its binding table nor its event
+mirror had reached the stack; ruling 346 documents one binding shape in
+conatus's docs, built when Mark says.)*
 
 ## 5. Phases and done-conditions
 

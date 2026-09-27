@@ -26,19 +26,19 @@ host = ["dep:cambium-genet-winit-host", "dep:cambium-rootstock", "dep:mesquite"]
 # The widget vocabulary the panels are written in. M0 uses none of it, but the
 # crate's whole reason to exist is the tiers above the sheet, and the family
 # revision is fixed here once rather than per milestone.
-cambium = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7" }
 # Perceptual seed-to-palette derivation. The sheet's colours are `Seeds` a
 # product hand-picked plus the states tinct fills.
-tinct = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e" }
+tinct = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7" }
 
 # M4: the host assembly's substrate. The seven hooks, the producer registry and
 # the frame readback are the winit host's; `RootView` and the context types are
 # rootstock's, which the winit host uses privately rather than re-exports;
 # `mesquite` is the scenario lane wired into two of the seven hooks, and its
 # `write_png` is the wing's one PNG encoder. All three behind `host`.
-cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
-mesquite = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4cecddab8080d5decf2b5d8568d47e", optional = true }
+cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7", optional = true }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7", optional = true }
+mesquite = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7", optional = true }
 
 # Deliberately nothing from `shared/isometer`: isomere never names a voxel and
 # never names a scene. A viewport card holds a leaf key, not a body.
@@ -51,5 +51,4 @@ mesquite = { git = "https://github.com/merely-made/mere.git", rev = "876320fddd4
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d", version = "=0.14.0" }
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "5ae30cad0ea421085a52dc9f86ead53028f0592d" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "0cf4f30ba0fe7d5ac7b5eac6c204c81b9087773c", version = "=0.14.0" }

@@ -8,9 +8,8 @@ repository.workspace = true
 description = "Isometry's product-owned Graphshell projection endpoint."
 
 [dependencies]
-graphshell-endpoint = { workspace = true }
+graphshell-endpoint = { workspace = true, features = ["stdio"] }
 chirograph = { workspace = true }
-graphshell-stdio = { workspace = true }
 isometry-campaign = { workspace = true }
 isometry-core = { workspace = true }
 isometry-views = { workspace = true }
