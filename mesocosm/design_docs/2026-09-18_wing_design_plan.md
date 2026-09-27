@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 378, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 379, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3226,6 +3226,26 @@ what later sections derive from.
      for concrete misses, then return to offline/locked execution; retain
      original failures and source/hash-qualified test receipts. Ruling
      377's service rejection and deliberate fault control remain required.
+
+379. **Finish explicit-height text and inline decoration bounds before
+     merging Lane L.** Asked on 2026-09-27: "Should we fix both remaining
+     text-bound issues before merging?" Evidence as put: "Three tests pass.
+     At 16px Arial, text occupies 17px inside an 18px line. Source inspection
+     shows explicit line heights and inline borders still use line-based
+     bounds; those cases need measured fixtures." Options, recommended
+     first: (A) "Fix both now (recommended). Add explicit-line-height and
+     wrapped-border fixtures, correct the bounds, and verify the combined
+     change before merging." (B) "Merge the normal-text fix first.
+     Explicitly defer the two remaining corrections." Mark answered
+     verbatim: "A". This extends ruling 329's fix scope: both remaining
+     corrections and their measured fixtures belong in the combined lane
+     before merge. *Reading, not ruled:* preserve current main's generated
+     text and selection behavior while reconciling the lane, use the
+     established font metrics for content bounds, and verify normal,
+     explicit-height and decorated cases with fault-specific controls.
+     Return with any metric-policy fork instead of inferring its answer.
+     The three fresh tests do not certify the old browser, WPT or 187-row
+     Isometry measurements; those remain separately qualified evidence.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6999,6 +7019,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 379 selects both remaining Lane L corrections before
+  merging: explicit-height text and inline decoration bounds, with measured
+  fixtures and combined verification. The existing lane resumes; generated
+  text changes on main must survive reconciliation. Main integration and
+  consumer repins remain gated on reviewed evidence.
 - 2026-09-27: Lane L's bounded CPU refresh passes three tests at
   `42f19cfca16`, including 33 Lato sizes. Arial 16px text measures 17px
   within an 18px line. Root verified ten raw receipt hashes and five
