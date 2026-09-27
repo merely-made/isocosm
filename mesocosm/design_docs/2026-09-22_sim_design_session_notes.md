@@ -497,6 +497,14 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, dependency checkpoint accepted.** Lane M S5-S8 passes
+root and independent review. The root lock has 1,657 packages from a fresh
+1,648 baseline; Git identities are fixed, one wgpu remains, and the checked
+production graphs omit persistence and Turso. The same detector finds them
+in the retained standalone positive graph. Conatus compiles and both
+focused lease tests pass. S9-S12 matrices and nested locks can proceed;
+headed/full two-peer acceptance and source integration remain open.
+
 **2026-09-27, text scope answered.** Ruling 379 extends 329: finish both
 explicit-height text and inline decoration bounds, add measured fixtures,
 and verify the combined change before merging Lane L. Mark chose A.

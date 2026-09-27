@@ -7019,6 +7019,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane M's S5-S8 checkpoint `5accdcb8` is accepted by root
+  and independent review. Root verified 520 source and 34 evidence hashes,
+  recomputed the lock's 1,648 to 1,657 packages (92 added, 83 removed,
+  22 existing blocks changed), unchanged Git sources, one wgpu 30.0.1 and
+  no Turso. The production feature logs omit persistence, with the retained
+  standalone graph detected by the same fresh detector as a positive control.
+  Conatus compiles and both focused Distillery lease tests pass. Source
+  remains on the lane; Mere main `25b0736c` contains documentation only.
+  S9-S12 matrices and nested locks are released; S13 headed/full two-peer
+  acceptance and main integration remain pending.
 - 2026-09-27: ruling 379 selects both remaining Lane L corrections before
   merging: explicit-height text and inline decoration bounds, with measured
   fixtures and combined verification. The existing lane resumes; generated
