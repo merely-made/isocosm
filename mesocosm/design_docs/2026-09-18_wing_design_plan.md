@@ -6762,6 +6762,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-27: the pin bump landed on main: mere 0418391f, genet 0cf4f30b and
+  netrender c8c09f16, the toolchain at 1.98.1, the hagiograph folded into
+  the family rev, Cleromancy optional and off by default, `isometry-runtime`
+  retired, and the side panel's figures moved (rulings 292, 297 to 300,
+  321, 323, 327, 329). Verified in all eight workspaces before merging.
 - 2026-09-27: rulings 346 to 364 recorded: the body-binding shape
   documented in conatus's docs and built later, isometer answering picks,
   a conatus home generic over the key, bodies only on T2's shared world,

@@ -762,7 +762,9 @@ the same finished step, can run in parallel.
 **Cross-repository pinning.** The Mesocosm workspace takes mere by one git
 rev (`mesocosm/Cargo.toml:31-47`, rev `876320fd`). Bumping that rev pulls
 every mere change since into five crates, so **the hagiograph is pinned alone
-at its own rev** until a deliberate whole-mere bump. It depends on serde and
+at its own rev** until a deliberate whole-mere bump. *(Superseded
+2026-09-27: wing design record ruling 297 folded the hagiograph into the
+family rev, and the bump moved every mere crate to 0418391f together.)* It depends on serde and
 nothing else, so two revs of one repository coexist without a shared
 dependency conflict.
 

@@ -225,6 +225,8 @@ with the family's receipts unchanged; then the board.
 - The family-plan risk that the Isometry root pins an older mere is closed
   as of 2026-09-15: root, isometer and both products share mere 876320fd and
   genet 5ae30cad.
+  *(2026-09-27: all moved together to mere 0418391f, genet 0cf4f30b and netrender c8c09f16, with the toolchain
+  at 1.98.1 (wing design record rulings 292, 297 to 300, 321, 327).)*
 - No Isometry-side document cited the L4 done condition before this plan.
 - `isometry-runtime`, which holds the earlier fixed-isometric GPU tenant,
   is excluded from the root workspace and untouched by this plan.
@@ -237,7 +239,9 @@ with the family's receipts unchanged; then the board.
   Three facts bound it. The resident cap stays 2,047 bricks: in the headed
   pane (972 by 820) a flat 256-tile board needs 1,345 visible bricks and
   fits, one with 0 to 7 relief needs 2,063 and does not. A defect in
-  `modulus` at 876320fd, unchanged on mere's main: after a retarget that
+  `modulus` at 876320fd, unchanged on mere's main *(fixed there on
+  2026-09-26 at 668854c9, ruling 288, and pinned here from 2026-09-27)*:
+  after a retarget that
   shrinks the selection, a kept brick can hold a slot past the resident
   count, so its refresh panics and picks pass through visible ground
   (`modulus/src/lib.rs:424-433`); Eponym's V1b carries it latently, never
