@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 370, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 371, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3063,6 +3063,23 @@ what later sections derive from.
      textures alive during transfer. *Reading, not ruled:* verify the
      current layout and measure that alternative before putting the choice
      back. Allocation remains open; 368 and 369 proceed independently.
+
+371. **Checkpoint 5 requires a per-tick flow handoff API.** Asked on
+     2026-09-27: "4. How should requested sim flow records be handed over?
+     Checkpoint 5 passes 108 tests and keeps every requested move until the
+     caller drains the queue, without a cap. Your ruling 345 says ‘Every
+     move, when asked’; handing records over each tick was the plan's
+     reading." Options, recommended first: (A) "Keep records until drained;
+     live hosts drain each tick, with no silent dropping (recommended)."
+     (B) "Require a per-tick handoff API before accepting checkpoint 5."
+     Mark selected verbatim: "Require a per-tick handoff API before accepting
+     checkpoint 5." The per-tick handoff is now required, rather than an
+     assumed host convention. Recording remains opt-in under 345 and every
+     requested move must be represented. Checkpoint 5's previously audited
+     implementation does not satisfy this new acceptance condition yet.
+     *Reading, not ruled:* the lane chooses a minimal explicit API and proves
+     that successive tick results cannot accumulate or mix records, in both
+     execution modes, with ledger reconciliation retained.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6836,6 +6853,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 371 requires a per-tick flow handoff before accepting
+  checkpoint 5. Lane A must implement and reverify it; the earlier until-
+  drained reading is not accepted. Atlas allocation remains under inquiry
+  (370); whether the newly ruled budget setting persists locally is asked
+  separately after finding no application preference store.
 - 2026-09-27: ruling 370 preserves Mark's question about GPU-preserving
   atlas growth. The offered full re-upload premise is under investigation;
   allocation is not selected. A bounded comparison may inform the next
