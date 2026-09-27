@@ -1,5 +1,8 @@
 //! Replacement experiment only. Production retains capacity-fixed allocation.
 
+#[path = "growth_batched.rs"]
+mod batched;
+
 use super::*;
 use crate::{AtlasLimits, BrickProjectionRevision};
 use std::time::Instant;
