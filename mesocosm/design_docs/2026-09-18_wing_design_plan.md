@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 365, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 366, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2993,6 +2993,17 @@ what later sections derive from.
      are (1) repin traversal now and defer genet/pre.4, or (2) wait and
      bundle all three. Separate original option labels and recommendation
      order were not preserved in the handoff; they are not reconstructed.
+
+366. **The three method refinements are accepted.** On 2026-09-27 the
+     assistant offered three additions: distinguish measured evidence from
+     lane reports and unknowns; order questions by what their answers
+     unblock; name each control's detectable fault and retain passing and
+     deliberately failing results. These were offered together, not as
+     mutually exclusive options. Mark: "Sounds good! Shall we proceed? Or
+     would you like to review/audit first?" The additions supplement the
+     preserved method in session notes §8.2. *Reading, not ruled:* the
+     assistant chose a narrow traversal audit before the already-authorized
+     repin. This answer does not identify ruling 365's coordination target.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6766,6 +6777,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 366 accepts the three method refinements: evidence
+  status, questions ordered by dependencies, and fault-specific controls
+  with passing and deliberately failing outcomes. Traversal audit opened;
+  ruling 365's agent identity remains unresolved.
 - 2026-09-27: the working method preserved in session notes §8.2, with
   proposed refinements explicitly unruled; ruling 365 annotated with the
   question and alternatives recoverable from the handoff.

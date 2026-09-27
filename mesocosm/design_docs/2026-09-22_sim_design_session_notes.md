@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 365 on 2026-09-27, the last
+on 2026-09-26 and 353 to 366 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -349,6 +349,11 @@ improvement. This annotation supplements the dated account above.
 - Name the fault a control detects and retain both outcomes in the same
   receipt: the working case passes, the deliberately broken case fails.
   Treat a negative result as evidence only within that demonstrated scope.
+
+**Acceptance annotation, 2026-09-27 (ruling 366):** Mark answered the three
+refinements, "Sounds good! Shall we proceed? Or would you like to
+review/audit first?" The refinements above are now accepted. Their proposal
+label remains as the dated record of how they were presented.
 
 ### 8.3 The sequence
 
@@ -443,6 +448,7 @@ improvement. This annotation supplements the dated account above.
 | | Part B: synthesis; dev placement; flow reason; shape keys | "The actor's own lineage"; "Any declared matter account"; "Add the process"; "Part shapes get their own prefix" | 357 to 360 |
 | | The CPU walk; the start offset; T2's timing; X1's defaults | "Call modulus's walk"; "Adopt the clamp"; "After the pre.4 migration"; "Keep as built" | 361 to 364 |
 | | Repin the traversal fix now or bundle it with genet and pre.4? | "You can repin but communicate with the isocosm agent"; the intended agent remains unresolved | 365 |
+| Method | Evidence status; dependency-ordered questions; fault-specific controls, offered as three additions | "Sounds good! Shall we proceed? Or would you like to review/audit first?" | 366 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

@@ -749,3 +749,20 @@ a lane saw. This section is the current one, and it names its build.
   contacting that agent remain prerequisites; the repin, picture receipts
   and paging merge are still pending. Genet's text fix and burn pre.4 follow
   separately.
+- **2026-09-27, pre-repin audit, partial.** At isometry `a9409e0` and mere
+  `7bb5bfda`, all 30 files in
+  `Code/testing/mere/receipts/2026-09-27/dda-precision/SHA256SUMS` matched
+  their SHA-256 entries. The manifest itself hashes to
+  `df10dc7594331a5ac3b9d694dc2c83915af3f1dcb767afc3c608428203be4d3f`.
+  Source inspection confirmed the same-run accumulated-walk control in
+  `modulus/src/traversal_tests.rs`: 330 and 660 moved pixels at one and
+  two headroom layers, versus zero required from the fixed CPU walk.
+  These counts were not recomputed in this audit: the fresh locked,
+  offline modulus test invocation waited on another session's Cargo
+  package-cache lock and was stopped before compiling. No new target was
+  created. GPU receipt files were integrity-checked, not rerun.
+  The repin interval also includes `a464dc2a`, which updates Knot's two
+  dependency revisions; consumer checks must cover that resolution change.
+  Lane A's `shared/isocosm/Cargo.toml` still pins hagiograph at `53648d3a`,
+  whereas main pins `0418391f`. That manifest and lock need coordination
+  before repinning to `7bb5bfda`; the pins remain unchanged.
