@@ -176,7 +176,7 @@ pub(crate) fn init(
     // `ISOMETRY_SYNTH=<n>` loads an n x n synthetic stress board (n>1,
     // default 30 = the probe P2 board) instead of the demo skirmish;
     // large n exercises viewport windowing.
-    let map = match std::env::var("ISOMETRY_SYNTH") {
+    let mut map = match std::env::var("ISOMETRY_SYNTH") {
         Ok(v) => {
             let n = v
                 .trim()
@@ -188,6 +188,14 @@ pub(crate) fn init(
         },
         Err(_) => demo_map(),
     };
+    if app.terrain_receipt.is_some() {
+        // Receipt-only relief fixture, before the normal host constructs its board.
+        for row in 0..map.ground.height() {
+            for col in 0..map.ground.width() {
+                map.elevation.set(col, row, ((col / 6 + row / 9) % 8) as u8);
+            }
+        }
+    }
     let can_restore = !matches!(app.net_intent.as_ref(), Some(NetIntent::Join(_)));
     let mut restore_status = None;
     let mut restored_public = None;
@@ -495,7 +503,8 @@ impl App {
     /// armed selftest would never reach its own deadline. Asking for frames is
     /// how the shared host's hook says the same thing the old `WaitUntil` did.
     pub(crate) fn selftests_pending(&self) -> bool {
-        (self.travel_selftest && !self.travel_fired)
+        self.terrain_receipt.as_ref().is_some_and(|receipt| !receipt.done())
+            || (self.travel_selftest && !self.travel_fired)
             || (self.cmd_selftest && !self.cmd_fired)
             || (self.watchtower_selftest && !self.watchtower_fired)
             || (self.convince_selftest && !self.convince_fired)
@@ -522,6 +531,9 @@ impl App {
         self.maybe_compendium_selftest(ctx);
         self.maybe_whisper_selftest(ctx);
         self.maybe_turns_selftest(ctx);
+        if let Some(receipt) = self.terrain_receipt.as_mut() {
+            receipt.drive(ctx, self.started);
+        }
         self.maybe_select_selftest(ctx);
         self.maybe_overlay_selftest(ctx);
         if self.net.is_some() {

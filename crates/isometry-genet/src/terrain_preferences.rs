@@ -29,11 +29,21 @@ fn config_path() -> Option<PathBuf> {
         .map(PathBuf::from)?
         .join("Library/Application Support/Isometry");
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
-    let root = std::env::var_os("XDG_CONFIG_HOME")
-        .map(PathBuf::from)
-        .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".config")))?
-        .join("isometry");
+    let root = xdg_root(
+        std::env::var_os("XDG_CONFIG_HOME").map(PathBuf::from),
+        std::env::var_os("HOME").map(PathBuf::from),
+    )?
+    .join("isometry");
     root.is_absolute().then(|| root.join("terrain.json"))
+}
+
+// Pure resolver also tested on Windows; invalid XDG values use HOME.
+#[cfg(any(test, not(any(target_os = "windows", target_os = "macos"))))]
+fn xdg_root(xdg: Option<PathBuf>, home: Option<PathBuf>) -> Option<PathBuf> {
+    xdg.filter(|path| path.is_absolute()).or_else(|| {
+        home.filter(|path| path.is_absolute())
+            .map(|path| path.join(".config"))
+    })
 }
 
 impl Preferences {
@@ -127,6 +137,20 @@ impl Preferences {
 mod tests {
     use super::*;
     use isometry_views::{UiState, demo_map};
+
+    #[test]
+    fn xdg_empty_relative_and_unset_fall_back_to_home() {
+        let absolute = std::env::temp_dir();
+        for xdg in [None, Some(PathBuf::new()), Some(PathBuf::from("relative"))] {
+            assert_eq!(
+                xdg_root(xdg, Some(absolute.clone())),
+                Some(absolute.join(".config"))
+            );
+        }
+        assert_eq!(xdg_root(Some(absolute.clone()), None), Some(absolute));
+        assert_eq!(xdg_root(None, None), None);
+        assert_eq!(xdg_root(None, Some(PathBuf::from("relative"))), None);
+    }
 
     struct Scratch(PathBuf);
     impl Scratch {

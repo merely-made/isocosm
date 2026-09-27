@@ -167,6 +167,7 @@ impl App {
                 .map(|value| crate::selftest::OverlayArm::of(&value)),
             overlay_fired: false,
             turns_fired: false,
+            terrain_receipt: crate::selftest::TerrainReceipt::from_env(),
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,

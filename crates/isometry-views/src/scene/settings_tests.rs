@@ -30,7 +30,8 @@ fn changing_terrain_settings_rebuilds_a_parked_scene_once() {
     ui.viewport = PANE;
     let mut view = BoardView::new(ui.map.clone());
     view.sync(&ui);
-    let mut producer = BoardProducer::new(BoardSource::new(view.into_handle()));
+    let handle = view.into_handle();
+    let mut producer = BoardProducer::new(BoardSource::new(handle.clone()));
     let request = FrameRequest {
         device: &device,
         queue: &queue,
@@ -41,7 +42,7 @@ fn changing_terrain_settings_rebuilds_a_parked_scene_once() {
         render_scale: 1,
     };
     assert!(producer.render_scene(&request).unwrap().is_some());
-    assert!(producer.source().ground_cost().unwrap().residency.resident > 0);
+    assert_upfront(&producer, 8 * 1024 * 1024);
     assert!(producer.render_scene(&request).unwrap().is_none());
     let mut renders = producer.renders();
     for budget in [4u64, 12, 64, 2] {
@@ -56,6 +57,10 @@ fn changing_terrain_settings_rebuilds_a_parked_scene_once() {
         assert_eq!(cost.residency.rebuilt, Some(Rebuild::Requested));
         let diagnostics = producer.source().terrain_diagnostics().unwrap();
         assert!(diagnostics.full_map_upload);
+        assert_upfront(
+            &producer,
+            (budget * 1024 * 1024).min(producer.source().atlas_device_budget().unwrap()),
+        );
         assert_eq!(
             producer.source().ground().unwrap().limits().max_atlas_bytes,
             (budget * 1024 * 1024).min(producer.source().atlas_device_budget().unwrap())
@@ -72,9 +77,49 @@ fn changing_terrain_settings_rebuilds_a_parked_scene_once() {
         Some(Rebuild::Requested)
     );
     assert!(producer.render_scene(&request).unwrap().is_none());
+    // Chosen capacity stands through ordinary view and content changes.
+    for edit in [false, true] {
+        if edit {
+            ui.map.elevation.set(0, 0, 1);
+        } else {
+            ui.camera.0 += 8.0;
+        }
+        handle.borrow_mut().sync(&ui);
+        assert!(producer.render_scene(&request).unwrap().is_some());
+        let diagnostics = producer.source().terrain_diagnostics().unwrap();
+        assert!(!diagnostics.full_map_upload && !diagnostics.map_recreated);
+        assert_eq!(diagnostics.resource_creations, 0);
+        assert_eq!(producer.source().ground().unwrap().capacity(), 4095);
+        if edit {
+            assert!(diagnostics.changed_slots_declared > 0);
+        }
+        eprintln!(
+            "[terrain-settings] edit={edit} resource_creations=0 capacity=4095 upload_bytes={}",
+            diagnostics.brick_upload_bytes
+        );
+        assert!(producer.render_scene(&request).unwrap().is_none());
+    }
     device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
     eprintln!(
         "[terrain-settings] budgets 8 -> 4 -> 12 -> 64 (device-clamped) -> 2 MiB; each one rebuild then skip; headroom one rebuild then skip; renders {}",
         producer.renders()
+    );
+}
+
+fn assert_upfront(producer: &BoardProducer, expected_bytes: u64) {
+    let stats = producer.source().ground_cost().unwrap().residency;
+    let diagnostics = producer.source().terrain_diagnostics().unwrap();
+    let pointers = stats.extent.into_iter().map(u64::from).product::<u64>() * 4;
+    assert!(stats.resident > 0 && stats.resident < stats.capacity);
+    assert!(diagnostics.full_map_upload);
+    assert_eq!(
+        diagnostics.brick_upload_bytes - pointers,
+        expected_bytes,
+        "actual complete atlas upload includes empty chosen capacity"
+    );
+    assert_eq!((stats.capacity as u64 + 1) * 512, expected_bytes);
+    eprintln!(
+        "[terrain-settings] upfront atlas_bytes={expected_bytes} resident={} capacity={}",
+        stats.resident, stats.capacity
     );
 }
