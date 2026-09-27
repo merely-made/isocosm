@@ -491,6 +491,16 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, tighter batching measured.** Ruling 373's experiment is
+complete: the new batched copy improves the larger replacement, but full
+uploads remain faster in both measured cases (0.191/0.598 ms against
+0.348/1.584 ms). Root checked raw hashes and recomputed the statistics;
+198 complete readbacks and the three fault controls support correctness.
+The board plan records exact scope and limits. Allocation remains open,
+and the new evidence returns the choice to Mark. No answer is inferred.
+Independent read-only review confirms the result and controls; the question
+offers upfront allocation, growth with full uploads, or further copy research.
+
 **2026-09-27, checkpoint accepted.** Checkpoint 5 lands with 371's per-tick
 API, independently checked fresh evidence, 111 final-source tests and the
 Mesocosm consumer check. Physiological scope stays with checkpoint 6.

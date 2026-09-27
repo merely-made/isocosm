@@ -6885,6 +6885,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 373's tighter-batched probe completed on Lane E
+  `e69e1df`, receipt head `0ad455c`. Root recomputed the raw statistics and
+  verified the receipt hashes: full / batched medians are 0.191 / 0.348 ms
+  and 0.598 / 1.584 ms in the two growth cases. All 198 complete readbacks
+  match; missing-copy, missing-patch and swapped-brick controls detect
+  corruption. The board plan records staging bytes and timing boundaries.
+  Independent read-only review confirms the result is sufficient to return
+  the allocation choice to Mark, with no additional measurement gate.
+  Allocation remains an open user choice; this evidence is not a ruling.
 - 2026-09-27: checkpoint 5 integrated from Lane A `5ba6fae`, including
   371's per-tick API. Root and independent review verified 81 source blobs,
   27 raw receipts, the 1,000-world summary and 128,676 differential lines.

@@ -887,3 +887,36 @@ a lane saw. This section is the current one, and it names its build.
   The next fixture must distinguish keys/voxels and detect wrong offsets.
   CPU map generation, pointer/bind-group recreation and rendering remain
   outside the bounded replacement timing unless separately measured.
+
+- **2026-09-27, tighter batching measured for 373.** Lane E tested
+  `e69e1df` and pushed receipt head `0ad455c`. One encoder orders the
+  retained texture copy before packed patch-buffer copies, with one
+  submission. Fresh texture/buffer allocation, box discovery, CPU packing,
+  encoding and completion wait are included. Thirty measured samples per
+  arm after three warmups rotate order on the same RTX 4060 Laptop.
+  For 260→700 bricks, full upload / previous bulk / new batched medians
+  are 0.191 / 0.303 / 0.348 ms; for 2,504→5,000 they are
+  0.598 / 3.325 / 1.584 ms. Batched observed maxima are 1.374 / 1.890 ms,
+  not latency guarantees. The larger copy improves, but full uploads
+  remain fastest in these two measured cases.
+  Exact padded staging is 475,136 / 2,588,672 bytes versus changed logical
+  texels of 225,792 / 1,278,464 bytes. Older queue-write staging is opaque;
+  this does not measure bus traffic. The full baseline includes empty
+  capacity. CPU map creation, pointers, bind groups, rendering and readback
+  stay outside every timer; unrelated CPU load was not controlled.
+  All 198 whole-atlas readbacks match with asserted-distinct, nonzero
+  per-key/per-voxel patterns. Same-run missing-copy, missing-patch and
+  swapped-retained-brick controls detect corruption in both cases; the
+  swaps differ at 1,022 texels. Root independently checked all nine raw
+  manifest hashes, parsed samples and statistics. Raw evidence and
+  `root-recomputed.json` are in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-batched/`.
+  Earlier experiments remain historical. Production growth is not
+  implemented or authorized; allocation returns to Mark as an open choice.
+  Independent read-only review also verifies the tested source/lock hashes,
+  all 198 parsed rows, statistics, ordering, timer boundaries and controls,
+  and finds no further measurement gate needed for 373. Fresh packing and
+  staging are substantial costs; reusable staging/direct packing were not
+  tested, so this is not an optimized-copy lower bound. The next question
+  offers upfront allocation (recommended), row growth with full uploads,
+  or further copy research while allocation stays open.
