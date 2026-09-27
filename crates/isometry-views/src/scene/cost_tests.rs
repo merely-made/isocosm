@@ -29,6 +29,49 @@ use super::world::BoardWorld;
 use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
+#[test]
+fn current_omissions_reach_the_host_without_a_residency_change() {
+    let ui = UiState::new(demo_map());
+    let mut ground = BoardGround::new(&ui.map, &Overlays::of(&ui), 1, Default::default(), CARD);
+    let camera = BoardWorld::new(&ui.map)
+        .camera(&ui.geo, ui.camera, PANE, None)
+        .expect("a camera");
+    let mut map = {
+        let bricks = ground.bricks();
+        let mut framed = ground.framed(camera, &bricks);
+        assert!(!framed.keys.is_empty());
+        framed.overflow = 7;
+        ground.terrain(&bricks, &framed).brick_map().unwrap()
+    };
+    ground.uploaded(Duration::ZERO);
+    let original = ground.cost();
+    for omitted in [12, 3, 0] {
+        {
+            let bricks = ground.bricks();
+            let mut framed = ground.framed(camera, &bricks);
+            framed.overflow = omitted;
+            assert!(matches!(
+                ground
+                    .terrain(&bricks, &framed)
+                    .refresh(&mut map, &[])
+                    .unwrap(),
+                isometer::TerrainRefresh::Current
+            ));
+        }
+        ground.uploaded(Duration::ZERO);
+        let current = ground.cost();
+        assert_eq!(current.residency.overflow, omitted);
+        assert!(
+            current
+                .line()
+                .contains(&format!("{omitted} past the atlas"))
+        );
+        let mut expected = original;
+        expected.residency.overflow = omitted;
+        assert_eq!(current, expected, "only the current count moved");
+    }
+}
+
 /// A pan moves the camera and nothing else: no column is read and no brick is
 /// remade except the ones it brings into view. What it uploads is the pointer
 /// volume plus those bricks, to the byte.

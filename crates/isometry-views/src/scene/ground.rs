@@ -50,7 +50,8 @@ use super::terrain::surface_of;
 pub const RESIDENCY_MARGIN: f32 = BRICK as f32;
 
 /// What the last change to the board's ground cost, for the profile line and
-/// the receipts.
+/// the receipts. Its omitted-brick count describes the current frame, even
+/// when the frame required no change to the resident map.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct GroundCost {
     /// Reading the map into one column per tile, where the regrow stood.
@@ -154,7 +155,9 @@ impl BoardGround {
     }
 
     pub fn cost(&self) -> GroundCost {
-        self.cost
+        let mut cost = self.cost;
+        cost.residency.overflow = self.residency.borrow().overflow();
+        cost
     }
 
     /// New residency settings, which rebuild the map at them on the next

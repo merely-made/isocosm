@@ -167,6 +167,39 @@ fn a_requested_rebuild_replaces_the_map() {
     );
 }
 
+/// Framing may change its omitted outer bricks while retaining exactly the
+/// same keys. Reporting that demand must not pretend the atlas changed.
+#[test]
+fn current_overflow_changes_without_uploading_the_same_retained_keys() {
+    let hills = Hills::new();
+    let residency = RefCell::new(Residency::new(ResidencySettings::default(), LIMITS));
+    let mut framed = frame(&hills, [0.0, 0.0]);
+    assert!(!framed.keys.is_empty(), "the retained set is real terrain");
+    framed.overflow = 7;
+    let mut map = PagedTerrain::new(&residency, &hills, &framed, 1)
+        .brick_map()
+        .expect("the initial map");
+    assert_eq!(residency.borrow().overflow(), 7);
+    let last_change = residency.borrow().stats();
+    let changes = residency.borrow().changes();
+    let projection = map.projection_revision();
+    let atlas = map.atlas().to_vec();
+    for omitted in [12, 3, 0] {
+        framed.overflow = omitted;
+        assert_eq!(
+            step(&residency, &mut map, &hills, &framed, &[]),
+            TerrainRefresh::Current,
+            "changing only the omission count requires no upload or rebuild"
+        );
+        assert_eq!(residency.borrow().overflow(), omitted, "current frame");
+        assert_eq!(residency.borrow().stats(), last_change, "last map change");
+        assert_eq!(residency.borrow().changes(), changes);
+        assert_eq!(map.projection_revision(), projection);
+        assert_eq!(map.atlas(), atlas);
+        assert_reads(&map, &residency.borrow(), &hills);
+    }
+}
+
 /// The capacity is every brick the card allows, in whole rows of 256 slots
 /// less the air slot, and modulus builds a map of exactly that capacity:
 /// the historical atlas, one row, a budget between rows, the 8 MiB default,

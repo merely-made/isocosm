@@ -93,6 +93,7 @@ pub struct Residency {
     reserve: Option<Reserve>,
     rebuild: bool,
     stats: ResidencyStats,
+    overflow: usize,
     changes: u64,
 }
 
@@ -109,6 +110,7 @@ impl Residency {
             reserve: None,
             rebuild: false,
             stats: ResidencyStats::default(),
+            overflow: 0,
             changes: 0,
         }
     }
@@ -144,6 +146,12 @@ impl Residency {
     /// What the last change did. A frame that changed nothing leaves it.
     pub fn stats(&self) -> ResidencyStats {
         self.stats
+    }
+
+    /// Bricks omitted from the latest successfully applied frame, including
+    /// frames whose retained bricks required no upload.
+    pub fn overflow(&self) -> usize {
+        self.overflow
     }
 
     /// How many changes the residency has made: builds, retargets and
@@ -207,6 +215,7 @@ impl Residency {
             reserved: reserve.map_or([0; 2], |reserve| reserve.layers),
         };
         self.resident = resident;
+        self.overflow = framed.overflow;
         self.reserve = reserve;
         self.rebuild = false;
         self.changes += 1;
@@ -279,6 +288,7 @@ impl Residency {
             stats.refreshed = refreshed.len();
             slots.extend(refreshed);
         }
+        self.overflow = framed.overflow;
         if incoming.is_empty() && stale.is_empty() && stats.evicted == 0 {
             return Ok(TerrainRefresh::Current);
         }
