@@ -116,7 +116,7 @@ fn the_defaults_are_the_eight_shapes_and_the_five_functions_in_use() {
     assert_eq!(rules.shapes.len(), 8);
     let names: BTreeSet<&str> = SHAPES
         .iter()
-        .map(|s| s.strip_prefix("shape:").unwrap())
+        .map(|s| s.strip_prefix("part-shape:").unwrap())
         .collect();
     let ruled = [
         "lump", "rod", "sheet", "point", "tube", "branch", "shell", "joint",
@@ -125,11 +125,11 @@ fn the_defaults_are_the_eight_shapes_and_the_five_functions_in_use() {
     let shapes = |f: &str| rules.functions[f].shapes.clone();
     let seeding = |f: &str| rules.functions[f].seeding;
     for (function, shape) in [
-        ("function:contract", "shape:rod"),
-        ("function:intake", "shape:lump"),
-        ("function:sense", "shape:point"),
-        ("function:fix", "shape:sheet"),
-        ("function:secrete", "shape:sheet"),
+        ("function:contract", "part-shape:rod"),
+        ("function:intake", "part-shape:lump"),
+        ("function:sense", "part-shape:point"),
+        ("function:fix", "part-shape:sheet"),
+        ("function:secrete", "part-shape:sheet"),
     ] {
         assert_eq!(shapes(function), BTreeSet::from([shape.to_string()]));
     }
@@ -137,12 +137,12 @@ fn the_defaults_are_the_eight_shapes_and_the_five_functions_in_use() {
     assert_eq!(rules.functions.len(), 5);
     // A sheet grows fixing and admits secreting, which it only acquires.
     assert_eq!(
-        rules.grown("shape:sheet"),
+        rules.grown("part-shape:sheet"),
         BTreeSet::from(["function:fix".into()])
     );
-    assert!(rules.admits("shape:sheet", "function:secrete"));
-    assert!(!rules.admits("shape:rod", "function:secrete"));
-    assert!(rules.grown("shape:tube").is_empty());
+    assert!(rules.admits("part-shape:sheet", "function:secrete"));
+    assert!(!rules.admits("part-shape:rod", "function:secrete"));
+    assert!(rules.grown("part-shape:tube").is_empty());
     // A generated world adopts neither; it serializes as it did before.
     let generated = Founding::default().generate().unwrap();
     let json = serde_json::to_string(&generated.rules).unwrap();
@@ -201,11 +201,11 @@ fn a_catalogue_and_its_parts_round_trip_through_bytes() {
     let body = g.population.lift(1).unwrap();
     body.parts.insert(
         1,
-        part("shape:sheet", &["function:fix", "function:4-acquired"]),
+        part("part-shape:sheet", &["function:fix", "function:4-acquired"]),
     );
     body.parts.insert(
         2,
-        part("shape:rod", &["function:contract", "function:3-grown"]),
+        part("part-shape:rod", &["function:contract", "function:3-grown"]),
     );
     g.validate().unwrap();
     let bytes = serde_json::to_vec(&g).unwrap();
@@ -223,19 +223,21 @@ fn a_function_is_its_set_of_shapes_and_its_seeding() {
         rules.functions.insert("function:x".into(), f);
         rules.revision()
     };
-    let a = read(r#"{"shapes":["shape:sheet","shape:lump"],"seeding":"Grown"}"#);
-    let b = read(r#"{"shapes":["shape:lump","shape:sheet","shape:lump"],"seeding":"Grown"}"#);
-    let c = read(r#"{"shapes":["shape:lump","shape:sheet"],"seeding":"Acquired"}"#);
+    let a = read(r#"{"shapes":["part-shape:sheet","part-shape:lump"],"seeding":"Grown"}"#);
+    let b = read(
+        r#"{"shapes":["part-shape:lump","part-shape:sheet","part-shape:lump"],"seeding":"Grown"}"#,
+    );
+    let c = read(r#"{"shapes":["part-shape:lump","part-shape:sheet"],"seeding":"Acquired"}"#);
     assert_eq!(a, b);
     assert_eq!(revision(a.clone()), revision(b));
     assert_ne!(revision(a), revision(c));
     // A part's functions are a set too.
-    let json = r#"{"parent":null,"traits":[],"severed":false,"shape":"shape:sheet",
+    let json = r#"{"parent":null,"traits":[],"severed":false,"shape":"part-shape:sheet",
         "functions":["function:secrete","function:fix","function:secrete"]}"#;
     let p: Part = serde_json::from_str(json).unwrap();
     assert_eq!(
         p,
-        part("shape:sheet", &["function:fix", "function:secrete"])
+        part("part-shape:sheet", &["function:fix", "function:secrete"])
     );
 }
 
@@ -257,7 +259,7 @@ fn bad_shapes_functions_and_bindings_are_refused() {
         (
             "names an unknown shape",
             Box::new(|g: &mut Genesis| {
-                let shapes = BTreeSet::from(["shape:wing".into()]);
+                let shapes = BTreeSet::from(["part-shape:wing".into()]);
                 let f = Function {
                     shapes,
                     seeding: Seeding::Grown,
@@ -285,20 +287,20 @@ fn bad_shapes_functions_and_bindings_are_refused() {
                     .lift(1)
                     .unwrap()
                     .parts
-                    .insert(1, part("shape:wing", &[]));
+                    .insert(1, part("part-shape:wing", &[]));
             }),
         ),
         (
             "unknown function",
             Box::new(|g: &mut Genesis| {
-                let p = part("shape:rod", &["function:fly"]);
+                let p = part("part-shape:rod", &["function:fly"]);
                 g.population.lift(1).unwrap().parts.insert(1, p);
             }),
         ),
         (
             "cannot express",
             Box::new(|g: &mut Genesis| {
-                let p = part("shape:rod", &["function:fix"]);
+                let p = part("part-shape:rod", &["function:fix"]);
                 g.population.lift(1).unwrap().parts.insert(1, p);
             }),
         ),

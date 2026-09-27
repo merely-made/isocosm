@@ -30,16 +30,17 @@ pub struct Function {
     pub seeding: Seeding,
 }
 
-/// Ruling 276's eight shapes, which a world adopts by naming them.
+/// Ruling 276's eight shapes, which a world adopts by naming them. Part
+/// shapes keep their own namespace (ruling 360); `shape:` is the world's.
 pub const SHAPES: [&str; 8] = [
-    "shape:lump",
-    "shape:rod",
-    "shape:sheet",
-    "shape:point",
-    "shape:tube",
-    "shape:branch",
-    "shape:shell",
-    "shape:joint",
+    "part-shape:lump",
+    "part-shape:rod",
+    "part-shape:sheet",
+    "part-shape:point",
+    "part-shape:tube",
+    "part-shape:branch",
+    "part-shape:shell",
+    "part-shape:joint",
 ];
 
 /// The eight shapes as a world's rules hold them.
@@ -51,7 +52,7 @@ pub fn default_shapes() -> BTreeSet<Key> {
 /// sense, sheets fix, and sheets secrete once acquired.
 pub fn default_functions() -> BTreeMap<Key, Function> {
     let function = |shape: &str, seeding| Function {
-        shapes: BTreeSet::from([format!("shape:{shape}")]),
+        shapes: BTreeSet::from([format!("part-shape:{shape}")]),
         seeding,
     };
     BTreeMap::from([

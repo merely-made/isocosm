@@ -100,12 +100,16 @@ fn an_act_binds_its_actors_lowest_numbered_live_part_expressing_the_function() {
     g.rules.functions = default_functions();
     g.rules.traits.insert(USED.into());
     g.population.lift(1).unwrap().parts = BTreeMap::from([
-        (0, part("shape:sheet", ["function:fix"], true)),
-        (1, part("shape:rod", ["function:contract"], false)),
-        (2, part("shape:sheet", ["function:fix"], false)),
+        (0, part("part-shape:sheet", ["function:fix"], true)),
+        (1, part("part-shape:rod", ["function:contract"], false)),
+        (2, part("part-shape:sheet", ["function:fix"], false)),
         (
             3,
-            part("shape:sheet", ["function:fix", "function:secrete"], false),
+            part(
+                "part-shape:sheet",
+                ["function:fix", "function:secrete"],
+                false,
+            ),
         ),
     ]);
     let choice = Causation::Choice;
