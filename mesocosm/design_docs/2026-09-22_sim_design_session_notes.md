@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 371 on 2026-09-27, the last
+on 2026-09-26 and 353 to 372 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -454,6 +454,7 @@ label remains as the dated record of how they were presented.
 | Paging budget | Live device-bounded 8 MiB default, or fixed host budget? | "Expose a setting, default 8 MiB, bounded by device limits; changing it rebuilds the atlas (recommended)." | 369 |
 | Atlas allocation | Upfront allocation, or growth with full re-upload? | "How costly is replacing the texture and uploading only the retained bricks that change? Is that possible?" Allocation remains open while the premise is checked. | 370 |
 | Sim flow handoff | Until drained with host draining each tick, or a required per-tick API? | "Require a per-tick handoff API before accepting checkpoint 5." | 371 |
+| Budget persistence | Small local per-device preference store, or session-only setting? | "Save the atlas budget locally per device; add a small local preference store (recommended)." | 372 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

@@ -849,3 +849,8 @@ a lane saw. This section is the current one, and it names its build.
   GPU copying with full CPU re-upload, including temporary coexistence of
   old/new textures and preservation of slot addresses. No growth policy is
   authorized by the question alone.
+- **2026-09-27, budget persistence ruled (372).** Save the atlas budget
+  locally per device in a small application preference store, outside
+  campaign data. Restore it on restart and enforce current device bounds
+  when applying it. Verify a restart roundtrip and missing/malformed data;
+  allocation policy remains open while GPU-copy costs are measured.

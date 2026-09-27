@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 371, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 372, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3080,6 +3080,21 @@ what later sections derive from.
      *Reading, not ruled:* the lane chooses a minimal explicit API and proves
      that successive tick results cannot accumulate or mix records, in both
      execution modes, with ledger reconciliation retained.
+
+372. **The atlas budget is saved locally per device.** Asked on 2026-09-27:
+     "Should the atlas budget survive restarting the app? The existing
+     pixel-grid preference lasts only for the session, and there is
+     currently no local application-preference store. Campaign storage holds
+     shared world data, so this rendering preference should stay outside
+     it." Options, recommended first: (A) "Save the atlas budget locally per
+     device; add a small local preference store (recommended)." (B) "Keep it
+     for this session only, matching the existing pixel-grid preference."
+     Mark selected verbatim: "Save the atlas budget locally per device; add
+     a small local preference store (recommended)." This extends 369 with
+     persistence independent of campaign authority or network replication.
+     *Reading, not ruled:* persist the requested preference and apply the
+     current device's enforced bounds when using it; missing or malformed
+     local data falls back to the ruled default without changing campaigns.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6853,6 +6868,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 372 adds per-device local persistence to the atlas
+  budget. Lane E owns the small host preference store and restart tests;
+  campaign storage stays separate. Independent review confirms the omitted
+  reserve physiology is a checkpoint 6 probe question, not another gate
+  for accepting bounded checkpoint 5 after the per-tick API passes.
 - 2026-09-27: ruling 371 requires a per-tick flow handoff before accepting
   checkpoint 5. Lane A must implement and reverify it; the earlier until-
   drained reading is not accepted. Atlas allocation remains under inquiry
