@@ -121,14 +121,29 @@ less drift. The fault is in the traversal, and headroom only lengthens it.
   wall so far back; a slab sized to the frame would help too, and is the
   board's camera, not the sizing.
 
+## At the pin bump, 2026-09-27
+
+Re-run at 4663de8, on mere 0418391f with the atlas sized to the card, whose
+modulus has the retarget fix but not the traversal fix, the probe's 357
+output lines are the same as above to the character: 330 CPU texels, 40 on
+the GPU. The headed captures agree. With one spare layer the 256 board
+still differs from headroom 0 in the same 356 pixels, the two bands at
+physical x 1309 to 1311 and 2161 to 2163, and its board region is pixel for
+pixel the one 3312d08 drew on the old pins; every pixel that moved across
+the bump is in the side panel. One capture of three at headroom 1 differs
+from the other two in a single side-panel pixel, by one step of green, so
+the pictures table reads 357 for it.
+
 ## Raw receipts kept out of tree
 
 Under ruling 255 the probe's logs are in
-`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/bands/`. Each
-opens with its commit, command and compiler; the two builds' findings are
-identical.
+`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/bands/`, and
+the pin bump's in `.../scene-board-paging/4663de8/bands/`. Each opens with
+its commit, command and compiler. The first round's two builds found the
+same; the pin bump's was run in release.
 
 | File | Bytes | SHA-256 |
 | --- | --- | --- |
 | `probe-release.log` | 92,620 | `81d275af82446362f61885cbeec4dc9373fdc4748ecaa84262d23632e3d4302d` |
 | `probe-debug.log` | 92,466 | `ee5cdc43fd3942b6548b41a9ac657e2dc1801165a29167849e501c5b8a95277b` |
+| `4663de8/bands/probe-release.log` | 92,389 | `799602bc73b2f405ac0dc76e23eaa7be9d5b6cbcae17327152f47812e1e25ae2` |
