@@ -806,3 +806,27 @@ a lane saw. This section is the current one, and it names its build.
   to succeed. It must run against this repin. Overflow after card sizing,
   the host's budget setting and upfront versus growing allocation await
   Mark; Eponym's actual device limits are already required by ruling 295.
+- **2026-09-27, paging's traversal gate passes after the repin.** Lane E
+  merged main `b4db31d` without conflicts; tested source `e688a5e` adds
+  assertions and a same-run empty-terrain GPU control. With Rust 1.98.1,
+  the locked offline release gate passes: the old walker moves 330 pixels,
+  the fixed CPU and GPU each move zero, and each of the two terrain frames
+  differs from the empty-terrain frame at all 669,280 pixels. Capture
+  lengths are checked at 2,677,120 bytes. Complete stdout, stderr and
+  source/compiler provenance are in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+  The earlier passing attempt without the empty-terrain control is retained
+  separately as `lane-e-traversal-band-gate`; it is not the final gate.
+  This verifies the declared traversal frame, not moving bodies/contact or
+  a combined simulated-scene budget. Paging remains unmerged pending the
+  three policy answers and remaining integration receipts.
+  A separate read-only review, confirmed against source at `1bbdf4f`,
+  identified two policy-linked follow-ups, not reproduced runtime failures:
+  `BoardSource::set_residency` changes settings but its input signature does
+  not, so the producer can skip the requested rebuild when `needs_frame`
+  is false; and `Residency::update` returns `Current` before publishing a
+  changed overflow count if the retained keys and dirty set stay unchanged.
+  Live settings need a producer-level change/rebuild/skip test; a counted
+  fallback needs a same-keys/different-overflow reporting test. The current
+  host sets headroom at construction, and `ResidencyStats` describes the
+  last change, so these findings do not establish a current host regression.

@@ -487,6 +487,9 @@ rewritten, with a sophont line added, at his word (200).
 
 **2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
 367, with the checks and picture receipts recorded in the board plan.
+Paging's strengthened release gate then passed on its branch, including
+the old-walk fault control and a same-run empty-terrain GPU control; its
+policy questions and remaining integration checks still precede merge.
 Checkpoint 5 was independently audited on Lane A, still unmerged; the sim
 plan distinguishes preserved raw evidence from fresh output compared in
 memory. Three paging policy questions and flow retention are awaiting

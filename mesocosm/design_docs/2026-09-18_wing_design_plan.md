@@ -6786,6 +6786,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: paging's release traversal gate passes on Lane E `e688a5e`
+  after main's repin: old-walk control 330 moved pixels, fixed CPU/GPU zero;
+  both GPU terrain frames differ from the empty control at 669,280 pixels.
+  Complete logs are retained. The board plan records two source-reviewed
+  follow-ups for live settings invalidation and current overflow reporting.
+  Policy answers and remaining integration receipts still precede merge;
+  no new ruling or production change follows from this gate.
 - 2026-09-27: traversal repin applied under 361, 362, 365 and 367: all
   seven mere manifests at `7bb5bfda`, the CPU ray wrapper calling modulus,
   root 397 tests and shared isometer 280 tests passing, all-feature host
