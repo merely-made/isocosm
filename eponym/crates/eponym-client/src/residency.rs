@@ -15,7 +15,7 @@ use std::{collections::BTreeSet, fmt};
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::TraceCamera;
 use mesocosm_core::places::{Places, WALKER_HEIGHT};
-use modulus::{BrickMap, BrickMapError, BrickProjectionRevision};
+use modulus::{AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision};
 use renderling::glam::Vec3;
 
 use crate::room::SEED;
@@ -316,11 +316,19 @@ impl StableResidency {
             * u64::from(pointer_extent[1])
             * u64::from(pointer_extent[2])
             * 4;
-        // Whole atlas slot rows under what the budget leaves: one row is
-        // 16 x 16 slots of 512 bytes.
-        let row_bytes = 16 * 16 * 512;
-        let rows = ((RESIDENT_BUDGET_BYTES.saturating_sub(pointer_bytes)) / row_bytes) as u32;
-        let map = BrickMap::with_capacity(BrickProjectionRevision(0), rows, pointer_extent)?;
+        // The atlas takes every whole row the budget leaves the pointer
+        // volume, as modulus sizes it, at the texture edge of wgpu's default
+        // limits.
+        let limits = AtlasLimits {
+            max_atlas_bytes: RESIDENT_BUDGET_BYTES.saturating_sub(pointer_bytes),
+            ..AtlasLimits::DEFAULT
+        };
+        let map = BrickMap::with_limits(
+            BrickProjectionRevision(0),
+            limits.max_bricks(),
+            pointer_extent,
+            limits,
+        )?;
         let atlas_bytes = map.atlas().len() as u64;
         debug_assert!(pointer_bytes + atlas_bytes <= RESIDENT_BUDGET_BYTES);
         Ok(Self {
@@ -462,6 +470,10 @@ mod tests {
         let mut scene = ResidencyScene::grow();
         let mut stable = StableResidency::new(&scene).expect("stable cache under budget");
         assert!(stable.resident_bytes() <= RESIDENT_BUDGET_BYTES);
+        // Every whole row the budget leaves: one more would not fit.
+        let rows = u64::from(stable.map().atlas_extent()[1] / 8);
+        let row = stable.map().atlas().len() as u64 / rows;
+        assert!(stable.resident_bytes() + row > RESIDENT_BUDGET_BYTES);
         let extents = (stable.map().pointer_extent(), stable.map().atlas_extent());
 
         let first = stable
