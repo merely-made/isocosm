@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 329, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 337, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2744,6 +2744,66 @@ what later sections derive from.
      the row test is set aside with a pointer to this finding, and a genet
      lane makes the fragment take the line box's rounded metrics, landing
      with the next repin, mere's first.
+330. **nisus grows into the voxel authority.** Put to Mark on 2026-09-26,
+     from Lane J's assessment under ruling 326: two voxel stores exist,
+     mere's nisus, with revisioned chunks, a patch that refuses stale
+     revisions, dirty regions kept out of saves and the same 8³ layout, and
+     isometer-core's `Ground`, which the renderer reads, with one world
+     revision, a dirty queue only one reader can drain and no public
+     additive write; the placement table gives revisioned voxel chunks and
+     edits to nisus, and §4.3 calls the duplication a don't. nisus,
+     `Ground`, or a trait deciding later? Mark: "nisus grows into it." nisus
+     becomes the world store, with a chunk map, a world revision, a revision
+     log and additive writes, and `Ground` becomes a thin layer over it or
+     retires; the save hashes that encode `Ground`'s bytes migrate or keep
+     its wire format.
+331. **One edit reaches its consumers through a revision log.** Put to Mark
+     on 2026-09-26, with 330: a log of changes keyed by revision at 8³-brick
+     grain, each consumer reading what changed since its own last read and
+     rebuilding when too far behind; per-consumer queues; or a product-side
+     conductor? Mark: "A revision log."
+332. **conatus carries the source's stamp; the barrier stays with the
+     product.** Put to Mark on 2026-09-26, with 330: conatus stamps colliders
+     with its own counter, which cannot be compared with the source's, and
+     T2 wants a barrier holding dependent simulation until the colliders
+     catch up; conatus carries the source stamp with the barrier in the
+     product, products track it, or conatus holds the barrier? Mark:
+     "conatus carries the source stamp." Its voxel edits take an optional
+     source stamp that queries report, and the barrier lives in the product
+     until a second consumer proves it.
+333. **Navigation stays a search per query, each result stamped.** Put to
+     Mark on 2026-09-26, with 330: no product caches navigation, each
+     searching the current terrain per query, never stale but never saying
+     which revision it read; stamp each query, a cached walkability product,
+     or wait for the place graph? Mark: "Stamp each query." A cached product
+     comes only when a measured query cost forces it.
+334. **T2's first receipt is inside mere, then Mesocosm.** Put to Mark on
+     2026-09-26, with 330: a conatus integration test driving the nisus
+     store into a collider and a modulus refresh, then Mesocosm's carve and
+     an additive write moving collider picks, routing and render slots at
+     one revision; Mesocosm first; or Eponym's crossing, blocked until E2?
+     Mark: "Inside mere, then Mesocosm."
+335. **T2's plan is a lane in the conatus engine plan's §2.** Put to Mark on
+     2026-09-26, with 330: mere's conatus engine plan §2 is complete when
+     "terrain edits, body-volume edits, collision, queries, and mesh/SDF
+     preparation use one chunk/revision path", T2 in general form; a lane
+     there, a new plan in mere, or functional loops keeping it? Mark: "A
+     lane in conatus's §2." Eponym's functional loops plan keeps only T2's
+     product receipt and points there.
+336. **The ray traversal's precision is fixed in mere.** Put to Mark on
+     2026-09-26, from Lane E's third round under ruling 318: the 356 pixels
+     come from `modulus`'s `brick_dda`, which adds each crossing step in
+     32-bit floats from an eye about 1,380 units behind the board, so the
+     error grows along each ray's walk and headroom only lengthens it;
+     against a 64-bit traversal neither picture is exact, headroom 0 off at
+     201 texels and 1 at 531. Fix it in mere, move the eye in isometer now,
+     both, or leave it? Mark: "Fix it in mere." `modulus` computes each
+     crossing directly or measures from the ray's entry into the box, and
+     each product picks it up at its next repin, re-recording its picture
+     receipts.
+337. **Paging merges after the traversal fix.** Put to Mark on 2026-09-26,
+     with 336: merge now at headroom 1, now at headroom 0, or after the fix?
+     Mark: "After the fix."
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5523,6 +5583,11 @@ isometer-render, and the gltf crate is the loader either way.
   reads. Mesocosm's core uses nisus for body volumes through
   `voxel_profile` and `Ground` for terrain. The wing's don'ts forbid
   exactly this duplication. (Narrowed 2026-09-18 by W1.)
+  *(Corrected 2026-09-26 by the T2 assessment of ruling 326:
+  `voxel_profile` mirrors terrain `Ground` into nisus chunks, its only use
+  in the repository (`mesocosm-core/src/voxel_profile.rs`); no body volume
+  touches nisus. Rulings 330 to 335 settle the duplication: nisus grows
+  into the authority.)*
 - **A revision that never moves for regrowing hosts.** isometer's
   `GroundTerrain` stamps `Ground::revision()`, which only `carve` advances
   (`isometer-core/src/ground.rs:374`) and `grow` resets to zero
@@ -6529,6 +6594,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 330 to 337 recorded: T2's six forks from Lane J's
+  assessment (nisus grows into the voxel authority; a revision log fans
+  one edit out; conatus carries the source's stamp, the barrier staying
+  with the product; navigation stamped per query; the first receipt in
+  mere, then Mesocosm; T2 a lane in the conatus engine plan's §2); the
+  ray traversal's f32 drift, found by Lane E behind paging's 356 pixels,
+  fixed in mere; and paging merging after that fix. §4.3's line on nisus
+  and body volumes is corrected: `voxel_profile` mirrors terrain.
 - 2026-09-26: rulings 327 to 329 recorded: the pin bump retargets to
   mere's current main; `eponym/CLAUDE.md` names the Eponym overlay plan as
   its executable plan, amended at Mark's word; and the bump merges with

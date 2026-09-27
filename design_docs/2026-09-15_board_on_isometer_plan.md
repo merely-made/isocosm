@@ -723,3 +723,11 @@ a lane saw. This section is the current one, and it names its build.
   356 pixels of the 256 board where headroom 0 is byte-identical, so the
   cause is found before the branch merges (ruling 318), and the overlay
   self-test's tie is broken with it (325).
+- **2026-09-26, the 356 pixels explained.** Lane E traced them to the
+  shared ray traversal, `modulus`'s `brick_dda`, which adds each crossing
+  step in 32-bit floats from an eye about 1,380 units behind the board:
+  the error grows along each ray's walk, and headroom only lengthens the
+  walk. Against a 64-bit traversal, headroom 0 is already off at 201
+  texels and headroom 1 at 531, so neither picture is exact
+  (`testing/scene-board-paging/bands.md` on the branch). Mark ruled the
+  fix into mere (ruling 336) and paging's merge after it (337).
