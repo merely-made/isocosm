@@ -36,6 +36,15 @@ pub struct Part {
     pub parent: Option<Id>,
     pub traits: BTreeSet<Key>,
     pub severed: bool,
+    /// One of the world's shapes (ruling 276); empty in a part from before
+    /// shapes, which expresses nothing. Parts without one serialize and hash
+    /// as before the field existed.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub shape: Key,
+    /// The catalogue functions this part expresses, each admitted by its
+    /// shape (ruling 338).
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub functions: BTreeSet<Key>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

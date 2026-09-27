@@ -70,7 +70,7 @@ fn table(groups: &[Group], processes: Vec<Process>) -> Genesis {
 fn due(id: &str, requires: Vec<Query>, effects: Vec<Effect>, target: Option<Target>) -> Process {
     Process {
         id: id.into(),
-        shape: Shape::Choice,
+        causation: Causation::Choice,
         requires,
         commitments: vec![],
         effects,

@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 367, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 374, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3013,6 +3013,126 @@ what later sections derive from.
      over orchestration, preserving lane work and verification checkpoints.
      *Reading, not ruled:* this authorizes the traversal repin and lane
      coordination; unresolved design forks still come back to Mark.
+
+368. **Centre-first overflow remains, with the current omitted count.**
+     Asked on 2026-09-27: "1. When visible terrain exceeds the atlas budget,
+     what should happen? The card-sized atlas holds 16,383 bricks; the
+     measured large-board views need 2,413–2,504. Ruling 301 made centre-first
+     dropping temporary, so keeping it for future overflow needs an
+     amendment." Options, recommended first: (A) "Keep the nearest terrain
+     and report the current number of omitted bricks, amending 301
+     (recommended)." (B) "Refuse the frame with a capacity error rather than
+     omit terrain." Mark selected verbatim: "Keep the nearest terrain and
+     report the current number of omitted bricks, amending 301
+     (recommended)." This amends 301's expiry at card sizing. The count must
+     describe the current frame even when the retained keys do not change.
+     *Reading, not ruled:* "nearest" retains the existing centre-first
+     ordering identified in the question; it does not replace it with a
+     different camera-distance rule. The review's stale-count case needs
+     a regression test with unchanged keys and changing omitted counts.
+
+369. **The host exposes a device-bounded atlas budget setting.** Asked on
+     2026-09-27: "2. Should the player be able to change the terrain atlas
+     budget? The host currently fixes it at 8 MiB, although the library
+     accepts other budgets. A live setting also needs a rebuild that cannot
+     be skipped as an unchanged frame." Options, recommended first: (A)
+     "Expose a setting, default 8 MiB, bounded by device limits; changing it
+     rebuilds the atlas (recommended)." (B) "Keep the host fixed at 8 MiB for
+     this slice; only library callers can choose another budget." Mark
+     selected verbatim: "Expose a setting, default 8 MiB, bounded by device
+     limits; changing it rebuilds the atlas (recommended)." The player can
+     change the budget and the next frame must reflect it. Allocation
+     upfront versus growth remains a separate unanswered question.
+     *Reading, not ruled:* use the existing host preference machinery and
+     test one rebuild after a settings change, then an unchanged-frame skip.
+
+370. **Atlas allocation is reopened around preserving resident GPU data.**
+     Asked on 2026-09-27: "3. Should the atlas allocate its full budget
+     immediately? The branch allocates all 8 MiB; the small demo's 260
+     bricks fit in two 128 KiB rows. Growing later saves initial memory but
+     requires replacing the texture and uploading all retained bricks
+     again." Options, recommended first: (A) "Allocate the chosen budget
+     upfront, keeping texture dimensions and slots stable (recommended)."
+     (B) "Allocate occupied rows initially and grow up to the chosen budget,
+     with replacement and full re-upload." Mark asked: "How costly is
+     replacing the texture and uploading only the retained bricks that
+     change? Is that possible?" This is a request to examine the premise,
+     not a selection of either allocation policy. The assistant's initial
+     answer: a new texture may receive unchanged residents through a GPU
+     copy and only new or edited data through CPU uploads, with both
+     textures alive during transfer. *Reading, not ruled:* verify the
+     current layout and measure that alternative before putting the choice
+     back. Allocation remains open; 368 and 369 proceed independently.
+
+371. **Checkpoint 5 requires a per-tick flow handoff API.** Asked on
+     2026-09-27: "4. How should requested sim flow records be handed over?
+     Checkpoint 5 passes 108 tests and keeps every requested move until the
+     caller drains the queue, without a cap. Your ruling 345 says ‘Every
+     move, when asked’; handing records over each tick was the plan's
+     reading." Options, recommended first: (A) "Keep records until drained;
+     live hosts drain each tick, with no silent dropping (recommended)."
+     (B) "Require a per-tick handoff API before accepting checkpoint 5."
+     Mark selected verbatim: "Require a per-tick handoff API before accepting
+     checkpoint 5." The per-tick handoff is now required, rather than an
+     assumed host convention. Recording remains opt-in under 345 and every
+     requested move must be represented. Checkpoint 5's previously audited
+     implementation does not satisfy this new acceptance condition yet.
+     *Reading, not ruled:* the lane chooses a minimal explicit API and proves
+     that successive tick results cannot accumulate or mix records, in both
+     execution modes, with ledger reconciliation retained.
+
+372. **The atlas budget is saved locally per device.** Asked on 2026-09-27:
+     "Should the atlas budget survive restarting the app? The existing
+     pixel-grid preference lasts only for the session, and there is
+     currently no local application-preference store. Campaign storage holds
+     shared world data, so this rendering preference should stay outside
+     it." Options, recommended first: (A) "Save the atlas budget locally per
+     device; add a small local preference store (recommended)." (B) "Keep it
+     for this session only, matching the existing pixel-grid preference."
+     Mark selected verbatim: "Save the atlas budget locally per device; add
+     a small local preference store (recommended)." This extends 369 with
+     persistence independent of campaign authority or network replication.
+     *Reading, not ruled:* persist the requested preference and apply the
+     current device's enforced bounds when using it; missing or malformed
+     local data falls back to the ruled default without changing campaigns.
+
+373. **Measure a more tightly batched GPU-copy path before choosing
+     allocation.** Asked on 2026-09-27: "Given the measured replacement
+     cost, which allocation path should paging take? Full uploads took
+     0.198/0.589 ms in the two growth cases; the tested GPU-copy path took
+     0.325/3.310 ms while sending 57–59% fewer CPU bytes. These are local
+     medians, not worst-case frame guarantees." Options, recommended first:
+     (A) "Allocate the chosen budget upfront; avoid growth events and keep
+     the tested copy approach as research (recommended)." (B) "Grow by rows
+     with full uploads for now; accept occasional replacement costs to use
+     less initial memory." (C) "Measure a more tightly batched GPU-copy path
+     before deciding; keep allocation open." Mark selected verbatim:
+     "Measure a more tightly batched GPU-copy path before deciding; keep
+     allocation open." This opens a bounded measurement, not production
+     growth. *Reading, not ruled:* compare one ordered submission combining
+     retained texture copying and staged changed-data copies, counting CPU
+     preparation and completion, with readback and fault controls.
+
+374. **Allocate the chosen terrain atlas budget upfront.** Asked on
+     2026-09-27: "Which allocation policy should paging use? Independent
+     review confirms the new batched copy works, but full uploads remain
+     faster: 0.191/0.598 ms versus 0.348/1.584 ms across the two growth
+     cases, with 30 measured samples each. Upfront allocation uses the
+     chosen budget (8 MiB by default); growing by rows starts the 260-brick
+     demo at 256 KiB but introduces texture replacements. These local
+     timings exclude rendering and are not frame-time guarantees."
+     Options, recommended first: (A) "Allocate the chosen budget upfront;
+     avoid growth replacements (recommended)." (B) "Grow by rows and fully
+     upload on replacement; trade occasional replacement work for lower
+     initial memory." (C) "Keep allocation open and investigate reusable
+     staging or another copy design before choosing." Mark answered
+     verbatim: "Agreed. The numbers have spoken." This accepts the
+     recommendation, closing the allocation question opened in 370 and
+     held open for measurement by 373. The budget remains configurable,
+     default 8 MiB and bounded by the device (369), persisted locally per
+     device (372). A changed budget still rebuilds the atlas; filling its
+     available capacity does not trigger growth. Copy experiments remain
+     research evidence, with their stated timing and hardware limits.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6786,6 +6906,58 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 374 accepts upfront allocation of the chosen budget.
+  Lane E resumes final consumer, cost and headed integration gates before
+  merging paging; current dependency pins and checkpoint 5 are preserved.
+- 2026-09-27: ruling 373's tighter-batched probe completed on Lane E
+  `e69e1df`, receipt head `0ad455c`. Root recomputed the raw statistics and
+  verified the receipt hashes: full / batched medians are 0.191 / 0.348 ms
+  and 0.598 / 1.584 ms in the two growth cases. All 198 complete readbacks
+  match; missing-copy, missing-patch and swapped-brick controls detect
+  corruption. The board plan records staging bytes and timing boundaries.
+  Independent read-only review confirms the result is sufficient to return
+  the allocation choice to Mark, with no additional measurement gate.
+  Allocation remains an open user choice; this evidence is not a ruling.
+- 2026-09-27: checkpoint 5 integrated from Lane A `5ba6fae`, including
+  371's per-tick API. Root and independent review verified 81 source blobs,
+  27 raw receipts, the 1,000-world summary and 128,676 differential lines.
+  Final-source 111 tests and Mesocosm's all-feature/all-target check pass on
+  Rust 1.98.1; the merge preserves tested source and pins. The sim plan
+  excludes reserve physiology and checkpoint 6. Ruling 373 opens tighter
+  batching measurements while allocation stays open.
+- 2026-09-27: ruling 370's copy premise tested on Lane E `3375a36`:
+  retained GPU data can survive row growth, verified by full readback and
+  missing-copy/patch controls. In two local cases bulk GPU copy reduces
+  CPU bytes but takes longer than full uploads; the board plan records
+  timing, submission-count and machine-load limits. Allocation question
+  reopened with measured options, still unanswered.
+- 2026-09-27: ruling 372 adds per-device local persistence to the atlas
+  budget. Lane E owns the small host preference store and restart tests;
+  campaign storage stays separate. Independent review confirms the omitted
+  reserve physiology is a checkpoint 6 probe question, not another gate
+  for accepting bounded checkpoint 5 after the per-tick API passes.
+- 2026-09-27: ruling 371 requires a per-tick flow handoff before accepting
+  checkpoint 5. Lane A must implement and reverify it; the earlier until-
+  drained reading is not accepted. Atlas allocation remains under inquiry
+  (370); whether the newly ruled budget setting persists locally is asked
+  separately after finding no application preference store.
+- 2026-09-27: ruling 370 preserves Mark's question about GPU-preserving
+  atlas growth. The offered full re-upload premise is under investigation;
+  allocation is not selected. A bounded comparison may inform the next
+  question without implementing production growth.
+- 2026-09-27: rulings 368 and 369 answer the first two paging questions:
+  standing centre-first overflow with a current omitted-brick count,
+  amending 301, and a live device-bounded budget defaulting to 8 MiB.
+  Lane E implements them with tests for unchanged retained keys and the
+  producer's settings-change skip. Allocation and sim flow retention remain
+  open. Mark invited ongoing coordination with the independent review chat.
+- 2026-09-27: paging's release traversal gate passes on Lane E `e688a5e`
+  after main's repin: old-walk control 330 moved pixels, fixed CPU/GPU zero;
+  both GPU terrain frames differ from the empty control at 669,280 pixels.
+  Complete logs are retained. The board plan records two source-reviewed
+  follow-ups for live settings invalidation and current overflow reporting.
+  Policy answers and remaining integration receipts still precede merge;
+  no new ruling or production change follows from this gate.
 - 2026-09-27: traversal repin applied under 361, 362, 365 and 367: all
   seven mere manifests at `7bb5bfda`, the CPU ray wrapper calling modulus,
   root 397 tests and shared isometer 280 tests passing, all-feature host

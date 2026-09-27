@@ -18,7 +18,7 @@ use super::{
 use crate::{
     Result,
     meaning::{mass, value},
-    rules::{Process, Shape},
+    rules::{Causation, Process},
     schema::*,
     simulation::Work,
 };
@@ -160,7 +160,7 @@ impl<'w> Crowd<'w> {
             if !e.alive || !gates.open(&e, self.tick) {
                 continue;
             }
-            if p.shape == Shape::Agentless {
+            if p.causation == Causation::Agentless {
                 if e.kingdom != "kingdom:world" {
                     continue;
                 }

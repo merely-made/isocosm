@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 367 on 2026-09-27, the last
+on 2026-09-26 and 353 to 374 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -450,6 +450,13 @@ label remains as the dated record of how they were presented.
 | | Repin the traversal fix now or bundle it with genet and pre.4? | "You can repin but communicate with the isocosm agent"; the intended agent remains unresolved | 365 |
 | Method | Evidence status; dependency-ordered questions; fault-specific controls, offered as three additions | "Sounds good! Shall we proceed? Or would you like to review/audit first?" | 366 |
 | Coordination | Lane A, the RPG session or both before repinning? | "Ah, the rpg session isn’t active now. But you can orchestrate the repin/rest" | 367 |
+| Paging overflow | Standing nearest-terrain fallback with a current omitted count, or capacity error? | "Keep the nearest terrain and report the current number of omitted bricks, amending 301 (recommended)." | 368 |
+| Paging budget | Live device-bounded 8 MiB default, or fixed host budget? | "Expose a setting, default 8 MiB, bounded by device limits; changing it rebuilds the atlas (recommended)." | 369 |
+| Atlas allocation | Upfront allocation, or growth with full re-upload? | "How costly is replacing the texture and uploading only the retained bricks that change? Is that possible?" Allocation remains open while the premise is checked. | 370 |
+| Sim flow handoff | Until drained with host draining each tick, or a required per-tick API? | "Require a per-tick handoff API before accepting checkpoint 5." | 371 |
+| Budget persistence | Small local per-device preference store, or session-only setting? | "Save the atlas budget locally per device; add a small local preference store (recommended)." | 372 |
+| Allocation after measurement | Upfront budget, growth with full uploads, or tighter batched copying measurement? | "Measure a more tightly batched GPU-copy path before deciding; keep allocation open." | 373 |
+| Allocation after tighter batching | Upfront budget, growth with full uploads, or further copy research? | "Agreed. The numbers have spoken." Accepts upfront allocation. | 374 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -485,8 +492,51 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, allocation decided.** Ruling 374 accepts allocating the
+chosen budget upfront, after the reviewed tighter-batching experiment.
+The configurable, persistent per-device budget and current omitted count
+stand. Lane E proceeds through remaining integration gates; budget changes
+rebuild the atlas, while ordinary population changes do not grow it.
+
+**2026-09-27, tighter batching measured.** Ruling 373's experiment is
+complete: the new batched copy improves the larger replacement, but full
+uploads remain faster in both measured cases (0.191/0.598 ms against
+0.348/1.584 ms). Root checked raw hashes and recomputed the statistics;
+198 complete readbacks and the three fault controls support correctness.
+The board plan records exact scope and limits. Allocation remains open,
+and the new evidence returns the choice to Mark. No answer is inferred.
+Independent read-only review confirms the result and controls; the question
+offers upfront allocation, growth with full uploads, or further copy research.
+
+**2026-09-27, checkpoint accepted.** Checkpoint 5 lands with 371's per-tick
+API, independently checked fresh evidence, 111 final-source tests and the
+Mesocosm consumer check. Physiological scope stays with checkpoint 6.
+Ruling 373 asks for tighter batching measurements rather than selecting
+allocation; paging's settings and omission reporting remain on its branch.
+
+**2026-09-27, allocation evidence.** The replacement probe answers 370:
+GPU copies can preserve unchanged residents, but the measured two-submit
+path is slower than full uploads in both cases despite lower CPU bytes.
+The question is put back with an option to measure tighter batching;
+allocation remains open. The board plan keeps the numbers and limits.
+
+**2026-09-27, flow answer.** Ruling 371 requires the per-tick API before
+checkpoint 5 acceptance. Allocation remains under inquiry (370); the
+budget's local persistence is a new follow-up because the host currently
+has no application preference store. The reserve-path reading is under
+independent review.
+
+**2026-09-27, next answers.** Rulings 368 and 369 settle standing counted
+overflow and a live budget setting. Allocation and sim flow retention remain
+open. Mark explicitly invited continued questions and coordination with the
+independent review chat; its next read-only pass checks the reserve-path
+reading before checkpoint 5 integration.
+
 **2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
 367, with the checks and picture receipts recorded in the board plan.
+Paging's strengthened release gate then passed on its branch, including
+the old-walk fault control and a same-run empty-terrain GPU control; its
+policy questions and remaining integration checks still precede merge.
 Checkpoint 5 was independently audited on Lane A, still unmerged; the sim
 plan distinguishes preserved raw evidence from fresh output compared in
 memory. Three paging policy questions and flow retention are awaiting

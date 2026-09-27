@@ -20,6 +20,12 @@ pub enum Command {
         entity: Id,
         event: Key,
     },
+    /// The dev source places matter at a site (rulings 271, 344 and 358).
+    PlaceMatter {
+        site: Id,
+        account: Key,
+        amount: u64,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -156,6 +162,12 @@ impl Session {
         });
         Ok(outcome)
     }
+    /// Whether a dev placed matter in this run: the run is assisted
+    /// (ruling 271), read from the history, which is the record (ruling 344).
+    pub fn assisted(&self) -> bool {
+        let placed = |e: &Entry| matches!(e.command, Command::PlaceMatter { .. });
+        self.entries.iter().any(placed)
+    }
     pub fn save(&self) -> Saved {
         Saved {
             version: crate::VERSION,
@@ -280,5 +292,13 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             Ok("collected".into())
         },
         Command::Learn { entity, event } => Ok(sim.learn(*entity, event)?.to_string()),
+        Command::PlaceMatter {
+            site,
+            account,
+            amount,
+        } => {
+            sim.place(*site, account, *amount)?;
+            Ok("placed".into())
+        },
     }
 }

@@ -106,6 +106,43 @@ than one draw in a hundred, and the controls' refusals carry no bound.
 `verify.py` applies the same rule and, where the worlds hunted, prints each
 arm's refusals beside its bound.
 
+`receipts/2026-09-27/isocosm/` holds checkpoint 5, Part B's steps 1 to 3:
+part shapes and the function catalogue, with the part a process binds
+(rulings 338 to 341 and 360); declared conversions, the diffusion kernel and
+the dev source (342 to 344, 357 and 358); and the flow record (345 and 359).
+`c5-draws.json`, rebuilt by `c5_summary.py` from the two raw runs of
+`c5-draws.rs`, which live out of tree with their hashes in `RAW_RECEIPTS.md`,
+summarizes 1,000 clock-seeded draws of each family, each run individually and
+grouped: over the whole function catalogue, where the two modes agreed in all
+1,000 and every one of the 510 functions was bound; and over ecology worlds
+whose transforms declare their conversions, with dev placements and host acts
+between advances, where every member's and site's ledgers reconciled with the
+flow record at every step of all 1,000, matter was always the founding total
+plus what was issued, and the modes claimed the same moves.
+`c5-differential.json`, with its driver `differential-drive-340.rs`, finds
+the driver's logs on main before Part B and at this checkpoint identical line
+for line, and the probe's pilots with food, water and hunters, compared by
+the previous day's `same_but_time.py`, equal in every field but wall time. No
+crowd arm applies: the crowd refuses processes binding a part until the
+vertical probe certifies them, and the flow record and the dev source are the
+core's alone. `checkpoint-5-source.json` names the commits, commands, checks
+and the two source tests not ported.
+
+**2026-09-27, ruling 371 follow-up:** the flow record now returns owned
+moves for one explicit tick or one host command; the until-drained queue is
+removed. `c5-per-tick-draws.rs` and `c5_per_tick_summary.py` produce
+`c5-per-tick.json`: 1,000 worlds, 95,824 handoffs in each mode, every ledger
+reconciled, every mode comparison agreed, and 158,312 earlier-tick injection
+controls detected. All historical final states and issued matter match.
+Explicit one-tick collection changes cohort batching, so flow-row counts are
+not claimed byte-identical to the old multi-tick run. The four unrecorded
+regression logs still match all 128,676 historical lines. Two deliberate
+core faults, retaining old moves and dropping a move, make the flow tests
+fail. `checkpoint-5-per-tick-source.json` records the source and qualified
+checks; `PER_TICK_RAW_RECEIPTS.md` hashes the complete fresh raw/log files.
+Reserve physiology, filial development cost and checkpoint 6 remain outside
+this receipt. The historical checkpoint-5 artifacts above retain their words.
+
 ## Specimen checks
 
 Run from the Mesocosm workspace. Use Cargo to select the current executable;

@@ -806,3 +806,126 @@ a lane saw. This section is the current one, and it names its build.
   to succeed. It must run against this repin. Overflow after card sizing,
   the host's budget setting and upfront versus growing allocation await
   Mark; Eponym's actual device limits are already required by ruling 295.
+- **2026-09-27, paging's traversal gate passes after the repin.** Lane E
+  merged main `b4db31d` without conflicts; tested source `e688a5e` adds
+  assertions and a same-run empty-terrain GPU control. With Rust 1.98.1,
+  the locked offline release gate passes: the old walker moves 330 pixels,
+  the fixed CPU and GPU each move zero, and each of the two terrain frames
+  differs from the empty-terrain frame at all 669,280 pixels. Capture
+  lengths are checked at 2,677,120 bytes. Complete stdout, stderr and
+  source/compiler provenance are in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+  The separate f64-camera diagnostic still differs at 68 texels for both
+  fixed maps: zero headroom moves is not universal pixel exactness. The
+  lane's receipt annotation is pushed at `fffee6a`; its tested code remains
+  `e688a5e`.
+  The earlier passing attempt without the empty-terrain control is retained
+  separately as `lane-e-traversal-band-gate`; it is not the final gate.
+  This verifies the declared traversal frame, not moving bodies/contact or
+  a combined simulated-scene budget. Paging remains unmerged pending the
+  three policy answers and remaining integration receipts.
+  A separate read-only review, confirmed against source at `1bbdf4f`,
+  identified two policy-linked follow-ups, not reproduced runtime failures:
+  `BoardSource::set_residency` changes settings but its input signature does
+  not, so the producer can skip the requested rebuild when `needs_frame`
+  is false; and `Residency::update` returns `Current` before publishing a
+  changed overflow count if the retained keys and dirty set stay unchanged.
+  Live settings need a producer-level change/rebuild/skip test; a counted
+  fallback needs a same-keys/different-overflow reporting test. The current
+  host sets headroom at construction, and `ResidencyStats` describes the
+  last change, so these findings do not establish a current host regression.
+- **2026-09-27, overflow and budget setting ruled (368, 369).** The existing
+  centre-first dropping rule becomes a standing fallback, amending 301;
+  the host reports the current omitted-brick count, including changes that
+  leave retained keys unchanged. The player gets a device-bounded atlas
+  budget setting, 8 MiB by default, whose changes rebuild the atlas. Lane E
+  implements these with focused reporting and producer-invalidation tests.
+  Upfront allocation versus growth remains unanswered, as does sim flow
+  retention. Eponym's actual-device-limit propagation proceeds separately
+  under existing ruling 295, preserving its own budget.
+- **2026-09-27, allocation premise reopened (370).** Mark asked whether a
+  replacement texture can retain unchanged bricks while uploading only
+  changes, and what it costs. Allocation remains open. Inspect and compare
+  GPU copying with full CPU re-upload, including temporary coexistence of
+  old/new textures and preservation of slot addresses. No growth policy is
+  authorized by the question alone.
+- **2026-09-27, budget persistence ruled (372).** Save the atlas budget
+  locally per device in a small application preference store, outside
+  campaign data. Restore it on restart and enforce current device bounds
+  when applying it. Verify a restart roundtrip and missing/malformed data;
+  allocation policy remains open while GPU-copy costs are measured.
+- **2026-09-27, atlas replacement measured for 370.** The test-only probe
+  on Lane E `3375a36` verifies unchanged slot coordinates while atlas rows
+  grow, and complete destination readback matches after GPU copying plus
+  uploads of new/edited bricks. Missing-copy and missing-patch controls
+  both produce wrong bytes. On the RTX 4060 Laptop (Vulkan 610.88), ten
+  measured runs after two warmups, with order rotated, give median
+  allocation-through-completion CPU times of 0.198/0.589 ms for full
+  uploads at 260→700 and 2,504→5,000 bricks; bulk old-atlas GPU copies plus
+  changed uploads take 0.325/3.310 ms, and copying individual retained
+  slots takes 1.301/10.945 ms. Bulk copying reduces CPU bytes from
+  524,288→225,792 and 3,145,728→1,278,464. Peak old+new texture payload is
+  786,432 and 4,456,448 bytes. The full path has one upload/submission;
+  bulk has five/fourteen changed-box writes and two submissions. These
+  include completion waits, are not GPU timestamps, omit a production
+  growth integration, and do not control unrelated machine load. They
+  establish feasibility and this implementation's cost, not an inherent
+  speed ranking for every batched copy design or a frame-time guarantee.
+  Raw samples and controls live in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-replacement/`.
+  Allocation has been put back to Mark: upfront budget (recommended),
+  growth with full uploads, or a more tightly batched copy measurement
+  before deciding. No allocation policy is inferred from the inquiry.
+
+- **2026-09-27, tighter batching requested (373).** Measure one ordered
+  submission for retained GPU copying and staged changed-data transfers
+  before choosing allocation. Independent review confirmed the first
+  experiment's feasibility and timings, with qualifications: byte savings
+  are logical upload payload, not measured bus traffic; the full baseline
+  includes empty capacity; identical unedited brick values do not detect
+  wrong source coordinates; and ten samples do not establish stable tails.
+  The next fixture must distinguish keys/voxels and detect wrong offsets.
+  CPU map generation, pointer/bind-group recreation and rendering remain
+  outside the bounded replacement timing unless separately measured.
+
+- **2026-09-27, tighter batching measured for 373.** Lane E tested
+  `e69e1df` and pushed receipt head `0ad455c`. One encoder orders the
+  retained texture copy before packed patch-buffer copies, with one
+  submission. Fresh texture/buffer allocation, box discovery, CPU packing,
+  encoding and completion wait are included. Thirty measured samples per
+  arm after three warmups rotate order on the same RTX 4060 Laptop.
+  For 260→700 bricks, full upload / previous bulk / new batched medians
+  are 0.191 / 0.303 / 0.348 ms; for 2,504→5,000 they are
+  0.598 / 3.325 / 1.584 ms. Batched observed maxima are 1.374 / 1.890 ms,
+  not latency guarantees. The larger copy improves, but full uploads
+  remain fastest in these two measured cases.
+  Exact padded staging is 475,136 / 2,588,672 bytes versus changed logical
+  texels of 225,792 / 1,278,464 bytes. Older queue-write staging is opaque;
+  this does not measure bus traffic. The full baseline includes empty
+  capacity. CPU map creation, pointers, bind groups, rendering and readback
+  stay outside every timer; unrelated CPU load was not controlled.
+  All 198 whole-atlas readbacks match with asserted-distinct, nonzero
+  per-key/per-voxel patterns. Same-run missing-copy, missing-patch and
+  swapped-retained-brick controls detect corruption in both cases; the
+  swaps differ at 1,022 texels. Root independently checked all nine raw
+  manifest hashes, parsed samples and statistics. Raw evidence and
+  `root-recomputed.json` are in
+  `Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-batched/`.
+  Earlier experiments remain historical. Production growth is not
+  implemented or authorized; allocation returns to Mark as an open choice.
+  Independent read-only review also verifies the tested source/lock hashes,
+  all 198 parsed rows, statistics, ordering, timer boundaries and controls,
+  and finds no further measurement gate needed for 373. Fresh packing and
+  staging are substantial costs; reusable staging/direct packing were not
+  tested, so this is not an optimized-copy lower bound. The next question
+  offers upfront allocation (recommended), row growth with full uploads,
+  or further copy research while allocation stays open.
+
+- **2026-09-27, upfront allocation ruled (374).** Mark accepted allocating
+  the chosen budget upfront: "Agreed. The numbers have spoken." This closes
+  the allocation inquiry and measurement gate in 370/373. Keep the 8 MiB
+  default, device bounds, live rebuild on budget change and local per-device
+  persistence under 369/372, plus current omission reporting under 368.
+  Ordinary terrain population changes use the existing fixed capacity;
+  production row growth is not part of this implementation. Lane E must
+  finish the consumer, cost and headed receipts before integration.

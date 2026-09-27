@@ -1,0 +1,1243 @@
+{
+  "version": 1,
+  "genesis": {
+    "version": 1,
+    "seed": 340,
+    "founding": {
+      "seed": 340,
+      "sites": 1,
+      "population": 6,
+      "lineages": 3,
+      "cohort_size": 2,
+      "stock_min": 8,
+      "stock_max": 64,
+      "period_max": 5,
+      "base_unit_micrometres": 1000,
+      "ecology": true
+    },
+    "world": {
+      "shape": "shape:graph",
+      "scale": "scale:macro",
+      "base_unit_micrometres": 1000,
+      "static_traits": [],
+      "magic": {},
+      "canon": {
+        "version": 1,
+        "id": "world:canon",
+        "revision": 1,
+        "glyphs": [
+          {
+            "id": "glyph:cycle",
+            "display": "↻",
+            "effect": "effect:cycle"
+          }
+        ],
+        "variants": [],
+        "limits": {
+          "glyphs": 4096,
+          "variants": 4096
+        }
+      },
+      "parent_world": null,
+      "neighbours": {}
+    },
+    "rules": {
+      "version": 1,
+      "accounts": {
+        "matter:0-0": {
+          "Matter": {
+            "lineage": "lineage:0"
+          }
+        },
+        "matter:0-1": {
+          "Matter": {
+            "lineage": "lineage:0"
+          }
+        },
+        "matter:1-0": {
+          "Matter": {
+            "lineage": "lineage:1"
+          }
+        },
+        "matter:1-1": {
+          "Matter": {
+            "lineage": "lineage:1"
+          }
+        },
+        "matter:2-0": {
+          "Matter": {
+            "lineage": "lineage:2"
+          }
+        },
+        "matter:2-1": {
+          "Matter": {
+            "lineage": "lineage:2"
+          }
+        },
+        "matter:2-2": {
+          "Matter": {
+            "lineage": "lineage:2"
+          }
+        },
+        "matter:2-3": {
+          "Matter": {
+            "lineage": "lineage:2"
+          }
+        },
+        "sim:attention": "Attention",
+        "sim:energy": "Energy",
+        "sim:obligation": "Obligation",
+        "sim:time": "Time",
+        "world:soil": {
+          "Matter": {
+            "lineage": "world:ground"
+          }
+        }
+      },
+      "conditions": [
+        "world:habitable",
+        "world:weather"
+      ],
+      "traits": [
+        "ability:cycle-0",
+        "ability:cycle-1",
+        "ability:cycle-2",
+        "life:consumer",
+        "life:decomposer",
+        "life:producer"
+      ],
+      "relations": [
+        "sim:member",
+        "sim:owns",
+        "sim:parent"
+      ],
+      "note_kinds": [
+        "sim:act",
+        "sim:discover",
+        "sim:observed"
+      ],
+      "processes": {
+        "ecology:age-0": {
+          "id": "ecology:age-0",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-0"
+              }
+            },
+            {
+              "Age": {
+                "at_least": 25
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 31,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:age-1": {
+          "id": "ecology:age-1",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-1"
+              }
+            },
+            {
+              "Age": {
+                "at_least": 28
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 31,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:age-2": {
+          "id": "ecology:age-2",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-2"
+              }
+            },
+            {
+              "Age": {
+                "at_least": 22
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 31,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:birth-0": {
+          "id": "ecology:birth-0",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-0"
+              }
+            },
+            {
+              "Account": {
+                "who": "Actor",
+                "key": "matter:0-0",
+                "at_least": 30
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Birth": {
+                "provision": {
+                  "matter:0-0": 8
+                }
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 7,
+          "priority": 40,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:birth-1": {
+          "id": "ecology:birth-1",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-1"
+              }
+            },
+            {
+              "Account": {
+                "who": "Actor",
+                "key": "matter:1-0",
+                "at_least": 30
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Birth": {
+                "provision": {
+                  "matter:1-0": 8
+                }
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 7,
+          "priority": 40,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:birth-2": {
+          "id": "ecology:birth-2",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-2"
+              }
+            },
+            {
+              "Account": {
+                "who": "Actor",
+                "key": "matter:2-0",
+                "at_least": 30
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Birth": {
+                "provision": {
+                  "matter:2-0": 8
+                }
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 7,
+          "priority": 40,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:death-0": {
+          "id": "ecology:death-0",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-0"
+              }
+            },
+            {
+              "Below": {
+                "who": "Actor",
+                "key": "matter:0-0",
+                "amount": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 30,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:death-1": {
+          "id": "ecology:death-1",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-1"
+              }
+            },
+            {
+              "Below": {
+                "who": "Actor",
+                "key": "matter:1-0",
+                "amount": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 30,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:death-2": {
+          "id": "ecology:death-2",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-2"
+              }
+            },
+            {
+              "Below": {
+                "who": "Actor",
+                "key": "matter:2-0",
+                "amount": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": 1,
+          "priority": 30,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "ecology:feed-1": {
+          "id": "ecology:feed-1",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-1"
+              }
+            },
+            {
+              "Holds": {
+                "who": "Target",
+                "at_least": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Eat": {
+                "from": "Target",
+                "amount": 1,
+                "into": "matter:1-0"
+              }
+            }
+          ],
+          "risk": null,
+          "target": {
+            "same_place": true,
+            "alive": true,
+            "lineage": null,
+            "among": [
+              "lineage:0"
+            ],
+            "weighted": true
+          },
+          "period": 3,
+          "priority": 10,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "ecology:feed-2": {
+          "id": "ecology:feed-2",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-2"
+              }
+            },
+            {
+              "Holds": {
+                "who": "Target",
+                "at_least": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Eat": {
+                "from": "Target",
+                "amount": 1,
+                "into": "matter:2-0"
+              }
+            }
+          ],
+          "risk": null,
+          "target": {
+            "same_place": true,
+            "alive": false,
+            "lineage": null,
+            "among": [
+              "lineage:0",
+              "lineage:1"
+            ],
+            "weighted": true
+          },
+          "period": 3,
+          "priority": 10,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "ecology:produce-0": {
+          "id": "ecology:produce-0",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-0"
+              }
+            },
+            {
+              "Condition": {
+                "key": "world:habitable",
+                "at_least": 1
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Transfer": {
+                "from": "Place",
+                "to": "Actor",
+                "account": "world:soil",
+                "amount": 2
+              }
+            },
+            {
+              "Transform": {
+                "who": "Actor",
+                "take": {
+                  "world:soil": 2
+                },
+                "give": {
+                  "matter:0-0": 2
+                }
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 2,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "ecology:upkeep-0": {
+          "id": "ecology:upkeep-0",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-0"
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Transform": {
+                "who": "Actor",
+                "take": {
+                  "matter:0-0": 1
+                },
+                "give": {
+                  "world:soil": 1
+                }
+              }
+            },
+            {
+              "Transfer": {
+                "from": "Actor",
+                "to": "Place",
+                "account": "world:soil",
+                "amount": 1
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 5,
+          "priority": 20,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "ecology:upkeep-1": {
+          "id": "ecology:upkeep-1",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-1"
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Transform": {
+                "who": "Actor",
+                "take": {
+                  "matter:1-0": 1
+                },
+                "give": {
+                  "world:soil": 1
+                }
+              }
+            },
+            {
+              "Transfer": {
+                "from": "Actor",
+                "to": "Place",
+                "account": "world:soil",
+                "amount": 1
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 5,
+          "priority": 20,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "ecology:upkeep-2": {
+          "id": "ecology:upkeep-2",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            },
+            {
+              "Trait": {
+                "who": "Actor",
+                "key": "ability:cycle-2"
+              }
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Transform": {
+                "who": "Actor",
+                "take": {
+                  "matter:2-0": 1
+                },
+                "give": {
+                  "world:soil": 1
+                }
+              }
+            },
+            {
+              "Transfer": {
+                "from": "Actor",
+                "to": "Place",
+                "account": "world:soil",
+                "amount": 1
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 5,
+          "priority": 20,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "sim:birth": {
+          "id": "sim:birth",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Birth": {
+                "provision": {
+                  "world:soil": 2
+                }
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "sim:death": {
+          "id": "sim:death",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            "Death"
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "sim:found-polity": {
+          "id": "sim:found-polity",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "FoundPolity": {
+                "governance": "governance:consent",
+                "focus": [
+                  "sim:give"
+                ],
+                "support": "world:soil"
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        },
+        "sim:give": {
+          "id": "sim:give",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Transfer": {
+                "from": "Actor",
+                "to": "Target",
+                "account": "world:soil",
+                "amount": 1
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "sim:reckon": {
+          "id": "sim:reckon",
+          "shape": "Transition",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Record": {
+                "axis": "feat:reserve",
+                "account": "world:soil"
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "sim:remember": {
+          "id": "sim:remember",
+          "shape": "Choice",
+          "requires": [
+            {
+              "Alive": "Actor"
+            }
+          ],
+          "commitments": [],
+          "effects": [
+            {
+              "Note": {
+                "kind": "sim:observed",
+                "text": "Observed at the specimen bench.",
+                "lifetime": null
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": null,
+          "priority": 0,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": true
+        },
+        "world:weather": {
+          "id": "world:weather",
+          "shape": "Agentless",
+          "requires": [],
+          "commitments": [],
+          "effects": [
+            {
+              "Condition": {
+                "key": "world:weather",
+                "delta": 1
+              }
+            }
+          ],
+          "risk": null,
+          "target": null,
+          "period": 3,
+          "priority": -1,
+          "need_account": null,
+          "need_below": 0,
+          "glyphs": [],
+          "invariants": [
+            "sim:matter",
+            "sim:nonnegative"
+          ],
+          "note": false
+        }
+      },
+      "field": {
+        "strength": 1000000,
+        "decay_per_tick": 10000,
+        "legend_floor": 250000
+      },
+      "limits": {
+        "entities": 1000002,
+        "sites": 4096,
+        "processes": 1024,
+        "operations": 128,
+        "events_per_advance": 1000000,
+        "notes": 100000,
+        "history": 1000000,
+        "advance_ticks": 100000
+      },
+      "epoch_ticks": 32,
+      "collection_buffer": 16
+    },
+    "lineages": {
+      "lineage:0": {
+        "parent": null,
+        "revision": 1,
+        "traits": [
+          "ability:cycle-0",
+          "life:producer"
+        ],
+        "kingdom": "kingdom:flora"
+      },
+      "lineage:1": {
+        "parent": null,
+        "revision": 1,
+        "traits": [
+          "ability:cycle-1",
+          "life:consumer"
+        ],
+        "kingdom": "kingdom:fauna"
+      },
+      "lineage:2": {
+        "parent": null,
+        "revision": 1,
+        "traits": [
+          "ability:cycle-2",
+          "life:decomposer"
+        ],
+        "kingdom": "kingdom:myco"
+      },
+      "world:ground": {
+        "parent": null,
+        "revision": 1,
+        "traits": [],
+        "kingdom": "kingdom:world"
+      }
+    },
+    "sites": {
+      "0": {
+        "terrain_seed": 17007093793125372572,
+        "conditions": {
+          "world:habitable": 1,
+          "world:weather": 0
+        },
+        "accounts": {
+          "world:soil": 411
+        },
+        "routes": []
+      }
+    },
+    "population": {
+      "groups": {
+        "0": {
+          "count": 1,
+          "entity": {
+            "lineage": "world:ground",
+            "kingdom": "kingdom:world",
+            "scale": "scale:macro",
+            "provenance": {
+              "Intrinsic": "world:ground"
+            },
+            "method": "Inert",
+            "place": 0,
+            "arrived": 0,
+            "visits": [],
+            "born": 0,
+            "alive": true,
+            "body_revision": 1,
+            "parts": {},
+            "traits": [],
+            "accounts": {},
+            "skills": {},
+            "tenets": {},
+            "disposition": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "1": {
+          "count": 2,
+          "entity": {
+            "lineage": "lineage:2",
+            "kingdom": "kingdom:myco",
+            "scale": "scale:meso",
+            "provenance": {
+              "Born": "lineage:2"
+            },
+            "method": "Reactive",
+            "place": 0,
+            "arrived": 0,
+            "visits": [],
+            "born": 0,
+            "alive": true,
+            "body_revision": 1,
+            "parts": {
+              "0": {
+                "parent": null,
+                "traits": [
+                  "ability:cycle-2"
+                ],
+                "severed": false
+              }
+            },
+            "traits": [
+              "ability:cycle-2",
+              "life:decomposer"
+            ],
+            "accounts": {
+              "matter:2-0": 10,
+              "world:soil": 4
+            },
+            "skills": {},
+            "tenets": {},
+            "disposition": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "3": {
+          "count": 2,
+          "entity": {
+            "lineage": "lineage:0",
+            "kingdom": "kingdom:flora",
+            "scale": "scale:meso",
+            "provenance": {
+              "Born": "lineage:0"
+            },
+            "method": "Reactive",
+            "place": 0,
+            "arrived": 0,
+            "visits": [],
+            "born": 0,
+            "alive": true,
+            "body_revision": 1,
+            "parts": {
+              "0": {
+                "parent": null,
+                "traits": [
+                  "ability:cycle-0"
+                ],
+                "severed": false
+              }
+            },
+            "traits": [
+              "ability:cycle-0",
+              "life:producer"
+            ],
+            "accounts": {
+              "matter:0-0": 10,
+              "world:soil": 4
+            },
+            "skills": {},
+            "tenets": {},
+            "disposition": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "5": {
+          "count": 2,
+          "entity": {
+            "lineage": "lineage:1",
+            "kingdom": "kingdom:fauna",
+            "scale": "scale:meso",
+            "provenance": {
+              "Born": "lineage:1"
+            },
+            "method": "Reactive",
+            "place": 0,
+            "arrived": 0,
+            "visits": [],
+            "born": 0,
+            "alive": true,
+            "body_revision": 1,
+            "parts": {
+              "0": {
+                "parent": null,
+                "traits": [
+                  "ability:cycle-1"
+                ],
+                "severed": false
+              }
+            },
+            "traits": [
+              "ability:cycle-1",
+              "life:consumer"
+            ],
+            "accounts": {
+              "matter:1-0": 10,
+              "world:soil": 4
+            },
+            "skills": {},
+            "tenets": {},
+            "disposition": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      "next_id": 7
+    }
+  },
+  "genesis_digest": "92177144318caf978f651a451322099083b98e1dafb92764b0d6875e94c21422",
+  "branch": "branch:trunk",
+  "entries": [
+    {
+      "id": "intent:c84322f7c54562f711e3b615ac1458bba3c4957ae56498001af66c01b06a1054",
+      "tick": 4,
+      "order": 0,
+      "command": {
+        "Act": {
+          "actor": 1,
+          "target": null,
+          "process": "sim:remember",
+          "cause": null
+        }
+      },
+      "outcome": "{\"id\":\"event:b94e40ac157e511acee5531c4ffe2f33d8e0a08e08e9c0eeb6ff89d84eb8065d\",\"tick\":4,\"revision\":\"50320ad8ed9bccb58275e627ef4b5cfba78207cab7271ecb477ba24b4d851e90\",\"actor\":1,\"target\":null,\"count\":1,\"chosen\":\"sim:remember\",\"foregone\":[\"ecology:upkeep-2\",\"sim:give\"],\"cause\":null,\"facts_read\":[\"Alive(Actor) = true\"],\"effects\":[{\"Note\":{\"kind\":\"sim:observed\",\"text\":\"Observed at the specimen bench.\",\"lifetime\":null}}],\"outcome\":\"Accepted\",\"matter_before\":495,\"matter_after\":495}"
+    }
+  ],
+  "tick": 7,
+  "state_hash": "5ca6022b1a5a770cce3eb8fed2a2da786e5649ac58453a4609d1d253d301ed7a",
+  "checkpoints": []
+}

@@ -1,0 +1,253 @@
+// Copyright 2026 Mark Alan Boykin
+// SPDX-License-Identifier: MPL-2.0
+
+//! One act's writes, held apart from the world until the act is accepted.
+//! The interpreter once staged each act on a copy of the whole simulation.
+//! A stage copies only what the act binds, its actor's and target's bodies
+//! and its site, and lists what the act adds: children, relations, notes,
+//! polities, record marks and its event. Committing writes exactly what the
+//! whole copy would have held; dropping the stage leaves the world as it
+//! was, identity grouping included.
+
+use crate::{
+    Result,
+    flows::{Leg, MadeBy},
+    meaning::mass,
+    reach::Reach,
+    schema::*,
+    simulation::Simulation,
+};
+use std::collections::BTreeMap;
+
+mod staged;
+#[cfg(test)]
+mod tests;
+
+pub(crate) use staged::Staged;
+
+pub(crate) struct Stage {
+    actor: Id,
+    target: Option<Id>,
+    place: Id,
+    /// The actor's part the act binds (ruling 338).
+    part: Option<Id>,
+    /// The members the actor stands for: one, or a whole bulk cohort.
+    count: u64,
+    /// The bound bodies as the act leaves them. A target that is the actor
+    /// is the same body.
+    bodies: BTreeMap<Id, Entity>,
+    /// The site's ledger and conditions, copied on the first write.
+    site: Option<Site>,
+    births: Vec<Entity>,
+    /// Inserted (`true`) and removed relations, in the order the act made
+    /// them.
+    relations: Vec<(Relation, bool)>,
+    notes: Vec<Note>,
+    polities: Vec<(Id, Polity)>,
+    /// Record entries in order, and each axis's high as the act leaves it,
+    /// so a later entry is judged against an earlier one.
+    marks: Vec<(Key, i64)>,
+    highs: BTreeMap<Key, i64>,
+    event: Option<(Event, Reach)>,
+    /// The act's matter moves, for the flow record (ruling 345).
+    legs: Vec<Leg>,
+}
+
+impl Simulation {
+    /// A stage for one act by `actor`, standing for `count` members at
+    /// `place`, binding `part` of the actor. A named target that does not
+    /// exist fails here, as lifting it from a whole copy would.
+    pub(crate) fn stage(
+        &self,
+        actor: Id,
+        target: Option<Id>,
+        place: Id,
+        part: Option<Id>,
+        count: u64,
+    ) -> Result<Stage> {
+        // A cohort acts only through processes without targets.
+        debug_assert!(count == 1 || target.is_none());
+        let population = &self.state.population;
+        let mut bodies = BTreeMap::new();
+        let body = population.get(actor).ok_or("unknown entity")?;
+        bodies.insert(actor, body.clone());
+        if let Some(target) = target {
+            let body = population.get(target).ok_or("unknown entity")?;
+            bodies.entry(target).or_insert_with(|| body.clone());
+        }
+        Ok(Stage {
+            actor,
+            target,
+            place,
+            part,
+            count,
+            bodies,
+            site: None,
+            births: vec![],
+            relations: vec![],
+            notes: vec![],
+            polities: vec![],
+            marks: vec![],
+            highs: BTreeMap::new(),
+            event: None,
+            legs: vec![],
+        })
+    }
+
+    /// Whether the staged act would change the world's matter: the bodies
+    /// and site it binds, weighed before and after, and any children.
+    pub(crate) fn moves_matter(&self, stage: &Stage) -> bool {
+        let weigh = |ledger: &Ledger| mass(ledger, &self.genesis.rules);
+        let (mut before, mut after) = (0u128, 0u128);
+        for (id, body) in &stage.bodies {
+            let weight = u128::from(if *id == stage.actor { stage.count } else { 1 });
+            let was = self.state.population.get(*id).expect("staged bodies exist");
+            before += weigh(&was.accounts) * weight;
+            after += weigh(&body.accounts) * weight;
+        }
+        if let Some(site) = &stage.site {
+            before += weigh(&self.state.sites[&stage.place].accounts);
+            after += weigh(&site.accounts);
+        }
+        after += stage
+            .births
+            .iter()
+            .map(|c| weigh(&c.accounts))
+            .sum::<u128>();
+        before != after
+    }
+
+    /// Adds the act's public event, seeding its reach, and the actor's note
+    /// of it. Nothing is written to the world until the commit.
+    pub(crate) fn stage_event(&self, stage: &mut Stage, event: Event) -> Result<()> {
+        let mut reach = Reach::default();
+        reach.seed(&event, &self.state.sites)?;
+        let (actor, id) = (stage.actor, event.id.clone());
+        let mut staged = Staged { sim: self, stage };
+        staged.add_note(actor, id.clone(), "sim:act", String::new(), None, id)?;
+        stage.event = Some((event, reach));
+        Ok(())
+    }
+
+    /// The stored groups an act can change, by first identity: each lifted
+    /// member's group and the pieces lifting leaves, the cohort that acts as
+    /// one, and the children's new groups.
+    fn reaches(&self, stage: &Stage) -> Vec<Id> {
+        let groups = &self.state.population.groups;
+        let mut firsts = vec![stage.actor];
+        // Lifting a member out of its group rewrites the group's first entry
+        // and adds entries for the member and for the rest of the group.
+        let mut lifted = |id: Id| {
+            if let Some((&first, group)) = groups.range(..=id).next_back() {
+                firsts.push(first);
+                firsts.push(id);
+                if id + 1 < first + group.count {
+                    firsts.push(id + 1);
+                }
+            }
+        };
+        if stage.count == 1 {
+            lifted(stage.actor);
+        }
+        if let Some(target) = stage.target {
+            lifted(target);
+        }
+        let next = self.state.population.next_id;
+        firsts.extend((0..stage.births.len() as u64).map(|k| next + k));
+        firsts.sort_unstable();
+        firsts.dedup();
+        firsts
+    }
+
+    /// Writes an accepted act of `process`, and its matter moves to the flow
+    /// record. Identities split as the whole copy split them before its
+    /// first write: the actor alone unless it acts for its cohort, then the
+    /// target.
+    pub(crate) fn commit(&mut self, mut stage: Stage, next_action: u64, process: &str) {
+        let (legs, count) = (std::mem::take(&mut stage.legs), stage.count);
+        let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() {
+            self.reaches(&stage)
+        } else {
+            vec![]
+        };
+        if let Some(pass) = &mut self.pass {
+            let population = &self.state.population;
+            if stage.count == 1 {
+                pass.lifting(population, stage.actor);
+            }
+            if let Some(target) = stage.target {
+                pass.lifting(population, target);
+            }
+        }
+        if let Some(j) = &mut self.journal {
+            let s = &self.state;
+            j.groups(&s.population, &reached);
+            if stage.site.is_some() {
+                j.site(stage.place, &s.sites[&stage.place]);
+            }
+            for (relation, _) in &stage.relations {
+                j.relation(relation, s.relations.contains(relation));
+            }
+            for (id, _) in &stage.polities {
+                j.polity(*id);
+            }
+            if !stage.marks.is_empty() {
+                j.record(&s.record);
+            }
+            if let Some((event, _)) = &stage.event {
+                j.event(&event.id);
+            }
+        }
+        self.write(stage, next_action);
+        self.flowed(MadeBy::Process(process.into()), legs, count);
+        if let Some(t) = &mut self.targets {
+            t.touch(&self.state.population, reached.iter().copied());
+        }
+        if let Some(f) = &mut self.filed {
+            f.touch(&self.state.population, reached, self.state.tick);
+        }
+    }
+
+    fn write(&mut self, stage: Stage, next_action: u64) {
+        let s = &mut self.state;
+        if stage.count == 1 {
+            s.population.lift(stage.actor).expect("the actor exists");
+        }
+        if let Some(target) = stage.target {
+            s.population.lift(target).expect("the target exists");
+        }
+        for (id, body) in stage.bodies {
+            let group = s.population.groups.get_mut(&id);
+            group.expect("staged bodies were lifted").entity = body;
+        }
+        for child in stage.births {
+            s.population
+                .insert(child, 1)
+                .expect("staging reserved the identity");
+        }
+        if let Some(site) = stage.site {
+            s.sites.insert(stage.place, site);
+        }
+        for (relation, present) in stage.relations {
+            if present {
+                s.relations.insert(relation);
+            } else {
+                s.relations.remove(&relation);
+            }
+        }
+        s.polities.extend(stage.polities);
+        for (axis, value) in stage.marks {
+            s.record.reckon(&[hagiograph::Entry {
+                axis,
+                value,
+                holder: stage.actor,
+            }]);
+        }
+        s.notes.extend(stage.notes);
+        if let Some((event, reach)) = stage.event {
+            s.reach.arrivals.extend(reach.arrivals);
+            s.events.insert(event.id.clone(), event);
+        }
+        s.next_action = next_action;
+    }
+}

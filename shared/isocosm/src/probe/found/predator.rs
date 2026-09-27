@@ -84,7 +84,7 @@ impl Hunters {
         let body = store(i, 0);
         let mut hunt = process(
             &format!("probe:hunt-{i}"),
-            Shape::Choice,
+            Causation::Choice,
             vec![Effect::Eat {
                 from: Binding::Target,
                 amount: self.bite,

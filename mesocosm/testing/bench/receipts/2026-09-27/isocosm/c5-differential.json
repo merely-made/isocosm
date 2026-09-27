@@ -1,0 +1,41 @@
+{
+ "kind": "isocosm-differential-part-b",
+ "driver": "differential-drive-340.rs: differential-drive-287.rs with every process, and the one transform it names, read from bytes, so one source builds against the core before ruling 340 renamed the causal kind and ruling 342 gave transforms a declared conversion, and after",
+ "driver_reproduces_the_last_logs": {
+  "note": "On main before Part B (3af984e) the driver writes the post-287 logs of checkpoint 4 byte for byte (c4-differential.json's after_287 hashes).",
+  "fuzz 7": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+  "fuzz 11": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+  "tight 13": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54"
+ },
+ "runs": [
+  {
+   "command": "drive fuzz 7 24 400",
+   "lines": 9648,
+   "main_3af984e_sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+   "checkpoint_5_sha256": "9ae1af613968f20f3a921625884db380ea22d4ebf50da0849badc76cfbd96af9",
+   "byte_identical": true
+  },
+  {
+   "command": "drive fuzz 11 60 1500",
+   "lines": 90120,
+   "main_3af984e_sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+   "checkpoint_5_sha256": "012e917571e203f2ce479b8a45914278e9a8b17f94f56d73efa3118fe7b71c5b",
+   "byte_identical": true
+  },
+  {
+   "command": "drive tight 13 48 600",
+   "lines": 28896,
+   "main_3af984e_sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54",
+   "checkpoint_5_sha256": "8a8e1ab6cb1dc650c9ef909cc262d6a5bd9c7cad6dca7952ca8f52a0adedbb54",
+   "byte_identical": true
+  },
+  {
+   "command": "drive probe 20260927 12",
+   "lines": 12,
+   "main_3af984e_sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224",
+   "checkpoint_5_sha256": "5cc9fdf39686b7e51e42e381c9a238ee8e117ded010f9876a2e5d3a35ed82224",
+   "byte_identical": true
+  }
+ ],
+ "finding": "Every line of every log identical: worlds that use none of Part B's rules run, receipt and hash exactly as before, in both modes, through saves loaded in each."
+}

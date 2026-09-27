@@ -47,7 +47,7 @@ fn rousing() -> Genesis {
     g.rules.processes.retain(|_, p| p.period.is_none());
     let rouse = Process {
         id: "test:rouse".into(),
-        shape: Shape::Choice,
+        causation: Causation::Choice,
         requires: vec![
             Query::Alive(Binding::Actor),
             Query::Trait {
@@ -230,7 +230,7 @@ fn cohort(processes: Vec<Process>) -> Genesis {
 fn due(id: &str, priority: i32, requires: Vec<Query>, effects: Vec<Effect>) -> Process {
     Process {
         id: id.into(),
-        shape: Shape::Choice,
+        causation: Causation::Choice,
         requires,
         commitments: vec![],
         effects,

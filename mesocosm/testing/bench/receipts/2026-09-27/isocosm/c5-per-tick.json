@@ -1,0 +1,22 @@
+{
+  "kind": "isocosm-checkpoint-5-per-tick-handoff",
+  "ruling": 371,
+  "master_seed": 1790490907209296200,
+  "drawn_steps_per_world": 60,
+  "draws": 1000,
+  "modes_agree_every_handoff": 1000,
+  "every_ledger_reconciled_every_handoff": 1000,
+  "matter_founded_plus_issued_every_handoff": 1000,
+  "handoffs_per_mode": 95824,
+  "tick_controls_both_modes": 158312,
+  "draws_with_tick_controls": 1000,
+  "flows_individual": 2521166,
+  "flows_grouped": 2333489,
+  "cohort_flows": 63260,
+  "historical_final_states_and_issue_match": 1000,
+  "draws_with_changed_flow_counts": 980,
+  "flow_count_reading": "Each explicit one-tick transaction applies the existing cohort collection at its end. Cohort batching may differ from the historical one-to-three-tick calls; every per-member ledger reconciles and final states/issued matter match.",
+  "fresh_raw_sha256": "94c06799a12b5daeb94abb9aaef82f241bf98b2e42125a365307534a9b88095a",
+  "historical_raw_sha256": "e9600f075c515d598599c9f89d4c09753cab67fcfc70f82eae04e6bf67193057",
+  "scope": "Per-tick/command handoff and ledger reconciliation. Reserve physiology, filial development cost and checkpoint 6 are outside this receipt."
+}
