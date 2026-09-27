@@ -772,3 +772,37 @@ a lane saw. This section is the current one, and it names its build.
   verification and the CPU wrapper change proceed, with independent audits
   of sim Part B, paging and the queued pre.4/text forks. Unresolved design
   choices remain with Mark.
+- **2026-09-27, traversal repin verified and applied.** Seven manifests
+  now pin mere `7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7`; the three
+  tracked lockfiles change only that revision. Genet and netrender stay
+  at `0cf4f30b` and `c8c09f16`. Isometer's `trace_ray` delegates traversal
+  to modulus, retaining ray validation, normalization, world-space hit
+  reporting and exhaustion errors (361). The added boundary-start test
+  hits voxel 262143 from coordinate 262144 at distance 0.0001 (362).
+  At the repin source based on main `0f3cc37`, root tests pass 397 with
+  three intentional ignores; shared isometer passes 280 with one ignored
+  doc test. Lens library clippy passes with warnings denied. Root,
+  Mesocosm and Eponym all-features/all-targets checks pass, offline and
+  locked; main's Isocosm Part A passes 69 tests and wing-integration four.
+  Modulus passes 26 tests; its separately rerun receipt measures
+  zero fixed-walk faults over 669,280 board rays at each of three headroom
+  settings, against the same-run old-walk control's 2, 332 and 662 faults
+  and 330/660 moved pixels. These are fresh CPU measurements; the four
+  archived GPU setups above remain integrity-checked historical evidence.
+  Fresh lens GPU tests execute with visible terrain and occlusion controls.
+  Eponym's headed D1 passes 64 frames and probes 9/9, 9/9, 0/9, 0/9,
+  independently recomputed from its PNG; the picture is byte-identical
+  to the preserved August 26 picture. Mesocosm's DC4 example records all
+  16 body cuts and a contact sheet, visually reviewed as capture evidence.
+  Logs, metadata and pictures are under
+  `Code/testing/isometry/receipts/2026-09-27/traversal-repin/`.
+  The default source audit has zero duplicate families. All features
+  retains 41 under ruling 298's optional Cleromancy exception: comparing
+  Lane E's pre-repin closure gives the same 125 family identities after
+  normalizing the mere revision; removing only Cleromancy gives zero.
+  Paging is still unmerged: its diagnostic had no assertions, so a bounded
+  gate patch is prepared on Lane E, requiring the old-walk control to move
+  330 pixels, the fixed CPU/GPU pictures to move zero, and GPU acquisition
+  to succeed. It must run against this repin. Overflow after card sizing,
+  the host's budget setting and upfront versus growing allocation await
+  Mark; Eponym's actual device limits are already required by ruling 295.

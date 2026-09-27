@@ -485,6 +485,17 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
+367, with the checks and picture receipts recorded in the board plan.
+Checkpoint 5 was independently audited on Lane A, still unmerged; the sim
+plan distinguishes preserved raw evidence from fresh output compared in
+memory. Three paging policy questions and flow retention are awaiting
+Mark. The remaining reserve-path reading, pre.4 setup and two text forks
+follow. Eponym's device-limit propagation was already ruled (295), so it
+returns to implementation rather than another vote. Genet's text branch
+and main have diverged, and main is dirty; the old fast-forward instruction
+cannot be used. No new design ruling follows from these audit findings.
+
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104
 occurrences; D20's provider over `mere-capability`, W3's to build; the

@@ -44,6 +44,10 @@ every conatus line cited here reads the same at mere's `origin/main`,
 *(2026-09-27: the products pin mere `0418391f` since the pin bump; every
 conatus line cited here reads the same at `876320fd` and at `a464dc2a`.)*
 
+*(2026-09-27, traversal repin: the products now pin mere `7bb5bfda`.
+`crates/conatus/conatus` has no diff from `0418391f` to that revision;
+this repin adds no binding or query-refresh implementation.)*
+
 ---
 
 ## 1. What exists

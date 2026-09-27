@@ -6786,6 +6786,17 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: traversal repin applied under 361, 362, 365 and 367: all
+  seven mere manifests at `7bb5bfda`, the CPU ray wrapper calling modulus,
+  root 397 tests and shared isometer 280 tests passing, all-feature host
+  checks passing, and fresh Eponym depth and Mesocosm body pictures kept.
+  The board plan's dated entry gives controls, evidence paths and source
+  audit limits. Lane A checkpoint 5 is independently audited but unmerged,
+  with the sim plan recording the retained evidence and its limits.
+  Paging's three policy choices and sim flow retention are put to Mark;
+  the pre.4 and text forks follow. Genet main has diverged from Lane L and
+  contains concurrent edits, so the handoff's fast-forward instruction is
+  stale; reconciliation and fresh verification precede integration.
 - 2026-09-27: ruling 367 transfers repin and remaining-lane orchestration
   to the new session because the RPG session is inactive. The coordination
   hold in 365 is superseded; verification and unresolved design forks stay.
