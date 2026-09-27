@@ -17,6 +17,9 @@ use taproot::Selector;
 
 use super::*;
 
+// The invariant under the panel figures: every text row holds its text.
+mod text_rows;
+
 type BoardHarness = Harness<UiState, Logic, UiChild>;
 
 /// The window this laptop opens: 1100 wide, and 752 tall because the host
