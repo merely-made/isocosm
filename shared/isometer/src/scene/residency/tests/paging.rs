@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Receipts for the map that follows the framed bricks: retargets, the hold,
+//! Receipts for the map that follows the framed bricks: retargets,
 //! refreshes, rebuilds and headroom.
 
 use super::*;
@@ -46,15 +46,11 @@ fn a_pan_retargets_and_the_map_reads_the_source() {
     );
 }
 
-/// The hold: a shrinking selection rebuilds from empty, and a kept brick an
-/// edit then touches is refreshed in place and read back right.
-///
-/// The control is the same pan driven straight through modulus's retarget:
-/// it leaves a kept brick drawn by the pointer volume yet read as air. When
-/// the pin moves past the fix the control fails, and the hold and this
-/// control retire together.
+/// A shrinking selection retargets like any other: a kept brick left in a
+/// slot past the resident count reads right, and an edit to it refreshes in
+/// place.
 #[test]
-fn a_shrinking_selection_rebuilds_packed_and_edits_still_land() {
+fn a_shrinking_selection_retargets_and_edits_still_land() {
     let mut hills = Hills::new();
     let residency = RefCell::new(Residency::new(ResidencySettings::default()));
     let from = [0.0, 0.0];
@@ -66,60 +62,49 @@ fn a_shrinking_selection_rebuilds_packed_and_edits_still_land() {
     let next = frame(&hills, to);
     assert!(next.keys.len() < first.keys.len());
     let refresh = step(&residency, &mut map, &hills, &next, &[]);
-    assert_eq!(refresh, TerrainRefresh::Full);
-    assert_eq!(residency.borrow().stats().rebuilt, Some(Rebuild::Shrink));
+    assert!(matches!(refresh, TerrainRefresh::Slots(_)));
+    assert_eq!(
+        residency.borrow().stats().rebuilt,
+        None,
+        "a shrinking pan retargets"
+    );
     assert_reads(&map, &residency.borrow(), &hills);
 
-    // An edit on a kept brick: raise one column inside it.
-    let kept = *next.keys.last().expect("bricks are framed");
-    let origin = key_origin(kept).map(|v| v as i32);
-    hills.edits.insert((origin[0] + 3, origin[2] + 4), 20);
+    // The case a packed map never meets: a kept brick in a slot past the
+    // resident count, with a column whose surface lies inside it, so an edit
+    // can move that surface without touching any other brick.
+    let origin = map.origin();
+    let slot = |key: [i16; 3]| {
+        let coord = [0, 1, 2].map(|i| (i32::from(key[i]) - i32::from(origin[i])) as u32);
+        map.pointer_at(coord).unwrap_or(0) as usize
+    };
+    let inside = |key: [i16; 3]| {
+        let at = key_origin(key).map(|v| v as i32);
+        let low = i32::from(key[1]) * BRICK;
+        (0..BRICK * BRICK)
+            .map(|i| (at[0] + i % BRICK, at[2] + i / BRICK))
+            .find(|(x, z)| (low..low + BRICK).contains(&hills.surface(*x, *z)))
+    };
+    let (kept, (x, z)) = next
+        .keys
+        .iter()
+        .copied()
+        .filter(|key| slot(*key) > next.keys.len())
+        .find_map(|key| inside(key).map(|column| (key, column)))
+        .expect("the pan leaves a kept brick past the resident count");
+
+    // The edit: that column's surface moved within the brick's layer.
+    let (surface, low) = (hills.surface(x, z), i32::from(kept[1]) * BRICK);
+    let moved = if surface + 1 < low + BRICK {
+        surface + 1
+    } else {
+        low
+    };
+    hills.edits.insert((x, z), moved);
     let refresh = step(&residency, &mut map, &hills, &next, &[kept]);
     assert!(matches!(refresh, TerrainRefresh::Slots(ref slots) if slots.len() == 1));
     assert_eq!(residency.borrow().stats().refreshed, 1);
     assert_reads(&map, &residency.borrow(), &hills);
-
-    // The control: the same two selections straight through modulus.
-    let hills = Hills::new();
-    let extent = first.extent(first.layers().expect("terrain"));
-    let mut raw =
-        BrickMap::with_capacity(BrickProjectionRevision(1), 8, extent).expect("a raw map");
-    let made = |framed: &FramedBricks| -> Vec<Vec<u8>> {
-        framed.keys.iter().map(|key| hills.brick(*key)).collect()
-    };
-    for (revision, framed) in [(2, &first), (3, &next)] {
-        let bricks = made(framed);
-        raw.retarget_with(
-            BrickProjectionRevision(revision),
-            framed.keys.iter().copied(),
-            |key| {
-                let index = framed.keys.binary_search(&key).ok()?;
-                Some(bricks[index].as_slice())
-            },
-        )
-        .expect("modulus takes the selection");
-    }
-    let origin = raw.origin();
-    let unreadable = next.keys.iter().find(|key| {
-        let coord = [0, 1, 2].map(|i| (i32::from(key[i]) - i32::from(origin[i])) as u32);
-        let slot = raw.pointer_at(coord).unwrap_or(0) as usize;
-        let brick = hills.brick(**key);
-        let Some(solid) = brick.iter().position(|material| *material != 0) else {
-            return false;
-        };
-        let at = key_origin(**key).map(|v| v as i32);
-        let voxel = [
-            at[0] + (solid % 8) as i32,
-            at[1] + (solid / 64) as i32,
-            at[2] + (solid / 8 % 8) as i32,
-        ];
-        slot > next.keys.len() && raw.material_at(voxel) == 0
-    });
-    assert!(
-        unreadable.is_some(),
-        "modulus now reads a kept brick after a shrinking retarget: the pin has \
-         moved past the fix, so retire Rebuild::Shrink and this control"
-    );
 }
 
 #[test]
@@ -255,17 +240,12 @@ fn an_edit_within_the_headroom_retargets_and_one_past_it_rebuilds() {
         assert_reads(&map, &residency.borrow(), &hills);
 
         // Lowered again: nothing rebuilds for height. The layer-2 brick is
-        // gone, so the framing shrinks, and while the hold stands that alone
-        // rebuilds, at the same reserve.
+        // gone, so the framing shrinks, and the map retargets to it.
         let dirty = lift(&mut hills, 5);
         let lowered = frame(&hills, [0.0, 0.0]);
         step(&residency, &mut map, &hills, &lowered, &dirty);
         let stats = residency.borrow().stats();
-        assert!(
-            matches!(stats.rebuilt, None | Some(Rebuild::Shrink)),
-            "lowering is never a height rebuild: {:?}",
-            stats.rebuilt
-        );
+        assert_eq!(stats.rebuilt, None, "lowering never rebuilds");
         assert_eq!(stats.reserved, [0, 2]);
         assert_reads(&map, &residency.borrow(), &hills);
 

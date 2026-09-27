@@ -25,13 +25,6 @@
 //! [`ResidencySettings::headroom`] spare ones above them, sized across as well
 //! as up, so an edit that lifts the terrain into them retargets and only one
 //! past them rebuilds the map ([`Rebuild::Headroom`]).
-//!
-//! **The hold.** modulus at the pinned revision bounds a slot by the number of
-//! keys rather than by the atlas, so after a retarget that shrinks the
-//! selection a kept brick can sit in a slot past that number: the GPU still
-//! draws it, the CPU reads it as air, and refreshing it panics. Until the pin
-//! moves past the fix, a selection that would shrink rebuilds the map from
-//! empty instead, which keeps the slots packed ([`Rebuild::Shrink`]).
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;

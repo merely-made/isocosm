@@ -96,9 +96,8 @@ fn a_256_board_draws_holding_what_its_frame_shows() {
 }
 
 /// One view, reached directly and by a walk through five others, holds the
-/// same bricks and answers every probe the same. The walk is chosen to both
-/// retarget and, while the hold stands, rebuild; a retarget in it is checked
-/// to the byte against the tracer.
+/// same bricks and answers every probe the same. Each retarget in the walk is
+/// checked to the byte against the tracer.
 #[test]
 fn one_view_holds_the_same_bricks_however_it_was_reached() {
     let map = relief_map(256);

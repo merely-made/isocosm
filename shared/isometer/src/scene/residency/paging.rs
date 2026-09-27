@@ -47,8 +47,6 @@ pub enum Rebuild {
     Extent,
     /// The terrain rose past the layers the pointer volume reserved for it.
     Headroom,
-    /// The selection shrank, and the hold rebuilds rather than retarget.
-    Shrink,
 }
 
 /// What the last change did to a residency.
@@ -225,14 +223,8 @@ impl Residency {
     ) -> Result<TerrainRefresh, String> {
         let why = if self.rebuild {
             Some(Rebuild::Requested)
-        } else if let Some(why) = self.outgrown(framed) {
-            Some(why)
-        } else if framed.keys.len() < self.resident.len() {
-            // The hold: see the module header. After the pin bump this arm
-            // goes, and a shrinking selection retargets like any other.
-            Some(Rebuild::Shrink)
         } else {
-            None
+            self.outgrown(framed)
         };
         if let Some(why) = why {
             *map = self.build(source, framed, why)?;

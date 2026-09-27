@@ -17,7 +17,7 @@
 
 use std::time::{Duration, Instant};
 
-use isometer::{BrickSource, Rebuild, TerrainSource};
+use isometer::{BrickSource, TerrainSource};
 use isometry_core::MapDocument;
 
 use super::columns::{BoardBricks, TileColumns};
@@ -31,8 +31,7 @@ use crate::state::UiState;
 
 /// A pan moves the camera and nothing else: no column is read and no brick is
 /// remade except the ones it brings into view. What it uploads is the pointer
-/// volume plus those bricks, to the byte — or, while the hold stands, the whole
-/// map when the framing shrinks.
+/// volume plus those bricks, to the byte.
 #[test]
 fn a_pan_reads_nothing_and_uploads_only_what_it_frames() {
     let mut board = board_or_skip!("the pan receipt");
@@ -61,21 +60,14 @@ fn a_pan_reads_nothing_and_uploads_only_what_it_frames() {
     );
     let held = cost.residency;
     assert!(held.resident <= held.capacity);
-    match held.rebuilt {
-        Some(why) => {
-            assert_eq!(why, Rebuild::Shrink, "only the hold rebuilds on a pan");
-            assert!(panned.full_map_upload);
-        },
-        None => {
-            let pointers: u64 = held.extent.iter().map(|axis| u64::from(*axis)).product();
-            assert!(panned.projection_replaced && !panned.full_map_upload);
-            assert_eq!(
-                panned.brick_upload_bytes,
-                pointers * 4 + held.loaded as u64 * 512,
-                "the pointer volume and the bricks brought into view"
-            );
-        },
-    }
+    assert_eq!(held.rebuilt, None, "a pan retargets");
+    let pointers: u64 = held.extent.iter().map(|axis| u64::from(*axis)).product();
+    assert!(panned.projection_replaced && !panned.full_map_upload);
+    assert_eq!(
+        panned.brick_upload_bytes,
+        pointers * 4 + held.loaded as u64 * 512,
+        "the pointer volume and the bricks brought into view"
+    );
 }
 
 /// A token step moves a body's pose. The terrain is untouched, so the step

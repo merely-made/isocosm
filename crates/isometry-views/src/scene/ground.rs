@@ -16,8 +16,8 @@
 //! allows (2,047 bricks until the family's atlas is sized to the card) and one
 //! spare brick layer of headroom above the board's tallest tile, so an edit
 //! that lifts it one layer retargets rather than rebuilding. The one layer is
-//! provisional, with what each costs in `testing/scene-board-paging/`. Retargeting, refreshing, rebuilding, and the hold on
-//! a shrinking selection are isometer's [`Residency`].
+//! provisional, with what each costs in `testing/scene-board-paging/`. Retargeting, refreshing and rebuilding are
+//! isometer's [`Residency`].
 //!
 //! **The revision.** The tracer skips an upload whose revision and projection
 //! both match what it holds, so a frame is stamped with the *view's* revision,
