@@ -16,6 +16,7 @@
 //! old walker must reproduce its 330 moved texels in the same run, proving
 //! that this fixture still detects the accumulation fault. GPU absence fails
 //! this manually requested receipt rather than certifying an empty check.
+//! Both terrain captures must differ from an empty-terrain GPU control.
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -47,7 +48,7 @@ const TEXTURE: [u32; 2] = [890, 752];
 mod gpu;
 mod traversal;
 
-use gpu::{pixel, render};
+use gpu::{pixel, render, render_empty};
 use traversal::{lockstep, ray64, replica, truth};
 
 type Hit = Option<([i32; 3], u8)>;
@@ -316,13 +317,25 @@ fn headroom_bands() {
     }
 
     // 5. The GPU's own two pictures.
-    let gpu_moved = match (render(&ui, camera, 0), render(&ui, camera, 1)) {
-        (Some(zero), Some(one)) => {
+    let gpu_moved = match (
+        render(&ui, camera, 0),
+        render(&ui, camera, 1),
+        render_empty(&ui, camera),
+    ) {
+        (Some(zero), Some(one), Some(empty)) => {
+            let expected_bytes = (TEXTURE[0] * TEXTURE[1] * 4) as usize;
+            for pixels in [&zero, &one, &empty] {
+                assert_eq!(pixels.len(), expected_bytes, "the complete GPU frame");
+            }
             let mut gpu = Vec::new();
+            let mut terrain_pixels = [0usize; 2];
             for py in 0..TEXTURE[1] {
                 for px in 0..TEXTURE[0] {
                     if pixel(&zero, px, py) != pixel(&one, px, py) {
                         gpu.push((px, py));
+                    }
+                    for (count, image) in terrain_pixels.iter_mut().zip([&zero, &one]) {
+                        *count += usize::from(pixel(image, px, py) != pixel(&empty, px, py));
                     }
                 }
             }
@@ -336,9 +349,17 @@ fn headroom_bands() {
                 json!({"kind": "gpu-diff", "texels": gpu.len(), "columns": gpu_columns,
                 "also_moved_on_the_cpu": shared}),
             );
+            line(
+                json!({"kind": "gpu-empty-terrain-control", "capture_bytes": expected_bytes,
+                "headroom_0_differs": terrain_pixels[0], "headroom_1_differs": terrain_pixels[1]}),
+            );
+            assert!(
+                terrain_pixels.into_iter().all(|count| count > 0),
+                "both GPU terrain frames must differ from the empty-terrain control"
+            );
             gpu.len()
         },
-        _ => panic!("the headroom receipt requires two successful GPU captures"),
+        _ => panic!("the headroom receipt requires all three successful GPU captures"),
     };
     line(json!({"kind": "old-walker-control", "texels": old_moved}));
     assert_eq!(

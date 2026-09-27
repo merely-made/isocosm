@@ -4,10 +4,21 @@ use super::*;
 
 /// The scene's own picture of the board at `headroom`, drawn on the GPU.
 pub(super) fn render(ui: &UiState, camera: SlabCamera, headroom: u32) -> Option<Vec<u8>> {
+    render_scene(ui, camera, Some(headroom))
+}
+
+/// The same frame with its terrain omitted, so the gate can detect it.
+pub(super) fn render_empty(ui: &UiState, camera: SlabCamera) -> Option<Vec<u8>> {
+    render_scene(ui, camera, None)
+}
+
+fn render_scene(ui: &UiState, camera: SlabCamera, headroom: Option<u32>) -> Option<Vec<u8>> {
     let (device, queue) = device()?;
     let mut scene = Scene::new(device.clone(), queue.clone(), TEXTURE[0], TEXTURE[1]).ok()?;
     scene.set_terrain_palette(Some(terrain_palette(&ui.map)));
-    let settings = ResidencySettings { headroom };
+    let settings = ResidencySettings {
+        headroom: headroom.unwrap_or_default(),
+    };
     let limits = scene.atlas_limits();
     let ground = BoardGround::new(&ui.map, &Overlays::of(ui), 1, settings, limits);
     let bricks = ground.bricks();
@@ -22,7 +33,7 @@ pub(super) fn render(ui: &UiState, camera: SlabCamera, headroom: u32) -> Option<
                 camera,
                 bodies: &[],
                 volumes: SceneVolumes::Voxels(&volumes),
-                terrain: Some(&terrain as &dyn TerrainSource),
+                terrain: headroom.map(|_| &terrain as &dyn TerrainSource),
                 dirty: &[],
                 grade: board_grade(),
                 terrain_appearance: Some(board_appearance()),
