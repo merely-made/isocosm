@@ -71,3 +71,14 @@ unrelated global Cargo cache owner; the test itself completed in 3.09 s.
 The [replacement experiment](replacement.md) answers the separate transfer
 cost inquiry. Broader paging timing and headed integration receipts remain
 separate gates before main integration.
+
+## 2026-09-27 host integration follow-up
+
+The real headed controls now have a dispatch-and-restart receipt:
+1 MiB displays 247 omitted bricks; a disabled minimum click stays unchanged;
+the increment rebuilds at 2 MiB and clears omissions; a second process restores
+2 MiB from the same isolated local preference file. The upfront GPU gate also
+asserts full chosen capacity for a small map and no allocation on ordinary
+pan/edit. The portable XDG resolver now ignores empty/relative XDG candidates
+before falling back to HOME. See [integration.md](integration.md) for final
+source, gates, pictures, historical failed fixture and raw hashes.

@@ -55,3 +55,12 @@ Each log opens with its commit, command and compiler; each headed session's
 | `headroom-check/headroom-0-run-2/stderr.log` | 45,225 | `0cc00cfe3e16cf088a8223dc4b8a28864c7e78e0e0b49e26fada524426b52e7c` |
 | `headroom-check/headroom-0-run-2/isometry_capture.png` | 726,012 | `8da8c71b2841db38754baffe4753d899bee465abd10485fd80d8e74217660166` |
 | `headroom-check/headroom-0-run-2/source.txt` | 297 | `affffad84cf034246c49925c19ef31343cadd7faa4d73a0a96fc0a95b99152bc` |
+
+## 2026-09-27 final integration batch
+
+Ruling 374 selects upfront allocation of the chosen feasible budget. The
+combined-source suites, fresh GPU gates, 150 cost records, and six successful
+headed captures are recorded in [integration.md](integration.md), with exact
+source qualifications and the raw manifest hash. [final-cost.md](final-cost.md)
+contains this batch's regenerated release tables. Earlier raw directories and
+annotations above remain unchanged.
