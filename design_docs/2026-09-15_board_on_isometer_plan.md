@@ -731,3 +731,10 @@ a lane saw. This section is the current one, and it names its build.
   texels and headroom 1 at 531, so neither picture is exact
   (`testing/scene-board-paging/bands.md` on the branch). Mark ruled the
   fix into mere (ruling 336) and paging's merge after it (337).
+- **2026-09-27, the traversal fixed in mere, on a branch.** Lane K's
+  `dda-precision` computes each crossing as the boundary less the eye
+  over the direction: on this board's frame no fault and no headroom
+  move remain, on the CPU and four GPU setups, for 0.02 to 0.08 ms a
+  frame. isometer will call modulus's CPU walk rather than copy it
+  (ruling 361), and the start clamps into the box (362). Paging merges
+  once that reaches isometry's pins.

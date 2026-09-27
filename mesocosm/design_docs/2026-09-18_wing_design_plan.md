@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 345, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 364, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2858,6 +2858,120 @@ what later sections derive from.
      asked." Each accepted act's matter moves, from, to, amount and the
      members it stands for, handed over each tick, every ledger reconciling
      from it in both runners.
+346. **The body-binding shape is documented in conatus's docs now and built
+     later; each product keeps its own table meanwhile.** Put to Mark on
+     2026-09-26, from Lane I's assessment under ruling 324, which found the
+     premise shifted: the board plan's live bodies are tokens drawn as
+     isometer meshes, not conatus bodies, and isometer answers pointer picks
+     itself, so no code queries a bound conatus body today, while tokens in
+     a volume battlemap (243), critters in the terrarium and Eponym's solver
+     (233) would. Design the shared mechanism anyway, document the shape
+     only, or retire `TactileWorld`'s critter half? Mark: "Document the
+     shape only." Asked how that sits with 348 and 349, Mark confirmed the
+     reading: the common shape goes into conatus's docs now, saying where
+     the module will live and how it works once built; nothing is built, and
+     each product keeps its own table until he says.
+347. **isometer alone answers a pointer pick.** Put to Mark on 2026-09-26,
+     with 346: isometer only, conatus through the bindings as T1 was ruled,
+     or both? Mark: "isometer only." The player clicks what was drawn, and
+     isometer answers per part and per frame, as the VTT board already does;
+     the bindings answer other queries.
+348. **The binding module, when built, lives in mere's conatus, generic over
+     the key.** Put to Mark on 2026-09-26, with 346: conatus, a new crate
+     under `shared/`, isometer, or `mesocosm-runtime`? Mark: "A module in
+     mere's conatus." Three mere doc passages are amended with the shape,
+     one of them the line placing bindings "not to Conatus".
+349. **It binds bodies only, on a world shared with T2's terrain collider.**
+     Put to Mark on 2026-09-26, with 346: bodies on a borrowed world, bodies
+     on its own world, or bodies and terrain? Mark: "Bodies only, shared
+     world." Terrain arrives through T2's one path (rulings 330 to 335).
+350. **Accepted state arrives both whole and per key.** Put to Mark on
+     2026-09-26, with 346: a whole-set reconcile and per-key set and remove,
+     reconcile only, or per key only? Mark: "Both." The reconcile is the cold
+     rebuild and carries the VTT's per-event accepted map; per-key updates
+     carry a critter changing alone; cold and incremental must agree.
+351. **A moved body keeps its id.** Put to Mark on 2026-09-26, with 346: move
+     it and keep its id, respawning only when the entity's shape revision
+     changes, or always respawn? Mark: "Move it, keep its id."
+352. **conatus gains a query-refresh call.** Put to Mark on 2026-09-26, with
+     346: conatus's queries miss a topology change until the world steps, so
+     `TactileWorld` and Eponym each run a tiny step; a refresh call in
+     conatus, the tiny step kept, or left to the world's owner? Mark: "A
+     refresh call in conatus." It is a small mere edit, independent of the
+     bindings, that both workarounds become.
+353. **Burn moves to pre.4 with exact pins, superseding the pre.3 repin and
+     D1's carets.** Put to Mark on 2026-09-27, after ruling 322 was reopened
+     and he asked whether pre.4 lets everything move to it. Lane H found the
+     whole family published pre.4 on 2026-09-22, with no stable 0.22 yet; in
+     mere only conatus breaks, about 18 mechanical lines in three files, and
+     isometer-lens needs two; Distillery and its lease tests pass;
+     cubek-reduce's and burn-remote's patches carry, burn-cubecl's needs a
+     hand rebase and cubecl-runtime's can go; and pre.3 with carets would not
+     fix isometer, a caret on pre.3 admitting pre.4. Pre.4 exact, pre.3
+     exact, pre.2 exact in mere, or wait for stable? Mark: "Pre.4, exact
+     pins." `=0.22.0-pre.4`, `=0.11.0-pre.4` and `=0.3.0-pre.4`; the parked
+     pre.3 repin's commits guide the rebase. This answers ruling 322.
+354. **No stopgap pin in isometer-lens.** Put to Mark on 2026-09-27, with
+     353: pin burn at pre.2 in isometer-lens until the migration lands, or
+     not? Mark: "No stopgap." isometer's all-features build stays broken on
+     a fresh lock until then.
+355. **mere's cubecl-runtime patch retires.** Put to Mark on 2026-09-27,
+     with 353: pre.4 makes each allocation's identity public, if hidden from
+     the docs; retire the patch or carry it re-pointed? Mark: "Retire it."
+     burn-cubecl's guard compares the public id, and Knot's need to patch
+     cubecl-runtime goes with it.
+356. **turso is settled in the migration.** Put to Mark on 2026-09-27, with
+     353: pre.4 brings in turso, a pre-release database, through cubecl's
+     default `persistence` feature, drifting by caret in every GPU build;
+     settle it in the migration, commit mere's lock again, or let it drift?
+     Mark: "Settle it in the migration." The lane checks whether
+     `persistence` can be turned off, which drops turso, and brings the
+     answer back before anything is committed.
+357. **A declared synthesis produces the actor's own lineage's matter.** Put
+     to Mark on 2026-09-27, from Part B's step 2 under ruling 342: the sim's
+     core has no notion of a producer; the actor's own lineage, a flora
+     kingdom, or kingdoms the rules declare? Mark: "The actor's own
+     lineage." Whatever has a synthesis process is a producer, mirroring
+     digestion, and no producer classification enters the core.
+358. **A dev placement may fill any declared matter account.** Put to Mark
+     on 2026-09-27, with 357: any declared matter account, or world matter
+     only? Mark: "Any declared matter account." Mesocosm's overlay chooses
+     soil.
+359. **Each flow names the process that moved it.** Put to Mark on
+     2026-09-27, with 357: add the act's process as the reason, or leave it
+     out as ruling 345 had it? Mark: "Add the process."
+360. **Part shapes take their own key prefix.** Put to Mark on 2026-09-27,
+     with 357: X1 keyed part shapes as `shape:*`, the namespace the world's
+     own `shape:graph` uses; separate them or share it? Mark: "Part shapes
+     get their own prefix." *Reading, not ruled:* `part-shape:*`, the
+     example offered.
+361. **isometer calls modulus's CPU walk instead of copying it.** Put to
+     Mark on 2026-09-27, from Lane K's traversal fix under ruling 336, each
+     crossing now computed as the boundary less the eye over the direction,
+     which removed every fault and every headroom move on the VTT board
+     frame, on the CPU and four GPU setups, for 0.02 to 0.08 ms a frame:
+     isometer's GPU path includes modulus's shader, but its CPU pick path is
+     a hand copy; call modulus's walk, or keep the copy? Mark: "Call
+     modulus's walk." modulus makes its exact CPU mirror public and isometer
+     wraps it.
+362. **The traversal's start clamps into the box.** Put to Mark on
+     2026-09-27, with 361: the shader's 1e-4 start offset is too small in
+     f32 beyond t of about 1,000, so a first-voxel hit reports its entry face
+     and the GPU and CPU disagree which, on 3,754 to 4,093 of 98,304 stress
+     rays and none on the board; clamp the start voxel into the box, report
+     the entry face, or leave it? Mark: "Adopt the clamp." It lands with the
+     traversal fix.
+363. **T2 is built after the pre.4 migration.** Put to Mark on 2026-09-27,
+     with ruling 335: after the migration, now, or when Mesocosm needs it?
+     Mark: "After the pre.4 migration." The traversal fix, the migration and
+     T2 all touch conatus, so they land in turn.
+364. **X1's defaults are copied in explicitly.** Put to Mark on 2026-09-27,
+     from Part B's step 1: the eight shapes and five functions are constants
+     a world copies in, the generator not yet copying them, and the crowd
+     refuses a process binding a part until the probe certifies it; keep
+     that, or have the generator copy them now? Mark: "Keep as built." Were
+     the defaults implicit, growing the set later (281) would change what old
+     worlds mean without changing their digest.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6648,6 +6762,17 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-27: rulings 346 to 364 recorded: the body-binding shape
+  documented in conatus's docs and built later, isometer answering picks,
+  a conatus home generic over the key, bodies only on T2's shared world,
+  reconcile and per-key updates, ids kept across moves and a query-refresh
+  call in conatus; burn moving to pre.4 with exact pins, answering 322,
+  with no stopgap, the cubecl-runtime patch retired and turso settled in
+  the migration; Part B's synthesis into the actor's own lineage, dev
+  placement into any declared matter account, each flow naming its
+  process and part shapes under their own prefix; isometer calling
+  modulus's CPU walk and the traversal's start clamped; T2 built after
+  the migration; and X1's defaults copied in explicitly.
 - 2026-09-26: rulings 338 to 345 recorded, Part B's forks: shape
   requirements and seeding on the function catalogue, which starts with
   the five functions in use; the process's causal kind renamed from

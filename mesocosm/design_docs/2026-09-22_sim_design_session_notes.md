@@ -270,8 +270,8 @@ out of these days of q&a brainstorming?"). After a detour into the family
 rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
-113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25 and 236 to 345
-on 2026-09-26, the last
+113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
+on 2026-09-26 and 353 to 364 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -396,6 +396,10 @@ worlds, none in ecological ones.
 | | The traversal; paging's merge | "Fix it in mere"; "After the fix" | 336, 337 |
 | | Part B: shape requirement; catalogue; the name; seeding | "On the function catalogue"; "The five in use"; "Rename the process one"; "Grown and Acquired" | 338 to 341 |
 | | Conversions; diffusion; the dev source; the flow record | "Check declared ones"; "A kernel now, wired later"; "In the history"; "Every move, when asked" | 342 to 345 |
+| | Bindings: premise; picking; home; world; updates; ids; refresh | "Document the shape only" (reading confirmed); "isometer only"; "A module in mere's conatus"; "Bodies only, shared world"; "Both"; "Move it, keep its id"; "A refresh call in conatus" | 346 to 352 |
+| | Burn: pre.4; the stopgap; the cubecl patch; turso | asked whether pre.4 lets everything move, then "Pre.4, exact pins"; "No stopgap"; "Retire it"; "Settle it in the migration" | 353 to 356 |
+| | Part B: synthesis; dev placement; flow reason; shape keys | "The actor's own lineage"; "Any declared matter account"; "Add the process"; "Part shapes get their own prefix" | 357 to 360 |
+| | The CPU walk; the start offset; T2's timing; X1's defaults | "Call modulus's walk"; "Adopt the clamp"; "After the pre.4 migration"; "Keep as built" | 361 to 364 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
