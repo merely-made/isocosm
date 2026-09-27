@@ -136,6 +136,89 @@ the pictures table reads 357 for it.
 
 ## Raw receipts kept out of tree
 
+### Traversal repin gate, 2026-09-27
+
+The bounded gate passed on `lane-e-paging` at
+`e688a5e3f14549fce9237eff1a4fc96b6fecbbab`, after main's verified repin
+`b4db31d380bb207a822eb87d04f8c439d8dbc48b` merged without conflicts. The
+tested source uses mere `7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7` and
+isometer's adapter over the shared CPU walk. The compiler was
+`rustc 1.98.1 (48a229cea 2026-09-01)`, host `x86_64-pc-windows-msvc`,
+LLVM 22.1.8. The working tree was clean when the run started.
+
+```text
+CARGO_TARGET_DIR=C:\t\cargo-targets\isometry
+CARGO_BUILD_JOBS=4
+cargo test --release -p isometry-views --lib headroom_bands --offline --locked -- --ignored --nocapture --test-threads=1
+```
+
+The one requested test passed; 120 tests were filtered out. It checked the
+same 890 by 752 frame, 669,280 texels:
+
+| Same-run check | Result |
+| --- | --- |
+| Retained old walker, headroom 0 against 1 | 330 moved texels, asserted |
+| Fixed CPU walk, headroom 0 against 1 | 0 moved hits, asserted |
+| Fixed GPU, headroom 0 against 1 | 0 moved pixels, asserted |
+| GPU headroom 0 against the empty-terrain frame | 669,280 differing pixels |
+| GPU headroom 1 against the empty-terrain frame | 669,280 differing pixels |
+| Each of the three GPU captures | 2,677,120 bytes, asserted |
+
+The empty-terrain control uses the same camera and grade with `terrain=None`.
+Both terrain frames must differ from it; a missing or failed GPU capture
+fails the gate. CPU traversal errors fail rather than becoming misses, and
+the CPU frame must contain at least one terrain hit. The old walker remains
+deliberately faulty, exposing the accumulated-crossing error in this same
+run. Its box-variant diagnostics now compare that old walk to the fixed
+map; those values are not failures of the fixed traversal.
+
+The independent f64-camera diagnostic still reports 68 differing texels
+for each fixed map. This gate establishes independence from headroom;
+it does not claim agreement with that f64 camera at every texel. Broader
+cost and headed-picture receipts were not rerun for this bounded gate.
+
+Raw files are retained under
+`Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+`provenance.json` records the command, compiler, branch, clean source commit,
+integrated main, target, job count and SHA-256 values for the lock and test
+sources. `result.json` records exit code 0. The SHA-256 of `SHA256SUMS` is
+`d6a8d27e5d730c4ec2445487defd2d6b6f4788a78534176db0802c57fe28fa6b`.
+
+| File | SHA-256 |
+| --- | --- |
+| `provenance.json` | `6e52389e0c330e9824f12c0329e8520445051e960fbb4461d9739d242bf8ec60` |
+| `stdout.log` | `5a61dddf5f9aaf5118c4c73d14661deac3ee829b4c10a80d009d7af14bd957c3` |
+| `stderr.log` | `158b82f8137279d60b3bfe3c9c00849c84d080a6dbf0b90602320973546666e2` |
+| `result.json` | `f67f95af1e97d7593c7d24fdf6c841593a24999b84a29a40b0896a43cc9790bf` |
+
+The preceding attempt at `1bbdf4f76202101b35466cf812351aea356412e4`
+also passed the 330/0/0 assertions, but lacked the empty-terrain GPU control.
+It remains separately archived in `.../lane-e-traversal-band-gate/` and is
+not the final acceptance receipt.
+
+Two source-review concerns remain follow-ups, not reproduced failures or
+new rulings. Neither was changed by this traversal gate:
+
+- Live settings: `BoardSource::set_residency` requests a residency rebuild,
+  but `BoardSource::inputs` does not include the settings or a settings
+  revision, and `SceneProducer::source_mut` does not invalidate the produced
+  frame. With `needs_frame=false` and an unchanged signature, production can
+  return early. The host currently sets this only during construction. If
+  live settings are selected, verify draw, change settings, then draw with
+  an unchanged camera and `needs_frame=false`.
+- Overflow reporting: `Residency::update` copies `framed.overflow` into
+  local stats, then returns `Current` before storing them when retained keys
+  and dirty slots are unchanged. A different dropped outer set can therefore
+  leave the reported overflow count unchanged. `ResidencyStats` currently
+  describes the last change. If counted overflow becomes a standing policy,
+  settle whether the report describes the current frame, then test the same
+  retained keys with different dropped counts.
+
+The three paging policy choices remain open. Passing this gate does not
+authorize those choices or merge paging into main.
+
+### Earlier raw receipts
+
 Under ruling 255 the probe's logs are in
 `Code/testing/isometry/receipts/2026-09-26/scene-board-paging/bands/`, and
 the pin bump's in `.../scene-board-paging/4663de8/bands/`. Each opens with
