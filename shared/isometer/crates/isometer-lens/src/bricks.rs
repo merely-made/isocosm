@@ -21,8 +21,8 @@ use modulus::BrickMap as SharedBrickMap;
 mod ray;
 
 pub use modulus::{
-    ATLAS_SLOTS_X, ATLAS_SLOTS_Z, BrickMapError, BrickProjectionRevision, MAX_ATLAS_SLOTS_Y,
-    RetargetDelta,
+    ATLAS_SLOTS_X, ATLAS_SLOTS_Z, AtlasLimits, BrickMapError, BrickProjectionRevision,
+    MAX_ATLAS_SLOTS_Y, RetargetDelta,
 };
 pub use ray::{BrickRayError, BrickRayHit};
 
@@ -114,6 +114,17 @@ impl BrickMap {
         pointer_extent: [u32; 3],
     ) -> Result<Self, BrickMapError> {
         SharedBrickMap::with_capacity(projection_revision, capacity_rows, pointer_extent).map(Self)
+    }
+
+    /// An empty capacity-fixed map sized to the host's card, holding at least
+    /// `bricks` in whole atlas rows; see [`modulus::BrickMap::with_limits`].
+    pub fn with_limits(
+        projection_revision: BrickProjectionRevision,
+        bricks: usize,
+        pointer_extent: [u32; 3],
+        limits: AtlasLimits,
+    ) -> Result<Self, BrickMapError> {
+        SharedBrickMap::with_limits(projection_revision, bricks, pointer_extent, limits).map(Self)
     }
 
     /// Replaces the selection from Ground while retained bricks keep their
