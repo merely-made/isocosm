@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 366, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 367, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3004,6 +3004,15 @@ what later sections derive from.
      preserved method in session notes §8.2. *Reading, not ruled:* the
      assistant chose a narrow traversal audit before the already-authorized
      repin. This answer does not identify ruling 365's coordination target.
+
+367. **The new session orchestrates the repin and remaining lanes.** Asked
+     which agent ruling 365 meant, with Lane A, the RPG session or both as
+     the alternatives, Mark answered on 2026-09-27: "Ah, the rpg session
+     isn’t active now. But you can orchestrate the repin/rest". This
+     supersedes the waiting coordination step in 365: the new session takes
+     over orchestration, preserving lane work and verification checkpoints.
+     *Reading, not ruled:* this authorizes the traversal repin and lane
+     coordination; unresolved design forks still come back to Mark.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6777,6 +6786,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 367 transfers repin and remaining-lane orchestration
+  to the new session because the RPG session is inactive. The coordination
+  hold in 365 is superseded; verification and unresolved design forks stay.
 - 2026-09-27: ruling 366 accepts the three method refinements: evidence
   status, questions ordered by dependencies, and fault-specific controls
   with passing and deliberately failing outcomes. Traversal audit opened;

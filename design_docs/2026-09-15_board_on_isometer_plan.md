@@ -766,3 +766,9 @@ a lane saw. This section is the current one, and it names its build.
   Lane A's `shared/isocosm/Cargo.toml` still pins hagiograph at `53648d3a`,
   whereas main pins `0418391f`. That manifest and lock need coordination
   before repinning to `7bb5bfda`; the pins remain unchanged.
+- **2026-09-27, orchestration resumed (ruling 367).** The RPG session is
+  inactive; Mark authorized this session to orchestrate the repin and
+  remaining lanes. The coordination hold above is superseded. Traversal
+  verification and the CPU wrapper change proceed, with independent audits
+  of sim Part B, paging and the queued pre.4/text forks. Unresolved design
+  choices remain with Mark.
