@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 376, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 377, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3179,6 +3179,29 @@ what later sections derive from.
      lifecycle receipt after migration. Acceptance is not reduced to a
      compiling rebase. The remaining pre.4 stop-rule dispositions are not
      inferred from this answer.
+
+377. **The pre.4 allocation guard also compares service identity.** Asked
+     on 2026-09-27: "How should we carry the GPU allocation guard into
+     pre.4? It currently compares five values: allocation ID, two slice
+     offsets, stream and size. Pre.4 adds a service ID, but normal
+     allocations still receive globally unique IDs, so a sixth comparison
+     is currently redundant. The existing five must remain: different
+     slices can share an allocation, and treating them as identical can
+     produce the wrong calculation." Options, recommended first: (A)
+     "Preserve the five comparisons; treat the new service field as context
+     and proceed under the migration stop rule (recommended)." (B) "Add
+     service ID as a sixth comparison; also verify the new rejection case
+     before proceeding." Mark selected verbatim: "Add service ID as a
+     sixth comparison; also verify the new rejection case before
+     proceeding." The migrated guard preserves allocation ID, both
+     offsets, stream and size and additionally requires equal service ID.
+     The service mismatch rejection must be verified before proceeding;
+     this disposes of the new-field stop under Mere's pre.4 plan S0-1 and
+     specifies S0-2's comparison scope. *Reading, not ruled:* pair a valid
+     matching-handle control with an otherwise equal handle whose service
+     differs, and show that deliberately removing the service predicate
+     makes the rejection check fail. Never submit the artificial mismatched
+     handle to a GPU client; the control exercises the guard itself.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6952,6 +6975,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 377 adds service identity to the five existing
+  allocation/view comparisons and requires a rejection control before
+  migration proceeds. Mere's plan is updated with this explicit disposition
+  of the pre.4 Handle-field stop; implementation and its receipts follow.
 - 2026-09-27: rulings 375 and 376 accept process-local CubeCL caches and
   complete Distillery migration gates. 375 amends 355: retain a manifest-only
   runtime patch, retire its identity helper. 376 requires a separate fixture
