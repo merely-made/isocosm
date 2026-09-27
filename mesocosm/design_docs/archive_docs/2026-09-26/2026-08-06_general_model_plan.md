@@ -1,20 +1,34 @@
 # The General Model (2026-08-06)
 
+**Archived 2026-09-26 (wing design record ruling 310).** W1 evaluated this
+plan as mixed, sim causal grammar and wing organ: §1 to §6 and the E0 to E4
+gates are the sim's, confirmed by the record's §3.1 and §3.3 and owned by the
+[sim plan](../../2026-09-22_sim_plan.md) §3, while §7.4, the hagioglyph and impresa
+organs with gates G1 to G7 and the impresa finding of 2026-09-21, is wing
+material no single game owns. Mark: "Split out the organs." §7.4 and that
+finding now live in the
+[wing organs plan](../../2026-09-26_wing_organs_plan.md); the rest is kept here
+as dated research, its words unchanged. Landed code stands where it is:
+`shared/wing-glyphs` and `shared/wing-impresa` (sim), the E0 to E4 slices in
+`mesocosm-core`.
+
 **Status: research and founding, 2026-08-06.** The ecological half is a
 scheduled change with gates. The fantastical half is a **proposed shape,
 not an adoption**: nothing in §6-§9 is scheduled, and F-gates exist to be
 argued with. Sibling to the
-[place-graph engine plan](2026-08-05_place_graph_engine_plan.md), which
+[place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md), which
 owns world substrate, and the
-[mesocosm founding plan](2026-07-30_mesocosm_founding_plan.md), which owns
-the epoch loop.
+[mesocosm founding plan](../../archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md), which owns
+the epoch loop (archived with this plan on 2026-09-26; the turn structure is
+carried in the [Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)
+§1.2, ruling 308).
 
 **W1, 2026-09-18:** rewrite. Tier: mixed, sim causal grammar and wing organ.
 Split: E0 to E4 are sim; §7.4's hagioglyph is a wing organ no single game
 owns. Rewrite is a lane under the record's W2 or W3; until it lands this
 plan's done-conditions are not authoritative. Evaluated against the wing
 design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Scoping update, 2026-09-09:** §7.1 documents multiple interacting
@@ -62,7 +76,7 @@ ecologies, and fantastical systems can all speak it.
 **Corrected 2026-08-07 (review).** The first draft concluded "one model
 with settings, and the ecology is its first configuration." That
 generalized past the wing's own authority rules: the
-[phenotype plan](2026-07-31_phenotype_plan.md) forbids sharing an
+[phenotype plan](../../2026-07-31_phenotype_plan.md) forbids sharing an
 evaluator before two sovereign rule systems have independently proven the
 same mechanism, and the founding record rules that what vessels share is
 world identity and compatible facts, never one live world model. The
@@ -490,7 +504,7 @@ interacting fantastical systems, with different realizations across worlds.
 The earlier impossible-ecology direction remains a useful starting family;
 it does not exclude deliberate magic, ritual, or spellcraft from this session.
 The charge-and-sympathetic-link example in
-`eponym/design_docs/2026-09-09_world_conditions_plan.md` is one candidate,
+`eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md` is one candidate,
 not the universal model or a selected implementation gate.
 
 The earlier claims that sympathetic magic is nearly free, that a cost formula
@@ -921,7 +935,7 @@ explicitly authorized a module usable by Mesocosm, Paredros, and Isometry.
 Sharing this bounded machinery proceeds now; sharing the products' entire
 rule evaluators is not required. The journey to divinity itself becomes the
 new god's motif and constraint. This section owns progression and world laws;
-the [presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#glyph-effects-and-interaction-experiment-2026-09-13)
+the [presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md#glyph-effects-and-interaction-experiment-2026-09-13)
 owns the glyph experiments and their rendering evidence.
 
 #### World vocabulary and effect identity
@@ -1186,8 +1200,8 @@ zero-removal/rejected actions, unchanged core history/hash, exact reset/replay,
 and actual control transfer followed by another body's carve. The collection
 does not follow that control transfer.
 
-The [public-API example](../crates/mesocosm-runtime/examples/glyph_journey.rs)
-produces [this JSON receipt](../testing/glyphs/journey.json). An unmodified
+The [public-API example](../../../crates/mesocosm-runtime/examples/glyph_journey.rs)
+produces [this JSON receipt](../../../testing/glyphs/journey.json). An unmodified
 seed-0 founder removes 15 voxels at `[0,12,0]`, earning the one configured base
 glyph. Its four-tick metric observations are `15,0,0,0`; settlement is 15.
 The copied shared journey qualifies for both routes, ascends, reincarnates,

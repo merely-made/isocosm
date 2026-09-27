@@ -114,7 +114,7 @@ Seven things I'd want reacted to before anything else:
    what §D has to argue. The general model plan names the carrier — **relation
    mark**, "state on a provenance, descent, contact, or trust edge", worked
    examples contagion and a debt
-   ([general model plan](2026-08-06_general_model_plan.md) §4.1). That is a
+   ([general model plan](archive_docs/2026-09-26/2026-08-06_general_model_plan.md) §4.1). That is a
    taxonomy entered in a 2026-08-07 review, not a ruling and not an
    implementation: the carrier is *named*, not chosen and not built.
 

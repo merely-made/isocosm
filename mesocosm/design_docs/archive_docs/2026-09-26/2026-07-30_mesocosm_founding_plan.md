@@ -1,8 +1,20 @@
 # Mesocosm: Founding Plan
 
+**Archived 2026-09-26 (wing design record ruling 308).** W1 evaluated this
+plan as mixed, sim world grammar and game overlay: its world half, the
+world-condition grammar, material flow and the trophic strategies, is the
+sim's ([sim plan](../../2026-09-22_sim_plan.md) §2.2, §2.4, §3.3), and its game
+half, metabolize, the epoch loop and care for a species, is what the record's
+§5.5 confirms. Mark: "Archive, carry over." The
+[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) is Mesocosm's
+charter; its §1.1 carries this plan's Tone section and its §1.2 the epoch
+loop's turn structure, word for word. Everything below is kept as the dated
+founding text. The dependency ledger named in the next line was archived the
+same day (ruling 311); the order lives in the record's §11.
+
 **Status: active founding design, refreshed 2026-08-31.** Later domain plans
 and live code supersede its implementation status; the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns the current
+[playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns the current
 integration proof and the dependency ledger owns dispatch order.
 Two audit corrections bind readers of this document: (1) its M0/runtime
 descriptions are **historical** where they conflict with the landed
@@ -16,7 +28,7 @@ material/lineage provenance — and claims must name which kind they mean. The d
 body pipeline, host, epoch lab, and first Isometry projection are implemented;
 the repeated phenotype loop and later M-phases remain open. Vessel 1 of the
 games wing. Shared architecture, the three pipeline laws, and the wing vocabulary
-live in [the games wing founding record](2026-07-30_games_wing_founding.md)
+live in [the games wing founding record](../../2026-07-30_games_wing_founding.md)
 and are not repeated here.
 
 **W1, 2026-09-18:** rewrite. Tier: mixed, sim world grammar and game
@@ -24,7 +36,7 @@ overlay. Split the world half into the sim; keep metabolize, the epoch loop
 and care for a species. Rewrite is a lane under the record's W2 or W3; until
 it lands this plan's done-conditions are not authoritative. Evaluated
 against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 ---
@@ -76,7 +88,7 @@ weapon in Isometry is an organism its ancestors ate. An "item" may carry an
 opaque body revision, biological-line reference, optional outer Fili
 provenance, and an appearance projection. The v0 proof carries only part of
 that record; the
-[wing phenotype contract](2026-07-31_wing_phenotype_contract_plan.md) scopes
+[wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md) scopes
 the stable identity and topology still needed at v1.
 
 ### The real axis is trait count, not cell count
@@ -458,7 +470,7 @@ Creative mode may offer an explicit freeze setting, but stasis is not the
 default fiction.
 
 When multiple players currently inhabit the same line, adaptation follows the
-[epoch-boundary plan's shared-lineage rule](2026-08-01_epoch_boundary_plan.md):
+[epoch-boundary plan's shared-lineage rule](../../2026-08-01_epoch_boundary_plan.md):
 agreement adopts one descendant revision, while disagreement branches without
 editing the shared parent in place.
 
@@ -585,7 +597,7 @@ by studying Thrive (§1c); 2 and 3 remain real forks.
    rather than an open question, but recorded here because it binds early
    decisions: `mesocosm-core` should be a **pure function of (seed, ordered
    inputs)** behind a boundary that can be snapshotted wholesale. See the
-   [body pipeline plan](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) §R0.
+   [body pipeline plan](../../archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) §R0.
    Cheap to design in now, brutal to retrofit.
 
 ## 1c. What we take from Thrive

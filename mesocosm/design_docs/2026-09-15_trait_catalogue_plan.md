@@ -5,7 +5,7 @@ committed. Founds the lane the
 [glyph expression plan](2026-09-15_glyph_expression_plan.md)'s ruling 1 names,
 and answers its finding R2. Consumes the
 [traits brief](2026-08-29_traits_and_perception_brief.md)'s rarity ladder and
-§8 questions, the [ProcessDef plan](2026-08-01_processdef_plan.md)'s PD3 pack
+§8 questions, the [ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md)'s PD3 pack
 door, and the
 [functional generation plan](2026-09-09_functional_generation_plan.md)'s
 blueprints. Answers Mark's 2026-09-04 framing at the foot of the
@@ -116,7 +116,8 @@ forms "do not yet construct staff geometry or allocate magical tissue" (`:96-99`
 
 §7.4 says "the desired default covers letters, numbers, and symbols; a world
 may use only `a`, `b`, and `c`, or a mod may supply a much larger vocabulary"
-(`2026-08-06_general_model_plan.md:919-921`). No number is ruled. Three honest
+(`2026-09-26_wing_organs_plan.md` §1, the status paragraph carried from the
+general model's §7.4 under ruling 310). No number is ruled. Three honest
 readings of that sentence:
 
 | Reading | Count |
@@ -203,9 +204,9 @@ The traits brief's ladder — 1 effect common, 2 uncommon, 3 rare, 4 legendary,
 5+ epic — collides with three written rulings, recorded at
 `2026-08-29_traits_and_perception_brief.md:567-600`: the founding plan bars the
 loot economy by name for this exact mechanic
-(`2026-07-30_mesocosm_founding_plan.md:477`), pillar 5 already names where
+(`archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md:477`), pillar 5 already names where
 scarcity lives, and the stop rule is "sample constraints, not powers"
-(`2026-08-06_general_model_plan.md:1301-1303`).
+(`archive_docs/2026-09-26/2026-08-06_general_model_plan.md:1301-1303`).
 
 **Taken:** the tier as a *derived reading of composition depth* — how many base
 traits an entry requires — bound to the price the board already charges

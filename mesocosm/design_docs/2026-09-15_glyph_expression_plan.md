@@ -14,8 +14,9 @@ Mesocosm's. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
-Implements the next move under general model
-[§7.4](2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13),
+Implements the next move under the
+[wing organs plan](2026-09-26_wing_organs_plan.md) §1 (the general model's
+§7.4 until ruling 310 moved it on 2026-09-26),
 after G3's first slice.
 
 ## 0. Mark's ruling (2026-09-15)

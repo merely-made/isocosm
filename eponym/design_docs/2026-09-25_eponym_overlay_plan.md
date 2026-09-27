@@ -34,11 +34,11 @@ takes `eponym-identity` under W3 (ruling 34); or naming. **Consumes:** the
 record; the sim plan; the contract crate's
 [README](../../shared/isocosm-overlay/README.md); the
 [founding plan](2026-07-30_paredros_founding_plan.md), the charter; the
-[execution plan](2026-08-07_paredros_execution_plan.md)'s fundamental-layer
+[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)'s fundamental-layer
 ledger F0 to F8; the [functional loops plan](2026-09-09_functional_loops_plan.md)
 for the joins and lane S; the
 [memory and remembrance plan](2026-09-09_memory_and_remembrance_plan.md) for
-lanes M and H; the [world conditions plan](2026-09-09_world_conditions_plan.md),
+lanes M and H; the [world conditions plan](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md),
 which founds the sim's process definition (ruling 32); the
 [genet document host plan](2026-09-13_genet_document_host_plan.md) for the
 host that stays Eponym's; and the
@@ -194,6 +194,23 @@ rule (`eponym/CLAUDE.md`), split along seams the code already has.
 | Knowledge | `epistemic` 570 | notes on knowers, reports and corrections (rulings 84, 86, 117) and the secrets regime (ruling 87); the sim plan's §4 |
 | Society | `society` 462 | the join of the above at the faction rung; confirmed as it moves |
 | Fixtures and scenes | `fixtures` 786 (world), `scene` 135 and `bin` 140 (social) | receipts, replaced by draws (ruling 15) |
+
+### 4.1 The execution plan's layers, mapped onto E2 (ruling 313)
+
+The [execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+retired into this plan on 2026-09-26. Its fundamental layers F0 to F2 are
+landed receipts (persistent world, one embodied life, other lives); F3 to F8
+keep their semantic done-conditions and land through E2's families in the
+order ruled (239), then E3 and E4. Nothing here reorders a family.
+
+| Layer | Its done-condition, in short | Lands in |
+| --- | --- | --- |
+| F3, memory, belief and standing | two witnesses believe differently, a claim reaches an absent creature, an answer cites its evidence and norms; F3a landed 2026-08-26 | knowledge (notes on knowers, reports, corrections; the reach field for the background, rulings 84, 86, 117) and standing and deeds (rulings 51, 56); the memory and remembrance plan for the foreground's recall |
+| F4, requests and coordination | one grammar asks a stranger, neighbour, ally or enemy for different acts; refusal and counteroffer are complete outcomes; no party command surface | asks and agreements (rulings 60, 63, 67) and E3's refused, countered and agreed asks |
+| F5, material life | one creature keeps a shelter from world materials; cooperation changes the work, not the verb; structures keep builders, materials and purpose | bodies, needs and holding (the one ledger, gear-limited holding, rulings 38, 53) and places and edits (carve as an asserted fact, ruling 89); the functional loops plan's T lanes, T2 now and T1 and T3 after these families (ruling 314) |
+| F6, settlement and culture | two settlements answer differently from their histories; every tenet points at practices and precedents | settlement (rulings 54, 63) and society, a settlement a faction until it has a methodology (rulings 8, 63); tenets and standing in the record's §2.6 |
+| F7, danger | a conflict avoided, negotiated, escaped, won or lost through existing facts; consequences alter bodies, property, relations and places with no combat-only duplicate | fights and technique (rulings 115, 116, 123, 221 to 223) and E3's sized-up fight and escalation |
+| F8, death and control continuity | death continues through an eligible life or an outsider; a non-death body change records what moved, copied, died or remained | the contract's death checkpoint (§3; rulings 61, 186) and E3's succession among bonded companions; tag-in in creative mode (ruling 187) |
 
 `eponym-identity` (509 lines) goes to dramatis under W3 (ruling 34), its
 `SubjectId`, body revisions and facets the sim's provenance noun, and its
@@ -352,6 +369,9 @@ done on paper; opening E1 is Mark's.
 
 ## Progress
 
+- 2026-09-26: this plan is Eponym's executable plan (ruling 313). §4.1 maps
+  the execution plan's F3 to F8 onto E2's families; the execution plan and
+  the world conditions plan (315) are archived at `archive_docs/2026-09-26/`.
 - 2026-09-26: E1 done. Ruling 253 opened E1 and V1 as contract modules
   only; `src/eponym/` was built in a worktree, reviewed and merged by the
   Simulation design review session (main 1996ecc), then the shapes shared

@@ -11,8 +11,8 @@ open.** This document owns Mesocosm's body rules. The
 cross-vessel boundary lives in the
 [wing phenotype contract](2026-07-31_wing_phenotype_contract_plan.md), and
 ordering remains with the
-[dependency ledger](2026-08-07_dependency_ledger.md).
-The [ProcessDef plan](2026-08-01_processdef_plan.md) owns the extensible
+[dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md).
+The [ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md) owns the extensible
 process vocabulary, developmental expression ABI, Piccolo host, and pack
 proofs. This document continues to own what those processes mean to a body.
 
@@ -352,7 +352,7 @@ process vocabulary is accepted.
 
 `ProcessDef` is now accepted as the working name for one namespaced
 transformation. The schema and authoring path are specified in the
-[ProcessDef plan](2026-08-01_processdef_plan.md). It is explicitly not the
+[ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md). It is explicitly not the
 universal gene type: anatomy, material, regulation, lifecycle, signalling, and
 relationships remain distinct developmental consequences.
 

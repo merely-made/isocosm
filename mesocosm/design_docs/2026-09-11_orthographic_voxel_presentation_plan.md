@@ -74,7 +74,7 @@ execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan
 ## Rulings (Mark, 2026-09-11)
 
 1. **Paredros is orthographic.** A true isometric game. This closes the camera
-   question the [Paredros execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
+   question the [Paredros execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
    left open until the spatial laws could judge it, and it retires the
    Barony/Delver close-perspective reference lane. Camera is not person:
    Paredros stays second person in agency.
@@ -855,7 +855,8 @@ are the next visual vocabulary candidates.
 
 ### Glyph effects and interaction experiment (2026-09-13)
 
-The [general model §7.4](2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
+The [wing organs plan](2026-09-26_wing_organs_plan.md) §1 (the general
+model's §7.4 until ruling 310 moved it on 2026-09-26)
 now owns the configurable world canon, acquisition history, journey-shaped
 divinity and fixed-period power direction. Its shared kernel and optional
 accepted-event trial integration are a gameplay-data slice. The rendering

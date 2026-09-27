@@ -18,7 +18,7 @@ authoritative. Evaluated against the wing design record; see
 The [games wing founding record](2026-07-30_games_wing_founding.md) remains
 authority for settled laws. Mesocosm's local body rules live in the
 [phenotype plan](2026-07-31_phenotype_plan.md). The
-[dependency ledger](2026-08-07_dependency_ledger.md) owns current ordering;
+[dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns current ordering;
 the execution waves plan is historical.
 
 ---

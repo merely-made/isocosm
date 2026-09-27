@@ -616,13 +616,13 @@ hagioglyph. So I figure the hagiograph bucket is more open than we planned."
 **What the hagiograph was scoped to**, across the record:
 
 - **What memory keeps** when a life ends, and the attention mechanic Law B
-  depends on (`2026-07-30_mesocosm_founding_plan.md:302-306`;
+  depends on (`archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md:302-306`;
   `2026-07-30_games_wing_founding.md:1210-1212`).
 - **Promoting unprecedented, legendary and narratively significant events**
   out of the timeline, for the stack's procedural voxel engine to manifest
   (`mesocosm/CLAUDE.md`, terminology; presentation plan L8,
   `2026-09-11_orthographic_voxel_presentation_plan.md:1397-1400`).
-- **Retaining significant history** (`2026-08-06_general_model_plan.md:574`)
+- **Retaining significant history** (`archive_docs/2026-09-26/2026-08-06_general_model_plan.md:574`)
   and making legendary craft consequential rather than a rarity tier (`:766`).
 - **A view over journals**, holding "the retold subset": legends, memorials,
   epithets and manifestations, whose presence scales with retelling. "Not
@@ -634,7 +634,8 @@ hagioglyph. So I figure the hagiograph bucket is more open than we planned."
 **What has been taken from it since.** The **hagioglyph** took the divinity
 half on 2026-09-15: the canon, the journey, ascension, **the chosen referent
 and its periods**, and revisions, consuming the hagiograph one way
-(`2026-08-06_general_model_plan.md:960-970`). **Impresa** took association
+(`2026-09-26_wing_organs_plan.md` §1, carried from the general model's
+§7.4 on 2026-09-26 under ruling 310). **Impresa** took association
 records and their fact, belief and legend readings, leaving the hagiograph
 the promotion that makes an association legend (G7, `:997-1033`).
 
@@ -679,7 +680,7 @@ Mark shared another agent's read. Where it was checked against the tree:
 - **"The relief lab was adopted on 2026-08-07 and never built."** Holds: an
   instrument for live seed and parameter tuning over `grown` and `Ground`
   (`:593-601`), listed as "instrument, any time" in the dependency ledger
-  (`2026-08-07_dependency_ledger.md:226`), with no code anywhere. The
+  (`archive_docs/2026-09-26/2026-08-07_dependency_ledger.md:226`), with no code anywhere. The
   presentation-amplification tier is likewise adopted without a receipt.
 - **"It is now the only world model behind three vessels."** Overstated.
   It is the only *procedural* world model, behind two: the tabletop's terrain

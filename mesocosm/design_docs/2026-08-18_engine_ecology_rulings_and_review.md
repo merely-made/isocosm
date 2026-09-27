@@ -326,7 +326,7 @@ pillars through renderling over the raymarched room and judged projected
 point probes on the RTX 4060 — raster covering rock where nearer, the floor
 covering a buried pillar base, a wholly sunken pillar invisible, with a
 positive control in the same frame and the replay hash unchanged. Receipt at
-`eponym/design_docs/2026-08-07_paredros_execution_plan.md` §3 D1 and
+`eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md` §3 D1 and
 `Code/testing/paredros/d1_depth.{json,png}`.
 
 One durable caution: the stage *replaces* its depth texture on size or

@@ -1,5 +1,16 @@
 # World Conditions and Authored Laws Plan
 
+**Archived 2026-09-26 (wing design record ruling 315).** Ruling 32 founded
+the sim's process definition on this plan's schema with its stop rule
+lifted, and the [sim plan](../../../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+§3.1 takes eight of its twelve parts from here by name. Mark: "Archive now."
+The sim plan's §3.1 is the definition; this copy is its source text, cited
+by the sim plan and the record. Its Eponym-owned sections, evaluator
+ownership and the pinned RAW profiles, go with it: an act is resolved by what
+the body affords on Isocosm (the Eponym overlay plan's E3), and no
+world-conditions code was ever written (Progress, 2026-09-09). The text is
+kept as written.
+
 **Status: plan (2026-09-09).** This is Paredros's proposal for conditions-led
 fantastical mechanics. It refines the founding record's call for structurally
 different worlds; it does not make a shared games-wing rules engine. Wing-wide
@@ -12,11 +23,11 @@ wing to §9.7. Rewrite is a lane under the record's W2 or W3; until it
 lands this plan's done-conditions are not authoritative. Ruled 2026-09-18
 (record ruling 32): its schema founds the sim's process definition and its
 stop rule is lifted. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3.
 
 Wing-wide procedural composition scoping lives in
-`mesocosm/design_docs/2026-08-06_general_model_plan.md` §7.1 (2026-09-09):
+`mesocosm/design_docs/archive_docs/2026-09-26/2026-08-06_general_model_plan.md` §7.1 (2026-09-09):
 multiple causal families, explicit couplings, and variation in laws,
 embodiment, practice, and presentation. The charge example below is one
 candidate within that scope, not a universal magic model. This file retains

@@ -9,7 +9,9 @@ here; [Mesocosm's product index](../mesocosm/design_docs/DOC_README.md) and
 [Eponym's product index](../eponym/design_docs/DOC_README.md) retain their
 local document catalogues. Shared wing design lives once in the imported
 [founding record](../mesocosm/design_docs/2026-07-30_games_wing_founding.md),
-with [magic and generator discussions](../mesocosm/design_docs/2026-08-06_general_model_plan.md).
+with [magic and generator discussions](../mesocosm/design_docs/archive_docs/2026-09-26/2026-08-06_general_model_plan.md)
+(archived 2026-09-26, ruling 310; the organs moved to the
+[wing organs plan](../mesocosm/design_docs/2026-09-26_wing_organs_plan.md)).
 
 - [Games wing consolidation](2026-09-09_games_wing_consolidation_plan.md):
   history-preserving repository import, source/worktree preservation, separate
@@ -62,7 +64,7 @@ Rebuilt 2026-08-08 after the wing audit's archive pass: ten plans moved to
 | [2026-08-08_extracted_receipts.md](2026-08-08_extracted_receipts.md) | The archive pass's extraction ledger: every residue from the ten archived plans (unmet headed/network receipts, N3, campaign-pack splits, worldbuilding residue, C7 receipts, the preserved diagonal ruling, the exploration headed receipt), each pointing where it lands. |
 | [2026-08-02_overmap_presentation_plan.md](2026-08-02_overmap_presentation_plan.md) | **Rewritten to the wing design record 2026-09-26 (ruling 280): sites are the world map's nodes held as adjacency and discovery is knowledge by reach, through the VTT overlay plan's V2, not authored `at` positions or `party_known`; source-time restated as four readings of the reach field (new §3.5); the overmap stays a far view (ruling 212).** **Active**, with two audit prerequisites reopened: a neutral region-paint seam (sprigging's `GraphCanvas` privately owns paint order; Mesocosm's minimap is the second consumer justifying the neutral layer) and hulls derived from final displayed positions incl. overrides, with uniform-position/unplaced/override/parallel-route/headed receipts. Also carries the recorded product direction: **source-time as a feature** (believed-then vs known-now vs retconned), the wing's claim carrier at campaign scale. |
 | [2026-07-09_shared_authority_and_collaborative_building_plan.md](2026-07-09_shared_authority_and_collaborative_building_plan.md) | Re-scoped 2026-08-08: the **no-second-runtime sequencing gate stands**; the earlier tiers (host-owned stores, peer Lua revalidation, secrets, commit-reveal) are superseded by the Stickleback migration plan. Kept for the gate and the campaign grammars. |
-| [2026-07-08_environmental_surfaces_plan.md](2026-07-08_environmental_surfaces_plan.md) | Design lane, **active only after its authority rewrite**: core stores surfaces and applies explicit deltas; Lua/system resolution chooses propagation once. |
+| [2026-07-08_environmental_surfaces_plan.md](2026-07-08_environmental_surfaces_plan.md) | **Rewritten 2026-09-26 as a VTT note (wing design record ruling 312), not a lane.** Environment is the sim's field on places, moved by agentless processes and diffused by the one mechanism (sim plan §2.4, §3.3); a ruleset at a battlemap reads the field and the cells' conditions and adjudicates by its own rules through the handoff (V3), never owning spread; the Larian interaction matrix is a set of process definitions a world declares, not a ruleset dial. The 2026-07-08 tile-layer plan is in git history. |
 | [2026-07-07_optional_intelligence_vision.md](2026-07-07_optional_intelligence_vision.md) | Vision record, **parked**; refresh authority and model assumptions only when activated. |
 
 ## Archive
@@ -92,4 +94,4 @@ mode (E0-E6 landed).
 Retired plans go to `archive_docs/<YYYY-MM-DD>/`, as the folders above show.
 
 - [Functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md): shared charge networks, operators, body bindings, and generator proposal carriage; first slice implemented and tested locally.
-- [Glyph canon and divinity](../mesocosm/design_docs/2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13): configurable world vocabulary, provenance and ordered reacquisition across lives, journey constraints, fixed-period divine power, and the shared kernel's first Mesocosm consumer.
+- [Glyph canon and divinity](../mesocosm/design_docs/2026-09-26_wing_organs_plan.md) (the general model's §7.4 until 2026-09-26, ruling 310): configurable world vocabulary, provenance and ordered reacquisition across lives, journey constraints, fixed-period divine power, and the shared kernel's first Mesocosm consumer.

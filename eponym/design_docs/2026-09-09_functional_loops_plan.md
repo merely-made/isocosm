@@ -6,21 +6,29 @@ are implemented, along with B3 treatment and J1b fractional terrain motion.
 The native client uses the same movement, injury and inventory owners. Broader
 contact mechanics, construction and full adventure coordination remain open.
 
-**W1, 2026-09-18:** rewrite. Tier: mixed, sim bodies and places, Paredros
-verbs. T2 and the B and J lanes are the strongest live lanes; the place
-rung under them is the wrong one, cheaper to correct before T lands.
-Rewrite is a lane under the record's W2 or W3; until it lands this plan's
-done-conditions are not authoritative. Evaluated against the wing design
-record; see
+**Rewritten to the record, 2026-09-26 (wing design record rulings 280 and
+314).** W1 (2026-09-18) evaluated this plan as mixed, sim bodies and places,
+Paredros verbs, and found one contradiction: every place fact under it is
+Mesocosm's heightfield partition, where the record's §3.7 and ruling 14
+derive places from the volume; T2, one edit reaching every spatial consumer,
+is confirmed by ruling 12 and the record's §4.3. J and B are landed lanes.
+Mark ruled the T lane's timing against the Eponym overlay plan's E2: "T2
+now, T1 and T3 later" (ruling 314); the T section says which. Whether a lane
+opens T2 now is a separate question. The done-conditions are authoritative
+again. The evaluation stays in
 [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
-§3.
+§3. The world conditions plan and the execution plan this plan cites were
+archived the same day (rulings 315 and 313); the links point at the archived
+copies, and the
+[Eponym overlay plan](2026-09-25_eponym_overlay_plan.md) is Eponym's
+executable plan.
 
 ## Direction
 
 Build systems that produce situations. A curated encounter is optional content,
 not the prerequisite for developing material life, bodies, memory, or world
 conditions. Existing F0-F8 milestones in the
-[execution plan](2026-08-07_paredros_execution_plan.md) retain their semantic
+[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md) retain their semantic
 done-conditions. This plan owns the next implementation dependencies across
 them; the damaged crossing remains a reusable contact fixture.
 
@@ -63,7 +71,7 @@ is not proof that Paredros's pinned dependency supplies it.
 | H: Hagiograph | Retelling, remembrance, significance and manifestation proposals | Remembered history changes a later interaction or admitted world proposal | M plus W for material manifestations |
 | S: save and continuation | Coherent snapshots, resume, death and succession | Save/reload continues the same consequences through another life | Incremental requirement on every lane, not a last phase |
 
-Detailed law design lives in [world conditions](2026-09-09_world_conditions_plan.md).
+Detailed law design lives in [world conditions](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md).
 Individual memory and Hagiograph live in
 [memory and remembrance](2026-09-09_memory_and_remembrance_plan.md). These are
 Paredros consumer plans; any promoted shared contract needs its own owning-repo
@@ -232,6 +240,18 @@ outcome happened. Accept a weighting policy only after that comparison; do not
 make the first model's weights a permanent world law.
 
 ## T: materials, construction and work
+
+**Timing under the record (2026-09-26, ruling 314).** T2 is not gated on E2:
+its substance is the stack's, revisioned dirty regions reaching colliders,
+navigation and render from one accepted edit (record §4.3; conatus and nisus
+in the record's placement table), and it reads no place node. T1 and T3 wait
+for E2's bodies-and-holding and lives-and-rounds families (Eponym overlay
+plan §4, ruling 239): custody, storage and provenance are the one ledger's
+and gear-limited holding (rulings 38, 53), and `ProjectGoal`'s work is the
+denizen's methodology (ruling 37), so building either over today's `Session`
+would be a prototype ruling 239 forbids. The place facts T reads today are
+the heightfield partition W1 named; over Isocosm they are the place graph
+and a carve is an asserted fact (ruling 89).
 
 ### T1. Material transactions
 

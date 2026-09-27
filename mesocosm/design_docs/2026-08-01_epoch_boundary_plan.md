@@ -28,9 +28,12 @@ overlay plan now owns it (§11, §12), and supersedes the word `borg` (ruling
 This owns what happens *between* epochs: how a run is judged, how a lineage
 splits, what a player may aim at, and why a young critter is different from an
 old one. The [phenotype plan](2026-07-31_phenotype_plan.md) owns bodies and
-capability. The [process plan](2026-08-01_processdef_plan.md) owns the process
-vocabulary. The [founding plan](2026-07-30_mesocosm_founding_plan.md) owns the
-epoch loop's turn structure, which this sits on top of.
+capability. The process vocabulary is the sim's process definition
+([sim plan](2026-09-22_sim_plan.md) §3.1; the ProcessDef plan is archived at
+[archive_docs/2026-09-26/](archive_docs/2026-09-26/2026-08-01_processdef_plan.md),
+ruling 309). The [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)
+§1.2 owns the epoch loop's turn structure, which this sits on top of (carried
+there from the founding plan, archived 2026-09-26 under ruling 308).
 
 ---
 

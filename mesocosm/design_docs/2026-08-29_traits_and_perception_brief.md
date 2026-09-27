@@ -44,7 +44,7 @@ A condition that can fire for anonymous far subjects declares a cohort
 reduction; otherwise it pins only the affected subjects to individual
 execution. This boundary settles execution shape, not acquisition price, NPC
 reach, or the player's information access. The
-[ProcessDef plan](2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs)
+[ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs)
 owns the condition/development/process split.
 
 **2026-09-01, PE2 landed and `learn_from` is subsumed.** The boundary above is
@@ -574,7 +574,7 @@ problem it is stated here undiluted.
 
 **The rarity ladder collides with three written rulings.** Not taste — text.
 
-- `2026-07-30_mesocosm_founding_plan.md:466`, the Tone section, about *this
+- `archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md:466`, the Tone section, about *this
   exact mechanic*: incorporation "carries real ethical weight once critters are
   not necessarily unintelligent — play it with ritual seriousness (Qud's water
   ritual), **never as a loot economy**." Verified.
@@ -601,7 +601,7 @@ the flag-bag failure the companion brief's Niche refusal names, as a label you
 farm rather than a slot you pick.
 
 **Rarity-by-effect-count is on the wrong side of an explicit stop rule.**
-`2026-08-06_general_model_plan.md:632`: "**Sample constraints, not powers.**
+`archive_docs/2026-09-26/2026-08-06_general_model_plan.md:632`: "**Sample constraints, not powers.**
 Sanderson's Second Law: a generator over powers produces noise, a generator
 over limitations, weaknesses, and costs produces character." A 1/2/3/4/5+
 ladder ranks by how much a thing does. **Mark's own message already supplies
@@ -610,17 +610,17 @@ rather than effect-count would move the proposal from "cuts against a stop
 rule" to "is what the stop rule asked for," at no loss to what he described.
 
 **The composition grammar is the near-inverse of the ruled one, and nobody had
-flagged it.** `general_model_plan.md:422`: "**Fix the Technique axis; generate
+flagged it.** `archive_docs/2026-09-26/2026-08-06_general_model_plan.md:422`: "**Fix the Technique axis; generate
 the Form axis from the world's own ontology.**" Mark's proposal has no fixed
 verb axis — it generates one flat bank and composes within it. And
-`general_model_plan.md:272` requires an **exclusion relation** over any
+`archive_docs/2026-09-26/2026-08-06_general_model_plan.md:272` requires an **exclusion relation** over any
 generated combination space; Mark's design names none. The companion brief's
 proposed answer (let the conservation economy be the exclusion relation) is
 offered for rejection, not ruled, and has a stated limit: the economy sorts by
 gradient, so derived exclusion means "loses over time", not "cannot exist".
 
 **Sequencing: a bank is three gates downstream of anything ruled.** F0
-(`general_model_plan.md:588-598`) demands one vertical slice — one carrier
+(`archive_docs/2026-09-26/2026-08-06_general_model_plan.md:588-598`) demands one vertical slice — one carrier
 state, one cost, one application route, one discoverable consequence — with
 "**No registry, no shared type.**" F1 extracts the envelope *only if* F0 and a
 second effect repeat the same shape. F5's generated Form axis is gated on F0-F2
@@ -708,7 +708,7 @@ Said plainly, because the above is long.
   reward with no price in the shipping build. Charging for it is correcting the
   code, not decorating it.
 - **The cost formula's *shape* is the one the plan already asked for.**
-  `general_model_plan.md:429-432` wants "a closed-form cost function over the
+  `archive_docs/2026-09-26/2026-08-06_general_model_plan.md:429-432` wants "a closed-form cost function over the
   parameter vector... keeps a generated space balanced without hand tuning",
   and TD7's own done-condition demands "derived from body-plan numbers, not
   tuned." Complexity × lineage distance is derived.
@@ -850,13 +850,13 @@ Ordered by what blocks what.
    survives; a stored bank does not, without an argument this brief cannot make
    for Mark.
 
-7. **Is the fixed-verb grammar retained or replaced?** `general_model_plan.md:422`
+7. **Is the fixed-verb grammar retained or replaced?** `archive_docs/2026-09-26/2026-08-06_general_model_plan.md:422`
    rules a fixed Technique axis and a generated Form axis. Mark's proposal is one
    generated flat bank. If the ruling stands, the bank's shape changes; if Mark
    is replacing it, that should be recorded as a replacement.
 
 8. **What is the exclusion relation?** Required by
-   `general_model_plan.md:272` for any generated combination space. The
+   `archive_docs/2026-09-26/2026-08-06_general_model_plan.md:272` for any generated combination space. The
    companion brief's conservation-economy answer is a gradient, not a wall.
 
 9. **Apparent kind: reading, or per-observer function?** Related to but not the

@@ -1,10 +1,19 @@
 # Dependency Ledger (2026-08-07)
 
+**Archived 2026-09-26 (wing design record ruling 311).** W1 found this
+ledger's founding rule product-first where the record's §11 orders the work
+W0 to W5, sim first, and each overlay plan now carries its own phases
+(Mesocosm M0 to M4, Eponym E0 to E4, the VTT V0 to V4) under the sim plan's
+S0 to S6. Mark: "Archive and repoint." The order lives in the record's §11
+alone; the plans that cited this ledger as ordering authority now cite §11
+and the overlay plans. The six cross-wing lanes and the dated receipt
+statuses below are kept as written.
+
 **Status: active ordering authority; cross-wing creator scope proposed
 2026-09-07 after a source/plan review; the first joint Mesocosm habitat/body
 slice is locally verified.** Existing product receipt statuses
 remain attached to their dated entries below. Successor to the
-[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md), demoted to
+[execution waves plan](../../archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md), demoted to
 Wave 1/2 history by the audit. The governing plans own the *what*; this
 owns dependencies and integration order. Detailed design and evidence live
 in the owning plans; this ledger supplies the cross-plan map.
@@ -13,7 +22,7 @@ in the owning plans; this ledger supplies the cross-plan map.
 wrong sequence. Rewrite is a lane under the record's W2 or W3; until it
 lands this plan's done-conditions are not authoritative. Evaluated against
 the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 The founding condition remains causal: another run should pull product work.
@@ -29,7 +38,7 @@ The answer from the current seams is to start the creator while advancing
 specific dependencies beside it. A universal engine or world generator is not
 a prerequisite. All three games remain valid entry points into the wing.
 
-The [wing body/creator contract](2026-07-31_wing_phenotype_contract_plan.md#11-shared-character-creator-scope-2026-09-07)
+The [wing body/creator contract](../../2026-07-31_wing_phenotype_contract_plan.md#11-shared-character-creator-scope-2026-09-07)
 owns C0-C5, the source findings, and the primary-source research. These rows
 are bounded work lanes, not new crates or separate competing plans.
 
@@ -111,14 +120,14 @@ PE0 + PE1 + PE2
   -> PE7 collapse-and-recovery proof
 ```
 
-The [playable ecology plan](2026-08-31_playable_ecology_plan.md) owns those
+The [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns those
 integration targets and done-conditions. **PE0-PE3 are landed; PE4 is next.**
 PE4's trophic grammar and the visible-body integration below now share an
 end-to-end acceptance scene. The individual and lineage checkpoints remain
 distinct and use the landed developmental path.
 
 **Visible voxel bodies (Mark's integration request, 2026-09-04):**
-[phenotype section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 owns `VB0 source audit [complete] -> VB1 live voxel body -> VB2 procedural
 anatomy + VB3 addressed inspection -> VB4 body change and descendant -> VB5
 roster and cost receipt`. VB2 content design may parallel VB1 once the
@@ -216,7 +225,7 @@ advances projection identity, fully republishes 795,144 bytes with zero texture
 or bind-group creation, and is followed by an upload-silent frame. D1's
 depth join and T1's terrarium picking receipts live in the engine review
 §5 (D1's headed half in
-`eponym/design_docs/2026-08-07_paredros_execution_plan.md`). V1b
+`eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md`). V1b
 (2026-08-26) closed incremental `ResidentChunk` publication and
 allocator-observed bytes: one capacity-fixed cache with per-brick
 retargets and a tracer-validated lease epoch (engine review §5 V1b).
@@ -236,7 +245,7 @@ the ecology's acceptance gates stop moving under it).
 
 ## Paredros lane
 
-The [execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
+The [execution plan](../../../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
 orders itself. S0-S3 are foundation receipts; F0-F2 are closed, F3 is active,
 and F3a is landed. Its opt-in traversal/residency code now handles equal-sized
 travel through product-owned projection revision, with headless and headed

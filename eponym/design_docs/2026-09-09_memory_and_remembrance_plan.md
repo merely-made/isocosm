@@ -5,7 +5,7 @@ ordinary individual memory and the later memorial boundary. It is intentionally
 separate from the world-conditions plan and from the functional-loops plan.
 Those plans own world triggers and larger orchestration. This document owns
 the memory model, its evidence links, bounded recall, and promotion records.
-The adjacent contracts are [world conditions](2026-09-09_world_conditions_plan.md)
+The adjacent contracts are [world conditions](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md)
 and [functional loops](2026-09-09_functional_loops_plan.md).
 
 **Rewritten to the record, 2026-09-26 (wing design record ruling 280).**

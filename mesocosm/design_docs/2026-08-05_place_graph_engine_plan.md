@@ -318,7 +318,7 @@ patience constant, and it duplicates a feeding model the ecology already
 owns. Its lasting contribution is proving the *queries* work: sight
 through terrain, pursuit across a burrow threshold, one-voxel continuity,
 and the movement law that preferences order rather than refuse. The
-[general model plan](2026-08-06_general_model_plan.md) gate **E4**
+[general model plan](archive_docs/2026-09-26/2026-08-06_general_model_plan.md) gate **E4**
 replaces it with drive-and-affordance selection, where pursuit is what a
 fast, large-mouthed, starving body does about a reachable meal. Do not
 build further behaviour on the FSM.

@@ -122,7 +122,7 @@ each other; R3 when the peer's crate lands; R5 last.
   done-condition became "the same counts and the same two failures". Filed
   with the likely cause (mesocosm-core's 2026-09-16 ecology commits shifting
   the grown terrain the sortie scenes rely on) in the
-  [execution plan](../../eponym/design_docs/2026-08-07_paredros_execution_plan.md)
+  [execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
   §6 for a separate lane.
 - **2026-09-24, R2: what was renamed and what was kept.** Renamed: the
   directory; the five crates' directories, package names, path dependencies,

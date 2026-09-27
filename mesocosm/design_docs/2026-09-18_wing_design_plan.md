@@ -5057,7 +5057,7 @@ realigning the world to a new ruleset". The world-conditions schema already
 demands exactly this of any change of rules: "A rules revision cannot
 reinterpret a past accepted event. Conversion is a new, explicit event with
 both old and new revisions recorded"
-(`eponym/design_docs/2026-09-09_world_conditions_plan.md`, core invariant
+(`eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md`, core invariant
 4). Advancing time is what makes the seams honest: whatever the new ruleset
 cannot express is accounted for by the years that passed, as ruling 38 made
 the coarsening of needs diegetic. *Reading, docketed as D22, accepted 2026-09-22:* realignment is

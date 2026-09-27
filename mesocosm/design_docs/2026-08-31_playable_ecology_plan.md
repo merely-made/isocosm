@@ -24,7 +24,7 @@ does not replace their detailed plans:
 
 - [the played-slice plan](2026-08-28_played_slice_plan.md) owns live host
   wiring;
-- [the ProcessDef plan](2026-08-01_processdef_plan.md) owns transformations,
+- [the ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md) owns transformations,
   expression, packs, and validation;
 - [the phenotype plan](2026-07-31_phenotype_plan.md) owns developmental
   programs, body realization, and capability;
@@ -38,7 +38,7 @@ does not replace their detailed plans:
   the three candidate schemes for generated materials;
 - [the scale plan](2026-08-29_scale_plan.md) owns cohort execution, residency,
   zoom, and stress receipts;
-- [the dependency ledger](2026-08-07_dependency_ledger.md) remains the
+- [the dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) remains the
   authority on global order and cross-plan blocking.
 
 If this plan and an owning plan disagree about a domain detail, the owning plan
@@ -659,7 +659,7 @@ Every generated candidate states its causes, inputs, outputs, costs, counters,
 observable cues, and inheritance path. Mechanical fingerprint and rank tests
 reject vocabularies whose extra nouns do not reach independent formulas.
 
-The affinity-table pack door moved here from PD4 ([ProcessDef plan](2026-08-01_processdef_plan.md)
+The affinity-table pack door moved here from PD4 ([ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md)
 §14 residue) waiting on a policy default. **Ruled by Mark, 2026-09-02: a
 pack-declared affinity overrides `Founding`; `Founding` is the fallback the
 world ships with.** Wiring `World::found` and `WorldRules` to take the
@@ -890,7 +890,7 @@ detailed requirements and research live in the plan that owns each mechanism.
 | Individual/cohort execution | [Scale](2026-08-29_scale_plan.md) and [place graph](2026-08-05_place_graph_engine_plan.md) | PE6 | Exact zero-tick aggregate/materialize round trip; persistent pointable subjects; named reductions; per-evaluator all-individual comparison envelope; unsupported-process fallback. |
 | Generated material vocabulary | [Elements and traits](2026-08-29_elements_and_traits_memo.md#storage-shape-shared-by-all-three) | PE4 | Saved world-local definitions and compact ids; exact mass reconciliation; measured local-palette versus wider-cell decision only when the one-byte baseline binds. |
 | Sub-part body mutation | [Phenotype D3a](2026-07-31_phenotype_plan.md#d3a-when-do-voxel-cells-become-body-state) | First played case in PE2 or PE3 that cannot use whole-part loss | New immutable volume or explicit body patch; atomic body revision; bounded revision-safe mesh/collider work; truthful fallback. **P3 (2026-09-01) named the first candidate case and did not open it:** a live cut lands on the boundary between two parts, and whole-part loss cannot express it without creating or destroying matter. |
-| Generated trait execution | [ProcessDef](2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs) and [acquisition](2026-08-29_traits_and_perception_brief.md) | PE2 then PE3 | Event-driven condition, discrete development program, and native repeated process remain separate; each is typed and bounded; the exact realized candidate and digest persist. |
+| Generated trait execution | [ProcessDef](archive_docs/2026-09-26/2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs) and [acquisition](2026-08-29_traits_and_perception_brief.md) | PE2 then PE3 | Event-driven condition, discrete development program, and native repeated process remain separate; each is typed and bounded; the exact realized candidate and digest persist. |
 | Environmental fields | [Resident views](2026-08-14_resident_views_composition_plan.md#field-admission-boundary-2026-09-01) and [elements](2026-08-29_elements_and_traits_memo.md#field-dimensionality-is-part-of-admission) | First PE4 world rule that needs a new field | Named consumer, honest domain, cadence, sources/sinks, boundaries, units/range, conservation, scale rule, cost, and control. |
 
 **Generated trait execution, first half met (2026-09-01).** PE2 built the
@@ -1613,7 +1613,7 @@ receipt; a platform-shaped possibility does not reorder PE0-PE7.
     or a join through the digests; PE2 did not invent one with no consumer.
 
 - **2026-09-01, PE2's first prerequisite is met: PD1b landed whole.** The
-  [ProcessDef plan](2026-08-01_processdef_plan.md)'s allocation half is
+  [ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md)'s allocation half is
   complete, so §4's `PD1b allocation -> PD2 -> PE2` chain now waits only on
   PD2's one native played process.
 

@@ -1,5 +1,16 @@
 # Paredros Execution Plan (2026-08-07)
 
+**Archived 2026-09-26 (wing design record ruling 313).** W1 found the F0 to
+F8 layers right and the ordering product-first, with receipts that are
+fixtures: F2 closes "other lives" on a step that ticks every living member
+every round with residents capped at sixteen a site, where the record's §3.5
+holds hundreds of thousands of things by grouping. Mark: "Retire into the
+overlay plan now." The
+[Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md) §4.1 maps F3 to F8
+onto E2's families, and its E0 to E4 are Eponym's phases; S0 to S3 and the
+F0 to F2 receipts below stand as the record of what landed. The text is
+kept as written.
+
 **Native package, 2026-09-13:** current examples use `eponym-client`,
 renamed from `paredros-room` (to `paredros-client` on 2026-09-13, then to
 `eponym-client` by the family rename's R2 on 2026-09-24). Dated verification entries below retain the
@@ -13,9 +24,9 @@ S0-S3 remain landed foundation receipts, with their stated headed judgments
 still open. They do not define a required entourage, sortie loop, or camera.
 **R4 was decided and executed
 2026-08-10**: see
-[the extraction review](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). The former
+[the extraction review](../../archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). The former
 S4-S6 future gate line is superseded by the fundamental layers in §4. The
-[founding plan](2026-07-30_paredros_founding_plan.md)
+[founding plan](../../2026-07-30_paredros_founding_plan.md)
 remains the charter. Its 2026-08-13 rulings now bind here: one named life in a
 persistent generated world; allies are contingent; control changes through
 death, an explicit world event, or an optional player rule; culture has
@@ -27,15 +38,15 @@ the ordering is product-first and the receipts are fixtures. Rewrite is a
 lane under the record's W2 or W3; until it lands this plan's
 done-conditions are not authoritative. Evaluated against the wing design
 record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3.
 
 **Functional-loop direction, 2026-09-09:** the
-[functional loops and wiring plan](2026-09-09_functional_loops_plan.md) owns
+[functional loops and wiring plan](../../2026-09-09_functional_loops_plan.md) owns
 the next cross-system implementation lanes. F0-F8 remain semantic milestones;
 a curated crossing or other authored encounter is not a prerequisite. Its
-companion plans scope [world conditions](2026-09-09_world_conditions_plan.md)
-and [memory and remembrance](2026-09-09_memory_and_remembrance_plan.md), including
+companion plans scope [world conditions](../../archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md)
+and [memory and remembrance](../../2026-09-09_memory_and_remembrance_plan.md), including
 Hagiograph. The crossing's wider encounter draft below is optional content,
 not the implementation sequence for these subsystems.
 
@@ -704,7 +715,7 @@ observation/report/norm chain remain F3b work.
 #### F3b1 — A consequential answer, design proposal (2026-09-05)
 
 The concrete implementation and bounded-memory stages now live in
-[memory and remembrance](2026-09-09_memory_and_remembrance_plan.md).
+[memory and remembrance](../../2026-09-09_memory_and_remembrance_plan.md).
 
 Join observer-owned beliefs to a judgment under an explicit norm revision,
 then derive that observer's standing and an answer with its complete support
@@ -832,7 +843,7 @@ the player should receive. S0's close camera is evidence, not a ruling.
 
 **First read-only slice complete locally, 2026-09-06.** Mark redirected
 exploration from extending the crossing toward borg generation and RPG growth.
-The [founding plan](2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
+The [founding plan](../../2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
 owns the proposed rules and three-lives fixture. Historical entry and the
 distinct inheritance routes live in
 `mesocosm/design_docs/2026-07-30_games_wing_founding.md`, under
@@ -1019,10 +1030,10 @@ Charge and inhabitants are deferred while the borg design is explored.
 ### Embodied prototype alongside F3: proposed 2026-09-05
 
 **2026-09-09 scope clarification:** this remains an optional reusable fixture.
-The [functional-loop lanes](2026-09-09_functional_loops_plan.md) develop the
+The [functional-loop lanes](../../2026-09-09_functional_loops_plan.md) develop the
 underlying systems without requiring this encounter or its curated sequence.
 
-The [founding plan's player-experience proposal](2026-07-30_paredros_founding_plan.md#player-experience-body-place-and-other-lives)
+The [founding plan's player-experience proposal](../../2026-07-30_paredros_founding_plan.md#player-experience-body-place-and-other-lives)
 owns action feel, progression, world differences, and the player-facing
 knowledge boundary. F0-F8 remain semantic milestones. A small playable
 cross-section may exercise preliminary F4/F5/F7 verbs before those milestones
@@ -1336,7 +1347,7 @@ play, and subjective traversal acceptance remain unclaimed.
   trigger. Done when the seam is either extracted with two consumers
   named, or explicitly declined in writing.
   **DECIDED 2026-08-10**: see
-  [the extraction review](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). Tenancy
+  [the extraction review](../../archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). Tenancy
   pushed up to netrender (landed there 2026-08-10), identity promoted in
   place, grammar refused on principle, the adventure-mode frame adopted
   symmetrically.
@@ -1559,7 +1570,7 @@ play, and subjective traversal acceptance remain unclaimed.
 ## 7. Progress
 
 - **2026-09-09: controlled-session persistence foundation.** J1a in the
-  [functional-loop plan](2026-09-09_functional_loops_plan.md) adds one owned
+  [functional-loop plan](../../2026-09-09_functional_loops_plan.md) adds one owned
   `GameState` with historically validated control cuts, death and existing-life
   succession, versioned save/restore and configurable archive limits. The
   world library plus session-boundary gate passed 35 + 3 tests. No contact,
@@ -1570,7 +1581,7 @@ play, and subjective traversal acceptance remain unclaimed.
   prior art, independent surgery and a proposed sympathetic-charge magic slice.
 
 - **2026-09-09: functional-loop lanes and safe body inspection.** The new
-  [wiring plan](2026-09-09_functional_loops_plan.md) records dependencies for
+  [wiring plan](../../2026-09-09_functional_loops_plan.md) records dependencies for
   session authority, injury/directional combat, building, persistence and
   continuation, with companion world-condition and memory/Hagiograph plans.
   J0 is implemented locally in the equipment sheet: stale and dead anatomy

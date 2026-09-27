@@ -52,6 +52,53 @@ Ruling 6's six parts.
 | Perspective | the terrarium section at a shallow oblique, the review as the trait graph board; survival shows what the played critter knows, creative shows the truth and edits nothing | vessel briefs §2, 180, 184 |
 | Timescale | epochs: a round under a versioned epoch rule, then the boundary, where every lineage adapts and the player's is revised in the shop; the start chosen from the world's habitability for the critter onward | 57, 179, 182; the playable ecology plan's `EpochRule` |
 
+### 1.1 Tone
+
+Carried word for word from the founding plan's Tone section on 2026-09-26,
+when that plan was archived and this one became Mesocosm's charter (ruling
+308). Written 2026-07-30.
+
+> RimWorld vanilla. Sincere, affectionate, mortal. Dark events may happen;
+> the endless organ-theft and incest-joke register is out. This matters more
+> than usual here, because incorporation carries real ethical weight once
+> critters are not necessarily unintelligent — play it with ritual
+> seriousness (Qud's water ritual), never as a loot economy.
+
+The traits brief and the trait catalogue plan cite this against a loot
+economy for incorporation; pillar 5 of the product description names where
+scarcity lives.
+
+### 1.2 The epoch loop's turn structure
+
+Carried from the founding plan's "The epoch loop" section on 2026-09-26
+(ruling 308); the ruled sentences keep their words. Ruled 2026-07-30 and
+2026-07-31; clarified 2026-08-31.
+
+> **Every species takes a turn**, spending its own accumulated resources to
+> adapt, in initiative order — and the same initiative order carries over
+> from the epoch. Mutations can be swapped, not merely added.
+
+**Initiative is descending metabolic complexity** (ruled 2026-07-31). The
+most complex lineages commit first; simpler lineages act later and can
+respond to what those expensive, slower-generating forms just became, which
+compresses generation time into one legible adaptation round without adding
+visible turns to imitate elapsed generations. The player is one species
+among many at this table, which is what makes the world feel like it is
+playing too and where trophic cascades become legible. The adaptation phase
+is third person, deliberately, the vessel's sanctioned person shift, passing
+all three guardrails of the wing founding record §1. Reproduction is the
+individual-scale checkpoint inside this structure, not the boundary
+(2026-08-31). Whether the epoch ends on a timer or a condition is the
+versioned epoch rule (the playable ecology plan's `EpochRule`); whether a run
+is limited or unlimited is answered by ruling 181 and phase M4: losing is
+not the end, and the played loop's proof is three epochs end to end.
+
+Today this is `World::adapt_round`, in descending recipe complexity with
+ties by id, commits landing immediately so a later line answers a world the
+earlier ones changed (epoch boundary plan, PE3a); over Isocosm every lineage
+weighs its adaptation against the rest of the trophic web (ruling 182),
+under M2's lineages-and-the-boundary family.
+
 ## 2. The played loop
 
 1. **Founding.** A seeded draw from the generator's declared space, the
@@ -233,6 +280,11 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- 2026-09-26: this plan is Mesocosm's charter (ruling 308). §1.1 and §1.2
+  carry the founding plan's Tone section and the epoch loop's turn
+  structure; the founding plan is archived at `archive_docs/2026-09-26/`,
+  with the ProcessDef plan (309), the general model (310, its organs in the
+  wing organs plan) and the dependency ledger (311).
 - 2026-09-26: rulings 262, 263 and 267 bear on M2: a vertical probe before
   the order from bodies onward is taken as fixed; each family built and
   certified in Isocosm, `mesocosm-core`'s copies retiring together at M3;

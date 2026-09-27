@@ -1,5 +1,18 @@
 # ProcessDef: authored biology without ability flags
 
+**Archived 2026-09-26 (wing design record ruling 309).** Ruling 32 founded
+the sim's process definition from Eponym's world-conditions schema and made
+this plan's `ProcessDef` shapes expressions in it; the
+[sim plan](../../2026-09-22_sim_plan.md) §3.1 is that definition, and the
+[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M2 begins
+with the matter-and-processes family that carries the landed code onto
+Isocosm. W1 found the definition space here to hold thirty rule shapes with
+no scarcity, cost, foregone or cause-link, and the status line below stale:
+PD3's pack loader and piccolo host exist in `mesocosm-phenotype`. Mark:
+"Archive." PD0 to PD3 landed as the Progress section records and stand in
+code; PD4's piccolo parity is §3.1's own ("piccolo authors it and lowers to
+it"). The text below is kept as written.
+
 **Status: in progress, refreshed 2026-09-01. PD1b is COMPLETE. Its identity
 slice landed 2026-08-08 (native `ProcessDef` records, per-definition digests,
 a registry) and its allocation half landed 2026-09-01: a private
@@ -15,17 +28,17 @@ yet. PD0 and the PD1a allocation design pass are complete.**
 evidence. Rewrite is a lane under the record's W2 or W3; until it lands this
 plan's done-conditions are not authoritative. Evaluated against the wing
 design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 This plan owns Mesocosm's extensible process vocabulary, developmental
 expression boundary, content-pack shape, and Piccolo proof. The
-[phenotype plan](2026-07-31_phenotype_plan.md) continues to own body and
+[phenotype plan](../../2026-07-31_phenotype_plan.md) continues to own body and
 capability semantics. The
-[dependency ledger](2026-08-07_dependency_ledger.md) owns scheduling, and the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns the product
+[dependency ledger](../../archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns scheduling, and the
+[playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns the product
 integration proof that consumes PD1b and PD2.
-The [wing phenotype contract](2026-07-31_wing_phenotype_contract_plan.md)
+The [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md)
 owns what can cross into Paredros and Isometry.
 
 ---
@@ -288,7 +301,7 @@ initial hard Carry gate described in this historical implementation note.
 For a valid disfavoured domain pairing, the world's configured cumulative
 allowance and reserve price now determine feasibility before the same
 allocation validator is called. Invalid domains remain refused. Regrow
-retains its separate route. See [TG3a](2026-09-04_trophic_grammar_plan.md#tg3-scruple-per-part)
+retains its separate route. See [TG3a](../../2026-09-04_trophic_grammar_plan.md#tg3-scruple-per-part)
 for the approved one-cell allowance, equal-mass reserve cost, condition
 composition and remaining acceptance work.
 
@@ -580,7 +593,7 @@ developmental program that produced that candidate, not the literal mosaic.
 Later bodies realize their own phenotype mosaics from that program and their
 actual conditions.
 
-The [epoch-boundary plan](2026-08-01_epoch_boundary_plan.md) owns the
+The [epoch-boundary plan](../../2026-08-01_epoch_boundary_plan.md) owns the
 multi-writer result: players on one lineage may adopt one validated program
 together, while disagreement preserves the proposal as a branch rather than
 merging preview mosaics cell by cell.
@@ -1178,7 +1191,7 @@ These are intentionally deferred to the gate with evidence:
   default the PD3/PD4 residue named: a pack-declared affinity overrides
   `Founding`; `Founding` is the fallback the world ships with. Recorded at
   both residue notes above; wiring it into `World::found` and `WorldRules` is
-  PE4's, per the [playable ecology plan](2026-08-31_playable_ecology_plan.md).
+  PE4's, per the [playable ecology plan](../../2026-08-31_playable_ecology_plan.md).
 
 - **2026-09-02, PD5 complete (with P4a): a line commits, and its descendants
   arrive already carrying it.**

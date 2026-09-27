@@ -85,7 +85,7 @@ the catalogue's job is to prove the four axial rules reach real animals, and
 these are imagined creatures.
 
 **The enabling ruling already exists.** Founding plan
-([`2026-07-30_mesocosm_founding_plan.md`](2026-07-30_mesocosm_founding_plan.md),
+([`archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md`](archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md),
 §"The authoring caution"): *"author the organisms, generate the arrangements.
 That is the wave 2.2 ruling (three authored worlds, not procedural generation)
 holding one level further down, at the bestiary."* This plan is that sentence
