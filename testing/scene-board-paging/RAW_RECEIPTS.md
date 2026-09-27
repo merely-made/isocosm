@@ -1,5 +1,13 @@
 # Raw receipts kept out of tree
 
+## 2026-09-27 additions
+
+Later independent gates retain their own source and hash manifests:
+[traversal bands](bands.md), [current omissions and local settings](settings.md),
+and the test-only [atlas replacement experiment](replacement.md). Their
+directories are under `Code/testing/isometry/receipts/2026-09-27/`; the
+2026-09-26 receipts below are preserved as recorded.
+
 Under ruling 255 of the wing design record, the raw logs of the scene
 board's paging receipts live outside the repository, in
 `Code/testing/isometry/receipts/2026-09-26/scene-board-paging/4663de8/`

@@ -230,3 +230,13 @@ same; the pin bump's was run in release.
 | `probe-release.log` | 92,620 | `81d275af82446362f61885cbeec4dc9373fdc4748ecaa84262d23632e3d4302d` |
 | `probe-debug.log` | 92,466 | `ee5cdc43fd3942b6548b41a9ac657e2dc1801165a29167849e501c5b8a95277b` |
 | `4663de8/bands/probe-release.log` | 92,389 | `799602bc73b2f405ac0dc76e23eaa7be9d5b6cbcae17327152f47812e1e25ae2` |
+
+## 2026-09-27 annotation: the two source-review concerns
+
+Rulings 368/369/372 now select current overflow reporting and a locally
+persisted, device-bounded terrain budget. The earlier dated open-fork text
+above records the gate's state at that time. The [settings receipt](settings.md)
+records the subsequent same-keys overflow regression and the settings
+signature positive control. [Atlas replacement measurements](replacement.md)
+answer the allocation inquiry without choosing a production growth policy.
+The traversal band receipt remains its own exact-source gate.
