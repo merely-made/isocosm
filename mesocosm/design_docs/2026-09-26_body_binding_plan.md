@@ -2,25 +2,33 @@
 
 **Date:** 2026-09-26
 
-**Status, 2026-09-26:** assessment, for Mark's forks (§7). Nothing is built
-and nothing in mere is touched. Written under wing design record ruling 324
-("Plan it now"): one binding adapter serving Mesocosm's critters and the
-VTT's tokens, taking the retired `isometry-runtime` pieces (readable at
-`f15fd43`) and Mesocosm's `TactileWorld` as input, built when Mark says.
+**Status, 2026-09-27:** ruled 2026-09-26, rulings 346 to 352 of the wing
+design record; the shape is documented, not built. Mark ruled "Document the
+shape only" (346): the shape in §4 goes into conatus's docs now, saying
+where the module will live and how it works once built, through the text in
+Appendix A, which a mere lane applies alongside the query-refresh call
+(352). Nothing is built, and each product keeps its own table until he
+says. The assessment written under ruling 324 on 2026-09-26 stands below as
+the evidence, its forks marked with their rulings (§7).
 
-**Owns:** the design of one adapter that keeps a consumer's own key against
-conatus bodies (the binding table) and turns accepted state into body
-changes (the accepted-map mirror); where it lives; what each consumer
-changes to adopt it; and the done-conditions for building it.
+**Owns:** the shape of conatus's body binding module, which keeps a
+consumer's own key against conatus bodies (the binding table) and turns
+accepted state into body changes (the accepted-map mirror); the text that
+puts the shape into mere's docs (Appendix A); what each consumer changes,
+and what retires, once it is built; and the done-conditions for documenting
+it now and building it later.
 
-**Does not own:** conatus itself or any edit to mere; the terrain collider
-and its edits (the functional loops plan's T2, being assessed under ruling
-326); pointer picking on a drawn frame (isometer's, `shared/isometer/src/query.rs`);
-the sim's entities and places (the [sim plan](2026-09-22_sim_plan.md));
-what a token or a critter means (each product's); or naming.
+**Does not own:** conatus, or any edit to mere, which a mere lane makes from
+Appendix A; the query-refresh call, a mere edit of its own (352); the
+terrain collider and its edits, which are T2's, a lane in the conatus engine
+plan's §2 (rulings 330 to 335) built after the pre.4 migration (363);
+pointer picking, which is isometer's alone (347); the sim's entities and
+places (the [sim plan](2026-09-22_sim_plan.md)); what a token or a critter
+means (each product's); or naming.
 
 **Consumes:** the [wing design record](2026-09-18_wing_design_plan.md)
-rulings 233, 299, 324 and 326 and §4.1; the retired
+rulings 233, 299, 324, 326, 330 to 335, 346 to 352 and 363, and §4.1; the
+retired
 [runtime profile plan](../../design_docs/archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md);
 the [engine review](2026-08-18_engine_ecology_rulings_and_review.md) §5 T1;
 the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) and the
@@ -29,10 +37,10 @@ the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) and the
 mere's `design_docs/mere_docs/implementation_strategy/2026-08-22_conatus_engine_plan.md`
 and `2026-08-23_runtime_composition_acceptance_plan.md`.
 
-Code is cited at this branch's base, `aa0fe2b`, except the retired crate,
+Code is cited at this branch's base, `8a6a0cb`, except the retired crate,
 cited at `f15fd43`. conatus is cited at the products' pin, mere `876320fd`;
-every conatus line cited here reads the same in mere's local checkout of
-main, `059c1855`.
+every conatus line cited here reads the same at mere's `origin/main`,
+`a464dc2a`, where Appendix A cites mere's docs.
 
 ---
 
@@ -119,47 +127,44 @@ board-on-isometer plan's "tokens as live bodies" (its I4) means tokens drawn
 as isometer bodies, which landed; it is not tokens as conatus bodies. No
 code in either product queries a bound conatus body today. The VTT's line
 of sight is grid arithmetic in `isometry-core` (`visibility.rs:170`), and
-`mesocosm-core` stays Parry-free (engine review §5, line 561). §7 fork 1
-takes this to Mark.
+`mesocosm-core` stays Parry-free (engine review §5, line 561). Ruling 346
+answered this: the shape is documented now and built when Mark says.
 
 Eponym is a third shape (ruling 233 puts its motion and contact solver on
 the game side over conatus): it rebuilds a `BodyWorld` from product state
 for each move and keeps no table (`eponym/crates/eponym-world/src/contact/spatial.rs:5`,
 `:27`; `motion.rs:158`), and it too steps before querying (`spatial.rs:52`,
-`motion.rs:187`).
+`motion.rs:187`). Its per-move rebuild is a cold reconcile, which the shape
+already covers (§7, fork 8).
 
 ## 3. Where it lives
 
-The record's §2 test puts it in the stack: every game needs bodies by key,
-and keeping a key decides nothing about the world. The record's §4.1
-places bodies, collision and queries in conatus. The candidates:
+**Ruled 2026-09-26 (348): a module in mere's `conatus`, generic over the
+consumer's key,** built when Mark says (346). The record's §2 test puts it
+in the stack: every game needs bodies by key, and keeping a key decides
+nothing about the world; the record's §4.1 places bodies, collision and
+queries in conatus. Every consumer already pins conatus (Mesocosm, Eponym
+and isometer at `876320fd`), and a generic key keeps product types out of
+it. mere's objection, that one source becomes several runtime things, now
+holds for nothing but bodies: isometer carries the host's key itself
+(`SubjectKey`), so scene instances need no table, and the resident plane
+retired with its renderer (the record's §4.2). Mesocosm is the second
+consumer mere's plan waited for before extracting the shared minimum.
 
-- **A module in mere's `conatus` crate, generic over the consumer's key.**
-  Every consumer already pins conatus (Mesocosm, Eponym and isometer at
-  `876320fd`). Generic `K` keeps product types out of conatus, and the
-  meaning of a key stays with its owner. mere's objection was that one
-  source becomes several runtime things; since then isometer carries the
-  host's key itself (`SubjectKey`), so scene instances need no table, and
-  the resident plane retired with its renderer (the record's §4.2), leaving
-  bodies, which are conatus's; and Mesocosm is the second consumer that plan
-  was waiting for. Cost: a mere edit, and three mere doc passages amended
-  (`engine.rs:139-140`; the engine plan's lines 186-196; the composition
-  plan's row at line 52 and its C4 at line 171).
-- **A new crate under `shared/`.** No mere edit, but a crate for a component
-  of a few hundred lines, against Mark's rule of 2026-09-23 that a
-  component is not a crate, and a name through a naming round.
-- **A module in isometer.** isometer holds the drawn half of the key, but it
-  is the rendering tier and names no conatus body (ruling 324); this would
-  make it the physics tier's host too.
-- **Stay in `mesocosm-runtime`,** which T1 named the adapter's permanent host
-  on 2026-08-26 (engine review line 344). The VTT would then depend on a
-  Mesocosm product crate, which fails the record's §2 test.
+The alternatives weighed were a new crate under `shared/` (a crate for a
+component of a few hundred lines, against Mark's rule of 2026-09-23 that a
+component is not a crate), a module in isometer (the rendering tier, which
+names no conatus body), and `mesocosm-runtime`, which T1 named the
+adapter's permanent host on 2026-08-26 (engine review line 344) and which
+would make the VTT depend on a Mesocosm crate. Ruling 348 supersedes T1's
+naming. The three mere doc passages that placed the table outside conatus
+are amended with the shape (Appendix A.2).
 
-Recommended: the conatus module (§7 fork 3).
+## 4. The shape
 
-## 4. Interface sketch
-
-Illustrative, not compile-ready. The names are placeholders, not proposals.
+Ruled 2026-09-26 (347 to 352). Illustrative, not compile-ready; the names
+are placeholders, not proposals. Appendix A.1 states the same shape in
+prose for conatus's docs.
 
 ```rust
 /// A consumer's keys against conatus bodies. Holds no world, no terrain,
@@ -171,7 +176,7 @@ pub struct BodyBindings<K: Ord + Clone> {
 struct Bound { body: BodyId, shape: u64 }
 
 /// What the consumer lowered: where the body stands, what it is made of,
-/// and the caller's own revision of that shape (a change respawns).
+/// and the caller's own revision of that shape (a change respawns, 351).
 pub struct BodySpec {
     pub transform: Transform,
     pub shape: u64,
@@ -182,18 +187,19 @@ pub struct BodySpec {
 pub struct Changes<K> { pub spawned: Vec<K>, pub moved: Vec<K>, pub removed: Vec<K> }
 
 pub enum BindingError<K> {
-    DuplicateKey(K),                  // in one reconcile, found before any world call
-    LostBody { key: K, body: BodyId }, // despawned behind the adapter's back
+    DuplicateKey(K),                   // in one reconcile, found before any world call
+    LostBody { key: K, body: BodyId }, // despawned behind the module's back
     Body(BodyError),
 }
 
 impl<K: Ord + Clone> BodyBindings<K> {
-    /// The accepted-map mirror: the whole accepted set. Spawn new keys, move
-    /// moved ones, respawn a changed shape, despawn absent keys. Validated in
-    /// full before the first world call; a cold rebuild is this on an empty table.
+    /// The accepted-map mirror (350): the whole accepted set. Spawn new keys,
+    /// move moved ones (351), respawn a changed shape, despawn absent keys.
+    /// Validated in full before the first world call; a cold rebuild is this
+    /// on an empty table.
     pub fn reconcile(&mut self, world: &mut BodyWorld,
         desired: impl IntoIterator<Item = (K, BodySpec)>) -> Result<Changes<K>, BindingError<K>>;
-    /// One key changed.
+    /// One key changed alone (350).
     pub fn set(&mut self, world: &mut BodyWorld, key: K, spec: BodySpec)
         -> Result<Changes<K>, BindingError<K>>;
     pub fn remove(&mut self, world: &mut BodyWorld, key: &K)
@@ -206,30 +212,44 @@ impl<K: Ord + Clone> BodyBindings<K> {
 }
 ```
 
-It takes a borrowed `BodyWorld` (an `Engine` lends one, `engine.rs:166`),
-so terrain, bound bodies and anything unbound share one world (fork 4).
-Queries stay conatus's own calls; the adapter only names what they hit.
-Several bodies for one source use a compound key such as `(source, part)`,
-which reserves room for articulated or dynamic bodies without a second
-table. It takes no intent and serializes no `BodyId`.
+It binds bodies only and borrows the caller's `BodyWorld` (349; an `Engine`
+lends one, `engine.rs:166`), so bound bodies share one world with the
+terrain collider that T2's one edit path keeps current (rulings 330 to
+335). Accepted state arrives whole, as a reconcile that is also the cold
+rebuild, or per key (350); cold and incremental must agree. A moved body
+keeps its id, and only a new shape revision respawns it (351). Queries stay
+conatus's own calls and the module names what they hit; after a topology
+change, queries see it through conatus's refresh call (352), not a settle
+step. Pointer picks on a drawn frame are isometer's (347). Several bodies
+for one source use a compound key such as `(source, part)`. It takes no
+intent and serializes no `BodyId`.
 
 ## 5. Adoption, and what retires
 
-**Mesocosm.** In `tactile.rs`, the critter map, `set_critter` and
-`clear_critter` (`:100`, `:208-244`) become the adapter, keyed by
-`OrganismId` (`mesocosm-core/src/organism.rs:45`) until M2's bodies family
-moves and the sim's `EntityHandle` (`shared/isocosm-overlay/src/handle.rs:10`)
-names critters. The critter branch of `pick` (`:264-271`) becomes `key()`.
-Capsule lowering (`:303-354`) stays Mesocosm's, as the caller's shape. The
-terrain half (`:104-206`) stays until T2 decides the terrain collider's
-home (fork 4). The `t1_picking` example ports. Directing's click (M3) goes
-through isometer's pick unless fork 2 says otherwise.
+**Now (346).** Nothing adopts and nothing retires. Mesocosm keeps
+`TactileWorld` whole: its critter table, its pick and its terrain half. The
+VTT has no table, since ruling 299 retired `isometry-runtime`; if a token
+needs a conatus body before the module is built, the VTT keeps its own.
+Directing's click (M3) goes through isometer's pick (347). One change comes
+without the bindings: when the refresh call lands (352) and a product
+repins, `TactileWorld`'s settle step (`tactile.rs:141-153`) and Eponym's
+pre-query steps (`contact/spatial.rs:52`, `motion.rs:187`) become that call.
 
-**The VTT, when tokens become conatus bodies.** After `isonetry` accepts a
+**When Mark says build.** In Mesocosm, `tactile.rs`'s critter map,
+`set_critter` and `clear_critter` (`:100`, `:208-244`) become the module,
+keyed by `OrganismId` (`mesocosm-core/src/organism.rs:45`) until M2's bodies
+family moves and the sim's `EntityHandle`
+(`shared/isocosm-overlay/src/handle.rs:10`) names critters. The critter
+branch of `pick` (`:264-271`) becomes `key()`. Capsule lowering
+(`:303-354`) stays Mesocosm's, as the caller's shape. The `t1_picking`
+example ports. The terrain half (`:104-206`) is not the module's: T2's one
+path replaces it on T2's own schedule (349; rulings 330 to 335, 363).
+
+In the VTT, once tokens become conatus bodies: after `isonetry` accepts a
 map event (`crates/isonetry/src/session/apply.rs:54-59`), the host calls
 `reconcile` with the map's tokens. The key stays map-qualified: `(map,
-TokenId)` today, and under ruling 243 the site's `PlaceHandle` in the
-map's place (`TableActKind::Move { to: Cell { site, at } }`,
+TokenId)` today, and under ruling 243 the site's `PlaceHandle` in the map's
+place (`TableActKind::Move { to: Cell { site, at } }`,
 `shared/isocosm-overlay/src/vtt/table.rs:37`, `:45`). Tiles lower through
 the scene board's own convention, `BoardWorld::stand`
 (`crates/isometry-views/src/scene/world.rs:110`), so a token's conatus body
@@ -237,122 +257,102 @@ and its drawn body stand at the same point; the retired
 `IsometrySpatialConfig` does not come back. Facing lowers as
 `facing_rotation` did, in the VTT.
 
-**What retires.** The rest of `crates/isometry-runtime` (ruling 299; its
-deletion is another branch's): its table and mirror are carried here; its
-second table, resident plane and renderer have no successor, because a
-product owns no renderer (the record's §4.2). `TactileWorld`'s critter
-half. T1's naming of `mesocosm-runtime` as the adapter's permanent host, if
-fork 3 moves it. The three mere doc passages in §3 are amended, if the
-module goes to conatus.
+What retires then: `TactileWorld`'s critter half, and the interim wording
+Appendix A puts in conatus's docs ("documented, not built", and the
+`Engine` comment's "until the binding module is built"). The rest of
+`crates/isometry-runtime` retired with ruling 299 (its deletion is another
+branch's); its table and mirror are carried by the module, and its second
+table, resident plane and renderer have no successor, because a product
+owns no renderer (the record's §4.2).
 
-## 6. Done-conditions for building it
+## 6. Done-conditions
 
-One build phase, then two adoptions. Each receipt that draws is a seeded
-draw, not a fixture (ruling 15).
+**Documented, now (346).** Done when a mere lane has applied Appendix A at
+mere's main: the "Body bindings" text of A.1 stands in the conatus engine
+plan's §1; the three passages read as A.2 gives them; mere's two index rows
+carry A.3's sentences, as mere's DOC_POLICY §6 asks; no binding code is
+written, the `Engine` doc comment being the only line under `crates/` the
+change touches; no live mere passage still puts the key-to-body table
+outside conatus, those A.4 lists saying only that a source's meaning is the
+profile's; and this plan's status and progress name the mere commit. The
+refresh call (352) may ride in the same lane as a change of its own, with
+its own tests.
 
-- **Build.** Done when the adapter exists where fork 3 puts it, names no
-  product type, adds no dependency beyond its host crate's, and stays under
-  the 600-line ceiling; over a seeded draw of accepted sets and edits, a
-  cold `reconcile` and the same history applied through `set` and `remove`
+**Built, when Mark says.** Each receipt that draws is a seeded draw, not a
+fixture (ruling 15).
+
+- **Build.** Done when the module exists in `conatus`, names no product
+  type, adds no dependency to conatus, and stays under the 600-line
+  ceiling; over a seeded draw of accepted sets and edits, a cold
+  `reconcile` and the same history applied through `set` and `remove`
   leave the same keys, transforms and shapes; a key removed and added back
   never resolves to its old body, and an old `BodyId` resolves to no key; a
-  duplicate key, and a body despawned behind the adapter, are refused before
+  duplicate key, and a body despawned behind the module, are refused before
   any world call; after a conatus refusal partway through an apply, the
-  table names exactly the bodies the world holds; `key()` of an unbound body
-  is `None`; and no `BodyId` reaches anything serialized.
+  table names exactly the bodies the world holds; `key()` of an unbound
+  body is `None`; no `BodyId` reaches anything serialized; and conatus's
+  docs drop their interim wording in the same change.
 - **Mesocosm adopts.** Done when `TactileWorld`'s critter tests pass through
-  the adapter and `t1_picking` reproduces its receipt: 22 judged stops, 16
+  the module and `t1_picking` reproduces its receipt: 22 judged stops, 16
   ground, 4 critter, 2 nothing, the judgment agreeing bit for bit across two
   fresh runs.
 - **The VTT adopts,** when its first conatus consumer opens. Done when the
   retired profile's four tests (`lib.rs:366-469`), ported to the board's
-  lowering, pass against the adapter, and a token's conatus body and its
+  lowering, pass against the module, and a token's conatus body and its
   drawn body stand at the same world point for every tile and elevation of
   a seeded draw of maps.
 - In every workspace the change touches,
   `cargo check --workspace --all-features --all-targets` is green.
 
-## 7. Forks for Mark
+## 7. Forks, as ruled
 
-1. **The premise has shifted.** The question put for ruling 324 named the
-   VTT's tokens as live bodies as a second consumer; the board-on-isometer
-   plan's live bodies are drawn isometer bodies, landed and keyed by
-   `TokenId`, and pointer picking, T1's one use, is now isometer's. No code
-   queries a bound conatus body today.
-   (a) Design the adapter anyway as the shared mechanism, with the ported
-   receipts as its first consumers and the first non-pointer query (a ray
-   that is not the camera's, an overlap, contact) as its first live one.
-   (b) Write the common shape into conatus's docs and let each product keep
-   its own table, which is where mere's docs stand today. (c) Retire
-   `TactileWorld`'s critter half with `isometry-runtime` and let Eponym's
-   solver found the table when it first needs one. *Recommended: (a).* The
-   mechanism is the same in both versions, the known consumers (tokens
-   standing in a volume battlemap under ruling 243, critters in the
-   terrarium, Eponym's solver under ruling 233) all need a body by key, and
-   the design costs nothing until Mark says build. *That the first two need
-   conatus queries is a reading, not ruled.*
-2. **Pointer picking.** (a) isometer's drawn-frame pick only
-   (`query.rs:271`), and the adapter answers other queries. (b) conatus
-   through the adapter, as T1 was ruled. (c) Both: isometer for the player's
-   click, conatus for a headless pick on the bench. *Recommended: (a).* The
-   player clicks what was drawn, isometer answers per part and per frame,
-   and the VTT board already routes through it (`board.rs:177-200`); a
-   bench pick can ray conatus and call `key()` without a picking API.
-3. **Where it lives.** (a) A module in mere's `conatus`, generic over the
-   key. (b) A new crate under `shared/`. (c) A module in isometer. (d)
-   `mesocosm-runtime`, as T1 named. *Recommended: (a).* The record's §4.1
-   places bodies and queries in conatus, every consumer already pins it,
-   and generic keys keep product meaning out; it costs a mere edit and the
-   three mere doc passages in §3. (b) mints a crate for a component, (c)
-   puts physics in the rendering tier, and (d) makes the VTT depend on a
-   Mesocosm crate.
-4. **Terrain and the world.** (a) Bodies only, on a borrowed `BodyWorld`
-   that T2's terrain collider shares. (b) Bodies only, on a world the
-   adapter owns. (c) Bodies and terrain on its own world, `TactileWorld`
-   whole, with `GroundVoxelProfile` (`mesocosm-core/src/voxel_profile.rs`,
-   which needs only isometer-core's `Ground` and nisus) moving beside it.
-   *Recommended: (a).* T2 is one edit reaching every spatial consumer,
-   colliders included, and is being assessed (ruling 326); a terrain feed
-   here would be a second path for that edit, the duplication the record's
-   §4.3 already flags, and an owned world pushes anything unbound into a
-   second one.
-5. **How accepted state arrives.** (a) Both a whole-set `reconcile` and
-   per-key `set`/`remove`, reconcile being the cold rebuild. (b) Reconcile
-   only. (c) Per-key only. *Recommended: (a).* The VTT's source is a whole
-   accepted map per event (`lib.rs:136-229`) and a critter changes alone;
-   replay needs the cold path, and the retired R3 asked that cold and
-   incremental agree.
-6. **A pose change.** (a) Move the body and keep its `BodyId`; respawn only
-   when the caller's shape revision changes. (b) Always respawn, as
-   `TactileWorld` does. *Recommended: (a).* Ids are generational
-   (`body.rs:11-17`), so a respawn per move churns every id anything holds
-   between frames, such as an interaction event's colliders; (b) is simpler
-   and harmless only while nothing steps. The sim's `Entity` already carries
-   a `body_revision` (`shared/isocosm/src/schema.rs:63`) for the caller to
-   pass.
-7. **Refreshing conatus's queries.** (a) The adapter settles with a minimal
-   step after each topology change, as `TactileWorld` does. (b) conatus
-   gains a query-refresh call, a mere edit, which both `TactileWorld`'s
-   settle and Eponym's pre-query steps become. (c) Leave refresh to the
-   world's owner. *Recommended: (b).* Two consumers already work around its
-   absence (`tactile.rs:141-153`, `spatial.rs:52`), and `TactileWorld`'s
-   comment names this as the call it replaces. `advance(0)` does not step
-   (`engine.rs:259`), so the retired mirror's frame would not have
-   refreshed queries either; that is read from the code, not run.
-8. **Eponym.** (a) Out of this build; its per-move rebuild is a cold
-   `reconcile`, so the interface reserves room with no change. (b) In, as
-   the third consumer and the first with a live query. *Recommended: (a).*
-   Ruling 324 names two consumers, and Eponym's solver belongs to its own
-   plan; widening is Mark's call, and (b) is the natural first live
-   consumer if fork 1's (a) wants one sooner.
+Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
+
+1. **The premise had shifted** (§2). Asked: design the shared mechanism
+   anyway (recommended), document the shape only, or retire
+   `TactileWorld`'s critter half. **Ruling 346.** Mark: "Document the
+   shape only." Asked how that sits with 348 and 349, he confirmed the
+   reading: the common shape goes into conatus's docs now, saying where the
+   module will live and how it works once built; nothing is built, and each
+   product keeps its own table until he says.
+2. **Pointer picking.** Asked: isometer only (recommended), conatus through
+   the bindings as T1 was ruled, or both. **Ruling 347.** Mark: "isometer
+   only." The player clicks what was drawn and isometer answers per part and
+   per frame, as the VTT board already does; the bindings answer other
+   queries.
+3. **Where it lives.** Asked: a module in mere's conatus (recommended), a
+   new crate under `shared/`, isometer, or `mesocosm-runtime`. **Ruling
+   348.** Mark: "A module in mere's conatus." It is generic over the key,
+   and three mere doc passages are amended with the shape, one of them the
+   line placing bindings "not to Conatus" (Appendix A.2).
+4. **Terrain and the world.** Asked: bodies only, on a borrowed world shared
+   with T2's terrain collider (recommended), bodies only on its own world,
+   or bodies and terrain. **Ruling 349.** Mark: "Bodies only, shared
+   world." Terrain arrives through T2's one path (rulings 330 to 335).
+5. **How accepted state arrives.** Asked: both a whole-set reconcile and
+   per-key set and remove (recommended), reconcile only, or per key only.
+   **Ruling 350.** Mark: "Both." The reconcile is the cold rebuild and
+   carries the VTT's per-event accepted map; per-key updates carry a critter
+   changing alone; cold and incremental must agree.
+6. **A pose change.** Asked: move the body and keep its id, respawning only
+   when the shape revision changes (recommended), or always respawn.
+   **Ruling 351.** Mark: "Move it, keep its id."
+7. **Refreshing conatus's queries.** Asked: keep a settle step in the
+   adapter, a refresh call in conatus (recommended), or leave it to the
+   world's owner. **Ruling 352.** Mark: "A refresh call in conatus." It is
+   a small mere edit, independent of the bindings, that `TactileWorld`'s
+   settle step and Eponym's pre-query steps both become.
+8. **Eponym.** Not put to Mark: with nothing built, whether Eponym is in the
+   build is moot. Its per-move rebuild (`contact/spatial.rs:27`,
+   `motion.rs:158`) is a cold reconcile, which the shape already covers.
 
 ## Findings
 
 - **2026-09-26:** mere's composition plan records the tactile-bodies row as
   "Met 2026-08-26 by Mesocosm", the contract "held by Conatus's public
   vocabulary" (line 52), while its C4 gate for the same second-consumer
-  challenge still reads "Open" (line 171). Reported, not changed; mere is
-  read-only here.
+  challenge still reads "Open" (line 171). A.2's third replacement
+  reconciles the two.
 - **2026-09-26:** `TactileWorld` has one caller, the `t1_picking` example;
   the headed Mesocosm host builds no tactile world (dev tools plan, finding
   3 at line 248).
@@ -363,6 +363,13 @@ draw, not a fixture (ruling 15).
 - **2026-09-26:** `crates/isometry-runtime` is still on main and excluded
   from the root workspace (`Cargo.toml:13`); its deletion under ruling 299
   is on another branch.
+- **2026-09-27:** at mere `a464dc2a` the conatus engine plan's §2 (lines
+  204-231) does not yet hold the T2 lane ruling 335 puts there, so A.1
+  points to T2 by its rulings rather than by a heading.
+- **2026-09-27:** the composition plan's Isometry profile section (lines
+  68-97 at `a464dc2a`) still describes `isometry-runtime` as a live slice;
+  ruling 299 retired it. It places no binding outside conatus, so Appendix
+  A leaves it; reported for the mere lane.
 
 ## Progress
 
@@ -370,3 +377,223 @@ draw, not a fixture (ruling 15).
   crate at `f15fd43`, `TactileWorld`, conatus at `876320fd`, isometer's
   picks, the overlay contract and both overlay plans. Nothing built; eight
   forks for Mark.
+- **2026-09-27:** Mark ruled seven forks on 2026-09-26 (rulings 346 to
+  352), the eighth moot. The plan is revised to the rulings (status, §3 to
+  §7), and Appendix A carries the text for conatus's docs, cited at mere
+  `origin/main`, `a464dc2a`; rebased onto `8a6a0cb`. Nothing built, and
+  mere untouched.
+
+---
+
+## Appendix A. Text for conatus's docs
+
+For a mere lane to apply at mere's main, alongside the query-refresh call
+(352). Everything is cited at mere `origin/main`, `a464dc2a`. Each
+replacement quotes the text it replaces, so it can be applied by match if
+lines have moved.
+
+### A.1 Add to the conatus engine plan
+
+In `design_docs/mere_docs/implementation_strategy/2026-08-22_conatus_engine_plan.md`,
+§1 "Runtime and systems", after the paragraph A.2's second item replaces
+(lines 186-196) and before "The remaining runtime work is" (line 198):
+
+```markdown
+**Body bindings (ruled 2026-09-26; documented, not built).** A product keeps
+its own key against the Conatus bodies that stand for its sources, such as
+a VTT token or a Mesocosm critter. Isometry's retired accepted-map profile
+and Mesocosm's `TactileWorld` built that table alike; Isometry's body
+binding plan compares them
+(`repos/isometry/mesocosm/design_docs/2026-09-26_body_binding_plan.md`).
+Mark ruled its shape documented here now and its code built later (wing
+design record, rulings 346 to 352,
+`repos/isometry/mesocosm/design_docs/2026-09-18_wing_design_plan.md`).
+Until he says to build it, each product keeps its own table: Mesocosm's in
+`mesocosm-runtime`'s `TactileWorld`, while the VTT, whose `isometry-runtime`
+retired, has none today.
+
+When built, it is a module in `conatus`, generic over the product's key
+(ruling 348), and works like this:
+
+- **Bodies only, on the caller's world** (349). It owns no `BodyWorld`; each
+  call borrows the caller's, which an `Engine` lends through `bodies_mut`,
+  so bound bodies share one world with the terrain collider that T2's one
+  edit path keeps current (rulings 330 to 335). It holds no terrain, no
+  clock and nothing durable, and never serializes a `BodyId`.
+- **The table.** Each key maps to one `BodyId` and the shape revision it was
+  built from, with the reverse map kept in step. A key means what the
+  product says: a map-qualified token id for the VTT, an organism or entity
+  id for a critter. Several bodies for one source use a compound key such
+  as `(source, part)`.
+- **Accepted state, whole or per key** (350). A reconcile takes the whole
+  accepted set: it spawns new keys, moves moved ones and despawns absent
+  ones. It is the cold rebuild, and it carries the VTT's accepted map on
+  each event. Per-key set and remove carry one source changing alone, such
+  as a critter. Cold and incremental must agree. Only authorized product
+  code calls it, with state its authority has already accepted; it takes no
+  intent.
+- **A moved body keeps its id** (351). A new pose moves the body. Only a
+  change of the caller's shape revision respawns it.
+- **Refusals before mutation.** A key twice in one reconcile, and a bound
+  body despawned behind the module, are refused before any world call.
+  After a Conatus refusal partway through an apply, the table names exactly
+  the bodies the world holds.
+- **Queries stay Conatus's.** Rays, overlaps, character moves and frames are
+  Conatus's own calls; the module names what they touch by key, and a body
+  it does not bind, the terrain among them, has none. After a topology
+  change a query sees it through Conatus's query-refresh call (352), not a
+  settle step. Pointer picks on a drawn frame are isometer's (347).
+
+What a key means, when a source binds, and what else it becomes (scene
+instances, resident slots, audio voices) stay the product's. Eponym's
+per-move query world is a cold reconcile, so the shape covers it without
+change. The conditions for building the module are in the body binding
+plan's §6.
+```
+
+### A.2 Replace the three passages that place bindings outside conatus
+
+**1. conatus's `Engine` doc comment,** `crates/conatus/conatus/src/engine.rs:139-140`.
+
+Replace:
+
+```rust
+/// [`FrameUpdate`] to its selected consumers. Rules, input, audio, rendering,
+/// and durable source bindings remain outside this runtime.
+```
+
+With:
+
+```rust
+/// [`FrameUpdate`] to its selected consumers. Rules, input, audio, rendering,
+/// and what a product's sources mean remain outside this runtime. Until the
+/// binding module is built (conatus engine plan §1, "Body bindings"), a
+/// product keeps its own keys against bodies.
+```
+
+**2. The engine plan's "Source bindings stay profile-owned",**
+`design_docs/mere_docs/implementation_strategy/2026-08-22_conatus_engine_plan.md:186-196`.
+
+Replace:
+
+```markdown
+**Source bindings stay profile-owned.** `BodyId` is generational and
+runtime-only, and `BodyDesc` deliberately carries no durable source
+reference. One durable product source may materialize as several bodies,
+scene instances, resident slots, and audio voices, so the binding table
+(`ProductSourceId -> RuntimeBindings { bodies, scene instances, resident
+slots, audio voices }`) belongs to the runtime profile, not to Conatus and
+not inside `BodyDesc`. Sceno's `SourceRef` is the pattern reference, not
+automatically the universal type: it belongs to semantic scenes and lacks
+revision and materialization information. The first Isometry profile
+defines a neutral-shaped binding table locally; the shared minimum is
+extracted when Paredros or Mesocosm needs the same vocabulary.
+```
+
+With:
+
+```markdown
+**What a source means stays profile-owned; its body table will be a Conatus
+module.** `BodyId` is generational and runtime-only, and `BodyDesc`
+deliberately carries no durable source reference. One durable product
+source may materialize as several bodies, scene instances, resident slots,
+and audio voices, so what a source is, when it binds, and what it becomes
+belong to the runtime profile, not to Conatus and not inside `BodyDesc`.
+Sceno's `SourceRef` is the pattern reference, not automatically the
+universal type: it belongs to semantic scenes and lacks revision and
+materialization information. The first Isometry profile defined a
+neutral-shaped binding table locally, and Mesocosm's `TactileWorld` needed
+the same vocabulary. On 2026-09-26 Mark ruled the shared minimum, the table
+keeping a product's own key against its bodies, a Conatus module generic
+over the key, documented below as "Body bindings" and built when he says
+(wing design record, rulings 346 and 348); until then each product keeps
+its own table.
+```
+
+**3. The composition plan's tactile row and C4,**
+`design_docs/mere_docs/implementation_strategy/2026-08-23_runtime_composition_acceptance_plan.md:52`
+and `:171-180`.
+
+Replace the row at line 52:
+
+```markdown
+| Tactile bodies and spatial queries | Conatus owns the state it advances | Product source bindings to runtime `BodyId`s | Isometry product profile mirrors accepted map tokens; Mesocosm's `mesocosm-runtime` tactile adapter (terrarium picking, T1 2026-08-26) is the second, oracle-judged consumer | Met 2026-08-26 by Mesocosm; the shared vocabulary stays Conatus ids and arrays, Rapier private | Two profiles proven; contract held by Conatus's public vocabulary |
+```
+
+With:
+
+```markdown
+| Tactile bodies and spatial queries | Conatus owns the state it advances, and will own the table keeping a product's key against its bodies, as a module generic over the key | The product's own keys, and what they mean, against runtime `BodyId`s | Isometry product profile mirrors accepted map tokens; Mesocosm's `mesocosm-runtime` tactile adapter (terrarium picking, T1 2026-08-26) is the second, oracle-judged consumer; the two compared on C4's five dimensions 2026-09-26 | Ruled 2026-09-26 (wing design record, rulings 346 to 352): the shape is documented in the conatus engine plan §1, "Body bindings", and built when Mark says; pointer picks are isometer's (347) | Shape documented, not built; each product keeps its own table |
+```
+
+Replace C4, lines 171-180:
+
+```markdown
+### C4 — Second consumer challenge
+
+**Open.** Paredros or Mesocosm consumes the relevant Isometry profile shape and
+forces at least one real comparison of source identity, trigger cadence,
+authorization, subsystem selection, and frame consumption. Paredros's
+nonspatial F3 proof may establish cold rebuild versus incremental delta,
+recipe-version refusal, removal-before-replacement, and one durable source
+materializing into several runtime bindings, but it cannot close C4 without an
+embodied spatial consumer. Only the common minimum may then move to a shared
+contract. Product-specific fields and epistemic vocabulary remain local.
+```
+
+With:
+
+```markdown
+### C4 — Second consumer challenge
+
+**Compared 2026-09-26; the shape is documented, not built.** Mesocosm's
+`TactileWorld` (T1, 2026-08-26) is the embodied spatial consumer this gate
+asked for. Isometry's body binding plan
+(`repos/isometry/mesocosm/design_docs/2026-09-26_body_binding_plan.md` §2)
+compared it with the retired Isometry profile on source identity, trigger
+cadence, authorization, subsystem selection, and frame consumption: they
+agree on authorization and differ on the other four. Mark ruled the common
+minimum, the table keeping a product's own key against its bodies, a
+Conatus module generic over the key, documented in the conatus engine
+plan's §1 and built when he says (wing design record, rulings 346 to 352).
+The comparison is made; the minimum moves when the module is built, and
+until then each product keeps its own table. Paredros's nonspatial F3 proof
+may still establish cold rebuild versus incremental delta, recipe-version
+refusal, removal-before-replacement, and one durable source materializing
+into several runtime bindings. Product-specific fields and epistemic
+vocabulary remain local.
+```
+
+### A.3 mere's index rows
+
+mere's DOC_POLICY §6 has `design_docs/DOC_README.md` change with the docs it
+indexes. Append a sentence to each row:
+
+- Line 94, the conatus engine plan's row, after "and the Nexus
+  decomposition.": "Body bindings ruled 2026-09-26 (wing design record,
+  rulings 346 to 352): documented in §1 as a Conatus module generic over the
+  key, built when Mark says; each product keeps its own table meanwhile."
+- Line 95, the composition plan's row, after "cross-product identity
+  contracts stay gated.": "Advanced 2026-09-26: C4's comparison is made and
+  the tactile row's shared minimum ruled a Conatus module, documented and
+  not built (rulings 346 to 352)."
+
+### A.4 Passages that stand as written
+
+These name source bindings as the profile's and stay true once A.2 is
+applied, because the profile still decides what a key means, what binds and
+when; the module is a mechanism it calls.
+
+- The conatus engine plan, lines 30-37 and 57-61: the profile conducts
+  clocks, triggers, input mapping, authorization, source bindings and
+  subsystem selection.
+- The same plan, lines 48-49: the 2026-08-23 correction "Source bindings are
+  profile-owned". It is a dated ruling list, kept as history, and its
+  "(§1)" now leads to A.2's text.
+- The same plan, line 249: the product owns the resident plane's source
+  bindings. Resident slots are outside this shape.
+- The same plan, lines 361-367: contracts wait for the second consumer. It
+  is the rule rulings 346 and 348 satisfied.
+- The composition plan, lines 17-20 and 49: a profile chooses its source
+  bindings, and owns them for semantic projection; and lines 191-192: a
+  first consumer cannot establish a source-binding schema.
