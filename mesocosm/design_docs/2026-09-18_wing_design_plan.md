@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 374, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 376, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3133,6 +3133,52 @@ what later sections derive from.
      device (372). A changed budget still rebuilds the atlas; filling its
      available capacity does not trigger growth. Copy experiments remain
      research evidence, with their stated timing and hardware limits.
+
+375. **Disable CubeCL persistence in pre.4; amend 355's patch retirement.**
+     Asked on 2026-09-27: "1. Should pre.4 retain GPU tuning results between
+     app launches?" Evidence as put: "Disabling persistence removes 55
+     packages, taking the measured dependency count from 1,710 to 1,655. It
+     requires retaining a small vendor patch, amending ruling 355. The
+     tested Windows configuration already falls back to memory;
+     persistence's benefit on Unix remains unmeasured." Options, recommended
+     first: (A) "Disable persistence (recommended). Keep the manifest-only
+     patch; tuning repeats when needed in each process. Retire the old
+     identity helper." (B) "Keep persistence. Remove the runtime patch as
+     355 intended; retain Turso and its dependencies." (C) "Measure Unix
+     first. Compare cold and warm launches before choosing." Mark answered
+     both questions verbatim: "I accept your two recommendations. Wow. Much
+     larger dependency count than I figured." This accepts A: retain the
+     vendored `cubecl-runtime` for the manifest-only removal of `persistence`
+     from its defaults, while retiring its identity helper. This explicitly
+     amends 355 and settles 356's persistence choice. Caches remain local to
+     each process. The 1,710/1,655 figures are Lane H's lockfile package
+     counts, including optional resolution, not every application's compiled
+     crate count; the reduction is nine Turso crates plus 46 transitive
+     packages. Unix performance has not been measured. *Reading, not ruled:*
+     keep a narrow patch-removal condition when upstream makes persistence
+     optional without the forcing edge. An upstream issue or PR was not an
+     option in this round and is not authorized by this answer.
+
+376. **Require the complete Distillery migration gates.** Asked on
+     2026-09-27: "2. How thoroughly should we verify Distillery during the
+     migration?" Evidence as put: "The full plan covers five nested
+     workspaces and a two-peer run checking output, cancellation, memory
+     recovery and a fresh lease. The remote fixture first needs its five
+     outdated dependency patch rows aligned with the root's eight current
+     rows." Options, recommended first: (A) "Require the full set
+     (recommended). Repair and verify the fixture on pre.2 first, then
+     repeat the complete checks on pre.4." (B) "Defer the two-peer run.
+     Require compilation, lease tests and headed numerical checks; leave
+     remote acceptance open." (C) "Limit this pass to compilation and
+     lease tests. Leave both headed numerical and remote acceptance open."
+     Mark answered both questions verbatim: "I accept your two
+     recommendations. Wow. Much larger dependency count than I figured."
+     This accepts A: preserve the fixture repair as a separate prerequisite,
+     prove its pre.2 baseline, and require all five nested workspaces,
+     compilation/lease tests, headed numerical controls and the two-peer
+     lifecycle receipt after migration. Acceptance is not reduced to a
+     compiling rebase. The remaining pre.4 stop-rule dispositions are not
+     inferred from this answer.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6906,6 +6952,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: rulings 375 and 376 accept process-local CubeCL caches and
+  complete Distillery migration gates. 375 amends 355: retain a manifest-only
+  runtime patch, retire its identity helper. 376 requires a separate fixture
+  prerequisite verified on pre.2 and full headed/two-peer verification on
+  pre.4. Mere's migration plan and index are updated in the same batch;
+  migration execution still awaits the remaining stop-rule disposition.
 - 2026-09-27: paging integrated from Lane E `983aa43` under 368, 369,
   372 and 374. Root verified all 112 receipt hashes and 50 final-source
   hashes; independent review accepted the bounded change. Root/shared
