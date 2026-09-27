@@ -41,6 +41,8 @@ Code is cited at this branch's base, `8a6a0cb`, except the retired crate,
 cited at `f15fd43`. conatus is cited at the products' pin, mere `876320fd`;
 every conatus line cited here reads the same at mere's `origin/main`,
 `a464dc2a`, where Appendix A cites mere's docs.
+*(2026-09-27: the products pin mere `0418391f` since the pin bump; every
+conatus line cited here reads the same at `876320fd` and at `a464dc2a`.)*
 
 ---
 
