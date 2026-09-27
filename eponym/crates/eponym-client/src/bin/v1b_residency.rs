@@ -14,14 +14,12 @@
 //! frame, exact per-transition upload accounting, retained one-frame
 //! recovery, and records wgpu's allocator report beside the logical bytes.
 
-use std::{path::Path, sync::Arc, time::Instant};
+use std::{sync::Arc, time::Instant};
 
-use isometer::core::ground::BRICK;
-use isometer::lens::{
-    BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, Grade,
-};
-use modulus::{BrickMap, BrickProjectionRevision};
-use netrender::WgpuHandles;
+#[path = "v1b_residency/receipt.rs"]
+mod receipt;
+use receipt::{FrameSample, report};
+
 use eponym_client::{
     gpu::{self, Composer, SIZE},
     residency::{
@@ -30,7 +28,12 @@ use eponym_client::{
     },
     scene,
 };
-use serde::Serialize;
+use isometer::core::ground::BRICK;
+use isometer::lens::{
+    BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTracer, Grade,
+};
+use modulus::{BrickMap, BrickProjectionRevision};
+use netrender::WgpuHandles;
 use winit::{
     application::ApplicationHandler,
     dpi::PhysicalSize,
@@ -45,14 +48,6 @@ const TRAVEL_FRAME: u64 = 72;
 
 fn main() {
     let scene = ResidencyScene::grow();
-    let stable = StableResidency::new(&scene).expect("the stable cache fits the V1 budget");
-    println!(
-        "V1b world: {} exact bricks, cache capacity {}, fixed {} bytes, focus {:?}",
-        scene.ground.brick_count(),
-        stable.capacity(),
-        stable.resident_bytes(),
-        scene.focus
-    );
     let event_loop = EventLoop::new().expect("winit event loop");
     event_loop.set_control_flow(ControlFlow::Poll);
     let mut app = StableApp {
@@ -60,7 +55,6 @@ fn main() {
             wgpu::InstanceDescriptor::new_without_display_handle_from_env(),
         ),
         scene,
-        stable,
         live: None,
         samples: Vec::with_capacity(V1_FRAMES as usize),
         allocator_after_first: None,
@@ -158,12 +152,12 @@ struct Live {
     composer: Composer,
     adapter: String,
     current: ResidencyMetrics,
+    stable: StableResidency,
 }
 
 struct StableApp {
     instance: wgpu::Instance,
     scene: ResidencyScene,
-    stable: StableResidency,
     live: Option<Live>,
     samples: Vec<FrameSample>,
     allocator_after_first: Option<u64>,
@@ -194,6 +188,17 @@ impl ApplicationHandler for StableApp {
             .unwrap_or(capabilities.formats[0]);
         let adapter = handles.adapter.get_info().name;
         let tenant = StableTenant::new(&handles, SIZE);
+        let limits = tenant.tracer.atlas_limits();
+        let stable = StableResidency::with_limits(&self.scene, limits)
+            .expect("the stable cache fits the device and V1 budget");
+        println!(
+            "V1b world: {} exact bricks, cache capacity {}, fixed {} bytes, device 3D limit {}, focus {:?}",
+            self.scene.ground.brick_count(),
+            stable.capacity(),
+            stable.resident_bytes(),
+            limits.max_texture_dimension_3d,
+            self.scene.focus
+        );
         let composer = Composer::new(handles, SIZE);
         let mut live = Live {
             window,
@@ -204,6 +209,7 @@ impl ApplicationHandler for StableApp {
             tenant,
             composer,
             adapter,
+            stable,
             current: ResidencyMetrics {
                 projection_revision: BrickProjectionRevision(0),
                 visible_range: 0,
@@ -254,7 +260,7 @@ impl StableApp {
         }
 
         let page_began = Instant::now();
-        let outcome = self
+        let outcome = live
             .stable
             .prepare(&self.scene, visible)
             .expect("camera range has a V1b page");
@@ -277,7 +283,7 @@ impl StableApp {
         let diagnostics = live
             .tenant
             .draw(
-                self.stable.map(),
+                live.stable.map(),
                 BrickRevision(self.scene.ground.revision()),
                 camera,
                 &pose,
@@ -294,7 +300,7 @@ impl StableApp {
             assert!(!diagnostics.map_recreated, "frame {frame}");
             if page_transition {
                 assert!(diagnostics.projection_replaced, "frame {frame}");
-                let pointer_bytes = std::mem::size_of_val(self.stable.map().pointers()) as u64;
+                let pointer_bytes = std::mem::size_of_val(live.stable.map().pointers()) as u64;
                 assert_eq!(
                     diagnostics.brick_upload_bytes,
                     pointer_bytes + loaded_slots.len() as u64 * 512,
@@ -382,10 +388,11 @@ impl StableApp {
                 &master,
                 &live.adapter,
                 &self.scene,
-                &self.stable,
+                &live.stable,
                 &self.samples,
                 self.allocator_after_first,
                 allocator_after_last,
+                live.device.limits().max_texture_dimension_3d,
             );
             event_loop.exit();
         } else {
@@ -416,193 +423,4 @@ fn configure(live: &mut Live) {
             view_formats: vec![],
         },
     );
-}
-
-#[derive(Clone, Serialize)]
-struct FrameSample {
-    frame: u64,
-    projection_revision: u64,
-    camera_distance: f32,
-    visible_range: i32,
-    resident_range: i32,
-    page_transition: bool,
-    page_prepare_us: u64,
-    loaded_bricks: usize,
-    evicted_bricks: usize,
-    resident_bricks: usize,
-    brick_upload_bytes: u64,
-    tracer_cpu_prepare_us: u64,
-    resource_creations: u32,
-    bind_group_rebuilds: u32,
-    projection_replaced: bool,
-    frame_us: u64,
-}
-
-#[derive(Serialize)]
-struct Recovery {
-    event_frame: u64,
-    resident_range: i32,
-    steady_median_us: u64,
-    threshold_us: u64,
-    event_frame_us: u64,
-    recovered_at_frame: Option<u64>,
-    recovery_frames: Option<u64>,
-}
-
-#[derive(Serialize)]
-struct Receipt<'a> {
-    gate: &'static str,
-    vessel: &'static str,
-    camera_profile: &'static str,
-    traversal_implementation: &'static str,
-    resident_measure: &'static str,
-    publication_mode: &'static str,
-    adapter: &'a str,
-    size: [u32; 2],
-    frames: usize,
-    world_bricks: usize,
-    ground_revision: u64,
-    resident_budget_bytes: u64,
-    cache_capacity_bricks: usize,
-    fixed_resident_bytes: u64,
-    fixed_pointer_extent: [u32; 3],
-    fixed_atlas_extent: [u32; 3],
-    allocator_bytes_after_first_frame: Option<u64>,
-    allocator_bytes_after_last_frame: Option<u64>,
-    allocator_growth_bytes: Option<i64>,
-    retargets: usize,
-    travel_frame: u64,
-    total_brick_upload_bytes: u64,
-    frame_us_min: u64,
-    frame_us_median: u64,
-    frame_us_max: u64,
-    steady_frame_us_median: u64,
-    rapid_close_recovery: Recovery,
-    rapid_far_recovery: Recovery,
-    capture: &'a str,
-    capture_distinct_colours: usize,
-    samples: &'a [FrameSample],
-}
-
-#[allow(clippy::too_many_arguments)]
-fn report(
-    composer: &Composer,
-    master: &wgpu::Texture,
-    adapter: &str,
-    scene: &ResidencyScene,
-    stable: &StableResidency,
-    samples: &[FrameSample],
-    allocator_after_first: Option<u64>,
-    allocator_after_last: Option<u64>,
-) {
-    let capture = composer.capture(master);
-    capture.write_png(Path::new(CAPTURE)).expect("V1b capture");
-    assert!(
-        !capture.is_trivial(),
-        "V1b capture has only {} distinct colours",
-        capture.distinct
-    );
-    let frame_spans: Vec<_> = samples.iter().map(|sample| sample.frame_us).collect();
-    let steady_spans: Vec<_> = samples
-        .iter()
-        .filter(|sample| !sample.page_transition)
-        .map(|sample| sample.frame_us)
-        .collect();
-    let rapid_close_recovery = recovery(samples, 48);
-    let rapid_far_recovery = recovery(samples, 60);
-    assert!(
-        rapid_close_recovery.recovered_at_frame.is_some()
-            && rapid_far_recovery.recovered_at_frame.is_some(),
-        "both rapid zooms must recover within the V1b trace"
-    );
-    let allocator_growth_bytes = allocator_after_first
-        .zip(allocator_after_last)
-        .map(|(first, last)| last as i64 - first as i64);
-    if let Some(growth) = allocator_growth_bytes {
-        // Driver-internal staging metadata moves by a few bytes between
-        // samples; a leaked page or texture would be half a megabyte. The
-        // tolerance is far below one brick slot.
-        assert!(
-            growth.abs() <= 4096,
-            "the allocator moved {growth} bytes after the first frame; the cache is not stable"
-        );
-    }
-    let receipt = Receipt {
-        gate: "V1b",
-        vessel: "paredros",
-        camera_profile: "third-person continuous zoom: near acts, mid leads, far plans",
-        traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer",
-        resident_measure: "fixed pointer plus atlas allocation, with wgpu allocator-report bytes",
-        publication_mode: "one capacity-fixed cache; retargets publish the pointer volume plus \
-                           loaded slots only, retained slots never re-upload",
-        adapter,
-        size: SIZE,
-        frames: samples.len(),
-        world_bricks: scene.ground.brick_count(),
-        ground_revision: scene.ground.revision(),
-        resident_budget_bytes: RESIDENT_BUDGET_BYTES,
-        cache_capacity_bricks: stable.capacity(),
-        fixed_resident_bytes: stable.resident_bytes(),
-        fixed_pointer_extent: stable.map().pointer_extent(),
-        fixed_atlas_extent: stable.map().atlas_extent(),
-        allocator_bytes_after_first_frame: allocator_after_first,
-        allocator_bytes_after_last_frame: allocator_after_last,
-        allocator_growth_bytes,
-        retargets: samples
-            .iter()
-            .filter(|sample| sample.page_transition)
-            .count(),
-        travel_frame: TRAVEL_FRAME,
-        total_brick_upload_bytes: samples.iter().map(|sample| sample.brick_upload_bytes).sum(),
-        frame_us_min: *frame_spans.iter().min().expect("V1b frames"),
-        frame_us_median: median(&frame_spans),
-        frame_us_max: *frame_spans.iter().max().expect("V1b frames"),
-        steady_frame_us_median: median(&steady_spans),
-        rapid_close_recovery,
-        rapid_far_recovery,
-        capture: CAPTURE,
-        capture_distinct_colours: capture.distinct,
-        samples,
-    };
-    let json = serde_json::to_string_pretty(&receipt).expect("V1b receipt JSON");
-    std::fs::write(RECEIPT, &json).expect("write V1b receipt");
-    println!("{json}");
-}
-
-fn recovery(samples: &[FrameSample], event_frame: u64) -> Recovery {
-    let event = samples
-        .iter()
-        .find(|sample| sample.frame == event_frame)
-        .expect("rapid zoom frame");
-    let steady: Vec<_> = samples
-        .iter()
-        .filter(|sample| sample.resident_range == event.resident_range && !sample.page_transition)
-        .map(|sample| sample.frame_us)
-        .collect();
-    let steady_median_us = median(&steady);
-    let threshold_us = steady_median_us + steady_median_us / 4;
-    let recovered_at_frame = samples
-        .iter()
-        .find(|sample| {
-            sample.frame > event_frame
-                && sample.resident_range == event.resident_range
-                && sample.frame_us <= threshold_us
-        })
-        .map(|sample| sample.frame);
-    Recovery {
-        event_frame,
-        resident_range: event.resident_range,
-        steady_median_us,
-        threshold_us,
-        event_frame_us: event.frame_us,
-        recovered_at_frame,
-        recovery_frames: recovered_at_frame.map(|frame| frame - event_frame),
-    }
-}
-
-fn median(values: &[u64]) -> u64 {
-    assert!(!values.is_empty(), "a median needs samples");
-    let mut sorted = values.to_vec();
-    sorted.sort_unstable();
-    sorted[sorted.len() / 2]
 }

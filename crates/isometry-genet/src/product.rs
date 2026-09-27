@@ -106,7 +106,11 @@ impl Product for Isometry {
         // The ground is brought up to date inside the producer's own draw, so
         // what an edit cost is only knowable once the frame is behind us.
         if let Some(board) = app.scene_board.as_mut() {
-            board.report_ground();
+            board.report_ground(ctx);
+        }
+        let started = app.started;
+        if let Some(receipt) = app.terrain_receipt.as_mut() {
+            receipt.drive(ctx, started);
         }
     }
 

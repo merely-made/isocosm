@@ -24,6 +24,9 @@ mod scene;
 mod tracer;
 
 #[cfg(test)]
+#[path = "tracer_tests/limits.rs"]
+mod limits_tests;
+#[cfg(test)]
 mod netrender_tests;
 #[cfg(test)]
 #[path = "tracer_tests/terrain.rs"]
@@ -32,15 +35,17 @@ mod terrain_tests;
 mod tracer_tests;
 
 pub use body::{BodyLensProjection, BodyPlacement, BodyProjectionError, BodyRevision, LensPart};
-pub use bricks::{BrickMap, BrickMapError, BrickProjectionRevision, BrickRayError, BrickRayHit};
+pub use bricks::{
+    AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision, BrickRayError, BrickRayHit,
+};
 pub use renderer::{
     Capture, DirtyRect, FRAME_FORMAT, FrameDiagnostics, FrameInput, Lens, LensError, MapChange,
     MapRevision,
 };
 pub use scene::{LensScene, SceneCodecError};
 pub use tracer::{
-    BrickCapture, BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTraceError,
-    BrickTracer, LeasedAtlas, SlabWall, TraceCamera,
+    ATLAS_BUDGET_BYTES, BrickCapture, BrickChange, BrickDiagnostics, BrickFrameInput,
+    BrickRevision, BrickTraceError, BrickTracer, LeasedAtlas, SlabWall, TraceCamera,
 };
 
 /// Hard admission limit imposed by the baseline uniform layout.

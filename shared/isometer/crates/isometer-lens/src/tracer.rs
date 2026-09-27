@@ -22,7 +22,7 @@ mod params;
 mod residency;
 mod types;
 
-use modulus::BRICK_DDA_WGSL;
+use modulus::{AtlasLimits, BRICK_DDA_WGSL};
 
 use crate::{FRAME_FORMAT, MAX_ROSTER, MAX_ROSTER_CAPSULES};
 use params::{
@@ -36,6 +36,11 @@ pub use types::{
     BrickCapture, BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTraceError,
     SlabWall, TraceCamera,
 };
+
+/// The bytes a tracer lets a capacity-fixed atlas take unless its host says
+/// otherwise: modulus's recommended 8 MiB, 64 rows or 16,383 bricks on any
+/// card whose 3D texture edge reaches 512 texels.
+pub const ATLAS_BUDGET_BYTES: u64 = 8 * 1024 * 1024;
 
 struct CaptureResources {
     width: u32,
@@ -88,6 +93,17 @@ impl BrickTracer {
     /// device cannot be copied into this tracer's atlas.
     pub fn device(&self) -> &wgpu::Device {
         &self.device
+    }
+
+    /// How large a capacity-fixed atlas this tracer can hold: the 3D
+    /// texture edge its device enforces, which is not always its adapter's,
+    /// under [`ATLAS_BUDGET_BYTES`]. A host with its own budget replaces
+    /// `max_atlas_bytes`.
+    pub fn atlas_limits(&self) -> AtlasLimits {
+        AtlasLimits {
+            max_texture_dimension_3d: self.device.limits().max_texture_dimension_3d,
+            max_atlas_bytes: ATLAS_BUDGET_BYTES,
+        }
     }
 
     pub fn with_device(device: wgpu::Device, queue: wgpu::Queue, width: u32, height: u32) -> Self {

@@ -25,8 +25,8 @@ use std::collections::BTreeSet;
 
 use isometer::lens::{BrickDiagnostics, Grade, TerrainAppearance};
 use isometer::{
-    BodySignature, FrameRequest, Pick, Pose, Scene, SceneBody, SceneFrame, SceneHost,
-    SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    BodySignature, FrameRequest, Pick, Pose, ResidencySettings, Scene, SceneBody, SceneFrame,
+    SceneHost, SceneProducer, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
     TerrainSource,
 };
 use isometry_core::{MapDocument, TileCoord, Token, TokenId};
@@ -50,7 +50,7 @@ const BODY_BUDGET: usize = 256;
 
 /// The board draws flat colour: no palette starving, no dither, and the fog
 /// pushed past the far wall so a tile's kind colour is its own.
-fn board_grade() -> Grade {
+pub(super) fn board_grade() -> Grade {
     Grade {
         fog_start: 1.0,
         ..Grade::clay()
@@ -64,7 +64,7 @@ fn board_grade() -> Grade {
 /// this entry is about the *background* alone, and both of its branches — the
 /// sky above the classifying plane and the underground below it — are the one
 /// colour the `.pane` rule carries.
-fn board_appearance() -> TerrainAppearance {
+pub(super) fn board_appearance() -> TerrainAppearance {
     let ground = hex_rgb(PANE_GROUND);
     TerrainAppearance {
         soil: ground,
@@ -79,7 +79,7 @@ fn board_appearance() -> TerrainAppearance {
 
 /// Isometry keeps no host presentation beside the scene: no capsule roster and
 /// no substitute for a body that would not project.
-struct PlainHost;
+pub(super) struct PlainHost;
 impl SceneHost for PlainHost {}
 
 /// What one pixel of the scene board shows.
@@ -110,6 +110,10 @@ pub struct BoardSource {
     scene_size: [u32; 2],
     /// The grown ground and everything about keeping it current.
     ground: Option<BoardGround>,
+    /// How the ground's pointer volume is sized; the host's to choose. The
+    /// atlas is the scene's card.
+    residency: ResidencySettings,
+    atlas_budget: u64,
     /// The palette the bound table was built for, so a kind added to the map
     /// rebinds it and an ordinary frame does not.
     palette_revision: Option<usize>,
@@ -137,7 +141,45 @@ impl BoardSource {
             world: None,
             palettes: BTreeSet::new(),
             placeholders: 0,
+            residency: ResidencySettings::default(),
+            atlas_budget: isometer::lens::ATLAS_BUDGET_BYTES,
         }
+    }
+
+    /// The same source with its brick map sized by `settings`.
+    pub fn with_residency(mut self, settings: ResidencySettings) -> Self {
+        self.set_residency(settings);
+        self
+    }
+
+    /// Sizes the brick map by `settings` from the next frame on.
+    pub fn set_residency(&mut self, settings: ResidencySettings) {
+        self.residency = settings;
+        if let Some(ground) = &mut self.ground {
+            ground.set_residency(settings);
+        }
+    }
+
+    pub fn residency(&self) -> ResidencySettings {
+        self.residency
+    }
+
+    /// The host's atlas-only budget. Device bounds still apply; pointer
+    /// storage remains separate. A changed value rebuilds on the next frame.
+    pub fn set_atlas_budget(&mut self, bytes: u64) {
+        self.atlas_budget = bytes.max(128 * 1024);
+    }
+
+    /// Maximum atlas payload on the scene's actual device, once acquired.
+    pub fn atlas_device_budget(&self) -> Option<u64> {
+        let mut limits = self.scene.as_ref()?.atlas_limits();
+        limits.max_atlas_bytes = u64::MAX;
+        let bricks = limits.max_bricks();
+        Some(if bricks == 0 {
+            0
+        } else {
+            (bricks as u64 + 1) * 512
+        })
     }
 
     pub fn view(&self) -> &BoardHandle {
@@ -159,10 +201,9 @@ impl BoardSource {
         self.ground.as_ref().map(BoardGround::cost)
     }
 
-    /// Why the board's current map is not drawn: the error its brick map failed
-    /// to build with. `None` while it is drawn, and before the first frame.
-    pub fn refusal(&self) -> Option<&str> {
-        self.ground.as_ref().and_then(BoardGround::refusal)
+    /// The board's ground, once a frame has read it.
+    pub fn ground(&self) -> Option<&BoardGround> {
+        self.ground.as_ref()
     }
 
     /// The tracer's own receipt for the last drawn frame: what the terrain
@@ -204,7 +245,9 @@ impl BoardSource {
     /// scale can be read off, whatever internal resolution the scene draws at.
     fn framing(&mut self, request: &FrameRequest<'_>) -> Option<(SlabCamera, BoardWorld)> {
         let view = self.view.borrow();
-        let world = BoardWorld::new(&view.map);
+        // The snapshot keeps the tallest tile current, so a signature check
+        // does not scan the grid for it.
+        let world = BoardWorld::with_tallest(&view.map, view.tallest());
         // Until the host reports a pane, the texture's own size is the pane:
         // the first frame then frames the board rather than nothing.
         let pane = if view.pane.0 > 0.0 && view.pane.1 > 0.0 {
@@ -238,12 +281,32 @@ impl BoardSource {
         Ok(())
     }
 
-    /// Brings the ground and the material palette up to the snapshot.
+    /// Brings the ground and the material palette up to the snapshot. A new
+    /// ground's atlas is as large as the scene's card allows.
     fn ensure_terrain(&mut self, revision: u64) -> Result<(), String> {
+        let mut limits = self
+            .scene
+            .as_ref()
+            .ok_or("the scene was not built")?
+            .atlas_limits();
+        limits.max_atlas_bytes = self
+            .atlas_budget
+            .min(self.atlas_device_budget().unwrap_or(0));
         let view = self.view.borrow();
         match &mut self.ground {
-            Some(ground) => ground.sync(&view.map, &view.overlays, revision)?,
-            None => self.ground = Some(BoardGround::new(&view.map, &view.overlays, revision)?),
+            Some(ground) => {
+                ground.set_limits(limits);
+                ground.sync(&view.map, &view.overlays, revision);
+            },
+            None => {
+                self.ground = Some(BoardGround::new(
+                    &view.map,
+                    &view.overlays,
+                    revision,
+                    self.residency,
+                    limits,
+                ))
+            },
         }
         // The table is a function of the map's kinds alone: the tints and the
         // shrouded half are fixed blocks past them.
@@ -326,7 +389,7 @@ impl SceneSource for BoardSource {
             // edit, so `Ground::revision` stays zero for the board's lifetime.
             terrain_revision: Some(view.terrain_revision()),
             bodies,
-            host: Vec::new(),
+            host: vec![u64::from(self.residency.headroom), self.atlas_budget],
         })
     }
 
@@ -360,14 +423,13 @@ impl SceneSource for BoardSource {
         // comes out of the source for the encode and goes straight back.
         let mut scene = self.scene.take().ok_or("the scene was not built")?;
         let held = self.view.borrow();
-        let refused = self.refusal().is_some();
         let mut missing = 0;
         let mut bodies = Vec::with_capacity(drawn.len());
         for token in &drawn {
             // Unexplored ground draws nothing, and neither does a piece
-            // standing on it or above a focus elevation, nor any piece of a
-            // map the board refused: there is no ground to stand it on.
-            if refused || held.overlays.cuts(&held.map, token) {
+            // standing on it or above a focus elevation: there is no ground
+            // to stand it on.
+            if held.overlays.cuts(&held.map, token) {
                 continue;
             }
             let (body, placeholder) = self.tokens.body(&token.sprite);
@@ -387,9 +449,14 @@ impl SceneSource for BoardSource {
         self.placeholders = missing;
         let Some(ground) = &self.ground else {
             self.scene = Some(scene);
-            return Err("the board grew no ground".into());
+            return Err("the board read no ground".into());
         };
-        let terrain = ground.terrain();
+        // The bricks this frame shows, made from the columns as the scene
+        // asks for them: the residency retargets to them, and remakes the
+        // held ones an edit touched.
+        let bricks = ground.bricks();
+        let framed = ground.framed(camera, &bricks);
+        let terrain = ground.terrain(&bricks, &framed);
         let dirty = ground.dirty();
         let mut encoder = request
             .device
@@ -413,6 +480,7 @@ impl SceneSource for BoardSource {
         );
         drop(bodies);
         drop(held);
+        let fill = bricks.fill_time();
         // The encoded twin: the leaf declares `SCENE_ENCODING`, so the
         // compositor samples these bytes directly.
         let view = scene.encoded_view().clone();
@@ -423,7 +491,7 @@ impl SceneSource for BoardSource {
         request.queue.submit(Some(encoder.finish()));
         // The frame carried the change, so the next one carries nothing.
         if let Some(ground) = &mut self.ground {
-            ground.uploaded();
+            ground.uploaded(fill);
         }
         Ok(Some(view))
     }

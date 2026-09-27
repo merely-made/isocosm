@@ -25,8 +25,16 @@
 //! are not edits — a still board, a pan, a token step — and walks the brick cap
 //! the plan's open decision turns on, over the fixture `harness` now holds for
 //! it and `edit_tests` both.
+//!
+//! Paging (2026-09-26) replaces the grown ground: [`columns`] reads the map as
+//! one record per tile and makes any brick from them on demand, and [`ground`]
+//! holds only the bricks the frame shows, through isometer's residency, so a
+//! board past what one atlas holds draws rather than refusing its map. The
+//! atlas is as large as the scene's card allows, where it was once 2,047
+//! bricks.
 
 mod board;
+mod columns;
 mod ground;
 mod overlay;
 mod pick;
@@ -36,20 +44,34 @@ mod view;
 mod world;
 
 #[cfg(test)]
+mod band_tests;
+#[cfg(test)]
+mod columns_tests;
+#[cfg(test)]
 mod cost_tests;
 #[cfg(test)]
 mod edit_tests;
 #[cfg(test)]
 mod harness;
 #[cfg(test)]
+mod paging_tests;
+#[cfg(test)]
 mod parity_tests;
 #[cfg(test)]
+mod settings_tests;
+#[cfg(test)]
 mod terrain_tests;
+#[cfg(test)]
+mod view_tests;
 #[cfg(test)]
 mod world_tests;
 
 pub use board::{BOARD_SCENE_LEAF_KEY, BoardPick, BoardProducer, BoardSource};
-pub use ground::{BoardGround, BoardTerrain, GroundCost};
+pub use columns::{BoardBricks, ColumnChange, TileColumns};
+pub use ground::{BoardGround, GroundCost, RESIDENCY_MARGIN};
+/// The settings [`BoardSource::with_residency`] takes, named here so a host
+/// reaches them through the view layer as it reaches the rest of isometer.
+pub use isometer::ResidencySettings;
 pub use overlay::{BoardPalette, Overlays, Tint, terrain_palette};
 pub use pick::ScenePick;
 pub use terrain::{

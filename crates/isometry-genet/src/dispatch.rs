@@ -12,6 +12,9 @@ impl App {
     /// Consume one-shot state requests (save/load) and repaint: the
     /// tail of every dispatch.
     pub(crate) fn after_dispatch(&mut self, ctx: &mut Ctx<'_>) {
+        if let Some(board) = &mut self.scene_board {
+            board.save_preferences(ctx);
+        }
         // No `set_ime_allowed` here any more: the host asks `focused_text`
         // itself at the tail of every dispatch, which is the same question this
         // used to answer by hand.

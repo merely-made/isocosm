@@ -6906,6 +6906,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: paging integrated from Lane E `983aa43` under 368, 369,
+  372 and 374. Root verified all 112 receipt hashes and 50 final-source
+  hashes; independent review accepted the bounded change. Root/shared
+  suites pass 411/293 tests, all three consumer checks pass, and six
+  native sessions demonstrate live budget changes, saved restart, zero
+  headroom drift and a 32,424-pixel overlay control. Source qualifications,
+  earlier failed attempts and timing limits remain in
+  `testing/scene-board-paging/integration.md`. Dependency pins, tracked
+  locks and checkpoint 5 are unchanged. Genet text acceptance stays open.
 - 2026-09-27: ruling 374 accepts upfront allocation of the chosen budget.
   Lane E resumes final consumer, cost and headed integration gates before
   merging paging; current dependency pins and checkpoint 5 are preserved.

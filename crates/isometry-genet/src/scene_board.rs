@@ -19,6 +19,10 @@
 //! the producer presents each of those pixels as one square block, which is
 //! the GBA crispness pillar expressed in the renderer rather than in CSS.
 //!
+//! **Headroom.** `ISOMETRY_SCENE_HEADROOM=<layers>` sets the spare brick
+//! layers the scene board's pointer volume keeps above the board's tallest
+//! tile; unset, the residency's own default of one, which is provisional.
+//!
 //! Nothing here runs unless the flag is set. With it unset the producer is
 //! never built, the leaf is never registered, and every existing receipt sees
 //! the board it always saw.
@@ -27,7 +31,8 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use isometry_views::{
-    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ScenePick, UiState,
+    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ResidencySettings, ScenePick,
+    UiState,
 };
 
 use crate::Ctx;
@@ -51,20 +56,37 @@ pub(crate) struct SceneBoard {
     /// The last ground change reported under `ISOMETRY_PROFILE`, so a still
     /// board says nothing and an edit says what it cost (B4).
     costed: Option<GroundCost>,
+    preferences: crate::terrain_preferences::Preferences,
+}
+
+/// The residency settings the environment asks for: the default, with
+/// `ISOMETRY_SCENE_HEADROOM` overriding its spare layers when it parses.
+fn residency() -> ResidencySettings {
+    let mut settings = ResidencySettings::default();
+    let asked = std::env::var("ISOMETRY_SCENE_HEADROOM").ok();
+    if let Some(layers) = asked.and_then(|value| value.trim().parse().ok()) {
+        settings.headroom = layers;
+        eprintln!("[isometry] scene board headroom {layers} layers");
+    }
+    settings
 }
 
 impl SceneBoard {
-    /// Builds the producer over a first snapshot of the board.
-    pub(crate) fn new(ui: &UiState) -> Self {
+    /// Restores the local terrain budget and builds the first board snapshot.
+    pub(crate) fn new(ui: &mut UiState) -> Self {
+        let preferences = crate::terrain_preferences::Preferences::local(ui);
         let mut board = BoardView::new(ui.map.clone());
         board.sync(ui);
         let view = board.into_handle();
         Self {
             view: view.clone(),
-            producer: Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(view)))),
+            producer: Rc::new(RefCell::new(BoardProducer::new(
+                BoardSource::new(view).with_residency(residency()),
+            ))),
             scale: 1,
             reported: None,
             costed: None,
+            preferences,
         }
     }
 
@@ -85,18 +107,30 @@ impl SceneBoard {
         ScenePick::new(self.producer.clone())
     }
 
-    /// What the last ground change cost, said once per change under
-    /// `ISOMETRY_PROFILE`.
+    /// Reports current omissions/device bounds to the panel and, under
+    /// `ISOMETRY_PROFILE`, what the last ground change cost.
     ///
     /// Called *after* the frame rather than in [`Self::sync`], because the
     /// ground is brought up to date inside the producer's own draw: asked
     /// before it, a sync would always report the change before last, and a
     /// board that then parks would never say what the last edit cost.
-    pub(crate) fn report_ground(&mut self) {
+    pub(crate) fn report_ground(&mut self, ctx: &mut Ctx<'_>) {
+        let source = self.producer.borrow();
+        let cost = source.source().ground_cost();
+        if let Some(limit) = source.source().atlas_device_budget() {
+            let omitted = cost.map_or(0, |cost| cost.residency.overflow);
+            let current = &ctx.runner.state().terrain_settings;
+            if current.device_budget != Some(limit) || current.omitted != omitted {
+                ctx.runner
+                    .update(|ui| ui.terrain_settings.report(limit, omitted));
+                if let Some(window) = ctx.window {
+                    window.request_redraw();
+                }
+            }
+        }
         if std::env::var_os("ISOMETRY_PROFILE").is_none() {
             return;
         }
-        let cost = self.producer.borrow().source().ground_cost();
         if self.costed != cost {
             self.costed = cost;
             if let Some(cost) = cost {
@@ -105,8 +139,23 @@ impl SceneBoard {
         }
     }
 
+    /// Save a changed user request at dispatch, before a window can close.
+    pub(crate) fn save_preferences(&mut self, ctx: &mut Ctx<'_>) {
+        if let Err(error) = self.preferences.save_changed(ctx.runner.state()) {
+            eprintln!("[isometry] could not save terrain memory preference: {error}");
+            ctx.runner.update(|ui| {
+                ui.status = format!("Terrain memory applies this session; saving failed: {error}")
+            });
+        }
+    }
+
     /// Per frame: take the board's state and set the pixel grid.
     pub(crate) fn sync(&mut self, ctx: &mut Ctx<'_>) {
+        self.save_preferences(ctx);
+        self.producer
+            .borrow_mut()
+            .source_mut()
+            .set_atlas_budget(ctx.runner.state().terrain_settings.budget_bytes());
         self.view.borrow_mut().sync(ctx.runner.state());
         let device = ctx
             .window

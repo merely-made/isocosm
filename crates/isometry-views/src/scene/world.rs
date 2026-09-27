@@ -72,7 +72,7 @@ pub fn elevation_px(geo: &IsoGeometry) -> f32 {
 
 /// The board's placement in the scene's world: the map-to-terrain offset B1
 /// fixed, plus the projection constants the camera and the picks share.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct BoardWorld {
     /// Map cell of the tile whose low corner is terrain column `(0, 0)`,
     /// exactly [`MapTerrain`]'s.
@@ -85,18 +85,21 @@ pub struct BoardWorld {
 }
 
 impl BoardWorld {
+    /// The world of `map`, scanning its whole elevation grid for the tallest
+    /// tile. A caller that keeps that number current already, as the board's
+    /// snapshot does, uses [`Self::with_tallest`] and skips the scan.
     pub fn new(map: &MapDocument) -> Self {
+        Self::with_tallest(map, tallest(map))
+    }
+
+    /// The world of `map` whose tallest tile stands at elevation `tallest`.
+    pub fn with_tallest(map: &MapDocument, tallest: u8) -> Self {
         let terrain = MapTerrain::new(map);
         let (w, h) = (map.ground.width() as i32, map.ground.height() as i32);
-        let tallest = map
-            .elevation
-            .iter()
-            .map(|(_, _, e)| *e as f32)
-            .fold(0.0, f32::max);
         Self {
             origin: (w / 2, h / 2),
             extent: terrain.extent(),
-            ceiling: tallest * VOXELS_PER_STEP as f32 + GROUND_TOP,
+            ceiling: f32::from(tallest) * VOXELS_PER_STEP as f32 + GROUND_TOP,
         }
     }
 
@@ -213,6 +216,11 @@ impl BoardWorld {
             )),
         )
     }
+}
+
+/// The elevation of `map`'s tallest tile, by a scan of the whole grid.
+pub fn tallest(map: &MapDocument) -> u8 {
+    map.elevation.iter().map(|(_, _, e)| *e).max().unwrap_or(0)
 }
 
 /// World y of the top face of a focus elevation: the highest ground a focus

@@ -929,3 +929,21 @@ a lane saw. This section is the current one, and it names its build.
   Ordinary terrain population changes use the existing fixed capacity;
   production row growth is not part of this implementation. Lane E must
   finish the consumer, cost and headed receipts before integration.
+
+- **2026-09-27, paging integrated.** Lane E `983aa43` passes final gates
+  and independent read-only review. Under 368/369/372/374, the atlas
+  allocates the chosen feasible budget upfront (8 MiB default), reports
+  current omissions and rebuilds once after a live budget change. The
+  requested budget persists locally outside campaign data. Root verified
+  112 raw receipt hashes and 50 final-source hashes, with 411 root and
+  293 shared tests passing and all three consumer checks passing.
+  Six native sessions prove the 1 MiB / 247 omitted to 2 MiB / zero
+  transition, restart persistence, zero headroom pixel drift and the
+  32,424-pixel overlay-absent control. Raw failed attempts are retained.
+  [Integration receipt](../testing/scene-board-paging/integration.md)
+  qualifies each gate's source, Eponym's exact lock and the final
+  formatting-only change. Cost-table `headed` rows are headless harness
+  measurements at headed-pane dimensions, and their `frame` covers
+  `Board::draw` plus completion wait, not host input-to-present latency.
+  Pins, tracked locks and sim checkpoint 5 are unchanged. The switch and
+  Genet text acceptance remain governed by their existing open rulings.

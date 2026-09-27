@@ -176,7 +176,7 @@ pub(crate) fn init(
     // `ISOMETRY_SYNTH=<n>` loads an n x n synthetic stress board (n>1,
     // default 30 = the probe P2 board) instead of the demo skirmish;
     // large n exercises viewport windowing.
-    let map = match std::env::var("ISOMETRY_SYNTH") {
+    let mut map = match std::env::var("ISOMETRY_SYNTH") {
         Ok(v) => {
             let n = v
                 .trim()
@@ -188,6 +188,14 @@ pub(crate) fn init(
         },
         Err(_) => demo_map(),
     };
+    if app.terrain_receipt.is_some() {
+        // Receipt-only relief fixture, before the normal host constructs its board.
+        for row in 0..map.ground.height() {
+            for col in 0..map.ground.width() {
+                map.elevation.set(col, row, ((col / 6 + row / 9) % 8) as u8);
+            }
+        }
+    }
     let can_restore = !matches!(app.net_intent.as_ref(), Some(NetIntent::Join(_)));
     let mut restore_status = None;
     let mut restored_public = None;
@@ -242,6 +250,15 @@ pub(crate) fn init(
     let (logical_w, logical_h) = (available.0 / zoom, available.1 / zoom);
     ui.viewport = ((logical_w - PANEL_W).max(0.0), logical_h);
     app.last_viewport = ui.viewport;
+    if app.terrain_receipt.is_some() {
+        // The overflow receipt must frame the interior, not the boot corner.
+        let centre = (
+            ui.map.ground.width() as i32 / 2,
+            ui.map.ground.height() as i32 / 2,
+        );
+        let (x, y) = ui.geo.tile_to_screen(centre, 0);
+        ui.camera = (ui.viewport.0 / 2.0 - x, ui.viewport.1 / 2.0 - y);
+    }
     // The board's pixel grid, before the first frame rather than after it: a
     // board laid out at the raw fractional zoom for one frame and re-laid out
     // on the next is a visible jump on a slow boot.
@@ -348,7 +365,7 @@ pub(crate) fn init(
     // field. With it unset nothing below is built and the DOM board stands.
     if scene_board::enabled() {
         ui.scene_board = true;
-        let board = scene_board::SceneBoard::new(&ui);
+        let board = scene_board::SceneBoard::new(&mut ui);
         // B3: the board's gestures resolve through the frame this producer
         // draws. Set here, beside the flag, so the DOM board never carries one.
         ui.board_pick = Some(board.pick());
@@ -495,7 +512,10 @@ impl App {
     /// armed selftest would never reach its own deadline. Asking for frames is
     /// how the shared host's hook says the same thing the old `WaitUntil` did.
     pub(crate) fn selftests_pending(&self) -> bool {
-        (self.travel_selftest && !self.travel_fired)
+        self.terrain_receipt
+            .as_ref()
+            .is_some_and(|receipt| !receipt.done())
+            || (self.travel_selftest && !self.travel_fired)
             || (self.cmd_selftest && !self.cmd_fired)
             || (self.watchtower_selftest && !self.watchtower_fired)
             || (self.convince_selftest && !self.convince_fired)

@@ -492,6 +492,15 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, paging integrated.** Lane E's final gates and independent
+review pass: 411 root and 293 shared tests, all three consumer checks,
+and six native sessions. The chosen budget is allocated upfront, saved
+per device and rebuilt when changed; current omissions are displayed.
+The live control changes 1 MiB / 247 omitted to 2 MiB / zero, and restart
+restores 2 MiB. Root checked receipt/source hashes and image controls.
+The integration receipt retains source qualifications and timing limits.
+Pre.4 setup and Genet text decisions remain open; no new ruling is inferred.
+
 **2026-09-27, allocation decided.** Ruling 374 accepts allocating the
 chosen budget upfront, after the reviewed tighter-batching experiment.
 The configurable, persistent per-device budget and current omitted count

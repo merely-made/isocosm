@@ -15,8 +15,8 @@
 //! [`SceneHost`].
 
 use isometer_lens::{
-    BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
-    CritterPose, FRAME_FORMAT, Grade, TerrainAppearance, TerrainPalette,
+    AtlasLimits, BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision,
+    BrickTracer, CritterPose, FRAME_FORMAT, Grade, TerrainAppearance, TerrainPalette,
 };
 
 use crate::bodies::{BodyFrameStats, BodyLayer, SceneBody, SceneVolumes};
@@ -26,7 +26,12 @@ use crate::query::PresentedFrame;
 
 #[cfg(test)]
 mod palette_tests;
+mod residency;
 mod terrain;
+pub use residency::{
+    BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencySettings,
+    ResidencyStats, framed_bricks,
+};
 pub use terrain::{GroundTerrain, HostTerrain, TerrainRefresh, TerrainSource};
 
 /// Captures and the display twin are written in this format regardless of any
@@ -232,6 +237,12 @@ impl Scene {
     /// capsule roster's counters are read from.
     pub fn last_trace_diagnostics(&self) -> Option<BrickDiagnostics> {
         self.tracer.last_diagnostics()
+    }
+
+    /// How large a capacity-fixed atlas this scene's tracer can hold; see
+    /// [`BrickTracer::atlas_limits`].
+    pub fn atlas_limits(&self) -> AtlasLimits {
+        self.tracer.atlas_limits()
     }
 
     /// The brick map the next frame traces, once one has been supplied.

@@ -15,7 +15,7 @@ use std::{collections::BTreeSet, fmt};
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::TraceCamera;
 use mesocosm_core::places::{Places, WALKER_HEIGHT};
-use modulus::{BrickMap, BrickMapError, BrickProjectionRevision};
+use modulus::{AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision};
 use renderling::glam::Vec3;
 
 use crate::room::SEED;
@@ -297,6 +297,15 @@ pub struct StableOutcome {
 
 impl StableResidency {
     pub fn new(scene: &ResidencyScene) -> Result<Self, ResidencyError> {
+        Self::with_limits(scene, AtlasLimits::DEFAULT)
+    }
+
+    /// Uses the host's enforced texture limit and atlas ceiling, while the
+    /// pointer volume and atlas together still fit the V1 residency budget.
+    pub fn with_limits(
+        scene: &ResidencyScene,
+        mut limits: AtlasLimits,
+    ) -> Result<Self, ResidencyError> {
         // The fixed pointer box: the widest band's horizontal reach,
         // clamped by the world, with the world's whole vertical brick span
         // (selection never filters by height).
@@ -316,11 +325,17 @@ impl StableResidency {
             * u64::from(pointer_extent[1])
             * u64::from(pointer_extent[2])
             * 4;
-        // Whole atlas slot rows under what the budget leaves: one row is
-        // 16 x 16 slots of 512 bytes.
-        let row_bytes = 16 * 16 * 512;
-        let rows = ((RESIDENT_BUDGET_BYTES.saturating_sub(pointer_bytes)) / row_bytes) as u32;
-        let map = BrickMap::with_capacity(BrickProjectionRevision(0), rows, pointer_extent)?;
+        // The atlas takes every whole row the combined budget leaves the
+        // pointer volume, bounded further by the host's atlas ceiling.
+        limits.max_atlas_bytes = limits
+            .max_atlas_bytes
+            .min(RESIDENT_BUDGET_BYTES.saturating_sub(pointer_bytes));
+        let map = BrickMap::with_limits(
+            BrickProjectionRevision(0),
+            limits.max_bricks(),
+            pointer_extent,
+            limits,
+        )?;
         let atlas_bytes = map.atlas().len() as u64;
         debug_assert!(pointer_bytes + atlas_bytes <= RESIDENT_BUDGET_BYTES);
         Ok(Self {
@@ -409,140 +424,4 @@ fn selected_keys(ground: &Ground, focus: [i32; 3], range: i32) -> BTreeSet<[i16;
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn the_zoom_trace_contains_continuous_and_rapid_changes() {
-        assert_eq!(zoom_distance(0), CLOSE_DISTANCE);
-        assert!(zoom_distance(24) > zoom_distance(23));
-        assert_eq!(zoom_distance(47), FAR_DISTANCE);
-        assert_eq!(zoom_distance(48), CLOSE_DISTANCE);
-        assert_eq!(zoom_distance(60), FAR_DISTANCE);
-        assert_eq!(visible_range(CLOSE_DISTANCE, 16.0 / 9.0), 32);
-        assert_eq!(visible_range(FAR_DISTANCE, 16.0 / 9.0), 127);
-    }
-
-    #[test]
-    fn one_budget_pages_a_region_that_cannot_be_wholly_resident() {
-        let scene = ResidencyScene::grow();
-        assert!(matches!(
-            crate::brick::from_ground(&scene.ground),
-            Err(BrickMapError::TooManyBricks { .. })
-        ));
-        let mut policy = ResidencyPolicy::default();
-        let close = policy
-            .prepare(&scene, PAGE_RANGES[0])
-            .unwrap()
-            .expect("initial page");
-        assert!(policy.prepare(&scene, PAGE_RANGES[0]).unwrap().is_none());
-        assert!(matches!(
-            policy.prepare(&scene, PAGE_RANGES[2] + 1),
-            Err(ResidencyError::VisibleRange { .. })
-        ));
-        let far = policy
-            .prepare(&scene, PAGE_RANGES[2])
-            .unwrap()
-            .expect("far page");
-        assert!(far.metrics.loaded_bricks > 0);
-        assert!(far.metrics.resident_bricks > close.metrics.resident_bricks);
-        assert!(far.metrics.resident_bytes <= RESIDENT_BUDGET_BYTES);
-        let recovered = policy
-            .prepare(&scene, PAGE_RANGES[0])
-            .unwrap()
-            .expect("rapid close recovery");
-        assert!(recovered.metrics.evicted_bricks > 0);
-        let ground_at = [scene.focus[0], scene.focus[1] - 1, scene.focus[2]];
-        assert!(scene.ground.solid(ground_at));
-        assert_ne!(recovered.map.material_at(ground_at), 0);
-    }
-
-    #[test]
-    fn the_stable_cache_retargets_without_changing_its_extents() {
-        let mut scene = ResidencyScene::grow();
-        let mut stable = StableResidency::new(&scene).expect("stable cache under budget");
-        assert!(stable.resident_bytes() <= RESIDENT_BUDGET_BYTES);
-        let extents = (stable.map().pointer_extent(), stable.map().atlas_extent());
-
-        let first = stable
-            .prepare(&scene, PAGE_RANGES[0])
-            .unwrap()
-            .expect("initial page");
-        assert_eq!(
-            first.delta.loaded_slots.len(),
-            first.metrics.resident_bricks,
-            "an empty cache loads its whole first page"
-        );
-        assert!(stable.prepare(&scene, PAGE_RANGES[0]).unwrap().is_none());
-
-        let far = stable
-            .prepare(&scene, PAGE_RANGES[2])
-            .unwrap()
-            .expect("far page");
-        assert!(far.metrics.resident_bricks <= stable.capacity());
-        assert_eq!(far.delta.evicted, 0, "zooming out keeps the close page");
-        assert!(far.delta.retained > 0);
-        assert_eq!(
-            (stable.map().pointer_extent(), stable.map().atlas_extent()),
-            extents,
-            "a band change must not move the fixed extents"
-        );
-
-        assert!(scene.move_focus_x(BRICK));
-        let travelled = stable
-            .prepare(&scene, PAGE_RANGES[2])
-            .unwrap()
-            .expect("same-band travel");
-        assert!(!travelled.delta.loaded_slots.is_empty());
-        assert!(travelled.delta.evicted > 0);
-        assert_eq!(
-            (stable.map().pointer_extent(), stable.map().atlas_extent()),
-            extents,
-            "travel must not move the fixed extents"
-        );
-        let ground_at = [scene.focus[0], scene.focus[1] - 1, scene.focus[2]];
-        assert!(scene.ground.solid(ground_at));
-        assert_ne!(stable.map().material_at(ground_at), 0);
-    }
-
-    #[test]
-    fn travel_within_one_page_band_advances_projection_identity() {
-        let mut scene = ResidencyScene::grow();
-        let mut policy = ResidencyPolicy::default();
-        let first = policy
-            .prepare(&scene, PAGE_RANGES[2])
-            .unwrap()
-            .expect("initial page");
-        assert!(scene.move_focus_x(BRICK));
-        let travelled = policy
-            .prepare(&scene, PAGE_RANGES[2])
-            .unwrap()
-            .expect("same-band travel page");
-
-        assert_eq!(
-            first.metrics.resident_range,
-            travelled.metrics.resident_range
-        );
-        assert!(travelled.metrics.loaded_bricks > 0);
-        assert!(travelled.metrics.evicted_bricks > 0);
-        assert_eq!(
-            first.map.pointer_extent(),
-            travelled.map.pointer_extent(),
-            "the headed far-page move must preserve pointer texture extent"
-        );
-        assert_eq!(
-            first.map.atlas_extent(),
-            travelled.map.atlas_extent(),
-            "the headed far-page move must preserve atlas texture extent"
-        );
-        assert_eq!(
-            travelled.metrics.projection_revision.0,
-            first.metrics.projection_revision.0 + 1
-        );
-        assert_eq!(
-            travelled.map.projection_revision(),
-            travelled.metrics.projection_revision
-        );
-        assert!(policy.prepare(&scene, PAGE_RANGES[2]).unwrap().is_none());
-    }
-}
+mod tests;

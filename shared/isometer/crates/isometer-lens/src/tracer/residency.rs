@@ -434,3 +434,7 @@ fn write_texture_3d(
         },
     );
 }
+
+#[cfg(test)]
+#[path = "../tracer_tests/growth.rs"]
+mod growth;

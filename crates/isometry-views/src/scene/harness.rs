@@ -10,16 +10,42 @@
 //! Without a wgpu adapter every receipt built on this skips **loudly** through
 //! [`board_or_skip`] and asserts nothing.
 
+use isometer::lens::{ATLAS_BUDGET_BYTES, AtlasLimits};
 use isometer::{FrameRequest, SceneSource};
 use isometry_core::TileCoord;
 
 use super::board::{BoardPick, BoardSource};
+use super::ground::BoardGround;
 use super::view::BoardHandle;
-use crate::demo::demo_map;
+use crate::demo::{demo_map, synth_map};
 use crate::state::UiState;
 
 /// The pane every receipt draws into, logical px.
 pub(super) const PANE: (f32, f32) = (640.0, 480.0);
+
+/// The board pane of B5's headed session, logical px: 1,782 by 1,504 physical
+/// at device scale 2 and interface zoom 0.917.
+pub(super) const HEADED_PANE: (f32, f32) = (972.0, 820.0);
+
+/// The stress board with relief: `synth_map`'s ground and pieces, every tile
+/// raised in steps of 0 to 7, so its bricks stand two layers tall.
+pub(super) fn relief_map(edge: u32) -> isometry_core::MapDocument {
+    let mut map = synth_map(edge, edge);
+    for row in 0..edge {
+        for col in 0..edge {
+            map.elevation.set(col, row, ((col / 6 + row / 9) % 8) as u8);
+        }
+    }
+    map
+}
+
+/// The card a receipt that builds a ground without a scene sizes its atlas
+/// to: a device at wgpu's default limits under the tracer's default budget,
+/// which is what [`device`]'s scene reports.
+pub(super) const CARD: AtlasLimits = AtlasLimits {
+    max_texture_dimension_3d: 2048,
+    max_atlas_bytes: ATLAS_BUDGET_BYTES,
+};
 
 pub(super) fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
@@ -35,6 +61,7 @@ pub(super) struct Board {
     pub(super) ui: UiState,
     handle: BoardHandle,
     source: BoardSource,
+    pane: (f32, f32),
 }
 
 impl Board {
@@ -45,15 +72,20 @@ impl Board {
     /// The same fixture over any map, so a cost receipt can ask what a board
     /// other than the demo's costs.
     pub(super) fn of(map: isometry_core::MapDocument) -> Option<Self> {
+        Self::sized(map, PANE)
+    }
+
+    /// The fixture at another pane size, framed on the map's centre tile.
+    pub(super) fn sized(map: isometry_core::MapDocument, pane: (f32, f32)) -> Option<Self> {
         let (device, queue) = device()?;
         let mut ui = UiState::new(map);
-        ui.viewport = PANE;
+        ui.viewport = pane;
         let centre = (
             ui.map.ground.width() as i32 / 2,
             ui.map.ground.height() as i32 / 2,
         );
         let (x, y) = ui.geo.tile_to_screen(centre, 0);
-        ui.camera = (PANE.0 / 2.0 - x, PANE.1 / 2.0 - y);
+        ui.camera = (pane.0 / 2.0 - x, pane.1 / 2.0 - y);
         let mut view = super::view::BoardView::new(ui.map.clone());
         view.sync(&ui);
         let handle = view.into_handle();
@@ -64,6 +96,7 @@ impl Board {
             ui,
             handle,
             source,
+            pane,
         })
     }
 
@@ -74,8 +107,8 @@ impl Board {
         let request = FrameRequest {
             device: &self.device,
             queue: &self.queue,
-            size: [PANE.0 as u32, PANE.1 as u32],
-            aspect: PANE.0 / PANE.1,
+            size: [self.pane.0 as u32, self.pane.1 as u32],
+            aspect: self.pane.0 / self.pane.1,
             color: None,
             needs_frame: true,
             render_scale: 1,
@@ -100,14 +133,36 @@ impl Board {
         self.source.ground_cost().expect("the board grew a ground")
     }
 
-    /// Why the board is not drawing the map it was asked for, if it is not.
-    pub(super) fn refusal(&self) -> Option<String> {
-        self.source.refusal().map(str::to_owned)
+    /// The board's ground: its columns and the bricks the scene holds.
+    pub(super) fn ground(&self) -> &BoardGround {
+        self.source.ground().expect("a drawn board read its ground")
+    }
+
+    /// Sizes the board's brick map by `settings` from the next frame on.
+    /// The limits the board's device enforces.
+    pub(super) fn device_limits(&self) -> wgpu::Limits {
+        self.device.limits()
+    }
+
+    pub(super) fn set_residency(&mut self, settings: isometer::ResidencySettings) {
+        self.source.set_residency(settings);
     }
 
     pub(super) fn pick(&self, px: f32, py: f32) -> Option<BoardPick> {
         self.source
-            .pick([2.0 * px / PANE.0 - 1.0, 1.0 - 2.0 * py / PANE.1])
+            .pick([2.0 * px / self.pane.0 - 1.0, 1.0 - 2.0 * py / self.pane.1])
+    }
+
+    /// The pane this board draws into.
+    pub(super) fn pane(&self) -> (f32, f32) {
+        self.pane
+    }
+
+    /// The camera the last frame was drawn with.
+    pub(super) fn camera(&self) -> isometer::SlabCamera {
+        self.source
+            .presented_camera()
+            .expect("a drawn board has a camera")
     }
 }
 

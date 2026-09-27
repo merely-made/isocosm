@@ -113,6 +113,7 @@ mod selftest;
 mod sheets;
 mod source_time;
 mod storylets;
+mod terrain_preferences;
 #[cfg(test)]
 mod watchtower_tests;
 
@@ -307,6 +308,7 @@ struct App {
     /// `ISOMETRY_TURNS_SELFTEST`: click the Turns disclosure through the
     /// host's own laid-out geometry and leave the collapsed panel for capture.
     turns_selftest: bool,
+    terrain_receipt: Option<selftest::TerrainReceipt>,
     turns_fired: bool,
     /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and

@@ -8,7 +8,9 @@
 //!
 //! The platform crate owns pointer/atlas layout and traversal. This module
 //! owns the product-specific decision that a Ground brick's raw material
-//! bytes populate that presentation view.
+//! bytes populate that presentation view. A terrain that makes its bricks on
+//! demand rather than holding a `Ground` retargets and refreshes through the
+//! `_with` forms, which take the bytes from any source.
 
 use std::collections::BTreeMap;
 use std::ops::Deref;
@@ -18,7 +20,7 @@ use modulus::BrickMap as SharedBrickMap;
 
 mod ray;
 
-pub use modulus::{BrickMapError, BrickProjectionRevision, RetargetDelta};
+pub use modulus::{AtlasLimits, BrickMapError, BrickProjectionRevision, RetargetDelta};
 pub use ray::{BrickRayError, BrickRayHit};
 
 /// A Ground-backed adapter over the product-neutral brick map.
@@ -85,9 +87,20 @@ impl BrickMap {
         ground: &Ground,
         changed: impl IntoIterator<Item = [i16; 3]>,
     ) -> Result<Vec<u32>, BrickMapError> {
-        self.0.refresh(changed, |key| {
+        self.refresh_with(changed, |key| {
             ground.brick_materials(key).map(|(brick, _)| brick.raw())
         })
+    }
+
+    /// Copies changed bricks from any source into their stable slots; see
+    /// [`modulus::BrickMap::refresh`]. `brick` answers in the Ground's own
+    /// Y-Z-X order.
+    pub fn refresh_with<'a>(
+        &mut self,
+        changed: impl IntoIterator<Item = [i16; 3]>,
+        brick: impl FnMut([i16; 3]) -> Option<&'a [u8]>,
+    ) -> Result<Vec<u32>, BrickMapError> {
+        self.0.refresh(changed, brick)
     }
 
     /// An empty capacity-fixed map whose extents never change; see
@@ -100,6 +113,17 @@ impl BrickMap {
         SharedBrickMap::with_capacity(projection_revision, capacity_rows, pointer_extent).map(Self)
     }
 
+    /// An empty capacity-fixed map sized to the host's card, holding at least
+    /// `bricks` in whole atlas rows; see [`modulus::BrickMap::with_limits`].
+    pub fn with_limits(
+        projection_revision: BrickProjectionRevision,
+        bricks: usize,
+        pointer_extent: [u32; 3],
+        limits: AtlasLimits,
+    ) -> Result<Self, BrickMapError> {
+        SharedBrickMap::with_limits(projection_revision, bricks, pointer_extent, limits).map(Self)
+    }
+
     /// Replaces the selection from Ground while retained bricks keep their
     /// slots; see [`modulus::BrickMap::retarget`].
     pub fn retarget(
@@ -108,9 +132,21 @@ impl BrickMap {
         projection_revision: BrickProjectionRevision,
         keys: impl IntoIterator<Item = [i16; 3]>,
     ) -> Result<RetargetDelta, BrickMapError> {
-        self.0.retarget(projection_revision, keys, |key| {
+        self.retarget_with(projection_revision, keys, |key| {
             ground.brick_materials(key).map(|(brick, _)| brick.raw())
         })
+    }
+
+    /// Replaces the selection from any source while retained bricks keep
+    /// their slots; see [`modulus::BrickMap::retarget`]. `brick` is asked for
+    /// the loaded keys only.
+    pub fn retarget_with<'a>(
+        &mut self,
+        projection_revision: BrickProjectionRevision,
+        keys: impl IntoIterator<Item = [i16; 3]>,
+        brick: impl FnMut([i16; 3]) -> Option<&'a [u8]>,
+    ) -> Result<RetargetDelta, BrickMapError> {
+        self.0.retarget(projection_revision, keys, brick)
     }
 
     pub fn shared(&self) -> &SharedBrickMap {

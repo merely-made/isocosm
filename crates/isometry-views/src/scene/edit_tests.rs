@@ -8,10 +8,11 @@
 //! the claim is what the GPU was actually asked to do, not what this crate
 //! believes it asked for.
 //!
-//! `a_map_whose_brick_map_will_not_build_holds_the_board_empty` is the same
-//! claim about a *failed* change: the revision is recorded behind the build,
-//! not ahead of it, so a map the lens refuses leaves none of the previous
-//! map's terrain standing under the new map's camera.
+//! `a_board_past_the_old_cap_draws_its_own_ground` is the same claim about a
+//! change of board. It was a *refused* change until paging: a 96 by 96 map was
+//! past `modulus::MAX_BRICKS` and had to leave none of the previous map's
+//! terrain standing under its camera. Now it draws, and what it draws must be
+//! its own ground and not the board before it.
 //!
 //! They also *show* the thing B2 could not have known was wrong, rather than
 //! asserting it: `the_shared_ground_terrain_would_have_skipped_the_upload`
@@ -47,7 +48,7 @@ fn an_elevation_edit_reaches_the_next_frame_as_slots() {
     assert!(first.full_map_upload, "the first frame binds the whole map");
     eprintln!(
         "first frame: the whole map is {whole} bytes over {} bricks, {}",
-        board.cost().bricks,
+        board.cost().residency.resident,
         board.cost().line()
     );
 
@@ -346,63 +347,83 @@ fn hits(board: &Board) -> usize {
         .count()
 }
 
-/// A map the lens will not build a brick map for holds the board empty, and
-/// leaves none of the previous map's terrain under the new map's camera.
+/// A board past the old cap draws its own ground, and the board before it
+/// comes back whole.
 ///
-/// No budget is counted ahead of the build: `modulus::BrickMap` caps a map at
-/// `MAX_BRICKS` (2,047) and a 96 by 96 board needs some thousands, so the
-/// `BrickMap::from_ground_keys` the rebuild already runs refuses it on its own.
-/// What this asserts is the **ordering** around that refusal. Before the fix
-/// the ground took the new revision with no map built for it, so the frame
-/// after the failure returned `Ok` through `sync`'s early return, the tracer
-/// recognised the map it already held, and the demo board's terrain stood under
-/// the wide map's camera while the error cleared.
-///
-/// The demo board either side of it is the positive control, in the same run:
-/// the probes that meet terrain before the switch meet it again after.
+/// Until paging, a 96 by 96 map refused its brick map at 3,600 bricks, and
+/// the receipt here was about the ordering around that refusal: the demo
+/// board's terrain must not stand under the wide map's camera. The wide map
+/// now draws, so the same danger is asked directly. Every probe that lands on
+/// a top face must name the height the *wide* map has there; the demo map
+/// stands a hill where the wide one is flat, so its ground left behind would
+/// show as raised tops. The control is the demo board itself, in the same
+/// run: the same probes find those raised tops on it.
 #[test]
-fn a_map_whose_brick_map_will_not_build_holds_the_board_empty() {
-    let mut board = board_or_skip!("the refused-switch receipt");
+fn a_board_past_the_old_cap_draws_its_own_ground() {
+    let mut board = board_or_skip!("the wide-board receipt");
     board.draw();
     let before = hits(&board);
-    let bricks = board.cost().bricks;
+    // A dense grid of its own: the hill is a few tiles, and the coarse grid
+    // above can step over it.
+    let dense: Vec<(f32, f32)> = (0..32)
+        .flat_map(|iy| (0..32).map(move |ix| ((ix as f32 + 0.5) * 20.0, (iy as f32 + 0.5) * 15.0)))
+        .collect();
+    let raised = |board: &Board| {
+        dense
+            .iter()
+            .filter(|(x, y)| {
+                matches!(
+                    board.pick(*x, *y),
+                    Some(BoardPick::Tile { elevation, top: true, .. }) if elevation > 0
+                )
+            })
+            .count()
+    };
     assert!(before > 0, "the demo board is drawn: the positive control");
-    assert_eq!(board.refusal(), None, "and nothing is refused about it");
+    assert!(raised(&board) > 0, "and its hill is under these probes");
 
     board.ui.map = synth_map(96, 96);
     for frame in 1..=3 {
         board.draw();
-        let why = board
-            .refusal()
-            .unwrap_or_else(|| panic!("frame {frame}: the wide map is refused, and says why"));
-        assert!(
-            why.contains("brick map"),
-            "frame {frame}: the lens's own error is carried, not invented: {why}"
-        );
+        let held = board.cost().residency;
+        assert!(hits(&board) > 0, "frame {frame}: the wide board is drawn");
+        assert!(held.resident > 0 && held.resident <= held.capacity);
+        let mut tops = 0;
+        for (x, y) in probes() {
+            if let Some(BoardPick::Tile {
+                at,
+                elevation,
+                top: true,
+            }) = board.pick(x, y)
+            {
+                let own = board.ui.map.elevation.get(at.0 as u32, at.1 as u32);
+                assert_eq!(
+                    Some(elevation),
+                    own.map(|e| i32::from(*e)),
+                    "frame {frame}: tile {at:?} shows the wide board's own height"
+                );
+                tops += 1;
+            }
+        }
+        assert!(tops > 0, "frame {frame}: the probes meet top faces");
         assert_eq!(
-            board.cost().bricks,
+            raised(&board),
             0,
-            "frame {frame}: the board is held empty"
-        );
-        assert_eq!(
-            hits(&board),
-            0,
-            "frame {frame}: the demo map's terrain is not drawn under the new map"
+            "frame {frame}: no ground of the demo board stands"
         );
     }
+    eprintln!(
+        "a 96 by 96 board, 3,600 bricks, drawn holding {}",
+        board.cost().line()
+    );
 
-    // A map that builds replaces it and is drawn again.
+    // The board before it comes back and is drawn whole again.
     board.ui.map = demo_map();
     board.draw();
-    assert_eq!(board.refusal(), None);
-    assert_eq!(
-        board.cost().bricks,
-        bricks,
-        "the demo ground is grown again"
-    );
     assert_eq!(
         hits(&board),
         before,
-        "and every probe that met it before meets it now"
+        "every probe that met the demo board before meets it now"
     );
+    assert!(raised(&board) > 0);
 }

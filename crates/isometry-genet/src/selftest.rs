@@ -21,6 +21,8 @@ mod board;
 mod overlays;
 mod session;
 mod surfaces;
+mod terrain;
+pub(crate) use terrain::TerrainReceipt;
 mod watchtower;
 mod world;
 
