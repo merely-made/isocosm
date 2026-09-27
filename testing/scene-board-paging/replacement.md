@@ -1,5 +1,10 @@
 # Atlas replacement experiment, 2026-09-27
 
+**Later annotation, 2026-09-27:** ruling 373 led to a
+[batched one-submission measurement](batched-replacement.md), with distinct
+key/voxel contents and a swapped-brick control. The first result below is
+preserved as historical evidence. Allocation remains open.
+
 Mark asked whether a replacement texture could keep unchanged bricks on the
 GPU and upload only changed retained bricks. It can: the test-only harness
 at `3375a36` reconstructs both replacement sizes byte-for-byte by copying

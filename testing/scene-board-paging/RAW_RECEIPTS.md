@@ -8,6 +8,9 @@ and the test-only [atlas replacement experiment](replacement.md). Their
 directories are under `Code/testing/isometry/receipts/2026-09-27/`; the
 2026-09-26 receipts below are preserved as recorded.
 
+Ruling 373 adds the [one-submission replacement measurement](batched-replacement.md)
+in `lane-e-atlas-batched/`, preserving the first experiment and draft run.
+
 Under ruling 255 of the wing design record, the raw logs of the scene
 board's paging receipts live outside the repository, in
 `Code/testing/isometry/receipts/2026-09-26/scene-board-paging/4663de8/`
