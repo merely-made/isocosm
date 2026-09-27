@@ -9,8 +9,14 @@
 
 use std::collections::BTreeMap;
 
+use isometer_lens::ATLAS_BUDGET_BYTES;
+
 use super::paging::span_of;
 use super::*;
+
+/// The card the receipts size their atlas to: the historical 2,047 bricks,
+/// far more than any framing here holds.
+const LIMITS: AtlasLimits = AtlasLimits::DEFAULT;
 
 mod framing;
 mod paging;

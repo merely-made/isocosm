@@ -20,10 +20,7 @@ use modulus::BrickMap as SharedBrickMap;
 
 mod ray;
 
-pub use modulus::{
-    ATLAS_SLOTS_X, ATLAS_SLOTS_Z, AtlasLimits, BrickMapError, BrickProjectionRevision,
-    MAX_ATLAS_SLOTS_Y, RetargetDelta,
-};
+pub use modulus::{AtlasLimits, BrickMapError, BrickProjectionRevision, RetargetDelta};
 pub use ray::{BrickRayError, BrickRayHit};
 
 /// A Ground-backed adapter over the product-neutral brick map.

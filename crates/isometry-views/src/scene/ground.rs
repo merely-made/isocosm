@@ -11,13 +11,14 @@
 //!
 //! **Which bricks.** Mark's ruling of 2026-09-26: every brick whose screen box
 //! overlaps the pane grown by one brick, a pure function of the view and the
-//! map. That is [`isometer::framed_bricks`] with [`RESIDENCY_MARGIN`], over
-//! the residency settings the host chooses: every atlas row the pinned modulus
-//! allows (2,047 bricks until the family's atlas is sized to the card) and one
-//! spare brick layer of headroom above the board's tallest tile, so an edit
+//! map. That is [`isometer::framed_bricks`] with [`RESIDENCY_MARGIN`], held
+//! in an atlas as large as the scene's card allows (rulings 289 and 296): the
+//! device's 3D texture edge under the tracer's 8 MiB budget, 16,383 bricks on
+//! any card whose edge reaches 512 texels. The host chooses the headroom, one
+//! spare brick layer above the board's tallest tile by default, so an edit
 //! that lifts it one layer retargets rather than rebuilding. The one layer is
-//! provisional, with what each costs in `testing/scene-board-paging/`. Retargeting, refreshing and rebuilding are
-//! isometer's [`Residency`].
+//! provisional, with what each costs in `testing/scene-board-paging/`.
+//! Retargeting, refreshing and rebuilding are isometer's [`Residency`].
 //!
 //! **The revision.** The tracer skips an upload whose revision and projection
 //! both match what it holds, so a frame is stamped with the *view's* revision,
@@ -33,6 +34,7 @@ use std::collections::BTreeSet;
 use std::time::{Duration, Instant};
 
 use isometer::core::ground::BRICK;
+use isometer::lens::AtlasLimits;
 use isometer::{
     FramedBricks, PagedTerrain, Residency, ResidencySettings, ResidencyStats, SlabCamera,
     framed_bricks,
@@ -122,12 +124,13 @@ pub struct BoardGround {
 
 impl BoardGround {
     /// Reads a board's columns. Its bricks are made when a frame asks, into a
-    /// map sized by `settings`.
+    /// map as large as `limits` allow, its pointer volume sized by `settings`.
     pub fn new(
         map: &MapDocument,
         overlays: &Overlays,
         revision: u64,
         settings: ResidencySettings,
+        limits: AtlasLimits,
     ) -> Self {
         let started = Instant::now();
         let columns = TileColumns::of(map, overlays);
@@ -140,7 +143,7 @@ impl BoardGround {
             revision,
             focus: overlays.focus,
             dirty: Vec::new(),
-            residency: RefCell::new(Residency::new(settings)),
+            residency: RefCell::new(Residency::new(settings, limits)),
             seen: 0,
             cost: GroundCost::default(),
         }
@@ -163,6 +166,11 @@ impl BoardGround {
     /// Bricks the atlas holds.
     pub fn capacity(&self) -> usize {
         self.residency.borrow().capacity()
+    }
+
+    /// The card the atlas is sized to.
+    pub fn limits(&self) -> AtlasLimits {
+        self.residency.borrow().limits()
     }
 
     /// The bricks the scene's map holds.

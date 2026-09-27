@@ -8,12 +8,10 @@
 
 use super::*;
 
-/// How a residency sizes its map. Both are the host's to choose.
+/// How a residency sizes its pointer volume; the host's to choose. The
+/// atlas is the card's, given to [`Residency::new`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct ResidencySettings {
-    /// Rows of atlas slots, 256 bricks to a row, up to [`MAX_ATLAS_SLOTS_Y`],
-    /// all the pinned modulus allows.
-    pub rows: u32,
     /// Spare brick layers the pointer volume keeps above the terrain's
     /// tallest point. An edit that lifts it no further than this retargets;
     /// one past it rebuilds the map whole. Each layer costs the volume one more
@@ -23,14 +21,10 @@ pub struct ResidencySettings {
 }
 
 impl Default for ResidencySettings {
-    /// Every row the pinned modulus allows, and one spare layer. The one layer
-    /// is provisional: a first guess, taken back to Mark with what each layer
-    /// costs.
+    /// One spare layer, provisionally: a first guess, taken back to Mark with
+    /// what each layer costs.
     fn default() -> Self {
-        Self {
-            rows: MAX_ATLAS_SLOTS_Y,
-            headroom: 1,
-        }
+        Self { headroom: 1 }
     }
 }
 
@@ -91,6 +85,7 @@ struct Reserve {
 #[derive(Debug)]
 pub struct Residency {
     settings: ResidencySettings,
+    limits: AtlasLimits,
     resident: BTreeSet<[i16; 3]>,
     projection: u64,
     /// What the bound map was sized for; `None` when it was built over no
@@ -102,11 +97,13 @@ pub struct Residency {
 }
 
 impl Residency {
-    /// A residency sized by `settings`, its rows clamped to what modulus
-    /// allows at the pinned revision.
-    pub fn new(settings: ResidencySettings) -> Self {
+    /// A residency whose atlas holds every brick `limits` allow, its pointer
+    /// volume sized by `settings`. A tracer fills the limits from its device:
+    /// [`Scene::atlas_limits`](crate::Scene::atlas_limits).
+    pub fn new(settings: ResidencySettings, limits: AtlasLimits) -> Self {
         Self {
-            settings: clamped(settings),
+            settings,
+            limits,
             resident: BTreeSet::new(),
             projection: 0,
             reserve: None,
@@ -122,16 +119,21 @@ impl Residency {
 
     /// New settings rebuild the map at them on the next frame.
     pub fn set_settings(&mut self, settings: ResidencySettings) {
-        let settings = clamped(settings);
         if settings != self.settings {
             self.settings = settings;
             self.rebuild = true;
         }
     }
 
-    /// Bricks the atlas holds: every slot but the reserved air slot.
+    /// The card the atlas is sized to.
+    pub fn limits(&self) -> AtlasLimits {
+        self.limits
+    }
+
+    /// Bricks the atlas holds: every slot the limits allow but the reserved
+    /// air slot.
     pub fn capacity(&self) -> usize {
-        (ATLAS_SLOTS_X * self.settings.rows * ATLAS_SLOTS_Z - 1) as usize
+        self.limits.max_bricks()
     }
 
     /// The bricks the map holds.
@@ -184,7 +186,7 @@ impl Residency {
         });
         let extent = reserve.map_or([1; 3], |reserve| reserve.held);
         let start = self.next_projection();
-        let mut map = BrickMap::with_capacity(start, self.settings.rows, extent)
+        let mut map = BrickMap::with_limits(start, self.capacity(), extent, self.limits)
             .map_err(|error| format!("paged brick map: {error}"))?;
         let bytes = fill(source, &framed.keys);
         let revision = self.next_projection();
@@ -307,14 +309,6 @@ impl Residency {
     }
 }
 
-/// Settings with their rows inside what modulus allows.
-fn clamped(settings: ResidencySettings) -> ResidencySettings {
-    ResidencySettings {
-        rows: settings.rows.clamp(1, MAX_ATLAS_SLOTS_Y),
-        ..settings
-    }
-}
-
 /// The key box the bricks span, one along any axis they do not.
 pub(super) fn span_of(keys: &[[i16; 3]]) -> [u32; 3] {
     let Some(first) = keys.first() else {
@@ -333,7 +327,7 @@ pub(super) fn span_of(keys: &[[i16; 3]]) -> [u32; 3] {
 /// Makes the bricks `keys` names, in order, [`BRICK_BYTES`] apiece.
 fn fill(source: &dyn BrickSource, keys: &[[i16; 3]]) -> Vec<u8> {
     let mut bytes = vec![0; keys.len() * BRICK_BYTES];
-    for (key, out) in keys.iter().zip(bytes.chunks_exact_mut(BRICK_BYTES)) {
+    for (key, out) in keys.iter().zip(bytes.as_chunks_mut::<BRICK_BYTES>().0) {
         source.fill(*key, out);
     }
     bytes

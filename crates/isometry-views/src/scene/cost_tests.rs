@@ -22,7 +22,7 @@ use isometry_core::MapDocument;
 
 use super::columns::{BoardBricks, TileColumns};
 use super::ground::BoardGround;
-use super::harness::{PANE, board_or_skip, relief_map};
+use super::harness::{CARD, PANE, board_or_skip, relief_map};
 use super::overlay::Overlays;
 use super::terrain::MapTerrain;
 use super::world::BoardWorld;
@@ -152,7 +152,7 @@ fn what_reading_the_ground_costs_beside_raising_it() {
 /// harness's pane on the map's centre tile.
 fn first_map(map: &MapDocument) -> (BoardGround, usize, usize) {
     let ui = UiState::new(map.clone());
-    let ground = BoardGround::new(&ui.map, &Overlays::of(&ui), 1, Default::default());
+    let ground = BoardGround::new(&ui.map, &Overlays::of(&ui), 1, Default::default(), CARD);
     let centre = (
         map.ground.width() as i32 / 2,
         map.ground.height() as i32 / 2,
@@ -175,7 +175,7 @@ fn first_map(map: &MapDocument) -> (BoardGround, usize, usize) {
 }
 
 /// The cap, walked again: B5 found 70 by 70 fit at 1,936 bricks and 72 by 72
-/// refused at 2,116. Paged, `MAX_BRICKS` bounds what one frame holds rather
+/// refused at 2,116. Paged, the atlas bounds what one frame holds rather
 /// than what a board may be, so every board builds its map, the generator's
 /// own 256 by 256 included, holding the same frame's worth of bricks however
 /// wide it grows.

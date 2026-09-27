@@ -21,6 +21,11 @@
 //! the frame's centre go first, the margin's before the frame's own, and are
 //! counted as [`FramedBricks::overflow`].
 //!
+//! **The atlas** is as large as the card allows: a [`Residency`] is given
+//! the [`AtlasLimits`] its tracer reports, the device's 3D texture edge under
+//! an 8 MiB budget unless the host names another, and holds every brick
+//! those allow.
+//!
 //! **Headroom.** The pointer volume holds the terrain's layers and
 //! [`ResidencySettings::headroom`] spare ones above them, sized across as well
 //! as up, so an edit that lifts the terrain into them retargets and only one
@@ -32,9 +37,7 @@ use std::ops::Range;
 
 use isometer_core::ground::BRICK;
 use isometer_lens::BrickMap;
-use isometer_lens::bricks::{
-    ATLAS_SLOTS_X, ATLAS_SLOTS_Z, BrickProjectionRevision, MAX_ATLAS_SLOTS_Y,
-};
+use isometer_lens::bricks::{AtlasLimits, BrickProjectionRevision};
 
 use super::terrain::{TerrainRefresh, TerrainSource};
 use crate::camera::{SlabCamera, SlabWindow};

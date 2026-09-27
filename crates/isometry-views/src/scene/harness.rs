@@ -10,6 +10,7 @@
 //! Without a wgpu adapter every receipt built on this skips **loudly** through
 //! [`board_or_skip`] and asserts nothing.
 
+use isometer::lens::{ATLAS_BUDGET_BYTES, AtlasLimits};
 use isometer::{FrameRequest, SceneSource};
 use isometry_core::TileCoord;
 
@@ -37,6 +38,14 @@ pub(super) fn relief_map(edge: u32) -> isometry_core::MapDocument {
     }
     map
 }
+
+/// The card a receipt that builds a ground without a scene sizes its atlas
+/// to: a device at wgpu's default limits under the tracer's default budget,
+/// which is what [`device`]'s scene reports.
+pub(super) const CARD: AtlasLimits = AtlasLimits {
+    max_texture_dimension_3d: 2048,
+    max_atlas_bytes: ATLAS_BUDGET_BYTES,
+};
 
 pub(super) fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
@@ -130,6 +139,11 @@ impl Board {
     }
 
     /// Sizes the board's brick map by `settings` from the next frame on.
+    /// The limits the board's device enforces.
+    pub(super) fn device_limits(&self) -> wgpu::Limits {
+        self.device.limits()
+    }
+
     pub(super) fn set_residency(&mut self, settings: isometer::ResidencySettings) {
         self.source.set_residency(settings);
     }

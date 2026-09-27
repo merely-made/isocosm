@@ -29,7 +29,9 @@
 //! Paging (2026-09-26) replaces the grown ground: [`columns`] reads the map as
 //! one record per tile and makes any brick from them on demand, and [`ground`]
 //! holds only the bricks the frame shows, through isometer's residency, so a
-//! board past the atlas's 2,047 bricks draws rather than refusing its map.
+//! board past what one atlas holds draws rather than refusing its map. The
+//! atlas is as large as the scene's card allows, where it was once 2,047
+//! bricks.
 
 mod board;
 mod columns;

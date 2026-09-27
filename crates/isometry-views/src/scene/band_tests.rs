@@ -25,7 +25,7 @@ use serde_json::json;
 use super::board::{PlainHost, board_appearance, board_grade};
 use super::columns::{BoardBricks, TileColumns};
 use super::ground::BoardGround;
-use super::harness::device;
+use super::harness::{CARD, device};
 use super::overlay::{Overlays, terrain_palette};
 use super::world::{BoardWorld, tallest};
 use crate::demo::synth_map;
@@ -72,11 +72,8 @@ fn built(
     camera: SlabCamera,
     headroom: u32,
 ) -> (BrickMap, [f32; 3], [f32; 3], Vec<[i16; 3]>) {
-    let settings = ResidencySettings {
-        headroom,
-        ..ResidencySettings::default()
-    };
-    let ground = BoardGround::new(&ui.map, &Overlays::of(ui), 1, settings);
+    let settings = ResidencySettings { headroom };
+    let ground = BoardGround::new(&ui.map, &Overlays::of(ui), 1, settings, CARD);
     let bricks = ground.bricks();
     let framed = ground.framed(camera, &bricks);
     let map = ground

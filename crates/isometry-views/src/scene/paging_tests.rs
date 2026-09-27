@@ -21,11 +21,12 @@ use std::collections::BTreeSet;
 use std::time::Instant;
 
 use isometer::core::ground::Ground;
+use isometer::lens::ATLAS_BUDGET_BYTES;
 use isometer::{Rebuild, ResidencySettings, TerrainSource};
 
 use super::board::BoardPick;
 use super::ground::BoardGround;
-use super::harness::{Board, HEADED_PANE, PANE, relief_map};
+use super::harness::{Board, CARD, HEADED_PANE, PANE, relief_map};
 use super::overlay::Overlays;
 use super::terrain::MapTerrain;
 use super::world::BoardWorld;
@@ -93,6 +94,40 @@ fn a_256_board_draws_holding_what_its_frame_shows() {
         );
         assert_ne!(first, moved, "{name}: residency follows the view");
     }
+}
+
+/// The atlas is the scene's card: the device's own texture edge under the
+/// tracer's 8 MiB. At B5's headed pane the relief board frames more bricks
+/// than the old 2,047, and the card holds every one of them.
+#[test]
+fn the_relief_board_holds_its_whole_headed_frame() {
+    let Some(mut board) = sized_or_skip(relief_map(256), HEADED_PANE, "the card receipt") else {
+        return;
+    };
+    board.draw();
+    let limits = board.ground().limits();
+    assert_eq!(
+        limits.max_texture_dimension_3d,
+        board.device_limits().max_texture_dimension_3d
+    );
+    assert_eq!(limits.max_atlas_bytes, ATLAS_BUDGET_BYTES);
+    assert_eq!(
+        limits, CARD,
+        "the harness's device is the CPU receipts' card"
+    );
+    let held = board.cost().residency;
+    eprintln!(
+        "the relief board at the headed pane: {}",
+        board.cost().line()
+    );
+    assert_eq!(held.capacity, limits.max_bricks());
+    assert!(
+        held.resident > 2_047,
+        "past the old atlas: {}",
+        held.resident
+    );
+    assert_eq!(held.overflow, 0, "the card holds the whole frame");
+    assert_holds_its_frame(&board, "the relief board at the headed pane");
 }
 
 /// One view, reached directly and by a walk through five others, holds the
@@ -320,10 +355,7 @@ fn a_raise_within_the_headroom_retargets_and_one_past_it_rebuilds() {
         let Some(mut board) = sized_or_skip(demo_map(), PANE, "the headroom receipt") else {
             return;
         };
-        board.set_residency(ResidencySettings {
-            headroom,
-            ..ResidencySettings::default()
-        });
+        board.set_residency(ResidencySettings { headroom });
         board.draw();
         assert_eq!(
             board.cost().residency.reserved,
@@ -413,11 +445,8 @@ fn paging_receipts_headroom() {
                 .camera(&ui.geo, (pane.0 / 2.0 - x, pane.1 / 2.0 - y), pane, None)
                 .expect("the board frames the pane");
             for headroom in 0..=3 {
-                let settings = ResidencySettings {
-                    headroom,
-                    ..ResidencySettings::default()
-                };
-                let mut ground = BoardGround::new(&ui.map, &overlays, 1, settings);
+                let settings = ResidencySettings { headroom };
+                let mut ground = BoardGround::new(&ui.map, &overlays, 1, settings, CARD);
                 let (extent, atlas) = {
                     let bricks = ground.bricks();
                     let framed = ground.framed(camera, &bricks);

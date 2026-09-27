@@ -12,7 +12,7 @@ use super::*;
 #[test]
 fn a_pan_retargets_and_the_map_reads_the_source() {
     let hills = Hills::new();
-    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default(), LIMITS));
     let from = [0.0, 0.0];
     let first = frame(&hills, from);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -52,7 +52,7 @@ fn a_pan_retargets_and_the_map_reads_the_source() {
 #[test]
 fn a_shrinking_selection_retargets_and_edits_still_land() {
     let mut hills = Hills::new();
-    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default(), LIMITS));
     let from = [0.0, 0.0];
     let first = frame(&hills, from);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -110,7 +110,7 @@ fn a_shrinking_selection_retargets_and_edits_still_land() {
 #[test]
 fn an_edit_to_an_absent_brick_lands_when_it_returns() {
     let mut hills = Hills::new();
-    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default(), LIMITS));
     let home = [0.0, 0.0];
     let first = frame(&hills, home);
     let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -150,7 +150,7 @@ fn an_edit_to_an_absent_brick_lands_when_it_returns() {
 #[test]
 fn a_requested_rebuild_replaces_the_map() {
     let hills = Hills::new();
-    let residency = RefCell::new(Residency::new(ResidencySettings::default()));
+    let residency = RefCell::new(Residency::new(ResidencySettings::default(), LIMITS));
     let framed = frame(&hills, [0.0, 0.0]);
     let mut map = PagedTerrain::new(&residency, &hills, &framed, 1)
         .brick_map()
@@ -167,27 +167,30 @@ fn a_requested_rebuild_replaces_the_map() {
     );
 }
 
+/// The capacity is every brick the card allows, in whole rows of 256 slots
+/// less the air slot, and modulus builds a map of exactly that capacity:
+/// the historical atlas, one row, a budget between rows, the 8 MiB default,
+/// and a card whose texture edge binds before the budget.
 #[test]
-fn the_capacity_is_the_atlas_modulus_builds() {
-    let rows = |rows| {
-        Residency::new(ResidencySettings {
-            rows,
-            ..ResidencySettings::default()
-        })
-        .capacity()
+fn the_capacity_is_the_atlas_the_card_allows() {
+    let row = 16 * 16 * 512;
+    let card = |edge, bytes| AtlasLimits {
+        max_texture_dimension_3d: edge,
+        max_atlas_bytes: bytes,
     };
-    for count in 1..=8 {
-        let map = BrickMap::with_capacity(BrickProjectionRevision(0), count, [1, 1, 1])
-            .expect("a capacity map");
-        assert_eq!(rows(count), map.capacity());
+    for (limits, bricks) in [
+        (LIMITS, 2_047),
+        (card(2048, row), 255),
+        (card(2048, 3 * row + 1), 767),
+        (card(2048, ATLAS_BUDGET_BYTES), 16_383),
+        (card(256, ATLAS_BUDGET_BYTES), 8_191),
+    ] {
+        let capacity = Residency::new(ResidencySettings::default(), limits).capacity();
+        assert_eq!(capacity, bricks, "{limits:?}");
+        let map = BrickMap::with_limits(BrickProjectionRevision(0), capacity, [1, 1, 1], limits)
+            .expect("a map at the card's size");
+        assert_eq!(map.capacity(), capacity, "{limits:?}");
     }
-    assert_eq!(rows(0), rows(1));
-    assert_eq!(rows(99), rows(8));
-    assert_eq!(
-        Residency::new(ResidencySettings::default()).capacity(),
-        rows(8),
-        "the default is every row modulus allows"
-    );
 }
 
 /// Headroom: a pointer volume reserving spare layers takes an edit that lifts
@@ -198,11 +201,7 @@ fn the_capacity_is_the_atlas_modulus_builds() {
 fn an_edit_within_the_headroom_retargets_and_one_past_it_rebuilds() {
     for headroom in [1, 0] {
         let mut hills = Hills::new();
-        let settings = ResidencySettings {
-            headroom,
-            ..ResidencySettings::default()
-        };
-        let residency = RefCell::new(Residency::new(settings));
+        let residency = RefCell::new(Residency::new(ResidencySettings { headroom }, LIMITS));
         let first = frame(&hills, [0.0, 0.0]);
         assert_eq!(first.layers(), Some([0, 1]), "the field stands two layers");
         let mut map = PagedTerrain::new(&residency, &hills, &first, 1)
@@ -272,10 +271,7 @@ fn an_edit_within_the_headroom_retargets_and_one_past_it_rebuilds() {
 #[test]
 fn settings_rebuild_the_map_at_their_headroom() {
     let hills = Hills::new();
-    let residency = RefCell::new(Residency::new(ResidencySettings {
-        headroom: 0,
-        ..ResidencySettings::default()
-    }));
+    let residency = RefCell::new(Residency::new(ResidencySettings { headroom: 0 }, LIMITS));
     let framed = frame(&hills, [0.0, 0.0]);
     let mut map = PagedTerrain::new(&residency, &hills, &framed, 1)
         .brick_map()

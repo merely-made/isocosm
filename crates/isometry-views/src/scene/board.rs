@@ -110,7 +110,8 @@ pub struct BoardSource {
     scene_size: [u32; 2],
     /// The grown ground and everything about keeping it current.
     ground: Option<BoardGround>,
-    /// How the ground's brick map is sized; the host's to choose.
+    /// How the ground's pointer volume is sized; the host's to choose. The
+    /// atlas is the scene's card.
     residency: ResidencySettings,
     /// The palette the bound table was built for, so a kind added to the map
     /// rebinds it and an ordinary frame does not.
@@ -260,8 +261,14 @@ impl BoardSource {
         Ok(())
     }
 
-    /// Brings the ground and the material palette up to the snapshot.
+    /// Brings the ground and the material palette up to the snapshot. A new
+    /// ground's atlas is as large as the scene's card allows.
     fn ensure_terrain(&mut self, revision: u64) -> Result<(), String> {
+        let limits = self
+            .scene
+            .as_ref()
+            .ok_or("the scene was not built")?
+            .atlas_limits();
         let view = self.view.borrow();
         match &mut self.ground {
             Some(ground) => ground.sync(&view.map, &view.overlays, revision),
@@ -271,6 +278,7 @@ impl BoardSource {
                     &view.overlays,
                     revision,
                     self.residency,
+                    limits,
                 ))
             },
         }

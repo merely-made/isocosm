@@ -7,11 +7,9 @@ pub(super) fn render(ui: &UiState, camera: SlabCamera, headroom: u32) -> Option<
     let (device, queue) = device()?;
     let mut scene = Scene::new(device.clone(), queue.clone(), TEXTURE[0], TEXTURE[1]).ok()?;
     scene.set_terrain_palette(Some(terrain_palette(&ui.map)));
-    let settings = ResidencySettings {
-        headroom,
-        ..ResidencySettings::default()
-    };
-    let ground = BoardGround::new(&ui.map, &Overlays::of(ui), 1, settings);
+    let settings = ResidencySettings { headroom };
+    let limits = scene.atlas_limits();
+    let ground = BoardGround::new(&ui.map, &Overlays::of(ui), 1, settings, limits);
     let bricks = ground.bricks();
     let framed = ground.framed(camera, &bricks);
     let terrain = ground.terrain(&bricks, &framed);
