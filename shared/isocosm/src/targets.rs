@@ -92,6 +92,7 @@ impl Simulation {
             return None;
         }
         let place = entity.place;
+        let part = self.bind_part(actor, p);
         let groups = &self.state.population.groups;
         // A group offers its first member, or its second when the first is
         // the actor; identities never reach the top of their range, so the
@@ -104,7 +105,7 @@ impl Simulation {
                 && self.target_matches(actor, Some(candidate), p)
                 && p.requires
                     .iter()
-                    .all(|q| self.query(actor, Some(candidate), place, q).is_ok());
+                    .all(|q| self.query(actor, Some(candidate), place, part, q).is_ok());
             accepted.then_some(candidate)
         };
         let accepting = |first: &Id| offered(*first).is_some();

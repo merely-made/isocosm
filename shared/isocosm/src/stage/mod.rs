@@ -22,6 +22,8 @@ pub(crate) struct Stage {
     actor: Id,
     target: Option<Id>,
     place: Id,
+    /// The actor's part the act binds (ruling 338).
+    part: Option<Id>,
     /// The members the actor stands for: one, or a whole bulk cohort.
     count: u64,
     /// The bound bodies as the act leaves them. A target that is the actor
@@ -44,13 +46,14 @@ pub(crate) struct Stage {
 
 impl Simulation {
     /// A stage for one act by `actor`, standing for `count` members at
-    /// `place`. A named target that does not exist fails here, as lifting
-    /// it from a whole copy would.
+    /// `place`, binding `part` of the actor. A named target that does not
+    /// exist fails here, as lifting it from a whole copy would.
     pub(crate) fn stage(
         &self,
         actor: Id,
         target: Option<Id>,
         place: Id,
+        part: Option<Id>,
         count: u64,
     ) -> Result<Stage> {
         // A cohort acts only through processes without targets.
@@ -67,6 +70,7 @@ impl Simulation {
             actor,
             target,
             place,
+            part,
             count,
             bodies,
             site: None,

@@ -4,6 +4,10 @@
 use crate::{Result, meaning::mass, rules::*, schema::Key};
 use std::collections::BTreeMap;
 
+mod body;
+
+pub(crate) use body::part;
+
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
         && value.split_once(':').is_some_and(|(a, b)| {
@@ -43,6 +47,9 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         },
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
+        },
+        Query::Expresses { function } if !rules.functions.contains_key(function) => {
+            return Err(format!("unknown function {function}"));
         },
         _ => (),
     }
@@ -96,6 +103,7 @@ fn mind(rules: &Rules) -> Result<()> {
                     who: Binding::Actor,
                     ..
                 }
+                | Query::Expresses { .. }
         );
         if !own {
             return Err("a need reads only its member and its site's conditions".into());
@@ -153,6 +161,9 @@ fn competitions(rules: &Rules) -> Result<()> {
             traits(rules, [&kind.identity])?;
             matter(rules, &kind.body)?;
             query(rules, &kind.hungry)?;
+            if body::reads_part(&kind.hungry)? {
+                return Err(format!("{id} reads a part no process binds"));
+            }
             for p in [&kind.eat, &kind.share, &kind.spend] {
                 process(p)?;
             }
@@ -197,11 +208,13 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     {
         key(id)?;
     }
+    body::catalogue(rules)?;
     for (id, p) in &rules.processes {
         key(id)?;
         if id != &p.id {
             return Err("process key does not match identity".into());
         }
+        body::process(p)?;
         if p.period == Some(0) {
             return Err(format!("zero period: {id}"));
         }

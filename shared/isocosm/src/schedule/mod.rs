@@ -6,7 +6,8 @@
 //! pass began. A process visits only the groups ready for it: carrying the
 //! traits it requires of its actor (ruling 258), and passing its thresholds
 //! on the actor's own accounts and age, a group's age coming due on a timer
-//! (ruling 286). Any other group would be blocked, so passing it by changes
+//! (ruling 286), and a live part expressing any function it requires (ruling
+//! 338). Any other group would be blocked, so passing it by changes
 //! nothing but the count. The operation budget counts only the evaluations
 //! that run (ruling 259), by the members each stands for (ruling 285).
 

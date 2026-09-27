@@ -39,6 +39,7 @@ impl Seen<'_> {
         Scene {
             actor: self.member,
             target: Named::Unnamed,
+            part: None,
             site: Some(self.site),
             tick: self.tick,
             related: &no_relations,
@@ -84,6 +85,7 @@ impl Parties for Bin<'_> {
                 }
             },
             Binding::Target => Err("the crowd has no targets".into()),
+            Binding::Part => Err("a part keeps no ledger".into()),
         }
     }
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
@@ -94,6 +96,7 @@ impl Parties for Bin<'_> {
                 credit(&mut self.site.accounts, key, total)
             },
             Binding::Target => Err("the crowd has no targets".into()),
+            Binding::Part => Err("a part keeps no ledger".into()),
         }
     }
     fn body(&mut self, who: Binding) -> Result<&mut Entity> {
@@ -101,6 +104,9 @@ impl Parties for Bin<'_> {
             Binding::Actor => Ok(self.member),
             _ => Err("the crowd binds only the actor's body".into()),
         }
+    }
+    fn part(&mut self) -> Result<(&mut Entity, Id)> {
+        Err("the crowd binds no parts".into())
     }
     fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
         meaning::shift(&mut self.site.conditions, key, delta, self.count)
@@ -123,7 +129,8 @@ fn identity_bound(p: &Process) -> bool {
             Query::Age { .. }
             | Query::Condition { .. }
             | Query::Mood { .. }
-            | Query::MoodBelow { .. } => false,
+            | Query::MoodBelow { .. }
+            | Query::Expresses { .. } => false,
         })
 }
 
@@ -199,6 +206,10 @@ pub(super) fn apply(
             "{} depends on identity; it runs individually",
             p.id
         ));
+    }
+    // Until the vertical probe certifies it, the crowd binds no parts.
+    if p.expresses().is_some() {
+        return Err(format!("{} binds a part; it runs individually", p.id));
     }
     let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
     if count > 1 && effects.iter().any(|e| writes_site(e)) && p.requires.iter().any(reads_site) {

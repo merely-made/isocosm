@@ -231,6 +231,10 @@ impl Parties for Staged<'_> {
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;
         Ok(self.stage.bodies.get_mut(&id).ok_or("body missing")?)
     }
+    fn part(&mut self) -> Result<(&mut Entity, Id)> {
+        let part = self.stage.part.ok_or("no part is bound")?;
+        Ok((self.actor(), part))
+    }
     fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
         meaning::shift(&mut self.site()?.conditions, key, delta, 1)
     }

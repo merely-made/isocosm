@@ -326,6 +326,8 @@ impl ProbeFounding {
             }),
             mind: Some(mind),
             tick_microseconds: None,
+            shapes: BTreeSet::new(),
+            functions: BTreeMap::new(),
         };
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;

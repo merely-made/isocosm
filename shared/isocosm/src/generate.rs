@@ -253,6 +253,8 @@ impl Founding {
             similitude: None,
             mind: None,
             tick_microseconds: None,
+            shapes: BTreeSet::new(),
+            functions: BTreeMap::new(),
         };
         let mut sites = BTreeMap::new();
         for i in 0..u64::from(self.sites) {
@@ -347,6 +349,8 @@ impl Founding {
                             parent: None,
                             traits: lineages[&lineage].traits.clone(),
                             severed: false,
+                            shape: Key::new(),
+                            functions: BTreeSet::new(),
                         },
                     )]),
                     traits: lineages[&lineage].traits.clone(),

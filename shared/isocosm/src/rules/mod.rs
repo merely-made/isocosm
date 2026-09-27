@@ -5,9 +5,12 @@ use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod body;
 mod competition;
 mod mind;
 
+pub(crate) use body::expressing;
+pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
 pub use mind::{Mind, Need};
 
@@ -36,6 +39,9 @@ pub enum Binding {
     Actor,
     Target,
     Place,
+    /// The actor's part the process's `Expresses` requirement binds
+    /// (ruling 338). A part has traits and life but keeps no ledger.
+    Part,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -84,6 +90,12 @@ pub enum Query {
     Holds {
         who: Binding,
         at_least: u64,
+    },
+    /// The actor has a live part expressing `function` (ruling 338). A
+    /// process requires at most one, and binds the lowest-numbered such part
+    /// as `Binding::Part`; its receipt reads that part's address.
+    Expresses {
+        function: Key,
     },
 }
 
@@ -235,6 +247,14 @@ pub struct Rules {
     /// worlds without it serialize and hash as before it existed.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tick_microseconds: Option<u64>,
+    /// The shapes a world's parts take (rulings 264 and 276): open keys,
+    /// the eight of `default_shapes` when a world adopts them. Worlds naming
+    /// none serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub shapes: BTreeSet<Key>,
+    /// The function catalogue (rulings 278, 338 and 339), by function.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub functions: BTreeMap<Key, Function>,
 }
 
 /// The clock's unit where a world states none: a minute (ruling 257).
@@ -254,8 +274,18 @@ impl Rules {
 }
 
 impl Process {
+    /// The function whose part this process binds: its `Expresses`
+    /// requirement, if it has one.
+    pub fn expresses(&self) -> Option<&Key> {
+        self.requires.iter().find_map(|q| match q {
+            Query::Expresses { function } => Some(function),
+            _ => None,
+        })
+    }
+
     /// Conservative executable proof of independence. No shared writes, targets,
-    /// identity draws, ancestry or public events can hide inside a batch.
+    /// identity draws, ancestry or public events can hide inside a batch. The
+    /// bound part is the actor's own, alike across a cohort.
     pub fn bulk_safe(&self) -> bool {
         self.risk.is_none()
             && self.target.is_none()
@@ -263,9 +293,9 @@ impl Process {
             && self.requires.iter().all(|q| {
                 matches!(
                     q,
-                    Query::Alive(Binding::Actor)
+                    Query::Alive(Binding::Actor | Binding::Part)
                         | Query::Trait {
-                            who: Binding::Actor,
+                            who: Binding::Actor | Binding::Part,
                             ..
                         }
                         | Query::Account {
@@ -288,6 +318,7 @@ impl Process {
                             who: Binding::Actor,
                             ..
                         }
+                        | Query::Expresses { .. }
                 )
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {
@@ -297,7 +328,7 @@ impl Process {
                         who: Binding::Actor,
                         ..
                     } | Effect::Trait {
-                        who: Binding::Actor,
+                        who: Binding::Actor | Binding::Part,
                         ..
                     } | Effect::Practice { .. }
                         | Effect::Ease {

@@ -77,8 +77,11 @@ impl Simulation {
             receipt.outcome = Outcome::Refused("unknown causal event".into());
             return receipt;
         }
+        // The part the act binds, read before any requirement so that each
+        // reads the same one (ruling 338).
+        let part = self.bind_part(actor, definition);
         for query in &definition.requires {
-            match self.query(actor, target, place, query) {
+            match self.query(actor, target, place, part, query) {
                 Ok(fact) => receipt.facts_read.push(fact),
                 Err(why) => {
                     receipt.outcome = Outcome::Blocked(why);
@@ -92,16 +95,17 @@ impl Simulation {
             .values()
             .filter(|p| p.id != process && p.causation == Causation::Choice)
             .filter(|p| {
+                let part = self.bind_part(actor, p);
                 self.target_matches(actor, target, p)
                     && p.requires
                         .iter()
-                        .all(|q| self.query(actor, target, place, q).is_ok())
+                        .all(|q| self.query(actor, target, place, part, q).is_ok())
             })
             .map(|p| p.id.clone())
             .collect();
         // Writes go to a stage of what the act binds, never to the world,
         // until every check below has passed.
-        let mut stage = match self.stage(actor, target, place, count) {
+        let mut stage = match self.stage(actor, target, place, part, count) {
             Ok(stage) => stage,
             Err(why) => {
                 receipt.outcome = Outcome::Blocked(why);

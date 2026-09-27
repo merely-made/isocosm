@@ -61,6 +61,9 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
     if p.risk.is_some() || p.note || !p.commitments.is_empty() {
         return refuse("depends on identity; it runs individually");
     }
+    if p.expresses().is_some() {
+        return refuse("binds a part; it runs individually");
+    }
     let [Effect::Eat { from, amount, into }] = p.effects.as_slice() else {
         return refuse("the crowd feeds only by eating");
     };

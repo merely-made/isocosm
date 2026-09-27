@@ -115,7 +115,10 @@ fn round(
                 };
                 // Equal members read alike, so the definition's query is
                 // asked once for the group.
-                if sim.query(first, None, site, &c.kinds[k].hungry).is_ok() {
+                if sim
+                    .query(first, None, site, None, &c.kinds[k].hungry)
+                    .is_ok()
+                {
                     hungry.extend((first..first + group.count).map(|id| (id, k)));
                 }
             }

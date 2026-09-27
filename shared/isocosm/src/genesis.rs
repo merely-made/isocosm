@@ -98,6 +98,7 @@ impl Genesis {
                 if part.traits.iter().any(|t| !self.rules.traits.contains(t)) {
                     return Err("unknown part trait".into());
                 }
+                crate::validation::part(&self.rules, part)?;
                 let mut seen = BTreeSet::from([id]);
                 let mut parent = part.parent;
                 while let Some(p) = parent {
