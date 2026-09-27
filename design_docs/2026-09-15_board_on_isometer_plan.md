@@ -843,3 +843,9 @@ a lane saw. This section is the current one, and it names its build.
   Upfront allocation versus growth remains unanswered, as does sim flow
   retention. Eponym's actual-device-limit propagation proceeds separately
   under existing ruling 295, preserving its own budget.
+- **2026-09-27, allocation premise reopened (370).** Mark asked whether a
+  replacement texture can retain unchanged bricks while uploading only
+  changes, and what it costs. Allocation remains open. Inspect and compare
+  GPU copying with full CPU re-upload, including temporary coexistence of
+  old/new textures and preservation of slot addresses. No growth policy is
+  authorized by the question alone.

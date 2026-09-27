@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 369 on 2026-09-27, the last
+on 2026-09-26 and 353 to 370 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -452,6 +452,7 @@ label remains as the dated record of how they were presented.
 | Coordination | Lane A, the RPG session or both before repinning? | "Ah, the rpg session isn’t active now. But you can orchestrate the repin/rest" | 367 |
 | Paging overflow | Standing nearest-terrain fallback with a current omitted count, or capacity error? | "Keep the nearest terrain and report the current number of omitted bricks, amending 301 (recommended)." | 368 |
 | Paging budget | Live device-bounded 8 MiB default, or fixed host budget? | "Expose a setting, default 8 MiB, bounded by device limits; changing it rebuilds the atlas (recommended)." | 369 |
+| Atlas allocation | Upfront allocation, or growth with full re-upload? | "How costly is replacing the texture and uploading only the retained bricks that change? Is that possible?" Allocation remains open while the premise is checked. | 370 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 

@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 369, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 370, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3045,6 +3045,24 @@ what later sections derive from.
      upfront versus growth remains a separate unanswered question.
      *Reading, not ruled:* use the existing host preference machinery and
      test one rebuild after a settings change, then an unchanged-frame skip.
+
+370. **Atlas allocation is reopened around preserving resident GPU data.**
+     Asked on 2026-09-27: "3. Should the atlas allocate its full budget
+     immediately? The branch allocates all 8 MiB; the small demo's 260
+     bricks fit in two 128 KiB rows. Growing later saves initial memory but
+     requires replacing the texture and uploading all retained bricks
+     again." Options, recommended first: (A) "Allocate the chosen budget
+     upfront, keeping texture dimensions and slots stable (recommended)."
+     (B) "Allocate occupied rows initially and grow up to the chosen budget,
+     with replacement and full re-upload." Mark asked: "How costly is
+     replacing the texture and uploading only the retained bricks that
+     change? Is that possible?" This is a request to examine the premise,
+     not a selection of either allocation policy. The assistant's initial
+     answer: a new texture may receive unchanged residents through a GPU
+     copy and only new or edited data through CPU uploads, with both
+     textures alive during transfer. *Reading, not ruled:* verify the
+     current layout and measure that alternative before putting the choice
+     back. Allocation remains open; 368 and 369 proceed independently.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6818,6 +6836,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 370 preserves Mark's question about GPU-preserving
+  atlas growth. The offered full re-upload premise is under investigation;
+  allocation is not selected. A bounded comparison may inform the next
+  question without implementing production growth.
 - 2026-09-27: rulings 368 and 369 answer the first two paging questions:
   standing centre-first overflow with a current omitted-brick count,
   amending 301, and a live device-bounded budget defaulting to 8 MiB.
