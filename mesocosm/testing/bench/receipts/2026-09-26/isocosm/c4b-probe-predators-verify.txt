@@ -158,6 +158,7 @@ exact against unweighted crowd (draw control): receipt equivalent False, differe
   inspect:account:world:soil       D=0.0000 means     0.00     0.00  certified True  (p 3.05e-07)  detected False (receipt p 1.0000, recomputed 1.0000)
 
 All distances and equivalence verdicts recomputed and matched.
+refusals: exact 0 of 1000 (no bound); exact-control 0 of 1000 (no bound); crowd 0 of 1000 (bound 1%, within); crowd-averaged 0 of 1000 (no bound); crowd-unweighted 0 of 1000 (no bound)
 savings {"exact_evaluations": 14909153, "crowd_evaluations": 6065291, "evaluation_ratio": 2.4581100890295287, "per_draw_evaluation_ratio": {"min": 1.4420429606969476, "median": 2.430319223737871, "max": 8.262103505843072}, "exact_represented": 14909153, "crowd_represented": 14798075, "exact_micros": 237059963, "crowd_micros": 43426386, "wall_ratio": 5.458892273467104, "approximate": null}
 density {"founders": {"min": 142.0, "median": 281.0, "max": 584.0}, "alive_end": {"min": 43.0, "median": 173.0, "max": 491.0}, "alive_per_state_end": {"min": 1.2166666666666666, "median": 2.26, "max": 48.0}, "exact_groups_stored_end": {"min": 73.0, "median": 203.0, "max": 448.0}, "crowd_bins_end": {"min": 28.0, "median": 130.0, "max": 358.0}}
 checks {"exact_rerun_identical": true, "collect_changes_no_outcome": true}

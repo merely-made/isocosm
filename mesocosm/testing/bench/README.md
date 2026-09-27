@@ -100,6 +100,11 @@ certified receipts, which live out of tree, hashed in `RAW_RECEIPTS.md`.
 hunters in the domains tried, measured with an instrumented copy of the core
 (`boundary_setup2.py`, `boundary-measure-4b.rs`), and why the certified one
 was chosen. `checkpoint-4b-source.json` names the commit, commands and checks.
+A crowd refusing a draw has it recorded and left out of that arm's
+comparisons; the crowd under certification fails the check if it refuses more
+than one draw in a hundred, and the controls' refusals carry no bound.
+`verify.py` applies the same rule and, where the worlds hunted, prints each
+arm's refusals beside its bound.
 
 ## Specimen checks
 

@@ -198,6 +198,7 @@ exact against unweighted crowd (draw control): receipt equivalent False, differe
   inspect:account:world:water      D=0.0000 means     0.00     0.00  certified True  (p 3.87e-07)  detected False (receipt p 1.0000, recomputed 1.0000)
 
 All distances and equivalence verdicts recomputed and matched.
+refusals: exact 0 of 1000 (no bound); exact-control 0 of 1000 (no bound); crowd 0 of 1000 (bound 1%, within); crowd-averaged 0 of 1000 (no bound); crowd-unweighted 0 of 1000 (no bound)
 savings {"exact_evaluations": 21392854, "crowd_evaluations": 13045852, "evaluation_ratio": 1.6398203812215562, "per_draw_evaluation_ratio": {"min": 1.1497986399947184, "median": 1.6205226960110042, "max": 5.344534050179211}, "exact_represented": 21392854, "crowd_represented": 21246259, "exact_micros": 394188069, "crowd_micros": 86679379, "wall_ratio": 4.547656819276474, "approximate": null}
 density {"founders": {"min": 152.0, "median": 277.0, "max": 588.0}, "alive_end": {"min": 22.0, "median": 162.0, "max": 454.0}, "alive_per_state_end": {"min": 1.1304347826086956, "median": 1.591549295774648, "max": 24.0}, "exact_groups_stored_end": {"min": 76.0, "median": 216.0, "max": 485.0}, "crowd_bins_end": {"min": 44.0, "median": 180.0, "max": 414.0}}
 checks {"exact_rerun_identical": true, "collect_changes_no_outcome": true}
