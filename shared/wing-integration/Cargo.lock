@@ -114,7 +114,7 @@ checksum = "3e0f1c7c3a72c66fd80abe965175f7523475c0489a87d3ff9d6e8c87d87a9d2d"
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?rev=668854c9184fecd3f9bfffd7e325aad0ab36036d#668854c9184fecd3f9bfffd7e325aad0ab36036d"
+source = "git+https://github.com/merely-made/mere.git?rev=0418391f802671251f602d7606cf6a67a2a22d1b#0418391f802671251f602d7606cf6a67a2a22d1b"
 dependencies = [
  "serde",
 ]
@@ -226,7 +226,7 @@ dependencies = [
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/mere.git?rev=668854c9184fecd3f9bfffd7e325aad0ab36036d#668854c9184fecd3f9bfffd7e325aad0ab36036d"
+source = "git+https://github.com/merely-made/mere.git?rev=0418391f802671251f602d7606cf6a67a2a22d1b#0418391f802671251f602d7606cf6a67a2a22d1b"
 dependencies = [
  "async-trait",
  "blake3",
@@ -237,7 +237,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?rev=668854c9184fecd3f9bfffd7e325aad0ab36036d#668854c9184fecd3f9bfffd7e325aad0ab36036d"
+source = "git+https://github.com/merely-made/mere.git?rev=0418391f802671251f602d7606cf6a67a2a22d1b#0418391f802671251f602d7606cf6a67a2a22d1b"
 dependencies = [
  "serde",
 ]
