@@ -250,6 +250,12 @@ pub(crate) fn init(
     let (logical_w, logical_h) = (available.0 / zoom, available.1 / zoom);
     ui.viewport = ((logical_w - PANEL_W).max(0.0), logical_h);
     app.last_viewport = ui.viewport;
+    if app.terrain_receipt.is_some() {
+        // The overflow receipt must frame the interior, not the boot corner.
+        let centre = (ui.map.ground.width() as i32 / 2, ui.map.ground.height() as i32 / 2);
+        let (x, y) = ui.geo.tile_to_screen(centre, 0);
+        ui.camera = (ui.viewport.0 / 2.0 - x, ui.viewport.1 / 2.0 - y);
+    }
     // The board's pixel grid, before the first frame rather than after it: a
     // board laid out at the raw fractional zoom for one frame and re-laid out
     // on the next is a visible jump on a slow boot.
