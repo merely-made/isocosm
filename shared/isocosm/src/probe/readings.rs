@@ -10,7 +10,7 @@
 //! field an effect can write or the founding sets.
 
 use super::{
-    Crowd, ExactRun, ProbeWorld,
+    Crowd, ExactRun, MealLog, ProbeWorld,
     aggregate::{self, Seen},
     draws::Stream,
     fight,
@@ -50,6 +50,11 @@ pub enum Probe {
     },
     Inspect {
         field: Field,
+    },
+    /// The matter a hunt's prey held as each meal began, on average, in
+    /// hundredths: where the hunt's draw took its meals (ruling 287).
+    Meals {
+        process: Key,
     },
 }
 
@@ -238,6 +243,12 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
             }
         }
     }
+    for hunt in world.hunts() {
+        let probe = Probe::Meals {
+            process: hunt.clone(),
+        };
+        push(format!("{hunt}#meal-holdings"), hunt, probe, false);
+    }
     for field in inspected(world) {
         let key = format!("inspect:{}", name(&field));
         push(key, "inspection", Probe::Inspect { field }, false);
@@ -368,6 +379,7 @@ pub fn evaluate(
     sites: &BTreeMap<Id, Site>,
     tick: Tick,
     inspected: Option<&Entity>,
+    meals: &MealLog,
 ) -> Result<Vec<u64>> {
     let lineages: Vec<&Key> = world.genesis.lineages.keys().collect();
     let rules = &world.genesis.rules;
@@ -412,6 +424,11 @@ pub fn evaluate(
                     .filter(|(e, _)| e.traits.contains(identity) && past(e))
                     .map(|(_, n)| n)
                     .sum()
+            },
+            Probe::Meals { process } => {
+                let m = meals.get(process).copied().unwrap_or_default();
+                let mean = (m.held * 100).checked_div(u128::from(m.count));
+                u64::try_from(mean.unwrap_or(0)).map_err(|e| e.to_string())?
             },
             Probe::Inspect { field } => {
                 let e = inspected.ok_or("no member to inspect")?;

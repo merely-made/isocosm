@@ -165,10 +165,11 @@ impl Crowd<'_> {
         let meals = u64::try_from(capacity.min(u128::from(demand))).expect("at most the demand");
         if 0 < meals && meals < demand && hunters.len() > 1 {
             return Err(format!(
-                "{}: prey run out part way through hunters in more than one state at site \
-                 {site}, tick {}; the core feeds the first in identity order, which the crowd \
-                 cannot know",
-                p.id, self.tick
+                "{}: {} at site {site}, tick {}; the core feeds the first in identity order, \
+                 which the crowd cannot know",
+                p.id,
+                super::super::REFUSED,
+                self.tick
             ));
         }
         if 0 < meals && meals < demand {
@@ -211,6 +212,9 @@ impl Crowd<'_> {
             if m.accepts(&after, site, rules) {
                 *prey.entry(after.clone()).or_default() += 1;
             }
+            let m = self.meals.entry(p.id.clone()).or_default();
+            m.count += 1;
+            m.held += mass(&eaten.accounts, rules);
             self.moved(&eaten, after, 1);
         }
         // Every hunter eats, or the one state they share is split between

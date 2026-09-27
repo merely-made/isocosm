@@ -334,6 +334,44 @@ fn abundant_prey_are_eaten_more_by_a_draw_keyed_by_the_act() {
 }
 
 #[test]
+fn a_watched_process_shows_each_meal_and_what_its_prey_held() {
+    let base = prey();
+    for seed in 0..40 {
+        let mut genesis = base.clone();
+        genesis.dynamics = Some(seed);
+        let mut plain = Simulation::new(genesis.clone(), Execution::Grouped).unwrap();
+        plain.advance(1).unwrap();
+        assert!(plain.take_watched().is_empty());
+        let mut sim = Simulation::new(genesis, Execution::Grouped).unwrap();
+        sim.watch(EAT);
+        sim.advance(1).unwrap();
+        // Watching changes nothing the world does.
+        assert_eq!(sim.state_hash(), plain.state_hash(), "seed {seed}");
+        let target = eaten(&sim, &base);
+        let held = WEIGHTS.iter().find(|w| w.0 == target).unwrap().1;
+        let act = isocosm::watch::Watched {
+            tick: 1,
+            process: EAT.into(),
+            actor: 1,
+            target: Some(target),
+            count: 1,
+            target_matter: held,
+        };
+        assert_eq!(sim.take_watched(), [act], "seed {seed}");
+        assert!(sim.take_watched().is_empty());
+    }
+    // An advance refused part way takes its acts back with its changes.
+    let mut short = base.clone();
+    short.rules.limits.events_per_advance = 1;
+    let mut sim = Simulation::new(short, Execution::Individuals).unwrap();
+    sim.watch(EAT);
+    sim.advance(1).unwrap();
+    assert_eq!(sim.take_watched().len(), 1);
+    assert!(sim.advance(2).is_err());
+    assert!(sim.take_watched().is_empty());
+}
+
+#[test]
 fn feeding_draws_the_same_members_however_equal_prey_are_grouped() {
     // Eaters of lineage 0 eat each other as well as lineage 1, so an eater
     // is sometimes drawn from within its own group; a bulk process keeps

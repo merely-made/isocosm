@@ -252,6 +252,9 @@ impl ProbeFounding {
             for p in hunters.processes() {
                 processes.insert(p.id.clone(), p);
             }
+            for i in 0..hunters.lineage {
+                accounts.insert(predator::fat(i), matter(&format!("lineage:{i}")));
+            }
             hunters
         });
         let minds: Vec<mind::Kind> = minds
@@ -388,26 +391,29 @@ impl ProbeFounding {
                         let held = self.pick(domain, cohort, [1, d.want + d.ration]);
                         ledger.insert(contested::store(i as u32, d.thing.store), held);
                     }
+                    if let Some(h) = hunters {
+                        let fat = self.pick("probe-fat", cohort, h.fat);
+                        ledger.insert(predator::fat(i as u32), fat);
+                    }
                     population.insert(member(lineages, &lineage, s, ledger), count)?;
                     left -= count;
                     cohort += 1;
                 }
             }
         }
-        // Hunters come after every other member, so founding them leaves
-        // the rest of the world as it was.
-        let mut cohort = 0;
+        // Hunters come after every other member, founded alike at each
+        // site, so which of them come first matters to nothing until prey
+        // run out part way through them.
         for s in 0..sites {
             let Some(h) = hunters else { break };
             let lineage = format!("lineage:{}", h.lineage);
+            let held = self.pick("probe-hunter-body", s, [1, h.appetite + h.bite]);
+            let ledger = BTreeMap::from([(contested::store(h.lineage, 0), held)]);
             let mut left = h.per_site;
             while left > 0 {
                 let count = left.min(self.cohort);
-                let held = self.pick("probe-hunter-body", cohort, [1, h.appetite + h.bite]);
-                let ledger = BTreeMap::from([(contested::store(h.lineage, 0), held)]);
-                population.insert(member(lineages, &lineage, s, ledger), count)?;
+                population.insert(member(lineages, &lineage, s, ledger.clone()), count)?;
                 left -= count;
-                cohort += 1;
             }
         }
         Ok((site_map, population))

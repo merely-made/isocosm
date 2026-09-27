@@ -61,6 +61,13 @@ impl ProbeWorld {
             .as_ref()
             .ok_or_else(|| "the world states no similitude".into())
     }
+    /// The processes that draw their target by weight, each hunt's meals
+    /// read by the check.
+    pub fn hunts(&self) -> impl Iterator<Item = &Key> {
+        let processes = self.genesis.rules.processes.values();
+        let weighted = processes.filter(|p| p.target.as_ref().is_some_and(|t| t.weighted));
+        weighted.map(|p| &p.id)
+    }
     pub fn mind(&self) -> Result<&Mind> {
         self.genesis
             .rules
@@ -69,6 +76,21 @@ impl ProbeWorld {
             .ok_or_else(|| "the world has no mind".into())
     }
 }
+
+/// What a crowd says when prey run out part way through hunters in more
+/// than one state, which only identity order could settle.
+pub const REFUSED: &str = "prey run out part way through hunters in more than one state";
+
+/// The meals of a hunt: how many, and the matter their prey held as each
+/// began, summed.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Meals {
+    pub count: u64,
+    pub held: u128,
+}
+
+/// Each hunt's meals, by process.
+pub type MealLog = BTreeMap<Key, Meals>;
 
 /// How a contested ration first falls between two sides (ruling 206):
 /// sharers split it, a contester takes it from a sharer, and two contesters

@@ -55,6 +55,8 @@ pub struct Crowd<'w> {
     /// Hunting passes at a site where the prey ran out part way through
     /// hunters sharing one state.
     pub shortfalls: u64,
+    /// Each hunt's meals.
+    pub meals: super::MealLog,
 }
 
 impl<'w> Crowd<'w> {
@@ -75,6 +77,7 @@ impl<'w> Crowd<'w> {
             bins,
             work: Work::default(),
             shortfalls: 0,
+            meals: Default::default(),
         };
         crowd.matter = crowd.total_matter();
         Ok(crowd)

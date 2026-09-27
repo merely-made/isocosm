@@ -195,13 +195,22 @@ fn without_shortage_two_competitions_settle_alike_in_both_runners() {
         let run = run_ordered(&w, 1, true, &w.competitions().keys().collect::<Vec<_>>()).unwrap();
         let members = readings::exact_members(&run);
         let s = run.sim.state();
-        let exact = readings::evaluate(&derived, &w, &members, &s.sites, s.tick, None).unwrap();
+        let exact = readings::evaluate(&derived, &w, &members, &s.sites, s.tick, None, &run.meals);
+        let exact = exact.unwrap();
         let crowd = Crowd::new(&w, 2, Variant::Histogram)
             .unwrap()
             .run()
             .unwrap();
         let members = readings::crowd_members(&crowd);
-        let fungible = readings::evaluate(&derived, &w, &members, &crowd.sites, crowd.tick, None);
+        let fungible = readings::evaluate(
+            &derived,
+            &w,
+            &members,
+            &crowd.sites,
+            crowd.tick,
+            None,
+            &crowd.meals,
+        );
         assert_eq!(exact, fungible.unwrap(), "world {seed}");
         assert!(derived.iter().any(|r| r.key.starts_with(WATER)));
     }

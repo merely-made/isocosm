@@ -16,7 +16,7 @@
 mod report;
 
 use isocosm::probe::{
-    Crowd, PredatorFounding, ProbeFounding, ProbeWorld, Variant,
+    Crowd, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED, Variant,
     check::{self, Settings},
     readings::{self, Reading},
     run_exact,
@@ -58,6 +58,7 @@ fn arm(
             alive,
             alive_states,
             shortfalls,
+            refused: None,
             readings: values,
         }
     };
@@ -67,7 +68,9 @@ fn arm(
         let members = readings::exact_members(&run);
         let s = run.sim.state();
         let inspected = readings::inspect(&members, inspect);
-        let values = readings::evaluate(derived, world, &members, &s.sites, s.tick, inspected)?;
+        let values = readings::evaluate(
+            derived, world, &members, &s.sites, s.tick, inspected, &run.meals,
+        )?;
         let stored = s.population.groups.len() - s.sites.len();
         Ok(finish(micros, &members, &run.work, stored, 0, values))
     } else {
@@ -88,6 +91,7 @@ fn arm(
             &crowd.sites,
             crowd.tick,
             inspected,
+            &crowd.meals,
         )?;
         let shortfalls = crowd.shortfalls;
         Ok(finish(
@@ -196,7 +200,8 @@ fn run() -> Result<(), String> {
         seed: isocosm::draw(o.master, "probe-check", &[]),
     };
     let began = Instant::now();
-    let mut rows: [Vec<Vec<u64>>; 6] = Default::default();
+    // A draw an arm refused has no row there.
+    let mut rows: [Vec<Option<Vec<u64>>>; 6] = Default::default();
     let mut infos: Option<Vec<ReadingInfo>> = None;
     let mut read_set = None;
     let mut out: Vec<Draw> = Vec::new();
@@ -244,9 +249,12 @@ fn run() -> Result<(), String> {
         let mut draw = Draw::new(k, seed, &world)?;
         for &index in &arms {
             let dynamics = isocosm::draw(o.master, "probe-dynamics", &[k, index as u64]);
-            let a = arm(&world, &derived, index, dynamics)
-                .map_err(|why| format!("draw {k}, {}: {why}", ARMS[index]))?;
-            rows[index].push(a.readings.clone());
+            let a = match arm(&world, &derived, index, dynamics) {
+                Ok(a) => a,
+                Err(why) if why.contains(REFUSED) => Arm::refused(ARMS[index], dynamics, why),
+                Err(why) => return Err(format!("draw {k}, {}: {why}", ARMS[index])),
+            };
+            rows[index].push(a.refused.is_none().then(|| a.readings.clone()));
             draw.arms.push(a);
         }
         if k == 0 && !o.crowds {
@@ -286,57 +294,66 @@ fn run() -> Result<(), String> {
         .map(|r| r.key.clone())
         .collect();
     let [exact, control, crowd, averaged, approximate, unweighted] = rows;
+    // Each comparison reads the draws both its arms ran to the end.
+    let compare = |name: &str, a: &[Option<Vec<u64>>], b: &[Option<Vec<u64>>]| {
+        let (x, y): (Vec<Vec<u64>>, Vec<Vec<u64>>) = a
+            .iter()
+            .zip(b)
+            .filter_map(|(a, b)| Some((a.clone()?, b.clone()?)))
+            .unzip();
+        check::compare(name, &bounds, &x, &y, settings)
+    };
     let mut comparisons = Vec::new();
     let mut verdicts = None;
     if !o.density && !o.crowds {
         comparisons = vec![
-            check::compare("exact against crowd", &bounds, &exact, &crowd, settings),
-            check::compare(
-                "exact against exact (positive control)",
-                &bounds,
-                &exact,
-                &control,
-                settings,
-            ),
-            check::compare(
+            compare("exact against crowd", &exact, &crowd),
+            compare("exact against exact (positive control)", &exact, &control),
+            compare(
                 "exact against averaged crowd (negative control)",
-                &bounds,
                 &exact,
                 &averaged,
-                settings,
             ),
         ];
         if draw_control {
-            comparisons.push(check::compare(
+            comparisons.push(compare(
                 "exact against unweighted crowd (draw control)",
-                &bounds,
                 &exact,
                 &unweighted,
-                settings,
             ));
         }
         verdicts = Some(Verdicts::new(&comparisons, starvation));
     }
     if o.approximate && !o.crowds {
-        comparisons.push(check::compare(
+        comparisons.push(compare(
             "exact against approximate crowd",
-            &bounds,
             &exact,
             &approximate,
-            settings,
         ));
     }
     if o.approximate || o.crowds {
-        comparisons.push(check::compare(
+        comparisons.push(compare(
             "crowd against approximate crowd",
-            &bounds,
             &crowd,
             &approximate,
-            settings,
         ));
     }
-    let savings = Savings::new(&out);
-    let density = Density::new(&out);
+    // Savings and density come from the draws no arm refused.
+    let whole: Vec<&Draw> = out
+        .iter()
+        .filter(|d| d.arms.iter().all(|a| a.refused.is_none()))
+        .collect();
+    let savings = Savings::new(&whole);
+    let density = Density::new(&whole);
+    let mut refused: std::collections::BTreeMap<&'static str, Vec<u64>> = Default::default();
+    for d in &out {
+        for a in d.arms.iter().filter(|a| a.refused.is_some()) {
+            refused.entry(a.arm).or_default().push(d.k);
+        }
+    }
+    if !refused.is_empty() {
+        eprintln!("refused draws by arm: {refused:?}");
+    }
     eprintln!(
         "{}; evaluations {:.1}x fewer",
         verdicts
@@ -364,6 +381,7 @@ fn run() -> Result<(), String> {
         savings,
         density,
         checks,
+        refused,
         note: NOTE,
         draws: out,
     };

@@ -106,6 +106,8 @@ pub struct Simulation {
     pub(crate) pass: Option<crate::schedule::Pass>,
     /// What the advance under way has changed, to put back if it is refused.
     pub(crate) journal: Option<crate::journal::Journal>,
+    /// The scheduled acts a host asked to see.
+    pub(crate) watch: crate::watch::Watch,
 }
 
 impl Simulation {
@@ -139,6 +141,7 @@ impl Simulation {
             filed: None,
             pass: None,
             journal: None,
+            watch: Default::default(),
         })
     }
     pub fn state(&self) -> &State {
@@ -194,6 +197,7 @@ impl Simulation {
         let fresh = self.journal.is_none();
         if fresh {
             self.journal = Some(crate::journal::Journal::new(&self.state));
+            self.watch_from();
         }
         fresh
     }
@@ -206,6 +210,7 @@ impl Simulation {
         let journal = self.journal.take().expect("an advance under way");
         if !accepted {
             journal.rollback(&mut self.state);
+            self.unwatch();
         }
     }
     pub fn inspect(&mut self, id: Id) -> Result<()> {

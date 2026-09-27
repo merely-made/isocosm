@@ -21,7 +21,11 @@ fn values(world: &isocosm::probe::ProbeWorld, arm: &str, dynamics: u64) -> Vec<u
         let members = readings::exact_members(&run);
         let inspected = readings::inspect(&members, dynamics);
         let s = run.sim.state();
-        readings::evaluate(&derived, world, &members, &s.sites, s.tick, inspected).unwrap()
+        let meals = &run.meals;
+        readings::evaluate(
+            &derived, world, &members, &s.sites, s.tick, inspected, meals,
+        )
+        .unwrap()
     } else {
         let variant = match arm {
             "crowd" => Variant::Histogram,
@@ -38,6 +42,7 @@ fn values(world: &isocosm::probe::ProbeWorld, arm: &str, dynamics: u64) -> Vec<u
             &crowd.sites,
             crowd.tick,
             inspected,
+            &crowd.meals,
         )
         .unwrap()
     }
@@ -228,12 +233,6 @@ fn hunted(seed: u64, water: bool) -> isocosm::probe::ProbeWorld {
     .unwrap()
 }
 
-/// Living hunters: members of the lineage after the prey.
-fn hunters<'a>(members: impl Iterator<Item = (&'a isocosm::schema::Entity, u64)>) -> u64 {
-    let hunting = |e: &isocosm::schema::Entity| e.alive && e.lineage == "lineage:2";
-    members.filter(|(e, _)| hunting(e)).map(|(_, n)| n).sum()
-}
-
 #[test]
 fn hunters_live_by_eating_the_others_both_ways_and_keep_matter() {
     for seed in 0..2 {
@@ -243,14 +242,9 @@ fn hunters_live_by_eating_the_others_both_ways_and_keep_matter() {
             .matter();
         let run = run_exact(&w, seed, true).unwrap();
         assert_eq!(run.sim.matter(), before);
-        // A hunter begins with a body of at most its appetite and a bite,
-        // eight at most, and spends one a tick, dying the tick it spends
-        // the last: alive after nine, it ate.
-        let groups = run.sim.state().population.groups.values();
-        assert!(
-            hunters(groups.map(|g| (&g.entity, g.count))) > 0,
-            "world {seed}"
-        );
+        // The hunters ate, and the core's scheduler reported each meal.
+        let hunt = "probe:hunt-2";
+        assert!(run.meals[hunt].count > 0, "world {seed}");
         let variants = [
             Variant::Histogram,
             Variant::Averaged,
@@ -259,8 +253,7 @@ fn hunters_live_by_eating_the_others_both_ways_and_keep_matter() {
         ];
         for variant in variants {
             let crowd = Crowd::new(&w, seed, variant).unwrap().run().unwrap();
-            let fed = hunters(crowd.bins.iter().map(|(e, &n)| (e, n)));
-            assert!(fed > 0, "world {seed}, {variant:?}");
+            assert!(crowd.meals[hunt].count > 0, "world {seed}, {variant:?}");
             if variant == Variant::Histogram {
                 let again = Crowd::new(&w, seed, variant).unwrap().run().unwrap();
                 assert_eq!(again.bins, crowd.bins, "world {seed}");
@@ -279,6 +272,10 @@ fn hunters_read_as_any_lineage_does() {
     assert!(keys.contains(&"probe:hunt-2#2"));
     assert!(!keys.contains(&"probe:hunt-2#3"));
     assert!(keys.contains(&"inspect:account:matter:2-0"));
+    // Where the draw took its meals is read directly, and so is the prey's
+    // fat, which only a hunt takes.
+    assert!(keys.contains(&"probe:hunt-2#meal-holdings"));
+    assert!(keys.contains(&"inspect:account:matter:0-2"));
     let starvation: Vec<&str> = derived
         .iter()
         .filter(|r| r.starvation)

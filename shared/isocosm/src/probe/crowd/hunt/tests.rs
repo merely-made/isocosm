@@ -4,7 +4,9 @@
 use crate::{
     meaning::value,
     population::Population,
-    probe::{Crowd, PredatorFounding, ProbeFounding, ProbeWorld, Variant, run_exact},
+    probe::{
+        Crowd, MealLog, Meals, PredatorFounding, ProbeFounding, ProbeWorld, Variant, run_exact,
+    },
     schema::*,
 };
 use std::collections::BTreeMap;
@@ -24,6 +26,7 @@ fn table(prey: &[u64], hunters: &[u64]) -> ProbeWorld {
             hunters: [2, 2],
             bite: [1, 1],
             appetite: [3, 3],
+            fat: [0, 0],
         }),
         ..Default::default()
     }
@@ -55,8 +58,11 @@ fn table(prey: &[u64], hunters: &[u64]) -> ProbeWorld {
     w
 }
 
-/// What each prey member holds after, most first, and each hunter's body.
-fn outcome<'a>(members: impl Iterator<Item = (&'a Entity, u64)>) -> (Vec<u64>, Vec<u64>) {
+/// What each prey member holds after, most first, each hunter's body, and
+/// the hunt's meals.
+type Outcome = (Vec<u64>, Vec<u64>, Meals);
+
+fn outcome<'a>(members: impl Iterator<Item = (&'a Entity, u64)>, meals: &MealLog) -> Outcome {
     let (mut prey, mut hunters) = (vec![], vec![]);
     for (e, n) in members {
         let (list, key) = match e.lineage.as_str() {
@@ -68,18 +74,26 @@ fn outcome<'a>(members: impl Iterator<Item = (&'a Entity, u64)>) -> (Vec<u64>, V
     }
     prey.sort_unstable_by(|a, b| b.cmp(a));
     hunters.sort_unstable();
-    (prey, hunters)
+    let meals = meals.get("probe:hunt-2").copied().unwrap_or_default();
+    (prey, hunters, meals)
 }
 
-fn exact(w: &ProbeWorld, dynamics: u64) -> (Vec<u64>, Vec<u64>) {
+fn exact(w: &ProbeWorld, dynamics: u64) -> Outcome {
     let run = run_exact(w, dynamics, true).unwrap();
     let groups = run.sim.state().population.groups.values();
-    outcome(groups.map(|g| (&g.entity, g.count)))
+    outcome(groups.map(|g| (&g.entity, g.count)), &run.meals)
 }
 
-fn crowd(w: &ProbeWorld, dynamics: u64) -> crate::Result<(Vec<u64>, Vec<u64>)> {
+fn crowd(w: &ProbeWorld, dynamics: u64) -> crate::Result<Outcome> {
     let crowd = Crowd::new(w, dynamics, Variant::Histogram)?.run()?;
-    Ok(outcome(crowd.bins.iter().map(|(e, &n)| (e, n))))
+    Ok(outcome(
+        crowd.bins.iter().map(|(e, &n)| (e, n)),
+        &crowd.meals,
+    ))
+}
+
+fn meals(count: u64, held: u128) -> Meals {
+    Meals { count, held }
 }
 
 #[test]
@@ -88,27 +102,30 @@ fn the_crowd_draws_prey_as_the_core_does() {
     // seven; after it, the second takes from the untouched three, the
     // eaten one or the one in the ratio 3:2:1, and after a meal of the one
     // it takes from a three. So the prey end as 2, 2, 1 three times in
-    // seven, as 3, 1, 1 twice, and as 3, 2, 0 twice.
+    // seven, as 3, 1, 1 twice, and as 3, 2, 0 twice; and the meals' prey
+    // held 3 and 3, 3 and 2, or 3 and 1 as each meal began.
     let w = table(&[3, 3, 1], &[0, 0]);
     let want = [
-        (vec![2, 2, 1], 3.0),
-        (vec![3, 1, 1], 2.0),
-        (vec![3, 2, 0], 2.0),
+        (vec![2, 2, 1], 3.0, meals(2, 6)),
+        (vec![3, 1, 1], 2.0, meals(2, 5)),
+        (vec![3, 2, 0], 2.0, meals(2, 4)),
     ];
     let seeds = 3500u64;
     for arm in ["exact", "crowd"] {
         let mut seen: BTreeMap<Vec<u64>, u64> = BTreeMap::new();
         for dynamics in 0..seeds {
-            let (prey, hunters) = match arm {
+            let (prey, hunters, fed) = match arm {
                 "exact" => exact(&w, dynamics),
                 _ => crowd(&w, dynamics).unwrap(),
             };
-            // Every hunter eats a bite.
+            // Every hunter eats a bite, and the meals say what each took.
             assert_eq!(hunters, [1, 1], "{arm}");
+            let ended = want.iter().find(|w| w.0 == prey).expect("a possible end");
+            assert_eq!(fed, ended.2, "{arm} {prey:?}");
             *seen.entry(prey).or_default() += 1;
         }
         assert_eq!(seen.len(), want.len(), "{arm}: {seen:?}");
-        for (prey, sevenths) in &want {
+        for (prey, sevenths, _) in &want {
             let share = seen[prey] as f64 / seeds as f64;
             let expected = sevenths / 7.0;
             assert!((share - expected).abs() < 0.03, "{arm} {prey:?}: {share}");
@@ -121,7 +138,7 @@ fn prey_running_out_part_way_feeds_alike_hunters_and_refuses_unlike_ones() {
     // One meal for two hunters: the core feeds the first in identity order.
     // Alike, either leaves the same crowd.
     let alike = table(&[1, 0], &[0, 0]);
-    let fed = (vec![0, 0], vec![0, 1]);
+    let fed = (vec![0, 0], vec![0, 1], meals(1, 1));
     assert_eq!(exact(&alike, 1), fed);
     assert_eq!(crowd(&alike, 1).unwrap(), fed);
     let counted = Crowd::new(&alike, 1, Variant::Histogram).unwrap().run();
@@ -129,12 +146,12 @@ fn prey_running_out_part_way_feeds_alike_hunters_and_refuses_unlike_ones() {
     // Unlike, the first is the one holding nothing, which the crowd cannot
     // know.
     let unlike = table(&[1, 0], &[0, 1]);
-    assert_eq!(exact(&unlike, 1), (vec![0, 0], vec![1, 1]));
+    assert_eq!(exact(&unlike, 1), (vec![0, 0], vec![1, 1], meals(1, 1)));
     let refused = crowd(&unlike, 1).unwrap_err();
     assert!(refused.contains("prey run out part way"), "{refused}");
     // Nothing to eat: no hunter eats, whatever their order.
     let bare = table(&[0, 0], &[0, 1]);
-    let none = (vec![0, 0], vec![0, 1]);
+    let none = (vec![0, 0], vec![0, 1], Meals::default());
     assert_eq!(exact(&bare, 1), none);
     assert_eq!(crowd(&bare, 1).unwrap(), none);
     let counted = Crowd::new(&bare, 1, Variant::Histogram).unwrap().run();

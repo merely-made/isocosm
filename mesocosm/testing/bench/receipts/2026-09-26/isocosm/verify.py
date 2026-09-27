@@ -7,7 +7,8 @@ Kolmogorov-Smirnov distance and DKW-Massart equivalence p-value exactly,
 with Holm's adjustment, and the difference test by its own within-pair
 permutations drawn with Python's generator. It asserts the distances and
 equivalence verdicts match the receipt, reports the difference verdicts
-side by side, and prints the summary tables.
+side by side, and prints the summary tables. A draw an arm refused has no
+readings there and is left out of that arm's comparisons, as in the check.
 """
 import json
 import math
@@ -15,10 +16,15 @@ import random
 import sys
 
 receipt = json.load(open(sys.argv[1]))
-arms = {}
-for d in receipt["draws"]:
-    for a in d["arms"]:
-        arms.setdefault(a["arm"], []).append(a["readings"])
+draws = [{a["arm"]: a for a in d["arms"]} for d in receipt["draws"]]
+
+
+def paired(left, right):
+    """Each arm's readings over the draws both ran to the end."""
+    kept = [(d[left], d[right]) for d in draws if left in d and right in d]
+    kept = [(a, b) for a, b in kept if not a.get("refused") and not b.get("refused")]
+    return [a["readings"] for a, _ in kept], [b["readings"] for _, b in kept]
+
 pairs = {
     "exact against crowd": ("exact", "crowd"),
     "exact against exact (positive control)": ("exact", "exact-control"),
@@ -83,11 +89,12 @@ print("verdicts", json.dumps(receipt["verdicts"]))
 for comparison in receipt["comparisons"]:
     left, right = pairs[comparison["name"]]
     rows = comparison["readings"]
-    n = len(arms[left])
+    lefts, rights = paired(left, right)
+    n = len(lefts)
     ds, pes, pds = [], [], []
     for r, row in enumerate(rows):
-        a = [v[r] for v in arms[left]]
-        b = [v[r] for v in arms[right]]
+        a = [v[r] for v in lefts]
+        b = [v[r] for v in rights]
         d = distance(a, b)
         assert abs(d - row["distance"]) < 1e-12, (comparison["name"], row["key"], d, row["distance"])
         ds.append(d)
@@ -101,6 +108,8 @@ for comparison in receipt["comparisons"]:
         agree = (pd <= alpha) == row["detected"]
         print(f"  {row['key']:<32} D={d:.4f} means {row['mean_a']:8.2f} {row['mean_b']:8.2f}  certified {row['certified']!s:<5} (p {pe:.2e})  detected {row['detected']!s:<5} (receipt p {row['p_difference_holm']:.4f}, recomputed {pd:.4f}{'' if agree else ', DISAGREES'})")
 print("\nAll distances and equivalence verdicts recomputed and matched.")
+if receipt.get("refused"):
+    print("refused", json.dumps(receipt["refused"]))
 print("savings", json.dumps(receipt["savings"]))
 print("density", json.dumps(receipt["density"]))
 print("checks", json.dumps(receipt["checks"]))

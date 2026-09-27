@@ -25,6 +25,7 @@ pub mod simulation;
 mod stage;
 mod targets;
 mod validation;
+pub mod watch;
 
 pub use generate::Founding;
 pub use history::{Command, Session};

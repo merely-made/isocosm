@@ -190,11 +190,22 @@ impl Simulation {
                 );
             }
             let target = self.choose_target(actor, process);
+            let held = self.watching(id, target);
             let r = self.apply(actor, target, id, None, multiplicity);
             work.evaluations += 1;
             work.represented += multiplicity;
             if matches!(r.outcome, Outcome::Accepted | Outcome::RiskOutcome) {
                 work.accepted += multiplicity;
+                if let Some(target_matter) = held {
+                    self.watched(crate::watch::Watched {
+                        tick: self.state.tick,
+                        process: id.into(),
+                        actor,
+                        target,
+                        count: multiplicity,
+                        target_matter,
+                    });
+                }
             } else {
                 work.blocked += multiplicity;
             }

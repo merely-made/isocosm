@@ -9,7 +9,7 @@
 //! tick regroups equal neighbours in storage and changes no outcome.
 
 use super::{
-    Meeting, ProbeWorld, allocate,
+    MealLog, Meeting, ProbeWorld, allocate,
     draws::Stream,
     fight::{Copies, Ground, fight},
     meet,
@@ -26,6 +26,8 @@ use std::collections::BTreeMap;
 pub struct ExactRun {
     pub sim: Simulation,
     pub work: Work,
+    /// Each hunt's meals, as the core's scheduler reports them.
+    pub meals: MealLog,
 }
 
 pub fn run_exact(world: &ProbeWorld, dynamics: u64, collect: bool) -> Result<ExactRun> {
@@ -44,9 +46,18 @@ pub(super) fn run_ordered(
     let mut genesis = world.genesis.clone();
     genesis.dynamics = Some(dynamics);
     let mut sim = Simulation::new(genesis, Execution::Individuals)?;
+    for hunt in world.hunts() {
+        sim.watch(hunt);
+    }
     let mut work = Work::default();
+    let mut meals = MealLog::new();
     for _ in 0..world.ticks {
         let scheduled = sim.advance(1)?;
+        for act in sim.take_watched() {
+            let m = meals.entry(act.process).or_default();
+            m.count += act.count;
+            m.held += act.target_matter * u128::from(act.count);
+        }
         work.evaluations += scheduled.evaluations;
         work.represented += scheduled.represented;
         work.accepted += scheduled.accepted;
@@ -56,7 +67,7 @@ pub(super) fn run_ordered(
             sim.collect();
         }
     }
-    Ok(ExactRun { sim, work })
+    Ok(ExactRun { sim, work, meals })
 }
 
 /// Every act a round settles must be accepted: the allocation never

@@ -41,7 +41,31 @@ pub struct Arm {
     /// hunters sharing one state, so that which of them ate changed nothing.
     #[serde(skip_serializing_if = "is_zero")]
     pub shortfalls: u64,
+    /// Why a crowd refused the draw, which then has no readings on this arm
+    /// and is left out of the comparisons the arm takes part in.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub refused: Option<String>,
     pub readings: Vec<u64>,
+}
+
+impl Arm {
+    pub fn refused(arm: &'static str, dynamics: u64, why: String) -> Self {
+        Self {
+            arm,
+            dynamics,
+            micros: 0,
+            evaluations: 0,
+            represented: 0,
+            accepted: 0,
+            blocked: 0,
+            stored: 0,
+            alive: 0,
+            alive_states: 0,
+            shortfalls: 0,
+            refused: Some(why),
+            readings: Vec::new(),
+        }
+    }
 }
 
 fn is_zero(n: &u64) -> bool {
@@ -227,6 +251,7 @@ static MISSING: Arm = Arm {
     alive: 0,
     alive_states: 0,
     shortfalls: 0,
+    refused: None,
     readings: Vec::new(),
 };
 
@@ -260,7 +285,7 @@ pub struct Approximate {
 }
 
 impl Savings {
-    pub fn new(draws: &[Draw]) -> Self {
+    pub fn new(draws: &[&Draw]) -> Self {
         let total =
             |name: &str, f: fn(&Arm) -> u64| draws.iter().map(|d| f(find(d, name))).sum::<u64>();
         let ran = |name: &str| draws.iter().all(|d| d.arms.iter().any(|a| a.arm == name));
@@ -321,8 +346,8 @@ pub struct Density {
 }
 
 impl Density {
-    pub fn new(draws: &[Draw]) -> Self {
-        let spread = |f: &dyn Fn(&Draw) -> f64| Spread::of(draws.iter().map(f).collect());
+    pub fn new(draws: &[&Draw]) -> Self {
+        let spread = |f: &dyn Fn(&Draw) -> f64| Spread::of(draws.iter().map(|d| f(d)).collect());
         Self {
             founders: spread(&|d| d.members as f64),
             alive_end: spread(&|d| find(d, "crowd").alive as f64),
@@ -414,6 +439,9 @@ pub struct Receipt {
     pub savings: Savings,
     pub density: Density,
     pub checks: Checks,
+    /// The draws each crowd refused, by arm, when there were any.
+    #[serde(skip_serializing_if = "std::collections::BTreeMap::is_empty")]
+    pub refused: std::collections::BTreeMap<&'static str, Vec<u64>>,
     pub note: &'static str,
     pub draws: Vec<Draw>,
 }
