@@ -90,7 +90,7 @@ impl Simulation {
             .rules
             .processes
             .values()
-            .filter(|p| p.id != process && p.shape == Shape::Choice)
+            .filter(|p| p.id != process && p.causation == Causation::Choice)
             .filter(|p| {
                 self.target_matches(actor, target, p)
                     && p.requires

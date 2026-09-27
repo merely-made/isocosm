@@ -157,7 +157,7 @@ impl Simulation {
         if !entity.alive {
             return Ok(());
         }
-        if process.shape == Shape::Agentless {
+        if process.causation == Causation::Agentless {
             if entity.kingdom != "kingdom:world" {
                 return Ok(());
             }

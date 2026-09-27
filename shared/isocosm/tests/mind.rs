@@ -41,7 +41,7 @@ fn world(low: u64) -> Genesis {
     });
     let mut build = rules.processes["sim:remember"].clone();
     build.id = "mind:strain".into();
-    build.shape = Shape::Transition;
+    build.causation = Causation::Transition;
     build.note = false;
     build.requires = vec![
         Query::Alive(Binding::Actor),

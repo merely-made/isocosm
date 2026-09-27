@@ -51,7 +51,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let lineage = format!("lineage:{i}");
         let mut upkeep = process(
             &format!("ecology:upkeep-{i}"),
-            Shape::Choice,
+            Causation::Choice,
             vec![
                 Effect::Transform {
                     who: Binding::Actor,
@@ -75,7 +75,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         g.rules.processes.insert(upkeep.id.clone(), upkeep);
         let mut death = process(
             &format!("ecology:death-{i}"),
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Death],
         );
         death.requires.extend([
@@ -95,7 +95,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         g.rules.processes.insert(death.id.clone(), death);
         let mut age = process(
             &format!("ecology:age-{i}"),
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Death],
         );
         age.requires.extend([
@@ -114,7 +114,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let child_mass = founding.stock_min.max(2);
         let mut birth = process(
             &format!("ecology:birth-{i}"),
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Birth {
                 provision: BTreeMap::from([(body.clone(), child_mass)]),
             }],
@@ -137,7 +137,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         if i % 3 == 0 {
             let mut grow = process(
                 &format!("ecology:produce-{i}"),
-                Shape::Choice,
+                Causation::Choice,
                 vec![
                     Effect::Transfer {
                         from: Binding::Place,
@@ -175,7 +175,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 .collect();
             let mut feed = process(
                 &format!("ecology:feed-{i}"),
-                Shape::Choice,
+                Causation::Choice,
                 vec![Effect::Eat {
                     from: Binding::Target,
                     amount: 1,

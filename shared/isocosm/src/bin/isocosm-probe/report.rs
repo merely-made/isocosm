@@ -9,7 +9,7 @@ use isocosm::{
         check::{Comparison, Settings},
         readings::{Probe, Reading},
     },
-    rules::{Effect, Process, Query, Shape},
+    rules::{Causation, Effect, Process, Query},
     schema::Key,
 };
 use serde::Serialize;
@@ -158,7 +158,7 @@ impl Draw {
         // What regrows a thing is the agentless process that makes it.
         let regrowth = |key: &Key| {
             let makes = |p: &&Process| {
-                p.shape == Shape::Agentless
+                p.causation == Causation::Agentless
                     && p.effects.iter().any(
                         |e| matches!(e, Effect::Transform { give, .. } if give.contains_key(key)),
                     )

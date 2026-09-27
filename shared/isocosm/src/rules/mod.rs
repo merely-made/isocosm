@@ -25,7 +25,7 @@ pub enum AccountKind {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Shape {
+pub enum Causation {
     Choice,
     Agentless,
     Transition,
@@ -185,7 +185,10 @@ pub struct Target {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Process {
     pub id: Key,
-    pub shape: Shape,
+    /// A process's causal kind (ruling 340), saved as `shape`, the name
+    /// it had before part shapes took it, so old worlds load.
+    #[serde(rename = "shape")]
+    pub causation: Causation,
     pub requires: Vec<Query>,
     pub commitments: Vec<Effect>,
     pub effects: Vec<Effect>,

@@ -269,7 +269,7 @@ impl ProbeFounding {
         let round_strain = self.pick("probe-round-strain", 0, self.round_strain);
         let round = process(
             "probe:round",
-            Shape::Choice,
+            Causation::Choice,
             contested::strain(round_strain),
         );
         for p in keeping.into_iter().chain([round]) {

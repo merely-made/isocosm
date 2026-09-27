@@ -41,10 +41,10 @@ impl Default for Founding {
 fn set(values: &[&str]) -> BTreeSet<Key> {
     values.iter().map(|s| s.to_string()).collect()
 }
-pub(crate) fn process(id: &str, shape: Shape, effects: Vec<Effect>) -> Process {
+pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> Process {
     Process {
         id: id.into(),
-        shape,
+        causation,
         requires: vec![Query::Alive(Binding::Actor)],
         commitments: vec![],
         effects,
@@ -137,7 +137,7 @@ impl Founding {
                 let id = format!("process:cycle-{i}-{j}");
                 let mut p = process(
                     &id,
-                    Shape::Choice,
+                    Causation::Choice,
                     vec![Effect::Transform {
                         who: Binding::Actor,
                         take: BTreeMap::from([(source.clone(), amount)]),
@@ -165,7 +165,7 @@ impl Founding {
         }
         let mut mark = process(
             "sim:remember",
-            Shape::Choice,
+            Causation::Choice,
             vec![Effect::Note {
                 kind: "sim:observed".into(),
                 text: "Observed at the specimen bench.".into(),
@@ -176,7 +176,7 @@ impl Founding {
         processes.insert(mark.id.clone(), mark);
         let mut donate = process(
             "sim:give",
-            Shape::Choice,
+            Causation::Choice,
             vec![Effect::Transfer {
                 from: Binding::Actor,
                 to: Binding::Target,
@@ -188,19 +188,19 @@ impl Founding {
         processes.insert(donate.id.clone(), donate);
         let mut birth = process(
             "sim:birth",
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Birth {
                 provision: BTreeMap::from([("world:soil".into(), 2)]),
             }],
         );
         birth.note = true;
         processes.insert(birth.id.clone(), birth);
-        let mut death = process("sim:death", Shape::Transition, vec![Effect::Death]);
+        let mut death = process("sim:death", Causation::Transition, vec![Effect::Death]);
         death.note = true;
         processes.insert(death.id.clone(), death);
         let polity = process(
             "sim:found-polity",
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::FoundPolity {
                 governance: "governance:consent".into(),
                 focus: set(&["sim:give"]),
@@ -210,7 +210,7 @@ impl Founding {
         processes.insert(polity.id.clone(), polity);
         let mut reckon = process(
             "sim:reckon",
-            Shape::Transition,
+            Causation::Transition,
             vec![Effect::Record {
                 axis: "feat:reserve".into(),
                 account: "world:soil".into(),
@@ -220,7 +220,7 @@ impl Founding {
         processes.insert(reckon.id.clone(), reckon);
         let mut weather = process(
             "world:weather",
-            Shape::Agentless,
+            Causation::Agentless,
             vec![Effect::Condition {
                 key: "world:weather".into(),
                 delta: 1,
