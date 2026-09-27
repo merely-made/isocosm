@@ -1,0 +1,53 @@
+{
+ "kind": "isocosm-checkpoint-5-draws",
+ "parts": {
+  "master_seed": 1790490907045540900,
+  "draws": 1000,
+  "modes_agree": 1000,
+  "functions_per_draw": [
+   41,
+   48
+  ],
+  "functions_bound_per_draw": [
+   41,
+   48
+  ],
+  "functions_never_bound": [],
+  "times_each_function_bound": [
+   77,
+   108
+  ],
+  "draws_with_marks_read_back": 1000,
+  "members_represented": 4083192,
+  "evaluations_individual": 4083192,
+  "evaluations_grouped": 2327048
+ },
+ "flows": {
+  "master_seed": 1790490907209296200,
+  "draws": 1000,
+  "steps_per_draw": 60,
+  "modes_agree_every_step": 1000,
+  "every_ledger_reconciled_every_step": 1000,
+  "matter_founded_plus_issued_every_step": 1000,
+  "flows_individual": 2521166,
+  "flows_grouped": 2369249,
+  "cohort_flows": 50822,
+  "draws_with_cohort_flows": 1000,
+  "issued_per_draw": [
+   0,
+   421
+  ],
+  "made_by": [
+   "command PlaceMatter",
+   "ecology:birth",
+   "ecology:feed",
+   "ecology:produce",
+   "ecology:upkeep",
+   "sim:birth",
+   "sim:give",
+   "test:graze",
+   "test:respire"
+  ],
+  "unreconciled": []
+ }
+}

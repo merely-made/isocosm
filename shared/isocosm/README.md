@@ -90,6 +90,40 @@ founding parameters accompany its realized rules and topology.
   account the prey holds in proportion and credited to the eater's own body.
   Sites are explicitly well-mixed compartments. These are testable law
   families, not the full authored ecology.
+- A world's rules may name the shapes its parts take and a catalogue of
+  functions (rulings 276, 278 and 338 to 341), each function listing the
+  shapes that admit it and whether growing such a part expresses it (Grown)
+  or only a development does (Acquired). A part has a shape and expresses
+  functions its shape admits. A process requiring `Expresses` binds its
+  actor's lowest-numbered live part expressing that function as
+  `Binding::Part`: its receipt reads that part's address and the body's
+  revision, and it may read and mark the part's traits, which revises the
+  body. Ruling 276's eight shapes, under their own `part-shape:` keys (ruling
+  360), and ruling 339's five functions in use are defaults a world adopts by
+  naming them; a world naming none serializes and hashes as before. A required
+  function is one of a process's gates. The crowd refuses processes that bind
+  a part until the vertical probe certifies them.
+- A transform may declare a conversion, checked against Mesocosm's three
+  (rulings 342 and 357): synthesis turns the world's matter, of a lineage of
+  the world's kingdom, into the body's own lineage's, so whatever synthesizes
+  is a producer; digestion turns living matter into the eater's own; and
+  mineralization returns matter that includes living matter to the world's.
+  Undeclared transforms pass as before. `diffusion::percolate` is Mesocosm's
+  soil transport as a pure kernel over ledgers, unwired until the places
+  family decides whether columns are sites (ruling 343).
+- A dev may place matter into any declared matter account at a site
+  (`Command::PlaceMatter`, rulings 271, 344 and 358). It enters from outside
+  the conserved total: the world hashes as the matter it holds, what was
+  issued is kept beside the world and recomputed on replay, every receipt
+  carries it beside the conserved totals once it is not nothing, and the
+  history labels the run assisted.
+- A host may keep the flow record (rulings 270, 345 and 359): every matter
+  move an accepted act makes, from holder and account to holder and account,
+  what each member moved and the members the act stood for, with the act's
+  process, or the command for the dev source's placements. Kept outside the
+  world's state and taken when wanted, it reaches no hash or save; a blocked
+  act or an advance put back leaves none, and every member's and site's
+  ledgers reconcile with it in both modes.
 - Notes use the Impresa causal core with a Djot/open-data envelope. Events
   spread along directed routes. Deterministic knowing integrates past
   residence and decaying reach; learning fixes a note. Hagiograph judges
@@ -148,8 +182,9 @@ This is the first executable foundation of the
 S1-S6. The schema includes several future authoring seams whose full behavior
 is not implemented: goals and deliberation, ranked polity consent, genotype
 epochs and realignment, world crossing, magic, body-volume mechanics, and
-the complete thirty-process vocabulary. Periodic processes use authored
-cadences; they are not a general planner.
+what the catalogue's functions do beyond binding a part, which the vertical
+probe (ruling 262) takes up. Periodic processes use authored cadences; they
+are not a general planner.
 
 Collection is conservative exact compression. It retains deviations and
 history; graded stubs, event pruning and reconstruction from a sparse log
