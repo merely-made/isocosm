@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-26:** rulings run to 326, and W5 is drafted as the
+**Status, 2026-09-26:** rulings run to 329, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -2643,8 +2643,9 @@ what later sections derive from.
      comparisons, which could let a crowd that refuses often still pass;
      record with a bound, record and leave out, or abort? Mark: "Record,
      with a bound." The check fails if an arm under test refuses more than
-     1% of its draws. *Reading, not ruled:* the arm under test is the crowd
-     being certified, and the controls record their refusals unbounded.
+     1% of its draws. *Reading, not ruled:* the arms under test are the
+     crowds being certified or qualified, the approximate crowd included,
+     and the controls record their refusals unbounded.
 318. **The headroom's picture change is explained before paging merges.**
      Put to Mark on 2026-09-26, from Lane E's second round: with one spare
      layer the 256 board changes in 356 pixels, 0.011%, two 3-pixel bands
@@ -2684,6 +2685,12 @@ what later sections derive from.
      against; exact pins in mere, an exact pin in isometer-lens, or
      isometer's lock committed? Mark: "Exact pins in mere." *Reading, not
      ruled:* isometry's pins move to the mere revision that carries them.
+     *Reopened the same day:* it conflicts with ruling D1 of mere's burn
+     migration plan (2026-09-16), which moves mere to pre.3 as caret
+     requirements and revisits tightening at stable 0.22.0. Put back,
+     Mark asked whether burn 0.22.0-pre.4, published four days before,
+     lets everything move to it; that is assessed before this is ruled
+     again.
 323. **With Cleromancy off, `>choose` seeds its draw from the command.** Put
      to Mark on 2026-09-26, with 321: the VTT's own seeded draw of ruling
      298 takes the command's seed and domain, so a command always makes the
@@ -2713,6 +2720,30 @@ what later sections derive from.
      until Eponym needs construction? Mark: "Assess first." A lane maps
      what conatus and nisus already do and what T2 needs, and comes back
      with forks before any edit to mere.
+327. **The pin bump lands at mere's current main.** Put to Mark on
+     2026-09-26, from the check behind ruling 322: mere's main had moved 16
+     commits past the 668854c9 Lane G pinned and verified, with insigne's
+     phase B and genet and netrender repinned to 0cf4f30b and c8c09f16;
+     finish at 668854c9, or retarget? Mark: "Retarget to mere's main now."
+     So isometry moves to mere 0418391f with genet 0cf4f30b and netrender
+     c8c09f16, the toolchain to 1.98.1 with them (321), and the bump's
+     checks run again there.
+328. **`eponym/CLAUDE.md` names the Eponym overlay plan as the executable
+     plan.** Put to Mark on 2026-09-26, after ruling 313 retired the
+     execution plan: the doc lane's wording for the two lines that named
+     it. Mark: "Amend as drafted."
+329. **The pin bump merges now, and genet's text fragment is fixed next.**
+     Put to Mark on 2026-09-26, from the side panel's comparison under
+     ruling 319: at the old pins every row holds its text, and at the new
+     ones rows at 11 to 13 px are a pixel shorter than their text fragment,
+     because genet 6afb472a builds line boxes from rounded font metrics, as
+     Chromium does, while its text fragment keeps Parley's taller extent;
+     mere's newer genet does not touch that code. Bump now and fix genet
+     next, fix genet before the bump, or accept it as Chromium does? Mark:
+     "Bump now, fix genet next." The two figures move to the shorter panel,
+     the row test is set aside with a pointer to this finding, and a genet
+     lane makes the fragment take the line box's rounded metrics, landing
+     with the next repin, mere's first.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6498,6 +6529,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   paging, full W3C animation in genet, mesh bodies as a second kind);
   §4.7 parallelism added as a W2 requirement from the stack's June
   briefs; the web posture reopened with a recommendation in §4.5.
+- 2026-09-26: rulings 327 to 329 recorded: the pin bump retargets to
+  mere's current main; `eponym/CLAUDE.md` names the Eponym overlay plan as
+  its executable plan, amended at Mark's word; and the bump merges with
+  the side panel's figures moved while genet's text fragment is fixed
+  next. Ruling 322 is reopened, since it conflicts with D1 of mere's burn
+  migration plan, and Mark asked whether burn pre.4 lets everything move
+  to it. The doc lane's second batch, rulings 308 to 315 applied, landed.
 - 2026-09-26: rulings 316 to 326 recorded, from the lanes' reports:
   checkpoint 4b's hunting domain accepted, refused draws recorded under a
   1% bound, and the sim core's observation hook kept; paging's headroom

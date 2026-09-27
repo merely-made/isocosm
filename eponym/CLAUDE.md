@@ -73,9 +73,11 @@ vocabulary. Its direct Mesocosm core dependency is current shared-organ
 evidence, not settled permanent ownership. F0-F2 are closed; F3 memory,
 belief, and standing is active, with F3a (pointable memory and belief)
 landed 2026-08-26. The executable plan is
-`design_docs/2026-08-07_paredros_execution_plan.md`; S0-S3 are retained as
-foundation receipts, while the 2026-08-13 fundamental-layer ledger now owns
-future ordering. The founding plan remains the charter with its phase section
+`design_docs/2026-09-25_eponym_overlay_plan.md`, phases E0 to E4 (wing design
+record ruling 313, 2026-09-26); the 2026-08-07 execution plan is archived at
+`design_docs/archive_docs/2026-09-26/`, its S0-S3 and F0-F2 retained as
+foundation receipts and its F3-F8 mapped onto E2's families in the overlay
+plan's §4.1. The founding plan remains the charter with its phase section
 superseded.
 
 The local `eponym-world::Session` foundation (2026-09-09) composes one
@@ -93,7 +95,7 @@ timed strikes, impairment/recovery, and a readable shared-device HUD.
 `eponym-world::ContactWorld` is a separate fixed-step input/replay probe
 using Conatus character movement, not yet a join to `GameState` or F3 evidence.
 Its stationary practice body has no decision system. Full encounter and
-playtester acceptance remain open in the execution plan.
+playtester acceptance remain open in the Eponym overlay plan's E3 and E4.
 
 See `design_docs/PROJECT_DESCRIPTION.md` for the product description,
 `design_docs/DOC_README.md` for the doc index, and the wing-level
