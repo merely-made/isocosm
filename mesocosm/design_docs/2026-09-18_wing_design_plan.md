@@ -6975,6 +6975,18 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Mere's plan/index carry 375–377 at main `844affce`.
+  Lane M's separate fixture prerequisite `43c50fc6` passes both locked
+  pre.2 builds; root verified 496 source hashes and the final log hash.
+  The refreshed fixture mirrors the eight mesh patches and owned Vello
+  source; its existing source closure explains the larger nested lock.
+  The six-comparison guard and manifest-only runtime patch are prepared
+  and independently source-reviewed, but uncompiled. Offline resolution
+  stops at missing `cubecl-spirv =0.11.0-pre.4`; guard tests and the
+  deliberately removed-service control have not run. A bounded download
+  question is pending. Production dependencies remain unchanged. Evidence:
+  `Code/testing/mere/receipts/2026-09-27/burn-pre4/`; Mere's migration plan
+  owns the checkpoint and remaining acceptance gates.
 - 2026-09-27: ruling 377 adds service identity to the five existing
   allocation/view comparisons and requires a rejection control before
   migration proceeds. Mere's plan is updated with this explicit disposition

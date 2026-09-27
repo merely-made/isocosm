@@ -495,6 +495,14 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, first migration checkpoint.** The repaired remote fixture
+passes its locked pre.2 baseline, independently checked. The runtime and
+six-comparison guard patches are prepared and source-reviewed. Guard tests
+and their deliberate fault control remain unrun: offline resolution needs
+the uncached `cubecl-spirv 0.11.0-pre.4`. The plan requires returning with
+that concrete download request; the question is pending. Main's production
+dependencies remain pre.2. The complete Distillery gates remain required.
+
 **2026-09-27, allocation guard answered.** Ruling 377 keeps the five
 existing comparisons and adds service identity. A verified mismatch
 rejection is required before proceeding. Mere's migration plan carries the
