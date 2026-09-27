@@ -76,6 +76,14 @@ pub struct Receipt {
     pub outcome: Outcome,
     pub matter_before: u128,
     pub matter_after: u128,
+    /// What the dev source has issued into the run so far, part of the
+    /// conserved totals beside it (ruling 344); absent while nothing is.
+    #[serde(default, skip_serializing_if = "nothing")]
+    pub issued: u128,
+}
+
+fn nothing(amount: &u128) -> bool {
+    *amount == 0
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -97,6 +105,8 @@ pub struct Simulation {
     /// change this sum, so receipts read it here rather than re-summing the
     /// whole world for every act.
     pub(crate) conserved: u128,
+    /// What the dev source has issued, part of `conserved` (ruling 344).
+    pub(crate) issued: u128,
     /// Groups filed for target searches, kept only during an advance.
     pub(crate) targets: Option<crate::targets::Targets>,
     /// Groups filed by the traits due processes require, kept only during
@@ -137,6 +147,7 @@ impl Simulation {
             mode,
             revision,
             conserved,
+            issued: 0,
             targets: None,
             filed: None,
             pass: None,

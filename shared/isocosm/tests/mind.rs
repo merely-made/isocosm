@@ -51,6 +51,7 @@ fn world(low: u64) -> Genesis {
         who: Binding::Actor,
         take: BTreeMap::new(),
         give: BTreeMap::from([(STRAIN.into(), 3)]),
+        conversion: None,
     }];
     build.period = Some(1);
     let mut bleed = build.clone();

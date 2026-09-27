@@ -142,6 +142,7 @@ impl Founding {
                         who: Binding::Actor,
                         take: BTreeMap::from([(source.clone(), amount)]),
                         give: BTreeMap::from([(destination, amount)]),
+                        conversion: None,
                     }],
                 );
                 p.requires.extend([

@@ -23,6 +23,7 @@ fn an_act_that_would_make_matter_is_refused_and_changes_nothing() {
         who: Binding::Actor,
         take: BTreeMap::new(),
         give: BTreeMap::from([("world:soil".into(), 1)]),
+        conversion: None,
     });
     let rules = &mut std::sync::Arc::make_mut(&mut sim.genesis).rules;
     rules.processes.insert(conjure.id.clone(), conjure);

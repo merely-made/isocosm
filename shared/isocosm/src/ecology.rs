@@ -57,6 +57,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     who: Binding::Actor,
                     take: BTreeMap::from([(body.clone(), 1)]),
                     give: BTreeMap::from([("world:soil".into(), 1)]),
+                    conversion: None,
                 },
                 Effect::Transfer {
                     from: Binding::Actor,
@@ -149,6 +150,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                         who: Binding::Actor,
                         take: BTreeMap::from([("world:soil".into(), 2)]),
                         give: BTreeMap::from([(body, 2)]),
+                        conversion: None,
                     },
                 ],
             );

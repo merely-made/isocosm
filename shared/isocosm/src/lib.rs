@@ -7,6 +7,8 @@
 
 pub mod aggregate;
 pub mod bench;
+mod dev;
+pub mod diffusion;
 mod ecology;
 mod execute;
 pub mod generate;

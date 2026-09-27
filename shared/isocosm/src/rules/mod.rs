@@ -112,6 +112,11 @@ pub enum Effect {
         who: Binding,
         take: Ledger,
         give: Ledger,
+        /// The kind of conversion it declares, checked against that kind
+        /// (rulings 342 and 357); undeclared transforms pass as before, and
+        /// serialize as they did.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        conversion: Option<Conversion>,
     },
     Condition {
         key: Key,
@@ -170,6 +175,20 @@ pub enum Effect {
         amount: u64,
         into: Key,
     },
+}
+
+/// The conversions a transform may declare (rulings 342 and 357). World
+/// matter is matter of a lineage of the world's kingdom (rulings 98 and 100);
+/// all other matter is living.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Conversion {
+    /// World matter into the body's own lineage's: whatever synthesizes is a
+    /// producer.
+    Synthesis,
+    /// Living matter into the eater's own lineage's.
+    Digestion,
+    /// Living matter back into the world's.
+    Mineralization,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

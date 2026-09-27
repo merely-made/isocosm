@@ -62,7 +62,8 @@ impl Staged<'_> {
 
     /// Applies one effect to the stage. Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
-        if let Some(done) = meaning::effect(self, e) {
+        let rules = &self.sim.genesis.rules;
+        if let Some(done) = meaning::effect(self, rules, e) {
             done?;
             return Ok(false);
         }

@@ -38,6 +38,7 @@ impl Simulation {
             outcome: Outcome::Accepted,
             matter_before: before,
             matter_after: before,
+            issued: self.issued,
         };
         // The definition is read from the shared genesis while the world is
         // written.

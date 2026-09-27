@@ -96,6 +96,7 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
                 who: Binding::Actor,
                 take,
                 give,
+                ..
             } => accounts.extend(take.keys().chain(give.keys()).cloned()),
             Effect::Transfer {
                 from, to, account, ..

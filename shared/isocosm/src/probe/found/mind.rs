@@ -166,6 +166,7 @@ impl MindFounding {
                 who: Binding::Actor,
                 take: BTreeMap::new(),
                 give: BTreeMap::from([(STRAIN.into(), pick("mind-build", 0, self.build))]),
+                conversion: None,
             }],
         );
         build.requires.push(Query::MoodBelow { amount: low_mood });

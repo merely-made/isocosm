@@ -5,8 +5,10 @@ use crate::{Result, meaning::mass, rules::*, schema::Key};
 use std::collections::BTreeMap;
 
 mod body;
+mod conversion;
 
 pub(crate) use body::part;
+pub(crate) use conversion::kinds as conversions;
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -243,6 +245,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             query(rules, q)?;
         }
         for e in effects {
+            conversion::declared(rules, id, e)?;
             match e {
                 Effect::Transfer { account: a, .. } => account(rules, a)?,
                 Effect::Transform { take, give, .. } => {

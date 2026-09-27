@@ -236,7 +236,7 @@ pub(super) fn apply(
         contended: false,
     };
     for effect in effects {
-        match meaning::effect(&mut bin, effect) {
+        match meaning::effect(&mut bin, rules, effect) {
             None => return Err(format!("the crowd cannot apply {effect:?}")),
             Some(Ok(())) => {},
             Some(Err(why)) if bin.contended => return Err(format!("{}: {why}", p.id)),

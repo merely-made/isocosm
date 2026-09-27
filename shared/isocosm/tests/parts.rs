@@ -81,6 +81,7 @@ fn energy(amount: i64) -> Effect {
         who: Binding::Actor,
         take,
         give,
+        conversion: None,
     }
 }
 

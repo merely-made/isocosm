@@ -8,7 +8,7 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Effect, Need, Query, Rules, expressing},
+    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Rules, expressing},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -244,7 +244,7 @@ pub(crate) trait Parties {
 /// The effects both runners apply. The others write the world's records,
 /// relations, notes, births, polities and legend, which only the individual
 /// runner keeps; `None` hands those back to it.
-pub(crate) fn effect(p: &mut impl Parties, e: &Effect) -> Option<Result<()>> {
+pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<Result<()>> {
     Some(match e {
         Effect::Transfer {
             from,
@@ -254,7 +254,12 @@ pub(crate) fn effect(p: &mut impl Parties, e: &Effect) -> Option<Result<()>> {
         } => p
             .take(*from, account, *amount)
             .and_then(|()| p.give(*to, account, *amount)),
-        Effect::Transform { who, take, give } => transform(p, *who, take, give),
+        Effect::Transform {
+            who,
+            take,
+            give,
+            conversion,
+        } => transform(p, rules, *who, (take, give), *conversion),
         Effect::Condition { key, delta } => p.shift(key, *delta),
         Effect::Trait {
             who: Binding::Part,
@@ -277,8 +282,28 @@ fn ease(e: &mut Entity, key: &str, amount: u64) {
     }
 }
 
-fn transform(p: &mut impl Parties, who: Binding, take: &Ledger, give: &Ledger) -> Result<()> {
+/// A transform takes and gives on one ledger. A declared synthesis or
+/// digestion gives only the body's own lineage's matter (ruling 357);
+/// admission has checked the rest of what each conversion takes and gives.
+fn transform(
+    p: &mut impl Parties,
+    rules: &Rules,
+    who: Binding,
+    (take, give): (&Ledger, &Ledger),
+    conversion: Option<Conversion>,
+) -> Result<()> {
     p.reach(who)?;
+    if let Some(kind @ (Conversion::Synthesis | Conversion::Digestion)) = conversion {
+        let own = p.body(who)?.lineage.clone();
+        let foreign = give.keys().find(|k| {
+            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage }) if *lineage == own)
+        });
+        if let Some(key) = foreign {
+            return Err(format!(
+                "{kind:?} gives {key}, which is not {own}'s own matter"
+            ));
+        }
+    }
     for (key, amount) in take {
         p.take(who, key, *amount)?;
     }
@@ -335,3 +360,6 @@ pub(crate) fn shift(
     *slot = slot.checked_add(total).ok_or("condition overflow")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests;

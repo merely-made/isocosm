@@ -67,6 +67,7 @@ fn spend(from: &str) -> Vec<Effect> {
             who: Binding::Actor,
             take: BTreeMap::from([(from.into(), 1)]),
             give: BTreeMap::from([("world:soil".into(), 1)]),
+            conversion: None,
         },
         Effect::Transfer {
             from: Binding::Actor,
@@ -86,6 +87,7 @@ pub(super) fn strain(amount: u64) -> Vec<Effect> {
         who: Binding::Actor,
         take: BTreeMap::new(),
         give: BTreeMap::from([(STRAIN.into(), amount)]),
+        conversion: None,
     }]
 }
 
@@ -102,6 +104,7 @@ fn feed(thing: &Thing, store: &str, amount: u64) -> Vec<Effect> {
             who: Binding::Actor,
             take: BTreeMap::from([(thing.key.into(), amount)]),
             give: BTreeMap::from([(store.into(), amount)]),
+            conversion: None,
         },
     ]
 }
@@ -115,6 +118,7 @@ pub(super) fn regrow(thing: &Thing, amount: u64) -> Process {
             who: Binding::Place,
             take: BTreeMap::from([("world:soil".into(), amount)]),
             give: BTreeMap::from([(thing.key.into(), amount)]),
+            conversion: None,
         }],
     );
     p.requires.push(Query::Account {
