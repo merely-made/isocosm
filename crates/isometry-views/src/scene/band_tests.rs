@@ -11,6 +11,11 @@
 //! which part of the pointer box moves them, through a replica of the
 //! traversal whose box can be moved alone; and what an f64 traversal of the
 //! same ray, started from no box at all, says the pixel shows.
+//!
+//! The gate requires headroom to move zero CPU and GPU texels. The retained
+//! old walker must reproduce its 330 moved texels in the same run, proving
+//! that this fixture still detects the accumulation fault. GPU absence fails
+//! this manually requested receipt rather than certifying an empty check.
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -150,8 +155,7 @@ fn headroom_bands() {
     let far = trace.far();
     let through = |map: &BrickMap, o, d| -> Hit {
         map.trace_ray(o, d, far)
-            .ok()
-            .flatten()
+            .expect("the probe's valid ray must finish its traversal")
             .map(|hit| (hit.voxel, hit.material))
     };
 
@@ -235,10 +239,21 @@ fn headroom_bands() {
         .iter()
         .map(|(_, _, o, d)| through(&map0, *o, *d))
         .collect();
+    assert!(
+        base.iter().any(Option::is_some),
+        "the CPU frame must hit terrain"
+    );
+    let mut old_baseline = Vec::with_capacity(rays.len());
+    let mut old_moved = 0usize;
     for (name, bounds) in &variants {
         let (mut unlike_base, mut unlike_self) = (0usize, 0usize);
-        for ((_, _, o, d), before) in rays.iter().zip(&base) {
+        for (index, ((_, _, o, d), before)) in rays.iter().zip(&base).enumerate() {
             let hit = replica(*o, *d, far, *bounds, &ground);
+            if *name == "headroom 0" {
+                old_baseline.push(hit);
+            } else if *name == "headroom 1" {
+                old_moved += usize::from(hit != old_baseline[index]);
+            }
             unlike_base += usize::from(hit != *before);
             if *name == "headroom 1" {
                 unlike_self += usize::from(hit != through(&map1, *o, *d));
@@ -301,7 +316,7 @@ fn headroom_bands() {
     }
 
     // 5. The GPU's own two pictures.
-    match (render(&ui, camera, 0), render(&ui, camera, 1)) {
+    let gpu_moved = match (render(&ui, camera, 0), render(&ui, camera, 1)) {
         (Some(zero), Some(one)) => {
             let mut gpu = Vec::new();
             for py in 0..TEXTURE[1] {
@@ -321,7 +336,15 @@ fn headroom_bands() {
                 json!({"kind": "gpu-diff", "texels": gpu.len(), "columns": gpu_columns,
                 "also_moved_on_the_cpu": shared}),
             );
+            gpu.len()
         },
-        _ => eprintln!("SKIPPED: no wgpu adapter, so the GPU arm drew nothing."),
-    }
+        _ => panic!("the headroom receipt requires two successful GPU captures"),
+    };
+    line(json!({"kind": "old-walker-control", "texels": old_moved}));
+    assert_eq!(
+        old_moved, 330,
+        "the old walker must expose the original fault"
+    );
+    assert_eq!(moved.len(), 0, "headroom must not move CPU hits");
+    assert_eq!(gpu_moved, 0, "headroom must not move GPU pixels");
 }
