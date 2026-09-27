@@ -9,7 +9,14 @@
 //! whole copy would have held; dropping the stage leaves the world as it
 //! was, identity grouping included.
 
-use crate::{Result, meaning::mass, reach::Reach, schema::*, simulation::Simulation};
+use crate::{
+    Result,
+    flows::{Leg, MadeBy},
+    meaning::mass,
+    reach::Reach,
+    schema::*,
+    simulation::Simulation,
+};
 use std::collections::BTreeMap;
 
 mod staged;
@@ -42,6 +49,8 @@ pub(crate) struct Stage {
     marks: Vec<(Key, i64)>,
     highs: BTreeMap<Key, i64>,
     event: Option<(Event, Reach)>,
+    /// The act's matter moves, for the flow record (ruling 345).
+    legs: Vec<Leg>,
 }
 
 impl Simulation {
@@ -81,6 +90,7 @@ impl Simulation {
             marks: vec![],
             highs: BTreeMap::new(),
             event: None,
+            legs: vec![],
         })
     }
 
@@ -149,10 +159,12 @@ impl Simulation {
         firsts
     }
 
-    /// Writes an accepted act. Identities split as the whole copy split them
-    /// before its first write: the actor alone unless it acts for its
-    /// cohort, then the target.
-    pub(crate) fn commit(&mut self, stage: Stage, next_action: u64) {
+    /// Writes an accepted act of `process`, and its matter moves to the flow
+    /// record. Identities split as the whole copy split them before its
+    /// first write: the actor alone unless it acts for its cohort, then the
+    /// target.
+    pub(crate) fn commit(&mut self, mut stage: Stage, next_action: u64, process: &str) {
+        let (legs, count) = (std::mem::take(&mut stage.legs), stage.count);
         let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() {
             self.reaches(&stage)
         } else {
@@ -187,6 +199,7 @@ impl Simulation {
             }
         }
         self.write(stage, next_action);
+        self.flowed(MadeBy::Process(process.into()), legs, count);
         if let Some(t) = &mut self.targets {
             t.touch(&self.state.population, reached.iter().copied());
         }

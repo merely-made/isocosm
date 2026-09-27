@@ -8,7 +8,14 @@
 //! recomputed on replay from the history, whose placing command is the
 //! record and labels the run assisted.
 
-use crate::{Result, meaning::credit, rules::AccountKind, schema::*, simulation::Simulation};
+use crate::{
+    Result,
+    flows::{Holder, Leg, MadeBy},
+    meaning::credit,
+    rules::AccountKind,
+    schema::*,
+    simulation::Simulation,
+};
 
 impl Simulation {
     /// Places `amount` of the matter account `account` at `site`.
@@ -28,6 +35,12 @@ impl Simulation {
         let s = self.state.sites.get_mut(&site).ok_or("unknown site")?;
         credit(&mut s.accounts, account, amount)?;
         (self.conserved, self.issued) = (conserved, issued);
+        let leg = Leg {
+            from: (Holder::Dev, account.into()),
+            to: (Holder::Site(site), account.into()),
+            amount,
+        };
+        self.flowed(MadeBy::Command("PlaceMatter".into()), vec![leg], 1);
         Ok(())
     }
 

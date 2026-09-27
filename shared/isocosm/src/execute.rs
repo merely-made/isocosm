@@ -171,7 +171,7 @@ impl Simulation {
         if risky {
             receipt.outcome = Outcome::RiskOutcome;
         }
-        self.commit(stage, next);
+        self.commit(stage, next, process);
         debug_assert_eq!(
             self.matter(),
             self.conserved,

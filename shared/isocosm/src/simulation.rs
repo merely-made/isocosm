@@ -118,6 +118,8 @@ pub struct Simulation {
     pub(crate) journal: Option<crate::journal::Journal>,
     /// The scheduled acts a host asked to see.
     pub(crate) watch: crate::watch::Watch,
+    /// The matter moves a host asked to see.
+    pub(crate) flows: crate::flows::Flows,
 }
 
 impl Simulation {
@@ -153,6 +155,7 @@ impl Simulation {
             pass: None,
             journal: None,
             watch: Default::default(),
+            flows: Default::default(),
         })
     }
     pub fn state(&self) -> &State {
@@ -209,6 +212,7 @@ impl Simulation {
         if fresh {
             self.journal = Some(crate::journal::Journal::new(&self.state));
             self.watch_from();
+            self.flows_from();
         }
         fresh
     }
@@ -222,6 +226,7 @@ impl Simulation {
         if !accepted {
             journal.rollback(&mut self.state);
             self.unwatch();
+            self.unflow();
         }
     }
     pub fn inspect(&mut self, id: Id) -> Result<()> {

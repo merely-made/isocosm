@@ -8,6 +8,7 @@
 use super::Stage;
 use crate::{
     Result,
+    flows::{self, Holder, Leg},
     meaning::{self, Parties, credit, debit},
     rules::*,
     schema::*,
@@ -37,6 +38,15 @@ impl Staged<'_> {
         }
         Ok(self.stage.site.as_mut().expect("copied above"))
     }
+    /// Who holds a binding's ledger in this act.
+    fn holder(&self, who: Binding) -> Option<Holder> {
+        match who {
+            Binding::Actor => Some(Holder::Entity(self.stage.actor)),
+            Binding::Target => self.stage.target.map(Holder::Entity),
+            Binding::Place => Some(Holder::Site(self.stage.place)),
+            Binding::Part => None,
+        }
+    }
     fn actor(&mut self) -> &mut Entity {
         let actor = self.stage.actor;
         self.stage
@@ -63,8 +73,14 @@ impl Staged<'_> {
     /// Applies one effect to the stage. Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
         let rules = &self.sim.genesis.rules;
+        // Moves are worked out only while a host keeps the flow record.
+        let legs = match self.sim.flowing() {
+            true => flows::moves(e, rules, |who| self.holder(who)),
+            false => vec![],
+        };
         if let Some(done) = meaning::effect(self, rules, e) {
             done?;
+            self.stage.legs.extend(legs);
             return Ok(false);
         }
         let (actor, target, place) = (self.stage.actor, self.stage.target, self.stage.place);
@@ -133,6 +149,18 @@ impl Staged<'_> {
                     kind: "sim:parent".into(),
                 };
                 self.stage.relations.push((parent, true));
+                // The child's matter is its parent's, moved (ruling 345).
+                let rules = &sim.genesis.rules;
+                let matter =
+                    |k: &Key| matches!(rules.accounts.get(k), Some(AccountKind::Matter { .. }));
+                let moved = provision.iter().filter(|(k, v)| matter(k) && **v > 0);
+                for (key, value) in moved.filter(|_| sim.flowing()) {
+                    self.stage.legs.push(Leg {
+                        from: (Holder::Entity(actor), key.clone()),
+                        to: (Holder::Entity(id), key.clone()),
+                        amount: *value,
+                    });
+                }
             },
             Effect::Tell { event } => {
                 let teller = &self.stage.bodies[&actor];
@@ -204,6 +232,15 @@ impl Staged<'_> {
                     total = total.checked_add(*value).ok_or("meal overflow")?;
                 }
                 credit(self.ledger(Binding::Actor)?, into, total)?;
+                if let Some(prey) = self.holder(*from).filter(|_| sim.flowing()) {
+                    self.stage
+                        .legs
+                        .extend(taken.into_iter().map(|(key, amount)| Leg {
+                            from: (prey, key),
+                            to: (Holder::Entity(actor), into.clone()),
+                            amount,
+                        }));
+                }
             },
             // Every other effect has its meaning in `meaning::effect`.
             _ => unreachable!("shared effects return above"),
