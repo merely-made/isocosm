@@ -148,6 +148,7 @@ vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-3
 # and `genet-fontique` at 5ae30cad, so genet.git answers to neither name and a
 # row here would match no package and fail resolution. genet-livery reaches the
 # fork by path inside the git checkout, so no registry parley enters this graph.
-# Keep layout and IPC on the same Genet revision as this workspace's host.
+# Keep layout on the same Genet revision as this workspace's host. No
+# ipc-channel row since genet 1b62fd0b: nothing here reaches it (mere dropped
+# its row the same way, 250fd238).
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e", version = "=0.14.0" }
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e" }

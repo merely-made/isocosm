@@ -65,4 +65,3 @@ vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-3
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e", version = "=0.14.0" }
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e" }

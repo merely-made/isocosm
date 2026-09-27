@@ -38,14 +38,14 @@ crabslab = { path = "../../../crates/crabslab/crates/crabslab" }
 # two wgpu majors and netrender's vello rasterizer stops type-checking
 # against this workspace's wgpu 30. Retires when a wgpu-30 vello ships.
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
-# Genet's vendored layout and IPC. `[patch]` does not inherit through a git
-# dep, so a consumer of genet-livery restates these at the same genet revision
-# the workspace dependencies pin (plan P0). No parley or fontique row: genet
+# Genet's vendored layout. `[patch]` does not inherit through a git dep, so a
+# consumer of genet-livery restates it at the same genet revision the
+# workspace dependencies pin (plan P0). No parley or fontique row: genet
 # published its forks as `genet-parley` and `genet-fontique` at 5ae30cad, so
 # genet.git answers to neither name and such a row would fail resolution;
-# genet-livery reaches the fork by path inside the git checkout.
+# genet-livery reaches the fork by path inside the git checkout. No
+# ipc-channel row since genet 1b62fd0b: nothing here reaches it.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e", version = "=0.14.0" }
-ipc-channel = { git = "https://github.com/merely-made/genet.git", rev = "1b62fd0b21893d87c864c735aed7e0bfc1c9942e" }
 
 # The probe builds a lot of shader and rasterizer code. Unoptimized debug
 # builds render a frame slowly enough to misread as a hang.
