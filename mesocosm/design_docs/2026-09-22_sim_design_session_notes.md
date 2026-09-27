@@ -496,6 +496,15 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, guard checkpoint verified.** Nine tests pass. Deliberately
+removing service equality yields seven passes and exactly two service
+failures; restoring the reviewed source returns nine passes. Root and
+independent review checked the paired evidence. Seven needed registry
+archives were fetched under 378 and their hashes checked. Standalone test
+defaults explicitly enable persistence, so production dependency absence
+still needs its own consumer-graph gate. Remaining patch/manifest/lock work
+can proceed on Lane M; full migration acceptance remains open.
+
 **2026-09-27, downloads authorized.** Ruling 378 permits crates.io
 dependencies needed for the pinned migration, recording downloads and
 preserving Git revisions. Lane M resumes the guard checkpoint. Tests and

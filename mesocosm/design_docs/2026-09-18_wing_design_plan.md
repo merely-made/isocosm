@@ -6999,6 +6999,17 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane M's guard checkpoint `65129b98` passes after seven
+  exact registry archives were fetched under 378 and independently hashed.
+  The actual helper passes all nine tests; removing only service equality
+  compiles and fails exactly the two service tests, with seven passing.
+  Restoring its exact reviewed bytes returns nine passes. Root and independent
+  review checked logs, mutation scope, restoration and unchanged test lock.
+  The standalone default-feature test explicitly enables persistence through
+  cubecl-server, so this is not evidence of production Turso absence. The
+  next bounded phase rebases remaining patches and migrates exact manifests
+  and locks; production feature-graph, consumer, headed numerical and two-peer
+  gates remain open. Main production dependencies have not migrated.
 - 2026-09-27: ruling 378 permits required crates.io downloads for the
   pinned pre.4 migration, with download records and unchanged Git revisions.
   Lane M resumes the guard checkpoint; this approval is not a test result.
