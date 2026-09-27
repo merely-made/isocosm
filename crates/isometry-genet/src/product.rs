@@ -108,6 +108,10 @@ impl Product for Isometry {
         if let Some(board) = app.scene_board.as_mut() {
             board.report_ground(ctx);
         }
+        let started = app.started;
+        if let Some(receipt) = app.terrain_receipt.as_mut() {
+            receipt.drive(ctx, started);
+        }
     }
 
     /// The session actor woke us: drain what it sent, on the UI thread, in one

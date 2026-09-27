@@ -531,9 +531,6 @@ impl App {
         self.maybe_compendium_selftest(ctx);
         self.maybe_whisper_selftest(ctx);
         self.maybe_turns_selftest(ctx);
-        if let Some(receipt) = self.terrain_receipt.as_mut() {
-            receipt.drive(ctx, self.started);
-        }
         self.maybe_select_selftest(ctx);
         self.maybe_overlay_selftest(ctx);
         if self.net.is_some() {

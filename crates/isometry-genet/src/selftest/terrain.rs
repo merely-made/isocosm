@@ -31,22 +31,22 @@ impl TerrainReceipt {
             return;
         }
         let settings = &ctx.runner.state().terrain_settings;
-        assert!(
-            settings.device_budget.is_some(),
-            "headed receipt requires an acquired GPU"
-        );
         let expected = if self.verify || self.stage == 2 { 2 } else { 1 };
-        assert_eq!(
-            settings.budget_mib, expected,
-            "normal panel callback / preference load"
-        );
-        if expected == 1 {
-            assert!(settings.omitted > 0, "same-run overflow positive control");
-        } else {
-            assert_eq!(
-                settings.omitted, 0,
-                "current omission count clears after growth of chosen budget"
+        let settled = settings.device_budget.is_some()
+            && settings.budget_mib == expected
+            && if expected == 1 {
+                settings.omitted > 0
+            } else {
+                settings.omitted == 0
+            };
+        // Ground reporting and DOM reconciliation can take separate frames.
+        // Wait for their actual observations, with a hard failure deadline.
+        if !settled {
+            assert!(
+                started.unwrap().elapsed() < Duration::from_secs(20),
+                "terrain receipt did not settle: expected={expected}, observed={settings:?}"
             );
+            return;
         }
         let (buttons, labels) = {
             let dom = ctx.runner.dom();
@@ -64,8 +64,15 @@ impl TerrainReceipt {
                 .collect();
             (dom.all_with_class(panel[0], "btn"), labels)
         };
-        assert!(labels.contains(&format!("Terrain memory: {expected} MiB")));
-        assert!(labels.contains(&format!("{} terrain bricks omitted", settings.omitted)));
+        if !labels.contains(&format!("Terrain memory: {expected} MiB"))
+            || !labels.contains(&format!("{} terrain bricks omitted", settings.omitted))
+        {
+            assert!(
+                started.unwrap().elapsed() < Duration::from_secs(20),
+                "terrain panel did not settle: {labels:?}"
+            );
+            return;
+        }
         eprintln!(
             "[terrain-host-receipt] stage={} verify={} requested={} device_bytes={} omitted={} labels={labels:?}",
             self.stage,
