@@ -14,7 +14,9 @@ derive places from the volume; T2, one edit reaching every spatial consumer,
 is confirmed by ruling 12 and the record's §4.3. J and B are landed lanes.
 Mark ruled the T lane's timing against the Eponym overlay plan's E2: "T2
 now, T1 and T3 later" (ruling 314); the T section says which. Whether a lane
-opens T2 now is a separate question. The done-conditions are authoritative
+builds T2 now was put separately: "Assess first" (ruling 326), a lane mapping
+what mere's conatus and nisus already do against what T2 needs, returning
+with forks before any edit to mere. The done-conditions are authoritative
 again. The evaluation stays in
 [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3. The world conditions plan and the execution plan this plan cites were
@@ -244,7 +246,9 @@ make the first model's weights a permanent world law.
 **Timing under the record (2026-09-26, ruling 314).** T2 is not gated on E2:
 its substance is the stack's, revisioned dirty regions reaching colliders,
 navigation and render from one accepted edit (record §4.3; conatus and nisus
-in the record's placement table), and it reads no place node. T1 and T3 wait
+in the record's placement table), and it reads no place node; it is assessed
+before it is built (ruling 326), the assessment mapping conatus and nisus
+against T2's needs and returning with forks. T1 and T3 wait
 for E2's bodies-and-holding and lives-and-rounds families (Eponym overlay
 plan §4, ruling 239): custody, storage and provenance are the one ledger's
 and gear-limited holding (rulings 38, 53), and `ProjectGoal`'s work is the
