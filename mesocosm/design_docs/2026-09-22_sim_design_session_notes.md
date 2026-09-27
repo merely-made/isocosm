@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 364 on 2026-09-27, the last
+on 2026-09-26 and 353 to 367 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -307,6 +307,53 @@ worlds, none in ecological ones.
   Mark's word ("Commit and push").
 - Wing law and CLAUDE.md changed only on his explicit word, the Law A
   amendment shown as a draft first.
+
+#### 2026-09-27 annotation: the method carried into the new session
+
+Mark supplied the following working method and invited its preservation and
+improvement. This annotation supplements the dated account above.
+
+1. Design moves in rounds of up to four multiple-choice questions. Each
+   question gives its evidence in one or two sentences with concrete
+   numbers, then two to four options stating their commitments, with the
+   assistant's recommendation first. A free-form answer may reframe the
+   question: answer what Mark actually asked before putting it back.
+2. Every design answer becomes a numbered ruling in the design record,
+   preserving the question as put, its options, Mark's words verbatim and
+   what follows. Anything inferred beyond those words is **Reading, not
+   ruled**. Dated text keeps its words; changes are dated annotations or new
+   rulings naming what they amend.
+3. Rulings and all affected documents move together in the same turn: the
+   record, plans, session notes and index. Commit by path and push each
+   batch so the documentation agrees with the tree.
+4. Evidence precedes the question: read code, measure and verify lane
+   claims before presenting them. Reopen a ruling when evidence conflicts
+   with it, including conflicts with another repository's plan. The prior
+   checks caught the founding plan's six citers, the binding plan's changed
+   premise and ruling 322's conflict with mere's D1.
+5. Lanes receive briefs quoting their rulings, done-conditions and rules,
+   and stop at checkpoints. A choice with more than one defensible answer
+   comes back as a fork for the next question round.
+6. Nothing reaches main unverified. Verify a lane in its own worktree:
+   tests, recomputed receipts, checked hashes and controls that must fail
+   when the relevant behavior is deliberately broken. An absence counts
+   only when a positive control in the same run demonstrates detection.
+
+**Proposed refinements, 2026-09-27. Reading, not ruled:**
+
+- Give evidence its source revision and status: measured in this run,
+  independently checked, reported by a lane, or still unknown. Use numbers
+  where supported; never invent precision to fill the question format.
+- Order forks by dependencies and say exactly what each answer unblocks.
+  Keep unrelated work moving while a required decision remains open.
+- Name the fault a control detects and retain both outcomes in the same
+  receipt: the working case passes, the deliberately broken case fails.
+  Treat a negative result as evidence only within that demonstrated scope.
+
+**Acceptance annotation, 2026-09-27 (ruling 366):** Mark answered the three
+refinements, "Sounds good! Shall we proceed? Or would you like to
+review/audit first?" The refinements above are now accepted. Their proposal
+label remains as the dated record of how they were presented.
 
 ### 8.3 The sequence
 
@@ -400,6 +447,9 @@ worlds, none in ecological ones.
 | | Burn: pre.4; the stopgap; the cubecl patch; turso | asked whether pre.4 lets everything move, then "Pre.4, exact pins"; "No stopgap"; "Retire it"; "Settle it in the migration" | 353 to 356 |
 | | Part B: synthesis; dev placement; flow reason; shape keys | "The actor's own lineage"; "Any declared matter account"; "Add the process"; "Part shapes get their own prefix" | 357 to 360 |
 | | The CPU walk; the start offset; T2's timing; X1's defaults | "Call modulus's walk"; "Adopt the clamp"; "After the pre.4 migration"; "Keep as built" | 361 to 364 |
+| | Repin the traversal fix now or bundle it with genet and pre.4? | "You can repin but communicate with the isocosm agent"; the intended agent remains unresolved | 365 |
+| Method | Evidence status; dependency-ordered questions; fault-specific controls, offered as three additions | "Sounds good! Shall we proceed? Or would you like to review/audit first?" | 366 |
+| Coordination | Lane A, the RPG session or both before repinning? | "Ah, the rpg session isn’t active now. But you can orchestrate the repin/rest" | 367 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -434,6 +484,17 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27 continuation.** Traversal repinned under 361, 362, 365 and
+367, with the checks and picture receipts recorded in the board plan.
+Checkpoint 5 was independently audited on Lane A, still unmerged; the sim
+plan distinguishes preserved raw evidence from fresh output compared in
+memory. Three paging policy questions and flow retention are awaiting
+Mark. The remaining reserve-path reading, pre.4 setup and two text forks
+follow. Eponym's device-limit propagation was already ruled (295), so it
+returns to implementation rather than another vote. Genet's text branch
+and main have diverged, and main is dirty; the old fast-forward instruction
+cannot be used. No new design ruling follows from these audit findings.
 
 The substance of a technique, which the hagioglyph organ's plan owns; the
 tract rename in Mesocosm's phenotype code, a lane of about 104

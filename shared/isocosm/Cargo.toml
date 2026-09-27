@@ -15,4 +15,4 @@ serde_json = "1"
 sha2 = "0.10"
 wing-impresa = { path = "../wing-impresa" }
 wing-glyphs = { path = "../wing-glyphs" }
-hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "0418391f802671251f602d7606cf6a67a2a22d1b" }
+hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7" }

@@ -31,7 +31,7 @@ isometer-lens = { path = "crates/isometer-lens" }
 isometer-render = { path = "crates/isometer-render" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "0418391f802671251f602d7606cf6a67a2a22d1b" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "7bb5bfdab273cb5e8236ef519fb9f0eb8f37bee7" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }

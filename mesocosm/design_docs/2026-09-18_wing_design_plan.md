@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 364, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 367, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -29,6 +29,11 @@ and three game overlays; the rules that decide which tier a thing belongs
 to; the method by which claims reach rulings and receipts reach plans; and
 the order in which the wing's existing plans are re-read, kept, rewritten or
 retired against this record.
+
+**Method annotation, 2026-09-27:** Mark restated the question, ruling and
+verification method and invited improvements. The preserved method and
+explicitly unruled refinements are in the [session notes,
+§8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
 
 **Does not own:** any tier's internal design below the level ruled here, any
 product's verbs, the hagiograph's implementation (mere's eidetic family), or
@@ -2972,6 +2977,42 @@ what later sections derive from.
      that, or have the generator copy them now? Mark: "Keep as built." Were
      the defaults implicit, growing the set later (281) would change what old
      worlds mean without changing their digest.
+
+365. **The traversal repin proceeds with coordination.** Asked whether to
+     repin isometry for the traversal fix now, leaving genet's text fix and
+     burn pre.4 for later, or bundle all three, Mark answered: "You can repin
+     but communicate with the isocosm agent". The 2026-09-27 handoff carried
+     this answer unrecorded. The repin targets mere `7bb5bfda`; genet and
+     netrender stay at their current pins. *Reading, not ruled:* the agent
+     may mean Lane A (sim Part B) or the RPG session; its identity and the
+     requested coordination remain unresolved before the repin proceeds.
+
+     **2026-09-27 annotation:** the handoff preserves the question as
+     "repin isometry now for the traversal fix, with genet's fix and pre.4
+     in a later repin, or wait and bundle all three?" Its two alternatives
+     are (1) repin traversal now and defer genet/pre.4, or (2) wait and
+     bundle all three. Separate original option labels and recommendation
+     order were not preserved in the handoff; they are not reconstructed.
+
+366. **The three method refinements are accepted.** On 2026-09-27 the
+     assistant offered three additions: distinguish measured evidence from
+     lane reports and unknowns; order questions by what their answers
+     unblock; name each control's detectable fault and retain passing and
+     deliberately failing results. These were offered together, not as
+     mutually exclusive options. Mark: "Sounds good! Shall we proceed? Or
+     would you like to review/audit first?" The additions supplement the
+     preserved method in session notes §8.2. *Reading, not ruled:* the
+     assistant chose a narrow traversal audit before the already-authorized
+     repin. This answer does not identify ruling 365's coordination target.
+
+367. **The new session orchestrates the repin and remaining lanes.** Asked
+     which agent ruling 365 meant, with Lane A, the RPG session or both as
+     the alternatives, Mark answered on 2026-09-27: "Ah, the rpg session
+     isn’t active now. But you can orchestrate the repin/rest". This
+     supersedes the waiting coordination step in 365: the new session takes
+     over orchestration, preserving lane work and verification checkpoints.
+     *Reading, not ruled:* this authorizes the traversal repin and lane
+     coordination; unresolved design forks still come back to Mark.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6745,6 +6786,30 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: traversal repin applied under 361, 362, 365 and 367: all
+  seven mere manifests at `7bb5bfda`, the CPU ray wrapper calling modulus,
+  root 397 tests and shared isometer 280 tests passing, all-feature host
+  checks passing, and fresh Eponym depth and Mesocosm body pictures kept.
+  The board plan's dated entry gives controls, evidence paths and source
+  audit limits. Lane A checkpoint 5 is independently audited but unmerged,
+  with the sim plan recording the retained evidence and its limits.
+  Paging's three policy choices and sim flow retention are put to Mark;
+  the pre.4 and text forks follow. Genet main has diverged from Lane L and
+  contains concurrent edits, so the handoff's fast-forward instruction is
+  stale; reconciliation and fresh verification precede integration.
+- 2026-09-27: ruling 367 transfers repin and remaining-lane orchestration
+  to the new session because the RPG session is inactive. The coordination
+  hold in 365 is superseded; verification and unresolved design forks stay.
+- 2026-09-27: ruling 366 accepts the three method refinements: evidence
+  status, questions ordered by dependencies, and fault-specific controls
+  with passing and deliberately failing outcomes. Traversal audit opened;
+  ruling 365's agent identity remains unresolved.
+- 2026-09-27: the working method preserved in session notes §8.2, with
+  proposed refinements explicitly unruled; ruling 365 annotated with the
+  question and alternatives recoverable from the handoff.
+- 2026-09-27: ruling 365 recorded from the session handoff: proceed with
+  the traversal repin after communicating with the isocosm agent. The
+  intended agent still needs identification; the repin has not landed.
 - 2026-09-18: record written from the 2026-09-17 and 2026-09-18
   conversation.
 - 2026-09-18: W1 evaluated the Isometry root: fifteen plans, four
