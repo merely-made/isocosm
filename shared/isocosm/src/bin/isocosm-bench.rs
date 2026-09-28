@@ -23,6 +23,7 @@ fn run() -> Result<(), String> {
     };
     let mut ticks = 32;
     let mut draws = None;
+    let mut map_draws = None;
     let mut output = None;
     let mut load = None;
     let mut world = None;
@@ -38,7 +39,7 @@ fn run() -> Result<(), String> {
         }
         if arg == "--help" {
             println!(
-                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N] [--load SAVE | --world GENESIS] [--output FILE] [--individuals]"
+                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N] [--load SAVE | --world GENESIS] [--output FILE] [--individuals]"
             );
             return Ok(());
         }
@@ -60,13 +61,21 @@ fn run() -> Result<(), String> {
                 founding.lineages = u32::try_from(number()?).map_err(|e| e.to_string())?
             },
             "--draws" => draws = Some(number()?),
+            "--map-draws" => map_draws = Some(number()?),
             "--output" => output = Some(value),
             "--load" => load = Some(value),
             "--world" => world = Some(value),
             _ => return Err(format!("unknown argument {arg}")),
         }
     }
-    let json = if let Some(count) = draws {
+    let json = if let Some(count) = map_draws {
+        eprintln!("Map-draw receipt: master seed {}, draws {count}", founding.seed);
+        let report = isocosm::bench::map_draws(founding.seed, count)?;
+        let borders: u64 = report.draws.iter().map(|d| d.borders).sum();
+        let corners: u64 = report.draws.iter().map(|d| d.corners).sum();
+        eprintln!("{} maps, {borders} border sides and {corners} corners checked, master seed {}", report.draws.len(), founding.seed);
+        serde_json::to_string_pretty(&report)
+    } else if let Some(count) = draws {
         eprintln!("Generated-draw receipt: master seed {}, draws {count}, ticks {ticks}",founding.seed);
         let report = isocosm::bench::draws(founding.seed,count,ticks)?;
         eprintln!("{} generated comparisons, {} saved replays, master seed {}",report.comparisons.len(),report.saved_replays,founding.seed);

@@ -274,6 +274,18 @@ pub struct Rules {
     /// The function catalogue (rulings 278, 338 and 339), by function.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub functions: BTreeMap<Key, Function>,
+    /// The site conditions a lift reads its terrain from (ruling 394).
+    /// Absent in worlds without terrain, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub skeleton: Option<Skeleton>,
+}
+
+/// The condition keys holding a site's coarse terrain, in base units.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Skeleton {
+    pub elevation: Key,
+    pub relief: Key,
+    pub water: Key,
 }
 
 /// The clock's unit where a world states none: a minute (ruling 257).

@@ -69,3 +69,67 @@ pub fn draws(master_seed: u64, count: u64, ticks: u64) -> Result<Draws> {
     }
     Ok(report)
 }
+
+/// One drawn world map and what SP1 checked on it.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MapDraw {
+    pub seed: u64,
+    pub grid: crate::map::Grid,
+    pub borders: u64,
+    pub corners: u64,
+    pub digest: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MapDraws {
+    pub version: u32,
+    pub master_seed: u64,
+    pub domain: String,
+    pub draws: Vec<MapDraw>,
+}
+
+/// SP1's receipt (the spine plan, §A.5): drawn world maps whose borders read
+/// the same from both sides, whose corners agree, and which found the same
+/// world twice.
+pub fn map_draws(master_seed: u64, count: u64) -> Result<MapDraws> {
+    use crate::terrain::{View, check};
+    if count == 0 || count > 1024 {
+        return Err("bench draw budget exceeded".into());
+    }
+    let mut report = MapDraws {
+        version: crate::VERSION,
+        master_seed,
+        domain: "square sites on planes, rings and tori; 2..16 by 2..16 sites; sides 256..2048 base units; elevation within one side, relief within an eighth".into(),
+        draws: vec![],
+    };
+    for i in 0..count {
+        let seed = crate::draw(master_seed, "map-seed", &[i]);
+        let grid = crate::map::Grid::drawn(seed);
+        let founding = Founding {
+            seed,
+            sites: grid.width * grid.height,
+            map: Some(crate::map::Layout::Grid(grid.clone())),
+            ..Founding::default()
+        };
+        let genesis = founding
+            .generate()
+            .map_err(|why| format!("draw {i}, seed {seed}: {why}"))?;
+        let view = View::of(&genesis)?;
+        let borders = check::profiles(&view, |v, s, k| v.edge_profile(s, k))
+            .map_err(|why| format!("draw {i}, seed {seed}: {why}"))?;
+        let corners = check::corners(&view, |v, s, c| v.corner_height(s, c))
+            .map_err(|why| format!("draw {i}, seed {seed}: {why}"))?;
+        let digest = crate::digest(&genesis);
+        if crate::digest(&founding.generate()?) != digest {
+            return Err(format!("draw {i}, seed {seed}: one founding laid two maps"));
+        }
+        report.draws.push(MapDraw {
+            seed,
+            grid,
+            borders,
+            corners,
+            digest,
+        });
+    }
+    Ok(report)
+}

@@ -190,6 +190,7 @@ fn known_events_follow_reachable_routes_and_notes_survive_decay() {
         to: 1,
         travel: 4,
         transmission: 1_000_000,
+        border: None,
     }];
     genesis.sites.get_mut(&1).unwrap().routes.clear();
     genesis.sites.get_mut(&2).unwrap().routes.clear();
@@ -427,6 +428,7 @@ fn past_exposure_is_retained_after_movement_and_decay() {
         to: 1,
         travel: 10,
         transmission: 0,
+        border: None,
     });
     g.population.lift(3).unwrap().place = 0;
     let mut move_to = g.rules.processes["sim:remember"].clone();

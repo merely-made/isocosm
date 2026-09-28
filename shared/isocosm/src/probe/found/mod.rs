@@ -328,6 +328,7 @@ impl ProbeFounding {
             tick_microseconds: None,
             shapes: BTreeSet::new(),
             functions: BTreeMap::new(),
+            skeleton: None,
         };
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
@@ -475,5 +476,6 @@ fn world_traits() -> WorldTraits {
         },
         parent_world: None,
         neighbours: BTreeMap::new(),
+        footprint: None,
     }
 }

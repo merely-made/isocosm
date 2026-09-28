@@ -99,6 +99,36 @@ pub struct Route {
     pub to: Id,
     pub travel: Tick,
     pub transmission: u32,
+    /// Where the route crosses between the two sites' frames (ruling 397).
+    /// Absent on worlds without geometry, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
+}
+
+/// One side of a site meeting one side of a neighbour. Side `k` runs from
+/// the footprint's corner `k` to corner `k + 1`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct Border {
+    /// The side of this site the route leaves by.
+    pub side: u8,
+    /// The side of the neighbour it enters by.
+    pub enters: u8,
+    /// The sides meet end to end in the same direction rather than the
+    /// usual opposite one; never on planes, rings or tori.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub flipped: bool,
+}
+
+fn is_false(value: &bool) -> bool {
+    !*value
+}
+
+/// A site's outline in its own frame: its sides, and each side's length in
+/// base units (ruling 395: squares first).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Footprint {
+    pub sides: u8,
+    pub side: u64,
 }
 
 /// Sites are asserted graph nodes; kind/biome are derived from conditions.
@@ -173,6 +203,10 @@ pub struct WorldTraits {
     pub canon: wing_glyphs::CanonSpec,
     pub parent_world: Option<Key>,
     pub neighbours: BTreeMap<Key, Key>,
+    /// Every site's outline, on worlds with geometry. Absent worlds serialize
+    /// and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub footprint: Option<Footprint>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

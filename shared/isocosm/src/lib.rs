@@ -16,6 +16,7 @@ pub mod generate;
 mod genesis;
 pub mod history;
 mod journal;
+pub mod map;
 mod meaning;
 pub mod population;
 pub mod probe;
@@ -27,6 +28,7 @@ pub mod schema;
 pub mod simulation;
 mod stage;
 mod targets;
+pub mod terrain;
 mod validation;
 pub mod watch;
 

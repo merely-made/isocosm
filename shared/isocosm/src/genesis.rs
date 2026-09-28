@@ -110,6 +110,6 @@ impl Genesis {
                 }
             }
         }
-        Ok(())
+        crate::map::validate(self)
     }
 }

@@ -19,6 +19,10 @@ pub struct Founding {
     pub period_max: u64,
     pub base_unit_micrometres: u64,
     pub ecology: bool,
+    /// The world map's geometry and skeleton (ruling 398). Absent in
+    /// foundings without one, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub map: Option<crate::map::Layout>,
 }
 
 impl Default for Founding {
@@ -34,6 +38,7 @@ impl Default for Founding {
             period_max: 5,
             base_unit_micrometres: 1000,
             ecology: false,
+            map: None,
         }
     }
 }
@@ -231,7 +236,7 @@ impl Founding {
         weather.period = Some(3);
         weather.priority = -1;
         processes.insert(weather.id.clone(), weather);
-        let rules = Rules {
+        let mut rules = Rules {
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
@@ -256,9 +261,11 @@ impl Founding {
             tick_microseconds: None,
             shapes: BTreeSet::new(),
             functions: BTreeMap::new(),
+            skeleton: None,
         };
         let mut sites = BTreeMap::new();
-        for i in 0..u64::from(self.sites) {
+        // A map lays its own sites below; without one, a ring and a chord.
+        for i in 0..u64::from(if self.map.is_some() { 0 } else { self.sites }) {
             let mut neighbours = BTreeSet::new();
             if self.sites > 1 {
                 neighbours.insert((i + 1) % u64::from(self.sites));
@@ -285,10 +292,21 @@ impl Founding {
                             travel: 1 + random("distance", i * 256 + to) % 4,
                             transmission: 500_000
                                 + (random("transmission", i * 256 + to) % 500_001) as u32,
+                            border: None,
                         })
                         .collect(),
                 },
             );
+        }
+        let mut footprint = None;
+        let mut shape: Key = "shape:graph".into();
+        if let Some(layout) = &self.map {
+            let laid = layout.lay(self.seed, self.sites)?;
+            rules.conditions.extend(laid.conditions);
+            rules.skeleton = Some(laid.skeleton);
+            sites = laid.sites;
+            footprint = Some(laid.footprint);
+            shape = laid.shape;
         }
         let mut population = Population::default();
         // The world has a body at each site for its agentless processes.
@@ -375,7 +393,7 @@ impl Founding {
             sites,
             population,
             world: WorldTraits {
-                shape: "shape:graph".into(),
+                shape,
                 scale: "scale:macro".into(),
                 base_unit_micrometres: self.base_unit_micrometres,
                 static_traits: BTreeSet::new(),
@@ -394,6 +412,7 @@ impl Founding {
                 },
                 parent_world: None,
                 neighbours: BTreeMap::new(),
+                footprint,
             },
         };
         if self.ecology {
