@@ -118,6 +118,10 @@ visibility. The current default stays in place while a clearing-and-burrow
 prototype tests the new direction. Exact pitch, framing, cutaway rules and
 depth traversal remain prototype questions. The proposed sequence is body-part
 inspection (VB3), then [CP1](2026-08-30_default_creatures_plan.md#cp1-clearing-and-burrow-camera-prototype).
+*Annotation, 2026-09-28 (wing design record, rulings 382, 387 and 388):* the
+wing now has a default view, the 2:1 dimetric at 30° with quarter turns, and
+CP1's review compares this direction with it before Mesocosm's opening view
+is ruled.
 
 ### Paredros: third person, one continuous zoom
 

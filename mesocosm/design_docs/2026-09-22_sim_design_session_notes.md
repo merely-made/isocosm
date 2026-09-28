@@ -899,11 +899,17 @@ marked otherwise.
 | Which projection family should the modes share? | 382: one default view, isometric with quarter turns, precluding no other |
 | What is harmony → order → chaos in sim terms? | 383: ecological states, "not so important" |
 | Is the omniscient end of the mind axis a seat someone plays? | 384: some divine figures peek behind the curtain, which is rule-bending magic |
+| Apply the founding record amendment for 381 as drafted? | 385: applied as drafted |
+| Apply the `CLAUDE.md` drafts? | 386: both applied, the tabletop's camera line and the "schedule" wording |
+| What pitch is the wing's default view? | 387: the 2:1 dimetric, 30° |
+| Does Mesocosm open in the wing's default view? | 388: CP1 compares both before it is ruled; the question's "pending" corrected to CP1's review |
 
 ### 9.4 Drafts waiting on Mark's word
 
 Wing law and `CLAUDE.md` change only on Mark's explicit word. Neither
-draft is applied.
+draft is applied. *Later the same day both were applied at his word,
+rulings 385 and 386, the second also striking "a schedule" from Mesocosm's
+and Eponym's `CLAUDE.md` identity lines.*
 
 *For ruling 381, in the founding record's "Each vessel is a mode of the same
 peopled history", after the paragraph ending "require another vessel to be
@@ -934,3 +940,10 @@ the camera line:*
   as its opening view.
 - Room for perspective views in isometer's camera (382).
 - Where the one host lives and how a build profile is expressed (381).
+
+*Answered later the same day:* the pitch is the 2:1 dimetric, 30° (387),
+and Mesocosm's opening view waits on CP1's comparison (388). *Reading, put
+to Mark the same day without objection:* isometer's camera reserves room for
+a perspective projection now and builds it when a mode needs one, with
+Eponym's `r1-proof` perspective camera as the donor. Still open: where the
+one host lives and how a build profile is expressed.

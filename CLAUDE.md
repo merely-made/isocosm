@@ -164,9 +164,10 @@ sem and weave are wired into this repo. Both are described once in
   guardrail stands.)
 - Do not ship copyrighted game content. 5e SRD (CC-BY-4.0) and
   Pathfinder 2e (ORC) material only, with attribution.
-- Do not treat camera freedom as a near-term rendering task. The locked
-  isometric angle is the shipped 2D lens; later 2.5D / 3D modes are allowed
-  because voxel source models dissolve the facing-art explosion, but they need
-  their own plan and render lane.
+- The wing's default view is isometric with quarter turns (wing design
+  record, ruling 382). The tabletop ships its locked 2:1 lens today and
+  reaches quarter turns through a plan and render lane of its own; free yaw,
+  first person and over-the-shoulder views are not precluded and each needs
+  the same.
 - Do not add features beyond the active plan's current target without
   surfacing the scope change first.

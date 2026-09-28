@@ -196,7 +196,12 @@ view: free-yaw isometric, first person and third person over the shoulder
 stay available. The camera row below already admits the default and free
 yaw. First person and over the shoulder need a perspective camera, which
 isometer's orthographic `SlabCamera` does not express. The default's pitch,
-the VTT's 30° dimetric or true isometric, is open.
+the VTT's 30° dimetric or true isometric, is open. *Ruled later that day
+(387):* the pitch is the 2:1 dimetric, 30°, `SlabCamera::dimetric_2_1`
+turned in quarter steps, with true isometric one of the other views.
+*Reading, put to Mark the same day without objection:* the camera reserves
+room for a perspective projection now and builds it when a mode needs one,
+with Eponym's `r1-proof` perspective camera as the donor.
 
 | Choice | The application states | The engine must not require |
 | --- | --- | --- |

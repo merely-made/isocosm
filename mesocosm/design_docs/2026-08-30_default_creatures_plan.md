@@ -2269,6 +2269,13 @@ direction reopens camera exploration beyond Q9's earlier three-angle result.
 The current oblique default remains the comparison arm until a prototype is
 reviewed. No exact isometric angle or final movement model is ruled here.
 
+**Annotation, 2026-09-28 (wing design record, rulings 382, 387 and 388):**
+the review gains an arm, the wing's default view, the 2:1 dimetric at 30°
+pitch on the diagonal azimuth, turned in quarter steps, run beside the
+2026-09-05 arm on seeded draws, and Mesocosm's opening view is ruled on
+those receipts. *Reading, not ruled:* CP1's turns are about world axes, so
+the new arm needs a 45 degree azimuth setting it lacks.
+
 **Implementation note (2026-09-05):** `--scene ecology|terrarium` selects the
 scene, with `ecology` as the backward-compatible default and a saved replay
 scene taking precedence. The terrarium uses a fixed habitat volume and a

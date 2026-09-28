@@ -28,7 +28,7 @@ Vessel 2 of the Isocosm family, Mesocosm (first person), Eponym (second
 person) and the VTT (third person), over one simulator, Isocosm, sharing a
 world substrate, a lineage model, and a trust plane. Sharing engine organs is encouraged where the
 organ stays verb-neutral (ruled 2026-08-05, wing founding record §1); the
-vessels still do not share a genre, a schedule, or their verbs. The wing's
+vessels still do not share a genre or their verbs. The wing's
 question, ruled 2026-08-07: **continuity under transformation** — here,
 whether a community remains itself as control, bodies, and generations
 change.

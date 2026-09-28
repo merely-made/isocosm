@@ -182,6 +182,15 @@ authorities — joined by a shared *history*, never by a shared running world
 instance. A vessel must never be able to require another vessel to be
 running.
 
+**Amended 2026-09-28** (wing design record, ruling 381, applied at Mark's
+word by ruling 385): one host carries the three games as modes over one
+world save, a build may carry one mode or all three, and players in
+different modes may share one trunk. What survives of the limit is its
+guard against coupling as obligation: no mode may require another mode's
+code to run, and each game keeps its genre, its verbs and its care
+granularity. As founded this read "joined by a shared *history*, never by a
+shared running world instance".
+
 What the frame decides, and why it is here rather than only in the review:
 
 - **Facts of the world cross; verbs never do.** The recognizable things are

@@ -32,7 +32,10 @@ divine awareness of the sim as rule-bending magic (384). The founding
 record's amendment for 381 and the tabletop `CLAUDE.md`'s for 382 are
 drafted in the
 [session notes' §9.4](2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
-and wait on Mark's word.
+and wait on Mark's word. Later the same session Mark gave it: both
+amendments are applied (385, 386), the default's pitch is the 2:1 dimetric,
+30° (387), and Mesocosm's opening view waits on CP1 comparing its
+2026-09-05 direction with the default (388). Rulings run to 388.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -3401,6 +3404,78 @@ what later sections derive from.
      trait a divine figure may have, not one its tier confers; option A's
      world seat is not adopted.
 
+385. **The founding record's amendment for ruling 381 is applied as
+     drafted.** Asked on 2026-09-28: "Apply the founding record amendment
+     for ruling 381 as drafted in the session notes §9.4? It adds a dated
+     2026-09-28 amendment after 'require another vessel to be running': one
+     host carries the modes over one world save, a build may carry one mode
+     or all three, and what survives of the limit is 'no mode may require
+     another mode's code to run', with each game keeping its genre, verbs
+     and care granularity." Options, recommended first: (A) "Apply as
+     drafted: the dated amendment goes into the founding record's 'Each
+     vessel is a mode of the same peopled history' section; the original
+     words stay as history, per the doc rules (recommended)." (B) "Hold for
+     now." Mark chose A, "Apply as drafted". Applied the same day. The
+     2026-08-10 words stand above the amendment as history, and ruling 381's
+     reading that the guard survives as "no mode may require another mode's
+     code to run" is now the founding record's text.
+
+386. **The `CLAUDE.md` drafts are applied: the tabletop's camera line and
+     the "schedule" wording.** Asked on 2026-09-28: "Apply the CLAUDE.md
+     drafts? The tabletop's camera don't would become: the wing's default
+     view is isometric with quarter turns (382); the tabletop ships its
+     locked 2:1 lens today and reaches quarter turns through its own plan
+     and render lane; free yaw, first person and over the shoulder are not
+     precluded. Separately, Mesocosm's CLAUDE.md:34 and Eponym's
+     CLAUDE.md:31 still say the vessels do not share 'a schedule', the
+     wording ruling 33 retired." Options, recommended first: (A) "Apply
+     both: tabletop camera line replaced as drafted, and 'a schedule' struck
+     from Mesocosm's and Eponym's identity lines to match the founding
+     record's 2026-09-18 amendment (recommended)." (B) "Camera line only."
+     (C) "Hold both." Mark chose A, "Apply both". The tabletop's camera
+     don't is replaced by the session notes' §9.4 draft, and "a schedule" is
+     struck from both identity lines, which now agree with the founding
+     record's sentence as ruling 33 amended it.
+
+387. **The default view's pitch is the 2:1 dimetric, 30°.** Asked on
+     2026-09-28: "What pitch is the wing's default view?" Evidence as put:
+     "camera.rs:108: the VTT's 2:1 lens is a 30° pitch; true isometric's
+     35.26° gives 2:1.155 tiles, which loses clean 2:1 pixel stair lines."
+     Options, recommended first: (A) "2:1 dimetric, 30°: the shipped lens and
+     what 'isometric' means in pixel art: clean 2:1 tile edges at integer
+     scale. True isometric stays available as another view (recommended)."
+     (B) "True isometric, 35.26°: equal foreshortening on all three axes;
+     tile edges step unevenly in pixel art." (C) "Per mode: the default
+     fixes quarter turns and orthography only." Mark chose A, "2:1 dimetric,
+     30°". This answers ruling 382's reading: the default view is
+     `SlabCamera::dimetric_2_1` (`shared/isometer/src/camera.rs:136`) turned
+     in quarter steps, and true isometric is one of the other views.
+
+388. **Mesocosm's opening view is ruled on CP1's receipts, which compare its
+     2026-09-05 direction with the wing default.** Asked on 2026-09-28:
+     "Does Mesocosm open in the wing's default view?" Evidence as put: "its
+     accepted direction of 2026-09-05 is shallow-depth up/down/left/right
+     play with deliberate quarter-turn views of a cutaway terrarium; the
+     clearing-and-burrow prototype CP1 that tests it is pending; the shipped
+     default is an oblique section." *Corrected on recording:* CP1 has been
+     implemented and native-verified since 2026-09-05, with its visual review
+     pending (default creatures plan, CP1); it turns in quarter steps about
+     world axes at a configurable 0 to 45 degree pitch, default 12, so what
+     was pending is the review, not the prototype. Options, recommended
+     first: (A) "CP1 compares both: the pending prototype runs the 2026-09-05
+     direction and the wing default side by side on seeded draws;
+     Mesocosm's opening view is ruled on its receipts (recommended)." (B)
+     "Open in the default." (C) "Keep the section." Mark chose A, "CP1
+     compares both". So CP1's review gains a second arm, the wing default
+     (387's 30° pitch at the diagonal azimuth, turned in quarter steps),
+     beside its 2026-09-05 arm, on seeded draws (ruling 15), and Mesocosm's
+     opening view goes back to Mark on those receipts; the oblique section
+     stays the shipped default until then. *Reading, not ruled:* the second
+     arm needs a 45 degree azimuth setting CP1 lacks, since its turns are
+     about world axes; the review weighs what the 2026-09-05 direction was
+     accepted for, 2D legibility with 3D space and a visible burrow
+     interior, not a preference score.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -6382,7 +6457,9 @@ players in different modes may share one trunk under ruling 104. **A default
 view (ruling 382).** The wing has one default view, isometric with quarter
 turns, which precludes no other: free-yaw isometric, first person and third
 person over the shoulder stay available, so perspective remains a mode's
-choice as ruling 1 has it, now with a shared default.
+choice as ruling 1 has it, now with a shared default. Its pitch is the 2:1
+dimetric, 30° (ruling 387), and whether Mesocosm opens in it is ruled on
+CP1's comparison (ruling 388).
 
 ### 5.1 Rulesets over the sim
 
@@ -7193,6 +7270,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 385 to 388 recorded, the same session's second
+  round: the founding record's amendment for 381 applied (385); the
+  tabletop's camera line and the "schedule" wording in Mesocosm's and
+  Eponym's `CLAUDE.md` amended (386); the default view's pitch is the 2:1
+  dimetric, 30° (387); CP1 compares Mesocosm's 2026-09-05 direction with the
+  wing default before its opening view is ruled (388). Carried into the
+  founding record, three `CLAUDE.md` files, the presentation plan, the
+  default creatures plan's CP1, the vessel briefs, two overlay plans'
+  perspective rows, the session notes' §9 and the index.
 - 2026-09-28: rulings 381 to 384 recorded, from the one-game hypothesis
   session: one host carrying the three games as modes over one world save
   (381), a default view across the wing (382), harmony, order and chaos as
