@@ -7019,6 +7019,21 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: a bounded Seiche diagnostic localizes a faulty isolated GPU
+  broadcast subtraction. NdArray matches scalar subtraction bit-for-bit in
+  four cases; the three-point GPU fixture has six wrong entries out of nine
+  on each axis. Independent review recomputed arrays, detector controls and
+  source restoration. Immediate readback does not prove the complete force
+  program uses the same launch path. Source review finds that our pre.2 and
+  pre.4 alias arms omit the output reference shape for the second operand;
+  pristine fresh-output paths broadcast both operands. The candidate repair
+  preserves identity predicates, separate output and tolerances. A question
+  is pending: fix pre.2 separately then carry the verified correction into
+  pre.4 (recommended), or fix only the migration lane. No production edit or
+  new ruling is inferred. The text consumer's external local test graph is
+  coherent at Lane L Genet plus cached Netrender `c8c09f16`; its test runs
+  against a separate lock with primary source/pins/lock untouched and cannot
+  certify the portable `9607d16` closure.
 - 2026-09-27: Seiche's two finite GPU failures reproduce on the preserved
   pre.2 baseline `f4f61d6c` with identical test hardening and the same reported
   error, 1.9973466. Independent review checked restoration of all 1,994

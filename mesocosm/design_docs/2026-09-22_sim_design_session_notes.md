@@ -497,6 +497,15 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, alias-layout repair question.** A three-point isolated GPU
+subtraction has six wrong entries out of nine, while the CPU matches scalar
+arithmetic. Our pre.2/pre.4 shared-buffer branch omits the second operand's
+broadcast reference shape. Repair order is now a user fork: separate pre.2
+fix then carry it into pre.4, or migration-only repair. Production changes
+remain stopped; identity checks and tolerances need not change. The local
+text consumer test proceeds with a separate coherent test lock and remains
+distinct from portable rendering-closure acceptance.
+
 **2026-09-27, baseline comparison and renderer boundary.** Both Seiche
 failures reproduce on pre.2 with the same reported error; source restoration
 and receipts are verified. This identifies a pre-existing failure without
