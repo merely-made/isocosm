@@ -498,6 +498,19 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, real-panel capture and coherent repin landed.** Isometry
+`0427e982` adopts Mere `ac41628a`, Genet `92b249af` and NetRender `9607d16`
+for the separately approved capture task. The real paused panel's packet
+preserves three font faces, 73 runs and 1,228 glyphs; final Classic replay is
+byte-identical to the native paired PNG. Root verified the 13 source blobs,
+30 artifacts and both executable hashes in the committed source seal.
+Missing-font and overwrite rejection controls are recorded. Default root,
+Eponym and 111 Isocosm tests pass. The bench README owns commands and exact
+scope; embedded system-font packets stay local. This closes the capture/replay
+slice, while Hybrid text, live external textures, native performance, optional
+Cleromancy and Lane L verification on the new family remain open. The capture
+lane released the shared Isometry target and created no isolated resources.
+
 **2026-09-27, bounded pre.4 carry verified.** Mere branch commit `8d308572`
 is pushed. The correction now passes the
 same nine direct cases and three-failure fault control on pre.4, with exact

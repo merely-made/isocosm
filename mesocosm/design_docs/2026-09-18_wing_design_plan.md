@@ -7040,6 +7040,22 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: the separately approved real-panel capture task landed at
+  Isometry `0427e982`, using Mere's capture hook `ac41628a`, Genet `92b249af`
+  and NetRender `9607d16`. Seven family manifests moved coherently across
+  the products and shared crates. The paused Simulation > Inspect individual
+  panel remains at tick 0 with 262 entities and the same captured/final sim
+  hash. Its full packet retains three faces, 73 runs and 1,228 glyphs; the
+  hardened Classic verifier rejects missing fonts and reproduces the paired
+  2464x1504 PNG exactly on the recorded RTX 4060/Vulkan adapter. Root checked
+  all 13 committed source blobs, 30 artifact hashes and two executable hashes,
+  and confirmed byte-identical capture/final replay PNGs. Default root and
+  Eponym checks pass; Isocosm has 111 passing tests. The source seal and scope
+  are in `mesocosm/testing/bench/receipts/2026-09-27/paint-capture/source.json`
+  and the bench README. Embedded font packets remain local. Hybrid text,
+  live external textures, native performance, optional Cleromancy integration
+  and Lane L verification on this new family remain separate. This records
+  execution evidence, not a new ruling or full renderer acceptance.
 - 2026-09-27: ruling 380's bounded pre.4 carry is pushed at Mere `8d308572`
   after independent source and receipt review. Its nine direct GPU tests pass, the mapping-only fault
   fails exactly three broadcast cases with six controls passing, and exact
