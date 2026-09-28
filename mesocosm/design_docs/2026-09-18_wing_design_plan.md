@@ -7040,6 +7040,20 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: Lane M's remaining S9-S12 checkpoint passed root and
+  independent review: nine Conatus cases, ESP synthetic parity and actual
+  finite/length controls, real MiniLM parity, refreshed Numen 77 passes
+  (one timing test ignored), and all eight nested/standalone builds.
+  Seal `238b5909` covers 1,986 final source/doc hashes and 81 receipt files.
+  Four exact locked cache downloads were checksum-verified. The remote
+  fixture needed pre.4's device constructor and wrapper plus a corrected
+  provenance label; both compile failures and the successful rebuild remain
+  recorded. Earlier run maps differ only in that unused fixture source;
+  numerical tolerances, the six-field guard and prepared locks are preserved.
+  The checkpoint is approved for its separate lane commit. S13 browser and
+  two-peer lifecycle receipts, reconciliation with current main and migration
+  integration remain open. Current Genet publication is independently in
+  progress; no new ruling or full migration acceptance follows.
 - 2026-09-27: Lane L's source fix and retained-motion combination fixture
   landed on Genet main/origin at `7b48f94d`, after a clean fast-forward.
   Independent review and root checks verified 124 sealed receipt files,

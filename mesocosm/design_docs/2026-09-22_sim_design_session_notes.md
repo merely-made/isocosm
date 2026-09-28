@@ -498,6 +498,19 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, remaining migration compile/GPU checkpoint accepted.**
+Lane M completed all eight standalone/nested builds and the remaining
+Conatus, ESP and Numen correctness gates. Root and independent review checked
+1,986 source/doc hashes and 81 receipts in seal `238b5909`. The remote fixture's
+pre.4 API adaptation passed its rebuild; unchanged thresholds, source scope and
+the two initial compile failures remain explicit in Mere's owning plan.
+The separate lane commit is authorized. S13 and current-main reconciliation
+still precede migration integration. Current Genet publication continues on
+Mere, then Isometry; primary consumer locks have not yet been promoted.
+The completed text worktree remains because automatic policy rejected cleanup;
+its historical binaries, fingerprints and lock have been preserved separately.
+The pending additional NetRender coordination question remains unanswered.
+
 **2026-09-27, text source integrated.** Genet main/origin now contains
 Lane L's fix and retained-motion combination fixture at `7b48f94d`.
 Root and independent review checked both sealed receipts: 876 affected
