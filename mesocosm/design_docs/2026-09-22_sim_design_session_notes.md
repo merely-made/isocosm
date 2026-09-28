@@ -813,3 +813,124 @@ the same day by the RPG systems session.
 - Read the plans a new thread consumes before asking: the played slice's
   direct control was a contradiction already in the tree, found only when
   W5 opened.
+
+## 9. The one-game hypothesis session, 2026-09-28
+
+### 9.1 How it started
+
+Mark, verbatim: "Hmmm. Let's imagine this is one big game. Critter lineage
+roguelike, denizen adventure rpg, sim world vtt, all isometric: rotatable,
+orthogonal projections. There are many semantic axes to examine and vary
+this hypothetical isocosm with: scale (local, regional, world, individual to
+group to polity), detailed representation to functional abstraction, time,
+inert to sentient to sapient to omniscient, mundane to magical, harmony to
+order to chaos, definitely more as we have discussed. Characterize: what
+would efficient, effective sim, rendering, and game engines that could
+handle such procedural world and asset generation look like? Compare that
+and prior art to what we have in our stack, looking for what's missing.
+Upon review, let's see where our current plans and this hypothesis
+differs."
+
+### 9.2 What the assessment found
+
+Read: the record's 380 rulings, the sim plan, the presentation plan, the
+three overlay plans, and the code at isometry `bfa1b36` and mere
+`5ce144ff`. Each point below was checked in that code unless it is dated or
+marked otherwise.
+
+- The hypothesis is mostly the ruled design. Ruling 1 already makes
+  projection a distinction made on top of the sim, and the games are
+  overlays that foreground rungs (35).
+- Mark's axes read as ranges of representation. Every entity sits somewhere
+  on each, and the engines' work is to hold the cheapest representation
+  that answers what is asked, move things along an axis without
+  contradiction, and show each position legibly.
+- The gaps, ranked by how much the hypothesis leans on them:
+  - the sim's site graph and the voxel bricks are disconnected models:
+    isocosm's `Site`, `Route` and `Location` carry no volume, and nisus is
+    ruled the voxel authority (330) but unbuilt;
+  - time at scale: the 2026-09-25 baseline grew as n^2.09, 117 s a tick at
+    10,000 members, and a century at the minute clock is 52.6 million
+    ticks;
+  - near to far is four renderers (the isometer scene, the VTT's DOM board,
+    the VTT atlas on sprigging's canvas, Mesocosm's minimap on the HUD
+    lane) with no shared level-of-detail ladder;
+  - no host carries several overlays, though all four workspaces now pin
+    mere `5ce144ff`, which makes isometer's manifest comment on divergent
+    pins stale; the divergent patches are the VTT's p2panda set and
+    Eponym's renderling leftovers;
+  - no texel snapping, none of ruling 22's lighting, no glTF anywhere in the
+    wing, no building or settlement generator with isoscape unfounded, and
+    no audio engine in the wing, though woodshed has a cpal engine and a
+    Firewheel engine and mere has `mora` and `pipit`.
+- `Method { Inert, Reactive, Deliberative, Normative }` exists
+  (`shared/isocosm/src/schema.rs:27`) and only `Inert` and `Reactive` are
+  used; the sim has no polity processes.
+- Eponym's client already runs a perspective camera in its default
+  `r1-proof` profile, per its `CLAUDE.md`; isometer's `SlabCamera` is
+  orthographic only.
+- Tensions found in the tree whatever the hypothesis: the founding record's
+  "never by a shared running world instance" beside its 2026-09-18 "one
+  clock" amendment; the tabletop `CLAUDE.md`'s locked-lens don't beside the
+  presentation plan's ruling 12, "fixed or free"; Eponym's overlay plan
+  keeping first person as a setting beside the presentation plan's ruling
+  1, "orthographic" (resolved by ruling 382); and Eponym's `CLAUDE.md`
+  still saying the vessels do not share "a schedule", the wording the
+  founding record dropped on 2026-09-18.
+- Prior art not in the sim prior-art brief, from general knowledge and
+  unverified: multi-resolution modelling in defence simulation (Davis and
+  Bigelow, RAND, 1998; Reynolds, Natrajan and Srinivasan's
+  multiple-representation entities, 1997), whose named hard case, a
+  detailed unit meeting an aggregate one, is the played critter meeting a
+  cohort; Sunshine-Hill's alibi generation (2010) and Brockington's
+  level-of-detail AI for Neverwinter Nights (2002); Zeigler's DEVS; Spore's
+  animation retargeting (Hecker et al., 2008); FFT's and Tactics Ogre's
+  quarter turns, Triangle Strategy's rotated diorama, SimCity 2000's and
+  RollerCoaster Tycoon's four baked views, and t3ssel8r's texel-snapped
+  pixel rendering; Stonesense and Armok Vision over Dwarf Fortress;
+  Veloren's rigid-segment voxel figures; semantic zoom (Perlin and Fox,
+  1993).
+
+### 9.3 The questions and rulings
+
+| Question as put | Ruling |
+| --- | --- |
+| One executable with modes over one world save, or three sovereign products? | 381: one host, modes |
+| Which projection family should the modes share? | 382: one default view, isometric with quarter turns, precluding no other |
+| What is harmony → order → chaos in sim terms? | 383: ecological states, "not so important" |
+| Is the omniscient end of the mind axis a seat someone plays? | 384: some divine figures peek behind the curtain, which is rule-bending magic |
+
+### 9.4 Drafts waiting on Mark's word
+
+Wing law and `CLAUDE.md` change only on Mark's explicit word. Neither
+draft is applied.
+
+*For ruling 381, in the founding record's "Each vessel is a mode of the same
+peopled history", after the paragraph ending "require another vessel to be
+running":*
+
+> **Amended 2026-09-28** (wing design record, ruling 381): one host carries
+> the three games as modes over one world save, a build may carry one mode
+> or all three, and players in different modes may share one trunk. What
+> survives of the limit is its guard against coupling as obligation: no
+> mode may require another mode's code to run, and each game keeps its
+> genre, its verbs and its care granularity. As founded this read "joined
+> by a shared *history*, never by a shared running world instance".
+
+*For ruling 382, in the tabletop's `CLAUDE.md`, Important Don'ts, replacing
+the camera line:*
+
+> - The wing's default view is isometric with quarter turns (wing design
+>   record, ruling 382). The tabletop ships its locked 2:1 lens today and
+>   reaches quarter turns through a plan and render lane of its own; free
+>   yaw, first person and over-the-shoulder views are not precluded and each
+>   needs the same.
+
+### 9.5 What the session left open
+
+- The default view's pitch: the VTT's 30° dimetric, which keeps 2:1 pixel
+  tiles, or true isometric at 35.26°.
+- Whether Mesocosm opens in the default view or keeps the terrarium section
+  as its opening view.
+- Room for perspective views in isometer's camera (382).
+- Where the one host lives and how a build profile is expressed (381).

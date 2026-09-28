@@ -190,6 +190,14 @@ representation behind them and preserves object identity across whatever it
 chooses. Isometric 2:1, orthographic isometric, and the terrarium section are
 presets over this, not separate systems.
 
+**Annotation, 2026-09-28 (wing design record, ruling 382):** the wing has
+one default view, isometric with quarter turns, and it precludes no other
+view: free-yaw isometric, first person and third person over the shoulder
+stay available. The camera row below already admits the default and free
+yaw. First person and over the shoulder need a perspective camera, which
+isometer's orthographic `SlabCamera` does not express. The default's pitch,
+the VTT's 30° dimetric or true isometric, is open.
+
 | Choice | The application states | The engine must not require |
 | --- | --- | --- |
 | Camera | projection, orientation, scale, permitted movement | a fixed camera for correctness |

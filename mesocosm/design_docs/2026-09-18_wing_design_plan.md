@@ -24,6 +24,16 @@ agree with, ruling 114 holds every game's ruleset to the same test, rulings
 rulings 117 to 119 let any belief be wrong, say what makes one take and
 how that is weighed.
 
+**Status, 2026-09-28:** rulings run to 384. The one-game hypothesis session
+ruled one host carrying the three games as modes over one world save (381),
+a default view across the wing, isometric with quarter turns, precluding no
+other view (382), harmony, order and chaos as ecological states (383), and
+divine awareness of the sim as rule-bending magic (384). The founding
+record's amendment for 381 and the tabletop `CLAUDE.md`'s for 382 are
+drafted in the
+[session notes' §9.4](2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
+and wait on Mark's word.
+
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
 to; the method by which claims reach rulings and receipts reach plans; and
@@ -3268,6 +3278,129 @@ what later sections derive from.
      its unchanged tolerances. The isolated subtraction receipt alone does
      not certify complete force calculations or migration acceptance.
 
+381. **One host carries the three games as modes over one world save.**
+     Asked on 2026-09-28, in the session on Mark's hypothesis that the wing
+     is one big game ("Critter lineage roguelike, denizen adventure rpg, sim
+     world vtt, all isometric: rotatable, orthogonal projections"; session
+     notes §9): "Imagining this as one big game: should the wing ship as one
+     executable with modes over one world save, or stay three sovereign
+     products?" Evidence as put, checked that day at isometry `bfa1b36` and
+     mere `5ce144ff`: "the overlay contract is game-neutral, 1,256 lines
+     with a sibling module per game; all four workspaces pin mere 5ce144ff;
+     the only divergent patches are the VTT's p2panda set and Eponym's
+     renderling leftovers." Options, recommended first: (A) "One host,
+     modes: any build carries one or all three overlays over one world save;
+     each product becomes a build profile of one host, and players in
+     different modes can share a trunk. Commits: amending the founding
+     record's 'never a shared running world' passage (your word needed),
+     retiring Eponym's renderling patches, a mode switch in isomere's host
+     assembly (recommended)." (B) "One game, one product: retire the three
+     product identities for one roadmap." (C) "Three sovereign products: the
+     hypothesis stays a design lens, not packaging." Mark chose A, "One
+     host, modes". So the three games are modes of one host over one world
+     save, each product a build profile of that host, and participants in
+     different modes may share one trunk (ruling 104's option A). The three
+     products keep their names and descriptions. The founding record's
+     "joined by a shared *history*, never by a shared running world
+     instance. A vessel must never be able to require another vessel to be
+     running" is superseded in substance; being wing law, its amendment
+     waits on Mark's word, drafted in the session notes' §9.4. *Reading, not
+     ruled:* the founding guard against coupling as obligation survives as
+     "no mode may require another mode's code to run", so a one-mode build
+     stays whole; the mode switch belongs to isomere's host assembly under
+     W3; Eponym's renderling patches retire with §4.2's debt; W5's order
+     (231) stands.
+
+382. **The wing has one default view, isometric with quarter turns, and it
+     precludes no other view.** Asked on 2026-09-28, in the same session:
+     "Which projection family should the modes share?" Evidence as put:
+     "SlabCamera already takes any direction plus a cutaway, so every
+     orthographic preset is a vector; the VTT's lens is a 30° dimetric
+     preset; isometer has no texel snapping, so free yaw over pixel art will
+     shimmer; FFT and Tactics Ogre turn in quarter steps, from general
+     knowledge." Options, recommended first: (A) "Ortho, quarter turns:
+     every mode orthographic; yaw turns in 90° steps with an animated turn;
+     free yaw only in creative mode and the bench; pitch is a per-mode
+     preset. Commits: texel-snapped camera, four-yaw bake sets for the far
+     tier, Eponym's first-person setting dropped (recommended)." (B) "Ortho,
+     free yaw: continuous rotation in every mode." (C) "Per mode, as ruled:
+     record ruling 1 stands; each overlay picks its projection, first person
+     included." Mark answered verbatim: "I don't think having a default
+     isometric mode with quarter turns should preclude other views, like
+     free yaw isometric, or first person, or third person over the shoulder.
+     But a default across the wing is a powerful thing." So the wing has one
+     default view, isometric with quarter turns, and free-yaw isometric,
+     first person and third person over the shoulder stay available: ruling
+     1 stands with a default added, and option A's dropped first person does
+     not follow. The engine owes the default a texel-snapped camera,
+     animated quarter turns and yaw bake sets for baked tiers, and owes the
+     other views room: `SlabCamera` is orthographic only
+     (`shared/isometer/src/camera.rs:48`), so first person and over the
+     shoulder need a perspective camera the scene does not have. *Reading,
+     not ruled:* "isometric" is read in the game-art sense, which includes
+     the VTT's 2:1 pixel lens, a 30° dimetric (`camera.rs:108`), rather than
+     only true isometric at 35.26°; the default's pitch, and whether
+     Mesocosm opens in the default or keeps the terrarium section as its
+     opening view, go back to Mark; the tabletop `CLAUDE.md`'s "Do not treat
+     camera freedom as a near-term rendering task" conflicts with a
+     quarter-turn default, and its amendment waits on his word, drafted in
+     the session notes' §9.4.
+
+383. **Harmony, order and chaos are ecological states.** Asked on
+     2026-09-28: "What is harmony → order → chaos in sim terms? It appears
+     nowhere in the 380 rulings, the sim plan, or the workspace." Options,
+     recommended first: (A) "Cost of coordination: a derived reading, never
+     stored: harmony where members' alignments agree and consent suffices;
+     order where a constitution diverges from its members and working
+     enforcement holds the gap (rulings 64, 65, and 79's legitimacy gap);
+     chaos where neither consent nor enforcement holds (recommended)." (B)
+     "A field on places, like an aether or warp level, moved by processes
+     and magic." (C) "A tenet axis sophonts value and hold as tenets." Mark
+     answered verbatim: "I guess i just thought of it as like ecological
+     balance; whether it's unmaintained and good, maintained and good, or
+     unbalanced. Just figured that described, like, ecological states. Not
+     so important." So harmony is a balanced ecology that nothing
+     maintains, order a balanced ecology that something maintains, and
+     chaos an unbalanced one. A state is a reading and is never stored (§1),
+     and no lane opens for it. *Reading, not ruled:* balance is read off
+     ruling 267's four measures, persistence, turnover, collapse and the
+     response to an intervention, each bounded in the world's rules;
+     maintained means the balance depends on acts some agent keeps making, a
+     farmer, a gardener, a lineage engineering its habitat or a polity
+     provisioning its people (ruling 38), so harmony is a web held by
+     agentless processes and unchoosing members alone; option A's social
+     reading is not adopted.
+
+384. **Some divine figures can peek behind the curtain: an awareness of the
+     sim beyond an organism's capabilities is magic that bends the rules.**
+     Asked on 2026-09-28: "Is the omniscient end of the mind axis a seat
+     someone plays?" Evidence as put: "Today omniscience is a view: creative
+     mode sees without editing (184), the DM edits (156), and the storyteller
+     is the world's own agency (103); ascension is parked (279)." Options,
+     recommended first: (A) "Play the world: a fourth mode, the participant
+     plays the world entity and directs its storyteller, bounded by the
+     founder's conditions (recommended)." (B) "Views only: omniscience stays
+     creative mode and the DM seat; the storyteller stays the world's own
+     AI." (C) "Earned in-world: only through ascension, once the divinity
+     rung is unparked; the seat belongs to the divine thing." Mark answered
+     verbatim: "I would think some divine figures could peek behind the
+     curtain so to speak. An unnatural awareness of the sim beyond an
+     organism's capabilities is a cool bending of the rules, right? Seems
+     magical!" Answered in the session: yes, in this record's own terms.
+     §3.10 defines bending the rules as a magic system's declared suspension
+     of an invariant, and this awareness suspends two for its bearer: ruling
+     5's "memory is not global", knowledge arriving only by reach, and
+     ruling 59's senses being the creature's own. So the omniscient end is
+     not a seat or a fourth mode. It is an ability some divine figures hold,
+     and it is magic, parked with divinity and magic under ruling 279.
+     *Reading, not ruled:* the bearer reads truth rather than arrivals
+     within a scope, its domain's effect, its place or its referent (rulings
+     47 to 52), which the hagioglyph organ's plan owns; played in survival
+     mode it widens what the played figure knows and so what the view shows
+     (ruling 180), with no view machinery of its own; "some" makes it a
+     trait a divine figure may have, not one its tier confers; option A's
+     world seat is not adopted.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -4343,6 +4476,11 @@ Cautions, from memory of games and unverified: the X series resolves combat
 differently in and out of the player's sector and players exploit the
 difference, and S.T.A.L.K.E.R.'s A-Life switches between an offline and an
 online model with visible seams.
+
+**Ecological states (ruling 383, 2026-09-28).** Harmony, order and chaos
+name the state of an ecology: balanced with nothing maintaining it, balanced
+because something maintains it, and unbalanced. Each is a reading over the
+web, never stored, and no lane is open for it.
 
 ### 3.3.1 Needs, value and exchange
 
@@ -5770,6 +5908,13 @@ only ruling 43's enactment; an anatomically gated one offers the highest
 form first. The ladder is derived from the world's magic and no longer
 fixed, and ruling 44's "quality of the journey" stands as the measure.
 
+**Awareness beyond the body (ruling 384, 2026-09-28).** Some divine figures
+can peek behind the curtain. An awareness of the sim beyond what an
+organism's body affords suspends ruling 5's locality of knowledge and ruling
+59's senses for its bearer, so it is rule-bending by this section's
+definition. It is an ability some divine figures have, not a seat or a
+mode, and it is parked with divinity and magic (ruling 279).
+
 Prior art for ruling 101, known. Ars Magica's hermetic grammar composes
 every effect from five techniques and ten forms, the typed-composition
 answer to "what else" as a shipped rules system. GURPS Thaumatology is a
@@ -6230,6 +6375,14 @@ levels:
 must be able to run at background fidelity and surface as effects,
 encounters, pressures and stakes in a game that does not play it. What that
 requires of each rung is a W2 question.
+
+**One host, modes (ruling 381, 2026-09-28).** The three games are modes of
+one host over one world save, each product a build profile of it, and
+players in different modes may share one trunk under ruling 104. **A default
+view (ruling 382).** The wing has one default view, isometric with quarter
+turns, which precludes no other: free-yaw isometric, first person and third
+person over the shoulder stay available, so perspective remains a mode's
+choice as ruling 1 has it, now with a shared default.
 
 ### 5.1 Rulesets over the sim
 
@@ -7040,6 +7193,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 381 to 384 recorded, from the one-game hypothesis
+  session: one host carrying the three games as modes over one world save
+  (381), a default view across the wing (382), harmony, order and chaos as
+  ecological states (383), and divine awareness as rule-bending magic
+  (384). Carried into §3.3, §3.10 and §5, the sim plan, the presentation
+  plan, the three overlay plans' perspective rows, the session notes' §9
+  and the index. The founding record and tabletop `CLAUDE.md` amendments
+  are drafted there, not applied.
 - 2026-09-28: Mere's primary adoption now passes the original hover
   retention test and all 44 Rootstock tests. Four deliberately broken consumer
   controls fail as intended; exact restoration passes 44 again. Locked native
