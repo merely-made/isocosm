@@ -7040,6 +7040,19 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 380's bounded pre.4 carry is pushed at Mere `8d308572`
+  after independent source and receipt review. Its nine direct GPU tests pass, the mapping-only fault
+  fails exactly three broadcast cases with six controls passing, and exact
+  restoration passes all nine. Nine identity tests also pass; their receipt
+  identifies the earlier corrected-source executable, whose hash root checked
+  before the later rebuild. Full Seiche passes 96 tests and one existing
+  ignored, including both original force comparisons at unchanged tolerances.
+  Root rehashed all 1,984 recorded source entries and the gate logs. All six
+  identity predicates, seven prepared migration files and both locks remain
+  byte-identical. No dependency, renderer pin or manifest change was needed.
+  The owning Mere migration plan and `pre4-carry-checkpoint.json` qualify this
+  carry separately from the remaining matrix, ESP/Conatus and S13 gates.
+  The source fix stays on the migration branch; Isometry pins remain unchanged.
 - 2026-09-27: ruling 380's separate pre.2 correction is verified and pushed
   on Mere main `a016f86f`. The final direct launcher tests pass nine cases;
   removing only the broadcast mapping fails exactly three broadcast cases

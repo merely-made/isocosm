@@ -498,6 +498,17 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, bounded pre.4 carry verified.** Mere branch commit `8d308572`
+is pushed. The correction now passes the
+same nine direct cases and three-failure fault control on pre.4, with exact
+restoration, nine identity checks and 96 full Seiche passes (one existing
+ignored). Independent review and root hash checks agree. The six-field guard,
+seven prepared files, both locks and original tolerances are unchanged; this
+carry needed no dependency or rendering update. It remains a separate source
+commit on the migration branch. The wider migration matrix, ESP/Conatus gates,
+S13 and current-main integration remain open. Lane M stays retained for those
+gates; Lane L remains retained while concurrent Genet primary work continues.
+
 **2026-09-27, separate pre.2 repair landed.** Mere main `a016f86f` carries
 ruling 380's verified alias-broadcast correction. Nine direct launcher tests
 pass, the mapping-only fault fails the three broadcast cases, and exact
