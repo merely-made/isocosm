@@ -7040,6 +7040,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: the reviewed reconciliation is preserved as a **held branch
+  checkpoint**, Mere `387a8dd2`, pushed with parents `a7c477e7` and `5ce144ff`.
+  Root and independent review rehashed seal `6400226a`: 1,986 source/doc
+  entries, 141 receipts and 11 locks. This preserves the resolved merge;
+  the documented scroll failure still blocks acceptance, S13 and main
+  migration integration. The separate Genet owner repair is under test.
 - 2026-09-28: the broader pre.4 reconciliation tests exposed a separate
   scrolling regression on the published Genet/Mere combination. The original
   equal-hover test requests 12 pixels inside a 180-pixel container with a

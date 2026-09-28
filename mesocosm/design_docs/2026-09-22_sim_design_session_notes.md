@@ -498,6 +498,14 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, held branch checkpoint preserved.** Mere `387a8dd2` records
+the reviewed reconciliation with both parents and all sealed source bytes
+preserved. It is pushed and clean. Root and independent review checked
+1,986 source/doc entries, 141 receipts and 11 locks under seal `6400226a`.
+The scroll failure remains an acceptance blocker; this checkpoint does not
+release S13 or main integration. The separate Genet repair's focused tests
+and fault controls pass, while broader verification remains in progress.
+
 **2026-09-28, published scroll regression discovered.** Reconciliation's
 broader Rootstock suite has 40 passes and one failure: a 200-pixel line in a
 180-pixel scroll container clamps a requested 12-pixel offset to zero before
