@@ -498,6 +498,20 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, text publication accepted and pushed.** Mere `5ce144ff`
+publishes the tested Genet `7b48f94d`; Isometry `5da804eb` adopts both across
+its seven owning manifests. Root and independent review checked the 106-file
+Mere and 126-file Isometry seals. Both actual-pin row runs measure 187 rows
+with zero short, and the test now runs ordinarily. Native/Wasm Mere checks
+and all four Isometry consumer workspaces' all-features/all-targets checks
+pass. The side-panel plan records exact source audits, fault controls and
+the retained optional lineages. Eponym's check includes its unchanged local
+Renderling edits and clean Crabslab; it is not portable renderer acceptance.
+Lane M is reconciling this exact main before S13. Its refreshed workspace
+check exposed the known two-line Reader accessibility adapter; the bounded
+lane adoption is released while the primary Reader bytes remain preserved.
+The prior publication-pending entry below is historical. Rulings remain 380.
+
 **2026-09-28, remaining migration compile/GPU checkpoint accepted.**
 Lane M completed all eight standalone/nested builds and the remaining
 Conatus, ESP and Numen correctness gates. Root and independent review checked

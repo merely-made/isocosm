@@ -7040,6 +7040,18 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: Genet text publication is complete through Mere `5ce144ff`
+  and Isometry `5da804eb`, both pushed. Independent review and root rehashes
+  accept 106 Mere and 126 Isometry receipt files. Both actual-pin row runs
+  measure 187 rows with zero short (61 expanded, 64 composing, 62 picking);
+  the regression now runs ordinarily, with its 0.01 allowance unchanged.
+  Mere native/Wasm checks and all four Isometry consumer workspaces'
+  all-features/all-targets checks pass. Source detectors reject the retained
+  deliberately incorrect paths and revisions. The side-panel plan owns the
+  detailed evidence: text-fragment containment, existing optional source
+  lineages, and Eponym's unchanged local Renderling/Crabslab qualification.
+  Lane M is reconciling this exact Mere main into its accepted pre.4 branch;
+  S13 and migration integration remain open. No new ruling follows.
 - 2026-09-28: Lane M's remaining S9-S12 checkpoint passed root and
   independent review: nine Conatus cases, ESP synthetic parity and actual
   finite/length controls, real MiniLM parity, refreshed Numen 77 passes
