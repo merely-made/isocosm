@@ -15,7 +15,7 @@ this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
-**Status, 2026-09-27:** rulings run to 379, and W5 is drafted as the
+**Status, 2026-09-27:** rulings run to 380, and W5 is drafted as the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
@@ -3246,6 +3246,27 @@ what later sections derive from.
      Return with any metric-policy fork instead of inferring its answer.
      The three fresh tests do not certify the old browser, WPT or 187-row
      Isometry measurements; those remain separately qualified evidence.
+
+380. **Fix the pre-existing alias broadcast defect on pre.2 first, then
+     carry the verified correction into pre.4.** Asked on 2026-09-27:
+     "Which repair order do you want?" Evidence as put: "We also localized
+     the existing Seiche bug: our shared-buffer patch omits broadcasting
+     for its second input. The small GPU fixture gets 6 of 9 values wrong."
+     Options, recommended first: (A) "Fix pre.2 separately, then carry the
+     verified correction into pre.4 (recommended). The existing bug gets
+     its own tested commit." (B) "Fix only the migration lane. Pre.2 stays
+     unchanged until the complete migration lands." The stated constraint
+     was: "Allocation checks and numerical tolerances stay unchanged."
+     Mark answered verbatim: "A". Repair and verify the existing pre.2
+     patch in its own commit before carrying the correction into pre.4;
+     the migration's remaining gates still apply. *Reading, not ruled:*
+     construct alias views with the output's broadcast reference shape in
+     all three affected launchers, preserving each input's own shape and
+     strides, identity checks and separate output allocation. Use direct
+     launcher regressions, same-shape and separate-input controls, a
+     deliberately reverted layout correction, and full Seiche parity at
+     its unchanged tolerances. The isolated subtraction receipt alone does
+     not certify complete force calculations or migration acceptance.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -7019,6 +7040,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 380 selects a separate verified pre.2 alias broadcast
+  fix before carrying the correction into pre.4. Implementation is released
+  on Mere's current primary checkout with unrelated reader WIP preserved;
+  direct launcher, broken-control and full-force verification precede its
+  own source commit. Pre.4 carry waits for that checkpoint's review.
 - 2026-09-27: a bounded Seiche diagnostic localizes a faulty isolated GPU
   broadcast subtraction. NdArray matches scalar subtraction bit-for-bit in
   four cases; the three-point GPU fixture has six wrong entries out of nine

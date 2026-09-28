@@ -271,7 +271,7 @@ rename, which he closed ("forget about the rename. the sim design and the
 wing design is more important"), he asked to be questioned, "ask me
 questions, refine refine", then "put the question to me directly". Rulings
 113 to 173 were given on 2026-09-24, 174 to 235 on 2026-09-25, 236 to 352
-on 2026-09-26 and 353 to 379 on 2026-09-27, the last
+on 2026-09-26 and 353 to 380 on 2026-09-27, the last
 of them answering the consistency pass and the two lanes' forks, typing
 the attention set, and settling the input by click.
 
@@ -462,6 +462,7 @@ label remains as the dated record of how they were presented.
 | Pre.4 allocation guard | Preserve five comparisons or add service identity? | "Add service ID as a sixth comparison; also verify the new rejection case before proceeding." | 377 |
 | Pre.4 missing dependencies | Allow needed crates.io downloads, only the first missing package, or remain offline? | "Ok." Accepts needed downloads for the pinned migration, recording them and preserving Git pins. | 378 |
 | Text bounds before merge | Fix explicit-height text and inline decoration bounds now, or merge normal text and defer both? | "A". Fix both with measured fixtures and verify the combined change before merging. | 379 |
+| Alias broadcast repair order | Fix pre.2 separately then carry into pre.4, or fix only the migration lane? | "A". Give the pre-existing defect its own verified pre.2 commit, then carry the correction; allocation checks and tolerances stay unchanged. | 380 |
 | W5, Eponym | Co-op; succession; modes | "Each their own"; "The player chooses"; "The same" | 185 to 187 |
 | W5, the VTT | Sim off; uncalibrated rulesets; packs; hooks | "Sim off allowed"; debug or experimental with a warning; "Wait or the gm forces it"; "As suggested hooks" | 188 to 191 |
 
@@ -496,6 +497,13 @@ rewritten, with a sophont line added, at his word (200).
 | `isocosm-overlay`'s README claimed a 0.0.1 name reservation | None exists on crates.io; the line was corrected on merge |
 
 ### 8.5 What the session left open
+
+**2026-09-27, repair order answered.** Ruling 380 chooses a separate tested
+pre.2 repair, then carries the verified correction into pre.4. Allocation
+identity checks and numerical tolerances stay unchanged. Primary Mere's
+unrelated reader WIP must survive; the migration lane retains its prepared
+changes while the pre.2 source and controls are independently reviewed.
+The answer authorizes the repair sequence, not numerical acceptance.
 
 **2026-09-27, alias-layout repair question.** A three-point isolated GPU
 subtraction has six wrong entries out of nine, while the CPU matches scalar
