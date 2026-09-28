@@ -252,6 +252,40 @@ first; 4 by 396, chunks at power-of-two cell sizes from the start.
   isoscape when isoscape is founded (ruling 392's "isoscape keeps founding
   presets").
 
+### A.8 SP1's brief (2026-09-28, rulings 397 to 399)
+
+- **Types, all optional and skipped when absent, so every existing world,
+  receipt and digest is unchanged:** a `Border` on `Route` naming the side it
+  leaves by, the side it enters and whether the two meet flipped (397); a
+  `Footprint` on the world's traits, its side count and side length in base
+  units; the rules naming the skeleton's condition keys (394); and the map
+  domain as `Founding.map` (398).
+- **Validation:** borders only on a world with a footprint; sides within the
+  footprint's count; each side of a site used by at most one route; every
+  border's reverse present and matching; skeleton keys declared in the rules
+  and present on every site.
+- **The generator:** square sites on planes, rings and tori (395), the
+  skeleton laid top-down from integer value noise over the grid, and each
+  site's `terrain_seed` kept for its interior detail. Its width times its
+  height is the site count; a founding whose `sites` disagrees is refused
+  (398's reading).
+- **The terrain models, in Isocosm (393):** integer value noise from
+  `isocosm::draw`; corner classes found by walking borders, each corner's
+  height drawn from the sites around it and keyed by the class's least
+  member; each edge profile running between its two corner heights, with
+  detail that vanishes at both ends, keyed by the unordered pair of border
+  records and read reversed from the far side.
+- **Receipts:** tests over derived seeds as regression pins, and
+  `isocosm-bench --map-draws N` drawing from an unselected master seed and
+  saving its receipt (ruling 15), over grids from 2×2 to 16×16 and site sides
+  from 256 to 2,048 base units (399).
+- **Controls:** a profile keyed by the ordered pair fails the symmetry check;
+  a corner height keyed per site fails corner agreement.
+- *Readings, not ruled:* corners must be shared for borders to agree exactly
+  at their ends; terrain math is integer-only, the sim's encoding rule
+  (`shared/isocosm/src/lib.rs`); a span's passability is a reading of its
+  slope against the water level and is never stored.
+
 ## 0. Rulings this plan rests on (2026-08-05)
 
 *Reading, not ruled, 2026-09-28, on what stands:* 1, 3, 5, 7 and 8 stand,
@@ -938,6 +972,8 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: SP1's brief written as §A.8 and its three forks ruled (397 to
+  399); the Isocosm baseline passed 111 tests before any SP1 change.
 - 2026-09-28: SP0 done, §A.6's four decisions ruled (393 to 396); §A.2's
   skeleton and §A.3's model owner updated to match.
 - 2026-09-28: rewritten as the spatial spine's plan (rulings 389 to 392):

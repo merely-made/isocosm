@@ -986,3 +986,12 @@ form, the first shapes and the lift's grain (§A.6 of the plan).
 | At what grain does the lift work in the first slice? | 396: chunks at power-of-two cell sizes from the start |
 
 With these the spine plan's SP0 is done; SP1 is next.
+
+SP1's brief (the plan's §A.8) then put three forks, after a baseline of 111
+passing Isocosm tests:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does each adjacency's frame relation live? | 397: on the route, as an optional border |
+| How does the map family enter founding? | 398: an optional part of Founding |
+| What space do SP1's seeded draws cover? | 399: scale-free, 2×2 to 16×16 grids and 256 to 2,048 base-unit sides |

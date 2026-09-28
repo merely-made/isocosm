@@ -42,7 +42,9 @@ as its plan (390), with sites meeting through edge profiles (391) and
 Isocosm owning the lift (392). Rulings run to 392. The spine's four
 decisions followed: terrain models in Isocosm (393), the skeleton as
 condition keys (394), square sites first (395) and a chunked lift (396),
-closing its SP0. Rulings run to 396.
+closing its SP0. Rulings run to 396. SP1's brief then ruled borders on
+routes (397), the map family as an optional part of Founding (398) and
+scale-free draws (399). Rulings run to 399.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -3625,6 +3627,48 @@ what later sections derive from.
      border (recommended)." (B) "Whole small sites at one cell size, with
      chunking arriving at T2." Mark chose A, "Chunks from the start". With
      rulings 393 to 396 the spine plan's SP0 is done.
+
+397. **Each route carries its border.** Asked on 2026-09-28, in SP1's
+     brief: "Where does each adjacency's frame relation live (which side a
+     route leaves by and which side it enters)? Evidence: ruling 72 holds
+     the world map 'as adjacency and never as a two-dimensional array';
+     Route today is { to, travel, transmission }; square grids could derive
+     sides from a width-by-height descriptor, but spheres and bodies (ruling
+     73) cannot." Options, recommended first: (A) "On the route: each Route
+     gains an optional border naming the side it leaves by and the side it
+     enters, and validation checks both directions agree; skipped when
+     absent, so old worlds keep their digests. The same record serves
+     hexagons, pentagons and bodies later (recommended)." (B) "A grid
+     descriptor: the world holds its shape with a width and height, and
+     sides are derived from site positions." Mark chose A, "On the route".
+     *Reading, not ruled:* a border also says whether its two sides meet
+     flipped, false on planes, rings and tori and reserved for
+     non-orientable shapes, skipped when false.
+
+398. **The map family is an optional part of Founding.** Asked on
+     2026-09-28: "How does the map family enter founding? Evidence: Founding
+     is 'saved with every bench receipt' (generate.rs); the ecology places
+     groups by random(\"habitat\", group) % sites and disperses along
+     routes, so it runs over any site graph." Options, recommended first:
+     (A) "Optional part of Founding: Founding gains an optional map domain,
+     skipped when absent so every old receipt and digest stays
+     byte-identical; when present it lays the sites, their borders and
+     skeletons, and the ecology runs over them unchanged (recommended)." (B)
+     "Its own domain, joined to Founding later." Mark chose A, "Optional
+     part of Founding". *Reading, not ruled:* with a map present, its width
+     times its height is the site count, and a founding whose `sites`
+     disagrees is refused rather than reconciled.
+
+399. **SP1's draws are scale-free.** Asked on 2026-09-28: "What space do
+     SP1's seeded draws cover? Evidence: no product default exists yet
+     (Isocosm's base unit default is a 1,000 µm placeholder); the VTT's
+     generator authors boards to 256 tiles; Mesocosm's enclosure is 129
+     voxels across." Options, recommended first: (A) "Scale-free draws:
+     grids from 2×2 to 16×16 over planes, rings and tori, and site sides
+     from 256 to 2,048 base units, choosing no product default; defaults
+     come when a game founds on the spine (SP7) (recommended)." (B) "Fix a
+     default now, a 7.5-inch base unit and 256-tile sites (2,048 voxels)."
+     Mark chose A, "Scale-free draws".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -7429,6 +7473,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 397 to 399 recorded, SP1's brief: borders on routes
+  (397), the map family as an optional part of Founding (398), scale-free
+  draws (399). Carried into the spine plan's §A.8, the session notes' §9.6
+  and the index.
 - 2026-09-28: rulings 393 to 396 recorded, the spine plan's four decisions:
   terrain models in Isocosm, amending the isoscape plan's ruling 11 (393);
   the skeleton as condition keys (394); square sites on planes, rings and
