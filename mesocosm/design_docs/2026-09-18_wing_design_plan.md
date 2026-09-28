@@ -89,6 +89,68 @@ Mark by questions from the top down on 2026-09-17 and 2026-09-18.
 
 ---
 
+**Status, 2026-09-28, composition refinement:** rulings run to 407. At Mark's
+"Let's document!", the current architecture and the construction, magic,
+learning and condition-carryover contracts below were recorded. This is a
+documentation pass; SP2's landed receipt and other active work are unchanged.
+
+## Current architecture, 2026-09-28
+
+**Design consolidation, rulings 404 to 407; no implementation gate opened.**
+One host carries the three modes over one world save (381). The default
+camera is the rotatable 2:1 dimetric view (382, 387); additional perspectives
+remain possible. A mode controls how someone plays. Knowledge access controls
+what they may learn. Camera and presentation detail control how permitted
+information is shown. Simulation fidelity, spatial extent, social extent,
+agency, retention and update frequency are separate choices with explicit
+connections. Changing the camera does not itself change world facts or grant
+knowledge; changing modes does not itself reincarnate a subject.
+
+The construction model is nested assemblage of meaningful geometric and
+functional primitives. Assemblies remain inspectable inside. Compatibility
+rules admit combinations without enumerating every finished critter, plant,
+prop, item or building. Construction supplies function and limitations;
+geometry supplies measurements where a mechanic needs them (405). Tradeoffs
+depend on conditions and epoch. The design does not require creatures to
+learn every behavior from zero or function to emerge from unconstrained
+physical optimization (407).
+
+A source recipe and history yield a contextual embodiment. Its accepted
+construction supports coordinated functional readings, geometry, collision,
+animation bindings and descriptions. These derived products cite the source
+revision; one body may require many runtime objects. Runtime handles and
+render parts are disposable and do not define the continuing individual.
+The [body contract's current refinement](2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
+separates subject, incarnation, recipe, body revision and projection.
+
+Capability is what current construction and circumstances support; repertoire
+is the procedures an entity can attempt; proficiency is how well it performs
+them. Maturation and practice can change these separately. Perception, belief,
+self-belief and tenets inform choices; actual circumstances resolve effects.
+The [sim plan](2026-09-22_sim_plan.md#25-capabilities-and-knowledge) owns these
+distinctions. Material and conceptual operations share composition machinery,
+with mundane and magical meanings supplied by the world's rules (407).
+
+Magic composes fundamental effects with strongly escalating energy costs,
+and its scripts may read world conditions and other generators' accepted
+outputs (404). Rulesets categorize those effects and supply distinctive
+exemplars; generated spells can extend their catalogues. The
+[functional generation plan](2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+owns this design, including its open cost and execution questions. Explainable
+surprise and powerful combinations are wanted; fairness does not mean every
+build is equally strong.
+
+**Execution and inspection, reading rather than a new runtime ruling.**
+Generate reusable structures when needed; cache derived results against their
+dependencies; schedule known transitions; react to relevant changes; retain
+continuous work where it serves a mechanic. World truth, changes, narrative
+records, and an observer's beliefs have different purposes. A shared bench
+should explain what supports an action, which circumstances changed its cost,
+why it failed, and which accepted events caused its outcome, without giving
+every inhabitant that diagnostic knowledge. Moirai is comparison material for
+rule authoring and causal inspection, not a selected dependency or replacement
+authority. Concrete source findings and remaining work live in the plans below.
+
 ## 0. Rulings this record rests on
 
 All ruled by Mark in conversation, 2026-09-17 and 2026-09-18, unless dated
@@ -3726,6 +3788,126 @@ what later sections derive from.
      Ground's palette (recommended)." (B) "Palette indices for now." Mark
      chose A, "World-local ids".
 
+404. **Magic composes fundamental effects, paid for through equivalent
+     exchange, with world-dependent scripts.** Asked on 2026-09-28, after
+     reviewing Moirai and the wing: "How expressive may a generated
+     operation become?" The recommendation was composition over a bounded
+     vocabulary, with fundamentally new operations a separate content
+     extension. Mark expanded it: "As long as we can explain ‘em, i favor
+     hitting the fundamentals and then letting things run wild. I want to
+     be surprised! I don’t mind broken builds. I enjoy caves of qud,
+     remember? But it has to be fair…" His cost principle: "Equivalent
+     exchange. Any effect (burn, freeze, shock, buff, debuff, heal…) should
+     be available as a cantrip and combinable. But each level of combining
+     takes a magnitude more energy."
+
+     Every admitted fundamental effect has a small cantrip expression and
+     may participate in combinations. More composition demands sharply
+     greater power. Mark's tenth-level, ten-effect illustration expresses
+     that escalation; it does not fix a formula, a multiplier, a count of
+     primitives, or a conversion into any tabletop system's spell levels.
+     Powerful or unexpected builds are welcome when their behavior and
+     exchange can be explained. This does not make all effects free or
+     automatically known to every caster.
+
+     Mark wants the effects applied to typologies such as Homestuck's,
+     Elder Scrolls', D&D's, Pathfinder's and PbtA's, with ruleset spells as
+     distinctive exemplars and generated spells extending the catalogue
+     and expressing the world. These are requested comparisons and adapter
+     directions, not an assertion that those systems share one taxonomy.
+     CoreRPG and individual ruleset mappings remain to be designed.
+
+     The core expands by defining an effect's script: its fundamental
+     character plus fungible characteristics influenced by simulation.
+     Mark's examples are fire that burns hotter near fire and costs less
+     mana, ice that spreads until stopped by the sun, and stronger gravity
+     in a larger world. These are possible authored world laws, not default
+     laws or real-world physical claims. In his words: "basically hook
+     other generators of the sim into the effect’s script calculation";
+     mod authors and the generator should both be able to create such
+     magic. Ball x Pit's combinations are an analogy for the composition,
+     not a prescribed algorithm. Ways of using magic remain open.
+
+405. **Construction declares function; geometry measures what a mechanic
+     needs.** Asked in the same review: "When does geometric detail affect
+     the rules?" The recommendation was: "construction declares functional
+     properties; geometry supplies measurements where a mechanic needs
+     them, such as clearance, reach, contact, or coverage. We should name
+     those dependencies explicitly." Mark answered: "Yeah, that’s a good
+     recommendation." Fine geometry need not be simulated to discover every
+     capability. A declared property that depends on a measurement must
+     identify it so an accepted body change can invalidate the reading.
+
+406. **A new life selects conditions to carry forward, with granular player
+     configuration or randomization.** Asked: "How are consequences
+     translated between substantially different embodiments?" Mark's
+     answer, verbatim: "I would say it can influence a person in a lot of
+     different ways. A detriment to the part, or the part being gone
+     entirely, or even a benefit related to the incident; old losses perhaps
+     led to new abilities that became characteristic… i think practically
+     it’s like choosing what conditions to bring forward to the next life.
+     That decision can be randomized or configured by the player. Or even
+     just a blanket “keep conditions?”prompt would be fine, though i would
+     prefer the more granular choices."
+
+     History remains pointable while its expression in the next life can
+     be a detriment, absence, benefit, or characteristic ability connected
+     to the incident. Granular choices are preferred; randomized selection
+     and a blanket keep-conditions option are supported design directions.
+     Not selecting an active condition does not erase its historical event.
+     This governs carryover after a new life is available; it does not
+     change the existing rules for gaining reincarnation. Mapping choices,
+     their costs or restrictions, and default selection remain to be designed.
+
+407. **Construction and action distinctions from the design discussion are
+     consolidated.** This records earlier answers in this conversation,
+     rather than presenting them as new choices made on 2026-09-28. Mark
+     chose mostly generated forms from geometric and functional primitives,
+     nested composition, general compatibility enabling wild combinations,
+     and construction determining capabilities and limits with stylized
+     movement respecting them. He chose: "Material and conceptual operations
+     share the composition system." Tradeoffs are circumstantial: "a failure
+     in one epoch could be an advantage in another." He accepted the
+     distinctions with "capability, repertoire, proficiency. agreed", and
+     placed perception and self-perception with belief and tenets, including
+     believing oneself unable to do something actually possible.
+
+     Recipe and history provide continuity while embodiment and mechanics
+     may adapt to worlds and rulesets. Incarnation is part of that model.
+     The earlier objection to costly physical discovery of all function
+     stands: generation assembles meaningful components; ordinary inherited
+     behavior need not be learned from zero. These decisions refine the
+     body and functional plans; they do not certify the current single-part
+     bindings or three-operator evaluator as the complete composition system.
+
+408. **SP3's capture shows water as opaque voxels.** Asked on 2026-09-28,
+     after the spine's SP2 landed at `38ea90f`: "How does SP3's capture show
+     water? Evidence, checked in code today: Ground stores a sea_level that
+     nothing in isometer reads, so the renderer draws no water at all;
+     ruling 28 (water as a field, salva for particles) and ruling 22's
+     transparency row are unbuilt; the lift now yields water cells up to
+     each site's level." Options, recommended first: (A) "Opaque water
+     voxels: the bench adapter paints water cells as a solid palette colour,
+     so the capture shows where water lies and whether it meets across the
+     border; real water (transparency, the field, salva) stays ruling 28's
+     lane (recommended)." (B) "Leave water out, reported in the receipt."
+     (C) "Build water first, in a render lane of its own." Mark chose A,
+     "Opaque water voxels". Put as the first of SP3's forks and first
+     numbered 404, renumbered on recording because a parallel session had
+     taken 404 to 407.
+
+409. **SP3 captures a border window and an overview.** Asked on 2026-09-28:
+     "What does SP3's capture frame? Evidence: a site at the draws' largest
+     is 2,048 base units a side, about 4.2 million columns at the base grain;
+     isometer's Ground grows one bounded extent column by column; SP2 lifts
+     any window at any power-of-two cell size." Options, recommended first:
+     (A) "Border window and overview: two captures, a window straddling the
+     shared border at the base grain, where a seam would show up close, and
+     both whole sites at a coarse level, where the two read as one
+     landscape; each receipted with its seed and border digests
+     (recommended)." (B) "Whole sites, coarse." (C) "Border window only."
+     Mark chose A, "Border window and overview".
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -6140,6 +6322,13 @@ and savagery, and its legends mode is a timeline to browse and not to edit.
 
 ### 3.10 The world's lineage and the magic generator
 
+**2026-09-28 refinement:** ruling 404 makes fundamental effects composable,
+gives them cantrip expressions and escalating exchange costs, and admits
+world-dependent scripts authored by modders or generated by the sim. The
+[functional generation plan](2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+owns the current model and open questions; the six axes below remain useful
+dimensions. Ruling 407 adds the construction and learning distinctions.
+
 From ruling 101. Every clause of Mark's first sentence is already held by a
 ruling, and the magic generator is a reading, docketed as D30, accepted 2026-09-22.
 
@@ -7528,6 +7717,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   on was a crate constant.
 
 ## Progress
+
+- 2026-09-28: rulings 408 and 409 recorded, SP3's capture for the spatial
+  spine: water as opaque voxels (408), a border window and an overview
+  (409). SP3's handoff is the spine plan's §A.10.
+- 2026-09-28: at Mark's "Let's document!", recorded rulings 404 to 407 and
+  the current architecture; refined composition, geometry dependence,
+  capability/repertoire/proficiency, contextual embodiment and selected
+  condition carryover in their existing plans. Documentation only; the
+  spatial spine's SP2 work and all existing implementation gates stand.
 
 - 2026-09-28: rulings 400 to 403 recorded, SP2's forks: the skeleton given
   back exactly where it can be (400), a Coons patch interior (401), columns

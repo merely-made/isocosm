@@ -344,6 +344,34 @@ first; 4 by 396, chunks at power-of-two cell sizes from the start.
   third stop rule); soil depth is an eighth of the site's relief, at least
   one base unit.
 
+### A.10 SP3's handoff (2026-09-28, rulings 408 and 409)
+
+Ruled, not yet built. Where the next session starts:
+
+- **Host.** The specimen bench in `mesocosm-genet`, Isocosm's only
+  consumer, which compiles against SP1 and SP2 (checked 2026-09-28). Its
+  terrain today is a Mesocosm `World`'s `Ground`: the producer
+  (`src/app/bench/producer.rs`) hands `world.ground()` to the section
+  (`src/section.rs`), which wraps it as isometer's `GroundTerrain`.
+  Captures come from a scenario's `capture <name>` line through
+  `Host::capture_to` (`src/app/drive.rs`).
+- **The adapter** (reading, not ruled: it lives in the bench, which holds
+  both crates). It implements isometer-core's `Terrain` over lifted chunks
+  and grows a `Ground` for the scene with `Ground::grow_with`, mapping
+  world-local material ids to palette indices, water as an opaque palette
+  colour (408). `Ground` grows every column from height zero, so the
+  adapter subtracts a local datum, the window's lowest top less the soil
+  depth, or tall sites realize thousands of voxels a column.
+- **Two captures** (409): a window straddling the shared border of two
+  neighbouring sites at the base grain, and both whole sites at a coarse
+  level. Reading, not ruled: in the wing's default view,
+  `SlabCamera::dimetric_2_1` (rulings 382 and 387). Each receipt carries
+  the seed, the parameters and the border digests.
+- **Control:** one side lifted from a perturbed skeleton shows the seam and
+  fails the digest.
+- **Done when** SP3's done-condition in §A.5 holds: a native capture shows
+  the border with no seam in surface or material.
+
 ## 0. Rulings this plan rests on (2026-08-05)
 
 *Reading, not ruled, 2026-09-28, on what stands:* 1, 3, 5, 7 and 8 stand,

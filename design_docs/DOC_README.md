@@ -13,6 +13,12 @@ with [magic and generator discussions](../mesocosm/design_docs/archive_docs/2026
 (archived 2026-09-26, ruling 310; the organs moved to the
 [wing organs plan](../mesocosm/design_docs/2026-09-26_wing_organs_plan.md)).
 
+- [Current wing architecture](../mesocosm/design_docs/2026-09-18_wing_design_plan.md#current-architecture-2026-09-28):
+  one host and world save, independent play/knowledge/camera/detail choices,
+  meaningful construction, capability/repertoire/proficiency, contextual
+  effect composition and condition carryover between lives. The 2026-09-28
+  refinements (404 to 407) are documented design, with implementation status
+  and open questions retained in the linked owner plans.
 - [Games wing consolidation](2026-09-09_games_wing_consolidation_plan.md):
   history-preserving repository import, source/worktree preservation, separate
   build workspaces, aligned platform dependencies, single-renderer migration,

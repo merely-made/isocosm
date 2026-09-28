@@ -8,7 +8,130 @@ heading. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
-## Scope and ownership
+## Composition design, 2026-09-28
+
+**Status: design refinement, not implemented.** Wing design record rulings
+[404 to 407](2026-09-18_wing_design_plan.md#0-rulings-this-record-rests-on)
+extend the intended model beyond the bounded evaluator whose receipt remains
+below. Its three operators and charge routing are foundations, not the extent
+of the effect vocabulary or a complete spellcasting model.
+
+### Meaningful construction
+
+Geometric and functional primitives compose into nested assemblies whose
+internals remain addressable. A shared composition description should support
+critters, plants, props, equipment and buildings; the rules give each domain
+its meanings. Material and conceptual operations use this composition system.
+Compatibility describes relationships and conditions rather than a list of
+permitted finished designs. Constructible, executable in these circumstances,
+and advantageous here are different questions. A disadvantage may become an
+advantage as the world changes.
+
+Construction declares functional properties. Geometry supplies required
+measurements, such as reach, clearance, contact and coverage (405). The same
+accepted construction and revision support functional readings, generated
+form, colliders, animation bindings and descriptions. Structural attachment,
+resource transport and control relationships need not be the same graph.
+Motion can use reusable, stylized procedures that respect the construction.
+No commitment to a new ECS, skeletal library or physics-based learning system
+follows from this model. The
+[body contract](2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
+owns identity and contextual embodiment; the sim plan owns capability,
+repertoire and proficiency.
+
+### Fundamental effects and equivalent exchange
+
+Every fundamental effect admitted by a world's magic has a small cantrip
+expression and can combine with others: burn, freeze, shock, buff, debuff and
+heal are Mark's examples, not a closed enum. Cantrip describes a small
+expression, not universal access, zero cost or a specific ruleset's casting
+category. New fundamentals can be defined by an effect script; generation
+can compose and vary admitted behavior, and modders can extend that behavior.
+
+Each level of combining demands a magnitude more energy (404). The required
+design is strongly escalating cost with deeper or stronger combinations;
+the exact curve is open. The illustration of tenth-level magic combining
+the strength of ten effects does not select tenfold growth, a numerical
+definition of composition level, or a D&D/Pathfinder spell rank. Nor does it
+say that ten sequential low-power casts are one tenth-level combination.
+
+Explainable, surprising and powerful combinations are desired. Fairness means
+the exchange and consequences must be understandable; it does not require
+equally strong builds or removing every interaction that players exploit.
+**Reading, not ruled:** costs should expose their contributing effects,
+strengths, composition relationships and contextual modifiers. Composition
+depth, repeated effects, duration, area, range, simultaneous versus sequential
+use, and persistent propagation need explicit treatment before choosing a
+formula. Equivalent exchange is a world rule, not a claim of thermodynamic
+realism. Existing distinctions between ordinary magic and admitted divine
+exceptions remain in the sim plan.
+
+### Scripts connected to the world
+
+An effect script defines its fundamental character alongside characteristics
+that can vary with the sim. Possible world laws include nearby fire making
+fire hotter and cheaper to cast, ice spreading until sunlight stops it, and
+world size influencing gravity. These are admitted alternatives a world may
+generate, not mandatory defaults. A script can depend on other generators'
+outputs and on changing world conditions, so magic expresses the particular
+world rather than only choosing names and colors.
+
+**Proposed execution contract, not a selected scripting runtime:** an effect
+definition identifies its revision, parameters, world inputs, targets,
+operations, costs, ongoing behavior and explanation. It names what facts it
+reads and may change. Reads use accepted world state and admitted generated
+definitions; a query must not silently regenerate the rules of an inhabited
+world. Mod-authored and sim-generated definitions pass through the same
+admission and inspection path. The sim plan's current rule remains: lower to
+process definitions where possible; hooks without a supported lowering stay
+foreground-only until an appropriate background interpretation is designed.
+
+Persistent effects need an explicit lifecycle: activation, due updates,
+interruption and termination, including the event or condition that can stop
+them. Reevaluate a dependency when it changes, and schedule ongoing work at
+the mechanic's required grain. Self-amplifying interactions are not rejected
+merely for being strong; their resource accounting, feedback and execution
+cost must be inspectable. How to bound script work without silently changing
+world outcomes remains an execution-design question, not a balancing rule.
+
+### Rulesets and ways of casting
+
+Categories such as schools or aspects are interpretations of the effects and
+their relationships. Mark's references are Homestuck, Elder Scrolls, D&D,
+Pathfinder and PbtA; these are influences to compare, not interchangeable
+schemas. A ruleset's supplied spells can be distinctive exemplars of its
+categories. Generated spells can fill out that catalogue and tailor it to
+the world. Preserve each exemplar's defining behavior when specifying its
+mapping; do not infer mechanical equivalence from a school label.
+
+CoreRPG and the individual system adapters are unresolved. The same canonical
+effect need not acquire the same spell level, numeric damage or casting
+procedure under every ruleset. The overlay calibration requirements still
+apply to shared world outcomes. Casting methods are another dimension and
+remain open; this refinement does not select a universal mana pool, gesture,
+preparation system, or progression model. Ball x Pit supplies Mark's analogy
+for combinations, not an algorithm to reproduce.
+
+### Design completion and inspection
+
+Before selecting implementation slices, complete the description of effect
+composition, context reads, resource exchange, ongoing actions and revision
+changes across the construction, sim and overlay contracts. Record which
+parts are authored, generated, derived once, invalidated by change, scheduled
+or continuously resolved. An examiner should trace an action's support to
+parts, equipment, procedures and conditions; show cost contributions and
+refusal reasons; and connect accepted outcomes to their causes. Developer
+explanations must remain distinct from what an inhabitant knows.
+
+[Moirai](https://github.com/theor/Moirai/tree/d29de5dc1931965c73ae66a069e7c8fd51dc5df4)
+was reviewed as comparison material on 2026-09-28: scheduled transitions,
+property-gated reactions, and execution ancestry support efficient rule
+authoring and inspection. This is source review, not a local benchmark or a
+dependency choice. Isocosm's staged, checked effects remain the existing
+authority boundary; an execution trace alone does not establish an actor's
+motives or beliefs.
+
+## Scope and ownership of the implemented first slice
 
 One shared pure Rust evaluator lives in `shared/wing-functions/`. Its standalone
 Cargo workspace preserves the three products' dependency resolution. It carries
@@ -49,6 +172,10 @@ charge units; this does not replace Mesocosm's conserved matter ledger.
 
 ## Open work after this slice
 
+The composition design above is the broader target. The list below records
+the first slice's outstanding integration and is not a closed vocabulary of
+what future effects may do.
+
 Directional gesture timing, physical strike adjudication, live Paredros session
 integration, construction UI, authored material/process admission, dynamic graft
 network reconciliation and gameplay save ownership remain consumer work.
@@ -57,6 +184,11 @@ cost and interruption semantics. An atomic batch is not a timed action: sustaine
 charging requires a product-owned action lifecycle and reevaluation on mutation.
 
 ## Progress
+
+- 2026-09-28: documented rulings 404 to 407, including extensible fundamental
+  effects, equivalent exchange, contextual scripts, ruleset exemplars and
+  coordinated construction outputs. No code, cost formula, new runtime or
+  adapter was implemented or selected.
 
 - 2026-09-09: implementation lanes started; no acceptance receipt yet.
 

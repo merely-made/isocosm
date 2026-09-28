@@ -2,7 +2,12 @@
 
 **Date:** 2026-09-15
 
-**Status:** design, for Mark's sign-off. No crate founded, no commit.
+**Status, reconciled 2026-09-28:** shared library exists at `shared/isomere`.
+The Progress record below closes the original round at M5, with M6 deferred;
+those are historical receipts, not tests rerun in this documentation pass.
+The former header, "No crate founded", was stale. One host carrying the
+three modes is now the design target under ruling 381; the shared assembly
+alone does not implement that target.
 
 **W1, 2026-09-18:** keep. Tier: stack, hosting and interface. Rewrite only
 the keymap row per ruling 21. Evaluated against the wing design record; see
@@ -137,6 +142,37 @@ mesquite's: its state, its root view, its sheet seeds, its keymap and its
 actions. Isometry's `hooks.rs` and Paredros's session `model.rs` are the
 two sources; Mesocosm's main binary is the third consumer and the one that
 retires `chrome.rs` and its five adapters by moving onto it.
+
+### 2.4 One host and independent presentation choices
+
+**Design refinement, 2026-09-28; not implemented by this document.** Ruling
+381 makes each product a build profile of one host over one world save.
+The host should distinguish the active play mode and its controls, the
+participant's knowledge access, the camera, and presentation detail. The
+shared default is a 30-degree 2:1 dimetric view with quarter turns (382,
+387), with Mesocosm's opening view still subject to CP1's comparison (388).
+Other perspectives remain possible.
+
+Mode changes should preserve the accepted world, subject and embodiment
+unless an explicit game action changes them. Camera changes act on the
+scene; they do not grant perception or independently select simulation
+fidelity. Share picking, highlighting, body inspection and effect inspection
+across modes wherever their meanings agree. A ruleset supplies its controls
+and readings without owning another copy of the scene's world truth.
+
+The construction examiner should connect source parts and relationships to
+capabilities, repertoire, proficiency and conditions. The process examiner
+should distinguish supporting requirements, cost contributions, accepted
+effects, causal history and the actor's beliefs. Incarnation controls should
+support granular configured or randomized carryover (406), with consequences
+explained before commitment; the body contract owns the transition model.
+
+**Still open:** the executable's location, build-profile packaging, session
+and mode-switch lifecycle, and a shared presentation/knowledge contract.
+Isometer currently exposes an orthographic slab camera; perspective support
+is future scene work. These are host and scene design tasks, not a request
+to move simulation rules into isomere. The above defines the target for W3
+and W4 without opening another implementation lane.
 
 ## 3. What goes upstream instead
 

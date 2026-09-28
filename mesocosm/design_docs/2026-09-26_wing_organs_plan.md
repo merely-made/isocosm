@@ -180,6 +180,18 @@ the Paredros side.
 
 ### An individual has a journey, not just an inventory
 
+**2026-09-28 refinement (406):** the journey's continuity is distinct from
+the conditions selected for the next life. An old incident may persist as a
+detriment, an absent part, or a related benefit or characteristic ability.
+Selection may be randomized or configured by the player, preferably per
+condition; a blanket keep-conditions option is also acceptable. Leaving a
+condition behind does not erase its event or acquisition evidence. The
+[body contract](2026-07-31_wing_phenotype_contract_plan.md#conditions-carried-into-a-new-life)
+owns embodiment adaptation and the proposed selection record. This does not
+change the existing eligibility for reincarnation or make the progression
+kernel an implementation of condition transfer. Its restrictions, defaults
+and interaction with acquisition restoration remain to be designed.
+
 Record original acquisition order, incarnation, simulation tick, and accepted
 source evidence, including the means: ability, trait, technique, item, bond,
 quest, event, or a mod-defined category. Losing an item is distinct from

@@ -1020,3 +1020,55 @@ SP2 landed the same day at `38ea90f`, with its receipt. The SP1 lesson came
 round again: two of SP2's instruments were incomplete on first writing, a
 relief check with no control and a water test that could pass without water,
 and both were fixed before the commit.
+
+### 9.7 Construction, magic and condition carryover
+
+In the parallel read-only design conversation, Mark linked
+[Moirai](https://github.com/theor/Moirai/tree/d29de5dc1931965c73ae66a069e7c8fd51dc5df4)
+as comparison material, explicitly not a request to copy or adopt it.
+Source review found useful comparisons in rule authoring, scheduled
+transitions, property-gated reactions and causal inspection. No local
+benchmark or integration was run.
+
+The subsequent plan/code review found the one-host and default-camera
+decisions already recorded, the spatial spine active, and a gap between
+symbolic sim parts, the concrete body pipeline, functional charge routing
+and a general nested construction model. The portable body plan was already
+marked for rewrite; the sim plan did not yet distinguish capability,
+repertoire and proficiency. Mark then answered three design questions and
+authorized the documentation pass with "Let's document!" The earlier
+read-only restriction was lifted for these plan edits, not for code work.
+
+| Question as put, with the recommendation | Answer and ruling |
+| --- | --- |
+| How expressive may a generated operation become? Compose supported fundamentals, with new operations a separate extension mechanism | 404: Mark expanded the recommendation to explainable, surprising combinations; equivalent exchange with strongly escalating energy; mod-defined and sim-generated effect scripts reading world conditions and generator outputs; ruleset spells as distinctive exemplars alongside generated additions |
+| When does geometric detail affect the rules? Construction declares functional properties, geometry supplies named measurements where mechanics require them | 405: Mark agreed with the recommendation |
+| How are consequences translated between substantially different embodiments? Explicit adaptation and provenance, with universal translation left open | 406: choose conditions for the next life, granularly where possible; randomized or player-configured; an incident may become a detriment, an absent part, or a related benefit/characteristic ability |
+
+The exact answers and their consequences are in the wing design record.
+Ruling 407 consolidates earlier accepted answers from this conversation:
+nested meaningful components, material and conceptual operation composition,
+circumstantial tradeoffs, capability/repertoire/proficiency, and perception
+and self-belief as part of the mind. These were prior decisions being
+documented, not another questionnaire.
+
+The documentation homes are the record's current architecture, the sim
+plan's capabilities/magic/record sections, the body contract's current
+refinement, the functional generation plan's composition design, the organs
+plan's journey distinction, and isomere's host target. Historical receipts
+remain scoped; no new runtime, body schema or playable loop is claimed.
+
+**Open after the answers:** the cost curve and definition of a composition
+level; repeated/sequential effects versus one compound effect; persistent
+effect timing, interruption and feedback; scripting/lowering and bounded
+execution; CoreRPG and individual ruleset adapters; casting methods; the
+shared construction schema and multi-part action support; carryover defaults,
+admissibility and costs. Runtime schemas, dependency tracking and concrete
+UI flows are proposed design work rather than additional user rulings.
+
+**Corrections to preserve:** "a magnitude" does not yet mean tenfold, and
+the tenth-level illustration does not set a tabletop spell rank. Cantrip
+availability is not automatic learning or zero cost. Broken or very strong
+builds are welcome when fair and explainable; the task is not to prevent all
+powerful combinations. Carrying an incident's history is different from
+carrying its current wound. Omitted conditions do not erase history.

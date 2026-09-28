@@ -1,12 +1,19 @@
-# Wing bodies and character creation: one body, sovereign readings
+# Wing construction, embodiment and continuity
 
-**Status: cross-vessel contract and creator lanes; first joint Mesocosm
+**Status, 2026-09-28:** current contract refinement documented under wing
+design record rulings 405 to 407. This is a partial design rewrite, not a
+new wire schema or completed creator. The section below supersedes earlier
+product ownership and crossing assumptions where stated; historical receipts
+remain evidence only for the code they exercised.
+
+**Historical status: cross-vessel contract and creator lanes; first joint Mesocosm
 habitat/body slice and retained-trait creator locally verified through 2026-09-08.
 Body/chronicle wire schemas remain v0.** Existing local body editors and sheets are
 foundations, not a completed shared creator. Section 11 scopes C0-C5; W0-W6
 remain the portable-body gates. This plan specifies what body identity means across
-Mesocosm, Paredros, and Isometry. It does not give the games one capability
-system, runtime, renderer, or biological simulation.
+Mesocosm, Paredros, and Isometry as understood then. Ruling 381 subsequently
+selected one host and world save; the current refinement below describes
+continuity within that host and across contextual embodiments.
 
 **W1, 2026-09-18:** rewrite. Tier: stack formats and sim nouns. v1
 unimplemented, so the correction is free. Rewrite is a lane under the
@@ -23,7 +30,96 @@ the execution waves plan is historical.
 
 ---
 
-## 1. Why a wing plan is necessary
+## Current contract refinement, 2026-09-28
+
+### Identity and construction
+
+The shared target distinguishes these concepts; this table is a design
+contract, not a declaration of implemented Rust types or storage owners.
+
+| Concept | Meaning |
+| --- | --- |
+| Continuing subject | The individual whose history continues across eligible incarnations and contextual adaptations; distinct from biological descent |
+| Incarnation | A particular life or embodiment of that individual, with its own conditions and development |
+| Source recipe | Versioned instructions and meaningful components from which a construction is developed under world conditions; it can itself evolve through accepted changes |
+| Body revision | The accepted structure and condition of a particular body at a causal point; changes do not rewrite earlier revisions |
+| Part address | An address within an identified embodiment and revision, connected to source components and prior parts where a meaningful correspondence exists |
+| Derived representation | Geometry, functional readings, collision, animation bindings, descriptions or a ruleset's sheet, produced for a stated source revision and context |
+| Runtime instance | Disposable simulation/physics/render handles used to operate or present that embodiment |
+
+A recipe and history give continuity without demanding identical anatomy in
+every world. Nested assemblies preserve access to their parts. Structural
+attachments, supply routes, control relationships and semantic roles are
+related descriptions, not necessarily one tree. The accepted source and its
+history remain pointable when a new body expresses them differently.
+
+Construction declares functional properties; geometry supplies named
+measurements where mechanics require them (405). Geometry, collision,
+animation and functional readings identify the source revision they reflect.
+One body can correspond to multiple runtime objects. Changing a mesh or
+camera alone does not mint a new incarnation or change an injury.
+
+### Four different transitions
+
+| Transition | Continuity and permitted change |
+| --- | --- |
+| Change play mode or camera in one world | Continue the same subject, incarnation and accepted body. Controls, presentation and permitted knowledge may change; any actual transformation needs an accepted world event |
+| Interpret under another ruleset | Preserve source and history while deriving that ruleset's mechanics. If interpretation actually changes the body, record an adaptation rather than pretending it is only a view |
+| Adapt or regrow in another context | Record a new body revision or embodiment with its source, destination rules and relevant history; keep the prior form pointable and explain accommodations |
+| Begin a new life | Apply the selected carryover conditions and development under the new context; a continuing individual's reincarnation is distinct from founding a descendant with a new identity |
+
+The earlier Carry/Regrow distinction remains useful for physical crossings.
+It is no longer the whole account of moving between games: a mode switch
+over one save is the first row. Fidelity to source and adaptation to context
+remain choices to design, rather than a universal demand for exact anatomy.
+
+### Conditions carried into a new life
+
+Ruling 406 makes this a granular selection. An incident can carry forward as
+a detriment to a corresponding part, an absent part, or a benefit or ability
+that became characteristic through that experience. Literal anatomical
+equivalence is not required. Selection can be randomized or player-configured;
+a blanket keep-conditions choice is a useful coarse option, with finer
+choices preferred. Omitting an active condition leaves its historical cause
+intact. Keeping its history does not force every new body to carry a wound.
+
+**Proposed record shape, not yet ruled or implemented:** each candidate
+carryover cites its source incident and condition, the proposed expression
+in the destination, and the adaptation rule revision. The accepted transition
+records which candidates were selected, omitted or transformed and whether
+selection was configured or drawn. A part address from the old life remains
+a source reference, not an assumed address in the new body. If several
+expressions fit, expose the alternatives instead of silently inventing an
+equivalence. The player-facing choice should explain the consequence rather
+than expose internal IDs.
+
+This changes what may continue once a new life is available, not who is
+eligible for reincarnation. The
+[wing organs plan](2026-09-26_wing_organs_plan.md#an-individual-has-a-journey-not-just-an-inventory)
+keeps the journey and existing acquisition/progression rules. Carryover
+conditions and restoration of acquired effects are distinct, even when the
+same incident supplies evidence for both. Exact restrictions, defaults and
+costs of selection remain open.
+
+### Work still required
+
+Define the shared construction description and its source-to-part mappings;
+the relation between body revisions and incarnations; revision invalidation
+for derived consumers; and condition adaptation/selection. Coordinate with
+the [functional generation plan](2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+and the sim's capability/repertoire/proficiency model. These contracts should
+be coherent across modes, generation and history before implementation slices
+are selected. They do not require every supported perspective or a fully
+physical animation system before the isometric game can be built.
+
+**Verified foundations, 2026-09-28:** `isometer-core::BodyDocument` holds
+part identities, structural attachments and provenance; `mesocosm-core`
+has a recipe/development pipeline; `isocosm::Entity` holds symbolic parts
+and a body revision; `wing-glyphs::Journey` records reincarnation within
+its progression kernel. Their existence does not establish this complete
+mapping or selectable condition carryover. No code changed in this refinement.
+
+## 1. Why a wing plan was necessary (earlier contract)
 
 The wing has already ruled that a body is a part tree, loss cascades, the tree
 is shared identity, and each vessel owns its capability fold. The v0 proof pair
@@ -77,6 +173,11 @@ These are plain working terms, not product names.
 
 ## 3. Ownership table
 
+**Historical product allocation.** The current refinement above and the
+overlay absorption plans govern the shared-sim target. This table describes
+the earlier portable-facet boundary; it does not assign new shared authority
+to a product or override the one-host decision.
+
 | Data | Authority | Portable treatment |
 | ---- | --------- | ------------------ |
 | Subject identity | shared subject profile | retained exactly |
@@ -105,6 +206,11 @@ The same individual crossing vessels and a descendant founding a new life are
 different operations.
 
 ### The same subject crosses
+
+**Scope clarified, 2026-09-28:** the paragraphs below describe carrying a
+particular body across a compatible boundary. Contextual embodiment and
+incarnation follow the current refinement above; a mode switch is not a
+physical crossing.
 
 The subject id and body revision remain stable. A consumer may render the
 provided projection, derive capabilities it understands, or preserve the body
