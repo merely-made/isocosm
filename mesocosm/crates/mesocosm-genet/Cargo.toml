@@ -75,3 +75,4 @@ serde_json = "1"
 # The frame examples that moved here from isometer-lens (family plan step 1)
 # hash their own scene bytes, so they name the wire format directly.
 postcard = { workspace = true }
+ttf-parser = "0.25.1"

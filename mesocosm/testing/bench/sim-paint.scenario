@@ -1,0 +1,15 @@
+# Paused real-panel capture for renderer replay; never advances the simulation.
+wait 1200
+assert snap ready == yes
+click role:button Simulation
+settle 3
+assert snap sim-open == yes
+assert snap sim-tick == 0
+assert snap sim-entities == 262
+click role:button Inspect individual
+settle 3
+remember founded
+capture sim-founded
+settle 3
+same founded sim-hash
+assert snap sim-tick == 0

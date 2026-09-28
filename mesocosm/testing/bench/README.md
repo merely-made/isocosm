@@ -22,6 +22,50 @@ invalid founding leaves the played world intact. Both use native controls.
 The core's [README](../../../shared/isocosm/README.md) names the implemented
 behavior and the remaining sim-plan work.
 
+### Resource-complete panel text capture
+
+`sim-paint.scenario` opens the actual simulation panel, inspects an individual,
+and stays paused at tick 0. Set `MESQUITE_CAPTURE_PAINT=1` to save a full
+postcard `PaintEnvelope` beside each scenario PNG. The JSON capture record's
+`paint_path` identifies the matching packet. Its fonts retain their bytes and
+collection indices; glyphs retain their caller-shaped IDs and positions.
+The paint packet and PNG come from the same presented frame. Existing paint
+packets are refused, so choose an unused output stem for a fresh run.
+
+From this `mesocosm` workspace (replace `OUTPUT` with a capture directory):
+
+```powershell
+$env:CARGO_TARGET_DIR = 'C:\t\cargo-targets\isometry'
+$env:MESQUITE_CAPTURE_PAINT = '1'
+cargo run --locked -p mesocosm-genet -- --bench --seed 1 --frames 1800 --scenario testing/bench/sim-paint.scenario --receipt OUTPUT/sim.json --capture OUTPUT/sim.png
+Remove-Item Env:MESQUITE_CAPTURE_PAINT
+cargo run --locked -p mesocosm-genet --example paint_replay -- OUTPUT/sim-sim-founded.paintlist OUTPUT/sim-sim-founded.png OUTPUT/replay.png
+```
+
+`paint_replay` checks lossless decoding, valid embedded faces, matching font
+bytes/indices and positioned glyphs after translation, and rejection of a
+deliberately removed font palette. It rasterizes the packet with Classic at
+the paired PNG's size, reports pixel differences, and fails differences above
+one channel value. It performs no layout or shaping. External GPU texture
+references refuse replay: capturing the live Isometer producer remains a
+separate integration task. Export overhead is excluded from timing claims.
+
+The [2026-09-27 receipt](receipts/2026-09-27/paint-capture/source.json)
+records a native 2464 by 1504 capture and an independent Classic replay with
+zero changed pixels: 221 commands, 73 text runs, 1,228 glyphs and three full
+font resources. Missing-font and existing-packet controls both reject. The
+simulation remains at tick 0 with 262 entities and the same world hash.
+Raw packets, paired PNGs, lock snapshots and logs stay in the receipt's local
+artifact directory; embedded system-font bytes are not checked into Git.
+The replay output path must also be unused.
+
+The host integration pins Mere `ac41628a`, Genet `92b249af` and NetRender
+`9607d16f` together across the shared Isomere/Isometer consumers. Default
+Isometry and Eponym client checks cover those sibling graphs. The optional
+Cleromancy integration retains its separately pinned graph and is outside
+this capture receipt. This proves the paused panel's paint replay, not Hybrid
+text rendering, live Isometer texture import or whole-loop performance.
+
 The core's own `isocosm-scale` binary measures what it runs by size, outside
 this host: time per tick, evaluations, stored groups, history growth and heap,
 for both generator families and both execution modes, with fitted scaling

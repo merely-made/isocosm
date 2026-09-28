@@ -1,0 +1,327 @@
+{
+  "date": "2026-09-27",
+  "kind": "native-sim-panel-paint-capture",
+  "isometry_parent": "77be9b455a4b109ffdd4ef98af3f21e550a53545",
+  "source_blobs": {
+    "Cargo.toml": "07020028ea33cb153d0e422ed10aefd324edf5a9",
+    "Cargo.lock": "1ed8da17b96fadec028e72a4ad73274716027c06",
+    "eponym/Cargo.toml": "6a2445dfe66eaf010086a91ba4bd2d55db5acb6d",
+    "mesocosm/Cargo.toml": "11dd8522b21c38b89e1e88ac7b89ee8a88294d71",
+    "mesocosm/crates/mesocosm-genet/Cargo.toml": "72dc7badbeb2c70da5dc056588601d9efde5f85c",
+    "mesocosm/crates/mesocosm-genet/examples/paint_replay.rs": "d2549b99a7c00c06ce3d70b4ed14b925b115c689",
+    "mesocosm/testing/bench/README.md": "1bcd479f9ec3e79b2b35da3802af117ba099f1dd",
+    "mesocosm/testing/bench/sim-paint.scenario": "bde2fe588ad9e012070b9fde2b6fdaee1fa9c3e4",
+    "shared/isocosm/Cargo.toml": "6fa77f1f200c04878af0e6febcd2d0993b61dc7f",
+    "shared/isocosm/Cargo.lock": "3089bf6aeab1e991c115fd8f91666db2e0c97bdf",
+    "shared/isomere/Cargo.toml": "0812f206a902d5a58f3ca9e73476608339c54b27",
+    "shared/isometer/Cargo.toml": "d99392c42c17e18bbd086f0e25817021414f2492",
+    "shared/isometer/crates/isometer-lens/Cargo.toml": "2830c06dc96a0ab9a8a14d6ffa9442eac6063bea"
+  },
+  "pins": {
+    "mere": "ac41628a40c68d4b2f6d93bdb5618a4b5bf97c70",
+    "genet": "92b249af5b200f78d036d8e9b0cb4fe025610740",
+    "netrender": "9607d16f1907f6c2085648ae96abcaa30d7c3d41",
+    "classic": "netrender-vello 0.10.1",
+    "peniko": "0.6.1",
+    "wgpu_mesocosm_eponym": "30.0.0",
+    "wgpu_root": "30.0.1",
+    "one_paint_and_wgpu_identity_per_checked_consumer": true
+  },
+  "compiler": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "profile": "dev",
+  "artifact_directory": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture",
+  "artifacts": [
+    {
+      "file": "build.txt",
+      "bytes": 17280,
+      "sha256": "6dfe7155ec2e67e6203388d9351d6b2e40ca58c3b8da322e8b5308cdff89f52c"
+    },
+    {
+      "file": "dependency-tree.txt",
+      "bytes": 34102,
+      "sha256": "6c743f5e574d5cbb3f11094df3b6375d97f13201b9bffa8ec9f16ad5a7049c29"
+    },
+    {
+      "file": "eponym-check.txt",
+      "bytes": 12598,
+      "sha256": "4784afcfc3258e9afb62fd5a72f640a874623df853d623446526b5116146d797"
+    },
+    {
+      "file": "eponym-dependency-tree.txt",
+      "bytes": 35852,
+      "sha256": "f001f9a4b1469b4cfbed82903f870a44247c06e525088d11d0692dcdc509b328"
+    },
+    {
+      "file": "eponym.Cargo.lock",
+      "bytes": 155898,
+      "sha256": "08981a06c22d435113a09e6abb3741cbfb6a83a5ede7b272b54d8191f455b72e"
+    },
+    {
+      "file": "final-build.txt",
+      "bytes": 7763,
+      "sha256": "8617a10945a376c3559b22b7abdb44e359ac873c9d898cc2f51ec8547f0b39ee"
+    },
+    {
+      "file": "isocosm-tests.txt",
+      "bytes": 11920,
+      "sha256": "1ca1c042e092c9ffced71014c8b07082d4fd4f76eb72673cd4a76dd2018baf79"
+    },
+    {
+      "file": "mesocosm.Cargo.lock",
+      "bytes": 149235,
+      "sha256": "a19d1d5b0b59ca5f773f1c36f385d91fe650c0aeb21a1b726d9717347876806a"
+    },
+    {
+      "file": "mesquite-tests.txt",
+      "bytes": 2795,
+      "sha256": "e8423dd2c8302498b50349eb88dc958a3d3327d3955b8f430a2fb57328a4858a"
+    },
+    {
+      "file": "native.txt",
+      "bytes": 156,
+      "sha256": "b7778b8c8b256201310376e3d1036979e6d5489ed8af533a76bf02fdbf2542ef"
+    },
+    {
+      "file": "refusal-control.json",
+      "bytes": 134,
+      "sha256": "aa482f418b98a356883467317bbb485e27893520f622ef77113287488c8be5e5"
+    },
+    {
+      "file": "refusal.json",
+      "bytes": 18864,
+      "sha256": "20cfff231c574de038188171467d165fab4295092459a89ecabab827e30cf9cc"
+    },
+    {
+      "file": "refusal.txt",
+      "bytes": 480,
+      "sha256": "1ee44bc2f92e681dde0fdbea6cd0abc1bad5ee4317b1c5c3288d2133cd16576e"
+    },
+    {
+      "file": "replay-build.txt",
+      "bytes": 177,
+      "sha256": "ed23171dc45cbb0bf99e7dc2fa63392055416ae3b87c5d3dbfe2940c656f03f5"
+    },
+    {
+      "file": "replay-final-build.txt",
+      "bytes": 177,
+      "sha256": "87786c1f4f7b7ee9e4f88c8605303785906846050f5550fc8fc3c29147e207ee"
+    },
+    {
+      "file": "replay-final-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "replay-final.json",
+      "bytes": 770,
+      "sha256": "5226ce56ec7e68dcbf82e5563e542134e5e43e71f0535d3db02d5d699b945836"
+    },
+    {
+      "file": "replay-final.png",
+      "bytes": 709375,
+      "sha256": "9061fb4263eead6cd540af4d53760ae4566c00947172485d522532edc66b2cfb"
+    },
+    {
+      "file": "replay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "replay.json",
+      "bytes": 589,
+      "sha256": "fffa065cd319f0f96d1bbaae4a321686968e1371830ba134812c7432a02634ae"
+    },
+    {
+      "file": "replay.png",
+      "bytes": 709375,
+      "sha256": "9061fb4263eead6cd540af4d53760ae4566c00947172485d522532edc66b2cfb"
+    },
+    {
+      "file": "root-check.txt",
+      "bytes": 13474,
+      "sha256": "4f5a181321f781afcd815d069315dfdd29c3ab893f80c70948ba8418b8a2a46f"
+    },
+    {
+      "file": "root-dependency-tree.txt",
+      "bytes": 44878,
+      "sha256": "00b19566245f0d427331062d17e8a3817a792b0a1f942ab9b298126b0dfe7608"
+    },
+    {
+      "file": "root-lock-update.txt",
+      "bytes": 14712,
+      "sha256": "9b805a18c4442ea08bef8374e5b8974bcb08fd29609648896d7a1f2476cb284e"
+    },
+    {
+      "file": "sim-sim-founded.paintlist",
+      "bytes": 2511691,
+      "sha256": "73c4a9ce901957bcccdc371cdede05f12c671d7780376be71f2c2a02ff3ddd7d"
+    },
+    {
+      "file": "sim-sim-founded.png",
+      "bytes": 709375,
+      "sha256": "9061fb4263eead6cd540af4d53760ae4566c00947172485d522532edc66b2cfb"
+    },
+    {
+      "file": "sim.json",
+      "bytes": 34318,
+      "sha256": "53b09837bcfc5ab4dd8c20f428469390bde0b0fb527f94cbc8c06b3bbc15420b"
+    },
+    {
+      "file": "sim.paintlist",
+      "bytes": 2511691,
+      "sha256": "73c4a9ce901957bcccdc371cdede05f12c671d7780376be71f2c2a02ff3ddd7d"
+    },
+    {
+      "file": "sim.png",
+      "bytes": 709375,
+      "sha256": "9061fb4263eead6cd540af4d53760ae4566c00947172485d522532edc66b2cfb"
+    },
+    {
+      "file": "host-and-replay-build.txt",
+      "bytes": 73,
+      "sha256": "10171e54b45f171a01251a830643a5413f6ac93321689ee84809e4dbcdb4ede8"
+    }
+  ],
+  "executables": [
+    {
+      "path": "C:/t/cargo-targets/isometry/debug/mesocosm-genet.exe",
+      "sha256": "f2ae505f4ca6c57b5657393c39e1df30f6aa17256406228f7b8625099974b66e"
+    },
+    {
+      "path": "C:/t/cargo-targets/isometry/debug/examples/paint_replay.exe",
+      "sha256": "8fc513377df2aedc07afd8d40d65750358962df906ed878414218bfe020a54ae"
+    }
+  ],
+  "capture": {
+    "command": "mesocosm-genet.exe --bench --seed 1 --frames 1800 --scenario testing/bench/sim-paint.scenario --receipt OUTPUT/sim.json --capture OUTPUT/sim.png",
+    "cwd": "mesocosm",
+    "environment": {
+      "CAMBIUM_UI_ZOOM": "1",
+      "MESQUITE_CAPTURE_PAINT": "1"
+    },
+    "exit_code": 0,
+    "frames": 25,
+    "captures": [
+      {
+        "name": "sim-founded",
+        "png": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture\\sim-sim-founded.png",
+        "paint": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture\\sim-sim-founded.paintlist",
+        "tick": "0",
+        "entities": "262",
+        "world_hash": "5c688ec70f033b8993d6df2b5fe0c9b7cf21b510713c06058701e148c137a681"
+      },
+      {
+        "name": "final",
+        "png": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture/sim.png",
+        "paint": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture/sim.paintlist",
+        "tick": "0",
+        "entities": "262",
+        "world_hash": "5c688ec70f033b8993d6df2b5fe0c9b7cf21b510713c06058701e148c137a681"
+      }
+    ]
+  },
+  "replay": {
+    "command": "paint_replay.exe OUTPUT/sim-sim-founded.paintlist OUTPUT/sim-sim-founded.png OUTPUT/replay-final.png",
+    "exit_code": 0,
+    "result": {
+      "adapter": {
+        "backend": "Vulkan",
+        "device_type": "DiscreteGpu",
+        "driver": "NVIDIA",
+        "driver_info": "610.88",
+        "name": "NVIDIA GeForce RTX 4060 Laptop GPU"
+      },
+      "box_shadow_masks": 0,
+      "changed_pixels": 0,
+      "commands": 221,
+      "external_textures": 0,
+      "font_and_glyph_identity": true,
+      "font_bytes": 2489052,
+      "fonts": 3,
+      "glyphs": 1228,
+      "images": 0,
+      "kind": "real-panel-paint-replay",
+      "lossless_round_trip": true,
+      "max_channel_delta": 0,
+      "missing_font_control_rejected": true,
+      "packet": "C:/Users/mark_/Code/testing/isometry/receipts/2026-09-27/paint-capture/sim-sim-founded.paintlist",
+      "packet_bytes": 2511691,
+      "pixels": [
+        2464,
+        1504
+      ],
+      "scale": 2.0,
+      "text_runs": 73,
+      "viewport": [
+        1232,
+        752
+      ]
+    }
+  },
+  "overwrite_control": {
+    "exit_code": 1,
+    "packet_unchanged": true,
+    "sha256": "73C4A9CE901957BCCCDC371CDEDE05F12C671D7780376BE71F2C2A02FF3DDD7D"
+  },
+  "validation": [
+    {
+      "cwd": "mere",
+      "command": "cargo test --offline -p cambium-rootstock -p mesquite --lib -j2",
+      "result": "41 Rootstock and 17 Mesquite tests passed"
+    },
+    {
+      "cwd": "mere",
+      "command": "cargo test --offline --locked -p cambium-genet-winit-host --test scenario --test host_fonts -j2",
+      "result": "17 scenario and 2 font tests passed"
+    },
+    {
+      "cwd": "mere",
+      "command": "cargo test --offline --locked -p mesquite --lib -j2",
+      "result": "17 tests passed after case-insensitive path guard",
+      "log": "mesquite-tests.txt"
+    },
+    {
+      "cwd": "isometry/mesocosm",
+      "command": "cargo build --offline --locked -p mesocosm-genet --example paint_replay -j2",
+      "result": "passed",
+      "log": "replay-final-build.txt"
+    },
+    {
+      "cwd": "isometry",
+      "command": "cargo check --offline --locked -p isometry-genet -j2",
+      "result": "passed with two dead-code warnings",
+      "log": "root-check.txt"
+    },
+    {
+      "cwd": "isometry/eponym",
+      "command": "cargo check --offline -p eponym-client --all-targets -j2",
+      "result": "passed with one dead-code warning",
+      "log": "eponym-check.txt"
+    },
+    {
+      "cwd": "isometry",
+      "command": "cargo test --manifest-path shared/isocosm/Cargo.toml --offline -j2",
+      "result": "111 tests passed",
+      "log": "isocosm-tests.txt"
+    },
+    {
+      "cwd": "isometry/mesocosm",
+      "command": "cargo build --offline --locked -p mesocosm-genet --bin mesocosm-genet --example paint_replay -j2",
+      "result": "passed",
+      "log": "host-and-replay-build.txt"
+    }
+  ],
+  "scope": [
+    "Real native Simulation > Inspect individual panel, paused at tick 0.",
+    "Packet contains full font data and caller-shaped glyphs; standalone replay performs no layout or shaping.",
+    "Paired framebuffer capture is the host raster target before platform compositor decoration.",
+    "Classic pixel parity is exact for this capture on the recorded adapter.",
+    "Zero external textures, image resources and shadow masks in this captured panel; other resource paths are not established by this receipt.",
+    "Embedded system-font packets and PNGs remain local; Git carries hashes and source identity.",
+    "Capture/export work is outside performance claims; shared machine was not reserved for timing.",
+    "Hybrid text, live Isometer producer texture import and native whole-loop performance remain separate gates.",
+    "Optional Cleromancy graph remains separately pinned and is not covered by the default Isometry check.",
+    "Initial standalone replay required STORAGE_BINDING on its destination; final verifier was rebuilt and rerun successfully."
+  ]
+}
