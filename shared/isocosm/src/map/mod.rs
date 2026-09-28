@@ -11,7 +11,7 @@ pub use grid::{Grid, SHAPES};
 use crate::{
     Result,
     rules::Skeleton,
-    schema::{Border, Footprint, Id, Key, Site},
+    schema::{Border, Footprint, Id, Key, Material, Site},
     simulation::Genesis,
 };
 use serde::{Deserialize, Serialize};
@@ -25,13 +25,15 @@ pub enum Layout {
 }
 
 /// What a layout lays: sites with their borders and skeletons, the
-/// conditions the skeleton declares, and the world's outline and shape.
+/// conditions the skeleton declares, the world's outline and shape, and
+/// the materials its ground is made of.
 pub(crate) struct Laid {
     pub sites: BTreeMap<Id, Site>,
     pub conditions: BTreeSet<Key>,
     pub skeleton: Skeleton,
     pub footprint: Footprint,
     pub shape: Key,
+    pub materials: Vec<Material>,
 }
 
 impl Layout {
@@ -51,9 +53,32 @@ pub fn default_skeleton() -> Skeleton {
     }
 }
 
+/// The materials a laid world's ground starts with (ruling 403): air, water,
+/// soil and rock, all nis of the world itself. `world:soil` is the nis the
+/// ledger's soil account names.
+pub fn default_materials() -> Vec<Material> {
+    ["world:air", "world:water", "world:soil", "world:rock"]
+        .into_iter()
+        .map(|key| Material {
+            key: key.into(),
+            lineage: "world:ground".into(),
+        })
+        .collect()
+}
+
 /// Borders only where the world has an outline, each within it, each side
-/// used once and each met by its reverse; skeletons declared and present.
+/// used once and each met by its reverse; skeletons declared and present;
+/// materials named once each, of lineages the world has.
 pub(crate) fn validate(g: &Genesis) -> Result<()> {
+    let mut named = BTreeSet::new();
+    for material in &g.world.materials {
+        if !named.insert(&material.key) || !g.lineages.contains_key(&material.lineage) {
+            return Err("a material named twice or of an absent lineage".into());
+        }
+    }
+    if g.world.materials.len() > 256 {
+        return Err("more materials than a voxel can name".into());
+    }
     let bordered = g
         .sites
         .values()

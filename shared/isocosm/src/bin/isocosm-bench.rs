@@ -24,6 +24,8 @@ fn run() -> Result<(), String> {
     let mut ticks = 32;
     let mut draws = None;
     let mut map_draws = None;
+    let mut lift_draws = None;
+    let mut lift_digest = None;
     let mut output = None;
     let mut load = None;
     let mut world = None;
@@ -39,7 +41,7 @@ fn run() -> Result<(), String> {
         }
         if arg == "--help" {
             println!(
-                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N] [--load SAVE | --world GENESIS] [--output FILE] [--individuals]"
+                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--individuals]"
             );
             return Ok(());
         }
@@ -62,13 +64,26 @@ fn run() -> Result<(), String> {
             },
             "--draws" => draws = Some(number()?),
             "--map-draws" => map_draws = Some(number()?),
+            "--lift-draws" => lift_draws = Some(number()?),
+            "--lift-digest" => lift_digest = Some(number()?),
             "--output" => output = Some(value),
             "--load" => load = Some(value),
             "--world" => world = Some(value),
             _ => return Err(format!("unknown argument {arg}")),
         }
     }
-    let json = if let Some(count) = map_draws {
+    if let Some(sites) = lift_digest {
+        println!("{}", isocosm::bench::lift_digest(founding.seed, sites)?);
+        return Ok(());
+    }
+    let json = if let Some(count) = lift_draws {
+        eprintln!("Lift-draw receipt: master seed {}, draws {count}", founding.seed);
+        let report = isocosm::bench::lift_draws(founding.seed, count)?;
+        let borders: u64 = report.draws.iter().map(|d| d.borders).sum();
+        let chunks: u64 = report.draws.iter().map(|d| d.chunks).sum();
+        eprintln!("{} worlds, {borders} border sides met exactly, {chunks} chunks lifted twice, master seed {}", report.draws.len(), founding.seed);
+        serde_json::to_string_pretty(&report)
+    } else if let Some(count) = map_draws {
         eprintln!("Map-draw receipt: master seed {}, draws {count}", founding.seed);
         let report = isocosm::bench::map_draws(founding.seed, count)?;
         let borders: u64 = report.draws.iter().map(|d| d.borders).sum();

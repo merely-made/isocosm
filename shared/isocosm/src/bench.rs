@@ -133,3 +133,112 @@ pub fn map_draws(master_seed: u64, count: u64) -> Result<MapDraws> {
     }
     Ok(report)
 }
+
+/// The world a map seed founds, as both map receipts draw it.
+fn mapped(seed: u64) -> Result<crate::simulation::Genesis> {
+    let grid = crate::map::Grid::drawn(seed);
+    Founding {
+        seed,
+        sites: grid.width * grid.height,
+        map: Some(crate::map::Layout::Grid(grid)),
+        ..Founding::default()
+    }
+    .generate()
+}
+
+/// The chunks a lift receipt compares: the first and last chunk of `site`
+/// at the base grain, and every chunk three levels up.
+fn sample(view: &crate::terrain::View<'_>, site: u64) -> Result<Vec<crate::terrain::Chunk>> {
+    let last = view.chunks(0) - 1;
+    let mut chunks = vec![
+        view.lift(site, 0, [0, 0])?,
+        view.lift(site, 0, [last, last])?,
+    ];
+    let n = view.chunks(3);
+    for z in 0..n {
+        for x in 0..n {
+            chunks.push(view.lift(site, 3, [x, z])?);
+        }
+    }
+    Ok(chunks)
+}
+
+/// The digest of the sampled chunks of a map seed's first `sites` sites:
+/// what a second process must repeat (the spine plan's SP2).
+pub fn lift_digest(seed: u64, sites: u64) -> Result<String> {
+    let genesis = mapped(seed)?;
+    let view = crate::terrain::View::of(&genesis)?;
+    let mut chunks = Vec::new();
+    for &site in view.sites.keys().take(sites as usize) {
+        chunks.extend(sample(&view, site)?);
+    }
+    Ok(crate::digest(&chunks))
+}
+
+/// One drawn world's lift and what SP2 checked on it.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LiftDraw {
+    pub seed: u64,
+    pub grid: crate::map::Grid,
+    pub borders: u64,
+    pub means: u64,
+    pub reliefs: u64,
+    pub chunks: u64,
+    pub digest: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LiftDraws {
+    pub version: u32,
+    pub master_seed: u64,
+    pub domain: String,
+    pub draws: Vec<LiftDraw>,
+}
+
+/// SP2's receipt: drawn worlds whose neighbours meet exactly at every
+/// base-grain border point, whose first and last sites' means are their
+/// elevations exactly, whose detail stays within relief, and whose sampled
+/// chunks lift the same bytes twice.
+pub fn lift_draws(master_seed: u64, count: u64) -> Result<LiftDraws> {
+    use crate::terrain::{View, check};
+    if count == 0 || count > 1024 {
+        return Err("bench draw budget exceeded".into());
+    }
+    let mut report = LiftDraws {
+        version: crate::VERSION,
+        master_seed,
+        domain: "the map draws' space; every border at the base grain, the mean of the first and last sites by brute force, detail against relief at every site, sampled chunks at levels 0 and 3".into(),
+        draws: vec![],
+    };
+    for i in 0..count {
+        let seed = crate::draw(master_seed, "lift-seed", &[i]);
+        let genesis = mapped(seed).map_err(|why| format!("draw {i}, seed {seed}: {why}"))?;
+        let view = View::of(&genesis)?;
+        let fail = |why: String| format!("draw {i}, seed {seed}: {why}");
+        let borders = check::borders(&view, |v, s| v.lattice(s)).map_err(fail)?;
+        let ends = [
+            *view.sites.keys().next().unwrap(),
+            *view.sites.keys().last().unwrap(),
+        ];
+        let means = check::means(&view, &ends, |v, s| v.lattice(s)).map_err(fail)?;
+        let reliefs = check::reliefs(&view, |v, s| v.lattice(s)).map_err(fail)?;
+        let chunks = sample(&view, ends[0])?;
+        let digest = crate::digest(&chunks);
+        if crate::digest(&sample(&view, ends[0])?) != digest {
+            return Err(fail("one site lifted two ways".into()));
+        }
+        report.draws.push(LiftDraw {
+            seed,
+            grid: match genesis.founding.and_then(|f| f.map) {
+                Some(crate::map::Layout::Grid(grid)) => grid,
+                None => return Err(fail("a map draw without its map".into())),
+            },
+            borders,
+            means,
+            reliefs,
+            chunks: chunks.len() as u64,
+            digest,
+        });
+    }
+    Ok(report)
+}

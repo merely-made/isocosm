@@ -477,5 +477,6 @@ fn world_traits() -> WorldTraits {
         parent_world: None,
         neighbours: BTreeMap::new(),
         footprint: None,
+        materials: Vec::new(),
     }
 }

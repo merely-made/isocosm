@@ -36,7 +36,7 @@ impl EdgeProfile {
 
 impl View<'_> {
     /// The lesser of a border's two sides, which draws its profile.
-    fn canonical(&self, site: Id, side: u8) -> Result<(Id, u8)> {
+    pub(super) fn canonical(&self, site: Id, side: u8) -> Result<(Id, u8)> {
         let (to, b) = self.border(site, side).ok_or("a side without a border")?;
         Ok((site, side).min((to, b.enters)))
     }

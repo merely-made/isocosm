@@ -207,6 +207,17 @@ pub struct WorldTraits {
     /// and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub footprint: Option<Footprint>,
+    /// What a voxel's material id names, by position (ruling 403). Empty in
+    /// worlds without terrain, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub materials: Vec<Material>,
+}
+
+/// A voxel material: the nis it is, by key, and the lineage it is nis of.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Material {
+    pub key: Key,
+    pub lineage: Key,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

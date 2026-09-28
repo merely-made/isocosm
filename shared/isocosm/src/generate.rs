@@ -299,6 +299,7 @@ impl Founding {
             );
         }
         let mut footprint = None;
+        let mut materials = Vec::new();
         let mut shape: Key = "shape:graph".into();
         if let Some(layout) = &self.map {
             let laid = layout.lay(self.seed, self.sites)?;
@@ -306,6 +307,7 @@ impl Founding {
             rules.skeleton = Some(laid.skeleton);
             sites = laid.sites;
             footprint = Some(laid.footprint);
+            materials = laid.materials;
             shape = laid.shape;
         }
         let mut population = Population::default();
@@ -413,6 +415,7 @@ impl Founding {
                 parent_world: None,
                 neighbours: BTreeMap::new(),
                 footprint,
+                materials,
             },
         };
         if self.ecology {

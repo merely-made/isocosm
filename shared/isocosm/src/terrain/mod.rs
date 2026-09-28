@@ -7,15 +7,19 @@
 
 pub mod check;
 mod corners;
+mod lattice;
+mod lift;
 mod profile;
 
 pub use corners::CornerKey;
+pub use lattice::{Lattice, fading};
+pub use lift::{CHUNK, Chunk, Materials};
 pub use profile::{EdgeProfile, SPANS};
 
 use crate::{
     Result,
     rules::Skeleton,
-    schema::{Border, Footprint, Id, Key, Site},
+    schema::{Border, Footprint, Id, Key, Material, Site},
     simulation::Genesis,
 };
 use std::collections::BTreeMap;
@@ -27,6 +31,7 @@ pub struct View<'a> {
     pub sites: &'a BTreeMap<Id, Site>,
     pub footprint: Footprint,
     pub skeleton: &'a Skeleton,
+    pub materials: &'a [Material],
 }
 
 impl<'a> View<'a> {
@@ -44,6 +49,7 @@ impl<'a> View<'a> {
                 .skeleton
                 .as_ref()
                 .ok_or("a world without a skeleton")?,
+            materials: &genesis.world.materials,
         })
     }
 

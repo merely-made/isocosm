@@ -3,7 +3,7 @@
 
 //! Square sites on a plane, a ring or a torus (ruling 395).
 
-use super::{Laid, default_skeleton};
+use super::{Laid, default_materials, default_skeleton};
 use crate::{
     Result,
     schema::{Border, Footprint, Id, Key, Route, Site},
@@ -123,6 +123,7 @@ impl Grid {
                 side: self.side,
             },
             shape: self.shape.clone(),
+            materials: default_materials(),
         })
     }
 
