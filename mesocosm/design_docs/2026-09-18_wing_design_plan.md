@@ -7040,6 +7040,20 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: ruling 380's separate pre.2 correction is verified and pushed
+  on Mere main `a016f86f`. The final direct launcher tests pass nine cases;
+  removing only the broadcast mapping fails exactly three broadcast cases
+  while six controls pass, and restoration passes all nine. Full Seiche
+  passes 96 tests with one existing ignored; both previously failing force
+  tests pass at the original tolerances. Root and independent review verified
+  the evidence; root rehashed all 1,997 sealed source/document entries and
+  70 receipt files. The five identity checks, production force formulas,
+  both locks and unrelated reader WIP are preserved. The owning Mere plan
+  §13.21 and `pre2-repair-checkpoint.json` record exact provenance. This is
+  nonexclusive correctness evidence. A bounded carry into the existing pre.4
+  lane is released, retaining its six-field guard and current dependency
+  closure; it needs its own direct/control and full-force verification.
+  Wider migration acceptance and S13 remain open. Isometry pins are unchanged.
 - 2026-09-27: Lane L's final checkpoint is clean and pushed at `f81083b8`,
   with production source `9b730e7b`. Its published Netrender9607 closure
   passes 200 boundary tests; root recomputed all 17 receipt hashes, seven

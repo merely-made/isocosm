@@ -498,6 +498,17 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, separate pre.2 repair landed.** Mere main `a016f86f` carries
+ruling 380's verified alias-broadcast correction. Nine direct launcher tests
+pass, the mapping-only fault fails the three broadcast cases, and exact
+restoration passes all nine. Full Seiche passes 96 tests, one existing ignored,
+including both formerly failing GPU force comparisons at unchanged tolerances.
+Root and independent review checked the code and receipts; both locks and
+reader WIP are preserved. The pre.4 carry is now released only for this
+correction and its tests, preserving its six-field guard, prepared files and
+current rendering closure. That carry needs its own verification; broader
+migration and S13 acceptance remain open. Isometry pins are unchanged.
+
 **2026-09-27, text lane final checkpoint.** Lane L `f81083b8` retains
 production source `9b730e7b` and passes 200 additional boundary tests on its
 published Netrender9607 closure. Root recomputed the receipt and current
