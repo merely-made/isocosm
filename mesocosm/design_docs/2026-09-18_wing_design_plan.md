@@ -7019,6 +7019,25 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Seiche's two finite GPU failures reproduce on the preserved
+  pre.2 baseline `f4f61d6c` with identical test hardening and the same reported
+  error, 1.9973466. Independent review checked restoration of all 1,994
+  primary source entries; root checked the nine comparison receipt hashes
+  and restored Seiche bytes. Numerical acceptance remains open, with only a
+  displacement-stage diagnostic released. Mere's doc-only follow-up is
+  reconciled with the renderer owner's published `815279cf` as `be2e710a`;
+  that new rendering closure is not retroactive evidence for Lane M.
+  Lane L's source and controls pass independent review. Its Isometry consumer
+  dry resolution stops before build at Netrender `9607d16` versus `c8c09f16`
+  and locked Vello 0.10.1 versus 0.10.0. All 16 raw receipt hashes check;
+  primary Isometry pins and lock are untouched. A separately qualified local
+  compatibility diagnostic may proceed only with a separate test lock and
+  coherent renderer identity; portable consumer acceptance remains open.
+  Read-only sparse-backend review also confirms two owner-plan gaps: a named
+  live GPU-image lifecycle gate and fixed logical ticks/actions for backend
+  comparisons. Sim and specimen are separate surfaces; per-frame Play and
+  atomic multi-tick advance must not be silently changed by renderer work.
+  These are review findings sent to the existing review thread, not new rulings.
 - 2026-09-27: Lane L's combined bounds fixes are pushed at `367626ad`
   (tested code `9b730e7b`). Six combined fixtures pass, both independent
   reverted-hunk controls fail, and the qualified Livery/Buckram aggregate

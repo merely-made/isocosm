@@ -497,6 +497,16 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, baseline comparison and renderer boundary.** Both Seiche
+failures reproduce on pre.2 with the same reported error; source restoration
+and receipts are verified. This identifies a pre-existing failure without
+closing numerical acceptance. Lane L passes independent review, but consumer
+resolution requires a coherent Netrender/Vello closure; its failed dry run
+changed no primary pins or lock. Separate sparse-backend review confirms
+that live producer-image acceptance and equal logical tick/action comparisons
+need explicit gates in the owning plan. The sim's atomicity and separate
+surfaces remain intact. No new design answer is inferred from these reviews.
+
 **2026-09-27, text checkpoint and numerical stop.** Lane L implemented both
 379 corrections and reports 867 passing CPU tests, with two detected broken
 controls; root verified all 71 raw hashes. Independent review and Isometry
