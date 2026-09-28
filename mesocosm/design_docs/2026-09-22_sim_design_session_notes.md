@@ -498,6 +498,18 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, text source integrated.** Genet main/origin now contains
+Lane L's fix and retained-motion combination fixture at `7b48f94d`.
+Root and independent review checked both sealed receipts: 876 affected
+passes (6 existing ignored), 200 boundary passes, recompiled fault controls,
+and 187 current-family rows with zero short versus 39 on published Genet.
+The local override preserves the rest of the dependency graph; a portable
+Mere/Isometry repin remains a separate gate. The source-integration and
+new-family diagnostic waits below are superseded. Lane L is retained briefly
+for historical embedded-output retirement. Lane M's nine Conatus cases and
+ESP synthetic/real MiniLM parity are independently accepted; standalone builds
+and final Numen review remain pending. S13 remains unreleased. No new ruling.
+
 **2026-09-27, real-panel capture and coherent repin landed.** Isometry
 `0427e982` adopts Mere `ac41628a`, Genet `92b249af` and NetRender `9607d16`
 for the separately approved capture task. The real paused panel's packet

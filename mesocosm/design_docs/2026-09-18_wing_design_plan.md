@@ -7040,6 +7040,20 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane L's source fix and retained-motion combination fixture
+  landed on Genet main/origin at `7b48f94d`, after a clean fast-forward.
+  Independent review and root checks verified 124 sealed receipt files,
+  876 affected CPU passes (6 existing ignored), 200 boundary passes and
+  both freshly compiled fault controls. The current-family local consumer
+  pair has 187 rows: zero short with the lane, 39 with published Genet.
+  Only the 19 Genet source identities change in the paired 799-node graph;
+  existing dual vello_encoding identities remain. This supersedes the source
+  integration and new-family diagnostic waits below. Portable Mere/Isometry
+  repinning remains open. Conatus's nine resident GPU cases and ESP's
+  synthetic/real-model parity gates also passed independent review on Lane M;
+  remaining migration builds and final-source Numen review are pending.
+  These are nonexclusive correctness receipts, with unchanged numerical
+  bounds, not timing measurements or S13 acceptance. Rulings remain at 380.
 - 2026-09-27: the separately approved real-panel capture task landed at
   Isometry `0427e982`, using Mere's capture hook `ac41628a`, Genet `92b249af`
   and NetRender `9607d16`. Seven family manifests moved coherently across
