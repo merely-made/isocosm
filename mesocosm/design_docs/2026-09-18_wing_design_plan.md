@@ -7050,7 +7050,7 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   provenance label; both compile failures and the successful rebuild remain
   recorded. Earlier run maps differ only in that unused fixture source;
   numerical tolerances, the six-field guard and prepared locks are preserved.
-  The checkpoint is approved for its separate lane commit. S13 browser and
+  The checkpoint is pushed separately at Mere `a7c477e7`. S13 browser and
   two-peer lifecycle receipts, reconciliation with current main and migration
   integration remain open. Current Genet publication is independently in
   progress; no new ruling or full migration acceptance follows.

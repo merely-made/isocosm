@@ -504,7 +504,7 @@ Conatus, ESP and Numen correctness gates. Root and independent review checked
 1,986 source/doc hashes and 81 receipts in seal `238b5909`. The remote fixture's
 pre.4 API adaptation passed its rebuild; unchanged thresholds, source scope and
 the two initial compile failures remain explicit in Mere's owning plan.
-The separate lane commit is authorized. S13 and current-main reconciliation
+The separate lane commit is pushed at Mere `a7c477e7`. S13 and current-main reconciliation
 still precede migration integration. Current Genet publication continues on
 Mere, then Isometry; primary consumer locks have not yet been promoted.
 The completed text worktree remains because automatic policy rejected cleanup;
