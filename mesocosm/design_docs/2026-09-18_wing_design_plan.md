@@ -7040,6 +7040,19 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-27: Lane L's final checkpoint is clean and pushed at `f81083b8`,
+  with production source `9b730e7b`. Its published Netrender9607 closure
+  passes 200 boundary tests; root recomputed all 17 receipt hashes, seven
+  current source/lock hashes and the test counts. A separately qualified
+  local Isometry closure passes all 187 rows, while the unchanged published
+  consumer closure detects 39 short rows. That diagnostic uses all 19 Genet
+  packages from the lane and four cached Netrender c8 packages; it does not
+  establish portable9607 consumer acceptance. The production Isometry lock
+  and pins are unchanged. Genet integration waits for concurrent retained
+  motion work in primary; Lane L remains retained. Receipts live under
+  `testing/genet/receipts/2026-09-27/text-fragment-boundary-suites` and
+  `text-fragment-consumer-local-c8`, with the owning Genet line-box plan
+  carrying full provenance. These are findings, not new rulings.
 - 2026-09-27: ruling 380 selects a separate verified pre.2 alias broadcast
   fix before carrying the correction into pre.4. Implementation is released
   on Mere's current primary checkout with unrelated reader WIP preserved;

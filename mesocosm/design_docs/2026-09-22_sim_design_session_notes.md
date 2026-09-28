@@ -498,6 +498,17 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-27, text lane final checkpoint.** Lane L `f81083b8` retains
+production source `9b730e7b` and passes 200 additional boundary tests on its
+published Netrender9607 closure. Root recomputed the receipt and current
+source hashes and counts. The separately qualified local Isometry check
+passes 187 rows; the original consumer closure fails 39 rows in the paired
+control. The local check uses the lane's 19 Genet packages and four cached
+Netrender c8 packages, so portable9607 Isometry acceptance remains open.
+Primary pins/lock are unchanged. Genet integration is held while another
+agent owns retained-motion edits in primary; the completed lane is retained.
+The Genet line-box plan owns the detailed evidence and qualifications.
+
 **2026-09-27, repair order answered.** Ruling 380 chooses a separate tested
 pre.2 repair, then carries the verified correction into pre.4. Allocation
 identity checks and numerical tolerances stay unchanged. Primary Mere's
