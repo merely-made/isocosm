@@ -23,7 +23,10 @@ planned in the rewritten
 [place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §A.
 Ruling 11's terrain models beside isometer's seam are that plan's decision
 1: they stand if Isocosm may depend on isometer-core, and move into Isocosm
-if not. Phase D stands as written.
+if not. Phase D stands as written. *Ruled later that day (393):* they move
+into Isocosm, and ruling 11 carries the amendment; Phase W's W2 and W3 are
+read accordingly, the relief and brick description going to Isocosm and
+isoscape keeping the pipeline's presets.
 
 **Owns:** the line between the three generation buckets Mark framed on
 2026-09-16 (terrain in isometer, world in isoscape, history in the
@@ -84,7 +87,10 @@ extracted after two real consumers and never declared in advance
 11. **Terrain models live beside isometer's seam; isoscape owns the seeded
     pipeline.** The relief and brick description move into isometer next to
     the `Terrain` seam they fill, and isoscape owns the pipeline and the
-    per-vessel presets that call them (§3.1).
+    per-vessel presets that call them (§3.1). *Amended 2026-09-28 (wing
+    design record, ruling 393):* the terrain models live in Isocosm as
+    verb-free modules, and isometer-core keeps only the `Terrain` trait and
+    `Ground`.
 12. **The genesis prefix is a wing rule.** Generated world history is
     accepted events on each vessel's one clock, and each vessel carries a
     test that a generated world record cannot be told from a played one.

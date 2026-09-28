@@ -39,7 +39,10 @@ amendments are applied (385, 386), the default's pitch is the 2:1 dimetric,
 opened the first gap, the spatial spine: designed now and sliced around
 rulings 195 and 363 (389), planned in the place-graph engine plan rewritten
 as its plan (390), with sites meeting through edge profiles (391) and
-Isocosm owning the lift (392). Rulings run to 392.
+Isocosm owning the lift (392). Rulings run to 392. The spine's four
+decisions followed: terrain models in Isocosm (393), the skeleton as
+condition keys (394), square sites first (395) and a chunked lift (396),
+closing its SP0. Rulings run to 396.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -3559,6 +3562,69 @@ what later sections derive from.
      graph, and isometer-core renders nothing (its dependencies are
      `wing-formats`, `serde` and `postcard`). Which clause gives way is the
      spine plan's decision 1 (§A.6).
+
+393. **The terrain models live in Isocosm.** Asked on 2026-09-28, as the
+     spine plan's decision 1: "Where do the terrain models the lift calls
+     live? Ruling 392's two clauses meet here: models 'beside the Terrain
+     seam' would sit in isometer-core, which its 'no render crate' clause
+     keeps out of the sim." Evidence as put, checked at `d80163b`:
+     "isometer-core depends only on wing-formats, serde and postcard and
+     renders nothing; ruling 330 says Ground 'becomes a thin layer over
+     [nisus] or retires' once T2 lands." Options, recommended first: (A)
+     "Models in Isocosm: relief functions, detail noise and cavity shapes
+     live in Isocosm as verb-free modules; isometer-core keeps only the
+     Terrain trait and Ground; the bench adapter implements Terrain over the
+     lift. Amends the isoscape plan's ruling 11, and nothing in the sim has
+     to unwind when Ground thins at T2 (recommended)." (B) "Isocosm uses
+     isometer-core: the models sit beside the seam as isoscape ruling 11
+     says; amends ruling 392's no-render-crate clause." Mark chose A,
+     "Models in Isocosm". So ruling 392's no-render-crate clause holds, its
+     "beside the Terrain seam" gives way, and the isoscape plan's ruling 11
+     is amended: the relief and brick description move into Isocosm, not
+     beside isometer's seam.
+
+394. **A site's skeleton is keyed entries in its conditions.** Asked on
+     2026-09-28, decision 2: "How is a site's skeleton held? Evidence:
+     Site.conditions is already an asserted BTreeMap<Key, i64> per site;
+     biome is a reading over conditions (ruling 72); the wing keeps open
+     sets as data, never enums." Options, recommended first: (A) "Condition
+     keys: elevation, relief and water level by default, in base units,
+     named by the world's rules; a world may add keys such as temperature or
+     rainfall that the lift reads. No change to Site's shape
+     (recommended)." (B) "Typed fields, versioned with the schema." (C) "A
+     wider typed set with climate and a watershed now." Mark chose A,
+     "Condition keys". So the skeleton adds no field to `Site`: the world's
+     rules name the keys the lift reads, elevation, relief and water level
+     by default.
+
+395. **The first slice builds square sites on planes, rings and tori.**
+     Asked on 2026-09-28, decision 3: "Which world shapes and site
+     footprints does the first slice build?" Evidence as put: "today's
+     generator draws a ring plus one random extra route per site with no
+     geometry, so no current world has frames; square footprints with four
+     edges tile planes, rings and tori under one frame rule; a sphere needs
+     a geodesic grid of hexagons with twelve pentagons (record §3.7.1),
+     whose borders need polygon interpolation." Options, recommended first:
+     (A) "Squares first: square sites with four edges on planes, rings and
+     tori; the edge-profile type is designed for polygons, and hexagons and
+     pentagons are built second (recommended)." (B) "Polygons now, with a
+     geodesic sphere among the first draws." (C) "One site first, against
+     drawn border profiles." Mark chose A, "Squares first".
+
+396. **The lift works in chunks at power-of-two cell sizes from the start.**
+     Asked on 2026-09-28, decision 4: "At what grain does the lift work in
+     the first slice?" Evidence as put, arithmetic and not measured:
+     "Ground::grow fills every column of one extent at one cell size; a site
+     of 256 five-foot tiles at a 7.5-inch voxel is 2,048 voxels across,
+     about 4.2 million columns, where Mesocosm's 129-voxel enclosure is
+     16,641; ruling 13 allows power-of-two cell sizes per chunk and ruling
+     147 lets a site span as many chunks as it needs." Options, recommended
+     first: (A) "Chunks from the start: the lift takes a chunk key and a cell
+     size from day one, so a site of any size costs only what is lifted and
+     far views lift coarse; the bench lifts a window across the shared
+     border (recommended)." (B) "Whole small sites at one cell size, with
+     chunking arriving at T2." Mark chose A, "Chunks from the start". With
+     rulings 393 to 396 the spine plan's SP0 is done.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -7363,6 +7429,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 393 to 396 recorded, the spine plan's four decisions:
+  terrain models in Isocosm, amending the isoscape plan's ruling 11 (393);
+  the skeleton as condition keys (394); square sites on planes, rings and
+  tori first (395); a chunked lift at power-of-two cell sizes (396). SP0 is
+  done. Carried into the spine plan, the isoscape plan, the sim plan, the
+  session notes' §9.6 and the index.
 - 2026-09-28: rulings 389 to 392 recorded, opening the spatial spine, the
   first gap of the one-game assessment: designed now and sliced around
   rulings 195 and 363 (389), the place-graph engine plan rewritten as its

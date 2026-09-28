@@ -6,6 +6,10 @@ for Mark. No code has moved. The first slice is new Isocosm capability and
 touches neither `mesocosm-core`'s places family (ruling 195) nor mere
 (ruling 363).
 
+**Status, later on 2026-09-28:** SP0 is done: the four decisions were ruled
+(393 to 396), terrain models in Isocosm, the skeleton as condition keys,
+square sites first and a chunked lift. SP1 is next.
+
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
@@ -75,7 +79,8 @@ marked asserted.
 2. **The skeleton** (asserted at founding, top-down, the 2026-08-05 ruling
    7). Each site's coarse terrain facts, from which its volume is derived:
    at least an elevation, a relief amplitude and a water level, in base
-   units; decision 2 says how they are held. Biome stays a reading over
+   units, held as keyed entries in `Site.conditions` that the world's rules
+   name (ruling 394). Biome stays a reading over
    conditions (ruling 72). The site's `terrain_seed`, drawn today and read
    nowhere (`shared/isocosm/src/generate.rs:275`), becomes the seed of its
    interior detail.
@@ -129,7 +134,7 @@ marked asserted.
 | Piece | Owner | Ruling |
 | --- | --- | --- |
 | World map, skeleton, edge profiles, lift, edits as facts, places, up and across | Isocosm, `shared/isocosm` | 392 |
-| The terrain models the lift calls: relief functions, detail noise, cavity shapes, all verb-free | Isocosm or isometer-core, open (decision 1) | 392; isoscape plan ruling 11 |
+| The terrain models the lift calls: relief functions, detail noise, cavity shapes, all verb-free | Isocosm, as verb-free modules; isometer-core keeps the `Terrain` trait and `Ground` | 392, 393, amending the isoscape plan's ruling 11 |
 | The skeleton's founding pipeline and presets | isoscape, once founded | 392 |
 | The voxel store and revision log | nisus after T2; Isocosm's edit list and re-lift before | 330, 331, 363 |
 | Rendering | isometer, through an adapter from the lift's description to `Ground` | 392 |
@@ -158,7 +163,8 @@ Done-conditions are seeded draws from a declared space, never fixtures
 guards is deliberately broken.
 
 - **SP0, the spine ruled.** Done when §A.6's decisions are taken. Opened by
-  rulings 389 to 392 on 2026-09-28.
+  rulings 389 to 392 on 2026-09-28. **Done 2026-09-28** (rulings 393 to
+  396).
 - **SP1, the world map with geometry, the skeleton and edge profiles.** A
   generator family draws a world map in a shape with every adjacency's frame
   relation, a skeleton per site, and edge profiles derived from site pairs.
@@ -225,6 +231,10 @@ and SP7 on ruling 195's order.
 4. **The lift's grain.** Chunks at power-of-two cell sizes from the start, so
    a site of any size costs what is lifted; or whole small sites at one cell
    size first, with chunking arriving with the store at T2.
+
+*All four ruled 2026-09-28:* 1 by ruling 393, the models in Isocosm; 2 by
+394, condition keys; 3 by 395, square sites on planes, rings and tori
+first; 4 by 396, chunks at power-of-two cell sizes from the start.
 
 ### A.7 Readings, not ruled
 
@@ -928,6 +938,8 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: SP0 done, §A.6's four decisions ruled (393 to 396); §A.2's
+  skeleton and §A.3's model owner updated to match.
 - 2026-09-28: rewritten as the spatial spine's plan (rulings 389 to 392):
   §A added; §0 annotated with a reading of what stands; §1 marked superseded
   where §A.2 disagrees; the G0 to G4 history, the burrow run, the Findings

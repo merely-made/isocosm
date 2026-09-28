@@ -977,3 +977,12 @@ Drafting the plan found ruling 392's option text meeting itself: models
 clause keeps out of the sim's graph, though isometer-core renders nothing.
 The finding went back to Mark as the plan's decision 1, beside the skeleton's
 form, the first shapes and the lift's grain (§A.6 of the plan).
+
+| Question as put | Ruling |
+| --- | --- |
+| Where do the terrain models the lift calls live? | 393: in Isocosm, amending the isoscape plan's ruling 11 |
+| How is a site's skeleton held? | 394: keyed entries in its conditions |
+| Which world shapes and site footprints does the first slice build? | 395: square sites on planes, rings and tori |
+| At what grain does the lift work in the first slice? | 396: chunks at power-of-two cell sizes from the start |
+
+With these the spine plan's SP0 is done; SP1 is next.
