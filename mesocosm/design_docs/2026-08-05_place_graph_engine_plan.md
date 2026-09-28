@@ -10,6 +10,12 @@ touches neither `mesocosm-core`'s places family (ruling 195) nor mere
 (393 to 396), terrain models in Isocosm, the skeleton as condition keys,
 square sites first and a chunked lift. SP1 is next.
 
+**Status, 2026-09-28, SP1 landed** at `6f25a89`: 121 tests pass, three
+controls fail as they must, and 256 maps drawn from an unselected master
+seed pass every check
+([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP1_MAP_DRAWS.md)).
+SP2, the lift, is next.
+
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
@@ -146,7 +152,7 @@ At isometry `d80163b` and mere `origin/main` `a31b9a14`:
 
 | Piece | Where | Holds | Gap against §A.2 |
 | --- | --- | --- | --- |
-| World map | `shared/isocosm/src/generate.rs:260-290` | up to 256 sites in a ring plus one random extra route each; routes with travel time and transmission | no shape, no geometry, no frame relation; `terrain_seed` read nowhere |
+| World map | `shared/isocosm/src/generate.rs:260-290` | up to 256 sites in a ring plus one random extra route each; routes with travel time and transmission | no shape, no geometry, no frame relation; `terrain_seed` read nowhere. *2026-09-28:* SP1 adds grid layouts with borders and skeletons (`src/map/`) and corners and edge profiles (`src/terrain/`) |
 | Sites and locations | `shared/isocosm/src/schema.rs:98-120` | `Site { terrain_seed, conditions, accounts, routes }` and `Location { sites, claims, parent, ratio }` | no skeleton, no edge profile, no volume |
 | Brick container and seam | `shared/isometer/crates/isometer-core/src/ground.rs` | one bounded extent grown column by column from `Terrain`'s surface plus cavities; 8³ bricks; materials to 63; one revision; a dirty queue one reader drains | not chunked by site, no cell sizes, no additive write; the crate depends only on `wing-formats`, `serde` and `postcard` |
 | Voxel mechanics | mere `crates/conatus/nisus/src/lib.rs` | 64-bit chunk addressing, a product-owned chunk extent, revision-gated edits, dirty regions | no world store, chunk map or revision log: T2's, after pre.4 (ruling 363) |
@@ -171,7 +177,10 @@ guards is deliberately broken.
   Done when every new type byte-round-trips, a profile computed from either
   side is the same bytes mirrored, two runs of one seed give identical maps,
   and the draws cover every shape decision 3 names; the control, a profile
-  keyed by the ordered pair, fails the symmetry check.
+  keyed by the ordered pair, fails the symmetry check. **Done 2026-09-28** at
+  `6f25a89`: `shared/isocosm/src/map/` lays the grids and validates borders,
+  `src/terrain/` walks corners and draws profiles, and the receipt's 256
+  unselected draws cover planes, rings and tori.
 - **SP2, the lift.** A site's baseline volume as a plain description in its
   frame at a stated cell size, conditioned on its skeleton and its edges'
   profiles. Done when on seeded draws a site lifts to identical bytes twice
@@ -869,6 +878,15 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Findings
 
+- 2026-09-28, **SP1: the corner control needed a positive check beside
+  it.** A corner height keyed per site fails corner agreement, but a corner
+  walk returning single slots would fail that control too, through the check
+  that borders end at their corners, so the control could not prove the walk.
+  `corner_walks_find_every_corner_of_the_grid_once` counts the corners
+  instead: (W+1)(H+1) on a plane, W(H+1) on a ring and W·H on a torus, each
+  slot in exactly one (`shared/isocosm/tests/spine.rs`). The direction rule,
+  a far side reading its border backwards, has its control in the receipt: a
+  forced forward read fails at "site 1 side 3 misses its corners".
 - 2026-09-28, **what the spine starts from** (§A.4 in full). Isocosm's
   sites carry a `terrain_seed` drawn at `generate.rs:275` and read nowhere.
   `Ground` is one bounded extent with one revision and no additive write, in
@@ -972,6 +990,12 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: **SP1 landed** at `6f25a89`. Optional `Border`, `Footprint`,
+  `Skeleton` and `Founding.map`, skipped when absent so old worlds hash as
+  before; the grid layout and validation in `src/map/`; corners, profiles
+  and the two checks in `src/terrain/`; `isocosm-bench --map-draws`. Ten
+  tests in `tests/spine.rs`, 121 in all, with Clippy and rustfmt clean.
+  Receipt in `mesocosm/testing/bench/receipts/2026-09-28/isocosm/`.
 - 2026-09-28: SP1's brief written as §A.8 and its three forks ruled (397 to
   399); the Isocosm baseline passed 111 tests before any SP1 change.
 - 2026-09-28: SP0 done, §A.6's four decisions ruled (393 to 396); §A.2's

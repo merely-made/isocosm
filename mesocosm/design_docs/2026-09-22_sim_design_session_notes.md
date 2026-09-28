@@ -995,3 +995,9 @@ passing Isocosm tests:
 | Where does each adjacency's frame relation live? | 397: on the route, as an optional border |
 | How does the map family enter founding? | 398: an optional part of Founding |
 | What space do SP1's seeded draws cover? | 399: scale-free, 2×2 to 16×16 grids and 256 to 2,048 base-unit sides |
+
+SP1 landed the same day at `6f25a89`, with its receipt. One lesson on the
+way: a control that fails is not yet proof of the mechanism it guards. The
+per-site corner control would have failed even against a broken corner walk,
+so a positive count of the grid's corners was added beside it (the spine
+plan's Findings).
