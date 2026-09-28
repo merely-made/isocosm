@@ -7040,6 +7040,18 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: the broader pre.4 reconciliation tests exposed a separate
+  scrolling regression on the published Genet/Mere combination. The original
+  equal-hover test requests 12 pixels inside a 180-pixel container with a
+  200-pixel line; the offset is clamped to zero before hover. Untouched Mere
+  `5ce144ff` reproduces it with unchanged source/lock hashes. Both Genet and
+  Rootstock scroll clamps currently use DOM-node fragment bounds, omitting
+  the formatting-line extent after the font-content/line-box separation.
+  The 187-row text containment result remains valid but does not establish
+  scrolling correctness. Reconciliation and S13 are held for a bounded
+  owner-side layout repair; the existing retention assertion stays intact.
+  Workspace, Distillery, lease, trainer, remote-fixture and web checks pass;
+  Mesquite has 17 passes. No design ruling or migration acceptance follows.
 - 2026-09-28: Genet text publication is complete through Mere `5ce144ff`
   and Isometry `5da804eb`, both pushed. Independent review and root rehashes
   accept 106 Mere and 126 Isometry receipt files. Both actual-pin row runs

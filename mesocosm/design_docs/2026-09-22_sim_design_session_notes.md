@@ -498,6 +498,20 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, published scroll regression discovered.** Reconciliation's
+broader Rootstock suite has 40 passes and one failure: a 200-pixel line in a
+180-pixel scroll container clamps a requested 12-pixel offset to zero before
+hover. The same unchanged test fails on untouched Mere `5ce144ff`, so this
+is not introduced by pre.4. Genet and Rootstock both derive nested scroll
+extents from node fragments, which now represent font content separately
+from formatting lines. The original retention test remains intact while the
+owner-side layout repair is measured. Other affected gates pass, including
+the workspace, Distillery and leases, Djinn, remote fixture, web build and
+17 Mesquite tests. The remote lock preserves its original Syn dependency
+after an unchanged locked candidate proved Cargo's extra edge change
+unnecessary. The published 187/0 row result stands within its stated scope;
+reconciliation acceptance, S13 and main migration integration remain held.
+
 **2026-09-28, text publication accepted and pushed.** Mere `5ce144ff`
 publishes the tested Genet `7b48f94d`; Isometry `5da804eb` adopts both across
 its seven owning manifests. Root and independent review checked the 106-file
