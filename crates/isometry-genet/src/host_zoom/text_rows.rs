@@ -94,8 +94,6 @@ fn short_rows(state: &str, harness: &BoardHarness) -> Vec<String> {
 
 /// Expanded at zoom 1, then the two transient states the panel diet measures.
 #[test]
-#[ignore = "genet 6afb472a's text fragment keeps Parley's extent, 1 px over its rounded \
-            line box (wing design record ruling 329); runs again when the genet fix lands"]
 fn every_side_panel_text_row_holds_its_text() {
     let expanded = board(DESIGN_SIZE, false);
     assert_eq!(expanded.ui_zoom(), 1.0, "measured at zoom 1");

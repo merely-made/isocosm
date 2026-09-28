@@ -22,7 +22,7 @@ resident-ground-receipt = ["dep:burn", "conatus/resident"]
 # byte-identical to the ones mesocosm declares, so the feature request and the
 # revision the resolver sees do not move with the crate.
 [dependencies]
-modulus = { git = "https://github.com/merely-made/mere.git", rev = "ac41628a40c68d4b2f6d93bdb5618a4b5bf97c70" }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "5ce144ffe58945746b7dabc21de499725219beaf" }
 # Body documents and brick ground, from the family floor. The lens names no
 # product type in production code.
 isometer-core = { path = "../isometer-core" }
@@ -40,7 +40,7 @@ pollster = "0.4"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
 burn = { version = "0.22.0-pre.2", default-features = false, features = ["std", "wgpu"], optional = true }
-conatus = { git = "https://github.com/merely-made/mere.git", rev = "ac41628a40c68d4b2f6d93bdb5618a4b5bf97c70" }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "5ce144ffe58945746b7dabc21de499725219beaf" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-time = "1"

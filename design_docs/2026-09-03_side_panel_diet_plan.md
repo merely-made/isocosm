@@ -11,6 +11,12 @@ every figure below moved with genet's rounded line boxes, and both
 transient states now fit the design expanded; see
 [Rounded line boxes](#rounded-line-boxes-2026-09-26) (ruling 329).
 
+**2026-09-28 text-bound update:** the published Genet `7b48f94d` fix through
+Mere `5ce144ff` makes all 187 measured text rows hold their fragments. The
+previously ignored detector is now an ordinary test; rulings 329/379 are
+qualified by the dated publication receipt below. Smallest-display reachability
+and prior headed/pixel evidence keep their separate scope.
+
 **W1, 2026-09-18:** keep. Tier: game overlay. Cuts landed; restate the target
 as reachable at the smallest supported display. Evaluated against the wing
 design record; see
@@ -445,3 +451,36 @@ takes the line box's rounded metrics, and runs again then; the two
   the new figures; the new `host_zoom::text_rows` receipt, which records the
   one-pixel text overhang the move introduced, is ignored until the genet fix
   lands and then runs again.
+- **2026-09-28, accepted text bounds published into the actual consumer.**
+  The seven owning manifests now select Mere
+  `5ce144ffe58945746b7dabc21de499725219beaf` and Genet
+  `7b48f94d7a742840b527205d82a37da958240d73`. NetRender remains `9607d16`;
+  no local Genet/Mere source override is supplied. The root's 799-package
+  graph has the same normalized nodes, features and edges as its preserved
+  pre-publication graph, with exactly 21 Mere and 19 Genet source replacements.
+  Both pre-existing `vello_encoding` 0.10.0 source identities remain; wgpu
+  remains 30.0.1 and netrender-vello 0.10.1. Deliberately inserted outside-path,
+  old-Genet and old-Mere metadata faults are rejected by the source detector.
+  The actual published-pin test passes first with `--ignored`, then as an
+  ordinary test after removing only the obsolete ignore annotation. Both
+  runs measure **187 rows, zero short**: 61 expanded, 64 composing, 62 picking.
+  The 0.01 row allowance and every assertion are unchanged. These measurements
+  compare text-fragment bounds with containing row boxes, not glyph ink or
+  browser-reference pixels. The earlier qualified local-consumer broken
+  baseline remains in Genet's owning receipt; this is the new published-pin
+  acceptance. Raw commands, fonts, locks, metadata, controls and recomputed
+  rows are under `Code/testing/isometry/receipts/2026-09-27/genet-text-publication`.
+  Completion checks all pass with explicit Rust/Cargo 1.98.1, four jobs and
+  the existing Isometry target: root, Isocosm, Mesocosm and Eponym workspace
+  `--all-features --all-targets` checks, plus changed-source rustfmt and diff
+  checks. The root all-feature graph has 1,081 packages and retains the
+  separately pinned optional Cleromancy lineage (Mere `876320fd`, Genet
+  `5ae30cad`); this gate makes no claim of a single source family there.
+  Eponym's published Genet/Mere/NetRender adoption is checked with its existing
+  manifest-declared Renderling `1a7a1920` checkout plus 26 modified files and
+  clean Crabslab `a1ffc170`. Exact before/after hashes qualify those local
+  sources, which this publication does not change. That consumer check is
+  not clean portable-renderer acceptance. The other root/product source
+  audits reject unapproved outside paths. The first attempted row command
+  included `--lib` for a binary-only package and exited before running tests;
+  the corrected published and ordinary runs above are the acceptance gates.
