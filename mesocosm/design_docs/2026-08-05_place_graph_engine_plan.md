@@ -16,6 +16,14 @@ seed pass every check
 ([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP1_MAP_DRAWS.md)).
 SP2, the lift, is next.
 
+**Status, 2026-09-28, SP2 landed** at `38ea90f`: 133 tests pass, four
+controls fail as they must, and 64 worlds drawn from an unselected master
+seed meet exactly at every border point, give their elevations back as exact
+means against a brute-force sum of 195,970,560 columns, and lift the same
+bytes twice
+([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP2_LIFT_DRAWS.md)).
+SP3, the bench adapter into isometer, is next.
+
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
@@ -187,7 +195,10 @@ guards is deliberately broken.
   and in a second process, every pair of neighbours agrees exactly on every
   shared border sample, restricting a just-lifted site returns its skeleton,
   and an unvisited site allocates nothing; the control, detail that does not
-  fade at the edges, fails the border check.
+  fade at the edges, fails the border check. **Done 2026-09-28** at
+  `38ea90f`: `src/terrain/lattice.rs` holds the exact surface and
+  `src/terrain/lift.rs` the chunks; a second process repeats a lift's
+  digest, and lifting leaves the world's digest unchanged.
 - **SP3, the bench.** On the specimen bench, Isocosm's first host, an
   adapter implements `Terrain` over the lift, and two neighbouring sites of a
   drawn world render through isometer across their shared border. Done when
@@ -916,6 +927,22 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Findings
 
+- 2026-09-28, **SP2: an exact mean over base-grain columns needs a
+  closed form, and the lattice gives one.** Were each column to round on
+  its own, the sum of a site's columns would have no closed form, and ruling
+  400's exact mean would cost a sum over every column before any lift, about
+  4.2 million for a 2,048-unit site. Holding the surface as the exact
+  interpolation of the 17 by 17 lattice, in units of `1 / (4 s²)`, makes the
+  sum a weighted sum of lattice heights and the correction an exact integer
+  spread over the interior (§A.9). The receipt checks it against brute force
+  over 195,970,560 columns.
+- 2026-09-28, **SP2: two instruments were incomplete on first writing and
+  were fixed before the commit.** The relief check had no control, and a
+  bound true by construction proves nothing without one: detail drawn past
+  its window now fails it. The water test could have passed without any
+  column under water: it now asserts that some drawn columns are. The border
+  check's own control, a far side read in the near side's direction, is in
+  the receipt.
 - 2026-09-28, **SP1: the corner control needed a positive check beside
   it.** A corner height keyed per site fails corner agreement, but a corner
   walk returning single slots would fail that control too, through the check
@@ -1028,6 +1055,13 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: **SP2 landed** at `38ea90f`. The world-local material table on
+  the world's traits, seeded by the map; the lattice with its Coons interior,
+  faded detail and exact correction in `src/terrain/lattice.rs`; column
+  chunks in `src/terrain/lift.rs`; the border, mean and relief checks;
+  `isocosm-bench --lift-draws` and `--lift-digest`. Twelve tests in
+  `tests/lift.rs`, 133 in all, with Clippy and rustfmt clean. Receipt in
+  `mesocosm/testing/bench/receipts/2026-09-28/isocosm/`.
 - 2026-09-28: SP2's forks ruled (400 to 403) and its brief written as §A.9,
   the exact mean kept by a lattice with closed-form sums rather than a sum
   over every column.

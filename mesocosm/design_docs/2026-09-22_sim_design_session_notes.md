@@ -1015,3 +1015,8 @@ Working 400 out before coding showed that an exact mean over every
 base-grain column has no closed form if each column rounds on its own; the
 brief keeps it exact through a lattice whose sums are closed, recorded as a
 reading beside the rulings.
+
+SP2 landed the same day at `38ea90f`, with its receipt. The SP1 lesson came
+round again: two of SP2's instruments were incomplete on first writing, a
+relief check with no control and a water test that could pass without water,
+and both were fixed before the commit.
