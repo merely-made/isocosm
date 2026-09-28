@@ -35,7 +35,11 @@ drafted in the
 and wait on Mark's word. Later the same session Mark gave it: both
 amendments are applied (385, 386), the default's pitch is the 2:1 dimetric,
 30° (387), and Mesocosm's opening view waits on CP1 comparing its
-2026-09-05 direction with the default (388). Rulings run to 388.
+2026-09-05 direction with the default (388). Rulings run to 388. Mark then
+opened the first gap, the spatial spine: designed now and sliced around
+rulings 195 and 363 (389), planned in the place-graph engine plan rewritten
+as its plan (390), with sites meeting through edge profiles (391) and
+Isocosm owning the lift (392). Rulings run to 392.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -3476,6 +3480,86 @@ what later sections derive from.
      accepted for, 2D legibility with 3D space and a visible burrow
      interior, not a preference score.
 
+389. **The spatial spine is designed now and sliced around the recorded
+     order.** Asked on 2026-09-28, when Mark chose to start on the first gap
+     of the one-game assessment, connecting the sim's site graph to the
+     voxel world ("Let's start on 1?"): "How does starting on gap 1 run
+     against the recorded order? Ruling 195 puts places fourth in Isocosm's
+     absorption (the sim is on matter and processes now), and ruling 363
+     holds T2, the nisus world store, until the pre.4 migration ends
+     (production is still on pre.2, S13 open)." Options, recommended first:
+     (A) "Design now, slice around: plan the whole spine now, and build a
+     first slice that jumps neither ruling: site skeleton, shared edge
+     profiles and deterministic lifting into today's Ground through the
+     Terrain seam, proven on the Isocosm bench; nisus takes the store over
+     when T2 lands. mesocosm-core's places family still moves fourth
+     (recommended)." (B) "Move places earlier: amend 195 so places move
+     ahead of bodies and the record, and build the spine in Isocosm now; T2
+     still waits on pre.4." (C) "Design only for now: no code until places'
+     turn in 195's order and T2 after pre.4." Mark chose A, "Design now,
+     slice around". So the spine is planned whole now, its first slice is
+     new Isocosm capability that neither moves `mesocosm-core`'s places
+     family ahead of ruling 195's order nor touches mere ahead of ruling
+     363, and nisus takes the store over when T2 lands.
+
+390. **The place-graph engine plan is rewritten as the spine's plan.** Asked
+     on 2026-09-28: "Where should the spine's plan live? The place-graph
+     engine plan owns 'the world substrate: the place graph, volumetric
+     truth' but has been marked for rewrite since W1 (2026-09-18), its
+     done-conditions not authoritative; the isoscape plan (2026-09-16)
+     extracts the place graph into isoscape, which ruling 192 (2026-09-25)
+     overtook by sending places to Isocosm." Options, recommended first: (A)
+     "Rewrite place-graph plan: rewrite the place-graph engine plan to the
+     record as the spine's plan, keeping its landed G0 to G4 receipts as
+     history, and annotate the isoscape plan's place-graph row as overtaken
+     by ruling 192 (recommended)." (B) "New spine plan: a new dated plan owns
+     the spine; the place-graph plan is archived with a pointer." (C) "Fold
+     into the sim plan: rows of §2.2 and a new S phase." Mark chose A,
+     "Rewrite place-graph plan". The rewrite discharges W1's verdict for
+     that plan (ruling 31).
+
+391. **Neighbouring sites meet through edge profiles.** Asked on 2026-09-28:
+     "How do neighbouring sites meet without seams? Ruling 73 allows any
+     world shape, so there are no global coordinates to sample terrain noise
+     in; Mesocosm's relief is one 65×65 diamond-square field that cannot
+     tile; the place-graph plan's standing ruling 7 wants a top-down
+     skeleton, then bottom-up detail." Options, recommended first: (A) "Edge
+     profiles: a top-down skeleton gives each site coarse facts (elevation,
+     relief kind, water); each adjacency carries a boundary profile drawn
+     from both sites' facts and the edge's own seed, so both sides compute
+     the same border; interior detail is free within the site's own frame.
+     Works on any topology (recommended)." (B) "Stitch at lift time: each
+     site grows from its own seed alone, and a border band blends into
+     whichever neighbours are already lifted." (C) "Global coords, flat
+     first." Mark chose A, "Edge profiles". *Reading, not ruled:* a profile
+     is derived and never stored, being a function of asserted facts and the
+     seed (§1), and an edit on a border is an ordinary asserted voxel edit;
+     the place-graph plan's 2026-08-05 ruling 6, one global coordinate space
+     in which an edge is never a portal, holds within a site's frame and
+     gives way between sites, where crossing an edge changes frame (D15's
+     across) without ever reading as a scene transition.
+
+392. **Isocosm owns the lift from site to volume.** Asked on 2026-09-28: "Who
+     owns the lift from site to volume? Isoscape ruling 11 puts terrain
+     models beside isometer's Terrain seam and the seeded pipeline in
+     isoscape; ruling 192 puts places in Isocosm; isocosm depends today only
+     on wing-impresa, wing-glyphs and hagiograph; Ground sits in
+     isometer-core, a render-family crate, and nisus is ruled its
+     successor." Options, recommended first: (A) "Isocosm lifts: Isocosm
+     owns the skeleton, the edge profiles, the lift and the derived places;
+     the terrain models it calls stay verb-free stack functions beside the
+     Terrain seam; the sim depends on no render crate, so an adapter feeds
+     the lift's plain description to Ground; isoscape keeps founding presets
+     (recommended)." (B) "Isoscape lifts: isoscape owns the whole
+     site-to-volume pipeline and founds now." (C) "Isocosm owns all,
+     terrain models included." Mark chose A, "Isocosm lifts". *Found on
+     drafting the spine plan and put back:* option A's clauses meet in one
+     place, since models "beside the Terrain seam" would sit in
+     isometer-core, which the no-render-crate clause keeps out of the sim's
+     graph, and isometer-core renders nothing (its dependencies are
+     `wing-formats`, `serde` and `postcard`). Which clause gives way is the
+     spine plan's decision 1 (§A.6).
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -5576,6 +5660,15 @@ node set is a fixed three-by-three partition at any enclosure size
 ignores height (`places.rs:170-181`), and interiors are asserted counts
 (`places/grown.rs:39-45`). Volume-derived nodes are unbuilt work under W2.
 
+**The spine (rulings 389 to 392, 2026-09-28).** What connects the world
+map's sites to the voxels under them is planned whole in the
+[place-graph engine plan](2026-08-05_place_graph_engine_plan.md), rewritten
+as the spine's plan (390). A top-down skeleton gives each site coarse facts,
+each adjacency carries an edge profile both sides compute alike (391), and
+Isocosm lifts a site's volume from those facts and its seed (392). The first
+slice builds that lift without moving `mesocosm-core`'s places family ahead
+of ruling 195 or touching mere ahead of ruling 363 (389).
+
 ### 3.7.1 The world map: sites, regions and locations
 
 From ruling 72, whose definitions are kept whole in the first column.
@@ -7270,6 +7363,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 389 to 392 recorded, opening the spatial spine, the
+  first gap of the one-game assessment: designed now and sliced around
+  rulings 195 and 363 (389), the place-graph engine plan rewritten as its
+  plan (390), edge profiles (391), and Isocosm owning the lift (392), with
+  392's two clauses found to meet in isometer-core and put back as the
+  spine plan's decision 1. Carried into §3.7, the rewritten plan, the
+  isoscape plan, the sim plan, the session notes' §9.6 and the index.
 - 2026-09-28: rulings 385 to 388 recorded, the same session's second
   round: the founding record's amendment for 381 applied (385); the
   tabletop's camera line and the "schedule" wording in Mesocosm's and

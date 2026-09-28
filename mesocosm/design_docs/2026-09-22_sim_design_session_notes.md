@@ -947,3 +947,33 @@ to Mark the same day without objection:* isometer's camera reserves room for
 a perspective projection now and builds it when a mode needs one, with
 Eponym's `r1-proof` perspective camera as the donor. Still open: where the
 one host lives and how a build profile is expressed.
+
+### 9.6 Gap 1, the spatial spine
+
+Mark, verbatim, after the rulings above: "Let's start on 1?", the first gap
+of §9.2, connecting the sim's site graph to the voxel world.
+
+The assessment found, at isometry `d80163b` and mere `origin/main`
+`a31b9a14`: Isocosm's sites are an abstract graph whose `terrain_seed` is
+read nowhere; `Ground` is one bounded, heightfield-grown volume in a crate
+that renders nothing; nisus is chunk mechanics without a world store; the T2
+lane ruling 335 placed in mere's conatus engine plan §2 is unwritten, and
+the pre.4 migration T2 waits on is unfinished (production on pre.2, S13
+open); the only site-shaped terrain, Mesocosm's 65×65 relief, cannot tile;
+ruling 195 puts places fourth and the sim is on the first family; mere's
+checkout holds a peer's uncommitted work fifteen commits behind, so the
+session read `origin/main` and edited nothing there. The drive, low at
+1.54 GiB earlier in the day, had 468 GB free.
+
+| Question as put | Ruling |
+| --- | --- |
+| How does starting on gap 1 run against rulings 195 and 363? | 389: design now, slice around |
+| Where should the spine's plan live? | 390: the place-graph engine plan, rewritten |
+| How do neighbouring sites meet without seams? | 391: edge profiles |
+| Who owns the lift from site to volume? | 392: Isocosm lifts |
+
+Drafting the plan found ruling 392's option text meeting itself: models
+"beside the Terrain seam" sit in isometer-core, which its no-render-crate
+clause keeps out of the sim's graph, though isometer-core renders nothing.
+The finding went back to Mark as the plan's decision 1, beside the skeleton's
+form, the first shapes and the lift's grain (§A.6 of the plan).

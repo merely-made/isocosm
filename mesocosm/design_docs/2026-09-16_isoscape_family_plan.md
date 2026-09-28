@@ -14,6 +14,17 @@ absent from the index. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
+**Annotation, 2026-09-28 (wing design record, rulings 192, 390 and 392):**
+the place graph this plan extracts into isoscape (§3.2, Phase W's W3) goes
+to Isocosm instead: ruling 192 made Isocosm absorb `mesocosm-core`, places
+among its families, and ruling 392 makes Isocosm own the lift from site to
+volume, leaving isoscape the founding pipeline and presets. The spine is
+planned in the rewritten
+[place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §A.
+Ruling 11's terrain models beside isometer's seam are that plan's decision
+1: they stand if Isocosm may depend on isometer-core, and move into Isocosm
+if not. Phase D stands as written.
+
 **Owns:** the line between the three generation buckets Mark framed on
 2026-09-16 (terrain in isometer, world in isoscape, history in the
 hagiograph); the wing's world generation as a crate family named
@@ -728,7 +739,7 @@ is a done-condition shape for whether generated systems compose.
 | --- | --- | --- | --- |
 | **hagiograph** | mere, `crates/eidetic/hagiograph` | The mark record over product-defined axes and holders, with merge and the feat rule; the deep-time seam, span and handover receipt; later promotion, retelling and memorials | Mesocosm, then Paredros |
 | **isometer** | isometry, `shared/isometer` | Terrain models beside `isometer-core`'s `Terrain` seam: Mesocosm's diamond-square relief and brick description | Mesocosm and Paredros through isoscape; the tabletop keeps its authored adapter |
-| **isoscape** | isometry, `shared/isoscape` | The seeded pipeline and per-vessel presets; the place graph extracted from `mesocosm-core`; world generation split from life generation | Mesocosm and Paredros, which already share the skeleton |
+| **isoscape** | isometry, `shared/isoscape` | The seeded pipeline and per-vessel presets; the place graph extracted from `mesocosm-core` (*overtaken 2026-09-28: to Isocosm, rulings 192 and 392*); world generation split from life generation | Mesocosm and Paredros, which already share the skeleton |
 
 **Stays where it is.** Each product's journal and log; Mesocosm's feats,
 scales, soil ledger and founding roster; Paredros's sites map and population;

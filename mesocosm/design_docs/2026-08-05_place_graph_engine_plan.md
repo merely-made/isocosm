@@ -1,6 +1,25 @@
-# Place-Graph Engine Plan (2026-08-05)
+# Place-Graph Engine Plan (2026-08-05): the spatial spine
 
-**Status: active substrate record, clarified 2026-09-01.** Founded from the
+**Status, 2026-09-28:** rewritten to the wing design record as the spatial
+spine's plan (rulings 389 to 392). SP0 is open, with four decisions in §A.6
+for Mark. No code has moved. The first slice is new Isocosm capability and
+touches neither `mesocosm-core`'s places family (ruling 195) nor mere
+(ruling 363).
+
+**Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
+this plan a rewrite verdict: the sim's spatial half, on which W2 could not
+be founded while it stood undecided. The one-game assessment of 2026-09-28
+([session notes §9](2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
+ranked connecting the sim's site graph to the voxel world first among the
+gaps, and Mark chose to start there. §A is the spine: what connects the
+world map's sites to the voxels under them, who owns each piece, what
+exists, the phases and the decisions still open. Everything from §0 onward
+is the plan as it stood on 2026-09-01, kept as history: its rulings of
+2026-08-05 carry a dated reading of what stands, §1's model gives way to
+§A.2 where they disagree, and the G0 to G4 build history, the burrow run,
+the Findings and the Progress stand as the receipts they were.
+
+*As of 2026-09-01:* **Status: active substrate record, clarified 2026-09-01.** Founded from the
 2026-08-04/05 engine rumination. The G labels below record the order in which
 the substrate was assembled. They are historical indexing, not current
 acceptance gates. Sibling to the
@@ -11,14 +30,227 @@ This plan owns the world substrate: the place graph, volumetric truth, the
 two-scale execution substrate, and the composed slice that proves them
 together.
 
-**W1, 2026-09-18:** rewrite. Tier: sim, §3.7. The sim's spatial half; W2
+*W1, 2026-09-18:* **rewrite.** Tier: sim, §3.7. The sim's spatial half; W2
 cannot be founded on an undecided answer here. Rewrite is a lane under the
 record's W2 or W3; until it lands this plan's done-conditions are not
 authoritative. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
+## A. The spatial spine (2026-09-28)
+
+### A.1 What it rests on
+
+Rulings of the [wing design record](2026-09-18_wing_design_plan.md), quoted
+there in full:
+
+| Ruling | What it fixes for the spine |
+| --- | --- |
+| §1, the derivation rule | a world is a seed, its rules and its asserted facts; a site's volume is derived and only its edits are stored |
+| 12 | the near rung is a volume with an interior, destructible and constructible, for every game |
+| 13 | cells are power-of-two multiples of one base unit, chosen per chunk; bricks stay 8³ |
+| 14, §3.7 | places above the bricks are derived from them, re-derived locally from dirty regions, and never disagree with them |
+| 18 | a game's grid is a projection over the cubic volume |
+| 23 | the terrain gets a per-axis scale, owed under W3 |
+| 69, 70 | what is of note persists; the ambient regenerates from the same basic facts |
+| 72, 73 | the world map is a graph of sites in the world's one shape, held as adjacency |
+| 74, 88, D15 | nesting is one step with a down, an up, an across and a ratio, allocated as locations are generated |
+| 92 | scopes are a game's, never the sim's |
+| 124 | the first scale target is a region |
+| 147, 148 | a site and a paged chunk are independent; a location's kind decides what it follows when its ground moves |
+| 195 | `mesocosm-core`'s places family moves fourth into Isocosm |
+| 330 to 333, 363 | nisus becomes the voxel store with a revision log; T2 builds it after the pre.4 migration |
+| 389 to 392 | this rewrite: designed now and sliced around 195 and 363, this plan as its home, edge profiles, Isocosm lifts |
+
+### A.2 The model
+
+Far to near. Each layer is derived from the one above it unless it is
+marked asserted.
+
+1. **The world map** (asserted at founding). Sites and their adjacency in
+   the world's one shape: Isocosm's `Site` and `Route`
+   (`shared/isocosm/src/schema.rs:98-112`). Each adjacency also records how
+   the two sites' frames meet: which side of one touches which side of the
+   other, and in what orientation.
+2. **The skeleton** (asserted at founding, top-down, the 2026-08-05 ruling
+   7). Each site's coarse terrain facts, from which its volume is derived:
+   at least an elevation, a relief amplitude and a water level, in base
+   units; decision 2 says how they are held. Biome stays a reading over
+   conditions (ruling 72). The site's `terrain_seed`, drawn today and read
+   nowhere (`shared/isocosm/src/generate.rs:275`), becomes the seed of its
+   interior detail.
+3. **Edge profiles** (derived, never stored, ruling 391). For each
+   adjacency, a profile of the shared border: surface heights sampled along
+   the edge, and whether each span passes, climbs or stops at a cliff or
+   water, drawn from both sites' skeletons and a seed keyed by the unordered
+   pair. Both sides compute the same bytes, the far side reading them
+   mirrored into its own frame.
+4. **The lift** (derived, the nesting step's down). Given a site, a chunk
+   and a cell size, the chunk's baseline voxels: a surface interpolated from
+   the site's skeleton towards each edge's profile; detail from the site's
+   seed that fades to nothing at the edges, so every border equals its
+   profile exactly; materials by depth and conditions; water under its
+   level; cavities as data. A pure function: the same inputs give the same
+   bytes on any machine, and an unvisited site allocates nothing.
+5. **Edits** (asserted). Carving, filling and building are facts in the
+   sim's record, keyed by site and cell. A site's volume is its lift with its
+   edits replayed, so stored bytes are proportional to edits. Until T2
+   lands, Isocosm keeps the edits and re-lifts; after it, nisus's world store
+   and revision log hold them (rulings 330 and 331).
+6. **Places over the bricks** (derived, ruling 14). Connected components of
+   air at the world's declared grain, passages as edges and travel cost as
+   weights, re-derived locally where edits dirtied the volume. Cross-site
+   passages join through edge profiles, so the graph over the bricks spans
+   sites. The sim reads the volume only at its declared grain: a coarse lift
+   for a far view is presentation and never feeds a derivation (§5's third
+   stop rule).
+7. **Up** (restriction). A site's conditions summarise its volume where
+   edits or processes have moved it from the baseline. An unedited site's
+   conditions are its skeleton's, so restricting a just-lifted site returns
+   what it came from by construction: a consistency check, never evidence
+   about evolution (ruling 113).
+8. **Across.** Leaving a site by an edge arrives in the neighbour's frame by
+   the edge's recorded frame relation. The shared profile makes the ground
+   meet; the frame change is arithmetic and never a scene transition (§5's
+   first stop rule).
+9. **Nested maps** (rulings 74 and 88). A location opening into a finer map,
+   a dungeon's floors or a ship's decks, uses the same step: its own frame, a
+   profile at its opening and its own lift, allocated when the location is
+   generated.
+10. **Consumers.** isometer draws a lifted site through `Ground` today, fed
+    by an adapter, and through nisus's store after T2; conatus's colliders
+    follow the store through T2; the sim's processes run over the places.
+    The VTT's authored boards are asserted volumes displacing a site's lift
+    (ruling 89); Mesocosm's enclosure is one site; Eponym's continuous scope
+    crosses sites.
+
+### A.3 Who owns what
+
+| Piece | Owner | Ruling |
+| --- | --- | --- |
+| World map, skeleton, edge profiles, lift, edits as facts, places, up and across | Isocosm, `shared/isocosm` | 392 |
+| The terrain models the lift calls: relief functions, detail noise, cavity shapes, all verb-free | Isocosm or isometer-core, open (decision 1) | 392; isoscape plan ruling 11 |
+| The skeleton's founding pipeline and presets | isoscape, once founded | 392 |
+| The voxel store and revision log | nisus after T2; Isocosm's edit list and re-lift before | 330, 331, 363 |
+| Rendering | isometer, through an adapter from the lift's description to `Ground` | 392 |
+| Colliders and spatial queries | conatus, through T2 | 330 to 334 |
+
+### A.4 What exists, checked 2026-09-28
+
+At isometry `d80163b` and mere `origin/main` `a31b9a14`:
+
+| Piece | Where | Holds | Gap against §A.2 |
+| --- | --- | --- | --- |
+| World map | `shared/isocosm/src/generate.rs:260-290` | up to 256 sites in a ring plus one random extra route each; routes with travel time and transmission | no shape, no geometry, no frame relation; `terrain_seed` read nowhere |
+| Sites and locations | `shared/isocosm/src/schema.rs:98-120` | `Site { terrain_seed, conditions, accounts, routes }` and `Location { sites, claims, parent, ratio }` | no skeleton, no edge profile, no volume |
+| Brick container and seam | `shared/isometer/crates/isometer-core/src/ground.rs` | one bounded extent grown column by column from `Terrain`'s surface plus cavities; 8³ bricks; materials to 63; one revision; a dirty queue one reader drains | not chunked by site, no cell sizes, no additive write; the crate depends only on `wing-formats`, `serde` and `postcard` |
+| Voxel mechanics | mere `crates/conatus/nisus/src/lib.rs` | 64-bit chunk addressing, a product-owned chunk extent, revision-gated edits, dirty regions | no world store, chunk map or revision log: T2's, after pre.4 (ruling 363) |
+| T2's lane | mere's conatus engine plan §2 | §2's general done-condition, one chunk/revision path | the lane ruling 335 placed there is not written; production Burn is still `0.22.0-pre.2`, S13 open |
+| Relief and places | `mesocosm-core/src/places.rs` and `places/`, 1,925 lines | a 65×65 diamond-square `Relief` from its own seed, `Grown` implementing `Terrain`, places over a fixed three-by-three partition | one field per enclosure, which cannot tile across sites; moves fourth under 195 |
+| Authored terrain | `crates/isometry-views/src/scene/terrain.rs` | `MapTerrain` implementing `Terrain` over the VTT's authored maps | the VTT's boards as asserted volumes over a site (SP7) |
+| Eponym's places | `eponym/crates/eponym-world/src/sites.rs` | stable surface and underground slots; a closed five-kind site enum | its words crossed against ruling 72 (the record's §3.7.1) |
+| Base unit | `shared/isocosm/src/generate.rs:35` | a default of 1,000 µm | a placeholder no world has been founded against |
+
+### A.5 Phases and done-conditions
+
+Done-conditions are seeded draws from a declared space, never fixtures
+(ruling 15), and each check carries a control that fails when the property it
+guards is deliberately broken.
+
+- **SP0, the spine ruled.** Done when §A.6's decisions are taken. Opened by
+  rulings 389 to 392 on 2026-09-28.
+- **SP1, the world map with geometry, the skeleton and edge profiles.** A
+  generator family draws a world map in a shape with every adjacency's frame
+  relation, a skeleton per site, and edge profiles derived from site pairs.
+  Done when every new type byte-round-trips, a profile computed from either
+  side is the same bytes mirrored, two runs of one seed give identical maps,
+  and the draws cover every shape decision 3 names; the control, a profile
+  keyed by the ordered pair, fails the symmetry check.
+- **SP2, the lift.** A site's baseline volume as a plain description in its
+  frame at a stated cell size, conditioned on its skeleton and its edges'
+  profiles. Done when on seeded draws a site lifts to identical bytes twice
+  and in a second process, every pair of neighbours agrees exactly on every
+  shared border sample, restricting a just-lifted site returns its skeleton,
+  and an unvisited site allocates nothing; the control, detail that does not
+  fade at the edges, fails the border check.
+- **SP3, the bench.** On the specimen bench, Isocosm's first host, an
+  adapter implements `Terrain` over the lift, and two neighbouring sites of a
+  drawn world render through isometer across their shared border. Done when
+  a native capture shows the border with no seam in surface or material and
+  the receipt carries the seed, the parameters and the border digests; the
+  control, one side lifted from a perturbed skeleton, shows the seam and
+  fails the digest.
+- **SP4, edits.** Carve and fill as asserted facts over the lift. Done when
+  seeded edit sequences replay to identical bytes, a site re-lifted with its
+  edits equals the edited site, an edit on a border is seen from both sides,
+  and stored bytes grow with edits and not with sites.
+- **SP5, places over the bricks.** Connected air, passages and travel cost at
+  the declared grain. Done when local re-derivation equals full
+  re-derivation after every edit of seeded sequences, a route whose profile
+  stops at a cliff or water reads impassable in the volume, and one that
+  passes reads passable; the control, a stale dirty region, disagrees and is
+  caught.
+- **SP6, the store moves to nisus.** After T2 (ruling 363): baseline chunks
+  land in nisus's world store and edits pass through its revision log
+  (rulings 330 and 331), and `Ground` thins or retires as ruling 330 allows.
+  Done when T2's own done-conditions hold and SP2 to SP5's draws pass again
+  on nisus, with saves keeping their hashes or converting by a recorded
+  event.
+- **SP7, the absorption join.** Ruling 195's fourth family:
+  `mesocosm-core`'s places move onto the spine, Mesocosm's enclosure becoming
+  one site of a drawn world, the VTT's authored boards asserted volumes
+  displacing a lift (ruling 89), and Eponym's scope crossing sites. Done
+  under the Mesocosm overlay plan's M2 for places.
+- **SP8, the region.** Ruling 124's edge: a drawn region of hundreds of
+  sites lifted where attention is, with memory bounded by the loaded window
+  and not by the world, measured and receipted.
+
+SP1 to SP5 need neither mere nor `mesocosm-core`'s places; SP6 waits on T2
+and SP7 on ruling 195's order.
+
+### A.6 Decisions for Mark
+
+1. **Where the terrain models live.** Ruling 392's clauses meet: models
+   "beside the Terrain seam" sit in isometer-core, which the no-render-crate
+   clause keeps out of the sim's graph, and isometer-core renders nothing.
+   Either the models live in Isocosm, amending the isoscape plan's ruling 11,
+   or Isocosm may depend on isometer-core, amending ruling 392's clause.
+2. **How the skeleton is held.** Keyed entries in `Site.conditions` named by
+   the world's rules, typed fields on `Site`, or a wider typed set with
+   climate and watersheds now.
+3. **The first slice's shapes.** Square sites with four edges on planes,
+   rings and tori first, with polygon footprints designed into the profile
+   and built second; polygons and a geodesic sphere now; or one site against
+   generated borders.
+4. **The lift's grain.** Chunks at power-of-two cell sizes from the start, so
+   a site of any size costs what is lifted; or whole small sites at one cell
+   size first, with chunking arriving with the store at T2.
+
+### A.7 Readings, not ruled
+
+- The 2026-08-05 ruling 6 holds within a site's frame and gives way between
+  sites, where crossing an edge changes frame (ruling 391's reading); §5's
+  "no portals" stands as a rule about what a crossing reads as.
+- Edge profiles are derived and never stored, and an edit on a border is an
+  ordinary edit (ruling 391's reading).
+- The adapter from the lift to `Ground` lives in the host that holds both,
+  the specimen bench, since isometer depends on no sim crate and the sim on
+  no render crate.
+- The sim derives places at a grain the world declares, never at a view's
+  cell size (§5's third stop rule).
+- The skeleton's founding pipeline starts in Isocosm's generator and moves to
+  isoscape when isoscape is founded (ruling 392's "isoscape keeps founding
+  presets").
+
 ## 0. Rulings this plan rests on (2026-08-05)
+
+*Reading, not ruled, 2026-09-28, on what stands:* 1, 3, 5, 7 and 8 stand,
+7 carried into ruling 391; 2 stands with its "no shared schedule" retired by
+the founding record's 2026-09-18 amendment; 4's camera line and 9's
+reference targets are history; 6 holds within a site's frame and gives way
+between sites (§A.7); 10's determinism line stands, the record citing it for
+ruling 28, while its tool choices are history beside conatus's private
+Rapier; 11 is superseded by the record's §4.2, renderling retired.
 
 Recorded here and amended into the founding record, `CLAUDE.md`, and the
 landscape doc in the same session:
@@ -87,6 +319,11 @@ landscape doc in the same session:
     device audit; rust-gpu is welcome, carried by the fork family.
 
 ## 1. The model
+
+*2026-09-28:* §A.2 supersedes this section where they disagree. One
+continuous coordinate space holds within a site's frame; places over the
+bricks are derived (ruling 14), while the world map's sites are asserted at
+founding (ruling 72).
 
 One continuous integer coordinate space (the core's `[i32; 3]`), with
 layers of meaning over it:
@@ -588,6 +825,15 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Findings
 
+- 2026-09-28, **what the spine starts from** (§A.4 in full). Isocosm's
+  sites carry a `terrain_seed` drawn at `generate.rs:275` and read nowhere.
+  `Ground` is one bounded extent with one revision and no additive write, in
+  a crate that renders nothing (`wing-formats`, `serde`, `postcard`). nisus
+  has no world store, and the T2 lane ruling 335 placed in mere's conatus
+  engine plan §2 is not written there; production Burn is still
+  `0.22.0-pre.2`. Mesocosm's relief is one 65×65 field that cannot tile.
+  Isocosm's default base unit is 1,000 µm (`generate.rs:35`), a placeholder
+  no world has been founded against.
 - 2026-09-01, **the shipped cohort is a projection, not an execution tier.**
   `step_inner` advances the individual organism roster, then calls
   `cohort::from_organisms` to populate conservation tallies. `Cohort` carries
@@ -682,6 +928,10 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: rewritten as the spatial spine's plan (rulings 389 to 392):
+  §A added; §0 annotated with a reading of what stands; §1 marked superseded
+  where §A.2 disagrees; the G0 to G4 history, the burrow run, the Findings
+  and the Progress kept. SP0 opened with four decisions.
 - 2026-09-01: reconciled the substrate record with the scale and playable
   ecology plans. The current Near/Far flag selects execution detail over an
   individual roster; future individual/cohort materialization is now stated
