@@ -498,6 +498,17 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, Genet scroll source accepted.** Tested source `7a60ad79` is
+pushed; `ff52bd2b` adds publication documentation only. The seven focused
+fixtures pass, all three fault controls detect their intended defects, and
+restored Livery/Buckram passes 883 tests with six existing ignored. Root and
+independent review verified seal `865c6a8f`, its 88 files, 104 source entries
+and nine owned paths. Formatting-line and font-content bounds remain distinct.
+Mere primary is adopting the new owner query and exact revision, including
+the known optional-description API fields; the original scroll test remains
+the consumer gate. The pre.4 branch stays at held checkpoint `387a8dd2` until
+repaired Mere main is verified. No new ruling or S13 acceptance follows.
+
 **2026-09-28, held branch checkpoint preserved.** Mere `387a8dd2` records
 the reviewed reconciliation with both parents and all sealed source bytes
 preserved. It is pushed and clean. Root and independent review checked

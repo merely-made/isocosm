@@ -7040,6 +7040,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: Genet's scroll repair passed review and is pushed at tested
+  source `7a60ad79` (docs-only successor `ff52bd2b`). The owner query retains
+  formatting-line bounds separately from font-content fragments; the clamp
+  includes later fragments and respects existing clipping. Seven focused
+  tests and three deliberately broken controls cover missing line extents,
+  later fragments and split inline ownership. Restored Livery/Buckram passes
+  883 tests with six existing ignored. Root and independent review rehashed
+  88 raw receipts, 104 package source entries and nine owned paths under seal
+  `865c6a8f`. Mere's original 12-pixel test and coherent consumer publication
+  follow; pre.4 acceptance and S13 remain held until that adoption is verified.
 - 2026-09-28: the reviewed reconciliation is preserved as a **held branch
   checkpoint**, Mere `387a8dd2`, pushed with parents `a7c477e7` and `5ce144ff`.
   Root and independent review rehashed seal `6400226a`: 1,986 source/doc
