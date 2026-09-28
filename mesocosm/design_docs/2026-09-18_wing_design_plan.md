@@ -7040,6 +7040,18 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: Mere's primary adoption now passes the original hover
+  retention test and all 44 Rootstock tests. Four deliberately broken consumer
+  controls fail as intended; exact restoration passes 44 again. Locked native
+  and web graphs differ only by the tested Genet source substitution, and four
+  source-detector controls reject incorrect revisions/paths. The adoption is
+  uncommitted: workspace, host, native and web gates still need execution.
+  Only 1.54 GiB remains free; expected remaining debug-symbol files alone are
+  about 0.94-1.07 GiB before libraries and linker temporary files. New builds
+  are paused before exhausting the drive. Automatic approval review blocked
+  removal of the verified 59.58 GiB Genet incremental cache before execution;
+  Mark has been asked to remove that exact cache manually. No cleanup occurred,
+  and no consumer or migration acceptance is inferred from the partial gates.
 - 2026-09-28: Genet's scroll repair passed review and is pushed at tested
   source `7a60ad79` (docs-only successor `ff52bd2b`). The owner query retains
   formatting-line bounds separately from font-content fragments; the clamp

@@ -498,6 +498,19 @@ rewritten, with a sophont line added, at his word (200).
 
 ### 8.5 What the session left open
 
+**2026-09-28, consumer repair checked; build space blocks completion.**
+Mere's original 12-pixel hover test and all 44 Rootstock tests pass on the new
+Genet revision. Each of four consumer fault controls detects its intended
+defect; exact source restoration passes 44 again. Native/web locked graphs
+preserve every normalized node, feature and edge, with four effective source
+controls and all pre.2 patch bytes preserved. The remaining workspace, host,
+native and web gates are not run yet. Available space is 1.54 GiB, below a
+reasonable margin for the observed remaining artifacts, so new builds pause.
+Automatic approval review rejected deletion of the verified 59.58 GiB stable
+Genet incremental cache with only "blocked by policy". No deletion or alternate
+cleanup was performed. A manual cache-removal question is pending with Mark.
+Mere primary stays uncommitted; Isometry repinning and pre.4/S13 remain held.
+
 **2026-09-28, Genet scroll source accepted.** Tested source `7a60ad79` is
 pushed; `ff52bd2b` adds publication documentation only. The seven focused
 fixtures pass, all three fault controls detect their intended defects, and
