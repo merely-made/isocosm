@@ -1001,3 +1001,17 @@ way: a control that fails is not yet proof of the mechanism it guards. The
 per-site corner control would have failed even against a broken corner walk,
 so a positive count of the grid's corners was added beside it (the spine
 plan's Findings).
+
+SP2's forks came next:
+
+| Question as put | Ruling |
+| --- | --- |
+| What must a lifted site give back when read up? | 400: exact where it can be |
+| How is a site's interior built between its borders? | 401: a Coons patch |
+| What does a lift return? | 402: columns per chunk |
+| What do a lift's voxels name as material? | 403: world-local ids |
+
+Working 400 out before coding showed that an exact mean over every
+base-grain column has no closed form if each column rounds on its own; the
+brief keeps it exact through a lattice whose sums are closed, recorded as a
+reading beside the rulings.

@@ -295,6 +295,44 @@ first; 4 by 396, chunks at power-of-two cell sizes from the start.
   (`shared/isocosm/src/lib.rs`); a span's passability is a reading of its
   slope against the water level and is never stored.
 
+### A.9 SP2's brief (2026-09-28, rulings 400 to 403)
+
+- **The surface** (rulings 400 and 401). Each site's surface is the exact
+  bilinear interpolation of a 17 by 17 lattice laid over its footprint at
+  spacing `side / 16`. Its boundary rows are the four edge profiles' control
+  heights, so every border is its profile exactly and both sides agree.
+  Interior points are the Coons patch of that boundary, plus detail from the
+  site's seed windowed to vanish at the edges and bounded by its relief,
+  plus a correction shaped by the same window that makes the mean surface
+  over the site's base-grain columns equal its elevation exactly.
+- **The lift** (ruling 402). A chunk is a window of columns, 32 by 32 at
+  its cell size of `2^level` base units, keyed by site, level and chunk
+  position and clipped at the site's far edges. Each column carries its
+  surface top in cells, rounded down from the exact surface; the chunk
+  carries the water top and the material-by-depth rule: soil within the soil
+  depth of the surface, rock below it, water from the surface up to the
+  water level where the surface lies below it, air above.
+- **Materials** (ruling 403). A table saved with the world's traits names
+  each id's material and the lineage it is nis of; the map seeds it with
+  `world:air`, `world:water`, `world:soil` and `world:rock`, all nis of
+  `world:ground`. `world:soil` is the same nis the ledger's soil account
+  names.
+- **Checks, over seeded draws, each beside a control:** a site lifts to
+  identical bytes twice and in a second process; every pair of neighbours
+  gives exactly the same surface along their shared border, and detail that
+  does not fade at the edges fails that; a brute-force sum of every
+  base-grain column's exact surface equals the elevation times the column
+  count, and dropping the correction fails that; detail stays within
+  relief; lifting allocates nothing in the world.
+- *Readings, not ruled:* the surface is held in units of `1 / (4 s²)` base
+  units, `s` the lattice spacing, so the mean's closed form is an integer
+  sum and the correction spreads an exact integer over the interior lattice;
+  a lift checks that the side is a multiple of 16 and at most 2^16 base
+  units, which keeps every sum within 128-bit integers; columns are sampled
+  at their origins, a presentation choice the sim never derives from (§5's
+  third stop rule); soil depth is an eighth of the site's relief, at least
+  one base unit.
+
 ## 0. Rulings this plan rests on (2026-08-05)
 
 *Reading, not ruled, 2026-09-28, on what stands:* 1, 3, 5, 7 and 8 stand,
@@ -990,6 +1028,9 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Progress
 
+- 2026-09-28: SP2's forks ruled (400 to 403) and its brief written as §A.9,
+  the exact mean kept by a lattice with closed-form sums rather than a sum
+  over every column.
 - 2026-09-28: **SP1 landed** at `6f25a89`. Optional `Border`, `Footprint`,
   `Skeleton` and `Founding.map`, skipped when absent so old worlds hash as
   before; the grid layout and validation in `src/map/`; corners, profiles

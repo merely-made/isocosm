@@ -44,7 +44,10 @@ decisions followed: terrain models in Isocosm (393), the skeleton as
 condition keys (394), square sites first (395) and a chunked lift (396),
 closing its SP0. Rulings run to 396. SP1's brief then ruled borders on
 routes (397), the map family as an optional part of Founding (398) and
-scale-free draws (399). Rulings run to 399.
+scale-free draws (399). Rulings run to 399. SP1 landed at `6f25a89`, and
+SP2's forks followed: a lift gives its skeleton back exactly where it can
+(400), the interior is a Coons patch (401), a lift returns columns per chunk
+(402), and its materials are world-local ids (403). Rulings run to 403.
 
 **Owns:** the design of the games wing as three tiers, a simulator, a stack
 and three game overlays; the rules that decide which tier a thing belongs
@@ -3669,6 +3672,59 @@ what later sections derive from.
      come when a game founds on the spine (SP7) (recommended)." (B) "Fix a
      default now, a 7.5-inch base unit and 256-tile sites (2,048 voxels)."
      Mark chose A, "Scale-free draws".
+
+400. **A lifted site gives its skeleton back exactly where it can.** Asked on
+     2026-09-28, the first of SP2's forks: "What must a lifted site give back
+     when read up? SP2's done-condition says restricting a just-lifted site
+     returns its skeleton. Evidence: SP1's corners take the mean elevation of
+     the sites around them, so a surface built from a site's borders alone
+     averages its neighbours, not itself; water is a fill level, exact by
+     construction." Options, recommended first: (A) "Exact where it can be:
+     the lift is corrected so the site's mean surface over its base-grain
+     columns equals its elevation exactly, water fills exactly to its level,
+     and relief bounds the interior detail; restriction computes all three
+     from the volume, so the check actually tests the lift (recommended)."
+     (B) "Skeleton passes through, the check an identity." (C) "Within a
+     tolerance the world's rules state." Mark chose A, "Exact where it can
+     be". *Reading, not ruled:* exactness is kept without summing every
+     column, by holding the surface as the exact interpolation of a lattice
+     whose sums have closed forms (the spine plan's §A.9).
+
+401. **A site's interior is a Coons patch.** Asked on 2026-09-28: "How is a
+     site's interior surface built between its four borders? Evidence: SP1
+     gives each site four profiles meeting exactly at shared corners; the
+     interior must meet them exactly at the edges for the border check, and
+     SP2's control is detail that does not fade at the edges." Options,
+     recommended first: (A) "Coons patch: transfinite interpolation from the
+     four profiles, which meets every edge exactly, plus a windowed
+     correction to the site's own elevation and windowed detail from its
+     seed; integer, one evaluation per column (recommended)." (B) "Harmonic
+     fill, solved iteratively." (C) "Distance blend, which creases along the
+     diagonals." Mark chose A, "Coons patch".
+
+402. **A lift returns columns per chunk.** Asked on 2026-09-28: "What does a
+     lift return? Evidence: SP2's volumes are heightfields with materials by
+     depth, no caves yet; ruling 396 wants chunks at power-of-two cell sizes;
+     isometer's Ground takes a surface per column, a sea level and cavities
+     through its Terrain seam; a 2,048-voxel site is about 4.2 million
+     columns at the base grain." Options, recommended first: (A) "Columns per
+     chunk: each lift returns a chunk window of columns (surface height and a
+     material-by-depth rule) at its cell size; dense voxels are lowered from
+     columns only when a store needs them (SP6), and the bench adapter feeds
+     Ground directly (recommended)." (B) "Dense voxel chunks from the start."
+     Mark chose A, "Columns per chunk".
+
+403. **A lift's materials are world-local ids.** Asked on 2026-09-28: "What do
+     a lift's voxels name as their material? Evidence: the wing index's
+     working principle, 'A voxel material is a compact id into saved
+     world-local definitions'; the sim types matter by provenance (nis,
+     ruling 97), the world's own kinds being its geology; Ground's materials
+     are palette indices up to 63." Options, recommended first: (A)
+     "World-local ids: ids into a table saved with the world, seeded with
+     air, water, soil and rock as the world kingdom's own nis, which later
+     grows the world's generated kinds; the bench adapter maps ids to
+     Ground's palette (recommended)." (B) "Palette indices for now." Mark
+     chose A, "World-local ids".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -7473,6 +7529,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-28: rulings 400 to 403 recorded, SP2's forks: the skeleton given
+  back exactly where it can be (400), a Coons patch interior (401), columns
+  per chunk (402), world-local material ids (403). Carried into the spine
+  plan's §A.9, the session notes' §9.6 and the index.
 - 2026-09-28: rulings 397 to 399 recorded, SP1's brief: borders on routes
   (397), the map family as an optional part of Founding (398), scale-free
   draws (399). Carried into the spine plan's §A.8, the session notes' §9.6
