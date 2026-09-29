@@ -1117,7 +1117,7 @@ Pre.4 is reconciling it after local pre-build checkpoint `0ea65fb6`; neither
 that checkpoint nor this consumer repin accepts pre.4 or S13. The later pre.4
 consumer handoff remains distinct. No new ruling was needed for this execution.
 
-### 9.10 Pre.4's patch comparison and conditional retirement
+### 9.9 Pre.4's patch comparison and conditional retirement
 
 The migration conversation reported that pre.4 passed the same 21 browser
 cases with and without the `burn-cubecl` patch, unlike August's pre.2
