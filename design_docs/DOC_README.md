@@ -2,6 +2,12 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
 
+**Platform verification, 2026-09-29:** the published scroll repair is adopted
+at Mere `32edc2ad` / Genet `7a60ad79`. The ordinary 187-row test, four workspace
+checks and 27 spine/lift tests pass; [the side-panel plan](2026-09-03_side_panel_diet_plan.md)
+records source controls and retained renderer qualifications. Pre.4 and S13
+remain separate gates; older dated hold notices are historical.
+
 ## Games wing entry points
 
 This is the canonical repository entry index. The tabletop documents remain

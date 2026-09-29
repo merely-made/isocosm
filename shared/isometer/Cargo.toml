@@ -31,7 +31,7 @@ isometer-lens = { path = "crates/isometer-lens" }
 isometer-render = { path = "crates/isometer-render" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "5ce144ffe58945746b7dabc21de499725219beaf" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
@@ -64,4 +64,4 @@ wgpu = { version = "30", default-features = false, features = [
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7b48f94d7a742840b527205d82a37da958240d73", version = "=0.14.0" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7a60ad7965a1ae81292211b405a53210c554f70c", version = "=0.14.0" }

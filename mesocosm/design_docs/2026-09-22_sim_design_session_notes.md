@@ -1102,3 +1102,17 @@ allocation. The [receipt](../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN
 preserves that failure alongside the corrected passing runs. This completes
 the approved terrain connection and both documentation lanes, not the later
 body, edits, paging or shared-store implementation.
+
+**2026-09-29, scroll consumer verification complete.** Mere's repaired primary
+was published at `32edc2ad`, preserving the Conatus owner-plan commit `4fbcb727`.
+The seven Isometry manifests now use that Mere revision and tested Genet
+`7a60ad79`: the ordinary side-panel test holds 187 rows, all four workspace
+checks pass, and Isocosm lift/spine plus Mesocosm spine pass 27 tests. The
+[side-panel plan](../../design_docs/2026-09-03_side_panel_diet_plan.md) records
+the dependency/source controls and inherited renderer qualifications. SP3's
+native captures retain their original pins; they were not replayed here.
+
+Mere's separate semantic-selector work subsequently published `99e44853`.
+Pre.4 is reconciling it after local pre-build checkpoint `0ea65fb6`; neither
+that checkpoint nor this consumer repin accepts pre.4 or S13. The later pre.4
+consumer handoff remains distinct. No new ruling was needed for this execution.

@@ -13,6 +13,13 @@ remain here, once, and all three products are now in the same Git repository.
 Canonical index for `design_docs/`. Per DOC_POLICY §5, this file wins over
 any other index and is updated in the same session as any doc change.
 
+**Platform verification, 2026-09-29:** Mere `32edc2ad` / Genet `7a60ad79`
+passes the ordinary 187-row test, four workspace checks and 27 spine/lift
+tests. The [side-panel receipt](../../design_docs/2026-09-03_side_panel_diet_plan.md)
+and the record's latest progress entry supersede the older disk/scroll hold
+notices below. Pre.4 and S13 remain separate gates; SP3 native captures retain
+their original pins.
+
 ## Working principles for AI assistants
 
 - Construction design should establish the relationships among source,

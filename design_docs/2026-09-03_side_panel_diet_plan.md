@@ -484,3 +484,23 @@ takes the line box's rounded metrics, and runs again then; the two
   audits reject unapproved outside paths. The first attempted row command
   included `--lib` for a binary-only package and exited before running tests;
   the corrected published and ordinary runs above are the acceptance gates.
+
+- **2026-09-29, published scroll repair adopted.** The seven owning manifests
+  select Mere `32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b` and Genet
+  `7a60ad7965a1ae81292211b405a53210c554f70c`. This carries the verified
+  formatting-line scroll extent and clipped-descendant repair through the
+  actual consumer. The ordinary row test measures **187 rows, zero short**
+  (61 expanded, 64 composing, 62 picking), with its 0.01 allowance unchanged.
+  Root independently recounted every printed row; empty-output and deliberately
+  short-row parser controls reject. No application source or assertion changed.
+  Eight fresh locked graphs preserve mapped identities, features and edges
+  except the required Mien-to-Insigne edge. All 22 source/path fault controls
+  reject. Four workspace all-feature/all-target checks pass; Isocosm lift/spine
+  passes 12/10 tests and Mesocosm spine passes five. The optional Cleromancy
+  lineage and all 232 local renderer input hashes remain unchanged, retaining
+  the earlier Eponym qualification. These are text-fragment containment and
+  build/regression receipts, not new SP3 native captures. Evidence is under
+  `Code/testing/isometry/receipts/2026-09-29/scroll-publication`; its 146-file
+  test seal precedes the separate documentation-only publication seal.
+  Mere later advanced separately to `99e44853`; this consumer receipt remains
+  bound to `32edc2ad`/`7a60ad79`. Pre.4 and S13 retain their own gates.

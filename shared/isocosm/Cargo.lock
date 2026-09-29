@@ -59,7 +59,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?rev=5ce144ffe58945746b7dabc21de499725219beaf#5ce144ffe58945746b7dabc21de499725219beaf"
+source = "git+https://github.com/merely-made/mere.git?rev=32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b#32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b"
 dependencies = [
  "serde",
 ]

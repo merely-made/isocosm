@@ -7718,6 +7718,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-29: the scroll repair is published through Mere `32edc2ad` and
+  adopted by the seven Isometry manifests with Genet `7a60ad79`. The ordinary
+  row test holds all 187 rows with its original allowance; all four workspace
+  checks and 27 focused spine/lift tests pass. Eight locked graphs and 22
+  deliberate source/path faults preserve the inherited optional lineages and
+  qualified local renderer context. The side-panel plan owns the detailed
+  receipt. Mere's later semantic main `99e44853` is being reconciled into
+  pre.4 after a reviewed local pre-build checkpoint `0ea65fb6`; that checkpoint
+  is not migration acceptance, and S13 remains held. Earlier disk/scroll holds
+  below are historical. No new design ruling follows.
 - 2026-09-28: rulings 408 and 409 recorded, SP3's capture for the spatial
   spine: water as opaque voxels (408), a border window and an overview
   (409). SP3's handoff is the spine plan's §A.10.
