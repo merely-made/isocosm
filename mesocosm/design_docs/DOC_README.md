@@ -20,6 +20,11 @@ and the record's latest progress entry supersede the older disk/scroll hold
 notices below. Pre.4 and S13 remain separate gates; SP3 native captures retain
 their original pins.
 
+**Pre.4 stop, 2026-09-29:** remote reclamation failed the zero-active
+baseline after local patch retirement. Cause unknown; further GPU checks,
+candidate edits and integration await the pending diagnosis/park answer.
+See the wing record's Progress and session notes §9.9. No new ruling yet.
+
 ## Working principles for AI assistants
 
 - Construction design should establish the relationships among source,

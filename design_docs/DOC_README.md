@@ -8,6 +8,12 @@ checks and 27 spine/lift tests pass; [the side-panel plan](2026-09-03_side_panel
 records source controls and retained renderer qualifications. Pre.4 and S13
 remain separate gates; older dated hold notices are historical.
 
+**Pre.4 stop, 2026-09-29:** the separate migration failed remote allocator
+reclamation after local patch retirement. Its cause remains unknown;
+candidate edits, further GPU checks and integration are held pending the
+diagnosis/park answer. The [wing record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md#progress)
+preserves the failure and its evidence limits. Current consumer pins stand.
+
 ## Games wing entry points
 
 This is the canonical repository entry index. The tabletop documents remain

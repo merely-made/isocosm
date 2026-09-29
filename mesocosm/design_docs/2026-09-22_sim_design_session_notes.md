@@ -1133,3 +1133,17 @@ required. The answer does not automatically retire the patch, validate
 untested launcher shapes or accept S13. The existing Mere migration lane
 owns this work. Isometry's accepted `eb2a367` dependency receipt and SP3's
 historical native receipts keep their exact original scope and pins.
+
+**Later checkpoint, 2026-09-29:** the comparison and paired launcher
+controls supported local patch retirement at Mere `124fc42b`, but the
+remaining remote lifecycle check failed stop rule 4. The accepted failure
+receipt records 10 active allocations / 5,323,776 bytes after a zero-active
+baseline, unchanged source/binary/model inputs, exit 1 and no timeout.
+Its 41,943,040 reserved bytes are not physical VRAM measurements. Empty
+JSON stdout leaves the strict prior numerical ceiling and fresh-session
+recovery unverified; the cause is unknown. The migration chat asked Mark
+to choose bounded diagnosis preserving the zero baseline or parking pre.4.
+At this checkpoint no answer or new ruling is recorded. Browser GPU checks,
+candidate edits, merge and downstream repin remain held. The record's
+progress entry cites the sealed failure receipt; existing consumer pins
+and earlier receipt qualifications are preserved.

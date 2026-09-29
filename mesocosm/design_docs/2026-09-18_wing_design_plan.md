@@ -7748,6 +7748,20 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-29: **pre.4 stopped at remote allocator reclamation.** After
+  ruling 410's comparison and paired launcher checks, the migration lane
+  retired the four `burn-cubecl` selectors locally at Mere `124fc42b`.
+  The subsequent sealed remote lifecycle run exited 1 without timing out:
+  its zero-active baseline ended with 10 active allocations / 5,323,776
+  active bytes. Reserved bytes were 41,943,040, not measured physical VRAM.
+  Source, binary and model inputs were unchanged. JSON stdout was empty;
+  the native-control stage marker establishes neither the strict prior
+  numerical ceiling nor fresh-session recovery. Cause remains unknown.
+  Stop rule 4 holds further browser GPU checks, candidate edits, merge and
+  downstream repin pending Mark's answer to bounded diagnosis versus
+  parking pre.4. No new ruling or migration acceptance is recorded here.
+  Evidence: `Code/testing/mere/receipts/2026-09-29/pre4-s13/post-retirement/root-remote-allocator-stop.json`.
+  Isometry's accepted Mere `32edc2ad` / Genet `7a60ad79` pins are unchanged.
 - 2026-09-29: ruling 410 records Mark's "I suppose A, then B if we can":
   compare historical unpatched pre.2 in the current browser first, then
   retire the patch if supported. The conditional-retirement interpretation
