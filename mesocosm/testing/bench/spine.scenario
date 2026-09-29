@@ -1,0 +1,35 @@
+wait 1200
+assert snap ready == yes
+remember specimen
+click role:button World terrain
+wait 1200
+assert snap spine-open == yes
+assert snap spine-level == 0
+assert snap spine-border-equal == yes
+assert snap error == none
+capture spine-border
+click role:button Two-site overview
+wait 1200
+assert snap spine-level >= 1
+assert snap spine-border-equal == yes
+capture spine-overview
+click role:button Border window
+wait 1200
+capture spine-restored
+viewport-pixels-same spine-border spine-restored
+click role:button Perturb one side
+wait 1200
+assert snap spine-border-equal == no
+assert snap error == none
+capture spine-perturbed
+viewport-pixels-change spine-border spine-perturbed
+click role:button Perturb one side
+wait 1200
+assert snap spine-border-equal == yes
+capture spine-repaired
+viewport-pixels-same spine-border spine-repaired
+click role:button Back to specimen
+wait 1200
+assert snap spine-open == no
+same specimen hash
+assert snap error == none

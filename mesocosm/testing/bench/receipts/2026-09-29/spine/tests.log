@@ -1,0 +1,12 @@
+   Compiling mesocosm-genet v0.0.1 (C:\Users\mark_\Code\repos\isometry\mesocosm\crates\mesocosm-genet)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.78s
+     Running unittests src\lib.rs (C:\t\cargo-targets\isometry\debug\deps\mesocosm_genet-791c9ba5113ec21b.exe)
+
+running 5 tests
+test app::bench::spine::terrain::tests::spine_local_datum_and_materials_preserve_water_soil_and_rock ... ok
+test app::bench::spine::terrain::tests::spine_palette_resolves_world_keys_instead_of_assuming_ids ... ok
+test app::bench::spine::terrain::tests::spine_rebuilding_a_window_is_identical ... ok
+test app::bench::spine::terrain::tests::spine_perturbed_side_breaks_the_same_border_check_and_geometry ... ok
+test app::bench::spine::terrain::tests::spine_draws_join_and_preserve_the_founded_world ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 158 filtered out; finished in 4.77s

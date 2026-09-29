@@ -21,6 +21,7 @@ mod probe;
 mod producer;
 mod spatial;
 mod sim;
+mod spine;
 mod state;
 mod structure_controls;
 mod trial;
@@ -130,6 +131,7 @@ pub fn run_inputs(
         camera: host.config.camera,
         content: host.content,
         comparison: None,
+        spine: None,
     }));
     let mut generation = generation_controls::Controls::new(&model.borrow());
     let simulation = sim::Panel::new(model.borrow().creator.request.seed);
@@ -168,6 +170,7 @@ pub fn run_inputs(
             }
             if !ctx.runner.state().effects.open
                 && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().spine.is_none()
                 && ctx.runner.state().model.borrow().trial.is_none()
                 && ctx.runner.state().model.borrow().spatial.playing
             {
@@ -180,12 +183,14 @@ pub fn run_inputs(
             }
             if !ctx.runner.state().effects.open
                 && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().spine.is_none()
                 && ctx.runner.state().model.borrow().trial_playing()
             {
                 ctx.runner.update(|s| s.model.borrow_mut().advance_trial());
             }
             if !ctx.runner.state().effects.open
                 && ctx.runner.state().visible
+                && ctx.runner.state().model.borrow().spine.is_none()
                 && ctx.runner.state().model.borrow().trial_advancing()
             {
                 ctx.runner.update(|s| s.model.borrow_mut().advance_trial_boundary());
@@ -217,10 +222,11 @@ pub fn run_inputs(
             }
             state.model.borrow().creator.pending
                 || (state.effects.open && state.effects.playing)
-                || (state.visible && !state.effects.open && state.model.borrow().trial_playing())
-                || (state.visible && !state.effects.open && state.model.borrow().trial_advancing())
+                || (state.visible && !state.effects.open && state.model.borrow().spine.is_none() && state.model.borrow().trial_playing())
+                || (state.visible && !state.effects.open && state.model.borrow().spine.is_none() && state.model.borrow().trial_advancing())
                 || (state.visible
                     && !state.effects.open
+                    && state.model.borrow().spine.is_none()
                     && state.model.borrow().trial.is_none()
                     && state.model.borrow().spatial.playing)
         }),

@@ -119,6 +119,114 @@ and a body revision; `wing-glyphs::Journey` records reincarnation within
 its progression kernel. Their existence does not establish this complete
 mapping or selectable condition carryover. No code changed in this refinement.
 
+### Sim entities into the shared scene, 2026-09-28
+
+**Status: preparation documented; body adapter unimplemented.** The first
+orchestration batch implements the spatial plan's SP3 terrain presentation
+while preparing this mapping. It does not open the sim plan's checkpoint 6,
+change M2's absorption order, or authorize a second body simulation. M2 moves
+matter and processes, bodies, the record, places, lineages and the boundary,
+then effects ([overlay plan §5](2026-09-25_mesocosm_overlay_plan.md#5-phases-and-done-conditions)).
+The proposed responsibilities below make the next body lane reviewable;
+they are not additional user rulings or a final storage schema.
+
+#### Verified source and destination
+
+Checked against the code on 2026-09-28:
+
+- [`isocosm::Entity` and `Part`](../../shared/isocosm/src/schema.rs) carry
+  a body revision, symbolic part IDs, parent links, severed state, shape and
+  functions. The entity's `place` names a site. Its identity is the member ID
+  used by [`Population::get`](../../shared/isocosm/src/population.rs), which
+  can resolve a member inside a cohort interval; a cohort row is not one
+  critter. There is no entity-local position or facing in this schema.
+- [`BodyDocument`](../../shared/isometer/crates/isometer-core/src/body.rs)
+  carries concrete attachments, extents, pivots, volume references, part
+  mass and provenance. It has neither an Isocosm entity identity nor an
+  authoritative body revision. `PartId(u32)` indexes its part vector;
+  Isocosm's part IDs are `u64` keys. The two are not interchangeable.
+- [`SceneBody`](../../shared/isometer/src/bodies.rs) already takes a
+  `SubjectKey(u64)`, a borrowed `BodyDocument`, pose, scale, materials and
+  presentation policy. [`LiveBodyProjector`](../../shared/isometer/crates/isometer-mesh/src/live.rs)
+  caches volume geometry and returns a `BodyDependencyRevision`. That stamp
+  describes geometry dependencies, not the sim's `body_revision`.
+- The current [`section` adapter](../crates/mesocosm-genet/src/section/bodies.rs)
+  reads a `mesocosm-core::Organism`'s concrete body and position. The
+  [`bench producer`](../crates/mesocosm-genet/src/app/bench/producer.rs)
+  reads its specimen, while the [`sim panel`](../crates/mesocosm-genet/src/app/bench/sim.rs)
+  owns a separate Isocosm `Session`. These are existing independent
+  consumers, not an implemented Isocosm entity-to-scene connection.
+
+#### Proposed mapping and responsibilities
+
+| Concern | Accepted source and scene destination | Adapter responsibility or missing source |
+| --- | --- | --- |
+| Entity identity | A member's Isocosm `Id` can fit `SubjectKey` without narrowing | Scope the mapping to the active session/world and branch; replacing or restoring the session invalidates old mappings and picks. A lineage or cohort row must not substitute for member identity. Sim entity identity is not yet a complete continuing-subject/incarnation model. |
+| Body revision | `Entity.body_revision`, alongside the scene's independently computed `BodyDependencyRevision` | Remember which accepted source revision produced the document. A changed source revision need not change geometry; a geometry stamp is never written back as the sim revision. Track additional recipe, material and presentation dependencies where actually read. |
+| Part correspondence | Sim `(entity Id, body revision, part Id)` to `BodyDocument::PartId` and back | Preserve full `u64` source IDs in a correspondence table. Do not cast to `u32`, infer correspondence by vector position, or use a display ID as a sim command argument. Retain tombstones for the document lifetime; if the mapping is rebuilt, expire old picks. |
+| Structure and condition | Symbolic `parent`/`severed` to concrete attachment topology and live parts | Parent identity and severed state can be checked now. Attachment offsets, pivots, extents and volumes are missing from the sim source. A shape name alone does not specify their values. Accepted construction/development must supply them; rendering must not invent anatomy that changes capabilities. |
+| Recipe and context | An accepted construction source to a derived document | Mesocosm's recipe/development path exists, but Isocosm has no binding to that complete source. Define its authoritative owner through M2, including context and generator revision. Do not regrow a body on camera or mode changes, or silently attach an unrelated specimen to a sim entity. |
+| Matter and provenance | Source construction and accepted history to part mass/provenance and materials | Entity accounts/provenance cannot automatically become each part's mass or origin; lineage strings cannot be cast into `SpeciesId(u32)`. Resolve and qualify these mappings explicitly. A colour or declared solid used for inspection grants no mechanical property. |
+| Placement | `Entity.place` identifies the site; `SceneBody::Pose` needs local position and facing in the chosen scene frame | Local placement and frame/unit conversion need an accepted source. An illustrative arrangement of population members must be labelled as such and must not claim authoritative location, movement, clearance or contact. The renderer's `grounded` offset and presentation scale cannot resolve those missing facts. |
+| Selection and knowledge | A completed scene's body/part receipt back to the accepted source | Validate frame, source scope, body revision and correspondence before resolving the full source address. Apply the host's knowledge policy before presentation. A debug inspection is not evidence that the critter perceives the selected object. |
+
+The document adapter is a derived, replaceable view of accepted construction.
+Concrete geometry that affects mechanics needs an agreed authoritative source
+or reproducible derivation from one. Keeping an independently mutable
+`mesocosm-core::World` beside Isocosm and synchronizing their answers would
+create the second authority this mapping is meant to avoid.
+
+#### Update and query boundary
+
+Publish scene inputs only after a successful session operation. A refused
+operation leaves the last accepted mapping intact. Rebuild the affected
+documents/correspondences when their construction dependencies change; update
+pose separately when accepted placement changes; reuse content-addressed
+volume geometry. Session replacement, rewind or branch change discards the
+old source qualification even if numeric IDs happen to recur. Painting alone
+does not lift every cohort member into an individual or record an inspection.
+An explicit player examination follows the existing inspection command and
+retention policy.
+
+[`watch`](../../shared/isocosm/src/watch.rs) observes selected accepted
+scheduled acts; [`flows`](../../shared/isocosm/src/flows.rs) reports matter
+moves for the requested completed tick or command. Neither is a complete
+body/placement change stream, a player intent API, or foreground adjudication.
+Until such a stream exists, refresh from the relevant accepted state and its
+declared dependencies. Preserve `Session::advance`'s atomic span; requesting
+per-tick observations is an explicit host choice, not a reason to alter
+transaction semantics for rendering.
+
+[`isometer` picking](../../shared/isometer/src/query.rs) answers for the
+completed frame. The host validates that receipt, resolves the source address,
+and submits an intent through the appropriate game/sim boundary. It never
+submits `SubjectKey`, renderer `PartId`, or a geometry stamp as world truth.
+Collision and Conatus body handles are separate consumers of accepted
+construction. The [body-binding plan](2026-09-26_body_binding_plan.md)
+remains documented-only; this scene mapping neither implements that table
+nor moves pointer picking into physics.
+
+#### Next body lane: done-conditions and open forks
+
+Before opening implementation, settle the accepted construction source and
+local placement source in their owning M2/spatial work. Choose whether the
+initial view is an explicitly illustrative population inspection or a located
+world scene. The latter requires real local pose; deterministic display
+spacing does not provide it. The continuing-subject/incarnation storage and
+multi-part correspondence for contextual adaptations remain wider design
+questions. A first same-body adapter must not claim to settle them.
+
+The body connection is done when drawn entities and selected parts resolve
+to their exact accepted source addresses; a changed or severed part updates
+the same scene after acceptance; stale picks refuse after body/session
+replacement; and rebuilding presentation from an unchanged saved state
+preserves correspondence and appearance. Verification must include a source
+part ID above `u32::MAX`, unchanged rendering without sim mutation, and
+rejected operations without leaked visual changes. Report source revision,
+projection work, cache reuse and uploads separately. These are proposed
+adapter acceptance conditions, not claims that CP6, M2, procedural animation,
+playable directing or cross-incarnation adaptation are complete.
+
 ## 1. Why a wing plan was necessary (earlier contract)
 
 The wing has already ruled that a body is a part tree, loss cascades, the tree

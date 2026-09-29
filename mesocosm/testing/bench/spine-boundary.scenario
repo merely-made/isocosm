@@ -1,0 +1,23 @@
+wait 1200
+assert snap ready == yes
+click role:button World trial
+settle 3
+assert snap trial-active == true
+assert snap trial-epoch == 0
+click role:button Advance to boundary
+click role:button World terrain
+assert snap spine-open == yes
+assert snap trial-advancing == true
+remember held-trial
+settle 20
+same held-trial trial-tick
+same held-trial trial-hash
+same held-trial revision
+assert snap trial-advancing == true
+capture spine-held-boundary
+click role:button Back to specimen
+wait 600
+assert snap trial-advancing == false
+assert snap trial-epoch == 1
+assert snap trial-steps == 1000
+assert snap error == none

@@ -20,6 +20,9 @@ fn button(label: &'static str, action: fn(&mut Bench)) -> Child {
 }
 
 pub(super) fn root(state: &Bench) -> Child {
+    if state.model.borrow().spine.is_some() {
+        return super::spine::view(state);
+    }
     if state.sim.open {
         return super::sim::view(state);
     }
@@ -163,6 +166,7 @@ pub(super) fn root(state: &Bench) -> Child {
     };
     let mut controls = vec![
         button("Simulation", Bench::open_sim),
+        button("World terrain", Bench::open_spine),
         button("World trial", Bench::start_trial),
         button("Effects experiment", |s| {
             s.effects.open = !s.effects.open;

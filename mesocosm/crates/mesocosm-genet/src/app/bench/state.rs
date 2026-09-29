@@ -24,6 +24,7 @@ pub(super) struct Specimen {
     pub camera: CameraMode,
     pub content: Option<crate::generation_content::Pack>,
     pub comparison: Option<super::comparison::Comparison>,
+    pub spine: Option<super::spine::Landscape>,
 }
 
 impl Specimen {

@@ -16,6 +16,11 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         !model.creator.pending && model.creator.prepared.is_some() && model.creator.count() > 0;
     let yes = |value| if value { "yes" } else { "no" };
     let mut snapshot = ProbeSnapshot::default()
+        .with_field("spine-open", yes(model.spine.is_some()))
+        .with_field("spine-border-equal", model.spine.as_ref().map_or("none", |s| yes(s.receipt.border_equal)))
+        .with_field("spine-level", model.spine.as_ref().map_or("none".into(), |s| s.receipt.level.to_string()))
+        .with_field("spine-receipt", model.spine.as_ref().map_or("none".into(), |s| serde_json::to_string(&s.receipt).expect("terrain receipt serializes")))
+        .with_field("spine-render", scene.spine.as_ref().and_then(|s| s.diagnostics()).map_or("none".into(), |s| serde_json::to_string(&s).expect("terrain diagnostics serialize")))
         .with_field("sim-open", yes(state.sim.open))
         .with_field("sim-tick", state.sim.session.as_ref().map_or(0, |s| s.sim.state().tick).to_string())
         .with_field("sim-hash", state.sim.session.as_ref().map_or(String::new(), |s| s.sim.state_hash()))
@@ -185,7 +190,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
             "ready",
             yes(
                 (creator_ready || (model.population.is_some() && !model.creator.pending))
-                    && (scene.section.is_some() || scene.population_stats.is_some())
+                    && (scene.section.is_some() || scene.population_stats.is_some() || scene.spine.is_some())
                     && scene.error.is_none()
                     && scene.renders() > 0,
             ),
@@ -227,7 +232,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("visible", yes(state.visible))
         .with_field(
             "active",
-            yes(scene.section.is_some() || scene.population_stats.is_some()),
+            yes(scene.section.is_some() || scene.population_stats.is_some() || scene.spine.is_some()),
         )
         .with_field("decorated", yes(state.decorated))
         .with_field("transformed", yes(state.transformed))
@@ -325,7 +330,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     // Scene counters describe the last produced Section texture. Retention can
     // reuse that texture over multiple document callbacks; these are not per-
     // callback deltas or a claim about visible pixels.
-    let ordinary = scene.section.is_some() && scene.population_stats.is_none();
+    let ordinary = scene.section.is_some() && scene.population_stats.is_none() && model.spine.is_none();
     snapshot = snapshot.with_field("section-active", yes(ordinary));
     snapshot = snapshot.with_field(
         "section-stats-scope",

@@ -39,6 +39,9 @@ pub(super) fn viewport(ctx: &Context<'_>) -> Option<Viewport> {
     if let Some(border) = rect(Selector::role("img").containing("Glyph effect experiment")) {
         return Some(Viewport::new(border, pixel_scale, INSET));
     }
+    if let Some(border) = rect(Selector::role("img").containing("Generated world terrain")) {
+        return Some(Viewport::new(border, pixel_scale, INSET));
+    }
     let border = rect(Selector::role("img").containing("Specimen"))?;
     (border[2] > 0.0 && border[3] > 0.0).then(|| {
         Viewport::new(border, pixel_scale, INSET)

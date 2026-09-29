@@ -1,0 +1,14 @@
+[cambium-winit] accessibility Installed, 89 nodes projected
+bench: waited 0 frames
+bench: waited 0 frames
+bench: captured spine-border
+bench: waited 0 frames
+bench: captured spine-overview
+bench: waited 0 frames
+bench: captured spine-restored
+bench: waited 0 frames
+bench: captured spine-perturbed
+bench: waited 0 frames
+bench: captured spine-repaired
+bench: waited 0 frames
+bench: RESULT ok (37 frames, 6 captures)

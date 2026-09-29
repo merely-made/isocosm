@@ -24,6 +24,23 @@ bytes twice
 ([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP2_LIFT_DRAWS.md)).
 SP3, the bench adapter into isometer, is next.
 
+**Status, 2026-09-28, SP3 opened:** Mark approved the first integration
+batch with "Ok. Let's proceed. Orchestrate away." SP3 implements the
+settled handoff in §A.10; body-to-scene mapping and Mere ownership-plan
+reconciliation proceed as documentation lanes alongside it. Neither lane
+opens body absorption, generic physics bindings, or T2 implementation.
+The source baseline is `e32890e`.
+
+**Status, 2026-09-29, SP3 verified:** the retained bench's World terrain
+view draws a base-grain border and a coarse two-site overview through the
+existing isometer scene. Five focused tests, the locked package all-target
+check and both native scenarios pass. The perturbed source visibly breaks
+the border; restoring it restores the viewport exactly. The trial boundary
+stays suspended while terrain is open and completes after returning.
+[Receipt and captures](../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md).
+SP4's asserted edits are next on the spatial chain; body absorption and
+shared-store implementation retain their separate gates.
+
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
@@ -205,7 +222,9 @@ guards is deliberately broken.
   a native capture shows the border with no seam in surface or material and
   the receipt carries the seed, the parameters and the border digests; the
   control, one side lifted from a perturbed skeleton, shows the seam and
-  fails the digest.
+  fails the digest. **Done 2026-09-29:** native border/overview and
+  perturb/restore pass, with exact source/material checks and a retained
+  trial-boundary regression scenario; see the SP3 receipt above.
 - **SP4, edits.** Carve and fill as asserted facts over the lift. Done when
   seeded edit sequences replay to identical bytes, a site re-lifted with its
   edits equals the edited site, an edit on a border is seen from both sides,
@@ -346,15 +365,18 @@ first; 4 by 396, chunks at power-of-two cell sizes from the start.
 
 ### A.10 SP3's handoff (2026-09-28, rulings 408 and 409)
 
-Ruled, not yet built. Where the next session starts:
+Ruled; implemented and native-verified 2026-09-29 (receipt above).
+The accepted handoff, with its implemented adapter:
 
 - **Host.** The specimen bench in `mesocosm-genet`, Isocosm's only
   consumer, which compiles against SP1 and SP2 (checked 2026-09-28). Its
   terrain today is a Mesocosm `World`'s `Ground`: the producer
   (`src/app/bench/producer.rs`) hands `world.ground()` to the section
   (`src/section.rs`), which wraps it as isometer's `GroundTerrain`.
-  Captures come from a scenario's `capture <name>` line through
-  `Host::capture_to` (`src/app/drive.rs`).
+  The bench uses its retained mesquite scenario/capture lane
+  (`src/app/bench.rs` and `src/app/bench/probe.rs`). The main host's
+  `Host::capture_to` in `src/app/drive.rs` is a separate path; SP3 uses the
+  bench lane.
 - **The adapter** (reading, not ruled: it lives in the bench, which holds
   both crates). It implements isometer-core's `Terrain` over lifted chunks
   and grows a `Ground` for the scene with `Ground::grow_with`, mapping
@@ -955,6 +977,30 @@ standing rule: after two real consumers, never declared in advance.
 
 ## Findings
 
+- 2026-09-29, **SP3 must admit the selected window against the actual
+  scene capacity.** The first native control produced 3,664 bricks and
+  `GroundTerrain::brick_map` refused its default 2,047-brick map. The
+  pixel-change check correctly failed because the prior image remained.
+  The retained adapter now counts occupied bricks before `Ground` allocation
+  against `AtlasLimits::DEFAULT`, in addition to its voxel-work and memory
+  estimates. The base-grain border window is 32 by 32 columns, and the
+  deliberately changed site's elevation increases by 64 base units.
+  Overviews still include both whole sites at a coarse grain. This verifies
+  a bounded scene connection, not paging or a laptop frame-rate target.
+- 2026-09-29, **SP3's presentation units and materials.** Lifted heights,
+  water and soil are already expressed in cells at the requested level;
+  an overview must not scale their vertical values again. The adapter
+  uses a common local datum across both sites and resolves material IDs
+  through the world's key table. Soil thickness may legitimately differ
+  with site relief. Surface-border agreement and faithful material lowering
+  are separate checks; matching surface digests alone cannot prove both.
+- 2026-09-29, **retaining another bench view requires lifecycle checks.**
+  Source review found that pausing the trial's ordinary play flag leaves
+  its separate epoch-boundary advancement active. The terrain view must
+  suspend both paths and report its own presented camera, rather than the
+  prior specimen's camera and body counters. A height-only bound also
+  permits too much work: guard total voxel construction before growing
+  `Ground`, and report the selected window's workload with its receipt.
 - 2026-09-28, **SP2: an exact mean over base-grain columns needs a
   closed form, and the lattice gives one.** Were each column to round on
   its own, the sum of a site's columns would have no closed form, and ruling

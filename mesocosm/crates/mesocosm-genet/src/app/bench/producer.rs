@@ -30,6 +30,7 @@ pub(super) struct BenchScene {
     pub stats: BodyFrameStats,
     population: Option<super::population::renderer::Renderer>,
     pub population_stats: Option<super::population::renderer::RenderStats>,
+    pub spine: Option<super::spine::render::Renderer>,
     pub glyph_count: usize,
     pub anchor_count: usize,
     pub mesh_upload_bytes: u64,
@@ -53,6 +54,7 @@ impl BenchScene {
             stats: BodyFrameStats::default(),
             population: None,
             population_stats: None,
+            spine: None,
             glyph_count: 0,
             anchor_count: 0,
             mesh_upload_bytes: 0,
@@ -147,6 +149,26 @@ impl BenchScene {
     ) -> Result<Option<wgpu::TextureView>, String> {
         let model = self.model.borrow();
         let epoch = self.epoch(&model);
+        if self.card.is_none() {
+            if let Some(land) = &model.spine {
+                if self.spine.is_none() {
+                    self.section = None;
+                    self.population = None;
+                    self.population_stats = None;
+                    self.stats = BodyFrameStats::default();
+                    self.glyph_count = 0;
+                    self.anchor_count = 0;
+                    self.spine = Some(super::spine::render::Renderer::new(device, queue, size)?);
+                }
+                let view = self.spine.as_mut().unwrap().render(device, queue, size, model.revision, land)?;
+                if let Some(stats) = self.spine.as_ref().and_then(|s| s.diagnostics()) {
+                    self.terrain_upload_bytes += stats.brick_upload_bytes;
+                    self.terrain_write_calls += u64::from(stats.pointer_write_calls) + u64::from(stats.atlas_write_calls);
+                }
+                return Ok(Some(view));
+            }
+            self.spine = None;
+        }
         if let Some(workload) = &model.population {
             if self.population.is_none() || self.size != size {
                 self.population = Some(super::population::renderer::Renderer::new(
@@ -343,6 +365,7 @@ impl BenchScene {
         self.section = None;
         self.population = None;
         self.population_stats = None;
+        self.spine = None;
         self.ground_revision = None;
         self.revision = 0;
         self.size = (0, 0);
@@ -430,6 +453,7 @@ impl SceneSource for BenchScene {
     }
 
     fn presented_camera(&self) -> Option<isometer::SlabCamera> {
+        if let Some(spine) = &self.spine { return spine.camera; }
         self.section.as_ref().and_then(Section::presented_camera)
     }
 

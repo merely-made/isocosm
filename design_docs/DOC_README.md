@@ -19,6 +19,10 @@ with [magic and generator discussions](../mesocosm/design_docs/archive_docs/2026
   effect composition and condition carryover between lives. The 2026-09-28
   refinements (404 to 407) are documented design, with implementation status
   and open questions retained in the linked owner plans.
+  The first integration batch, native-verified 2026-09-29, connects generated terrain to the
+  existing specimen bench ([SP3](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md#a10-sp3s-handoff-2026-09-28-rulings-408-and-409));
+  body mapping is documented in the body contract, with concrete construction
+  and local placement still needing accepted sources.
 - [Games wing consolidation](2026-09-09_games_wing_consolidation_plan.md):
   history-preserving repository import, source/worktree preservation, separate
   build workspaces, aligned platform dependencies, single-renderer migration,

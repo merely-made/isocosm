@@ -1,0 +1,32 @@
+   Compiling mesocosm-genet v0.0.1 (C:\Users\mark_\Code\repos\isometry\mesocosm\crates\mesocosm-genet)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31.97s
+     Running unittests src\lib.rs (C:\t\cargo-targets\isometry\debug\deps\mesocosm_genet-791c9ba5113ec21b.exe)
+
+running 5 tests
+test app::bench::spine::terrain::tests::spine_local_datum_and_materials_preserve_water_soil_and_rock ... ok
+test app::bench::spine::terrain::tests::spine_perturbed_side_breaks_the_same_border_check_and_geometry ... FAILED
+test app::bench::spine::terrain::tests::spine_draws_join_and_preserve_the_founded_world ... FAILED
+test app::bench::spine::terrain::tests::spine_palette_resolves_world_keys_instead_of_assuming_ids ... ok
+test app::bench::spine::terrain::tests::spine_rebuilding_a_window_is_identical ... ok
+
+failures:
+
+---- app::bench::spine::terrain::tests::spine_perturbed_side_breaks_the_same_border_check_and_geometry stdout ----
+
+thread 'app::bench::spine::terrain::tests::spine_perturbed_side_breaks_the_same_border_check_and_geometry' (45268) panicked at crates\mesocosm-genet\src\app\bench\spine\tests.rs:37:45:
+called `Result::unwrap()` on an `Err` value: "terrain window needs 2240 bricks; scene capacity is 2047"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- app::bench::spine::terrain::tests::spine_draws_join_and_preserve_the_founded_world stdout ----
+
+thread 'app::bench::spine::terrain::tests::spine_draws_join_and_preserve_the_founded_world' (11716) panicked at crates\mesocosm-genet\src\app\bench\spine\tests.rs:10:52:
+called `Result::unwrap()` on an `Err` value: "terrain window needs 2240 bricks; scene capacity is 2047"
+
+
+failures:
+    app::bench::spine::terrain::tests::spine_draws_join_and_preserve_the_founded_world
+    app::bench::spine::terrain::tests::spine_perturbed_side_breaks_the_same_border_check_and_geometry
+
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 158 filtered out; finished in 2.05s
+
+error: test failed, to rerun pass `-p mesocosm-genet --lib`

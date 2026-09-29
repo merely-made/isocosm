@@ -1072,3 +1072,33 @@ availability is not automatic learning or zero cost. Broken or very strong
 builds are welcome when fair and explainable; the task is not to prevent all
 powerful combinations. Carrying an incident's history is different from
 carrying its current wound. Omitted conditions do not erase history.
+
+### 9.8 First integration batch
+
+Mark authorized orchestration with "Ok. Let's proceed. Orchestrate away."
+The batch opens SP3's retained bench terrain connection under rulings 408
+and 409. Body-to-scene preparation and shared-owner plan reconciliation run
+beside it as documentation work. It does not open M2 body absorption, CP6,
+generic physics bindings or T2 implementation.
+
+The body-contract source audit found that Isocosm's symbolic part IDs and
+site membership do not yet supply complete construction geometry or local
+pose. Its proposed mapping preserves full source IDs, distinguishes body
+and geometry revisions, and rejects stale picks. A display arrangement may
+be useful for inspection but cannot stand in for authoritative movement.
+
+Mere's Conatus owner plan now carries the previously ruled generic body
+table and T2 store/revision path, committed separately as `4fbcb727`.
+Implementation gates remain unchanged. The paging/migration conversation
+owns its concurrent Mere index and platform changes; SP3 retains the
+published Mere `5ce144ff` dependency while that work is verified.
+
+SP3 passed native verification on 2026-09-29. The retained bench now presents
+the border and overview, catches a deliberately mismatched source, restores
+the original viewport exactly, and suspends/resumes an existing trial's epoch
+advance. The first native run caught a renderer-capacity mismatch that CPU
+tests had missed; admission now counts actual occupied bricks before
+allocation. The [receipt](../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md)
+preserves that failure alongside the corrected passing runs. This completes
+the approved terrain connection and both documentation lanes, not the later
+body, edits, paging or shared-store implementation.
