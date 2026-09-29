@@ -3908,6 +3908,36 @@ what later sections derive from.
      (recommended)." (B) "Whole sites, coarse." (C) "Border window only."
      Mark chose A, "Border window and overview".
 
+410. **Compare historical pre.2 first, then retire the patch if possible.**
+     Asked on 2026-09-29 in the migration conversation: "Pre.4 passes all 21
+     browser cases both with and without our patch, with zero GPU errors;
+     independent review ruled out stale assets. August's pre.2 receipt failed
+     shared multiplication and both LayerNorm cases. The plan makes carrying
+     or retiring the patch your call. How should we proceed?" Options:
+     (A) "Compare historical pre.2 in this same browser first, then decide
+     whether to retire the patch (recommended)." (B) "Retire the patch based
+     on this result, then run the remaining migration checks." (C) "Keep
+     the patch as a precaution, record that the old failure no longer
+     reproduces, and run the remaining checks." Mark answered verbatim:
+     "I suppose A, then B if we can".
+
+     The historical comparison proceeds first. *Reading, not ruled:* the
+     answer authorizes retiring the `burn-cubecl` patch if the comparison
+     and reviewed evidence support it, followed by the remaining migration
+     checks. It does not order automatic retirement, certify untested
+     launcher shapes, or accept pre.4/S13 before their remaining gates pass.
+     If the comparison leaves the reason to retain the patch unresolved,
+     return with that evidence rather than silently choosing option C.
+
+     Source: the exact question/options in
+     `Code/testing/mere/receipts/2026-09-29/pre4-s13/pending-question.json`
+     and Mark's user message in migration chat
+     `01a0e255-9be7-70f3-94d8-4125bfeab06f`, turn
+     `01a0ee9b-9d2f-7160-8a46-5bc30a4014fd`. The question file's unanswered
+     status describes the pre-answer checkpoint; this ruling records the
+     answer. Mere's migration lane owns the comparison, patch decision
+     evidence and remaining implementation gates.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -7718,6 +7748,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-29: ruling 410 records Mark's "I suppose A, then B if we can":
+  compare historical unpatched pre.2 in the current browser first, then
+  retire the patch if supported. The conditional-retirement interpretation
+  is labelled a reading. The migration lane owns execution; neither this
+  answer nor the unexpected unpatched pass accepts the remaining S13 gates.
 - 2026-09-29: the scroll repair is published through Mere `32edc2ad` and
   adopted by the seven Isometry manifests with Genet `7a60ad79`. The ordinary
   row test holds all 187 rows with its original allowance; all four workspace

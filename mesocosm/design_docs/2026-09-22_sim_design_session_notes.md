@@ -1116,3 +1116,20 @@ Mere's separate semantic-selector work subsequently published `99e44853`.
 Pre.4 is reconciling it after local pre-build checkpoint `0ea65fb6`; neither
 that checkpoint nor this consumer repin accepts pre.4 or S13. The later pre.4
 consumer handoff remains distinct. No new ruling was needed for this execution.
+
+### 9.10 Pre.4's patch comparison and conditional retirement
+
+The migration conversation reported that pre.4 passed the same 21 browser
+cases with and without the `burn-cubecl` patch, unlike August's pre.2
+control. It offered (A) comparing historical pre.2 in the same current
+browser before deciding, (B) retiring the patch on the new result and then
+running the remaining checks, or (C) keeping it as a precaution with an
+explicit control amendment. Mark answered: "I suppose A, then B if we can".
+The exact question, options, answer and source are recorded as ruling 410.
+
+The comparison comes first. *Reading, not ruled:* retirement is authorized
+if the evidence supports it, with the remaining migration checks still
+required. The answer does not automatically retire the patch, validate
+untested launcher shapes or accept S13. The existing Mere migration lane
+owns this work. Isometry's accepted `eb2a367` dependency receipt and SP3's
+historical native receipts keep their exact original scope and pins.
