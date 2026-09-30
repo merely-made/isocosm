@@ -1157,3 +1157,17 @@ migration, merge, promotion or downstream repin. It supplies no cause for
 the retained allocations and no missing numerical/recovery result. The
 Mere migration lane owns the investigation; Isometry's source and pins
 remain unchanged by this documentation pass.
+
+**Diagnosis checkpoint, 2026-09-30:** independent review accepted the
+diagnostic result: the same-binary control and diagnostic still failed,
+but an explicit completion wait returned `Ok(())` and released the active
+allocations; subsequent cleanup cleared reserved bytes. Source bytes and
+mtime were restored. Nine corrupted-evidence controls rejected. The exact
+retained allocations remain unidentified; a production repair, the strict
+numerical ceiling, recovery and preservation of a second live lease are
+not established. The next fork asks where repair belongs: the existing
+`burn-remote` close path with honest completion/errors and those acceptance
+tests (recommended), CubeCL's general polling behavior with broader checks,
+or parking the migration. Its question is preserved beside the diagnosis
+receipt cited in the wing record. At this checkpoint the answer is pending,
+no repair is selected, and ruling 411 remains the latest decision.

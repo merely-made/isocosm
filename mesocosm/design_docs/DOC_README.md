@@ -22,8 +22,9 @@ their original pins.
 
 **Pre.4 diagnosis, 2026-09-30 (411):** Mark authorized bounded diagnosis
 after remote reclamation failed, preserving the zero-active baseline.
-Ownership or patch-design changes return as forks; broader migration
-acceptance and integration remain held. See the record and session notes §9.9.
+The verified diagnostic releases active allocations after explicit completion,
+but both runs remain failures. Repair location is the pending fork;
+production repair and integration remain held. See the record and §9.9 notes.
 
 ## Working principles for AI assistants
 

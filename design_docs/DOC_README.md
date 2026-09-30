@@ -10,8 +10,9 @@ remain separate gates; older dated hold notices are historical.
 
 **Pre.4 diagnosis, 2026-09-30 (411):** after remote allocator reclamation
 failed, Mark authorized bounded diagnosis with the zero-active baseline
-preserved. Ownership or patch-design changes return as forks; broader
-migration acceptance and integration remain held. The
+preserved. Diagnosis now shows active allocations released after explicit
+completion, while both test runs still fail. The repair-location fork is
+pending; production repair, migration acceptance and integration remain held. The
 [wing record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md#progress)
 preserves the failure and its evidence limits. Current consumer pins stand.
 

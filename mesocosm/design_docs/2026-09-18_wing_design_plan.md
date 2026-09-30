@@ -7777,6 +7777,23 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-30: **ruling 411's diagnosis is verified; repair choice pending.**
+  Control and diagnostic runs with the same executable/model inputs both
+  retained 10 allocations / 5,323,776 active bytes and exited 1 with empty
+  stdout. Four further samples without explicit synchronization were
+  unchanged. `client.sync().await` returned `Ok(())` in 1.9222 ms; active
+  counters became zero, and subsequent cleanup cleared the 41,943,040
+  reserved bytes. Source bytes and modification time were restored. Nine
+  corrupted-evidence controls were rejected. The evidence supports a
+  completion/polling issue after teardown submissions; it does not identify
+  the exact retained allocations or prove a production repair. Strict
+  numerical error, fresh-session recovery and preservation of another live
+  lease remain unverified. Evidence and review qualifications:
+  `Code/testing/mere/receipts/2026-09-29/pre4-s13/allocator-diagnosis/independent-diagnostic-outcome.json`.
+  The adjacent `repair-fork-pending-question.json` asks whether to repair
+  the existing `burn-remote` close path, change general CubeCL polling, or
+  park the migration. No repair is selected and no new ruling is recorded;
+  production repair, migration acceptance and integration remain held.
 - 2026-09-30: ruling 411 records Mark's "A!": bounded allocator diagnosis
   proceeds with the zero-active baseline retained. Ownership or patch-design
   changes return as forks. This answers the diagnosis/park question below;
