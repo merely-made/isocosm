@@ -4115,6 +4115,85 @@ what later sections derive from.
      close." Mark chose A, "Site until placed". Ruling 275's measurement
      still decides who moves a body within a place.
 
+423. **The detail ladder has five rungs in one camera, and its far marks
+     show modifiers.** Asked on 2026-09-30: "What rungs does the ladder
+     hold, near to far? Evidence: isometer draws live voxel parts, baked
+     sprites (isometer-mesh's bake), glyph marks and traced terrain; the
+     VTT's overmap (sprigging's canvas) and Mesocosm's minimap (hulls on the
+     HUD lane) draw places outside the scene; the record suggests
+     Ptree-style distributions for cohorts, unbuilt; ruling 382 makes the
+     isometric view with quarter turns the wing's default." Options,
+     recommended first: (A) "Five rungs, one camera: live parts over
+     base-grain terrain; baked sprites over coarse terrain; a mark per
+     individual over surface tiles; aggregate marks for groups and cohorts
+     over places; the world map, sites coloured by their readings with
+     routes. All in the one isometric camera, the map included
+     (recommended)." (B) "Three rungs and a map view: parts, sprites and
+     marks in the scene; the world map stays a separate document view, as
+     the overmap and minimap are today." (C) "Continuous, no rungs: each
+     thing picks its representation by projected size alone, with no fixed
+     set of rungs." Mark chose A and reframed its marks: "Five rungs, one
+     camera, but where you’ve put glyphs and marks, i would think of them
+     as modifiers and aggregate modifiers. The glyphs were really just
+     effects that would be applied, and there are other effects/means of
+     modifying things… unless literally every effect or modification is
+     derived from a glyph, like the spell parts in elder scrolls spell
+     creation… the point being, there are also conditional modifiers, like
+     things like adjacency perks, that might restate or define a new
+     modifier in terms of others (or generally, modifier combination…) so
+     it might help to think of how we are representing conditions,
+     statuses, and modifiers as applied to entities individually and in the
+     aggregate".
+     So one camera draws five rungs, the world map among them. The third
+     and fourth rungs mark modifiers and aggregate modifiers, of which a
+     glyph's effect is one kind. How conditions, statuses and modifiers are
+     held on entities, singly and in aggregate, opens as its own question
+     ([session notes, §10](2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30)).
+     *Reading, not ruled:* the question used "mark" in two senses, the
+     effect experiment's drawn glyph effects (`mesocosm-core`'s
+     `effect_experiment`) and a symbol standing for a thing too small to
+     draw; the answer joins them, so a thing's mark at those rungs shows
+     what modifies it.
+
+424. **A thing shows the finest rung its size warrants among those the sim
+     holds.** Asked on 2026-09-30: "What decides which rung a thing shows?
+     Evidence: the stop rule forbids render LOD or residency choosing the
+     sim's representation; ruling 212 makes what the view shows up close an
+     attention intent in the log, which is what lifts detail in the sim."
+     Options, recommended first: (A) "Size, within what the sim holds: each
+     thing takes the finest rung its projected size warrants among those
+     the sim holds for it; zooming in examines (212), which lifts detail, so
+     finer rungs arrive through the log, never by the renderer's choice
+     (recommended)." (B) "Attention drives the view: rungs follow what the
+     player attends rather than distance: pinned and examined things show
+     fine, the rest stay coarse whatever the zoom." (C) "Sim tier alone: the
+     rung is the sim's tier for the thing, individual, cohort or site,
+     whatever its size on screen." Mark chose A, "Size, within what the sim
+     holds". So projected size proposes and the sim's keeping bounds it: a
+     cohort held as a histogram (207) shows aggregate marks however close
+     the camera comes until examining lifts it, and the renderer never
+     draws an individual the sim does not hold.
+
+425. **Terrain fits the budget in nested rings.** Asked on 2026-09-30: "How
+     does terrain fit the budget across a zoom? Evidence: ruling 296's host
+     budget, 8 MiB or about 16,383 bricks, while SP3's bench measured
+     against GroundTerrain's default of 2,047; 291 makes residency follow
+     the view; SP2 lifts any region at any power-of-two cell size; clipmaps
+     are marked consumer-gated in the engine review." Options, recommended
+     first: (A) "Nested rings: base grain where the view examines, each ring
+     outward a power of two coarser, all inside the host's device budget;
+     the bench adopts that budget like the VTT board (recommended)." (B)
+     "One grain per view: the whole view takes one grain, the finest that
+     fits the budget; simple, and coarse up close in wide views." (C) "Base
+     grain, refuse overflow: page base grain everywhere visible and refuse
+     what overflows, as SP3 does now." Mark chose A, "Nested rings". So
+     ruling 291's residency becomes rings: base grain over what the view
+     examines, each ring outward lifted one level coarser (SP2's chunks),
+     all inside 296's 8 MiB, and the specimen bench leaves GroundTerrain's
+     default of 2,047 for the host's budget. A ring's grain is residency and
+     never selects the sim's representation, since every level lifts from
+     the same exact surface.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -7925,6 +8004,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-30: rulings 423 to 425 recorded, the first round of one zoom, the
+  wing's detail ladder: five rungs in one camera with the far marks read as
+  modifiers (423), the finest rung a thing's size warrants among those the
+  sim holds (424), and terrain in nested rings inside the host's budget
+  (425). The transition between rungs came back as a question, answered in
+  the session notes' §10 with what a continuous morph would require, and
+  423 opened how conditions, statuses and modifiers sit on entities, singly
+  and in aggregate. Carried into the session notes' §10 and the
+  presentation plan's open decisions.
 - 2026-09-30: rulings 412 to 422 recorded, the spatial spine's SP4 and SP5
   designed: earth is matter (412), edits as shape operations (413), one fact
   read across borders (414), columns plus exceptions (415), overflow heaped

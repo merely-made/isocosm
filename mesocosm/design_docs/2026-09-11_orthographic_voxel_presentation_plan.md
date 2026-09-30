@@ -1462,6 +1462,13 @@ consumer. That edit is genet's, in the same session the lane opens.
   fragment-backed parts. Raised while genet's T2 was open; T2 landed
   2026-09-15 with the quadratic removed and 50,000 elements at 7.68 s, so
   the policy is now a quality choice rather than a scaling necessity.
+  *Reading, not ruled, 2026-09-30:* the wing's detail ladder now answers
+  it. The wing design record's ruling 424 gives each thing the finest rung
+  its projected size warrants among those the sim holds, live parts being
+  the finest; live faces during rotation (ruling 6 above) stand. The ladder's
+  five rungs (423), its terrain rings (425) and the open transition are in
+  the record and the
+  [session notes' §10](2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
 - Whether the tracer keeps the Mesocosm section by default or the section
   also moves to tile layers once L4 lands.
 - Whether L6's GPU bake targets the enhanced capability profile only, with

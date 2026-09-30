@@ -1213,3 +1213,80 @@ ruling 412 withdrew it.
 Mark's free answer to 420 listed "small (16), extra small (32)"; put back,
 he chose names ascending ("good catch") and asked whether the cap could be x
 by y; it can, laid in each site's own frame.
+
+**The second thread, one zoom.** Mark chose it next: one detail ladder in
+place of the four near-to-far renderers §9.2 found. The first round ruled
+three of its four questions.
+
+| Question as put | Ruling |
+| --- | --- |
+| What rungs does the ladder hold, near to far? | 423: five rungs in one camera, the far marks read as modifiers |
+| What decides which rung a thing shows? | 424: size, within what the sim holds |
+| How does terrain fit the budget across a zoom? | 425: nested rings |
+
+**What a continuous morph would require.** The fourth question, how a thing
+changes rung, came back as a question: "Tell me more about what continuous
+morph would require." Answered from the tree, pair by pair:
+
+- *Sprite and live parts* share one voxel truth, and their geometry already
+  agrees exactly: `a_baked_sprite_and_a_live_body_agree_on_silhouette`
+  (`isometer-mesh`'s `token.rs`) finds no pixel of disagreement for three
+  bodies at all four facings under the bake's projection. The live pass
+  takes the bake's own palette (`LiveBody::palette`). Whether the GPU pass
+  lands the same pixels and face shading is unmeasured. Where it does, the
+  swap is invisible and needs no morph, which the presentation plan's
+  hybrid (live faces during rotation, its ruling 6) wants anyway.
+  Unfolding a sprite into moving parts needs more: `bake_facing` composites
+  a whole volume, so each part would be baked alone with its anchor,
+  multiplying the atlas by the part count.
+- *Terrain between grains* can slide: a lift samples each column at its
+  origin (`terrain::lift`), so a fine column can rise or sink from its
+  coarse parent's top to its own, exact at both ends.
+- *A site on the world map* can rise into its relief: SP2 made a site's mean
+  over base-grain columns exactly its elevation, so easing the exact surface
+  from a flat plate at that elevation keeps the mean fixed at every step.
+- *A mark and a sprite* share no geometry. Swelling one into the other needs
+  a chain of coarser bakes, the volume halved per level (about a seventh
+  more voxels), so the sprite shrinks into the mark's footprint. No chain
+  exists.
+- *A group and its members*: the view may not invent members (424), so the
+  split waits on examining's lift through the log (212), or the intent fires
+  on approach, which moves 212's line from up close to coming close.
+- The look takes no alpha blends, which smear pixel art, so every morph frame
+  must itself be exact, and frame sequences become receipts per rung pair
+  and per quarter turn.
+
+**The modifiers question.** Ruling 423's reframing asks how conditions,
+statuses and modifiers sit on entities, singly and in aggregate. What the
+tree holds, 2026-09-30:
+
+- The sim (`shared/isocosm`'s `schema.rs`, `rules/mod.rs`): an entity
+  asserts traits, accounts, skills, tenets and a disposition, and reads its
+  phenotype, needs, capability and standing; sites keep keyed conditions; a
+  process gates on queries (trait, account, site condition, mood, an
+  expressed function) and applies effects with fixed amounts. No entity
+  keeps a condition, and nothing is a modifier.
+- The VTT: a token's conditions are keyed magnitudes (`isometry-core`'s
+  `map.rs`), and the SRD's Lua projects them into readings (`s_speed` halves
+  speed while prone). The overlay's handoff carries `Condition { subject,
+  condition, magnitude }`, which nothing in the sim applies.
+- wing-glyphs binds each glyph to an effect id, which a canon revision may
+  move (`CorrespondenceMove`), and a variant to its base plus opaque
+  modifier ids it never executes; effect packs declare a behaviour, a
+  receiver class and a cost shape.
+- Mesocosm's allocation mosaic gives tracts in adjacent cells cooperation,
+  interference or hybrids, ruling 36's Balatro shape.
+- Rulings that already speak of modifiers or conditions: personality traits
+  compound modifiers on other aspects (158); an opinion modifier weighs a
+  directive (60); a sheet is a bundle of grants, abilities, modifiers,
+  resources and recognitions (the record's §5); computed amounts are bounded
+  expression trees (268); every fundamental effect composes at rising cost
+  (404), in one composition system for material and conceptual operations
+  (407); a new life chooses the conditions it carries (406); and a crowd is
+  a histogram of exact states (207), so each condition a member keeps
+  splits its bin.
+
+Elder Scrolls' spell parts are its effects, not glyphs: its spells, potions,
+enchantments, diseases and birthsigns all compose one effect list. In the
+tree a glyph is a canon's name for an effect, so "every modification from a
+glyph" would let a canon revision change what being wet does.
