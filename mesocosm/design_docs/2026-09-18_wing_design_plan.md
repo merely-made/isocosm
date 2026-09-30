@@ -3967,6 +3967,154 @@ what later sections derive from.
      sealed question remains historical. Mere's existing migration lane
      owns diagnosis and its evidence; no production change is claimed here.
 
+412. **Earth is matter: the volume is the world's own body.** Asked on
+     2026-09-30, the spatial spine's SP4 design (Mark: "We'll design things
+     until implementation is a piece of cake"): "When something carves or
+     fills the volume, what happens to matter? Evidence: Mesocosm keeps
+     terrain and edible soil as separate stores ('A carve changes the first
+     and not the second', TD6); Isocosm's world:soil account is a site's
+     edible pool; my SP2 reading wrongly made the voxel material world:soil
+     the same nis as that account; ruling 12 makes terrain destructible and
+     constructible." Options, recommended first: (A) "Earth is matter: the
+     volume is the world's own body: carving moves each cell's mass (a
+     density per material, a world rule) into whoever carved it, filling
+     draws from them, so dug earth can be carried and built with and nothing
+     appears or vanishes. Edible soil stays its own pool, as TD6 rules, and
+     the voxel material gets its own name (recommended)." (B) "Separate,
+     shape only, spoil unmodelled." (C) "Topsoil is the pool, amending TD6."
+     Mark chose A, "Earth is matter". So SP2's reading that the voxel
+     material and the ledger's soil are one nis is withdrawn. *Reading, not
+     ruled:* the voxel material is renamed `world:earth`; air weighs
+     nothing; edits by a DM, the world editor or creative mode take and
+     return matter through the dev source outside the conserved total and
+     label the run assisted, as ruling 271 has it for placed matter.
+
+413. **Edits are stored as shape operations.** Asked on 2026-09-30: "What is
+     stored when the volume is edited? Evidence: Ground's own edits are
+     shapes (carve at a point with a radius; cavities as rooms and a route);
+     the done-condition wants stored bytes that grow with edits and not with
+     sites; lifts must replay every edit a chunk touches." Options,
+     recommended first: (A) "Shape operations: each edit is a shape and a
+     material (carve a sphere, fill a box, dig a route), stored in order per
+     site and replayed onto any chunk it overlaps; compact for big edits,
+     exact for small ones (recommended)." (B) "Cell edits at the base
+     grain." (C) "Shapes, compacted into cells when they grow too many."
+     Mark chose A, "Shape operations".
+
+414. **An edit reaching across a border is one fact, read across.** Asked on
+     2026-09-30: "How does an edit that reaches across a border belong to the
+     sites? Evidence: SP1 gives every border a frame relation both sites
+     know; SP4's done-condition says 'an edit on a border is seen from both
+     sides'." Options, recommended first: (A) "One fact, read across: an edit
+     is stored once, in the frame of the site it was made in, with its
+     extent; any neighbour it reaches reads it through the border's frame
+     relation (recommended)." (B) "Split when made, one part per site." Mark
+     chose A, "One fact, read across".
+
+415. **A lift carries caves as columns plus exceptions.** Asked on
+     2026-09-30: "How does a lift carry caves and overhangs? Evidence: SP2's
+     chunk is columns (a surface top and a material-by-depth rule, ruling
+     402), which cannot hold a tunnel under the surface; ruling 402 lowers
+     dense voxels only when a store needs them (SP6)." Options, recommended
+     first: (A) "Columns plus exceptions: a chunk keeps its columns and adds
+     a sparse list of cells that differ from the column rule, so an
+     untouched chunk costs what it did and an edited one pays only for its
+     changes (recommended)." (B) "Dense when edited." (C) "Surface edits
+     only for now." Mark chose A, "Columns plus exceptions".
+
+416. **What a carver cannot hold is heaped beside the cut.** Asked on
+     2026-09-30: "When a carve yields more earth than the carver can hold,
+     where does the rest go? Evidence: ruling 53 makes holding containment by
+     capacity (biology, gear or construction), but Isocosm models no capacity
+     yet, so this sets the rule for when it does; ruling 412 says nothing
+     appears or vanishes." Options, recommended first: (A) "Heaped beside the
+     cut: what the carver cannot hold is filled back as a heap next to the
+     cut, an automatic fill edit, so spoil is visible terrain, conserved, and
+     can be dug again. Until capacity exists, the carver holds all of it
+     (recommended)." (B) "The site's stock, invisible in the volume." (C)
+     "Refused whole." Mark chose A, "Heaped beside the cut".
+
+417. **The outdoors divides into walkable patches, capped.** Asked on
+     2026-09-30, the first of SP5's forks: "How is open air divided into
+     places? Evidence: the air above a site is one connected component (the
+     sky), so components alone cannot divide the outdoors; the record's §3.7
+     lists 'outdoor regions' beside rooms, caves and corridors, aiming at ten
+     thousand nodes, not ten million; Mesocosm divides its enclosure by a
+     fixed three-by-three partition today." Options, recommended first: (A)
+     "Walkable patches, capped: rooms, caves and tunnels are air cut off from
+     the sky; the outdoors floods over walkable surface and splits wherever
+     cliffs or water stop a walker, and a patch larger than a cap is cut on
+     the chunk grid. Places follow how things move (recommended)." (B)
+     "Drainage basins." (C) "Chunk grid." Mark chose A, "Walkable patches,
+     capped". The cap's form is ruling 420's.
+
+418. **Places are derived at the base grain, clearance recorded on
+     edges.** Asked on 2026-09-30: "At what grain are places derived, and for
+     which body? Evidence: Mesocosm's P9 and P10 showed live body geometry
+     changing both passage and sight (compact and broad bodies diverge in the
+     same tunnels); §5's third stop rule forbids deriving from a view's cell
+     size." Options, recommended first: (A) "Base grain, clearance on edges:
+     places are derived once at the base grain; every passage records its
+     clearance (the widest and tallest body that fits), and a route for a
+     body filters by it, so one graph serves every body (recommended)." (B)
+     "A graph per body class." (C) "One declared walker." Mark chose A,
+     "Base grain, clearance on edges".
+
+419. **A world-rule climb splits walkable patches.** Asked on 2026-09-30:
+     "What steepness splits one walkable patch from the next? Evidence:
+     ruling 417 splits patches 'wherever cliffs or water stop a walker', and
+     ruling 418 records each passage's clearance so bodies differ per edge;
+     drawn relief runs to an eighth of a site's side, and SP2's detail makes
+     local steps; the base unit is scale-free." Options, recommended first:
+     (A) "World-rule climb: the world's rules set a climb, default one base
+     unit of rise per unit of run (45°); anything steeper splits patches, and
+     each edge records its step so a body that climbs higher still passes
+     (recommended)." (B) "From the roster, the least climb any living lineage
+     can manage." (C) "No slope split, steepness only an edge's cost." Mark
+     chose A, "World-rule climb".
+
+420. **The patch cap is a world rule with stepped presets.** Asked on
+     2026-09-30: "How large may an outdoor patch grow before it is cut on the
+     chunk grid? Evidence: the record's §3.7 aims at ten thousand places, not
+     ten million; ruling 124's region is hundreds of sites, though only
+     lifted sites have places below the site; a 2,048-unit site holds 64
+     chunks at level 3 (256 units a side) and 4,096 at the base (32 units)."
+     Options, recommended first: (A) "A level-3 chunk, at most 256 by 256
+     base units (recommended)." (B) "A base chunk, 32 by 32." (C) "A world
+     rule, no default." Mark answered verbatim: "World rule with stepped
+     defaults: small (16), extra small (32), medium(64), extra medium (128),
+     large (256), extra large (512), your choice (n by n)". Put back, since
+     extra small came out larger than small: "Which order did you mean?"
+     with the options "Names ascend" and "As written". Mark: "Names ascend,
+     also, good catch. Also, would it be possible to do x by y, so 128 x 256,
+     for example?" Answered in the session: yes, nothing needs squares; the
+     cap is a grid of x by y cells laid over each site in its own frame,
+     and powers of two only line up with chunk edges. So the presets, sides
+     in base units, are extra small 16, small 32, medium 64, extra medium
+     128, large 256 and extra large 512, and a founder may set their own x by
+     y.
+
+421. **A world picks the large preset, 256, by default.** Asked on
+     2026-09-30: "Which preset does a world take when its founder picks none?
+     Evidence: a largest drawn site (2,048 units) holds 64 patches at 256,
+     256 at 128 and 1,024 at 64; the record's §3.7 aims at ten thousand
+     places, not ten million, and only lifted sites have places below the
+     site." Options, recommended first: (A) "Large, 256 (recommended)." (B)
+     "Extra medium, 128." (C) "Medium, 64." Mark chose A, "Large, 256".
+
+422. **An entity names its site until its game places it.** Asked on
+     2026-09-30: "Once a site has places, what does an entity's location
+     name? Evidence: Entity.place is a site id today; the sim never
+     pathfinds or knows positions (§3.8); ruling 275, who owns fine position
+     up close, waits on a measurement; reach, travel and plague run over
+     places (§3.7)." Options, recommended first: (A) "Site until placed: an
+     entity names its site; in a lifted site where its game has placed it,
+     it names its patch or room, and restriction returns it to the site.
+     Places are the finest location the sim holds; coordinates stay the
+     foreground's (recommended)." (B) "Always the site." (C) "Coordinates up
+     close." Mark chose A, "Site until placed". Ruling 275's measurement
+     still decides who moves a body within a place.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -7777,6 +7925,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-30: rulings 412 to 422 recorded, the spatial spine's SP4 and SP5
+  designed: earth is matter (412), edits as shape operations (413), one fact
+  read across borders (414), columns plus exceptions (415), overflow heaped
+  beside the cut (416), walkable patches (417) at the base grain with
+  clearance on edges (418), a world-rule climb (419), the patch cap's
+  presets (420) and default (421), and an entity naming its site until its
+  game places it (422). Carried into the spine plan's §A.11 and §A.12, the
+  session notes' §10 and the index.
 - 2026-09-30: **ruling 411's diagnosis is verified; repair choice pending.**
   Control and diagnostic runs with the same executable/model inputs both
   retained 10 allocations / 5,323,776 active bytes and exited 1 with empty

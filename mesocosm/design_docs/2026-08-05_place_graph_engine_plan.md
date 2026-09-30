@@ -41,6 +41,12 @@ stays suspended while terrain is open and completes after returning.
 SP4's asserted edits are next on the spatial chain; body absorption and
 shared-store implementation retain their separate gates.
 
+**Status, 2026-09-30:** SP4 and SP5 designed with Mark, rulings 412 to 422
+(§A.11 and §A.12): earth is matter, edits are shape operations stored once
+and read across borders, lifts carry caves as exceptions, spoil heaps beside
+the cut, and places are walkable patches at the base grain with clearance on
+their edges. SP4 is next to build.
+
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
@@ -346,7 +352,9 @@ first; 4 by 396, chunks at power-of-two cell sizes from the start.
   each id's material and the lineage it is nis of; the map seeds it with
   `world:air`, `world:water`, `world:soil` and `world:rock`, all nis of
   `world:ground`. `world:soil` is the same nis the ledger's soil account
-  names.
+  names. *Withdrawn 2026-09-30 by ruling 412:* Mesocosm's TD6 keeps terrain
+  and edible soil separate, so the voxel material is earth, to be renamed
+  `world:earth`, and `world:soil` stays the edible pool.
 - **Checks, over seeded draws, each beside a control:** a site lifts to
   identical bytes twice and in a second process; every pair of neighbours
   gives exactly the same surface along their shared border, and detail that
@@ -393,6 +401,86 @@ The accepted handoff, with its implemented adapter:
   fails the digest.
 - **Done when** SP3's done-condition in §A.5 holds: a native capture shows
   the border with no seam in surface or material.
+- *2026-09-30:* no capture shows water: seed 7's two sites lie above their
+  water level, so ruling 408's point, where water lies and whether it meets
+  across the border, is shown only by a unit test. A capture of a drawn
+  border that crosses water is owed.
+
+### A.11 SP4's brief (2026-09-30, rulings 412 to 416)
+
+- **Matter** (412). The volume is the world's own body. Each voxel material
+  carries a density, the ledger amount one base-unit cell of it holds, and
+  names the matter account its mass moves through; both are world rules.
+  Carving moves each emptied cell's mass into the carver's account for that
+  material and filling draws from the filler's, so for every edit the
+  volume's loss is the ledger's gain exactly. Air weighs nothing. An edit by
+  a DM, the world editor or creative mode takes and returns matter through
+  the dev source outside the conserved total and labels the run assisted
+  (ruling 271). The voxel material seeded as `world:soil` becomes
+  `world:earth`; `world:soil` stays the edible pool of TD6 and Isocosm's
+  ecology.
+- **Edits** (413). An edit is an operation, carve to air or fill with a
+  named material, over a shape: a sphere (centre and radius), a box (two
+  corners) or a route (points and a radius), in base units in the frame of
+  the site it was made in. It carries its tick and a global sequence, is an
+  asserted fact in the sim's state and history, and replays in sequence
+  onto every chunk its extent reaches.
+- **Borders** (414). An edit is stored once; a neighbour reads it through
+  the border's frame relation, so both sides see the same fact. The list of
+  foreign edits reaching a site is derived from the edits, never stored.
+- **Caves** (415). A chunk keeps its columns and gains a sparse list of
+  exceptions at the base grain, cells whose material differs from what the
+  column rule gives; a coarse lift point-samples the base cell at each
+  coarse cell's origin, as columns do.
+- **Overflow** (416). Once capacity exists, what a carver cannot hold is
+  filled back as a heap beside the cut, an automatic fill edit placed from
+  the edit's seed; until then the carver holds all of it.
+- **Checks, over seeded draws, each beside a control:** seeded edit
+  sequences replay to identical bytes; a site re-lifted with its edits
+  equals the edited site; an edit across a border is seen from both sides,
+  and a neighbour that ignores foreign edits fails that; every edit
+  conserves matter exactly, and a carve that credits nobody fails that;
+  stored bytes grow with edits and not with sites.
+- *Readings, not ruled:* an edit carries its own coordinates, supplied by
+  whoever asserts it, the foreground game's handoff, a DM or the dev source,
+  since the sim knows no positions inside a site (§3.8); an edit's extent
+  stays under one site side, reaching only immediate neighbours; overlapping
+  edits from different sites apply in global sequence; a carve's mass is
+  counted column by column over the shape's vertical interval, never cell by
+  cell; densities are world rules each founder may set.
+
+### A.12 SP5's brief (2026-09-30, rulings 417 to 422)
+
+- **Places** (417). Rooms, caves and tunnels are air cut off from the sky.
+  The outdoors floods over walkable surface, an air cell over a solid one
+  with headroom, and splits where a step exceeds the world's climb or water
+  begins; a patch larger than the world's cap is cut on a grid of that cap.
+- **Grain and clearance** (418). Places are derived once at the base grain.
+  Each passage between two places records its clearance: the widest and
+  tallest body that fits, and the step it climbs. A route for a body keeps
+  only the passages it fits.
+- **Climb** (419). A world rule, default one base unit of rise per unit of
+  run; a steeper step splits patches and is recorded on the edges that
+  cross it.
+- **Cap** (420 and 421). Presets, sides in base units: extra small 16, small
+  32, medium 64, extra medium 128, large 256, the default, and extra large
+  512; or a founder's own x by y, laid in each site's own frame.
+- **Location** (422). An entity names its site; in a lifted site where its
+  game has placed it, it names its patch or room, and restriction returns it
+  to its site.
+- **Checks, over seeded draws, each beside a control:** local re-derivation
+  equals full re-derivation after every edit of seeded sequences, and a
+  stale dirty region disagrees and is caught; a route whose border profile
+  stops at a cliff or water reads impassable in the volume, and one that
+  passes reads passable; a body wider than a passage is refused by the
+  clearance filter, and a broken filter lets it through.
+- *Readings, not ruled:* an unlifted site is one place, and lifting opens it
+  into its places, the nesting step's down, with its conditions read back up
+  (ruling 74); water bodies are places of their own, joined to the land by
+  edges a body wades or swims; a place's identity is its site and its least
+  base cell, so re-derivation keeps the ids of places that still hold that
+  cell; an edit re-derives the places its extent touches and their
+  neighbours.
 
 ## 0. Rulings this plan rests on (2026-08-05)
 

@@ -1171,3 +1171,45 @@ tests (recommended), CubeCL's general polling behavior with broader checks,
 or parking the migration. Its question is preserved beside the diagnosis
 receipt cited in the wing record. At this checkpoint the answer is pending,
 no repair is selected, and ruling 411 remains the latest decision.
+
+## 10. The design session, 2026-09-30
+
+Mark, verbatim, closing Monday's session: "See ya on wednesday! We'll design
+things until implementation is a piece of cake." Opening Wednesday's:
+"iiiits wednesday!"
+
+**What had moved.** Another session had built and verified SP3 on the night
+of 2026-09-29 (`040abfc`): the bench's border window, its coarse overview
+and the perturbed control, bounded after a full-site control made 3,664
+bricks against the atlas default of 2,047. Its captures were read in this
+session: the border shows no seam, the overview reads as one landscape, and
+the control shows a cliff. None shows water, since seed 7's sites lie above
+their water level, so a capture across water is owed.
+
+**The thread.** Put as a choice among the spine's edits and places, one zoom,
+time at scale and the mode host; Mark chose the spine's edits and places, a
+session direction rather than a ruling.
+
+**The finding that opened SP4.** Mesocosm's soil module keeps terrain and
+edible soil separate ("A carve changes the first and not the second", TD6),
+while SP2's brief had read the voxel material `world:soil` as the ledger's
+soil. That reading was put to Mark as wrong on Mesocosm's own ruling, and
+ruling 412 withdrew it.
+
+| Question as put | Ruling |
+| --- | --- |
+| When something carves or fills the volume, what happens to matter? | 412: earth is matter, the volume the world's own body |
+| What is stored when the volume is edited? | 413: shape operations |
+| How does an edit that reaches across a border belong to the sites? | 414: one fact, read across |
+| How does a lift carry caves and overhangs? | 415: columns plus exceptions |
+| When a carve yields more earth than the carver can hold, where does the rest go? | 416: heaped beside the cut |
+| How is open air divided into places? | 417: walkable patches, capped |
+| At what grain are places derived, and for which body? | 418: base grain, clearance on edges |
+| What steepness splits one walkable patch from the next? | 419: a world-rule climb |
+| How large may an outdoor patch grow? | 420: stepped presets, names ascending, or the founder's own x by y |
+| Which preset does a world take by default? | 421: large, 256 |
+| Once a site has places, what does an entity's location name? | 422: its site, until its game places it |
+
+Mark's free answer to 420 listed "small (16), extra small (32)"; put back,
+he chose names ascending ("good catch") and asked whether the cap could be x
+by y; it can, laid in each site's own frame.
