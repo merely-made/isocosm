@@ -3938,6 +3938,35 @@ what later sections derive from.
      answer. Mere's migration lane owns the comparison, patch decision
      evidence and remaining implementation gates.
 
+411. **Diagnose retained allocations with the zero baseline preserved.**
+     Asked after the remote allocator stop, answered on 2026-09-30: "The
+     remote reclaim check left 10 active allocations (5,323,776 bytes) after
+     400 cleanup polls; its starting baseline was zero. Migration stop rule
+     4 requires bringing this back to you. Which next step?" Options:
+     "A. Diagnose the retained allocations in a bounded repair lane,
+     keeping the zero-baseline requirement; return any ownership or
+     patch-design change as a fork (recommended)." "B. Park the pre.4
+     migration with its evidence preserved and leave production on its
+     current dependencies." Mark answered verbatim: "A!".
+
+     Bounded diagnosis proceeds. The zero-active-allocation baseline stays
+     required, and any ownership or patch-design change returns as a fork.
+     *Reading, not ruled:* this releases the diagnosis lane, not broader
+     migration acceptance, merge, promotion or the downstream repin. The
+     retained allocations' cause remains a question for that investigation;
+     the answer does not establish the missing numerical or recovery proof.
+
+     Source: `allocator-stop-pending-question.json` and the separate
+     `allocator-stop-answer.json` under
+     `Code/testing/mere/receipts/2026-09-29/pre4-s13/post-retirement/`.
+     The question's SHA256 is
+     `b31b1f13b849fcadbc83c9cac50c26731807c1488084128cdd252614a0a06bb0`,
+     matching the answer record. Mark's user message is in migration chat
+     `01a0e255-9be7-70f3-94d8-4125bfeab06f`, turn
+     `01a0f0f8-5004-7243-a6f5-0bd909dbbf3c`. The unanswered status in the
+     sealed question remains historical. Mere's existing migration lane
+     owns diagnosis and its evidence; no production change is claimed here.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -7748,6 +7777,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-09-30: ruling 411 records Mark's "A!": bounded allocator diagnosis
+  proceeds with the zero-active baseline retained. Ownership or patch-design
+  changes return as forks. This answers the diagnosis/park question below;
+  broader migration acceptance, merge and downstream repin remain held.
 - 2026-09-29: **pre.4 stopped at remote allocator reclamation.** After
   ruling 410's comparison and paired launcher checks, the migration lane
   retired the four `burn-cubecl` selectors locally at Mere `124fc42b`.

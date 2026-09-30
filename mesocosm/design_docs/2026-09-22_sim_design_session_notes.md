@@ -1147,3 +1147,13 @@ At this checkpoint no answer or new ruling is recorded. Browser GPU checks,
 candidate edits, merge and downstream repin remain held. The record's
 progress entry cites the sealed failure receipt; existing consumer pins
 and earlier receipt qualifications are preserved.
+
+**Answer, 2026-09-30 (411):** Mark answered "A!" to the allocator-stop
+question. Bounded diagnosis proceeds with the zero-active baseline intact;
+ownership or patch-design changes return as forks. The exact question,
+options, answer and receipt hash are in the canonical record. *Reading,
+not ruled:* the answer releases diagnosis without accepting the wider
+migration, merge, promotion or downstream repin. It supplies no cause for
+the retained allocations and no missing numerical/recovery result. The
+Mere migration lane owns the investigation; Isometry's source and pins
+remain unchanged by this documentation pass.
