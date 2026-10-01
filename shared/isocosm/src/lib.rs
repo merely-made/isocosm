@@ -19,6 +19,7 @@ mod journal;
 pub mod map;
 mod meaning;
 pub mod population;
+pub mod preset;
 pub mod probe;
 mod queries;
 pub mod reach;

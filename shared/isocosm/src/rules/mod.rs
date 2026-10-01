@@ -7,11 +7,13 @@ use std::collections::{BTreeMap, BTreeSet};
 
 mod body;
 mod competition;
+mod epoch;
 mod mind;
 
 pub(crate) use body::expressing;
 pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
+pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -278,6 +280,14 @@ pub struct Rules {
     /// Absent in worlds without terrain, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub skeleton: Option<Skeleton>,
+    /// What ends an epoch (ruling 451); `epoch_ticks` is the timed budget.
+    /// Timed worlds serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "EpochRule::is_timed")]
+    pub epoch: EpochRule,
+    /// The epochs a world lives before anyone steps in (ruling 452). Worlds
+    /// without a past serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "DeepTimeSpan::is_bare")]
+    pub deep_time: DeepTimeSpan,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -298,6 +308,15 @@ impl Rules {
     /// The world time one tick counts, in microseconds.
     pub fn tick_microseconds(&self) -> u64 {
         self.tick_microseconds.unwrap_or(DEFAULT_TICK_MICROSECONDS)
+    }
+    /// The ticks a timed epoch runs, or none under a rule that ends epochs
+    /// otherwise, which makes one unbounded epoch until something ends it.
+    pub fn epoch_budget(&self) -> Option<Tick> {
+        self.epoch.is_timed().then_some(self.epoch_ticks)
+    }
+    /// The most ticks this world's deep time may take (ruling 452).
+    pub fn deep_time_ceiling(&self) -> crate::Result<Tick> {
+        deep_time_ceiling(self.epoch, self.epoch_ticks, self.deep_time)
     }
     pub fn validate(&self) -> crate::Result<()> {
         crate::validation::rules(self)

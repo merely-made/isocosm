@@ -103,13 +103,17 @@ impl Session {
         }
         work
     }
-    /// Advances to `end` epoch by epoch, checkpointing each boundary.
+    /// Advances to `end` epoch by epoch, checkpointing each boundary; a rule
+    /// that ends epochs otherwise runs one unbounded epoch (ruling 451).
     fn epochs(&mut self, end: Tick) -> Result<Work> {
         let mut work = Work::default();
-        let epoch = self.sim.genesis.rules.epoch_ticks;
+        let budget = self.sim.genesis.rules.epoch_budget();
         while self.sim.state.tick < end {
             let now = self.sim.state.tick;
-            let boundary = now.checked_add(epoch - now % epoch).unwrap_or(end).min(end);
+            let boundary = budget
+                .and_then(|epoch| now.checked_add(epoch - now % epoch))
+                .unwrap_or(end)
+                .min(end);
             let next = self.sim.advance(boundary - now)?;
             work.evaluations += next.evaluations;
             work.represented += next.represented;
@@ -119,7 +123,7 @@ impl Session {
             if work.represented > self.sim.genesis.rules.limits.events_per_advance as u64 {
                 return Err("advance exceeds configured operation budget".into());
             }
-            if boundary.is_multiple_of(epoch) {
+            if budget.is_some_and(|epoch| boundary.is_multiple_of(epoch)) {
                 self.checkpoints.push(Checkpoint {
                     tick: boundary,
                     state_hash: self.sim.state_hash(),
@@ -130,7 +134,8 @@ impl Session {
     }
     fn replay_until(&mut self, tick: Tick) -> Result<()> {
         while self.sim.state.tick < tick {
-            let mut step = (tick - self.sim.state.tick).min(self.sim.genesis.rules.epoch_ticks);
+            let budget = self.sim.genesis.rules.epoch_budget();
+            let mut step = (tick - self.sim.state.tick).min(budget.unwrap_or(Tick::MAX));
             loop {
                 match self.advance(step) {
                     Ok(_) => break,

@@ -317,7 +317,8 @@ impl ProbeFounding {
                     + sites * (founders + hunters.as_ref().map_or(0, |h| h.per_site)),
                 ..Limits::default()
             },
-            epoch_ticks: 32,
+            // A year at the default minute (ruling 451).
+            epoch_ticks: crate::rules::year_ticks(crate::rules::DEFAULT_TICK_MICROSECONDS),
             collection_buffer: 0,
             competitions,
             similitude: Some(Similitude {
@@ -329,6 +330,8 @@ impl ProbeFounding {
             shapes: BTreeSet::new(),
             functions: BTreeMap::new(),
             skeleton: None,
+            epoch: Default::default(),
+            deep_time: Default::default(),
         };
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
