@@ -247,6 +247,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         }
         for e in effects {
             conversion::declared(rules, id, e)?;
+            for a in e.amounts() {
+                amount(rules, p, id, a)?;
+            }
             match e {
                 Effect::Transfer { account: a, .. } => account(rules, a)?,
                 Effect::Transform { take, give, .. } => {
@@ -296,7 +299,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
                 // meal.
                 Effect::Eat { from, amount, into } => {
                     matter(rules, into)?;
-                    if *from != Binding::Target || *amount == 0 {
+                    if *from != Binding::Target || *amount == Amount::Fixed(0) {
                         return Err(format!("{id} eats what cannot be eaten"));
                     }
                 },
@@ -306,4 +309,26 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     }
     mind(rules)?;
     competitions(rules)
+}
+
+/// A computed amount keeps its bounds and reads only what its act binds; a
+/// part keeps no ledger to read (ruling 338).
+fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
+    a.validate().map_err(|why| format!("{id}: {why}"))?;
+    let Amount::Computed(e) = a else {
+        return Ok(());
+    };
+    for r in e.reads() {
+        match r {
+            Reading::Account { who, key } => {
+                account(rules, key)?;
+                if *who == Binding::Part || (*who == Binding::Target && p.target.is_none()) {
+                    return Err(format!(
+                        "{id} reads an amount from {who:?}, which it does not bind"
+                    ));
+                }
+            },
+        }
+    }
+    Ok(())
 }

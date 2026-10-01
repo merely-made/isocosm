@@ -64,7 +64,7 @@ fn rousing() -> Genesis {
             },
             Effect::Practice {
                 key: "skill:rousing".into(),
-                amount: 1,
+                amount: 1.into(),
             },
         ],
         risk: None,
@@ -249,7 +249,7 @@ fn due(id: &str, priority: i32, requires: Vec<Query>, effects: Vec<Effect>) -> P
 fn practise(key: &str) -> Effect {
     Effect::Practice {
         key: key.into(),
-        amount: 1,
+        amount: 1.into(),
     }
 }
 
@@ -291,7 +291,7 @@ fn a_reserve_running_out_is_seen_in_the_same_tick() {
             from: Binding::Actor,
             to: Binding::Place,
             account: soil.into(),
-            amount: 1,
+            amount: 1.into(),
         }],
     );
     let starve = due(

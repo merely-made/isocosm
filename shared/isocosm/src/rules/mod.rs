@@ -5,11 +5,13 @@ use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod amount;
 mod body;
 mod competition;
 mod epoch;
 mod mind;
 
+pub use amount::{Amount, Expr, MAX_DRAW, MAX_NODES, Reading};
 pub(crate) use body::expressing;
 pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
@@ -107,7 +109,7 @@ pub enum Effect {
         from: Binding,
         to: Binding,
         account: Key,
-        amount: u64,
+        amount: Amount,
     },
     /// An authored transform accounts for both sides, including byproducts.
     Transform {
@@ -135,7 +137,7 @@ pub enum Effect {
     },
     Practice {
         key: Key,
-        amount: u64,
+        amount: Amount,
     },
     Move {
         destination: Id,
@@ -167,16 +169,48 @@ pub enum Effect {
     Ease {
         who: Binding,
         key: Key,
-        amount: u64,
+        amount: Amount,
     },
     /// Eating (ruling 287): up to `amount` of a body's matter, drawn from
     /// all its matter accounts in proportion, largest remainders first in
     /// key order, and credited to the actor's own `into` account.
     Eat {
         from: Binding,
-        amount: u64,
+        amount: Amount,
         into: Key,
     },
+}
+
+impl Effect {
+    /// The amounts an act resolves before it stages this effect (X3).
+    pub fn amounts(&self) -> Vec<&Amount> {
+        match self {
+            Self::Transfer { amount, .. }
+            | Self::Practice { amount, .. }
+            | Self::Ease { amount, .. }
+            | Self::Eat { amount, .. } => vec![amount],
+            _ => vec![],
+        }
+    }
+    pub fn draws(&self) -> bool {
+        self.amounts().iter().any(|a| a.draws())
+    }
+    /// This effect with every amount resolved to the number it comes to.
+    pub fn resolve(
+        &self,
+        read: &mut impl FnMut(&Reading) -> crate::Result<i64>,
+        draw: &mut impl FnMut(u64) -> crate::Result<u64>,
+    ) -> crate::Result<Effect> {
+        let mut e = self.clone();
+        if let Self::Transfer { amount, .. }
+        | Self::Practice { amount, .. }
+        | Self::Ease { amount, .. }
+        | Self::Eat { amount, .. } = &mut e
+        {
+            *amount = amount.resolve(read, draw)?;
+        }
+        Ok(e)
+    }
 }
 
 /// The conversions a transform may declare (rulings 342 and 357). World
@@ -385,7 +419,7 @@ impl Process {
                             who: Binding::Actor,
                             ..
                         }
-                )
+                ) && e.amounts().iter().all(|a| a.bulk_safe())
             })
     }
 }

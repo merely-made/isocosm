@@ -251,9 +251,10 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             to,
             account,
             amount,
-        } => p
-            .take(*from, account, *amount)
-            .and_then(|()| p.give(*to, account, *amount)),
+        } => amount.resolved().and_then(|amount| {
+            p.take(*from, account, amount)
+                .and_then(|()| p.give(*to, account, amount))
+        }),
         Effect::Transform {
             who,
             take,
@@ -267,11 +268,14 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             present,
         } => p.part().and_then(|(b, id)| mark_part(b, id, key, *present)),
         Effect::Trait { who, key, present } => p.body(*who).and_then(|b| mark(b, key, *present)),
-        Effect::Practice { key, amount } => p
-            .body(Binding::Actor)
-            .and_then(|b| practice(b, key, *amount)),
+        Effect::Practice { key, amount } => amount.resolved().and_then(|amount| {
+            p.body(Binding::Actor)
+                .and_then(|b| practice(b, key, amount))
+        }),
         Effect::Death => p.body(Binding::Actor).map(|b| b.alive = false),
-        Effect::Ease { who, key, amount } => p.body(*who).map(|b| ease(b, key, *amount)),
+        Effect::Ease { who, key, amount } => amount
+            .resolved()
+            .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
         _ => return None,
     })
 }

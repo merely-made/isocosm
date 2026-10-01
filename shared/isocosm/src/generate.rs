@@ -193,7 +193,7 @@ impl Founding {
                 from: Binding::Actor,
                 to: Binding::Target,
                 account: "world:soil".into(),
-                amount: 1,
+                amount: 1.into(),
             }],
         );
         donate.note = true;

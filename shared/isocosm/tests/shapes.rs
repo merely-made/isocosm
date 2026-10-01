@@ -357,7 +357,7 @@ fn bad_shapes_functions_and_bindings_are_refused() {
                     from: Binding::Actor,
                     to: Binding::Part,
                     account: "world:soil".into(),
-                    amount: 1,
+                    amount: 1.into(),
                 };
                 let mut p = process("test:into", vec![], vec![into]);
                 usable(&mut p);

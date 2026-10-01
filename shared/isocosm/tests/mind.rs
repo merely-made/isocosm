@@ -60,7 +60,7 @@ fn world(low: u64) -> Genesis {
     bleed.effects = vec![Effect::Ease {
         who: Binding::Actor,
         key: STRAIN.into(),
-        amount: 2,
+        amount: 2.into(),
     }];
     for p in [build, bleed] {
         rules.processes.insert(p.id.clone(), p);
@@ -142,7 +142,7 @@ fn a_mind_is_admitted_only_as_the_rules_declare_it() {
             p.effects = vec![Effect::Ease {
                 who: Binding::Actor,
                 key: "world:soil".into(),
-                amount: 1,
+                amount: 1.into(),
             }];
         })
         .contains("eases what cannot be eased")

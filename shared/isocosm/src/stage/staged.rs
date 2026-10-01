@@ -14,7 +14,10 @@ use crate::{
     schema::*,
     simulation::Simulation,
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    borrow::Cow,
+    collections::{BTreeMap, BTreeSet},
+};
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -70,8 +73,35 @@ impl Staged<'_> {
         Ok(())
     }
 
+    /// The effect with its amounts resolved against the stage as it stands,
+    /// each draw keyed by the act and its place among the act's draws (X3).
+    fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Cow<'e, Effect>> {
+        if e.amounts().iter().all(|a| matches!(a, Amount::Fixed(_))) {
+            return Ok(Cow::Borrowed(e));
+        }
+        let (seed, act) = (self.sim.genesis.seed, self.sim.state.next_action);
+        let mut draws = self.stage.draws;
+        let mut read = |r: &Reading| -> Result<i64> {
+            match r {
+                Reading::Account { who, key } => {
+                    let held = meaning::value(self.ledger(*who)?, key);
+                    i64::try_from(held).map_err(|e| e.to_string())
+                },
+            }
+        };
+        let mut draw = |below: u64| -> Result<u64> {
+            draws += 1;
+            Ok(crate::draw(seed, "amount", &[act, draws]) % below)
+        };
+        let resolved = e.resolve(&mut read, &mut draw)?;
+        self.stage.draws = draws;
+        Ok(Cow::Owned(resolved))
+    }
+
     /// Applies one effect to the stage. Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
+        let resolved = self.resolve(e)?;
+        let e = resolved.as_ref();
         let rules = &self.sim.genesis.rules;
         // Moves are worked out only while a host keeps the flow record.
         let legs = match self.sim.flowing() {
@@ -224,7 +254,7 @@ impl Staged<'_> {
             // takes is `meaning::share`'s.
             Effect::Eat { from, amount, into } => {
                 let rules = &sim.genesis.rules;
-                let taken = meaning::share(&*self.ledger(*from)?, rules, *amount);
+                let taken = meaning::share(&*self.ledger(*from)?, rules, amount.resolved()?);
                 let source = self.ledger(*from)?;
                 let mut total = 0u64;
                 for (key, value) in &taken {

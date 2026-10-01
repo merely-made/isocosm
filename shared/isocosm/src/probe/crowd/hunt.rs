@@ -70,6 +70,9 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
     if *from != Binding::Target {
         return refuse("the crowd eats only its target");
     }
+    let Ok(amount) = amount.resolved() else {
+        return refuse("bites a computed amount; it runs individually");
+    };
     let mut least = 0;
     for q in &p.requires {
         match q {
@@ -81,12 +84,12 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
             _ => {},
         }
     }
-    if least < *amount {
+    if least < amount {
         return refuse("a prey may hold less than a bite");
     }
     Ok(Meal {
         selector,
-        bite: *amount,
+        bite: amount,
         into,
         least,
     })

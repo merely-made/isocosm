@@ -117,7 +117,7 @@ fn predation(world: &ProbeWorld) -> Option<Predation> {
         .values()
         .find(|p| p.target.as_ref().is_some_and(|t| t.weighted))?;
     let bite = p.effects.iter().find_map(|e| match e {
-        Effect::Eat { amount, .. } => Some(*amount),
+        Effect::Eat { amount, .. } => amount.resolved().ok(),
         _ => None,
     });
     let appetite = p.requires.iter().find_map(|q| match q {

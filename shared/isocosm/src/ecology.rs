@@ -63,7 +63,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     from: Binding::Actor,
                     to: Binding::Place,
                     account: "world:soil".into(),
-                    amount: 1,
+                    amount: 1.into(),
                 },
             ],
         );
@@ -144,7 +144,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                         from: Binding::Place,
                         to: Binding::Actor,
                         account: "world:soil".into(),
-                        amount: 2,
+                        amount: 2.into(),
                     },
                     Effect::Transform {
                         who: Binding::Actor,
@@ -180,7 +180,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 Causation::Choice,
                 vec![Effect::Eat {
                     from: Binding::Target,
-                    amount: 1,
+                    amount: 1.into(),
                     into: body.clone(),
                 }],
             );

@@ -346,7 +346,7 @@ fn an_overflowing_transfer_is_refused_and_changes_nothing() {
             from: Binding::Actor,
             to: Binding::Target,
             account: SOIL.into(),
-            amount: 1,
+            amount: 1.into(),
         }],
     );
     give.target = Some(Target {

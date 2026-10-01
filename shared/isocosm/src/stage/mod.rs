@@ -51,6 +51,8 @@ pub(crate) struct Stage {
     event: Option<(Event, Reach)>,
     /// The act's matter moves, for the flow record (ruling 345).
     legs: Vec<Leg>,
+    /// The draws its amounts have taken, keying the next (X3).
+    draws: u64,
 }
 
 impl Simulation {
@@ -91,6 +93,7 @@ impl Simulation {
             highs: BTreeMap::new(),
             event: None,
             legs: vec![],
+            draws: 0,
         })
     }
 

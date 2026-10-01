@@ -104,7 +104,7 @@ fn eat(amount: u64, at_least: u64, among: &[&str]) -> Process {
         ],
         vec![Effect::Eat {
             from: Binding::Target,
-            amount,
+            amount: amount.into(),
             into: GUT.into(),
         }],
         Some(Target {
@@ -207,7 +207,7 @@ fn a_body_holding_too_little_is_not_run_for() {
             from: Binding::Actor,
             to: Binding::Place,
             account: GUT.into(),
-            amount: 1,
+            amount: 1.into(),
         }],
         None,
     );
@@ -222,7 +222,7 @@ fn a_body_holding_too_little_is_not_run_for() {
     }
 }
 
-fn meal_of(p: &mut Process) -> (&mut Binding, &mut u64, &mut Key) {
+fn meal_of(p: &mut Process) -> (&mut Binding, &mut Amount, &mut Key) {
     match &mut p.effects[0] {
         Effect::Eat { from, amount, into } => (from, amount, into),
         _ => unreachable!("the process eats"),
@@ -239,7 +239,7 @@ fn rules_refuse_a_meal_of_nothing_of_a_place_or_into_what_is_not_matter() {
         change(g.rules.processes.get_mut(EAT).unwrap());
         assert!(g.validate().is_err());
     };
-    refused(&|p| *meal_of(p).1 = 0);
+    refused(&|p| *meal_of(p).1 = 0.into());
     refused(&|p| *meal_of(p).0 = Binding::Place);
     refused(&|p| *meal_of(p).0 = Binding::Actor);
     refused(&|p| *meal_of(p).2 = "sim:energy".into());
@@ -381,7 +381,7 @@ fn feeding_draws_the_same_members_however_equal_prey_are_grouped() {
         vec![Query::Alive(Binding::Actor)],
         vec![Effect::Practice {
             key: "skill:rest".into(),
-            amount: 1,
+            amount: 1.into(),
         }],
         None,
     );
