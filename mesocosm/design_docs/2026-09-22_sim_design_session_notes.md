@@ -1471,3 +1471,14 @@ the checkpoint 5 review saved, fuel against tissue, and filial cost.
 The checkpoint is briefed in the sim plan's §9 with Lane A's steps restated
 in the tree; reproduction lands with the bodies and lineages families, none
 of the five natives being a birth.
+
+**Opening checkpoint 6.** Mark chose to open it. Step 4's assessment found
+Isocosm's epoch a timed checkpoint boundary only (`Rules.epoch_ticks`, 32
+world minutes in the generator) against Mesocosm's three-kind rule on its
+ten-a-second play clock, and deep time counted in epochs there against
+ruling 124's century of world time:
+
+| Question as put | Ruling |
+| --- | --- |
+| What ends an epoch in Isocosm, and how long is one by default? | 451: three kinds, a year by default |
+| How is deep time's span counted? | 452: epochs, as Mesocosm, over the recommendation of world time |

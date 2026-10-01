@@ -4798,6 +4798,52 @@ what later sections derive from.
      may cross from a symbiont, whose edge counts as eating, so the lexicon
      rule stands as the brief's §F proposed.
 
+451. **An epoch ends by one of three rules, a year by default.** Asked on
+     2026-10-01, opening checkpoint 6's step 4: "What ends an epoch in
+     Isocosm, and how long is one by default? Evidence: Isocosm's epoch is a
+     checkpoint boundary every epoch_ticks world ticks, 32 minutes in the
+     generator, a test value; Mesocosm's rule has three kinds, Timed, Gated
+     (named, unbuilt) and PlayerTriggered (a dev door), its default 1,000
+     play ticks at ten a second, a third of a reference starter's 3,000-tick
+     life; ruling 256 runs lineages yearly; 57 changes a genotype only at the
+     epoch boundary." Options, recommended first: (A) "Three kinds, a year
+     by default: the rule carries Timed, Gated and PlayerTriggered; Timed
+     counts the world's unit and defaults to a year, the lineages' period
+     (256), so the boundary where every lineage adapts (57) falls with their
+     yearly process; checkpoints keep falling on boundaries (recommended)."
+     (B) "Three kinds, a share of a lifespan: Timed defaults to a third of
+     the world's reference lifespan, Mesocosm's own rationale, read from its
+     age processes." (C) "Timed only, the founder's choice: epoch_ticks stays
+     the only kind, with no default beyond what the founder sets or the
+     generator draws." Mark chose A, "Three kinds, a year by default". So
+     Mesocosm's three rules move into Isocosm's: Timed counts the world's
+     unit, a year by default, which is 525,960 ticks at the default minute;
+     Gated stays named and unbuilt; PlayerTriggered ends an epoch only on
+     demand. The boundary where every lineage adapts (57) falls with the
+     lineages' yearly process (256), and checkpoints fall on boundaries.
+
+452. **Deep time's span counts epochs, as Mesocosm counts it.** Asked on
+     2026-10-01, with 451: "How is deep time's span counted? Evidence:
+     Mesocosm counts it in epochs (DeepTimeSpan, a world rule in the digest,
+     isoscape rulings 5 and 16), the hagiograph taking DeepTime { epochs };
+     ruling 124 reads the target as a century of world time; a Gated or
+     PlayerTriggered epoch has no length to convert by." Options,
+     recommended first: (A) "World time, epochs counted: the span is a
+     duration in the world's unit, a century for 124's region; the epochs it
+     holds are counted as they close, and the hagiograph is handed that
+     count (recommended)." (B) "Epochs, as Mesocosm: the span counts epochs,
+     its world time following the epoch rule." (C) "Both, checked: the
+     founder states a duration and an epoch count, refused when they
+     disagree." Mark chose B, "Epochs, as Mesocosm", over the
+     recommendation. So deep time's span is a count of epochs in the world's
+     rules and digest, its world time following the epoch rule: under 451's
+     default year, 124's century is a span of 100 epochs. *Reading, not
+     ruled:* Mesocosm's two refusals carry over with it: a span under a rule
+     that never closes an epoch on its own, Gated until it is built or
+     PlayerTriggered, is refused before any tick, and a run that stops
+     closing epochs within one epoch more than its span is refused as
+     stalled.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8615,6 +8661,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 451 and 452 recorded as checkpoint 6 opened: an
+  epoch ends by one of Mesocosm's three rules, a year by default (451), and
+  deep time's span counts epochs (452, over the recommendation of world
+  time). Carried into the sim plan's checkpoint 6 brief, the session notes'
+  §10 and the index.
 - 2026-10-01: rulings 446 to 450 recorded, checkpoint 6's design: a body's
   tissue and reserve (446), and reproduction as several strategies governed
   by traits (447), the default set brood, seed or egg, budding and fission
