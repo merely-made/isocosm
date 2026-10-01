@@ -1315,3 +1315,23 @@ where processing, not memory, is the limit. Ruling 123 already keeps a
 body's wounds and vigour in its ledger, so option A's example, a lasting
 injury, had a home. Neither was in the question's evidence, and 428 went
 back to Mark with both before reaching the sim plan.
+
+**The third round, answered 2026-10-01.** 428 went back beside the
+aggregate, the far marks and a modifier's reach; Mark took every
+recommendation.
+
+| Question as put | Ruling |
+| --- | --- |
+| How should 428's record meet §3.5 and ruling 123? | 430: §3.5 narrowed to the environment's conditions, the record beside the ledger |
+| How does a modifier apply to a group? | 431: declared per modifier, distributive or collective |
+| What does a far mark show of what modifies a thing? | 432: the effects' glyphs, through a lens the player sets |
+| How far does a modifier reach beyond its bearer? | 433: the scopes the sim holds |
+
+With these, Mark's question from 423 has its answer. *Individually*, a thing
+keeps conditions as records beside its ledger (428, 430), and every
+modification applies effects from one vocabulary, from whatever source (427),
+combined in the world's layers (429) within the scopes the sim holds (433).
+*In aggregate*, each modifier is distributive or collective (431). *On
+screen*, the far rungs draw the effects' glyphs as the viewer may know them
+(432). The word "lens" in 432 collides with the wing's projection lens, so
+its name waits on Mark.

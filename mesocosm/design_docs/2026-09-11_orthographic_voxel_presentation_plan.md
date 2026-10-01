@@ -1474,7 +1474,12 @@ consumer. That edit is genet's, in the same session the lane opens.
   live parts is the seamless step, and it owes a measurement this plan's
   receipts do not yet hold: `isometer-mesh`'s silhouette test proves
   coverage under the bake's projection, not that the GPU pass lands the
-  bake's pixels and face shading.
+  bake's pixels and face shading. The far rungs' content is ruled too (432):
+  a thing's mark carries the glyphs of the effects modifying it, as the
+  viewer may know them and filtered by the player's choice with a default
+  per mode, and a group's mark carries each glyph's exact share of members
+  or the group's own value. Each glyph's display already lives in
+  `wing-glyphs` (`GlyphDefinition::display`).
 - Whether the tracer keeps the Mesocosm section by default or the section
   also moves to tile layers once L4 lands.
 - Whether L6's GPU bake targets the enhanced capability profile only, with

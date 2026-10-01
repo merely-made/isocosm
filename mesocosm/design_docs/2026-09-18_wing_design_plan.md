@@ -4281,7 +4281,9 @@ what later sections derive from.
      places, not on things", one of its four rules for holding hundreds of
      thousands of things, and ruling 123, which already keeps a body's
      wounds and vigour in its ledger, so option A's example, a lasting
-     injury, had a home. Put back to Mark with both.
+     injury, had a home. Put back to Mark with both. *Settled 2026-10-01 by
+     ruling 430:* the record stands beside the ledger, and §3.5's rule is
+     narrowed to the environment's conditions.
 
 429. **Modifiers combine in layers the world orders.** Asked on 2026-09-30:
      "How do modifiers that read other modifiers combine? Evidence:
@@ -4306,6 +4308,107 @@ what later sections derive from.
      computed amounts stay bounded expression trees (268). *Reading, not
      ruled:* the mosaic's adjacency (36) sits in such a layer, reading its
      neighbouring tracts.
+
+430. **The environment's conditions live on places; a thing's own
+     condition record sits beside its ledger.** Asked on 2026-10-01,
+     putting 428 back: "Ruling 428's record meets two lines its question
+     left out: the record's §3.5, "Conditions live on places, not on
+     things" (one of four rules for holding hundreds of thousands of
+     things, where processing, not memory, is the limit), and ruling 123,
+     which keeps wounds and vigour in the body's ledger. Under 207 a crowd
+     groups by what the rules read, so a record's cause need not split a
+     bin, and an end can be a scheduled event (§3.5's second rule). How
+     should they meet?" Options, recommended first: (A) "Narrow §3.5,
+     record beside ledger: §3.5 becomes "the environment's conditions live
+     on places", which things read where they stand; a thing's record keeps
+     what its ledger and body do not, states with a cause and perhaps an end
+     (poisoned, blessed, prone); wounds and vigour stay the ledger's (123),
+     and 406 chooses among both (recommended)." (B) "One home for every
+     state: as the first, but wounds move from the ledger into condition
+     records, so everything a carryover chooses among lives in one place;
+     vigour stays a pool." (C) "Withdraw the record: §3.5 stands as
+     written; a thing's states stay ledger and traits (poison an account
+     that eases, a curse a trait), their causes pointable through the
+     history; the handoff maps onto them." Mark chose A, "Narrow §3.5,
+     record beside ledger". So §3.5's fourth rule now reads "the
+     environment's conditions live on places": rain, heat and plague
+     exposure stay fields that things read where they stand, never copied
+     onto each thing. 428's record holds the states a thing's ledger and
+     body do not, and its example is corrected: wounds and vigour stay the
+     ledger's (123), a severed part the body's. A crowd groups by what the
+     rules read (207), so a record's cause splits no bin, and an end is a
+     scheduled event, never a countdown. 406's carryover chooses among
+     records and wounds alike.
+
+431. **A modifier declares whether it applies to each member or to the
+     group.** Asked on 2026-10-01: "How does a modifier apply to a group?
+     Evidence: 207 groups a crowd by each member's exact state as the rules
+     read it; the schema keeps quantity per member, a cohort's total being
+     quantity times multiplicity; a polity keeps accounts of its own; ruling
+     58 makes a fungus one body and germs many." Options, recommended first:
+     (A) "Declared per modifier: a distributive modifier applies to each
+     member and enters its state, splitting the histogram only where its
+     predicate differs; a collective one belongs to the group, as a polity's
+     accounts do (a swarm's cover, a herd's vigilance), and splits nothing
+     (recommended)." (B) "Always to members: a group keeps no modifiers of
+     its own; collective effects sit on the polity or body that holds the
+     group, and the aggregate only summarises its members." (C) "The group
+     stands in: while held as a crowd, members' modifiers fold into the
+     group's as rates, and lifting deals them back out; cheapest, and
+     inexact against 207." Mark chose A, "Declared per modifier". So every
+     modifier declares itself distributive or collective. A distributive one
+     enters each member's state and splits a crowd only where its predicate
+     reads members differently; a collective one is the group's own, as a
+     polity's accounts are. These are 423's aggregate modifiers. *Reading,
+     not ruled:* a fungus, one body however far it spreads (58), takes
+     collective modifiers on that body, and germs, many bodies, distributive
+     ones.
+
+432. **A far mark shows the glyphs of the effects on a thing, through a
+     lens the player sets.** Asked on 2026-10-01: "What does a far mark show
+     of what modifies a thing? Evidence: ruling 49 gives every fundamental
+     effect its own manifestation, a glyph, and wing-glyphs keeps each
+     glyph's display; knowledge access decides what a viewer may learn and
+     presentation only how it is shown (the record's architecture,
+     2026-09-28); 207's histogram holds each group's exact shares." Options,
+     recommended first: (A) "Effect glyphs through a lens: a thing's mark
+     shows the glyphs of the effects on it that the viewer may know,
+     filtered by a lens the player sets, with a default per mode; a group's
+     mark gives each glyph the share of members it touches, or the group's
+     own value when collective (recommended)." (B) "Fixed per game: each
+     game decides what its far marks show (Mesocosm hunger and lineage, the
+     VTT conditions, Eponym standing), with no player lens." (C)
+     "Everything known, as pips: every known modifier shows as a small pip,
+     unranked and unfiltered." Mark chose A, "Effect glyphs through a lens".
+     So the third and fourth rungs (423) draw the world's own glyphs: an
+     individual's mark carries the glyphs of the effects modifying it, and a
+     group's mark each glyph with its exact share of members (207) or the
+     group's own value (431). Knowledge access bounds what may show, the
+     player's lens chooses among it, and each mode supplies a default.
+     *Reading, not ruled:* the word "lens" collides with the wing's lens, a
+     projection (the VTT's locked isometric lens, `isometer-lens`); naming
+     this filter is Mark's.
+
+433. **A modifier reaches only the scopes the sim holds.** Asked on
+     2026-10-01: "How far does a modifier reach beyond its bearer?
+     Evidence: the sim never pathfinds or checks line of sight (§3.8) and
+     keeps coordinates the foreground's (422); it does hold bodies and their
+     mosaics, relations, groups, places and sites; the mosaic's adjacency
+     lies within one body (36)." Options, recommended first: (A) "Scopes the
+     sim holds: a modifier reaches its bearer, its body's neighbouring
+     tracts, its relations, its group, its place or its site; adjacency on
+     a battlemap belongs to the game holding positions, in its ruleset
+     (recommended)." (B) "Bearer only: a modifier touches only its bearer;
+     reaching others is a process that gives them a condition." (C)
+     "Through the reach field: auras spread as the reach field carries
+     events, fading with distance and time." Mark chose A, "Scopes the sim
+     holds". So a modifier declares its scope among bearer, body, relation,
+     group, place and site, and 423's adjacency perks come in two kinds:
+     between a body's tracts, the sim's (36), and between pieces on a board,
+     the game's, resolved by its ruleset with positions the sim never holds
+     (§3.8, 422). *Reading, not ruled:* a modifier scoped to a place or a
+     site whose predicate reads only the place applies alike to every member
+     there, and splits no crowd.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -6339,6 +6442,13 @@ location.
 Memory is not the constraint at this scale; processing is, and the four
 rules make it proportional to what is happening.
 
+*Amended 2026-10-01 by ruling 430:* the fourth rule reads "the environment's
+conditions live on places". Things read rain, heat and plague exposure where
+they stand, and none is copied onto each thing. A thing keeps its own
+condition records (428) only for states its ledger and body do not hold;
+their ends are scheduled events, as the second rule wants, and a crowd groups
+by what the rules read, so a record's cause splits no bin (207).
+
 *Ruled 2026-09-24 (ruling 124): the first target is a region.* At its
 largest, a seeded draw runs a region on Mark's laptop: hundreds of sites,
 tens of thousands of critters, hundreds of them named, a century of history
@@ -8117,6 +8227,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 430 to 433 recorded, one zoom's third round: 428
+  settled against §3.5 and ruling 123, §3.5's fourth rule narrowed to the
+  environment's conditions with the record beside the ledger (430);
+  modifiers declared distributive or collective (431); far marks drawing
+  the effects' glyphs through a lens the player sets, the word's collision
+  with the wing's projection lens left to Mark (432); and a modifier's
+  reach limited to the scopes the sim holds (433). §3.5 carries a dated
+  amendment. Carried into the sim plan's §2.3, §2.4 and §2.5, the session
+  notes' §10, the presentation plan's open decisions and the index.
 - 2026-10-01: rulings 426 to 429 recorded, one zoom's second round: the
   transition seamless where rungs share geometry and dithered where they do
   not (426), every modification an effect from the world's one vocabulary
