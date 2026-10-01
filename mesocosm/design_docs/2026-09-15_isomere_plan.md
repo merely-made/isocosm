@@ -9,6 +9,11 @@ The former header, "No crate founded", was stale. One host carrying the
 three modes is now the design target under ruling 381; the shared assembly
 alone does not implement that target.
 
+**Status, 2026-10-01:** the mode host's location, switching and save are
+ruled (442 to 444, in [§2.4](#24-one-host-and-independent-presentation-choices));
+the shared presentation and knowledge contract stays open. Nothing is built,
+and the host waits on Mesocosm's M3 for its first mode.
+
 **W1, 2026-09-18:** keep. Tier: stack, hosting and interface. Rewrite only
 the keymap row per ruling 21. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
@@ -173,6 +178,22 @@ Isometer currently exposes an orthographic slab camera; perspective support
 is future scene work. These are host and scene design tasks, not a request
 to move simulation rules into isomere. The above defines the target for W3
 and W4 without opening another implementation lane.
+
+**Ruled 2026-10-01 (wing design record, 442 to 444).** The executable lives
+in a host workspace of its own, holding only the mode host's binary and
+taking the three products' crates by path under the union of their patches;
+each product's workspace keeps building its one-mode profile, and Eponym's
+renderling, whose patches point outside the repository, retires before
+Eponym's mode joins that build (442). A window plays one mode over the open
+world and switches in place, swapping controls, view defaults and attention
+set while keeping the world, the subject and its embodiment; two modes over
+one world on one machine are two windows (443). The world save holds the
+sim's history and a section per mode, a build without a mode carrying its
+section through unread and unchanged (444). *Reading, not ruled:* the host
+can carry no mode until an overlay runs its game on the sim, so it lands
+with Mesocosm's M3, carrying Mesocosm's mode alone, and the VTT's and
+Eponym's modes join as their overlays land (194, 231). **Still open:** the
+shared presentation and knowledge contract.
 
 ## 3. What goes upstream instead
 
@@ -496,3 +517,8 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   status and help lines with a declared keymap, and the host assembly,
   consumed by Paredros and Isometry, with Paredros's netrender body sheet
   retired.
+- **2026-10-01:** the mode host's assessment found no game running on the
+  sim (only `mesocosm-genet`'s bench depends on `isocosm`), the three
+  overlays stopped at their contract modules, and Eponym's renderling still
+  patched to paths outside the repository. Mark ruled the host's location,
+  switching and save (442 to 444), carried into §2.4. Design only.

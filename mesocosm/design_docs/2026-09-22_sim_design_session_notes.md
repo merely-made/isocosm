@@ -1408,3 +1408,31 @@ Left to engineering, needing no ruling: the 13 µs an evaluation,
 unprofiled; sites run in parallel with results identical for any thread
 count; the 25% of evaluations blocked; and per-entity queues, which stay
 258's decision before M2's first receipts.
+
+**The fourth thread, the mode host.** Put as a choice among the mode host,
+building the cost-only century, profiling the evaluation and building a
+brief, Mark chose the mode host, §9.2's last gap. Its assessment:
+
+- isomere's `Assembly<P: Product>` is already the one host shell all three
+  products use, each its own `Product` in its own window;
+- no game runs on the sim: only `mesocosm-genet`'s bench depends on
+  `isocosm`, the VTT's and Eponym's hosts on neither it nor
+  `isocosm-overlay`, the three overlays stopped at their contract modules,
+  and V2 and E2 wait on Mesocosm's M3 (231);
+- the three workspaces patch vello and taffy alike, the VTT adding genet's
+  DOM crates, ipc-channel and muniment, Eponym rust-gpu's `spirv-std` and
+  two path patches to `Code/crates/crabslab` for renderling, which
+  `eponym-client` still uses;
+- the isomere plan's §2.4 already listed the open items: the executable's
+  location, packaging, the mode-switch lifecycle, and a presentation and
+  knowledge contract.
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does the all-modes build live? | 442: its own host workspace |
+| How does a host switch modes? | 443: in place, a mode per window |
+| What does the one world save hold? | 444: the world plus a section per mode |
+
+*Reading, not ruled:* the host lands with Mesocosm's M3, carrying its mode
+alone, the VTT's and Eponym's joining as their overlays land (194, 231). The
+presentation and knowledge contract is the host's last open item.

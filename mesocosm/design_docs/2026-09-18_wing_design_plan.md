@@ -4580,6 +4580,74 @@ what later sections derive from.
      viability; S5's century receipt still needs a drawn world that lives,
      which 260's staged gates decide.
 
+442. **The all-modes build lives in a host workspace of its own.** Asked on
+     2026-10-01, opening the mode host after its assessment found that no
+     game runs over the sim yet: "Where does the all-modes build live?
+     Evidence: the repository keeps three Cargo workspaces, the VTT's at the
+     root and Mesocosm's and Eponym's below, separate "to preserve
+     source/patch policy", and the root's .cargo/config.toml is inherited,
+     so product patches cannot go there; vello and taffy are patched alike
+     in all three, the VTT adds genet's DOM crates, ipc-channel and
+     muniment, and Eponym adds rust-gpu's spirv-std and two path patches to
+     Code/crates/crabslab, outside the repository, for renderling, which
+     eponym-client still uses; 385 keeps "no mode may require another
+     mode's code to run"." Options, recommended first: (A) "Its own host
+     workspace: a host workspace holding only the mode host's binary,
+     depending on the three products' crates by path under the union of
+     their patches, renderling's retired first; each product's workspace
+     keeps building its one-mode profile (recommended)." (B) "One workspace
+     for all: the three merge into one, one lockfile and one patch table;
+     simplest to build, ending the separation the root CLAUDE.md keeps."
+     (C) "The root workspace hosts: the VTT's root workspace takes in the
+     host binary and the other products' crates." Mark chose A, "Its own
+     host workspace". So a fourth workspace holds the mode host's binary
+     alone and takes the three products' crates by path; the product
+     workspaces keep their separation and their one-mode builds; and
+     Eponym's renderling, with its patches to paths outside the repository,
+     retires before Eponym's mode can join the host's build.
+
+443. **A window plays one mode and switches in place.** Asked on
+     2026-10-01: "How does a host switch modes? Evidence: isomere's
+     Assembly runs one Product in one window over cambium's winit host; 381
+     lets players in different modes share a trunk across peers; the isomere
+     plan's 2026-09-28 refinement, not ruled, keeps the world, subject and
+     embodiment across a mode change unless a game action changes them; each
+     mode brings its own controls, view defaults and attention set (212,
+     213)." Options, recommended first: (A) "In place, a mode per window: a
+     window plays one mode over the open world and switches in place,
+     swapping controls, view and attention set without reloading the world,
+     subject and embodiment kept; a second window can play another mode over
+     the same world (recommended)." (B) "Modes side by side in panes: one
+     window shows several modes at once, each pane with its own mode and
+     attention set." (C) "One mode per launch: switching saves and
+     relaunches into the other mode." Mark chose A, "In place, a mode per
+     window". So a mode switch keeps the open world, the subject and its
+     embodiment, and swaps the window's controls, view defaults and
+     attention set; the isomere plan's refinement on what a switch keeps is
+     ruled by this. Two modes over one world on one machine are two
+     windows.
+
+444. **The world save holds the sim's history and a section per mode.**
+     Asked on 2026-10-01: "What does the one world save hold? Evidence: the
+     sim saves its genesis, history and checkpoints (history.rs's Saved);
+     the VTT bundles maps, tilesets, sheets and system choice as a campaign
+     pack; Mesocosm keeps epochs and the shop; branches and merges run over
+     the sim's log (104); under 385 a build without a mode must still open
+     the save." Options, recommended first: (A) "World plus a section per
+     mode: one save holds the sim's history and a section per mode for what
+     is that mode's alone (a campaign's maps, a lineage's shop), each
+     section opaque to builds without its mode and kept intact by them
+     (recommended)." (B) "The world, mode files beside it: the save is the
+     sim's alone; each mode keeps its own file naming the world by digest."
+     (C) "Everything as the sim's facts: mode state becomes asserted facts
+     in the sim's record, branching and merging with it." Mark chose A,
+     "World plus a section per mode". So one file carries the sim's history
+     and, per mode, the state that is that mode's alone; a build without a
+     mode carries its section through unread and unchanged, which is 385's
+     guard applied to saves. *Reading, not ruled:* how a mode's section
+     branches and merges with the trunk (104) is the mode's own, the sim's
+     history merging as ruled.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8397,6 +8465,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 442 to 444 recorded, the mode host's first round,
+  after its assessment found no game running on the sim: the all-modes build
+  in a host workspace of its own (442), a window playing one mode and
+  switching in place (443), and the world save holding the sim's history and
+  a section per mode (444). Carried into the isomere plan's status, §2.4 and
+  Progress, the session notes' §10 and the index.
 - 2026-10-01: rulings 439 to 441 recorded, time at scale's first round,
   after the 09-25 scale points were remeasured on today's core (n^1.02,
   33 ms a tick at 4,096 members; the history run still dies by tick 65):
