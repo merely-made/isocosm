@@ -1335,3 +1335,28 @@ combined in the world's layers (429) within the scopes the sim holds (433).
 screen*, the far rungs draw the effects' glyphs as the viewer may know them
 (432). The word "lens" in 432 collides with the wing's projection lens, so
 its name waits on Mark.
+
+**The briefs.** Put as a choice among writing the two briefs, time at scale,
+the mode host and building SP4, Mark chose "Write the two briefs", a session
+direction rather than a ruling, and named 432's choice in the same round:
+
+| Question as put | Ruling |
+| --- | --- |
+| What do we call the player's choice of which glyphs the far marks show? | 434: filter |
+
+The ladder is briefed as the presentation plan's lane L10 and conditions and
+modifiers as the sim plan's §3.6 with phase S7, each with done-conditions
+beside controls. Writing them found four forks:
+
+- *Where a crowd member's condition cause is kept.* A `Population` cohort
+  shares "the complete causal state" and `restrict` merges only equal
+  entities, so a cause inside the record would split cohorts, which 430
+  forbids; and an `Event` is written only for a process marked `note`, one
+  per bulk application, so the history names no member's cause either.
+- *How a second application of a key combines with the first*, a spider's
+  poison on a thing already poisoned.
+- *What becomes of the VTT's overmap and Mesocosm's minimap* once the one
+  camera reaches the world map (423).
+- *How a far mark draws a glyph's display*, opaque Unicode in `wing-glyphs`,
+  when isometer's glyph batch draws only a bounded set of punctuation
+  strokes.

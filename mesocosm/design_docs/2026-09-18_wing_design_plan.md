@@ -4387,7 +4387,8 @@ what later sections derive from.
      player's lens chooses among it, and each mode supplies a default.
      *Reading, not ruled:* the word "lens" collides with the wing's lens, a
      projection (the VTT's locked isometric lens, `isometer-lens`); naming
-     this filter is Mark's.
+     this filter is Mark's. *Named 2026-10-01 by ruling 434:* the player's
+     filter.
 
 433. **A modifier reaches only the scopes the sim holds.** Asked on
      2026-10-01: "How far does a modifier reach beyond its bearer?
@@ -4409,6 +4410,20 @@ what later sections derive from.
      (§3.8, 422). *Reading, not ruled:* a modifier scoped to a place or a
      site whose predicate reads only the place applies alike to every member
      there, and splits no crowd.
+
+434. **The player's choice of which glyphs far marks show is a filter.**
+     Asked on 2026-10-01: "What do we call the player's choice of which
+     glyphs the far marks show? Evidence: "lens" already names the wing's
+     projection (the VTT's locked isometric lens, isometer-lens); "filter"
+     is already the creator's word for a player's narrowing choice (the
+     phenotype contract plan's generation filters), and elsewhere only
+     filter feeding uses it." Options, recommended first: (A) "Filter: the
+     creator's existing word for a player's narrowing choice; plain, and its
+     other use, filter feeding, is a different sense (recommended)." (B)
+     "Lens: keep 432's word, beside the projection lens and isometer-lens."
+     Mark chose A, "Filter". So 432's choice is the player's filter, each
+     mode supplying a default filter, and "lens" keeps one meaning, a
+     projection.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -8227,6 +8242,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: ruling 434 recorded, 432's choice named the player's filter.
+  At Mark's word the two briefs were written: the detail ladder as the
+  presentation plan's lane L10, and conditions and modifiers as the sim
+  plan's §3.6 with phase S7. The writing found four forks, recorded in the
+  session notes' §10 and put to Mark.
 - 2026-10-01: rulings 430 to 433 recorded, one zoom's third round: 428
   settled against §3.5 and ruling 123, §3.5's fourth rule narrowed to the
   environment's conditions with the record beside the ledger (430);

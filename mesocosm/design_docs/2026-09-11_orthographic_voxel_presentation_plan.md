@@ -2,6 +2,13 @@
 
 **Date:** 2026-09-11
 
+**Status, 2026-10-01:** lane [L10, the detail ladder](#l10-the-detail-ladder-2026-10-01),
+is briefed from the wing design record's rulings 423 to 426 and 432 to 434:
+five rungs in one camera, chosen by size within what the sim holds, terrain
+in nested rings, seamless or dithered transitions, and far marks drawing the
+effects' glyphs through the player's filter. Nothing is built; three forks
+return to Mark.
+
 **Status, 2026-09-13:** path C is the main spatial renderer under rulings
 13–15: mutually occluding ground and bodies share one producer-owned depth
 viewport, with body parts as instances. L0a/L0b and L0c are recorded below;
@@ -1387,6 +1394,98 @@ the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
 core types, owned by the [isometer family plan](2026-09-14_isometer_family_plan.md).
 
+### L10. The detail ladder (2026-10-01)
+
+Ruled by Mark on 2026-09-30 and 2026-10-01 in the wing's one-zoom thread;
+ruling numbers in this lane are the wing design record's (423 to 426, 432 to
+434). One detail ladder replaces the four near-to-far renderers the one-game
+assessment found: the isometer scene, the VTT's DOM board, the VTT atlas on
+sprigging's canvas and Mesocosm's minimap on the HUD lane
+([session notes, §9.2](2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
+It answers the hybrid switch policy among the open decisions below.
+
+**The rungs (423),** near to far, all in the one isometric camera (382, 387):
+
+| Rung | Draws | Over | Needs the sim to hold |
+| --- | --- | --- | --- |
+| R0 | live voxel parts, `isometer-render`'s `LiveBody` | base-grain terrain | the individual |
+| R1 | baked sprites, `isometer-mesh`'s `bake_facing` | a ring's coarser terrain | the individual |
+| R2 | a mark per individual, the glyphs of the effects modifying it | surface tiles | the individual |
+| R3 | an aggregate mark per group, each glyph with its share or the group's own value | places | a crowd or group |
+| R4 | the world map, sites coloured by their readings, with routes | the map | the site |
+
+**Choosing (424).** A pure function of the view and of what the sim holds:
+each thing takes the finest rung its projected size warrants, bounded by the
+finest the sim holds for it. Thresholds are in projected pixels of a thing's
+extent, each with a hysteresis band (426). Zooming in examines (212), which
+lifts detail through the log, so a finer rung arrives only once the sim holds
+it, and the renderer never draws an individual the sim does not hold.
+
+**Terrain (425).** Residency (291, `isometer::scene::residency`) becomes
+rings: base grain over what the view examines, each ring outward lifted one
+level coarser by SP2's `lift(site, level, at)`, the whole inside 296's 8 MiB
+of 16,383 bricks. The tracer walks each brick at its own scale, so levels
+meet without stitching (the record's §3.6). *Reading, not ruled:* where the
+rings overflow, the outer rings coarsen first and the examined region keeps
+base grain. The specimen bench leaves GroundTerrain's default of 2,047 for
+the host's budget (425).
+
+**Transitions (426).** Seamless where the rungs share geometry: R0 and R1
+meet pixel for pixel, a fine terrain column slides from its parent's top to
+its own, and a site's plate eases into its relief with its exact mean held at
+every frame (SP2). Dithered where they do not: R1 to R2, R2 to R3 and R3 to
+R4 swap by an ordered dither over a few frames, never alpha, with hysteresis
+at each threshold. A group dithers into its members only once they are
+lifted (424).
+
+**Far marks (432, 434).** An individual's mark carries the glyphs of the
+effects modifying it, which every modification has (427 with 49), as far as
+the viewer may know them, through the player's filter, each mode supplying a
+default. A group's mark gives each glyph its exact share of members (207), or
+the group's own value when collective (431). A glyph's display is
+`wing_glyphs::GlyphDefinition::display`, opaque Unicode, while isometer's
+glyph batch draws a bounded set of punctuation strokes, not display text, so
+how a mark draws a display is open. The sim supplies the modifiers through the
+[sim plan's §3.6](2026-09-22_sim_plan.md#36-conditions-and-modifiers), phase
+S7.
+
+**Owner tree:** `shared/isometer`, beside the residency helper (291), for the
+pure functions: rung choice, rings and the dither schedule. Hosts supply the
+sim's holdings, the viewer's knowledge and the player's filter through the
+overlay contract; the sim decides nothing about drawing.
+
+**Done when:**
+
+1. Rung choice is a pure function in isometer, tested over seeded views and
+   holdings: no thing shows a rung finer than the sim holds for it, and a
+   zoom oscillating inside a hysteresis band never changes a rung. A choice
+   with the bound removed, and one with a zero band, are the controls that
+   must fail.
+2. Over seeded maps and views the ring set stays within 16,383 bricks, base
+   grain covers the examined region, and the level rises by one per ring
+   outward. A 2,047-brick control coarsens the outer rings instead of
+   refusing, and the specimen bench runs on the host's budget.
+3. A receipt shows the GPU pass landing the bake's pixels and face shading
+   at the R0 to R1 threshold for seeded bodies at all four facings, with a
+   perturbed palette as the control. Until it holds, R0 and R1 dither.
+4. Every terrain slide frame has integer column tops between the parent's
+   and the column's own, ending at the two lifts, and every plate-easing
+   frame holds the site's exact mean, checked on the numerator; an ease that
+   does not hold it is the control.
+5. Every pixel of every dithered frame comes from exactly one of the two
+   rungs' pictures, the same for the same thing and frame; an alpha-blended
+   control is caught.
+6. An individual's mark shows exactly the known glyphs its filter passes,
+   and a group's shares equal its histogram's counts; an effect the viewer
+   cannot know is the control and never shows. Rests on S7.
+
+**Open, returning to Mark as forks:** what becomes of the VTT's overmap and
+Mesocosm's minimap; how a mark draws a glyph's display; and whether examining
+fires as the camera approaches, once the lift's latency is measured under
+done-condition 1's harness. Thresholds, bands, each mode's default filter and
+the dither's pattern and frame count are bench readings, to come with
+numbers.
+
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's
@@ -1479,7 +1578,8 @@ consumer. That edit is genet's, in the same session the lane opens.
   viewer may know them and filtered by the player's choice with a default
   per mode, and a group's mark carries each glyph's exact share of members
   or the group's own value. Each glyph's display already lives in
-  `wing-glyphs` (`GlyphDefinition::display`).
+  `wing-glyphs` (`GlyphDefinition::display`). The whole ladder is briefed as
+  [lane L10](#l10-the-detail-ladder-2026-10-01).
 - Whether the tracer keeps the Mesocosm section by default or the section
   also moves to tile layers once L4 lands.
 - Whether L6's GPU bake targets the enhanced capability profile only, with
