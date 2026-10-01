@@ -1482,3 +1482,23 @@ ruling 124's century of world time:
 | --- | --- |
 | What ends an epoch in Isocosm, and how long is one by default? | 451: three kinds, a year by default |
 | How is deep time's span counted? | 452: epochs, as Mesocosm, over the recommendation of world time |
+
+**Building checkpoint 6.** Step 4 and X3 were built on the branch
+`checkpoint-6` in `Code/worktrees/isometry-cp6`: the epoch rule, deep time
+and the founding presets as rules data (`c1ce6fc`, 142 tests), then computed
+amounts as bounded expression trees resolved once per act (`df0e999`, 150
+tests, fixed-amount behaviour unchanged). Reading Mesocosm's natives for the
+minimal body found that X2's readings and X6's allocation need fields the
+core part lacks, against the brief's reading that the body would live in the
+probe's world:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does the probe's minimal body live? | 453: optional fields on the core part |
+
+The same reading lengthened the extension list the probe owes at the
+checkpoint: an integer square root and a comparison in X3, for mass to the
+three-quarter power and a gland charged only over ground that covers its
+dose; queries over expressions; an ordered take, for upkeep from the reserve
+before the tissue (446); and the reserve marked among a lineage's two matter
+accounts.

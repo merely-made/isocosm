@@ -4844,6 +4844,31 @@ what later sections derive from.
      closing epochs within one epoch more than its span is refused as
      stalled.
 
+453. **The probe's minimal body is optional fields on the core part.**
+     Asked on 2026-10-01, building checkpoint 6's step 5, after its step 4
+     and X3 had landed on the branch: "Where does the probe's minimal body
+     live? Evidence: X2's readings and X6's allocation are core extensions
+     that read a part's cells, cell mass and half-extents, which Isocosm's
+     Part holds none of; my reading in the checkpoint 6 brief kept the
+     minimal body in the probe's world until the anatomy brief gives the
+     schema its body (281); the 09-25 crowd probe kept its bounds in its own
+     world the same way; the step's done-condition wants each native run as
+     definitions." Options, recommended first: (A) "Optional fields on the
+     core Part: Part gains half-extents, a cell capacity, cells per function
+     and cell mass, optional and hashing as before when absent; X2 and X6
+     read them in meaning for both runners, the natives run as core
+     definitions, and the anatomy brief reshapes the fields after the probe
+     (recommended)." (B) "A body in the probe's world: the probe holds its
+     own body type and runs the natives through probe-local readings; the
+     core's Part and definition widen only after the anatomy brief, so the
+     natives run as definitions only then." Mark chose A, "Optional fields
+     on the core Part". So the core part carries half-extents, a cell
+     capacity, cells per function and cell mass, each absent in parts
+     without them; X2's readings and X6's allocation read them for both
+     runners; and the anatomy brief (281) may reshape them once the probe
+     has shown what the mechanics use. This amends the brief's reading that
+     the minimal body lives in the probe's world.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8661,6 +8686,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: ruling 453 recorded while building checkpoint 6's step 5: the
+  probe's minimal body is optional fields on the core part, amending the
+  brief's reading that it would live in the probe's world. Step 4 and X3
+  are built and verified on the `checkpoint-6` branch, not yet on main.
+  Carried into the sim plan's checkpoint 6 brief, the session notes' §10
+  and the index.
 - 2026-10-01: rulings 451 and 452 recorded as checkpoint 6 opened: an
   epoch ends by one of Mesocosm's three rules, a year by default (451), and
   deep time's span counts epochs (452, over the recommendation of world
