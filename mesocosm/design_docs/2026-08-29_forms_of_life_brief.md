@@ -487,6 +487,15 @@ out of §C and §A with no new state.
 
 ### F. Reproduction — brood / spores / budding / horizontal
 
+*Ruled 2026-10-01 (wing design record, 447 to 450):* reproduction is several
+strategies governed by traits. The default set is brood, seed or egg,
+budding and fission, and spores. A lineage's traits name its strategies,
+the body's reproductive functions must express the one used, and the
+phenotype switches among them by circumstance. Reproduction also carries
+mating, semelparity or iteroparity, parental care, and horizontal transfer,
+a symbiont's edge counting as eating so the lexicon rule stands. The text
+below is the brief as written on 2026-08-29.
+
 **Has.** Brood only, and it is well-priced: gestation on `m^0.25`, cost
 `biomass/4`, and since TD6 the child's opening budget comes out of the parent's
 reserve rather than being conjured — capped at that cost, and zero if the parent

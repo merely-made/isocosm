@@ -4679,6 +4679,125 @@ what later sections derive from.
      mode shares it; and it shapes play only, every peer holding the whole
      world under replay.
 
+446. **A body keeps its lineage's matter as tissue and reserve.** Asked on
+     2026-10-01, opening checkpoint 6 with the question the checkpoint 5
+     review saved for its minimal-body probe: "Does a body keep its fuel
+     apart from its tissue? Evidence: Mesocosm keeps a reserve beside each
+     body's substance: a meal burns into the reserve when the body is within
+     STARVED_UPKEEP_TICKS of empty and builds tissue otherwise (TD5, one rule
+     for every kingdom), upkeep and rent are paid from the reserve, ceilings
+     bound both at the adult mass, and what a body cannot hold spills back to
+     the ground (TD6); Isocosm holds one matter account per lineage,
+     digestion yielding the eater's own (273, 342); the checkpoint 5 review
+     saved this for you." Options, recommended first: (A) "Two own-lineage
+     accounts: each body keeps its lineage's matter as tissue and reserve: a
+     meal burns into reserve near starving and builds tissue otherwise;
+     upkeep and rent draw reserve first, then tissue; ceilings bound both,
+     and what a body cannot hold spills to the ground (recommended)." (B)
+     "One account, reserve as a reading: a body keeps one matter account,
+     and the reserve is the share above a structural minimum, read by rule;
+     no separate ceiling or spill." (C) "Tissue only: no reserve: upkeep and
+     rent draw tissue directly, as Isocosm does now." Mark chose A, "Two
+     own-lineage accounts". So Mesocosm's TD5 and TD6 physiology moves into
+     Isocosm as two accounts of the body's own lineage's matter, leaving
+     own-lineage digestion (273, 342) as ruled: a meal's routing between
+     them is one rule for every kingdom, upkeep and rent draw the reserve
+     before the tissue, ceilings bound both, and what a body cannot hold
+     spills to the ground. *Reading, not ruled:* a spill is a mineralization
+     (342), living matter returning to the world's; the starvation margin,
+     the ceilings and the routing threshold are world rules with Mesocosm's
+     values as defaults; and the probe's minimal body carries both accounts.
+
+447. **Reproduction is several strategies, governed by traits.** Asked on
+     2026-10-01, with 446, filial cost being the other physiology the
+     checkpoint 5 review left out: "What does a birth take from the parent,
+     and what body does the child start with? Evidence: Mesocosm grows the
+     child from the lineage's recipe at a quarter of the parent's biomass
+     (OFFSPRING_COST), paid from the parent's substance, with a reserve
+     endowment from its reserve as far as it goes, "a birth is a transfer,
+     not a spawn" (TD6); Isocosm's Birth clones the parent's whole body and
+     debits a provision from its accounts; plasticity is a life stage youth
+     pays for (the epoch boundary plan)." Options, recommended first: (A) "A
+     filial body, world-rule cost: the child is grown from its lineage's
+     recipe at a fraction of the parent's body set by the world's rules,
+     Mesocosm's quarter the default, paid from the parent's tissue, with a
+     reserve endowment from its reserve as far as it goes; a birth is a
+     transfer, never a spawn (recommended)." (B) "A clone with a provision:
+     as Isocosm does now: the child copies the parent's body and receives a
+     provision debited from the parent." (C) "A seed, grown by feeding: the
+     child starts as a minimal body paid from the reserve alone and grows by
+     its own feeding, the cheap many-offspring strategy." Mark answered:
+     "There should probably be a few reproductive strategies governed by
+     traits… so 1 and 3 and more could be options". So a lineage reproduces
+     by strategies its traits govern, the filial body and the seed among
+     them; which strategies form the default set, what decides a body's, and
+     which further axes reproduction carries were put back the same day.
+     *Reading, not ruled:* every strategy is a transfer and never a spawn, as
+     TD6 and the sim's conservation of matter require.
+
+448. **The default set holds four reproductive strategies.** Asked on
+     2026-10-01, putting 447 back: "Which reproductive strategies does the
+     default set hold? Evidence: the forms-of-life brief's reproduction axis
+     (§F) has brood, the only one built, plus budding (a body at its ceiling
+     routing overflow into a bud, conservation-neutral), spores
+     (reproduction without locomotion, needing a bounded scatter) and
+     horizontal transfer; germs are many bodies that burn generations
+     spreading (58); you named the filial body and the seed. I'd take all
+     four below." Options, several allowed: "Brood, a filial body: the child
+     grown from the recipe at a fraction of the parent set by world rule,
+     paid from its tissue, with a reserve endowment; Mesocosm's today."
+     "Seed or egg: a minimal propagule paid from the reserve, growing by its
+     own feeding; many offspring, most lost." "Budding and fission: a body at
+     its ceiling routes its overflow into a bud, or divides, the child a
+     share of the parent; how germs spread as many bodies (58)." "Spores:
+     many tiny propagules scattered beyond the parent's reach, most lost,
+     under a bounded scatter rule." Mark chose all four. So the default set
+     is brood, seed or egg, budding and fission, and spores, each paid as
+     described. *Reading, not ruled:* fractions, propagule sizes and scatter
+     bounds are world rules with Mesocosm's values as defaults where it has
+     them, and spores' scatter waits for the places family.
+
+449. **A lineage's traits name its strategies, the body must support the one
+     used, and the phenotype switches by circumstance.** Asked on
+     2026-10-01, with 448: "What decides how a body reproduces? Evidence:
+     ruling 36's phenotype expresses abilities by circumstance, condition,
+     status and activity, and the record names an aphid growing wings and a
+     locust turning gregarious as its polyphenism; 277 puts a reproductive
+     organ system among the body's systems, assembled from functions; 405
+     has construction declare function; a lineage's genotype changes only at
+     the epoch boundary (57)." Options, recommended first: (A) "A trait the
+     body must support: the lineage's traits name its strategies, the body's
+     reproductive functions must express the one used, and the phenotype may
+     switch among them by circumstance, as aphids switch with the season
+     (36) (recommended)." (B) "One per lineage, fixed: a lineage reproduces
+     one way, changed only at the epoch boundary (57)." (C) "The body alone:
+     whatever reproductive functions a body expresses decide it, with no
+     lineage trait." Mark chose A, "A trait the body must support". So
+     which strategies a lineage may use is genotype, changing at the epoch
+     boundary (57); which one a body uses is phenotype, switching by
+     circumstance; and a body uses a strategy only when its reproductive
+     functions express it (405, 277).
+
+450. **Reproduction also carries mating, semelparity or iteroparity,
+     parental care and horizontal transfer.** Asked on 2026-10-01, with 448:
+     "Which further axes does reproduction carry now? Evidence: Mesocosm
+     breeds from one parent today; 57 rerolls expression at reproduction by
+     the heterogeneity of the genes; the brief notes the engine is
+     iteroparous by construction and semelparity "cheap and dramatic";
+     horizontal transfer conflicts with the lexicon rule unless a symbiont's
+     edge counts as eating (§F)." Options, several allowed: "Mating: two
+     parents' genotypes combine, needing a partner, the reroll spreading by
+     both parents' heterogeneity." "Semelparity or iteroparity: one brood
+     then death, or many, as a trait." "Parental care: provisioning after
+     birth, a feeding transfer from parent to young." "Horizontal transfer:
+     acquiring a trait from something not eaten, a symbiont's edge counted
+     as eating." Mark chose all four. So reproduction may mix two parents'
+     genotypes, 57's reroll spreading by both parents' heterogeneity; a
+     lineage may breed once and die or breed many times, by trait; a parent
+     may provision its young after birth by a feeding transfer; and a trait
+     may cross from a symbiont, whose edge counts as eating, so the lexicon
+     rule stands as the brief's §F proposed.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8496,6 +8615,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 446 to 450 recorded, checkpoint 6's design: a body's
+  tissue and reserve (446), and reproduction as several strategies governed
+  by traits (447), the default set brood, seed or egg, budding and fission
+  and spores (448), chosen by a trait the body must support and switched by
+  circumstance (449), with mating, semelparity or iteroparity, parental care
+  and horizontal transfer (450). Lane A's checkpoint 3 plan, found only in
+  that lane's session, has its steps 4 and 5 restated in the sim plan's §9
+  as checkpoint 6's brief. Carried into the sim plan's §2.3, §3.4, §9,
+  status and Progress, the forms-of-life brief's §F, the session notes'
+  §10 and the index.
 - 2026-10-01: ruling 445 recorded, the mode host's knowledge contract: a
   window's access follows its seat and subject, never its mode. The mode
   host has no open design item; it waits on Mesocosm's M3 and on Eponym's

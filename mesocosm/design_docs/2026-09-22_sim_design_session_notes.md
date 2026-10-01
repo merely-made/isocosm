@@ -1447,3 +1447,27 @@ runs the whole sim, so knowledge access shapes play and keeps no secrets:
 With it the mode host has no open design item. What remains is sequence:
 Mesocosm's M3, Eponym's renderling retired, then the host workspace and its
 first mode.
+
+**The fifth thread, checkpoint 6.** Put as a choice among designing
+checkpoint 6, building a designed brief and the secondary gaps, Mark chose
+checkpoint 6, the next unopened step on the critical path: Mesocosm on the
+sim (M2, then M3) gates both other overlays, the mode host's first mode and
+the viability a real century needs. Its assessment found that Lane A's
+checkpoint 3 plan, which defined the checkpoint, lived only in that lane's
+session (`agent-a89e04fcecf797735`): step 4, rules data, and step 5, the
+vertical probe of the five natives over a minimal allocated body. Lane A's
+classifier fork was found settled by 338 and 405, and the minimal body's
+schema home by 281's order, so two physiology questions remained: the one
+the checkpoint 5 review saved, fuel against tissue, and filial cost.
+
+| Question as put | Ruling |
+| --- | --- |
+| Does a body keep its fuel apart from its tissue? | 446: two own-lineage accounts, tissue and reserve |
+| What does a birth take from the parent, and what body does the child start with? | 447: Mark's own answer, several strategies governed by traits |
+| Which reproductive strategies does the default set hold? | 448: brood, seed or egg, budding and fission, spores |
+| What decides how a body reproduces? | 449: a trait the body must support, switched by circumstance |
+| Which further axes does reproduction carry now? | 450: mating, semelparity or iteroparity, parental care, horizontal transfer |
+
+The checkpoint is briefed in the sim plan's §9 with Lane A's steps restated
+in the tree; reproduction lands with the bodies and lineages families, none
+of the five natives being a birth.
