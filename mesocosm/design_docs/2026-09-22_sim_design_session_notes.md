@@ -1376,3 +1376,35 @@ asked: the lift's latency decides whether examining fires as the camera
 approaches, the GPU pass must be shown to land the bake's pixels and
 shading, and thresholds, bands, default filters, the dither, and a world's
 default layers and stacking come from the bench as readings with numbers.
+
+**The third thread, time at scale.** Put as a choice among time at scale,
+the mode host, measuring the briefs' open items and building, Mark chose
+time at scale, the gap §9.2 ranked second. Its assessment remeasured the
+09-25 scale points on today's core
+(`mesocosm/testing/bench/receipts/2026-10-01/isocosm/SCALE_REMEASURE.md`):
+
+- the quadratic is gone, cost growing as n^1.02 over 512 to 4,096 members,
+  33 ms a tick at 4,096 against 18.2 s on 09-25, about 77 ms at 10,000 by
+  the fit, at 9 to 17 µs an evaluation;
+- the scheduler already jumps between due ticks, so at ruling 256's periods
+  a century costs evaluations: 36,525 daily passes, against about 23
+  million evaluations in 300 s, where one daily process over 10,000 members
+  at nine a group needs about 41 million;
+- no drawn world lives long enough to measure it, the history run's 1,024
+  members all dead by tick 65; and grouping decays, 10.7 to 5.7 members a
+  group in eight ticks.
+
+The strategy was found already ruled, the background hybrid (261) with the
+exact crowd wherever grouping pays (266) and viability staged per family by
+four measures (260, 267), so the round put only what those left open:
+
+| Question as put | Ruling |
+| --- | --- |
+| How is "where grouping stops paying" (266) measured? | 439: members per state, a world rule |
+| Where is a rate model calibrated against the exact runner? | 440: on the bench, per rules digest |
+| How is the century measured before a drawn world lives that long? | 441: a cost-only draw now |
+
+Left to engineering, needing no ruling: the 13 µs an evaluation,
+unprofiled; sites run in parallel with results identical for any thread
+count; the 25% of evaluations blocked; and per-entity queues, which stay
+258's decision before M2's first receipts.

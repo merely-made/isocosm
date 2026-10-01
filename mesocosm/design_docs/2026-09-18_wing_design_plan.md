@@ -4518,6 +4518,68 @@ what later sections derive from.
      (netrender's), run once per glyph and cached, so no font draws at frame
      time.
 
+439. **Grouping stops paying where members per state fall below a world
+     rule.** Asked on 2026-10-01, opening time at scale after a remeasure of
+     the 09-25 scale points on today's core (`SCALE_REMEASURE.md`): "How is
+     "where grouping stops paying" (266) measured? Evidence: today at 4,096
+     members, members per group fall from 10.7 to 5.7 in eight ticks; the
+     crowd's savings fell from 11 to 2.4 times once strain was per-member
+     state (261); a century in 300 s buys about 23 million evaluations at
+     today's 13 µs each, and one daily process over 10,000 members at nine a
+     group needs about 41 million." Options, recommended first: (A)
+     "Members per state, a world rule: a site and lineage moves to its rate
+     model when its members per distinct state fall below a bound the
+     world's rules set, measured at each of its periods, and moves back when
+     they rise; every switch is receipted (recommended)." (B) "When the
+     budget needs it: deep time spends a work budget in evaluations,
+     machine-independent (284), moving the site-lineages whose grouping
+     pays least to rate models first until the century fits; amends 266's
+     line from grouping to budget." (C) "Declared per process: the rules
+     mark which processes run as rate models in deep time; everything else
+     stays exact." Mark chose A, "Members per state, a world rule". So 266's
+     line is measured per site and lineage at each of its periods, as
+     members per distinct state against a bound in the world's rules; below
+     it the site and lineage runs its rate model, above it the exact crowd,
+     and every switch either way is receipted. The century's time is not
+     guaranteed by this; the budget stays a guard on work (284).
+
+440. **A rate model is calibrated on the bench, once per rules digest.**
+     Asked on 2026-10-01: "Where is a rate model calibrated against the
+     exact runner? Evidence: 261 says on the bench; 207's crowd was
+     certified on 1,000 draws for one rules revision; a world's rules are
+     content-addressed (§3.1); a world's own sites, lineages and scarcity
+     differ from any bench draw's." Options, recommended first: (A) "Bench,
+     per rules digest: rates are fitted once per rules digest over many
+     draws, certified against the exact runner as 207's crowd was, and
+     shipped with the rules; a world never runs an uncalibrated model
+     (recommended)." (B) "Bench, then each world: bench-fitted rates
+     refined by a short exact window in each world's deep time before it
+     leaps, the refinement receipted." (C) "Each world only: each world's
+     deep time runs an exact window per site and lineage and fits its own
+     rates." Mark chose A, "Bench, per rules digest". So a rules digest
+     carries its rate models' fitted rates and their certificate, and a
+     world under rules without a certified model keeps every site and
+     lineage on the exact crowd, whatever 439's bound says.
+
+441. **A cost-only century is measured now; the century receipt waits on
+     viability.** Asked on 2026-10-01: "How is the century measured before a
+     drawn world lives that long? Evidence: today's history run is all dead
+     by tick 65, with no births, as on 09-25; 260 stages viability per family
+     with M2; S5's done-condition wants a drawn region's century receipted
+     (124); the reservoir family, independent processes, ran a
+     10,000-member tick in 0.42 s on 09-25." Options, recommended first: (A)
+     "A cost-only draw now: a region-sized draw with deaths held off,
+     labelled cost and never viability, measures a century's evaluations
+     and seconds on today's core; the real receipt waits on 260's gates
+     (recommended)." (B) "Wait for viability: no century number until M2's
+     families keep a web alive." (C) "The reservoir family: a century on
+     the family that already lives, as a lower bound on cost." Mark chose
+     A, "A cost-only draw now". So a region-sized draw at ruling 256's
+     periods runs a century of world time with deaths held off, and its
+     receipt says on every page that it measures cost and certifies no
+     viability; S5's century receipt still needs a drawn world that lives,
+     which 260's staged gates decide.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8335,6 +8397,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 439 to 441 recorded, time at scale's first round,
+  after the 09-25 scale points were remeasured on today's core (n^1.02,
+  33 ms a tick at 4,096 members; the history run still dies by tick 65):
+  grouping stops paying below a world rule's members per state (439), rate
+  models are certified once per rules digest on the bench (440), and a
+  cost-only century draw is measured before viability (441). Carried into
+  the sim plan's §5.3, S5, Findings and Progress, the session notes' §10
+  and the index.
 - 2026-10-01: rulings 435 to 438 recorded, the four forks the briefs'
   writing found: a cohort's tally of condition causes beside its state
   (435), one record per key combined by the key's stacking (436), minimaps
