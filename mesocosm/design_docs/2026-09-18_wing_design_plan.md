@@ -4648,6 +4648,37 @@ what later sections derive from.
      branches and merges with the trunk (104) is the mode's own, the sim's
      history merging as ruled.
 
+445. **What a window may know follows its seat and subject, never its
+     mode.** Asked on 2026-10-01, the mode host's last open item, the
+     shared presentation and knowledge contract: "What decides what a
+     window may know? Evidence: Mesocosm's survival shows what the critter
+     knows and creative the truth, seeing only (180, 184); a DM edits and
+     may take up any unclaimed entity (156); divine figures may see behind
+     the curtain as magic (384); under replay every peer runs the whole sim
+     (212, 213), so access shapes play, not secrecy; a mode switch keeps the
+     subject and embodiment (443); the overlay contract has an AttentionSet
+     and a ViewHandle but no access." Options, recommended first: (A) "Seat
+     and subject, never the mode: a window's access comes from its
+     participant's seat (player, creative observer, DM) and the entity
+     played, plus awareness granted in play (384); switching modes changes
+     how it is shown, never what may be known, and every presentation path
+     reads through it (recommended)." (B) "Each mode sets its own: survival
+     or creative in Mesocosm, player or DM in the VTT, as each game decides;
+     a switch may change what is known." (C) "Truth everywhere, filters
+     optional: every window may see the truth, and each mode offers a
+     knowledge filter the player can turn on." Mark chose A, "Seat and
+     subject, never the mode". So a window's knowledge access is computed
+     from three things: its participant's seat, the entity it plays, and any
+     awareness granted in play, such as 384's divine sight. Readings, far
+     marks (432), examiners and the event stream all read through it, and a
+     mode switch changes only how the permitted is shown. *Reading, not
+     ruled:* Mesocosm's survival and creative (180) read as seats, a player
+     playing a critter and a creative observer seeing the truth without
+     editing (184), and the VTT's DM is the seat that edits (156); the access
+     type belongs in `isocosm-overlay` beside the attention set, since every
+     mode shares it; and it shapes play only, every peer holding the whole
+     world under replay.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8465,6 +8496,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: ruling 445 recorded, the mode host's knowledge contract: a
+  window's access follows its seat and subject, never its mode. The mode
+  host has no open design item; it waits on Mesocosm's M3 and on Eponym's
+  renderling retiring. Carried into the isomere plan, the session notes'
+  §10 and the index.
 - 2026-10-01: rulings 442 to 444 recorded, the mode host's first round,
   after its assessment found no game running on the sim: the all-modes build
   in a host workspace of its own (442), a window playing one mode and

@@ -1436,3 +1436,14 @@ brief, Mark chose the mode host, §9.2's last gap. Its assessment:
 *Reading, not ruled:* the host lands with Mesocosm's M3, carrying its mode
 alone, the VTT's and Eponym's joining as their overlays land (194, 231). The
 presentation and knowledge contract is the host's last open item.
+
+That item went to Mark alone, with the finding that under replay every peer
+runs the whole sim, so knowledge access shapes play and keeps no secrets:
+
+| Question as put | Ruling |
+| --- | --- |
+| What decides what a window may know? | 445: seat and subject, never the mode |
+
+With it the mode host has no open design item. What remains is sequence:
+Mesocosm's M3, Eponym's renderling retired, then the host workspace and its
+first mode.

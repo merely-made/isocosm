@@ -9,10 +9,9 @@ The former header, "No crate founded", was stale. One host carrying the
 three modes is now the design target under ruling 381; the shared assembly
 alone does not implement that target.
 
-**Status, 2026-10-01:** the mode host's location, switching and save are
-ruled (442 to 444, in [§2.4](#24-one-host-and-independent-presentation-choices));
-the shared presentation and knowledge contract stays open. Nothing is built,
-and the host waits on Mesocosm's M3 for its first mode.
+**Status, 2026-10-01:** the mode host's location, switching, save and
+knowledge contract are ruled (442 to 445, in [§2.4](#24-one-host-and-independent-presentation-choices)).
+Nothing is built, and the host waits on Mesocosm's M3 for its first mode.
 
 **W1, 2026-09-18:** keep. Tier: stack, hosting and interface. Rewrite only
 the keymap row per ruling 21. Evaluated against the wing design record; see
@@ -192,8 +191,14 @@ sim's history and a section per mode, a build without a mode carrying its
 section through unread and unchanged (444). *Reading, not ruled:* the host
 can carry no mode until an overlay runs its game on the sim, so it lands
 with Mesocosm's M3, carrying Mesocosm's mode alone, and the VTT's and
-Eponym's modes join as their overlays land (194, 231). **Still open:** the
-shared presentation and knowledge contract.
+Eponym's modes join as their overlays land (194, 231). The shared
+presentation and knowledge contract is ruled too (445): a window's access
+follows its participant's seat (player, creative observer, DM), the entity
+it plays and any awareness granted in play (384), never its mode, and every
+presentation path, readings, far marks, examiners and the event stream,
+reads through it. *Reading, not ruled:* the access type sits in
+`isocosm-overlay` beside the attention set, and under replay it shapes play,
+not secrecy.
 
 ## 3. What goes upstream instead
 
@@ -522,3 +527,6 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   overlays stopped at their contract modules, and Eponym's renderling still
   patched to paths outside the repository. Mark ruled the host's location,
   switching and save (442 to 444), carried into §2.4. Design only.
+- **2026-10-01:** the knowledge contract ruled (445): a window's access
+  follows its seat and subject, never its mode. §2.4 has no open item left;
+  the host waits on Mesocosm's M3.
