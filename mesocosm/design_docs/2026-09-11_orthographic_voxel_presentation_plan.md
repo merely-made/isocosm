@@ -1469,6 +1469,12 @@ consumer. That edit is genet's, in the same session the lane opens.
   five rungs (423), its terrain rings (425) and the open transition are in
   the record and the
   [session notes' §10](2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
+  *2026-10-01:* the transition is ruled (426): seamless where the rungs share
+  geometry, by ordered dither with hysteresis where they do not. Sprite to
+  live parts is the seamless step, and it owes a measurement this plan's
+  receipts do not yet hold: `isometer-mesh`'s silhouette test proves
+  coverage under the bake's projection, not that the GPU pass lands the
+  bake's pixels and face shading.
 - Whether the tracer keeps the Mesocosm section by default or the section
   also moves to tile layers once L4 lands.
 - Whether L6's GPU bake targets the enhanced capability profile only, with

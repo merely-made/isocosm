@@ -1290,3 +1290,28 @@ Elder Scrolls' spell parts are its effects, not glyphs: its spells, potions,
 enchantments, diseases and birthsigns all compose one effect list. In the
 tree a glyph is a canon's name for an effect, so "every modification from a
 glyph" would let a canon revision change what being wet does.
+
+**The second round, answered 2026-10-01.** The transition was put back with
+the morph's needs, beside the first three modifier questions; Mark took
+every recommendation.
+
+| Question as put | Ruling |
+| --- | --- |
+| Now that the morph's needs are known, how does a thing change rung? | 426: seamless where the rungs share geometry, dithered where they do not |
+| Is every modification built from the one effect vocabulary? | 427: one vocabulary, many sources, a glyph among them |
+| How does an entity hold a condition? | 428: a condition record, reopened the same day |
+| How do modifiers that read other modifiers combine? | 429: layers in the world's order |
+
+Ruling 49 joins 427 to the ladder: every effect the world recognises as
+fundamental has its own manifestation, a glyph, so every modification's
+effect has a glyph whatever its source, and the far rungs can mark a thing's
+modifiers with them. Elder Scrolls draws each effect with its own icon in
+the same way.
+
+**What 428's question left out.** Carrying 428 into the sim plan met its
+§2.4 line, "Conditions live on places, never on things", which cites the
+record's §3.5, one of four rules for holding hundreds of thousands of things
+where processing, not memory, is the limit. Ruling 123 already keeps a
+body's wounds and vigour in its ledger, so option A's example, a lasting
+injury, had a home. Neither was in the question's evidence, and 428 went
+back to Mark with both before reaching the sim plan.

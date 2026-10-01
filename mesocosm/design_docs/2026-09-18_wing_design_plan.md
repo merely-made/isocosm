@@ -4194,6 +4194,119 @@ what later sections derive from.
      never selects the sim's representation, since every level lifts from
      the same exact surface.
 
+426. **A thing changes rung seamlessly where the rungs share geometry, and
+     by dither where they do not.** Asked on 2026-09-30, after the session
+     notes' account of what a continuous morph would require (§10), Mark's
+     own question in place of an answer to the first round's fourth: "Now
+     that the morph's needs are known, how does a thing change rung?
+     Evidence: sprites and live parts agree to the pixel on silhouette (3
+     bodies × 4 facings) and share the bake's palette; terrain grains and a
+     site's plate can slide exactly; mark to sprite needs a halved-bake
+     chain (about +1/7 voxels) and unfolding needs per-part bakes (atlas ×
+     part count); a group's split waits on the lift (212)." Options,
+     recommended first: (A) "Seamless where shared: sprites and live parts
+     meet pixel for pixel, terrain columns slide between grains, a site's
+     plate rises into its relief with its mean held; marks, sprites and
+     groups, which share no geometry, swap by ordered dither with
+     hysteresis. Every frame exact (recommended)." (B) "Continuous morph
+     throughout: adds per-part bakes, the halved-bake chain for marks, and
+     members bursting from their group once the lift lands (or on approach,
+     moving 212's line). Richest, with frame receipts per rung pair and
+     quarter turn." (C) "Dithered everywhere: one mechanism for every rung
+     pair: an ordered dither over a few frames with hysteresis, as first
+     recommended." (D) "Hard pop, with hysteresis: the rung switches in one
+     frame; simplest and exact, and visible as a pop." Mark chose A,
+     "Seamless where shared", answered on 2026-10-01. So the step from
+     sprite to live parts owes a measurement, since agreement on silhouette
+     is not yet agreement on the picture: the GPU pass must land the bake's
+     pixels and face shading at the threshold. Terrain slides column by
+     column between the rings' levels (425), a site's plate eases into its
+     relief, and marks, sprites and groups dither with hysteresis at each
+     threshold. A group still dithers into members only once they are
+     lifted (424); whether examining fires on approach is not ruled.
+     *Reading, not ruled:* neither per-part bakes nor a chain of halved
+     bakes is needed under this ruling.
+
+427. **Every modification applies effects from the world's one vocabulary,
+     and a glyph is one source among many.** Asked on 2026-09-30: "Is every
+     modification built from the one effect vocabulary? Evidence:
+     wing-glyphs binds each glyph to an effect id that a canon revision may
+     move; 404 makes every fundamental effect a combinable cantrip; 407
+     puts material and conceptual operations in one composition system;
+     Elder Scrolls' spells, potions, enchantments, diseases and birthsigns
+     all compose one effect list." Options, recommended first: (A) "One
+     vocabulary, many sources: every modifier applies effects from the
+     world's vocabulary; a glyph is one source beside traits, parts, items,
+     places, conditions and relations, and a canon revision moves only what
+     glyphs bind (recommended)." (B) "Effects for magic only: magic
+     composes effects and pays per 404; mundane modifiers (terrain, gear,
+     hunger) are plain adjustments to readings, authored apart." (C) "Every
+     modifier is a glyph: every modification is a glyph in some canon,
+     mundane ones included; uniform, and a canon revision can then change
+     what being wet does." Mark chose A, "One vocabulary, many sources",
+     answered on 2026-10-01. So the effect is the atom of modification, as
+     Elder Scrolls' spell parts are, which answers 423's "unless literally
+     every effect or modification is derived from a glyph": every one is
+     derived from an effect. A modifier names its source, a glyph, trait,
+     part, item, place, condition or relation, and a canon revision moves a
+     glyph's binding without touching modifiers from other sources.
+     *Reading, not ruled:* ruling 49 gives every effect the world
+     recognises as fundamental "its own characteristic manifestation (a
+     glyph)", so every modification's effect has a glyph whatever its
+     source, and the far rungs can mark a thing's modifiers with their
+     effects' glyphs. A ruleset's own arithmetic over readings, such as the
+     SRD's `s_speed`, stays the ruleset's, which the sim never sees (§5).
+
+428. **An entity holds a condition as a record: key, magnitude, cause and
+     an optional end.** Asked on 2026-09-30: "How does an entity hold a
+     condition? Evidence: sites keep keyed conditions and VTT tokens keyed
+     magnitudes; the handoff's Condition { subject, condition, magnitude }
+     has nowhere to land, since Entity keeps none; strain is kept as an
+     account that eases (159), flags as traits; 406 carries chosen
+     conditions into a next life, and inheritance must be pointable."
+     Options, recommended first: (A) "A condition record: key, magnitude,
+     the event that caused it and an optional end; a status is a condition
+     with an end (poisoned for ten turns), a lasting injury one without.
+     Readings read them, the handoff lands in them, 406 chooses among them
+     (recommended)." (B) "Traits and accounts: no new structure: a
+     present-or-absent condition is a trait, and one with a magnitude is an
+     account that eases, as strain does." (C) "Readings only: every
+     condition derives from the ledger and the record (malnourished from
+     matter held), never kept." Mark chose A, "A condition record",
+     answered on 2026-10-01. So an entity keeps conditions with their
+     causes pointable, a status is a condition with an end, the overlay's
+     handoff lands in them, and 406's carryover chooses among them.
+     *Reopened on 2026-10-01* before it was carried into the sim plan: the
+     question's evidence left out the record's §3.5, "Conditions live on
+     places, not on things", one of its four rules for holding hundreds of
+     thousands of things, and ruling 123, which already keeps a body's
+     wounds and vigour in its ledger, so option A's example, a lasting
+     injury, had a home. Put back to Mark with both.
+
+429. **Modifiers combine in layers the world orders.** Asked on 2026-09-30:
+     "How do modifiers that read other modifiers combine? Evidence:
+     Balatro's jokers apply left to right, each reading the running score;
+     Magic: The Gathering orders continuous effects in seven layers;
+     Pathfinder takes the highest bonus of each type; 268 bounds amounts as
+     expression trees; 207's crowd needs each member's reading computed
+     once, deterministically." Options, recommended first: (A) "Layers in
+     world order: each modifier sits in a layer the world's rules order and
+     reads conditions and earlier layers only, so no cycle can form; within
+     a layer each reading declares its stacking: sum, highest, lowest,
+     product or replace (recommended)." (B) "The bearer's arrangement:
+     modifiers apply in the order the bearer's build sets, each reading the
+     running result, as Balatro's jokers do; arranging becomes play, as the
+     mosaic already makes adjacency play." (C) "Dependency order: a
+     modifier reads whatever it names; evaluation follows its dependencies,
+     and authoring refuses a cycle." Mark chose A, "Layers in world order",
+     answered on 2026-10-01. So an adjacency perk, or a modifier defined in
+     terms of others, reads the layers beneath its own; every reading
+     terminates and is computed once per state, as the crowd needs; the
+     world's rules declare the layers and each reading's stacking; and
+     computed amounts stay bounded expression trees (268). *Reading, not
+     ruled:* the mosaic's adjacency (36) sits in such a layer, reading its
+     neighbouring tracts.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8004,6 +8117,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 426 to 429 recorded, one zoom's second round: the
+  transition seamless where rungs share geometry and dithered where they do
+  not (426), every modification an effect from the world's one vocabulary
+  with a glyph one source among many (427), an entity's condition record
+  (428), and modifiers combined in layers the world orders (429). 428 was
+  reopened the same day, before reaching the sim plan, on the record's §3.5
+  ("Conditions live on places, not on things") and ruling 123's wounds in
+  the ledger, which its question's evidence left out; it is put back to
+  Mark. Carried into the session notes' §10, the sim plan's §2.4 and §2.5,
+  the presentation plan's open decisions and the index.
 - 2026-09-30: rulings 423 to 425 recorded, the first round of one zoom, the
   wing's detail ladder: five rungs in one camera with the far marks read as
   modifiers (423), the finest rung a thing's size warrants among those the
