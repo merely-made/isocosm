@@ -3,11 +3,12 @@
 **Date:** 2026-09-11
 
 **Status, 2026-10-01:** lane [L10, the detail ladder](#l10-the-detail-ladder-2026-10-01),
-is briefed from the wing design record's rulings 423 to 426 and 432 to 434:
-five rungs in one camera, chosen by size within what the sim holds, terrain
-in nested rings, seamless or dithered transitions, and far marks drawing the
-effects' glyphs through the player's filter. Nothing is built; three forks
-return to Mark.
+is briefed from the wing design record's rulings 423 to 426, 432 to 434, 437
+and 438: five rungs in one camera, chosen by size within what the sim holds,
+terrain in nested rings, seamless or dithered transitions, far marks drawing
+the effects' glyphs as pixel icons through the player's filter, and minimaps
+and overmaps as second cameras. Nothing is built. Whether examining fires as
+the camera approaches waits on a measurement of the lift's latency.
 
 **Status, 2026-09-13:** path C is the main spatial renderer under rulings
 13–15: mutually occluding ground and bodies share one producer-owned depth
@@ -1444,10 +1445,21 @@ the viewer may know them, through the player's filter, each mode supplying a
 default. A group's mark gives each glyph its exact share of members (207), or
 the group's own value when collective (431). A glyph's display is
 `wing_glyphs::GlyphDefinition::display`, opaque Unicode, while isometer's
-glyph batch draws a bounded set of punctuation strokes, not display text, so
-how a mark draws a display is open. The sim supplies the modifiers through the
+glyph batch draws a bounded set of punctuation strokes, not display text. So
+each display is rasterised once at mark size into an atlas of pixel icons,
+and isometer draws far marks from it at integer scale with the scene's depth
+(438); the glyph batch keeps drawing glyph effects' strokes. A canon revision
+changes which glyph an effect shows, never the atlas. *Reading, not ruled:*
+the rasteriser is netrender's text path (parley, skrifa, vello), run once per
+glyph, cached, and thresholded to opaque pixels, since the look takes no
+alpha. The sim supplies the modifiers through the
 [sim plan's §3.6](2026-09-22_sim_plan.md#36-conditions-and-modifiers), phase
 S7.
+
+**More cameras (437).** A minimap or an overmap is a second camera on the
+same ladder, held at R4. The main camera reaches R4 by zooming out, and the
+VTT's overmap on sprigging's canvas and Mesocosm's minimap hulls on the HUD
+lane retire once a second camera replaces each.
 
 **Owner tree:** `shared/isometer`, beside the residency helper (291), for the
 pure functions: rung choice, rings and the dither schedule. Hosts supply the
@@ -1478,13 +1490,22 @@ overlay contract; the sim decides nothing about drawing.
 6. An individual's mark shows exactly the known glyphs its filter passes,
    and a group's shares equal its histogram's counts; an effect the viewer
    cannot know is the control and never shows. Rests on S7.
+7. The atlas holds each glyph's display once, as opaque pixels at mark size,
+   and marks drawn from it occlude and are occluded by the scene at its
+   depth. A canon revision moves which icon an effect shows without
+   rebuilding the atlas: the receipt counts atlas builds, and a control
+   that rebuilds on revision shows a second build.
+8. The VTT and Mesocosm each show their map through a second camera held at
+   R4, matching the sites, routes and readings their retiring overmap and
+   minimap drew, and the canvas and HUD renderers are removed.
 
-**Open, returning to Mark as forks:** what becomes of the VTT's overmap and
-Mesocosm's minimap; how a mark draws a glyph's display; and whether examining
-fires as the camera approaches, once the lift's latency is measured under
-done-condition 1's harness. Thresholds, bands, each mode's default filter and
-the dither's pattern and frame count are bench readings, to come with
-numbers.
+**Forks found writing this, ruled 2026-10-01:** what becomes of the overmap
+and minimap is second cameras on the ladder (437), and how a mark draws a
+glyph's display is pixel icons from the display (438). **Still open:**
+whether examining fires as the camera approaches, once the lift's latency is
+measured under done-condition 1's harness. Thresholds, bands, each mode's
+default filter and the dither's pattern and frame count are bench readings,
+to come with numbers.
 
 ## CSS features and standards to earmark
 

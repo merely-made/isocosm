@@ -1360,3 +1360,19 @@ beside controls. Writing them found four forks:
 - *How a far mark draws a glyph's display*, opaque Unicode in `wing-glyphs`,
   when isometer's glyph batch draws only a bounded set of punctuation
   strokes.
+
+Put to Mark as one round, all four took the recommendation:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where is a crowd member's condition cause kept? | 435: a tally beside the cohort |
+| How does a second application of a key combine with the first? | 436: one record, the key's stacking |
+| What becomes of the VTT's overmap and Mesocosm's minimap? | 437: second cameras on the ladder |
+| How does a far mark draw a glyph's display? | 438: pixel icons from the display |
+
+Both briefs now carry their forks' answers: S7 has seven done-conditions and
+L10 eight, each beside a control. What stays open is measured before it is
+asked: the lift's latency decides whether examining fires as the camera
+approaches, the GPU pass must be shown to land the bake's pixels and
+shading, and thresholds, bands, default filters, the dither, and a world's
+default layers and stacking come from the bench as readings with numbers.

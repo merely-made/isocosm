@@ -4425,6 +4425,99 @@ what later sections derive from.
      mode supplying a default filter, and "lens" keeps one meaning, a
      projection.
 
+435. **A cohort keeps a tally of its members' condition causes beside its
+     state.** Asked on 2026-10-01, a fork found writing the sim plan's
+     §3.6: "Where is a crowd member's condition cause kept? Evidence: a
+     Population cohort shares "the complete causal state" and restrict
+     merges only equal entities, so a cause inside the record would split
+     cohorts, which 430 forbids; an Event is written only for a process
+     marked note, one per bulk application with the group's representative
+     as subject; how a thing learned is already sampled backward on demand
+     (86, 117)." Options, recommended first: (A) "A tally beside the
+     cohort: each cohort keeps, outside its equality, a count of members per
+     cause (the act: process, tick, place); merging adds tallies, and
+     lifting draws a member's cause from them by a seeded draw, after which
+     the lifted member keeps its own. Exact in counts, pointable for anyone
+     lifted (recommended)." (B) "Drawn back on demand: a crowd keeps no
+     causes; lifting draws a plausible cause from the history, as how a
+     thing learned is sampled backward (86, 117). Exact only for
+     individuals." Mark chose A, "A tally beside the cohort". So a cause is
+     the act that applied a condition, named by process, tick and place
+     whether or not the act was noted, and a cohort's tally counts its
+     members by cause outside the equality `restrict` compares. Merging adds
+     tallies, and a lift draws the lifted member's cause, seeded, from them,
+     so the counts stay exact and every lifted member's cause is pointable.
+     *Reading, not ruled:* the members left on either side of a lift divide
+     the rest of the tally by a seeded draw, since no member has an identity
+     until looked at (113).
+
+436. **A second application of a key combines into one record by the key's
+     stacking.** Asked on 2026-10-01, a fork found writing §3.6: "How does a
+     second application of a key combine with the first, a spider's poison
+     on a thing already poisoned? Evidence: 5e's conditions do not stack and
+     the longer duration applies; Elder Scrolls stacks one effect from
+     different spells but refreshes a recast of the same; Pathfinder 2e's
+     valued conditions take the higher value; 429 already declares stacking
+     per reading." Options, recommended first: (A) "One record, the key's
+     stacking: a key declares its stacking as a reading does (429): the
+     magnitudes combine by it (sum, highest, replace…) and the end becomes
+     the later of the two; both causes are kept (recommended)." (B) "A
+     record per application: each application keeps its own magnitude and
+     end, and readings stack them when read; a thing poisoned ten times
+     holds ten records, and a crowd splits by each." (C) "Refresh: a
+     reapplication replaces the magnitude and the end, as many games refresh
+     a debuff." Mark chose A, "One record, the key's stacking". So a thing
+     holds at most one record per key: each key declares its stacking from
+     429's list, a second application combines magnitudes by it, the end
+     becomes the later of the two, and both causes stay counted (435).
+     *Reading, not ruled:* a key declaring replace takes the new
+     application's end with its magnitude, which is the refresh of option C
+     available to a world that wants it.
+
+437. **A minimap or overmap is a second camera on the ladder.** Asked on
+     2026-10-01, a fork found writing the presentation plan's lane L10:
+     "What becomes of the VTT's overmap and Mesocosm's minimap? Evidence:
+     423 put the world map in the one camera as R4, over the option of
+     keeping it "a separate document view, as the overmap and minimap are
+     today"; the overmap draws on sprigging's canvas and the minimap as
+     hulls on the HUD lane; §9.2 counted both among the four near-to-far
+     renderers." Options, recommended first: (A) "Second cameras on the
+     ladder: the main camera reaches R4 by zooming out; where a game wants a
+     minimap or overmap, it is a second camera on the same ladder, held at
+     R4, and the separate canvas and HUD renderers retire (recommended)."
+     (B) "Retire both: one camera only; zooming out is the only map." (C)
+     "Keep them for now: both stay as they are until L10 lands, then come
+     back as a fork." Mark chose A, "Second cameras on the ladder". So the
+     four near-to-far renderers become one ladder drawn through as many
+     cameras as a game wants, and the VTT's overmap on sprigging's canvas
+     and Mesocosm's minimap hulls retire once a second camera held at R4
+     replaces each.
+
+438. **A far mark draws a glyph's display as a pixel icon.** Asked on
+     2026-10-01, a fork found writing L10: "How does a far mark draw a
+     glyph's display? Evidence: wing-glyphs keeps a display as opaque
+     Unicode; isometer's glyph batch draws a bounded set of punctuation
+     strokes with the scene's depth, "a presentation vocabulary and nothing
+     more"; the hosts are genet documents, which already lay out text; the
+     look is pixel art at integer scale (387)." Options, recommended first:
+     (A) "Pixel icons from the display: each glyph's display is rasterised
+     once at mark size into a pixel atlas, nearest-neighbour at integer
+     scale, and isometer draws marks from it with the scene's depth; a canon
+     revision changes which glyph an effect shows, never the atlas
+     (recommended)." (B) "Genet text over the scene: marks are document
+     elements the host positions by the scene's projection, its text and CSS
+     drawing each display, as the VTT's DOM board draws tiles; no depth
+     shared with the scene." (C) "Strokes per glyph: the world gives each
+     glyph a stroke shape from isometer's vocabulary, drawn by the existing
+     batch; no text at all, and the vocabulary grows with every glyph."
+     Mark chose A, "Pixel icons from the display". So each glyph's display
+     is rasterised once into an atlas of pixel icons at mark size, and
+     isometer draws far marks from that atlas at integer scale with the
+     scene's depth. The existing glyph batch keeps drawing glyph effects'
+     strokes. *Reading, not ruled:* the rasteriser is the stack's text path
+     (netrender's), run once per glyph and cached, so no font draws at frame
+     time.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -8242,6 +8335,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 435 to 438 recorded, the four forks the briefs'
+  writing found: a cohort's tally of condition causes beside its state
+  (435), one record per key combined by the key's stacking (436), minimaps
+  and overmaps as second cameras on the ladder (437), and far marks drawn as
+  pixel icons from each glyph's display (438). Carried into the sim plan's
+  §3.6 and S7, the presentation plan's L10, the session notes' §10 and the
+  index.
 - 2026-10-01: ruling 434 recorded, 432's choice named the player's filter.
   At Mark's word the two briefs were written: the detail ladder as the
   presentation plan's lane L10, and conditions and modifiers as the sim
