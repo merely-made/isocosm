@@ -2450,6 +2450,9 @@ what later sections derive from.
      tube, or add tube, branch, shell and joint? Mark: "Add tube, branch,
      shell, joint." So the classifier reads hollowness, branching and
      enclosure as well as extents.
+     *Amended 2026-10-02 by ruling 492:* shapes are read from a part's
+     measurements to name it, and gate no function; no classifier reading
+     hollowness, branching or enclosure had been built.
 277. **A body's functions assemble into organ systems, and new systems are
      riffed from them.** Put to Mark on 2026-09-26, with 276: which functions
      join contract, intake, sense, fix and secrete: structure and control,
@@ -2930,6 +2933,10 @@ what later sections derive from.
      of the part it binds, and a spread acts from each patch, which one
      lowest-numbered binding does not cover; the anatomy brief's next round
      settles how.
+     *Settled 2026-10-02 by ruling 488:* a spread is a territory, acting at
+     each place it covers, so the one binding serves a part tree. *Amended
+     by ruling 492:* no shape gates a function; the catalogue's shapes are
+     each function's fits.
 339. **The catalogue starts with the five functions in use.** Put to Mark on
      2026-09-26, with 338: the five, all fifteen of ruling 277, or those
      with the other vocabularies folded in? Mark: "The five in use."
@@ -3864,6 +3871,8 @@ what later sections derive from.
      identify it so an accepted body change can invalidate the reading.
      *Applied to bodies 2026-10-02 by ruling 462:* the sim keeps where each
      part attaches and measures reach, clearance and contact itself.
+     *Applied to the catalogue 2026-10-02 by ruling 492:* each function's
+     mechanic names the measurement that scales it.
 
 406. **A new life selects conditions to carry forward, with granular player
      configuration or randomization.** Asked: "How are consequences
@@ -5248,6 +5257,9 @@ what later sections derive from.
      grown on them, secrete alone acquired; a lump splits its cells between
      taking in and storing; and wing-functions' source and store map onto
      store, its gate onto gate and its actuator onto contract.
+     *Amended 2026-10-02 by ruling 492:* the table's shapes are the fits the
+     generator draws by default, not gates; any part may express any
+     function, scaled by its measurements.
 
 467. **One part model serves every body form, a part attaching to a parent
      or lying on a site.** Asked on 2026-10-02, the anatomy brief's third
@@ -5794,6 +5806,49 @@ what later sections derive from.
      a body can realize its routes, such as an animal whose respiratory
      source is fix or a gut that photosynthesizes; each riff becomes world
      data with its own name.
+     *Corrected 2026-10-02 by ruling 492:* 466's gate refused its own
+     example, a gut that photosynthesizes, fix being admitted only on
+     sheets; under 492 the gut fixes by its area.
+
+492. **No shape gates a function; what a part does scales with the
+     measurement its mechanic names.** Raised by Mark on 2026-10-02, the
+     anatomy brief's seventh round, as the sixth was recorded: "The shapes,
+     that’s the part I’m most worried about. That correspondence between
+     function and shape". Asked the same day: "How should a part's shape
+     relate to its function? Evidence: in the sim, a part's shape is a
+     declared label, one of the eight, and 466's table gates which functions
+     it may express. Nothing checks the label against the part's geometry,
+     which is only a box of half-extents. The classifier 276 named, reading
+     hollowness, branching and enclosure, does not exist. The only one in
+     code is isometer's, which reads a box's extents into four roles (lump,
+     rod, sheet, point), so tube, branch, shell and joint are labels nothing
+     can verify. The gate also refuses 491's own example, a gut that
+     photosynthesizes, since fix is admitted only on sheets. 405 has
+     construction declare function and geometry measure what a mechanic
+     needs." Options, recommended first: (A) "Measurements, not gates: any
+     part can express any function. What it does scales with the measurement
+     its mechanic names: fix by the area a part presents, contract by its
+     length, store and intake by its volume. Form still decides how well,
+     the table becomes the fits the generator draws by default, and shapes
+     are read from measurements to name parts, never to gate them. A
+     photosynthesizing gut fixes by its area, poorly (recommended)." (B)
+     "Classified, then gated: keep 466's gate, but read each part's shape
+     from its geometry, as 276 meant. The part records hollowness, branching
+     and enclosure beside its extents, and the classifier names its shape,
+     so a label cannot lie." (C) "Gated, with affinity: keep the eight
+     declared shapes. Any shape may express any function, but at a
+     world-rule fraction of the rate unless the table lists it." (D) "As
+     ruled: keep 466's gate on declared labels. Riffs swap only functions
+     the shapes admit, and 491's example becomes an animal whose leaves feed
+     its gut." Mark chose A, "Measurements, not gates". So any part can
+     express any function, and what it does scales with the measurement its
+     mechanic names, fix by the area a part presents, contract by its
+     length, store and intake by its volume, so form still decides how well;
+     466's table becomes the fits the generator draws by default; and shapes
+     are read from measurements to name parts, never to gate them. This
+     amends the gate of 338 and 466 and the classifier's role in 276, and
+     makes 491's example, a gut that photosynthesizes, which 466's gate
+     refused when 491 was recorded, a body that can be.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9615,6 +9670,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: ruling 492 recorded, the anatomy brief's seventh round, raised
+  by Mark: no shape gates a function, and what a part does scales with the
+  measurement its mechanic names. Annotations on 276, 338 (with 488's
+  settling of its spread question), 405, 466 and 491. Carried into the
+  brief, the sim plan, the session notes' §10 and the index.
 - 2026-10-02: rulings 489 to 491 recorded, the anatomy brief's sixth round:
   the default systems take the proposed table of ten (489), the natives read
   them from the bodies family on (490), and the generator riffs systems by

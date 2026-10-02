@@ -1641,3 +1641,10 @@ The sixth round took the default systems, as Mark asked:
 | Do the default systems take the proposed table? | 489: the proposed table |
 | When do the natives start reading their systems? | 490: with the bodies family |
 | How does the generator riff new systems? | 491: by substitution |
+
+Mark then raised the shapes: "The shapes, that’s the part I’m most worried
+about. That correspondence between function and shape". The evidence: a
+part's shape in the sim is a declared label that validation never checks
+against its geometry, the classifier 276 named was never built, and 466's
+gate refused 491's own example. Put to him as how a part's shape should
+relate to its function, it was ruled 492: measurements, not gates.

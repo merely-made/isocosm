@@ -1,9 +1,9 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Six rounds are ruled (459 to 470, 477
-to 480 and 485 to 491); the questions still open are listed in §8 and go to
-Mark in rounds. Nothing is built. When the brief is ruled through, it is
+281 asked, from the probe's evidence. Seven rounds are ruled (459 to 470,
+477 to 480 and 485 to 492); the questions still open are listed in §8 and go
+to Mark in rounds. Nothing is built. When the brief is ruled through, it is
 carried into the sim plan's §2.3 and becomes the brief for S2's bodies
 family, the next in ruling 195's order (457).
 
@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470, 477 to 480 and 485 to 491; checkpoint 6's findings in
+450, 453, 456 to 470, 477 to 480 and 485 to 492; checkpoint 6's findings in
 the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -72,10 +72,10 @@ process takes only what its system carries, the rest staying put.
 ## 2. The function catalogue
 
 One catalogue every game reads (278), holding all fifteen functions of
-ruling 277 (461), each with the shapes that admit it, its seeding (341) and
-what reads it (466):
+ruling 277 (461), each with the shapes it fits best, its seeding (341) and
+what reads it (466, 492):
 
-| Function | Shapes | Seeding | Read by |
+| Function | Fits | Seeding | Read by |
 | --- | --- | --- | --- |
 | contract | rod | Grown | rent, mouthful, reach |
 | intake | lump, tube | Grown | the meal |
@@ -93,28 +93,32 @@ what reads it (466):
 | grip | rod, branch, joint | Grown | Eponym's grip, contact |
 | adhesion | sheet, point | Grown | Eponym's adhesion |
 
-Secrete alone is acquired; every other function grows on the shapes it
-names, and a lump splits its cells between taking in and storing. The other
-vocabularies fold in (461, 466): wing-functions' source and store onto
-store, a source being a store that starts charged, its gate onto gate and
-its actuator onto contract; Eponym's grip and adhesion are the catalogue's,
-their reach measured by the sim (462). *Reading, not ruled:* Eponym's load
-stays declared until a mechanic measures it, and the contact probe's
-impairments of grip and reach become harms to the parts that grip and reach.
+Secrete alone is acquired. No shape gates a function (492): any part can
+express any function, and what it does scales with the measurement its
+mechanic names, fix by the area a part presents, contract by its length,
+store and intake by its volume, so form still decides how well; the
+generator draws the fits by default, and a lump splits its cells between
+taking in and storing. The other vocabularies fold in (461, 466):
+wing-functions' source and store onto store, a source being a store that
+starts charged, its gate onto gate and its actuator onto contract; Eponym's
+grip and adhesion are the catalogue's, their reach measured by the sim
+(462). *Reading, not ruled:* Eponym's load stays declared until a mechanic
+measures it, and the contact probe's impairments of grip and reach become
+harms to the parts that grip and reach.
 
 ## 3. The part
 
-A part has one of the eight shapes (276), the functions it expresses, its
-half-extents, where it attaches to its parent (462), its cells allocated
-among its functions, its tissue (459), its traits and whether it is
-severed. Its capacity and the mass of one cell are read from its extents by
-Mesocosm's rule (460): along each axis one cell per two voxels of
-half-extent plus one, at most four an axis and 64 in all, each cell
-weighing the part's adult mass over its cells, the adult mass being its
-voxels priced at the reference mass a segment. *Reading, not ruled:* the
-reference mass and segment, 100 mg in 125 voxels, are world rules with
-Mesocosm's values as defaults, as 446's reading has the starvation margin,
-the ceilings and the routing threshold.
+A part has a shape, one of the eight, read from its measurements to name it
+and gating nothing (276, 492), the functions it expresses, its half-extents,
+where it attaches to its parent (462), its cells allocated among its
+functions, its tissue (459), its traits and whether it is severed. Its
+capacity and the mass of one cell are read from its extents by Mesocosm's
+rule (460): along each axis one cell per two voxels of half-extent plus one,
+at most four an axis and 64 in all, each cell weighing the part's adult mass
+over its cells, the adult mass being its voxels priced at the reference mass
+a segment. *Reading, not ruled:* the reference mass and segment, 100 mg in
+125 voxels, are world rules with Mesocosm's values as defaults, as 446's
+reading has the starvation margin, the ceilings and the routing threshold.
 
 A part attaches to its parent, making the tree (467), and a terrain-body is
 a part tree whose parts are big enough to carry places. A spread such as
@@ -213,9 +217,17 @@ strategies.
   appendages grow in.
 - **Wounds' details** (469): which functions lose the cells a wound takes,
   and where regrowing them falls in growth's order.
+- **Measurements** (492): which measurement each function's mechanic names
+  beyond the four ruled, how area, length and volume are read from a part's
+  half-extents, and how a shape is read from them to name a part, a box
+  showing no hollow, fork or enclosure.
 
 ## Progress
 
+- 2026-10-02: the seventh round, raised by Mark, ruled (492): no shape gates
+  a function, and what a part does scales with the measurement its mechanic
+  names; §2's table now lists fits, §3 reads a part's shape from its
+  measurements, and §8 gains the measurements item.
 - 2026-10-02: the sixth round ruled (489 to 491): the default systems take
   the table of ten, now in §1, the natives read them from the bodies family
   on, and the generator riffs systems by substitution; §8's default systems
