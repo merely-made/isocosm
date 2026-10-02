@@ -183,37 +183,80 @@ pub enum Effect {
         amount: Amount,
         into: Key,
     },
+    /// An effect applied only where its guard comes to something (X5), such
+    /// as an eater paying for a bite only while the gland is charged.
+    When {
+        guard: Expr,
+        effect: Box<Effect>,
+    },
+    /// Up to `amount` taken from the actor's accounts in the order listed,
+    /// each share moved to the same account at `to` (ruling 446): upkeep
+    /// paid from the reserve before the tissue.
+    Spend {
+        from: Vec<Key>,
+        to: Binding,
+        amount: Amount,
+    },
+    /// Cells of the bound part moved to a function it expresses, from
+    /// another or, with no `from`, from its free cells (X6).
+    Allocate {
+        from: Option<Key>,
+        to: Key,
+        cells: Amount,
+    },
 }
 
 impl Effect {
-    /// The amounts an act resolves before it stages this effect (X3).
+    /// The amounts an act resolves before it stages this effect (X3); a
+    /// guarded effect's are its inner effect's.
     pub fn amounts(&self) -> Vec<&Amount> {
         match self {
             Self::Transfer { amount, .. }
             | Self::Practice { amount, .. }
             | Self::Ease { amount, .. }
-            | Self::Eat { amount, .. } => vec![amount],
+            | Self::Eat { amount, .. }
+            | Self::Spend { amount, .. } => vec![amount],
+            Self::Allocate { cells, .. } => vec![cells],
+            Self::When { effect, .. } => effect.amounts(),
             _ => vec![],
         }
     }
     pub fn draws(&self) -> bool {
-        self.amounts().iter().any(|a| a.draws())
+        matches!(self, Self::When { guard, .. } if guard.draws())
+            || self.amounts().iter().any(|a| a.draws())
     }
-    /// This effect with every amount resolved to the number it comes to.
+    /// Whether resolving it computes anything, a guard included.
+    pub fn computes(&self) -> bool {
+        matches!(self, Self::When { .. })
+            || self
+                .amounts()
+                .iter()
+                .any(|a| matches!(a, Amount::Computed(_)))
+    }
+    /// This effect with every amount resolved to the number it comes to, or
+    /// none where a guard came to nothing.
     pub fn resolve(
         &self,
         read: &mut impl FnMut(&Reading) -> crate::Result<i64>,
         draw: &mut impl FnMut(u64) -> crate::Result<u64>,
-    ) -> crate::Result<Effect> {
-        let mut e = self.clone();
-        if let Self::Transfer { amount, .. }
-        | Self::Practice { amount, .. }
-        | Self::Ease { amount, .. }
-        | Self::Eat { amount, .. } = &mut e
-        {
-            *amount = amount.resolve(read, draw)?;
+    ) -> crate::Result<Option<Effect>> {
+        if let Self::When { guard, effect } = self {
+            return match guard.eval(read, draw)? {
+                0 => Ok(None),
+                _ => effect.resolve(read, draw),
+            };
         }
-        Ok(e)
+        let mut e = self.clone();
+        match &mut e {
+            Self::Transfer { amount, .. }
+            | Self::Practice { amount, .. }
+            | Self::Ease { amount, .. }
+            | Self::Eat { amount, .. }
+            | Self::Spend { amount, .. } => *amount = amount.resolve(read, draw)?,
+            Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw)?,
+            _ => {},
+        }
+        Ok(Some(e))
     }
 }
 

@@ -246,78 +246,131 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             query(rules, q)?;
         }
         for e in effects {
-            conversion::declared(rules, id, e)?;
-            for a in e.amounts() {
-                amount(rules, p, id, a)?;
-            }
-            match e {
-                Effect::Transfer { account: a, .. } => account(rules, a)?,
-                Effect::Transform { take, give, .. } => {
-                    for a in take.keys().chain(give.keys()) {
-                        account(rules, a)?;
-                    }
-                    // Matter remains matter even for transforms between provenance kinds.
-                    if mass(take, rules) != mass(give, rules) {
-                        return Err(format!("unbalanced matter transform: {id}"));
-                    }
-                },
-                Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
-                    return Err(format!("unknown condition {key}"));
-                },
-                Effect::Trait { key, .. } if !rules.traits.contains(key) => {
-                    return Err(format!("unknown trait {key}"));
-                },
-                Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
-                    return Err(format!("unknown relation {kind}"));
-                },
-                Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
-                    return Err(format!("unknown note kind {kind}"));
-                },
-                Effect::Birth { provision } => {
-                    for a in provision.keys() {
-                        account(rules, a)?;
-                    }
-                },
-                Effect::FoundPolity { support, .. } => account(rules, support)?,
-                Effect::Record { axis, account: a } => {
-                    key(axis)?;
-                    account(rules, a)?;
-                    if !p.note {
-                        return Err("recorded feats require a causal event".into());
-                    }
-                },
-                // Easing a level destroys what it takes, so it never takes
-                // matter, and only bodies keep levels.
-                Effect::Ease { who, key, .. } => {
-                    account(rules, key)?;
-                    if matter(rules, key).is_ok() || *who == Binding::Place {
-                        return Err(format!("{id} eases what cannot be eased"));
-                    }
-                },
-                // The target is eaten into the eater's own matter; a site or
-                // the eater itself is not eaten, and a meal of nothing is no
-                // meal.
-                Effect::Eat { from, amount, into } => {
-                    matter(rules, into)?;
-                    if *from != Binding::Target || *amount == Amount::Fixed(0) {
-                        return Err(format!("{id} eats what cannot be eaten"));
-                    }
-                },
-                _ => (),
-            }
+            effect(rules, p, id, e)?;
         }
     }
     mind(rules)?;
     competitions(rules)
 }
 
+/// One effect's checks; a guarded effect's guard and inner effect are
+/// checked in turn (X5).
+fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
+    conversion::declared(rules, id, e)?;
+    for a in e.amounts() {
+        amount(rules, p, id, a)?;
+    }
+    match e {
+        Effect::Transfer { account: a, .. } => account(rules, a)?,
+        Effect::Transform { take, give, .. } => {
+            for a in take.keys().chain(give.keys()) {
+                account(rules, a)?;
+            }
+            // Matter remains matter even for transforms between provenance kinds.
+            if mass(take, rules) != mass(give, rules) {
+                return Err(format!("unbalanced matter transform: {id}"));
+            }
+        },
+        Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
+            return Err(format!("unknown condition {key}"));
+        },
+        Effect::Trait { key, .. } if !rules.traits.contains(key) => {
+            return Err(format!("unknown trait {key}"));
+        },
+        Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
+            return Err(format!("unknown relation {kind}"));
+        },
+        Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
+            return Err(format!("unknown note kind {kind}"));
+        },
+        Effect::Birth { provision } => {
+            for a in provision.keys() {
+                account(rules, a)?;
+            }
+        },
+        Effect::FoundPolity { support, .. } => account(rules, support)?,
+        Effect::Record { axis, account: a } => {
+            key(axis)?;
+            account(rules, a)?;
+            if !p.note {
+                return Err("recorded feats require a causal event".into());
+            }
+        },
+        // Easing a level destroys what it takes, so it never takes
+        // matter, and only bodies keep levels.
+        Effect::Ease { who, key, .. } => {
+            account(rules, key)?;
+            if matter(rules, key).is_ok() || *who == Binding::Place {
+                return Err(format!("{id} eases what cannot be eased"));
+            }
+        },
+        // The target is eaten into the eater's own matter; a site or
+        // the eater itself is not eaten, and a meal of nothing is no
+        // meal.
+        Effect::Eat { from, amount, into } => {
+            matter(rules, into)?;
+            if *from != Binding::Target || *amount == Amount::Fixed(0) {
+                return Err(format!("{id} eats what cannot be eaten"));
+            }
+        },
+        Effect::When {
+            guard,
+            effect: inner,
+        } => {
+            if matches!(**inner, Effect::When { .. }) {
+                return Err(format!("{id} guards a guard"));
+            }
+            guard.validate().map_err(|why| format!("{id}: {why}"))?;
+            reads(rules, p, id, guard)?;
+            effect(rules, p, id, inner)?;
+        },
+        // An ordered take drains the actor's own accounts into another
+        // ledger (ruling 446).
+        Effect::Spend { from, to, .. } => {
+            if from.is_empty() {
+                return Err(format!("{id} spends from no account"));
+            }
+            for a in from {
+                account(rules, a)?;
+            }
+            if matches!(to, Binding::Actor | Binding::Part)
+                || (*to == Binding::Target && p.target.is_none())
+            {
+                return Err(format!("{id} spends to {to:?}, which it cannot"));
+            }
+        },
+        // Allocation moves the bound part's cells between catalogue
+        // functions (X6).
+        Effect::Allocate { from, to, .. } => {
+            if p.expresses().is_none() {
+                return Err(format!("{id} allocates without binding a part"));
+            }
+            for f in from.iter().chain([to]) {
+                if !rules.functions.contains_key(f) {
+                    return Err(format!("{id} allocates to an unknown function {f}"));
+                }
+            }
+            if from.as_ref() == Some(to) {
+                return Err(format!("{id} allocates a function to itself"));
+            }
+        },
+        _ => (),
+    }
+    Ok(())
+}
+
 /// A computed amount keeps its bounds and reads only what its act binds; a
 /// part keeps no ledger to read (ruling 338).
 fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
     a.validate().map_err(|why| format!("{id}: {why}"))?;
-    let Amount::Computed(e) = a else {
-        return Ok(());
-    };
+    match a {
+        Amount::Computed(e) => reads(rules, p, id, e),
+        Amount::Fixed(_) => Ok(()),
+    }
+}
+
+/// What an expression reads, each binding one its act binds.
+fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
     for r in e.reads() {
         let who = r.who();
         if who == Binding::Part || (who == Binding::Target && p.target.is_none()) {

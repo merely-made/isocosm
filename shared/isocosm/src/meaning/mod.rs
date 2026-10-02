@@ -312,6 +312,10 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
         Effect::Ease { who, key, amount } => amount
             .resolved()
             .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
+        Effect::Allocate { from, to, cells } => cells.resolved().and_then(|cells| {
+            p.part()
+                .and_then(|(b, id)| allocate(b, id, from.as_deref(), to, cells))
+        }),
         _ => return None,
     })
 }
@@ -378,6 +382,40 @@ fn mark(e: &mut Entity, key: &str, present: bool) -> Result<()> {
 fn mark_part(e: &mut Entity, part: Id, key: &str, present: bool) -> Result<()> {
     let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
     set(&mut p.traits, key, present);
+    revise(e)
+}
+
+/// X6: `cells` of the bound part moved to a function it expresses, from
+/// another's or from its free cells, the part's capacity never exceeded.
+fn allocate(e: &mut Entity, part: Id, from: Option<&str>, to: &str, cells: u64) -> Result<()> {
+    let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
+    let cells = u32::try_from(cells).map_err(|_| "allocation overflow")?;
+    if !p.functions.contains(to) {
+        return Err(format!("the bound part does not express {to}"));
+    }
+    match from {
+        Some(f) => {
+            let held = p.cells.get(f).copied().unwrap_or(0);
+            if held < cells {
+                return Err(format!("the bound part holds {held} cells for {f}"));
+            }
+            match held - cells {
+                0 => p.cells.remove(f),
+                left => p.cells.insert(f.into(), left),
+            };
+        },
+        None => {
+            let used: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
+            let free = u64::from(p.capacity).saturating_sub(used);
+            if free < u64::from(cells) {
+                return Err(format!("the bound part has {free} free cells"));
+            }
+        },
+    }
+    if cells > 0 {
+        let slot = p.cells.entry(to.into()).or_default();
+        *slot = slot.checked_add(cells).ok_or("allocation overflow")?;
+    }
     revise(e)
 }
 

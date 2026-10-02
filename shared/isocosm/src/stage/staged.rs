@@ -74,10 +74,11 @@ impl Staged<'_> {
     }
 
     /// The effect with its amounts resolved against the stage as it stands,
-    /// each draw keyed by the act and its place among the act's draws (X3).
-    fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Cow<'e, Effect>> {
-        if e.amounts().iter().all(|a| matches!(a, Amount::Fixed(_))) {
-            return Ok(Cow::Borrowed(e));
+    /// each draw keyed by the act and its place among the act's draws (X3),
+    /// or none where a guard came to nothing (X5).
+    fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Option<Cow<'e, Effect>>> {
+        if !e.computes() {
+            return Ok(Some(Cow::Borrowed(e)));
         }
         let (seed, act) = (self.sim.genesis.seed, self.sim.state.next_action);
         let mut draws = self.stage.draws;
@@ -96,12 +97,14 @@ impl Staged<'_> {
         };
         let resolved = e.resolve(&mut read, &mut draw)?;
         self.stage.draws = draws;
-        Ok(Cow::Owned(resolved))
+        Ok(resolved.map(Cow::Owned))
     }
 
     /// Applies one effect to the stage. Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
-        let resolved = self.resolve(e)?;
+        let Some(resolved) = self.resolve(e)? else {
+            return Ok(false);
+        };
         let e = resolved.as_ref();
         let rules = &self.sim.genesis.rules;
         // Moves are worked out only while a host keeps the flow record.
@@ -271,6 +274,34 @@ impl Staged<'_> {
                             to: (Holder::Entity(actor), into.clone()),
                             amount,
                         }));
+                }
+            },
+            // An ordered take reads the balances it drains, so it is applied
+            // here: each account in turn gives what it holds, up to what is
+            // still owed (ruling 446).
+            Effect::Spend { from, to, amount } => {
+                let mut owed = amount.resolved()?;
+                for key in from {
+                    let held = meaning::value(self.ledger(Binding::Actor)?, key);
+                    let paid = held.min(owed);
+                    if paid == 0 {
+                        continue;
+                    }
+                    debit(self.ledger(Binding::Actor)?, key, paid)?;
+                    credit(self.ledger(*to)?, key, paid)?;
+                    owed -= paid;
+                    let matter = matches!(
+                        sim.genesis.rules.accounts.get(key),
+                        Some(AccountKind::Matter { .. })
+                    );
+                    let ends = (self.holder(Binding::Actor), self.holder(*to));
+                    if let (true, true, (Some(from), Some(to))) = (sim.flowing(), matter, ends) {
+                        self.stage.legs.push(Leg {
+                            from: (from, key.clone()),
+                            to: (to, key.clone()),
+                            amount: paid,
+                        });
+                    }
                 }
             },
             // Every other effect has its meaning in `meaning::effect`.

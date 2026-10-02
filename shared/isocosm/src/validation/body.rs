@@ -49,12 +49,18 @@ pub(super) fn reads_part(q: &Query) -> Result<bool> {
     }
 }
 
-/// Whether `e` writes the bound part, refusing what a part cannot take.
+/// Whether `e` writes the bound part, refusing what a part cannot take; a
+/// guarded effect writes what its inner effect does.
 fn writes_part(e: &Effect) -> Result<bool> {
     match e {
         Effect::Trait {
             who: Binding::Part, ..
-        } => Ok(true),
+        }
+        | Effect::Allocate { .. } => Ok(true),
+        Effect::When { effect, .. } => writes_part(effect),
+        Effect::Spend {
+            to: Binding::Part, ..
+        } => Err("a part keeps no ledger".into()),
         Effect::Transfer {
             from: Binding::Part,
             ..
