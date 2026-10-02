@@ -244,23 +244,30 @@ impl Simulation {
     }
 
     fn write(&mut self, stage: Stage, next_action: u64) {
-        // What each body and the site were as the pass began, which the
-        // act's changes are measured from and the rest of the pass reads.
-        let bases: Vec<Entity> = stage
-            .bodies
-            .keys()
-            .map(|id| {
-                self.body_at_start(*id)
-                    .expect("staged bodies exist")
-                    .clone()
-            })
-            .collect();
-        let site_base = stage.site.as_ref().map(|_| {
-            let site = self.site_at_start(stage.place);
-            site.expect("staged sites exist").clone()
-        });
-        if let Some(frame) = &mut self.frame {
-            for (id, base) in stage.bodies.keys().zip(&bases) {
+        // Under a frame, what each body and the site were as the pass
+        // began, which the act's changes are measured from and the rest of
+        // the pass reads; without one, the act's copies replace them.
+        let (bases, site_base) = match &self.frame {
+            Some(_) => {
+                let bases: Vec<Entity> = stage
+                    .bodies
+                    .keys()
+                    .map(|id| {
+                        self.body_at_start(*id)
+                            .expect("staged bodies exist")
+                            .clone()
+                    })
+                    .collect();
+                let site_base = stage.site.as_ref().map(|_| {
+                    let site = self.site_at_start(stage.place);
+                    site.expect("staged sites exist").clone()
+                });
+                (Some(bases), site_base)
+            },
+            None => (None, None),
+        };
+        if let (Some(frame), Some(bases)) = (&mut self.frame, &bases) {
+            for (id, base) in stage.bodies.keys().zip(bases) {
                 let span = if *id == stage.actor { stage.count } else { 1 };
                 frame.keep_body(*id, span, base);
             }
@@ -275,22 +282,25 @@ impl Simulation {
         if let Some(target) = stage.target {
             s.population.lift(target).expect("the target exists");
         }
-        for ((id, body), base) in stage.bodies.into_iter().zip(&bases) {
+        for (k, (id, body)) in stage.bodies.into_iter().enumerate() {
             let group = s.population.groups.get_mut(&id);
-            merge(
-                &mut group.expect("staged bodies were lifted").entity,
-                base,
-                body,
-            );
+            let live = &mut group.expect("staged bodies were lifted").entity;
+            match &bases {
+                Some(bases) => merge(live, &bases[k], body),
+                None => *live = body,
+            }
         }
         for child in stage.births {
             s.population
                 .insert(child, 1)
                 .expect("staging reserved the identity");
         }
-        if let (Some(site), Some(base)) = (stage.site, &site_base) {
+        if let Some(site) = stage.site {
             let live = s.sites.get_mut(&stage.place).expect("staged sites exist");
-            merge_site(live, base, site);
+            match &site_base {
+                Some(base) => merge_site(live, base, site),
+                None => *live = site,
+            }
         }
         for (relation, present) in stage.relations {
             if present {

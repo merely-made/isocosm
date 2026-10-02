@@ -192,7 +192,10 @@ impl<'w> Crowd<'w> {
         // Each state's takes of its site, per member, or none if blocked.
         let mut planned: Vec<Option<Ledger>> = Vec::with_capacity(acting.len());
         let mut wanted: BTreeMap<(Id, Key), u128> = BTreeMap::new();
-        for (e, n) in &acting {
+        // A pass that takes nothing it shares is not planned, as the core
+        // does not plan it.
+        let planning = p.takes_shared();
+        for (e, n) in acting.iter().filter(|_| planning) {
             let mut takes = Ledger::new();
             let site = site_of(e)?;
             let mut scratch = site.clone();
@@ -207,12 +210,17 @@ impl<'w> Crowd<'w> {
             }
             planned.push(Some(takes));
         }
-        for ((e, n), takes) in acting.into_iter().zip(planned) {
+        let planned = planned.into_iter().map(Some).chain(std::iter::repeat(None));
+        for ((e, n), plan) in acting.into_iter().zip(planned) {
             self.work.evaluations += 1;
             self.work.represented += n;
-            let Some(takes) = takes else {
-                self.work.blocked += n;
-                continue;
+            let takes = match plan {
+                Some(Some(takes)) => takes,
+                Some(None) => {
+                    self.work.blocked += n;
+                    continue;
+                },
+                None => Ledger::new(),
             };
             let held = |k: &Key| start[&e.place].accounts.get(k).copied().unwrap_or(0);
             let shares: Ledger = takes
@@ -231,7 +239,10 @@ impl<'w> Crowd<'w> {
                 .sites
                 .get_mut(&e.place)
                 .ok_or("a bin at an unknown site")?;
-            let run = aggregate::Run::Act(&shares);
+            let run = match planning {
+                true => aggregate::Run::Act(&shares),
+                false => aggregate::Run::Free,
+            };
             let from = &start[&e.place];
             match aggregate::apply(p, &e, from, site, n, self.tick, rules, run)? {
                 Some(next) => {

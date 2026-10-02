@@ -30,6 +30,54 @@ use crate::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+/// Whether an act of `p`'s pass could read what another act of it writes:
+/// a target, a take of shared ground, or a site it both reads and writes.
+fn framed(p: &Process) -> bool {
+    let at = |b: &Binding| *b == Binding::Place;
+    let reads = |r: &Reading| at(&r.who());
+    let computes = |e: &Effect| {
+        let guard =
+            matches!(e, Effect::When { guard, .. } if guard.reads().iter().any(|r| reads(r)));
+        guard
+            || e.amounts().iter().any(|a| match a {
+                Amount::Computed(x) => x.reads().iter().any(|r| reads(r)),
+                Amount::Fixed(_) => false,
+            })
+    };
+    let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
+    let reads_site = p.requires.iter().any(|q| {
+        matches!(
+            q,
+            Query::Account {
+                who: Binding::Place,
+                ..
+            } | Query::Below {
+                who: Binding::Place,
+                ..
+            } | Query::Holds {
+                who: Binding::Place,
+                ..
+            } | Query::Condition { .. }
+                | Query::Mood { .. }
+                | Query::MoodBelow { .. }
+        )
+    }) || effects.iter().any(|e| computes(e));
+    let writes_site = effects.iter().any(|e| {
+        matches!(
+            e,
+            Effect::Transfer { .. }
+                | Effect::Transform {
+                    who: Binding::Place,
+                    ..
+                }
+                | Effect::Condition { .. }
+                | Effect::Spend { .. }
+                | Effect::When { .. }
+        )
+    });
+    p.target.is_some() || p.risk.is_some() || p.takes_shared() || (reads_site && writes_site)
+}
+
 impl Simulation {
     pub(crate) fn advance_to(&mut self, end: Tick) -> Result<Work> {
         let mut queue = BTreeSet::new();
@@ -100,7 +148,9 @@ impl Simulation {
             let pass = Pass::new(&self.state.population);
             let bound = pass.bound;
             self.pass = Some(pass);
-            self.frame = Some(Frame::default());
+            // A pass keeps its start only where one act could read what
+            // another writes (ruling 454).
+            self.frame = framed(process).then(Frame::default);
             if process.takes_shared() {
                 self.plan(process, &id, gates.as_ref(), bound);
             }
