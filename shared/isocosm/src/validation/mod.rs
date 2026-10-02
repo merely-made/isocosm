@@ -244,6 +244,17 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         }
         for q in &p.requires {
             query(rules, q)?;
+            if let Query::Computed(x) = q {
+                x.validate().map_err(|why| format!("{id}: {why}"))?;
+                reads(rules, p, id, x)?;
+                let kept = x
+                    .reads()
+                    .iter()
+                    .any(|u| matches!(u.reading, Reading::Kept { .. }));
+                if x.draws() || kept {
+                    return Err(format!("{id} requires what only an act computes"));
+                }
+            }
         }
         for e in effects {
             effect(rules, p, id, e)?;

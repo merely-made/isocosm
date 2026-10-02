@@ -7,10 +7,12 @@
 //! keyed by its site account (ruling 236). The lineage count is fixed so
 //! every draw reads alike.
 
+mod body;
 mod contested;
 mod mind;
 mod predator;
 
+pub use body::BodyFounding;
 pub use mind::{MindFounding, STRAIN};
 pub use predator::PredatorFounding;
 
@@ -427,7 +429,12 @@ impl ProbeFounding {
     }
 }
 
-fn member(lineages: &BTreeMap<Key, Lineage>, lineage: &str, place: Id, accounts: Ledger) -> Entity {
+pub(super) fn member(
+    lineages: &BTreeMap<Key, Lineage>,
+    lineage: &str,
+    place: Id,
+    accounts: Ledger,
+) -> Entity {
     let l = &lineages[lineage];
     let world = l.kingdom == "kingdom:world";
     Entity {
@@ -459,7 +466,7 @@ fn member(lineages: &BTreeMap<Key, Lineage>, lineage: &str, place: Id, accounts:
     }
 }
 
-fn world_traits() -> WorldTraits {
+pub(super) fn world_traits() -> WorldTraits {
     WorldTraits {
         shape: "shape:graph".into(),
         scale: "scale:macro".into(),

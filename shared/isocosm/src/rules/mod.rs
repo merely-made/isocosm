@@ -105,6 +105,10 @@ pub enum Query {
     Expresses {
         function: Key,
     },
+    /// An expression over what the act reads comes to something (X3): a
+    /// mouthful of at least a milligram. It neither draws nor reads a kept
+    /// value, being read before the act does either.
+    Computed(Expr),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -535,7 +539,7 @@ impl Process {
                             ..
                         }
                         | Query::Expresses { .. }
-                )
+                ) || matches!(q, Query::Computed(x) if Amount::Computed(x.clone()).bulk_safe())
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {
                 matches!(

@@ -131,6 +131,7 @@ fn identity_bound(p: &Process) -> bool {
             | Query::Mood { .. }
             | Query::MoodBelow { .. }
             | Query::Expresses { .. } => false,
+            Query::Computed(x) => x.reads().iter().any(|u| target(&u.body())),
         })
 }
 

@@ -101,7 +101,8 @@ impl Staged<'_> {
             match r {
                 Reading::Kept { name } => {
                     let kept = self.stage.kept.get(name);
-                    kept.copied().ok_or_else(|| format!("no value {name} was kept"))
+                    kept.copied()
+                        .ok_or_else(|| format!("no value {name} was kept"))
                 },
                 Reading::Account { who, key } => {
                     let held = meaning::value(self.ledger(*who)?, key);

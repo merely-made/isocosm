@@ -176,6 +176,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = mass(s.ledger(*who)?, s.rules);
             (v >= u128::from(*at_least), v.to_string())
         },
+        Query::Computed(x) => {
+            let v = computed(x, s)?;
+            (v != 0, v.to_string())
+        },
         // The address a receipt carries: which part, at which revision.
         Query::Expresses { function } => {
             let actor = s.body(Binding::Actor)?;
@@ -188,6 +192,27 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             }
         },
     })
+}
+
+/// An expression's value as a scene shows it, a sum over parts reading a
+/// body's living parts.
+fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
+    let mut read = |r: &Reading| -> Result<i64> {
+        match (r, r.who()) {
+            (Reading::Kept { .. }, _) => Err("a requirement keeps no values".into()),
+            (Reading::Account { key, .. }, who) => {
+                i64::try_from(value(s.ledger(who)?, key)).map_err(|e| e.to_string())
+            },
+            (r, Binding::Part) => Ok(i64::try_from(r.of_part(s.part()?)).unwrap_or(i64::MAX)),
+            (r, who) => Ok(body_reading(s.body(who)?, r)),
+        }
+    };
+    let mut parts = |who: Binding| -> Result<Vec<Part>> {
+        let living = s.body(who)?.parts.values().filter(|p| !p.severed);
+        Ok(living.cloned().collect())
+    };
+    let mut draw = |_: u64, _: u8| -> Result<u64> { Err("a requirement draws nothing".into()) };
+    x.eval_in(&mut read, &mut draw, &mut parts)
 }
 
 /// The actor's mood, read and never kept: the weights of the needs that

@@ -282,6 +282,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             }
             | Query::Part { .. }
             | Query::Expresses { .. } => "parts".into(),
+            Query::Computed(_) => "computed".into(),
             Query::Alive(_) => "alive".into(),
             Query::Trait { key, .. } => format!("trait:{key}"),
             Query::Account { who, key, .. } | Query::Below { who, key, .. } => match who {
