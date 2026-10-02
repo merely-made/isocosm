@@ -1762,7 +1762,8 @@ what later sections derive from.
      effects: keep it, or move the record ahead of places so replay and
      save are on Isocosm sooner? Mark: "Record earlier." So the order is
      matter and processes, bodies, the record, places, lineages and the
-     boundary, then effects.
+     boundary, then effects. *Confirmed from bodies onward 2026-10-02 by
+     ruling 457.*
 196. **The played slice plan retires into W5.** Put to Mark on 2026-09-25,
      the plan's third decision: retire the played slice plan into the
      overlay plan when M3 lands, or keep it as the host's own? Mark:
@@ -2325,7 +2326,8 @@ what later sections derive from.
      controls first, or move one whole body module first? Mark: "Vertical
      probe first." So the probe shows which extensions the mechanics need and
      whether the crowd still finds identical members once bodies carry cells,
-     and the order from bodies on is confirmed after it.
+     and the order from bodies on is confirmed after it. *Confirmed
+     2026-10-02 by ruling 457,* after checkpoint 6.
 263. **Each family is built and certified in Isocosm, and `mesocosm-core`'s
      copies retire together at M3.** Put to Mark on 2026-09-26, with 262: how
      is "`mesocosm-core` no longer owns it" met while Mesocosm's consumers
@@ -2483,7 +2485,8 @@ what later sections derive from.
      rulings 276 to 278: write the three-level model up now, ahead of S1's
      body schema, or after the vertical probe? Mark: "After the probe."
      *Item added 2026-10-01 by ruling 456:* where tissue and reserve sit in
-     a body, and whether a bite lands on one part.
+     a body, and whether a bite lands on one part. *Opened 2026-10-02 by
+     ruling 458.*
 282. **A lane wires paging into the VTT's scene board now.** Put to Mark on
      2026-09-26, from the first review: the board refuses its brick map past
      `modulus::MAX_BRICKS` of 2,047, about 70 tiles square, where the
@@ -4973,6 +4976,40 @@ what later sections derive from.
      hunting family's keeping 287's proportional take, and the anatomy brief
      (281) carries Mark's question as an item of its own: where tissue and
      reserve sit in a body, and whether a bite lands on one part.
+
+457. **The order from bodies onward stands.** Asked on 2026-10-02,
+     reporting checkpoint 6 under ruling 262: "Ruling 195's order from
+     bodies onward is bodies, the record, places, lineages and the
+     boundary, then effects. The probe ran every native without places,
+     but four mechanics wait for places: contract's reach, sense's
+     perception, and fixing's forage radius and crowding. Nothing it found
+     touches the record. Keep the order?" Options, recommended first: (A)
+     "Confirm the order: bodies next, opened by the anatomy brief (281),
+     then the record, places, lineages and the boundary, then effects.
+     Replay and save reach Isocosm before places, as 195 wanted, and the
+     waiting mechanics land with places, third (recommended)." (B) "Places
+     before the record: bodies, then places, then the record. The four
+     waiting mechanics, and sense with them, come sooner, so the natives
+     are complete earlier; replay and save on Isocosm come later than 195
+     chose." Mark chose A, "Confirm the order". So 195's order stands from
+     bodies onward: bodies, opened by the anatomy brief, then the record,
+     places, lineages and the boundary, and effects; contract's reach,
+     sense's perception, and fixing's forage radius and crowding land with
+     places.
+
+458. **The anatomy brief comes next.** Asked on 2026-10-02, with 457:
+     "What comes next?" Options, recommended first: (A) "The anatomy
+     brief: ruling 281 writes it after the probe. It carries 456's item,
+     where tissue and reserve sit and whether a bite lands on one part, and
+     may reshape 453's part fields (recommended)." (B) "Rate models for
+     bodies: grouping saves only 1.28 to 1.43x once bodies carry cells.
+     Calibrate the rate models of 439 and 440 against the body family on
+     the bench, ahead of the families." (C) "Conditions and modifiers (S7):
+     briefed in §3.6 and S7, nothing built: condition records beside the
+     ledger, layered modifiers, and a cohort's tally of causes." Mark chose
+     A, "The anatomy brief". So the anatomy brief is written next, from the
+     probe's evidence, carrying 456's item and free to reshape 453's
+     fields.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -8791,6 +8828,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 457 and 458 recorded from checkpoint 6's report: the
+  order from bodies onward stands (195, 262), and the anatomy brief comes
+  next (281). Annotations on 195, 262 and 281; carried into the sim plan's
+  status, the session notes' §10 and the index.
 - 2026-10-01: checkpoint 6 merged at `b4345cc`, built under rulings 446
   and 451 to 456 and verified on its branch: the five natives run as
   definitions over a minimal allocated body, the crowd is certified for

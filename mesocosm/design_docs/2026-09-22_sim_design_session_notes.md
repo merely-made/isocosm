@@ -1544,4 +1544,9 @@ question is plain: once bodies carry cells the crowd finds about 1.15
 living members a state at every density, saving 1.28 to 1.43 times the
 evaluations, so grouping stops paying for bodies, the ground 266 and 439
 gave rate models. The branch merged at `b4345cc`; the order from bodies
-onward goes back to Mark with the result.
+onward went back to Mark with the result:
+
+| Question as put | Ruling |
+| --- | --- |
+| Keep ruling 195's order from bodies onward? | 457: confirm the order |
+| What comes next? | 458: the anatomy brief |
