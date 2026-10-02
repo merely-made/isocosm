@@ -54,9 +54,11 @@ pub struct Crowd<'w> {
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
     pub work: Work,
-    /// Hunting passes at a site where the prey ran out part way through
-    /// hunters sharing one state.
+    /// Prey a hunting pass shared out among eaters it could not cover.
     pub shortfalls: u64,
+    /// Site accounts a pass shared out among takers they could not cover
+    /// (ruling 454).
+    pub site_shortfalls: u64,
     /// Each hunt's meals.
     pub meals: super::MealLog,
 }
@@ -79,6 +81,7 @@ impl<'w> Crowd<'w> {
             bins,
             work: Work::default(),
             shortfalls: 0,
+            site_shortfalls: 0,
             meals: Default::default(),
         };
         crowd.matter = crowd.total_matter();
@@ -239,6 +242,10 @@ impl<'w> Crowd<'w> {
             }
             planned.push(Some(takes));
         }
+        let short = |((site, k), asked): (&(Id, Key), &u128)| {
+            *asked > u128::from(start[site].accounts.get(k).copied().unwrap_or(0))
+        };
+        self.site_shortfalls += wanted.iter().filter(|w| short(*w)).count() as u64;
         let planned = planned.into_iter().map(Some).chain(std::iter::repeat(None));
         for ((e, n, draws), plan) in split.into_iter().zip(planned) {
             self.work.evaluations += 1;
