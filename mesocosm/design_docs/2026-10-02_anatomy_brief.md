@@ -1,8 +1,8 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Seven rounds are ruled (459 to 470,
-477 to 480 and 485 to 492); the questions still open are listed in §8 and go
+281 asked, from the probe's evidence. Eight rounds are ruled (459 to 470,
+477 to 480 and 485 to 496); the questions still open are listed in §8 and go
 to Mark in rounds. Nothing is built. When the brief is ruled through, it is
 carried into the sim plan's §2.3 and becomes the brief for S2's bodies
 family, the next in ruling 195's order (457).
@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470, 477 to 480 and 485 to 492; checkpoint 6's findings in
+450, 453, 456 to 470, 477 to 480 and 485 to 496; checkpoint 6's findings in
 the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -72,33 +72,37 @@ process takes only what its system carries, the rest staying put.
 ## 2. The function catalogue
 
 One catalogue every game reads (278), holding all fifteen functions of
-ruling 277 (461), each with the shapes it fits best, its seeding (341) and
-what reads it (466, 492):
+ruling 277 (461), each with the shapes it fits best, the measurement it
+scales with, its seeding (341) and what reads it (466, 492, 493):
 
-| Function | Fits | Seeding | Read by |
-| --- | --- | --- | --- |
-| contract | rod | Grown | rent, mouthful, reach |
-| intake | lump, tube | Grown | the meal |
-| sense | point | Grown | perception (waits for places) |
-| fix | sheet | Grown | a producer's income |
-| secrete | sheet | Acquired | rent, the dose |
-| support | rod, shell, joint, branch | Grown | none yet (load, clearance) |
-| conduct | tube, branch | Grown | wing-functions' edges |
-| gate | joint, tube | Grown | wing-functions' gate |
-| store | lump | Grown | the reserve (459, 463) |
-| circulate | tube, lump | Grown | none yet |
-| respire | sheet, branch | Grown | none yet |
-| excrete | tube | Grown | none yet |
-| reproduce | lump | Grown | reproduction (447-450) |
-| grip | rod, branch, joint | Grown | Eponym's grip, contact |
-| adhesion | sheet, point | Grown | Eponym's adhesion |
+| Function | Fits | Scales with | Seeding | Read by |
+| --- | --- | --- | --- | --- |
+| contract | rod | length | Grown | rent, mouthful, reach |
+| intake | lump, tube | volume | Grown | the meal |
+| sense | point | length | Grown | perception (waits for places) |
+| fix | sheet | presented area | Grown | a producer's income |
+| secrete | sheet | volume | Acquired | rent, the dose |
+| support | rod, shell, joint, branch | cross-section | Grown | none yet (load, clearance) |
+| conduct | tube, branch | cross-section | Grown | wing-functions' edges |
+| gate | joint, tube | cross-section | Grown | wing-functions' gate |
+| store | lump | volume | Grown | the reserve (459, 463) |
+| circulate | tube, lump | volume | Grown | none yet |
+| respire | sheet, branch | presented area | Grown | none yet |
+| excrete | tube | volume | Grown | none yet |
+| reproduce | lump | volume | Grown | reproduction (447-450) |
+| grip | rod, branch, joint | length | Grown | Eponym's grip, contact |
+| adhesion | sheet, point | presented area | Grown | Eponym's adhesion |
 
 Secrete alone is acquired. No shape gates a function (492): any part can
 express any function, and what it does scales with the measurement its
 mechanic names, fix by the area a part presents, contract by its length,
-store and intake by its volume, so form still decides how well; the
-generator draws the fits by default, and a lump splits its cells between
-taking in and storing. The other vocabularies fold in (461, 466):
+store and intake by its volume, so form still decides how well. Each
+measurement is read from a part's box (493), length its longest extent,
+presented area its largest face, cross-section its smallest face and volume
+its voxels, and a function takes its part's measurement in proportion to the
+cells it holds there, the natives taking them up with the bodies family
+(490); the generator draws the fits by default, and a lump splits its cells
+between taking in and storing. The other vocabularies fold in (461, 466):
 wing-functions' source and store onto store, a source being a store that
 starts charged, its gate onto gate and its actuator onto contract; Eponym's
 grip and adhesion are the catalogue's, their reach measured by the sim
@@ -108,17 +112,19 @@ harms to the parts that grip and reach.
 
 ## 3. The part
 
-A part has a shape, one of the eight, read from its measurements to name it
-and gating nothing (276, 492), the functions it expresses, its half-extents,
-where it attaches to its parent (462), its cells allocated among its
-functions, its tissue (459), its traits and whether it is severed. Its
-capacity and the mass of one cell are read from its extents by Mesocosm's
-rule (460): along each axis one cell per two voxels of half-extent plus one,
-at most four an axis and 64 in all, each cell weighing the part's adult mass
-over its cells, the adult mass being its voxels priced at the reference mass
-a segment. *Reading, not ruled:* the reference mass and segment, 100 mg in
-125 voxels, are world rules with Mesocosm's values as defaults, as 446's
-reading has the starvation margin, the ceilings and the routing threshold.
+A part has a shape, one of the eight, which names it and gates nothing (276,
+492), the functions it expresses, its half-extents, where it attaches to its
+parent (462), its cells allocated among its functions, its tissue (459), its
+traits and whether it is severed. Its name is read from its box for lump,
+rod, sheet and point, from the tree for branch and joint, and declared at
+construction from the body's voxels for tube and shell (494). Its capacity
+and the mass of one cell are read from its extents by Mesocosm's rule (460):
+along each axis one cell per two voxels of half-extent plus one, at most
+four an axis and 64 in all, each cell weighing the part's adult mass over
+its cells, the adult mass being its voxels priced at the reference mass a
+segment. *Reading, not ruled:* the reference mass and segment, 100 mg in 125
+voxels, are world rules with Mesocosm's values as defaults, as 446's reading
+has the starvation margin, the ceilings and the routing threshold.
 
 A part attaches to its parent, making the tree (467), and a terrain-body is
 a part tree whose parts are big enough to carry places. A spread such as
@@ -171,18 +177,21 @@ with its segments and the appendages they bear, a variance and the lexicon;
 the policy is isometer's, the facing each role prefers, mirroring and
 tolerance. Each child draws its own soma from them by its seed, so siblings
 differ, and a maturing body grows toward the lineage's recipe rather than
-its soma, so a limb absent at development grows in later. It grows a part it
-lacks once growth finds no room left in its parts (479): the next missing
-part nearest the root first, its tissue from that growth and its functions'
-expression at PD2's price, a cell's mass a cell from the reserve into the
-ground, after which growth fills it in proportion (464). In life a part also
-arrives by incorporation, landing at a plan-resolved attachment (251), and
-what a body incorporates teaches its lineage that kind, so later children
-can grow it, which is Mesocosm's kleptoplasty and its lexicon. *Reading, not
-ruled:* each organ keeps its situs (252); the recipe and the policy change
-only at the epoch boundary (57), as isometer's plan does; a seed (448) is a
-body that starts with little of its recipe and grows the rest; and a body
-without a reserve pays PD2's price from its tissue, as its rent (463).
+its soma, so a limb absent at development grows in later. Whether it also
+adds segments toward the recipe's count, anamorphic, or keeps its drawn
+count, epimorphic, is a trait of its lineage, epimorphic by default (495).
+It grows a part it lacks once growth finds no room left in its parts (479):
+the next missing part nearest the root first, its tissue from that growth
+and its functions' expression at PD2's price, a cell's mass a cell from the
+reserve into the ground, after which growth fills it in proportion (464). In
+life a part also arrives by incorporation, landing at a plan-resolved
+attachment (251), and what a body incorporates teaches its lineage that
+kind, so later children can grow it, which is Mesocosm's kleptoplasty and
+its lexicon. *Reading, not ruled:* each organ keeps its situs (252); the
+recipe and the policy change only at the epoch boundary (57), as isometer's
+plan does; a seed (448) is a body that starts with little of its recipe and
+grows the rest; and a body without a reserve pays PD2's price from its
+tissue, as its rent (463).
 
 ## 7. Wounds and severing
 
@@ -190,20 +199,22 @@ A wound loses cells from the part it lands on (469), so the part's capacity,
 its adult mass and its functions' cells shrink, and the tissue it can no
 longer hold spills to the ground (446). A lineage whose traits allow it
 regrows lost cells as growth, paying each cell's mass; one without them
-never heals, which is 123's "slowly, or never". The same trait lets growth
-toward the recipe regrow a severed part, so a lineage without it keeps its
-losses (485). Severing takes a part and everything under it, never the root,
-and the severed subtree becomes a body of its own on the site, keeping its
-tissue, reserve and provenance (470): a living body where its lineage can
-regrow from a fragment, beside 448's budding, every such fragment living on
-and physiology deciding which last (486), and otherwise a dead body, eaten,
-incorporated or left to rot like any carcass. This answers Mesocosm's
-unbuilt dismemberment gate: a severed part's milligrams stay in the
-conservation account. *Reading, not ruled:* the part keeps its lost cells
-beside its tissue, so a wound stays the ledger's as 430 has it; a fragment
-that lives grows the parts its recipe names that it lacks (468); and
-regrowing from a fragment is a trait, as 449 has a lineage's traits name its
-strategies.
+never heals, which is 123's "slowly, or never". A wound takes cells from the
+part's functions in proportion to the cells each holds, and a healing
+lineage's growth regrows them before it fills tissue or grows new parts
+(496). The same trait lets growth toward the recipe regrow a severed part,
+so a lineage without it keeps its losses (485). Severing takes a part and
+everything under it, never the root, and the severed subtree becomes a body
+of its own on the site, keeping its tissue, reserve and provenance (470): a
+living body where its lineage can regrow from a fragment, beside 448's
+budding, every such fragment living on and physiology deciding which last
+(486), and otherwise a dead body, eaten, incorporated or left to rot like
+any carcass. This answers Mesocosm's unbuilt dismemberment gate: a severed
+part's milligrams stay in the conservation account. *Reading, not ruled:*
+the part keeps its lost cells beside its tissue, so a wound stays the
+ledger's as 430 has it; a fragment that lives grows the parts its recipe
+names that it lacks (468); and regrowing from a fragment is a trait, as 449
+has a lineage's traits name its strategies.
 
 ## 8. Open, for the next rounds
 
@@ -212,18 +223,14 @@ strategies.
   matter lies on places and in hosts, and what carries a germ lineage's
   genes as it revises them; and what of the catalogue either expresses
   without parts.
-- **Variance under growth** (478): whether a body's segment count, drawn
-  within the variance, also grows toward the recipe's, or only absent
-  appendages grow in.
-- **Wounds' details** (469): which functions lose the cells a wound takes,
-  and where regrowing them falls in growth's order.
-- **Measurements** (492): which measurement each function's mechanic names
-  beyond the four ruled, how area, length and volume are read from a part's
-  half-extents, and how a shape is read from them to name a part, a box
-  showing no hollow, fork or enclosure.
 
 ## Progress
 
+- 2026-10-02: the eighth round ruled (493 to 496): each function's
+  measurement by its share of the cells, now a column of §2's table; the
+  eight names read from the box and the tree, tube and shell declared;
+  segment growth a lineage trait; and wounds taken in proportion, healed
+  first. §8 keeps only territories and surfaces.
 - 2026-10-02: the seventh round, raised by Mark, ruled (492): no shape gates
   a function, and what a part does scales with the measurement its mechanic
   names; §2's table now lists fits, §3 reads a part's shape from its

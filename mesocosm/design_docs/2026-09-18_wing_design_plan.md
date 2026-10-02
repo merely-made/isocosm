@@ -2453,6 +2453,9 @@ what later sections derive from.
      *Amended 2026-10-02 by ruling 492:* shapes are read from a part's
      measurements to name it, and gate no function; no classifier reading
      hollowness, branching or enclosure had been built.
+     *Read 2026-10-02 by ruling 494:* lump, rod, sheet and point from the
+     box, branch and joint from the tree, tube and shell declared from the
+     body's voxels.
 277. **A body's functions assemble into organ systems, and new systems are
      riffed from them.** Put to Mark on 2026-09-26, with 276: which functions
      join contract, intake, sense, fix and secrete: structure and control,
@@ -5260,6 +5263,8 @@ what later sections derive from.
      *Amended 2026-10-02 by ruling 492:* the table's shapes are the fits the
      generator draws by default, not gates; any part may express any
      function, scaled by its measurements.
+     *Measured 2026-10-02 by ruling 493:* each function's measurement is
+     tabled, taken by its share of the cells.
 
 467. **One part model serves every body form, a part attaching to a parent
      or lying on a site.** Asked on 2026-10-02, the anatomy brief's third
@@ -5351,6 +5356,9 @@ what later sections derive from.
      without them never heals.
      *Widened 2026-10-02 by ruling 485:* the same trait lets growth toward
      the recipe regrow a severed part.
+     *Specified 2026-10-02 by ruling 496:* a wound takes cells in proportion
+     to each function's, and a healing lineage regrows them before tissue or
+     new parts.
 
 470. **A severed part becomes a body of its own, alive where its lineage
      regrows from fragments.** Asked on 2026-10-02, with 467: "Where does a
@@ -5503,6 +5511,8 @@ what later sections derive from.
      than its own soma, so a limb absent at development grows in later.
      *Bounded 2026-10-02 by ruling 485:* a severed part grows back only
      where the lineage can heal.
+     *Varied 2026-10-02 by ruling 495:* a lineage trait decides whether
+     segments grow toward the recipe's count, epimorphic by default.
 
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
@@ -5849,6 +5859,124 @@ what later sections derive from.
      amends the gate of 338 and 466 and the classifier's role in 276, and
      makes 491's example, a gut that photosynthesizes, which 466's gate
      refused when 491 was recorded, a body that can be.
+     *Specified 2026-10-02 by rulings 493 and 494:* each function's
+     measurement, by its share of the cells, and how the eight names are
+     read.
+
+493. **Each function scales with one measurement, by its share of the
+     cells.** Asked on 2026-10-02, the anatomy brief's eighth round: "What
+     does each function measure, and how (see the preview)? Evidence: 492
+     ruled fix by area, contract by length, and store and intake by volume.
+     The sim already reads two of these: Span, the longest half-extent of
+     each part expressing a function, summed, which rent and the mouthful
+     read; and Voxels, a part's volume, which the ceiling reads. It has no
+     area reading, so fixing still reads the body's tissue to the
+     three-quarter power (TD2c). A part's cells are counted per function,
+     and a lump splits its cells between intake and store (466)." The
+     preview, as put:
+
+     | Function | Scales with | Read now |
+     | --- | --- | --- |
+     | contract | length | span: rent, the mouthful |
+     | intake | volume | - |
+     | sense | length | - (perception waits for places) |
+     | fix | presented area | - (income reads tissue) |
+     | secrete | volume | cell mass: rent, the gland |
+     | support | cross-section | - |
+     | conduct | cross-section | - (a route's capacity) |
+     | gate | cross-section | - |
+     | store | volume | - |
+     | circulate | volume | - |
+     | respire | presented area | - |
+     | excrete | volume | - |
+     | reproduce | volume | - |
+     | grip | length | - |
+     | adhesion | presented area | - |
+
+     Options, recommended first: (A) "The proposed table, by cell share:
+     every function names one measurement, read from each part's box: length
+     (its longest extent), presented area (its largest face), cross-section
+     (its smallest face) or volume (its voxels). A function takes its part's
+     measurement in proportion to the cells it holds there. The natives take
+     these up with the bodies family, as with their systems (490)
+     (recommended)." (B) "Whole part, not by share: as the table, but a
+     function reads the whole measurement of each part expressing it, as
+     Span does today. A lump that takes in and stores counts its full volume
+     for each." (C) "Only the four ruled: fix, contract, store and intake
+     take their measurements. Each other function names its measurement when
+     its mechanic arrives (405)." Mark chose A, "The proposed table, by cell
+     share". So every function names one measurement read from each part's
+     box, length its longest extent, presented area its largest face,
+     cross-section its smallest face or volume its voxels, as the table
+     lists; a function takes its part's measurement in proportion to the
+     cells it holds there; and the natives take them up with the bodies
+     family, as with their systems (490).
+
+494. **The eight names are read from the box and the tree, and hollows
+     declared.** Asked on 2026-10-02, with 493: "How are tube, branch, shell
+     and joint read, now that shapes only name parts (492)? Evidence:
+     isometer's classifier reads a box into lump, rod, sheet and point. A
+     sim part is a box, which shows no hollow (tube, shell), no fork
+     (branch) and no joint. The sim's tree does show forks (a part with two
+     or more children) and joints (a small part between two others).
+     isometer's part points to its voxel volume, but the sim keeps no
+     volumes (462). 405 lets construction declare a property that names its
+     measurement." Options, recommended first: (A) "From the tree, and
+     declared hollows: lump, rod, sheet and point come from the box. Branch
+     and joint come from the tree. Tube and shell are declared at
+     construction from the body's voxels, naming that measurement (405),
+     since the sim keeps no volumes (recommended)." (B) "Four names: the sim
+     names parts by the box alone: lump, rod, sheet and point. Tube, branch,
+     shell and joint leave its vocabulary, amending 276." (C) "The sim keeps
+     hollowness: each part records whether it is hollow and whether it
+     encloses, beside its extents, so all eight are read in the sim. Branch
+     and joint come from the tree." Mark chose A, "From the tree, and
+     declared hollows". So lump, rod, sheet and point are read from the box,
+     branch and joint from the tree, and tube and shell declared at
+     construction from the body's voxels, naming that measurement (405),
+     since the sim keeps no volumes.
+
+495. **Whether segments grow toward the recipe's count is a lineage trait.**
+     Asked on 2026-10-02, with 493: "Does a body's segment count grow toward
+     the recipe's (478)? Evidence: Mesocosm's soma draws each tagma's
+     segment count within the recipe's variance, so siblings differ. 478
+     grows a maturing body toward its lineage's recipe, so appendages absent
+     at development grow in. In nature, millipedes add segments after
+     hatching (anamorphic growth), while some centipedes hatch with all of
+     theirs (epimorphic)." Options, recommended first: (A) "By lineage
+     trait: whether a body adds segments toward the recipe's count as it
+     matures (anamorphic) or keeps its drawn count (epimorphic) is a trait
+     of the lineage, epimorphic by default. Absent appendages grow in either
+     way (478) (recommended)." (B) "Segments stand as drawn: only absent
+     appendages grow in. A body's segment count is its own for life." (C)
+     "Segments grow too: every body grows toward the recipe's segment count:
+     a short one adds segments, and a long one keeps its extras." Mark chose
+     A, "By lineage trait". So whether a body adds segments toward the
+     recipe's count as it matures, anamorphic, or keeps its drawn count,
+     epimorphic, is a trait of its lineage, epimorphic by default; absent
+     appendages grow in either way (478).
+
+496. **A wound takes cells in proportion, and healing comes first.** Asked
+     on 2026-10-02, with 493: "Which cells does a wound take, and when do
+     they regrow (469)? Evidence: 469 has a wound lose cells from the part
+     it lands on, shrinking its capacity, adult mass and functions' cells. A
+     sim part's cells are counts per function with no adjacency (Mesocosm's
+     mosaic has adjacency, and a function left in pieces stops). 464 spreads
+     rent and growth in proportion, with no part first. 485 regrows severed
+     parts where the lineage heals, and 479 grows a missing part once the
+     parts are full." Options, recommended first: (A) "In proportion, healed
+     first: a wound takes cells from the part's functions in proportion to
+     the cells each holds. A healing lineage's growth regrows lost cells
+     before it fills tissue or grows new parts, paying each cell's mass
+     (recommended)." (B) "Drawn, healed first: the cells come from one
+     function, drawn by the cells each holds, so a wound lands somewhere
+     specific: a bite to the gut takes intake. Regrowth as in the first."
+     (C) "In proportion, healed alongside: as the first, but lost cells
+     regrow in proportion alongside the tissue's filling, not before it."
+     Mark chose A, "In proportion, healed first". So a wound takes cells
+     from the part's functions in proportion to the cells each holds, and a
+     healing lineage's growth regrows lost cells before it fills tissue or
+     grows new parts, paying each cell's mass.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9670,6 +9798,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 493 to 496 recorded, the anatomy brief's eighth round:
+  each function's measurement, by its share of the cells (493); the eight
+  names read from the box and the tree, tube and shell declared (494);
+  segment growth a lineage trait, epimorphic by default (495); and a wound
+  taking cells in proportion, healed first (496). Annotations on 276, 466,
+  469, 478 and 492. Carried into the brief, the sim plan, the session notes'
+  §10 and the index.
 - 2026-10-02: ruling 492 recorded, the anatomy brief's seventh round, raised
   by Mark: no shape gates a function, and what a part does scales with the
   measurement its mechanic names. Annotations on 276, 338 (with 488's

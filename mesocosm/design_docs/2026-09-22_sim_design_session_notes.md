@@ -1648,3 +1648,12 @@ part's shape in the sim is a declared label that validation never checks
 against its geometry, the classifier 276 named was never built, and 466's
 gate refused 491's own example. Put to him as how a part's shape should
 relate to its function, it was ruled 492: measurements, not gates.
+
+The eighth round took the measurements 492 opened and the two items left:
+
+| Question as put | Ruling |
+| --- | --- |
+| What does each function measure, and how? | 493: the proposed table, by cell share |
+| How are tube, branch, shell and joint read, now that shapes only name parts? | 494: from the tree, and declared hollows |
+| Does a body's segment count grow toward the recipe's? | 495: by lineage trait |
+| Which cells does a wound take, and when do they regrow? | 496: in proportion, healed first |
