@@ -2,7 +2,7 @@
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
 281 asked, from the probe's evidence. Five rounds are ruled (459 to 470, 477
-to 480 and 485 to 487); the questions still open are listed in §8 and go to
+to 480 and 485 to 488); the questions still open are listed in §8 and go to
 Mark in rounds. Nothing is built. When the brief is ruled through, it is
 carried into the sim plan's §2.3 and becomes the brief for S2's bodies
 family, the next in ruling 195's order (457).
@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470, 477 to 480 and 485 to 487; checkpoint 6's findings in
+450, 453, 456 to 470, 477 to 480 and 485 to 488; checkpoint 6's findings in
 the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -88,15 +88,20 @@ reference mass and segment, 100 mg in 125 voxels, are world rules with
 Mesocosm's values as defaults, as 446's reading has the starvation margin,
 the ceilings and the routing threshold.
 
-A part attaches to its parent, making the tree, or lies on a site, making a
-spread's patch (467), and every body form uses this one model: a fungus is
-one body across many sites, a germ is many bodies (58), and a terrain-body
-is a part tree whose parts are big enough to carry places. One catalogue and
-one matter rule serve all three. A spread acts wherever a patch lies (480):
-an act reads and writes the site of the part it binds, and a body can be a
-target wherever it has a live part, while its place, for its record and its
-moves, stays its root's site. *Reading, not ruled:* a tree's parts lie where
-its body is, so nothing changes for a tree.
+A part attaches to its parent, making the tree (467), and a terrain-body is
+a part tree whose parts are big enough to carry places. A spread such as
+mold is no part tree but a territory (488): one entity whose body is its
+matter on each place it covers, acting there and spreading into neighbouring
+places. Micro life is a surface: a germ lineage's matter lying on places and
+in hosts, spread and transformed by place-bound processes and applying
+conditions to whatever stands in it, its lineage its only identity, as 39's
+paint and §3.2.1's playing the lineage directly have it. 467 had a spread's
+patches lie on sites as parts and 480 had it act wherever a patch lay; 488
+amends both for these forms, while an act still reads and writes the site of
+the part it binds (480). *Reading, not ruled:* a tree's parts lie where its
+body is, so nothing changes for a tree; a surface's matter lies in the site
+accounts that spills already land in, and its processes are agentless and
+bound to the place, as the mineralization rate is.
 
 ## 4. Where a body's matter sits
 
@@ -170,11 +175,11 @@ strategies.
 
 ## 8. Open, for the next rounds
 
-- **Spreads and micro life** (58, 467, 480): whether a spread such as
-  underground mold, and micro life, are better held as territories or as
-  surfaces than as bodies with parts; Mark's reframe of the placemap
-  question, put back to him, which decides whether 480's acts and a spread's
-  connections still arise.
+- **Territories and surfaces** (488): how a territory holds its matter on
+  each place and spreads it, and what it does where it lies; how a surface's
+  matter lies on places and in hosts, and what carries a germ lineage's
+  genes as it revises them; and what of the catalogue either expresses
+  without parts.
 - **The default systems** (277, 465, 477): which systems the default set
   names, with their functions and roles, and which processes read them; next
   after the spread question (487).
@@ -186,6 +191,9 @@ strategies.
 
 ## Progress
 
+- 2026-10-02: the fifth round's first question ruled after Mark's reframe
+  (488): a mold is a territory and micro life a surface; §3's spread
+  paragraph rewritten, and §8's head is now territories and surfaces.
 - 2026-10-02: the fifth round ruled three of its four (485 to 487): a
   severed part grows back only where the lineage can heal, every fragment of
   such a lineage lives and physiology decides which last, and the open items

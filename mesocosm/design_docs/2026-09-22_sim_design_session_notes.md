@@ -1630,4 +1630,6 @@ territories than individual entities? Or surfaces (kinda analogue to the
 surfaces and effects mechanic in larian games?)? Same question for micro
 entities". It goes back to him with the evidence for territories and
 surfaces, and then, by his "After that, default systems!", the default
-systems follow.
+systems follow. Put back as whether a spread like underground mold, and
+micro life, are better held as territories or surfaces, it was ruled 488:
+territory for mold, surface for micro.

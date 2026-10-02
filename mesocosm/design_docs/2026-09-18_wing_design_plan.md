@@ -562,6 +562,8 @@ what later sections derive from.
     nethermurk" (a reference of Mark's, not read here).
     *Placed 2026-10-02 by ruling 467:* a fungus's patches are parts lying on
     sites, in the part tree's model.
+    *Amended 2026-10-02 by ruling 488:* a fungus is one entity whose body is
+    a territory, and germs are a surface, their lineage their identity.
 59. **Play is directing, not driving; a creature's senses are its own.**
     Mark, 2026-09-19, asked about senses: "How do you perceive and react
     to the world without fauna sense organs, like most critters? And
@@ -5271,6 +5273,9 @@ what later sections derive from.
      §3.2.1's "not the part model".
      *Placed 2026-10-02 by ruling 480:* a spread acts wherever a patch lies,
      its place staying its root's site.
+     *Amended 2026-10-02 by ruling 488:* a spread such as mold is a
+     territory and micro life a surface, so the part model serves trees and
+     terrain-bodies.
 
 468. **A lineage carries a recipe, and its bodies also grow parts in life.**
      Asked on 2026-10-02, with 467: "Where does a body's part tree come
@@ -5528,6 +5533,9 @@ what later sections derive from.
      a fungus fixes from each patch's soil and is grazed where its patches
      lie, while the body's place, for its record and its moves, stays its
      root's site.
+     *Amended 2026-10-02 by ruling 488:* a spread is a territory, acting at
+     each place it covers; an act still reads and writes the site of the
+     part it binds.
 
 481. **hecs stays the ECS.** Asked on 2026-10-02 in the Conatus/physics
      session, after Mark said of the ECS "Not bevy, but can we compare the
@@ -5629,6 +5637,74 @@ what later sections derive from.
      written. Mark added, while his answer to the round's first question was
      being taken up: "After that, default systems!" So the spread question
      comes first, then the default systems.
+
+488. **A mold is a territory, and micro life a surface.** Asked on
+     2026-10-02, opening the anatomy brief's fifth round: "Is a body a
+     placemap? Evidence: the forms-of-life brief refused internal pursuit
+     because "a host is one body at one position; there is no place graph
+     inside it". It named an interior place graph as the one thing that
+     would need new world machinery, a second authority over space. The
+     place-graph plan's rule 6 makes nesting elective and continuous in one
+     global space; a place with no internal topology stays a leaf. Places
+     are the finest location the sim holds (422), and reach, travel and
+     plague run over them (§3.7). Ruling 39's germ can "inhabit a creature",
+     and a terrain-body is at once a creature and a place (§3.2.1)."
+     Options, recommended first: (A) "Every body a placemap: a body's parts
+     are places nested at its location in the one place graph (rule 6),
+     joined by its attachments, or for a spread by the routes between its
+     patches. Other bodies can stand in those places, so a germ inhabits its
+     host and a world rests on a lion turtle. Systems route along those
+     edges, and a body acts once at each place it occupies: a tree once, a
+     spread at each patch (recommended)." (B) "Only bodies that carry
+     places: terrain-bodies and spreads are placemaps, but a part tree stays
+     a leaf (rule 6). Nothing lives inside an animal, and the forms-of-life
+     brief's refusal of internal pursuit stands." (C) "Not now: keep the
+     part model as ruled and take the placemap reading up when the places or
+     micro family needs it. 480's question of how a spread acts stays open."
+     Mark answered: "Oh… i meant the other way… like think of a locale where
+     mold has spread underground… would it be more helpful to think of such
+     a body as more like territories than individual entities? Or surfaces
+     (kinda analogue to the surfaces and effects mechanic in larian games?)?
+     Same question for micro entities". Answered that both fit these forms
+     better than a body with parts, and that the sim already holds most of a
+     surface: a lineage's living matter on the ground as site accounts,
+     where spills land; an agentless process bound to the place acting on it
+     each tick, the mineralization rate; and conditions on places that
+     whatever stands there reads, combining by key (430, 436). Territory
+     keeps one entity, suiting a mold, 58's "only the instance of the
+     whole"; surface drops it, suiting germs, 39's "paint that can spread".
+     Leaned territory for mold and surface for micro. Put back: "How should
+     the sim hold a spread like underground mold, and micro life? Evidence:
+     58 made a fungus one body, "only the instance of the whole", and germs
+     many bodies that burn generations. 39 called a germ "like a paint that
+     can spread", and §3.2.1 says to play a germ is to play the lineage
+     directly. The sim already lays a lineage's living matter on the ground
+     as site accounts, where spills land. An agentless process bound to the
+     place acts on that matter each tick (mineralization), and conditions
+     live on places (430), combining by key (436). Larian's surfaces follow
+     that pattern: matter on the ground that spreads, combines and affects
+     whatever stands in it." Options, recommended first: (A) "Territory for
+     mold, surface for micro: a mold or fungus is one entity whose body is a
+     territory: its matter on each place it covers, acting there and
+     spreading into neighbouring places, with no part tree. A germ lineage
+     is a surface: its matter lies on places and in hosts, is spread and
+     transformed by place-bound processes, and applies conditions to
+     whatever stands in it. Its lineage is its only identity. A terrain-body
+     stays a part tree (recommended)." (B) "Territories for both: germs are
+     also entities with territories, one per colony, so a plague has an
+     identity that can be met, tracked and named. Mold as in the first." (C)
+     "Surfaces for both: neither is an entity: a mold is also its lineage's
+     matter on places, and a played fungus directs its lineage's surface."
+     (D) "Bodies, as ruled: keep 467 and 480: a spread is one body whose
+     patches are parts on sites, and germs are many bodies (58)." Mark chose
+     A, "Territory for mold, surface for micro". So a mold or fungus is one
+     entity whose body is a territory, its matter on each place it covers,
+     acting there and spreading into neighbouring places, with no part tree;
+     a germ lineage is a surface, its matter lying on places and in hosts,
+     spread and transformed by place-bound processes and applying conditions
+     to whatever stands in it, its lineage its only identity; and a
+     terrain-body stays a part tree. This amends 58's germs as many bodies,
+     and 467's and 480's patches as parts, for these forms.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5999,8 +6075,9 @@ Consequence for the body noun: a body is a part tree (animal), a spread
 over a substrate (germ, fungus, colony), or a terrain-body (macro), and
 the three body forms share the ledger and the record but not the part
 model. *Amended 2026-10-02 by ruling 467:* one part model serves all
-three, a part attaching to a parent or lying on a site. **Ruled 2026-09-19
-(ruling 58): a spread is a body,** and the
+three, a part attaching to a parent or lying on a site. *Amended again by
+ruling 488:* a mold is a territory and micro life a surface. **Ruled
+2026-09-19 (ruling 58): a spread is a body,** and the
 kingdom decides how many. A fungus is one body even when its patches are
 separate: a distributed, collective organism with a long life, in which
 there is no individual, only the instance of the whole, so its regions are
@@ -9449,6 +9526,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: ruling 488 recorded, the fifth round's first question after
+  Mark's reframe of it: a mold is a territory and micro life a surface,
+  amending 58, 467 and 480 for these forms; annotations on 58, 467, 480 and
+  §3.2.1's body forms. Carried into the brief, the sim plan, the session
+  notes' §10 and the index.
 - 2026-10-02: rulings 485 to 487 recorded, the anatomy brief's fifth round:
   a severed part grows back only where the lineage can heal (485), every
   fragment of such a lineage lives and physiology decides which last (486),
