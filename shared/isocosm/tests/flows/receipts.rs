@@ -79,7 +79,7 @@ fn taking(account: &str) -> Effect {
         from: Binding::Target,
         to: Binding::Actor,
         account: account.into(),
-        amount: 10,
+        amount: 10.into(),
     }
 }
 

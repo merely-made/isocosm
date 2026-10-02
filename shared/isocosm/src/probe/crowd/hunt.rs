@@ -1,53 +1,41 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Feeding by a weighted draw (ruling 287) as a crowd. The core draws each
-//! hunter's prey among the members its selector accepts, each weighted by
-//! what it holds; the crowd draws a prey state, weighted by its members
-//! times what each holds, which is the chance the core's draw lands on one
-//! of them. Each meal moves one member to its eaten state before the next
-//! hunter draws, as the core's pass leaves it. Only prey holding a whole
-//! bite are accepted, so every meal is a bite: a hunter's own state never
-//! bears on what its meal leaves, and the order the hunters come in changes
-//! nothing, until the prey run out part way through a site's hunters. The
-//! core then feeds the first in identity order. When those hunters share
-//! one state, which ones eat changes nothing either, since they are alike;
-//! when they do not, the crowd cannot know which come first, so it refuses,
-//! as it refuses a contended site debit.
+//! Feeding by a weighted draw (ruling 287) as a crowd, under ruling 454.
+//! The core has every hunter draw its prey from the pass's start, among the
+//! members its selector accepts, each weighted by what it holds; the crowd
+//! draws each hunter's prey state, weighted by its members times what each
+//! holds, and which of the state's alike members it lands on, uniformly.
+//! Hunters landing on one prey share it: each takes its mouthful, computed
+//! of its own state, where the prey holds enough for all, or else the same
+//! fraction of it, floored, and the prey gives what they take as one share
+//! of the accounts the meal names. Each hunter's whole act then runs
+//! against its prey as the pass began, less its own portion, as the core's
+//! does, and the prey gives only what accepted acts took. Neither runner's
+//! order of hunters changes anything, so nothing is refused.
 
 use super::{
-    super::{aggregate::Seen, draws::Stream},
+    super::{
+        aggregate::{self, Seen, binds_target},
+        draws::Stream,
+    },
     Crowd,
 };
 use crate::{
     Result,
-    meaning::{credit, mass, share},
-    rules::{Binding, Effect, Process, Query, Target},
+    meaning::{debit, mass, share},
+    rules::{Binding, Effect, Process, Query, Rules, Target},
+    schedule::edible,
     schema::*,
 };
 use std::collections::BTreeMap;
 
-/// A feeding process as the crowd runs it.
+/// A feeding process as the crowd runs it: its meal comes first.
 struct Meal<'a> {
     selector: &'a Target,
-    bite: u64,
-    into: &'a Key,
+    of: &'a [Key],
     /// The least a prey holds to be taken.
     least: u64,
-}
-
-/// Whether a query reads the prey, or anything else only identity settles.
-fn binds_target(q: &Query) -> bool {
-    match q {
-        Query::Related { .. } => true,
-        Query::Alive(who) => *who == Binding::Target,
-        Query::Trait { who, .. }
-        | Query::Account { who, .. }
-        | Query::Below { who, .. }
-        | Query::Part { who, .. }
-        | Query::Holds { who, .. } => *who == Binding::Target,
-        _ => false,
-    }
 }
 
 fn meal(p: &Process) -> Result<Meal<'_>> {
@@ -61,14 +49,22 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
     if p.risk.is_some() || p.note || !p.commitments.is_empty() {
         return refuse("depends on identity; it runs individually");
     }
-    if p.expresses().is_some() {
-        return refuse("binds a part; it runs individually");
-    }
-    let [Effect::Eat { from, amount, into }] = p.effects.as_slice() else {
-        return refuse("the crowd feeds only by eating");
+    let Some(Effect::Eat {
+        from: Binding::Target,
+        amount,
+        of,
+        ..
+    }) = p.effects.first()
+    else {
+        return refuse("the crowd feeds by eating its target first");
     };
-    if *from != Binding::Target {
-        return refuse("the crowd eats only its target");
+    if !aggregate::slots(p)?.is_empty() {
+        return refuse("a hunt that draws runs individually");
+    }
+    if let crate::rules::Amount::Computed(x) = amount
+        && x.reads().iter().any(|u| u.body() == Binding::Target)
+    {
+        return refuse("a mouthful read of its prey runs individually");
     }
     let mut least = 0;
     for q in &p.requires {
@@ -81,35 +77,21 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
             _ => {},
         }
     }
-    if least < *amount {
-        return refuse("a prey may hold less than a bite");
-    }
     Ok(Meal {
         selector,
-        bite: *amount,
-        into,
+        of,
         least,
     })
 }
 
 impl Meal<'_> {
-    fn accepts(&self, e: &Entity, site: Id, rules: &crate::rules::Rules) -> bool {
+    fn accepts(&self, e: &Entity, site: Id, rules: &Rules) -> bool {
         let t = self.selector;
         e.place == site
             && t.alive.is_none_or(|alive| alive == e.alive)
             && t.lineage.as_ref().is_none_or(|l| *l == e.lineage)
             && (t.among.is_empty() || t.among.contains(&e.lineage))
             && mass(&e.accounts, rules) >= u128::from(self.least)
-    }
-
-    /// The meals a prey holding `held` gives before it holds too little.
-    fn meals(&self, held: u128) -> u128 {
-        let least = u128::from(self.least);
-        if held < least {
-            0
-        } else {
-            (held - least) / u128::from(self.bite) + 1
-        }
     }
 }
 
@@ -119,9 +101,10 @@ impl Crowd<'_> {
     pub(super) fn hunt(&mut self, p: &Process, hunters: Vec<(Entity, u64)>) -> Result<()> {
         let m = meal(p)?;
         let rules = &self.world.genesis.rules;
-        let mut at: BTreeMap<Id, Vec<(Entity, u64)>> = BTreeMap::new();
+        let start = self.sites.clone();
+        let mut at: BTreeMap<Id, Vec<(Entity, u64, u64)>> = BTreeMap::new();
         for (e, n) in hunters {
-            let site = self.sites.get(&e.place).ok_or("a bin at an unknown site")?;
+            let site = start.get(&e.place).ok_or("a bin at an unknown site")?;
             if m.accepts(&e, e.place, rules) {
                 return Err(format!("{}: a hunter is its own prey", p.id));
             }
@@ -134,14 +117,16 @@ impl Crowd<'_> {
                 rules,
             };
             let mut own = p.requires.iter().filter(|q| !binds_target(q));
-            if own.all(|q| seen.holds(q).unwrap_or(false)) {
-                at.entry(e.place).or_default().push((e, n));
-            } else {
+            if !own.all(|q| seen.holds_for(p, q).unwrap_or(false)) {
                 self.work.blocked += n;
+                continue;
             }
+            // What each of this state's hunters asks of its prey.
+            let mouthful = aggregate::mouthful(p, &e, site)?;
+            at.entry(e.place).or_default().push((e, n, mouthful));
         }
         for (site, hunters) in at {
-            self.hunt_at(p, &m, site, hunters)?;
+            self.hunt_at(p, &m, (site, &start[&site]), hunters)?;
         }
         Ok(())
     }
@@ -150,89 +135,117 @@ impl Crowd<'_> {
         &mut self,
         p: &Process,
         m: &Meal,
-        site: Id,
-        hunters: Vec<(Entity, u64)>,
+        (site, began): (Id, &Site),
+        hunters: Vec<(Entity, u64, u64)>,
     ) -> Result<()> {
         let rules = &self.world.genesis.rules;
-        let demand: u64 = hunters.iter().map(|h| h.1).sum();
-        let mut prey: BTreeMap<Entity, u64> = self
+        let prey: Vec<(Entity, u64)> = self
             .bins
             .iter()
             .filter(|(e, _)| m.accepts(e, site, rules))
             .map(|(e, &n)| (e.clone(), n))
             .collect();
-        let capacity: u128 = prey
+        let weighted = self.variant != super::Variant::Unweighted;
+        let weights: Vec<u128> = prey
             .iter()
-            .map(|(e, &n)| m.meals(mass(&e.accounts, rules)) * u128::from(n))
-            .sum();
-        let meals = u64::try_from(capacity.min(u128::from(demand))).expect("at most the demand");
-        if 0 < meals && meals < demand && hunters.len() > 1 {
-            return Err(format!(
-                "{}: {} at site {site}, tick {}; the core feeds the first in identity order, \
-                 which the crowd cannot know",
-                p.id,
-                super::super::REFUSED,
-                self.tick
-            ));
-        }
-        if 0 < meals && meals < demand {
-            self.shortfalls += 1;
+            .map(|(e, n)| {
+                u128::from(*n)
+                    * if weighted {
+                        mass(&e.accounts, rules)
+                    } else {
+                        1
+                    }
+            })
+            .collect();
+        let total = u64::try_from(weights.iter().sum::<u128>())
+            .map_err(|_| "prey weigh too much to draw")?;
+        if total == 0 {
+            // No prey: every hunter is blocked, as the core finds no target.
+            self.work.blocked += hunters.iter().map(|h| h.1).sum::<u64>();
+            return Ok(());
         }
         let domain = format!("probe-hunt:{}", p.id);
         let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick, site]));
-        let weighted = self.variant != super::Variant::Unweighted;
-        let weight = |e: &Entity, n: u64| {
-            u128::from(n)
-                * if weighted {
-                    mass(&e.accounts, rules)
-                } else {
-                    1
-                }
-        };
-        for _ in 0..meals {
-            let total: u128 = prey.iter().map(|(e, &n)| weight(e, n)).sum();
-            let total = u64::try_from(total).map_err(|_| "prey weigh too much to draw")?;
-            let mut pick = u128::from(s.below(total));
-            let mut eaten = None;
-            for (e, &n) in &prey {
-                if pick < weight(e, n) {
-                    eaten = Some(e.clone());
-                    break;
-                }
-                pick -= weight(e, n);
+        // Each hunter's prey state, by weight, then which of its members.
+        let mut landed: BTreeMap<(usize, u64), Vec<usize>> = BTreeMap::new();
+        for (h, (_, n, _)) in hunters.iter().enumerate() {
+            for _ in 0..*n {
+                let mut pick = u128::from(s.below(total));
+                let state = weights
+                    .iter()
+                    .position(|w| {
+                        let here = pick < *w;
+                        if !here {
+                            pick -= w;
+                        }
+                        here
+                    })
+                    .expect("the pick falls within the total weight");
+                let member = s.below(prey[state].1);
+                landed.entry((state, member)).or_default().push(h);
             }
-            let eaten = eaten.expect("the pick falls within the total weight");
-            let mut after = eaten.clone();
-            for (key, value) in share(&eaten.accounts, rules, m.bite) {
-                crate::meaning::debit(&mut after.accounts, &key, value)?;
-            }
-            let after = super::normalize(after);
-            let slot = prey.get_mut(&eaten).expect("the eaten state is prey");
-            *slot -= 1;
-            if *slot == 0 {
-                prey.remove(&eaten);
-            }
-            if m.accepts(&after, site, rules) {
-                *prey.entry(after.clone()).or_default() += 1;
-            }
-            let m = self.meals.entry(p.id.clone()).or_default();
-            m.count += 1;
-            m.held += mass(&eaten.accounts, rules);
-            self.moved(&eaten, after, 1);
         }
-        // Every hunter eats, or the one state they share is split between
-        // those that eat and those left without.
-        let mut left = meals;
-        for (e, n) in hunters {
-            let eat = n.min(left);
-            left -= eat;
-            self.work.accepted += eat;
-            self.work.blocked += n - eat;
-            if eat > 0 {
-                let mut fed = e.clone();
-                credit(&mut fed.accounts, m.into, m.bite)?;
-                self.moved(&e, super::normalize(fed), eat);
+        let mut moves: Vec<(Entity, Entity)> = Vec::new();
+        for ((state, _), eaters) in landed {
+            let was = &prey[state].0;
+            let mut offered = edible(&was.accounts, m.of);
+            offered.retain(|k, _| crate::meaning::matter(rules, k));
+            let held: u128 = offered.values().map(|v| u128::from(*v)).sum();
+            let asked: u128 = eaters.iter().map(|&h| u128::from(hunters[h].2)).sum();
+            // Each hunter's mouthful, or the same fraction of it, floored.
+            let given: Vec<u64> = eaters
+                .iter()
+                .map(|&h| {
+                    let take = hunters[h].2;
+                    match asked <= held {
+                        true => take,
+                        false => (u128::from(take) * held / asked) as u64,
+                    }
+                })
+                .collect();
+            if asked > held {
+                self.shortfalls += 1;
             }
+            let mut left = share(&offered, rules, given.iter().sum());
+            let mut after = was.clone();
+            for (&h, g) in eaters.iter().zip(given) {
+                let portion = share(&left, rules, g);
+                for (k, v) in &portion {
+                    *left.get_mut(k).expect("a portion of what is left") -= v;
+                }
+                let hunter = &hunters[h].0;
+                let live = self
+                    .sites
+                    .get_mut(&site)
+                    .ok_or("a bin at an unknown site")?;
+                let draws = BTreeMap::new();
+                let a = aggregate::Act {
+                    start: began,
+                    count: 1,
+                    tick: self.tick,
+                    rules,
+                    draws: &draws,
+                    meal: Some((was, &portion)),
+                };
+                let run = aggregate::Run::Free;
+                let Some(fed) = aggregate::act(p, hunter, live, run, a)? else {
+                    self.work.blocked += 1;
+                    continue;
+                };
+                // The prey gives only what accepted acts took.
+                for (k, v) in &portion {
+                    debit(&mut after.accounts, k, *v)?;
+                }
+                self.work.accepted += 1;
+                let log = self.meals.entry(p.id.clone()).or_default();
+                log.count += 1;
+                log.held += mass(&was.accounts, rules);
+                moves.push((hunter.clone(), fed));
+            }
+            moves.push((was.clone(), super::normalize(after)));
+        }
+        for (from, to) in moves {
+            self.moved(&from, to, 1);
         }
         Ok(())
     }

@@ -115,6 +115,7 @@ fn a_take_beyond_one_account_is_refused_whole() {
     for key in accounts {
         let kind = AccountKind::Matter {
             lineage: "lineage:0".into(),
+            reserve: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }
@@ -346,7 +347,7 @@ fn an_overflowing_transfer_is_refused_and_changes_nothing() {
             from: Binding::Actor,
             to: Binding::Target,
             account: SOIL.into(),
-            amount: 1,
+            amount: 1.into(),
         }],
     );
     give.target = Some(Target {

@@ -194,6 +194,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     if rules.tick_microseconds == Some(0) {
         return Err("the clock's unit must be some time".into());
     }
+    rules.deep_time_ceiling()?;
     if rules.field.strength > 1_000_000
         || rules.field.legend_floor > 1_000_000
         || rules.field.decay_per_tick == 0
@@ -243,66 +244,240 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         }
         for q in &p.requires {
             query(rules, q)?;
-        }
-        for e in effects {
-            conversion::declared(rules, id, e)?;
-            match e {
-                Effect::Transfer { account: a, .. } => account(rules, a)?,
-                Effect::Transform { take, give, .. } => {
-                    for a in take.keys().chain(give.keys()) {
-                        account(rules, a)?;
-                    }
-                    // Matter remains matter even for transforms between provenance kinds.
-                    if mass(take, rules) != mass(give, rules) {
-                        return Err(format!("unbalanced matter transform: {id}"));
-                    }
-                },
-                Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
-                    return Err(format!("unknown condition {key}"));
-                },
-                Effect::Trait { key, .. } if !rules.traits.contains(key) => {
-                    return Err(format!("unknown trait {key}"));
-                },
-                Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
-                    return Err(format!("unknown relation {kind}"));
-                },
-                Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
-                    return Err(format!("unknown note kind {kind}"));
-                },
-                Effect::Birth { provision } => {
-                    for a in provision.keys() {
-                        account(rules, a)?;
-                    }
-                },
-                Effect::FoundPolity { support, .. } => account(rules, support)?,
-                Effect::Record { axis, account: a } => {
-                    key(axis)?;
-                    account(rules, a)?;
-                    if !p.note {
-                        return Err("recorded feats require a causal event".into());
-                    }
-                },
-                // Easing a level destroys what it takes, so it never takes
-                // matter, and only bodies keep levels.
-                Effect::Ease { who, key, .. } => {
-                    account(rules, key)?;
-                    if matter(rules, key).is_ok() || *who == Binding::Place {
-                        return Err(format!("{id} eases what cannot be eased"));
-                    }
-                },
-                // The target is eaten into the eater's own matter; a site or
-                // the eater itself is not eaten, and a meal of nothing is no
-                // meal.
-                Effect::Eat { from, amount, into } => {
-                    matter(rules, into)?;
-                    if *from != Binding::Target || *amount == 0 {
-                        return Err(format!("{id} eats what cannot be eaten"));
-                    }
-                },
-                _ => (),
+            if let Query::Computed(x) = q {
+                x.validate().map_err(|why| format!("{id}: {why}"))?;
+                reads(rules, p, id, x)?;
+                let kept = x
+                    .reads()
+                    .iter()
+                    .any(|u| matches!(u.reading, Reading::Kept { .. }));
+                if x.draws() || kept {
+                    return Err(format!("{id} requires what only an act computes"));
+                }
             }
         }
+        for e in effects {
+            effect(rules, p, id, e)?;
+        }
+        kept_first(p, id)?;
     }
     mind(rules)?;
     competitions(rules)
+}
+
+/// A kept value is read only after its act keeps it, and kept only at the
+/// top of the act, never within a guard's branch.
+fn kept_first(p: &Process, id: &str) -> Result<()> {
+    let risky = p.risk.iter().flat_map(|r| &r.effects);
+    for outcomes in [p.effects.iter().collect::<Vec<_>>(), risky.collect()] {
+        let mut kept = std::collections::BTreeSet::new();
+        for e in p.commitments.iter().chain(outcomes) {
+            let mut exprs: Vec<&Expr> = e.computed().into_iter().collect();
+            for a in e.amounts() {
+                if let Amount::Computed(x) = a {
+                    exprs.push(x);
+                }
+            }
+            for inner in e.branches() {
+                if matches!(inner, Effect::Keep { .. }) {
+                    return Err(format!("{id} keeps a value within a guard"));
+                }
+                exprs.extend(inner.computed());
+            }
+            for u in exprs.iter().flat_map(|x| x.reads()) {
+                if let Reading::Kept { name } = u.reading
+                    && !kept.contains(name)
+                {
+                    return Err(format!("{id} reads {name} before keeping it"));
+                }
+            }
+            if let Effect::Keep { name, .. } = e {
+                kept.insert(name.clone());
+            }
+        }
+    }
+    Ok(())
+}
+
+/// One effect's checks; a guarded effect's guard and inner effect are
+/// checked in turn (X5).
+fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
+    conversion::declared(rules, id, e)?;
+    for a in e.amounts() {
+        amount(rules, p, id, a)?;
+    }
+    if let Effect::Keep { value, .. } = e {
+        value.validate().map_err(|why| format!("{id}: {why}"))?;
+        reads(rules, p, id, value)?;
+    }
+    match e {
+        Effect::Transfer { account: a, .. } => account(rules, a)?,
+        Effect::Transform { take, give, .. } => {
+            for a in take.keys().chain(give.keys()) {
+                account(rules, a)?;
+            }
+            // Matter remains matter even for transforms between provenance kinds.
+            if mass(take, rules) != mass(give, rules) {
+                return Err(format!("unbalanced matter transform: {id}"));
+            }
+        },
+        Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
+            return Err(format!("unknown condition {key}"));
+        },
+        Effect::Trait { key, .. } if !rules.traits.contains(key) => {
+            return Err(format!("unknown trait {key}"));
+        },
+        Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
+            return Err(format!("unknown relation {kind}"));
+        },
+        Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
+            return Err(format!("unknown note kind {kind}"));
+        },
+        Effect::Birth { provision } => {
+            for a in provision.keys() {
+                account(rules, a)?;
+            }
+        },
+        Effect::FoundPolity { support, .. } => account(rules, support)?,
+        Effect::Record { axis, account: a } => {
+            key(axis)?;
+            account(rules, a)?;
+            if !p.note {
+                return Err("recorded feats require a causal event".into());
+            }
+        },
+        // Easing a level destroys what it takes, so it never takes
+        // matter, and only bodies keep levels.
+        Effect::Ease { who, key, .. } => {
+            account(rules, key)?;
+            if matter(rules, key).is_ok() || *who == Binding::Place {
+                return Err(format!("{id} eases what cannot be eased"));
+            }
+        },
+        // The target is eaten into the eater's own matter; a site or
+        // the eater itself is not eaten, a meal of nothing is no meal, and
+        // a meal naming accounts names matter (ruling 456).
+        Effect::Eat {
+            from,
+            amount,
+            into,
+            of,
+        } => {
+            matter(rules, into)?;
+            for key in of {
+                matter(rules, key)?;
+            }
+            if *from != Binding::Target || *amount == Amount::Fixed(0) {
+                return Err(format!("{id} eats what cannot be eaten"));
+            }
+        },
+        Effect::When { guard, .. } => {
+            if e.branches().any(|b| matches!(b, Effect::When { .. })) {
+                return Err(format!("{id} guards a guard"));
+            }
+            guard.validate().map_err(|why| format!("{id}: {why}"))?;
+            reads(rules, p, id, guard)?;
+            for inner in e.branches() {
+                effect(rules, p, id, inner)?;
+            }
+        },
+        // An ordered take drains the actor's own accounts into another
+        // ledger (ruling 446).
+        Effect::Spend { from, to, into, .. } => {
+            if let Some(into) = into {
+                matter(rules, into)?;
+            }
+            if from.is_empty() {
+                return Err(format!("{id} spends from no account"));
+            }
+            for a in from {
+                account(rules, a)?;
+            }
+            if matches!(to, Binding::Actor | Binding::Part)
+                || (*to == Binding::Target && p.target.is_none())
+            {
+                return Err(format!("{id} spends to {to:?}, which it cannot"));
+            }
+        },
+        // A conversion takes matter of one ledger into another account of
+        // it, as a declared conversion (rulings 342 and 357).
+        Effect::Convert { who, from, to, .. } => {
+            for a in from.iter().chain([to]) {
+                matter(rules, a)?;
+            }
+            if from.is_empty() || from.contains(to) || *who == Binding::Part {
+                return Err(format!("{id} converts what cannot be converted"));
+            }
+            if *who == Binding::Target && p.target.is_none() {
+                return Err(format!("{id} converts a target it does not bind"));
+            }
+        },
+        // Allocation moves the bound part's cells between catalogue
+        // functions (X6).
+        Effect::Allocate { from, to, .. } => {
+            if p.expresses().is_none() {
+                return Err(format!("{id} allocates without binding a part"));
+            }
+            for f in from.iter().chain([to]) {
+                if !rules.functions.contains_key(f) {
+                    return Err(format!("{id} allocates to an unknown function {f}"));
+                }
+            }
+            if from.as_ref() == Some(to) {
+                return Err(format!("{id} allocates a function to itself"));
+            }
+        },
+        _ => (),
+    }
+    Ok(())
+}
+
+/// A computed amount keeps its bounds and reads only what its act binds; a
+/// part keeps no ledger to read (ruling 338).
+fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
+    a.validate().map_err(|why| format!("{id}: {why}"))?;
+    match a {
+        Amount::Computed(e) => reads(rules, p, id, e),
+        Amount::Fixed(_) => Ok(()),
+    }
+}
+
+/// What an expression reads, each binding one its act binds.
+fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
+    for u in e.reads() {
+        let (r, who) = (u.reading, u.reading.who());
+        // A part keeps no ledger, and is read only where the act binds one
+        // or a sum over a body's parts reads each in turn (ruling 455).
+        let unbound = match who {
+            Binding::Part => {
+                (u.folded.is_none() && p.expresses().is_none())
+                    || matches!(r, Reading::Account { .. })
+            },
+            Binding::Target => p.target.is_none(),
+            Binding::Actor | Binding::Place => false,
+        } || (u.folded == Some(Binding::Target) && p.target.is_none());
+        if unbound {
+            return Err(format!(
+                "{id} reads an amount from {who:?}, which it does not bind"
+            ));
+        }
+        match r {
+            Reading::Account { key, .. } => account(rules, key)?,
+            _ if who == Binding::Place => {
+                return Err(format!("{id} reads a body from a site, which has none"));
+            },
+            Reading::CellWeight { .. } if who != Binding::Part => {
+                return Err(format!("{id} reads a cell weight of a whole body"));
+            },
+            Reading::Span { function, .. }
+            | Reading::Cells { function, .. }
+            | Reading::CellMass { function, .. }
+                if !rules.functions.contains_key(function) =>
+            {
+                return Err(format!("{id} reads an unknown function {function}"));
+            },
+            _ => {},
+        }
+    }
+    Ok(())
 }

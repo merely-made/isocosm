@@ -73,7 +73,7 @@ fn spend(from: &str) -> Vec<Effect> {
             from: Binding::Actor,
             to: Binding::Place,
             account: "world:soil".into(),
-            amount: 1,
+            amount: 1.into(),
         },
     ]
 }
@@ -98,7 +98,7 @@ fn feed(thing: &Thing, store: &str, amount: u64) -> Vec<Effect> {
             from: Binding::Place,
             to: Binding::Actor,
             account: thing.key.into(),
-            amount,
+            amount: amount.into(),
         },
         Effect::Transform {
             who: Binding::Actor,

@@ -5,19 +5,27 @@ use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod amount;
 mod body;
 mod competition;
+mod epoch;
 mod mind;
 
+pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
 pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
+pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
     Matter {
         lineage: Key,
+        /// A body's reserve of its own lineage's matter, kept apart from its
+        /// tissue (ruling 446). Tissue accounts serialize and hash as before.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        reserve: bool,
     },
     Energy,
     Attention,
@@ -97,6 +105,10 @@ pub enum Query {
     Expresses {
         function: Key,
     },
+    /// An expression over what the act reads comes to something (X3): a
+    /// mouthful of at least a milligram. It neither draws nor reads a kept
+    /// value, being read before the act does either.
+    Computed(Expr),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -105,7 +117,7 @@ pub enum Effect {
         from: Binding,
         to: Binding,
         account: Key,
-        amount: u64,
+        amount: Amount,
     },
     /// An authored transform accounts for both sides, including byproducts.
     Transform {
@@ -133,7 +145,7 @@ pub enum Effect {
     },
     Practice {
         key: Key,
-        amount: u64,
+        amount: Amount,
     },
     Move {
         destination: Id,
@@ -165,16 +177,155 @@ pub enum Effect {
     Ease {
         who: Binding,
         key: Key,
-        amount: u64,
+        amount: Amount,
     },
     /// Eating (ruling 287): up to `amount` of a body's matter, drawn from
     /// all its matter accounts in proportion, largest remainders first in
-    /// key order, and credited to the actor's own `into` account.
+    /// key order, and credited to the actor's own `into` account. A meal
+    /// naming accounts takes from those alone (ruling 456); meals naming
+    /// none serialize as before.
     Eat {
         from: Binding,
-        amount: u64,
+        amount: Amount,
         into: Key,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        of: Vec<Key>,
     },
+    /// Effects applied only where a guard comes to something (X5), such as
+    /// an eater paying for a bite only while the gland is charged, and
+    /// others where it does not, the guard read once: TD5's routing of a
+    /// meal by one reading of hunger.
+    When {
+        guard: Expr,
+        then: Vec<Effect>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        otherwise: Vec<Effect>,
+    },
+    /// Up to `amount` taken from the actor's accounts in the order listed,
+    /// each share moved to the same account at `to` (ruling 446): upkeep
+    /// paid from the reserve before the tissue. With `into`, what is paid
+    /// arrives as that account instead, living matter returned as the
+    /// world's: rent mineralized at once, as Mesocosm returns it.
+    Spend {
+        from: Vec<Key>,
+        to: Binding,
+        amount: Amount,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        into: Option<Key>,
+    },
+    /// Up to `amount` of one ledger's `from` accounts, a share of each in
+    /// proportion, given to the same ledger as `to` by a declared
+    /// conversion: a meal digested, soil synthesized, matter mineralized.
+    Convert {
+        who: Binding,
+        from: Vec<Key>,
+        to: Key,
+        amount: Amount,
+        conversion: Conversion,
+    },
+    /// A value computed against the act as it stands, kept under `name`
+    /// for the act's later effects to read.
+    Keep {
+        name: Key,
+        value: Expr,
+    },
+    /// Cells of the bound part moved to a function it expresses, from
+    /// another or, with no `from`, from its free cells (X6).
+    Allocate {
+        from: Option<Key>,
+        to: Key,
+        cells: Amount,
+    },
+}
+
+impl Effect {
+    /// The amounts an act resolves before it stages this effect (X3); a
+    /// guarded effect's are its branches'.
+    pub fn amounts(&self) -> Vec<&Amount> {
+        match self {
+            Self::Transfer { amount, .. }
+            | Self::Practice { amount, .. }
+            | Self::Ease { amount, .. }
+            | Self::Eat { amount, .. }
+            | Self::Spend { amount, .. }
+            | Self::Convert { amount, .. } => vec![amount],
+            Self::Allocate { cells, .. } => vec![cells],
+            Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
+            _ => vec![],
+        }
+    }
+    /// A guarded effect's branches, both of them; nothing for another.
+    pub fn branches(&self) -> impl Iterator<Item = &Effect> {
+        let (then, otherwise): (&[Effect], &[Effect]) = match self {
+            Self::When {
+                then, otherwise, ..
+            } => (then, otherwise),
+            _ => (&[], &[]),
+        };
+        then.iter().chain(otherwise)
+    }
+    pub fn draws(&self) -> bool {
+        matches!(self, Self::When { guard: x, .. } | Self::Keep { value: x, .. } if x.draws())
+            || self.amounts().iter().any(|a| a.draws())
+    }
+    /// The expressions it reads besides its amounts: a guard, or a kept
+    /// value.
+    pub fn computed(&self) -> Option<&Expr> {
+        match self {
+            Self::When { guard: x, .. } | Self::Keep { value: x, .. } => Some(x),
+            _ => None,
+        }
+    }
+    /// The branch a guard chooses, read once; nothing for another effect.
+    pub fn branch(
+        &self,
+        read: &mut Read,
+        draw: &mut Draw,
+        parts: &mut PartsOf,
+    ) -> crate::Result<Option<&[Effect]>> {
+        let Self::When {
+            guard,
+            then,
+            otherwise,
+        } = self
+        else {
+            return Ok(None);
+        };
+        Ok(Some(match guard.eval_in(read, draw, parts)? {
+            0 => otherwise,
+            _ => then,
+        }))
+    }
+    /// Whether resolving it computes anything, a guard included.
+    pub fn computes(&self) -> bool {
+        matches!(self, Self::When { .. } | Self::Keep { .. })
+            || self
+                .amounts()
+                .iter()
+                .any(|a| matches!(a, Amount::Computed(_)))
+    }
+    /// This effect with every amount resolved to the number it comes to; a
+    /// guarded effect is applied by its branch instead.
+    pub fn resolve(
+        &self,
+        read: &mut Read,
+        draw: &mut Draw,
+        parts: &mut PartsOf,
+    ) -> crate::Result<Effect> {
+        let mut e = self.clone();
+        match &mut e {
+            Self::Transfer { amount, .. }
+            | Self::Practice { amount, .. }
+            | Self::Ease { amount, .. }
+            | Self::Eat { amount, .. }
+            | Self::Spend { amount, .. }
+            | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
+            Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw, parts)?,
+            Self::When { .. } => return Err("a guarded effect is applied by its branch".into()),
+            _ => {},
+        }
+        Ok(e)
+    }
 }
 
 /// The conversions a transform may declare (rulings 342 and 357). World
@@ -278,6 +429,14 @@ pub struct Rules {
     /// Absent in worlds without terrain, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub skeleton: Option<Skeleton>,
+    /// What ends an epoch (ruling 451); `epoch_ticks` is the timed budget.
+    /// Timed worlds serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "EpochRule::is_timed")]
+    pub epoch: EpochRule,
+    /// The epochs a world lives before anyone steps in (ruling 452). Worlds
+    /// without a past serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "DeepTimeSpan::is_bare")]
+    pub deep_time: DeepTimeSpan,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -299,6 +458,15 @@ impl Rules {
     pub fn tick_microseconds(&self) -> u64 {
         self.tick_microseconds.unwrap_or(DEFAULT_TICK_MICROSECONDS)
     }
+    /// The ticks a timed epoch runs, or none under a rule that ends epochs
+    /// otherwise, which makes one unbounded epoch until something ends it.
+    pub fn epoch_budget(&self) -> Option<Tick> {
+        self.epoch.is_timed().then_some(self.epoch_ticks)
+    }
+    /// The most ticks this world's deep time may take (ruling 452).
+    pub fn deep_time_ceiling(&self) -> crate::Result<Tick> {
+        deep_time_ceiling(self.epoch, self.epoch_ticks, self.deep_time)
+    }
     pub fn validate(&self) -> crate::Result<()> {
         crate::validation::rules(self)
     }
@@ -312,6 +480,27 @@ impl Process {
             Query::Expresses { function } => Some(function),
             _ => None,
         })
+    }
+
+    /// Whether its acts take from ground they share, a site's or a
+    /// target's, which a pass shares out when it runs short (ruling 454).
+    pub fn takes_shared(&self) -> bool {
+        fn takes(e: &Effect) -> bool {
+            let shared = |b: &Binding| matches!(b, Binding::Place | Binding::Target);
+            match e {
+                Effect::Transfer { from, .. } | Effect::Eat { from, .. } => shared(from),
+                Effect::Transform { who, take, .. } => shared(who) && !take.is_empty(),
+                Effect::Convert { who, .. } => shared(who),
+                Effect::When { .. } => e.branches().any(takes),
+                _ => false,
+            }
+        }
+        let risky = self.risk.iter().flat_map(|r| &r.effects);
+        self.commitments
+            .iter()
+            .chain(&self.effects)
+            .chain(risky)
+            .any(takes)
     }
 
     /// Conservative executable proof of independence. No shared writes, targets,
@@ -350,7 +539,7 @@ impl Process {
                             ..
                         }
                         | Query::Expresses { .. }
-                )
+                ) || matches!(q, Query::Computed(x) if Amount::Computed(x.clone()).bulk_safe())
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {
                 matches!(
@@ -366,7 +555,7 @@ impl Process {
                             who: Binding::Actor,
                             ..
                         }
-                )
+                ) && e.amounts().iter().all(|a| a.bulk_safe())
             })
     }
 }

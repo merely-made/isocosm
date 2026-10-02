@@ -43,12 +43,13 @@ impl Simulation {
         std::mem::take(&mut self.watch.acts)
     }
 
-    /// The matter `target` holds now, when acts of `process` are watched.
+    /// The matter `target` held as the pass began, when acts of `process`
+    /// are watched.
     pub(crate) fn watching(&self, process: &str, target: Option<Id>) -> Option<u128> {
         if !self.watch.processes.contains(process) {
             return None;
         }
-        let held = target.and_then(|t| self.state.population.get(t));
+        let held = target.and_then(|t| self.body_at_start(t));
         Some(held.map_or(0, |e| mass(&e.accounts, &self.genesis.rules)))
     }
 

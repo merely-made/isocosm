@@ -10,20 +10,75 @@
 //! 338). Any other group would be blocked, so passing it by changes
 //! nothing but the count. The operation budget counts only the evaluations
 //! that run (ruling 259), by the members each stands for (ruling 285).
+//! Every act of a pass reads the world as the pass began, and a pass whose
+//! acts take from ground they share is planned first, so that ground running
+//! short is shared out among them (ruling 454).
 
 mod filed;
+mod frame;
 mod pass;
 
 pub(crate) use filed::{Filed, Gates};
+pub(crate) use frame::{Demands, Frame, Planned, Shares, edible, fits, merge, merge_site};
 pub(crate) use pass::Pass;
 
 use crate::{
     Result,
     rules::*,
     schema::*,
-    simulation::{Execution, Outcome, Simulation, Work},
+    simulation::{Execution, Simulation, Work},
 };
 use std::collections::{BTreeMap, BTreeSet};
+
+/// Whether an act of `p`'s pass could read what another act of it writes:
+/// a target, a take of shared ground, or a site it both reads and writes.
+fn framed(p: &Process) -> bool {
+    let at_site = |x: &Expr| x.reads().iter().any(|u| u.body() == Binding::Place);
+    let computes = |e: &Effect| {
+        let guard = e.computed().is_some_and(at_site);
+        guard
+            || e.amounts().iter().any(|a| match a {
+                Amount::Computed(x) => at_site(x),
+                Amount::Fixed(_) => false,
+            })
+    };
+    let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
+    let reads_site = p.requires.iter().any(|q| {
+        matches!(
+            q,
+            Query::Account {
+                who: Binding::Place,
+                ..
+            } | Query::Below {
+                who: Binding::Place,
+                ..
+            } | Query::Holds {
+                who: Binding::Place,
+                ..
+            } | Query::Condition { .. }
+                | Query::Mood { .. }
+                | Query::MoodBelow { .. }
+        ) || matches!(q, Query::Computed(x) if at_site(x))
+    }) || effects.iter().any(|e| computes(e));
+    let writes_site = effects.iter().any(|e| {
+        matches!(
+            e,
+            Effect::Transfer { .. }
+                | Effect::Transform {
+                    who: Binding::Place,
+                    ..
+                }
+                | Effect::Condition { .. }
+                | Effect::Spend { .. }
+                | Effect::Convert {
+                    who: Binding::Place,
+                    ..
+                }
+                | Effect::When { .. }
+        )
+    });
+    p.target.is_some() || p.risk.is_some() || p.takes_shared() || (reads_site && writes_site)
+}
 
 impl Simulation {
     pub(crate) fn advance_to(&mut self, end: Tick) -> Result<Work> {
@@ -95,6 +150,12 @@ impl Simulation {
             let pass = Pass::new(&self.state.population);
             let bound = pass.bound;
             self.pass = Some(pass);
+            // A pass keeps its start only where one act could read what
+            // another writes (ruling 454).
+            self.frame = framed(process).then(Frame::default);
+            if process.takes_shared() {
+                self.plan(process, &id, gates.as_ref(), bound);
+            }
             let mut from = 0;
             while let Some(found) = self
                 .next_group(&id, gates.is_some(), from)
@@ -108,12 +169,83 @@ impl Simulation {
             }
             self.passed_by(gates.as_ref(), from, bound);
             self.pass = None;
+            self.frame = None;
             let next = due.checked_add(process.period.unwrap());
             if let Some(next) = next.filter(|next| *next <= end) {
                 queue.insert((next, priority, id));
             }
         }
         Ok(())
+    }
+
+    /// Plans every act of the pass against the world as it began, nothing
+    /// written, and shares out the ground they would take (ruling 454).
+    fn plan(&mut self, process: &Process, id: &str, gates: Option<&Gates>, bound: Id) {
+        let mut plans = Vec::new();
+        let mut act = self.state.next_action;
+        let mut from = 0;
+        while let Some(first) = self
+            .next_group(id, gates.is_some(), from)
+            .filter(|f| *f < bound)
+        {
+            let count = self.state.population.groups[&first].count;
+            from = first + count;
+            let Some((calls, multiplicity)) = self.calls(process, first, count) else {
+                continue;
+            };
+            for offset in 0..calls {
+                let actor = first + offset;
+                let entity = self.state.population.get(actor);
+                if entity.is_none_or(|e| gates.is_some_and(|g| !g.open(e, self.state.tick))) {
+                    continue;
+                }
+                let target = self.choose_target(actor, process);
+                if let Some(demands) = self.demands(actor, target, id, multiplicity, act) {
+                    plans.push(frame::Plan {
+                        actor,
+                        target,
+                        act,
+                        demands,
+                    });
+                    act += multiplicity;
+                }
+            }
+        }
+        let rules = &self.genesis.rules;
+        let (sites, population) = (&self.state.sites, &self.state.population);
+        let ground = |h: crate::flows::Holder| match h {
+            crate::flows::Holder::Site(id) => sites.get(&id).map(|s| s.accounts.clone()),
+            crate::flows::Holder::Entity(id) => population.get(id).map(|e| e.accounts.clone()),
+            crate::flows::Holder::Dev => None,
+        };
+        let mut frame = self.frame.take().expect("a pass under way");
+        frame.share(plans, ground, rules);
+        self.frame = Some(frame);
+    }
+
+    /// How a group is evaluated: the calls, each standing for some members,
+    /// or none when the process passes it by whole.
+    fn calls(&self, process: &Process, first: Id, count: u64) -> Option<(u64, u64)> {
+        let entity = self.body_at_start(first)?;
+        if !entity.alive {
+            return None;
+        }
+        if process.causation == Causation::Agentless {
+            if entity.kingdom != "kingdom:world" {
+                return None;
+            }
+        } else if entity.method == Method::Inert {
+            return None;
+        }
+        if process
+            .need_account
+            .as_ref()
+            .is_some_and(|a| entity.accounts.get(a).copied().unwrap_or(0) >= process.need_below)
+        {
+            return None;
+        }
+        let bulk = self.mode == Execution::Grouped && process.bulk_safe();
+        Some(if bulk { (1, count) } else { (count, 1) })
     }
 
     /// The least stored group from `from` on that could match: any group,
@@ -152,31 +284,12 @@ impl Simulation {
         (first, count): (Id, u64),
         work: &mut Work,
     ) -> Result<()> {
-        let Some(entity) = self.state.population.get(first) else {
+        let Some((calls, multiplicity)) = self.calls(process, first, count) else {
             return Ok(());
         };
-        if !entity.alive {
-            return Ok(());
-        }
-        if process.causation == Causation::Agentless {
-            if entity.kingdom != "kingdom:world" {
-                return Ok(());
-            }
-        } else if entity.method == Method::Inert {
-            return Ok(());
-        }
-        if process
-            .need_account
-            .as_ref()
-            .is_some_and(|a| entity.accounts.get(a).copied().unwrap_or(0) >= process.need_below)
-        {
-            return Ok(());
-        }
-        let bulk = self.mode == Execution::Grouped && process.bulk_safe();
-        let (calls, multiplicity) = if bulk { (1, count) } else { (count, 1) };
         for offset in 0..calls {
             let actor = first + offset;
-            let Some(entity) = self.state.population.get(actor) else {
+            let Some(entity) = self.body_at_start(actor) else {
                 continue;
             };
             if gates.is_some_and(|g| !g.open(entity, self.state.tick)) {
@@ -190,14 +303,29 @@ impl Simulation {
                     "advance exceeds configured operation budget; use shorter advances".into(),
                 );
             }
-            let target = self.choose_target(actor, process);
-            let held = self.watching(id, target);
-            let r = self.apply(actor, target, id, None, multiplicity);
+            // A planned pass acts as it planned; an act it found blocked
+            // stays blocked, the world it reads being the same.
+            let planned = self.frame.as_ref().and_then(|f| f.planned.as_ref());
+            let (target, accepted) = match planned.map(|p| p.get(&actor).cloned()) {
+                None => {
+                    let target = self.choose_target(actor, process);
+                    (
+                        target,
+                        self.apply(actor, target, id, None, multiplicity).accepted(),
+                    )
+                },
+                Some(None) => (None, false),
+                Some(Some(plan)) => (
+                    plan.target,
+                    self.act(actor, id, multiplicity, plan).accepted(),
+                ),
+            };
             work.evaluations += 1;
             work.represented += multiplicity;
-            if matches!(r.outcome, Outcome::Accepted | Outcome::RiskOutcome) {
+            if accepted {
                 work.accepted += multiplicity;
-                if let Some(target_matter) = held {
+                // The matter the target held as the pass began.
+                if let Some(target_matter) = self.watching(id, target) {
                     self.watched(crate::watch::Watched {
                         tick: self.state.tick,
                         process: id.into(),

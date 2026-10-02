@@ -176,7 +176,7 @@ impl MindFounding {
             vec![Effect::Ease {
                 who: Binding::Actor,
                 key: STRAIN.into(),
-                amount: pick("mind-bleed", 0, self.bleed),
+                amount: pick("mind-bleed", 0, self.bleed).into(),
             }],
         );
         bleed.requires.extend([

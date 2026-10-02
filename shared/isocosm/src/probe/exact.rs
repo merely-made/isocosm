@@ -90,6 +90,9 @@ fn round(
     dynamics: u64,
     work: &mut Work,
 ) -> Result<()> {
+    if world.competitions().is_empty() {
+        return Ok(());
+    }
     let tick = sim.state().tick;
     let mind = world.mind()?;
     let rules = &world.genesis.rules;

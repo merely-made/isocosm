@@ -20,6 +20,18 @@ const WORLD: &str = "kingdom:world";
 /// What the rules alone can check: matter only, some of it, and a body to
 /// synthesize or digest into.
 pub(super) fn declared(rules: &Rules, id: &str, e: &Effect) -> Result<()> {
+    if let Effect::Convert {
+        who, conversion, ..
+    } = e
+    {
+        let body = matches!(who, Binding::Actor | Binding::Target);
+        if *conversion != Conversion::Mineralization && !body {
+            return Err(format!(
+                "{id} declares {conversion:?} for what is not a body"
+            ));
+        }
+        return Ok(());
+    }
     let Effect::Transform {
         who,
         take,
@@ -46,7 +58,7 @@ pub(super) fn declared(rules: &Rules, id: &str, e: &Effect) -> Result<()> {
 pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<()> {
     // The lineage an account's matter is of, and whether it is the world's.
     let of = |key: &Key| match rules.accounts.get(key) {
-        Some(AccountKind::Matter { lineage }) => {
+        Some(AccountKind::Matter { lineage, .. }) => {
             let world = lineages.get(lineage).is_some_and(|l| l.kingdom == WORLD);
             Some((lineage, world))
         },
@@ -58,21 +70,39 @@ pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<
             .iter()
             .chain(&p.effects)
             .chain(p.risk.iter().flat_map(|r| &r.effects));
+        let effects = effects.flat_map(|e| std::iter::once(e).chain(e.branches()));
         for e in effects {
-            let Effect::Transform {
-                take,
-                give,
-                conversion: Some(kind),
-                ..
-            } = e
-            else {
-                continue;
-            };
             let side = |l: &Ledger| -> Vec<(&Key, bool)> {
                 let moved = l.iter().filter(|(_, v)| **v > 0);
                 moved.filter_map(|(k, _)| of(k)).collect()
             };
-            let (took, gave) = (side(take), side(give));
+            let keys = |ks: &'_ [Key]| -> Vec<(&Key, bool)> { ks.iter().filter_map(&of).collect() };
+            let (kind, took, gave) = match e {
+                Effect::Transform {
+                    take,
+                    give,
+                    conversion: Some(kind),
+                    ..
+                } => (*kind, side(take), side(give)),
+                Effect::Convert {
+                    from,
+                    to,
+                    conversion,
+                    ..
+                } => (*conversion, keys(from), keys(std::slice::from_ref(to))),
+                // Spending into another account returns living matter as
+                // the world's (ruling 446).
+                Effect::Spend {
+                    from,
+                    into: Some(into),
+                    ..
+                } => (
+                    Conversion::Mineralization,
+                    keys(from),
+                    keys(std::slice::from_ref(into)),
+                ),
+                _ => continue,
+            };
             let world = |s: &[(&Key, bool)]| s.iter().all(|(_, w)| *w);
             let living = |s: &[(&Key, bool)]| s.iter().all(|(_, w)| !*w);
             let one = gave.iter().map(|(l, _)| *l).collect::<BTreeSet<_>>().len() == 1;

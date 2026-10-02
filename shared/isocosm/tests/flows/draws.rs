@@ -72,7 +72,7 @@ pub(super) fn declared(seed: u64) -> Genesis {
                 from: Binding::Target,
                 to: Binding::Actor,
                 account: "matter:0-0".into(),
-                amount: 1,
+                amount: 1.into(),
             },
             Effect::Transform {
                 who: Binding::Actor,

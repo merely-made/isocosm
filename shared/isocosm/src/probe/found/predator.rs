@@ -87,8 +87,9 @@ impl Hunters {
             Causation::Choice,
             vec![Effect::Eat {
                 from: Binding::Target,
-                amount: self.bite,
+                amount: self.bite.into(),
                 into: body.clone(),
+                of: vec![],
             }],
         );
         hunt.requires.extend([

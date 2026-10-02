@@ -86,6 +86,12 @@ fn nothing(amount: &u128) -> bool {
     *amount == 0
 }
 
+impl Receipt {
+    pub fn accepted(&self) -> bool {
+        matches!(self.outcome, Outcome::Accepted | Outcome::RiskOutcome)
+    }
+}
+
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Work {
     pub evaluations: u64,
@@ -114,6 +120,8 @@ pub struct Simulation {
     pub(crate) filed: Option<crate::schedule::Filed>,
     /// The due process's pass under way, if any.
     pub(crate) pass: Option<crate::schedule::Pass>,
+    /// What that pass reads: the world as it began (ruling 454).
+    pub(crate) frame: Option<crate::schedule::Frame>,
     /// What the advance under way has changed, to put back if it is refused.
     pub(crate) journal: Option<crate::journal::Journal>,
     /// The scheduled acts a host asked to see.
@@ -153,6 +161,7 @@ impl Simulation {
             targets: None,
             filed: None,
             pass: None,
+            frame: None,
             journal: None,
             watch: Default::default(),
             flows: Default::default(),
@@ -160,6 +169,16 @@ impl Simulation {
     }
     pub fn state(&self) -> &State {
         &self.state
+    }
+    /// A member as the pass under way began (ruling 454), or as it is.
+    pub(crate) fn body_at_start(&self, id: Id) -> Option<&Entity> {
+        let kept = self.frame.as_ref().and_then(|f| f.body(id));
+        kept.or_else(|| self.state.population.get(id))
+    }
+    /// A site as the pass under way began, or as it is.
+    pub(crate) fn site_at_start(&self, id: Id) -> Option<&Site> {
+        let kept = self.frame.as_ref().and_then(|f| f.site(id));
+        kept.or_else(|| self.state.sites.get(&id))
     }
     pub fn genesis(&self) -> &Genesis {
         &self.genesis

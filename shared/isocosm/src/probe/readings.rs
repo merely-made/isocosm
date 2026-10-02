@@ -30,6 +30,8 @@ pub enum Field {
     Alive,
     Born,
     Account(Key),
+    /// The cells a member's living parts hold for a function.
+    Cells(Key),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -74,16 +76,19 @@ fn name(field: &Field) -> String {
         Field::Alive => "alive".into(),
         Field::Born => "born".into(),
         Field::Account(k) => format!("account:{k}"),
+        Field::Cells(f) => format!("cells:{f}"),
     }
 }
 
+/// Every effect a world's processes hold, a guard's branches included.
 fn effects(world: &ProbeWorld) -> Vec<&Effect> {
-    world
+    let top = world
         .genesis
         .rules
         .processes
         .values()
-        .flat_map(|p| p.commitments.iter().chain(&p.effects))
+        .flat_map(|p| p.commitments.iter().chain(&p.effects));
+    top.flat_map(|e| std::iter::once(e).chain(e.branches()))
         .collect()
 }
 
@@ -125,6 +130,14 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
         fields.push(Field::Born);
     }
     fields.extend(accounts.into_iter().map(Field::Account));
+    // A part's cells, for each function a development moves them between.
+    let mut functions = BTreeSet::new();
+    for e in &effects {
+        if let Effect::Allocate { from, to, .. } = e {
+            functions.extend(from.iter().chain([to]).cloned());
+        }
+    }
+    fields.extend(functions.into_iter().map(Field::Cells));
     fields
 }
 
@@ -163,6 +176,14 @@ fn threshold(selector: &[Key], q: &Query) -> Option<Probe> {
             ..
         }
         | Query::Condition { .. } => Probe::Sites { query: q.clone() },
+        // A computed requirement of a member's own state, such as room for
+        // a mouthful, counts the members of its kind it holds for.
+        Query::Computed(x) if x.reads().iter().all(|u| matches!(u.body(), Binding::Actor)) => {
+            Probe::Members {
+                selector: selector.to_vec(),
+                query: q.clone(),
+            }
+        },
         _ => return None,
     })
 }
@@ -194,6 +215,20 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
             probe,
             false,
         );
+    }
+    // A world without competitions counts each living lineage's members by
+    // the identity its members carry.
+    if competitions.is_empty() {
+        let living = world.genesis.lineages.values();
+        let identities = living
+            .filter(|l| l.kingdom != "kingdom:world")
+            .flat_map(|l| &l.traits);
+        for identity in identities {
+            let probe = Probe::Alive {
+                identity: identity.clone(),
+            };
+            push(format!("alive:{identity}"), "lineage", probe, false);
+        }
     }
     for p in world.genesis.rules.processes.values() {
         let selector: Vec<Key> = p
@@ -282,6 +317,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             }
             | Query::Part { .. }
             | Query::Expresses { .. } => "parts".into(),
+            Query::Computed(_) => "computed".into(),
             Query::Alive(_) => "alive".into(),
             Query::Trait { key, .. } => format!("trait:{key}"),
             Query::Account { who, key, .. } | Query::Below { who, key, .. } => match who {
@@ -447,6 +483,12 @@ pub fn evaluate(
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
                     Field::Account(k) => crate::meaning::value(&e.accounts, k),
+                    Field::Cells(f) => {
+                        let living = e.parts.values().filter(|p| !p.severed);
+                        living
+                            .map(|p| u64::from(p.cells.get(f).copied().unwrap_or(0)))
+                            .sum()
+                    },
                 }
             },
         });

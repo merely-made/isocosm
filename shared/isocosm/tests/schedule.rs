@@ -64,7 +64,7 @@ fn rousing() -> Genesis {
             },
             Effect::Practice {
                 key: "skill:rousing".into(),
-                amount: 1,
+                amount: 1.into(),
             },
         ],
         risk: None,
@@ -93,18 +93,31 @@ fn practised(sim: &Simulation, id: Id) -> u64 {
 }
 
 #[test]
-fn a_member_that_gains_a_required_trait_during_the_pass_is_still_visited() {
+fn a_member_that_gains_a_required_trait_during_a_pass_acts_from_the_next() {
     for mode in [Execution::Individuals, Execution::Grouped] {
         let mut sim = Simulation::new(rousing(), mode).unwrap();
         let work = sim.advance(1).unwrap();
-        // The first cohort each rouse member 4, splitting the second cohort.
-        // Member 4 was not roused when the pass began, yet is visited, as a
-        // scan over every group would visit it, and rouses member 5, who
-        // acts later in the same pass; member 6 is never roused.
+        // The first cohort each rouse member 4, the first of the second
+        // cohort as the pass began. A pass reads the world as it began
+        // (ruling 454), so member 4, roused part way, does not act in it.
         let skills: Vec<u64> = (1..=6).map(|id| practised(&sim, id)).collect();
-        assert_eq!(skills, [1, 1, 1, 1, 1, 0], "{mode:?}");
-        // Five members ran; the unroused sixth and the world's body did not.
-        assert_eq!((work.evaluations, work.accepted), (5, 5), "{mode:?}");
+        assert_eq!(skills, [1, 1, 1, 0, 0, 0], "{mode:?}");
+        assert_eq!((work.evaluations, work.accepted), (3, 3), "{mode:?}");
+        // The next pass began with member 4 roused: it rouses member 5,
+        // passing over itself.
+        let work = sim.advance(1).unwrap();
+        let skills: Vec<u64> = (1..=6).map(|id| practised(&sim, id)).collect();
+        assert_eq!(skills, [2, 2, 2, 1, 0, 0], "{mode:?}");
+        assert_eq!((work.evaluations, work.accepted), (4, 4), "{mode:?}");
+        let roused = |id| {
+            sim.state()
+                .population
+                .get(id)
+                .unwrap()
+                .traits
+                .contains(ROUSED)
+        };
+        assert_eq!((roused(5), roused(6)), (true, false), "{mode:?}");
     }
 }
 
@@ -249,7 +262,7 @@ fn due(id: &str, priority: i32, requires: Vec<Query>, effects: Vec<Effect>) -> P
 fn practise(key: &str) -> Effect {
     Effect::Practice {
         key: key.into(),
-        amount: 1,
+        amount: 1.into(),
     }
 }
 
@@ -291,7 +304,7 @@ fn a_reserve_running_out_is_seen_in_the_same_tick() {
             from: Binding::Actor,
             to: Binding::Place,
             account: soil.into(),
-            amount: 1,
+            amount: 1.into(),
         }],
     );
     let starve = due(

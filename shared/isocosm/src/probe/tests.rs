@@ -190,7 +190,9 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
     for process in processes.map(String::from) {
         let p = &world.genesis.rules.processes[&process];
         let before = site.clone();
-        let moved = aggregate::apply(p, &entity, &mut site, count, 1, rules).unwrap();
+        let start = site.clone();
+        let run = aggregate::Run::Free;
+        let moved = aggregate::apply(p, &entity, &start, &mut site, count, 1, rules, run).unwrap();
         for id in first..first + count {
             let outcome = sim.execute(id, None, &process, None).outcome;
             let Some(moved) = &moved else {
@@ -215,5 +217,88 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         }
         site = before;
         sim = Simulation::new(world.genesis.clone(), Execution::Individuals).unwrap();
+    }
+}
+
+/// A one-site probe world whose only process has each member of lineage 0
+/// take `take` of the site's soil each tick, the site holding `soil`.
+fn takers(soil: u64, take: u64) -> ProbeWorld {
+    let mut w = ProbeFounding {
+        seed: 4,
+        ticks: 1,
+        sites: [1, 1],
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    let g = &mut w.genesis;
+    g.rules.competitions.clear();
+    let mut p = crate::generate::process(
+        "test:take",
+        crate::rules::Causation::Choice,
+        vec![crate::rules::Effect::Transfer {
+            from: crate::rules::Binding::Place,
+            to: crate::rules::Binding::Actor,
+            account: "world:soil".into(),
+            amount: take.into(),
+        }],
+    );
+    p.requires.push(crate::rules::Query::Trait {
+        who: crate::rules::Binding::Actor,
+        key: "ability:probe-0".into(),
+    });
+    p.period = Some(1);
+    g.rules.processes = [(p.id.clone(), p)].into_iter().collect();
+    g.sites
+        .get_mut(&0)
+        .unwrap()
+        .accounts
+        .insert("world:soil".into(), soil);
+    w
+}
+
+/// Each taker's soil, most first, and what the site kept.
+fn shared(members: Vec<(&Entity, u64)>, sites: &BTreeMap<Id, Site>) -> (Vec<u64>, u64) {
+    let mut got: Vec<u64> = members
+        .iter()
+        .filter(|(e, _)| e.lineage == "lineage:0")
+        .flat_map(|(e, n)| (0..*n).map(|_| crate::meaning::value(&e.accounts, "world:soil")))
+        .collect();
+    got.sort_unstable_by(|a, b| b.cmp(a));
+    (got, sites[&0].accounts["world:soil"])
+}
+
+#[test]
+fn a_short_site_is_shared_alike_by_crowd_and_core() {
+    let counted = |w: &ProbeWorld| {
+        let groups = w.genesis.population.groups.values();
+        let mine = groups.filter(|g| g.entity.lineage == "lineage:0");
+        mine.map(|g| g.count).sum::<u64>()
+    };
+    for (soil, take) in [(100, 3), (1_000_000, 3)] {
+        let w = takers(soil, take);
+        let n = counted(&w);
+        let run = run_exact(&w, 7, true).unwrap();
+        let s = run.sim.state();
+        let exact = shared(readings::exact_members(&run), &s.sites);
+        let crowd = Crowd::new(&w, 7, Variant::Histogram)
+            .unwrap()
+            .run()
+            .unwrap();
+        let both = shared(readings::crowd_members(&crowd), &crowd.sites);
+        assert_eq!(exact, both, "soil {soil}");
+        // Each taker the same fraction of its take, floored (ruling 454),
+        // or the whole of it where the site holds enough: the control.
+        let each = if soil >= take * n {
+            take
+        } else {
+            take * soil / (take * n)
+        };
+        assert!(
+            exact.0.iter().all(|got| *got == each),
+            "soil {soil}: {:?}",
+            exact.0
+        );
+        assert_eq!(exact.1, soil - each * n, "soil {soil}");
     }
 }

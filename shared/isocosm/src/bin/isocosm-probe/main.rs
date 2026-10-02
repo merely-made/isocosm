@@ -11,12 +11,13 @@
 //! adds a lineage hunting the others by ruling 287's weighted draw;
 //! `--approximate` adds a fifth arm, the crowd with ruling 220's approximate
 //! pairing draw, checked against the exact runner and against the exact
-//! crowd.
+//! crowd. `--bodies` draws checkpoint 6's worlds of bodies instead (ruling
+//! 262), where the draw control runs as it does with hunters.
 
 mod report;
 
 use isocosm::probe::{
-    Crowd, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED, Variant,
+    BodyFounding, Crowd, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED, Variant,
     check::{self, Settings},
     readings::{self, Reading},
     run_exact,
@@ -117,6 +118,7 @@ struct Options {
     water: bool,
     predators: bool,
     approximate: bool,
+    bodies: bool,
 }
 
 fn options() -> Result<Options, String> {
@@ -136,6 +138,7 @@ fn options() -> Result<Options, String> {
         water: false,
         predators: false,
         approximate: false,
+        bodies: false,
     };
     while let Some(arg) = args.next() {
         let mut number = || -> Result<u64, String> {
@@ -158,6 +161,8 @@ fn options() -> Result<Options, String> {
             // A lineage that hunts the others: ruling 287's weighted draw.
             "--predators" => o.predators = true,
             "--approximate" => o.approximate = true,
+            // Checkpoint 6's worlds of bodies (ruling 262).
+            "--bodies" => o.bodies = true,
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
             _ => return Err(format!("unknown argument {arg}")),
         }
@@ -167,14 +172,25 @@ fn options() -> Result<Options, String> {
 
 fn run() -> Result<(), String> {
     let o = options()?;
-    let mut domain = ProbeFounding {
+    let mut probe = ProbeFounding {
         water: o.water,
         predators: o.predators.then(PredatorFounding::default),
         ..ProbeFounding::default()
     };
     if let Some(members) = o.members {
-        domain.members = members;
+        probe.members = members;
     }
+    // With bodies, `--members` sets the producers per site and a quarter
+    // as many grazers.
+    let mut bodies = BodyFounding::default();
+    if let Some([low, high]) = o.members {
+        bodies.producers = [low, high];
+        bodies.grazers = [(low / 4).max(1), (high / 4).max(1)];
+    }
+    let domain = match o.bodies {
+        true => Domain::Bodies(bodies),
+        false => Domain::Probe(Box::new(probe)),
+    };
     let mut arms: Vec<usize> = if o.crowds {
         vec![2]
     } else if o.density {
@@ -186,7 +202,7 @@ fn run() -> Result<(), String> {
         arms.push(4);
     }
     // The draw's control runs beside a verdict, wherever there are hunters.
-    let draw_control = o.predators && !o.density && !o.crowds;
+    let draw_control = (o.predators || o.bodies) && !o.density && !o.crowds;
     if draw_control {
         arms.push(5);
     }
@@ -211,11 +227,7 @@ fn run() -> Result<(), String> {
     };
     for k in 0..o.draws {
         let seed = isocosm::draw(o.master, "probe-world", &[k]);
-        let world = ProbeFounding {
-            seed,
-            ..domain.clone()
-        }
-        .generate()?;
+        let world = domain.generate(seed)?;
         let derived = readings::derive(&world);
         let similitude = world.similitude()?;
         let these: Vec<ReadingInfo> = derived

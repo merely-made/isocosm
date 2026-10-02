@@ -413,7 +413,7 @@ fn an_accepted_act_is_in_the_record_and_a_refused_one_is_not() {
         from: Binding::Actor,
         to: Binding::Place,
         account: "world:soil".into(),
-        amount: 1_000_000,
+        amount: 1_000_000.into(),
     };
     let give = g.rules.processes["sim:give"].clone();
     let mut greedy = give.clone();

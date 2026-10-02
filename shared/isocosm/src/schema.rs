@@ -31,7 +31,7 @@ pub enum Method {
     Normative,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Part {
     pub parent: Option<Id>,
     pub traits: BTreeSet<Key>,
@@ -45,6 +45,33 @@ pub struct Part {
     /// shape (ruling 338).
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub functions: BTreeSet<Key>,
+    /// The minimal body (ruling 453), each field absent in parts without it,
+    /// which serialize and hash as before: the part's half-extents in
+    /// voxels, which spans and ceilings read;
+    #[serde(default, skip_serializing_if = "is_zero_extent")]
+    pub half_extent: [i32; 3],
+    /// its living cells;
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub capacity: u32,
+    /// the cells each function it expresses holds (X6's allocation), never
+    /// more in all than its capacity;
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub cells: BTreeMap<Key, u32>,
+    /// and the matter one cell weighs.
+    #[serde(default, skip_serializing_if = "is_zero_mass")]
+    pub cell_mass: u64,
+}
+
+fn is_zero_extent(value: &[i32; 3]) -> bool {
+    *value == [0; 3]
+}
+
+fn is_zero(value: &u32) -> bool {
+    *value == 0
+}
+
+fn is_zero_mass(value: &u64) -> bool {
+    *value == 0
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

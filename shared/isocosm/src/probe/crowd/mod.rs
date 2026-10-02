@@ -14,11 +14,12 @@ mod round;
 use super::{
     Mind, ProbeWorld,
     aggregate::{self, normalize},
+    draws::Stream,
 };
 use crate::{
     Result,
     meaning::{mass, value},
-    rules::{Causation, Process},
+    rules::{AccountKind, Causation, Process},
     schema::*,
     simulation::Work,
 };
@@ -42,7 +43,8 @@ pub enum Variant {
 
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
-    mind: &'w Mind,
+    /// The mind a world's fights read; none in a world without them.
+    mind: Option<&'w Mind>,
     dynamics: u64,
     variant: Variant,
     /// Draw the competitions in reverse order, to show it changes nothing.
@@ -52,9 +54,11 @@ pub struct Crowd<'w> {
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
     pub work: Work,
-    /// Hunting passes at a site where the prey ran out part way through
-    /// hunters sharing one state.
+    /// Prey a hunting pass shared out among eaters it could not cover.
     pub shortfalls: u64,
+    /// Site accounts a pass shared out among takers they could not cover
+    /// (ruling 454).
+    pub site_shortfalls: u64,
     /// Each hunt's meals.
     pub meals: super::MealLog,
 }
@@ -67,7 +71,7 @@ impl<'w> Crowd<'w> {
         }
         let mut crowd = Self {
             world,
-            mind: world.mind()?,
+            mind: world.genesis.rules.mind.as_ref(),
             dynamics,
             variant,
             reversed: false,
@@ -77,6 +81,7 @@ impl<'w> Crowd<'w> {
             bins,
             work: Work::default(),
             shortfalls: 0,
+            site_shortfalls: 0,
             meals: Default::default(),
         };
         crowd.matter = crowd.total_matter();
@@ -155,7 +160,7 @@ impl<'w> Crowd<'w> {
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
-        let mut hunters = Vec::new();
+        let mut acting = Vec::new();
         for (e, n) in snapshot {
             if !e.alive || !gates.open(&e, self.tick) {
                 continue;
@@ -173,26 +178,122 @@ impl<'w> Crowd<'w> {
             {
                 continue;
             }
-            if hunting {
-                hunters.push((e, n));
+            acting.push((e, n));
+        }
+        if hunting {
+            return self.hunt(p, acting);
+        }
+        self.pass(p, acting)
+    }
+
+    /// One pass over the states acting in it (ruling 454): each reads its
+    /// site as the pass began, and the pass's takes of a site are planned
+    /// and shared out, each member the same fraction of its take, floored,
+    /// where they would take more than the site held.
+    fn pass(&mut self, p: &Process, acting: Vec<(Entity, u64)>) -> Result<()> {
+        let rules = &self.world.genesis.rules;
+        let start = self.sites.clone();
+        let site_of = |e: &Entity| start.get(&e.place).ok_or("a bin at an unknown site");
+        // A state's members each draw their own (X3): they are split by
+        // what they draw, member by member, before any acts.
+        let slots = aggregate::slots(p)?;
+        let domain = format!("probe-amount:{}", p.id);
+        let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick]));
+        let mut split: Vec<(Entity, u64, BTreeMap<u8, u64>)> = Vec::new();
+        for (e, n) in acting {
+            if slots.is_empty() {
+                split.push((e, n, BTreeMap::new()));
                 continue;
             }
+            let mut drawn: BTreeMap<BTreeMap<u8, u64>, u64> = BTreeMap::new();
+            for _ in 0..n {
+                let one = slots.iter().map(|(&slot, &below)| (slot, s.below(below)));
+                *drawn.entry(one.collect()).or_default() += 1;
+            }
+            split.extend(drawn.into_iter().map(|(d, k)| (e.clone(), k, d)));
+        }
+
+        // Each state's takes of its site, per member, or none if blocked.
+        let mut planned: Vec<Option<Ledger>> = Vec::with_capacity(split.len());
+        let mut wanted: BTreeMap<(Id, Key), u128> = BTreeMap::new();
+        // A pass that takes nothing it shares is not planned, as the core
+        // does not plan it.
+        let planning = p.takes_shared();
+        for (e, n, draws) in split.iter().filter(|_| planning) {
+            let mut takes = Ledger::new();
+            let site = site_of(e)?;
+            let mut scratch = site.clone();
+            let run = aggregate::Run::Plan(&mut takes);
+            let a = aggregate::Act {
+                start: site,
+                count: 1,
+                tick: self.tick,
+                rules,
+                draws,
+                meal: None,
+            };
+            let blocked = aggregate::act(p, e, &mut scratch, run, a)?;
+            if blocked.is_none() {
+                planned.push(None);
+                continue;
+            }
+            for (k, v) in &takes {
+                *wanted.entry((e.place, k.clone())).or_default() += u128::from(*v) * u128::from(*n);
+            }
+            planned.push(Some(takes));
+        }
+        let short = |((site, k), asked): (&(Id, Key), &u128)| {
+            *asked > u128::from(start[site].accounts.get(k).copied().unwrap_or(0))
+        };
+        self.site_shortfalls += wanted.iter().filter(|w| short(*w)).count() as u64;
+        let planned = planned.into_iter().map(Some).chain(std::iter::repeat(None));
+        for ((e, n, draws), plan) in split.into_iter().zip(planned) {
             self.work.evaluations += 1;
             self.work.represented += n;
+            let takes = match plan {
+                Some(Some(takes)) => takes,
+                Some(None) => {
+                    self.work.blocked += n;
+                    continue;
+                },
+                None => Ledger::new(),
+            };
+            let held = |k: &Key| start[&e.place].accounts.get(k).copied().unwrap_or(0);
+            let shares: Ledger = takes
+                .into_iter()
+                .map(|(k, take)| {
+                    let asked = wanted[&(e.place, k.clone())];
+                    let given = if asked <= u128::from(held(&k)) {
+                        take
+                    } else {
+                        (u128::from(take) * u128::from(held(&k)) / asked) as u64
+                    };
+                    (k, given)
+                })
+                .collect();
             let site = self
                 .sites
                 .get_mut(&e.place)
                 .ok_or("a bin at an unknown site")?;
-            match aggregate::apply(p, &e, site, n, self.tick, &self.world.genesis.rules)? {
+            let run = match planning {
+                true => aggregate::Run::Act(&shares),
+                false => aggregate::Run::Free,
+            };
+            let a = aggregate::Act {
+                start: &start[&e.place],
+                count: n,
+                tick: self.tick,
+                rules,
+                draws: &draws,
+                meal: None,
+            };
+            match aggregate::act(p, &e, site, run, a)? {
                 Some(next) => {
                     self.work.accepted += n;
                     self.moved(&e, next, n);
                 },
                 None => self.work.blocked += n,
             }
-        }
-        if hunting {
-            self.hunt(p, hunters)?;
         }
         Ok(())
     }
@@ -206,7 +307,10 @@ impl<'w> Crowd<'w> {
             .ok_or("a bin at an unknown site")?;
         self.work.evaluations += 1;
         self.work.represented += n;
-        let next = aggregate::apply(p, e, site, n, self.tick, &world.genesis.rules)?
+        let start = site.clone();
+        let rules = &world.genesis.rules;
+        let run = aggregate::Run::Free;
+        let next = aggregate::apply(p, e, &start, site, n, self.tick, rules, run)?
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)
@@ -214,20 +318,33 @@ impl<'w> Crowd<'w> {
 
     fn average(&mut self) {
         let kinds = self.world.kinds();
-        let mut classes: BTreeMap<(usize, Id), Vec<(Entity, u64)>> = BTreeMap::new();
+        let rules = &self.world.genesis.rules;
+        // What is averaged: the body a competition sizes its kind up by, or,
+        // in a world without competitions, a lineage's reserve (ruling 446).
+        let averaged = |e: &Entity| -> Option<Key> {
+            if kinds.is_empty() {
+                let reserve = |k: &AccountKind| matches!(k, AccountKind::Matter { lineage, reserve: true } if *lineage == e.lineage);
+                let mut found = rules.accounts.iter().filter(|(_, k)| reserve(k));
+                found.next().map(|(key, _)| key.clone())
+            } else {
+                let kind = kinds.iter().find(|k| e.traits.contains(&k.identity));
+                kind.map(|k| k.body.clone())
+            }
+        };
+        let mut classes: BTreeMap<(Key, Id), Vec<(Entity, u64)>> = BTreeMap::new();
         for (e, &n) in &self.bins {
-            let Some(k) = kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
+            let Some(body) = averaged(e) else {
                 continue;
             };
             if e.alive {
                 classes
-                    .entry((k, e.place))
+                    .entry((body, e.place))
                     .or_default()
                     .push((e.clone(), n));
             }
         }
-        for ((k, _), members) in classes {
-            let body = &kinds[k].body;
+        for ((body, _), members) in classes {
+            let body = &body;
             let n: u64 = members.iter().map(|m| m.1).sum();
             let total: u64 = members
                 .iter()

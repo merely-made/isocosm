@@ -1,7 +1,20 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{rules::*, schema::*, simulation::*, stage::Staged};
+use crate::{
+    rules::*,
+    schedule::{Demands, Planned, Shares},
+    schema::*,
+    simulation::*,
+    stage::Staged,
+};
+
+/// How an act runs: written to the world, with the shares of shared ground
+/// its pass gave it, or planned and written nowhere (ruling 454).
+enum Run {
+    Act(Option<Shares>),
+    Plan,
+}
 
 impl Simulation {
     pub(crate) fn apply(
@@ -12,16 +25,45 @@ impl Simulation {
         cause: Option<Key>,
         count: u64,
     ) -> Receipt {
+        let act = self.state.next_action;
+        let run = Run::Act(None);
+        self.run((actor, target), process, cause, (count, act), run)
+            .0
+    }
+
+    /// A planned act, with the target, number and shares its pass gave it.
+    pub(crate) fn act(&mut self, actor: Id, process: &str, count: u64, plan: Planned) -> Receipt {
+        let run = Run::Act(Some(plan.shares));
+        let at = (actor, plan.target);
+        self.run(at, process, None, (count, plan.act), run).0
+    }
+
+    /// What an act acting as number `act` would take of shared ground, if
+    /// it would be accepted; nothing is written.
+    pub(crate) fn demands(
+        &mut self,
+        actor: Id,
+        target: Option<Id>,
+        process: &str,
+        count: u64,
+        act: u64,
+    ) -> Option<Demands> {
+        let (receipt, demands) = self.run((actor, target), process, None, (count, act), Run::Plan);
+        demands.filter(|_| receipt.accepted())
+    }
+
+    fn run(
+        &mut self,
+        (actor, target): (Id, Option<Id>),
+        process: &str,
+        cause: Option<Key>,
+        (count, act): (u64, u64),
+        run: Run,
+    ) -> (Receipt, Option<Demands>) {
         let before = self.conserved;
         let id = format!(
             "event:{}",
-            crate::digest(&(
-                self.genesis.seed,
-                self.state.tick,
-                self.state.next_action,
-                actor,
-                process
-            ))
+            crate::digest(&(self.genesis.seed, self.state.tick, act, actor, process))
         );
         let mut receipt = Receipt {
             id: id.clone(),
@@ -40,16 +82,22 @@ impl Simulation {
             matter_after: before,
             issued: self.issued,
         };
+        let refused = |mut receipt: Receipt, outcome: Outcome| {
+            receipt.outcome = outcome;
+            (receipt, None)
+        };
         // The definition is read from the shared genesis while the world is
         // written.
         let genesis = std::sync::Arc::clone(&self.genesis);
         let Some(definition) = genesis.rules.processes.get(process) else {
-            receipt.outcome = Outcome::Refused(format!("unknown process {process}"));
-            return receipt;
+            return refused(
+                receipt,
+                Outcome::Refused(format!("unknown process {process}")),
+            );
         };
         if count == 0 || (count > 1 && !definition.bulk_safe()) {
-            receipt.outcome = Outcome::Refused("process cannot execute as a cohort".into());
-            return receipt;
+            let why = "process cannot execute as a cohort".into();
+            return refused(receipt, Outcome::Refused(why));
         }
         if count > 1
             && self
@@ -59,24 +107,22 @@ impl Simulation {
                 .get(&actor)
                 .is_none_or(|g| g.count != count)
         {
-            receipt.outcome = Outcome::Refused("cohort identity interval changed".into());
-            return receipt;
+            let why = "cohort identity interval changed".into();
+            return refused(receipt, Outcome::Refused(why));
         }
-        let Some(entity) = self.state.population.get(actor) else {
-            receipt.outcome = Outcome::Refused("actor is absent".into());
-            return receipt;
+        let Some(entity) = self.body_at_start(actor) else {
+            return refused(receipt, Outcome::Refused("actor is absent".into()));
         };
         let place = entity.place;
         if definition.target.is_some() && !self.target_matches(actor, target, definition) {
-            receipt.outcome = Outcome::Blocked("no target satisfies the declared scope".into());
-            return receipt;
+            let why = "no target satisfies the declared scope".into();
+            return refused(receipt, Outcome::Blocked(why));
         }
         if cause
             .as_ref()
             .is_some_and(|id| !self.state.events.contains_key(id))
         {
-            receipt.outcome = Outcome::Refused("unknown causal event".into());
-            return receipt;
+            return refused(receipt, Outcome::Refused("unknown causal event".into()));
         }
         // The part the act binds, read before any requirement so that each
         // reads the same one (ruling 338).
@@ -84,10 +130,7 @@ impl Simulation {
         for query in &definition.requires {
             match self.query(actor, target, place, part, query) {
                 Ok(fact) => receipt.facts_read.push(fact),
-                Err(why) => {
-                    receipt.outcome = Outcome::Blocked(why);
-                    return receipt;
-                },
+                Err(why) => return refused(receipt, Outcome::Blocked(why)),
             }
         }
         receipt.foregone = genesis
@@ -106,13 +149,15 @@ impl Simulation {
             .collect();
         // Writes go to a stage of what the act binds, never to the world,
         // until every check below has passed.
-        let mut stage = match self.stage(actor, target, place, part, count) {
+        let mut stage = match self.stage((actor, target), place, part, count, act) {
             Ok(stage) => stage,
-            Err(why) => {
-                receipt.outcome = Outcome::Blocked(why);
-                return receipt;
-            },
+            Err(why) => return refused(receipt, Outcome::Blocked(why)),
         };
+        let planning = matches!(run, Run::Plan);
+        match run {
+            Run::Plan => stage.demands = Some(Demands::default()),
+            Run::Act(shares) => stage.shares = shares,
+        }
         let risky = definition.risk.as_ref().is_some_and(|r| {
             crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
                 < u64::from(r.per_million)
@@ -131,26 +176,30 @@ impl Simulation {
         for effect in &effects {
             match staged.effect(effect, &id) {
                 Ok(feat) => legend |= feat,
-                Err(why) => {
-                    receipt.outcome = Outcome::Blocked(why);
-                    return receipt;
-                },
+                Err(why) => return refused(receipt, Outcome::Blocked(why)),
             }
         }
         // Only what the act bound can have changed, so weighing it alone
         // decides whether the world's matter would change.
         if self.moves_matter(&stage) {
-            receipt.outcome = Outcome::Refused("matter invariant would be violated".into());
-            return receipt;
+            let why = "matter invariant would be violated".into();
+            return refused(receipt, Outcome::Refused(why));
         }
-        let Some(next) = self.state.next_action.checked_add(count) else {
-            receipt.outcome = Outcome::Refused("action sequence exhausted".into());
-            return receipt;
+        // What the act changed must land whole where the pass has written
+        // already, which its shares make so for shared ground (ruling 454).
+        if !self.fits(&stage) {
+            let why = "shared ground was taken by its pass".into();
+            return refused(receipt, Outcome::Blocked(why));
+        }
+        let Some(next) = act.checked_add(count) else {
+            return refused(
+                receipt,
+                Outcome::Refused("action sequence exhausted".into()),
+            );
         };
         if definition.note {
             if self.state.events.len() >= genesis.rules.limits.history {
-                receipt.outcome = Outcome::Refused("event budget exhausted".into());
-                return receipt;
+                return refused(receipt, Outcome::Refused("event budget exhausted".into()));
             }
             let event = Event {
                 id: id.clone(),
@@ -163,13 +212,16 @@ impl Simulation {
                 legend,
             };
             if let Err(why) = self.stage_event(&mut stage, event) {
-                receipt.outcome = Outcome::Refused(why);
-                return receipt;
+                return refused(receipt, Outcome::Refused(why));
             }
         }
         receipt.effects = effects.into_iter().cloned().collect();
         if risky {
             receipt.outcome = Outcome::RiskOutcome;
+        }
+        if planning {
+            let demands = stage.demands.take();
+            return (receipt, demands);
         }
         self.commit(stage, next, process);
         debug_assert_eq!(
@@ -177,6 +229,6 @@ impl Simulation {
             self.conserved,
             "an accepted act changed the world's matter"
         );
-        receipt
+        (receipt, None)
     }
 }

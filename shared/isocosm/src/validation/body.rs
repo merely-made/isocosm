@@ -49,12 +49,21 @@ pub(super) fn reads_part(q: &Query) -> Result<bool> {
     }
 }
 
-/// Whether `e` writes the bound part, refusing what a part cannot take.
+/// Whether `e` writes the bound part, refusing what a part cannot take; a
+/// guarded effect writes what its inner effect does.
 fn writes_part(e: &Effect) -> Result<bool> {
     match e {
         Effect::Trait {
             who: Binding::Part, ..
-        } => Ok(true),
+        }
+        | Effect::Allocate { .. } => Ok(true),
+        Effect::When { .. } => {
+            let writes: Result<Vec<bool>> = e.branches().map(writes_part).collect();
+            Ok(writes?.into_iter().any(|w| w))
+        },
+        Effect::Spend {
+            to: Binding::Part, ..
+        } => Err("a part keeps no ledger".into()),
         Effect::Transfer {
             from: Binding::Part,
             ..
@@ -123,6 +132,20 @@ pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
                 part.shape
             ));
         }
+    }
+    // Its cells go only to what it expresses, never more than it has
+    // (ruling 453).
+    if let Some(f) = part.cells.keys().find(|f| !part.functions.contains(*f)) {
+        return Err(format!(
+            "a part holds cells for {f}, which it does not express"
+        ));
+    }
+    let held: u64 = part.cells.values().map(|c| u64::from(*c)).sum();
+    if held > u64::from(part.capacity) {
+        return Err(format!(
+            "a part holds {held} cells in a capacity of {}",
+            part.capacity
+        ));
     }
     Ok(())
 }

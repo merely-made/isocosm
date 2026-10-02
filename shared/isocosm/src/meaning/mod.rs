@@ -8,7 +8,9 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Rules, expressing},
+    rules::{
+        AccountKind, Binding, Conversion, Effect, Need, Query, Reading, Rules, Seeding, expressing,
+    },
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -22,12 +24,25 @@ pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
 }
 
+/// X2's native readings of a body (ruling 453): each the sum, over its
+/// living parts, of what one part shows.
+pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
+    let living = body.parts.values().filter(|p| !p.severed);
+    let total: u128 = living.map(|p| r.of_part(p)).sum();
+    i64::try_from(total).unwrap_or(i64::MAX)
+}
+
+/// Whether the rules declare `key` matter, of whatever lineage.
+pub(crate) fn matter(rules: &Rules, key: &str) -> bool {
+    matches!(rules.accounts.get(key), Some(AccountKind::Matter { .. }))
+}
+
 /// The matter a ledger holds: its entries in accounts the rules declare
 /// matter, whatever lineage they belong to.
 pub(crate) fn mass(ledger: &Ledger, rules: &Rules) -> u128 {
     ledger
         .iter()
-        .filter(|(k, _)| matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. })))
+        .filter(|(k, _)| matter(rules, k))
         .map(|(_, v)| u128::from(*v))
         .sum()
 }
@@ -161,6 +176,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = mass(s.ledger(*who)?, s.rules);
             (v >= u128::from(*at_least), v.to_string())
         },
+        Query::Computed(x) => {
+            let v = computed(x, s)?;
+            (v != 0, v.to_string())
+        },
         // The address a receipt carries: which part, at which revision.
         Query::Expresses { function } => {
             let actor = s.body(Binding::Actor)?;
@@ -173,6 +192,27 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             }
         },
     })
+}
+
+/// An expression's value as a scene shows it, a sum over parts reading a
+/// body's living parts.
+fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
+    let mut read = |r: &Reading| -> Result<i64> {
+        match (r, r.who()) {
+            (Reading::Kept { .. }, _) => Err("a requirement keeps no values".into()),
+            (Reading::Account { key, .. }, who) => {
+                i64::try_from(value(s.ledger(who)?, key)).map_err(|e| e.to_string())
+            },
+            (r, Binding::Part) => Ok(i64::try_from(r.of_part(s.part()?)).unwrap_or(i64::MAX)),
+            (r, who) => Ok(body_reading(s.body(who)?, r)),
+        }
+    };
+    let mut parts = |who: Binding| -> Result<Vec<Part>> {
+        let living = s.body(who)?.parts.values().filter(|p| !p.severed);
+        Ok(living.cloned().collect())
+    };
+    let mut draw = |_: u64, _: u8| -> Result<u64> { Err("a requirement draws nothing".into()) };
+    x.eval_in(&mut read, &mut draw, &mut parts)
 }
 
 /// The actor's mood, read and never kept: the weights of the needs that
@@ -232,6 +272,8 @@ pub(crate) trait Parties {
     /// Checks a binding resolves to a ledger, as a transform does before
     /// it takes or gives anything.
     fn reach(&mut self, who: Binding) -> Result<()>;
+    /// What one member's share of a binding's ledger holds of `key`.
+    fn held(&mut self, who: Binding, key: &str) -> Result<u64>;
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn body(&mut self, who: Binding) -> Result<&mut Entity>;
@@ -251,9 +293,10 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             to,
             account,
             amount,
-        } => p
-            .take(*from, account, *amount)
-            .and_then(|()| p.give(*to, account, *amount)),
+        } => amount.resolved().and_then(|amount| {
+            p.take(*from, account, amount)
+                .and_then(|()| p.give(*to, account, amount))
+        }),
         Effect::Transform {
             who,
             take,
@@ -267,13 +310,99 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             present,
         } => p.part().and_then(|(b, id)| mark_part(b, id, key, *present)),
         Effect::Trait { who, key, present } => p.body(*who).and_then(|b| mark(b, key, *present)),
-        Effect::Practice { key, amount } => p
-            .body(Binding::Actor)
-            .and_then(|b| practice(b, key, *amount)),
+        Effect::Practice { key, amount } => amount.resolved().and_then(|amount| {
+            p.body(Binding::Actor)
+                .and_then(|b| practice(b, key, amount))
+        }),
         Effect::Death => p.body(Binding::Actor).map(|b| b.alive = false),
-        Effect::Ease { who, key, amount } => p.body(*who).map(|b| ease(b, key, *amount)),
+        Effect::Ease { who, key, amount } => amount
+            .resolved()
+            .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
+        Effect::Allocate { from, to, cells } => cells.resolved().and_then(|cells| {
+            p.part()
+                .and_then(|(b, id)| allocate(rules, b, id, from.as_deref(), to, cells))
+        }),
+        Effect::Spend {
+            from,
+            to,
+            amount,
+            into,
+        } => amount
+            .resolved()
+            .and_then(|amount| spend(p, from, *to, into.as_deref(), amount).map(|_| ())),
+        Effect::Convert {
+            who,
+            from,
+            to,
+            amount,
+            conversion,
+        } => amount
+            .resolved()
+            .and_then(|amount| convert(p, rules, *who, (from, to), amount, *conversion))
+            .map(|_| ()),
         _ => return None,
     })
+}
+
+/// An ordered take (ruling 446): each of the actor's accounts in turn gives
+/// what it holds, up to what is still owed, arriving at `to` as itself or
+/// as `into`. Returns what each account paid.
+pub(crate) fn spend(
+    p: &mut impl Parties,
+    from: &[Key],
+    to: Binding,
+    into: Option<&str>,
+    amount: u64,
+) -> Result<Vec<(Key, u64)>> {
+    let mut owed = amount;
+    let mut paid = Vec::new();
+    for key in from {
+        let given = p.held(Binding::Actor, key)?.min(owed);
+        if given == 0 {
+            continue;
+        }
+        p.take(Binding::Actor, key, given)?;
+        p.give(to, into.unwrap_or(key), given)?;
+        owed -= given;
+        paid.push((key.clone(), given));
+    }
+    Ok(paid)
+}
+
+/// A conversion of up to `amount` of a ledger's `from` accounts, a share of
+/// each in proportion as a meal takes (ruling 287), into `to`. A synthesis
+/// or digestion gives only the body's own lineage's matter (ruling 357).
+/// Returns what it took.
+pub(crate) fn convert(
+    p: &mut impl Parties,
+    rules: &Rules,
+    who: Binding,
+    (from, to): (&[Key], &Key),
+    amount: u64,
+    conversion: Conversion,
+) -> Result<Ledger> {
+    p.reach(who)?;
+    if let Conversion::Synthesis | Conversion::Digestion = conversion {
+        let own = p.body(who)?.lineage.clone();
+        let mine = matches!(rules.accounts.get(to), Some(AccountKind::Matter { lineage, .. }) if *lineage == own);
+        if !mine {
+            return Err(format!(
+                "{conversion:?} gives {to}, which is not {own}'s own matter"
+            ));
+        }
+    }
+    let mut offered = Ledger::new();
+    for key in from {
+        offered.insert(key.clone(), p.held(who, key)?);
+    }
+    let taken = share(&offered, rules, amount);
+    let mut total = 0u64;
+    for (key, value) in &taken {
+        p.take(who, key, *value)?;
+        total = total.checked_add(*value).ok_or("conversion overflow")?;
+    }
+    p.give(who, to, total)?;
+    Ok(taken)
 }
 
 fn ease(e: &mut Entity, key: &str, amount: u64) {
@@ -296,7 +425,7 @@ fn transform(
     if let Some(kind @ (Conversion::Synthesis | Conversion::Digestion)) = conversion {
         let own = p.body(who)?.lineage.clone();
         let foreign = give.keys().find(|k| {
-            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage }) if *lineage == own)
+            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage, .. }) if *lineage == own)
         });
         if let Some(key) = foreign {
             return Err(format!(
@@ -338,6 +467,55 @@ fn mark(e: &mut Entity, key: &str, present: bool) -> Result<()> {
 fn mark_part(e: &mut Entity, part: Id, key: &str, present: bool) -> Result<()> {
     let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
     set(&mut p.traits, key, present);
+    revise(e)
+}
+
+/// X6: `cells` of the bound part moved to a function it expresses, from
+/// another's or from its free cells, the part's capacity never exceeded. A
+/// development places an acquired function its shape admits (ruling 338).
+fn allocate(
+    rules: &Rules,
+    e: &mut Entity,
+    part: Id,
+    from: Option<&str>,
+    to: &str,
+    cells: u64,
+) -> Result<()> {
+    let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
+    let cells = u32::try_from(cells).map_err(|_| "allocation overflow")?;
+    if !p.functions.contains(to) {
+        let acquired = rules
+            .functions
+            .get(to)
+            .is_some_and(|f| f.seeding == Seeding::Acquired);
+        if !acquired || !rules.admits(&p.shape, to) {
+            return Err(format!("the bound part cannot come to express {to}"));
+        }
+        p.functions.insert(to.into());
+    }
+    match from {
+        Some(f) => {
+            let held = p.cells.get(f).copied().unwrap_or(0);
+            if held < cells {
+                return Err(format!("the bound part holds {held} cells for {f}"));
+            }
+            match held - cells {
+                0 => p.cells.remove(f),
+                left => p.cells.insert(f.into(), left),
+            };
+        },
+        None => {
+            let used: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
+            let free = u64::from(p.capacity).saturating_sub(used);
+            if free < u64::from(cells) {
+                return Err(format!("the bound part has {free} free cells"));
+            }
+        },
+    }
+    if cells > 0 {
+        let slot = p.cells.entry(to.into()).or_default();
+        *slot = slot.checked_add(cells).ok_or("allocation overflow")?;
+    }
     revise(e)
 }
 

@@ -7,10 +7,12 @@
 //! keyed by its site account (ruling 236). The lineage count is fixed so
 //! every draw reads alike.
 
+mod body;
 mod contested;
 mod mind;
 mod predator;
 
+pub use body::BodyFounding;
 pub use mind::{MindFounding, STRAIN};
 pub use predator::PredatorFounding;
 
@@ -96,6 +98,7 @@ fn set(values: &[String]) -> BTreeSet<Key> {
 fn matter(lineage: &str) -> AccountKind {
     AccountKind::Matter {
         lineage: lineage.into(),
+        reserve: false,
     }
 }
 
@@ -317,7 +320,8 @@ impl ProbeFounding {
                     + sites * (founders + hunters.as_ref().map_or(0, |h| h.per_site)),
                 ..Limits::default()
             },
-            epoch_ticks: 32,
+            // A year at the default minute (ruling 451).
+            epoch_ticks: crate::rules::year_ticks(crate::rules::DEFAULT_TICK_MICROSECONDS),
             collection_buffer: 0,
             competitions,
             similitude: Some(Similitude {
@@ -329,6 +333,8 @@ impl ProbeFounding {
             shapes: BTreeSet::new(),
             functions: BTreeMap::new(),
             skeleton: None,
+            epoch: Default::default(),
+            deep_time: Default::default(),
         };
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
@@ -423,7 +429,12 @@ impl ProbeFounding {
     }
 }
 
-fn member(lineages: &BTreeMap<Key, Lineage>, lineage: &str, place: Id, accounts: Ledger) -> Entity {
+pub(super) fn member(
+    lineages: &BTreeMap<Key, Lineage>,
+    lineage: &str,
+    place: Id,
+    accounts: Ledger,
+) -> Entity {
     let l = &lineages[lineage];
     let world = l.kingdom == "kingdom:world";
     Entity {
@@ -455,7 +466,7 @@ fn member(lineages: &BTreeMap<Key, Lineage>, lineage: &str, place: Id, accounts:
     }
 }
 
-fn world_traits() -> WorldTraits {
+pub(super) fn world_traits() -> WorldTraits {
     WorldTraits {
         shape: "shape:graph".into(),
         scale: "scale:macro".into(),

@@ -23,6 +23,11 @@ pub struct Founding {
     /// foundings without one, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub map: Option<crate::map::Layout>,
+    /// An authored world whose pressures every site takes at founding
+    /// (ruling 272). Absent in foundings without one, which serialize and
+    /// hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub preset: Option<crate::preset::Preset>,
 }
 
 impl Default for Founding {
@@ -39,6 +44,7 @@ impl Default for Founding {
             base_unit_micrometres: 1000,
             ecology: false,
             map: None,
+            preset: None,
         }
     }
 }
@@ -98,6 +104,7 @@ impl Founding {
                 "world:soil".into(),
                 AccountKind::Matter {
                     lineage: "world:ground".into(),
+                    reserve: false,
                 },
             ),
             ("sim:energy".into(), AccountKind::Energy),
@@ -132,6 +139,7 @@ impl Founding {
                     format!("matter:{i}-{j}"),
                     AccountKind::Matter {
                         lineage: lineage.clone(),
+                        reserve: false,
                     },
                 );
             }
@@ -187,7 +195,7 @@ impl Founding {
                 from: Binding::Actor,
                 to: Binding::Target,
                 account: "world:soil".into(),
-                amount: 1,
+                amount: 1.into(),
             }],
         );
         donate.note = true;
@@ -253,7 +261,8 @@ impl Founding {
                 entities: 1_000_001 + u64::from(self.sites),
                 ..Limits::default()
             },
-            epoch_ticks: 32,
+            // A year at the default minute (ruling 451).
+            epoch_ticks: crate::rules::year_ticks(crate::rules::DEFAULT_TICK_MICROSECONDS),
             collection_buffer: 16,
             competitions: BTreeMap::new(),
             similitude: None,
@@ -262,6 +271,8 @@ impl Founding {
             shapes: BTreeSet::new(),
             functions: BTreeMap::new(),
             skeleton: None,
+            epoch: Default::default(),
+            deep_time: Default::default(),
         };
         let mut sites = BTreeMap::new();
         // A map lays its own sites below; without one, a ring and a chord.
@@ -309,6 +320,9 @@ impl Founding {
             footprint = Some(laid.footprint);
             materials = laid.materials;
             shape = laid.shape;
+        }
+        if let Some(preset) = self.preset {
+            preset.apply(&mut rules.conditions, &mut sites);
         }
         let mut population = Population::default();
         // The world has a body at each site for its agentless processes.
@@ -367,11 +381,8 @@ impl Founding {
                     parts: BTreeMap::from([(
                         0,
                         Part {
-                            parent: None,
                             traits: lineages[&lineage].traits.clone(),
-                            severed: false,
-                            shape: Key::new(),
-                            functions: BTreeSet::new(),
+                            ..Default::default()
                         },
                     )]),
                     traits: lineages[&lineage].traits.clone(),

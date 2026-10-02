@@ -57,7 +57,7 @@ fn failed_second_effect_rolls_back_first_effect_and_identity_split() {
         from: Binding::Actor,
         to: Binding::Target,
         account: "world:soil".into(),
-        amount: 999,
+        amount: 999.into(),
     });
     let mut sim = Simulation::new(genesis, Execution::Grouped).unwrap();
     let before = sim.state_hash();
@@ -85,7 +85,7 @@ fn a_failed_act_keeps_none_of_its_notes_children_or_relations() {
             from: Binding::Actor,
             to: Binding::Place,
             account: "world:soil".into(),
-            amount: 999,
+            amount: 999.into(),
         },
     ]);
     let mut sim = Simulation::new(genesis, Execution::Individuals).unwrap();
@@ -115,7 +115,7 @@ fn a_record_is_judged_against_an_earlier_one_in_the_same_act() {
             from: Binding::Place,
             to: Binding::Actor,
             account: "world:soil".into(),
-            amount: 1,
+            amount: 1.into(),
         },
         Effect::Record {
             axis: "feat:reserve".into(),

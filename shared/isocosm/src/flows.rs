@@ -153,16 +153,17 @@ pub(crate) fn moves(
         moved.map(|(k, v)| (k.clone(), *v)).collect()
     };
     match e {
+        // An act resolves its amounts before its moves are worked out.
         Effect::Transfer {
             from,
             to,
             account,
             amount,
-        } if matter(account) && *amount > 0 => match (holder(*from), holder(*to)) {
-            (Some(f), Some(t)) if f != t => vec![Leg {
+        } if matter(account) => match (holder(*from), holder(*to), amount.resolved()) {
+            (Some(f), Some(t), Ok(amount)) if f != t && amount > 0 => vec![Leg {
                 from: (f, account.clone()),
                 to: (t, account.clone()),
-                amount: *amount,
+                amount,
             }],
             _ => vec![],
         },
