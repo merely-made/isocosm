@@ -8791,6 +8791,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: checkpoint 6 merged at `b4345cc`, built under rulings 446
+  and 451 to 456 and verified on its branch: the five natives run as
+  definitions over a minimal allocated body, the crowd is certified for
+  part-bound processes on 1,000 draws, and 4b's hunting checks pass again
+  under 454's shares. The sim plan's Findings holds the extension list and
+  the density, about 1.15 living members a state; the order from bodies
+  onward (195, 262) goes back to Mark.
 - 2026-10-01: rulings 454 to 456 recorded while building checkpoint 6's
   step 5, from assessing the body family against Mesocosm's tick: shared
   ground shared out from the pass's start (454, carrying out 269 and 306), a

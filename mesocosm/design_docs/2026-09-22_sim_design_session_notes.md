@@ -1525,3 +1525,23 @@ organism and no native reads which part loses tissue, put it back:
 The same reading corrected 446's: Mesocosm returns rent as mineral at once
 but leaves a spill as typed matter for the soil's rate, so a spill is not
 itself a mineralization.
+
+**Checkpoint 6 built.** The branch carried 454 into the core and the
+crowd, then the extensions the physiology needed: a sum over a body's
+parts (455), a guard with an otherwise branch, conversions of a computed
+amount, spending into the world's matter, values an act keeps, and a
+requirement over an expression. Writing the body family turned up two
+things worth recording. A frond's capacity was first drawn rather than
+taken from Mesocosm's lattice, and half the fronds grew glands, so grazers
+paid back nearly every bite as dose and every producer starved by tick 18;
+the lattice and a quarter of the cohorts as candidates fixed both, and the
+gland is as potent in Mesocosm, 84 to 105 mg on a palette plate. And the
+fidelity tests passed at once, so each was proved by a planted fault: one,
+the gland's ground guard dropped, went unseen until draws over lean ground
+were added. The probe's check passed on 1,000 draws, 16 of 16 readings,
+and 4b's two hunting checks passed again under 454. Its answer to 262's
+question is plain: once bodies carry cells the crowd finds about 1.15
+living members a state at every density, saving 1.28 to 1.43 times the
+evaluations, so grouping stops paying for bodies, the ground 266 and 439
+gave rate models. The branch merged at `b4345cc`; the order from bodies
+onward goes back to Mark with the result.
