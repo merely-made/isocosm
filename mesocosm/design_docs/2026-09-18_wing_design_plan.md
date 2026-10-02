@@ -2922,6 +2922,10 @@ what later sections derive from.
      bound to the lowest-numbered one that qualifies. The thirty shapes of
      the old plan become every non-empty set of the eight shapes times
      seeding, 510 in all, and step 1 covers them.
+     *Extended 2026-10-02 by ruling 480:* an act reads and writes the site
+     of the part it binds, and a spread acts from each patch, which one
+     lowest-numbered binding does not cover; the anatomy brief's next round
+     settles how.
 339. **The catalogue starts with the five functions in use.** Put to Mark on
      2026-09-26, with 338: the five, all fifteen of ruling 277, or those
      with the other vocabularies folded in? Mark: "The five in use."
@@ -5194,6 +5198,9 @@ what later sections derive from.
      network; the generator recombines systems, and a process may require a
      working one. What makes a system working is left to the brief's next
      round.
+     *Settled 2026-10-02 by ruling 477:* a body's network is read from its
+     tree, and a system works by degree, carrying what a process asks
+     through the capacities.
 
 466. **The fifteen functions take the proposed shapes and seeding.** Asked
      on 2026-10-02, with 463: "Do the fifteen functions take the shapes and
@@ -5262,6 +5269,8 @@ what later sections derive from.
      and a terrain-body is a part tree whose parts are big enough to carry
      places. One catalogue and one matter rule serve all three, amending
      §3.2.1's "not the part model".
+     *Placed 2026-10-02 by ruling 480:* a spread acts wherever a patch lies,
+     its place staying its root's site.
 
 468. **A lineage carries a recipe, and its bodies also grow parts in life.**
      Asked on 2026-10-02, with 467: "Where does a body's part tree come
@@ -5289,6 +5298,10 @@ what later sections derive from.
      lineage its kind, so later children can grow it; and a maturing body
      also grows the parts its recipe names that it lacks, each at a
      plan-resolved attachment.
+     *Specified 2026-10-02 by rulings 478 and 479:* the lineage keeps
+     Mesocosm's axial recipe and the placement policy, a child draws its own
+     soma, and a maturing body grows toward the lineage's recipe once its
+     parts are full, at PD2's price.
 
 469. **A wound loses a part's cells, regrown at a price where the lineage
      can.** Asked on 2026-10-02, with 467: "What is a wound to a part, and
@@ -5402,6 +5415,113 @@ what later sections derive from.
      skinning would be a second 2D renderer beside vello. Mark chose "vello
      for documents, kiss3d 2D for lit games": kiss3d's 2D only behind the
      scene contract for a lit 2D game. The alternative was vello only.
+
+477. **A body's system network is read from its tree, and a system works by
+     degree.** Asked on 2026-10-02, the anatomy brief's fourth round: "How
+     is a body's system network made, and when does a system work? Evidence:
+     under 465, a system is the functions it assembles and how the parts
+     expressing them connect along the body's tree. wing-functions' network
+     puts sources and stores (each with a capacity and a charge), gates
+     (open or shut) and effects on parts, joined by edges with capacities.
+     Mesocosm keeps a seeded, generated network as durable state, bound to
+     the body's current parts. Eponym counts a route as open when a path
+     runs from any source or store to the effect through live parts and open
+     gates, within a hop limit." Options, recommended first: (A) "From the
+     tree, working when routed: the world's rules give each system its
+     functions and their roles. A body's network is read from its tree on
+     demand: nodes on the live parts expressing those functions, edges along
+     attachments, capacities from the cells of the parts between. A system
+     works when each of its effects can be reached from a source or store
+     through live parts and open gates (Eponym's test), so severing a part
+     breaks the systems that ran through it (recommended)." (B) "From the
+     tree, working by degree: as the first, but a system works to the degree
+     its routes carry what a process asks through the edges' capacities, so
+     a wounded conduit carries less and the process gets less." (C)
+     "Generated and kept, as Mesocosm: each body keeps its network as state:
+     a seeded blueprint bound at birth and re-bound after every body change.
+     A system works when its routes are open, as in the first." Mark chose
+     B, "From the tree, working by degree". So the world's rules give each
+     system its functions and their roles; a body's network is read from its
+     tree on demand, nodes on the live parts expressing those functions,
+     edges along attachments and capacities from the cells of the parts
+     between; and a system works to the degree its routes carry what a
+     process asks, so a wounded conduit carries less and the process gets
+     less.
+
+478. **The lineage keeps Mesocosm's recipe, and a body grows toward it.**
+     Asked on 2026-10-02, with 477: "What does Isocosm's lineage keep as its
+     recipe (468)? Evidence: Isocosm's lineage keeps its parent, revision,
+     traits and kingdom, and the sim depends on no isometer or Mesocosm
+     crate. Mesocosm's recipe runs head to tail as tagmata: each has a
+     segment count, the appendage kind and count each segment bears, and
+     their shapes. It also holds a variance, by which an individual's
+     segment count may stray, and the lexicon. Each individual develops a
+     soma from the recipe, with segments drawn within the variance and some
+     appendages left absent: "the cheapest evidence that individuals are not
+     clones". isometer's policy is the facing each role prefers, mirroring
+     and tolerance." Options, recommended first: (A) "Mesocosm's recipe, in
+     the sim: the lineage keeps the axial recipe (tagmata, segments,
+     appendages, variance, lexicon) and the placement policy as world data.
+     Each child draws its own soma from them by its seed, so siblings
+     differ. A maturing body grows toward its own soma, so a limb absent at
+     development stays absent (recommended)." (B) "A template tree: the
+     lineage keeps one adult part tree (shapes, functions, extents,
+     attachments) and its lexicon. Every child develops that tree, varying
+     only in size, with no segments or tagmata." (C) "Recipe, grown toward
+     the lineage's: as the first, but a maturing body grows toward the
+     lineage's recipe rather than its own soma, so a limb absent at
+     development grows in later." Mark chose C, "Recipe, grown toward the
+     lineage's". So the lineage keeps the axial recipe (tagmata, segments,
+     appendages, variance, lexicon) and the placement policy as world data;
+     each child draws its own soma from them by its seed, so siblings
+     differ; and a maturing body grows toward the lineage's recipe rather
+     than its own soma, so a limb absent at development grows in later.
+
+479. **A body grows a part it lacks once its parts are full, at PD2's
+     price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
+     a part it lacks, and what does the part cost? Evidence: Mesocosm grows
+     a filial child whole from its recipe (447); in life it adds parts only
+     by incorporation and otherwise grows tissue, which 464 spreads over the
+     parts in proportion to their room. A seed (448) starts minimal and
+     grows by its own feeding. In isometer's plan, parts "fill in during an
+     epoch, automatically" as a body eats. Mesocosm prices development by
+     the cell (PD2): each cell whose expression changes costs one cell's
+     mass, paid from the reserve into the ground." Options, recommended
+     first: (A) "When its parts are full: growth that finds no room left in
+     the body's parts grows the next part the body lacks, nearest the root
+     first. Its tissue comes from that growth, and expressing its functions
+     costs PD2's price, a cell's mass per cell, from the reserve into the
+     ground. Growth then fills it by 464 (recommended)." (B) "By life stage:
+     the recipe marks which parts come at which stage, and a body grows all
+     of a stage's parts when it reaches that stage's mass, as a larva
+     becomes an adult. Paid the same way." (C) "With every meal: each meal
+     grows the next missing part first, as far as it reaches, before any
+     tissue thickens, so a young body takes its form before its size. Paid
+     the same way." Mark chose A, "When its parts are full". So growth that
+     finds no room left in the body's parts grows the next part the body
+     lacks, nearest the root first, its tissue from that growth and its
+     functions' expression at PD2's price, a cell's mass a cell from the
+     reserve into the ground; growth then fills it by 464.
+
+480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
+     "Where is a spread body present? Evidence: under 467 a fungus is one
+     body whose patches lie on many sites. Isocosm ties everything to a
+     body's one place: an act reads and writes its body's site (fixing draws
+     that site's soil), targets are filed by place and lineage (237), and
+     the crowd groups members by site. A process binds a live part
+     expressing its function (338)." Options, recommended first: (A)
+     "Wherever a patch lies: an act reads and writes the site of the part it
+     binds, and a body can be a target wherever it has a live part, so a
+     fungus fixes from each patch's soil and is grazed where its patches
+     lie. The body's place, for its record and its moves, stays its root's
+     site (recommended)." (B) "Its root's site only: a spread acts and is
+     found only at its root's site. Patches elsewhere hold matter but act on
+     nothing until the places family moves bodies between sites." Mark chose
+     A, "Wherever a patch lies". So an act reads and writes the site of the
+     part it binds, and a body can be a target wherever it has a live part:
+     a fungus fixes from each patch's soil and is grazed where its patches
+     lie, while the body's place, for its record and its moves, stays its
+     root's site.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9222,6 +9342,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 477 to 480 recorded, the anatomy brief's fourth round:
+  a body's system network read from its tree, a system working by degree
+  (477); the lineage keeping Mesocosm's recipe, a maturing body growing
+  toward it rather than its own soma (478); a missing part grown once the
+  body's parts are full, at PD2's price (479); and a spread acting wherever
+  a patch lies (480). Mark chose against the recommendation on 477 and 478.
+  Annotations on 338, 465, 467 and 468. Carried into the brief, the sim
+  plan, the session notes' §10 and the index.
 - 2026-10-02: rulings 471 to 476 recorded from the Conatus/physics session
   (Mark asked them carried here): kiss3d, reshaped, as the lit body tenant
   (471); a stack-owned light and environment block (472); WGSL/WESL for

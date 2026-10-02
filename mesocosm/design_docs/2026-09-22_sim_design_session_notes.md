@@ -1597,3 +1597,20 @@ Mark chose against the recommendation twice: a maturing body growing the
 parts its recipe names, over parts arriving in life only by incorporation;
 and a severed part living on where its lineage can regrow from a fragment,
 over every severed part dying.
+
+The fourth round took systems, waiting since the second, and three of the
+follow-ups the third opened:
+
+| Question as put | Ruling |
+| --- | --- |
+| How is a body's system network made, and when does a system work? | 477: from the tree, working by degree |
+| What does Isocosm's lineage keep as its recipe? | 478: recipe, grown toward the lineage's |
+| When does a maturing body grow a part it lacks, and what does the part cost? | 479: when its parts are full |
+| Where is a spread body present? | 480: wherever a patch lies |
+
+Mark chose against the recommendation twice: systems working by degree
+rather than by reachable routes, and bodies growing toward the lineage's
+recipe rather than their own soma. Recording found two interactions for the
+next round: growth toward the recipe meets 469's trait-gated healing where a
+body has lost a part to severing, and a spread acting from each patch meets
+338's one lowest-numbered binding.

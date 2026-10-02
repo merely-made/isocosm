@@ -1,11 +1,11 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Three rounds are ruled (459 to 470);
-the questions still open are listed in §6 and go to Mark in rounds. Nothing
-is built. When the brief is ruled through, it is carried into the sim plan's
-§2.3 and becomes the brief for S2's bodies family, the next in ruling 195's
-order (457).
+281 asked, from the probe's evidence. Four rounds are ruled (459 to 470 and
+477 to 480); the questions still open are listed in §8 and go to Mark in
+rounds. Nothing is built. When the brief is ruled through, it is carried
+into the sim plan's §2.3 and becomes the brief for S2's bodies family, the
+next in ruling 195's order (457).
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the
@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453 and 456 to 470; checkpoint 6's findings in the [sim
+450, 453, 456 to 470 and 477 to 480; checkpoint 6's findings in the [sim
 plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -32,7 +32,14 @@ A system is data in the world's rules (465): the functions it assembles and
 how the parts expressing them connect along the body's tree, on the model of
 wing-functions' network of sources, stores, gates and effects on parts,
 joined by edges with capacities. The generator recombines systems, and a
-process may require a working one; what makes a system working is open (§8).
+process may require a working one. A body's network is read from its tree on
+demand (477): nodes on the live parts expressing a system's functions, edges
+along attachments, and capacities from the cells of the parts between; a
+system works to the degree its routes carry what a process asks, so a
+wounded conduit carries less and the process gets less. *Reading, not
+ruled:* the routing is wing-functions' bounded one, first-fit and
+breadth-first rather than a maximum flow, and a severed part carries
+nothing.
 
 ## 2. The function catalogue
 
@@ -85,7 +92,11 @@ A part attaches to its parent, making the tree, or lies on a site, making a
 spread's patch (467), and every body form uses this one model: a fungus is
 one body across many sites, a germ is many bodies (58), and a terrain-body
 is a part tree whose parts are big enough to carry places. One catalogue and
-one matter rule serve all three.
+one matter rule serve all three. A spread acts wherever a patch lies (480):
+an act reads and writes the site of the part it binds, and a body can be a
+target wherever it has a live part, while its place, for its record and its
+moves, stays its root's site. *Reading, not ruled:* a tree's parts lie where
+its body is, so nothing changes for a tree.
 
 ## 4. Where a body's matter sits
 
@@ -117,17 +128,24 @@ invalidates it (405). Pivots, yaw and volumes stay isometer's, for drawing.
 ## 6. How parts arrive
 
 A lineage carries a recipe and a placement policy, and a child develops its
-part tree from them (468), as 447's filial body does. A maturing body grows
-the parts its recipe names that it lacks, each at a plan-resolved attachment
-(251), so a larva can grow its legs. In life a part also arrives by
-incorporation, landing at a plan-resolved attachment, and what a body
-incorporates teaches its lineage that kind, so later children can grow it,
-which is Mesocosm's kleptoplasty and its lexicon. *Reading, not ruled:* the
-recipe is Mesocosm's axial one, segments grouped into tagmata with each
-organ at its situs (252), and the policy is isometer's, the facing each role
-prefers and whether it mirrors; both change only at the epoch boundary (57),
-as isometer's plan does; and a seed (448) is a body that starts with little
-of its recipe and grows the rest.
+part tree from them (468), as 447's filial body does. The recipe is
+Mesocosm's axial one, kept as world data (478): tagmata head to tail, each
+with its segments and the appendages they bear, a variance and the lexicon;
+the policy is isometer's, the facing each role prefers, mirroring and
+tolerance. Each child draws its own soma from them by its seed, so siblings
+differ, and a maturing body grows toward the lineage's recipe rather than
+its soma, so a limb absent at development grows in later. It grows a part it
+lacks once growth finds no room left in its parts (479): the next missing
+part nearest the root first, its tissue from that growth and its functions'
+expression at PD2's price, a cell's mass a cell from the reserve into the
+ground, after which growth fills it in proportion (464). In life a part also
+arrives by incorporation, landing at a plan-resolved attachment (251), and
+what a body incorporates teaches its lineage that kind, so later children
+can grow it, which is Mesocosm's kleptoplasty and its lexicon. *Reading, not
+ruled:* each organ keeps its situs (252); the recipe and the policy change
+only at the epoch boundary (57), as isometer's plan does; a seed (448) is a
+body that starts with little of its recipe and grows the rest; and a body
+without a reserve pays PD2's price from its tissue, as its rent (463).
 
 ## 7. Wounds and severing
 
@@ -149,22 +167,32 @@ has a lineage's traits name its strategies.
 
 ## 8. Open, for the next rounds
 
-- **A spread's presence** (467): which sites a spread body is on, for the
-  processes, crowds and targets that read a body's place, Isocosm's body
-  having one place.
-- **Growth in life** (468): what decides when a maturing body grows a part
-  its recipe names, what the part costs and starts with, and what Isocosm's
-  lineage keeps of the recipe and the policy.
+- **A spread's acts** (480): a process binds the lowest-numbered part that
+  qualifies (338), yet a spread acts from each patch; whether it then acts
+  once for each qualifying patch, or once for each site where it has one.
+- **A spread's connections** (467, 477): whether a spread's patches connect
+  along the routes between their sites, for its systems, or each patch works
+  alone.
+- **Regrowing what was lost** (469, 478, 479): whether growth toward the
+  recipe also regrows a severed part, or only what development left absent,
+  beside 469's healing of cells where the lineage's traits allow.
+- **Variance under growth** (478): whether a body's segment count, drawn
+  within the variance, also grows toward the recipe's, or only absent
+  appendages grow in.
 - **Wounds' details** (469): which functions lose the cells a wound takes,
   and where regrowing them falls in growth's order.
 - **Fragments** (470): what a fragment needs to live, such as a function its
   lineage's root expresses.
-- **Systems as networks** (465): how a system's network is written in the
-  world's rules, and what makes one working, which a process that requires
-  it reads.
+- **The default systems** (277, 465, 477): which systems the default set
+  names, with their functions and roles, and which processes read them.
 
 ## Progress
 
+- 2026-10-02: the fourth round ruled (477 to 480): system networks read from
+  the tree and working by degree, the lineage keeping Mesocosm's recipe with
+  bodies growing toward it once their parts are full, and a spread acting
+  wherever a patch lies; §8's list rebuilt with the interactions recording
+  found.
 - 2026-10-02: the third round ruled (467 to 470): one part model for every
   body form, a lineage's recipe with growth in life and the lexicon, wounds
   as lost cells regrown at a price, and severed parts as bodies of their
