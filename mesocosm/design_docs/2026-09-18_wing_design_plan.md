@@ -2464,6 +2464,9 @@ what later sections derive from.
      names. Parts are shapes expressing functions. The generator riffs new
      systems by mixing functions, for new-looking life that stays
      biologically reasonable.
+     *Specified 2026-10-02 by rulings 465 and 466:* a system is a named
+     network of functions in the world's rules, and each function's shapes
+     and seeding are tabled.
 278. **The function vocabularies become one catalogue in the sim.** Put to
      Mark on 2026-09-26, from the survey, which found four that never meet,
      Mesocosm's processes, `wing-functions`' kinds, Eponym's grip and
@@ -4727,6 +4730,9 @@ what later sections derive from.
      4's mineralization rate, an agentless site process, returns it.
      *Located 2026-10-02 by ruling 459:* tissue in each part, the reserve in
      the parts that store.
+     *Bounded and spread 2026-10-02 by rulings 463 and 464:* a store holds
+     what its cells can and a body without one keeps none, and rent, growth
+     and a landing meal reach the parts in proportion.
 
 447. **Reproduction is several strategies, governed by traits.** Asked on
      2026-10-01, with 446, filial cost being the other physiology the
@@ -4985,6 +4991,9 @@ what later sections derive from.
      reserve sit in a body, and whether a bite lands on one part. *Settled
      2026-10-02 by ruling 459:* tissue in parts, the reserve in stores, a
      bite landing on one part.
+     *Cite corrected 2026-10-02:* the proportional take across a prey's
+     accounts is ruling 294's, decided from 287's fork; 287 gave each
+     consumer one feeding process.
 
 457. **The order from bodies onward stands.** Asked on 2026-10-02,
      reporting checkpoint 6 under ruling 262: "Ruling 195's order from
@@ -5043,6 +5052,10 @@ what later sections derive from.
      a bite lands on one part of its prey, drawn by what each holds, and
      incorporation takes a part whole with its matter. This settles 456's
      item and locates 446's two accounts.
+     *Bounded 2026-10-02 by ruling 463:* a store holds reserve up to its
+     store cells times a cell's mass, and a body without one keeps none.
+     *Spread by ruling 464:* rent, growth and a landing meal reach the parts
+     in proportion.
 
 460. **A part's cells are derived from its extents.** Asked on 2026-10-02,
      with 459: "How many cells does a part hold? Evidence: Mesocosm derives
@@ -5081,6 +5094,9 @@ what later sections derive from.
      folded in". So the catalogue holds 277's fifteen, each with its
      shapes, seeding and reader, and the other three vocabularies map onto
      it.
+     *Tabled 2026-10-02 by ruling 466:* each function's shapes, seeding and
+     reader, with wing-functions' source and store onto store, its gate onto
+     gate and its actuator onto contract.
 
 462. **The sim keeps where each part attaches.** Asked on 2026-10-02, with
      459: "Who measures a body's geometry for the sim? Evidence: Isocosm's
@@ -5103,6 +5119,110 @@ what later sections derive from.
      its parent, the sim measures reach, clearance and contact from that,
      each mechanic naming the measurement it reads (405), and pivots, yaw
      and volumes stay isometer's.
+
+463. **A store holds the reserve its cells can, and a body without one keeps
+     none.** Asked on 2026-10-02, the anatomy brief's second round: "How
+     much can a body's stores hold, and what of a body with none? Evidence:
+     Mesocosm bounds the reserve at the body's adult mass, the same bound as
+     its tissue (TD6), and every body has a reserve. Under 459 the reserve
+     sits in parts that express store, and neither body the probe drew
+     (fronds; a lump, limbs and an eye) expresses store. TD5 burns a meal
+     into the reserve when the body is near starving, which needs somewhere
+     to put it." Options, recommended first: (A) "Store cells hold it: each
+     store part holds up to its store cells times one cell's mass. A body
+     with no store keeps no reserve: TD5 then builds tissue and rent draws
+     on tissue. Storing becomes a real strategy, fat bodies against lean
+     ones (recommended)." (B) "Adult mass, held in stores: the reserve's
+     bound stays the whole body's adult mass, as in Mesocosm, spread across
+     its store parts. A body with no store keeps none." (C) "Every body
+     keeps a reserve: stores hold up to their cells; a body with no store
+     keeps a small reserve in its root, so TD5 always has somewhere to burn
+     into." Mark chose A, "Store cells hold it". So a store part holds
+     reserve up to its store cells times a cell's mass, and a body without
+     one keeps none: TD5 then builds tissue, and rent draws tissue.
+
+464. **Rent, growth and a landing meal reach a body's parts in proportion.**
+     Asked on 2026-10-02, with 463: "Which parts do rent, growth and a
+     landing meal reach, now that every part holds its own tissue? Evidence:
+     Mesocosm takes rent and bites from its living parts in part order, root
+     first, each part giving its own mix, and it grows by thickening the
+     root up to the body's room. Each part has its own adult mass. Ruling
+     454 made identity order decide nothing within a pass." Options,
+     recommended first: (A) "In proportion: rent is drawn from the parts in
+     proportion to their tissue (287's share rule). Growth and a landing
+     meal fill each part in proportion to its room below its own adult mass.
+     No part comes first, and none overfills (recommended)." (B) "Root
+     first, as Mesocosm: rent from the root first, then the other parts in
+     order; growth thickens the root up to the body's room, as Mesocosm does
+     now." Mark chose A, "In proportion". So rent takes from the parts in
+     proportion to their tissue, and growth and a landing meal fill each
+     part in proportion to its room below its own adult mass. *Cite
+     corrected 2026-10-02, on recording:* the option's "287's share rule" is
+     ruling 294's proportional take, decided from 287's fork; 287 itself
+     gave each consumer one feeding process.
+
+465. **Organ systems are named networks of functions.** Asked on 2026-10-02,
+     with 463: "Are organ systems data in the sim? Evidence: ruling 277
+     assembles systems from functions and has the generator riff new ones.
+     Nothing reads a system yet. wing-functions already models one kind of
+     system as a network: sources, stores, gates and effects on parts,
+     joined by edges with capacities, which is what conduct and circulate
+     would route along." Options, recommended first: (A) "Named networks of
+     functions: a system is data in the world's rules: the functions it
+     assembles and how the parts expressing them connect along the body's
+     tree, with wing-functions' network as the model. The generator
+     recombines systems, and a process may require a working one
+     (recommended)." (B) "Named sets of functions: a system names its
+     functions but not how they connect; it counts as present when the body
+     expresses them all." (C) "The generator's grouping only: systems shape
+     what the generator builds; the sim reads only parts and functions."
+     Mark chose A, "Named networks of functions". So a system is data in the
+     world's rules, naming the functions it assembles and how the parts
+     expressing them connect along the body's tree, on wing-functions'
+     network; the generator recombines systems, and a process may require a
+     working one. What makes a system working is left to the brief's next
+     round.
+
+466. **The fifteen functions take the proposed shapes and seeding.** Asked
+     on 2026-10-02, with 463: "Do the fifteen functions take the shapes and
+     seeding proposed (see the preview), with wing-functions' source mapped
+     onto store (a store that starts charged) and its actuator onto
+     contract?" The preview, as put:
+
+     | Function | Shapes | Seeding | Read by |
+     | --- | --- | --- | --- |
+     | contract | rod | Grown | rent, mouthful, reach |
+     | intake | lump, tube | Grown | the meal |
+     | sense | point | Grown | perception (waits for places) |
+     | fix | sheet | Grown | a producer's income |
+     | secrete | sheet | Acquired | rent, the dose |
+     | support | rod, shell, joint, branch | Grown | none yet (load, clearance) |
+     | conduct | tube, branch | Grown | wing-functions' edges |
+     | gate | joint, tube | Grown | wing-functions' gate |
+     | store | lump | Grown | the reserve (459) |
+     | circulate | tube, lump | Grown | none yet |
+     | respire | sheet, branch | Grown | none yet |
+     | excrete | tube | Grown | none yet |
+     | reproduce | lump | Grown | reproduction (447-450) |
+     | grip | rod, branch, joint | Grown | Eponym's grip, contact |
+     | adhesion | sheet, point | Grown | Eponym's adhesion |
+
+     wing-functions: source -> store, store -> store, gate -> gate, actuator
+     -> contract.
+
+     Options, recommended first: (A) "The proposed table: each function
+     admitted by the shapes listed, grown on them except secrete, which is
+     acquired, as now. Store grows on lumps, so a lump splits its cells
+     between taking in and storing (recommended)." (B) "Store acquired, not
+     grown: the same table, but store is acquired, as secrete is: no body
+     grows a reserve organ; a development has to give it one." (C) "Every
+     shape admits every function: no shape requirements: any part can
+     express any function, and the generator chooses. Simpler, but it loses
+     ruling 405's tie between form and function." Mark chose A, "The
+     proposed table". So each function is admitted by the shapes listed and
+     grown on them, secrete alone acquired; a lump splits its cells between
+     taking in and storing; and wing-functions' source and store map onto
+     store, its gate onto gate and its actuator onto contract.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -8921,6 +9041,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 463 to 466 recorded, the anatomy brief's second round:
+  a store holds what its cells can and a body without one keeps no reserve
+  (463), rent, growth and a landing meal reach parts in proportion (464),
+  organ systems are named networks of functions (465), and the fifteen
+  functions' shapes and seeding (466). Annotations on 277, 446, 459 and 461,
+  and cite corrections on 456 and 464: the proportional take is 294's, not
+  287's. Carried into the brief, the sim plan, the session notes' §10 and
+  the index.
 - 2026-10-02: rulings 459 to 462 recorded, the anatomy brief's first
   round: tissue in parts and the reserve in stores (459), cells derived
   from extents (460), all fifteen functions with the other vocabularies

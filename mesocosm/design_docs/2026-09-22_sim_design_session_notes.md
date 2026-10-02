@@ -1569,4 +1569,16 @@ questions the rest rests on:
 | Who measures a body's geometry for the sim? | 462: the sim keeps attachment offsets |
 
 The brief opened as its own doc with those rulings and the questions still
-open.
+open. The second round took the four that followed from them:
+
+| Question as put | Ruling |
+| --- | --- |
+| How much can a body's stores hold, and what of a body with none? | 463: store cells hold it |
+| Which parts do rent, growth and a landing meal reach? | 464: in proportion |
+| Are organ systems data in the sim? | 465: named networks of functions |
+| Do the fifteen functions take the shapes and seeding proposed? | 466: the proposed table |
+
+Recording them found a miscite in the question as put: the in-proportion
+option named "287's share rule", and the proportional take is ruling 294's,
+decided from 287's fork. The record carries the correction on 464, and on
+456, which made the same slip.
