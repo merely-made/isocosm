@@ -2474,6 +2474,8 @@ what later sections derive from.
      *Specified 2026-10-02 by rulings 465 and 466:* a system is a named
      network of functions in the world's rules, and each function's shapes
      and seeding are tabled.
+     *Tabled 2026-10-02 by rulings 489 and 491:* ten default systems, and
+     new ones riffed by substitution.
 278. **The function vocabularies become one catalogue in the sim.** Put to
      Mark on 2026-09-26, from the survey, which found four that never meet,
      Mesocosm's processes, `wing-functions`' kinds, Eponym's grip and
@@ -5203,6 +5205,8 @@ what later sections derive from.
      *Settled 2026-10-02 by ruling 477:* a body's network is read from its
      tree, and a system works by degree, carrying what a process asks
      through the capacities.
+     *Tabled 2026-10-02 by ruling 489:* the ten default systems, which the
+     natives read from the bodies family on (490).
 
 466. **The fifteen functions take the proposed shapes and seeding.** Asked
      on 2026-10-02, with 463: "Do the fifteen functions take the shapes and
@@ -5705,6 +5709,91 @@ what later sections derive from.
      to whatever stands in it, its lineage its only identity; and a
      terrain-body stays a part tree. This amends 58's germs as many bodies,
      and 467's and 480's patches as parts, for these forms.
+
+489. **The default systems take the proposed table.** Asked on 2026-10-02,
+     the anatomy brief's sixth round: "Do the default systems take the
+     proposed table (see the preview)? Evidence: 277 names the
+     integumentary, respiratory, circulatory, digestive, nervous and
+     reproductive systems, the senses, and systems fauna lack. Under 465 and
+     477, a system is functions in roles (sources, stores, gates, effects),
+     read from the tree, and it works to the degree its routes carry what a
+     process asks. Eponym's one network is a source on the root (capacity
+     24, charge 24) feeding effects on two limbs. The probe's natives read
+     intake (the meal), fix (income), contract (the mouthful) and secrete
+     (the dose)." The preview, as put:
+
+     | System | Sources | Stores | Gates | Effects | Read by |
+     | --- | --- | --- | --- | --- | --- |
+     | digestive | intake | store | gate | every living part | the meal |
+     | photosynthetic | fix | store | gate | every living part | a producer's income |
+     | muscular | every living part | store | gate | contract | the mouthful, reach, Eponym's strikes |
+     | nervous | sense | - | gate | contract | perception, reach (wait for places) |
+     | glandular | secrete | store | gate | the biting parts | the dose |
+     | reproductive | every living part | store | gate | reproduce | reproduction (447 to 450) |
+     | circulatory | circulate | store | gate | every living part | none yet |
+     | respiratory | respire | - | gate | contract | none yet |
+     | excretory | every living part | - | gate | excrete | none yet |
+     | integumentary | no routes: shells expressing support | | | | none yet |
+
+     Options, recommended first: (A) "The proposed table: ten systems, each
+     with functions in roles. Routes run along attachments, their capacities
+     from the cells of the parts between (477). The senses are the nervous
+     system's sources. The integument routes nothing and works by the share
+     of its cells still living (recommended)." (B) "Only what a mechanic
+     reads: five systems now: digestive, photosynthetic, muscular, glandular
+     and reproductive. The others enter with the first mechanic that reads
+     them." (C) "Fewer, broader systems: four: neuromuscular (sense and
+     every living part, through gates, to contract), as Eponym's one network
+     is; metabolic (intake or fix, to stores and every part); reproductive;
+     and the integument." Mark chose A, "The proposed table". So the default
+     set holds ten systems, each its functions in roles, routes running
+     along attachments with capacities from the cells of the parts between;
+     the senses are the nervous system's sources; and the integument routes
+     nothing and works by the share of its cells still living. Each is read
+     as the table lists, and circulatory, respiratory and excretory by
+     nothing yet.
+
+490. **The natives read their systems from the bodies family on.** Asked on
+     2026-10-02, with 489: "When do the natives start reading their systems?
+     Evidence: the probe's natives are certified on bodies founded before
+     466, which express no store, gate or conduct: fronds that fix, and a
+     grazer's intake lump, contracting rods and sensing point. Read as the
+     table lists, a grazer's muscular route would run from its living parts
+     to its rods along their attachments, and a wound or a severing would
+     narrow or cut it. 477 lets a process require a working system."
+     Options, recommended first: (A) "With the bodies family: the natives
+     read the systems the table lists from S2's bodies family on. That
+     family founds bodies by the recipe (478) with 466's functions and
+     certifies them again. Until then nothing certified changes
+     (recommended)." (B) "Now, in the probe: rewire the probe's natives to
+     read their systems at once, and certify checkpoint 6's domain again on
+     regrown bodies." (C) "By world rule: each native's definition names the
+     system it reads, if any. The default set names none, so a world opts
+     in." Mark chose A, "With the bodies family". So the natives read the
+     systems the table lists from S2's bodies family on, which founds bodies
+     by the recipe (478) with 466's functions and certifies them again;
+     until then nothing certified changes.
+
+491. **The generator riffs systems by substitution.** Asked on 2026-10-02,
+     with 489: "How does the generator riff new systems? Evidence: in 277
+     Mark asked to "riff new ones and mix existing ones to make new
+     forms/systems... new-looking forms of life that still are biologically
+     reasonable". A system is functions in roles (465, 477), and each
+     function is admitted by its shapes (466). Under 465 the generator
+     recombines systems, and a system is data in the world's rules."
+     Options, recommended first: (A) "By substitution: a riffed system is a
+     default one with a role's function swapped for another, or one added.
+     It is kept only if a body can realize its routes: an animal whose
+     respiratory source is fix, a gut that photosynthesizes. Each riff
+     becomes world data with its own name (recommended)." (B) "Free
+     assembly: any functions in any roles, kept if some native reads the
+     result. Stranger systems, less often reasonable." (C) "Not yet: the
+     default set only for now; riffing waits for the generator's own round."
+     Mark chose A, "By substitution". So a riffed system is a default one
+     with a role's function swapped for another, or one added, kept only if
+     a body can realize its routes, such as an animal whose respiratory
+     source is fix or a gut that photosynthesizes; each riff becomes world
+     data with its own name.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9526,6 +9615,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 489 to 491 recorded, the anatomy brief's sixth round:
+  the default systems take the proposed table of ten (489), the natives read
+  them from the bodies family on (490), and the generator riffs systems by
+  substitution (491). Annotations on 277 and 465. Carried into the brief,
+  the sim plan, the session notes' §10 and the index.
 - 2026-10-02: ruling 488 recorded, the fifth round's first question after
   Mark's reframe of it: a mold is a territory and micro life a surface,
   amending 58, 467 and 480 for these forms; annotations on 58, 467, 480 and

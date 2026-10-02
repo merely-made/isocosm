@@ -1633,3 +1633,11 @@ surfaces, and then, by his "After that, default systems!", the default
 systems follow. Put back as whether a spread like underground mold, and
 micro life, are better held as territories or surfaces, it was ruled 488:
 territory for mold, surface for micro.
+
+The sixth round took the default systems, as Mark asked:
+
+| Question as put | Ruling |
+| --- | --- |
+| Do the default systems take the proposed table? | 489: the proposed table |
+| When do the natives start reading their systems? | 490: with the bodies family |
+| How does the generator riff new systems? | 491: by substitution |

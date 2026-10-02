@@ -1,8 +1,8 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Five rounds are ruled (459 to 470, 477
-to 480 and 485 to 488); the questions still open are listed in §8 and go to
+281 asked, from the probe's evidence. Six rounds are ruled (459 to 470, 477
+to 480 and 485 to 491); the questions still open are listed in §8 and go to
 Mark in rounds. Nothing is built. When the brief is ruled through, it is
 carried into the sim plan's §2.3 and becomes the brief for S2's bodies
 family, the next in ruling 195's order (457).
@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470, 477 to 480 and 485 to 488; checkpoint 6's findings in
+450, 453, 456 to 470, 477 to 480 and 485 to 491; checkpoint 6's findings in
 the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -40,6 +40,34 @@ wounded conduit carries less and the process gets less. *Reading, not
 ruled:* the routing is wing-functions' bounded one, first-fit and
 breadth-first rather than a maximum flow, and a severed part carries
 nothing.
+
+The default set holds ten systems (489), each its functions in roles:
+
+| System | Sources | Stores | Gates | Effects | Read by |
+| --- | --- | --- | --- | --- | --- |
+| digestive | intake | store | gate | every living part | the meal |
+| photosynthetic | fix | store | gate | every living part | a producer's income |
+| muscular | every living part | store | gate | contract | the mouthful, reach, Eponym's strikes |
+| nervous | sense | - | gate | contract | perception, reach (wait for places) |
+| glandular | secrete | store | gate | the biting parts | the dose |
+| reproductive | every living part | store | gate | reproduce | reproduction (447 to 450) |
+| circulatory | circulate | store | gate | every living part | none yet |
+| respiratory | respire | - | gate | contract | none yet |
+| excretory | every living part | - | gate | excrete | none yet |
+| integumentary | no routes: shells expressing support | | | | none yet |
+
+The senses are the nervous system's sources, and the integument, which
+routes nothing, works by the share of its cells still living. The natives
+read their systems from S2's bodies family on, which founds bodies by the
+recipe with 466's functions and certifies them again; until then nothing
+certified changes (490). The generator riffs a new system by substitution
+(491): a default one with a role's function swapped for another, or one
+added, kept only if a body can realize its routes, such as an animal whose
+respiratory source is fix or a gut that photosynthesizes, each riff world
+data with its own name. *Reading, not ruled:* a cell's capacity is a world
+rule set so an intact body's routes carry all its natives ask, so a body
+reads its full degree until a wound or a severing narrows a route; and a
+process takes only what its system carries, the rest staying put.
 
 ## 2. The function catalogue
 
@@ -180,9 +208,6 @@ strategies.
   matter lies on places and in hosts, and what carries a germ lineage's
   genes as it revises them; and what of the catalogue either expresses
   without parts.
-- **The default systems** (277, 465, 477): which systems the default set
-  names, with their functions and roles, and which processes read them; next
-  after the spread question (487).
 - **Variance under growth** (478): whether a body's segment count, drawn
   within the variance, also grows toward the recipe's, or only absent
   appendages grow in.
@@ -191,6 +216,10 @@ strategies.
 
 ## Progress
 
+- 2026-10-02: the sixth round ruled (489 to 491): the default systems take
+  the table of ten, now in §1, the natives read them from the bodies family
+  on, and the generator riffs systems by substitution; §8's default systems
+  item closed.
 - 2026-10-02: the fifth round's first question ruled after Mark's reframe
   (488): a mold is a territory and micro life a surface; §3's spread
   paragraph rewritten, and §8's head is now territories and surfaces.
