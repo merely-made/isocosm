@@ -2391,7 +2391,9 @@ what later sections derive from.
      *Reading, not ruled:* decision-making capability is a methodology that
      chooses (ruling 37), so producers and other purely reactive members
      scramble in proportion, and members that choose compete under rulings
-     115, 236 and 240.
+     115, 236 and 240. *Specified 2026-10-01 by ruling 454:* a pass reads
+     the world as it began, and a short site or prey gives each taker the
+     same fraction of its take, floored, the remainder staying put.
 270. **The flow record is buffered outside state.** Put to Mark on
      2026-09-26, from decision 7: each tick's matter receipts, reconciling
      every compartment, buffered outside the state hash, kept in state under
@@ -2480,6 +2482,8 @@ what later sections derive from.
 281. **The anatomy brief follows the probe.** Put to Mark on 2026-09-26, with
      rulings 276 to 278: write the three-level model up now, ahead of S1's
      body schema, or after the vertical probe? Mark: "After the probe."
+     *Item added 2026-10-01 by ruling 456:* where tissue and reserve sit in
+     a body, and whether a bite lands on one part.
 282. **A lane wires paging into the VTT's scene board now.** Put to Mark on
      2026-09-26, from the first review: the board refuses its brick map past
      `modulus::MAX_BRICKS` of 2,047, about 70 tiles square, where the
@@ -2652,7 +2656,8 @@ what later sections derive from.
      site's hunters start as one group; switch to 269's proportional
      scramble in Part B, or before Part A merges? Mark: "In Part B." Part A
      merges with identity order and the case counted, 6 draws in 1,000 with
-     food and 3 with water.
+     food and 3 with water. *Carried out 2026-10-01 by ruling 454:* hunters
+     draw from the pass's start and share a prey that cannot cover them.
 307. **The draw control stays in the check.** Put to Mark on 2026-09-26,
      with 304: Lane A added the crowd drawing prey by headcount as a control
      arm of its own accord; keep it or keep the check to the arms the
@@ -4707,6 +4712,13 @@ what later sections derive from.
      (342), living matter returning to the world's; the starvation margin,
      the ceilings and the routing threshold are world rules with Mesocosm's
      values as defaults; and the probe's minimal body carries both accounts.
+     *Reading corrected 2026-10-01, building step 5:* a spill is not itself a
+     mineralization. Mesocosm returns rent to the ground as mineral at once
+     (`complete_return`) but leaves a spill there as the spiller's typed
+     matter (`deposit_stock`), which the soil's mineralization rate turns to
+     mineral later (`soil::mineralize`). So the probe returns rent as soil at
+     once and lands a spill on its site as the spiller's matter, where step
+     4's mineralization rate, an agentless site process, returns it.
 
 447. **Reproduction is several strategies, governed by traits.** Asked on
      2026-10-01, with 446, filial cost being the other physiology the
@@ -4868,6 +4880,99 @@ what later sections derive from.
      runners; and the anatomy brief (281) may reshape them once the probe
      has shown what the mechanics use. This amends the brief's reading that
      the minimal body lives in the probe's world.
+
+454. **Shared ground is shared out from the pass's start.** Asked on
+     2026-10-01, building checkpoint 6's step 5, ruling 306 having moved
+     hunting's shortage to 269's scramble in Part B: "How does ruling 269's
+     scramble share out ground that runs short? Evidence: today the core
+     takes in identity order, lowest identities first, and the crowd refuses
+     a site debit that covers only some members; 4b counted 6 hunting
+     shortfalls in 1,000 draws with food and 3 with water. Mesocosm's meals
+     and roots are first-come in organism order. A computed mouthful (TD9)
+     makes hunters' order matter even with no shortage, so the crowd can't
+     group hunters whose mouthfuls differ while meals are taken one after
+     another." Options, recommended first: (A) "Shares from the pass's
+     start: each pass reads the world as it stood when it began. Where a
+     site or a prey holds less than all the takes on it, every taker gets
+     the same fraction of its take, floored, and the remainder stays where
+     it was. Hunters draw their prey from the pass's start too. Order no
+     longer matters, so the crowd groups it, computed mouthfuls included.
+     Ruling 287's hunts change behaviour, so 4b's two checks run again
+     (recommended)." (B) "A seeded random order: each pass visits its
+     reactive members in an order drawn from the dynamics seed, and whoever
+     comes after the supply runs out goes without. A smaller change to the
+     core, but a lottery rather than a proportional share. The crowd groups
+     mixed mouthfuls only by drawing the order by count." (C) "Shares for
+     site accounts only: fixing's soil is shared in proportion. Hunting
+     keeps one meal at a time with fixed bites, and identity order under
+     shortage. Computed mouthfuls stay with individuals, listed as waiting
+     for hunting's own scramble." Mark chose A, "Shares from the pass's
+     start". So each periodic pass reads the world as it stood when the pass
+     began. A site account or a prey holding less than the takes on it gives
+     each taker the same fraction of its take, floored, and the remainder
+     stays put. Hunters draw their prey against the pass's start, so two may
+     draw one prey and share it. Identity order decides no outcome of a
+     pass, the crowd groups computed takes by state, and 287's hunts are
+     re-baselined, 4b's two checks running again before the checkpoint
+     merges. *Reading, not ruled:* the competitions of rulings 115, 236 and
+     240 keep their rounds against the tick's start, being how what can
+     decide competes (269).
+
+455. **A body's ceiling is read part by part.** Asked on 2026-10-01, with
+     454: "How is a body's ceiling read? Evidence: Mesocosm prices each part
+     at its voxels × 100/125, floored and at least 1 mg, then sums the
+     parts. For a lump, two limbs and an eye from the primitive palette that
+     gives 249 mg, against 251 mg if read over the whole body at once. The
+     ceiling caps both accounts, prices upkeep and the mouthful, and decides
+     where a meal goes." Options, recommended first: (A) "Part by part,
+     exactly: one new expression node sums a formula over the living parts,
+     with each part bound in turn. The per-part floor and the 1 mg minimum
+     match Mesocosm to the milligram (recommended)." (B) "Whole body at
+     once: use the existing voxel reading times 100/125, floored once. No
+     new node, but it can differ from Mesocosm by up to about 1 mg per
+     part." Mark chose A, "Part by part, exactly". So X3 gains a node
+     summing an expression over a body's living parts, each bound in turn as
+     the part, and the probe's ceilings match Mesocosm's to the milligram,
+     the reference mass and segment entering as the expression's constants.
+
+456. **The probe's meal takes tissue, and where matter sits in a body goes
+     to the anatomy brief.** Asked on 2026-10-01, with 454: "What does a meal
+     take from its prey? Evidence: Mesocosm takes the mouthful from the
+     prey's substance only; a body's reserve goes back to the ground when it
+     dies. Isocosm's Eat takes from every matter account in proportion
+     (ruling 287), which 4b's prey fat relies on." Options, recommended
+     first: (A) "Tissue only, as Mesocosm: a meal names the accounts it
+     takes from. The body family takes tissue only, so a bitten prey keeps
+     its reserve. The hunting family keeps its proportional take of body and
+     fat (recommended)." (B) "Every matter account in proportion: keep
+     Isocosm's current Eat. A prey loses reserve along with its flesh, so
+     being bitten also changes how hungry it is, which Mesocosm never does."
+     Mark asked: "Could it depend on the part eaten, like the provenance of
+     the tissue? Like, where's the reserve stored in the body?" Answered
+     that Mesocosm's reserve has no place in the body, being one number on
+     the organism; that each part keeps its own mass and provenance mix,
+     bites and rent taking from the living parts root first and only
+     incorporation taking a named part whole; that which part loses tissue
+     changes nothing the five natives read; and that the probe's parts (453)
+     hold no matter. Put back: "What does the probe's meal take, given that
+     in Mesocosm the reserve has no place in the body and the part a bite
+     lands on changes nothing the five natives read?" Options, recommended
+     first: (A) "Tissue now, placement to anatomy: the probe's meal takes
+     tissue only, as Mesocosm does. The anatomy brief (281) gets an item with
+     your question: where tissue and reserve sit in the body, and whether a
+     bite lands on one part (recommended)." (B) "Matter in parts now: each
+     part holds its own tissue, plus reserve where it stores some. A bite
+     lands on a drawn part of the prey and takes from that part. This widens
+     ruling 453 ahead of the anatomy brief, for something none of the five
+     natives reads." (C) "A storing function: the reserve lives in parts that
+     express a new store function in the catalogue. A bite takes reserve
+     along with tissue in the share of the prey's cells that store. The
+     reserve gets a place without each part keeping its own ledger." Mark
+     chose A, "Tissue now, placement to anatomy". So a meal names the
+     accounts it takes from, the body family's taking tissue alone and the
+     hunting family's keeping 287's proportional take, and the anatomy brief
+     (281) carries Mark's question as an item of its own: where tissue and
+     reserve sit in a body, and whether a bite lands on one part.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -8686,6 +8791,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-01: rulings 454 to 456 recorded while building checkpoint 6's
+  step 5, from assessing the body family against Mesocosm's tick: shared
+  ground shared out from the pass's start (454, carrying out 269 and 306), a
+  body's ceiling read part by part (455), and the probe's meal taking tissue,
+  with where matter sits in a body handed to the anatomy brief (456, after
+  Mark's free-text question was answered and put back). 446's reading
+  corrected: a spill is not itself a mineralization. Annotations on 269,
+  281 and 306; carried into the sim plan's checkpoint 6 brief and status,
+  and the session notes' §10. The kernel (`2ec21eb` to `93e58f6`) is on the
+  branch, not yet on main.
 - 2026-10-01: ruling 453 recorded while building checkpoint 6's step 5: the
   probe's minimal body is optional fields on the core part, amending the
   brief's reading that it would live in the probe's world. Step 4 and X3

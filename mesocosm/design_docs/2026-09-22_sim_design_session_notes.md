@@ -1502,3 +1502,26 @@ three-quarter power and a gland charged only over ground that covers its
 dose; queries over expressions; an ordered take, for upkeep from the reserve
 before the tissue (446); and the reserve marked among a lineage's two matter
 accounts.
+
+The kernel followed on the branch: X2's readings over the minimal body
+(`2ec21eb`), guarded effects, the ordered take and allocation (`c91f8f2`),
+and the gland script lowered with draws keyed by slot and the bound part's
+cell weight (`93e58f6`, 166 tests). Assessing the body family against
+Mesocosm's tick then found three forks. Ruling 306 had moved hunting's
+shortage to 269's scramble in Part B, whose last step this is; a computed
+mouthful makes hunters' order matter even with no shortage; Mesocosm floors
+each part's ceiling before summing; and Mesocosm's bite takes substance
+only, the reserve having no place in its body. Mark's free-text answer to
+the third asked whether a meal could depend on the part eaten, where the
+reserve is stored; the answer, that Mesocosm's reserve is one number on the
+organism and no native reads which part loses tissue, put it back:
+
+| Question as put | Ruling |
+| --- | --- |
+| How does ruling 269's scramble share out ground that runs short? | 454: shares from the pass's start |
+| How is a body's ceiling read? | 455: part by part, exactly |
+| What does the probe's meal take? | 456: tissue now, placement to the anatomy brief |
+
+The same reading corrected 446's: Mesocosm returns rent as mineral at once
+but leaves a spill as typed matter for the soil's rate, so a spill is not
+itself a mineralization.
