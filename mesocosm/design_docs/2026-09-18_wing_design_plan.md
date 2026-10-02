@@ -2920,7 +2920,8 @@ what later sections derive from.
      Contract, intake, sense, fix and secrete, rods contracting, lumps
      taking in, points sensing, sheets fixing, and sheets secreting when
      acquired; the keys stay open, the rest arriving with the anatomy brief
-     (281) and the probe's evidence.
+     (281) and the probe's evidence. *Widened 2026-10-02 by ruling 461:*
+     all fifteen of 277, the other vocabularies folded in.
 340. **The process's causal kind gives up the name `Shape`.** Put to Mark on
      2026-09-26, with 338: `isocosm::rules::Shape`, a process's causal kind
      (choice, agentless, transition), collides with ruling 276's part
@@ -3845,6 +3846,8 @@ what later sections derive from.
      recommendation." Fine geometry need not be simulated to discover every
      capability. A declared property that depends on a measurement must
      identify it so an accepted body change can invalidate the reading.
+     *Applied to bodies 2026-10-02 by ruling 462:* the sim keeps where each
+     part attaches and measures reach, clearance and contact itself.
 
 406. **A new life selects conditions to carry forward, with granular player
      configuration or randomization.** Asked: "How are consequences
@@ -4722,6 +4725,8 @@ what later sections derive from.
      mineral later (`soil::mineralize`). So the probe returns rent as soil at
      once and lands a spill on its site as the spiller's matter, where step
      4's mineralization rate, an agentless site process, returns it.
+     *Located 2026-10-02 by ruling 459:* tissue in each part, the reserve in
+     the parts that store.
 
 447. **Reproduction is several strategies, governed by traits.** Asked on
      2026-10-01, with 446, filial cost being the other physiology the
@@ -4882,7 +4887,9 @@ what later sections derive from.
      without them; X2's readings and X6's allocation read them for both
      runners; and the anatomy brief (281) may reshape them once the probe
      has shown what the mechanics use. This amends the brief's reading that
-     the minimal body lives in the probe's world.
+     the minimal body lives in the probe's world. *Reshaped 2026-10-02 by
+     rulings 459 to 462:* matter in parts, capacity and cell mass derived
+     from extents, and each part's attachment kept.
 
 454. **Shared ground is shared out from the pass's start.** Asked on
      2026-10-01, building checkpoint 6's step 5, ruling 306 having moved
@@ -4975,7 +4982,9 @@ what later sections derive from.
      accounts it takes from, the body family's taking tissue alone and the
      hunting family's keeping 287's proportional take, and the anatomy brief
      (281) carries Mark's question as an item of its own: where tissue and
-     reserve sit in a body, and whether a bite lands on one part.
+     reserve sit in a body, and whether a bite lands on one part. *Settled
+     2026-10-02 by ruling 459:* tissue in parts, the reserve in stores, a
+     bite landing on one part.
 
 457. **The order from bodies onward stands.** Asked on 2026-10-02,
      reporting checkpoint 6 under ruling 262: "Ruling 195's order from
@@ -5010,6 +5019,90 @@ what later sections derive from.
      A, "The anatomy brief". So the anatomy brief is written next, from the
      probe's evidence, carrying 456's item and free to reshape 453's
      fields.
+
+459. **Tissue sits in parts, and the reserve in parts that store.** Asked
+     on 2026-10-02, opening the anatomy brief (458): "Where does a body's
+     matter sit? Evidence: Mesocosm keeps tissue part by part, each part
+     with its own mass and typed mix; rent and bites take from the parts
+     root first; incorporation takes a whole part; the reserve is one
+     number on the organism. isometer's part carries its own mass too. The
+     probe kept tissue and reserve as body accounts, and no native read
+     which part held what. Ruling 277 lists 'store' among the functions."
+     Options, recommended first: (A) "Tissue in parts, reserve in stores:
+     each part holds its own tissue, and parts expressing 'store' hold the
+     reserve (fat bodies, tubers). A bite lands on one part of the prey,
+     drawn by what each holds. Incorporation takes a part whole, with its
+     matter (recommended)." (B) "Tissue in parts, reserve body-wide:
+     Mesocosm's model as it is: each part its own tissue, the reserve one
+     account on the body. Bites and rent take from the parts in a fixed
+     order." (C) "Body-wide, as the probe: two accounts on the body and
+     nothing in the parts. Severing a part or incorporating one moves a
+     share of the body's matter in proportion to the part's size." Mark
+     chose A, "Tissue in parts, reserve in stores". So each part holds its
+     own tissue and the parts that express store hold the body's reserve;
+     a bite lands on one part of its prey, drawn by what each holds, and
+     incorporation takes a part whole with its matter. This settles 456's
+     item and locates 446's two accounts.
+
+460. **A part's cells are derived from its extents.** Asked on 2026-10-02,
+     with 459: "How many cells does a part hold? Evidence: Mesocosm derives
+     a part's cells from its extents: along each axis, one cell per two
+     voxels of half-extent plus one, at most four per axis and 64 in all.
+     Its palette plate holds nine, and each cell weighs the part's adult
+     mass divided by its cells. Isocosm's part declares both numbers
+     (ruling 453); the probe founded them by Mesocosm's rule." Options,
+     recommended first: (A) "Derived from extents: capacity and cell mass
+     are read from the part's extents by Mesocosm's rule. There's no field
+     to keep and nothing to disagree with the geometry (recommended)." (B)
+     "Declared per part: as ruling 453 has it: authored per part,
+     independent of the part's size." (C) "Derived, declarable: Mesocosm's
+     rule by default, with an author's value used wherever one is given."
+     Mark chose A, "Derived from extents". So a part's capacity and cell
+     mass are readings of its extents by Mesocosm's rule, and 453's two
+     declared fields give way to them.
+
+461. **The catalogue takes all fifteen functions, the other vocabularies
+     folded in.** Asked on 2026-10-02, with 459: "How far does the function
+     catalogue widen in this brief? Evidence: ruling 339 started it with the
+     five in use, the rest to come with this brief. Ruling 277 named
+     fifteen. Ruling 278 joins four vocabularies: Mesocosm's five;
+     wing-functions' charge routing (source, store, gate, actuator);
+     Eponym's grip and adhesion, each declaring a reach and a load; and the
+     contact probe's impairments of grip and reach. The probe's mechanics
+     read only the five." Options, recommended first: (A) "All fifteen,
+     others folded in: one catalogue now. Each function lists its shapes,
+     its seeding and the mechanic that reads it, or none yet.
+     wing-functions' kinds and Eponym's grip and adhesion map onto it
+     (recommended)." (B) "Only what a mechanic reads: the five now. Each
+     other function enters with the first mechanic that reads it, as each
+     game's family moves into the sim." (C) "The fifteen, folding later:
+     the fifteen now; the other vocabularies keep their own until their
+     consumers move into the sim." Mark chose A, "All fifteen, others
+     folded in". So the catalogue holds 277's fifteen, each with its
+     shapes, seeding and reader, and the other three vocabularies map onto
+     it.
+
+462. **The sim keeps where each part attaches.** Asked on 2026-10-02, with
+     459: "Who measures a body's geometry for the sim? Evidence: Isocosm's
+     part keeps only its parent and extents, and the sim depends on no
+     isometer crate. isometer's part keeps a pivot, an attachment offset
+     and a yaw; drawing reads them, and so does Mesocosm's reach (the
+     farthest contracting part's distance from the root, plus its extent).
+     Ruling 405: geometry measures only what a mechanic needs, and each
+     such reading names what it depends on. Eponym declares reach and load
+     per part instead of measuring." Options, recommended first: (A) "The
+     sim keeps attachment offsets: each part records where it attaches to
+     its parent, so the sim measures reach, clearance and contact itself;
+     each mechanic names the measurement it reads. Pivots, yaw and volumes
+     stay with isometer, for drawing (recommended)." (B) "Declared
+     capabilities: parts declare what a mechanic needs, such as reach and
+     load, as Eponym does. Nothing is measured in the sim." (C) "isometer
+     measures: the sim asks isometer's body document for measurements,
+     taking a dependency on the geometry family." Mark chose A, "The sim
+     keeps attachment offsets". So each part records where it attaches to
+     its parent, the sim measures reach, clearance and contact from that,
+     each mechanic naming the measurement it reads (405), and pivots, yaw
+     and volumes stay isometer's.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -8828,6 +8921,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 459 to 462 recorded, the anatomy brief's first
+  round: tissue in parts and the reserve in stores (459), cells derived
+  from extents (460), all fifteen functions with the other vocabularies
+  folded in (461), and attachment offsets kept by the sim (462).
+  Annotations on 339, 405, 446, 453 and 456; the brief opened as
+  `2026-10-02_anatomy_brief.md`, and carried into the sim plan's §2.3,
+  the session notes' §10 and the index.
 - 2026-10-02: rulings 457 and 458 recorded from checkpoint 6's report: the
   order from bodies onward stands (195, 262), and the anatomy brief comes
   next (281). Annotations on 195, 262 and 281; carried into the sim plan's

@@ -1550,3 +1550,23 @@ onward went back to Mark with the result:
 | --- | --- |
 | Keep ruling 195's order from bodies onward? | 457: confirm the order |
 | What comes next? | 458: the anatomy brief |
+
+**The anatomy brief.** Its assessment read the rulings that define it (264,
+276 to 278, 281, 338 to 341, 405, 453, 456) and four body vocabularies in
+code: Isocosm's probe part, with shape, functions, extents and declared
+cells but no matter or placement; isometer's body document, each part with
+its own mass, a pivot, an attachment offset and a yaw; Mesocosm's
+phenotype, each part with a lattice of cells derived from its extents, its
+tracts and its typed mix; and Eponym's part capabilities, grip and
+adhesion each declaring a reach and a load. The first round put the four
+questions the rest rests on:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does a body's matter sit? | 459: tissue in parts, reserve in stores |
+| How many cells does a part hold? | 460: derived from extents |
+| How far does the function catalogue widen in this brief? | 461: all fifteen, others folded in |
+| Who measures a body's geometry for the sim? | 462: the sim keeps attachment offsets |
+
+The brief opened as its own doc with those rulings and the questions still
+open.
