@@ -22,10 +22,10 @@ impl Simulation {
     /// expressing the function `p` requires (ruling 338).
     pub(crate) fn bind_part(&self, actor: Id, p: &Process) -> Option<Id> {
         let function = p.expresses()?;
-        expressing(self.state.population.get(actor)?, function)
+        expressing(self.body_at_start(actor)?, function)
     }
     /// Reads `query` for an act by `actor`, with `part` the part its process
-    /// binds.
+    /// binds, against the world as the pass under way began (ruling 454).
     pub(crate) fn query(
         &self,
         actor: Id,
@@ -42,17 +42,13 @@ impl Simulation {
             }))
         };
         let scene = Scene {
-            actor: self.state.population.get(actor),
+            actor: self.body_at_start(actor),
             target: match target {
                 None => Named::Unnamed,
-                Some(id) => self
-                    .state
-                    .population
-                    .get(id)
-                    .map_or(Named::Missing, Named::Found),
+                Some(id) => self.body_at_start(id).map_or(Named::Missing, Named::Found),
             },
             part,
-            site: self.state.sites.get(&place),
+            site: self.site_at_start(place),
             tick: self.state.tick,
             related: &related,
             rules: &self.genesis.rules,
@@ -71,10 +67,10 @@ impl Simulation {
         let Some(target) = target.filter(|id| *id != actor) else {
             return false;
         };
-        let Some(a) = self.state.population.get(actor) else {
+        let Some(a) = self.body_at_start(actor) else {
             return false;
         };
-        let Some(b) = self.state.population.get(target) else {
+        let Some(b) = self.body_at_start(target) else {
             return false;
         };
         (!selector.same_place || a.place == b.place)

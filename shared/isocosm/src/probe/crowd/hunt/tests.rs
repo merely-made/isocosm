@@ -14,17 +14,17 @@ use std::collections::BTreeMap;
 const PREY: &str = "matter:0-0";
 const BODY: &str = "matter:2-0";
 
-/// One site with hungry hunters of lineage 2 holding `hunters`, biting one
-/// at a time, and prey of lineage 0 holding `prey`, one member each; the
-/// hunt is the only process and nothing is contested.
-fn table(prey: &[u64], hunters: &[u64]) -> ProbeWorld {
+/// One site with hungry hunters of lineage 2 holding `hunters`, biting
+/// `bite` at a time, and prey of lineage 0 holding `prey`, one member each;
+/// the hunt is the only process and nothing is contested.
+fn table(prey: &[u64], hunters: &[u64], bite: u64) -> ProbeWorld {
     let mut w = ProbeFounding {
         seed: 5,
         ticks: 1,
         sites: [1, 1],
         predators: Some(PredatorFounding {
             hunters: [2, 2],
-            bite: [1, 1],
+            bite: [bite, bite],
             appetite: [3, 3],
             fat: [0, 0],
         }),
@@ -98,19 +98,18 @@ fn meals(count: u64, held: u128) -> Meals {
 
 #[test]
 fn the_crowd_draws_prey_as_the_core_does() {
-    // Weights 3, 3 and 1. The first meal takes from a three six times in
-    // seven; after it, the second takes from the untouched three, the
-    // eaten one or the one in the ratio 3:2:1, and after a meal of the one
-    // it takes from a three. So the prey end as 2, 2, 1 three times in
-    // seven, as 3, 1, 1 twice, and as 3, 2, 0 twice; and the meals' prey
-    // held 3 and 3, 3 and 2, or 3 and 1 as each meal began.
-    let w = table(&[3, 3, 1], &[0, 0]);
+    // Weights 3, 3 and 1, each hunter drawing from the pass's start (ruling
+    // 454): a three twice in 18/49, the two threes in 18/49, a three and
+    // the one in 12/49, and the one twice in 1/49, which two bites of one
+    // share out to nothing each, the one staying.
+    let w = table(&[3, 3, 1], &[0, 0], 1);
     let want = [
-        (vec![2, 2, 1], 3.0, meals(2, 6)),
-        (vec![3, 1, 1], 2.0, meals(2, 5)),
-        (vec![3, 2, 0], 2.0, meals(2, 4)),
+        (vec![3, 1, 1], 18.0, vec![1, 1], meals(2, 6)),
+        (vec![2, 2, 1], 18.0, vec![1, 1], meals(2, 6)),
+        (vec![3, 2, 0], 12.0, vec![1, 1], meals(2, 4)),
+        (vec![3, 3, 1], 1.0, vec![0, 0], meals(2, 2)),
     ];
-    let seeds = 3500u64;
+    let seeds = 4900u64;
     for arm in ["exact", "crowd"] {
         let mut seen: BTreeMap<Vec<u64>, u64> = BTreeMap::new();
         for dynamics in 0..seeds {
@@ -118,39 +117,40 @@ fn the_crowd_draws_prey_as_the_core_does() {
                 "exact" => exact(&w, dynamics),
                 _ => crowd(&w, dynamics).unwrap(),
             };
-            // Every hunter eats a bite, and the meals say what each took.
-            assert_eq!(hunters, [1, 1], "{arm}");
             let ended = want.iter().find(|w| w.0 == prey).expect("a possible end");
-            assert_eq!(fed, ended.2, "{arm} {prey:?}");
+            assert_eq!((&hunters, fed), (&ended.2, ended.3), "{arm} {prey:?}");
             *seen.entry(prey).or_default() += 1;
         }
         assert_eq!(seen.len(), want.len(), "{arm}: {seen:?}");
-        for (prey, sevenths, _) in &want {
+        for (prey, in_49, _, _) in &want {
             let share = seen[prey] as f64 / seeds as f64;
-            let expected = sevenths / 7.0;
-            assert!((share - expected).abs() < 0.03, "{arm} {prey:?}: {share}");
+            let expected = in_49 / 49.0;
+            assert!((share - expected).abs() < 0.025, "{arm} {prey:?}: {share}");
         }
     }
 }
 
 #[test]
-fn prey_running_out_part_way_feeds_alike_hunters_and_refuses_unlike_ones() {
-    // One meal for two hunters: the core feeds the first in identity order.
-    // Alike, either leaves the same crowd.
-    let alike = table(&[1, 0], &[0, 0]);
-    let fed = (vec![0, 0], vec![0, 1], meals(1, 1));
-    assert_eq!(exact(&alike, 1), fed);
-    assert_eq!(crowd(&alike, 1).unwrap(), fed);
-    let counted = Crowd::new(&alike, 1, Variant::Histogram).unwrap().run();
-    assert_eq!(counted.unwrap().shortfalls, 1);
-    // Unlike, the first is the one holding nothing, which the crowd cannot
-    // know.
-    let unlike = table(&[1, 0], &[0, 1]);
-    assert_eq!(exact(&unlike, 1), (vec![0, 0], vec![1, 1], meals(1, 1)));
-    let refused = crowd(&unlike, 1).unwrap_err();
-    assert!(refused.contains("prey run out part way"), "{refused}");
-    // Nothing to eat: no hunter eats, whatever their order.
-    let bare = table(&[0, 0], &[0, 1]);
+fn a_prey_too_small_for_its_hunters_is_shared_alike_in_both_runners() {
+    // One bite for two hunters: each gets half of it, floored, so neither
+    // eats, the prey keeps its one, and nothing is refused, whatever the
+    // hunters hold.
+    for hunters in [[0, 0], [0, 1]] {
+        let w = table(&[1, 0], &hunters, 1);
+        let shared = (vec![1, 0], hunters.to_vec(), meals(2, 2));
+        assert_eq!(exact(&w, 1), shared, "{hunters:?}");
+        assert_eq!(crowd(&w, 1).unwrap(), shared, "{hunters:?}");
+        let counted = Crowd::new(&w, 1, Variant::Histogram).unwrap().run();
+        assert_eq!(counted.unwrap().shortfalls, 1);
+    }
+    // Two bites of two from a prey of three: three quarters each, floored,
+    // one each, the prey keeping one.
+    let w = table(&[3], &[0, 0], 2);
+    let shared = (vec![1], vec![1, 1], meals(2, 6));
+    assert_eq!(exact(&w, 1), shared);
+    assert_eq!(crowd(&w, 1).unwrap(), shared);
+    // Nothing to eat: no hunter eats, and none is short.
+    let bare = table(&[0, 0], &[0, 1], 1);
     let none = (vec![0, 0], vec![0, 1], Meals::default());
     assert_eq!(exact(&bare, 1), none);
     assert_eq!(crowd(&bare, 1).unwrap(), none);

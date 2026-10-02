@@ -17,9 +17,10 @@ struct Plain<'a> {
 impl Sides for Plain<'_> {
     fn act(&mut self, side: usize, process: &str) -> Result<()> {
         let p = &self.world.genesis.rules.processes[process];
-        let mut site = self.world.genesis.sites[&0].clone();
-        let rules = &self.world.genesis.rules;
-        let next = aggregate::apply(p, &self.states[side], &mut site, 1, 1, rules)?;
+        let start = &self.world.genesis.sites[&0];
+        let (mut site, rules) = (start.clone(), &self.world.genesis.rules);
+        let run = aggregate::Run::Free;
+        let next = aggregate::apply(p, &self.states[side], start, &mut site, 1, 1, rules, run)?;
         self.states[side] = next.ok_or("blocked")?;
         Ok(())
     }

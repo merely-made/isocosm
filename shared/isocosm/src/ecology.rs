@@ -182,6 +182,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     from: Binding::Target,
                     amount: 1.into(),
                     into: body.clone(),
+                    of: vec![],
                 }],
             );
             feed.requires.extend([

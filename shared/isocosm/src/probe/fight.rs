@@ -66,7 +66,8 @@ impl Sides for Copies<'_> {
         self.work.evaluations += 1;
         self.work.represented += 1;
         let mut site = self.ground.site.clone();
-        let next = aggregate::apply(p, &key.0, &mut site, 1, self.ground.tick, self.rules)?
+        let (ground, tick, run) = (self.ground.site, self.ground.tick, aggregate::Run::Free);
+        let next = aggregate::apply(p, &key.0, ground, &mut site, 1, tick, self.rules, run)?
             .ok_or_else(|| format!("{process} was blocked in a fight"))?;
         self.work.accepted += 1;
         self.states[side] = next.clone();

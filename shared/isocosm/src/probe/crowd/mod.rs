@@ -155,7 +155,7 @@ impl<'w> Crowd<'w> {
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
-        let mut hunters = Vec::new();
+        let mut acting = Vec::new();
         for (e, n) in snapshot {
             if !e.alive || !gates.open(&e, self.tick) {
                 continue;
@@ -173,26 +173,73 @@ impl<'w> Crowd<'w> {
             {
                 continue;
             }
-            if hunting {
-                hunters.push((e, n));
+            acting.push((e, n));
+        }
+        if hunting {
+            return self.hunt(p, acting);
+        }
+        self.pass(p, acting)
+    }
+
+    /// One pass over the states acting in it (ruling 454): each reads its
+    /// site as the pass began, and the pass's takes of a site are planned
+    /// and shared out, each member the same fraction of its take, floored,
+    /// where they would take more than the site held.
+    fn pass(&mut self, p: &Process, acting: Vec<(Entity, u64)>) -> Result<()> {
+        let rules = &self.world.genesis.rules;
+        let start = self.sites.clone();
+        let site_of = |e: &Entity| start.get(&e.place).ok_or("a bin at an unknown site");
+        // Each state's takes of its site, per member, or none if blocked.
+        let mut planned: Vec<Option<Ledger>> = Vec::with_capacity(acting.len());
+        let mut wanted: BTreeMap<(Id, Key), u128> = BTreeMap::new();
+        for (e, n) in &acting {
+            let mut takes = Ledger::new();
+            let site = site_of(e)?;
+            let mut scratch = site.clone();
+            let run = aggregate::Run::Plan(&mut takes);
+            let blocked = aggregate::apply(p, e, site, &mut scratch, 1, self.tick, rules, run)?;
+            if blocked.is_none() {
+                planned.push(None);
                 continue;
             }
+            for (k, v) in &takes {
+                *wanted.entry((e.place, k.clone())).or_default() += u128::from(*v) * u128::from(*n);
+            }
+            planned.push(Some(takes));
+        }
+        for ((e, n), takes) in acting.into_iter().zip(planned) {
             self.work.evaluations += 1;
             self.work.represented += n;
+            let Some(takes) = takes else {
+                self.work.blocked += n;
+                continue;
+            };
+            let held = |k: &Key| start[&e.place].accounts.get(k).copied().unwrap_or(0);
+            let shares: Ledger = takes
+                .into_iter()
+                .map(|(k, take)| {
+                    let asked = wanted[&(e.place, k.clone())];
+                    let given = if asked <= u128::from(held(&k)) {
+                        take
+                    } else {
+                        (u128::from(take) * u128::from(held(&k)) / asked) as u64
+                    };
+                    (k, given)
+                })
+                .collect();
             let site = self
                 .sites
                 .get_mut(&e.place)
                 .ok_or("a bin at an unknown site")?;
-            match aggregate::apply(p, &e, site, n, self.tick, &self.world.genesis.rules)? {
+            let run = aggregate::Run::Act(&shares);
+            let from = &start[&e.place];
+            match aggregate::apply(p, &e, from, site, n, self.tick, rules, run)? {
                 Some(next) => {
                     self.work.accepted += n;
                     self.moved(&e, next, n);
                 },
                 None => self.work.blocked += n,
             }
-        }
-        if hunting {
-            self.hunt(p, hunters)?;
         }
         Ok(())
     }
@@ -206,7 +253,10 @@ impl<'w> Crowd<'w> {
             .ok_or("a bin at an unknown site")?;
         self.work.evaluations += 1;
         self.work.represented += n;
-        let next = aggregate::apply(p, e, site, n, self.tick, &world.genesis.rules)?
+        let start = site.clone();
+        let rules = &world.genesis.rules;
+        let run = aggregate::Run::Free;
+        let next = aggregate::apply(p, e, &start, site, n, self.tick, rules, run)?
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)

@@ -57,12 +57,17 @@ pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
     i64::try_from(total).unwrap_or(i64::MAX)
 }
 
+/// Whether the rules declare `key` matter, of whatever lineage.
+pub(crate) fn matter(rules: &Rules, key: &str) -> bool {
+    matches!(rules.accounts.get(key), Some(AccountKind::Matter { .. }))
+}
+
 /// The matter a ledger holds: its entries in accounts the rules declare
 /// matter, whatever lineage they belong to.
 pub(crate) fn mass(ledger: &Ledger, rules: &Rules) -> u128 {
     ledger
         .iter()
-        .filter(|(k, _)| matches!(rules.accounts.get(*k), Some(AccountKind::Matter { .. })))
+        .filter(|(k, _)| matter(rules, k))
         .map(|(_, v)| u128::from(*v))
         .sum()
 }

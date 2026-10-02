@@ -177,11 +177,15 @@ pub enum Effect {
     },
     /// Eating (ruling 287): up to `amount` of a body's matter, drawn from
     /// all its matter accounts in proportion, largest remainders first in
-    /// key order, and credited to the actor's own `into` account.
+    /// key order, and credited to the actor's own `into` account. A meal
+    /// naming accounts takes from those alone (ruling 456); meals naming
+    /// none serialize as before.
     Eat {
         from: Binding,
         amount: Amount,
         into: Key,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        of: Vec<Key>,
     },
     /// An effect applied only where its guard comes to something (X5), such
     /// as an eater paying for a bite only while the gland is charged.
@@ -412,6 +416,26 @@ impl Process {
             Query::Expresses { function } => Some(function),
             _ => None,
         })
+    }
+
+    /// Whether its acts take from ground they share, a site's or a
+    /// target's, which a pass shares out when it runs short (ruling 454).
+    pub fn takes_shared(&self) -> bool {
+        fn takes(e: &Effect) -> bool {
+            let shared = |b: &Binding| matches!(b, Binding::Place | Binding::Target);
+            match e {
+                Effect::Transfer { from, .. } | Effect::Eat { from, .. } => shared(from),
+                Effect::Transform { who, take, .. } => shared(who) && !take.is_empty(),
+                Effect::When { effect, .. } => takes(effect),
+                _ => false,
+            }
+        }
+        let risky = self.risk.iter().flat_map(|r| &r.effects);
+        self.commitments
+            .iter()
+            .chain(&self.effects)
+            .chain(risky)
+            .any(takes)
     }
 
     /// Conservative executable proof of independence. No shared writes, targets,

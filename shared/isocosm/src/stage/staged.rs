@@ -11,6 +11,7 @@ use crate::{
     flows::{self, Holder, Leg},
     meaning::{self, Parties, credit, debit},
     rules::*,
+    schedule::edible,
     schema::*,
     simulation::Simulation,
 };
@@ -36,7 +37,7 @@ impl Staged<'_> {
     }
     fn site(&mut self) -> Result<&mut Site> {
         if self.stage.site.is_none() {
-            let site = self.sim.state.sites.get(&self.stage.place);
+            let site = self.sim.site_at_start(self.stage.place);
             self.stage.site = Some(site.ok_or("site missing")?.clone());
         }
         Ok(self.stage.site.as_mut().expect("copied above"))
@@ -80,7 +81,7 @@ impl Staged<'_> {
         if !e.computes() {
             return Ok(Some(Cow::Borrowed(e)));
         }
-        let (seed, act) = (self.sim.genesis.seed, self.sim.state.next_action);
+        let (seed, act) = (self.sim.genesis.seed, self.stage.act);
         let mut read = |r: &Reading| -> Result<i64> {
             match r {
                 Reading::Account { who, key } => {
@@ -102,11 +103,75 @@ impl Staged<'_> {
         Ok(resolved.map(Cow::Owned))
     }
 
+    /// The effect's takes of ground the act shares (ruling 454): recorded
+    /// while its pass plans, held to the act's shares when it acts. A meal's
+    /// share is the matter it takes, which the meal reads itself.
+    fn share_out<'e>(&mut self, e: Cow<'e, Effect>) -> Result<Cow<'e, Effect>> {
+        let shared = |b: &Binding| matches!(b, Binding::Place | Binding::Target);
+        let holder = |b: &Binding| self.holder(*b).ok_or("shared ground missing");
+        match e.as_ref() {
+            Effect::Transfer {
+                from,
+                account,
+                amount,
+                ..
+            } if shared(from) => {
+                let (holder, asked) = (holder(from)?, amount.resolved()?);
+                let key = (holder, account.clone());
+                // A plan asks for the whole take and stages what is there.
+                let given = if let Some(d) = &mut self.stage.demands {
+                    d.accounts.push((holder, account.clone(), asked));
+                    asked.min(meaning::value(self.ledger(*from)?, account))
+                } else if let Some(shares) = &mut self.stage.shares {
+                    let left = shares.accounts.entry(key).or_default();
+                    let given = asked.min(*left);
+                    *left -= given;
+                    given
+                } else {
+                    return Ok(e);
+                };
+                let mut e = e.into_owned();
+                if let Effect::Transfer { amount, .. } = &mut e {
+                    *amount = given.into();
+                }
+                Ok(Cow::Owned(e))
+            },
+            Effect::Transform { who, take, .. } if shared(who) && !take.is_empty() => {
+                let holder = holder(who)?;
+                if let Some(d) = &mut self.stage.demands {
+                    let takes = take.iter().map(|(k, v)| (holder, k.clone(), *v));
+                    d.accounts.extend(takes);
+                }
+                if let Some(shares) = &mut self.stage.shares {
+                    for (k, v) in take {
+                        let left = shares.accounts.entry((holder, k.clone())).or_default();
+                        if *left < *v {
+                            return Err("a transform of shared ground cannot be shared out".into());
+                        }
+                        *left -= v;
+                    }
+                }
+                Ok(e)
+            },
+            Effect::Eat {
+                from, amount, of, ..
+            } if shared(from) => {
+                let (holder, asked) = (holder(from)?, amount.resolved()?);
+                if let Some(d) = &mut self.stage.demands {
+                    d.meal = Some((holder, asked, of.clone()));
+                }
+                Ok(e)
+            },
+            _ => Ok(e),
+        }
+    }
+
     /// Applies one effect to the stage. Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
         let Some(resolved) = self.resolve(e)? else {
             return Ok(false);
         };
+        let resolved = self.share_out(resolved)?;
         let e = resolved.as_ref();
         let rules = &self.sim.genesis.rules;
         // Moves are worked out only while a host keeps the flow record.
@@ -257,10 +322,23 @@ impl Staged<'_> {
                 return Ok(standing.is_some_and(|h| value > h));
             },
             // Eating binds another body, so it is applied here; what a meal
-            // takes is `meaning::share`'s.
-            Effect::Eat { from, amount, into } => {
+            // takes is `meaning::share`'s, of the accounts it names (ruling
+            // 456), or its share of a prey its pass shared out (ruling 454).
+            Effect::Eat {
+                from,
+                amount,
+                into,
+                of,
+            } => {
                 let rules = &sim.genesis.rules;
-                let taken = meaning::share(&*self.ledger(*from)?, rules, amount.resolved()?);
+                let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
+                let taken = match portion {
+                    Some(portion) => portion,
+                    None => {
+                        let offered = edible(&*self.ledger(*from)?, of);
+                        meaning::share(&offered, rules, amount.resolved()?)
+                    },
+                };
                 let source = self.ledger(*from)?;
                 let mut total = 0u64;
                 for (key, value) in &taken {

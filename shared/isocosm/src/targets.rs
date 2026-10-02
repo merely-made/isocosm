@@ -8,7 +8,9 @@
 //! each weighted by the matter it holds, so abundant prey are eaten more.
 //! During an advance the groups are filed by place and lineage, so a
 //! selector that names either looks only where it could match instead of
-//! across the whole population (ruling 237).
+//! across the whole population (ruling 237). Every member is read as the
+//! pass under way began, so what earlier acts of the pass did to a member
+//! changes neither whether it is accepted nor what it weighs (ruling 454).
 
 use crate::{meaning::mass, population::Population, rules::*, schema::*, simulation::Simulation};
 use std::collections::{BTreeMap, BTreeSet};
@@ -82,7 +84,7 @@ impl Targets {
 impl Simulation {
     pub(crate) fn choose_target(&self, actor: Id, p: &Process) -> Option<Id> {
         let selector = p.target.as_ref()?;
-        let entity = self.state.population.get(actor)?;
+        let entity = self.body_at_start(actor)?;
         // Reject an ineligible actor before searching the population for food.
         // This is only a read shortcut; apply still checks every requirement.
         if p.requires.iter().any(|q| {
@@ -149,7 +151,10 @@ impl Simulation {
             let group = &groups[&first];
             let within = first <= actor && actor < first + group.count;
             let members = u128::from(group.count - u64::from(within));
-            let held = mass(&group.entity.accounts, rules);
+            // A group's members began the pass alike: an act lifts out the
+            // member it changes, or writes a cohort whole.
+            let began = self.body_at_start(first).expect("filed groups exist");
+            let held = mass(&began.accounts, rules);
             if members > 0 && held > 0 {
                 total += members * held;
                 eligible.push((first, within, members, held));

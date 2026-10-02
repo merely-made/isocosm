@@ -4,16 +4,17 @@
 //! One act's writes, held apart from the world until the act is accepted.
 //! The interpreter once staged each act on a copy of the whole simulation.
 //! A stage copies only what the act binds, its actor's and target's bodies
-//! and its site, and lists what the act adds: children, relations, notes,
-//! polities, record marks and its event. Committing writes exactly what the
-//! whole copy would have held; dropping the stage leaves the world as it
-//! was, identity grouping included.
+//! and its site, as its pass began (ruling 454), and lists what the act
+//! adds: children, relations, notes, polities, record marks and its event.
+//! Committing lands what the act changed of them; dropping the stage leaves
+//! the world as it was, identity grouping included.
 
 use crate::{
     Result,
-    flows::{Leg, MadeBy},
+    flows::{Holder, Leg, MadeBy},
     meaning::mass,
     reach::Reach,
+    schedule::{Demands, Shares, fits, merge, merge_site},
     schema::*,
     simulation::Simulation,
 };
@@ -51,28 +52,34 @@ pub(crate) struct Stage {
     event: Option<(Event, Reach)>,
     /// The act's matter moves, for the flow record (ruling 345).
     legs: Vec<Leg>,
+    /// The number the act acts as, which keys its draws.
+    act: u64,
+    /// While a pass plans, what the act would take of shared ground.
+    pub(crate) demands: Option<Demands>,
+    /// What the act may take of shared ground, as its pass shared it out.
+    pub(crate) shares: Option<Shares>,
 }
 
 impl Simulation {
     /// A stage for one act by `actor`, standing for `count` members at
-    /// `place`, binding `part` of the actor. A named target that does not
-    /// exist fails here, as lifting it from a whole copy would.
+    /// `place`, binding `part` of the actor, acting as number `act`. A named
+    /// target that does not exist fails here, as lifting it from a whole
+    /// copy would.
     pub(crate) fn stage(
         &self,
-        actor: Id,
-        target: Option<Id>,
+        (actor, target): (Id, Option<Id>),
         place: Id,
         part: Option<Id>,
         count: u64,
+        act: u64,
     ) -> Result<Stage> {
         // A cohort acts only through processes without targets.
         debug_assert!(count == 1 || target.is_none());
-        let population = &self.state.population;
         let mut bodies = BTreeMap::new();
-        let body = population.get(actor).ok_or("unknown entity")?;
+        let body = self.body_at_start(actor).ok_or("unknown entity")?;
         bodies.insert(actor, body.clone());
         if let Some(target) = target {
-            let body = population.get(target).ok_or("unknown entity")?;
+            let body = self.body_at_start(target).ok_or("unknown entity")?;
             bodies.entry(target).or_insert_with(|| body.clone());
         }
         Ok(Stage {
@@ -91,7 +98,34 @@ impl Simulation {
             highs: BTreeMap::new(),
             event: None,
             legs: vec![],
+            act,
+            demands: None,
+            shares: None,
         })
+    }
+
+    /// Whether what the act changed lands whole on bodies and a site that
+    /// earlier acts of its pass changed too.
+    pub(crate) fn fits(&self, stage: &Stage) -> bool {
+        let Some(frame) = &self.frame else {
+            return true;
+        };
+        let bodies = stage.bodies.iter().all(|(id, body)| {
+            if !frame.changed(Holder::Entity(*id)) {
+                return true;
+            }
+            let base = frame.body(*id).expect("a changed body was kept");
+            let live = self.state.population.get(*id).expect("staged bodies exist");
+            fits(&live.accounts, &base.accounts, &body.accounts)
+        });
+        let site = stage.site.as_ref().is_none_or(|site| {
+            let Some(base) = frame.site(stage.place) else {
+                return true;
+            };
+            let live = &self.state.sites[&stage.place];
+            fits(&live.accounts, &base.accounts, &site.accounts)
+        });
+        bodies && site
     }
 
     /// Whether the staged act would change the world's matter: the bodies
@@ -101,12 +135,13 @@ impl Simulation {
         let (mut before, mut after) = (0u128, 0u128);
         for (id, body) in &stage.bodies {
             let weight = u128::from(if *id == stage.actor { stage.count } else { 1 });
-            let was = self.state.population.get(*id).expect("staged bodies exist");
+            let was = self.body_at_start(*id).expect("staged bodies exist");
             before += weigh(&was.accounts) * weight;
             after += weigh(&body.accounts) * weight;
         }
         if let Some(site) = &stage.site {
-            before += weigh(&self.state.sites[&stage.place].accounts);
+            let was = self.site_at_start(stage.place).expect("staged sites exist");
+            before += weigh(&was.accounts);
             after += weigh(&site.accounts);
         }
         after += stage
@@ -209,6 +244,30 @@ impl Simulation {
     }
 
     fn write(&mut self, stage: Stage, next_action: u64) {
+        // What each body and the site were as the pass began, which the
+        // act's changes are measured from and the rest of the pass reads.
+        let bases: Vec<Entity> = stage
+            .bodies
+            .keys()
+            .map(|id| {
+                self.body_at_start(*id)
+                    .expect("staged bodies exist")
+                    .clone()
+            })
+            .collect();
+        let site_base = stage.site.as_ref().map(|_| {
+            let site = self.site_at_start(stage.place);
+            site.expect("staged sites exist").clone()
+        });
+        if let Some(frame) = &mut self.frame {
+            for (id, base) in stage.bodies.keys().zip(&bases) {
+                let span = if *id == stage.actor { stage.count } else { 1 };
+                frame.keep_body(*id, span, base);
+            }
+            if let Some(base) = &site_base {
+                frame.keep_site(stage.place, base);
+            }
+        }
         let s = &mut self.state;
         if stage.count == 1 {
             s.population.lift(stage.actor).expect("the actor exists");
@@ -216,17 +275,22 @@ impl Simulation {
         if let Some(target) = stage.target {
             s.population.lift(target).expect("the target exists");
         }
-        for (id, body) in stage.bodies {
+        for ((id, body), base) in stage.bodies.into_iter().zip(&bases) {
             let group = s.population.groups.get_mut(&id);
-            group.expect("staged bodies were lifted").entity = body;
+            merge(
+                &mut group.expect("staged bodies were lifted").entity,
+                base,
+                body,
+            );
         }
         for child in stage.births {
             s.population
                 .insert(child, 1)
                 .expect("staging reserved the identity");
         }
-        if let Some(site) = stage.site {
-            s.sites.insert(stage.place, site);
+        if let (Some(site), Some(base)) = (stage.site, &site_base) {
+            let live = s.sites.get_mut(&stage.place).expect("staged sites exist");
+            merge_site(live, base, site);
         }
         for (relation, present) in stage.relations {
             if present {

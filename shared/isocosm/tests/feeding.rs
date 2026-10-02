@@ -107,6 +107,7 @@ fn eat(amount: u64, at_least: u64, among: &[&str]) -> Process {
             from: Binding::Target,
             amount: amount.into(),
             into: GUT.into(),
+            of: vec![],
         }],
         Some(Target {
             same_place: true,
@@ -225,7 +226,9 @@ fn a_body_holding_too_little_is_not_run_for() {
 
 fn meal_of(p: &mut Process) -> (&mut Binding, &mut Amount, &mut Key) {
     match &mut p.effects[0] {
-        Effect::Eat { from, amount, into } => (from, amount, into),
+        Effect::Eat {
+            from, amount, into, ..
+        } => (from, amount, into),
         _ => unreachable!("the process eats"),
     }
 }

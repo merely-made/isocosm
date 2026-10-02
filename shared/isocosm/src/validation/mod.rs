@@ -305,10 +305,18 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             }
         },
         // The target is eaten into the eater's own matter; a site or
-        // the eater itself is not eaten, and a meal of nothing is no
-        // meal.
-        Effect::Eat { from, amount, into } => {
+        // the eater itself is not eaten, a meal of nothing is no meal, and
+        // a meal naming accounts names matter (ruling 456).
+        Effect::Eat {
+            from,
+            amount,
+            into,
+            of,
+        } => {
             matter(rules, into)?;
+            for key in of {
+                matter(rules, key)?;
+            }
             if *from != Binding::Target || *amount == Amount::Fixed(0) {
                 return Err(format!("{id} eats what cannot be eaten"));
             }
