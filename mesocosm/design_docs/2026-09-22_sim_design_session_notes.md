@@ -1657,3 +1657,13 @@ The eighth round took the measurements 492 opened and the two items left:
 | How are tube, branch, shell and joint read, now that shapes only name parts? | 494: from the tree, and declared hollows |
 | Does a body's segment count grow toward the recipe's? | 495: by lineage trait |
 | Which cells does a wound take, and when do they regrow? | 496: in proportion, healed first |
+
+The ninth round took the last open item, territories and surfaces, and
+ruled the brief through:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does a territory's and a surface's matter sit? | 497: on the places, under their keys |
+| How do territories and surfaces spread? | 498: overflow along routes |
+| What carries a germ lineage's genes as it revises them? | 499: strains |
+| What of the catalogue does a territory or a surface express without parts? | 500: by the matter at each place |

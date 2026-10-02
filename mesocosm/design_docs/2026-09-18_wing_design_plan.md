@@ -564,6 +564,8 @@ what later sections derive from.
     sites, in the part tree's model.
     *Amended 2026-10-02 by ruling 488:* a fungus is one entity whose body is
     a territory, and germs are a surface, their lineage their identity.
+    *Strained 2026-10-02 by ruling 499:* a germ lineage revises its genes on
+    the fly by forking strains where a host or place selects.
 59. **Play is directing, not driving; a creature's senses are its own.**
     Mark, 2026-09-19, asked about senses: "How do you perceive and react
     to the world without fauna sense organs, like most critters? And
@@ -5731,6 +5733,10 @@ what later sections derive from.
      to whatever stands in it, its lineage its only identity; and a
      terrain-body stays a part tree. This amends 58's germs as many bodies,
      and 467's and 480's patches as parts, for these forms.
+     *Specified 2026-10-02 by rulings 497 to 500:* both lie in places'
+     ledgers under their keys and spread by overflow along routes, a germ
+     lineage forks strains, and their functions scale by the matter at each
+     place.
 
 489. **The default systems take the proposed table.** Asked on 2026-10-02,
      the anatomy brief's sixth round: "Do the default systems take the
@@ -5977,6 +5983,98 @@ what later sections derive from.
      from the part's functions in proportion to the cells each holds, and a
      healing lineage's growth regrows lost cells before it fills tissue or
      grows new parts, paying each cell's mass.
+
+497. **A territory's and a surface's matter lies in each place's ledger,
+     under their keys.** Asked on 2026-10-02, the anatomy brief's ninth
+     round: "Where does a territory's and a surface's matter sit (488)?
+     Evidence: a site's ledger already holds a lineage's living matter under
+     the same keys as a body's tissue: that is where spills land, and where
+     mineralization, an agentless process bound to the place, returns a
+     share to soil each tick. A body's ledger can hold any key. Conditions
+     live on places (430), and a thing standing there reads them." Options,
+     recommended first: (A) "On the places, under their keys: both lie in
+     each place's own ledger, as spills do: a territory's matter under its
+     entity's key, a surface's under its lineage's. Whatever acts at a place
+     (a grazer, a fire, mineralization) reads them where they lie. A host's
+     ledger holds a surface's matter the same way. The territory entity
+     keeps its identity, record and mind (recommended)." (B) "In the
+     territory, place by place: the territory entity keeps one account for
+     each place it covers, so its whole travels with its record. Surfaces as
+     in the first." Mark chose A, "On the places, under their keys". So both
+     lie in each place's own ledger, as spills do, a territory's matter
+     under its entity's key and a surface's under its lineage's, read where
+     they lie by whatever acts at the place, a grazer, a fire or
+     mineralization; a host's ledger holds a surface's matter the same way;
+     and the territory entity keeps its identity, record and mind.
+
+498. **Territories and surfaces spread by overflow along routes.** Asked on
+     2026-10-02, with 497: "How do territories and surfaces spread (488)?
+     Evidence: routes join sites, each with a travel time and a transmission
+     (per million). Reach already spreads an event's strength along them,
+     scaled by transmission at each hop and arriving after the travel. 39's
+     germ "spreads depending on substrate". 155 lets a player direct a
+     fungus monocreature whole, and a methodology that chooses is 37's."
+     Options, recommended first: (A) "Overflow along routes: growth at a
+     place beyond what its substrate holds (the soil, a host's tissue) moves
+     into neighbouring places along routes, a share by each route's
+     transmission, after its travel. A territory that chooses, a player's
+     mold among them, directs its overflow among its neighbours. Mold creeps
+     where the ground feeds it, and a plague follows the routes
+     (recommended)." (B) "Diffusion each tick: a share of the matter at each
+     place moves to every neighbour each tick by transmission, whether or
+     not the place is full, so a spread thins as it widens. No choosing."
+     (C) "Chosen for both: a territory and a surface each run a spreading
+     process whose target is drawn among their neighbours by what the
+     substrate there offers, weighted like a feeding target." Mark chose A,
+     "Overflow along routes". So growth at a place beyond what its substrate
+     holds, the soil or a host's tissue, moves into neighbouring places
+     along routes, a share by each route's transmission after its travel; a
+     territory that chooses, a player's mold among them, directs its
+     overflow among its neighbours; mold creeps where the ground feeds it,
+     and a plague follows the routes.
+
+499. **A germ lineage revises its genes by forking strains.** Asked on
+     2026-10-02, with 497: "What carries a germ lineage's genes as it
+     revises them? Evidence: 58 has germs revise their genes on the fly by
+     host and environment. §3.2.1 says that for a germ the epoch boundary
+     comes every generation, and to play a germ is to play the lineage
+     directly. Other lineages change their genotype only at the epoch
+     boundary (57). Isocosm's lineage can fork, each lineage naming a
+     parent." Options, recommended first: (A) "Strains: a germ lineage
+     revises by forking strains, child lineages, where a host or place
+     selects. Each strain is a surface of its own, carrying its revised
+     genes, so a plague drifts and diverges as it spreads (recommended)."
+     (B) "One lineage, conditioned: one genotype for the whole surface, its
+     expression conditioned by host and place (36). Each generation's
+     revision changes all of it." (C) "The played lineage alone: a played
+     germ revises its genes on the fly, as its shop is open during the
+     round. Unplayed germs revise only at the epoch boundary, like other
+     lineages." Mark chose A, "Strains". So a germ lineage revises by
+     forking strains, child lineages, where a host or place selects, each
+     strain a surface of its own carrying its revised genes, so a plague
+     drifts and diverges as it spreads.
+
+500. **A territory or surface expresses its functions by the matter at each
+     place.** Asked on 2026-10-02, with 497: "What of the catalogue does a
+     territory or a surface express without parts? Evidence: functions are
+     expressed by a part's cells, each scaled by a measurement and taken by
+     its share of the cells (466, 493). A territory or a surface has matter
+     on places but no parts or cells (488). Mold decomposes and may fix;
+     39's germ infects and decomposes corpses." Options, recommended first:
+     (A) "By the matter at each place: a territory or surface expresses the
+     functions its lineage's traits name, at each place where it lies,
+     scaled by the matter it holds there in place of cells and measurements.
+     A mold's decay at a place grows with its mass there (recommended)." (B)
+     "Cells per place: the matter at each place is counted in cells of the
+     lineage's functions, at a cell's mass, so the catalogue and 493's
+     measurements apply unchanged, area read from the place's footprint."
+     (C) "Only their own processes: they express no catalogue functions.
+     Their definitions name the processes they run (decompose, infect, fix),
+     which read the matter where it lies." Mark chose A, "By the matter at
+     each place". So a territory or surface expresses the functions its
+     lineage's traits name at each place where it lies, scaled by the matter
+     it holds there in place of cells and measurements, so a mold's decay at
+     a place grows with its mass there.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9798,6 +9896,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 497 to 500 recorded, the anatomy brief's ninth round,
+  which rules it through: territories and surfaces lie in each place's
+  ledger under their keys (497) and spread by overflow along routes (498), a
+  germ lineage forks strains (499), and functions scale by the matter at
+  each place (500). Annotations on 58 and 488. Carried into the brief, the
+  sim plan, the session notes' §10 and the index.
 - 2026-10-02: rulings 493 to 496 recorded, the anatomy brief's eighth round:
   each function's measurement, by its share of the cells (493); the eight
   names read from the box and the tree, tube and shell declared (494);

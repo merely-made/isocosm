@@ -1,11 +1,10 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Eight rounds are ruled (459 to 470,
-477 to 480 and 485 to 496); the questions still open are listed in §8 and go
-to Mark in rounds. Nothing is built. When the brief is ruled through, it is
-carried into the sim plan's §2.3 and becomes the brief for S2's bodies
-family, the next in ruling 195's order (457).
+281 asked, from the probe's evidence, and ruled through in nine rounds (459
+to 470, 477 to 480 and 485 to 500); §8 holds nothing open. Nothing is built.
+Next, by 487, it is carried into the sim plan's §2.3 and becomes the brief
+for S2's bodies family, the next in ruling 195's order (457).
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the
@@ -13,10 +12,10 @@ sim measures, how parts arrive, and wounds and severing. **Does not own:**
 drawing a body (isometer's body document keeps pivots, yaw and volumes), the
 processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
-[wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
-123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470, 477 to 480 and 485 to 496; checkpoint 6's findings in
-the [sim plan](2026-09-22_sim_plan.md).
+[wing design record](2026-09-18_wing_design_plan.md), rulings 36, 37, 39,
+57, 58, 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446,
+447 to 450, 453, 456 to 470, 477 to 480 and 485 to 500; checkpoint 6's
+findings in the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
 
@@ -136,10 +135,22 @@ conditions to whatever stands in it, its lineage its only identity, as 39's
 paint and §3.2.1's playing the lineage directly have it. 467 had a spread's
 patches lie on sites as parts and 480 had it act wherever a patch lay; 488
 amends both for these forms, while an act still reads and writes the site of
-the part it binds (480). *Reading, not ruled:* a tree's parts lie where its
-body is, so nothing changes for a tree; a surface's matter lies in the site
-accounts that spills already land in, and its processes are agentless and
-bound to the place, as the mineralization rate is.
+the part it binds (480). Both lie in each place's own ledger, as spills do
+(497): a territory's matter under its entity's key and a surface's under its
+lineage's, read where they lie by whatever acts there, and a host's ledger
+holds a surface's matter the same way; the territory entity keeps its
+identity, record and mind. They spread by overflow (498): growth at a place
+beyond what its substrate holds moves into neighbouring places along routes,
+a share by each route's transmission after its travel, and a territory that
+chooses, a player's mold among them, directs its overflow. A germ lineage
+revises its genes by forking strains where a host or place selects, each
+strain a surface of its own (499). Each expresses the functions its
+lineage's traits name at each place where it lies, scaled by the matter it
+holds there in place of cells and measurements (500). *Reading, not ruled:*
+a tree's parts lie where its body is, so nothing changes for a tree; a
+surface's processes are agentless and bound to the place, as the
+mineralization rate is; and a strain is a lineage whose parent is the
+lineage it forked from.
 
 ## 4. Where a body's matter sits
 
@@ -216,16 +227,17 @@ ledger's as 430 has it; a fragment that lives grows the parts its recipe
 names that it lacks (468); and regrowing from a fragment is a trait, as 449
 has a lineage's traits name its strategies.
 
-## 8. Open, for the next rounds
+## 8. Open
 
-- **Territories and surfaces** (488): how a territory holds its matter on
-  each place and spreads it, and what it does where it lies; how a surface's
-  matter lies on places and in hosts, and what carries a germ lineage's
-  genes as it revises them; and what of the catalogue either expresses
-  without parts.
+None. The ninth round ruled the last item through (497 to 500); the bodies
+family's brief is next (487).
 
 ## Progress
 
+- 2026-10-02: the ninth round ruled the brief through (497 to 500):
+  territories and surfaces lie in each place's ledger under their keys and
+  spread by overflow along routes, a germ lineage forks strains, and their
+  functions scale by the matter at each place; §8 holds nothing open.
 - 2026-10-02: the eighth round ruled (493 to 496): each function's
   measurement by its share of the cells, now a column of §2's table; the
   eight names read from the box and the tree, tube and shell declared;
