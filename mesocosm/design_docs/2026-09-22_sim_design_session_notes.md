@@ -1667,3 +1667,17 @@ ruled the brief through:
 | How do territories and surfaces spread? | 498: overflow along routes |
 | What carries a germ lineage's genes as it revises them? | 499: strains |
 | What of the catalogue does a territory or a surface express without parts? | 500: by the matter at each place |
+
+The bodies family's brief was then shaped in one round:
+
+| Question as put | Ruling |
+| --- | --- |
+| How is S2's bodies family cut into checkpoints? | 501: four, in this order |
+| Where are territories and surfaces built? | 502: in the bodies family, last |
+| Where is riffing new systems by substitution built? | 503: in the systems checkpoint |
+
+On territories and surfaces Mark added: "1 is also possibly important for
+the concept of aura, if we're doing magical systems... so definitely in the
+bodies family, last". Against the recommendation, riffing is built with the
+systems rather than left to the generator. The family is briefed in the sim
+plan's §9 as checkpoints 7 to 11.

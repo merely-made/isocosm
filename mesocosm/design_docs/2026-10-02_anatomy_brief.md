@@ -3,8 +3,9 @@
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
 281 asked, from the probe's evidence, and ruled through in nine rounds (459
 to 470, 477 to 480 and 485 to 500); §8 holds nothing open. Nothing is built.
-Next, by 487, it is carried into the sim plan's §2.3 and becomes the brief
-for S2's bodies family, the next in ruling 195's order (457).
+It was carried into the sim plan's §2.3 the same day and briefed as S2's
+bodies family, checkpoints 7 to 11 in that plan's §9 (501 to 503), the next
+in ruling 195's order (457).
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the
@@ -230,10 +231,12 @@ has a lineage's traits name its strategies.
 ## 8. Open
 
 None. The ninth round ruled the last item through (497 to 500); the bodies
-family's brief is next (487).
+family is briefed in the sim plan's §9 (501 to 503).
 
 ## Progress
 
+- 2026-10-02: carried into the sim plan's §2.3 as an anatomy row and briefed
+  as S2's bodies family, checkpoints 7 to 11 (501 to 503).
 - 2026-10-02: the ninth round ruled the brief through (497 to 500):
   territories and surfaces lie in each place's ledger under their keys and
   spread by overflow along routes, a germ lineage forks strains, and their

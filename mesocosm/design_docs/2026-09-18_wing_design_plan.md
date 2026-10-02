@@ -4451,6 +4451,8 @@ what later sections derive from.
      (§3.8, 422). *Reading, not ruled:* a modifier scoped to a place or a
      site whose predicate reads only the place applies alike to every member
      there, and splits no crowd.
+     *Noted 2026-10-02 with ruling 502:* Mark sees territories and surfaces
+     as possibly important for auras in magical systems.
 
 434. **The player's choice of which glyphs far marks show is a filter.**
      Asked on 2026-10-01: "What do we call the player's choice of which
@@ -5665,6 +5667,8 @@ what later sections derive from.
      written. Mark added, while his answer to the round's first question was
      being taken up: "After that, default systems!" So the spread question
      comes first, then the default systems.
+     *Shaped 2026-10-02 by rulings 501 to 503:* the family is checkpoints 7
+     to 11, briefed in the sim plan's §9.
 
 488. **A mold is a territory, and micro life a surface.** Asked on
      2026-10-02, opening the anatomy brief's fifth round: "Is a body a
@@ -5737,6 +5741,8 @@ what later sections derive from.
      ledgers under their keys and spread by overflow along routes, a germ
      lineage forks strains, and their functions scale by the matter at each
      place.
+     *Placed 2026-10-02 by ruling 502:* built as the bodies family's last
+     checkpoint, at site grain.
 
 489. **The default systems take the proposed table.** Asked on 2026-10-02,
      the anatomy brief's sixth round: "Do the default systems take the
@@ -5825,6 +5831,8 @@ what later sections derive from.
      *Corrected 2026-10-02 by ruling 492:* 466's gate refused its own
      example, a gut that photosynthesizes, fix being admitted only on
      sheets; under 492 the gut fixes by its area.
+     *Built 2026-10-02 by ruling 503:* in the bodies family's systems
+     checkpoint.
 
 492. **No shape gates a function; what a part does scales with the
      measurement its mechanic names.** Raised by Mark on 2026-10-02, the
@@ -6075,6 +6083,75 @@ what later sections derive from.
      lineage's traits name at each place where it lies, scaled by the matter
      it holds there in place of cells and measurements, so a mold's decay at
      a place grows with its mass there.
+
+501. **S2's bodies family is four checkpoints, in order.** Asked on
+     2026-10-02, opening the bodies family's brief as 487 ordered: "How is
+     S2's bodies family cut into checkpoints (see the preview)? Evidence:
+     the anatomy brief holds 32 rulings. 490 has the natives read their
+     systems on bodies founded by the recipe, so development comes before
+     systems; wounds narrow routes (477), so harm comes after systems.
+     Earlier briefs gave graft compatibility to bodies (§9, step 4) and
+     reproduction's strategies to the bodies and lineages families (447 to
+     450). Checkpoint 6 certified its step exact against the crowd on 1,000
+     draws with three controls." The preview, as put:
+
+     | Checkpoint | Builds | Rulings |
+     | --- | --- | --- |
+     | 7, matter in parts | tissue in parts, reserve in stores, spread in proportion; cells derived; measurements by cell share; names read, no gate | 459, 460, 463, 464, 492 to 494 |
+     | 8, development | the lineage's recipe and policy; births by the filial body and the seed; growth toward the recipe once full; segment growth by trait; incorporation teaching the lexicon, with graft compatibility | 447 to 449, 468, 478, 479, 495 |
+     | 9, systems | networks read from the tree along attachment offsets, working by degree; the ten defaults, read by the natives | 462, 465, 477, 489, 490 |
+     | 10, harm and loss | wounds as lost cells, healed first; severing into bodies; regrowth where the lineage heals; fragments | 469, 470, 485, 486, 496 |
+
+     Options, recommended first: (A) "Four, in this order: matter in parts,
+     development, systems, then harm and loss, each certified exact against
+     the crowd as checkpoint 6 was. Reproduction's further axes (450) wait
+     for the lineages family (recommended)." (B) "Two larger ones: matter in
+     parts with development as one checkpoint, and systems with harm and
+     loss as the other. Fewer certifications, larger steps." (C) "One: the
+     whole family as a single checkpoint, certified once at the end." Mark
+     chose A, "Four, in this order". So the bodies family is checkpoint 7,
+     matter in parts; 8, development; 9, systems; and 10, harm and loss,
+     each with the rulings the table lists and each certified exact against
+     the crowd as checkpoint 6 was; reproduction's further axes (450) wait
+     for the lineages family.
+
+502. **Territories and surfaces are built in the bodies family, last.**
+     Asked on 2026-10-02, with 501: "Where are territories and surfaces
+     built? Evidence: 488 makes a mold a territory and micro life a surface.
+     They lie in places' ledgers under their keys (497), spread by overflow
+     along routes (498), and germs fork strains (499). Sites' ledgers and
+     routes exist now. Places, the finer grain of 422, come with the places
+     family, after the record in 195's order." Options, recommended first:
+     (A) "In the bodies family, last: a fifth checkpoint after harm and
+     loss, built at site grain on the ledgers and routes that exist. Strains
+     fork lineages as Isocosm already can, and places' finer grain follows
+     with the places family (recommended)." (B) "With the places family:
+     territories and surfaces wait until places exist, and are built there
+     at their finer grain." (C) "A family of their own: mold and micro life
+     get their own family, briefed after the bodies family." Mark answered:
+     "1 is also possibly important for the concept of aura, if we're doing
+     magical systems... so definitely in the bodies family, last". So a
+     fifth checkpoint, 11, builds territories and surfaces after harm and
+     loss, at site grain on the ledgers and routes that exist, strains
+     forking lineages as Isocosm already can, and places' finer grain
+     follows with the places family. *Reading, not ruled:* an aura may be a
+     territory or a surface applying conditions on its places, within the
+     place and site scopes 433 gave modifiers; whether magic uses one is the
+     magic design's (404).
+
+503. **The systems checkpoint also riffs.** Asked on 2026-10-02, with 501:
+     "Where is riffing new systems by substitution (491) built? Evidence:
+     the generator is S5's (§5), founding worlds and running deep time. The
+     bodies family certifies on the ten default systems (489). A riff is
+     kept only if a body can realize its routes, which needs systems to be
+     built first." Options, recommended first: (A) "With the generator: s5's
+     generator riffs systems by substitution. The bodies family builds and
+     certifies only the ten defaults (recommended)." (B) "In the systems
+     checkpoint: the bodies family's systems checkpoint also riffs, and
+     certifies a riffed system beside the defaults." Mark chose B, "In the
+     systems checkpoint". So the bodies family's systems checkpoint also
+     riffs systems by substitution (491) and certifies a riffed system
+     beside the ten defaults.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9896,6 +9973,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 501 to 503 recorded, the bodies family's shape: four
+  checkpoints in order, matter in parts, development, systems, harm and loss
+  (501); territories and surfaces built last, Mark noting their likely use
+  for auras (502); and the systems checkpoint riffing (503). Annotations on
+  433, 487, 488 and 491. The family is briefed in the sim plan's §9 as
+  checkpoints 7 to 11, and §2.3 gains an anatomy row.
 - 2026-10-02: rulings 497 to 500 recorded, the anatomy brief's ninth round,
   which rules it through: territories and surfaces lie in each place's
   ledger under their keys (497) and spread by overflow along routes (498), a
