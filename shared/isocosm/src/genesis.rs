@@ -19,7 +19,7 @@ impl Genesis {
         }
         wing_glyphs::Canon::new(self.world.canon.clone())?;
         for kind in self.rules.accounts.values() {
-            if let AccountKind::Matter { lineage } = kind
+            if let AccountKind::Matter { lineage, .. } = kind
                 && !self.lineages.contains_key(lineage)
             {
                 return Err("matter has an absent provenance lineage".into());

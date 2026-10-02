@@ -46,7 +46,7 @@ pub(super) fn declared(rules: &Rules, id: &str, e: &Effect) -> Result<()> {
 pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<()> {
     // The lineage an account's matter is of, and whether it is the world's.
     let of = |key: &Key| match rules.accounts.get(key) {
-        Some(AccountKind::Matter { lineage }) => {
+        Some(AccountKind::Matter { lineage, .. }) => {
             let world = lineages.get(lineage).is_some_and(|l| l.kingdom == WORLD);
             Some((lineage, world))
         },

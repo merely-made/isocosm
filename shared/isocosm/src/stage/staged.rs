@@ -87,6 +87,7 @@ impl Staged<'_> {
                     let held = meaning::value(self.ledger(*who)?, key);
                     i64::try_from(held).map_err(|e| e.to_string())
                 },
+                r => Ok(meaning::body_reading(self.body(r.who())?, r)),
             }
         };
         let mut draw = |below: u64| -> Result<u64> {

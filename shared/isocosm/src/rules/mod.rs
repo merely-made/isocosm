@@ -22,6 +22,10 @@ pub use mind::{Mind, Need};
 pub enum AccountKind {
     Matter {
         lineage: Key,
+        /// A body's reserve of its own lineage's matter, kept apart from its
+        /// tissue (ruling 446). Tissue accounts serialize and hash as before.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        reserve: bool,
     },
     Energy,
     Attention,

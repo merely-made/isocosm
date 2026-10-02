@@ -319,15 +319,25 @@ fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
         return Ok(());
     };
     for r in e.reads() {
+        let who = r.who();
+        if who == Binding::Part || (who == Binding::Target && p.target.is_none()) {
+            return Err(format!(
+                "{id} reads an amount from {who:?}, which it does not bind"
+            ));
+        }
         match r {
-            Reading::Account { who, key } => {
-                account(rules, key)?;
-                if *who == Binding::Part || (*who == Binding::Target && p.target.is_none()) {
-                    return Err(format!(
-                        "{id} reads an amount from {who:?}, which it does not bind"
-                    ));
-                }
+            Reading::Account { key, .. } => account(rules, key)?,
+            _ if who == Binding::Place => {
+                return Err(format!("{id} reads a body from a site, which has none"));
             },
+            Reading::Span { function, .. }
+            | Reading::Cells { function, .. }
+            | Reading::CellMass { function, .. }
+                if !rules.functions.contains_key(function) =>
+            {
+                return Err(format!("{id} reads an unknown function {function}"));
+            },
+            _ => {},
         }
     }
     Ok(())

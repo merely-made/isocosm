@@ -22,6 +22,7 @@ fn rules() -> Rules {
     for key in CHANNELS {
         let kind = AccountKind::Matter {
             lineage: "world:ground".into(),
+            reserve: false,
         };
         rules.accounts.insert(key.into(), kind);
     }

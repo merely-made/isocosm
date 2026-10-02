@@ -8,7 +8,7 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Rules, expressing},
+    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Reading, Rules, expressing},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -20,6 +20,42 @@ pub(crate) fn needs(rules: &Rules) -> &[Need] {
 
 pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
+}
+
+/// X2's native readings of a body (ruling 453): each the sum, over its
+/// living parts, of what the reading asks of one. Accounts are read from a
+/// ledger instead.
+pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
+    let living = body.parts.values().filter(|p| !p.severed);
+    let cells = |p: &Part, f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
+    let total: u128 = match r {
+        Reading::Account { .. } => 0,
+        Reading::Span { function, .. } => living
+            .filter(|p| p.functions.contains(function))
+            .map(|p| {
+                u128::from(
+                    p.half_extent
+                        .iter()
+                        .map(|h| h.unsigned_abs())
+                        .max()
+                        .unwrap_or(0),
+                )
+            })
+            .sum(),
+        Reading::Voxels { .. } => living
+            .map(|p| {
+                p.half_extent
+                    .iter()
+                    .map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
+                    .product::<u128>()
+            })
+            .sum(),
+        Reading::Cells { function, .. } => living.map(|p| cells(p, function)).sum(),
+        Reading::CellMass { function, .. } => living
+            .map(|p| cells(p, function) * u128::from(p.cell_mass))
+            .sum(),
+    };
+    i64::try_from(total).unwrap_or(i64::MAX)
 }
 
 /// The matter a ledger holds: its entries in accounts the rules declare
@@ -300,7 +336,7 @@ fn transform(
     if let Some(kind @ (Conversion::Synthesis | Conversion::Digestion)) = conversion {
         let own = p.body(who)?.lineage.clone();
         let foreign = give.keys().find(|k| {
-            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage }) if *lineage == own)
+            !matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage, .. }) if *lineage == own)
         });
         if let Some(key) = foreign {
             return Err(format!(

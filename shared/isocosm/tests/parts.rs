@@ -25,6 +25,7 @@ fn part(shape: &str, functions: impl IntoIterator<Item = impl Into<Key>>, severe
         severed,
         shape: shape.into(),
         functions: functions.into_iter().map(Into::into).collect(),
+        ..Default::default()
     }
 }
 

@@ -104,6 +104,7 @@ impl Founding {
                 "world:soil".into(),
                 AccountKind::Matter {
                     lineage: "world:ground".into(),
+                    reserve: false,
                 },
             ),
             ("sim:energy".into(), AccountKind::Energy),
@@ -138,6 +139,7 @@ impl Founding {
                     format!("matter:{i}-{j}"),
                     AccountKind::Matter {
                         lineage: lineage.clone(),
+                        reserve: false,
                     },
                 );
             }
@@ -379,11 +381,8 @@ impl Founding {
                     parts: BTreeMap::from([(
                         0,
                         Part {
-                            parent: None,
                             traits: lineages[&lineage].traits.clone(),
-                            severed: false,
-                            shape: Key::new(),
-                            functions: BTreeSet::new(),
+                            ..Default::default()
                         },
                     )]),
                     traits: lineages[&lineage].traits.clone(),

@@ -47,18 +47,7 @@ impl Amount {
     pub fn bulk_safe(&self) -> bool {
         match self {
             Self::Fixed(_) => true,
-            Self::Computed(e) => {
-                !e.draws()
-                    && e.reads().iter().all(|r| {
-                        matches!(
-                            r,
-                            Reading::Account {
-                                who: Binding::Actor,
-                                ..
-                            }
-                        )
-                    })
-            },
+            Self::Computed(e) => !e.draws() && e.reads().iter().all(|r| r.who() == Binding::Actor),
         }
     }
     pub fn validate(&self) -> Result<()> {
@@ -100,13 +89,42 @@ pub enum Expr {
     Draw {
         below: u64,
     },
+    /// The floor square root of a value, nothing below nothing; twice over a
+    /// product it gives a mass to the three-quarter power.
+    Sqrt(Box<Expr>),
+    /// One where the first value is at least the second, else zero.
+    AtLeast(Box<Expr>, Box<Expr>),
 }
 
-/// What an expression reads of the act. The native readings of X2 join here.
+/// What an expression reads of the act: an account, or one of X2's native
+/// readings of a body's living parts, each the sum over those parts.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Reading {
     /// An account a binding holds, the site's included.
     Account { who: Binding, key: Key },
+    /// The longest half-extent of each part expressing a function, summed:
+    /// an actuator's or a sensor's span.
+    Span { who: Binding, function: Key },
+    /// Every part's voxels, `(2|h| + 1)` along each axis, summed.
+    Voxels { who: Binding },
+    /// The cells each part holds for a function, summed.
+    Cells { who: Binding, function: Key },
+    /// Those cells' matter: each part's cells for a function times its cell
+    /// mass, summed, such as what a body's glands hold.
+    CellMass { who: Binding, function: Key },
+}
+
+impl Reading {
+    /// Whose state it reads.
+    pub fn who(&self) -> Binding {
+        match self {
+            Self::Account { who, .. }
+            | Self::Span { who, .. }
+            | Self::Voxels { who }
+            | Self::Cells { who, .. }
+            | Self::CellMass { who, .. } => *who,
+        }
+    }
 }
 
 impl Expr {
@@ -145,8 +163,8 @@ impl Expr {
         match self {
             Self::Const(_) | Self::Read(_) | Self::Draw { .. } => vec![],
             Self::Add(v) | Self::Mul(v) | Self::Min(v) | Self::Max(v) => v.iter().collect(),
-            Self::Div(a, b) => vec![a, b],
-            Self::Clamp { value, .. } => vec![value],
+            Self::Div(a, b) | Self::AtLeast(a, b) => vec![a, b],
+            Self::Clamp { value, .. } | Self::Sqrt(value) => vec![value],
         }
     }
     pub fn nodes(&self) -> usize {
@@ -189,15 +207,27 @@ impl Expr {
             Self::Read(r) => read(r)?,
             Self::Add(v) => all(v, read, draw)?.into_iter().fold(0, i64::saturating_add),
             Self::Mul(v) => all(v, read, draw)?.into_iter().fold(1, i64::saturating_mul),
-            Self::Div(a, b) => {
-                let (a, b) = (a.eval(read, draw)?, b.eval(read, draw)?);
-                if b == 0 { 0 } else { a.div_euclid(b) }
-            },
+            Self::Div(a, b) => floor_div(a.eval(read, draw)?, b.eval(read, draw)?),
             Self::Min(v) => all(v, read, draw)?.into_iter().min().unwrap_or(0),
             Self::Max(v) => all(v, read, draw)?.into_iter().max().unwrap_or(0),
-            Self::Clamp { value, lo, hi } => value.eval(read, draw)?.clamp(*lo, *hi),
+            Self::Clamp { value, lo, hi } => value.eval(read, draw)?.max(*lo).min(*hi),
             Self::Draw { below } => i64::try_from(draw(*below)?).map_err(|e| e.to_string())?,
+            Self::Sqrt(value) => value.eval(read, draw)?.max(0).unsigned_abs().isqrt() as i64,
+            Self::AtLeast(a, b) => i64::from(a.eval(read, draw)? >= b.eval(read, draw)?),
         })
+    }
+}
+
+/// Division rounding toward negative infinity, a zero divisor giving zero
+/// and the one overflow saturating.
+fn floor_div(a: i64, b: i64) -> i64 {
+    if b == 0 {
+        return 0;
+    }
+    match a.checked_div(b) {
+        None => i64::MAX,
+        Some(q) if a % b != 0 && (a < 0) != (b < 0) => q - 1,
+        Some(q) => q,
     }
 }
 

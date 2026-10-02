@@ -124,5 +124,19 @@ pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
             ));
         }
     }
+    // Its cells go only to what it expresses, never more than it has
+    // (ruling 453).
+    if let Some(f) = part.cells.keys().find(|f| !part.functions.contains(*f)) {
+        return Err(format!(
+            "a part holds cells for {f}, which it does not express"
+        ));
+    }
+    let held: u64 = part.cells.values().map(|c| u64::from(*c)).sum();
+    if held > u64::from(part.capacity) {
+        return Err(format!(
+            "a part holds {held} cells in a capacity of {}",
+            part.capacity
+        ));
+    }
     Ok(())
 }

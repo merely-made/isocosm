@@ -82,6 +82,7 @@ fn part(shape: &str, functions: &[&str]) -> Part {
         severed: false,
         shape: shape.into(),
         functions: functions.iter().map(|f| f.to_string()).collect(),
+        ..Default::default()
     }
 }
 
