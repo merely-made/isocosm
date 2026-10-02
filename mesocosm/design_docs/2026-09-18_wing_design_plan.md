@@ -5340,6 +5340,69 @@ what later sections derive from.
      joining 448's budding, and otherwise a dead one, eaten, incorporated or
      left to rot like any carcass.
 
+471. **kiss3d, reshaped, is the lit body tenant.** Asked on 2026-10-02 in
+     the Conatus/physics session, after Mark asked how renderling's five
+     features compare with kiss3d "or other alternative prospective pieces
+     of game engine that would compose into the stack", adding: "I am
+     willing to reshape a good candidate into an excellent stack
+     component/module/crate". Evidence: kiss3d 0.46 (wgpu 30, WGSL, BSD-3)
+     covers renderling's shadow maps, light tiling (clustered forward+),
+     PBR/IBL, glTF animation and skinning with morphs on web, plus SSAO, OIT,
+     transmission, water waves and 2D lighting; it takes the host's device
+     but keeps a thread-local `Context` singleton
+     (`kiss3d-0.46.0/src/context/context.rs:12`) and wants a window.
+     Renderling's edge is GPU-driven slab instancing. Options, recommended
+     first: (A) "kiss3d, reshaped: an explicit context handle in place of
+     the thread-local, a render-into-caller-targets entry with no window,
+     the tracer's depth as a pre-pass, its shadow atlas and light buffer
+     exported (recommended)." (B) Grow isometer-render with both as donors.
+     (C) Re-adopt renderling. (D) Measure kiss3d and renderling first. Mark
+     chose A. So ruling 27's "provided it composes" is met by reshaping
+     kiss3d to the stack's device and target seams. Mere's
+     `2026-08-22_conatus_engine_plan.md` holds the full evidence.
+472. **Lighting is a stack-owned light and environment block.** Asked the
+     same day. Evidence: terrain is traced and bodies rasterised, joined by
+     depth (L3), so a renderer's shadow maps and lights never reach the
+     terrain unless shared. Options: (A) "Stack-owned light/environment
+     block: sun and day/night from sim fields, the point-light list and the
+     water field live in the scene contract; tracer and rasteriser both read
+     them; the renderer exports its shadow atlas, light buffer and depth
+     (recommended)." (B) The renderer owns lighting and the tracer keeps its
+     own sun and fog. Mark chose A, carrying ruling 22's rows across both
+     consumers.
+473. **WGSL/WESL for raster, CubeCL for compute.** Asked the same day.
+     Evidence: all five wing render shaders are WGSL
+     (`isometer-lens/src/{tracer,march,grade}.wgsl`,
+     `isometer-render/src/{shader,live_body}.wgsl`), against the 2026-08-16
+     "author in CubeCL, the brick renderer included" line, and CubeCL 0.10
+     has no texture bindings. Options: (A) WGSL/WESL for raster, CubeCL for
+     compute (recommended). (B) wgsl-rs once on wgpu 30. (C) rust-gpu 0.10
+     for raster too. Mark chose A. This amends the 2026-08-16 line; rust-gpu
+     stays for Nexus-derived compute only.
+474. **The renderling fork is archived, after L7.** Asked the same day.
+     Evidence: L7's done-condition (eponym-client with no renderling
+     dependency) is unmet; eponym-client and the `ambience-lease` and
+     `field-bake` probes path-depend on the live `crates/renderling` and
+     `crates/crabslab`; upstream craballoc 0.4 is unadopted by renderling and
+     superseded by crabslab's `feat/wgsl-rs`. Mark chose "Archive the fork
+     now", then, told that moving the checkouts before L7 breaks Eponym,
+     "L7 first, then archive". So Eponym's Tenant and lighting move off
+     renderling, the two probes are archived and the patch rows dropped, and
+     then both forks move to `archive/`. Had renderling been kept, its
+     residency would have been conatus/CubeCL buffers bound directly
+     ("Residency via conatus/CubeCL").
+475. **R2 is re-proved in isometer-render.** Asked the same day. The R2
+     receipt proved CubeCL output published into a GPU-only renderling
+     vertex range, one device and two allocators. Mark chose "Re-prove in
+     isometer-render": isometer-render binds conatus's CubeCL buffers
+     directly, testing whether the copy and the second allocator disappear.
+     The alternative archived it with no successor.
+476. **vello for documents, kiss3d 2D for lit games.** Asked the same day.
+     Evidence: kiss3d's lit 2D (16 lights), radiance-cascade 2D GI and 2D
+     skinning would be a second 2D renderer beside vello. Mark chose "vello
+     for documents, kiss3d 2D for lit games": kiss3d's 2D only behind the
+     scene contract for a lit 2D game. The alternative was vello only.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -9159,6 +9222,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 471 to 476 recorded from the Conatus/physics session
+  (Mark asked them carried here): kiss3d, reshaped, as the lit body tenant
+  (471); a stack-owned light and environment block (472); WGSL/WESL for
+  raster and CubeCL for compute, amending the 2026-08-16 line (473); the
+  renderling fork archived after L7 (474); R2 re-proved in isometer-render
+  (475); vello for documents and kiss3d 2D for lit games (476). Open: the
+  ECS, hecs against shipyard, compared and coming back to Mark.
 - 2026-10-02: rulings 467 to 470 recorded, the anatomy brief's third round:
   one part model for every body form, a part attaching to a parent or lying
   on a site (467); a lineage's recipe, from which a child develops and a
