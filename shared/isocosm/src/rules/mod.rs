@@ -219,6 +219,12 @@ pub enum Effect {
         amount: Amount,
         conversion: Conversion,
     },
+    /// A value computed against the act as it stands, kept under `name`
+    /// for the act's later effects to read.
+    Keep {
+        name: Key,
+        value: Expr,
+    },
     /// Cells of the bound part moved to a function it expresses, from
     /// another or, with no `from`, from its free cells (X6).
     Allocate {
@@ -255,8 +261,16 @@ impl Effect {
         then.iter().chain(otherwise)
     }
     pub fn draws(&self) -> bool {
-        matches!(self, Self::When { guard, .. } if guard.draws())
+        matches!(self, Self::When { guard: x, .. } | Self::Keep { value: x, .. } if x.draws())
             || self.amounts().iter().any(|a| a.draws())
+    }
+    /// The expressions it reads besides its amounts: a guard, or a kept
+    /// value.
+    pub fn computed(&self) -> Option<&Expr> {
+        match self {
+            Self::When { guard: x, .. } | Self::Keep { value: x, .. } => Some(x),
+            _ => None,
+        }
     }
     /// The branch a guard chooses, read once; nothing for another effect.
     pub fn branch(
@@ -280,7 +294,7 @@ impl Effect {
     }
     /// Whether resolving it computes anything, a guard included.
     pub fn computes(&self) -> bool {
-        matches!(self, Self::When { .. })
+        matches!(self, Self::When { .. } | Self::Keep { .. })
             || self
                 .amounts()
                 .iter()

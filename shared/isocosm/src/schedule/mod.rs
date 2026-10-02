@@ -35,7 +35,7 @@ use std::collections::{BTreeMap, BTreeSet};
 fn framed(p: &Process) -> bool {
     let at_site = |x: &Expr| x.reads().iter().any(|u| u.body() == Binding::Place);
     let computes = |e: &Effect| {
-        let guard = matches!(e, Effect::When { guard, .. } if at_site(guard));
+        let guard = e.computed().is_some_and(at_site);
         guard
             || e.amounts().iter().any(|a| match a {
                 Amount::Computed(x) => at_site(x),

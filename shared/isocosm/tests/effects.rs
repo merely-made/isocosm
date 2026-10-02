@@ -191,6 +191,51 @@ fn a_guard_is_read_once_for_both_its_branches() {
 }
 
 #[test]
+fn a_kept_value_is_read_as_it_was_kept() {
+    // The site's soil kept, then two taken, then the kept value practised:
+    // ten, as it was kept, not the eight left.
+    let soil = Expr::Read(Reading::Account {
+        who: Binding::Place,
+        key: SOIL.into(),
+    });
+    let keep = Effect::Keep {
+        name: "test:soil".into(),
+        value: soil.clone(),
+    };
+    let kept = Expr::Read(Reading::Kept {
+        name: "test:soil".into(),
+    });
+    let practise = |x: Expr| Effect::Practice {
+        key: "skill:test:kept".into(),
+        amount: Amount::Computed(x),
+    };
+    let mut g = world();
+    let effects = vec![keep.clone(), take_soil(), practise(kept.clone())];
+    with(&mut g, act("test:keep", vec![], effects));
+    let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
+    assert_eq!(
+        sim.execute(1, None, "test:keep", None).outcome,
+        Outcome::Accepted
+    );
+    let body = sim.state().population.get(1).unwrap();
+    assert_eq!((site(&sim, SOIL), body.skills["skill:test:kept"]), (8, 10));
+    // Read before it is kept, or kept within a guard: refused.
+    let refused = |effects: Vec<Effect>| {
+        let mut g = world();
+        with(&mut g, act("test:x", vec![], effects));
+        g.validate().is_err()
+    };
+    assert!(refused(vec![practise(kept.clone()), keep.clone()]));
+    let within = Effect::When {
+        guard: Expr::Const(1),
+        then: vec![keep.clone()],
+        otherwise: vec![],
+    };
+    assert!(refused(vec![within, practise(kept.clone())]));
+    assert!(!refused(vec![keep, practise(kept)]), "the control passes");
+}
+
+#[test]
 fn upkeep_drains_the_reserve_before_the_tissue() {
     let spend = |amount: u64| Effect::Spend {
         from: vec![RESERVE.into(), TISSUE.into()],

@@ -99,6 +99,10 @@ impl Staged<'_> {
         };
         let mut read = |r: &Reading| -> Result<i64> {
             match r {
+                Reading::Kept { name } => {
+                    let kept = self.stage.kept.get(name);
+                    kept.copied().ok_or_else(|| format!("no value {name} was kept"))
+                },
                 Reading::Account { who, key } => {
                     let held = meaning::value(self.ledger(*who)?, key);
                     i64::try_from(held).map_err(|e| e.to_string())
@@ -192,6 +196,11 @@ impl Staged<'_> {
     /// Applies one effect to the stage, a guarded one by the branch its
     /// guard chooses (X5). Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
+        if let Effect::Keep { name, value } = e {
+            let value = self.compute(|read, draw, parts| value.eval_in(read, draw, parts))?;
+            self.stage.kept.insert(name.clone(), value);
+            return Ok(false);
+        }
         if matches!(e, Effect::When { .. }) {
             let branch = self.compute(|read, draw, parts| e.branch(read, draw, parts))?;
             let mut feat = false;

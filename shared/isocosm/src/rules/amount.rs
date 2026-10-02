@@ -19,8 +19,10 @@ pub type Draw<'a> = dyn FnMut(u64, u8) -> Result<u64> + 'a;
 /// A body's living parts, for a sum over them.
 pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<Vec<Part>> + 'a;
 
-/// The most nodes one expression may hold.
-pub const MAX_NODES: usize = 64;
+/// The most nodes one expression may hold: room for Mesocosm's mouthful,
+/// its build multiple and its room each reading the ceiling's sum over
+/// parts.
+pub const MAX_NODES: usize = 128;
 /// The widest draw an expression may take, small enough for a crowd to split
 /// its members over exactly (ruling 207).
 pub const MAX_DRAW: u64 = 64;
@@ -149,6 +151,9 @@ pub enum Reading {
     CellMass { who: Binding, function: Key },
     /// What one cell weighs, read of the bound part alone.
     CellWeight { who: Binding },
+    /// A value the act kept for its later effects, such as what a bite
+    /// took before the meal landed.
+    Kept { name: Key },
 }
 
 impl Reading {
@@ -167,6 +172,7 @@ impl Reading {
             Self::Cells { function, .. } => cells(function),
             Self::CellMass { function, .. } => cells(function) * u128::from(p.cell_mass),
             Self::CellWeight { .. } => u128::from(p.cell_mass),
+            Self::Kept { .. } => 0,
         }
     }
 
@@ -179,6 +185,8 @@ impl Reading {
             | Self::Cells { who, .. }
             | Self::CellMass { who, .. }
             | Self::CellWeight { who } => *who,
+            // What an act keeps is its own.
+            Self::Kept { .. } => Binding::Actor,
         }
     }
 }

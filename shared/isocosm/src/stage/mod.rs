@@ -58,6 +58,8 @@ pub(crate) struct Stage {
     pub(crate) demands: Option<Demands>,
     /// What the act may take of shared ground, as its pass shared it out.
     pub(crate) shares: Option<Shares>,
+    /// The values the act kept for its later effects.
+    pub(crate) kept: BTreeMap<Key, i64>,
 }
 
 impl Simulation {
@@ -101,6 +103,7 @@ impl Simulation {
             act,
             demands: None,
             shares: None,
+            kept: BTreeMap::new(),
         })
     }
 

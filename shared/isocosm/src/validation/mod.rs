@@ -248,9 +248,44 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         for e in effects {
             effect(rules, p, id, e)?;
         }
+        kept_first(p, id)?;
     }
     mind(rules)?;
     competitions(rules)
+}
+
+/// A kept value is read only after its act keeps it, and kept only at the
+/// top of the act, never within a guard's branch.
+fn kept_first(p: &Process, id: &str) -> Result<()> {
+    let risky = p.risk.iter().flat_map(|r| &r.effects);
+    for outcomes in [p.effects.iter().collect::<Vec<_>>(), risky.collect()] {
+        let mut kept = std::collections::BTreeSet::new();
+        for e in p.commitments.iter().chain(outcomes) {
+            let mut exprs: Vec<&Expr> = e.computed().into_iter().collect();
+            for a in e.amounts() {
+                if let Amount::Computed(x) = a {
+                    exprs.push(x);
+                }
+            }
+            for inner in e.branches() {
+                if matches!(inner, Effect::Keep { .. }) {
+                    return Err(format!("{id} keeps a value within a guard"));
+                }
+                exprs.extend(inner.computed());
+            }
+            for u in exprs.iter().flat_map(|x| x.reads()) {
+                if let Reading::Kept { name } = u.reading
+                    && !kept.contains(name)
+                {
+                    return Err(format!("{id} reads {name} before keeping it"));
+                }
+            }
+            if let Effect::Keep { name, .. } = e {
+                kept.insert(name.clone());
+            }
+        }
+    }
+    Ok(())
 }
 
 /// One effect's checks; a guarded effect's guard and inner effect are
@@ -259,6 +294,10 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
     conversion::declared(rules, id, e)?;
     for a in e.amounts() {
         amount(rules, p, id, a)?;
+    }
+    if let Effect::Keep { value, .. } = e {
+        value.validate().map_err(|why| format!("{id}: {why}"))?;
+        reads(rules, p, id, value)?;
     }
     match e {
         Effect::Transfer { account: a, .. } => account(rules, a)?,

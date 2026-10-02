@@ -76,8 +76,7 @@ pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<
                 let moved = l.iter().filter(|(_, v)| **v > 0);
                 moved.filter_map(|(k, _)| of(k)).collect()
             };
-            let keys =
-                |ks: &'_ [Key]| -> Vec<(&Key, bool)> { ks.iter().filter_map(&of).collect() };
+            let keys = |ks: &'_ [Key]| -> Vec<(&Key, bool)> { ks.iter().filter_map(&of).collect() };
             let (kind, took, gave) = match e {
                 Effect::Transform {
                     take,
