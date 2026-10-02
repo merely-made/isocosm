@@ -1582,3 +1582,18 @@ Recording them found a miscite in the question as put: the in-proportion
 option named "287's share rule", and the proportional take is ruling 294's,
 decided from 287's fork. The record carries the correction on 464, and on
 456, which made the same slip.
+
+The third round took four of the five items then open, what makes a system
+working waiting for the fourth:
+
+| Question as put | Ruling |
+| --- | --- |
+| Do the spread and the terrain-body use the part tree's model? | 467: one model, placed two ways |
+| Where does a body's part tree come from? | 468: recipe, and growth in life |
+| What is a wound to a part, and does it heal? | 469: lost cells, regrown at a price |
+| Where does a severed part's matter go? | 470: alive where it can be |
+
+Mark chose against the recommendation twice: a maturing body growing the
+parts its recipe names, over parts arriving in life only by incorporation;
+and a severed part living on where its lineage can regrow from a fragment,
+over every severed part dying.

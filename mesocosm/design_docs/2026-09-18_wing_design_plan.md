@@ -560,6 +560,8 @@ what later sections derive from.
     life, but they are distributed, collective organisms; there is no
     individual, only the instance of the whole, like the fungelganger in
     nethermurk" (a reference of Mark's, not read here).
+    *Placed 2026-10-02 by ruling 467:* a fungus's patches are parts lying on
+    sites, in the part tree's model.
 59. **Play is directing, not driving; a creature's senses are its own.**
     Mark, 2026-09-19, asked about senses: "How do you perceive and react
     to the world without fauna sense organs, like most critters? And
@@ -1211,6 +1213,9 @@ what later sections derive from.
      So a blow drains vigour first and wounds a part when it lands hard or
      the vigour is gone; vigour comes back with rest, and wounds heal
      slowly, or never.
+     *Specified 2026-10-02 by ruling 469:* a wound loses cells from the part
+     it lands on, regrown at a price where the lineage's traits allow, or
+     never.
 124. **The first scale target is a region; larger scales are not
      precluded.** Put to Mark on 2026-09-24, after the finding that the
      generator's declared space had parameters and no ranges and that no
@@ -4760,6 +4765,9 @@ what later sections derive from.
      which further axes reproduction carries were put back the same day.
      *Reading, not ruled:* every strategy is a transfer and never a spawn, as
      TD6 and the sim's conservation of matter require.
+     *Given its recipe 2026-10-02 by ruling 468:* a lineage carries a recipe
+     and a placement policy, a child develops its part tree from them, and a
+     maturing body grows the parts its recipe names that it lacks.
 
 448. **The default set holds four reproductive strategies.** Asked on
      2026-10-01, putting 447 back: "Which reproductive strategies does the
@@ -4782,6 +4790,8 @@ what later sections derive from.
      described. *Reading, not ruled:* fractions, propagule sizes and scatter
      bounds are world rules with Mesocosm's values as defaults where it has
      them, and spores' scatter waits for the places family.
+     *Joined 2026-10-02 by ruling 470:* fragmentation, a severed part living
+     on as a new body where its lineage can regrow from a fragment.
 
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
@@ -5073,6 +5083,8 @@ what later sections derive from.
      Mark chose A, "Derived from extents". So a part's capacity and cell
      mass are readings of its extents by Mesocosm's rule, and 453's two
      declared fields give way to them.
+     *Wounded 2026-10-02 by ruling 469:* a part keeps the cells a wound has
+     lost, so its living cells are its derived capacity less them.
 
 461. **The catalogue takes all fifteen functions, the other vocabularies
      folded in.** Asked on 2026-10-02, with 459: "How far does the function
@@ -5223,6 +5235,110 @@ what later sections derive from.
      grown on them, secrete alone acquired; a lump splits its cells between
      taking in and storing; and wing-functions' source and store map onto
      store, its gate onto gate and its actuator onto contract.
+
+467. **One part model serves every body form, a part attaching to a parent
+     or lying on a site.** Asked on 2026-10-02, the anatomy brief's third
+     round: "Do the spread and the terrain-body use the part tree's model?
+     Evidence: the record's §3.2.1 gives three body forms that "share the
+     ledger and the record but not the part model": a part tree (animal); a
+     spread over a substrate (germ, fungus, colony); and a terrain-body
+     (macro, a lion turtle whose volume carries places). Ruling 58 makes a
+     fungus one body whose separate patches are its parts, and a germ many
+     bodies. Isocosm's body sits on one site, and each of its parts names a
+     parent." Options, recommended first: (A) "One model, placed two ways:
+     every body's parts have shapes, functions, cells and tissue. A part
+     either attaches to a parent (the tree) or lies on a site (a spread's
+     patch), so a fungus is one body across many sites and a germ stays many
+     bodies. A terrain-body is a part tree whose parts are big enough to
+     carry places. One catalogue and one matter rule serve all three
+     (recommended)." (B) "Part tree now, others later: rule only the part
+     tree here. The spread and the terrain-body get their part model when
+     the micro and macro families arrive." (C) "Three models, as §3.2.1: the
+     forms share the ledger and the record, and each keeps its own part
+     model." Mark chose A, "One model, placed two ways". So every body's
+     parts have shapes, functions, cells and tissue, and a part attaches to
+     a parent, making the tree, or lies on a site, making a spread's patch:
+     a fungus is one body across many sites, a germ stays many bodies (58),
+     and a terrain-body is a part tree whose parts are big enough to carry
+     places. One catalogue and one matter rule serve all three, amending
+     §3.2.1's "not the part model".
+
+468. **A lineage carries a recipe, and its bodies also grow parts in life.**
+     Asked on 2026-10-02, with 467: "Where does a body's part tree come
+     from? Evidence: ruling 447 grows a filial child from its lineage's
+     recipe, but Isocosm's lineage keeps no recipe, and its Birth clones the
+     parent. Mesocosm's lineage carries an axial recipe (segments, tagmata,
+     the situs of 252) and isometer's placement policy (facings by role,
+     mirroring), and a child develops from them. In life, a Mesocosm body
+     gains a part only by incorporation: what it ate lands at a
+     plan-resolved attachment (251). A lineage can express only the
+     appendage kinds it has eaten (its lexicon)." Options, recommended
+     first: (A) "Recipe and lexicon: a lineage carries a recipe and a
+     placement policy, and a child develops its part tree from them. In
+     life, parts arrive only by incorporation, at a plan-resolved
+     attachment. What a body incorporates teaches its lineage that kind, so
+     later children can grow it: Mesocosm's kleptoplasty (recommended)." (B)
+     "Recipe, no lexicon: as the first, but a recipe may name any shape.
+     Incorporating lands parts but teaches the lineage nothing." (C)
+     "Recipe, and growth in life: as the first, and a maturing body also
+     grows the parts its recipe names that it lacks, each at a plan-resolved
+     attachment, so a larva can grow its legs." Mark chose C, "Recipe, and
+     growth in life". So a lineage carries a recipe and a placement policy,
+     and a child develops its part tree from them; in life a part arrives by
+     incorporation, landing at a plan-resolved attachment and teaching the
+     lineage its kind, so later children can grow it; and a maturing body
+     also grows the parts its recipe names that it lacks, each at a
+     plan-resolved attachment.
+
+469. **A wound loses a part's cells, regrown at a price where the lineage
+     can.** Asked on 2026-10-02, with 467: "What is a wound to a part, and
+     does it heal? Evidence: ruling 123 has a blow drain vigour first and
+     wound a part when it lands hard or the vigour is gone; wounds heal
+     slowly, or never. The record reads a wound as a loss in a part's
+     structure: a cut leg slows, a lost eye blinds. Ruling 430 keeps wounds
+     in the ledger, not in condition records. Mesocosm has a seam for this,
+     called only by its tests: a part loses cells for good, its living cells
+     being its capacity, and a function left in pieces stops. A bite (459)
+     takes tissue, which regrows by feeding." Options, recommended first:
+     (A) "Lost cells, regrown at a price: a wound loses cells from the part
+     it lands on, so the part's capacity, adult mass and function cells
+     shrink, and tissue it can no longer hold spills to the ground (446). A
+     lineage whose traits allow it regrows lost cells as growth, paying each
+     cell's mass; one without them never heals (recommended)." (B) "Lost
+     cells, for good: Mesocosm's seam as built: a wound's cells never come
+     back, and only vigour recovers." (C) "Tissue lost, structure only by
+     severing: a wound takes tissue from the part, which spills to the
+     ground and regrows by feeding. Only severing loses structure, so
+     "never" means a lost part." Mark chose A, "Lost cells, regrown at a
+     price". So a wound loses cells from the part it lands on, shrinking its
+     capacity, its adult mass and its functions' cells, and the tissue it
+     can no longer hold spills to the ground (446); a lineage whose traits
+     allow it regrows lost cells as growth, paying each cell's mass, and one
+     without them never heals.
+
+470. **A severed part becomes a body of its own, alive where its lineage
+     regrows from fragments.** Asked on 2026-10-02, with 467: "Where does a
+     severed part's matter go? Evidence: severing takes a part and
+     everything under it, never the root (isometer's sever). Mesocosm drops
+     a severed part from the body's mass, so "its milligrams have left the
+     conservation account". Its corpse-organ eating refuses severed parts,
+     because eating one would create matter, and the dismemberment gate
+     meant to put them "somewhere honest" is unbuilt. Isocosm conserves
+     every milligram. Incorporation takes a part whole with its matter
+     (459)." Options, recommended first: (A) "A dead body of its own: the
+     severed subtree becomes a dead body on the site, keeping its tissue,
+     reserve and provenance, so it can be eaten, incorporated or left to rot
+     like any carcass. A shed tail is a meal (recommended)." (B) "Spilled to
+     the ground: its matter lands on the site as the body's own (446's
+     spill), and the site's mineralization returns it. Nothing is left to
+     eat." (C) "Alive where it can be: as the first, but a severed part
+     whose lineage can regrow from a fragment lives on as a new body
+     (fragmentation, beside 448's budding). Others die as in the first."
+     Mark chose C, "Alive where it can be". So a severed subtree becomes a
+     body on the site, keeping its tissue, reserve and provenance: a new
+     living body where its lineage can regrow from a fragment, fragmentation
+     joining 448's budding, and otherwise a dead one, eaten, incorporated or
+     left to rot like any carcass.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -5592,7 +5708,9 @@ world that may be an entity" already allows at the largest scale.
 Consequence for the body noun: a body is a part tree (animal), a spread
 over a substrate (germ, fungus, colony), or a terrain-body (macro), and
 the three body forms share the ledger and the record but not the part
-model. **Ruled 2026-09-19 (ruling 58): a spread is a body,** and the
+model. *Amended 2026-10-02 by ruling 467:* one part model serves all
+three, a part attaching to a parent or lying on a site. **Ruled 2026-09-19
+(ruling 58): a spread is a body,** and the
 kingdom decides how many. A fungus is one body even when its patches are
 separate: a distributed, collective organism with a long life, in which
 there is no individual, only the instance of the whole, so its regions are
@@ -9041,6 +9159,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 467 to 470 recorded, the anatomy brief's third round:
+  one part model for every body form, a part attaching to a parent or lying
+  on a site (467); a lineage's recipe, from which a child develops and a
+  maturing body grows the parts it lacks, incorporation teaching the lineage
+  what it eats (468); a wound loses cells, regrown at a price where the
+  lineage can (469); and a severed part becomes a body of its own, alive
+  where its lineage regrows from fragments (470). Mark chose against the
+  recommendation on 468 and 470. Annotations on §3.2.1's body forms, 58,
+  123, 447, 448 and 460. Carried into the brief, the sim plan, the session
+  notes' §10 and the index.
 - 2026-10-02: rulings 463 to 466 recorded, the anatomy brief's second round:
   a store holds what its cells can and a body without one keeps no reserve
   (463), rent, growth and a landing meal reach parts in proportion (464),
