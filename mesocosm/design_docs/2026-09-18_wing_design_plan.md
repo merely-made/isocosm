@@ -5523,6 +5523,40 @@ what later sections derive from.
      lie, while the body's place, for its record and its moves, stays its
      root's site.
 
+481. **hecs stays the ECS.** Asked on 2026-10-02 in the Conatus/physics
+     session, after Mark said of the ECS "Not bevy, but can we compare the
+     potential of the other two?" Evidence: a local bench (Ryzen 9 7940HS,
+     release, 10k entities, microseconds per frame) put hecs 0.11.1 against
+     shipyard 0.11.5 at iterate 9.6 vs 19.7, spawn and despawn of 1% 5.4 vs
+     15, add and remove on 10% 166 vs 53, and listing changes 29 vs 20, all
+     under 1.1% of a 16 ms frame; hecs is 9.5k lines with 53 reverse
+     dependencies, shipyard 27.9k with 18; both are one-maintainer, MIT or
+     Apache-2.0, `Send + Sync` and build for wasm. Options, recommended
+     first: (A) "hecs, as ruled (recommended)." (B) shipyard, for cheap
+     add/remove and built-in tracking. (C) Prototype both first. Mark chose
+     A, keeping 2026-08-16's "hecs, placed".
+482. **The mode host and armillary schedule; the ECS is storage.** Asked
+     the same day. Evidence: armillary actors per shard, Rayon inside a
+     shard and an ordered merge already give the wing its scheduling and
+     determinism (§4.7). Options: (A) "Mode host and armillary; ECS is
+     storage (recommended)." (B) ECS workloads inside each actor, which
+     needs shipyard. Mark chose A: no second scheduler inside the first.
+483. **The projection's diff comes from the record's receipts.** Asked the
+     same day: where does the record-to-scene-contract projection learn what
+     changed? Options: (A) "The record's receipts (recommended)", which the
+     authoritative record already emits per tick, so the ECS never becomes a
+     second source of truth. (B) hecs `ChangeTracker`, exact but scanning
+     every tracked entity. (C) A dirty-flag component. Mark chose A.
+484. **A boundary crate in Mere holds the ECS.** Asked the same day.
+     Options: (A) "Boundary crate in mere (recommended)": a thin crate owning
+     the `BodyId`-to-`Entity` side table (keeping the ECS disposable, never
+     mirrored ids), spawn and despawn tied to receipts, a command buffer for
+     off-thread writes, the scene-contract diff emitter and per-mode `World`
+     construction, with systems using hecs directly inside it. (B) The same
+     crate in Mesocosm until a second consumer appears. (C) No boundary
+     crate. (D) A full trait over ECSes. Mark chose A, since the projection
+     serves every mode.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -9342,6 +9376,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 481 to 484 recorded from the Conatus/physics session,
+  the ECS left open at 476: hecs stays (481); the mode host and armillary
+  schedule, the ECS is storage (482); the projection's diff comes from the
+  record's receipts (483); a boundary crate in Mere holds the ECS (484).
 - 2026-10-02: rulings 477 to 480 recorded, the anatomy brief's fourth round:
   a body's system network read from its tree, a system working by degree
   (477); the lineage keeping Mesocosm's recipe, a maturing body growing
