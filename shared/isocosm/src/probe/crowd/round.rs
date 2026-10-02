@@ -157,7 +157,11 @@ impl Crowd<'_> {
     /// own stream against the tick's start, and takes combine in the order
     /// of what they contest, so any order gives the same crowd.
     fn round_ordered(&mut self, order: &[&Key]) -> Result<()> {
-        let (mind, world) = (self.mind, self.world);
+        let world = self.world;
+        if world.competitions().is_empty() {
+            return Ok(());
+        }
+        let mind = self.mind.ok_or("a world with competitions keeps a mind")?;
         let rules = &world.genesis.rules;
         let sites: Vec<Id> = self.sites.keys().copied().collect();
         for site in sites {

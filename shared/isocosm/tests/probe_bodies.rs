@@ -287,3 +287,36 @@ fn every_native_acts_somewhere_in_the_domain() {
         assert!(acted.get(p).copied().unwrap_or(0) > 0, "{p}: {acted:?}");
     }
 }
+
+#[test]
+fn the_crowd_runs_bodies_without_refusing_any() {
+    use isocosm::probe::{Crowd, Variant, readings, run_exact};
+    for seed in 0..6 {
+        let w = BodyFounding {
+            seed,
+            ..Default::default()
+        }
+        .generate()
+        .unwrap();
+        // The crowd checks every tick that it keeps the world's matter.
+        let crowd = Crowd::new(&w, 7, Variant::Histogram)
+            .unwrap()
+            .run()
+            .unwrap();
+        let exact = run_exact(&w, 7, true).unwrap();
+        let (a, b) = (
+            readings::crowd_members(&crowd),
+            readings::exact_members(&exact),
+        );
+        let (alive, states) = readings::alive_states(&a);
+        assert!(
+            alive > 0 && states > 0 && states as u64 <= alive,
+            "seed {seed}"
+        );
+        assert_eq!(
+            a.iter().map(|m| m.1).sum::<u64>(),
+            b.iter().map(|m| m.1).sum::<u64>(),
+            "seed {seed}: no member is made or lost"
+        );
+    }
+}

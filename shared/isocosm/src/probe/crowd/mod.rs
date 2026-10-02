@@ -14,11 +14,12 @@ mod round;
 use super::{
     Mind, ProbeWorld,
     aggregate::{self, normalize},
+    draws::Stream,
 };
 use crate::{
     Result,
     meaning::{mass, value},
-    rules::{Causation, Process},
+    rules::{AccountKind, Causation, Process},
     schema::*,
     simulation::Work,
 };
@@ -42,7 +43,8 @@ pub enum Variant {
 
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
-    mind: &'w Mind,
+    /// The mind a world's fights read; none in a world without them.
+    mind: Option<&'w Mind>,
     dynamics: u64,
     variant: Variant,
     /// Draw the competitions in reverse order, to show it changes nothing.
@@ -67,7 +69,7 @@ impl<'w> Crowd<'w> {
         }
         let mut crowd = Self {
             world,
-            mind: world.mind()?,
+            mind: world.genesis.rules.mind.as_ref(),
             dynamics,
             variant,
             reversed: false,
@@ -189,18 +191,45 @@ impl<'w> Crowd<'w> {
         let rules = &self.world.genesis.rules;
         let start = self.sites.clone();
         let site_of = |e: &Entity| start.get(&e.place).ok_or("a bin at an unknown site");
+        // A state's members each draw their own (X3): they are split by
+        // what they draw, member by member, before any acts.
+        let slots = aggregate::slots(p)?;
+        let domain = format!("probe-amount:{}", p.id);
+        let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick]));
+        let mut split: Vec<(Entity, u64, BTreeMap<u8, u64>)> = Vec::new();
+        for (e, n) in acting {
+            if slots.is_empty() {
+                split.push((e, n, BTreeMap::new()));
+                continue;
+            }
+            let mut drawn: BTreeMap<BTreeMap<u8, u64>, u64> = BTreeMap::new();
+            for _ in 0..n {
+                let one = slots.iter().map(|(&slot, &below)| (slot, s.below(below)));
+                *drawn.entry(one.collect()).or_default() += 1;
+            }
+            split.extend(drawn.into_iter().map(|(d, k)| (e.clone(), k, d)));
+        }
+
         // Each state's takes of its site, per member, or none if blocked.
-        let mut planned: Vec<Option<Ledger>> = Vec::with_capacity(acting.len());
+        let mut planned: Vec<Option<Ledger>> = Vec::with_capacity(split.len());
         let mut wanted: BTreeMap<(Id, Key), u128> = BTreeMap::new();
         // A pass that takes nothing it shares is not planned, as the core
         // does not plan it.
         let planning = p.takes_shared();
-        for (e, n) in acting.iter().filter(|_| planning) {
+        for (e, n, draws) in split.iter().filter(|_| planning) {
             let mut takes = Ledger::new();
             let site = site_of(e)?;
             let mut scratch = site.clone();
             let run = aggregate::Run::Plan(&mut takes);
-            let blocked = aggregate::apply(p, e, site, &mut scratch, 1, self.tick, rules, run)?;
+            let a = aggregate::Act {
+                start: site,
+                count: 1,
+                tick: self.tick,
+                rules,
+                draws,
+                meal: None,
+            };
+            let blocked = aggregate::act(p, e, &mut scratch, run, a)?;
             if blocked.is_none() {
                 planned.push(None);
                 continue;
@@ -211,7 +240,7 @@ impl<'w> Crowd<'w> {
             planned.push(Some(takes));
         }
         let planned = planned.into_iter().map(Some).chain(std::iter::repeat(None));
-        for ((e, n), plan) in acting.into_iter().zip(planned) {
+        for ((e, n, draws), plan) in split.into_iter().zip(planned) {
             self.work.evaluations += 1;
             self.work.represented += n;
             let takes = match plan {
@@ -243,8 +272,15 @@ impl<'w> Crowd<'w> {
                 true => aggregate::Run::Act(&shares),
                 false => aggregate::Run::Free,
             };
-            let from = &start[&e.place];
-            match aggregate::apply(p, &e, from, site, n, self.tick, rules, run)? {
+            let a = aggregate::Act {
+                start: &start[&e.place],
+                count: n,
+                tick: self.tick,
+                rules,
+                draws: &draws,
+                meal: None,
+            };
+            match aggregate::act(p, &e, site, run, a)? {
                 Some(next) => {
                     self.work.accepted += n;
                     self.moved(&e, next, n);
@@ -275,20 +311,33 @@ impl<'w> Crowd<'w> {
 
     fn average(&mut self) {
         let kinds = self.world.kinds();
-        let mut classes: BTreeMap<(usize, Id), Vec<(Entity, u64)>> = BTreeMap::new();
+        let rules = &self.world.genesis.rules;
+        // What is averaged: the body a competition sizes its kind up by, or,
+        // in a world without competitions, a lineage's reserve (ruling 446).
+        let averaged = |e: &Entity| -> Option<Key> {
+            if kinds.is_empty() {
+                let reserve = |k: &AccountKind| matches!(k, AccountKind::Matter { lineage, reserve: true } if *lineage == e.lineage);
+                let mut found = rules.accounts.iter().filter(|(_, k)| reserve(k));
+                found.next().map(|(key, _)| key.clone())
+            } else {
+                let kind = kinds.iter().find(|k| e.traits.contains(&k.identity));
+                kind.map(|k| k.body.clone())
+            }
+        };
+        let mut classes: BTreeMap<(Key, Id), Vec<(Entity, u64)>> = BTreeMap::new();
         for (e, &n) in &self.bins {
-            let Some(k) = kinds.iter().position(|k| e.traits.contains(&k.identity)) else {
+            let Some(body) = averaged(e) else {
                 continue;
             };
             if e.alive {
                 classes
-                    .entry((k, e.place))
+                    .entry((body, e.place))
                     .or_default()
                     .push((e.clone(), n));
             }
         }
-        for ((k, _), members) in classes {
-            let body = &kinds[k].body;
+        for ((body, _), members) in classes {
+            let body = &body;
             let n: u64 = members.iter().map(|m| m.1).sum();
             let total: u64 = members
                 .iter()

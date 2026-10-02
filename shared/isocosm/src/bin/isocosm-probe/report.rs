@@ -5,7 +5,7 @@
 
 use isocosm::{
     probe::{
-        ProbeFounding, ProbeWorld,
+        BodyFounding, ProbeFounding, ProbeWorld,
         check::{Comparison, Settings},
         readings::{Probe, Reading},
     },
@@ -97,6 +97,9 @@ pub struct Draw {
     /// With predators: the hunters as drawn.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub predation: Option<Predation>,
+    /// A world of bodies: each lineage's founders, by lineage.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bodies: Option<std::collections::BTreeMap<Key, u64>>,
     pub arms: Vec<Arm>,
 }
 
@@ -176,11 +179,17 @@ impl Draw {
                 regrowth: regrowth(key),
             })
             .collect();
-        let first = world
-            .competitions()
-            .values()
-            .next()
-            .ok_or("no competition")?;
+        // A world of bodies contests nothing; it is summed by lineage.
+        let first = world.competitions().values().next();
+        let bodies = first.is_none().then(|| {
+            let mut by = std::collections::BTreeMap::new();
+            for c in g.population.groups.values() {
+                if c.entity.kingdom != "kingdom:world" {
+                    *by.entry(c.entity.lineage.clone()).or_default() += c.count;
+                }
+            }
+            by
+        });
         Ok(Self {
             k,
             seed,
@@ -188,11 +197,12 @@ impl Draw {
             members: g.population.count() - g.sites.len() as u64,
             leanings: world.kinds().iter().map(|k| leaning(&k.identity)).collect(),
             contested,
-            margin: first.margin,
-            cost: first.cost,
-            upset: first.upset,
-            advantage: first.advantage,
+            margin: first.map_or(0, |c| c.margin),
+            cost: first.map_or(0, |c| c.cost),
+            upset: first.map_or(0, |c| c.upset),
+            advantage: first.map_or(0, |c| c.advantage),
             predation: predation(world),
+            bodies,
             arms: vec![],
         })
     }
@@ -422,7 +432,24 @@ pub struct Checks {
     pub collect_changes_no_outcome: bool,
 }
 
-pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds. With predators, the exact arms draw each hunter's prey by the core's weighted draw as its scheduler reaches the hunter; the crowds draw a prey state per hunting member, weighted by its members times what each holds, and the unweighted crowd, the draw's control, by its members alone.";
+pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world under its own dynamics seed. The exact arms are the core's individual runner: every competition resolves member by member against the tick's start, fights on copies of the two states, and each member's takes settle through the interpreter at the tick's end. The crowd is the exact-state histogram with exact count draws; the approximate crowd, when run, takes each count in one step near its mean and variance; the averaged crowd replaces each lineage's reserves at a site by their average after every round. Readings are taken after the last tick. Evaluations count interpreter applications, and the act applications fights make on copies: per member in the exact arms, per state, and per distinct act on a state within a round, in the crowds. With predators, the exact arms draw each hunter's prey by the core's weighted draw from the pass's start (ruling 454); the crowds draw a prey state per hunting member, weighted by its members times what each holds, and the member it lands on uniformly, and the unweighted crowd, the draw's control, by its members alone. A world of bodies (checkpoint 6) contests nothing: its producers fix and grow glands and its grazers graze them by the same weighted draw, and the averaged crowd replaces each lineage's reserves at a site by their average after every tick.";
+
+/// The domain a run drew its worlds from.
+#[derive(Clone, Serialize)]
+#[serde(untagged)]
+pub enum Domain {
+    Probe(Box<ProbeFounding>),
+    Bodies(BodyFounding),
+}
+
+impl Domain {
+    pub fn generate(&self, seed: u64) -> Result<ProbeWorld, String> {
+        match self {
+            Self::Probe(d) => ProbeFounding { seed, ..*d.clone() }.generate(),
+            Self::Bodies(d) => BodyFounding { seed, ..d.clone() }.generate(),
+        }
+    }
+}
 
 #[derive(Serialize)]
 pub struct Receipt {
@@ -430,7 +457,7 @@ pub struct Receipt {
     pub kind: &'static str,
     pub master_seed: u64,
     pub arms: Vec<&'static str>,
-    pub domain: ProbeFounding,
+    pub domain: Domain,
     pub settings: Settings,
     pub read_set: BTreeSet<String>,
     pub readings: Vec<ReadingInfo>,

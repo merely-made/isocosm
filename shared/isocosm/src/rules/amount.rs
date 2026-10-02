@@ -223,7 +223,7 @@ impl Expr {
         }
     }
 
-    fn children(&self) -> Vec<&Expr> {
+    pub fn children(&self) -> Vec<&Expr> {
         match self {
             Self::Const(_) | Self::Read(_) | Self::Draw { .. } => vec![],
             Self::Add(v) | Self::Mul(v) | Self::Min(v) | Self::Max(v) => v.iter().collect(),
