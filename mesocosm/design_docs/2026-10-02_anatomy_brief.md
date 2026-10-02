@@ -1,11 +1,11 @@
 # The anatomy brief
 
 **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
-281 asked, from the probe's evidence. Four rounds are ruled (459 to 470 and
-477 to 480); the questions still open are listed in §8 and go to Mark in
-rounds. Nothing is built. When the brief is ruled through, it is carried
-into the sim plan's §2.3 and becomes the brief for S2's bodies family, the
-next in ruling 195's order (457).
+281 asked, from the probe's evidence. Five rounds are ruled (459 to 470, 477
+to 480 and 485 to 487); the questions still open are listed in §8 and go to
+Mark in rounds. Nothing is built. When the brief is ruled through, it is
+carried into the sim plan's §2.3 and becomes the brief for S2's bodies
+family, the next in ruling 195's order (457).
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the
@@ -15,8 +15,8 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 39, 58,
 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446, 447 to
-450, 453, 456 to 470 and 477 to 480; checkpoint 6's findings in the [sim
-plan](2026-09-22_sim_plan.md).
+450, 453, 456 to 470, 477 to 480 and 485 to 487; checkpoint 6's findings in
+the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
 
@@ -153,41 +153,44 @@ A wound loses cells from the part it lands on (469), so the part's capacity,
 its adult mass and its functions' cells shrink, and the tissue it can no
 longer hold spills to the ground (446). A lineage whose traits allow it
 regrows lost cells as growth, paying each cell's mass; one without them
-never heals, which is 123's "slowly, or never". Severing takes a part and
-everything under it, never the root, and the severed subtree becomes a body
-of its own on the site, keeping its tissue, reserve and provenance (470): a
-living body where its lineage can regrow from a fragment, beside 448's
-budding, and otherwise a dead body, eaten, incorporated or left to rot like
-any carcass. This answers Mesocosm's unbuilt dismemberment gate: a severed
-part's milligrams stay in the conservation account. *Reading, not ruled:*
-the part keeps its lost cells beside its tissue, so a wound stays the
-ledger's as 430 has it; a fragment that lives grows the parts its recipe
-names that it lacks (468); and regrowing from a fragment is a trait, as 449
-has a lineage's traits name its strategies.
+never heals, which is 123's "slowly, or never". The same trait lets growth
+toward the recipe regrow a severed part, so a lineage without it keeps its
+losses (485). Severing takes a part and everything under it, never the root,
+and the severed subtree becomes a body of its own on the site, keeping its
+tissue, reserve and provenance (470): a living body where its lineage can
+regrow from a fragment, beside 448's budding, every such fragment living on
+and physiology deciding which last (486), and otherwise a dead body, eaten,
+incorporated or left to rot like any carcass. This answers Mesocosm's
+unbuilt dismemberment gate: a severed part's milligrams stay in the
+conservation account. *Reading, not ruled:* the part keeps its lost cells
+beside its tissue, so a wound stays the ledger's as 430 has it; a fragment
+that lives grows the parts its recipe names that it lacks (468); and
+regrowing from a fragment is a trait, as 449 has a lineage's traits name its
+strategies.
 
 ## 8. Open, for the next rounds
 
-- **A spread's acts** (480): a process binds the lowest-numbered part that
-  qualifies (338), yet a spread acts from each patch; whether it then acts
-  once for each qualifying patch, or once for each site where it has one.
-- **A spread's connections** (467, 477): whether a spread's patches connect
-  along the routes between their sites, for its systems, or each patch works
-  alone.
-- **Regrowing what was lost** (469, 478, 479): whether growth toward the
-  recipe also regrows a severed part, or only what development left absent,
-  beside 469's healing of cells where the lineage's traits allow.
+- **Spreads and micro life** (58, 467, 480): whether a spread such as
+  underground mold, and micro life, are better held as territories or as
+  surfaces than as bodies with parts; Mark's reframe of the placemap
+  question, put back to him, which decides whether 480's acts and a spread's
+  connections still arise.
+- **The default systems** (277, 465, 477): which systems the default set
+  names, with their functions and roles, and which processes read them; next
+  after the spread question (487).
 - **Variance under growth** (478): whether a body's segment count, drawn
   within the variance, also grows toward the recipe's, or only absent
   appendages grow in.
 - **Wounds' details** (469): which functions lose the cells a wound takes,
   and where regrowing them falls in growth's order.
-- **Fragments** (470): what a fragment needs to live, such as a function its
-  lineage's root expresses.
-- **The default systems** (277, 465, 477): which systems the default set
-  names, with their functions and roles, and which processes read them.
 
 ## Progress
 
+- 2026-10-02: the fifth round ruled three of its four (485 to 487): a
+  severed part grows back only where the lineage can heal, every fragment of
+  such a lineage lives and physiology decides which last, and the open items
+  are ruled before the family brief. The first question came back reframed
+  as territories or surfaces for spreads and micro life, now the head of §8.
 - 2026-10-02: the fourth round ruled (477 to 480): system networks read from
   the tree and working by degree, the lineage keeping Mesocosm's recipe with
   bodies growing toward it once their parts are full, and a spread acting

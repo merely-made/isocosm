@@ -5328,6 +5328,8 @@ what later sections derive from.
      can no longer hold spills to the ground (446); a lineage whose traits
      allow it regrows lost cells as growth, paying each cell's mass, and one
      without them never heals.
+     *Widened 2026-10-02 by ruling 485:* the same trait lets growth toward
+     the recipe regrow a severed part.
 
 470. **A severed part becomes a body of its own, alive where its lineage
      regrows from fragments.** Asked on 2026-10-02, with 467: "Where does a
@@ -5352,6 +5354,8 @@ what later sections derive from.
      living body where its lineage can regrow from a fragment, fragmentation
      joining 448's budding, and otherwise a dead one, eaten, incorporated or
      left to rot like any carcass.
+     *Specified 2026-10-02 by ruling 486:* every fragment of such a lineage
+     lives on, and physiology decides which last.
 
 471. **kiss3d, reshaped, is the lit body tenant.** Asked on 2026-10-02 in
      the Conatus/physics session, after Mark asked how renderling's five
@@ -5476,6 +5480,8 @@ what later sections derive from.
      each child draws its own soma from them by its seed, so siblings
      differ; and a maturing body grows toward the lineage's recipe rather
      than its own soma, so a limb absent at development grows in later.
+     *Bounded 2026-10-02 by ruling 485:* a severed part grows back only
+     where the lineage can heal.
 
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
@@ -5556,6 +5562,73 @@ what later sections derive from.
      crate in Mesocosm until a second consumer appears. (C) No boundary
      crate. (D) A full trait over ECSes. Mark chose A, since the projection
      serves every mode.
+
+485. **Growth toward the recipe regrows a severed part only where the
+     lineage can heal.** Asked on 2026-10-02, the anatomy brief's fifth
+     round: "Does growth toward the recipe regrow a severed part? Evidence:
+     469 regrows lost cells only where the lineage's traits allow, and
+     others never heal (123's "slowly, or never"). 478 has a maturing body
+     grow toward its lineage's recipe, so a limb absent at development grows
+     in, and 479 grows a missing part once the body's parts are full.
+     Severing takes a part and its subtree, which leaves a part the recipe
+     names missing. A living fragment regrows a whole body (470). Mesocosm
+     regrows nothing." Options, recommended first: (A) "Where the lineage
+     can heal: growth toward the recipe regrows a severed part only in a
+     lineage whose traits let it heal (469's trait), so one trait governs
+     healing cells and regrowing parts. A lineage without it keeps its
+     losses, and what development left absent still grows in (recommended)."
+     (B) "Always: any body regrows a severed part once its parts are full,
+     like any part it lacks. 469's trait governs only lost cells." (C)
+     "Never: growth toward the recipe fills only what development left
+     absent. A severed part stays lost in every lineage, and only cells
+     heal." Mark chose A, "Where the lineage can heal". So growth toward the
+     recipe regrows a severed part only in a lineage whose traits let it
+     heal, 469's trait governing both healing cells and regrowing parts; a
+     lineage without it keeps its losses, and what development left absent
+     still grows in (478).
+
+486. **Every fragment of a lineage that regrows from fragments lives, and
+     physiology decides which last.** Asked on 2026-10-02, with 485: "What
+     does a fragment need in order to live (470)? Evidence: a severed part
+     of a lineage that regrows from fragments lives on as a body, keeping
+     its tissue and reserve. 479 grows it toward the recipe once its parts
+     are full, and growth needs meals. A body pays rent from its reserve, or
+     from tissue when it has no store (463), and starves at Mesocosm's
+     margin (446). A filial child starts at a quarter of its parent (447).
+     Under 58, a fungus split apart stays one body, so fragments come from
+     part trees." Options, recommended first: (A) "Any fragment; physiology
+     decides: every severed part of such a lineage lives on as a body. One
+     with no way to feed starves by rent in time, so no new rule decides
+     which fragments live (recommended)." (B) "A fragment that can feed: it
+     lives only if it holds a part expressing intake or fix, so it can feed
+     while it regrows. Others die at once." (C) "A fragment of size: it
+     lives only if it holds at least a world-rule share of the body's mass,
+     the filial child's quarter by default. Others die at once." Mark chose
+     A, "Any fragment; physiology decides". So every severed part of a
+     lineage that regrows from fragments lives on as a body, and one with no
+     way to feed starves by rent in time; no new rule decides which
+     fragments live.
+
+487. **The brief rules its open items before the bodies family's brief.**
+     Asked on 2026-10-02, with 485: "What does the anatomy brief still rule
+     before S2's bodies family brief is written? Evidence: the brief holds
+     16 rulings, and this round makes 20. After it, these stay open:
+     variance under growth, which functions a wound takes its cells from,
+     and the default systems with the processes that read them. A spread's
+     connections also stay open if the placemap reading is not taken. Lanes
+     stop at forks, so an open item comes back to you when the build reaches
+     it." Options, recommended first: (A) "Write the family's brief next:
+     carry the brief into the sim plan's §2.3 and write S2's bodies family
+     brief with done-conditions. The open items go to its lane as forks,
+     brought back when its build reaches them (recommended)." (B) "Rule the
+     rest first: another round on the open items, then the family's brief."
+     (C) "The default systems first: a round of their own for the default
+     systems, content the family needs from the start, with the smaller
+     items handed to the lane." Mark chose B, "Rule the rest first". So
+     another round takes the open items before S2's bodies family brief is
+     written. Mark added, while his answer to the round's first question was
+     being taken up: "After that, default systems!" So the spread question
+     comes first, then the default systems.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9376,6 +9449,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 485 to 487 recorded, the anatomy brief's fifth round:
+  a severed part grows back only where the lineage can heal (485), every
+  fragment of such a lineage lives and physiology decides which last (486),
+  and the brief rules its open items before the bodies family's brief, the
+  spread question and then the default systems (487). The round's first
+  question, whether a body is a placemap, came back reframed, whether a
+  spread and micro life are territories or surfaces, and is put back.
+  Annotations on 469, 470 and 478. Carried into the brief, the sim plan, the
+  session notes' §10 and the index.
 - 2026-10-02: rulings 481 to 484 recorded from the Conatus/physics session,
   the ECS left open at 476: hecs stays (481); the mode host and armillary
   schedule, the ECS is storage (482); the projection's diff comes from the

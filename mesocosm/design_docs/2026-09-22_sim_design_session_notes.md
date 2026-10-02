@@ -1614,3 +1614,20 @@ recipe rather than their own soma. Recording found two interactions for the
 next round: growth toward the recipe meets 469's trait-gated healing where a
 body has lost a part to severing, and a spread acting from each patch meets
 338's one lowest-numbered binding.
+
+The fifth round put four questions, and three were ruled:
+
+| Question as put | Ruling |
+| --- | --- |
+| Does growth toward the recipe regrow a severed part? | 485: where the lineage can heal |
+| What does a fragment need in order to live? | 486: any fragment; physiology decides |
+| What does the anatomy brief still rule before S2's bodies family brief is written? | 487: rule the rest first |
+
+The first, whether a body is a placemap, came back reframed. Mark: "Oh… i
+meant the other way… like think of a locale where mold has spread
+underground… would it be more helpful to think of such a body as more like
+territories than individual entities? Or surfaces (kinda analogue to the
+surfaces and effects mechanic in larian games?)? Same question for micro
+entities". It goes back to him with the evidence for territories and
+surfaces, and then, by his "After that, default systems!", the default
+systems follow.
