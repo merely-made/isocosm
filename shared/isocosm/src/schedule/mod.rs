@@ -33,14 +33,12 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Whether an act of `p`'s pass could read what another act of it writes:
 /// a target, a take of shared ground, or a site it both reads and writes.
 fn framed(p: &Process) -> bool {
-    let at = |b: &Binding| *b == Binding::Place;
-    let reads = |r: &Reading| at(&r.who());
+    let at_site = |x: &Expr| x.reads().iter().any(|u| u.body() == Binding::Place);
     let computes = |e: &Effect| {
-        let guard =
-            matches!(e, Effect::When { guard, .. } if guard.reads().iter().any(|r| reads(r)));
+        let guard = matches!(e, Effect::When { guard, .. } if at_site(guard));
         guard
             || e.amounts().iter().any(|a| match a {
-                Amount::Computed(x) => x.reads().iter().any(|r| reads(r)),
+                Amount::Computed(x) => at_site(x),
                 Amount::Fixed(_) => false,
             })
     };
@@ -72,6 +70,10 @@ fn framed(p: &Process) -> bool {
                 }
                 | Effect::Condition { .. }
                 | Effect::Spend { .. }
+                | Effect::Convert {
+                    who: Binding::Place,
+                    ..
+                }
                 | Effect::When { .. }
         )
     });

@@ -6,8 +6,18 @@
 //! act. An act resolves every amount before staging anything with it.
 
 use super::Binding;
-use crate::{Result, schema::Key};
+use crate::{
+    Result,
+    schema::{Key, Part},
+};
 use serde::{Deserialize, Serialize};
+
+/// What an expression reads of its act.
+pub type Read<'a> = dyn FnMut(&Reading) -> Result<i64> + 'a;
+/// A uniform draw below a bound, keyed by its slot.
+pub type Draw<'a> = dyn FnMut(u64, u8) -> Result<u64> + 'a;
+/// A body's living parts, for a sum over them.
+pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<Vec<Part>> + 'a;
 
 /// The most nodes one expression may hold.
 pub const MAX_NODES: usize = 64;
@@ -51,7 +61,7 @@ impl Amount {
                 !e.draws()
                     && e.reads()
                         .iter()
-                        .all(|r| matches!(r.who(), Binding::Actor | Binding::Part))
+                        .all(|u| matches!(u.body(), Binding::Actor | Binding::Part))
             },
         }
     }
@@ -62,14 +72,10 @@ impl Amount {
         }
     }
     /// The amount resolved: an expression's value, never below nothing.
-    pub fn resolve(
-        &self,
-        read: &mut impl FnMut(&Reading) -> Result<i64>,
-        draw: &mut impl FnMut(u64, u8) -> Result<u64>,
-    ) -> Result<Amount> {
+    pub fn resolve(&self, read: &mut Read, draw: &mut Draw, parts: &mut PartsOf) -> Result<Amount> {
         Ok(match self {
             Self::Fixed(value) => Self::Fixed(*value),
-            Self::Computed(e) => Self::Fixed(e.eval(read, draw)?.max(0) as u64),
+            Self::Computed(e) => Self::Fixed(e.eval_in(read, draw, parts)?.max(0) as u64),
         })
     }
 }
@@ -101,6 +107,27 @@ pub enum Expr {
     Sqrt(Box<Expr>),
     /// One where the first value is at least the second, else zero.
     AtLeast(Box<Expr>, Box<Expr>),
+    /// `each` summed over `who`'s living parts, each read in turn as the
+    /// part (ruling 455): a body's ceiling, floored part by part.
+    Parts {
+        who: Binding,
+        each: Box<Expr>,
+    },
+}
+
+/// A reading an expression takes, with the body a sum over parts reads it
+/// across: a part reading inside one reads each of that body's parts.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Use<'e> {
+    pub reading: &'e Reading,
+    pub folded: Option<Binding>,
+}
+
+impl Use<'_> {
+    /// The body whose state it reads.
+    pub fn body(&self) -> Binding {
+        self.folded.unwrap_or(self.reading.who())
+    }
 }
 
 /// What an expression reads of the act: an account, or one of X2's native
@@ -125,6 +152,24 @@ pub enum Reading {
 }
 
 impl Reading {
+    /// What one part shows it (X2): a span only where the part expresses
+    /// the function. Accounts are read from a ledger instead.
+    pub fn of_part(&self, p: &Part) -> u128 {
+        let cells = |f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
+        let extent = p.half_extent.iter().map(|h| h.unsigned_abs());
+        match self {
+            Self::Account { .. } => 0,
+            Self::Span { function, .. } if p.functions.contains(function) => {
+                u128::from(extent.max().unwrap_or(0))
+            },
+            Self::Span { .. } => 0,
+            Self::Voxels { .. } => extent.map(|h| 2 * u128::from(h) + 1).product(),
+            Self::Cells { function, .. } => cells(function),
+            Self::CellMass { function, .. } => cells(function) * u128::from(p.cell_mass),
+            Self::CellWeight { .. } => u128::from(p.cell_mass),
+        }
+    }
+
     /// Whose state it reads.
     pub fn who(&self) -> Binding {
         match self {
@@ -175,7 +220,9 @@ impl Expr {
             Self::Const(_) | Self::Read(_) | Self::Draw { .. } => vec![],
             Self::Add(v) | Self::Mul(v) | Self::Min(v) | Self::Max(v) => v.iter().collect(),
             Self::Div(a, b) | Self::AtLeast(a, b) => vec![a, b],
-            Self::Clamp { value, .. } | Self::Sqrt(value) => vec![value],
+            Self::Clamp { value, .. } | Self::Sqrt(value) | Self::Parts { each: value, .. } => {
+                vec![value]
+            },
         }
     }
     pub fn nodes(&self) -> usize {
@@ -184,9 +231,21 @@ impl Expr {
     pub fn draws(&self) -> bool {
         matches!(self, Self::Draw { .. }) || self.children().iter().any(|c| c.draws())
     }
-    pub fn reads(&self) -> Vec<&Reading> {
+    /// Every reading it takes, a part reading inside a sum over parts
+    /// marked with the body it is summed across.
+    pub fn reads(&self) -> Vec<Use<'_>> {
         match self {
-            Self::Read(r) => vec![r],
+            Self::Read(reading) => vec![Use {
+                reading,
+                folded: None,
+            }],
+            Self::Parts { who, each } => {
+                let mut uses = each.reads();
+                for u in uses.iter_mut().filter(|u| u.reading.who() == Binding::Part) {
+                    u.folded = Some(*who);
+                }
+                uses
+            },
             _ => self.children().into_iter().flat_map(Expr::reads).collect(),
         }
     }
@@ -205,28 +264,61 @@ impl Expr {
             Self::Draw { below, .. } if *below == 0 || *below > MAX_DRAW => {
                 Err(format!("an amount draws outside 1..={MAX_DRAW}"))
             },
+            Self::Parts { who, each } => {
+                if !matches!(who, Binding::Actor | Binding::Target) {
+                    return Err(format!(
+                        "an amount sums the parts of {who:?}, which has none"
+                    ));
+                }
+                if each.folds() {
+                    return Err("an amount sums parts within a sum over parts".into());
+                }
+                each.check()
+            },
             _ => self.children().iter().try_for_each(|c| c.check()),
         }
     }
-    pub fn eval(
-        &self,
-        read: &mut impl FnMut(&Reading) -> Result<i64>,
-        draw: &mut impl FnMut(u64, u8) -> Result<u64>,
-    ) -> Result<i64> {
+    fn folds(&self) -> bool {
+        matches!(self, Self::Parts { .. }) || self.children().iter().any(|c| c.folds())
+    }
+    /// Its value where nothing sums over parts.
+    pub fn eval(&self, read: &mut Read, draw: &mut Draw) -> Result<i64> {
+        self.eval_in(read, draw, &mut |_| Err("no parts to sum over".into()))
+    }
+    /// Its value, `parts` giving the living parts a sum over parts reads.
+    pub fn eval_in(&self, read: &mut Read, draw: &mut Draw, parts: &mut PartsOf) -> Result<i64> {
+        let mut eval = |e: &Expr| e.eval_in(read, draw, parts);
         Ok(match self {
             Self::Const(c) => *c,
             Self::Read(r) => read(r)?,
-            Self::Add(v) => all(v, read, draw)?.into_iter().fold(0, i64::saturating_add),
-            Self::Mul(v) => all(v, read, draw)?.into_iter().fold(1, i64::saturating_mul),
-            Self::Div(a, b) => floor_div(a.eval(read, draw)?, b.eval(read, draw)?),
-            Self::Min(v) => all(v, read, draw)?.into_iter().min().unwrap_or(0),
-            Self::Max(v) => all(v, read, draw)?.into_iter().max().unwrap_or(0),
-            Self::Clamp { value, lo, hi } => value.eval(read, draw)?.max(*lo).min(*hi),
+            Self::Add(v) => all(v, &mut eval)?.into_iter().fold(0, i64::saturating_add),
+            Self::Mul(v) => all(v, &mut eval)?.into_iter().fold(1, i64::saturating_mul),
+            Self::Div(a, b) => {
+                let a = eval(a)?;
+                floor_div(a, eval(b)?)
+            },
+            Self::Min(v) => all(v, &mut eval)?.into_iter().min().unwrap_or(0),
+            Self::Max(v) => all(v, &mut eval)?.into_iter().max().unwrap_or(0),
+            Self::Clamp { value, lo, hi } => eval(value)?.max(*lo).min(*hi),
             Self::Draw { below, slot } => {
                 i64::try_from(draw(*below, *slot)?).map_err(|e| e.to_string())?
             },
-            Self::Sqrt(value) => value.eval(read, draw)?.max(0).unsigned_abs().isqrt() as i64,
-            Self::AtLeast(a, b) => i64::from(a.eval(read, draw)? >= b.eval(read, draw)?),
+            Self::Sqrt(value) => eval(value)?.max(0).unsigned_abs().isqrt() as i64,
+            Self::AtLeast(a, b) => {
+                let a = eval(a)?;
+                i64::from(a >= eval(b)?)
+            },
+            Self::Parts { who, each } => {
+                let mut total = 0i64;
+                for part in parts(*who)? {
+                    let mut one = |r: &Reading| match r.who() {
+                        Binding::Part => Ok(i64::try_from(r.of_part(&part)).unwrap_or(i64::MAX)),
+                        _ => read(r),
+                    };
+                    total = total.saturating_add(each.eval(&mut one, draw)?);
+                }
+                total
+            },
         })
     }
 }
@@ -244,10 +336,6 @@ fn floor_div(a: i64, b: i64) -> i64 {
     }
 }
 
-fn all(
-    v: &[Expr],
-    read: &mut impl FnMut(&Reading) -> Result<i64>,
-    draw: &mut impl FnMut(u64, u8) -> Result<u64>,
-) -> Result<Vec<i64>> {
-    v.iter().map(|e| e.eval(read, draw)).collect()
+fn all(v: &[Expr], eval: &mut impl FnMut(&Expr) -> Result<i64>) -> Result<Vec<i64>> {
+    v.iter().map(eval).collect()
 }

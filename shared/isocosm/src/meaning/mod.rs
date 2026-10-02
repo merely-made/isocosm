@@ -24,36 +24,11 @@ pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
 }
 
-/// What one part shows a body reading (X2): a span only where it expresses
-/// the function. Accounts are read from a ledger instead.
-pub(crate) fn part_reading(p: &Part, r: &Reading) -> u128 {
-    let cells = |f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
-    match r {
-        Reading::Account { .. } => 0,
-        Reading::Span { function, .. } if p.functions.contains(function) => u128::from(
-            p.half_extent
-                .iter()
-                .map(|h| h.unsigned_abs())
-                .max()
-                .unwrap_or(0),
-        ),
-        Reading::Span { .. } => 0,
-        Reading::Voxels { .. } => p
-            .half_extent
-            .iter()
-            .map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
-            .product(),
-        Reading::Cells { function, .. } => cells(function),
-        Reading::CellMass { function, .. } => cells(function) * u128::from(p.cell_mass),
-        Reading::CellWeight { .. } => u128::from(p.cell_mass),
-    }
-}
-
 /// X2's native readings of a body (ruling 453): each the sum, over its
 /// living parts, of what one part shows.
 pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
     let living = body.parts.values().filter(|p| !p.severed);
-    let total: u128 = living.map(|p| part_reading(p, r)).sum();
+    let total: u128 = living.map(|p| r.of_part(p)).sum();
     i64::try_from(total).unwrap_or(i64::MAX)
 }
 
@@ -272,6 +247,8 @@ pub(crate) trait Parties {
     /// Checks a binding resolves to a ledger, as a transform does before
     /// it takes or gives anything.
     fn reach(&mut self, who: Binding) -> Result<()>;
+    /// What one member's share of a binding's ledger holds of `key`.
+    fn held(&mut self, who: Binding, key: &str) -> Result<u64>;
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn body(&mut self, who: Binding) -> Result<&mut Entity>;
@@ -320,8 +297,87 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             p.part()
                 .and_then(|(b, id)| allocate(rules, b, id, from.as_deref(), to, cells))
         }),
+        Effect::Spend {
+            from,
+            to,
+            amount,
+            into,
+        } => amount
+            .resolved()
+            .and_then(|amount| spend(p, from, *to, into.as_deref(), amount).map(|_| ())),
+        Effect::Convert {
+            who,
+            from,
+            to,
+            amount,
+            conversion,
+        } => amount
+            .resolved()
+            .and_then(|amount| convert(p, rules, *who, (from, to), amount, *conversion))
+            .map(|_| ()),
         _ => return None,
     })
+}
+
+/// An ordered take (ruling 446): each of the actor's accounts in turn gives
+/// what it holds, up to what is still owed, arriving at `to` as itself or
+/// as `into`. Returns what each account paid.
+pub(crate) fn spend(
+    p: &mut impl Parties,
+    from: &[Key],
+    to: Binding,
+    into: Option<&str>,
+    amount: u64,
+) -> Result<Vec<(Key, u64)>> {
+    let mut owed = amount;
+    let mut paid = Vec::new();
+    for key in from {
+        let given = p.held(Binding::Actor, key)?.min(owed);
+        if given == 0 {
+            continue;
+        }
+        p.take(Binding::Actor, key, given)?;
+        p.give(to, into.unwrap_or(key), given)?;
+        owed -= given;
+        paid.push((key.clone(), given));
+    }
+    Ok(paid)
+}
+
+/// A conversion of up to `amount` of a ledger's `from` accounts, a share of
+/// each in proportion as a meal takes (ruling 287), into `to`. A synthesis
+/// or digestion gives only the body's own lineage's matter (ruling 357).
+/// Returns what it took.
+pub(crate) fn convert(
+    p: &mut impl Parties,
+    rules: &Rules,
+    who: Binding,
+    (from, to): (&[Key], &Key),
+    amount: u64,
+    conversion: Conversion,
+) -> Result<Ledger> {
+    p.reach(who)?;
+    if let Conversion::Synthesis | Conversion::Digestion = conversion {
+        let own = p.body(who)?.lineage.clone();
+        let mine = matches!(rules.accounts.get(to), Some(AccountKind::Matter { lineage, .. }) if *lineage == own);
+        if !mine {
+            return Err(format!(
+                "{conversion:?} gives {to}, which is not {own}'s own matter"
+            ));
+        }
+    }
+    let mut offered = Ledger::new();
+    for key in from {
+        offered.insert(key.clone(), p.held(who, key)?);
+    }
+    let taken = share(&offered, rules, amount);
+    let mut total = 0u64;
+    for (key, value) in &taken {
+        p.take(who, key, *value)?;
+        total = total.checked_add(*value).ok_or("conversion overflow")?;
+    }
+    p.give(who, to, total)?;
+    Ok(taken)
 }
 
 fn ease(e: &mut Entity, key: &str, amount: u64) {

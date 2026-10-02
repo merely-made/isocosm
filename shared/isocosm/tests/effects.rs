@@ -121,7 +121,8 @@ fn a_guarded_effect_applies_only_where_its_guard_comes_to_something() {
     let mut g = world();
     let guarded = |n| Effect::When {
         guard: site_holds_at_least(n),
-        effect: Box::new(take_soil()),
+        then: vec![take_soil()],
+        otherwise: vec![],
     };
     with(&mut g, act("test:rich", vec![], vec![guarded(5)]));
     with(&mut g, act("test:poor", vec![], vec![guarded(50)]));
@@ -147,10 +148,46 @@ fn a_guarded_effect_applies_only_where_its_guard_comes_to_something() {
         vec![],
         vec![Effect::When {
             guard: Expr::Draw { below: 2, slot: 0 },
-            effect: Box::new(take_soil()),
+            then: vec![take_soil()],
+            otherwise: vec![],
         }],
     );
     assert!(p.effects[0].draws() && !p.bulk_safe());
+}
+
+#[test]
+fn a_guard_is_read_once_for_both_its_branches() {
+    // Soil taken while the site holds eight or more, a skill practised
+    // otherwise: taking it leaves less than eight, yet the other branch
+    // does not then run, the guard having been read before either.
+    let practise = Effect::Practice {
+        key: "skill:test:else".into(),
+        amount: 1.into(),
+    };
+    let either = Effect::When {
+        guard: site_holds_at_least(8),
+        then: vec![take_soil()],
+        otherwise: vec![practise],
+    };
+    let mut g = world();
+    with(&mut g, act("test:either", vec![], vec![either]));
+    let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
+    let skill = |sim: &Simulation| {
+        let body = sim.state().population.get(1).unwrap();
+        body.skills.get("skill:test:else").copied().unwrap_or(0)
+    };
+    let run = |sim: &mut Simulation| sim.execute(1, None, "test:either", None).outcome;
+    assert_eq!(run(&mut sim), Outcome::Accepted);
+    assert_eq!(
+        (site(&sim, SOIL), skill(&sim)),
+        (8, 0),
+        "one branch, not both"
+    );
+    assert_eq!(run(&mut sim), Outcome::Accepted);
+    assert_eq!((site(&sim, SOIL), skill(&sim)), (6, 0));
+    // The control: below eight, the other branch runs instead.
+    assert_eq!(run(&mut sim), Outcome::Accepted);
+    assert_eq!((site(&sim, SOIL), skill(&sim)), (6, 1));
 }
 
 #[test]
@@ -159,6 +196,7 @@ fn upkeep_drains_the_reserve_before_the_tissue() {
         from: vec![RESERVE.into(), TISSUE.into()],
         to: Binding::Place,
         amount: amount.into(),
+        into: None,
     };
     let mut g = world();
     with(&mut g, act("test:upkeep", vec![], vec![spend(5)]));
@@ -186,6 +224,7 @@ fn an_ordered_take_records_each_share_as_its_own_move() {
             from: vec![RESERVE.into(), TISSUE.into()],
             to: Binding::Place,
             amount: 5.into(),
+            into: None,
         }],
     );
     p.period = Some(1);
@@ -277,10 +316,12 @@ fn rules_refuse_what_these_effects_cannot_do() {
     let soil = || take_soil();
     let nested = Effect::When {
         guard: Expr::Const(1),
-        effect: Box::new(Effect::When {
+        then: vec![],
+        otherwise: vec![Effect::When {
             guard: Expr::Const(1),
-            effect: Box::new(soil()),
-        }),
+            then: vec![soil()],
+            otherwise: vec![],
+        }],
     };
     assert!(
         refused(act("test:a", vec![], vec![nested])),
@@ -290,6 +331,7 @@ fn rules_refuse_what_these_effects_cannot_do() {
         from,
         to,
         amount: 1.into(),
+        into: None,
     };
     assert!(refused(act(
         "test:b",

@@ -146,6 +146,121 @@ fn a_body_reads_the_sum_over_its_living_parts() {
     }
 }
 
+/// A body's ceiling as Mesocosm prices it: each living part's voxels at
+/// 100 mg a 125-voxel segment, floored and at least 1 mg (ruling 455).
+fn ceiling() -> Expr {
+    let voxels = Expr::Read(Reading::Voxels { who: Binding::Part });
+    let priced = Expr::Div(
+        Box::new(Expr::Mul(vec![voxels, Expr::Const(100)])),
+        Box::new(Expr::Const(125)),
+    );
+    Expr::Parts {
+        who: Binding::Actor,
+        each: Box::new(Expr::Max(vec![Expr::Const(1), priced])),
+    }
+}
+
+#[test]
+fn a_ceiling_floors_part_by_part_as_mesocosm_does() {
+    // A lump, two limbs and an eye of the primitive palette, a speck of one
+    // voxel and a severed lump: 100, 64, 64, 21 and 1 mg.
+    let parts = [
+        (shaped("lump", &["function:intake"], [2, 2, 2]), false),
+        (shaped("rod", &["function:contract"], [4, 1, 1]), false),
+        (shaped("rod", &["function:contract"], [4, -1, 1]), false),
+        (shaped("point", &["function:sense"], [1, 1, 1]), false),
+        (shaped("point", &["function:sense"], [0, 0, 0]), false),
+        (shaped("lump", &["function:intake"], [2, 2, 2]), true),
+    ];
+    let mesocosm: u64 = parts
+        .iter()
+        .filter(|(_, severed)| !severed)
+        .map(|(p, _)| {
+            let voxels: u64 = p
+                .half_extent
+                .iter()
+                .map(|h| 2 * u64::from(h.unsigned_abs()) + 1)
+                .product();
+            (voxels * 100 / 125).max(1)
+        })
+        .sum();
+    assert_eq!(mesocosm, 250);
+    let mut g = world();
+    g.population.lift(1).unwrap().parts = parts
+        .into_iter()
+        .enumerate()
+        .map(|(i, (p, severed))| (i as Id, Part { severed, ..p }))
+        .collect();
+    let whole = Expr::Div(
+        Box::new(Expr::Mul(vec![
+            Expr::Read(Reading::Voxels {
+                who: Binding::Actor,
+            }),
+            Expr::Const(100),
+        ])),
+        Box::new(Expr::Const(125)),
+    );
+    for (id, e) in [("parts", ceiling()), ("whole", whole)] {
+        let mut p = practise(
+            id,
+            Reading::Voxels {
+                who: Binding::Actor,
+            },
+        );
+        p.effects = vec![Effect::Practice {
+            key: format!("skill:{id}"),
+            amount: Amount::Computed(e),
+        }];
+        g.rules.processes.insert(p.id.clone(), p);
+    }
+    let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
+    for id in ["parts", "whole"] {
+        let r = sim.execute(1, None, &format!("test:{id}"), None);
+        assert_eq!(r.outcome, Outcome::Accepted, "{id}");
+    }
+    let skills = &sim.state().population.get(1).unwrap().skills;
+    // The control: read over the whole body the floors fall once, 252.
+    assert_eq!(
+        (skills["skill:parts"], skills["skill:whole"]),
+        (mesocosm, 252)
+    );
+}
+
+#[test]
+fn rules_refuse_a_sum_over_parts_where_there_are_none() {
+    let refused = |e: Expr| {
+        let mut g = world();
+        let mut p = practise(
+            "sum",
+            Reading::Voxels {
+                who: Binding::Actor,
+            },
+        );
+        p.effects = vec![Effect::Practice {
+            key: "skill:sum".into(),
+            amount: Amount::Computed(e),
+        }];
+        g.rules.processes.insert(p.id.clone(), p);
+        g.validate().is_err()
+    };
+    let over = |who, each| Expr::Parts {
+        who,
+        each: Box::new(each),
+    };
+    let part = || Expr::Read(Reading::Voxels { who: Binding::Part });
+    assert!(refused(over(Binding::Place, part())), "a site has no parts");
+    assert!(refused(over(Binding::Target, part())), "no target is bound");
+    assert!(
+        refused(over(Binding::Actor, over(Binding::Actor, part()))),
+        "a sum within a sum"
+    );
+    assert!(
+        refused(Expr::Add(vec![part(), over(Binding::Actor, part())])),
+        "a part read outside the sum binds none"
+    );
+    assert!(!refused(over(Binding::Actor, part())), "the control passes");
+}
+
 #[test]
 fn three_quarter_power_is_mesocosms() {
     let power = |m: i64| {

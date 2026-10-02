@@ -63,6 +63,13 @@ struct Bin<'a> {
 }
 
 impl Parties for Bin<'_> {
+    fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
+        match who {
+            Binding::Actor => Ok(meaning::value(&self.member.accounts, key)),
+            // A site's ledger is shared, so no one member holds a share of it.
+            _ => Err("the crowd reads no one member's share of shared ground".into()),
+        }
+    }
     fn reach(&mut self, who: Binding) -> Result<()> {
         match who {
             Binding::Target => Err("the crowd has no targets".into()),

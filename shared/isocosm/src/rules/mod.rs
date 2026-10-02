@@ -11,7 +11,7 @@ mod competition;
 mod epoch;
 mod mind;
 
-pub use amount::{Amount, Expr, MAX_DRAW, MAX_NODES, Reading};
+pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
 pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
@@ -187,19 +187,37 @@ pub enum Effect {
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         of: Vec<Key>,
     },
-    /// An effect applied only where its guard comes to something (X5), such
-    /// as an eater paying for a bite only while the gland is charged.
+    /// Effects applied only where a guard comes to something (X5), such as
+    /// an eater paying for a bite only while the gland is charged, and
+    /// others where it does not, the guard read once: TD5's routing of a
+    /// meal by one reading of hunger.
     When {
         guard: Expr,
-        effect: Box<Effect>,
+        then: Vec<Effect>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        otherwise: Vec<Effect>,
     },
     /// Up to `amount` taken from the actor's accounts in the order listed,
     /// each share moved to the same account at `to` (ruling 446): upkeep
-    /// paid from the reserve before the tissue.
+    /// paid from the reserve before the tissue. With `into`, what is paid
+    /// arrives as that account instead, living matter returned as the
+    /// world's: rent mineralized at once, as Mesocosm returns it.
     Spend {
         from: Vec<Key>,
         to: Binding,
         amount: Amount,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        into: Option<Key>,
+    },
+    /// Up to `amount` of one ledger's `from` accounts, a share of each in
+    /// proportion, given to the same ledger as `to` by a declared
+    /// conversion: a meal digested, soil synthesized, matter mineralized.
+    Convert {
+        who: Binding,
+        from: Vec<Key>,
+        to: Key,
+        amount: Amount,
+        conversion: Conversion,
     },
     /// Cells of the bound part moved to a function it expresses, from
     /// another or, with no `from`, from its free cells (X6).
@@ -212,22 +230,53 @@ pub enum Effect {
 
 impl Effect {
     /// The amounts an act resolves before it stages this effect (X3); a
-    /// guarded effect's are its inner effect's.
+    /// guarded effect's are its branches'.
     pub fn amounts(&self) -> Vec<&Amount> {
         match self {
             Self::Transfer { amount, .. }
             | Self::Practice { amount, .. }
             | Self::Ease { amount, .. }
             | Self::Eat { amount, .. }
-            | Self::Spend { amount, .. } => vec![amount],
+            | Self::Spend { amount, .. }
+            | Self::Convert { amount, .. } => vec![amount],
             Self::Allocate { cells, .. } => vec![cells],
-            Self::When { effect, .. } => effect.amounts(),
+            Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
             _ => vec![],
         }
+    }
+    /// A guarded effect's branches, both of them; nothing for another.
+    pub fn branches(&self) -> impl Iterator<Item = &Effect> {
+        let (then, otherwise): (&[Effect], &[Effect]) = match self {
+            Self::When {
+                then, otherwise, ..
+            } => (then, otherwise),
+            _ => (&[], &[]),
+        };
+        then.iter().chain(otherwise)
     }
     pub fn draws(&self) -> bool {
         matches!(self, Self::When { guard, .. } if guard.draws())
             || self.amounts().iter().any(|a| a.draws())
+    }
+    /// The branch a guard chooses, read once; nothing for another effect.
+    pub fn branch(
+        &self,
+        read: &mut Read,
+        draw: &mut Draw,
+        parts: &mut PartsOf,
+    ) -> crate::Result<Option<&[Effect]>> {
+        let Self::When {
+            guard,
+            then,
+            otherwise,
+        } = self
+        else {
+            return Ok(None);
+        };
+        Ok(Some(match guard.eval_in(read, draw, parts)? {
+            0 => otherwise,
+            _ => then,
+        }))
     }
     /// Whether resolving it computes anything, a guard included.
     pub fn computes(&self) -> bool {
@@ -237,30 +286,27 @@ impl Effect {
                 .iter()
                 .any(|a| matches!(a, Amount::Computed(_)))
     }
-    /// This effect with every amount resolved to the number it comes to, or
-    /// none where a guard came to nothing.
+    /// This effect with every amount resolved to the number it comes to; a
+    /// guarded effect is applied by its branch instead.
     pub fn resolve(
         &self,
-        read: &mut impl FnMut(&Reading) -> crate::Result<i64>,
-        draw: &mut impl FnMut(u64, u8) -> crate::Result<u64>,
-    ) -> crate::Result<Option<Effect>> {
-        if let Self::When { guard, effect } = self {
-            return match guard.eval(read, draw)? {
-                0 => Ok(None),
-                _ => effect.resolve(read, draw),
-            };
-        }
+        read: &mut Read,
+        draw: &mut Draw,
+        parts: &mut PartsOf,
+    ) -> crate::Result<Effect> {
         let mut e = self.clone();
         match &mut e {
             Self::Transfer { amount, .. }
             | Self::Practice { amount, .. }
             | Self::Ease { amount, .. }
             | Self::Eat { amount, .. }
-            | Self::Spend { amount, .. } => *amount = amount.resolve(read, draw)?,
-            Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw)?,
+            | Self::Spend { amount, .. }
+            | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
+            Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw, parts)?,
+            Self::When { .. } => return Err("a guarded effect is applied by its branch".into()),
             _ => {},
         }
-        Ok(Some(e))
+        Ok(e)
     }
 }
 
@@ -426,7 +472,8 @@ impl Process {
             match e {
                 Effect::Transfer { from, .. } | Effect::Eat { from, .. } => shared(from),
                 Effect::Transform { who, take, .. } => shared(who) && !take.is_empty(),
-                Effect::When { effect, .. } => takes(effect),
+                Effect::Convert { who, .. } => shared(who),
+                Effect::When { .. } => e.branches().any(takes),
                 _ => false,
             }
         }

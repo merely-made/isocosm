@@ -57,7 +57,10 @@ fn writes_part(e: &Effect) -> Result<bool> {
             who: Binding::Part, ..
         }
         | Effect::Allocate { .. } => Ok(true),
-        Effect::When { effect, .. } => writes_part(effect),
+        Effect::When { .. } => {
+            let writes: Result<Vec<bool>> = e.branches().map(writes_part).collect();
+            Ok(writes?.into_iter().any(|w| w))
+        },
         Effect::Spend {
             to: Binding::Part, ..
         } => Err("a part keeps no ledger".into()),

@@ -74,14 +74,29 @@ impl Staged<'_> {
         Ok(())
     }
 
-    /// The effect with its amounts resolved against the stage as it stands,
-    /// each draw keyed by the act and its slot (X3),
-    /// or none where a guard came to nothing (X5).
-    fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Option<Cow<'e, Effect>>> {
-        if !e.computes() {
-            return Ok(Some(Cow::Borrowed(e)));
-        }
+    /// Computes against the stage as it stands what an amount or a guard
+    /// reads: each draw keyed by the act and its slot (X3), and a sum over a
+    /// body's parts reading each of its living parts (ruling 455).
+    fn compute<T>(
+        &mut self,
+        f: impl FnOnce(&mut Read, &mut Draw, &mut PartsOf) -> Result<T>,
+    ) -> Result<T> {
         let (seed, act) = (self.sim.genesis.seed, self.stage.act);
+        let living = |e: &Entity| -> Vec<Part> {
+            e.parts.values().filter(|p| !p.severed).cloned().collect()
+        };
+        let mine = living(self.body(Binding::Actor)?);
+        let theirs = match self.stage.target {
+            Some(_) => Some(living(self.body(Binding::Target)?)),
+            None => None,
+        };
+        let mut parts = |who: Binding| -> Result<Vec<Part>> {
+            match who {
+                Binding::Actor => Ok(mine.clone()),
+                Binding::Target => theirs.clone().ok_or_else(|| "no target is bound".into()),
+                _ => Err(format!("{who:?} has no parts")),
+            }
+        };
         let mut read = |r: &Reading| -> Result<i64> {
             match r {
                 Reading::Account { who, key } => {
@@ -91,7 +106,7 @@ impl Staged<'_> {
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
                     let part = body.parts.get(&id).ok_or("bound part missing")?;
-                    Ok(i64::try_from(meaning::part_reading(part, r)).unwrap_or(i64::MAX))
+                    Ok(i64::try_from(r.of_part(part)).unwrap_or(i64::MAX))
                 },
                 r => Ok(meaning::body_reading(self.body(r.who())?, r)),
             }
@@ -99,8 +114,16 @@ impl Staged<'_> {
         let mut draw = |below: u64, slot: u8| -> Result<u64> {
             Ok(crate::draw(seed, "amount", &[act, u64::from(slot)]) % below)
         };
-        let resolved = e.resolve(&mut read, &mut draw)?;
-        Ok(resolved.map(Cow::Owned))
+        f(&mut read, &mut draw, &mut parts)
+    }
+
+    /// The effect with its amounts resolved against the stage as it stands.
+    fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Cow<'e, Effect>> {
+        if !e.computes() {
+            return Ok(Cow::Borrowed(e));
+        }
+        let resolved = self.compute(|read, draw, parts| e.resolve(read, draw, parts))?;
+        Ok(Cow::Owned(resolved))
     }
 
     /// The effect's takes of ground the act shares (ruling 454): recorded
@@ -166,11 +189,18 @@ impl Staged<'_> {
         }
     }
 
-    /// Applies one effect to the stage. Returns whether it set a feat.
+    /// Applies one effect to the stage, a guarded one by the branch its
+    /// guard chooses (X5). Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
-        let Some(resolved) = self.resolve(e)? else {
-            return Ok(false);
-        };
+        if matches!(e, Effect::When { .. }) {
+            let branch = self.compute(|read, draw, parts| e.branch(read, draw, parts))?;
+            let mut feat = false;
+            for inner in branch.expect("a guard chooses a branch") {
+                feat |= self.effect(inner, cause)?;
+            }
+            return Ok(feat);
+        }
+        let resolved = self.resolve(e)?;
         let resolved = self.share_out(resolved)?;
         let e = resolved.as_ref();
         let rules = &self.sim.genesis.rules;
@@ -179,6 +209,50 @@ impl Staged<'_> {
             true => flows::moves(e, rules, |who| self.holder(who)),
             false => vec![],
         };
+        let sim = self.sim;
+        // An ordered take and a conversion read the balances they take, so
+        // their moves are worked out as they are applied.
+        match e {
+            Effect::Spend {
+                from,
+                to,
+                amount,
+                into,
+            } => {
+                let paid = meaning::spend(self, from, *to, into.as_deref(), amount.resolved()?)?;
+                let ends = (self.holder(Binding::Actor), self.holder(*to));
+                if let (true, (Some(start), Some(end))) = (sim.flowing(), ends) {
+                    let matter = |k: &Key| meaning::matter(&sim.genesis.rules, k);
+                    for (key, paid) in paid.into_iter().filter(|(k, _)| matter(k)) {
+                        let arrives = into.clone().unwrap_or_else(|| key.clone());
+                        self.stage.legs.push(Leg {
+                            from: (start, key),
+                            to: (end, arrives),
+                            amount: paid,
+                        });
+                    }
+                }
+                return Ok(false);
+            },
+            Effect::Convert {
+                who,
+                from,
+                to,
+                amount,
+                conversion,
+            } => {
+                let rules = &sim.genesis.rules;
+                let amount = amount.resolved()?;
+                let taken = meaning::convert(self, rules, *who, (from, to), amount, *conversion)?;
+                if let (true, Some(holder)) = (sim.flowing(), self.holder(*who)) {
+                    let total: u64 = taken.values().sum();
+                    let legs = flows::poured(holder, taken, [(to.clone(), total)]);
+                    self.stage.legs.extend(legs);
+                }
+                return Ok(false);
+            },
+            _ => {},
+        }
         if let Some(done) = meaning::effect(self, rules, e) {
             done?;
             self.stage.legs.extend(legs);
@@ -356,34 +430,6 @@ impl Staged<'_> {
                         }));
                 }
             },
-            // An ordered take reads the balances it drains, so it is applied
-            // here: each account in turn gives what it holds, up to what is
-            // still owed (ruling 446).
-            Effect::Spend { from, to, amount } => {
-                let mut owed = amount.resolved()?;
-                for key in from {
-                    let held = meaning::value(self.ledger(Binding::Actor)?, key);
-                    let paid = held.min(owed);
-                    if paid == 0 {
-                        continue;
-                    }
-                    debit(self.ledger(Binding::Actor)?, key, paid)?;
-                    credit(self.ledger(*to)?, key, paid)?;
-                    owed -= paid;
-                    let matter = matches!(
-                        sim.genesis.rules.accounts.get(key),
-                        Some(AccountKind::Matter { .. })
-                    );
-                    let ends = (self.holder(Binding::Actor), self.holder(*to));
-                    if let (true, true, (Some(from), Some(to))) = (sim.flowing(), matter, ends) {
-                        self.stage.legs.push(Leg {
-                            from: (from, key.clone()),
-                            to: (to, key.clone()),
-                            amount: paid,
-                        });
-                    }
-                }
-            },
             // Every other effect has its meaning in `meaning::effect`.
             _ => unreachable!("shared effects return above"),
         }
@@ -394,6 +440,9 @@ impl Staged<'_> {
 /// The individual runner's parties for the shared effect meanings: the
 /// staged bodies and site.
 impl Parties for Staged<'_> {
+    fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
+        Ok(meaning::value(self.ledger(who)?, key))
+    }
     fn reach(&mut self, who: Binding) -> Result<()> {
         if who == Binding::Place {
             let site = self.sim.state.sites.get(&self.stage.place);

@@ -321,20 +321,22 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} eats what cannot be eaten"));
             }
         },
-        Effect::When {
-            guard,
-            effect: inner,
-        } => {
-            if matches!(**inner, Effect::When { .. }) {
+        Effect::When { guard, .. } => {
+            if e.branches().any(|b| matches!(b, Effect::When { .. })) {
                 return Err(format!("{id} guards a guard"));
             }
             guard.validate().map_err(|why| format!("{id}: {why}"))?;
             reads(rules, p, id, guard)?;
-            effect(rules, p, id, inner)?;
+            for inner in e.branches() {
+                effect(rules, p, id, inner)?;
+            }
         },
         // An ordered take drains the actor's own accounts into another
         // ledger (ruling 446).
-        Effect::Spend { from, to, .. } => {
+        Effect::Spend { from, to, into, .. } => {
+            if let Some(into) = into {
+                matter(rules, into)?;
+            }
             if from.is_empty() {
                 return Err(format!("{id} spends from no account"));
             }
@@ -345,6 +347,19 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 || (*to == Binding::Target && p.target.is_none())
             {
                 return Err(format!("{id} spends to {to:?}, which it cannot"));
+            }
+        },
+        // A conversion takes matter of one ledger into another account of
+        // it, as a declared conversion (rulings 342 and 357).
+        Effect::Convert { who, from, to, .. } => {
+            for a in from.iter().chain([to]) {
+                matter(rules, a)?;
+            }
+            if from.is_empty() || from.contains(to) || *who == Binding::Part {
+                return Err(format!("{id} converts what cannot be converted"));
+            }
+            if *who == Binding::Target && p.target.is_none() {
+                return Err(format!("{id} converts a target it does not bind"));
             }
         },
         // Allocation moves the bound part's cells between catalogue
@@ -379,14 +394,18 @@ fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
 
 /// What an expression reads, each binding one its act binds.
 fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
-    for r in e.reads() {
-        let who = r.who();
-        // A part keeps no ledger, and is read only where the act binds one.
+    for u in e.reads() {
+        let (r, who) = (u.reading, u.reading.who());
+        // A part keeps no ledger, and is read only where the act binds one
+        // or a sum over a body's parts reads each in turn (ruling 455).
         let unbound = match who {
-            Binding::Part => p.expresses().is_none() || matches!(r, Reading::Account { .. }),
+            Binding::Part => {
+                (u.folded.is_none() && p.expresses().is_none())
+                    || matches!(r, Reading::Account { .. })
+            },
             Binding::Target => p.target.is_none(),
             Binding::Actor | Binding::Place => false,
-        };
+        } || (u.folded == Some(Binding::Target) && p.target.is_none());
         if unbound {
             return Err(format!(
                 "{id} reads an amount from {who:?}, which it does not bind"
