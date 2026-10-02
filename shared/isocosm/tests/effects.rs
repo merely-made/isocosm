@@ -146,7 +146,7 @@ fn a_guarded_effect_applies_only_where_its_guard_comes_to_something() {
         "test:any",
         vec![],
         vec![Effect::When {
-            guard: Expr::Draw { below: 2 },
+            guard: Expr::Draw { below: 2, slot: 0 },
             effect: Box::new(take_soil()),
         }],
     );

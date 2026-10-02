@@ -373,7 +373,13 @@ fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
 fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
     for r in e.reads() {
         let who = r.who();
-        if who == Binding::Part || (who == Binding::Target && p.target.is_none()) {
+        // A part keeps no ledger, and is read only where the act binds one.
+        let unbound = match who {
+            Binding::Part => p.expresses().is_none() || matches!(r, Reading::Account { .. }),
+            Binding::Target => p.target.is_none(),
+            Binding::Actor | Binding::Place => false,
+        };
+        if unbound {
             return Err(format!(
                 "{id} reads an amount from {who:?}, which it does not bind"
             ));
@@ -382,6 +388,9 @@ fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
             Reading::Account { key, .. } => account(rules, key)?,
             _ if who == Binding::Place => {
                 return Err(format!("{id} reads a body from a site, which has none"));
+            },
+            Reading::CellWeight { .. } if who != Binding::Part => {
+                return Err(format!("{id} reads a cell weight of a whole body"));
             },
             Reading::Span { function, .. }
             | Reading::Cells { function, .. }

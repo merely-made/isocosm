@@ -47,7 +47,12 @@ impl Amount {
     pub fn bulk_safe(&self) -> bool {
         match self {
             Self::Fixed(_) => true,
-            Self::Computed(e) => !e.draws() && e.reads().iter().all(|r| r.who() == Binding::Actor),
+            Self::Computed(e) => {
+                !e.draws()
+                    && e.reads()
+                        .iter()
+                        .all(|r| matches!(r.who(), Binding::Actor | Binding::Part))
+            },
         }
     }
     pub fn validate(&self) -> Result<()> {
@@ -60,7 +65,7 @@ impl Amount {
     pub fn resolve(
         &self,
         read: &mut impl FnMut(&Reading) -> Result<i64>,
-        draw: &mut impl FnMut(u64) -> Result<u64>,
+        draw: &mut impl FnMut(u64, u8) -> Result<u64>,
     ) -> Result<Amount> {
         Ok(match self {
             Self::Fixed(value) => Self::Fixed(*value),
@@ -85,9 +90,11 @@ pub enum Expr {
         lo: i64,
         hi: i64,
     },
-    /// A uniform draw in `0..below`, keyed by the act.
+    /// A uniform draw in `0..below`, keyed by the act and its slot, so a
+    /// slot read twice in one act reads the same draw.
     Draw {
         below: u64,
+        slot: u8,
     },
     /// The floor square root of a value, nothing below nothing; twice over a
     /// product it gives a mass to the three-quarter power.
@@ -97,7 +104,8 @@ pub enum Expr {
 }
 
 /// What an expression reads of the act: an account, or one of X2's native
-/// readings of a body's living parts, each the sum over those parts.
+/// readings of a body's living parts, each the sum over those parts, or of
+/// the bound part alone where `who` is the part.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Reading {
     /// An account a binding holds, the site's included.
@@ -112,6 +120,8 @@ pub enum Reading {
     /// Those cells' matter: each part's cells for a function times its cell
     /// mass, summed, such as what a body's glands hold.
     CellMass { who: Binding, function: Key },
+    /// What one cell weighs, read of the bound part alone.
+    CellWeight { who: Binding },
 }
 
 impl Reading {
@@ -122,7 +132,8 @@ impl Reading {
             | Self::Span { who, .. }
             | Self::Voxels { who }
             | Self::Cells { who, .. }
-            | Self::CellMass { who, .. } => *who,
+            | Self::CellMass { who, .. }
+            | Self::CellWeight { who } => *who,
         }
     }
 }
@@ -152,7 +163,7 @@ impl Expr {
             value: Box::new(Self::Add(vec![
                 Self::Const(base),
                 Self::Mul(vec![Self::Const(rate), Self::Read(reading)]),
-                Self::Draw { below },
+                Self::Draw { below, slot: 0 },
             ])),
             lo,
             hi,
@@ -191,7 +202,7 @@ impl Expr {
                 Err("an amount's operation has no operands".into())
             },
             Self::Clamp { lo, hi, .. } if lo > hi => Err("an amount clamps below its floor".into()),
-            Self::Draw { below } if *below == 0 || *below > MAX_DRAW => {
+            Self::Draw { below, .. } if *below == 0 || *below > MAX_DRAW => {
                 Err(format!("an amount draws outside 1..={MAX_DRAW}"))
             },
             _ => self.children().iter().try_for_each(|c| c.check()),
@@ -200,7 +211,7 @@ impl Expr {
     pub fn eval(
         &self,
         read: &mut impl FnMut(&Reading) -> Result<i64>,
-        draw: &mut impl FnMut(u64) -> Result<u64>,
+        draw: &mut impl FnMut(u64, u8) -> Result<u64>,
     ) -> Result<i64> {
         Ok(match self {
             Self::Const(c) => *c,
@@ -211,7 +222,9 @@ impl Expr {
             Self::Min(v) => all(v, read, draw)?.into_iter().min().unwrap_or(0),
             Self::Max(v) => all(v, read, draw)?.into_iter().max().unwrap_or(0),
             Self::Clamp { value, lo, hi } => value.eval(read, draw)?.max(*lo).min(*hi),
-            Self::Draw { below } => i64::try_from(draw(*below)?).map_err(|e| e.to_string())?,
+            Self::Draw { below, slot } => {
+                i64::try_from(draw(*below, *slot)?).map_err(|e| e.to_string())?
+            },
             Self::Sqrt(value) => value.eval(read, draw)?.max(0).unsigned_abs().isqrt() as i64,
             Self::AtLeast(a, b) => i64::from(a.eval(read, draw)? >= b.eval(read, draw)?),
         })
@@ -234,7 +247,7 @@ fn floor_div(a: i64, b: i64) -> i64 {
 fn all(
     v: &[Expr],
     read: &mut impl FnMut(&Reading) -> Result<i64>,
-    draw: &mut impl FnMut(u64) -> Result<u64>,
+    draw: &mut impl FnMut(u64, u8) -> Result<u64>,
 ) -> Result<Vec<i64>> {
     v.iter().map(|e| e.eval(read, draw)).collect()
 }

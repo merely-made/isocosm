@@ -153,7 +153,7 @@ fn three_quarter_power_is_mesocosms() {
             Expr::Const(m),
             Expr::Sqrt(Box::new(Expr::Const(m))),
         ])));
-        e.eval(&mut |_| Ok(0), &mut |_| Ok(0)).unwrap()
+        e.eval(&mut |_| Ok(0), &mut |_, _| Ok(0)).unwrap()
     };
     for m in [1u64, 7, 1_000, 10_000, 123_456, 9_999_999] {
         let mesocosm = (m * m.isqrt()).isqrt();
@@ -165,7 +165,7 @@ fn three_quarter_power_is_mesocosms() {
 
 #[test]
 fn division_floors_and_comparison_is_one_or_zero() {
-    let eval = |e: Expr| e.eval(&mut |_| Ok(0), &mut |_| Ok(0)).unwrap();
+    let eval = |e: Expr| e.eval(&mut |_| Ok(0), &mut |_, _| Ok(0)).unwrap();
     let div = |a, b| Expr::Div(Box::new(Expr::Const(a)), Box::new(Expr::Const(b)));
     assert_eq!(eval(div(-7, 2)), -4);
     assert_eq!(eval(div(7, -2)), -4);

@@ -8,7 +8,9 @@
 
 use crate::{
     Result,
-    rules::{AccountKind, Binding, Conversion, Effect, Need, Query, Reading, Rules, expressing},
+    rules::{
+        AccountKind, Binding, Conversion, Effect, Need, Query, Reading, Rules, Seeding, expressing,
+    },
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -22,39 +24,36 @@ pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
     ledger.get(key).copied().unwrap_or(0)
 }
 
+/// What one part shows a body reading (X2): a span only where it expresses
+/// the function. Accounts are read from a ledger instead.
+pub(crate) fn part_reading(p: &Part, r: &Reading) -> u128 {
+    let cells = |f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
+    match r {
+        Reading::Account { .. } => 0,
+        Reading::Span { function, .. } if p.functions.contains(function) => u128::from(
+            p.half_extent
+                .iter()
+                .map(|h| h.unsigned_abs())
+                .max()
+                .unwrap_or(0),
+        ),
+        Reading::Span { .. } => 0,
+        Reading::Voxels { .. } => p
+            .half_extent
+            .iter()
+            .map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
+            .product(),
+        Reading::Cells { function, .. } => cells(function),
+        Reading::CellMass { function, .. } => cells(function) * u128::from(p.cell_mass),
+        Reading::CellWeight { .. } => u128::from(p.cell_mass),
+    }
+}
+
 /// X2's native readings of a body (ruling 453): each the sum, over its
-/// living parts, of what the reading asks of one. Accounts are read from a
-/// ledger instead.
+/// living parts, of what one part shows.
 pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
     let living = body.parts.values().filter(|p| !p.severed);
-    let cells = |p: &Part, f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
-    let total: u128 = match r {
-        Reading::Account { .. } => 0,
-        Reading::Span { function, .. } => living
-            .filter(|p| p.functions.contains(function))
-            .map(|p| {
-                u128::from(
-                    p.half_extent
-                        .iter()
-                        .map(|h| h.unsigned_abs())
-                        .max()
-                        .unwrap_or(0),
-                )
-            })
-            .sum(),
-        Reading::Voxels { .. } => living
-            .map(|p| {
-                p.half_extent
-                    .iter()
-                    .map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
-                    .product::<u128>()
-            })
-            .sum(),
-        Reading::Cells { function, .. } => living.map(|p| cells(p, function)).sum(),
-        Reading::CellMass { function, .. } => living
-            .map(|p| cells(p, function) * u128::from(p.cell_mass))
-            .sum(),
-    };
+    let total: u128 = living.map(|p| part_reading(p, r)).sum();
     i64::try_from(total).unwrap_or(i64::MAX)
 }
 
@@ -314,7 +313,7 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
         Effect::Allocate { from, to, cells } => cells.resolved().and_then(|cells| {
             p.part()
-                .and_then(|(b, id)| allocate(b, id, from.as_deref(), to, cells))
+                .and_then(|(b, id)| allocate(rules, b, id, from.as_deref(), to, cells))
         }),
         _ => return None,
     })
@@ -386,12 +385,27 @@ fn mark_part(e: &mut Entity, part: Id, key: &str, present: bool) -> Result<()> {
 }
 
 /// X6: `cells` of the bound part moved to a function it expresses, from
-/// another's or from its free cells, the part's capacity never exceeded.
-fn allocate(e: &mut Entity, part: Id, from: Option<&str>, to: &str, cells: u64) -> Result<()> {
+/// another's or from its free cells, the part's capacity never exceeded. A
+/// development places an acquired function its shape admits (ruling 338).
+fn allocate(
+    rules: &Rules,
+    e: &mut Entity,
+    part: Id,
+    from: Option<&str>,
+    to: &str,
+    cells: u64,
+) -> Result<()> {
     let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
     let cells = u32::try_from(cells).map_err(|_| "allocation overflow")?;
     if !p.functions.contains(to) {
-        return Err(format!("the bound part does not express {to}"));
+        let acquired = rules
+            .functions
+            .get(to)
+            .is_some_and(|f| f.seeding == Seeding::Acquired);
+        if !acquired || !rules.admits(&p.shape, to) {
+            return Err(format!("the bound part cannot come to express {to}"));
+        }
+        p.functions.insert(to.into());
     }
     match from {
         Some(f) => {

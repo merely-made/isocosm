@@ -74,29 +74,31 @@ impl Staged<'_> {
     }
 
     /// The effect with its amounts resolved against the stage as it stands,
-    /// each draw keyed by the act and its place among the act's draws (X3),
+    /// each draw keyed by the act and its slot (X3),
     /// or none where a guard came to nothing (X5).
     fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Option<Cow<'e, Effect>>> {
         if !e.computes() {
             return Ok(Some(Cow::Borrowed(e)));
         }
         let (seed, act) = (self.sim.genesis.seed, self.sim.state.next_action);
-        let mut draws = self.stage.draws;
         let mut read = |r: &Reading| -> Result<i64> {
             match r {
                 Reading::Account { who, key } => {
                     let held = meaning::value(self.ledger(*who)?, key);
                     i64::try_from(held).map_err(|e| e.to_string())
                 },
+                r if r.who() == Binding::Part => {
+                    let (body, id) = self.part()?;
+                    let part = body.parts.get(&id).ok_or("bound part missing")?;
+                    Ok(i64::try_from(meaning::part_reading(part, r)).unwrap_or(i64::MAX))
+                },
                 r => Ok(meaning::body_reading(self.body(r.who())?, r)),
             }
         };
-        let mut draw = |below: u64| -> Result<u64> {
-            draws += 1;
-            Ok(crate::draw(seed, "amount", &[act, draws]) % below)
+        let mut draw = |below: u64, slot: u8| -> Result<u64> {
+            Ok(crate::draw(seed, "amount", &[act, u64::from(slot)]) % below)
         };
         let resolved = e.resolve(&mut read, &mut draw)?;
-        self.stage.draws = draws;
         Ok(resolved.map(Cow::Owned))
     }
 

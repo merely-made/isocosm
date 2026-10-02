@@ -238,7 +238,7 @@ impl Effect {
     pub fn resolve(
         &self,
         read: &mut impl FnMut(&Reading) -> crate::Result<i64>,
-        draw: &mut impl FnMut(u64) -> crate::Result<u64>,
+        draw: &mut impl FnMut(u64, u8) -> crate::Result<u64>,
     ) -> crate::Result<Option<Effect>> {
         if let Self::When { guard, effect } = self {
             return match guard.eval(read, draw)? {

@@ -47,7 +47,7 @@ fn due(id: &str, effects: Vec<Effect>) -> Process {
 }
 
 fn eval(e: &Expr, held: i64) -> i64 {
-    e.eval(&mut |_| Ok(held), &mut |below| Ok(below - 1))
+    e.eval(&mut |_| Ok(held), &mut |below, _| Ok(below - 1))
         .unwrap()
 }
 
@@ -74,7 +74,7 @@ fn an_expression_keeps_its_bounds() {
     let wide = Expr::Add((0..MAX_NODES as i64).map(Expr::Const).collect());
     assert!(wide.validate().is_err(), "more than {MAX_NODES} nodes");
     for below in [0, MAX_DRAW + 1] {
-        assert!(Expr::Draw { below }.validate().is_err(), "{below}");
+        assert!(Expr::Draw { below, slot: 0 }.validate().is_err(), "{below}");
     }
     let clamp = Expr::Clamp {
         value: Box::new(Expr::Const(1)),
@@ -171,7 +171,7 @@ fn draws_key_by_the_act_and_stay_in_range() {
             from: Binding::Place,
             to: Binding::Actor,
             account: "world:soil".into(),
-            amount: Amount::Computed(Expr::Draw { below: 4 }),
+            amount: Amount::Computed(Expr::Draw { below: 4, slot: 0 }),
         };
         genesis
             .rules
@@ -214,7 +214,7 @@ fn bulk_safety_follows_the_amounts() {
     assert!(ease(1.into()).bulk_safe());
     assert!(ease(Amount::Computed(Expr::Read(soil(Binding::Actor)))).bulk_safe());
     assert!(!ease(Amount::Computed(Expr::Read(soil(Binding::Place)))).bulk_safe());
-    assert!(!ease(Amount::Computed(Expr::Draw { below: 2 })).bulk_safe());
+    assert!(!ease(Amount::Computed(Expr::Draw { below: 2, slot: 0 })).bulk_safe());
 }
 
 #[test]
