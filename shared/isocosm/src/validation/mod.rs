@@ -419,6 +419,8 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} spends to {to:?}, which it cannot"));
             }
         },
+        // A bud is marked by a key the world names (ruling 524).
+        Effect::Bud { mark, .. } => key(mark)?,
         // Growth turns matter in hand into the actor's new parts, their
         // price returned to the place (rulings 479 and 510).
         Effect::Grow {

@@ -111,6 +111,36 @@ pub fn boxed(half_extent: [i32; 3]) -> &'static str {
     }
 }
 
+/// A lineage's own matter accounts: its tissue, reserve and provision.
+#[derive(Clone, Debug, Default)]
+pub struct Own {
+    pub tissue: Option<Key>,
+    pub reserve: Option<Key>,
+    pub provision: Option<Key>,
+}
+
+pub fn own(rules: &Rules, lineage: &str) -> Own {
+    let mut own = Own::default();
+    for (key, kind) in &rules.accounts {
+        let AccountKind::Matter {
+            lineage: l,
+            reserve,
+            provision,
+        } = kind
+        else {
+            continue;
+        };
+        let slot = match (l == lineage, reserve, provision) {
+            (false, ..) => continue,
+            (true, true, _) => &mut own.reserve,
+            (true, _, true) => &mut own.provision,
+            _ => &mut own.tissue,
+        };
+        slot.get_or_insert_with(|| key.clone());
+    }
+    own
+}
+
 /// Whether `key` is a reserve account.
 fn reserve(rules: &Rules, key: &str) -> bool {
     matches!(

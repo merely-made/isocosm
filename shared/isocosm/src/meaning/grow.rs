@@ -17,27 +17,6 @@ pub(crate) struct Grown {
     pub taken: Vec<(Ledger, Key, u64)>,
 }
 
-/// The actor's own tissue and reserve accounts.
-fn own(rules: &Rules, lineage: &str) -> (Option<Key>, Option<Key>) {
-    let mut tissue = None;
-    let mut reserve = None;
-    for (key, kind) in &rules.accounts {
-        if let AccountKind::Matter {
-            lineage: l,
-            reserve: r,
-            provision: false,
-        } = kind
-            && l == lineage
-        {
-            match r {
-                true => reserve = reserve.or(Some(key.clone())),
-                false => tissue = tissue.or(Some(key.clone())),
-            }
-        }
-    }
-    (tissue, reserve)
-}
-
 pub(crate) fn grow(
     p: &mut impl Parties,
     rules: &Rules,
@@ -48,7 +27,10 @@ pub(crate) fn grow(
     let mut grown = Grown::default();
     let lineage = p.body(Binding::Actor)?.lineage.clone();
     let development = p.development(&lineage)?;
-    let (Some(tissue), reserve) = own(rules, &lineage) else {
+    let anatomy::Own {
+        tissue, reserve, ..
+    } = anatomy::own(rules, &lineage);
+    let Some(tissue) = tissue else {
         return Err(format!("{lineage} has no tissue to grow"));
     };
     let pay: Vec<Key> = reserve.into_iter().chain([tissue.clone()]).collect();
