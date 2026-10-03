@@ -50,6 +50,7 @@ fn developed() -> Genesis {
             parent: None,
             anchor: Default::default(),
             facing: isocosm::rules::Facing::Back,
+            socket: isocosm::rules::Facing::Right,
             variance: None,
         }],
         variance: 1,

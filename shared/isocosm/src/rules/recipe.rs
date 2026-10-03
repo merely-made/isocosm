@@ -100,6 +100,10 @@ pub struct Tagma {
     /// The way the tagma runs from what it joins; the spine runs back.
     #[serde(default = "back")]
     pub facing: Facing,
+    /// Where on a segment its borne kind attaches, as Mesocosm's sockets
+    /// do (510): a flank, mirrored where the plan is bilateral, by default.
+    #[serde(default = "right")]
+    pub socket: Facing,
     /// Overrides the recipe's variance for this tagma.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub variance: Option<u8>,
@@ -245,6 +249,10 @@ fn is_zero(n: &u8) -> bool {
 
 fn back() -> Facing {
     Facing::Back
+}
+
+fn right() -> Facing {
+    Facing::Right
 }
 
 fn never() -> [u32; 2] {
