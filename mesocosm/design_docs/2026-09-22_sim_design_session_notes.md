@@ -1773,3 +1773,15 @@ fourth round took it back with three more forks:
 
 Against the recommendation, a bud is a part of its parent grown off, as
 448 described it, rather than a clone.
+
+A fifth round closed checkpoint 8's design:
+
+| Question as put | Ruling |
+| --- | --- |
+| Which care do the probe's grazers give? | 528: milk |
+| Does the probe's check certify semelparity? | 529: drawn per cohort |
+| How many eggs does a birth lay? | 530: clutch by lineage trait |
+| How much do children vary, without Mesocosm's fixed odds? | 531: odds in the recipe |
+
+Against the recommendation, a clutch's size is a lineage's trait rather
+than one egg a birth.

@@ -222,7 +222,9 @@ part's tissue, affinity deciding how it lands. *Ruled 2026-10-03 (520):*
 whether growth with the parts full first grows a missing part or fills
 the provision is a lineage trait. *Ruled 2026-10-03 (524):* a bud grows as a
 part at its parent's reproducing part and severs into a body of its own
-once full.
+once full. *Ruled 2026-10-03 (530, 531):* how many eggs a birth lays is a
+lineage trait, and each recipe carries the odds that a segment's
+appendages develop absent beside its segment variance.
 
 ## 7. Wounds and severing
 

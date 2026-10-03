@@ -4831,6 +4831,8 @@ what later sections derive from.
      provision its parent's reproduce cells fill.
      *Specified 2026-10-03 by ruling 524:* a bud grows as a part at its
      parent's reproducing part and severs into a body of its own once full.
+     *Specified 2026-10-03 by ruling 530:* how many eggs a birth lays is a
+     lineage trait.
 
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
@@ -5550,6 +5552,8 @@ what later sections derive from.
      *Given its kinds 2026-10-03 by rulings 511 and 512:* a kind is a part
      template, and a founded lineage's recipe is drawn by its kingdom, the
      authored roster kept as presets.
+     *Varied 2026-10-03 by ruling 531:* each recipe carries its absence odds
+     beside its variance.
 
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
@@ -6619,6 +6623,8 @@ what later sections derive from.
      semelparity or iteroparity and parental care are built and certified
      in checkpoint 8, and mating and horizontal transfer are built with the
      boundary family, where genotypes and 57's reroll live.
+     *Drawn in the probe 2026-10-03 by ruling 529:* a share of each
+     lineage's cohorts are semelparous.
 
 522. **Ars Magica's open text becomes a VTT ruleset and a reference for the
      wing's magic.** Raised by Mark on 2026-10-03 ("this is probably good
@@ -6761,7 +6767,80 @@ what later sections derive from.
      sized by its reproduce volume, or mouthfuls, 526's regurgitated food
      from its reserve sized by its intake volume, as its trait says; the
      probe's grazers give one, certified, and the other is tested. Which
-     one the probe's grazers give goes back to Mark.
+     one the probe's grazers give goes back to Mark. *Answered 2026-10-03
+     by ruling 528:* milk.
+
+528. **The probe's grazers give milk.** Asked on 2026-10-03, checkpoint 8's
+     fifth round: "Which care do the probe's grazers give (527)? Evidence:
+     milk spends the refilling provision, one reproduce cell of 12 mg in a
+     grazer, so care trades against the next birth. Mouthfuls spend the
+     reserve (1 to 4 store cells of 12 mg each), sized by intake volume
+     (median mouthful 11 mg), and cost no births." Options, recommended
+     first: (A) "Milk: the probe's grazers nurse, exercising 518's provision
+     past the birth, and care trades against breeding. Mouthfuls are
+     tested, not certified (recommended)." (B) "Mouthfuls: the probe's
+     grazers regurgitate from the reserve. Milk is tested, not certified."
+     Mark chose A, "Milk". So the probe's grazers nurse their hungry young
+     from their refilling provision, certified, and mouthfuls are tested.
+
+529. **The probe draws semelparity per cohort.** Asked on 2026-10-03, with
+     528: "Does the probe's check certify semelparity, one brood and then
+     death (521)? Evidence: 514 put every strategy built into the check. The
+     probe already draws traits per cohort: a quarter of producer cohorts
+     can grow a gland. A semelparous body dies when its birth is done; an
+     iteroparous one breeds again." Options, recommended first: (A) "Drawn
+     per cohort: as the gland candidate is, a share of each lineage's
+     cohorts in each world are semelparous, so the check covers both kinds
+     of body (recommended)." (B) "Producers semelparous: every producer
+     dies when its bud severs, as annual plants do. Grazers breed many
+     times." (C) "Tested, not certified: semelparity is built and tested,
+     and the probe's lineages all breed many times." Mark chose A, "Drawn
+     per cohort". So a share of each probe lineage's cohorts in each world
+     are semelparous, dying when their birth is done, and the check covers
+     both kinds of body.
+
+530. **How many eggs a birth lays is a lineage trait.** Asked on
+     2026-10-03, with 528: "How many eggs does a birth lay (448: many
+     offspring, most lost)? Evidence: under 518 an egg spends the
+     provision, 12 mg in a grazer. An egg is a minimal body, the recipe's
+     root, which for a grazer is its lump. Under 523 an egg lives while it
+     can pay its rent, about 1 mg a tick at that size." Options, recommended
+     first: (A) "One egg a birth: an egg takes the whole provision. It
+     differs from a brood by its minimal body, and many offspring come from
+     how often a body lays (recommended)." (B) "Clutch by lineage trait: how
+     many eggs a birth splits its provision into is a lineage trait, drawn
+     by the generator." (C) "As many as it can make: the provision is split
+     into as many eggs as can each take one milligram per part. Most
+     starve." Mark chose B, "Clutch by lineage trait", against the
+     recommendation. So how many eggs a birth splits its provision into is
+     a trait of the lineage, drawn by the generator and revised at the
+     epoch boundary (57). *Reading, not ruled:* the provision is split among
+     the clutch as a take is (464), units left over to the largest
+     remainders, and the probe draws its grazers' clutch per world as it
+     draws their other traits.
+
+531. **A recipe carries its absence odds beside its variance.** Asked on
+     2026-10-03, with 528: "How much do children vary, without Mesocosm's
+     fixed odds? Evidence: Mesocosm's soma drifts each tagma's segment
+     count by up to the recipe's variance (1 or 2). It leaves one segment's
+     appendages absent at odds of 1 in 12 per tagma, a fixed constant ("the
+     cheapest evidence that individuals are not clones"); mouths, feelers
+     and canopy plates are never left absent. The probe's bodies are one
+     frond, or a lump with 1 or 2 limbs and an eye." Options, recommended
+     first: (A) "Odds in the recipe: each recipe carries its absence odds
+     beside its variance, drawn by the generator with the recipe, with
+     Mesocosm's 1 in 12 among the draws. The probe draws both per world, at
+     zero in 513's control (recommended)." (B) "A world rule: the absence
+     odds are one world rule, drawn per world, and each recipe keeps only
+     its variance." (C) "No absences: children vary only by their segment
+     counts; every appendage the recipe names develops." Mark chose A,
+     "Odds in the recipe". So each recipe carries the odds that a
+     segment's appendages develop absent beside its segment variance, both
+     drawn by the generator with the recipe, Mesocosm's 1 in 12 among the
+     draws, and the probe draws both per world, at zero in 513's control.
+     *Reading, not ruled:* the kinds Mesocosm never leaves absent, the
+     feeding, sensing and canopy organs, become those whose templates hold
+     intake, sense or fix, so no child is born unable to feed.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10604,6 +10683,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 528 to 531 recorded, checkpoint 8's fifth round: the
+  probe's grazers give milk (528); the probe draws semelparity per cohort
+  (529); how many eggs a birth lays is a lineage trait (530, against the
+  recommendation); and a recipe carries its absence odds beside its
+  variance (531). Annotations on 448, 478, 521 and 527. Carried into the
+  sim plan's checkpoint 8 brief, the anatomy brief, the session notes'
+  §10 and the index.
 - 2026-10-03: rulings 523 to 527 recorded, checkpoint 8's fourth round: a
   body starves when its rent fails, Mesocosm's 20 mg line going (523,
   evidence returned against 513 and 518); a bud is a part grown off its
