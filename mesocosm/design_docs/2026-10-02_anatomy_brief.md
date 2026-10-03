@@ -218,7 +218,9 @@ provision up to their cells' mass, as store cells hold the reserve, filled
 by growth once the parts are full; a body bears when it is full and the
 birth spends it, with no fraction or interval; and a body that isn't
 hungry incorporates a part whole when its bite would take all of the
-part's tissue, affinity deciding how it lands.
+part's tissue, affinity deciding how it lands. *Ruled 2026-10-03 (520):*
+whether growth with the parts full first grows a missing part or fills
+the provision is a lineage trait.
 
 ## 7. Wounds and severing
 

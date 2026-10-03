@@ -3867,6 +3867,9 @@ what later sections derive from.
      mod authors and the generator should both be able to create such
      magic. Ball x Pit's combinations are an analogy for the composition,
      not a prescribed algorithm. Ways of using magic remain open.
+     *Given a reference 2026-10-03 by ruling 522:* Ars Magica's Hermetic
+     magic, Techniques composed with Forms at levels its guidelines set,
+     informs the design, nothing of it copied into the sim.
 
 405. **Construction declares function; geometry measures what a mechanic
      needs.** Asked in the same review: "When does geometric detail affect
@@ -4867,6 +4870,9 @@ what later sections derive from.
      may provision its young after birth by a feeding transfer; and a trait
      may cross from a symbiont, whose edge counts as eating, so the lexicon
      rule stands as the brief's §F proposed.
+     *Placed 2026-10-03 by ruling 521:* semelparity or iteroparity and
+     parental care are built in checkpoint 8, mating and horizontal transfer
+     with the boundary family.
 
 451. **An epoch ends by one of three rules, a year by default.** Asked on
      2026-10-01, opening checkpoint 6's step 4: "What ends an epoch in
@@ -5563,7 +5569,8 @@ what later sections derive from.
      functions' expression at PD2's price, a cell's mass a cell from the
      reserve into the ground; growth then fills it by 464.
      *Joined 2026-10-03 by ruling 518:* growth with the parts full also
-     fills the provision; which comes first goes back to Mark.
+     fills the provision; which comes first goes back to Mark. *Ordered
+     2026-10-03 by ruling 520:* which comes first is a lineage trait.
 
 480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
      "Where is a spread body present? Evidence: under 467 a fungus is one
@@ -6161,6 +6168,8 @@ what later sections derive from.
      territory or a surface applying conditions on its places, within the
      place and site scopes 433 gave modifiers; whether magic uses one is the
      magic design's (404).
+     *Given a reference 2026-10-03 by ruling 522:* Ars Magica's realm
+     auras, which modify casting where they lie.
 
 503. **The systems checkpoint also riffs.** Asked on 2026-10-02, with 501:
      "Where is riffing new systems by substitution (491) built? Evidence:
@@ -6435,7 +6444,8 @@ what later sections derive from.
      check covers every strategy built. *Reopened in part the same day by
      ruling 518:* every birth now spends the provision its reproduce cells
      hold, so what switches a grazer between an egg and a brood goes back
-     to Mark.
+     to Mark. *Switched 2026-10-03 by ruling 519:* by hunger, a fed grazer
+     brooding and a hungry one laying an egg.
 
 515. **A body's reproduce volume scales what a birth spends, and neither
      the budget nor the timing is hardcoded.** Asked on 2026-10-03, with
@@ -6535,7 +6545,103 @@ what later sections derive from.
      fraction or interval is set anywhere. *Reading, not ruled:* the
      provision is a matter account of the lineage, held in its reproduce
      cells as the reserve is in its stores, and it moves by the flow
-     record like any other.
+     record like any other. *Ordered 2026-10-03 by ruling 520:* whether
+     growth fills the provision or a missing part first is a lineage
+     trait.
+
+519. **Hunger switches a grazer between an egg and a brood.** Asked on
+     2026-10-03, checkpoint 8's third round: "Under 518 every birth spends
+     the provision. What switches a grazer between laying an egg and
+     brooding (514, 449)? Evidence: 514's switch read the reserve, which no
+     longer pays. A brood develops the recipe's whole body from the
+     provision. An egg is a minimal body that grows the rest (§6's reading).
+     Water fleas brood live young while fed and lay resting eggs under
+     stress. The probe already reads a grazer's hunger (TD5)." Options,
+     recommended first: (A) "Hunger: a fed grazer broods and a hungry one
+     lays an egg, the cheap hedge under stress, as water fleas do
+     (recommended)." (B) "The provision's size: a brood when the provision
+     can give every recipe part its minimum, an egg otherwise." (C) "The
+     reserve still: an egg while the reserve could refill the provision, a
+     brood otherwise, keeping 514's wording." Mark chose A, "Hunger". So a
+     fed grazer broods and a hungry one lays an egg, the phenotype's switch
+     of 449 read from the hunger TD5 already reads.
+
+520. **Whether growth builds a missing part or fills the provision first is
+     a lineage trait.** Asked on 2026-10-03, with 519: "With its parts full,
+     does growth first build a missing part (479) or fill the provision
+     (518)? Evidence: both rulings take growth that finds no room left.
+     Founders are founded whole, but a child from an egg starts minimal and
+     lacks most of its recipe. Mesocosm matures a body by age (270 ticks for
+     100 mg)." Options, recommended first: (A) "Parts first: a body grows
+     toward its recipe before it provisions, so it reaches its form before
+     it breeds. Maturity emerges as being whole and full, with no age
+     threshold (recommended)." (B) "Provision first: a full body provisions
+     before growing missing parts, so it breeds early and builds its form
+     later." (C) "In proportion: growth with the parts full splits between
+     the provision and the next missing part by their room." (D) "A lineage
+     trait: which comes first is a lineage's life-history trait, drawn by
+     the generator and revised at the epoch boundary." Mark chose D, "A
+     lineage trait", against the recommendation. So whether a body with its
+     parts full first grows the next missing part or first fills its
+     provision is a trait of its lineage, drawn by the generator and revised
+     at the epoch boundary (57). *Reading, not ruled:* a lineage that grows
+     its parts first comes to breed only once whole, so its maturity
+     emerges with no age threshold; one that provisions first breeds while
+     still incomplete.
+
+521. **Semelparity and parental care come with development; mating and
+     horizontal transfer wait for the boundary family.** Asked on
+     2026-10-03, with 519: "Where are 450's axes built? Evidence: 450 ruled
+     mating, semelparity or iteroparity, parental care and horizontal
+     transfer. The bodies family's brief places 447 to 449 in checkpoint 8
+     and does not place 450. Mating needs two genotypes to meet and spreads
+     57's reroll, which lives at the epoch boundary. Semelparity is a trait
+     (one brood, then death). Parental care is a feeding transfer, and
+     horizontal transfer a symbiont's edge counted as eating." Options,
+     recommended first: (A) "Split by home: semelparity and parental care in
+     checkpoint 8, since they're body-level. Mating and horizontal transfer
+     go with the boundary family, where genotypes and the reroll live
+     (recommended)." (B) "All in checkpoint 8: all four are built and
+     certified with development." (C) "All with the boundary: all four wait
+     for the boundary family." Mark chose A, "Split by home". So
+     semelparity or iteroparity and parental care are built and certified
+     in checkpoint 8, and mating and horizontal transfer are built with the
+     boundary family, where genotypes and 57's reroll live.
+
+522. **Ars Magica's open text becomes a VTT ruleset and a reference for the
+     wing's magic.** Raised by Mark on 2026-10-03 ("this is probably good
+     shit for a ruleset", with the link
+     https://github.com/OriginalMadman/Ars-Magica-Open-License), then
+     asked: "Where does Ars Magica's open material go? Evidence: Atlas
+     Games released the text of Ars Magica 5th Edition and its 53 books
+     under CC BY-SA 4.0; the repo is a community Markdown conversion.
+     Hermetic magic composes 5 Techniques with 10 Forms at levels set by
+     guidelines, close to 404's fundamentals combined at rising cost. Its
+     four realms' auras modify casting, as you noted for territories and
+     surfaces (502). The VTT's CLAUDE.md ships only 5e SRD (CC-BY) and
+     Pathfinder 2e (ORC). Share-alike: anything shipped from it is CC
+     BY-SA, with Atlas's credit line." Options, recommended first: (A) "VTT
+     ruleset and magic reference: the VTT gains an Ars Magica system pack
+     under CC BY-SA, its CLAUDE.md content line widened by your word. Its
+     magic and auras also inform the wing's design, with nothing copied
+     into the sim (recommended)." (B) "A VTT ruleset only: a third system
+     pack beside 5e and Pathfinder, with the wing's magic designed without
+     it." (C) "Noted for later: recorded as a candidate, with no work until
+     the magic family or the VTT's next system." Mark chose A, "VTT ruleset
+     and magic reference". So the VTT gains an Ars Magica 5th Edition
+     system pack under CC BY-SA 4.0, credited as Atlas Games' licence asks
+     ("Based on the material for Ars Magica, ©1993–2024, licensed by
+     Trident, Inc. d/b/a Atlas Games®, under Creative Commons
+     Attribution-ShareAlike 4.0 International license 4.0"), and the VTT's
+     `CLAUDE.md` content line is widened to admit it; and Hermetic magic
+     and the realms' auras inform the wing's magic design (404, 502), with
+     nothing copied into the sim. Mark then supplied prior art for the
+     adaptation, recorded in §5.1. *Reading, not ruled:* the authoritative
+     text is Atlas Games' release
+     (https://www.atlas-games.com/arsmagica/openars), the community
+     conversion a convenience to check against it; no pack is opened or
+     scheduled by this ruling; and any lane that reads the prior art's code
+     checks each project's licence first, none having been checked here.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9698,6 +9804,27 @@ where a foreground game's rules stop and the sim's begin. Both are inside a
 branch, so they do not touch the base profile, and rulings 114, 154, 156,
 188 and 189 answer them.
 
+*2026-10-03, ruling 522:* Ars Magica 5th Edition, whose text Atlas Games
+released under CC BY-SA 4.0, becomes a VTT ruleset, and its Hermetic magic
+and realm auras a reference for the wing's magic. It is a family unlike
+the d20 pair: stress and simple dice with botches, magic composed of
+Techniques and Forms, and seasonal advancement for a covenant. Prior art
+Mark supplied for adapting it, each still to be read and its licence
+checked before any code of it is studied:
+
+| Work | What it offers |
+| --- | --- |
+| *Ars Magica: Years of Conquest*, Black Chicken Studios, 2012 ([announcement](https://forum.atlas-games.com/t/ars-magica-video-game/7312), [campaign](https://www.kicktraq.com/projects/blackchickenstudios/ars-magica-video-game/)) | A licensed generational simulation RPG proposal whose Kickstarter failed: design precedent for communities, accumulated knowledge and history, not evidence the approach worked |
+| Ars Magica for Foundry VTT ([project](https://github.com/Xzotl42/arm5e), [listing](https://foundryvtt.com/packages/arm5e)) | Open fifth-edition tabletop play with a content compendium: how the rules become digital records and player tools |
+| Metacreator ([fifth edition](https://atlas-games.com/news/post?s=great-news-metacreator-for-arm5), [features](https://atlas-games.com/forumARCHIVE/threads/000128.html), [retirement](https://forum.atlas-games.com/t/metacreator-distribution/171200)) | Character and covenant management with study, training, spell research, enchanting, aging and kept history: the seasonal side; sales ended in 2022 |
+| [Ars Magica Character Generator](https://github.com/garin1000/Ars-Magica-Character-Generator) | A pure Rust rules library behind a Tauri and Svelte interface, mechanics in JSON with stable identifiers, choices saved with the ruleset's identity and version; characters implemented, covenants not; maturity unassessed |
+| [Fate of Ars Magica](https://github.com/ArtturiLaitakari/FateofArsMagica) | A small fan conversion to Fate Core and Accelerated: which distinctions survive a change of resolution system |
+| [Ars Magica 2](https://www.curseforge.com/minecraft/mc-mods/ars-magica-2), [Mana and Artifice](https://www.curseforge.com/minecraft/mc-mods/mana-and-artifice), [Ars Nouveau](https://www.curseforge.com/minecraft/mc-mods/ars-nouveau) | Minecraft spellcrafting from shapes, components, modifiers and rituals, Mana and Artifice also with modular constructs: the practical limits and interface of composed spells, not faithful to the tabletop rules |
+
+Mark's suggested reading: Foundry's module and the Rust generator for how
+rules are encoded, Metacreator for seasonal history, and Mana and Artifice
+and Ars Nouveau for composed spells.
+
 ### 5.2 The boundary between the sim and a game (ruled in part)
 
 **Review, 2026-09-21, at Mark's word: "This ruling feels particularly
@@ -10357,6 +10484,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 519 to 522 recorded: hunger switches a grazer
+  between an egg and a brood (519); growth's order between a missing part
+  and the provision is a lineage trait (520, against the recommendation);
+  semelparity and parental care come with development, mating and
+  horizontal transfer with the boundary family (521); and Ars Magica's open
+  text becomes a VTT ruleset and a reference for the wing's magic (522,
+  raised by Mark), its prior art in §5.1. Annotations on 404, 450, 479,
+  502, 514 and 518. Carried into the sim plan's checkpoint 8 brief, the
+  anatomy brief, the session notes' §10, the index and the VTT's
+  `CLAUDE.md`, whose content line is widened at Mark's word.
 - 2026-10-03: rulings 514 to 518 recorded, checkpoint 8's second round:
   the check certifies all three strategies (514); reproduce volume scales
   what a birth spends, nothing hardcoded (515, Mark's reframe); a whole

@@ -1744,3 +1744,17 @@ gestation are placeholders, not values to hardcode:
 | How does a probe body incorporate? | 516: whole parts, by affinity |
 | How does the probe see births within its run? | 517: a longer probe |
 | Where should a birth's budget and its timing come from? | 518: filled like a store |
+
+A third round took the two follow-ons, 450's axes, and Ars Magica's open
+text, which Mark raised mid-round with a link and then with prior art for
+adapting it:
+
+| Question as put | Ruling |
+| --- | --- |
+| What switches a grazer between laying an egg and brooding? | 519: hunger |
+| Does growth first build a missing part or fill the provision? | 520: a lineage trait |
+| Where are 450's axes built? | 521: split by home |
+| Where does Ars Magica's open material go? | 522: VTT ruleset and magic reference |
+
+Against the recommendation, growth's order is a lineage's life history
+rather than parts first.

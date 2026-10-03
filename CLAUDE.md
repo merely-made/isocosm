@@ -67,7 +67,8 @@ See `design_docs/PROJECT_DESCRIPTION.md` for the product description and
   distributable pack.
 - **system plugin**: a game system: character/item schemas plus scripted
   rules (Lua, via piccolo). 5e SRD and Pathfinder 2e are the first-party
-  candidates.
+  candidates, and Ars Magica 5th Edition's open text joins them (wing
+  design record, ruling 522).
 - **session**: a hosted play instance: the DM's app is the authority,
   players replicate an ordered event log over p2p (iroh). "The DM" means
   whoever holds edit mode, not necessarily one person; see the
@@ -162,8 +163,11 @@ sem and weave are wired into this repo. Both are described once in
   plan exists: `design_docs/2026-07-09_shared_authority_and_collaborative_building_plan.md`.
   Its conclusion: shared and DM-less authority still need no CRDTs; the
   guardrail stands.)
-- Do not ship copyrighted game content. 5e SRD (CC-BY-4.0) and
-  Pathfinder 2e (ORC) material only, with attribution.
+- Do not ship copyrighted game content. 5e SRD (CC-BY-4.0), Pathfinder 2e
+  (ORC) and Ars Magica 5th Edition's open text (CC-BY-SA-4.0, Atlas Games'
+  release; ruling 522) material only, with attribution. Anything shipped
+  from Ars Magica is share-alike: CC-BY-SA-4.0 with Atlas Games' credit
+  line.
 - The wing's default view is isometric with quarter turns (wing design
   record, ruling 382). The tabletop ships its locked 2:1 lens today and
   reaches quarter turns through a plan and render lane of its own; free yaw,
