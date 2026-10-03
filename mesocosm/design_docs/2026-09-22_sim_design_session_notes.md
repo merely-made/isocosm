@@ -1702,3 +1702,12 @@ averaging put the choice back:
 | Question as put | Ruling |
 | --- | --- |
 | What should the averaged crowd average from checkpoint 7 on? | 507: all own matter |
+
+Under 507 the check passed on 1,000 draws, and checkpoint 7 merged at
+`c51bb0a`. Its planted faults found two weak instruments, a conservation test
+that passed on a world the fault had frozen and a calibration test whose
+tolerance was a quarter of its medians, and the fault script found a third
+of its own: restoring a file with an older time let cargo keep the faulted
+build. Other sessions compiling through the runs made the times
+incomparable with checkpoint 6's, so cost was measured against main's
+build interleaved.

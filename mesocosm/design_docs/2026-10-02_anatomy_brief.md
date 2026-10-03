@@ -5,7 +5,10 @@
 to 470, 477 to 480 and 485 to 500); §8 holds nothing open. Nothing is built.
 It was carried into the sim plan's §2.3 the same day and briefed as S2's
 bodies family, checkpoints 7 to 11 in that plan's §9 (501 to 503), the next
-in ruling 195's order (457).
+in ruling 195's order (457). *2026-10-03:* checkpoint 7 built §4, where a
+body's matter sits, with §3's cells derived from extents, §5's
+measurements and the names of 494, merged at `c51bb0a`; development, systems,
+harm and loss, and spreads follow as checkpoints 8 to 11.
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the

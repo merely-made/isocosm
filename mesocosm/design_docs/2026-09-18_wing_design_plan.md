@@ -10078,6 +10078,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: checkpoint 7, matter in parts, merged at `c51bb0a` under rulings
+  504 to 507, certified with its controls; the readings taken while
+  building it are in the sim plan's Findings for Mark to reject.
 - 2026-10-02: ruling 507 recorded, while certifying checkpoint 7: the
   averaged crowd averages all of a lineage's own matter, tissue and
   reserve, producers keeping no reserve under 506. Annotation on 209.
