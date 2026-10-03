@@ -1898,6 +1898,9 @@ what later sections derive from.
      positive control, the exact runner against itself under a dynamics
      seed kept apart from the founding seed, and a negative control, a
      crowd that averages reserves, which must fail the starvation check.
+     *Amended 2026-10-02 by ruling 507:* in a body world the averaged crowd
+     averages each lineage's own matter, tissue and reserve, since a
+     lineage that keeps no store (506) has no reserve to average.
 210. **A player may pin any pointable thing.** Put to Mark on 2026-09-25,
      typing the attention set (ruling 204): what can a player pin, which
      ruling 130 keeps on the player's account? Three options were put: any
@@ -6221,6 +6224,40 @@ what later sections derive from.
      draw, and producers stay single fronds with no reserve, the domain
      testing both strategies 463 named.
 
+507. **The averaged crowd averages all of a lineage's own matter.** Asked on
+     2026-10-02, when checkpoint 7's 1,000-draw check (master seed
+     1790993524767155700) failed: "What should the averaged crowd average
+     from checkpoint 7 on? Evidence: the negative control's averaged crowd
+     averages each lineage's reserve (446), but under 506 producers keep
+     none and starvation reads tissue below 21 mg, so it can't move
+     starvation: 8.19 against 8.42, not detected. On the same 200 draws
+     (seed 20261002), reserve-only averaging leaves producers identical to
+     the exact runner (alive 60.65 against 60.65, starving 6.29 against
+     6.28). Averaging tissue and reserve cuts their starvation to 3.25 (D
+     0.335, p 0.0075), and it still catches grazers' meals." The run's other
+     failure was a fault, not a fork: the exact runner weighed a prey's
+     entity ledger for its meal holdings, empty since 504, reading 0 against
+     the crowd's 9,830. Options, recommended first: (A) "All own matter:
+     each lineage's tissue and reserve at a site, each replaced by its
+     average every tick and given back by room. One rule for every lineage,
+     matching the hunting family's averaged body. Piloted: starvation
+     detected at D 0.335 on 200 draws (recommended)." (B) "Tissue where no
+     store: a lineage that stores averages its reserve as at checkpoint 6;
+     one that keeps no reserve averages its tissue. Grazers' control stays
+     checkpoint 6's. Producers come out the same as option 1, which is the
+     arm the pilot measured." (C) "Reserve only, any detection: keep
+     checkpoint 6's averaging, and judge the control by any detected
+     difference rather than a starvation one. It caught grazers' meals
+     (6.36 against 7.70), but producers stay untouched, so starvation is no
+     longer under test." Mark chose A, "All own matter". So from checkpoint
+     7 on, the averaged crowd replaces each lineage's tissue and its reserve
+     at a site by their averages every tick, each given back through the
+     parts by their room, and it must still fail the starvation check
+     (209). *Reading, not ruled:* the hunting family's averaged crowd, which
+     averages the body each kind is sized by, is unchanged; and what an
+     average cannot fit in one member's parts passes to classmates with
+     room, so the control loses no matter.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -10041,6 +10078,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: ruling 507 recorded, while certifying checkpoint 7: the
+  averaged crowd averages all of a lineage's own matter, tissue and
+  reserve, producers keeping no reserve under 506. Annotation on 209.
+  Carried into the sim plan's checkpoint 7 brief, the session notes' §10
+  and the index.
 - 2026-10-02: rulings 504 to 506 recorded, checkpoint 7's forks: each part
   keeps its own ledger and is a holder (504); income and the mouthful read
   their measurements alone, calibrated to the median body (505), against the

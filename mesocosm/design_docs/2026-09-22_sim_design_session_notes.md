@@ -1692,3 +1692,13 @@ Opening checkpoint 7, its assessment found three forks:
 
 Against the recommendation, income and the mouthful read their measurements
 alone rather than scaling Mesocosm's tissue rates.
+
+Certifying checkpoint 7, the 1,000-draw check failed twice over. The exact
+runner weighed a prey's empty entity ledger for its meal holdings, a fault
+fixed on the branch. The averaged crowd could not move starvation, because
+producers keep no reserve to average, and a 200-draw pilot of each
+averaging put the choice back:
+
+| Question as put | Ruling |
+| --- | --- |
+| What should the averaged crowd average from checkpoint 7 on? | 507: all own matter |
