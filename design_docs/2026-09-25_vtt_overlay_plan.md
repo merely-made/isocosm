@@ -8,7 +8,9 @@ recording their rulings, with a toolkit grown from what they repeat; a
 world chooses whether the sim or its ruleset leads, so 114's calibration
 holds only where the sim leads; and an encounter across systems runs
 under a named hybrid profile. Ars Magica 5th Edition joins 5e and
-Pathfinder 2e (522).
+Pathfinder 2e (522). In a ruleset-led world an edition's own state
+persists beside the body with declared relations (542), and its
+procedures run unattended under declared decision policies (543).
 
 **Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
 (231 and 243 to 250); V1 done 2026-09-26, opened by ruling 253 as a

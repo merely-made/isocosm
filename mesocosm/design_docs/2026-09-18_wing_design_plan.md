@@ -7020,6 +7020,9 @@ what later sections derive from.
      (41). *Reading, not ruled:* a ruleset-led world's background owes the
      ruleset's own procedures, simplified only as far as their outcomes
      survive, and 189's experimental mode stays for sim-led worlds.
+     *Specified 2026-10-03 by rulings 542 and 543:* an edition's own state
+     persists beside the body, its relations declared, and unattended its
+     procedures run under declared decision policies.
 
 539. **Rules are built as faithful editions, a shared toolkit grown from
      them.** Asked on 2026-10-03, with 538: "What do we build for rules?
@@ -7083,6 +7086,52 @@ what later sections derive from.
      Mesocosm keep their native mechanics and share the toolkit's effects
      and procedures; and a published ruleset may govern Eponym's
      progression, magic or costs as a selectable mode.
+
+542. **An edition's own state persists beside the body, its relations to it
+     declared.** Asked on 2026-10-03, following 538: "In a world its
+     ruleset leads (538), where do the edition's own facts live: hit
+     points, spell slots, death-save failures, Ars Magica's seasonal
+     advancement? Evidence: they can't all be regenerated from the body.
+     The sim's body holds tissue in parts, and D&D hit points return on a
+     rest whatever the tissue. The overlay contract (154) hands outcomes
+     back through checked effects on the ledger, and the ledger, the record
+     and the derivation rule stay inviolable (41)." Options, recommended
+     first: (A) "Native state, related: edition state persists in its own
+     right beside the body. Each fact is marked as a world fact, native
+     state or a derived display, and the ruleset declares how they relate:
+     what a wound to hit points does to the body, what death in either
+     does to the other (recommended)." (B) "Derived from the body: edition
+     state is read from the sim's body and ledger on demand (hit points
+     from tissue, say), and nothing native persists." (C) "Native,
+     unrelated: edition state persists apart from the body, which the
+     edition ignores, so the two never constrain each other." Mark chose A,
+     "Native state, related". So an edition's own state persists in its own
+     right beside the body; each fact is marked a world fact, native state
+     or a derived display; and the ruleset declares how they relate, what a
+     wound to hit points does to the body and what death in either does to
+     the other.
+
+543. **Unattended, a ruleset-led world runs the ruleset's procedures under
+     declared decision policies.** Asked on 2026-10-03, with 542: "With
+     nobody playing, how does a ruleset-led world's background resolve
+     what the ruleset specifies, a battle say? Evidence: Ceptre runs a
+     procedure unattended once each choice is replaced by a stated
+     strategy. Icepool shows a reroll's distribution depends on its policy
+     (always push, or push when failure is dire). RAW leaves some decisions
+     to the GM, which the VTT keeps for the table (539)." Options,
+     recommended first: (A) "Procedures with policies: the ruleset's own
+     procedures run, each choice a player or GM would make replaced by a
+     declared decision policy for that kind of actor. They're simplified
+     only as far as the bench shows the outcomes survive (recommended)."
+     (B) "Sim calibrated to it: the sim's background model stays,
+     calibrated to match the ruleset's outcome distribution on the bench:
+     114 run in reverse." (C) "Unattended waits: what the ruleset specifies
+     isn't resolved unattended; it waits for play, and the sim advances
+     only what the ruleset leaves unsaid." Mark chose A, "Procedures with
+     policies". So with nobody playing, a ruleset-led world's background
+     runs the ruleset's own procedures, each choice a player or GM would
+     make replaced by a declared decision policy for that kind of actor,
+     simplified only as far as the bench shows the outcomes survive.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10955,6 +11004,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 542 and 543 recorded, following 538: an edition's
+  own state persists beside the body, its relations to it declared (542),
+  and unattended a ruleset-led world runs the ruleset's procedures under
+  declared decision policies (543). Annotation on 538. Carried into the
+  sim plan's §3.5, the VTT's overlay plan, the session notes' §10 and the
+  index.
 - 2026-10-03: rulings 538 to 541 recorded, rulesets over the sim, raised
   by Mark with research and its prior art: each world chooses whether the
   sim or its ruleset leads (538, against the recommendation, amending

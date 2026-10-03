@@ -1819,4 +1819,10 @@ faithful editions need the ruleset to lead:
 | How do the products relate to the rulesets? | 541: VTT faithful, others native |
 
 Against the recommendation, authority is a world's choice rather than its
-profile governing outright.
+profile governing outright. Two follow-ons settled what a ruleset-led
+world means:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where do an edition's own facts live in a ruleset-led world? | 542: native state, related |
+| With nobody playing, how does a ruleset-led world resolve what its ruleset specifies? | 543: procedures with policies |
