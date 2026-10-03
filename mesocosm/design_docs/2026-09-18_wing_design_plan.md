@@ -398,6 +398,9 @@ what later sections derive from.
     is a desired extension of the sim and Lancer is its natural ruleset;
     neither is in this round, so the next ruleset consumer for the
     tabletop stays a PbtA-shaped system (§9.12b narrowed).
+    *Built out 2026-10-03 by rulings 538 to 541:* faithful editions, a
+    toolkit grown from them, hybrids by named profile, and a direction
+    of authority each world chooses.
 42. **Divinity is intrinsic provenance; constructs are a tier; the second
     tier's word is in question.** Mark, 2026-09-18: "To become divine is
     to become intrinsic to the provenance of the world; once something
@@ -1111,6 +1114,9 @@ what later sections derive from.
      and never a seam. This rules the agreement half of §5.2's resolution
      handoff, held under D19, and reverses the sim plan's "owed by the
      definitions and not by any game".
+     *Amended 2026-10-03 by ruling 538:* this holds in a world the sim
+     leads; a world may choose instead that its ruleset leads, the sim's
+     background following it.
 115. **Competition: each side chooses.** Put to Mark on 2026-09-24, after
      ruling 114 left the sim owing a model of a fight and the aggregation
      research had found shared-resource competition to be a world rule
@@ -1732,6 +1738,8 @@ what later sections derive from.
      refused on a world; allowed and flagged; or the DM's choice. Mark:
      "We should maybe consider allowing it debug, or experimental (with a
      warning)".
+     *Bounded 2026-10-03 by ruling 538:* calibration, and so this mode,
+     applies in worlds the sim leads.
 190. **An adventure pack whose requirements the world lacks waits, or the
      GM forces it.** Put to Mark on 2026-09-25: an adventure pack names
      what it needs from a world, a ruin, a faction at war, a missing heir;
@@ -6980,6 +6988,102 @@ what later sections derive from.
      answer was relayed by the migration session on 2026-10-03, not yet
      recorded there. Mere's migration lane owns the work.
 
+538. **Each world chooses whether the sim or its ruleset leads.** Raised by
+     Mark on 2026-10-03 with research into rulesets over the sim ("I guess
+     the gold standard would be successfully implementing d&d, pathfinder,
+     ars magica atop the sim, multiple versions, as close to the standard
+     raw as possible"), then asked: "Who governs where a published ruleset
+     and the sim disagree? Ruling 114 ("Rulesets calibrate"): with no
+     player choices, a ruleset reading the ledger must match the sim's own
+     background outcomes, which bends RAW wherever the sim models things
+     differently. D&D restores all hit points on a long rest, and
+     Pathfinder orders fortune and degree adjustments exactly, while the
+     sim heals tissue by its body model. Faithful editions, your gold
+     standard, need the opposite direction. The ledger, the record and the
+     derivation rule stay inviolable either way (41)." Options, recommended
+     first: (A) "The world's profile governs: a world declares its active
+     mechanics profile. Where the profile specifies behaviour, foreground
+     and background both obey it, the background simplifying only as far
+     as outcomes survive. The sim supplies whatever the profile leaves
+     unsaid, and its own model is the native profile. This reverses 114
+     (recommended)." (B) "Rulesets calibrate, as ruled: 114 stands:
+     editions are faithful where they agree with the sim and adapted where
+     it differs, and an edition that can't pass plays in experimental mode
+     (189)." (C) "Each world chooses: a world setting picks the direction:
+     the sim leads and rulesets calibrate, or the ruleset leads and the
+     sim's background follows it." Mark chose C, "Each world chooses",
+     against the recommendation. So the direction of authority is a world
+     setting: in a world the sim leads, rulesets calibrate to its
+     background as 114 has them; in a world its ruleset leads, the sim's
+     background follows that ruleset wherever it specifies behaviour. The
+     ledger, the record and the derivation rule stay inviolable in both
+     (41). *Reading, not ruled:* a ruleset-led world's background owes the
+     ruleset's own procedures, simplified only as far as their outcomes
+     survive, and 189's experimental mode stays for sim-led worlds.
+
+539. **Rules are built as faithful editions, a shared toolkit grown from
+     them.** Asked on 2026-10-03, with 538: "What do we build for rules?
+     Evidence: editions differ in sequencing, interruptions, stacking,
+     recovery, advancement and downtime, and RAW leaves decisions to the
+     GM. Foundry's Pathfinder 2e module builds abilities from small "rule
+     elements" (selector, predicate, value, an inspector). Datasworn carries
+     Ironsworn as portable JSON. A house ruleset starts once a framework
+     prescribes choices: six attributes, hit points, one success ladder."
+     Options, recommended first: (A) "Editions, toolkit grown: implement
+     recognized editions faithfully as versioned rulesets (Pathfinder 2e,
+     5e SRD versions, Ars Magica 5e), preserving the GM's decision points
+     and recording their rulings. A shared toolkit (checks, costs, choices,
+     modifiers, effects, durations, triggers) is extracted from what
+     repeats. A house ruleset only if experiments show a need
+     (recommended)." (B) "Toolkit first: design the cross-RPG kernel up
+     front from §5.1's taxonomy, then write each edition on it." (C) "A
+     house ruleset too: an Isocosm-native tabletop ruleset alongside the
+     editions, built on the toolkit and using the sim fully." Mark chose A,
+     "Editions, toolkit grown". So recognized editions are implemented
+     faithfully as versioned rulesets, the GM's decision points kept and
+     their rulings recorded; the shared rules toolkit is extracted from
+     what the editions repeat; and a house ruleset is made only if those
+     experiments show a need.
+
+540. **Rulesets mix freely in content and subsystems, and meet in an
+     encounter only under a named hybrid profile.** Asked on 2026-10-03,
+     with 538: "How far can rulesets mix? Evidence: sharing content
+     (creatures, places, histories) costs little. Combining subsystems (Ars
+     Magica's seasonal lab beside Pathfinder's combat) needs explicit
+     connections. A Pathfinder character fighting an Ars Magica one needs
+     decisions on whose defenses apply, how damage crosses, how turns
+     relate, and which exception wins: a hybrid design either way."
+     Options, recommended first: (A) "Hybrids by named profile: content and
+     subsystems combine freely. A cross-system encounter runs under a named
+     hybrid profile that documents each crossing and where it departs from
+     either edition (recommended)." (B) "Content only: worlds share content
+     across rulesets, but each game runs under one ruleset." (C) "Seamless
+     as the goal: the toolkit aims to make any two editions meet without a
+     named hybrid." Mark chose A, "Hybrids by named profile". So content
+     and subsystems combine freely across rulesets, and a cross-system
+     encounter runs under a named hybrid profile that documents each
+     crossing and each departure from either edition.
+
+541. **The VTT plays faithful editions; Eponym and Mesocosm keep their own
+     mechanics.** Asked on 2026-10-03, with 538: "How do the products
+     relate to the rulesets? Evidence: the overlay contract (154) already
+     has games submit intents and take back events. The VTT adjudicates at
+     a table. Eponym's embodied control and contact resolution are
+     mechanics of its own. Mesocosm's ecology, directing and epochs are
+     too. The Year Zero Engine licence admits VTT modules but excludes
+     video games." Options, recommended first: (A) "VTT faithful, others
+     native: the VTT hosts faithful editions. Eponym and Mesocosm keep
+     native mechanics, sharing the toolkit's effects and procedures, and a
+     published ruleset may govern Eponym's progression, magic or costs as a
+     selectable mode (recommended)." (B) "One ruleset for all: a world's
+     selected ruleset governs every product that plays it, Eponym and
+     Mesocosm included." (C) "VTT only: rulesets are the VTT's alone, and
+     Eponym and Mesocosm stay as designed." Mark chose A, "VTT faithful,
+     others native". So the VTT hosts faithful editions; Eponym and
+     Mesocosm keep their native mechanics and share the toolkit's effects
+     and procedures; and a published ruleset may govern Eponym's
+     progression, magic or costs as a selectable mode.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -10162,6 +10266,36 @@ Mark's suggested reading: Foundry's module and the Rust generator for how
 rules are encoded, Metacreator for seasonal history, and Mana and Artifice
 and Ars Nouveau for composed spells.
 
+*2026-10-03, rulings 538 to 541:* Mark's gold standard is faithful
+editions, D&D, Pathfinder and Ars Magica in their versions, as close to RAW
+as can be, with rulesets mixable over a coherent abstraction. Each world
+chooses whether the sim or its ruleset leads (538); rules are built as
+faithful versioned editions, keeping the GM's decision points, with a
+toolkit extracted from what repeats and a house ruleset only if needed
+(539); content and subsystems mix freely, and an encounter across systems
+runs under a named hybrid profile (540); and the VTT plays editions while
+Eponym and Mesocosm keep their native mechanics, sharing the toolkit (541).
+Further prior art Mark supplied, each still to be read and its licence
+checked before any code of it is studied:
+
+| Work | What it offers |
+| --- | --- |
+| [Datasworn](https://github.com/rsek/datasworn), with [Iron Vault](https://ironvault.quest/other-features/rulesets-and-homebrew.html) | Ironsworn and Starforged as JSON under a language-independent schema with generated types, Rust among them; content packages a separate tool imports and compiles homebrew into: author once, use across tools. Schema MIT, content licensed apart ([publisher's terms](https://tomkinpress.com/pages/licensing)) |
+| [Foundry's Pathfinder 2e rule elements](https://github.com/foundryvtt/pf2e/wiki/Quickstart-guide-for-rule-elements) | Abilities as small operations, each a selector, predicates, values from character or item data, and an inspector showing what a roll read: inspectable conditional effects |
+| [Inform](https://github.com/ganelson/inform) ([actions](https://ganelson.github.io/inform/WorldModelKit/actns.html)) | A world model processing actions through rulebooks of reach, visibility, carrying and actor: legible rule authoring and its exceptions |
+| [Icepool](https://github.com/HighDiceRoller/icepool) | Exact probabilities of dice mechanics, pools, keeps, rerolls and opposed rolls, for comparing a mapping's distributions on a bench; a reroll needs its decision policy |
+| [Versu](https://versu.com/about/how-versu-works/) ([content](https://emshort.blog/2013/02/22/versu-content-structure/), [conversation](https://emshort.blog/2013/02/26/versu-conversation-implementation/)) | Social practices, roles and reactions, characters able to break a norm and others answering it: oaths, rank, hospitality and covenant politics |
+| [Ceptre](https://www.cs.cmu.edu/~cmartens/ceptre.pdf) | Resource-transforming rules in stages, a player's choice replaceable by a stated strategy: which parts of a procedure become simulation once policies are supplied |
+| [BRP](https://brp.chaosium.com/brp-downloads/) | A generic ruleset with an ORC reference document, for adaptation experiments |
+| [GURPS Lite](https://www.sjgames.com/gurps/lite/3e/gurpslite.pdf) | Physical detail at configurable depth, as a design reference |
+| [Year Zero Engine](https://freeleaguepublishing.com/wp-content/uploads/2023/11/YZE-Standard-Reference-Document.pdf) | Risk, pushed rolls, stress and resource pressure; its [licence](https://freeleaguepublishing.com/wp-content/uploads/2026/03/Year-Zero-Engine-License-Agreement-version-1.1.pdf) admits VTT modules and excludes video games |
+| [Ironsworn](https://tomkinpress.com/collections/ironsworn) | Solo and cooperative play, with Datasworn's digital path |
+
+*Reading, not ruled:* portable content, executable effects and decision
+policies are separate investigations, and the test of a mapping is that
+two rules keep the same consequences, costs, permissions and choices, not
+only an outcome's label.
+
 ### 5.2 The boundary between the sim and a game (ruled in part)
 
 **Review, 2026-09-21, at Mark's word: "This ruling feels particularly
@@ -10821,6 +10955,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 538 to 541 recorded, rulesets over the sim, raised
+  by Mark with research and its prior art: each world chooses whether the
+  sim or its ruleset leads (538, against the recommendation, amending
+  114); faithful versioned editions with a toolkit grown from them (539);
+  hybrids by named profile (540); the VTT faithful, Eponym and Mesocosm
+  native (541). Annotations on 41, 114 and 189; the prior art in §5.1.
+  Carried into the sim plan's §3.5, the VTT's overlay plan, the session
+  notes' §10 and both indexes.
 - 2026-10-03: ruling 537 recorded at the Burn migration session's request:
   the web modules take the newest wasm-bindgen they can (Mark: "Take the
   newest ya can"), after 536's helper met the model probe's older pin.

@@ -1804,3 +1804,19 @@ Building step 8c raised one more:
 | Question as put | Ruling |
 | --- | --- |
 | Where do the provision and a missing part take growth, against the reserve? | 535: a lineage trait |
+
+Mark then raised rulesets over the sim, with research: the gold standard
+as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
+house ruleset, versioned editions or a cross-game kernel, and how the
+products relate. One question reopened ruling 114 on evidence that
+faithful editions need the ruleset to lead:
+
+| Question as put | Ruling |
+| --- | --- |
+| Who governs where a published ruleset and the sim disagree? | 538: each world chooses |
+| What do we build for rules? | 539: editions, toolkit grown |
+| How far can rulesets mix? | 540: hybrids by named profile |
+| How do the products relate to the rulesets? | 541: VTT faithful, others native |
+
+Against the recommendation, authority is a world's choice rather than its
+profile governing outright.

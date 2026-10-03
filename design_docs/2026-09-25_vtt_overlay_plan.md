@@ -2,6 +2,14 @@
 
 **Date:** 2026-09-25
 
+**2026-10-03, rulings 538 to 541:** the VTT plays recognized editions
+faithfully as versioned rulesets, keeping the GM's decision points and
+recording their rulings, with a toolkit grown from what they repeat; a
+world chooses whether the sim or its ruleset leads, so 114's calibration
+holds only where the sim leads; and an encounter across systems runs
+under a named hybrid profile. Ars Magica 5th Edition joins 5e and
+Pathfinder 2e (522).
+
 **Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
 (231 and 243 to 250); V1 done 2026-09-26, opened by ruling 253 as a
 contract module only; V2 to V4 proposed and not opened, waiting on
@@ -354,6 +362,9 @@ V1 is Mark's.
 
 ## Progress
 
+- 2026-10-03: rulings 538 to 541 noted at the head: faithful editions, a
+  toolkit grown from them, hybrids by named profile, and authority chosen
+  per world.
 - 2026-09-26: V1 done. Ruling 253 opened E1 and V1 as contract modules
   only; `src/vtt/` was built in a worktree, reviewed and merged by the
   Simulation design review session (main 1996ecc), then the shapes shared
