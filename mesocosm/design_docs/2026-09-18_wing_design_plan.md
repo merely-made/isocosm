@@ -5090,6 +5090,8 @@ what later sections derive from.
      store cells times a cell's mass, and a body without one keeps none.
      *Spread by ruling 464:* rent, growth and a landing meal reach the parts
      in proportion.
+     *Booked 2026-10-02 by ruling 504:* each part keeps its own ledger and
+     is a holder; the body's totals are readings.
 
 460. **A part's cells are derived from its extents.** Asked on 2026-10-02,
      with 459: "How many cells does a part hold? Evidence: Mesocosm derives
@@ -5176,6 +5178,8 @@ what later sections derive from.
      into." Mark chose A, "Store cells hold it". So a store part holds
      reserve up to its store cells times a cell's mass, and a body without
      one keeps none: TD5 then builds tissue, and rent draws tissue.
+     *Founded 2026-10-02 by ruling 506:* the probe's grazers store in their
+     lumps, and its producers stay lean.
 
 464. **Rent, growth and a landing meal reach a body's parts in proportion.**
      Asked on 2026-10-02, with 463: "Which parts do rent, growth and a
@@ -5925,6 +5929,8 @@ what later sections derive from.
      lists; a function takes its part's measurement in proportion to the
      cells it holds there; and the natives take them up with the bodies
      family, as with their systems (490).
+     *Applied 2026-10-02 by ruling 505:* income and the mouthful read their
+     measurements alone, calibrated to the domain's median body.
 
 494. **The eight names are read from the box and the tree, and hollows
      declared.** Asked on 2026-10-02, with 493: "How are tube, branch, shell
@@ -6152,6 +6158,68 @@ what later sections derive from.
      systems checkpoint". So the bodies family's systems checkpoint also
      riffs systems by substitution (491) and certifies a riffed system
      beside the ten defaults.
+
+504. **Each part keeps its own ledger and is a holder.** Asked on
+     2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
+     live in the sim's books (459)? Evidence: an account's holder is a site,
+     an entity or the dev source (31 uses in 9 files), and entity accounts
+     are read 182 times in 46 files. Every flow, share, pass frame and crowd
+     state is keyed by holder and account. `Binding::Part` exists, but its
+     doc says a part "keeps no ledger". The hunting family's members have no
+     parts at all." Options, recommended first: (A) "A ledger on each part:
+     a part gains its own ledger, keyed by provenance as the scruple is, and
+     becomes a holder (entity, part), so flows, shares and frames name it.
+     The body's totals are readings over its parts. A body without parts
+     keeps its entity ledger, so the hunting family's certified numbers must
+     not move: a control (recommended)." (B) "Part keys on the body's
+     ledger: the body's ledger keeps one account per part and kind (part 2's
+     tissue), so holders and flows stay as they are. Parts stay ledgerless
+     in the schema, and each account's name carries its part." Mark chose A,
+     "A ledger on each part". So a part gains its own ledger, keyed by
+     provenance as the scruple is, and becomes a holder that flows, shares
+     and frames name; the body's totals are readings over its parts; and a
+     body without parts keeps its entity ledger, the hunting family's
+     certified numbers standing as the control.
+
+505. **Income and the mouthful read their measurements alone.** Asked on
+     2026-10-02, with 504: "How do fixing's income (TD2c) and the mouthful
+     (TD9) take their measurements (493)? Evidence: both read the body's
+     tissue to the three-quarter power today; the mouthful also reads its
+     rods' span. Mesocosm's reference segment is 125 voxels, which gives
+     length 5, face 25 and volume 125. The probe's fronds are 3 to 4 voxels'
+     half-extent across, so their faces are 49 to 81. The grazer's intake
+     lump, at [2,2,2], is exactly 125 voxels. Its rods do nothing but
+     contract, so taking the rods' span by cell share leaves it unchanged."
+     Options, recommended first: (A) "Form scales Mesocosm's rates: keep
+     TD2c's and TD9's rates on tissue, multiplied by the function's
+     measurement over the same measurement of the reference segment. Fronds
+     fix 1.96 to 3.24 times today's rate, capped by room. The grazer's lump
+     is the reference size, so its meal is unchanged (recommended)." (B)
+     "Form replaces mass: the rates read the measurement alone, at a
+     world-rule rate per unit, calibrated so the domain's median body earns
+     what it does today. Tissue no longer sets income or the mouthful." Mark
+     chose B, "Form replaces mass". So TD2c's income and TD9's mouthful read
+     the function's measurement alone, at a world-rule rate per unit
+     calibrated so the domain's median body earns what it does today, and
+     tissue no longer sets either.
+
+506. **The probe's grazers store, and its producers stay lean.** Asked on
+     2026-10-02, with 504: "How are the probe's bodies founded under 463 and
+     466? Evidence: 463 lets only parts expressing store hold a reserve.
+     Neither probe body expresses store, yet both keep a reserve account
+     today. 466 lets a lump split its cells between taking in and storing.
+     Checkpoint 7 is done only when the reserve sits in parts, so something
+     must store." Options, recommended first: (A) "Fat grazers, lean
+     producers: the grazer's lump splits its cells between intake and store
+     by a founding draw. Producers stay single fronds with no reserve, so
+     the domain tests both strategies 463 named (recommended)." (B) "Both
+     lean: no store anywhere: reserves leave the domain, TD5 builds tissue
+     and rent draws on tissue." (C) "Both fat: producers also gain a small
+     storing lump beside the frond, a tuber, and the grazer's lump splits as
+     in the first." Mark chose A, "Fat grazers, lean producers". So the
+     grazer's lump splits its cells between intake and store by a founding
+     draw, and producers stay single fronds with no reserve, the domain
+     testing both strategies 463 named.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -9973,6 +10041,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-02: rulings 504 to 506 recorded, checkpoint 7's forks: each part
+  keeps its own ledger and is a holder (504); income and the mouthful read
+  their measurements alone, calibrated to the median body (505), against the
+  recommendation; and the probe's grazers store while its producers stay
+  lean (506). Annotations on 459, 463 and 493. Carried into the sim plan's
+  checkpoint 7 brief, the anatomy brief, the session notes' §10 and the
+  index.
 - 2026-10-02: rulings 501 to 503 recorded, the bodies family's shape: four
   checkpoints in order, matter in parts, development, systems, harm and loss
   (501); territories and surfaces built last, Mark noting their likely use

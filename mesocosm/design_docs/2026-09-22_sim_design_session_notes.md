@@ -1681,3 +1681,14 @@ the concept of aura, if we're doing magical systems... so definitely in the
 bodies family, last". Against the recommendation, riffing is built with the
 systems rather than left to the generator. The family is briefed in the sim
 plan's §9 as checkpoints 7 to 11.
+
+Opening checkpoint 7, its assessment found three forks:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does a part's matter live in the sim's books? | 504: a ledger on each part |
+| How do fixing's income and the mouthful take their measurements? | 505: form replaces mass |
+| How are the probe's bodies founded under 463 and 466? | 506: fat grazers, lean producers |
+
+Against the recommendation, income and the mouthful read their measurements
+alone rather than scaling Mesocosm's tissue rates.

@@ -15,7 +15,7 @@ processes that read bodies (the sim plan and the families), or the games'
 own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](2026-09-18_wing_design_plan.md), rulings 36, 37, 39,
 57, 58, 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446,
-447 to 450, 453, 456 to 470, 477 to 480 and 485 to 500; checkpoint 6's
+447 to 450, 453, 456 to 470, 477 to 480, 485 to 500 and 504; checkpoint 6's
 findings in the [sim plan](2026-09-22_sim_plan.md).
 
 ## 1. Three levels
@@ -156,20 +156,21 @@ lineage it forked from.
 ## 4. Where a body's matter sits
 
 Each part holds its own tissue, a mix of nis by provenance, which is the
-scruple of ruling 98; the parts that express store hold the body's reserve
-(459), each up to its store cells times a cell's mass, and a body with no
-store keeps none, so TD5 then builds tissue and rent draws tissue (463). A
-bite lands on one part of its prey, drawn by what each holds, and
-incorporation takes a part whole with its matter. Rent takes from the parts
-in proportion to their tissue, and growth and a landing meal fill each part
-in proportion to its room below its own adult mass, so no part comes first
-and none overfills (464). This settles 456's item: Mark's question, whether
-a meal could depend on the part eaten and where the reserve is stored, has
-its answer. *Reading, not ruled:* TD5's one rule keeps its threshold, read
-against the reserve held across all the body's stores; rent still draws the
-reserve before the tissue (446), from the stores in proportion to what each
-holds; and a meal routed to the reserve fills the stores in proportion to
-their room.
+scruple of ruling 98, in a ledger of its own, the part a holder and the
+body's totals readings of its parts (504); the parts that express store hold
+the body's reserve (459), each up to its store cells times a cell's mass,
+and a body with no store keeps none, so TD5 then builds tissue and rent
+draws tissue (463). A bite lands on one part of its prey, drawn by what each
+holds, and incorporation takes a part whole with its matter. Rent takes from
+the parts in proportion to their tissue, and growth and a landing meal fill
+each part in proportion to its room below its own adult mass, so no part
+comes first and none overfills (464). This settles 456's item: Mark's
+question, whether a meal could depend on the part eaten and where the
+reserve is stored, has its answer. *Reading, not ruled:* TD5's one rule
+keeps its threshold, read against the reserve held across all the body's
+stores; rent still draws the reserve before the tissue (446), from the
+stores in proportion to what each holds; and a meal routed to the reserve
+fills the stores in proportion to their room.
 
 ## 5. Geometry the sim measures
 
