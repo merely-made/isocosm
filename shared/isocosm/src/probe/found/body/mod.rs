@@ -297,7 +297,10 @@ impl BodyFounding {
                         part.matter.insert(tissue(i as u32), held);
                         let cells = u64::from(part.cells.get(anatomy::STORE).copied().unwrap_or(0));
                         let stored = cells * anatomy::cell_mass(part, b) * reserve_mille / 1000;
-                        if stored > 0 {
+                        // Every store keeps the account, empty or not, so
+                        // that every draw reads the same set (as checkpoint
+                        // 6's ledger kept both accounts).
+                        if cells > 0 {
                             part.matter.insert(reserve(i as u32), stored);
                         }
                     }
