@@ -9,12 +9,15 @@
 use crate::{
     Result,
     rules::{
-        AccountKind, Binding, BodyRules, Conversion, Effect, Need, Query, Reading, Rules, Seeding,
-        expressing,
+        AccountKind, Binding, BodyRules, Conversion, Development, Effect, Need, Query, Reading,
+        Rules, Seeding, expressing,
     },
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
+
+mod grow;
+pub(crate) use grow::grow;
 
 /// The needs a world's minds read their mood from; none without a mind.
 pub(crate) fn needs(rules: &Rules) -> &[Need] {
@@ -295,6 +298,10 @@ pub(crate) trait Parties {
     fn part(&mut self) -> Result<(&mut Entity, Id)>;
     /// Moves a condition at the site.
     fn shift(&mut self, key: &str, delta: i64) -> Result<()>;
+    /// What a lineage's bodies develop from (ruling 478).
+    fn development(&mut self, lineage: &str) -> Result<Development> {
+        Err(format!("{lineage}'s bodies cannot grow here"))
+    }
 }
 
 /// The effects both runners apply. The others write the world's records,
@@ -354,6 +361,11 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             .resolved()
             .and_then(|amount| convert(p, rules, *who, (from, to), amount, *conversion))
             .map(|_| ()),
+        Effect::Grow {
+            from,
+            into,
+            conversion,
+        } => grow(p, rules, from, into, *conversion).map(|_| ()),
         _ => return None,
     })
 }

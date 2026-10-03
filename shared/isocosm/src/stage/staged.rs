@@ -253,6 +253,27 @@ impl Staged<'_> {
                 }
                 return Ok(false);
             },
+            Effect::Grow {
+                from,
+                into,
+                conversion,
+            } => {
+                let rules = &sim.genesis.rules;
+                let grown = meaning::grow(self, rules, from, into, *conversion)?;
+                let ends = (self.holder(Binding::Actor), self.holder(Binding::Place));
+                if let (true, (Some(start), Some(end))) = (sim.flowing(), ends) {
+                    for (key, amount) in grown.paid {
+                        let (from, to) = ((start, key), (end, into.clone()));
+                        self.stage.legs.push(Leg { from, to, amount });
+                    }
+                    for (taken, to, total) in grown.taken {
+                        self.stage
+                            .legs
+                            .extend(flows::poured(start, taken, [(to, total)]));
+                    }
+                }
+                return Ok(false);
+            },
             Effect::Convert {
                 who,
                 from,
@@ -517,6 +538,12 @@ impl Staged<'_> {
 }
 
 impl Parties for Staged<'_> {
+    fn development(&mut self, lineage: &str) -> Result<crate::rules::Development> {
+        let l = self.sim.state.lineages.get(lineage);
+        l.and_then(|l| l.development.clone())
+            .ok_or_else(|| format!("{lineage} develops from no recipe"))
+    }
+
     fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
         let rules = &self.sim.genesis.rules;
         match who {

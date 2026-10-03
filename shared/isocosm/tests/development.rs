@@ -69,6 +69,7 @@ fn development(tagmata: Vec<Tagma>, variance: u8, absence: [u32; 2]) -> Developm
         policy: Policy::default(),
         domain: 0,
         clutch: 1,
+        anamorphic: false,
     }
 }
 

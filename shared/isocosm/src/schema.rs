@@ -56,6 +56,10 @@ pub struct Part {
     /// frame (rulings 462 and 510); nought at a root.
     #[serde(default, skip_serializing_if = "is_zero_extent")]
     pub offset: [i32; 3],
+    /// Where in its lineage's recipe it develops (252): tagma, segment, and
+    /// nought for the segment or one more than the borne part's place.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub situs: Option<[u8; 3]>,
     /// the cells each function it expresses holds (X6's allocation), never
     /// more in all than its capacity;
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
@@ -106,6 +110,10 @@ pub struct Entity {
     pub skills: BTreeMap<Key, u64>,
     pub tenets: BTreeMap<Key, Tenet>,
     pub disposition: [i16; 5],
+    /// Each tagma's segments as the body drew them (478, 495), what an
+    /// epimorphic body grows toward; absent in bodies without a recipe.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub soma: Vec<u8>,
 }
 
 /// A past residence. The departure tick belongs to the next place.

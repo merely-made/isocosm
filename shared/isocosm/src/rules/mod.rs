@@ -219,6 +219,14 @@ pub enum Effect {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         into: Option<Key>,
     },
+    /// The actor's next missing parts grown from what it holds of `from`
+    /// (rulings 479 and 510), each paying PD2's price from its reserve and
+    /// then its tissue into the place's `into`, and filled by `conversion`.
+    Grow {
+        from: Key,
+        into: Key,
+        conversion: Conversion,
+    },
     /// Up to `amount` of one ledger's `from` accounts, a share of each in
     /// proportion, given to the same ledger as `to` by a declared
     /// conversion: a meal digested, soil synthesized, matter mineralized.

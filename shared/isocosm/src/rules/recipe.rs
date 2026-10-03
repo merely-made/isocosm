@@ -232,6 +232,10 @@ pub struct Development {
     pub lexicon: BTreeSet<Key>,
     #[serde(default = "one")]
     pub clutch: u32,
+    /// Whether its bodies add segments toward the recipe's count as they
+    /// mature, or keep the count they drew, the default (495).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub anamorphic: bool,
 }
 
 impl Recipe {

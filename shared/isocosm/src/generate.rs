@@ -353,6 +353,7 @@ impl Founding {
                     skills: BTreeMap::new(),
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
+                    soma: vec![],
                 },
                 1,
             )?;
@@ -397,6 +398,7 @@ impl Founding {
                     skills: BTreeMap::new(),
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
+                    soma: vec![],
                 },
                 count,
             )?;

@@ -419,6 +419,19 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} spends to {to:?}, which it cannot"));
             }
         },
+        // Growth turns matter in hand into the actor's new parts, their
+        // price returned to the place (rulings 479 and 510).
+        Effect::Grow {
+            from,
+            into,
+            conversion,
+        } => {
+            matter(rules, from)?;
+            matter(rules, into)?;
+            if *conversion == Conversion::Mineralization {
+                return Err(format!("{id} grows a body by mineralizing"));
+            }
+        },
         // A conversion takes matter of one ledger into another account of
         // it, as a declared conversion (rulings 342 and 357).
         Effect::Convert { who, from, to, .. } => {

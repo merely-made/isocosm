@@ -470,6 +470,7 @@ pub(super) fn member(
         skills: BTreeMap::new(),
         tenets: BTreeMap::new(),
         disposition: [0; 5],
+        soma: vec![],
     }
 }
 

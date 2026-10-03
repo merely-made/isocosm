@@ -61,12 +61,14 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
     Soma { segments, absent }
 }
 
-/// A part of `t`, attached to `parent` at `offset`, holding nothing.
-fn part(t: &Template, parent: Option<Id>, offset: [i32; 3]) -> Part {
+/// A part of `t` at `situs`, attached to `parent` at `offset`, holding
+/// nothing.
+fn part(t: &Template, situs: [u8; 3], parent: Option<Id>, offset: [i32; 3]) -> Part {
     Part {
         parent,
         half_extent: t.half_extent,
         offset,
+        situs: Some(situs),
         cells: t
             .cells
             .iter()
@@ -125,7 +127,7 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
                 None => [0; 3],
             };
             let id = parts.len() as Id;
-            parts.insert(id, part(segment, parent, offset));
+            parts.insert(id, part(segment, [i as u8, s, 0], parent, offset));
             spine.push(id);
             last = Some(id);
             let Some(bears) = &t.bears else { continue };
@@ -138,6 +140,7 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
                 false => vec![t.socket],
             };
             let (run, _) = t.facing.axis();
+            let mut slot = 0u8;
             for ordinal in 0..t.per_segment {
                 let along = (2 * i32::from(ordinal) + 1 - i32::from(t.per_segment))
                     * borne.half_extent[run].abs().max(1);
@@ -145,7 +148,8 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
                     let mut offset = flush(segment.half_extent, borne.half_extent, *socket);
                     offset[run] += along;
                     let at = parts.len() as Id;
-                    parts.insert(at, part(borne, Some(id), offset));
+                    slot = slot.checked_add(1).ok_or("too many borne parts")?;
+                    parts.insert(at, part(borne, [i as u8, s, slot], Some(id), offset));
                 }
             }
         }

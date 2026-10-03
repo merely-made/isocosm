@@ -63,6 +63,7 @@ fn developed() -> Genesis {
         domain: 1,
         lexicon,
         clutch: 3,
+        anamorphic: false,
     });
     g
 }

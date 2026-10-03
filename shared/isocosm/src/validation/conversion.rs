@@ -90,6 +90,28 @@ pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<
                     conversion,
                     ..
                 } => (*conversion, keys(from), keys(std::slice::from_ref(to))),
+                // Growth's hand fits its conversion, and its price returns
+                // living matter as the world's (479, 446).
+                Effect::Grow {
+                    from,
+                    into,
+                    conversion,
+                } => {
+                    let hand = keys(std::slice::from_ref(from));
+                    let world_hand = hand.iter().all(|(_, w)| *w);
+                    let fits = match conversion {
+                        Conversion::Synthesis => world_hand,
+                        _ => !world_hand,
+                    };
+                    let price = keys(std::slice::from_ref(into));
+                    if !fits || !price.iter().all(|(_, w)| *w) {
+                        return Err(format!(
+                            "{} grows by {conversion:?} but moves the wrong kinds of matter",
+                            p.id
+                        ));
+                    }
+                    continue;
+                },
                 // Spending into another account returns living matter as
                 // the world's (ruling 446).
                 Effect::Spend {
