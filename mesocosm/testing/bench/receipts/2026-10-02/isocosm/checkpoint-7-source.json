@@ -1,0 +1,141 @@
+{
+ "date": "2026-10-02 to 2026-10-03",
+ "kind": "isocosm-checkpoint-7",
+ "branch": "checkpoint-7",
+ "commits": {
+  "from": "0e1480d (rulings 504 to 506 on main)",
+  "matter in parts": "12690f2 each part keeps its own ledger",
+  "founding": "edbdc0b keep the reserve account in every store",
+  "certification": "4d60160 weigh a watched prey's parts, and average all own matter (507)",
+  "controls": "the commit carrying these receipts: tests only (the calibration exact, the conservation test requiring that matter moved)"
+ },
+ "compiler": "rustc 1.98.1 (48a229cea 2026-09-01)",
+ "profile": "release",
+ "machine": "Windows 11 Home 10.0.26220, x86_64; other sessions compiling throughout",
+ "executables_sha256": {
+  "isocosm-probe at 12690f2": "bc115d57cdc124ddd421f91196e903686f39a0b2a20ddd8ee895c56907d649c1",
+  "isocosm-probe at edbdc0b": "cf9cb1cb62a9465170532fbaa668aa93ce23fe0083e25574595735f5768b2dab",
+  "isocosm-probe at 4d60160": "d2edf9ded506f11b3e1a063f5be68443fa71b1a6888c4970d8c3f556a6f25c9a",
+  "isocosm-scale at 4d60160": "b6f724054f520fd95f3a4c0a74d6138881cb5228a5bf52f7e46f4189f29ff31f",
+  "isocosm-probe on main (code as at b4345cc)": "4a554d3eff43f3b7a3ed50e58edd151eb36985299e411bd29ee69ed05c12d69e",
+  "isocosm-scale on main (code as at b4345cc)": "5adc34cb84a95cc4bb4ad220e5003af8b7a6d39d311f8bf008873b36190c9bb6",
+  "pilot: edbdc0b with the watch fixed and all own matter averaged": "6bd0bbacc970acfc08a74f5d123beee691cbc503b663d2219a791bd55b324808",
+  "pilot: edbdc0b with the watch fixed, reserves averaged": "7be4d9effd6406540045ec96f23fbe1f992bf57ba2f1b3edd06d4aa8f66f6af0"
+ },
+ "asked": "Mark: proceed (open checkpoint 7, build it in a worktree, certify it as checkpoint 6 was). Forks ruled on the way: 504 to 506 at opening, 507 while certifying.",
+ "runs": [
+  {
+   "file": "c7-probe-bodies.json (raw, out of tree); c7-probe-bodies-verify.txt",
+   "purpose": "checkpoint 7's vertical probe: the natives on part-held matter and their measurements, exact against crowd",
+   "command": "isocosm-probe --bodies --draws 1000 --output c7-probe-bodies.json",
+   "seeds": "master seed 1791001053826430500, from the clock",
+   "commit": "4d60160",
+   "draws": 1000,
+   "readings": 15,
+   "comparisons": {
+    "exact against crowd": "certified 15/15, detected 0, largest distance 0.027 (inspect:place)",
+    "exact against exact (positive control)": "certified 15/15, detected 0, largest 0.029 (inspect:account:reserve:1)",
+    "exact against averaged crowd (negative control)": "detected 6 of 15: body:starve-0#2 8.49 against 5.32 at 0.307, producers alive 55.70 against 58.87, body:graze-1#3, meal-holdings, inspect:alive, inspect:account:tissue:0",
+    "exact against unweighted crowd (draw control)": "detected 6 of 15; body:starve-0#2 at 0.256, 8.49 against 14.49"
+   },
+   "evaluation_ratio": 1.77,
+   "wall_ratio": 5.4,
+   "alive_per_state_end_median": 1.51,
+   "shortfalls": "the crowd shared out a prey too small for its grazers 471 times in 108 of the 1,000 draws; site shortfalls not counted",
+   "refused": "none",
+   "checks": {
+    "exact_rerun_identical": true,
+    "collect_changes_no_outcome": true
+   },
+   "verify": "every distance and verdict recomputed and matched; no difference verdict disagrees at the 0.05 line"
+  },
+  {
+   "file": "c7-probe-bodies-edbdc0b-failed.json (raw, out of tree); c7-probe-bodies-edbdc0b-failed-verify.txt",
+   "purpose": "the run that failed: the watch's meal holdings and the averaged crowd",
+   "command": "isocosm-probe --bodies --draws 1000 --output c7-probe-bodies.json",
+   "seeds": "master seed 1790993524767155700, from the clock",
+   "commit": "edbdc0b",
+   "result": "main pass false: body:graze-1#meal-holdings 0.00 against 9,830.42 (the exact runner's watch weighing an empty entity ledger); negative control starvation not detected, 8.19 against 8.42 (no producer reserve to average)"
+  },
+  {
+   "file": "c7-probe-bodies.log of 12690f2 (out of tree, c7-probe-bodies-failed-draw137.log)",
+   "purpose": "the first run",
+   "seeds": "master seed 1790991944854085300, from the clock",
+   "commit": "12690f2",
+   "result": "stopped at draw 137: only in draw 0, inspect:account:reserve:1 (a store that drew no reserve kept no account)"
+  },
+  {
+   "files": [
+    "pilot-507/avg-own-200.json, pilot-507/avg-reserve-200.json (raw, out of tree)",
+    "pilot-507-avg-own-200-verify.txt, pilot-507-avg-reserve-200-verify.txt"
+   ],
+   "purpose": "the evidence put to Mark for ruling 507",
+   "commands": [
+    "probe-avg-own --bodies --seed 20261002 --draws 200",
+    "probe-avg-reserve --bodies --seed 20261002 --draws 200"
+   ],
+   "result": "reserve-only averaging: producers alive 60.65 against 60.65, starving 6.29 against 6.28, not detected; all own matter: starving 6.29 against 3.25 at 0.335, detected"
+  },
+  {
+   "files": [
+    "c7-density-bodies-{32,64,128,256,512}.json (raw, out of tree)",
+    "c7-density-bodies.json",
+    "c6_density.py"
+   ],
+   "purpose": "savings by density for bodies",
+   "commands": [
+    "isocosm-probe --bodies --density --draws 32 --members N N, N in 32, 64, 128, 256, 512",
+    "python c6_density.py c7-density-bodies.json <the five>"
+   ],
+   "commit": "4d60160",
+   "result": "evaluations 1.77, 1.76, 1.89, 2.12, 2.64 times fewer; living members a state 1.44, 1.57, 1.80, 2.19, 2.81; wall 4.3 to 38.5 times, under load"
+  },
+  {
+   "files": [
+    "c7-remeasure-ecology.json (raw, out of tree)",
+    "c7_remeasure.py"
+   ],
+   "purpose": "the ecology scale points on the branch, against checkpoint 6's remeasure",
+   "command": "isocosm-scale --remeasure ../../mesocosm/testing/bench/receipts/2026-09-25/isocosm/scale.json --remeasure ../../mesocosm/testing/bench/receipts/2026-09-25/isocosm/scale-extension.json --family ecology --output c7-remeasure-ecology.json",
+   "commit": "4d60160",
+   "result": "0 of 29 points differ from c6-remeasure-ecology.json outside time and heap; the comparator finds 0 of 29 against itself and 29 of 29 between checkpoint 6's remeasure and the morning's before it"
+  },
+  {
+   "files": [
+    "ab/ab-{main,cp7}-{1,2,3}.json and ab/remeasure-{main,cp7}-{1,2}.json (raw, out of tree)"
+   ],
+   "purpose": "cost under shared load: main's build and the branch's interleaved",
+   "commands": [
+    "isocosm-probe --bodies --density --seed 2026100i --draws 32 --members 32 32, main then the branch, i in 1, 2, 3",
+    "the ecology remeasure above, main then the branch, twice"
+   ],
+   "result": "bodies: 82 against 109 microseconds an exact evaluation, 31 against 40 in the crowd, about 1.6 times the evaluations a draw; ecology: every state identical, mean tick 1.01 and 1.04 times main's at the median point (0.74 to 1.20)"
+  },
+  {
+   "files": [
+    "pilot-{food,water}-{main,cp7}.json (raw, out of tree)",
+    "c7_compare.py"
+   ],
+   "purpose": "what did not change: the hunting family, whose parts have no extents",
+   "commands": [
+    "isocosm-probe --predators --seed 20261001 --draws 16",
+    "isocosm-probe --predators --water --seed 20261001 --draws 16"
+   ],
+   "result": "main's build and 4d60160 equal in every field but wall time and the note, with food and with water; food against water differs in 4,235 fields"
+  }
+ ],
+ "checks": [
+  "cargo test in shared/isocosm: 197 passed, 0 failed",
+  "cargo clippy --all-targets: clean; cargo fmt --check: clean; the largest touched file 576 lines (src/probe/aggregate.rs)",
+  "cargo check -p mesocosm-genet --all-targets in the mesocosm workspace against the branch's isocosm: passes",
+  "every touched file under the 600-line ceiling"
+ ],
+ "controls": [
+  "planted faults, each caught by its test and restored: a take spread evenly; the reserve bounded by the whole part; a bite drawn evenly; a rod with one child read as a branch; flow legs left unsplit; a body's books leaving out its parts; fixing at 5 mg per 63 faces; grazing at 12 mg per 294 voxels",
+  "the books fault first passed, the core refusing every matter-moving act; the conservation test now requires producers to fix and pay rent",
+  "the calibration test first allowed a median a milligram off; it now requires equality",
+  "the watch: a graze weighing its prey at nothing fails on the old watch at seed 0, tick 1",
+  "the averaged crowd: reserve-only averaging fails the flattening test, producers' tissue 84 to 182 mg at one site"
+ ],
+ "scope": "Checkpoint 7: every milligram of a bodied member's own tissue and reserve sits in a part, its totals readings of its parts; takes, gives and bites part by part; capacity and cell mass from extents; measurements by cell share; names from the box and the tree; the flow record naming parts; the natives on part-held matter and their measurements; the crowd certified on them."
+}

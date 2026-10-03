@@ -4,12 +4,14 @@
 //! The five natives as definitions (ruling 262): Mesocosm's physiology
 //! lowered into processes over a minimal body (rulings 446, 453 and 455),
 //! its numbers Mesocosm's own, written into the expressions as a world's
-//! rules carry them. Contract prices rent and the mouthful by its span;
-//! intake is the meal, routed by TD5 and paid for where the prey's gland is
-//! charged; fix draws its income from the site's soil; secrete is the gland
-//! the lowered script develops and the rent and dose it adds. Contract's
-//! reach, sense's perception, and fix's forage radius and crowding wait for
-//! places, so sense runs nothing yet.
+//! rules carry them, its matter in parts since checkpoint 7 (rulings 459,
+//! 463, 464 and 504). Contract prices rent and the mouthful by its span;
+//! intake is the meal, its size read of intake's volume, routed by TD5 and
+//! paid for where the prey's gland is charged; fix draws its income from the
+//! site's soil by the area it presents (ruling 505); secrete is the gland the
+//! lowered script develops and the rent and dose it adds. Contract's reach,
+//! sense's perception, and fix's forage radius and crowding wait for places,
+//! so sense runs nothing yet.
 
 use crate::{generate::process, rules::*, schema::*};
 use std::collections::BTreeSet;
@@ -17,12 +19,14 @@ use std::collections::BTreeSet;
 /// Mesocosm's reference body: 100 mg in a segment of 125 voxels.
 const REFERENCE_MASS_MG: i64 = 100;
 const REFERENCE_SEGMENT_VOXELS: i64 = 125;
-/// The reference mass to the three-quarter power, as Mesocosm takes it.
-const REFERENCE_MASS_34: i64 = 31;
 const UPKEEP_BASE_MG: i64 = 1;
 const UPKEEP_SCALE: i64 = 62;
-const FIXES_BASE_MG: i64 = 5;
-const GRAZES_BASE_MG: i64 = 3;
+/// Ruling 505's rates per unit, as a fraction: income per voxel face of
+/// fixing area, and the mouthful per voxel of intake before TD9's build
+/// multiple, calibrated so the domain's median body earns what checkpoint
+/// 6's tissue rates gave it (see the calibration test).
+pub(super) const FIXES_PER_FACE: (i64, i64) = (4, 63);
+pub(super) const GRAZES_PER_VOXEL: (i64, i64) = (11, 294);
 /// A body this light or lighter starves.
 pub(super) const STARVATION_MG: u64 = 20;
 /// TD5's horizon: a meal burns into the reserve while it holds fewer
@@ -34,6 +38,7 @@ pub(super) const CANDIDATE: &str = "ability:candidate-secrete";
 const CONTRACT: &str = "function:contract";
 const INTAKE: &str = "function:intake";
 const FIX: &str = "function:fix";
+const STORE: &str = "function:store";
 const SECRETE: &str = "function:secrete";
 /// What a meal took and what its prey held before it, kept for the dose.
 const TAKEN: &str = "probe:taken";
@@ -149,33 +154,55 @@ fn hungry(i: u32) -> Expr {
     at_least(budget, add(vec![held(Binding::Actor, &reserve(i)), c(1)]))
 }
 
-/// How far an account is below the ceiling.
-fn gap(key: &str) -> Expr {
-    most(vec![c(0), less(ceiling(), held(Binding::Actor, key))])
+/// What the body may hold (ruling 463): its ceiling in tissue, and in
+/// reserve its store cells' mass.
+fn bound(reserve: bool) -> Expr {
+    match reserve {
+        true => Expr::Read(Reading::CellMass {
+            who: Binding::Actor,
+            function: STORE.into(),
+        }),
+        false => ceiling(),
+    }
 }
 
-/// What a body has room for (TD6): below its ceiling in tissue and in
-/// reserve.
+/// How far an account is below what the body may hold of it.
+fn gap(key: &str, reserve: bool) -> Expr {
+    most(vec![c(0), less(bound(reserve), held(Binding::Actor, key))])
+}
+
+/// What a body has room for (TD6): below its ceiling in tissue and below
+/// its stores' mass in reserve.
 fn room(i: u32) -> Expr {
-    add(vec![gap(&tissue(i)), gap(&reserve(i))])
+    add(vec![gap(&tissue(i), false), gap(&reserve(i), true)])
 }
 
-/// A producer's income (TD2c): an allometric rate, at least a milligram,
-/// within its room. Crowding waits for places.
+/// A function's measurement (ruling 493), by its share of the cells.
+fn measured(function: &str, measure: Measure) -> Expr {
+    Expr::Read(Reading::Measured {
+        who: Binding::Actor,
+        function: function.into(),
+        measure,
+    })
+}
+
+/// A producer's income (TD2c, ruling 505): the area its fixing presents at a
+/// rate per face, at least a milligram, within its room. Crowding waits for
+/// places.
 fn income(i: u32) -> Expr {
-    let m34 = three_quarter(held(Binding::Actor, &tissue(i)));
-    let rate = div(mul(vec![c(FIXES_BASE_MG), m34]), c(REFERENCE_MASS_34));
+    let (n, d) = FIXES_PER_FACE;
+    let rate = div(mul(vec![c(n), measured(FIX, Measure::Area)]), c(d));
     least(vec![most(vec![c(1), rate]), room(i)])
 }
 
-/// TD9's mouthful: the grazing rate scaled by the build multiple, within
-/// the room.
+/// TD9's mouthful (ruling 505): intake's volume at a rate per voxel, scaled
+/// by TD9's build multiple, within the room.
 fn mouthful(i: u32) -> Expr {
-    let m34 = three_quarter(held(Binding::Actor, &tissue(i)));
+    let (n, d) = GRAZES_PER_VOXEL;
     let priced = add(vec![ceiling(), mul(vec![span(), c(REFERENCE_MASS_MG)])]);
     let rate = div(
-        mul(vec![c(GRAZES_BASE_MG), m34, priced]),
-        mul(vec![c(REFERENCE_MASS_34), ceiling()]),
+        mul(vec![c(n), measured(INTAKE, Measure::Volume), priced]),
+        mul(vec![c(d), ceiling()]),
     );
     least(vec![most(vec![c(1), rate]), room(i)])
 }
@@ -184,18 +211,18 @@ fn mouthful(i: u32) -> Expr {
 /// first when hungry and the tissue first otherwise, each up to its
 /// ceiling, then what will not fit back to the site (TD6).
 fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect> {
-    let into = |to: Key| Effect::Convert {
+    let into = |to: Key, reserve: bool| Effect::Convert {
         who: Binding::Actor,
         from: vec![hand.into()],
-        amount: computed(least(vec![held(Binding::Actor, hand), gap(&to)])),
+        amount: computed(least(vec![held(Binding::Actor, hand), gap(&to, reserve)])),
         to,
         conversion,
     };
     vec![
         Effect::When {
             guard: hungry(i),
-            then: vec![into(reserve(i)), into(tissue(i))],
-            otherwise: vec![into(tissue(i)), into(reserve(i))],
+            then: vec![into(reserve(i), true), into(tissue(i), false)],
+            otherwise: vec![into(tissue(i), false), into(reserve(i), true)],
         },
         Effect::Transfer {
             from: Binding::Actor,

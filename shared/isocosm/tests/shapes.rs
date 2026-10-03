@@ -112,7 +112,7 @@ fn expresses(function: &str) -> Query {
 }
 
 #[test]
-fn the_defaults_are_the_eight_shapes_and_the_five_functions_in_use() {
+fn the_defaults_are_the_eight_shapes_and_the_fifteen_functions() {
     let rules = adopted().rules;
     assert_eq!(rules.shapes.len(), 8);
     let names: BTreeSet<&str> = SHAPES
@@ -125,25 +125,51 @@ fn the_defaults_are_the_eight_shapes_and_the_five_functions_in_use() {
     assert_eq!(names, BTreeSet::from(ruled));
     let shapes = |f: &str| rules.functions[f].shapes.clone();
     let seeding = |f: &str| rules.functions[f].seeding;
-    for (function, shape) in [
-        ("function:contract", "part-shape:rod"),
-        ("function:intake", "part-shape:lump"),
-        ("function:sense", "part-shape:point"),
-        ("function:fix", "part-shape:sheet"),
-        ("function:secrete", "part-shape:sheet"),
+    // Ruling 466's table: each function's fits.
+    let fits = |names: &[&str]| -> BTreeSet<Key> {
+        names.iter().map(|n| format!("part-shape:{n}")).collect()
+    };
+    for (function, names) in [
+        ("contract", &["rod"][..]),
+        ("intake", &["lump", "tube"]),
+        ("sense", &["point"]),
+        ("fix", &["sheet"]),
+        ("secrete", &["sheet"]),
+        ("support", &["rod", "shell", "joint", "branch"]),
+        ("conduct", &["tube", "branch"]),
+        ("gate", &["joint", "tube"]),
+        ("store", &["lump"]),
+        ("circulate", &["tube", "lump"]),
+        ("respire", &["sheet", "branch"]),
+        ("excrete", &["tube"]),
+        ("reproduce", &["lump"]),
+        ("grip", &["rod", "branch", "joint"]),
+        ("adhesion", &["sheet", "point"]),
     ] {
-        assert_eq!(shapes(function), BTreeSet::from([shape.to_string()]));
+        assert_eq!(
+            shapes(&format!("function:{function}")),
+            fits(names),
+            "{function}"
+        );
     }
-    assert_eq!(seeding("function:secrete"), Seeding::Acquired);
-    assert_eq!(rules.functions.len(), 5);
-    // A sheet grows fixing and admits secreting, which it only acquires.
+    assert_eq!(rules.functions.len(), 15);
+    let acquired: Vec<&Key> = rules
+        .functions
+        .iter()
+        .filter(|(f, _)| seeding(f) == Seeding::Acquired)
+        .map(|(f, _)| f)
+        .collect();
+    assert_eq!(acquired, vec!["function:secrete"]);
+    // A sheet grows what fits it and is grown; secreting fits it too, but
+    // only a development places it.
+    let names = |set: BTreeSet<Key>| -> Vec<String> { set.into_iter().collect() };
     assert_eq!(
-        rules.grown("part-shape:sheet"),
-        BTreeSet::from(["function:fix".into()])
+        names(rules.grown("part-shape:sheet")),
+        ["function:adhesion", "function:fix", "function:respire"]
     );
-    assert!(rules.admits("part-shape:sheet", "function:secrete"));
-    assert!(!rules.admits("part-shape:rod", "function:secrete"));
-    assert!(rules.grown("part-shape:tube").is_empty());
+    assert!(rules.fits("part-shape:sheet", "function:secrete"));
+    assert!(!rules.fits("part-shape:rod", "function:secrete"));
+    assert_eq!(rules.grown("part-shape:tube").len(), 5);
     // A generated world adopts neither; it serializes as it did before.
     let generated = Founding::default().generate().unwrap();
     let json = serde_json::to_string(&generated.rules).unwrap();
@@ -248,7 +274,7 @@ fn bad_shapes_functions_and_bindings_are_refused() {
     type Change = Box<dyn Fn(&mut Genesis)>;
     let cases: Vec<(&str, Change)> = vec![
         (
-            "is admitted by no shape",
+            "fits no shape",
             Box::new(|g: &mut Genesis| {
                 let f = Function {
                     shapes: BTreeSet::new(),
@@ -299,20 +325,6 @@ fn bad_shapes_functions_and_bindings_are_refused() {
             }),
         ),
         (
-            "cannot express",
-            Box::new(|g: &mut Genesis| {
-                let p = part("part-shape:rod", &["function:fix"]);
-                g.population.lift(1).unwrap().parts.insert(1, p);
-            }),
-        ),
-        (
-            "cannot express",
-            Box::new(|g: &mut Genesis| {
-                let p = part("", &["function:contract"]);
-                g.population.lift(1).unwrap().parts.insert(1, p);
-            }),
-        ),
-        (
             "unknown function",
             Box::new(|g: &mut Genesis| {
                 let p = process("test:fly", vec![expresses("function:fly")], vec![]);
@@ -339,7 +351,7 @@ fn bad_shapes_functions_and_bindings_are_refused() {
             }),
         ),
         (
-            "keeps no ledger",
+            "keeps only matter",
             Box::new(move |g: &mut Genesis| {
                 let read = Query::Account {
                     who: Binding::Part,
@@ -352,7 +364,7 @@ fn bad_shapes_functions_and_bindings_are_refused() {
             }),
         ),
         (
-            "keeps no ledger",
+            "written through its body",
             Box::new(move |g: &mut Genesis| {
                 let into = Effect::Transfer {
                     from: Binding::Actor,
@@ -407,4 +419,18 @@ fn with_mind(g: &mut Genesis, query: Query) {
         rise_traits: BTreeMap::new(),
         stake: 0,
     });
+}
+
+/// No shape gates a function (ruling 492): a rod may fix, and a part from
+/// before shapes may contract; the fits only guide the generator.
+#[test]
+fn any_part_may_express_any_function() {
+    for p in [
+        part("part-shape:rod", &["function:fix"]),
+        part("", &["function:contract"]),
+    ] {
+        let mut g = adopted();
+        g.population.lift(1).unwrap().parts.insert(1, p);
+        g.validate().unwrap();
+    }
 }

@@ -108,7 +108,7 @@ impl Frame {
     pub(crate) fn changed(&self, holder: Holder) -> bool {
         match holder {
             Holder::Site(id) => self.sites.contains_key(&id),
-            Holder::Entity(id) => self.body(id).is_some(),
+            Holder::Entity(id) | Holder::Part(id, _) => self.body(id).is_some(),
             Holder::Dev => false,
         }
     }
@@ -216,6 +216,7 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
     }
     delta(&mut live.accounts, &base.accounts, &new.accounts);
     delta(&mut live.skills, &base.skills, &new.skills);
+    merge_parts(&mut live.parts, &base.parts, new.parts.clone());
     for t in new.traits.difference(&base.traits) {
         live.traits.insert(t.clone());
     }
@@ -242,10 +243,32 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
         visits,
         born,
         alive,
-        parts,
         tenets,
         disposition
     );
+}
+
+/// Parts landed the same way (ruling 504): each part's matter by what the
+/// act added or took, anything else the act changed of it by its value.
+fn merge_parts(live: &mut BTreeMap<Id, Part>, base: &BTreeMap<Id, Part>, new: BTreeMap<Id, Part>) {
+    for id in base.keys().filter(|id| !new.contains_key(*id)) {
+        live.remove(id);
+    }
+    for (id, mut part) in new {
+        let (Some(was), Some(now)) = (base.get(&id), live.get_mut(&id)) else {
+            live.insert(id, part);
+            continue;
+        };
+        delta(&mut now.matter, &was.matter, &part.matter);
+        part.matter = std::mem::take(&mut now.matter);
+        let mut kept = was.clone();
+        kept.matter = part.matter.clone();
+        if part != kept {
+            *now = part;
+        } else {
+            now.matter = part.matter;
+        }
+    }
 }
 
 /// A site's change landed the same way: accounts and conditions by what

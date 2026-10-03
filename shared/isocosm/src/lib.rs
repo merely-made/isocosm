@@ -6,6 +6,7 @@
 //! admitted processes. Unsupported bulk operations execute individually.
 
 pub mod aggregate;
+pub mod anatomy;
 pub mod bench;
 mod dev;
 pub mod diffusion;

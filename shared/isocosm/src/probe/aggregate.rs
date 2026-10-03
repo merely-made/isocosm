@@ -16,8 +16,8 @@ use crate::{
     Result,
     meaning::{self, Named, Parties, Scene, credit, debit},
     rules::{
-        Amount, Binding, Draw, Effect, Expr, PartsOf, Process, Query, Read, Reading, Rules,
-        expressing,
+        Amount, Binding, BodyRules, Draw, Effect, Expr, PartsOf, Process, Query, Read, Reading,
+        Rules, expressing,
     },
     schema::*,
 };
@@ -75,13 +75,15 @@ pub(super) struct Act<'a> {
     pub rules: &'a Rules,
     /// Each slot's draw, fixed for the members the act stands for.
     pub draws: &'a BTreeMap<u8, u64>,
-    /// A meal's prey as the pass began, and the matter the meal's share
-    /// takes of it (ruling 454).
-    pub meal: Option<(&'a Entity, &'a Ledger)>,
+    /// A meal's prey as the pass began, the matter the meal's share takes
+    /// of it (ruling 454), and the part the bite lands on where the prey
+    /// keeps its matter in parts (ruling 459).
+    pub meal: Option<(&'a Entity, &'a Ledger, Option<Id>)>,
 }
 
 /// One state's members as their act leaves them, and what the act reads.
 struct Doing<'a> {
+    rules: &'a Rules,
     member: Entity,
     part: Option<Id>,
     /// The site as every member's writes leave it.
@@ -90,9 +92,11 @@ struct Doing<'a> {
     /// writes.
     seen: Site,
     count: u64,
-    /// The prey as one hunter's act sees it, and the share it takes.
+    /// The prey as one hunter's act sees it, the share it takes, and the
+    /// part its bite lands on.
     prey: Option<Entity>,
     portion: Option<Ledger>,
+    bitten: Option<Id>,
     kept: BTreeMap<Key, i64>,
     draws: &'a BTreeMap<u8, u64>,
 }
@@ -100,12 +104,12 @@ struct Doing<'a> {
 impl Parties for Doing<'_> {
     fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
         match who {
-            Binding::Actor => Ok(meaning::value(&self.member.accounts, key)),
+            Binding::Actor => Ok(crate::anatomy::held(&self.member, self.rules, key)),
             // One member's share of a shared site is the whole of it only
             // where the act stands for one member, the world's own.
             Binding::Place if self.count == 1 => Ok(meaning::value(&self.seen.accounts, key)),
             Binding::Target => match &self.prey {
-                Some(prey) => Ok(meaning::value(&prey.accounts, key)),
+                Some(prey) => Ok(crate::anatomy::held(prey, self.rules, key)),
                 None => Err("the crowd has no target".into()),
             },
             _ => Err("the crowd reads no one member's share of shared ground".into()),
@@ -119,7 +123,11 @@ impl Parties for Doing<'_> {
     }
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
         match who {
-            Binding::Actor => debit(&mut self.member.accounts, key, amount),
+            Binding::Actor => match crate::anatomy::take(&mut self.member, self.rules, key, amount)
+            {
+                Some(done) => done.map(|_| ()),
+                None => debit(&mut self.member.accounts, key, amount),
+            },
             // Shares make every take of the site whole (ruling 454).
             Binding::Place => {
                 let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
@@ -132,7 +140,11 @@ impl Parties for Doing<'_> {
     }
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
         match who {
-            Binding::Actor => credit(&mut self.member.accounts, key, amount),
+            Binding::Actor => match crate::anatomy::give(&mut self.member, self.rules, key, amount)
+            {
+                Some(done) => done.map(|_| ()),
+                None => credit(&mut self.member.accounts, key, amount),
+            },
             Binding::Place => {
                 let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
                 credit(&mut self.site.accounts, key, total)?;
@@ -168,10 +180,14 @@ impl Doing<'_> {
             e.parts.values().filter(|p| !p.severed).cloned().collect()
         };
         let (mine, theirs) = (living(&self.member), self.prey.as_ref().map(living));
-        let mut parts = |who: Binding| -> Result<Vec<Part>> {
+        let (rules, b) = (self.rules, self.rules.body());
+        let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
             match who {
-                Binding::Actor => Ok(mine.clone()),
-                Binding::Target => theirs.clone().ok_or_else(|| "no target is bound".into()),
+                Binding::Actor => Ok((mine.clone(), b)),
+                Binding::Target => match theirs.clone() {
+                    Some(t) => Ok((t, b)),
+                    None => Err("no target is bound".into()),
+                },
                 _ => Err(format!("{who:?} has no parts")),
             }
         };
@@ -191,15 +207,19 @@ impl Doing<'_> {
                 (Reading::Account { key, .. }, Binding::Place) => {
                     i64::try_from(meaning::value(&seen.accounts, key)).map_err(|e| e.to_string())
                 },
+                (Reading::Account { key, .. }, Binding::Part) => {
+                    let part = part.ok_or("no part is bound")?;
+                    i64::try_from(meaning::value(&part.matter, key)).map_err(|e| e.to_string())
+                },
                 (Reading::Account { key, .. }, who) => {
-                    let held = meaning::value(&body(who)?.accounts, key);
+                    let held = crate::anatomy::held(body(who)?, rules, key);
                     i64::try_from(held).map_err(|e| e.to_string())
                 },
                 (r, Binding::Part) => {
                     let part = part.ok_or("no part is bound")?;
-                    Ok(i64::try_from(r.of_part(part)).unwrap_or(i64::MAX))
+                    Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
                 },
-                (r, who) => Ok(meaning::body_reading(body(who)?, r)),
+                (r, who) => Ok(meaning::body_reading(body(who)?, r, rules)),
             }
         };
         let draws = self.draws;
@@ -250,7 +270,10 @@ impl Doing<'_> {
                 };
                 let mut total = 0u64;
                 for (key, value) in &portion {
-                    debit(&mut prey.accounts, key, *value)?;
+                    match self.bitten.and_then(|id| prey.parts.get_mut(&id)) {
+                        Some(part) => debit(&mut part.matter, key, *value)?,
+                        None => debit(&mut prey.accounts, key, *value)?,
+                    }
                     total += value;
                 }
                 credit(&mut self.member.accounts, into, total)?;
@@ -481,13 +504,15 @@ pub(super) fn act(
         Run::Plan(_) | Run::Free => Ledger::new(),
     };
     let mut doing = Doing {
+        rules: a.rules,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
         site: site.clone(),
         seen: a.start.clone(),
         count: a.count,
-        prey: a.meal.map(|(prey, _)| prey.clone()),
-        portion: a.meal.map(|(_, portion)| portion.clone()),
+        prey: a.meal.map(|(prey, _, _)| prey.clone()),
+        portion: a.meal.map(|(_, portion, _)| portion.clone()),
+        bitten: a.meal.and_then(|(_, _, part)| part),
         kept: BTreeMap::new(),
         draws: a.draws,
     };
@@ -527,12 +552,13 @@ pub(super) fn slots(p: &Process) -> Result<BTreeMap<u8, u64>> {
 
 /// What a hunt's meal, its first effect, asks of its prey for a hunter in
 /// state `e`, read of the hunter and its site as the pass began.
-pub(super) fn mouthful(p: &Process, e: &Entity, start: &Site) -> Result<u64> {
+pub(super) fn mouthful(p: &Process, e: &Entity, start: &Site, rules: &Rules) -> Result<u64> {
     let Some(Effect::Eat { amount, .. }) = p.effects.first() else {
         return Err(format!("{} feeds by eating its target first", p.id));
     };
     let draws = BTreeMap::new();
     let mut doing = Doing {
+        rules,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
         site: start.clone(),
@@ -540,6 +566,7 @@ pub(super) fn mouthful(p: &Process, e: &Entity, start: &Site) -> Result<u64> {
         count: 1,
         prey: None,
         portion: None,
+        bitten: None,
         kept: BTreeMap::new(),
         draws: &draws,
     };

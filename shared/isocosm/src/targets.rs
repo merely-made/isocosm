@@ -154,7 +154,7 @@ impl Simulation {
             // A group's members began the pass alike: an act lifts out the
             // member it changes, or writes a cohort whole.
             let began = self.body_at_start(first).expect("filed groups exist");
-            let held = mass(&began.accounts, rules);
+            let held = mass(&crate::anatomy::books(began), rules);
             if members > 0 && held > 0 {
                 total += members * held;
                 eligible.push((first, within, members, held));

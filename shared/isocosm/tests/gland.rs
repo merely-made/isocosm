@@ -17,8 +17,9 @@ const FIX: &str = "function:fix";
 const SECRETE: &str = "function:secrete";
 const CANDIDATE: &str = "ability:candidate-secrete";
 
-/// One critter, id 1: a frond fixing with all eight of its cells, five
-/// matter a cell, and a lump; `soil` at its site.
+/// One critter, id 1: a frond fixing with all eight of its cells, 27 mg a
+/// cell as its extents price it (ruling 460), and a lump taking in with its
+/// two; `soil` at its site.
 fn world(soil: u64) -> Genesis {
     let mut g = Founding {
         seed: 9,
@@ -42,9 +43,8 @@ fn world(soil: u64) -> Genesis {
             Part {
                 shape: "part-shape:sheet".into(),
                 functions: BTreeSet::from([FIX.into()]),
-                capacity: 8,
+                half_extent: [6, 3, 1],
                 cells: BTreeMap::from([(FIX.into(), 8)]),
-                cell_mass: 5,
                 ..Default::default()
             },
         ),
@@ -53,11 +53,29 @@ fn world(soil: u64) -> Genesis {
             Part {
                 shape: "part-shape:lump".into(),
                 functions: BTreeSet::from(["function:intake".into()]),
-                capacity: 2,
+                half_extent: [2, 1, 1],
+                cells: BTreeMap::from([("function:intake".into(), 2)]),
                 ..Default::default()
             },
         ),
     ]);
+    // Its own matter lives in its frond now that the frond has a body
+    // (ruling 504).
+    let lineage = critter.lineage.clone();
+    let own: Vec<Key> = critter
+        .accounts
+        .keys()
+        .filter(|k| {
+            matches!(g.rules.accounts.get(*k),
+                Some(AccountKind::Matter { lineage: l, .. }) if *l == lineage)
+        })
+        .cloned()
+        .collect();
+    let critter = g.population.lift(1).unwrap();
+    for k in own {
+        let v = critter.accounts.remove(&k).unwrap_or(0);
+        critter.parts.get_mut(&0).unwrap().matter.insert(k, v);
+    }
     for site in g.sites.values_mut() {
         site.accounts.insert("world:soil".into(), soil);
     }
@@ -233,7 +251,7 @@ fn a_bound_part_reads_alone_and_only_where_bound() {
     let skills = &sim.state().population.get(1).unwrap().skills;
     assert_eq!(
         (skills["skill:test:weight"], skills["skill:test:held"]),
-        (5, 8)
+        (27, 8)
     );
     let refused = |p: Process| {
         let mut g = world(0);
@@ -256,8 +274,8 @@ fn a_bound_part_reads_alone_and_only_where_bound() {
         key: "world:soil".into(),
     };
     assert!(
-        refused(practise("test:c", binds(FIX), ledger)),
-        "a part keeps no ledger"
+        !refused(practise("test:c", binds(FIX), ledger)),
+        "a part keeps a ledger (ruling 504)"
     );
     assert!(
         !refused(practise("test:d", binds(FIX), held)),
@@ -266,7 +284,7 @@ fn a_bound_part_reads_alone_and_only_where_bound() {
 }
 
 #[test]
-fn a_development_places_only_an_acquired_function_its_shape_admits() {
+fn a_development_places_only_an_acquired_function_on_any_shape() {
     let allot = |id: &str, bound: &str, to: &str| {
         process(
             id,
@@ -307,5 +325,7 @@ fn a_development_places_only_an_acquired_function_its_shape_admits() {
         refused(&mut sim, "test:grown"),
         "a grown function is not placed"
     );
-    assert!(refused(&mut sim, "test:lump"), "a lump cannot secrete");
+    // No shape gates a function (ruling 492): a lump may come to secrete.
+    assert!(!refused(&mut sim, "test:lump"), "a lump may secrete");
+    assert_eq!(cells(&sim, 1)[SECRETE], 1);
 }

@@ -52,6 +52,9 @@ pub(crate) struct Stage {
     event: Option<(Event, Reach)>,
     /// The act's matter moves, for the flow record (ruling 345).
     legs: Vec<Leg>,
+    /// Where its takes and gives of a body's own matter went among the
+    /// body's parts (ruling 504), which split those legs.
+    pub(crate) routed: Vec<crate::flows::Routed>,
     /// The number the act acts as, which keys its draws.
     act: u64,
     /// While a pass plans, what the act would take of shared ground.
@@ -100,6 +103,7 @@ impl Simulation {
             highs: BTreeMap::new(),
             event: None,
             legs: vec![],
+            routed: vec![],
             act,
             demands: None,
             shares: None,
@@ -119,7 +123,16 @@ impl Simulation {
             }
             let base = frame.body(*id).expect("a changed body was kept");
             let live = self.state.population.get(*id).expect("staged bodies exist");
-            fits(&live.accounts, &base.accounts, &body.accounts)
+            let part = |id: &Id| {
+                let matter = |e: &Entity| {
+                    e.parts
+                        .get(id)
+                        .map(|p| p.matter.clone())
+                        .unwrap_or_default()
+                };
+                fits(&matter(live), &matter(base), &matter(body))
+            };
+            fits(&live.accounts, &base.accounts, &body.accounts) && body.parts.keys().all(part)
         });
         let site = stage.site.as_ref().is_none_or(|site| {
             let Some(base) = frame.site(stage.place) else {
@@ -134,24 +147,20 @@ impl Simulation {
     /// Whether the staged act would change the world's matter: the bodies
     /// and site it binds, weighed before and after, and any children.
     pub(crate) fn moves_matter(&self, stage: &Stage) -> bool {
-        let weigh = |ledger: &Ledger| mass(ledger, &self.genesis.rules);
+        let weigh = |e: &Entity| mass(&crate::anatomy::books(e), &self.genesis.rules);
         let (mut before, mut after) = (0u128, 0u128);
         for (id, body) in &stage.bodies {
             let weight = u128::from(if *id == stage.actor { stage.count } else { 1 });
             let was = self.body_at_start(*id).expect("staged bodies exist");
-            before += weigh(&was.accounts) * weight;
-            after += weigh(&body.accounts) * weight;
+            before += weigh(was) * weight;
+            after += weigh(body) * weight;
         }
         if let Some(site) = &stage.site {
             let was = self.site_at_start(stage.place).expect("staged sites exist");
-            before += weigh(&was.accounts);
-            after += weigh(&site.accounts);
+            before += mass(&was.accounts, &self.genesis.rules);
+            after += mass(&site.accounts, &self.genesis.rules);
         }
-        after += stage
-            .births
-            .iter()
-            .map(|c| weigh(&c.accounts))
-            .sum::<u128>();
+        after += stage.births.iter().map(weigh).sum::<u128>();
         before != after
     }
 
@@ -202,7 +211,9 @@ impl Simulation {
     /// first write: the actor alone unless it acts for its cohort, then the
     /// target.
     pub(crate) fn commit(&mut self, mut stage: Stage, next_action: u64, process: &str) {
-        let (legs, count) = (std::mem::take(&mut stage.legs), stage.count);
+        let legs = std::mem::take(&mut stage.legs);
+        let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
+        let count = stage.count;
         let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() {
             self.reaches(&stage)
         } else {

@@ -1,18 +1,22 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Checkpoint 6's vertical probe (ruling 262): two lineages over a minimal
-//! allocated body, producers fixing and growing glands and grazers eating
-//! them, so that the five natives run as definitions. A world draws each
-//! lineage's body plan, its members' tissue and reserve by cohort, which
-//! producer cohorts carry the gland among their candidates, its sites' soil
-//! and the rate at which the ground returns living matter as soil. Nothing
-//! is contested and no mind is kept: what the crowd must match is the body.
+//! Checkpoint 6's vertical probe (ruling 262), its matter in parts since
+//! checkpoint 7: two lineages over a minimal allocated body, producers fixing
+//! and growing glands and grazers eating them, so that the five natives run
+//! as definitions. A world draws each lineage's body plan, its members'
+//! tissue by cohort as shares of each part's adult mass and the grazers'
+//! reserve as shares of what their lump stores (ruling 506), which producer
+//! cohorts carry the gland among their candidates, its sites' soil and the
+//! rate at which the ground returns living matter as soil. Nothing is
+//! contested and no mind is kept: what the crowd must match is the body.
 
+#[cfg(test)]
+mod calibration;
 mod physiology;
 
 use super::{ProbeWorld, Similitude, member, world_traits};
-use crate::{Result, population::Population, rules::*, schema::*, simulation::Genesis};
+use crate::{Result, anatomy, population::Population, rules::*, schema::*, simulation::Genesis};
 use physiology::{CANDIDATE, SOIL, reserve, tissue};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -33,10 +37,14 @@ pub struct BodyFounding {
     /// A limb's long half-extent, and how many limbs a grazer has.
     pub limb: [i32; 2],
     pub limbs: [u64; 2],
+    /// Of the eight cells of a grazer's lump, how many store (ruling 506);
+    /// the rest take in.
+    pub store: [u64; 2],
     /// Per mille of producer cohorts carrying the gland among their
     /// candidates.
     pub candidates: u64,
-    /// A cohort's tissue and reserve as founded, per mille of its ceiling.
+    /// A cohort's tissue as founded, per mille of each part's adult mass,
+    /// and its reserve, per mille of what its stores may hold.
     pub tissue: [u64; 2],
     pub reserve: [u64; 2],
     /// Each site's soil, and what of the ground's living matter the site
@@ -62,6 +70,7 @@ impl Default for BodyFounding {
             frond: [3, 4],
             limb: [3, 4],
             limbs: [1, 2],
+            store: [1, 4],
             candidates: 250,
             tissue: [150, 1000],
             reserve: [0, 1000],
@@ -72,31 +81,18 @@ impl Default for BodyFounding {
     }
 }
 
-/// A part of `shape` expressing `function`, with no cells of its own.
-fn shaped(shape: &str, function: &str, half_extent: [i32; 3]) -> Part {
-    Part {
+/// A part of `shape` expressing `function` on every cell its extents give
+/// it (ruling 460), attached to `parent`.
+fn shaped(shape: &str, function: &str, half_extent: [i32; 3], parent: Option<Id>) -> Part {
+    let mut p = Part {
+        parent,
         shape: format!("part-shape:{shape}"),
         functions: BTreeSet::from([format!("function:{function}")]),
         half_extent,
         ..Default::default()
-    }
-}
-
-/// The cells Mesocosm's lattice gives a part: one per two voxels of
-/// half-extent along each axis, plus one, at most four an axis.
-fn lattice(half_extent: [i32; 3]) -> u32 {
-    let axis = |h: i32| (h.abs().max(1) / 2 + 1).clamp(1, 4) as u32;
-    half_extent.iter().map(|h| axis(*h)).product()
-}
-
-/// A part's adult mass as Mesocosm prices it, for founding.
-fn ceiling(p: &Part) -> u64 {
-    let voxels: u64 = p
-        .half_extent
-        .iter()
-        .map(|h| 2 * u64::from(h.unsigned_abs()) + 1)
-        .product();
-    (voxels * 100 / 125).max(1)
+    };
+    p.cells = BTreeMap::from([(format!("function:{function}"), anatomy::capacity(&p))]);
+    p
 }
 
 impl BodyFounding {
@@ -120,6 +116,7 @@ impl BodyFounding {
             && self.limb[0] <= self.limb[1]
             && self.frond[0] > 0
             && self.limb[0] > 0
+            && self.store[0] <= self.store[1]
             && self.sites[0] > 0
             && self.cohort > 0
             && self.ticks > 0
@@ -130,25 +127,31 @@ impl BodyFounding {
     }
 
     /// The producers' body: one frond, every cell of Mesocosm's lattice
-    /// fixing, each weighing its share of the frond's adult mass.
+    /// fixing, keeping no reserve (ruling 506).
     fn frond(&self) -> BTreeMap<Id, Part> {
         let extent = |axis| self.pick("body-frond", axis, self.frond.map(|h| h as u64)) as i32;
-        let mut frond = shaped("sheet", "fix", [extent(0), extent(1), 1]);
-        frond.capacity = lattice(frond.half_extent);
-        frond.cells = BTreeMap::from([("function:fix".into(), frond.capacity)]);
-        frond.cell_mass = (ceiling(&frond) / u64::from(frond.capacity)).max(1);
+        let frond = shaped("sheet", "fix", [extent(0), extent(1), 1], None);
         BTreeMap::from([(0, frond)])
     }
 
-    /// The grazers' body: a lump to take in with, its limbs and an eye.
+    /// The grazers' body: a lump that takes in and stores, its cells split
+    /// by a draw (ruling 506), its limbs and an eye attached to it.
     fn grazer(&self) -> BTreeMap<Id, Part> {
-        let mut parts = vec![shaped("lump", "intake", [2, 2, 2])];
+        let mut lump = shaped("lump", "intake", [2, 2, 2], None);
+        let capacity = anatomy::capacity(&lump);
+        let store = (self.pick("body-store", 0, self.store) as u32).min(capacity - 1);
+        lump.functions.insert(anatomy::STORE.into());
+        lump.cells = BTreeMap::from([
+            ("function:intake".into(), capacity - store),
+            (anatomy::STORE.into(), store),
+        ]);
+        let mut parts = vec![lump];
         let limbs = self.pick("body-limbs", 0, self.limbs);
         for k in 0..limbs {
             let reach = self.pick("body-limb", k, self.limb.map(|h| h as u64)) as i32;
-            parts.push(shaped("rod", "contract", [reach, 1, 1]));
+            parts.push(shaped("rod", "contract", [reach, 1, 1], Some(0)));
         }
-        parts.push(shaped("point", "sense", [1, 1, 1]));
+        parts.push(shaped("point", "sense", [1, 1, 1], Some(0)));
         (0..).zip(parts).collect()
     }
 
@@ -203,6 +206,7 @@ impl BodyFounding {
         processes.insert(mineralize.id.clone(), mineralize);
         let founders: u64 = per_site.iter().sum();
         let rules = Rules {
+            body: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),
@@ -255,8 +259,8 @@ impl BodyFounding {
     }
 
     /// The sites with their soil, and the founders in cohorts at every
-    /// site, each cohort's tissue and reserve drawn as shares of its
-    /// lineage's ceiling.
+    /// site, each cohort's tissue drawn as a share of each part's adult mass
+    /// and its reserve as a share of what its stores may hold.
     fn found(
         &self,
         lineages: &BTreeMap<Key, Lineage>,
@@ -280,17 +284,26 @@ impl BodyFounding {
         for s in 0..sites {
             for (i, &n) in per_site.iter().enumerate() {
                 let lineage = format!("lineage:{i}");
-                let ceiling: u64 = plans[i].values().map(ceiling).sum();
                 let mut left = n;
                 while left > 0 {
                     let count = left.min(self.cohort);
-                    let share = |domain, range| self.pick(domain, cohort, range) * ceiling / 1000;
-                    let ledger = BTreeMap::from([
-                        (tissue(i as u32), share("body-tissue", self.tissue)),
-                        (reserve(i as u32), share("body-reserve", self.reserve)),
-                    ]);
-                    let mut e = member(lineages, &lineage, s, ledger);
+                    let tissue_mille = self.pick("body-tissue", cohort, self.tissue);
+                    let reserve_mille = self.pick("body-reserve", cohort, self.reserve);
+                    let mut e = member(lineages, &lineage, s, BTreeMap::new());
                     e.parts = plans[i].clone();
+                    let b = BodyRules::default();
+                    for part in e.parts.values_mut() {
+                        let held = anatomy::ceiling(part, b) * tissue_mille / 1000;
+                        part.matter.insert(tissue(i as u32), held);
+                        let cells = u64::from(part.cells.get(anatomy::STORE).copied().unwrap_or(0));
+                        let stored = cells * anatomy::cell_mass(part, b) * reserve_mille / 1000;
+                        // Every store keeps the account, empty or not, so
+                        // that every draw reads the same set (as checkpoint
+                        // 6's ledger kept both accounts).
+                        if cells > 0 {
+                            part.matter.insert(reserve(i as u32), stored);
+                        }
+                    }
                     let candidate = self.pick("body-candidate", cohort, [0, 999]) < self.candidates;
                     if i == 0 && candidate {
                         e.traits.insert(CANDIDATE.into());

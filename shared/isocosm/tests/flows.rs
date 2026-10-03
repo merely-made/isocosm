@@ -33,7 +33,7 @@ mod receipts;
 /// Matter held, by holder and account; absent is nothing.
 type Books = BTreeMap<(Holder, Key), i128>;
 
-/// Every matter account of every member and every site.
+/// Every matter account of every member, each of its parts, and every site.
 fn books(session: &Session) -> Books {
     let (rules, state) = (&session.sim.genesis().rules, session.sim.state());
     let matter = |k: &Key| matches!(rules.accounts.get(k), Some(AccountKind::Matter { .. }));
@@ -46,6 +46,9 @@ fn books(session: &Session) -> Books {
     for (&first, cohort) in &state.population.groups {
         for id in first..first + cohort.count {
             hold(Holder::Entity(id), &cohort.entity.accounts);
+            for (&part, p) in &cohort.entity.parts {
+                hold(Holder::Part(id, part), &p.matter);
+            }
         }
     }
     for (&id, site) in &state.sites {
@@ -67,6 +70,9 @@ fn claimed(flows: &[Flow]) -> Books {
             match *holder {
                 Holder::Entity(first) => {
                     (first..first + f.count).for_each(|id| claim(Holder::Entity(id), amount))
+                },
+                Holder::Part(first, part) => {
+                    (first..first + f.count).for_each(|id| claim(Holder::Part(id, part), amount))
                 },
                 Holder::Site(_) => claim(*holder, amount * i128::from(f.count)),
                 // The dev source holds nothing (ruling 344).
@@ -466,4 +472,44 @@ fn an_accepted_act_is_in_the_record_and_a_refused_one_is_not() {
         );
         assert_eq!(result.flows[0].amount, 7);
     }
+}
+
+/// Since checkpoint 7 a body's own matter moves part by part (ruling 504):
+/// the record names the parts it left or reached and still accounts for
+/// every ledger, each part's among them, in both modes alike.
+#[test]
+fn the_record_names_the_parts_a_bodys_matter_moves_through() {
+    let mut named = 0;
+    for seed in [1u64, 2] {
+        let world = isocosm::probe::BodyFounding {
+            seed,
+            ..Default::default()
+        };
+        let g = world.generate().unwrap().genesis;
+        let mut one = new_session(g.clone(), Execution::Individuals);
+        let mut all = new_session(g, Execution::Grouped);
+        for tick in 1..=12 {
+            let at = format!("on tick {tick} of body seed {seed}");
+            let (_, a) = stepped(&mut one, &at, |s| s.advance_tick_with_flows().unwrap());
+            let (_, b) = stepped(&mut all, &at, |s| s.advance_tick_with_flows().unwrap());
+            assert_eq!(claimed(&a), claimed(&b), "{at}");
+            for f in &a {
+                for (holder, key) in [&f.from, &f.to] {
+                    match *holder {
+                        Holder::Part(..) => named += 1,
+                        // A member's own tissue or reserve never moves as
+                        // the member's: it lives in its parts.
+                        Holder::Entity(id) => {
+                            let e = one.sim.state().population.get(id).unwrap();
+                            let i = e.lineage.trim_start_matches("lineage:");
+                            let own = [format!("tissue:{i}"), format!("reserve:{i}")];
+                            assert!(!own.contains(key), "{at}: {f:?}");
+                        },
+                        _ => {},
+                    }
+                }
+            }
+        }
+    }
+    assert!(named > 0, "no move named a part");
 }

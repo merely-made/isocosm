@@ -245,6 +245,7 @@ impl Founding {
         weather.priority = -1;
         processes.insert(weather.id.clone(), weather);
         let mut rules = Rules {
+            body: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

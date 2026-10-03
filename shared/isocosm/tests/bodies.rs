@@ -3,7 +3,9 @@
 
 //! Checkpoint 6's X2 and minimal body (rulings 446 and 453): native readings
 //! of a body's living parts, the part fields they read, and the reserve
-//! marked among a lineage's matter accounts.
+//! marked among a lineage's matter accounts; since checkpoint 7, cells and
+//! their mass read from extents (ruling 460) and measurements taken by a
+//! function's share of the cells (ruling 493).
 
 use isocosm::{
     Execution, Founding, Simulation,
@@ -22,8 +24,8 @@ fn shaped(shape: &str, functions: &[&str], half_extent: [i32; 3]) -> Part {
     }
 }
 
-/// One critter, id 1: a live contracting rod, the same severed, a sheet that
-/// fixes and secretes, and a sensing point.
+/// One critter, id 1: a live contracting rod, a severed sheet that
+/// contracted, a sheet that fixes and secretes, and a sensing point.
 fn world() -> Genesis {
     let mut g = Founding {
         seed: 453,
@@ -37,25 +39,39 @@ fn world() -> Genesis {
     .unwrap();
     g.rules.shapes = default_shapes();
     g.rules.functions = default_functions();
+    // Four cells along the rod; nine in the sheet, each weighing 21 mg.
     let rod = Part {
-        capacity: 9,
-        cells: BTreeMap::from([("function:contract".into(), 6)]),
-        cell_mass: 2,
-        ..shaped("rod", &["function:contract"], [3, -1, 1])
+        cells: BTreeMap::from([("function:contract".into(), 4)]),
+        ..shaped("rod", &["function:contract"], [6, -1, 1])
     };
     let severed = Part {
         severed: true,
-        ..shaped("rod", &["function:contract"], [2, 4, 1])
+        ..shaped("sheet", &["function:contract"], [2, 4, 1])
     };
     let sheet = Part {
-        capacity: 4,
         cells: BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]),
-        cell_mass: 5,
-        ..shaped("sheet", &["function:fix", "function:secrete"], [1, 1, 1])
+        ..shaped("sheet", &["function:fix", "function:secrete"], [4, 4, 1])
     };
-    let point = shaped("point", &["function:sense"], [0, 0, 2]);
-    g.population.lift(1).unwrap().parts =
-        BTreeMap::from([(0, rod), (1, severed), (2, sheet), (3, point)]);
+    let point = shaped("point", &["function:sense"], [1, 1, 1]);
+    let critter = g.population.lift(1).unwrap();
+    critter.parts = BTreeMap::from([(0, rod), (1, severed), (2, sheet), (3, point)]);
+    // Its own matter lives in its parts now that they have bodies (ruling
+    // 504): all of it in the rod.
+    let lineage = critter.lineage.clone();
+    let own: Vec<Key> = critter
+        .accounts
+        .keys()
+        .filter(|k| {
+            matches!(g.rules.accounts.get(*k),
+                Some(AccountKind::Matter { lineage: l, .. }) if *l == lineage)
+        })
+        .cloned()
+        .collect();
+    let critter = g.population.lift(1).unwrap();
+    for k in own {
+        let v = critter.accounts.remove(&k).unwrap_or(0);
+        critter.parts.get_mut(&0).unwrap().matter.insert(k, v);
+    }
     g
 }
 
@@ -95,7 +111,7 @@ fn a_body_reads_the_sum_over_its_living_parts() {
                 who: actor,
                 function: of("contract"),
             },
-            3,
+            6,
         ),
         (
             "sight",
@@ -103,16 +119,20 @@ fn a_body_reads_the_sum_over_its_living_parts() {
                 who: actor,
                 function: of("sense"),
             },
-            2,
+            1,
         ),
-        ("voxels", Reading::Voxels { who: actor }, 7 * 3 * 3 + 27 + 5),
+        (
+            "voxels",
+            Reading::Voxels { who: actor },
+            13 * 3 * 3 + 9 * 9 * 3 + 27,
+        ),
         (
             "cells",
             Reading::Cells {
                 who: actor,
                 function: of("contract"),
             },
-            6,
+            4,
         ),
         (
             "glands",
@@ -128,7 +148,37 @@ fn a_body_reads_the_sum_over_its_living_parts() {
                 who: actor,
                 function: of("secrete"),
             },
-            15,
+            3 * 21,
+        ),
+        // Ruling 493: the sheet's largest face, 81, of which fix holds one
+        // cell in nine; its 243 voxels, of which secrete holds three; the
+        // rod's length, all of it contracting.
+        (
+            "area",
+            Reading::Measured {
+                who: actor,
+                function: of("fix"),
+                measure: Measure::Area,
+            },
+            9,
+        ),
+        (
+            "volume",
+            Reading::Measured {
+                who: actor,
+                function: of("secrete"),
+                measure: Measure::Volume,
+            },
+            81,
+        ),
+        (
+            "length",
+            Reading::Measured {
+                who: actor,
+                function: of("contract"),
+                measure: Measure::Length,
+            },
+            13,
         ),
     ];
     let mut g = world();
@@ -141,7 +191,7 @@ fn a_body_reads_the_sum_over_its_living_parts() {
         let r = sim.execute(1, None, &format!("test:{id}"), None);
         assert_eq!(r.outcome, Outcome::Accepted, "{id}");
         let skills = &sim.state().population.get(1).unwrap().skills;
-        // The severed rod would add 4 to the span and 105 voxels.
+        // The severed sheet would add 4 to the span and 135 voxels.
         assert_eq!(skills[&format!("skill:{id}")], expected, "{id}");
     }
 }
@@ -338,13 +388,7 @@ fn a_body_reading_of_the_actor_is_bulk_safe_and_of_another_is_not() {
 fn bodies_and_tissue_serialize_as_before() {
     let g = Founding::default().generate().unwrap();
     let json = serde_json::to_string(&g).unwrap();
-    for key in [
-        "half_extent",
-        "capacity",
-        "\"cells\"",
-        "cell_mass",
-        "\"reserve\"",
-    ] {
+    for key in ["half_extent", "\"cells\"", "\"matter\"", "\"reserve\""] {
         assert!(!json.contains(key), "{key}");
     }
     let reserve = AccountKind::Matter {
@@ -365,13 +409,19 @@ fn a_part_allots_only_its_own_cells_to_what_it_expresses() {
     let refused = |change: &dyn Fn(&mut Part)| {
         let mut g = world();
         change(g.population.lift(1).unwrap().parts.get_mut(&2).unwrap());
-        g.validate().is_err()
+        g.validate().err().unwrap_or_default()
     };
+    // Extents of one cell by three by one hold three cells (ruling 460);
+    // the name is cleared so only the capacity can refuse it.
+    let shrunk = refused(&|p| {
+        p.half_extent = [1, 4, 1];
+        p.shape.clear();
+    });
+    assert!(shrunk.contains("capacity of 3"), "{shrunk}");
     assert!(
-        refused(&|p| p.capacity = 3),
-        "four cells in a capacity of three"
+        !refused(&|p| {
+            p.cells.insert(of("contract"), 0);
+        })
+        .is_empty()
     );
-    assert!(refused(&|p| {
-        p.cells.insert(of("contract"), 0);
-    }));
 }

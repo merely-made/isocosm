@@ -9,7 +9,8 @@
 use crate::{
     Result,
     rules::{
-        AccountKind, Binding, Conversion, Effect, Need, Query, Reading, Rules, Seeding, expressing,
+        AccountKind, Binding, BodyRules, Conversion, Effect, Need, Query, Reading, Rules, Seeding,
+        expressing,
     },
     schema::*,
 };
@@ -26,9 +27,9 @@ pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
 
 /// X2's native readings of a body (ruling 453): each the sum, over its
 /// living parts, of what one part shows.
-pub(crate) fn body_reading(body: &Entity, r: &Reading) -> i64 {
+pub(crate) fn body_reading(body: &Entity, r: &Reading, rules: &Rules) -> i64 {
     let living = body.parts.values().filter(|p| !p.severed);
-    let total: u128 = living.map(|p| r.of_part(p)).sum();
+    let total: u128 = living.map(|p| r.of_part(p, rules.body())).sum();
     i64::try_from(total).unwrap_or(i64::MAX)
 }
 
@@ -102,10 +103,21 @@ impl<'a> Scene<'a> {
         let actor = self.body(Binding::Actor)?;
         Ok(actor.parts.get(&id).ok_or("bound part missing")?)
     }
-    fn ledger(&self, b: Binding) -> Result<&'a Ledger> {
+    /// What a binding holds of `key`: a body's own matter through its parts
+    /// (ruling 504), the bound part's own ledger, or the site's.
+    fn held(&self, b: Binding, key: &str) -> Result<u64> {
         match b {
-            Binding::Place => Ok(&self.site.ok_or("site missing")?.accounts),
-            other => Ok(&self.body(other)?.accounts),
+            Binding::Place => Ok(value(&self.site.ok_or("site missing")?.accounts, key)),
+            Binding::Part => Ok(value(&self.part()?.matter, key)),
+            other => Ok(crate::anatomy::held(self.body(other)?, self.rules, key)),
+        }
+    }
+    /// The matter a binding holds in all, a body's parts' included.
+    fn matter(&self, b: Binding) -> Result<u128> {
+        match b {
+            Binding::Place => Ok(mass(&self.site.ok_or("site missing")?.accounts, self.rules)),
+            Binding::Part => Ok(mass(&self.part()?.matter, self.rules)),
+            other => Ok(mass(&crate::anatomy::books(self.body(other)?), self.rules)),
         }
     }
 }
@@ -133,11 +145,11 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             (v, v.to_string())
         },
         Query::Account { who, key, at_least } => {
-            let v = value(s.ledger(*who)?, key);
+            let v = s.held(*who, key)?;
             (v >= *at_least, v.to_string())
         },
         Query::Below { who, key, amount } => {
-            let v = value(s.ledger(*who)?, key);
+            let v = s.held(*who, key)?;
             (v < *amount, v.to_string())
         },
         Query::Age { at_least } => {
@@ -173,7 +185,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             (v < *amount, v.to_string())
         },
         Query::Holds { who, at_least } => {
-            let v = mass(s.ledger(*who)?, s.rules);
+            let v = s.matter(*who)?;
             (v >= u128::from(*at_least), v.to_string())
         },
         Query::Computed(x) => {
@@ -201,15 +213,17 @@ fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
         match (r, r.who()) {
             (Reading::Kept { .. }, _) => Err("a requirement keeps no values".into()),
             (Reading::Account { key, .. }, who) => {
-                i64::try_from(value(s.ledger(who)?, key)).map_err(|e| e.to_string())
+                i64::try_from(s.held(who, key)?).map_err(|e| e.to_string())
             },
-            (r, Binding::Part) => Ok(i64::try_from(r.of_part(s.part()?)).unwrap_or(i64::MAX)),
-            (r, who) => Ok(body_reading(s.body(who)?, r)),
+            (r, Binding::Part) => {
+                Ok(i64::try_from(r.of_part(s.part()?, s.rules.body())).unwrap_or(i64::MAX))
+            },
+            (r, who) => Ok(body_reading(s.body(who)?, r, s.rules)),
         }
     };
-    let mut parts = |who: Binding| -> Result<Vec<Part>> {
+    let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
         let living = s.body(who)?.parts.values().filter(|p| !p.severed);
-        Ok(living.cloned().collect())
+        Ok((living.cloned().collect(), s.rules.body()))
     };
     let mut draw = |_: u64, _: u8| -> Result<u64> { Err("a requirement draws nothing".into()) };
     x.eval_in(&mut read, &mut draw, &mut parts)
@@ -488,7 +502,7 @@ fn allocate(
             .functions
             .get(to)
             .is_some_and(|f| f.seeding == Seeding::Acquired);
-        if !acquired || !rules.admits(&p.shape, to) {
+        if !acquired {
             return Err(format!("the bound part cannot come to express {to}"));
         }
         p.functions.insert(to.into());
@@ -506,7 +520,7 @@ fn allocate(
         },
         None => {
             let used: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
-            let free = u64::from(p.capacity).saturating_sub(used);
+            let free = u64::from(crate::anatomy::capacity(p)).saturating_sub(used);
             if free < u64::from(cells) {
                 return Err(format!("the bound part has {free} free cells"));
             }

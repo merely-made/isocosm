@@ -120,7 +120,7 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
         }
     }
     for group in world.genesis.population.groups.values() {
-        accounts.extend(group.entity.accounts.keys().cloned());
+        accounts.extend(crate::anatomy::books(&group.entity).keys().cloned());
     }
     let mut fields = vec![Field::Lineage, Field::Place];
     if effects.iter().any(|e| matches!(e, Effect::Death)) {
@@ -482,7 +482,7 @@ pub fn evaluate(
                     Field::Place => e.place,
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
-                    Field::Account(k) => crate::meaning::value(&e.accounts, k),
+                    Field::Account(k) => crate::anatomy::held(e, &world.genesis.rules, k),
                     Field::Cells(f) => {
                         let living = e.parts.values().filter(|p| !p.severed);
                         living

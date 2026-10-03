@@ -44,9 +44,6 @@ fn world() -> Genesis {
             functions: ["function:fix", "function:secrete"]
                 .map(String::from)
                 .into(),
-            capacity: 4,
-            cells: BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]),
-            cell_mass: 5,
             ..Default::default()
         },
     )]);
@@ -307,7 +304,15 @@ fn allocation_moves_the_bound_parts_cells_within_its_capacity() {
         to: "function:fix".into(),
         cells: cells.into(),
     };
+    // A bodied sheet of four cells (ruling 460), its tissue in it and no
+    // reserve, since it stores nothing (rulings 463 and 504).
     let mut g = world();
+    let critter = g.population.lift(1).unwrap();
+    let sheet = critter.parts.get_mut(&0).unwrap();
+    sheet.half_extent = [3, 3, 1];
+    sheet.cells = BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]);
+    sheet.matter = BTreeMap::from([(TISSUE.into(), 10)]);
+    critter.accounts.clear();
     with(
         &mut g,
         act(

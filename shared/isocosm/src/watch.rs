@@ -7,7 +7,7 @@
 //! Watching changes nothing the world does, and an advance that is refused
 //! and put back takes its acts with it.
 
-use crate::{meaning::mass, schema::*, simulation::Simulation};
+use crate::{anatomy::books, meaning::mass, schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -50,7 +50,8 @@ impl Simulation {
             return None;
         }
         let held = target.and_then(|t| self.body_at_start(t));
-        Some(held.map_or(0, |e| mass(&e.accounts, &self.genesis.rules)))
+        // A body's own matter lives in its parts (ruling 504).
+        Some(held.map_or(0, |e| mass(&books(e), &self.genesis.rules)))
     }
 
     pub(crate) fn watched(&mut self, act: Watched) {

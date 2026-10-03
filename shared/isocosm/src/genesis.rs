@@ -100,6 +100,24 @@ impl Genesis {
                     return Err("unknown part trait".into());
                 }
                 crate::validation::part(&self.rules, part)?;
+                // A body's own matter lives in its parts (ruling 504).
+                if part.bodied() {
+                    let own = e.accounts.keys().find(|k| {
+                        matches!(self.rules.accounts.get(*k),
+                            Some(AccountKind::Matter { lineage, .. }) if *lineage == e.lineage)
+                    });
+                    if let Some(k) = own.filter(|k| e.accounts[*k] > 0) {
+                        return Err(format!("a body with parts holds {k} outside them"));
+                    }
+                }
+                // A declared name cannot lie (ruling 494): a bodied part
+                // names a hollow or what its box and the tree read.
+                if part.bodied() && !part.shape.is_empty() {
+                    let read = crate::anatomy::name(e, id);
+                    if read != Some(part.shape.as_str()) {
+                        return Err(format!("a part declared {} reads as {read:?}", part.shape));
+                    }
+                }
                 let mut seen = BTreeSet::from([id]);
                 let mut parent = part.parent;
                 while let Some(p) = parent {
