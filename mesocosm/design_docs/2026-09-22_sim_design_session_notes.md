@@ -1190,7 +1190,8 @@ pooled one having run beside other sessions at up to 96% CPU. Mere's burn
 plan §13.34 holds them. Then, against the recommendation of a new
 zero-dependency crate, Mark housed the helper in cambium-genet-web-host
 (536), so the model probe takes Cambium's web host and Isometry's web
-build will reach the helper through it.
+build will reach the helper through it. The probe's older `wasm-bindgen`
+pin then blocked it, and Mark answered "Take the newest ya can" (537).
 
 ## 10. The design session, 2026-09-30
 

@@ -6944,12 +6944,41 @@ what later sections derive from.
      function, Distillery's model probe takes cambium-genet-web-host as a
      dependency to call it, and any future web module, Isometry's
      included, reaches it through Cambium's web host.
+     *Pinned 2026-10-03 by ruling 537:* the probe could not share the web
+     host's `wasm-bindgen`, and the modules take the newest they can.
 
      Source: relayed by the Burn migration session ("Conatus, physics,
      seiche status") on 2026-10-03, to be recorded in mere's burn 0.22
      migration plan §13.35 on branch `burn-pre4-repin`; not yet committed
      there when this record took it, at mere `9f5a73f6`. Mere's migration
      lane owns the work.
+
+537. **The web modules take the newest wasm-bindgen they can.** Asked on
+     2026-10-03 in the Burn migration session, when ruling 536 met a pin
+     conflict: Distillery's model probe pins `wasm-bindgen = "=0.2.122"`
+     because 0.2.123 and later turn wgpu 30's successful null
+     `popErrorScope` into a GPU error, while cambium-genet-web-host and
+     graphshell-web pin `=0.2.127`, and Cargo allows one 0.2.x per graph;
+     graphshell-web already runs 0.2.127 on wgpu 30.0.0 with its receipts
+     passing. Options: (A) "put cambium-genet-web-host's browser
+     dependencies behind a default feature, so the probe takes only the
+     helper with `default-features = false`"; (B) "move the probe to the
+     0.2.127 family (about 159 more packages), re-proving its browser rows
+     against the popErrorScope break"; (C) "the probe keeps its own local
+     start function, against 536". Mark's answer, as the migration session
+     relays it: "Take the newest ya can". So the probe, cambium-genet-web-host
+     and graphshell-web take the newest wasm-bindgen that works for them.
+     *The migration session's reading, not ruled:* the newest that works,
+     shared as one exact pin by the probe, the web host and graphshell-web,
+     each step back from the newest needing evidence: option B at the
+     newest version. *Reading, not ruled:* Isometry's web build, reaching
+     the helper through Cambium's web host (536), sits on the same
+     wasm-bindgen.
+
+     Source: the conflict and the options are in mere's burn 0.22
+     migration plan §13.35, at `dd9819c4` on branch `burn-pre4-repin`; Mark's
+     answer was relayed by the migration session on 2026-10-03, not yet
+     recorded there. Mere's migration lane owns the work.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10792,6 +10821,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: ruling 537 recorded at the Burn migration session's request:
+  the web modules take the newest wasm-bindgen they can (Mark: "Take the
+  newest ya can"), after 536's helper met the model probe's older pin.
+  Annotation on 536. Carried into the session notes' §9.9 and the index.
 - 2026-10-03: ruling 536 recorded at the Burn migration session's request,
   Mark having ruled it there against the recommendation: 532's constructor
   helper lives in cambium-genet-web-host rather than a new crate.
