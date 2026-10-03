@@ -213,7 +213,12 @@ takes, Mesocosm's five appendages and its palette the default templates; a
 founded lineage's recipe is drawn by its kingdom, the eight authored bodies
 kept as presets; and a grown or incorporated part takes the first free box
 along the policy's facings, which needs the offsets, built with
-development.
+development. *Ruled 2026-10-03 (516, 518):* a body's reproduce cells hold a
+provision up to their cells' mass, as store cells hold the reserve, filled
+by growth once the parts are full; a body bears when it is full and the
+birth spends it, with no fraction or interval; and a body that isn't
+hungry incorporates a part whole when its bite would take all of the
+part's tissue, affinity deciding how it lands.
 
 ## 7. Wounds and severing
 

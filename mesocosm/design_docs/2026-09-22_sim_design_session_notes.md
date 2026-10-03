@@ -1733,3 +1733,14 @@ The first round:
 | How does the sim's recipe name what a segment bears? | 511: kinds as part templates |
 | What recipe does a founded world's lineage start with? | 512: drawn, roster as presets |
 | How do the probe's bodies support reproduction? | 513: a cell at founding |
+
+The second round turned on Mark's remark that Mesocosm's quarter and its
+gestation are placeholders, not values to hardcode:
+
+| Question as put | Ruling |
+| --- | --- |
+| Which reproductive strategies does the probe's check certify? | 514: all three in the check |
+| What does a body's reproduce volume scale? | 515: what a birth spends, nothing hardcoded |
+| How does a probe body incorporate? | 516: whole parts, by affinity |
+| How does the probe see births within its run? | 517: a longer probe |
+| Where should a birth's budget and its timing come from? | 518: filled like a store |

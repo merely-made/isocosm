@@ -4797,6 +4797,9 @@ what later sections derive from.
      *Given its recipe 2026-10-02 by ruling 468:* a lineage carries a recipe
      and a placement policy, a child develops its part tree from them, and a
      maturing body grows the parts its recipe names that it lacks.
+     *Amended 2026-10-03 by ruling 518:* a birth spends the provision its
+     parent's reproduce cells fill, not a fraction of the parent's body,
+     and comes when that provision is full.
 
 448. **The default set holds four reproductive strategies.** Asked on
      2026-10-01, putting 447 back: "Which reproductive strategies does the
@@ -4821,6 +4824,8 @@ what later sections derive from.
      them, and spores' scatter waits for the places family.
      *Joined 2026-10-02 by ruling 470:* fragmentation, a severed part living
      on as a new body where its lineage can regrow from a fragment.
+     *Paid 2026-10-03 by ruling 518:* every strategy's birth spends the
+     provision its parent's reproduce cells fill.
 
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
@@ -5557,6 +5562,8 @@ what later sections derive from.
      lacks, nearest the root first, its tissue from that growth and its
      functions' expression at PD2's price, a cell's mass a cell from the
      reserve into the ground; growth then fills it by 464.
+     *Joined 2026-10-03 by ruling 518:* growth with the parts full also
+     fills the provision; which comes first goes back to Mark.
 
 480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
      "Where is a spread body present? Evidence: under 467 a fungus is one
@@ -6406,6 +6413,129 @@ what later sections derive from.
      505's rates are calibrated again so the median body still earns what
      it did; and a recipe without that cell founds checkpoint 7's bodies
      exactly, a test's control.
+
+514. **The probe's check certifies all three strategies.** Asked on
+     2026-10-03, checkpoint 8's second round: "Which reproductive strategies
+     does the probe's check certify? Evidence: checkpoint 8 builds brood,
+     the seed or egg, and budding or fission (448; spores wait for places).
+     Brood is paid from tissue with a reserve endowment; the seed or egg is
+     paid from the reserve; a bud takes a body's overflow at its ceiling.
+     The probe's producers keep no reserve (506), so they can bud but not
+     seed. Its grazers store, so they can brood or lay eggs. Under 449 the
+     phenotype switches among a lineage's strategies by circumstance."
+     Options, recommended first: (A) "All three in the check: producers
+     bud. Grazers lay an egg while their reserve covers one and brood
+     otherwise. The certified check covers every strategy built
+     (recommended)." (B) "One each: producers bud and grazers brood. The
+     seed or egg is built and tested, not certified." (C) "Producers seed
+     from tissue: producers set seed, paid from tissue since they keep no
+     reserve, and grazers brood. Budding is built and tested, not
+     certified." Mark chose A, "All three in the check". So the probe's
+     producers bud and its grazers lay eggs or brood, and the certified
+     check covers every strategy built. *Reopened in part the same day by
+     ruling 518:* every birth now spends the provision its reproduce cells
+     hold, so what switches a grazer between an egg and a brood goes back
+     to Mark.
+
+515. **A body's reproduce volume scales what a birth spends, and neither
+     the budget nor the timing is hardcoded.** Asked on 2026-10-03, with
+     514: "What does a body's reproduce volume scale (492, 493)? Evidence:
+     Mesocosm prices a brood at a quarter of the parent's biomass (447 made
+     the fraction a world rule). A body waits 480 ticks between births,
+     scaled by the quarter power of its mass. Under 513 each probe body
+     reproduces in one cell: about 27 to 37 voxels of a frond, 16 of a
+     grazer's lump. Under 505 income and the mouthful read their
+     measurements alone." Options, recommended first: (A) "How often a body
+     bears: gestation is a world-rule rate per voxel of reproduce,
+     calibrated so the median body waits what Mesocosm's formula gives.
+     What a birth costs stays 447's world-rule fraction (recommended)." (B)
+     "What a birth spends: a birth's budget is a world-rule rate per voxel
+     of reproduce, calibrated to Mesocosm's quarter of the median body.
+     Gestation stays Mesocosm's, by mass." (C) "A gate only: expressing
+     reproduce lets a body breed. Mesocosm's fraction and gestation stand,
+     and nothing reads the volume yet." Mark answered: "What a birth spends,
+     but also, it's probably not wise to hardcode 1/4… nor how often.
+     Sounds like a placeholder value we set". So a body's reproduce volume
+     scales what a birth spends, and neither Mesocosm's quarter nor its
+     gestation is taken as a fixed value; where the budget and the timing
+     come from was put back the same day (518).
+
+516. **A whole part is incorporated, as affinity decides.** Asked on
+     2026-10-03, with 514: "How does a probe body incorporate (468)?
+     Evidence: Mesocosm incorporates whole-body and single-part meals
+     whenever the eater isn't starving, landing them at the first free box.
+     Its only lexicon lesson is eating 20 mg of plate, which teaches Plate.
+     Its affinity verdicts (native, adapter, refused) gate only grafts,
+     while the brief puts incorporation under them. Since checkpoint 7 a
+     grazer's bite lands on one part of a frond, a mouthful of about 11 mg
+     against a frond's tissue of about 66 mg." Options, recommended first:
+     (A) "Whole parts, by affinity: a grazer that isn't hungry, whose bite
+     would take all of a part's tissue, lands the part whole at the first
+     free box and teaches its lineage the kind. Affinity decides how it
+     lands: native as it was, adapter expressing nothing, refused burnt as
+     a meal (recommended)." (B) "Whole parts, ungated: the same landing, but
+     every whole part lands as it was. Affinity is left to grafting, as in
+     Mesocosm." (C) "Its own act: incorporation is a native the grazer
+     chooses over grazing when not hungry. It takes a whole part, up to its
+     room, gated by affinity." Mark chose A, "Whole parts, by affinity". So
+     a body that isn't hungry, whose bite would take all of a part's
+     tissue, lands that part whole at the first free box and teaches its
+     lineage the part's kind, and Mesocosm's affinity verdict decides how
+     it lands: a native part as it was, an adapter's expressing nothing,
+     a refused one burnt as a meal.
+
+517. **The probe runs long enough for births.** Asked on 2026-10-03, with
+     514: "How does the probe see births within its run? Evidence: Mesocosm
+     matures a 100 mg body at 270 ticks and gestates 480 between births,
+     both scaled by the quarter power of mass. The sim has no maturity or
+     gestation yet. The probe runs 24 ticks over 1,000 draws, at 3 to 6
+     seconds a draw." Options, recommended first: (A) "World-rule tempo,
+     fast probe: maturity and gestation become world rules on Mesocosm's
+     quarter-power curves, with its bases as defaults. The probe's world
+     sets small bases so bodies bear, and children mature and bear, within
+     its 24 ticks. Founders start mature at staggered gestation
+     (recommended)." (B) "A longer probe: Mesocosm's tempo, with the probe
+     running long enough for births, about 750 ticks. That's about 30 times
+     the cost of a check." (C) "Founders due at founding: Mesocosm's tempo,
+     with founders' gestation clocks drawn so some are due within 24 ticks.
+     Only founders bear; their children never do." Mark chose B, "A longer
+     probe". So the probe's domain is not given a tempo of its own: it runs
+     as long as the world's own tempo needs for births to happen. *Reading,
+     not ruled:* under 518 a birth comes when a body has filled its
+     provision, tens of ticks at the probe's incomes, so the run's length
+     is measured from that, not from Mesocosm's 750 ticks.
+
+518. **A birth spends the provision its reproduce cells fill.** Asked on
+     2026-10-03, putting 515 back: "You chose what a birth spends, and said
+     neither 1/4 nor how often should be hardcoded. Both are placeholders
+     from Mesocosm's TD2 tuning: OFFSPRING_COST 4, and GESTATION_BASE 480,
+     the "knob that decides boil against breathe". Where should a birth's
+     budget and its timing come from? Evidence: store cells hold the
+     reserve up to their cells' mass (463). Read that way, a reproduce cell
+     would hold 21 to 29 mg in a frond, about 6 to 8 ticks of the median
+     income (4 mg), and 12 mg in a grazer's lump. That's near Mesocosm's
+     quarter of these bodies." Options, recommended first: (A) "Filled like
+     a store: reproduce cells hold a provision up to their cells' mass,
+     filled by growth once the parts are full, and a body bears when its
+     provision is full, the birth spending it. The budget is the reproduce
+     volume and the timing is what the body earns, with no fraction or
+     interval; 447's fraction and gestation give way (recommended)." (B)
+     "Lineage traits: the budget per voxel of reproduce and the interval
+     between births are life-history traits each lineage carries. The
+     generator draws them within world-rule bounds, and they're revised at
+     the epoch boundary." (C) "World rules, drawn per world: a rate per
+     voxel and an interval are world rules the generator draws from its
+     declared space, with Mesocosm's values among them." Mark chose A,
+     "Filled like a store". So a body's reproduce cells hold a provision up
+     to their cells' mass, as store cells hold the reserve (463), filled by
+     growth once its parts are full; the body bears when its provision is
+     full, and the birth spends it. What a birth spends is the reproduce
+     volume and how often it comes is what the body earns: 447's
+     world-rule fraction and Mesocosm's gestation give way, and no birth
+     fraction or interval is set anywhere. *Reading, not ruled:* the
+     provision is a matter account of the lineage, held in its reproduce
+     cells as the reserve is in its stores, and it moves by the flow
+     record like any other.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10227,6 +10357,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 514 to 518 recorded, checkpoint 8's second round:
+  the check certifies all three strategies (514); reproduce volume scales
+  what a birth spends, nothing hardcoded (515, Mark's reframe); a whole
+  part is incorporated as affinity decides (516); the probe runs long
+  enough for births (517); and a birth spends the provision its reproduce
+  cells fill, with no fraction or interval (518, put back from 515).
+  Annotations on 447, 448 and 479. Carried into the sim plan's checkpoint
+  8 brief, the anatomy brief, the session notes' §10 and the index.
 - 2026-10-03: rulings 510 to 513 recorded, checkpoint 8's first round:
   attachment offsets built in checkpoint 8 (510), a recipe's kinds as part
   templates (511), founded recipes drawn by kingdom with the roster as
