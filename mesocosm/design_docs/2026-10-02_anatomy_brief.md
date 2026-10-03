@@ -220,7 +220,9 @@ birth spends it, with no fraction or interval; and a body that isn't
 hungry incorporates a part whole when its bite would take all of the
 part's tissue, affinity deciding how it lands. *Ruled 2026-10-03 (520):*
 whether growth with the parts full first grows a missing part or fills
-the provision is a lineage trait.
+the provision is a lineage trait. *Ruled 2026-10-03 (524):* a bud grows as a
+part at its parent's reproducing part and severs into a body of its own
+once full.
 
 ## 7. Wounds and severing
 

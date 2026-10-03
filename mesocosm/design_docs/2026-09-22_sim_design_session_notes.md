@@ -1758,3 +1758,18 @@ adapting it:
 
 Against the recommendation, growth's order is a lineage's life history
 rather than parts first.
+
+Working out how births run found that a 12 mg grazer child falls under the
+probe's fixed starvation line, another of Mesocosm's placeholders, so a
+fourth round took it back with three more forks:
+
+| Question as put | Ruling |
+| --- | --- |
+| A grazer child of 12 mg against a 20 mg starvation line: what gives? | 523: starve when rent fails |
+| What is a producer's bud under 518? | 524: a part grown off |
+| Which generated worlds found their lineages from recipes? | 525: worlds that ask for bodies |
+| How does parental care feed the young without a fixed amount? | 526: mouthfuls while young hunger |
+| Mouthfuls, or provisions from the parent, like milk? | 527: both, by lineage trait |
+
+Against the recommendation, a bud is a part of its parent grown off, as
+448 described it, rather than a clone.

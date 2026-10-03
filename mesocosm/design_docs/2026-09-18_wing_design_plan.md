@@ -4829,6 +4829,8 @@ what later sections derive from.
      on as a new body where its lineage can regrow from a fragment.
      *Paid 2026-10-03 by ruling 518:* every strategy's birth spends the
      provision its parent's reproduce cells fill.
+     *Specified 2026-10-03 by ruling 524:* a bud grows as a part at its
+     parent's reproducing part and severs into a body of its own once full.
 
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
@@ -4873,6 +4875,10 @@ what later sections derive from.
      *Placed 2026-10-03 by ruling 521:* semelparity or iteroparity and
      parental care are built in checkpoint 8, mating and horizontal transfer
      with the boundary family.
+     *Specified 2026-10-03 by rulings 526 and 527:* care feeds a hungry
+     child, while the parent is not hungry, milk from the parent's
+     refilling provision or its own mouthfuls from its reserve, as the
+     lineage's trait says.
 
 451. **An epoch ends by one of three rules, a year by default.** Asked on
      2026-10-01, opening checkpoint 6's step 4: "What ends an epoch in
@@ -5411,6 +5417,8 @@ what later sections derive from.
      left to rot like any carcass.
      *Specified 2026-10-02 by ruling 486:* every fragment of such a lineage
      lives on, and physiology decides which last.
+     *Joined 2026-10-03 by ruling 524:* a bud severs from its parent as a
+     fragment does, once full.
 
 471. **kiss3d, reshaped, is the lit body tenant.** Asked on 2026-10-02 in
      the Conatus/physics session, after Mark asked how renderling's five
@@ -6206,6 +6214,9 @@ what later sections derive from.
      and frames name; the body's totals are readings over its parts; and a
      body without parts keeps its entity ledger, the hunting family's
      certified numbers standing as the control.
+     *Kept 2026-10-03 by ruling 525:* the ecology family's extentless bodies
+     stay, the scale control, and only worlds that ask for bodies found
+     from recipes.
 
 505. **Income and the mouthful read their measurements alone.** Asked on
      2026-10-02, with 504: "How do fixing's income (TD2c) and the mouthful
@@ -6399,6 +6410,7 @@ what later sections derive from.
      A, "Drawn, roster as presets". So the generator draws each founded
      lineage's recipe by its kingdom, as Mesocosm's lottery does, and the
      eight authored bodies ship as founding presets.
+     *Bounded 2026-10-03 by ruling 525:* in worlds that ask for bodies.
 
 513. **The probe's bodies express reproduce in one cell from founding.**
      Asked on 2026-10-03, with 510: "How do the probe's bodies support
@@ -6642,6 +6654,114 @@ what later sections derive from.
      conversion a convenience to check against it; no pack is opened or
      scheduled by this ruling; and any lane that reads the prior art's code
      checks each project's licence first, none having been checked here.
+
+523. **A body starves when its rent fails, not below a fixed mass.** Asked
+     on 2026-10-03, checkpoint 8's fourth round, returning evidence against
+     513 and 518: "Under 513 and 518 a grazer's provision is one cell, 12
+     mg, and a brood or egg spends all of it. The probe starves any body
+     whose tissue falls to 20 mg or less, checked every tick (Mesocosm's
+     STARVATION_MG, a constant of the kind you called a placeholder). So
+     every grazer child would die on its first tick. Producer buds of 21 to
+     29 mg clear the line, but only just. A small grazer's rent is about 1
+     mg a tick, so without the line a 12 mg child would live about 12 ticks
+     unfed. What gives?" Options, recommended first: (A) "Starve when rent
+     fails: a body starves when its tissue and reserve can't pay its rent,
+     not below a fixed 20 mg. A small newborn lives while it can pay and
+     must feed. The constant goes, like the quarter (recommended)." (B) "Two
+     cells for grazers: 513 changes: grazers' recipe gives reproduce two
+     cells (25 mg), clearing the line. Producers keep one, and the 20 mg
+     line stays." (C) "Line scaled to the body: a body starves below a
+     share of its own parts' minimum, so the line follows its size. That
+     share is a world rule." Mark chose A, "Starve when rent fails". So a
+     body starves when its tissue and reserve cannot pay its rent, and
+     Mesocosm's fixed 20 mg line goes from the sim as its quarter did (515);
+     a newborn of any size lives while it can pay, and must feed.
+
+524. **A bud is a part grown off its parent.** Asked on 2026-10-03, with
+     523: "What is a producer's bud under 518, which has every birth spend
+     the provision (514)? Evidence: 448 described budding as "a body at its
+     ceiling routes its overflow into a bud, or divides, the child a share
+     of the parent". A brood draws a fresh soma from the recipe by the
+     child's seed (478). Severing a subtree into a body of its own is
+     already 470's fragmentation." Options, recommended first: (A) "A clone:
+     a bud copies its parent's soma, the clonal strategy, while a brood
+     draws a fresh one. Both spend the provision (recommended)." (B) "A part
+     grown off: the bud grows as a new part at the parent's reproducing
+     part, and severs into a body of its own once full, so the child is a
+     share of the parent, as 448 put it." (C) "A brood by another name: a
+     bud develops exactly as a brood does; the strategy only names how a
+     lineage is described." Mark chose B, "A part grown off", against the
+     recommendation. So a bud grows as a new part at its parent's
+     reproducing part and severs into a body of its own once full, the
+     child a share of its parent as 448 described it, its severing 470's.
+     *Reading, not ruled:* the bud is filled as the provision is, so its
+     tissue is what the provision would have held, and once severed it
+     grows the rest of its lineage's recipe by 479 and 520.
+
+525. **Only worlds that ask for bodies found their lineages from
+     recipes.** Asked on 2026-10-03, with 523: "Which generated worlds
+     found their lineages from recipes (512)? Evidence: Isocosm's generator
+     founds the ecology family's worlds with extentless parts that carry
+     traits but no matter (504 kept them as a control). Their 29 scale
+     points are the wing's cost baseline, unchanged at checkpoint 7. The
+     body family is founded by the probe." Options, recommended first: (A)
+     "Worlds that ask for bodies: the generator draws recipes for the body
+     family and any world founded with bodies. The ecology family keeps its
+     extentless bodies as the scale control (recommended)." (B) "Every
+     generated world: from checkpoint 8 every generated world founds recipe
+     bodies. The ecology family is re-founded and its scale points measured
+     again from scratch." Mark chose A, "Worlds that ask for bodies". So
+     the generator draws recipes for the body family and any world founded
+     with bodies, and the ecology family keeps its extentless bodies as the
+     scale control.
+
+526. **Parental care feeds hungry young a parent's own mouthfuls.** Asked on
+     2026-10-03, with 523: "How does parental care feed the young (450,
+     built here by 521), without a fixed amount? Evidence: 450 called it
+     provisioning after birth, a feeding transfer from parent to young. TD5
+     already lands a meal in tissue or reserve by hunger, and under 505 a
+     grazer's mouthful is read from its intake volume." Options,
+     recommended first: (A) "Mouthfuls while young hunger: a parent with
+     the trait gives a hungry child at its site one of its own mouthfuls a
+     tick from its reserve, landed by TD5, while the parent itself isn't
+     hungry. In the probe, grazers care (recommended)." (B) "The provision
+     flows on: after a birth the parent routes its provision's refill to
+     its young until they're whole, instead of toward its next birth." (C)
+     "An endowment at birth: care is a reserve endowment the child takes at
+     birth, as 447 first described it, with no feeding afterwards." Mark
+     chose A, "Mouthfuls while young hunger". So a parent whose lineage
+     cares gives a hungry child of its at its site one of its own mouthfuls
+     a tick from its reserve, landed by TD5, while the parent itself is not
+     hungry, and the probe's grazers care. *Put back the same day:* Mark
+     asked "Mouthfuls, or provisions from the parent (like milk?)", and
+     ruling 527 makes the food a lineage's trait.
+
+527. **What a caring parent gives, milk or mouthfuls, is a lineage trait.**
+     Asked on 2026-10-03, putting 526 back at Mark's question ("Mouthfuls,
+     or provisions from the parent (like milk?)"): "You asked: mouthfuls,
+     or provisions from the parent, like milk? What does a caring parent
+     give its hungry young? Evidence: 526's mouthful is regurgitation, the
+     parent's own mouthful (read from its intake volume) from its reserve,
+     as birds feed nestlings. Milk would be the reproductive provision 518
+     fills in the reproduce cells: after a birth it would flow to the young
+     instead of toward the next birth, sized by the parent's reproduce
+     volume. That would make care cost the parent births, as nursing delays
+     breeding in mammals." Options, recommended first: (A) "Milk from the
+     provision: while its young hunger, a caring parent's refilling
+     provision goes to them rather than to its next birth, sized by its
+     reproduce volume. Care trades against breeding. The probe's grazers
+     give milk (recommended)." (B) "Mouthfuls, as ruled: regurgitated food:
+     the parent's own mouthful from its reserve, sized by its intake
+     volume. Care costs the parent's reserve, not its births." (C) "Both,
+     by lineage trait: which a lineage gives, milk or mouthfuls, is its
+     trait, as mammals and birds differ. The probe's grazers give one; the
+     other is tested, not certified." Mark chose C, "Both, by lineage
+     trait". So a caring lineage feeds its hungry young either milk, its
+     refilling provision going to them rather than to its next birth and
+     sized by its reproduce volume, or mouthfuls, 526's regurgitated food
+     from its reserve sized by its intake volume, as its trait says; the
+     probe's grazers give one, certified, and the other is tested. Which
+     one the probe's grazers give goes back to Mark.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10484,6 +10604,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 523 to 527 recorded, checkpoint 8's fourth round: a
+  body starves when its rent fails, Mesocosm's 20 mg line going (523,
+  evidence returned against 513 and 518); a bud is a part grown off its
+  parent (524, against the recommendation); only worlds that ask for
+  bodies found from recipes (525); parental care feeds hungry young the
+  parent's own mouthfuls (526), and, put back at Mark's question, milk or
+  mouthfuls by lineage trait (527). Annotations on 448, 450, 470, 504 and
+  512.
+  Carried into the sim plan's checkpoint 8 brief, the anatomy brief, the
+  session notes' §10 and the index.
 - 2026-10-03: rulings 519 to 522 recorded: hunger switches a grazer
   between an egg and a brood (519); growth's order between a missing part
   and the provision is a lineage trait (520, against the recommendation);
