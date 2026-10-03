@@ -1794,3 +1794,9 @@ A fifth round closed checkpoint 8's design:
 
 Against the recommendation, a clutch's size is a lineage's trait rather
 than one egg a birth.
+
+Building step 8c raised one more:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where do the provision and a missing part take growth, against the reserve? | 535: a lineage trait |

@@ -5583,6 +5583,8 @@ what later sections derive from.
      *Joined 2026-10-03 by ruling 518:* growth with the parts full also
      fills the provision; which comes first goes back to Mark. *Ordered
      2026-10-03 by ruling 520:* which comes first is a lineage trait.
+     *Placed against the reserve 2026-10-03 by ruling 535:* before it or
+     after it, as the lineage breeds from income or from capital.
 
 480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
      "Where is a spread body present? Evidence: under 467 a fungus is one
@@ -6896,6 +6898,29 @@ what later sections derive from.
      evidence, committed at `cc91e3e8` on mere's branch `burn-pre4-repin`,
      not on main. The migration session relayed the three rulings for this
      record on 2026-10-03. Mere's migration lane owns the work.
+
+535. **Whether a lineage breeds from income or from capital is its trait.**
+     Asked on 2026-10-03, building checkpoint 8's step 8c: "Where do the
+     provision (518) and a missing part (479) take growth, against the
+     reserve? Evidence: TD5 lands a meal in tissue then reserve when fed,
+     reserve then tissue when hungry, and spills the rest to the ground.
+     479 and 518 both take "growth that finds no room left in the body's
+     parts". Producers keep no reserve (506), so it changes only bodies
+     that store. A grazer's reserve holds 12 to 48 mg, its provision 12 mg;
+     under 519 a hungry grazer lays eggs." Options, recommended first: (A)
+     "Before the reserve: with the parts full, growth goes to the missing
+     part or the provision (in the lineage's order, 520) before the
+     reserve, as 479's and 518's words say. A body breeds from income and
+     stores what's left (recommended)." (B) "After the reserve: TD5 stays as
+     it is, and only what it would spill goes to the missing part or the
+     provision. A body stores first and breeds from surplus." (C) "A
+     lineage trait: whether a lineage breeds from income or from capital is
+     its trait, drawn by the generator, as nature has both." Mark chose C,
+     "A lineage trait", against the recommendation. So whether growth with
+     the parts full goes to the missing part or the provision before the
+     reserve, breeding from income, or after it, breeding from capital, is
+     a trait of the lineage, drawn by the generator and revised at the
+     epoch boundary (57).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10738,6 +10763,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: ruling 535 recorded, building checkpoint 8's step 8c: whether
+  a lineage breeds from income or from capital, growth with its parts full
+  going to its missing parts and provision before or after its reserve, is
+  its trait (against the recommendation). Annotation on 479. Carried into
+  the sim plan's checkpoint 8 brief, the session notes' §10 and the index.
 - 2026-10-03: rulings 532 to 534 recorded at the Burn migration session's
   request, Mark having ruled them there: one stack helper runs pre.4's wasm
   constructors once for every web module (532), Distillery's model probe
