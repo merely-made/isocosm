@@ -1,0 +1,75 @@
+draws 200, readings 15, master seed 20261002
+verdicts {"main_pass": false, "main_equivalent": false, "main_different": false, "positive_control_pass": false, "negative_control_failed_starvation_check": true, "negative_control_detected_starvation_difference": true, "starvation_readings": ["body:starve-0#2", "body:starve-1#2"], "draw_control_detected": true}
+
+exact against crowd: receipt equivalent False, different False, pass False
+  alive:ability:probe-0            D=0.0200 means    60.65    60.87  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  alive:ability:probe-1            D=0.0000 means    14.08    14.08  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#3                   D=0.0250 means     6.36     6.27  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:starve-0#2                  D=0.0300 means     6.29     6.06  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:starve-1#2                  D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#meal-holdings       D=0.0300 means  9964.43  9978.83  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:lineage                  D=0.0650 means     0.21     0.14  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:place                    D=0.0100 means     0.25     0.26  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:alive                    D=0.0050 means     0.91     0.91  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:reserve:1        D=0.0700 means     5.47     3.90  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:0         D=0.0650 means    67.79    71.59  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:1         D=0.0700 means    39.16    26.54  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:world:soil       D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:fix       D=0.1000 means     4.12     4.58  certified False (p 1.00e+00)  detected False (receipt p 0.8400, recomputed 0.9225)
+  inspect:cells:function:secrete   D=0.0400 means     0.81     0.73  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+
+exact against exact (positive control): receipt equivalent False, different False, pass False
+  alive:ability:probe-0            D=0.0150 means    60.65    60.64  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  alive:ability:probe-1            D=0.0000 means    14.08    14.08  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#3                   D=0.0200 means     6.36     6.30  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:starve-0#2                  D=0.0200 means     6.29     6.29  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:starve-1#2                  D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#meal-holdings       D=0.0350 means  9964.43  9965.72  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:lineage                  D=0.0100 means     0.21     0.20  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:place                    D=0.0200 means     0.25     0.27  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:alive                    D=0.0100 means     0.91     0.90  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:reserve:1        D=0.0350 means     5.47     4.87  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:0         D=0.0800 means    67.79    62.86  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:1         D=0.0250 means    39.16    37.01  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:world:soil       D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:fix       D=0.0500 means     4.12     4.02  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:secrete   D=0.0450 means     0.81     0.99  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+
+exact against averaged crowd (negative control): receipt equivalent False, different True, pass False
+  alive:ability:probe-0            D=0.0700 means    60.65    63.69  certified False (p 1.00e+00)  detected True  (receipt p 0.0120, recomputed 0.0075)
+  alive:ability:probe-1            D=0.0000 means    14.08    14.08  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#3                   D=0.1400 means     6.36     8.10  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  body:starve-0#2                  D=0.3350 means     6.29     3.25  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  body:starve-1#2                  D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#meal-holdings       D=0.1750 means  9964.43  8954.20  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  inspect:lineage                  D=0.0200 means     0.21     0.19  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:place                    D=0.0150 means     0.25     0.23  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:alive                    D=0.0600 means     0.91     0.97  certified False (p 1.00e+00)  detected False (receipt p 0.1155, recomputed 0.1100)
+  inspect:account:reserve:1        D=0.0750 means     5.47     3.75  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:0         D=0.1250 means    67.79    70.73  certified False (p 1.00e+00)  detected False (receipt p 0.2600, recomputed 0.2350)
+  inspect:account:tissue:1         D=0.0300 means    39.16    35.09  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:world:soil       D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:fix       D=0.0850 means     4.12     4.42  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:secrete   D=0.0400 means     0.81     0.69  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+
+exact against unweighted crowd (draw control): receipt equivalent False, different True, pass False
+  alive:ability:probe-0            D=0.1200 means    60.65    55.19  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  alive:ability:probe-1            D=0.0000 means    14.08    14.08  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#3                   D=0.0800 means     6.36     7.04  certified False (p 1.00e+00)  detected True  (receipt p 0.0300, recomputed 0.0120)
+  body:starve-0#2                  D=0.2850 means     6.29    11.74  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  body:starve-1#2                  D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  body:graze-1#meal-holdings       D=0.1450 means  9964.43  9294.49  certified False (p 1.00e+00)  detected True  (receipt p 0.0075, recomputed 0.0075)
+  inspect:lineage                  D=0.0100 means     0.21     0.20  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:place                    D=0.0200 means     0.25     0.27  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:alive                    D=0.0950 means     0.91     0.81  certified False (p 1.00e+00)  detected True  (receipt p 0.0300, recomputed 0.0220)
+  inspect:account:reserve:1        D=0.0350 means     5.47     4.91  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:tissue:0         D=0.1100 means    67.79    68.51  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 0.9050)
+  inspect:account:tissue:1         D=0.0200 means    39.16    37.47  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:account:world:soil       D=0.0000 means     0.00     0.00  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:fix       D=0.0300 means     4.12     4.21  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+  inspect:cells:function:secrete   D=0.0050 means     0.81     0.83  certified False (p 1.00e+00)  detected False (receipt p 1.0000, recomputed 1.0000)
+
+All distances and equivalence verdicts recomputed and matched.
+savings {"exact_evaluations": 1198447, "crowd_evaluations": 664426, "evaluation_ratio": 1.8037328460957278, "per_draw_evaluation_ratio": {"min": 1.2823184630413547, "median": 1.8335135135135134, "max": 2.842995926041993}, "exact_represented": 1198447, "crowd_represented": 1198429, "exact_micros": 267709102, "crowd_micros": 50097339, "wall_ratio": 5.343778878155584, "approximate": null}
+density {"founders": {"min": 29.0, "median": 71.0, "max": 154.0}, "alive_end": {"min": 12.0, "median": 65.0, "max": 154.0}, "alive_per_state_end": {"min": 1.0, "median": 1.5357142857142858, "max": 6.0}, "exact_groups_stored_end": {"min": 23.0, "median": 60.0, "max": 143.0}, "crowd_bins_end": {"min": 12.0, "median": 48.0, "max": 120.0}}
+checks {"exact_rerun_identical": true, "collect_changes_no_outcome": true}

@@ -101,10 +101,9 @@ fn the_median_body_earns_what_it_did() {
     for (name, old, new) in &medians {
         eprintln!("{name}: median old {old}, new {new}");
     }
+    // Exactly: the medians are a few milligrams, so a tolerance of one
+    // would pass a rate a quarter off.
     for (name, old, new) in medians {
-        assert!(
-            old.abs_diff(new) <= 1,
-            "{name}: old {old} against new {new}"
-        );
+        assert_eq!(old, new, "{name}");
     }
 }

@@ -324,6 +324,9 @@ fn bodies_run_alike_grouped_and_individually() {
         let g = world(seed);
         let mut individuals = Simulation::new(g.clone(), Execution::Individuals).unwrap();
         let mut grouped = Simulation::new(g, Execution::Grouped).unwrap();
+        for p in ["body:fix-0", "body:upkeep-0"] {
+            individuals.watch(p);
+        }
         let before = individuals.matter();
         for tick in 1..=24 {
             individuals.advance(1).unwrap();
@@ -332,6 +335,14 @@ fn bodies_run_alike_grouped_and_individually() {
             assert_eq!(a, b, "seed {seed}, tick {tick}");
         }
         assert_eq!(grouped.matter(), before, "seed {seed}");
+        // The control: matter moved, producers fixing and paying rent, so
+        // the world whose matter held was one that changed.
+        let acted: std::collections::BTreeSet<String> = individuals
+            .take_watched()
+            .into_iter()
+            .map(|a| a.process)
+            .collect();
+        assert_eq!(acted.len(), 2, "seed {seed}: {acted:?}");
     }
 }
 
