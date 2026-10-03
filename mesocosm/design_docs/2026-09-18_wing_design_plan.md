@@ -4010,6 +4010,8 @@ what later sections derive from.
      `01a0f0f8-5004-7243-a6f5-0bd909dbbf3c`. The unanswered status in the
      sealed question remains historical. Mere's existing migration lane
      owns diagnosis and its evidence; no production change is claimed here.
+     *Answered 2026-10-03 by ruling 508:* the repair goes in burn-remote's
+     close path.
 
 412. **Earth is matter: the volume is the world's own body.** Asked on
      2026-09-30, the spatial spine's SP4 design (Mark: "We'll design things
@@ -6257,6 +6259,57 @@ what later sections derive from.
      averages the body each kind is sized by, is unchanged; and what an
      average cannot fit in one member's parts passes to classmates with
      room, so the control loses no matter.
+
+508. **The allocator repair goes in burn-remote's close path.** Asked on
+     2026-10-03 in the Burn migration session, as ruling 411's pending
+     fork: "pre.4's remote lifecycle gate holds 10 allocations (5,323,776
+     bytes) after reclaim until an explicit `client.sync()`, which takes it
+     to zero in 2.2 ms; where does the repair go?" Options: "the
+     burn-remote close path awaits cleanup completion and propagates
+     failures honestly"; "CubeCL's general completion polling changes for
+     every consumer"; "park the migration". Mark's answer, as mere's plan
+     records it: "burn-remote close path". So the repair goes in
+     burn-remote's close path, which waits for cleanup to complete and
+     reports its failures honestly. It keeps the zero-baseline gate and the
+     strict numerical and recovery gates, preserves a second live lease's
+     identity and tensor values, and rejects an injected synchronization
+     failure. *Reading, not ruled:* as with 411, this places the repair; it
+     does not accept the migration, its merge or promotion, or Isometry's
+     repin, and Isometry's handoff, which takes pre.4 through mere, stays
+     held.
+
+     Source: mere's burn 0.22 migration plan, §13.31
+     (`design_docs/mere_docs/implementation_strategy/2026-08-09_burn_0_22_migration_plan.md`),
+     committed at `f560c3b1` on mere's branch `burn-pre4-repin`, not on
+     main; the gate and A/B records it re-read are under
+     `Code/testing/mere/receipts/2026-10-02/burn-pre4` (remote/, extrema/,
+     web/). The migration session relayed both rulings for this record on
+     2026-10-03. Mere's migration lane owns the work and its evidence.
+
+509. **A bounded lane makes pre.4's wasm constructors run once.** Asked on
+     2026-10-03 with 508: "pre.4 frames take 557 ms against pre.2's 12.1
+     ms, GPU on or off, because the module re-runs its static constructors
+     on every JS-to-wasm call (pliron's `inventory` registrations via
+     `cubecl-core`, upstream, not our patches); native is unaffected, and
+     the physics plan's P5 web defaults (N = 9, threshold 400) were ruled on
+     pre.2's frame times." Options: "a bounded lane makes the constructors
+     run once (a different wasm link model, or a bindgen-side fix), proves
+     it with the same A/B, then re-measures P5's web crossover"; "the same
+     lane plus an upstream issue"; "vendor-patch the constructor sources for
+     wasm"; "park web promotion with native on pre.4". Mark's answer, as
+     mere's plan records it: "Bounded fix lane". So a bounded lane makes the
+     constructors run once, proves it with the same A/B and re-measures
+     P5's web crossover; no upstream issue is filed; and pre.4 is not
+     promoted to the web, nor the migration merged to mere's main, until the
+     constructors run once and the A/B shows it.
+
+     Source: mere's burn 0.22 migration plan, §13.31
+     (`design_docs/mere_docs/implementation_strategy/2026-08-09_burn_0_22_migration_plan.md`),
+     committed at `f560c3b1` on mere's branch `burn-pre4-repin`, not on
+     main; the gate and A/B records it re-read are under
+     `Code/testing/mere/receipts/2026-10-02/burn-pre4` (remote/, extrema/,
+     web/). The migration session relayed both rulings for this record on
+     2026-10-03. Mere's migration lane owns the work and its evidence.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10078,6 +10131,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 508 and 509 recorded at the Burn migration session's
+  request, Mark having ruled them there: the allocator repair goes in
+  burn-remote's close path (508), answering 411's fork, and a bounded lane
+  makes pre.4's wasm constructors run once before pre.4 reaches the web
+  (509). Annotation on 411. Carried into the session notes' §9.9 and the
+  index.
 - 2026-10-03: checkpoint 7, matter in parts, merged at `c51bb0a` under rulings
   504 to 507, certified with its controls; the readings taken while
   building it are in the sim plan's Findings for Mark to reject.

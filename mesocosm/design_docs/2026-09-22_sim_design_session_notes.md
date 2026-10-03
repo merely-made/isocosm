@@ -1172,6 +1172,14 @@ or parking the migration. Its question is preserved beside the diagnosis
 receipt cited in the wing record. At this checkpoint the answer is pending,
 no repair is selected, and ruling 411 remains the latest decision.
 
+**Answers, 2026-10-03 (508, 509):** in the Burn migration session Mark
+placed the repair in burn-remote's close path, "burn-remote close path"
+(508), and, for pre.4's wasm frames at 557 ms against pre.2's 12.1 because
+the module re-runs its static constructors on every call, chose "Bounded
+fix lane" (509): the constructors made to run once and proved by the same
+A/B before pre.4 reaches the web or the migration merges. The migration
+session relayed both for the record; mere's burn plan §13.31 holds them.
+
 ## 10. The design session, 2026-09-30
 
 Mark, verbatim, closing Monday's session: "See ya on wednesday! We'll design
