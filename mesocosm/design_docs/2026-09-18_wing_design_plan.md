@@ -6342,6 +6342,9 @@ what later sections derive from.
      P5's web crossover; no upstream issue is filed; and pre.4 is not
      promoted to the web, nor the migration merged to mere's main, until the
      constructors run once and the A/B shows it.
+     *Carried out 2026-10-03 by rulings 532 to 534:* one stack helper runs
+     the constructors once for every web module, Distillery's probe takes
+     it, and promotion waits on a GPU-on A/B taken with the machine quiet.
 
      Source: mere's burn 0.22 migration plan, §13.31
      (`design_docs/mere_docs/implementation_strategy/2026-08-09_burn_0_22_migration_plan.md`),
@@ -6841,6 +6844,58 @@ what later sections derive from.
      *Reading, not ruled:* the kinds Mesocosm never leaves absent, the
      feeding, sensing and canopy organs, become those whose templates hold
      intake, sense or fix, so no child is born unable to feed.
+
+532. **One stack helper runs the wasm constructors once, for every web
+     module.** Asked on 2026-10-03 in the Burn migration session, after
+     509's lane: the raw pre.4 module's `__wasm_call_ctors` calls 8,166
+     `inventory` constructors expanded from Pliron's macros in five crates,
+     and wasm-ld wraps every export in a call to them, 5,441 runs by the
+     time the page is ready; graphshell-web's start function now calls them
+     once, 1 run, the link line unchanged. "graphshell-web's start function
+     calls `__wasm_call_ctors` (one run per page, link line unchanged);
+     three other pre.4 web modules still run their constructors on every
+     call, and Knot's and Isometry's web builds will once they take pre.4."
+     Options: "one helper in a stack crate, called first from every web
+     module's start, with a run-once guard and a test counting exactly one
+     constructor run"; "the per-module start call as committed"; "the link
+     arg plus a post-bindgen glue edit". Mark's answer, as mere's plan
+     records it: "Shared stack helper". So one helper in a stack crate runs
+     the constructors once, called first from every web module's start,
+     with a run-once guard and a test counting exactly one run. *Reading,
+     not ruled:* recommended because a second run, say from a future
+     wasm-bindgen that also calls the constructors, would make each
+     `inventory` node point at itself so that iterating a registry never
+     ends, which the one-run test guards; and Isometry's web build calls
+     the same helper when it takes pre.4.
+
+533. **Distillery's model probe takes the fix; the minimal repros do not.**
+     Asked on 2026-10-03, with 532: "Distillery's model probe (which
+     records browser timings against bounds) and two minimal repros (burn
+     browser embedding; extrema, 3,648 wrapped exports) are still
+     command-linked. S13(b) extrema passes either way." Options: "the probe
+     takes the fix and the repros stay minimal"; "all three"; "none".
+     Mark's answer, as mere's plan records it: "Probe yes, repros no". So
+     Distillery's model probe calls the helper, and the burn embedding and
+     extrema repros stay minimal, command-linked.
+
+534. **Promotion waits on a GPU-on A/B taken with the machine quiet.** Asked
+     on 2026-10-03, with 532: "pooled medians on a busy machine (other
+     sessions up to 96% CPU): GPU off, fixed pre.4 12.2 ms against pre.2
+     12.2 ms; GPU on, 21.2 ms against 15.2 ms, one vsync above, ranges
+     overlapping (12.1 to 30.2 against 12.1 to 30.3), the profiles showing
+     no pre.4 code; the 2,000-node settle 6.8 against 6.3 ms; P5's
+     crossover still between 256 and 512 nodes." Options: "accept that
+     ruling 509's condition is met for graphshell-web"; "rerun the GPU-on
+     boot A/B on a quieter machine before promotion". Mark's answer, as
+     mere's plan records it: "Rerun GPU-on quieter". So pre.4's promotion
+     (S16) waits on a GPU-on boot A/B taken with the machine quiet. *Reading,
+     not ruled:* "quiet" is shown by recording the CPU load beside each
+     repetition, and the GPU-off result and P5's crossover stand.
+
+     Source: mere's burn 0.22 migration plan, §13.34, with §13.33's
+     evidence, committed at `cc91e3e8` on mere's branch `burn-pre4-repin`,
+     not on main. The migration session relayed the three rulings for this
+     record on 2026-10-03. Mere's migration lane owns the work.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10683,6 +10738,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 532 to 534 recorded at the Burn migration session's
+  request, Mark having ruled them there: one stack helper runs pre.4's wasm
+  constructors once for every web module (532), Distillery's model probe
+  takes it and the minimal repros do not (533), and promotion waits on a
+  GPU-on A/B taken with the machine quiet (534). Annotation on 509.
+  Carried into the session notes' §9.9 and the index.
 - 2026-10-03: rulings 528 to 531 recorded, checkpoint 8's fifth round: the
   probe's grazers give milk (528); the probe draws semelparity per cohort
   (529); how many eggs a birth lays is a lineage trait (530, against the

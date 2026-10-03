@@ -1180,6 +1180,15 @@ fix lane" (509): the constructors made to run once and proved by the same
 A/B before pre.4 reaches the web or the migration merges. The migration
 session relayed both for the record; mere's burn plan §13.31 holds them.
 
+**Answers, 2026-10-03 (532 to 534):** the constructor lane found 8,166
+`inventory` constructors run on every JS-to-wasm call, 5,441 times by page
+ready, and one run after graphshell-web's start called them once. Mark
+chose "Shared stack helper" (532), "Probe yes, repros no" (533) and "Rerun
+GPU-on quieter" (534): one helper for every web module, Distillery's probe
+taking it, and promotion waiting on a GPU-on A/B on a quiet machine, the
+pooled one having run beside other sessions at up to 96% CPU. Mere's burn
+plan §13.34 holds them.
+
 ## 10. The design session, 2026-09-30
 
 Mark, verbatim, closing Monday's session: "See ya on wednesday! We'll design
