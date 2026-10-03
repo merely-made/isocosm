@@ -58,6 +58,7 @@ fn table(groups: &[Group], processes: Vec<Process>) -> Genesis {
         let kind = AccountKind::Matter {
             lineage: lineage.into(),
             reserve: false,
+            provision: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }

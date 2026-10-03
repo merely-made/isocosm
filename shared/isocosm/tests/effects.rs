@@ -51,6 +51,7 @@ fn world() -> Genesis {
         let kind = AccountKind::Matter {
             lineage: lineage.clone(),
             reserve,
+            provision: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }

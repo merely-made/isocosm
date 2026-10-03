@@ -6,9 +6,11 @@ use std::collections::BTreeMap;
 
 mod body;
 mod conversion;
+mod recipe;
 
 pub(crate) use body::part;
 pub(crate) use conversion::kinds as conversions;
+pub(crate) use recipe::development;
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -212,6 +214,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         key(id)?;
     }
     body::catalogue(rules)?;
+    recipe::kinds(rules)?;
     for (id, p) in &rules.processes {
         key(id)?;
         if id != &p.id {

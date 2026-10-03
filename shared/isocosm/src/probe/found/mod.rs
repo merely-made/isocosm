@@ -99,6 +99,7 @@ fn matter(lineage: &str) -> AccountKind {
     AccountKind::Matter {
         lineage: lineage.into(),
         reserve: false,
+        provision: false,
     }
 }
 
@@ -183,6 +184,7 @@ impl ProbeFounding {
                 revision: 1,
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
+                development: None,
             },
         )]);
         let mut traits = set(&["leaning:contest".into(), "leaning:scramble".into()]);
@@ -214,6 +216,7 @@ impl ProbeFounding {
                     revision: 1,
                     traits: set(&[identity.clone(), leaning.into()]),
                     kingdom: "kingdom:fauna".into(),
+                    development: None,
                 },
             );
             let takes: Vec<(&Thing, u64)> = drawn.iter().map(|d| (d.thing, d.ration)).collect();
@@ -250,6 +253,7 @@ impl ProbeFounding {
                     revision: 1,
                     traits: set(&[identity]),
                     kingdom: "kingdom:fauna".into(),
+                    development: None,
                 },
             );
             for p in hunters.processes() {
@@ -303,6 +307,8 @@ impl ProbeFounding {
             .collect();
         let rules = Rules {
             body: None,
+            kinds: BTreeMap::new(),
+            affinity: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

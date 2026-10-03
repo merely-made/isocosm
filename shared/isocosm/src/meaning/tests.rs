@@ -23,6 +23,7 @@ fn rules() -> Rules {
         let kind = AccountKind::Matter {
             lineage: "world:ground".into(),
             reserve: false,
+            provision: false,
         };
         rules.accounts.insert(key.into(), kind);
     }

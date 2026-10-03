@@ -10,6 +10,7 @@ mod body;
 mod competition;
 mod epoch;
 mod mind;
+mod recipe;
 
 pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
@@ -17,6 +18,7 @@ pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_
 pub use competition::{Competition, Competitor, Similitude};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
+pub use recipe::{Affinity, Anchor, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
@@ -26,6 +28,10 @@ pub enum AccountKind {
         /// tissue (ruling 446). Tissue accounts serialize and hash as before.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         reserve: bool,
+        /// What its reproduce cells fill for a birth (ruling 518); other
+        /// accounts serialize and hash as before.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        provision: bool,
     },
     Energy,
     Attention,
@@ -441,6 +447,12 @@ pub struct Rules {
     /// none take Mesocosm's, and serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<BodyRules>,
+    /// The kinds recipes name, as part templates (ruling 511).
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub kinds: BTreeMap<Key, Template>,
+    /// Tissue domains and the crossings favoured (ruling 516).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub affinity: Option<Affinity>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

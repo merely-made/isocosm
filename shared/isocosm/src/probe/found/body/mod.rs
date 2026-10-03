@@ -169,6 +169,7 @@ impl BodyFounding {
         let matter = |lineage: &str, reserve: bool| AccountKind::Matter {
             lineage: lineage.into(),
             reserve,
+            provision: false,
         };
         let mut accounts = BTreeMap::from([(SOIL.into(), matter("world:ground", false))]);
         let mut traits = BTreeSet::from([CANDIDATE.to_string()]);
@@ -179,6 +180,7 @@ impl BodyFounding {
                 revision: 1,
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
+                development: None,
             },
         )]);
         let mut processes = BTreeMap::new();
@@ -195,6 +197,7 @@ impl BodyFounding {
                     revision: 1,
                     traits: BTreeSet::from([identity]),
                     kingdom: kingdom.into(),
+                    development: None,
                 },
             );
             let prey = (i == 1).then_some(0);
@@ -207,6 +210,8 @@ impl BodyFounding {
         let founders: u64 = per_site.iter().sum();
         let rules = Rules {
             body: None,
+            kinds: BTreeMap::new(),
+            affinity: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

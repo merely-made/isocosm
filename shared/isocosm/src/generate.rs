@@ -97,6 +97,7 @@ impl Founding {
                 revision: 1,
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
+                development: None,
             },
         )]);
         let mut accounts = BTreeMap::from([
@@ -105,6 +106,7 @@ impl Founding {
                 AccountKind::Matter {
                     lineage: "world:ground".into(),
                     reserve: false,
+                    provision: false,
                 },
             ),
             ("sim:energy".into(), AccountKind::Energy),
@@ -131,6 +133,7 @@ impl Founding {
                     revision: 1,
                     traits: BTreeSet::from([ability.clone()]),
                     kingdom: kingdoms[i as usize % kingdoms.len()].into(),
+                    development: None,
                 },
             );
             let n = 2 + random("compartments", u64::from(i)) % 3;
@@ -140,6 +143,7 @@ impl Founding {
                     AccountKind::Matter {
                         lineage: lineage.clone(),
                         reserve: false,
+                        provision: false,
                     },
                 );
             }
@@ -246,6 +250,8 @@ impl Founding {
         processes.insert(weather.id.clone(), weather);
         let mut rules = Rules {
             body: None,
+            kinds: BTreeMap::new(),
+            affinity: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
