@@ -5,9 +5,9 @@
 //! expression tree over what the act reads, with a draw term keyed by the
 //! act. An act resolves every amount before staging anything with it.
 
-use super::Binding;
+use super::{Binding, BodyRules};
 use crate::{
-    Result,
+    Result, anatomy,
     schema::{Key, Part},
 };
 use serde::{Deserialize, Serialize};
@@ -17,7 +17,9 @@ pub type Read<'a> = dyn FnMut(&Reading) -> Result<i64> + 'a;
 /// A uniform draw below a bound, keyed by its slot.
 pub type Draw<'a> = dyn FnMut(u64, u8) -> Result<u64> + 'a;
 /// A body's living parts, for a sum over them.
-pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<Vec<Part>> + 'a;
+/// A binding's living parts, with the reference body their readings
+/// price cells by (ruling 460).
+pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<(Vec<Part>, BodyRules)> + 'a;
 
 /// The most nodes one expression may hold: room for Mesocosm's mouthful,
 /// its build multiple and its room each reading the ceiling's sum over
@@ -151,27 +153,53 @@ pub enum Reading {
     CellMass { who: Binding, function: Key },
     /// What one cell weighs, read of the bound part alone.
     CellWeight { who: Binding },
+    /// Ruling 493's measurement of each part expressing a function, taken
+    /// by the function's share of the part's cells, summed.
+    Measured {
+        who: Binding,
+        function: Key,
+        measure: Measure,
+    },
     /// A value the act kept for its later effects, such as what a bite
     /// took before the meal landed.
     Kept { name: Key },
 }
 
+/// Ruling 493's measurements, each read from a part's box.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Measure {
+    /// The longest extent.
+    Length,
+    /// The largest face.
+    Area,
+    /// The smallest face.
+    CrossSection,
+    /// The voxels.
+    Volume,
+}
+
 impl Reading {
     /// What one part shows it (X2): a span only where the part expresses
-    /// the function. Accounts are read from a ledger instead.
-    pub fn of_part(&self, p: &Part) -> u128 {
+    /// the function, cell mass read from its extents (ruling 460), and an
+    /// account from the part's own ledger (ruling 504).
+    pub fn of_part(&self, p: &Part, b: BodyRules) -> u128 {
         let cells = |f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
         let extent = p.half_extent.iter().map(|h| h.unsigned_abs());
         match self {
-            Self::Account { .. } => 0,
+            Self::Account { key, .. } => u128::from(p.matter.get(key).copied().unwrap_or(0)),
             Self::Span { function, .. } if p.functions.contains(function) => {
                 u128::from(extent.max().unwrap_or(0))
             },
             Self::Span { .. } => 0,
             Self::Voxels { .. } => extent.map(|h| 2 * u128::from(h) + 1).product(),
             Self::Cells { function, .. } => cells(function),
-            Self::CellMass { function, .. } => cells(function) * u128::from(p.cell_mass),
-            Self::CellWeight { .. } => u128::from(p.cell_mass),
+            Self::CellMass { function, .. } => {
+                cells(function) * u128::from(anatomy::cell_mass(p, b))
+            },
+            Self::CellWeight { .. } => u128::from(anatomy::cell_mass(p, b)),
+            Self::Measured {
+                function, measure, ..
+            } => anatomy::share_of(p, function, *measure),
             Self::Kept { .. } => 0,
         }
     }
@@ -184,7 +212,8 @@ impl Reading {
             | Self::Voxels { who }
             | Self::Cells { who, .. }
             | Self::CellMass { who, .. }
-            | Self::CellWeight { who } => *who,
+            | Self::CellWeight { who }
+            | Self::Measured { who, .. } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,
         }
@@ -318,9 +347,10 @@ impl Expr {
             },
             Self::Parts { who, each } => {
                 let mut total = 0i64;
-                for part in parts(*who)? {
+                let (list, b) = parts(*who)?;
+                for part in list {
                     let mut one = |r: &Reading| match r.who() {
-                        Binding::Part => Ok(i64::try_from(r.of_part(&part)).unwrap_or(i64::MAX)),
+                        Binding::Part => Ok(i64::try_from(r.of_part(&part, b)).unwrap_or(i64::MAX)),
                         _ => read(r),
                     };
                     total = total.saturating_add(each.eval(&mut one, draw)?);

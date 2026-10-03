@@ -118,7 +118,7 @@ impl Population {
     pub fn totals(&self) -> Result<BTreeMap<Key, u128>> {
         let mut totals = BTreeMap::new();
         for group in self.groups.values() {
-            for (key, value) in &group.entity.accounts {
+            for (key, value) in &crate::anatomy::books(&group.entity) {
                 let slot = totals.entry(key.clone()).or_insert(0u128);
                 *slot = slot
                     .checked_add(u128::from(*value) * u128::from(group.count))

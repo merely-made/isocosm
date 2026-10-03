@@ -218,6 +218,23 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             return Err("process key does not match identity".into());
         }
         body::process(p)?;
+        // A part's ledger holds only matter (ruling 504).
+        for q in &p.requires {
+            if let Query::Account {
+                who: Binding::Part,
+                key,
+                ..
+            }
+            | Query::Below {
+                who: Binding::Part,
+                key,
+                ..
+            } = q
+                && !crate::meaning::matter(rules, key)
+            {
+                return Err(format!("{id}: a part keeps only matter, not {key}"));
+            }
+        }
         if p.period == Some(0) {
             return Err(format!("zero period: {id}"));
         }
@@ -432,8 +449,8 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
     Ok(())
 }
 
-/// A computed amount keeps its bounds and reads only what its act binds; a
-/// part keeps no ledger to read (ruling 338).
+/// A computed amount keeps its bounds and reads only what its act binds,
+/// a part's own ledger included (rulings 338 and 504).
 fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
     a.validate().map_err(|why| format!("{id}: {why}"))?;
     match a {
@@ -446,13 +463,10 @@ fn amount(rules: &Rules, p: &Process, id: &str, a: &Amount) -> Result<()> {
 fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
     for u in e.reads() {
         let (r, who) = (u.reading, u.reading.who());
-        // A part keeps no ledger, and is read only where the act binds one
-        // or a sum over a body's parts reads each in turn (ruling 455).
+        // A part is read only where the act binds one or a sum over a
+        // body's parts reads each in turn (ruling 455).
         let unbound = match who {
-            Binding::Part => {
-                (u.folded.is_none() && p.expresses().is_none())
-                    || matches!(r, Reading::Account { .. })
-            },
+            Binding::Part => u.folded.is_none() && p.expresses().is_none(),
             Binding::Target => p.target.is_none(),
             Binding::Actor | Binding::Place => false,
         } || (u.folded == Some(Binding::Target) && p.target.is_none());

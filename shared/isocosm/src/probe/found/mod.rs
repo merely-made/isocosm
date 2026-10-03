@@ -302,6 +302,7 @@ impl ProbeFounding {
             })
             .collect();
         let rules = Rules {
+            body: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

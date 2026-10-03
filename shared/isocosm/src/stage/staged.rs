@@ -82,6 +82,8 @@ impl Staged<'_> {
         f: impl FnOnce(&mut Read, &mut Draw, &mut PartsOf) -> Result<T>,
     ) -> Result<T> {
         let (seed, act) = (self.sim.genesis.seed, self.stage.act);
+        let sim = self.sim;
+        let b = sim.genesis.rules.body();
         let living = |e: &Entity| -> Vec<Part> {
             e.parts.values().filter(|p| !p.severed).cloned().collect()
         };
@@ -90,10 +92,13 @@ impl Staged<'_> {
             Some(_) => Some(living(self.body(Binding::Target)?)),
             None => None,
         };
-        let mut parts = |who: Binding| -> Result<Vec<Part>> {
+        let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
             match who {
-                Binding::Actor => Ok(mine.clone()),
-                Binding::Target => theirs.clone().ok_or_else(|| "no target is bound".into()),
+                Binding::Actor => Ok((mine.clone(), b)),
+                Binding::Target => match theirs.clone() {
+                    Some(t) => Ok((t, b)),
+                    None => Err("no target is bound".into()),
+                },
                 _ => Err(format!("{who:?} has no parts")),
             }
         };
@@ -105,15 +110,19 @@ impl Staged<'_> {
                         .ok_or_else(|| format!("no value {name} was kept"))
                 },
                 Reading::Account { who, key } => {
-                    let held = meaning::value(self.ledger(*who)?, key);
+                    let held = Parties::held(self, *who, key)?;
                     i64::try_from(held).map_err(|e| e.to_string())
                 },
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
                     let part = body.parts.get(&id).ok_or("bound part missing")?;
-                    Ok(i64::try_from(r.of_part(part)).unwrap_or(i64::MAX))
+                    Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
                 },
-                r => Ok(meaning::body_reading(self.body(r.who())?, r)),
+                r => Ok(meaning::body_reading(
+                    self.body(r.who())?,
+                    r,
+                    &sim.genesis.rules,
+                )),
             }
         };
         let mut draw = |below: u64, slot: u8| -> Result<u64> {
@@ -416,17 +425,50 @@ impl Staged<'_> {
             } => {
                 let rules = &sim.genesis.rules;
                 let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
-                let taken = match portion {
-                    Some(portion) => portion,
-                    None => {
-                        let offered = edible(&*self.ledger(*from)?, of);
-                        meaning::share(&offered, rules, amount.resolved()?)
+                // A bite lands on one part, drawn by what each holds (459).
+                let draw = crate::draw(sim.genesis.seed, "bite", &[self.stage.act]);
+                let bitten = crate::anatomy::bitten(self.body(*from)?, of, draw);
+                let offered = match bitten {
+                    Some(part) => {
+                        let prey = self.body(*from)?;
+                        edible(
+                            &prey.parts.get(&part).ok_or("bitten part missing")?.matter,
+                            of,
+                        )
                     },
+                    None => edible(&*self.ledger(*from)?, of),
                 };
-                let source = self.ledger(*from)?;
+                let taken: Ledger = match portion {
+                    // A share is of the prey's whole; the bitten part gives
+                    // what it holds of it, the rest staying put (454).
+                    Some(portion) => portion
+                        .into_iter()
+                        .map(|(k, v)| {
+                            let held = offered.get(&k).copied().unwrap_or(0);
+                            (k, v.min(held))
+                        })
+                        .filter(|(_, v)| *v > 0)
+                        .collect(),
+                    None => meaning::share(&offered, rules, amount.resolved()?),
+                };
+                let prey = self.holder(*from);
                 let mut total = 0u64;
                 for (key, value) in &taken {
-                    debit(source, key, *value)?;
+                    match (bitten, prey) {
+                        (Some(part), Some(Holder::Entity(id))) => {
+                            let body = self.body(*from)?;
+                            let p = body.parts.get_mut(&part).ok_or("bitten part missing")?;
+                            debit(&mut p.matter, key, *value)?;
+                            let routed = flows::Routed {
+                                body: id,
+                                key: key.clone(),
+                                give: false,
+                                parts: vec![(part, *value)],
+                            };
+                            self.stage.routed.push(routed);
+                        },
+                        _ => debit(self.ledger(*from)?, key, *value)?,
+                    }
                     total = total.checked_add(*value).ok_or("meal overflow")?;
                 }
                 credit(self.ledger(Binding::Actor)?, into, total)?;
@@ -449,9 +491,43 @@ impl Staged<'_> {
 
 /// The individual runner's parties for the shared effect meanings: the
 /// staged bodies and site.
+impl Staged<'_> {
+    /// A take or give of a body's own matter, routed through its parts and
+    /// logged for the flow record; `None` where the key lives elsewhere.
+    fn routed(&mut self, who: Binding, key: &str, amount: u64, give: bool) -> Option<Result<()>> {
+        let Some(Holder::Entity(id)) = self.holder(who) else {
+            return None;
+        };
+        let rules = &self.sim.genesis.rules;
+        let body = self.stage.bodies.get_mut(&id)?;
+        let split = match give {
+            true => crate::anatomy::give(body, rules, key, amount)?,
+            false => crate::anatomy::take(body, rules, key, amount)?,
+        };
+        Some(split.map(|parts| {
+            let (body, key) = (id, key.into());
+            self.stage.routed.push(flows::Routed {
+                body,
+                key,
+                give,
+                parts,
+            });
+        }))
+    }
+}
+
 impl Parties for Staged<'_> {
     fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
-        Ok(meaning::value(self.ledger(who)?, key))
+        let rules = &self.sim.genesis.rules;
+        match who {
+            Binding::Place => Ok(meaning::value(self.ledger(who)?, key)),
+            Binding::Part => {
+                let (body, id) = self.part()?;
+                let part = body.parts.get(&id).ok_or("bound part missing")?;
+                Ok(meaning::value(&part.matter, key))
+            },
+            other => Ok(crate::anatomy::held(self.body(other)?, rules, key)),
+        }
     }
     fn reach(&mut self, who: Binding) -> Result<()> {
         if who == Binding::Place {
@@ -461,10 +537,16 @@ impl Parties for Staged<'_> {
         self.ledger(who).map(|_| ())
     }
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        debit(self.ledger(who)?, key, amount)
+        match self.routed(who, key, amount, false) {
+            Some(done) => done,
+            None => debit(self.ledger(who)?, key, amount),
+        }
     }
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        credit(self.ledger(who)?, key, amount)
+        match self.routed(who, key, amount, true) {
+            Some(done) => done,
+            None => credit(self.ledger(who)?, key, amount),
+        }
     }
     fn body(&mut self, who: Binding) -> Result<&mut Entity> {
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;

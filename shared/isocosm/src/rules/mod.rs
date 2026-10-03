@@ -11,9 +11,9 @@ mod competition;
 mod epoch;
 mod mind;
 
-pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, PartsOf, Read, Reading, Use};
+pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
-pub use body::{Function, SHAPES, Seeding, default_functions, default_shapes};
+pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
@@ -437,6 +437,10 @@ pub struct Rules {
     /// without a past serialize and hash as before the field existed.
     #[serde(default, skip_serializing_if = "DeepTimeSpan::is_bare")]
     pub deep_time: DeepTimeSpan,
+    /// The reference body parts are priced by (ruling 460). Worlds stating
+    /// none take Mesocosm's, and serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub body: Option<BodyRules>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

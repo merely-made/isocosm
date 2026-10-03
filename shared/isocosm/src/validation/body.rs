@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Shapes, the function catalogue and the part a process binds (rulings
-//! 276 and 338 to 341). A function is admitted by at least one of the
-//! world's shapes; a part expresses only functions its shape admits; a
-//! process binds a part through at most one `Expresses`, and reads or writes
-//! it only as a part can be: its life and its traits, never a ledger.
+//! 276, 338 to 341, 492 and 504). A function fits at least one of the
+//! world's shapes, and any part may express it; a process binds a part
+//! through at most one `Expresses`, and reads it as a part can be: its life,
+//! its traits and its own ledger, never parts of its own.
 
 use super::key;
 use crate::{Result, rules::*, schema::*};
@@ -17,7 +17,7 @@ pub(super) fn catalogue(rules: &Rules) -> Result<()> {
     for (id, f) in &rules.functions {
         key(id)?;
         if f.shapes.is_empty() {
-            return Err(format!("{id} is admitted by no shape"));
+            return Err(format!("{id} fits no shape"));
         }
         if let Some(shape) = f.shapes.iter().find(|s| !rules.shapes.contains(*s)) {
             return Err(format!("{id} names an unknown shape {shape}"));
@@ -41,10 +41,10 @@ pub(super) fn reads_part(q: &Query) -> Result<bool> {
         }
         | Query::Holds {
             who: Binding::Part, ..
-        }
-        | Query::Part {
+        } => Ok(true),
+        Query::Part {
             who: Binding::Part, ..
-        } => Err("a part keeps no ledger and no parts".into()),
+        } => Err("a part keeps no parts".into()),
         _ => Ok(false),
     }
 }
@@ -63,7 +63,7 @@ fn writes_part(e: &Effect) -> Result<bool> {
         },
         Effect::Spend {
             to: Binding::Part, ..
-        } => Err("a part keeps no ledger".into()),
+        } => Err("a part's ledger is written through its body".into()),
         Effect::Transfer {
             from: Binding::Part,
             ..
@@ -80,7 +80,7 @@ fn writes_part(e: &Effect) -> Result<bool> {
         | Effect::Eat {
             from: Binding::Part,
             ..
-        } => Err("a part keeps no ledger".into()),
+        } => Err("a part's ledger is written through its body".into()),
         _ => Ok(false),
     }
 }
@@ -115,9 +115,9 @@ pub(super) fn process(p: &Process) -> Result<()> {
     Ok(())
 }
 
-/// A part's shape is one the world names, or none in a part from before
-/// shapes, and each function it expresses is in the catalogue and admitted
-/// by that shape.
+/// A part's declared shape is one the world names, or none in a part from
+/// before shapes, and each function it expresses is in the catalogue, on
+/// whatever shape (ruling 492); it holds only matter.
 pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
     if !part.shape.is_empty() && !rules.shapes.contains(&part.shape) {
         return Err(format!("unknown part shape {}", part.shape));
@@ -126,12 +126,13 @@ pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
         if !rules.functions.contains_key(f) {
             return Err(format!("unknown function {f}"));
         }
-        if !rules.admits(&part.shape, f) {
-            return Err(format!(
-                "a part of shape {:?} cannot express {f}",
-                part.shape
-            ));
-        }
+    }
+    if let Some(k) = part
+        .matter
+        .keys()
+        .find(|k| !crate::meaning::matter(rules, k))
+    {
+        return Err(format!("a part holds {k}, which is not matter"));
     }
     // Its cells go only to what it expresses, never more than it has
     // (ruling 453).
@@ -141,10 +142,10 @@ pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
         ));
     }
     let held: u64 = part.cells.values().map(|c| u64::from(*c)).sum();
-    if held > u64::from(part.capacity) {
+    let capacity = crate::anatomy::capacity(part);
+    if held > u64::from(capacity) {
         return Err(format!(
-            "a part holds {held} cells in a capacity of {}",
-            part.capacity
+            "a part holds {held} cells in a capacity of {capacity}"
         ));
     }
     Ok(())

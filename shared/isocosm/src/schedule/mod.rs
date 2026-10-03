@@ -215,7 +215,10 @@ impl Simulation {
         let (sites, population) = (&self.state.sites, &self.state.population);
         let ground = |h: crate::flows::Holder| match h {
             crate::flows::Holder::Site(id) => sites.get(&id).map(|s| s.accounts.clone()),
-            crate::flows::Holder::Entity(id) => population.get(id).map(|e| e.accounts.clone()),
+            crate::flows::Holder::Entity(id) => population.get(id).map(crate::anatomy::books),
+            crate::flows::Holder::Part(id, part) => population
+                .get(id)
+                .and_then(|e| e.parts.get(&part).map(|p| p.matter.clone())),
             crate::flows::Holder::Dev => None,
         };
         let mut frame = self.frame.take().expect("a pass under way");

@@ -24,6 +24,9 @@ pub enum Holder {
     Site(Id),
     /// A member, and with a count above one the members after it.
     Entity(Id),
+    /// A member's part, holding its own ledger (ruling 504), counted as its
+    /// member is.
+    Part(Id, Id),
     /// The dev source (ruling 344): outside the world, holding nothing.
     Dev,
 }
@@ -99,6 +102,80 @@ pub(crate) struct Leg {
     pub from: (Holder, Key),
     pub to: (Holder, Key),
     pub amount: u64,
+}
+
+/// Where one take or give of a body's own matter went among its parts
+/// (ruling 504), in the order the act made it.
+#[derive(Clone, Debug)]
+pub(crate) struct Routed {
+    pub body: Id,
+    pub key: Key,
+    pub give: bool,
+    pub parts: Vec<(Id, u64)>,
+}
+
+/// An act's legs with each side that moved a body's own matter split among
+/// the parts it left or reached, in order; a side nothing routed keeps its
+/// holder.
+pub(crate) fn split(legs: Vec<Leg>, routed: Vec<Routed>) -> Vec<Leg> {
+    use std::collections::{BTreeMap, VecDeque};
+    if routed.is_empty() {
+        return legs;
+    }
+    let mut queues: BTreeMap<(Id, Key, bool), VecDeque<(Id, u64)>> = BTreeMap::new();
+    for r in routed {
+        queues
+            .entry((r.body, r.key, r.give))
+            .or_default()
+            .extend(r.parts);
+    }
+    let mut side = |(holder, key): &(Holder, Key), amount: u64, give: bool| {
+        let Holder::Entity(body) = *holder else {
+            return vec![(*holder, amount)];
+        };
+        let Some(queue) = queues.get_mut(&(body, key.clone(), give)) else {
+            return vec![(*holder, amount)];
+        };
+        let (mut left, mut pieces) = (amount, vec![]);
+        while left > 0 {
+            let Some((part, held)) = queue.front_mut() else {
+                pieces.push((*holder, left));
+                break;
+            };
+            let moved = left.min(*held);
+            pieces.push((Holder::Part(body, *part), moved));
+            (*held, left) = (*held - moved, left - moved);
+            if *held == 0 {
+                queue.pop_front();
+            }
+        }
+        pieces
+    };
+    let mut out = vec![];
+    for leg in legs {
+        let from = side(&leg.from, leg.amount, false);
+        let mut to = side(&leg.to, leg.amount, true).into_iter();
+        let mut current = to.next();
+        for (holder, mut amount) in from {
+            while amount > 0 {
+                let Some((into, room)) = current.as_mut() else {
+                    break;
+                };
+                let moved = amount.min(*room);
+                out.push(Leg {
+                    from: (holder, leg.from.1.clone()),
+                    to: (*into, leg.to.1.clone()),
+                    amount: moved,
+                });
+                amount -= moved;
+                *room -= moved;
+                if *room == 0 {
+                    current = to.next();
+                }
+            }
+        }
+    }
+    out
 }
 
 #[derive(Clone, Debug, Default)]

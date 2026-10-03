@@ -442,7 +442,7 @@ pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
         .population
         .groups
         .values()
-        .map(|g| mass(&g.entity.accounts) * u128::from(g.count))
+        .map(|g| mass(&crate::anatomy::books(&g.entity)) * u128::from(g.count))
         .sum::<u128>()
         + state
             .sites

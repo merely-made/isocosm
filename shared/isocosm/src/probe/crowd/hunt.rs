@@ -23,6 +23,7 @@ use super::{
 };
 use crate::{
     Result,
+    anatomy::{self, books},
     meaning::{debit, mass, share},
     rules::{Binding, Effect, Process, Query, Rules, Target},
     schedule::edible,
@@ -91,7 +92,7 @@ impl Meal<'_> {
             && t.alive.is_none_or(|alive| alive == e.alive)
             && t.lineage.as_ref().is_none_or(|l| *l == e.lineage)
             && (t.among.is_empty() || t.among.contains(&e.lineage))
-            && mass(&e.accounts, rules) >= u128::from(self.least)
+            && mass(&books(e), rules) >= u128::from(self.least)
     }
 }
 
@@ -122,7 +123,7 @@ impl Crowd<'_> {
                 continue;
             }
             // What each of this state's hunters asks of its prey.
-            let mouthful = aggregate::mouthful(p, &e, site)?;
+            let mouthful = aggregate::mouthful(p, &e, site, rules)?;
             at.entry(e.place).or_default().push((e, n, mouthful));
         }
         for (site, hunters) in at {
@@ -148,14 +149,7 @@ impl Crowd<'_> {
         let weighted = self.variant != super::Variant::Unweighted;
         let weights: Vec<u128> = prey
             .iter()
-            .map(|(e, n)| {
-                u128::from(*n)
-                    * if weighted {
-                        mass(&e.accounts, rules)
-                    } else {
-                        1
-                    }
-            })
+            .map(|(e, n)| u128::from(*n) * if weighted { mass(&books(e), rules) } else { 1 })
             .collect();
         let total = u64::try_from(weights.iter().sum::<u128>())
             .map_err(|_| "prey weigh too much to draw")?;
@@ -188,7 +182,7 @@ impl Crowd<'_> {
         let mut moves: Vec<(Entity, Entity)> = Vec::new();
         for ((state, _), eaters) in landed {
             let was = &prey[state].0;
-            let mut offered = edible(&was.accounts, m.of);
+            let mut offered = edible(&books(was), m.of);
             offered.retain(|k, _| crate::meaning::matter(rules, k));
             let held: u128 = offered.values().map(|v| u128::from(*v)).sum();
             let asked: u128 = eaters.iter().map(|&h| u128::from(hunters[h].2)).sum();
@@ -209,9 +203,23 @@ impl Crowd<'_> {
             let mut left = share(&offered, rules, given.iter().sum());
             let mut after = was.clone();
             for (&h, g) in eaters.iter().zip(given) {
-                let portion = share(&left, rules, g);
+                let mut portion = share(&left, rules, g);
                 for (k, v) in &portion {
                     *left.get_mut(k).expect("a portion of what is left") -= v;
+                }
+                // The bite lands on one part, drawn by what each holds, and
+                // takes what that part holds of the portion (rulings 454 and
+                // 459); a prey with no parts to hold matter draws nothing.
+                let bitten = match bodied(was) {
+                    true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
+                    false => None,
+                };
+                if let Some(id) = bitten {
+                    let part = &after.parts[&id].matter;
+                    for (k, v) in portion.iter_mut() {
+                        *v = (*v).min(part.get(k).copied().unwrap_or(0));
+                    }
+                    portion.retain(|_, v| *v > 0);
                 }
                 let hunter = &hunters[h].0;
                 let live = self
@@ -225,7 +233,7 @@ impl Crowd<'_> {
                     tick: self.tick,
                     rules,
                     draws: &draws,
-                    meal: Some((was, &portion)),
+                    meal: Some((was, &portion, bitten)),
                 };
                 let run = aggregate::Run::Free;
                 let Some(fed) = aggregate::act(p, hunter, live, run, a)? else {
@@ -234,12 +242,18 @@ impl Crowd<'_> {
                 };
                 // The prey gives only what accepted acts took.
                 for (k, v) in &portion {
-                    debit(&mut after.accounts, k, *v)?;
+                    match bitten {
+                        Some(id) => {
+                            let part = after.parts.get_mut(&id).ok_or("bitten part missing")?;
+                            debit(&mut part.matter, k, *v)?;
+                        },
+                        None => debit(&mut after.accounts, k, *v)?,
+                    }
                 }
                 self.work.accepted += 1;
                 let log = self.meals.entry(p.id.clone()).or_default();
                 log.count += 1;
-                log.held += mass(&was.accounts, rules);
+                log.held += mass(&books(was), rules);
                 moves.push((hunter.clone(), fed));
             }
             moves.push((was.clone(), super::normalize(after)));
@@ -249,6 +263,11 @@ impl Crowd<'_> {
         }
         Ok(())
     }
+}
+
+/// Whether a prey keeps its matter in parts, so a bite draws one.
+fn bodied(e: &Entity) -> bool {
+    e.parts.values().any(|p| !p.severed && p.bodied())
 }
 
 #[cfg(test)]

@@ -18,7 +18,7 @@ use super::{
 };
 use crate::{
     Result,
-    meaning::{mass, value},
+    meaning::mass,
     rules::{AccountKind, Causation, Process},
     schema::*,
     simulation::Work,
@@ -106,7 +106,7 @@ impl<'w> Crowd<'w> {
         let members: u128 = self
             .bins
             .iter()
-            .map(|(e, &n)| mass(&e.accounts, rules) * u128::from(n))
+            .map(|(e, &n)| mass(&crate::anatomy::books(e), rules) * u128::from(n))
             .sum();
         members
             + self
@@ -157,6 +157,7 @@ impl<'w> Crowd<'w> {
     /// state the process's gates keep out, as the core files them, is not
     /// evaluated at all. A process drawing its target by weight hunts.
     fn scheduled(&mut self, p: &Process) -> Result<()> {
+        let rules = &self.world.genesis.rules;
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
         let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
@@ -174,7 +175,7 @@ impl<'w> Crowd<'w> {
             }
             if p.need_account
                 .as_ref()
-                .is_some_and(|a| value(&e.accounts, a) >= p.need_below)
+                .is_some_and(|a| crate::anatomy::held(&e, rules, a) >= p.need_below)
             {
                 continue;
             }
@@ -348,7 +349,7 @@ impl<'w> Crowd<'w> {
             let n: u64 = members.iter().map(|m| m.1).sum();
             let total: u64 = members
                 .iter()
-                .map(|(e, m)| value(&e.accounts, body) * m)
+                .map(|(e, m)| crate::anatomy::held(e, rules, body) * m)
                 .sum();
             for (e, m) in &members {
                 let slot = self.bins.get_mut(e).expect("member bin exists");
@@ -357,19 +358,67 @@ impl<'w> Crowd<'w> {
                     self.bins.remove(e);
                 }
             }
-            // Each member keeps everything but its reserve.
+            // Each member keeps everything but its reserve, which a body
+            // keeping matter in parts holds only up to its stores' room, the
+            // rest going on to members with room so that nothing is lost.
             let (base, mut extra) = (total / n, total % n);
-            for (e, m) in members {
-                let high = extra.min(m);
+            let mut over = 0u64;
+            let mut placed: Vec<(Entity, u64)> = vec![];
+            for (e, m) in &members {
+                let high = extra.min(*m);
                 extra -= high;
                 for (reserve, count) in [(base + 1, high), (base, m - high)] {
                     if count > 0 {
-                        let mut e = e.clone();
-                        e.accounts.insert(body.clone(), reserve);
-                        *self.bins.entry(normalize(e)).or_default() += count;
+                        let (e, left) = averaged_into(e, rules, body, reserve);
+                        over += left * count;
+                        placed.push((e, count));
                     }
                 }
             }
+            for (e, mut count) in placed {
+                while over > 0 && count > 0 {
+                    let room = crate::anatomy::room(&e, rules, body);
+                    if room == 0 || !crate::anatomy::anatomical(&e, rules, body) {
+                        break;
+                    }
+                    let mut one = e.clone();
+                    let given = room.min(over);
+                    crate::anatomy::give(&mut one, rules, body, given)
+                        .expect("given within room")
+                        .expect("given within room");
+                    over -= given;
+                    count -= 1;
+                    *self.bins.entry(normalize(one)).or_default() += 1;
+                }
+                if count > 0 {
+                    *self.bins.entry(normalize(e)).or_default() += count;
+                }
+            }
+            debug_assert_eq!(over, 0, "an averaged reserve fits its class");
         }
     }
+}
+
+/// `e` with its reserve `body` set to `reserve`: in its ledger, or for a
+/// body keeping matter in parts emptied from its stores and given back up to
+/// their room. Returns it and what did not fit.
+fn averaged_into(
+    e: &Entity,
+    rules: &crate::rules::Rules,
+    body: &Key,
+    reserve: u64,
+) -> (Entity, u64) {
+    let mut e = e.clone();
+    if !crate::anatomy::anatomical(&e, rules, body) {
+        e.accounts.insert(body.clone(), reserve);
+        return (e, 0);
+    }
+    for part in e.parts.values_mut() {
+        part.matter.remove(body);
+    }
+    let fits = reserve.min(crate::anatomy::room(&e, rules, body));
+    crate::anatomy::give(&mut e, rules, body, fits)
+        .expect("a reserve key lives in parts")
+        .expect("given within room");
+    (e, reserve - fits)
 }

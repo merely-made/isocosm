@@ -36,42 +36,41 @@ pub struct Part {
     pub parent: Option<Id>,
     pub traits: BTreeSet<Key>,
     pub severed: bool,
-    /// One of the world's shapes (ruling 276); empty in a part from before
-    /// shapes, which expresses nothing. Parts without one serialize and hash
-    /// as before the field existed.
+    /// The name a part is declared by (rulings 276 and 494): empty in a
+    /// part from before shapes; where given, a tube or a shell, the hollows
+    /// a box cannot show, or the name its box and the tree read. Parts
+    /// without one serialize and hash as before the field existed.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub shape: Key,
-    /// The catalogue functions this part expresses, each admitted by its
-    /// shape (ruling 338).
+    /// The catalogue functions this part expresses (ruling 338), any of
+    /// them on any shape (ruling 492).
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub functions: BTreeSet<Key>,
     /// The minimal body (ruling 453), each field absent in parts without it,
     /// which serialize and hash as before: the part's half-extents in
-    /// voxels, which spans and ceilings read;
+    /// voxels, from which its cells, their mass and its measurements are
+    /// read (rulings 460 and 493);
     #[serde(default, skip_serializing_if = "is_zero_extent")]
     pub half_extent: [i32; 3],
-    /// its living cells;
-    #[serde(default, skip_serializing_if = "is_zero")]
-    pub capacity: u32,
     /// the cells each function it expresses holds (X6's allocation), never
     /// more in all than its capacity;
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub cells: BTreeMap<Key, u32>,
-    /// and the matter one cell weighs.
-    #[serde(default, skip_serializing_if = "is_zero_mass")]
-    pub cell_mass: u64,
+    /// and the matter it holds, its own ledger (ruling 504): its tissue,
+    /// and its reserve where it stores.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub matter: Ledger,
+}
+
+impl Part {
+    /// Whether the part has a body to hold matter: a box of extents.
+    pub fn bodied(&self) -> bool {
+        self.half_extent != [0; 3]
+    }
 }
 
 fn is_zero_extent(value: &[i32; 3]) -> bool {
     *value == [0; 3]
-}
-
-fn is_zero(value: &u32) -> bool {
-    *value == 0
-}
-
-fn is_zero_mass(value: &u64) -> bool {
-    *value == 0
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
