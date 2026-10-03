@@ -317,108 +317,113 @@ impl<'w> Crowd<'w> {
         Ok(next)
     }
 
+    /// The negative control (ruling 209): every class of living members at
+    /// a site has what it holds of an account replaced by the class's
+    /// average. The account is the body a competition sizes a kind up by,
+    /// or, in a world without competitions, each of a lineage's own matter
+    /// accounts in turn, tissue and reserve alike (ruling 507).
     fn average(&mut self) {
         let kinds = self.world.kinds();
         let rules = &self.world.genesis.rules;
-        // What is averaged: the body a competition sizes its kind up by, or,
-        // in a world without competitions, a lineage's reserve (ruling 446).
-        let averaged = |e: &Entity| -> Option<Key> {
+        let averaged = |e: &Entity| -> Vec<Key> {
             if kinds.is_empty() {
-                let reserve = |k: &AccountKind| matches!(k, AccountKind::Matter { lineage, reserve: true } if *lineage == e.lineage);
-                let mut found = rules.accounts.iter().filter(|(_, k)| reserve(k));
-                found.next().map(|(key, _)| key.clone())
+                let own = |k: &AccountKind| matches!(k, AccountKind::Matter { lineage, .. } if *lineage == e.lineage);
+                let found = rules.accounts.iter().filter(|(_, k)| own(k));
+                found.map(|(key, _)| key.clone()).collect()
             } else {
                 let kind = kinds.iter().find(|k| e.traits.contains(&k.identity));
-                kind.map(|k| k.body.clone())
+                kind.map(|k| k.body.clone()).into_iter().collect()
             }
         };
-        let mut classes: BTreeMap<(Key, Id), Vec<(Entity, u64)>> = BTreeMap::new();
-        for (e, &n) in &self.bins {
-            let Some(body) = averaged(e) else {
-                continue;
-            };
-            if e.alive {
-                classes
-                    .entry((body, e.place))
-                    .or_default()
-                    .push((e.clone(), n));
-            }
-        }
-        for ((body, _), members) in classes {
-            let body = &body;
-            let n: u64 = members.iter().map(|m| m.1).sum();
-            let total: u64 = members
-                .iter()
-                .map(|(e, m)| crate::anatomy::held(e, rules, body) * m)
-                .sum();
-            for (e, m) in &members {
-                let slot = self.bins.get_mut(e).expect("member bin exists");
-                *slot -= m;
-                if *slot == 0 {
-                    self.bins.remove(e);
+        let accounts = self.bins.keys().map(|e| averaged(e).len()).max();
+        for which in 0..accounts.unwrap_or(0) {
+            let mut classes: BTreeMap<(Key, Id), Vec<(Entity, u64)>> = BTreeMap::new();
+            for (e, &n) in &self.bins {
+                if let Some(key) = averaged(e).into_iter().nth(which).filter(|_| e.alive) {
+                    let class = classes.entry((key, e.place)).or_default();
+                    class.push((e.clone(), n));
                 }
             }
-            // Each member keeps everything but its reserve, which a body
-            // keeping matter in parts holds only up to its stores' room, the
-            // rest going on to members with room so that nothing is lost.
-            let (base, mut extra) = (total / n, total % n);
-            let mut over = 0u64;
-            let mut placed: Vec<(Entity, u64)> = vec![];
-            for (e, m) in &members {
-                let high = extra.min(*m);
-                extra -= high;
-                for (reserve, count) in [(base + 1, high), (base, m - high)] {
-                    if count > 0 {
-                        let (e, left) = averaged_into(e, rules, body, reserve);
-                        over += left * count;
-                        placed.push((e, count));
-                    }
-                }
+            for ((key, _), members) in classes {
+                average_class(&mut self.bins, rules, &key, &members);
             }
-            for (e, mut count) in placed {
-                while over > 0 && count > 0 {
-                    let room = crate::anatomy::room(&e, rules, body);
-                    if room == 0 || !crate::anatomy::anatomical(&e, rules, body) {
-                        break;
-                    }
-                    let mut one = e.clone();
-                    let given = room.min(over);
-                    crate::anatomy::give(&mut one, rules, body, given)
-                        .expect("given within room")
-                        .expect("given within room");
-                    over -= given;
-                    count -= 1;
-                    *self.bins.entry(normalize(one)).or_default() += 1;
-                }
-                if count > 0 {
-                    *self.bins.entry(normalize(e)).or_default() += count;
-                }
-            }
-            debug_assert_eq!(over, 0, "an averaged reserve fits its class");
         }
     }
 }
 
-/// `e` with its reserve `body` set to `reserve`: in its ledger, or for a
-/// body keeping matter in parts emptied from its stores and given back up to
-/// their room. Returns it and what did not fit.
-fn averaged_into(
-    e: &Entity,
+/// One class's average of `key` set into `bins`. Each member keeps
+/// everything else; a body keeping matter in parts holds the average only up
+/// to their room, the rest going on to members with room so that nothing is
+/// lost.
+fn average_class(
+    bins: &mut BTreeMap<Entity, u64>,
     rules: &crate::rules::Rules,
-    body: &Key,
-    reserve: u64,
-) -> (Entity, u64) {
+    key: &Key,
+    members: &[(Entity, u64)],
+) {
+    let n: u64 = members.iter().map(|m| m.1).sum();
+    let total: u64 = members
+        .iter()
+        .map(|(e, m)| crate::anatomy::held(e, rules, key) * m)
+        .sum();
+    for (e, m) in members {
+        let slot = bins.get_mut(e).expect("member bin exists");
+        *slot -= m;
+        if *slot == 0 {
+            bins.remove(e);
+        }
+    }
+    let (base, mut extra) = (total / n, total % n);
+    let mut over = 0u64;
+    let mut placed: Vec<(Entity, u64)> = vec![];
+    for (e, m) in members {
+        let high = extra.min(*m);
+        extra -= high;
+        for (amount, count) in [(base + 1, high), (base, m - high)] {
+            if count > 0 {
+                let (e, left) = averaged_into(e, rules, key, amount);
+                over += left * count;
+                placed.push((e, count));
+            }
+        }
+    }
+    for (e, mut count) in placed {
+        while over > 0 && count > 0 {
+            let room = crate::anatomy::room(&e, rules, key);
+            if room == 0 || !crate::anatomy::anatomical(&e, rules, key) {
+                break;
+            }
+            let mut one = e.clone();
+            let given = room.min(over);
+            crate::anatomy::give(&mut one, rules, key, given)
+                .expect("given within room")
+                .expect("given within room");
+            over -= given;
+            count -= 1;
+            *bins.entry(normalize(one)).or_default() += 1;
+        }
+        if count > 0 {
+            *bins.entry(normalize(e)).or_default() += count;
+        }
+    }
+    debug_assert_eq!(over, 0, "an average fits its class");
+}
+
+/// `e` holding `amount` of `key`: in its ledger, or for a body keeping
+/// matter in parts emptied from them and given back up to their room.
+/// Returns it and what did not fit.
+fn averaged_into(e: &Entity, rules: &crate::rules::Rules, key: &Key, amount: u64) -> (Entity, u64) {
     let mut e = e.clone();
-    if !crate::anatomy::anatomical(&e, rules, body) {
-        e.accounts.insert(body.clone(), reserve);
+    if !crate::anatomy::anatomical(&e, rules, key) {
+        e.accounts.insert(key.clone(), amount);
         return (e, 0);
     }
     for part in e.parts.values_mut() {
-        part.matter.remove(body);
+        part.matter.remove(key);
     }
-    let fits = reserve.min(crate::anatomy::room(&e, rules, body));
-    crate::anatomy::give(&mut e, rules, body, fits)
-        .expect("a reserve key lives in parts")
+    let fits = amount.min(crate::anatomy::room(&e, rules, key));
+    crate::anatomy::give(&mut e, rules, key, fits)
+        .expect("the key lives in parts")
         .expect("given within room");
-    (e, reserve - fits)
+    (e, amount - fits)
 }

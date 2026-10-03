@@ -346,6 +346,11 @@ fn every_native_acts_somewhere_in_the_domain() {
         }
         sim.advance(24).unwrap();
         for act in sim.take_watched() {
+            // A graze is accepted only on a prey holding tissue, which its
+            // parts keep, so the watch weighs them (ruling 504).
+            if act.process == "body:graze-1" {
+                assert!(act.target_matter > 0, "seed {seed}: {act:?}");
+            }
             *acted.entry(act.process).or_default() += act.count;
         }
     }
@@ -393,4 +398,39 @@ fn the_crowd_runs_bodies_without_refusing_any() {
             "seed {seed}: no member is made or lost"
         );
     }
+}
+
+/// The averaged crowd flattens every account a lineage owns at each site,
+/// tissue and reserve alike (ruling 507), so a producer, which keeps no
+/// reserve, is averaged too. A lineage's members share one body plan, so
+/// the average always fits their parts.
+#[test]
+fn averaging_flattens_every_own_account_at_each_site() {
+    use isocosm::probe::{Crowd, Variant};
+    let mut spread = 0;
+    for seed in 0..4 {
+        let w = BodyFounding {
+            seed,
+            ..Default::default()
+        }
+        .generate()
+        .unwrap();
+        let crowd = Crowd::new(&w, 5, Variant::Averaged).unwrap().run().unwrap();
+        let rules = &w.genesis.rules;
+        let mut classes: BTreeMap<(String, Id), Vec<u64>> = BTreeMap::new();
+        for e in crowd.bins.keys().filter(|e| e.alive) {
+            let i = e.lineage.trim_start_matches("lineage:");
+            for key in [format!("tissue:{i}"), format!("reserve:{i}")] {
+                let held = anatomy::held(e, rules, &key);
+                classes.entry((key, e.place)).or_default().push(held);
+            }
+        }
+        for ((key, site), held) in classes {
+            let (lo, hi) = (held.iter().min().unwrap(), held.iter().max().unwrap());
+            assert!(hi - lo <= 1, "seed {seed}, {key} at {site}: {held:?}");
+            spread += u64::from(key.starts_with("tissue:0") && held.len() > 1);
+        }
+    }
+    // The control: some site held producers in more than one state.
+    assert!(spread > 0, "no class to flatten");
 }
