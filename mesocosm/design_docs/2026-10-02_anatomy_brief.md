@@ -117,7 +117,7 @@ harms to the parts that grip and reach.
 
 A part has a shape, one of the eight, which names it and gates nothing (276,
 492), the functions it expresses, its half-extents, where it attaches to its
-parent (462), its cells allocated among its functions, its tissue (459), its
+parent (462, built with development by 510), its cells allocated among its functions, its tissue (459), its
 traits and whether it is severed. Its name is read from its box for lump,
 rod, sheet and point, from the tree for branch and joint, and declared at
 construction from the body's voxels for tube and shell (494). Its capacity
@@ -207,7 +207,13 @@ its lexicon. *Reading, not ruled:* each organ keeps its situs (252); the
 recipe and the policy change only at the epoch boundary (57), as isometer's
 plan does; a seed (448) is a body that starts with little of its recipe and
 grows the rest; and a body without a reserve pays PD2's price from its
-tissue, as its rent (463).
+tissue, as its rent (463). *Ruled 2026-10-03 (510 to 512):* the recipe's
+kinds are part templates, a box and the share of cells each function
+takes, Mesocosm's five appendages and its palette the default templates; a
+founded lineage's recipe is drawn by its kingdom, the eight authored bodies
+kept as presets; and a grown or incorporated part takes the first free box
+along the policy's facings, which needs the offsets, built with
+development.
 
 ## 7. Wounds and severing
 

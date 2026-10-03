@@ -5162,6 +5162,8 @@ what later sections derive from.
      its parent, the sim measures reach, clearance and contact from that,
      each mechanic naming the measurement it reads (405), and pivots, yaw
      and volumes stay isometer's.
+     *Brought forward 2026-10-03 by ruling 510:* the offsets are built in
+     checkpoint 8, where growth and incorporation place parts by them.
 
 463. **A store holds the reserve its cells can, and a body without one keeps
      none.** Asked on 2026-10-02, the anatomy brief's second round: "How
@@ -5526,6 +5528,9 @@ what later sections derive from.
      where the lineage can heal.
      *Varied 2026-10-02 by ruling 495:* a lineage trait decides whether
      segments grow toward the recipe's count, epimorphic by default.
+     *Given its kinds 2026-10-03 by rulings 511 and 512:* a kind is a part
+     template, and a founded lineage's recipe is drawn by its kingdom, the
+     authored roster kept as presets.
 
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
@@ -6207,6 +6212,8 @@ what later sections derive from.
      the function's measurement alone, at a world-rule rate per unit
      calibrated so the domain's median body earns what it does today, and
      tissue no longer sets either.
+     *Calibrated again 2026-10-03 by ruling 513:* with a reproduce cell in
+     each probe body, so the median body still earns what it did.
 
 506. **The probe's grazers store, and its producers stay lean.** Asked on
      2026-10-02, with 504: "How are the probe's bodies founded under 463 and
@@ -6225,6 +6232,8 @@ what later sections derive from.
      grazer's lump splits its cells between intake and store by a founding
      draw, and producers stay single fronds with no reserve, the domain
      testing both strategies 463 named.
+     *Joined 2026-10-03 by ruling 513:* each probe body gives reproduce one
+     cell of its frond or its lump.
 
 507. **The averaged crowd averages all of a lineage's own matter.** Asked on
      2026-10-02, when checkpoint 7's 1,000-draw check (master seed
@@ -6310,6 +6319,93 @@ what later sections derive from.
      `Code/testing/mere/receipts/2026-10-02/burn-pre4` (remote/, extrema/,
      web/). The migration session relayed both rulings for this record on
      2026-10-03. Mere's migration lane owns the work and its evidence.
+
+510. **Attachment offsets are built in checkpoint 8.** Asked on 2026-10-03,
+     opening checkpoint 8 (501): "Checkpoint 8 places grown and incorporated
+     parts at a plan-resolved attachment (468, 479). Where does that
+     placement come from? Evidence: Isocosm's Part keeps its parent but no
+     offset, because ruling 462's offsets are scheduled for checkpoint 9.
+     Mesocosm's development sets each part's pivot-to-pivot offset: a
+     segment sits flush behind the last, and appendages sit in mirrored
+     flank sockets. Its growth::resolve tries the plan's facings in turn and
+     takes the first box that overlaps no living part, which needs those
+     offsets." Options, recommended first: (A) "Offsets in checkpoint 8:
+     462's offsets move forward. Development sets each part's offset as
+     Mesocosm does, and growth and incorporation find a free box by
+     isometer's search. Checkpoint 9 then reads the offsets for routes
+     (recommended)." (B) "The tree alone, for now: a grown or incorporated
+     part joins the parent its role's preferred facing picks, with no
+     position or overlap check. Checkpoint 9's offsets place what already
+     exists." (C) "Births only in 8: checkpoint 8 builds recipes and births.
+     Growth in life and incorporation wait for checkpoint 9's offsets." Mark
+     chose A, "Offsets in checkpoint 8". So 462's offsets are built in
+     checkpoint 8: development sets each part's offset as Mesocosm does, a
+     grown or incorporated part takes the first free box isometer's search
+     finds along the placement policy's facings, and checkpoint 9 reads the
+     offsets for routes.
+
+511. **A recipe's kinds are part templates.** Asked on 2026-10-03, with 510:
+     "How does the sim's recipe name what a segment bears? Evidence:
+     Mesocosm's tagma names an appendage kind (limb, feeler, plate, mouth,
+     vane) plus selectors into a palette of four box templates per role.
+     The kind implies the work: a mouth eats, a lit plate fixes. The sim's
+     parts carry extents and the cells each function holds, with any
+     function allowed on any shape (492). The lexicon is the set of kinds a
+     lineage may express (468)." Options, recommended first: (A) "Kinds as
+     part templates: a kind is a template: its box and the share of cells
+     each function takes. Tagmata name a segment template and the kind each
+     segment bears, with counts, and the lexicon is a set of kinds.
+     Mesocosm's five appendages and its palette become the default
+     templates (recommended)." (B) "Mesocosm's words as data: the appendage
+     enum and palette selectors stay as they are, with a fixed table from
+     each kind to its functions. The lexicon is a set of appendage kinds."
+     Mark chose A, "Kinds as part templates". So a kind is a template, a
+     box and the share of cells each function takes; a recipe's tagmata
+     name a segment template and the kind each segment bears, with their
+     counts; a lineage's lexicon is a set of kinds; and Mesocosm's five
+     appendages and its palette become the default templates.
+
+512. **A founded lineage's recipe is drawn by its kingdom, the roster kept
+     as presets.** Asked on 2026-10-03, with 510: "What recipe does a
+     founded world's lineage start with? Evidence: Mesocosm founds from an
+     authored roster of eight by default: 3 producers, 3 consumers and 2
+     decomposers, its consumers having 30 to 33 parts. A drawn founding is
+     an option, chosen by kingdom. Producers get 2 to 4 stretches of 4 to 11
+     segments bearing plates. Consumers get a mouth head and stretches of 1
+     to 6 segments bearing limbs or feelers. Variance is 1 or 2." Options,
+     recommended first: (A) "Drawn, roster as presets: the generator draws
+     each lineage's recipe by its kingdom, as Mesocosm's lottery does. The
+     eight authored bodies ship as founding presets, like the pressures
+     (recommended)." (B) "The roster by default: as Mesocosm does now:
+     lineages take the eight authored bodies, with drawing as an option."
+     (C) "One minimal recipe: every lineage starts with one bare tagma of
+     four segments and grows its vocabulary by incorporation." Mark chose
+     A, "Drawn, roster as presets". So the generator draws each founded
+     lineage's recipe by its kingdom, as Mesocosm's lottery does, and the
+     eight authored bodies ship as founding presets.
+
+513. **The probe's bodies express reproduce in one cell from founding.**
+     Asked on 2026-10-03, with 510: "How do the probe's bodies support
+     reproduction (449)? Evidence: a body may use a strategy only while it
+     expresses reproduce. That's a lump function measured by volume, and
+     it's the reproductive system's effector. The probe's producers are one
+     frond of 4 to 9 cells, all fixing. Its grazers are one lump of 8 cells:
+     1 to 4 store and the rest take in. One reproduce cell would take 11 to
+     25% of a frond's fixing area, or 14 to 25% of a grazer's intake,
+     against 505's calibrated rates." Options, recommended first: (A) "A
+     cell at founding: each recipe gives reproduce one cell of the frond or
+     lump, and 505's rates are calibrated again so the median body still
+     earns what it did. A recipe without the cell founds checkpoint 7's
+     bodies exactly, as a test's control (recommended)." (B) "Grown on
+     maturing: founding stays as it is today. A maturing body re-expresses
+     one cell as reproduce, at PD2's price, before it can breed." (C) "A
+     part of its own: producers bear a seed pod and grazers a lump that
+     reproduces, each a part of the recipe, leaving the frond and the
+     feeding lump unchanged." Mark chose A, "A cell at founding". So each of
+     the probe's recipes gives reproduce one cell of the frond or the lump;
+     505's rates are calibrated again so the median body still earns what
+     it did; and a recipe without that cell founds checkpoint 7's bodies
+     exactly, a test's control.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10131,6 +10227,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 510 to 513 recorded, checkpoint 8's first round:
+  attachment offsets built in checkpoint 8 (510), a recipe's kinds as part
+  templates (511), founded recipes drawn by kingdom with the roster as
+  presets (512), and the probe's bodies expressing reproduce in one cell
+  from founding (513). Annotations on 462, 478, 505 and 506. Carried into
+  the sim plan's checkpoint 8 and 9 briefs, the anatomy brief, the session
+  notes' §10 and the index.
 - 2026-10-03: rulings 508 and 509 recorded at the Burn migration session's
   request, Mark having ruled them there: the allocator repair goes in
   burn-remote's close path (508), answering 411's fork, and a bounded lane

@@ -1719,3 +1719,17 @@ of its own: restoring a file with an older time let cargo keep the faulted
 build. Other sessions compiling through the runs made the times
 incomparable with checkpoint 6's, so cost was measured against main's
 build interleaved.
+
+Opening checkpoint 8, its assessment found that Mesocosm builds a child
+whole at birth and never grows a body afterwards, so growth in life is new
+design; that its lineages keep a symmetry rather than the whole placement
+policy; that its affinity verdicts gate grafts, not meals; and that placing
+grown and incorporated parts needs the offsets checkpoint 9 was to build.
+The first round:
+
+| Question as put | Ruling |
+| --- | --- |
+| Where does a plan-resolved attachment's placement come from? | 510: offsets in checkpoint 8 |
+| How does the sim's recipe name what a segment bears? | 511: kinds as part templates |
+| What recipe does a founded world's lineage start with? | 512: drawn, roster as presets |
+| How do the probe's bodies support reproduction? | 513: a cell at founding |
