@@ -1187,7 +1187,10 @@ chose "Shared stack helper" (532), "Probe yes, repros no" (533) and "Rerun
 GPU-on quieter" (534): one helper for every web module, Distillery's probe
 taking it, and promotion waiting on a GPU-on A/B on a quiet machine, the
 pooled one having run beside other sessions at up to 96% CPU. Mere's burn
-plan §13.34 holds them.
+plan §13.34 holds them. Then, against the recommendation of a new
+zero-dependency crate, Mark housed the helper in cambium-genet-web-host
+(536), so the model probe takes Cambium's web host and Isometry's web
+build will reach the helper through it.
 
 ## 10. The design session, 2026-09-30
 

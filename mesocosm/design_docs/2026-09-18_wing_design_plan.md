@@ -6347,6 +6347,8 @@ what later sections derive from.
      *Carried out 2026-10-03 by rulings 532 to 534:* one stack helper runs
      the constructors once for every web module, Distillery's probe takes
      it, and promotion waits on a GPU-on A/B taken with the machine quiet.
+     *Housed 2026-10-03 by ruling 536:* the helper lives in
+     cambium-genet-web-host.
 
      Source: mere's burn 0.22 migration plan, §13.31
      (`design_docs/mere_docs/implementation_strategy/2026-08-09_burn_0_22_migration_plan.md`),
@@ -6921,6 +6923,33 @@ what later sections derive from.
      reserve, breeding from income, or after it, breeding from capital, is
      a trait of the lineage, drawn by the generator and revised at the
      epoch boundary (57).
+
+536. **The constructor helper lives in cambium-genet-web-host.** Asked on
+     2026-10-03 in the Burn migration session, carrying out 532: where the
+     shared constructor helper lives. "Today only two pre.4 web modules
+     exist: graphshell-web, and Distillery's model probe, which has no start
+     function. The only mere crates in both wasm graphs are esp, eidetic and
+     muniment (inference, memory, byte storage). cambium-genet-web-host is
+     the existing web-boundary crate: graphshell-web uses it, but it would
+     add about 159 packages to the probe's 273." Options, recommended
+     first: (A) "A new zero-dependency crate at the web boundary, holding
+     the helper, its run-once guard and the one-run test. Knot or Isometry
+     could take it later without Cambium's stack (recommended)." (B)
+     "cambium-genet-web-host. No new crate, but the probe takes ~159 more
+     packages, and every future web module needs Cambium's web host." (C)
+     "esp. Already in both graphs, but inference is the wrong job for it."
+     Mark's answer, as the migration session relays it: "cambium-genet-web-host",
+     against the recommendation. So the helper lives in
+     cambium-genet-web-host: graphshell-web calls it from its start
+     function, Distillery's model probe takes cambium-genet-web-host as a
+     dependency to call it, and any future web module, Isometry's
+     included, reaches it through Cambium's web host.
+
+     Source: relayed by the Burn migration session ("Conatus, physics,
+     seiche status") on 2026-10-03, to be recorded in mere's burn 0.22
+     migration plan §13.35 on branch `burn-pre4-repin`; not yet committed
+     there when this record took it, at mere `9f5a73f6`. Mere's migration
+     lane owns the work.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -10763,6 +10792,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: ruling 536 recorded at the Burn migration session's request,
+  Mark having ruled it there against the recommendation: 532's constructor
+  helper lives in cambium-genet-web-host rather than a new crate.
+  Annotation on 509. Carried into the session notes' §9.9 and the index.
 - 2026-10-03: ruling 535 recorded, building checkpoint 8's step 8c: whether
   a lineage breeds from income or from capital, growth with its parts full
   going to its missing parts and provision before or after its reserve, is
