@@ -40,6 +40,8 @@ pub(crate) struct Stage {
     /// The site's ledger and conditions, copied on the first write.
     site: Option<Site>,
     births: Vec<Entity>,
+    /// Kinds lineages learned by what their bodies took in (ruling 468).
+    lessons: Vec<(Key, Key)>,
     /// Inserted (`true`) and removed relations, in the order the act made
     /// them.
     relations: Vec<(Relation, bool)>,
@@ -96,6 +98,7 @@ impl Simulation {
             bodies,
             site: None,
             births: vec![],
+            lessons: vec![],
             relations: vec![],
             notes: vec![],
             polities: vec![],
@@ -321,6 +324,15 @@ impl Simulation {
                 s.relations.insert(relation);
             } else {
                 s.relations.remove(&relation);
+            }
+        }
+        for (lineage, kind) in stage.lessons {
+            let learned = s
+                .lineages
+                .get_mut(&lineage)
+                .and_then(|l| l.development.as_mut());
+            if let Some(d) = learned {
+                d.lexicon.insert(kind);
             }
         }
         s.polities.extend(stage.polities);

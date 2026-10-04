@@ -183,6 +183,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     amount: 1.into(),
                     into: body.clone(),
                     of: vec![],
+                    whole: false,
                 }],
             );
             feed.requires.extend([

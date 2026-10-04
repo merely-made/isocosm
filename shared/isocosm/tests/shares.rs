@@ -174,6 +174,7 @@ fn hunt(bite: u64) -> Process {
             amount: bite.into(),
             into: GUT.into(),
             of: vec![],
+            whole: false,
         }],
         Some(Target {
             same_place: true,

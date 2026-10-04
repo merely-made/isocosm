@@ -67,6 +67,24 @@ pub fn seat(
     })
 }
 
+/// Where a part of `half` taken in lands (rulings 510 and 516), as isometer
+/// resolves one: for each facing its plan tries for the part's name, each
+/// living part in order, the first flush box overlapping nothing. A part
+/// taken in lands alone, its mirror not sought.
+pub fn resolve(e: &Entity, policy: &Policy, half: [i32; 3]) -> Option<(Id, [i32; 3])> {
+    let placed = placed(e);
+    for facing in policy.candidates(anatomy::boxed(half)) {
+        for (id, host) in e.parts.iter().filter(|(_, p)| !p.severed) {
+            let offset = flush(host.half_extent, half, facing);
+            let at = [0, 1, 2].map(|i| placed[id][i] + offset[i]);
+            if free(e, &placed, at, half) {
+                return Some((*id, offset));
+            }
+        }
+    }
+    None
+}
+
 /// The segments a body grows toward (495): an anamorphic lineage's recipe
 /// counts, a body keeping any it drew beyond them; otherwise those it drew.
 fn target(d: &Development, e: &Entity) -> Vec<u8> {

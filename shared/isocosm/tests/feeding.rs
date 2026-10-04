@@ -109,6 +109,7 @@ fn eat(amount: u64, at_least: u64, among: &[&str]) -> Process {
             amount: amount.into(),
             into: GUT.into(),
             of: vec![],
+            whole: false,
         }],
         Some(Target {
             same_place: true,

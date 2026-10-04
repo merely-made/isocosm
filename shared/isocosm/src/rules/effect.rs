@@ -101,6 +101,10 @@ pub enum Effect {
         into: Key,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         of: Vec<Key>,
+        /// Whether a bite that would take all of a part's tissue takes the
+        /// part whole, as its affinity allows (ruling 516).
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        whole: bool,
     },
     /// Effects applied only where a guard comes to something (X5), such as
     /// an eater paying for a bite only while the gland is charged, and

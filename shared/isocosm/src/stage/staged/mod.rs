@@ -450,6 +450,7 @@ impl Staged<'_> {
                 amount,
                 into,
                 of,
+                whole,
             } => {
                 let rules = &sim.genesis.rules;
                 let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
@@ -466,6 +467,17 @@ impl Staged<'_> {
                     },
                     None => edible(&*self.ledger(*from)?, of),
                 };
+                // A bite that would take all of a part may take it whole.
+                if let (true, Some(part)) = (*whole, bitten) {
+                    let asked: u64 = match &portion {
+                        Some(p) => p.values().sum(),
+                        None => amount.resolved()?,
+                    };
+                    let all: u64 = offered.values().sum();
+                    if asked >= all && self.incorporate(*from, part)? {
+                        return Ok(false);
+                    }
+                }
                 let taken: Ledger = match portion {
                     // A share is of the prey's whole; the bitten part gives
                     // what it holds of it, the rest staying put (454).
@@ -518,4 +530,5 @@ impl Staged<'_> {
 }
 
 mod births;
+mod incorporate;
 mod parties;

@@ -298,6 +298,7 @@ pub(super) fn graze(i: u32, prey: u32) -> Process {
         amount: computed(mouthful(i)),
         into: hand.clone(),
         of: vec![hand.clone()],
+        whole: false,
     };
     let keep = |name: &str, value: Expr| Effect::Keep {
         name: name.into(),

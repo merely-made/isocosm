@@ -207,11 +207,23 @@ pub fn held(e: &Entity, rules: &Rules, key: &str) -> u64 {
 /// How much the body has room for of `key` in its parts.
 pub fn room(e: &Entity, rules: &Rules, key: &str) -> u64 {
     bodies(e)
-        .map(|(_, p)| {
-            let held = p.matter.get(key).copied().unwrap_or(0);
-            bound(p, rules, key).saturating_sub(held)
-        })
+        .map(|(_, p)| space(p, rules, &e.lineage, key))
         .fold(0, u64::saturating_add)
+}
+
+/// What one part has room for of `key`: below what it may hold, its own
+/// tissue's room shrunk by any other lineage's matter it keeps, as an
+/// incorporated part keeps its donor's (ruling 544).
+fn space(p: &Part, rules: &Rules, lineage: &str, key: &str) -> u64 {
+    let held = p.matter.get(key).copied().unwrap_or(0);
+    let room = bound(p, rules, key).saturating_sub(held);
+    if reserve(rules, key) || provision(rules, key) {
+        return room;
+    }
+    let foreign = p.matter.iter().filter(|(k, _)| {
+        matches!(rules.accounts.get(*k), Some(AccountKind::Matter { lineage: l, .. }) if l != lineage)
+    });
+    room.saturating_sub(foreign.map(|(_, v)| *v).fold(0, u64::saturating_add))
 }
 
 /// `amount` split by `weights`: each its exact share floored, the units
@@ -275,11 +287,9 @@ pub fn give(
     if !anatomical(e, rules, key) {
         return None;
     }
+    let lineage = e.lineage.clone();
     let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| {
-            let held = p.matter.get(key).copied().unwrap_or(0);
-            (id, bound(p, rules, key).saturating_sub(held))
-        })
+        .map(|(id, p)| (id, space(p, rules, &lineage, key)))
         .collect();
     let room: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if room < u128::from(amount) {

@@ -382,6 +382,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             amount,
             into,
             of,
+            ..
         } => {
             matter(rules, into)?;
             for key in of {
