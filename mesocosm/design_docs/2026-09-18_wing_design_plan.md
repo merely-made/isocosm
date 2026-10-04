@@ -6770,6 +6770,9 @@ what later sections derive from.
      hungry, and the probe's grazers care. *Put back the same day:* Mark
      asked "Mouthfuls, or provisions from the parent (like milk?)", and
      ruling 527 makes the food a lineage's trait.
+     *Specified 2026-10-04 by ruling 554:* care reads only unweaned young,
+     a young weaned the first time it is fed, its stores full; the crowd
+     runs a parent and its unweaned young as individuals.
 
 527. **What a caring parent gives, milk or mouthfuls, is a lineage trait.**
      Asked on 2026-10-03, putting 526 back at Mark's question ("Mouthfuls,
@@ -7365,6 +7368,34 @@ what later sections derive from.
      1,000." Mark chose A, "Wider soil". So the probe draws each site's
      soil from 200 to 12,000 mg, its domain spanning starved and surplus
      worlds.
+
+554. **Bonds run individually until the young is weaned.** Asked on
+     2026-10-04, opening checkpoint 8's step 8i: "How does the crowd run
+     milk, which 526 gives a parent's own hungry child? Evidence: the crowd
+     keeps counts of identical states and no identities (113: 'who' is
+     undefined for the fungible; anything of note runs as an individual).
+     Nursing names its target through the sim:child relation, so today the
+     crowd refuses it. Over 100 exact runs at 60 ticks, milk flowed 5,500
+     times. A median 48% of living grazers (quartiles 0% and 79%) were in a
+     bond with a still-hungry young, and 74% with any living young. A
+     member put back into a bin loses its identity, so a bond can end in
+     the crowd only where the rule ends it." Options, recommended first:
+     (A) "Bonds run individually: the crowd lifts a parent and its young
+     out as individuals, relation kept, until the young is weaned, i.e.
+     first fed with its stores full; nursing reads only unweaned young, in
+     both runners. About half of grazers run member by member. It's the
+     mechanism relations will need wherever the wing has them
+     (recommended)." (B) "Kin care: amend 526: a fed parent nurses any
+     hungry young of its lineage at its site, paired by count in pass order
+     as a hunt pairs hunters with prey, in both runners. No relation is
+     read and the crowd stays a crowd, but 'a child of its' goes." (C)
+     "Milk out of the crowd: the crowd's check runs the probe without milk,
+     and milk is certified on the exact runner alone." Mark chose A, "Bonds
+     run individually". So a young is weaned the first time it is fed, its
+     stores full, and nursing reads only unweaned young, in both runners;
+     and the crowd runs a parent and its unweaned young as individuals,
+     their relation kept, returning them to its counts once the young is
+     weaned, the mechanism by which the crowd will hold any relation.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11237,6 +11268,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: ruling 554 recorded, opening checkpoint 8's step 8i: a
+  young is weaned the first time it is fed, nursing reads only unweaned
+  young, and the crowd runs a parent and its unweaned young as
+  individuals, relation kept, the mechanism by which it will hold any
+  relation. Annotation on 526. Carried into the sim plan's checkpoint 8
+  brief, the session notes' §10 and the index.
 - 2026-10-04: rulings 552 and 553 recorded, building checkpoint 8's step
   8h: a bud severs once it holds a provision's worth (552), and the
   probe's soil is drawn from 200 to 12,000 mg a site (553), after

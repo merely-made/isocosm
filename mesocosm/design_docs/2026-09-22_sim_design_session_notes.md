@@ -1815,6 +1815,7 @@ Building step 8c raised one more:
 | When is a probe grazer fed? | 551: full stores count as fed |
 | When is a producer's bud full enough to sever? | 552: a provision's worth |
 | How rich in soil are the probe's worlds? | 553: wider soil, 200 to 12,000 mg a site |
+| How does the crowd run milk, a parent's own child's? | 554: bonds run individually until weaned |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
