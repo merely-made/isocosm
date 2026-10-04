@@ -1808,6 +1808,8 @@ Building step 8c raised one more:
 | --- | --- |
 | Where do the provision and a missing part take growth, against the reserve? | 535: a lineage trait |
 | Whose matter does an incorporated frond hold? | 544: the donor's, kept |
+| Where do generated recipes express reproduce? | 547: one cell of the root |
+| How does the generator draw a founded lineage's life history? | 548: drawn, within what bodies allow |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a

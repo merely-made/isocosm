@@ -6432,6 +6432,9 @@ what later sections derive from.
      lineage's recipe by its kingdom, as Mesocosm's lottery does, and the
      eight authored bodies ship as founding presets.
      *Bounded 2026-10-03 by ruling 525:* in worlds that ask for bodies.
+     *Completed 2026-10-04 by rulings 547 and 548:* each recipe reproduces
+     in one cell of its root, and each lineage's life history is drawn
+     within what its body allows.
 
 513. **The probe's bodies express reproduce in one cell from founding.**
      Asked on 2026-10-03, with 510: "How do the probe's bodies support
@@ -6455,6 +6458,8 @@ what later sections derive from.
      505's rates are calibrated again so the median body still earns what
      it did; and a recipe without that cell founds checkpoint 7's bodies
      exactly, a test's control.
+     *Extended 2026-10-04 by ruling 547:* generated recipes reproduce in
+     one cell of their root likewise.
 
 514. **The probe's check certifies all three strategies.** Asked on
      2026-10-03, checkpoint 8's second round: "Which reproductive strategies
@@ -7206,6 +7211,48 @@ what later sections derive from.
 
      Source: relayed by the migration session on 2026-10-03, for mere's
      burn plan §13.38 on `burn-pre4-repin`.
+
+547. **A generated recipe reproduces in one cell of its root.** Asked on
+     2026-10-04, building checkpoint 8's step 8g: "Where do generated
+     recipes express reproduce (449)? Evidence: Mesocosm's seeding gives
+     every cell of a part to its role's one process: a lump takes in, a rod
+     contracts, a point senses, a sheet fixes. So no drawn or roster recipe
+     would reproduce. For the probe, 513 gave reproduce one cell of the
+     frond or lump. A body may use a strategy only while it expresses
+     reproduce." Options, recommended first: (A) "One cell of the root: the
+     generator gives reproduce one cell of each recipe's root segment
+     kind, as 513 did for the probe (recommended)." (B) "An organ of its
+     own: each recipe bears a reproductive lump on one segment, a kind of
+     its own drawn with the recipe." (C) "Drawn among its kinds: the
+     generator draws which of the recipe's kinds gives reproduce a cell."
+     Mark chose A, "One cell of the root". So the generator gives
+     reproduce one cell of each recipe's root segment kind, drawn and
+     authored recipes alike, as 513 did for the probe. *Reading, not
+     ruled:* the default templates otherwise follow Mesocosm's seeding, all
+     of a part's cells to its role's process, so a lump takes in, a rod
+     contracts, a point senses and a sheet fixes (511).
+
+548. **A founded lineage's life history is drawn, within what its body
+     allows.** Asked on 2026-10-04, with 547: "How does the generator draw
+     each founded lineage's life history? Evidence: a lineage now carries
+     its strategies (449), whether it grows parts or provision first
+     (520), whether it breeds from income or capital (535), its clutch
+     (530), semelparity (521), its care, milk or mouthfuls (527), and
+     whether it grows segments (495). A body can lay eggs only with a
+     reserve, and can bud only where it reproduces. You've ruled against
+     hardcoded placeholder values (515)." Options, recommended first: (A)
+     "Drawn, within what bodies allow: each trait is drawn by the founding
+     seed: strategies among those the lineage's body supports, clutch
+     within a world-rule bound, the others either way. The probe sets its
+     own (recommended)." (B) "Kingdom presets: producers bud, consumers
+     brood or lay eggs, decomposers bud; the rest are drawn." (C) "One
+     default history: every founded lineage takes one life history (brood,
+     iteroparous, epimorphic, parts first, income, no care), varied only by
+     authoring." Mark chose A, "Drawn, within what bodies allow". So the
+     generator draws each founded lineage's life history by the founding
+     seed: its strategies among those its body supports, its clutch within
+     a world-rule bound, and each of its other traits either way; the
+     probe sets its own.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11078,6 +11125,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: rulings 547 and 548 recorded, building checkpoint 8's step
+  8g: a generated recipe reproduces in one cell of its root (547), and a
+  founded lineage's life history is drawn within what its body allows
+  (548). Annotations on 512 and 513. Carried into the sim plan's
+  checkpoint 8 brief, the session notes' §10 and the index.
 - 2026-10-03: rulings 545 and 546 recorded at the Burn migration session's
   request: the web modules take wasm-bindgen 0.2.129 with wgpu 30.0.1,
   carrying out 537 (545), and the Distillery probe's decoder model may be
