@@ -20,7 +20,16 @@ impl Sides for Plain<'_> {
         let start = &self.world.genesis.sites[&0];
         let (mut site, rules) = (start.clone(), &self.world.genesis.rules);
         let run = aggregate::Run::Free;
-        let next = aggregate::apply(p, &self.states[side], start, &mut site, 1, 1, rules, run)?;
+        let next = aggregate::apply(
+            p,
+            &self.states[side],
+            start,
+            &mut site,
+            1,
+            1,
+            (rules, None),
+            run,
+        )?;
         self.states[side] = next.ok_or("blocked")?;
         Ok(())
     }
@@ -205,6 +214,7 @@ fn mood_is_read_from_needs_and_moves_the_way_a_break_goes() {
             site,
             tick: 1,
             rules: &w.genesis.rules,
+            lineages: None,
         };
         seen.mood().unwrap()
     };

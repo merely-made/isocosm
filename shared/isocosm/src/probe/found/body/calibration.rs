@@ -5,7 +5,11 @@
 //! alone, at rates per unit set so the domain's median body earns what
 //! checkpoint 6's tissue rates gave it. Over a thousand founded worlds, each
 //! body's old rate is worked out as checkpoint 6 wrote it, and the new one
-//! from the constants, and the medians must agree to a milligram.
+//! from the constants, and the medians must agree to a milligram. Each
+//! rate is the middle of the range of rates that give the median, as the
+//! nearest fraction with a denominator of at most 400; calibrated again
+//! for checkpoint 8's recipe bodies, which give reproduce a cell and vary
+//! (rulings 513 and 531), the medians 5 and 12 mg.
 
 use super::{
     BodyFounding,

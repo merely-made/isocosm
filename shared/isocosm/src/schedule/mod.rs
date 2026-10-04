@@ -70,6 +70,7 @@ fn framed(p: &Process) -> bool {
                 }
                 | Effect::Condition { .. }
                 | Effect::Spend { .. }
+                | Effect::Grow { .. }
                 | Effect::Convert {
                     who: Binding::Place,
                     ..

@@ -52,6 +52,14 @@ pub struct Part {
     /// read (rulings 460 and 493);
     #[serde(default, skip_serializing_if = "is_zero_extent")]
     pub half_extent: [i32; 3],
+    /// Where it attaches: its pivot from its parent's, in the parent's
+    /// frame (rulings 462 and 510); nought at a root.
+    #[serde(default, skip_serializing_if = "is_zero_extent")]
+    pub offset: [i32; 3],
+    /// Where in its lineage's recipe it develops (252): tagma, segment, and
+    /// nought for the segment or one more than the borne part's place.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub situs: Option<[u8; 3]>,
     /// the cells each function it expresses holds (X6's allocation), never
     /// more in all than its capacity;
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
@@ -102,6 +110,10 @@ pub struct Entity {
     pub skills: BTreeMap<Key, u64>,
     pub tenets: BTreeMap<Key, Tenet>,
     pub disposition: [i16; 5],
+    /// Each tagma's segments as the body drew them (478, 495), what an
+    /// epimorphic body grows toward; absent in bodies without a recipe.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub soma: Vec<u8>,
 }
 
 /// A past residence. The departure tick belongs to the next place.
@@ -118,6 +130,10 @@ pub struct Lineage {
     pub revision: u64,
     pub traits: BTreeSet<Key>,
     pub kingdom: Key,
+    /// What its bodies develop from (rulings 478 and 511); lineages without
+    /// one serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub development: Option<crate::rules::Development>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

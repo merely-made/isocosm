@@ -8,6 +8,10 @@
 //! Since checkpoint 7 the matter sits in parts (rulings 459, 463, 464 and
 //! 504): the reserve only in what stores, income and the mouthful read
 //! fixing's area and intake's volume at ruling 505's calibrated rates.
+//! Since checkpoint 8 the bodies grow from recipes (rulings 513 and 518):
+//! each root reproduces in a cell whose provision fills after the tissue,
+//! and the formula tests found worlds without absences, so that no body
+//! lacks a part and growth builds nothing.
 
 use isocosm::{
     Execution, Simulation, anatomy,
@@ -32,6 +36,7 @@ struct Build {
     span: u64,
     gland: u64,
     store: u64,
+    provision: u64,
     area: u64,
     volume: u64,
 }
@@ -63,6 +68,9 @@ fn build(e: &Entity) -> Build {
         store: living()
             .map(|p| cells(p, "function:store") * anatomy::cell_mass(p, b))
             .sum(),
+        provision: living()
+            .map(|p| cells(p, "function:reproduce") * anatomy::cell_mass(p, b))
+            .sum(),
         area: measured("function:fix", Measure::Area),
         volume: measured("function:intake", Measure::Volume),
     }
@@ -73,27 +81,42 @@ fn upkeep(m: u64, b: &Build) -> u64 {
     1 + three_quarter(m) * (c + b.span * 100 + b.gland) / (62 * c)
 }
 
-/// What the body has room for: below its ceiling in tissue and below its
-/// stores' mass in reserve (ruling 463).
-fn room(b: &Build, tissue: u64, reserve: u64) -> u64 {
-    b.ceiling.saturating_sub(tissue) + b.store.saturating_sub(reserve)
+/// TD5's hunger: fewer than a hundred ticks of upkeep in reserve, the
+/// horizon capped by what the stores may hold (ruling 551).
+fn hungry(b: &Build, (tissue, reserve): (u64, u64)) -> bool {
+    reserve < (upkeep(tissue, b) * 100).min(b.store)
 }
 
-/// TD5's `earn_stock`: what lands as tissue and reserve and what spills.
-fn land(stock: u64, (tissue, reserve): (u64, u64), b: &Build, hungry: bool) -> (u64, u64, u64) {
+/// What the body has room for: below its ceiling in tissue, below its
+/// stores' mass in reserve (ruling 463) and below its reproduce cells' mass
+/// in provision (518), its provision empty.
+fn room(b: &Build, tissue: u64, reserve: u64) -> u64 {
+    b.ceiling.saturating_sub(tissue) + b.store.saturating_sub(reserve) + b.provision
+}
+
+/// TD5's `earn_stock`, the provision filled once the parts are (520, 535):
+/// what lands as tissue, reserve and provision, and what spills.
+fn land(stock: u64, (tissue, reserve): (u64, u64), b: &Build, hungry: bool) -> [u64; 4] {
     let (t_room, r_room) = (
         b.ceiling.saturating_sub(tissue),
         b.store.saturating_sub(reserve),
     );
-    if hungry {
-        let r = stock.min(r_room);
-        let t = (stock - r).min(t_room);
-        (tissue + t, reserve + r, stock - r - t)
+    let mut left = stock;
+    let mut take = |room: u64| {
+        let n = left.min(room);
+        left -= n;
+        n
+    };
+    let (t, r, p) = if hungry {
+        let r = take(r_room);
+        let t = take(t_room);
+        (t, r, take(b.provision))
     } else {
-        let t = stock.min(t_room);
-        let r = (stock - t).min(r_room);
-        (tissue + t, reserve + r, stock - t - r)
-    }
+        let t = take(t_room);
+        let p = take(b.provision);
+        (t, take(r_room), p)
+    };
+    [tissue + t, reserve + r, p, left]
 }
 
 fn world(seed: u64) -> Genesis {
@@ -104,6 +127,24 @@ fn world(seed: u64) -> Genesis {
     .generate()
     .unwrap()
     .genesis
+}
+
+/// A world whose bodies lack nothing their recipes name.
+fn whole(seed: u64) -> Genesis {
+    BodyFounding {
+        seed,
+        absence: [0, 0],
+        ..Default::default()
+    }
+    .generate()
+    .unwrap()
+    .genesis
+}
+
+fn provision(sim: &Simulation, id: Id) -> u64 {
+    let e = sim.state().population.get(id).unwrap();
+    let i = e.lineage.trim_start_matches("lineage:");
+    anatomy::held(e, &sim.genesis().rules, &format!("provision:{i}"))
 }
 
 fn first(g: &Genesis, lineage: &str) -> Id {
@@ -131,11 +172,11 @@ fn soil(sim: &Simulation) -> u64 {
 }
 
 /// Every member of `lineage` emptied and given `ledger` through its parts,
-/// as far as they hold it; returns what it holds.
+/// as far as they hold it; returns what its first member holds.
 fn set(g: &mut Genesis, lineage: &str, (tissue, reserve): (u64, u64)) -> (u64, u64) {
     let i = lineage.trim_start_matches("lineage:");
     let rules = g.rules.clone();
-    let mut held = (0, 0);
+    let mut held = None;
     for group in g.population.groups.values_mut() {
         let e = &mut group.entity;
         if e.lineage != lineage {
@@ -151,9 +192,9 @@ fn set(g: &mut Genesis, lineage: &str, (tissue, reserve): (u64, u64)) -> (u64, u
             let fits = amount.min(anatomy::room(e, &rules, &key));
             anatomy::give(e, &rules, &key, fits).unwrap().unwrap();
         }
-        held = totals_with(&rules, e);
+        held = held.or(Some(totals_with(&rules, e)));
     }
-    held
+    held.unwrap()
 }
 
 fn totals_with(rules: &isocosm::rules::Rules, e: &Entity) -> (u64, u64) {
@@ -170,7 +211,7 @@ fn rent_is_mesocosms_and_drains_the_reserve_first() {
     for seed in 0..6 {
         for lineage in ["lineage:0", "lineage:1"] {
             for asked in [(30, 0), (90, 3), (150, 40), (400, 1000)] {
-                let mut g = world(seed);
+                let mut g = whole(seed);
                 let held = set(&mut g, lineage, asked);
                 let i = lineage.trim_start_matches("lineage:");
                 let id = first(&g, lineage);
@@ -191,6 +232,35 @@ fn rent_is_mesocosms_and_drains_the_reserve_first() {
     }
     // The control: some rent was drawn from a store's reserve.
     assert!(drained > 0);
+}
+
+/// A body starves when its tissue and reserve cannot pay its rent (523),
+/// and not before: rent it can just pay keeps it alive.
+#[test]
+fn a_body_starves_only_when_it_cannot_pay_its_rent() {
+    let (mut starved, mut kept) = (0, 0);
+    for seed in 0..4 {
+        for lineage in ["lineage:0", "lineage:1"] {
+            let i = lineage.trim_start_matches("lineage:");
+            for asked in [(0, 0), (1, 0), (40, 0), (150, 40)] {
+                let mut g = whole(seed);
+                let held = set(&mut g, lineage, asked);
+                let id = first(&g, lineage);
+                let owed = upkeep(held.0, &build(g.population.get(id).unwrap()));
+                let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
+                let r = sim.execute(id, None, &format!("body:starve-{i}"), None);
+                let starves = held.0 + held.1 < owed;
+                let what = format!("seed {seed} {lineage} {held:?} owes {owed}");
+                assert_eq!(r.outcome == Outcome::Accepted, starves, "{what}");
+                assert_eq!(sim.state().population.get(id).unwrap().alive, !starves);
+                starved += u64::from(starves);
+                kept += u64::from(!starves && held.0 + held.1 == owed);
+            }
+        }
+    }
+    // The controls: some bodies starved, and some that could just pay
+    // their rent were kept.
+    assert!(starved > 0 && kept > 0, "{starved} starved, {kept} kept");
 }
 
 #[test]
@@ -215,21 +285,23 @@ fn a_producer_keeps_no_reserve_and_a_grazer_keeps_it_in_its_lump() {
 fn fixing_draws_its_income_by_area_and_lands_it_by_td5() {
     for seed in 0..6 {
         for asked in [(30, 0), (60, 50), (120, 400), (150, 100), (190, 190)] {
-            let mut g = world(seed);
+            let mut g = whole(seed);
             let held = set(&mut g, "lineage:0", asked);
             assert_eq!(held.1, 0, "a frond stores nothing");
             let id = first(&g, "lineage:0");
             let b = build(g.population.get(id).unwrap());
-            // Ruling 505's rate: four milligrams for each 63 faces fixing.
-            let rate = (b.area * 4 / 63).max(1);
+            // Ruling 505's rate, calibrated again for 513: eleven
+            // milligrams for each 144 faces fixing.
+            let rate = (b.area * 11 / 144).max(1);
             let income = rate.min(room(&b, held.0, held.1));
-            let hungry = held.1 < upkeep(held.0, &b) * 100;
-            let (tissue, reserve, spill) = land(income, held, &b, hungry);
+            let hungry = hungry(&b, held);
+            let [tissue, reserve, sown, spill] = land(income, held, &b, hungry);
             let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
             let ground = soil(&sim);
             let r = sim.execute(id, None, "body:fix-0", None);
             assert_eq!(r.outcome, Outcome::Accepted, "seed {seed} {held:?}");
             assert_eq!(ledger(&sim, id), (tissue, reserve), "seed {seed} {held:?}");
+            assert_eq!(provision(&sim, id), sown, "seed {seed} {held:?}");
             assert_eq!(soil(&sim), ground - income + spill, "seed {seed} {held:?}");
         }
     }
@@ -237,14 +309,14 @@ fn fixing_draws_its_income_by_area_and_lands_it_by_td5() {
 
 #[test]
 fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
-    let (mut glanded, mut uncharged, mut stored) = (0, 0, 0);
+    let (mut glanded, mut uncharged, mut stored, mut fed, mut taken_whole) = (0, 0, 0, 0, 0);
     for seed in 0..12 {
         for (meal, prey) in [
             ((30, 0), (100, 0)),
             ((60, 40), (25, 0)),
             ((150, 5), (180, 0)),
         ] {
-            let mut g = world(seed);
+            let mut g = whole(seed);
             let meal = set(&mut g, "lineage:1", meal);
             let prey = set(&mut g, "lineage:0", prey);
             let (id, target) = (first(&g, "lineage:1"), first(&g, "lineage:0"));
@@ -258,23 +330,27 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
                     .parts
                     .get_mut(&0)
                     .unwrap();
-                let capacity = anatomy::capacity(frond);
-                let cells = capacity.min(4);
-                frond.cells.insert("function:fix".into(), capacity - cells);
+                let fixing = frond.cells["function:fix"];
+                let cells = fixing.min(4);
+                frond.cells.insert("function:fix".into(), fixing - cells);
                 frond.cells.insert("function:secrete".into(), cells);
                 frond.functions.insert("function:secrete".into());
             }
             let b = build(g.population.get(id).unwrap());
             let c = b.ceiling.max(1);
-            // Ruling 505's rate: eleven milligrams for each 294 voxels of
-            // intake, scaled by TD9's build multiple.
-            let rate = (11 * b.volume * (c + b.span * 100) / (294 * c)).max(1);
+            // Ruling 505's rate, calibrated again for 513: twelve
+            // milligrams for each 269 voxels of intake, scaled by TD9's build
+            // multiple.
+            let rate = (12 * b.volume * (c + b.span * 100) / (269 * c)).max(1);
             let mouthful = rate.min(room(&b, meal.0, meal.1));
-            let taken = mouthful.min(prey.0);
-            let hungry = meal.1 < upkeep(meal.0, &b) * 100;
-            let (tissue, reserve, spill) = land(taken, meal, &b, hungry);
-            stored += u64::from(reserve > meal.1);
+            let hungry = hungry(&b, meal);
+            fed += u64::from(!hungry);
             let gland = build(g.population.get(target).unwrap()).gland;
+            let parts = |e: &Entity| -> Vec<u64> {
+                let held = |p: &Part| p.matter.get("tissue:0").copied().unwrap_or(0);
+                e.parts.values().map(held).collect()
+            };
+            let before = parts(g.population.get(target).unwrap());
             // A quarter of the draws graze over ground too lean to charge it.
             let lean = grown && seed % 4 == 0;
             if lean {
@@ -288,9 +364,6 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
             } else {
                 0
             };
-            let dose = charged * taken / prey.0.max(1);
-            uncharged += u64::from(lean && charged == 0);
-            glanded += u64::from(charged > 0);
             let r = sim.execute(id, Some(target), "body:graze-1", None);
             if mouthful == 0 {
                 assert!(matches!(r.outcome, Outcome::Blocked(_)), "no room, no meal");
@@ -301,9 +374,41 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
                 Outcome::Accepted,
                 "seed {seed} {meal:?} {prey:?}"
             );
+            // A fed grazer whose bite would take all of a part takes it
+            // whole, where affinity lets it land (516).
+            let after = parts(sim.state().population.get(target).unwrap());
+            if after.len() < before.len() {
+                assert!(
+                    !hungry && before.iter().any(|t| *t <= mouthful),
+                    "seed {seed}"
+                );
+                let eater = sim.state().population.get(id).unwrap();
+                let landed = eater
+                    .parts
+                    .values()
+                    .any(|p| p.matter.contains_key("tissue:0"));
+                assert!(landed, "seed {seed}: the part lands on the eater");
+                taken_whole += 1;
+                continue;
+            }
+            // A bite lands on one part (459): the mouthful, or all that part
+            // holds, the others untouched.
+            let bitten: Vec<usize> = (0..before.len())
+                .filter(|k| after[*k] != before[*k])
+                .collect();
+            assert_eq!(bitten.len(), 1, "seed {seed}: {before:?} to {after:?}");
+            let k = bitten[0];
+            let taken = mouthful.min(before[k]);
+            assert_eq!(before[k] - after[k], taken, "seed {seed}");
+            let [tissue, reserve, sown, spill] = land(taken, meal, &b, hungry);
+            stored += u64::from(reserve > meal.1);
+            let dose = charged * taken / prey.0.max(1);
+            uncharged += u64::from(lean && charged == 0);
+            glanded += u64::from(charged > 0);
             let paid = reserve.min(dose);
             let want = (tissue, reserve - paid);
             assert_eq!(ledger(&sim, id), want, "seed {seed} {meal:?} {prey:?}");
+            assert_eq!(provision(&sim, id), sown, "seed {seed} {meal:?} {prey:?}");
             assert_eq!(ledger(&sim, target), (prey.0 - taken, prey.1));
             let site = &sim.state().sites[&0].accounts;
             assert_eq!(site["world:soil"], ground + paid, "seed {seed}");
@@ -311,10 +416,12 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
         }
     }
     // The controls: some bites were dosed, so the gland was read at all;
-    // some fell on ground too lean to charge it; and some meals stored.
+    // some fell on ground too lean to charge it; some meals stored; and
+    // some grazers ate with their stores full, fed, and some of those took
+    // a part whole.
     assert!(
-        glanded > 0 && uncharged > 0 && stored > 0,
-        "{glanded} {uncharged} {stored}"
+        glanded > 0 && uncharged > 0 && stored > 0 && fed > 0 && taken_whole > 0,
+        "{glanded} {uncharged} {stored} {fed} {taken_whole}"
     );
 }
 
@@ -381,6 +488,7 @@ fn every_native_acts_somewhere_in_the_domain() {
 #[test]
 fn the_crowd_runs_bodies_without_refusing_any() {
     use isocosm::probe::{Crowd, Variant, readings, run_exact};
+    let mut births = 0;
     for seed in 0..6 {
         let w = BodyFounding {
             seed,
@@ -403,18 +511,20 @@ fn the_crowd_runs_bodies_without_refusing_any() {
             alive > 0 && states > 0 && states as u64 <= alive,
             "seed {seed}"
         );
-        assert_eq!(
-            a.iter().map(|m| m.1).sum::<u64>(),
-            b.iter().map(|m| m.1).sum::<u64>(),
-            "seed {seed}: no member is made or lost"
-        );
+        // Births make members, so the runners' counts agree only in
+        // distribution, the certification's to judge (checkpoint 8).
+        let born = |m: &[(&isocosm::schema::Entity, u64)]| m.iter().any(|(e, _)| e.born > 0);
+        births += usize::from(born(&a) && born(&b));
     }
+    assert!(births > 0, "no world bore in both runners");
 }
 
 /// The averaged crowd flattens every account a lineage owns at each site,
 /// tissue and reserve alike (ruling 507), so a producer, which keeps no
-/// reserve, is averaged too. A lineage's members share one body plan, so
-/// the average always fits their parts.
+/// reserve, is averaged too. Since checkpoint 8 a lineage's bodies vary, so
+/// the class is filled to one level as far as each body may hold: every
+/// member not at its bound holds the level or one above, and none at its
+/// bound could hold more than that. Kin are members like any other.
 #[test]
 fn averaging_flattens_every_own_account_at_each_site() {
     use isocosm::probe::{Crowd, Variant};
@@ -428,17 +538,26 @@ fn averaging_flattens_every_own_account_at_each_site() {
         .unwrap();
         let crowd = Crowd::new(&w, 5, Variant::Averaged).unwrap().run().unwrap();
         let rules = &w.genesis.rules;
-        let mut classes: BTreeMap<(String, Id), Vec<u64>> = BTreeMap::new();
-        for e in crowd.bins.keys().filter(|e| e.alive) {
+        let mut classes: BTreeMap<(String, Id), Vec<(u64, u64)>> = BTreeMap::new();
+        let members = crowd.bins.keys().chain(crowd.kin.values());
+        for e in members.filter(|e| e.alive) {
             let i = e.lineage.trim_start_matches("lineage:");
             for key in [format!("tissue:{i}"), format!("reserve:{i}")] {
                 let held = anatomy::held(e, rules, &key);
-                classes.entry((key, e.place)).or_default().push(held);
+                let bound = held + anatomy::room(e, rules, &key);
+                classes
+                    .entry((key, e.place))
+                    .or_default()
+                    .push((held, bound));
             }
         }
         for ((key, site), held) in classes {
-            let (lo, hi) = (held.iter().min().unwrap(), held.iter().max().unwrap());
-            assert!(hi - lo <= 1, "seed {seed}, {key} at {site}: {held:?}");
+            let open: Vec<u64> = held.iter().filter(|(h, b)| h < b).map(|h| h.0).collect();
+            if let Some(&level) = open.iter().min() {
+                let flat = open.iter().all(|h| *h <= level + 1);
+                let full = held.iter().all(|(h, b)| h < b || *b <= level + 1);
+                assert!(flat && full, "seed {seed}, {key} at {site}: {held:?}");
+            }
             spread += u64::from(key.starts_with("tissue:0") && held.len() > 1);
         }
     }

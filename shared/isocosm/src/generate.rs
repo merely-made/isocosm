@@ -28,6 +28,11 @@ pub struct Founding {
     /// hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub preset: Option<crate::preset::Preset>,
+    /// Bodies for flora and fauna, drawn within these bounds (rulings 525
+    /// and 550). Absent in foundings without them, which serialize and hash
+    /// as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bodies: Option<crate::bodied::Bodies>,
 }
 
 impl Default for Founding {
@@ -45,6 +50,7 @@ impl Default for Founding {
             ecology: false,
             map: None,
             preset: None,
+            bodies: None,
         }
     }
 }
@@ -89,6 +95,9 @@ impl Founding {
         {
             return Err("founding parameters outside declared generator domain".into());
         }
+        if let Some(bodies) = &self.bodies {
+            bodies.check()?;
+        }
         let random = |domain: &str, i| crate::draw(self.seed, domain, &[i]);
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
@@ -97,6 +106,7 @@ impl Founding {
                 revision: 1,
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
+                development: None,
             },
         )]);
         let mut accounts = BTreeMap::from([
@@ -105,6 +115,7 @@ impl Founding {
                 AccountKind::Matter {
                     lineage: "world:ground".into(),
                     reserve: false,
+                    provision: false,
                 },
             ),
             ("sim:energy".into(), AccountKind::Energy),
@@ -131,6 +142,7 @@ impl Founding {
                     revision: 1,
                     traits: BTreeSet::from([ability.clone()]),
                     kingdom: kingdoms[i as usize % kingdoms.len()].into(),
+                    development: None,
                 },
             );
             let n = 2 + random("compartments", u64::from(i)) % 3;
@@ -140,6 +152,7 @@ impl Founding {
                     AccountKind::Matter {
                         lineage: lineage.clone(),
                         reserve: false,
+                        provision: false,
                     },
                 );
             }
@@ -246,6 +259,8 @@ impl Founding {
         processes.insert(weather.id.clone(), weather);
         let mut rules = Rules {
             body: None,
+            kinds: BTreeMap::new(),
+            affinity: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
@@ -347,6 +362,7 @@ impl Founding {
                     skills: BTreeMap::new(),
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
+                    soma: vec![],
                 },
                 1,
             )?;
@@ -391,6 +407,7 @@ impl Founding {
                     skills: BTreeMap::new(),
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
+                    soma: vec![],
                 },
                 count,
             )?;
@@ -432,6 +449,9 @@ impl Founding {
         };
         if self.ecology {
             crate::ecology::configure(self, &mut genesis)?;
+        }
+        if let Some(bodies) = &self.bodies {
+            crate::bodied::embody(&mut genesis, bodies)?;
         }
         genesis.validate()?;
         Ok(genesis)

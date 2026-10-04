@@ -18,6 +18,7 @@ use crate::{
 };
 
 pub(crate) const STORE: &str = "function:store";
+pub(crate) const REPRODUCE: &str = "function:reproduce";
 
 /// Each axis's extent in voxels, `2|h| + 1`.
 fn axes(p: &Part) -> [u128; 3] {
@@ -83,15 +84,7 @@ pub fn name(e: &Entity, id: Id) -> Option<&'static str> {
         "part-shape:shell" => return Some("part-shape:shell"),
         _ => {},
     }
-    let h = p.half_extent.map(|h| h.unsigned_abs().max(1));
-    let (max, min) = (h.iter().max().copied()?, h.iter().min().copied()?);
-    let long = h.iter().filter(|d| **d * 2 >= max).count();
-    let boxed = match long {
-        _ if max <= 1 => "part-shape:point",
-        1 => "part-shape:rod",
-        2 if min * 2 <= max => "part-shape:sheet",
-        _ => "part-shape:lump",
-    };
+    let boxed = boxed(p.half_extent);
     let children = e
         .parts
         .values()
@@ -104,11 +97,66 @@ pub fn name(e: &Entity, id: Id) -> Option<&'static str> {
     })
 }
 
+/// The name a box alone reads, as isometer's classifier reads one.
+pub fn boxed(half_extent: [i32; 3]) -> &'static str {
+    let h = half_extent.map(|h| h.unsigned_abs().max(1));
+    let (max, min) = (h.iter().max().copied(), h.iter().min().copied());
+    let (max, min) = (max.unwrap_or(1), min.unwrap_or(1));
+    let long = h.iter().filter(|d| **d * 2 >= max).count();
+    match long {
+        _ if max <= 1 => "part-shape:point",
+        1 => "part-shape:rod",
+        2 if min * 2 <= max => "part-shape:sheet",
+        _ => "part-shape:lump",
+    }
+}
+
+/// A lineage's own matter accounts: its tissue, reserve and provision.
+#[derive(Clone, Debug, Default)]
+pub struct Own {
+    pub tissue: Option<Key>,
+    pub reserve: Option<Key>,
+    pub provision: Option<Key>,
+}
+
+pub fn own(rules: &Rules, lineage: &str) -> Own {
+    let mut own = Own::default();
+    for (key, kind) in &rules.accounts {
+        let AccountKind::Matter {
+            lineage: l,
+            reserve,
+            provision,
+        } = kind
+        else {
+            continue;
+        };
+        let slot = match (l == lineage, reserve, provision) {
+            (false, ..) => continue,
+            (true, true, _) => &mut own.reserve,
+            (true, _, true) => &mut own.provision,
+            _ => &mut own.tissue,
+        };
+        slot.get_or_insert_with(|| key.clone());
+    }
+    own
+}
+
 /// Whether `key` is a reserve account.
 fn reserve(rules: &Rules, key: &str) -> bool {
     matches!(
         rules.accounts.get(key),
         Some(AccountKind::Matter { reserve: true, .. })
+    )
+}
+
+/// Whether `key` is a provision account (ruling 518).
+fn provision(rules: &Rules, key: &str) -> bool {
+    matches!(
+        rules.accounts.get(key),
+        Some(AccountKind::Matter {
+            provision: true,
+            ..
+        })
     )
 }
 
@@ -122,13 +170,16 @@ pub fn anatomical(e: &Entity, rules: &Rules, key: &str) -> bool {
     own && e.parts.values().any(|p| !p.severed && p.bodied())
 }
 
-/// What a part may hold of `key` (ruling 463): its adult mass in tissue,
-/// and in reserve its store cells' mass.
+/// What a part may hold of `key` (rulings 463 and 518): its adult mass in
+/// tissue, in reserve its store cells' mass, and in provision its
+/// reproduce cells'.
 pub fn bound(p: &Part, rules: &Rules, key: &str) -> u64 {
     let b = rules.body();
+    let cells = |function: &str| u64::from(p.cells.get(function).copied().unwrap_or(0));
     if reserve(rules, key) {
-        let cells = u64::from(p.cells.get(STORE).copied().unwrap_or(0));
-        cells.saturating_mul(cell_mass(p, b))
+        cells(STORE).saturating_mul(cell_mass(p, b))
+    } else if provision(rules, key) {
+        cells(REPRODUCE).saturating_mul(cell_mass(p, b))
     } else {
         ceiling(p, b)
     }
@@ -156,11 +207,24 @@ pub fn held(e: &Entity, rules: &Rules, key: &str) -> u64 {
 /// How much the body has room for of `key` in its parts.
 pub fn room(e: &Entity, rules: &Rules, key: &str) -> u64 {
     bodies(e)
-        .map(|(_, p)| {
-            let held = p.matter.get(key).copied().unwrap_or(0);
-            bound(p, rules, key).saturating_sub(held)
-        })
+        .map(|(_, p)| space(p, rules, key))
         .fold(0, u64::saturating_add)
+}
+
+/// What one part has room for of `key`: below what it may hold, its room
+/// for tissue shrunk by all the tissue it keeps, of other accounts and
+/// other lineages, as an incorporated part keeps its donor's (ruling 544).
+fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
+    let held = p.matter.get(key).copied().unwrap_or(0);
+    let room = bound(p, rules, key).saturating_sub(held);
+    if reserve(rules, key) || provision(rules, key) {
+        return room;
+    }
+    let tissue = p
+        .matter
+        .iter()
+        .filter(|(k, _)| k.as_str() != key && !reserve(rules, k) && !provision(rules, k));
+    room.saturating_sub(tissue.map(|(_, v)| *v).fold(0, u64::saturating_add))
 }
 
 /// `amount` split by `weights`: each its exact share floored, the units
@@ -225,10 +289,7 @@ pub fn give(
         return None;
     }
     let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| {
-            let held = p.matter.get(key).copied().unwrap_or(0);
-            (id, bound(p, rules, key).saturating_sub(held))
-        })
+        .map(|(id, p)| (id, space(p, rules, key)))
         .collect();
     let room: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if room < u128::from(amount) {

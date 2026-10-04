@@ -10,16 +10,19 @@
 //! of its own state, where the prey holds enough for all, or else the same
 //! fraction of it, floored, and the prey gives what they take as one share
 //! of the accounts the meal names. Each hunter's whole act then runs
-//! against its prey as the pass began, less its own portion, as the core's
-//! does, and the prey gives only what accepted acts took. Neither runner's
-//! order of hunters changes anything, so nothing is refused.
+//! against its prey as the pass began, as the core's does: its bite lands on
+//! one part, drawn by what each holds, and takes what that part held of its
+//! share, or the part whole (459, 516). What it took lands on the prey as
+//! the hunters before it left it only where it fits, as a pass's acts land
+//! in the core: a bite of what the part still holds, a part taken whole
+//! only as the pass found it; otherwise the act is blocked.
 
 use super::{
     super::{
-        aggregate::{self, Seen, binds_target},
+        aggregate::{self, Seen, Took, binds_target},
         draws::Stream,
     },
-    Crowd,
+    Crowd, Who,
 };
 use crate::{
     Result,
@@ -55,7 +58,7 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
         amount,
         of,
         ..
-    }) = p.effects.first()
+    }) = aggregate::meal_of(p)
     else {
         return refuse("the crowd feeds by eating its target first");
     };
@@ -99,12 +102,12 @@ impl Meal<'_> {
 impl Crowd<'_> {
     /// One feeding process's pass over `hunters`, the states its gates let
     /// through as the pass began.
-    pub(super) fn hunt(&mut self, p: &Process, hunters: Vec<(Entity, u64)>) -> Result<()> {
+    pub(super) fn hunt(&mut self, p: &Process, hunters: Vec<(Entity, u64, Who)>) -> Result<()> {
         let m = meal(p)?;
         let rules = &self.world.genesis.rules;
         let start = self.sites.clone();
-        let mut at: BTreeMap<Id, Vec<(Entity, u64, u64)>> = BTreeMap::new();
-        for (e, n) in hunters {
+        let mut at: BTreeMap<Id, Vec<(Entity, u64, u64, Who)>> = BTreeMap::new();
+        for (e, n, who) in hunters {
             let site = start.get(&e.place).ok_or("a bin at an unknown site")?;
             if m.accepts(&e, e.place, rules) {
                 return Err(format!("{}: a hunter is its own prey", p.id));
@@ -116,6 +119,7 @@ impl Crowd<'_> {
                 site,
                 tick: self.tick,
                 rules,
+                lineages: Some(&self.lineages),
             };
             let mut own = p.requires.iter().filter(|q| !binds_target(q));
             if !own.all(|q| seen.holds_for(p, q).unwrap_or(false)) {
@@ -123,8 +127,8 @@ impl Crowd<'_> {
                 continue;
             }
             // What each of this state's hunters asks of its prey.
-            let mouthful = aggregate::mouthful(p, &e, site, rules)?;
-            at.entry(e.place).or_default().push((e, n, mouthful));
+            let mouthful = aggregate::mouthful(p, &e, site, (rules, Some(&self.lineages)))?;
+            at.entry(e.place).or_default().push((e, n, mouthful, who));
         }
         for (site, hunters) in at {
             self.hunt_at(p, &m, (site, &start[&site]), hunters)?;
@@ -137,9 +141,13 @@ impl Crowd<'_> {
         p: &Process,
         m: &Meal,
         (site, began): (Id, &Site),
-        hunters: Vec<(Entity, u64, u64)>,
+        hunters: Vec<(Entity, u64, u64, Who)>,
     ) -> Result<()> {
         let rules = &self.world.genesis.rules;
+        // Kin are fed on only individually.
+        if self.kin.values().any(|e| m.accepts(e, site, rules)) {
+            return Err(format!("{}: the crowd hunts no kin", p.id));
+        }
         let prey: Vec<(Entity, u64)> = self
             .bins
             .iter()
@@ -162,7 +170,7 @@ impl Crowd<'_> {
         let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick, site]));
         // Each hunter's prey state, by weight, then which of its members.
         let mut landed: BTreeMap<(usize, u64), Vec<usize>> = BTreeMap::new();
-        for (h, (_, n, _)) in hunters.iter().enumerate() {
+        for (h, (_, n, ..)) in hunters.iter().enumerate() {
             for _ in 0..*n {
                 let mut pick = u128::from(s.below(total));
                 let state = weights
@@ -179,7 +187,7 @@ impl Crowd<'_> {
                 landed.entry((state, member)).or_default().push(h);
             }
         }
-        let mut moves: Vec<(Entity, Entity)> = Vec::new();
+        let mut moves: Vec<(Entity, Entity, Who)> = Vec::new();
         for ((state, _), eaters) in landed {
             let was = &prey[state].0;
             let mut offered = edible(&books(was), m.of);
@@ -203,65 +211,98 @@ impl Crowd<'_> {
             let mut left = share(&offered, rules, given.iter().sum());
             let mut after = was.clone();
             for (&h, g) in eaters.iter().zip(given) {
-                let mut portion = share(&left, rules, g);
+                let portion = share(&left, rules, g);
                 for (k, v) in &portion {
                     *left.get_mut(k).expect("a portion of what is left") -= v;
                 }
-                // The bite lands on one part, drawn by what each holds, and
-                // takes what that part holds of the portion (rulings 454 and
-                // 459); a prey with no parts to hold matter draws nothing.
+                // A prey with no parts to hold matter draws nothing.
                 let bitten = match bodied(was) {
                     true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
                     false => None,
                 };
-                if let Some(id) = bitten {
-                    let part = &after.parts[&id].matter;
-                    for (k, v) in portion.iter_mut() {
-                        *v = (*v).min(part.get(k).copied().unwrap_or(0));
-                    }
-                    portion.retain(|_, v| *v > 0);
-                }
                 let hunter = &hunters[h].0;
-                let live = self
-                    .sites
-                    .get_mut(&site)
-                    .ok_or("a bin at an unknown site")?;
+                let live = self.sites.get(&site).ok_or("a bin at an unknown site")?;
+                let mut scratch = live.clone();
                 let draws = BTreeMap::new();
                 let a = aggregate::Act {
                     start: began,
                     count: 1,
                     tick: self.tick,
                     rules,
+                    lineages: Some(&self.lineages),
                     draws: &draws,
                     meal: Some((was, &portion, bitten)),
                 };
                 let run = aggregate::Run::Free;
-                let Some(fed) = aggregate::act(p, hunter, live, run, a)? else {
+                let fed = aggregate::act(p, hunter, &mut scratch, run, a)?;
+                let Some(fed) = fed.filter(|f| lands(&f.took, was, &mut after, bitten)) else {
                     self.work.blocked += 1;
                     continue;
                 };
-                // The prey gives only what accepted acts took.
-                for (k, v) in &portion {
-                    match bitten {
-                        Some(id) => {
-                            let part = after.parts.get_mut(&id).ok_or("bitten part missing")?;
-                            debit(&mut part.matter, k, *v)?;
-                        },
-                        None => debit(&mut after.accounts, k, *v)?,
-                    }
-                }
+                self.sites.insert(site, scratch);
+                self.learn(&fed.lessons);
                 self.work.accepted += 1;
                 let log = self.meals.entry(p.id.clone()).or_default();
                 log.count += 1;
                 log.held += mass(&books(was), rules);
-                moves.push((hunter.clone(), fed));
+                moves.push((hunter.clone(), fed.member, hunters[h].3));
             }
-            moves.push((was.clone(), super::normalize(after)));
+            moves.push((was.clone(), super::normalize(after), Who::Bin));
         }
-        for (from, to) in moves {
-            self.moved(&from, to, 1);
+        for (from, to, who) in moves {
+            match who {
+                Who::Bin => self.moved(&from, to, 1),
+                Who::Kin(id) => {
+                    self.kin.insert(id, to);
+                },
+            }
         }
         Ok(())
+    }
+}
+
+/// Lands what a meal took on the prey as the hunt has left it, where it
+/// fits: a bite of what the part, or the ledger, still holds; a part taken
+/// whole only as the pass found it. Returns whether it landed.
+fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<Id>) -> bool {
+    let holds =
+        |l: &Ledger, t: &Ledger| t.iter().all(|(k, v)| l.get(k).copied().unwrap_or(0) >= *v);
+    match took {
+        None => true,
+        Some(Took::Whole(id)) => {
+            let held = |e: &Entity| {
+                let p = e
+                    .parts
+                    .get(id)
+                    .map(|p| p.matter.clone())
+                    .unwrap_or_default();
+                p.into_iter().filter(|(_, v)| *v > 0).collect::<Ledger>()
+            };
+            if !after.parts.contains_key(id) || held(after) != held(was) {
+                return false;
+            }
+            after.parts.remove(id);
+            if !after.parts.values().any(|q| !q.severed) {
+                after.alive = false;
+            }
+            true
+        },
+        Some(Took::Bite(taken)) => {
+            let ledger = match bitten {
+                Some(id) => match after.parts.get_mut(&id) {
+                    Some(part) => &mut part.matter,
+                    None => return false,
+                },
+                None => &mut after.accounts,
+            };
+            if !holds(ledger, taken) {
+                return false;
+            }
+            for (k, v) in taken {
+                debit(ledger, k, *v).expect("checked above");
+            }
+            true
+        },
     }
 }
 

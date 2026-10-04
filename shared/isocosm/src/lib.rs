@@ -8,13 +8,16 @@
 pub mod aggregate;
 pub mod anatomy;
 pub mod bench;
+pub mod bodied;
 mod dev;
+pub mod development;
 pub mod diffusion;
 mod ecology;
 mod execute;
 pub mod flows;
 pub mod generate;
 mod genesis;
+pub mod growth;
 pub mod history;
 mod journal;
 pub mod map;

@@ -67,8 +67,17 @@ impl Sides for Copies<'_> {
         self.work.represented += 1;
         let mut site = self.ground.site.clone();
         let (ground, tick, run) = (self.ground.site, self.ground.tick, aggregate::Run::Free);
-        let next = aggregate::apply(p, &key.0, ground, &mut site, 1, tick, self.rules, run)?
-            .ok_or_else(|| format!("{process} was blocked in a fight"))?;
+        let next = aggregate::apply(
+            p,
+            &key.0,
+            ground,
+            &mut site,
+            1,
+            tick,
+            (self.rules, None),
+            run,
+        )?
+        .ok_or_else(|| format!("{process} was blocked in a fight"))?;
         self.work.accepted += 1;
         self.states[side] = next.clone();
         if let Some(known) = self.known.as_mut() {
@@ -196,6 +205,7 @@ pub(super) fn fight(
                 site: ground.site,
                 tick: ground.tick,
                 rules: ground.rules,
+                lineages: None,
             };
             let up = s.below(1000) < rise(mind, e, seen.mood()?);
             breaks[side] = Some(up);

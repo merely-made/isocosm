@@ -249,14 +249,18 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
 }
 
 /// Parts landed the same way (ruling 504): each part's matter by what the
-/// act added or took, anything else the act changed of it by its value.
+/// act added or took, anything else the act changed of it by its value. A
+/// part another act of the pass removed stays removed: the act left it as
+/// it found it, or it would not have fitted.
 fn merge_parts(live: &mut BTreeMap<Id, Part>, base: &BTreeMap<Id, Part>, new: BTreeMap<Id, Part>) {
     for id in base.keys().filter(|id| !new.contains_key(*id)) {
         live.remove(id);
     }
     for (id, mut part) in new {
         let (Some(was), Some(now)) = (base.get(&id), live.get_mut(&id)) else {
-            live.insert(id, part);
+            if !base.contains_key(&id) {
+                live.insert(id, part);
+            }
             continue;
         };
         delta(&mut now.matter, &was.matter, &part.matter);

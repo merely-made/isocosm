@@ -58,6 +58,7 @@ fn table(groups: &[Group], processes: Vec<Process>) -> Genesis {
         let kind = AccountKind::Matter {
             lineage: lineage.into(),
             reserve: false,
+            provision: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }
@@ -108,6 +109,7 @@ fn eat(amount: u64, at_least: u64, among: &[&str]) -> Process {
             amount: amount.into(),
             into: GUT.into(),
             of: vec![],
+            whole: false,
         }],
         Some(Target {
             same_place: true,

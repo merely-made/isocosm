@@ -90,6 +90,7 @@ impl Hunters {
                 amount: self.bite.into(),
                 into: body.clone(),
                 of: vec![],
+                whole: false,
             }],
         );
         hunt.requires.extend([

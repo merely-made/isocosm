@@ -54,6 +54,7 @@ fn world(own: &[(&str, u64)], site: &[(&str, u64)], processes: Vec<Process>) -> 
         let kind = AccountKind::Matter {
             lineage: lineage.into(),
             reserve,
+            provision: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }

@@ -394,6 +394,7 @@ fn bodies_and_tissue_serialize_as_before() {
     let reserve = AccountKind::Matter {
         lineage: "lineage:0".into(),
         reserve: true,
+        provision: false,
     };
     let back: AccountKind =
         serde_json::from_str(&serde_json::to_string(&reserve).unwrap()).unwrap();

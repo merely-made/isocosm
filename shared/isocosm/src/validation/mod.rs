@@ -6,9 +6,11 @@ use std::collections::BTreeMap;
 
 mod body;
 mod conversion;
+mod recipe;
 
 pub(crate) use body::part;
 pub(crate) use conversion::kinds as conversions;
+pub(crate) use recipe::development;
 
 pub(crate) fn key(value: &str) -> Result<()> {
     let valid = value.len() <= 256
@@ -212,6 +214,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         key(id)?;
     }
     body::catalogue(rules)?;
+    recipe::kinds(rules)?;
     for (id, p) in &rules.processes {
         key(id)?;
         if id != &p.id {
@@ -341,7 +344,10 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
             return Err(format!("unknown condition {key}"));
         },
-        Effect::Trait { key, .. } if !rules.traits.contains(key) => {
+        Effect::Trait { key, .. }
+        | Effect::Bear {
+            young: Some(key), ..
+        } if !rules.traits.contains(key) => {
             return Err(format!("unknown trait {key}"));
         },
         Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
@@ -379,6 +385,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             amount,
             into,
             of,
+            ..
         } => {
             matter(rules, into)?;
             for key in of {
@@ -414,6 +421,21 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 || (*to == Binding::Target && p.target.is_none())
             {
                 return Err(format!("{id} spends to {to:?}, which it cannot"));
+            }
+        },
+        // A bud is marked by a key the world names (ruling 524).
+        Effect::Bud { mark, .. } => key(mark)?,
+        // Growth turns matter in hand into the actor's new parts, their
+        // price returned to the place (rulings 479 and 510).
+        Effect::Grow {
+            from,
+            into,
+            conversion,
+        } => {
+            matter(rules, from)?;
+            matter(rules, into)?;
+            if *conversion == Conversion::Mineralization {
+                return Err(format!("{id} grows a body by mineralizing"));
             }
         },
         // A conversion takes matter of one ledger into another account of

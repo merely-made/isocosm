@@ -116,6 +116,7 @@ fn a_take_beyond_one_account_is_refused_whole() {
         let kind = AccountKind::Matter {
             lineage: "lineage:0".into(),
             reserve: false,
+            provision: false,
         };
         g.rules.accounts.insert(key.into(), kind);
     }

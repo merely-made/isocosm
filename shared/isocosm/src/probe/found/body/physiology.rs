@@ -24,11 +24,10 @@ const UPKEEP_SCALE: i64 = 62;
 /// Ruling 505's rates per unit, as a fraction: income per voxel face of
 /// fixing area, and the mouthful per voxel of intake before TD9's build
 /// multiple, calibrated so the domain's median body earns what checkpoint
-/// 6's tissue rates gave it (see the calibration test).
-pub(super) const FIXES_PER_FACE: (i64, i64) = (4, 63);
-pub(super) const GRAZES_PER_VOXEL: (i64, i64) = (11, 294);
-/// A body this light or lighter starves.
-pub(super) const STARVATION_MG: u64 = 20;
+/// 6's tissue rates gave it (see the calibration test), again since bodies
+/// grow from recipes (ruling 513).
+pub(super) const FIXES_PER_FACE: (i64, i64) = (11, 144);
+pub(super) const GRAZES_PER_VOXEL: (i64, i64) = (12, 269);
 /// TD5's horizon: a meal burns into the reserve while it holds fewer
 /// ticks of upkeep than this.
 const STARVED_UPKEEP_TICKS: i64 = 100;
@@ -40,6 +39,7 @@ const INTAKE: &str = "function:intake";
 const FIX: &str = "function:fix";
 const STORE: &str = "function:store";
 const SECRETE: &str = "function:secrete";
+pub(super) const REPRODUCE: &str = "function:reproduce";
 /// What a meal took and what its prey held before it, kept for the dose.
 const TAKEN: &str = "probe:taken";
 const PREY: &str = "probe:prey";
@@ -52,15 +52,20 @@ pub(super) fn reserve(lineage: u32) -> Key {
     format!("reserve:{lineage}")
 }
 
-fn c(v: i64) -> Expr {
+/// What a body's reproduce cells fill for a birth (ruling 518).
+pub(super) fn provision(lineage: u32) -> Key {
+    format!("provision:{lineage}")
+}
+
+pub(super) fn c(v: i64) -> Expr {
     Expr::Const(v)
 }
 
-fn add(v: Vec<Expr>) -> Expr {
+pub(super) fn add(v: Vec<Expr>) -> Expr {
     Expr::Add(v)
 }
 
-fn mul(v: Vec<Expr>) -> Expr {
+pub(super) fn mul(v: Vec<Expr>) -> Expr {
     Expr::Mul(v)
 }
 
@@ -68,30 +73,30 @@ fn div(a: Expr, b: Expr) -> Expr {
     Expr::Div(Box::new(a), Box::new(b))
 }
 
-fn least(v: Vec<Expr>) -> Expr {
+pub(super) fn least(v: Vec<Expr>) -> Expr {
     Expr::Min(v)
 }
 
-fn most(v: Vec<Expr>) -> Expr {
+pub(super) fn most(v: Vec<Expr>) -> Expr {
     Expr::Max(v)
 }
 
-fn less(a: Expr, b: Expr) -> Expr {
+pub(super) fn less(a: Expr, b: Expr) -> Expr {
     add(vec![a, mul(vec![c(-1), b])])
 }
 
-fn at_least(a: Expr, b: Expr) -> Expr {
+pub(super) fn at_least(a: Expr, b: Expr) -> Expr {
     Expr::AtLeast(Box::new(a), Box::new(b))
 }
 
-fn held(who: Binding, key: &str) -> Expr {
+pub(super) fn held(who: Binding, key: &str) -> Expr {
     Expr::Read(Reading::Account {
         who,
         key: key.into(),
     })
 }
 
-fn computed(e: Expr) -> Amount {
+pub(super) fn computed(e: Expr) -> Amount {
     Amount::Computed(e)
 }
 
@@ -99,19 +104,18 @@ fn computed(e: Expr) -> Amount {
 /// at the reference mass a segment, floored and at least a milligram, and
 /// at least a milligram in all, as Mesocosm's build multiple reads it.
 fn ceiling() -> Expr {
+    ceiling_of(Binding::Actor)
+}
+
+/// The same of `who`.
+pub(super) fn ceiling_of(who: Binding) -> Expr {
     let voxels = Expr::Read(Reading::Voxels { who: Binding::Part });
     let priced = div(
         mul(vec![voxels, c(REFERENCE_MASS_MG)]),
         c(REFERENCE_SEGMENT_VOXELS),
     );
     let each = Box::new(most(vec![c(1), priced]));
-    most(vec![
-        c(1),
-        Expr::Parts {
-            who: Binding::Actor,
-            each,
-        },
-    ])
+    most(vec![c(1), Expr::Parts { who, each }])
 }
 
 /// Mass to the three-quarter power, Mesocosm's integer way.
@@ -121,8 +125,12 @@ fn three_quarter(mass: Expr) -> Expr {
 }
 
 fn span() -> Expr {
+    span_of(Binding::Actor)
+}
+
+fn span_of(who: Binding) -> Expr {
     Expr::Read(Reading::Span {
-        who: Binding::Actor,
+        who,
         function: CONTRACT.into(),
     })
 }
@@ -130,40 +138,62 @@ fn span() -> Expr {
 /// TD7's rent and PD2's gland: one milligram and the mass's share, priced
 /// by the actuators' swing and the gland's held mass per ceiling.
 fn upkeep(i: u32) -> Expr {
-    let m34 = three_quarter(held(Binding::Actor, &tissue(i)));
+    upkeep_of(i, Binding::Actor)
+}
+
+/// The same of `who`.
+fn upkeep_of(i: u32, who: Binding) -> Expr {
+    let m34 = three_quarter(held(who, &tissue(i)));
     let gland = Expr::Read(Reading::CellMass {
-        who: Binding::Actor,
+        who,
         function: SECRETE.into(),
     });
     let priced = add(vec![
-        ceiling(),
-        mul(vec![span(), c(REFERENCE_MASS_MG)]),
+        ceiling_of(who),
+        mul(vec![span_of(who), c(REFERENCE_MASS_MG)]),
         gland,
     ]);
     let share = div(
         mul(vec![m34, priced]),
-        mul(vec![c(UPKEEP_SCALE), ceiling()]),
+        mul(vec![c(UPKEEP_SCALE), ceiling_of(who)]),
     );
     add(vec![c(UPKEEP_BASE_MG), share])
 }
 
 /// TD5's one rule: whether the reserve holds fewer ticks of upkeep than
-/// its horizon.
-fn hungry(i: u32) -> Expr {
-    let budget = mul(vec![upkeep(i), c(STARVED_UPKEEP_TICKS)]);
-    at_least(budget, add(vec![held(Binding::Actor, &reserve(i)), c(1)]))
+/// its horizon, the horizon capped by what its stores may hold, so that
+/// full stores count as fed (ruling 551).
+pub(super) fn hungry(i: u32) -> Expr {
+    hungry_of(i, Binding::Actor)
+}
+
+/// The same of `who`, by its own upkeep.
+pub(super) fn hungry_of(i: u32, who: Binding) -> Expr {
+    let horizon = mul(vec![upkeep_of(i, who), c(STARVED_UPKEEP_TICKS)]);
+    let budget = least(vec![horizon, cells_mass_of(STORE, who)]);
+    at_least(budget, add(vec![held(who, &reserve(i)), c(1)]))
 }
 
 /// What the body may hold (ruling 463): its ceiling in tissue, and in
 /// reserve its store cells' mass.
 fn bound(reserve: bool) -> Expr {
     match reserve {
-        true => Expr::Read(Reading::CellMass {
-            who: Binding::Actor,
-            function: STORE.into(),
-        }),
+        true => cells_mass(STORE),
         false => ceiling(),
     }
+}
+
+/// The matter a body's cells of `function` may hold: its stores' reserve,
+/// its reproduce cells' provision.
+pub(super) fn cells_mass(function: &str) -> Expr {
+    cells_mass_of(function, Binding::Actor)
+}
+
+fn cells_mass_of(function: &str, who: Binding) -> Expr {
+    Expr::Read(Reading::CellMass {
+        who,
+        function: function.into(),
+    })
 }
 
 /// How far an account is below what the body may hold of it.
@@ -171,10 +201,27 @@ fn gap(key: &str, reserve: bool) -> Expr {
     most(vec![c(0), less(bound(reserve), held(Binding::Actor, key))])
 }
 
-/// What a body has room for (TD6): below its ceiling in tissue and below
-/// its stores' mass in reserve.
+/// How far the provision is from full (ruling 518).
+pub(super) fn provision_gap(i: u32) -> Expr {
+    most(vec![
+        c(0),
+        less(cells_mass(REPRODUCE), held(Binding::Actor, &provision(i))),
+    ])
+}
+
+/// What a body has room for (TD6): below its ceiling in tissue, its
+/// stores' mass in reserve and its reproduce cells' in provision, and the
+/// adult mass of what its recipe still grows (rulings 479 and 518).
 fn room(i: u32) -> Expr {
-    add(vec![gap(&tissue(i), false), gap(&reserve(i), true)])
+    let lacking = Expr::Read(Reading::Lacking {
+        who: Binding::Actor,
+    });
+    add(vec![
+        gap(&tissue(i), false),
+        gap(&reserve(i), true),
+        provision_gap(i),
+        lacking,
+    ])
 }
 
 /// A function's measurement (ruling 493), by its share of the cells.
@@ -211,18 +258,33 @@ fn mouthful(i: u32) -> Expr {
 /// first when hungry and the tissue first otherwise, each up to its
 /// ceiling, then what will not fit back to the site (TD6).
 fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect> {
-    let into = |to: Key, reserve: bool| Effect::Convert {
+    let into = |to: Key, gap: Expr| Effect::Convert {
         who: Binding::Actor,
         from: vec![hand.into()],
-        amount: computed(least(vec![held(Binding::Actor, hand), gap(&to, reserve)])),
+        amount: computed(least(vec![held(Binding::Actor, hand), gap])),
         to,
         conversion,
+    };
+    let tissue_in = || into(tissue(i), gap(&tissue(i), false));
+    let reserve_in = || into(reserve(i), gap(&reserve(i), true));
+    // With the parts full, growth builds what the recipe lacks and then
+    // fills the provision, before the reserve: the probe's lineages grow
+    // their parts first and breed from income (520, 535).
+    let grown = || {
+        vec![
+            Effect::Grow {
+                from: hand.into(),
+                into: SOIL.into(),
+                conversion,
+            },
+            into(provision(i), provision_gap(i)),
+        ]
     };
     vec![
         Effect::When {
             guard: hungry(i),
-            then: vec![into(reserve(i), true), into(tissue(i), false)],
-            otherwise: vec![into(tissue(i), false), into(reserve(i), true)],
+            then: [vec![reserve_in(), tissue_in()], grown()].concat(),
+            otherwise: [vec![tissue_in()], grown(), vec![reserve_in()]].concat(),
         },
         Effect::Transfer {
             from: Binding::Actor,
@@ -233,7 +295,7 @@ fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect> {
     ]
 }
 
-fn own(i: u32) -> Query {
+pub(super) fn own(i: u32) -> Query {
     Query::Trait {
         who: Binding::Actor,
         key: format!("ability:probe-{i}"),
@@ -246,7 +308,7 @@ fn expresses(function: &str) -> Query {
     }
 }
 
-fn due(id: &str, causation: Causation, effects: Vec<Effect>, priority: i32) -> Process {
+pub(super) fn due(id: &str, causation: Causation, effects: Vec<Effect>, priority: i32) -> Process {
     let mut p = process(id, causation, effects);
     p.period = Some(1);
     p.priority = priority;
@@ -293,11 +355,19 @@ pub(super) fn fix(i: u32) -> Process {
 /// from the reserve in the share of the prey the bite took.
 pub(super) fn graze(i: u32, prey: u32) -> Process {
     let hand = tissue(prey);
-    let eat = Effect::Eat {
+    let bite = |whole| Effect::Eat {
         from: Binding::Target,
         amount: computed(mouthful(i)),
         into: hand.clone(),
         of: vec![hand.clone()],
+        whole,
+    };
+    // A fed grazer takes a frond whole where its bite would take it all
+    // (516); a hungry one eats it.
+    let eat = Effect::When {
+        guard: hungry(i),
+        then: vec![bite(false)],
+        otherwise: vec![bite(true)],
     };
     let keep = |name: &str, value: Expr| Effect::Keep {
         name: name.into(),
@@ -398,8 +468,8 @@ pub(super) fn gland(i: u32) -> Process {
     p
 }
 
-/// A body this light or lighter dies, its reserve returned to the site as
-/// soil and its tissue kept as carrion.
+/// A body whose tissue and reserve cannot pay its rent dies (ruling 523),
+/// its reserve returned to the site as soil and its tissue kept as carrion.
 fn starve(i: u32) -> Process {
     let release = Effect::Spend {
         from: vec![reserve(i)],
@@ -414,13 +484,13 @@ fn starve(i: u32) -> Process {
         effects,
         4,
     );
+    let funds = add(vec![
+        held(Binding::Actor, &tissue(i)),
+        held(Binding::Actor, &reserve(i)),
+    ]);
     p.requires.extend([
         own(i),
-        Query::Below {
-            who: Binding::Actor,
-            key: tissue(i),
-            amount: STARVATION_MG + 1,
-        },
+        Query::Computed(at_least(upkeep(i), add(vec![funds, c(1)]))),
     ]);
     p
 }
@@ -429,7 +499,7 @@ fn starve(i: u32) -> Process {
 /// matter on the ground returned as soil a tick, a share of each.
 pub(super) fn mineralize(lineages: u32, dose: u64) -> Process {
     let living = (0..lineages)
-        .flat_map(|i| [tissue(i), reserve(i)])
+        .flat_map(|i| [tissue(i), reserve(i), provision(i)])
         .collect();
     let effect = Effect::Convert {
         who: Binding::Place,
@@ -449,5 +519,6 @@ pub(super) fn natives(i: u32, prey: Option<u32>) -> Vec<Process> {
         None => processes.extend([fix(i), gland(i)]),
         Some(prey) => processes.push(graze(i, prey)),
     }
+    processes.extend(super::life::natives(i, prey.is_none()));
     processes
 }

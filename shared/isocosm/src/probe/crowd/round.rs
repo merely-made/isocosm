@@ -183,6 +183,7 @@ impl Crowd<'_> {
                         site: &ground,
                         tick: self.tick,
                         rules,
+                        lineages: Some(&self.lineages),
                     };
                     if seen.holds(&c.kinds[k].hungry)? {
                         hungry.push((e.clone(), n, k));

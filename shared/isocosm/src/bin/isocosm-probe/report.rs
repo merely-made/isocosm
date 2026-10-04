@@ -439,14 +439,18 @@ pub const NOTE: &str = "Worlds are drawn per k; each arm runs the same world und
 #[serde(untagged)]
 pub enum Domain {
     Probe(Box<ProbeFounding>),
-    Bodies(BodyFounding),
+    Bodies(Box<BodyFounding>),
 }
 
 impl Domain {
     pub fn generate(&self, seed: u64) -> Result<ProbeWorld, String> {
         match self {
             Self::Probe(d) => ProbeFounding { seed, ..*d.clone() }.generate(),
-            Self::Bodies(d) => BodyFounding { seed, ..d.clone() }.generate(),
+            Self::Bodies(d) => BodyFounding {
+                seed,
+                ..(**d).clone()
+            }
+            .generate(),
         }
     }
 }

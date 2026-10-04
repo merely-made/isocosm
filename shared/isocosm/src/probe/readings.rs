@@ -379,10 +379,13 @@ pub fn exact_members(run: &ExactRun) -> Vec<(&Entity, u64)> {
         .collect()
 }
 
+/// The crowd's members: its counts, and its kin one by one (554).
 pub fn crowd_members<'a>(crowd: &'a Crowd) -> Vec<(&'a Entity, u64)> {
+    let kin = crowd.kin.values().map(|e| (e, &1));
     crowd
         .bins
         .iter()
+        .chain(kin)
         .filter(|(e, _)| e.kingdom != "kingdom:world")
         .map(|(e, &n)| (e, n))
         .collect()
@@ -431,6 +434,7 @@ pub fn evaluate(
         site,
         tick,
         rules,
+        lineages: Some(&world.genesis.lineages),
     };
     let mut values = Vec::with_capacity(readings.len());
     for r in readings {

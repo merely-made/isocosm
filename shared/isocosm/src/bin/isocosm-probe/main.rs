@@ -188,7 +188,7 @@ fn run() -> Result<(), String> {
         bodies.grazers = [(low / 4).max(1), (high / 4).max(1)];
     }
     let domain = match o.bodies {
-        true => Domain::Bodies(bodies),
+        true => Domain::Bodies(Box::new(bodies)),
         false => Domain::Probe(Box::new(probe)),
     };
     let mut arms: Vec<usize> = if o.crowds {

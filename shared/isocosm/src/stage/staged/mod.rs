@@ -122,6 +122,7 @@ impl Staged<'_> {
                     self.body(r.who())?,
                     r,
                     &sim.genesis.rules,
+                    Some(&sim.state.lineages),
                 )),
             }
         };
@@ -253,6 +254,27 @@ impl Staged<'_> {
                 }
                 return Ok(false);
             },
+            Effect::Grow {
+                from,
+                into,
+                conversion,
+            } => {
+                let rules = &sim.genesis.rules;
+                let grown = meaning::grow(self, rules, from, into, *conversion)?;
+                let ends = (self.holder(Binding::Actor), self.holder(Binding::Place));
+                if let (true, (Some(start), Some(end))) = (sim.flowing(), ends) {
+                    for (key, amount) in grown.paid {
+                        let (from, to) = ((start, key), (end, into.clone()));
+                        self.stage.legs.push(Leg { from, to, amount });
+                    }
+                    for (taken, to, total) in grown.taken {
+                        self.stage
+                            .legs
+                            .extend(flows::poured(start, taken, [(to, total)]));
+                    }
+                }
+                return Ok(false);
+            },
             Effect::Convert {
                 who,
                 from,
@@ -317,6 +339,13 @@ impl Staged<'_> {
                     .transpose()?;
                 let object = format!("site:{place}");
                 self.add_note(actor, object, kind, text.clone(), expires, cause.into())?;
+            },
+            Effect::Bear { clutch, young } => self.bear(*clutch, young.as_ref())?,
+            // A semelparous budder dies as its bud severs (521).
+            Effect::Bud { mark, once } => {
+                if self.bud(mark)? && *once {
+                    self.effect(&Effect::Death, cause)?;
+                }
             },
             Effect::Birth { provision } => {
                 let born = self.stage.births.len() as u64;
@@ -422,6 +451,7 @@ impl Staged<'_> {
                 amount,
                 into,
                 of,
+                whole,
             } => {
                 let rules = &sim.genesis.rules;
                 let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
@@ -438,6 +468,17 @@ impl Staged<'_> {
                     },
                     None => edible(&*self.ledger(*from)?, of),
                 };
+                // A bite that would take all of a part may take it whole.
+                if let (true, Some(part)) = (*whole, bitten) {
+                    let asked: u64 = match &portion {
+                        Some(p) => p.values().sum(),
+                        None => amount.resolved()?,
+                    };
+                    let all: u64 = offered.values().sum();
+                    if asked >= all && self.incorporate(*from, part)? {
+                        return Ok(false);
+                    }
+                }
                 let taken: Ledger = match portion {
                     // A share is of the prey's whole; the bitten part gives
                     // what it holds of it, the rest staying put (454).
@@ -489,74 +530,6 @@ impl Staged<'_> {
     }
 }
 
-/// The individual runner's parties for the shared effect meanings: the
-/// staged bodies and site.
-impl Staged<'_> {
-    /// A take or give of a body's own matter, routed through its parts and
-    /// logged for the flow record; `None` where the key lives elsewhere.
-    fn routed(&mut self, who: Binding, key: &str, amount: u64, give: bool) -> Option<Result<()>> {
-        let Some(Holder::Entity(id)) = self.holder(who) else {
-            return None;
-        };
-        let rules = &self.sim.genesis.rules;
-        let body = self.stage.bodies.get_mut(&id)?;
-        let split = match give {
-            true => crate::anatomy::give(body, rules, key, amount)?,
-            false => crate::anatomy::take(body, rules, key, amount)?,
-        };
-        Some(split.map(|parts| {
-            let (body, key) = (id, key.into());
-            self.stage.routed.push(flows::Routed {
-                body,
-                key,
-                give,
-                parts,
-            });
-        }))
-    }
-}
-
-impl Parties for Staged<'_> {
-    fn held(&mut self, who: Binding, key: &str) -> Result<u64> {
-        let rules = &self.sim.genesis.rules;
-        match who {
-            Binding::Place => Ok(meaning::value(self.ledger(who)?, key)),
-            Binding::Part => {
-                let (body, id) = self.part()?;
-                let part = body.parts.get(&id).ok_or("bound part missing")?;
-                Ok(meaning::value(&part.matter, key))
-            },
-            other => Ok(crate::anatomy::held(self.body(other)?, rules, key)),
-        }
-    }
-    fn reach(&mut self, who: Binding) -> Result<()> {
-        if who == Binding::Place {
-            let site = self.sim.state.sites.get(&self.stage.place);
-            return site.map(|_| ()).ok_or_else(|| "site missing".into());
-        }
-        self.ledger(who).map(|_| ())
-    }
-    fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        match self.routed(who, key, amount, false) {
-            Some(done) => done,
-            None => debit(self.ledger(who)?, key, amount),
-        }
-    }
-    fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
-        match self.routed(who, key, amount, true) {
-            Some(done) => done,
-            None => credit(self.ledger(who)?, key, amount),
-        }
-    }
-    fn body(&mut self, who: Binding) -> Result<&mut Entity> {
-        let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;
-        Ok(self.stage.bodies.get_mut(&id).ok_or("body missing")?)
-    }
-    fn part(&mut self) -> Result<(&mut Entity, Id)> {
-        let part = self.stage.part.ok_or("no part is bound")?;
-        Ok((self.actor(), part))
-    }
-    fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
-        meaning::shift(&mut self.site()?.conditions, key, delta, 1)
-    }
-}
+mod births;
+mod incorporate;
+mod parties;

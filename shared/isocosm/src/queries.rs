@@ -52,6 +52,7 @@ impl Simulation {
             tick: self.state.tick,
             related: &related,
             rules: &self.genesis.rules,
+            lineages: Some(&self.state.lineages),
         };
         let (yes, reading) = crate::meaning::read(query, &scene)?;
         if yes {

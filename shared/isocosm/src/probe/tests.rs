@@ -192,7 +192,8 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         let before = site.clone();
         let start = site.clone();
         let run = aggregate::Run::Free;
-        let moved = aggregate::apply(p, &entity, &start, &mut site, count, 1, rules, run).unwrap();
+        let bodies = (rules, None);
+        let moved = aggregate::apply(p, &entity, &start, &mut site, count, 1, bodies, run).unwrap();
         for id in first..first + count {
             let outcome = sim.execute(id, None, &process, None).outcome;
             let Some(moved) = &moved else {
@@ -301,4 +302,89 @@ fn a_short_site_is_shared_alike_by_crowd_and_core() {
         );
         assert_eq!(exact.1, soil - each * n, "soil {soil}");
     }
+}
+
+/// The crowd applies a body's own processes to a state as the core does to
+/// each of its members (checkpoint 8): rent, fixing with growth toward the
+/// recipe in its landing (479), and starvation, on bodies as founded and
+/// on producers missing a frond; the gland draws per member, which a pass
+/// splits. Some fixing grows a frond back: the control.
+#[test]
+fn a_body_bin_moves_as_its_members_do() {
+    let mut grew = 0;
+    for seed in 0..6 {
+        for cut in [false, true] {
+            let mut g = BodyFounding {
+                seed,
+                ..Default::default()
+            }
+            .generate()
+            .unwrap()
+            .genesis;
+            let rules = g.rules.clone();
+            for group in g.population.groups.values_mut() {
+                let e = &mut group.entity;
+                let tail = e.parts.keys().copied().filter(|id| *id > 0).max();
+                if cut
+                    && e.lineage == "lineage:0"
+                    && let Some(tail) = tail
+                {
+                    e.parts.remove(&tail);
+                    let room = crate::anatomy::room(e, &rules, "tissue:0");
+                    crate::anatomy::give(e, &rules, "tissue:0", room)
+                        .unwrap()
+                        .unwrap();
+                }
+            }
+            let lineages = g.lineages.clone();
+            let groups: Vec<(Id, Entity, u64)> = g
+                .population
+                .groups
+                .iter()
+                .filter(|(_, c)| c.entity.kingdom != "kingdom:world")
+                .map(|(f, c)| (*f, c.entity.clone(), c.count))
+                .collect();
+            for (first, entity, count) in groups {
+                let i = &entity.lineage[8..];
+                let mut processes = vec![format!("body:upkeep-{i}"), format!("body:starve-{i}")];
+                if i == "0" {
+                    processes.push("body:fix-0".into());
+                }
+                for process in processes {
+                    let p = &rules.processes[&process];
+                    let mut sim = Simulation::new(g.clone(), Execution::Individuals).unwrap();
+                    let start = sim.state().sites[&entity.place].clone();
+                    let mut site = start.clone();
+                    let run = aggregate::Run::Free;
+                    let bodies = (&rules, Some(&lineages));
+                    let moved =
+                        aggregate::apply(p, &entity, &start, &mut site, count, 1, bodies, run)
+                            .unwrap();
+                    for id in first..first + count {
+                        let outcome = sim.execute(id, None, &process, None).outcome;
+                        let Some(moved) = &moved else {
+                            assert!(
+                                matches!(outcome, Outcome::Blocked(_)),
+                                "{process}: {outcome:?}"
+                            );
+                            continue;
+                        };
+                        assert_eq!(outcome, Outcome::Accepted, "seed {seed} {process}");
+                        let core =
+                            aggregate::normalize(sim.state().population.get(id).unwrap().clone());
+                        assert_eq!(&core, moved, "seed {seed} {process}");
+                        grew += usize::from(
+                            process == "body:fix-0" && moved.parts.len() > entity.parts.len(),
+                        );
+                    }
+                    assert_eq!(
+                        sim.state().sites[&entity.place].accounts,
+                        site.accounts,
+                        "seed {seed} {process}"
+                    );
+                }
+            }
+        }
+    }
+    assert!(grew > 0, "no fixing grew a frond back");
 }
