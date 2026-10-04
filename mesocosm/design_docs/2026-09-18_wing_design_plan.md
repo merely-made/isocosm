@@ -6730,6 +6730,8 @@ what later sections derive from.
      *Reading, not ruled:* the bud is filled as the provision is, so its
      tissue is what the provision would have held, and once severed it
      grows the rest of its lineage's recipe by 479 and 520.
+     *Specified 2026-10-04 by ruling 552:* "once full" is once it holds a
+     provision's worth, its parent's reproduce cells' mass.
 
 525. **Only worlds that ask for bodies found their lineages from
      recipes.** Asked on 2026-10-03, with 523: "Which generated worlds
@@ -7321,6 +7323,48 @@ what later sections derive from.
      lesser of TD5's 100 ticks of rent and what its stores may hold:
      Mesocosm's horizon stands wherever a store can reach it, a body whose
      stores are full is fed, and a body that stores nothing counts as fed.
+
+552. **A bud severs once it holds a provision's worth.** Asked on
+     2026-10-04, building checkpoint 8's step 8h: "When is a producer's bud
+     full enough to sever (524)? Evidence: 524 has a bud sever 'once full',
+     and its recorded reading says its tissue is 'what the provision would
+     have held'. Built, it severs only at its frond's adult mass, 151 to
+     453 mg, filled 21 to 63 mg a provision. Measured that way, no bud
+     severed in 100 worlds at 60 ticks, nor in 20 grazer-free worlds at 300
+     ticks; with five times the soil, 2 of 30 severed, at tick 88.
+     Prototyped at a provision's worth, every bud severs on its first pour:
+     buds are born in 8 of 100 worlds at 60 ticks, and 31 of 100 with five
+     times the soil." Options, recommended first: (A) "A provision's worth:
+     a bud severs once it holds what its parent's reproduce cells hold: a
+     seedling that grows the rest of its frond and recipe alone (479, 520),
+     as 524's reading has its tissue (recommended)." (B) "Its frond's
+     ceiling: as built: a bud severs only at its kind's adult mass, filled
+     over many provisions and the parent's income, so buds rarely complete
+     within a run." Mark chose A, "A provision's worth". So a bud severs
+     once its tissue reaches what its parent's reproduce cells hold, or its
+     kind's adult mass if that is less, and the severed seedling grows the
+     rest of its frond and recipe by 479 and 520.
+
+553. **The probe's soil is drawn wider.** Asked on 2026-10-04, with 552:
+     "How rich in soil are the probe's worlds? Evidence: a world's matter
+     is a median 94% of what its producers' bodies can hold (57% to 184%),
+     before grazers take their share. Without grazers, soil falls to 5 to
+     46 mg and fronds stall below their ceilings, so only soil-rich worlds
+     ever provision. With provision-sized buds at 60 ticks over 100 worlds,
+     sites of 200 to 2,400 mg give bud births in 8 worlds and eggs in 37;
+     sites of 200 to 12,000 mg give buds in 31 and eggs in 64. Broods (95)
+     and milk (71) are the same either way, and a draw costs 2.2 to 2.3 s."
+     Options, recommended first: (A) "Wider soil: each site's soil drawn
+     from 200 to 12,000 mg instead of 200 to 2,400, so the domain spans
+     starved and surplus worlds. Measured above: buds in 31 of 100 worlds
+     (recommended)." (B) "Soil scaled to bodies: each site's soil drawn as a
+     share of its founders' adult mass, lean to rich (for example 50% to
+     500%), whatever bodies a world draws. Not yet measured." (C) "As
+     founded: soil stays 200 to 2,400 mg a site. The check certifies buds
+     over the draws where they happen: about 8 in 100, roughly 80 of its
+     1,000." Mark chose A, "Wider soil". So the probe draws each site's
+     soil from 200 to 12,000 mg, its domain spanning starved and surplus
+     worlds.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11193,6 +11237,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: rulings 552 and 553 recorded, building checkpoint 8's step
+  8h: a bud severs once it holds a provision's worth (552), and the
+  probe's soil is drawn from 200 to 12,000 mg a site (553), after
+  measuring that whole-frond buds never severed within a run and that
+  most worlds held less matter than their producers' bodies. Annotation
+  on 524. Carried into the sim plan's checkpoint 8 brief, the session
+  notes' §10 and the index.
 - 2026-10-04: ruling 551 recorded, building checkpoint 8's step 8h: full
   stores count as fed, TD5's horizon capped by what a body's stores may
   hold, after measuring that no probe grazer's store could reach 100 ticks

@@ -1813,6 +1813,8 @@ Building step 8c raised one more:
 | Which kingdoms get recipes in a world that asks for bodies? | 549: flora and fauna |
 | What bounds does the generator draw within, by default? | 550: Mesocosm's where it has one |
 | When is a probe grazer fed? | 551: full stores count as fed |
+| When is a producer's bud full enough to sever? | 552: a provision's worth |
+| How rich in soil are the probe's worlds? | 553: wider soil, 200 to 12,000 mg a site |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
