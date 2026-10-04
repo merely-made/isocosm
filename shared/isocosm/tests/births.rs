@@ -78,6 +78,37 @@ fn act(id: &str, effects: Vec<Effect>) -> Process {
     }
 }
 
+/// A transfer of the actor's provision to a living grazer at its site:
+/// its own young where `young`, else the first such grazer.
+fn nurse(young: bool) -> Process {
+    let mut p = act(
+        if young {
+            "test:nurse"
+        } else {
+            "test:nurse-any"
+        },
+        vec![Effect::Transfer {
+            from: Binding::Actor,
+            to: Binding::Target,
+            account: "provision:1".into(),
+            amount: Amount::Fixed(6),
+        }],
+    );
+    p.target = Some(Target {
+        same_place: true,
+        alive: Some(true),
+        lineage: Some("lineage:1".into()),
+        among: BTreeSet::new(),
+        weighted: false,
+    });
+    if young {
+        p.requires.push(Query::Related {
+            kind: "sim:child".into(),
+        });
+    }
+    p
+}
+
 /// The probe's world, its first grazer replaced by a lump bearing a pair
 /// of limbs, its parts full and its provision `provision`.
 fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
@@ -132,10 +163,15 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
             }],
         ),
         act("test:feed", feed),
+        nurse(true),
+        nurse(false),
     ] {
         g.rules.processes.insert(p.id.clone(), p);
     }
     g.rules.traits.insert(BUD.into());
+    g.rules
+        .relations
+        .extend(["sim:parent".into(), "sim:child".into()]);
     // Room for the children; the probe's world holds its founders alone.
     g.rules.limits.entities += 64;
     let groups = g.population.groups.iter();
@@ -388,5 +424,73 @@ fn a_semelparous_bud_dies_as_it_severs() {
             break;
         }
         run(&mut s, id, "test:feed");
+    }
+}
+
+/// Care finds its own young (526): an act requiring the child relation
+/// is refused another grazer and accepted on the child, and a scheduled
+/// pass of it finds the child for itself.
+#[test]
+fn a_parent_finds_its_own_young() {
+    let (g, id) = world(1, 12);
+    let mut s = session(g);
+    run(&mut s, id, "test:brood");
+    let (kid, _) = children(&s, id)[0];
+    assert!(s.sim.state().relations.contains(&Relation {
+        subject: id,
+        kind: "sim:child".into(),
+        object: kid,
+    }));
+    run(&mut s, id, "test:feed");
+    let outcome = |s: &mut Session, process: &str, target: Id| -> String {
+        let command = Command::Act {
+            actor: id,
+            target: Some(target),
+            process: process.into(),
+            cause: None,
+        };
+        let r = s.command_with_flows(command).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&r.result).unwrap();
+        v["outcome"].to_string()
+    };
+    let state = s.sim.state();
+    let other = state
+        .population
+        .groups
+        .iter()
+        .find(|(f, c)| c.entity.lineage == "lineage:1" && **f != id && **f != kid)
+        .map(|(f, _)| *f)
+        .unwrap();
+    assert!(outcome(&mut s, "test:nurse", other).contains("Blocked"));
+    assert_eq!(outcome(&mut s, "test:nurse", kid), "\"Accepted\"");
+    let child = s.sim.state().population.get(kid).unwrap().clone();
+    assert_eq!(held(&s, &child, "provision:1"), 6);
+}
+
+/// A scheduled pass of the act chooses its target by the selector and the
+/// requirements together, so it finds the child; without the relation it
+/// takes the first grazer at the site.
+#[test]
+fn a_scheduled_pass_finds_the_young_by_the_relation() {
+    for young in [true, false] {
+        let (mut g, id) = world(1, 12);
+        let process = if young {
+            "test:nurse"
+        } else {
+            "test:nurse-any"
+        };
+        g.rules.processes.get_mut(process).unwrap().period = Some(1);
+        let mut s = session(g);
+        run(&mut s, id, "test:brood");
+        run(&mut s, id, "test:feed");
+        let (kid, _) = children(&s, id)[0];
+        let given = |s: &Session, who: Id| {
+            let e = s.sim.state().population.get(who).unwrap().clone();
+            held(s, &e, "provision:1")
+        };
+        let before = given(&s, kid);
+        let _ = s.advance_tick_with_flows().unwrap();
+        let fed = given(&s, kid) > before;
+        assert_eq!(fed, young, "the child is fed only by the relation");
     }
 }

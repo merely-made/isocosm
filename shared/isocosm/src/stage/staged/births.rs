@@ -45,12 +45,18 @@ impl Staged<'_> {
         child.visits.clear();
         child.skills = BTreeMap::new();
         child.provenance = Provenance::Born(child.lineage.clone());
+        // Both ways, so a parent's act can find its own young (526).
         let parent = Relation {
             subject: id,
             object: actor,
             kind: "sim:parent".into(),
         };
-        self.stage.relations.push((parent, true));
+        let young = Relation {
+            subject: actor,
+            object: id,
+            kind: "sim:child".into(),
+        };
+        self.stage.relations.extend([(parent, true), (young, true)]);
         child
     }
 
