@@ -1804,6 +1804,7 @@ Building step 8c raised one more:
 | Question as put | Ruling |
 | --- | --- |
 | Where do the provision and a missing part take growth, against the reserve? | 535: a lineage trait |
+| Whose matter does an incorporated frond hold? | 544: the donor's, kept |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a

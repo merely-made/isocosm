@@ -6228,6 +6228,8 @@ what later sections derive from.
      and frames name; the body's totals are readings over its parts; and a
      body without parts keeps its entity ledger, the hunting family's
      certified numbers standing as the control.
+     *Applied 2026-10-03 by ruling 544:* an incorporated part keeps its
+     donor's matter under its provenance.
      *Kept 2026-10-03 by ruling 525:* the ecology family's extentless bodies
      stay, the scale control, and only worlds that ask for bodies found
      from recipes.
@@ -6524,6 +6526,8 @@ what later sections derive from.
      lineage the part's kind, and Mesocosm's affinity verdict decides how
      it lands: a native part as it was, an adapter's expressing nothing,
      a refused one burnt as a meal.
+     *Specified 2026-10-03 by ruling 544:* the landed part keeps its
+     donor's matter.
 
 517. **The probe runs long enough for births.** Asked on 2026-10-03, with
      514: "How does the probe see births within its run? Evidence: Mesocosm
@@ -7132,6 +7136,27 @@ what later sections derive from.
      runs the ruleset's own procedures, each choice a player or GM would
      make replaced by a declared decision policy for that kind of actor,
      simplified only as far as the bench shows the outcomes survive.
+
+544. **An incorporated part keeps its donor's matter.** Asked on 2026-10-03,
+     building checkpoint 8's step 8f: "When a grazer incorporates a whole
+     frond (516), whose matter does the frond hold? Evidence: 504 keys a
+     part's ledger by provenance, as the scruple is, and Mesocosm keeps an
+     incorporated part's donor provenance (Origin::Incorporated). Rent,
+     growth, starvation (523) and the provision read only a body's own
+     lineage's matter. A frond of 4 to 9 cells holds about 66 mg of the
+     producer's tissue." Options, recommended first: (A) "The donor's,
+     kept: the frond keeps the producer's tissue under its provenance. The
+     eater can't spend it on rent or grow from it, and the frond's room for
+     the eater's own tissue counts what it already holds. Kleptoplasty as
+     Mesocosm keeps it (recommended)." (B) "Digested in place: landing
+     converts the frond's tissue to the eater's own, so the part is the
+     eater's in every way but its kind." (C) "The donor's, digested over
+     time: the frond keeps the donor's tissue, and rent and growth turn it
+     into the eater's own over the following ticks." Mark chose A, "The
+     donor's, kept". So an incorporated part keeps its donor's matter under
+     its provenance; the eater can neither spend it on rent nor grow from
+     it; and the part's room for the eater's own tissue counts the matter
+     it already holds.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11004,6 +11029,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: ruling 544 recorded, building checkpoint 8's step 8f: an
+  incorporated part keeps its donor's matter, unspendable by the eater
+  and counted against the part's room. Annotations on 504 and 516.
+  Carried into the sim plan's checkpoint 8 brief, the session notes' §10
+  and the index.
 - 2026-10-03: rulings 542 and 543 recorded, following 538: an edition's
   own state persists beside the body, its relations to it declared (542),
   and unattended a ruleset-led world runs the ruleset's procedures under
