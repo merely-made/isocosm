@@ -7008,6 +7008,8 @@ what later sections derive from.
      migration plan §13.35, at `dd9819c4` on branch `burn-pre4-repin`; Mark's
      answer was relayed by the migration session on 2026-10-03, not yet
      recorded there. Mere's migration lane owns the work.
+     *Widened 2026-10-04 by ruling 556:* every wasm module, and the newest
+     wasm-bindgen as a standing posture.
 
 538. **Each world chooses whether the sim or its ruleset leads.** Raised by
      Mark on 2026-10-03 with research into rulesets over the sim ("I guess
@@ -7204,6 +7206,8 @@ what later sections derive from.
      plan §13.37, at `88897eb6` on branch `burn-pre4-repin`, its evidence
      under `Code/testing/mere/receipts/2026-10-03/pre4-bindgen`; Mark's
      answer was relayed by the migration session on 2026-10-03, for §13.38.
+     *Widened 2026-10-04 by ruling 556:* the OPFS probe and the minimal
+     repros take 0.2.129 too.
 
 546. **The Distillery probe's decoder model may be downloaded as stated.**
      Asked on 2026-10-03 in the Burn migration session: "approve
@@ -7421,6 +7425,28 @@ what later sections derive from.
      evidence under `Code/testing/mere/receipts/2026-10-04/pre4-quiet-ab`;
      Mark's answer was relayed by the migration session on 2026-10-04,
      for mere's plan to record.
+
+556. **Every wasm module moves to the newest wasm-bindgen, 0.2.129.**
+     Asked on 2026-10-04 in the Burn migration session, widening 537 and
+     545: the muniment OPFS probe's page-error gate control is unproven.
+     Proving it needs the wasm-bindgen 0.2.126 command-line tool, which is
+     not on this machine and which no ruling covers downloading, while its
+     siblings all moved to the newest wasm-bindgen under 537. Options, as
+     the migration session relays them: move it to 0.2.129; install the
+     0.2.126 CLI; leave it unproven. Mark's answer, as the migration session
+     relays it: "move it and anything else to 0.2.129. let's stay with the
+     newest." So every wasm module in mere moves to wasm-bindgen 0.2.129,
+     the OPFS probe and the two minimal repros among them, the repros still
+     without the constructor helper (533). *Reading, not ruled:* "let's
+     stay with the newest" stands for later pins too, and Isometry's web
+     build, on the same pin through Cambium's web host, follows it.
+
+     Source: the finding and the options are in mere's burn 0.22 migration
+     plan, "Returned as forks", on branch `burn-pre4-repin` (its working
+     copy after `045c2f60`), where the options are listed as approving the
+     CLI install, leaving the gate unproven, or moving the probe to
+     0.2.129; Mark's answer was relayed by the migration session on
+     2026-10-04, for mere's plan to record.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11293,6 +11319,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: ruling 556 recorded at the Burn migration session's
+  request, widening 537 and 545: every wasm module in mere moves to
+  wasm-bindgen 0.2.129, the OPFS probe and the minimal repros among them,
+  rather than installing the 0.2.126 CLI for one probe's gate control.
+  Annotations on 537 and 545. Carried into the session notes' §9.9 and the
+  index.
 - 2026-10-04: ruling 555 recorded at the Burn migration session's
   request, carrying out 534: the quiet GPU-on A/B bounds the ambient load
   before each launch, after 0 of 80 repetitions met a bound that counted

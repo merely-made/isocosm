@@ -1196,7 +1196,9 @@ The newest, 0.2.129, crashed on wgpu 30.0.0 and ran clean on 30.0.1, and
 Mark chose "0.2.129 + wgpu 30.0.1" (545); he also approved the probe's
 decoder model download as stated (546). The quiet GPU-on A/B then counted
 none of 80 repetitions, its bound reading the measured page's own launch,
-and Mark chose "Bound load before launch" (555).
+and Mark chose "Bound load before launch" (555). The OPFS probe's gate
+control needed the 0.2.126 CLI, and Mark answered "move it and anything
+else to 0.2.129. let's stay with the newest" (556).
 
 ## 10. The design session, 2026-09-30
 
