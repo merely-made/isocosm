@@ -8,7 +8,9 @@
 //! in each segment, then the pair types of a uniform random matching, then
 //! each fight between two states.
 
+mod average;
 mod hunt;
+mod kin;
 mod round;
 #[cfg(test)]
 mod tests;
@@ -21,7 +23,7 @@ use super::{
 use crate::{
     Result,
     meaning::mass,
-    rules::{AccountKind, Causation, Process},
+    rules::{Causation, Process},
     schema::*,
     simulation::Work,
 };
@@ -43,6 +45,13 @@ pub enum Variant {
     Unweighted,
 }
 
+/// Whom a pass's entry stands for: the members of a bin, or one kin.
+#[derive(Clone, Copy, Debug)]
+pub(super) enum Who {
+    Bin,
+    Kin(Id),
+}
+
 pub struct Crowd<'w> {
     world: &'w ProbeWorld,
     /// The mind a world's fights read; none in a world without them.
@@ -55,6 +64,12 @@ pub struct Crowd<'w> {
     pub tick: Tick,
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
+    /// Members in a bond, with identities, their relations, and the trait
+    /// whose loss weans each young (554).
+    pub kin: BTreeMap<Id, Entity>,
+    relations: std::collections::BTreeSet<(Id, Key, Id)>,
+    young: BTreeMap<Id, Key>,
+    next_kin: Id,
     /// What its lineages develop from, their lexicons as their bodies
     /// have taught them (468).
     pub lineages: BTreeMap<Key, Lineage>,
@@ -84,6 +99,10 @@ impl<'w> Crowd<'w> {
             tick: 0,
             sites: world.genesis.sites.clone(),
             bins,
+            kin: BTreeMap::new(),
+            relations: Default::default(),
+            young: BTreeMap::new(),
+            next_kin: 0,
             lineages: world.genesis.lineages.clone(),
             work: Work::default(),
             shortfalls: 0,
@@ -109,9 +128,11 @@ impl<'w> Crowd<'w> {
 
     fn total_matter(&self) -> u128 {
         let rules = &self.world.genesis.rules;
+        let kin = self.kin.values().map(|e| (e, &1));
         let members: u128 = self
             .bins
             .iter()
+            .chain(kin)
             .map(|(e, &n)| mass(&crate::anatomy::books(e), rules) * u128::from(n))
             .sum();
         members
@@ -135,6 +156,7 @@ impl<'w> Crowd<'w> {
         due.sort_by(|a, b| (a.priority, &a.id).cmp(&(b.priority, &b.id)));
         for p in due {
             self.scheduled(p)?;
+            self.release();
         }
         self.round()?;
         if self.variant == Variant::Averaged {
@@ -150,12 +172,20 @@ impl<'w> Crowd<'w> {
     }
 
     /// The children of `n` members' births, each drawing its own soma from
-    /// `somas`, as a core child draws its by its own seed (478).
-    fn hatch(&mut self, born: Vec<aggregate::Pending>, n: u64, somas: &mut Stream) -> Result<()> {
+    /// `somas`, as a core child draws its by its own seed (478); unweaned
+    /// young of a living parent are born kin, their parent with them (554).
+    fn hatch(
+        &mut self,
+        born: Vec<aggregate::Pending>,
+        (n, who, after): (u64, Who, &Entity),
+        somas: &mut Stream,
+    ) -> Result<()> {
         let rules = &self.world.genesis.rules;
         let tick = self.tick;
         for birth in born {
+            let bonds = Self::bonding(&birth, after);
             for _ in 0..n {
+                let mut children = vec![];
                 let drawn = |l: &crate::meaning::births::Lineal, s: &mut Stream| {
                     crate::development::soma(rules, &l.d.recipe, s.below(u64::MAX))
                 };
@@ -177,7 +207,7 @@ impl<'w> Crowd<'w> {
                                 (tick, young.as_ref()),
                             )?
                             .0;
-                            *self.bins.entry(normalize(child)).or_default() += 1;
+                            children.push(child);
                         }
                     },
                     aggregate::Pending::Seedling {
@@ -194,7 +224,15 @@ impl<'w> Crowd<'w> {
                             soma,
                             tick,
                         );
-                        *self.bins.entry(normalize(child)).or_default() += 1;
+                        children.push(child);
+                    },
+                }
+                match &bonds {
+                    Some(young) => self.bond((&who, after), young, children),
+                    None => {
+                        for child in children {
+                            *self.bins.entry(normalize(child)).or_default() += 1;
+                        }
                     },
                 }
             }
@@ -231,10 +269,12 @@ impl<'w> Crowd<'w> {
     fn scheduled(&mut self, p: &Process) -> Result<()> {
         let rules = &self.world.genesis.rules;
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
-        let snapshot: Vec<(Entity, u64)> = self.bins.iter().map(|(e, &n)| (e.clone(), n)).collect();
+        let bins = self.bins.iter().map(|(e, &n)| (e.clone(), n, Who::Bin));
+        let kin = self.kin.iter().map(|(id, e)| (e.clone(), 1, Who::Kin(*id)));
+        let snapshot: Vec<(Entity, u64, Who)> = bins.chain(kin).collect();
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
         let mut acting = Vec::new();
-        for (e, n) in snapshot {
+        for (e, n, who) in snapshot {
             if !e.alive || !gates.open(&e, self.tick) {
                 continue;
             }
@@ -251,10 +291,13 @@ impl<'w> Crowd<'w> {
             {
                 continue;
             }
-            acting.push((e, n));
+            acting.push((e, n, who));
         }
         if hunting {
             return self.hunt(p, acting);
+        }
+        if kin::relational(p) {
+            return self.related(p, acting);
         }
         self.pass(p, acting)
     }
@@ -263,7 +306,7 @@ impl<'w> Crowd<'w> {
     /// site as the pass began, and the pass's takes of a site are planned
     /// and shared out, each member the same fraction of its take, floored,
     /// where they would take more than the site held.
-    fn pass(&mut self, p: &Process, acting: Vec<(Entity, u64)>) -> Result<()> {
+    fn pass(&mut self, p: &Process, acting: Vec<(Entity, u64, Who)>) -> Result<()> {
         let rules = &self.world.genesis.rules;
         let start = self.sites.clone();
         let site_of = |e: &Entity| start.get(&e.place).ok_or("a bin at an unknown site");
@@ -272,10 +315,10 @@ impl<'w> Crowd<'w> {
         let slots = aggregate::slots(p)?;
         let domain = format!("probe-amount:{}", p.id);
         let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick]));
-        let mut split: Vec<(Entity, u64, BTreeMap<u8, u64>)> = Vec::new();
-        for (e, n) in acting {
+        let mut split: Vec<(Entity, u64, BTreeMap<u8, u64>, Who)> = Vec::new();
+        for (e, n, who) in acting {
             if slots.is_empty() {
-                split.push((e, n, BTreeMap::new()));
+                split.push((e, n, BTreeMap::new(), who));
                 continue;
             }
             let mut drawn: BTreeMap<BTreeMap<u8, u64>, u64> = BTreeMap::new();
@@ -283,7 +326,7 @@ impl<'w> Crowd<'w> {
                 let one = slots.iter().map(|(&slot, &below)| (slot, s.below(below)));
                 *drawn.entry(one.collect()).or_default() += 1;
             }
-            split.extend(drawn.into_iter().map(|(d, k)| (e.clone(), k, d)));
+            split.extend(drawn.into_iter().map(|(d, k)| (e.clone(), k, d, who)));
         }
 
         // Each state's takes of its site, per member, or none if blocked.
@@ -292,7 +335,7 @@ impl<'w> Crowd<'w> {
         // A pass that takes nothing it shares is not planned, as the core
         // does not plan it.
         let planning = p.takes_shared();
-        for (e, n, draws) in split.iter().filter(|_| planning) {
+        for (e, n, draws, _) in split.iter().filter(|_| planning) {
             let mut takes = Ledger::new();
             let site = site_of(e)?;
             let mut scratch = site.clone();
@@ -323,7 +366,7 @@ impl<'w> Crowd<'w> {
         };
         self.site_shortfalls += wanted.iter().filter(|w| short(*w)).count() as u64;
         let planned = planned.into_iter().map(Some).chain(std::iter::repeat(None));
-        for ((e, n, draws), plan) in split.into_iter().zip(planned) {
+        for ((e, n, draws, who), plan) in split.into_iter().zip(planned) {
             self.work.evaluations += 1;
             self.work.represented += n;
             let takes = match plan {
@@ -368,8 +411,14 @@ impl<'w> Crowd<'w> {
                 Some(next) => {
                     self.work.accepted += n;
                     self.learn(&next.lessons);
-                    self.moved(&e, next.member, n);
-                    self.hatch(next.born, n, &mut somas)?;
+                    let after = next.member.clone();
+                    match who {
+                        Who::Bin => self.moved(&e, next.member, n),
+                        Who::Kin(id) => {
+                            self.kin.insert(id, next.member);
+                        },
+                    }
+                    self.hatch(next.born, (n, who, &after), &mut somas)?;
                 },
                 None => self.work.blocked += n,
             }
@@ -395,114 +444,4 @@ impl<'w> Crowd<'w> {
         self.work.accepted += n;
         Ok(next)
     }
-
-    /// The negative control (ruling 209): every class of living members at
-    /// a site has what it holds of an account replaced by the class's
-    /// average. The account is the body a competition sizes a kind up by,
-    /// or, in a world without competitions, each of a lineage's own matter
-    /// accounts in turn, tissue and reserve alike (ruling 507).
-    fn average(&mut self) {
-        let kinds = self.world.kinds();
-        let rules = &self.world.genesis.rules;
-        let averaged = |e: &Entity| -> Vec<Key> {
-            if kinds.is_empty() {
-                let own = |k: &AccountKind| matches!(k, AccountKind::Matter { lineage, .. } if *lineage == e.lineage);
-                let found = rules.accounts.iter().filter(|(_, k)| own(k));
-                found.map(|(key, _)| key.clone()).collect()
-            } else {
-                let kind = kinds.iter().find(|k| e.traits.contains(&k.identity));
-                kind.map(|k| k.body.clone()).into_iter().collect()
-            }
-        };
-        let accounts = self.bins.keys().map(|e| averaged(e).len()).max();
-        for which in 0..accounts.unwrap_or(0) {
-            let mut classes: BTreeMap<(Key, Id), Vec<(Entity, u64)>> = BTreeMap::new();
-            for (e, &n) in &self.bins {
-                if let Some(key) = averaged(e).into_iter().nth(which).filter(|_| e.alive) {
-                    let class = classes.entry((key, e.place)).or_default();
-                    class.push((e.clone(), n));
-                }
-            }
-            for ((key, _), members) in classes {
-                average_class(&mut self.bins, rules, &key, &members);
-            }
-        }
-    }
-}
-
-/// One class's average of `key` set into `bins`. Each member keeps
-/// everything else; a body keeping matter in parts holds the average only up
-/// to their room, the rest going on to members with room so that nothing is
-/// lost.
-fn average_class(
-    bins: &mut BTreeMap<Entity, u64>,
-    rules: &crate::rules::Rules,
-    key: &Key,
-    members: &[(Entity, u64)],
-) {
-    let n: u64 = members.iter().map(|m| m.1).sum();
-    let total: u64 = members
-        .iter()
-        .map(|(e, m)| crate::anatomy::held(e, rules, key) * m)
-        .sum();
-    for (e, m) in members {
-        let slot = bins.get_mut(e).expect("member bin exists");
-        *slot -= m;
-        if *slot == 0 {
-            bins.remove(e);
-        }
-    }
-    let (base, mut extra) = (total / n, total % n);
-    let mut over = 0u64;
-    let mut placed: Vec<(Entity, u64)> = vec![];
-    for (e, m) in members {
-        let high = extra.min(*m);
-        extra -= high;
-        for (amount, count) in [(base + 1, high), (base, m - high)] {
-            if count > 0 {
-                let (e, left) = averaged_into(e, rules, key, amount);
-                over += left * count;
-                placed.push((e, count));
-            }
-        }
-    }
-    for (e, mut count) in placed {
-        while over > 0 && count > 0 {
-            let room = crate::anatomy::room(&e, rules, key);
-            if room == 0 || !crate::anatomy::anatomical(&e, rules, key) {
-                break;
-            }
-            let mut one = e.clone();
-            let given = room.min(over);
-            crate::anatomy::give(&mut one, rules, key, given)
-                .expect("given within room")
-                .expect("given within room");
-            over -= given;
-            count -= 1;
-            *bins.entry(normalize(one)).or_default() += 1;
-        }
-        if count > 0 {
-            *bins.entry(normalize(e)).or_default() += count;
-        }
-    }
-    debug_assert_eq!(over, 0, "an average fits its class");
-}
-
-/// `e` holding `amount` of `key`: in its ledger, or for a body keeping
-/// matter in parts emptied from them and given back up to their room.
-/// Returns it and what did not fit.
-fn averaged_into(e: &Entity, rules: &crate::rules::Rules, key: &Key, amount: u64) -> (Entity, u64) {
-    let mut e = e.clone();
-    if !crate::anatomy::anatomical(&e, rules, key) {
-        e.accounts.insert(key.clone(), amount);
-        return (e, 0);
-    }
-    for part in e.parts.values_mut() {
-        part.matter.remove(key);
-    }
-    let fits = amount.min(crate::anatomy::room(&e, rules, key));
-    crate::anatomy::give(&mut e, rules, key, fits)
-        .expect("the key lives in parts")
-        .expect("given within room");
-    (e, amount - fits)
 }

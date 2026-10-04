@@ -22,7 +22,7 @@ use super::{
         aggregate::{self, Seen, Took, binds_target},
         draws::Stream,
     },
-    Crowd,
+    Crowd, Who,
 };
 use crate::{
     Result,
@@ -102,12 +102,12 @@ impl Meal<'_> {
 impl Crowd<'_> {
     /// One feeding process's pass over `hunters`, the states its gates let
     /// through as the pass began.
-    pub(super) fn hunt(&mut self, p: &Process, hunters: Vec<(Entity, u64)>) -> Result<()> {
+    pub(super) fn hunt(&mut self, p: &Process, hunters: Vec<(Entity, u64, Who)>) -> Result<()> {
         let m = meal(p)?;
         let rules = &self.world.genesis.rules;
         let start = self.sites.clone();
-        let mut at: BTreeMap<Id, Vec<(Entity, u64, u64)>> = BTreeMap::new();
-        for (e, n) in hunters {
+        let mut at: BTreeMap<Id, Vec<(Entity, u64, u64, Who)>> = BTreeMap::new();
+        for (e, n, who) in hunters {
             let site = start.get(&e.place).ok_or("a bin at an unknown site")?;
             if m.accepts(&e, e.place, rules) {
                 return Err(format!("{}: a hunter is its own prey", p.id));
@@ -128,7 +128,7 @@ impl Crowd<'_> {
             }
             // What each of this state's hunters asks of its prey.
             let mouthful = aggregate::mouthful(p, &e, site, (rules, Some(&self.lineages)))?;
-            at.entry(e.place).or_default().push((e, n, mouthful));
+            at.entry(e.place).or_default().push((e, n, mouthful, who));
         }
         for (site, hunters) in at {
             self.hunt_at(p, &m, (site, &start[&site]), hunters)?;
@@ -141,9 +141,13 @@ impl Crowd<'_> {
         p: &Process,
         m: &Meal,
         (site, began): (Id, &Site),
-        hunters: Vec<(Entity, u64, u64)>,
+        hunters: Vec<(Entity, u64, u64, Who)>,
     ) -> Result<()> {
         let rules = &self.world.genesis.rules;
+        // Kin are fed on only individually.
+        if self.kin.values().any(|e| m.accepts(e, site, rules)) {
+            return Err(format!("{}: the crowd hunts no kin", p.id));
+        }
         let prey: Vec<(Entity, u64)> = self
             .bins
             .iter()
@@ -166,7 +170,7 @@ impl Crowd<'_> {
         let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick, site]));
         // Each hunter's prey state, by weight, then which of its members.
         let mut landed: BTreeMap<(usize, u64), Vec<usize>> = BTreeMap::new();
-        for (h, (_, n, _)) in hunters.iter().enumerate() {
+        for (h, (_, n, ..)) in hunters.iter().enumerate() {
             for _ in 0..*n {
                 let mut pick = u128::from(s.below(total));
                 let state = weights
@@ -183,7 +187,7 @@ impl Crowd<'_> {
                 landed.entry((state, member)).or_default().push(h);
             }
         }
-        let mut moves: Vec<(Entity, Entity)> = Vec::new();
+        let mut moves: Vec<(Entity, Entity, Who)> = Vec::new();
         for ((state, _), eaters) in landed {
             let was = &prey[state].0;
             let mut offered = edible(&books(was), m.of);
@@ -241,12 +245,17 @@ impl Crowd<'_> {
                 let log = self.meals.entry(p.id.clone()).or_default();
                 log.count += 1;
                 log.held += mass(&books(was), rules);
-                moves.push((hunter.clone(), fed.member));
+                moves.push((hunter.clone(), fed.member, hunters[h].3));
             }
-            moves.push((was.clone(), super::normalize(after)));
+            moves.push((was.clone(), super::normalize(after), Who::Bin));
         }
-        for (from, to) in moves {
-            self.moved(&from, to, 1);
+        for (from, to, who) in moves {
+            match who {
+                Who::Bin => self.moved(&from, to, 1),
+                Who::Kin(id) => {
+                    self.kin.insert(id, to);
+                },
+            }
         }
         Ok(())
     }

@@ -211,13 +211,14 @@ fn grazing(seed: u64, held: u64) -> ProbeWorld {
 #[test]
 fn a_whole_meal_lands_alike_in_crowd_and_core() {
     use crate::probe::readings::{crowd_members, exact_members};
+    // Members per state, however each runner groups them.
     let states = |members: Vec<(&Entity, u64)>| {
-        let mut v: Vec<(Entity, u64)> = members
-            .into_iter()
-            .map(|(e, n)| (crate::probe::aggregate::normalize(e.clone()), n))
-            .collect();
-        v.sort();
-        v
+        let mut v: std::collections::BTreeMap<Entity, u64> = Default::default();
+        for (e, n) in members {
+            *v.entry(crate::probe::aggregate::normalize(e.clone()))
+                .or_default() += n;
+        }
+        v.into_iter().collect::<Vec<_>>()
     };
     let (mut whole, mut bitten) = (0, 0);
     for seed in 0..12 {

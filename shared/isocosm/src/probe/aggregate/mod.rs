@@ -315,6 +315,7 @@ pub(super) fn act(
         prey: a.meal.map(|(prey, _, _)| prey.clone()),
         portion: a.meal.map(|(_, portion, _)| portion.clone()),
         bitten: a.meal.and_then(|(_, _, part)| part),
+        bound: false,
         kept: BTreeMap::new(),
         draws: a.draws,
         took: None,
@@ -332,6 +333,83 @@ pub(super) fn act(
         lessons: doing.lessons,
         born: doing.born,
     }))
+}
+
+/// Whether every requirement of `p` holds for `e` on `target`, read with
+/// the target bound and its relation to `e` as `related` answers.
+pub(super) fn holds_on(
+    p: &Process,
+    (e, target): (&Entity, &Entity),
+    related: &dyn Fn(&Key) -> Result<bool>,
+    a: &Act,
+) -> bool {
+    let scene = Scene {
+        actor: Some(e),
+        target: Named::Found(target),
+        part: p.expresses().and_then(|f| expressing(e, f)),
+        site: Some(a.start),
+        tick: a.tick,
+        related,
+        rules: a.rules,
+        lineages: a.lineages,
+    };
+    p.requires
+        .iter()
+        .all(|q| meaning::read(q, &scene).is_ok_and(|(held, _)| held))
+}
+
+/// A related act (ruling 554): `p` for one member `e` on `target`, a body
+/// it is related to as `related` answers, every requirement read with the
+/// target bound, as the core reads it. Returns the member and the target as
+/// the act leaves them, or `None` where it is blocked.
+pub(super) fn act_on(
+    p: &Process,
+    (e, target): (&Entity, &Entity),
+    related: &dyn Fn(&Key) -> Result<bool>,
+    site: &mut Site,
+    a: Act,
+) -> Result<Option<(Acted, Entity)>> {
+    if p.risk.is_some() || p.note {
+        return Err(format!(
+            "{} depends on identity; it runs individually",
+            p.id
+        ));
+    }
+    if !holds_on(p, (e, target), related, &a) {
+        return Ok(None);
+    }
+    let part = p.expresses().and_then(|f| expressing(e, f));
+    let mut doing = Doing {
+        rules: a.rules,
+        lineages: a.lineages,
+        member: e.clone(),
+        part,
+        site: site.clone(),
+        seen: a.start.clone(),
+        count: 1,
+        prey: Some(target.clone()),
+        portion: None,
+        bitten: None,
+        bound: true,
+        kept: BTreeMap::new(),
+        draws: a.draws,
+        took: None,
+        lessons: vec![],
+        born: vec![],
+    };
+    let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
+    if !doing.run(&effects, a.rules, &mut Run::Free, &mut Ledger::new())? {
+        return Ok(None);
+    }
+    *site = doing.site;
+    let target = normalize(doing.prey.take().expect("bound above"));
+    let acted = Acted {
+        member: normalize(doing.member),
+        took: None,
+        lessons: doing.lessons,
+        born: doing.born,
+    };
+    Ok(Some((acted, target)))
 }
 
 /// Each draw slot `p` reads and its bound; a slot read under two bounds is
@@ -383,6 +461,7 @@ pub(super) fn mouthful(
         prey: None,
         portion: None,
         bitten: None,
+        bound: false,
         kept: BTreeMap::new(),
         draws: &draws,
         took: None,

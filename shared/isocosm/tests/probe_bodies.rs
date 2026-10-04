@@ -486,9 +486,9 @@ fn every_native_acts_somewhere_in_the_domain() {
 }
 
 #[test]
-#[ignore = "checkpoint 8i: the crowd learns whole meals, growth and births"]
 fn the_crowd_runs_bodies_without_refusing_any() {
     use isocosm::probe::{Crowd, Variant, readings, run_exact};
+    let mut births = 0;
     for seed in 0..6 {
         let w = BodyFounding {
             seed,
@@ -511,20 +511,21 @@ fn the_crowd_runs_bodies_without_refusing_any() {
             alive > 0 && states > 0 && states as u64 <= alive,
             "seed {seed}"
         );
-        assert_eq!(
-            a.iter().map(|m| m.1).sum::<u64>(),
-            b.iter().map(|m| m.1).sum::<u64>(),
-            "seed {seed}: no member is made or lost"
-        );
+        // Births make members, so the runners' counts agree only in
+        // distribution, the certification's to judge (checkpoint 8).
+        let born = |m: &[(&isocosm::schema::Entity, u64)]| m.iter().any(|(e, _)| e.born > 0);
+        births += usize::from(born(&a) && born(&b));
     }
+    assert!(births > 0, "no world bore in both runners");
 }
 
 /// The averaged crowd flattens every account a lineage owns at each site,
 /// tissue and reserve alike (ruling 507), so a producer, which keeps no
-/// reserve, is averaged too. A lineage's members share one body plan, so
-/// the average always fits their parts.
+/// reserve, is averaged too. Since checkpoint 8 a lineage's bodies vary, so
+/// the class is filled to one level as far as each body may hold: every
+/// member not at its bound holds the level or one above, and none at its
+/// bound could hold more than that. Kin are members like any other.
 #[test]
-#[ignore = "checkpoint 8i: the crowd learns whole meals, growth and births"]
 fn averaging_flattens_every_own_account_at_each_site() {
     use isocosm::probe::{Crowd, Variant};
     let mut spread = 0;
@@ -537,17 +538,26 @@ fn averaging_flattens_every_own_account_at_each_site() {
         .unwrap();
         let crowd = Crowd::new(&w, 5, Variant::Averaged).unwrap().run().unwrap();
         let rules = &w.genesis.rules;
-        let mut classes: BTreeMap<(String, Id), Vec<u64>> = BTreeMap::new();
-        for e in crowd.bins.keys().filter(|e| e.alive) {
+        let mut classes: BTreeMap<(String, Id), Vec<(u64, u64)>> = BTreeMap::new();
+        let members = crowd.bins.keys().chain(crowd.kin.values());
+        for e in members.filter(|e| e.alive) {
             let i = e.lineage.trim_start_matches("lineage:");
             for key in [format!("tissue:{i}"), format!("reserve:{i}")] {
                 let held = anatomy::held(e, rules, &key);
-                classes.entry((key, e.place)).or_default().push(held);
+                let bound = held + anatomy::room(e, rules, &key);
+                classes
+                    .entry((key, e.place))
+                    .or_default()
+                    .push((held, bound));
             }
         }
         for ((key, site), held) in classes {
-            let (lo, hi) = (held.iter().min().unwrap(), held.iter().max().unwrap());
-            assert!(hi - lo <= 1, "seed {seed}, {key} at {site}: {held:?}");
+            let open: Vec<u64> = held.iter().filter(|(h, b)| h < b).map(|h| h.0).collect();
+            if let Some(&level) = open.iter().min() {
+                let flat = open.iter().all(|h| *h <= level + 1);
+                let full = held.iter().all(|(h, b)| h < b || *b <= level + 1);
+                assert!(flat && full, "seed {seed}, {key} at {site}: {held:?}");
+            }
             spread += u64::from(key.starts_with("tissue:0") && held.len() > 1);
         }
     }

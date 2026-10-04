@@ -25,6 +25,9 @@ pub(super) struct Doing<'a> {
     pub(super) prey: Option<Entity>,
     pub(super) portion: Option<Ledger>,
     pub(super) bitten: Option<Id>,
+    /// The target is a body the act binds whole, a member's own young
+    /// (554), rather than a meal's prey.
+    pub(super) bound: bool,
     pub(super) kept: BTreeMap<Key, i64>,
     pub(super) draws: &'a BTreeMap<u8, u64>,
     /// What its meal took of the prey, the kinds its lineage learned, and
@@ -67,6 +70,13 @@ impl Parties for Doing<'_> {
                 debit(&mut self.site.accounts, key, total)?;
                 debit(&mut self.seen.accounts, key, amount)
             },
+            Binding::Target if self.bound => {
+                let target = self.prey.as_mut().ok_or("no target is bound")?;
+                match crate::anatomy::take(target, self.rules, key, amount) {
+                    Some(done) => done.map(|_| ()),
+                    None => debit(&mut target.accounts, key, amount),
+                }
+            },
             Binding::Target => Err("the crowd takes from a prey only by its meal".into()),
             Binding::Part => Err("a part keeps no ledger".into()),
         }
@@ -83,6 +93,13 @@ impl Parties for Doing<'_> {
                 credit(&mut self.site.accounts, key, total)?;
                 credit(&mut self.seen.accounts, key, amount)
             },
+            Binding::Target if self.bound => {
+                let target = self.prey.as_mut().ok_or("no target is bound")?;
+                match crate::anatomy::give(target, self.rules, key, amount) {
+                    Some(done) => done.map(|_| ()),
+                    None => credit(&mut target.accounts, key, amount),
+                }
+            },
             Binding::Target => Err("the crowd gives a prey nothing".into()),
             Binding::Part => Err("a part keeps no ledger".into()),
         }
@@ -90,6 +107,7 @@ impl Parties for Doing<'_> {
     fn body(&mut self, who: Binding) -> Result<&mut Entity> {
         match who {
             Binding::Actor => Ok(&mut self.member),
+            Binding::Target if self.bound => self.prey.as_mut().ok_or("no target is bound".into()),
             _ => Err("the crowd writes only the actor's body".into()),
         }
     }

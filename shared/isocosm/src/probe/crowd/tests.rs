@@ -53,13 +53,13 @@ fn breeding(seed: u64) -> ProbeWorld {
 /// Both runners make the same children of a bud, a brood and a clutch.
 #[test]
 fn births_come_alike_in_crowd_and_core() {
+    // Members per state, however each runner groups them.
     let states = |members: Vec<(&Entity, u64)>| {
-        let mut v: Vec<(Entity, u64)> = members
-            .into_iter()
-            .map(|(e, n)| (normalize(e.clone()), n))
-            .collect();
-        v.sort();
-        v
+        let mut v: std::collections::BTreeMap<Entity, u64> = Default::default();
+        for (e, n) in members {
+            *v.entry(normalize(e.clone())).or_default() += n;
+        }
+        v.into_iter().collect::<Vec<_>>()
     };
     let (mut buds, mut broods, mut eggs) = (0, 0, 0);
     for seed in 0..8 {
@@ -85,4 +85,89 @@ fn births_come_alike_in_crowd_and_core() {
         buds > 0 && broods > 0 && eggs > 0,
         "{buds} buds, {broods} broods, {eggs} eggs"
     );
+}
+
+/// One site of a producer of one frond holding plenty and a fed,
+/// iteroparous grazer, its tissue, stores and provision full: it broods,
+/// grazes its provision full again and nurses its unweaned young, who
+/// grazes too until weaned (554).
+fn nursing(seed: u64) -> ProbeWorld {
+    use crate::development::{Soma, develop};
+    let mut w = BodyFounding {
+        seed,
+        ticks: 4,
+        sites: [1, 1],
+        variance: [0, 0],
+        absence: [0, 0],
+        semelparous: 0,
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    let g = &mut w.genesis;
+    let kept = ["body:graze-1", "body:bear-1", "body:nurse-1", "body:wean-1"];
+    g.rules
+        .processes
+        .retain(|id, _| kept.contains(&id.as_str()));
+    let rules = g.rules.clone();
+    let find = |lineage: &str| {
+        let groups = g.population.groups.values();
+        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        found.next().unwrap().clone()
+    };
+    let (world, mut frond, mut parent) =
+        (find("world:ground"), find("lineage:0"), find("lineage:1"));
+    let d = g.lineages["lineage:0"].development.clone().unwrap();
+    let soma = Soma {
+        segments: vec![1],
+        absent: vec![],
+    };
+    frond.parts = develop(&rules, &d, &soma).unwrap();
+    frond.soma = vec![1];
+    frond.parts.get_mut(&0).unwrap().matter =
+        std::collections::BTreeMap::from([("tissue:0".into(), 10_000)]);
+    for key in ["tissue:1", "reserve:1", "provision:1"] {
+        let room = crate::anatomy::room(&parent, &rules, key);
+        crate::anatomy::give(&mut parent, &rules, key, room)
+            .unwrap()
+            .unwrap();
+    }
+    let mut population = Population::default();
+    for e in [world, frond, parent] {
+        population.insert(e, 1).unwrap();
+    }
+    g.population = population;
+    w
+}
+
+/// Both runners nurse alike: the crowd holds the parent and its unweaned
+/// young as kin, relation kept, and returns them to its counts once the
+/// young is weaned, ending in the same states as the core; milk flows.
+#[test]
+fn milk_flows_alike_in_crowd_and_core() {
+    let states = |members: Vec<(&Entity, u64)>| {
+        let mut v: std::collections::BTreeMap<Entity, u64> = Default::default();
+        for (e, n) in members {
+            *v.entry(normalize(e.clone())).or_default() += n;
+        }
+        v.into_iter().collect::<Vec<_>>()
+    };
+    let mut milk = 0;
+    for seed in 0..6 {
+        let w = nursing(seed);
+        let exact = run_exact(&w, 3, true).unwrap();
+        let crowd = Crowd::new(&w, 3, Variant::Histogram)
+            .unwrap()
+            .run()
+            .unwrap();
+        let a = states(readings::exact_members(&exact));
+        assert_eq!(a, states(readings::crowd_members(&crowd)), "seed {seed}");
+        let mut genesis = w.genesis.clone();
+        genesis.dynamics = Some(3);
+        let mut sim = crate::Simulation::new(genesis, crate::Execution::Individuals).unwrap();
+        sim.watch("body:nurse-1");
+        sim.advance(w.ticks).unwrap();
+        milk += sim.take_watched().len();
+    }
+    assert!(milk > 0, "no milk flowed");
 }
