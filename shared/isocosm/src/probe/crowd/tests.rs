@@ -87,10 +87,10 @@ fn births_come_alike_in_crowd_and_core() {
     );
 }
 
-/// One site of a producer of one frond holding plenty and a fed,
-/// iteroparous grazer, its tissue, stores and provision full: it broods,
-/// grazes its provision full again and nurses its unweaned young, who
-/// grazes too until weaned (554).
+/// One site of a producer of one frond holding plenty and two alike fed,
+/// iteroparous grazers, their tissue, stores and provision full: each
+/// broods, grazes its provision full again and nurses its own unweaned
+/// young, not the other's, who grazes too until weaned (554).
 fn nursing(seed: u64) -> ProbeWorld {
     use crate::development::{Soma, develop};
     let mut w = BodyFounding {
@@ -133,8 +133,8 @@ fn nursing(seed: u64) -> ProbeWorld {
             .unwrap();
     }
     let mut population = Population::default();
-    for e in [world, frond, parent] {
-        population.insert(e, 1).unwrap();
+    for (e, n) in [(world, 1), (frond, 1), (parent, 2)] {
+        population.insert(e, n).unwrap();
     }
     g.population = population;
     w
@@ -170,4 +170,66 @@ fn milk_flows_alike_in_crowd_and_core() {
         milk += sim.take_watched().len();
     }
     assert!(milk > 0, "no milk flowed");
+}
+
+/// A crowd bite takes what its part held of its share (459): a share of
+/// 8 mg landing on a root frond holding 3, with a living frond beyond it so
+/// it cannot be taken whole, takes 3.
+#[test]
+fn a_crowd_bite_takes_what_its_part_held() {
+    use crate::{
+        development::{Soma, develop},
+        probe::aggregate::{self, Took},
+    };
+    use std::collections::BTreeMap;
+    let w = BodyFounding {
+        seed: 1,
+        sites: [1, 1],
+        variance: [0, 0],
+        absence: [0, 0],
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    let g = &w.genesis;
+    let rules = &g.rules;
+    let find = |lineage: &str| {
+        let groups = g.population.groups.values();
+        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        found.next().unwrap().clone()
+    };
+    let (mut prey, mut grazer) = (find("lineage:0"), find("lineage:1"));
+    let d = g.lineages["lineage:0"].development.clone().unwrap();
+    let soma = Soma {
+        segments: vec![2],
+        absent: vec![],
+    };
+    prey.parts = develop(rules, &d, &soma).unwrap();
+    for (part, held) in [(0, 3), (1, 10)] {
+        prey.parts.get_mut(&part).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+    }
+    let room = crate::anatomy::room(&grazer, rules, "reserve:1");
+    crate::anatomy::give(&mut grazer, rules, "reserve:1", room)
+        .unwrap()
+        .unwrap();
+    let site = g.sites[&grazer.place].clone();
+    let portion = BTreeMap::from([("tissue:0".to_string(), 8)]);
+    let draws = BTreeMap::new();
+    let a = aggregate::Act {
+        start: &site,
+        count: 1,
+        tick: 1,
+        rules,
+        lineages: Some(&g.lineages),
+        draws: &draws,
+        meal: Some((&prey, &portion, Some(0))),
+    };
+    let p = &rules.processes["body:graze-1"];
+    let acted = aggregate::act(p, &grazer, &mut site.clone(), aggregate::Run::Free, a)
+        .unwrap()
+        .expect("the meal is accepted");
+    let Some(Took::Bite(taken)) = acted.took else {
+        panic!("a bite, not a part whole: {:?}", acted.took);
+    };
+    assert_eq!(taken, BTreeMap::from([("tissue:0".to_string(), 3)]));
 }
