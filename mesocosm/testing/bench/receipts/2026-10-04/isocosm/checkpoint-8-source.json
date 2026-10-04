@@ -1,0 +1,76 @@
+{
+ "date": "2026-10-03 to 2026-10-04",
+ "kind": "isocosm-checkpoint-8",
+ "branch": "checkpoint-8",
+ "commits": {
+  "from": "b687fec (main, rulings to 509 and checkpoint 7 merged)",
+  "8a schema": "4bf061e",
+  "8b development": "2cb6bc3",
+  "8c growth and provision": "986274e",
+  "8d births": "5333f78",
+  "8e parentage and care": "52f9978",
+  "8f incorporation": "716c214",
+  "8g generator bodies": "fc505b4",
+  "8h the probe on recipes": "d6c1ab8",
+  "8i weaning": "807f07a",
+  "8i the crowd's act split": "7ae8e59",
+  "8i crowd growth": "9996c55",
+  "8i crowd whole meals": "2eafcf2",
+  "8i crowd births": "7d2556c",
+  "8i crowd bonds (the certified code)": "7372c0e",
+  "8i tests the planted faults asked for": "b31e3c5 (tests only)"
+ },
+ "compiler": "rustc 1.98.1 (48a229cea 2026-09-01)",
+ "profile": "release",
+ "machine": "Windows 11 Home 10.0.26220, x86_64; other sessions working throughout",
+ "executables_sha256": {
+  "isocosm-probe at 7372c0e": "aae7da31b7578d291bd8127a53896235317dc9dad05ffbb947ebb3ff46642172"
+ },
+ "asked": "Mark: \"We can also do checkpoint 8 when you're ready\". Forks ruled on the way: 510 to 531, 535, 544, 547 to 550 while briefing and building 8a to 8g; 551 to 553 building 8h; 554 opening 8i.",
+ "runs": [
+  {
+   "file": "c8-probe-bodies.json (raw, out of tree); c8-probe-bodies-verify.txt",
+   "purpose": "checkpoint 8's vertical probe: bodies grown from recipes, births, care and incorporation, exact against crowd",
+   "command": "isocosm-probe --bodies --draws 1000 --output c8-probe-bodies.json",
+   "seeds": "master seed 1791137636009757700, from the clock",
+   "commit": "7372c0e",
+   "draws": 1000,
+   "readings": 26,
+   "ticks": 60,
+   "comparisons": {
+    "exact against crowd": "certified 26/26, detected 0, largest distance 0.031 (inspect:account:tissue:1)",
+    "exact against exact (positive control)": "certified 26/26, detected 0, largest 0.024 (inspect:cells:function:fix)",
+    "exact against averaged crowd (negative control)": "detected 17 of 26: body:starve-1#2 3.67 against 0.00 at 0.297, grazers alive 44.84 against 33.26; one reading's Holm p 0.044 in the receipt and 0.055 recomputed",
+    "exact against unweighted crowd (draw control)": "detected 10 of 26; body:starve-0#2 at 0.221, 25.79 against 35.28"
+   },
+   "evaluation_ratio": 1.18,
+   "wall_ratio": 3.58,
+   "seconds": 14043
+  },
+  {
+   "file": "pilot-c8-20.json, pilot-c8-100.json (raw, out of tree); pilot-c8-100-verify.txt",
+   "purpose": "pilots before the certified run, to look for a systematic difference",
+   "command": "isocosm-probe --bodies --draws 20 --seed 20261004; --draws 100 --seed 20261005",
+   "commit": "7372c0e"
+  },
+  {
+   "file": "c8-density-bodies-{32,64,128,256,512}.json (raw, out of tree); c8-density-bodies.json",
+   "purpose": "savings by density",
+   "command": "isocosm-probe --bodies --density --draws 32 --members N N",
+   "commit": "7372c0e"
+  },
+  {
+   "file": "c8h_faults.py, c8i_faults.py",
+   "purpose": "planted faults: 12 in the probe on recipes, 8 in the crowd's lessons, each caught by its named test",
+   "commit": "b31e3c5"
+  },
+  {
+   "file": "c8_calibrate.py, c8_calibration_rows.txt",
+   "purpose": "505's rates calibrated again for recipe bodies: 11/144 and 12/269, medians 5 and 12 mg"
+  },
+  {
+   "file": "c8_measure.rs",
+   "purpose": "the measurements behind rulings 551 to 554 and the run's 60 ticks, as run on the branch at the time"
+  }
+ ]
+}

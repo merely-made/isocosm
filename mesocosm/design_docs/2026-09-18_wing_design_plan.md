@@ -11319,6 +11319,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: checkpoint 8, development, merged at `e3297e6` under rulings 510
+  to 531, 535, 544 and 547 to 554, certified with its controls; the
+  readings taken while building it are in the sim plan's Findings for Mark
+  to reject.
 - 2026-10-04: ruling 556 recorded at the Burn migration session's
   request, widening 537 and 545: every wasm module in mere moves to
   wasm-bindgen 0.2.129, the OPFS probe and the minimal repros among them,

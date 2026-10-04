@@ -1821,6 +1821,15 @@ Building step 8c raised one more:
 | How rich in soil are the probe's worlds? | 553: wider soil, 200 to 12,000 mg a site |
 | How does the crowd run milk, a parent's own child's? | 554: bonds run individually until weaned |
 
+Under 551 to 554 the check passed on 1,000 draws, and checkpoint 8 merged
+at `e3297e6`. Measuring before asking found each of those four forks: no grazer
+could ever be fed, no bud severed within a run, worlds held too little
+matter for their producers, and half the grazers were in a bond the crowd
+could not hold. Building found two defects that made matter, in the pass
+frame, which the core's own conservation assertion caught only once a
+planted fault changed the dynamics. The crowd now groups almost nothing,
+its bodies differing member by member, which is 439's regime.
+
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
 house ruleset, versioned editions or a cross-game kernel, and how the

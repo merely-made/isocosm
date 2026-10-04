@@ -8,7 +8,10 @@ bodies family, checkpoints 7 to 11 in that plan's §9 (501 to 503), the next
 in ruling 195's order (457). *2026-10-03:* checkpoint 7 built §4, where a
 body's matter sits, with §3's cells derived from extents, §5's
 measurements and the names of 494, merged at `c51bb0a`; development, systems,
-harm and loss, and spreads follow as checkpoints 8 to 11.
+harm and loss, and spreads follow as checkpoints 8 to 11. *2026-10-04:*
+checkpoint 8 built §6, how parts arrive: development from a recipe, growth
+toward it, births and incorporation, merged at `e3297e6`; systems, harm and
+loss, and spreads follow as checkpoints 9 to 11.
 
 **Owns:** the body's schema in the sim: the three levels of ruling 277, the
 function catalogue, the part, where a body's matter sits, the geometry the
