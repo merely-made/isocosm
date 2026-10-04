@@ -10,6 +10,8 @@
 
 mod hunt;
 mod round;
+#[cfg(test)]
+mod tests;
 
 use super::{
     Mind, ProbeWorld,
@@ -147,6 +149,59 @@ impl<'w> Crowd<'w> {
         Ok(())
     }
 
+    /// The children of `n` members' births, each drawing its own soma from
+    /// `somas`, as a core child draws its by its own seed (478).
+    fn hatch(&mut self, born: Vec<aggregate::Pending>, n: u64, somas: &mut Stream) -> Result<()> {
+        let rules = &self.world.genesis.rules;
+        let tick = self.tick;
+        for birth in born {
+            for _ in 0..n {
+                let drawn = |l: &crate::meaning::births::Lineal, s: &mut Stream| {
+                    crate::development::soma(rules, &l.d.recipe, s.below(u64::MAX))
+                };
+                match &birth {
+                    aggregate::Pending::Hatch {
+                        lineal,
+                        clutch,
+                        shares,
+                        young,
+                        parent,
+                    } => {
+                        for &share in shares {
+                            let soma = drawn(lineal, somas);
+                            let child = crate::meaning::births::hatch(
+                                (parent, lineal),
+                                rules,
+                                soma,
+                                (*clutch, share),
+                                (tick, young.as_ref()),
+                            )?
+                            .0;
+                            *self.bins.entry(normalize(child)).or_default() += 1;
+                        }
+                    },
+                    aggregate::Pending::Seedling {
+                        lineal,
+                        part,
+                        mark,
+                        parent,
+                    } => {
+                        let soma = drawn(lineal, somas).segments;
+                        let child = crate::meaning::births::seedling(
+                            parent,
+                            part.clone(),
+                            mark,
+                            soma,
+                            tick,
+                        );
+                        *self.bins.entry(normalize(child)).or_default() += 1;
+                    },
+                }
+            }
+        }
+        Ok(())
+    }
+
     /// Kinds its lineages learned by what their bodies took in (468).
     fn learn(&mut self, lessons: &[(Key, Key)]) {
         for (lineage, kind) in lessons {
@@ -261,6 +316,8 @@ impl<'w> Crowd<'w> {
             }
             planned.push(Some(takes));
         }
+        let soma_domain = format!("probe-soma:{}", p.id);
+        let mut somas = Stream::new(crate::draw(self.dynamics, &soma_domain, &[self.tick]));
         let short = |((site, k), asked): (&(Id, Key), &u128)| {
             *asked > u128::from(start[site].accounts.get(k).copied().unwrap_or(0))
         };
@@ -312,6 +369,7 @@ impl<'w> Crowd<'w> {
                     self.work.accepted += n;
                     self.learn(&next.lessons);
                     self.moved(&e, next.member, n);
+                    self.hatch(next.born, n, &mut somas)?;
                 },
                 None => self.work.blocked += n,
             }

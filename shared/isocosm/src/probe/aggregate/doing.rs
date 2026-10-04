@@ -27,9 +27,11 @@ pub(super) struct Doing<'a> {
     pub(super) bitten: Option<Id>,
     pub(super) kept: BTreeMap<Key, i64>,
     pub(super) draws: &'a BTreeMap<u8, u64>,
-    /// What its meal took of the prey, and the kinds its lineage learned.
+    /// What its meal took of the prey, the kinds its lineage learned, and
+    /// the births its act made, which the crowd draws for each member.
     pub(super) took: Option<Took>,
     pub(super) lessons: Vec<(Key, Key)>,
+    pub(super) born: Vec<Pending>,
 }
 
 impl Parties for Doing<'_> {
@@ -268,6 +270,37 @@ impl Doing<'_> {
                 }
                 credit(&mut self.member.accounts, into, total)?;
                 self.took = Some(Took::Bite(taken));
+                Ok(true)
+            },
+            // Births, for the crowd to make member by member (447, 448).
+            Effect::Bear { clutch, young } => {
+                let Ok((lineal, shares)) = births::bear(self, rules, *clutch) else {
+                    return Ok(false);
+                };
+                self.born.push(Pending::Hatch {
+                    lineal,
+                    clutch: *clutch,
+                    shares,
+                    young: young.clone(),
+                    parent: self.member.clone(),
+                });
+                Ok(true)
+            },
+            Effect::Bud { mark, once } => {
+                let Ok(b) = births::bud(self, rules, mark) else {
+                    return Ok(false);
+                };
+                if let Some((_, part)) = b.severed {
+                    // The child of its parent as it was, the semelparous
+                    // parent dying as it severs (521).
+                    self.born.push(Pending::Seedling {
+                        lineal: b.lineal,
+                        part,
+                        mark: mark.clone(),
+                        parent: self.member.clone(),
+                    });
+                    self.member.alive &= !*once;
+                }
                 Ok(true)
             },
             _ => {

@@ -16,6 +16,7 @@ use crate::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+pub(crate) mod births;
 mod grow;
 pub(crate) use grow::grow;
 

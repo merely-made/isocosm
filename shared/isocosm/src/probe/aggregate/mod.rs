@@ -27,7 +27,29 @@ mod doing;
 use doing::Doing;
 pub(in crate::probe) use doing::Run;
 
-use crate::{growth, schedule::edible};
+use crate::{
+    growth,
+    meaning::births::{self, Lineal},
+    schedule::edible,
+};
+
+/// A birth an act made, its children not yet drawn: a brood's or a
+/// clutch's shares, or a severed bud, of a parent as the birth left it.
+pub(in crate::probe) enum Pending {
+    Hatch {
+        lineal: Lineal,
+        clutch: bool,
+        shares: Vec<u64>,
+        young: Option<Key>,
+        parent: Entity,
+    },
+    Seedling {
+        lineal: Lineal,
+        part: Part,
+        mark: Key,
+        parent: Entity,
+    },
+}
 
 /// What a meal took of its prey: a bite of the part it landed on, or of
 /// its ledger where it keeps no parts, or a part whole (516).
@@ -43,6 +65,7 @@ pub(in crate::probe) struct Acted {
     pub member: Entity,
     pub took: Option<Took>,
     pub lessons: Vec<(Key, Key)>,
+    pub born: Vec<Pending>,
 }
 
 /// Zero entries dropped: no query and no inspection tells absent from zero.
@@ -296,6 +319,7 @@ pub(super) fn act(
         draws: a.draws,
         took: None,
         lessons: vec![],
+        born: vec![],
     };
     let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
     if !doing.run(&effects, a.rules, &mut run, &mut left)? {
@@ -306,6 +330,7 @@ pub(super) fn act(
         member: normalize(doing.member),
         took: doing.took,
         lessons: doing.lessons,
+        born: doing.born,
     }))
 }
 
@@ -362,6 +387,7 @@ pub(super) fn mouthful(
         draws: &draws,
         took: None,
         lessons: vec![],
+        born: vec![],
     };
     doing
         .compute(|r, d, parts| amount.resolve(r, d, parts))?
