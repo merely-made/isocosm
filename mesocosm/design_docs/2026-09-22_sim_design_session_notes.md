@@ -1810,6 +1810,8 @@ Building step 8c raised one more:
 | Whose matter does an incorporated frond hold? | 544: the donor's, kept |
 | Where do generated recipes express reproduce? | 547: one cell of the root |
 | How does the generator draw a founded lineage's life history? | 548: drawn, within what bodies allow |
+| Which kingdoms get recipes in a world that asks for bodies? | 549: flora and fauna |
+| What bounds does the generator draw within, by default? | 550: Mesocosm's where it has one |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a

@@ -6434,7 +6434,8 @@ what later sections derive from.
      *Bounded 2026-10-03 by ruling 525:* in worlds that ask for bodies.
      *Completed 2026-10-04 by rulings 547 and 548:* each recipe reproduces
      in one cell of its root, and each lineage's life history is drawn
-     within what its body allows.
+     within what its body allows. *And by 549 and 550:* flora and fauna
+     alone draw recipes, within Mesocosm's bounds by default.
 
 513. **The probe's bodies express reproduce in one cell from founding.**
      Asked on 2026-10-03, with 510: "How do the probe's bodies support
@@ -7253,6 +7254,44 @@ what later sections derive from.
      seed: its strategies among those its body supports, its clutch within
      a world-rule bound, and each of its other traits either way; the
      probe sets its own.
+
+549. **Flora and fauna draw recipes; myco and micro wait for territories
+     and surfaces.** Asked on 2026-10-04, with 547: "In a world that asks
+     for bodies, which kingdoms get recipes (512, 525)? Evidence: Isocosm
+     founds flora, fauna, myco and micro lineages. Mesocosm's lottery draws
+     producers (rooted, bearing plates), consumers (a mouth head, limbs and
+     feelers) and decomposers (crusts, detritivores). Ruling 488 made a
+     mold a territory and micro life a surface, which checkpoint 11
+     builds." Options, recommended first: (A) "Flora and fauna: flora draws
+     as Mesocosm's producers and fauna as its consumers. Myco and micro
+     stay bodiless until checkpoint 11 makes them territories and surfaces
+     (488) (recommended)." (B) "Myco as decomposers too: flora as
+     producers, fauna as consumers, and myco as Mesocosm's decomposers with
+     bodies of their own. Micro waits for surfaces." (C) "All four: every
+     kingdom draws a recipe now, micro included, and checkpoint 11
+     revisits myco and micro." Mark chose A, "Flora and fauna". So in a
+     world that asks for bodies, flora lineages draw recipes as
+     Mesocosm's producers and fauna as its consumers, and myco and micro
+     lineages stay bodiless until checkpoint 11 makes them territories and
+     surfaces.
+
+550. **The generator draws within Mesocosm's bounds where it has them.**
+     Asked on 2026-10-04, with 547: "What bounds does the generator draw
+     within, by default? Evidence: 548 draws a lineage's clutch within a
+     world-rule bound, and 531 draws its absence odds "with Mesocosm's 1 in
+     12 among the draws". Mesocosm has no clutch at all, and its variance
+     is 1 or 2. Any default is a value someone sets, and a world may change
+     it." Options, recommended first: (A) "Mesocosm's where it has one:
+     variance 1 or 2 and absence odds 1 in 12 by default, each a range a
+     world may widen. The clutch draws 1 to 4 by default, a starting range
+     a world may widen (recommended)." (B) "Wide by default: defaults span
+     much more than Mesocosm does (variance 0 to 3, absence never to 1 in
+     4, clutch 1 to 12), so worlds start varied." (C) "No defaults: a world
+     asking for bodies must state each bound, and the generator refuses
+     one that doesn't." Mark chose A, "Mesocosm's where it has one". So the
+     generator draws a recipe's variance from 1 to 2 and its absence odds
+     at 1 in 12, and a lineage's clutch from 1 to 4, by default, each a
+     range the founding states and a world may widen.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11125,6 +11164,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: rulings 549 and 550 recorded, building checkpoint 8's step
+  8g: flora and fauna draw recipes while myco and micro wait for
+  territories and surfaces (549), and the generator draws within
+  Mesocosm's bounds where it has them, the clutch 1 to 4 (550).
+  Annotation on 512. Carried into the sim plan's checkpoint 8 brief, the
+  session notes' §10 and the index.
 - 2026-10-04: rulings 547 and 548 recorded, building checkpoint 8's step
   8g: a generated recipe reproduces in one cell of its root (547), and a
   founded lineage's life history is drawn within what its body allows
