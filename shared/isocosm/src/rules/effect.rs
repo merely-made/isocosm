@@ -56,9 +56,13 @@ pub enum Effect {
     /// A birth spending the actor's provision (rulings 447, 448, 518 and
     /// 530): a brood develops its lineage's whole recipe from a soma its own
     /// seed draws; a clutch lays the lineage's clutch of eggs, each its
-    /// recipe's root alone, sharing the provision.
+    /// recipe's root alone, sharing the provision. Each child carries
+    /// `young` from birth until something takes it away, as a caring
+    /// lineage's young are unweaned until first fed (554).
     Bear {
         clutch: bool,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        young: Option<Key>,
     },
     /// A bud (ruling 524): the provision poured into a part marked `mark`,
     /// grown at the reproducing part if there is none, which severs into a

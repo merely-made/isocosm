@@ -67,8 +67,9 @@ impl Staged<'_> {
         development::soma(&self.sim.genesis.rules, &d.recipe, seed)
     }
 
-    /// A brood, or a clutch of eggs, from the whole provision.
-    pub(super) fn bear(&mut self, clutch: bool) -> Result<()> {
+    /// A brood, or a clutch of eggs, from the whole provision, each child
+    /// carrying `young`.
+    pub(super) fn bear(&mut self, clutch: bool, young: Option<&Key>) -> Result<()> {
         let (d, own) = self.lineage()?;
         let (Some(provision), Some(tissue)) = (own.provision, own.tissue) else {
             return Err("a lineage without a provision bears nothing".into());
@@ -93,6 +94,7 @@ impl Staged<'_> {
                 parts.retain(|_, p| p.situs == Some([0, 0, 0]));
             }
             let mut child = self.child(id, parts, soma.segments);
+            child.traits.extend(young.cloned());
             let given = anatomy::give(&mut child, rules, &tissue, share)
                 .ok_or("a child with no parts")??;
             if self.sim.flowing() {

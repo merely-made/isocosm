@@ -114,8 +114,8 @@ impl Default for BodyFounding {
 }
 
 /// The traits a world's members may carry: their strategies and care
-/// (548), whether they breed once, and a bud's mark.
-fn life_traits() -> [&'static str; 7] {
+/// (548), whether they breed once, a bud's mark, and a young unweaned.
+fn life_traits() -> [&'static str; 8] {
     [
         BROOD,
         EGG,
@@ -124,6 +124,7 @@ fn life_traits() -> [&'static str; 7] {
         SEMELPAROUS,
         life::ITEROPAROUS,
         life::BUD_MARK,
+        life::UNWEANED,
     ]
 }
 

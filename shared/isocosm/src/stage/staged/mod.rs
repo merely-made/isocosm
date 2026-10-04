@@ -340,7 +340,7 @@ impl Staged<'_> {
                 let object = format!("site:{place}");
                 self.add_note(actor, object, kind, text.clone(), expires, cause.into())?;
             },
-            Effect::Bear { clutch } => self.bear(*clutch)?,
+            Effect::Bear { clutch, young } => self.bear(*clutch, young.as_ref())?,
             // A semelparous budder dies as its bud severs (521).
             Effect::Bud { mark, once } => {
                 if self.bud(mark)? && *once {

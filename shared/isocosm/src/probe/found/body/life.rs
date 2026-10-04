@@ -1,12 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Births and care in the probe (rulings 514, 519, 521, 524 and 526 to
-//! 529). Each when its provision is full, a producer buds and a grazer
+//! Births and care in the probe (rulings 514, 519, 521, 524, 526 to 529
+//! and 554). Each when its provision is full, a producer buds and a grazer
 //! broods when fed or lays its clutch of eggs when hungry, a semelparous
-//! cohort dying as its birth is done. A fed grazer with something
-//! provisioned nurses a hungry young of its own with milk, its refilling
-//! provision going to the young rather than to its next birth.
+//! cohort dying as its birth is done. A grazer's young are born unweaned
+//! and weaned the first time they are fed; a fed grazer with something
+//! provisioned nurses a hungry, unweaned young of its own with milk, its
+//! refilling provision going to the young rather than to its next birth.
 
 use super::physiology::*;
 use crate::{bodied::SEMELPAROUS, rules::*};
@@ -16,6 +17,8 @@ use std::collections::BTreeSet;
 pub(super) const BUD_MARK: &str = "part:bud";
 /// The cohort trait the probe draws beside semelparity (529).
 pub(super) const ITEROPAROUS: &str = "life:iteroparous";
+/// What a grazer's young carry until first fed (554).
+pub(super) const UNWEANED: &str = "life:unweaned";
 
 /// Its provision full, and something in it.
 fn provisioned(i: u32) -> Query {
@@ -52,10 +55,14 @@ fn bud(i: u32, once: bool) -> Process {
 /// A grazer's birth: a clutch of eggs while hungry, a brood while fed
 /// (519), the semelparous parent dying when it is done.
 fn bear(i: u32, once: bool) -> Process {
+    let born = |clutch| Effect::Bear {
+        clutch,
+        young: Some(UNWEANED.into()),
+    };
     let birth = Effect::When {
         guard: hungry(i),
-        then: vec![Effect::Bear { clutch: true }],
-        otherwise: vec![Effect::Bear { clutch: false }],
+        then: vec![born(true)],
+        otherwise: vec![born(false)],
     };
     let effects = match once {
         true => vec![birth, Effect::Death],
@@ -110,6 +117,10 @@ fn nurse(i: u32) -> Process {
         Query::Related {
             kind: "sim:child".into(),
         },
+        Query::Trait {
+            who: Binding::Target,
+            key: UNWEANED.into(),
+        },
         Query::Computed(mul(vec![fed, something, hungry_of(i, Binding::Target)])),
     ]);
     p.target = Some(Target {
@@ -122,10 +133,32 @@ fn nurse(i: u32) -> Process {
     p
 }
 
-/// A producer buds; a grazer bears and nurses.
+/// A young weaned the first time it is fed, its stores full (554).
+fn wean(i: u32) -> Process {
+    let weaned = Effect::Trait {
+        who: Binding::Actor,
+        key: UNWEANED.into(),
+        present: false,
+    };
+    let mut p = due(
+        &format!("body:wean-{i}"),
+        Causation::Transition,
+        vec![weaned],
+        5,
+    );
+    let unweaned = Query::Trait {
+        who: Binding::Actor,
+        key: UNWEANED.into(),
+    };
+    p.requires
+        .extend([own(i), unweaned, Query::Computed(less(c(1), hungry(i)))]);
+    p
+}
+
+/// A producer buds; a grazer bears, nurses and weans.
 pub(super) fn natives(i: u32, producer: bool) -> Vec<Process> {
     match producer {
         true => vec![bud(i, false), bud(i, true)],
-        false => vec![bear(i, false), bear(i, true), nurse(i)],
+        false => vec![bear(i, false), bear(i, true), nurse(i), wean(i)],
     }
 }

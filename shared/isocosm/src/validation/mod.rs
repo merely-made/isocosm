@@ -344,7 +344,10 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
             return Err(format!("unknown condition {key}"));
         },
-        Effect::Trait { key, .. } if !rules.traits.contains(key) => {
+        Effect::Trait { key, .. }
+        | Effect::Bear {
+            young: Some(key), ..
+        } if !rules.traits.contains(key) => {
             return Err(format!("unknown trait {key}"));
         },
         Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {

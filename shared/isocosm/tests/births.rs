@@ -6,7 +6,8 @@
 //! lays eggs that are the recipe's root alone, and a bud fills from the
 //! provision at the reproducing part and severs once full; each child
 //! draws its soma by its own seed, and every move reconciles in the flow
-//! record, to the child's parts.
+//! record, to the child's parts. A bud severs once it holds a provision's
+//! worth (552). Care and weaning (8e, 554) are in `births/care.rs`.
 
 use isocosm::{
     Command, Execution, Session, anatomy,
@@ -19,8 +20,12 @@ use isocosm::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "births/care.rs"]
+mod care;
+
 const SOIL: &str = "world:soil";
 const BUD: &str = "part:bud";
+const UNWEANED: &str = "life:unweaned";
 
 fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
     Template {
@@ -139,8 +144,20 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
         },
     ];
     for p in [
-        act("test:brood", vec![Effect::Bear { clutch: false }]),
-        act("test:lay", vec![Effect::Bear { clutch: true }]),
+        act(
+            "test:brood",
+            vec![Effect::Bear {
+                clutch: false,
+                young: Some(UNWEANED.into()),
+            }],
+        ),
+        act(
+            "test:lay",
+            vec![Effect::Bear {
+                clutch: true,
+                young: None,
+            }],
+        ),
         act(
             "test:bud",
             vec![Effect::Bud {
@@ -156,6 +173,24 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
             }],
         ),
         act("test:feed", feed),
+        act(
+            "test:fill",
+            vec![
+                Effect::Transfer {
+                    from: Binding::Place,
+                    to: Binding::Actor,
+                    account: SOIL.into(),
+                    amount: Amount::Fixed(12),
+                },
+                Effect::Convert {
+                    who: Binding::Actor,
+                    from: vec![SOIL.into()],
+                    to: "reserve:1".into(),
+                    amount: Amount::Fixed(12),
+                    conversion: Conversion::Synthesis,
+                },
+            ],
+        ),
         nurse(true),
         nurse(false),
     ] {
@@ -415,114 +450,5 @@ fn a_semelparous_bud_dies_as_it_severs() {
             break;
         }
         run(&mut s, id, "test:feed");
-    }
-}
-
-/// Care finds its own young (526): an act requiring the child relation
-/// is refused another grazer and accepted on the child, and a scheduled
-/// pass of it finds the child for itself.
-#[test]
-fn a_parent_finds_its_own_young() {
-    let (g, id) = world(1, 12);
-    let mut s = session(g);
-    run(&mut s, id, "test:brood");
-    let (kid, _) = children(&s, id)[0];
-    assert!(s.sim.state().relations.contains(&Relation {
-        subject: id,
-        kind: "sim:child".into(),
-        object: kid,
-    }));
-    run(&mut s, id, "test:feed");
-    let outcome = |s: &mut Session, process: &str, target: Id| -> String {
-        let command = Command::Act {
-            actor: id,
-            target: Some(target),
-            process: process.into(),
-            cause: None,
-        };
-        let r = s.command_with_flows(command).unwrap();
-        let v: serde_json::Value = serde_json::from_str(&r.result).unwrap();
-        v["outcome"].to_string()
-    };
-    let state = s.sim.state();
-    let other = state
-        .population
-        .groups
-        .iter()
-        .find(|(f, c)| c.entity.lineage == "lineage:1" && **f != id && **f != kid)
-        .map(|(f, _)| *f)
-        .unwrap();
-    assert!(outcome(&mut s, "test:nurse", other).contains("Blocked"));
-    assert_eq!(outcome(&mut s, "test:nurse", kid), "\"Accepted\"");
-    let child = s.sim.state().population.get(kid).unwrap().clone();
-    assert_eq!(held(&s, &child, "provision:1"), 6);
-}
-
-/// A scheduled pass of the act chooses its target by the selector and the
-/// requirements together, so it finds the child; without the relation it
-/// takes the first grazer at the site.
-#[test]
-fn a_scheduled_pass_finds_the_young_by_the_relation() {
-    for young in [true, false] {
-        let (mut g, id) = world(1, 12);
-        let process = if young {
-            "test:nurse"
-        } else {
-            "test:nurse-any"
-        };
-        g.rules.processes.get_mut(process).unwrap().period = Some(1);
-        let mut s = session(g);
-        run(&mut s, id, "test:brood");
-        run(&mut s, id, "test:feed");
-        let (kid, _) = children(&s, id)[0];
-        let given = |s: &Session, who: Id| {
-            let e = s.sim.state().population.get(who).unwrap().clone();
-            held(s, &e, "provision:1")
-        };
-        let before = given(&s, kid);
-        let _ = s.advance_tick_with_flows().unwrap();
-        let fed = given(&s, kid) > before;
-        assert_eq!(fed, young, "the child is fed only by the relation");
-    }
-}
-
-/// Milk (527, 528, 551): a parent whose stores are full nurses its hungry
-/// young from its provision, digested into the young's tissue as far as it
-/// has room; a parent still filling its stores does not.
-#[test]
-fn a_fed_parent_nurses_its_hungry_young_and_a_hungry_one_does_not() {
-    for fed in [true, false] {
-        let (mut g, id) = world(1, 12);
-        if fed {
-            let rules = g.rules.clone();
-            let e = g.population.lift(id).unwrap();
-            let room = anatomy::room(e, &rules, "reserve:1");
-            anatomy::give(e, &rules, "reserve:1", room)
-                .unwrap()
-                .unwrap();
-        }
-        let mut s = session(g);
-        run(&mut s, id, "test:brood");
-        let (kid, _) = children(&s, id)[0];
-        run(&mut s, id, "test:feed");
-        let of = |s: &Session, who: Id, key: &str| {
-            let e = s.sim.state().population.get(who).unwrap().clone();
-            held(s, &e, key)
-        };
-        let (young, kept) = (of(&s, kid, "tissue:1"), of(&s, id, "provision:1"));
-        assert_eq!(kept, 12);
-        let (outcome, _) = run_on(&mut s, id, Some(kid), "body:nurse-1");
-        let given = kept - of(&s, id, "provision:1");
-        assert_eq!(of(&s, kid, "tissue:1") - young, given, "fed {fed}");
-        match fed {
-            true => {
-                assert_eq!(outcome, "\"Accepted\"");
-                assert!(given > 0);
-            },
-            false => {
-                assert!(outcome.contains("Blocked"), "{outcome}");
-                assert_eq!(given, 0);
-            },
-        }
     }
 }
