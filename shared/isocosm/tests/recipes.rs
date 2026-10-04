@@ -13,7 +13,7 @@ use isocosm::{
     rules::{AccountKind, Affinity, Development, Policy, Recipe, Tagma, Template, Verdict},
     simulation::Genesis,
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 fn world() -> Genesis {
     BodyFounding::default().generate().unwrap().genesis
@@ -33,7 +33,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 /// The grazer's body as a recipe: a lump bearing a pair of limbs.
 fn developed() -> Genesis {
     let mut g = world();
-    g.rules.kinds = BTreeMap::from([
+    g.rules.kinds.extend([
         (
             "kind:lump".into(),
             template([2, 2, 2], &[("intake", 5), ("store", 2), ("reproduce", 1)]),
@@ -76,15 +76,20 @@ fn development_round_trips_and_a_world_without_it_serializes_as_before() {
     let back: Genesis = serde_json::from_str(&text).unwrap();
     assert_eq!(back, g);
     assert_eq!(digest(&back), digest(&g));
-    // The control: the plain world names none of the new fields.
-    let plain = serde_json::to_string(&world()).unwrap();
+    // The control: a world that asks for no bodies, the ecology family's
+    // (525), names none of the new fields.
+    let plain = serde_json::to_string(&isocosm::Founding::default().generate().unwrap()).unwrap();
     let named = |text: &str, field: &str| text.contains(&format!("\"{field}\""));
     for field in ["kinds", "affinity", "development"] {
         assert!(named(&text, field), "{field}");
     }
-    for field in ["kinds", "affinity", "development", "offset", "provision"] {
+    for field in ["kinds", "affinity", "development", "offset"] {
         assert!(!named(&plain, field), "{field}");
     }
+    // Its rates name a provision of their own; no account is one, as the
+    // probe's are.
+    let account = "\"provision\":true";
+    assert!(text.contains(account) && !plain.contains(account));
 }
 
 #[test]

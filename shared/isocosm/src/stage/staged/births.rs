@@ -1,11 +1,12 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Births spend the provision (rulings 447, 448, 518, 524 and 530). A brood
-//! develops its lineage's whole recipe from a soma its own seed draws; a
-//! clutch lays eggs, each the recipe's root alone, sharing the provision;
-//! and a bud is the provision poured into a part grown at the reproducing
-//! part, severing into a body of its own once full. A child's tissue is its
+//! Births spend the provision (rulings 447, 448, 518, 524, 530 and 552). A
+//! brood develops its lineage's whole recipe from a soma its own seed
+//! draws; a clutch lays eggs, each the recipe's root alone, sharing the
+//! provision; and a bud is the provision poured into a part grown at the
+//! reproducing part, severing into a body of its own once it holds a
+//! provision's worth, a seedling that grows the rest itself. A child's tissue is its
 //! parent's provision moved, never spawned (TD6), and each move is in the
 //! flow record.
 
@@ -109,7 +110,8 @@ impl Staged<'_> {
     }
 
     /// Pours the provision into the bud, growing one where there is none,
-    /// and severs it once full. Returns whether it severed.
+    /// and severs it once it holds a provision's worth. Returns whether it
+    /// severed.
     pub(super) fn bud(&mut self, mark: &Key) -> Result<bool> {
         let (d, own) = self.lineage()?;
         let (Some(provision), Some(tissue)) = (own.provision, own.tissue) else {
@@ -154,9 +156,23 @@ impl Staged<'_> {
                 id
             },
         };
+        // A provision's worth (552): what the parent's reproduce cells hold,
+        // or the bud's adult mass where that is less.
+        let parent = self.actor();
+        let worth: u64 = parent
+            .parts
+            .iter()
+            .filter(|(id, p)| **id != bud && !p.severed)
+            .map(|(_, p)| anatomy::bound(p, rules, &provision))
+            .sum();
+        let part = &parent.parts[&bud];
+        let full = anatomy::ceiling(part, rules.body()).min(worth);
+        let need = full.saturating_sub(part.matter.get(&tissue).copied().unwrap_or(0));
         // Its parts full, the body's room for tissue is the bud's; what the
-        // bud cannot take stays provisioned.
-        let pour = amount.min(anatomy::room(self.actor(), rules, &tissue));
+        // bud does not need stays provisioned.
+        let pour = amount
+            .min(need)
+            .min(anatomy::room(self.actor(), rules, &tissue));
         if pour > 0 {
             let from = std::slice::from_ref(&provision);
             let digested = Conversion::Digestion;
@@ -170,7 +186,7 @@ impl Staged<'_> {
             }
         }
         let part = &self.actor().parts[&bud];
-        if part.matter.get(&tissue).copied().unwrap_or(0) < anatomy::ceiling(part, rules.body()) {
+        if full == 0 || part.matter.get(&tissue).copied().unwrap_or(0) < full {
             return Ok(false);
         }
         let mut part = self.actor().parts.remove(&bud).expect("found above");

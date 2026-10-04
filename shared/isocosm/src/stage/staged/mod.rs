@@ -122,6 +122,7 @@ impl Staged<'_> {
                     self.body(r.who())?,
                     r,
                     &sim.genesis.rules,
+                    Some(&sim.state.lineages),
                 )),
             }
         };

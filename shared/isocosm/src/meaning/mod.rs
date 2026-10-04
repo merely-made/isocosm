@@ -30,7 +30,17 @@ pub(crate) fn value(ledger: &Ledger, key: &str) -> u64 {
 
 /// X2's native readings of a body (ruling 453): each the sum, over its
 /// living parts, of what one part shows.
-pub(crate) fn body_reading(body: &Entity, r: &Reading, rules: &Rules) -> i64 {
+pub(crate) fn body_reading(
+    body: &Entity,
+    r: &Reading,
+    rules: &Rules,
+    lineages: Option<&BTreeMap<Key, Lineage>>,
+) -> i64 {
+    if let Reading::Lacking { .. } = r {
+        let d = lineages.and_then(|l| l.get(&body.lineage)?.development.as_ref());
+        let lacking = d.map_or(0, |d| crate::growth::lacking_mass(rules, d, body));
+        return i64::try_from(lacking).unwrap_or(i64::MAX);
+    }
     let living = body.parts.values().filter(|p| !p.severed);
     let total: u128 = living.map(|p| r.of_part(p, rules.body())).sum();
     i64::try_from(total).unwrap_or(i64::MAX)
@@ -85,6 +95,9 @@ pub(crate) struct Scene<'a> {
     pub tick: Tick,
     pub related: &'a dyn Fn(&Key) -> Result<bool>,
     pub rules: &'a Rules,
+    /// The lineages a body's recipe is read from, where the runner keeps
+    /// them.
+    pub lineages: Option<&'a BTreeMap<Key, Lineage>>,
 }
 
 impl<'a> Scene<'a> {
@@ -221,7 +234,7 @@ fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
             (r, Binding::Part) => {
                 Ok(i64::try_from(r.of_part(s.part()?, s.rules.body())).unwrap_or(i64::MAX))
             },
-            (r, who) => Ok(body_reading(s.body(who)?, r, s.rules)),
+            (r, who) => Ok(body_reading(s.body(who)?, r, s.rules, s.lineages)),
         }
     };
     let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {

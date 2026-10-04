@@ -110,24 +110,17 @@ fn nurse(young: bool) -> Process {
 }
 
 /// The probe's world, its first grazer replaced by a lump bearing a pair
-/// of limbs, its parts full and its provision `provision`.
+/// of limbs, its parts full and its provision `provision`. The probe
+/// declares the provision, the relations and the bud's mark itself.
 fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
     let mut g = BodyFounding::default().generate().unwrap().genesis;
-    g.rules.kinds = BTreeMap::from([
+    g.rules.kinds.extend([
         (
             "kind:lump".into(),
             template([2, 2, 2], &[("intake", 5), ("store", 1), ("reproduce", 1)]),
         ),
         ("kind:limb".into(), template([3, 1, 1], &[("contract", 2)])),
     ]);
-    g.rules.accounts.insert(
-        "provision:1".into(),
-        AccountKind::Matter {
-            lineage: "lineage:1".into(),
-            reserve: false,
-            provision: true,
-        },
-    );
     let d = development(clutch);
     g.lineages.get_mut("lineage:1").unwrap().development = Some(d.clone());
     let feed = vec![
@@ -168,12 +161,6 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
     ] {
         g.rules.processes.insert(p.id.clone(), p);
     }
-    g.rules.traits.insert(BUD.into());
-    g.rules
-        .relations
-        .extend(["sim:parent".into(), "sim:child".into()]);
-    // Room for the children; the probe's world holds its founders alone.
-    g.rules.limits.entities += 64;
     let groups = g.population.groups.iter();
     let id = *groups
         .filter(|(_, c)| c.entity.lineage == "lineage:1")
@@ -231,14 +218,21 @@ fn books(s: &Session) -> Books {
 /// Runs `process` for `actor` and checks the record accounts for every
 /// ledger's change.
 fn run(s: &mut Session, actor: Id, process: &str) -> Vec<Flow> {
+    run_on(s, actor, None, process).1
+}
+
+/// The same on `target`, with the act's outcome.
+fn run_on(s: &mut Session, actor: Id, target: Option<Id>, process: &str) -> (String, Vec<Flow>) {
     let before = books(s);
     let command = Command::Act {
         actor,
-        target: None,
+        target,
         process: process.into(),
         cause: None,
     };
     let record = s.command_with_flows(command).unwrap();
+    let v: serde_json::Value = serde_json::from_str(&record.result).unwrap();
+    let outcome = v["outcome"].to_string();
     let mut claimed = Books::new();
     for f in &record.flows {
         for (holder, sign) in [(f.from.0, -1), (f.to.0, 1)] {
@@ -280,7 +274,7 @@ fn run(s: &mut Session, actor: Id, process: &str) -> Vec<Flow> {
             "{process}: {k:?}"
         );
     }
-    record.flows
+    (outcome, record.flows)
 }
 
 fn session(g: Genesis) -> Session {
@@ -372,8 +366,8 @@ fn nothing_provisioned_bears_nothing() {
 }
 
 #[test]
-fn a_bud_fills_from_the_provision_and_severs_once_full() {
-    let (g, id) = world(1, 12);
+fn a_bud_fills_from_the_provision_and_severs_at_a_provisions_worth() {
+    let (g, id) = world(1, 5);
     let mut s = session(g);
     let before = s.sim.matter();
     run(&mut s, id, "test:bud");
@@ -383,18 +377,13 @@ fn a_bud_fills_from_the_provision_and_severs_once_full() {
         .values()
         .find(|p| p.traits.contains(BUD))
         .unwrap();
-    assert_eq!(bud.matter["tissue:1"], 12, "the provision poured into it");
+    assert_eq!(bud.matter["tissue:1"], 5, "the provision poured into it");
     assert_eq!(parent.parts.len(), 4);
-    // A lump of 100 mg fills at 12 mg a provision: severed on the ninth.
-    let mut rounds = 1;
-    while children(&s, id).is_empty() {
-        assert!(rounds < 20, "the bud never severed");
-        run(&mut s, id, "test:feed");
-        run(&mut s, id, "test:bud");
-        rounds += 1;
-    }
-    // The ninth pours the 4 mg the bud has room for and keeps 8.
-    assert_eq!(rounds, 9);
+    assert!(children(&s, id).is_empty(), "short of a provision's worth");
+    // A provision's worth is the parent's reproduce cell, 12 mg (552): the
+    // next pour takes the 7 mg the bud lacks and the rest stays provisioned.
+    run(&mut s, id, "test:feed");
+    run(&mut s, id, "test:bud");
     let (_, child) = &children(&s, id)[0];
     assert_eq!(child.parts.len(), 1);
     let root = &child.parts[&0];
@@ -403,10 +392,12 @@ fn a_bud_fills_from_the_provision_and_severs_once_full() {
         (root.parent, root.offset, root.situs),
         (None, [0; 3], Some([0, 0, 0]))
     );
-    assert!(held(&s, child, "tissue:1") >= 100);
+    assert_eq!(held(&s, child, "tissue:1"), 12);
     let parent = s.sim.state().population.get(id).unwrap();
     assert_eq!(parent.parts.len(), 3, "the bud left");
     assert!(parent.alive);
+    let kept = held(&s, parent, "provision:1") + held(&s, child, "provision:1");
+    assert_eq!(kept, 5, "what the bud did not need");
     // Fed from the site, so the world's matter is the site's to account.
     assert_eq!(s.sim.matter(), before);
 }
@@ -492,5 +483,46 @@ fn a_scheduled_pass_finds_the_young_by_the_relation() {
         let _ = s.advance_tick_with_flows().unwrap();
         let fed = given(&s, kid) > before;
         assert_eq!(fed, young, "the child is fed only by the relation");
+    }
+}
+
+/// Milk (527, 528, 551): a parent whose stores are full nurses its hungry
+/// young from its provision, digested into the young's tissue as far as it
+/// has room; a parent still filling its stores does not.
+#[test]
+fn a_fed_parent_nurses_its_hungry_young_and_a_hungry_one_does_not() {
+    for fed in [true, false] {
+        let (mut g, id) = world(1, 12);
+        if fed {
+            let rules = g.rules.clone();
+            let e = g.population.lift(id).unwrap();
+            let room = anatomy::room(e, &rules, "reserve:1");
+            anatomy::give(e, &rules, "reserve:1", room)
+                .unwrap()
+                .unwrap();
+        }
+        let mut s = session(g);
+        run(&mut s, id, "test:brood");
+        let (kid, _) = children(&s, id)[0];
+        run(&mut s, id, "test:feed");
+        let of = |s: &Session, who: Id, key: &str| {
+            let e = s.sim.state().population.get(who).unwrap().clone();
+            held(s, &e, key)
+        };
+        let (young, kept) = (of(&s, kid, "tissue:1"), of(&s, id, "provision:1"));
+        assert_eq!(kept, 12);
+        let (outcome, _) = run_on(&mut s, id, Some(kid), "body:nurse-1");
+        let given = kept - of(&s, id, "provision:1");
+        assert_eq!(of(&s, kid, "tissue:1") - young, given, "fed {fed}");
+        match fed {
+            true => {
+                assert_eq!(outcome, "\"Accepted\"");
+                assert!(given > 0);
+            },
+            false => {
+                assert!(outcome.contains("Blocked"), "{outcome}");
+                assert_eq!(given, 0);
+            },
+        }
     }
 }

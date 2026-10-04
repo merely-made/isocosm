@@ -127,6 +127,11 @@ impl Simulation {
             let base = frame.body(*id).expect("a changed body was kept");
             let live = self.state.population.get(*id).expect("staged bodies exist");
             let part = |id: &Id| {
+                // A part another act of the pass removed stays removed, so
+                // the act may not have changed it.
+                if base.parts.contains_key(id) && !live.parts.contains_key(id) {
+                    return body.parts.get(id) == base.parts.get(id);
+                }
                 let matter = |e: &Entity| {
                     e.parts
                         .get(id)
@@ -135,7 +140,24 @@ impl Simulation {
                 };
                 fits(&matter(live), &matter(base), &matter(body))
             };
-            fits(&live.accounts, &base.accounts, &body.accounts) && body.parts.keys().all(part)
+            // A part the act removed, to an eater or a child, takes its
+            // matter with it: it lands only as the pass found it.
+            let same = |a: &Ledger, b: &Ledger| {
+                let held = |l: &Ledger| l.values().filter(|v| **v > 0).count();
+                held(a) == held(b) && a.iter().all(|(k, v)| b.get(k).copied().unwrap_or(0) == *v)
+            };
+            let removed = base
+                .parts
+                .iter()
+                .filter(|(id, _)| !body.parts.contains_key(*id))
+                .all(|(id, was)| {
+                    live.parts
+                        .get(id)
+                        .is_some_and(|now| same(&now.matter, &was.matter))
+                });
+            fits(&live.accounts, &base.accounts, &body.accounts)
+                && body.parts.keys().all(part)
+                && removed
         });
         let site = stage.site.as_ref().is_none_or(|site| {
             let Some(base) = frame.site(stage.place) else {

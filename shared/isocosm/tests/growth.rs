@@ -19,7 +19,7 @@ use isocosm::{
     schema::*,
     simulation::{Genesis, Outcome},
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 const SOIL: &str = "world:soil";
 
@@ -63,21 +63,13 @@ fn recipe(anamorphic: bool) -> Development {
 
 fn world(anamorphic: bool) -> Genesis {
     let mut g = BodyFounding::default().generate().unwrap().genesis;
-    g.rules.kinds = BTreeMap::from([
+    g.rules.kinds.extend([
         (
             "kind:lump".into(),
             template([2, 2, 2], &[("intake", 5), ("store", 1), ("reproduce", 1)]),
         ),
         ("kind:limb".into(), template([3, 1, 1], &[("contract", 2)])),
     ]);
-    g.rules.accounts.insert(
-        "provision:1".into(),
-        AccountKind::Matter {
-            lineage: "lineage:1".into(),
-            reserve: false,
-            provision: true,
-        },
-    );
     g.lineages.get_mut("lineage:1").unwrap().development = Some(recipe(anamorphic));
     g
 }

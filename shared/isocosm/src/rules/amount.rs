@@ -163,6 +163,10 @@ pub enum Reading {
     /// A value the act kept for its later effects, such as what a bite
     /// took before the meal landed.
     Kept { name: Key },
+    /// The adult mass of the parts its lineage's recipe develops that the
+    /// body does not yet hold (rulings 478 and 479): the room growth toward
+    /// the recipe has, nought for a body without one.
+    Lacking { who: Binding },
 }
 
 /// Ruling 493's measurements, each read from a part's box.
@@ -200,7 +204,7 @@ impl Reading {
             Self::Measured {
                 function, measure, ..
             } => anatomy::share_of(p, function, *measure),
-            Self::Kept { .. } => 0,
+            Self::Kept { .. } | Self::Lacking { .. } => 0,
         }
     }
 
@@ -213,6 +217,7 @@ impl Reading {
             | Self::Cells { who, .. }
             | Self::CellMass { who, .. }
             | Self::CellWeight { who }
+            | Self::Lacking { who }
             | Self::Measured { who, .. } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,

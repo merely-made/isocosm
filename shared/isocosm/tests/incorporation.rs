@@ -280,3 +280,132 @@ fn a_bite_that_takes_less_than_the_part_or_wants_no_part_eats_it() {
         assert!(!lexicon(&s).contains("kind:frond"));
     }
 }
+
+/// One pass of two grazers on one producer whose root holds 3 mg and its
+/// frond 10, each bite drawn by holdings and taken whole where it would
+/// take all of the frond (rulings 454 and 516). A part an earlier act of
+/// the pass bit or took may not be taken again as the pass found it, and
+/// a part it took stays taken, so the world's matter holds whichever order
+/// the bites come in; across seeds the frond is taken whole and a later
+/// bite refused.
+#[test]
+fn a_pass_takes_a_part_whole_only_as_it_finds_it() {
+    let (mut taken, mut refused) = (0, 0);
+    for seed in 0..24 {
+        for asks in [[10, 3], [3, 10]] {
+            let (g, grazers, prey) = pass_world(seed, asks);
+            let mut sim = isocosm::Simulation::new(g, Execution::Individuals).unwrap();
+            sim.watch("test:graze");
+            let before = sim.matter();
+            sim.advance(1).unwrap();
+            assert_eq!(sim.matter(), before, "seed {seed} {asks:?}");
+            let state = sim.state();
+            let holds = |id: Id| {
+                let e = state.population.get(id).unwrap();
+                let foreign = |p: &&Part| p.matter.get("tissue:0").is_some_and(|v| *v > 0);
+                e.parts.values().filter(foreign).count()
+            };
+            let whole: usize = grazers.iter().map(|g| holds(*g)).sum();
+            assert!(whole <= 1, "seed {seed}: the frond taken twice");
+            assert!(
+                state.population.get(prey).unwrap().parts.len() + whole == 2,
+                "seed {seed}: a part taken is gone, and only it"
+            );
+            taken += whole;
+            refused += 2 - sim.take_watched().len();
+        }
+    }
+    assert!(taken > 0 && refused > 0, "{taken} taken, {refused} refused");
+}
+
+/// The probe's world cut to one site's ground, a producer of two fronds
+/// holding 3 and 10 mg and two grazers asking `asks`, grazing alone.
+fn pass_world(seed: u64, asks: [u64; 2]) -> (Genesis, [Id; 2], Id) {
+    let (mut g, eater, prey) = world(0, 0, true);
+    g.seed = seed;
+    let frond = g.lineages["lineage:0"].development.clone().unwrap();
+    let rules = g.rules.clone();
+    let mut producer = g.population.get(prey).unwrap().clone();
+    let soma = Soma {
+        segments: vec![2],
+        absent: vec![],
+    };
+    producer.parts = develop(&rules, &frond, &soma).unwrap();
+    producer.soma = vec![2];
+    for (part, held) in [(0, 3), (1, 10)] {
+        producer.parts.get_mut(&part).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+    }
+    let grazer = g.population.get(eater).unwrap().clone();
+    let site = producer.place;
+    let mut population = isocosm::population::Population::default();
+    for c in g.population.groups.values() {
+        if c.entity.lineage == "world:ground" {
+            population.insert(c.entity.clone(), 1).unwrap();
+        }
+    }
+    let prey = population.insert(producer, 1).unwrap();
+    let mut ids = [0; 2];
+    for (k, ask) in asks.into_iter().enumerate() {
+        let mut e = grazer.clone();
+        e.place = site;
+        e.accounts.insert("test:appetite".into(), ask);
+        ids[k] = population.insert(e, 1).unwrap();
+    }
+    g.population = population;
+    g.rules
+        .accounts
+        .insert("test:appetite".into(), AccountKind::Energy);
+    let mut graze = g.rules.processes["test:graze"].clone();
+    if let Some(Effect::Eat { amount, .. }) = graze.effects.first_mut() {
+        *amount = Amount::Computed(Expr::Read(Reading::Account {
+            who: Binding::Actor,
+            key: "test:appetite".into(),
+        }));
+    }
+    graze.period = Some(1);
+    graze.target.as_mut().unwrap().same_place = true;
+    g.rules.processes = BTreeMap::from([(graze.id.clone(), graze)]);
+    (g, ids, prey)
+}
+
+/// The same pass where the smaller grazer gives the producer 5 mg instead
+/// of biting it, which lands by room on its fronds: a gift to a frond an
+/// earlier act took whole may not land, and the world's matter holds.
+#[test]
+fn a_pass_gives_nothing_to_a_part_it_took() {
+    let mut refused = 0;
+    for seed in 0..24 {
+        for asks in [[10, 0], [0, 10]] {
+            let (mut g, grazers, _) = pass_world(seed, asks);
+            let tend = g.rules.processes.get_mut("test:graze").unwrap();
+            let eat = tend.effects.remove(0);
+            let appetite = Expr::Read(Reading::Account {
+                who: Binding::Actor,
+                key: "test:appetite".into(),
+            });
+            tend.effects = vec![Effect::When {
+                guard: Expr::AtLeast(Box::new(appetite), Box::new(Expr::Const(1))),
+                then: vec![eat],
+                otherwise: vec![Effect::Transfer {
+                    from: Binding::Actor,
+                    to: Binding::Target,
+                    account: "tissue:0".into(),
+                    amount: Amount::Fixed(5),
+                }],
+            }];
+            for (k, ask) in asks.into_iter().enumerate() {
+                if ask == 0 {
+                    let e = g.population.lift(grazers[k]).unwrap();
+                    e.accounts.insert("tissue:0".into(), 5);
+                }
+            }
+            let mut sim = isocosm::Simulation::new(g, Execution::Individuals).unwrap();
+            sim.watch("test:graze");
+            let before = sim.matter();
+            sim.advance(1).unwrap();
+            assert_eq!(sim.matter(), before, "seed {seed} {asks:?}");
+            refused += 2 - sim.take_watched().len();
+        }
+    }
+    assert!(refused > 0, "no gift met a frond taken");
+}

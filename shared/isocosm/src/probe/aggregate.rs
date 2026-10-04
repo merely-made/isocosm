@@ -51,6 +51,7 @@ impl Seen<'_> {
             tick: self.tick,
             related: &no_relations,
             rules: self.rules,
+            lineages: None,
         }
     }
     pub(super) fn holds(&self, q: &Query) -> Result<bool> {
@@ -219,7 +220,7 @@ impl Doing<'_> {
                     let part = part.ok_or("no part is bound")?;
                     Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
                 },
-                (r, who) => Ok(meaning::body_reading(body(who)?, r, rules)),
+                (r, who) => Ok(meaning::body_reading(body(who)?, r, rules, None)),
             }
         };
         let draws = self.draws;

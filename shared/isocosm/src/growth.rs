@@ -140,6 +140,25 @@ pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<Part
     Ok(None)
 }
 
+/// The adult mass of the parts `d`'s recipe develops, at the counts the
+/// body grows toward, whose situs the body does not hold.
+pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
+    let soma = Soma {
+        segments: target(d, e),
+        absent: vec![],
+    };
+    let Ok(ideal) = develop(rules, d, &soma) else {
+        return 0;
+    };
+    let held: BTreeSet<[u8; 3]> = e.parts.values().filter_map(|p| p.situs).collect();
+    let b = rules.body();
+    ideal
+        .values()
+        .filter(|p| p.situs.is_some_and(|s| !held.contains(&s)))
+        .map(|p| anatomy::ceiling(p, b))
+        .fold(0, u64::saturating_add)
+}
+
 /// What expressing a new part's functions costs (PD2): one cell's mass for
 /// each cell it expresses.
 pub fn price(rules: &Rules, p: &Part) -> u64 {
