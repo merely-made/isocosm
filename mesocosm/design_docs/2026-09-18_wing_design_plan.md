@@ -6606,6 +6606,8 @@ what later sections derive from.
      brood otherwise, keeping 514's wording." Mark chose A, "Hunger". So a
      fed grazer broods and a hungry one lays an egg, the phenotype's switch
      of 449 read from the hunger TD5 already reads.
+     *Specified 2026-10-04 by ruling 551:* a body whose stores are full is
+     fed, TD5's horizon capped by what its stores may hold.
 
 520. **Whether growth builds a missing part or fills the provision first is
      a lineage trait.** Asked on 2026-10-03, with 519: "With its parts full,
@@ -7292,6 +7294,33 @@ what later sections derive from.
      generator draws a recipe's variance from 1 to 2 and its absence odds
      at 1 in 12, and a lineage's clutch from 1 to 4, by default, each a
      range the founding states and a world may widen.
+
+551. **Full stores count as fed.** Asked on 2026-10-04, building checkpoint
+     8's step 8h: "Under TD5, when is a probe grazer fed? Evidence: TD5
+     calls a body hungry while its reserve holds fewer than 100 ticks of
+     rent. Since 463 a reserve sits only in store cells, up to their mass.
+     Across 300 founded worlds, no grazer of 712 can ever hold 100 ticks:
+     the median store holds 36 mg against 4 mg a tick of rent (9 ticks),
+     and the largest reaches 48% of the horizon. In 12 measured runs of
+     400 ticks, every grazer birth was a clutch of eggs and milk never
+     flowed. As built, 519's brood, 526 to 528's milk (which needs a fed
+     parent) and 516's whole meals can never happen, so 514's check can't
+     certify them." Options, recommended first: (A) "Full stores count as
+     fed: a body is hungry while its reserve is below the lesser of TD5's
+     100 ticks of rent and what its stores can hold. Mesocosm's horizon
+     stands wherever a store can reach it; the probe's grazers are fed
+     once their stores fill. No new number. Producers store nothing, so
+     they count as fed, which changes nothing they do (recommended)." (B)
+     "Horizon a world rule: TD5's 100 ticks becomes a world rule,
+     Mesocosm's 100 by default. The probe draws its horizon per world
+     within what its stores hold (a median 9 ticks), so the check sees both
+     fed and hungry grazers." (C) "Bigger stores: the probe's grazers get a
+     store that can hold 100 ticks of rent: about 400 mg, or 32 store cells
+     at 12.5 mg. This changes 506's bodies." Mark chose A, "Full stores
+     count as fed". So a body is hungry while its reserve is below the
+     lesser of TD5's 100 ticks of rent and what its stores may hold:
+     Mesocosm's horizon stands wherever a store can reach it, a body whose
+     stores are full is fed, and a body that stores nothing counts as fed.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11164,6 +11193,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: ruling 551 recorded, building checkpoint 8's step 8h: full
+  stores count as fed, TD5's horizon capped by what a body's stores may
+  hold, after measuring that no probe grazer's store could reach 100 ticks
+  of rent. Annotation on 519. Carried into the sim plan's checkpoint 8
+  brief, the session notes' §10 and the index.
 - 2026-10-04: rulings 549 and 550 recorded, building checkpoint 8's step
   8g: flora and fauna draw recipes while myco and micro wait for
   territories and surfaces (549), and the generator draws within

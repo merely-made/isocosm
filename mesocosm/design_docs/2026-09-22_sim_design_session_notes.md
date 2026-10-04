@@ -1812,6 +1812,7 @@ Building step 8c raised one more:
 | How does the generator draw a founded lineage's life history? | 548: drawn, within what bodies allow |
 | Which kingdoms get recipes in a world that asks for bodies? | 549: flora and fauna |
 | What bounds does the generator draw within, by default? | 550: Mesocosm's where it has one |
+| When is a probe grazer fed? | 551: full stores count as fed |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
