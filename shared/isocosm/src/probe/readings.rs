@@ -431,6 +431,7 @@ pub fn evaluate(
         site,
         tick,
         rules,
+        lineages: Some(&world.genesis.lineages),
     };
     let mut values = Vec::with_capacity(readings.len());
     for r in readings {

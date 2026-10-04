@@ -116,6 +116,7 @@ impl Crowd<'_> {
                 site,
                 tick: self.tick,
                 rules,
+                lineages: Some(&self.lineages),
             };
             let mut own = p.requires.iter().filter(|q| !binds_target(q));
             if !own.all(|q| seen.holds_for(p, q).unwrap_or(false)) {
@@ -123,7 +124,7 @@ impl Crowd<'_> {
                 continue;
             }
             // What each of this state's hunters asks of its prey.
-            let mouthful = aggregate::mouthful(p, &e, site, rules)?;
+            let mouthful = aggregate::mouthful(p, &e, site, (rules, Some(&self.lineages)))?;
             at.entry(e.place).or_default().push((e, n, mouthful));
         }
         for (site, hunters) in at {
@@ -232,6 +233,7 @@ impl Crowd<'_> {
                     count: 1,
                     tick: self.tick,
                     rules,
+                    lineages: Some(&self.lineages),
                     draws: &draws,
                     meal: Some((was, &portion, bitten)),
                 };

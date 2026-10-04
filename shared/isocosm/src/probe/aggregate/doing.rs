@@ -11,6 +11,7 @@ use super::*;
 /// One state's members as their act leaves them, and what the act reads.
 pub(super) struct Doing<'a> {
     pub(super) rules: &'a Rules,
+    pub(super) lineages: Lineages<'a>,
     pub(super) member: Entity,
     pub(super) part: Option<Id>,
     /// The site as every member's writes leave it.
@@ -95,6 +96,12 @@ impl Parties for Doing<'_> {
         meaning::shift(&mut self.site.conditions, key, delta, self.count)?;
         meaning::shift(&mut self.seen.conditions, key, delta, 1)
     }
+    fn development(&mut self, lineage: &str) -> Result<Development> {
+        let found = self.lineages.and_then(|l| l.get(lineage));
+        found
+            .and_then(|l| l.development.clone())
+            .ok_or_else(|| format!("{lineage}'s bodies cannot grow here"))
+    }
 }
 
 impl Doing<'_> {
@@ -107,7 +114,7 @@ impl Doing<'_> {
             e.parts.values().filter(|p| !p.severed).cloned().collect()
         };
         let (mine, theirs) = (living(&self.member), self.prey.as_ref().map(living));
-        let (rules, b) = (self.rules, self.rules.body());
+        let (rules, b, lineages) = (self.rules, self.rules.body(), self.lineages);
         let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
             match who {
                 Binding::Actor => Ok((mine.clone(), b)),
@@ -146,7 +153,7 @@ impl Doing<'_> {
                     let part = part.ok_or("no part is bound")?;
                     Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
                 },
-                (r, who) => Ok(meaning::body_reading(body(who)?, r, rules, None)),
+                (r, who) => Ok(meaning::body_reading(body(who)?, r, rules, lineages)),
             }
         };
         let draws = self.draws;

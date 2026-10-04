@@ -53,6 +53,9 @@ pub struct Crowd<'w> {
     pub tick: Tick,
     pub sites: BTreeMap<Id, Site>,
     pub bins: BTreeMap<Entity, u64>,
+    /// What its lineages develop from, their lexicons as their bodies
+    /// have taught them (468).
+    pub lineages: BTreeMap<Key, Lineage>,
     pub work: Work,
     /// Prey a hunting pass shared out among eaters it could not cover.
     pub shortfalls: u64,
@@ -79,6 +82,7 @@ impl<'w> Crowd<'w> {
             tick: 0,
             sites: world.genesis.sites.clone(),
             bins,
+            lineages: world.genesis.lineages.clone(),
             work: Work::default(),
             shortfalls: 0,
             site_shortfalls: 0,
@@ -230,6 +234,7 @@ impl<'w> Crowd<'w> {
                 count: 1,
                 tick: self.tick,
                 rules,
+                lineages: Some(&self.lineages),
                 draws,
                 meal: None,
             };
@@ -285,6 +290,7 @@ impl<'w> Crowd<'w> {
                 count: n,
                 tick: self.tick,
                 rules,
+                lineages: Some(&self.lineages),
                 draws: &draws,
                 meal: None,
             };
@@ -311,7 +317,8 @@ impl<'w> Crowd<'w> {
         let start = site.clone();
         let rules = &world.genesis.rules;
         let run = aggregate::Run::Free;
-        let next = aggregate::apply(p, e, &start, site, n, self.tick, rules, run)?
+        let bodies = (rules, Some(&self.lineages));
+        let next = aggregate::apply(p, e, &start, site, n, self.tick, bodies, run)?
             .ok_or_else(|| format!("{process} was blocked in the round"))?;
         self.work.accepted += n;
         Ok(next)

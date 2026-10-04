@@ -16,8 +16,8 @@ use crate::{
     Result,
     meaning::{self, Named, Parties, Scene, credit, debit},
     rules::{
-        Amount, Binding, BodyRules, Draw, Effect, Expr, PartsOf, Process, Query, Read, Reading,
-        Rules, expressing,
+        Amount, Binding, BodyRules, Development, Draw, Effect, Expr, PartsOf, Process, Query, Read,
+        Reading, Rules, expressing,
     },
     schema::*,
 };
@@ -37,12 +37,16 @@ fn no_relations(_: &Key) -> Result<bool> {
     Err("the crowd keeps no relations".into())
 }
 
+/// The lineages a crowd's bodies develop from, where they have bodies.
+pub(super) type Lineages<'a> = Option<&'a BTreeMap<Key, Lineage>>;
+
 /// What one member, or a site alone, shows a query.
 pub(super) struct Seen<'a> {
     pub member: Option<&'a Entity>,
     pub site: &'a Site,
     pub tick: Tick,
     pub rules: &'a Rules,
+    pub lineages: Lineages<'a>,
 }
 
 impl Seen<'_> {
@@ -55,7 +59,7 @@ impl Seen<'_> {
             tick: self.tick,
             related: &no_relations,
             rules: self.rules,
-            lineages: None,
+            lineages: self.lineages,
         }
     }
     pub(super) fn holds(&self, q: &Query) -> Result<bool> {
@@ -78,6 +82,7 @@ pub(super) struct Act<'a> {
     pub count: u64,
     pub tick: Tick,
     pub rules: &'a Rules,
+    pub lineages: Lineages<'a>,
     /// Each slot's draw, fixed for the members the act stands for.
     pub draws: &'a BTreeMap<u8, u64>,
     /// A meal's prey as the pass began, the matter the meal's share takes
@@ -175,7 +180,7 @@ pub(super) fn apply(
     site: &mut Site,
     count: u64,
     tick: Tick,
-    rules: &Rules,
+    (rules, lineages): (&Rules, Lineages),
     run: Run,
 ) -> Result<Option<Entity>> {
     let draws = BTreeMap::new();
@@ -184,6 +189,7 @@ pub(super) fn apply(
         count,
         tick,
         rules,
+        lineages,
         draws: &draws,
         meal: None,
     };
@@ -209,6 +215,7 @@ pub(super) fn act(
         site: a.start,
         tick: a.tick,
         rules: a.rules,
+        lineages: a.lineages,
     };
     // A query of the prey is the hunt's, which chose it; a query that errs
     // blocks, as it does in the core.
@@ -223,6 +230,7 @@ pub(super) fn act(
     };
     let mut doing = Doing {
         rules: a.rules,
+        lineages: a.lineages,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
         site: site.clone(),
@@ -270,13 +278,19 @@ pub(super) fn slots(p: &Process) -> Result<BTreeMap<u8, u64>> {
 
 /// What a hunt's meal, its first effect, asks of its prey for a hunter in
 /// state `e`, read of the hunter and its site as the pass began.
-pub(super) fn mouthful(p: &Process, e: &Entity, start: &Site, rules: &Rules) -> Result<u64> {
+pub(super) fn mouthful(
+    p: &Process,
+    e: &Entity,
+    start: &Site,
+    (rules, lineages): (&Rules, Lineages),
+) -> Result<u64> {
     let Some(Effect::Eat { amount, .. }) = p.effects.first() else {
         return Err(format!("{} feeds by eating its target first", p.id));
     };
     let draws = BTreeMap::new();
     let mut doing = Doing {
         rules,
+        lineages,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
         site: start.clone(),
