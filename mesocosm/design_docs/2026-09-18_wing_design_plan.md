@@ -6925,6 +6925,8 @@ what later sections derive from.
      evidence, committed at `cc91e3e8` on mere's branch `burn-pre4-repin`,
      not on main. The migration session relayed the three rulings for this
      record on 2026-10-03. Mere's migration lane owns the work.
+     *Carried out 2026-10-04 by ruling 555:* the quiet is the ambient load
+     bounded before each launch, outside the measured window.
 
 535. **Whether a lineage breeds from income or from capital is its trait.**
      Asked on 2026-10-03, building checkpoint 8's step 8c: "Where do the
@@ -7396,6 +7398,29 @@ what later sections derive from.
      and the crowd runs a parent and its unweaned young as individuals,
      their relation kept, returning them to its counts once the young is
      weaned, the mechanism by which the crowd will hold any relation.
+
+555. **The quiet A/B bounds the load before each launch.** Asked on
+     2026-10-04 in the Burn migration session, carrying out 534: the quiet
+     GPU-on A/B cannot meet its load bound on this machine. It counted 0 of
+     80 repetitions, all valid; each measured window includes the measured
+     Chrome's own launch and WebGPU page, and an idle minute with nothing
+     of the lane running read a median of 15% and a maximum of 56%.
+     Uncounted, for the record: frame p95 12.2 ms on pre.2 against 18.2 ms
+     on pre.4, and time to ready 1,273 ms against 1,364 ms. Options: (A)
+     bound the ambient load just before each launch, outside the measured
+     window; (B) bound the load excluding the lane's own process tree; (C)
+     keep the bound as stated and run on another of Mark's machines. Mark's
+     answer, as the migration session relays it: "Bound load before
+     launch". So only repetitions that start quiet are counted, the bound
+     on the ambient load before each launch stated before the run, and
+     promotion (S16) still waits on the result.
+
+     Source: the finding and the options are in mere's burn 0.22 migration
+     plan, "Quiet GPU-on A/B, ruling 534" and "Returned as forks", in the
+     working copy of branch `burn-pre4-repin` (after `44500bca`), its
+     evidence under `Code/testing/mere/receipts/2026-10-04/pre4-quiet-ab`;
+     Mark's answer was relayed by the migration session on 2026-10-04,
+     for mere's plan to record.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11268,6 +11293,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: ruling 555 recorded at the Burn migration session's
+  request, carrying out 534: the quiet GPU-on A/B bounds the ambient load
+  before each launch, after 0 of 80 repetitions met a bound that counted
+  the measured page's own launch. Annotation on 534. Carried into the
+  session notes' §9.9 and the index.
 - 2026-10-04: ruling 554 recorded, opening checkpoint 8's step 8i: a
   young is weaned the first time it is fed, nursing reads only unweaned
   young, and the crowd runs a parent and its unweaned young as

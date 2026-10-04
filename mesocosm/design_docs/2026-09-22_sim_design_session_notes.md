@@ -1194,7 +1194,9 @@ build will reach the helper through it. The probe's older `wasm-bindgen`
 pin then blocked it, and Mark answered "Take the newest ya can" (537).
 The newest, 0.2.129, crashed on wgpu 30.0.0 and ran clean on 30.0.1, and
 Mark chose "0.2.129 + wgpu 30.0.1" (545); he also approved the probe's
-decoder model download as stated (546).
+decoder model download as stated (546). The quiet GPU-on A/B then counted
+none of 80 repetitions, its bound reading the measured page's own launch,
+and Mark chose "Bound load before launch" (555).
 
 ## 10. The design session, 2026-09-30
 
