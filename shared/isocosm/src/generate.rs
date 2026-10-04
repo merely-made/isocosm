@@ -28,6 +28,11 @@ pub struct Founding {
     /// hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub preset: Option<crate::preset::Preset>,
+    /// Bodies for flora and fauna, drawn within these bounds (rulings 525
+    /// and 550). Absent in foundings without them, which serialize and hash
+    /// as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bodies: Option<crate::bodied::Bodies>,
 }
 
 impl Default for Founding {
@@ -45,6 +50,7 @@ impl Default for Founding {
             ecology: false,
             map: None,
             preset: None,
+            bodies: None,
         }
     }
 }
@@ -88,6 +94,9 @@ impl Founding {
             || self.base_unit_micrometres == 0
         {
             return Err("founding parameters outside declared generator domain".into());
+        }
+        if let Some(bodies) = &self.bodies {
+            bodies.check()?;
         }
         let random = |domain: &str, i| crate::draw(self.seed, domain, &[i]);
         let mut lineages = BTreeMap::from([(
@@ -440,6 +449,9 @@ impl Founding {
         };
         if self.ecology {
             crate::ecology::configure(self, &mut genesis)?;
+        }
+        if let Some(bodies) = &self.bodies {
+            crate::bodied::embody(&mut genesis, bodies)?;
         }
         genesis.validate()?;
         Ok(genesis)
