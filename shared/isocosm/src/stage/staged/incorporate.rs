@@ -21,75 +21,39 @@ impl Staged<'_> {
             return Ok(false);
         };
         let actor = self.stage.actor;
-        let body = self.body(from)?;
-        let taken = body.parts.get(&part).ok_or("bitten part missing")?.clone();
-        if body
-            .parts
-            .values()
-            .any(|c| !c.severed && c.parent == Some(part))
-        {
+        if prey == actor {
             return Ok(false);
         }
-        let prey_lineage = body.lineage.clone();
-        let eater_lineage = self.actor().lineage.clone();
-        let developed = |l: &Key| {
-            sim.state
-                .lineages
-                .get(l)
-                .and_then(|l| l.development.clone())
+        let developed = |e: &Entity| {
+            let l = sim.state.lineages.get(&e.lineage);
+            l.and_then(|l| l.development.clone())
         };
-        let (Some(eater), Some(donor)) = (developed(&eater_lineage), developed(&prey_lineage))
-        else {
+        let bodies = &self.stage.bodies;
+        let (eater, donor) = (&bodies[&actor], bodies.get(&prey).ok_or("prey missing")?);
+        let (Some(mine), Some(theirs)) = (developed(eater), developed(donor)) else {
             return Ok(false);
         };
         let affinity = sim.genesis.rules.affinity.clone().unwrap_or_default();
-        let verdict = affinity.verdict(donor.domain, eater.domain);
-        if verdict == Verdict::Refused {
-            return Ok(false);
-        }
-        let Some((host, offset)) = growth::resolve(self.actor(), &eater.policy, taken.half_extent)
-        else {
+        let Some(w) = growth::whole((eater, donor), part, (&mine, &theirs), &affinity) else {
             return Ok(false);
         };
-        // What it teaches is its kind in its donor's recipe.
-        let kind = taken.situs.and_then(|[t, _, slot]| {
-            let tagma = donor.recipe.tagmata.get(usize::from(t))?;
-            if slot == 0 {
-                Some(tagma.segment.clone())
-            } else {
-                tagma.bears.clone()
-            }
-        });
-        let body = self.body(from)?;
-        let mut moved = body.parts.remove(&part).expect("found above");
-        if !body.parts.values().any(|q| !q.severed) {
-            body.alive = false;
-        }
-        moved.parent = Some(host);
-        moved.offset = offset;
-        moved.situs = None;
-        if verdict == Verdict::Adapter {
-            moved.cells.clear();
-            moved.functions.clear();
-        }
-        let eater_body = self.actor();
-        let id = eater_body
-            .parts
-            .keys()
-            .next_back()
-            .map_or(0, |last| last + 1);
+        let mut donor = self.stage.bodies.remove(&prey).expect("found above");
+        let id = growth::take_whole(self.actor(), &mut donor, part, &w);
+        self.stage.bodies.insert(prey, donor);
+        let id = id.ok_or("bitten part missing")?;
         if sim.flowing() {
-            for (key, n) in moved.matter.iter().filter(|(_, n)| **n > 0) {
+            let moved = self.actor().parts[&id].matter.clone();
+            for (key, n) in moved.into_iter().filter(|(_, n)| *n > 0) {
                 self.stage.legs.push(Leg {
                     from: (Holder::Part(prey, part), key.clone()),
-                    to: (Holder::Part(actor, id), key.clone()),
-                    amount: *n,
+                    to: (Holder::Part(actor, id), key),
+                    amount: n,
                 });
             }
         }
-        self.actor().parts.insert(id, moved);
-        if let Some(kind) = kind {
-            self.stage.lessons.push((eater_lineage, kind));
+        if let Some(kind) = w.kind {
+            let eater = self.actor().lineage.clone();
+            self.stage.lessons.push((eater, kind));
         }
         Ok(true)
     }

@@ -157,3 +157,95 @@ fn a_prey_too_small_for_its_hunters_is_shared_alike_in_both_runners() {
     let counted = Crowd::new(&bare, 1, Variant::Histogram).unwrap().run();
     assert_eq!(counted.unwrap().shortfalls, 0);
 }
+
+/// One producer of a single frond holding `held`, one grazer with its stores
+/// full and the graze the only process: its bite takes the frond whole where
+/// it would take all of it and the crossing allows (516), and bites it
+/// otherwise.
+fn grazing(seed: u64, held: u64) -> ProbeWorld {
+    use crate::{
+        development::{Soma, develop},
+        probe::BodyFounding,
+    };
+    let mut w = BodyFounding {
+        seed,
+        ticks: 1,
+        sites: [1, 1],
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    let g = &mut w.genesis;
+    g.rules.processes.retain(|id, _| id == "body:graze-1");
+    let rules = g.rules.clone();
+    let find = |lineage: &str| {
+        let groups = g.population.groups.values();
+        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        found.next().unwrap().clone()
+    };
+    let (world, mut frond, mut grazer) =
+        (find("world:ground"), find("lineage:0"), find("lineage:1"));
+    let d = g.lineages["lineage:0"].development.clone().unwrap();
+    let soma = Soma {
+        segments: vec![1],
+        absent: vec![],
+    };
+    frond.parts = develop(&rules, &d, &soma).unwrap();
+    frond.soma = vec![1];
+    frond.parts.get_mut(&0).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+    let room = crate::anatomy::room(&grazer, &rules, "reserve:1");
+    crate::anatomy::give(&mut grazer, &rules, "reserve:1", room)
+        .unwrap()
+        .unwrap();
+    let mut population = Population::default();
+    population.insert(world, 1).unwrap();
+    population.insert(frond, 1).unwrap();
+    population.insert(grazer, 1).unwrap();
+    g.population = population;
+    w
+}
+
+/// Both runners graze a frond alike, taken whole or bitten: the same states
+/// and the same site, across worlds whose drawn domains let the frond land
+/// as it was, expressing nothing, or not at all.
+#[test]
+fn a_whole_meal_lands_alike_in_crowd_and_core() {
+    use crate::probe::readings::{crowd_members, exact_members};
+    let states = |members: Vec<(&Entity, u64)>| {
+        let mut v: Vec<(Entity, u64)> = members
+            .into_iter()
+            .map(|(e, n)| (crate::probe::aggregate::normalize(e.clone()), n))
+            .collect();
+        v.sort();
+        v
+    };
+    let (mut whole, mut bitten) = (0, 0);
+    for seed in 0..12 {
+        for held in [1, 400] {
+            let w = grazing(seed, held);
+            let exact = run_exact(&w, 3, true).unwrap();
+            let crowd = Crowd::new(&w, 3, Variant::Histogram)
+                .unwrap()
+                .run()
+                .unwrap();
+            let a = states(exact_members(&exact));
+            assert_eq!(
+                a,
+                states(crowd_members(&crowd)),
+                "seed {seed}, frond {held}"
+            );
+            assert_eq!(exact.sim.state().sites, crowd.sites, "seed {seed}");
+            let grazer = a.iter().find(|(e, _)| e.lineage == "lineage:1").unwrap();
+            let took = grazer
+                .0
+                .parts
+                .values()
+                .any(|p| p.matter.contains_key("tissue:0"));
+            let prey = a.iter().find(|(e, _)| e.lineage == "lineage:0").unwrap();
+            let left = prey.0.parts.get(&0).map(|p| value(&p.matter, "tissue:0"));
+            whole += usize::from(took);
+            bitten += usize::from(left.is_some_and(|t| t < held));
+        }
+    }
+    assert!(whole > 0 && bitten > 0, "{whole} whole, {bitten} bitten");
+}

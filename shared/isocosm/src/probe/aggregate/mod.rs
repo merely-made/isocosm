@@ -27,6 +27,24 @@ mod doing;
 use doing::Doing;
 pub(in crate::probe) use doing::Run;
 
+use crate::{growth, schedule::edible};
+
+/// What a meal took of its prey: a bite of the part it landed on, or of
+/// its ledger where it keeps no parts, or a part whole (516).
+#[derive(Clone, Debug)]
+pub(in crate::probe) enum Took {
+    Bite(Ledger),
+    Whole(Id),
+}
+
+/// One state's members as an accepted act leaves them, with what its meal
+/// took and what its lineage learned.
+pub(in crate::probe) struct Acted {
+    pub member: Entity,
+    pub took: Option<Took>,
+    pub lessons: Vec<(Key, Key)>,
+}
+
 /// Zero entries dropped: no query and no inspection tells absent from zero.
 pub(super) fn normalize(mut e: Entity) -> Entity {
     e.accounts.retain(|_, v| *v != 0);
@@ -193,7 +211,42 @@ pub(super) fn apply(
         draws: &draws,
         meal: None,
     };
-    act(p, e, site, run, a)
+    Ok(act(p, e, site, run, a)?.map(|done| done.member))
+}
+
+/// A feeding process's meal: its first effect, or the one bite both arms
+/// of a leading guard take, whole or not (516).
+pub(super) fn meal_of(p: &Process) -> Option<&Effect> {
+    let first = p.effects.first()?;
+    let Effect::When {
+        then, otherwise, ..
+    } = first
+    else {
+        return matches!(first, Effect::Eat { .. }).then_some(first);
+    };
+    let alike = |a: &Effect, b: &Effect| match (a, b) {
+        (
+            Effect::Eat {
+                from,
+                amount,
+                into,
+                of,
+                ..
+            },
+            Effect::Eat {
+                from: f,
+                amount: m,
+                into: i,
+                of: o,
+                ..
+            },
+        ) => from == f && amount == m && into == i && of == o,
+        _ => false,
+    };
+    match (then.as_slice(), otherwise.as_slice()) {
+        ([a], [b]) if alike(a, b) => Some(a),
+        _ => None,
+    }
 }
 
 /// Applies `p` as `apply` does, with the draws and the meal of `a`.
@@ -203,7 +256,7 @@ pub(super) fn act(
     site: &mut Site,
     mut run: Run,
     a: Act,
-) -> Result<Option<Entity>> {
+) -> Result<Option<Acted>> {
     if identity_bound(p, a.meal.is_some()) {
         return Err(format!(
             "{} depends on identity; it runs individually",
@@ -241,13 +294,19 @@ pub(super) fn act(
         bitten: a.meal.and_then(|(_, _, part)| part),
         kept: BTreeMap::new(),
         draws: a.draws,
+        took: None,
+        lessons: vec![],
     };
     let effects: Vec<&Effect> = p.commitments.iter().chain(&p.effects).collect();
     if !doing.run(&effects, a.rules, &mut run, &mut left)? {
         return Ok(None);
     }
     *site = doing.site;
-    Ok(Some(normalize(doing.member)))
+    Ok(Some(Acted {
+        member: normalize(doing.member),
+        took: doing.took,
+        lessons: doing.lessons,
+    }))
 }
 
 /// Each draw slot `p` reads and its bound; a slot read under two bounds is
@@ -284,7 +343,7 @@ pub(super) fn mouthful(
     start: &Site,
     (rules, lineages): (&Rules, Lineages),
 ) -> Result<u64> {
-    let Some(Effect::Eat { amount, .. }) = p.effects.first() else {
+    let Some(Effect::Eat { amount, .. }) = meal_of(p) else {
         return Err(format!("{} feeds by eating its target first", p.id));
     };
     let draws = BTreeMap::new();
@@ -301,6 +360,8 @@ pub(super) fn mouthful(
         bitten: None,
         kept: BTreeMap::new(),
         draws: &draws,
+        took: None,
+        lessons: vec![],
     };
     doing
         .compute(|r, d, parts| amount.resolve(r, d, parts))?

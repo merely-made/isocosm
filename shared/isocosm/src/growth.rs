@@ -10,7 +10,7 @@
 use crate::{
     Result, anatomy,
     development::{Soma, develop, flush},
-    rules::{Development, Policy, Rules},
+    rules::{Affinity, Development, Policy, Rules, Verdict},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -164,4 +164,70 @@ pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
 pub fn price(rules: &Rules, p: &Part) -> u64 {
     let cells: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
     cells.saturating_mul(anatomy::cell_mass(p, rules.body()))
+}
+
+/// A part taken whole (rulings 468, 516 and 544): how its crossing lets it
+/// land and where, and the kind its donor's recipe names it, which the
+/// eater's lineage learns.
+pub struct Whole {
+    pub verdict: Verdict,
+    pub host: Id,
+    pub offset: [i32; 3],
+    pub kind: Option<Key>,
+}
+
+/// Whether `eater` can take `prey`'s part `part` whole: not a part with
+/// living children, not across a refused crossing, not without a free box.
+pub fn whole(
+    (eater, prey): (&Entity, &Entity),
+    part: Id,
+    (mine, theirs): (&Development, &Development),
+    affinity: &Affinity,
+) -> Option<Whole> {
+    let taken = prey.parts.get(&part)?;
+    if prey
+        .parts
+        .values()
+        .any(|c| !c.severed && c.parent == Some(part))
+    {
+        return None;
+    }
+    let verdict = affinity.verdict(theirs.domain, mine.domain);
+    if verdict == Verdict::Refused {
+        return None;
+    }
+    let (host, offset) = resolve(eater, &mine.policy, taken.half_extent)?;
+    let kind = taken.situs.and_then(|[t, _, slot]| {
+        let tagma = theirs.recipe.tagmata.get(usize::from(t))?;
+        match slot {
+            0 => Some(tagma.segment.clone()),
+            _ => tagma.bears.clone(),
+        }
+    });
+    Some(Whole {
+        verdict,
+        host,
+        offset,
+        kind,
+    })
+}
+
+/// Moves `part` off `prey`, dead with no living part left, onto `eater` as
+/// `w` lands it, its donor's matter kept and an adapter's expressing
+/// nothing. Returns its id on the eater.
+pub fn take_whole(eater: &mut Entity, prey: &mut Entity, part: Id, w: &Whole) -> Option<Id> {
+    let mut moved = prey.parts.remove(&part)?;
+    if !prey.parts.values().any(|q| !q.severed) {
+        prey.alive = false;
+    }
+    moved.parent = Some(w.host);
+    moved.offset = w.offset;
+    moved.situs = None;
+    if w.verdict == Verdict::Adapter {
+        moved.cells.clear();
+        moved.functions.clear();
+    }
+    let id = eater.parts.keys().next_back().map_or(0, |last| last + 1);
+    eater.parts.insert(id, moved);
+    Some(id)
 }

@@ -147,6 +147,19 @@ impl<'w> Crowd<'w> {
         Ok(())
     }
 
+    /// Kinds its lineages learned by what their bodies took in (468).
+    fn learn(&mut self, lessons: &[(Key, Key)]) {
+        for (lineage, kind) in lessons {
+            let d = self
+                .lineages
+                .get_mut(lineage)
+                .and_then(|l| l.development.as_mut());
+            if let Some(d) = d {
+                d.lexicon.insert(kind.clone());
+            }
+        }
+    }
+
     fn moved(&mut self, from: &Entity, to: Entity, n: u64) {
         let slot = self.bins.get_mut(from).expect("source bin exists");
         *slot -= n;
@@ -297,7 +310,8 @@ impl<'w> Crowd<'w> {
             match aggregate::act(p, &e, site, run, a)? {
                 Some(next) => {
                     self.work.accepted += n;
-                    self.moved(&e, next, n);
+                    self.learn(&next.lessons);
+                    self.moved(&e, next.member, n);
                 },
                 None => self.work.blocked += n,
             }

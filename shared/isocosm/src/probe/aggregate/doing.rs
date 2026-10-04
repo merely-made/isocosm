@@ -27,6 +27,9 @@ pub(super) struct Doing<'a> {
     pub(super) bitten: Option<Id>,
     pub(super) kept: BTreeMap<Key, i64>,
     pub(super) draws: &'a BTreeMap<u8, u64>,
+    /// What its meal took of the prey, and the kinds its lineage learned.
+    pub(super) took: Option<Took>,
+    pub(super) lessons: Vec<(Key, Key)>,
 }
 
 impl Parties for Doing<'_> {
@@ -105,6 +108,41 @@ impl Parties for Doing<'_> {
 }
 
 impl Doing<'_> {
+    /// The bitten part taken whole, where the share would take all of it
+    /// and its crossing and the eater's plan let it land (516, 544); whether
+    /// it was.
+    fn whole(&mut self, of: &[Key], portion: &Ledger) -> Result<bool> {
+        let (Some(prey), Some(id)) = (self.prey.as_mut(), self.bitten) else {
+            return Ok(false);
+        };
+        let Some(part) = prey.parts.get(&id) else {
+            return Ok(false);
+        };
+        let all: u64 = edible(&part.matter, of).values().sum();
+        if portion.values().sum::<u64>() < all {
+            return Ok(false);
+        }
+        let developed = |l: &Key| {
+            let found = self.lineages.and_then(|m| m.get(l));
+            found.and_then(|l| l.development.clone())
+        };
+        let (Some(mine), Some(theirs)) =
+            (developed(&self.member.lineage), developed(&prey.lineage))
+        else {
+            return Ok(false);
+        };
+        let affinity = self.rules.affinity.clone().unwrap_or_default();
+        let bodies = (&self.member, &*prey);
+        let Some(w) = growth::whole(bodies, id, (&mine, &theirs), &affinity) else {
+            return Ok(false);
+        };
+        growth::take_whole(&mut self.member, prey, id, &w).ok_or("bitten part missing")?;
+        let eater = self.member.lineage.clone();
+        self.lessons.extend(w.kind.map(|k| (eater, k)));
+        self.took = Some(Took::Whole(id));
+        Ok(true)
+    }
+
     /// Computes what an amount or a guard reads, as the core's stage does.
     pub(super) fn compute<T>(
         &mut self,
@@ -197,20 +235,39 @@ impl Doing<'_> {
                 let branch = branch.expect("a guard chooses a branch");
                 self.run(&branch.iter().collect::<Vec<_>>(), rules, how, left)
             },
-            // The meal's share of its prey, taken as its pass shared it out.
-            Effect::Eat { into, .. } => {
-                let (Some(prey), Some(portion)) = (&mut self.prey, self.portion.take()) else {
+            // The meal's share of its prey, as its pass shared it out: what
+            // the part its bite lands on held of it as the pass began (459),
+            // or that part whole where the share would take all of it (516).
+            Effect::Eat {
+                into, of, whole, ..
+            } => {
+                let Some(portion) = self.portion.take() else {
                     return Err("the crowd eats only in a hunt".into());
                 };
+                if *whole && self.whole(of, &portion)? {
+                    return Ok(true);
+                }
+                let prey = self.prey.as_mut().ok_or("the crowd eats only in a hunt")?;
+                let held = match self.bitten.and_then(|id| prey.parts.get_mut(&id)) {
+                    Some(part) => &mut part.matter,
+                    None => &mut prey.accounts,
+                };
+                let offered = edible(held, of);
+                let taken: Ledger = portion
+                    .into_iter()
+                    .map(|(k, v)| {
+                        let v = v.min(offered.get(&k).copied().unwrap_or(0));
+                        (k, v)
+                    })
+                    .filter(|(_, v)| *v > 0)
+                    .collect();
                 let mut total = 0u64;
-                for (key, value) in &portion {
-                    match self.bitten.and_then(|id| prey.parts.get_mut(&id)) {
-                        Some(part) => debit(&mut part.matter, key, *value)?,
-                        None => debit(&mut prey.accounts, key, *value)?,
-                    }
+                for (key, value) in &taken {
+                    debit(held, key, *value)?;
                     total += value;
                 }
                 credit(&mut self.member.accounts, into, total)?;
+                self.took = Some(Took::Bite(taken));
                 Ok(true)
             },
             _ => {

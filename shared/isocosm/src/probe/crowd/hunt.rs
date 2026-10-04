@@ -10,13 +10,16 @@
 //! of its own state, where the prey holds enough for all, or else the same
 //! fraction of it, floored, and the prey gives what they take as one share
 //! of the accounts the meal names. Each hunter's whole act then runs
-//! against its prey as the pass began, less its own portion, as the core's
-//! does, and the prey gives only what accepted acts took. Neither runner's
-//! order of hunters changes anything, so nothing is refused.
+//! against its prey as the pass began, as the core's does: its bite lands on
+//! one part, drawn by what each holds, and takes what that part held of its
+//! share, or the part whole (459, 516). What it took lands on the prey as
+//! the hunters before it left it only where it fits, as a pass's acts land
+//! in the core: a bite of what the part still holds, a part taken whole
+//! only as the pass found it; otherwise the act is blocked.
 
 use super::{
     super::{
-        aggregate::{self, Seen, binds_target},
+        aggregate::{self, Seen, Took, binds_target},
         draws::Stream,
     },
     Crowd,
@@ -55,7 +58,7 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
         amount,
         of,
         ..
-    }) = p.effects.first()
+    }) = aggregate::meal_of(p)
     else {
         return refuse("the crowd feeds by eating its target first");
     };
@@ -204,29 +207,18 @@ impl Crowd<'_> {
             let mut left = share(&offered, rules, given.iter().sum());
             let mut after = was.clone();
             for (&h, g) in eaters.iter().zip(given) {
-                let mut portion = share(&left, rules, g);
+                let portion = share(&left, rules, g);
                 for (k, v) in &portion {
                     *left.get_mut(k).expect("a portion of what is left") -= v;
                 }
-                // The bite lands on one part, drawn by what each holds, and
-                // takes what that part holds of the portion (rulings 454 and
-                // 459); a prey with no parts to hold matter draws nothing.
+                // A prey with no parts to hold matter draws nothing.
                 let bitten = match bodied(was) {
                     true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
                     false => None,
                 };
-                if let Some(id) = bitten {
-                    let part = &after.parts[&id].matter;
-                    for (k, v) in portion.iter_mut() {
-                        *v = (*v).min(part.get(k).copied().unwrap_or(0));
-                    }
-                    portion.retain(|_, v| *v > 0);
-                }
                 let hunter = &hunters[h].0;
-                let live = self
-                    .sites
-                    .get_mut(&site)
-                    .ok_or("a bin at an unknown site")?;
+                let live = self.sites.get(&site).ok_or("a bin at an unknown site")?;
+                let mut scratch = live.clone();
                 let draws = BTreeMap::new();
                 let a = aggregate::Act {
                     start: began,
@@ -238,25 +230,18 @@ impl Crowd<'_> {
                     meal: Some((was, &portion, bitten)),
                 };
                 let run = aggregate::Run::Free;
-                let Some(fed) = aggregate::act(p, hunter, live, run, a)? else {
+                let fed = aggregate::act(p, hunter, &mut scratch, run, a)?;
+                let Some(fed) = fed.filter(|f| lands(&f.took, was, &mut after, bitten)) else {
                     self.work.blocked += 1;
                     continue;
                 };
-                // The prey gives only what accepted acts took.
-                for (k, v) in &portion {
-                    match bitten {
-                        Some(id) => {
-                            let part = after.parts.get_mut(&id).ok_or("bitten part missing")?;
-                            debit(&mut part.matter, k, *v)?;
-                        },
-                        None => debit(&mut after.accounts, k, *v)?,
-                    }
-                }
+                self.sites.insert(site, scratch);
+                self.learn(&fed.lessons);
                 self.work.accepted += 1;
                 let log = self.meals.entry(p.id.clone()).or_default();
                 log.count += 1;
                 log.held += mass(&books(was), rules);
-                moves.push((hunter.clone(), fed));
+                moves.push((hunter.clone(), fed.member));
             }
             moves.push((was.clone(), super::normalize(after)));
         }
@@ -264,6 +249,51 @@ impl Crowd<'_> {
             self.moved(&from, to, 1);
         }
         Ok(())
+    }
+}
+
+/// Lands what a meal took on the prey as the hunt has left it, where it
+/// fits: a bite of what the part, or the ledger, still holds; a part taken
+/// whole only as the pass found it. Returns whether it landed.
+fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<Id>) -> bool {
+    let holds =
+        |l: &Ledger, t: &Ledger| t.iter().all(|(k, v)| l.get(k).copied().unwrap_or(0) >= *v);
+    match took {
+        None => true,
+        Some(Took::Whole(id)) => {
+            let held = |e: &Entity| {
+                let p = e
+                    .parts
+                    .get(id)
+                    .map(|p| p.matter.clone())
+                    .unwrap_or_default();
+                p.into_iter().filter(|(_, v)| *v > 0).collect::<Ledger>()
+            };
+            if !after.parts.contains_key(id) || held(after) != held(was) {
+                return false;
+            }
+            after.parts.remove(id);
+            if !after.parts.values().any(|q| !q.severed) {
+                after.alive = false;
+            }
+            true
+        },
+        Some(Took::Bite(taken)) => {
+            let ledger = match bitten {
+                Some(id) => match after.parts.get_mut(&id) {
+                    Some(part) => &mut part.matter,
+                    None => return false,
+                },
+                None => &mut after.accounts,
+            };
+            if !holds(ledger, taken) {
+                return false;
+            }
+            for (k, v) in taken {
+                debit(ledger, k, *v).expect("checked above");
+            }
+            true
+        },
     }
 }
 
