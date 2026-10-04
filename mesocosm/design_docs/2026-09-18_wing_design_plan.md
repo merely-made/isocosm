@@ -6958,6 +6958,8 @@ what later sections derive from.
      included, reaches it through Cambium's web host.
      *Pinned 2026-10-03 by ruling 537:* the probe could not share the web
      host's `wasm-bindgen`, and the modules take the newest they can.
+     *Pinned exactly 2026-10-03 by ruling 545:* wasm-bindgen 0.2.129 with
+     wgpu 30.0.1.
 
      Source: relayed by the Burn migration session ("Conatus, physics,
      seiche status") on 2026-10-03, to be recorded in mere's burn 0.22
@@ -7157,6 +7159,53 @@ what later sections derive from.
      its provenance; the eater can neither spend it on rent nor grow from
      it; and the part's room for the eater's own tissue counts the matter
      it already holds.
+
+545. **The web modules take wasm-bindgen 0.2.129 with wgpu 30.0.1.** Asked
+     on 2026-10-03 in the Burn migration session, carrying out 537: the
+     newest wasm-bindgen, 0.2.129, still crashes with wgpu 30.0.0 once per
+     GPU-on page, since from 0.2.126 its `JsOption` treats only
+     `undefined` as no error while the browser answers `null`; wgpu
+     30.0.1 reads it through `JsNullable` and needs 0.2.127 or later, and
+     the root lock already takes 30.0.1. In one session 0.2.127 and 0.2.129
+     crashed on 30.0.0 and 0.2.129 ran clean twice on 30.0.1, the
+     2,000-node settle within its bounds; graphshell-web on mere's main has
+     the crash today. Options: (A) "wasm-bindgen 0.2.129 with wgpu 30.0.1
+     in graphshell-web, `cambium-genet-web-host` and the probe. That is one
+     wgpu across the root, web and probe graphs. It removes the silent
+     panic graphshell-web has on main today, and the helper and the probe
+     dependency proceed as ruled (recommended)." (B) "wasm-bindgen 0.2.129
+     with wgpu 30.0.0. Every GPU-on page keeps panicking once, and the
+     probe's rows would fail on the worker error." (C) "all three at
+     0.2.122. That is an older version, and wgpu 30.0.1 cannot take it, so
+     the root lock would have to drop to 30.0.0 as well." Mark's answer, as
+     the migration session relays it: "0.2.129 + wgpu 30.0.1". So
+     graphshell-web, cambium-genet-web-host and Distillery's model probe
+     take wasm-bindgen 0.2.129 with wgpu 30.0.1, one wgpu across the root,
+     web and probe graphs, and the helper proceeds as 536 ruled. *Reading,
+     not ruled:* Isometry's web build reaches the same pins through
+     Cambium's web host.
+
+     Source: the finding and the options are in mere's burn 0.22 migration
+     plan §13.37, at `88897eb6` on branch `burn-pre4-repin`, its evidence
+     under `Code/testing/mere/receipts/2026-10-03/pre4-bindgen`; Mark's
+     answer was relayed by the migration session on 2026-10-03, for §13.38.
+
+546. **The Distillery probe's decoder model may be downloaded as stated.**
+     Asked on 2026-10-03 in the Burn migration session: "approve
+     downloading HuggingFaceTB/SmolLM2-135M-Instruct at revision
+     12fd25f77366fa6b3b4b768ec3050bf629380bac (Apache-2.0) from Hugging
+     Face. That is config (861 B), tokenizer (2.1 MB) and weights (269 MB,
+     BF16), about 271 MB in all, each checked against the SHA-256 already
+     pinned in the probe's `decoder-model.json`, and stored outside the
+     repo. It is for the Distillery probe's decoder row on pre.4." Options:
+     "approve as stated"; "skip the decoder row for this migration".
+     Mark's answer, as the migration session relays it: "Approve as
+     stated". So that model, at that revision, may be downloaded from
+     Hugging Face as stated, each file checked against its pinned SHA-256
+     and kept outside the repository, for the probe's decoder row.
+
+     Source: relayed by the migration session on 2026-10-03, for mere's
+     burn plan §13.38 on `burn-pre4-repin`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11029,6 +11078,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-03: rulings 545 and 546 recorded at the Burn migration session's
+  request: the web modules take wasm-bindgen 0.2.129 with wgpu 30.0.1,
+  carrying out 537 (545), and the Distillery probe's decoder model may be
+  downloaded as stated (546). Annotation on 536. Carried into the session
+  notes' §9.9 and the index.
 - 2026-10-03: ruling 544 recorded, building checkpoint 8's step 8f: an
   incorporated part keeps its donor's matter, unspendable by the eater
   and counted against the part's room. Annotations on 504 and 516.

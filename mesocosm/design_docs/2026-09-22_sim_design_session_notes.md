@@ -1192,6 +1192,9 @@ zero-dependency crate, Mark housed the helper in cambium-genet-web-host
 (536), so the model probe takes Cambium's web host and Isometry's web
 build will reach the helper through it. The probe's older `wasm-bindgen`
 pin then blocked it, and Mark answered "Take the newest ya can" (537).
+The newest, 0.2.129, crashed on wgpu 30.0.0 and ran clean on 30.0.1, and
+Mark chose "0.2.129 + wgpu 30.0.1" (545); he also approved the probe's
+decoder model download as stated (546).
 
 ## 10. The design session, 2026-09-30
 
