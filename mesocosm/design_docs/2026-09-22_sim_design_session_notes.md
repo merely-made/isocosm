@@ -1203,7 +1203,10 @@ counted 7 pre.2 and 8 pre.4 repetitions, indistinguishable in frame pacing,
 and Mark chose "Promote, then handoffs" (557); he also had the getrandom
 cfg committed (558) and the OPFS probe's rustfmt sweep taken (559). The
 probe, repro and OPFS runners had been building with the default stable
-toolchain, and Mark chose "The repo's pin (Recommended)" (567).
+toolchain, and Mark chose "The repo's pin (Recommended)" (567). Knot's
+repin onto pre.4, the first handoff, compiled with no source edits; Mark
+had its CubeCL persistence mirror 375 through mere's git (585) and djinn's
+rows for Knot's scene crates come with djinn's Knot repin (586).
 
 ## 10. The design session, 2026-09-30
 
@@ -1859,6 +1862,10 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | How often does a child's cell vary? | 578: per child, drawn |
 | Which functions can a cell vary to? | 579: any, by measurement |
 | Does a riff swap a role's function or add one? | 580: either, even odds |
+| Do a body's parts share a route's capacity? | 581: shared |
+| When several carried systems route a native's function, how does the native read them? | 582: as one network |
+| What happens to an inherited system the child's body doesn't realize? | 583: carried dormant |
+| Can a cell vary out of the last cell of a function that feeds, senses or fixes? | 584: any cell |
 
 Between the second round and the third, Mark asked, with an article on
 computational models of thought, whether the work overcompensates for not

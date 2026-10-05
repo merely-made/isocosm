@@ -7499,6 +7499,8 @@ what later sections derive from.
      ruled:* Isometry's repin is a step of its own, taken from that handoff.
      *Placed 2026-10-05 by ruling 572:* Isometry's repin follows checkpoint
      9.
+     *First handoff 2026-10-05, rulings 585 and 586:* Knot's repin moved
+     its mere rows to `07db35e2` with no source edits.
 
 558. **The web workspaces commit the getrandom cfg.** Asked on 2026-10-04
      in the Burn migration session, with 559 as one multi-select question:
@@ -7584,6 +7586,9 @@ what later sections derive from.
      is what reached over what was asked. *Reading, not ruled:* the routing
      is wing-functions' own, which gains a query for how much a route can
      carry rather than a second router in the sim.
+     *Specified 2026-10-05 by rulings 581 and 582:* a process's parts
+     share a route's capacity, and a native reads the systems routing its
+     function as one network.
 
 563. **No single riff is picked; riffing is to be systemic.** Asked on
      2026-10-05, checkpoint 9's second round: "Which riffed system does
@@ -7732,6 +7737,8 @@ what later sections derive from.
      cells vary at birth.
      *Specified 2026-10-05 by ruling 580:* a riff swaps or adds, at even
      odds.
+     *Specified 2026-10-05 by ruling 583:* an inherited system the child
+     cannot realize is carried dormant.
 
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
@@ -7814,6 +7821,9 @@ what later sections derive from.
      checkpoint 9". So checkpoint 9 is finished and merged on the current
      pin, and Isometry's repin onto mere's pre.4 main follows as its own
      step, briefed from mere's burn plan §13.40 to §13.45.
+     *Briefed 2026-10-05 from Knot's repin (585):* a standalone graph
+     compiling CubeCL takes turso unless it mirrors 375 as Knot does, so
+     Isometry's repin meets the same fork if its graph compiles CubeCL.
 
 573. **Each recipe draws its riff odds between 1 in 12 and 1 in 100.** Asked
      on 2026-10-05, with 572: "At what odds does a child's system vary
@@ -7941,6 +7951,8 @@ what later sections derive from.
      1 in 12 and 1 in 100, a range a world may widen, one cell of one of a
      child's parts varies. *Reading, not ruled:* the cell is drawn
      uniformly among the child's cells.
+     *Specified 2026-10-05 by ruling 584:* any cell may vary, the last of a
+     function that feeds, senses or fixes included.
 
 579. **A cell may vary to any grown function.** Asked with 577: "Which
      functions can a cell vary to? Evidence: under 492 no shape gates a
@@ -7980,6 +7992,118 @@ what later sections derive from.
      ability, and selection decides. *Reading, not ruled:* the system, its
      role and the new function are drawn uniformly, the function among
      those the child's body expresses that the role does not already name.
+
+581. **A process's parts share a route's capacity.** Asked on 2026-10-05,
+     checkpoint 9's sixth round: "Do a body's parts share a route's
+     capacity? Evidence: wing-functions resets edge capacity for every
+     operation. Delivering part by part (562) as separate operations judges
+     each part's route alone; delivering a process in one operation makes a
+     trunk carry everything bound beyond it. 564's 7 to 14 mg a cell came
+     from the shared reading: the most any part carries, 6.75, is a whole
+     54 mg mouthful through an 8-cell lump. Intact bodies carry everything
+     either way in checkpoint 9. The choice decides what checkpoint 10's
+     wounds do." Options, recommended first: (A) "Shared: One operation per
+     process: a part carries everything bound for the parts beyond it, so a
+     narrowed trunk shorts every part behind it. Who loses first when it
+     binds is checkpoint 10's question (recommended)." (B) "Own route: Each
+     part's route is judged alone, as wing-functions works today. A
+     narrowed trunk shorts only a part whose own share exceeds what it
+     carries." Mark chose A, "Shared". So a process routes in one
+     operation, a part carrying everything bound for the parts beyond it,
+     and a narrowed trunk shorts every part behind it; who loses first when
+     a trunk binds is checkpoint 10's question. *Reading, not ruled:*
+     wing-functions' partial-carriage query routes a process to one sink
+     that each effect part feeds by its share, so capacity is shared within
+     the operation and resets between processes.
+
+582. **A native reads the systems routing its function as one network.**
+     Asked with 581: "When several carried systems route a native's
+     function, how does the native read them (575)? Evidence: every
+     system's network runs over the same tree and the same capacities. They
+     differ only in which parts are sources, stores, gates and effects. A
+     riff adding intake to the muscular system's sources would also route
+     the meal to the contracting parts. The meal's size is fixed by the
+     bite, so reading each system as its own process would land it twice."
+     Options, recommended first: (A) "As one network: The native reads the
+     union of those systems as one network: all their sources, all their
+     effects, the process landing across them (recommended)." (B) "The best
+     one: The native reads whichever of those systems carries the most of
+     what it asks, and the others stand idle." (C) "Default first: The
+     native reads its own default system (489's pairing) where the body
+     carries it, and a riffed system only where it does not." Mark chose A,
+     "As one network". So a native reads the carried systems that route its
+     function as one network, all their sources and all their effects, the
+     process landing across them. *Reading, not ruled:* a role reading
+     "every living part" names no function, so a native reads only roles
+     that name its function, in the role 489's pairing gives it: fix and
+     intake as sources, contract and reproduce as effects. Otherwise every
+     latent cell would be routed already through a system whose sources are
+     every living part, and nothing would be latent (574).
+
+583. **An inherited system the body cannot realize is carried dormant.**
+     Asked with 581: "What happens to an inherited system the child's body
+     doesn't realize? Evidence: absence takes a borne kind at 1 in 12 per
+     tagma (531). A grazer whose only limb-bearing segment loses its limbs
+     has no contracting part, so its muscular system has no effect. Varied
+     cells are inherited (577), so a descendant may grow the part back.
+     Founding carries only what a body realizes (574)." Options, recommended
+     first: (A) "Carried dormant: The child carries it, routing nothing, and
+     passes it on, so a descendant whose body realizes it again has it back.
+     Latent systems build up as latent cells do (recommended)." (B)
+     "Dropped: A child carries only the inherited systems its body
+     realizes, as founding does. A dropped system is gone from the line
+     until a riff or the epoch boundary restores it." Mark chose A, "Carried
+     dormant". So a child carries every system its parent carried, one its
+     body cannot realize routing nothing, and passes it on, so a descendant
+     whose body realizes it again has it back.
+
+584. **Any cell may vary.** Asked with 581: "Can a cell vary out of the
+     last cell of a function that feeds, senses or fixes? Evidence: a
+     grazer's lump can hold a single intake cell (its 8 cells less store and
+     reproduce), its eye has one sense cell, and a frond can hold as little
+     as one fix cell. Absence spares kinds that feed, sense or fix, but only
+     as a reading of 531, never ruled. Varying such a cell makes a child
+     that cannot eat or fix." Options, recommended first: (A) "Any cell: Any
+     cell may vary, and selection decides: a child born unable to feed
+     starves. This matches 571, outcomes measured rather than managed
+     (recommended)." (B) "Never the last: A cell never varies out of the
+     last one its body holds of a function that feeds, senses or fixes, as
+     absences spare those kinds." Mark chose A, "Any cell". So any cell may
+     vary, the last of a function that feeds, senses or fixes included, and
+     a child born unable to feed starves. The sparing of those kinds from
+     absence, 531's reading, is not touched.
+
+585. **Knot's CubeCL persistence mirrors 375 through mere's git.** Asked on
+     2026-10-05 in Knot's repin onto pre.4, 557's first handoff:
+     "pristine `cubecl-runtime 0.11.0-pre.4` turns `persistence` on by
+     default, which pulls in turso 0.8.0-pre.13. Mere avoids this with
+     ruling 375's patch tree, but `[patch]` doesn't carry across
+     workspaces, so standalone Knot takes upstream's default." Options, as
+     the migration session relays them: (A) "Mirror 375 via mere's git
+     (Recommended)": one `[patch.crates-io]` row, `cubecl-runtime` from
+     mere.git at the same rev, nothing vendored; 1,278 packages with no
+     turso or SQLite, at the cost of one more row each repin. (B) "Pristine
+     upstream": 1,338 packages including turso's cone of about 55 crates,
+     with `cc` pinned to 1.4.7. Mark's answer, as it relays it: "Mirror 375
+     via mere's git (Recommended)". So Knot's root patch table takes
+     `cubecl-runtime` from mere.git at the rev its mere rows pin, and the
+     row moves with them at every repin.
+
+586. **djinn's rows for Knot's scene crates come with djinn's Knot repin.**
+     Asked with 585: "Knot now names `scenograph` and `scenomise` from
+     mere.git. Mere's `[patch."…mere.git"]` table lacks both, so djinn's
+     graph carries second copies. It still compiles because no types cross
+     between them." Options, as relayed: add both rows in the mere change
+     that moves djinn's Knot pin; or add them on mere main now. Mark's
+     answer, as it relays it: "With djinn's Knot repin (Recommended)". So
+     one mere change moves djinn's Knot pin to Knot's new head and adds the
+     two rows, which also drops the second genet copy mere carries through
+     the stale pin.
+
+     Source for 585 and 586: mere's burn 0.22 migration plan §13.46, at
+     `b7419e77` on mere's main, relayed by the migration session on
+     2026-10-05. Knot's repin moved 42 mere rows in three manifests from
+     `c79bb8c2` to `07db35e2` with no source edits.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11852,6 +11976,16 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's sixth round ruled (581 to 584): a process's
+  parts share a route's capacity (581); a native reads the systems routing
+  its function as one network (582); an inherited system the body cannot
+  realize is carried dormant (583); and any cell may vary (584). And
+  rulings 585 and 586 at the Burn migration session's request, from Knot's
+  repin onto pre.4: Knot's CubeCL persistence mirrors 375 through mere's
+  git, and djinn's rows for Knot's scene crates come with djinn's Knot
+  repin. Annotations on 557, 562, 568, 572 and 578. Carried into the sim
+  plan's checkpoint 9 brief, the anatomy brief's §1, the session notes and
+  the index.
 - 2026-10-05: checkpoint 9's fifth round ruled (577 to 580): a varied cell
   is inherited (577); one cell of a child varies at odds each recipe draws,
   1 in 12 to 1 in 100 (578); to any grown function, doing what its

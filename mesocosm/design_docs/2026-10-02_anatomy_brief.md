@@ -88,7 +88,10 @@ riffing is certified as it arises. *And (574 to 576):* a body carries
 the systems it realizes; a native acts on any carried system routing its
 function; and latent capability arises as cells vary at birth. *And (577
 to 580):* varied cells are inherited, vary at odds each recipe draws, to
-any grown function, and a riff swaps or adds at even odds.
+any grown function, and a riff swaps or adds at even odds. *And (581 to
+584):* a process's parts share a route's capacity; a native reads its
+systems as one network; an unrealized inherited system is carried dormant;
+and any cell may vary.
 
 ## 2. The function catalogue
 
