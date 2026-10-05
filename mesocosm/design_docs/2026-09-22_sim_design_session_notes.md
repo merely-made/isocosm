@@ -1221,7 +1221,10 @@ CubeCL takes turso unless it mirrors 375 (585), and turso's `aegis` needs
 `cc` at 1.4.7 or later. 558 applies only to workspaces compiling getrandom
 0.3 for wasm32, and a `**/.cargo/*` ignore rule hides the committed config
 unless it is re-included, as in mere `e0536ef3`. pre.4 needs rustc 1.95 or
-later; Knot stays on 1.97.1.
+later; Knot stays on 1.97.1. Knot's repin was pushed on 2026-10-05 (knot-editor
+`54bb8cd`), its lock 1,278 packages with no turso or SQLite; its lane ran
+a 31 GB machine out of memory at 16 build jobs while other sessions
+built, and 6 jobs were fine.
 
 ## 10. The design session, 2026-09-30
 
