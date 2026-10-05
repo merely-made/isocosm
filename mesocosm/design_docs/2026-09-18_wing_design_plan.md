@@ -6926,7 +6926,9 @@ what later sections derive from.
      not on main. The migration session relayed the three rulings for this
      record on 2026-10-03. Mere's migration lane owns the work.
      *Carried out 2026-10-04 by ruling 555:* the quiet is the ambient load
-     bounded before each launch, outside the measured window.
+     bounded before each launch, outside the measured window. *Promoted
+     2026-10-04 by ruling 557:* the quiet A/B found the two indistinguishable
+     in frame pacing.
 
 535. **Whether a lineage breeds from income or from capital is its trait.**
      Asked on 2026-10-03, building checkpoint 8's step 8c: "Where do the
@@ -7425,6 +7427,9 @@ what later sections derive from.
      evidence under `Code/testing/mere/receipts/2026-10-04/pre4-quiet-ab`;
      Mark's answer was relayed by the migration session on 2026-10-04,
      for mere's plan to record.
+     *Answered 2026-10-04 by ruling 557:* 7 pre.2 and 8 pre.4 repetitions
+     started quiet, indistinguishable in frame pacing, and pre.4 is
+     promoted.
 
 556. **Every wasm module moves to the newest wasm-bindgen, 0.2.129.**
      Asked on 2026-10-04 in the Burn migration session, widening 537 and
@@ -7447,6 +7452,42 @@ what later sections derive from.
      CLI install, leaving the gate unproven, or moving the probe to
      0.2.129; Mark's answer was relayed by the migration session on
      2026-10-04, for mere's plan to record.
+
+557. **pre.4 is promoted, then the handoffs follow.** Asked on 2026-10-04
+     in the Burn migration session: every gate holds. The allocator is
+     fixed (508); the wasm constructors run once (509, 532, 536); the web is
+     on wasm-bindgen 0.2.129 with wgpu 30.0.1 (545, 556); the probe's
+     embedding and decoder rows pass (546). The quiet A/B under 555 counted
+     7 pre.2 and 8 pre.4 repetitions: frame p50 12.1 against 12.05 ms, p95
+     12.3 against 12.25 ms, ready 1,369 against 1,389 ms. Main carries the
+     pre.2 lock, and promotion swaps it for pre.4's, about 1,678 packages.
+     Options, as the migration session relays them: promote, then the
+     handoffs; hold. Mark's answer, as it relays it: "Promote, then
+     handoffs". So the coordinator verifies and merges pre.4 into mere's
+     main (S16), and the Knot and Isometry repins follow as their own
+     steps, Knot first if anything breaks, per the lockstep. *Reading, not
+     ruled:* Isometry's repin is a step of its own, taken from that handoff.
+
+558. **The web workspaces commit the getrandom cfg.** Asked on 2026-10-04
+     in the Burn migration session, with 559 as one multi-select question:
+     every receipt bundle so far was built with `--cfg
+     getrandom_backend="wasm_js"` inherited from the batch's environment, so
+     a plain-shell build at the same commit makes a different bundle. Mark
+     ticked "Commit the getrandom cfg". So the flag goes in the web
+     workspaces' committed cargo config.
+
+559. **The OPFS probe takes its rustfmt sweep.** Asked with 558: the
+     muniment OPFS probe's runner stops at `cargo fmt --check`, because its
+     sources predate the 2026-09-04 rustfmt policy, which wants any sweep as
+     its own commit. Mark ticked "Sweep fmt over the OPFS probe". So the
+     sweep goes in its own commit, with its hash in
+     `.git-blame-ignore-revs`.
+
+     Source for 557 to 559: the findings are in mere's burn 0.22 migration
+     plan, the quiet A/B in §13.40, the OPFS probe's open fmt question at
+     the end of §13.41 and the two bundles from one head in §13.42, at
+     `6b6a43a0` on branch `burn-pre4-repin`; Mark's answers were relayed by
+     the migration session on 2026-10-04, for mere's §13.44.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11319,6 +11360,12 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-04: rulings 557 to 559 recorded at the Burn migration session's
+  request: pre.4 is promoted into mere's main and the Knot and Isometry
+  repins follow as handoffs (557); the web workspaces commit the getrandom
+  cfg (558); the OPFS probe takes its rustfmt sweep (559). Annotations on
+  534 and 555. Carried into the session notes' §9.9 and the index.
+  Isometry's repin onto pre.4 is a handoff to come.
 - 2026-10-04: checkpoint 8, development, merged at `e3297e6` under rulings 510
   to 531, 535, 544 and 547 to 554, certified with its controls; the
   readings taken while building it are in the sim plan's Findings for Mark

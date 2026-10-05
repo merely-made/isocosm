@@ -1198,7 +1198,10 @@ decoder model download as stated (546). The quiet GPU-on A/B then counted
 none of 80 repetitions, its bound reading the measured page's own launch,
 and Mark chose "Bound load before launch" (555). The OPFS probe's gate
 control needed the 0.2.126 CLI, and Mark answered "move it and anything
-else to 0.2.129. let's stay with the newest" (556).
+else to 0.2.129. let's stay with the newest" (556). The quiet A/B then
+counted 7 pre.2 and 8 pre.4 repetitions, indistinguishable in frame pacing,
+and Mark chose "Promote, then handoffs" (557); he also had the getrandom
+cfg committed (558) and the OPFS probe's rustfmt sweep taken (559).
 
 ## 10. The design session, 2026-09-30
 
