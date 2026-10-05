@@ -1846,6 +1846,19 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | How tight is the per-cell capacity that lets an intact body carry all? | 564: drawn per world |
 | How much more does a conduct cell carry than an ordinary cell? | 565: by cross-section |
 | What does nursing read? | 566: the young's digestive |
+| Where do systems vary? | 568: both, at birth and folded in at the epoch boundary |
+| Do the natives act by capability? | 569: by capability |
+| What does checkpoint 9 certify of riffing? | 570: riffing in the domain |
+| When bodies change, do we keep calibrating rates to earlier medians? | 571: stop; draw the rates |
+
+Between the second round and the third, Mark asked, with an article on
+computational models of thought, whether the work overcompensates for not
+letting things feed back by managing the dynamic. Partly, yes: calibrating
+to earlier medians (505), widening the soil for coverage (553) and systems
+inert by construction (561) manage outcomes, while conservation, the
+runners' equivalence and the planted faults constrain the instrument. The
+third round turned that answer into rulings: variation and selection
+decide what bodies can do, and the rates are drawn rather than tuned.
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a

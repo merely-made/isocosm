@@ -555,6 +555,10 @@ what later sections derive from.
     in between rounds...). But hey, you can always branch or fork off,
     provided you have a plan to grow your branch and compete or cooperate
     with the originating lineage."
+    *Applied to systems 2026-10-05 by ruling 568:* a body's systems vary
+    at birth, and the epoch boundary folds the variants that prospered into
+    the lineage.
+
 58. **A spread is a body; a fungus is one body and a germ is many.**
     Mark, 2026-09-19: "For fungus, one body, even separate. Germs are
     many bodies. You literally burn generations spreading as germs,
@@ -5839,6 +5843,8 @@ what later sections derive from.
      nothing and works by the share of its cells still living. Each is read
      as the table lists, and circulatory, respiratory and excretory by
      nothing yet.
+     *Extended 2026-10-05 by ruling 568:* each body carries its systems,
+     the world's defaults at founding, varying at birth.
 
 490. **The natives read their systems from the bodies family on.** Asked on
      2026-10-02, with 489: "When do the natives start reading their systems?
@@ -6214,6 +6220,8 @@ what later sections derive from.
      beside the ten defaults.
      *Reframed 2026-10-05 by ruling 563:* the checkpoint certifies riffing
      as a mechanism wherever it arises, not one riff beside the defaults.
+     *Specified 2026-10-05 by ruling 570:* riffing is certified as it
+     arises in the probe's domain, with latent and riffing-off controls.
 
 504. **Each part keeps its own ledger and is a holder.** Asked on
      2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
@@ -6265,6 +6273,8 @@ what later sections derive from.
      tissue no longer sets either.
      *Calibrated again 2026-10-03 by ruling 513:* with a reproduce cell in
      each probe body, so the median body still earns what it did.
+     *Retired 2026-10-05 by ruling 571:* the rates are drawn per world
+     around these values, no longer calibrated to earlier medians.
 
 506. **The probe's grazers store, and its producers stay lean.** Asked on
      2026-10-02, with 504: "How are the probe's bodies founded under 463 and
@@ -6469,6 +6479,8 @@ what later sections derive from.
      exactly, a test's control.
      *Extended 2026-10-04 by ruling 547:* generated recipes reproduce in
      one cell of their root likewise.
+     *Calibration retired 2026-10-05 by ruling 571:* 505's rates are drawn
+     per world.
 
 514. **The probe's check certifies all three strategies.** Asked on
      2026-10-03, checkpoint 8's second round: "Which reproductive strategies
@@ -7672,6 +7684,94 @@ what later sections derive from.
 
      Source: relayed by the migration session on 2026-10-05, for mere's
      burn plan §13.45 on `burn-pre4-repin`.
+
+568. **Systems vary at birth, and the epoch boundary folds in what
+     prospered.** Asked on 2026-10-05, putting 563 back: "Where do systems
+     vary (563)? Evidence: today systems are world data, one set of ten per
+     world (489), and every body reads the same set. A lineage already
+     varies in reproduction: each child draws its soma within its recipe's
+     variance and absence odds (531). It learns the kinds its bodies take in
+     (468), and its traits are revised at the epoch boundary (57), which the
+     boundary family builds (521). A riff is kept only if a body can realize
+     its routes (491)." Options, recommended first: (A) "At birth, per body:
+     each body carries its systems, the world's defaults at founding. A
+     child takes its parent's, and at odds its lineage's recipe carries,
+     beside its variance and absence odds, one role's function is swapped
+     for another its body expresses, kept only if the routes realize.
+     Variation every generation, selection deciding (recommended)." (B) "At
+     the boundary, per lineage: a lineage's systems riff by substitution at
+     the epoch boundary along with its other traits (57), built with the
+     boundary family. Checkpoint 9 makes systems lineage data and builds
+     the riffing, with riffs drawn at founding meanwhile." (C) "Both: bodies
+     vary at birth, and the epoch boundary folds the variants that
+     prospered into the lineage." Mark chose C, "Both". So each body carries
+     its systems, the world's defaults at founding; a child takes its
+     parent's, and at odds its lineage's recipe carries one role's function
+     is swapped for another its body expresses, kept only if its routes
+     realize; and at the epoch boundary the variants that prospered fold
+     into the lineage, 57's two doors applied to systems. *Reading, not
+     ruled:* checkpoint 9 builds the systems a body carries and their
+     variation at birth; the folding at the epoch boundary is built with
+     the boundary family, which builds that boundary's revisions (521).
+
+569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
+     the natives act by capability? Evidence: the probe's natives belong to
+     lineages: producers fix, grazers graze, each process keyed to a
+     lineage's identity. An incorporated native frond keeps its fixing
+     cells on a grazer (516), and variation can give a part cells nothing
+     reads. Today those cells earn nothing, so a latent ability can never be
+     selected." Options, recommended first: (A) "By capability: a native
+     acts for any body whose systems route its function: a grazer whose
+     system comes to route fix cells earns income. A lineage's natives are
+     whatever its bodies can do (recommended)." (B) "By lineage, learned: a
+     lineage gains a native when its lexicon learns a kind that expresses
+     the native's function (468). Bodies of that lineage then act it." (C)
+     "By lineage, as now: riffs feed only the natives a lineage already
+     has. A grazer's fix cells stay latent." Mark chose A, "By capability".
+     So a native acts for any body whose systems route its function, and a
+     lineage's natives are whatever its bodies can do. *Reading, not
+     ruled:* in the probe every lineage carries every native, each acting
+     only for a body whose system routes its function, on that lineage's
+     own accounts.
+
+570. **Checkpoint 9 certifies riffing as it arises in the domain.** Asked on
+     2026-10-05, with 568: "What does checkpoint 9 certify of riffing (503,
+     563)? Evidence: 503 asked for a riffed system certified beside the
+     defaults; under 563 the check certifies the mechanism wherever it
+     arises. Under 561 intact bodies carry all, and under 564 each world
+     draws its capacity." Options, recommended first: (A) "Riffing in the
+     domain: the probe's worlds let systems vary and riffs arise, and the
+     check certifies crowd against core over them. Controls: a latent
+     capability that a riff routes becomes an ability, and with riffing off
+     it stays latent (recommended)." (B) "Mechanism tests only: riffing is
+     built and tested directly (realized, refused, inherited, routed). The
+     probe's certified domain keeps the ten defaults until riffing has a
+     mechanic that reads it." Mark chose A, "Riffing in the domain". So the
+     probe's worlds let systems vary at birth and riffs arise, the check
+     certifies the crowd against the core over them, and its controls show
+     a latent capability that a riff routes becoming an ability, and with
+     riffing off staying latent.
+
+571. **The rates are drawn per world, not calibrated to earlier medians.**
+     Asked on 2026-10-05, with 568: "When bodies change, do we keep
+     calibrating rates to earlier medians? Evidence: 505 calibrated income
+     and the mouthful twice to checkpoint 6's medians, now 5 and 12 mg
+     because varied recipes make larger bodies. 553 widened the soil so
+     buds appear within the run. With systems and riffs varying, any
+     calibrated median moves again. This is the managing-outcomes habit you
+     asked about." Options, recommended first: (A) "Stop; draw the rates:
+     income and mouthful rates become world rules drawn per world within a
+     range around today's values. Outcomes are measured, not tuned, and the
+     check covers the range (recommended)." (B) "Freeze today's values:
+     11/144 and 12/269 become world-rule defaults, never recalibrated.
+     Outcomes are measured as they fall." (C) "Keep calibrating:
+     recalibrate to checkpoint 6's medians whenever bodies change, keeping
+     each checkpoint comparable with the last." Mark chose A, "Stop; draw
+     the rates". So fixing's income and the mouthful take rates each world
+     draws within a range around today's, outcomes are measured rather than
+     tuned, and the check covers the range. *Reading, not ruled:* the range
+     runs from half to twice today's rates, 11 mg per 144 faces and 12 per
+     269 voxels; 505's calibration test retires, its receipts kept.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11544,6 +11644,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's third round ruled (568 to 571), putting 563
+  back as a systemic question: a body's systems vary at birth and the
+  epoch boundary folds in what prospered (568); the natives act by
+  capability (569); the check certifies riffing as it arises in the domain
+  (570); and income and mouthful rates are drawn per world, no longer
+  calibrated to earlier medians (571). Annotations on 57, 489, 503, 505 and
+  513. Carried into the sim plan's checkpoint 9 brief, the anatomy brief's
+  §1, the session notes and the index.
 - 2026-10-05: checkpoint 9's second round recorded (563 to 566): no single
   riff is picked, riffing to be systemic and put back as the next question
   (563); each world draws its per-cell capacity (564); a conduct part

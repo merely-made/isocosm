@@ -81,7 +81,10 @@ taking its share only as far as its route carries it. *And 2026-10-05 (563
 to 566):* a riff is a latent capability becoming an ability through
 variation in reproduction, certified as a mechanism rather than picked;
 each world draws a cell's capacity; a conduct part carries by its
-cross-section; and milk reads the young's digestive routes.
+cross-section; and milk reads the young's digestive routes. *And (568 to
+571):* each body carries its systems, varying at birth, the epoch
+boundary folding in what prospered; the natives act by capability; and
+riffing is certified as it arises.
 
 ## 2. The function catalogue
 
