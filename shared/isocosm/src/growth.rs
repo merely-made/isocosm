@@ -110,6 +110,7 @@ pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<Part
     let soma = Soma {
         segments: target(d, e),
         absent: vec![],
+        seed: 0,
     };
     let ideal = develop(rules, d, &soma)?;
     let held: BTreeSet<[u8; 3]> = e.parts.values().filter_map(|p| p.situs).collect();
@@ -131,11 +132,13 @@ pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<Part
         let Some(offset) = seat(e, &d.policy, parent, part.half_extent, Some(part.offset)) else {
             continue;
         };
-        return Ok(Some(Part {
+        let mut grown = Part {
             parent: Some(parent),
             offset,
             ..part.clone()
-        }));
+        };
+        crate::systems::regrow(&mut grown, &e.varied);
+        return Ok(Some(grown));
     }
     Ok(None)
 }
@@ -146,6 +149,7 @@ pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
     let soma = Soma {
         segments: target(d, e),
         absent: vec![],
+        seed: 0,
     };
     let Ok(ideal) = develop(rules, d, &soma) else {
         return 0;

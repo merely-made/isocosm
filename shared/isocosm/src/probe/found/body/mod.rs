@@ -234,6 +234,8 @@ impl BodyFounding {
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),
+            systems: Default::default(),
+            carriage: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

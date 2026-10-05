@@ -214,6 +214,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         key(id)?;
     }
     body::catalogue(rules)?;
+    body::systems(rules)?;
     recipe::kinds(rules)?;
     for (id, p) in &rules.processes {
         key(id)?;

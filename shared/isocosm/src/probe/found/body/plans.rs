@@ -115,6 +115,8 @@ impl BodyFounding {
                 tagmata,
                 variance,
                 absence: if one_in == 0 { [0, 1] } else { [1, one_in] },
+                riff: [0, 1],
+                vary: [0, 1],
             };
             let domains = u64::from(affinity.domains.max(1));
             let d = Development {

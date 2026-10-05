@@ -121,6 +121,7 @@ fn nursing(seed: u64) -> ProbeWorld {
     let soma = Soma {
         segments: vec![1],
         absent: vec![],
+        seed: 0,
     };
     frond.parts = develop(&rules, &d, &soma).unwrap();
     frond.soma = vec![1];
@@ -203,6 +204,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
     let soma = Soma {
         segments: vec![2],
         absent: vec![],
+        seed: 0,
     };
     prey.parts = develop(rules, &d, &soma).unwrap();
     for (part, held) in [(0, 3), (1, 10)] {

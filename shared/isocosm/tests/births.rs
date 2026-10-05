@@ -53,6 +53,8 @@ fn development(clutch: u32) -> Development {
         }],
         variance: 0,
         absence: [0, 1],
+        riff: [0, 1],
+        vary: [0, 1],
     };
     Development {
         lexicon: recipe.kinds(),
@@ -206,6 +208,7 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
     let soma = Soma {
         segments: vec![1],
         absent: vec![],
+        seed: 0,
     };
     e.parts = develop(&g.rules, &d, &soma).unwrap();
     e.soma = vec![1];

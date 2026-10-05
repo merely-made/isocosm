@@ -26,6 +26,25 @@ pub(super) fn catalogue(rules: &Rules) -> Result<()> {
     Ok(())
 }
 
+/// Systems name only catalogue functions, and a route carries something
+/// (rulings 489 and 564).
+pub(super) fn systems(rules: &Rules) -> Result<()> {
+    for (id, s) in &rules.systems {
+        key(id)?;
+        if let Some(f) = s
+            .functions()
+            .into_iter()
+            .find(|f| !rules.functions.contains_key(*f))
+        {
+            return Err(format!("{id} names {f}, which the catalogue lacks"));
+        }
+    }
+    match rules.carriage {
+        Some(c) if c.per_cell == 0 => Err("a route carries nothing".into()),
+        _ => Ok(()),
+    }
+}
+
 /// Whether `q` reads the bound part, refusing what a part cannot answer.
 pub(super) fn reads_part(q: &Query) -> Result<bool> {
     match q {

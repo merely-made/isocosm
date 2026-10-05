@@ -354,8 +354,13 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             .resolved()
             .and_then(|amount| p.body(*who).map(|b| ease(b, key, amount))),
         Effect::Allocate { from, to, cells } => cells.resolved().and_then(|cells| {
-            p.part()
-                .and_then(|(b, id)| allocate(rules, b, id, from.as_deref(), to, cells))
+            let (b, id) = p.part()?;
+            let before = (!rules.systems.is_empty()).then(|| b.clone());
+            allocate(rules, b, id, from.as_deref(), to, cells)?;
+            if let Some(before) = before {
+                crate::systems::take_up(b, rules, &before);
+            }
+            Ok(())
         }),
         Effect::Spend {
             from,

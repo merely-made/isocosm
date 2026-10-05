@@ -261,6 +261,8 @@ impl Founding {
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
+            systems: Default::default(),
+            carriage: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
@@ -363,6 +365,8 @@ impl Founding {
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
                     soma: vec![],
+                    systems: BTreeMap::new(),
+                    varied: vec![],
                 },
                 1,
             )?;
@@ -408,6 +412,8 @@ impl Founding {
                     tenets: BTreeMap::new(),
                     disposition: [0; 5],
                     soma: vec![],
+                    systems: BTreeMap::new(),
+                    varied: vec![],
                 },
                 count,
             )?;

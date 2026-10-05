@@ -216,11 +216,11 @@ impl<'w> Crowd<'w> {
                         mark,
                         parent,
                     } => {
-                        let soma = drawn(lineal, somas).segments;
+                        let soma = drawn(lineal, somas);
                         let child = crate::meaning::births::seedling(
-                            parent,
-                            part.clone(),
-                            mark,
+                            (parent, lineal),
+                            rules,
+                            (part.clone(), mark),
                             soma,
                             tick,
                         );

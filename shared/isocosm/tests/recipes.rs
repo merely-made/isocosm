@@ -55,6 +55,8 @@ fn developed() -> Genesis {
         }],
         variance: 1,
         absence: [1, 12],
+        riff: [0, 1],
+        vary: [0, 1],
     };
     let lexicon = recipe.kinds();
     g.lineages.get_mut("lineage:1").unwrap().development = Some(Development {

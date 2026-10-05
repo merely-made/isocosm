@@ -50,6 +50,8 @@ fn development(t: Tagma, domain: u16) -> Development {
         tagmata: vec![t],
         variance: 0,
         absence: [0, 1],
+        riff: [0, 1],
+        vary: [0, 1],
     };
     Development {
         lexicon: recipe.kinds(),
@@ -73,6 +75,7 @@ fn dress(g: &mut Genesis, id: Id, d: &Development, tissue: &str) {
     let soma = Soma {
         segments: vec![1],
         absent: vec![],
+        seed: 0,
     };
     let e = g.population.lift(id).unwrap();
     e.parts = develop(&rules, d, &soma).unwrap();
@@ -329,6 +332,7 @@ fn pass_world(seed: u64, asks: [u64; 2]) -> (Genesis, [Id; 2], Id) {
     let soma = Soma {
         segments: vec![2],
         absent: vec![],
+        seed: 0,
     };
     producer.parts = develop(&rules, &frond, &soma).unwrap();
     producer.soma = vec![2];

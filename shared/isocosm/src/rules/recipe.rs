@@ -110,9 +110,10 @@ pub struct Tagma {
 }
 
 /// A lineage's axial recipe (ruling 478): tagmata head to tail; the drift
-/// each tagma's segment count may take either way; and the odds that a
-/// segment's borne kind develops absent, as a numerator over a denominator,
-/// none where the numerator is nought (531).
+/// each tagma's segment count may take either way; and the odds, each a
+/// numerator over a denominator and none where the numerator is nought,
+/// that a segment's borne kind develops absent (531), that a child's
+/// system riffs (573) and that one of its cells varies (578).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Recipe {
     pub tagmata: Vec<Tagma>,
@@ -120,6 +121,11 @@ pub struct Recipe {
     pub variance: u8,
     #[serde(default = "never")]
     pub absence: [u32; 2],
+    /// Recipes without these odds serialize and hash as before.
+    #[serde(default = "never", skip_serializing_if = "is_never")]
+    pub riff: [u32; 2],
+    #[serde(default = "never", skip_serializing_if = "is_never")]
+    pub vary: [u32; 2],
 }
 
 /// How a body places what it grows or takes in (isometer's policy, kept
@@ -261,6 +267,10 @@ fn right() -> Facing {
 
 fn never() -> [u32; 2] {
     [0, 1]
+}
+
+fn is_never(odds: &[u32; 2]) -> bool {
+    odds[0] == 0
 }
 
 fn one() -> u32 {

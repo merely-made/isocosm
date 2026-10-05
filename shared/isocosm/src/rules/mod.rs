@@ -12,6 +12,7 @@ mod effect;
 mod epoch;
 mod mind;
 mod recipe;
+mod systems;
 
 pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
@@ -21,6 +22,7 @@ pub use effect::{Conversion, Effect};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
 pub use recipe::{Affinity, Anchor, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
+pub use systems::{Carriage, Fill, Role, System, default_systems};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
@@ -224,6 +226,15 @@ pub struct Rules {
     /// Tissue domains and the crossings favoured (ruling 516).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub affinity: Option<Affinity>,
+    /// The world's default systems (rulings 489 and 574), which a founded
+    /// body carries as far as it realizes them. Worlds naming none
+    /// serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub systems: BTreeMap<Key, System>,
+    /// What a route carries (564), absent in worlds whose bodies read no
+    /// systems.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub carriage: Option<Carriage>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

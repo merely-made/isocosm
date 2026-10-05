@@ -98,7 +98,9 @@ pub(crate) fn hatch(
     if clutch {
         parts.retain(|_, p| p.situs == Some([0, 0, 0]));
     }
+    let seed = soma.seed;
     let mut child = newborn(parent, parts, soma.segments, tick);
+    born(&mut child, rules, &l.d.recipe, seed);
     child.traits.extend(young.cloned());
     let given =
         anatomy::give(&mut child, rules, &l.tissue, share).ok_or("a child with no parts")??;
@@ -193,15 +195,34 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
 /// A severed bud as a body of its own, born at `tick`: its part the root,
 /// its mark gone, and the segments its soma drew.
 pub(crate) fn seedling(
-    parent: &Entity,
-    mut part: Part,
-    mark: &Key,
-    soma: Vec<u8>,
+    (parent, l): (&Entity, &Lineal),
+    rules: &Rules,
+    (mut part, mark): (Part, &Key),
+    soma: Soma,
     tick: Tick,
 ) -> Entity {
     part.parent = None;
     part.offset = [0; 3];
     part.traits.remove(mark);
     part.situs = Some([0, 0, 0]);
-    newborn(parent, BTreeMap::from([(0, part)]), soma, tick)
+    let mut child = newborn(parent, BTreeMap::from([(0, part)]), soma.segments, tick);
+    born(&mut child, rules, &l.d.recipe, soma.seed);
+    child
+}
+
+/// What a child carries beyond its recipe (568, 577 and 583): its parent's
+/// systems, and its parent's varied cells where its soma develops their
+/// parts, applied to those it has; then its own varied cell and its riff,
+/// both by its soma's seed.
+fn born(child: &mut Entity, rules: &Rules, recipe: &crate::rules::Recipe, seed: u64) {
+    let soma = &child.soma;
+    let within = |v: &Varied| {
+        let [t, s, _] = v.situs;
+        soma.get(usize::from(t)).is_some_and(|n| s < *n)
+    };
+    let varied: Vec<Varied> = child.varied.iter().filter(|v| within(v)).cloned().collect();
+    child.varied = varied;
+    crate::systems::inherit(&mut child.parts, &child.varied);
+    crate::systems::vary(child, rules, recipe, seed);
+    crate::systems::riff(child, recipe, seed);
 }
