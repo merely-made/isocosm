@@ -5898,6 +5898,8 @@ what later sections derive from.
      *Reframed 2026-10-05 by ruling 563:* no single riff is picked; a riff
      is a latent capability becoming an ability through variation in
      reproduction, certified as a mechanism.
+     *Specified 2026-10-05 by ruling 580:* within a run, half of riffs swap
+     and half add.
 
 492. **No shape gates a function; what a part does scales with the
      measurement its mechanic names.** Raised by Mark on 2026-10-02, the
@@ -6898,6 +6900,9 @@ what later sections derive from.
      *Reading, not ruled:* the kinds Mesocosm never leaves absent, the
      feeding, sensing and canopy organs, become those whose templates hold
      intake, sense or fix, so no child is born unable to feed.
+     *Extended 2026-10-05 by rulings 577 to 579:* a child also takes its
+     parent's varied cells, and one of its cells may vary to any grown
+     function at odds its recipe draws.
 
 532. **One stack helper runs the wasm constructors once, for every web
      module.** Asked on 2026-10-03 in the Burn migration session, after
@@ -7725,6 +7730,8 @@ what later sections derive from.
      *Specified 2026-10-05 by rulings 574 and 576:* a founded body carries
      the defaults it realizes, and the functions a riff routes arise as
      cells vary at birth.
+     *Specified 2026-10-05 by ruling 580:* a riff swaps or adds, at even
+     odds.
 
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
@@ -7889,6 +7896,90 @@ what later sections derive from.
      which functions (under 492 no shape gates one), whether a varied cell
      is inherited, and whether a riff swaps or adds go back to Mark as the
      next round.
+     *Specified 2026-10-05 by rulings 577 to 580:* varied cells are
+     inherited; one cell of a child varies at odds each recipe draws, 1 in
+     12 to 1 in 100; to any grown function; and a riff swaps or adds at
+     even odds.
+
+577. **A varied cell is inherited.** Asked on 2026-10-05, checkpoint 9's
+     fifth round: "Is a varied cell inherited (576)? Evidence: a child draws
+     its soma from its lineage's recipe by its own seed (531): segment
+     counts drift and borne kinds go absent, but nothing passes from the
+     parent's body. Systems do pass down (568). If a varied cell lasts one
+     body, a riff that routes it must land in the same child: at 1 in 12 to
+     1 in 100 each, that is 1 in 144 to 1 in 10,000 births, and a probe
+     world sees a median of 40." Options, recommended first: (A)
+     "Inherited: A child takes its parent's varied cells on top of its own
+     recipe draw, as it takes its parent's systems. Latent capability
+     builds up down a line, and a riff in a later generation can route it
+     (recommended)." (B) "One body only: A varied cell lasts its body's
+     life. Riffing routes it only when both land in one child. Within a run
+     that is rare, and the epoch boundary folds in whatever prospered."
+     Mark chose A, "Inherited". So a child takes its parent's varied cells
+     on top of its own recipe draw, as it takes its parent's systems, and
+     latent capability builds up down a line for a later riff to route.
+     *Reading, not ruled:* a varied cell is kept by where it lies, its
+     tagma, segment and borne part, and passes to a child whose soma
+     develops that part; a segment the child's drift drops, or a borne kind
+     it lacks, takes its varied cell with it.
+
+578. **A child's cell varies at odds each recipe draws.** Asked with 577:
+     "How often does a child's cell vary? Evidence: founded producers have
+     4 to 27 cells (median 8) in 1 to 3 parts; grazers have 9 to 45
+     (median 15) in 2 to 12 parts. Absences are drawn at 1 in 12 per tagma
+     (531), and riffs at 1 in 12 to 1 in 100 per child, drawn per recipe
+     (573). A world's median of 40 births gives about 0.4 to 3 varied
+     children at per-child odds." Options, recommended first: (A) "Per
+     child, drawn: One cell of one part varies, at odds each recipe draws
+     between 1 in 12 and 1 in 100, as riffs are drawn. Large and small
+     bodies vary alike (recommended)." (B) "Per cell, drawn: Each cell
+     varies at odds drawn per recipe, between 1 in 100 and 1 in 1,000.
+     Bigger bodies vary more: a 45-cell grazer about five times as often as
+     an 8-cell frond." (C) "As absences, 1 in 12: A child's cell varies at
+     the recipe's absence odds, about three varied children per world."
+     Mark chose A, "Per child, drawn". So at odds each recipe draws between
+     1 in 12 and 1 in 100, a range a world may widen, one cell of one of a
+     child's parts varies. *Reading, not ruled:* the cell is drawn
+     uniformly among the child's cells.
+
+579. **A cell may vary to any grown function.** Asked with 577: "Which
+     functions can a cell vary to? Evidence: under 492 no shape gates a
+     function, and 466's fits are only what the generator draws by
+     default: a lump fits intake, store, circulate and reproduce; a sheet
+     fix, secrete, respire and adhesion; a rod contract, support and grip;
+     a point sense and adhesion. With fits only, a grazer's lump could
+     never come to fix by variation (491's own example). It could only take
+     a frond whole." Options, recommended first: (A) "Any, by measurement:
+     Any grown function in the catalogue, drawn uniformly, so not secrete,
+     which is acquired (341). What the cell does scales with the
+     measurement its mechanic names (492), so a lump's fix cell fixes
+     poorly, by its area (recommended)." (B) "Any, fits likelier: Any grown
+     function, with the part's fits drawn at several times the odds of the
+     rest. Most variation is reasonable for the shape, and the odd gut
+     still comes to fix." (C) "Fits only: Only functions the part's shape
+     fits. Variation stays shape-plausible. A gut comes to fix only by
+     taking a frond whole." Mark chose A, "Any, by measurement". So a
+     varied cell takes any grown function of the catalogue other than its
+     own, drawn uniformly, and does what the measurement its mechanic names
+     gives it, so a lump's fix cell fixes poorly by its area.
+
+580. **A riff swaps or adds, at even odds.** Asked with 577: "Does a riff
+     swap a role's function or add one? Evidence: 491 says either, 'a
+     role's function swapped for another, or one added', but 568's text
+     says swapped. Under 575 a native acts on any carried system that
+     routes its function. So a swap that takes intake out of a grazer's
+     only digestive source ends its meal, while an add keeps it and gains
+     the new one." Options, recommended first: (A) "Either, even odds: As
+     491 has it: half of riffs swap and half add. A swap can cost a body an
+     ability, and selection decides (recommended)." (B) "Add only: Riffs
+     only add a function to a role. A body never loses what its systems
+     routed, so abilities only build up." (C) "Swap only: As 568 put it: a
+     riff always replaces, so every riff trades one route for another."
+     Mark chose A, "Either, even odds". So half of riffs swap a role's
+     function for another and half add one, a swap able to cost a body an
+     ability, and selection decides. *Reading, not ruled:* the system, its
+     role and the new function are drawn uniformly, the function among
+     those the child's body expresses that the role does not already name.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11761,6 +11852,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's fifth round ruled (577 to 580): a varied cell
+  is inherited (577); one cell of a child varies at odds each recipe draws,
+  1 in 12 to 1 in 100 (578); to any grown function, doing what its
+  measurement gives it (579); and a riff swaps or adds at even odds (580).
+  Annotations on 491, 531, 568 and 576. Carried into the sim plan's
+  checkpoint 9 brief, the anatomy brief's §1, the session notes and the
+  index.
 - 2026-10-05: checkpoint 9's fourth round ruled (574 to 576): a body
   carries the default systems it realizes (574); a native acts on any
   carried system that routes its function (575); and latent capability

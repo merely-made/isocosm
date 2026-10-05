@@ -1855,6 +1855,10 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | Which systems does a body carry at founding? | 574: those it realizes |
 | Which native reads a riffed system? | 575: by function routed |
 | Where does latent capability come from in the probe? | 576: cells vary at birth |
+| Is a varied cell inherited? | 577: inherited |
+| How often does a child's cell vary? | 578: per child, drawn |
+| Which functions can a cell vary to? | 579: any, by measurement |
+| Does a riff swap a role's function or add one? | 580: either, even odds |
 
 Between the second round and the third, Mark asked, with an article on
 computational models of thought, whether the work overcompensates for not

@@ -86,7 +86,9 @@ cross-section; and milk reads the young's digestive routes. *And (568 to
 boundary folding in what prospered; the natives act by capability; and
 riffing is certified as it arises. *And (574 to 576):* a body carries
 the systems it realizes; a native acts on any carried system routing its
-function; and latent capability arises as cells vary at birth.
+function; and latent capability arises as cells vary at birth. *And (577
+to 580):* varied cells are inherited, vary at odds each recipe draws, to
+any grown function, and a riff swaps or adds at even odds.
 
 ## 2. The function catalogue
 
