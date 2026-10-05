@@ -74,6 +74,10 @@ data with its own name. *Reading, not ruled:* a cell's capacity is a world
 rule set so an intact body's routes carry all its natives ask, so a body
 reads its full degree until a wound or a severing narrows a route; and a
 process takes only what its system carries, the rest staying put.
+*Ruled 2026-10-05 (560 to 562):* every cell carries, a conduct cell a
+multiple of the world rule's capacity; an intact body carries all its
+natives ask; and a process reads its system part by part, each part
+taking its share only as far as its route carries it.
 
 ## 2. The function catalogue
 

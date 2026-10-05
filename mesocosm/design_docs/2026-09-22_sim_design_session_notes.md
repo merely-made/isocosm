@@ -1833,6 +1833,14 @@ frame, which the core's own conservation assertion caught only once a
 planted fault changed the dynamics. The crowd now groups almost nothing,
 its bodies differing member by member, which is 439's regime.
 
+Checkpoint 9 opened on 2026-10-05. Its first round:
+
+| Question as put | Ruling |
+| --- | --- |
+| Which cells carry along a system's route? | 560: every cell, conduits more |
+| How much does a route carry? | 561: intact carries all |
+| How does a process read a system whose effects are every living part? | 562: part by part |
+
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
 house ruleset, versioned editions or a cross-game kernel, and how the

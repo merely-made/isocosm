@@ -5524,6 +5524,9 @@ what later sections derive from.
      between; and a system works to the degree its routes carry what a
      process asks, so a wounded conduit carries less and the process gets
      less.
+     *Specified 2026-10-05 by rulings 560 to 562:* every cell carries, a
+     conduct cell more; an intact body carries all its natives ask; and a
+     process reads its system part by part.
 
 478. **The lineage keeps Mesocosm's recipe, and a body grows toward it.**
      Asked on 2026-10-02, with 477: "What does Isocosm's lineage keep as its
@@ -7488,6 +7491,66 @@ what later sections derive from.
      the end of §13.41 and the two bundles from one head in §13.42, at
      `6b6a43a0` on branch `burn-pre4-repin`; Mark's answers were relayed by
      the migration session on 2026-10-04, for mere's §13.44.
+
+560. **Every cell carries along a system's route, and conduits more.** Asked
+     on 2026-10-05, opening checkpoint 9: "Which cells carry along a
+     system's route (477)? Evidence: 477 takes a route's capacity from the
+     cells of the parts between. The catalogue gives conduct (tubes,
+     branches) wing-functions' edges as its mechanic, measured by
+     cross-section. No probe part expresses conduct, gate or circulate:
+     fronds are 4 to 9 cells, a lump 8, limbs 2 to 3, the eye 1." Options,
+     recommended first: (A) "Every cell, conduits more: each cell of a part
+     on the route carries a world rule's capacity, and a conduct cell
+     carries a multiple of it. Conduits widen routes without being
+     required, and the probe's bodies keep their recipes (recommended)."
+     (B) "Only conduct cells: a route runs only through parts expressing
+     conduct. The probe's recipes gain a conducting part between root and
+     limbs, and 505's rates are calibrated a third time." (C) "By
+     cross-section: each part carries by its cross-section, conduct's
+     measure, whatever it expresses: fat parts carry more than thin ones,
+     function aside." Mark chose A, "Every cell, conduits more". So each
+     cell of a part on a route carries a capacity the world's rules set,
+     a conduct cell a multiple of it, and the probe's bodies keep their
+     recipes.
+
+561. **An intact body carries all its natives ask.** Asked on 2026-10-05,
+     with 560: "How much does a route carry? Evidence: an intact founded
+     body asks 2 to 16 mg a tick to fix (median 5) and 2 to 54 to graze
+     (median 12, 90% under 30), through parts of 1 to 9 cells. The brief's
+     reading sets a cell's capacity so an intact body carries all its
+     natives ask. Wounds, which narrow routes, come in checkpoint 10."
+     Options, recommended first: (A) "Intact carries all: a per-cell world
+     rule, set so every intact founded body reads full degree. Until
+     checkpoint 10's wounds, only a severing, an absence or a missing
+     source lowers a degree, and checkpoint 9 certifies on cut-route
+     controls and the riff (recommended)." (B) "Bodies limit themselves: a
+     per-cell capacity at Mesocosm's scale, around a milligram a cell a
+     tick, so thin or small bodies deliver less now. The dynamics change
+     and the probe is calibrated again." Mark chose A, "Intact carries
+     all". So a cell's capacity is a world rule set so every intact founded
+     body reads its full degree; until wounds arrive, only a severing, an
+     absence or a missing source lowers a degree, and checkpoint 9
+     certifies on cut-route controls and the riff.
+
+562. **A process reads its system part by part.** Asked on 2026-10-05, with
+     560: "How does a process read a system whose effects are every living
+     part? Evidence: the digestive and photosynthetic systems feed every
+     living part (489). The meal and income land on a body's parts by room
+     (464). wing-functions routes first-fit, breadth-first, one target at a
+     time." Options, recommended first: (A) "Part by part: each part takes
+     its share of what the process lands only as far as its own route
+     carries it. What can't reach a part stays where the process found it,
+     the prey or the soil. The degree is what reached over what was asked
+     (recommended)." (B) "One degree a body: the system's degree is its
+     narrowest route's, and the whole process is scaled by it." (C)
+     "Reached or not: a part beyond a cut route takes nothing and every
+     reachable part takes its full share. Capacity counts only for cuts."
+     Mark chose A, "Part by part". So each part takes its share of what a
+     process lands only as far as its own route carries it, what cannot
+     reach a part staying where the process found it, and a system's degree
+     is what reached over what was asked. *Reading, not ruled:* the routing
+     is wing-functions' own, which gains a query for how much a route can
+     carry rather than a second router in the sim.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11360,6 +11423,11 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9 opened; its first round ruled (560 to 562):
+  every cell carries along a route and conduits more, an intact body
+  carries all its natives ask, and a process reads its system part by
+  part. Annotation on 477. Carried into the sim plan's checkpoint 9 brief,
+  the anatomy brief's §1, the session notes' §10 and the index.
 - 2026-10-04: rulings 557 to 559 recorded at the Burn migration session's
   request: pre.4 is promoted into mere's main and the Knot and Isometry
   repins follow as handoffs (557); the web workspaces commit the getrandom
