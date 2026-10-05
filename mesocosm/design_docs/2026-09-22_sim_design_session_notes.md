@@ -1208,6 +1208,21 @@ repin onto pre.4, the first handoff, compiled with no source edits; Mark
 had its CubeCL persistence mirror 375 through mere's git (585) and djinn's
 rows for Knot's scene crates come with djinn's Knot repin (586).
 
+For Isometry's own repin (572), the migration session relayed what Knot's
+met, as findings, not rulings, unchecked here. Knot changed no source for
+mien's `PersonaId` to `PersonaKey` (`f702ca27`), the Burn consumer API
+change (`439a3585`), seiche 0.0.6's `CounterDamping` enum (`0d7583d4`),
+conatus P5 (`a147e6ad`), burn-remote's close (`88fd392f`), personae's RSA
+and ECDSA (`2d2a36c6`, `62e69f13`) or the web constructors (`9ca02ea4`,
+`235a368f`). New edges: personae gains `ring` and `rsa`; esp's Burn
+requirement becomes exactly `=0.22.0-pre.4`; `scenomise` on `scenograph`
+is new only to a pin before `c79bb8c2`. A standalone graph compiling
+CubeCL takes turso unless it mirrors 375 (585), and turso's `aegis` needs
+`cc` at 1.4.7 or later. 558 applies only to workspaces compiling getrandom
+0.3 for wasm32, and a `**/.cargo/*` ignore rule hides the committed config
+unless it is re-included, as in mere `e0536ef3`. pre.4 needs rustc 1.95 or
+later; Knot stays on 1.97.1.
+
 ## 10. The design session, 2026-09-30
 
 Mark, verbatim, closing Monday's session: "See ya on wednesday! We'll design
