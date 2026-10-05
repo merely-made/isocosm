@@ -10,8 +10,8 @@
 //! immutable; a birth expresses it through the one validator and pays for it;
 //! a refusal is a named fact; a founder preview is deterministic; one program
 //! grows two bodies on two grounds; an unplayed lineage takes the same path;
-//! incorporation, acquisition and filial expression are three records; and the
-//! commit's own refusals, by name.
+//! and incorporation, acquisition and filial expression are three records.
+//! The commit's own refusals are `commit.rs`'s.
 //!
 //! What the epoch boundary does with all of this is PE3a's, next door in
 //! `round.rs`.
@@ -21,8 +21,7 @@ use mesocosm_core::history::Event;
 use mesocosm_core::program::{Conditions, Founder, RevisionId};
 use mesocosm_core::rules::{EpochRule, WorldRules};
 use mesocosm_core::{
-    Appendage, ConditionId, Founding, Intent, OrganismId, Outcome, Recipe, Rejection, SpeciesId,
-    Stage, Tagma, Unrevised, World,
+    Appendage, ConditionId, Founding, Intent, OrganismId, Outcome, Recipe, Stage, Tagma, World,
 };
 
 use super::bulk_world;
@@ -50,7 +49,7 @@ fn bare_recipe() -> Recipe {
 /// picks a seed rather than idling a thousand ticks to reach a boundary the
 /// test is not about. A one-tick budget makes every tick a boundary; the
 /// scoring window comes down with it so the rounds it fires are cheap.
-fn at_the_checkpoint(world: World) -> World {
+pub(super) fn at_the_checkpoint(world: World) -> World {
     let mut world = world.with_rules(
         WorldRules::native()
             .ending(EpochRule::Timed { ticks: 1 })
@@ -499,103 +498,5 @@ fn incorporation_discovery_and_filial_expression_are_three_records() {
             .condition,
         condition,
         "and the revision still resolves to the discovery it came from"
-    );
-}
-
-#[test]
-fn the_commit_is_gated_to_the_lineage_checkpoint_and_says_so_in_one_place() {
-    // **The placeholder replaced** (PE3). Bodies change between epochs and not
-    // during them, so the commit consults `revision_admitted_now`, that reads
-    // `World::at_boundary`, and every other tick is refused `NotYet`. The
-    // played door and the unplayed one are the same transaction, so they are
-    // gated together and neither can be a second way for a program to move.
-    let mut world = bulk_world(9_001, 24);
-    frond_on(&mut world);
-    endure(&mut world, HUNGER_TICKS + 1);
-    assert!(world.discovered(hunger()));
-    assert!(
-        !world.revision_admitted_now(),
-        "the default budget is nowhere near spent"
-    );
-    assert_eq!(
-        world.apply(Intent::Revise {
-            condition: hunger()
-        }),
-        Outcome::Rejected(Rejection::Unrevised(Unrevised::NotYet)),
-        "and mid-epoch it is refused by name"
-    );
-
-    let mut world = at_the_checkpoint(world);
-    assert!(world.revision_admitted_now(), "inside, it is admitted");
-    assert!(matches!(
-        world.apply(Intent::Revise {
-            condition: hunger()
-        }),
-        Outcome::Revised { .. }
-    ));
-}
-
-#[test]
-fn revising_a_condition_the_line_has_not_come_to_is_refused_by_name() {
-    let mut world = at_the_checkpoint(bulk_world(4_242, 24));
-    assert_eq!(
-        world.apply(Intent::Revise {
-            condition: hunger()
-        }),
-        Outcome::Rejected(Rejection::Unrevised(Unrevised::Undiscovered(hunger())))
-    );
-    assert_eq!(
-        world.revise(SpeciesId(9_999), hunger()),
-        Err(Unrevised::NoSuchSpecies(SpeciesId(9_999))),
-        "and a line this world never heard of is its own answer"
-    );
-}
-
-#[test]
-fn a_revision_this_world_could_never_express_is_refused_at_the_commit() {
-    // The gland removed from the admitted set. The condition table is native,
-    // so the line still comes to a candidate citing it — and every descendant's
-    // development would then refuse `UnknownProcess` forever. So the commit
-    // refuses once instead: a program that can never be expressed is not a
-    // program, and this is the honest place to say so.
-    let mut defs: Vec<_> = mesocosm_core::Registry::native().all().cloned().collect();
-    defs.retain(|def| def.id.name != "secrete");
-    let without = std::sync::Arc::new(mesocosm_core::Registry::admit(defs).expect("no collision"));
-    let mut world =
-        World::founded_on(4_242, 24, Founding::default(), without).expect("the palette is valid");
-
-    let me = world.controlled_id().expect("embodied");
-    let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
-    let (species, position) = (organism.species, organism.position);
-    *organism = mesocosm_core::Organism {
-        stage: Stage::Mature,
-        ..mesocosm_core::Organism::founding(
-            me,
-            species,
-            mesocosm_core::Kingdom::Consumer,
-            mesocosm_core::VolumeRef::from_tag(1),
-            [2, 2, 2],
-            position,
-            1_500,
-        )
-    };
-    endure(&mut world, HUNGER_TICKS + 1);
-    assert!(world.discovered(hunger()), "the line came to it anyway");
-
-    let mut world = at_the_checkpoint(world);
-    assert_eq!(
-        world.apply(Intent::Revise {
-            condition: hunger()
-        }),
-        Outcome::Rejected(Rejection::Unrevised(Unrevised::Nothing))
-    );
-    assert!(
-        world
-            .lineages()
-            .get(species)
-            .expect("the line")
-            .program()
-            .is_empty(),
-        "and nothing was committed"
     );
 }

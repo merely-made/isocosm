@@ -27,6 +27,8 @@ use mesocosm_core::{BodyOrgans, BodyProcesses};
 // path keeps the split file beside the suite it belongs to.
 #[path = "embodied/allocation.rs"]
 mod allocation;
+#[path = "embodied/commit.rs"]
+mod commit;
 #[path = "embodied/discovery.rs"]
 mod discovery;
 #[path = "embodied/gland.rs"]

@@ -1,0 +1,13 @@
+#!/bin/sh
+# The 600-line ceiling (ruling 592), checked on what each commit stages.
+# Enabled per clone with `git config core.hooksPath .githooks`.
+root=$(git rev-parse --show-toplevel) || exit 1
+if command -v pwsh >/dev/null 2>&1; then
+    shell=pwsh
+elif command -v powershell >/dev/null 2>&1; then
+    shell=powershell
+else
+    echo "pre-commit: no PowerShell here; the 600-line ceiling was not checked" >&2
+    exit 0
+fi
+exec "$shell" -NoProfile -File "$root/scripts/line-ceiling.ps1" -Staged
