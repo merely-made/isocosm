@@ -84,7 +84,9 @@ each world draws a cell's capacity; a conduct part carries by its
 cross-section; and milk reads the young's digestive routes. *And (568 to
 571):* each body carries its systems, varying at birth, the epoch
 boundary folding in what prospered; the natives act by capability; and
-riffing is certified as it arises.
+riffing is certified as it arises. *And (574 to 576):* a body carries
+the systems it realizes; a native acts on any carried system routing its
+function; and latent capability arises as cells vary at birth.
 
 ## 2. The function catalogue
 

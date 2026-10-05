@@ -1852,6 +1852,9 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | When bodies change, do we keep calibrating rates to earlier medians? | 571: stop; draw the rates |
 | When does Isometry repin onto mere's pre.4 main? | 572: after checkpoint 9 |
 | At what odds does a child's system vary? | 573: drawn, 1 in 12 to 100 |
+| Which systems does a body carry at founding? | 574: those it realizes |
+| Which native reads a riffed system? | 575: by function routed |
+| Where does latent capability come from in the probe? | 576: cells vary at birth |
 
 Between the second round and the third, Mark asked, with an article on
 computational models of thought, whether the work overcompensates for not

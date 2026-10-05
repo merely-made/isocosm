@@ -5845,6 +5845,9 @@ what later sections derive from.
      nothing yet.
      *Extended 2026-10-05 by ruling 568:* each body carries its systems,
      the world's defaults at founding, varying at birth.
+     *Specified 2026-10-05 by rulings 574 and 575:* a body carries the
+     defaults it realizes, and a native acts on any carried system routing
+     its function, the pairings naming the defaults that route them.
 
 490. **The natives read their systems from the bodies family on.** Asked on
      2026-10-02, with 489: "When do the natives start reading their systems?
@@ -7719,6 +7722,9 @@ what later sections derive from.
      the boundary family, which builds that boundary's revisions (521).
      *Specified 2026-10-05 by ruling 573:* the odds are drawn per recipe
      between 1 in 12 and 1 in 100.
+     *Specified 2026-10-05 by rulings 574 and 576:* a founded body carries
+     the defaults it realizes, and the functions a riff routes arise as
+     cells vary at birth.
 
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
@@ -7739,6 +7745,8 @@ what later sections derive from.
      ruled:* in the probe every lineage carries every native, each acting
      only for a body whose system routes its function, on that lineage's
      own accounts.
+     *Specified 2026-10-05 by ruling 575:* a native acts on any carried
+     system that routes its function.
 
 570. **Checkpoint 9 certifies riffing as it arises in the domain.** Asked on
      2026-10-05, with 568: "What does checkpoint 9 certify of riffing (503,
@@ -7819,6 +7827,68 @@ what later sections derive from.
      to 100". So each recipe draws its riff odds between 1 in 12 and 1 in
      100, a range a world may widen, and the check covers worlds that riff
      often and rarely.
+
+574. **A body carries the systems it realizes.** Asked on 2026-10-05,
+     checkpoint 9's fourth round: "Which systems does a body carry at
+     founding (568)? Evidence: the ten default systems route all fifteen
+     functions in some role (489). So if every body carries all ten,
+     everything a body expresses is already routed and nothing is latent: a
+     grazer that takes a frond whole fixes at once, by capability (569), no
+     riff needed." Options, recommended first: (A) "Those it realizes: A
+     body carries each default system whose roles its parts fill: a
+     producer its photosynthetic and reproductive, a grazer its digestive,
+     muscular, nervous and reproductive. A function it expresses outside
+     them is latent until a riff routes it (recommended)." (B) "All ten:
+     Every body carries the full default set. A function is latent only
+     where a riff has taken it out of its system." Mark chose A, "Those it
+     realizes". So a founded body carries each default system whose roles
+     its parts fill, and a function it expresses outside them is latent
+     until a riff routes it. *Reading, not ruled:* a system's roles are
+     filled when a part expresses a function each of its source and effect
+     roles names, "every living part" filled by any living part; stores and
+     gates join a route where a part expresses them, but none is required,
+     since no probe body expresses a gate.
+
+575. **A native acts on any system that routes its function.** Asked with
+     574: "Which native reads a riffed system? Evidence: 489's table pairs
+     each native with a system: the meal with digestive, income with
+     photosynthetic, the mouthful with muscular. A riff swaps or adds a
+     function in a role (491), for example fix as a digestive source."
+     Options, recommended first: (A) "By function routed: A native acts on
+     any carried system that routes its function: income wherever a system
+     routes fix from a source, the meal wherever one routes intake. A gut
+     with fix added earns income through its digestive routes
+     (recommended)." (B) "By the table: Each native reads only its own
+     system. A digestive system with fix as a source carries the meal from
+     fix cells, eating as photosynthesis." Mark chose A, "By function
+     routed". So a native acts on any system a body carries that routes its
+     function, and 489's pairing of natives with systems names the defaults
+     that route them, not a limit; a gut with fix added earns income
+     through its digestive routes.
+
+576. **Latent capability arises as cells vary at birth.** Asked with 574:
+     "Where does latent capability come from in the probe? Evidence: probe
+     recipes give a frond fix and reproduce, a lump intake, store and
+     reproduce, limbs contract and the eye sense. Children develop from the
+     recipe, so within a run a body expresses only what its recipe gives,
+     plus parts taken whole (in 2 to 3% of worlds). A riff can only route a
+     function the body expresses." Options, recommended first: (A) "Cells
+     vary at birth: A child's part may give a cell to another function the
+     catalogue lets its shape express, at odds, the recipe's cell plan
+     varying as its segments do. Latent capabilities arise there, and riffs
+     make abilities of them (recommended)." (B) "Recipes carry latent
+     cells: The generator and the probe give some kinds a cell of a
+     function their lineage's systems don't route, such as a fix cell in a
+     grazer's lump. Latency is founded, and riffs route it." (C) "Only
+     parts taken whole: Latency comes from incorporation alone, a grazer
+     keeping a frond's fixing cells. It's rare within a run." Mark chose
+     A, "Cells vary at birth". So a child's part may give a cell to another
+     function at birth, the recipe's cell plan varying as its segments do;
+     latent capabilities arise there, and riffs make abilities of them.
+     Parts taken whole remain a second source. How often a cell varies, to
+     which functions (under 492 no shape gates one), whether a varied cell
+     is inherited, and whether a riff swaps or adds go back to Mark as the
+     next round.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11691,6 +11761,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's fourth round ruled (574 to 576): a body
+  carries the default systems it realizes (574); a native acts on any
+  carried system that routes its function (575); and latent capability
+  arises as cells vary at birth (576), its odds, functions, inheritance and
+  the riff's swap or add put back as the next round. Annotations on 489,
+  568 and 569. Carried into the sim plan's checkpoint 9 brief, the anatomy
+  brief's §1, the session notes and the index.
 - 2026-10-05: rulings 572 and 573: Isometry repins onto mere's pre.4 main
   after checkpoint 9 (572), and each recipe draws its riff odds between 1
   in 12 and 1 in 100 (573). Annotations on 557, 567 and 568. Carried into
