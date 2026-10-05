@@ -77,7 +77,11 @@ process takes only what its system carries, the rest staying put.
 *Ruled 2026-10-05 (560 to 562):* every cell carries, a conduct cell a
 multiple of the world rule's capacity; an intact body carries all its
 natives ask; and a process reads its system part by part, each part
-taking its share only as far as its route carries it.
+taking its share only as far as its route carries it. *And 2026-10-05 (563
+to 566):* a riff is a latent capability becoming an ability through
+variation in reproduction, certified as a mechanism rather than picked;
+each world draws a cell's capacity; a conduct part carries by its
+cross-section; and milk reads the young's digestive routes.
 
 ## 2. The function catalogue
 

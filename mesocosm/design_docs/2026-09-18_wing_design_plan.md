@@ -5886,6 +5886,9 @@ what later sections derive from.
      sheets; under 492 the gut fixes by its area.
      *Built 2026-10-02 by ruling 503:* in the bodies family's systems
      checkpoint.
+     *Reframed 2026-10-05 by ruling 563:* no single riff is picked; a riff
+     is a latent capability becoming an ability through variation in
+     reproduction, certified as a mechanism.
 
 492. **No shape gates a function; what a part does scales with the
      measurement its mechanic names.** Raised by Mark on 2026-10-02, the
@@ -6209,6 +6212,8 @@ what later sections derive from.
      systems checkpoint". So the bodies family's systems checkpoint also
      riffs systems by substitution (491) and certifies a riffed system
      beside the ten defaults.
+     *Reframed 2026-10-05 by ruling 563:* the checkpoint certifies riffing
+     as a mechanism wherever it arises, not one riff beside the defaults.
 
 504. **Each part keeps its own ledger and is a holder.** Asked on
      2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
@@ -6817,6 +6822,8 @@ what later sections derive from.
      grazers regurgitate from the reserve. Milk is tested, not certified."
      Mark chose A, "Milk". So the probe's grazers nurse their hungry young
      from their refilling provision, certified, and mouthfuls are tested.
+     *Specified 2026-10-05 by ruling 566:* milk lands along the young's
+     digestive routes.
 
 529. **The probe draws semelparity per cohort.** Asked on 2026-10-03, with
      528: "Does the probe's check certify semelparity, one brood and then
@@ -7512,6 +7519,8 @@ what later sections derive from.
      cell of a part on a route carries a capacity the world's rules set,
      a conduct cell a multiple of it, and the probe's bodies keep their
      recipes.
+     *Specified 2026-10-05 by ruling 565:* a conduct cell's multiple is its
+     part's cross-section over the reference segment's.
 
 561. **An intact body carries all its natives ask.** Asked on 2026-10-05,
      with 560: "How much does a route carry? Evidence: an intact founded
@@ -7531,6 +7540,8 @@ what later sections derive from.
      body reads its full degree; until wounds arrive, only a severing, an
      absence or a missing source lowers a degree, and checkpoint 9
      certifies on cut-route controls and the riff.
+     *Specified 2026-10-05 by ruling 564:* each world draws the capacity,
+     about 7 to 14 mg a cell a tick.
 
 562. **A process reads its system part by part.** Asked on 2026-10-05, with
      560: "How does a process read a system whose effects are every living
@@ -7551,6 +7562,116 @@ what later sections derive from.
      is what reached over what was asked. *Reading, not ruled:* the routing
      is wing-functions' own, which gains a query for how much a route can
      carry rather than a second router in the sim.
+
+563. **No single riff is picked; riffing is to be systemic.** Asked on
+     2026-10-05, checkpoint 9's second round: "Which riffed system does
+     checkpoint 9 certify beside the defaults (491, 503)? Evidence: under
+     561 an intact body carries all its natives ask, so a riff every probe
+     body realizes changes nothing until wounds arrive. 491's own example is
+     a gut that photosynthesizes, and under 492 a gut fixes by its area.
+     Probe grazers have a lump that takes in, stores and reproduces, plus
+     limbs and an eye; producers keep no stores." Options, recommended
+     first: (A) "Gut that photosynthesizes: 491's example: the grazers'
+     digestive system takes fix as a second source. Their lump gives a few
+     cells to fix, so a grazer also earns a little income from its gut's
+     area, read through the riff. Grazer recipes change and the calibration
+     is redone (recommended)." (B) "Provision from stores: the reproductive
+     system sourced from stores alone, so a grazer provisions only from its
+     reserve. Producers, which store nothing, can't realize it and keep the
+     default. Grazers breed from capital, echoing 535." (C) "Certify it as
+     data: a riff built and checked as world data: realized or refused per
+     body, its cut routes tested. A probe world carries it beside the
+     defaults, inert on intact bodies until a native or a wound reads it."
+     Mark answered: "The idea of the gut that photosynthesizes is about
+     latent capability that can become an ability through variance via
+     reproduction.  Calibrating to that one example feels odd. Shouldn’t
+     we be going for the systemic approach, not picking and certifying
+     individual trait/part combinations". So no trait and part combination
+     is picked to calibrate or certify: a riff is a latent capability, cells
+     a body already expresses, becoming an ability when variation in
+     reproduction gives it a system that routes them, and the check
+     certifies that mechanism wherever it arises. How systems vary and what
+     the natives read of them go back to Mark as the next question. Mark
+     also asked, sharing an article on computational models of thought,
+     whether the work overcompensates for not letting things feed back by
+     managing the dynamic; the record's answer was yes in part: 505's
+     calibration to earlier medians, 553's soil widened for coverage and
+     561's inert systems manage outcomes, while conservation, the runners'
+     equivalence and the planted faults constrain the instrument.
+
+564. **Each world draws its per-cell capacity.** Asked on 2026-10-05, with
+     563: "How tight is the per-cell capacity that lets an intact body carry
+     all (561)? Evidence: an intact grazer's mouthful needs a median of 1.0
+     mg per cell per tick through its parts, 2.0 at the 90th percentile and
+     4.5 at the 99th. The most is 6.75, a 54 mg mouthful through an 8-cell
+     lump. Only checkpoint 10's wounds will read the slack." Options,
+     recommended first: (A) "Tight, about 7 mg: just above the domain's
+     largest need. The fullest bodies feel their first lost cell, and most
+     bodies have slack to spare (recommended)." (B) "A margin, 14 mg: twice
+     the largest need. A wound has to take about half a part's cells before
+     it narrows even the fullest route." (C) "Drawn per world: each world
+     draws its capacity between the two, so the check covers stretched and
+     slack bodies." Mark chose C, "Drawn per world". So each world draws a
+     cell's capacity between about 7 mg a tick and 14, and the check covers
+     stretched and slack bodies. *Reading, not ruled:* the range is a
+     founding range a world may widen, 7 to 14 by default.
+
+565. **A conduct part carries by its cross-section.** Asked on 2026-10-05,
+     with 563: "How much more does a conduct cell carry than an ordinary
+     cell (560)? Evidence: no probe or generated body has a conducting part
+     yet, so the multiple is a world rule's default that nothing reads
+     until one does. Conduct is measured by cross-section." Options,
+     recommended first: (A) "Four times: a default of 4: a tube or branch
+     carries clearly more, so conduits matter once a recipe grows one
+     (recommended)." (B) "Twice: a default of 2: conduits help modestly."
+     (C) "By cross-section: no fixed multiple: a conduct part carries by
+     its cross-section over the reference segment's, so a wide tube carries
+     more than a thin one." Mark chose C, "By cross-section". So a conduct
+     cell's multiple is its part's cross-section over the reference
+     segment's, a wide tube carrying more than a thin one, with no fixed
+     number. *Reading, not ruled:* the reference segment's cross-section is
+     its face, 25 voxels (505's evidence).
+
+566. **Nursing reads the young's digestive system.** Asked on 2026-10-05,
+     with 563: "What does nursing read? Evidence: the table gives the meal
+     to digestive, income to photosynthetic, the mouthful to muscular, the
+     dose to glandular and reproduction to reproductive (489). Milk is the
+     parent's provision moved to its young and digested into the young's
+     tissue (527, 528). Rent, starvation, weaning and mineralization read no
+     system." Options, recommended first: (A) "The young's digestive: milk
+     lands in the young part by part along the young's digestive routes, as
+     a meal would. The parent's provision leaves its reproduce part
+     directly (recommended)." (B) "The parent's reproductive: milk leaves
+     only as far as the parent's reproductive routes carry it from its
+     living parts to its reproduce part, and lands in the young by room."
+     (C) "Both: the parent's reproductive routes carry it out and the
+     young's digestive routes take it in." Mark chose A, "The young's
+     digestive". So milk lands in the young part by part along the young's
+     digestive routes, as a meal would, and leaves the parent's reproduce
+     part directly.
+
+567. **The pre.4 runners build with the repo's pinned toolchain.** Asked on
+     2026-10-05 in the Burn migration session, from pre.4's findings while
+     proving 558: "the probe, repro and OPFS runners build from a neutral
+     directory, so rustup gives them the default stable (1.97.1 here), not
+     the repo's pinned 1.98.1. Every probe and repro bundle so far was built
+     that way. What should the runners use?" Options, as the migration
+     session relays them: (1) "The repo's pin (Recommended): each runner
+     reads mere's rust-toolchain.toml and builds with it; the probe and
+     repro bundles are rebuilt once and their new hashes recorded." (2)
+     "Update default stable: run `rustup update stable` on this machine;
+     the runners still follow whatever stable is." (3) "Leave it, record
+     it: note in the burn plan that runner bundles come from the default
+     stable." Mark's answer, as it relays it: "The repo's pin
+     (Recommended)". So each runner reads mere's `rust-toolchain.toml` and
+     builds with it, and the probe and repro bundles are rebuilt once with
+     their new hashes recorded. Two findings came with it, not put to Mark:
+     a bundle is byte-identical only within one target directory, since it
+     embeds livery's `OUT_DIR` path and ThinLTO suffixes vary with it; and
+     the OPFS probe stamps its provenance into each build, by design.
+
+     Source: relayed by the migration session on 2026-10-05, for mere's
+     burn plan §13.45 on `burn-pre4-repin`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11423,6 +11544,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's second round recorded (563 to 566): no single
+  riff is picked, riffing to be systemic and put back as the next question
+  (563); each world draws its per-cell capacity (564); a conduct part
+  carries by its cross-section (565); nursing reads the young's digestive
+  system (566). And ruling 567 at the Burn migration session's request:
+  the pre.4 runners build with mere's pinned toolchain. Annotations on 491,
+  503, 528, 560 and 561. Carried into the sim plan's checkpoint 9 brief,
+  the anatomy brief's §1, the session notes and the index.
 - 2026-10-05: checkpoint 9 opened; its first round ruled (560 to 562):
   every cell carries along a route and conduits more, an intact body
   carries all its natives ask, and a process reads its system part by

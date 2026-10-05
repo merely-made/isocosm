@@ -1201,7 +1201,9 @@ control needed the 0.2.126 CLI, and Mark answered "move it and anything
 else to 0.2.129. let's stay with the newest" (556). The quiet A/B then
 counted 7 pre.2 and 8 pre.4 repetitions, indistinguishable in frame pacing,
 and Mark chose "Promote, then handoffs" (557); he also had the getrandom
-cfg committed (558) and the OPFS probe's rustfmt sweep taken (559).
+cfg committed (558) and the OPFS probe's rustfmt sweep taken (559). The
+probe, repro and OPFS runners had been building with the default stable
+toolchain, and Mark chose "The repo's pin (Recommended)" (567).
 
 ## 10. The design session, 2026-09-30
 
@@ -1840,6 +1842,10 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | Which cells carry along a system's route? | 560: every cell, conduits more |
 | How much does a route carry? | 561: intact carries all |
 | How does a process read a system whose effects are every living part? | 562: part by part |
+| Which riffed system does checkpoint 9 certify beside the defaults? | 563: none picked; riffing is systemic, put back |
+| How tight is the per-cell capacity that lets an intact body carry all? | 564: drawn per world |
+| How much more does a conduct cell carry than an ordinary cell? | 565: by cross-section |
+| What does nursing read? | 566: the young's digestive |
 
 Mark then raised rulesets over the sim, with research: the gold standard
 as faithful D&D, Pathfinder and Ars Magica in their versions, whether a
