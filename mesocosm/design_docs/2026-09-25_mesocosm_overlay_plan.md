@@ -169,6 +169,10 @@ checkpoint, `TakeControl` also the death checkpoint (a reading of rulings
 
 ## 4. Absorption: `mesocosm-core` into Isocosm
 
+*Amended 2026-10-05 by ruling 591:* `mesocosm-core` moves into Isocosm
+whole first and the host points at Isocosm; the families below are then
+re-expressed in place.
+
 Ruling 192: Isocosm absorbs `mesocosm-core`, piece by piece, re-expressed in
 its process definitions (ruling 32), and Mesocosm's own core shrinks to
 directing, presentation and the review. `mesocosm-core` is 44,901 lines of

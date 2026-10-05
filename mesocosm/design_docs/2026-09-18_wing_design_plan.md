@@ -1768,11 +1768,17 @@ what later sections derive from.
      process definitions (ruling 32), Mesocosm's own core shrinking to
      directing, presentation and the review; mesocosm-core becomes the
      sim; or a bridge now and convergence later. Mark: "Isocosm absorbs."
+     *Amended 2026-10-05 by ruling 591:* the legacy sims move first and are
+     re-expressed in place.
+
 193. **Moved modules are decomposed under the 600-line ceiling.** Mark,
      2026-09-25, while the Mesocosm overlay plan was being drafted: "Feel
      free to decompose them under the 600 Loc limit". So every family that
      moves into Isocosm is split as it goes, along seams the code already
      has.
+     *Enforced 2026-10-05 by ruling 592:* every tracked source file, by
+     script, exceptions listed with their reason.
+
 194. **Directing is built only on Isocosm.** Put to Mark on 2026-09-25, the
      Mesocosm overlay plan's first decision: prototype directing on the
      current host over `mesocosm-core` now, or build it only on Isocosm
@@ -8181,6 +8187,27 @@ what later sections derive from.
      at its site, weighted by what each holds (287): grazers eat producers
      as now, and a frond that comes to take in eats grazers.
 
+591. **The games move onto the sim first; families are refined in place.**
+     2026-10-05. Question: how do the games move onto the sim, given that
+     192 re-expresses each family before it moves and Isocosm has no space
+     inside a site? Options: move first, refine in place (recommended);
+     re-express, then switch (192 as ruled); hybrid per game. Mark chose
+     "Move first, refine in place", after "the first and most consequential
+     thing to do is literally to move the games onto the sim" and "finish
+     the damn migration, at least". So the legacy sims (`mesocosm-core`,
+     `eponym-world` and `eponym-social`, the campaign world) move into
+     Isocosm, every game points at Isocosm and the legacy crates are
+     deleted, the games playing as today; families are re-expressed as
+     process definitions inside Isocosm afterwards. Amends 192. Bodies stop
+     at checkpoint 8: checkpoint 9 is parked on its branch, unmerged.
+
+592. **No source file over 600 lines without a technical reason.** 2026-10-05,
+     Mark, unprompted: "enforce the 600 loc limit. there is no file that
+     should be bigger than that without a technical reason." So the
+     ceiling (193, and the repository's `CLAUDE.md`) is checked by a script
+     over every tracked source file, any exception listed with its reason,
+     and the files over it today are split.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12052,6 +12079,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: rulings 591 and 592: the games move onto the sim first,
+  families refined in place, checkpoint 9 parked; the 600-line ceiling
+  enforced by script.
 - 2026-10-05: checkpoint 9's seventh round ruled (587 to 590), mapping the
   probe's natives onto systems: a development brings the system its cells
   realize, so the gland keeps the dose (587); the biting parts are the
