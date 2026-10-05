@@ -91,7 +91,9 @@ to 580):* varied cells are inherited, vary at odds each recipe draws, to
 any grown function, and a riff swaps or adds at even odds. *And (581 to
 584):* a process's parts share a route's capacity; a native reads its
 systems as one network; an unrealized inherited system is carried dormant;
-and any cell may vary.
+and any cell may vary. *And (587 to 590):* a development brings the
+system its cells realize; the biting parts are the parts bitten; muscular
+carries the limbs' share of the mouthful; and a body grazes other lineages.
 
 ## 2. The function catalogue
 

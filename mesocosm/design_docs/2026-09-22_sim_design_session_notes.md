@@ -1881,6 +1881,10 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | When several carried systems route a native's function, how does the native read them? | 582: as one network |
 | What happens to an inherited system the child's body doesn't realize? | 583: carried dormant |
 | Can a cell vary out of the last cell of a function that feeds, senses or fixes? | 584: any cell |
+| Does a gland that develops in life bring its system? | 587: development brings it |
+| What are "the biting parts" the glandular system feeds? | 588: the parts bitten |
+| How does the mouthful read the muscular system? | 589: limbs' share only |
+| What does a body that comes to take in eat? | 590: other lineages |
 
 Between the second round and the third, Mark asked, with an article on
 computational models of thought, whether the work overcompensates for not

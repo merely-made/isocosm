@@ -5848,6 +5848,8 @@ what later sections derive from.
      *Specified 2026-10-05 by rulings 574 and 575:* a body carries the
      defaults it realizes, and a native acts on any carried system routing
      its function, the pairings naming the defaults that route them.
+     *Specified 2026-10-05 by rulings 588 and 589:* the biting parts are the
+     parts bitten, and the mouthful reads muscular for the limbs' share.
 
 490. **The natives read their systems from the bodies family on.** Asked on
      2026-10-02, with 489: "When do the natives start reading their systems?
@@ -7761,6 +7763,8 @@ what later sections derive from.
      own accounts.
      *Specified 2026-10-05 by ruling 575:* a native acts on any carried
      system that routes its function.
+     *Specified 2026-10-05 by ruling 590:* a body that takes in grazes any
+     living body of another lineage at its site.
 
 570. **Checkpoint 9 certifies riffing as it arises in the domain.** Asked on
      2026-10-05, with 568: "What does checkpoint 9 certify of riffing (503,
@@ -7865,6 +7869,8 @@ what later sections derive from.
      roles names, "every living part" filled by any living part; stores and
      gates join a route where a part expresses them, but none is required,
      since no probe body expresses a gate.
+     *Extended 2026-10-05 by ruling 587:* cells a development allocates in
+     life bring the default system they realize.
 
 575. **A native acts on any system that routes its function.** Asked with
      574: "Which native reads a riffed system? Evidence: 489's table pairs
@@ -8104,6 +8110,76 @@ what later sections derive from.
      `b7419e77` on mere's main, relayed by the migration session on
      2026-10-05. Knot's repin moved 42 mere rows in three manifests from
      `c79bb8c2` to `07db35e2` with no source edits.
+
+587. **A development brings the system its cells realize.** Asked on
+     2026-10-05, checkpoint 9's seventh round: "Does a gland that develops
+     in life bring its system (574)? Evidence: a quarter of producer
+     cohorts are gland candidates, and the gland develops after founding
+     by allocating fix cells to secrete. Founded fronds express only fix
+     and reproduce. So under 574 no frond carries the glandular system, and
+     the dose, a live mechanic since checkpoint 6, would stop in every
+     world." Options, recommended first: (A) "Development brings it: Cells
+     a development allocates during life bring the default system they
+     realize, as founding does. Cells varied at birth do not; they stay
+     latent until a riff routes them (recommended)." (B) "Dormant from
+     founding: A lineage whose development can place a function carries
+     that function's default system dormant from founding, and it wakes
+     when the cells arrive." (C) "As ruled: The gland is latent like any
+     other unrouted cell, and the dose stops until a riff routes secrete."
+     Mark chose A, "Development brings it". So cells a development
+     allocates during life bring the default system they realize, as
+     founding does, while cells varied at birth stay latent until a riff
+     routes them; a frond's gland brings the glandular system, and the dose
+     goes on.
+
+588. **The biting parts are the parts bitten.** Asked with 587: "What are
+     'the biting parts' the glandular system feeds (489)? Evidence: the
+     table names them as the glandular system's effects but never defines
+     them. The probe's dose is a frond's defense: a grazer biting a frond
+     whose gland the soil charges pays from its reserve, in the share of
+     the frond its bite took. A frond has no part that bites." Options,
+     recommended first: (A) "The parts bitten: The secretion reaches
+     whichever part a bite lands on, and the dose is what the routes carry
+     there. A frond's gland sits in the frond, so intact fronds dose as now
+     (recommended)." (B) "Every living part: The secretion spreads through
+     the whole body, and the dose reads the bitten part's share of it." (C)
+     "The parts that bite: Venom delivered by the body's own biting parts.
+     A frond has none, so the probe's dose stops until a riff routes it
+     elsewhere." Mark chose A, "The parts bitten". So the glandular
+     system's effects are whichever part a bite lands on, the dose being
+     what its routes carry there, and intact fronds dose as now.
+
+589. **The muscular system carries the limbs' share of the mouthful.** Asked
+     with 587: "How does the mouthful read the muscular system? Evidence:
+     221 of 4,501 founded grazers (4.9%, in 35 of 300 worlds) have no
+     contracting part, because absence took their limbs, which 531 allows.
+     Today such a grazer bites by its intake volume alone; its limbs' span
+     is what scales a bite up (TD9's build multiple). Muscular's effects
+     are the contracting parts (489)." Options, recommended first: (A)
+     "Limbs' share only: Muscular carries only the span's part of the
+     mouthful. A limbless grazer still bites by its intake, as now
+     (recommended)." (B) "Whole mouthful: Muscular carries the whole bite.
+     A grazer with no contracting part cannot bite and starves; about 5%
+     are born that way." Mark chose A, "Limbs' share only". So the muscular
+     system carries the span's part of the mouthful, TD9's build multiple,
+     to the contracting parts, and a limbless grazer bites by its intake as
+     now.
+
+590. **A body grazes other lineages.** Asked with 587: "What does a body
+     that comes to take in eat (569)? Evidence: under 569 every lineage
+     carries every native, so a frond may graze once a varied cell and a
+     riff route intake. Today a graze targets its lineage's named prey,
+     the producers, by a weighted draw (287)." Options, recommended first:
+     (A) "Other lineages: A body grazes any living body of another lineage
+     at its site, weighted by what each holds. Grazers eat producers as
+     now, and a frond that comes to take in eats grazers (recommended)."
+     (B) "Any but itself: Any living body at its site except itself, its
+     own lineage included." (C) "World's food web: Each lineage keeps the
+     prey the world names for it. A lineage given none cannot graze,
+     whatever its systems route." Mark chose A, "Other lineages". So a body
+     whose systems route intake grazes any living body of another lineage
+     at its site, weighted by what each holds (287): grazers eat producers
+     as now, and a frond that comes to take in eats grazers.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11976,6 +12052,13 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: checkpoint 9's seventh round ruled (587 to 590), mapping the
+  probe's natives onto systems: a development brings the system its cells
+  realize, so the gland keeps the dose (587); the biting parts are the
+  parts bitten (588); the muscular system carries the limbs' share of the
+  mouthful (589); and a body grazes other lineages (590). Annotations on
+  489, 569 and 574. Carried into the sim plan's checkpoint 9 brief, the
+  anatomy brief's §1, the session notes and the index.
 - 2026-10-05: checkpoint 9's sixth round ruled (581 to 584): a process's
   parts share a route's capacity (581); a native reads the systems routing
   its function as one network (582); an inherited system the body cannot
