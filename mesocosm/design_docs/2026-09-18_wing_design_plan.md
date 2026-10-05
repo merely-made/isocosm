@@ -7489,6 +7489,8 @@ what later sections derive from.
      main (S16), and the Knot and Isometry repins follow as their own
      steps, Knot first if anything breaks, per the lockstep. *Reading, not
      ruled:* Isometry's repin is a step of its own, taken from that handoff.
+     *Placed 2026-10-05 by ruling 572:* Isometry's repin follows checkpoint
+     9.
 
 558. **The web workspaces commit the getrandom cfg.** Asked on 2026-10-04
      in the Burn migration session, with 559 as one multi-select question:
@@ -7684,6 +7686,8 @@ what later sections derive from.
 
      Source: relayed by the migration session on 2026-10-05, for mere's
      burn plan §13.45 on `burn-pre4-repin`.
+     *Checked 2026-10-05:* mere's burn plan records it as §13.45 on main
+     (`07db35e2`), its question, options and answer as here.
 
 568. **Systems vary at birth, and the epoch boundary folds in what
      prospered.** Asked on 2026-10-05, putting 563 back: "Where do systems
@@ -7713,6 +7717,8 @@ what later sections derive from.
      ruled:* checkpoint 9 builds the systems a body carries and their
      variation at birth; the folding at the epoch boundary is built with
      the boundary family, which builds that boundary's revisions (521).
+     *Specified 2026-10-05 by ruling 573:* the odds are drawn per recipe
+     between 1 in 12 and 1 in 100.
 
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
@@ -7772,6 +7778,47 @@ what later sections derive from.
      tuned, and the check covers the range. *Reading, not ruled:* the range
      runs from half to twice today's rates, 11 mg per 144 faces and 12 per
      269 voxels; 505's calibration test retires, its receipts kept.
+
+572. **Isometry repins onto pre.4 after checkpoint 9.** Asked on
+     2026-10-05, when the Burn migration session reported S16 done: "When
+     does Isometry repin onto mere's pre.4 main (557's handoff)? Evidence:
+     mere main is 07db35e2 with pre.4 merged; Knot's repin is running now
+     and goes first. Isometry pins mere at 32edc2ad (2026-09-29), 415
+     commits behind, in 45 pins across 31 manifests and all three products.
+     Nothing in Isometry depends on Knot. The sim crate pins mere for
+     hagiograph alone, so the repin and checkpoint 9 overlap only in
+     isocosm's manifest and lock. You prefer sequential, visible work."
+     Options, recommended first: (A) "After checkpoint 9: finish and merge
+     checkpoint 9, then repin as its own step, briefed from the burn plan's
+     §13.40 to §13.45. By then Knot's repin will have shaken out whatever
+     breaks (recommended)." (B) "Now, pausing checkpoint 9: repin first,
+     once Knot is through, so the sim builds on the current stack, then
+     resume checkpoint 9 on top." (C) "In parallel: a separate lane repins
+     in its own worktree while checkpoint 9 builds. The overlap is one
+     manifest and its lock, merged at the end." Mark chose A, "After
+     checkpoint 9". So checkpoint 9 is finished and merged on the current
+     pin, and Isometry's repin onto mere's pre.4 main follows as its own
+     step, briefed from mere's burn plan §13.40 to §13.45.
+
+573. **Each recipe draws its riff odds between 1 in 12 and 1 in 100.** Asked
+     on 2026-10-05, with 572: "At what odds does a child's system vary
+     (568)? Evidence: 568 puts the odds in the lineage's recipe beside its
+     variance and absence odds, and the probe draws those per world (531).
+     Mesocosm's absence odds are 1 in 12, its 'cheapest evidence that
+     individuals are not clones'. A 60-tick probe world sees a median of 40
+     births (1 to 113), so 1 in 12 gives about three riffs a world and 1 in
+     100 most worlds none. A swap whose routes don't realize is not kept."
+     Options, recommended first: (A) "Drawn, 1 in 12 to 100: each recipe
+     draws its odds between 1 in 12 and 1 in 100, a range a world may
+     widen. Some worlds riff often within a run and others rarely, and the
+     check covers both (recommended)." (B) "1 in 12, as absences: the odds
+     default to Mesocosm's absence odds, about three riffs a world, often
+     enough that most runs see riffing." (C) "Rarer, 1 in 100: a system is
+     a deeper change than a missing limb: most worlds see none within a
+     run, and riffing shows over deep time." Mark chose A, "Drawn, 1 in 12
+     to 100". So each recipe draws its riff odds between 1 in 12 and 1 in
+     100, a range a world may widen, and the check covers worlds that riff
+     often and rarely.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11644,6 +11691,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: rulings 572 and 573: Isometry repins onto mere's pre.4 main
+  after checkpoint 9 (572), and each recipe draws its riff odds between 1
+  in 12 and 1 in 100 (573). Annotations on 557, 567 and 568. Carried into
+  the sim plan's checkpoint 9 brief, the session notes and the index.
 - 2026-10-05: checkpoint 9's third round ruled (568 to 571), putting 563
   back as a systemic question: a body's systems vary at birth and the
   epoch boundary folds in what prospered (568); the natives act by

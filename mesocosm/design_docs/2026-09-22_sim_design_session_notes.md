@@ -1850,6 +1850,8 @@ Checkpoint 9 opened on 2026-10-05. Its first round:
 | Do the natives act by capability? | 569: by capability |
 | What does checkpoint 9 certify of riffing? | 570: riffing in the domain |
 | When bodies change, do we keep calibrating rates to earlier medians? | 571: stop; draw the rates |
+| When does Isometry repin onto mere's pre.4 main? | 572: after checkpoint 9 |
+| At what odds does a child's system vary? | 573: drawn, 1 in 12 to 100 |
 
 Between the second round and the third, Mark asked, with an article on
 computational models of thought, whether the work overcompensates for not
