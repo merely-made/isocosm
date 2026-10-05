@@ -22,6 +22,7 @@ hash before relying on it, then recompute with `python verify.py <copy>
 | `c8-density-bodies-64.json` | 118,501 | `703142061c3d33e749ea784c363b6e6324ae5d0d099bdcda3b8bd4f1c799c705` |
 | `c8-density-bodies-128.json` | 118,794 | `3f99ecaf4f9048bb31c2a2c0d1a1971f226aaf04ce90905f977e18a622158513` |
 | `c8-density-bodies-256.json` | 119,125 | `1a5b7538fe0e1d897c7b0b3eb1cdef14594df2e42aa89b8b7b6e1e3c3d52f952` |
+| `c8-density-bodies-512.json` | 119,557 | `0e29fe05a970fca76d8eea4554423bf93070e6716994cef78e4cd0e2a5f95005` |
 | `pilot-c8-20.json` | 182,312 | `fa2db035ca371b69653d250a7453af2d7c8e5e6418d4315805f04451cb5b74d5` |
 | `pilot-c8-100.json` | 517,878 | `4765a1bc46e08ce84840795f6524b4946fc3e595f69908b5f4fabd7a55bcc4b6` |
 | `isocosm-probe-c8.exe` | 3,006,976 | `aae7da31b7578d291bd8127a53896235317dc9dad05ffbb947ebb3ff46642172` |
@@ -123,17 +124,18 @@ per site and a quarter as many grazers, 60 ticks; `c8-density-bodies.json`.
 | 64 | 1,187,202 | 1,027,825 | 1.16 | 213.6 | 48.9 | 4.4 | 1.04 |
 | 128 | 2,102,477 | 1,807,522 | 1.16 | 579.2 | 84.2 | 6.9 | 1.06 |
 | 256 | 4,217,195 | 3,597,754 | 1.17 | 1,992.9 | 170.3 | 11.7 | 1.10 |
+| 512 | 8,933,678 | 7,393,213 | 1.21 | 8,170.6 | 412.9 | 19.8 | 1.16 |
 
-The 512-producer point was still running at the merge and is added when it
-finishes.
+The 512-producer point finished after the merge, at 21:42 EDT, and was
+added then.
 Checkpoint 7 grouped 1.44 to 2.81 living members a state over the same
 densities and saved 1.77 to 2.64 times the evaluations. Checkpoint 8's
 bodies differ member by member: each cohort draws its soma within its
 recipe's variance and absence odds, each child draws its own, bodies grow
 toward their recipes, and bonded grazers run one by one (554). So nearly
-every living member is a state of its own, and the crowd saves about 1.16
-times the evaluations at every density. Its wall time still falls further
-behind the exact runner's as density grows, 3.1 to 11.7 times, since an
+every living member is a state of its own, and the crowd saves 1.15 to 1.21
+times the evaluations across the ladder. Its wall time still falls further
+behind the exact runner's as density grows, 3.1 to 19.8 times, since an
 evaluation over a state costs it less than one over a member costs the
 exact runner. This is the regime 439 named: grouping stops paying below a
 world rule's members per state.
