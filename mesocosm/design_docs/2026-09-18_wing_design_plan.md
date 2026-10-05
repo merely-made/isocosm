@@ -8207,6 +8207,33 @@ what later sections derive from.
      ceiling (193, and the repository's `CLAUDE.md`) is checked by a script
      over every tracked source file, any exception listed with its reason,
      and the files over it today are split.
+     *Scoped and enforced 2026-10-05 by rulings 593 to 595:* source only,
+     a pre-commit hook, `field-bake` retired; the splits landed at
+     `bb92f2e`.
+
+593. **Docs are outside the ceiling, and deduplicated.** 2026-10-05. Question:
+     do markdown docs fall under the 600-line ceiling (36 over it, the wing
+     record 13,725 lines)? Options: active docs too (recommended); every
+     doc; source code only. Mark chose "Source code only", then "but
+     deduplicate the docs." So the ceiling covers source code, and the docs
+     are deduplicated: each result one home, other mentions a link.
+
+594. **A pre-commit hook enforces the ceiling.** 2026-10-05. Options: a
+     pre-commit hook (recommended); by hand. Mark chose "Pre-commit hook".
+     So `.githooks/pre-commit` runs `scripts/line-ceiling.ps1 -Staged` and
+     this clone's `core.hooksPath` points at it. *Reading, not ruled:* the
+     hook checks only what a commit stages, so branches made before the
+     splits are not blocked by files they did not touch, and it says so
+     and passes where no PowerShell exists.
+
+595. **`field-bake` retires.** 2026-10-05. The probe could not be checked
+     without downloading crates and last built on Sep 9. Options: download
+     and check; commit the move unchecked; retire the probe. Mark chose
+     "Retire the probe". So it left the tree at `bb92f2e`, archived to
+     `Code/archive/field-bake-r2-2026-10-05`.
+
+596. **The repository's `CLAUDE.md` stays as it is.** 2026-10-05. Options:
+     add one line naming the script; leave it. Mark chose "Leave it".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -12079,6 +12106,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: rulings 593 to 596: the ceiling covers source and the docs
+  are deduplicated; a pre-commit hook enforces it; `field-bake` retired;
+  `CLAUDE.md` unchanged. The eight over-ceiling files split at `bb92f2e`.
 - 2026-10-05: rulings 591 and 592: the games move onto the sim first,
   families refined in place, checkpoint 9 parked; the 600-line ceiling
   enforced by script.
