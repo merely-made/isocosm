@@ -21,7 +21,7 @@ use isocosm::legacy::mesocosm::{NATIVE_ABI, Role, Seeding};
 /// The pack format ABI this build reads. One, and it is the core's own.
 pub const SUPPORTED_ABI: u32 = NATIVE_ABI;
 
-/// `mesocosm-pack.json`.
+/// `mesocosm-pack.toml`, or `mesocosm-pack.json` (ruling 624).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Manifest {
@@ -59,7 +59,7 @@ pub struct Manifest {
     pub fixtures: Vec<String>,
 }
 
-/// One `processes/<name>.json`.
+/// One `processes/<name>.toml` (or `.json`).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ProcessFile {

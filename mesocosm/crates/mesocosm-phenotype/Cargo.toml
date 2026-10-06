@@ -21,6 +21,8 @@ publish = false
 isocosm = { workspace = true }
 piccolo = "0.3"
 serde = { workspace = true }
-# The pack format. JSON because this workspace already reads and writes it
-# (traces, receipts, rosters), so a data-only pack costs no new parser.
+# The pack formats (wing design record, ruling 624): TOML for authored files,
+# JSON for recorded fixtures and packs written elsewhere. Both are already in
+# this workspace's graph.
 serde_json = "1"
+toml = "1"

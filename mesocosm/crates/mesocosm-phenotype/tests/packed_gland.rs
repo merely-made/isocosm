@@ -10,7 +10,7 @@
 //! and the same game outcome** as the native proof. Those are two claims and
 //! there is a test for each:
 //!
-//! 1. the definition admitted out of `packs/mesocosm/processes/secrete.json`
+//! 1. the definition admitted out of `packs/mesocosm/processes/secrete.toml`
 //!    is the definition `mesocosm-core` holds — same tract requirement, same
 //!    seeding, same content address, so every allocation already citing it
 //!    resolves against the packed ruleset unchanged;
