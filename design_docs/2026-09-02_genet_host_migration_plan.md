@@ -9,7 +9,7 @@ Evaluated against the wing design record; see
 
 **Related:** the [runtime profile plan](archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md)
 (its R2 desktop gate waits on this), the
-[perf and cambification plan](2026-07-20_perf_and_cambification_plan.md)
+[perf and cambification plan](archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md)
 (its one live item, the search and whisper text lanes, closes here), and
 genet's `docs/2026-08-09_cambium_desktop_host_g1_receipt.md` (the host this
 plan moves onto).

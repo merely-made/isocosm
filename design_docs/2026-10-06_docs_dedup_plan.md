@@ -90,3 +90,6 @@ put.
 ## Findings
 
 ## Progress
+
+- 2026-10-06: D0 done. The five broken live links repaired: four into
+  archived plans, one into the save-growth probe the migration moved.
