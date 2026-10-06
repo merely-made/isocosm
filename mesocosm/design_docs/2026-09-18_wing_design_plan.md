@@ -8266,6 +8266,26 @@ what later sections derive from.
      tree, and those adapters stay in a slim VTT crate over
      `isometry-core`, the sim depending on no game crate, as with Eponym
      (597).
+     *Amended 2026-10-06 by ruling 599:* the overmap projection is not an
+     adapter; the overmap itself moves into the sim.
+
+599. **The overmap moves into the sim.** 2026-10-06. Question, on new
+     evidence against 598: the campaign world's `travel_cost` and
+     `discover_around` (sim behaviour: travel and discovery) route through
+     `isometry-core`'s `Overmap`, a self-contained 262-line place graph
+     with Dijkstra routing that uses only std and serde, and about eight
+     VTT files also use it; where does the overmap go? Options: into the
+     sim (recommended); travel stays with the VTT, as adapter methods; the
+     sim uses `isometry-core` for the overmap alone. Mark chose "Into the
+     sim". So `overmap.rs` moves into Isocosm with the campaign world, a
+     place graph being a sim noun (ruling 72); travel and discovery stay
+     sim-side; the VTT imports `Overmap` from Isocosm; `isometry-core`
+     stays pure and light. The adapters left with the VTT are the map
+     wrapper (`CampaignMap`) and token and sheet drafting. *Reading, not
+     ruled:* the sim keeps every check lowering makes, as
+     `LocalMapProposal::validate` and `DraftMap::validate`, so a draft is
+     refused sim-side before any VTT document is built; the VTT's lowering
+     is a pair of extension traits in the slim `isometry-campaign`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -12138,6 +12158,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 599: the overmap moves into Isocosm with the campaign
+  world; the VTT keeps the map wrapper and token and sheet drafting.
 - 2026-10-06: ruling 598: the campaign world moves into Isocosm, its
   adapters over `isometry-core` staying with the VTT.
 - 2026-10-05: ruling 597: Eponym's motion stays game-side as
