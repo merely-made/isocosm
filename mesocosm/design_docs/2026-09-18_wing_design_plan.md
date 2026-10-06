@@ -8608,6 +8608,28 @@ what later sections derive from.
      list read from them, beside `SEEDED_KINDS`. Recorded worlds must
      reproduce: every founding's state hash is unchanged by the move. The
      plan is `2026-10-06_wing_datasheets_plan.md`.
+626. **The founding datasheets are embedded in isocosm.** 2026-10-06, at
+     the datasheets plan's P3 checkpoint. Question: where do the founding
+     datasheets live? Options: embedded in isocosm, parsed once, with
+     worlds, tests and probes calling `Founding` as now (recommended); in
+     Mesocosm's pack, admitted like the process files, which needs pack
+     admission wired into genesis at 71 sites and a ruling on the ruleset
+     digest. Mark chose "Embedded in isocosm". So the datasheets compile into
+     isocosm, and moving them into a pack waits for W2's founding ruleset.
+627. **Datasheets name shapes and selector encodings in words.** 2026-10-06,
+     the same checkpoint. Question: how do datasheets name shapes and the
+     encodings in their selectors (`SHAPE_SKIRT = ARMOUR_SHAPE + SHAPE_PAD`,
+     a mouth above `JAW_SHAPE` drawn as a jaw)? Options: by name (recommended);
+     raw selector numbers. Mark chose "By name". So a datasheet says
+     `shape = "pad"`, `worn = "covering"`, `mouth = "jaw"`,
+     `chain = "leaf"`. The loader computes today's selectors, and a test
+     proves every computed recipe equals the code's.
+628. **The rationale prose moves into the datasheets.** 2026-10-06, the same
+     checkpoint. Question: where does the prose go (why each body and shape
+     exists, the DC findings and rulings)? Options: into the datasheets as
+     TOML comments (recommended); stay in the Rust docs. Mark chose "Into
+     the datasheets". So the reasons sit beside the data people edit, and
+     the Rust keeps only loader documentation.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
