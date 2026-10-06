@@ -11,6 +11,6 @@ license = "MPL-2.0"
 description = "Live producer-to-consumer receipts for the games wing."
 
 [dependencies]
-mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../isocosm" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
 isometry-campaign = { path = "../../crates/isometry-campaign" }

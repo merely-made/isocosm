@@ -9,9 +9,9 @@
 //! without a Mesocosm world is `isometer`'s own `query/tests.rs`.
 
 use super::*;
+use isocosm::legacy::mesocosm::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
 use isometer::mesh::VolumeMap;
 use isometer::render::{RenderError, Renderer};
-use mesocosm_core::{BodyDocument, BodyPhenotype, OrganismId, PartId, VolumeRef};
 
 #[path = "mask_tests.rs"]
 mod mask;
@@ -117,7 +117,7 @@ fn visible_body_identity_uses_the_drawn_pose_and_expires_with_its_frame() {
     );
     assert!(!hit.tied);
     assert!(section.validate_pick(hit, &world, &volumes));
-    let hash = mesocosm_core::snapshot::state_hash(&world);
+    let hash = isocosm::legacy::mesocosm::snapshot::state_hash(&world);
 
     section
         .set_body_yaw(nearer, core::f32::consts::FRAC_PI_4)
@@ -134,7 +134,10 @@ fn visible_body_identity_uses_the_drawn_pose_and_expires_with_its_frame() {
     let turned = section.pick_ndc([0.0; 2]).unwrap().unwrap();
     assert_eq!(turned.selection, hit.selection);
     assert_ne!(turned.point, hit.point);
-    assert_eq!(mesocosm_core::snapshot::state_hash(&world), hash);
+    assert_eq!(
+        isocosm::legacy::mesocosm::snapshot::state_hash(&world),
+        hash
+    );
     assert!(section.set_body_yaw(nearer, f32::NAN).is_err());
     assert_eq!(section.pick_ndc([0.0; 2]).unwrap(), Some(turned));
     assert_eq!(
@@ -166,7 +169,7 @@ fn visible_body_identity_uses_the_drawn_pose_and_expires_with_its_frame() {
 
 #[test]
 fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it() {
-    use mesocosm_core::places::Places;
+    use isocosm::legacy::mesocosm::places::Places;
     let ground = Ground::grow(&Places::grown(4_242, 4, 4), 4);
     assert!(ground.solid([1, 1, 4]), "independent near-terrain fixture");
     let (mut world, controlled, _) = world();
@@ -275,7 +278,7 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
     assert_eq!(section.pick_ndc([0.0; 2]).unwrap(), None);
 
-    let hash = mesocosm_core::snapshot::state_hash(&world);
+    let hash = isocosm::legacy::mesocosm::snapshot::state_hash(&world);
     section.configure_terrarium(&habitat, 0.0, Cutaway::Always, [1, 1, 0]);
     assert_eq!(section.pick_ndc([0.0; 2]), Err(BodyPickError::NotReady));
     render(&mut section, &world, &volumes, &ground, centre).unwrap();
@@ -310,7 +313,10 @@ fn nearer_presented_terrain_occludes_bodies_but_cutaway_and_isolation_remove_it(
         exposed[32 * 65 + 32],
         "cutaway removes the rendered occluder too"
     );
-    assert_eq!(mesocosm_core::snapshot::state_hash(&world), hash);
+    assert_eq!(
+        isocosm::legacy::mesocosm::snapshot::state_hash(&world),
+        hash
+    );
 
     // A different habitat with the same pitch/reveal must apply even when
     // Ground's revision did not change.
@@ -384,12 +390,12 @@ fn a_queried_part_expires_after_severing_and_fallbacks_never_offer_false_visibil
             VolumeRef::from_tag(252),
             1_000,
             [1; 3],
-            mesocosm_core::Attachment {
+            isocosm::legacy::mesocosm::Attachment {
                 parent: PartId(0),
                 offset: [4, 0, 0],
-                yaw: mesocosm_core::Yaw::Quarter,
+                yaw: isocosm::legacy::mesocosm::Yaw::Quarter,
             },
-            mesocosm_core::Provenance::founding(),
+            isocosm::legacy::mesocosm::Provenance::founding(),
         )
         .unwrap();
     organism.phenotype = BodyPhenotype::seed(body);

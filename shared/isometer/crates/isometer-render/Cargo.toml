@@ -33,4 +33,4 @@ pollster = "0.4"
 png = "0.17"
 # `render_body` drives a real `World` to get a body worth drawing; nothing in
 # the library names a product type.
-mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../isocosm" }

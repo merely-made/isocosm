@@ -13,7 +13,7 @@
 
 use std::collections::VecDeque;
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Accounts, DevelopmentError, History, Intent, OrganismId, Outcome, Reading, Trend, World,
     state_hash,
 };
@@ -56,7 +56,7 @@ pub struct Runtime {
     readings: FlowWindows,
     /// Optional one-tick presentation reading used only by disposable trials.
     /// The ordinary driver does not retain an additional flow copy.
-    trial_flows: Option<Vec<mesocosm_core::flow::RecordedFlow>>,
+    trial_flows: Option<Vec<isocosm::legacy::mesocosm::flow::RecordedFlow>>,
     /// The one body whose own accounts are being reduced beside the ecology's,
     /// and what they read. (DT2)
     ///
@@ -99,7 +99,7 @@ pub struct Runtime {
     /// kind** (DT4). A budget that spent itself and a hand that asked through
     /// `Intent::EndEpoch` both come through `World::apply`'s boundary block and
     /// both are found here; the manual `Runtime::end_epoch` that used to reckon
-    /// a boundary of its own is deleted. See `mesocosm_core`'s `world::adapt`
+    /// a boundary of its own is deleted. See `isocosm::legacy::mesocosm`'s `world::adapt`
     /// module docs.
     epoch_seen: u64,
     /// What the most recent boundary came to.
@@ -153,13 +153,13 @@ impl Runtime {
         seed: u64,
         organisms: u32,
         ticks_per_second: u32,
-        development_palette: mesocosm_core::PartPalette,
+        development_palette: isocosm::legacy::mesocosm::PartPalette,
     ) -> Result<Self, DevelopmentError> {
         Self::with_founding_palette(
             seed,
             organisms,
             ticks_per_second,
-            mesocosm_core::Founding::Roster,
+            isocosm::legacy::mesocosm::Founding::Roster,
             development_palette,
         )
     }
@@ -169,18 +169,18 @@ impl Runtime {
         seed: u64,
         organisms: u32,
         ticks_per_second: u32,
-        founding: mesocosm_core::Founding,
-        development_palette: mesocosm_core::PartPalette,
+        founding: isocosm::legacy::mesocosm::Founding,
+        development_palette: isocosm::legacy::mesocosm::PartPalette,
     ) -> Result<Self, DevelopmentError> {
         let world = World::founded_with_palette(seed, organisms, founding, development_palette)?;
         Ok(Self::from_world(world, seed, organisms, ticks_per_second))
     }
 
     pub fn generated_start(
-        selection: &mesocosm_core::world::generation::Selection,
-        palette: mesocosm_core::PartPalette,
+        selection: &isocosm::legacy::mesocosm::world::generation::Selection,
+        palette: isocosm::legacy::mesocosm::PartPalette,
         ticks_per_second: u32,
-    ) -> Result<Self, mesocosm_core::world::generation::Error> {
+    ) -> Result<Self, isocosm::legacy::mesocosm::world::generation::Error> {
         let world = selection.enter(palette)?;
         Ok(Self::from_world(
             world,
@@ -362,7 +362,10 @@ impl Runtime {
     /// reading that disagreed.
     fn absorb(
         &mut self,
-        hand: Option<(mesocosm_core::OrganismId, mesocosm_core::SpeciesId)>,
+        hand: Option<(
+            isocosm::legacy::mesocosm::OrganismId,
+            isocosm::legacy::mesocosm::SpeciesId,
+        )>,
         revised: bool,
     ) {
         let events = self.world.drain_events();
@@ -498,7 +501,7 @@ impl Runtime {
     /// The reading half on its own, so a host can show a standing without
     /// ending an epoch to find it out.
     pub fn readings(&self) -> Vec<Reading> {
-        mesocosm_core::readings(&self.world, &self.history)
+        isocosm::legacy::mesocosm::readings(&self.world, &self.history)
     }
 
     /// The ordered trace of applied intents. Together with the seed and organism

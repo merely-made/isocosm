@@ -88,7 +88,7 @@ fn the_bound_body_embodies_from_tick_zero_while_its_journey_is_still_empty() {
     // untouched: that asymmetry is the whole point of keeping the two apart.
     let mut dead = trial.world().clone();
     for organism in dead.organisms.iter_mut() {
-        organism.stage = mesocosm_core::Stage::Carrion;
+        organism.stage = isocosm::legacy::mesocosm::Stage::Carrion;
     }
     assert!(reading.embodied_glyphs(&dead, &table).is_empty());
     assert!(reading.owns_effect("test:reshape"));

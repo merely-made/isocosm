@@ -8,7 +8,7 @@
 
 use std::time::Instant;
 
-use mesocosm_core::{PartId, places::WALKER_HEIGHT};
+use isocosm::legacy::mesocosm::{PartId, places::WALKER_HEIGHT};
 use eponym_identity::{BodyRevisionId, SubjectId};
 use eponym_world::fixtures::three_lives::wetland_body;
 use eponym_world::{

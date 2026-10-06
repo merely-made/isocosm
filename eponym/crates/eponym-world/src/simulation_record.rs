@@ -55,18 +55,33 @@ impl Simulation {
     }
 
     pub fn restore(bytes: &[u8]) -> Result<Self, SimulationError> {
+        Self::restore_solving(bytes, crate::MotionSolver::NONE)
+    }
+
+    /// Restores, replaying the game's motion with `solver`.
+    pub fn restore_solving(
+        bytes: &[u8],
+        solver: crate::MotionSolver,
+    ) -> Result<Self, SimulationError> {
         let save: SimulationSave = snapshot::decode(bytes).map_err(|_| SimulationError::Decode)?;
-        Self::restore_record(save)
+        Self::restore_record_solving(save, solver)
     }
 
     pub fn restore_record(save: SimulationSave) -> Result<Self, SimulationError> {
+        Self::restore_record_solving(save, crate::MotionSolver::NONE)
+    }
+
+    pub fn restore_record_solving(
+        save: SimulationSave,
+        solver: crate::MotionSolver,
+    ) -> Result<Self, SimulationError> {
         if save.version != SIMULATION_VERSION {
             return Err(SimulationError::VersionDiverged {
                 saved: save.version,
                 current: SIMULATION_VERSION,
             });
         }
-        let game = GameState::restore_record(save.game)?;
+        let game = GameState::restore_record_solving(save.game, solver)?;
         let population = Population::generate(game.world(), save.population)?;
         let regrown_population = population.state_hash()?;
         if regrown_population != save.expected_population_hash {

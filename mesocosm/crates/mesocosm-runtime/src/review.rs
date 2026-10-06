@@ -40,7 +40,7 @@
 
 use std::path::Path;
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Arrangement, ConditionId, Offer, Reading, RevisionId, SpeciesId, Trend, World,
 };
 use mesocosm_phenotype::express::{Entropy, Policy, Request, Runner};
@@ -156,13 +156,13 @@ impl Review {
     /// The status quo commits nothing, and neither does an untakeable
     /// candidate; both answer `None`, so a host cannot send a revision the
     /// world would only refuse.
-    pub fn commit(&self, index: usize) -> Option<mesocosm_core::Intent> {
+    pub fn commit(&self, index: usize) -> Option<isocosm::legacy::mesocosm::Intent> {
         let row = self.rows.get(index)?;
         row.offer
             .takeable()
             .then_some(row.offer.candidate)
             .flatten()
-            .map(|condition| mesocosm_core::Intent::Revise { condition })
+            .map(|condition| isocosm::legacy::mesocosm::Intent::Revise { condition })
     }
 }
 

@@ -6,8 +6,8 @@
 
 //! Host appearance overrides. Organism and material facts stay in the world.
 
+use isocosm::legacy::mesocosm::{Organism, OrganismId};
 use isometer::render::live_body::LiveBodyError;
-use mesocosm_core::{Organism, OrganismId};
 
 use super::HostBodies;
 use crate::section::Section;

@@ -24,7 +24,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Arrangement, Attachment, BodyPhenotype, Intent, Organism, ProcessId, Provenance, Registry,
     Stage, VolumeRef, World, Yaw,
 };
@@ -92,7 +92,7 @@ fn bulk_world(seed: u64, founders: u32) -> World {
         ..Organism::founding(
             me,
             species,
-            mesocosm_core::Kingdom::Consumer,
+            isocosm::legacy::mesocosm::Kingdom::Consumer,
             VolumeRef::from_tag(1),
             [2, 2, 2],
             position,
@@ -102,7 +102,7 @@ fn bulk_world(seed: u64, founders: u32) -> World {
     world
 }
 
-fn frond_on(world: &mut World) -> mesocosm_core::PartId {
+fn frond_on(world: &mut World) -> isocosm::legacy::mesocosm::PartId {
     let me = world.controlled_id().expect("embodied");
     let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
     let root = organism.body().root;
@@ -124,7 +124,7 @@ fn frond_on(world: &mut World) -> mesocosm_core::PartId {
 
 /// **One body plan**, and the two fixtures are frozen from exactly this. A
 /// bulk consumer carrying one twelve-cell frond.
-fn body_plan() -> (BodyPhenotype, mesocosm_core::PartId) {
+fn body_plan() -> (BodyPhenotype, isocosm::legacy::mesocosm::PartId) {
     let mut world = bulk_world(4_242, 24);
     let part = frond_on(&mut world);
     (world.phenotype().expect("embodied").clone(), part)
@@ -164,8 +164,8 @@ fn ground_of(fixture: &Fixture) -> i64 {
         .value
 }
 
-fn hunger() -> mesocosm_core::ConditionId {
-    mesocosm_core::discovery::conditions()
+fn hunger() -> isocosm::legacy::mesocosm::ConditionId {
+    isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|condition| condition.name == "mesocosm:endured-hunger")
         .expect("the table holds it")
@@ -185,7 +185,7 @@ fn endure(world: &mut World, ticks: u64) {
             .iter_mut()
             .find(|o| o.id == me)
             .expect("in the roster")
-            .energy_mg = upkeep * (mesocosm_core::STARVED_UPKEEP_TICKS - 1);
+            .energy_mg = upkeep * (isocosm::legacy::mesocosm::STARVED_UPKEEP_TICKS - 1);
         world.apply(Intent::Resume);
     }
 }
@@ -205,7 +205,7 @@ fn lua_proposes_the_same_accepted_allocation_as_the_native_fixture() {
     let (phenotype, part) = body_plan();
 
     // The native fixture: what the discovery grants, proposed by the game.
-    let native = mesocosm_core::discovery::conditions()
+    let native = isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|condition| condition.id() == hunger())
         .expect("the table holds it")
@@ -257,7 +257,10 @@ fn the_authored_proposal_walks_the_played_door_to_the_same_development() {
     // it with an ordinary `Deposit` first, which is the only reason a gland is
     // worth its rent there.
     let mut world = bulk_world(4_242, 24);
-    endure(&mut world, mesocosm_core::discovery::HUNGER_TICKS + 1);
+    endure(
+        &mut world,
+        isocosm::legacy::mesocosm::discovery::HUNGER_TICKS + 1,
+    );
     assert!(world.discovered(hunger()), "the condition landed");
     let part = frond_on(&mut world);
     // Enduring left the body under the starved line by construction. Fed again,
@@ -272,7 +275,7 @@ fn the_authored_proposal_walks_the_played_door_to_the_same_development() {
         .energy_mg = 1_500;
     assert_eq!(
         world.apply(Intent::Deposit { mass_mg: 400 }),
-        mesocosm_core::Outcome::Deposited { organism: me }
+        isocosm::legacy::mesocosm::Outcome::Deposited { organism: me }
     );
 
     let request = Request::of(&world, hunger()).expect("embodied and discovered");

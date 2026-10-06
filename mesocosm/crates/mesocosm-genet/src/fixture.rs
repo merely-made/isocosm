@@ -10,11 +10,11 @@
 //! New host sessions admit a generated content pack before founding; see
 //! `app/content.rs`. The core carries addresses and biological envelopes.
 
-use isometer::mesh::{Volume, VolumeMap};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Crossing, Founding, Intent, OrganismId, PartId, Placement, Role, Verdict, VolumeRef, World,
     world::organism_extent,
 };
+use isometer::mesh::{Volume, VolumeMap};
 
 pub fn volumes() -> VolumeMap {
     let mut map = VolumeMap::new();
@@ -178,7 +178,7 @@ mod tests {
 
     #[test]
     fn food_controls_skip_targets_the_controlled_ports_do_not_admit() {
-        use mesocosm_core::{IntakePort, Kingdom, NisKind, Process, Registry};
+        use isocosm::legacy::mesocosm::{IntakePort, Kingdom, NisKind, Process, Registry};
         let mut world = World::new(7, 80);
         let me = world.controlled_id().unwrap();
         let plant = world
@@ -220,17 +220,17 @@ mod tests {
             .find(|o| o.id == prey)
             .unwrap()
             .position = [at[0], at[1], at[2] + 2];
-        let hash = mesocosm_core::state_hash(&world);
+        let hash = isocosm::legacy::mesocosm::state_hash(&world);
         assert_eq!(reachable(&world), Some(prey));
         assert_eq!(toward_prey(&world), Some([0, 0, 1]));
-        assert_eq!(mesocosm_core::state_hash(&world), hash);
+        assert_eq!(isocosm::legacy::mesocosm::state_hash(&world), hash);
 
         world
             .organisms
             .iter_mut()
             .find(|o| o.id == prey)
             .unwrap()
-            .stage = mesocosm_core::Stage::Carrion;
+            .stage = isocosm::legacy::mesocosm::Stage::Carrion;
         assert_eq!(reachable(&world), None);
         let eater = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
         eater.phenotype.declare_port(
@@ -270,12 +270,12 @@ mod tests {
             let me = world.controlled_id().expect("embodied");
             let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
             let (species, position) = (organism.species, organism.position);
-            *organism = mesocosm_core::Organism {
-                stage: mesocosm_core::Stage::Mature,
-                ..mesocosm_core::Organism::founding(
+            *organism = isocosm::legacy::mesocosm::Organism {
+                stage: isocosm::legacy::mesocosm::Stage::Mature,
+                ..isocosm::legacy::mesocosm::Organism::founding(
                     me,
                     species,
-                    mesocosm_core::Kingdom::Decomposer,
+                    isocosm::legacy::mesocosm::Kingdom::Decomposer,
                     VolumeRef::from_tag(1),
                     [2, 2, 2],
                     position,
@@ -285,14 +285,16 @@ mod tests {
             // Placement is the claim here. Give this compact test body a
             // declared live-food port instead of relying on decomposers
             // historically being able to metabolize every living target.
-            let port = mesocosm_core::IntakePort::live(mesocosm_core::NisKind::Producer)
-                .with_live(mesocosm_core::NisKind::Consumer)
-                .with_live(mesocosm_core::NisKind::Decomposer)
-                .supported_by(
-                    mesocosm_core::Registry::native()
-                        .of_native(mesocosm_core::Process::Intake)
-                        .reference(),
-                );
+            let port = isocosm::legacy::mesocosm::IntakePort::live(
+                isocosm::legacy::mesocosm::NisKind::Producer,
+            )
+            .with_live(isocosm::legacy::mesocosm::NisKind::Consumer)
+            .with_live(isocosm::legacy::mesocosm::NisKind::Decomposer)
+            .supported_by(
+                isocosm::legacy::mesocosm::Registry::native()
+                    .of_native(isocosm::legacy::mesocosm::Process::Intake)
+                    .reference(),
+            );
             let root = organism.body().root;
             assert!(organism.phenotype.declare_port(root, port));
         }

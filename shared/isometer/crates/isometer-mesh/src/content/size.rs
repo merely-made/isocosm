@@ -87,7 +87,7 @@ impl<P: Palette + PartialEq + Clone> ContentPack<P> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::Founding;
+    use isocosm::legacy::mesocosm::Founding;
 
     #[test]
     fn unchanged_and_invalid_sizes_preserve_the_source() {
@@ -107,7 +107,7 @@ mod tests {
         let base = ContentPack::generate(Founding::default().palette()).unwrap();
         for size in [2, 3] {
             let enlarged = base.resized(size).unwrap();
-            let restored: ContentPack<mesocosm_core::PartPalette> =
+            let restored: ContentPack<isocosm::legacy::mesocosm::PartPalette> =
                 postcard::from_bytes(&postcard::to_allocvec(&enlarged).unwrap()).unwrap();
             assert_eq!(restored, enlarged);
             assert!(restored.resolve_for(enlarged.palette).is_ok());
@@ -143,7 +143,7 @@ mod tests {
 
     #[test]
     fn ordinary_development_keeps_paid_mass_while_changing_authoritative_bounds() {
-        use mesocosm_core::{Recipe, Soma, SpeciesId, develop_body};
+        use isocosm::legacy::mesocosm::{Recipe, Soma, SpeciesId, develop_body};
         let base = ContentPack::generate(Founding::default().palette()).unwrap();
         let larger = base.resized(2).unwrap();
         let recipe = Recipe::founding(3);

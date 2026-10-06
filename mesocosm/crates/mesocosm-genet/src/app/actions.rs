@@ -54,7 +54,7 @@
 //! A scenario that also wants wall time back pairs a pump with DT1's pause
 //! (`act p`), so nothing but the pump moves the world.
 
-use mesocosm_core::{Intent, OrganismId, Placement};
+use isocosm::legacy::mesocosm::{Intent, OrganismId, Placement};
 use winit::keyboard::{Key, NamedKey};
 
 use super::Host;

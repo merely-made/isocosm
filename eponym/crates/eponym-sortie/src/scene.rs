@@ -20,7 +20,7 @@
 //! the tend, and the return, so a regrown world that stopped having that
 //! cliff fails loudly rather than silently passing a tamer sortie.
 
-use mesocosm_core::places::Ground;
+use isocosm::legacy::mesocosm::places::Ground;
 use eponym_identity::{BodyRevisionId, Control, Facets, SubjectId, Tick};
 use eponym_client::room::{Room, SEED};
 use eponym_social::companion::Craft;

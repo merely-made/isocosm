@@ -167,7 +167,7 @@ pub(super) fn body_box(at: [i32; 3]) -> ([f32; 3], [f32; 3]) {
         [at[0] as f32, at[1] as f32, at[2] as f32],
         [
             (at[0] + 1) as f32,
-            at[1] as f32 + mesocosm_core::places::WALKER_HEIGHT as f32,
+            at[1] as f32 + isocosm::legacy::mesocosm::places::WALKER_HEIGHT as f32,
             (at[2] + 1) as f32,
         ],
     )

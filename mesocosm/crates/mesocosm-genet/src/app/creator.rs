@@ -5,7 +5,7 @@
 //! untouched startup runtime; generated previews never step a played world.
 
 use super::{Host, grafting};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Kingdom, PartPalette, World, state_hash,
     world::generation::{Prepared, Request, Selection},
 };
@@ -22,7 +22,7 @@ pub(super) struct Creator {
     original_camera: crate::section::CameraMode,
     pub habitat_view: bool,
     pub rebind: bool,
-    pub observation: Option<mesocosm_core::world::generation::Observation>,
+    pub observation: Option<isocosm::legacy::mesocosm::world::generation::Observation>,
     pub request: Request,
     pub selected: usize,
     pub prepared: Option<Prepared>,
@@ -283,7 +283,7 @@ impl Host {
                 return true;
             },
             "b" => {
-                use mesocosm_core::world::generation::{BodyPlan, VERSION};
+                use isocosm::legacy::mesocosm::world::generation::{BodyPlan, VERSION};
                 creator.request.version = VERSION;
                 creator.request.criteria.body_plan = match creator.request.criteria.body_plan {
                     BodyPlan::Axial => BodyPlan::Branched,
@@ -296,7 +296,7 @@ impl Host {
                 return true;
             },
             "u" => {
-                let defaults = mesocosm_core::world::generation::Criteria::default();
+                let defaults = isocosm::legacy::mesocosm::world::generation::Criteria::default();
                 let criteria = &mut creator.request.criteria;
                 criteria.role = defaults.role;
                 criteria.movement_organs = defaults.movement_organs;

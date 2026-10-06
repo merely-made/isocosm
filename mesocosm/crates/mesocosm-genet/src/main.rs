@@ -349,7 +349,7 @@ fn main() {
         });
         let request = saved
             .or_else(|| config.start.as_ref().map(|s| s.request.clone()))
-            .unwrap_or_else(|| mesocosm_core::world::generation::Request {
+            .unwrap_or_else(|| isocosm::legacy::mesocosm::world::generation::Request {
                 seed: config.seed,
                 ..Default::default()
             });
@@ -373,10 +373,12 @@ fn main() {
     }
 }
 
-fn read_start(path: Option<String>) -> Result<mesocosm_core::world::generation::Selection, String> {
+fn read_start(
+    path: Option<String>,
+) -> Result<isocosm::legacy::mesocosm::world::generation::Selection, String> {
     let path = path.ok_or("expected a selection JSON path")?;
     let bytes = std::fs::read(&path).map_err(|why| format!("{path}: {why}"))?;
-    let selection: mesocosm_core::world::generation::Selection =
+    let selection: isocosm::legacy::mesocosm::world::generation::Selection =
         serde_json::from_slice(&bytes).map_err(|why| format!("{path}: {why}"))?;
     selection
         .request

@@ -18,7 +18,6 @@ exclude = ["design_docs/"]
 # proven boundary take MIT OR Apache-2.0): see LICENSES.md.
 [workspace]
 members = [
-    "crates/mesocosm-core",
     "crates/mesocosm-genet",
     "crates/mesocosm-phenotype",
     "crates/mesocosm-runtime",
@@ -99,7 +98,7 @@ paint_list_render = { git = "https://github.com/merely-made/netrender.git", rev 
 # render have no row here. The core keeps one: mesocosm-core sits below the
 # family and must not take the facade.
 isometer-core = { path = "../shared/isometer/crates/isometer-core", version = "0.1.0" }
-mesocosm-core = { path = "crates/mesocosm-core", version = "0.0.1" }
+isocosm = { path = "../shared/isocosm" }
 mesocosm-phenotype = { path = "crates/mesocosm-phenotype", version = "0.0.1" }
 mesocosm-genet = { path = "crates/mesocosm-genet", version = "0.0.1" }
 mesocosm-runtime = { path = "crates/mesocosm-runtime", version = "0.0.1" }

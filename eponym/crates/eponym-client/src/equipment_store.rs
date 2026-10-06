@@ -138,7 +138,7 @@ mod tests {
     #[test]
     fn disk_roundtrip_restores_attachment_into_a_fresh_game() {
         let directory = scratch("roundtrip");
-        let fixture = session_fixture::timed_action_world();
+        let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
         let game = fixture.action.session().game();
         let worn = game.attachments(fixture.target);
         assert_eq!(worn.len(), 1);
@@ -147,7 +147,7 @@ mod tests {
         let path = save_equipment(&directory, &game.save().unwrap()).unwrap();
         let (published, bytes) = load_equipment(&directory).unwrap();
         assert_eq!(published, path);
-        let restored = GameState::restore(&bytes).unwrap();
+        let restored = GameState::restore_solving(&bytes, eponym_motion::SOLVER).unwrap();
         assert_eq!(&restored, game);
         assert_eq!(restored.attachments(fixture.target), worn);
 

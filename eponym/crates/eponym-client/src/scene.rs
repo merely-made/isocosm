@@ -12,12 +12,12 @@
 //! volume it actually occupies, one voxel by `WALKER_HEIGHT`, so what you
 //! see is what `stands` was asked about.
 
+use isocosm::legacy::mesocosm::places::WALKER_HEIGHT;
 use isometer::core::VolumeRef;
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::{CritterPose, TraceCamera, critter::Capsule};
 use isometer::mesh::{BodyMesh, Volume};
 use isometer::render::geometry::{SceneItem, Vertex, build_scene_vertices};
-use mesocosm_core::places::WALKER_HEIGHT;
 use netrender::Scene;
 use renderling::glam::{Mat4, Vec3};
 

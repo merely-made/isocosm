@@ -10,13 +10,15 @@
 //! dev tools plan's third principle is the whole of this file's discipline: no
 //! figure below is computed, averaged, inferred or defaulted. Where a fact was
 //! not readable it was added in core with a test rather than worked out here —
-//! [`Accounts`] and [`mesocosm_core::History::ending`] are the two DT2 added.
+//! [`Accounts`] and [`isocosm::legacy::mesocosm::History::ending`] are the two DT2 added.
 //!
 //! The words are this crate's, exactly as the vitals panel's are: core answers
 //! what is, and a panel decides how to say it.
 
-use mesocosm_core::flow::Accounts;
-use mesocosm_core::{Ending, Organism, OrganismId, PartId, Passing, Role, World, classify};
+use isocosm::legacy::mesocosm::flow::Accounts;
+use isocosm::legacy::mesocosm::{
+    Ending, Organism, OrganismId, PartId, Passing, Role, World, classify,
+};
 
 use super::super::vitals::condition_word;
 
@@ -212,7 +214,7 @@ fn extent_words(half_extent: [i32; 3]) -> String {
 
 /// What one part's mosaic expresses, and on how much tissue.
 ///
-/// Straight off [`BodyPhenotype::explain`](mesocosm_core::BodyPhenotype::explain),
+/// Straight off [`BodyPhenotype::explain`](isocosm::legacy::mesocosm::BodyPhenotype::explain),
 /// whose `named` is `None` exactly when this world's ruleset does not hold the
 /// definition — the missing-ruleset diagnostic, said rather than papered over
 /// with a similar local name.

@@ -25,9 +25,11 @@
 //! the same windows byte for byte, which `tests/readings.rs` asserts by encoding
 //! both and comparing the bytes.
 
-use mesocosm_core::Kingdom;
-use mesocosm_core::flow::{Account, Process, RecordedEvent, RecordedFlow, Subject, Trend};
-use mesocosm_core::history::Event;
+use isocosm::legacy::mesocosm::Kingdom;
+use isocosm::legacy::mesocosm::flow::{
+    Account, Process, RecordedEvent, RecordedFlow, Subject, Trend,
+};
+use isocosm::legacy::mesocosm::history::Event;
 use serde::{Deserialize, Serialize};
 
 /// How many ticks of per-tick totals are retained.
@@ -210,8 +212,8 @@ impl FlowWindows {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::flow::{Envelope, FlowEvent};
-    use mesocosm_core::{OrganismId, SpeciesId};
+    use isocosm::legacy::mesocosm::flow::{Envelope, FlowEvent};
+    use isocosm::legacy::mesocosm::{OrganismId, SpeciesId};
 
     fn subject(kingdom: Kingdom) -> Subject {
         Subject {

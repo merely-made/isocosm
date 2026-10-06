@@ -23,7 +23,7 @@ fn target_sheet(game: &GameState) -> SubjectSheet {
     let inputs = TechniqueInputs {
         occupied_parts: Vec::new(),
         part_capabilities: vec![PartCapability {
-            part: mesocosm_core::PartId(2),
+            part: isocosm::legacy::mesocosm::PartId(2),
             function: PartFunction::Adhesion,
             reach_voxels: 8,
             load_capacity_mg: 100_000,
@@ -50,7 +50,7 @@ fn target_sheet(game: &GameState) -> SubjectSheet {
         knowledge: &knowledge,
         inputs: &inputs,
         part_names: &[],
-        selected_part: Some(mesocosm_core::PartId(2)),
+        selected_part: Some(isocosm::legacy::mesocosm::PartId(2)),
     })
 }
 
@@ -104,7 +104,7 @@ fn released_limbs_hit_then_sever_release_and_kill_in_one_replayable_cut() {
             .get(TARGET)
             .unwrap()
             .document
-            .part(mesocosm_core::PartId(2))
+            .part(isocosm::legacy::mesocosm::PartId(2))
             .unwrap()
             .severed
     );
@@ -181,7 +181,7 @@ fn surviving_target_loses_the_part_from_its_sheet_then_can_resume_after_restore(
         sheet
             .parts
             .iter()
-            .any(|part| part.id == mesocosm_core::PartId(2) && part.severed)
+            .any(|part| part.id == isocosm::legacy::mesocosm::PartId(2) && part.severed)
     );
     assert!(sheet.actions.iter().all(|action| !action.available));
 

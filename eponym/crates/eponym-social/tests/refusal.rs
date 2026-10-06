@@ -12,7 +12,7 @@
 //! they stated, not about the rule that produced them, so a rule that stopped
 //! citing its evidence would fail even while giving the same answers.
 
-use mesocosm_core::snapshot::{decode, encode, hash_bytes};
+use isocosm::legacy::mesocosm::snapshot::{decode, encode, hash_bytes};
 use eponym_identity::Tick;
 use eponym_social::agreement::{AgreementChange, EndReason};
 use eponym_social::scene::{self, AUD, BRAM, ODRIS, SELA, THE_THREE, THE_WORK};

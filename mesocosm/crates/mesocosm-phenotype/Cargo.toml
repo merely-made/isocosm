@@ -18,7 +18,7 @@ publish = false
 # refusing the ones that are not admissible, which is precisely the job a
 # deterministic, integer-only, I/O-free core must not have.
 [dependencies]
-mesocosm-core = { workspace = true }
+isocosm = { workspace = true }
 piccolo = "0.3"
 serde = { workspace = true }
 # The pack format. JSON because this workspace already reads and writes it

@@ -6,13 +6,13 @@
 
 use std::collections::BTreeSet;
 
+use isocosm::legacy::mesocosm::organism::FaunaDrive;
+use isocosm::legacy::mesocosm::places::{PlaceId, WALKER_HEIGHT};
+use isocosm::legacy::mesocosm::{History, Intent, Outcome, World, state_hash};
 use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, Flight, Grade,
 };
-use mesocosm_core::organism::FaunaDrive;
-use mesocosm_core::places::{PlaceId, WALKER_HEIGHT};
-use mesocosm_core::{History, Intent, Outcome, World, state_hash};
 
 use crate::burrow_scenario::{self, HUNTER_ID, PLAYER_ID};
 
@@ -284,7 +284,7 @@ fn unique(positions: &[[i32; 3]]) -> bool {
     positions.iter().copied().collect::<BTreeSet<_>>().len() == positions.len()
 }
 
-fn position(world: &World, id: mesocosm_core::OrganismId) -> Result<[i32; 3], String> {
+fn position(world: &World, id: isocosm::legacy::mesocosm::OrganismId) -> Result<[i32; 3], String> {
     world
         .organisms
         .iter()

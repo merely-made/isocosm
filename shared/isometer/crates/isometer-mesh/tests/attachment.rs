@@ -15,10 +15,10 @@
 //! stays a judgment for the windowed host. What they do establish is that
 //! everything the screen would need is derivable, deterministic, and cheap.
 
-use isometer_mesh::{Volume, VolumeMap, mesh_body};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Intent, Origin, Outcome, PartId, Placement, STARVED_UPKEEP_TICKS, VolumeRef, World, Yaw,
 };
+use isometer_mesh::{Volume, VolumeMap, mesh_body};
 
 /// Volumes for the fixture: a body, and one for every primitive tag the world
 /// may mint. Developmental roles now choose their volume vocabulary from the
@@ -37,7 +37,7 @@ fn source() -> VolumeMap {
 /// Reach is anatomy since P2, so a starting critter touches about three
 /// voxels and a fixture has to travel like a player instead of assuming a
 /// meal is adjacent.
-fn reachable_organism(world: &mut World) -> mesocosm_core::OrganismId {
+fn reachable_organism(world: &mut World) -> isocosm::legacy::mesocosm::OrganismId {
     for _ in 0..600 {
         let here = world.position().expect("embodied");
         let Some((id, at)) = world

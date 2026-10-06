@@ -16,3 +16,11 @@ sha2 = "0.10"
 wing-impresa = { path = "../wing-impresa" }
 wing-glyphs = { path = "../wing-glyphs" }
 hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+# What the legacy tree under `src/legacy/` needs (ruling 591), at the pins
+# its products held.
+muniment = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+nisus = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
+wing-functions = { path = "../wing-functions" }
+wing-formats = { path = "../wing-formats" }
+postcard = { version = "1", default-features = false, features = ["alloc"] }

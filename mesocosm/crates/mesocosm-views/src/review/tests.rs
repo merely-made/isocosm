@@ -7,7 +7,7 @@
 //! What the board says, in the exact words a player reads. (PE3b)
 
 use super::*;
-use mesocosm_core::{ConditionId, Role, Score, SpeciesId, Unexpressed};
+use isocosm::legacy::mesocosm::{ConditionId, Role, Score, SpeciesId, Unexpressed};
 
 fn scored(income_mg: u64, rent_mg: u64) -> Score {
     Score {

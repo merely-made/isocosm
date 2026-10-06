@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::PartId;
+use isocosm::legacy::mesocosm::PartId;
 use eponym_identity::{BodyRevisionId, SubjectId, Tick};
 use eponym_world::{
     GameError, GameEvent, GameIntent, ItemId, ItemKind, ItemLocation, Name, Session, SessionError,
@@ -22,7 +22,7 @@ fn setup() -> (Session, Vec<ItemId>, [i32; 3]) {
                     && game
                         .world()
                         .ground()
-                        .stands(at, mesocosm_core::places::WALKER_HEIGHT) =>
+                        .stands(at, isocosm::legacy::mesocosm::places::WALKER_HEIGHT) =>
             {
                 Some(at)
             },

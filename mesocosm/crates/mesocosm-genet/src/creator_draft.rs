@@ -3,7 +3,7 @@
 
 //! Local generator criteria, independent of an entered world's saved trace.
 
-use mesocosm_core::world::generation::Request;
+use isocosm::legacy::mesocosm::world::generation::Request;
 use std::{io::Write, path::Path};
 
 pub fn load(path: &Path) -> Result<Option<Request>, String> {
@@ -51,7 +51,7 @@ mod tests {
         request.version = u32::MAX;
         assert!(save(&path, &request).is_err());
         assert_eq!(std::fs::read(&path).unwrap(), bytes);
-        request.version = mesocosm_core::world::generation::VERSION;
+        request.version = isocosm::legacy::mesocosm::world::generation::VERSION;
         request.variation = 3;
         save(&path, &request).unwrap();
         assert_eq!(load(&path).unwrap(), Some(request));

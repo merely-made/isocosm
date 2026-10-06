@@ -13,7 +13,7 @@
 //! claims and live in `tests/checkpoint.rs` and `tests/review.rs`.
 
 use super::*;
-use mesocosm_core::{PartId, Placement, Yaw};
+use isocosm::legacy::mesocosm::{PartId, Placement, Yaw};
 
 fn scripted() -> Vec<Intent> {
     vec![
@@ -22,7 +22,7 @@ fn scripted() -> Vec<Intent> {
         Intent::Move { delta: [0, 0, 2] },
         Intent::Deposit { mass_mg: 25 },
         Intent::Metabolize {
-            organism: mesocosm_core::OrganismId(0),
+            organism: isocosm::legacy::mesocosm::OrganismId(0),
             placement: Placement::Explicit {
                 parent: PartId(0),
                 offset: [4, 0, 0],
@@ -442,7 +442,10 @@ fn watching_a_body_does_not_change_the_hash() {
         accounts.rent_mg > 0,
         "a living body spends something on standing still"
     );
-    assert_eq!(unwatched.accounts(), mesocosm_core::Accounts::default());
+    assert_eq!(
+        unwatched.accounts(),
+        isocosm::legacy::mesocosm::Accounts::default()
+    );
 }
 
 /// Watching is idempotent, and a change of subject starts the window over —
@@ -459,11 +462,17 @@ fn rewatching_the_same_body_keeps_its_window_and_a_new_one_starts_over() {
     assert_eq!(rt.watched(), Some(OrganismId(0)));
 
     rt.watch(Some(OrganismId(1)));
-    assert_eq!(rt.accounts(), mesocosm_core::Accounts::default());
+    assert_eq!(
+        rt.accounts(),
+        isocosm::legacy::mesocosm::Accounts::default()
+    );
     rt.step(4);
     assert_eq!(rt.accounts().ticks, 4);
 
     rt.watch(None);
-    assert_eq!(rt.accounts(), mesocosm_core::Accounts::default());
+    assert_eq!(
+        rt.accounts(),
+        isocosm::legacy::mesocosm::Accounts::default()
+    );
     assert_eq!(rt.watched(), None);
 }

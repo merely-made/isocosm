@@ -13,7 +13,7 @@
 use std::sync::LazyLock;
 
 use super::*;
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Attachment, Crossing, INSTINCT_IDLE_TICKS, Intent, Kingdom, Organism, OrganismId, Origin,
     PartId, Provenance, SpeciesId, Stage, VolumeRef, World, Yaw,
 };
@@ -69,7 +69,10 @@ fn the_demo_trace_exercises_every_verb_the_slice_claims() {
 fn the_demo_trace_replays_to_its_recorded_hash() {
     let trace = &*TRACE;
     let (world, _) = Runtime::replay(trace.seed, trace.organisms, &trace.intents);
-    assert_eq!(mesocosm_core::state_hash(&world), trace.state_hash);
+    assert_eq!(
+        isocosm::legacy::mesocosm::state_hash(&world),
+        trace.state_hash
+    );
 }
 
 /// TD4's other half, receipted: the recorded run must actually let go, or
@@ -169,12 +172,12 @@ fn the_demo_reaches_a_non_food_discovery_and_a_meal_that_unlocks_nothing() {
     let discovery = discoveries[0];
     assert_eq!(
         discovery.route,
-        mesocosm_core::Input::Endurance,
+        isocosm::legacy::mesocosm::Input::Endurance,
         "and it is not a meal that taught it"
     );
     assert!(matches!(
         discovery.evidence,
-        mesocosm_core::Evidence::Endured { .. }
+        isocosm::legacy::mesocosm::Evidence::Endured { .. }
     ));
     assert!(
         world.last_observation().is_some(),
@@ -205,12 +208,12 @@ fn a_recorded_meal_is_observed_and_unlocks_nothing() {
         }
     }
     let observation = seen.expect("the script eats early and often");
-    assert_eq!(observation.route, mesocosm_core::Input::Meal);
+    assert_eq!(observation.route, isocosm::legacy::mesocosm::Input::Meal);
     assert!(
         observation
             .missed
             .iter()
-            .any(|(_, miss)| matches!(miss, mesocosm_core::Miss::UndeclaredInput)),
+            .any(|(_, miss)| matches!(miss, isocosm::legacy::mesocosm::Miss::UndeclaredInput)),
         "a meal cannot be offered to a condition that never asked about \
          meals: {observation:?}"
     );
@@ -221,7 +224,7 @@ fn a_recorded_meal_is_observed_and_unlocks_nothing() {
 /// one at the controlled body's feet at a particular tick, so that is not a
 /// sound premise for this host receipt.
 fn graft_fixture() -> (World, OrganismId, PartId) {
-    let mut world = World::new(DEMO_SEED, mesocosm_core::world::FOUNDERS);
+    let mut world = World::new(DEMO_SEED, isocosm::legacy::mesocosm::world::FOUNDERS);
     let recipient = world.controlled_id().expect("embodied");
     let (species, position) = {
         let body = world
@@ -330,8 +333,8 @@ fn a_carcass_branch_graft_replays_and_keeps_its_provenance() {
         replay.apply(intent.clone());
     }
     assert_eq!(
-        mesocosm_core::state_hash(&replay),
-        mesocosm_core::state_hash(&world),
+        isocosm::legacy::mesocosm::state_hash(&replay),
+        isocosm::legacy::mesocosm::state_hash(&world),
         "the same accepted transfer replays from the fixed fixture"
     );
 }

@@ -7,8 +7,8 @@
 //! PE0's reading receipts: replay reproduces them, and the warning separates a
 //! stressed enclosure from an untouched one.
 
-use mesocosm_core::snapshot::encode;
-use mesocosm_core::{Intent, Kingdom, Placement, Stage, World, state_hash};
+use isocosm::legacy::mesocosm::snapshot::encode;
+use isocosm::legacy::mesocosm::{Intent, Kingdom, Placement, Stage, World, state_hash};
 use mesocosm_runtime::{FlowWindows, Runtime};
 
 fn scripted(world: &World) -> Vec<Intent> {
@@ -110,7 +110,7 @@ fn the_windows_stay_bounded_however_long_the_run() {
 /// 7 brought far-tier search and feeding to parity with near's, so far
 /// consumers now reach what they see; under that ecology seed 7's own
 /// untouched enclosure peaks at a 94-tick shortfall streak, over
-/// [`mesocosm_core::WARN_AFTER_TICKS`] (60), and can no longer serve as a
+/// [`isocosm::legacy::mesocosm::WARN_AFTER_TICKS`] (60), and can no longer serve as a
 /// neutral control — the control arm below asserts the untouched enclosure
 /// never reads short at all. Measured against the current ecology
 /// (`arm(seed, false)` / `arm(seed, true)`, [`ARM_FOUNDERS`] founders,
@@ -121,7 +121,7 @@ const ARM_SEED: u64 = 31;
 /// Seeds whose untouched enclosure holds its stand across [`ARM_TICKS`].
 ///
 /// These control fixtures may show short transient dips, but none reaches
-/// [`mesocosm_core::WARN_AFTER_TICKS`]. Under TG1, seed 555 reaches 14 short
+/// [`isocosm::legacy::mesocosm::WARN_AFTER_TICKS`]. Under TG1, seed 555 reaches 14 short
 /// ticks and recovers before the 60-tick warning threshold.
 ///
 /// **Re-pinned 2026-09-16.** Was `[1, 7, 99, 555]`, chosen before far-tier
@@ -201,10 +201,10 @@ fn a_neutral_control_does_not_raise_the_warning_a_stressed_arm_raises() {
         "the untouched enclosure never read short across {ARM_TICKS} ticks"
     );
     assert!(
-        stressed >= mesocosm_core::WARN_AFTER_TICKS,
+        stressed >= isocosm::legacy::mesocosm::WARN_AFTER_TICKS,
         "the induced overdraw reached {stressed} short ticks, under the {} the \
          warning is ruled at",
-        mesocosm_core::WARN_AFTER_TICKS
+        isocosm::legacy::mesocosm::WARN_AFTER_TICKS
     );
 }
 
@@ -215,7 +215,7 @@ fn an_enclosure_holding_its_stand_never_raises_it() {
     // healthy enclosure would be worth nothing on a sick one.
     for seed in QUIET_SEEDS {
         assert!(
-            arm(seed, false) < mesocosm_core::WARN_AFTER_TICKS,
+            arm(seed, false) < isocosm::legacy::mesocosm::WARN_AFTER_TICKS,
             "seed {seed} reached the warning threshold with nothing done to it"
         );
     }

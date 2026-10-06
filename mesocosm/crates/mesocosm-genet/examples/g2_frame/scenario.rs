@@ -4,11 +4,11 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 use isometer::lens::{
     BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Grade,
     TraceCamera, critter::Capsule,
 };
-use mesocosm_core::places::{Ground, Places};
 
 pub const INITIAL_SIZE: [u32; 2] = [960, 540];
 pub const MIN_FRAMES: u32 = 2;

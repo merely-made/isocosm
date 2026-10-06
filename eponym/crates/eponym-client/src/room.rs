@@ -12,8 +12,8 @@
 //! buried spot, in a deterministic outward scan, whose whole footprint is
 //! solid and whose thinnest overburden still leaves a roof.
 
+use isocosm::legacy::mesocosm::places::{Places, WALKER_HEIGHT};
 use isometer::core::ground::Ground;
-use mesocosm_core::places::{Places, WALKER_HEIGHT};
 
 /// The world this probe plays in. One seed, so the room is the same room on
 /// every machine and in every replay.

@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     PartPalette,
     world::generation::{Error, Observation, Prepared, Request},
 };

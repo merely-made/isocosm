@@ -218,6 +218,31 @@ impl Session {
         save: SessionSave,
         limits: SessionLimits,
     ) -> Result<Self, SessionError> {
+        Self::restore_record_inner(save, limits, crate::MotionSolver::NONE)
+    }
+
+    /// Restores a session, replaying its motion with `solver`.
+    pub fn restore_solving(bytes: &[u8], solver: crate::MotionSolver) -> Result<Self, SessionError> {
+        let limits = SessionLimits::default();
+        if bytes.len() > limits.max_bytes {
+            return Err(SessionError::TooLarge);
+        }
+        let save: SessionSave = snapshot::decode(bytes).map_err(|_| SessionError::Decode)?;
+        Self::restore_record_inner(save, limits, solver)
+    }
+
+    pub fn restore_record_solving(
+        save: SessionSave,
+        solver: crate::MotionSolver,
+    ) -> Result<Self, SessionError> {
+        Self::restore_record_inner(save, SessionLimits::default(), solver)
+    }
+
+    fn restore_record_inner(
+        save: SessionSave,
+        limits: SessionLimits,
+        solver: crate::MotionSolver,
+    ) -> Result<Self, SessionError> {
         if save.version != SESSION_VERSION {
             return Err(SessionError::VersionDiverged {
                 saved: save.version,
@@ -277,7 +302,7 @@ impl Session {
             return Err(SessionError::TooLarge);
         }
         let world = World::restore_record(save.game.world.clone()).map_err(GameError::from)?;
-        let mut game = GameState::new(world);
+        let mut game = GameState::new(world).with_motion_solver(solver);
         let mut control = None;
         let mut cursor = 0usize;
         let intent_count = save.game.intents.len() as u64;

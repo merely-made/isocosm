@@ -6,7 +6,7 @@
 
 use isometer_core::ground::Ground;
 use isometer_core::snapshot::{self, hash_bytes};
-use mesocosm_core::places::{Grown, Places};
+use isocosm::legacy::mesocosm::places::{Grown, Places};
 use eponym_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 

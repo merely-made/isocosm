@@ -51,7 +51,7 @@ png = "0.17"
 # `develop_body` and the archetype fixtures have no family equivalent, and
 # generation stays Mesocosm's (family plan §4 ruling). Production code names
 # nothing from it.
-mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../isocosm" }
 isometer-mesh = { path = "../isometer-mesh" }
 isometer-render = { path = "../isometer-render" }
 netrender = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }

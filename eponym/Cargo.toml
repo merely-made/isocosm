@@ -20,6 +20,7 @@ exclude = ["design_docs/"]
 members = [
     "crates/eponym-identity",
     "crates/eponym-client",
+    "crates/eponym-motion",
     "crates/eponym-social",
     "crates/eponym-sortie",
     "crates/eponym-world",

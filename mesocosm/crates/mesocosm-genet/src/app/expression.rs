@@ -4,7 +4,7 @@
 //! Choosing a discovered development through the shared body-preview panel.
 
 use super::Host;
-use mesocosm_core::{Intent, Outcome};
+use isocosm::legacy::mesocosm::{Intent, Outcome};
 use mesocosm_views::{BodyMenu, BodyMenuRow, MAX_BODY_MENU_ROWS};
 
 impl Host {
@@ -192,9 +192,9 @@ impl Host {
 }
 
 fn tissue_mg(
-    phenotype: &mesocosm_core::BodyPhenotype,
-    part: mesocosm_core::PartId,
-    process: mesocosm_core::process::ProcessRef,
+    phenotype: &isocosm::legacy::mesocosm::BodyPhenotype,
+    part: isocosm::legacy::mesocosm::PartId,
+    process: isocosm::legacy::mesocosm::process::ProcessRef,
 ) -> u64 {
     let Some(mosaic) = phenotype.mosaic(part) else {
         return 0;

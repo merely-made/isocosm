@@ -387,7 +387,7 @@ mod tests {
     /// The session's own world, detached from its `Session` so a test can
     /// apply the world facts the projection has to survive.
     fn played_game() -> (GameState, SubjectId) {
-        let fixture = session_fixture::timed_action_world();
+        let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
         let played = fixture.keeper;
         (fixture.action.session().game().clone(), played)
     }

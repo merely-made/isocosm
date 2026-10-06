@@ -3,7 +3,7 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+use isocosm::legacy::mesocosm::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use eponym_identity::SubjectId;
 use eponym_world::timed_action::{Direction, TimedActionRules, TimedActionSession};
 use eponym_world::{

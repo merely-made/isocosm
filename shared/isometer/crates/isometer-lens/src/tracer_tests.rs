@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::places::{Ground, Places};
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 
 use crate::{
     BrickChange, BrickFrameInput, BrickMap, BrickProjectionRevision, BrickRevision,

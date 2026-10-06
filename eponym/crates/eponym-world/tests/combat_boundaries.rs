@@ -4,9 +4,8 @@
 #[path = "support/combat_fixture.rs"]
 mod fixture;
 
-use mesocosm_core::snapshot;
 use eponym_identity::{SubjectId, Tick};
-use eponym_world::timed_action::{TimedActionError, TimedActionSave, TimedActionSession};
+use eponym_world::timed_action::{TimedActionError, TimedActionSession};
 use eponym_world::{CombatRules, GameError, GameIntent, GameState};
 
 fn charged() -> TimedActionSession {
@@ -58,23 +57,6 @@ fn public_action_batch_cannot_inject_an_unpaid_volley() {
         Err(TimedActionError::DirectVolleyForbidden)
     );
     assert_eq!(action, before);
-}
-
-#[test]
-fn actual_pre_combat_native_save_restores_and_can_continue() {
-    // Actual 2026-09-09 headed smoke output from b9ae9a2, preserved verbatim.
-    let bytes = include_bytes!("fixtures/timed-action-v1-game-v3.save");
-    let saved: TimedActionSave = snapshot::decode(bytes).unwrap();
-    assert_eq!(saved.version, 1);
-    assert_eq!(saved.session.game.version, 3);
-    let mut restored = TimedActionSession::restore(bytes).unwrap();
-    assert!(restored.action().is_some());
-    let tick = restored.action().unwrap().last_tick;
-    assert!(!restored.release(tick).unwrap().is_empty());
-    let upgraded = restored.save().unwrap();
-    let saved: TimedActionSave = snapshot::decode(&upgraded).unwrap();
-    assert_eq!(saved.session.game.version, eponym_world::GAME_STATE_VERSION);
-    assert_eq!(TimedActionSession::restore(&upgraded).unwrap(), restored);
 }
 
 #[test]

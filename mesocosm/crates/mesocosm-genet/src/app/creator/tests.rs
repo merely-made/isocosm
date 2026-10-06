@@ -28,7 +28,7 @@ fn ready(host: &mut Host) {
 
 #[test]
 fn body_plan_switch_preserves_current_draft_habitat() {
-    use mesocosm_core::world::generation::{BodyPlan, VERSION};
+    use isocosm::legacy::mesocosm::world::generation::{BodyPlan, VERSION};
     let mut host = opened(serde_json::from_str(r#"{"seed":7}"#).unwrap());
     let original = host.runtime.state_hash();
     ready(&mut host);
@@ -293,12 +293,12 @@ fn selected_world_is_revalidated_entered_once_and_replayed() {
     host.run_action("enter");
     assert_eq!(host.runtime.state_hash(), expected);
     for _ in 0..8 {
-        host.runtime.queue(mesocosm_core::Intent::Idle);
+        host.runtime.queue(isocosm::legacy::mesocosm::Intent::Idle);
         host.runtime.step(1);
     }
     let trace = PlayedTrace {
         start: host.config.start.clone(),
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: SceneMode::Ecology,
         body_layout: host.config.body_layout,
         seed: host.config.seed,

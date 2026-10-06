@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use crate::{BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade};
-use mesocosm_core::places::{Ground, Places};
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 
 #[test]
 fn cold_retained_and_carved_terrain_have_distinct_upload_receipts() {

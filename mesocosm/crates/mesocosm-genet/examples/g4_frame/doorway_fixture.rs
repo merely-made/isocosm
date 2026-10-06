@@ -6,9 +6,9 @@
 
 //! The carved-doorway fixture retained for G4's interactive judgment harness.
 
-use mesocosm_core::places::{WALKER_HEIGHT, spot, step};
-use mesocosm_core::world::ENCLOSURE;
-use mesocosm_core::{Kingdom, Organism, OrganismId, SpeciesId, VolumeRef, World};
+use isocosm::legacy::mesocosm::places::{WALKER_HEIGHT, spot, step};
+use isocosm::legacy::mesocosm::world::ENCLOSURE;
+use isocosm::legacy::mesocosm::{Kingdom, Organism, OrganismId, SpeciesId, VolumeRef, World};
 
 pub const SEED: u64 = 4_242;
 pub const PLAYER_ID: OrganismId = OrganismId(0);

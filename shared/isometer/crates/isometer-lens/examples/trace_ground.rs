@@ -12,10 +12,10 @@
 
 use std::path::{Path, PathBuf};
 
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 use isometer_lens::{
     BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade,
 };
-use mesocosm_core::places::{Ground, Places};
 
 const WIDTH: u32 = 512;
 const HEIGHT: u32 = 384;

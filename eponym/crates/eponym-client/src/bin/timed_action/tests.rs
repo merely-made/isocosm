@@ -57,7 +57,9 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
             .revision,
         anatomy.revision
     );
-    let mut restored = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    let mut restored =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     assert_eq!(restored, app.action);
     let next = Tick(action.last_tick.0 + 1);
     assert_eq!(
@@ -162,7 +164,9 @@ fn native_fractional_motion_resumes_exactly() {
     assert!(after.position[0] > before.position[0]);
     assert!(after.position[0] - before.position[0] < eponym_world::MOTION_SCALE);
     let mut resumed = App::new();
-    resumed.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    resumed.action =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     app.move_player([1, 0, 0]);
     resumed.move_player([1, 0, 0]);
     assert_eq!(app.action, resumed.action);
@@ -182,7 +186,9 @@ fn native_support_loss_slows_movement_and_is_visible_after_resume() {
         .unwrap();
     assert_eq!(before.active_supports.len(), 4);
     app.injure();
-    app.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    app.action =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     let after = app
         .action
         .session()

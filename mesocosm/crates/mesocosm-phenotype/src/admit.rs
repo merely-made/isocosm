@@ -24,7 +24,7 @@
 use std::collections::BTreeSet;
 use std::path::{Component, Path, PathBuf};
 
-use mesocosm_core::{Process, ProcessDef, ProcessId, Registry};
+use isocosm::legacy::mesocosm::{Process, ProcessDef, ProcessId, Registry};
 
 use crate::pack::{Manifest, ProcessFile, SUPPORTED_ABI, role_of, seeding_of};
 
@@ -135,7 +135,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
 /// The whole door in one call: what comes back is an ordinary
 /// [`Registry`] the core runs, and its
 /// [`digest`](Registry::digest) is what a world records as its
-/// [`WorldRules`](mesocosm_core::WorldRules).
+/// [`WorldRules`](isocosm::legacy::mesocosm::WorldRules).
 pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
     admit(root, &discover(root)?)
 }

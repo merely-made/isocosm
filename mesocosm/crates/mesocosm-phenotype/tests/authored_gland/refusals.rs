@@ -15,7 +15,9 @@
 
 use std::sync::Arc;
 
-use mesocosm_core::{BodyPhenotype, Intent, Organism, Process, Registry, Stage, VolumeRef, World};
+use isocosm::legacy::mesocosm::{
+    BodyPhenotype, Intent, Organism, Process, Registry, Stage, VolumeRef, World,
+};
 use mesocosm_phenotype::express::{
     Entropy, Expression, Policy, Proposal, Refused, Request, Runner, lower,
 };
@@ -80,7 +82,7 @@ fn an_invalid_part_refuses_cleanly() {
     assert_eq!(
         lower(&registry, &phenotype, &proposal),
         Err(Refused::UnknownPart {
-            part: mesocosm_core::PartId(99)
+            part: isocosm::legacy::mesocosm::PartId(99)
         })
     );
 }
@@ -190,8 +192,12 @@ fn the_validator_still_owns_its_own_boundaries() {
     let allocation = lower(&registry, &phenotype, &proposal).expect("it lowers");
     let mut candidate = phenotype.clone();
     match candidate.develop(&registry, &allocation) {
-        Err(mesocosm_core::Refusal::TractMismatch { part, .. }) => {
-            assert_eq!(part, mesocosm_core::PartId(0), "a bulk root is not a plate")
+        Err(isocosm::legacy::mesocosm::Refusal::TractMismatch { part, .. }) => {
+            assert_eq!(
+                part,
+                isocosm::legacy::mesocosm::PartId(0),
+                "a bulk root is not a plate"
+            )
         },
         other => panic!("{other:?}"),
     }
@@ -221,7 +227,7 @@ fn a_stale_ruleset_refuses_at_the_one_validator() {
     let mut candidate = phenotype.clone();
     assert_eq!(
         candidate.develop(&without, &allocation),
-        Err(mesocosm_core::Refusal::UnknownProcess(
+        Err(isocosm::legacy::mesocosm::Refusal::UnknownProcess(
             Registry::native().of_native(Process::Secrete).reference()
         )),
         "the ruleset that lost the definition refuses the body that cites it"
@@ -238,9 +244,17 @@ fn a_world_validates_against_the_ruleset_it_admitted() {
     let mut defs: Vec<_> = packed().all().cloned().collect();
     defs.retain(|def| def.id.name != "secrete");
     let without = Arc::new(Registry::admit(defs).expect("no collision"));
-    let mut world = World::founded_on(4_242, 24, mesocosm_core::Founding::default(), without)
-        .expect("the palette is valid");
-    assert_ne!(world.rules(), mesocosm_core::WorldRules::native());
+    let mut world = World::founded_on(
+        4_242,
+        24,
+        isocosm::legacy::mesocosm::Founding::default(),
+        without,
+    )
+    .expect("the palette is valid");
+    assert_ne!(
+        world.rules(),
+        isocosm::legacy::mesocosm::WorldRules::native()
+    );
     assert!(world.ruleset().get(&gland()).is_none());
 
     let me = world.controlled_id().expect("embodied");
@@ -251,14 +265,17 @@ fn a_world_validates_against_the_ruleset_it_admitted() {
         ..Organism::founding(
             me,
             species,
-            mesocosm_core::Kingdom::Consumer,
+            isocosm::legacy::mesocosm::Kingdom::Consumer,
             VolumeRef::from_tag(1),
             [2, 2, 2],
             position,
             1_500,
         )
     };
-    endure(&mut world, mesocosm_core::discovery::HUNGER_TICKS + 1);
+    endure(
+        &mut world,
+        isocosm::legacy::mesocosm::discovery::HUNGER_TICKS + 1,
+    );
     frond_on(&mut world);
 
     // The condition table is native, so the candidate cites the gland this
@@ -268,11 +285,13 @@ fn a_world_validates_against_the_ruleset_it_admitted() {
         world.apply(Intent::Express {
             condition: hunger()
         }),
-        mesocosm_core::Outcome::Rejected(mesocosm_core::Rejection::Refused(
-            mesocosm_core::Refusal::UnknownProcess(
-                Registry::native().of_native(Process::Secrete).reference()
+        isocosm::legacy::mesocosm::Outcome::Rejected(
+            isocosm::legacy::mesocosm::Rejection::Refused(
+                isocosm::legacy::mesocosm::Refusal::UnknownProcess(
+                    Registry::native().of_native(Process::Secrete).reference()
+                )
             )
-        ))
+        )
     );
 }
 
@@ -329,7 +348,7 @@ fn lua_has_no_world_mutation_path() {
         &Registry,
         &BodyPhenotype,
         &Proposal,
-    ) -> Result<mesocosm_core::AllocationProposal, Refused> = lower;
+    ) -> Result<isocosm::legacy::mesocosm::AllocationProposal, Refused> = lower;
 }
 
 #[test]
@@ -385,7 +404,7 @@ fn a_script_cannot_express_what_the_line_has_not_come_to() {
     let allocation = lower(&registry, &phenotype, &proposal).expect("nothing lowers to nothing");
     assert_eq!(
         phenotype.clone().develop(&registry, &allocation),
-        Err(mesocosm_core::Refusal::NothingProposed)
+        Err(isocosm::legacy::mesocosm::Refusal::NothingProposed)
     );
 }
 

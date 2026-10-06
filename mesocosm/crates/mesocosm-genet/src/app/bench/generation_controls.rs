@@ -8,7 +8,7 @@ use super::{
 };
 use crate::generation_content::Pack;
 use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Kingdom,
     world::generation::{Archetype, BodyPlan},
 };
@@ -40,7 +40,7 @@ impl Bench {
 
     pub(super) fn commit_generation(
         &mut self,
-        change: impl FnOnce(&mut mesocosm_core::world::generation::Request),
+        change: impl FnOnce(&mut isocosm::legacy::mesocosm::world::generation::Request),
     ) {
         let seed = match self.generation.seed.text().trim().parse::<u64>() {
             Ok(seed) => seed,
@@ -108,7 +108,8 @@ impl Bench {
         let entropy = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map_or(0, |t| t.as_nanos() as u64);
-        let seed = mesocosm_core::Rng::from_seed(entropy ^ self.model.borrow().epoch).next_u64();
+        let seed = isocosm::legacy::mesocosm::Rng::from_seed(entropy ^ self.model.borrow().epoch)
+            .next_u64();
         self.suggested_seed(seed);
     }
 

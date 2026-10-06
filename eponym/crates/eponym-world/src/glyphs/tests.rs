@@ -195,7 +195,7 @@ fn scripted_history_grants_in_acceptance_order_with_event_provenance() {
 fn a_rebuilt_reading_from_a_reloaded_game_has_an_identical_journal() {
     let world = scripted();
     let first = GlyphReading::new(rules(world.keeper), world.game()).unwrap();
-    let restored = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let restored = GameState::restore_solving(&world.game().save().unwrap(), crate::MotionSolver::STILL).unwrap();
     let second = GlyphReading::new(rules(world.keeper), &restored).unwrap();
 
     assert_eq!(first.journey().snapshot(), second.journey().snapshot());
@@ -243,7 +243,7 @@ fn a_reading_moves_no_world_fact() {
     assert_eq!(world.game().state_hash().unwrap(), before);
     assert_eq!(
         world.game().save().unwrap(),
-        GameState::restore(&world.game().save().unwrap())
+        GameState::restore_solving(&world.game().save().unwrap(), crate::MotionSolver::STILL)
             .unwrap()
             .save()
             .unwrap(),
@@ -279,7 +279,7 @@ fn death_ends_the_reading_and_the_world_goes_on_without_it() {
     let world = session::timed_action_world();
     // A plain `GameState`, so the world can keep accepting events for another
     // subject after the bound one dies; a `Session` gates them behind control.
-    let mut game = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let mut game = GameState::restore_solving(&world.game().save().unwrap(), crate::MotionSolver::STILL).unwrap();
     let mut reading = GlyphReading::new(rules(world.keeper), &game).unwrap();
 
     let tick = game.next_tick();
@@ -438,7 +438,7 @@ fn a_revision_moves_the_live_effect_and_leaves_every_founding_meaning_alone() {
 
     // The revision is accepted history, so a reading rebuilt from a reloaded
     // save arrives at the same live correspondence.
-    let restored = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let restored = GameState::restore_solving(&world.game().save().unwrap(), crate::MotionSolver::STILL).unwrap();
     let rebuilt = GlyphReading::new(rules(world.keeper), &restored).unwrap();
     assert_eq!(rebuilt.revision(), reading.revision());
     assert_eq!(rebuilt.live_canon(), reading.live_canon());
@@ -493,7 +493,7 @@ fn evidence_on_each_side_of_a_revision_names_the_revision_it_was_accepted_under(
 #[test]
 fn a_promotion_cause_is_refused_without_its_condition_receipt() {
     let world = session::timed_action_world();
-    let mut game = GameState::restore(&world.game().save().unwrap()).unwrap();
+    let mut game = GameState::restore_solving(&world.game().save().unwrap(), crate::MotionSolver::STILL).unwrap();
     let unreceipted = CanonRevisionCause::Promotion {
         promotion_id: "hagiograph:promotion/1".into(),
         condition_receipt: None,

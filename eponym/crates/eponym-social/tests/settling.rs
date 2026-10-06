@@ -13,7 +13,7 @@
 //! [`Settlement::home_of`], which are derived from agreement state, so the
 //! move-out tests are really tests that no second copy of residence exists.
 
-use mesocosm_core::snapshot::{decode, encode, hash_bytes};
+use isocosm::legacy::mesocosm::snapshot::{decode, encode, hash_bytes};
 use eponym_identity::Tick;
 use eponym_social::agreement::EndReason;
 use eponym_social::scene::{AUD, BRAM, ODRIS, SELA};

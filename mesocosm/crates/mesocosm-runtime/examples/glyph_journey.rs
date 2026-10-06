@@ -4,7 +4,7 @@
 //! A real world grant followed by an explicitly separate progression probe.
 //! Prints a JSON receipt; it neither saves a world nor casts a spell.
 
-use mesocosm_core::{World, state_hash};
+use isocosm::legacy::mesocosm::{World, state_hash};
 use mesocosm_runtime::{
     Trial,
     glyphs::{AcceptedKind, EventGrant, GlyphRules},

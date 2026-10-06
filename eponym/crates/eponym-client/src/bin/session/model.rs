@@ -372,7 +372,7 @@ pub fn run() -> i32 {
     let Some(options) = probe::options() else {
         return 0;
     };
-    let fixture = session_fixture::timed_action_world();
+    let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
     let played = fixture.keeper;
     let target = fixture.target;
     let target_item = fixture.target_item;

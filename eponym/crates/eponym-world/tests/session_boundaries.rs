@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::snapshot::{encode, hash_bytes};
+use isocosm::legacy::mesocosm::snapshot::{encode, hash_bytes};
 use eponym_identity::{ControlIntent, SubjectId, Tick};
 use eponym_world::{
     GameIntent, GameState, ItemLocation, Name, Session, SessionError, SessionLimits, SessionSave,

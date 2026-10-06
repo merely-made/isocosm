@@ -95,7 +95,9 @@ impl GameState {
             },
             _ => return Err(crate::MotionError::InvalidRules.into()),
         };
-        let outcome = crate::motion::advance(self.world.ground(), prior, input, rules)?;
+        let outcome = self
+            .motion
+            .advance(self.world.ground(), prior, input, rules)?;
         debug_assert_eq!(outcome.pose.step, step);
         self.movement
             .record_contact_pose(&self.world, subject, outcome.pose)?;

@@ -163,8 +163,15 @@ fn network(subject: SubjectId) -> FunctionalNetwork {
 }
 
 pub fn timed_action_world() -> Fixture {
+    timed_action_world_solving(crate::MotionSolver::STILL)
+}
+
+/// The same world, its motion solved by `solver`; the plain fixture admits
+/// motion steps without moving, the sim linking no solver (ruling 597).
+pub fn timed_action_world_solving(solver: crate::MotionSolver) -> Fixture {
     let keeper = three_lives::KEEPER;
-    let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap());
+    let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
+        .with_motion_solver(solver);
     let at = game
         .items()
         .all()

@@ -3,7 +3,7 @@
 
 use super::state::{Bench, Specimen};
 use crate::generation_content::Pack;
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     PartId, World, state_hash,
     world::generation::{Candidate, ProportionSelection},
 };

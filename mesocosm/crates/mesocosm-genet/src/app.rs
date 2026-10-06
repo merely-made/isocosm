@@ -10,9 +10,9 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Instant;
 
+use isocosm::legacy::mesocosm::{Kingdom, Organism, Signal, Stage};
 use isometer::mesh::{BodyMesh, VolumeMap, VolumeSource, mesh_body};
 use isometer::render::{SceneItem, deadened, kingdom_colour};
-use mesocosm_core::{Kingdom, Organism, Signal, Stage};
 use mesocosm_runtime::Runtime;
 use winit::application::ApplicationHandler;
 use winit::event::{ElementState, WindowEvent};
@@ -98,7 +98,7 @@ pub struct Host {
     /// Where the section sits relative to the critter it follows. Presentation
     /// only; it never reaches an intent, so it cannot reach the trace.
     pan: Pan,
-    habitat: Option<mesocosm_core::world::TerrariumHabitat>,
+    habitat: Option<isocosm::legacy::mesocosm::world::TerrariumHabitat>,
     window: Option<Arc<Window>>,
     gpu: Option<Gpu>,
     adapter: Option<wgpu::AdapterInfo>,
@@ -138,7 +138,7 @@ pub struct Host {
     /// Host state, outside the snapshot: it moves the camera and nothing else,
     /// so it can no more reach the trace than the pan beside it. See
     /// `app::follow`.
-    follow: Option<mesocosm_core::OrganismId>,
+    follow: Option<isocosm::legacy::mesocosm::OrganismId>,
     /// A followed critter that stopped being one, kept so the tile can report
     /// it after follow has snapped back.
     follow_lost: Option<mesocosm_views::Lost>,
@@ -166,7 +166,7 @@ pub struct Host {
     noted: usize,
     /// The offspring the last accepted forced birth produced, so a scenario can
     /// follow what it just made. (DT4)
-    last_child: Option<mesocosm_core::OrganismId>,
+    last_child: Option<isocosm::legacy::mesocosm::OrganismId>,
 }
 
 struct Gpu {
@@ -252,7 +252,7 @@ impl Host {
         // only where the camera starts: the ordinary keys move it from here,
         // and a target that is not alive is reported and dropped on the first
         // frame like any other.
-        let follow = config.follow.map(mesocosm_core::OrganismId);
+        let follow = config.follow.map(isocosm::legacy::mesocosm::OrganismId);
         // Parsed once, here, so a typo in a scenario stops the run before a
         // window opens rather than three verbs into it. (DT4)
         let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {

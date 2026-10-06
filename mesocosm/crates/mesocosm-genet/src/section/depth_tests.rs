@@ -1,10 +1,10 @@
+use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isocosm::legacy::mesocosm::{PartId, VolumeRef};
 use isometer::lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, FRAME_FORMAT, Grade, TraceCamera,
 };
 use isometer::mesh::{BodyMesh, Volume};
 use isometer::render::{LiveBody, LiveBodyRenderer};
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_core::{PartId, VolumeRef};
 
 use super::bodies::clip_from_world;
 use super::*;

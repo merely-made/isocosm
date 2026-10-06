@@ -445,13 +445,26 @@ impl TimedActionSession {
         Ok(bytes)
     }
     pub fn restore(bytes: &[u8]) -> Result<Self, TimedActionError> {
+        Self::restore_solving(bytes, crate::MotionSolver::NONE)
+    }
+    /// Restores, replaying the session's motion with `solver`.
+    pub fn restore_solving(
+        bytes: &[u8],
+        solver: crate::MotionSolver,
+    ) -> Result<Self, TimedActionError> {
         if bytes.len() > MAX_TIMED_ACTION_BYTES {
             return Err(TimedActionError::Decode);
         }
         let save = snapshot::decode(bytes).map_err(|_| TimedActionError::Decode)?;
-        Self::restore_record(save)
+        Self::restore_record_solving(save, solver)
     }
     pub fn restore_record(save: TimedActionSave) -> Result<Self, TimedActionError> {
+        Self::restore_record_solving(save, crate::MotionSolver::NONE)
+    }
+    pub fn restore_record_solving(
+        save: TimedActionSave,
+        solver: crate::MotionSolver,
+    ) -> Result<Self, TimedActionError> {
         if save.version != TIMED_ACTION_VERSION {
             return Err(TimedActionError::VersionDiverged {
                 saved: save.version,
@@ -461,7 +474,7 @@ impl TimedActionSession {
         save.rules.validate()?;
         save.network.validate()?;
         let mut restored = Self::begin(
-            Session::restore_record(save.session)?,
+            Session::restore_record_solving(save.session, solver)?,
             save.network.network,
             save.rules,
         )?;

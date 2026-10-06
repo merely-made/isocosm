@@ -85,7 +85,7 @@ pub fn run_inputs(
         None => None,
     };
     if config.creator_request.is_none() {
-        config.creator_request = Some(mesocosm_core::world::generation::Request {
+        config.creator_request = Some(isocosm::legacy::mesocosm::world::generation::Request {
             seed: config.seed,
             ..Default::default()
         });

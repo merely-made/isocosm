@@ -13,7 +13,7 @@
 //! two-voxel riser would hold forever; trying the two perpendiculars in a
 //! fixed order is that slide rule lifted one level, and just as replayable.
 
-use mesocosm_core::places::{Ground, step};
+use isocosm::legacy::mesocosm::places::{Ground, step};
 
 /// One walking tick toward a goal in x and z. Returns where the body ends
 /// up, which is where it started when everything in that direction refuses.
@@ -70,7 +70,7 @@ pub fn apart(a: [i32; 3], b: [i32; 3]) -> i32 {
 
 /// A standing spot on the open surface of a column, if the column has one.
 pub fn stand(ground: &Ground, x: i32, z: i32) -> Option<[i32; 3]> {
-    use mesocosm_core::places::WALKER_HEIGHT;
+    use isocosm::legacy::mesocosm::places::WALKER_HEIGHT;
     let top = ground.surface(x, z)?;
     let at = [x, top + 1, z];
     ground.stands(at, WALKER_HEIGHT).then_some(at)

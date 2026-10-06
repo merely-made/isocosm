@@ -3,8 +3,8 @@
 
 use super::*;
 use crate::{Host, played::PlayedTrace};
+use isocosm::legacy::mesocosm::{Intent, state_hash};
 use isometer::mesh::mesh_body;
-use mesocosm_core::{Intent, state_hash};
 
 #[test]
 fn incompatible_recording_is_refused_before_founding_or_content_resolution() {
@@ -12,7 +12,7 @@ fn incompatible_recording_is_refused_before_founding_or_content_resolution() {
         serde_json::from_str(r#"{"seed":7,"organisms":3,"steps":0,"state_hash":0,"intents":[]}"#)
             .unwrap();
     assert_eq!(legacy.trophic_grammar, 0);
-    for revision in [0, mesocosm_core::TROPHIC_GRAMMAR_REVISION + 1] {
+    for revision in [0, isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION + 1] {
         let trace = PlayedTrace {
             start: None,
             trophic_grammar: revision,
@@ -56,7 +56,7 @@ fn same_mesh(a: isometer::mesh::BodyMesh, b: isometer::mesh::BodyMesh) {
 
 #[test]
 fn generated_selection_replays_with_saved_content_and_ignores_current_start() {
-    use mesocosm_core::world::generation::{Request, Selection};
+    use isocosm::legacy::mesocosm::world::generation::{Request, Selection};
     assert!(serde_json::from_str::<Request>(r#"{"criteria":{"wings":true}}"#).is_err());
     assert!(serde_json::from_str::<Request>(r#"{"temperature":20}"#).is_err());
     let selection = Selection {
@@ -79,7 +79,7 @@ fn generated_selection_replays_with_saved_content_and_ignores_current_start() {
     }
     let trace = PlayedTrace {
         start: Some(selection.clone()),
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: crate::played::SceneMode::Ecology,
         body_layout: config.body_layout,
         seed: selection.request.seed,
@@ -116,16 +116,16 @@ fn generated_selection_replays_with_saved_content_and_ignores_current_start() {
 
 #[test]
 fn recipe_json_accepts_legacy_fields_and_rejects_duplicate_authority() {
-    use mesocosm_core::axis::Recipe;
+    use isocosm::legacy::mesocosm::axis::Recipe;
     let legacy = r#"{"tagmata":[{"segments":3,"appendage":"None","per_segment":0,"segment_shape":0,"appendage_shape":0}],"variance":1,"lexicon":["None","Mouth"]}"#;
     let recipe: Recipe = serde_json::from_str(legacy).unwrap();
     assert_eq!(recipe, Recipe::founding(3));
     let duplicate = legacy.replace("\"variance\":1", "\"variance\":1,\"variance\":2");
     assert!(serde_json::from_str::<Recipe>(&duplicate).is_err());
-    let branching = mesocosm_core::axis::archetype::branching::producer_shrub();
+    let branching = isocosm::legacy::mesocosm::axis::archetype::branching::producer_shrub();
     let decoded: Recipe = serde_json::from_slice(&serde_json::to_vec(&branching).unwrap()).unwrap();
     assert_eq!(decoded, branching);
-    let jointed = mesocosm_core::axis::archetype::jointed::consumer_browser();
+    let jointed = isocosm::legacy::mesocosm::axis::archetype::jointed::consumer_browser();
     let json = serde_json::to_string(&jointed).unwrap();
     assert_eq!(serde_json::from_str::<Recipe>(&json).unwrap(), jointed);
     let duplicate = json.replace(
@@ -149,7 +149,7 @@ fn recorded_content_replays_without_the_current_generation_setting() {
     }
     let trace = PlayedTrace {
         start: None,
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: crate::played::SceneMode::Ecology,
         body_layout: config.body_layout,
         seed: config.seed,
@@ -206,7 +206,7 @@ fn historical_recordings_keep_their_original_palette() {
 fn a_bad_saved_pack_is_refused_without_falling_back_to_fixtures() {
     let mut trace = crate::played::record_demo(7, 40, 10, 0);
     let mut pack = Pack::generate(crate::generation_content::DevelopmentPalette(
-        mesocosm_core::Founding::Roster.palette(),
+        isocosm::legacy::mesocosm::Founding::Roster.palette(),
     ))
     .unwrap();
     pack.version = u16::MAX;
@@ -228,8 +228,8 @@ fn snapshot_and_saved_content_recover_the_same_anatomy_and_voxels() {
         ..HostConfig::default()
     })
     .unwrap();
-    let snapshot = mesocosm_core::snapshot(runtime.world()).unwrap();
-    let world = mesocosm_core::restore(&snapshot).unwrap();
+    let snapshot = isocosm::legacy::mesocosm::snapshot(runtime.world()).unwrap();
+    let world = isocosm::legacy::mesocosm::restore(&snapshot).unwrap();
     assert_eq!(state_hash(&world), runtime.state_hash());
     let bytes = serde_json::to_vec(&pack.unwrap()).unwrap();
     let saved: Pack = serde_json::from_slice(&bytes).unwrap();
@@ -241,7 +241,7 @@ fn snapshot_and_saved_content_recover_the_same_anatomy_and_voxels() {
     assert!(
         saved
             .resolve_for(crate::generation_content::DevelopmentPalette(
-                mesocosm_core::Founding::Roster.palette(),
+                isocosm::legacy::mesocosm::Founding::Roster.palette(),
             ))
             .is_err()
     );
@@ -290,7 +290,7 @@ fn changing_surface_content_preserves_all_other_world_facts_through_play() {
     // Postcard stores VolumeRef's fixed [u8;32] verbatim. Normalize only these
     // known cryptographic addresses, leaving every other snapshot byte intact.
     // JSON cannot encode the ground's coordinate-array map keys.
-    let mut generated_facts = mesocosm_core::snapshot(generated.world()).unwrap();
+    let mut generated_facts = isocosm::legacy::mesocosm::snapshot(generated.world()).unwrap();
     let mut offset = 0;
     let mut replacements = 0;
     while offset + 32 <= generated_facts.len() {
@@ -306,7 +306,7 @@ fn changing_surface_content_preserves_all_other_world_facts_through_play() {
         }
     }
     assert!(replacements >= mapping.len());
-    let baseline_facts = mesocosm_core::snapshot(&baseline).unwrap();
+    let baseline_facts = isocosm::legacy::mesocosm::snapshot(&baseline).unwrap();
     assert_eq!(generated_facts.len(), baseline_facts.len());
     let difference = generated_facts
         .iter()

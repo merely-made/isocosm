@@ -9,11 +9,11 @@
 
 use std::time::Instant;
 
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 use isometer_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Flight, Grade,
     critter::Capsule,
 };
-use mesocosm_core::places::{Ground, Places};
 
 const WIDTH: u32 = 1920;
 const HEIGHT: u32 = 1080;

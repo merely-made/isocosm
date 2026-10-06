@@ -25,8 +25,8 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::places::{Ground, ROCK};
-use mesocosm_core::snapshot::{encode, hash_bytes};
+use isocosm::legacy::mesocosm::places::{Ground, ROCK};
+use isocosm::legacy::mesocosm::snapshot::{encode, hash_bytes};
 use eponym_identity::{BodyRevisionId, Control, ControlIntent, Facets, SubjectId, Tick};
 use eponym_social::agreement::EndReason;
 use eponym_social::deed::DeedKind;

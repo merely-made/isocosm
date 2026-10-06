@@ -6,7 +6,7 @@
 
 //! F3a receipt: pointable, actor-scoped claims about accepted deeds.
 
-use mesocosm_core::snapshot::{decode, encode, hash_bytes};
+use isocosm::legacy::mesocosm::snapshot::{decode, encode, hash_bytes};
 use eponym_identity::{SubjectId, Tick};
 use eponym_social::{
     ClaimHistory, ClaimId, DeedId, DeedKind, DeedLog, EpistemicEntry, EpistemicError, EpistemicId,

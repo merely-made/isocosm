@@ -8,8 +8,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
 use std::fmt;
 
-use mesocosm_core::Places;
-use mesocosm_core::places::{AIR, BRICK, Ground};
+use isocosm::legacy::mesocosm::Places;
+use isocosm::legacy::mesocosm::places::{AIR, BRICK, Ground};
 use parry3d::math::{IVector, Pose, Vector};
 use parry3d::query::{
     ContactManifold, DefaultQueryDispatcher, PersistentQueryDispatcher, PointQuery, Ray, RayCast,

@@ -7,7 +7,7 @@
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 
-use mesocosm_core::places::{Grown, PlaceId};
+use isocosm::legacy::mesocosm::places::{Grown, PlaceId};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]

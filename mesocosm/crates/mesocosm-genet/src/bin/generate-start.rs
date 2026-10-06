@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Generate inspectable candidates and selection files for `mesocosm-genet --start`.
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Kingdom,
     world::generation::{
         Archetype, BodyPlan, Request, Selection, SoilPattern, Structure, StructureLayout,

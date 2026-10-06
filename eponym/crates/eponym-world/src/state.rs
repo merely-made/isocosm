@@ -13,7 +13,7 @@ use crate::{
     MovementError, MovementEvent, MovementProfile, MovementProjection, World,
 };
 use isometer_core::snapshot::{self, hash_bytes};
-use mesocosm_core::places::spot;
+use isocosm::legacy::mesocosm::places::spot;
 use eponym_identity::{SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
@@ -30,6 +30,10 @@ pub struct GameState {
     items: Items,
     intents: Vec<GameIntent>,
     events: Vec<GameEvent>,
+    /// The game's motion solver (rulings 233 and 597): handed by the host,
+    /// never saved.
+    #[serde(skip)]
+    motion: crate::MotionSolver,
 }
 
 impl GameState {
@@ -43,7 +47,18 @@ impl GameState {
             items,
             intents: Vec::new(),
             events: Vec::new(),
+            motion: crate::MotionSolver::NONE,
         }
+    }
+
+    /// This state, solving motion with `solver`.
+    pub fn with_motion_solver(mut self, solver: crate::MotionSolver) -> Self {
+        self.motion = solver;
+        self
+    }
+
+    pub fn set_motion_solver(&mut self, solver: crate::MotionSolver) {
+        self.motion = solver;
     }
 
     pub fn world(&self) -> &World {
@@ -364,7 +379,7 @@ impl GameState {
                 if !self
                     .world
                     .ground()
-                    .stands(*at, mesocosm_core::places::WALKER_HEIGHT)
+                    .stands(*at, isocosm::legacy::mesocosm::places::WALKER_HEIGHT)
                 {
                     return Err(MovementError::InvalidStart(*at).into());
                 }

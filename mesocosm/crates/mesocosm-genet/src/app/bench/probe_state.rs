@@ -173,7 +173,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
                 .as_ref()
                 .and_then(|c| c.cards[0].world.as_deref())
                 .map_or("none".into(), |w| {
-                    format!("{:016x}", mesocosm_core::state_hash(w))
+                    format!("{:016x}", isocosm::legacy::mesocosm::state_hash(w))
                 }),
         )
         .with_field("opacity", opacity.to_string())
@@ -250,7 +250,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("overlay-clicks", state.overlay_clicks.to_string())
         .with_field(
             "hash",
-            format!("{:016x}", mesocosm_core::state_hash(model.world())),
+            format!("{:016x}", isocosm::legacy::mesocosm::state_hash(model.world())),
         )
         .with_field(
             "error",
@@ -287,7 +287,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
     );
     snapshot = snapshot.with_field(
         "source-hash",
-        format!("{:016x}", mesocosm_core::state_hash(model.source_world())),
+        format!("{:016x}", isocosm::legacy::mesocosm::state_hash(model.source_world())),
     );
     if let Some(trial) = &model.trial {
         for (key, value) in trial.probe_fields() {

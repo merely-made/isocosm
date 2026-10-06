@@ -30,11 +30,23 @@ impl GameState {
     pub fn save(&self) -> Result<Vec<u8>, GameError> {
         snapshot::encode(&self.save_record()?).map_err(|_| GameError::Encode)
     }
+    /// Restores a save without a motion solver: one that recorded motion
+    /// is refused, `MotionError::NoSolver`.
     pub fn restore(bytes: &[u8]) -> Result<Self, GameError> {
+        Self::restore_solving(bytes, crate::MotionSolver::NONE)
+    }
+    /// Restores a save, replaying its motion with `solver`.
+    pub fn restore_solving(bytes: &[u8], solver: crate::MotionSolver) -> Result<Self, GameError> {
         let save: GameSave = snapshot::decode(bytes).map_err(|_| GameError::Decode)?;
-        Self::restore_record(save)
+        Self::restore_record_solving(save, solver)
     }
     pub fn restore_record(save: GameSave) -> Result<Self, GameError> {
+        Self::restore_record_solving(save, crate::MotionSolver::NONE)
+    }
+    pub fn restore_record_solving(
+        save: GameSave,
+        solver: crate::MotionSolver,
+    ) -> Result<Self, GameError> {
         if !(LEGACY_GAME_STATE_VERSION..=GAME_STATE_VERSION).contains(&save.version) {
             return Err(GameError::VersionDiverged {
                 saved: save.version,
@@ -80,7 +92,7 @@ impl GameState {
             return Err(GameError::LegacyCanonIntent);
         }
         let world = World::restore_record(save.world)?;
-        let mut state = Self::new(world);
+        let mut state = Self::new(world).with_motion_solver(solver);
         for intent in save.intents {
             state.apply(intent)?;
         }

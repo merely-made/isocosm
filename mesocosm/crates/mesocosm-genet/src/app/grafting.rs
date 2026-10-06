@@ -3,7 +3,7 @@
 
 //! Host-owned menu focus and a disposable projection of core's graft candidate.
 
-use mesocosm_core::{Crossing, Intent, OrganismId, Outcome, PartId, World};
+use isocosm::legacy::mesocosm::{Crossing, Intent, OrganismId, Outcome, PartId, World};
 use mesocosm_views::{BodyMenu, BodyMenuRow, MAX_BODY_MENU_ROWS};
 use winit::keyboard::{Key, NamedKey};
 
@@ -19,7 +19,7 @@ pub(super) enum BodyOperation {
 
 pub(super) struct Grafting {
     pub operation: BodyOperation,
-    pub conditions: Vec<mesocosm_core::ConditionId>,
+    pub conditions: Vec<isocosm::legacy::mesocosm::ConditionId>,
     pub open: bool,
     pub selected: usize,
     pub sources: Vec<(OrganismId, PartId)>,
@@ -166,7 +166,7 @@ impl Host {
                         preview.attachment.parent.0, preview.attachment.offset
                     );
                     let terms = match (state.crossing, preview.verdict) {
-                        (Crossing::Carry, mesocosm_core::graft::Verdict::Adapter) => {
+                        (Crossing::Carry, isocosm::legacy::mesocosm::graft::Verdict::Adapter) => {
                             "Tissue arrives inactive; an adapter is required."
                         },
                         (Crossing::Carry, _) => "Donor arrangement retained.",
@@ -176,9 +176,9 @@ impl Host {
                         "{} parts, {} mg tissue. {terms} Amber marks the new root. Diet after graft: {}.",
                         preview.parts.len(),
                         preview.mass_mg,
-                        mesocosm_views::dev::part::feeding_word(mesocosm_core::FeedingMode::of(
-                            &preview.phenotype
-                        ))
+                        mesocosm_views::dev::part::feeding_word(
+                            isocosm::legacy::mesocosm::FeedingMode::of(&preview.phenotype)
+                        )
                     );
                     if let Some(compatibility) = &preview.compatibility {
                         detail.push_str(&format!(
@@ -202,7 +202,7 @@ impl Host {
                     let reason = mesocosm_views::refusal_words(&refusal);
                     rows[state.selected - page].refusal = Some(reason.into());
                     detail = format!("Cannot graft this branch: {reason}.");
-                    if let mesocosm_core::Rejection::GraftAllowance {
+                    if let isocosm::legacy::mesocosm::Rejection::GraftAllowance {
                         requested_mg,
                         allowance_mg,
                     } = refusal

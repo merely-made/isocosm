@@ -17,8 +17,8 @@
 //! headless fixture in the workspace, the population instrument included, keeps
 //! its exact timing across this phase.
 
-use mesocosm_core::snapshot::encode;
-use mesocosm_core::{Intent, OrganismId, World, state_hash};
+use isocosm::legacy::mesocosm::snapshot::encode;
+use isocosm::legacy::mesocosm::{Intent, OrganismId, World, state_hash};
 use mesocosm_runtime::{Checkpoint, Occasion, Runtime};
 
 /// How many ticks this body is from its next brood, or `None` if the ordinary
@@ -31,8 +31,8 @@ use mesocosm_runtime::{Checkpoint, Occasion, Runtime};
 /// to find the exact tick it turns over. That is the ecology's own gate,
 /// answered about a clone; the world is not touched and the birth, when it
 /// comes, is the ordinary one.
-fn ticks_to_brood(organism: &mesocosm_core::Organism) -> Option<u32> {
-    if organism.stage != mesocosm_core::Stage::Mature {
+fn ticks_to_brood(organism: &isocosm::legacy::mesocosm::Organism) -> Option<u32> {
+    if organism.stage != isocosm::legacy::mesocosm::Stage::Mature {
         return None;
     }
     let mut probe = organism.clone();
@@ -373,14 +373,14 @@ fn run_to_a_boundary(seed: u64) -> Option<Runtime> {
         .world()
         .living()
         .find(|organism| {
-            organism.kingdom() == mesocosm_core::Kingdom::Producer
+            organism.kingdom() == isocosm::legacy::mesocosm::Kingdom::Producer
                 && rt.world().is_eligible(organism.id)
         })
         .map(|organism| organism.id)?;
     rt.queue(Intent::TakeControl { organism: stand });
     rt.step(1);
 
-    let horizon = mesocosm_core::rules::DEFAULT_EPOCH_TICKS + 400;
+    let horizon = isocosm::legacy::mesocosm::rules::DEFAULT_EPOCH_TICKS + 400;
     for _ in 0..horizon {
         if matches!(
             rt.checkpoint().map(|checkpoint| checkpoint.occasion),
@@ -448,7 +448,7 @@ fn the_epoch_boundary_holds_the_world_and_resume_answers_it() {
 #[test]
 fn an_idle_terrarium_crosses_a_boundary_without_being_asked() {
     let mut rt = Runtime::new(4_242, 60, 10);
-    let horizon = mesocosm_core::rules::DEFAULT_EPOCH_TICKS + 200;
+    let horizon = isocosm::legacy::mesocosm::rules::DEFAULT_EPOCH_TICKS + 200;
     assert_eq!(rt.step(horizon), horizon, "every step ran");
     assert!(rt.world().epoch > 0, "and the epoch ended anyway");
     assert!(
@@ -477,7 +477,7 @@ fn a_revision_is_admitted_at_the_lineage_checkpoint_and_refused_off_it() {
     assert!(rt.world().revision_admitted_now(), "and here it is");
 
     let revise = Intent::Revise {
-        condition: mesocosm_core::ConditionId(1),
+        condition: isocosm::legacy::mesocosm::ConditionId(1),
     };
     assert!(checkpoint.answers(&revise), "a revision answers this one");
     assert!(
@@ -496,7 +496,7 @@ fn a_revision_is_admitted_at_the_lineage_checkpoint_and_refused_off_it() {
 fn a_run_through_an_epoch_boundary_replays_to_the_same_hash() {
     let seed = 4_242;
     let mut rt = Runtime::new(seed, 60, 10);
-    for _ in 0..(mesocosm_core::rules::DEFAULT_EPOCH_TICKS + 100) {
+    for _ in 0..(isocosm::legacy::mesocosm::rules::DEFAULT_EPOCH_TICKS + 100) {
         let intent = match rt.checkpoint() {
             Some(checkpoint) => checkpoint.default_answer(),
             None => Intent::Resume,

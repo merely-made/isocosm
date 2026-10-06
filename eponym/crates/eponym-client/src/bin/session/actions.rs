@@ -408,7 +408,7 @@ impl SessionApp {
         let restored = std::fs::read(&path)
             .map_err(|error| error.to_string())
             .and_then(|bytes| {
-                eponym_world::timed_action::TimedActionSession::restore(&bytes)
+                eponym_world::timed_action::TimedActionSession::restore_solving(&bytes, eponym_motion::SOLVER)
                     .map_err(|error| format!("{error:?}"))
             });
         self.status = vec![match restored {

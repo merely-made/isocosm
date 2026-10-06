@@ -27,7 +27,6 @@
 mod anatomy;
 mod bodies;
 mod combat;
-mod contact;
 mod equipment;
 pub mod fixtures;
 pub mod glyphs;
@@ -60,14 +59,12 @@ pub use combat::{
     COMBAT_RULES_REVISION, CombatError, CombatRules, MAX_COMBAT_REACH, MAX_VOLLEY_STRIKES,
     ResolvedStrike, StrikeOutcome,
 };
-pub use contact::{
-    BodyId, BodyKind, BodyProfile as ContactBodyProfile, BodyState, BoxCollider, ContactEffect,
-    ContactError, ContactSave, ContactWorld, FIXED_DT_SECONDS, HeldInput, Impairment, Input,
-    InputFrame, MAX_RECORDED_FRAMES, MovableBoard, Position, TriggeredInput,
-};
 pub use equipment::AttachmentView;
 pub use items::{Item, ItemError, ItemId, ItemKind, ItemLocation, Items};
-pub use motion::{MOTION_SCALE, MotionError, MotionInput, MotionPose, MotionRules};
+pub use motion::{
+    MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionSolver,
+    Solve,
+};
 pub use movement::{Movement, MovementError, MovementEvent, MovementIntent, MovementSave};
 pub use movement_profile::{
     MOVEMENT_PROFILE_REVISION, MotionEnvelope, MovementProfile, MovementProjection, SupportBand,

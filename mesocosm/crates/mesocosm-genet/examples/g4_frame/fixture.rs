@@ -7,9 +7,11 @@
 //! The generated threshold fixture shared by G4's native and browser hosts.
 //! Selection is pinned here so both hosts present the same run.
 
-use mesocosm_core::places::{PlaceId, Places, WALKER_HEIGHT, step};
-use mesocosm_core::world::{ENCLOSURE, PLACE_SALT, PLACE_SIDE};
-use mesocosm_core::{Intent, Kingdom, Organism, OrganismId, SpeciesId, VolumeRef, World};
+use isocosm::legacy::mesocosm::places::{PlaceId, Places, WALKER_HEIGHT, step};
+use isocosm::legacy::mesocosm::world::{ENCLOSURE, PLACE_SALT, PLACE_SIDE};
+use isocosm::legacy::mesocosm::{
+    Intent, Kingdom, Organism, OrganismId, SpeciesId, VolumeRef, World,
+};
 
 pub const SEED: u64 = 0;
 pub const PLAYER_ID: OrganismId = OrganismId(0);

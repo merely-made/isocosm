@@ -12,7 +12,7 @@
 
 use isometer::lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
 use isometer::render::PartMaterial;
-use mesocosm_core::{Organism, OrganismId, World};
+use isocosm::legacy::mesocosm::{Organism, OrganismId, World};
 use std::collections::BTreeMap;
 use isometer::{BodyFrameStats, Pose, SceneBody, SlabWindow, SubjectKey};
 

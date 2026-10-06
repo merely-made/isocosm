@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use isocosm::legacy::mesocosm::{PartId, effect_experiment::Glyph};
 use isometer::mesh::BodyDependencyRevision;
 use isometer::{PartAddress, SubjectKey};
-use mesocosm_core::{PartId, effect_experiment::Glyph};
 
 const BOUNDS: ([f32; 3], [f32; 3]) = ([-10., -4., -8.], [12., 16., 10.]);
 fn dot(a: [f32; 3], b: [f32; 3]) -> f32 {

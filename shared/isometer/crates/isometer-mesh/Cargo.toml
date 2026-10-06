@@ -29,7 +29,7 @@ vox = ["dep:dot_vox"]
 # Fixtures only: `World`, `develop_body`, `Recipe`, `Soma`, `PartPalette` and
 # the archetype roster are Mesocosm's development model, which stays with
 # Mesocosm. Production code names nothing from it.
-mesocosm-core = { path = "../../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../isocosm" }
 # The bake lane's appearance recipes round-trip as JSON, and the sprite
 # example writes a JSON receipt.
 serde_json = "1"

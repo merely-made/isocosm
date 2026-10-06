@@ -16,7 +16,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use mesocosm_core::{NATIVE_ABI, Role, Seeding};
+use isocosm::legacy::mesocosm::{NATIVE_ABI, Role, Seeding};
 
 /// The pack format ABI this build reads. One, and it is the core's own.
 pub const SUPPORTED_ABI: u32 = NATIVE_ABI;
@@ -82,7 +82,7 @@ pub struct ProcessFile {
 /// hold.
 ///
 /// A closed set on purpose. A pack cannot mint a shape: the roles are what
-/// [`classify`](mesocosm_core::classify) produces out of geometry, and a
+/// [`classify`](isocosm::legacy::mesocosm::classify) produces out of geometry, and a
 /// definition that could name a fifth would be a tract requirement no part
 /// could ever satisfy.
 pub fn role_of(word: &str) -> Option<Role> {

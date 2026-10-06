@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+use isocosm::legacy::mesocosm::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use eponym_identity::{SubjectId, Tick};
 use eponym_world::timed_action::{Direction, TimedActionRules, TimedActionSession};
 use eponym_world::{GameIntent, GameState, ItemLocation, Name, Session, World, WorldConfig};

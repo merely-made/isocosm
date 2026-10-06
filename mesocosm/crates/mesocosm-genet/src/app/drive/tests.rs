@@ -18,7 +18,7 @@ use std::rc::Rc;
 use cambium::GenetAppRunner;
 use taproot::{ProbeSurface, Scenario, text_present};
 use genet_scripted_dom::ScriptedDom;
-use mesocosm_core::Intent;
+use isocosm::legacy::mesocosm::Intent;
 
 use super::*;
 use crate::HostConfig;
@@ -212,7 +212,7 @@ fn an_assertion_reads_the_words_a_chrome_lane_actually_holds() {
         fn(&mesocosm_views::Vitals) -> mesocosm_views::VitalsChild,
         mesocosm_views::VitalsChild,
     >;
-    let mut world = mesocosm_core::World::new(0x1234, 12);
+    let mut world = isocosm::legacy::mesocosm::World::new(0x1234, 12);
     world.apply(Intent::Idle);
     let reading = mesocosm_views::vitals_of(&world, 1_000, Some("grew"), None);
 

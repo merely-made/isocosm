@@ -4,15 +4,16 @@
 //! Fixed habitat volume and explicit, presentation-only interior exposure.
 
 use super::{CameraMode, Section};
+use isocosm::legacy::mesocosm::{places::Ground, world::TerrariumHabitat};
 use isometer::lens::{BrickMap, BrickProjectionRevision};
-use mesocosm_core::{places::Ground, world::TerrariumHabitat};
 
 /// CP1 uses the existing locomotion unit conversion for all visible anatomy.
-pub const BODY_SCALE: f32 = 1.0 / mesocosm_core::places::BODY_VOXELS_PER_GROUND_VOXEL as f32;
+pub const BODY_SCALE: f32 =
+    1.0 / isocosm::legacy::mesocosm::places::BODY_VOXELS_PER_GROUND_VOXEL as f32;
 
 /// Frame admitted anatomy once at genesis. The host retains this volume while
 /// organisms move; a longer founding plant cannot be clipped by a seed's crop.
-pub fn framed_habitat(world: &mesocosm_core::World) -> TerrariumHabitat {
+pub fn framed_habitat(world: &isocosm::legacy::mesocosm::World) -> TerrariumHabitat {
     let mut habitat = world.terrarium_habitat();
     for organism in &world.organisms {
         let body = organism.body().aabb();

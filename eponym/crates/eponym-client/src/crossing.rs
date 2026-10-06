@@ -8,8 +8,8 @@ mod draw;
 
 use isometer::render::geometry::Vertex;
 use netrender::Scene;
-pub use eponym_world::{BodyId, BodyKind, ContactWorld, HeldInput, Input, TriggeredInput};
-use eponym_world::{BoxCollider, MovableBoard};
+pub use eponym_motion::{BodyId, BodyKind, ContactWorld, HeldInput, Input, TriggeredInput};
+use eponym_motion::{BoxCollider, MovableBoard};
 use renderling::glam::{Mat4, Vec3};
 
 pub fn new_world(kind: BodyKind) -> (ContactWorld, BodyId) {

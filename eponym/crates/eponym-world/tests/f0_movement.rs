@@ -6,7 +6,7 @@
 
 use std::collections::BTreeSet;
 
-use mesocosm_core::places::{WALKER_HEIGHT, step};
+use isocosm::legacy::mesocosm::places::{WALKER_HEIGHT, step};
 use eponym_identity::{SubjectId, Tick};
 use eponym_world::{
     Layer, Movement, MovementError, MovementIntent, Navigation, SiteKind, SlotId, World,

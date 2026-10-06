@@ -4,8 +4,8 @@
 use std::sync::LazyLock;
 
 use cambium::{AnyView, GenetCtx, GenetElement, PointerPhase, clickable, el, focusable, text};
+use isocosm::legacy::mesocosm::PartId;
 use isomere::{ExaminerModel, ExaminerRow, Picked, Seeds, Sizes, ViewportCard};
-use mesocosm_core::PartId;
 
 use super::{LEAF_KEY, state::Bench};
 

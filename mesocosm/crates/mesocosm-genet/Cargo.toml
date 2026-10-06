@@ -18,13 +18,12 @@ publish = false
 # still owns the final surface blit and presentation.
 [dependencies]
 tempfile = "3"
-mesocosm-core = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
 # The shared glyph kernel: the canon the bench's journey preset declares and
 # the declaration half of the effect pack. Data only; execution is core's.
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
-isocosm = { path = "../../../shared/isocosm" }
+isocosm = { workspace = true }
 netrender = { workspace = true }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }

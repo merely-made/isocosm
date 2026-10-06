@@ -6,9 +6,9 @@
 
 use super::*;
 use crate::section::{BodyMode, BodyPickError, CameraMode, Framing, SectionFrame};
+use isocosm::legacy::mesocosm::{Founding, World};
 use isometer::mesh::VolumeMap;
 use isometer::render::{RenderError, Renderer};
-use mesocosm_core::{Founding, World};
 
 fn render(section: &mut Section, world: &World, volumes: &VolumeMap, centre: [f32; 3]) -> Vec<u8> {
     let mut encoder = section.device.create_command_encoder(&Default::default());
@@ -78,7 +78,7 @@ fn tint_changes_material_pixels_and_instances_while_geometry_stays_cached() {
         .phenotype = preview.phenotype;
     let organism = world.controlled().unwrap();
     let volumes = crate::fixture::volumes_for(&world);
-    let hash = mesocosm_core::state_hash(&world);
+    let hash = isocosm::legacy::mesocosm::state_hash(&world);
     let material_facts = crate::section::materials::project(&organism.phenotype, world.ruleset());
     assert!(!material_facts.is_empty());
     let mut section = Section::new(
@@ -163,7 +163,7 @@ fn tint_changes_material_pixels_and_instances_while_geometry_stays_cached() {
     assert_eq!(render(&mut section, &world, &volumes, centre), initial);
     cached(&section);
     assert_eq!(section.set_body_tint(subject, None), Ok(false));
-    assert_eq!(mesocosm_core::state_hash(&world), hash);
+    assert_eq!(isocosm::legacy::mesocosm::state_hash(&world), hash);
     assert_eq!(
         crate::section::materials::project(&organism.phenotype, world.ruleset()),
         material_facts,

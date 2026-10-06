@@ -19,4 +19,4 @@ serde = { version = "1", default-features = false, features = ["derive", "alloc"
 # snapshot organ rather than growing a second one. Test-only, so the library
 # itself stays free of it.
 [dev-dependencies]
-mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../shared/isocosm" }

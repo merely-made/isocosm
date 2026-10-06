@@ -74,7 +74,7 @@ fn expression_commits_once_and_replays_without_revising_the_lineage() {
     assert_eq!(host.runtime.trace().len(), 1);
     let trace = PlayedTrace {
         start: None,
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: SceneMode::ExpressionPractice,
         body_layout: host.config.effective_body_layout(),
         seed: 7,

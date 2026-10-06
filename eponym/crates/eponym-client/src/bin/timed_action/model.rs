@@ -99,7 +99,8 @@ fn target_body() -> BodyDocument {
 impl App {
     fn new() -> Self {
         let subject = three_lives::KEEPER;
-        let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap());
+        let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
+            .with_motion_solver(eponym_motion::SOLVER);
         let at = game
             .items()
             .all()
@@ -571,7 +572,7 @@ impl App {
     fn load(&mut self) {
         self.status = match std::fs::read(&self.save_path)
             .map_err(|e| e.to_string())
-            .and_then(|bytes| TimedActionSession::restore(&bytes).map_err(|e| format!("{e:?}")))
+            .and_then(|bytes| TimedActionSession::restore_solving(&bytes, eponym_motion::SOLVER).map_err(|e| format!("{e:?}")))
         {
             Ok(action) => {
                 if action.session().game().bodies().get(self.target).is_none() {

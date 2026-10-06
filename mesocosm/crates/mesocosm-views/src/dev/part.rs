@@ -3,9 +3,9 @@
 
 //! The selected-part reading for the host dev inspector.
 
-use mesocosm_core::history::{Event, History};
-use mesocosm_core::{FeedingMode, IntakePort, NisKind};
-use mesocosm_core::{OrganismId, Origin, PartId, Role, World, classify};
+use isocosm::legacy::mesocosm::history::{Event, History};
+use isocosm::legacy::mesocosm::{FeedingMode, IntakePort, NisKind};
+use isocosm::legacy::mesocosm::{OrganismId, Origin, PartId, Role, World, classify};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct PartReading {
@@ -123,7 +123,7 @@ pub fn feeding_word(mode: FeedingMode) -> &'static str {
     }
 }
 
-fn feeding_words(organism: &mesocosm_core::Organism) -> String {
+fn feeding_words(organism: &isocosm::legacy::mesocosm::Organism) -> String {
     if !organism.is_alive() {
         return "carcass; inactive".into();
     }
@@ -163,7 +163,7 @@ fn port_words(port: IntakePort) -> String {
     }
 }
 
-fn intake_words(organism: &mesocosm_core::Organism, part: PartId) -> String {
+fn intake_words(organism: &isocosm::legacy::mesocosm::Organism, part: PartId) -> String {
     let declared = organism
         .phenotype
         .mosaic(part)
@@ -180,10 +180,10 @@ fn intake_words(organism: &mesocosm_core::Organism, part: PartId) -> String {
     )
 }
 
-fn cause_words(cause: mesocosm_core::phenotype::Expressed) -> String {
+fn cause_words(cause: isocosm::legacy::mesocosm::phenotype::Expressed) -> String {
     match cause {
-        mesocosm_core::phenotype::Expressed::Geometry => "geometry".into(),
-        mesocosm_core::phenotype::Expressed::Arranged { revision } => {
+        isocosm::legacy::mesocosm::phenotype::Expressed::Geometry => "geometry".into(),
+        isocosm::legacy::mesocosm::phenotype::Expressed::Arranged { revision } => {
             format!("arranged revision {revision}")
         },
     }

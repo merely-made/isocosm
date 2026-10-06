@@ -4,7 +4,9 @@
 //! Independent recipe choices, saved in the ordinary generation request.
 use super::{generation_controls::choice, state::Bench, view::Child};
 use cambium::{el, text};
-use mesocosm_core::world::generation::{BodyPlan, Structure, StructureLayout, StructureOrgans};
+use isocosm::legacy::mesocosm::world::generation::{
+    BodyPlan, Structure, StructureLayout, StructureOrgans,
+};
 
 impl Bench {
     fn structure(&mut self, change: impl FnOnce(&mut Structure)) {
@@ -23,7 +25,7 @@ impl Bench {
                 .as_ref()
                 .is_some_and(|s| s.organs == StructureOrgans::Leaves)
             {
-                request.criteria.role = Some(mesocosm_core::Kingdom::Producer);
+                request.criteria.role = Some(isocosm::legacy::mesocosm::Kingdom::Producer);
             }
             request.criteria.movement_organs = None;
             request.variation = 0;

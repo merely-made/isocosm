@@ -10,8 +10,10 @@ use super::Runtime;
 #[cfg(test)]
 use super::deep_time_world;
 use crate::Checkpoint;
-use mesocosm_core::flow::{Account, Process, RecordedFlow};
-use mesocosm_core::{History, Intent, OrganismId, Outcome, World, history::Event, state_hash};
+use isocosm::legacy::mesocosm::flow::{Account, Process, RecordedFlow};
+use isocosm::legacy::mesocosm::{
+    History, Intent, OrganismId, Outcome, World, history::Event, state_hash,
+};
 use serde::Serialize;
 use std::collections::BTreeMap;
 

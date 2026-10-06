@@ -4,9 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
+use isocosm::legacy::mesocosm::PartId;
 use isometer::mesh::VolumeMap;
 use isometer::render::{RenderError, Renderer};
-use mesocosm_core::PartId;
 
 use super::bodies::{HostBodies, key};
 use super::*;

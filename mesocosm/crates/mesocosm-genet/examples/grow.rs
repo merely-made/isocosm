@@ -15,9 +15,9 @@
 //! cargo run -p mesocosm-genet --example grow -- <output-dir> [meals]
 //! ```
 
+use isocosm::legacy::mesocosm::{Placement, World};
 use isometer::mesh::{VolumeSource, flatten, mesh_body};
 use isometer::render::{Camera, Renderer, SceneItem};
-use mesocosm_core::{Placement, World};
 
 use mesocosm_genet::fixture;
 
@@ -42,7 +42,7 @@ fn main() {
         let intent = fixture::metabolize(&world, target, &volumes, Placement::Planned);
         if matches!(
             world.apply(intent),
-            mesocosm_core::Outcome::Incorporated { .. }
+            isocosm::legacy::mesocosm::Outcome::Incorporated { .. }
         ) {
             eaten += 1;
         }
@@ -98,7 +98,7 @@ fn main() {
     // it goes somewhere whether or not anyone is playing.
     let before_alive = world.living().count();
     for _ in 0..600 {
-        world.apply(mesocosm_core::Intent::Idle);
+        world.apply(isocosm::legacy::mesocosm::Intent::Idle);
     }
     let after_alive = world.living().count();
     println!("left alone for 600 ticks: {before_alive} alive -> {after_alive} alive");
@@ -108,11 +108,11 @@ fn main() {
     let carrion = world
         .organisms
         .iter()
-        .filter(|o| o.stage == mesocosm_core::Stage::Carrion)
+        .filter(|o| o.stage == isocosm::legacy::mesocosm::Stage::Carrion)
         .count();
     let producers = world
         .living()
-        .filter(|o| o.kingdom() == mesocosm_core::Kingdom::Producer)
+        .filter(|o| o.kingdom() == isocosm::legacy::mesocosm::Kingdom::Producer)
         .count();
     println!(
         "enclosure: {alive} alive ({producers} producers), {carrion} carrion,          {} total ever minted",
@@ -123,16 +123,16 @@ fn main() {
     // prove the world contains liars in both directions.
     let warning = world
         .living()
-        .filter(|o| o.signal == mesocosm_core::Signal::Warning)
+        .filter(|o| o.signal == isocosm::legacy::mesocosm::Signal::Warning)
         .count();
     let armed = world.living().filter(|o| o.venom_mg > 0).count();
     let bluffers = world
         .living()
-        .filter(|o| o.signal == mesocosm_core::Signal::Warning && o.venom_mg == 0)
+        .filter(|o| o.signal == isocosm::legacy::mesocosm::Signal::Warning && o.venom_mg == 0)
         .count();
     let traps = world
         .living()
-        .filter(|o| o.signal == mesocosm_core::Signal::Plain && o.venom_mg > 0)
+        .filter(|o| o.signal == isocosm::legacy::mesocosm::Signal::Plain && o.venom_mg > 0)
         .count();
     println!("signals: {warning} warn, {armed} armed -> {bluffers} bluffing, {traps} trapping");
 

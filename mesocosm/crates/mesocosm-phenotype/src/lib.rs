@@ -10,7 +10,7 @@
 //! core does not depend on it. The core is deterministic, integer-only and
 //! free of I/O, so reading a directory and deciding whether what is in it may
 //! be admitted cannot live there. What crosses back is a
-//! [`Registry`](mesocosm_core::Registry) — ordinary native data the core
+//! [`Registry`](isocosm::legacy::mesocosm::Registry) — ordinary native data the core
 //! already knows how to run.
 //!
 //! # Data only
@@ -19,7 +19,7 @@
 //! it, no path outside it, and no way to name a rule the core does not already
 //! evaluate: a definition declares an id, the shapes that may express it, and
 //! whether growing one of those shapes grows it. That is the whole vocabulary,
-//! and it is exactly what [`ProcessDef`](mesocosm_core::ProcessDef) holds.
+//! and it is exactly what [`ProcessDef`](isocosm::legacy::mesocosm::ProcessDef) holds.
 //! Piccolo authoring (PD4) arrives beside this, never underneath it.
 //!
 //! ```text
@@ -37,7 +37,7 @@
 //! outside rule authority; the manifest's `version`, `license` and `note` are
 //! metadata; the order files are listed in is an authoring convenience,
 //! because admission sorts by qualified id and
-//! [`Registry::digest`](mesocosm_core::Registry::digest) folds the sorted
+//! [`Registry::digest`](isocosm::legacy::mesocosm::Registry::digest) folds the sorted
 //! definition digests. JSON whitespace and key order cannot reach the digest
 //! at all, since the digest is taken over the lowered definitions rather than
 //! over file bytes.

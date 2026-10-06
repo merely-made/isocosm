@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::{BodyDocument, Origin, PartId, SpeciesId, VolumeRef, snapshot};
+use isocosm::legacy::mesocosm::{BodyDocument, Origin, PartId, SpeciesId, VolumeRef, snapshot};
 use eponym_identity::{BodyRevisionId, SubjectId, Tick};
 use eponym_world::fixtures::three_lives as fixture;
 use eponym_world::{

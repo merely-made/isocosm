@@ -23,7 +23,7 @@
 
 use std::path::{Path, PathBuf};
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Attachment, Intent, Process, ProcessId, ProcessRef, Provenance, Registry, SnapshotError,
     VolumeRef, World, WorldRules, Yaw,
 };
@@ -85,7 +85,7 @@ fn nothing_the_pack_declares_grows_itself_onto_a_founded_body() {
     assert!(!gland.seeded(), "the pack says nothing grows a gland");
     assert!(
         packed
-            .seeds(mesocosm_core::Role::Plate)
+            .seeds(isocosm::legacy::mesocosm::Role::Plate)
             .all(|def| def.id.name != "secrete"),
         "and the seeding rule agrees"
     );
@@ -116,7 +116,7 @@ fn endure(world: &mut World, ticks: u64) {
             .iter_mut()
             .find(|o| o.id == me)
             .expect("in the roster")
-            .energy_mg = upkeep * (mesocosm_core::STARVED_UPKEEP_TICKS - 1);
+            .energy_mg = upkeep * (isocosm::legacy::mesocosm::STARVED_UPKEEP_TICKS - 1);
         world.apply(Intent::Resume);
     }
 }
@@ -131,12 +131,12 @@ fn bulk_world(seed: u64, founders: u32) -> World {
     let me = world.controlled_id().expect("embodied");
     let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
     let (species, position) = (organism.species, organism.position);
-    *organism = mesocosm_core::Organism {
-        stage: mesocosm_core::Stage::Mature,
-        ..mesocosm_core::Organism::founding(
+    *organism = isocosm::legacy::mesocosm::Organism {
+        stage: isocosm::legacy::mesocosm::Stage::Mature,
+        ..isocosm::legacy::mesocosm::Organism::founding(
             me,
             species,
-            mesocosm_core::Kingdom::Consumer,
+            isocosm::legacy::mesocosm::Kingdom::Consumer,
             VolumeRef::from_tag(1),
             [2, 2, 2],
             position,
@@ -146,7 +146,7 @@ fn bulk_world(seed: u64, founders: u32) -> World {
     world
 }
 
-fn frond_on(world: &mut World) -> mesocosm_core::PartId {
+fn frond_on(world: &mut World) -> isocosm::legacy::mesocosm::PartId {
     let me = world.controlled_id().expect("embodied");
     let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
     let root = organism.body().root;
@@ -166,8 +166,8 @@ fn frond_on(world: &mut World) -> mesocosm_core::PartId {
         .expect("a frond attaches above the root")
 }
 
-fn hunger() -> mesocosm_core::ConditionId {
-    mesocosm_core::discovery::conditions()
+fn hunger() -> isocosm::legacy::mesocosm::ConditionId {
+    isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|condition| condition.name == "mesocosm:endured-hunger")
         .expect("the table holds it")
@@ -187,7 +187,10 @@ fn the_packed_definition_reaches_pd2s_four_states_through_the_packed_door() {
         .reference();
 
     let mut world = bulk_world(4_242, 24);
-    endure(&mut world, mesocosm_core::discovery::HUNGER_TICKS + 1);
+    endure(
+        &mut world,
+        isocosm::legacy::mesocosm::discovery::HUNGER_TICKS + 1,
+    );
     assert!(world.discovered(hunger()), "the condition landed");
     let candidate = world
         .discoveries()
@@ -219,7 +222,7 @@ fn the_packed_definition_reaches_pd2s_four_states_through_the_packed_door() {
         "the whole of what a host says about a development"
     );
     let outcome = world.apply(intent);
-    let mesocosm_core::Outcome::Expressed {
+    let isocosm::legacy::mesocosm::Outcome::Expressed {
         part: on,
         cost_mg,
         revision,
@@ -286,15 +289,22 @@ fn a_host_cannot_ask_for_what_its_line_has_not_come_to() {
         world.apply(Intent::Express {
             condition: hunger()
         }),
-        mesocosm_core::Outcome::Rejected(mesocosm_core::Rejection::Undiscovered(hunger()))
+        isocosm::legacy::mesocosm::Outcome::Rejected(
+            isocosm::legacy::mesocosm::Rejection::Undiscovered(hunger())
+        )
     );
 
-    endure(&mut world, mesocosm_core::discovery::HUNGER_TICKS + 1);
+    endure(
+        &mut world,
+        isocosm::legacy::mesocosm::discovery::HUNGER_TICKS + 1,
+    );
     assert_eq!(
         world.apply(Intent::Express {
             condition: hunger()
         }),
-        mesocosm_core::Outcome::Rejected(mesocosm_core::Rejection::Nowhere(hunger())),
+        isocosm::legacy::mesocosm::Outcome::Rejected(
+            isocosm::legacy::mesocosm::Rejection::Nowhere(hunger())
+        ),
         "discovered, and this body is not a shape that can carry it"
     );
 }
@@ -312,13 +322,13 @@ fn a_snapshot_names_the_exact_admitted_ruleset() {
         "a world founded under this build is running the pack's biology"
     );
 
-    let bytes = mesocosm_core::snapshot(&world).expect("encodes");
-    let restored = mesocosm_core::restore_under(&bytes, std::sync::Arc::new(packed()))
+    let bytes = isocosm::legacy::mesocosm::snapshot(&world).expect("encodes");
+    let restored = isocosm::legacy::mesocosm::restore_under(&bytes, std::sync::Arc::new(packed()))
         .expect("the same ruleset restores");
     assert_eq!(restored.rules(), world.rules());
     assert_eq!(
-        mesocosm_core::state_hash(&restored),
-        mesocosm_core::state_hash(&world),
+        isocosm::legacy::mesocosm::state_hash(&restored),
+        isocosm::legacy::mesocosm::state_hash(&world),
         "the ruleset is world state, so it is inside the hash"
     );
 }
@@ -329,20 +339,20 @@ fn a_replay_against_a_different_admitted_ruleset_is_refused_identifiably() {
     // under a biology that is not the one it ran is refused by name, with both
     // digests, rather than continuing against whatever this build holds.
     let world = World::new(4_242, 24);
-    let bytes = mesocosm_core::snapshot(&world).expect("encodes");
+    let bytes = isocosm::legacy::mesocosm::snapshot(&world).expect("encodes");
 
     // A pack with one rule-bearing byte changed: the gland grows on plates.
     let mut defs: Vec<_> = packed().all().cloned().collect();
     for def in &mut defs {
         if def.id.name == "secrete" {
-            def.seeding = mesocosm_core::Seeding::Geometry;
+            def.seeding = isocosm::legacy::mesocosm::Seeding::Geometry;
         }
     }
     let other = Registry::admit(defs).expect("no collision");
     assert_ne!(other.digest(), packed().digest());
 
     let other_digest = other.digest();
-    let refused = mesocosm_core::restore_under(&bytes, std::sync::Arc::new(other));
+    let refused = isocosm::legacy::mesocosm::restore_under(&bytes, std::sync::Arc::new(other));
     assert_eq!(
         refused.err(),
         Some(SnapshotError::Ruleset {
@@ -354,7 +364,7 @@ fn a_replay_against_a_different_admitted_ruleset_is_refused_identifiably() {
 
     // And the same bytes still restore under the ruleset they ran under, so
     // the refusal is about the biology rather than about the save.
-    assert!(mesocosm_core::restore_under(&bytes, world.admitted()).is_ok());
+    assert!(isocosm::legacy::mesocosm::restore_under(&bytes, world.admitted()).is_ok());
 }
 
 #[test]

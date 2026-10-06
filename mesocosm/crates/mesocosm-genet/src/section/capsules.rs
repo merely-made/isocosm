@@ -4,8 +4,8 @@
 //! Legacy capsule projections and counted body fallbacks.
 
 use super::SlabWindow;
+use isocosm::legacy::mesocosm::{BodyDocument, Organism, World};
 use isometer::lens::{BodyLensProjection, BodyPlacement, CritterPose, MAX_ROSTER};
-use mesocosm_core::{BodyDocument, Organism, World};
 /// The controlled critter's pose, through the landed V2 projection.
 ///
 /// It stays the tracer's single pose rather than a roster member, because a
