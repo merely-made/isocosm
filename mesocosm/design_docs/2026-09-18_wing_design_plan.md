@@ -8566,6 +8566,26 @@ what later sections derive from.
      are taken by name under MIT, with a licence row, when a lane needs them.
      Asked whether to record the read, Mark chose "Write a brief, like
      Balaur's".
+623. **Rosters and rulesets move into datasheets, through a plan.**
+     2026-10-06. Mark asked whether the TOML used for generated datasheets
+     suits Isocosm's entity rosters and rulesets. Evidence:
+     - the wing's packs are JSON (`mesocosm-pack.json`, five
+       `processes/*.json`, the VTT's `isometry-pack.json` and SRD
+       `data/*.json`), with behaviour in piccolo Lua;
+     - its rosters are Rust code (`Founding::SpacedRoster.palette()`, the
+       impresa's `SEEDED_KINDS`);
+     - Livery's `properties.toml` is the stack's datasheet shape.
+
+     Mark widened the format question to the whole stack. It is ruled in
+     mere's `design_docs/2026-10-06_data_formats_brief.md` (F1 to F5): text is
+     split by who writes the file (TOML for what people author or review, JSON
+     for what programs write and for imports), and binary uses two formats by
+     job. On the wing's own question, the options were: yes, through a plan;
+     only new ones; not now. Mark chose "Yes, through a plan". So a dated plan
+     names which rosters and catalogues move, their schemas in Livery's
+     datasheet shape, and receipts showing worlds and state hashes unchanged
+     by the move. Under F1, the wing's authored pack manifests and process
+     records become TOML; the SRD data stays a JSON import.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
