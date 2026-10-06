@@ -109,6 +109,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-06/2026-09-18_wing_design_plan_progress.md`](archive_docs/2026-10-06/2026-09-18_wing_design_plan_progress.md): the design record's full progress log to 2026-10-06 (ruling 613).
 - [`2026-09-26/2026-07-30_mesocosm_founding_plan.md`](archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md): ruling 308; Mesocosm's charter is now the overlay plan.
 - [`2026-09-26/2026-08-01_processdef_plan.md`](archive_docs/2026-09-26/2026-08-01_processdef_plan.md): ruling 309; its shapes are the sim's process definition.
 - [`2026-09-26/2026-08-06_general_model_plan.md`](archive_docs/2026-09-26/2026-08-06_general_model_plan.md): ruling 310; its organs went to the wing organs plan.
