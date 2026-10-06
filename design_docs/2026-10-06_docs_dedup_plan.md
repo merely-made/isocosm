@@ -89,6 +89,17 @@ put.
 
 ## Findings
 
+- 2026-10-06, D2: some plans hold rulings Mark made before the design record
+  existed (the board plan's cliff height and DOM board, the dev tools plan's
+  fixture defaults, the isomere plan's M4 answers, the phenotype plan's trait
+  array). The record has none of them, so their plan is their one home and
+  they stay where they are; only the trait array's second copy, in the epoch
+  boundary plan, became a link.
+- 2026-10-06, D1: many docs' own status lines are older than the status their
+  index row carried (the sim plan's still says implementation in progress on
+  2026-09-22). The rows now carry the newest status; bringing each doc's own
+  line up to date is left for D5's list.
+
 ## Progress
 
 - 2026-10-06: D0 done. The five broken live links repaired: four into
@@ -99,3 +110,9 @@ put.
   indexed once. The prose they carried was checked against the docs first:
   every commit, count and date found a home, and the one that had none moved
   to the epoch boundary plan.
+- 2026-10-06: D2 done. The design record's log cut from 1,676 lines to the
+  eight landings no other doc owns (`04a7eb45`), the sim plan's from 415 to
+  its fifteen landings, both archived intact at
+  `mesocosm/design_docs/archive_docs/2026-10-06/`; the three overlay plans,
+  the rename, place-graph and epoch boundary plans' ruling restatements cut to
+  their landings.

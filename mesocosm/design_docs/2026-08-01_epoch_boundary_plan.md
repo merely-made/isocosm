@@ -744,7 +744,6 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   descendant will express one literal phenotype.
 
 ## Progress
-
 - **2026-09-26: rewritten to the wing design record** under ruling 280's doc
   lane. §3 gains the record's three gates and names the hagiograph as the
   organ that judges; §11 and §12 mark what has moved to the sim and the
@@ -770,13 +769,9 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   tulpa mention rather than rewriting the historical text; see repo
   `CLAUDE.md`. No code changed.
 
-- **2026-09-02, ruling: the old `epoch.rs` trait array is deleted (doc
-  only).** Mark ruled the phenotype plan §D4's fifth retirement condition:
-  delete `epoch::Trait`, `fitness`, `standing` and the old round; keep the
-  seven authored pressures and three authored world profiles as data, since
-  they seed PE4's world criteria. A deletion slice does it. This is the
+- **2026-09-02:** the trait array's deletion ruled; the ruling lives in the
+  [phenotype plan](2026-07-31_phenotype_plan.md)'s progress, and this is the
   module the entry below already found had no consumer left in `World`.
-
 - **2026-09-02 (PE3a):** the boundary finally happens on its own. `EpochRule`
   is a versioned world rule beside the ruleset — `Timed { ticks }` built,
   default 1,000, `Gated` and `PlayerTriggered` named as data that end nothing —

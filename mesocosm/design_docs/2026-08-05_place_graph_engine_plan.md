@@ -1216,7 +1216,6 @@ standing rule: after two real consumers, never declared in advance.
   the browser receipt (D0 discipline).
 
 ## Progress
-
 - 2026-09-28: **SP2 landed** at `38ea90f`. The world-local material table on
   the world's traits, seeded by the map; the lattice with its Coons interior,
   faded detail and exact correction in `src/terrain/lattice.rs`; column
@@ -1250,10 +1249,6 @@ standing rule: after two real consumers, never declared in advance.
   rulings recorded in §0 and amended into the founding record, `CLAUDE.md`,
   and the landscape doc the same session. V1 and V2 landed 2026-08-04
   (landscape §8.6), so G2 rides a proven browser harness and real bodies.
-- 2026-08-06: rulings 9-11 added (reference targets, three-tier physics,
-  renderer tenancy). Mesocosm camera amended to pulled back (ruling 4);
-  G2 and G3 reworded to match. Renderling fork scout begun (wgpu 26→29
-  bump feasibility).
 - 2026-08-06, later: renderling tenant proven (device unity, leak fix,
   95/95, wing-shaped scene; see Findings). **G0 constructor landed**:
   `Places::grown` with full distinctness, congruence, and connectivity
