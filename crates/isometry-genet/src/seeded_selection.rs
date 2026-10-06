@@ -1,7 +1,7 @@
-//! The GM's `>choose` without Cleromancy: the VTT's own seeded draw.
+//! The GM's `>choose`: the VTT's own seeded draw. (Cleromancy's sealed
+//! reading was the other path until ruling 600 removed it, 2026-10-06.)
 //!
-//! Cleromancy is an optional host feature, off by default (ruled 2026-09-26),
-//! so this is the default build's path. The request's seed and domain seed the
+//! The request's seed and domain seed the
 //! generator lane's entropy tape and one draw picks a loaded declaration. The
 //! same request over the same choices replays the same pick; there is no sealed
 //! receipt, and the preview and commit gates are unchanged.

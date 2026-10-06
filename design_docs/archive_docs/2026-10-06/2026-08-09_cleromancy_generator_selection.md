@@ -1,8 +1,13 @@
 # Cleromancy generator selection
 
+**Status, 2026-10-06:** superseded. Cleromancy is removed from the VTT, a
+stale dependency of marginal benefit (wing design record ruling 600,
+amending 298); `>choose` is the VTT's own seeded draw (ruling 323). Archived
+the same day; nothing in it remains open.
+
 **W1, 2026-09-18:** keep. Tier: stack, generation. Not listed in the root
 index, an index defect. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 ## Decision

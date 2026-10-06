@@ -71,13 +71,6 @@ isomere = { path = "shared/isomere" }
 isometry-views = { path = "crates/isometry-views", version = "0.1.0" }
 isonetry = { path = "crates/isonetry", version = "0.1.0" }
 isometry-system = { path = "crates/isometry-system", version = "0.1.0" }
-# Private host-side choice receipts. The committed source stays on Git; a local
-# Cleromancy checkout is supplied by the machine-local source patch during
-# paired development. Behind isometry-genet's `cleromancy` feature, off by
-# default (2026-09-26): this rev still pins mere 876320fd and genet 5ae30cad,
-# so the feature builds those beside the family revisions above until
-# Cleromancy aligns in its own repository.
-cleromancy = { git = "https://github.com/merely-made/cleromancy.git", rev = "9b496157c7852983f6cd2ac10e06f8b4aa59f653", default-features = false }
 
 # Persistence
 serde = { version = "1.0", features = ["derive"] }
@@ -227,11 +220,6 @@ genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "
 # the patch below names that package explicitly while keeping the dependency
 # alias Cargo expects.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7a60ad7965a1ae81292211b405a53210c554f70c", version = "=0.14.0" }
-# ipc-channel: genet's in-process fork (force-inprocess default; drops the
-# windows 0.61 pin that broke gpu-allocator/wgpu-hal unification). Only the
-# `cleromancy` feature's genet 5ae30cad reaches it now, through
-# servo-malloc-size-of; it retires with that pin.
-ipc-channel ={ git = "https://github.com/merely-made/genet.git", rev = "7a60ad7965a1ae81292211b405a53210c554f70c" }
 # `murm-replication` (stickleback) and `mere-transport` are written against the
 # **owned p2panda fork**, not the published crates. mere's manifest repoints the
 # family there; this workspace must mirror it, or it resolves stock p2panda from

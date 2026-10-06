@@ -7,14 +7,6 @@ authors.workspace = true
 repository.workspace = true
 description = "Isometry's desktop application over the shared Cambium desktop host: state, hooks, the net bridge, and the self-tests. The native host itself is genet's."
 
-[features]
-default = []
-# The GM's `>choose` through Cleromancy's sealed reading. Off by default (ruled
-# 2026-09-26): without it the choice is the VTT's own seeded draw. Cleromancy
-# pins its own mere and genet, so turning this on puts a second copy of each
-# in the build until it aligns with this workspace's revisions.
-cleromancy = ["dep:cleromancy"]
-
 [dependencies]
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
@@ -22,7 +14,6 @@ isocosm = { workspace = true }
 isometry-views = { workspace = true }
 isonetry = { workspace = true, features = ["iroh"] }
 isometry-system = { workspace = true }
-cleromancy = { workspace = true, optional = true }
 tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"] }
 cambium = { workspace = true }
 sceno = { workspace = true }
