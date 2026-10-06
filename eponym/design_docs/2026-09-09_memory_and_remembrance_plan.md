@@ -1,6 +1,9 @@
 # Memory, remembrance, and hagiograph
 
-**Status (2026-09-09): plan.** This is a Paredros implementation plan for
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status (2026-09-09): plan.** This is a Paredros implementation plan for
 ordinary individual memory and the later memorial boundary. It is intentionally
 separate from the world-conditions plan and from the functional-loops plan.
 Those plans own world triggers and larger orchestration. This document owns

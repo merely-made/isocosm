@@ -2,7 +2,10 @@
 
 **Date:** 2026-09-15
 
-**Status:** assessment, for Mark's sign-off. No code moved, no commit.
+**Status, 2026-09-27:** Lanes landed 2026-09-16; paging integrated 2026-09-27. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** assessment, for Mark's sign-off. No code moved, no commit.
 
 **W1, 2026-09-18:** rewrite. Tier: mixed, stack rendering and game overlay.
 The lanes landed and the code is good; the done-conditions were parity with

@@ -1,6 +1,9 @@
 # Wing organs: the hagioglyph and the impresa (2026-09-26)
 
-**Status: carried, not rewritten.** This plan holds the general model plan's
+**Status, 2026-09-28:** Carried 2026-09-26; carryover distinction 2026-09-28 (ruling 406). *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: carried, not rewritten.** This plan holds the general model plan's
 §7.4, "Glyph canon, the journey, and divinity", and its impresa finding of
 2026-09-21, moved here on 2026-09-26 under wing design record ruling 310
 ("Split out the organs") when the rest of the general model was archived at

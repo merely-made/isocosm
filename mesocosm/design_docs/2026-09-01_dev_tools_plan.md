@@ -1,6 +1,9 @@
 # Dev tools: sitting in a run and interrogating it
 
-**Status (2026-09-02): DT1, DT2, DT3 and DT4 all landed. The plan is
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280): the tools move to the bench (W4). *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status (2026-09-02): DT1, DT2, DT3 and DT4 all landed. The plan is
 complete.** Both §4 decisions ruled and built. DT4 folded the bespoke replay
 and demo harness into genet-probe's `Automatable`/`Driveable`/`Scenario`, and
 reconciled the epoch boundary's two disagreeing doors into one on the way.

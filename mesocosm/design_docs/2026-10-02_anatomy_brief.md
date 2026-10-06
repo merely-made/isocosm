@@ -1,6 +1,9 @@
 # The anatomy brief
 
-**Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
+**Status, 2026-10-04:** Checkpoint 8 built how parts arrive. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
 281 asked, from the probe's evidence, and ruled through in nine rounds (459
 to 470, 477 to 480 and 485 to 500); §8 holds nothing open. Nothing is built.
 It was carried into the sim plan's §2.3 the same day and briefed as S2's

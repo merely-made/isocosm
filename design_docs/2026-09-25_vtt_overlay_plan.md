@@ -12,7 +12,10 @@ Pathfinder 2e (522). In a ruleset-led world an edition's own state
 persists beside the body with declared relations (542), and its
 procedures run unattended under declared decision policies (543).
 
-**Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
+**Status, 2026-10-03:** Rulings 538 to 541; V0 and V1 done. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
 (231 and 243 to 250); V1 done 2026-09-26, opened by ruling 253 as a
 contract module only; V2 to V4 proposed and not opened, waiting on
 Mesocosm's M3 (ruling 231). Drafted at

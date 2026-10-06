@@ -1,6 +1,9 @@
 # Ruined watchtower: first connected campaign
 
-**Status: W1-W6 and W8 locally verified; W7 passes Windows/ThinkPad and Windows/M4 in both host roles; Windows-host/M4-player graphical turn verified (2026-09-06). W9-W10 pass native/protocol checks and the M4 travel-overmap visual receipt (2026-09-08), using its preserved dependency closure.** Mark accepted an original ruined
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); W1 to W10 verified. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: W1-W6 and W8 locally verified; W7 passes Windows/ThinkPad and Windows/M4 in both host roles; Windows-host/M4-player graphical turn verified (2026-09-06). W9-W10 pass native/protocol checks and the M4 travel-overmap visual receipt (2026-09-08), using its preserved dependency closure.** Mark accepted an original ruined
 watchtower as the first playable procedural place, with Luna/Terra agents
 and permission to improve shared stack utilities when a concrete need emerges.
 

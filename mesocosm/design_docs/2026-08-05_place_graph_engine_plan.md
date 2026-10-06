@@ -1,6 +1,9 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
-**Status, 2026-09-28:** rewritten to the wing design record as the spatial
+**Status, 2026-09-30:** SP4 and SP5 designed (412 to 422); SP4 next. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-09-28:** rewritten to the wing design record as the spatial
 spine's plan (rulings 389 to 392). SP0 is open, with four decisions in §A.6
 for Mark. No code has moved. The first slice is new Isocosm capability and
 touches neither `mesocosm-core`'s places family (ruling 195) nor mere

@@ -1,6 +1,9 @@
 # The epoch boundary: significance, speciation, and what youth costs
 
-**Status: partially built, refreshed 2026-09-02.** The world record, causal
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); partially built. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: partially built, refreshed 2026-09-02.** The world record, causal
 event log, species tree, places, reckoning, and player speciation are built,
 and since PE3a **the boundary itself happens**: a versioned epoch rule ends it,
 every unplayed line takes a scored turn at it, and a driver holds the world

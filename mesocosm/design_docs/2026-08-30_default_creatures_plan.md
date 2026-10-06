@@ -1,6 +1,9 @@
 # Default Creatures Plan (2026-08-30)
 
-**Status: implementation through DC4 landed; visual acceptance remains open
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); DC1 to DC4 landed. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: implementation through DC4 landed; visual acceptance remains open
 (refreshed 2026-09-05).** DC4's roster ships as the default founding, but Mark
 still sees capsules rather than readable voxel critters. The
 [phenotype plan section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)

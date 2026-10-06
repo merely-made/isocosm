@@ -1,7 +1,10 @@
 # Views Founding: Adapter-First UI, and the Minimap as First Chrome
 
 **Date:** 2026-08-02
-**Status:** First slice landed (adapter + leaf, tested). Host embedding open.
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); first slice landed. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** First slice landed (adapter + leaf, tested). Host embedding open.
 Amended 2026-08-29 (§6): the textless guard was lane discipline, not a text ban.
 Route B's own subject — the between-epochs screen — landed 2026-09-02 (§7).
 
