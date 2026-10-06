@@ -8333,6 +8333,24 @@ what later sections derive from.
      and its comment are gone from that file, and nothing else in it
      changed; the file is not committed.
 
+603. **The wing reads balaur.** 2026-10-06. Question: the physics session
+     relayed balaur (MIT, Sebastien Crozet and Dragos Daian, HEAD
+     `de0df794`), a deterministic 2D and 3D engine composing hecs, kiss3d
+     with its own patches, and rapier, with a per-tick digest, snapshot
+     ring and replay; it overlaps rulings 471 and 481 to 484 and sits
+     beside Isocosm's receipts. When should the wing look at it? Options:
+     keep on the doc dedup and take the physics lane's findings later
+     (recommended); assess it now; note it only. Mark answered: "The intent
+     was to use it for reference for scenograph designing scenes, and for
+     potentially more. What, you think we can use it for the wing? Hell, if
+     it helps, sure, let's see what's good. You can assess, wait for the
+     physics lane, then consider what you learned and what they learned as
+     we check our rulings and any forks". So balaur is assessed now against
+     the wing's rulings, the physics lane's findings are awaited, and the
+     two together check the rulings and raise forks. *Reading, not ruled:*
+     the read is of balaur at `de0df794`, read-only, copying no code; any
+     port is its own decision; the doc dedup (593) waits behind it.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12204,6 +12222,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 603: the wing reads balaur against its rulings, beside
+  the physics lane's review.
 - 2026-10-06: rulings 601 and 602: Eponym's `CLAUDE.md` repointed at the
   moved crates; the machine-local tabletop config sheds Cleromancy.
 - 2026-10-06: the migration lands (ruling 591) at `1ffb7294`:
