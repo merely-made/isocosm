@@ -1393,9 +1393,9 @@ dependencies = [
 [[package]]
 name = "conatus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?rev=32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b#32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b"
+source = "git+https://github.com/merely-made/mere.git?rev=5fecd707c6bc9022f952c6d7b99d59f0f568d8e8#5fecd707c6bc9022f952c6d7b99d59f0f568d8e8"
 dependencies = [
- "nisus",
+ "nisus 0.1.0 (git+https://github.com/merely-made/mere.git?rev=5fecd707c6bc9022f952c6d7b99d59f0f568d8e8)",
  "rapier3d",
  "serde",
 ]
@@ -4039,7 +4039,7 @@ dependencies = [
  "hagiograph",
  "isometer-core",
  "muniment",
- "nisus",
+ "nisus 0.1.0 (git+https://github.com/merely-made/mere.git?rev=32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b)",
  "postcard",
  "serde",
  "serde_json",
@@ -5371,6 +5371,14 @@ checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
 name = "nisus"
 version = "0.1.0"
 source = "git+https://github.com/merely-made/mere.git?rev=32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b#32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "nisus"
+version = "0.1.0"
+source = "git+https://github.com/merely-made/mere.git?rev=5fecd707c6bc9022f952c6d7b99d59f0f568d8e8#5fecd707c6bc9022f952c6d7b99d59f0f568d8e8"
 dependencies = [
  "serde",
 ]
@@ -10387,3 +10395,8 @@ dependencies = [
  "syn 3.0.5",
  "winnow",
 ]
+
+[[patch.unused]]
+name = "cubecl-runtime"
+version = "0.11.0"
+source = "git+https://github.com/merely-made/mere.git?rev=5fecd707c6bc9022f952c6d7b99d59f0f568d8e8#5fecd707c6bc9022f952c6d7b99d59f0f568d8e8"

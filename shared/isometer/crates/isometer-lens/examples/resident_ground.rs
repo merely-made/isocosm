@@ -197,7 +197,7 @@ fn propose(client: ResidentClient, ground: &Ground, at: [i32; 3]) -> (CandidateG
     let proposed_occupancy = diffuse(burn.into_tensor())
         .slice([1..2, 1..2, 1..2])
         .into_data()
-        .to_vec::<f32>()
+        .try_to_vec::<f32>()
         .expect("one candidate scalar")[0];
     (
         CandidateGroundDelta {
@@ -418,8 +418,8 @@ fn main() {
     // observed by CubeCL's own memory accounting rather than our word.
     let memory_before_commit = client
         .compute_client()
-        .memory_usage()
-        .expect("resident memory usage before commit");
+        .memory_report(burn::cubecl::MemoryScope::Device)
+        .usage();
     resident_atlas
         .commit_plane_patch(
             &setup.queue,
@@ -436,8 +436,8 @@ fn main() {
         .expect("patch retained resident atlas");
     let memory_after_commit = client
         .compute_client()
-        .memory_usage()
-        .expect("resident memory usage after commit");
+        .memory_report(burn::cubecl::MemoryScope::Device)
+        .usage();
     assert_eq!(
         memory_before_commit.bytes_in_use, memory_after_commit.bytes_in_use,
         "the committed patch changed the allocator's bytes in use"
