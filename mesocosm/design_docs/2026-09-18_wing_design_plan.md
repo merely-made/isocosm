@@ -8496,6 +8496,34 @@ what later sections derive from.
      `CLAUDE.md` files share move to the root `CLAUDE.md`, the product files
      linking; the `LICENSES.md` files, per-product legal records, stay.
 
+616. **A plan holds the spec, the record the decision.** 2026-10-06,
+     carrying out 593. Question: after the dedup's first four phases the
+     largest overlap left is this record against the sim plan (827 ten-word
+     runs) and the anatomy brief (491), their tables and design text stating
+     what rulings set; how far does dedup go? Options: spec in plans,
+     decisions in the record (recommended); cut the plans' restatements; stop
+     there. Mark chose "Spec in plans, decisions in record". So a plan is its
+     spec's home and cites ruling numbers, this record is the decision's home,
+     neither restates the other's rationale, and the overlap a spec shares
+     with the ruling that set it stays.
+617. **The overlay plans link §11 for W5's done-conditions.** 2026-10-06.
+     Question: the three overlay plans each copy W5's done-conditions from
+     §11 and restate the contract's ruled shape (154); what happens to the
+     copies? Options: link to §11 (recommended); leave them. Mark chose "Link
+     to §11". So each plan's §0 links §11 and keeps what is particular to its
+     game, and the contract's shape is cited by ruling number.
+618. **A doc's own status line is current.** 2026-10-06. Question: about
+     twenty plans' own status lines are older than the status their index
+     row carries; where does current status live? Options: update the doc's
+     line (recommended); the index row only. Mark chose "Update the doc's
+     line". So each plan's status line carries its newest dated status, and
+     the index row repeats a short version of it.
+619. **Broken links in older archives are repaired.** 2026-10-06. Question:
+     fifteen relative links in older archives point at docs that moved since;
+     repair them? Options: repair them (recommended); leave archives alone.
+     Mark chose "Repair them". So each is repointed to where its target lives
+     now, its words unchanged.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
