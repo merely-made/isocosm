@@ -93,3 +93,9 @@ put.
 
 - 2026-10-06: D0 done. The five broken live links repaired: four into
   archived plans, one into the save-growth probe the migration moved.
+- 2026-10-06: D1 done (`44de9664` and this commit). The three indexes are
+  rows of link, purpose and dated status: wing 13,367 words to 1,911, root
+  2,772 to 979, Eponym 2,815 to 536; longest row 39 words; every live doc
+  indexed once. The prose they carried was checked against the docs first:
+  every commit, count and date found a home, and the one that had none moved
+  to the epoch boundary plan.
