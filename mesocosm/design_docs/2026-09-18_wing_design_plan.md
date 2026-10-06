@@ -2134,6 +2134,9 @@ what later sections derive from.
      side over the stack's conatus, the accepted transition for each tick
      crossing as the intent, or in the sim, fed the input frames? Mark:
      "Game side."
+     *Carried out 2026-10-05 by ruling 597:* motion and contact move to
+     `eponym-motion`; the sim is handed the solver.
+
 234. **Where a first Eponym life begins in time is the player's pick, with
      society the default.** Put to Mark on 2026-09-25, from decision 2: from
      the world's habitability for the creature onward, as ruling 179 gives
@@ -2235,6 +2238,9 @@ what later sections derive from.
      So the absorption stands in the plan's §4 order and the faction turn
      retires. *Reading, not ruled:* a sim-off campaign's downtime is then the
      table's own, as the plain tabletop plays today (ruling 188).
+     *Carried out 2026-10-06 by ruling 598:* the campaign world moves, its
+     `isometry-core` adapters staying with the VTT.
+
 248. **A sim-off campaign still writes its facts as notes.** Put to Mark on
      2026-09-26, from decision 7: does a campaign played with the sim off
      still write its facts as notes, so the sim can be switched on later over
@@ -2645,6 +2651,8 @@ what later sections derive from.
      default or removed? Mark: "Optional, off by default." Without it the
      choice uses the VTT's own seeded draw, and cleromancy aligns in its own
      repository on its own schedule.
+     *Amended 2026-10-06 by ruling 600:* Cleromancy is removed from the
+     VTT, a stale dependency of marginal benefit.
 299. **`isometry-runtime` retires.** Put to Mark on 2026-09-26, the bump
      finding the crate pinning an old conatus: "What is that needed for?
      Also, stale name". Answered that it is the leftover of the runtime
@@ -8235,6 +8243,77 @@ what later sections derive from.
 596. **The repository's `CLAUDE.md` stays as it is.** 2026-10-05. Options:
      add one line naming the script; leave it. Mark chose "Leave it".
 
+597. **Eponym's motion stays game-side.** 2026-10-05. Question: how does
+     Eponym's world move onto the sim, given that 233 keeps motion and
+     contact game-side over conatus, which wraps Rapier? Options: motion
+     stays game-side (recommended); move it all, conatus included. Mark
+     chose "Motion stays game-side". So `eponym-world`'s motion and contact
+     (about 2,100 lines, its only conatus users) stay with the game as
+     `eponym-motion`; `eponym-world`, `eponym-social` and `eponym-identity`
+     move into Isocosm, and Isocosm never depends on Rapier. *Reading, not
+     ruled:* the sim keeps motion's data and admission and is handed a
+     solver (`MotionSolver`), none by default so motion is refused by name;
+     a host hands the conatus solver, and a save with motion replays with
+     the same one, keeping Eponym's rule that hosts never supply a final
+     position; fixtures that need motion recorded but not solved use a
+     solver that does not move.
+
+598. **The campaign world's adapters stay with the VTT.** 2026-10-06.
+     Question: how does the VTT's campaign world move onto the sim, given
+     that `isometry-campaign` depends on `isometry-core`, the VTT's
+     substrate, in four places (the map wrapper, token and sheet drafting,
+     the overmap projection, one test)? Options: adapters stay with the
+     VTT (recommended); move it all. Mark chose "Adapters stay with the
+     VTT". So the campaign world moves into Isocosm as its legacy campaign
+     tree, and those adapters stay in a slim VTT crate over
+     `isometry-core`, the sim depending on no game crate, as with Eponym
+     (597).
+     *Amended 2026-10-06 by ruling 599:* the overmap projection is not an
+     adapter; the overmap itself moves into the sim.
+
+599. **The overmap moves into the sim.** 2026-10-06. Question, on new
+     evidence against 598: the campaign world's `travel_cost` and
+     `discover_around` (sim behaviour: travel and discovery) route through
+     `isometry-core`'s `Overmap`, a self-contained 262-line place graph
+     with Dijkstra routing that uses only std and serde, and about eight
+     VTT files also use it; where does the overmap go? Options: into the
+     sim (recommended); travel stays with the VTT, as adapter methods; the
+     sim uses `isometry-core` for the overmap alone. Mark chose "Into the
+     sim". So `overmap.rs` moves into Isocosm with the campaign world, a
+     place graph being a sim noun (ruling 72); travel and discovery stay
+     sim-side; the VTT imports `Overmap` from Isocosm; `isometry-core`
+     stays pure and light. The adapters left with the VTT are the map
+     wrapper (`CampaignMap`) and token and sheet drafting. *Reading, not
+     ruled:* the sim keeps every check lowering makes, as
+     `LocalMapProposal::validate` and `DraftMap::validate`, so a draft is
+     refused sim-side before any VTT document is built; the VTT's lowering
+     is a pair of extension traits in the slim `isometry-campaign`.
+
+600. **The VTT builds on the stack we have; Cleromancy leaves it.**
+     2026-10-06. Question: main's root lock pins ten crates.io packages
+     whose `.crate` files are gone from the local cache (imagesize, usvg,
+     resvg, selectors, stylo_malloc_size_of, tikv-jemalloc-sys,
+     tikv-jemallocator, fontconfig-parser, cc 1.4.6, glam 0.33.7), so the
+     root workspace cannot build offline, untouched main included; how
+     should the VTT side of the campaign move be verified and locked?
+     Options: fetch the ten (recommended); offline, taking the resolver's
+     drift to cached versions; offline, keeping main's pins by hand. Mark
+     answered: "Sounds like we should just rebuild on the actual stack we
+     have instead of inviting crates we don't need or want into the
+     stack". Told that eight of the ten come only from Cleromancy's second
+     stack (genet `5ae30cad`, mere `876320fd`), behind `isometry-genet`'s
+     `cleromancy` feature (off by default since ruling 298), he added:
+     "Acha, that should not be in at all. Old, stale dependency", and "The
+     idea was, hey, maybe we could make seeds for worlds out of readings or
+     details you provide. But eh. Marginal benefit!" So nothing is fetched
+     and Cleromancy leaves the VTT: the feature, its workspace pin, its
+     selection module, and the `ipc-channel` patch only its genet reached.
+     `>choose` is the VTT's own seeded draw (ruling 323), the default
+     already. *Reading, not ruled:* the lock takes the versions on disk
+     (cc 1.6.0, find-msvc-tools 0.1.14, glam 0.33.12); the Cleromancy
+     decision record moves to the VTT's archive; with Cleromancy gone the
+     repo `CLAUDE.md`'s `--all-features` gate runs whole again, unchanged.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12106,6 +12185,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 600: the VTT builds on the stack it runs on, nothing
+  fetched; Cleromancy, a stale dependency, leaves the VTT.
+- 2026-10-06: ruling 599: the overmap moves into Isocosm with the campaign
+  world; the VTT keeps the map wrapper and token and sheet drafting.
+- 2026-10-06: ruling 598: the campaign world moves into Isocosm, its
+  adapters over `isometry-core` staying with the VTT.
+- 2026-10-05: ruling 597: Eponym's motion stays game-side as
+  `eponym-motion`, the sim handed its solver.
 - 2026-10-05: rulings 593 to 596: the ceiling covers source and the docs
   are deduplicated; a pre-commit hook enforces it; `field-bake` retired;
   `CLAUDE.md` unchanged. The eight over-ceiling files split at `bb92f2e`.
