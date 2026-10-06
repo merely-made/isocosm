@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-07
 **Status:** active plan. Near-term buildable, un-gated. Scoped out of the
-optional-intelligence vision ([2026-07-07_optional_intelligence_vision.md](2026-07-07_optional_intelligence_vision.md),
+optional-intelligence vision ([2026-07-07_optional_intelligence_vision.md](../../2026-07-07_optional_intelligence_vision.md),
 section 8): the factual layer needs no model and no ABI widening, so it
 escapes the post-keystone gating and lands early. Done-conditions, not time
 estimates.

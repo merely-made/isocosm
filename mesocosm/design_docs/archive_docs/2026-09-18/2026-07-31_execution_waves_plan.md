@@ -11,7 +11,7 @@ current chains are:
   (place-graph lane), with F0-F5 exploratory.
 
 Wave 1/2 content below is preserved as history. The successor is the
-[dependency ledger](../../2026-08-07_dependency_ledger.md).
+[dependency ledger](../2026-09-26/2026-08-07_dependency_ledger.md).
 
 **Status: in progress, 2026-08-01.** **Wave 1 is complete**: core, runtime,
 mesher, renderer, a windowed host, and the Isometry projection, with every
@@ -25,7 +25,7 @@ constraints that only appear once the order is fixed.
 Governing plans, which own the *what*:
 
 - [body pipeline and host probe](../2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) — the shared organ, the body document, R-phases
-- [Mesocosm founding plan](../../2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
+- [Mesocosm founding plan](../2026-09-26/2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
 - [games wing founding record](../../2026-07-30_games_wing_founding.md) — the laws, and the proof pair as the next architectural threshold
 - [phenotype plan](../../2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
 - [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
@@ -421,7 +421,7 @@ structural: **every pressure has a trait that answers it, and income is flat and
 uncontested, so every lineage eventually solves its world and then stops.** Nothing
 in the model can make a lineage lose.
 
-Open question 3 in the [founding plan](../../2026-07-30_mesocosm_founding_plan.md) framed
+Open question 3 in the [founding plan](../2026-09-26/2026-07-30_mesocosm_founding_plan.md) framed
 extinction as emergent-preferred with evented pressure "only to keep worlds from
 settling". **The lab says emergent extinction does not arise on its own under these
 conditions**, so that "only" is doing more work than it looked like. Two candidate

@@ -9,7 +9,7 @@ proven. The second-host probe was dropped; storage extraction and the v1 body
 identity contract remain open. Answers the question "can we plan a render lane
 usable by all three vessels?" The answer is no at that layer, but there is a
 shared organ underneath it. Landscape and candidate inventory:
-[engine and render lane landscape](2026-07-30_engine_and_render_lane_landscape.md).
+[engine and render lane landscape](../2026-09-18/2026-07-30_engine_and_render_lane_landscape.md).
 
 ---
 
@@ -86,7 +86,7 @@ presentation from topology.
 
 The implemented `mesocosm.body/v0` is the smaller first proof: flattened
 voxels, cell attribution, flat provenance, species, mass, and collision hints.
-The [wing phenotype contract](2026-07-31_wing_phenotype_contract_plan.md) owns
+The [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md) owns
 the v1 artifact split and its acceptance receipts.
 
 ### Authoring input, canonical body document, and caches
@@ -258,7 +258,7 @@ Done-conditions, not estimates. R-phases interleave with the M-phases in the
 founding plan; R0–R2 are prerequisites for a meaningful M0.
 
 > **Ordering authority moved 2026-07-31** to the
-> [execution waves plan](2026-07-31_execution_waves_plan.md). This section still
+> [execution waves plan](../2026-09-18/2026-07-31_execution_waves_plan.md). This section still
 > owns *what each phase is*; that plan owns *when they happen and in what
 > order*, and adds two constraints that only appear once the order is fixed:
 > the **confound rule** (both hosts initially stage the same enclosure, so the
@@ -316,7 +316,7 @@ afterwards.
 > longer a comparison; its receipts survive as absolute observations of the one
 > lane. R2a is unblocked from the host question and deferred behind playfeel
 > instead. Reasons, and what dropping the comparison costs, are recorded in the
-> [execution waves plan](2026-07-31_execution_waves_plan.md) §1.3. The sections
+> [execution waves plan](../2026-09-18/2026-07-31_execution_waves_plan.md) §1.3. The sections
 > below are kept as written because they define what the receipts *are*.
 
 ### R2 — The host probe

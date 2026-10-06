@@ -13,12 +13,12 @@ around since 2026-07-07.
 **Related:**
 [next_horizons_landscape](2026-07-07_next_horizons_landscape.md) (this answers its
 open question B.4 and takes its lane 4, the schema/ABI widening),
-[shared_authority](2026-07-09_shared_authority_and_collaborative_building_plan.md)
+[shared_authority](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)
 (this supersedes that doc's "Next Game Slice" section: a game lane was living in a
 governance doc),
 [board_to_text_narration](2026-07-07_board_to_text_narration_plan.md) (narration is
 the third renderer of the event this plan defines),
-[environmental_surfaces](2026-07-08_environmental_surfaces_plan.md) (surfaces react
+[environmental_surfaces](../../2026-07-08_environmental_surfaces_plan.md) (surfaces react
 to the same resolved event),
 [campaign_packs](2026-07-08_campaign_packs_plan.md) (choreography ships as pack
 data).
