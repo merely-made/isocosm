@@ -65,14 +65,12 @@ held, for the battlemap as a scene; and the
 
 ## 0. Done-conditions
 
-From the record's §11, W5 is done for a game when it has:
+W5's done-conditions are the record's
+[§11](../mesocosm/design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for the VTT, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase V4
+(the played loop).
 
-1. a profile designed to the record's §5 (§1 here);
-2. a core implementing the overlay contract (§3);
-3. a played loop with receipts drawn from the generator (§2, phase V4).
-
-Ruling 174 made Mesocosm the first overlay; the VTT's and Eponym's go side by
-side after Mesocosm's M3, each on its own plan (ruling 231, §6 decision 8).
+The order is rulings 174 and 231.
 
 ## 1. The profile
 
@@ -132,9 +130,7 @@ Ruling 6's six parts.
 
 ## 3. The core and the contract
 
-The contract's shape is ruled (ruling 154): a game submits intents, the sim
-returns events and a read-only view of each tick, and outcomes a game
-settles come back through the handoff. The VTT is the game that fills the
+The contract's shape is ruling 154's. The VTT is the game that fills the
 handoff: the record's §3.8 has the foreground game resolve a blow by its own
 rules, and `ActionResolved` (`crates/isonetry/src/protocol.rs:180`) already
 carries a resolved action as one envelope every peer applies. Its module is

@@ -33,11 +33,10 @@ rulings are now answered (rulings 180 to 183 and two readings); the
 
 ## 0. Done-conditions
 
-From the record's §11, W5 is done when Mesocosm has:
-
-1. a profile designed to the record's §5 (§1 here);
-2. a core implementing the overlay contract (§3);
-3. a played loop with receipts drawn from the generator (§2, phase M4).
+W5's done-conditions are the record's
+[§11](2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Mesocosm, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase M4
+(the played loop).
 
 ## 1. The profile
 
@@ -135,9 +134,7 @@ under M2's lineages-and-the-boundary family.
 
 ## 3. The core and the contract
 
-The contract's shape is ruled (ruling 154): a game submits intents, the sim
-returns events and a read-only view of each tick, and outcomes a game
-settles come back through the handoff.
+The contract's shape is ruling 154's.
 
 | Direction | Mesocosm's side | Rests on |
 | --- | --- | --- |
