@@ -61,7 +61,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance. | Canonical core; moving to the root copy under ruling 615. |
+| [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Mesocosm's goals and pillars. | Maintainer-owned. |
 | [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md) | The wing's founding record: the vessels and their care granularities, the pipeline laws, the shared vocabulary, the game tastes. | Founding record, 2026-07-30; wing-level, cited by every product. |
 | [2026-09-18_wing_design_plan.md](2026-09-18_wing_design_plan.md) | The wing as a simulator: the design record of rulings (§0) and the W0 to W5 plan (§11). | Living record. |

@@ -121,12 +121,16 @@ Read `DOC_README.md` first, then this policy, before starting work. Any durable
 working principle learned during a session is promoted into `DOC_README.md`'s
 working-principles section in that same session.
 
-## Local addendum — Isometry
+## Local addendum — Isometry, the games wing's repository
 
-Isometry is a single subsystem (the app) plus a pure substrate crate. Docs are
-flat in `design_docs/`; no area roots have been promoted yet.
+This repository holds three products: Isocosm: VTT at the root, Mesocosm in
+`mesocosm/` and Eponym in `eponym/`, each with a flat `design_docs/` and its
+own index; no area roots have been promoted yet. This one policy governs all
+three (wing design record, ruling 615); the product directories link here.
 
-Games-wing material — shared architecture, the pipeline laws, the shared
-vocabulary — is governed by core §2 and lives once, in the Mesocosm repo at
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`. Cite it by path;
-never copy it into this repo.
+Games-wing material (shared architecture, the pipeline laws, the shared
+vocabulary) is governed by core §2 and lives once, in
+`mesocosm/design_docs/`: the founding record
+`2026-07-30_games_wing_founding.md` and the design record
+`2026-09-18_wing_design_plan.md`. Cite it by path; never copy it into another
+product's docs.

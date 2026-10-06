@@ -31,7 +31,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance. | Canonical core; the one copy under ruling 615. |
+| [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-06_docs_dedup_plan.md](2026-10-06_docs_dedup_plan.md) | The repo-wide docs dedup (rulings 593, 612 to 615). | In progress, 2026-10-06. |
 | [2026-09-25_vtt_overlay_plan.md](2026-09-25_vtt_overlay_plan.md) | The VTT's overlay (W5): rulesets over the sim. | 2026-10-03: rulings 538 to 541; V0 and V1 done. |

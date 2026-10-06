@@ -144,51 +144,11 @@ architecture in the sibling repo at
   memorial sense.
 - **tulpa**: Gemot's federated adapter-training lane; not the memorial organ.
 
-Do not coin new names for these concepts mid-session. Naming rounds are
-deliberate here: candidates get crates.io, game, studio, and trademark checks
-before adoption, and the receipts are recorded.
+## Shared rules
 
-## Document Structure
-
-All authoritative design material lives in `design_docs/`. Read
-`design_docs/DOC_README.md` first.
-
-| Path | What's there |
-| ---- | ----------- |
-| `design_docs/DOC_README.md` | Index and AI working principles |
-| `design_docs/DOC_POLICY.md` | Documentation governance |
-| `design_docs/PROJECT_DESCRIPTION.md` | Product goals, pillars (maintainer-owned) |
-| `design_docs/<date>_<keyword>_plan.md` | Active plans |
-| `design_docs/archive_docs/<date>/` | Retired plans |
-
-Wing-level material lives once, in Mesocosm, and is cited by path. Never copy
-it here.
-
-## General Guidelines
-
-- Rust: standard idioms. No `unsafe` without documented justification.
-- 600-LOC ceiling per source file. Split before adding when approaching it,
-  and trim comment volume while splitting.
-- Plans go in `design_docs/` per the date-keyword-plan convention with
-  done-conditions, not time estimates. Never `.claude/plans/`.
-- Follow `DOC_POLICY.md` for documentation changes.
-- Check the Merely ecosystem before writing a new module: mere, genet,
-  netrender, isometry, mesocosm, and the wgpu-* repos may already have the
-  piece or the pattern. Name the owning layer before building anything
-  app-local.
-- Prefer runtime verification over extended static code tracing. If runtime
-  diagnostics are blocked, surface that blocker early.
-
-## Licensing Boundary
-
-- Game code and repository documentation are MPL-2.0.
-- Promoted reusable library crates are MPL-2.0 as well (ruled 2026-09-03;
-  the earlier MIT OR Apache-2.0 path for a proven boundary is retired). The
-  only exception route is the fork/vendor criterion in mere's license posture
-  brief, recorded in `LICENSES.md` when it applies.
-- Original game assets are CC BY-SA 4.0 and require an attribution entry.
-  Imported assets retain their own licenses and must be recorded explicitly.
-- See `LICENSES.md`. Do not blur code, library, and asset grants.
+Documents, guidelines, the pipeline laws and the licensing boundary are
+the repository's, in the root [`CLAUDE.md`](../CLAUDE.md) under "Rules for all
+three products" (wing design record, ruling 615); it loads with this file.
 
 ## Important Don'ts
 
@@ -206,10 +166,6 @@ it here.
   transplantation, cloning, resurrection, and similar exceptions must leave
   material, causal, and social consequences. Record what occurred; do not
   collapse disputed continuity into a universal `same_person` flag.
-- **Do not violate the three pipeline laws** (wing founding record §3). What
-  crosses between games is choices under scarcity, not morphology;
-  inheritance must be pointable; player history displaces procedural content
-  and never gates it.
 - **Do not build a Nemesis system.** Procedurally generated rivals with
   promotion hierarchies are patented to August 2036. Generic grudges and
   remembered encounters are fine (Dwarf Fortress prior art); the
@@ -225,5 +181,3 @@ it here.
   settlement authoring remains allowed. Additive operations preserve
   concurrent claims; each collaborative domain must name its materializer,
   conflict UI, and any true CRDT it actually needs.
-- Do not add features beyond the active plan's current target without
-  surfacing the scope change first.

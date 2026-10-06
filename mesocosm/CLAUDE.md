@@ -129,61 +129,17 @@ architecture that Paredros and Isometry also depend on.
   things could have theirs too." General model §7.4, G7. Crate name stays
   plain per the naming ledger's tier rule.
 
-Do not coin new names for these concepts mid-session. Naming rounds are
-deliberate here: candidates get crates.io, game, studio, and trademark checks
-before adoption, and the receipts are recorded.
-
 **Collision to respect**: the bare word *flora* is spoken for platform-side
 (a moot's accumulated codicils). Game vocabulary must not reuse it.
 
-## Document Structure
+## Shared rules
 
-All authoritative design material lives in `design_docs/`. Read
-`design_docs/DOC_README.md` first.
-
-| Path | What's there |
-| ---- | ----------- |
-| `design_docs/DOC_README.md` | Index and AI working principles |
-| `design_docs/DOC_POLICY.md` | Documentation governance |
-| `design_docs/PROJECT_DESCRIPTION.md` | Product goals, pillars (maintainer-owned) |
-| `design_docs/<date>_<keyword>_plan.md` | Active plans |
-| `design_docs/archive_docs/<date>/` | Retired plans |
-
-Wing-level material lives once, here, and is cited by the sibling repos.
-Do not copy it into Paredros or Isometry.
-
-## General Guidelines
-
-- Rust: standard idioms. No `unsafe` without documented justification.
-- 600-LOC ceiling per source file. Split before adding when approaching it,
-  and trim comment volume while splitting.
-- Plans go in `design_docs/` per the date-keyword-plan convention with
-  done-conditions, not time estimates. Never `.claude/plans/`.
-- Follow `DOC_POLICY.md` for documentation changes.
-- Check the Merely ecosystem before writing a new module: mere, genet,
-  netrender, isometry, and the wgpu-* repos may already have the piece or the
-  pattern. Name the owning layer before building anything app-local.
-- Prefer runtime verification over extended static code tracing. If runtime
-  diagnostics are blocked, surface that blocker early.
-
-## Licensing Boundary
-
-- Game code and repository documentation are MPL-2.0.
-- Promoted reusable library crates are MPL-2.0 as well (ruled 2026-09-03;
-  the earlier MIT OR Apache-2.0 path for a proven boundary is retired). The
-  only exception route is the fork/vendor criterion in mere's license posture
-  brief, recorded in `LICENSES.md` when it applies.
-- Original game assets are CC BY-SA 4.0 and require an attribution entry.
-  Imported assets retain their own licenses and must be recorded explicitly.
-- See `LICENSES.md`. Do not blur code, library, and asset grants.
+Documents, guidelines, the pipeline laws and the licensing boundary are
+the repository's, in the root [`CLAUDE.md`](../CLAUDE.md) under "Rules for all
+three products" (wing design record, ruling 615); it loads with this file.
 
 ## Important Don'ts
 
-- **Do not violate the three pipeline laws** (games wing founding record §3).
-  What crosses between games is choices under scarcity, not morphology, save
-  that a lineage's traits cross as material (amended 2026-09-24); inheritance
-  must be pointable; player history displaces procedural content and never
-  gates it.
 - **Do not let a stage grow its own engine.** All stages are rule-dressings
   over one substrate. This is the anti-Spore insurance and the wing's single
   most load-bearing rule.
@@ -205,9 +161,8 @@ Do not copy it into Paredros or Isometry.
   still names its materializer and conflict rule; introduce a true CRDT only
   when that domain proves it needs mergeable concurrent values. Live action
   remains separately ordered or authoritative.
-- Do not add features beyond the active plan's current target without
-  surfacing the scope change first. **The invariant is care granularity, not
-  person purity** (relaxed 2026-07-30; wing founding record §1). Mesocosm is
+- **The invariant is care granularity, not person purity** (relaxed
+  2026-07-30; wing founding record §1). Mesocosm is
   care for a **species**. Person may shift — the adaptation phase is
   deliberately third person — provided first person stays home, the shift is
   bounded and diegetic, and each layer could be removed with the game still

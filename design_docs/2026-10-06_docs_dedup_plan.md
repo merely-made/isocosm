@@ -89,6 +89,13 @@ put.
 
 ## Findings
 
+- 2026-10-06, D4: the root's `DOC_POLICY.md` core is byte-identical to
+  genet's, the canonical core; mere's copy differs at line 80 (bold where the
+  core has backticks), a diff for mere's own lane. The product `CLAUDE.md`
+  files' pipeline-law lines disagreed: Eponym's lacked the 2026-09-24
+  materials amendment, so the one root copy takes Mesocosm's amended wording.
+  The two rollback-netcode rules stay with their products, their substance
+  differing (Eponym's puts single-player first and asks for a conflict UI).
 - 2026-10-06, D3: every item the session notes left open (§6, §8.5, §9.5,
   §10) was found ruled since or held in a live doc: the parked questions in
   the sim plan's §8, the naming items by rulings 157, 224, 251 and 252 with
@@ -127,3 +134,8 @@ put.
 - 2026-10-06: D3 done. The session notes archived at
   `mesocosm/design_docs/archive_docs/2026-10-06/`, links repointed in and
   out; the anatomy brief's round-by-round log cut to its two landings.
+- 2026-10-06: D4 done. One `DOC_POLICY.md` at `design_docs/`, its addendum
+  covering the three products, the product copies a link to it; the rules
+  the product `CLAUDE.md` files shared, with the root's own copies, gathered
+  once in the root `CLAUDE.md` under "Rules for all three products", the
+  product files linking there.
