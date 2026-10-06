@@ -12,9 +12,9 @@ named pre-rebase debt there. The original conclusion
 that one ordered log should survive every tier was too broad. The first
 multi-writer campaign-space slice is landed behind `isonetry`'s
 `campaign-p2p` feature; tactical play still uses the existing sequencer.
-**Related:** [worldbuilding_generation_plan](2026-07-09_worldbuilding_generation_plan.md)
+**Related:** [worldbuilding_generation_plan](archive_docs/2026-08-08/2026-07-09_worldbuilding_generation_plan.md)
 (decision 8 two-store split, W0 landed, the W2 generator ABI this doc leans
-on), [campaign_packs_plan](2026-07-08_campaign_packs_plan.md) (decision 12
+on), [campaign_packs_plan](archive_docs/2026-08-08/2026-07-08_campaign_packs_plan.md) (decision 12
 determinism discipline, which tier 3 promotes from optimization to
 load-bearing), [optional_intelligence_vision](2026-07-07_optional_intelligence_vision.md)
 (DM-authority as the trust boundary), and the personae suite vision
@@ -344,7 +344,7 @@ ordering only where the domain requires it.
 ## Next Game Slice
 
 **Moved 2026-07-14 to
-[adjudication_and_representation_plan](2026-07-14_adjudication_and_representation_plan.md)
+[adjudication_and_representation_plan](archive_docs/2026-08-08/2026-07-14_adjudication_and_representation_plan.md)
 (phase A2).** It was a game lane living in a governance doc, and framing it as
 filler work for while the peer-runtime rebase proceeds had it backwards: the
 targeted-action loop is the main thread, and this tier work is what waits on

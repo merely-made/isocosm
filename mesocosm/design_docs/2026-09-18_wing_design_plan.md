@@ -5468,6 +5468,9 @@ what later sections derive from.
      chose A. So ruling 27's "provided it composes" is met by reshaping
      kiss3d to the stack's device and target seams. Mere's
      `2026-08-22_conatus_engine_plan.md` holds the full evidence.
+     *Annotated 2026-10-06 by ruling 606:* the reshape starts from upstream
+     kiss3d, taking balaur's commits by name.
+
 472. **Lighting is a stack-owned light and environment block.** Asked the
      same day. Evidence: terrain is traced and bodies rasterised, joined by
      depth (L3), so a renderer's shadow maps and lights never reach the
@@ -8350,6 +8353,143 @@ what later sections derive from.
      two together check the rulings and raise forks. *Reading, not ruled:*
      the read is of balaur at `de0df794`, read-only, copying no code; any
      port is its own decision; the doc dedup (593) waits behind it.
+     *2026-10-06:* the wing's half of the read is
+     [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md).
+
+604. **Game-side physics replays bit for bit across machines.** 2026-10-06,
+     from the balaur read (603). Question: Isocosm's sim is integer-only, and
+     floats live game-side, in Eponym's motion over conatus, whose rapier
+     3d 0.33 has neither `enhanced-determinism` nor libm; D18 (2026-09-21)
+     parked one software libm as a note; balaur's recipe (rapier
+     `enhanced-determinism`, glamx with `libm` and `scalar-math`, a lint
+     against bare transcendentals) is diffed in CI on Linux, macOS arm64 and
+     Windows, and mere measured `enhanced-determinism` free at 500 to 5,000
+     bodies; Eponym saves replay motion through the solver (597). Should the
+     wing require bit-identical physics replay across machines? Options:
+     require it now (recommended); keep D18's note; same-machine only. Mark
+     chose "Require it now". So every float path a game hands to the sim's
+     physics replays bit for bit on any machine, carried out in conatus by
+     the physics lane's G8 with that recipe and a digest diffed across
+     Windows, macOS and Linux. This turns D18's libm note into a
+     requirement. *Reading, not ruled:* until G8 lands it, a save promises
+     same-machine replay only.
+605. **The shards carry a shard-count equality check.** 2026-10-06, from
+     the balaur read. Question: §4.7 designs the ordered merge before the
+     shards, which are not built; balaur asserts one-thread and
+     eight-thread runs give one digest; Isocosm's draws are keyed by seed
+     and domain, so no one stream couples shards. Should the shard work
+     carry an equality check? Options: make it a done-condition
+     (recommended); leave it to the shard plan. Mark chose "Make it a
+     done-condition". So when the shards land, one shard and N shards give
+     the same state hash, at more than one thread count, as a standing test.
+606. **471's kiss3d reshape starts from upstream.** 2026-10-06, from the
+     balaur read. Question: balaur's kiss3d is Ughuuu/kiss3d#1 (branch
+     `balaur-wrapped-surface` at `4522a762`), 82 commits and 125 files over
+     v0.46.0 that GitHub will not render, with useful pieces (a software
+     adapter for surface-less rendering, offscreen depth always samplable,
+     every shadow setting exposed, built-in shaders linked in a fixed
+     order) but none of 471's four reshape items; where does the reshape
+     start? Options: upstream, taking commits by name (recommended); from
+     balaur's branch; wait for upstream. Mark chose "Upstream, take commits
+     by name". So the reshape forks upstream kiss3d at a pinned commit and
+     takes balaur's commits one at a time as it needs them, each reviewed,
+     so the fork's own diff stays readable.
+
+607. **Isocosm's state hash joins the family's witness, in balaur's
+     shape.** 2026-10-06, from the balaur read. Question: Isocosm's
+     `Simulation::state_hash` takes SHA-256 over the whole state's JSON,
+     used 220 times across the tree, and answers only "unequal"; balaur
+     labels each slice by stable id and names the first that differs. What
+     should Isocosm do? Options: add labelled entries beside the SHA-256
+     hash (recommended); leave it; replace it with a per-tick FNV digest.
+     Mark asked: "Can we scope 3? Seems appealing but how would this go?"
+     Told that the third means Isocosm joining the witness the rest of the
+     family already uses (`isometer_core::snapshot::hash_bytes`, FNV-1a over
+     postcard bytes, in Mesocosm, Eponym and the legacy trees), Mark: "Ok, 3
+     sounds good to me." So Isocosm's state hash becomes the family's 64-bit
+     FNV-1a witness, with labelled entries keyed by stable ids, a
+     first-divergence report and a per-tick trace. *Reading, not ruled:*
+     SHA-256 stays for content addresses (`crate::digest`: the genesis
+     digest, branch ids) and for the draws (`crate::draw`), which this does
+     not touch; FNV is an equality witness, not a cryptographic digest, so
+     anything peers must trust stays on a standard cryptographic hash.
+
+608. **Version-1 saves still load.** 2026-10-06, carrying out 607.
+     Question: Isocosm's version-1 saves store the SHA-256 state hash and
+     recheck it on load, and `tests/data/pre-causation-world.json` proves a
+     world saved before a field rename still loads; what happens to them?
+     Options: read v1, write v2 (recommended); refuse v1. Mark chose "Read
+     v1, write v2". So a v1 save is verified with the SHA-256 hash it
+     carries, kept only as a v1 reader, and saving again writes v2 with the
+     FNV witness; the fixture's guarantee holds.
+609. **The labelled digest is built once, in mere.** 2026-10-06. Question:
+     FNV `hash_bytes` sits in `isometer_core::snapshot`, shared by Mesocosm,
+     Eponym and the legacy trees, and mere's physics lane put fork E to Mark
+     (the same labelled trace and first divergence for conatus's G8); mere
+     sits below Isometry, so a wing crate cannot serve conatus. Where is the
+     instrument built? Options: once, in mere (recommended); beside
+     `hash_bytes`; Isocosm only. Mark chose "Once, in mere". So one
+     labelled-digest crate in mere serves conatus's G8, which Mark took on
+     mere's side ("That, plus replay as a track", adding G10's record and
+     replay), and Isocosm. *Reading, not ruled:* G8 shapes the crate;
+     Isocosm's switch to the FNV witness need not wait for it, and its
+     labels and first-divergence report follow when the crate exists.
+610. **Labelled checkpoints per epoch; a per-tick trace on demand.**
+     2026-10-06. Question: Isocosm advances only through ticks with due
+     events (ruling 284), and its saves already record a checkpoint, tick
+     and hash, at each epoch boundary, a mismatch saying only "checkpoint
+     history mismatch"; balaur records a digest every tick. How often does
+     Isocosm record? Options: epochs in saves, ticks on demand
+     (recommended); every tick in the save. Mark chose "Epochs in saves,
+     ticks on demand". So saves keep one labelled checkpoint per epoch and
+     a mismatch names the first diverging entry; the bench and probe tools
+     write a full per-tick trace when asked.
+611. **The docs dedup comes before 607's lane.** 2026-10-06. Question: the
+     docs dedup (593) has waited since before the balaur read, and 607's
+     code lane touches Isocosm's history, aggregate, bench and probe tools
+     and mesocosm-genet's probe state; which first? Options: dedup first
+     (recommended); 607 first. Mark chose "Dedup first". So 593 is finished
+     now, then 607 runs as its own lane in a worktree.
+
+612. **An index row is a pointer, a purpose and a status.** 2026-10-06,
+     carrying out 593. Question: the wing index's rows hold 11,819 of its
+     13,367 words, the design record's row alone 2,737 words of ruling
+     summaries that grow with every ruling; what should a row hold?
+     Options: pointer, purpose, status (recommended); the same plus a
+     latest-rulings line; leave the indexes. Mark chose "Pointer, purpose,
+     status". So each row is the link, one line of what the doc is for and
+     a dated status; ruling summaries live only in this record.
+613. **Progress logs record landings, past entries included.** 2026-10-06,
+     carrying out 593. Question: this record's Progress log is 1,679 lines,
+     largely one-line restatements of rulings already in §0, and plans' logs
+     do the same; the standing rule keeps dated text's words, which
+     conflicts with 593. What happens to them? Options: landings only,
+     trimming past entries (recommended); only from now on; leave them. Mark
+     chose "Landings only, trim past". So a progress entry records what was
+     built or verified, with its commit, and names rulings by number without
+     restating them; past entries are cut to that shape, being logs and not
+     rulings, and the rulings keep their words.
+614. **Session notes are archived; briefs cite rulings by number.**
+     2026-10-06, carrying out 593. Question: the sim design session notes
+     (1,921 lines) tabulate each round's questions and answers, which this
+     record holds as rulings, beside narrative (how it started, what was got
+     wrong, what was left open), and the anatomy brief tabulates its rounds
+     the same way. Options: archive the notes (recommended); keep them with
+     tables cut to numbers; leave them. Mark chose "Archive the notes". So
+     anything still open is extracted into a live doc, the notes move to
+     `archive_docs/2026-10-06/`, and briefs keep their design text but cite
+     rulings by number instead of re-tabulating rounds.
+615. **One `DOC_POLICY.md`, and shared `CLAUDE.md` rules at the root.**
+     2026-10-06, carrying out 593. Question: `DOC_POLICY.md` exists three
+     times (root, Mesocosm, Eponym), one canonical core with stale local
+     addenda, and the two product `CLAUDE.md` files share about 400
+     ten-word runs, the two `LICENSES.md` about 250; how far does dedup go?
+     Options: one `DOC_POLICY.md` only (recommended); also the `CLAUDE.md`
+     files; leave the copies. Mark chose "Also the CLAUDE.md files". So the
+     root keeps the one `DOC_POLICY.md`, with one addendum covering the three
+     products, the product copies replaced by a link; the rules the product
+     `CLAUDE.md` files share move to the root `CLAUDE.md`, the product files
+     linking; the `LICENSES.md` files, per-product legal records, stay.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11322,6 +11462,9 @@ modern hardware effectively like RimWorld"):
   Factorio did: fixed shard assignment and an ordered merge of cross-shard
   effects per tick, or the replay hashes break. The merge is designed
   before the shards are.
+  *(2026-10-06, ruling 605: one shard and N shards give the same state
+  hash, at more than one thread count, as a done-condition of the shard
+  work.)*
 - **On the web** the sim runs in one Worker, co-located with its script
   host as the brief already decided, and scales down by shard count.
 
@@ -11814,7 +11957,7 @@ is the binding that costs.
 | What it would buy | Obtainable without it? |
 | --- | --- |
 | A boundary that cannot be eroded, since no pointer can cross | yes: the contract as its own crate of value types, the sim's internals private behind it, and the component binding kept building and passing the same conformance suite in CI, so the second binding is the boundary's standing proof |
-| Floating point that is bit-identical across peers' machines, which replay hashes and the moot need | yes with discipline: one software `libm` everywhere and no platform intrinsics |
+| Floating point that is bit-identical across peers' machines, which replay hashes and the moot need | yes with discipline: one software `libm` everywhere and no platform intrinsics *(required for game-side physics by ruling 604, 2026-10-06)* |
 | Sandboxing, capability grants, crash isolation, hot reload, any language | only for what is actually a component, which is why rung 3 exists |
 | Location transparency: a shard that can run on a thread, a Worker, a subprocess or a peer | yes: armillary's actors already exchange `Send` values, and the contract's values serialise |
 
@@ -12222,6 +12365,15 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: rulings 608 to 611, carrying out 607: v1 saves still load;
+  the labelled digest built once, in mere, shared with conatus's G8;
+  labelled checkpoints per epoch with a per-tick trace on demand; the docs
+  dedup first.
+- 2026-10-06: ruling 607: Isocosm's state hash joins the family's FNV
+  witness, labelled, with a first-divergence report and a per-tick trace.
+- 2026-10-06: rulings 604 to 606, from the balaur read: game-side physics
+  replays bit for bit across machines (G8); the shards carry a shard-count
+  equality check; 471's kiss3d reshape starts from upstream.
 - 2026-10-06: ruling 603: the wing reads balaur against its rulings, beside
   the physics lane's review.
 - 2026-10-06: rulings 601 and 602: Eponym's `CLAUDE.md` repointed at the
