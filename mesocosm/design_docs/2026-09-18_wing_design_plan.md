@@ -2238,6 +2238,9 @@ what later sections derive from.
      So the absorption stands in the plan's §4 order and the faction turn
      retires. *Reading, not ruled:* a sim-off campaign's downtime is then the
      table's own, as the plain tabletop plays today (ruling 188).
+     *Carried out 2026-10-06 by ruling 598:* the campaign world moves, its
+     `isometry-core` adapters staying with the VTT.
+
 248. **A sim-off campaign still writes its facts as notes.** Put to Mark on
      2026-09-26, from decision 7: does a campaign played with the sim off
      still write its facts as notes, so the sim can be switched on later over
@@ -8253,6 +8256,17 @@ what later sections derive from.
      position; fixtures that need motion recorded but not solved use a
      solver that does not move.
 
+598. **The campaign world's adapters stay with the VTT.** 2026-10-06.
+     Question: how does the VTT's campaign world move onto the sim, given
+     that `isometry-campaign` depends on `isometry-core`, the VTT's
+     substrate, in four places (the map wrapper, token and sheet drafting,
+     the overmap projection, one test)? Options: adapters stay with the
+     VTT (recommended); move it all. Mark chose "Adapters stay with the
+     VTT". So the campaign world moves into Isocosm as its legacy campaign
+     tree, and those adapters stay in a slim VTT crate over
+     `isometry-core`, the sim depending on no game crate, as with Eponym
+     (597).
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12124,6 +12138,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 598: the campaign world moves into Isocosm, its
+  adapters over `isometry-core` staying with the VTT.
 - 2026-10-05: ruling 597: Eponym's motion stays game-side as
   `eponym-motion`, the sim handed its solver.
 - 2026-10-05: rulings 593 to 596: the ceiling covers source and the docs
