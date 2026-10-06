@@ -8547,6 +8547,25 @@ what later sections derive from.
      the remaining 44 pins move onto stable as their own lane, briefed from
      mere's burn plan §13.47, removing the doubles, and 607's lane follows
      (amending 611's order).
+622. **scenevm is a donor of techniques only.** 2026-10-06, from Mark's
+     question whether Eldiron's `scenevm` (MIT, 0.95.0) would be "of use for
+     the isocosm wing", how it "compares with kiss3d as a tenant, or composes
+     with the structure we're researching from balaur engine". Evidence:
+     - it owns its device (`static GLOBAL_GPU: OnceLock`) and its targets,
+       and is on wgpu 29.0.3 against the stack's 30;
+     - it carries Eldiron's scene model and its own sun, lights and probes,
+       against 472;
+     - beside a raster path, it has a compute ray and path tracer;
+     - it has a capped irradiance probe grid that samples along the normal.
+
+     Read in `2026-10-06_scenevm_wing_brief.md`. Options: donor of
+     techniques only (recommended); measure it as a tenant; no role. Mark
+     chose "Donor of techniques only". So kiss3d stays the lit body tenant
+     (471, 606), and scenevm is read, not depended on. Its techniques (the
+     probe grid, progressive accumulation, its environment block's fields)
+     are taken by name under MIT, with a licence row, when a lane needs them.
+     Asked whether to record the read, Mark chose "Write a brief, like
+     Balaur's".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
