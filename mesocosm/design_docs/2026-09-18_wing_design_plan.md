@@ -12185,6 +12185,14 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: the migration lands (ruling 591) at `1ffb7294`:
+  `mesocosm-core`, Eponym's world, social and identity crates, and the
+  VTT's campaign world with its overmap live in Isocosm as
+  `isocosm::legacy::{mesocosm, eponym, campaign}`, and the games import
+  from there. Game-side by ruling: `eponym-motion` (597) and the slim
+  `isometry-campaign` (598, 599). Verified offline: Isocosm's suite, each
+  product's checks and tests, and the VTT's `--all-features --all-targets`
+  gate with 370 tests passing.
 - 2026-10-06: ruling 600: the VTT builds on the stack it runs on, nothing
   fetched; Cleromancy, a stale dependency, leaves the VTT.
 - 2026-10-06: ruling 599: the overmap moves into Isocosm with the campaign
