@@ -3,8 +3,8 @@
 
 //! Authored movement roles for the keeper, separate from its striking anatomy.
 
-use eponym_identity::{BodyRevisionId, SubjectId};
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use isocosm::legacy::eponym::world::{
     GameIntent, GameState, MOTION_SCALE, MotionEnvelope, MotionRules, MovementProfile, SupportBand,
 };
 
@@ -13,14 +13,14 @@ pub(super) fn configure_keeper(game: &mut GameState, subject: SubjectId) {
     // These four gripping limbs are explicitly authored as weight-bearing here.
     // Their striking reach does not define the terrain collision envelope.
     let profile = MovementProfile {
-        revision: eponym_world::MOVEMENT_PROFILE_REVISION,
+        revision: isocosm::legacy::eponym::world::MOVEMENT_PROFILE_REVISION,
         source_revision: BodyRevisionId(0),
         envelope: MotionEnvelope {
             anchor: body.root,
             half_width: MOTION_SCALE / 4,
             height: 2 * MOTION_SCALE,
         },
-        supports: eponym_world::fixtures::three_lives::limb_parts(body).to_vec(),
+        supports: isocosm::legacy::eponym::world::fixtures::three_lives::limb_parts(body).to_vec(),
         support_band: SupportBand { min_y: 0, max_y: 2 },
     };
     game.apply(GameIntent::ConfigureMovementProfile {

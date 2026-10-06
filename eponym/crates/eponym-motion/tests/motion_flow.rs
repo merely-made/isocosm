@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use eponym_identity::{BodyRevisionId, SubjectId};
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use isocosm::legacy::eponym::world::{
     GameIntent, GameState, ItemLocation, MotionInput, MotionPose, MotionRules, Name, World,
     WorldConfig, fixtures::three_lives::wetland_body,
 };
@@ -34,7 +34,7 @@ fn malformed_standalone_pose_receipts_cannot_corrupt_movement() {
             movement
                 .apply(
                     state.world(),
-                    eponym_world::MovementIntent::ContactPose {
+                    isocosm::legacy::eponym::world::MovementIntent::ContactPose {
                         tick: movement.next_tick(),
                         subject: SUBJECT,
                         pose,

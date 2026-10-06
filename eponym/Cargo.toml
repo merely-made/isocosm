@@ -18,12 +18,9 @@ exclude = ["design_docs/"]
 # proven boundary take MIT OR Apache-2.0): see LICENSES.md.
 [workspace]
 members = [
-    "crates/eponym-identity",
     "crates/eponym-client",
     "crates/eponym-motion",
-    "crates/eponym-social",
     "crates/eponym-sortie",
-    "crates/eponym-world",
 ]
 
 # renderling is a rust-gpu consumer: it wants the shader toolchain's spirv-std

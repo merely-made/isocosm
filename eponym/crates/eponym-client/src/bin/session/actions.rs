@@ -11,9 +11,9 @@
 use std::time::{Duration, Instant};
 
 use isometer::core::PartId;
-use eponym_identity::{BodyRevisionId, SubjectId, Tick};
-use eponym_world::timed_action::Direction;
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId, Tick};
+use isocosm::legacy::eponym::world::timed_action::Direction;
+use isocosm::legacy::eponym::world::{
     CanonRevisionCause, GameEvent, GameIntent, ItemId, ItemKind, MotionInput, StrikeOutcome,
 };
 
@@ -45,7 +45,7 @@ impl SessionApp {
                     move_x: (toward[0] * 32767) as i16,
                     move_z: (toward[2] * 32767) as i16,
                 },
-                rules: eponym_world::fixtures::session::motion_rules(game, played),
+                rules: isocosm::legacy::eponym::world::fixtures::session::motion_rules(game, played),
             }
         };
         let step = match &intent {
@@ -408,7 +408,7 @@ impl SessionApp {
         let restored = std::fs::read(&path)
             .map_err(|error| error.to_string())
             .and_then(|bytes| {
-                eponym_world::timed_action::TimedActionSession::restore_solving(&bytes, eponym_motion::SOLVER)
+                isocosm::legacy::eponym::world::timed_action::TimedActionSession::restore_solving(&bytes, eponym_motion::SOLVER)
                     .map_err(|error| format!("{error:?}"))
             });
         self.status = vec![match restored {

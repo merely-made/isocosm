@@ -10,11 +10,11 @@
 //! march as a story a playtester can follow, ending with the same ask S2
 //! saw counteroffered, answered differently, for a reason on the page.
 
-use eponym_identity::Tick;
-use eponym_social::Verdict;
-use eponym_social::scene::SELA;
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
+use isocosm::legacy::eponym::identity::Tick;
+use isocosm::legacy::eponym::social::Verdict;
+use isocosm::legacy::eponym::social::scene::SELA;
 
 fn main() {
     let (answers, sortie) = scene::played_through();

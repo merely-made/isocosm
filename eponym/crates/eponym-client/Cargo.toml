@@ -32,8 +32,6 @@ v1b-proof = ["v1-proof"]
 # kinematics, netrender's frame, and the local renderling fork (which has no
 # published home). Revisit when the probe grows into a shipped target.
 [dependencies]
-eponym-identity = { path = "../eponym-identity" }
-eponym-world = { path = "../eponym-world" }
 eponym-motion = { path = "../eponym-motion" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }

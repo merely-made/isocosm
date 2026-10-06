@@ -1,16 +1,17 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use isocosm::legacy::eponym::world::timed_action::{Direction, LimbBinding, StrikeReceipt};
+use isocosm::legacy::eponym::world::*;
 use isocosm::legacy::mesocosm::{BodyDocument, SpeciesId, VolumeRef};
-use eponym_identity::{BodyRevisionId, SubjectId};
-use eponym_world::timed_action::{Direction, LimbBinding, StrikeReceipt};
-use eponym_world::*;
 
 const ACTOR: SubjectId = SubjectId(31);
 const TARGET: SubjectId = SubjectId(32);
 
 fn setup() -> GameState {
-    let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap()).with_motion_solver(eponym_motion::SOLVER);
+    let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
+        .with_motion_solver(eponym_motion::SOLVER);
     let at = game
         .items()
         .all()
@@ -157,7 +158,8 @@ fn fractional_motion_changes_contact_without_crossing_a_cell() {
 fn saved_fractional_contact_continues_exactly() {
     let mut straight = setup();
     move_actor(&mut straight);
-    let mut resumed = GameState::restore_solving(&straight.save().unwrap(), eponym_motion::SOLVER).unwrap();
+    let mut resumed =
+        GameState::restore_solving(&straight.save().unwrap(), eponym_motion::SOLVER).unwrap();
     assert_eq!(fire(&mut straight, 2), fire(&mut resumed, 2));
     assert_eq!(straight, resumed);
     assert_eq!(
@@ -168,7 +170,7 @@ fn saved_fractional_contact_continues_exactly() {
 
 #[test]
 fn real_v5_motion_archive_retains_its_legacy_combat_history() {
-    use eponym_world::timed_action::{TimedActionSave, TimedActionSession};
+    use isocosm::legacy::eponym::world::timed_action::{TimedActionSave, TimedActionSession};
     let bytes = include_bytes!("fixtures/timed-action-v1-game-v5.save");
     let save: TimedActionSave = isocosm::legacy::mesocosm::snapshot::decode(bytes).unwrap();
     assert_eq!(save.session.game.version, 5);
@@ -184,10 +186,10 @@ fn real_v5_motion_archive_retains_its_legacy_combat_history() {
         isocosm::legacy::mesocosm::snapshot::decode(&restored.save().unwrap()).unwrap();
     assert_eq!(
         rewritten.session.game.version,
-        eponym_world::GAME_STATE_VERSION
+        isocosm::legacy::eponym::world::GAME_STATE_VERSION
     );
     let mut upgraded = save.clone();
-    upgraded.session.game.version = eponym_world::GAME_STATE_VERSION;
+    upgraded.session.game.version = isocosm::legacy::eponym::world::GAME_STATE_VERSION;
     assert_eq!(rewritten, upgraded);
     let subject = restored.session().control().played();
     let game = restored.session().game();
@@ -203,7 +205,8 @@ fn real_v5_motion_archive_retains_its_legacy_combat_history() {
         }])
         .unwrap();
     assert_eq!(
-        TimedActionSession::restore_solving(&restored.save().unwrap(), eponym_motion::SOLVER).unwrap(),
+        TimedActionSession::restore_solving(&restored.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap(),
         restored
     );
 }

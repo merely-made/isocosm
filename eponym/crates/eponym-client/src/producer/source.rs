@@ -19,8 +19,8 @@ use isometer::{
     SceneBody, SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera,
     SubjectKey, TerrainSource,
 };
-use eponym_identity::SubjectId;
-use eponym_world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
+use isocosm::legacy::eponym::identity::SubjectId;
+use isocosm::legacy::eponym::world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 
 use super::handle::{SceneHandle, SceneModel};
 

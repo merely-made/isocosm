@@ -18,11 +18,11 @@
 //! the pact fires only while its agreement stands, so ending the agreement
 //! revokes the tag-in the same way it vacates a home in S2.
 
-use eponym_identity::{SubjectId, Tick};
-use eponym_social::agreement::AgreementId;
-use eponym_social::offer::{Offer, Terms, Work};
-use eponym_social::response::{Response, RulingKind, Verdict};
-use eponym_social::society::{SocialError, Society};
+use isocosm::legacy::eponym::identity::{SubjectId, Tick};
+use isocosm::legacy::eponym::social::agreement::AgreementId;
+use isocosm::legacy::eponym::social::offer::{Offer, Terms, Work};
+use isocosm::legacy::eponym::social::response::{Response, RulingKind, Verdict};
+use isocosm::legacy::eponym::social::society::{SocialError, Society};
 use serde::{Deserialize, Serialize};
 
 /// A companion's agreed part on the march. Which driver moves them, and

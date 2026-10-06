@@ -5,4 +5,5 @@
 //! re-expressed in Isocosm's process definitions family by family, after
 //! which each leaves this tree.
 
+pub mod eponym;
 pub mod mesocosm;

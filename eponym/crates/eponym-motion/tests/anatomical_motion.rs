@@ -1,12 +1,12 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::PartId;
-use eponym_identity::{BodyRevisionId, SubjectId};
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use isocosm::legacy::eponym::world::{
     GameError, GameIntent, GameState, MotionEnvelope, MotionInput, MotionRules, MovementProfile,
     Name, SupportBand, World, WorldConfig, fixtures::three_lives::wetland_body,
 };
+use isocosm::legacy::mesocosm::PartId;
 
 const SUBJECT: SubjectId = SubjectId(73);
 const ROOT: PartId = PartId(0);
@@ -14,12 +14,13 @@ const LIMB_A: PartId = PartId(1);
 const LIMB_B: PartId = PartId(2);
 
 fn state() -> GameState {
-    let mut state = GameState::new(World::generate(7, WorldConfig::default()).unwrap()).with_motion_solver(eponym_motion::SOLVER);
+    let mut state = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
+        .with_motion_solver(eponym_motion::SOLVER);
     let at = state
         .items()
         .all()
         .find_map(|item| match item.location {
-            eponym_world::ItemLocation::At(at)
+            isocosm::legacy::eponym::world::ItemLocation::At(at)
                 if state
                     .world()
                     .ground()
@@ -58,7 +59,7 @@ fn state() -> GameState {
 
 fn profile(revision: u64, supports: Vec<PartId>) -> MovementProfile {
     MovementProfile {
-        revision: eponym_world::MOVEMENT_PROFILE_REVISION,
+        revision: isocosm::legacy::eponym::world::MOVEMENT_PROFILE_REVISION,
         source_revision: BodyRevisionId(revision),
         envelope: MotionEnvelope {
             anchor: ROOT,
@@ -165,7 +166,8 @@ fn losing_one_of_two_supports_halves_speed_and_survives_resume() {
     advance(&mut one, 1, input).unwrap();
     advance(&mut two, 1, input).unwrap();
     assert!(two.pose(SUBJECT).unwrap().position[0] > one.pose(SUBJECT).unwrap().position[0]);
-    let mut resumed = GameState::restore_solving(&one.save().unwrap(), eponym_motion::SOLVER).unwrap();
+    let mut resumed =
+        GameState::restore_solving(&one.save().unwrap(), eponym_motion::SOLVER).unwrap();
     advance(&mut one, 2, input).unwrap();
     advance(&mut resumed, 2, input).unwrap();
     assert_eq!(resumed, one);
@@ -240,7 +242,8 @@ fn configured_shape_survives_save_resume_and_continued_motion() {
         },
     )
     .unwrap();
-    let mut resumed = GameState::restore_solving(&straight.save().unwrap(), eponym_motion::SOLVER).unwrap();
+    let mut resumed =
+        GameState::restore_solving(&straight.save().unwrap(), eponym_motion::SOLVER).unwrap();
     assert_eq!(resumed, straight);
     advance(&mut straight, 2, MotionInput::default()).unwrap();
     advance(&mut resumed, 2, MotionInput::default()).unwrap();
@@ -282,7 +285,8 @@ fn stale_or_invalid_profiles_and_disguised_old_archives_reject() {
     assert_eq!(state, before);
 
     advance(&mut state, 1, MotionInput::default()).unwrap();
-    let resumed = GameState::restore_solving(&state.save().unwrap(), eponym_motion::SOLVER).unwrap();
+    let resumed =
+        GameState::restore_solving(&state.save().unwrap(), eponym_motion::SOLVER).unwrap();
     assert_eq!(resumed, state);
 
     let mut save = state.save_record().unwrap();

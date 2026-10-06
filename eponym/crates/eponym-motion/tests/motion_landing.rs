@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use eponym_identity::{BodyRevisionId, SubjectId};
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use isocosm::legacy::eponym::world::{
     GameEvent, GameIntent, GameState, MotionInput, MotionRules, Name, World, WorldConfig,
     fixtures::three_lives::wetland_body,
 };
@@ -81,8 +81,8 @@ fn game() -> (GameState, MotionInput, i32) {
         at[2] + i32::from(input.move_z.signum()),
     ];
     world
-        .apply(eponym_world::WorldIntent::Carve {
-            tick: eponym_identity::Tick(0),
+        .apply(isocosm::legacy::eponym::world::WorldIntent::Carve {
+            tick: isocosm::legacy::eponym::identity::Tick(0),
             by: SUBJECT,
             centre: [lower[0], lower[1] - 1, lower[2]],
             radius: 2,

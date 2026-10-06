@@ -45,7 +45,7 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
     let action = app.action.action().unwrap();
     assert_eq!(
         action.contributors[&isometer::core::PartId(1)].state,
-        eponym_world::timed_action::ContributionState::Cancelled
+        isocosm::legacy::eponym::world::timed_action::ContributionState::Cancelled
     );
     assert_eq!(
         action.contributors[&isometer::core::PartId(2)].charge,
@@ -99,7 +99,8 @@ fn ordinary_fall_refreshes_charged_bindings_and_death_cancels_them() {
             .unwrap()
             .contributors
             .values()
-            .all(|c| c.state == eponym_world::timed_action::ContributionState::Cancelled)
+            .all(|c| c.state
+                == isocosm::legacy::eponym::world::timed_action::ContributionState::Cancelled)
     );
     let before = app.action.clone();
     assert!(app.action.rest().is_err());
@@ -134,11 +135,10 @@ fn wrong_direction_is_a_recorded_miss() {
             _ => None,
         })
         .unwrap();
-    assert!(
-        strikes
-            .iter()
-            .all(|strike| matches!(strike.outcome, eponym_world::StrikeOutcome::Miss))
-    );
+    assert!(strikes.iter().all(|strike| matches!(
+        strike.outcome,
+        isocosm::legacy::eponym::world::StrikeOutcome::Miss
+    )));
 }
 
 #[test]
@@ -162,7 +162,7 @@ fn native_fractional_motion_resumes_exactly() {
         .unwrap();
     assert_eq!(after.step, 1);
     assert!(after.position[0] > before.position[0]);
-    assert!(after.position[0] - before.position[0] < eponym_world::MOTION_SCALE);
+    assert!(after.position[0] - before.position[0] < isocosm::legacy::eponym::world::MOTION_SCALE);
     let mut resumed = App::new();
     resumed.action =
         TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)

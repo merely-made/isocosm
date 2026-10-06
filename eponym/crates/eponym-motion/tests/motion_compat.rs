@@ -1,13 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::snapshot;
-use eponym_identity::{BodyRevisionId, SubjectId, Tick};
-use eponym_world::timed_action::{TimedActionSave, TimedActionSession};
-use eponym_world::{
+use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId, Tick};
+use isocosm::legacy::eponym::world::timed_action::{TimedActionSave, TimedActionSession};
+use isocosm::legacy::eponym::world::{
     GAME_STATE_VERSION, GameError, GameIntent, GameState, ItemLocation, MotionInput, MotionRules,
     Name, Session, SessionError, World, WorldConfig,
 };
+use isocosm::legacy::mesocosm::snapshot;
 
 const SUBJECT: SubjectId = SubjectId(91);
 
@@ -23,7 +23,8 @@ fn motion(tick: Tick) -> GameIntent {
 }
 
 fn session() -> Session {
-    let mut game = GameState::new(World::generate(17, WorldConfig::default()).unwrap()).with_motion_solver(eponym_motion::SOLVER);
+    let mut game = GameState::new(World::generate(17, WorldConfig::default()).unwrap())
+        .with_motion_solver(eponym_motion::SOLVER);
     let at = game
         .items()
         .all()
@@ -58,7 +59,8 @@ fn v4_native_timed_action_archive_restores_and_rewrites_as_v5() {
     let rewritten: TimedActionSave = snapshot::decode(&restored.save().unwrap()).unwrap();
     assert_eq!(rewritten.session.game.version, GAME_STATE_VERSION);
     assert_eq!(
-        TimedActionSession::restore_solving(&restored.save().unwrap(), eponym_motion::SOLVER).unwrap(),
+        TimedActionSession::restore_solving(&restored.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap(),
         restored
     );
 }
@@ -66,7 +68,8 @@ fn v4_native_timed_action_archive_restores_and_rewrites_as_v5() {
 #[test]
 fn v3_and_v4_archives_cannot_disguise_continuous_motion() {
     for version in [3, 4] {
-        let game = GameState::new(World::generate(19, WorldConfig::default()).unwrap()).with_motion_solver(eponym_motion::SOLVER);
+        let game = GameState::new(World::generate(19, WorldConfig::default()).unwrap())
+            .with_motion_solver(eponym_motion::SOLVER);
         let mut game_save = game.save_record().unwrap();
         game_save.version = version;
         game_save.intents.push(motion(Tick(0)));

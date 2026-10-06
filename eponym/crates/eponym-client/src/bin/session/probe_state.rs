@@ -4,7 +4,7 @@
 //! The typed reading a Eponym scenario asserts against, and the event stream
 //! it matches. Projections only: nothing here applies an intent.
 
-use eponym_world::{GameEvent, ItemKind, MOTION_SCALE};
+use isocosm::legacy::eponym::world::{GameEvent, ItemKind, MOTION_SCALE};
 use taproot::ProbeSnapshot;
 
 use super::Context;

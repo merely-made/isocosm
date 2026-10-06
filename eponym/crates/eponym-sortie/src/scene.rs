@@ -21,14 +21,14 @@
 //! cliff fails loudly rather than silently passing a tamer sortie.
 
 use isocosm::legacy::mesocosm::places::Ground;
-use eponym_identity::{BodyRevisionId, Control, Facets, SubjectId, Tick};
+use isocosm::legacy::eponym::identity::{BodyRevisionId, Control, Facets, SubjectId, Tick};
 use eponym_client::room::{Room, SEED};
-use eponym_social::companion::Craft;
-use eponym_social::offer::{Terms, Work};
-use eponym_social::response::Response;
-use eponym_social::scene::{AUD, BRAM, ODRIS, SELA};
-use eponym_social::settling;
-use eponym_social::society::Society;
+use isocosm::legacy::eponym::social::companion::Craft;
+use isocosm::legacy::eponym::social::offer::{Terms, Work};
+use isocosm::legacy::eponym::social::response::Response;
+use isocosm::legacy::eponym::social::scene::{AUD, BRAM, ODRIS, SELA};
+use isocosm::legacy::eponym::social::settling;
+use isocosm::legacy::eponym::social::society::Society;
 
 use crate::march;
 use crate::party::{self, Pact};
@@ -209,7 +209,7 @@ pub fn grudged() -> (Vec<Response>, Sortie) {
         Tick(DEPART.0 - 1),
         AUD,
         Some(BRAM),
-        eponym_social::deed::DeedKind::Abandoned,
+        isocosm::legacy::eponym::social::deed::DeedKind::Abandoned,
     );
     let (answers, mut sortie) = muster(society);
     sortie.run();
