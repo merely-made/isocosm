@@ -34,7 +34,7 @@ whether a community remains itself as control, bodies, and generations
 change.
 
 **Early implementation.** The repo holds the name-reservation package, the
-design docs, and five crates. `crates/eponym-client` owns native input, rendering and inspection,
+design docs, and three crates. `crates/eponym-client` owns native input, rendering and inspection,
 including body sheets, timed actions and the retained S0 room probe
 landed 2026-08-08: one room carved into a grown mesocosm hillside, one body
 under near-tier kinematics, a fixed input trace with save/reload/replay, and
@@ -46,7 +46,7 @@ Ground binding. Three further gates landed as opt-in bins: `v1_residency`
 (continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth composed
 with renderling, D1), and `v1b_residency` (the stable capacity-fixed
 resident brick cache, V1b), behind the `v1-proof`, `d1-proof`, and
-`v1b-proof` features. `crates/eponym-social` is the S1
+`v1b-proof` features. `isocosm::legacy::eponym::social` is the S1
 willingness owner landed the same
 day: deeds, standing, confidence, refusal, standing agreements, and the
 premises behind every answer, with the refusal scene as an executable
@@ -57,8 +57,8 @@ ending. `crates/eponym-sortie` is S3's joint receipt (sim half landed
 2026-08-08): the one crate reading both owners, with negotiated
 participation, terrain falls as body-revision wounds, the pact-governed
 tag-in, the dig rule, and sortie deeds that explain later answers.
-`crates/eponym-identity` holds the identity facts both owners
-share and neither may own. `crates/eponym-world` owns persistent site
+`isocosm::legacy::eponym::identity` holds the identity facts both owners
+share and neither may own. `isocosm::legacy::eponym::world` owns persistent site
 meanings over stable surface and underground slots, routes, containment,
 inherited replacement, multi-author material edits, generated bodies and
 items, needs, perception, injury, recovery, death, and regrow-plus-replay
@@ -80,7 +80,7 @@ foundation receipts and its F3-F8 mapped onto E2's families in the overlay
 plan's §4.1. The founding plan remains the charter with its phase section
 superseded.
 
-The local `eponym-world::Session` foundation (2026-09-09) composes one
+The local `isocosm::legacy::eponym::world::Session` foundation (2026-09-09) composes one
 `GameState` with historically validated control and existing-life succession.
 Its versioned save supports configurable archive limits. The bounded J1b
 `AdvanceMotion` path now owns fractional terrain motion and landing injury in
@@ -92,7 +92,7 @@ open. See `design_docs/2026-09-09_functional_loops_plan.md` for current lanes.
 The `crossing` binary (2026-09-05) is the dry damaged-crossing contact
 fixture: two restartable body presets, board carrying, tethering, brace,
 timed strikes, impairment/recovery, and a readable shared-device HUD.
-`eponym-world::ContactWorld` is a separate fixed-step input/replay probe
+`eponym-motion::ContactWorld` is a separate fixed-step input/replay probe
 using Conatus character movement, not yet a join to `GameState` or F3 evidence.
 Its stationary practice body has no decision system. Full encounter and
 playtester acceptance remain open in the Eponym overlay plan's E3 and E4.

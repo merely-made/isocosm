@@ -8314,6 +8314,25 @@ what later sections derive from.
      decision record moves to the VTT's archive; with Cleromancy gone the
      repo `CLAUDE.md`'s `--all-features` gate runs whole again, unchanged.
 
+601. **Eponym's `CLAUDE.md` follows the move.** 2026-10-06. Question: its
+     lines 49 to 95 still place `eponym-social`, `eponym-identity` and
+     `eponym-world` under `crates/` and name `eponym-world::Session` and
+     `eponym-world::ContactWorld`, which now live in
+     `isocosm::legacy::eponym` and, for `ContactWorld`, the game-side
+     `eponym-motion` (597); update it? Options: repoint the paths
+     (recommended); leave it. Mark chose "Repoint the paths". So the six
+     names point where the code lives and every other sentence stays.
+     *Reading, not ruled:* "five crates" became "three crates", the count
+     the repoint leaves true.
+602. **The machine-local tabletop config sheds Cleromancy.** 2026-10-06.
+     Question: the ignored `.cargo/tabletop-local.toml` still patches
+     cleromancy to its sibling checkout and carries a 15-line comment on
+     the second Cambium it forced, so every `wing.ps1 isometry` build
+     would warn "patch was not used"; clean it? Options: remove both
+     (recommended); leave it. Mark chose "Remove both". So the patch table
+     and its comment are gone from that file, and nothing else in it
+     changed; the file is not committed.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12185,6 +12204,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: rulings 601 and 602: Eponym's `CLAUDE.md` repointed at the
+  moved crates; the machine-local tabletop config sheds Cleromancy.
 - 2026-10-06: the migration lands (ruling 591) at `1ffb7294`:
   `mesocosm-core`, Eponym's world, social and identity crates, and the
   VTT's campaign world with its overmap live in Isocosm as
