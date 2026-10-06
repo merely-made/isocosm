@@ -815,3 +815,7 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
 - **2026-08-03:** resolved the co-signing target: co-players adopt one
   developmental program, while world-conditioned phenotype realization remains
   free to vary.
+- **2026-09-04:** the old `epoch.rs` trait array deleted, as ruled
+  2026-09-02; the seven authored pressures and three world profiles survive
+  it as `mesocosm-core/src/pressure.rs`. *(Carried from the wing index on
+  2026-10-06, when its rows were cut to ruling 612's shape.)*
