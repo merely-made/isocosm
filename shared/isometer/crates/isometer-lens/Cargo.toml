@@ -39,8 +39,8 @@ bytemuck = { version = "1", features = ["derive"] }
 pollster = "0.4"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
-burn = { version = "0.22.0-pre.2", default-features = false, features = ["std", "wgpu"], optional = true }
-conatus = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+burn = { version = "=0.22.0", default-features = false, features = ["std", "wgpu", "cubecl"], optional = true }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-time = "1"

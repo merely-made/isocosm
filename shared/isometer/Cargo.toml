@@ -61,6 +61,8 @@ wgpu = { version = "30", default-features = false, features = [
 # order to build standalone. Consumed by path from a product workspace, the
 # product's own identical patch table is the one that applies.
 [patch.crates-io]
+# Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
+cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
