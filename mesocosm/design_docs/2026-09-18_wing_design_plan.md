@@ -2134,6 +2134,9 @@ what later sections derive from.
      side over the stack's conatus, the accepted transition for each tick
      crossing as the intent, or in the sim, fed the input frames? Mark:
      "Game side."
+     *Carried out 2026-10-05 by ruling 597:* motion and contact move to
+     `eponym-motion`; the sim is handed the solver.
+
 234. **Where a first Eponym life begins in time is the player's pick, with
      society the default.** Put to Mark on 2026-09-25, from decision 2: from
      the world's habitability for the creature onward, as ruling 179 gives
@@ -8235,6 +8238,21 @@ what later sections derive from.
 596. **The repository's `CLAUDE.md` stays as it is.** 2026-10-05. Options:
      add one line naming the script; leave it. Mark chose "Leave it".
 
+597. **Eponym's motion stays game-side.** 2026-10-05. Question: how does
+     Eponym's world move onto the sim, given that 233 keeps motion and
+     contact game-side over conatus, which wraps Rapier? Options: motion
+     stays game-side (recommended); move it all, conatus included. Mark
+     chose "Motion stays game-side". So `eponym-world`'s motion and contact
+     (about 2,100 lines, its only conatus users) stay with the game as
+     `eponym-motion`; `eponym-world`, `eponym-social` and `eponym-identity`
+     move into Isocosm, and Isocosm never depends on Rapier. *Reading, not
+     ruled:* the sim keeps motion's data and admission and is handed a
+     solver (`MotionSolver`), none by default so motion is refused by name;
+     a host hands the conatus solver, and a save with motion replays with
+     the same one, keeping Eponym's rule that hosts never supply a final
+     position; fixtures that need motion recorded but not solved use a
+     solver that does not move.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12106,6 +12124,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-05: ruling 597: Eponym's motion stays game-side as
+  `eponym-motion`, the sim handed its solver.
 - 2026-10-05: rulings 593 to 596: the ceiling covers source and the docs
   are deduplicated; a pre-commit hook enforces it; `field-bake` retired;
   `CLAUDE.md` unchanged. The eight over-ceiling files split at `bb92f2e`.
