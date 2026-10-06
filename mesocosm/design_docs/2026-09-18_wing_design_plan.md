@@ -2651,6 +2651,8 @@ what later sections derive from.
      default or removed? Mark: "Optional, off by default." Without it the
      choice uses the VTT's own seeded draw, and cleromancy aligns in its own
      repository on its own schedule.
+     *Amended 2026-10-06 by ruling 600:* Cleromancy is removed from the
+     VTT, a stale dependency of marginal benefit.
 299. **`isometry-runtime` retires.** Put to Mark on 2026-09-26, the bump
      finding the crate pinning an old conatus: "What is that needed for?
      Also, stale name". Answered that it is the leftover of the runtime
@@ -8287,6 +8289,31 @@ what later sections derive from.
      refused sim-side before any VTT document is built; the VTT's lowering
      is a pair of extension traits in the slim `isometry-campaign`.
 
+600. **The VTT builds on the stack we have; Cleromancy leaves it.**
+     2026-10-06. Question: main's root lock pins ten crates.io packages
+     whose `.crate` files are gone from the local cache (imagesize, usvg,
+     resvg, selectors, stylo_malloc_size_of, tikv-jemalloc-sys,
+     tikv-jemallocator, fontconfig-parser, cc 1.4.6, glam 0.33.7), so the
+     root workspace cannot build offline, untouched main included; how
+     should the VTT side of the campaign move be verified and locked?
+     Options: fetch the ten (recommended); offline, taking the resolver's
+     drift to cached versions; offline, keeping main's pins by hand. Mark
+     answered: "Sounds like we should just rebuild on the actual stack we
+     have instead of inviting crates we don't need or want into the
+     stack". Told that eight of the ten come only from Cleromancy's second
+     stack (genet `5ae30cad`, mere `876320fd`), behind `isometry-genet`'s
+     `cleromancy` feature (off by default since ruling 298), he added:
+     "Acha, that should not be in at all. Old, stale dependency", and "The
+     idea was, hey, maybe we could make seeds for worlds out of readings or
+     details you provide. But eh. Marginal benefit!" So nothing is fetched
+     and Cleromancy leaves the VTT: the feature, its workspace pin, its
+     selection module, and the `ipc-channel` patch only its genet reached.
+     `>choose` is the VTT's own seeded draw (ruling 323), the default
+     already. *Reading, not ruled:* the lock takes the versions on disk
+     (cc 1.6.0, find-msvc-tools 0.1.14, glam 0.33.12); the Cleromancy
+     decision record moves to the VTT's archive; with Cleromancy gone the
+     repo `CLAUDE.md`'s `--all-features` gate runs whole again, unchanged.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12158,6 +12185,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 600: the VTT builds on the stack it runs on, nothing
+  fetched; Cleromancy, a stale dependency, leaves the VTT.
 - 2026-10-06: ruling 599: the overmap moves into Isocosm with the campaign
   world; the VTT keeps the map wrapper and token and sheet drafting.
 - 2026-10-06: ruling 598: the campaign world moves into Isocosm, its
