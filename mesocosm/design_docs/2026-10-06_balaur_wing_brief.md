@@ -1,9 +1,8 @@
 # Balaur, read for the games wing
 
-**Status, 2026-10-06:** the wing's half of the read is done; held for the
-physics lane's findings (mere's balaur review brief, §3, "For the games
-wing"), after which the two together check the rulings named below and the
-forks in §4 go to Mark (ruling 603).
+**Status, 2026-10-06:** both halves read. The physics lane's findings are
+§3.8 of mere's balaur review brief (mere `ec5293f0`); §5 below sets them
+beside this read, and the forks in §4 go to Mark (ruling 603).
 
 **Subject.** [balaurengine/balaur](https://github.com/balaurengine/balaur) at
 `de0df794eee4eea223ed7efd31461044c71999f0`, MIT, "Copyright (c) 2026 Sébastien
@@ -29,6 +28,9 @@ Checked at the pinned commit, against the summary the physics session relayed:
   `balaur-wrapped-surface` at `4522a762` (kiss3d 0.46.0), not `balaur-hooks`.
   GitHub reports 82 commits and 125 files over `v0.46.0` and will not render
   the diff; the per-patch account is the physics lane's.
+- Stable ids are strings, `StableId(String)`, runtime ids of the form
+  `<authority>:<counter>`, not u64; and the ring is `CheckpointRing` in the
+  code, `SnapshotRing` only in `ARCHITECTURE.md` (both from the lane).
 - hecs is 0.11.1, the version ruling 481's bench measured. The toolchain pin
   is 1.98.1, the same as Isometry's.
 
@@ -48,8 +50,8 @@ queue. Its offscreen mode (`crates/balaur_render/src/kiss3d_backend.rs`,
 caller's. So balaur is a working consumer of kiss3d 0.46 and a donor of
 patterns (a prelinked shader cache keyed by link parameters, three render
 modes agreeing bit for bit because rendering only observes), not the reshape.
-Whether the reshape starts from balaur's branch or from upstream waits on the
-physics lane's patch list.
+The lane's account of the branch (§5) confirms this: it is Ughuuu/kiss3d#1,
+headed into `balaur-hooks`, and none of its changes is one of 471's four.
 
 ### 2.2 ECS: hecs confirmed, the architecture differs by design
 
@@ -150,6 +152,41 @@ Not yet put to Mark. Each is checked against the lane's findings first.
    before the shards; balaur asserts one-thread and eight-thread runs equal.
    The shard work's receipt would assert one shard and N shards produce the
    same state hash. Against: leave it to the shard plan.
-4. **Where 471's reshape starts:** from balaur's kiss3d branch, inheriting
-   its web canvas, IME, wrapped surface and 2D-material screen copy, or from
-   upstream kiss3d 0.46. Waits on the lane's patch list.
+4. **Where 471's reshape starts:** from upstream kiss3d at a pinned commit,
+   taking balaur's commits by name as the reshape needs them, each reviewed;
+   or from balaur's branch, inheriting all 82; or waiting for its hooks to
+   land upstream.
+
+## 5. The physics lane's findings, set beside this read
+
+From §3.8 of mere's brief, read at the same commit through web reads only:
+
+- **Determinism.** The digest is FNV-1a over a tagged byte encoding (floats by
+  bit pattern, strings NUL-ended, tables key-sorted), slices walked in
+  pre-order and labelled by stable id or path; `--trace-digest` writes a line
+  per tick and CI diffs five examples on three platforms. Replay is JSON Lines
+  format 3 with a trailer whose absence means a crash; `--verify` stops at the
+  first mismatching digest. One PCG32, seed 0, its state in snapshots and the
+  header; `house_lints.py` rejects bare transcendental calls. This settles
+  §2.3's description; fork 1 stands. Isocosm's keyed draws already avoid the
+  single shared stream, which suits §4.7's shards better than one generator.
+- **ECS and scheduler.** Eight stages, systems as closures run in insertion
+  order with no constraints, one 60 Hz accumulator capped at four substeps, a
+  replaceable `FrameDriver`. As §2.2 says: 481 confirmed, 482 to 484 differ by
+  design.
+- **kiss3d.** The branch carries upstream commits made after v0.46.0, then
+  balaur's hooks (opaque web canvas, mid-pass screen copy, IME, safe area),
+  platform work, rendering settings (a software adapter for surface-less
+  rendering, bloom, SSAO fixes, wesl 0.5), the wrapped-surface pass (every
+  shadow setting exposed, orthographic heights, 64 lit-2D lights, offscreen
+  depth always samplable) and build work (built-in shaders linked in one
+  declaration order so two builds match). The diff did not render; the groups
+  come from commit titles and the file list from balaur's own plan. None
+  makes the context explicit, renders into caller targets, takes depth in
+  from a tracer, or exports the shadow atlas and light buffer, so 471 stands
+  and fork 4 is where to start.
+- **Mere's own forks.** The lane put five to Mark on mere's side (A to E).
+  Its fork E amends conatus's G8 with a labelled per-tick trace, the first
+  divergence, velocity in the fold, one owned generator per world and a
+  lint: the physics half of this brief's forks 1 and 2, which are Isocosm's
+  hash and the wing's requirement.
