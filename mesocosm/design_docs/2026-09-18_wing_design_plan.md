@@ -8586,6 +8586,28 @@ what later sections derive from.
      datasheet shape, and receipts showing worlds and state hashes unchanged
      by the move. Under F1, the wing's authored pack manifests and process
      records become TOML; the SRD data stays a JSON import.
+624. **Packs load from TOML or JSON.** 2026-10-06, for the move of the
+     pack files to TOML. Question: after the migration, should packs still
+     load from JSON? Options: TOML only, with a JSON pack refused by a
+     message naming the rule (recommended); accept both. Mark chose "Accept
+     both". So both loaders (`mesocosm-phenotype`'s admission and
+     `isometry-system`'s content packs) read either syntax, TOML preferred,
+     and this repository's own packs are TOML. The pre-commit check then
+     polices this repository only; a pack written elsewhere in JSON still
+     loads. *Reading, not ruled:* the manifest's `abi` stays 1, since the
+     schema does not change, only the syntax.
+625. **Every founding becomes data, instrument variants too.** 2026-10-06,
+     for 623's plan. Question: which rosters move into datasheets? Options:
+     the shipping rosters and kinds, with the instrument-only variants
+     staying code (recommended); everything, instrument variants too; only
+     the new sim's founding ruleset. Mark chose "Everything, instrument
+     variants too". So every `Founding` variant (`Drawn`,
+     `BrowsingConsumer`, `RosterStand`, `RosterFauna`, `Roster`,
+     `BranchingRoster`, `JointedRoster`, `SpacedRoster`), with its palette
+     and per-tier recipe lists, becomes a datasheet, and the enum becomes a
+     list read from them, beside `SEEDED_KINDS`. Recorded worlds must
+     reproduce: every founding's state hash is unchanged by the move. The
+     plan is `2026-10-06_wing_datasheets_plan.md`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
