@@ -1,6 +1,6 @@
 # Docs dedup plan
 
-**Status, 2026-10-06:** in progress.
+**Status, 2026-10-06:** done; D0 to D5 landed, the residue ruled (616 to 619).
 
 Carries out the wing design record's ruling 593 ("each result one home, other
 mentions a link") as Mark shaped it in rulings 612 to 615. The record holds
@@ -89,6 +89,14 @@ put.
 
 ## Findings
 
+- 2026-10-06, D5: after D0 to D4 the repeated-paragraph surplus fell from
+  3,192 words to 1,168. What still repeats: the record against the sim plan
+  (827 ten-word runs) and the anatomy brief (491), a spec sharing what its
+  rulings set, kept by ruling 616; the overlay plans' copies of §11, linked
+  under 617; twenty stale status lines, brought current under 618; fifteen
+  broken links in older archives, repaired under 619; the paging receipts'
+  summary and final-cost pages (629 runs), receipts kept as taken; and the
+  two `LICENSES.md`, per-product legal records kept by 615.
 - 2026-10-06, D4: the root's `DOC_POLICY.md` core is byte-identical to
   genet's, the canonical core; mere's copy differs at line 80 (bold where the
   core has backticks), a diff for mere's own lane. The product `CLAUDE.md`
@@ -139,3 +147,6 @@ put.
   the product `CLAUDE.md` files shared, with the root's own copies, gathered
   once in the root `CLAUDE.md` under "Rules for all three products", the
   product files linking there.
+- 2026-10-06: D5 done. The residue measured and put to Mark as rulings 616
+  to 619, each carried out: overlay plans linked to §11 (`04eb72f4`), status
+  lines current, archive links repaired (`4f2ea2ca`).
