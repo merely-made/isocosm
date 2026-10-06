@@ -36,7 +36,7 @@
 use serde::{Deserialize, Serialize};
 pub use wing_formats::{Chronicle, Deed, PartOrigin};
 
-use crate::world::{HistoryEvent, WorldCharacter};
+use crate::legacy::campaign::world::{HistoryEvent, WorldCharacter};
 
 /// The schema this reads and writes.
 pub const CHRONICLE_SCHEMA: &str = wing_formats::CHRONICLE_SCHEMA;

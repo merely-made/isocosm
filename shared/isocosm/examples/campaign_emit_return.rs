@@ -16,10 +16,10 @@
 
 use std::{fs, path::PathBuf};
 
-use isometry_campaign::{Arrival, HistoryEvent};
+use isocosm::legacy::campaign::{Arrival, HistoryEvent};
 
 fn main() {
-    let bytes = include_bytes!("../tests/fixtures/played.chronicle");
+    let bytes = include_bytes!("../tests/campaign_fixtures/played.chronicle");
     let mut arrival = Arrival::read(bytes).expect("the fixture is a valid chronicle");
 
     // A name makes a critter a borg; a faction makes a borg a character. Both
@@ -41,7 +41,7 @@ fn main() {
     // second, and only this call Mesocosm will act on.
     arrival.record_loss(1, 61);
 
-    let out = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures");
+    let out = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures").join("campaign");
     fs::create_dir_all(&out).expect("the fixture directory is writable");
     let file = out.join("returned.chronicle");
     let written = arrival.to_bytes().expect("a chronicle is always encodable");

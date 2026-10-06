@@ -1,7 +1,7 @@
 //! Host-only preview surface for W2 generator records.
 
 use cambium::{clickable, el, text};
-use isometry_campaign::GenValue;
+use isocosm::legacy::campaign::GenValue;
 
 use crate::board::UiChild;
 use crate::state::UiState;

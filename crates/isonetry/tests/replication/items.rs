@@ -120,7 +120,7 @@ fn host_transfers_an_equipped_item_atomically() {
 
 #[test]
 fn restored_host_reconciles_a_pending_item_modifier_once() {
-    let mut campaign = isometry_campaign::CampaignStore::new();
+    let mut campaign = isocosm::legacy::campaign::CampaignStore::new();
     let hidden = HiddenItemModifier {
         id: "reward-03.sword.curse".to_owned(),
         item: ItemId::new("reward-03.sword"),

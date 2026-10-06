@@ -1,5 +1,5 @@
 use super::*;
-use isometry_campaign::{GenValue, GeneratorRequest};
+use isocosm::legacy::campaign::{GenValue, GeneratorRequest};
 use isometry_core::{MapDocument, TurnList};
 use std::collections::BTreeMap;
 use std::time::Instant;
@@ -23,7 +23,7 @@ fn campaign_party_context_crosses_the_actor_bridge() {
         "CARGO_MANIFEST_DIR"
     ))
     .join("../isometry-system/examples/packs/watchtower")]);
-    let mut tape = isometry_campaign::EntropyTape::from_seed(91);
+    let mut tape = isocosm::legacy::campaign::EntropyTape::from_seed(91);
     let record = catalog
         .generate(
             "party-start".to_owned(),

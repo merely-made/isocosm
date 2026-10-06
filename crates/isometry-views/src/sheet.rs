@@ -5,7 +5,7 @@
 //! host.
 
 use cambium::{clickable, el, text};
-use isometry_campaign::EquipmentSlot;
+use isocosm::legacy::campaign::EquipmentSlot;
 use isometry_core::FieldValue;
 
 use crate::board::UiChild;

@@ -34,6 +34,7 @@ campaign-murm = ["dep:murm", "dep:thiserror"]
 [dependencies]
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
+isocosm = { workspace = true }
 muniment = { workspace = true }
 serde = { workspace = true }
 # Compact, no_std-friendly wire framing; also the byte form the portable

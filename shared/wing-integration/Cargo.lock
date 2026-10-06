@@ -229,25 +229,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "isometry-campaign"
-version = "0.1.0"
-dependencies = [
- "isometry-core",
- "postcard",
- "serde",
- "serde_json",
- "wing-formats",
- "wing-functions",
-]
-
-[[package]]
-name = "isometry-core"
-version = "0.1.0"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -506,7 +487,6 @@ version = "0.0.1"
 dependencies = [
  "isocosm",
  "isometer-mesh",
- "isometry-campaign",
 ]
 
 [[package]]

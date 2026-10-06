@@ -8,7 +8,7 @@ use std::collections::BTreeSet;
 
 use serde::{Deserialize, Serialize};
 
-use crate::GenValue;
+use crate::legacy::campaign::GenValue;
 
 /// The current JSON format for an Isometry content-pack manifest.
 pub const CONTENT_PACK_FORMAT: u32 = 1;

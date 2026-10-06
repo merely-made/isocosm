@@ -27,7 +27,7 @@ impl App {
             .generator_preview
             .as_ref()
             .expect("watchtower generator must produce a preview");
-        let isometry_campaign::GenValue::Campaign { campaign } = &preview.proposal else {
+        let isocosm::legacy::campaign::GenValue::Campaign { campaign } = &preview.proposal else {
             panic!("watchtower preview must be a campaign");
         };
         let expected = campaign

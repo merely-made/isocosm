@@ -4,9 +4,9 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
-use isometry_core::{Overmap, OvermapEdge, OvermapNode};
+use crate::legacy::campaign::{Overmap, OvermapEdge, OvermapNode};
 
-use crate::{ItemProposal, LocalMapProposal, MapScale, SecretFact, WorldFact};
+use crate::legacy::campaign::{ItemProposal, LocalMapProposal, MapScale, SecretFact, WorldFact};
 
 mod draft;
 mod ops;

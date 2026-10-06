@@ -15,10 +15,10 @@
 //! critter driven through the world until it had eaten several dozen
 //! organisms; `rng.chronicle` is one nobody ever ran.
 
-use isometry_campaign::{Arrival, ChronicleError, HistoryEvent};
+use isocosm::legacy::campaign::{Arrival, ChronicleError, HistoryEvent};
 
-const PLAYED: &[u8] = include_bytes!("fixtures/played.chronicle");
-const RNG: &[u8] = include_bytes!("fixtures/rng.chronicle");
+const PLAYED: &[u8] = include_bytes!("campaign_fixtures/played.chronicle");
+const RNG: &[u8] = include_bytes!("campaign_fixtures/rng.chronicle");
 
 /// Everything this campaign can learn about an arriving creature, which is
 /// exactly the surface a consumer could try to sort on.

@@ -1,6 +1,6 @@
-//! Generated map data and its lowering into the pure map substrate.
+//! Generated map data and its validation. Lowering it into the VTT's map
+//! documents is the VTT's (ruling 598).
 
-use isometry_core::MapDocument;
 use serde::{Deserialize, Serialize};
 
 pub const MAX_GENERATED_MAP_EDGE: u32 = 256;
@@ -53,8 +53,8 @@ pub struct EncounterAnchor {
     pub tags: Vec<String>,
 }
 
-/// Portable pack output. Sparse cells override `default_ground`; lowering
-/// interns the authored string vocabulary into a `MapDocument`.
+/// Portable pack output. Sparse cells override `default_ground`; the VTT's
+/// lowering interns the authored string vocabulary into its map document.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LocalMapProposal {
     pub id: String,
@@ -64,22 +64,6 @@ pub struct LocalMapProposal {
     pub default_ground: String,
     #[serde(default)]
     pub cells: Vec<MapCellProposal>,
-    #[serde(default)]
-    pub spawn_zones: Vec<SpawnZone>,
-    #[serde(default)]
-    pub transitions: Vec<MapTransition>,
-    #[serde(default)]
-    pub encounter_anchors: Vec<EncounterAnchor>,
-}
-
-/// A generated or authored map retained in the campaign registry. The active
-/// board remains `GameSnapshot::map`; this record carries scale and traversal
-/// metadata that the substrate itself does not interpret.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct CampaignMap {
-    pub id: String,
-    pub scale: MapScale,
-    pub document: MapDocument,
     #[serde(default)]
     pub spawn_zones: Vec<SpawnZone>,
     #[serde(default)]
@@ -102,7 +86,10 @@ pub enum MapProposalError {
 }
 
 impl LocalMapProposal {
-    pub fn lower(&self, scale: MapScale) -> Result<CampaignMap, MapProposalError> {
+    /// Every check lowering makes, in the order it makes them, building
+    /// nothing: what the sim can tell of a proposal without the VTT's
+    /// document.
+    pub fn validate(&self) -> Result<(), MapProposalError> {
         if self.id.trim().is_empty() {
             return Err(MapProposalError::MissingId);
         }
@@ -119,30 +106,12 @@ impl LocalMapProposal {
         if self.default_ground.trim().is_empty() {
             return Err(MapProposalError::MissingDefaultGround);
         }
-        let mut document = MapDocument::new(&self.name, self.width, self.height);
-        let default_ground = document.intern_tile_kind(&self.default_ground);
-        for row in 0..self.height {
-            for col in 0..self.width {
-                document.ground.set(col, row, default_ground);
-            }
-        }
         for cell in &self.cells {
             let point = MapPoint {
                 col: cell.col,
                 row: cell.row,
             };
             require_point(self.width, self.height, point)?;
-            if let Some(ground) = &cell.ground {
-                let kind = document.intern_tile_kind(ground);
-                document.ground.set(cell.col, cell.row, kind);
-            }
-            if let Some(prop) = &cell.prop {
-                let kind = document.intern_tile_kind(prop);
-                document.props.set(cell.col, cell.row, kind);
-            }
-            if let Some(elevation) = cell.elevation {
-                document.elevation.set(cell.col, cell.row, elevation);
-            }
         }
         for zone in &self.spawn_zones {
             if zone.id.trim().is_empty() {
@@ -164,14 +133,7 @@ impl LocalMapProposal {
             }
             require_point(self.width, self.height, anchor.at)?;
         }
-        Ok(CampaignMap {
-            id: self.id.clone(),
-            scale,
-            document,
-            spawn_zones: self.spawn_zones.clone(),
-            transitions: self.transitions.clone(),
-            encounter_anchors: self.encounter_anchors.clone(),
-        })
+        Ok(())
     }
 }
 
@@ -218,41 +180,3 @@ impl std::fmt::Display for MapProposalError {
 }
 
 impl std::error::Error for MapProposalError {}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn sparse_proposal_lowers_to_playable_document_and_metadata() {
-        let proposal = LocalMapProposal {
-            id: "demo:river-cache".to_owned(),
-            name: "River Cache".to_owned(),
-            width: 4,
-            height: 3,
-            default_ground: "grass".to_owned(),
-            cells: vec![MapCellProposal {
-                col: 2,
-                row: 1,
-                ground: Some("stone".to_owned()),
-                prop: Some("tree".to_owned()),
-                elevation: Some(2),
-            }],
-            spawn_zones: vec![SpawnZone {
-                id: "party".to_owned(),
-                cells: vec![MapPoint { col: 0, row: 1 }],
-            }],
-            transitions: Vec::new(),
-            encounter_anchors: vec![EncounterAnchor {
-                id: "guardian".to_owned(),
-                at: MapPoint { col: 3, row: 1 },
-                tags: vec!["undead".to_owned()],
-            }],
-        };
-        let map = proposal.lower(MapScale::Local).unwrap();
-        assert_eq!(map.document.ground.width(), 4);
-        assert_eq!(map.document.elevation.get(2, 1), Some(&2));
-        assert_eq!(map.spawn_zones[0].id, "party");
-        assert_eq!(map.encounter_anchors[0].tags, vec!["undead"]);
-    }
-}

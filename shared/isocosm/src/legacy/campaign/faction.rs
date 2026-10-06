@@ -18,7 +18,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{
+use crate::legacy::campaign::{
     CampaignWorld, EntropyTape, HistoryEvent, StoryletProposal, StoryletRequirements,
     WorldCharacter, WorldEvent, WorldFaction, WorldPlace,
 };
@@ -98,7 +98,7 @@ impl CampaignWorld {
     /// world time (capped), so the tick is *proportional to the time the table
     /// spent away* -- a long scene earns the factions a busy downtime, a short
     /// one barely stirs them. Pure and replayable: the DM edits and commits the
-    /// batch through [`crate::WorldEvent`]s, and the commit empties each acting
+    /// batch through [`crate::legacy::campaign::WorldEvent`]s, and the commit empties each acting
     /// faction's bank. Factions are visited in id order, so the draw sequence --
     /// and thus the batch -- is stable for a given world, tick, and seed.
     pub fn faction_turn(&self, tick: i64, tape: &mut EntropyTape) -> Vec<FactionMove> {
@@ -277,7 +277,7 @@ mod tests {
     use std::collections::BTreeMap;
 
     use super::*;
-    use crate::StoryletError;
+    use crate::legacy::campaign::StoryletError;
 
     fn faction_sheet(fields: &[(&str, i64)]) -> BTreeMap<String, i64> {
         fields.iter().map(|(k, v)| (k.to_owned().to_owned(), *v)).collect()

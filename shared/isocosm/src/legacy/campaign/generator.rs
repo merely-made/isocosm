@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{CampaignDraft, LocalMapProposal, StoryletProposal, WorldFact};
+use crate::legacy::campaign::{CampaignDraft, LocalMapProposal, StoryletProposal, WorldFact};
 
 /// One typed value crossing the pack-generator ABI.
 #[derive(Clone, Debug, PartialEq, Eq)]

@@ -6,7 +6,7 @@
 //! same request over the same choices replays the same pick; there is no sealed
 //! receipt, and the preview and commit gates are unchanged.
 
-use isometry_campaign::{EntropyTape, GeneratorChoice};
+use isocosm::legacy::campaign::{EntropyTape, GeneratorChoice};
 use isometry_views::GeneratorSelectionRequest;
 
 /// The host-local result of one seeded choice.
@@ -67,7 +67,7 @@ fn request_seed(seed: &str, domain: &str) -> u64 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{GenValue, GeneratorRequest};
+    use isocosm::legacy::campaign::{GenValue, GeneratorRequest};
     use isometry_system::{GeneratorCatalog, GeneratorLimits};
 
     use crate::boot::generator_pack_roots;

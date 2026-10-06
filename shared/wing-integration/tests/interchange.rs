@@ -9,6 +9,7 @@
 //! producer's live bytes against the retained artifact, and the same bytes
 //! through the baker.
 
+use isocosm::legacy::campaign::{Arrival, ChronicleError};
 use isocosm::legacy::mesocosm::{
     Attachment, BodyDocument, Chronicle, Consequence, Deed, Origin, PartId, Provenance, SpeciesId,
     VolumeRef, Yaw,
@@ -16,7 +17,6 @@ use isocosm::legacy::mesocosm::{
 use isometer_mesh::bake::{BakeParams, bake_facing};
 use isometer_mesh::profile::ProfileError;
 use isometer_mesh::{BodyProfile, Volume, VolumeMap};
-use isometry_campaign::{Arrival, ChronicleError};
 
 /// The retained v0 artifact protects persisted data. The live producer test
 /// below protects the producer-reader seam when either side changes.

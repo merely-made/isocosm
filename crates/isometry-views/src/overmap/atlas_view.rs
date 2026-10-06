@@ -5,7 +5,8 @@ use std::sync::Arc;
 use cambium::{
     GraphCanvasAtlas, GraphCanvasAtlasField, GraphCanvasAtlasPaint, GraphCanvasAtlasRoute,
 };
-use isometry_campaign::{CampaignMap, CampaignWorld, MapScale};
+use isocosm::legacy::campaign::{CampaignWorld, MapScale};
+use isometry_campaign::CampaignMap;
 use sceno::{Rect, Size2, Vec2};
 use sprigging::ColorF;
 
@@ -158,7 +159,8 @@ fn terrain_paint_cached(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{CampaignMap, MapPoint, MapTransition, WorldPlace};
+    use isocosm::legacy::campaign::{MapPoint, MapTransition, WorldPlace};
+    use isometry_campaign::CampaignMap;
     use std::collections::{BTreeMap, BTreeSet};
 
     #[test]

@@ -10,7 +10,7 @@ members = [
     "crates/isometry-system",
     "crates/isocosm-vtt",
 ]
-exclude = ["mesocosm", "eponym", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
+exclude = ["mesocosm", "eponym", "shared/isocosm", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
 
 # Keep interactive debug builds responsive; see the watchtower plan's M4 drag
 # receipt. Include the app where generic host/layout code is instantiated.
@@ -44,6 +44,10 @@ rust-version = "1.80"
 # Internal crates
 isometry-core = { path = "crates/isometry-core", version = "0.1.0" }
 isometry-campaign = { path = "crates/isometry-campaign", version = "0.1.0" }
+# The sim. Its own workspace, so excluded above and taken by path; the
+# campaign layer lives in it as `isocosm::legacy::campaign` (rulings 591,
+# 598, 599).
+isocosm = { path = "shared/isocosm" }
 # The wing appearance crate: the voxel bake merged into the family mesh
 # crate on 2026-09-15. It carries its own workspace, so it stays in the
 # `exclude` list above and is taken by path, as wing-integration takes it.

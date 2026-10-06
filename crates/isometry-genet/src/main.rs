@@ -53,10 +53,11 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::time::{Duration, Instant};
 
-use isometry_campaign::{
+use isocosm::legacy::campaign::{
     CampaignStore, CampaignWorld, EntropyTape, FactionMove, GenValue, GeneratorRequest, ItemId,
     ItemInstance, MapScale, WorldEvent, WorldFact,
 };
+use isometry_campaign::LowerMap;
 use isometry_core::{
     Facing, FieldValue, MapDocument, Rng, SessionEvent, SheetData, TileCoord, Token, TokenId, apply,
 };

@@ -1,10 +1,10 @@
 use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
-use isometry_campaign::{
-    CampaignMap, CampaignWorld, EquipmentSlot, GenValue, GenerationRecord, GeneratorChoice,
-    Inventory, ItemId,
+use isocosm::legacy::campaign::{
+    CampaignWorld, EquipmentSlot, GenValue, GenerationRecord, GeneratorChoice, Inventory, ItemId,
 };
+use isometry_campaign::CampaignMap;
 use isometry_core::{
     Facing, IsoGeometry, Layer, MapDocument, MoveRules, Rng, RollRecord, SessionEvent,
     TemplateKind, TileCoord, TileKindId, Token, TokenId, TurnList, apply, distance, reachable,

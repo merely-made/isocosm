@@ -5,12 +5,9 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
-description = "Isometry's campaign-state layer: generated objects, secret facts with reveal conditions, the public world-fact envelope, and the host-private campaign store. Pure data, no I/O; the substrate stores and displays, system plugins interpret."
+description = "The VTT's half of the campaign layer: generated campaign maps lowered into the substrate documents peers replicate. The campaign data itself lives in the Isocosm sim."
 
 [dependencies]
-wing-functions = { path = "../../shared/wing-functions" }
-wing-formats = { path = "../../shared/wing-formats" }
+isocosm = { workspace = true }
 isometry-core = { workspace = true }
 serde = { workspace = true }
-serde_json = { workspace = true }
-postcard = { workspace = true }

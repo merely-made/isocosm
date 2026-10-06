@@ -8,7 +8,7 @@ use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
 
 use armillary::{ActorHandle, Correlated, Emitter, RequestId, RequestIds, Wake};
-use isometry_campaign::{CampaignStore, GenerationRecord};
+use isocosm::legacy::campaign::{CampaignStore, GenerationRecord};
 use isometry_core::TokenId;
 use isonetry::iroh_link::{ClientNet, HostNet};
 use isonetry::{ActionIntent, GameEvent, GameSnapshot};
@@ -49,7 +49,7 @@ enum BridgeCommand {
     },
     FactionTurn {
         request: RequestId,
-        moves: Vec<isometry_campaign::FactionMove>,
+        moves: Vec<isocosm::legacy::campaign::FactionMove>,
     },
     Whisper {
         to: String,
@@ -253,7 +253,7 @@ impl NetBridge {
     /// move's world events replicate to every peer.
     pub fn commit_faction_turn(
         &mut self,
-        moves: Vec<isometry_campaign::FactionMove>,
+        moves: Vec<isocosm::legacy::campaign::FactionMove>,
     ) -> Option<RequestId> {
         let request = self.request_ids.issue();
         self.actor

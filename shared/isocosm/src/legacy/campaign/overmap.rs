@@ -3,14 +3,15 @@
 //! Nodes are places; edges are routes carrying an abstract travel weight. This
 //! is the map *above* the tactical maps: where `MapDocument` is a tile grid the
 //! party fights on, the overmap is a graph the party travels across. Geometry
-//! only, like the rest of `isometry-core`: what a weight *costs* in time (5e
-//! forced-march, PF2e hexploration), what a site *holds*, and what happens when
-//! you arrive are system-plugin and campaign concerns layered on later. The
-//! substrate stores the graph and searches it, and knows nothing of any of that.
+//! only: what a weight *costs* in time (5e forced-march, PF2e hexploration),
+//! what a site *holds*, and what happens when you arrive are system-plugin and
+//! campaign concerns layered on later. This module stores the graph and
+//! searches it, and knows nothing of any of that. It moved here from the VTT's
+//! `isometry-core` (ruling 599).
 //!
-//! Pathfinding is a bounded Dijkstra rather than the grid's uniform BFS
-//! ([`crate::path::reachable`]): overmap routes carry unequal weights, so equal
-//! per-step cost cannot serve. The *shape* is the grid's (reachable-within-budget
+//! Pathfinding is a bounded Dijkstra rather than the grid's uniform BFS (the
+//! VTT's `isometry_core::path::reachable`): overmap routes carry unequal
+//! weights, so equal per-step cost cannot serve. The *shape* is the grid's (reachable-within-budget
 //! plus a path), the arithmetic is weighted.
 
 use std::cmp::Reverse;
@@ -46,7 +47,7 @@ pub struct OvermapEdge {
 }
 
 /// A pointcrawl graph: sites and the routes between them. Pure geometry, the
-/// travel counterpart of [`crate::map::MapDocument`].
+/// travel counterpart of the VTT's `MapDocument`.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Overmap {
     pub name: String,

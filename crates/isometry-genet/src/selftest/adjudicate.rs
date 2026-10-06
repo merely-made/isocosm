@@ -75,7 +75,7 @@ impl App {
                     "waystation".to_owned(),
                     isometry_campaign::CampaignMap {
                         id: "waystation".to_owned(),
-                        scale: isometry_campaign::MapScale::Local,
+                        scale: isocosm::legacy::campaign::MapScale::Local,
                         document: away,
                         spawn_zones: Vec::new(),
                         transitions: Vec::new(),

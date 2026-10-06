@@ -15,7 +15,7 @@ use std::fs;
 use std::path::Path;
 use std::time::{Duration, Instant};
 
-use isometry_campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
+use isocosm::legacy::campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
 use isometry_core::{Facing, FieldValue, MapDocument, SheetData, Token, TokenId, TurnList};
 use isometry_system::{GeneratorCatalog, GeneratorLimits};
 use isonetry::iroh_link::{ClientNet, HostNet};

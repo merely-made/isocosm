@@ -10,7 +10,7 @@ use cleromancy::{
     Candidate, ContextSnapshot, DerivedSelection, Field, Reading, ReadingEngine, Receipt,
     UNIFORM_RULE,
 };
-use isometry_campaign::{GenValue, GeneratorChoice, GeneratorLockPreset};
+use isocosm::legacy::campaign::{GenValue, GeneratorChoice, GeneratorLockPreset};
 use serde::Serialize;
 
 use isometry_views::GeneratorSelectionRequest;
@@ -107,7 +107,7 @@ pub(crate) fn select_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{EntropyTape, GeneratorRequest};
+    use isocosm::legacy::campaign::{EntropyTape, GeneratorRequest};
     use isometry_system::{GeneratorCatalog, GeneratorLimits};
 
     use crate::boot::generator_pack_roots;

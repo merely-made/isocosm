@@ -9,8 +9,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use super::*;
 
-use crate::{CampaignMap, MapPoint, MapProposalError};
-use isometry_core::{Facing, SheetData, Token, TokenId};
+use crate::legacy::campaign::{MapPoint, MapProposalError};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorldEvent {
@@ -89,34 +88,12 @@ pub struct MapInhabitant {
 }
 
 impl DraftMap {
-    /// Lower a portable campaign map into the substrate document that peers
-    /// replicate. Inhabitants are validated before they are installed in the
-    /// returned document, so a bad generated person cannot escape as a partial
-    /// map.
-    pub fn lower(&self) -> Result<CampaignMap, MapProposalError> {
-        let mut lowered = self.map.lower(self.scale)?;
-        self.validate_inhabitants()?;
-
-        for inhabitant in &self.inhabitants {
-            let id = TokenId(inhabitant.id);
-            let mut sheet = SheetData::new(&inhabitant.system);
-            for (key, value) in &inhabitant.stats {
-                sheet.set_int(key, *value);
-            }
-            // A sheet's display name is ordinary text data. Keep it separate
-            // from the generated numeric vocabulary even if a generator chose
-            // the same key in its number map.
-            sheet.set_text("name", &inhabitant.name);
-            lowered.document.tokens.push(Token {
-                id,
-                at: (inhabitant.at.col as i32, inhabitant.at.row as i32),
-                facing: Facing::South,
-                sprite: inhabitant.sprite.clone(),
-                owner: inhabitant.owner.clone(),
-            });
-            lowered.document.set_sheet(id, sheet);
-        }
-        Ok(lowered)
+    /// Every check lowering makes, in the order it makes them, building
+    /// nothing: the map's, then its inhabitants'. Lowering into the VTT's
+    /// document is the VTT's (ruling 598).
+    pub fn validate(&self) -> Result<(), MapProposalError> {
+        self.map.validate()?;
+        self.validate_inhabitants()
     }
 
     fn validate_inhabitants(&self) -> Result<(), MapProposalError> {
@@ -186,7 +163,7 @@ impl CampaignDraft {
             if !map_ids.insert(map.map.id.as_str()) {
                 return Err(WorldError::DuplicateMap(map.map.id.clone()));
             }
-            map.lower()
+            map.validate()
                 .map_err(|_| WorldError::ConflictingId(map.map.id.clone()))?;
         }
         Ok(())

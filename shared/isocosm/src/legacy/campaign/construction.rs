@@ -5,7 +5,7 @@
 //! This is a proposal, never a campaign/body mutation. Admission uses current
 //! product-supplied parts and rules; successful inspection does not reserve charge.
 
-use crate::GenValue;
+use crate::legacy::campaign::GenValue;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use wing_functions::{
@@ -133,7 +133,7 @@ impl ConstructionProposal {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{GenerationRecord, GeneratorRequest};
+    use crate::legacy::campaign::{GenerationRecord, GeneratorRequest};
     use wing_functions::{Edge, Node, NodeId, NodeKind, Operator};
 
     fn proposal() -> ConstructionProposal {

@@ -234,7 +234,7 @@ fn the_brick_cap_bounds_residency_not_the_board() {
         );
         held_at.push((edge, held, total));
     }
-    let edge = isometry_campaign::MAX_GENERATED_MAP_EDGE;
+    let edge = isocosm::legacy::campaign::MAX_GENERATED_MAP_EDGE;
     let (_, held, total) = first_map(&relief_map(edge));
     eprintln!("[isometry-b5] {edge}x{edge} with relief: {total} bricks on the board, {held} held");
     let past_the_old_cap: Vec<_> = held_at

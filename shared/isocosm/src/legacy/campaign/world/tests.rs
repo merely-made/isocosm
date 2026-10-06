@@ -1,8 +1,8 @@
 //! Tests for this module, split out on 2026-07-24; unchanged.
 
 use super::*;
-use crate::MapPoint;
-use crate::MapProposalError;
+use crate::legacy::campaign::MapPoint;
+use crate::legacy::campaign::MapProposalError;
 
 #[test]
 fn storylet_requires_private_fact_and_casts_existing_character() {
@@ -112,48 +112,7 @@ fn campaign_draft_rejects_duplicate_map_ids_before_commit() {
 }
 
 #[test]
-fn draft_map_lowers_public_inhabitants_into_tokens_and_sheets() {
-    let mut stats = BTreeMap::new();
-    stats.insert("hp_current".into(), 12);
-    stats.insert("ac".into(), 14);
-    let map = DraftMap {
-        scale: MapScale::Local,
-        map: LocalMapProposal {
-            id: "watchtower".into(),
-            name: "Ruined Watchtower".into(),
-            width: 3,
-            height: 2,
-            default_ground: "stone".into(),
-            cells: vec![],
-            spawn_zones: vec![],
-            transitions: vec![],
-            encounter_anchors: vec![],
-        },
-        inhabitants: vec![MapInhabitant {
-            id: 7,
-            name: "Tower Warden".into(),
-            sprite: "warden".into(),
-            at: MapPoint { col: 2, row: 1 },
-            system: "demo".into(),
-            stats,
-            owner: Some("tower".into()),
-        }],
-    };
-
-    let lowered = map.lower().unwrap();
-    assert_eq!(lowered.document.tokens.len(), 1);
-    let token = lowered.document.token(isometry_core::TokenId(7)).unwrap();
-    assert_eq!(token.at, (2, 1));
-    assert_eq!(token.owner.as_deref(), Some("tower"));
-    let sheet = lowered.document.sheet(isometry_core::TokenId(7)).unwrap();
-    assert_eq!(sheet.system, "demo");
-    assert_eq!(sheet.text("name"), Some("Tower Warden"));
-    assert_eq!(sheet.int("hp_current"), Some(12));
-    assert_eq!(sheet.int("ac"), Some(14));
-}
-
-#[test]
-fn draft_map_refuses_inhabitants_before_exposing_a_partial_document() {
+fn draft_map_validation_refuses_duplicate_inhabitants() {
     let map = DraftMap {
         scale: MapScale::Local,
         map: LocalMapProposal {
@@ -189,7 +148,10 @@ fn draft_map_refuses_inhabitants_before_exposing_a_partial_document() {
         ],
     };
 
-    assert_eq!(map.lower(), Err(MapProposalError::DuplicateInhabitantId(4)));
+    assert_eq!(
+        map.validate(),
+        Err(MapProposalError::DuplicateInhabitantId(4))
+    );
 }
 
 #[test]

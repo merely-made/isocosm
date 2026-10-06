@@ -10,7 +10,7 @@ description = "Isometry's product-owned Graphshell projection endpoint."
 [dependencies]
 graphshell-endpoint = { workspace = true, features = ["stdio"] }
 chirograph = { workspace = true }
-isometry-campaign = { workspace = true }
+isocosm = { workspace = true }
 isometry-core = { workspace = true }
 isometry-views = { workspace = true }
 sceno = { workspace = true }

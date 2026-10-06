@@ -7,7 +7,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use isometry_campaign::CampaignProposal;
+use isocosm::legacy::campaign::CampaignProposal;
 // Replication lives in `murm-replication` (Murm's peer-exchange foundation);
 // `mooting` keeps only the governance policy. They were one crate until Murm's
 // peer-runtime split, and mooting's compatibility re-export has since been

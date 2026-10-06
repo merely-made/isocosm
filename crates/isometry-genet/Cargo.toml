@@ -18,6 +18,7 @@ cleromancy = ["dep:cleromancy"]
 [dependencies]
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
+isocosm = { workspace = true }
 isometry-views = { workspace = true }
 isonetry = { workspace = true, features = ["iroh"] }
 isometry-system = { workspace = true }

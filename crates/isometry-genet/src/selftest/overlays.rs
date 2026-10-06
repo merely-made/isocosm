@@ -18,7 +18,8 @@
 //! positive control: the DOM arm shows what the scene arm is being measured
 //! against.
 
-use isometry_campaign::{CampaignMap, EncounterAnchor, MapPoint, MapScale, MapTransition};
+use isocosm::legacy::campaign::{EncounterAnchor, MapPoint, MapScale, MapTransition};
+use isometry_campaign::CampaignMap;
 
 use super::*;
 

@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::RevealCondition;
+use crate::legacy::campaign::RevealCondition;
 
 /// Globally stable campaign identity for one item instance. It is a string so
 /// pack generators can mint readable deterministic ids (`reward-03.sword`).
