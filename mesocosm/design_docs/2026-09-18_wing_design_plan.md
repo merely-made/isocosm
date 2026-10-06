@@ -8451,6 +8451,46 @@ what later sections derive from.
      (recommended); 607 first. Mark chose "Dedup first". So 593 is finished
      now, then 607 runs as its own lane in a worktree.
 
+612. **An index row is a pointer, a purpose and a status.** 2026-10-06,
+     carrying out 593. Question: the wing index's rows hold 11,819 of its
+     13,367 words, the design record's row alone 2,737 words of ruling
+     summaries that grow with every ruling; what should a row hold?
+     Options: pointer, purpose, status (recommended); the same plus a
+     latest-rulings line; leave the indexes. Mark chose "Pointer, purpose,
+     status". So each row is the link, one line of what the doc is for and
+     a dated status; ruling summaries live only in this record.
+613. **Progress logs record landings, past entries included.** 2026-10-06,
+     carrying out 593. Question: this record's Progress log is 1,679 lines,
+     largely one-line restatements of rulings already in §0, and plans' logs
+     do the same; the standing rule keeps dated text's words, which
+     conflicts with 593. What happens to them? Options: landings only,
+     trimming past entries (recommended); only from now on; leave them. Mark
+     chose "Landings only, trim past". So a progress entry records what was
+     built or verified, with its commit, and names rulings by number without
+     restating them; past entries are cut to that shape, being logs and not
+     rulings, and the rulings keep their words.
+614. **Session notes are archived; briefs cite rulings by number.**
+     2026-10-06, carrying out 593. Question: the sim design session notes
+     (1,921 lines) tabulate each round's questions and answers, which this
+     record holds as rulings, beside narrative (how it started, what was got
+     wrong, what was left open), and the anatomy brief tabulates its rounds
+     the same way. Options: archive the notes (recommended); keep them with
+     tables cut to numbers; leave them. Mark chose "Archive the notes". So
+     anything still open is extracted into a live doc, the notes move to
+     `archive_docs/2026-10-06/`, and briefs keep their design text but cite
+     rulings by number instead of re-tabulating rounds.
+615. **One `DOC_POLICY.md`, and shared `CLAUDE.md` rules at the root.**
+     2026-10-06, carrying out 593. Question: `DOC_POLICY.md` exists three
+     times (root, Mesocosm, Eponym), one canonical core with stale local
+     addenda, and the two product `CLAUDE.md` files share about 400
+     ten-word runs, the two `LICENSES.md` about 250; how far does dedup go?
+     Options: one `DOC_POLICY.md` only (recommended); also the `CLAUDE.md`
+     files; leave the copies. Mark chose "Also the CLAUDE.md files". So the
+     root keeps the one `DOC_POLICY.md`, with one addendum covering the three
+     products, the product copies replaced by a link; the rules the product
+     `CLAUDE.md` files share move to the root `CLAUDE.md`, the product files
+     linking; the `LICENSES.md` files, per-product legal records, stay.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
