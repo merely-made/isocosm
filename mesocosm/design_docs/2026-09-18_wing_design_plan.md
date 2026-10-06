@@ -7850,6 +7850,8 @@ what later sections derive from.
      in every workspace (`863636f3`, `9b5cc5cc`); 44 other mere pins stay at
      `32edc2ad`. *Reading, not ruled:* the remaining repin targets stable,
      not pre.4.
+     *Amended 2026-10-06 by ruling 621:* the rest of the repin, onto
+     stable, comes now, before 607's lane.
 
 573. **Each recipe draws its riff odds between 1 in 12 and 1 in 100.** Asked
      on 2026-10-05, with 572: "At what odds does a child's system vary
@@ -8455,6 +8457,8 @@ what later sections derive from.
      and mesocosm-genet's probe state; which first? Options: dedup first
      (recommended); 607 first. Mark chose "Dedup first". So 593 is finished
      now, then 607 runs as its own lane in a worktree.
+     *Amended 2026-10-06 by ruling 621:* the repin onto stable comes
+     between the dedup and 607's lane.
 
 612. **An index row is a pointer, a purpose and a status.** 2026-10-06,
      carrying out 593. Question: the wing index's rows hold 11,819 of its
@@ -8523,6 +8527,26 @@ what later sections derive from.
      repair them? Options: repair them (recommended); leave archives alone.
      Mark chose "Repair them". So each is repointed to where its target lives
      now, its words unchanged.
+
+620. **Mere's pinned commit reaches cargo from the local checkout.**
+     2026-10-06. Question: the stable Burn landing pins conatus and
+     cubecl-runtime at mere `5fecd707`, which this Windows machine's cargo git
+     cache lacks, so the root, Mesocosm and Eponym workspaces cannot resolve
+     offline, though `repos/mere` holds the commit and every crates.io crate
+     is cached; how does it reach cargo? Options: copy from the local mere
+     checkout (recommended); fetch from GitHub; leave it. Mark chose "Copy
+     from local mere". So the commit is fetched from `repos/mere` into
+     cargo's mere git cache, locally, with no network.
+621. **The rest of the repin, onto stable, comes before 607's lane.**
+     2026-10-06, amending 572's order. Question: the landing moved 9 of 53
+     mere pins to `5fecd707`, and the root graph already holds `nisus` at two
+     revisions (conatus's beside isocosm's), compiling only while no type
+     crosses; 572 put the full repin after checkpoint 9, which is parked
+     (591). When does it happen? Options: now, before 607 (recommended);
+     after 607's lane; after checkpoint 9. Mark chose "Now, before 607". So
+     the remaining 44 pins move onto stable as their own lane, briefed from
+     mere's burn plan §13.47, removing the doubles, and 607's lane follows
+     (amending 611's order).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
