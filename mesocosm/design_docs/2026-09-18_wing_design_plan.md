@@ -8350,6 +8350,8 @@ what later sections derive from.
      two together check the rulings and raise forks. *Reading, not ruled:*
      the read is of balaur at `de0df794`, read-only, copying no code; any
      port is its own decision; the doc dedup (593) waits behind it.
+     *2026-10-06:* the wing's half of the read is
+     [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
