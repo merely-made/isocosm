@@ -8414,6 +8414,43 @@ what later sections derive from.
      not touch; FNV is an equality witness, not a cryptographic digest, so
      anything peers must trust stays on a standard cryptographic hash.
 
+608. **Version-1 saves still load.** 2026-10-06, carrying out 607.
+     Question: Isocosm's version-1 saves store the SHA-256 state hash and
+     recheck it on load, and `tests/data/pre-causation-world.json` proves a
+     world saved before a field rename still loads; what happens to them?
+     Options: read v1, write v2 (recommended); refuse v1. Mark chose "Read
+     v1, write v2". So a v1 save is verified with the SHA-256 hash it
+     carries, kept only as a v1 reader, and saving again writes v2 with the
+     FNV witness; the fixture's guarantee holds.
+609. **The labelled digest is built once, in mere.** 2026-10-06. Question:
+     FNV `hash_bytes` sits in `isometer_core::snapshot`, shared by Mesocosm,
+     Eponym and the legacy trees, and mere's physics lane put fork E to Mark
+     (the same labelled trace and first divergence for conatus's G8); mere
+     sits below Isometry, so a wing crate cannot serve conatus. Where is the
+     instrument built? Options: once, in mere (recommended); beside
+     `hash_bytes`; Isocosm only. Mark chose "Once, in mere". So one
+     labelled-digest crate in mere serves conatus's G8, which Mark took on
+     mere's side ("That, plus replay as a track", adding G10's record and
+     replay), and Isocosm. *Reading, not ruled:* G8 shapes the crate;
+     Isocosm's switch to the FNV witness need not wait for it, and its
+     labels and first-divergence report follow when the crate exists.
+610. **Labelled checkpoints per epoch; a per-tick trace on demand.**
+     2026-10-06. Question: Isocosm advances only through ticks with due
+     events (ruling 284), and its saves already record a checkpoint, tick
+     and hash, at each epoch boundary, a mismatch saying only "checkpoint
+     history mismatch"; balaur records a digest every tick. How often does
+     Isocosm record? Options: epochs in saves, ticks on demand
+     (recommended); every tick in the save. Mark chose "Epochs in saves,
+     ticks on demand". So saves keep one labelled checkpoint per epoch and
+     a mismatch names the first diverging entry; the bench and probe tools
+     write a full per-tick trace when asked.
+611. **The docs dedup comes before 607's lane.** 2026-10-06. Question: the
+     docs dedup (593) has waited since before the balaur read, and 607's
+     code lane touches Isocosm's history, aggregate, bench and probe tools
+     and mesocosm-genet's probe state; which first? Options: dedup first
+     (recommended); 607 first. Mark chose "Dedup first". So 593 is finished
+     now, then 607 runs as its own lane in a worktree.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12288,6 +12325,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: rulings 608 to 611, carrying out 607: v1 saves still load;
+  the labelled digest built once, in mere, shared with conatus's G8;
+  labelled checkpoints per epoch with a per-tick trace on demand; the docs
+  dedup first.
 - 2026-10-06: ruling 607: Isocosm's state hash joins the family's FNV
   witness, labelled, with a first-divergence report and a per-tick trace.
 - 2026-10-06: rulings 604 to 606, from the balaur read: game-side physics
