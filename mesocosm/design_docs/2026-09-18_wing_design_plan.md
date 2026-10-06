@@ -8395,6 +8395,25 @@ what later sections derive from.
      takes balaur's commits one at a time as it needs them, each reviewed,
      so the fork's own diff stays readable.
 
+607. **Isocosm's state hash joins the family's witness, in balaur's
+     shape.** 2026-10-06, from the balaur read. Question: Isocosm's
+     `Simulation::state_hash` takes SHA-256 over the whole state's JSON,
+     used 220 times across the tree, and answers only "unequal"; balaur
+     labels each slice by stable id and names the first that differs. What
+     should Isocosm do? Options: add labelled entries beside the SHA-256
+     hash (recommended); leave it; replace it with a per-tick FNV digest.
+     Mark asked: "Can we scope 3? Seems appealing but how would this go?"
+     Told that the third means Isocosm joining the witness the rest of the
+     family already uses (`isometer_core::snapshot::hash_bytes`, FNV-1a over
+     postcard bytes, in Mesocosm, Eponym and the legacy trees), Mark: "Ok, 3
+     sounds good to me." So Isocosm's state hash becomes the family's 64-bit
+     FNV-1a witness, with labelled entries keyed by stable ids, a
+     first-divergence report and a per-tick trace. *Reading, not ruled:*
+     SHA-256 stays for content addresses (`crate::digest`: the genesis
+     digest, branch ids) and for the draws (`crate::draw`), which this does
+     not touch; FNV is an equality witness, not a cryptographic digest, so
+     anything peers must trust stays on a standard cryptographic hash.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12269,6 +12288,8 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: ruling 607: Isocosm's state hash joins the family's FNV
+  witness, labelled, with a first-divergence report and a per-tick trace.
 - 2026-10-06: rulings 604 to 606, from the balaur read: game-side physics
   replays bit for bit across machines (G8); the shards carry a shard-count
   equality check; 471's kiss3d reshape starts from upstream.

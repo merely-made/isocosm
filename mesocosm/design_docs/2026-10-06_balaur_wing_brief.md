@@ -134,7 +134,7 @@ revisited only through a plan).
 ## 4. Forks
 
 Put to Mark 2026-10-06 with both reads in hand. Forks 2, 3 and 4 are
-rulings 604, 605 and 606; fork 1 came back with a question and is re-put.
+rulings 604, 605 and 606; fork 1, scoped at Mark's question, is ruling 607.
 
 1. **A divergence locator beside the state hash.** Keep SHA-256 over the
    whole state as the address (branches and saves name it), and add a
