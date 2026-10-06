@@ -131,9 +131,10 @@ netcode meets a standing rule in all three products' `CLAUDE.md` files: no
 rollback netcode, speculatively (Mesocosm and Eponym) or at all (the VTT,
 revisited only through a plan).
 
-## 4. Forks drafted, held for the physics lane
+## 4. Forks
 
-Not yet put to Mark. Each is checked against the lane's findings first.
+Put to Mark 2026-10-06 with both reads in hand. Forks 2, 3 and 4 are
+rulings 604, 605 and 606; fork 1 came back with a question and is re-put.
 
 1. **A divergence locator beside the state hash.** Keep SHA-256 over the
    whole state as the address (branches and saves name it), and add a

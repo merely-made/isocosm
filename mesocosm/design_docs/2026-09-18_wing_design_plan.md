@@ -5468,6 +5468,9 @@ what later sections derive from.
      chose A. So ruling 27's "provided it composes" is met by reshaping
      kiss3d to the stack's device and target seams. Mere's
      `2026-08-22_conatus_engine_plan.md` holds the full evidence.
+     *Annotated 2026-10-06 by ruling 606:* the reshape starts from upstream
+     kiss3d, taking balaur's commits by name.
+
 472. **Lighting is a stack-owned light and environment block.** Asked the
      same day. Evidence: terrain is traced and bodies rasterised, joined by
      depth (L3), so a renderer's shadow maps and lights never reach the
@@ -8352,6 +8355,45 @@ what later sections derive from.
      port is its own decision; the doc dedup (593) waits behind it.
      *2026-10-06:* the wing's half of the read is
      [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md).
+
+604. **Game-side physics replays bit for bit across machines.** 2026-10-06,
+     from the balaur read (603). Question: Isocosm's sim is integer-only, and
+     floats live game-side, in Eponym's motion over conatus, whose rapier
+     3d 0.33 has neither `enhanced-determinism` nor libm; D18 (2026-09-21)
+     parked one software libm as a note; balaur's recipe (rapier
+     `enhanced-determinism`, glamx with `libm` and `scalar-math`, a lint
+     against bare transcendentals) is diffed in CI on Linux, macOS arm64 and
+     Windows, and mere measured `enhanced-determinism` free at 500 to 5,000
+     bodies; Eponym saves replay motion through the solver (597). Should the
+     wing require bit-identical physics replay across machines? Options:
+     require it now (recommended); keep D18's note; same-machine only. Mark
+     chose "Require it now". So every float path a game hands to the sim's
+     physics replays bit for bit on any machine, carried out in conatus by
+     the physics lane's G8 with that recipe and a digest diffed across
+     Windows, macOS and Linux. This turns D18's libm note into a
+     requirement. *Reading, not ruled:* until G8 lands it, a save promises
+     same-machine replay only.
+605. **The shards carry a shard-count equality check.** 2026-10-06, from
+     the balaur read. Question: §4.7 designs the ordered merge before the
+     shards, which are not built; balaur asserts one-thread and
+     eight-thread runs give one digest; Isocosm's draws are keyed by seed
+     and domain, so no one stream couples shards. Should the shard work
+     carry an equality check? Options: make it a done-condition
+     (recommended); leave it to the shard plan. Mark chose "Make it a
+     done-condition". So when the shards land, one shard and N shards give
+     the same state hash, at more than one thread count, as a standing test.
+606. **471's kiss3d reshape starts from upstream.** 2026-10-06, from the
+     balaur read. Question: balaur's kiss3d is Ughuuu/kiss3d#1 (branch
+     `balaur-wrapped-surface` at `4522a762`), 82 commits and 125 files over
+     v0.46.0 that GitHub will not render, with useful pieces (a software
+     adapter for surface-less rendering, offscreen depth always samplable,
+     every shadow setting exposed, built-in shaders linked in a fixed
+     order) but none of 471's four reshape items; where does the reshape
+     start? Options: upstream, taking commits by name (recommended); from
+     balaur's branch; wait for upstream. Mark chose "Upstream, take commits
+     by name". So the reshape forks upstream kiss3d at a pinned commit and
+     takes balaur's commits one at a time as it needs them, each reviewed,
+     so the fork's own diff stays readable.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
@@ -11324,6 +11366,9 @@ modern hardware effectively like RimWorld"):
   Factorio did: fixed shard assignment and an ordered merge of cross-shard
   effects per tick, or the replay hashes break. The merge is designed
   before the shards are.
+  *(2026-10-06, ruling 605: one shard and N shards give the same state
+  hash, at more than one thread count, as a done-condition of the shard
+  work.)*
 - **On the web** the sim runs in one Worker, co-located with its script
   host as the brief already decided, and scales down by shard count.
 
@@ -11816,7 +11861,7 @@ is the binding that costs.
 | What it would buy | Obtainable without it? |
 | --- | --- |
 | A boundary that cannot be eroded, since no pointer can cross | yes: the contract as its own crate of value types, the sim's internals private behind it, and the component binding kept building and passing the same conformance suite in CI, so the second binding is the boundary's standing proof |
-| Floating point that is bit-identical across peers' machines, which replay hashes and the moot need | yes with discipline: one software `libm` everywhere and no platform intrinsics |
+| Floating point that is bit-identical across peers' machines, which replay hashes and the moot need | yes with discipline: one software `libm` everywhere and no platform intrinsics *(required for game-side physics by ruling 604, 2026-10-06)* |
 | Sandboxing, capability grants, crash isolation, hot reload, any language | only for what is actually a component, which is why rung 3 exists |
 | Location transparency: a shard that can run on a thread, a Worker, a subprocess or a peer | yes: armillary's actors already exchange `Send` values, and the contract's values serialise |
 
@@ -12224,6 +12269,9 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
 
 ## Progress
 
+- 2026-10-06: rulings 604 to 606, from the balaur read: game-side physics
+  replays bit for bit across machines (G8); the shards carry a shard-count
+  equality check; 471's kiss3d reshape starts from upstream.
 - 2026-10-06: ruling 603: the wing reads balaur against its rulings, beside
   the physics lane's review.
 - 2026-10-06: rulings 601 and 602: Eponym's `CLAUDE.md` repointed at the
