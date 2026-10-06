@@ -18,7 +18,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   (wing design record 404 to 407).
 
 - Follow the question, ruling and verification method restated by Mark on
-  2026-09-27 in [session notes §8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
+  2026-09-27 in [session notes §8.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
   Its three refinements were accepted in ruling 366 on 2026-09-27.
 - Read `../CLAUDE.md` first for repo role, terminology, and don'ts.
 - Verify claims against the codebase and the sibling repos, not doc-to-doc
@@ -69,7 +69,6 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_sim_plan.md](2026-09-22_sim_plan.md) | The sim, W2: Isocosm's schema, processes, record and phases S1 to S6. | 2026-10-04: S2 checkpoint 8 merged at `e3297e6`; checkpoint 9 parked (ruling 591). |
 | [2026-09-22_aggregation_research.md](2026-09-22_aggregation_research.md) | The reduction literature checked, and the executable boundary of the sim's first implementation. | Research, applied 2026-09-22. |
-| [2026-09-22_sim_design_session_notes.md](2026-09-22_sim_design_session_notes.md) | Notes of the sim design sessions, 2026-09-16 to 2026-09-30. | 2026-10-06: to be archived under ruling 614. |
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
 | [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md) | Balaur read against the wing's rulings. | 2026-10-06: read; its forks ruled as 604 to 607. |
 | [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | M0 and M1 done 2026-09-25; M2 to M4 proposed. |
@@ -109,6 +108,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-06/2026-09-22_sim_design_session_notes.md`](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md): the sim design sessions' notes, 2026-09-16 to 2026-09-30 (ruling 614).
 - [`2026-10-06/2026-09-22_sim_plan_progress.md`](archive_docs/2026-10-06/2026-09-22_sim_plan_progress.md): the sim plan's full progress log to 2026-10-06 (ruling 613).
 - [`2026-10-06/2026-09-18_wing_design_plan_progress.md`](archive_docs/2026-10-06/2026-09-18_wing_design_plan_progress.md): the design record's full progress log to 2026-10-06 (ruling 613).
 - [`2026-09-26/2026-07-30_mesocosm_founding_plan.md`](archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md): ruling 308; Mesocosm's charter is now the overlay plan.

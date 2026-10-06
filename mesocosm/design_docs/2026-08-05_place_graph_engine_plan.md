@@ -50,7 +50,7 @@ their edges. SP4 is next to build.
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
-([session notes §9](2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
+([session notes §9](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
 ranked connecting the sim's site graph to the voxel world first among the
 gaps, and Mark chose to start there. §A is the spine: what connects the
 world map's sites to the voxels under them, who owns each piece, what

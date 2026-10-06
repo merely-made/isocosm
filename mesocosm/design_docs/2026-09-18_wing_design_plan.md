@@ -11,7 +11,7 @@ sim's own plan, is next and is design work, not lanes.
 
 **Status, 2026-09-22:** rulings run to 105. W2 is drafted as the
 [sim plan](2026-09-22_sim_plan.md), a schema and definitions compiled from
-this record, with the [session notes](2026-09-22_sim_design_session_notes.md)
+this record, with the [session notes](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
@@ -31,7 +31,7 @@ other view (382), harmony, order and chaos as ecological states (383), and
 divine awareness of the sim as rule-bending magic (384). The founding
 record's amendment for 381 and the tabletop `CLAUDE.md`'s for 382 are
 drafted in the
-[session notes' §9.4](2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
+[session notes' §9.4](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
 and wait on Mark's word. Later the same session Mark gave it: both
 amendments are applied (385, 386), the default's pitch is the 2:1 dimetric,
 30° (387), and Mesocosm's opening view waits on CP1 comparing its
@@ -58,7 +58,7 @@ retired against this record.
 **Method annotation, 2026-09-27:** Mark restated the question, ruling and
 verification method and invited improvements. The preserved method and
 explicitly unruled refinements are in the [session notes,
-§8.2](2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
+§8.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
 
 **Does not own:** any tier's internal design below the level ruled here, any
 product's verbs, the hagiograph's implementation (mere's eidetic family), or
@@ -4223,7 +4223,7 @@ what later sections derive from.
      and fourth rungs mark modifiers and aggregate modifiers, of which a
      glyph's effect is one kind. How conditions, statuses and modifiers are
      held on entities, singly and in aggregate, opens as its own question
-     ([session notes, §10](2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30)).
+     ([session notes, §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30)).
      *Reading, not ruled:* the question used "mark" in two senses, the
      effect experiment's drawn glyph effects (`mesocosm-core`'s
      `effect_experiment`) and a symbol standing for a thing too small to

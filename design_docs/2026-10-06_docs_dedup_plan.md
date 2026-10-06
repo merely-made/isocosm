@@ -89,6 +89,14 @@ put.
 
 ## Findings
 
+- 2026-10-06, D3: every item the session notes left open (§6, §8.5, §9.5,
+  §10) was found ruled since or held in a live doc: the parked questions in
+  the sim plan's §8, the naming items by rulings 157, 224, 251 and 252 with
+  `borg` to construct in the record's §3.2.1, Massif Press in ruling 108 and
+  the sim plan, the mode host by rulings 442 to 445, the threats by 283, the
+  overlays' forks by 232 to 250, the far rungs' lens by 434, and examining on
+  approach in the record as not ruled. Nothing needed extracting. Only the
+  notes tabulated rounds; the anatomy brief narrated its rounds in its log.
 - 2026-10-06, D2: some plans hold rulings Mark made before the design record
   existed (the board plan's cliff height and DOM board, the dev tools plan's
   fixture defaults, the isomere plan's M4 answers, the phenotype plan's trait
@@ -116,3 +124,6 @@ put.
   `mesocosm/design_docs/archive_docs/2026-10-06/`; the three overlay plans,
   the rename, place-graph and epoch boundary plans' ruling restatements cut to
   their landings.
+- 2026-10-06: D3 done. The session notes archived at
+  `mesocosm/design_docs/archive_docs/2026-10-06/`, links repointed in and
+  out; the anatomy brief's round-by-round log cut to its two landings.

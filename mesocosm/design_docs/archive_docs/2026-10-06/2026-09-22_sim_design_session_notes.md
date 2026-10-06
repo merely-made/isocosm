@@ -1,5 +1,11 @@
 # The sim design sessions, 2026-09-16 to 2026-09-24: notes
 
+**Archived 2026-10-06** under the wing design record's ruling 614. The record
+holds every round's question and answer as rulings; each item these notes
+left open was found ruled since or held in a live document (the docs dedup
+plan's Findings lists them). Relative links were repointed for the move; the
+dated text keeps its words.
+
 **Date:** 2026-09-22. **Extended 2026-09-24 and 2026-09-25** with the
 refinement session, §8, at Mark's word ("Record session notes").
 
@@ -12,10 +18,10 @@ the method, the sequence of questions and answers, what each answer
 produced, what was checked against code, what was got wrong and corrected,
 what was named, and what was left open. It is not an authority: Mark's
 words are quoted verbatim as numbered rulings in the
-[wing design record](2026-09-18_wing_design_plan.md) §0, the readings this
+[wing design record](../../2026-09-18_wing_design_plan.md) §0, the readings this
 record's author added are on the
-[readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md), and the compiled
-result is the [sim plan](2026-09-22_sim_plan.md). Where this file and those
+[readings docket](../2026-09-24/2026-09-21_wing_readings_docket.md), and the compiled
+result is the [sim plan](../../2026-09-22_sim_plan.md). Where this file and those
 disagree, they win.
 
 **Who spoke.** Mark ruled; the assistant asked, checked and recorded. In
@@ -470,7 +476,7 @@ Administrative: ruling 128 amended Mesocosm's CLAUDE.md portable-profile
 line; the readings docket was archived to `archive_docs/2026-09-24/` once
 nothing was held; relic, tale and tract joined Mesocosm's terminology; Law
 A was amended for materials at Mark's word; and the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) was drafted as
+[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) was drafted as
 W5, its M0 done the same day. Then, at Mark's word, work went parallel:
 the overlay plan's M1 and an S2 probe of the sim plan opened as lanes, and a
 read-only consistency pass over the record and the plans went to the RPG
@@ -1098,7 +1104,7 @@ the border and overview, catches a deliberately mismatched source, restores
 the original viewport exactly, and suspends/resumes an existing trial's epoch
 advance. The first native run caught a renderer-capacity mismatch that CPU
 tests had missed; admission now counts actual occupied bricks before
-allocation. The [receipt](../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md)
+allocation. The [receipt](../../../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md)
 preserves that failure alongside the corrected passing runs. This completes
 the approved terrain connection and both documentation lanes, not the later
 body, edits, paging or shared-store implementation.
@@ -1108,7 +1114,7 @@ was published at `32edc2ad`, preserving the Conatus owner-plan commit `4fbcb727`
 The seven Isometry manifests now use that Mere revision and tested Genet
 `7a60ad79`: the ordinary side-panel test holds 187 rows, all four workspace
 checks pass, and Isocosm lift/spine plus Mesocosm spine pass 27 tests. The
-[side-panel plan](../../design_docs/2026-09-03_side_panel_diet_plan.md) records
+[side-panel plan](../../../../design_docs/2026-09-03_side_panel_diet_plan.md) records
 the dependency/source controls and inherited renderer qualifications. SP3's
 native captures retain their original pins; they were not replayed here.
 
