@@ -8691,6 +8691,35 @@ what later sections derive from.
      (recommended); JSON into FNV. Mark chose "Postcard". So Isocosm hashes
      through `isometer_core::snapshot::encode`, one encoding across the
      family.
+637. **H1 builds in its own worktree on one shared target directory.**
+     2026-10-07, after the repin landed (621). Question: C: had 280 GB free,
+     under the 500 GB floor, and the repin worktree's per-workspace targets
+     for the eight workspaces took 126 GB; where does H1 build? Options: a
+     worktree with `CARGO_TARGET_DIR` shared by all eight (recommended); a
+     worktree with per-workspace targets; a branch in the main checkout.
+     Mark chose "Worktree, shared target (Recommended)". So the stack
+     builds once for H1's checks, and cargo serialises on the one lock.
+638. **A permanent shared target directory is assessed as a plan.**
+     2026-10-07. Question: should the repo's eight workspaces share one
+     target directory for good, with a dev opt-level for isocosm's tests?
+     Options: assess it as a plan after H1 (recommended); not now. Mark
+     chose "Assess it as a plan (Recommended)". So a short plan measures
+     disk and cold-build time for a shared `target-dir` and the opt-level,
+     checked against each workspace's patch policy, since children inherit
+     `.cargo/config.toml`.
+639. **The unused `cubecl-runtime` patch goes.** 2026-10-07. Question: the
+     stable landing's `[patch.crates-io]` row is unused in the root,
+     Mesocosm and Eponym (no CubeCL in any of their graphs, all features
+     included); remove it? Options: remove (recommended); keep for a coming
+     GPU consumer. Mark chose "Remove it (Recommended)". So the row leaves
+     all three manifests, and a workspace taking a GPU Burn path adds it
+     back.
+640. **Disk beyond the repo is audited, not cleared.** 2026-10-07.
+     Question: `Code/worktrees/` holds about 35 worktrees of other repos and
+     an orphan `isometry-migrate$t`; what is done there? Options: isometry's
+     orphan only (recommended); audit all and report; leave it. Mark chose
+     "Audit all, report". So every worktree and target dir under `Code` is
+     measured and classed merged or stale, and nothing is deleted.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
