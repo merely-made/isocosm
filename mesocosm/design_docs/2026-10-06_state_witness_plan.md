@@ -1,7 +1,7 @@
 # Isocosm's state witness
 
-**Status, 2026-10-06:** briefed; waits on the repin onto stable (ruling 621),
-then opens in its own worktree. Four forks below go to Mark first.
+**Status, 2026-10-06:** briefed and its forks ruled (622 to 625); H1 waits on
+the repin onto stable (ruling 621), then opens in its own worktree.
 
 Carries out the wing design record's rulings 607 to 610: Isocosm's state hash
 joins the family's FNV-1a witness, in balaur's shape (labelled entries and a
@@ -67,21 +67,11 @@ first divergence on load and in a trace; the v2 format adds the entries
 without breaking H1's v2 saves, or the save version moves again with a reader
 kept.
 
-## Forks for Mark
+## Forks, ruled 2026-10-06
 
-1. **Label granularity in saves.** One entry per top-level `State` field
-   (thirteen per checkpoint, naming the collection that diverged), or one per
-   entity (naming the site or lineage, but thousands per checkpoint in a
-   grown world), or fields in saves with per-entity entries only in the
-   on-demand traces. *Recommended:* fields in saves, entities in traces.
-2. **The v2 hash's type.** A u64, the family witness's own type, with v1
-   read through a separate struct; or a hex string in the existing `Key`
-   field, the version telling the algorithms apart. *Recommended:* u64.
-3. **Staging.** H1 now and H2 when mere's crate exists, as ruling 609's
-   reading has it; or the whole lane waiting for the crate. *Recommended:*
-   staged.
-4. **Encoding.** Postcard through `snapshot::encode`, the family's bytes; or
-   the existing JSON fed to FNV. *Recommended:* postcard, one encoding across
-   the family.
+1. Label grain: fields in saves, entities in the traces (ruling 622).
+2. The v2 hash: a u64, v1 read through a separate struct (623).
+3. Staging: H1 after the repin, H2 when mere's crate lands (624).
+4. Encoding: postcard through `snapshot::encode` (625).
 
 ## Progress
