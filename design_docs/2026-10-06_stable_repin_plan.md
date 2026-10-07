@@ -1,6 +1,6 @@
 # The repin onto stable Burn
 
-**Status, 2026-10-06:** in progress on branch `repin-stable`.
+**Status, 2026-10-07:** landed on main (`0de3a393`) and pushed.
 
 Carries out the wing design record's ruling 621 (amending 572): the mere pins
 the stable Burn landing left at `32edc2ad` move to mere `5fecd707`, the
@@ -38,6 +38,7 @@ mere. Briefed from §13.47 and the Knot repin's notes (ruling 585).
    *(Met: every mere/genet/netrender row carries its git source; the only
    source-less rows are each workspace's own path crates.)*
 5. Merged to main and pushed; this plan's status says so.
+   *(Met 2026-10-07.)*
 
 ## Progress
 
