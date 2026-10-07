@@ -46,7 +46,7 @@ native package is `eponym-client`.
 ## Open items
 
 - **`eponym-sortie` fails two tests**, found 2026-10-06 while verifying the
-  wing datasheets plan (`../../mesocosm/design_docs/archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md`),
+  [wing datasheets plan](../../mesocosm/design_docs/archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md),
   and not that plan's: `a_tag_in_occurs_mid_action_under_the_pact` ("the
   pact never fired") and `an_injury_persists_as_a_body_revision_fact` ("the
   played body was never wounded"). Both fail the same way on the sources
