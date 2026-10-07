@@ -7,7 +7,10 @@
 
 use crate::{DEFAULT_MAX_KINDS, SCHEMA_VERSION, identifier};
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeSet, sync::Arc};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    sync::Arc,
+};
 
 /// The six the ruling names. Directional, subject to object: the subject
 /// claimed, discovered, experienced, embodied, invoked or defeated the
@@ -114,5 +117,68 @@ impl TryFrom<KindSetSpec> for KindSet {
 impl From<KindSet> for KindSetSpec {
     fn from(value: KindSet) -> Self {
         Arc::try_unwrap(value.spec).unwrap_or_else(|spec| (*spec).clone())
+    }
+}
+
+/// The seeded kinds' datasheet, compiled in (wing design record, ruling 625).
+const SEEDED_SHEET: &str = include_str!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/datasheets/kinds.toml"
+));
+
+/// Livery's header over the seeded set, in a pack's own kind-set shape.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct KindsSheet {
+    schema: u32,
+    owner: String,
+    consumer: String,
+    status: String,
+    sources: BTreeMap<String, Source>,
+    seeded: KindSetSpec,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Source {
+    doc: String,
+    note: String,
+}
+
+fn seeded_spec(text: &str) -> Result<KindSetSpec, String> {
+    let sheet: KindsSheet = toml::from_str(text).map_err(|why| format!("kinds.toml: {why}"))?;
+    if sheet.schema != 1 {
+        return Err(format!("kinds.toml: schema {} is not 1", sheet.schema));
+    }
+    let said = |text: &String| !text.trim().is_empty();
+    let sourced = !sheet.sources.is_empty()
+        && sheet
+            .sources
+            .values()
+            .all(|source| said(&source.doc) && said(&source.note));
+    if !(said(&sheet.owner) && said(&sheet.consumer) && said(&sheet.status) && sourced) {
+        return Err("kinds.toml: owner, consumer, status and sources are required".into());
+    }
+    Ok(sheet.seeded)
+}
+
+#[cfg(test)]
+mod sheet_tests {
+    use super::*;
+
+    #[test]
+    fn the_sheet_holds_the_seeded_kinds() {
+        let spec = seeded_spec(SEEDED_SHEET).expect("the sheet reads");
+        assert_eq!(spec, KindSet::seeded().spec().clone());
+        assert_eq!(spec.kinds, SEEDED_KINDS);
+    }
+
+    #[test]
+    fn a_changed_sheet_is_caught() {
+        let changed = SEEDED_SHEET.replacen("\"impresa:invoke\"", "\"impresa:summon\"", 1);
+        assert_ne!(changed, SEEDED_SHEET);
+        assert_ne!(seeded_spec(&changed).expect("reads").kinds, SEEDED_KINDS);
+        let misspelt = SEEDED_SHEET.replacen("kinds = [", "kind = [", 1);
+        assert!(seeded_spec(&misspelt).is_err());
     }
 }

@@ -1,0 +1,500 @@
+# Authored creatures: the bodies a world is meant to open holding.
+#
+# The opposite in intent of the axis catalogue, whose own doc says "these
+# are reference points, not content": it exists to prove four axial rules
+# reach a centipede. This sheet is content. Each body here is an imagined
+# creature, a recipe plus the palette entries its shapes need. It is
+# developed by the same `Recipe -> Soma -> develop_body` path every other
+# body takes. Nothing here builds a body document directly; an archetype that
+# did would be the second simulation authority `CLAUDE.md` forbids.
+#
+# The roster: eight, per the default creatures plan's §4.2, three producers,
+# three consumers and two decomposers. Each is one idea followed through
+# rather than a parameter sweep.
+#
+#   Producer    producer_mat            a low mat of flat pads lying over the ground
+#   Producer    producer_shrub          two leaf sizes on one branching runner
+#   Producer    producer_stalk          a long bare stem carrying one crown of big fronds
+#   Consumer    consumer_browser        a long-necked hexapod that crops the stand
+#   Consumer    consumer_pursuit        a short-bodied sprinter with a swinging jaw
+#   Consumer    consumer_armoured       a small cropper wearing its plates as covering
+#   Decomposer  decomposer_crust        a flat creeper whose pads lie in the litter
+#   Decomposer  decomposer_detritivore  an eight-legged walker that finds the dead
+#
+# What the ruled framing does to them. The terrarium section looks along -z
+# and development chains segments along +z, so the game's own camera draws
+# every one of these bodies end-on. That is presentation rather than anatomy
+# and it is recorded as a finding; the receipts turn the slab a quarter to
+# show the body plans.
+#
+# What each reads as, and why. Kingdom is a reading of feeding anatomy
+# (`organism/kingdom.rs`), so an archetype does not declare a tier: it grows
+# the organs that make one. The producers carry plates in canopy positions;
+# the consumers carry a mouth under the head and nothing lit; the
+# decomposers carry neither.
+#
+# Armour is a position, not a shape (DC4). consumer_armoured and
+# decomposer_crust both wear plates, and neither reads Producer, because
+# their plates hang on the flanks rather than being held up.
+#
+# Senses. Every fauna archetype carries working eyes and something that
+# contracts, which is the ruling this plan was founded on. The three
+# producers are sightless and sessile, deliberately: a plant has no eyes, and
+# a body with no Sense and no Contract part reads a build multiple of exactly
+# 1, which is what makes the stand free at the ecology scale (plan §2.4).
+#
+# No names. The identifiers are role-descriptive. Naming rounds in this repo
+# carry crates.io, game, studio and trademark checks and are Mark's; a
+# founding lineage is also deliberately unnamed (`species.rs`: "they were
+# there before anybody arrived to name them").
+#
+# The palette is world state and the recipe is the program. An archetype is
+# therefore two halves that live in different places. Its shapes go in the
+# palette, which a world snapshots; its arrangement goes in the recipe, which
+# a lineage carries.
+#
+# How a body reads its shapes (rulings 627 and 630). A tagma names its
+# segment shape from the mass bank (`segment`) and its appendage's shape
+# from that appendage's own bank (`shape`); leaving either out means the
+# bank's slot 0. Two selector encodings are words: `mouth = "jaw"` draws a
+# mouth from the limb bank as an actuator instead of from the mass bank as
+# bulk, and `worn = "covering"` wears a plate against the body instead of
+# holding it out. Names resolve in the palette of the founding that admits
+# the body, and a name that palette does not admit is refused.
+
+schema = 1
+owner = "isocosm"
+consumer = "isocosm world genesis (Founding)"
+status = "authored"
+
+[sources.default_creatures]
+doc = "mesocosm/design_docs/2026-08-30_default_creatures_plan.md"
+note = "DC1 to DC4: the wider palette, the roster of eight, founding from it"
+
+[sources.wing_record]
+doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
+
+# The current world's baseline admitted part vocabulary, and all a drawn
+# world admits. One shape per role: this is the vocabulary bodies were built
+# from before the palette could hold more, kept exactly so, so that widening
+# the machinery changed no body. The tags are fixture content addresses while
+# the project has no pack loader.
+#
+# A test pins this to `PartPalette::primitive()`, which the code still builds
+# for its other callers.
+[palettes.primitive]
+
+[[palettes.primitive.mass]]
+# Roughly cubic. The blocky segment every recipe that names no shape is
+# made of.
+name = "block"
+tag = 1
+half_extent = [2, 2, 2]
+
+[[palettes.primitive.limb]]
+# The primitive limb: build price 6.25. A jaw is this shape drawn as a mouth.
+name = "rod"
+tag = 2
+half_extent = [4, 1, 1]
+
+[[palettes.primitive.plate]]
+# The big frond a crown is made of.
+name = "frond"
+tag = 3
+half_extent = [4, 4, 1]
+
+[[palettes.primitive.sensor]]
+# A working eye: 3x3x3, 21 mg, span 1.
+name = "eye"
+tag = 4
+half_extent = [1, 1, 1]
+
+# The vocabulary the archetypes are carved from, added to the baseline world
+# palette.
+#
+# Every entry is a spare slot. The primitive palette's four defaults are
+# untouched, so a recipe that names no shape, which is every recipe the
+# worldgen lottery (`axis::seed`) draws, develops the body it always did, and
+# this palette can be installed on a world whose tiers still draw.
+#
+# The mass and plate banks are full at PALETTE_SHAPES = 4; limb spends two of
+# four and sensor two, of which two are all the build-price guard admits
+# anyway. The working eye is the baseline's own sensor, taken rather than
+# added: slot 0 already names it.
+[palettes.base]
+extends = "primitive"
+
+[[palettes.base.mass]]
+# The trunk shape a slim segment is made of: 5x3x3 voxels, 36 mg of ceiling.
+name = "slim"
+tag = 5
+half_extent = [2, 1, 1]
+
+[[palettes.base.mass]]
+# A broad segment, the one a leg pair hangs off: 5x5x3, 60 mg.
+name = "broad"
+tag = 6
+half_extent = [2, 2, 1]
+
+[[palettes.base.mass]]
+# The cropping mouth: a flat 5x3x1 blade, 12 mg. Mass-classified, which is
+# what makes the body that wears it a Grazer. A mouth drawn from the mass
+# bank is bulk, which is the whole of why a body wearing this one grazes.
+# Doubles as the flat tile a crust is tiled from.
+name = "crop"
+tag = 7
+half_extent = [2, 1, 0]
+
+[[palettes.base.limb]]
+# A walking leg: 7x3x3, 50 mg, span 3. Build price 6.00 against the
+# primitive limb's 6.25, so it is admissible under the §2.3 guard; DC1's
+# finding is that at a 3x3 cross-section [4,1,1] is the longest leg that
+# would be.
+name = "leg"
+tag = 8
+half_extent = [3, 1, 1]
+
+[[palettes.base.sensor]]
+# A decorative sense voxel: one voxel, 1 mg, and span zero, so it buys
+# detail and no horizon. The plan's §2.2 names this as its own kind of part:
+# "an archetype's decorative eye voxels and its functional sense organs are
+# therefore not the same parts."
+name = "speck"
+tag = 9
+half_extent = [0, 0, 0]
+
+[[palettes.base.plate]]
+# A small upright leaf: 7x7x1, 39 mg. What a shrub is mostly made of.
+name = "blade"
+tag = 10
+half_extent = [3, 3, 0]
+
+[[palettes.base.plate]]
+# A flat horizontal pad: 9x1x9, 64 mg. Held above a segment it is a mat's
+# leaf; worn as covering on the flank it is the skirt a crust spreads with,
+# the same leaf lying in the litter instead of being held up. The one shape
+# in the palette the position rule is exercised on both ways.
+name = "pad"
+tag = 11
+half_extent = [4, 0, 4]
+
+[[palettes.base.plate]]
+# A flank shell: 1x9x9, 64 mg. Only ever worn as covering, and deep enough
+# in y to stand proud of the segment it wraps. The palette admits no lit use
+# of it, because armour is the only thing this shape is for.
+name = "shell"
+tag = 12
+half_extent = [0, 4, 4]
+
+# A low ground mat: a run of blocky tiles each holding two flat pads up.
+#
+# Forty-one parts. The plainest producer there is, and the one the terrarium
+# floor is mostly made of. Its pads sit two voxels over the tiles they grow
+# from, which is a canopy position by a small margin: the rule asks where a
+# plate hangs, not how far.
+#
+# Variance 1: a mat with one tile more or less is the same mat.
+[body.producer_mat]
+variance = 1
+
+[[body.producer_mat.tagma]]
+# A rooting foot, so the mat has somewhere to start.
+segments = 2
+
+[[body.producer_mat.tagma]]
+segments = 13
+appendage = "plate"
+shape = "pad"
+per_segment = 2
+
+# A many-fronded shrub: eight big fronds on a stout stem, then sixteen small
+# blades on a finer branch.
+#
+# Forty-one parts in two leafing stretches. Two leaf sizes on one plant is
+# most of what makes it read as a shrub rather than a stack, and it is also
+# the only producer here that reads as foliage at the ruled framing.
+#
+# Variance 1, for the same reason the mat has it.
+[body.producer_shrub]
+variance = 1
+
+[[body.producer_shrub.tagma]]
+segments = 1
+
+[[body.producer_shrub.tagma]]
+# A stout main stem carrying big fronds, then a finer branch of small
+# blades: two leaf sizes on one plant.
+segments = 8
+appendage = "plate"
+shape = "frond"
+
+[[body.producer_shrub.tagma]]
+segments = 8
+segment = "slim"
+appendage = "plate"
+shape = "blade"
+per_segment = 2
+
+# A tall single stalk with a crown: seventeen bare segments and six big
+# fronds.
+#
+# Twenty-six parts, and the one archetype the axial rules fight. A body's
+# segments chain along z and nothing stacks along y, so "tall" is a long bare
+# stem rather than a raised one, and the height in the silhouette comes from
+# the crown's [4,4,1] fronds standing eight voxels over it. Recorded as a
+# finding rather than worked around: raising a stalk needs a second growth
+# axis, which was not that slice's to add.
+#
+# Variance 1: the stem's length varies and the crown's does not matter, since
+# the absence guard keeps a fronded stretch from losing its fronds.
+[body.producer_stalk]
+variance = 1
+
+[[body.producer_stalk.tagma]]
+segments = 1
+
+[[body.producer_stalk.tagma]]
+segments = 16
+
+[[body.producer_stalk.tagma]]
+segments = 3
+appendage = "plate"
+shape = "frond"
+per_segment = 2
+
+# A browsing hexapod: the consumer tier's first authored body. (Plan §2.4,
+# carving B)
+#
+# Thirty-three parts: a slim head carrying a broad cropping mouth, two eyes
+# and two decorative specks, a five-segment neck, three broad segments
+# bearing six legs around a deep chest, and a ten-segment tail. It reads
+# Consumer because the head bears a mouth and nothing on it is lit, and
+# Grazer because that mouth is bulk rather than a jaw: it crops what stands
+# still.
+#
+# Variance is zero, deliberately. The plan asks an archetype to set its
+# variance rather than inherit the draw's `1 + rng.below(2)`: "a hexapod with
+# a varying leg count is a different creature, while a frond with a varying
+# frond count is the same plant." Kin still are not clones: `Soma::develop`
+# keeps its developmental absence, so an individual may be born without a
+# leg pair or without its eyes. What absence may never take is a feeding
+# organ, which is guarded, so no individual can develop out of its line's
+# kingdom.
+[body.consumer_browser]
+variance = 0
+
+[[body.consumer_browser.tagma]]
+# The head, and the crop borne under it: this one attachment is what the
+# world reads the whole body's living off.
+segments = 1
+segment = "slim"
+appendage = "mouth"
+shape = "crop"
+
+[[body.consumer_browser.tagma]]
+# Eyes, then specks. Two tagmata because a stretch grows one kind of
+# appendage from one shape, and these are two different parts doing two
+# different jobs.
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "speck"
+
+[[body.consumer_browser.tagma]]
+# A browser's reach.
+segments = 5
+segment = "slim"
+
+[[body.consumer_browser.tagma]]
+# Six legs on three broad segments, around a deep chest.
+segments = 1
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+
+[[body.consumer_browser.tagma]]
+segments = 1
+
+[[body.consumer_browser.tagma]]
+segments = 2
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+
+[[body.consumer_browser.tagma]]
+segments = 10
+segment = "slim"
+
+# A low pursuit form: short body, long tail, six legs, and a jaw.
+#
+# Thirty parts. The mouth is drawn from the limb bank, so it classifies as an
+# actuator and the body reads Predator: the ruling of 2026-08-30, in one
+# selector. A jaw swings, so the body that wears one is a predator.
+#
+# This is the archetype DC2's finding asked for. A consumer tier is one
+# interbreeding species per lineage, so founding the browser alone founded a
+# world of nothing but mobile grazers with nothing eating them back; the
+# pursuit form founds beside it.
+#
+# Variance 0, for the same reason the browser's is.
+[body.consumer_pursuit]
+variance = 0
+
+[[body.consumer_pursuit.tagma]]
+segments = 1
+segment = "slim"
+appendage = "mouth"
+mouth = "jaw"
+shape = "rod"
+
+[[body.consumer_pursuit.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+
+[[body.consumer_pursuit.tagma]]
+segments = 2
+appendage = "limb"
+shape = "leg"
+
+[[body.consumer_pursuit.tagma]]
+segments = 4
+
+[[body.consumer_pursuit.tagma]]
+segments = 1
+appendage = "limb"
+shape = "leg"
+
+[[body.consumer_pursuit.tagma]]
+# A long tail behind a short body: what a sprinter steers with.
+segments = 12
+segment = "slim"
+
+# A small armoured opportunist: four blocky segments wearing eight flank
+# shells, over a cropping mouth.
+#
+# Twenty-nine parts, and the archetype the position rule exists for. Its ten
+# shells are plates, so every one performs Fix, and the body still reads
+# Consumer: covering is not a canopy, so nothing it wears is lit. Before DC4
+# no founding consumer could be armoured at all; DC1.5 recorded that as a
+# standing constraint on this roster, and this is it lifted.
+#
+# Variance 0.
+[body.consumer_armoured]
+variance = 0
+
+[[body.consumer_armoured.tagma]]
+segments = 1
+segment = "slim"
+appendage = "mouth"
+shape = "crop"
+
+[[body.consumer_armoured.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+
+[[body.consumer_armoured.tagma]]
+# The carapace, on the deepest segments the palette has.
+segments = 5
+appendage = "plate"
+shape = "shell"
+worn = "covering"
+
+[[body.consumer_armoured.tagma]]
+# Four legs on one stretch rather than two stretches of one: absence is
+# drawn per stretch, and two single-segment leg stretches can both come up
+# short and leave the body immobile.
+segments = 2
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+
+[[body.consumer_armoured.tagma]]
+segments = 3
+segment = "slim"
+
+# A spreading crust: flat tiles with pads lying out to either side, two
+# eyes, and four holdfast threads.
+#
+# Thirty-six parts. It reads Decomposer by carrying neither organ: its head
+# bears no mouth, and its pads are worn as covering rather than held up. That
+# is the residual reading DC1.5 found, arrived at on purpose for once rather
+# than by subtraction.
+#
+# It is not sightless: a crust that could not tell where the dead were would
+# be scenery. The holdfasts are limb-classified threads, so it contracts,
+# which is also what the drawn decomposer tier has always done.
+#
+# Variance 1: a crust one tile wider is the same crust.
+[body.decomposer_crust]
+variance = 1
+
+[[body.decomposer_crust.tagma]]
+segments = 1
+segment = "broad"
+appendage = "feeler"
+shape = "eye"
+
+[[body.decomposer_crust.tagma]]
+# Three holdfast segments rather than two: at variance 1 a stretch of two
+# can realize as one and then lose it to absence, and a crust that cannot
+# hold on is a body the ruling does not admit.
+segments = 3
+segment = "crop"
+appendage = "limb"
+shape = "leg"
+
+[[body.decomposer_crust.tagma]]
+segments = 8
+segment = "crop"
+appendage = "plate"
+shape = "pad"
+worn = "covering"
+
+# A mobile detritivore: eight legs, two eyes, two specks, and no mouth at
+# all.
+#
+# Thirty-one parts. The one archetype whose reading turns on an absence:
+# nothing hangs under its head, so it takes nothing in through an organ and
+# absorbs across its bulk instead, which is what a saprotroph does.
+#
+# Variance 0: an eight-legged walker with a varying leg count is a different
+# animal.
+[body.decomposer_detritivore]
+variance = 0
+
+[[body.decomposer_detritivore.tagma]]
+# Bare, and that is the whole reading: a head with no mouth.
+segments = 1
+segment = "slim"
+
+[[body.decomposer_detritivore.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+
+[[body.decomposer_detritivore.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "speck"
+
+[[body.decomposer_detritivore.tagma]]
+segments = 4
+appendage = "limb"
+shape = "leg"
+
+[[body.decomposer_detritivore.tagma]]
+segments = 12
+segment = "slim"

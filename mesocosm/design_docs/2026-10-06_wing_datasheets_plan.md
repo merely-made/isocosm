@@ -1,7 +1,7 @@
 # Wing datasheets: packs in TOML, the check, and foundings as data
 
-**Status:** in progress, 2026-10-06. P1 and P2 are landed and verified; P3
-is next.
+**Status:** in progress, 2026-10-06. P1, P2 and P3a are landed and verified;
+P3b is next.
 
 Carries out rulings 623 to 625 of the wing design record, under the stack's
 format rule in mere's `design_docs/2026-10-06_data_formats_brief.md`. F1
@@ -170,3 +170,36 @@ than one defensible answer.
     the line ceiling, refuses `.json` under a `packs/` path segment unless
     it is below `fixtures/`. The whole tree passes. **Control:** a staged
     `processes/stray.json` is refused with the rule's message.
+- 2026-10-06: P3a landed on `wing-datasheets`.
+  - **The sheets.** Five in `shared/isocosm/datasheets/foundings/`: `base`,
+    `branching`, `jointed` and `spaced`, holding palettes, chains and bodies,
+    and `foundings`, which names each founding's palette and per-tier bodies.
+    `shared/wing-impresa/datasheets/kinds.toml` holds the seeded kinds as a
+    `KindSetSpec`, the shape a pack's kind set already has. The Rust prose
+    moved in as comments (628). The Rust copies stay until P3b.
+  - **The reader.** `world/genesis/datasheet.rs` parses the embedded sheets
+    once and computes today's selectors from the names.
+  - **Equality.** Built from the sheets, every founding's palette and
+    per-tier recipes equal the code's: 8 foundings, 16 bodies and 4 palettes.
+    The primitive palette equals `PartPalette::primitive()`. The seeded
+    kinds equal `SEEDED_KINDS`.
+  - **Control.** Turning the mat's pads into fronds breaks the Roster's
+    equality, and a changed kind breaks the kinds'. The first control,
+    blades, was refused instead: the jointed palette admits no blade, which
+    is the name check working.
+  - **Refusals tested:** a shape the palette does not admit, a misspelt key,
+    a partial layout, `worn` on a non-plate, a fifth shape in a bank, and
+    replacing a slot that does not exist.
+  - **Dependencies.** `toml = "1"` in isocosm and wing-impresa. Each lock
+    gained nine packages (`toml` 1.1.6 and its parser stack), already in the
+    root lock and the local cache, resolved offline.
+  - *Reading, not ruled:* the details of the sheet grammar.
+    - Names resolve in the palette of the founding that admits the body, and
+      a name it lacks is refused.
+    - Leaving out `segment` or `shape` means slot 0.
+    - `mouth` takes `bulk` or `jaw`, and `worn` takes `held` or `covering`,
+      words from the code's own prose.
+    - A chain is named within its sheet, or as `<sheet>.<chain>`.
+    - A layout places every tagma or none.
+    - A body carries a full-length chain list when any tagma names a chain,
+      and none otherwise, which matches all 16 code bodies.

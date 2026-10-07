@@ -1,0 +1,101 @@
+# Where a founding tier's bodies come from.
+#
+# A per-tier set, since DC4. It began as DC2's isolable arm, one tier
+# authored so the instrument could read that tier's cost alone, and the
+# roster made the natural shape a list of bodies per tier rather than one
+# body per tier, because how many lineages a tier founds is now part of the
+# answer. Which palette a world admits follows from the choice, because an
+# archetype's shapes are world state and its arrangement is the lineage's.
+#
+# Each founding names the palette a world founded this way admits, and, per
+# tier, the authored bodies it installs, one lineage each, in founding
+# order. A body is `<sheet>.<body>`. A tier the founding leaves out still
+# draws one recipe from the worldgen lottery (`axis::seed`). The archetype
+# palettes only fill spare slots, so they differ from the primitive one in
+# what they can express and not in what a drawn recipe develops.
+#
+# The names are what receipts record (`"palette": "SpacedRoster"`), so they
+# do not change.
+
+schema = 1
+owner = "isocosm"
+consumer = "isocosm world genesis (Founding)"
+status = "authored"
+
+# How the enclosure ships (DC4). `axis::seed` stays in the tree as the
+# generator a soup world would still use.
+default = "Roster"
+
+[sources.default_creatures]
+doc = "mesocosm/design_docs/2026-08-30_default_creatures_plan.md"
+note = "§5, what founding becomes; DC2 and DC4"
+
+[sources.phenotype]
+doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
+note = "VB2: the branching, jointed and spaced founding sets"
+
+[sources.wing_record]
+doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
+
+# Every tier draws one recipe from the worldgen lottery DC1.5 left in place.
+# Three non-played lineages, which is what the world founded through DC1.5.
+[founding.Drawn]
+palette = "primitive"
+
+# The consumer tier founds from the browser; producers and decomposers still
+# draw. DC2's arm, kept so its measurement stays reproducible against the
+# roster's.
+[founding.BrowsingConsumer]
+palette = "base"
+consumer = ["base.consumer_browser"]
+
+# Only the producer tier founds authored bodies.
+#
+# A DC4 diagnostic. The roster moves the stand and the mouths at once, so a
+# verdict on it cannot say which half did the moving. This and RosterFauna
+# split it, and they exist for the instrument rather than for a world to
+# ship.
+[founding.RosterStand]
+palette = "base"
+producer = ["base.producer_mat", "base.producer_shrub", "base.producer_stalk"]
+
+# Only the consumer and decomposer tiers do. The other half of RosterStand.
+[founding.RosterFauna]
+palette = "base"
+consumer = ["base.consumer_browser", "base.consumer_pursuit", "base.consumer_armoured"]
+decomposer = ["base.decomposer_crust", "base.decomposer_detritivore"]
+
+# The full roster: one lineage per archetype, three producers, three
+# consumers, two decomposers, and nothing drawn. The browser leads its tier
+# because the played critter takes the first of its tier.
+[founding.Roster]
+palette = "base"
+producer = ["base.producer_mat", "base.producer_shrub", "base.producer_stalk"]
+consumer = ["base.consumer_browser", "base.consumer_pursuit", "base.consumer_armoured"]
+decomposer = ["base.decomposer_crust", "base.decomposer_detritivore"]
+
+# Explicit branching recipes; the historical Roster remains reproducible.
+# The producer set preserves the historical mat and stalk while replacing its
+# serial shrub with the raised branching construction. The consumer set
+# preserves the pursuit form while arranging browser and armour in the
+# camera's readable plane.
+[founding.BranchingRoster]
+palette = "base"
+producer = ["base.producer_mat", "branching.producer_shrub", "base.producer_stalk"]
+consumer = ["branching.consumer_browser", "base.consumer_pursuit", "branching.consumer_armoured"]
+decomposer = ["base.decomposer_crust", "base.decomposer_detritivore"]
+
+# Paid appendage chains and separated leaves; previous sets stay fixed.
+[founding.JointedRoster]
+palette = "jointed"
+producer = ["base.producer_mat", "jointed.producer_shrub", "base.producer_stalk"]
+consumer = ["jointed.consumer_browser", "base.consumer_pursuit", "jointed.consumer_armoured"]
+decomposer = ["base.decomposer_crust", "base.decomposer_detritivore"]
+
+# Spaced appendage chains, preserving the last jointed recording set.
+[founding.SpacedRoster]
+palette = "spaced"
+producer = ["base.producer_mat", "spaced.producer_shrub", "base.producer_stalk"]
+consumer = ["spaced.consumer_browser", "base.consumer_pursuit", "jointed.consumer_armoured"]
+decomposer = ["base.decomposer_crust", "base.decomposer_detritivore"]

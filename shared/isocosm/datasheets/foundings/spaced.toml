@@ -1,0 +1,191 @@
+# A roomier visible-body roster: separated feet and a fuller leaf crown.
+#
+# The spaced founding set keeps the measured jointed recording reproducible:
+# the jointed sheet is left as it was, and what changed lives here. Its
+# armoured grazer and its leg chain are the jointed sheet's, unchanged.
+
+schema = 1
+owner = "isocosm"
+consumer = "isocosm world genesis (Founding)"
+status = "authored"
+
+[sources.phenotype]
+doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
+note = "VB2 feet and canopy spacing, 2026-09-05"
+
+[sources.wing_record]
+doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
+
+# The jointed vocabulary, with only its local leaf slot widened. The mat and
+# stalk use their own plate selectors, so this changes only this roster's
+# shrub; feet and their price-bearing extents remain exactly jointed's.
+[palettes.spaced]
+extends = "jointed"
+
+[[palettes.spaced.plate]]
+replaces = "leaf"
+name = "broad_leaf"
+tag = 25
+half_extent = [6, 0, 4]
+
+# A broad leaf held up on its own paid stalk.
+[[chain.leaf]]
+role = "mass"
+shape = "slim"
+facing = "above"
+
+[[chain.leaf]]
+role = "plate"
+shape = "broad_leaf"
+facing = "above"
+
+# Five broad leaves sit at distinct, connected branch endpoints. Branches
+# vary only through the trunk; every leaf situs remains one fixed segment.
+[body.producer_shrub]
+variance = 0
+
+[[body.producer_shrub.tagma]]
+segments = 5
+layout = { anchor = "tip", facing = "above", variance = 1 }
+
+[[body.producer_shrub.tagma]]
+segments = 4
+segment = "slim"
+layout = { parent = 0, anchor = "base", facing = "left" }
+
+[[body.producer_shrub.tagma]]
+segments = 1
+segment = "slim"
+appendage = "plate"
+shape = "broad_leaf"
+chain = "leaf"
+layout = { parent = 1, anchor = "tip", facing = "above", variance = 0 }
+
+[[body.producer_shrub.tagma]]
+segments = 4
+segment = "slim"
+layout = { parent = 0, anchor = "middle", facing = "right" }
+
+[[body.producer_shrub.tagma]]
+segments = 1
+segment = "slim"
+appendage = "plate"
+shape = "broad_leaf"
+chain = "leaf"
+layout = { parent = 3, anchor = "tip", facing = "above", variance = 0 }
+
+[[body.producer_shrub.tagma]]
+segments = 4
+segment = "slim"
+layout = { parent = 0, anchor = "tip", facing = "front" }
+
+[[body.producer_shrub.tagma]]
+segments = 1
+segment = "slim"
+appendage = "plate"
+shape = "broad_leaf"
+chain = "leaf"
+layout = { parent = 5, anchor = "tip", facing = "above", variance = 0 }
+
+[[body.producer_shrub.tagma]]
+segments = 2
+segment = "slim"
+layout = { parent = 0, anchor = "tip", facing = "above" }
+
+[[body.producer_shrub.tagma]]
+segments = 1
+segment = "slim"
+appendage = "plate"
+shape = "broad_leaf"
+chain = "leaf"
+layout = { parent = 7, anchor = "tip", facing = "above", variance = 0 }
+
+[[body.producer_shrub.tagma]]
+segments = 4
+segment = "slim"
+layout = { parent = 0, anchor = "tip", facing = "back" }
+
+[[body.producer_shrub.tagma]]
+segments = 1
+segment = "slim"
+appendage = "plate"
+shape = "broad_leaf"
+chain = "leaf"
+layout = { parent = 9, anchor = "tip", facing = "above", variance = 0 }
+
+# The branching browser's head, neck, eyes, and tail remain intact. Three
+# fixed leg situs are separated by real bare backbone runs longer than a
+# foot.
+[body.consumer_browser]
+variance = 0
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+appendage = "mouth"
+shape = "crop"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+layout = { parent = 0, anchor = "base", facing = "above" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "speck"
+layout = { parent = 1, anchor = "tip", facing = "above" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+layout = { parent = 0, anchor = "base", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 2
+segment = "slim"
+layout = { parent = 3, anchor = "tip", facing = "below", variance = 1 }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "broad"
+appendage = "limb"
+shape = "foot"
+chain = "jointed.leg"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 5
+segment = "slim"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "broad"
+appendage = "limb"
+shape = "foot"
+chain = "jointed.leg"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 5
+segment = "slim"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "broad"
+appendage = "limb"
+shape = "foot"
+chain = "jointed.leg"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 4
+segment = "slim"
+layout = { anchor = "tip", facing = "back", variance = 1 }
