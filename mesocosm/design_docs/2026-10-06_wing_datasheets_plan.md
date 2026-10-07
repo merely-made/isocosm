@@ -1,6 +1,6 @@
 # Wing datasheets: packs in TOML, the check, and foundings as data
 
-**Status:** done, 2026-10-06. P1, P2, P3a and P3b are landed and verified.
+**Status:** landed, 2026-10-06. P1, P2, P3a and P3b are landed and verified.
 
 Carries out rulings 623 to 625 of the wing design record, under the stack's
 format rule in mere's `design_docs/2026-10-06_data_formats_brief.md`. F1
