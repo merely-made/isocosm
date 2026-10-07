@@ -1,5 +1,14 @@
 # Wing datasheets: packs in TOML, the check, and foundings as data
 
+**Archived 2026-10-06** on Mark's word ("Hand off, then archive
+(Recommended)"), with P1 to P3b landed and pushed. Its three findings that
+were not its own were carried as follows. isometer's `ProducerContext` drift
+and Mesocosm's stale `icu_provider` pin went to the repin-onto-stable lane
+(ruling 621, branch `repin-stable`), which has taken both. eponym-sortie's
+two failing tests are an open item in Eponym's `DOC_README.md`. Deferred by
+ruling 626: moving the founding datasheets into a pack waits for W2's
+founding ruleset.
+
 **Status:** landed, 2026-10-06. P1, P2, P3a and P3b are landed and verified.
 
 Carries out rulings 623 to 625 of the wing design record, under the stack's

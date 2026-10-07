@@ -43,6 +43,16 @@ native package is `eponym-client`.
 | [2026-09-09_memory_and_remembrance_plan.md](2026-09-09_memory_and_remembrance_plan.md) | Memory and remembrance: observer-relative answers, durable history, the hagiograph. | Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. |
 | [2026-09-13_genet_document_host_plan.md](2026-09-13_genet_document_host_plan.md) | The presentation join: one played session through genet and netrender. | P0 to P4 landed 2026-09-14. |
 
+## Open items
+
+- **`eponym-sortie` fails two tests**, found 2026-10-06 while verifying the
+  wing datasheets plan (`../../mesocosm/design_docs/archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md`),
+  and not that plan's: `a_tag_in_occurs_mid_action_under_the_pact` ("the
+  pact never fired") and `an_injury_persists_as_a_body_revision_fact` ("the
+  played body was never wounded"). Both fail the same way on the sources
+  before its founding change (`d6ffaf20`). The crate last moved the same day
+  (`68844aa9`, `f4a40613`). Log: `Code/testing/isometry-datasheets-p3b-eponym.log`.
+
 ## Archive
 
 Each archived file carries its own paragraph saying why it moved and what

@@ -72,7 +72,6 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-22_aggregation_research.md](2026-09-22_aggregation_research.md) | The reduction literature checked, and the executable boundary of the sim's first implementation. | Research, applied 2026-09-22. |
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
 | [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md) | Balaur read against the wing's rulings. | 2026-10-06: read; its forks ruled as 604 to 607. |
-| [2026-10-06_wing_datasheets_plan.md](2026-10-06_wing_datasheets_plan.md) | Packs in TOML, the pre-commit check, and every founding and the impresa's kinds as datasheets. | 2026-10-06: landed, P1 to P3b (rulings 623 to 632). |
 | [2026-10-06_scenevm_wing_brief.md](2026-10-06_scenevm_wing_brief.md) | Eldiron's scenevm read against kiss3d as a tenant and balaur's structure; what is worth learning from it. | 2026-10-06: read; a donor of techniques only (ruling 622). |
 | [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | M0 and M1 done 2026-09-25; M2 to M4 proposed. |
 | [2026-09-22_family_rename_plan.md](2026-09-22_family_rename_plan.md) | The family rename: Isocosm, Eponym, Isocosm: VTT. | Landed 2026-09-24: R0 to R5. |
@@ -111,6 +110,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-06/2026-10-06_wing_datasheets_plan.md`](archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md): packs in TOML, the pack JSON check, and every founding and the seeded kinds as datasheets, landed (rulings 623 to 632); its findings handed off.
 - [`2026-10-06/2026-09-22_sim_design_session_notes.md`](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md): the sim design sessions' notes, 2026-09-16 to 2026-09-30 (ruling 614).
 - [`2026-10-06/2026-09-22_sim_plan_progress.md`](archive_docs/2026-10-06/2026-09-22_sim_plan_progress.md): the sim plan's full progress log to 2026-10-06 (ruling 613).
 - [`2026-10-06/2026-09-18_wing_design_plan_progress.md`](archive_docs/2026-10-06/2026-09-18_wing_design_plan_progress.md): the design record's full progress log to 2026-10-06 (ruling 613).
