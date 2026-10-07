@@ -191,8 +191,6 @@ taproot = { git = "https://github.com/merely-made/genet.git", rev = "bd3e8861b29
 # takes the revision the deps above take, for the same one-source-one-reference
 # reason.
 [patch.crates-io]
-# Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
 # `murm-replication` (from mere) depends on the *published* muniment, while this
 # workspace tracks the repo. Two sources means two `muniment::Backend` traits and
 # `MunimentStore`'s bounds stop matching, so redirect the registry edge at the
