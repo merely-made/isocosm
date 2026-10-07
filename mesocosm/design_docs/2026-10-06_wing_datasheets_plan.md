@@ -1,7 +1,6 @@
 # Wing datasheets: packs in TOML, the check, and foundings as data
 
-**Status:** in progress, 2026-10-06. P1, P2 and P3a are landed and verified;
-P3b is next.
+**Status:** done, 2026-10-06. P1, P2, P3a and P3b are landed and verified.
 
 Carries out rulings 623 to 625 of the wing design record, under the stack's
 format rule in mere's `design_docs/2026-10-06_data_formats_brief.md`. F1
@@ -205,3 +204,47 @@ than one defensible answer.
     - A layout places every tagma or none.
     - A body carries a full-length chain list when any tagma names a chain,
       and none otherwise, which matches all 16 code bodies.
+- 2026-10-06: P3b landed on `wing-datasheets` (`48d19b8e`).
+  - **`Founding` reads `foundings.toml`.** It is a `Copy` handle by name.
+    - The eight names are associated constants, so call sites read as
+      before.
+    - `Founding::named` and `Founding::all` reach any founding the sheet
+      declares, and the default is the sheet's.
+    - Debug prints the bare name, as receipts store it.
+  - **The archetype functions are lookups** into the sheets (ruling 632).
+    The shapes, tagmata, tier lists and their prose left the Rust.
+  - **The reader moved** to `axis/archetype/datasheet.rs`, below the
+    genesis code that uses it. At the 600-line ceiling its serde shapes
+    split into `datasheet/schema.rs`.
+  - **wing-impresa.** `KindSet::seeded()` reads `kinds.toml`, and
+    `SEEDED_KINDS` is gone. Its one non-test use and its tests now read the
+    sheet.
+  - **The receipt.** Each founding was founded at seeds 7 and 4242 with 12
+    founders and hashed at founding and after 40 idle ticks: 32 hashes,
+    recorded at `18945c84` while the code still built every roster
+    (`Code/testing/isometry-datasheets-p3b-before.txt`). Founding from the
+    sheets reproduces all 32 (`world/genesis/founding/tests.rs`). The 16
+    founded hashes are distinct, so the instrument tells the foundings
+    apart.
+  - **Control.** With the mat's pads changed to fronds in `base.toml`, the
+    receipt fails at `RosterStand`, the first founding that installs the mat.
+  - **Tests,** in `Code/testing/isometry-datasheets-p3b-*.log`:
+    - isocosm 1,231 passed and 1 ignored, across the lib, every
+      integration test and the doctests.
+    - wing-impresa 19 passed.
+    - Mesocosm's workspace 336 passed and 2 ignored.
+    - Eponym 81 passed and 3 ignored, with 2 failures not this plan's (below).
+    - The VTT's `cargo check --workspace --all-targets --all-features`
+      passes, and isometer-lens's examples, `dc4_roster` among them,
+      compile.
+  - **Found, not this plan's:**
+    - `eponym-sortie`'s `a_tag_in_occurs_mid_action_under_the_pact` and
+      `an_injury_persists_as_a_body_revision_fact` fail ("the pact never
+      fired", "the played body was never wounded"). They fail identically
+      on P3a's sources, where the code still built the rosters.
+    - isometer's own `src/producer/tests.rs:391` no longer compiles, since
+      mere's `cambium_rootstock::ProducerContext` gained a `core` field.
+    - Mesocosm's ignored lock pins `icu_provider` 2.3.0, which this machine
+      never downloaded; the main checkout's copy of 2026-09-29 pins it too.
+      For this run the worktree's copy was moved offline to the cached
+      2.3.1 and `zerovec-derive` 0.11.6. Nothing was downloaded.
