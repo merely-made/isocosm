@@ -31,7 +31,7 @@ isometer-lens = { path = "crates/isometer-lens" }
 isometer-render = { path = "crates/isometer-render" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
@@ -41,6 +41,10 @@ serde = { version = "1", features = ["derive"] }
 [dev-dependencies]
 serde_json = "1"
 pollster = "0.4"
+# The host render core a `ProducerContext` carries, at the sources
+# cambium-rootstock resolves, so the test's core is the host's own type.
+genet-render-host = { git = "https://github.com/merely-made/genet.git", rev = "bd3e8861b2932d62b73c9936ac3a317f1df3ffdb" }
+netrender = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
 # The GPU receipts are this crate's own leaf: `default-features = false` above
 # turns every backend off, and an instance with no backend panics at
 # construction rather than reporting a missing adapter. Naming them here keeps
@@ -66,4 +70,4 @@ cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "5fecd
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "7a60ad7965a1ae81292211b405a53210c554f70c", version = "=0.14.0" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "bd3e8861b2932d62b73c9936ac3a317f1df3ffdb", version = "=0.14.0" }

@@ -376,22 +376,25 @@ fn an_unchanged_frame_neither_encodes_nor_advances_the_generation() {
 /// document's last image in place rather than an empty slot.
 #[test]
 fn the_produced_texture_is_straight_alpha_encoded_srgb() {
-    let Some((device, queue)) = device() else {
-        eprintln!("no adapter; skipping isometer output contract receipt");
+    let Ok(core) = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default()) else {
+        eprintln!("no render core; skipping isometer output contract receipt");
         return;
     };
+    let (device, queue) = (core.device().clone(), core.queue().clone());
     let mut producer = SceneProducer::new(Specimen::new(device.clone(), queue.clone()));
     let frame = ProducerFrameInfo {
         logical_size: (SIZE[0] as f32, SIZE[1] as f32),
         physical_size: SIZE,
         layout_scale: 1.0,
         needs_frame: false,
+        timestamp: None,
         appearance: ResolvedAppearance::default(),
     };
     let cx = ProducerContext {
         device: &device,
         queue: &queue,
         frame: &frame,
+        core: &core,
     };
 
     let produced = producer.render(&cx).expect("the first frame");

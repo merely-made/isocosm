@@ -22,7 +22,7 @@ resident-ground-receipt = ["dep:burn", "conatus/resident"]
 # byte-identical to the ones mesocosm declares, so the feature request and the
 # revision the resolver sees do not move with the crate.
 [dependencies]
-modulus = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
 # Body documents and brick ground, from the family floor. The lens names no
 # product type in production code.
 isometer-core = { path = "../isometer-core" }
