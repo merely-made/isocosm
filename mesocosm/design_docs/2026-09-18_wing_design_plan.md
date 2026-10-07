@@ -8729,6 +8729,14 @@ what later sections derive from.
      "Final hash and checkpoints (Recommended)". So the v1 reader takes the
      SHA-256 at each epoch boundary while replaying and compares it, and a
      v1 fixture with checkpoints, made by the pre-H1 code, proves it.
+642. **The probe traces draw 0's exact run.** 2026-10-07, for H1's
+     `--trace` (610). Question: `isocosm-probe` runs many drawn worlds,
+     each four ways, and already reruns draw 0's exact run as a reference;
+     what does its trace record? Options: draw 0's exact run, in the bench's
+     `<tick> <witness>` lines (recommended); every draw's exact run; every
+     arm of every draw. Mark chose "Draw 0's exact run (Recommended)". So
+     `run_exact` takes an optional per-tick sink, and both tools write the
+     same line format.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
