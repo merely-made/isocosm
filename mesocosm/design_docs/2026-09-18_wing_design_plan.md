@@ -8655,6 +8655,18 @@ what later sections derive from.
      them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
      every palette slot has a name; plate's and sensor's defaults keep the
      code's "frond" and "eye".
+632. **Archetype names stay in code as lookups into the sheets.** 2026-10-06,
+     P3b of the datasheets plan. Question: once the code-built bodies go,
+     how do the 34 lines outside the founding code reach a body or palette?
+     One is production (generated archetypes seed from the spaced shrub),
+     five are examples in isometer-lens and mesocosm-genet, and the rest
+     are tests. The archetype module's four test files check the 16 bodies'
+     development as well. Options: keep `archetype::producer_mat()`,
+     `archetype::spaced::palette()` and the rest as one-line lookups into
+     the sheets, so the shapes, tagmata and prose live only in data and the
+     20 names stay compile-checked (recommended); remove them and look
+     bodies up by string. Mark chose "Keep names as lookups (Recommended)".
+     So no caller changes, and a test proves every accessor resolves.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

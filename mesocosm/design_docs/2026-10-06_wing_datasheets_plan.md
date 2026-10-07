@@ -24,6 +24,8 @@ review, and datasheets in Livery's shape.
   ("By roster set (Recommended)"); palettes extend one another ("Each
   extends another (Recommended)"); the unnamed primitive shapes are "block"
   and "rod" ("\"block\" and \"rod\" (Recommended)").
+- **632,** in P3b: the archetype functions stay as one-line lookups into
+  the sheets ("Keep names as lookups (Recommended)").
 
 ## Findings (2026-10-06, isometry `3530f611`)
 
