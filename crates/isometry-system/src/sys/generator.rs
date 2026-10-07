@@ -18,7 +18,7 @@ impl GeneratorCatalog {
         let mut diagnostics = Vec::new();
         for root in roots {
             let root = root.as_ref();
-            if root.join(GeneratorPack::MANIFEST_FILE).is_file() {
+            if GeneratorPack::manifest_path(root).is_some() {
                 candidates.push(root.to_path_buf());
                 continue;
             }
@@ -27,7 +27,7 @@ impl GeneratorCatalog {
                     let mut children: Vec<PathBuf> = entries
                         .filter_map(Result::ok)
                         .map(|entry| entry.path())
-                        .filter(|path| path.join(GeneratorPack::MANIFEST_FILE).is_file())
+                        .filter(|path| GeneratorPack::manifest_path(path).is_some())
                         .collect();
                     children.sort();
                     candidates.extend(children);
@@ -125,7 +125,18 @@ impl GeneratorCatalog {
 }
 
 impl GeneratorPack {
-    pub const MANIFEST_FILE: &'static str = "isometry-pack.json";
+    /// The manifest as authored (wing design record, ruling 624).
+    pub const MANIFEST_FILE: &'static str = "isometry-pack.toml";
+    /// The manifest's JSON name, still read when no TOML manifest is present.
+    pub const MANIFEST_FILE_JSON: &'static str = "isometry-pack.json";
+
+    /// The manifest at `root`: the TOML name first, then the JSON one.
+    pub fn manifest_path(root: &Path) -> Option<PathBuf> {
+        [Self::MANIFEST_FILE, Self::MANIFEST_FILE_JSON]
+            .into_iter()
+            .map(|name| root.join(name))
+            .find(|path| path.is_file())
+    }
 
     /// Load a pack directory and validate its manifest before any generator
     /// assets are read. The canonical root also prevents a declared symlink
@@ -135,10 +146,20 @@ impl GeneratorPack {
             .as_ref()
             .canonicalize()
             .map_err(|error| format!("open content-pack root: {error}"))?;
-        let manifest_path = root.join(Self::MANIFEST_FILE);
-        let manifest_json = std::fs::read_to_string(&manifest_path)
+        if root.join(Self::MANIFEST_FILE).is_file() && root.join(Self::MANIFEST_FILE_JSON).is_file()
+        {
+            return Err(format!(
+                "{} holds both {} and {}; a pack has one manifest",
+                root.display(),
+                Self::MANIFEST_FILE,
+                Self::MANIFEST_FILE_JSON
+            ));
+        }
+        let manifest_path = Self::manifest_path(&root)
+            .ok_or_else(|| format!("no content-pack manifest in {}", root.display()))?;
+        let manifest_text = std::fs::read_to_string(&manifest_path)
             .map_err(|error| format!("read {}: {error}", manifest_path.display()))?;
-        let manifest: ContentPackManifest = serde_json::from_str(&manifest_json)
+        let manifest: ContentPackManifest = parse_data(&manifest_path, &manifest_text)
             .map_err(|error| format!("parse {}: {error}", manifest_path.display()))?;
         manifest
             .validate()
@@ -210,8 +231,8 @@ impl GeneratorPack {
                 "fixture is not declared for generator {generator}: {fixture_path}"
             ));
         }
-        let fixture_json = self.read_asset(fixture_path)?;
-        let fixture: GeneratorFixture = serde_json::from_str(&fixture_json)
+        let fixture_text = self.read_asset(fixture_path)?;
+        let fixture: GeneratorFixture = parse_data(Path::new(fixture_path), &fixture_text)
             .map_err(|error| format!("parse fixture {fixture_path}: {error}"))?;
         if fixture.request.generator != generator {
             return Err(format!(
@@ -323,3 +344,12 @@ impl GeneratorRuntime {
     }
 }
 
+/// Decodes a pack data file by its extension: TOML as authored, JSON as still
+/// accepted (wing design record, ruling 624).
+fn parse_data<T: serde::de::DeserializeOwned>(path: &Path, text: &str) -> Result<T, String> {
+    match path.extension().and_then(|ext| ext.to_str()) {
+        Some("toml") => toml::from_str(text).map_err(|error| error.to_string()),
+        Some("json") => serde_json::from_str(text).map_err(|error| error.to_string()),
+        _ => Err("not a pack data file: expected .toml or .json".to_string()),
+    }
+}

@@ -16,7 +16,7 @@ mod impresa;
 mod kinds;
 
 pub use impresa::{Impresa, ImpresaLimits, ImpresaSpec, ObjectId, Record, Stance, SubjectId};
-pub use kinds::{KindSet, KindSetLimits, KindSetSpec, SEEDED_KINDS};
+pub use kinds::{KindSet, KindSetLimits, KindSetSpec};
 
 pub const SCHEMA_VERSION: u32 = 1;
 pub const DEFAULT_MAX_ENTRIES: usize = 65536;

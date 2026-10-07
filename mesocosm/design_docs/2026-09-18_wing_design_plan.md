@@ -8547,6 +8547,150 @@ what later sections derive from.
      the remaining 44 pins move onto stable as their own lane, briefed from
      mere's burn plan §13.47, removing the doubles, and 607's lane follows
      (amending 611's order).
+622. **scenevm is a donor of techniques only.** 2026-10-06, from Mark's
+     question whether Eldiron's `scenevm` (MIT, 0.95.0) would be "of use for
+     the isocosm wing", how it "compares with kiss3d as a tenant, or composes
+     with the structure we're researching from balaur engine". Evidence:
+     - it owns its device (`static GLOBAL_GPU: OnceLock`) and its targets,
+       and is on wgpu 29.0.3 against the stack's 30;
+     - it carries Eldiron's scene model and its own sun, lights and probes,
+       against 472;
+     - beside a raster path, it has a compute ray and path tracer;
+     - it has a capped irradiance probe grid that samples along the normal.
+
+     Read in `2026-10-06_scenevm_wing_brief.md`. Options: donor of
+     techniques only (recommended); measure it as a tenant; no role. Mark
+     chose "Donor of techniques only". So kiss3d stays the lit body tenant
+     (471, 606), and scenevm is read, not depended on. Its techniques (the
+     probe grid, progressive accumulation, its environment block's fields)
+     are taken by name under MIT, with a licence row, when a lane needs them.
+     Asked whether to record the read, Mark chose "Write a brief, like
+     Balaur's".
+623. **Rosters and rulesets move into datasheets, through a plan.**
+     2026-10-06. Mark asked whether the TOML used for generated datasheets
+     suits Isocosm's entity rosters and rulesets. Evidence:
+     - the wing's packs are JSON (`mesocosm-pack.json`, five
+       `processes/*.json`, the VTT's `isometry-pack.json` and SRD
+       `data/*.json`), with behaviour in piccolo Lua;
+     - its rosters are Rust code (`Founding::SpacedRoster.palette()`, the
+       impresa's `SEEDED_KINDS`);
+     - Livery's `properties.toml` is the stack's datasheet shape.
+
+     Mark widened the format question to the whole stack. It is ruled in
+     mere's `design_docs/2026-10-06_data_formats_brief.md` (F1 to F5): text is
+     split by who writes the file (TOML for what people author or review, JSON
+     for what programs write and for imports), and binary uses two formats by
+     job. On the wing's own question, the options were: yes, through a plan;
+     only new ones; not now. Mark chose "Yes, through a plan". So a dated plan
+     names which rosters and catalogues move, their schemas in Livery's
+     datasheet shape, and receipts showing worlds and state hashes unchanged
+     by the move. Under F1, the wing's authored pack manifests and process
+     records become TOML; the SRD data stays a JSON import.
+624. **Packs load from TOML or JSON.** 2026-10-06, for the move of the
+     pack files to TOML. Question: after the migration, should packs still
+     load from JSON? Options: TOML only, with a JSON pack refused by a
+     message naming the rule (recommended); accept both. Mark chose "Accept
+     both". So both loaders (`mesocosm-phenotype`'s admission and
+     `isometry-system`'s content packs) read either syntax, TOML preferred,
+     and this repository's own packs are TOML. The pre-commit check then
+     polices this repository only; a pack written elsewhere in JSON still
+     loads. *Reading, not ruled:* the manifest's `abi` stays 1, since the
+     schema does not change, only the syntax.
+625. **Every founding becomes data, instrument variants too.** 2026-10-06,
+     for 623's plan. Question: which rosters move into datasheets? Options:
+     the shipping rosters and kinds, with the instrument-only variants
+     staying code (recommended); everything, instrument variants too; only
+     the new sim's founding ruleset. Mark chose "Everything, instrument
+     variants too". So every `Founding` variant (`Drawn`,
+     `BrowsingConsumer`, `RosterStand`, `RosterFauna`, `Roster`,
+     `BranchingRoster`, `JointedRoster`, `SpacedRoster`), with its palette
+     and per-tier recipe lists, becomes a datasheet, and the enum becomes a
+     list read from them, beside `SEEDED_KINDS`. Recorded worlds must
+     reproduce: every founding's state hash is unchanged by the move. The
+     plan is `2026-10-06_wing_datasheets_plan.md`.
+626. **The founding datasheets are embedded in isocosm.** 2026-10-06, at
+     the datasheets plan's P3 checkpoint. Question: where do the founding
+     datasheets live? Options: embedded in isocosm, parsed once, with
+     worlds, tests and probes calling `Founding` as now (recommended); in
+     Mesocosm's pack, admitted like the process files, which needs pack
+     admission wired into genesis at 71 sites and a ruling on the ruleset
+     digest. Mark chose "Embedded in isocosm". So the datasheets compile into
+     isocosm, and moving them into a pack waits for W2's founding ruleset.
+627. **Datasheets name shapes and selector encodings in words.** 2026-10-06,
+     the same checkpoint. Question: how do datasheets name shapes and the
+     encodings in their selectors (`SHAPE_SKIRT = ARMOUR_SHAPE + SHAPE_PAD`,
+     a mouth above `JAW_SHAPE` drawn as a jaw)? Options: by name (recommended);
+     raw selector numbers. Mark chose "By name". So a datasheet says
+     `shape = "pad"`, `worn = "covering"`, `mouth = "jaw"`,
+     `chain = "leaf"`. The loader computes today's selectors, and a test
+     proves every computed recipe equals the code's.
+628. **The rationale prose moves into the datasheets.** 2026-10-06, the same
+     checkpoint. Question: where does the prose go (why each body and shape
+     exists, the DC findings and rulings)? Options: into the datasheets as
+     TOML comments (recommended); stay in the Rust docs. Mark chose "Into
+     the datasheets". So the reasons sit beside the data people edit, and
+     the Rust keeps only loader documentation.
+629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
+     the datasheets plan. Question: one self-contained sheet per founding,
+     as the plan worded it, or sheets by roster set? The eight foundings
+     share 16 distinct recipes; per-founding sheets would hold 41
+     transcriptions, the mat in seven. Options: by roster set, the base,
+     branching, jointed and spaced sheets mirroring today's modules, plus
+     one foundings sheet naming each founding's palette and tier lists by
+     reference (recommended); one sheet per founding. Mark chose "By roster
+     set (Recommended)". So each body is written once, and the plan's
+     "one TOML datasheet per founding" is amended.
+630. **Palettes extend one another.** 2026-10-06, the same round. Question:
+     are the four palettes written in full or by extension? Options: each
+     extends another, listing the slots it adds or replaces, with the
+     primitive palette written in full and pinned by a test to
+     `PartPalette::primitive()` (recommended); each written in full, every
+     slot in selector order. Mark chose "Each extends another
+     (Recommended)". So "no default moves" stays visible in the sheet, and a
+     shared shape is edited once.
+631. **The two unnamed primitive shapes are "block" and "rod".** 2026-10-06,
+     the same round. Question: what are mass slot 0 (`[2,2,2]`, tag 1) and
+     limb slot 0 (`[4,1,1]`, tag 2) called, which the code names only as
+     `0` and `JAW_SHAPE`? Options: "block" and "rod" (recommended); leave
+     them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
+     every palette slot has a name; plate's and sensor's defaults keep the
+     code's "frond" and "eye".
+632. **Archetype names stay in code as lookups into the sheets.** 2026-10-06,
+     P3b of the datasheets plan. Question: once the code-built bodies go,
+     how do the 34 lines outside the founding code reach a body or palette?
+     One is production (generated archetypes seed from the spaced shrub),
+     five are examples in isometer-lens and mesocosm-genet, and the rest
+     are tests. The archetype module's four test files check the 16 bodies'
+     development as well. Options: keep `archetype::producer_mat()`,
+     `archetype::spaced::palette()` and the rest as one-line lookups into
+     the sheets, so the shapes, tagmata and prose live only in data and the
+     20 names stay compile-checked (recommended); remove them and look
+     bodies up by string. Mark chose "Keep names as lookups (Recommended)".
+     So no caller changes, and a test proves every accessor resolves.
+
+633. **Saves keep fields; traces keep entities.** 2026-10-06, the state
+     *(Recorded at `c0091aa8` as 622 to 625, numbers already taken by the
+     datasheets rulings on main; renumbered 633 to 636 the same day.)*
+     witness brief's first fork. Question: a saved checkpoint can carry its
+     labelled entries per top-level `State` field (thirteen) or per entity
+     (thousands in a grown world); what grain do saves keep? Options: fields
+     in saves, entities in traces (recommended); entities in saves; fields
+     only. Mark chose "Fields in saves, entities in traces". So a load names
+     the collection that diverged, and the on-demand per-tick trace names the
+     entity.
+634. **A v2 save stores the witness as a u64.** 2026-10-06. Options: u64
+     (recommended); a hex string in the existing `Key`. Mark chose "u64". So
+     v2 stores the family witness's own type, and v1 saves are read through a
+     separate struct carrying their string.
+635. **The witness lands before its labels.** 2026-10-06, confirming 609's
+     reading. Options: H1 now, H2 later (recommended); wait for mere's crate.
+     Mark chose "H1 now, H2 later". So the plain witness, the save versions
+     and the per-tick trace land after the repin, and the labels when mere's
+     crate does.
+636. **The witness hashes postcard bytes.** 2026-10-06. Options: postcard
+     (recommended); JSON into FNV. Mark chose "Postcard". So Isocosm hashes
+     through `isometer_core::snapshot::encode`, one encoding across the
+     family.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

@@ -15,7 +15,8 @@
 //!
 //! # Data only
 //!
-//! A pack is a manifest plus one JSON file per definition. There is no code in
+//! A pack is a manifest plus one data file per definition, TOML as authored,
+//! JSON still read (wing design record, ruling 624). There is no code in
 //! it, no path outside it, and no way to name a rule the core does not already
 //! evaluate: a definition declares an id, the shapes that may express it, and
 //! whether growing one of those shapes grows it. That is the whole vocabulary,
@@ -24,10 +25,11 @@
 //!
 //! ```text
 //! packs/mesocosm/
-//!   mesocosm-pack.json      manifest: pack id, version, abi, license, files
+//!   mesocosm-pack.toml      manifest: pack id, version, abi, license, files
 //!   processes/
-//!     secrete.json          one definition
+//!     secrete.toml          one definition
 //!     ...
+//!   fixtures/               recorded runs, kept as JSON (program-written)
 //! ```
 //!
 //! # What is rule-bearing
@@ -38,9 +40,9 @@
 //! metadata; the order files are listed in is an authoring convenience,
 //! because admission sorts by qualified id and
 //! [`Registry::digest`](isocosm::legacy::mesocosm::Registry::digest) folds the sorted
-//! definition digests. JSON whitespace and key order cannot reach the digest
-//! at all, since the digest is taken over the lowered definitions rather than
-//! over file bytes.
+//! definition digests. Syntax, whitespace and key order cannot reach the
+//! digest at all, since the digest is taken over the lowered definitions
+//! rather than over file bytes.
 //!
 //! # What is refused
 //!
@@ -60,8 +62,9 @@
 //! module's own note on why that is structural rather than a promise.
 
 mod admit;
+mod data;
 pub mod express;
 mod pack;
 
-pub use admit::{Admission, MANIFEST, admit, admit_dir, asset, discover};
+pub use admit::{Admission, MANIFEST, MANIFEST_JSON, admit, admit_dir, asset, discover};
 pub use pack::{Manifest, ProcessFile, SUPPORTED_ABI};

@@ -4055,6 +4055,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.10.9",
+ "toml",
  "wing-formats",
  "wing-functions",
  "wing-glyphs",
@@ -4206,6 +4207,7 @@ dependencies = [
  "piccolo",
  "serde",
  "serde_json",
+ "toml",
 ]
 
 [[package]]
@@ -9854,6 +9856,7 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
+ "toml",
 ]
 
 [[package]]

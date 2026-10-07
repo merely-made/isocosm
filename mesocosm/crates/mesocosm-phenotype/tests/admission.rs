@@ -57,7 +57,7 @@ impl Scratch {
         }
         edit(&mut manifest);
         scratch.write(
-            MANIFEST,
+            MANIFEST_JSON,
             &serde_json::to_string_pretty(&manifest).expect("a manifest encodes"),
         );
         scratch
@@ -135,7 +135,7 @@ fn author_facing_text_is_not_rule_bearing() {
     // this is where that is enforced rather than asserted.
     let scratch = Scratch::new("prose");
     scratch.write("processes/secrete.json", GLAND);
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     let plain = admit_dir(scratch.path()).expect("admits");
 
     let noisy = Scratch::new("prose_noisy");
@@ -150,7 +150,7 @@ fn author_facing_text_is_not_rule_bearing() {
   "note": "Every word of this is outside the digest."
 }"#,
     );
-    noisy.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    noisy.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     let described = admit_dir(noisy.path()).expect("admits");
 
     assert_eq!(plain.digest(), described.digest());
@@ -161,7 +161,7 @@ fn one_rule_bearing_byte_moves_the_ruleset_digest() {
     // Four fields are rule-bearing, and each of them alone must move it.
     let scratch = Scratch::new("rule_bearing");
     scratch.write("processes/secrete.json", GLAND);
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     let base = admit_dir(scratch.path()).expect("admits").digest();
 
     for (what, body) in [
@@ -178,7 +178,7 @@ fn one_rule_bearing_byte_moves_the_ruleset_digest() {
     ] {
         let moved = Scratch::new("rule_bearing_moved");
         moved.write("processes/secrete.json", &body);
-        moved.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+        moved.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
         assert_ne!(
             admit_dir(moved.path()).expect("admits").digest(),
             base,
@@ -198,7 +198,7 @@ fn a_colliding_namespaced_id_is_refused() {
     scratch.write("processes/secrete.json", GLAND);
     scratch.write("processes/again.json", GLAND);
     scratch.write(
-        MANIFEST,
+        MANIFEST_JSON,
         &manifest(&["processes/secrete.json", "processes/again.json"]),
     );
     assert_eq!(
@@ -221,7 +221,7 @@ fn a_namespace_is_what_stops_two_definitions_colliding() {
         &GLAND.replace("\"mesocosm\"", "\"reef\""),
     );
     scratch.write(
-        MANIFEST,
+        MANIFEST_JSON,
         &manifest(&["processes/mine.json", "processes/theirs.json"]),
     );
     let admitted = admit_dir(scratch.path()).expect("two namespaces, no collision");
@@ -237,7 +237,7 @@ fn a_path_escape_is_refused() {
         "processes/../../secrete.json",
         "/etc/secrete.json",
     ] {
-        scratch.write(MANIFEST, &manifest(&[declared]));
+        scratch.write(MANIFEST_JSON, &manifest(&[declared]));
         assert_eq!(
             admit_dir(scratch.path()),
             Err(Admission::PathEscape {
@@ -251,7 +251,7 @@ fn a_path_escape_is_refused() {
 #[test]
 fn a_malformed_schema_is_refused() {
     let scratch = Scratch::new("malformed");
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     for body in [
         // Not JSON at all.
         "{",
@@ -279,7 +279,7 @@ fn a_word_this_world_does_not_hold_is_refused_not_approximated() {
     // a seeding rule this build does not hold is an answer, never the nearest
     // thing it does hold.
     let scratch = Scratch::new("unknown_words");
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
 
     scratch.write(
         "processes/secrete.json",
@@ -314,7 +314,7 @@ fn an_undeclared_definition_file_is_refused() {
         "processes/stowaway.json",
         &GLAND.replace("secrete", "sting"),
     );
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     assert!(
         matches!(admit_dir(scratch.path()), Err(Admission::UndeclaredFile { path }) if path.ends_with("stowaway.json")),
         "an unlisted definition must not be admitted or ignored"
@@ -324,7 +324,7 @@ fn an_undeclared_definition_file_is_refused() {
 #[test]
 fn a_declared_file_that_is_not_there_is_refused() {
     let scratch = Scratch::new("missing");
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     assert!(matches!(
         admit_dir(scratch.path()),
         Err(Admission::Unreadable { .. })
@@ -336,7 +336,7 @@ fn a_pack_this_build_cannot_read_is_refused_before_anything_is_lowered() {
     let scratch = Scratch::new("abi");
     scratch.write("processes/secrete.json", GLAND);
     scratch.write(
-        MANIFEST,
+        MANIFEST_JSON,
         &manifest(&["processes/secrete.json"]).replace("\"abi\": 1", "\"abi\": 99"),
     );
     assert_eq!(
@@ -351,7 +351,7 @@ fn a_pack_this_build_cannot_read_is_refused_before_anything_is_lowered() {
 #[test]
 fn a_pack_that_declares_nothing_is_refused() {
     let scratch = Scratch::new("empty");
-    scratch.write(MANIFEST, &manifest(&[]));
+    scratch.write(MANIFEST_JSON, &manifest(&[]));
     assert!(matches!(
         admit_dir(scratch.path()),
         Err(Admission::EmptyPack { .. })
@@ -369,7 +369,7 @@ fn a_definition_no_shape_can_express_is_refused() {
         "processes/secrete.json",
         &GLAND.replace("[\"plate\"]", "[]"),
     );
-    scratch.write(MANIFEST, &manifest(&["processes/secrete.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
     assert!(matches!(
         admit_dir(scratch.path()),
         Err(Admission::NoTract { .. })
@@ -381,7 +381,7 @@ fn a_pack_admits_completely_or_not_at_all() {
     // Four good files and one bad one admit nothing: half a biology is a
     // different biology, not a smaller one.
     let scratch = Scratch::shipped("partial", |_| {});
-    scratch.write("processes/secrete.json", "{ this is not json");
+    scratch.write("processes/secrete.toml", "this is not = [toml");
     assert!(matches!(
         admit_dir(scratch.path()),
         Err(Admission::MalformedSchema { .. })
@@ -407,7 +407,7 @@ fn a_definition_the_engine_has_no_binding_for_still_lowers() {
   "seeding": "acquired"
 }"#,
     );
-    scratch.write(MANIFEST, &manifest(&["processes/filter.json"]));
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/filter.json"]));
     let admitted = admit_dir(scratch.path()).expect("admits");
     let def = admitted
         .get(&isocosm::legacy::mesocosm::ProcessId::new("reef", "filter"))

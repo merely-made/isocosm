@@ -1,0 +1,37 @@
+format = 1
+id = "demo"
+name = "Demo Generator Pack"
+version = "0.1.0"
+
+[[generators]]
+id = "forge_item"
+name = "Forge item"
+default_args = { type = "text", value = "river" }
+script = "generators/forge_item.lua"
+fixtures = ["fixtures/forge_item.json"]
+
+[[generators.lock_presets]]
+key = "culture"
+label = "River-clan culture"
+value = { type = "text", value = "river-clans" }
+
+[[generators]]
+id = "local_map"
+name = "Local map"
+default_args = { type = "text", value = "river" }
+script = "generators/local_map.lua"
+fixtures = ["fixtures/local_map.json"]
+
+[[generators]]
+id = "campaign"
+name = "River campaign"
+default_args = { type = "text", value = "river" }
+script = "generators/campaign.lua"
+fixtures = []
+
+[[generators]]
+id = "npc"
+name = "Wandering NPC"
+default_args = { type = "text", value = "wilds" }
+script = "generators/npc.lua"
+fixtures = []

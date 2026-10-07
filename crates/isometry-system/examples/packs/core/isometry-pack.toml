@@ -1,0 +1,36 @@
+format = 1
+id = "core"
+name = "Core Choreography"
+version = "0.1.0"
+generators = []
+
+[[choreography]]
+name = "strike"
+style = "beats/strike.css"
+
+[[choreography]]
+name = "recoil"
+style = "beats/recoil.css"
+
+[[choreography]]
+name = "dodge"
+style = "beats/dodge.css"
+
+[[choreography]]
+name = "fall"
+style = "beats/fall.css"
+
+[[choreography]]
+name = "cheer"
+emote = "Cheer"
+style = "beats/cheer.css"
+
+[[choreography]]
+name = "shrug"
+emote = "Shrug"
+style = "beats/shrug.css"
+
+[[choreography]]
+name = "taunt"
+emote = "Taunt"
+style = "beats/taunt.css"

@@ -1,200 +1,39 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! A roomier visible-body roster: separated feet and a fuller leaf crown.
+//! A roomier visible-body roster, separated feet and a fuller leaf crown:
+//! `spaced.toml`.
+//!
+//! The bodies, the palette and the reasons for them are in the sheet.
 
 use super::*;
-use crate::legacy::mesocosm::axis::{Anchor, AppendageStep, ChainFacing, Stretch};
-use crate::legacy::mesocosm::body::VolumeRef;
-use crate::legacy::mesocosm::development::{PartPalette, PartTemplate};
-use crate::legacy::mesocosm::plan::{Facing, Role};
 
-const BROAD_LEAF: [i32; 3] = [6, 0, 4];
-const SHAPE_FOOT: u8 = 3;
-const SHAPE_SLIM: u8 = 1;
-const SHAPE_LEAF: u8 = 1;
-const LEAF_VOLUME_TAG: u8 = 25;
-
-fn shape(tag: u8, half_extent: [i32; 3]) -> PartTemplate {
-    PartTemplate {
-        volume: VolumeRef::from_tag(tag),
-        half_extent,
-    }
-}
-
-/// The jointed vocabulary, with only its local blade slot widened. The mat
-/// and stalk use their own plate selectors, so this changes only this roster's
-/// shrub; feet and their price-bearing extents remain exactly jointed's.
+/// The jointed palette with its leaf slot widened.
 pub fn palette() -> PartPalette {
-    let mut palette = super::jointed::palette();
-    palette.plate.extra[0] = Some(shape(LEAF_VOLUME_TAG, BROAD_LEAF));
-    palette
+    datasheet::palette("spaced")
 }
 
-fn layout(placements: &[(Option<u8>, Anchor, Facing, Option<u8>)]) -> Vec<Stretch> {
-    placements
-        .iter()
-        .map(|&(parent, anchor, facing, variance)| Stretch {
-            parent,
-            anchor,
-            facing,
-            variance,
-        })
-        .collect()
-}
-
-fn leaf_chain() -> Vec<AppendageStep> {
-    vec![
-        AppendageStep {
-            role: Role::Mass,
-            shape: SHAPE_SLIM,
-            facing: ChainFacing::Above,
-            distal: false,
-        },
-        AppendageStep {
-            role: Role::Plate,
-            shape: SHAPE_LEAF,
-            facing: ChainFacing::Above,
-            distal: false,
-        },
-    ]
-}
-
-/// Five broad leaves sit at distinct, connected branch endpoints. Branches
-/// vary only through the trunk; every leaf situs remains one fixed segment.
-pub fn producer_shrub() -> Recipe {
-    let mut recipe = Recipe::of(vec![
-        Tagma::bare(5).with_shapes(0, 0),
-        Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_LEAF),
-        Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_LEAF),
-        Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_LEAF),
-        Tagma::bare(2).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_LEAF),
-        Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_LEAF),
-    ])
-    .with_layout(layout(&[
-        (None, Anchor::Tip, Facing::Above, Some(1)),
-        (Some(0), Anchor::Base, Facing::Left, None),
-        (Some(1), Anchor::Tip, Facing::Above, Some(0)),
-        (Some(0), Anchor::Middle, Facing::Right, None),
-        (Some(3), Anchor::Tip, Facing::Above, Some(0)),
-        (Some(0), Anchor::Tip, Facing::Front, None),
-        (Some(5), Anchor::Tip, Facing::Above, Some(0)),
-        (Some(0), Anchor::Tip, Facing::Above, None),
-        (Some(7), Anchor::Tip, Facing::Above, Some(0)),
-        (Some(0), Anchor::Tip, Facing::Back, None),
-        (Some(9), Anchor::Tip, Facing::Above, Some(0)),
-    ]))
-    .with_appendage_chains(vec![
-        vec![],
-        vec![],
-        leaf_chain(),
-        vec![],
-        leaf_chain(),
-        vec![],
-        leaf_chain(),
-        vec![],
-        leaf_chain(),
-        vec![],
-        leaf_chain(),
-    ]);
-    recipe.variance = 0;
-    recipe
-}
-
-/// The branching browser's head, neck, eyes, and tail remain intact. Three
-/// fixed leg situs are separated by real bare backbone runs longer than a foot.
-pub fn consumer_browser() -> Recipe {
-    let mut recipe = Recipe::of(vec![
-        Tagma::new(1, Appendage::Mouth).with_shapes(SHAPE_SLIM, SHAPE_CROP),
-        Tagma::new(1, Appendage::Feeler).with_shapes(SHAPE_SLIM, SHAPE_EYE),
-        Tagma::new(1, Appendage::Feeler).with_shapes(SHAPE_SLIM, SHAPE_SPECK),
-        Tagma::bare(1).with_shapes(SHAPE_SLIM, 0),
-        Tagma::bare(2).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_FOOT),
-        Tagma::bare(5).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_FOOT),
-        Tagma::bare(5).with_shapes(SHAPE_SLIM, 0),
-        Tagma::new(1, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_FOOT),
-        Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-    ])
-    .with_layout(layout(&[
-        (None, Anchor::Tip, Facing::Back, None),
-        (Some(0), Anchor::Base, Facing::Above, None),
-        (Some(1), Anchor::Tip, Facing::Above, None),
-        (Some(0), Anchor::Base, Facing::Back, None),
-        (Some(3), Anchor::Tip, Facing::Below, Some(1)),
-        (None, Anchor::Tip, Facing::Back, None),
-        (None, Anchor::Tip, Facing::Back, None),
-        (None, Anchor::Tip, Facing::Back, None),
-        (None, Anchor::Tip, Facing::Back, None),
-        (None, Anchor::Tip, Facing::Back, None),
-        (None, Anchor::Tip, Facing::Back, Some(1)),
-    ]))
-    .with_appendage_chains(vec![
-        vec![],
-        vec![],
-        vec![],
-        vec![],
-        vec![],
-        leg_chain(),
-        vec![],
-        leg_chain(),
-        vec![],
-        leg_chain(),
-        vec![],
-    ]);
-    recipe.variance = 0;
-    recipe
-}
-
-fn leg_chain() -> Vec<AppendageStep> {
-    // The jointed endpoint shapes and directions are unchanged.
-    vec![
-        AppendageStep {
-            role: Role::Limb,
-            shape: 1,
-            facing: ChainFacing::Outward,
-            distal: false,
-        },
-        AppendageStep {
-            role: Role::Limb,
-            shape: 2,
-            facing: ChainFacing::Below,
-            distal: true,
-        },
-        AppendageStep {
-            role: Role::Limb,
-            shape: SHAPE_FOOT,
-            facing: ChainFacing::Front,
-            distal: true,
-        },
-    ]
-}
-
-pub fn consumer_armoured() -> Recipe {
-    super::jointed::consumer_armoured()
-}
-
-pub const PRODUCERS: [fn() -> Recipe; 3] =
-    [super::producer_mat, producer_shrub, super::producer_stalk];
-pub const CONSUMERS: [fn() -> Recipe; 3] =
-    [consumer_browser, super::consumer_pursuit, consumer_armoured];
+bodies!("spaced":
+    /// Five broad leaves at distinct, connected branch endpoints.
+    producer_shrub => "spaced.producer_shrub",
+    /// The branching browser with three fixed, spaced leg situs.
+    consumer_browser => "spaced.consumer_browser",
+    /// The jointed armoured grazer, unchanged.
+    consumer_armoured => "jointed.consumer_armoured",
+);
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::legacy::mesocosm::axis::Soma;
-    use crate::legacy::mesocosm::body::{BodyDocument, Part, SpeciesId};
+    use crate::legacy::mesocosm::body::{BodyDocument, Part, SpeciesId, VolumeRef};
     use crate::legacy::mesocosm::development::{develop_body, minimum_body_mass_mg};
     use crate::legacy::mesocosm::organism::Kingdom;
     use crate::legacy::mesocosm::process::FeedingMode;
 
+    // The foot's and the broad leaf's tags in the jointed and spaced sheets.
     const FOOT_VOLUME_TAG: u8 = 14;
+    const LEAF_VOLUME_TAG: u8 = 25;
 
     fn body(recipe: &Recipe, seed: u64) -> BodyDocument {
         let soma = Soma::develop(recipe, seed);

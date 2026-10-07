@@ -315,7 +315,7 @@ impl World {
             // salted stream, so a stream left unspent moves nothing else: the
             // tiers that still draw develop bodies identical to another arm's.
             let recipe = match founding.tier(kingdom).get(slot) {
-                Some(authored) => authored(),
+                Some(authored) => authored.clone(),
                 None => {
                     let mut stream = Rng::from_seed(seed ^ RECIPE_SALT ^ u64::from(species.0));
                     crate::legacy::mesocosm::axis::seed(&mut stream, kingdom)

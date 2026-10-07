@@ -1,0 +1,168 @@
+# The visible-body roster's second arrangement pass.
+#
+# These bodies keep the historical roster available as the axial set. They
+# use ordinary recipe layout data, so development remains the sole source of
+# their part graphs and a renderer never recognizes a species to make a
+# body. They admit the base palette; this sheet adds no shapes.
+#
+# A layout, when a body gives one, places every tagma: `parent` is the index
+# of the tagma it branches from (none continues the chain), `anchor` where
+# along that parent it attaches, `facing` which way it grows, and `variance`
+# a regional variance that overrides the body's for that stretch.
+
+schema = 1
+owner = "isocosm"
+consumer = "isocosm world genesis (Founding)"
+status = "authored"
+
+[sources.phenotype]
+doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
+note = "VB2 arrangement slice, 2026-09-04: branching layouts"
+
+[sources.wing_record]
+doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
+
+# A raised shrub with two lateral, leaf-bearing branches and a crown.
+#
+# The trunk is vertical; each branch anchors to a realised trunk segment, so
+# the same program remains recognisable when its individual segment count
+# varies. Every plate is still held above the segment it grows from, leaving
+# the existing canopy and fixation reading intact.
+[body.producer_shrub]
+variance = 1
+
+[[body.producer_shrub.tagma]]
+segments = 5
+layout = { anchor = "tip", facing = "above" }
+
+[[body.producer_shrub.tagma]]
+segments = 3
+segment = "slim"
+appendage = "plate"
+shape = "blade"
+layout = { parent = 0, anchor = "middle", facing = "left" }
+
+[[body.producer_shrub.tagma]]
+segments = 3
+segment = "slim"
+appendage = "plate"
+shape = "blade"
+layout = { parent = 0, anchor = "tip", facing = "right" }
+
+[[body.producer_shrub.tagma]]
+segments = 2
+segment = "slim"
+appendage = "plate"
+shape = "frond"
+per_segment = 2
+layout = { parent = 0, anchor = "tip", facing = "above" }
+
+# A browsing consumer with a raised head, a compact chest, and a shorter
+# tail. Its only regional variation is in bare neck and tail segments: leg
+# count remains fixed, while relatives still have visible proportions of
+# their own.
+[body.consumer_browser]
+variance = 0
+
+[[body.consumer_browser.tagma]]
+# Head root. The structural long axis remains back; this is not a
+# camera-facing convention.
+segments = 1
+segment = "slim"
+appendage = "mouth"
+shape = "crop"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+# Eyes and specks use distinct sockets above the head rather than sharing
+# one mass pivot.
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+layout = { parent = 0, anchor = "base", facing = "above" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "speck"
+layout = { parent = 1, anchor = "tip", facing = "above" }
+
+[[body.consumer_browser.tagma]]
+# A neck base first clears the crop, then its bare lower run drops into the
+# chest and is the only neck region that may vary.
+segments = 1
+segment = "slim"
+layout = { parent = 0, anchor = "base", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 2
+segment = "slim"
+layout = { parent = 3, anchor = "tip", facing = "below", variance = 1 }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 1
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 2
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_browser.tagma]]
+segments = 4
+segment = "slim"
+layout = { anchor = "tip", facing = "back", variance = 1 }
+
+# A low armoured cropper: eyes rise from the head, shells continue its
+# trunk, and the legs branch down from the carapace's base. Plates remain
+# covering, so it keeps the consumer reading.
+[body.consumer_armoured]
+variance = 0
+
+[[body.consumer_armoured.tagma]]
+segments = 1
+segment = "slim"
+appendage = "mouth"
+shape = "crop"
+layout = { anchor = "tip", facing = "back" }
+
+[[body.consumer_armoured.tagma]]
+segments = 1
+segment = "slim"
+appendage = "feeler"
+shape = "eye"
+layout = { parent = 0, anchor = "base", facing = "above" }
+
+[[body.consumer_armoured.tagma]]
+# The shell run begins at the head, not at the eye branch.
+segments = 5
+appendage = "plate"
+shape = "shell"
+worn = "covering"
+layout = { parent = 0, anchor = "base", facing = "back" }
+
+[[body.consumer_armoured.tagma]]
+# The undercarriage branches from the trunk rather than becoming a serial
+# tail after the shell run.
+segments = 2
+segment = "broad"
+appendage = "limb"
+shape = "leg"
+layout = { parent = 2, anchor = "base", facing = "below" }
+
+[[body.consumer_armoured.tagma]]
+segments = 3
+segment = "slim"
+layout = { parent = 2, anchor = "tip", facing = "back", variance = 1 }

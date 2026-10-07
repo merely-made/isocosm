@@ -68,9 +68,11 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md) | W1: every plan evaluated against the design record. | Ruled and applied 2026-09-18 (ruling 31). |
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_sim_plan.md](2026-09-22_sim_plan.md) | The sim, W2: Isocosm's schema, processes, record and phases S1 to S6. | 2026-10-04: S2 checkpoint 8 merged at `e3297e6`; checkpoint 9 parked (ruling 591). |
+| [2026-10-06_state_witness_plan.md](2026-10-06_state_witness_plan.md) | Isocosm's state hash onto the family's FNV witness, labelled (rulings 607 to 610). | Briefed and ruled 2026-10-06 (633 to 636); waits on the repin. |
 | [2026-09-22_aggregation_research.md](2026-09-22_aggregation_research.md) | The reduction literature checked, and the executable boundary of the sim's first implementation. | Research, applied 2026-09-22. |
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
 | [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md) | Balaur read against the wing's rulings. | 2026-10-06: read; its forks ruled as 604 to 607. |
+| [2026-10-06_scenevm_wing_brief.md](2026-10-06_scenevm_wing_brief.md) | Eldiron's scenevm read against kiss3d as a tenant and balaur's structure; what is worth learning from it. | 2026-10-06: read; a donor of techniques only (ruling 622). |
 | [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | M0 and M1 done 2026-09-25; M2 to M4 proposed. |
 | [2026-09-22_family_rename_plan.md](2026-09-22_family_rename_plan.md) | The family rename: Isocosm, Eponym, Isocosm: VTT. | Landed 2026-09-24: R0 to R5. |
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | Carried 2026-09-26; carryover distinction 2026-09-28 (ruling 406). |
@@ -108,6 +110,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-06/2026-10-06_wing_datasheets_plan.md`](archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md): packs in TOML, the pack JSON check, and every founding and the seeded kinds as datasheets, landed (rulings 623 to 632); its findings handed off.
 - [`2026-10-06/2026-09-22_sim_design_session_notes.md`](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md): the sim design sessions' notes, 2026-09-16 to 2026-09-30 (ruling 614).
 - [`2026-10-06/2026-09-22_sim_plan_progress.md`](archive_docs/2026-10-06/2026-09-22_sim_plan_progress.md): the sim plan's full progress log to 2026-10-06 (ruling 613).
 - [`2026-10-06/2026-09-18_wing_design_plan_progress.md`](archive_docs/2026-10-06/2026-09-18_wing_design_plan_progress.md): the design record's full progress log to 2026-10-06 (ruling 613).
