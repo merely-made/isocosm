@@ -376,7 +376,8 @@ fn an_unchanged_frame_neither_encodes_nor_advances_the_generation() {
 /// document's last image in place rather than an empty slot.
 #[test]
 fn the_produced_texture_is_straight_alpha_encoded_srgb() {
-    let Ok(core) = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default()) else {
+    let Ok(core) = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default())
+    else {
         eprintln!("no render core; skipping isometer output contract receipt");
         return;
     };

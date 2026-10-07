@@ -50,3 +50,14 @@ mere. Briefed from §13.47 and the Knot repin's notes (ruling 585).
   and passed alone), wing-integration 4, isocosm-overlay 43; Eponym 81 with
   two failures, the Sortie scenarios that fail on untouched main too.
   Remaining: merge to main and the push, which waits on Mark's word.
+- 2026-10-07: main merged in (`0979f6af`; 18 commits, whose only manifest
+  change is the datasheets work's `toml = "1"` in four crates; weave resolved
+  one entity). Re-verified: each workspace still resolves offline to one
+  mere, genet and netrender; the root lock passes `--locked` unchanged and
+  wing-integration's gains toml's registry rows. Checks pass with
+  `--workspace` over all targets in all eight (Mesocosm's, Eponym's and
+  isometer's roots are packages, so without `--workspace` a check covers
+  only the root). Tests, one thread each: isocosm 1,231, the VTT 371,
+  isometer 293, isomere 51 (with `host`; 42 without), Mesocosm 336,
+  wing-integration 4, isocosm-overlay 43; Eponym 81 with the same two Sortie
+  failures. The isometer producer test is rustfmt-clean again, at 600 lines.
