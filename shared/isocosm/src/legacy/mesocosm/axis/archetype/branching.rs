@@ -1,127 +1,21 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The visible-body roster's second arrangement pass.
+//! The visible-body roster's second arrangement pass: `branching.toml`.
 //!
-//! These recipes keep the historical roster available as the axial set. They
-//! use ordinary recipe layout data, so development remains the sole source of
-//! their part graphs and a renderer never recognizes a species to make a body.
+//! Explicit branching layouts, admitted under the base palette. The bodies
+//! and the reasons for them are in the sheet.
 
 use super::*;
-use crate::legacy::mesocosm::axis::{Anchor, Stretch};
-use crate::legacy::mesocosm::plan::Facing;
 
-fn layout(placements: &[(Option<u8>, Anchor, Facing, Option<u8>)]) -> Vec<Stretch> {
-    placements
-        .iter()
-        .map(|&(parent, anchor, facing, variance)| Stretch {
-            parent,
-            anchor,
-            facing,
-            variance,
-        })
-        .collect()
-}
-
-/// A raised shrub with two lateral, leaf-bearing branches and a crown.
-///
-/// The trunk is vertical; each branch anchors to a realised trunk segment, so
-/// the same program remains recognisable when its individual segment count
-/// varies. Every plate is still held above the segment it grows from, leaving
-/// the existing canopy and fixation reading intact.
-pub fn producer_shrub() -> Recipe {
-    with_variance(
-        Recipe::of(vec![
-            Tagma::bare(5).with_shapes(0, 0),
-            Tagma::new(3, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_BLADE),
-            Tagma::new(3, Appendage::Plate).with_shapes(SHAPE_SLIM, SHAPE_BLADE),
-            Tagma::new(2, Appendage::Plate)
-                .with_shapes(SHAPE_SLIM, SHAPE_FROND)
-                .with_per_segment(2),
-        ])
-        .with_layout(layout(&[
-            (None, Anchor::Tip, Facing::Above, None),
-            (Some(0), Anchor::Middle, Facing::Left, None),
-            (Some(0), Anchor::Tip, Facing::Right, None),
-            (Some(0), Anchor::Tip, Facing::Above, None),
-        ])),
-        1,
-    )
-}
-
-/// A browsing consumer with a raised head, a compact chest, and a shorter
-/// tail. Its only regional variation is in bare neck and tail segments: leg
-/// count remains fixed, while relatives still have visible proportions of
-/// their own.
-pub fn consumer_browser() -> Recipe {
-    with_variance(
-        Recipe::of(vec![
-            Tagma::new(1, Appendage::Mouth).with_shapes(SHAPE_SLIM, SHAPE_CROP),
-            Tagma::new(1, Appendage::Feeler).with_shapes(SHAPE_SLIM, SHAPE_EYE),
-            Tagma::new(1, Appendage::Feeler).with_shapes(SHAPE_SLIM, SHAPE_SPECK),
-            Tagma::bare(1).with_shapes(SHAPE_SLIM, 0),
-            Tagma::bare(2).with_shapes(SHAPE_SLIM, 0),
-            Tagma::new(1, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_LEG),
-            Tagma::bare(1).with_shapes(0, 0),
-            Tagma::new(2, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_LEG),
-            Tagma::bare(4).with_shapes(SHAPE_SLIM, 0),
-        ])
-        .with_layout(layout(&[
-            // Head root. The structural long axis remains Back; this is not
-            // a camera-facing convention.
-            (None, Anchor::Tip, Facing::Back, None),
-            // Eyes and specks use distinct sockets above the head rather than
-            // sharing one mass pivot.
-            (Some(0), Anchor::Base, Facing::Above, None),
-            (Some(1), Anchor::Tip, Facing::Above, None),
-            // A neck base first clears the crop, then its bare lower run drops
-            // into the chest and is the only neck region that may vary.
-            (Some(0), Anchor::Base, Facing::Back, None),
-            (Some(3), Anchor::Tip, Facing::Below, Some(1)),
-            (None, Anchor::Tip, Facing::Back, None),
-            (None, Anchor::Tip, Facing::Back, None),
-            (None, Anchor::Tip, Facing::Back, None),
-            (None, Anchor::Tip, Facing::Back, Some(1)),
-        ])),
-        0,
-    )
-}
-
-/// A low armoured cropper: eyes rise from the head, shells continue its trunk,
-/// and the legs branch down from the carapace's base. Plates remain covering,
-/// so it keeps the consumer reading.
-pub fn consumer_armoured() -> Recipe {
-    with_variance(
-        Recipe::of(vec![
-            Tagma::new(1, Appendage::Mouth).with_shapes(SHAPE_SLIM, SHAPE_CROP),
-            Tagma::new(1, Appendage::Feeler).with_shapes(SHAPE_SLIM, SHAPE_EYE),
-            Tagma::new(5, Appendage::Plate).with_shapes(0, SHAPE_SHELL),
-            Tagma::new(2, Appendage::Limb).with_shapes(SHAPE_BROAD, SHAPE_LEG),
-            Tagma::bare(3).with_shapes(SHAPE_SLIM, 0),
-        ])
-        .with_layout(layout(&[
-            (None, Anchor::Tip, Facing::Back, None),
-            (Some(0), Anchor::Base, Facing::Above, None),
-            // The shell run begins at the head, not at the eye branch.
-            (Some(0), Anchor::Base, Facing::Back, None),
-            // The undercarriage branches from the trunk rather than becoming
-            // a serial tail after the shell run.
-            (Some(2), Anchor::Base, Facing::Below, None),
-            (Some(2), Anchor::Tip, Facing::Back, Some(1)),
-        ])),
-        0,
-    )
-}
-
-/// The V2 producer set preserves the historical mat and stalk while replacing
-/// its serial shrub with the raised branching construction.
-pub const PRODUCERS: [fn() -> Recipe; 3] =
-    [super::producer_mat, producer_shrub, super::producer_stalk];
-
-/// The V2 consumer set preserves the pursuit form while arranging browser and
-/// armour in the camera's readable plane.
-pub const CONSUMERS: [fn() -> Recipe; 3] =
-    [consumer_browser, super::consumer_pursuit, consumer_armoured];
+bodies!("base":
+    /// A raised shrub with two lateral, leaf-bearing branches and a crown.
+    producer_shrub => "branching.producer_shrub",
+    /// A browsing consumer with a raised head, a compact chest and a shorter tail.
+    consumer_browser => "branching.consumer_browser",
+    /// A low armoured cropper whose legs branch down from the carapace.
+    consumer_armoured => "branching.consumer_armoured",
+);
 
 #[cfg(test)]
 mod tests {

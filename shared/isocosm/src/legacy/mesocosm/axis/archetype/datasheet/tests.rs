@@ -1,68 +1,64 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The sheets against the code they replace, and what a sheet may not say.
+//! What the sheets build, and what a sheet may not say.
+//!
+//! That the sheets build the worlds the code-built rosters did is the founding
+//! receipt's to prove (`world/genesis/founding/tests.rs`); P3a's equality
+//! test against the code is in history at `18945c84`.
 
 use super::*;
 use crate::legacy::mesocosm::axis::archetype;
-use crate::legacy::mesocosm::world::genesis::Founding;
-
-const ALL: [Founding; 8] = [
-    Founding::Drawn,
-    Founding::BrowsingConsumer,
-    Founding::RosterStand,
-    Founding::RosterFauna,
-    Founding::Roster,
-    Founding::BranchingRoster,
-    Founding::JointedRoster,
-    Founding::SpacedRoster,
-];
-const KINGDOMS: [Kingdom; 3] = [Kingdom::Producer, Kingdom::Consumer, Kingdom::Decomposer];
-
-fn code_tier(founding: Founding, kingdom: Kingdom) -> Vec<Recipe> {
-    founding.tier(kingdom).iter().map(|body| body()).collect()
-}
 
 #[test]
-fn every_founding_sheet_builds_the_codes_palette_and_bodies() {
-    let sheets = foundings();
-    for founding in ALL {
-        let name = format!("{founding:?}");
-        let sheet = sheets
-            .get(&name)
-            .unwrap_or_else(|| panic!("no sheet for {name}"));
-        assert_eq!(sheet.palette, founding.palette(), "{name}: palette");
-        for kingdom in KINGDOMS {
-            assert_eq!(
-                sheet.tier(kingdom),
-                code_tier(founding, kingdom),
-                "{name}, {kingdom:?}"
-            );
-        }
+fn every_named_body_and_palette_resolves() {
+    // Ruling 632: the names in code are lookups, so each must find its body.
+    let bodies: [fn() -> Recipe; 16] = [
+        archetype::producer_mat,
+        archetype::producer_shrub,
+        archetype::producer_stalk,
+        archetype::consumer_browser,
+        archetype::consumer_pursuit,
+        archetype::consumer_armoured,
+        archetype::decomposer_crust,
+        archetype::decomposer_detritivore,
+        archetype::branching::producer_shrub,
+        archetype::branching::consumer_browser,
+        archetype::branching::consumer_armoured,
+        archetype::jointed::producer_shrub,
+        archetype::jointed::consumer_browser,
+        archetype::jointed::consumer_armoured,
+        archetype::spaced::producer_shrub,
+        archetype::spaced::consumer_browser,
+    ];
+    for body in bodies {
+        assert!(!body().tagmata.is_empty());
     }
-}
-
-#[test]
-fn the_sheets_name_the_eight_foundings_and_the_default() {
-    let mut expected: Vec<String> = ALL.iter().map(|founding| format!("{founding:?}")).collect();
-    expected.sort();
-    assert_eq!(foundings().names().collect::<Vec<_>>(), expected);
-    assert_eq!(foundings().default, format!("{:?}", Founding::default()));
+    assert_eq!(
+        archetype::spaced::consumer_armoured(),
+        archetype::jointed::consumer_armoured()
+    );
+    for palette in [
+        archetype::palette(),
+        archetype::jointed::palette(),
+        archetype::spaced::palette(),
+    ] {
+        assert_ne!(palette, PartPalette::primitive());
+    }
 }
 
 #[test]
 fn the_primitive_palette_is_the_codes() {
     assert_eq!(
         foundings().palette("primitive"),
-        Some(PartPalette::primitive())
+        Ok(PartPalette::primitive())
     );
 }
 
 #[test]
-fn a_changed_sheet_is_caught() {
-    // The control for the equality test above: the mat's pads become fronds,
-    // which every palette admits, and the Roster's first producer must stop
-    // matching the code.
+fn a_changed_sheet_builds_a_changed_body() {
+    // The mat's pads become fronds, which every palette admits: the Roster's
+    // first producer must stop matching the shipped one, and only it.
     let base = SETS[0]
         .1
         .replacen("shape = \"pad\"", "shape = \"frond\"", 1);
@@ -73,6 +69,19 @@ fn a_changed_sheet_is_caught() {
     let roster = changed.get("Roster").expect("the roster");
     assert_ne!(roster.producer[0], archetype::producer_mat());
     assert_eq!(roster.producer[1], archetype::producer_shrub());
+}
+
+#[test]
+fn a_founding_resolves_a_body_in_its_own_palette() {
+    // The jointed palette has no blade, so the mat with blades cannot be
+    // founded there, though the base palette admits it.
+    let base = SETS[0]
+        .1
+        .replacen("shape = \"pad\"", "shape = \"blade\"", 1);
+    let mut sets = SETS;
+    sets[0].1 = &base;
+    let why = load(&sets, FOUNDINGS.1).err().expect("refused");
+    assert!(why.contains("admits no Plate shape \"blade\""), "{why}");
 }
 
 const KEYS: &str = "schema = 1\nowner = \"test\"\nconsumer = \"test\"\nstatus = \"test\"\n";
@@ -107,7 +116,7 @@ fn try_load(tables: &str) -> Result<Foundings, String> {
 }
 
 fn refused(tables: &str, words: &str) {
-    let why = try_load(tables).expect_err("refused");
+    let why = try_load(tables).err().expect("refused");
     assert!(why.contains(words), "{why:?} does not say {words:?}");
 }
 
@@ -123,6 +132,7 @@ fn the_test_sheet_loads_with_its_encodings() {
     assert_eq!(body.tagmata[0].appendage_shape, JAW_SHAPE);
     assert_eq!(body.tagmata[1].appendage_shape, ARMOUR_SHAPE);
     assert!(body.layout.is_empty() && body.appendage_chains.is_empty());
+    assert_eq!(sheets.body("t.b", "p").as_ref(), Ok(body));
 }
 
 #[test]

@@ -3,17 +3,17 @@
 
 //! The founding datasheets, read into palettes and recipes.
 //!
-//! Wing design record rulings 625 to 631. The sheets live in
+//! Wing design record rulings 625 to 632. The sheets live in
 //! `datasheets/foundings/` and compile in: one per roster set (`base`,
 //! `branching`, `jointed`, `spaced`) holding palettes, chains and bodies, and
 //! `foundings.toml` naming each founding's palette and per-tier bodies. The
 //! reasons for every shape and body are comments in the sheets.
 //!
 //! Sheets name shapes; this module computes the selectors. A tagma's
-//! `segment` and `shape` name slots in the palette of the founding that
-//! admits the body, `mouth = "jaw"` adds [`JAW_SHAPE`], and
-//! `worn = "covering"` adds [`ARMOUR_SHAPE`]. A name that palette does not
-//! admit is refused.
+//! `segment` and `shape` name slots in the palette a body is resolved in
+//! (for a founding, the palette it admits), `mouth = "jaw"` adds
+//! [`JAW_SHAPE`], and `worn = "covering"` adds [`ARMOUR_SHAPE`]. A name that
+//! palette does not admit is refused.
 
 use std::collections::BTreeMap;
 use std::sync::OnceLock;
@@ -21,12 +21,15 @@ use std::sync::OnceLock;
 use serde::Deserialize;
 
 use crate::legacy::mesocosm::axis::{
-    ARMOUR_SHAPE, Anchor, Appendage, AppendageStep, ChainFacing, JAW_SHAPE, Recipe, Stretch, Tagma,
+    ARMOUR_SHAPE, Appendage, AppendageStep, JAW_SHAPE, Recipe, Stretch, Tagma,
 };
 use crate::legacy::mesocosm::body::VolumeRef;
 use crate::legacy::mesocosm::development::{PALETTE_SHAPES, PartPalette, PartTemplate, RoleShapes};
 use crate::legacy::mesocosm::organism::Kingdom;
-use crate::legacy::mesocosm::plan::{Facing, Role};
+use crate::legacy::mesocosm::plan::Role;
+
+mod schema;
+use schema::*;
 
 macro_rules! sheet {
     ($name:literal) => {
@@ -72,13 +75,14 @@ impl FoundingSheet {
     }
 }
 
-/// Every founding the sheets declare, and every palette they define.
-#[derive(Clone, Debug, PartialEq, Eq)]
+/// Every founding the sheets declare, every palette they define, and the
+/// bodies, for resolving one by name.
 pub struct Foundings {
     /// The founding a world takes when it names none.
     pub default: String,
     foundings: BTreeMap<String, FoundingSheet>,
-    palettes: BTreeMap<String, PartPalette>,
+    palettes: BTreeMap<String, NamedPalette>,
+    sheets: BTreeMap<String, SetSheet>,
 }
 
 impl Foundings {
@@ -90,8 +94,20 @@ impl Foundings {
         self.foundings.keys().map(String::as_str)
     }
 
-    pub fn palette(&self, name: &str) -> Option<PartPalette> {
-        self.palettes.get(name).copied()
+    pub fn palette(&self, name: &str) -> Result<PartPalette, String> {
+        self.palettes
+            .get(name)
+            .ok_or_else(|| format!("no palette {name:?}"))?
+            .admitted()
+    }
+
+    /// One body, `<sheet>.<body>`, resolved in the named palette.
+    pub fn body(&self, body: &str, palette: &str) -> Result<Recipe, String> {
+        let named = self
+            .palettes
+            .get(palette)
+            .ok_or_else(|| format!("no palette {palette:?}"))?;
+        recipe(&self.sheets, body, named)
     }
 }
 
@@ -102,13 +118,27 @@ pub fn foundings() -> &'static Foundings {
     SHEETS.get_or_init(|| load(&SETS, FOUNDINGS.1).unwrap_or_else(|why| panic!("{why}")))
 }
 
+/// An embedded palette, by name.
+pub fn palette(name: &str) -> PartPalette {
+    foundings()
+        .palette(name)
+        .unwrap_or_else(|why| panic!("{why}"))
+}
+
+/// An embedded body, `<sheet>.<body>`, resolved in the named palette.
+pub fn body(body: &str, palette: &str) -> Recipe {
+    foundings()
+        .body(body, palette)
+        .unwrap_or_else(|why| panic!("{why}"))
+}
+
 /// Reads roster-set sheets, given as `(name, text)`, and a foundings sheet.
 pub fn load(sets: &[(&str, &str)], foundings: &str) -> Result<Foundings, String> {
     let mut sheets = BTreeMap::new();
     for &(name, text) in sets {
         let sheet: SetSheet = parse(name, text)?;
         sheet.check(name)?;
-        if sheets.insert(name, sheet).is_some() {
+        if sheets.insert(name.to_string(), sheet).is_some() {
             return Err(format!("{name}: a sheet is named twice"));
         }
     }
@@ -155,14 +185,11 @@ pub fn load(sets: &[(&str, &str)], foundings: &str) -> Result<Foundings, String>
             founding_sheet.default
         ));
     }
-    let palettes = named
-        .iter()
-        .map(|(name, palette)| Ok((name.clone(), palette.admitted()?)))
-        .collect::<Result<_, String>>()?;
     Ok(Foundings {
         default: founding_sheet.default,
         foundings: resolved,
-        palettes,
+        palettes: named,
+        sheets,
     })
 }
 
@@ -288,9 +315,9 @@ fn named_palette(
     Ok(palette)
 }
 
-/// Resolves `<sheet>.<body>` in the palette of the founding that admits it.
+/// Resolves `<sheet>.<body>` in the given palette.
 fn recipe(
-    sheets: &BTreeMap<&str, SetSheet>,
+    sheets: &BTreeMap<String, SetSheet>,
     body: &str,
     palette: &NamedPalette,
 ) -> Result<Recipe, String> {
@@ -382,7 +409,7 @@ fn tagma(entry: &TagmaEntry, palette: &NamedPalette) -> Result<Tagma, String> {
 
 /// A chain is named within its body's sheet, or as `<sheet>.<chain>`.
 fn chain(
-    sheets: &BTreeMap<&str, SetSheet>,
+    sheets: &BTreeMap<String, SetSheet>,
     home: &str,
     name: &str,
     palette: &NamedPalette,
@@ -404,174 +431,6 @@ fn chain(
             })
         })
         .collect()
-}
-
-// The sheets' own shapes. Everything is `deny_unknown_fields`, so a misspelt
-// key is refused rather than read as its default.
-
-/// Livery's header, which every sheet carries.
-macro_rules! header_fields {
-    ($sheet:ident { $($(#[$attr:meta])* $field:ident: $ty:ty),* $(,)? }) => {
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        struct $sheet {
-            schema: u32,
-            owner: String,
-            consumer: String,
-            status: String,
-            sources: BTreeMap<String, Source>,
-            $($(#[$attr])* $field: $ty),*
-        }
-
-        impl $sheet {
-            fn check(&self, sheet: &str) -> Result<(), String> {
-                if self.schema != 1 {
-                    return Err(format!("{sheet}: schema {} is not 1", self.schema));
-                }
-                let said = |text: &String| !text.trim().is_empty();
-                let sourced = !self.sources.is_empty()
-                    && self.sources.values().all(|source| said(&source.doc) && said(&source.note));
-                if !(said(&self.owner) && said(&self.consumer) && said(&self.status) && sourced) {
-                    return Err(format!("{sheet}: owner, consumer, status and sources are required"));
-                }
-                Ok(())
-            }
-        }
-    };
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Source {
-    doc: String,
-    note: String,
-}
-
-header_fields!(SetSheet {
-    #[serde(default)]
-    palettes: BTreeMap<String, PaletteEntry>,
-    #[serde(default)]
-    chain: BTreeMap<String, Vec<StepEntry>>,
-    #[serde(default)]
-    body: BTreeMap<String, BodyEntry>,
-});
-
-header_fields!(FoundingsSheet {
-    default: String,
-    founding: BTreeMap<String, FoundingEntry>,
-});
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct FoundingEntry {
-    palette: String,
-    #[serde(default)]
-    producer: Vec<String>,
-    #[serde(default)]
-    consumer: Vec<String>,
-    #[serde(default)]
-    decomposer: Vec<String>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct PaletteEntry {
-    extends: Option<String>,
-    #[serde(default)]
-    mass: Vec<ShapeEntry>,
-    #[serde(default)]
-    limb: Vec<ShapeEntry>,
-    #[serde(default)]
-    plate: Vec<ShapeEntry>,
-    #[serde(default)]
-    sensor: Vec<ShapeEntry>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct ShapeEntry {
-    name: String,
-    tag: u8,
-    half_extent: [i32; 3],
-    replaces: Option<String>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct StepEntry {
-    role: RoleWord,
-    shape: String,
-    facing: ChainFacingWord,
-    #[serde(default)]
-    distal: bool,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct BodyEntry {
-    variance: u8,
-    tagma: Vec<TagmaEntry>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct TagmaEntry {
-    segments: u8,
-    segment: Option<String>,
-    appendage: Option<AppendageWord>,
-    shape: Option<String>,
-    mouth: Option<MouthWord>,
-    worn: Option<WornWord>,
-    per_segment: Option<u8>,
-    layout: Option<LayoutEntry>,
-    chain: Option<String>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct LayoutEntry {
-    parent: Option<u8>,
-    anchor: AnchorWord,
-    facing: FacingWord,
-    variance: Option<u8>,
-}
-
-/// A lower-case word in a sheet for each variant of a code enum.
-macro_rules! words {
-    ($word:ident => $code:ident { $($variant:ident),* $(,)? }) => {
-        #[derive(Clone, Copy, Deserialize)]
-        #[serde(rename_all = "snake_case")]
-        enum $word { $($variant),* }
-
-        impl From<$word> for $code {
-            fn from(word: $word) -> Self {
-                match word { $($word::$variant => $code::$variant),* }
-            }
-        }
-    };
-}
-
-words!(AppendageWord => Appendage { None, Limb, Feeler, Plate, Mouth, Vane });
-words!(RoleWord => Role { Mass, Limb, Plate, Sensor });
-words!(AnchorWord => Anchor { Base, Middle, Tip });
-words!(FacingWord => Facing { Front, Back, Left, Right, Above, Below });
-words!(ChainFacingWord => ChainFacing { Outward, Inward, Above, Below, Front, Back });
-
-/// Which bank a mouth is drawn from: the mass bank as bulk, the limb bank as
-/// an actuator.
-#[derive(Clone, Copy, PartialEq, Eq, Deserialize)]
-#[serde(rename_all = "snake_case")]
-enum MouthWord {
-    Bulk,
-    Jaw,
-}
-
-/// Whether a plate is held out from the body or worn against it.
-#[derive(Clone, Copy, PartialEq, Eq, Deserialize)]
-#[serde(rename_all = "snake_case")]
-enum WornWord {
-    Held,
-    Covering,
 }
 
 #[cfg(test)]

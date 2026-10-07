@@ -39,9 +39,6 @@ use super::{DEVELOPMENT_SALT, ENCLOSURE, GRAFT_SALT, PLACE_SALT, PLACE_SIDE, REC
 /// area too.
 const SOIL_SEED_MG_PER_COLUMN: u64 = 100;
 
-// Read by tests until `Founding` reads it (the datasheets plan's P3b).
-#[cfg_attr(not(test), allow(dead_code))]
-mod datasheet;
 mod founding;
 pub use founding::Founding;
 
@@ -318,7 +315,7 @@ impl World {
             // salted stream, so a stream left unspent moves nothing else: the
             // tiers that still draw develop bodies identical to another arm's.
             let recipe = match founding.tier(kingdom).get(slot) {
-                Some(authored) => authored(),
+                Some(authored) => authored.clone(),
                 None => {
                     let mut stream = Rng::from_seed(seed ^ RECIPE_SALT ^ u64::from(species.0));
                     crate::legacy::mesocosm::axis::seed(&mut stream, kingdom)

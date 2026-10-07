@@ -9,21 +9,8 @@ use crate::{DEFAULT_MAX_KINDS, SCHEMA_VERSION, identifier};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
-    sync::Arc,
+    sync::{Arc, OnceLock},
 };
-
-/// The six the ruling names. Directional, subject to object: the subject
-/// claimed, discovered, experienced, embodied, invoked or defeated the
-/// object, never the reverse, so an inverse reading is a query and not
-/// another kind.
-pub const SEEDED_KINDS: [&str; 6] = [
-    "impresa:claim",
-    "impresa:discover",
-    "impresa:experience",
-    "impresa:embody",
-    "impresa:invoke",
-    "impresa:defeat",
-];
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -87,17 +74,17 @@ impl KindSet {
         })
     }
 
-    /// The six seeded kinds, for a world that has authored none of its own
-    /// and for tests. A pack extends this by shipping its own spec, never by
-    /// mutating a set already in hand.
+    /// The seeded kinds, `datasheets/kinds.toml`, for a world that has
+    /// authored none of its own and for tests. A pack extends this by shipping
+    /// its own spec, never by mutating a set already in hand.
     pub fn seeded() -> Self {
-        Self::new(KindSetSpec {
-            version: SCHEMA_VERSION,
-            id: "impresa:seeded".into(),
-            kinds: SEEDED_KINDS.iter().copied().map(String::from).collect(),
-            limits: KindSetLimits::default(),
-        })
-        .expect("the seeded kinds are a valid set")
+        static SEEDED: OnceLock<KindSet> = OnceLock::new();
+        SEEDED
+            .get_or_init(|| {
+                let spec = seeded_spec(SEEDED_SHEET).unwrap_or_else(|why| panic!("{why}"));
+                Self::new(spec).expect("the seeded kinds are a valid set")
+            })
+            .clone()
     }
 
     pub fn spec(&self) -> &KindSetSpec {
@@ -167,17 +154,30 @@ mod sheet_tests {
     use super::*;
 
     #[test]
-    fn the_sheet_holds_the_seeded_kinds() {
-        let spec = seeded_spec(SEEDED_SHEET).expect("the sheet reads");
-        assert_eq!(spec, KindSet::seeded().spec().clone());
-        assert_eq!(spec.kinds, SEEDED_KINDS);
+    fn the_sheet_holds_the_six_ruled_kinds_in_order() {
+        let spec = KindSet::seeded().spec().clone();
+        assert_eq!(spec.id, "impresa:seeded");
+        assert_eq!(spec.version, SCHEMA_VERSION);
+        assert_eq!(spec.limits, KindSetLimits::default());
+        assert_eq!(
+            spec.kinds,
+            [
+                "impresa:claim",
+                "impresa:discover",
+                "impresa:experience",
+                "impresa:embody",
+                "impresa:invoke",
+                "impresa:defeat",
+            ]
+        );
     }
 
     #[test]
     fn a_changed_sheet_is_caught() {
         let changed = SEEDED_SHEET.replacen("\"impresa:invoke\"", "\"impresa:summon\"", 1);
         assert_ne!(changed, SEEDED_SHEET);
-        assert_ne!(seeded_spec(&changed).expect("reads").kinds, SEEDED_KINDS);
+        let kinds = seeded_spec(&changed).expect("reads").kinds;
+        assert_ne!(kinds, KindSet::seeded().spec().kinds);
         let misspelt = SEEDED_SHEET.replacen("kinds = [", "kind = [", 1);
         assert!(seeded_spec(&misspelt).is_err());
     }

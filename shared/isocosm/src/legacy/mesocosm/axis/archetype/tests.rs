@@ -141,11 +141,9 @@ const ROSTER: [Row; 8] = [
 /// `axis::seed` itself rather than against numbers copied out of a receipt.
 #[test]
 fn the_roster_conserves_each_tiers_scale() {
-    for (kingdom, roster) in [
-        (Kingdom::Producer, &PRODUCERS[..]),
-        (Kingdom::Consumer, &CONSUMERS[..]),
-        (Kingdom::Decomposer, &DECOMPOSERS[..]),
-    ] {
+    let founding = datasheet::foundings().get("Roster").expect("the roster");
+    for kingdom in [Kingdom::Producer, Kingdom::Consumer, Kingdom::Decomposer] {
+        let roster = founding.tier(kingdom);
         let mut drawn = Vec::new();
         for species in 2u64..12 {
             for seed in 1u64..=10 {
@@ -166,11 +164,7 @@ fn the_roster_conserves_each_tiers_scale() {
             }
         }
         let drawn_mean = drawn.iter().sum::<u64>() / drawn.len() as u64;
-        let authored_mean = roster
-            .iter()
-            .map(|recipe| ceiling_of(&recipe()))
-            .sum::<u64>()
-            / roster.len() as u64;
+        let authored_mean = roster.iter().map(ceiling_of).sum::<u64>() / roster.len() as u64;
         let ratio = authored_mean as f64 / drawn_mean as f64;
         assert!(
             (0.8..=1.2).contains(&ratio),
@@ -323,18 +317,20 @@ fn kin_resemble_and_are_not_clones() {
 /// `PartPalette::validate` refuses either, so developing at all is the proof.
 #[test]
 fn the_archetype_palette_is_admissible() {
-    assert_eq!(classify(CROP), Role::Mass, "the crop must be bulk");
-    assert_eq!(classify(SLIM), Role::Mass);
-    assert_eq!(classify(BROAD), Role::Mass);
-    assert_eq!(classify(LEG), Role::Limb);
-    assert_eq!(classify(EYE), Role::Sensor);
-    assert_eq!(classify(SPECK), Role::Sensor);
-    assert_eq!(classify(BLADE), Role::Plate);
-    assert_eq!(classify(PAD), Role::Plate);
-    assert_eq!(classify(SHELL), Role::Plate);
+    let palette = palette();
+    for (role, bank) in [
+        (Role::Mass, palette.mass),
+        (Role::Limb, palette.limb),
+        (Role::Plate, palette.plate),
+        (Role::Sensor, palette.sensor),
+    ] {
+        // The crop among them is bulk, which is why a mouth drawn from it grazes.
+        for shape in bank.admitted() {
+            assert_eq!(classify(shape.half_extent), role, "{shape:?}");
+        }
+    }
     // Both banks the roster fills are full, which is the budget line the plan
     // asked to be checked rather than assumed.
-    let palette = palette();
     assert_eq!(palette.mass.admitted().count(), 4, "Mass bank is full");
     assert_eq!(palette.plate.admitted().count(), 4, "Plate bank is full");
     assert_eq!(palette.limb.admitted().count(), 2);

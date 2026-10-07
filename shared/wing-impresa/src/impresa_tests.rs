@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 use super::*;
-use crate::{KindSetLimits, KindSetSpec, SEEDED_KINDS};
+use crate::{KindSetLimits, KindSetSpec};
 
 fn entry(
     subject: &str,
@@ -69,7 +69,7 @@ fn spec() -> ImpresaSpec {
 
 /// The seeded six plus a pack's own kind, which is how a world grows one.
 fn packed() -> KindSet {
-    let mut kinds: Vec<String> = SEEDED_KINDS.iter().copied().map(String::from).collect();
+    let mut kinds = KindSet::seeded().spec().kinds.clone();
     kinds.push("pack:betrothed".into());
     KindSet::new(KindSetSpec {
         version: SCHEMA_VERSION,
@@ -84,10 +84,18 @@ fn packed() -> KindSet {
 fn the_seeded_set_carries_the_six_ruled_kinds() {
     let kinds = KindSet::seeded();
     assert_eq!(kinds.spec().kinds.len(), 6);
-    for kind in SEEDED_KINDS {
+    let ruled = [
+        "impresa:claim",
+        "impresa:discover",
+        "impresa:experience",
+        "impresa:embody",
+        "impresa:invoke",
+        "impresa:defeat",
+    ];
+    for kind in ruled {
         assert!(kinds.contains(kind), "{kind}");
     }
-    assert_eq!(kinds.spec().kinds, SEEDED_KINDS, "authored order is kept");
+    assert_eq!(kinds.spec().kinds, ruled, "authored order is kept");
     assert!(!kinds.contains("pack:betrothed"));
     // Closed by name, so a near miss is a miss.
     assert!(!kinds.contains("claim"));
