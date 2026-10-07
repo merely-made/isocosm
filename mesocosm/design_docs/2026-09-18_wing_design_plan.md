@@ -8630,6 +8630,31 @@ what later sections derive from.
      TOML comments (recommended); stay in the Rust docs. Mark chose "Into
      the datasheets". So the reasons sit beside the data people edit, and
      the Rust keeps only loader documentation.
+629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
+     the datasheets plan. Question: one self-contained sheet per founding,
+     as the plan worded it, or sheets by roster set? The eight foundings
+     share 16 distinct recipes; per-founding sheets would hold 41
+     transcriptions, the mat in seven. Options: by roster set, the base,
+     branching, jointed and spaced sheets mirroring today's modules, plus
+     one foundings sheet naming each founding's palette and tier lists by
+     reference (recommended); one sheet per founding. Mark chose "By roster
+     set (Recommended)". So each body is written once, and the plan's
+     "one TOML datasheet per founding" is amended.
+630. **Palettes extend one another.** 2026-10-06, the same round. Question:
+     are the four palettes written in full or by extension? Options: each
+     extends another, listing the slots it adds or replaces, with the
+     primitive palette written in full and pinned by a test to
+     `PartPalette::primitive()` (recommended); each written in full, every
+     slot in selector order. Mark chose "Each extends another
+     (Recommended)". So "no default moves" stays visible in the sheet, and a
+     shared shape is edited once.
+631. **The two unnamed primitive shapes are "block" and "rod".** 2026-10-06,
+     the same round. Question: what are mass slot 0 (`[2,2,2]`, tag 1) and
+     limb slot 0 (`[4,1,1]`, tag 2) called, which the code names only as
+     `0` and `JAW_SHAPE`? Options: "block" and "rod" (recommended); leave
+     them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
+     every palette slot has a name; plate's and sensor's defaults keep the
+     code's "frond" and "eye".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

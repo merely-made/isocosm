@@ -16,6 +16,14 @@ review, and datasheets in Livery's shape.
   both". *Reading, not ruled:* `abi` stays 1, since only the syntax changes.
 - **625.** Every founding becomes data, the instrument variants too. Mark:
   "Everything, instrument variants too".
+- **626 to 628,** at P3's checkpoint: the datasheets are embedded in
+  isocosm ("Embedded in isocosm"), name shapes and selector encodings in
+  words ("By name"), and carry the rationale prose as TOML comments ("Into
+  the datasheets").
+- **629 to 631,** in P3a: sheets by roster set plus one foundings sheet
+  ("By roster set (Recommended)"); palettes extend one another ("Each
+  extends another (Recommended)"); the unnamed primitive shapes are "block"
+  and "rod" ("\"block\" and \"rod\" (Recommended)").
 
 ## Findings (2026-10-06, isometry `3530f611`)
 
@@ -86,11 +94,15 @@ passes on the converted tree.
 ### P3: foundings and kinds as data (ruling 625)
 
 - **P3a: datasheets beside the code.**
-  - One TOML datasheet per founding, in Livery's shape (`schema`, owner and
-    consumer, a `status` saying it is authored, `sources` naming the DC plan
-    or ruling behind it), embedded in `isocosm` and parsed once.
-  - Each holds the palette and the per-tier recipe lists, with shapes by
-    name.
+  - TOML datasheets in Livery's shape (`schema`, owner and consumer, a
+    `status` saying it is authored, `sources` naming the DC plan or ruling
+    behind it), embedded in `isocosm` and parsed once.
+  - *Amended 2026-10-06 by ruling 629:* one sheet per roster set (base,
+    branching, jointed, spaced), each with its palette and bodies, and one
+    foundings sheet naming each founding's palette and per-tier body lists
+    by reference. The plan first said one sheet per founding.
+  - Shapes and selector encodings are named (627); palettes extend one
+    another (630).
   - `SEEDED_KINDS` gets its own datasheet in `wing-impresa`.
   - Tests prove each datasheet builds values equal to the current code:
     every palette, every recipe, every kind.
