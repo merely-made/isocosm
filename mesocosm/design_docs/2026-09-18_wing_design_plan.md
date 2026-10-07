@@ -8668,7 +8668,9 @@ what later sections derive from.
      bodies up by string. Mark chose "Keep names as lookups (Recommended)".
      So no caller changes, and a test proves every accessor resolves.
 
-622. **Saves keep fields; traces keep entities.** 2026-10-06, the state
+633. **Saves keep fields; traces keep entities.** 2026-10-06, the state
+     *(Recorded at `c0091aa8` as 622 to 625, numbers already taken by the
+     datasheets rulings on main; renumbered 633 to 636 the same day.)*
      witness brief's first fork. Question: a saved checkpoint can carry its
      labelled entries per top-level `State` field (thirteen) or per entity
      (thousands in a grown world); what grain do saves keep? Options: fields
@@ -8676,16 +8678,16 @@ what later sections derive from.
      only. Mark chose "Fields in saves, entities in traces". So a load names
      the collection that diverged, and the on-demand per-tick trace names the
      entity.
-623. **A v2 save stores the witness as a u64.** 2026-10-06. Options: u64
+634. **A v2 save stores the witness as a u64.** 2026-10-06. Options: u64
      (recommended); a hex string in the existing `Key`. Mark chose "u64". So
      v2 stores the family witness's own type, and v1 saves are read through a
      separate struct carrying their string.
-624. **The witness lands before its labels.** 2026-10-06, confirming 609's
+635. **The witness lands before its labels.** 2026-10-06, confirming 609's
      reading. Options: H1 now, H2 later (recommended); wait for mere's crate.
      Mark chose "H1 now, H2 later". So the plain witness, the save versions
      and the per-tick trace land after the repin, and the labels when mere's
      crate does.
-625. **The witness hashes postcard bytes.** 2026-10-06. Options: postcard
+636. **The witness hashes postcard bytes.** 2026-10-06. Options: postcard
      (recommended); JSON into FNV. Mark chose "Postcard". So Isocosm hashes
      through `isometer_core::snapshot::encode`, one encoding across the
      family.

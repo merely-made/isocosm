@@ -1,6 +1,6 @@
 # Isocosm's state witness
 
-**Status, 2026-10-06:** briefed and its forks ruled (622 to 625); H1 waits on
+**Status, 2026-10-06:** briefed and its forks ruled (633 to 636); H1 waits on
 the repin onto stable (ruling 621), then opens in its own worktree.
 
 Carries out the wing design record's rulings 607 to 610: Isocosm's state hash
@@ -69,9 +69,9 @@ kept.
 
 ## Forks, ruled 2026-10-06
 
-1. Label grain: fields in saves, entities in the traces (ruling 622).
-2. The v2 hash: a u64, v1 read through a separate struct (623).
-3. Staging: H1 after the repin, H2 when mere's crate lands (624).
-4. Encoding: postcard through `snapshot::encode` (625).
+1. Label grain: fields in saves, entities in the traces (ruling 633).
+2. The v2 hash: a u64, v1 read through a separate struct (634).
+3. Staging: H1 after the repin, H2 when mere's crate lands (635).
+4. Encoding: postcard through `snapshot::encode` (636).
 
 ## Progress
