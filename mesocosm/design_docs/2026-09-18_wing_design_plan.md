@@ -8720,6 +8720,15 @@ what later sections derive from.
      orphan only (recommended); audit all and report; leave it. Mark chose
      "Audit all, report". So every worktree and target dir under `Code` is
      measured and classed merged or stale, and nothing is deleted.
+641. **A v1 save is still checked at every checkpoint.** 2026-10-07,
+     reading 608 for H1. Question: 608 verifies a v1 save "with the SHA-256
+     hash it carries", and today's load also checks each epoch checkpoint's
+     hash; the one tracked v1 save (the pre-causation fixture, tick 7) has
+     no checkpoints. Should a v1 load still check its checkpoints? Options:
+     final hash and checkpoints (recommended); final hash only. Mark chose
+     "Final hash and checkpoints (Recommended)". So the v1 reader takes the
+     SHA-256 at each epoch boundary while replaying and compares it, and a
+     v1 fixture with checkpoints, made by the pre-H1 code, proves it.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
