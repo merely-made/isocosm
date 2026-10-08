@@ -8805,6 +8805,29 @@ what later sections derive from.
      mere rev for the leaf alone; wait for a scheduled repin. Mark chose
      "Full repin to 329d60d0 (Recommended)". So every mere pin and genet's
      follow, one mere per graph holds (621), and H2 builds on it.
+651. **H2's saves move to v3.** 2026-10-08, briefing H2 on mere's
+     `state-witness` (`329d60d0`). Question: a v2 checkpoint stores a tick
+     and a u64; how do saves carry the per-field entries (633) at each
+     epoch? Options: extend v2 with an optional field (recommended); move to
+     v3. Mark chose "Move to v3". So `SAVE_VERSION` becomes 3 with entries
+     required, and v2 joins v1 as a kept reader, checked by its own hashes.
+652. **The state hash is the entries' digest.** 2026-10-08. Question: H1's
+     hash is one FNV over the whole state's postcard bytes, while the
+     crate's `Witness::digest` is balaur's fold over the entries, a
+     different number for the same state; what does the state hash become?
+     Options: keep H1's hash (recommended); use the entries' digest. Mark
+     chose "Use the entries' digest". So `state_hash` is `Witness::digest`
+     over the per-field entries, one number with one derivation, and H1's
+     whole-state hash survives only to read v2 saves. *Reading, not ruled:*
+     the entries include the world's seed, revision and traits beside the
+     state's fields, so the digest covers what H1's covered.
+653. **Per-tick entries go in a framed trace.** 2026-10-08. Question: how do
+     the bench and probe write per-tick entries (610), a line holding one
+     entry per critter (649)? Options: framed postcard under a new flag
+     (recommended); JSON Lines. Mark chose "Framed postcard, new flag
+     (Recommended)". So `--trace` keeps its text lines and
+     `--trace-entries <file>` writes the crate's framed `Trace` (MERETRC,
+     version 1), compared by `first_trace_divergence`.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
