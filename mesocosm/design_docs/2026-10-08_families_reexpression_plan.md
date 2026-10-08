@@ -1,6 +1,7 @@
 # Re-expressing the legacy families in Isocosm
 
-**Status, 2026-10-08:** assessment; its forks go to Mark before a phase opens.
+**Status, 2026-10-08:** assessment; forks 1, 2, 3 and 5 ruled (666 to 669), the
+rest to Mark before a phase opens.
 Comes after checkpoint 9 and the open bugs (wing design record, ruling 656).
 
 Ruling 192 had Isocosm absorb `mesocosm-core`, "piece by piece re-expressed
@@ -110,5 +111,18 @@ is), its certification passes on draws with its controls.
 9. *The founding datasheets and the two `Founding`s* (625, 626).
 10. *The legacy tests and examples:* port, replace by draws, or retire with
     their family.
+
+## Rulings so far
+
+- 666: a family's legacy copy leaves once its re-expression is certified
+  and its callers re-point (fork 1; amends 263).
+- 667: parity by draws against the legacy implementation's readings, no
+  legacy save reader (fork 2).
+- 668: one merged order, the shared families first in 195's order, then
+  Eponym's (239) and the VTT's (247) (fork 3).
+- 669: code the sim's laws exclude is handed back to its game or host, or
+  deleted, when its family is reached (fork 5).
+
+Open: forks 4 and 6 to 10.
 
 ## Progress

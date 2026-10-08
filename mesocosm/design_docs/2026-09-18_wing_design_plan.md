@@ -8952,6 +8952,45 @@ what later sections derive from.
      it, adapting to parry 0.31's query results (`ShapeDistance`,
      `ShapeIntersection`, sub-shape ids) and 0.30's contact-manifold
      accessors.
+666. **Each legacy family leaves as its re-expression lands.** 2026-10-08,
+     the families re-expression plan's first round
+     (`2026-10-08_families_reexpression_plan.md`). Question: 263 (Mark:
+     "Build, retire together") retires Mesocosm's copies together at M3,
+     while 591 moved all the legacy code into Isocosm and `legacy.rs` has
+     each family leave the tree once re-expressed; when does a family's copy
+     go? Put with 63,277 legacy lines and "196 caller files", a miscount:
+     the survey's per-crate counts sum to 229 files, which bears on no
+     option. Options: each family as it lands (recommended); together at
+     M3, per 263. Mark chose "Each family as it lands (Recommended)". So a
+     family's legacy copy is deleted once its re-expression is certified and
+     its callers re-point. Amends 263.
+667. **A re-expressed family keeps parity by draws.** 2026-10-08. Question:
+     what does "playing as today" (591) hold a family to, re-expression
+     changing the state's shape so legacy saves and hashes cannot match?
+     Options: parity by draws with legacy as the control, legacy saves not
+     carried, the games being pre-release (recommended); also migrate legacy
+     saves; bit-identical where only code moves. Mark chose "Parity by
+     draws, legacy as control (Recommended)". So each family is certified on
+     seeded draws against the legacy implementation's readings with the usual
+     controls, and no legacy save reader is built.
+668. **One merged order of families.** 2026-10-08. Question: one order across
+     the three games or each game's own (195 and 457, 239, 247, all before
+     591)? Options: one merged order (recommended); three orders, game by
+     game. Mark chose "One merged order (Recommended)". So the shared
+     families go first in 195's order, matter and processes, bodies (after
+     checkpoints 10 and 11), the record, places (after the place graph's SP3
+     to SP5), lineages and the boundary, effects; then Eponym's own in 239's
+     order and the VTT's in 247's.
+669. **What the sim's laws exclude is handed back or deleted.** 2026-10-08.
+     Question: the sim neither renders nor resolves a blow; what becomes of
+     `voxel_profile`, Eponym's sheets, techniques, timed actions, strike
+     resolver and movement, the campaign's store and collaboration,
+     `effect_experiment` and the fixture worlds? Options: hand back or
+     delete (recommended); re-express everything; decide per family. Mark
+     chose "Hand back or delete (Recommended)". So game-owned code returns to
+     its game crate, presentation adapters go to the host or isometer,
+     `effect_experiment` is deleted and fixtures become draws (15), each when
+     its family is reached.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
