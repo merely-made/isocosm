@@ -37,10 +37,13 @@ pub struct Entry {
     pub outcome: String,
 }
 
+/// Saves have their own version: `crate::VERSION` also gates every genesis.
+pub const SAVE_VERSION: u32 = 2;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Checkpoint {
     pub tick: Tick,
-    pub state_hash: Key,
+    pub state_hash: u64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -51,8 +54,27 @@ pub struct Saved {
     pub branch: Key,
     pub entries: Vec<Entry>,
     pub tick: Tick,
-    pub state_hash: Key,
+    pub state_hash: u64,
     pub checkpoints: Vec<Checkpoint>,
+}
+
+/// A version-1 save, whose hashes are SHA-256 over JSON. Read only (608).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SavedV1 {
+    pub version: u32,
+    pub genesis: Genesis,
+    pub genesis_digest: Key,
+    pub branch: Key,
+    pub entries: Vec<Entry>,
+    pub tick: Tick,
+    pub state_hash: Key,
+    pub checkpoints: Vec<CheckpointV1>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CheckpointV1 {
+    pub tick: Tick,
+    pub state_hash: Key,
 }
 
 #[derive(Clone, Debug)]
@@ -102,6 +124,20 @@ impl Session {
             self.checkpoints.truncate(checkpoints);
         }
         work
+    }
+    /// Advances one tick at a time, handing `each` the tick and its witness:
+    /// the per-tick trace the tools write on demand (ruling 610).
+    pub fn advance_traced(&mut self, ticks: Tick, mut each: impl FnMut(Tick, u64)) -> Result<Work> {
+        let mut work = Work::default();
+        for _ in 0..ticks {
+            let next = self.advance(1)?;
+            work.evaluations += next.evaluations;
+            work.represented += next.represented;
+            work.accepted += next.accepted;
+            work.blocked += next.blocked;
+            each(self.sim.state.tick, self.sim.state_hash());
+        }
+        Ok(work)
     }
     /// Advances to `end` epoch by epoch, checkpointing each boundary; a rule
     /// that ends epochs otherwise runs one unbounded epoch (ruling 451).
@@ -175,7 +211,7 @@ impl Session {
     }
     pub fn save(&self) -> Saved {
         Saved {
-            version: crate::VERSION,
+            version: SAVE_VERSION,
             genesis: self.sim.genesis.as_ref().clone(),
             genesis_digest: crate::digest(&self.sim.genesis),
             branch: self.branch.clone(),
@@ -185,33 +221,112 @@ impl Session {
             checkpoints: self.checkpoints.clone(),
         }
     }
-    pub fn load(saved: Saved, mode: Execution) -> Result<Self> {
-        if saved.version != crate::VERSION || crate::digest(&saved.genesis) != saved.genesis_digest
+    /// Loads a save of either version, read by its `version` field.
+    pub fn load_json(json: &[u8], mode: Execution) -> Result<Self> {
+        #[derive(Deserialize)]
+        struct Version {
+            version: u32,
+        }
+        let parse = |e: serde_json::Error| e.to_string();
+        match serde_json::from_slice::<Version>(json)
+            .map_err(parse)?
+            .version
         {
+            1 => Self::load_v1(serde_json::from_slice(json).map_err(parse)?, mode),
+            _ => Self::load(serde_json::from_slice(json).map_err(parse)?, mode),
+        }
+    }
+    pub fn load(saved: Saved, mode: Execution) -> Result<Self> {
+        if saved.version != SAVE_VERSION || crate::digest(&saved.genesis) != saved.genesis_digest {
             return Err("save version or genesis digest mismatch".into());
         }
-        let mut session = Self::new(saved.genesis, mode)?;
-        session.branch = saved.branch;
+        let session = Self::replay(
+            saved.genesis,
+            saved.branch,
+            saved.entries,
+            saved.tick,
+            mode,
+            &[],
+            |_, _| Ok(()),
+        )?;
+        if session.sim.state_hash() != saved.state_hash {
+            return Err("save state hash mismatch".into());
+        }
+        if session.checkpoints != saved.checkpoints {
+            return Err("checkpoint history mismatch".into());
+        }
+        Ok(session)
+    }
+    /// Verifies a v1 save by the SHA-256 hashes it carries, final and at each
+    /// checkpoint (rulings 608 and 641); the session saves again as v2.
+    pub fn load_v1(saved: SavedV1, mode: Execution) -> Result<Self> {
+        if saved.version != 1 || crate::digest(&saved.genesis) != saved.genesis_digest {
+            return Err("save version or genesis digest mismatch".into());
+        }
+        let stops: Vec<Tick> = saved.checkpoints.iter().map(|c| c.tick).collect();
+        let check = |i: usize, sim: &Simulation| {
+            if sim.state_hash_v1() == saved.checkpoints[i].state_hash {
+                Ok(())
+            } else {
+                Err("checkpoint history mismatch".to_string())
+            }
+        };
+        let session = Self::replay(
+            saved.genesis,
+            saved.branch,
+            saved.entries,
+            saved.tick,
+            mode,
+            &stops,
+            check,
+        )?;
+        if session.sim.state_hash_v1() != saved.state_hash {
+            return Err("save state hash mismatch".into());
+        }
+        if !session.checkpoints.iter().map(|c| c.tick).eq(stops) {
+            return Err("checkpoint history mismatch".into());
+        }
+        Ok(session)
+    }
+    /// Replays a saved history to `tick`, calling `at` on reaching each of
+    /// `stops` (ascending), before any entry at that tick.
+    fn replay(
+        genesis: Genesis,
+        branch: Key,
+        entries: Vec<Entry>,
+        tick: Tick,
+        mode: Execution,
+        stops: &[Tick],
+        mut at: impl FnMut(usize, &Simulation) -> Result<()>,
+    ) -> Result<Self> {
+        let mut session = Self::new(genesis, mode)?;
+        session.branch = branch;
+        let mut next = 0;
+        let mut reach = |session: &mut Self, until: Tick| -> Result<()> {
+            while next < stops.len() && stops[next] <= until {
+                session.replay_until(stops[next])?;
+                at(next, &session.sim)?;
+                next += 1;
+            }
+            session.replay_until(until)
+        };
         let mut ids = std::collections::BTreeSet::new();
-        for entry in saved.entries {
+        for entry in entries {
             if !ids.insert(entry.id.clone())
                 || entry.tick < session.sim.state.tick
-                || entry.tick > saved.tick
+                || entry.tick > tick
             {
                 return Err("invalid intent order or identity".into());
             }
-            session.replay_until(entry.tick)?;
+            reach(&mut session, entry.tick)?;
             let outcome = run(&mut session.sim, &entry.command)?;
             if outcome != entry.outcome {
                 return Err(format!("replay outcome mismatch for {}", entry.id));
             }
             session.entries.push(entry);
         }
-        session.replay_until(saved.tick)?;
-        if session.sim.state_hash() != saved.state_hash {
-            return Err("save state hash mismatch".into());
-        }
-        if session.checkpoints != saved.checkpoints {
+        reach(&mut session, tick)?;
+        if next < stops.len() {
             return Err("checkpoint history mismatch".into());
         }
         Ok(session)

@@ -135,7 +135,7 @@ fn command(seed: u64, step: u64, session: &Session) -> Option<Command> {
 
 /// A draw run in one mode: each step's state hash and the moves its record
 /// claims, and every flow it recorded.
-fn run(seed: u64, mode: Execution) -> (Vec<(Key, Books)>, Vec<Flow>) {
+fn run(seed: u64, mode: Execution) -> (Vec<(u64, Books)>, Vec<Flow>) {
     let mut session = new_session(declared(seed), mode);
     let founded = session.sim.matter();
     let (mut steps, mut all) = (vec![], vec![]);

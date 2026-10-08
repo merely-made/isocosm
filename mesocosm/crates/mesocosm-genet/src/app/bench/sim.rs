@@ -6,7 +6,7 @@ use super::{state::Bench, view::Child};
 use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
 use isocosm::{
     Execution, Founding, Session,
-    history::{Command, Merge, Saved},
+    history::{Command, Merge},
     schema::Method,
 };
 
@@ -180,10 +180,9 @@ impl Bench {
             if std::fs::metadata(path).map_err(|e| e.to_string())?.len() > 64 * 1024 * 1024 {
                 return Err("Save exceeds 64 MiB.".into());
             }
-            let saved: Saved =
-                serde_json::from_slice(&std::fs::read(path).map_err(|e| e.to_string())?)
-                    .map_err(|e| e.to_string())?;
-            Session::load(saved, Execution::Grouped)
+            // Either save version; a v1 save is checked by its own hashes (608).
+            let json = std::fs::read(path).map_err(|e| e.to_string())?;
+            Session::load_json(&json, Execution::Grouped)
         })();
         match result {
             Ok(session) => {

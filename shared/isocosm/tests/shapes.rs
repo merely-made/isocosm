@@ -6,7 +6,7 @@
 
 use isocosm::{
     Execution, Founding, Session, Simulation,
-    history::Saved,
+    history::SAVE_VERSION,
     rules::*,
     schema::*,
     simulation::{Genesis, Outcome},
@@ -20,18 +20,17 @@ const PRE_CAUSATION: &str = include_str!("data/pre-causation-world.json");
 #[test]
 fn a_world_saved_before_the_rename_still_loads() {
     for mode in [Execution::Individuals, Execution::Grouped] {
-        let saved: Saved = serde_json::from_str(PRE_CAUSATION).unwrap();
-        let hash = saved.state_hash.clone();
-        // Loading checks the genesis digest, replays every command and
-        // advance, and compares the state hash and every checkpoint.
-        let session = Session::load(saved, mode).unwrap();
-        assert_eq!(session.sim.state_hash(), hash, "{mode:?}");
+        // A v1 save: loading checks the genesis digest, replays every command
+        // and advance, and compares the SHA-256 hashes it carries (608).
+        let session = Session::load_json(PRE_CAUSATION.as_bytes(), mode).unwrap();
         let rules = &session.sim.genesis().rules;
         let causation = |id: &str| rules.processes[id].causation;
         assert_eq!(causation("sim:remember"), Causation::Choice);
         assert_eq!(causation("ecology:death-0"), Causation::Transition);
-        // Saved again, it writes the field under its old name.
-        let json = serde_json::to_string(&session.save()).unwrap();
+        // Saved again, it writes v2 and the field under its old name.
+        let saved = session.save();
+        assert_eq!(saved.version, SAVE_VERSION);
+        let json = serde_json::to_string(&saved).unwrap();
         assert!(json.contains(r#""shape":"Transition""#));
         assert!(!json.contains("causation"));
     }

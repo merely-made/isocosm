@@ -189,15 +189,25 @@ impl Simulation {
     pub fn set_mode(&mut self, mode: Execution) {
         self.mode = mode;
     }
-    pub fn state_hash(&self) -> Key {
+    /// The family's witness (ruling 607): FNV-1a over postcard (636), a u64
+    /// (634). An equality witness for replay, not a content address.
+    pub fn state_hash(&self) -> u64 {
+        use isometer_core::snapshot::{encode, hash_bytes};
+        hash_bytes(&encode(&self.witnessed()).expect("sim schema encodes"))
+    }
+    /// SHA-256 over JSON, kept only to verify version-1 saves (608).
+    pub(crate) fn state_hash_v1(&self) -> Key {
+        crate::digest(&self.witnessed())
+    }
+    fn witnessed(&self) -> (u64, &Key, &WorldTraits, State) {
         let mut state = self.state.clone();
         state.population = state.population.normalized();
-        crate::digest(&(
+        (
             self.genesis.seed,
             &self.revision,
             &self.genesis.world,
             state,
-        ))
+        )
     }
     pub fn matter(&self) -> u128 {
         matter(&self.state, &self.genesis.rules)
