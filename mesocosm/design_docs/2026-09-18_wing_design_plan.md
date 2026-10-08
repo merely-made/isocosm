@@ -8768,6 +8768,16 @@ what later sections derive from.
      chose "Measure it standalone (Recommended)". So isocosm's suite runs at
      opt-level 0 and 1 on the shared build-dir, and its compile time, test
      time and disk come back before any profile changes.
+647. **The labelled-digest crate is asked for ahead of G8.** 2026-10-08,
+     after reading mere's dynamics grammar plan. Question: H2 waits on G8,
+     which is open and unscheduled (F92 set G2's rework and G4 running), and
+     isocosm needs only its labelled-digest crate, the rest being seiche's
+     float determinism; how does H2 get unblocked? Options: ask mere's side
+     to carve the crate out of G8 as a small step ahead of it (recommended);
+     wait for G8's turn; reopen 609. Mark chose "Carve the crate out of G8
+     (Recommended)". So the request goes to mere's side with the state
+     witness plan's label inventory as isocosm's spec; 609 stands, and
+     mere's plan stays mere's to change.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
