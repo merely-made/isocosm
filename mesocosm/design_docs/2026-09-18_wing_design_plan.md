@@ -8797,6 +8797,14 @@ what later sections derive from.
      (Recommended)". So a divergence names the exact critter, and a trace
      line holds as many entries as the world has critters. Notes needed no
      ruling: the list is append-only, so `note:<index>` is stable.
+650. **Isocosm repins onto mere `329d60d0` for the state-witness crate.**
+     2026-10-08. Question: mere landed `state-witness` (its F116 to F131)
+     on main at `329d60d0`, 288 commits past isocosm's `5fecd707`, and
+     mere's own genet pin moved `bd3e8861` to `965b64e2`; how does isocosm
+     take it? Options: a full repin to `329d60d0` (recommended); a second
+     mere rev for the leaf alone; wait for a scheduled repin. Mark chose
+     "Full repin to 329d60d0 (Recommended)". So every mere pin and genet's
+     follow, one mere per graph holds (621), and H2 builds on it.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
