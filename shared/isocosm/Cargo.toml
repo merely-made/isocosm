@@ -22,6 +22,8 @@ hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09
 muniment = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
 nisus = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
+# The labelled witness, built once in mere (wing rulings 609, 647, 650).
+state-witness = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }

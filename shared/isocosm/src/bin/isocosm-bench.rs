@@ -25,6 +25,7 @@ fn run() -> Result<(), String> {
     let mut lift_digest = None;
     let mut output = None;
     let mut trace = None;
+    let mut trace_entries = None;
     let mut load = None;
     let mut world = None;
     let mut mode = Execution::Grouped;
@@ -39,7 +40,7 @@ fn run() -> Result<(), String> {
         }
         if arg == "--help" {
             println!(
-                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--trace FILE] [--individuals]"
+                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--trace FILE] [--trace-entries FILE] [--individuals]"
             );
             return Ok(());
         }
@@ -66,6 +67,7 @@ fn run() -> Result<(), String> {
             "--lift-digest" => lift_digest = Some(number()?),
             "--output" => output = Some(value),
             "--trace" => trace = Some(value),
+            "--trace-entries" => trace_entries = Some(value),
             "--load" => load = Some(value),
             "--world" => world = Some(value),
             _ => return Err(format!("unknown argument {arg}")),
@@ -103,16 +105,30 @@ fn run() -> Result<(), String> {
             let genesis=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
             Session::new(genesis,mode)?
         } else { Session::new(founding.generate()?,mode)? };
-        let work = match &trace {
-            // `<tick> <witness>` for every advanced tick (ruling 610).
-            Some(path) => {
-                let mut lines = String::new();
-                let work = session.advance_traced(ticks, |tick, hash| lines += &format!("{tick} {hash:016x}
-"))?;
+        // `<tick> <witness>` lines (ruling 610) and per-entity entries,
+        // framed (653), for every advanced tick.
+        let work = if trace.is_some() || trace_entries.is_some() {
+            let mut lines = String::new();
+            let mut entries = state_witness::Trace::new();
+            let work = session.advance_traced(ticks, |sim| {
+                let tick = sim.state().tick;
+                if trace.is_some() {
+                    lines += &format!("{tick} {:016x}\n", sim.state_hash());
+                }
+                if trace_entries.is_some() {
+                    entries.push(tick, sim.entity_witness()).expect("ticks advance");
+                }
+            })?;
+            if let Some(path) = &trace {
                 std::fs::write(path, lines).map_err(|e| e.to_string())?;
-                work
-            },
-            None => session.advance(ticks)?,
+            }
+            if let Some(path) = &trace_entries {
+                let framed = entries.to_framed().map_err(|e| format!("{e:?}"))?;
+                std::fs::write(path, framed).map_err(|e| e.to_string())?;
+            }
+            work
+        } else {
+            session.advance(ticks)?
         };
         // Observation is an explicit log entry, never a side effect of drawing UI.
         let actor = session.sim.state().population.groups.iter()

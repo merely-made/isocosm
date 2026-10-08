@@ -1,7 +1,7 @@
 # Isocosm's state witness
 
-**Status, 2026-10-07:** H1 landed on main and pushed; H2 waits on mere's
-labelled-digest crate (G8).
+**Status, 2026-10-08:** H1 and H2 landed on main and pushed. The plan is
+complete.
 
 Carries out the wing design record's rulings 607 to 610: Isocosm's state hash
 joins the family's FNV-1a witness, in balaur's shape (labelled entries and a
@@ -154,3 +154,30 @@ Two of these are not plain lookups:
   core's but for timings. Built on one shared target (637): 81 GB for the
   eight workspaces' checks and tests, where the repin's per-workspace
   targets held 126 GB.
+- 2026-10-08, H2: isocosm repinned onto mere `329d60d0` (ruling 650; its
+  own plan, `design_docs/2026-10-08_mere_329d60d0_repin_plan.md`), and
+  `isometer_core::snapshot::hash_bytes` became a re-export of mere's
+  `state_witness::hash_bytes` (mere's F119), held to four values computed
+  apart from the crate, before and after. `Simulation::witness` gives one
+  entry per field, the world's seed, revision and traits beside the state's
+  fourteen (17 in all); `Simulation::entity_witness` one per entity, every
+  critter by id with its cohort's digest computed once (649), notes by their
+  append-only index. `state_hash` is the field entries' digest (652), and the
+  whole-state hash of H1 survives only as `state_hash_v2`. Saves are v3
+  (651): each checkpoint and the final state carry their entries, and a load
+  names the earliest diverging label ("checkpoint at tick 8 diverges first
+  at sites"); v1 and v2 load through the kept readers in `history/read.rs`,
+  checked by their own hashes at every checkpoint, and save again as v3. A
+  v2 fixture with checkpoints at 4, 8 and 12, written by the pre-H2 core
+  (`14d8d9af`), proves the v2 reader. `advance_traced` hands its callback
+  the world; `isocosm-bench` and `isocosm-probe` gain `--trace-entries
+  <file>`, the crate's framed `Trace` (653), beside `--trace`.
+  Done-conditions: a unit placed at one site is named `sites` on load at the
+  tick-8 checkpoint and `site:<id>` at tick 6 in the entity trace; both
+  execution modes give the same per-critter entries; v1 and v2 refuse a
+  flipped middle checkpoint, a dropped one and a flipped final hash; a v3
+  save with a changed entry is named, or refused when its digest no longer
+  folds. All eight workspaces check; tests, one thread each: isocosm 1,241
+  (ten in `tests/witness.rs`), the VTT 371, Mesocosm 336, isometer 294,
+  isomere 51, wing-integration 4, isocosm-overlay 43; Eponym 81 with the two
+  Sortie failures that predate both repins.

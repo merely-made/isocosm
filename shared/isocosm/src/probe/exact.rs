@@ -35,13 +35,13 @@ pub fn run_exact(world: &ProbeWorld, dynamics: u64, collect: bool) -> Result<Exa
     run_ordered(world, dynamics, collect, &order)
 }
 
-/// The exact run, handing `each` every tick and its witness: the probe's
+/// The exact run, handing `each` the world after every tick: the probe's
 /// `--trace` (rulings 610 and 642).
 pub fn run_exact_traced(
     world: &ProbeWorld,
     dynamics: u64,
     collect: bool,
-    each: &mut dyn FnMut(Tick, u64),
+    each: &mut dyn FnMut(&Simulation),
 ) -> Result<ExactRun> {
     let order: Vec<&Key> = world.competitions().keys().collect();
     run_with(world, dynamics, collect, &order, each)
@@ -55,7 +55,7 @@ pub(super) fn run_ordered(
     collect: bool,
     order: &[&Key],
 ) -> Result<ExactRun> {
-    run_with(world, dynamics, collect, order, &mut |_, _| {})
+    run_with(world, dynamics, collect, order, &mut |_| {})
 }
 
 fn run_with(
@@ -63,7 +63,7 @@ fn run_with(
     dynamics: u64,
     collect: bool,
     order: &[&Key],
-    each: &mut dyn FnMut(Tick, u64),
+    each: &mut dyn FnMut(&Simulation),
 ) -> Result<ExactRun> {
     let mut genesis = world.genesis.clone();
     genesis.dynamics = Some(dynamics);
@@ -88,7 +88,7 @@ fn run_with(
         if collect {
             sim.collect();
         }
-        each(sim.state().tick, sim.state_hash());
+        each(&sim);
     }
     Ok(ExactRun { sim, work, meals })
 }
