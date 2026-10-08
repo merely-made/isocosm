@@ -57,3 +57,18 @@ iMacs and Linux boxes opt in the same way.
    Mark before any profile changes (646).
 
 ## Progress
+
+- 2026-10-07: the main checkout carries the recipe, and all eight
+  workspaces report `target/build` as their build directory while keeping
+  their own `target/` (condition 1). Cold checks over all targets through
+  it, offline: root 194 s (all features), Mesocosm 93 s, Eponym 125 s,
+  isocosm 60 s, isometer 52 s, isomere 19 s, wing-integration 35 s,
+  isocosm-overlay 13 s, about ten minutes in all. Debug builds of the two
+  hosts took 427 s and 328 s and about 41 GB; `isometry-genet.exe` landed
+  in `target/debug/` and `mesocosm-genet.exe` in `mesocosm/target/debug/`
+  (condition 2). Mesocosm first refused to resolve: its untracked lock in
+  this checkout dated from 2026-09-29 and still pinned mere `32edc2ad`, so
+  its `wgpu 30.0.0` met the `^30.0.1` mere `5fecd707` asks. Moved aside, the
+  lock re-resolved offline to one mere, genet and netrender. Any checkout
+  older than the repin carries the same stale untracked locks (Mesocosm,
+  Eponym, isometer, isomere) and re-resolves the same way.
