@@ -68,6 +68,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md) | W1: every plan evaluated against the design record. | Ruled and applied 2026-09-18 (ruling 31). |
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_sim_plan.md](2026-09-22_sim_plan.md) | The sim, W2: Isocosm's schema, processes, record and phases S1 to S6. | 2026-10-04: S2 checkpoint 8 merged at `e3297e6`; checkpoint 9 parked (ruling 591). |
+| [2026-10-08_families_reexpression_plan.md](2026-10-08_families_reexpression_plan.md) | Re-expressing the legacy sims in Isocosm's process definitions, family by family (rulings 192, 591, 656). | Assessment 2026-10-08; forks to Mark. |
 | [2026-10-06_state_witness_plan.md](2026-10-06_state_witness_plan.md) | Isocosm's state hash onto the family's FNV witness, labelled (rulings 607 to 610). | Complete 2026-10-08: H1 (641, 642) and H2 (647 to 653). |
 | [2026-09-22_aggregation_research.md](2026-09-22_aggregation_research.md) | The reduction literature checked, and the executable boundary of the sim's first implementation. | Research, applied 2026-09-22. |
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
