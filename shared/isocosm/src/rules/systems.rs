@@ -121,7 +121,9 @@ pub fn default_systems() -> BTreeMap<Key, System> {
             "muscular",
             system(&["living"], &["store"], &["gate"], &["contract"]),
         ),
-        ("nervous", system(&["sense"], &[], &["gate"], &["contract"])),
+        // The nervous system carries no matter (ruling 657); its
+        // communication between the systems is designed apart (658).
+        ("nervous", system(&["sense"], &[], &["gate"], &[])),
         (
             "glandular",
             system(&["secrete"], &["store"], &["gate"], &["bitten"]),
@@ -136,7 +138,7 @@ pub fn default_systems() -> BTreeMap<Key, System> {
         ),
         (
             "respiratory",
-            system(&["respire"], &[], &["gate"], &["contract"]),
+            system(&["respire"], &[], &["gate"], &[]),
         ),
         (
             "excretory",
