@@ -27,7 +27,7 @@ publish = false
 
 [patch.crates-io]
 # Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "5fecd707c6bc9022f952c6d7b99d59f0f568d8e8" }
+cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
 spirv-std = { git = "https://github.com/rust-gpu/rust-gpu.git", rev = "05b34493ce661dccd6694cf58afc13e3c8f7a7e0" }
 craballoc = { path = "../../../../../crates/crabslab/crates/craballoc" }
 crabslab = { path = "../../../../../crates/crabslab/crates/crabslab" }

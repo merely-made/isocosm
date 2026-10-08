@@ -1,6 +1,6 @@
 # The repin onto mere `329d60d0`
 
-**Status, 2026-10-08:** planned; under way on branch `repin-329d60d0`.
+**Status, 2026-10-08:** landed on main and pushed.
 
 Carries out the wing design record's ruling 650: isocosm takes mere's
 `state-witness` crate (mere's F116 to F131) by moving every mere pin to
@@ -30,12 +30,36 @@ builds on it, starting with F119's switch of `isometer_core`'s `hash_bytes`.
 ## Done-conditions
 
 1. Every workspace resolves with one revision each of mere (`329d60d0`),
-   genet (`965b64e2`) and netrender.
+   genet (`965b64e2`) and netrender. *(Met.)*
 2. Every workspace checks over all targets, the VTT's with all features.
+   *(Met.)*
 3. The tests pass again (the VTT's, isocosm's, Mesocosm's, Eponym's,
    isometer's, isomere's, wing-integration's, isocosm-overlay's), or each
-   failure is shown to predate the repin.
-4. The tracked locks are regenerated with no stripped sources.
-5. Merged to main and pushed; this plan's status says so.
+   failure is shown to predate the repin. *(Met.)*
+4. The tracked locks are regenerated with no stripped sources. *(Met.)*
+5. Merged to main and pushed; this plan's status says so. *(Met.)*
 
 ## Progress
+
+- 2026-10-08: 50 mere rows moved to `329d60d0` and 17 genet rows to
+  `965b64e2` across eight manifests, the probe `eponym/probes/ambience-lease`
+  included. The root resolved online, fetching both sources while its
+  tracked lock held every other version (58 packages locked); the other
+  workspaces resolved offline from the cache. Each holds one mere, genet and
+  netrender. Checks over all targets passed in all eight with no code change:
+  root 117 s, Mesocosm 60 s, Eponym 77 s, isometer 39 s, isocosm 37 s,
+  wing-integration 30 s, isomere 18 s, isocosm-overlay 9 s, on a fresh
+  shared build-dir. Tests, one thread each: isocosm 1,237, the VTT 371,
+  Mesocosm 336, isometer 293, isomere 51, wing-integration 4,
+  isocosm-overlay 43; Eponym 81 with the two Sortie failures that predate
+  the stable repin. The tracked locks' only source-less rows are each
+  workspace's own path crates.
+- Found on the way, not the repin's: isomere's own `cubecl-runtime` patch
+  row is unused (the same warning ruling 639 cleared from three other
+  workspaces); and the probe `ambience-lease` does not compile, at
+  `src/lease.rs:253`, where wgpu 30.0.1's `get_mapped_range` now returns a
+  `Result`. It fails the same way on main's old pins, so it predates this.
+- Mere's coordinator noted that mere main has since moved to `4c796590`,
+  bringing G2's change to cartography's projection API (its F86, F87, F132).
+  No isometry crate calls those functions or depends on cartography, so the
+  next repin past it is a no-op there.
