@@ -97,7 +97,7 @@ Saves label by field (633); traces label by entity, which per collection is:
 | `sites`, `locations`, `polities` | `Id` | `site:<id>` and so on |
 | `lineages`, `events` | `Key` | `lineage:<key>`, `event:<key>` |
 | `relations` | the (subject, kind, object) triple | the triple itself |
-| `notes` | position in a `Vec` | none stable today |
+| `notes` | position in an append-only `Vec` | `note:<index>` |
 | `roots`, `released` | `Id` | `root:<id>`, `released:<id>` |
 | `record` | hagiograph marks by `Key` | `mark:<key>` |
 | `reach` | arrivals by event `Key`, then site `Id` | `arrival:<event>/<site>` |
@@ -107,10 +107,14 @@ Two of these are not plain lookups:
   and individual runs agree only after `Population::normalized`. An entry per
   critter would mean expanding every cohort; an entry per normalized cohort,
   labelled by its first id, keeps the trace as large as the state is.
-- *Notes.* A note has no id, and its index shifts when an earlier note
-  expires, so an index label would report the wrong first divergence. A
-  stable label needs one built from the note (its cause, kind, subject and
-  object) or an id added to `Note`.
+- *Notes.* A note has no id, but the list is append-only: notes are pushed
+  (`simulation.rs:409`, and through the stage, `stage/mod.rs:368`), expiry
+  is read against the tick rather than removing anything, a full budget
+  refuses rather than evicts (`room`), and the only shrink is the journal's
+  rollback to the length an advance began with (`journal.rs:103`). So the
+  index is stable for a world's life and labels a note. *Corrected
+  2026-10-08:* the first reading said the index shifted on expiry; it does
+  not.
 
 ## Forks, ruled 2026-10-06
 
