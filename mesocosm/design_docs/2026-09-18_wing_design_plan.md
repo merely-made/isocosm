@@ -8906,6 +8906,28 @@ what later sections derive from.
      those systems stop. Mark chose "Systems work alone (Recommended)". So
      only the joint effect is lost: a frond is unaffected, and a nerve cut
      costs coordination, not life.
+662. **The joining lands in checkpoint 9.** 2026-10-08, deciding 658.
+     Question: checkpoint 9's certification has not run, so adding the
+     joining now costs no recertification, and the bite is the one process
+     reading two systems; where does it land? Options: in checkpoint 9
+     (recommended); its own checkpoint after 9; with perception and places.
+     Mark chose "In checkpoint 9 (Recommended)". So the limbs' share needs
+     nervous routes joining the intake parts and the contracting parts, with
+     a control whose cut nerves leave the grazer biting by intake alone, its
+     muscles intact, certified with the rest of the checkpoint.
+663. **A sense reaching both systems connects them.** 2026-10-08. Question:
+     what counts as the nerves connecting two systems' parts, routes running
+     along attachments through live parts (477) and the senses being the
+     nervous system's sources? Options: a sense reaches both (recommended);
+     any chain of parts expressing a nervous function. Mark chose "A sense
+     reaches both (Recommended)". So a body joins its systems through what it
+     senses: a nervous route from a sense source must reach a part of each,
+     and a grazer with no eye has no joint bite.
+664. **The joint effect is by degree.** 2026-10-08. Question: all or nothing,
+     or by degree? Options: by degree, as systems work (477) (recommended);
+     all or nothing. Mark chose "By degree (Recommended)". So the joint share
+     scales with the share of the second system's parts the nerves reach: one
+     limb innervated of two gives about half the limbs' share.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
