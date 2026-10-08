@@ -1,7 +1,8 @@
 # One build directory for the repo's workspaces
 
-**Status, 2026-10-07:** ruled (wing design record 638, 643 to 646);
-adoption under way.
+**Status, 2026-10-08:** landed. The main checkout shares one build-dir
+(643 to 645), and isocosm builds at opt-level 1 everywhere it is built
+(646, 648).
 
 The repo builds eight Cargo workspaces (root, Mesocosm, Eponym, isocosm,
 isometer, isomere, wing-integration, isocosm-overlay), each of which
@@ -80,4 +81,5 @@ iMacs and Linux boxes opt in the same way.
   At 1: compile 239 s, run 1,610 s, 9.3 GB more, that being isocosm held at
   both levels side by side. All 1,237 tests passed both times. One run each
   on a machine shared with other sessions, so the seconds are approximate;
-  the factor of three is well outside that. Taken to Mark.
+  the factor of three is well outside that. Taken to Mark, who ruled 648:
+  every workspace that builds isocosm sets it to 1, committed (`4785b314`).
