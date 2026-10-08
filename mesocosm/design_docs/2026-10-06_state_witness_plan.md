@@ -1,7 +1,7 @@
 # Isocosm's state witness
 
-**Status, 2026-10-07:** H1 done on branch `state-witness`, verified, waiting
-on Mark's word to merge; H2 waits on mere's labelled-digest crate (G8).
+**Status, 2026-10-07:** H1 landed on main and pushed; H2 waits on mere's
+labelled-digest crate (G8).
 
 Carries out the wing design record's rulings 607 to 610: Isocosm's state hash
 joins the family's FNV-1a witness, in balaur's shape (labelled entries and a
