@@ -3,7 +3,11 @@
 
 use crate::{Result, schema::*, simulation::*};
 use serde::{Deserialize, Serialize};
+use state_witness::{Witness, first_divergence};
 use std::collections::BTreeMap;
+
+mod read;
+pub use read::{CheckpointV1, CheckpointV2, SavedV1, SavedV2};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Command {
@@ -38,12 +42,13 @@ pub struct Entry {
 }
 
 /// Saves have their own version: `crate::VERSION` also gates every genesis.
-pub const SAVE_VERSION: u32 = 2;
+pub const SAVE_VERSION: u32 = 3;
 
+/// An epoch boundary's per-field entries (rulings 633 and 651).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Checkpoint {
     pub tick: Tick,
-    pub state_hash: u64,
+    pub witness: Witness,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -54,27 +59,10 @@ pub struct Saved {
     pub branch: Key,
     pub entries: Vec<Entry>,
     pub tick: Tick,
+    /// The final entries' digest (ruling 652).
     pub state_hash: u64,
+    pub witness: Witness,
     pub checkpoints: Vec<Checkpoint>,
-}
-
-/// A version-1 save, whose hashes are SHA-256 over JSON. Read only (608).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct SavedV1 {
-    pub version: u32,
-    pub genesis: Genesis,
-    pub genesis_digest: Key,
-    pub branch: Key,
-    pub entries: Vec<Entry>,
-    pub tick: Tick,
-    pub state_hash: Key,
-    pub checkpoints: Vec<CheckpointV1>,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct CheckpointV1 {
-    pub tick: Tick,
-    pub state_hash: Key,
 }
 
 #[derive(Clone, Debug)]
@@ -125,9 +113,13 @@ impl Session {
         }
         work
     }
-    /// Advances one tick at a time, handing `each` the tick and its witness:
-    /// the per-tick trace the tools write on demand (ruling 610).
-    pub fn advance_traced(&mut self, ticks: Tick, mut each: impl FnMut(Tick, u64)) -> Result<Work> {
+    /// Advances one tick at a time, handing `each` the world after each: the
+    /// per-tick traces the tools write on demand (rulings 610 and 653).
+    pub fn advance_traced(
+        &mut self,
+        ticks: Tick,
+        mut each: impl FnMut(&Simulation),
+    ) -> Result<Work> {
         let mut work = Work::default();
         for _ in 0..ticks {
             let next = self.advance(1)?;
@@ -135,7 +127,7 @@ impl Session {
             work.represented += next.represented;
             work.accepted += next.accepted;
             work.blocked += next.blocked;
-            each(self.sim.state.tick, self.sim.state_hash());
+            each(&self.sim);
         }
         Ok(work)
     }
@@ -162,7 +154,7 @@ impl Session {
             if budget.is_some_and(|epoch| boundary.is_multiple_of(epoch)) {
                 self.checkpoints.push(Checkpoint {
                     tick: boundary,
-                    state_hash: self.sim.state_hash(),
+                    witness: self.sim.witness(),
                 });
             }
         }
@@ -210,6 +202,7 @@ impl Session {
         self.entries.iter().any(placed)
     }
     pub fn save(&self) -> Saved {
+        let witness = self.sim.witness();
         Saved {
             version: SAVE_VERSION,
             genesis: self.sim.genesis.as_ref().clone(),
@@ -217,11 +210,12 @@ impl Session {
             branch: self.branch.clone(),
             entries: self.entries.clone(),
             tick: self.sim.state.tick,
-            state_hash: self.sim.state_hash(),
+            state_hash: witness.digest(),
+            witness,
             checkpoints: self.checkpoints.clone(),
         }
     }
-    /// Loads a save of either version, read by its `version` field.
+    /// Loads a save of any version, read by its `version` field.
     pub fn load_json(json: &[u8], mode: Execution) -> Result<Self> {
         #[derive(Deserialize)]
         struct Version {
@@ -233,6 +227,7 @@ impl Session {
             .version
         {
             1 => Self::load_v1(serde_json::from_slice(json).map_err(parse)?, mode),
+            2 => Self::load_v2(serde_json::from_slice(json).map_err(parse)?, mode),
             _ => Self::load(serde_json::from_slice(json).map_err(parse)?, mode),
         }
     }
@@ -249,42 +244,25 @@ impl Session {
             &[],
             |_, _| Ok(()),
         )?;
-        if session.sim.state_hash() != saved.state_hash {
-            return Err("save state hash mismatch".into());
-        }
-        if session.checkpoints != saved.checkpoints {
+        // The earliest checkpoint that diverges names the first entry that
+        // did (rulings 609 and 610); then the final state.
+        let ticks = |c: &[Checkpoint]| c.iter().map(|c| c.tick).collect::<Vec<_>>();
+        if ticks(&session.checkpoints) != ticks(&saved.checkpoints) {
             return Err("checkpoint history mismatch".into());
         }
-        Ok(session)
-    }
-    /// Verifies a v1 save by the SHA-256 hashes it carries, final and at each
-    /// checkpoint (rulings 608 and 641); the session saves again as v2.
-    pub fn load_v1(saved: SavedV1, mode: Execution) -> Result<Self> {
-        if saved.version != 1 || crate::digest(&saved.genesis) != saved.genesis_digest {
-            return Err("save version or genesis digest mismatch".into());
-        }
-        let stops: Vec<Tick> = saved.checkpoints.iter().map(|c| c.tick).collect();
-        let check = |i: usize, sim: &Simulation| {
-            if sim.state_hash_v1() == saved.checkpoints[i].state_hash {
-                Ok(())
-            } else {
-                Err("checkpoint history mismatch".to_string())
+        for (ours, theirs) in session.checkpoints.iter().zip(&saved.checkpoints) {
+            if let Some(d) = first_divergence(&theirs.witness, &ours.witness) {
+                return Err(format!(
+                    "checkpoint at tick {} diverges first at {}",
+                    ours.tick, d.label
+                ));
             }
-        };
-        let session = Self::replay(
-            saved.genesis,
-            saved.branch,
-            saved.entries,
-            saved.tick,
-            mode,
-            &stops,
-            check,
-        )?;
-        if session.sim.state_hash_v1() != saved.state_hash {
+        }
+        if saved.state_hash != saved.witness.digest() {
             return Err("save state hash mismatch".into());
         }
-        if !session.checkpoints.iter().map(|c| c.tick).eq(stops) {
-            return Err("checkpoint history mismatch".into());
+        if let Some(d) = first_divergence(&saved.witness, &session.sim.witness()) {
+            return Err(format!("save state diverges first at {}", d.label));
         }
         Ok(session)
     }

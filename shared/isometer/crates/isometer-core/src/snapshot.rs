@@ -36,21 +36,25 @@ pub fn decode<T: DeserializeOwned>(bytes: &[u8]) -> Result<T, CodecError> {
     postcard::from_bytes(bytes).map_err(|_| CodecError::Decode)
 }
 
-/// FNV-1a over encoded bytes. Chosen for being a few integer operations with
-/// no platform-dependent behaviour; this is an equality witness for replay,
-/// not a cryptographic digest.
-pub fn hash_bytes(bytes: &[u8]) -> u64 {
-    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-    for byte in bytes {
-        hash ^= *byte as u64;
-        hash = hash.wrapping_mul(0x0000_0100_0000_01B3);
-    }
-    hash
-}
+/// FNV-1a over encoded bytes: an equality witness for replay, not a
+/// cryptographic digest. Mere's `state-witness` owns it (wing ruling 609,
+/// mere's F119); this re-export keeps every caller's path.
+pub use state_witness::hash_bytes;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Fixed values, computed apart from this crate, that every saved witness
+    /// depends on: a change of implementation must keep them.
+    #[test]
+    fn the_witness_keeps_its_values() {
+        let all: Vec<u8> = (0..=255).collect();
+        assert_eq!(hash_bytes(b""), 0xcbf2_9ce4_8422_2325);
+        assert_eq!(hash_bytes(b"a"), 0xaf63_dc4c_8601_ec8c);
+        assert_eq!(hash_bytes(b"isocosm"), 0xa005_dbe9_febc_5e04);
+        assert_eq!(hash_bytes(&all), 0x4242_dc52_49c3_3625);
+    }
     use crate::body::{BodyDocument, SpeciesId, VolumeRef};
 
     #[test]

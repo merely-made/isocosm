@@ -224,6 +224,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "state-witness",
  "toml",
  "wing-formats",
  "wing-functions",
@@ -237,6 +238,7 @@ version = "0.1.0"
 dependencies = [
  "postcard",
  "serde",
+ "state-witness",
  "wing-formats",
 ]
 
@@ -277,6 +279,15 @@ name = "memchr"
 version = "2.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
+
+[[package]]
+name = "mere-framing"
+version = "0.0.2"
+source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+dependencies = [
+ "postcard",
+ "serde",
+]
 
 [[package]]
 name = "muniment"
@@ -432,6 +443,16 @@ name = "stable_deref_trait"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
+
+[[package]]
+name = "state-witness"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+dependencies = [
+ "mere-framing",
+ "postcard",
+ "serde",
+]
 
 [[package]]
 name = "syn"

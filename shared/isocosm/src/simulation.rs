@@ -5,6 +5,8 @@ use crate::{Result, population::Population, reach::Reach, rules::*, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod witness;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Execution {
     Individuals,
@@ -189,9 +191,14 @@ impl Simulation {
     pub fn set_mode(&mut self, mode: Execution) {
         self.mode = mode;
     }
-    /// The family's witness (ruling 607): FNV-1a over postcard (636), a u64
-    /// (634). An equality witness for replay, not a content address.
+    /// The digest of the per-field entries (ruling 652): an equality
+    /// witness for replay, not a content address.
     pub fn state_hash(&self) -> u64 {
+        self.witness().digest()
+    }
+    /// FNV-1a over the whole state's postcard bytes, kept only to verify
+    /// version-2 saves (ruling 651).
+    pub(crate) fn state_hash_v2(&self) -> u64 {
         use isometer_core::snapshot::{encode, hash_bytes};
         hash_bytes(&encode(&self.witnessed()).expect("sim schema encodes"))
     }
