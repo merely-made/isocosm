@@ -67,6 +67,38 @@ first divergence on load and in a trace; the v2 format adds the entries
 without breaking H1's v2 saves, or the save version moves again with a reader
 kept.
 
+**Where H2 stands, read 2026-10-08.** mere's dynamics grammar plan
+(`mere/design_docs/mere_docs/implementation_strategy/2026-10-02_dynamics_grammar_plan.md`,
+§G8 and its 2026-10-06 annotation) lists G8 as open: not briefed, and not
+among the lanes F92 set running (G2's rework and G4). Isocosm's needs reach
+G8 as four relayed lines; the inventory below is the fuller statement for its
+brief.
+
+**Label inventory, from `State` (`shared/isocosm/src/simulation.rs:37`).**
+Saves label by field (633); traces label by entity, which per collection is:
+
+| Field | Keyed by | Entity label |
+| --- | --- | --- |
+| `tick`, `next_action` | scalars | one `clock` entry |
+| `population` | cohorts: first `Id` and a `count` | the normalized cohort's first id |
+| `sites`, `locations`, `polities` | `Id` | `site:<id>` and so on |
+| `lineages`, `events` | `Key` | `lineage:<key>`, `event:<key>` |
+| `relations` | the (subject, kind, object) triple | the triple itself |
+| `notes` | position in a `Vec` | none stable today |
+| `roots`, `released` | `Id` | `root:<id>`, `released:<id>` |
+| `record` | hagiograph marks by `Key` | `mark:<key>` |
+| `reach` | arrivals by event `Key`, then site `Id` | `arrival:<event>/<site>` |
+
+Two of these are not plain lookups:
+- *Population.* A cohort is a range of ids carrying one entity, and grouped
+  and individual runs agree only after `Population::normalized`. An entry per
+  critter would mean expanding every cohort; an entry per normalized cohort,
+  labelled by its first id, keeps the trace as large as the state is.
+- *Notes.* A note has no id, and its index shifts when an earlier note
+  expires, so an index label would report the wrong first divergence. A
+  stable label needs one built from the note (its cause, kind, subject and
+  object) or an id added to `Note`.
+
 ## Forks, ruled 2026-10-06
 
 1. Label grain: fields in saves, entities in the traces (ruling 633).
