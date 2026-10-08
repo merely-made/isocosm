@@ -33,6 +33,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
+| [2026-10-07_shared_build_dir_plan.md](2026-10-07_shared_build_dir_plan.md) | One build directory for the repo's eight workspaces (rulings 638, 643 to 646). | Ruled 2026-10-07; adoption under way. |
 | [2026-10-06_stable_repin_plan.md](2026-10-06_stable_repin_plan.md) | The repin onto stable Burn's mere `5fecd707` (ruling 621). | Done, 2026-10-07. |
 | [2026-10-06_docs_dedup_plan.md](2026-10-06_docs_dedup_plan.md) | The repo-wide docs dedup (rulings 593, 612 to 619). | Done, 2026-10-06. |
 | [2026-09-25_vtt_overlay_plan.md](2026-09-25_vtt_overlay_plan.md) | The VTT's overlay (W5): rulesets over the sim. | 2026-10-03: rulings 538 to 541; V0 and V1 done. |
