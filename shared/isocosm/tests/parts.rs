@@ -324,7 +324,7 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
 /// What a run leaves: its state, its matter, the members its evaluations
 /// stood for, accepted and blocked, and each watched process's acts, by the
 /// members they stood for.
-type Run = (Key, u128, [u64; 3], BTreeMap<Key, u64>);
+type Run = (u64, u128, [u64; 3], BTreeMap<Key, u64>);
 
 fn run(g: &Genesis, mode: Execution, reload: bool) -> (Run, u64) {
     let mut session = Session::new(g.clone(), mode).unwrap();

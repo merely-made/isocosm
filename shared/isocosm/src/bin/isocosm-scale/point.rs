@@ -50,7 +50,7 @@ pub(super) struct Point {
     heap_live_end_bytes: usize,
     distinct_states: usize,
     distinct_read_states: usize,
-    final_hash: String,
+    final_hash: u64,
     components: Components,
     per_tick: Vec<TickRow>,
 }

@@ -10422,8 +10422,3 @@ dependencies = [
  "syn 3.0.5",
  "winnow",
 ]
-
-[[patch.unused]]
-name = "cubecl-runtime"
-version = "0.11.0"
-source = "git+https://github.com/merely-made/mere.git?rev=5fecd707c6bc9022f952c6d7b99d59f0f568d8e8#5fecd707c6bc9022f952c6d7b99d59f0f568d8e8"

@@ -1,7 +1,7 @@
 # Isocosm's state witness
 
-**Status, 2026-10-06:** briefed and its forks ruled (633 to 636); H1 waits on
-the repin onto stable (ruling 621), then opens in its own worktree.
+**Status, 2026-10-07:** H1 done on branch `state-witness`, verified, waiting
+on Mark's word to merge; H2 waits on mere's labelled-digest crate (G8).
 
 Carries out the wing design record's rulings 607 to 610: Isocosm's state hash
 joins the family's FNV-1a witness, in balaur's shape (labelled entries and a
@@ -73,5 +73,35 @@ kept.
 2. The v2 hash: a u64, v1 read through a separate struct (634).
 3. Staging: H1 after the repin, H2 when mere's crate lands (635).
 4. Encoding: postcard through `snapshot::encode` (636).
+5. A v1 save is still checked at every checkpoint, not only its final hash
+   (641, 2026-10-07).
+6. The probe's trace is draw 0's exact run, in the bench's line format (642,
+   2026-10-07).
 
 ## Progress
+
+- 2026-10-07, H1: `Simulation::state_hash` is `hash_bytes(encode(..))`, a
+  u64, over the same normalized tuple; the SHA-256 survives only as
+  `state_hash_v1`. Saves carry `SAVE_VERSION = 2`; `Session::load_json`
+  reads the `version` field and sends v1 to `load_v1`, which checks the
+  final SHA-256 and, stopping the replay at each recorded checkpoint tick,
+  every checkpoint's (641). `Session::advance_traced` and
+  `probe::run_exact_traced` feed `--trace <file>` in `isocosm-bench` and
+  `isocosm-probe` (draw 0's exact run, 642; refused beside `--crowds`, which
+  drops that run). Outside isocosm only `mesocosm-genet` moved: its
+  `sim-hash` probe field prints `{:016x}` and its save panel loads through
+  `load_json`. Done-conditions: every caller builds on the u64, all eight
+  workspaces checking over all targets; the pre-causation fixture loads and
+  re-saves as v2; a new v1 fixture with checkpoints at 4, 8 and 12, written
+  by the pre-H1 core (`tests/data/v1-checkpointed-world.json`), loads,
+  re-saves as v2 and refuses a flipped middle checkpoint, a dropped one and
+  a flipped final hash; a v2 save round-trips and refuses a flipped hash;
+  a one-unit `PlaceMatter` after tick 5 makes the trace first differ at
+  tick 6, the first traced tick after it, and not before. Tests, one
+  thread each: isocosm 1,237 (six new in `tests/witness.rs`), the VTT 371,
+  Mesocosm 336, isometer 293, isomere 51, wing-integration 4,
+  isocosm-overlay 43; Eponym 81 with the two Sortie failures that predate
+  the repin. The probe's report for seed 11, one draw, matches the pre-H1
+  core's but for timings. Built on one shared target (637): 81 GB for the
+  eight workspaces' checks and tests, where the repin's per-workspace
+  targets held 126 GB.
