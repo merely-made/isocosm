@@ -8885,6 +8885,27 @@ what later sections derive from.
      decide". So a short design round on what the communication changes in
      play comes before its placement, and checkpoint 9's certification
      waits on that decision.
+659. **The nervous system joins systems for a process.** 2026-10-08, 658's
+     design round. Question: what does its communication do, given that
+     each system carries milligrams from sources through gates to effects,
+     wing-functions' gates are open or shut (477), and the bite already
+     reads two systems (intake for the meal, contract for the limbs'
+     share)? Options: it joins systems for a process (recommended); it opens
+     the other systems' gates; it carries timing. Mark chose "It joins
+     systems for a process (Recommended)". So a process reading several
+     systems gets their joint effect only where nervous routes connect those
+     systems' parts, and each system still works alone.
+660. **Any gated system can be joined.** 2026-10-08. Question: which systems
+     does it connect? Options: the four Mark named, muscular, digestive,
+     respiratory and nervous (recommended); every system with gates. Mark
+     chose "Every system with gates". So the joining is not limited to a
+     list: any process reading two or more gated systems is joined by nerves.
+661. **Without nerves, systems work alone.** 2026-10-08. Question: what
+     happens to a body with no nerves, or with them cut, such as the probe's
+     fronds? Options: systems work alone (recommended); local reflex only;
+     those systems stop. Mark chose "Systems work alone (Recommended)". So
+     only the joint effect is lost: a frond is unaffected, and a nerve cut
+     costs coordination, not life.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
