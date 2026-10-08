@@ -8828,6 +8828,31 @@ what later sections derive from.
      (Recommended)". So `--trace` keeps its text lines and
      `--trace-entries <file>` writes the crate's framed `Trace` (MERETRC,
      version 1), compared by `first_trace_divergence`.
+654. **The landed lane branches go.** 2026-10-08. Question: three local
+     branches (`lane-a-scheduler-index`, `lane-a-scheduler-part-a`,
+     `worktree-agent-a89e04fcecf797735`) landed on main on 2026-09-25 and 26
+     by subject and patch, the only difference left being raw receipts kept
+     out of tree (255); delete them? Options: delete all three
+     (recommended); keep them. Mark chose "Delete all three (Recommended)".
+655. **Checkpoint 9 is unparked and finished.** 2026-10-08, reopening 591's
+     park ("Bodies stop at checkpoint 8: checkpoint 9 is parked on its
+     branch, unmerged"). Question: `checkpoint-9` holds two commits on origin
+     and uncommitted work untouched since 2026-10-05; what happens to it?
+     Options: commit it as work in progress and push (recommended); leave
+     it; unpark and finish it. Mark chose "Unpark and finish it". So main
+     merges into the branch, 9d and 9e are finished and certified as
+     checkpoints 6 to 8 were, and the checkpoint merges.
+656. **The order after the migration.** 2026-10-08. Question: what is
+     isocosm's next objective? Options: re-express the families (591's next
+     step; recommended); checkpoint 9; the open bugs (isomere's unused
+     cubecl patch, the ambience-lease probe, isometry-views' GPU tests at two
+     threads, parry-ground offline); Mesocosm's overlay M2 to M4. Mark: "3
+     will need doing in the course of 2, so those two go together. Then 1
+     (you can opportunistically review and research and plan while waiting
+     for 2+3 builds), then 4 (same, design in downtime)". So checkpoint 9
+     and the open bugs go first, together; the families' re-expression is
+     researched and planned while their builds run and comes next; the
+     overlay's M2 to M4 is designed in the downtime after that.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
