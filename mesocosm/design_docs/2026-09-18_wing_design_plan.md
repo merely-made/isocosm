@@ -8942,6 +8942,16 @@ what later sections derive from.
      So mere's physics coordinator is asked to move conatus and seiche to the
      current rapier and parry, and parry-ground repins to the stack's parry
      once it moves.
+     *Annotation, 2026-10-08:* mere took it, Mark ruling there as F163 to
+     F166 of its dynamics grammar plan (relayed by its physics coordinator;
+     branch `rapier-036`): rapier 0.36.0 / parry 0.31.1, the parry nexus
+     already pins; a lane of its own beside G4b1; rapier's
+     `enhanced-determinism` on in the same move, meeting G8's and 604's
+     rapier condition; any receipt that moves stops the lane for Mark. So
+     parry-ground repins to parry3d 0.31.1 with the isocosm repin that takes
+     it, adapting to parry 0.31's query results (`ShapeDistance`,
+     `ShapeIntersection`, sub-shape ids) and 0.30's contact-manifold
+     accessors.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
