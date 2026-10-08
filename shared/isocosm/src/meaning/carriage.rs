@@ -46,7 +46,10 @@ pub(crate) fn asks(
         .iter()
         .map(|id| {
             let p = &e.parts[id];
-            (*id, if lands.is_empty() { cells(p) } else { room(p) })
+            // Cells weigh a share, not a cap: scaled by the ask, they always
+            // cover it, where room caps what a landing asks.
+            let by_cells = cells(p).saturating_mul(ask.max(1));
+            (*id, if lands.is_empty() { by_cells } else { room(p) })
         })
         .collect();
     if !lands.is_empty()

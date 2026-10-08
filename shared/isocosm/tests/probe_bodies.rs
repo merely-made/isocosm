@@ -141,6 +141,23 @@ fn whole(seed: u64) -> Genesis {
     .genesis
 }
 
+/// A whole world at ruling 505's rates, with carriage that never binds: the
+/// feeding formulas as calibrated, before 571 drew rates per world and the
+/// systems bounded what reaches each part (both certified in `systems.rs`).
+fn at_505(seed: u64) -> Genesis {
+    BodyFounding {
+        seed,
+        absence: [0, 0],
+        fixes: [11, 11],
+        grazes: [12, 12],
+        carriage: [1_000_000, 1_000_000],
+        ..Default::default()
+    }
+    .generate()
+    .unwrap()
+    .genesis
+}
+
 fn provision(sim: &Simulation, id: Id) -> u64 {
     let e = sim.state().population.get(id).unwrap();
     let i = e.lineage.trim_start_matches("lineage:");
@@ -285,7 +302,7 @@ fn a_producer_keeps_no_reserve_and_a_grazer_keeps_it_in_its_lump() {
 fn fixing_draws_its_income_by_area_and_lands_it_by_td5() {
     for seed in 0..6 {
         for asked in [(30, 0), (60, 50), (120, 400), (150, 100), (190, 190)] {
-            let mut g = whole(seed);
+            let mut g = at_505(seed);
             let held = set(&mut g, "lineage:0", asked);
             assert_eq!(held.1, 0, "a frond stores nothing");
             let id = first(&g, "lineage:0");
@@ -316,25 +333,24 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
             ((60, 40), (25, 0)),
             ((150, 5), (180, 0)),
         ] {
-            let mut g = whole(seed);
+            let mut g = at_505(seed);
             let meal = set(&mut g, "lineage:1", meal);
             let prey = set(&mut g, "lineage:0", prey);
             let (id, target) = (first(&g, "lineage:1"), first(&g, "lineage:0"));
             // Half the draws graze a frond that has grown its gland.
             let grown = seed % 2 == 0;
             if grown {
-                let frond = g
-                    .population
-                    .lift(target)
-                    .unwrap()
-                    .parts
-                    .get_mut(&0)
-                    .unwrap();
-                let fixing = frond.cells["function:fix"];
+                let rules = g.rules.clone();
+                let frond = g.population.lift(target).unwrap();
+                let before = frond.clone();
+                let part = frond.parts.get_mut(&0).unwrap();
+                let fixing = part.cells["function:fix"];
                 let cells = fixing.min(4);
-                frond.cells.insert("function:fix".into(), fixing - cells);
-                frond.cells.insert("function:secrete".into(), cells);
-                frond.functions.insert("function:secrete".into());
+                part.cells.insert("function:fix".into(), fixing - cells);
+                part.cells.insert("function:secrete".into(), cells);
+                part.functions.insert("function:secrete".into());
+                // The gland's cells bring the system they realize (587).
+                isocosm::systems::take_up(frond, &rules, &before);
             }
             let b = build(g.population.get(id).unwrap());
             let c = b.ceiling.max(1);
@@ -564,3 +580,4 @@ fn averaging_flattens_every_own_account_at_each_site() {
     // The control: some site held producers in more than one state.
     assert!(spread > 0, "no class to flatten");
 }
+
