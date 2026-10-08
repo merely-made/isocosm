@@ -8869,9 +8869,22 @@ what later sections derive from.
      system's `contract` effect too. Mark chose "Nervous carries no matter".
      So the nervous and respiratory systems name no effects in the default
      table, the muscular system is the only route to the contracting parts,
-     and the control passes as written. *Reading, not ruled:* perception and
-     reach, which 489 has the nervous system serve once places exist, will
-     need its effects as signal rather than carriage when they are built.
+     and the control passes as written. *Annotation, 2026-10-08:* Mark,
+     straight after: "The nervous system should allow the musculature,
+     digestive, respiratory, and neurological systems to communicate." That
+     is its purpose, replacing the reading first written here (that it would
+     carry perception's signal), and 658 takes up how.
+658. **The nervous system's communication is designed before it lands.**
+     2026-10-08, from 657's annotation. Question: systems are functions in
+     roles whose routes carry milligrams, and checkpoint 9 needs only that
+     the nervous system carries no matter; when and how is its
+     communication between the systems built? Options: record now and build
+     with the first mechanic that reads it (recommended); innervation gates
+     in checkpoint 9, a system's gate working only where the nerves reach
+     it; design it first, then decide. Mark chose "Design it first, then
+     decide". So a short design round on what the communication changes in
+     play comes before its placement, and checkpoint 9's certification
+     waits on that decision.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
