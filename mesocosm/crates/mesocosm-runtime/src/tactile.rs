@@ -20,8 +20,10 @@ use conatus::{
     BodyDesc, BodyError, BodyId, BodyKind, BodyWorld, ColliderDesc, ColliderShape, SpatialFilter,
     Transform, VoxelEdit,
 };
-use mesocosm_core::places::{AIR, BRICK};
-use mesocosm_core::voxel_profile::{GroundChunkChange, GroundVoxelProfile, GroundVoxelUpdate};
+use isocosm::legacy::mesocosm::places::{AIR, BRICK};
+use isocosm::legacy::mesocosm::voxel_profile::{
+    GroundChunkChange, GroundVoxelProfile, GroundVoxelUpdate,
+};
 
 /// One capsule of a critter's presented pose, world coordinates. A tapered
 /// pose capsule is carried at its mean radius; taper is a recorded
@@ -356,7 +358,7 @@ fn rotation_from_y(direction: [f32; 3]) -> [f32; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::places::{Ground, Places};
+    use isocosm::legacy::mesocosm::places::{Ground, Places};
 
     fn ground() -> Ground {
         Ground::grow(&Places::grown(4_242, 4, 64), 64)

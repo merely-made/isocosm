@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::places::{Ground, Places};
+use isocosm::legacy::mesocosm::places::{Ground, Places};
 
 use crate::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade, TerrainAppearance,

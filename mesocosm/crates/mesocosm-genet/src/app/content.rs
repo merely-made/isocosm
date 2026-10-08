@@ -22,8 +22,8 @@ pub(super) fn with_authored(runtime: Runtime) -> Runtime {
 
 fn runtime(
     config: &HostConfig,
-    founding: mesocosm_core::Founding,
-    palette: mesocosm_core::PartPalette,
+    founding: isocosm::legacy::mesocosm::Founding,
+    palette: isocosm::legacy::mesocosm::PartPalette,
 ) -> Result<Runtime, String> {
     if let Some(selection) = config.effective_start() {
         if config.effective_scene() != crate::played::SceneMode::Ecology {
@@ -76,7 +76,7 @@ pub(super) fn start(config: &HostConfig) -> Result<(Runtime, Option<Pack>, Volum
         trace.validate_rules()?;
     }
     let founding = if config.effective_start().is_some() {
-        mesocosm_core::Founding::Drawn
+        isocosm::legacy::mesocosm::Founding::Drawn
     } else {
         config.effective_body_layout().founding()
     };

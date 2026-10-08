@@ -22,7 +22,7 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::{PlaceId, SpeciesId, World};
+use isocosm::legacy::mesocosm::{PlaceId, SpeciesId, World};
 use sceno::{
     Arrangement, Footprint, Hulls, Placement, Rect, Representation, Scene, Score, ScoreItem, Size2,
     SourceRef, Vec2,
@@ -38,7 +38,7 @@ pub const MINIMAP_ADAPTER: &str = "mesocosm";
 /// units are voxels, `invert_y` is off, and a host that wants a different
 /// framing scales the realized scene rather than the facts.
 pub fn minimap_score(world: &World) -> Score {
-    let extent = mesocosm_core::world::ENCLOSURE as f32;
+    let extent = isocosm::legacy::mesocosm::world::ENCLOSURE as f32;
     let mut score = Score::new(Arrangement::Hulls(Hulls {
         origin: Vec2::ZERO,
         units_per_coordinate: 1.0,
@@ -163,7 +163,7 @@ pub fn minimap_leaf(world: &World) -> crate::leaf::MinimapLeaf {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::Intent;
+    use isocosm::legacy::mesocosm::Intent;
 
     fn world() -> World {
         let mut world = World::new(4_242, 40);

@@ -15,9 +15,9 @@
 
 use std::path::{Path, PathBuf};
 
-use mesocosm_core::discovery::HUNGER_TICKS;
-use mesocosm_core::rules::{EpochRule, WorldRules};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::discovery::HUNGER_TICKS;
+use isocosm::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use isocosm::legacy::mesocosm::{
     Appendage, Attachment, Intent, Provenance, Recipe, Tagma, Trend, VolumeRef, World, Yaw,
 };
 use mesocosm_runtime::{Authored, Occasion, Review, Runtime, Source};
@@ -31,11 +31,11 @@ fn pack_root() -> PathBuf {
         .expect("the workspace root is two above this crate")
 }
 
-fn hunger() -> mesocosm_core::ConditionId {
-    mesocosm_core::discovery::conditions()
+fn hunger() -> isocosm::legacy::mesocosm::ConditionId {
+    isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|condition| {
-            mesocosm_core::discovery::name_of(condition.id())
+            isocosm::legacy::mesocosm::discovery::name_of(condition.id())
                 .is_some_and(|name| name == "mesocosm:endured-hunger")
         })
         .expect("the table holds it")
@@ -57,7 +57,7 @@ fn endure(world: &mut World, ticks: u64) {
             .iter_mut()
             .find(|o| o.id == me)
             .expect("in the roster")
-            .energy_mg = upkeep * (mesocosm_core::STARVED_UPKEEP_TICKS - 1);
+            .energy_mg = upkeep * (isocosm::legacy::mesocosm::STARVED_UPKEEP_TICKS - 1);
         world.apply(Intent::Resume);
     }
 }
@@ -71,12 +71,12 @@ fn bulk_world(seed: u64, founders: u32) -> World {
     let me = world.controlled_id().expect("embodied");
     let organism = world.organisms.iter_mut().find(|o| o.id == me).unwrap();
     let (species, position) = (organism.species, organism.position);
-    *organism = mesocosm_core::Organism {
-        stage: mesocosm_core::Stage::Mature,
-        ..mesocosm_core::Organism::founding(
+    *organism = isocosm::legacy::mesocosm::Organism {
+        stage: isocosm::legacy::mesocosm::Stage::Mature,
+        ..isocosm::legacy::mesocosm::Organism::founding(
             me,
             species,
-            mesocosm_core::Kingdom::Consumer,
+            isocosm::legacy::mesocosm::Kingdom::Consumer,
             VolumeRef::from_tag(1),
             [2, 2, 2],
             position,
@@ -148,7 +148,7 @@ fn the_review_stands_only_while_the_world_holds_at_a_lineage_checkpoint() {
     // *individual* checkpoint: they are answered and the run carries on, which
     // is also what shows that the review belongs to one of the three occasions
     // and not to the machinery they share.
-    for _ in 0..mesocosm_core::rules::DEFAULT_EPOCH_TICKS * 4 {
+    for _ in 0..isocosm::legacy::mesocosm::rules::DEFAULT_EPOCH_TICKS * 4 {
         match rt.checkpoint().map(|held| held.occasion) {
             Some(Occasion::Epoch(_)) => break,
             Some(_) => {
@@ -270,7 +270,7 @@ fn a_pack_expression_appears_beside_the_discovered_proposal_and_is_marked() {
             world
                 .phenotype()
                 .expect("embodied")
-                .mosaic(mesocosm_core::PartId(part))
+                .mosaic(isocosm::legacy::mesocosm::PartId(part))
                 .is_some(),
             "and on a part this body has"
         );

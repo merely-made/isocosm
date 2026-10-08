@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::Founding;
+use isocosm::legacy::mesocosm::Founding;
 use serde::{Deserialize, Serialize};
 
 /// A founding recipe set, independent of voxel content and drawing mode.

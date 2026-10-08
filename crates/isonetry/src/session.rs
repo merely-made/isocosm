@@ -6,12 +6,13 @@
 
 use std::collections::HashMap;
 
-use isometry_campaign::{
+use isocosm::legacy::campaign::{
     CampaignStore, FactionMove, GenerationRecord, GenerationRecordError, InventoryError, ItemId,
     ItemInstance, ItemModifierReveal, MapScale, StoryletEffect, StoryletProposal, WorldError,
     WorldEvent, WorldFact,
 };
-use isometry_core::{apply, EventError, TileCoord, TokenId};
+use isometry_campaign::{LowerDraftMap, LowerMap};
+use isometry_core::{EventError, TileCoord, TokenId, apply};
 use muniment::Journal;
 
 use crate::protocol::{

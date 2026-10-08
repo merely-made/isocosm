@@ -1,6 +1,9 @@
 # Memory, remembrance, and hagiograph
 
-**Status (2026-09-09): plan.** This is a Paredros implementation plan for
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status (2026-09-09): plan.** This is a Paredros implementation plan for
 ordinary individual memory and the later memorial boundary. It is intentionally
 separate from the world-conditions plan and from the functional-loops plan.
 Those plans own world triggers and larger orchestration. This document owns
@@ -299,7 +302,7 @@ Done-conditions:
 
 ### Save growth baseline, 2026-09-09
 
-The runnable [save-growth probe](../crates/eponym-world/examples/save_growth.rs)
+The runnable [save-growth probe](../../shared/isocosm/examples/eponym_world_save_growth.rs)
 uses a generated world, one admitted wetland body and one carried dressing.
 Each pair attaches and detaches that dressing. At every checkpoint, the current
 world, body and items equal their initial values; restoring the complete save
@@ -316,6 +319,8 @@ Receipt: [CSV](../testing/save_growth/2026-09-09.csv). Command:
 `cargo run -p eponym-world --example save_growth --locked --offline -j 2
 --target-dir target-contact`, with
 `CARGO_HOME=C:/Users/mark_/Code/cargo-homes/paredros-save-check-20260908`.
+*(2026-10-06: the probe moved into Isocosm with Eponym's world, ruling 591;
+from `shared/isocosm` it runs as `cargo run --example eponym_world_save_growth`.)*
 This is the repository's optimized dev profile with debug information, one run
 amid concurrent work. Timings are diagnostic samples, not a performance target.
 All four restored-equality checks passed. These are encoded bytes without an

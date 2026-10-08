@@ -1,0 +1,17 @@
+#!/bin/sh
+# Checked on what each commit stages: the 600-line ceiling (ruling 592), and
+# no hand-written JSON in a pack (data formats brief F1, ruling 624).
+# Enabled per clone with `git config core.hooksPath .githooks`.
+root=$(git rev-parse --show-toplevel) || exit 1
+if command -v pwsh >/dev/null 2>&1; then
+    shell=pwsh
+elif command -v powershell >/dev/null 2>&1; then
+    shell=powershell
+else
+    echo "pre-commit: no PowerShell here; the line ceiling and pack formats were not checked" >&2
+    exit 0
+fi
+status=0
+"$shell" -NoProfile -File "$root/scripts/line-ceiling.ps1" -Staged || status=1
+"$shell" -NoProfile -File "$root/scripts/pack-json.ps1" -Staged || status=1
+exit $status

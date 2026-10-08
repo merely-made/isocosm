@@ -12,7 +12,10 @@ Pathfinder 2e (522). In a ruleset-led world an edition's own state
 persists beside the body with declared relations (542), and its
 procedures run unattended under declared decision policies (543).
 
-**Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
+**Status, 2026-10-03:** Rulings 538 to 541; V0 and V1 done. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-09-26:** plan; V0 done 2026-09-26, its eight decisions ruled
 (231 and 243 to 250); V1 done 2026-09-26, opened by ruling 253 as a
 contract module only; V2 to V4 proposed and not opened, waiting on
 Mesocosm's M3 (ruling 231). Drafted at
@@ -65,14 +68,12 @@ held, for the battlemap as a scene; and the
 
 ## 0. Done-conditions
 
-From the record's §11, W5 is done for a game when it has:
+W5's done-conditions are the record's
+[§11](../mesocosm/design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for the VTT, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase V4
+(the played loop).
 
-1. a profile designed to the record's §5 (§1 here);
-2. a core implementing the overlay contract (§3);
-3. a played loop with receipts drawn from the generator (§2, phase V4).
-
-Ruling 174 made Mesocosm the first overlay; the VTT's and Eponym's go side by
-side after Mesocosm's M3, each on its own plan (ruling 231, §6 decision 8).
+The order is rulings 174 and 231.
 
 ## 1. The profile
 
@@ -132,9 +133,7 @@ Ruling 6's six parts.
 
 ## 3. The core and the contract
 
-The contract's shape is ruled (ruling 154): a game submits intents, the sim
-returns events and a read-only view of each tick, and outcomes a game
-settles come back through the handoff. The VTT is the game that fills the
+The contract's shape is ruling 154's. The VTT is the game that fills the
 handoff: the record's §3.8 has the foreground game resolve a blow by its own
 rules, and `ActionResolved` (`crates/isonetry/src/protocol.rs:180`) already
 carries a resolved action as one envelope every peer applies. Its module is
@@ -363,36 +362,13 @@ V1 is Mark's.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
-
-- 2026-10-03: rulings 538 to 541 noted at the head: faithful editions, a
-  toolkit grown from them, hybrids by named profile, and authority chosen
-  per world.
 - 2026-09-26: V1 done. Ruling 253 opened E1 and V1 as contract modules
   only; `src/vtt/` was built in a worktree, reviewed and merged by the
   Simulation design review session (main 1996ecc), then the shapes shared
   with Eponym's module were lifted to the crate root at Mark's word
   (269ffc5). fmt, clippy and 43 tests clean. Everything from V2 on waits
   for Mesocosm's M3 (ruling 231).
-- 2026-09-26: rulings 249 and 250, recorded at 4de670a, take §6's last
-  decision: the bench calibrates Pathfinder 2e's skeleton first, and an
-  uncalibrated campaign warns when it opens and marks every receipt and save,
-  with no standing banner. V0 is done, all eight decisions ruled; §1, §3 and
-  §5 follow.
-- 2026-09-26: rulings 245 to 248, recorded at de68795, take §6's decisions
-  3, 4, 5 and 7: sharing a character and the DM playing the unclaimed are on
-  by default, downtime needs every player's yes, Isocosm absorbs
-  `isometry-campaign`'s world in §4's order and the tape-drawn faction turn
-  retires at V2, with a sim-off campaign's downtime the table's own as a
-  reading recorded with the ruling, and a sim-off campaign still writes its
-  facts as notes. §1 to §5 follow. The first calibration remains.
-- 2026-09-26: rulings 243 and 244, recorded at ed20550, take §6's decisions
-  1 and 2: with the sim on, a battlemap is projected from the generated
-  volume in the game's grid with the DM's map an edit over it, and moves
-  within a battlemap reach the sim as per-tick batches, so a character's
-  place in the site follows its token. §2, §3, §4 and §5 follow.
-- 2026-09-25: ruling 231 marks §6's decision 8: the VTT's and Eponym's
-  overlays go side by side after Mesocosm's M3, each on its own plan. The
-  record links this plan from its §5.7 and §11 (aa354f3).
+- 2026-09-26: V0 done, its eight decisions ruled (rulings 231, 243 to 250).
 - 2026-09-25: plan drafted at Mark's word ("Overlay plans to RPG") from the
   record's §5.7, rulings 114, 154, 188 to 191 and the contract's rulings,
   the system-plugin crate and this repository's plans. V0 to V4 proposed;

@@ -8,7 +8,7 @@
 //! same world and the same past every time. Split out of `runtime.rs` at the
 //! 600-line ceiling.
 
-use mesocosm_core::{History, Intent, World};
+use isocosm::legacy::mesocosm::{History, Intent, World};
 
 use super::{Runtime, reckon_if_ended};
 use crate::readings::FlowWindows;

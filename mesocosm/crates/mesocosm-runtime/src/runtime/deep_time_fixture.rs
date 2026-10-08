@@ -9,7 +9,7 @@
 //! out of `runtime.rs` at the 600-line ceiling; this whole module is
 //! `#[cfg(test)]`, so nothing here reaches a non-test build.
 
-use mesocosm_core::{History, Intent, World};
+use isocosm::legacy::mesocosm::{History, Intent, World};
 
 /// Direct `World::apply`/`History::record_all`, no runtime and no reckoning,
 /// so what comes back is exactly "a world with a past" and nothing else has
@@ -26,8 +26,8 @@ pub(crate) fn deep_time_world(
 ) -> (World, History) {
     let world = World::new(seed, organisms);
     let rules = world.rules();
-    let mut world = world.with_rules(mesocosm_core::WorldRules {
-        epoch: mesocosm_core::rules::EpochRule::Timed { ticks: epoch_ticks },
+    let mut world = world.with_rules(isocosm::legacy::mesocosm::WorldRules {
+        epoch: isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: epoch_ticks },
         ..rules
     });
     let mut history = History::new();

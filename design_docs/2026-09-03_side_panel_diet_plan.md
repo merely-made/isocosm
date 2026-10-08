@@ -1,6 +1,9 @@
 # Side panel diet
 
-**Status:** in progress (2026-09-04) — P0, P1 and cut 5 landed, both open
+**Status, 2026-09-28:** All 187 rows pass at Mere `5ce144ff` / Genet `7b48f94d`. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** in progress (2026-09-04) — P0, P1 and cut 5 landed, both open
 decisions closed by Mark (three-column mode grid kept; hints only for a
 target pick). The recorded stop is lifted: cambium's `disclosure` became
 generic over its content's state on 2026-09-03, which is exactly what cut 5

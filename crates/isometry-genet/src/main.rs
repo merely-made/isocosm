@@ -53,10 +53,11 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::time::{Duration, Instant};
 
-use isometry_campaign::{
+use isocosm::legacy::campaign::{
     CampaignStore, CampaignWorld, EntropyTape, FactionMove, GenValue, GeneratorRequest, ItemId,
     ItemInstance, MapScale, WorldEvent, WorldFact,
 };
+use isometry_campaign::LowerMap;
 use isometry_core::{
     Facing, FieldValue, MapDocument, Rng, SessionEvent, SheetData, TileCoord, Token, TokenId, apply,
 };
@@ -83,15 +84,8 @@ mod boot;
 mod board_census;
 mod campaign_store;
 mod catalog;
-// The GM's `>choose`: Cleromancy's sealed reading behind the `cleromancy`
-// feature, the VTT's own seeded draw otherwise.
-#[cfg(feature = "cleromancy")]
-mod cleromancy_selection;
-#[cfg(feature = "cleromancy")]
-use cleromancy_selection as generator_selection;
-#[cfg(not(feature = "cleromancy"))]
+// The GM's `>choose`: the VTT's own seeded draw.
 mod seeded_selection;
-#[cfg(not(feature = "cleromancy"))]
 use seeded_selection as generator_selection;
 mod dispatch;
 mod generators;

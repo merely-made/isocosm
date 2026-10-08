@@ -1,7 +1,10 @@
 # Overmap Presentation Plan: Hulls, Backdrop, and a Map That Reads as Terrain
 
 **Date:** 2026-08-02
-**Status:** Active, with **two prerequisites reopened by the 2026-08-08
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280). *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** Active, with **two prerequisites reopened by the 2026-08-08
 audit** ahead of the "already landed" list:
 (1) **a neutral region-paint seam**: sprigging's `GraphCanvas` privately
 owns paint order and geometry, so "extend the existing leaf" is not

@@ -20,7 +20,7 @@ use isocosm::probe::{
     BodyFounding, Crowd, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED, Variant,
     check::{self, Settings},
     readings::{self, Reading},
-    run_exact,
+    run_exact, run_exact_traced,
 };
 use report::*;
 use std::time::Instant;
@@ -111,6 +111,8 @@ struct Options {
     draws: u64,
     permutations: u64,
     output: Option<String>,
+    trace: Option<String>,
+    trace_entries: Option<String>,
     project: Option<u64>,
     members: Option<[u64; 2]>,
     density: bool,
@@ -131,6 +133,8 @@ fn options() -> Result<Options, String> {
         draws: 64,
         permutations: 1999,
         output: None,
+        trace: None,
+        trace_entries: None,
         project: None,
         members: None,
         density: false,
@@ -164,8 +168,16 @@ fn options() -> Result<Options, String> {
             // Checkpoint 6's worlds of bodies (ruling 262).
             "--bodies" => o.bodies = true,
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
+            // Draw 0's exact run, `<tick> <witness>` per tick (ruling 642).
+            "--trace" => o.trace = Some(args.next().ok_or("--trace needs a path")?),
+            "--trace-entries" => {
+                o.trace_entries = Some(args.next().ok_or("--trace-entries needs a path")?)
+            },
             _ => return Err(format!("unknown argument {arg}")),
         }
+    }
+    if (o.trace.is_some() || o.trace_entries.is_some()) && o.crowds {
+        return Err("--trace follows the exact run, which --crowds leaves out".into());
     }
     Ok(o)
 }
@@ -271,7 +283,23 @@ fn run() -> Result<(), String> {
         }
         if k == 0 && !o.crowds {
             let dynamics = draw.arms[0].dynamics;
-            let reference = run_exact(&world, dynamics, true)?.sim.state_hash();
+            let mut lines = String::new();
+            let mut entries = state_witness::Trace::new();
+            let mut line = |sim: &isocosm::Simulation| {
+                let tick = sim.state().tick;
+                lines += &format!("{tick} {:016x}\n", sim.state_hash());
+                if o.trace_entries.is_some() {
+                    entries.push(tick, sim.entity_witness()).expect("ticks advance");
+                }
+            };
+            let reference = run_exact_traced(&world, dynamics, true, &mut line)?.sim.state_hash();
+            if let Some(path) = &o.trace {
+                std::fs::write(path, &lines).map_err(|e| e.to_string())?;
+            }
+            if let Some(path) = &o.trace_entries {
+                let framed = entries.to_framed().map_err(|e| format!("{e:?}"))?;
+                std::fs::write(path, framed).map_err(|e| e.to_string())?;
+            }
             checks.exact_rerun_identical =
                 reference == run_exact(&world, dynamics, true)?.sim.state_hash();
             checks.collect_changes_no_outcome =

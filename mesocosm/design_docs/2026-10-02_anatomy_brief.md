@@ -1,6 +1,9 @@
 # The anatomy brief
 
-**Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
+**Status, 2026-10-04:** Checkpoint 8 built how parts arrive. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-10-02:** opened by ruling 458 after checkpoint 6, as ruling
 281 asked, from the probe's evidence, and ruled through in nine rounds (459
 to 470, 477 to 480 and 485 to 500); §8 holds nothing open. Nothing is built.
 It was carried into the sim plan's §2.3 the same day and briefed as S2's
@@ -91,7 +94,9 @@ to 580):* varied cells are inherited, vary at odds each recipe draws, to
 any grown function, and a riff swaps or adds at even odds. *And (581 to
 584):* a process's parts share a route's capacity; a native reads its
 systems as one network; an unrealized inherited system is carried dormant;
-and any cell may vary.
+and any cell may vary. *And (587 to 590):* a development brings the
+system its cells realize; the biting parts are the parts bitten; muscular
+carries the limbs' share of the mouthful; and a body grazes other lineages.
 
 ## 2. The function catalogue
 
@@ -277,49 +282,9 @@ family is briefed in the sim plan's §9 (501 to 503).
 
 ## Progress
 
-- 2026-10-02: carried into the sim plan's §2.3 as an anatomy row and briefed
-  as S2's bodies family, checkpoints 7 to 11 (501 to 503).
-- 2026-10-02: the ninth round ruled the brief through (497 to 500):
-  territories and surfaces lie in each place's ledger under their keys and
-  spread by overflow along routes, a germ lineage forks strains, and their
-  functions scale by the matter at each place; §8 holds nothing open.
-- 2026-10-02: the eighth round ruled (493 to 496): each function's
-  measurement by its share of the cells, now a column of §2's table; the
-  eight names read from the box and the tree, tube and shell declared;
-  segment growth a lineage trait; and wounds taken in proportion, healed
-  first. §8 keeps only territories and surfaces.
-- 2026-10-02: the seventh round, raised by Mark, ruled (492): no shape gates
-  a function, and what a part does scales with the measurement its mechanic
-  names; §2's table now lists fits, §3 reads a part's shape from its
-  measurements, and §8 gains the measurements item.
-- 2026-10-02: the sixth round ruled (489 to 491): the default systems take
-  the table of ten, now in §1, the natives read them from the bodies family
-  on, and the generator riffs systems by substitution; §8's default systems
-  item closed.
-- 2026-10-02: the fifth round's first question ruled after Mark's reframe
-  (488): a mold is a territory and micro life a surface; §3's spread
-  paragraph rewritten, and §8's head is now territories and surfaces.
-- 2026-10-02: the fifth round ruled three of its four (485 to 487): a
-  severed part grows back only where the lineage can heal, every fragment of
-  such a lineage lives and physiology decides which last, and the open items
-  are ruled before the family brief. The first question came back reframed
-  as territories or surfaces for spreads and micro life, now the head of §8.
-- 2026-10-02: the fourth round ruled (477 to 480): system networks read from
-  the tree and working by degree, the lineage keeping Mesocosm's recipe with
-  bodies growing toward it once their parts are full, and a spread acting
-  wherever a patch lies; §8's list rebuilt with the interactions recording
-  found.
-- 2026-10-02: the third round ruled (467 to 470): one part model for every
-  body form, a lineage's recipe with growth in life and the lexicon, wounds
-  as lost cells regrown at a price, and severed parts as bodies of their
-  own, alive where the lineage regrows from fragments; §6 and §7 added, the
-  open list renumbered §8.
-- 2026-10-02: the second round ruled (463 to 466): stores hold what their
-  cells can and a body without one keeps no reserve, rent, growth and a
-  landing meal reach parts in proportion, organ systems are named networks
-  of functions, and the fifteen functions' shapes and seeding are the table
-  in §2.
-- 2026-10-02: opened by ruling 458; rulings 459 to 462 ruled the first
-  round: tissue in parts and the reserve in stores, cells derived from
-  extents, the fifteen functions with the other vocabularies folded in,
-  and attachment kept by the sim.
+Ruled through in nine rounds, rulings 458 to 500, each round's questions and
+answers in the wing design record's §0 (ruling 614); built by the sim plan's
+checkpoints, whose log records the landings.
+
+- 2026-10-04: how parts arrive built as checkpoint 8 (`e3297e6`).
+- 2026-10-03: where a body's matter sits built as checkpoint 7 (`c51bb0a`).

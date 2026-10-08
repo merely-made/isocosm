@@ -15,9 +15,11 @@
 
 use std::path::{Path, PathBuf};
 
+use isocosm::legacy::mesocosm::{
+    Intent, OrganismId, Outcome, PartId, Placement, VolumeRef, World, Yaw,
+};
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
 use isometer_render::{Camera, Renderer};
-use mesocosm_core::{Intent, OrganismId, Outcome, PartId, Placement, VolumeRef, World, Yaw};
 
 const SIZE: u32 = 512;
 const SEED: u64 = 0x00A7_7AC4;

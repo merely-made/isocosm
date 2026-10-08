@@ -30,8 +30,8 @@
 
 use std::path::Path;
 
-use mesocosm_core::discovery::{self, Condition, HUNGER_TICKS};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::discovery::{self, Condition, HUNGER_TICKS};
+use isocosm::legacy::mesocosm::{
     Attachment, Intent, Kingdom, Organism, OrganismId, Outcome, PartId, Placement, Provenance,
     STARVED_UPKEEP_TICKS, SpeciesId, Stage, Trend, VolumeRef, World, Yaw,
 };

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use super::super::state::Bench;
 use super::{Form, Spatial};
-use mesocosm_core::effect_experiment::Glyph;
+use isocosm::legacy::mesocosm::effect_experiment::Glyph;
 use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -56,7 +56,7 @@ impl Bench {
                 seed: s.seed,
                 count: s.count,
                 tick: s.tick,
-                world: mesocosm_core::state_hash(m.world()),
+                world: isocosm::legacy::mesocosm::state_hash(m.world()),
                 isolated: m.isolated,
                 yaw: m.yaw,
                 camera: m.camera.name().into(),
@@ -105,7 +105,7 @@ impl Bench {
                     return Err("Selected part is no longer available.".into());
                 }
             }
-            if saved.world != mesocosm_core::state_hash(m.world())
+            if saved.world != isocosm::legacy::mesocosm::state_hash(m.world())
                 || saved.isolated != m.isolated
                 || saved.yaw != m.yaw
                 || saved.camera != m.camera.name()

@@ -50,8 +50,13 @@ pub enum Mismatch {
 impl Fixture {
     /// Reads a fixture from a declared pack file.
     pub fn read(path: &Path) -> Result<Self, String> {
-        let bytes = std::fs::read(path).map_err(|error| format!("{}: {error}", path.display()))?;
-        serde_json::from_slice(&bytes).map_err(|error| format!("{}: {error}", path.display()))
+        crate::data::read(path).map_err(|error| {
+            let why = match error {
+                crate::data::ReadError::Unreadable(why)
+                | crate::data::ReadError::Malformed(why) => why,
+            };
+            format!("{}: {why}", path.display())
+        })
     }
 
     /// Runs the script against this fixture's own context and checks both

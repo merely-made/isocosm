@@ -42,7 +42,7 @@ fn generator_controls_keep_locks_visible_and_queue_host_work() {
         default_args: GenValue::Text {
             value: "river".to_owned(),
         },
-        lock_presets: vec![isometry_campaign::GeneratorLockPreset {
+        lock_presets: vec![isocosm::legacy::campaign::GeneratorLockPreset {
             key: "culture".to_owned(),
             label: "River-clan culture".to_owned(),
             value: GenValue::Text {

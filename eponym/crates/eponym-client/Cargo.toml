@@ -32,12 +32,11 @@ v1b-proof = ["v1-proof"]
 # kinematics, netrender's frame, and the local renderling fork (which has no
 # published home). Revisit when the probe grows into a shipped target.
 [dependencies]
-eponym-identity = { path = "../eponym-identity" }
-eponym-world = { path = "../eponym-world" }
+eponym-motion = { path = "../eponym-motion" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }
-mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../shared/isocosm" }
 netrender = { workspace = true }
 # P1/P2 document-host lane deps: the Cambium host, its producer seam, the
 # scenario driver, and the paint-list path netrender rasterizes.

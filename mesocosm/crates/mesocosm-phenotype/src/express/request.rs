@@ -12,7 +12,9 @@
 //! this struct is not visible to an author, which is how "scripts cannot
 //! inspect hidden world state" is enforced rather than asked for.
 
-use mesocosm_core::{BodyPhenotype, ConditionId, Registry, RulesetDigest, World, classify};
+use isocosm::legacy::mesocosm::{
+    BodyPhenotype, ConditionId, Registry, RulesetDigest, World, classify,
+};
 use serde::{Deserialize, Serialize};
 
 /// Why the host is asking. (Plan §4's bounded triggers.)
@@ -124,7 +126,7 @@ impl Request {
     ///
     /// `None` when nobody is embodied or the line has not come to that
     /// condition — the same two facts
-    /// [`World::candidate_intent`](mesocosm_core::World::candidate_intent)
+    /// [`World::candidate_intent`](isocosm::legacy::mesocosm::World::candidate_intent)
     /// answers, asked one door over.
     ///
     /// **The one declared world condition today is `ground_mg`**: what the soil
@@ -242,12 +244,12 @@ fn parts_of(registry: &Registry, phenotype: &BodyPhenotype) -> Vec<PartView> {
 
 /// The plain shape word a pack and a script both speak. The same closed set
 /// [`role_of`](crate::pack::role_of) reads back.
-pub(crate) fn role_word(role: mesocosm_core::Role) -> String {
+pub(crate) fn role_word(role: isocosm::legacy::mesocosm::Role) -> String {
     match role {
-        mesocosm_core::Role::Mass => "mass",
-        mesocosm_core::Role::Limb => "limb",
-        mesocosm_core::Role::Plate => "plate",
-        mesocosm_core::Role::Sensor => "sensor",
+        isocosm::legacy::mesocosm::Role::Mass => "mass",
+        isocosm::legacy::mesocosm::Role::Limb => "limb",
+        isocosm::legacy::mesocosm::Role::Plate => "plate",
+        isocosm::legacy::mesocosm::Role::Sensor => "sensor",
     }
     .to_owned()
 }

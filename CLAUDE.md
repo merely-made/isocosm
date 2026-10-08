@@ -24,6 +24,77 @@ it first when starting any session.
 
 ---
 
+## Rules for all three products
+
+Gathered here on 2026-10-06 from the three products' `CLAUDE.md` files (wing
+design record, ruling 615). This file loads with each product's own, which
+links here.
+
+### Documents
+
+Authoritative design material lives in each product's `design_docs/`: read
+its `DOC_README.md` first. One `DOC_POLICY.md`, at `design_docs/`, governs all
+three; follow it for documentation changes. Wing-level material lives once, in
+`mesocosm/design_docs/`, and is cited by path, never copied.
+
+| Path, in each product's `design_docs/` | What's there |
+| ---- | ----------- |
+| `DOC_README.md` | Index and AI working principles |
+| `PROJECT_DESCRIPTION.md` | Product goals and pillars (maintainer-owned) |
+| `<date>_<keyword>_plan.md` | Active plans |
+| `archive_docs/<date>/` | Retired plans |
+
+### Guidelines
+
+- Rust: standard idioms. No `unsafe` without documented justification.
+- 600-LOC ceiling per source file, tests included, enforced by the
+  pre-commit hook (wing design record, rulings 592 to 594). Split before
+  adding when approaching it, and trim comment volume while splitting. A file
+  over the ceiling grows into a directory module with focused siblings, the
+  shape `state/`, `board/`, `overmap/`, `selftest/`, `campaign_space/` and
+  `session/` already use: shared imports and fixtures at the roof, children
+  on `use super::*`, and visibility widened no further than `pub(super)`.
+  **Split along seams the code already has, not by line count**, and for a
+  test file that means the module boundaries of the subject it drives, one
+  file per subject. Ruled 2026-09-04, when the last seven over-ceiling files
+  came down; the pass is recorded in
+  `design_docs/archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md`.
+- Plans go in `design_docs/` per the date-keyword-plan convention with
+  done-conditions, not time estimates. Never `.claude/plans/`.
+- Check the Merely ecosystem before writing a new module: mere, genet,
+  netrender, woodshed, the wgpu-* repos and the sibling products may already
+  have the piece or the pattern. Name the owning layer before building
+  anything app-local.
+- Prefer runtime verification over extended static code tracing. If runtime
+  diagnostics are blocked, surface that blocker early.
+- Do not coin new names for a product's concepts mid-session. Naming rounds
+  are deliberate: candidates get crates.io, game, studio and trademark checks
+  before adoption, and the receipts are recorded.
+- Do not add features beyond the active plan's current target without
+  surfacing the scope change first.
+- **Do not violate the three pipeline laws** (games wing founding record §3).
+  What crosses between games is choices under scarcity, not morphology, save
+  that a lineage's traits cross as material (amended 2026-09-24); inheritance
+  must be pointable; player history displaces procedural content and never
+  gates it.
+
+### Licensing, for Mesocosm and Eponym
+
+The VTT's crates keep the root workspace's MIT OR Apache-2.0. For Mesocosm
+and Eponym:
+
+- Game code and repository documentation are MPL-2.0.
+- Promoted reusable library crates are MPL-2.0 as well (ruled 2026-09-03;
+  the earlier MIT OR Apache-2.0 path for a proven boundary is retired). The
+  only exception route is the fork/vendor criterion in mere's license posture
+  brief, recorded in `LICENSES.md` when it applies.
+- Original game assets are CC BY-SA 4.0 and require an attribution entry.
+  Imported assets retain their own licenses and must be recorded explicitly.
+- See the product's `LICENSES.md`. Do not blur code, library, and asset
+  grants.
+
+---
+
 ## Project Identity
 
 **Isocosm: VTT** (formerly Isometry; renamed 2026-09-22, wing design record
@@ -74,20 +145,7 @@ See `design_docs/PROJECT_DESCRIPTION.md` for the product description and
   whoever holds edit mode, not necessarily one person; see the
   shared-authority design doc.
 
-Do not coin new names for these concepts mid-session.
-
-## Document Structure
-
-All authoritative design material lives in `design_docs/`. Read
-`design_docs/DOC_README.md` first.
-
-| Path | What's there |
-| ---- | ----------- |
-| `design_docs/DOC_README.md` | Index and AI working principles |
-| `design_docs/DOC_POLICY.md` | Documentation governance |
-| `design_docs/PROJECT_DESCRIPTION.md` | Product goals, features (maintainer-owned) |
-| `design_docs/<date>_<keyword>_plan.md` | Active feature plans |
-| `design_docs/archive_docs/<date>/` | Retired plans |
+Documents follow "Rules for all three products" above.
 
 ## Workspace Layout
 
@@ -120,23 +178,8 @@ file I/O. Event log semantics live in core; transport lives in
 
 ## General Guidelines
 
-- Rust: standard idioms. No `unsafe` without documented justification.
-- 600-LOC ceiling per source file, tests included. Split before adding when
-  approaching it. A file over the ceiling grows into a directory module with
-  focused siblings, the shape `state/`, `board/`, `overmap/`, `selftest/`,
-  `campaign_space/` and `session/` already use: shared imports and fixtures at
-  the roof, children on `use super::*`, and visibility widened no further than
-  `pub(super)`. **Split along seams the code already has, not by line count**,
-  and for a test file that means the module boundaries of the subject it
-  drives, one file per subject. Ruled 2026-09-04, when the last seven
-  over-ceiling files came down; the pass is recorded in
-  `design_docs/archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md`.
-- Plans go in `design_docs/` per the date-keyword-plan convention with
-  done-conditions, not time estimates. Never `.claude/plans/`.
-- Follow `DOC_POLICY.md` for documentation changes.
-- Check the Merely ecosystem before writing a new module: genet,
-  netrender, mere, woodshed, and the wgpu-* repos may already have the
-  piece or the pattern.
+The rules all three products share are above. For the tabletop:
+
 - **Guard the feature-gated code**: run
   `cargo check --workspace --all-features --all-targets` after touching a
   sibling repo, and before committing anything in `isonetry`. Every
@@ -173,5 +216,3 @@ sem and weave are wired into this repo. Both are described once in
   reaches quarter turns through a plan and render lane of its own; free yaw,
   first person and over-the-shoulder views are not precluded and each needs
   the same.
-- Do not add features beyond the active plan's current target without
-  surfacing the scope change first.

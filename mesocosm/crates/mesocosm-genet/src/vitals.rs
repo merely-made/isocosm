@@ -26,7 +26,7 @@ use genet_livery::{
     emit_paint_list_with_text_system_scrolled_with_images, layout_with_text_system, resolve_styles,
 };
 use genet_scripted_dom::{NodeId, ScriptedDom};
-use mesocosm_core::World;
+use isocosm::legacy::mesocosm::World;
 use mesocosm_views::{Vitals, VitalsChild};
 use paint_list_api::{DeviceIntSize, PaintList as _};
 
@@ -119,9 +119,9 @@ impl VitalsChrome {
         &mut self,
         chrome: &Chrome,
         world: &World,
-        outcomes: &[mesocosm_core::Outcome],
+        outcomes: &[isocosm::legacy::mesocosm::Outcome],
         steps: u64,
-        trend: &mesocosm_core::Trend,
+        trend: &isocosm::legacy::mesocosm::Trend,
     ) {
         match world.energy_mg() {
             Some(energy) => self.high_water = self.high_water.max(energy),

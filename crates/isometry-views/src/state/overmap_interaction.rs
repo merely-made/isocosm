@@ -105,7 +105,8 @@ impl UiState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{CampaignMap, MapScale, WorldPlace};
+    use isocosm::legacy::campaign::{MapScale, WorldPlace};
+    use isometry_campaign::CampaignMap;
 
     fn atlas_ui() -> UiState {
         let mut ui = UiState::new(isometry_core::MapDocument::new("region", 2, 2));
@@ -132,7 +133,7 @@ mod tests {
         );
         ui.world.reveal("dm", "watchtower");
         ui.world
-            .apply(&isometry_campaign::WorldEvent::PartyMoved {
+            .apply(&isocosm::legacy::campaign::WorldEvent::PartyMoved {
                 party: "dm".to_owned(),
                 node: "watchtower".to_owned(),
             })

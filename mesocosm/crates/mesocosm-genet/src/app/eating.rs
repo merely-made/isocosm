@@ -4,7 +4,7 @@
 //! Addressed tissue intake through the ordinary play menu.
 
 use super::Host;
-use mesocosm_core::{Intent, Outcome};
+use isocosm::legacy::mesocosm::{Intent, Outcome};
 use mesocosm_views::{BodyMenu, BodyMenuRow, MAX_BODY_MENU_ROWS};
 
 #[cfg(test)]

@@ -21,12 +21,12 @@ Wildermyth-shaped narrative arcs without putting nondeterminism into replay.
   12: generation is host-authoritative, and the result crosses the wire. Seed
   replay is an optional bandwidth optimization only for deterministic
   generators.
-- Builds on [optional_intelligence_vision](2026-07-07_optional_intelligence_vision.md):
+- Builds on [optional_intelligence_vision](../../2026-07-07_optional_intelligence_vision.md):
   deterministic tables and storylets are the floor; models can help author or
   rephrase, but runtime play cannot depend on them.
 - Uses [board_to_text_narration_plan](2026-07-07_board_to_text_narration_plan.md)
   as the factual projection for generated scenes and future recaps.
-- Complements [environmental_surfaces_plan](2026-07-08_environmental_surfaces_plan.md):
+- Complements [environmental_surfaces_plan](../../2026-07-08_environmental_surfaces_plan.md):
   custom world laws can decide what fire, water, iron, names, moons, oaths, or
   blood do, while the substrate only stores surface/state facts.
 
@@ -129,7 +129,7 @@ for shape; adapt, don't copy.
    split: "filtered on the wire versus filtered at render is a
    session-policy choice above this module." This resolves open question 3:
    the answer is wire-culled by construction, not render-hidden.
-   *(Generalized 2026-07-09 by the [shared-authority doc](2026-07-09_shared_authority_and_collaborative_building_plan.md):
+   *(Generalized 2026-07-09 by the [shared-authority doc](../../2026-07-09_shared_authority_and_collaborative_building_plan.md):
    "host-private" means the GM ring, the set of edit-mode holders, which
    may be more than one app; with co-DMs the `CampaignStore` syncs over a
    directed whisper-shaped channel among them, still never the hashed log.

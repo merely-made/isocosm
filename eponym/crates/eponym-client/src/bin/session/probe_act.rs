@@ -18,7 +18,7 @@
 use std::time::Instant;
 
 use isometer::core::PartId;
-use eponym_world::timed_action::Direction;
+use isocosm::legacy::eponym::world::timed_action::Direction;
 
 use super::super::{CHARGE_INTERVAL, SessionApp};
 

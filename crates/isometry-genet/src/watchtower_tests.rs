@@ -76,7 +76,7 @@ fn map_only_campaign_creation_does_not_require_a_regional_party() {
     harness.update(|ui| ui.start_generator("watchtower"));
     harness.after_dispatch();
     harness.update(|ui| {
-        let isometry_campaign::GenValue::Campaign { campaign } =
+        let isocosm::legacy::campaign::GenValue::Campaign { campaign } =
             &mut ui.generator_preview.as_mut().unwrap().proposal
         else {
             panic!("campaign preview")
@@ -218,7 +218,7 @@ fn watchtower_preview_commit_projects_inhabitants_and_reopens_checkpoint() {
             .generator_preview
             .as_ref()
             .expect("watchtower request creates a campaign preview");
-        let isometry_campaign::GenValue::Campaign { campaign } = &preview.proposal else {
+        let isocosm::legacy::campaign::GenValue::Campaign { campaign } = &preview.proposal else {
             panic!("watchtower generator produces a campaign draft");
         };
         campaign

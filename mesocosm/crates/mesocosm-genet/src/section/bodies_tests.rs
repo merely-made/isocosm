@@ -7,7 +7,7 @@ use isometer::render::PartMaterial;
 
 #[test]
 fn grounded_terrarium_anatomy_fits_the_fixed_volume() {
-    let founding = mesocosm_core::Founding::SpacedRoster;
+    let founding = isocosm::legacy::mesocosm::Founding::SpacedRoster;
     let world = World::terrarium(7, founding, founding.palette()).unwrap();
     let bounds = super::super::framed_habitat(&world).bounds;
     let scale = super::super::TERRARIUM_BODY_SCALE;

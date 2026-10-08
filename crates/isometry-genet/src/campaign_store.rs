@@ -7,7 +7,7 @@
 
 use std::path::Path;
 
-use isometry_campaign::CampaignStore;
+use isocosm::legacy::campaign::CampaignStore;
 use isonetry::GameSnapshot;
 use muniment::{Journal, JsonSlots, RedbBackend};
 use serde::{Deserialize, Serialize};
@@ -100,7 +100,7 @@ impl CampaignRepository {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{
+    use isocosm::legacy::campaign::{
         EntropyTape, EquipmentSlot, GenValue, GenerationRecord, GeneratorRequest, Inventory,
         ItemId, ItemInstance, ItemProposal, RevealCondition, SecretFact, WorldFact,
     };

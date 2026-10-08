@@ -245,7 +245,7 @@ impl Fnv1a {
 
 #[cfg(test)]
 mod tests {
-    use mesocosm_core::{
+    use isocosm::legacy::mesocosm::{
         Attachment, BodyDocument, Kingdom, Organism, OrganismId, PartId, Provenance, SpeciesId,
         Stage, VolumeRef, Yaw,
     };

@@ -28,8 +28,8 @@
 
 use std::path::{Path, PathBuf};
 
+use isocosm::legacy::mesocosm::{Intent, Placement, World};
 use isometer::mesh::VolumeMap;
-use mesocosm_core::{Intent, Placement, World};
 use mesocosm_runtime::{Checkpoint, Occasion, Runtime};
 use serde::{Deserialize, Serialize};
 
@@ -118,7 +118,7 @@ pub struct Script {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct PlayedTrace {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub start: Option<mesocosm_core::world::generation::Selection>,
+    pub start: Option<isocosm::legacy::mesocosm::world::generation::Selection>,
     /// Native eating semantics. Unversioned traces predate typed intake.
     #[serde(default)]
     pub trophic_grammar: u32,
@@ -357,7 +357,7 @@ impl PlayedTrace {
                 return Err("recording metadata disagrees with its generated start".into());
             }
         }
-        let current = mesocosm_core::TROPHIC_GRAMMAR_REVISION;
+        let current = isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION;
         if self.trophic_grammar != current {
             return Err(format!(
                 "recording uses trophic grammar revision {}, this build uses {current}; replay it with its original build or record a new run",
@@ -421,7 +421,7 @@ pub fn record_demo(seed: u64, organisms: u32, ticks_per_second: u32, steps: u64)
     }
     PlayedTrace {
         start: None,
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: SceneMode::Ecology,
         body_layout: BodyLayout::Axial,
         seed,
@@ -483,7 +483,7 @@ fn demo_intent(world: &World, volumes: &VolumeMap, step: u64, script: &mut Scrip
     if ENDURING.contains(&step)
         && let Some(me) = world.controlled()
     {
-        let target = me.upkeep_mg() * mesocosm_core::STARVED_UPKEEP_TICKS / 2;
+        let target = me.upkeep_mg() * isocosm::legacy::mesocosm::STARVED_UPKEEP_TICKS / 2;
         if me.energy_mg > target {
             return Intent::Deposit {
                 mass_mg: me.energy_mg - target,

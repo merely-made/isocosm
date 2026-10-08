@@ -46,8 +46,8 @@ pub use isometer::{
 /// The experiment's glyph choice as the renderer's stroke shape. `isometer`
 /// draws shapes; the effect-experiment vocabulary is Mesocosm's, and this is
 /// the one place the two meet.
-pub fn stroke(glyph: mesocosm_core::effect_experiment::Glyph) -> Stroke {
-    use mesocosm_core::effect_experiment::Glyph;
+pub fn stroke(glyph: isocosm::legacy::mesocosm::effect_experiment::Glyph) -> Stroke {
+    use isocosm::legacy::mesocosm::effect_experiment::Glyph;
     match glyph {
         Glyph::Quotes => Stroke::Quotes,
         Glyph::Slashes => Stroke::Slashes,
@@ -60,13 +60,13 @@ pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEG
 /// and bench keep one import path.
 pub use isometer::SlabWindow;
 
+use isocosm::legacy::mesocosm::World;
+use isocosm::legacy::mesocosm::places::Ground;
 use isometer::lens::{BrickMap, CritterPose, Grade};
 use isometer::render::composite::Composite;
 use isometer::{
     CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
 };
-use mesocosm_core::World;
-use mesocosm_core::places::Ground;
 
 /// The G2 slab: section depth and the palette depth of the retro grade, plus
 /// the half-height Mark ruled on 2026-08-29. Kept as defaults, not as constants
@@ -411,7 +411,7 @@ impl isometer::SceneHost for SectionHost<'_> {
         // The scene carries neutral material channels; which of them is the
         // expressed gland is Mesocosm's vocabulary, so the count is read back
         // here rather than named inside the scene.
-        let secrete = materials::channel(mesocosm_core::process::Process::Secrete);
+        let secrete = materials::channel(isocosm::legacy::mesocosm::process::Process::Secrete);
         layer.stats.secretory_parts = layer
             .drawn_materials()
             .map(|materials| {

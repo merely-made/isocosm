@@ -4,9 +4,9 @@
 //! GPU evidence using the same material adapter and cached renderer as play.
 
 use crate::section::{CameraMode, bodies::clip_from_world};
+use isocosm::legacy::mesocosm::{Founding, OrganismId, World};
 use isometer::mesh::{LiveBodyProjector, VolumeMap};
 use isometer::render::{LiveBody, LiveBodyRenderer, Renderer};
-use mesocosm_core::{Founding, OrganismId, World};
 
 #[path = "family.rs"]
 mod family;
@@ -89,8 +89,9 @@ impl Capture {
             .unwrap_or_else(|error| panic!("organism {subject:?} failed to project: {error:?}"));
         let mut materials = super::project(&organism.phenotype, world.ruleset());
         if hide_secretion {
-            materials
-                .retain(|m| m.material != super::channel(mesocosm_core::process::Process::Secrete));
+            materials.retain(|m| {
+                m.material != super::channel(isocosm::legacy::mesocosm::process::Process::Secrete)
+            });
         }
         let bounds = organism.body().aabb();
         let centre = [0, 1, 2].map(|i| (bounds.min[i] + bounds.max[i]) as f32 * 0.5);
@@ -201,7 +202,7 @@ fn save(name: &str, pixels: &[u8]) {
 fn accepted_expression_changes_pixels_without_rebuilding_geometry() {
     let founding = Founding::SpacedRoster;
     let mut world = World::expression_practice(7, founding, founding.palette()).unwrap();
-    let initial_hash = mesocosm_core::state_hash(&world);
+    let initial_hash = isocosm::legacy::mesocosm::state_hash(&world);
     let condition = world.discoveries()[0].condition;
     let subject = world.controlled_id().unwrap();
     let Some(mut capture) = Capture::new(&world) else {
@@ -223,10 +224,10 @@ fn accepted_expression_changes_pixels_without_rebuilding_geometry() {
         before, expected,
         "expression has a visible material consequence"
     );
-    assert_eq!(mesocosm_core::state_hash(&world), initial_hash);
+    assert_eq!(isocosm::legacy::mesocosm::state_hash(&world), initial_hash);
     assert!(matches!(
-        world.apply(mesocosm_core::Intent::Express { condition }),
-        mesocosm_core::Outcome::Expressed { .. }
+        world.apply(isocosm::legacy::mesocosm::Intent::Express { condition }),
+        isocosm::legacy::mesocosm::Outcome::Expressed { .. }
     ));
     let (actual, uploads) = capture.body(&world, subject, false);
     assert_eq!(uploads, 0);
@@ -246,7 +247,7 @@ fn descendant_comparison_renders_recorded_bodies() {
     let mut receipts = Vec::new();
     let mut rendered = std::collections::BTreeMap::new();
     for stage in &proof.stages {
-        let hash = mesocosm_core::state_hash(&stage.world);
+        let hash = isocosm::legacy::mesocosm::state_hash(&stage.world);
         let (pixels, _) = capture.body(&stage.world, stage.subject, false);
         let name = stage.label.replace(' ', "-");
         save(&name, &pixels);
@@ -260,7 +261,7 @@ fn descendant_comparison_renders_recorded_bodies() {
             save("after-revision-child-without-secretion-mark", &unmarked);
         }
         rendered.insert(stage.label, pixels);
-        assert_eq!(mesocosm_core::state_hash(&stage.world), hash);
+        assert_eq!(isocosm::legacy::mesocosm::state_hash(&stage.world), hash);
         let organism = stage
             .world
             .organisms
@@ -271,7 +272,7 @@ fn descendant_comparison_renders_recorded_bodies() {
         receipts.push(serde_json::json!({ "stage": stage.label, "subject": stage.subject.0,
             "tick": stage.world.tick, "state_hash": format!("{hash:016x}"),
             "program": stage.world.lineages().get(organism.species).unwrap().program().digest(),
-            "secretory_parts": materials.iter().filter(|m| m.material == super::channel(mesocosm_core::process::Process::Secrete)).count(),
+            "secretory_parts": materials.iter().filter(|m| m.material == super::channel(isocosm::legacy::mesocosm::process::Process::Secrete)).count(),
             "assisted_setup": proof.assisted_setup }));
     }
     assert_eq!(

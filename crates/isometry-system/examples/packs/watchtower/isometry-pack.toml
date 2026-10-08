@@ -1,0 +1,16 @@
+format = 1
+id = "watchtower"
+name = "Ash and Bells Watchtower"
+version = "0.1.0"
+
+[[generators]]
+id = "ruined_tower"
+name = "Ruined watchtower"
+default_args = { type = "text", value = "ash-and-bells" }
+script = "generators/ruined_tower.lua"
+fixtures = []
+
+[[generators.lock_presets]]
+key = "breach"
+label = "Breach on the east"
+value = { type = "text", value = "east" }

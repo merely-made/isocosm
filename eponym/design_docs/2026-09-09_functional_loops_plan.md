@@ -1,6 +1,9 @@
 # Paredros functional loops and wiring plan
 
-**Status: in progress, 2026-09-13.** J0 body inspection, J1a controlled-session
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (rulings 280, 314). *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: in progress, 2026-09-13.** J0 body inspection, J1a controlled-session
 persistence, B1 charged limb contributions and B2 cardinal strike adjudication
 are implemented, along with B3 treatment and J1b fractional terrain motion.
 The native client uses the same movement, injury and inventory owners. Broader

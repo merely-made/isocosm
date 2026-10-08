@@ -3,10 +3,17 @@
 
 //! The producer tests' view of the promoted fixture world.
 //!
-//! The world itself lives in [`eponym_world::fixtures::session`], which the
+//! The world itself lives in [`isocosm::legacy::eponym::world::fixtures::session`], which the
 //! session host also builds from; only the scene handle is producer-specific.
 
-pub use eponym_world::fixtures::session::{Fixture, advance_motion, timed_action_world};
+pub use isocosm::legacy::eponym::world::fixtures::session::{Fixture, advance_motion};
+
+/// The shared fixture world, its motion solved by the game's solver.
+pub fn timed_action_world() -> Fixture {
+    isocosm::legacy::eponym::world::fixtures::session::timed_action_world_solving(
+        eponym_motion::SOLVER,
+    )
+}
 
 use super::{SceneHandle, SceneModel};
 

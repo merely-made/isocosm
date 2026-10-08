@@ -1,6 +1,9 @@
 # Genet document host for Paredros
 
-**Status:** planned, 2026-09-13. Assessment accepted by Mark the same day:
+**Status, 2026-09-14:** P0 to P4 landed 2026-09-14. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** planned, 2026-09-13. Assessment accepted by Mark the same day:
 route, plan placement, pin alignment and the GlyphCSS prior-art row were each
 ruled explicitly.
 

@@ -50,7 +50,7 @@ impl AppView for App {
                 game.bodies().get(player).map_or(0, |body| body.wound),
                 game.items()
                     .carried_by(player)
-                    .filter(|item| item.kind == eponym_world::ItemKind::Dressing)
+                    .filter(|item| item.kind == isocosm::legacy::eponym::world::ItemKind::Dressing)
                     .count(),
                 game.anatomies().get(player).map_or(0, |record| record
                     .document
@@ -95,7 +95,7 @@ impl AppView for App {
         if let Some(pose) = self.action.session().game().movement().pose(subject) {
             let at = pose
                 .position
-                .map(|v| v as f64 / eponym_world::MOTION_SCALE as f64);
+                .map(|v| v as f64 / isocosm::legacy::eponym::world::MOTION_SCALE as f64);
             lines.push(format!(
                 "Position {:.3}, {:.3}, {:.3}; step={} grounded={}",
                 at[0], at[1], at[2], pose.step, pose.grounded
@@ -106,9 +106,11 @@ impl AppView for App {
                 "Movement supports {}/{}; speed {:.2} voxels/s; clearance {:.2} wide x {:.2} high",
                 projection.active_supports.len(),
                 projection.declared_supports,
-                projection.speed as f64 / eponym_world::MOTION_SCALE as f64,
-                2.0 * projection.envelope.half_width as f64 / eponym_world::MOTION_SCALE as f64,
-                projection.envelope.height as f64 / eponym_world::MOTION_SCALE as f64,
+                projection.speed as f64 / isocosm::legacy::eponym::world::MOTION_SCALE as f64,
+                2.0 * projection.envelope.half_width as f64
+                    / isocosm::legacy::eponym::world::MOTION_SCALE as f64,
+                projection.envelope.height as f64
+                    / isocosm::legacy::eponym::world::MOTION_SCALE as f64,
             )),
             Ok(None) => lines.push("Movement: legacy stance profile".into()),
             Err(error) => lines.push(format!("Movement support unavailable: {error:?}")),

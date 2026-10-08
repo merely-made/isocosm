@@ -5,6 +5,8 @@ use crate::{Result, population::Population, reach::Reach, rules::*, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod witness;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Execution {
     Individuals,
@@ -189,15 +191,30 @@ impl Simulation {
     pub fn set_mode(&mut self, mode: Execution) {
         self.mode = mode;
     }
-    pub fn state_hash(&self) -> Key {
+    /// The digest of the per-field entries (ruling 652): an equality
+    /// witness for replay, not a content address.
+    pub fn state_hash(&self) -> u64 {
+        self.witness().digest()
+    }
+    /// FNV-1a over the whole state's postcard bytes, kept only to verify
+    /// version-2 saves (ruling 651).
+    pub(crate) fn state_hash_v2(&self) -> u64 {
+        use isometer_core::snapshot::{encode, hash_bytes};
+        hash_bytes(&encode(&self.witnessed()).expect("sim schema encodes"))
+    }
+    /// SHA-256 over JSON, kept only to verify version-1 saves (608).
+    pub(crate) fn state_hash_v1(&self) -> Key {
+        crate::digest(&self.witnessed())
+    }
+    fn witnessed(&self) -> (u64, &Key, &WorldTraits, State) {
         let mut state = self.state.clone();
         state.population = state.population.normalized();
-        crate::digest(&(
+        (
             self.genesis.seed,
             &self.revision,
             &self.genesis.world,
             state,
-        ))
+        )
     }
     pub fn matter(&self) -> u128 {
         matter(&self.state, &self.genesis.rules)

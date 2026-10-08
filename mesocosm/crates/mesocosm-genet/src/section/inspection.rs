@@ -10,9 +10,9 @@
 //! spatial request writes to disk, and the world lookup an adapter does
 //! before the scene sees a body.
 
+use isocosm::legacy::mesocosm::{OrganismId, PartId, World};
 use isometer::mesh::BodyDependencyRevision;
 use isometer::{BodyPickError, PartAddress, SceneVolumes};
-use mesocosm_core::{OrganismId, PartId, World};
 
 use super::Section;
 use super::bodies::{key, organism_of};
@@ -119,7 +119,7 @@ impl Section {
     /// cutaway clipping. Uses the same configured pose as the next body draw.
     pub fn presentation_bounds(
         &mut self,
-        organism: &mesocosm_core::Organism,
+        organism: &isocosm::legacy::mesocosm::Organism,
         volumes: &isometer::mesh::VolumeMap,
     ) -> Result<Option<([f32; 3], [f32; 3])>, String> {
         let body = self.host_bodies.scene_body(organism, &[], None);
@@ -212,7 +212,7 @@ impl Section {
     /// organism into the body it reads.
     pub fn glyph_anchors(
         &mut self,
-        organism: &mesocosm_core::Organism,
+        organism: &isocosm::legacy::mesocosm::Organism,
         volumes: &isometer::mesh::VolumeMap,
         selected: Option<BodySelection>,
     ) -> Result<Vec<isometer::GlyphAnchor>, String> {

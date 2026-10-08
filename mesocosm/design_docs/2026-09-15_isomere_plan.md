@@ -2,7 +2,10 @@
 
 **Date:** 2026-09-15
 
-**Status, reconciled 2026-09-28:** shared library exists at `shared/isomere`.
+**Status, 2026-10-01:** The mode host ruled (442 to 445); waits on Mesocosm's M3. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, reconciled 2026-09-28:** shared library exists at `shared/isomere`.
 The Progress record below closes the original round at M5, with M6 deferred;
 those are historical receipts, not tests rerun in this documentation pass.
 The former header, "No crate founded", was stale. One host carrying the

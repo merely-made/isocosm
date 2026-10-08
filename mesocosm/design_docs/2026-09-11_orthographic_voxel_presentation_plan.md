@@ -1402,7 +1402,7 @@ ruling numbers in this lane are the wing design record's (423 to 426, 432 to
 434). One detail ladder replaces the four near-to-far renderers the one-game
 assessment found: the isometer scene, the VTT's DOM board, the VTT atlas on
 sprigging's canvas and Mesocosm's minimap on the HUD lane
-([session notes, §9.2](2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
+([session notes, §9.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
 It answers the hybrid switch policy among the open decisions below.
 
 **The rungs (423),** near to far, all in the one isometric camera (382, 387):
@@ -1588,7 +1588,7 @@ consumer. That edit is genet's, in the same session the lane opens.
   the finest; live faces during rotation (ruling 6 above) stand. The ladder's
   five rungs (423), its terrain rings (425) and the open transition are in
   the record and the
-  [session notes' §10](2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
+  [session notes' §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
   *2026-10-01:* the transition is ruled (426): seamless where the rungs share
   geometry, by ordered dither with hysteresis where they do not. Sprite to
   live parts is the seamless step, and it owes a measurement this plan's

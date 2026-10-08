@@ -24,14 +24,14 @@ fn main() {
 mod native {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
+    use isocosm::legacy::mesocosm::{
+        BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
+        snapshot, world::organism_extent,
+    };
     use isometer::lens::{
         BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
     };
     use isometer::mesh::{BodyProfile, Volume, VolumeMap, mesh_body};
-    use mesocosm_core::{
-        BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
-        snapshot, world::organism_extent,
-    };
     use mesocosm_genet::maps;
     use serde::Serialize;
 
@@ -164,7 +164,7 @@ mod native {
                     volume_tag: lens.volume.0[0],
                     incorporated: matches!(
                         lens.provenance.origin,
-                        mesocosm_core::Origin::Incorporated { .. }
+                        isocosm::legacy::mesocosm::Origin::Incorporated { .. }
                     ),
                     lens_capsule: lens.capsule,
                     mesh_placement: true,

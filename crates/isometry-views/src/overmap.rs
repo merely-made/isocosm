@@ -23,7 +23,7 @@ use cambium::{
     Slider, clickable, el, graph_atlas_swatch, graph_canvas_swatch_with_drag_and_relations, lens,
     segmented_control, slider, text,
 };
-use isometry_core::{Overmap, OvermapEdge};
+use isocosm::legacy::campaign::{Overmap, OvermapEdge};
 use sceno::{
     Arrangement, Footprint, Geographic, Placement, Representation, Score, ScoreItem, SourceRef,
     Spiral, Vec2,

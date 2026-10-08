@@ -12,11 +12,11 @@
 //! explained by a deed from the sortie; and the canary holds, watched on a
 //! companion who refused and cannot be moved by anything.
 
-use eponym_identity::{BodyRevisionId, ControlIntent, Tick};
-use eponym_social::scene::{AUD, BRAM, ODRIS, SELA};
-use eponym_social::{DeedKind, Premise, Verdict};
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
+use isocosm::legacy::eponym::identity::{BodyRevisionId, ControlIntent, Tick};
+use isocosm::legacy::eponym::social::scene::{AUD, BRAM, ODRIS, SELA};
+use isocosm::legacy::eponym::social::{DeedKind, Premise, Verdict};
 
 fn tick_of(event: &SortieEvent) -> Tick {
     match event {

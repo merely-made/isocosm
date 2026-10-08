@@ -4,8 +4,8 @@
 //! Versioned presentation fixtures. These are renderer workloads, not organisms
 //! or developmental claims. Geometry variation is bounded exterior notching.
 
+use isocosm::legacy::mesocosm::{PartId, VolumeRef};
 use isometer::mesh::{BodyMesh, Volume};
-use mesocosm_core::{PartId, VolumeRef};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 

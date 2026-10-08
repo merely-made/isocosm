@@ -167,7 +167,7 @@ fn declared_pack_fixture_runs_without_opening_undeclared_assets() {
     std::fs::create_dir_all(root.join("generators")).unwrap();
     std::fs::create_dir_all(root.join("fixtures")).unwrap();
     std::fs::write(
-        root.join(GeneratorPack::MANIFEST_FILE),
+        root.join(GeneratorPack::MANIFEST_FILE_JSON),
         r#"{
   "format": 1,
   "id": "demo",

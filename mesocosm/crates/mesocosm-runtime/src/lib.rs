@@ -6,7 +6,7 @@
 
 //! Mesocosm's host-neutral runtime.
 //!
-//! Sits between [`mesocosm_core`] and any host. A host owns the window, the
+//! Sits between [`isocosm::legacy::mesocosm`] and any host. A host owns the window, the
 //! device, and the frame loop; it hands elapsed time in, queues intents, and
 //! reads the world back to draw it.
 //!

@@ -20,6 +20,7 @@ mod genesis;
 pub mod growth;
 pub mod history;
 mod journal;
+pub mod legacy;
 pub mod map;
 mod meaning;
 pub mod population;

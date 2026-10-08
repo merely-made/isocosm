@@ -33,11 +33,10 @@ rulings are now answered (rulings 180 to 183 and two readings); the
 
 ## 0. Done-conditions
 
-From the record's §11, W5 is done when Mesocosm has:
-
-1. a profile designed to the record's §5 (§1 here);
-2. a core implementing the overlay contract (§3);
-3. a played loop with receipts drawn from the generator (§2, phase M4).
+W5's done-conditions are the record's
+[§11](2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Mesocosm, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase M4
+(the played loop).
 
 ## 1. The profile
 
@@ -135,9 +134,7 @@ under M2's lineages-and-the-boundary family.
 
 ## 3. The core and the contract
 
-The contract's shape is ruled (ruling 154): a game submits intents, the sim
-returns events and a read-only view of each tick, and outcomes a game
-settles come back through the handoff.
+The contract's shape is ruling 154's.
 
 | Direction | Mesocosm's side | Rests on |
 | --- | --- | --- |
@@ -168,6 +165,10 @@ checkpoint, `TakeControl` also the death checkpoint (a reading of rulings
 `PlaceMatter` are dev intents.
 
 ## 4. Absorption: `mesocosm-core` into Isocosm
+
+*Amended 2026-10-05 by ruling 591:* `mesocosm-core` moves into Isocosm
+whole first and the host points at Isocosm; the families below are then
+re-expressed in place.
 
 Ruling 192: Isocosm absorbs `mesocosm-core`, piece by piece, re-expressed in
 its process definitions (ruling 32), and Mesocosm's own core shrinks to
@@ -279,32 +280,13 @@ All three taken on 2026-09-25, the day the plan was drafted.
   0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
-
 - 2026-09-26: this plan is Mesocosm's charter (ruling 308). §1.1 and §1.2
   carry the founding plan's Tone section and the epoch loop's turn
   structure; the founding plan is archived at `archive_docs/2026-09-26/`,
   with the ProcessDef plan (309), the general model (310, its organs in the
   wing organs plan) and the dependency ledger (311).
-- 2026-09-26: rulings 262, 263 and 267 bear on M2: a vertical probe before
-  the order from bodies onward is taken as fixed; each family built and
-  certified in Isocosm, `mesocosm-core`'s copies retiring together at M3;
-  and each family's level of the web kept alive by persistence, turnover,
-  collapse and response to an intervention.
-- 2026-09-26: ruling 260 stages viability with M2: each family is done
-  only when the level of the web it enables stays alive in most draws.
-  Ruling 258 lands the scheduler's trait index before M2, and Lane A's
-  checkpoint 3 plan for matter and processes, the first family, is with
-  Mark.
-- 2026-09-25: rulings 225 to 230 settle the played loop's collapse and
-  ends (§2 step 4) and the right click's ring of acts (§1); ruling 231
-  puts Eponym's and the VTT's overlays, planned the same day, side by
-  side after M3.
-- 2026-09-25: rulings 214 to 216 settle the input: a click draws the
-  critter's attention, a right click picks another meaning, no click
-  warns, and the standing orders grow from attention. The contract
-  narrows to match: `MesocosmIntent::Nudge` replaces the four directive
-  kinds, the priorities, places and stances becoming the sim's to grow in
-  M3. Nineteen tests pass.
+- 2026-09-25: the contract narrowed to `MesocosmIntent::Nudge` in place of
+  the four directive kinds (rulings 214 to 216); nineteen tests pass.
 - 2026-09-25: M1 done. The attention set is typed in `isocosm-overlay`
   under rulings 210 to 213: who the participant plays, what they pin,
   the region they examine up close, and the game's own care, changed only

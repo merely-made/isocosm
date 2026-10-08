@@ -164,7 +164,7 @@ impl Deref for BrickMap {
 
 #[cfg(test)]
 mod tests {
-    use mesocosm_core::places::{BRICK, Ground, Places};
+    use isocosm::legacy::mesocosm::places::{BRICK, Ground, Places};
 
     use super::*;
 

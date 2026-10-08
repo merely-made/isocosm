@@ -249,7 +249,7 @@ fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_in
     assert_eq!(runtime.step(1), 1);
     assert!(matches!(
         runtime.last_outcomes(),
-        [mesocosm_core::Outcome::Rejected(_)]
+        [isocosm::legacy::mesocosm::Outcome::Rejected(_)]
     ));
     // Rejection does not freeze the ecology. Its legitimate producer transfers
     // remain available; none purport to be uptake by the rejected target.
@@ -375,9 +375,9 @@ fn with_past_activity_sequence_numbers_index_the_full_history() {
 fn a_world_after_core_deep_time_trials_without_reckoning_and_replays() {
     let source = World::new(7, 60);
     let rules = source.rules();
-    let mut world = source.with_rules(mesocosm_core::WorldRules {
-        epoch: mesocosm_core::rules::EpochRule::Timed { ticks: 20 },
-        deep_time: mesocosm_core::DeepTimeSpan { epochs: 2 },
+    let mut world = source.with_rules(isocosm::legacy::mesocosm::WorldRules {
+        epoch: isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: 20 },
+        deep_time: isocosm::legacy::mesocosm::DeepTimeSpan { epochs: 2 },
         ..rules
     });
     let mut history = History::new();
@@ -446,7 +446,7 @@ fn a_trial_at_the_shipped_ceiling_reaches_the_first_epoch_boundary() {
     }
     assert_eq!(
         u64::from(trial.steps()),
-        mesocosm_core::rules::DEFAULT_EPOCH_TICKS,
+        isocosm::legacy::mesocosm::rules::DEFAULT_EPOCH_TICKS,
         "the boundary falls on the epoch's own budget"
     );
     assert!(

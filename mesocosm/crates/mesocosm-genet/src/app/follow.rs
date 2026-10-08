@@ -25,12 +25,12 @@
 //!
 //! The one thing follow may not do is fail quietly. When the target stops being
 //! alive, [`Host::update_follow`] takes the record's own ending
-//! ([`mesocosm_core::History::ending`]) and keeps it as a [`Lost`] for the tile
+//! ([`isocosm::legacy::mesocosm::History::ending`]) and keeps it as a [`Lost`] for the tile
 //! to print, then snaps follow back to the controlled critter. The succession
 //! lane is untouched: a death of the *controlled* critter is still the
 //! driver's checkpoint and behaves exactly as it did.
 
-use mesocosm_core::{OrganismId, World};
+use isocosm::legacy::mesocosm::{OrganismId, World};
 use mesocosm_views::Lost;
 
 use super::Host;
@@ -333,7 +333,7 @@ mod tests {
         host.runtime.step(1);
         assert!(matches!(
             host.runtime.last_outcomes().first(),
-            Some(mesocosm_core::Outcome::Killed { .. })
+            Some(isocosm::legacy::mesocosm::Outcome::Killed { .. })
         ));
 
         host.update_follow();
@@ -368,8 +368,8 @@ mod tests {
             if natural.iter().any(|organism| {
                 matches!(
                     host.runtime.history().ending(*organism),
-                    Some(mesocosm_core::Ending {
-                        how: mesocosm_core::Passing::Died,
+                    Some(isocosm::legacy::mesocosm::Ending {
+                        how: isocosm::legacy::mesocosm::Passing::Died,
                         ..
                     })
                 )
@@ -382,8 +382,8 @@ mod tests {
             .find(|organism| {
                 matches!(
                     host.runtime.history().ending(*organism),
-                    Some(mesocosm_core::Ending {
-                        how: mesocosm_core::Passing::Died,
+                    Some(isocosm::legacy::mesocosm::Ending {
+                        how: isocosm::legacy::mesocosm::Passing::Died,
                         ..
                     })
                 )

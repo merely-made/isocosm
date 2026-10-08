@@ -25,14 +25,14 @@
 
 use std::collections::BTreeMap;
 
-use mesocosm_core::places::{Ground, ROCK};
-use mesocosm_core::snapshot::{encode, hash_bytes};
-use eponym_identity::{BodyRevisionId, Control, ControlIntent, Facets, SubjectId, Tick};
-use eponym_social::agreement::EndReason;
-use eponym_social::deed::DeedKind;
-use eponym_social::offer::Work;
-use eponym_social::response::RulingKind;
-use eponym_social::society::Society;
+use isocosm::legacy::mesocosm::places::{Ground, ROCK};
+use isocosm::legacy::mesocosm::snapshot::{encode, hash_bytes};
+use isocosm::legacy::eponym::identity::{BodyRevisionId, Control, ControlIntent, Facets, SubjectId, Tick};
+use isocosm::legacy::eponym::social::agreement::EndReason;
+use isocosm::legacy::eponym::social::deed::DeedKind;
+use isocosm::legacy::eponym::social::offer::Work;
+use isocosm::legacy::eponym::social::response::RulingKind;
+use isocosm::legacy::eponym::social::society::Society;
 use serde::{Deserialize, Serialize};
 
 use crate::march;
@@ -101,7 +101,7 @@ pub enum SortieEvent {
     },
     PactInvoked {
         at: Tick,
-        under: eponym_social::agreement::AgreementId,
+        under: isocosm::legacy::eponym::social::agreement::AgreementId,
     },
     TaggedIn {
         at: Tick,
@@ -141,7 +141,7 @@ pub struct Sortie {
     positions: BTreeMap<SubjectId, [i32; 3]>,
     parts: Vec<(SubjectId, Part)>,
     pact: Option<Pact>,
-    outing: Option<eponym_social::agreement::AgreementId>,
+    outing: Option<isocosm::legacy::eponym::social::agreement::AgreementId>,
     tend: Work,
     home: [i32; 3],
     site: [i32; 3],
@@ -181,7 +181,7 @@ impl Sortie {
         everyone: &[SubjectId],
         parts: Vec<(SubjectId, Part)>,
         pact: Option<Pact>,
-        outing: Option<eponym_social::agreement::AgreementId>,
+        outing: Option<isocosm::legacy::eponym::social::agreement::AgreementId>,
         tend: Work,
         home: [i32; 3],
         site: [i32; 3],

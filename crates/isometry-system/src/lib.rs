@@ -19,14 +19,14 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
-use isometry_campaign::{
+use isocosm::legacy::campaign::{
     CampaignDraft, ContentPackManifest, EncounterAnchor, EntropyTape, GenValue, GenerationRecord,
     GeneratorChoice, GeneratorFixture, GeneratorRequest, Inventory, ItemProposal, LocalMapProposal,
     MapCellProposal, MapPatchProposal, MapPoint, MapTransition, NpcProposal, SpawnZone,
     StoryletProposal, WorldFact,
 };
 use isometry_core::{
-    roll, Beat, FieldValue, Rng, RollRecord, SheetData, SheetDelta, TileCoord, TokenId,
+    Beat, FieldValue, Rng, RollRecord, SheetData, SheetDelta, TileCoord, TokenId, roll,
 };
 use piccolo::{Closure, Executor, Fuel, IntoValue, Lua, StashedExecutor, Table, Value};
 

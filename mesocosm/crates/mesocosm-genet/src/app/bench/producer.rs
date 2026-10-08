@@ -8,7 +8,7 @@ use crate::section::{
     self, BodyFrameStats, BodyMode, BodySelection, Framing, Section, SectionFrame,
 };
 use isometer::{FrameRequest, SceneProducer, SceneSignature, SceneSource};
-use mesocosm_core::PartId;
+use isocosm::legacy::mesocosm::PartId;
 
 /// The bench's scene behind the wing's producer wrapper: the unchanged-input
 /// skip and the sRGB / straight-alpha output contract are `isometer`'s, and

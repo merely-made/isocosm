@@ -13,8 +13,6 @@ publish = false
 # kinematics come through eponym-client exactly as S0 consumes them (which
 # brings the render stack along in the build; the sim here never touches it).
 [dependencies]
-eponym-identity = { version = "0.0.1", path = "../eponym-identity" }
-eponym-social = { version = "0.0.1", path = "../eponym-social" }
 eponym-client = { version = "0.0.1", path = "../eponym-client" }
-mesocosm-core = { version = "0.0.1", path = "../../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../../../shared/isocosm" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }

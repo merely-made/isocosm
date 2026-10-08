@@ -4,9 +4,9 @@
 //! Captures actual founded relatives, plus their admitted content and identities.
 //! Usage: cargo run --release -p mesocosm-genet --example voxel_families -- OUT_DIR [spaced|jointed|branching|axial]
 
+use isocosm::legacy::mesocosm::{World, axis::archetype};
 use isometer::mesh::mesh_body;
 use isometer::render::{Camera, Renderer, SceneItem, kingdom_colour};
-use mesocosm_core::{World, axis::archetype};
 use mesocosm_genet::generation_content::{DevelopmentPalette, Pack};
 use std::path::PathBuf;
 
@@ -26,7 +26,7 @@ fn main() {
     let world = World::founded_with_palette(7, 120, layout.founding(), pack.palette.0).unwrap();
     std::fs::write(
         out.join("world.snapshot"),
-        mesocosm_core::snapshot(&world).unwrap(),
+        isocosm::legacy::mesocosm::snapshot(&world).unwrap(),
     )
     .unwrap();
     mesocosm_genet::played::write_json(

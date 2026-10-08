@@ -88,12 +88,12 @@ impl App {
             // The field: the live board, stored, with a door beside the knight.
             let field = isometry_campaign::CampaignMap {
                 id: "field".to_owned(),
-                scale: isometry_campaign::MapScale::Local,
+                scale: isocosm::legacy::campaign::MapScale::Local,
                 document: ui.map.clone(),
                 spawn_zones: Vec::new(),
-                transitions: vec![isometry_campaign::MapTransition {
+                transitions: vec![isocosm::legacy::campaign::MapTransition {
                     id: "field-gate".to_owned(),
-                    at: isometry_campaign::MapPoint { col: 12, row: 14 },
+                    at: isocosm::legacy::campaign::MapPoint { col: 12, row: 14 },
                     target_map: "hut".to_owned(),
                     target_entry: Some("hut-door".to_owned()),
                 }],
@@ -116,12 +116,12 @@ impl App {
             });
             let hut = isometry_campaign::CampaignMap {
                 id: "hut".to_owned(),
-                scale: isometry_campaign::MapScale::Local,
+                scale: isocosm::legacy::campaign::MapScale::Local,
                 document: hut_doc,
                 spawn_zones: Vec::new(),
-                transitions: vec![isometry_campaign::MapTransition {
+                transitions: vec![isocosm::legacy::campaign::MapTransition {
                     id: "hut-door".to_owned(),
-                    at: isometry_campaign::MapPoint { col: 2, row: 2 },
+                    at: isocosm::legacy::campaign::MapPoint { col: 2, row: 2 },
                     target_map: "field".to_owned(),
                     target_entry: Some("field-gate".to_owned()),
                 }],

@@ -1,0 +1,2 @@
+# Source files allowed over the 600-line ceiling (ruling 592), one per line:
+# the tracked path, a tab, and the technical reason it cannot be split.

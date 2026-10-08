@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::Creator;
-use mesocosm_core::world::generation::{FixedBody, SoilPattern, VERSION};
+use isocosm::legacy::mesocosm::world::generation::{FixedBody, SoilPattern, VERSION};
 
 impl Creator {
     pub(super) fn habitat_key(&mut self, key: &str) -> bool {

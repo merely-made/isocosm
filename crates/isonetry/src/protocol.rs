@@ -1,9 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use isometry_campaign::{
-    CampaignMap, CampaignWorld, GenerationRecord, Inventory, ItemId, ItemModifierReveal,
-    WorldEvent, WorldFact,
+use isocosm::legacy::campaign::{
+    CampaignWorld, GenerationRecord, Inventory, ItemId, ItemModifierReveal, WorldEvent, WorldFact,
 };
+use isometry_campaign::CampaignMap;
 use isometry_core::{
     Beat, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, TileCoord, TokenId,
     TurnList,

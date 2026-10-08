@@ -49,14 +49,12 @@ host that stays Eponym's; and the
 
 ## 0. Done-conditions
 
-From the record's §11, W5 is done for a game when it has:
+W5's done-conditions are the record's
+[§11](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Eponym, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase E4
+(the played loop).
 
-1. a profile designed to the record's §5 (§1 here);
-2. a core implementing the overlay contract (§3);
-3. a played loop with receipts drawn from the generator (§2, phase E4).
-
-Ruling 174 made Mesocosm the first overlay; Eponym's and the VTT's go side by
-side after Mesocosm's M3, each on its own plan (ruling 231, §6 decision 7).
+The order is rulings 174 and 231.
 
 ## 1. The profile
 
@@ -118,9 +116,7 @@ Ruling 6's six parts.
 
 ## 3. The core and the contract
 
-The contract's shape is ruled (ruling 154): a game submits intents, the sim
-returns events and a read-only view of each tick, and outcomes a game
-settles come back through the handoff. Eponym is the game the contract
+The contract's shape is ruling 154's. Eponym is the game the contract
 opens actuation to: §5.2 point 2 carries "directives, and where the overlay
 opens it, the actuation of one body", and §9.14 names driving as Eponym's
 (ruling 60). Its module is `shared/isocosm-overlay/src/eponym/`, beside
@@ -368,7 +364,6 @@ done on paper; opening E1 is Mark's.
   no type to the core.
 
 ## Progress
-
 - 2026-09-26: this plan is Eponym's executable plan (ruling 313). §4.1 maps
   the execution plan's F3 to F8 onto E2's families; the execution plan and
   the world conditions plan (315) are archived at `archive_docs/2026-09-26/`.
@@ -379,25 +374,7 @@ done on paper; opening E1 is Mark's.
   (269ffc5). fmt, clippy and 43 tests clean. One refinement of §3's
   reading: `ConfigureMovementProfile` is the game-side solver's own.
   Everything from E2 on waits for Mesocosm's M3 (ruling 231).
-- 2026-09-26: rulings 241 and 242, recorded at ed20550, take §6's last two
-  decisions: posing is a telling's manner, carried on the telling and never
-  an intent of its own, and E4 plays two peers over the session lane. E0 is
-  done, all seven decisions ruled; §2, §3 and §5 follow.
-- 2026-09-26: rulings 238 and 239, recorded at e460014, close §6's decision
-  3 and rule decision 4: at a death with no bonded companion the player
-  takes up another life in that world or goes to a new one, and going to a
-  new world is how a line ends, a reading recorded with the ruling; Isocosm
-  absorbs Eponym's simulation in the order proposed, and driving is built
-  only on Isocosm. §2, §3, §4 and §5 follow. Posing and co-op in E4 remain.
-- 2026-09-26: rulings 232 to 235, ruled 2026-09-25 and recorded at 0e63438,
-  mark §6's decisions 1 and 2 and the first half of 3: the foreground hands
-  blows back through an inhabited handoff, the solver runs on the game side
-  with the accepted transition crossing per tick, the start in time is the
-  player's pick with society the default, and how a first life begins is the
-  player's call among three. §1, §2, §3, §4 and §5 follow.
-- 2026-09-25: ruling 231 marks §6's decision 7: Eponym's and the VTT's
-  overlays go side by side after Mesocosm's M3, each on its own plan. The
-  record links this plan from its §5.6 and §11 (aa354f3).
+- 2026-09-26: E0 done, its seven decisions ruled (rulings 231 to 242).
 - 2026-09-25: plan drafted at Mark's word ("Overlay plans to RPG") from the
   record's §5.6, rulings 60, 130, 152 to 156, 185 to 187 and the contract's
   rulings, Eponym's plans and its code. E0 to E4 proposed; no lane open;

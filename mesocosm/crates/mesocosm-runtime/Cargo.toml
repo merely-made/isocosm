@@ -12,7 +12,7 @@ publish = false
 # probe hosts can share it. Sharing it is also what keeps the host comparison
 # honest: a difference between hosts cannot be a difference in stepping.
 [dependencies]
-mesocosm-core = { workspace = true }
+isocosm = { workspace = true }
 # The pack door, and the review's second proposal source (PE3b). The dependency
 # still runs one way — core knows nothing of either crate — and this is the
 # first production consumer the authoring half has had: an epoch review is

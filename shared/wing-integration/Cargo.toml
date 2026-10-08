@@ -11,6 +11,11 @@ license = "MPL-2.0"
 description = "Live producer-to-consumer receipts for the games wing."
 
 [dependencies]
-mesocosm-core = { path = "../../mesocosm/crates/mesocosm-core" }
+isocosm = { path = "../isocosm" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
-isometry-campaign = { path = "../../crates/isometry-campaign" }
+
+# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# that builds it sets the same level so the shared build directory holds one
+# copy (wing design record, ruling 648).
+[profile.dev.package.isocosm]
+opt-level = 1

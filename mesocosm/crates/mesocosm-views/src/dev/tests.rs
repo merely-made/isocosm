@@ -14,8 +14,8 @@
 //! literal somebody typed.
 
 use super::*;
-use mesocosm_core::flow::Accounts;
-use mesocosm_core::{Ending, OrganismId, Passing, World, classify};
+use isocosm::legacy::mesocosm::flow::Accounts;
+use isocosm::legacy::mesocosm::{Ending, OrganismId, Passing, World, classify};
 
 /// A world with a body in it, and the id of the critter under the hand.
 fn fixture() -> (World, OrganismId) {

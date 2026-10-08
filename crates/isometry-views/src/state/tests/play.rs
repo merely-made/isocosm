@@ -6,7 +6,7 @@
 //! Split out of `tests.rs` on 2026-09-04; unchanged.
 
 use super::*;
-use isometry_campaign::{EncounterAnchor, MapPoint, MapScale, MapTransition};
+use isocosm::legacy::campaign::{EncounterAnchor, MapPoint, MapScale, MapTransition};
 
 #[test]
 fn spawn_in_a_session_routes_through_the_authority_not_the_local_map() {

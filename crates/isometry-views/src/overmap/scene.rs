@@ -117,7 +117,7 @@ fn normalize_for_swatch(scene: &sceno::Scene) -> BTreeMap<String, (f32, f32)> {
 #[cfg(test)]
 mod relax_tests {
     use super::*;
-    use isometry_core::OvermapNode;
+    use isocosm::legacy::campaign::OvermapNode;
 
     fn node(id: &str, at: (i32, i32)) -> OvermapNode {
         OvermapNode {

@@ -32,7 +32,7 @@
 //!
 //! [`Host::followed`]: super::Host::followed
 
-use mesocosm_core::Intent;
+use isocosm::legacy::mesocosm::Intent;
 
 use super::Host;
 use crate::input::{self, DevKey};
@@ -43,11 +43,12 @@ use crate::input::{self, DevKey};
 /// than sitting on it: a press that always placed the maximum could not
 /// distinguish a working bound from an absent one, and the refusal case would
 /// only ever be reachable by editing this constant.
-pub const DEV_PLACE_MG: u64 = mesocosm_core::PLACE_MATTER_MAX_MG / 2;
+pub const DEV_PLACE_MG: u64 = isocosm::legacy::mesocosm::PLACE_MATTER_MAX_MG / 2;
 
 /// Checked where it cannot drift: a press that placed nothing, or that sat on
 /// the world's bound, would make `OverBound` unreachable from the keyboard.
-const _: () = assert!(DEV_PLACE_MG > 0 && DEV_PLACE_MG < mesocosm_core::PLACE_MATTER_MAX_MG);
+const _: () =
+    assert!(DEV_PLACE_MG > 0 && DEV_PLACE_MG < isocosm::legacy::mesocosm::PLACE_MATTER_MAX_MG);
 
 impl Host {
     /// The intent one of DT3's four keys asks for, or `None` when there is
@@ -98,7 +99,7 @@ impl Host {
 mod tests {
     use super::*;
     use crate::HostConfig;
-    use mesocosm_core::Outcome;
+    use isocosm::legacy::mesocosm::Outcome;
     use winit::keyboard::Key;
 
     fn host() -> Host {
@@ -171,7 +172,7 @@ mod tests {
         assert!(
             matches!(
                 host.runtime.last_outcomes().first(),
-                Some(Outcome::Rejected(mesocosm_core::Rejection::NotLiving(who))) if *who == target
+                Some(Outcome::Rejected(isocosm::legacy::mesocosm::Rejection::NotLiving(who))) if *who == target
             ),
             "{:?}",
             host.runtime.last_outcomes()

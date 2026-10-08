@@ -1,0 +1,36 @@
+# The kinds an association may have, as a world opens with them.
+#
+# Closed, so a record cannot invent its own relation by spelling one;
+# extensible by a pack, exactly as the glyph canon is, so a world is not stuck
+# with six. A pack extends the set by shipping its own kind set, in the same
+# shape as `[seeded]` below, never by mutating a set already in hand.
+
+schema = 1
+owner = "wing-impresa"
+consumer = "every world's impresa records (KindSet::seeded)"
+status = "authored"
+
+[sources.general_model]
+doc = "mesocosm/design_docs/archive_docs/2026-09-26/2026-08-06_general_model_plan.md"
+note = "G7, impresa (Mark, 2026-09-15): kinds are a world-configured closed set, seeded from six"
+
+[sources.wing_record]
+doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+note = "ruling 625: every founding becomes data, beside the seeded kinds"
+
+# The six the ruling names, for a world that has authored none of its own.
+# Directional, subject to object: the subject claimed, discovered,
+# experienced, embodied, invoked or defeated the object, never the reverse,
+# so an inverse reading is a query and not another kind. Authored order is
+# kept.
+[seeded]
+version = 1
+id = "impresa:seeded"
+kinds = [
+    "impresa:claim",
+    "impresa:discover",
+    "impresa:experience",
+    "impresa:embody",
+    "impresa:invoke",
+    "impresa:defeat",
+]

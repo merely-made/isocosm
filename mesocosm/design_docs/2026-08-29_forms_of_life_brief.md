@@ -1,6 +1,9 @@
 # Composable Forms of Life — Research Brief (2026-08-29)
 
-**Status: research brief, refreshed 2026-08-31. Not a plan, not a scheduled
+**Status, 2026-10-01:** Research brief; 2026-10-01: its reproduction axis ruled (447 to 450). *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: research brief, refreshed 2026-08-31. Not a plan, not a scheduled
 round.** Mark has reaffirmed the product direction that animal-, plant-,
 fungal-, and microbial-scale critters belong in the playable roster. The four
 stages, their order, and their representation choices remain unruled.

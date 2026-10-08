@@ -6,7 +6,9 @@
 //! durable divinity powers. Core remains the authority for the underlying act.
 
 use crate::TrialUptake;
-use mesocosm_core::{History, OrganismId, World, embodiment::embodied, history::Event, state_hash};
+use isocosm::legacy::mesocosm::{
+    History, OrganismId, World, embodiment::embodied, history::Event, state_hash,
+};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wing_glyphs::{

@@ -161,7 +161,7 @@ impl Leaf for MinimapLeaf {
 mod tests {
     use super::*;
     use crate::minimap::minimap_leaf;
-    use mesocosm_core::World;
+    use isocosm::legacy::mesocosm::World;
     use sprigging::PaintCmd;
 
     fn leaf() -> MinimapLeaf {

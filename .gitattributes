@@ -44,3 +44,6 @@
 *.kojo merge=weave
 *.mill merge=weave
 *.dart merge=weave
+
+# Hooks run under sh everywhere, so they keep LF line endings.
+.githooks/* text eol=lf

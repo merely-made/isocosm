@@ -347,7 +347,7 @@ impl App {
 /// The door sweep needs it while a `&mut` borrow of the runner is live, which
 /// puts the whole-`self` method out of reach.
 pub(crate) fn snapshot_with_journal(
-    journal: Vec<isometry_campaign::WorldFact>,
+    journal: Vec<isocosm::legacy::campaign::WorldFact>,
     ui: &UiState,
 ) -> GameSnapshot {
     GameSnapshot {

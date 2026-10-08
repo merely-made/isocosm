@@ -34,7 +34,7 @@ whether a community remains itself as control, bodies, and generations
 change.
 
 **Early implementation.** The repo holds the name-reservation package, the
-design docs, and five crates. `crates/eponym-client` owns native input, rendering and inspection,
+design docs, and three crates. `crates/eponym-client` owns native input, rendering and inspection,
 including body sheets, timed actions and the retained S0 room probe
 landed 2026-08-08: one room carved into a grown mesocosm hillside, one body
 under near-tier kinematics, a fixed input trace with save/reload/replay, and
@@ -46,7 +46,7 @@ Ground binding. Three further gates landed as opt-in bins: `v1_residency`
 (continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth composed
 with renderling, D1), and `v1b_residency` (the stable capacity-fixed
 resident brick cache, V1b), behind the `v1-proof`, `d1-proof`, and
-`v1b-proof` features. `crates/eponym-social` is the S1
+`v1b-proof` features. `isocosm::legacy::eponym::social` is the S1
 willingness owner landed the same
 day: deeds, standing, confidence, refusal, standing agreements, and the
 premises behind every answer, with the refusal scene as an executable
@@ -57,8 +57,8 @@ ending. `crates/eponym-sortie` is S3's joint receipt (sim half landed
 2026-08-08): the one crate reading both owners, with negotiated
 participation, terrain falls as body-revision wounds, the pact-governed
 tag-in, the dig rule, and sortie deeds that explain later answers.
-`crates/eponym-identity` holds the identity facts both owners
-share and neither may own. `crates/eponym-world` owns persistent site
+`isocosm::legacy::eponym::identity` holds the identity facts both owners
+share and neither may own. `isocosm::legacy::eponym::world` owns persistent site
 meanings over stable surface and underground slots, routes, containment,
 inherited replacement, multi-author material edits, generated bodies and
 items, needs, perception, injury, recovery, death, and regrow-plus-replay
@@ -80,7 +80,7 @@ foundation receipts and its F3-F8 mapped onto E2's families in the overlay
 plan's §4.1. The founding plan remains the charter with its phase section
 superseded.
 
-The local `eponym-world::Session` foundation (2026-09-09) composes one
+The local `isocosm::legacy::eponym::world::Session` foundation (2026-09-09) composes one
 `GameState` with historically validated control and existing-life succession.
 Its versioned save supports configurable archive limits. The bounded J1b
 `AdvanceMotion` path now owns fractional terrain motion and landing injury in
@@ -92,7 +92,7 @@ open. See `design_docs/2026-09-09_functional_loops_plan.md` for current lanes.
 The `crossing` binary (2026-09-05) is the dry damaged-crossing contact
 fixture: two restartable body presets, board carrying, tethering, brace,
 timed strikes, impairment/recovery, and a readable shared-device HUD.
-`eponym-world::ContactWorld` is a separate fixed-step input/replay probe
+`eponym-motion::ContactWorld` is a separate fixed-step input/replay probe
 using Conatus character movement, not yet a join to `GameState` or F3 evidence.
 Its stationary practice body has no decision system. Full encounter and
 playtester acceptance remain open in the Eponym overlay plan's E3 and E4.
@@ -144,51 +144,11 @@ architecture in the sibling repo at
   memorial sense.
 - **tulpa**: Gemot's federated adapter-training lane; not the memorial organ.
 
-Do not coin new names for these concepts mid-session. Naming rounds are
-deliberate here: candidates get crates.io, game, studio, and trademark checks
-before adoption, and the receipts are recorded.
+## Shared rules
 
-## Document Structure
-
-All authoritative design material lives in `design_docs/`. Read
-`design_docs/DOC_README.md` first.
-
-| Path | What's there |
-| ---- | ----------- |
-| `design_docs/DOC_README.md` | Index and AI working principles |
-| `design_docs/DOC_POLICY.md` | Documentation governance |
-| `design_docs/PROJECT_DESCRIPTION.md` | Product goals, pillars (maintainer-owned) |
-| `design_docs/<date>_<keyword>_plan.md` | Active plans |
-| `design_docs/archive_docs/<date>/` | Retired plans |
-
-Wing-level material lives once, in Mesocosm, and is cited by path. Never copy
-it here.
-
-## General Guidelines
-
-- Rust: standard idioms. No `unsafe` without documented justification.
-- 600-LOC ceiling per source file. Split before adding when approaching it,
-  and trim comment volume while splitting.
-- Plans go in `design_docs/` per the date-keyword-plan convention with
-  done-conditions, not time estimates. Never `.claude/plans/`.
-- Follow `DOC_POLICY.md` for documentation changes.
-- Check the Merely ecosystem before writing a new module: mere, genet,
-  netrender, isometry, mesocosm, and the wgpu-* repos may already have the
-  piece or the pattern. Name the owning layer before building anything
-  app-local.
-- Prefer runtime verification over extended static code tracing. If runtime
-  diagnostics are blocked, surface that blocker early.
-
-## Licensing Boundary
-
-- Game code and repository documentation are MPL-2.0.
-- Promoted reusable library crates are MPL-2.0 as well (ruled 2026-09-03;
-  the earlier MIT OR Apache-2.0 path for a proven boundary is retired). The
-  only exception route is the fork/vendor criterion in mere's license posture
-  brief, recorded in `LICENSES.md` when it applies.
-- Original game assets are CC BY-SA 4.0 and require an attribution entry.
-  Imported assets retain their own licenses and must be recorded explicitly.
-- See `LICENSES.md`. Do not blur code, library, and asset grants.
+Documents, guidelines, the pipeline laws and the licensing boundary are
+the repository's, in the root [`CLAUDE.md`](../CLAUDE.md) under "Rules for all
+three products" (wing design record, ruling 615); it loads with this file.
 
 ## Important Don'ts
 
@@ -206,10 +166,6 @@ it here.
   transplantation, cloning, resurrection, and similar exceptions must leave
   material, causal, and social consequences. Record what occurred; do not
   collapse disputed continuity into a universal `same_person` flag.
-- **Do not violate the three pipeline laws** (wing founding record §3). What
-  crosses between games is choices under scarcity, not morphology;
-  inheritance must be pointable; player history displaces procedural content
-  and never gates it.
 - **Do not build a Nemesis system.** Procedurally generated rivals with
   promotion hierarchies are patented to August 2036. Generic grudges and
   remembered encounters are fine (Dwarf Fortress prior art); the
@@ -225,5 +181,3 @@ it here.
   settlement authoring remains allowed. Additive operations preserve
   concurrent claims; each collaborative domain must name its materializer,
   conflict UI, and any true CRDT it actually needs.
-- Do not add features beyond the active plan's current target without
-  surfacing the scope change first.

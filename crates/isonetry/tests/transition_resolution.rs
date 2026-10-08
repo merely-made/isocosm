@@ -9,10 +9,11 @@
 //! travel *payload* rather than of replication: what the authority says, and
 //! what a peer is thereby spared from working out.
 
-use isometry_campaign::{
-    CampaignMap, CampaignStore, EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale,
+use isocosm::legacy::campaign::{
+    CampaignStore, EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale,
     MapTransition,
 };
+use isometry_campaign::CampaignMap;
 use isometry_core::{Facing, MapDocument, SessionEvent, SheetData, Token, TokenId, TurnList};
 use isonetry::sim::Sim;
 use isonetry::{
@@ -29,7 +30,7 @@ fn uncontrolled_faction_residents_do_not_hold_the_party_board() {
     state.map.tokens[0].at = (3, 3);
     state.world.factions.insert(
         "scavengers".to_owned(),
-        isometry_campaign::WorldFaction {
+        isocosm::legacy::campaign::WorldFaction {
             id: "scavengers".to_owned(),
             name: "Scavengers".to_owned(),
             tags: vec![],

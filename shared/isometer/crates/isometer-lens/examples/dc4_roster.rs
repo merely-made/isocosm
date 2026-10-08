@@ -27,12 +27,12 @@
 //!
 //! Also writes `dc4_roster.png`, a two-row contact sheet of the broadside cuts.
 
+use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isocosm::legacy::mesocosm::{Recipe, Soma, SpeciesId, axis::archetype, develop_body};
 use isometer_lens::{
     BodyLensProjection, BodyPlacement, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
     Grade, TraceCamera,
 };
-use mesocosm_core::places::{Ground, Places};
-use mesocosm_core::{Recipe, Soma, SpeciesId, axis::archetype, develop_body};
 
 /// The host's own framing (`mesocosm-genet::section::SLAB_HALF_HEIGHT`, ruled
 /// 2026-08-29) and its slice depth, quoted rather than imported so the lens

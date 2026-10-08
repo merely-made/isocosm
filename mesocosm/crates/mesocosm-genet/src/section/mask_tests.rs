@@ -72,12 +72,12 @@ fn noncentral_pivot_and_quarter_turned_attachment_are_not_culled_by_core_bounds(
                 VolumeRef::from_tag(252),
                 1_000,
                 [1, 1, 5],
-                mesocosm_core::Attachment {
+                isocosm::legacy::mesocosm::Attachment {
                     parent: PartId(0),
                     offset: [0; 3],
-                    yaw: mesocosm_core::Yaw::Quarter,
+                    yaw: isocosm::legacy::mesocosm::Yaw::Quarter,
                 },
-                mesocosm_core::Provenance::founding(),
+                isocosm::legacy::mesocosm::Provenance::founding(),
             )
             .unwrap();
         body.parts[part.0 as usize].pivot = [1, 1, 10];

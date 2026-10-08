@@ -10,7 +10,7 @@
 //! cannot create a grant.
 
 use crate::section::{GlyphOrientation, SpatialGlyph, stroke};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     PartId, World,
     effect_pack::{
         Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, MarkForm, MarkRequest, Refusal,

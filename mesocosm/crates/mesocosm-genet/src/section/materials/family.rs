@@ -6,10 +6,10 @@
 use super::Capture;
 use crate::generation_content::Pack;
 use crate::played::{BodyLayout, PlayedTrace, SceneMode};
-use mesocosm_core::{Intent, OrganismId};
+use isocosm::legacy::mesocosm::{Intent, OrganismId};
 use mesocosm_runtime::Runtime;
 
-fn apply(runtime: &mut Runtime, intent: Intent) -> mesocosm_core::Outcome {
+fn apply(runtime: &mut Runtime, intent: Intent) -> isocosm::legacy::mesocosm::Outcome {
     runtime.queue(intent);
     assert_eq!(
         runtime.step(1),
@@ -56,7 +56,7 @@ fn record_stage(
             "alive": organism.is_alive(),
             "reserve_mg": organism.energy_mg,
             "phenotype_digest": organism.phenotype.digest(),
-            "secretory_parts": materials.iter().filter(|m| m.material == crate::section::materials::channel(mesocosm_core::process::Process::Secrete)).count(),
+            "secretory_parts": materials.iter().filter(|m| m.material == crate::section::materials::channel(isocosm::legacy::mesocosm::process::Process::Secrete)).count(),
         }));
     }
     assert_eq!(runtime.state_hash(), hash, "rendering is read-only");
@@ -64,7 +64,7 @@ fn record_stage(
         let directory = std::path::Path::new(&directory);
         let trace = PlayedTrace {
             start: None,
-            trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+            trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
             scene: SceneMode::FamilyPractice,
             body_layout: BodyLayout::Spaced,
             seed: 7,
@@ -95,7 +95,7 @@ fn record_stage(
 #[test]
 fn family_scene_replays_intake_expression_and_a_natural_descendant() {
     use crate::section::materials::channel;
-    use mesocosm_core::{Founding, Outcome, history::Event, process::Process};
+    use isocosm::legacy::mesocosm::{Founding, Outcome, history::Event, process::Process};
     let pack = Pack::generate(crate::generation_content::DevelopmentPalette(
         Founding::SpacedRoster.palette(),
     ))
@@ -120,14 +120,14 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
     assert!(matches!(
         refused.apply(Intent::Consume {
             organism: ids.donor,
-            part: mesocosm_core::PartId(u32::MAX),
+            part: isocosm::legacy::mesocosm::PartId(u32::MAX),
         }),
         Outcome::Rejected(_)
     ));
     elapsed.apply(Intent::Resume);
     assert_eq!(
-        mesocosm_core::state_hash(&refused),
-        mesocosm_core::state_hash(&elapsed)
+        isocosm::legacy::mesocosm::state_hash(&refused),
+        isocosm::legacy::mesocosm::state_hash(&elapsed)
     );
     let (refused_pixels, _) = capture.body(&refused, ids.parent, false);
     let (elapsed_pixels, uploads) = capture.body(&elapsed, ids.parent, false);
@@ -238,10 +238,12 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
         .find(|o| o.id == child)
         .unwrap();
     assert!(
-        offspring
-            .body()
-            .living()
-            .all(|part| { matches!(part.provenance.origin, mesocosm_core::Origin::Founding) }),
+        offspring.body().living().all(|part| {
+            matches!(
+                part.provenance.origin,
+                isocosm::legacy::mesocosm::Origin::Founding
+            )
+        }),
         "a descendant develops its own tissue rather than copying the acquired branch"
     );
     assert!(

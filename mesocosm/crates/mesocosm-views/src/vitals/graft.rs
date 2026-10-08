@@ -6,7 +6,7 @@
 
 //! Graft provenance and checked compatibility terms.
 
-use mesocosm_core::Graft;
+use isocosm::legacy::mesocosm::Graft;
 
 /// The two sentences a transferred branch is owed: where it came from, and
 /// what it is doing here. (P3)
@@ -60,7 +60,7 @@ pub fn graft_words(graft: &Graft, expressing: bool) -> GraftWords {
 
 /// The core's checked graft terms, shared by preview and landed readings.
 pub fn compatibility_words(
-    receipt: &mesocosm_core::graft::compatibility::CompatibilityReceipt,
+    receipt: &isocosm::legacy::mesocosm::graft::compatibility::CompatibilityReceipt,
 ) -> String {
     let mut words = format!(
         "{} / {} mg allowance ({} mg remaining); {} mg extra reserve cost",
@@ -72,7 +72,7 @@ pub fn compatibility_words(
         receipt.penalty_mg,
     );
     for condition in &receipt.applied {
-        if let Some(name) = mesocosm_core::discovery::name_of(*condition) {
+        if let Some(name) = isocosm::legacy::mesocosm::discovery::name_of(*condition) {
             words.push_str(&format!("; raised by {name}"));
         }
     }

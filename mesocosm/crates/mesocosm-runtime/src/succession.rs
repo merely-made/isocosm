@@ -60,11 +60,11 @@
 //! too, and the one answer that does **not** close the question: a revision is
 //! taken *at* the checkpoint, and the world stays there until it is resumed.
 //!
-//! [`World::held`]: mesocosm_core::World::held
+//! [`World::held`]: isocosm::legacy::mesocosm::World::held
 
-use mesocosm_core::flow::{Account, Process, RecordedEvent, RecordedFlow};
-use mesocosm_core::history::Event;
-use mesocosm_core::{History, Intent, OrganismId, SpeciesId, World};
+use isocosm::legacy::mesocosm::flow::{Account, Process, RecordedEvent, RecordedFlow};
+use isocosm::legacy::mesocosm::history::Event;
+use isocosm::legacy::mesocosm::{History, Intent, OrganismId, SpeciesId, World};
 
 /// A birth the played critter is the parent of.
 ///

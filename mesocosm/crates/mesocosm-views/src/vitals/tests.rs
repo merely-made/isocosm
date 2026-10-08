@@ -13,7 +13,7 @@
 //! verdicts — and only the literal words can hold that.
 
 use super::*;
-use mesocosm_core::Graft;
+use isocosm::legacy::mesocosm::Graft;
 
 #[test]
 fn a_world_with_nobody_in_it_reads_dead() {
@@ -68,7 +68,7 @@ fn a_warning_carries_its_evidence_and_only_arrives_when_it_is_true() {
     let short = Trend {
         stand_change_mg: -7_930,
         grazed_mg: 15_771,
-        shortfall_ticks: mesocosm_core::WARN_AFTER_TICKS,
+        shortfall_ticks: isocosm::legacy::mesocosm::WARN_AFTER_TICKS,
         ..quiet
     };
     let words = warning_words(&short).expect("a real shortfall says so");
@@ -91,7 +91,7 @@ fn a_warning_carries_its_evidence_and_only_arrives_when_it_is_true() {
 /// and, when something is not working, what would change it.
 #[test]
 fn the_gland_reads_differently_in_each_of_its_four_states() {
-    let part = mesocosm_core::PartId(3);
+    let part = isocosm::legacy::mesocosm::PartId(3);
     let allocated = Gland {
         tracts: vec![(part, 5)],
         cells: 5,
@@ -141,7 +141,7 @@ fn the_gland_reads_differently_in_each_of_its_four_states() {
 /// or not the code is.
 #[test]
 fn a_discovery_says_what_it_is_how_it_was_come_by_and_what_it_grants() {
-    let condition = mesocosm_core::discovery::conditions()
+    let condition = isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|found| found.name == "mesocosm:endured-hunger")
         .expect("the table holds it");
@@ -149,13 +149,13 @@ fn a_discovery_says_what_it_is_how_it_was_come_by_and_what_it_grants() {
         tick: 940,
         epoch: 0,
         condition: condition.id(),
-        route: mesocosm_core::Input::Endurance,
-        evidence: mesocosm_core::Evidence::Endured {
-            stress: mesocosm_core::Stress::Hunger,
+        route: isocosm::legacy::mesocosm::Input::Endurance,
+        evidence: isocosm::legacy::mesocosm::Evidence::Endured {
+            stress: isocosm::legacy::mesocosm::Stress::Hunger,
             ticks: 100,
         },
         candidate: condition.grants,
-        source: mesocosm_core::Source::Endured,
+        source: isocosm::legacy::mesocosm::Source::Endured,
         digest: 0x1234,
     };
     let words = discovery_words(&discovery);
@@ -174,21 +174,24 @@ fn a_discovery_says_what_it_is_how_it_was_come_by_and_what_it_grants() {
 /// which condition refused it and why.
 #[test]
 fn a_meal_that_taught_nothing_still_says_what_it_offered_and_what_refused() {
-    let hunger = mesocosm_core::discovery::conditions()
+    let hunger = isocosm::legacy::mesocosm::discovery::conditions()
         .into_iter()
         .find(|found| found.name == "mesocosm:endured-hunger")
         .expect("the table holds it");
     let observation = Observation {
         tick: 12,
-        route: mesocosm_core::Input::Meal,
-        evidence: mesocosm_core::Evidence::Meal {
-            donor: mesocosm_core::SpeciesId(4),
-            part: mesocosm_core::PartId(0),
-            role: mesocosm_core::Role::Mass,
+        route: isocosm::legacy::mesocosm::Input::Meal,
+        evidence: isocosm::legacy::mesocosm::Evidence::Meal {
+            donor: isocosm::legacy::mesocosm::SpeciesId(4),
+            part: isocosm::legacy::mesocosm::PartId(0),
+            role: isocosm::legacy::mesocosm::Role::Mass,
             mass_mg: 260,
         },
         matched: None,
-        missed: vec![(hunger.id(), mesocosm_core::Miss::UndeclaredInput)],
+        missed: vec![(
+            hunger.id(),
+            isocosm::legacy::mesocosm::Miss::UndeclaredInput,
+        )],
     };
     let words = observation_words(&observation).expect("it taught nothing, so it is said");
     assert!(words.contains("bulk part 0 of line 4, 260 mg"), "{words}");
@@ -213,22 +216,22 @@ fn a_meal_that_taught_nothing_still_says_what_it_offered_and_what_refused() {
 fn a_development_that_would_not_validate_says_why_in_plain_words() {
     assert_eq!(
         refusal_words(&Rejection::Refused(Refusal::TractMismatch {
-            part: mesocosm_core::PartId(0),
-            process: mesocosm_core::ProcessRef {
-                definition: mesocosm_core::DefinitionDigest(1),
+            part: isocosm::legacy::mesocosm::PartId(0),
+            process: isocosm::legacy::mesocosm::ProcessRef {
+                definition: isocosm::legacy::mesocosm::DefinitionDigest(1),
             },
         })),
         "that shape does not do that"
     );
     assert_eq!(
         refusal_words(&Rejection::Refused(Refusal::Disconnected(
-            mesocosm_core::PartId(3)
+            isocosm::legacy::mesocosm::PartId(3)
         ))),
         "an organ is one piece of tissue"
     );
     assert_eq!(
         notice_in(&[Outcome::Expressed {
-            part: mesocosm_core::PartId(3),
+            part: isocosm::legacy::mesocosm::PartId(3),
             cost_mg: 115,
             revision: 1,
         }]),
@@ -242,14 +245,14 @@ fn a_development_that_would_not_validate_says_why_in_plain_words() {
 fn a_landed_meal_says_which_way_the_body_took_it() {
     assert_eq!(
         notice_in(&[Outcome::Burned {
-            organism: mesocosm_core::OrganismId(3),
+            organism: isocosm::legacy::mesocosm::OrganismId(3),
             energy_mg: 120,
         }]),
         Some("burned")
     );
     assert_eq!(
         notice_in(&[Outcome::Incorporated {
-            part: mesocosm_core::PartId(1),
+            part: isocosm::legacy::mesocosm::PartId(1),
         }]),
         Some("grew")
     );
@@ -257,9 +260,9 @@ fn a_landed_meal_says_which_way_the_body_took_it() {
     // onto you, and the player picked it rather than the plan.
     assert_eq!(
         notice_in(&[Outcome::Consumed {
-            part: mesocosm_core::PartId(4),
-            from: mesocosm_core::OrganismId(9),
-            from_part: mesocosm_core::PartId(2),
+            part: isocosm::legacy::mesocosm::PartId(4),
+            from: isocosm::legacy::mesocosm::OrganismId(9),
+            from_part: isocosm::legacy::mesocosm::PartId(2),
             mass_mg: 400,
         }]),
         Some("took the organ")
@@ -271,15 +274,18 @@ fn a_landed_meal_says_which_way_the_body_took_it() {
 fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
     let carried = Graft {
         tick: 340,
-        recipient: mesocosm_core::OrganismId(0),
-        donor: mesocosm_core::OrganismId(759),
-        donor_line: mesocosm_core::SpeciesId(2),
-        donor_part: mesocosm_core::PartId(31),
-        root: mesocosm_core::PartId(41),
-        parts: vec![mesocosm_core::PartId(41), mesocosm_core::PartId(42)],
+        recipient: isocosm::legacy::mesocosm::OrganismId(0),
+        donor: isocosm::legacy::mesocosm::OrganismId(759),
+        donor_line: isocosm::legacy::mesocosm::SpeciesId(2),
+        donor_part: isocosm::legacy::mesocosm::PartId(31),
+        root: isocosm::legacy::mesocosm::PartId(41),
+        parts: vec![
+            isocosm::legacy::mesocosm::PartId(41),
+            isocosm::legacy::mesocosm::PartId(42),
+        ],
         mass_mg: 20,
         crossing: Crossing::Carry,
-        verdict: mesocosm_core::Verdict::Adapter,
+        verdict: isocosm::legacy::mesocosm::Verdict::Adapter,
         compatibility: None,
         cost_mg: 72,
         revision: 1,
@@ -290,16 +296,18 @@ fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
     let words = graft_words(&carried, false);
     assert_eq!(words.taken, "2 parts from part 31 of line 2");
     let priced = Graft {
-        verdict: mesocosm_core::Verdict::Refused,
-        compatibility: Some(mesocosm_core::graft::compatibility::CompatibilityReceipt {
-            base_allowance_mg: 20,
-            effective_allowance_mg: 25,
-            incoming_mg: 20,
-            retained_mg: 0,
-            requested_mg: 20,
-            penalty_mg: 20,
-            applied: vec![mesocosm_core::discovery::conditions()[0].id()],
-        }),
+        verdict: isocosm::legacy::mesocosm::Verdict::Refused,
+        compatibility: Some(
+            isocosm::legacy::mesocosm::graft::compatibility::CompatibilityReceipt {
+                base_allowance_mg: 20,
+                effective_allowance_mg: 25,
+                incoming_mg: 20,
+                retained_mg: 0,
+                requested_mg: 20,
+                penalty_mg: 20,
+                applied: vec![isocosm::legacy::mesocosm::discovery::conditions()[0].id()],
+            },
+        ),
         ..carried.clone()
     };
     let priced_words = graft_words(&priced, true);
@@ -332,8 +340,8 @@ fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
     let regrown = graft_words(
         &Graft {
             crossing: Crossing::Regrow,
-            verdict: mesocosm_core::Verdict::Refused,
-            parts: vec![mesocosm_core::PartId(41)],
+            verdict: isocosm::legacy::mesocosm::Verdict::Refused,
+            parts: vec![isocosm::legacy::mesocosm::PartId(41)],
             ..carried
         },
         true,
@@ -346,13 +354,13 @@ fn a_transferred_branch_says_where_it_came_from_and_what_it_is_doing() {
 fn a_landed_branch_says_which_crossing_it_took() {
     let landed = |crossing| {
         notice_in(&[Outcome::Grafted {
-            root: mesocosm_core::PartId(41),
+            root: isocosm::legacy::mesocosm::PartId(41),
             parts: 2,
-            from: mesocosm_core::OrganismId(759),
-            from_part: mesocosm_core::PartId(31),
+            from: isocosm::legacy::mesocosm::OrganismId(759),
+            from_part: isocosm::legacy::mesocosm::PartId(31),
             mass_mg: 20,
             crossing,
-            verdict: mesocosm_core::Verdict::Native,
+            verdict: isocosm::legacy::mesocosm::Verdict::Native,
         }])
     };
     assert_eq!(landed(Crossing::Carry), Some("carried the branch"));
@@ -361,13 +369,13 @@ fn a_landed_branch_says_which_crossing_it_took() {
     // And the two refusals P3 added, in words that say what would make it
     // possible rather than naming an error.
     assert_eq!(
-        refusal_words(&Rejection::WholeBody(mesocosm_core::PartId(0))),
+        refusal_words(&Rejection::WholeBody(isocosm::legacy::mesocosm::PartId(0))),
         "that is the whole of it"
     );
     assert_eq!(
         refusal_words(&Rejection::Incompatible {
-            from: mesocosm_core::Domain(2),
-            into: mesocosm_core::Domain(1),
+            from: isocosm::legacy::mesocosm::Domain(2),
+            into: isocosm::legacy::mesocosm::Domain(1),
         }),
         "that tissue will not go in you"
     );

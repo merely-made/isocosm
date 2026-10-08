@@ -346,8 +346,8 @@ impl App {
 }
 
 /// A DM-facing reason a storylet is not yet playable.
-fn describe_storylet_error(error: &isometry_campaign::StoryletError) -> String {
-    use isometry_campaign::StoryletError::*;
+fn describe_storylet_error(error: &isocosm::legacy::campaign::StoryletError) -> String {
+    use isocosm::legacy::campaign::StoryletError::*;
     match error {
         MissingFactionTag(tag) => format!("needs a faction tagged '{tag}'"),
         MissingHiddenFact(id) => format!("needs the secret '{id}' to be true"),

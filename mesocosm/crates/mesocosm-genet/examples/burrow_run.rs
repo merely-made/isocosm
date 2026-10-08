@@ -11,12 +11,12 @@
 
 use std::fs::File;
 
+use isocosm::legacy::mesocosm::places::{WALKER_HEIGHT, spot};
+use isocosm::legacy::mesocosm::{Intent, OrganismId, Outcome, World, state_hash};
 use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap,
     BrickRevision, BrickTracer, Flight, Grade,
 };
-use mesocosm_core::places::{WALKER_HEIGHT, spot};
-use mesocosm_core::{Intent, OrganismId, Outcome, World, state_hash};
 use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, PresentedFrame, Scene,
     WgpuHandles, create_netrender_instance,

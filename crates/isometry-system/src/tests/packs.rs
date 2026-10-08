@@ -123,7 +123,7 @@ fn attack_expr_folds_str_mod_and_proficiency() {
 
 #[test]
 fn equipped_modifier_changes_effective_attack_without_mutating_sheet() {
-    use isometry_campaign::{
+    use isocosm::legacy::campaign::{
         EquipmentSlot, Inventory, ItemId, ItemInstance, ItemModifier, ItemModifierKind,
     };
 
@@ -157,4 +157,29 @@ fn equipped_modifier_changes_effective_attack_without_mutating_sheet() {
         system.action_expr("attack", &effective).as_deref(),
         Some("1d20+4")
     );
+}
+
+#[test]
+fn a_pack_with_both_manifests_is_refused() {
+    // Ruling 624 reads TOML or JSON, never both at once: a pack carrying a
+    // stale JSON manifest beside its TOML one would otherwise load whichever
+    // the loader happened to prefer.
+    let root = std::env::temp_dir().join(format!("isometry-two-manifests-{}", std::process::id()));
+    std::fs::create_dir_all(&root).unwrap();
+    let manifest =
+        "format = 1\nid = \"twice\"\nname = \"Twice\"\nversion = \"0.1.0\"\ngenerators = []\n";
+    std::fs::write(root.join(GeneratorPack::MANIFEST_FILE), manifest).unwrap();
+    std::fs::write(
+        root.join(GeneratorPack::MANIFEST_FILE_JSON),
+        r#"{"format": 1, "id": "twice", "name": "Twice", "version": "0.1.0", "generators": []}"#,
+    )
+    .unwrap();
+    let refused = GeneratorPack::load(&root)
+        .err()
+        .expect("two manifests are refused");
+    assert!(refused.contains("one manifest"), "{refused}");
+    std::fs::remove_file(root.join(GeneratorPack::MANIFEST_FILE_JSON)).unwrap();
+    let loaded = GeneratorPack::load(&root).expect("the TOML manifest alone loads");
+    assert_eq!(loaded.manifest().id, "twice");
+    let _ = std::fs::remove_dir_all(&root);
 }

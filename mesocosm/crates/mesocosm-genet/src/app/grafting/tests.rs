@@ -15,13 +15,13 @@ fn host() -> Host {
 #[test]
 fn whole_body_preview_fits_deep_bodies_after_every_turn() {
     use crate::section::{CameraMode, camera_basis};
-    use mesocosm_core::world::generation::{BodyPlan, Request};
+    use isocosm::legacy::mesocosm::world::generation::{BodyPlan, Request};
     let mut exceeds_world_slice = false;
     for plan in [BodyPlan::Axial, BodyPlan::Branched] {
         let mut request = Request::default();
         request.criteria.body_plan = plan;
         let prepared = request
-            .prepare(mesocosm_core::Founding::Drawn.palette())
+            .prepare(isocosm::legacy::mesocosm::Founding::Drawn.palette())
             .unwrap();
         for index in 0..prepared.draft().candidates.len() {
             let world = prepared.enter(index).unwrap();
@@ -85,7 +85,7 @@ fn rotating_presentation_bounds_fit_beside_the_panel_and_inside_the_slab() {
     use isometer::mesh::{BodyMesh, Volume};
     use isometer::render::live_body::{LiveBody, body_bounds};
     let mesh = BodyMesh::single(
-        mesocosm_core::VolumeRef::from_tag(251),
+        isocosm::legacy::mesocosm::VolumeRef::from_tag(251),
         &Volume::solid([4, 6, 40], 3),
     );
     for degrees in [0.0_f32, 45.0, 90.0, 180.0, 270.0, 360.0] {
@@ -178,7 +178,7 @@ fn confirmation_records_one_graft_and_replays_from_the_named_scene() {
     assert_eq!(host.runtime.trace().len(), 1);
     let trace = PlayedTrace {
         start: None,
-        trophic_grammar: mesocosm_core::TROPHIC_GRAMMAR_REVISION,
+        trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
         scene: SceneMode::GraftPractice,
         body_layout: host.config.effective_body_layout(),
         seed: 7,

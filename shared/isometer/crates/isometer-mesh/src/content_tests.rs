@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::{Founding, PartPalette, PartTemplate, Role, RoleShapes};
+use isocosm::legacy::mesocosm::{Founding, PartPalette, PartTemplate, Role, RoleShapes};
 
 use super::*;
 

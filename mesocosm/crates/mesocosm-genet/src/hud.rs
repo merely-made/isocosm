@@ -15,8 +15,8 @@
 //! [`crate::vitals`] is the first consumer of. What the guard still forbids is
 //! teaching this lane lettering as a shortcut.
 
+use isocosm::legacy::mesocosm::World;
 use isometer::render::{Camera, Renderer, SceneItem};
-use mesocosm_core::World;
 use mesocosm_views::MinimapLeaf;
 use sprigging::{Leaf, PaintCx, Size};
 
@@ -64,7 +64,7 @@ pub struct Hud {
 fn overhead() -> Camera {
     Camera {
         target: [0.0, 0.0, 0.0],
-        extent: mesocosm_core::world::ENCLOSURE as f32 + 2.0,
+        extent: isocosm::legacy::mesocosm::world::ENCLOSURE as f32 + 2.0,
         yaw: std::f32::consts::FRAC_PI_2,
         pitch: 1.553_343_f32,
         aspect: 1.0,

@@ -25,7 +25,7 @@ use crate::protocol::{
     FNV_OFFSET, GameEvent, GameSnapshot, NetMessage, Outbound, PeerId, Recipient, fnv1a,
 };
 use crate::session::{ClientSession, HostSession};
-use isometry_campaign::CampaignStore;
+use isocosm::legacy::campaign::CampaignStore;
 use muniment::Journal;
 
 /// The session ALPN. Bumping it is a protocol break (old clients can't
@@ -218,7 +218,7 @@ impl HostNet {
 
     pub async fn commit_campaign(
         &self,
-        record: isometry_campaign::GenerationRecord,
+        record: isocosm::legacy::campaign::GenerationRecord,
         item_owner: Option<isometry_core::TokenId>,
     ) -> Result<(), String> {
         let out = self
@@ -233,7 +233,7 @@ impl HostNet {
     /// Commit a campaign and seed the named party at its one starting place.
     pub async fn commit_campaign_for_party(
         &self,
-        record: isometry_campaign::GenerationRecord,
+        record: isocosm::legacy::campaign::GenerationRecord,
         item_owner: Option<isometry_core::TokenId>,
         party: &str,
     ) -> Result<(), String> {
@@ -277,7 +277,7 @@ impl HostNet {
     /// Commit a downtime faction tick, broadcasting each move's world events.
     pub async fn commit_faction_turn(
         &self,
-        moves: Vec<isometry_campaign::FactionMove>,
+        moves: Vec<isocosm::legacy::campaign::FactionMove>,
     ) -> Result<(), String> {
         let out = self.session.lock().await.commit_faction_turn(moves)?;
         dispatch(&self.peers, out).await;

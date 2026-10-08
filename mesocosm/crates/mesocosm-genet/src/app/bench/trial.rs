@@ -8,8 +8,8 @@ use super::{
 };
 use crate::section::{GlyphOrientation, SpatialGlyph};
 use cambium::{clickable, el, focusable, text};
+use isocosm::legacy::mesocosm::{PartId, World, effect_pack::Amount, history::Event};
 use isometer::GlyphAnchor;
-use mesocosm_core::{PartId, World, effect_pack::Amount, history::Event};
 use mesocosm_runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialUptake};
 mod boundary;
 mod carving;

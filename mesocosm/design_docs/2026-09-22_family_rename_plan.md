@@ -231,7 +231,6 @@ each other; R3 when the peer's crate lands; R5 last.
   side holds a mark. Subtitling the tabletop under Isocosm is the response.
 
 ## Progress
-
 - 2026-09-22: R3 folded into the owning sim session's first implementation;
   core, binary, tests, native consumer and current indexes use Isocosm.
 
@@ -239,12 +238,8 @@ each other; R3 when the peer's crate lands; R5 last.
   landed the same day.
 - 2026-09-22: R1 landed at Mark's word ("Sure"): nine documents renamed in
   the present tense, drafts for the six maintainer-owned files filed.
-- 2026-09-22: ruling 111 (option B) applied: Isometry retired as a product
-  word; the names line, the names table, R4 and two drafts amended; R3's
-  wording brought to the owning session's `wing-sim`.
-- 2026-09-24: ruling 112: Mesocosm keeps its name and Eponym stays, so the
-  names table is final; hagiograph, redshank and ortet claimed on crates.io
-  at Mark's word, beside the family's three.
+- 2026-09-24: hagiograph, redshank and ortet claimed on crates.io beside the
+  family's three (ruling 112).
 - 2026-09-24: R2 landed at the coordinator's word: `paredros/` to `eponym/`,
   five crates to `eponym-*`, root package `eponym` 0.0.2. Baseline and final
   alike: `cargo test --workspace --no-fail-fast` 230 passed, 2 failed (the two

@@ -211,7 +211,7 @@ fn movement_and_feeding_rules_consume_actual_actor_events_only() {
 
 #[test]
 fn changing_control_does_not_transfer_the_bound_collection() {
-    use mesocosm_core::{Intent, Outcome};
+    use isocosm::legacy::mesocosm::{Intent, Outcome};
     let (mut runtime, target, at) = (0..32)
         .find_map(|seed| {
             let runtime = crate::Runtime::new(seed, 60, 1);
@@ -330,7 +330,7 @@ fn owns_effect_joins_the_journey_to_the_current_canon_effect_through_base_and_va
 
 #[test]
 fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
-    use mesocosm_core::effect_pack::{Bearer, EffectPackTable, MarkForm, Refusal};
+    use isocosm::legacy::mesocosm::effect_pack::{Bearer, EffectPackTable, MarkForm, Refusal};
     let (world, at) = carve_fixture();
     let mut trial = Trial::new(&world).unwrap();
     trial
@@ -353,26 +353,26 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
     );
     let first = table
         .resolve(
-            mesocosm_core::effect_pack::DEFAULT_EFFECT,
+            isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
             owned,
             Bearer::Embodied,
             at,
             None,
             None,
-            mesocosm_core::effect_pack::Amount::Voxels(1),
+            isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
         )
         .unwrap();
     for _ in 0..32 {
         let reading = trial.glyphs().unwrap();
         let again = table
             .resolve(
-                mesocosm_core::effect_pack::DEFAULT_EFFECT,
+                isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
                 reading.owns_effect("test:reshape"),
                 Bearer::Embodied,
                 at,
                 None,
                 None,
-                mesocosm_core::effect_pack::Amount::Voxels(1),
+                isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
             )
             .unwrap();
         assert_eq!(again, first);
@@ -388,23 +388,25 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
     // An unowned effect paints nothing, however many times it is asked.
     assert_eq!(
         table.resolve(
-            mesocosm_core::effect_pack::DEFAULT_EFFECT,
+            isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
             false,
             Bearer::Embodied,
             at,
             None,
             None,
-            mesocosm_core::effect_pack::Amount::Voxels(1),
+            isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
         ),
         Err(Refusal::NotAcquired {
-            effect: mesocosm_core::effect_pack::DEFAULT_EFFECT.into()
+            effect: isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT.into()
         })
     );
 }
 
 #[test]
 fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
-    use mesocosm_core::effect_pack::{Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, Refusal};
+    use isocosm::legacy::mesocosm::effect_pack::{
+        Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, Refusal,
+    };
     let (world, at) = carve_fixture();
     let mut trial = Trial::new(&world).unwrap();
     trial
@@ -519,7 +521,7 @@ fn a_producer_that_only_takes_up_soil_acquires_through_uptake() {
 /// neither is somebody else's. The positive control runs in the same test.
 #[test]
 fn zero_and_foreign_uptake_are_not_accepted_acts() {
-    use mesocosm_core::flow::{Account, Carrier, Envelope, FlowEvent, Process};
+    use isocosm::legacy::mesocosm::flow::{Account, Carrier, Envelope, FlowEvent, Process};
     let (world, organism) = uptake_fixture();
     let mut reading = GlyphReading::new(rules(organism, AcceptedKind::Uptake), &world).unwrap();
     let flow = |mg| TrialUptake {

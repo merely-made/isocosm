@@ -12,8 +12,24 @@ publish = false
 [dependencies]
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = "1"
+toml = "1"
 sha2 = "0.10"
 wing-impresa = { path = "../wing-impresa" }
 wing-glyphs = { path = "../wing-glyphs" }
+hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+# What the legacy tree under `src/legacy/` needs (ruling 591), at the pins
+# its products held.
+muniment = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+nisus = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
+# The labelled witness, built once in mere (wing rulings 609, 647, 650).
+state-witness = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
 wing-functions = { path = "../wing-functions" }
-hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "32edc2ad8b8a670febf9fb45d9a11bfeedb1ac3b" }
+wing-formats = { path = "../wing-formats" }
+postcard = { version = "1", default-features = false, features = ["alloc"] }
+
+# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# that builds it sets the same level so the shared build directory holds one
+# copy (wing design record, ruling 648).
+[profile.dev.package.isocosm]
+opt-level = 1

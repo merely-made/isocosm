@@ -1,6 +1,9 @@
 # The epoch boundary: significance, speciation, and what youth costs
 
-**Status: partially built, refreshed 2026-09-02.** The world record, causal
+**Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); partially built. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: partially built, refreshed 2026-09-02.** The world record, causal
 event log, species tree, places, reckoning, and player speciation are built,
 and since PE3a **the boundary itself happens**: a versioned epoch rule ends it,
 every unplayed line takes a scored turn at it, and a driver holds the world
@@ -744,7 +747,6 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   descendant will express one literal phenotype.
 
 ## Progress
-
 - **2026-09-26: rewritten to the wing design record** under ruling 280's doc
   lane. §3 gains the record's three gates and names the hagiograph as the
   organ that judges; §11 and §12 mark what has moved to the sim and the
@@ -770,13 +772,9 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   tulpa mention rather than rewriting the historical text; see repo
   `CLAUDE.md`. No code changed.
 
-- **2026-09-02, ruling: the old `epoch.rs` trait array is deleted (doc
-  only).** Mark ruled the phenotype plan §D4's fifth retirement condition:
-  delete `epoch::Trait`, `fitness`, `standing` and the old round; keep the
-  seven authored pressures and three authored world profiles as data, since
-  they seed PE4's world criteria. A deletion slice does it. This is the
+- **2026-09-02:** the trait array's deletion ruled; the ruling lives in the
+  [phenotype plan](2026-07-31_phenotype_plan.md)'s progress, and this is the
   module the entry below already found had no consumer left in `World`.
-
 - **2026-09-02 (PE3a):** the boundary finally happens on its own. `EpochRule`
   is a versioned world rule beside the ruleset — `Timed { ticks }` built,
   default 1,000, `Gated` and `PlayerTriggered` named as data that end nothing —
@@ -815,3 +813,7 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
 - **2026-08-03:** resolved the co-signing target: co-players adopt one
   developmental program, while world-conditioned phenotype realization remains
   free to vary.
+- **2026-09-04:** the old `epoch.rs` trait array deleted, as ruled
+  2026-09-02; the seven authored pressures and three world profiles survive
+  it as `mesocosm-core/src/pressure.rs`. *(Carried from the wing index on
+  2026-10-06, when its rows were cut to ruling 612's shape.)*

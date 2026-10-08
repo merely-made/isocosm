@@ -17,10 +17,10 @@ use crate::section::{self, CameraMode};
 pub struct HostConfig {
     /// Open the local starting-life picker before the ecology clock begins.
     /// Preview changes are disposable until the player confirms a candidate.
-    pub creator_request: Option<mesocosm_core::world::generation::Request>,
+    pub creator_request: Option<isocosm::legacy::mesocosm::world::generation::Request>,
     /// Explicit destination for saving creator criteria, separate from play.
     pub creator_draft: Option<PathBuf>,
-    pub start: Option<mesocosm_core::world::generation::Selection>,
+    pub start: Option<isocosm::legacy::mesocosm::world::generation::Selection>,
     pub seed: u64,
     pub organisms: u32,
     pub ticks_per_second: u32,
@@ -93,7 +93,9 @@ pub struct HostConfig {
 }
 
 impl HostConfig {
-    pub fn effective_start(&self) -> Option<&mesocosm_core::world::generation::Selection> {
+    pub fn effective_start(
+        &self,
+    ) -> Option<&isocosm::legacy::mesocosm::world::generation::Selection> {
         match &self.replay {
             Some(trace) => trace.start.as_ref(),
             None => self.start.as_ref(),
@@ -120,7 +122,7 @@ impl Default for HostConfig {
             // The world's own area-scaled cohort, not a literal: S1 tied the
             // founding population to the enclosure's floor area so a wider
             // terrarium is bigger rather than emptier.
-            organisms: mesocosm_core::world::FOUNDERS,
+            organisms: isocosm::legacy::mesocosm::world::FOUNDERS,
             // The canonical played tempo (TD2, ruled 2026-08-29). Sixty was
             // never chosen; it was the frame rate, and driving the ecology's
             // tick-tuned life history at it mapped a whole lifetime onto

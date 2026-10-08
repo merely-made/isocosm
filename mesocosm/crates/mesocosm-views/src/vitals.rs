@@ -16,7 +16,7 @@
 //! panel *is*, and the host says where its raster lands.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Crossing, Discovery, Gland, Ineligible, Observation, Outcome, Refusal, Rejection, Trend,
     Unrevised, World,
 };
@@ -198,25 +198,25 @@ pub fn observation_words(observation: &Observation) -> Option<String> {
 /// panel naming the same condition two ways reads as two conditions. `None`
 /// from the registry is the missing-ruleset diagnostic and is said rather than
 /// papered over with a similar local name.
-pub(crate) fn condition_word(condition: mesocosm_core::ConditionId) -> String {
-    mesocosm_core::discovery::name_of(condition)
+pub(crate) fn condition_word(condition: isocosm::legacy::mesocosm::ConditionId) -> String {
+    isocosm::legacy::mesocosm::discovery::name_of(condition)
         .map(|name| name.trim_start_matches("mesocosm:").replace('-', " "))
         .unwrap_or_else(|| "a condition this world does not hold".to_string())
 }
 
-fn process_word(process: mesocosm_core::ProcessRef) -> String {
-    mesocosm_core::Registry::native()
+fn process_word(process: isocosm::legacy::mesocosm::ProcessRef) -> String {
+    isocosm::legacy::mesocosm::Registry::native()
         .resolve(process)
         .map(|def| def.id.name.clone())
         .unwrap_or_else(|| "an unknown process".to_string())
 }
 
-fn tract_word(tract: mesocosm_core::Role) -> &'static str {
+fn tract_word(tract: isocosm::legacy::mesocosm::Role) -> &'static str {
     match tract {
-        mesocosm_core::Role::Mass => "bulk",
-        mesocosm_core::Role::Limb => "a limb",
-        mesocosm_core::Role::Plate => "a plate",
-        mesocosm_core::Role::Sensor => "a sensor",
+        isocosm::legacy::mesocosm::Role::Mass => "bulk",
+        isocosm::legacy::mesocosm::Role::Limb => "a limb",
+        isocosm::legacy::mesocosm::Role::Plate => "a plate",
+        isocosm::legacy::mesocosm::Role::Sensor => "a sensor",
     }
 }
 

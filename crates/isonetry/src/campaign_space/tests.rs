@@ -1,7 +1,7 @@
 //! Tests for this module, split out on 2026-07-24; unchanged.
 
 use super::*;
-use isometry_campaign::{CampaignProposal, CampaignProposalMode};
+use isocosm::legacy::campaign::{CampaignProposal, CampaignProposalMode};
 use mooting::{ElectorateSnapshot, RecognitionPolicy};
 use muniment::MemoryBackend;
 

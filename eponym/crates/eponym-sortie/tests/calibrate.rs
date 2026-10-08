@@ -13,9 +13,9 @@
 //! offset is chosen from this table, so the hazard is a fact about the
 //! grown world rather than an authored set-piece.
 
-use eponym_social::scene::AUD;
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
+use isocosm::legacy::eponym::social::scene::AUD;
 
 #[test]
 #[ignore = "calibration probe, run by hand"]

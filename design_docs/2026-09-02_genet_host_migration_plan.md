@@ -9,7 +9,7 @@ Evaluated against the wing design record; see
 
 **Related:** the [runtime profile plan](archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md)
 (its R2 desktop gate waits on this), the
-[perf and cambification plan](2026-07-20_perf_and_cambification_plan.md)
+[perf and cambification plan](archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md)
 (its one live item, the search and whisper text lanes, closes here), and
 genet's `docs/2026-08-09_cambium_desktop_host_g1_receipt.md` (the host this
 plan moves onto).
@@ -440,3 +440,7 @@ call and are recorded here as the closing step, not performed by this plan.
   geometry seam for the Turns headed self-test. The 23 rootstock tests, the
   native host check, and `cargo check -p isometry-genet` are green. Beat timing
   remains a separate issue and keeps the recorded 750 ms behavior in this cut.
+- **2026-10-06, received from Mere's S14 archive pass.** Mere archived its
+  host UI zoom plan (`mere/design_docs/archive_docs/2026-10-06_completed_plans/2026-09-03_host_ui_zoom_plan.md`); Mere's ruling
+  S60 sends Z5's open 820-versus-1040 design figure here, where it is recorded
+  as Mark's call. Recorded in Mere's archived plan tails plan (`mere/design_docs/mere_docs/implementation_strategy/2026-07-03_archived_plan_tails_plan.md`, section "2026-10-06 archive pass").

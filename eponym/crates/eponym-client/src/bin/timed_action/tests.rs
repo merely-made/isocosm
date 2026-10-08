@@ -45,7 +45,7 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
     let action = app.action.action().unwrap();
     assert_eq!(
         action.contributors[&isometer::core::PartId(1)].state,
-        eponym_world::timed_action::ContributionState::Cancelled
+        isocosm::legacy::eponym::world::timed_action::ContributionState::Cancelled
     );
     assert_eq!(
         action.contributors[&isometer::core::PartId(2)].charge,
@@ -57,7 +57,9 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
             .revision,
         anatomy.revision
     );
-    let mut restored = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    let mut restored =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     assert_eq!(restored, app.action);
     let next = Tick(action.last_tick.0 + 1);
     assert_eq!(
@@ -97,7 +99,8 @@ fn ordinary_fall_refreshes_charged_bindings_and_death_cancels_them() {
             .unwrap()
             .contributors
             .values()
-            .all(|c| c.state == eponym_world::timed_action::ContributionState::Cancelled)
+            .all(|c| c.state
+                == isocosm::legacy::eponym::world::timed_action::ContributionState::Cancelled)
     );
     let before = app.action.clone();
     assert!(app.action.rest().is_err());
@@ -132,11 +135,10 @@ fn wrong_direction_is_a_recorded_miss() {
             _ => None,
         })
         .unwrap();
-    assert!(
-        strikes
-            .iter()
-            .all(|strike| matches!(strike.outcome, eponym_world::StrikeOutcome::Miss))
-    );
+    assert!(strikes.iter().all(|strike| matches!(
+        strike.outcome,
+        isocosm::legacy::eponym::world::StrikeOutcome::Miss
+    )));
 }
 
 #[test]
@@ -160,9 +162,11 @@ fn native_fractional_motion_resumes_exactly() {
         .unwrap();
     assert_eq!(after.step, 1);
     assert!(after.position[0] > before.position[0]);
-    assert!(after.position[0] - before.position[0] < eponym_world::MOTION_SCALE);
+    assert!(after.position[0] - before.position[0] < isocosm::legacy::eponym::world::MOTION_SCALE);
     let mut resumed = App::new();
-    resumed.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    resumed.action =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     app.move_player([1, 0, 0]);
     resumed.move_player([1, 0, 0]);
     assert_eq!(app.action, resumed.action);
@@ -182,7 +186,9 @@ fn native_support_loss_slows_movement_and_is_visible_after_resume() {
         .unwrap();
     assert_eq!(before.active_supports.len(), 4);
     app.injure();
-    app.action = TimedActionSession::restore(&app.action.save().unwrap()).unwrap();
+    app.action =
+        TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
+            .unwrap();
     let after = app
         .action
         .session()

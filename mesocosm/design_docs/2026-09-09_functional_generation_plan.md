@@ -1,6 +1,9 @@
 # Functional networks, operators and generation
 
-**Status: first slice implemented, reviewed and committed, 2026-09-09.** Authorized first implementation slice
+**Status, 2026-09-28:** Composition designed (404 to 407); no implementation lane open. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status: first slice implemented, reviewed and committed, 2026-09-09.** Authorized first implementation slice
 following the general model discussion sections 7.2 and 7.3.
 
 **W1, 2026-09-18:** keep. Tier: sim. Index defect: filed below the Archive

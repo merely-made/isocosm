@@ -3,10 +3,10 @@
 
 //! Shared content admission for generated starts and their command-line preview.
 
-use isometer::mesh::content::{ContentPack, Palette, Shape};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     Founding, PartPalette, PartTemplate, Role, RoleShapes, world::generation::Request,
 };
+use isometer::mesh::content::{ContentPack, Palette, Shape};
 use serde::{Deserialize, Serialize};
 
 /// Mesocosm's development palette, carried through the mesh's generation
@@ -83,7 +83,7 @@ pub fn palette(request: &Request) -> PartPalette {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::world::generation::Structure;
+    use isocosm::legacy::mesocosm::world::generation::Structure;
 
     #[test]
     fn structure_admits_the_bench_palette_without_changing_earlier_requests() {

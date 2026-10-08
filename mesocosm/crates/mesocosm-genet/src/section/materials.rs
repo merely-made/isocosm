@@ -4,11 +4,11 @@
 //! Surface appearance reads admitted, living process tissue. Allocation cells
 //! remain simulation facts; their proportions drive a disposable voxel pattern.
 
-use isometer::render::PartMaterial;
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     BodyPhenotype,
     process::{Process, Registry},
 };
+use isometer::render::PartMaterial;
 use std::collections::BTreeMap;
 
 #[cfg(test)]
@@ -67,13 +67,13 @@ pub(super) fn project(phenotype: &BodyPhenotype, registry: &Registry) -> Vec<Par
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::{Founding, World};
+    use isocosm::legacy::mesocosm::{Founding, World};
 
     #[test]
     fn preview_materials_read_allocated_tissue_without_changing_authority_or_geometry() {
         let founding = Founding::SpacedRoster;
         let world = World::expression_practice(7, founding, founding.palette()).unwrap();
-        let hash = mesocosm_core::state_hash(&world);
+        let hash = isocosm::legacy::mesocosm::state_hash(&world);
         let condition = world.discoveries()[0].condition;
         let preview = world.preview_expression(condition).unwrap();
         let actual = &world.controlled().unwrap().phenotype;
@@ -91,7 +91,7 @@ mod tests {
         assert_eq!(material.part, preview.part);
         assert!(material.fraction > 0.0 && material.fraction < 1.0);
         assert_eq!(actual.body(), preview.phenotype.body());
-        assert_eq!(mesocosm_core::state_hash(&world), hash);
+        assert_eq!(isocosm::legacy::mesocosm::state_hash(&world), hash);
         assert_eq!(after, project(&preview.phenotype, world.ruleset()));
         let empty_registry = Registry::admit(Vec::new()).unwrap();
         assert!(project(&preview.phenotype, &empty_registry).is_empty());

@@ -3,12 +3,12 @@
 //! Usage:
 //! `cargo run -p isometry-system --example generator_fixture -- <script.lua> <fixture.json>`
 //!
-//! The fixture is a serialized `isometry_campaign::GeneratorFixture`. A
+//! The fixture is a serialized `isocosm::legacy::campaign::GeneratorFixture`. A
 //! passing run proves both the typed proposal and its host entropy trace.
 
 use std::path::PathBuf;
 
-use isometry_campaign::GeneratorFixture;
+use isocosm::legacy::campaign::GeneratorFixture;
 use isometry_system::{GeneratorLimits, GeneratorRuntime};
 
 fn main() -> Result<(), String> {

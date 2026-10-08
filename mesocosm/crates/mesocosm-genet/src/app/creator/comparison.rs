@@ -1,7 +1,9 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use mesocosm_core::world::generation::{Criteria, FixedBody, Observation, Request, SoilPattern};
+use isocosm::legacy::mesocosm::world::generation::{
+    Criteria, FixedBody, Observation, Request, SoilPattern,
+};
 
 /// The habitat inputs that can change while a generated body is held.
 ///
@@ -102,13 +104,13 @@ impl ComparisonHistory {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mesocosm_core::world::generation::{TrialController, TrialEvidence};
+    use isocosm::legacy::mesocosm::world::generation::{TrialController, TrialEvidence};
 
     fn request(seed: u64) -> Request {
         Request {
             fixed_body: Some(FixedBody {
                 seed: 91,
-                role: mesocosm_core::Kingdom::Consumer,
+                role: isocosm::legacy::mesocosm::Kingdom::Consumer,
             }),
             seed,
             ..Request::default()

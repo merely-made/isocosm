@@ -24,8 +24,8 @@
 //! decides when there is anything to show.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
+use isocosm::legacy::mesocosm::{Feat, Offer, Reading, Scale, Trend, Untakeable};
 use isomere::{JournalClasses, JournalRow};
-use mesocosm_core::{Feat, Offer, Reading, Scale, Trend, Untakeable};
 
 pub type BoardChild = Box<dyn AnyView<Board, (), GenetCtx, GenetElement>>;
 

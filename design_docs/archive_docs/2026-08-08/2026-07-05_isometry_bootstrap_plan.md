@@ -39,7 +39,7 @@ session.
    event log the host validates and rebroadcasts. Late joiners get a snapshot
    plus the log tail. This remains the tactical consistency model, not the
    ownership model for a campaign. The 2026-07-11 revision in the
-   [shared-authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)
+   [shared-authority plan](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)
    adds signed multi-writer p2panda campaign spaces and keeps sequencing only
    where a domain requires it.
 3. **Tile-as-DOM-element, viewport-windowed.** The map lives in

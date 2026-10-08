@@ -15,8 +15,8 @@
 
 use isometer::SlabCamera;
 use isometer::core::PartId;
-use eponym_identity::SubjectId;
-use eponym_world::MotionInput;
+use isocosm::legacy::eponym::identity::SubjectId;
+use isocosm::legacy::eponym::world::MotionInput;
 
 use super::fixture::{FixtureScene, advance_motion, timed_action_world};
 use super::harness::{self, Ink, SIZE};
@@ -475,7 +475,7 @@ fn a_fractional_motion_step_moves_the_drawn_body_by_the_projected_fraction() {
         .pose(fixture.keeper)
         .expect("keeper pose")
         .position;
-    let scale = eponym_world::MOTION_SCALE;
+    let scale = isocosm::legacy::eponym::world::MOTION_SCALE;
     assert!(
         moved != start && moved.iter().any(|value| value.rem_euclid(scale) != 0),
         "{forward:?}: the step must leave a fractional pose: {start:?} -> {moved:?}"

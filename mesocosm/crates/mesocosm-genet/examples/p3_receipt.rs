@@ -24,13 +24,13 @@
 //! cargo run -p mesocosm-genet --release --example p3_receipt
 //! ```
 
-use isometer::mesh::{Volume, VolumeMap, mesh_body};
-use isometer::render::{Camera, Renderer, SceneItem};
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Intent, Kingdom,
     Organism, OrganismId, Outcome, PartId, Process, ProposedTract, Provenance, Registry, SpeciesId,
     Stage, Trend, VolumeRef, World, Yaw,
 };
+use isometer::mesh::{Volume, VolumeMap, mesh_body};
+use isometer::render::{Camera, Renderer, SceneItem};
 
 use mesocosm_genet::chrome::Chrome;
 use mesocosm_genet::vitals::VitalsChrome;

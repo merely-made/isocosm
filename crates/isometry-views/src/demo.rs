@@ -6,7 +6,7 @@
 //! sizes the *board*, [`synth_world`] the *campaign*. They measure different
 //! costs and neither substitutes for the other.
 
-use isometry_campaign::{
+use isocosm::legacy::campaign::{
     CampaignWorld, RoleSlot, StoryletProposal, StoryletRequirements, WorldCharacter, WorldFaction,
     WorldLaw, WorldPlace, WorldRoute,
 };

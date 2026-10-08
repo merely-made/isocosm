@@ -5,7 +5,8 @@
 //! this adapter does not manufacture Voronoi geography from the discovered
 //! graph. Hosts can hand these owned records to the shared atlas canvas.
 
-use isometry_campaign::{CampaignMap, CampaignWorld, MapScale};
+use isocosm::legacy::campaign::{CampaignWorld, MapScale};
+use isometry_campaign::CampaignMap;
 use sceno::{Footprint, Vec2};
 use std::collections::BTreeMap;
 
@@ -206,7 +207,7 @@ fn cell_footprint() -> Footprint {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{MapPoint, MapTransition, WorldPlace, WorldRoute};
+    use isocosm::legacy::campaign::{MapPoint, MapTransition, WorldPlace, WorldRoute};
     use isometry_core::MapDocument;
     use std::collections::BTreeSet;
 

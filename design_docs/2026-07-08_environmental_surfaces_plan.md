@@ -2,7 +2,10 @@
 
 **Date:** 2026-07-08, rewritten 2026-09-26 as a VTT note (wing design record
 ruling 312).
-**Status:** note beside the [VTT overlay plan](2026-09-25_vtt_overlay_plan.md)'s
+**Status, 2026-09-26:** A VTT note since 2026-09-26 (ruling 312), not a lane. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status:** note beside the [VTT overlay plan](2026-09-25_vtt_overlay_plan.md)'s
 V3, not a lane. Nothing has landed and nothing is scheduled here.
 
 ## What this was

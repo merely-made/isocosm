@@ -22,7 +22,7 @@
 //! where the camera sits, and the save/replay discipline the later gates
 //! inherit.
 //!
-//! [`places`]: mesocosm_core::places
+//! [`places`]: isocosm::legacy::mesocosm::places
 
 #[cfg(feature = "r1-proof")]
 mod brick;

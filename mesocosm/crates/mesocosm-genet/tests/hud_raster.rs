@@ -284,9 +284,9 @@ fn the_minimap_texture_is_transparent_where_nothing_was_painted() {
     // windowed host rasterizes. If the white ground reproduces, it is in
     // this content; if not, it is environmental.
     {
-        let mut world = mesocosm_core::World::new(4_242, 40);
+        let mut world = isocosm::legacy::mesocosm::World::new(4_242, 40);
         for _ in 0..50 {
-            world.apply(mesocosm_core::Intent::Idle);
+            world.apply(isocosm::legacy::mesocosm::Intent::Idle);
         }
         let mut leaf = mesocosm_views::minimap_leaf(&world);
         let mut cmds = Vec::new();

@@ -16,8 +16,8 @@ use chirograph::{
 };
 use chirograph::{Revision, SceneEpoch, SceneSnapshot};
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isometry_campaign::{CampaignWorld, WorldPlace, WorldRoute};
-use isometry_core::{MapDocument, Overmap};
+use isocosm::legacy::campaign::{CampaignWorld, Overmap, WorldPlace, WorldRoute};
+use isometry_core::MapDocument;
 use isometry_views::{overmap_score, tile_board_scene, tile_board_score};
 use sceno::{InstanceId, RoutedRelation, Scene};
 

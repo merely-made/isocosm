@@ -381,7 +381,8 @@ impl HostSession {
         item_owner: Option<TokenId>,
         party: Option<&str>,
     ) -> Result<Vec<Outbound>, String> {
-        let isometry_campaign::GenValue::Campaign { campaign: draft } = record.proposal.clone()
+        let isocosm::legacy::campaign::GenValue::Campaign { campaign: draft } =
+            record.proposal.clone()
         else {
             return Err("generation record is not a campaign draft".to_owned());
         };
@@ -432,7 +433,9 @@ impl HostSession {
         // host-private campaign state. Keep the original `draft` above for
         // staging, then redact only the public record that enters the log.
         let mut public_record = record;
-        if let isometry_campaign::GenValue::Campaign { campaign } = &mut public_record.proposal {
+        if let isocosm::legacy::campaign::GenValue::Campaign { campaign } =
+            &mut public_record.proposal
+        {
             campaign.secrets.clear();
         }
         let mut events = vec![GameEvent::Generation(public_record)];

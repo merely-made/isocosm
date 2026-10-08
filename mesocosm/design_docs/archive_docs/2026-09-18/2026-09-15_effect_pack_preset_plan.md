@@ -2,7 +2,7 @@
 
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Implements gate **G3** of the
-[general model plan §7.4](../../2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
+[general model plan §7.4](../2026-09-26/2026-08-06_general_model_plan.md#74-glyph-canon-the-journey-and-divinity-2026-09-13)
 ("admit a default effect pack and two contrasting journey rules through
 product adjudication") as one replayable specimen-bench preset, over the
 bench and trial the

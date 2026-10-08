@@ -6,7 +6,7 @@ use crate::{
     HostConfig,
     played::{BodyLayout, SceneMode},
 };
-use mesocosm_core::places::route_step_for;
+use isocosm::legacy::mesocosm::places::route_step_for;
 
 fn host() -> Host {
     Host::new(HostConfig {
@@ -186,7 +186,7 @@ fn family_scene_plays_through_menus_walks_tunnel_and_replays() {
             .entries()
             .iter()
             .any(|r| matches!(r.record,
-        mesocosm_core::history::Event::Born {organism,parent:Some(parent),..}
+        isocosm::legacy::mesocosm::history::Event::Born {organism,parent:Some(parent),..}
         if parent == ids.parent && organism != ids.relative && organism != ids.donor))
     );
     capture(&mut script, "offspring");

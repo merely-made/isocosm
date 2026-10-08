@@ -67,7 +67,7 @@
 use std::path::PathBuf;
 
 use taproot::{Automatable, Driveable, ProbeSnapshot, ProbeSurface, Progress};
-use mesocosm_core::Outcome;
+use isocosm::legacy::mesocosm::Outcome;
 use winit::event_loop::ActiveEventLoop;
 
 use super::Host;

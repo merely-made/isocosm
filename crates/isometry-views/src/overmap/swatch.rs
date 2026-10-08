@@ -146,7 +146,7 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_core::OvermapNode;
+    use isocosm::legacy::campaign::OvermapNode;
 
     fn node(id: &str, at: (i32, i32)) -> OvermapNode {
         OvermapNode {
@@ -302,7 +302,7 @@ mod tests {
         let mut ui = UiState::new(isometry_core::MapDocument::new("t", 2, 2));
         ui.world.places.insert(
             "here".to_owned(),
-            isometry_campaign::WorldPlace {
+            isocosm::legacy::campaign::WorldPlace {
                 id: "here".to_owned(),
                 name: "Here".to_owned(),
                 tags: Vec::new(),
@@ -312,7 +312,7 @@ mod tests {
         );
         ui.world.reveal("dm", "here");
         ui.world
-            .apply(&isometry_campaign::WorldEvent::PartyMoved {
+            .apply(&isocosm::legacy::campaign::WorldEvent::PartyMoved {
                 party: "dm".to_owned(),
                 node: "here".to_owned(),
             })

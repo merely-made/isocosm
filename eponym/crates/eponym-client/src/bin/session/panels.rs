@@ -19,10 +19,10 @@
 //! `eponym-world/tests/equipment.rs`.
 
 use isometer::core::PartId;
-use eponym_identity::SubjectId;
-use eponym_world::CanonRevisionCause;
-use eponym_world::glyphs::ProvenanceKind;
-use eponym_world::{
+use isocosm::legacy::eponym::identity::SubjectId;
+use isocosm::legacy::eponym::world::CanonRevisionCause;
+use isocosm::legacy::eponym::world::glyphs::ProvenanceKind;
+use isocosm::legacy::eponym::world::{
     AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, GameState, ItemKind, ItemLocation,
     MOTION_SCALE, SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
 };
@@ -67,7 +67,7 @@ pub(super) fn subject_sheet(
         body: &record.document,
         knowledge: &knowledge,
         inputs: &inputs,
-        part_names: eponym_world::fixtures::three_lives::PART_NAMES,
+        part_names: isocosm::legacy::eponym::world::fixtures::three_lives::PART_NAMES,
         selected_part,
     });
     sheet.actions.clear();
@@ -89,7 +89,7 @@ pub(super) fn subject_sheet(
 
 /// One carried or worn item, as the equipment panel lists it.
 pub(super) struct Carried {
-    pub item: eponym_world::ItemId,
+    pub item: isocosm::legacy::eponym::world::ItemId,
     pub kind: ItemKind,
     /// The part it is attached to, when it is worn rather than carried.
     pub attached: Option<PartId>,
@@ -380,14 +380,14 @@ fn describe_cause(cause: &CanonRevisionCause) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eponym_identity::BodyRevisionId;
-    use eponym_world::GameIntent;
-    use eponym_world::fixtures::session as session_fixture;
+    use isocosm::legacy::eponym::identity::BodyRevisionId;
+    use isocosm::legacy::eponym::world::GameIntent;
+    use isocosm::legacy::eponym::world::fixtures::session as session_fixture;
 
     /// The session's own world, detached from its `Session` so a test can
     /// apply the world facts the projection has to survive.
     fn played_game() -> (GameState, SubjectId) {
-        let fixture = session_fixture::timed_action_world();
+        let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
         let played = fixture.keeper;
         (fixture.action.session().game().clone(), played)
     }

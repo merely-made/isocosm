@@ -6,14 +6,15 @@
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use isometry_campaign::{
-    CampaignDraft, CampaignMap, CampaignWorld, DraftMap, EncounterAnchor, EntropyTape,
-    EquipmentSlot, GenValue, GenerationRecord, GeneratorRequest, HiddenItemModifier, HistoryEvent,
-    Inventory, ItemId, ItemInstance, ItemModifier, ItemModifierKind, ItemProposal,
-    LocalMapProposal, MapCellProposal, MapInhabitant, MapPoint, MapScale, MapTransition, RevealCondition,
-    RoleSlot, SecretFact, SpawnZone, StoryletEffect, StoryletProposal, StoryletRequirements,
-    WorldCharacter, WorldEvent, WorldFact, WorldFaction, WorldLaw, WorldPlace, WorldRoute,
+use isocosm::legacy::campaign::{
+    CampaignDraft, CampaignWorld, DraftMap, EncounterAnchor, EntropyTape, EquipmentSlot, GenValue,
+    GenerationRecord, GeneratorRequest, HiddenItemModifier, HistoryEvent, Inventory, ItemId,
+    ItemInstance, ItemModifier, ItemModifierKind, ItemProposal, LocalMapProposal, MapCellProposal,
+    MapInhabitant, MapPoint, MapScale, MapTransition, RevealCondition, RoleSlot, SecretFact,
+    SpawnZone, StoryletEffect, StoryletProposal, StoryletRequirements, WorldCharacter, WorldEvent,
+    WorldFact, WorldFaction, WorldLaw, WorldPlace, WorldRoute,
 };
+use isometry_campaign::{CampaignMap, LowerMap};
 use isometry_core::{
     Beat, Facing, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, Token, TokenId,
     TurnList,

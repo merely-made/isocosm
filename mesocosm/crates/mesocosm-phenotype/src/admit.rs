@@ -24,12 +24,16 @@
 use std::collections::BTreeSet;
 use std::path::{Component, Path, PathBuf};
 
-use mesocosm_core::{Process, ProcessDef, ProcessId, Registry};
+use isocosm::legacy::mesocosm::{Process, ProcessDef, ProcessId, Registry};
 
 use crate::pack::{Manifest, ProcessFile, SUPPORTED_ABI, role_of, seeding_of};
 
-/// The manifest's own file name, and what [`discover`] looks for.
-pub const MANIFEST: &str = "mesocosm-pack.json";
+/// The manifest's own file name, and what [`discover`] looks for first.
+pub const MANIFEST: &str = "mesocosm-pack.toml";
+
+/// The manifest's JSON name, still read when no TOML manifest is present
+/// (wing design record, ruling 624).
+pub const MANIFEST_JSON: &str = "mesocosm-pack.json";
 
 /// Why a pack was not admitted.
 ///
@@ -44,7 +48,7 @@ pub enum Admission {
     /// A declared file could not be read.
     Unreadable { path: String, why: String },
     /// A file is not the shape the schema declares: a missing field, an
-    /// unknown key, a wrong type, or not JSON at all.
+    /// unknown key, a wrong type, or not TOML or JSON at all.
     MalformedSchema { path: String, why: String },
     /// A pack written against a format this build does not read.
     UnknownAbi { found: u32, supported: u32 },
@@ -55,7 +59,8 @@ pub enum Admission {
     /// resolved root. A pack is a directory of data; a path out of it is a
     /// pack reaching into the machine.
     PathEscape { declared: String },
-    /// A `.json` file sits in the pack that the manifest never declared.
+    /// A data file (`.toml` or `.json`) sits in the pack that the manifest
+    /// never declared. A second manifest beside the one discovered is one.
     ///
     /// Refused rather than ignored (plan §5, "undeclared files are rejected"):
     /// a definition that is present and unlisted is either a rule someone
@@ -82,7 +87,9 @@ impl Admission {
     /// The refusal in the plain sentence a diagnostic prints.
     pub fn words(&self) -> String {
         match self {
-            Admission::NoManifest { root } => format!("no {MANIFEST} in {root}"),
+            Admission::NoManifest { root } => {
+                format!("no {MANIFEST} or {MANIFEST_JSON} in {root}")
+            },
             Admission::Unreadable { path, why } => format!("{path} could not be read: {why}"),
             Admission::MalformedSchema { path, why } => format!("{path} is malformed: {why}"),
             Admission::UnknownAbi { found, supported } => {
@@ -114,13 +121,12 @@ impl Admission {
 /// say what version and license each pack declares, and decide what to offer,
 /// without having lowered anything into a ruleset yet.
 pub fn discover(root: &Path) -> Result<Manifest, Admission> {
-    let path = root.join(MANIFEST);
-    if !path.is_file() {
+    let Some(path) = manifest_path(root) else {
         return Err(Admission::NoManifest {
             root: root.display().to_string(),
         });
-    }
-    let manifest: Manifest = read_json(&path)?;
+    };
+    let manifest: Manifest = read_data(&path)?;
     if manifest.abi != SUPPORTED_ABI {
         return Err(Admission::UnknownAbi {
             found: manifest.abi,
@@ -135,7 +141,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
 /// The whole door in one call: what comes back is an ordinary
 /// [`Registry`] the core runs, and its
 /// [`digest`](Registry::digest) is what a world records as its
-/// [`WorldRules`](mesocosm_core::WorldRules).
+/// [`WorldRules`](isocosm::legacy::mesocosm::WorldRules).
 pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
     admit(root, &discover(root)?)
 }
@@ -152,7 +158,7 @@ pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
     let mut defs = Vec::with_capacity(manifest.processes.len());
     for relative in &manifest.processes {
         let path = inside(root, relative)?;
-        let file: ProcessFile = read_json(&path)?;
+        let file: ProcessFile = read_data(&path)?;
         defs.push(lower(relative, &file)?);
         declared.insert(path);
     }
@@ -221,13 +227,24 @@ fn inside(root: &Path, declared: &str) -> Result<PathBuf, Admission> {
     }
 }
 
-/// Refuses a `.json` under the pack root that the manifest never named.
+/// The manifest to read at `root`: the TOML name first, then the JSON one.
+fn manifest_path(root: &Path) -> Option<PathBuf> {
+    [MANIFEST, MANIFEST_JSON]
+        .into_iter()
+        .map(|name| root.join(name))
+        .find(|path| path.is_file())
+}
+
+/// Refuses a data file under the pack root that the manifest never named.
+/// Only the manifest discovery read is exempt, so a second one beside it is
+/// refused like any other stray file.
 fn undeclared(root: &Path, declared: &BTreeSet<PathBuf>) -> Result<(), Admission> {
     let mut found: Vec<PathBuf> = Vec::new();
     walk(root, &mut found);
     found.sort();
+    let manifest = manifest_path(root);
     for path in found {
-        if path.file_name().is_some_and(|name| name == MANIFEST) {
+        if manifest.as_ref() == Some(&path) {
             continue;
         }
         let resolved = path.canonicalize().unwrap_or_else(|_| path.clone());
@@ -256,7 +273,7 @@ fn walk(dir: &Path, found: &mut Vec<PathBuf>) {
         let path = entry.path();
         if path.is_dir() {
             walk(&path, found);
-        } else if path.extension().is_some_and(|ext| ext == "json") {
+        } else if crate::data::is_data(&path) {
             found.push(path);
         }
     }
@@ -307,13 +324,16 @@ fn lower(relative: &str, file: &ProcessFile) -> Result<ProcessDef, Admission> {
     })
 }
 
-fn read_json<T: serde::de::DeserializeOwned>(path: &Path) -> Result<T, Admission> {
-    let bytes = std::fs::read(path).map_err(|error| Admission::Unreadable {
-        path: path.display().to_string(),
-        why: error.to_string(),
-    })?;
-    serde_json::from_slice(&bytes).map_err(|error| Admission::MalformedSchema {
-        path: path.display().to_string(),
-        why: error.to_string(),
+fn read_data<T: serde::de::DeserializeOwned>(path: &Path) -> Result<T, Admission> {
+    let path_text = path.display().to_string();
+    crate::data::read(path).map_err(|error| match error {
+        crate::data::ReadError::Unreadable(why) => Admission::Unreadable {
+            path: path_text,
+            why,
+        },
+        crate::data::ReadError::Malformed(why) => Admission::MalformedSchema {
+            path: path_text,
+            why,
+        },
     })
 }

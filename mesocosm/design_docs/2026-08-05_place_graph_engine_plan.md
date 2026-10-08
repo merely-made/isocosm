@@ -1,6 +1,9 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
-**Status, 2026-09-28:** rewritten to the wing design record as the spatial
+**Status, 2026-09-30:** SP4 and SP5 designed (412 to 422); SP4 next. *(Brought current 2026-10-06 under ruling 618; the
+earlier status line follows as written.)*
+
+*Earlier:* **Status, 2026-09-28:** rewritten to the wing design record as the spatial
 spine's plan (rulings 389 to 392). SP0 is open, with four decisions in §A.6
 for Mark. No code has moved. The first slice is new Isocosm capability and
 touches neither `mesocosm-core`'s places family (ruling 195) nor mere
@@ -50,7 +53,7 @@ their edges. SP4 is next to build.
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
-([session notes §9](2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
+([session notes §9](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
 ranked connecting the sim's site graph to the voxel world first among the
 gaps, and Mark chose to start there. §A is the spine: what connects the
 world map's sites to the voxels under them, who owns each piece, what
@@ -1216,7 +1219,6 @@ standing rule: after two real consumers, never declared in advance.
   the browser receipt (D0 discipline).
 
 ## Progress
-
 - 2026-09-28: **SP2 landed** at `38ea90f`. The world-local material table on
   the world's traits, seeded by the map; the lattice with its Coons interior,
   faded detail and exact correction in `src/terrain/lattice.rs`; column
@@ -1250,10 +1252,6 @@ standing rule: after two real consumers, never declared in advance.
   rulings recorded in §0 and amended into the founding record, `CLAUDE.md`,
   and the landscape doc the same session. V1 and V2 landed 2026-08-04
   (landscape §8.6), so G2 rides a proven browser harness and real bodies.
-- 2026-08-06: rulings 9-11 added (reference targets, three-tier physics,
-  renderer tenancy). Mesocosm camera amended to pulled back (ruling 4);
-  G2 and G3 reworded to match. Renderling fork scout begun (wgpu 26→29
-  bump feasibility).
 - 2026-08-06, later: renderling tenant proven (device unity, leak fix,
   95/95, wing-shaped scene; see Findings). **G0 constructor landed**:
   `Places::grown` with full distinctness, congruence, and connectivity

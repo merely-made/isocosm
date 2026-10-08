@@ -1,10 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{
-    Execution, Founding, Session,
-    history::{Command, Saved},
-};
+use isocosm::{Execution, Founding, Session, history::Command};
 
 fn main() {
     if let Err(why) = run() {
@@ -27,6 +24,8 @@ fn run() -> Result<(), String> {
     let mut lift_draws = None;
     let mut lift_digest = None;
     let mut output = None;
+    let mut trace = None;
+    let mut trace_entries = None;
     let mut load = None;
     let mut world = None;
     let mut mode = Execution::Grouped;
@@ -41,7 +40,7 @@ fn run() -> Result<(), String> {
         }
         if arg == "--help" {
             println!(
-                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--individuals]"
+                "isocosm-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--trace FILE] [--trace-entries FILE] [--individuals]"
             );
             return Ok(());
         }
@@ -67,6 +66,8 @@ fn run() -> Result<(), String> {
             "--lift-draws" => lift_draws = Some(number()?),
             "--lift-digest" => lift_digest = Some(number()?),
             "--output" => output = Some(value),
+            "--trace" => trace = Some(value),
+            "--trace-entries" => trace_entries = Some(value),
             "--load" => load = Some(value),
             "--world" => world = Some(value),
             _ => return Err(format!("unknown argument {arg}")),
@@ -98,21 +99,44 @@ fn run() -> Result<(), String> {
     } else {
         let mut session = if let Some(path) = load {
             let bytes = std::fs::read(path).map_err(|e|e.to_string())?;
-            let saved: Saved = serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
-            Session::load(saved,mode)?
+            Session::load_json(&bytes,mode)?
         } else if let Some(path) = world {
             let bytes=std::fs::read(path).map_err(|e|e.to_string())?;
             let genesis=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
             Session::new(genesis,mode)?
         } else { Session::new(founding.generate()?,mode)? };
-        let work = session.advance(ticks)?;
+        // `<tick> <witness>` lines (ruling 610) and per-entity entries,
+        // framed (653), for every advanced tick.
+        let work = if trace.is_some() || trace_entries.is_some() {
+            let mut lines = String::new();
+            let mut entries = state_witness::Trace::new();
+            let work = session.advance_traced(ticks, |sim| {
+                let tick = sim.state().tick;
+                if trace.is_some() {
+                    lines += &format!("{tick} {:016x}\n", sim.state_hash());
+                }
+                if trace_entries.is_some() {
+                    entries.push(tick, sim.entity_witness()).expect("ticks advance");
+                }
+            })?;
+            if let Some(path) = &trace {
+                std::fs::write(path, lines).map_err(|e| e.to_string())?;
+            }
+            if let Some(path) = &trace_entries {
+                let framed = entries.to_framed().map_err(|e| format!("{e:?}"))?;
+                std::fs::write(path, framed).map_err(|e| e.to_string())?;
+            }
+            work
+        } else {
+            session.advance(ticks)?
+        };
         // Observation is an explicit log entry, never a side effect of drawing UI.
         let actor = session.sim.state().population.groups.iter()
             .find(|(_,g)|g.entity.method != isocosm::schema::Method::Inert).map(|(id,_)|*id).ok_or("no critter")?;
         session.command(Command::Inspect(actor))?;
         eprintln!("seed {} · tick {} · {} entities · {} groups · {} evaluations for {} represented acts · {}",
             session.sim.genesis().seed, session.sim.state().tick, session.sim.state().population.count(),
-            session.sim.state().population.groups.len(),work.evaluations,work.represented,session.sim.state_hash());
+            session.sim.state().population.groups.len(),work.evaluations,work.represented,format!("{:016x}",session.sim.state_hash()));
         serde_json::to_string_pretty(&session.save())
     }.map_err(|e|e.to_string())?;
     if let Some(path) = output {

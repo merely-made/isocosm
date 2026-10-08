@@ -21,13 +21,13 @@
 //! A part's requested tracts take tissue from the high end of its lattice
 //! downward, in the order the script listed them, each run contiguous — the
 //! same suffix rule
-//! [`Candidate::propose`](mesocosm_core::Candidate) already relies on, and for
+//! [`Candidate::propose`](isocosm::legacy::mesocosm::Candidate) already relies on, and for
 //! the same reason: a suffix of the row-major order is a connected region and
 //! so is the prefix left behind. What the script did not claim keeps doing what
 //! it did. The result is a **complete desired state** for the parts named,
 //! which is the only shape the validator accepts.
 
-use mesocosm_core::{
+use isocosm::legacy::mesocosm::{
     AllocationProposal, Arrangement, BodyPhenotype, CellId, PartId, ProcessId, ProcessRef,
     ProposedTract, Registry,
 };
@@ -58,7 +58,7 @@ pub struct Proposal {
 }
 
 /// Lowers an authored proposal into the ordinary
-/// [`AllocationProposal`](mesocosm_core::AllocationProposal).
+/// [`AllocationProposal`](isocosm::legacy::mesocosm::AllocationProposal).
 ///
 /// The bridge's whole Lua-to-Rust half, and the last thing between a script and
 /// the validator. It resolves ids against **this world's** ruleset, lays out

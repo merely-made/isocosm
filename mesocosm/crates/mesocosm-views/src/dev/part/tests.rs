@@ -2,7 +2,7 @@ use super::*;
 
 #[test]
 fn intake_reading_follows_declared_ports_and_distinguishes_inactive_tissue() {
-    use mesocosm_core::{IntakePort, NisKind, Process, Registry, state_hash};
+    use isocosm::legacy::mesocosm::{IntakePort, NisKind, Process, Registry, state_hash};
     let (mut world, id, part) = fixture();
     let registry = Registry::native();
     let port = IntakePort::live(NisKind::Consumer)
@@ -29,7 +29,7 @@ fn intake_reading_follows_declared_ports_and_distinguishes_inactive_tissue() {
     let reading = part_of(&world, id, part, &History::new()).reading.unwrap();
     assert_eq!(reading.intake, "inactive: living consumers");
 }
-use mesocosm_core::{Event, History, PartId, RecordedEvent, World};
+use isocosm::legacy::mesocosm::{Event, History, PartId, RecordedEvent, World};
 
 fn fixture() -> (World, OrganismId, PartId) {
     let world = World::new(0x00A7_7AC4, 8);
@@ -129,10 +129,10 @@ fn incorporated_tissue_keeps_donor_identity_without_inventing_an_event() {
         .unwrap();
     let mut body = subject.body().clone();
     body.parts[part.0 as usize].provenance.origin = Origin::Incorporated {
-        from_species: mesocosm_core::SpeciesId(42),
+        from_species: isocosm::legacy::mesocosm::SpeciesId(42),
         from_part: PartId(17),
     };
-    subject.phenotype = mesocosm_core::BodyPhenotype::seed(body);
+    subject.phenotype = isocosm::legacy::mesocosm::BodyPhenotype::seed(body);
     let reading = part_of(&world, organism, part, &History::new())
         .reading
         .unwrap();
