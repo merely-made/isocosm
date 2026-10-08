@@ -8778,6 +8778,16 @@ what later sections derive from.
      (Recommended)". So the request goes to mere's side with the state
      witness plan's label inventory as isocosm's spec; 609 stands, and
      mere's plan stays mere's to change.
+648. **Isocosm builds at opt-level 1 in every workspace.** 2026-10-08, from
+     646's measurement. Question: isocosm at opt-level 1 cut its suite from
+     84 to 27 minutes for 29 s more compile, and a profile set in only some
+     workspaces holds isocosm twice in the shared build directory (9.3 GB);
+     where is it set? Options: every workspace that builds it, committed
+     (recommended); isocosm's workspace only; the machine-local config;
+     leave it at 0. Mark chose "Every workspace, committed (Recommended)".
+     So each workspace manifest that builds isocosm carries
+     `[profile.dev.package.isocosm] opt-level = 1`; Eponym's whole dev
+     profile is already 1.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

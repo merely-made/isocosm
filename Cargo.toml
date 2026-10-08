@@ -272,3 +272,9 @@ mere-p2panda-net = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere
 # from genet or netrender, so every app workspace restates it. Retires by
 # deletion when upstream ships a wgpu-30 vello.
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
+
+# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# that builds it sets the same level so the shared build directory holds one
+# copy (wing design record, ruling 648).
+[profile.dev.package.isocosm]
+opt-level = 1

@@ -25,3 +25,9 @@ isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
+
+# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# that builds it sets the same level so the shared build directory holds one
+# copy (wing design record, ruling 648).
+[profile.dev.package.isocosm]
+opt-level = 1

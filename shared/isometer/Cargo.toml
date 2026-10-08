@@ -71,3 +71,9 @@ vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-3
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "bd3e8861b2932d62b73c9936ac3a317f1df3ffdb", version = "=0.14.0" }
+
+# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# that builds it sets the same level so the shared build directory holds one
+# copy (wing design record, ruling 648).
+[profile.dev.package.isocosm]
+opt-level = 1
