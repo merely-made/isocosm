@@ -69,6 +69,7 @@ iMacs and Linux boxes opt in the same way.
   (condition 2). Mesocosm first refused to resolve: its untracked lock in
   this checkout dated from 2026-09-29 and still pinned mere `32edc2ad`, so
   its `wgpu 30.0.0` met the `^30.0.1` mere `5fecd707` asks. Moved aside, the
-  lock re-resolved offline to one mere, genet and netrender. Any checkout
-  older than the repin carries the same stale untracked locks (Mesocosm,
-  Eponym, isometer, isomere) and re-resolves the same way.
+  lock re-resolved offline to one mere, genet and netrender. Eponym's,
+  isometer's and isomere's untracked locks re-resolved to `5fecd707` by
+  themselves on the same run; only Mesocosm's held a version the new pins
+  refuse, so a checkout older than the repin needs that one moved aside.
