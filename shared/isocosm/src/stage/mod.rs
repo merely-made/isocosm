@@ -65,6 +65,10 @@ pub(crate) struct Stage {
     pub(crate) shares: Option<Shares>,
     /// The values the act kept for its later effects.
     pub(crate) kept: BTreeMap<Key, i64>,
+    /// What a carriage lets each bound body's parts still take (581), and
+    /// the part the act's bite landed on.
+    pub(crate) caps: BTreeMap<Id, crate::anatomy::Caps>,
+    pub(crate) bitten: Option<Id>,
 }
 
 impl Simulation {
@@ -111,6 +115,8 @@ impl Simulation {
             demands: None,
             shares: None,
             kept: BTreeMap::new(),
+            caps: BTreeMap::new(),
+            bitten: None,
         })
     }
 

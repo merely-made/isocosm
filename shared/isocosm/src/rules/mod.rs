@@ -119,6 +119,14 @@ pub enum Query {
     /// mouthful of at least a milligram. It neither draws nor reads a kept
     /// value, being read before the act does either.
     Computed(Expr),
+    /// A body's systems route `function` in `role` (rulings 569 and 575):
+    /// one it carries names it there, a living part expresses it, and the
+    /// systems naming it are realized as one.
+    Routes {
+        who: Binding,
+        function: Key,
+        role: Role,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -337,6 +345,10 @@ impl Process {
                             ..
                         }
                         | Query::Expresses { .. }
+                        | Query::Routes {
+                            who: Binding::Actor,
+                            ..
+                        }
                 ) || matches!(q, Query::Computed(x) if Amount::Computed(x.clone()).bulk_safe())
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {

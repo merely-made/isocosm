@@ -17,6 +17,10 @@ use crate::{
     schema::*,
 };
 
+/// What each part of a body may still take in an act whose carriage bound
+/// it (ruling 581): a part not named takes nothing.
+pub type Caps = std::collections::BTreeMap<Id, u64>;
+
 pub(crate) const STORE: &str = "function:store";
 pub(crate) const REPRODUCE: &str = "function:reproduce";
 
@@ -206,15 +210,27 @@ pub fn held(e: &Entity, rules: &Rules, key: &str) -> u64 {
 
 /// How much the body has room for of `key` in its parts.
 pub fn room(e: &Entity, rules: &Rules, key: &str) -> u64 {
+    room_within(e, rules, key, None)
+}
+
+/// The same within `caps`, where a carriage bound the act.
+pub fn room_within(e: &Entity, rules: &Rules, key: &str, caps: Option<&Caps>) -> u64 {
     bodies(e)
-        .map(|(_, p)| space(p, rules, key))
+        .map(|(id, p)| capped(space(p, rules, key), id, caps))
         .fold(0, u64::saturating_add)
+}
+
+fn capped(room: u64, id: Id, caps: Option<&Caps>) -> u64 {
+    match caps {
+        Some(c) => room.min(c.get(&id).copied().unwrap_or(0)),
+        None => room,
+    }
 }
 
 /// What one part has room for of `key`: below what it may hold, its room
 /// for tissue shrunk by all the tissue it keeps, of other accounts and
 /// other lineages, as an incorporated part keeps its donor's (ruling 544).
-fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
+pub(crate) fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
     let held = p.matter.get(key).copied().unwrap_or(0);
     let room = bound(p, rules, key).saturating_sub(held);
     if reserve(rules, key) || provision(rules, key) {
@@ -229,7 +245,7 @@ fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
 
 /// `amount` split by `weights`: each its exact share floored, the units
 /// left over to the largest remainders, ties in the order given.
-fn apportion(weights: &[(Id, u64)], amount: u64) -> Vec<(Id, u64)> {
+pub(crate) fn apportion(weights: &[(Id, u64)], amount: u64) -> Vec<(Id, u64)> {
     let total: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if total == 0 {
         return vec![];
@@ -263,6 +279,18 @@ pub fn take(
     key: &str,
     amount: u64,
 ) -> Option<Result<Vec<(Id, u64)>>> {
+    take_within(e, rules, key, amount, None)
+}
+
+/// The same where a carriage bound the act: what leaves a part frees as
+/// much of what it may take in.
+pub fn take_within(
+    e: &mut Entity,
+    rules: &Rules,
+    key: &str,
+    amount: u64,
+    caps: Option<&mut Caps>,
+) -> Option<Result<Vec<(Id, u64)>>> {
     if !anatomical(e, rules, key) {
         return None;
     }
@@ -274,6 +302,12 @@ pub fn take(
         return Some(Err(format!("insufficient {key}")));
     }
     let split = apportion(&weights, amount);
+    if let Some(caps) = caps {
+        for (id, n) in &split {
+            let slot = caps.entry(*id).or_default();
+            *slot = slot.saturating_add(*n);
+        }
+    }
     Some(apply(e, key, &split, debit).map(|()| split))
 }
 
@@ -285,17 +319,35 @@ pub fn give(
     key: &str,
     amount: u64,
 ) -> Option<Result<Vec<(Id, u64)>>> {
+    give_within(e, rules, key, amount, None)
+}
+
+/// The same within `caps`, where a carriage bound the act (581), each part
+/// taking no more than what reached it.
+pub fn give_within(
+    e: &mut Entity,
+    rules: &Rules,
+    key: &str,
+    amount: u64,
+    mut caps: Option<&mut Caps>,
+) -> Option<Result<Vec<(Id, u64)>>> {
     if !anatomical(e, rules, key) {
         return None;
     }
     let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| (id, space(p, rules, key)))
+        .map(|(id, p)| (id, capped(space(p, rules, key), id, caps.as_deref())))
         .collect();
     let room: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if room < u128::from(amount) {
         return Some(Err(format!("no room in the body for {amount} of {key}")));
     }
     let split = apportion(&weights, amount);
+    if let Some(caps) = caps.as_deref_mut() {
+        for (id, n) in &split {
+            let slot = caps.entry(*id).or_default();
+            *slot = slot.saturating_sub(*n);
+        }
+    }
     Some(apply(e, key, &split, credit).map(|()| split))
 }
 

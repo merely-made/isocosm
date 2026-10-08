@@ -29,6 +29,9 @@ pub(super) struct Doing<'a> {
     /// (554), rather than a meal's prey.
     pub(super) bound: bool,
     pub(super) kept: BTreeMap<Key, i64>,
+    /// What a carriage lets the member's and the target's parts still take
+    /// (581).
+    pub(super) caps: [Option<crate::anatomy::Caps>; 2],
     pub(super) draws: &'a BTreeMap<u8, u64>,
     /// What its meal took of the prey, the kinds its lineage learned, and
     /// the births its act made, which the crowd draws for each member.
@@ -59,8 +62,13 @@ impl Parties for Doing<'_> {
     }
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
         match who {
-            Binding::Actor => match crate::anatomy::take(&mut self.member, self.rules, key, amount)
-            {
+            Binding::Actor => match crate::anatomy::take_within(
+                &mut self.member,
+                self.rules,
+                key,
+                amount,
+                self.caps[0].as_mut(),
+            ) {
                 Some(done) => done.map(|_| ()),
                 None => debit(&mut self.member.accounts, key, amount),
             },
@@ -72,7 +80,8 @@ impl Parties for Doing<'_> {
             },
             Binding::Target if self.bound => {
                 let target = self.prey.as_mut().ok_or("no target is bound")?;
-                match crate::anatomy::take(target, self.rules, key, amount) {
+                let caps = self.caps[1].as_mut();
+                match crate::anatomy::take_within(target, self.rules, key, amount, caps) {
                     Some(done) => done.map(|_| ()),
                     None => debit(&mut target.accounts, key, amount),
                 }
@@ -83,8 +92,13 @@ impl Parties for Doing<'_> {
     }
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
         match who {
-            Binding::Actor => match crate::anatomy::give(&mut self.member, self.rules, key, amount)
-            {
+            Binding::Actor => match crate::anatomy::give_within(
+                &mut self.member,
+                self.rules,
+                key,
+                amount,
+                self.caps[0].as_mut(),
+            ) {
                 Some(done) => done.map(|_| ()),
                 None => credit(&mut self.member.accounts, key, amount),
             },
@@ -95,7 +109,8 @@ impl Parties for Doing<'_> {
             },
             Binding::Target if self.bound => {
                 let target = self.prey.as_mut().ok_or("no target is bound")?;
-                match crate::anatomy::give(target, self.rules, key, amount) {
+                let caps = self.caps[1].as_mut();
+                match crate::anatomy::give_within(target, self.rules, key, amount, caps) {
                     Some(done) => done.map(|_| ()),
                     None => credit(&mut target.accounts, key, amount),
                 }
@@ -124,6 +139,30 @@ impl Parties for Doing<'_> {
         found
             .and_then(|l| l.development.clone())
             .ok_or_else(|| format!("{lineage}'s bodies cannot grow here"))
+    }
+    fn bitten(&self) -> Option<Id> {
+        self.bitten
+    }
+    fn bound(&mut self, who: Binding, caps: crate::anatomy::Caps) -> Result<()> {
+        match who {
+            Binding::Actor => self.caps[0] = Some(caps),
+            Binding::Target if self.prey.is_some() => self.caps[1] = Some(caps),
+            _ => return Err(format!("{who:?} has no parts to bound")),
+        }
+        Ok(())
+    }
+    fn room(&mut self, who: Binding, key: &str) -> Result<u64> {
+        let (body, caps) = match who {
+            Binding::Actor => (&self.member, &self.caps[0]),
+            Binding::Target => (self.prey.as_ref().ok_or("no target")?, &self.caps[1]),
+            _ => return Err(format!("{who:?} has no parts")),
+        };
+        Ok(crate::anatomy::room_within(
+            body,
+            self.rules,
+            key,
+            caps.as_ref(),
+        ))
     }
 }
 
@@ -184,6 +223,7 @@ impl Doing<'_> {
             }
         };
         let (member, seen, prey, kept) = (&self.member, &self.seen, &self.prey, &self.kept);
+        let (caps, bitten) = (&self.caps, self.bitten);
         let part = self.part.and_then(|id| member.parts.get(&id));
         let mut read = |r: &Reading| -> Result<i64> {
             let body = |who: Binding| match who {
@@ -206,6 +246,21 @@ impl Doing<'_> {
                 (Reading::Account { key, .. }, who) => {
                     let held = crate::anatomy::held(body(who)?, rules, key);
                     i64::try_from(held).map_err(|e| e.to_string())
+                },
+                (Reading::Room { key, .. }, who) => {
+                    let caps = if who == Binding::Target {
+                        &caps[1]
+                    } else {
+                        &caps[0]
+                    };
+                    let room = crate::anatomy::room_within(body(who)?, rules, key, caps.as_ref());
+                    i64::try_from(room).map_err(|e| e.to_string())
+                },
+                (Reading::Carried { .. }, who) => {
+                    let e = body(who)?;
+                    let l = lineages.and_then(|l| l.get(&e.lineage));
+                    let d = l.and_then(|l| l.development.as_ref());
+                    Ok(meaning::carried(e, r, rules, d, bitten))
                 },
                 (r, Binding::Part) => {
                     let part = part.ok_or("no part is bound")?;

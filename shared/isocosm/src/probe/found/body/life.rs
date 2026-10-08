@@ -8,7 +8,10 @@
 //! and weaned the first time they are fed; a fed grazer with something
 //! provisioned nurses a hungry, unweaned young of its own with milk, its
 //! refilling provision going to the young rather than to its next birth.
+//! A birth needs systems that route reproduce (575), and milk lands along
+//! the young's digestive routes, as a meal would (566).
 
+use super::feeding::{INTAKE, carried, routes};
 use super::physiology::*;
 use crate::{bodied::SEMELPAROUS, rules::*};
 use std::collections::BTreeSet;
@@ -25,6 +28,11 @@ fn provisioned(i: u32) -> Query {
     let full = at_least(c(0), provision_gap(i));
     let some = at_least(held(Binding::Actor, &provision(i)), c(1));
     Query::Computed(mul(vec![full, some]))
+}
+
+/// Its systems route reproduce to the parts that reproduce.
+fn reproduces() -> Query {
+    routes(Binding::Actor, REPRODUCE, Role::Effect)
 }
 
 fn cohort(once: bool) -> Query {
@@ -48,7 +56,8 @@ fn bud(i: u32, once: bool) -> Process {
         once,
     };
     let mut p = due(&named("bud", i, once), Causation::Choice, vec![effect], 6);
-    p.requires.extend([own(i), cohort(once), provisioned(i)]);
+    p.requires
+        .extend([own(i), cohort(once), provisioned(i), reproduces()]);
     p
 }
 
@@ -69,13 +78,14 @@ fn bear(i: u32, once: bool) -> Process {
         false => vec![birth],
     };
     let mut p = due(&named("bear", i, once), Causation::Choice, effects, 6);
-    p.requires.extend([own(i), cohort(once), provisioned(i)]);
+    p.requires
+        .extend([own(i), cohort(once), provisioned(i), reproduces()]);
     p
 }
 
 /// Milk (527, 528): what the fed parent has provisioned, as much as its
-/// hungry young has room for, moved to the young and digested into its
-/// tissue.
+/// hungry young has room for and its digestive routes carry (566), moved
+/// to the young and digested into its tissue within what reached each part.
 fn nurse(i: u32) -> Process {
     let kept = || {
         Expr::Read(Reading::Kept {
@@ -89,7 +99,9 @@ fn nurse(i: u32) -> Process {
             held(Binding::Target, &tissue(i)),
         ),
     ]);
-    let milk = least(vec![held(Binding::Actor, &provision(i)), room]);
+    let offered = least(vec![held(Binding::Actor, &provision(i)), room]);
+    let route = (INTAKE, Role::Source);
+    let milk = carried(Binding::Target, route, offered, vec![tissue(i)]);
     let effects = vec![
         Effect::Keep {
             name: "milk".into(),
@@ -100,6 +112,13 @@ fn nurse(i: u32) -> Process {
             to: Binding::Target,
             account: provision(i),
             amount: computed(kept()),
+        },
+        Effect::Carry {
+            who: Binding::Target,
+            function: INTAKE.into(),
+            role: Role::Source,
+            ask: computed(kept()),
+            lands: vec![tissue(i)],
         },
         Effect::Convert {
             who: Binding::Target,

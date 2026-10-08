@@ -17,6 +17,7 @@ use crate::{
 use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) mod births;
+pub(crate) mod carriage;
 mod grow;
 pub(crate) use grow::grow;
 
@@ -37,14 +38,48 @@ pub(crate) fn body_reading(
     rules: &Rules,
     lineages: Option<&BTreeMap<Key, Lineage>>,
 ) -> i64 {
-    if let Reading::Lacking { .. } = r {
-        let d = lineages.and_then(|l| l.get(&body.lineage)?.development.as_ref());
-        let lacking = d.map_or(0, |d| crate::growth::lacking_mass(rules, d, body));
-        return i64::try_from(lacking).unwrap_or(i64::MAX);
+    let d = || lineages.and_then(|l| l.get(&body.lineage)?.development.as_ref());
+    match r {
+        Reading::Lacking { .. } => {
+            let lacking = d().map_or(0, |d| crate::growth::lacking_mass(rules, d, body));
+            return i64::try_from(lacking).unwrap_or(i64::MAX);
+        },
+        // Read outside an act, a carriage knows no bite and a room no bound.
+        Reading::Carried { .. } => return carried(body, r, rules, d(), None),
+        Reading::Room { key, .. } => {
+            let room = crate::anatomy::room(body, rules, key);
+            return i64::try_from(room).unwrap_or(i64::MAX);
+        },
+        _ => {},
     }
     let living = body.parts.values().filter(|p| !p.severed);
     let total: u128 = living.map(|p| r.of_part(p, rules.body())).sum();
     i64::try_from(total).unwrap_or(i64::MAX)
+}
+
+/// What a body's systems carry, as `Reading::Carried` asks it, the part
+/// the act's bite landed on being `bitten`; nought where the carriage
+/// fails.
+pub(crate) fn carried(
+    body: &Entity,
+    r: &Reading,
+    rules: &Rules,
+    d: Option<&Development>,
+    bitten: Option<Id>,
+) -> i64 {
+    let Reading::Carried {
+        function,
+        role,
+        ask,
+        lands,
+        ..
+    } = r
+    else {
+        return 0;
+    };
+    let route = (function.as_str(), *role);
+    let total = carriage::carried(body, rules, d, route, (*ask, lands), bitten);
+    i64::try_from(total.unwrap_or(0)).unwrap_or(i64::MAX)
 }
 
 /// Whether the rules declare `key` matter, of whatever lineage.
@@ -209,6 +244,14 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             let v = computed(x, s)?;
             (v != 0, v.to_string())
         },
+        Query::Routes {
+            who,
+            function,
+            role,
+        } => {
+            let v = crate::systems::routes(s.body(*who)?, function, *role);
+            (v, v.to_string())
+        },
         // The address a receipt carries: which part, at which revision.
         Query::Expresses { function } => {
             let actor = s.body(Binding::Actor)?;
@@ -316,6 +359,15 @@ pub(crate) trait Parties {
     fn development(&mut self, lineage: &str) -> Result<Development> {
         Err(format!("{lineage}'s bodies cannot grow here"))
     }
+    /// The part the act's bite landed on, where it bit.
+    fn bitten(&self) -> Option<Id> {
+        None
+    }
+    /// Bounds what the act gives `who`'s parts from here on, part by part
+    /// (581).
+    fn bound(&mut self, who: Binding, caps: crate::anatomy::Caps) -> Result<()>;
+    /// What `who` has room for of `key` within the act's bounds.
+    fn room(&mut self, who: Binding, key: &str) -> Result<u64>;
 }
 
 /// The effects both runners apply. The others write the world's records,
@@ -385,6 +437,15 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             into,
             conversion,
         } => grow(p, rules, from, into, *conversion).map(|_| ()),
+        Effect::Carry {
+            who,
+            function,
+            role,
+            ask,
+            lands,
+        } => ask
+            .resolved()
+            .and_then(|ask| carriage::carry(p, rules, *who, (function, *role), (ask, lands))),
         _ => return None,
     })
 }

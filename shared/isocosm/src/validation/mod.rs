@@ -52,7 +52,9 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
         },
-        Query::Expresses { function } if !rules.functions.contains_key(function) => {
+        Query::Expresses { function } | Query::Routes { function, .. }
+            if !rules.functions.contains_key(function) =>
+        {
             return Err(format!("unknown function {function}"));
         },
         _ => (),
@@ -108,6 +110,10 @@ fn mind(rules: &Rules) -> Result<()> {
                     ..
                 }
                 | Query::Expresses { .. }
+                | Query::Routes {
+                    who: Binding::Actor,
+                    ..
+                }
         );
         if !own {
             return Err("a need reads only its member and its site's conditions".into());
@@ -467,6 +473,28 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} allocates a function to itself"));
             }
         },
+        // A carriage routes a catalogue function through a body it binds,
+        // landing only matter (581).
+        Effect::Carry {
+            who,
+            function,
+            lands,
+            ..
+        } => {
+            if !rules.functions.contains_key(function) {
+                return Err(format!("{id} carries an unknown function {function}"));
+            }
+            match who {
+                Binding::Actor => {},
+                Binding::Target if p.target.is_some() => {},
+                _ => return Err(format!("{id} carries through a body it does not bind")),
+            }
+            for key in lands {
+                if !matches!(rules.accounts.get(key), Some(AccountKind::Matter { .. })) {
+                    return Err(format!("{id} lands {key}, which is not matter"));
+                }
+            }
+        },
         _ => (),
     }
     Ok(())
@@ -509,9 +537,16 @@ fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
             Reading::Span { function, .. }
             | Reading::Cells { function, .. }
             | Reading::CellMass { function, .. }
+            | Reading::Carried { function, .. }
                 if !rules.functions.contains_key(function) =>
             {
                 return Err(format!("{id} reads an unknown function {function}"));
+            },
+            Reading::Room { key, .. } => account(rules, key)?,
+            Reading::Carried { lands, .. } => {
+                for key in lands {
+                    account(rules, key)?;
+                }
             },
             _ => {},
         }
