@@ -73,3 +73,11 @@ iMacs and Linux boxes opt in the same way.
   isometer's and isomere's untracked locks re-resolved to `5fecd707` by
   themselves on the same run; only Mesocosm's held a version the new pins
   refuse, so a checkout older than the repin needs that one moved aside.
+- 2026-10-08: isocosm's suite measured on the shared directory, one thread,
+  offline, the `isocosm` package alone changed through
+  `--config profile.dev.package.isocosm.opt-level=1` (condition 3). At
+  opt-level 0: compile 210 s, run 5,029 s, the directory growing 13.4 GB.
+  At 1: compile 239 s, run 1,610 s, 9.3 GB more, that being isocosm held at
+  both levels side by side. All 1,237 tests passed both times. One run each
+  on a machine shared with other sessions, so the seconds are approximate;
+  the factor of three is well outside that. Taken to Mark.
