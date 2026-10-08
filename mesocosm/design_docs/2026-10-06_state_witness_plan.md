@@ -74,6 +74,19 @@ among the lanes F92 set running (G2's rework and G4). Isocosm's needs reach
 G8 as four relayed lines; the inventory below is the fuller statement for its
 brief.
 
+**mere's answer, 2026-10-08 (ruling 647's request).** Mark ruled on mere's
+side, as F116 to F119 of its dynamics grammar plan (relayed by its physics
+coordinator; on mere's branch `state-witness`, not yet on main): the crate
+is built now, as a third lane ahead of the rest of G8 (F116); it is a leaf at
+`crates/system/state-witness`, on serde and postcard only (F117), unpublished
+and pinned by rev (F118); and it owns `hash_bytes`, proven equal to
+`isometer_core::snapshot::hash_bytes`, *switching `isometer_core` over and
+retiring its copy being this repo's change* (F119). Its API forks (ordered or
+keyed entries, a label on one side only, the report's shape, a whole-list
+digest beside H1's hash, a postcard header) go to Mark there; isocosm's
+evidence on each was sent to the coordinator the same day. H2 opens when the
+crate reaches mere main, with the F119 switch as its first step.
+
 **Label inventory, from `State` (`shared/isocosm/src/simulation.rs:37`).**
 Saves label by field (633); traces label by entity, which per collection is:
 
