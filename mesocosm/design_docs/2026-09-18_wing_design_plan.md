@@ -9027,6 +9027,32 @@ what later sections derive from.
      unparked. Mark chose "Move as code; rungs stay parked (Recommended)".
      So that code re-expresses with its family, unchanged in behaviour, and
      279 still bars new design on those rungs.
+674. **A body's geometry goes through isometer; its physiology stays the
+     sim's.** 2026-10-08, from Mark after 670: "I would figure that's how
+     the sim would relate to movement, reach, and bodies too." Question:
+     which half of a body? Isocosm's native `Part` holds geometry (parent,
+     shape, extents, offset, situs) and physiology (functions, cells,
+     matter, the systems of checkpoints 6 to 9); isometer's `BodyDocument`
+     holds geometry and identity, and isometer-core names no world or
+     organism. Options: geometry through isometer (recommended); whole
+     bodies through isometer; bodies stay the sim's. Mark chose "Geometry
+     through isometer (Recommended)". So a body's shape is isometer's body
+     document, and the sim keeps its physiology keyed by isometer's part
+     ids, one geometry for every game and the lens.
+675. **Movement and physical reach go through isometer; the reach field stays
+     the sim's.** 2026-10-08. Question: a body's movement in a site and its
+     physical reach would read isometer's in-site space, while the sim's
+     reach field (`reach.rs`, sim plan §4) is when news arrives at each site,
+     the record's; does that split hold? Options: space through isometer,
+     news the sim's (recommended); everything spatial through isometer.
+     Mark chose "Yes: space through isometer, news the sim's (Recommended)".
+676. **It lands with the bodies family.** 2026-10-08. Question: checkpoints 9
+     to 11 are built on the sim's own `Part` geometry and 9 is about to
+     certify; when does 674 land? Options: with the bodies family
+     (recommended); before checkpoint 9 certifies. Mark chose "With the
+     bodies family (Recommended)". So checkpoints 9 to 11 certify on the
+     sim's geometry as built, and the bodies family's re-expression, after
+     11 (668), moves geometry onto isometer, certified by draws (667).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

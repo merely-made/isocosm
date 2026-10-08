@@ -130,6 +130,11 @@ is), its certification passes on draws with its controls.
 - 673: glyphs and the chronicles move as code with their families; 279's
   rungs stay parked (fork 8).
 - 672: legacy tests become draws or retire with their family (fork 10).
+- 674 to 676: a body's geometry goes through isometer and its physiology
+  stays the sim's, keyed by isometer's part ids; movement and physical
+  reach go through isometer's in-site space, the reach field staying the
+  sim's record; this lands with the bodies family, checkpoints 9 to 11
+  certifying on the sim's geometry as built.
 
 Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.
