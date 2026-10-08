@@ -8853,6 +8853,15 @@ what later sections derive from.
      and the open bugs go first, together; the families' re-expression is
      researched and planned while their builds run and comes next; the
      overlay's M2 to M4 is designed in the downtime after that.
+     *Annotation, 2026-10-08, the open bugs on `checkpoint-9`:* isomere's
+     unused cubecl-runtime patch row is gone, as 639's three were; the
+     ambience-lease probe builds again on wgpu 30.0.1 (a `Result` from
+     `get_mapped_range`, `Queue::present`, a surface colour space);
+     parry-ground waits on mere's rapier move (665); and isometry-views'
+     crash at two test threads did not recur on the current pins in four
+     runs of all 130 tests, its GPU receipt among them. Without a run on the
+     older pins where it was seen, that finding is scoped to these runs: not
+     reproduced, cause unknown.
 657. **The nervous system carries no matter.** 2026-10-08, finishing
      checkpoint 9 (amends 489's table). Question: checkpoint 9's control for
      589 (the muscular system carries the limbs' share of the bite) failed:
