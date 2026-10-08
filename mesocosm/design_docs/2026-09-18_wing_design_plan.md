@@ -8928,6 +8928,20 @@ what later sections derive from.
      all or nothing. Mark chose "By degree (Recommended)". So the joint share
      scales with the share of the second system's parts the nerves reach: one
      limb innervated of two gives about half the limbs' share.
+665. **Mere is asked to move rapier; parry-ground waits for it.**
+     2026-10-08, one of 656's open bugs. Question: parry-ground cannot build
+     offline, pinning `parry3d =0.29.0`, which the cache lacks; the stack
+     sits on rapier 0.33 / parry 0.28 because conatus adopted it on
+     2026-08-22 and nothing has moved it since (mere's alignment brief meant
+     0.34 / parry 0.29), while crates.io has rapier 0.36 / parry 0.31. On
+     0.28.0 the probe's receipt reproduces its 2026-08-21 numbers exactly.
+     Mark first asked "Lol, why's the stack on an older version"; put back
+     with that answer, the options were: ask mere to bump and pin the probe
+     to 0.28.0 now (recommended); ask mere to bump and let the probe wait;
+     pin 0.28.0 with no request. Mark chose "Ask mere to bump; probe waits".
+     So mere's physics coordinator is asked to move conatus and seiche to the
+     current rapier and parry, and parry-ground repins to the stack's parry
+     once it moves.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
