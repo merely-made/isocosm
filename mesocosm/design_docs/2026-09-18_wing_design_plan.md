@@ -8991,6 +8991,42 @@ what later sections derive from.
      its game crate, presentation adapters go to the host or isometer,
      `effect_experiment` is deleted and fixtures become draws (15), each when
      its family is reached.
+670. **In-site space is isometer's; the sim takes it through isometer.**
+     2026-10-08, the families plan's second round. Question: legacy
+     `places` gives Mesocosm its space inside a site and Eponym uses it,
+     while native Isocosm is site-grained (591: "Isocosm has no space inside
+     a site"); where does in-site space go? Options: a sim noun after the
+     place graph's SP3 to SP5 (recommended); isometer's, not the sim's;
+     game-side. Mark: "1 through 2. Sounds like isometer's ambit, but that
+     the sim should take it through isometer." Put back as read, Mark
+     confirmed: "Yes, that's it". So isometer owns in-site space, and
+     Isocosm's places family consumes it through isometer rather than
+     keeping a copy, re-expressed after SP3 to SP5.
+671. **Non-sapient critters are never driven; Mesocosm's driving ends with
+     its world family's move.** 2026-10-08. Question: directing is built
+     only on Isocosm (194, the overlay plan's M3), while legacy Mesocosm
+     drives its critter through a sixteen-variant `Intent`; what happens to
+     direct driving when the world family moves? Options: keep driving until
+     M3 (recommended); the world waits for M3; drop driving at the move.
+     Mark: "Wait. Driving is ok, as long as the creature is sapient. That's
+     the dividing line, right?" Answered from 60 ("Driving is paredros.
+     You're one sophont…") and 175, and put back, Mark chose "Drop it at
+     the move". So driving is the sapient player's mode, a critter that is
+     not sapient is directed, the legacy driving does not carry over, and
+     Mesocosm is not playable between its world family's move and M3.
+672. **Legacy tests become draws or retire.** 2026-10-08. Question: what of
+     the 13,738 lines of legacy integration tests and 25 examples? Options:
+     draws, or retire (recommended); port them all. Mark chose "Draws, or
+     retire (Recommended)". So behaviour a test pins becomes a draw or
+     control in its family's certification (667, 15), the rest retires with
+     the family's legacy copy, and receipt examples move to the receipts.
+673. **Parked rungs' code moves; the rungs stay parked.** 2026-10-08.
+     Question: glyphs, magic and neighbouring worlds pull no code lane yet
+     (279); do Eponym's glyphs and the chronicles move with their families?
+     Options: move as code, rungs parked (recommended); stay legacy until
+     unparked. Mark chose "Move as code; rungs stay parked (Recommended)".
+     So that code re-expresses with its family, unchanged in behaviour, and
+     279 still bars new design on those rungs.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

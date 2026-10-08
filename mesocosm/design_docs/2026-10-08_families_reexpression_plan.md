@@ -1,7 +1,7 @@
 # Re-expressing the legacy families in Isocosm
 
-**Status, 2026-10-08:** assessment; forks 1, 2, 3 and 5 ruled (666 to 669), the
-rest to Mark before a phase opens.
+**Status, 2026-10-08:** assessment; forks ruled but 9, which goes with the bodies
+family (666 to 673).
 Comes after checkpoint 9 and the open bugs (wing design record, ruling 656).
 
 Ruling 192 had Isocosm absorb `mesocosm-core`, "piece by piece re-expressed
@@ -122,7 +122,16 @@ is), its certification passes on draws with its controls.
   Eponym's (239) and the VTT's (247) (fork 3).
 - 669: code the sim's laws exclude is handed back to its game or host, or
   deleted, when its family is reached (fork 5).
+- 670: in-site space is isometer's, and the places family takes it through
+  isometer, after SP3 to SP5 (fork 4).
+- Fork 6 is settled by 668: bodies come after checkpoints 10 and 11.
+- 671: non-sapient critters are never driven; Mesocosm's legacy driving
+  ends with its world family's move, unplayable until M3 (fork 7).
+- 673: glyphs and the chronicles move as code with their families; 279's
+  rungs stay parked (fork 8).
+- 672: legacy tests become draws or retire with their family (fork 10).
 
-Open: forks 4 and 6 to 10.
+Open: fork 9, the founding datasheets and the two `Founding`s, taken with
+the bodies family.
 
 ## Progress
