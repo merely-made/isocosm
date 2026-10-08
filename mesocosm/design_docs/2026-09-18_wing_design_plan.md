@@ -8853,6 +8853,25 @@ what later sections derive from.
      and the open bugs go first, together; the families' re-expression is
      researched and planned while their builds run and comes next; the
      overlay's M2 to M4 is designed in the downtime after that.
+657. **The nervous system carries no matter.** 2026-10-08, finishing
+     checkpoint 9 (amends 489's table). Question: checkpoint 9's control for
+     589 (the muscular system carries the limbs' share of the bite) failed:
+     489's table gives the nervous system (sense to contract) and the
+     respiratory (respire to contract) `contract` as an effect too, and 582
+     reads every carried system routing a function as one network, so a
+     grazer lamed in its muscular system alone still had its share carried
+     by its nervous routes (10, 10, 13 and 4 mg against the same on four
+     seeds; cutting every route to the contracting parts gave the limbless
+     bite, 4, 4, 7 and 1). Options: fix the control, 582 standing
+     (recommended); the muscular system alone carries the share, an
+     exception to 582; the nervous system carries no matter, ceasing to name
+     `contract` in the default table, which touches the respiratory
+     system's `contract` effect too. Mark chose "Nervous carries no matter".
+     So the nervous and respiratory systems name no effects in the default
+     table, the muscular system is the only route to the contracting parts,
+     and the control passes as written. *Reading, not ruled:* perception and
+     reach, which 489 has the nervous system serve once places exist, will
+     need its effects as signal rather than carriage when they are built.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
