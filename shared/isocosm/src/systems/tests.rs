@@ -5,7 +5,7 @@ use super::*;
 use crate::rules::{Carriage, Rules, default_systems};
 use std::collections::BTreeMap;
 
-fn rules(per_cell: u64) -> Rules {
+pub(super) fn rules(per_cell: u64) -> Rules {
     let mut r = crate::probe::BodyFounding::default()
         .generate()
         .expect("a probe world")

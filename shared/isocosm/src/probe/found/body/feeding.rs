@@ -50,6 +50,17 @@ pub(super) fn carried(
     ask: Expr,
     lands: Vec<Key>,
 ) -> Expr {
+    joint(who, (function, role), ask, lands, None)
+}
+
+/// The same, joined to `joined` through the senses (659 to 664).
+fn joint(
+    who: Binding,
+    (function, role): (&str, Role),
+    ask: Expr,
+    lands: Vec<Key>,
+    joined: Option<(&str, Role)>,
+) -> Expr {
     Expr::Carried {
         reading: Reading::Carried {
             who,
@@ -57,6 +68,7 @@ pub(super) fn carried(
             role,
             ask: 0,
             lands,
+            joined: joined.map(|(f, r)| (f.into(), r)),
         },
         ask: Box::new(ask),
     }
@@ -93,7 +105,8 @@ fn income(i: u32, r: Rates) -> Expr {
 
 /// TD9's mouthful (ruling 505): intake's volume at the world's rate a voxel,
 /// and the build multiple's share as far as the muscular routes carry it
-/// to the contracting parts (589), within the room.
+/// to the contracting parts (589) and the senses join them to intake (659 to
+/// 664), within the room.
 fn mouthful(i: u32, r: Rates) -> Expr {
     let volume = || measured(INTAKE, Measure::Volume);
     let base = div(mul(vec![c(r.grazes), volume()]), c(VOXELS));
@@ -102,11 +115,12 @@ fn mouthful(i: u32, r: Rates) -> Expr {
         mul(vec![c(r.grazes), volume(), priced]),
         mul(vec![c(VOXELS), ceiling()]),
     );
-    let share = carried(
+    let share = joint(
         Binding::Actor,
         (CONTRACT, Role::Effect),
         less(built, base.clone()),
         vec![],
+        Some((INTAKE, Role::Source)),
     );
     least(vec![most(vec![c(1), add(vec![base, share])]), room(i)])
 }

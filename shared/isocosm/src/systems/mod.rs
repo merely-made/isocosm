@@ -9,9 +9,11 @@
 //! reading), stores and gates joining a route where a part expresses them.
 
 mod carry;
+mod nerves;
 mod vary;
 
 pub use carry::{Carried, capacity, carry};
+pub use nerves::joined;
 pub use vary::{Riff, founded, inherit, regrow, riff, take_up, vary};
 
 use crate::{
@@ -40,7 +42,8 @@ pub fn filling(e: &Entity, role: &BTreeSet<Fill>, bitten: Option<Id>) -> BTreeSe
 }
 
 /// Whether `e` realizes `s`: a living part fills its sources and one its
-/// effects, the parts a bite lands on being any living part.
+/// effects, the parts a bite lands on being any living part; a system
+/// naming no effects, as the nervous system does (657), by its sources.
 pub fn realizes(e: &Entity, s: &System) -> bool {
     let filled = |role: &BTreeSet<Fill>| {
         let living = e.parts.values().filter(|p| !p.severed);
@@ -48,7 +51,7 @@ pub fn realizes(e: &Entity, s: &System) -> bool {
             .flat_map(|p| role.iter().map(move |f| fills(p, f, true)))
             .any(|v| v)
     };
-    filled(&s.sources) && filled(&s.effects)
+    filled(&s.sources) && (s.effects.is_empty() || filled(&s.effects))
 }
 
 /// The systems `e` carries that name `function` in `role`, as one network:
@@ -76,6 +79,8 @@ pub fn routes(e: &Entity, function: &str, role: Role) -> bool {
     expressed && union(e, function, role).is_some_and(|u| realizes(e, &u))
 }
 
+#[cfg(test)]
+mod nerves_tests;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]

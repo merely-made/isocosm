@@ -249,7 +249,7 @@ impl Ambience {
             .poll(wgpu::PollType::wait_indefinitely())
             .expect("device poll");
         rx.recv().expect("map channel").expect("positions map");
-        let data = slice.get_mapped_range();
+        let data = slice.get_mapped_range().expect("positions mapped");
         let out: Vec<[f32; 4]> = bytemuck::cast_slice(&data).to_vec();
         drop(data);
         staging.unmap();

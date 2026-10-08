@@ -184,6 +184,10 @@ pub enum Reading {
         role: Role,
         ask: u64,
         lands: Vec<Key>,
+        /// The route this one joins through the nervous system (rulings
+        /// 659 to 664): asked only as far as a sense reaches both.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        joined: Option<(Key, Role)>,
     },
     /// What a body has room for of an account within what the act's
     /// carriage lets reach each part (581); all its room where none bounds

@@ -198,7 +198,7 @@ impl LiveApp {
                     [size.width.max(1), size.height.max(1)],
                 );
                 live.window.pre_present_notify();
-                frame.present();
+                live.handles.queue.present(frame);
             }
             Acquired::Outdated | Acquired::Lost => configure(live),
             Acquired::Timeout | Acquired::Occluded => {}
@@ -303,6 +303,7 @@ fn configure(live: &mut Live) {
             width: size.width.max(1),
             height: size.height.max(1),
             present_mode: wgpu::PresentMode::AutoVsync,
+            color_space: wgpu::SurfaceColorSpace::Auto,
             desired_maximum_frame_latency: 2,
             alpha_mode: wgpu::CompositeAlphaMode::Auto,
             view_formats: vec![],

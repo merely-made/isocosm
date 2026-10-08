@@ -57,7 +57,9 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
     .generate()
     .unwrap();
     let g = &mut w.genesis;
-    g.rules.processes.retain(|id, _| keep.contains(&id.as_str()));
+    g.rules
+        .processes
+        .retain(|id, _| keep.contains(&id.as_str()));
     let rules = g.rules.clone();
     let find = |lineage: &str| {
         let mut found = g.population.groups.values().map(|c| &c.entity);
@@ -76,10 +78,13 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
     ]);
     let b = rules.body();
     for p in e.parts.values_mut() {
-        p.matter.insert("tissue:1".into(), anatomy::ceiling(p, b) / 2);
+        p.matter
+            .insert("tissue:1".into(), anatomy::ceiling(p, b) / 2);
     }
     let full = anatomy::room(&e, &rules, "reserve:1");
-    anatomy::give(&mut e, &rules, "reserve:1", full).unwrap().unwrap();
+    anatomy::give(&mut e, &rules, "reserve:1", full)
+        .unwrap()
+        .unwrap();
     e.systems = isocosm::systems::founded(&e, &rules);
     change(&mut e, &rules);
     let mut population = isocosm::population::Population::default();
@@ -105,7 +110,11 @@ fn run(w: &ProbeWorld) -> Vec<Entity> {
     let exact = run_exact(w, 3, true).unwrap();
     let crowd = Crowd::new(w, 3, Variant::Histogram).unwrap().run().unwrap();
     let core = states(readings::exact_members(&exact));
-    assert_eq!(core, states(readings::crowd_members(&crowd)), "crowd and core");
+    assert_eq!(
+        core,
+        states(readings::crowd_members(&crowd)),
+        "crowd and core"
+    );
     core.into_iter().map(|(e, _)| e).collect()
 }
 
@@ -149,12 +158,22 @@ fn a_cut_route_carries_nothing_beyond_the_cut() {
         let start = of(&founded(&cut), GRAZER).clone();
         // Control: intact, the farther limb is fed.
         let fed = run(&intact);
-        assert!(tissue(of(&fed, GRAZER), 2) > tissue(&start, 2), "seed {seed}");
+        assert!(
+            tissue(of(&fed, GRAZER), 2) > tissue(&start, 2),
+            "seed {seed}"
+        );
         // Cut, it is alive and has room, and takes nothing; the lump still
         // takes its share.
         let severed = run(&cut);
-        assert_eq!(tissue(of(&severed, GRAZER), 2), tissue(&start, 2), "seed {seed}");
-        assert!(tissue(of(&severed, GRAZER), 0) > tissue(&start, 0), "seed {seed}");
+        assert_eq!(
+            tissue(of(&severed, GRAZER), 2),
+            tissue(&start, 2),
+            "seed {seed}"
+        );
+        assert!(
+            tissue(of(&severed, GRAZER), 0) > tissue(&start, 0),
+            "seed {seed}"
+        );
     }
 }
 
@@ -169,7 +188,10 @@ fn a_latent_cell_earns_only_once_a_riff_routes_it() {
     for seed in 0..6 {
         let w = world(seed, FIX, latent);
         let start = of(&founded(&w), GRAZER).clone();
-        assert_eq!(held(of(&run(&w), GRAZER), "tissue:1"), held(&start, "tissue:1"));
+        assert_eq!(
+            held(of(&run(&w), GRAZER), "tissue:1"),
+            held(&start, "tissue:1")
+        );
         assert_eq!(soil(&w, true), soil(&w, false), "latent: seed {seed}");
         let riffed = world(seed, FIX, |e, r| {
             latent(e, r);
@@ -178,7 +200,10 @@ fn a_latent_cell_earns_only_once_a_riff_routes_it() {
         });
         let after = run(&riffed);
         assert!(held(of(&after, GRAZER), "tissue:1") > held(&start, "tissue:1"));
-        assert!(soil(&riffed, true) < soil(&riffed, false), "riffed: seed {seed}");
+        assert!(
+            soil(&riffed, true) < soil(&riffed, false),
+            "riffed: seed {seed}"
+        );
     }
 }
 
@@ -197,6 +222,29 @@ fn the_limbs_share_of_a_bite_needs_muscular_routes() {
         fewer += u64::from(b < a);
     }
     assert!(fewer > 0, "the limbs added nothing to any bite");
+}
+
+/// The limbs' share needs the senses joining them to intake (rulings 659 to
+/// 664): numbed, with every muscle intact, a grazer bites as a limbless one.
+#[test]
+fn the_limbs_share_needs_nerves_joining_them_to_intake() {
+    let mut fewer = 0;
+    for seed in 0..6 {
+        let whole = world(seed, GRAZE, |_, _| {});
+        let numb = world(seed, GRAZE, |e, _| {
+            e.systems.remove("system:nervous");
+        });
+        let limbless = world(seed, GRAZE, |e, r| {
+            e.parts.retain(|id, _| *id == 0 || *id == 3);
+            e.systems = isocosm::systems::founded(e, r);
+        });
+        let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");
+        let (a, b, c) = (eaten(&whole), eaten(&numb), eaten(&limbless));
+        assert_eq!(b, c, "seed {seed}: numb {b} against limbless {c}");
+        assert!(0 < b && b <= a, "seed {seed}: {b} against {a}");
+        fewer += u64::from(b < a);
+    }
+    assert!(fewer > 0, "the nerves added nothing to any bite");
 }
 
 #[test]

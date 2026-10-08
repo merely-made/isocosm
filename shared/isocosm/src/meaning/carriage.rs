@@ -65,16 +65,26 @@ pub(crate) fn asks(
 }
 
 /// What the systems `e` carries naming `function` in `role` carry of
-/// `ask`: the total an amount reads (`Reading::Carried`).
+/// `ask`: the total an amount reads (`Reading::Carried`). Where it `joined`
+/// another route, the ask is what the senses join of it (659 to 664).
 pub(crate) fn carried(
     e: &Entity,
     rules: &Rules,
     d: Option<&Development>,
     route: (&str, Role),
-    landing: (u64, &[Key]),
+    (ask, lands): (u64, &[Key]),
     bitten: Option<Id>,
+    joined: Option<(&str, Role)>,
 ) -> Result<u64> {
-    let (asked, _) = asks(e, rules, d, route, landing, bitten);
+    let ask = match joined {
+        Some(first) => {
+            let (reached, total) = systems::joined(e, rules, first, route, bitten);
+            let share = u128::from(ask) * u128::from(reached) / u128::from(total.max(1));
+            u64::try_from(share).unwrap_or(u64::MAX)
+        },
+        None => ask,
+    };
+    let (asked, _) = asks(e, rules, d, route, (ask, lands), bitten);
     Ok(systems::carry(e, rules, route, &asked, bitten)?.total)
 }
 
