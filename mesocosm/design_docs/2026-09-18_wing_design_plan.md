@@ -8737,6 +8737,37 @@ what later sections derive from.
      arm of every draw. Mark chose "Draw 0's exact run (Recommended)". So
      `run_exact` takes an optional per-tick sink, and both tools write the
      same line format.
+643. **The repo shares a build-dir, not a target-dir.** 2026-10-07,
+     assessing 638. Question: cargo 1.98 has `build-dir` (stable since
+     1.91), and two throwaway workspaces under one shared build-dir reused
+     one serde build while each kept its own `target/` for final outputs;
+     nothing in the repo reads `target/debug` by path. Which mechanism?
+     Options: shared build-dir (recommended); shared target-dir. Mark chose
+     "Shared build-dir (Recommended)". So intermediates are shared per
+     checkout and each workspace's binaries stay where they are.
+644. **The setting is machine-local.** 2026-10-07. Question: the root
+     `.cargo/config.toml` is gitignored on purpose as the machine-local
+     override file, and every workspace inherits it; where does the
+     setting live? Options: the machine-local root config (recommended);
+     un-ignore and commit it; `wing.ps1` passes it. Mark chose
+     "Machine-local root config (Recommended)". So nothing is committed but
+     the plan, and each worktree or machine opts in by the plan's recipe.
+645. **Adopted on the disk already measured.** 2026-10-07. Question: H1
+     measured 81 GB on one shared target against about 126 GB on the
+     repin's separate ones, with cold checks of root 148 s, Mesocosm 98 s
+     and Eponym 192 s shared and no separate cold times; measure more
+     before adopting? Options: a cold A/B in a worktree (recommended);
+     adopt on today's numbers. Mark chose "Adopt on today's numbers". So
+     there is no A/B run.
+646. **Isocosm's test opt-level is measured on its own.** 2026-10-07.
+     Question: `opt-level = 1` for isocosm speeds its tests but builds it
+     apart from the other workspaces' isocosm; measure it? Options: in the
+     A/B (recommended); drop it. Mark chose "Measure in the A/B
+     (Recommended)", and with 645 ruling out the A/B the question went
+     back: standalone, drop it, or fold it into an A/B after all. Mark
+     chose "Measure it standalone (Recommended)". So isocosm's suite runs at
+     opt-level 0 and 1 on the shared build-dir, and its compile time, test
+     time and disk come back before any profile changes.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
