@@ -8788,6 +8788,15 @@ what later sections derive from.
      So each workspace manifest that builds isocosm carries
      `[profile.dev.package.isocosm] opt-level = 1`; Eponym's whole dev
      profile is already 1.
+649. **Traces label every critter.** 2026-10-08, briefing H2 (633 said
+     entities in traces). Question: population is stored as cohorts, runs
+     of identical critters with consecutive ids that both execution modes
+     merge alike; how do traces label critters? Options: one entry per
+     critter, each cohort's digest reused for its members (recommended);
+     one entry per cohort. Mark chose "One entry per critter
+     (Recommended)". So a divergence names the exact critter, and a trace
+     line holds as many entries as the world has critters. Notes needed no
+     ruling: the list is append-only, so `note:<index>` is stable.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
