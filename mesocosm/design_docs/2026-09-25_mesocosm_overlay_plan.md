@@ -233,7 +233,10 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   678). M3 plays a native generated lineage (682), its choice made by a
   deliberative methodology weighing needs, mood, nudges and bond (683), and
   the interim boundary ports grow-a-copy scoring over `Session::fork_at`
-  ahead of the lineages family (684).
+  ahead of the lineages family (684). A suggestion is a reading over
+  receipts and what the critter knows (685); the runtime translates contract
+  envelopes into native commands, the nudge among them (686); and the
+  interim M4's regions group sites by biomass after 226 (687).
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
