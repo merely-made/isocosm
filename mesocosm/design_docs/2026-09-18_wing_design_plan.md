@@ -9555,6 +9555,16 @@ what later sections derive from.
      rust-gpu fork (`24451e7f`, checked out at `Code/crates/rust-gpu-libm`)
      lifts the cap, Eponym path-patches both `spirv-std` sources to it, and
      it retires when L7 drops renderling on the kiss3d tenant.
+730. **isometry-views' GPU receipts share one test device.** 2026-10-09,
+     from 656's annotation. Question: the library tests hang under the
+     default parallel runner, two runs of three on `bdc89a05` and one of
+     three on `329d60d0`, stalled in the GPU-backed `scene` tests, each of
+     which builds its own wgpu instance and device; serially all 119 pass in
+     17 s. Options: one shared test device (recommended); serialize the GPU
+     tests; leave it and gate on one thread. Mark chose "One shared test
+     device (Recommended)". So the receipts share one device made once, which
+     tests whether concurrent device creation is the cause; done when ten
+     parallel runs pass.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
