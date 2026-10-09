@@ -168,7 +168,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+source = "git+https://github.com/merely-made/mere.git?rev=bdc89a0531273bdb4fdb2480268724e358655098#bdc89a0531273bdb4fdb2480268724e358655098"
 dependencies = [
  "serde",
 ]
@@ -272,7 +272,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mere-framing"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+source = "git+https://github.com/merely-made/mere.git?rev=bdc89a0531273bdb4fdb2480268724e358655098#bdc89a0531273bdb4fdb2480268724e358655098"
 dependencies = [
  "postcard",
  "serde",
@@ -281,7 +281,7 @@ dependencies = [
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+source = "git+https://github.com/merely-made/mere.git?rev=bdc89a0531273bdb4fdb2480268724e358655098#bdc89a0531273bdb4fdb2480268724e358655098"
 dependencies = [
  "async-trait",
  "blake3",
@@ -292,7 +292,7 @@ dependencies = [
 [[package]]
 name = "nisus"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+source = "git+https://github.com/merely-made/mere.git?rev=bdc89a0531273bdb4fdb2480268724e358655098#bdc89a0531273bdb4fdb2480268724e358655098"
 dependencies = [
  "serde",
 ]
@@ -436,7 +436,7 @@ checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
 [[package]]
 name = "state-witness"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/mere.git?rev=329d60d09c181b4fcff59482bc62deab7fa27cbf#329d60d09c181b4fcff59482bc62deab7fa27cbf"
+source = "git+https://github.com/merely-made/mere.git?rev=bdc89a0531273bdb4fdb2480268724e358655098#bdc89a0531273bdb4fdb2480268724e358655098"
 dependencies = [
  "mere-framing",
  "postcard",

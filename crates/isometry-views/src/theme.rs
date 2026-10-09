@@ -132,7 +132,7 @@ pub fn board_css() -> String {
     padding: 3px 6px;
     margin-bottom: 2px;
 }
-.cmd-line input {
+.cmd-line [role="textbox"] {
     color: #ffd766;
     background-color: transparent;
     border: 0;
@@ -142,7 +142,7 @@ pub fn board_css() -> String {
 .cmd-result { color: #b9c0cf; font-size: 12px; padding: 1px 6px; }
 .character-field { align-items: center; gap: 8px; }
 .character-name, .character-owner { display: flex; align-items: center; flex: 1; min-width: 0; height: 28px; box-sizing: border-box; padding: 3px 8px; background-color: #232734; border: 1px solid #46516a; margin: 4px 0; }
-.character-name input, .character-owner input { flex: 1; color: #e8ebf2; background-color: transparent; border: 0; padding: 0; font-size: 14px; }
+.character-name [role="textbox"], .character-owner [role="textbox"] { flex: 1; color: #e8ebf2; background-color: transparent; border: 0; padding: 0; font-size: 14px; }
 .character-name .field-caret, .character-owner .field-caret { color: #9fd48a; }
 
 /* The whisper composer's field. Same shape as the > line, its own colour: the
@@ -154,7 +154,7 @@ pub fn board_css() -> String {
     padding: 3px 6px;
     margin-bottom: 2px;
 }
-.compose-line input {
+.compose-line [role="textbox"] {
     color: #9fd48a;
     background-color: transparent;
     border: 0;
@@ -581,7 +581,7 @@ const COMPENDIUM_CSS: &str = r#"
 .entry-name { font-size: 16px; font-weight: bold; color: #e8ebf2; margin-bottom: 2px; }
 .compendium-desc { font-size: 12px; color: #cfd3dd; line-height: 1.45; }
 .search-field { display: flex; align-items: center; justify-content: space-between; background-color: #232734; border: 1px solid #2c3347; border-radius: 3px; padding: 5px 9px; margin-bottom: 8px; font-size: 12px; }
-.search-field input { flex: 1; color: #e8ebf2; background-color: transparent; border: 0; padding: 0; font-size: 12px; }
+.search-field [role="textbox"] { flex: 1; color: #e8ebf2; background-color: transparent; border: 0; padding: 0; font-size: 12px; }
 .search-field .field-caret { color: #9fd48a; }
 .search-hint { color: #6a7080; font-style: italic; }
 .search-clear { color: #8a90a0; cursor: pointer; }
