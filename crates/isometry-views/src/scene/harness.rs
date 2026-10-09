@@ -47,10 +47,19 @@ pub(super) const CARD: AtlasLimits = AtlasLimits {
     max_atlas_bytes: ATLAS_BUDGET_BYTES,
 };
 
+/// The receipts' one device, made once and shared: a device apiece, made
+/// concurrently by the parallel runner, hung the suite (wing ruling 730).
 pub(super) fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
-    pollster::block_on(adapter.request_device(&Default::default())).ok()
+    static SHARED: std::sync::OnceLock<Option<(wgpu::Device, wgpu::Queue)>> =
+        std::sync::OnceLock::new();
+    SHARED
+        .get_or_init(|| {
+            let descriptor = wgpu::InstanceDescriptor::new_without_display_handle();
+            let instance = wgpu::Instance::new(descriptor);
+            let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
+            pollster::block_on(adapter.request_device(&Default::default())).ok()
+        })
+        .clone()
 }
 
 /// A board drawn through the shipping path: one `UiState`, the snapshot it
