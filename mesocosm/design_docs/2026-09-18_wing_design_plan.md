@@ -8862,6 +8862,15 @@ what later sections derive from.
      runs of all 130 tests, its GPU receipt among them. Without a run on the
      older pins where it was seen, that finding is scoped to these runs: not
      reproduced, cause unknown.
+     *Annotation, 2026-10-09:* reproduced as a hang, not a crash, during the
+     repin onto mere `bdc89a05`: `isometry-views`' library tests under the
+     default parallel runner stalled with the test process idle (about 0.06
+     s of CPU in 20 s, 84 threads), two runs of three on the new pins and one
+     of three on main's old pins, so it predates the repin. Both stalled runs
+     left the GPU-backed `scene` tests unfinished (`paging_tests`,
+     `parity_tests`), each of which builds its own wgpu instance and device
+     (`scene/harness.rs:50`, `parity_tests.rs:49`). Run on one thread all 119
+     pass in 17 s. wgpu is 30.0.1 on both pins.
 657. **The nervous system carries no matter.** 2026-10-08, finishing
      checkpoint 9 (amends 489's table). Question: checkpoint 9's control for
      589 (the muscular system carries the limbs' share of the bite) failed:
