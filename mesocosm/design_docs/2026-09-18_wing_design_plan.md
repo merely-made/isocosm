@@ -9281,6 +9281,11 @@ what later sections derive from.
      SP4 waits for T2 (Recommended)". So mere's conatus coordinator is asked
      to open T2, and SP4 builds on nisus's store once it lands, with no
      `Ground`-only interim to unwind; SP6's move folds into SP4.
+     *Annotation, 2026-10-08:* mere's dynamics coordinator took the
+     request: T2 is queued behind `rapier-036` (T2's collider updates go
+     through conatus, which that lane ports), its assessment to run against
+     SP4's needs when a slot frees, its forks ruled in the conatus engine
+     plan.
 701. **The lift moves to isometer.** 2026-10-08. Question: does the lift
      (isocosm's `src/terrain` and `src/map`, 1,040 lines) move? Options: the
      lift to isometer, the world map and skeleton staying the sim's
@@ -9335,6 +9340,31 @@ what later sections derive from.
      root, and moves the tombstones' matter out, closing the gap where
      `anatomy::books` counts a tombstone's matter that `held` and `room`
      skip.
+708. **A wound spills everything over its lowered bound.** 2026-10-08,
+     checkpoint 10's second round. Question: 469 spills "tissue it can no
+     longer hold", but the store and reproduce bounds (`anatomy::bound`)
+     also derive from capacity; what spills? Options: all over its bound
+     (recommended); tissue only. Mark chose "All over its bound
+     (Recommended)". So tissue, reserve and provision each spill what
+     exceeds their lowered bound, and no account sits above its bound.
+709. **Free cells count in a wound's proportion.** 2026-10-08. Question:
+     do unallocated cells count in 496's proportion? Options: free cells
+     count (recommended); allocated only. Mark chose "Free cells count
+     (Recommended)". So a wound takes cells across every function and the
+     free pool together, and free cells cushion it.
+710. **Losing every cell severs a part, or kills at the root.**
+     2026-10-08. Question: what happens when a wound takes all of a part's
+     cells? Options: it severs, the root killing (recommended); a
+     zero-capacity stub. Mark chose "Severs; root kills (Recommended)". So
+     a non-root part with no cells left is severed under 707, and a root
+     with none dies.
+711. **Severing comes only from losing every cell.** 2026-10-08. Question:
+     Eponym's strike severs past `sever_threshold` (24), and 669 hands
+     strike resolution to the game; can a wound sever before all cells are
+     lost? Options: only at all cells (recommended); a world-rule
+     threshold; a cause that names it. Mark chose "Only at all cells
+     (Recommended)". So severing has one mechanism, and a game's strikes
+     reach it by wounding hard enough.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
