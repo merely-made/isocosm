@@ -209,6 +209,8 @@ fn a_latent_cell_earns_only_once_a_riff_routes_it() {
 
 #[test]
 fn the_limbs_share_of_a_bite_needs_muscular_routes() {
+    // The muscular system is the only route to the contracting parts (657):
+    // lamed, with every limb in place, a grazer bites as a limbless one.
     let mut fewer = 0;
     for seed in 0..6 {
         let whole = world(seed, GRAZE, |_, _| {});
@@ -216,16 +218,19 @@ fn the_limbs_share_of_a_bite_needs_muscular_routes() {
             let muscle = e.systems.get_mut("system:muscular").unwrap();
             muscle.effects = [Fill::Function("function:sense".into())].into();
         });
+        let limbless = world(seed, GRAZE, |e, r| {
+            e.parts.retain(|id, _| *id == 0 || *id == 3);
+            e.systems = isocosm::systems::founded(e, r);
+        });
         let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");
-        let (a, b) = (eaten(&whole), eaten(&lamed));
+        let (a, b, c) = (eaten(&whole), eaten(&lamed), eaten(&limbless));
+        assert_eq!(b, c, "seed {seed}: lamed {b} against limbless {c}");
         assert!(0 < b && b <= a, "seed {seed}: {b} against {a}");
         fewer += u64::from(b < a);
     }
     assert!(fewer > 0, "the limbs added nothing to any bite");
 }
 
-/// The limbs' share needs the senses joining them to intake (rulings 659 to
-/// 664): numbed, with every muscle intact, a grazer bites as a limbless one.
 #[test]
 fn the_limbs_share_needs_nerves_joining_them_to_intake() {
     let mut fewer = 0;
