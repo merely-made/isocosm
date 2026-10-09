@@ -33,6 +33,7 @@ use isometer::FrameRequest;
 use isometry_core::IsoGeometry;
 
 use super::board::{BoardPick, BoardProducer, BoardSource};
+use super::harness::device;
 use super::pick::ScenePick;
 use super::terrain::{VOXELS_PER_STEP, VOXELS_PER_TILE};
 use super::view::BoardView;
@@ -45,12 +46,6 @@ use crate::state::UiState;
 const PANE: (f32, f32) = (640.0, 480.0);
 /// Probes per axis. 16 by 16 is 256 pixels spread over the whole pane.
 const PROBES: u32 = 16;
-
-fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
-    let adapter = pollster::block_on(instance.request_adapter(&Default::default())).ok()?;
-    pollster::block_on(adapter.request_device(&Default::default())).ok()
-}
 
 /// The pan that puts the demo map's centre tile in the middle of the pane.
 fn centred(geo: &IsoGeometry, map: &isometry_core::MapDocument) -> (f32, f32) {
