@@ -9503,6 +9503,13 @@ what later sections derive from.
      land. mere's coordinator adds that 0.36 sleeps bodies sooner (0.5 s
      and 0.05 against 2 s and 0.4) and seiche's `remask_node` now wakes its
      body (F175), so a world read mid-settle may read differently.
+     *Annotation, 2026-10-09:* mere opened one conatus lane, the queries
+     then T2 (Mark there: "One conatus lane: queries, then T2
+     (Recommended)"), recorded in the conatus engine plan §1 on branch
+     `conatus-world`; its first round is assessment only, each query's
+     shape in conatus's own vocabulary going to Mark as forks before
+     anything is built, 352's refresh assessed beside them. This carries
+     700, 722 and 723.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
