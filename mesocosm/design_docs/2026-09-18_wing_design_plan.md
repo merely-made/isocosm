@@ -8961,6 +8961,9 @@ what later sections derive from.
      it, adapting to parry 0.31's query results (`ShapeDistance`,
      `ShapeIntersection`, sub-shape ids) and 0.30's contact-manifold
      accessors.
+     *Annotation, 2026-10-08:* 692 to 695: still waits for the merge; a
+     caret pin; the probe uses none of those items; and it folds into
+     conatus, assessed on its own.
 666. **Each legacy family leaves as its re-expression lands.** 2026-10-08,
      the families re-expression plan's first round
      (`2026-10-08_families_reexpression_plan.md`). Question: 263 (Mark:
@@ -9193,6 +9196,46 @@ what later sections derive from.
      the reach field (recommended); defer until senses. Mark chose "Through
      knows (Recommended)". So the interim M4 ships both modes, and senses
      refine the filter when they run.
+692. **parry-ground still waits for mere's merge.** 2026-10-08, the parry
+     survey's round, reopening 665's premise: `parry3d-0.31.1.crate` is now
+     in the cargo cache, so the probe could build offline, it does not
+     depend on conatus, and mere's `rapier-036` branch (7 commits) has
+     stopped at F166 and is not on main. Question: when does parry-ground
+     repin? Options: wait for mere's merge (recommended); `=0.31.1` now;
+     `=0.28.0` as an interim. Mark chose "Wait for mere's merge
+     (Recommended)". So 665 stands. The survey also found the probe calls
+     none of the items 0.30 and 0.31 changed (`ShapeDistance`,
+     `ShapeIntersection`, sub-shape ids, the manifold accessors), so
+     665's annotation's adaptation is likely only the pin and two README
+     lines (*Inference*, not compiled).
+693. **The pin is a caret.** 2026-10-08. Question: the probe's lock is
+     gitignored, so its version requirement is its only reproducibility
+     guard, while mere pins rapier with a caret; what form? Options: exact
+     `=0.31.1` (recommended); caret `0.31.1`. Mark chose "Caret 0.31.1". So
+     the probe follows mere's style and may resolve a later 0.31.x.
+     *Reading, not ruled:* this holds while the probe keeps a direct parry
+     dependency, which 695 may retire.
+694. **A receipt figure that moves at the repin: no preference.**
+     2026-10-08. Question: if a figure moves at the repin, in parry-ground
+     or in isometry's conatus-driven receipts (mesocosm-runtime's tactile,
+     eponym-motion, isometer-lens's resident ground), given rapier 0.36's
+     new sleep and contact defaults and `enhanced-determinism` now turning
+     on glamx scalar math? Options: stop and report (recommended);
+     re-record within a stated tolerance. Mark gave no preference.
+     *Reading, not ruled:* the recommended course applies, matching mere's
+     F166: a moved figure stops the repin and comes back with its before
+     and after numbers.
+695. **parry-ground folds into conatus.** 2026-10-08. Question: the probe
+     is a 481-line binary with no consumers, `GroundCollision` already
+     wraps `Voxels` privately, and mesocosm-runtime's `tactile.rs` already
+     feeds the ground into a conatus voxel collider; does it keep calling
+     parry directly? Options: stay on parry (recommended); fold into
+     conatus. Mark chose "Fold into conatus". So the probe's checks are to
+     run through the stack's conatus voxel collider and the direct parry
+     dependency retires (consolidate into the stack). This is a new
+     objective with its own assessment: what conatus exposes for the
+     probe's ray, point and manifold checks, and whether the receipt's
+     figures survive the move.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
