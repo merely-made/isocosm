@@ -9520,6 +9520,32 @@ what later sections derive from.
      chose "Yes, fetch mere (Recommended)". So the sweep moves 50 mere rows
      to `bdc89a05`, 17 genet rows to `15713014` and parry-ground to parry3d
      0.31.1 in its own worktree, fetching nothing else.
+729. **Eponym takes a one-line spirv-std carriage; renderling leaves with
+     L7 on kiss3d.** 2026-10-09, from the repin onto `bdc89a05`. Evidence:
+     seven workspaces and parry-ground check clean on the new pins, parry-
+     ground with no code change; Eponym does not resolve, renderling's
+     rust-gpu `05b34493` capping `spirv-std`'s `libm` at 0.2.11 ("libm
+     0.2.12 is a breaking change with new intrinsics") while rapier 0.36's
+     simba 0.10.2 needs `^0.2.15`, one `libm` 0.2.x allowed a graph; with
+     the cap lifted on a scratch copy, patched for both sources renderling
+     reaches it by, Eponym checks clean in 69 s; renderling's 45 shaders are
+     committed `.spv` with no build script; upstream rust-gpu main has
+     lifted the cap. First question: carriage, move renderling's rust-gpu,
+     or hold the repin? Mark chose "Move renderling's rust-gpu". Put back
+     with the finding that this ports renderling's shaders from spirv-std
+     0.9 to 0.10 (22 files, 67 entry points, nightly 2025-02-16 to
+     2026-08-15) and rebuilds 45 `.spv` never rebuilt here, upstream
+     renderling still on `05b34493`. Mark: "Wait. Do we need renderling,
+     given kiss?" Answered from L7, 474 and 471: no, renderling is retired
+     by ruling, but `eponym-client` still draws its room and crossing
+     through it (12 files, about 3,250 lines), the kiss3d tenant is not
+     built, and an optional dependency still enters the lock. Options:
+     carriage now, L7 with kiss3d (recommended); L7 now on isometer-render;
+     start kiss3d with L7 on it. Mark chose "Carriage now, L7 with kiss3d
+     (Recommended)". So branch `mark-ik/spirv-std-libm-uncap` of the
+     rust-gpu fork (`24451e7f`, checked out at `Code/crates/rust-gpu-libm`)
+     lifts the cap, Eponym path-patches both `spirv-std` sources to it, and
+     it retires when L7 drops renderling on the kiss3d tenant.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
