@@ -114,6 +114,25 @@ pub struct Entity {
     /// epimorphic body grows toward; absent in bodies without a recipe.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub soma: Vec<u8>,
+    /// The systems it carries (rulings 568, 574 and 583), the world's
+    /// defaults as founding realized them, riffed and passed down; absent in
+    /// bodies that read none, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub systems: BTreeMap<Key, crate::rules::System>,
+    /// The cells that varied from its recipe, its own and its forebears'
+    /// (rulings 576 to 579): passed down, and grown again where a part
+    /// regrows.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub varied: Vec<Varied>,
+}
+
+/// A cell varied at birth (576): where it lies in the recipe, and the
+/// function it left for the one it took.
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct Varied {
+    pub situs: [u8; 3],
+    pub from: Key,
+    pub to: Key,
 }
 
 /// A past residence. The departure tick belongs to the next place.

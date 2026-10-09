@@ -62,6 +62,8 @@ fn development(tagmata: Vec<Tagma>, variance: u8, absence: [u32; 2]) -> Developm
         tagmata,
         variance,
         absence,
+        riff: [0, 1],
+        vary: [0, 1],
     };
     Development {
         lexicon: recipe.kinds(),

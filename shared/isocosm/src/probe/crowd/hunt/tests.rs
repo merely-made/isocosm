@@ -189,6 +189,7 @@ fn grazing(seed: u64, held: u64) -> ProbeWorld {
     let soma = Soma {
         segments: vec![1],
         absent: vec![],
+        seed: 0,
     };
     frond.parts = develop(&rules, &d, &soma).unwrap();
     frond.soma = vec![1];

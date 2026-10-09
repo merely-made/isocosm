@@ -190,6 +190,8 @@ pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
         tagmata,
         variance,
         absence: [1, one_in],
+        riff: [0, 1],
+        vary: [0, 1],
     }
 }
 
@@ -200,6 +202,8 @@ pub fn roster() -> Vec<(&'static str, bool, Recipe)> {
         tagmata,
         variance,
         absence: [1, 12],
+        riff: [0, 1],
+        vary: [0, 1],
     };
     vec![
         (

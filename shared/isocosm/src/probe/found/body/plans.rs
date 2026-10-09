@@ -110,11 +110,17 @@ impl BodyFounding {
         let mut i = 0;
         plans.map(|(tagmata, limbs)| {
             let variance = self.pick("body-variance", i, self.variance.map(u64::from)) as u8;
-            let one_in = self.pick("body-absence", i, self.absence.map(u64::from)) as u32;
+            let odds =
+                |domain: &str, range: [u32; 2]| match self.pick(domain, i, range.map(u64::from)) {
+                    0 => [0, 1],
+                    one_in => [1, one_in as u32],
+                };
             let recipe = Recipe {
                 tagmata,
                 variance,
-                absence: if one_in == 0 { [0, 1] } else { [1, one_in] },
+                absence: odds("body-absence", self.absence),
+                riff: odds("body-riff", self.riff),
+                vary: odds("body-vary", self.vary),
             };
             let domains = u64::from(affinity.domains.max(1));
             let d = Development {

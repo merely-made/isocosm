@@ -60,8 +60,7 @@ pub(crate) fn grow(
         for (key, paid) in spend(p, &pay, Binding::Place, Some(into), price)? {
             *grown.paid.entry(key).or_default() += paid;
         }
-        let body = p.body(Binding::Actor)?;
-        let room = anatomy::room(body, rules, &tissue);
+        let room = p.room(Binding::Actor, &tissue)?;
         let fill = room.min(p.held(Binding::Actor, from)?);
         if fill > 0 {
             let taken = convert(

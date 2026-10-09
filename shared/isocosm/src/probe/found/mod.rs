@@ -309,6 +309,8 @@ impl ProbeFounding {
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
+            systems: Default::default(),
+            carriage: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),
@@ -471,6 +473,8 @@ pub(super) fn member(
         tenets: BTreeMap::new(),
         disposition: [0; 5],
         soma: vec![],
+        systems: BTreeMap::new(),
+        varied: vec![],
     }
 }
 

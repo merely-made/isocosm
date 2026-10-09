@@ -163,6 +163,18 @@ pub enum Effect {
         to: Key,
         cells: Amount,
     },
+    /// `ask` carried to `who`'s effect parts through the systems naming
+    /// `function` in `role` (rulings 562 and 581), each asking by its room
+    /// for `lands`: where a part is no effect or was carried less than it
+    /// asked, what the act then gives each part is bounded by what reached
+    /// it.
+    Carry {
+        who: Binding,
+        function: Key,
+        role: Role,
+        ask: Amount,
+        lands: Vec<Key>,
+    },
 }
 
 impl Effect {
@@ -177,6 +189,7 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Convert { amount, .. } => vec![amount],
             Self::Allocate { cells, .. } => vec![cells],
+            Self::Carry { ask, .. } => vec![ask],
             Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
             _ => vec![],
         }
@@ -248,6 +261,7 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
             Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw, parts)?,
+            Self::Carry { ask, .. } => *ask = ask.resolve(read, draw, parts)?,
             Self::When { .. } => return Err("a guarded effect is applied by its branch".into()),
             _ => {},
         }

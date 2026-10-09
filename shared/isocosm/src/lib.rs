@@ -33,6 +33,7 @@ mod schedule;
 pub mod schema;
 pub mod simulation;
 mod stage;
+pub mod systems;
 mod targets;
 pub mod terrain;
 mod validation;

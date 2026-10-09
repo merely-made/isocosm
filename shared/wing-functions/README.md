@@ -18,7 +18,10 @@ Store transfers charge; it does not instantiate a spell or material.
 Routing uses deterministic breadth-first selection and remaining edge capacity.
 It is a first-fit routing policy, not a maximum-flow guarantee. Some networks
 can require a different routing policy to use all feasible supply. Capacities
-apply per operation; a batch executes sequentially. This does not yet model
+apply per operation; a batch executes sequentially. `carry` routes what several
+effect sites ask in one operation, sharing edge room among them; its receipt
+says what reached each, short where routes or supplies run out, never an error
+for want of charge. This does not yet model
 simultaneous limb timing, sustained charging, recovery or interrupts over time.
 
 `generation` samples functional blueprints for caller-supplied creature or staff

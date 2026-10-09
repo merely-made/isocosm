@@ -1,0 +1,24 @@
+ 0 CAUGHT     a sense reaches through parts that cannot carry (663) :: --lib systems::nerves_tests::the_joint_share_is_the_contracting_cells
+ 1 CAUGHT     systems join without a nervous system (661) :: --lib systems::nerves_tests::without_nerves_or_a_sense_nothing_joins
+ 2 CAUGHT     the joint share ignores the degree (664) :: --test systems the_limbs_share_needs_nerves_joining_them_to_intake
+ 3 MISSED     the nervous system carries the limbs' share again (657) :: --test systems the_limbs_share_of_a_bite_needs_muscular_routes
+ 4 CAUGHT     a carriage landing nothing caps its ask at its cells (the bug found) :: --test probe_bodies a_grazers_meal
+ 5 CAUGHT     a system naming no effects is never realized :: --lib systems::nerves_tests::a_grazer_with_an_eye_joins
+ 6 MISSED     a part carries whatever its cells (560, 564) :: --lib systems::tests::a_cut_route_carries_nothing_beyond_it
+ 7 CAUGHT     a development brings a system its body already realized (587) :: --lib systems::vary_tests::a_developed_gland_brings_its_system
+ 8 CAUGHT     cells vary without their odds (578) :: --lib systems::vary_tests::with_no_odds_nothing_varies_or_riffs
+ 9 CAUGHT     systems riff without their odds (573) :: --lib systems::vary_tests::with_no_odds_nothing_varies_or_riffs
+10 CAUGHT     a riff is kept though the child no longer realizes it (491) :: --lib systems::vary_tests::a_riff_on_a_dormant_system_is_kept_only_where_it_wakes
+9 of 11 caught
+
+Rerun of faults 3 and 6, 2026-10-08, after the first pass missed them:
+- 3 was missed because the muscular control only asked that a lamed grazer
+  eat less on some seed; with the nervous route back, the eye's one cell
+  still carried less than the muscles did. The control now holds that a
+  lamed grazer bites exactly as a limbless one (657: the muscular system is
+  the only route), and catches it.
+- 6 named the wrong test: the cut-route test severs a part, so a part's
+  capacity never enters it. The trunk test pins capacity and catches it.
+ 3 CAUGHT     the nervous system carries the limbs' share again (657) :: --test systems the_limbs_share_of_a_bite_needs_muscular_routes
+ 6 CAUGHT     a part carries whatever its cells (560, 564) :: --lib systems::tests::parts_share_the_trunk_that_carries_to_them
+All 11 caught.

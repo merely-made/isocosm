@@ -5,12 +5,16 @@
 //! Each operation uses first-fit, breadth-first routes in `NodeId` order; it is
 //! deliberately bounded, not a maximum-flow solver. Edge capacity resets for
 //! each operation, including sequential operations in an atomic chain.
+//! A carriage carries what several effect sites ask in one operation, sharing
+//! edge capacity among them and reporting what reached each.
 //! The crate records functional receipts; callers own body state and adjudication.
 
+mod carriage;
 pub mod generation;
 mod network;
 mod operators;
 
+pub use carriage::Carriage;
 pub use generation::*;
 pub use network::{
     Edge, FunctionalNetwork, MAX_EDGES, MAX_NODES, NETWORK_SCHEMA_VERSION, NetworkError,
@@ -21,5 +25,7 @@ pub use operators::{
     WorldRules,
 };
 
+#[cfg(test)]
+mod carriage_tests;
 #[cfg(test)]
 mod tests;

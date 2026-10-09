@@ -10,11 +10,14 @@
 //! grazers' reserve as shares of what their lump stores (ruling 506), which
 //! producer cohorts carry the gland among their candidates, which cohorts
 //! breed once (529), its sites' soil and the rate at which the ground
-//! returns living matter as soil. Nothing is contested and no mind is kept:
-//! what the crowd must match is the body.
+//! returns living matter as soil. Since checkpoint 9 a body carries the
+//! systems it realizes and its natives read them, each lineage feeding by
+//! capability, and a world draws its feeding rates, what a cell carries,
+//! and each recipe's riff and variation odds (rulings 564, 571, 573, 578).
+//! Nothing is contested and no mind is kept: what the crowd must match is
+//! the body.
 
-#[cfg(test)]
-mod calibration;
+mod feeding;
 mod life;
 mod physiology;
 mod plans;
@@ -62,6 +65,15 @@ pub struct BodyFounding {
     pub absence: [u32; 2],
     /// How many eggs a grazer's birth lays (530).
     pub clutch: [u32; 2],
+    /// Each recipe's odds that a child's system riffs and that one of its
+    /// cells varies, one in so many, 0 for never (573, 578).
+    pub riff: [u32; 2],
+    pub vary: [u32; 2],
+    /// The feeding rates, numerators over 144 faces and 269 voxels (571),
+    /// and what a cell carries a tick, in milligrams (564).
+    pub fixes: [u64; 2],
+    pub grazes: [u64; 2],
+    pub carriage: [u64; 2],
     /// Per mille of producer cohorts carrying the gland among their
     /// candidates, and of all cohorts breeding once (529).
     pub candidates: u64,
@@ -102,6 +114,11 @@ impl Default for BodyFounding {
             variance: [1, 2],
             absence: [12, 12],
             clutch: [1, 4],
+            riff: [12, 100],
+            vary: [12, 100],
+            fixes: [6, 22],
+            grazes: [6, 24],
+            carriage: [7, 14],
             candidates: 250,
             semelparous: 500,
             tissue: [150, 1000],
@@ -143,6 +160,9 @@ impl BodyFounding {
             self.reserve,
             self.soil,
             self.mineralization,
+            self.fixes,
+            self.grazes,
+            self.carriage,
         ];
         ranges.iter().all(|r| r[0] <= r[1])
             && self.frond[0] <= self.frond[1]
@@ -155,6 +175,11 @@ impl BodyFounding {
             && self.absence[0] <= self.absence[1]
             && self.clutch[0] <= self.clutch[1]
             && self.clutch[0] > 0
+            && self.riff[0] <= self.riff[1]
+            && self.vary[0] <= self.vary[1]
+            && self.fixes[0] > 0
+            && self.grazes[0] > 0
+            && self.carriage[0] > 0
             && (1..=2).contains(&self.limbs[0])
             && self.limbs[1] <= 2
             && self.sites[0] > 0
@@ -177,6 +202,11 @@ impl BodyFounding {
             self.pick("body-members", 1, self.grazers),
         ];
         let dose = self.pick("body-mineralization", 0, self.mineralization);
+        let rates = feeding::Rates {
+            fixes: self.pick("body-fixes", 0, self.fixes) as i64,
+            grazes: self.pick("body-grazes", 0, self.grazes) as i64,
+        };
+        let per_cell = self.pick("body-carriage", 0, self.carriage);
         let affinity = Affinity::default();
         let developments = self.developments(&affinity);
         let matter = |lineage: &str, reserve: bool, provision: bool| AccountKind::Matter {
@@ -223,8 +253,7 @@ impl BodyFounding {
                     development: Some(developments[i as usize].clone()),
                 },
             );
-            let prey = (i == 1).then_some(0);
-            for p in physiology::natives(i, prey) {
+            for p in physiology::natives(i, 2, i == 0, rates) {
                 processes.insert(p.id.clone(), p);
             }
         }
@@ -234,6 +263,8 @@ impl BodyFounding {
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),
+            systems: default_systems(),
+            carriage: Some(Carriage { per_cell }),
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),
@@ -327,6 +358,7 @@ impl BodyFounding {
                     );
                     e.parts = develop(rules, d, &drawn)?;
                     e.soma = drawn.segments;
+                    e.systems = crate::systems::founded(&e, rules);
                     let i = i as u32;
                     for part in e.parts.values_mut() {
                         let held = anatomy::ceiling(part, b) * tissue_mille / 1000;

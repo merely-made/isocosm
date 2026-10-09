@@ -325,7 +325,7 @@ impl FunctionalNetwork {
         let mut used = vec![0_u64; self.edges.len()];
         let mut debits = Vec::new();
         while needed > 0 {
-            let Some((source, path)) = self.find_path(target, hops, live, &used) else {
+            let Some((source, path)) = self.find_path(|n| n == target, hops, live, &used) else {
                 break;
             };
             let source_charge = match self.nodes[&source].kind {
@@ -389,9 +389,11 @@ impl FunctionalNetwork {
         })
     }
 
-    fn find_path(
+    /// The first breadth-first route from a charged, live supply to a node
+    /// `arrived` accepts, through edges with room left.
+    pub(crate) fn find_path(
         &self,
-        target: NodeId,
+        arrived: impl Fn(NodeId) -> bool,
         hops: u32,
         live: &BTreeSet<PartRef>,
         used: &[u64],
@@ -400,13 +402,13 @@ impl FunctionalNetwork {
         let mut seen = BTreeSet::new();
         for (&id, node) in &self.nodes {
             let charged_supply = matches!(node.kind, NodeKind::Source { charge, .. } | NodeKind::Store { charge, .. } if charge > 0);
-            if id != target && charged_supply && live.contains(&node.kind.part()) {
+            if !arrived(id) && charged_supply && live.contains(&node.kind.part()) {
                 queue.push_back((id, Vec::new()));
                 seen.insert(id);
             }
         }
         while let Some((node, path)) = queue.pop_front() {
-            if node == target && !path.is_empty() {
+            if !path.is_empty() && arrived(node) {
                 let source = self.edge_source(path[0]);
                 return Some((source, path));
             }

@@ -145,7 +145,8 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
                 | Query::Account { who, .. }
                 | Query::Below { who, .. }
                 | Query::Part { who, .. }
-                | Query::Holds { who, .. } => target(who),
+                | Query::Holds { who, .. }
+                | Query::Routes { who, .. } => target(who),
                 Query::Age { .. }
                 | Query::Condition { .. }
                 | Query::Mood { .. }
@@ -166,7 +167,8 @@ pub(super) fn binds_target(q: &Query) -> bool {
         | Query::Account { who, .. }
         | Query::Below { who, .. }
         | Query::Part { who, .. }
-        | Query::Holds { who, .. } => *who == Binding::Target,
+        | Query::Holds { who, .. }
+        | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         _ => false,
     }
@@ -317,6 +319,7 @@ pub(super) fn act(
         bitten: a.meal.and_then(|(_, _, part)| part),
         bound: false,
         kept: BTreeMap::new(),
+        caps: [None, None],
         draws: a.draws,
         took: None,
         lessons: vec![],
@@ -392,6 +395,7 @@ pub(super) fn act_on(
         bitten: None,
         bound: true,
         kept: BTreeMap::new(),
+        caps: [None, None],
         draws: a.draws,
         took: None,
         lessons: vec![],
@@ -463,6 +467,7 @@ pub(super) fn mouthful(
         bitten: None,
         bound: false,
         kept: BTreeMap::new(),
+        caps: [None, None],
         draws: &draws,
         took: None,
         lessons: vec![],

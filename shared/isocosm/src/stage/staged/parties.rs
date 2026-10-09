@@ -15,9 +15,10 @@ impl Staged<'_> {
         };
         let rules = &self.sim.genesis.rules;
         let body = self.stage.bodies.get_mut(&id)?;
+        let caps = self.stage.caps.get_mut(&id);
         let split = match give {
-            true => crate::anatomy::give(body, rules, key, amount)?,
-            false => crate::anatomy::take(body, rules, key, amount)?,
+            true => crate::anatomy::give_within(body, rules, key, amount, caps)?,
+            false => crate::anatomy::take_within(body, rules, key, amount, caps)?,
         };
         Some(split.map(|parts| {
             let (body, key) = (id, key.into());
@@ -79,5 +80,24 @@ impl Parties for Staged<'_> {
     }
     fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
         meaning::shift(&mut self.site()?.conditions, key, delta, 1)
+    }
+    fn bitten(&self) -> Option<Id> {
+        self.stage.bitten
+    }
+    fn bound(&mut self, who: Binding, caps: crate::anatomy::Caps) -> Result<()> {
+        let Some(Holder::Entity(id)) = self.holder(who) else {
+            return Err(format!("{who:?} has no parts to bound"));
+        };
+        self.stage.caps.insert(id, caps);
+        Ok(())
+    }
+    fn room(&mut self, who: Binding, key: &str) -> Result<u64> {
+        let Some(Holder::Entity(id)) = self.holder(who) else {
+            return Err(format!("{who:?} has no parts"));
+        };
+        let rules = &self.sim.genesis.rules;
+        let body = self.stage.bodies.get(&id).ok_or("body missing")?;
+        let caps = self.stage.caps.get(&id);
+        Ok(crate::anatomy::room_within(body, rules, key, caps))
     }
 }

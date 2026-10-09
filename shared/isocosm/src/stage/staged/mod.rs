@@ -113,6 +113,17 @@ impl Staged<'_> {
                     let held = Parties::held(self, *who, key)?;
                     i64::try_from(held).map_err(|e| e.to_string())
                 },
+                Reading::Room { who, key } => {
+                    let room = Parties::room(self, *who, key)?;
+                    i64::try_from(room).map_err(|e| e.to_string())
+                },
+                Reading::Carried { who, .. } => {
+                    let bitten = self.stage.bitten;
+                    let body = self.body(*who)?;
+                    let l = sim.state.lineages.get(&body.lineage);
+                    let d = l.and_then(|l| l.development.as_ref());
+                    Ok(meaning::carried(body, r, &sim.genesis.rules, d, bitten))
+                },
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
                     let part = body.parts.get(&id).ok_or("bound part missing")?;
@@ -458,6 +469,7 @@ impl Staged<'_> {
                 // A bite lands on one part, drawn by what each holds (459).
                 let draw = crate::draw(sim.genesis.seed, "bite", &[self.stage.act]);
                 let bitten = crate::anatomy::bitten(self.body(*from)?, of, draw);
+                self.stage.bitten = bitten;
                 let offered = match bitten {
                     Some(part) => {
                         let prey = self.body(*from)?;

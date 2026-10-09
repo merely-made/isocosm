@@ -10,7 +10,8 @@ use crate::{
 /// One site of a producer, its parts and provision full, and two grazers,
 /// every provision full, one
 /// grazer's stores full and the other's empty, and only the births running;
-/// with no variance and no absences every child's soma is its recipe's.
+/// with no variance, absences, riffs or varied cells every child's soma and
+/// systems are its recipe's and its parent's.
 fn breeding(seed: u64) -> ProbeWorld {
     let mut w = BodyFounding {
         seed,
@@ -18,6 +19,8 @@ fn breeding(seed: u64) -> ProbeWorld {
         sites: [1, 1],
         variance: [0, 0],
         absence: [0, 0],
+        riff: [0, 0],
+        vary: [0, 0],
         ..Default::default()
     }
     .generate()
@@ -99,6 +102,8 @@ fn nursing(seed: u64) -> ProbeWorld {
         sites: [1, 1],
         variance: [0, 0],
         absence: [0, 0],
+        riff: [0, 0],
+        vary: [0, 0],
         semelparous: 0,
         ..Default::default()
     }
@@ -121,6 +126,7 @@ fn nursing(seed: u64) -> ProbeWorld {
     let soma = Soma {
         segments: vec![1],
         absent: vec![],
+        seed: 0,
     };
     frond.parts = develop(&rules, &d, &soma).unwrap();
     frond.soma = vec![1];
@@ -187,6 +193,8 @@ fn a_crowd_bite_takes_what_its_part_held() {
         sites: [1, 1],
         variance: [0, 0],
         absence: [0, 0],
+        riff: [0, 0],
+        vary: [0, 0],
         ..Default::default()
     }
     .generate()
@@ -203,6 +211,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
     let soma = Soma {
         segments: vec![2],
         absent: vec![],
+        seed: 0,
     };
     prey.parts = develop(rules, &d, &soma).unwrap();
     for (part, held) in [(0, 3), (1, 10)] {

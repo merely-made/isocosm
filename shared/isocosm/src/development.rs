@@ -24,6 +24,10 @@ use std::collections::BTreeMap;
 pub struct Soma {
     pub segments: Vec<u8>,
     pub absent: Vec<(u8, u8)>,
+    /// The seed it was drawn by, which the child's riff and its varied
+    /// cell draw by too (573, 578).
+    #[serde(default)]
+    pub seed: u64,
 }
 
 /// Kinds a child never lacks (531's reading): those that feed, sense or fix.
@@ -58,7 +62,11 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
             absent.push((i as u8, at as u8));
         }
     }
-    Soma { segments, absent }
+    Soma {
+        segments,
+        absent,
+        seed,
+    }
 }
 
 /// A part of `t` at `situs`, attached to `parent` at `offset`, holding

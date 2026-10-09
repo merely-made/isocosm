@@ -316,7 +316,8 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
                 who: Binding::Part, ..
             }
             | Query::Part { .. }
-            | Query::Expresses { .. } => "parts".into(),
+            | Query::Expresses { .. }
+            | Query::Routes { .. } => "parts".into(),
             Query::Computed(_) => "computed".into(),
             Query::Alive(_) => "alive".into(),
             Query::Trait { key, .. } => format!("trait:{key}"),

@@ -12,6 +12,7 @@ mod effect;
 mod epoch;
 mod mind;
 mod recipe;
+mod systems;
 
 pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read, Reading, Use};
 pub(crate) use body::expressing;
@@ -21,6 +22,7 @@ pub use effect::{Conversion, Effect};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
 pub use recipe::{Affinity, Anchor, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
+pub use systems::{Carriage, Fill, Role, System, default_systems};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AccountKind {
@@ -117,6 +119,14 @@ pub enum Query {
     /// mouthful of at least a milligram. It neither draws nor reads a kept
     /// value, being read before the act does either.
     Computed(Expr),
+    /// A body's systems route `function` in `role` (rulings 569 and 575):
+    /// one it carries names it there, a living part expresses it, and the
+    /// systems naming it are realized as one.
+    Routes {
+        who: Binding,
+        function: Key,
+        role: Role,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -224,6 +234,15 @@ pub struct Rules {
     /// Tissue domains and the crossings favoured (ruling 516).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub affinity: Option<Affinity>,
+    /// The world's default systems (rulings 489 and 574), which a founded
+    /// body carries as far as it realizes them. Worlds naming none
+    /// serialize and hash as before the field existed.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub systems: BTreeMap<Key, System>,
+    /// What a route carries (564), absent in worlds whose bodies read no
+    /// systems.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub carriage: Option<Carriage>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -326,6 +345,10 @@ impl Process {
                             ..
                         }
                         | Query::Expresses { .. }
+                        | Query::Routes {
+                            who: Binding::Actor,
+                            ..
+                        }
                 ) || matches!(q, Query::Computed(x) if Amount::Computed(x.clone()).bulk_safe())
             })
             && self.commitments.iter().chain(&self.effects).all(|e| {

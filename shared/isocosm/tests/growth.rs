@@ -50,6 +50,8 @@ fn recipe(anamorphic: bool) -> Development {
         }],
         variance: 0,
         absence: [0, 1],
+        riff: [0, 1],
+        vary: [0, 1],
     };
     Development {
         lexicon: recipe.kinds(),
@@ -87,6 +89,7 @@ fn body(g: &Genesis, drawn: &[u8], absent: &[(u8, u8)], cut: &[[u8; 3]], reserve
     let soma = Soma {
         segments: drawn.to_vec(),
         absent: absent.to_vec(),
+        seed: 0,
     };
     let mut e = g.population.get(first_grazer(g)).unwrap().clone();
     e.parts = develop(&g.rules, &d, &soma).unwrap();

@@ -5,7 +5,7 @@
 //! expression tree over what the act reads, with a draw term keyed by the
 //! act. An act resolves every amount before staging anything with it.
 
-use super::{Binding, BodyRules};
+use super::{Binding, BodyRules, Role};
 use crate::{
     Result, anatomy,
     schema::{Key, Part},
@@ -117,6 +117,13 @@ pub enum Expr {
         who: Binding,
         each: Box<Expr>,
     },
+    /// What a body's systems carry of `ask` (rulings 562 and 581):
+    /// `reading`, a `Reading::Carried`, read with its ask set to `ask`'s
+    /// value.
+    Carried {
+        reading: Reading,
+        ask: Box<Expr>,
+    },
 }
 
 /// A reading an expression takes, with the body a sum over parts reads it
@@ -167,6 +174,25 @@ pub enum Reading {
     /// body does not yet hold (rulings 478 and 479): the room growth toward
     /// the recipe has, nought for a body without one.
     Lacking { who: Binding },
+    /// What the systems a body carries naming `function` in `role` carry
+    /// of `ask` to their effect parts (rulings 562, 575, 581 and 582):
+    /// their share by their room for `lands`, or by their cells where it
+    /// lands nothing, the parts a bite landed on being the act's.
+    Carried {
+        who: Binding,
+        function: Key,
+        role: Role,
+        ask: u64,
+        lands: Vec<Key>,
+        /// The route this one joins through the nervous system (rulings
+        /// 659 to 664): asked only as far as a sense reaches both.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        joined: Option<(Key, Role)>,
+    },
+    /// What a body has room for of an account within what the act's
+    /// carriage lets reach each part (581); all its room where none bounds
+    /// it.
+    Room { who: Binding, key: Key },
 }
 
 /// Ruling 493's measurements, each read from a part's box.
@@ -204,7 +230,9 @@ impl Reading {
             Self::Measured {
                 function, measure, ..
             } => anatomy::share_of(p, function, *measure),
-            Self::Kept { .. } | Self::Lacking { .. } => 0,
+            Self::Kept { .. } | Self::Lacking { .. } | Self::Carried { .. } | Self::Room { .. } => {
+                0
+            },
         }
     }
 
@@ -218,7 +246,9 @@ impl Reading {
             | Self::CellMass { who, .. }
             | Self::CellWeight { who }
             | Self::Lacking { who }
-            | Self::Measured { who, .. } => *who,
+            | Self::Measured { who, .. }
+            | Self::Carried { who, .. }
+            | Self::Room { who, .. } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,
         }
@@ -262,9 +292,10 @@ impl Expr {
             Self::Const(_) | Self::Read(_) | Self::Draw { .. } => vec![],
             Self::Add(v) | Self::Mul(v) | Self::Min(v) | Self::Max(v) => v.iter().collect(),
             Self::Div(a, b) | Self::AtLeast(a, b) => vec![a, b],
-            Self::Clamp { value, .. } | Self::Sqrt(value) | Self::Parts { each: value, .. } => {
-                vec![value]
-            },
+            Self::Clamp { value, .. }
+            | Self::Sqrt(value)
+            | Self::Parts { each: value, .. }
+            | Self::Carried { ask: value, .. } => vec![value],
         }
     }
     pub fn nodes(&self) -> usize {
@@ -281,6 +312,14 @@ impl Expr {
                 reading,
                 folded: None,
             }],
+            Self::Carried { reading, ask } => {
+                let mut uses = vec![Use {
+                    reading,
+                    folded: None,
+                }];
+                uses.extend(ask.reads());
+                uses
+            },
             Self::Parts { who, each } => {
                 let mut uses = each.reads();
                 for u in uses.iter_mut().filter(|u| u.reading.who() == Binding::Part) {
@@ -317,6 +356,13 @@ impl Expr {
                 }
                 each.check()
             },
+            Self::Carried { reading, ask } => match reading {
+                Reading::Carried {
+                    who: Binding::Actor | Binding::Target,
+                    ..
+                } => ask.check(),
+                _ => Err("an amount carries only through a body's systems".into()),
+            },
             _ => self.children().iter().try_for_each(|c| c.check()),
         }
     }
@@ -349,6 +395,13 @@ impl Expr {
             Self::AtLeast(a, b) => {
                 let a = eval(a)?;
                 i64::from(a >= eval(b)?)
+            },
+            Self::Carried { reading, ask } => {
+                let mut r = reading.clone();
+                if let Reading::Carried { ask: slot, .. } = &mut r {
+                    *slot = eval(ask)?.max(0).unsigned_abs();
+                }
+                read(&r)?
             },
             Self::Parts { who, each } => {
                 let mut total = 0i64;

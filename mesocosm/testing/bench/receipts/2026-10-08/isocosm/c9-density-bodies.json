@@ -1,0 +1,185 @@
+{
+ "kind": "isocosm-probe-bodies-density-ladder",
+ "rows": [
+  {
+   "file": "c9-density-bodies-32.json",
+   "sha256": "8898e39550c6b674f3f64dea96f0af2241afbb2df18615389fa6650205812340",
+   "master_seed": 1791531357652834600,
+   "draws": 32,
+   "producers_per_site": [
+    32,
+    32
+   ],
+   "grazers_per_site": [
+    8,
+    8
+   ],
+   "exact_evaluations": 694535,
+   "crowd_evaluations": 582987,
+   "evaluation_ratio": 1.19,
+   "per_draw_evaluation_ratio": {
+    "min": 0.99,
+    "median": 1.22,
+    "max": 1.46
+   },
+   "exact_seconds": 140.41,
+   "crowd_seconds": 40.832,
+   "wall_ratio": 3.4,
+   "alive_end": {
+    "min": 7.0,
+    "median": 63.0,
+    "max": 166.0
+   },
+   "alive_per_state_end": {
+    "min": 1.0,
+    "median": 1.03,
+    "max": 1.29
+   },
+   "shortfalls": 6335
+  },
+  {
+   "file": "c9-density-bodies-64.json",
+   "sha256": "b733c04cc76b1d3778a18b2f615e5b4790490547b0cced0bed9d2db687830664",
+   "master_seed": 1791531556786749100,
+   "draws": 32,
+   "producers_per_site": [
+    64,
+    64
+   ],
+   "grazers_per_site": [
+    16,
+    16
+   ],
+   "exact_evaluations": 1397722,
+   "crowd_evaluations": 1234575,
+   "evaluation_ratio": 1.13,
+   "per_draw_evaluation_ratio": {
+    "min": 1.0,
+    "median": 1.15,
+    "max": 1.44
+   },
+   "exact_seconds": 486.33,
+   "crowd_seconds": 99.16,
+   "wall_ratio": 4.9,
+   "alive_end": {
+    "min": 24.0,
+    "median": 110.0,
+    "max": 219.0
+   },
+   "alive_per_state_end": {
+    "min": 1.0,
+    "median": 1.04,
+    "max": 1.15
+   },
+   "shortfalls": 20938
+  },
+  {
+   "file": "c9-density-bodies-128.json",
+   "sha256": "ccf3409389bab7941064830f7006fdbcf9d2dc488add13f561f900326494a2ac",
+   "master_seed": 1791532206229553600,
+   "draws": 32,
+   "producers_per_site": [
+    128,
+    128
+   ],
+   "grazers_per_site": [
+    32,
+    32
+   ],
+   "exact_evaluations": 2989217,
+   "crowd_evaluations": 2589820,
+   "evaluation_ratio": 1.15,
+   "per_draw_evaluation_ratio": {
+    "min": 1.05,
+    "median": 1.16,
+    "max": 1.31
+   },
+   "exact_seconds": 1273.83,
+   "crowd_seconds": 155.745,
+   "wall_ratio": 8.2,
+   "alive_end": {
+    "min": 51.0,
+    "median": 271.0,
+    "max": 456.0
+   },
+   "alive_per_state_end": {
+    "min": 1.01,
+    "median": 1.08,
+    "max": 1.28
+   },
+   "shortfalls": 32614
+  },
+  {
+   "file": "c9-density-bodies-256.json",
+   "sha256": "a7095040534187b09ac1a8f0a82b1dafd84e0fb82e5524e88b30c693690b8940",
+   "master_seed": 1791533725946461000,
+   "draws": 32,
+   "producers_per_site": [
+    256,
+    256
+   ],
+   "grazers_per_site": [
+    64,
+    64
+   ],
+   "exact_evaluations": 5942678,
+   "crowd_evaluations": 5191169,
+   "evaluation_ratio": 1.14,
+   "per_draw_evaluation_ratio": {
+    "min": 1.06,
+    "median": 1.17,
+    "max": 1.37
+   },
+   "exact_seconds": 5329.11,
+   "crowd_seconds": 410.042,
+   "wall_ratio": 13.0,
+   "alive_end": {
+    "min": 189.0,
+    "median": 409.0,
+    "max": 888.0
+   },
+   "alive_per_state_end": {
+    "min": 1.01,
+    "median": 1.06,
+    "max": 1.27
+   },
+   "shortfalls": 99300
+  },
+  {
+   "file": "c9-density-bodies-512.json",
+   "sha256": "79f6968178c2ae907e727f4b04fbf5cf3adf76fba25b846a6fd55eabd5469895",
+   "master_seed": 1791539965963973700,
+   "draws": 32,
+   "producers_per_site": [
+    512,
+    512
+   ],
+   "grazers_per_site": [
+    128,
+    128
+   ],
+   "exact_evaluations": 10786379,
+   "crowd_evaluations": 9062190,
+   "evaluation_ratio": 1.19,
+   "per_draw_evaluation_ratio": {
+    "min": 1.11,
+    "median": 1.18,
+    "max": 1.38
+   },
+   "exact_seconds": 13136.71,
+   "crowd_seconds": 578.1,
+   "wall_ratio": 22.7,
+   "alive_end": {
+    "min": 356.0,
+    "median": 749.0,
+    "max": 1510.0
+   },
+   "alive_per_state_end": {
+    "min": 1.02,
+    "median": 1.05,
+    "max": 1.31
+   },
+   "shortfalls": 172766
+  }
+ ]
+}

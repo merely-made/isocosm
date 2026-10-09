@@ -104,9 +104,9 @@ impl Staged<'_> {
                 });
             }
         }
-        let soma = self.soma(&b.lineal, id).segments;
+        let soma = self.soma(&b.lineal, id);
         let tick = self.sim.state.tick;
-        let child = births::seedling(self.actor(), part, mark, soma, tick);
+        let child = births::seedling((self.actor(), &b.lineal), rules, (part, mark), soma, tick);
         self.relate(id);
         self.stage.births.push(child);
         Ok(true)
