@@ -9426,6 +9426,24 @@ what later sections derive from.
      the subtree regrows the same way, part by part from the top, and
      isometer gains the matching operation (it has `sever` and no revival)
      with the bodies family's move (676).
+720. **Isometer's fixtures become its own.** 2026-10-08, the in-site space
+     survey's last round. Question: isometer-lens, -mesh and -render
+     dev-depend on isocosm, and 16 of their files import `isocosm::legacy`
+     as fixtures, which break when legacy places retires (666); what
+     replaces them? Options: isometer-local fixtures (recommended); native
+     isocosm draws. Mark chose "Isometer-local fixtures (Recommended)". So
+     the fixtures are rebuilt from isometer's own ground and body documents,
+     and isometer's tests no longer depend on the sim it serves.
+721. **Lineage vocabulary leaves isometer-core with the bodies family.**
+     2026-10-08. Question: isometer-core carries Mesocosm's lineage words 39
+     times (`SpeciesId`, `Origin::Incorporated{from_species}`,
+     `Provenance.epoch`, `BodyPlan`); under 674 it holds one geometry for
+     every game; does that vocabulary leave? Options: it leaves with the
+     bodies family (recommended); it stays. Mark chose "Leaves with the
+     bodies family (Recommended)". So when 674 lands, provenance and species
+     ids move to the sim, keyed by `PartId` (699), isometer keeping geometry
+     and an opaque origin tag, and `BodyPlan`'s shape classes stay as
+     product-neutral geometry.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

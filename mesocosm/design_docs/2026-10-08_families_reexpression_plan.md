@@ -146,6 +146,11 @@ is), its certification passes on draws with its controls.
   once mere's T2 lands (697, 700); walking, routing and sight are rewritten
   over SP5 (702); soil stays the sim's on isometer's columns (703); bodies
   key physiology by `PartId`, situs joining `BodyDocument` (699).
+- 704 to 719: checkpoint 10's brief, in the sim plan; 719 has a regrown
+  part revive its tombstone, so isometer gains a revival beside `sever`
+  with the bodies family.
+- 720, 721: isometer's fixtures become its own, and the lineage vocabulary
+  leaves isometer-core with the bodies family.
 
 Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.
