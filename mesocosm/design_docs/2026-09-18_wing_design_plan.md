@@ -9574,6 +9574,18 @@ what later sections derive from.
      device (Recommended)". So the receipts share one device made once, which
      tests whether concurrent device creation is the cause; done when ten
      parallel runs pass.
+     *Annotation, 2026-10-09:* ten parallel runs of ten passed, the suite
+     in about 3 s against 5; merged at `ad206d26`. Concurrent device
+     creation was the cause, closing 656's open bug.
+731. **The fold happens now, on a repin to `50fd021c`.** 2026-10-09.
+     Question: the conatus queries landed at mere `50fd021c`, 85 commits
+     past `bdc89a05` (its lock changing 11 lines, genet and netrender
+     unchanged), and the fold (725) needs isometry's pin past it; with the
+     next repin, or now, with mere's coordinator reporting Mark's usage
+     short? Options: with the next repin (recommended); now. Mark chose
+     "Now". So isometry repins its 50 mere rows to `50fd021c`, fetching
+     mere's source once as 728 did, and parry-ground's checks move onto
+     conatus's `BodyWorld` queries.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
