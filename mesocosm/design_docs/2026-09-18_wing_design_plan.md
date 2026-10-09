@@ -9444,6 +9444,40 @@ what later sections derive from.
      ids move to the sim, keyed by `PartId` (699), isometer keeping geometry
      and an opaque origin tag, and `BodyPlan`'s shape classes stay as
      product-neutral geometry.
+722. **The fold asks mere for point and occupancy reads, and waits.**
+     2026-10-08, the fold assessment under 695. Evidence: conatus's
+     `BodyWorld` at `329d60d0` queries only by `raycast`, `overlaps`,
+     `edit_voxels` and `step`, with no point, contact or occupancy query,
+     and rapier-036 leaves that surface unchanged. Question: parry-ground's
+     point containment and its exact occupancy cross-check (41,763 occupied
+     voxels, 132 unchanged-region signatures) have no conatus query; what
+     happens to them? Options: ask mere and wait (recommended); proxies
+     now; drop the collider side. Mark chose "Ask mere; the fold waits
+     (Recommended)". So mere's dynamics coordinator is asked for a point
+     query and a voxel occupancy read-back on `BodyWorld`, and both checks
+     keep their meaning.
+723. **The contact check asks mere for a contact query.** 2026-10-08.
+     Question: the probe's ball gives a manifold of 1 then 0 contacts and a
+     replayed minimum distance, while conatus exposes no contact geometry
+     and rapier skips fixed-fixed contacts by default. Options: `overlaps`,
+     re-worded (recommended); ask mere for a contact query; a dynamic ball
+     and step events. Mark chose "Ask mere for a contact query". So conatus
+     is asked for a shape-against-world contact query returning points and
+     distances, a contact-geometry vocabulary that is mere's to rule, and
+     the fold waits on it too.
+724. **The folded probe stays a standalone isometry probe.** 2026-10-08.
+     Question: where does it live? Options: its own workspace under
+     `crates/probes`, pinned to mere by rev (recommended); `TactileWorld`'s
+     tests; a receipt in mere, losing every `Ground` figure. Mark chose
+     "Standalone isometry probe (Recommended)". *Reading, not ruled:* its
+     name no longer fits once parry goes, and a rename is a naming round.
+725. **The fold comes after the rapier-036 merge.** 2026-10-08. Question:
+     conatus's public API is identical at `329d60d0` and on rapier-036;
+     fold now or after? Options: after the merge and isometry's repin
+     (recommended); now, re-running at the repin. Mark chose "After the
+     rapier-036 merge (Recommended)". So the figures are taken once, on
+     the stack's new physics and the queries 722 and 723 ask for, and 693's
+     caret pin lapses with the direct parry dependency.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
