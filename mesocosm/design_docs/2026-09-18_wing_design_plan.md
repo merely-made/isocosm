@@ -9365,6 +9365,36 @@ what later sections derive from.
      threshold; a cause that names it. Mark chose "Only at all cells
      (Recommended)". So severing has one mechanism, and a game's strikes
      reach it by wounding hard enough.
+712. **Healing lands just before tissue.** 2026-10-08, checkpoint 10's
+     third round. Question: 496 heals "before it fills tissue or grows new
+     parts"; a hungry body lands reserve, tissue, grow, provision and a fed
+     one tissue, grow, provision, reserve; where does healing sit? Options:
+     just before tissue (recommended); first in both. Mark chose "Just
+     before tissue (Recommended)". So a hungry body lands reserve, heal,
+     tissue, grow, provision, and a fed one heal, tissue, grow, provision,
+     reserve.
+713. **Regrowing from a fragment is a second trait.** 2026-10-08.
+     Question: 485 makes healing and regrowing parts one trait; is
+     regrowing from a fragment (470) its own? Options: a second trait,
+     drawn per lineage like 548's eight (recommended); one trait for both.
+     Mark chose "A second trait (Recommended)". So a lineage can heal
+     without its fragments living, and the anatomy brief §7's reading is
+     ruled.
+714. **A living fragment re-roots as a seedling does.** 2026-10-08.
+     Question: a limb's subtree holds no recipe root, so `lacking()` grows
+     nothing; how does a living fragment grow? Options: re-root like a
+     seedling (recommended); grow toward the root; re-develop the recipe.
+     Mark chose "Re-root like a seedling (Recommended)". So the fragment's
+     top part becomes part 0 at situs `[0,0,0]`, as a bud does, and it
+     grows its recipe from there.
+715. **A living fragment is a birth, unprovisioned.** 2026-10-08. Question:
+     a bud is `Born(lineage)`, spends provision (518) and counts among
+     births and the living; is a fragment a birth? Options: a birth without
+     provision (recommended); not a birth. Mark chose "A birth,
+     unprovisioned (Recommended)". So a living fragment is `Born(lineage)`,
+     counted among births and the living with a parent relation (554),
+     carrying its own matter, its systems dormant where it cannot realize
+     them (583).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
