@@ -9303,6 +9303,38 @@ what later sections derive from.
      the sim's, keyed by isometer's columns, which settles 343's "whether
      columns are sites"; the tier line goes to the host or directing; and
      SP5's places supersede the coarse partition.
+704. **Checkpoint 10's wounds come from an agentless hazard.** 2026-10-08,
+     checkpoint 10's brief, first round. Question: what inflicts a wound in
+     the probe before 123's fights exist (the probe's fights are between
+     partless members, 504's extentless control; the bodies probe contests
+     nothing; a dev command is not drawn)? Options: an agentless hazard at
+     a per-world drawn rate (recommended); a bite past a threshold; fights
+     joined to bodies. Mark chose "Agentless hazard (Recommended)". So a
+     drawn hazard wounds a part, rate zero is the negative control, and
+     123's fights reuse the same wound effect when they come.
+705. **A wound is its own effect.** 2026-10-08. Question: how is a wound
+     told from a bite (469: a bite takes tissue, a wound takes cells; 496
+     passed on "a bite to the gut takes intake")? Options: its own `Effect`
+     with its own part draw (recommended); `Eat` gains a wound flag. Mark
+     chose "Its own Effect (Recommended)". So `Eat` stays tissue only, and
+     in the flow record a spill goes from part to site in the part's own
+     matter while a bite goes from part to eater.
+706. **A part keeps its lost cells.** 2026-10-08. Question: capacity and
+     adult mass read only from `half_extent` today, which 674 makes the
+     body document's; how does a wound shrink them? Options: a lost-cells
+     field that capacity and ceiling subtract (recommended); shrink
+     `half_extent`. Mark chose "A lost-cells field (Recommended)". So
+     physiology never writes geometry, and 674's move stays mechanical.
+707. **Severing follows isometer's semantics.** 2026-10-08. Question:
+     native flags only the cut part (its children still count in `held`),
+     isometer tombstones the whole subtree with stable ids and refuses the
+     root, and a bud removes the part outright; what does severing record?
+     Options: isometer's semantics (recommended); remove like a bud; the
+     cut part only. Mark chose "Isometer's semantics (Recommended)". So a
+     severing tombstones the whole subtree, keeps ids, never takes the
+     root, and moves the tombstones' matter out, closing the gap where
+     `anatomy::books` counts a tombstone's matter that `held` and `room`
+     skip.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
