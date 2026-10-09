@@ -9482,6 +9482,27 @@ what later sections derive from.
      723's queries with T2, behind rapier-036, as a lane in the conatus
      engine plan §1; the contact query goes to Mark as a round there, and
      352's refresh call is assessed in the same pass.
+726. **Isometry repins onto mere's rapier-036 after checkpoint 9 merges.**
+     2026-10-09. Evidence: mere's physics coordinator reported `rapier-036`
+     landed on mere main at `bdc89a05` (rapier 0.36, parry 0.31.1,
+     `enhanced-determinism`, seiche and conatus ported, and D2's ten
+     compatible updates), 240 commits past isometry's `329d60d0`; the sweep
+     covers 52 manifest pins; checkpoint 9's certified run had about 50
+     minutes left on a branch built on `329d60d0`. Question: when does
+     isometry repin? Options: after checkpoint 9 merges (recommended); start
+     now in a worktree. Mark chose "After cp9 merges (Recommended)". So
+     checkpoint 9 certifies and merges on its own pin, and the repin follows
+     in its own worktree.
+727. **parry-ground repins in the same sweep.** 2026-10-09. Question: 692 has
+     parry-ground wait for this merge with a caret pin (693), while its fold
+     into conatus (725) also waits on the three queries 722 and 723 asked
+     for; does it repin now? Options: repin it too (recommended); leave it
+     until the fold. Mark chose "Repin parry-ground too (Recommended)". So
+     it moves to a caret `0.31.1` in the sweep, its receipt is run, and a
+     moved figure stops the sweep (694); the fold comes when mere's queries
+     land. mere's coordinator adds that 0.36 sleeps bodies sooner (0.5 s
+     and 0.05 against 2 s and 0.4) and seiche's `remask_node` now wakes its
+     body (F175), so a world read mid-settle may read differently.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
