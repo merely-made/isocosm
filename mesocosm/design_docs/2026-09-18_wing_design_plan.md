@@ -9096,6 +9096,43 @@ what later sections derive from.
      Isocosm runs without in-site space, rounds, births, boundaries and a
      collapse at site grain with its receipts replaying, and the full M4
      follows when places land.
+681. **The interim M4 is the switch; amends 678.** 2026-10-08, the directing
+     survey's first round. Question: 678 makes Mesocosm's world family's
+     move the switch, last, after places, while 680 puts a played loop on
+     Isocosm before places; where do M3 and the interim M4 run? (genet's W4
+     bench, 8,288 lines, already drives a native `Session` beside the legacy
+     world.) Options: beside legacy, switching at the world family's move
+     (recommended); the interim M4 is the switch. Mark chose "Interim M4 is
+     the switch". So genet's runtime moves onto a native `Session` at the
+     interim M4, and in-site play (carve, deposit, voxel sight) is gone
+     until the full M4. *Reading, not ruled:* M3 lands with the interim M4,
+     so 671's gap still closes to nothing; Mesocosm's legacy world family
+     retires at that switch rather than after places.
+682. **M3 plays a native generated lineage.** 2026-10-08. Question: native
+     generation (`bodied.rs`) makes lineages today, while re-expressing
+     Mesocosm's founders waits on the bodies family and the families plan's
+     fork 9; which critter does M3 play? Options: a native lineage
+     (recommended); the founders, re-expressed. Mark chose "Native lineage
+     (Recommended)". So M3 does not wait on the bodies family, and the
+     founders join when it and fork 9 land.
+683. **The critter's choice is a deliberative methodology.** 2026-10-08.
+     Question: the scheduler runs every due process for each ready group, so
+     nothing chooses one act over another and a nudge has nowhere to be
+     weighed; where does the choice live? Options: a scheduler methodology on
+     the unused `Method::Deliberative` (recommended); nudges as kept state
+     that ordinary processes read through `Query`. Mark chose "Deliberative
+     method (Recommended)". So a deliberative critter chooses one Choice
+     process, weighing needs, mood, nudges and bond, which is 679's "chosen
+     by its methodology", and `Receipt.foregone` records what it passed over.
+684. **The interim boundary ports grow-a-copy scoring.** 2026-10-08.
+     Question: the interim M4's boundaries adapt every lineage (57, 182),
+     while adaptation belongs to the lineages family, fifth, after places;
+     legacy `adapt_round` scores a candidate by growing a copy, and native
+     `Session::fork_at` exists. Options: port grow-a-copy over `fork_at`
+     (recommended); pull the lineages family ahead of places; a boundary
+     without adapting. Mark chose "Port grow-a-copy (Recommended)". So
+     adaptation's scoring lands natively ahead of its family, and 195 and
+     668's order stands.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

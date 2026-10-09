@@ -138,6 +138,8 @@ is), its certification passes on draws with its controls.
 - 677, 678: the Mesocosm overlay's M2 is this plan's Mesocosm share, with
   the overlay's web condition (260, 267, 283); Mesocosm's world family moves
   last, its re-expression being the switch to M3's directing.
+  *Annotation, 2026-10-08:* 681 amends 678: the switch is the interim M4,
+  before places, and in-site play waits for the full M4.
 
 Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.

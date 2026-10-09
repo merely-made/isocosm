@@ -4,7 +4,8 @@
 
 **Status, 2026-10-08:** M0 and M1 done (2026-09-25); M2 is now the families
 re-expression plan's Mesocosm share (677), M3 lands with Mesocosm's world
-family (678), and M4 gains an interim milestone at site grain (680). *The
+family (678), and M4 gains an interim milestone at site grain (680), which
+is the switch (681). *The
 earlier status:* plan; M0 done the same day (rulings 194 to 196),
 M1 done the same day (rulings 197, 202 to 205, 210 to 213), M2 to M4
 proposed and not
@@ -226,6 +227,13 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   being the switch to M3's directing (678), driving ending there (671).
   The driving intents are the critter's own acts and `Idle` goes (679). An
   interim M4 at site grain comes before the full M4 (680).
+- *Annotation, 2026-10-08 (681 to 684):* the interim M4, not the world
+  family's move, is the switch: genet's runtime moves onto a native
+  `Session` there, and in-site play waits for the full M4 (681, amending
+  678). M3 plays a native generated lineage (682), its choice made by a
+  deliberative methodology weighing needs, mood, nudges and bond (683), and
+  the interim boundary ports grow-a-copy scoring over `Session::fork_at`
+  ahead of the lineages family (684).
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
@@ -254,7 +262,9 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   (ruling 113). This is W5's done-condition.
 
 M1 and M2 run side by side; M3 needs M2's matter, bodies and places; M4
-needs all of M2 and M3.
+needs all of M2 and M3. *Annotation, 2026-10-08:* superseded in part by
+680 to 682: M3 and the interim M4 run at site grain on a native lineage,
+before places and the bodies family; the full M4 still needs both.
 
 ## 6. Decisions for Mark
 
