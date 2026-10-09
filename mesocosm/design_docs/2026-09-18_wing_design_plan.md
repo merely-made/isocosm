@@ -9510,6 +9510,16 @@ what later sections derive from.
      shape in conatus's own vocabulary going to Mark as forks before
      anything is built, 352's refresh assessed beside them. This carries
      700, 722 and 723.
+728. **The repin may fetch mere's source.** 2026-10-09. Evidence: cargo's
+     git cache holds genet `15713014` (mere `bdc89a05`'s genet pin, 68
+     commits past isometry's `965b64e2`, a fast-forward) and netrender
+     `9607d16f`, and all 17 registry versions new in mere's lock since
+     `329d60d0` are cached; only mere `bdc89a05` itself is missing.
+     Question: may the repin fetch it, one git fetch of the owned
+     `merely-made/mere` remote? Options: yes (recommended); not yet. Mark
+     chose "Yes, fetch mere (Recommended)". So the sweep moves 50 mere rows
+     to `bdc89a05`, 17 genet rows to `15713014` and parry-ground to parry3d
+     0.31.1 in its own worktree, fetching nothing else.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
