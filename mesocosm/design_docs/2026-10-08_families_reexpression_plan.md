@@ -135,6 +135,9 @@ is), its certification passes on draws with its controls.
   reach go through isometer's in-site space, the reach field staying the
   sim's record; this lands with the bodies family, checkpoints 9 to 11
   certifying on the sim's geometry as built.
+- 677, 678: the Mesocosm overlay's M2 is this plan's Mesocosm share, with
+  the overlay's web condition (260, 267, 283); Mesocosm's world family moves
+  last, its re-expression being the switch to M3's directing.
 
 Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.

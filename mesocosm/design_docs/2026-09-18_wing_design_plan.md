@@ -9062,6 +9062,40 @@ what later sections derive from.
      bodies family (Recommended)". So checkpoints 9 to 11 certify on the
      sim's geometry as built, and the bodies family's re-expression, after
      11 (668), moves geometry onto isometer, certified by draws (667).
+677. **The overlay's M2 is the families plan's Mesocosm share.** 2026-10-08,
+     the Mesocosm overlay plan's design round. Question: M2 ("absorption by
+     family") predates 591 and 666 to 676, and the families re-expression
+     plan carries that work for all three games; what becomes of M2?
+     Options: M2 is the families plan's Mesocosm share (recommended); keep
+     M2 as its own phase. Mark chose "M2 is the families plan's Mesocosm
+     share (Recommended)". So M2 points to the families plan for Mesocosm's
+     families and keeps its own condition: the web each level enables stays
+     alive in most draws (260), measured by persistence, turnover, collapse
+     and response to intervention (267, 283).
+678. **Mesocosm's world family moves last, with M3.** 2026-10-08. Question:
+     671 ends Mesocosm's driving when its world family moves, leaving it
+     unplayable until M3; how is the gap handled? Options: the world family
+     moves last, with M3 (recommended); accept the gap; M3 first, then the
+     families. Mark chose "World family moves last, with M3 (Recommended)".
+     So Mesocosm keeps playing on the legacy world until directing on
+     Isocosm is ready, and the world family's re-expression is the switch
+     itself: the gap closes to nothing.
+679. **The driving intents become the critter's own acts; `Idle` goes.**
+     2026-10-08, ruling the overlay plan §3's two readings. Question: the
+     old `Move`, `Metabolize`, `Consume`, `Graft`, `Deposit` and `Carve`
+     were driving; `Idle` advanced a tick without acting. Options: rule both
+     as read (recommended); rule the six and keep `Idle` as a player act.
+     Mark chose "Rule both as read (Recommended)". So the six are the
+     critter's own acts under directing, chosen by its methodology, and
+     `Idle` has no role.
+680. **An interim M4 at site grain.** 2026-10-08. Question: M4 now waits for
+     in-site space through isometer (670, after SP3 to SP5) and for bodies
+     after checkpoints 10 and 11; is there an earlier milestone? Options: an
+     interim M4 at site grain (recommended); M4 waits for places. Mark chose
+     "An interim M4 at site grain (Recommended)". So a first played loop on
+     Isocosm runs without in-site space, rounds, births, boundaries and a
+     collapse at site grain with its receipts replaying, and the full M4
+     follows when places land.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

@@ -2,7 +2,10 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-09-25:** plan; M0 done the same day (rulings 194 to 196),
+**Status, 2026-10-08:** M0 and M1 done (2026-09-25); M2 is now the families
+re-expression plan's Mesocosm share (677), M3 lands with Mesocosm's world
+family (678), and M4 gains an interim milestone at site grain (680). *The
+earlier status:* plan; M0 done the same day (rulings 194 to 196),
 M1 done the same day (rulings 197, 202 to 205, 210 to 213), M2 to M4
 proposed and not
 opened. Drafted at Mark's
@@ -215,6 +218,14 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   derived from it (ruling 204). **Done 2026-09-25:** the attention set
   typed under rulings 210 to 213. The sim's side of it, holding each set and
   deriving each stream, is built with M2 and M3.
+- *Annotation, 2026-10-08 (677 to 680):* M2 is the
+  [families re-expression plan](2026-10-08_families_reexpression_plan.md)'s
+  Mesocosm share, in its merged order (668), each family retiring as it
+  lands (666), certified by draws (667), keeping this phase's web
+  condition below. Mesocosm's world family moves last, its re-expression
+  being the switch to M3's directing (678), driving ending there (671).
+  The driving intents are the critter's own acts and `Idle` goes (679). An
+  interim M4 at site grain comes before the full M4 (680).
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
