@@ -1,4 +1,4 @@
-// Temporary: checkpoint 9's evidence, the probe's cells and asks.
+// Checkpoint 9's evidence, the probe's cells and asks; it ran as an ignored test in shared/isocosm/tests.
 use isocosm::{anatomy, probe::BodyFounding, rules::Measure, schema::*};
 
 #[test]
