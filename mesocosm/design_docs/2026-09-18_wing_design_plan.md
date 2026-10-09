@@ -9478,6 +9478,10 @@ what later sections derive from.
      rapier-036 merge (Recommended)". So the figures are taken once, on
      the stack's new physics and the queries 722 and 723 ask for, and 693's
      caret pin lapses with the direct parry dependency.
+     *Annotation, 2026-10-09:* mere's dynamics coordinator queued 722 and
+     723's queries with T2, behind rapier-036, as a lane in the conatus
+     engine plan §1; the contact query goes to Mark as a round there, and
+     352's refresh call is assessed in the same pass.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
