@@ -9133,6 +9133,32 @@ what later sections derive from.
      without adapting. Mark chose "Port grow-a-copy (Recommended)". So
      adaptation's scoring lands natively ahead of its family, and 195 and
      668's order stands.
+685. **A suggestion is a derived reading.** 2026-10-08, the directing
+     survey's second round. Question: what is a suggestion that surfaces
+     (the contract's `EventRecord` is a generic topic and a byte payload;
+     `Receipt.foregone` lists the Choice processes passed over; `knows`
+     records what the critter knows)? Options: a reading over `foregone`
+     and `knows` (recommended); a new contract event; wait for senses. Mark
+     chose "Derived reading (Recommended)". So a suggestion is what the
+     critter considered and could act on, read from its receipts and what
+     it knows, and nothing new is kept.
+686. **The runtime translates the contract.** 2026-10-08. Question: which
+     way does the contract dependency run (Isocosm does not depend on
+     `isocosm-overlay`, 1,256 lines and used by nothing, and the overlay
+     depends on nothing sim-internal, D18)? Options: the runtime over
+     `Session` translates envelopes into native commands (recommended);
+     Isocosm's `Command` takes the contract's types. Mark chose "Runtime
+     translates (Recommended)". So Isocosm and the contract stay
+     independent, and the nudge enters the sim as a new logged native
+     command.
+687. **A region at site grain groups sites by biomass.** 2026-10-08.
+     Question: what is a region at site grain, for the local collapse
+     played on (225, 226)? Options: one site (recommended); sites grouped by
+     biomass, needing a grouping rule. Mark chose "Sites grouped by
+     biomass". So the interim M4 carries 226's regions at site grain: each
+     trophic level fills its slot in a region of sites until over capacity,
+     then spills into a new one, and the regions merge as biomass falls.
+     The grouping rule is put as its own question.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
