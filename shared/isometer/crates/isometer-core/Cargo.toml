@@ -17,4 +17,4 @@ serde = { version = "1", features = ["derive"] }
 postcard = { version = "1", features = ["alloc"] }
 # The family's FNV-1a witness, built once in mere (wing ruling 609; mere's
 # F119 hands it this crate's copy). A leaf on serde, postcard and framing.
-state-witness = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+state-witness = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }

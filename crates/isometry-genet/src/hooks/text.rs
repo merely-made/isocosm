@@ -21,7 +21,7 @@ pub(super) enum Lane {
     CharacterOwner,
 }
 
-/// Which lane holds the caret, and the `<input>` node that carries it.
+/// Which lane holds the caret, and the text field node that carries it.
 ///
 /// The wrapper classes are the host/view contract. A rename in a view breaks
 /// typing here rather than silently sending letters to board shortcuts.
@@ -29,9 +29,9 @@ pub(super) fn focused_lane(runner: &Runner) -> Option<(NodeId, Lane)> {
     let node = runner.focus()?;
     let dom = runner.dom();
     let dom = dom.borrow();
-    if dom.element_name(node)?.local.as_ref() != "input" {
-        return None;
-    }
+    // Cambium marks its app text fields (a `role="textbox"` element, no
+    // longer an `<input>`) with the value they project.
+    dom.attribute(node, &Namespace::from(""), &LocalName::from("data-cambium-text-value"))?;
     let parent = dom.parent(node)?;
     let lane = match dom.attribute(parent, &Namespace::from(""), &LocalName::from("class"))? {
         "cmd-line" => Lane::Command,

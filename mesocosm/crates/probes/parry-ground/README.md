@@ -1,7 +1,7 @@
 # Committed Ground collision receipt
 
 This standalone R3 probe projects `mesocosm_core::places::Ground` occupancy into
-Parry 0.29 `Voxels`. The projection carries the committed Ground revision and
+Parry 0.31 `Voxels`. The projection carries the committed Ground revision and
 rescans only the dirty 8 by 8 by 8 Ground bricks. Parry uses the same 8-cubed
 internal chunk size and maintains its collision-neighbor masks itself.
 
@@ -36,4 +36,13 @@ and replaying the carve reproduced the complete query receipt bit for bit.
 
 Parry's direct ray and point traits work on `Voxels`. Contacts use the
 persistent contact-manifold dispatcher; the simpler single-contact helper does
-not dispatch voxel shapes in Parry 0.29.
+not dispatch voxel shapes in Parry 0.29 or 0.31.
+
+## Rerun, 2026-10-09
+
+On parry3d 0.31.1 (wing design record, rulings 692, 693 and 727), with no
+code change, every figure above reproduced exactly: 136 bricks, 69,632
+cells, 41,763 voxels; revision 0 to 1, 19 removed across four regions and
+2,048 cells; the ray 2.5 to 4.5, containment true to false, contacts one to
+zero; 132 regions retained, replay bit-identical. The probe folds into
+conatus once its queries land (695, 722 to 725).

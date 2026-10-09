@@ -16,14 +16,14 @@ toml = "1"
 sha2 = "0.10"
 wing-impresa = { path = "../wing-impresa" }
 wing-glyphs = { path = "../wing-glyphs" }
-hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
 # What the legacy tree under `src/legacy/` needs (ruling 591), at the pins
 # its products held.
-muniment = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
-nisus = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+muniment = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
+nisus = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 # The labelled witness, built once in mere (wing rulings 609, 647, 650).
-state-witness = { git = "https://github.com/merely-made/mere.git", rev = "329d60d09c181b4fcff59482bc62deab7fa27cbf" }
+state-witness = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
