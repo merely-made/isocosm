@@ -9395,6 +9395,37 @@ what later sections derive from.
      counted among births and the living with a parent relation (554),
      carrying its own matter, its systems dormant where it cannot realize
      them (583).
+716. **A hazard's wound lands on a part drawn by cells.** 2026-10-08,
+     checkpoint 10's fourth round. Question: bites draw by edible holdings
+     (`anatomy::bitten`) and 705 gives the wound its own draw; which part?
+     Options: by living cells (recommended); by tissue; uniform. Mark chose
+     "By cells (Recommended)". So bigger parts are hit more often, structure
+     for structure, apart from where the food is.
+717. **Severing bumps the body's revision; a wound does not.** 2026-10-08.
+     Question: Allocate and trait marks bump `body_revision`, invalidating
+     `Query::Part` bindings, and Eponym's `injure` bumps its own; do harms?
+     Options: severing bumps, wounds don't (recommended); both bump. Mark
+     chose "Severing bumps, wounds don't (Recommended)". So a severing
+     re-resolves bindings, and a bound process keeps its wounded part and
+     reads its new capacity.
+718. **Checkpoint 10 builds rot; eating carrion comes later.** 2026-10-08.
+     Question: 470's dead fragments are "eaten, incorporated or left to
+     rot", but nothing eats or rots a dead body today; what does checkpoint
+     10 build? Options: rot here, eating later (recommended); eating too;
+     leave as carrion. Mark chose "Rot here, eating later (Recommended)". So
+     a dead body's matter returns to the site at a drawn rate, closing the
+     conservation loop, and eating carrion comes with 123's scavenging or
+     the lineages family.
+719. **A regrown part revives its tombstone.** 2026-10-08. Question: under
+     707 a tombstone keeps its id and situs, and `lacking()` refuses a
+     situs held, severed or not; what id does a regrown part take? Options:
+     a new id, the tombstone kept (recommended); revive the tombstone. Mark
+     chose "Revive the tombstone". So healing's regrowth clears the severed
+     flag on the part at that situs and gives it new cells, and an id names
+     the part at its place in the plan across a loss. *Reading, not ruled:*
+     the subtree regrows the same way, part by part from the top, and
+     isometer gains the matching operation (it has `sever` and no revival)
+     with the bodies family's move (676).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
