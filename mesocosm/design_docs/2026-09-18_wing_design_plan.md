@@ -9519,6 +9519,15 @@ what later sections derive from.
      shape in conatus's own vocabulary going to Mark as forks before
      anything is built, 352's refresh assessed beside them. This carries
      700, 722 and 723.
+     *Annotation, 2026-10-09:* the queries and the refresh landed on mere
+     main (`5f1ab608`, docs `50fd021c`, 85 commits past `bdc89a05`):
+     `refresh_queries`, `colliders_at_point` (containment only),
+     `voxel_filled` and `voxel_cells` in a canonical order, and `contacts`
+     returning `ShapeContact { collider, point, normal, distance }` with the
+     prediction honoured exactly; the probe's ball case reads one point at
+     (1.5, 2.0, 1.5), normal (0, 1, 0), distance -0.3. T2 is paused in mere
+     on Mark's usage (its F199). The fold needs isometry's mere pin at or
+     past `50fd021c`.
 728. **The repin may fetch mere's source.** 2026-10-09. Evidence: cargo's
      git cache holds genet `15713014` (mere `bdc89a05`'s genet pin, 68
      commits past isometry's `965b64e2`, a fast-forward) and netrender
