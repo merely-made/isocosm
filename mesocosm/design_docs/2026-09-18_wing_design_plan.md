@@ -9236,6 +9236,73 @@ what later sections derive from.
      objective with its own assessment: what conatus exposes for the
      probe's ray, point and manifold checks, and whether the receipt's
      figures survive the move.
+696. **The sim records edits; isometer applies them and derives places.**
+     2026-10-08, the in-site space survey's round, under 670. Question: SP4
+     and SP5 have no code; 413 stores edits as shape operations, "an
+     asserted fact in the sim's state and history", and 422 lets an entity
+     name its patch or room; who holds what? Options: the sim records,
+     isometer applies (recommended); isometer owns the edit log; both in
+     the sim. Mark chose "Sim records, isometer applies (Recommended)". So
+     the sim keeps each edit as an asserted fact and an entity's place id,
+     and isometer applies edits to its volume and derives places, passages
+     and travel cost.
+697. **nisus is the store behind isometer, now.** 2026-10-08. Question: 330
+     made mere's nisus the voxel authority, and 670 gives in-site space to
+     isometer, whose `Ground` stores it today; how do they fit? Options:
+     isometer's API with nisus under it later, under SP6 (recommended);
+     nisus as the store now; retire 330. Mark chose "Nisus as the store
+     now". So 670 governs the interface and 330 the storage, and nisus goes
+     in behind isometer with SP4 rather than waiting for SP6.
+     *Annotation, 2026-10-08:* put back as 700 with T2 still unbuilt; it
+     stands.
+698. **SP4 and SP5 are built in isometer.** 2026-10-08. Question: the lift
+     lives in isocosm (`src/terrain`, `src/map`, 1,040 lines) and SP3's
+     adapter in genet's bench; where are SP4 and SP5 built? Options: in
+     isometer, wgpu-free (recommended); in isocosm, then moved. Mark chose
+     "In isometer (Recommended)". So edit application and places are an
+     isometer-core module or a product-neutral isometer crate without wgpu,
+     consumed by the sim directly.
+699. **The seam keys by `PartId`, and situs joins the body document.**
+     2026-10-08, under 674. Question: isometer's `PartId(u32)` is a vector
+     index with tombstones and native ids are `u64` map keys; situs and
+     shape have no isometer field; isometer's `mass_mg` would duplicate the
+     sim's ledger. Options: key by `PartId`, situs and the shape name join
+     `BodyDocument` (recommended); situs and shape stay sim-side; isometer
+     adopts `u64` ids. Mark chose "PartId; situs joins the document
+     (Recommended)". So the sim keys physiology by `PartId`, `BodyDocument`
+     gains situs and the shape name as product-neutral fields, and
+     `mass_mg` becomes a reading of the sim's ledger, not a second store.
+700. **SP4 waits for T2.** 2026-10-08, 697 put back with a finding: mere's
+     nisus is one 629-line `lib.rs` with no world store or revision log;
+     those are T2, a lane in mere's conatus engine plan §2 (335), unblocked
+     since pre.4 merged (363) and unbuilt. Question: with nisus now, SP4
+     waits on mere's T2 lane; still the call? Options: yes, SP4 waits for T2
+     (recommended); SP4 on `Ground`, swapped when T2 lands. Mark chose "Yes:
+     SP4 waits for T2 (Recommended)". So mere's conatus coordinator is asked
+     to open T2, and SP4 builds on nisus's store once it lands, with no
+     `Ground`-only interim to unwind; SP6's move folds into SP4.
+701. **The lift moves to isometer.** 2026-10-08. Question: does the lift
+     (isocosm's `src/terrain` and `src/map`, 1,040 lines) move? Options: the
+     lift to isometer, the world map and skeleton staying the sim's
+     (recommended); it stays, with an adapter; everything moves. Mark chose
+     "Lift moves to isometer (Recommended)". So site grain stays the sim's,
+     and lifting a site into voxels is isometer's, beside SP4 and SP5 (698).
+702. **Walking, routing and sight are rewritten over SP5.** 2026-10-08.
+     Question: legacy `near.rs` (369 lines) uses only `Ground` and `Aabb`;
+     675 sends movement and physical reach through isometer and 597 keeps
+     Eponym's conatus motion game-side. Options: into isometer as they are
+     (recommended); rewritten over SP5's passages; back to the games. Mark
+     chose "Rewrite over SP5". So isometer's walking, routing and sight are
+     built over SP5's passages and travel cost, not raw voxels, and the
+     legacy searches retire with their family. *Reading, not ruled:*
+     Eponym's conatus motion stays game-side (597).
+703. **Soil, the tier line and the coarse partition split now.** 2026-10-08.
+     Question: where do legacy soil, the tier line and the coarse `Places`
+     partition go? Options: split now (recommended); decide at the family.
+     Mark chose "Split now (Recommended)". So soil and its diffusion stay
+     the sim's, keyed by isometer's columns, which settles 343's "whether
+     columns are sites"; the tier line goes to the host or directing; and
+     SP5's places supersede the coarse partition.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

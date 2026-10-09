@@ -250,6 +250,17 @@ guards is deliberately broken.
   Done when T2's own done-conditions hold and SP2 to SP5's draws pass again
   on nisus, with saves keeping their hashes or converting by a recorded
   event.
+- *Annotation, 2026-10-08 (696 to 703, under 670 and 674):* the sim
+  records each edit as an asserted fact and an entity's place id, and
+  isometer applies edits and derives places, passages and travel cost (696);
+  SP4 and SP5 are built in isometer, wgpu-free (698), with the lift moving
+  there too, site grain staying the sim's (701); nisus is the store behind
+  isometer from SP4 on, so SP4 waits for mere's T2 and SP6's move folds into
+  it (697, 700); walking, routing and sight are rewritten over SP5's
+  passages (702); soil stays the sim's, keyed by isometer's columns, the
+  tier line goes to the host or directing, and SP5's places supersede the
+  coarse partition (703); bodies key physiology by isometer's `PartId`, with
+  situs and the shape name joining `BodyDocument` (699).
 - **SP7, the absorption join.** Ruling 195's fourth family:
   `mesocosm-core`'s places move onto the spine, Mesocosm's enclosure becoming
   one site of a drawn world, the VTT's authored boards asserted volumes

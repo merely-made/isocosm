@@ -140,6 +140,12 @@ is), its certification passes on draws with its controls.
   last, its re-expression being the switch to M3's directing.
   *Annotation, 2026-10-08:* 681 amends 678: the switch is the interim M4,
   before places, and in-site play waits for the full M4.
+- 696 to 703: in-site space through isometer, worked out: the sim records
+  edits and place ids, isometer applies them and derives places (696); SP4
+  and SP5 and the lift are built in isometer (698, 701), on nisus's store
+  once mere's T2 lands (697, 700); walking, routing and sight are rewritten
+  over SP5 (702); soil stays the sim's on isometer's columns (703); bodies
+  key physiology by `PartId`, situs joining `BodyDocument` (699).
 
 Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.
