@@ -236,7 +236,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   ahead of the lineages family (684). A suggestion is a reading over
   receipts and what the critter knows (685); the runtime translates contract
   envelopes into native commands, the nudge among them (686); and the
-  interim M4's regions group sites by biomass after 226 (687).
+  interim M4's regions group sites by biomass after 226 (687), derived each
+  round (689). The bond is a weighted relation to a placeless participant
+  entity, one per player (688); standing orders are read from the logged
+  nudges and their outcomes (690); and survival mode filters through what
+  the critter knows (691).
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its

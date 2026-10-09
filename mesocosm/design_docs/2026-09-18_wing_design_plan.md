@@ -9159,6 +9159,40 @@ what later sections derive from.
      trophic level fills its slot in a region of sites until over capacity,
      then spills into a new one, and the regions merge as biomass falls.
      The grouping rule is put as its own question.
+688. **The bond is a weighted relation to a participant.** 2026-10-08.
+     Question: what is the bond (177, 178)? Options: an account
+     (recommended); `Tenet.trust`; a relation to a participant outside the
+     world. Mark: "i can't think of how to do 1 for different players
+     (coop) without doing 3, and 3 sounds fascinating". Put back: the
+     participant becomes an entity with no place, as the world is one
+     (98), and native `Relation` (subject, kind, object) has no strength;
+     where does the strength live? Options: a weighted relation
+     (recommended); a relation plus an account keyed by participant;
+     accounts only, with no participant. Mark chose "Weighted relation
+     (Recommended)". So a participant is a placeless entity, `Relation`
+     gains a value, and each player's bond is its own weighted relation to
+     the critter, moving with outcomes, which serves coop. *Reading, not
+     ruled:* 178's setting seeds the weight at birth.
+689. **Regions are derived each round.** 2026-10-08, with 687. Question: how
+     are 226's regions held at site grain? Options: derived each round from
+     site biomass and site routes, never kept (recommended); kept and
+     updated. Mark chose "Derived each round (Recommended)". So a region is
+     a reading, as mood is (227): a world rule sets each trophic level's
+     slot capacity, and a region grows along adjacent sites, so geography
+     counts.
+690. **Standing orders are derived from the history.** 2026-10-08.
+     Question: where do 216's standing orders live? Options: derived from
+     the logged nudges and their outcomes (recommended); kept on the
+     entity. Mark chose "Derived from history (Recommended)". So range,
+     home, priorities and stances are desire paths (59) read from the log,
+     replaying exactly, and at site grain a contract `PlaceHandle` names a
+     site.
+691. **Survival mode filters through what the critter knows.** 2026-10-08.
+     Question: how does survival mode (180, 184) filter at site grain, with
+     the sense function still running nothing? Options: through `knows` and
+     the reach field (recommended); defer until senses. Mark chose "Through
+     knows (Recommended)". So the interim M4 ships both modes, and senses
+     refine the filter when they run.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
