@@ -74,7 +74,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-10-02_anatomy_brief.md](2026-10-02_anatomy_brief.md) | Bodies: parts and cells, the function catalogue, organ systems, matter's place, how parts arrive, wounds. | 2026-10-04: checkpoint 8 built how parts arrive. |
 | [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md) | Balaur read against the wing's rulings. | 2026-10-06: read; its forks ruled as 604 to 607. |
 | [2026-10-06_scenevm_wing_brief.md](2026-10-06_scenevm_wing_brief.md) | Eldiron's scenevm read against kiss3d as a tenant and balaur's structure; what is worth learning from it. | 2026-10-06: read; a donor of techniques only (ruling 622). |
-| [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | M0 and M1 done 2026-09-25; M2 to M4 proposed. |
+| [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | M0 and M1 done 2026-09-25; M2 is the families plan's share (677); M3 and the interim M4 in the directing plan (681 to 691). |
+| [2026-10-08_directing_interim_m4_plan.md](2026-10-08_directing_interim_m4_plan.md) | Directing (M3) and the interim M4 at site grain: the bond, the deliberative choice, the readings, the switch. | Plan 2026-10-08; forks ruled 681 to 691. |
 | [2026-09-22_family_rename_plan.md](2026-09-22_family_rename_plan.md) | The family rename: Isocosm, Eponym, Isocosm: VTT. | Landed 2026-09-24: R0 to R5. |
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | Carried 2026-09-26; carryover distinction 2026-09-28 (ruling 406). |
 | [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | Ruled 2026-09-26 (346 to 352); documented, not built. |
