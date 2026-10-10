@@ -12,6 +12,8 @@
 //! how the camera preset becomes a [`SlabCamera`], and where the terrain comes
 //! from.
 
+use isocosm::legacy::eponym::identity::SubjectId;
+use isocosm::legacy::eponym::world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 use isometer::core::{BodyDocument, PartId};
 use isometer::lens::{BrickMap, Grade};
 use isometer::{
@@ -19,8 +21,6 @@ use isometer::{
     SceneBody, SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera,
     SubjectKey, TerrainSource,
 };
-use isocosm::legacy::eponym::identity::SubjectId;
-use isocosm::legacy::eponym::world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 
 use super::handle::{SceneHandle, SceneModel};
 
@@ -282,7 +282,7 @@ impl SceneModel {
 
         let drawn = drawable(game);
         let volumes = DeclaredExtentVolumes::from_documents(
-            drawn.iter().map(|(_, record, _)| &record.document),
+            drawn.iter().map(|(_, record, _)| record.document.doc()),
             material,
         );
         let bodies: Vec<SceneBody<'_>> = drawn

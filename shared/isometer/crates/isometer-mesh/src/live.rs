@@ -14,7 +14,7 @@
 
 use std::collections::BTreeMap;
 
-use isometer_core::{BodyDocument, Provenance, VolumeRef, Yaw};
+use isometer_core::{BodyDocument, VolumeRef, Yaw};
 
 use crate::{BodyMesh, MeshError, PartMesh, Placement, VolumeSource, mesh_volume};
 
@@ -111,7 +111,7 @@ impl LiveBodyProjector {
                 pivot_at,
                 pivot: part.pivot,
                 yaw,
-                provenance: Some(part.provenance.clone()),
+                origin: part.origin,
             });
         }
 
@@ -168,30 +168,15 @@ fn revision_for(placements: &[Placement]) -> BodyDependencyRevision {
         hasher.write_i32s(placement.pivot_at);
         hasher.write_i32s(placement.pivot);
         hasher.write_u8(yaw_tag(placement.yaw));
-        match placement.provenance.as_ref() {
-            Some(provenance) => {
+        match placement.origin {
+            Some(tag) => {
                 hasher.write_u8(1);
-                hash_provenance(&mut hasher, provenance);
+                hasher.write_u64(tag);
             },
             None => hasher.write_u8(0),
         }
     }
     BodyDependencyRevision(hasher.finish())
-}
-
-fn hash_provenance(hasher: &mut Fnv1a, provenance: &Provenance) {
-    match &provenance.origin {
-        isometer_core::Origin::Founding => hasher.write_u8(0),
-        isometer_core::Origin::Incorporated {
-            from_species,
-            from_part,
-        } => {
-            hasher.write_u8(1);
-            hasher.write_u32(from_species.0);
-            hasher.write_u32(from_part.0);
-        },
-    }
-    hasher.write_u64(provenance.epoch);
 }
 
 fn yaw_tag(yaw: Yaw) -> u8 {
@@ -245,7 +230,7 @@ impl Fnv1a {
 
 #[cfg(test)]
 mod tests {
-    use isometer_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, BodyDocument, PartId, VolumeRef, Yaw};
 
     use super::*;
     use crate::{Volume, VolumeMap};
@@ -258,7 +243,7 @@ mod tests {
     }
 
     fn body() -> BodyDocument {
-        BodyDocument::new(SpeciesId(3), VolumeRef::from_tag(1), 100, [1, 1, 1])
+        BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1])
     }
 
     #[test]
@@ -267,14 +252,13 @@ mod tests {
         let arm = body
             .attach(
                 VolumeRef::from_tag(2),
-                20,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset: [5, 0, 0],
                     yaw: Yaw::Quarter,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         let mut projector = LiveBodyProjector::new();
@@ -285,7 +269,7 @@ mod tests {
         assert_eq!(placement.volume, VolumeRef::from_tag(2));
         assert_eq!(placement.pivot_at, [5, 0, 0]);
         assert_eq!(placement.yaw, Yaw::Quarter);
-        assert_eq!(placement.provenance, Some(Provenance::founding()));
+        assert_eq!(placement.origin, None, "its own part");
     }
 
     #[test]
@@ -295,14 +279,13 @@ mod tests {
         let (_, before) = projector.project_body(&body, &source()).unwrap();
         body.attach(
             VolumeRef::from_tag(2),
-            20,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
 
@@ -317,14 +300,13 @@ mod tests {
         let arm = body
             .attach(
                 VolumeRef::from_tag(2),
-                20,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset: [4, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         let mut projector = LiveBodyProjector::new();
@@ -343,14 +325,13 @@ mod tests {
         for offset in [4, 7, 10] {
             body.attach(
                 VolumeRef::from_tag(2),
-                20,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset: [offset, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         }
@@ -372,14 +353,13 @@ mod tests {
         let mut body = body();
         body.attach(
             VolumeRef::from_tag(99),
-            20,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         let mut projector = LiveBodyProjector::new();

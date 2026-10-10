@@ -182,7 +182,9 @@ pub fn arrange(phenotype: &BodyPhenotype, aim: Aim) -> AllocationProposal {
         let fresh;
         let source = match aim {
             Aim::Express => {
-                fresh = Mosaic::seed(phenotype.body().part(part).expect("a living part"));
+                let body = phenotype.body();
+                let found = body.part(part).expect("a living part");
+                fresh = Mosaic::seed(found, body.mass_mg(part));
                 fresh.tracts()
             },
             Aim::Spare => mosaic.tracts(),

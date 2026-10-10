@@ -11,14 +11,17 @@
 //! keeps its own copy until it retires. Seed 7, keeper plus target, identical
 //! intent order.
 
-use isometer_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId, Tick};
+use crate::lineage::{LineageBody as BodyDocument, Provenance, SpeciesId};
+use isometer_core::{Attachment, PartId, VolumeRef, Yaw};
 use wing_functions::{
     Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
 };
 
 use crate::legacy::eponym::world::fixtures::three_lives;
-use crate::legacy::eponym::world::glyphs::{AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules};
+use crate::legacy::eponym::world::glyphs::{
+    AcceptedKind, CanonSpec, EventGrant, GlyphDefinition, GlyphRules,
+};
 use crate::legacy::eponym::world::timed_action::{Direction, TimedActionRules, TimedActionSession};
 use crate::legacy::eponym::world::{
     CanonRevisionCause, CombatRules, GameIntent, GameState, ItemId, ItemKind, ItemLocation,
@@ -293,7 +296,11 @@ pub fn motion_rules(game: &GameState, subject: SubjectId) -> MotionRules {
 
 /// One recorded fixed motion step for a subject, the same path the
 /// timed-action host's movement keys take.
-pub fn advance_motion(session: &mut Session, subject: SubjectId, input: crate::legacy::eponym::world::MotionInput) {
+pub fn advance_motion(
+    session: &mut Session,
+    subject: SubjectId,
+    input: crate::legacy::eponym::world::MotionInput,
+) {
     let game = session.game();
     let pose = game.movement().pose(subject).expect("pose");
     let revision = game.bodies().get(subject).expect("body").revision;

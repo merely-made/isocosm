@@ -18,7 +18,7 @@
 
 use std::collections::BTreeSet;
 
-use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
+use isometer_core::{BodyDocument, VolumeRef};
 
 use crate::bake::sheet::{build_stamp, model_centre, project_voxel, sheet_frame};
 use crate::bake::{Appearance, BakeParams, Palette, compose};
@@ -58,13 +58,13 @@ impl TokenBody {
     /// (`half_extent * 2`) never under-covers the voxels. `BodyDocument::new`
     /// puts the pivot on that half extent, which is the volume's centre, so a
     /// yaw turns the token about itself rather than about a corner.
-    pub fn from_voxels(species: SpeciesId, mass_mg: u64, voxels: &Voxels) -> Self {
-        Self::from_volume(species, mass_mg, Volume::from_voxels(voxels))
+    pub fn from_voxels(voxels: &Voxels) -> Self {
+        Self::from_volume(Volume::from_voxels(voxels))
     }
 
     /// Builds a token from paper-doll layers, stacked by [`compose`].
-    pub fn from_layers(species: SpeciesId, mass_mg: u64, layers: &[&Voxels]) -> Self {
-        Self::from_voxels(species, mass_mg, &compose(layers))
+    pub fn from_layers(layers: &[&Voxels]) -> Self {
+        Self::from_voxels(&compose(layers))
     }
 
     /// Builds a token from an [`Appearance`], resolving its layer names
@@ -74,8 +74,6 @@ impl TokenBody {
     /// the host owns the rig library, so resolution cannot live in this crate.
     /// An unresolved name is returned rather than skipped.
     pub fn from_appearance<'a>(
-        species: SpeciesId,
-        mass_mg: u64,
         appearance: &Appearance,
         library: impl Fn(&str) -> Option<&'a Voxels>,
     ) -> Result<Self, MissingLayer> {
@@ -86,7 +84,7 @@ impl TokenBody {
                 None => return Err(MissingLayer(name.clone())),
             }
         }
-        Ok(Self::from_layers(species, mass_mg, &layers))
+        Ok(Self::from_layers(&layers))
     }
 
     /// The root volume's dimensions, which a silhouette needs to know the
@@ -99,13 +97,13 @@ impl TokenBody {
             .unwrap_or([0; 3])
     }
 
-    fn from_volume(species: SpeciesId, mass_mg: u64, volume: Volume) -> Self {
+    fn from_volume(volume: Volume) -> Self {
         let reference = volume.content_ref();
         let half_extent = volume.size.map(|d| d.div_ceil(2) as i32);
         let mut volumes = VolumeMap::new();
         volumes.insert(reference, volume);
         Self {
-            document: BodyDocument::new(species, reference, mass_mg, half_extent),
+            document: BodyDocument::new(reference, half_extent),
             volumes,
             volume: reference,
         }
@@ -246,7 +244,7 @@ mod tests {
     #[test]
     fn a_token_body_is_one_part_addressing_its_own_content() {
         let (hero, _) = demo::hero();
-        let token = TokenBody::from_voxels(SpeciesId(1), 70_000, &hero);
+        let token = TokenBody::from_voxels(&hero);
 
         assert_eq!(token.document.living().count(), 1);
         assert_eq!(token.document.root, isometer_core::PartId(0));
@@ -263,7 +261,7 @@ mod tests {
         );
         assert_eq!(
             token.volume,
-            TokenBody::from_voxels(SpeciesId(9), 1, &hero).volume,
+            TokenBody::from_voxels(&hero).volume,
             "the same recipe is the same content address, whoever owns it"
         );
     }
@@ -275,7 +273,7 @@ mod tests {
         let mut upper = Voxels::new(2, 1, 1);
         upper.set(1, 0, 0, 3);
 
-        let token = TokenBody::from_layers(SpeciesId(2), 10, &[&lower, &upper]);
+        let token = TokenBody::from_layers(&[&lower, &upper]);
         let volume = crate::VolumeSource::volume(&token.volumes, token.volume).unwrap();
 
         assert_eq!(volume.size, [2, 1, 1]);
@@ -292,13 +290,12 @@ mod tests {
             clips: Vec::new(),
         };
 
-        let resolved = TokenBody::from_appearance(SpeciesId(4), 100, &appearance, |name| {
-            (name == "body").then_some(&hero)
-        })
-        .expect("the library has the layer");
+        let resolved =
+            TokenBody::from_appearance(&appearance, |name| (name == "body").then_some(&hero))
+                .expect("the library has the layer");
         assert_eq!(resolved.size(), [10, 24, 8]);
 
-        let missing = TokenBody::from_appearance(SpeciesId(4), 100, &appearance, |_| None);
+        let missing = TokenBody::from_appearance(&appearance, |_| None);
         assert_eq!(missing.unwrap_err(), MissingLayer("body".into()));
     }
 
@@ -319,7 +316,7 @@ mod tests {
     #[test]
     fn a_token_body_projects_to_a_mesh_with_quads() {
         let (hero, _) = demo::hero();
-        let token = TokenBody::from_voxels(SpeciesId(1), 70_000, &hero);
+        let token = TokenBody::from_voxels(&hero);
 
         let mut projector = LiveBodyProjector::new();
         let (mesh, _revision) = projector
@@ -353,7 +350,7 @@ mod tests {
         ];
         for (name, voxels) in subjects {
             let (_, palette) = demo::hero();
-            let token = TokenBody::from_voxels(SpeciesId(1), 1, &voxels);
+            let token = TokenBody::from_voxels(&voxels);
             let mut projector = LiveBodyProjector::new();
             let (mesh, _) = projector
                 .project_body(&token.document, &token.volumes)

@@ -12,12 +12,14 @@
 //! What a line learns is the stage's: eating a part whole teaches its kind
 //! to the eater's lexicon (468), which is what a revision draws on.
 
+pub mod body;
 pub mod program;
 pub mod reckon;
 pub mod review;
 pub mod speciate;
 pub mod tree;
 
+pub use body::*;
 pub use program::Revision;
 pub use reckon::Reading;
 pub use review::{Offer, Review};

@@ -31,7 +31,7 @@ fn seeded_trees_vary_parentage_and_use_paid_admitted_parts() {
                 crate::legacy::mesocosm::develop_body(SpeciesId(1), &recipe, &soma, 800, palette)
                     .unwrap();
             assert_eq!(body.total_mass_mg(), 800);
-            assert!(body.living().all(|part| part.mass_mg > 0));
+            assert!(body.living().all(|part| body.mass_mg(part.id) > 0));
         }
         assert!(
             parent_graphs.len() >= 32,

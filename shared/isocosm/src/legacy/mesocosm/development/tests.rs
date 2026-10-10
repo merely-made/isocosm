@@ -135,7 +135,7 @@ fn development_conserves_mass_and_is_deterministic() {
     let b = develop_body(SpeciesId(3), &recipe, &soma, 4_003, palette()).unwrap();
     assert_eq!(a, b);
     assert_eq!(a.total_mass_mg(), 4_003);
-    assert!(a.living().all(|part| part.mass_mg > 0));
+    assert!(a.living().all(|part| a.mass_mg(part.id) > 0));
 }
 
 #[test]
@@ -307,5 +307,5 @@ fn the_expression_floor_is_the_number_of_parts() {
     let body = develop_body(SpeciesId(1), &recipe, &soma, u64::from(minimum), palette()).unwrap();
 
     assert_eq!(minimum as usize, body.len());
-    assert!(body.living().all(|part| part.mass_mg == 1));
+    assert!(body.living().all(|part| body.mass_mg(part.id) == 1));
 }

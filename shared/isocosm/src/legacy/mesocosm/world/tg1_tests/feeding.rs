@@ -11,11 +11,7 @@ fn mixed_target(world: &mut World, target: OrganismId) -> crate::matter::Stock {
         .find(|organism| organism.id == target)
         .expect("the target is present");
     let root = donor.body().root;
-    let mass = donor
-        .body()
-        .part(root)
-        .expect("the target has a root")
-        .mass_mg;
+    let mass = donor.body().mass_mg(root);
     let stock = crate::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
     donor.phenotype.replace_part_stock(root, stock).unwrap();
     donor.phenotype.total_stock().unwrap()

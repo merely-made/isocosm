@@ -129,10 +129,16 @@ fn incorporated_tissue_keeps_donor_identity_without_inventing_an_event() {
         .find(|o| o.id == organism)
         .unwrap();
     let mut body = subject.body().clone();
-    body.parts[part.0 as usize].provenance.origin = Origin::Incorporated {
-        from_species: isocosm::legacy::mesocosm::SpeciesId(42),
-        from_part: PartId(17),
-    };
+    body.set_provenance(
+        part,
+        isocosm::legacy::mesocosm::Provenance {
+            origin: Origin::Incorporated {
+                from_species: isocosm::legacy::mesocosm::SpeciesId(42),
+                from_part: PartId(17),
+            },
+            epoch: 0,
+        },
+    );
     subject.phenotype = isocosm::legacy::mesocosm::BodyPhenotype::seed(body);
     let reading = part_of(&world, organism, part, &History::new())
         .reading

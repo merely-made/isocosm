@@ -10,6 +10,7 @@ mod body;
 mod competition;
 mod directing;
 mod effect;
+mod graft;
 mod epoch;
 mod mind;
 mod recipe;
@@ -21,6 +22,7 @@ pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance};
 pub use effect::{Conversion, Effect};
+pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
 pub use recipe::{Affinity, Anchor, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
@@ -236,6 +238,10 @@ pub struct Rules {
     /// Tissue domains and the crossings favoured (ruling 516).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub affinity: Option<Affinity>,
+    /// What refused material a body may keep, and at what price (755);
+    /// absent in worlds without grafts, which hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub compatibility: Option<Compatibility>,
     /// The world's default systems (rulings 489 and 574), which a founded
     /// body carries as far as it realizes them. Worlds naming none
     /// serialize and hash as before the field existed.

@@ -10,11 +10,11 @@
 //! half added process references and definition digests.
 
 use super::*;
-use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, VolumeRef, Yaw};
 
 /// A bulk root, with an optional long limb reaching out along +x.
 fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {
-    let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 2]);
+    let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2]);
     let root = body.root;
     if !limb {
         return (body, None);
@@ -22,7 +22,6 @@ fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {
     let arm = body
         .attach(
             VolumeRef::from_tag(2),
-            200,
             // Long in one axis only, so `classify` reads it as a limb.
             [6, 1, 1],
             Attachment {
@@ -30,7 +29,7 @@ fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {
                 offset: [8, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .expect("attaches");
     (body, Some(arm))
@@ -95,33 +94,31 @@ fn severing_the_limb_takes_the_reach_with_it() {
 
 #[test]
 fn a_longer_limb_reaches_further_than_a_short_one() {
-    let mut short = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, [1, 1, 1]);
+    let mut short = BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1]);
     let root = short.root;
     let mut long = short.clone();
 
     short
         .attach(
             VolumeRef::from_tag(2),
-            50,
             [3, 1, 1],
             Attachment {
                 parent: root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
     long.attach(
         VolumeRef::from_tag(2),
-        50,
         [9, 1, 1],
         Attachment {
             parent: root,
             offset: [10, 0, 0],
             yaw: Yaw::Zero,
         },
-        Provenance::founding(),
+        None,
     )
     .unwrap();
 
@@ -286,11 +283,10 @@ fn a_rule_bearing_byte_changes_the_digest() {
 fn a_plate_is_not_an_actuator() {
     // Armour resists; it does not reach. Without this a body could grow
     // reach by growing anything at all, and shape would stop mattering.
-    let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, [1, 1, 1]);
+    let mut body = BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1]);
     let root = body.root;
     body.attach(
         VolumeRef::from_tag(2),
-        50,
         // Wide and flat: two long axes, one short.
         [4, 4, 1],
         Attachment {
@@ -298,7 +294,7 @@ fn a_plate_is_not_an_actuator() {
             offset: [6, 0, 0],
             yaw: Yaw::Zero,
         },
-        Provenance::founding(),
+        None,
     )
     .unwrap();
 

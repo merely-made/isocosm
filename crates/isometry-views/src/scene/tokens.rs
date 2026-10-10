@@ -22,7 +22,6 @@ use isometer::mesh::VolumeSource;
 use isometer::mesh::bake::Palette;
 use isometer::mesh::voxel::Voxels;
 use isometer::{PaletteColour, TokenBody, VolumeMap, material_colours};
-use isometer_core::SpeciesId;
 use isometry_core::Facing;
 
 use super::terrain::VOXELS_PER_TILE;
@@ -64,20 +63,14 @@ impl TokenBodies {
             }
             bodies.insert(name.to_owned(), body);
         };
-        for (index, (name, _)) in variants.iter().enumerate() {
-            add(
-                name,
-                TokenBody::from_voxels(SpeciesId(index as u32 + 1), MASS_MG, &rig),
-            );
+        for (name, _) in variants.iter() {
+            add(name, TokenBody::from_voxels(&rig));
         }
         // The stand-in: one voxel of palette index 0, which becomes material
         // 1 and takes the placeholder colour below.
         let mut cell = Voxels::new(1, 1, 1);
         cell.set(0, 0, 0, 0);
-        add(
-            PLACEHOLDER,
-            TokenBody::from_voxels(SpeciesId(0), MASS_MG, &cell),
-        );
+        add(PLACEHOLDER, TokenBody::from_voxels(&cell));
         Self { bodies, volumes }
     }
 
@@ -115,10 +108,6 @@ impl TokenBodies {
         FOOTPRINT * VOXELS_PER_TILE as f32 / widest
     }
 }
-
-/// A token's mass is not a board concept; the recipe lane wants one number and
-/// this is the demo rig's own.
-const MASS_MG: u64 = 70_000;
 
 /// Magenta: a placeholder that reads as a mistake at a glance.
 const PLACEHOLDER_COLOUR: [u8; 3] = [220, 40, 200];

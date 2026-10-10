@@ -8,7 +8,7 @@
 //! receipts use: no product world is in scope here either.
 
 use cambium_rootstock::{ProducerFrameInfo, ResolvedAppearance};
-use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
+use isometer_core::{BodyDocument, VolumeRef};
 
 use super::*;
 use crate::bodies::{SceneVolumes, SubjectKey};
@@ -47,7 +47,7 @@ impl Specimen {
     fn new(device: wgpu::Device, queue: wgpu::Queue) -> Self {
         let documents: Vec<_> = [80u8, 81]
             .into_iter()
-            .map(|tag| BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(tag), 1_000, [1; 3]))
+            .map(|tag| BodyDocument::new(VolumeRef::from_tag(tag), [1; 3]))
             .collect();
         let volumes = DeclaredExtentVolumes::from_documents(documents.iter(), 9);
         Self {

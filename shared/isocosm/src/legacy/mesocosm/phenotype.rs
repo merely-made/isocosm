@@ -85,7 +85,11 @@ impl BodyPhenotype {
     /// passing through here, so there is no path that produces a live body
     /// with no allocation.
     pub fn seed(body: BodyDocument) -> Self {
-        let mosaics = body.parts.iter().map(Mosaic::seed).collect();
+        let mosaics = body
+            .parts
+            .iter()
+            .map(|part| Mosaic::seed(part, body.mass_mg(part.id)))
+            .collect();
         let mut phenotype = Self {
             body,
             mosaics,
@@ -434,7 +438,7 @@ impl BodyPhenotype {
                 part.id.0 as usize == index
                     && mosaic.conserves()
                     && mosaic.capacity() <= MAX_CELLS
-                    && mosaic.scruple().total() == u128::from(part.mass_mg)
+                    && mosaic.scruple().total() == u128::from(self.body.mass_mg(part.id))
             })
     }
 
@@ -454,7 +458,7 @@ impl BodyPhenotype {
             .body
             .attach(volume, mass_mg, half_extent, attachment, provenance)?;
         let part = self.body.part(id).expect("just attached");
-        self.mosaics.push(Mosaic::seed(part));
+        self.mosaics.push(Mosaic::seed(part, mass_mg));
         debug_assert!(self.conserves(), "an attach must leave the mosaics whole");
         Ok(id)
     }
@@ -469,7 +473,7 @@ impl BodyPhenotype {
 
     /// Which lineage this body belongs to. Forking is the only caller.
     pub fn set_species(&mut self, species: SpeciesId) {
-        self.body.species = species;
+        self.body.set_species(species);
     }
 
     /// **The only way allocation moves.**

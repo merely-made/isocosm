@@ -169,7 +169,7 @@ fn a_named_part_meal_preserves_its_donor_mixture() {
     );
     let donor = world.organisms.iter_mut().find(|o| o.id == target).unwrap();
     let root = donor.body().root;
-    let mass = donor.body().part(root).unwrap().mass_mg;
+    let mass = donor.body().mass_mg(root);
     let mix = crate::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
     donor.phenotype.replace_part_stock(root, mix).unwrap();
     let Outcome::Consumed { part, .. } = world.consume(target, root) else {

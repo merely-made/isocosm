@@ -221,7 +221,7 @@ impl BodyPhenotype {
                         .then(|| part.attachment.map(|at| at.parent))
                         .flatten(),
                     volume: part.volume,
-                    mass_mg: part.mass_mg,
+                    mass_mg: body.mass_mg(part.id),
                     stock: *mosaic.scruple(),
                     half_extent: part.half_extent,
                     joint: inside.then_some(part.attachment).flatten(),
@@ -235,7 +235,7 @@ impl BodyPhenotype {
             })
             .collect::<Vec<_>>();
         (!parts.is_empty()).then_some(Branch {
-            species: body.species,
+            species: body.species(),
             root,
             parts,
         })
@@ -368,7 +368,8 @@ impl BodyPhenotype {
                     let Some(found) = self.body().part(*part) else {
                         continue;
                     };
-                    for tract in Mosaic::seed(found).tracts() {
+                    let mass_mg = self.body().mass_mg(*part);
+                    for tract in Mosaic::seed(found, mass_mg).tracts() {
                         tracts.push(ProposedTract {
                             part: *part,
                             process: tract.process,

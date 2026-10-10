@@ -172,7 +172,7 @@ fn provenance_round_trips_through_the_wire() {
     let restored: BodyDocument = decode(&bytes).expect("body decodes");
 
     assert_eq!(body, restored);
-    let provenance = &restored.part(part).unwrap().provenance;
+    let provenance = restored.provenance(part).unwrap();
     assert_eq!(provenance.epoch, 4);
     assert_eq!(
         provenance.origin,
@@ -186,11 +186,10 @@ fn provenance_round_trips_through_the_wire() {
 #[test]
 fn provenance_survives_a_whole_world_snapshot() {
     let world = run_fixture();
-    let donors: Vec<SpeciesId> = world
-        .body()
-        .unwrap()
+    let body = world.body().unwrap();
+    let donors: Vec<SpeciesId> = body
         .incorporated()
-        .map(|p| match p.provenance.origin {
+        .map(|p| match body.provenance(p.id).unwrap().origin {
             Origin::Incorporated { from_species, .. } => from_species,
             Origin::Founding => unreachable!("filtered to incorporated"),
         })
@@ -199,11 +198,10 @@ fn provenance_survives_a_whole_world_snapshot() {
 
     let bytes = snapshot(&world).unwrap();
     let restored = restore(&bytes).unwrap();
-    let restored_donors: Vec<SpeciesId> = restored
-        .body()
-        .unwrap()
+    let body = restored.body().unwrap();
+    let restored_donors: Vec<SpeciesId> = body
         .incorporated()
-        .map(|p| match p.provenance.origin {
+        .map(|p| match body.provenance(p.id).unwrap().origin {
             Origin::Incorporated { from_species, .. } => from_species,
             Origin::Founding => unreachable!("filtered to incorporated"),
         })

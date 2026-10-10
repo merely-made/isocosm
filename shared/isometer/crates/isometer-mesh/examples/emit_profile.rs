@@ -25,14 +25,28 @@
 
 use std::{fs, path::PathBuf};
 
-use isometer_core::{
-    Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
-};
+use isometer_core::{Attachment, BodyDocument, PartId, PartOrigin, VolumeRef, Yaw};
 use isometer_mesh::{BodyProfile, Volume, VolumeMap};
 
 fn main() {
     let (body, volumes) = grown();
-    let profile = BodyProfile::of(&body, &volumes).expect("the fixture body is placeable");
+    // The lineage the sim keeps beside the document (756): species 7, a
+    // limb from species 42's part 1 at epoch 3, a plate from 11's part 0 at 7.
+    let origin = |id: PartId| match id.0 {
+        1 => PartOrigin {
+            from_species: Some(42),
+            from_part: Some(1),
+            epoch: 3,
+        },
+        2 => PartOrigin {
+            from_species: Some(11),
+            from_part: Some(0),
+            epoch: 7,
+        },
+        _ => PartOrigin::default(),
+    };
+    let profile =
+        BodyProfile::of(&body, &volumes, 7, origin).expect("the fixture body is placeable");
     let bytes = profile.to_bytes().expect("a profile is always encodable");
 
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures");
@@ -56,43 +70,29 @@ fn main() {
 /// that shows founding and incorporated material side by side and still has a
 /// part with a non-zero yaw.
 fn grown() -> (BodyDocument, VolumeMap) {
-    let mut body = BodyDocument::new(SpeciesId(7), VolumeRef::from_tag(1), 4_000, [2, 3, 2]);
+    let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 3, 2]);
 
     body.attach(
         VolumeRef::from_tag(2),
-        900,
         [1, 1, 3],
         Attachment {
             parent: body.root,
             offset: [3, 0, 0],
             yaw: Yaw::Zero,
         },
-        Provenance {
-            origin: Origin::Incorporated {
-                from_species: SpeciesId(42),
-                from_part: PartId(1),
-            },
-            epoch: 3,
-        },
+        Some(1),
     )
     .expect("the limb attaches");
 
     body.attach(
         VolumeRef::from_tag(3),
-        1_400,
         [2, 1, 1],
         Attachment {
             parent: body.root,
             offset: [0, 4, 0],
             yaw: Yaw::Quarter,
         },
-        Provenance {
-            origin: Origin::Incorporated {
-                from_species: SpeciesId(11),
-                from_part: PartId(0),
-            },
-            epoch: 7,
-        },
+        Some(1),
     )
     .expect("the plate attaches");
 

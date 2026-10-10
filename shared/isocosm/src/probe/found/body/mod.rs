@@ -263,6 +263,7 @@ impl BodyFounding {
             body: None,
             kinds: self.kinds(),
             affinity: Some(affinity),
+            compatibility: None,
             systems: default_systems(),
             carriage: Some(Carriage { per_cell }),
             directing: None,

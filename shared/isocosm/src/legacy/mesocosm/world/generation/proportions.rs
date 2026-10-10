@@ -185,7 +185,7 @@ mod tests {
                         a.attachment.map(|a| a.parent),
                         b.attachment.map(|a| a.parent)
                     );
-                    assert_eq!(a.mass_mg, b.mass_mg);
+                    assert_eq!(candidate.body.mass_mg(a.id), original.body.mass_mg(b.id));
                 }
                 let selection = prepared.proportion_selection(0, 0, index + 1);
                 let bytes = serde_json::to_vec(&selection).unwrap();

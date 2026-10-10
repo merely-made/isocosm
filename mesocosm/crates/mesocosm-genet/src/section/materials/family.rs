@@ -239,12 +239,7 @@ fn family_scene_replays_intake_expression_and_a_natural_descendant() {
         .find(|o| o.id == child)
         .unwrap();
     assert!(
-        offspring.body().living().all(|part| {
-            matches!(
-                part.provenance.origin,
-                isocosm::legacy::mesocosm::Origin::Founding
-            )
-        }),
+        offspring.body().incorporated().all(|part| part.severed),
         "a descendant develops its own tissue rather than copying the acquired branch"
     );
     assert!(

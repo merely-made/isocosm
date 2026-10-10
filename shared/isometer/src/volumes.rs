@@ -97,12 +97,12 @@ impl VolumeSource for DeclaredExtentVolumes {
 
 #[cfg(test)]
 mod tests {
-    use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, BodyDocument, VolumeRef, Yaw};
 
     use super::*;
 
     fn document(root: VolumeRef, half_extent: [i32; 3]) -> BodyDocument {
-        BodyDocument::new(SpeciesId(3), root, 100, half_extent)
+        BodyDocument::new(root, half_extent)
     }
 
     #[test]
@@ -110,14 +110,13 @@ mod tests {
         let mut body = document(VolumeRef::from_tag(1), [1, 2, 3]);
         body.attach(
             VolumeRef::from_tag(2),
-            20,
             [2, 2, 2],
             Attachment {
                 parent: body.root,
                 offset: [5, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
 
@@ -144,14 +143,13 @@ mod tests {
         second
             .attach(
                 VolumeRef::from_tag(7),
-                20,
                 [1, 0, 1],
                 Attachment {
                     parent: second.root,
                     offset: [4, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
 

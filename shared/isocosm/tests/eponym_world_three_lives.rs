@@ -1,17 +1,17 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::{Origin, PartId};
 use isocosm::legacy::eponym::world::fixtures::three_lives as fixture;
 use isocosm::legacy::eponym::world::{
     ActionBlocker, BindingBlocker, PartFunction, SourceQuery, SubjectBody, TechniqueId, arrest_fall,
 };
+use isocosm::legacy::mesocosm::{Origin, PartId};
 
 #[test]
 fn shared_line_keeps_lost_addresses_and_identifies_symbiont_donor() {
     let lives = fixture::three_lives();
     for life in &lives {
-        assert_eq!(life.body.species, fixture::WETLAND_LINE);
+        assert_eq!(life.body.species(), fixture::WETLAND_LINE);
         assert!(life.body.is_living(fixture::MANTLE));
         assert!(life.body.is_living(fixture::FIBRE_GLAND));
         assert!(fixture::facts_have_sources(life) && fixture::source_order_is_valid(life));
@@ -25,12 +25,11 @@ fn shared_line_keeps_lost_addresses_and_identifies_symbiont_donor() {
     assert_eq!(
         lives[2]
             .body
-            .part(fixture::ADHESIVE_SYMBIONT)
+            .provenance(fixture::ADHESIVE_SYMBIONT)
             .unwrap()
-            .provenance
             .origin,
         Origin::Incorporated {
-            from_species: donor.species,
+            from_species: donor.species(),
             from_part: donor.root
         }
     );

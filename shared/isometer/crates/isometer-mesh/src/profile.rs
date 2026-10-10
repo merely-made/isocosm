@@ -48,7 +48,7 @@
 //! is then recoverable per voxel, and a reader that does not care can ignore
 //! it entirely.
 
-use isometer_core::{BodyDocument, PartOrigin, wire};
+use isometer_core::{BodyDocument, PartId, PartOrigin, wire};
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
 
@@ -93,17 +93,19 @@ pub type ProfileError = wire::WireError;
 
 impl BodyProfile {
     /// Projects a body and the voxels its parts refer to into a crossable
-    /// artifact.
-    pub fn of(body: &BodyDocument, source: &impl VolumeSource) -> Result<Self, MeshError> {
+    /// artifact, its species and each part's origin as the product that
+    /// keeps its lineage reads them (756).
+    pub fn of(
+        body: &BodyDocument,
+        source: &impl VolumeSource,
+        species: u32,
+        origin: impl Fn(PartId) -> PartOrigin,
+    ) -> Result<Self, MeshError> {
         let (flattened, attribution) = flatten_attributed(body, source)?;
-        let parts = body
-            .parts
-            .iter()
-            .map(|part| PartOrigin::from(&part.provenance))
-            .collect();
+        let parts = body.parts.iter().map(|part| origin(part.id)).collect();
 
         Ok(Self(wing_formats::BodyProfile {
-            species: body.species.0,
+            species,
             size: flattened.volume.size,
             origin: flattened.origin,
             cells: flattened.volume.into_voxels(),
@@ -180,27 +182,20 @@ impl BodyProfile {
 mod tests {
     use super::*;
     use crate::{Volume, VolumeMap};
-    use isometer_core::{Attachment, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+    use isometer_core::{Attachment, VolumeRef, Yaw};
 
     /// A two-part body: a root, and one limb taken from another species.
     fn donated() -> (BodyDocument, VolumeMap) {
-        let mut body = BodyDocument::new(SpeciesId(7), VolumeRef::from_tag(1), 1_000, [1, 1, 1]);
+        let mut body = BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1]);
         body.attach(
             VolumeRef::from_tag(2),
-            500,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [2, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance {
-                origin: Origin::Incorporated {
-                    from_species: SpeciesId(42),
-                    from_part: PartId(3),
-                },
-                epoch: 5,
-            },
+            Some(1),
         )
         .expect("the limb attaches");
 
@@ -212,7 +207,16 @@ mod tests {
 
     fn profile() -> BodyProfile {
         let (body, volumes) = donated();
-        BodyProfile::of(&body, &volumes).unwrap()
+        // The product's lineage: the limb came from species 42's part 3.
+        let origin = |id: PartId| match id.0 {
+            1 => PartOrigin {
+                from_species: Some(42),
+                from_part: Some(3),
+                epoch: 5,
+            },
+            _ => PartOrigin::default(),
+        };
+        BodyProfile::of(&body, &volumes, 7, origin).unwrap()
     }
 
     #[test]
@@ -433,7 +437,7 @@ mod tests {
         // existed, it still sees.
         let (body, volumes) = donated();
         let plain = crate::flatten(&body, &volumes).unwrap();
-        let profile = BodyProfile::of(&body, &volumes).unwrap();
+        let profile = BodyProfile::of(&body, &volumes, 7, |_| PartOrigin::default()).unwrap();
 
         assert_eq!(profile.size, plain.volume.size);
         assert_eq!(profile.origin, plain.origin);

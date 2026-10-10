@@ -106,7 +106,7 @@ pub enum GameIntent {
         tick: Tick,
         subject: SubjectId,
         revision: BodyRevisionId,
-        document: Box<isometer_core::BodyDocument>,
+        document: Box<crate::lineage::LineageBody>,
     },
     ReconcileAnatomy {
         tick: Tick,

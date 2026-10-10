@@ -8,7 +8,7 @@
 //! few small bodies, so the family's suites need no simulation to stand on.
 //! Behind the `fixtures` feature; nothing a product links.
 
-use crate::body::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
+use crate::body::{Attachment, BodyDocument, PartId, VolumeRef, Yaw};
 use crate::ground::{Cavity, Ground, SURFACE_BAND, Terrain};
 
 /// Rolling relief from a seed: two crossed integer waves plus a hashed
@@ -71,20 +71,14 @@ pub fn limb(
         offset,
         yaw: Yaw::Zero,
     };
-    body.attach(
-        VolumeRef::from_tag(tag),
-        100,
-        half_extent,
-        attachment,
-        Provenance::founding(),
-    )
-    .expect("a fixture limb attaches")
+    body.attach(VolumeRef::from_tag(tag), half_extent, attachment, None)
+        .expect("a fixture limb attaches")
 }
 
 /// A small walker: a core, four legs below and a sensor in front, each
 /// part's volume tagged by its index plus one.
 pub fn walker() -> BodyDocument {
-    let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 3]);
+    let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 3]);
     let root = body.root;
     for (n, [x, z]) in [[-2, -2], [2, -2], [-2, 2], [2, 2]].into_iter().enumerate() {
         limb(&mut body, root, 2 + n as u8, [0, 2, 0], [x, -4, z]);

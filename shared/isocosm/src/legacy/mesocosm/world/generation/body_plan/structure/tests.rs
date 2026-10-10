@@ -49,7 +49,12 @@ fn every_feasible_layout_organ_role_founds_and_replays_paid_anatomy() {
                 let candidate = &draft.candidates[0];
                 assert!(structure.accepts(&Soma::develop(&candidate.recipe, candidate.seed)));
                 assert_eq!(candidate.body.total_mass_mg(), request.criteria.mass_mg);
-                assert!(candidate.body.living().all(|part| part.mass_mg > 0));
+                assert!(
+                    candidate
+                        .body
+                        .living()
+                        .all(|part| candidate.body.mass_mg(part.id) > 0)
+                );
                 let world = prepared.enter(0).unwrap();
                 assert_eq!(
                     world.total_matter_mg(),

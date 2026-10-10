@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Native input receipt for Eponym's bounded timed limb action.
 use self::hud::Hud;
-use isometer::core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+use isocosm::lineage::{LineageBody as BodyDocument, Provenance, SpeciesId};
+use isometer::core::{Attachment, VolumeRef, Yaw};
 use eponym_client::gpu::Composer;
 use isocosm::legacy::eponym::identity::Tick;
 use isocosm::legacy::eponym::world::fixtures::three_lives;

@@ -218,7 +218,7 @@ fn serialization_does_not_distinguish_the_played_critter() {
                         part.volume,
                         part.pivot,
                         part.attachment,
-                        part.provenance.clone(),
+                        o.body().provenance(part.id).cloned(),
                         part.severed,
                     )
                 })

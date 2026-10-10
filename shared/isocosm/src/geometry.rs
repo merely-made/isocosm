@@ -8,7 +8,7 @@
 //! geometry, as parts did before bodies.
 
 use crate::{Result, schema::*};
-use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, BodyDocument, VolumeRef, Yaw};
 use std::collections::BTreeMap;
 
 /// A part's geometry before it joins a document: what development,
@@ -85,11 +85,10 @@ impl Body {
             doc.parts.push(isometer_core::Part {
                 id: PartId(n),
                 volume: UNDRAWN,
-                mass_mg: 0,
                 half_extent: s.half_extent,
                 pivot: s.half_extent,
                 attachment: at,
-                provenance: Provenance::founding(),
+                origin: None,
                 severed: s.severed,
                 situs: s.situs,
                 shape: s.shape.clone(),
@@ -105,10 +104,9 @@ impl Body {
 /// No volume drawn yet: the sim names none.
 const UNDRAWN: VolumeRef = VolumeRef([0; 32]);
 
-/// A document rooted at `root`. Mass is the sim's ledger's (699) and the
-/// lineage fields isometer still carries are left neutral until 721 lands.
+/// A document rooted at `root`; mass is the parts' ledgers' (699).
 pub fn document(root: &Frame) -> BodyDocument {
-    let mut d = BodyDocument::new(SpeciesId(0), UNDRAWN, 0, root.half_extent);
+    let mut d = BodyDocument::new(UNDRAWN, root.half_extent);
     let part = &mut d.parts[0];
     part.situs = root.situs;
     part.shape = root.shape.clone();
@@ -124,7 +122,7 @@ pub fn attach(d: &mut BodyDocument, f: &Frame) -> Result<PartId> {
         yaw: Yaw::Zero,
     };
     let id = d
-        .attach(UNDRAWN, 0, f.half_extent, at, Provenance::founding())
+        .attach(UNDRAWN, f.half_extent, at, None)
         .map_err(|e| format!("{e:?}"))?;
     let part = &mut d.parts[id.0 as usize];
     part.situs = f.situs;

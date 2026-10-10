@@ -250,7 +250,7 @@ fn append_body(out: &mut Vec<Vertex>, item: &SceneItem) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometer_core::{BodyDocument, SpeciesId, VolumeRef};
+    use isometer_core::{BodyDocument, VolumeRef};
     use isometer_mesh::{Volume, VolumeMap, mesh_body};
 
     fn source() -> VolumeMap {
@@ -261,7 +261,7 @@ mod tests {
 
     #[test]
     fn a_cube_becomes_six_quads_of_triangles() {
-        let body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, [1, 1, 1]);
+        let body = BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1]);
         let mesh = mesh_body(&body, &source()).unwrap();
         let vertices = build_vertices(&mesh);
         assert_eq!(vertices.len(), 6 * 6, "six faces, two triangles each");

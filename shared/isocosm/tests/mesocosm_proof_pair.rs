@@ -220,7 +220,8 @@ fn this_game_derives_its_own_consequence_from_a_foreign_fact() {
         "the locally regrown descendant expresses the inherited loss"
     );
     assert_eq!(
-        descendant.species.0, chronicle.species,
+        descendant.species().0,
+        chronicle.species,
         "the lineage continues"
     );
 }
@@ -276,7 +277,7 @@ fn a_generated_critter_founds_a_lineage_exactly_like_a_played_one() {
     );
 
     for (chronicle, descendant) in chronicles.iter().zip(descendants) {
-        assert_eq!(descendant.species.0, chronicle.species);
+        assert_eq!(descendant.species().0, chronicle.species);
         let expressed = Chronicle::of(&descendant);
         assert!(
             expressed

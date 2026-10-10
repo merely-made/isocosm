@@ -1,13 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::{BodyDocument, Origin, PartId, SpeciesId, VolumeRef, snapshot};
 use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId, Tick};
 use isocosm::legacy::eponym::world::fixtures::three_lives as fixture;
 use isocosm::legacy::eponym::world::{
     AnatomyError, BodyError, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameState, Name,
     Navigation, SiteKind, World, WorldConfig,
 };
+use isocosm::legacy::mesocosm::{BodyDocument, Origin, PartId, SpeciesId, VolumeRef, snapshot};
 
 const SEED: u64 = 42_424;
 const SUBJECT: SubjectId = SubjectId(1);
@@ -100,12 +100,11 @@ fn admission_preserves_fixture_provenance_and_severed_parts() {
     assert_eq!(
         record
             .document
-            .part(fixture::ADHESIVE_SYMBIONT)
+            .provenance(fixture::ADHESIVE_SYMBIONT)
             .unwrap()
-            .provenance
             .origin,
         Origin::Incorporated {
-            from_species: fixture::symbiont_donor().species,
+            from_species: fixture::symbiont_donor().species(),
             from_part: fixture::symbiont_donor().root,
         }
     );

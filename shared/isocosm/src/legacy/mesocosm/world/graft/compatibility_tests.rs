@@ -6,7 +6,6 @@
 
 //! TG3a's world-transaction acceptance for bounded disfavoured carries.
 
-use crate::legacy::mesocosm::body::Origin;
 use crate::legacy::mesocosm::discovery::{Evidence, Stress, conditions};
 use crate::legacy::mesocosm::graft::compatibility::{Compatibility, ConditionAllowance};
 use crate::legacy::mesocosm::graft::{Crossing, Domain, Verdict};
@@ -255,14 +254,11 @@ fn retained_disfavoured_tissue_counts_cumulatively_after_carry_or_regrow() {
             Outcome::Grafted { .. }
         ));
 
-        let retained: u64 = world
-            .controlled()
-            .unwrap()
-            .phenotype
-            .body()
-            .living()
-            .filter(|part| matches!(part.provenance.origin, Origin::Incorporated { .. }))
-            .map(|part| part.mass_mg)
+        let body = world.controlled().unwrap().phenotype.body();
+        let retained: u64 = body
+            .incorporated()
+            .filter(|part| !part.severed)
+            .map(|part| body.mass_mg(part.id))
             .sum();
         assert_eq!(
             retained, first_mg,

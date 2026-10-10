@@ -9,9 +9,9 @@
 
 use std::collections::BTreeSet;
 
+use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
 use isometer_core::ground::Ground;
 use isometer_core::{Aabb, BodyDocument, PartId};
-use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
 use serde::{Deserialize, Serialize};
 
 use crate::legacy::eponym::world::part_bounds;
@@ -94,8 +94,7 @@ impl CombatRules {
         if !matches!(
             self.revision,
             LEGACY_COMBAT_RULES_REVISION | COMBAT_RULES_REVISION
-        )
-            || self.max_reach < 1
+        ) || self.max_reach < 1
             || self.max_reach > MAX_COMBAT_REACH
             || self.charge_per_reach == 0
             || self.base_harm == 0
@@ -361,23 +360,26 @@ mod tests {
     #[test]
     fn outer_surface_wins_over_a_nearer_internal_part_center() {
         use crate::legacy::eponym::world::timed_action::LimbBinding;
-        use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
-        let actor = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 10, [1; 3]);
-        let mut target = BodyDocument::new(SpeciesId(2), VolumeRef::from_tag(2), 100, [10, 1, 1]);
+        use isometer_core::{Attachment, VolumeRef, Yaw};
+        let actor = BodyDocument::new(VolumeRef::from_tag(1), [1; 3]);
+        let mut target = BodyDocument::new(VolumeRef::from_tag(2), [10, 1, 1]);
         target
             .attach(
                 VolumeRef::from_tag(3),
-                1,
                 [1; 3],
                 Attachment {
                     parent: target.root,
                     offset: [-5, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
-        let world = crate::legacy::eponym::world::World::generate(7, crate::legacy::eponym::world::WorldConfig::default()).unwrap();
+        let world = crate::legacy::eponym::world::World::generate(
+            7,
+            crate::legacy::eponym::world::WorldConfig::default(),
+        )
+        .unwrap();
         // Place above terrain to isolate part ordering. The small internal
         // part has a closer centre, but the enclosing body's surface is first.
         let result = resolve(

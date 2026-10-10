@@ -90,8 +90,8 @@ impl BodyPhenotype {
         if part.id != root {
             return Err(SubstanceError::UnknownPart(root));
         }
-        part.mass_mg = mass_mg;
         mosaic.scruple = next;
+        self.body.set_mass_mg(root, mass_mg);
         debug_assert!(self.conserves());
         Ok(())
     }
@@ -137,10 +137,12 @@ impl BodyPhenotype {
         if found.id != part {
             return Err(StockMassError::UnknownPart(part));
         }
-        if stock.total() != u128::from(found.mass_mg) {
+        let _ = found;
+        let part_mass_mg = self.body.mass_mg(part);
+        if stock.total() != u128::from(part_mass_mg) {
             return Err(StockMassError::Mismatch {
                 part,
-                part_mass_mg: found.mass_mg,
+                part_mass_mg,
                 stock_total_mg: stock.total(),
             });
         }
@@ -165,7 +167,7 @@ impl BodyPhenotype {
         let body_mass_mg = self
             .body
             .living()
-            .map(|part| u128::from(part.mass_mg))
+            .map(|part| u128::from(self.body.mass_mg(part.id)))
             .sum();
         if stock.total() != body_mass_mg {
             return Err(StockMassError::BodyMismatch {
@@ -184,7 +186,7 @@ impl BodyPhenotype {
             if part.severed {
                 continue;
             }
-            let (allocation, rest) = remaining.take(part.mass_mg);
+            let (allocation, rest) = remaining.take(self.body.mass_mg(part.id));
             allocations[index] = allocation;
             remaining = rest;
         }
@@ -211,8 +213,8 @@ impl BodyPhenotype {
         if found.id != part {
             return Stock::EMPTY;
         }
-        found.mass_mg = 0;
         let taken = std::mem::replace(&mut mosaic.scruple, Stock::EMPTY);
+        self.body.set_mass_mg(part, 0);
         debug_assert!(self.conserves());
         taken
     }
@@ -231,8 +233,9 @@ impl BodyPhenotype {
             let (taken, remainder) = self.mosaics[index].scruple.take(unpaid);
             let paid = u64::try_from(taken.total()).expect("a requested payment fits u64");
             self.mosaics[index].scruple = remainder;
-            self.body.parts[index].mass_mg =
+            let left =
                 u64::try_from(remainder.total()).expect("a part stock always fits its scalar mass");
+            self.body.set_mass_mg(PartId(index as u32), left);
             spent = spent
                 .checked_add(taken)
                 .expect("a payment cannot exceed the requested milligrams");

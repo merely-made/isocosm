@@ -76,38 +76,14 @@ impl Bodies {
     }
 }
 
-/// Mesocosm's palette (511): each box with all its cells given to its
-/// role's process, a lump taking in, a rod contracting, a point sensing and
-/// a sheet fixing.
+/// Mesocosm's palette (511, 758): the default founding's, read from the
+/// datasheets, each box with all its cells given to its bank's function.
 pub fn default_kinds() -> BTreeMap<Key, Template> {
-    let kinds: [(&str, [i32; 3], &str); 11] = [
-        ("mass", [2, 2, 2], "intake"),
-        ("slim", [2, 1, 1], "intake"),
-        ("broad", [2, 2, 1], "intake"),
-        ("crop", [2, 1, 0], "intake"),
-        ("limb", [4, 1, 1], "contract"),
-        ("leg", [3, 1, 1], "contract"),
-        ("eye", [1, 1, 1], "sense"),
-        ("frond", [4, 4, 1], "fix"),
-        ("blade", [3, 3, 0], "fix"),
-        ("pad", [4, 0, 4], "fix"),
-        ("shell", [0, 4, 4], "fix"),
-    ];
-    kinds
-        .into_iter()
-        .map(|(name, half_extent, process)| {
-            let cells = BTreeMap::from([(
-                format!("function:{process}"),
-                anatomy::capacity(half_extent),
-            )]);
-            let template = Template {
-                half_extent,
-                cells,
-                shape: String::new(),
-            };
-            (format!("kind:{name}"), template)
-        })
-        .collect()
+    let palette = &crate::datasheet::sheets()
+        .founding(crate::datasheet::native::default_founding())
+        .expect("the default founding")
+        .palette;
+    crate::datasheet::native::kinds(palette).unwrap_or_else(|why| panic!("{why}"))
 }
 
 fn kind(name: &str) -> Key {
@@ -164,7 +140,7 @@ pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
             false => match r("recipe-appendage", s) % 6 {
                 0 | 1 => {
                     limbed = true;
-                    Some(("limb", FLANK))
+                    Some(("rod", FLANK))
                 },
                 2 if s == 0 => Some(("eye", FLANK)),
                 _ => None,
@@ -172,13 +148,13 @@ pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
         };
         let per = 1 + u8::from(r("recipe-pair", s) % 8 == 0);
         tagmata.push(match borne {
-            Some((k, socket)) => bearing(segments, "mass", k, per, socket),
-            None => bare(segments, "mass"),
+            Some((k, socket)) => bearing(segments, "block", k, per, socket),
+            None => bare(segments, "block"),
         });
     }
     let head = match producer {
-        true => bare(1, "mass"),
-        false => bearing(1, "mass", if limbed { "limb" } else { "mass" }, 1, MOUTH),
+        true => bare(1, "block"),
+        false => bearing(1, "block", if limbed { "rod" } else { "block" }, 1, MOUTH),
     };
     tagmata.insert(0, head);
     let [v0, v1] = b.variance;
@@ -194,119 +170,11 @@ pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
     }
 }
 
-/// Mesocosm's eight authored bodies (512), by name, whether each is a
-/// producer, and its recipe; a speck, a box of no extent, becomes an eye.
-pub fn roster() -> Vec<(&'static str, bool, Recipe)> {
-    let recipe = |variance, tagmata| Recipe {
-        tagmata,
-        variance,
-        absence: [1, 12],
-        riff: [0, 1],
-        vary: [0, 1],
-    };
-    vec![
-        (
-            "producer:mat",
-            true,
-            recipe(1, vec![bare(2, "mass"), bearing(13, "mass", "pad", 2, LIT)]),
-        ),
-        (
-            "producer:shrub",
-            true,
-            recipe(
-                1,
-                vec![
-                    bare(1, "mass"),
-                    bearing(8, "mass", "frond", 1, LIT),
-                    bearing(8, "slim", "blade", 2, LIT),
-                ],
-            ),
-        ),
-        (
-            "producer:stalk",
-            true,
-            recipe(
-                1,
-                vec![
-                    bare(1, "mass"),
-                    bare(16, "mass"),
-                    bearing(3, "mass", "frond", 2, LIT),
-                ],
-            ),
-        ),
-        (
-            "consumer:browser",
-            false,
-            recipe(
-                0,
-                vec![
-                    bearing(1, "slim", "crop", 1, MOUTH),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bare(5, "slim"),
-                    bearing(1, "broad", "leg", 1, FLANK),
-                    bare(1, "mass"),
-                    bearing(2, "broad", "leg", 1, FLANK),
-                    bare(10, "slim"),
-                ],
-            ),
-        ),
-        (
-            "consumer:pursuit",
-            false,
-            recipe(
-                0,
-                vec![
-                    bearing(1, "slim", "limb", 1, MOUTH),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bearing(2, "mass", "leg", 1, FLANK),
-                    bare(4, "mass"),
-                    bearing(1, "mass", "leg", 1, FLANK),
-                    bare(12, "slim"),
-                ],
-            ),
-        ),
-        (
-            "consumer:armoured",
-            false,
-            recipe(
-                0,
-                vec![
-                    bearing(1, "slim", "crop", 1, MOUTH),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bearing(5, "mass", "shell", 1, FLANK),
-                    bearing(2, "broad", "leg", 1, FLANK),
-                    bare(3, "slim"),
-                ],
-            ),
-        ),
-        (
-            "decomposer:crust",
-            false,
-            recipe(
-                1,
-                vec![
-                    bearing(1, "broad", "eye", 1, FLANK),
-                    bearing(3, "crop", "leg", 1, FLANK),
-                    bearing(8, "crop", "pad", 1, FLANK),
-                ],
-            ),
-        ),
-        (
-            "decomposer:detritivore",
-            false,
-            recipe(
-                0,
-                vec![
-                    bare(1, "slim"),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bearing(1, "slim", "eye", 1, FLANK),
-                    bearing(4, "mass", "leg", 1, FLANK),
-                    bare(12, "slim"),
-                ],
-            ),
-        ),
-    ]
+/// Mesocosm's authored bodies (512, 758): the default founding's, read
+/// from the datasheets, by name, whether each is a producer, and its recipe.
+pub fn roster() -> Vec<(String, bool, Recipe)> {
+    let founding = crate::datasheet::native::default_founding();
+    crate::datasheet::native::founding(founding).unwrap_or_else(|why| panic!("{why}"))
 }
 
 /// Gives reproduce one cell of `recipe`'s root kind (547), as a kind of its

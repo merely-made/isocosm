@@ -60,8 +60,8 @@ fn an_over_cap_disfavoured_carry_is_refused_and_regrowth_is_the_route_that_remai
     assert_eq!(
         phenotype
             .body()
-            .part(root)
-            .map(|part| &part.provenance.origin),
+            .provenance(root)
+            .map(|provenance| &provenance.origin),
         Some(&Origin::Incorporated {
             from_species: DONOR_LINE,
             from_part: frond,
