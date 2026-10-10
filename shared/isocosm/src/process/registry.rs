@@ -24,7 +24,7 @@
 
 use std::sync::LazyLock;
 
-use super::{DefinitionDigest, Process, ProcessDef, ProcessId, ProcessRef, Seeding};
+use super::{DefinitionDigest, Process, ProcessDef, ProcessId, ProcessRef};
 use isometer_core::Role;
 use isometer_core::snapshot::hash_bytes;
 use serde::{Deserialize, Serialize};
@@ -59,55 +59,44 @@ pub struct Registry {
     defs: Vec<ProcessDef>,
 }
 
-/// The definitions this build ships.
-///
-/// **Sorted by qualified id**, which is the canonical order every admitted
-/// registry is in. `contract, fix, intake, secrete, sense` therefore reads
-/// alphabetically rather than in the order the four natives were built; the
-/// order is not rule-bearing (see [`Registry::digest`]) and no rule reads a
-/// position, so this is a canonicalisation rather than a change.
+/// The definitions this build ships, lowered onto the function catalogue
+/// (wing ruling 750): each native's best-fit shapes and seeding are the
+/// catalogue's (`rules::default_functions`), read as the box classes a
+/// legacy body has. A catalogue shape no box reads (tube, shell, joint,
+/// branch) has no class here. **Sorted by qualified id**, the canonical order.
 fn native_defs() -> Vec<ProcessDef> {
+    let catalogue = crate::rules::default_functions();
+    let def = |name: &str, native: Process| {
+        let f = &catalogue[&format!("function:{name}")];
+        let expressed_by = Role::ALL
+            .into_iter()
+            .filter(|role| f.shapes.contains(shape_of(*role)))
+            .collect();
+        ProcessDef {
+            id: ProcessId::new("mesocosm", name),
+            native: Some(native),
+            expressed_by,
+            seeding: f.seeding,
+        }
+    };
     vec![
-        ProcessDef {
-            id: ProcessId::new("mesocosm", "contract"),
-            native: Some(Process::Contract),
-            expressed_by: vec![Role::Limb],
-            seeding: Seeding::Grown,
-        },
-        ProcessDef {
-            id: ProcessId::new("mesocosm", "fix"),
-            native: Some(Process::Fix),
-            expressed_by: vec![Role::Plate],
-            seeding: Seeding::Grown,
-        },
-        ProcessDef {
-            id: ProcessId::new("mesocosm", "intake"),
-            native: Some(Process::Intake),
-            expressed_by: vec![Role::Mass],
-            seeding: Seeding::Grown,
-        },
-        ProcessDef {
-            id: ProcessId::new("mesocosm", "secrete"),
-            native: Some(Process::Secrete),
-            // **The same shape that fixes.** Area against the world is what a
-            // toxin surface needs too, which is why a nettle's sting is on its
-            // leaf; and it puts the tradeoff where PD1a wanted it, inside one
-            // organ. A plate on a consumer is armour rather than a frond, so
-            // the same rule lets an animal arm its shell without becoming a
-            // plant.
-            expressed_by: vec![Role::Plate],
-            // **Nothing grows a gland.** This is the whole of PD2's first
-            // done-condition: expressing it is an act with a record, so a body
-            // that has one was given one.
-            seeding: Seeding::Acquired,
-        },
-        ProcessDef {
-            id: ProcessId::new("mesocosm", "sense"),
-            native: Some(Process::Sense),
-            expressed_by: vec![Role::Sensor],
-            seeding: Seeding::Grown,
-        },
+        def("contract", Process::Contract),
+        def("fix", Process::Fix),
+        def("intake", Process::Intake),
+        // Acquired in the catalogue: nothing grows a gland (PD2).
+        def("secrete", Process::Secrete),
+        def("sense", Process::Sense),
     ]
+}
+
+/// The catalogue's name for what a box class reads as (ruling 494).
+fn shape_of(role: Role) -> &'static str {
+    match role {
+        Role::Mass => "part-shape:lump",
+        Role::Limb => "part-shape:rod",
+        Role::Plate => "part-shape:sheet",
+        Role::Sensor => "part-shape:point",
+    }
 }
 
 static NATIVE: LazyLock<Registry> = LazyLock::new(|| {

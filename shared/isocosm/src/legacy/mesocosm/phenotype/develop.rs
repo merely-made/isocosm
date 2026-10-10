@@ -283,9 +283,8 @@ pub(super) fn validate(
             let Some(def) = registry.resolve(tract.process) else {
                 return Err(Refusal::UnknownProcess(tract.process));
             };
-            // Shape gates expression. This is where "a part cannot acquire a
-            // capability by editing a number" is actually enforced: to make a
-            // plate contract you would have to make it a limb.
+            // No shape gates expression since ruling 492 (lowered by 750);
+            // the check stands for a ruleset that narrows it again.
             if !def.admits(role) {
                 return Err(Refusal::TractMismatch {
                     part: *part,

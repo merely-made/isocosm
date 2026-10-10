@@ -208,11 +208,10 @@ fn nothing_grows_a_gland() {
             "{role:?} grows a gland"
         );
     }
-    // The two questions are genuinely different for exactly one shape today.
-    // If this ever reads equal again, the seeding split has been undone.
+    // Every definition admits a plate (492); a plate grows one of them.
     let admitted = registry.all().filter(|def| def.admits(Role::Plate)).count();
     let grown = registry.seeds(Role::Plate).count();
-    assert_eq!((admitted, grown), (2, 1));
+    assert_eq!((admitted, grown), (5, 1));
 }
 
 #[test]

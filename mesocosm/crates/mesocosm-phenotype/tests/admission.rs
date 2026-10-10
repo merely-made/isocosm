@@ -416,5 +416,8 @@ fn a_definition_the_engine_has_no_binding_for_still_lowers() {
     assert_eq!(def.native, None);
     assert_eq!(def.expressed_by, vec![Role::Plate, Role::Mass]);
     assert_eq!(def.seeding, Seeding::Acquired);
-    assert!(def.admits(Role::Mass) && !def.admits(Role::Limb));
+    assert!(
+        def.admits(Role::Mass) && def.admits(Role::Limb),
+        "no shape gates (492)"
+    );
 }
