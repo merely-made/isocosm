@@ -115,10 +115,10 @@ fn a_tag_in_occurs_mid_action_under_the_pact() {
     let (sela, aud) = (sortie.society.id(SELA), sortie.society.id(AUD));
     assert!(deeds.iter().any(|deed| deed.doer == sela
         && deed.toward == Some(aud)
-        && matches!(deed.kind, DeedKind::PerformedUnderAgreement(_))));
+        && deed.kind.is(isocosm::social::PERFORMED)));
     assert!(deeds.iter().any(|deed| deed.doer == sela
         && deed.toward == Some(aud)
-        && deed.kind == DeedKind::StoodBy));
+        && deed.kind.is(eponym_play::vocabulary::STOOD_BY)));
 }
 
 #[test]
@@ -176,7 +176,7 @@ fn a_sortie_deed_explains_a_later_answer() {
         .iter()
         .find(|id| {
             let deed = society.sim().deed(id).unwrap();
-            deed.at == shared_at.0 && deed.kind == DeedKind::Shared && deed.doer == society.id(AUD)
+            deed.at == shared_at.0 && deed.kind.is(eponym_play::vocabulary::SHARED) && deed.doer == society.id(AUD)
         })
         .expect("the answer does not cite the sortie's share");
     let deed = society.sim().deed(sortie_deed).unwrap();
@@ -236,13 +236,13 @@ fn the_negotiation_is_real_and_the_agreement_closes() {
     let outing = sortie
         .society
         .agreements()
-        .find(|agreement| agreement.holder == sortie.society.id(BRAM) && agreement.work == scene::OUTING)
+        .find(|agreement| agreement.holder == sortie.society.id(BRAM) && agreement.work == scene::outing())
         .expect("the expedition agreement exists");
     assert!(!outing.standing());
     let ended = sortie
         .society
         .deeds()
         .iter()
-        .any(|deed| deed.kind == DeedKind::AgreementEnded(outing.id));
+        .any(|deed| deed.kind == DeedKind::under(isocosm::social::AGREEMENT_ENDED, outing.id));
     assert!(ended);
 }

@@ -7,7 +7,7 @@
 //! would bear for them. Nothing here commands anyone.
 
 use super::{Confidence, Deed, Premise, Standing, Terms, Verdict, Work, terms::caution_of};
-use crate::schema::{Entity, Id};
+use crate::{rules::Rules, schema::{Entity, Id}};
 
 pub fn trust_asked(danger: u8) -> i16 {
     i16::from(danger)
@@ -23,18 +23,19 @@ pub struct Weighed {
 }
 
 /// The deeds behind a standing, then the standing itself.
-pub fn evidence(deeds: &[Deed], standing: &Standing, toward: Id) -> Vec<Premise> {
+pub fn evidence(rules: &Rules, deeds: &[Deed], standing: &Standing, toward: Id) -> Vec<Premise> {
+    let v = super::deed::vocabulary(rules);
     let mut premises: Vec<Premise> = standing
         .from_deeds
         .iter()
         .filter_map(|id| deeds.iter().find(|d| &d.id == id))
         .map(|deed| {
-            let (trust, affinity) = deed.kind.weight();
+            let (trust, affinity) = v.weight(&deed.kind.key);
             Premise::Deed {
                 deed: deed.id.clone(),
                 at: deed.at,
                 doer: deed.doer,
-                kind: deed.kind,
+                kind: deed.kind.clone(),
                 trust,
                 affinity,
             }
@@ -52,7 +53,7 @@ pub fn evidence(deeds: &[Deed], standing: &Standing, toward: Id) -> Vec<Premise>
 fn confidence(peer: &Entity, work: &Work) -> (bool, Premise) {
     let read = Confidence::read(peer, work);
     let premise = Premise::Confidence {
-        craft: read.craft,
+        craft: read.craft.clone(),
         demanded: read.demanded,
         held: read.held,
         margin: read.margin(),
@@ -72,14 +73,14 @@ fn trust(standing: &Standing, work: &Work) -> (bool, Premise) {
     (met, premise)
 }
 
-pub fn weigh(peer: &Entity, toward: Id, standing: &Standing, deeds: &[Deed], work: &Work, terms: &Terms) -> Weighed {
+pub fn weigh(rules: &Rules, peer: &Entity, toward: Id, standing: &Standing, deeds: &[Deed], work: &Work, terms: &Terms) -> Weighed {
     let (able, conf) = confidence(peer, work);
     if !able {
         // Nothing about the asker is in play, so nothing about it is cited.
         let premises = vec![conf];
         return Weighed { verdict: Verdict::Refuse, premises };
     }
-    let mut premises = evidence(deeds, standing, toward);
+    let mut premises = evidence(rules, deeds, standing, toward);
     premises.push(conf);
     let (met, asked) = trust(standing, work);
     premises.push(asked);
@@ -108,9 +109,9 @@ pub fn weigh(peer: &Entity, toward: Id, standing: &Standing, deeds: &[Deed], wor
 
 /// Whether a holder does routine work under an agreement: craft and trust,
 /// no danger weighed, since the agreement already bounds it.
-pub fn weigh_routine(peer: &Entity, toward: Id, standing: &Standing, deeds: &[Deed], work: &Work) -> (bool, Vec<Premise>) {
+pub fn weigh_routine(rules: &Rules, peer: &Entity, toward: Id, standing: &Standing, deeds: &[Deed], work: &Work) -> (bool, Vec<Premise>) {
     let (able, conf) = confidence(peer, work);
-    let mut premises = evidence(deeds, standing, toward);
+    let mut premises = evidence(rules, deeds, standing, toward);
     premises.push(conf);
     if !able {
         return (false, premises);

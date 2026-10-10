@@ -267,6 +267,7 @@ impl BodyFounding {
             systems: default_systems(),
             carriage: Some(Carriage { per_cell }),
             directing: None,
+            social: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

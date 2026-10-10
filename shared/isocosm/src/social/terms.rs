@@ -4,37 +4,18 @@
 //! What is asked and agreed: crafts, work, terms, offers and standing
 //! agreements (rulings 63 and 67). An agreement is still not a command.
 
-use crate::schema::{Entity, Id, Tick};
+use crate::schema::{Entity, Id, Key, Tick};
 use serde::{Deserialize, Serialize};
 
-/// A craft a peer may hold, kept as the skill `craft:<name>`.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub enum Craft {
-    Scouting,
-    Smithing,
-    Healing,
-    Hauling,
-    Watching,
+/// A craft is a key the world's vocabulary declares (778), held as the
+/// skill of that key; its grade, nought where a peer holds none.
+pub fn grade_of(e: &Entity, craft: &str) -> u8 {
+    e.skills.get(craft).map_or(0, |g| (*g).min(255) as u8)
 }
 
-impl Craft {
-    pub fn name(&self) -> &'static str {
-        match self {
-            Self::Scouting => "scouting",
-            Self::Smithing => "smithing",
-            Self::Healing => "healing",
-            Self::Hauling => "hauling",
-            Self::Watching => "watching",
-        }
-    }
-    /// The skill a body keeps it under.
-    pub fn skill(&self) -> String {
-        format!("craft:{}", self.name())
-    }
-    /// The grade `e` holds in it, nought where it holds none.
-    pub fn grade_of(&self, e: &Entity) -> u8 {
-        e.skills.get(&self.skill()).map_or(0, |g| (*g).min(255) as u8)
-    }
+/// A craft as said: its key without its namespace.
+pub fn craft_name(craft: &str) -> &str {
+    craft.split_once(':').map_or(craft, |(_, name)| name)
 }
 
 /// Where a peer's caution is kept among its disposition's axes. *Reading,
@@ -46,9 +27,9 @@ pub fn caution_of(e: &Entity) -> i16 {
 }
 
 /// A peer's read of whether work is within its craft.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Confidence {
-    pub craft: Craft,
+    pub craft: Key,
     pub demanded: u8,
     pub held: u8,
 }
@@ -56,9 +37,9 @@ pub struct Confidence {
 impl Confidence {
     pub fn read(e: &Entity, work: &Work) -> Self {
         Self {
-            craft: work.craft,
+            craft: work.craft.clone(),
             demanded: work.grade,
-            held: work.craft.grade_of(e),
+            held: grade_of(e, &work.craft),
         }
     }
     pub fn margin(&self) -> i16 {
@@ -69,16 +50,16 @@ impl Confidence {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Work {
-    pub craft: Craft,
+    pub craft: Key,
     pub grade: u8,
     pub danger: u8,
 }
 
 impl Work {
-    pub fn new(craft: Craft, grade: u8, danger: u8) -> Self {
-        Self { craft, grade, danger }
+    pub fn new(craft: impl Into<Key>, grade: u8, danger: u8) -> Self {
+        Self { craft: craft.into(), grade, danger }
     }
 }
 
@@ -95,7 +76,7 @@ impl Terms {
 }
 
 /// An ask put by one sophont to another.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Offer {
     pub asked_by: Id,
     pub asked_of: Id,
@@ -108,10 +89,10 @@ impl Offer {
         Self { asked_by, asked_of, work, terms }
     }
     pub fn to(&self, asked_of: Id) -> Self {
-        Self { asked_of, ..*self }
+        Self { asked_of, ..self.clone() }
     }
     pub fn on(&self, terms: Terms) -> Self {
-        Self { terms, ..*self }
+        Self { terms, ..self.clone() }
     }
 }
 

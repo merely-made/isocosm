@@ -3,7 +3,9 @@
 
 //! The durable product boundary for one controlled life.
 //!
-//! This coordinator owns only control history and its save cut. `GameState`
+//! This coordinator owns only control history and its save cut; who is
+//! played is the sim's, the player a participant taking up its sophont
+//! through native `Take` (wing rulings 671 and 779). `GameState`
 //! remains the sole owner of world, body, movement, inventory, and injury.
 //! A control change is stamped at a game-intent cut, so restore can validate
 //! who was alive when they were selected rather than guessing from final state.
@@ -106,8 +108,9 @@ impl From<IdentityError> for SessionError {
 
 impl Session {
     /// Starts control at the current accepted game-intent cut.
-    pub fn begin(game: GameState, subject: SubjectId) -> Result<Self, SessionError> {
+    pub fn begin(mut game: GameState, subject: SubjectId) -> Result<Self, SessionError> {
         eligible(&game, subject)?;
+        game.take_up(subject)?;
         Ok(Self {
             control: Control::begin(subject, game.next_tick()),
             game,
@@ -125,11 +128,13 @@ impl Session {
     /// Applies one ordinary game action for the one currently controlled body.
     pub fn apply_game(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, SessionError> {
         // A world-level intent names no subject, so control does not gate it.
+        // Who is played is the sim's (779).
+        let played = self.game.played().unwrap_or(self.control.played());
         if let Some(subject) = intent.subject()
-            && subject != self.control.played()
+            && subject != played
         {
             return Err(SessionError::NotControlled {
-                expected: self.control.played(),
+                expected: played,
                 actual: subject,
             });
         }
@@ -155,6 +160,7 @@ impl Session {
             return Err(SessionError::HomeStillAlive(home));
         }
         eligible(&self.game, successor)?;
+        self.game.take_up(successor)?;
         self.control.apply(ControlIntent::Succeed {
             to: successor,
             at: self.game.next_tick(),
@@ -319,16 +325,16 @@ impl Session {
                 if control_at(intent) > at {
                     break;
                 }
-                apply_control_at_cut(&mut control, &game, intent)?;
+                apply_control_at_cut(&mut control, &mut game, intent)?;
                 cursor += 1;
             }
             if cut < save.game.intents.len() {
                 let intent = save.game.intents[cut].clone();
-                if let (Some(control), Some(subject)) = (&control, intent.subject())
-                    && subject != control.played()
+                if let (Some(played), Some(subject)) = (game.played(), intent.subject())
+                    && subject != played
                 {
                     return Err(SessionError::NotControlled {
-                        expected: control.played(),
+                        expected: played,
                         actual: subject,
                     });
                 }
@@ -381,7 +387,7 @@ fn control_at(intent: ControlIntent) -> Tick {
 
 fn apply_control_at_cut(
     control: &mut Option<Control>,
-    game: &GameState,
+    game: &mut GameState,
     intent: ControlIntent,
 ) -> Result<(), SessionError> {
     match (control.as_mut(), intent) {
@@ -393,6 +399,7 @@ fn apply_control_at_cut(
                 });
             }
             eligible(game, subject)?;
+            game.take_up(subject)?;
             *control = Some(Control::begin(subject, at));
             Ok(())
         },
@@ -425,6 +432,7 @@ fn apply_control_at_cut(
                 return Err(SessionError::HomeStillAlive(home));
             }
             eligible(game, to)?;
+            game.take_up(to)?;
             control.apply(ControlIntent::Succeed { to, at })?;
             Ok(())
         },

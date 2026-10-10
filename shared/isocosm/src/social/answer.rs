@@ -4,7 +4,7 @@
 //! Standing, folded from deeds, and the answers a peer gives with the
 //! premises behind each: refusal is an outcome, never an error.
 
-use super::{DeedKind, EndReason, Terms, terms::Craft};
+use super::{DeedKind, EndReason, Terms};
 use crate::schema::{Id, Key, Tick};
 use serde::{Deserialize, Serialize};
 
@@ -63,7 +63,7 @@ pub enum Premise {
         from_deeds: Vec<Key>,
     },
     Confidence {
-        craft: Craft,
+        craft: Key,
         demanded: u8,
         held: u8,
         margin: i16,

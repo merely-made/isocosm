@@ -9,7 +9,8 @@
 
 use eponym_play::identity::{SubjectId, Tick};
 use isocosm::schema::Id;
-use isocosm::social::{Craft, DeedKind, Offer, Response, Terms, Work};
+use eponym_play::vocabulary::{ABANDONED, HEALING, SCOUTING, SHARED, STOOD_BY, WATCHING};
+use isocosm::social::{DeedKind, Offer, Response, Terms, Work};
 
 use crate::society::{SocialError, Society};
 
@@ -19,36 +20,42 @@ pub const ODRIS: SubjectId = SubjectId(3);
 pub const SELA: SubjectId = SubjectId(4);
 pub const THE_THREE: [SubjectId; 3] = [BRAM, ODRIS, SELA];
 
-pub const BRAM_ASK: Work = Work { craft: Craft::Scouting, grade: 2, danger: 2 };
-pub const ODRIS_ASK: Work = Work { craft: Craft::Watching, grade: 3, danger: 2 };
-pub const SELA_ASK: Work = Work { craft: Craft::Healing, grade: 3, danger: 4 };
+pub fn bram_ask() -> Work {
+    Work::new(SCOUTING, 2, 2)
+}
+pub fn odris_ask() -> Work {
+    Work::new(WATCHING, 3, 2)
+}
+pub fn sela_ask() -> Work {
+    Work::new(HEALING, 3, 4)
+}
 pub const THE_KEEP: Terms = Terms { share: 2, danger_cap: 4 };
 
 /// The four, admitted to `society`, and Aud's deeds toward the three.
 pub fn admit(society: &mut Society) -> Result<(), SocialError> {
-    society.admit(AUD, "Aud", &[(Craft::Scouting, 2)], 0)?;
-    society.admit(BRAM, "Bram", &[(Craft::Scouting, 4)], 0)?;
-    society.admit(ODRIS, "Odris", &[(Craft::Scouting, 5), (Craft::Watching, 3)], 1)?;
-    society.admit(SELA, "Sela", &[(Craft::Scouting, 3), (Craft::Healing, 4)], 3)?;
+    society.admit(AUD, "Aud", &[(SCOUTING, 2)], 0)?;
+    society.admit(BRAM, "Bram", &[(SCOUTING, 4)], 0)?;
+    society.admit(ODRIS, "Odris", &[(SCOUTING, 5), (WATCHING, 3)], 1)?;
+    society.admit(SELA, "Sela", &[(SCOUTING, 3), (HEALING, 4)], 3)?;
     for (tick, toward, kind) in [
-        (1, BRAM, DeedKind::StoodBy),
-        (2, BRAM, DeedKind::StoodBy),
-        (3, ODRIS, DeedKind::Shared),
-        (4, ODRIS, DeedKind::Abandoned),
-        (5, SELA, DeedKind::Shared),
-        (6, SELA, DeedKind::Shared),
-        (7, SELA, DeedKind::StoodBy),
+        (1, BRAM, STOOD_BY),
+        (2, BRAM, STOOD_BY),
+        (3, ODRIS, SHARED),
+        (4, ODRIS, ABANDONED),
+        (5, SELA, SHARED),
+        (6, SELA, SHARED),
+        (7, SELA, STOOD_BY),
     ] {
-        society.record(Tick(tick), AUD, Some(toward), kind)?;
+        society.record(Tick(tick), AUD, Some(toward), DeedKind::new(kind))?;
     }
     Ok(())
 }
 
 pub fn ask_of(society: &Society, subject: SubjectId) -> Offer {
     let work = match subject {
-        BRAM => BRAM_ASK,
-        ODRIS => ODRIS_ASK,
-        _ => SELA_ASK,
+        BRAM => bram_ask(),
+        ODRIS => odris_ask(),
+        _ => sela_ask(),
     };
     society.offer(AUD, subject, work, THE_KEEP)
 }
@@ -64,7 +71,7 @@ pub fn answers(society: &mut Society) -> Result<Vec<Response>, SocialError> {
 }
 
 pub fn sela_settled_ask(society: &Society) -> Offer {
-    let work = Work { danger: 3, ..SELA_ASK };
+    let work = Work { danger: 3, ..sela_ask() };
     society.offer(AUD, SELA, work, Terms { share: 3, danger_cap: 3 })
 }
 

@@ -25,6 +25,7 @@ use std::collections::BTreeMap;
 
 use eponym_play::identity::{BodyRevisionId, Control, ControlIntent, SubjectId, Tick};
 use isocosm::schema::Id as AgreementId;
+use eponym_play::vocabulary::{SHARED, STOOD_BY};
 use isocosm::social::{DeedKind, EndReason, RulingKind, Work};
 use isometer_core::ground::ROCK;
 use isometer_core::snapshot::{encode, hash_bytes};
@@ -383,7 +384,7 @@ impl Sortie {
                     .expect("the pact's agreement exists");
                 if tended.kind == RulingKind::Performed {
                     self.society
-                        .record(self.tick(), healer, Some(down), DeedKind::StoodBy)
+                        .record(self.tick(), healer, Some(down), DeedKind::new(STOOD_BY))
                         .expect("the healer's deed is recorded");
                     self.events.push(SortieEvent::Tended {
                         at: self.tick(),
@@ -476,7 +477,7 @@ impl Sortie {
             let with: Vec<SubjectId> = self.parts.iter().map(|(who, _)| *who).collect();
             for companion in with {
                 self.society
-                    .record(self.tick(), leader, Some(companion), DeedKind::Shared)
+                    .record(self.tick(), leader, Some(companion), DeedKind::new(SHARED))
                     .expect("the share is recorded");
                 self.events.push(SortieEvent::SharedOut {
                     at: self.tick(),

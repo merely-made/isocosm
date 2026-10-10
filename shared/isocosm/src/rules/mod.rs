@@ -255,6 +255,10 @@ pub struct Rules {
     /// means the defaults, and worlds without it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub directing: Option<Directing>,
+    /// The crafts and deeds a world's sophonts read (778); absent in worlds
+    /// without them, which hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub social: Option<crate::social::Vocabulary>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

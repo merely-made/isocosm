@@ -37,6 +37,9 @@ pub struct GameState {
     anatomies: Anatomies,
     records: BTreeMap<SubjectId, BodyRecord>,
     places: ItemPlaces,
+    /// The player, a participant in the sim, who takes up the sophont it
+    /// drives through native `Take` (671, 779).
+    participant: Option<Id>,
     intents: Vec<GameIntent>,
     events: Vec<GameEvent>,
     /// Read from the sim after every accepted intent.
@@ -64,6 +67,7 @@ impl GameState {
             anatomies: Anatomies::default(),
             records: BTreeMap::new(),
             places: ItemPlaces::default(),
+            participant: None,
             intents: Vec::new(),
             events: Vec::new(),
             bodies: Bodies::new(),
@@ -106,6 +110,28 @@ impl GameState {
     /// The sim's entity for `subject`.
     pub fn entity(&self, subject: SubjectId) -> Option<Id> {
         self.world.entity(subject)
+    }
+
+    /// The player takes up `subject` to drive it, joining the sim first if
+    /// it has not (779). Not an intent: a control cut between intents.
+    pub fn take_up(&mut self, subject: SubjectId) -> Result<(), GameError> {
+        let critter = self.entity_of(subject)?;
+        let participant = match self.participant {
+            Some(p) => p,
+            None => {
+                let joined = self.world.command(Command::Join)?;
+                let id = joined.strip_prefix("participant:").and_then(|s| s.parse().ok());
+                *self.participant.insert(id.ok_or(GameError::Decode)?)
+            },
+        };
+        self.world.command(Command::Take { participant, critter })?;
+        Ok(())
+    }
+
+    /// The subject the player drives, as the sim holds it.
+    pub fn played(&self) -> Option<SubjectId> {
+        let critter = self.world.sim().plays(self.participant?)?;
+        self.world.subjects().find(|(_, e)| *e == critter).map(|(s, _)| s)
     }
 
     /// Detailed anatomy may support a current action only at its admitted revision.
@@ -156,7 +182,7 @@ impl GameState {
 
     /// The sim's hash beside the game's own record.
     pub fn state_hash(&self) -> Result<u64, GameError> {
-        let record = (&self.movement, &self.anatomies, &self.records, &self.places, &self.intents);
+        let record = (&self.movement, &self.anatomies, &self.records, &self.places, &self.intents, self.participant);
         let bytes = snapshot::encode(&record).map_err(|_| GameError::Encode)?;
         Ok(hash_bytes(&bytes) ^ self.world.state_hash()?)
     }

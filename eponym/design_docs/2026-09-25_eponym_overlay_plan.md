@@ -391,3 +391,7 @@ done on paper; opening E1 is Mark's.
   for driving the played sophont over the native session (671). The
   families plan's Progress has the detail. §4's table and E2's
   done-conditions stand for the after-pass.
+- 2026-10-10: the world move's follow-ups (wing rulings 778 and 779):
+  Eponym's crafts and deeds are keys its rules pack declares, and the
+  player drives its sophont through native `Take`, one path with
+  Mesocosm's directing. The families plan's Progress has the detail.

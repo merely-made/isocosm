@@ -11,7 +11,7 @@ use eponym_play::{World, WorldError, WorldIntent, founding};
 use isocosm::history::Command;
 use isocosm::schema::{Id, Key, Method};
 use isocosm::social::{
-    Agreement, Answer, Craft, Deed, DeedKind, EndReason, Offer, Premise, Response, Ruling, Social,
+    Agreement, Answer, Deed, DeedKind, EndReason, Offer, Premise, Response, Ruling, Social,
     Standing, Terms, Work,
 };
 
@@ -44,7 +44,7 @@ impl Society {
 
     /// A peer, asserted as an authored character (769), arrives in the
     /// played site and takes a one-part body.
-    pub fn admit(&mut self, subject: SubjectId, name: &str, crafts: &[(Craft, u8)], caution: i16) -> Result<Id, SocialError> {
+    pub fn admit(&mut self, subject: SubjectId, name: &str, crafts: &[(&str, u8)], caution: i16) -> Result<Id, SocialError> {
         let key = name.to_lowercase();
         let character = isocosm::asserted::Character { key: key.clone(), name: name.into(), ..Default::default() };
         self.world.command(Command::Assert(isocosm::asserted::Assertion::Character(character)))?;
@@ -59,7 +59,7 @@ impl Society {
                 .map(|(k, v)| (k.to_string(), *v))
                 .collect(),
             traits: Default::default(),
-            skills: crafts.iter().map(|(c, g)| (c.skill(), u64::from(*g))).collect(),
+            skills: crafts.iter().map(|(c, g)| (c.to_string(), u64::from(*g))).collect(),
             disposition,
             character: Some(key),
         };
@@ -108,16 +108,16 @@ impl Society {
         }
     }
     pub fn consider(&mut self, offer: &Offer, at: Tick) -> Result<Response, SocialError> {
-        match self.social(Social::Consider(*offer), at)? {
+        match self.social(Social::Consider(offer.clone()), at)? {
             Answer::Response(r) => Ok(r),
             _ => Err(SocialError::Decode),
         }
     }
     pub fn form(&mut self, offer: &Offer, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::Form(*offer), at)
+        self.ruling(Social::Form(offer.clone()), at)
     }
     pub fn exercise(&mut self, agreement: Id, work: &Work, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::Exercise { agreement, work: *work }, at)
+        self.ruling(Social::Exercise { agreement, work: work.clone() }, at)
     }
     pub fn propose_change(&mut self, agreement: Id, by: SubjectId, terms: Terms, at: Tick) -> Result<Ruling, SocialError> {
         self.ruling(Social::Renegotiate { agreement, by: self.id(by), terms }, at)
@@ -126,7 +126,7 @@ impl Society {
         self.ruling(Social::End { agreement, by: self.id(by), why }, at)
     }
     pub fn offer_home(&mut self, offer: &Offer, dwelling: Id, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::OfferHome { offer: *offer, dwelling }, at)
+        self.ruling(Social::OfferHome { offer: offer.clone(), dwelling }, at)
     }
 
     /// A dwelling, asserted as an authored place (769).

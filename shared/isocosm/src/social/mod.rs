@@ -3,7 +3,8 @@
 
 //! Standing and asks (rulings 51, 56, 60, 63 and 67; Eponym's social family
 //! re-expressed in native nouns with its world move, 755): a peer is an
-//! entity, its crafts its skills and its caution a disposition; a deed is
+//! entity, its crafts the skills its world's vocabulary declares (778) and
+//! its caution a disposition; a deed is
 //! an act leaving a world event; standing is folded from deeds; a standing
 //! agreement lives in the world's state; a home is a site held under one.
 //! **Nothing here commands anyone**: offers are put, answers come back, and
@@ -21,11 +22,14 @@ pub mod willing;
 
 pub use answer::{Premise, Response, Ruling, RulingKind, Standing, Verdict, cited_deeds};
 pub use asks::standing_in;
-pub use deed::{Deed, DeedKind, processes};
+pub use deed::{
+    AGREEMENT_ENDED, AGREEMENT_FORMED, Deed, DeedKind, DeedRule, OFFER_ACCEPTED, OFFER_COUNTERED,
+    OFFER_REFUSED, PERFORMED, RECORDED, RENEGOTIATED, Vocabulary, processes, vocabulary,
+};
 pub use settlement::{DailyRound, TENANT};
 pub use terms::{
-    Agreement, AgreementChange, AgreementEvent, AgreementState, CAUTION, Confidence, Craft,
-    EndReason, Offer, Terms, Work, caution_of,
+    Agreement, AgreementChange, AgreementEvent, AgreementState, CAUTION, Confidence, EndReason,
+    Offer, Terms, Work, caution_of, craft_name, grade_of,
 };
 
 /// A social act, as the log carries it.
@@ -51,7 +55,7 @@ pub enum Answer {
 impl crate::simulation::Simulation {
     pub(crate) fn social(&mut self, act: &Social) -> crate::Result<Answer> {
         Ok(match act {
-            Social::Deed { doer, toward, kind } => Answer::Deed(self.record_deed(*doer, *toward, *kind)?),
+            Social::Deed { doer, toward, kind } => Answer::Deed(self.record_deed(*doer, *toward, kind)?),
             Social::Consider(offer) => Answer::Response(self.weigh_offer(offer)?),
             Social::Form(offer) => Answer::Ruling(self.form(offer)?),
             Social::Exercise { agreement, work } => Answer::Ruling(self.exercise(*agreement, work)?),

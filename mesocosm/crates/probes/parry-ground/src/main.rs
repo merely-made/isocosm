@@ -12,8 +12,10 @@ use conatus::{
     BodyDesc, BodyError, BodyKind, BodyWorld, ColliderDesc, ColliderId, ColliderShape,
     SpatialFilter, Transform, VoxelEdit,
 };
-use isocosm::legacy::mesocosm::Places;
-use isocosm::legacy::mesocosm::places::{AIR, BRICK, Ground};
+use isometer_core::ground::{AIR, BRICK, Ground};
+use terrain::Places;
+
+mod terrain;
 
 const SEED: u64 = 0xC011_1DE3;
 const SIDE: u16 = 3;

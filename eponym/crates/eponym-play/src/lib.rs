@@ -34,6 +34,7 @@ mod subject_sheet;
 mod technique;
 pub mod timed_action;
 mod transitions;
+pub mod vocabulary;
 pub mod walking;
 mod world;
 

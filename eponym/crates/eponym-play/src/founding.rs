@@ -124,7 +124,9 @@ pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
     r.relations.insert(isocosm::social::TENANT.into());
     r.note_kinds.extend(set(&[isocosm::arrival::NAME, SITE_FACT]));
     r.note_kinds.extend(isocosm::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
-    r.processes.extend(isocosm::social::processes());
+    let social = crate::vocabulary::vocabulary();
+    r.processes.extend(isocosm::social::processes(&social));
+    r.social = Some(social);
     r.processes.extend(processes());
     r.mind = Some(Mind {
         strain: "sim:strain".into(),

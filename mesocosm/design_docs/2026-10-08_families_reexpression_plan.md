@@ -486,3 +486,20 @@ the bodies family.
   *Reading, not ruled:* `voxel_profile` went to mesocosm-runtime beside the
   tactile adapter (669, the overlay plan's §4 reading); the chronicle's
   legacy re-entry (`found`) and generator retired with legacy development.
+- **2026-10-10, Eponym's follow-ups and legacy Mesocosm's last lines (lane
+  `lane-eponym-follow`, under 732's compile gate).** Under 778 the social
+  vocabulary is the rules pack's: `Rules::social` declares crafts (keys
+  held as skills) and deeds by key with their weight on trust and liking
+  and their phrase; the sim names only the seven deeds asks and agreements
+  record, which a vocabulary must declare, and deed processes are made from
+  it. Eponym's pack declares Eponym's (`eponym-play`'s `vocabulary`). Under
+  779 native `Take` admits a sophont to drive beside a deliberative critter
+  to direct; Eponym's player joins as a participant and takes up the
+  sophont it plays at each control cut, and its session reads who is played
+  from the sim. Legacy Mesocosm's last 1,981 lines served only the
+  parry-ground probe: the grown enclosure, its relief and the brick terrain
+  moved into the probe as its own fixture, its release run reading as
+  before (136 bricks, 69,632 cells, 41,763 voxels, ray 2.5 to 4.5), and
+  legacy Mesocosm is deleted. *Reading, not ruled:* an undeclared deed
+  weighs nothing and is refused when recorded; Eponym's control keeps its
+  log and home beside the sim's `plays`.

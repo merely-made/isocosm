@@ -14,7 +14,7 @@ use crate::{Result, schema::related, simulation::Simulation};
 pub const TENANT: &str = "social:tenant";
 
 /// Where someone lives and what they do daily, read from agreements.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DailyRound {
     pub home: Option<Id>,
     pub does: Option<Work>,
@@ -69,7 +69,7 @@ impl Simulation {
         let Some((_, home, a)) = self.tenancies().into_iter().find(|t| t.0 == who) else {
             return DailyRound::default();
         };
-        let does = self.state.agreements.get(&a).map(|a| a.work);
+        let does = self.state.agreements.get(&a).map(|a| a.work.clone());
         DailyRound { home: Some(home), does }
     }
 }

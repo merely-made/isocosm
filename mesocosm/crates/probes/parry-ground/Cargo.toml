@@ -9,6 +9,8 @@ publish = false
 
 [dependencies]
 isocosm = { path = "../../../../shared/isocosm" }
+isometer-core = { path = "../../../../shared/isometer/crates/isometer-core" }
+serde = { version = "1", features = ["derive"] }
 # The stack's collider layer (wing rulings 695, 722 to 725, 731): Rapier and
 # Parry stay private inside conatus.
 conatus = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }

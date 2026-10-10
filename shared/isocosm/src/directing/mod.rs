@@ -153,8 +153,10 @@ impl Simulation {
             .population
             .get(critter)
             .ok_or("unknown critter")?;
-        if !e.alive || e.method != Method::Deliberative {
-            return Err("only a living deliberative critter is directed".into());
+        // One path takes up a life in both games (779): a deliberative
+        // critter is directed, a normative one, a sophont, is driven (671).
+        if !e.alive || !matches!(e.method, Method::Deliberative | Method::Normative) {
+            return Err("only a living deliberative critter or sophont is taken up".into());
         }
         let lineage = e.lineage.clone();
         let rules = self.genesis.rules.directing();

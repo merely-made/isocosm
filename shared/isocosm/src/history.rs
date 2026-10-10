@@ -47,7 +47,8 @@ pub enum Command {
     /// A participant joins, a placeless entity (ruling 688).
     Join,
     /// A participant takes up a critter, its bond seeded by the world's
-    /// setting (178).
+    /// setting (178): a deliberative one to direct, a sophont to drive
+    /// (671, 779).
     Take {
         participant: Id,
         critter: Id,

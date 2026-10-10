@@ -270,6 +270,7 @@ impl Founding {
             systems: Default::default(),
             carriage: None,
             directing: None,
+            social: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

@@ -31,20 +31,6 @@ pub struct NestEntry {
     pub route: Vec<[i32; 3]>,
 }
 
-impl Grown {
-    /// The exact generated access routes embodied by `Ground::grow`.
-    ///
-    /// This is a read model over the same construction rule as terrain
-    /// generation. Debuggers and projections can name a threshold without
-    /// reconstructing one from rendered voxels or storing another authority.
-    pub fn nest_entries(&self, extent: i32) -> impl Iterator<Item = (Nest, NestEntry)> + '_ {
-        self.nests
-            .iter()
-            .copied()
-            .filter_map(move |nest| nest_entry(self, extent, nest).map(|entry| (nest, entry)))
-    }
-}
-
 /// Mesocosm's half of the family's terrain seam.
 ///
 /// Burrows are anchored at the highest column near the host, so a low-lying
@@ -156,5 +142,3 @@ fn nest_entry_direction(host: u16) -> [i32; 2] {
 
 // Split out at the 600-LOC ceiling (2026-08-29, TD2b): same module, just a
 // separate file, per the `organism::ecology` / `ecology::tests` precedent.
-#[cfg(test)]
-mod tests;

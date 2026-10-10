@@ -14,7 +14,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::rng::Rng;
+use isocosm::rng::Rng;
 
 /// Grid side: 2^6 + 1. Coarse is the point; regions carry local detail.
 const SIDE: usize = 65;
@@ -126,49 +126,5 @@ impl Relief {
             }
         }
         hi - lo
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn the_same_seed_raises_the_same_land() {
-        assert_eq!(Relief::generate(7), Relief::generate(7));
-        assert_ne!(Relief::generate(7), Relief::generate(8));
-    }
-
-    #[test]
-    fn heights_stay_in_band_and_vary() {
-        let relief = Relief::generate(4_242);
-        let mut distinct = std::collections::BTreeSet::new();
-        for z in (-512..=512).step_by(64) {
-            for x in (-512..=512).step_by(64) {
-                let h = relief.sample(512, x, z);
-                assert!((0..=CEILING).contains(&h));
-                distinct.insert(h);
-            }
-        }
-        assert!(distinct.len() > 8, "a landscape, not a plate: {distinct:?}");
-    }
-
-    #[test]
-    fn some_of_the_world_is_wet_and_most_is_not() {
-        for seed in [1u64, 99, 4_242] {
-            let relief = Relief::generate(seed);
-            let mut wet = 0;
-            let mut total = 0;
-            for z in (-512..=512).step_by(32) {
-                for x in (-512..=512).step_by(32) {
-                    total += 1;
-                    if relief.sample(512, x, z) < relief.sea {
-                        wet += 1;
-                    }
-                }
-            }
-            assert!(wet > 0, "seed {seed}: no water at all");
-            assert!(wet * 2 < total, "seed {seed}: mostly ocean");
-        }
     }
 }

@@ -22,7 +22,8 @@
 
 use eponym_client::room::{Room, SEED};
 use eponym_play::identity::{Control, SubjectId, Tick};
-use isocosm::social::{Craft, DeedKind, Response, Terms, Work};
+use eponym_play::vocabulary::{ABANDONED, HEALING, SCOUTING};
+use isocosm::social::{DeedKind, Response, Terms, Work};
 use isometer_space::volume::Volume;
 
 use crate::march;
@@ -31,11 +32,9 @@ use crate::settled::{self, AUD, BRAM, ODRIS, SELA};
 use crate::society::Society;
 use crate::sortie::Sortie;
 
-pub const OUTING: Work = Work {
-    craft: Craft::Scouting,
-    grade: 3,
-    danger: 4,
-};
+pub fn outing() -> Work {
+    Work::new(SCOUTING, 3, 4)
+}
 
 pub const OUTING_TERMS: Terms = Terms {
     share: 2,
@@ -43,11 +42,9 @@ pub const OUTING_TERMS: Terms = Terms {
 };
 
 /// Tending the fallen: inside Sela's standing settlement agreement.
-pub const TEND: Work = Work {
-    craft: Craft::Healing,
-    grade: 3,
-    danger: 3,
-};
+pub fn tend() -> Work {
+    Work::new(HEALING, 3, 3)
+}
 
 /// Departure day. The settled scene's last deed is tick 12.
 pub const DEPART: Tick = Tick(13);
@@ -89,12 +86,12 @@ fn muster_at(
         .find(|agreement| agreement.holder == sela && agreement.standing())
         .map(|agreement| agreement.id)
         .expect("the settled scene housed Sela");
-    let healer = party::healer_part(&society, sela_home, &TEND)
+    let healer = party::healer_part(&society, sela_home, &tend())
         .expect("her standing agreement covers the tending");
 
     // Bram's part is negotiated fresh, and the answer is his.
     let (answer, scout) =
-        party::negotiate_scout(&mut society, AUD, BRAM, OUTING, OUTING_TERMS, DEPART)
+        party::negotiate_scout(&mut society, AUD, BRAM, outing(), OUTING_TERMS, DEPART)
             .expect("the muster asks people the society knows");
 
     let mut parts = Vec::new();
@@ -115,7 +112,7 @@ fn muster_at(
             successor: SELA,
         }),
         outing,
-        TEND,
+        tend(),
         home,
         site,
         way_home,
@@ -178,7 +175,7 @@ pub fn surveyed(offset: [i32; 2], way_offsets: &[[i32; 2]]) -> Option<(Vec<Respo
 pub fn grudged() -> (Vec<Response>, Sortie) {
     let mut society = settled_society();
     society
-        .record(Tick(DEPART.0 - 1), AUD, Some(BRAM), DeedKind::Abandoned)
+        .record(Tick(DEPART.0 - 1), AUD, Some(BRAM), DeedKind::new(ABANDONED))
         .expect("Aud's desertion is recorded");
     let (answers, mut sortie) = muster(society);
     sortie.run();

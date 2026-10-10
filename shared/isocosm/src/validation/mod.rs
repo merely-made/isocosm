@@ -206,6 +206,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     if let Some(directing) = &rules.directing {
         directing.validate()?;
     }
+    if let Some(social) = &rules.social {
+        social.validate(key)?;
+    }
     if rules.field.strength > 1_000_000
         || rules.field.legend_floor > 1_000_000
         || rules.field.decay_per_tick == 0
