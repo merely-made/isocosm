@@ -52,6 +52,7 @@ impl Host {
                 gpu.section.display_texture(),
                 frame,
                 gpu.section.body_stats().fallback_bodies as u64,
+                gpu.section.body_view().as_ref(),
             );
             let master_view = master.texture.create_view(&Default::default());
             let mut encoder =
@@ -187,6 +188,7 @@ impl Host {
             terrain_style: self.config.terrain_style.resolved().name(),
             bodies: self.config.body_mode.name(),
             body_budget: self.config.body_budget,
+            body_light: self.config.body_light,
             body_projection: section.map(|s| s.body_stats()).unwrap_or_default(),
             inspecting: self.inspection.open,
             selected_part: self.inspection.selected.map(|s| PartSelectionReceipt {

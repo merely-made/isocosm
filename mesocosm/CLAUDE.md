@@ -40,7 +40,12 @@ native Isocosm (`shared/isocosm`); legacy Mesocosm is deleted (wing rulings
 host `mesocosm-genet`, all running on a native `Session` (the switch, D5), plus
 the parry-ground probe. The player directs the critter through nudges and
 answers at checkpoints; driving is gone (671, 679) and so is the
-sixteen-variant `Intent`. A critter that is not sapient is taken up through
+sixteen-variant `Intent`. The main host draws bodies through Mere's lit
+`tenant` on its shared wgpu device and caller encoder, layered by Netrender
+over Isometer's traced terrain depth (Q7, 2026-10-10). Its four workspace
+compile gates passed; GPU runtime/headed acceptance remains the after-pass's.
+The two CPU clipping/projection controls passed.
+A critter that is not sapient is taken up through
 native `Take`, directing; a sophont would be driven (671, 779). The body
 section is lifted through isometer's in-site space (`isometer-space`). The
 repeated game loop and phenotype bridge are still under design and playtest;

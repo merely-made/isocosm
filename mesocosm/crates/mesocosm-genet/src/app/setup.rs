@@ -92,8 +92,12 @@ impl Host {
             return;
         };
         let mut section = match Section::new(
-            device.clone(),
-            queue.clone(),
+            &tenant::HostDevice {
+                instance: instance.clone(),
+                adapter: adapter.clone(),
+                device: device.clone(),
+                queue: queue.clone(),
+            },
             self.config.width,
             self.config.height,
             format,
@@ -110,6 +114,7 @@ impl Host {
         };
 
         section.configure_bodies(self.config.body_mode, self.config.body_budget);
+        section.set_body_light(self.config.body_light);
 
         // The chrome shares the game's device rather than creating a second
         // one, which is the arrangement the workspace's wgpu pin exists for.

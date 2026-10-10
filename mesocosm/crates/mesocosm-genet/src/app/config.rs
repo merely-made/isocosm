@@ -36,6 +36,8 @@ pub struct HostConfig {
     /// Voxel anatomy or the capsule comparison, presentation only.
     pub body_mode: section::BodyMode,
     pub body_budget: usize,
+    /// Presentation-only ambient intensity for the body tenant.
+    pub body_light: f32,
     /// Off by default (DT1); recorded in the receipt either way.
     pub dev: bool,
     /// Which body the camera starts on (DT2); presentation only.
@@ -63,6 +65,7 @@ impl Default for HostConfig {
             terrain_style: section::TerrainStyle::Auto,
             body_mode: section::BodyMode::default(),
             body_budget: section::DEFAULT_BODY_BUDGET,
+            body_light: 1.0,
             dev: false,
             follow: None,
             watch: None,

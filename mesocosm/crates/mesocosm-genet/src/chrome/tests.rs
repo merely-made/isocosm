@@ -207,7 +207,7 @@ fn opaque_section_graph_byte_matches_direct_composite() {
     let chrome = Chrome::new(handles, SURFACE_FORMAT, 32).expect("Netrender on shared handles");
     let source = source(&device, &queue);
     let direct_master = legacy_master(&chrome, &source);
-    let framed = chrome.frame_master(&source, (WIDTH, HEIGHT), 3);
+    let framed = chrome.frame_master(&source, (WIDTH, HEIGHT), 3, None);
     let master_allocations = chrome
         .net
         .vello_master_allocations()
@@ -228,7 +228,7 @@ fn opaque_section_graph_byte_matches_direct_composite() {
         intervening_chrome_visible,
         "shared renderer must rasterize a visible chrome scene between tenant frames"
     );
-    let reused = chrome.frame_master(&source, (WIDTH, HEIGHT), 3);
+    let reused = chrome.frame_master(&source, (WIDTH, HEIGHT), 3, None);
     let master_allocations_after = chrome
         .net
         .vello_master_allocations()
@@ -289,7 +289,7 @@ fn opaque_section_graph_byte_matches_direct_composite() {
     );
 
     let receipt = &framed.receipt;
-    assert_eq!(receipt.tenant_name, "mesocosm-section");
+    assert_eq!(receipt.tenant_name, "mesocosm-terrain");
     assert_eq!(receipt.fallback_count, 3);
     assert_eq!(receipt.scene_op_boundary, 0);
     assert_eq!(receipt.caller_reported_physical_submission_count, Some(1));
@@ -297,7 +297,7 @@ fn opaque_section_graph_byte_matches_direct_composite() {
     assert_eq!(receipt.graph_encoder_batches, 1);
     assert_eq!(receipt.graph_submission_boundaries, 1);
     for needle in [
-        "mesocosm-section",
+        "mesocosm-terrain",
         "opaque tenant composite",
         "netrender initialized master",
         "rasterizer=Classic execution_boundary=opaque_submission",

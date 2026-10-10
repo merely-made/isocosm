@@ -2,6 +2,14 @@
 
 **Date:** 2026-10-10
 
+**Current state, 2026-10-10:** in progress. Q1 and Q7 are integrated; Q2,
+Q3 and Q8 are active. Q3's anatomical accounting and turn-order checkpoint
+is integrated, with its reproduction gate still open. Q8 reuses Q7's
+finished worktree. Structural forks for character metadata and healing
+allocation are pending; the next numbered ruling remains 809.
+
+Original setup record:
+
 **Status, 2026-10-10:** queued. Written at Mark's word with the week's budget
 nearly spent: "set up lanes for less conversational agents to grind via a
 handoff to an orchestrator". An orchestrator session runs these lanes; the
@@ -271,6 +279,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q7 integrated and Q8 launched:** `2c86e5f7` moves Mesocosm
+  bodies onto Mere's pinned tenant, with caller-encoder submission, palette
+  UVs, configurable ambient light, tracer depth and Netrender layering.
+  `LiveBody` remains for real VTT/Eponym consumers and posed queries. Both
+  CPU clipping/projection controls passed. The orchestrator rechecked all
+  four merged workspaces offline: default Isometer, Mesocosm, root and
+  Eponym (the latter two with all features). The ignored Mesocosm lock was
+  copied and its SHA256 verified. GPU/headed and performance gates remain
+  on A4. Q8 started with read-only harm preflight and takes over the same
+  worktree after synchronization; no new worktree or Cargo home is needed.
+  Q2's independent short batch passed 1 native event test, 7 assertion
+  tests and 46 overlay tests. Q3 receives the next Cargo turn for its
+  declared reproduction candidate and unchanged original controls.
 - **2026-10-10, Q3 checkpoint integrated:** `e7af61ec` is integrated after
   the merged Isocosm workspace/all-targets offline check, source ceiling,
   staged diff and weave checks passed. Its 42 focused tests certify the

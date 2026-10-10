@@ -145,6 +145,20 @@ pub struct BodyLayer {
 }
 
 impl BodyLayer {
+    /// Prepared geometry, with the same poses and inspection as the queries.
+    /// A host tenant consumes this after the scene's terrain depth pre-pass.
+    pub fn render_bodies(&self) -> impl Iterator<Item = (SubjectKey, LiveBody<'_>)> {
+        self.placed.iter().map(|body| {
+            let mut live = body.live();
+            live.focused = self.focus_subject == Some(body.subject);
+            live.selected_part = self.selected.and_then(|address| {
+                (address.subject == body.subject && address.revision == body.revision)
+                    .then_some(address.part)
+            });
+            (body.subject, live)
+        })
+    }
+
     /// `preview_depth` is the host's ordinary slab depth: the isolated preview
     /// starts at the depth the shipped camera already uses.
     pub fn new(device: &wgpu::Device, width: u32, height: u32, preview_depth: f32) -> Self {
@@ -450,7 +464,11 @@ impl BodyLayer {
                         scale: body.scale,
                         yaw_radians: body.pose.yaw_radians,
                         tint: body.tint,
-                        palette: self.palettes.get(&body.subject).cloned().unwrap_or_default(),
+                        palette: self
+                            .palettes
+                            .get(&body.subject)
+                            .cloned()
+                            .unwrap_or_default(),
                     };
                     match isometer_render::live_body::body_bounds(placed.live()) {
                         Ok(Some(bounds)) if body.always_visible || intersects(bounds, window) => {},

@@ -2,6 +2,13 @@
 
 **Date:** 2026-09-11
 
+**Status, 2026-10-10, Q7:** Mesocosm's tenant migration is implemented,
+with all four workspace compile gates and both CPU controls passed.
+GPU runtime/headed certification remains after-pass work.
+LiveBody remains for the VTT board,
+Eponym's embedded producer, and the shared posed-face queries; Mesocosm
+no longer uses its unlit draw.
+
 **Status, 2026-10-10:** L2, L7 and L9 have landed, L7 on mere's kiss3d
 tenant rather than the DOM path this plan first drew (734 to 736, 749).
 Ruling 796 makes the tenant the wing's one body rasteriser, so Mesocosm
@@ -1533,6 +1540,42 @@ The VTT's overmap readings that camera draws are its overlay plan's V2
 
 ## Current state, 2026-10-10
 
+Mesocosm's `section/tenant.rs` consumes Isometer's prepared, culled geometry
+on the caller's shared device and encoder. The scene traces terrain first
+into a sampleable `Depth32Float`; the tenant reads it as its depth pre-pass,
+draws a transparent sRGB body target, and Netrender layers terrain, bodies
+and chrome. Captures use the same final master; the chromeless path blends
+the same two source targets. Shadows remain off (749). The `--body-light`
+setting controls presentation-only ambient intensity and is recorded in the
+played receipt, never by the simulation.
+
+The pinned tenant has no world-cut entry, so its adapter clips the same
+posed faces and slab/bounds used by picking. It keeps per-body palette,
+tint, part selection and double-sided cutaway faces. Tissue marks retain
+their local-voxel density grammar, subdividing only marked greedy faces.
+These are source-level adapter mappings; headed lighting, palette and
+selection preservation are still uncertified. The adapter rebuilds CPU
+palette meshes for comparison each frame; `mesh_builds` counts that work.
+Unchanged meshes avoid repeated GPU mesh uploads. Moving, turning or cutting
+a body can cause a new world-space mesh upload; those costs and the mark
+subdivision cost belong to after-pass measurement.
+
+The body receipt carries the tenant's reported internal submissions and
+refuses a nonzero count. Mesh upload bytes are estimates; the pinned API
+does not expose its camera/light upload counters. The opaque Netrender
+receipt labels the terrain import, with a separate external-layer pass
+producing the final master. Its boundary counts are not whole-frame counts.
+The extra terrain import's cost remains an after-pass item.
+
+LiveBody retirement has additional real consumers beyond Mesocosm:
+`isometry-views/src/scene/board.rs` and Eponym's `producer/source.rs` still
+build the shared scene's unlit pass. Its pose/query types also support the
+new tenant's geometry. Those callers keep the default shared scene path;
+retirement waits until they have moved. No Mere change or repin is needed.
+Ruling 796's full retirement remains open.
+
+## Earlier current state, 2026-10-10
+
 Added under ruling 793; the dated text above keeps its words, including
 its places where renderling or the DOM is the body's path.
 
@@ -1920,6 +1963,40 @@ always going to converge on; the genet first-frame slice is owed regardless
 and belongs in L1's genet plan as a named consumer.
 
 ## Progress
+
+- **2026-10-10, Q7 CPU controls:** `cargo test -p mesocosm-genet --lib
+  section::tenant::geometry::tests --offline -j 1` passed 2/2, with 20 other
+  tests filtered. `transformed_face_crossing_the_slab_is_clipped_and_outside_faces_vanish`
+  checks the clipped area and full rejection of a translated, scaled,
+  rotated face; `tenant_and_tracer_project_the_same_depth_under_mesocosm_presets`
+  checks tenant camera validity and matrix agreement for all seven presets.
+  Output used the same target/build directories as the compile gates below.
+  These CPU controls execute no GPU frame. Headed depth, palette, selection,
+  capture/window agreement and performance certification remain A4 work.
+
+- **2026-10-10, Q7 compile gates:** `cargo check --workspace --all-targets
+  --offline -j 1` passed in `shared/isometer` (default only) and `mesocosm`;
+  the same gate with `--all-features` passed in the root VTT workspace and
+  `eponym`. Mesocosm was checked again after correcting the tenant's CPU
+  mesh-build counter. All used `C:\t\cargo-targets\isometry\tenant` and its
+  `build` directory. Existing VTT unused/dead-code warnings remain. These
+  gates compile tests; the two CPU adapter controls still await execution,
+  and no GPU runtime/headed receipt is claimed.
+
+- **2026-10-10, Q7 gate checkpoint:** `shared/isometer` passed
+  `cargo check --workspace --all-targets --offline -j 1`, default features,
+  in `C:\t\cargo-targets\isometry\tenant`. This verifies the shared scene
+  hook and query/geometry API compile, including its tests; it executes no
+  tests. Mesocosm and the VTT/Eponym consumer gates remain pending. Cargo
+  was released at this checkpoint for the other queued lanes.
+
+- **2026-10-10, Q7:** implemented the host tenant, terrain depth pre-pass,
+  ordered Netrender layers, capture/chromeless composition and shared body
+  encode hook. Added CPU controls for a transformed face crossing the slab,
+  a fully clipped face and tenant/tracer projection agreement. Formatting
+  and whitespace checks pass; compile gates are queued. No runtime/headed
+  receipt is claimed. Lane ran with the inherited Codex model under 805's
+  translation of the queue's Opus requirement.
 
 - **2026-10-10, Q1:** current state/status and native source paths verified
   under 793 to 802; dated receipts preserved. This documentation pass adds

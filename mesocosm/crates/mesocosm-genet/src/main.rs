@@ -64,6 +64,13 @@ fn main() {
                     .filter(|v| *v > 0)
                     .unwrap_or_else(|| fail("--body-budget wants a positive integer"));
             },
+            "--body-light" => {
+                config.body_light = args
+                    .next()
+                    .and_then(|v| v.parse::<f32>().ok())
+                    .filter(|v| v.is_finite() && *v >= 0.0)
+                    .unwrap_or_else(|| fail("--body-light wants a finite nonnegative intensity"));
+            },
             "--terrain-style" => {
                 config.terrain_style = TerrainStyle::parse(&args.next().unwrap_or_default())
                     .unwrap_or_else(|| fail("--terrain-style wants auto, classic or habitat"));
@@ -181,6 +188,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --population N  founding population (default: the founding's own)
   --bodies MODE   voxels (default) or capsules (comparison), presentation only
   --body-budget N maximum detailed bodies in the section
+  --body-light N  ambient body light intensity (default 1, zero is dark)
   --terrain-style MODE  auto (classic), classic or habitat
   --camera MODE   oblique (default), side, across, terrarium-east/south/west/north
   --slab H        section slab half-height in voxels (presentation only, default 28)

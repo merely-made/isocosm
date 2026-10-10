@@ -87,6 +87,20 @@ pub struct SceneStats {
 /// one: the capsule fallback is Mesocosm's alone — the scene reports that a
 /// body would not project and the host decides what the frame shows instead.
 pub trait SceneHost {
+    /// A host-owned body pass runs after the terrain depth pre-pass.
+    fn uses_body_tenant(&self) -> bool {
+        false
+    }
+
+    fn encode_body_tenant(
+        &mut self,
+        _encoder: &mut wgpu::CommandEncoder,
+        _bodies: &mut BodyLayer,
+        _camera: SlabCamera,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+
     /// Before the frame's bodies are projected.
     fn begin(&mut self) {}
 
@@ -292,11 +306,13 @@ impl Scene {
 
     /// Encodes one frame into the tenant-owned display texture.
     ///
-    /// Bodies raster first into the shared depth, then the tracer joins the
+    /// By default bodies raster first into the shared depth, then the tracer joins the
     /// terrain against it under the same `clip_from_world`, then the glyph
     /// batch against that same depth, then the display copy. A frame with no terrain stops after the
     /// bodies: that is the isolated preview, and it completes with
     /// `terrain_drawn` false so a pick does not consult the brick map.
+    /// A host opting into its own tenant skips the body raster here and
+    /// encodes after the tracer, consuming the terrain-only depth pre-pass.
     pub fn render(
         &mut self,
         encoder: &mut wgpu::CommandEncoder,
@@ -339,6 +355,7 @@ impl Scene {
             if frame.terrain.is_none()
                 || (self.bodies.isolated && self.bodies.stats.fallback_bodies == 0)
             {
+                host.encode_body_tenant(encoder, &mut self.bodies, camera)?;
                 self.draw_glyphs(encoder, camera);
                 self.copy_to_display(encoder);
                 self.complete_query_frame(camera, false);
@@ -406,6 +423,7 @@ impl Scene {
         }
         self.terrain_upload_pending = false;
         if frame.capsules.is_none() {
+            host.encode_body_tenant(encoder, &mut self.bodies, camera)?;
             self.draw_glyphs(encoder, camera);
         }
         self.copy_to_display(encoder);
@@ -478,6 +496,9 @@ impl Scene {
             });
         }
         let matrix = camera.clip_from_world();
+        if host.uses_body_tenant() {
+            return matrix;
+        }
         let Self {
             device,
             queue,

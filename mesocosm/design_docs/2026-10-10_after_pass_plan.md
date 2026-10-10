@@ -86,6 +86,19 @@ checked. `Command::Express` (787) has its own tests since this baseline.
 
 ## A4. Tuning and headed findings (761)
 
+**2026-10-10, Q7 additions (presentation plan):** certify Mesocosm's lit
+body/terrain occlusion, palette and selection under each camera and after
+resize; compare the captured final layered master with the window, including
+the chromeless route. The tenant adapter's two CPU clipping/projection
+controls passed (Q7 Progress); they execute no GPU frame. Measure the
+presentation-only `--body-light` setting, per-frame
+CPU palette reconstruction and per-face pose validation, mesh uploads on
+motion/camera cuts, marked-face subdivision and the retained
+terrain receipt's extra import. The body receipt's mesh-byte estimates omit
+tenant camera/light uploads; obtain measured counters before making an
+upload-silence claim. The old body rasteriser still has VTT/Eponym scene
+consumers; migrate those before retiring LiveBody.
+
 The torch's brightness and shadows (749); body voxel scale against ground
 cells; cliff frequency on hilly worlds (744 readings); flow windows' births
 and deaths against members; the 3x2 map layout; forced births on bodied
@@ -138,6 +151,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, Q7 integration:** tenant migration `2c86e5f7` passed its
+  four workspace compile gates and two CPU controls; the orchestrator also
+  passed all four merged workspace gates offline. These certify source
+  integration and CPU clipping/projection, while A4 retains the GPU/headed
+  and performance checks above. `LiveBody` has live VTT/Eponym/query
+  consumers and is retained. Q8 now owns the finished renderer worktree
+  for checkpoint 10, with healing allocation awaiting Mark's ruling.
 - **2026-10-10, Q3 checkpoint integrated:** the generated-body account
   and turn-order slice is integrated after 42 focused tests and a merged
   workspace/all-targets offline check. A1's survival and reproduction gate

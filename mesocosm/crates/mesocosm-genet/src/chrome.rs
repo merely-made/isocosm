@@ -19,9 +19,9 @@
 
 use isometer::render::composite::Composite;
 use netrender::{
-    ColorLoad, Compositor, ExternalTexturePlacement, OpaqueTenantInput, OpaqueTenantMetadata,
-    OpaqueTenantReceipt, PresentedFrame, Renderer as NetRenderer, Scene, SurfaceKey, WgpuHandles,
-    create_netrender_instance,
+    ColorLoad, Compositor, ExternalTextureComposite, ExternalTexturePlacement, OpaqueTenantInput,
+    OpaqueTenantMetadata, OpaqueTenantReceipt, PresentedFrame, Renderer as NetRenderer, Scene,
+    SurfaceKey, WgpuHandles, create_netrender_instance,
 };
 
 pub(crate) struct FrameMaster {
@@ -156,19 +156,19 @@ impl Chrome {
         &self.queue
     }
 
-    /// Imports the completed section texture as one opaque tenant and returns
-    /// Netrender's initialized master. Section internals stay behind the named
-    /// producer boundary; only its display texture crosses it.
+    /// Records the terrain's opaque import, then layers lit bodies over it.
+    /// Returns the final master and the terrain import's own boundary receipt.
     pub(crate) fn frame_master(
         &self,
         section: &wgpu::Texture,
         frame: (u32, u32),
         fallback_count: u64,
+        bodies: Option<&wgpu::TextureView>,
     ) -> FrameMaster {
         let scene = Scene::new(frame.0, frame.1);
         let metadata = OpaqueTenantMetadata::new(
-            "mesocosm-section",
-            "isometer::lens::BrickTracer + mesocosm_genet::Section::render",
+            "mesocosm-terrain",
+            "isometer::lens::BrickTracer (terrain import)",
             fallback_count,
             0,
             ExternalTexturePlacement::new([0.0, 0.0, frame.0 as f32, frame.1 as f32]),
@@ -183,6 +183,25 @@ impl Chrome {
             netrender::peniko::Color::new([0.0, 0.0, 0.0, 0.0]),
             &tenant,
         );
+        if let Some(bodies) = bodies {
+            let terrain = section.create_view(&Default::default());
+            let place = ExternalTexturePlacement::new([0.0, 0.0, frame.0 as f32, frame.1 as f32]);
+            // The opaque receipt covers the terrain import. The final master
+            // uses Netrender's ordered external layers, as Eponym's D1 does.
+            // Import the original terrain target, never sample Netrender's
+            // own retained master while it is also a render attachment.
+            let layers = [
+                ExternalTextureComposite::new(&terrain, place).with_scene_op_boundary(0),
+                ExternalTextureComposite::new(bodies, place).with_scene_op_boundary(0),
+            ];
+            self.net.render_with_compositor_and_external_textures(
+                &scene,
+                FRAME_MASTER_FORMAT,
+                &mut capture,
+                netrender::peniko::Color::new([0.0, 0.0, 0.0, 0.0]),
+                &layers,
+            );
+        }
         FrameMaster {
             texture: capture
                 .texture
