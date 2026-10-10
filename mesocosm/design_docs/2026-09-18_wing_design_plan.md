@@ -9603,6 +9603,22 @@ what later sections derive from.
      done-conditions as merge gates; their conditions become the after-pass's
      checklist. 700 (SP4 waits for mere's T2, now paused there) still holds
      until Mark says otherwise.
+733. **Places and renderling go first; SP4 builds on `Ground` now;
+     amends 700.** 2026-10-09, after 732's push was laid out with places
+     held by 700 (SP4 waiting for mere's T2, paused there) and L7 waiting
+     for the kiss3d tenant. Mark: "Do the last two first, if they have no
+     place. Then proceed, orchestrate if needed", and, asked which two,
+     chose "Places and renderling". So SP4 and SP5 are built in isometer
+     (698) on `Ground` behind isometer's own API, nisus slotting in
+     underneath when T2 lands (697 stands as the destination), with the
+     lift (701), walking over SP5 (702) and the soil split (703); and
+     `eponym-client` drops renderling (L7) ahead of the rest of 732's push,
+     orchestrated as parallel lanes. *Reading, not ruled:* the kiss3d tenant
+     (471) is mere's, in its conatus engine plan, and not begun, so L7 lands
+     on isometer-render as the interim body tenant, lighting gone until
+     kiss3d arrives; 729's spirv-std carriage, the `ambience-lease` and
+     `field-bake` probes and the renderling and crabslab forks then retire
+     as 474 has them.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
