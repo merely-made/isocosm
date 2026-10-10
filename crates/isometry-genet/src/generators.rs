@@ -155,7 +155,7 @@ impl App {
                     // campaign starts the explicitly selected session party,
                     // matching the overmap's viewer identity (including dm).
                     let party = match &record.proposal {
-                        GenValue::Campaign { campaign } if !campaign.world.places.is_empty() => {
+                        GenValue::Campaign { campaign } if !campaign.world.places().is_empty() => {
                             Some(
                                 ctx.runner
                                     .state()

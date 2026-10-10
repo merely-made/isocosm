@@ -80,6 +80,7 @@ mod tests {
                         travel: 1,
                         transmission: 1_000_000,
                         border: None,
+                        authored: None,
                     })
                     .collect();
                 let site = Site {
@@ -87,6 +88,7 @@ mod tests {
                     conditions: BTreeMap::new(),
                     accounts: BTreeMap::new(),
                     routes,
+                    authored: None,
                 };
                 (i, site)
             })

@@ -105,7 +105,8 @@ impl UiState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::{MapScale, WorldPlace};
+    use isocosm::asserted::{Assertion, Place};
+    use isocosm::legacy::campaign::MapScale;
     use isometry_campaign::CampaignMap;
 
     fn atlas_ui() -> UiState {
@@ -121,16 +122,15 @@ mod tests {
                 encounter_anchors: Vec::new(),
             },
         );
-        ui.world.places.insert(
-            "watchtower".to_owned(),
-            WorldPlace {
-                id: "watchtower".to_owned(),
+        ui.world
+            .assert(Assertion::Place(Place {
+                key: "watchtower".to_owned(),
                 name: "Watchtower".to_owned(),
-                tags: Vec::new(),
+                tags: Default::default(),
                 map: Some("region".to_owned()),
                 position: Some((0, 0)),
-            },
-        );
+            }))
+            .unwrap();
         ui.world.reveal("dm", "watchtower");
         ui.world
             .apply(&isocosm::legacy::campaign::WorldEvent::PartyMoved {
@@ -157,7 +157,7 @@ mod tests {
     fn atlas_drag_keeps_geography_home_and_preserves_grab_delta() {
         let mut ui = atlas_ui();
         let home = crate::overmap::overmap_home_positions(&ui)["watchtower"];
-        let source = ui.world.places["watchtower"].position;
+        let source = ui.world.places()["watchtower"].position;
         ui.overmap_motion.begin("watchtower");
         ui.overmap_motion.move_to("watchtower", (0.1, 0.0));
         ui.overmap_motion.end("watchtower");
@@ -173,7 +173,7 @@ mod tests {
             cambium::PointerPhase::Up,
             (down.0 + 0.08, down.1),
         ));
-        assert_eq!(ui.world.places["watchtower"].position, source);
+        assert_eq!(ui.world.places()["watchtower"].position, source);
         assert!((ui.overmap_motion.offset("watchtower").0 - 0.18).abs() < 1e-5);
     }
 

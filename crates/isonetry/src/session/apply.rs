@@ -57,16 +57,16 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             apply(&mut state.map, e).map_err(GameError::Core)?;
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::TurnAdd(id) => {
             require_token(state, *id)?;
             state.turns.add(*id);
             Ok(())
-        }
+        },
         GameEvent::TurnRemove(id) => {
             state.turns.remove(*id);
             Ok(())
-        }
+        },
         GameEvent::TurnAdvance => {
             // The fallen do not get a turn. Deterministic and replicated: the
             // skip is computed from state every peer already has, so nobody has
@@ -90,15 +90,15 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
                 }
             }
             Ok(())
-        }
+        },
         GameEvent::TurnSetOrder(order) => {
             state.turns.set_order(order.clone());
             Ok(())
-        }
+        },
         GameEvent::Rolled(record) => {
             push_roll(state, record);
             Ok(())
-        }
+        },
         GameEvent::ActionResolved(res) => {
             // The idempotency rule. A verdict is taken once, named by the
             // request the authority stamped on it: a retransmit, a log replayed
@@ -169,18 +169,18 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             state.applied_actions.insert(res.request);
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::Emoted { token, beat } => {
             require_token(state, *token)?;
             play_beats(state, vec![isometry_core::Beat::new(*token, beat.clone())]);
             Ok(())
-        }
+        },
         GameEvent::StanceSet { token, stance } => {
             require_token(state, *token)?;
             state.map.set_stance(*token, stance);
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::ConditionSet {
             token,
             condition,
@@ -192,23 +192,26 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             state.map.set_mobility(*token, *mobility);
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::SheetSet { token, sheet } => {
             state.map.set_sheet(*token, sheet.clone());
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::CharacterCreated { token, sheet } => {
             // Validate and insert the token before attaching its sheet. This is
             // one event, so a rejected placement leaves neither half behind and
             // a replicated character is never observable without its system
             // defaults.
-            apply(&mut state.map, &isometry_core::SessionEvent::TokenPlaced(token.clone()))
-                .map_err(GameError::Core)?;
+            apply(
+                &mut state.map,
+                &isometry_core::SessionEvent::TokenPlaced(token.clone()),
+            )
+            .map_err(GameError::Core)?;
             state.map.set_sheet(token.id, sheet.clone());
             sync_active_map(state);
             Ok(())
-        }
+        },
         GameEvent::Fact(fact) => {
             if !fact.id.is_empty() {
                 if let Some(existing) = state.journal.iter().find(|entry| entry.id == fact.id) {
@@ -221,7 +224,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             }
             state.journal.push(fact.clone());
             Ok(())
-        }
+        },
         GameEvent::InventorySet { token, inventory } => {
             require_token(state, *token)?;
             inventory.validate().map_err(GameError::Inventory)?;
@@ -238,12 +241,12 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             }
             state.inventories.insert(*token, inventory.clone());
             Ok(())
-        }
+        },
         GameEvent::ItemTransfer { from, to, item } => transfer_item(state, *from, *to, item),
         GameEvent::ItemModifierRevealed(reveal) => {
             apply_item_modifier_reveal(state, reveal)?;
             Ok(())
-        }
+        },
         GameEvent::Generation(record) => {
             record
                 .validate(MAX_GENERATION_VALUE_DEPTH)
@@ -257,7 +260,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             }
             state.generations.push(record.clone());
             Ok(())
-        }
+        },
         GameEvent::MapStored(map) => {
             if map.id.trim().is_empty() {
                 return Err(GameError::UnknownMap(map.id.clone()));
@@ -271,7 +274,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             }
             state.maps.insert(map.id.clone(), map.clone());
             Ok(())
-        }
+        },
         GameEvent::MapActivated { id } => {
             let map = state
                 .maps
@@ -284,7 +287,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
                 state.turns.add(token.id);
             }
             Ok(())
-        }
+        },
         GameEvent::World(event) => state.world.apply(event).map_err(GameError::World),
         // Apply-only. The crossing was ruled once, by `resolve_transition`, and
         // every field it decided is in the payload: see `session/travel.rs`.
@@ -296,7 +299,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
                 .ok_or_else(|| GameError::UnknownMap("<no active map>".to_owned()))?;
             *state.clocks.entry(active).or_insert(0) += ticks;
             Ok(())
-        }
+        },
         GameEvent::TravelResolved {
             party,
             to,
@@ -315,7 +318,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             // so a place reached later is later there -- the C3 clock, reached
             // across the overmap instead of through a door. A bare waypoint (no
             // site) keeps no clock, so its leg is not banked anywhere yet.
-            if let Some(map) = state.world.places.get(to).and_then(|p| p.map.clone()) {
+            if let Some(map) = state.world.places().get(to).and_then(|p| p.map.clone()) {
                 *state.clocks.entry(map).or_insert(0) += ticks;
             }
             // The march's toll: every party member gains exhaustion, a graded
@@ -344,7 +347,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             // map to fight, rather than arriving in peace: the same map switch a
             // door makes (C2). A bare waypoint with no site is a safe arrival.
             if *encounter {
-                if let Some(map) = state.world.places.get(to).and_then(|p| p.map.clone()) {
+                if let Some(map) = state.world.places().get(to).and_then(|p| p.map.clone()) {
                     if state.maps.contains_key(&map) {
                         state.active_map = Some(map);
                     }
@@ -353,7 +356,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             push_roll(state, roll);
             sync_active_map(state);
             Ok(())
-        }
+        },
     }
 }
 
@@ -424,4 +427,3 @@ pub(crate) fn require_token(state: &GameSnapshot, id: TokenId) -> Result<(), Gam
         Err(GameError::Core(EventError::UnknownToken(id)))
     }
 }
-

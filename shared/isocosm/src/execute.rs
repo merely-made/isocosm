@@ -210,6 +210,7 @@ impl Simulation {
                 cause,
                 strength: genesis.rules.field.strength,
                 legend,
+                authored: None,
             };
             if let Err(why) = self.stage_event(&mut stage, event) {
                 return refused(receipt, Outcome::Refused(why));

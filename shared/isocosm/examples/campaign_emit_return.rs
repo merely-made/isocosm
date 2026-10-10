@@ -16,7 +16,8 @@
 
 use std::{fs, path::PathBuf};
 
-use isocosm::legacy::campaign::{Arrival, HistoryEvent};
+use isocosm::asserted::HistoryLine;
+use isocosm::legacy::campaign::Arrival;
 
 fn main() {
     let bytes = include_bytes!("../tests/campaign_fixtures/played.chronicle");
@@ -30,7 +31,12 @@ fn main() {
 
     for event in [
         history("h1", "joined-a-faction", 40, "took the Vale's colours"),
-        history("h2", "held-the-ford", 52, "held the ford through the winter"),
+        history(
+            "h2",
+            "held-the-ford",
+            52,
+            "held the ford through the winter",
+        ),
         history("h4", "was-sung-about", 77, "the Vale still sings about it"),
     ] {
         arrival.record(&event);
@@ -41,7 +47,9 @@ fn main() {
     // second, and only this call Mesocosm will act on.
     arrival.record_loss(1, 61);
 
-    let out = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures").join("campaign");
+    let out = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("fixtures")
+        .join("campaign");
     fs::create_dir_all(&out).expect("the fixture directory is writable");
     let file = out.join("returned.chronicle");
     let written = arrival.to_bytes().expect("a chronicle is always encodable");
@@ -51,21 +59,21 @@ fn main() {
         "wrote {} ({} bytes) - {} as {}, faction {:?}, {} deeds",
         file.display(),
         written.len(),
-        character.id,
+        character.key,
         character.name,
         character.faction,
         arrival.chronicle().deeds.len(),
     );
 }
 
-fn history(id: &str, kind: &str, time: i64, text: &str) -> HistoryEvent {
-    HistoryEvent {
-        id: id.into(),
+fn history(id: &str, kind: &str, time: i64, text: &str) -> HistoryLine {
+    HistoryLine {
+        key: id.into(),
         time,
         kind: kind.into(),
         text: text.into(),
         participants: vec!["the-vale".into()],
         place: Some("the-ford".into()),
-        tags: vec!["war".into()],
+        tags: ["war".into()].into(),
     }
 }

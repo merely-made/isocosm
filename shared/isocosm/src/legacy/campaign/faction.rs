@@ -21,9 +21,9 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::asserted::{Assertion, Authored, Character, Faction, HistoryLine, Place};
 use crate::legacy::campaign::{
-    CampaignWorld, EntropyTape, HistoryEvent, StoryletProposal, StoryletRequirements,
-    WorldCharacter, WorldEvent, WorldFaction, WorldPlace,
+    CampaignWorld, EntropyTape, StoryletProposal, StoryletRequirements, WorldEvent,
 };
 
 /// World-time a faction must have banked to earn one extra move beyond its
@@ -80,7 +80,7 @@ impl FactionVerb {
 pub struct FactionMove {
     pub faction: String,
     pub verb: FactionVerb,
-    pub history: HistoryEvent,
+    pub history: HistoryLine,
     pub change: Option<WorldEvent>,
 }
 
@@ -89,7 +89,7 @@ impl FactionMove {
     /// applies each through `CampaignWorld::apply`, exactly as any world edit,
     /// so there is no faction-turn-specific apply anywhere.
     pub fn into_events(self) -> Vec<WorldEvent> {
-        let mut events = vec![WorldEvent::History(self.history)];
+        let mut events = vec![WorldEvent::Assert(Assertion::History(self.history))];
         events.extend(self.change);
         events
     }
@@ -106,8 +106,8 @@ impl CampaignWorld {
     /// and thus the batch -- is stable for a given world, tick, and seed.
     pub fn faction_turn(&self, tick: i64, tape: &mut EntropyTape) -> Vec<FactionMove> {
         let mut moves = Vec::new();
-        for faction in self.factions.values() {
-            for _ in 0..self.move_budget(&faction.id) {
+        for faction in self.factions().values() {
+            for _ in 0..self.move_budget(&faction.authored.key) {
                 let verb = FactionVerb::from_draw(tape.draw());
                 moves.push(self.build_move(faction, verb, tick, tape));
             }
@@ -137,7 +137,7 @@ impl CampaignWorld {
     pub fn radiant_quests(&self) -> Vec<StoryletProposal> {
         let mut quests = Vec::new();
         for (id, sheet) in &self.faction_sheets {
-            let Some(faction) = self.factions.get(id) else {
+            let Some(faction) = self.factions().get(id) else {
                 continue;
             };
             for (key, wanted) in sheet {
@@ -150,13 +150,13 @@ impl CampaignWorld {
                 }
                 quests.push(StoryletProposal {
                     key: format!("{id}.demand.{thing}"),
-                    entry: format!("The {} needs {thing}.", faction.name),
+                    entry: format!("The {} needs {thing}.", faction.authored.name),
                     // The patron tag is how the faction is cast: a storylet the
                     // table plays *for* this faction, not merely near it.
                     tags: vec!["radiant".to_owned(), format!("patron:{id}")],
                     requirements: StoryletRequirements {
                         // Playable while the faction that wants it still stands.
-                        faction_tags: faction.tags.first().cloned().into_iter().collect(),
+                        faction_tags: first_tag(faction),
                         hidden_facts: Vec::new(),
                         world_laws: Vec::new(),
                     },
@@ -172,67 +172,76 @@ impl CampaignWorld {
 
     fn build_move(
         &self,
-        faction: &WorldFaction,
+        faction: &Faction,
         verb: FactionVerb,
         tick: i64,
         tape: &mut EntropyTape,
     ) -> FactionMove {
         let nonce = tape.draw() % 100_000;
+        let Authored {
+            key: id,
+            name: called,
+            tags,
+            ..
+        } = &faction.authored;
         let (text, change) = match verb {
             FactionVerb::Court => {
                 // A recruited character can be cast in a storylet role, so a
                 // court move reaches back into the storylet graph: a story that
                 // could not cast now can. The ally carries the faction's tags.
                 let name = ally_name(nonce);
-                let text = format!("{name} swore to the {}.", faction.name);
-                let change = WorldEvent::Character(WorldCharacter {
-                    id: format!("{}.ally.t{tick}.{nonce}", faction.id),
+                let text = format!("{name} swore to the {called}.");
+                let change = WorldEvent::Assert(Assertion::Character(Character {
+                    key: format!("{id}.ally.t{tick}.{nonce}"),
                     name,
-                    tags: faction.tags.clone(),
-                    faction: Some(faction.id.clone()),
+                    tags: tags.clone(),
+                    faction: Some(id.clone()),
                     place: None,
-                });
+                }));
                 (text, Some(change))
-            }
+            },
             FactionVerb::Fracture => {
                 // A splinter carries its parent's tags plus a grievance tag, so
                 // a `faction_tags` requirement nothing met before can now be
                 // satisfied -- eligibility changes without touching the parent
                 // (committed factions are immutable; a move adds, never mutates).
-                let mut tags = faction.tags.clone();
-                tags.push("splinter".to_owned());
-                let text = format!("A faction broke from the {}.", faction.name);
-                let change = WorldEvent::Faction(WorldFaction {
-                    id: format!("{}.splinter.t{tick}.{nonce}", faction.id),
-                    name: format!("Splinter of {}", faction.name),
-                    tags,
-                    claims: Vec::new(),
-                });
+                let mut tags = tags.clone();
+                tags.insert("splinter".to_owned());
+                let text = format!("A faction broke from the {called}.");
+                let change = WorldEvent::Assert(Assertion::Faction(Faction {
+                    authored: Authored {
+                        key: format!("{id}.splinter.t{tick}.{nonce}"),
+                        name: format!("Splinter of {called}"),
+                        tags,
+                        claims: Default::default(),
+                    },
+                    ..Default::default()
+                }));
                 (text, Some(change))
-            }
+            },
             FactionVerb::Expand => {
-                let text = format!("The {} claimed new ground.", faction.name);
-                let change = WorldEvent::Place(WorldPlace {
-                    id: format!("{}.hold.t{tick}.{nonce}", faction.id),
-                    name: format!("Hold of {}", faction.name),
-                    tags: faction.tags.clone(),
+                let text = format!("The {called} claimed new ground.");
+                let change = WorldEvent::Assert(Assertion::Place(Place {
+                    key: format!("{id}.hold.t{tick}.{nonce}"),
+                    name: format!("Hold of {called}"),
+                    tags: tags.clone(),
                     map: None,
                     position: None,
-                });
+                }));
                 (text, Some(change))
-            }
+            },
             FactionVerb::Scheme => {
                 // A scheme seeds a storylet the table can later play. It requires
                 // the faction's own first tag, so it is eligible the moment it
                 // lands (a tagless faction schemes an always-open story).
-                let key = format!("{}.scheme.t{tick}.{nonce}", faction.id);
-                let text = format!("The {} set a scheme in motion.", faction.name);
+                let key = format!("{id}.scheme.t{tick}.{nonce}");
+                let text = format!("The {called} set a scheme in motion.");
                 let change = WorldEvent::Storylet(StoryletProposal {
                     key,
-                    entry: format!("A scheme of the {} comes due.", faction.name),
+                    entry: format!("A scheme of the {called} comes due."),
                     tags: vec!["faction-scheme".to_owned()],
                     requirements: StoryletRequirements {
-                        faction_tags: faction.tags.first().cloned().into_iter().collect(),
+                        faction_tags: first_tag(faction),
                         hidden_facts: Vec::new(),
                         world_laws: Vec::new(),
                     },
@@ -240,30 +249,42 @@ impl CampaignWorld {
                     effects: Vec::new(),
                 });
                 (text, Some(change))
-            }
+            },
             FactionVerb::Raid => {
                 // The pure-narrative beat: a raid makes history but claims
                 // nothing, so the DM sees a move whose `change` is None -- proof
                 // the story and the mechanical change are separable.
-                (format!("The {} raided a rival.", faction.name), None)
-            }
+                (format!("The {called} raided a rival."), None)
+            },
         };
-        let history = HistoryEvent {
-            id: format!("{}.move.t{tick}.{nonce}", faction.id),
+        let history = HistoryLine {
+            key: format!("{id}.move.t{tick}.{nonce}"),
             time: tick,
             kind: "faction-turn".to_owned(),
             text,
-            participants: vec![faction.id.clone()],
+            participants: vec![id.clone()],
             place: None,
-            tags: vec![verb.label().to_owned()],
+            tags: [verb.label().to_owned()].into(),
         };
         FactionMove {
-            faction: faction.id.clone(),
+            faction: id.clone(),
             verb,
             history,
             change,
         }
     }
+}
+
+/// A faction's first tag, as a storylet's requirement.
+fn first_tag(faction: &Faction) -> Vec<String> {
+    faction
+        .authored
+        .tags
+        .iter()
+        .next()
+        .cloned()
+        .into_iter()
+        .collect()
 }
 
 /// A placeholder name pool. Real names are a pack's job (rung 7: names come from
@@ -283,22 +304,28 @@ mod tests {
     use crate::legacy::campaign::StoryletError;
 
     fn faction_sheet(fields: &[(&str, i64)]) -> BTreeMap<String, i64> {
-        fields.iter().map(|(k, v)| (k.to_owned().to_owned(), *v)).collect()
+        fields
+            .iter()
+            .map(|(k, v)| (k.to_owned().to_owned(), *v))
+            .collect()
     }
 
-    fn faction(id: &str, name: &str, tags: &[&str]) -> WorldFaction {
-        WorldFaction {
-            id: id.to_owned(),
-            name: name.to_owned(),
-            tags: tags.iter().map(|t| t.to_owned().to_owned()).collect(),
-            claims: Vec::new(),
+    fn faction(id: &str, name: &str, tags: &[&str]) -> Faction {
+        Faction {
+            authored: Authored {
+                key: id.to_owned(),
+                name: name.to_owned(),
+                tags: tags.iter().map(|t| t.to_string()).collect(),
+                claims: Default::default(),
+            },
+            ..Default::default()
         }
     }
 
-    fn world_with(factions: Vec<WorldFaction>) -> CampaignWorld {
+    fn world_with(factions: Vec<Faction>) -> CampaignWorld {
         let mut world = CampaignWorld::default();
         for f in factions {
-            world.factions.insert(f.id.clone(), f);
+            world.assert(Assertion::Faction(f)).unwrap();
         }
         world
     }
@@ -316,7 +343,10 @@ mod tests {
         let second = world.faction_turn(3, &mut b);
 
         assert_eq!(first.len(), 2, "one move per committed faction");
-        assert_eq!(first, second, "same world, tick, and seed => the same batch");
+        assert_eq!(
+            first, second,
+            "same world, tick, and seed => the same batch"
+        );
         // Every move records history at the tick, whatever else it does.
         assert!(first.iter().all(|m| m.history.time == 3));
         assert!(first.iter().all(|m| m.history.kind == "faction-turn"));
@@ -420,7 +450,11 @@ mod tests {
         world
             .faction_sheets
             .insert("tide".to_owned(), faction_sheet(&[("banked_time", 10_000)]));
-        assert_eq!(world.move_budget("tide"), 4, "one baseline plus the cap of 3");
+        assert_eq!(
+            world.move_budget("tide"),
+            4,
+            "one baseline plus the cap of 3"
+        );
     }
 
     #[test]
@@ -445,7 +479,10 @@ mod tests {
             quest.tags.contains(&"patron:mages".to_owned()),
             "the faction is cast as patron"
         );
-        assert!(quest.entry.contains("lodestone"), "the demand names the need");
+        assert!(
+            quest.entry.contains("lodestone"),
+            "the demand names the need"
+        );
         // And it is playable right now: the guild carries the tag it requires.
         assert!(
             world.resolve_storylet(quest, []).is_ok(),

@@ -191,9 +191,9 @@ impl App {
                 .iter()
                 .map(|m| FactionMoveRow {
                     faction: world
-                        .factions
+                        .factions()
                         .get(&m.faction)
-                        .map(|f| f.name.clone())
+                        .map(|f| f.authored.name.clone())
                         .unwrap_or_else(|| m.faction.clone()),
                     verb: m.verb.label().to_owned(),
                     text: m.history.text.clone(),
@@ -381,7 +381,7 @@ fn storylet_rows(world: &CampaignWorld, secret_ids: &[String]) -> Vec<StoryletRo
                         .into_iter()
                         .map(|(role, character_id)| {
                             let name = world
-                                .characters
+                                .characters()
                                 .get(&character_id)
                                 .map(|c| c.name.clone())
                                 .unwrap_or(character_id);
@@ -439,7 +439,9 @@ mod tests {
 
         // Removing the cast breaks every role-bearing storylet.
         let mut thinner = world.clone();
-        thinner.characters.clear();
+        thinner
+            .edit(|e| e.retain(|a| !matches!(a, isocosm::asserted::Assertion::Character(_))))
+            .unwrap();
         assert_ne!(
             base,
             storylet_rows(&thinner, &none),

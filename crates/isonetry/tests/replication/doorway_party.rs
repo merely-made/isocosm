@@ -1,12 +1,13 @@
 //! The bounded connection between local doorways and overmap party position.
 
 use super::*;
+use isocosm::asserted::{Assertion, Place};
 
-fn place(id: &str, map: &str) -> WorldPlace {
-    WorldPlace {
-        id: id.to_owned(),
+fn place(id: &str, map: &str) -> Place {
+    Place {
+        key: id.to_owned(),
         name: id.to_owned(),
-        tags: Vec::new(),
+        tags: Default::default(),
         map: Some(map.to_owned()),
         position: None,
     }
@@ -20,12 +21,12 @@ fn party_snapshot() -> GameSnapshot {
     state.maps.get_mut("field").unwrap().document = state.map.clone();
     state
         .world
-        .places
-        .insert("field-place".into(), place("field-place", "field"));
+        .assert(Assertion::Place(place("field-place", "field")))
+        .unwrap();
     state
         .world
-        .places
-        .insert("hut-place".into(), place("hut-place", "hut"));
+        .assert(Assertion::Place(place("hut-place", "hut")))
+        .unwrap();
     state
         .world
         .party_node
@@ -62,7 +63,10 @@ fn a_split_party_crossing_stays_tactical_only() {
 #[test]
 fn absent_or_ambiguous_target_place_stays_tactical_only() {
     let mut absent = party_snapshot();
-    absent.world.places.remove("hut-place");
+    absent
+        .world
+        .edit(|e| e.retain(|a| a.key() != "hut-place"))
+        .unwrap();
     assert!(matches!(
         doorway_events(&absent, next_request()).as_slice(),
         [GameEvent::TransitionResolved(_)]
@@ -71,8 +75,8 @@ fn absent_or_ambiguous_target_place_stays_tactical_only() {
     let mut ambiguous = party_snapshot();
     ambiguous
         .world
-        .places
-        .insert("other-hut".into(), place("other-hut", "hut"));
+        .assert(Assertion::Place(place("other-hut", "hut")))
+        .unwrap();
     assert!(matches!(
         doorway_events(&ambiguous, next_request()).as_slice(),
         [GameEvent::TransitionResolved(_)]

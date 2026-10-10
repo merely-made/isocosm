@@ -4,6 +4,9 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
+use crate::asserted::{
+    Asserted, Assertion, Character, Faction, HistoryLine, Law, Place, Refused, Route,
+};
 use crate::legacy::campaign::{Overmap, OvermapEdge, OvermapNode};
 
 use crate::legacy::campaign::{ItemProposal, LocalMapProposal, MapScale, SecretFact, WorldFact};

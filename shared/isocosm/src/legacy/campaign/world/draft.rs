@@ -13,12 +13,9 @@ use crate::legacy::campaign::{MapPoint, MapProposalError};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorldEvent {
-    Faction(WorldFaction),
-    Place(WorldPlace),
-    Character(WorldCharacter),
-    Route(WorldRoute),
-    Law(WorldLaw),
-    History(HistoryEvent),
+    /// Authored content: a faction, place, route, character, law or history
+    /// line (rulings 757, 768 and 769).
+    Assert(Assertion),
     Storylet(StoryletProposal),
     /// Bind or update a faction's mutable numbers. Overwrites, because a
     /// faction's resources and banked time change as it acts.
@@ -170,22 +167,9 @@ impl CampaignDraft {
     }
 
     pub fn public_world_events(&self) -> Vec<WorldEvent> {
-        self.world
-            .factions
-            .values()
-            .cloned()
-            .map(WorldEvent::Faction)
-            .chain(self.world.places.values().cloned().map(WorldEvent::Place))
-            .chain(
-                self.world
-                    .characters
-                    .values()
-                    .cloned()
-                    .map(WorldEvent::Character),
-            )
-            .chain(self.world.routes.values().cloned().map(WorldEvent::Route))
-            .chain(self.world.laws.values().cloned().map(WorldEvent::Law))
-            .chain(self.world.history.iter().cloned().map(WorldEvent::History))
+        let assertions = self.world.assertions().iter().cloned();
+        assertions
+            .map(WorldEvent::Assert)
             .chain(
                 self.world
                     .storylets

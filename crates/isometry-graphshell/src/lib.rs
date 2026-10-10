@@ -4,6 +4,7 @@
 //! Graphshell receives only disclosed Scenograph scenes and presentation
 //! resources.
 
+use isocosm::asserted::{Assertion, Place, Route};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use chirograph::{
@@ -16,7 +17,7 @@ use chirograph::{
 };
 use chirograph::{Revision, SceneEpoch, SceneSnapshot};
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm::legacy::campaign::{CampaignWorld, Overmap, WorldPlace, WorldRoute};
+use isocosm::legacy::campaign::{CampaignWorld, Overmap};
 use isometry_core::MapDocument;
 use isometry_views::{overmap_score, tile_board_scene, tile_board_score};
 use sceno::{InstanceId, RoutedRelation, Scene};
@@ -62,31 +63,29 @@ impl IsometryEndpoint {
             ("moor", "Glass Moor", (5, 0)),
             ("observatory", "Old Observatory", (10, 3)),
         ] {
-            world.places.insert(
-                id.into(),
-                WorldPlace {
-                    id: id.into(),
+            world
+                .assert(Assertion::Place(Place {
+                    key: id.into(),
                     name: name.into(),
-                    tags: Vec::new(),
+                    tags: Default::default(),
                     map: (id == "moor").then(|| "moor-crossing".into()),
                     position: Some(position),
-                },
-            );
+                }))
+                .unwrap();
         }
         for (id, from, to, weight) in [
             ("road-west", "harbour", "moor", 2),
             ("ridge-path", "moor", "observatory", 3),
         ] {
-            world.routes.insert(
-                id.into(),
-                WorldRoute {
-                    id: id.into(),
+            world
+                .assert(Assertion::Route(Route {
+                    key: id.into(),
                     from: from.into(),
                     to: to.into(),
-                    tags: Vec::new(),
+                    tags: Default::default(),
                     weight,
-                },
-            );
+                }))
+                .unwrap();
         }
         world.party_node.insert("players".into(), "harbour".into());
         world.party_known.insert(
@@ -120,11 +119,11 @@ impl IsometryEndpoint {
             ProjectionKind::Overmap => {
                 let arrangement = overmap_score(&self.world.overmap_for(&self.party)).arrangement;
                 sceno::Score::new(arrangement)
-            }
+            },
             ProjectionKind::TileBoard => {
                 let arrangement = tile_board_score(&self.map).arrangement;
                 sceno::Score::new(arrangement)
-            }
+            },
         };
         ProjectionRequest {
             version: ProtocolVersion::V1,
@@ -146,7 +145,7 @@ impl IsometryEndpoint {
                 let mut scene = scenomise::solve(&overmap_score(&overmap));
                 add_overmap_routes(&mut scene, &overmap);
                 (scene, Some(overmap))
-            }
+            },
             ProjectionKind::TileBoard => (tile_board_scene(&self.map), None),
         }
     }
@@ -169,16 +168,16 @@ impl IsometryEndpoint {
                 ProjectionKind::Overmap => {
                     let place = self
                         .world
-                        .places
+                        .places()
                         .get(&source.id)
                         .ok_or_else(|| format!("unknown projected place {}", source.id))?;
-                    let here = self.world.party_at(&self.party) == Some(place.id.as_str());
+                    let here = self.world.party_at(&self.party) == Some(place.key.as_str());
                     (
                         place.name.clone(),
                         vec![
                             CardValueV1 {
                                 label: "Place".into(),
-                                value: place.id.clone(),
+                                value: place.key.clone(),
                             },
                             CardValueV1 {
                                 label: "Party".into(),
@@ -189,7 +188,7 @@ impl IsometryEndpoint {
                         if here { "◆" } else { "◇" },
                         overmap_actions(),
                     )
-                }
+                },
                 ProjectionKind::TileBoard => {
                     let (column, row) = parse_tile(&source.id)?;
                     let kind = self
@@ -219,7 +218,7 @@ impl IsometryEndpoint {
                         "▱",
                         tile_actions(),
                     )
-                }
+                },
             };
             let semantics = PresentationSemantics {
                 label: title.clone(),
@@ -388,7 +387,7 @@ impl IntentSink for IsometryEndpoint {
             FRAME_INTENT | INSPECT_INTENT => {
                 self.accepted_curation_intents += 1;
                 Ok(IntentResult::Accepted)
-            }
+            },
             TRAVEL_INTENT => Ok(IntentResult::Rejected {
                 reason: "the player projection grant is read-only for campaign travel".into(),
             }),
@@ -507,13 +506,15 @@ mod tests {
             .unwrap();
         assert_eq!(overmap.scene.active_item_count(), 3);
         assert_eq!(overmap.scene.tables.relations.iter().flatten().count(), 2);
-        assert!(overmap
-            .scene
-            .tables
-            .sources
-            .iter()
-            .flatten()
-            .all(|source| source.adapter == isometry_views::ISOMETRY_OVERMAP_ADAPTER));
+        assert!(
+            overmap
+                .scene
+                .tables
+                .sources
+                .iter()
+                .flatten()
+                .all(|source| source.adapter == isometry_views::ISOMETRY_OVERMAP_ADAPTER)
+        );
         let board = endpoint
             .snapshot(descriptor.projections[1].request.clone())
             .unwrap();
@@ -528,13 +529,15 @@ mod tests {
         let wire = serde_json::to_string(&board.scene).unwrap();
         let remote: SceneSnapshot = serde_json::from_str(&wire).unwrap();
         assert_eq!(remote.active_backdrops_in_order()[0].1, backdrop[0].1);
-        assert!(board
-            .scene
-            .tables
-            .sources
-            .iter()
-            .flatten()
-            .all(|source| source.adapter == isometry_views::ISOMETRY_TILE_BOARD_ADAPTER));
+        assert!(
+            board
+                .scene
+                .tables
+                .sources
+                .iter()
+                .flatten()
+                .all(|source| source.adapter == isometry_views::ISOMETRY_TILE_BOARD_ADAPTER)
+        );
     }
 
     #[test]

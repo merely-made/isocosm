@@ -17,24 +17,28 @@ fn storylet_matches_private_fact_casts_existing_role_and_commits_effects() {
         tags: vec!["river".into()],
         reveal: RevealCondition::Manual,
     });
-    host.local_event(GameEvent::World(WorldEvent::Faction(WorldFaction {
-        id: "tide".into(),
-        name: "Tide Court".into(),
-        tags: vec!["river".into()],
-        claims: vec![],
+    let assert = |a: Assertion| GameEvent::World(WorldEvent::Assert(a));
+    host.local_event(assert(Assertion::Faction(Faction {
+        authored: Authored {
+            key: "tide".into(),
+            name: "Tide Court".into(),
+            tags: ["river".into()].into(),
+            claims: Default::default(),
+        },
+        ..Default::default()
     })));
-    host.local_event(GameEvent::World(WorldEvent::Character(WorldCharacter {
-        id: "mara".into(),
+    host.local_event(assert(Assertion::Character(Character {
+        key: "mara".into(),
         name: "Mara".into(),
-        tags: vec!["warden".into()],
+        tags: ["warden".into()].into(),
         faction: Some("tide".into()),
         place: None,
     })));
-    host.local_event(GameEvent::World(WorldEvent::Law(WorldLaw {
-        id: "iron-remembers".into(),
+    host.local_event(assert(Assertion::Law(Law {
+        key: "iron-remembers".into(),
         name: "Iron remembers".into(),
         text: "Iron keeps its maker's name.".into(),
-        tags: vec!["magic".into()],
+        tags: ["magic".into()].into(),
         parameters: BTreeMap::new(),
     })));
     let encounter = LocalMapProposal {
@@ -63,14 +67,14 @@ fn storylet_matches_private_fact_casts_existing_role_and_commits_effects() {
         }],
         effects: vec![
             StoryletEffect::History {
-                event: HistoryEvent {
-                    id: "oath-returned".into(),
+                event: HistoryLine {
+                    key: "oath-returned".into(),
                     time: 4,
                     kind: "omen".into(),
                     text: "The oath returned.".into(),
                     participants: vec!["mara".into()],
                     place: None,
-                    tags: vec![],
+                    tags: Default::default(),
                 },
             },
             StoryletEffect::Item {
@@ -94,7 +98,7 @@ fn storylet_matches_private_fact_casts_existing_role_and_commits_effects() {
 
     host.commit_storylet("drowned-oath", Some(TokenId(1)))
         .unwrap();
-    assert_eq!(host.state().world.history[0].id, "oath-returned");
+    assert_eq!(host.state().world.history()[0].key, "oath-returned");
     assert!(
         host.state().inventories[&TokenId(1)]
             .items
@@ -126,15 +130,17 @@ fn storylet_matches_private_fact_casts_existing_role_and_commits_effects() {
 fn campaign_commit_keeps_secrets_private_and_applies_public_draft() {
     const SECRET_TEXT: &str = "The witness lied.";
     let mut world = CampaignWorld::default();
-    world.factions.insert(
-        "tide".into(),
-        WorldFaction {
-            id: "tide".into(),
-            name: "Tide Court".into(),
-            tags: vec!["river".into()],
-            claims: vec![],
-        },
-    );
+    world
+        .assert(Assertion::Faction(Faction {
+            authored: Authored {
+                key: "tide".into(),
+                name: "Tide Court".into(),
+                tags: ["river".into()].into(),
+                claims: [].into(),
+            },
+            ..Default::default()
+        }))
+        .unwrap();
     world.storylets.insert(
         "finale".into(),
         StoryletProposal {
@@ -219,7 +225,7 @@ fn campaign_commit_keeps_secrets_private_and_applies_public_draft() {
     }
 
     assert!(host.campaign().secret("oath.secret").is_some());
-    assert!(host.state().world.factions.contains_key("tide"));
+    assert!(host.state().world.factions().contains_key("tide"));
     assert_eq!(host.state().active_map.as_deref(), Some("march"));
     let keeper = host.state().map.token(TokenId(31)).unwrap();
     assert_eq!(keeper.sprite, "keeper");
@@ -283,8 +289,9 @@ fn campaign_commit_refuses_invalid_inhabitants_without_changing_public_or_privat
             campaign: CampaignDraft {
                 id: "bad-tower".into(),
                 name: "Bad Tower".into(),
-                world: CampaignWorld {
-                    storylets: BTreeMap::from([(
+                world: {
+                    let mut world = CampaignWorld::default();
+                    world.storylets = BTreeMap::from([(
                         "finale".into(),
                         StoryletProposal {
                             key: "finale".into(),
@@ -294,8 +301,8 @@ fn campaign_commit_refuses_invalid_inhabitants_without_changing_public_or_privat
                             roles: vec![],
                             effects: vec![],
                         },
-                    )]),
-                    ..Default::default()
+                    )]);
+                    world
                 },
                 maps: vec![DraftMap {
                     scale: MapScale::Local,

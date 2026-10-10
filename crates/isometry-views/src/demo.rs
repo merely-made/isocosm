@@ -6,10 +6,8 @@
 //! sizes the *board*, [`synth_world`] the *campaign*. They measure different
 //! costs and neither substitutes for the other.
 
-use isocosm::legacy::campaign::{
-    CampaignWorld, RoleSlot, StoryletProposal, StoryletRequirements, WorldCharacter, WorldFaction,
-    WorldLaw, WorldPlace, WorldRoute,
-};
+use isocosm::asserted::{Assertion, Authored, Character, Faction, Law, Place, Route};
+use isocosm::legacy::campaign::{CampaignWorld, RoleSlot, StoryletProposal, StoryletRequirements};
 use isometry_core::{Facing, MapDocument, Token, TokenId};
 
 pub fn demo_map() -> MapDocument {
@@ -155,28 +153,28 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
     let side = (places as f64).sqrt().ceil().max(1.0) as usize;
 
     for i in 0..places {
-        let place = WorldPlace {
-            id: format!("p{i}"),
+        let place = Place {
+            key: format!("p{i}"),
             name: format!("Site {i}"),
-            tags: vec![["wood", "hill", "water", "ruin"][i % 4].to_owned()],
+            tags: [["wood", "hill", "water", "ruin"][i % 4].to_owned()].into(),
             map: None,
             position: None,
         };
-        world.places.insert(place.id.clone(), place);
+        world.assert(Assertion::Place(place)).unwrap();
 
-        let character = WorldCharacter {
-            id: format!("c{i}"),
+        let character = Character {
+            key: format!("c{i}"),
             name: format!("Notable {i}"),
             // "elder" is deliberately rare: a role asking for it scans deep into
             // the cast before it casts, which is the cost a storylet refresh pays.
             tags: match i % 7 {
-                0 => vec!["notable".to_owned(), "elder".to_owned()],
-                _ => vec!["notable".to_owned()],
+                0 => ["notable".to_owned(), "elder".to_owned()].into(),
+                _ => ["notable".to_owned()].into(),
             },
             faction: Some(format!("f{}", i % side)),
             place: Some(format!("p{i}")),
         };
-        world.characters.insert(character.id.clone(), character);
+        world.assert(Assertion::Character(character)).unwrap();
 
         let right = (i % side + 1 < side).then_some(i + 1);
         let down = Some(i + side);
@@ -186,34 +184,37 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
             .filter(|&n| n < places)
             .enumerate()
         {
-            let route = WorldRoute {
-                id: format!("r{i}_{ordinal}"),
+            let route = Route {
+                key: format!("r{i}_{ordinal}"),
                 from: format!("p{i}"),
                 to: format!("p{neighbor}"),
-                tags: Vec::new(),
+                tags: Default::default(),
                 weight: (i % 5 + 1) as u32,
             };
-            world.routes.insert(route.id.clone(), route);
+            world.assert(Assertion::Route(route)).unwrap();
         }
     }
 
     for i in 0..side {
-        let faction = WorldFaction {
-            id: format!("f{i}"),
-            name: format!("House {i}"),
-            tags: vec!["settled".to_owned()],
-            claims: vec![format!("p{i}")],
+        let faction = Faction {
+            authored: Authored {
+                key: format!("f{i}"),
+                name: format!("House {i}"),
+                tags: ["settled".to_owned()].into(),
+                claims: [format!("p{i}")].into(),
+            },
+            ..Default::default()
         };
-        world.factions.insert(faction.id.clone(), faction);
+        world.assert(Assertion::Faction(faction)).unwrap();
 
-        let law = WorldLaw {
-            id: format!("l{i}"),
+        let law = Law {
+            key: format!("l{i}"),
             name: format!("Custom {i}"),
             text: "A rule of the setting.".to_owned(),
-            tags: Vec::new(),
+            tags: Default::default(),
             parameters: Default::default(),
         };
-        world.laws.insert(law.id.clone(), law);
+        world.assert(Assertion::Law(law)).unwrap();
     }
 
     for i in 0..storylets {
@@ -266,7 +267,9 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
         world.storylets.insert(storylet.key.clone(), storylet);
     }
 
-    world.party_node.insert(SYNTH_PARTY.to_owned(), "p0".to_owned());
+    world
+        .party_node
+        .insert(SYNTH_PARTY.to_owned(), "p0".to_owned());
     for i in 0..places {
         world.reveal(SYNTH_PARTY, &format!("p{i}"));
     }

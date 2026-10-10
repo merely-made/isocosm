@@ -62,6 +62,10 @@ pub struct State {
     /// before.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub nudges: Vec<crate::directing::Nudge>,
+    /// Authored laws, asserted rule records by key (769). Absent from runs
+    /// with none, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub laws: BTreeMap<Key, crate::asserted::Law>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -166,6 +170,7 @@ impl Simulation {
             reach: Reach::default(),
             edits: Vec::new(),
             nudges: Vec::new(),
+            laws: BTreeMap::new(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {

@@ -1,41 +1,39 @@
 //! Tests for this module, split out on 2026-07-24; unchanged.
 
 use super::*;
+use crate::asserted::Authored;
 use crate::legacy::campaign::MapPoint;
 use crate::legacy::campaign::MapProposalError;
 
 #[test]
 fn storylet_requires_private_fact_and_casts_existing_character() {
     let mut world = CampaignWorld::default();
-    world.factions.insert(
-        "tide".into(),
-        WorldFaction {
-            id: "tide".into(),
+    let faction = Faction {
+        authored: Authored {
+            key: "tide".into(),
             name: "Tide Court".into(),
-            tags: vec!["river".into()],
-            claims: vec![],
+            tags: ["river".into()].into(),
+            claims: Default::default(),
         },
-    );
-    world.characters.insert(
-        "mara".into(),
-        WorldCharacter {
-            id: "mara".into(),
-            name: "Mara".into(),
-            tags: vec!["warden".into()],
-            faction: Some("tide".into()),
-            place: None,
-        },
-    );
-    world.laws.insert(
-        "iron-remembers".into(),
-        WorldLaw {
-            id: "iron-remembers".into(),
-            name: "Iron remembers".into(),
-            text: "Iron keeps the name of its maker.".into(),
-            tags: vec!["magic".into()],
-            parameters: BTreeMap::new(),
-        },
-    );
+        ..Default::default()
+    };
+    world.assert(Assertion::Faction(faction)).unwrap();
+    let mara = Character {
+        key: "mara".into(),
+        name: "Mara".into(),
+        tags: ["warden".into()].into(),
+        faction: Some("tide".into()),
+        place: None,
+    };
+    world.assert(Assertion::Character(mara)).unwrap();
+    let law = Law {
+        key: "iron-remembers".into(),
+        name: "Iron remembers".into(),
+        text: "Iron keeps the name of its maker.".into(),
+        tags: ["magic".into()].into(),
+        parameters: BTreeMap::new(),
+    };
+    world.assert(Assertion::Law(law)).unwrap();
     let storylet = StoryletProposal {
         key: "sunken-vow".into(),
         entry: "The old oath surfaces.".into(),
@@ -177,14 +175,12 @@ fn storylet_effects_round_trip_over_the_binary_carrier() {
             },
         },
         StoryletEffect::History {
-            event: HistoryEvent {
-                id: "tide".into(),
+            event: HistoryLine {
+                key: "tide".into(),
                 time: 1,
                 kind: "tide".into(),
                 text: "The tide turns.".into(),
-                participants: vec![],
-                place: None,
-                tags: vec![],
+                ..Default::default()
             },
         },
         StoryletEffect::Item {
@@ -203,48 +199,41 @@ fn storylet_effects_round_trip_over_the_binary_carrier() {
     );
 }
 
-fn place(id: &str, name: &str) -> WorldPlace {
-    WorldPlace {
-        id: id.into(),
+fn place(id: &str, name: &str) -> Assertion {
+    Assertion::Place(Place {
+        key: id.into(),
         name: name.into(),
-        tags: vec![],
-        map: None,
-        position: None,
-    }
+        ..Default::default()
+    })
 }
 
-fn route(id: &str, from: &str, to: &str, weight: u32) -> WorldRoute {
-    WorldRoute {
-        id: id.into(),
+fn route(id: &str, from: &str, to: &str, weight: u32) -> Assertion {
+    Assertion::Route(Route {
+        key: id.into(),
         from: from.into(),
         to: to.into(),
-        tags: vec![],
+        tags: Default::default(),
         weight,
-    }
+    })
 }
 
 #[test]
 fn the_overmap_projects_from_places_and_routes() {
     let mut world = CampaignWorld::default();
-    for (id, name) in [
-        ("village", "Village"),
-        ("forest", "Forest"),
-        ("ruins", "Ruins"),
-    ] {
-        world.places.insert(id.into(), place(id, name));
-    }
     // The forest opens into a tactical map; the node carries it as its site.
-    world.places.get_mut("forest").unwrap().map = Some("forest-map".into());
-    world
-        .routes
-        .insert("r1".into(), route("r1", "village", "forest", 2));
-    world
-        .routes
-        .insert("r2".into(), route("r2", "forest", "ruins", 3));
+    world.assert(place("village", "Village")).unwrap();
+    let forest = Place {
+        key: "forest".into(),
+        name: "Forest".into(),
+        map: Some("forest-map".into()),
+        ..Default::default()
+    };
+    world.assert(Assertion::Place(forest)).unwrap();
+    world.assert(place("ruins", "Ruins")).unwrap();
+    world.assert(route("r1", "village", "forest", 2)).unwrap();
+    world.assert(route("r2", "forest", "ruins", 3)).unwrap();
     // An unweighted route (weight 0) still costs 1 once projected.
-    world
-        .routes
-        .insert("r3".into(), route("r3", "village", "ruins", 0));
+    world.assert(route("r3", "village", "ruins", 0)).unwrap();
 
     let overmap = world.overmap();
     assert_eq!(overmap.nodes.len(), 3, "a node per place");
@@ -265,15 +254,9 @@ fn the_overmap_projects_from_places_and_routes() {
 #[test]
 fn a_party_sits_on_an_overmap_node_and_travels() {
     let mut world = CampaignWorld::default();
-    world
-        .places
-        .insert("village".into(), place("village", "Village"));
-    world
-        .places
-        .insert("forest".into(), place("forest", "Forest"));
-    world
-        .routes
-        .insert("r1".into(), route("r1", "village", "forest", 2));
+    world.assert(place("village", "Village")).unwrap();
+    world.assert(place("forest", "Forest")).unwrap();
+    world.assert(route("r1", "village", "forest", 2)).unwrap();
 
     assert_eq!(world.party_at("A"), None, "the party starts off the map");
     world
@@ -301,15 +284,9 @@ fn a_party_sits_on_an_overmap_node_and_travels() {
 #[test]
 fn pace_scales_the_travel_cost() {
     let mut world = CampaignWorld::default();
-    world
-        .places
-        .insert("village".into(), place("village", "Village"));
-    world
-        .places
-        .insert("forest".into(), place("forest", "Forest"));
-    world
-        .routes
-        .insert("r1".into(), route("r1", "village", "forest", 4));
+    world.assert(place("village", "Village")).unwrap();
+    world.assert(place("forest", "Forest")).unwrap();
+    world.assert(route("r1", "village", "forest", 4)).unwrap();
 
     // Default pace is normal (100%): the cost is the route's weight.
     assert_eq!(world.pace("A"), 100);
@@ -348,14 +325,10 @@ fn pace_scales_the_travel_cost() {
 fn a_party_discovers_the_overmap_as_it_travels() {
     let mut world = CampaignWorld::default();
     for id in ["village", "forest", "ruins", "island"] {
-        world.places.insert(id.into(), place(id, id));
+        world.assert(place(id, id)).unwrap();
     }
-    world
-        .routes
-        .insert("r1".into(), route("r1", "village", "forest", 2));
-    world
-        .routes
-        .insert("r2".into(), route("r2", "forest", "ruins", 2));
+    world.assert(route("r1", "village", "forest", 2)).unwrap();
+    world.assert(route("r2", "forest", "ruins", 2)).unwrap();
     // The island has no route to it.
 
     // A party that knows nothing sees an empty overmap.

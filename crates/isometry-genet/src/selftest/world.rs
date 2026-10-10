@@ -8,6 +8,7 @@
 //! Split out of `selftest.rs` on 2026-09-04; unchanged.
 
 use super::*;
+use isocosm::asserted::{Assertion, Place, Route};
 
 impl App {
     /// `ISOMETRY_STORYLET_SELFTEST=1`: seed a ready storylet and a locked one,
@@ -116,16 +117,16 @@ impl App {
         }
         self.overmap_fired = true;
 
-        use isocosm::legacy::campaign::{ItemId, ItemInstance, WorldPlace, WorldRoute};
+        use isocosm::legacy::campaign::{ItemId, ItemInstance};
         {
             let runner = &mut *ctx.runner;
             runner.update(|ui| {
                 // Positions left unset (`None`): the overmap relaxes a
                 // force-directed layout from the routes, proving that path.
-                let place = |id: &str, name: &str| WorldPlace {
-                    id: id.to_owned(),
+                let place = |id: &str, name: &str| Place {
+                    key: id.to_owned(),
                     name: name.to_owned(),
-                    tags: Vec::new(),
+                    tags: Default::default(),
                     map: None,
                     position: None,
                 };
@@ -136,27 +137,27 @@ impl App {
                     ("keep", "Grey Keep"),
                     ("citadel", "Sky Citadel"),
                 ] {
-                    ui.world.places.insert(id.to_owned(), place(id, name));
+                    ui.world.assert(Assertion::Place(place(id, name))).unwrap();
                 }
-                let route = |id: &str, from: &str, to: &str, weight: u32| WorldRoute {
-                    id: id.to_owned(),
+                let route = |id: &str, from: &str, to: &str, weight: u32| Route {
+                    key: id.to_owned(),
                     from: from.to_owned(),
                     to: to.to_owned(),
-                    tags: Vec::new(),
+                    tags: Default::default(),
                     weight,
                 };
                 ui.world
-                    .routes
-                    .insert("r1".to_owned(), route("r1", "village", "forest", 2));
+                    .assert(Assertion::Route(route("r1", "village", "forest", 2)))
+                    .unwrap();
                 ui.world
-                    .routes
-                    .insert("r2".to_owned(), route("r2", "forest", "ruins", 3));
+                    .assert(Assertion::Route(route("r2", "forest", "ruins", 3)))
+                    .unwrap();
                 ui.world
-                    .routes
-                    .insert("r3".to_owned(), route("r3", "village", "keep", 5));
+                    .assert(Assertion::Route(route("r3", "village", "keep", 5)))
+                    .unwrap();
                 ui.world
-                    .routes
-                    .insert("r4".to_owned(), route("r4", "keep", "citadel", 4));
+                    .assert(Assertion::Route(route("r4", "keep", "citadel", 4)))
+                    .unwrap();
 
                 let party = ui.viewer.clone().unwrap_or_else(|| "dm".to_owned());
                 ui.world

@@ -19,17 +19,17 @@ fn proposal_label(value: &GenValue) -> String {
                 patch.target,
                 patch.operations.len()
             )
-        }
+        },
         GenValue::WorldFact { fact } => format!("Fact: {}", fact.text),
         GenValue::Storylet { storylet } => format!("Storylet: {}", storylet.entry),
         GenValue::LocalMap { map } => {
             format!("Map: {} ({}x{})", map.name, map.width, map.height)
-        }
+        },
         GenValue::Campaign { campaign } => format!(
             "Campaign: {} ({} maps, {} factions, {} secrets)",
             campaign.name,
             campaign.maps.len(),
-            campaign.world.factions.len(),
+            campaign.world.factions().len(),
             campaign.secrets.len()
         ),
     }
@@ -43,13 +43,19 @@ fn proposal_details(value: &GenValue) -> Vec<String> {
         format!("Start: {}", campaign.starting_map),
         format!("Finale: {}", campaign.final_storylet),
     ];
-    details.extend(
-        campaign
-            .world
-            .factions
-            .values()
-            .map(|faction| format!("Faction: {} [{}]", faction.name, faction.tags.join(", "))),
-    );
+    details.extend(campaign.world.factions().values().map(|faction| {
+        format!(
+            "Faction: {} [{}]",
+            faction.authored.name,
+            faction
+                .authored
+                .tags
+                .iter()
+                .cloned()
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
+    }));
     details.extend(campaign.maps.iter().map(|map| {
         format!(
             "Map: {} ({:?}, {}x{})",
@@ -67,14 +73,14 @@ fn proposal_details(value: &GenValue) -> Vec<String> {
     details.extend(
         campaign
             .world
-            .laws
+            .laws()
             .values()
             .map(|law| format!("Law: {} - {}", law.name, law.text)),
     );
     details.extend(
         campaign
             .world
-            .history
+            .history()
             .iter()
             .map(|event| format!("History {}: {}", event.time, event.text)),
     );
@@ -162,7 +168,7 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
                 .attr("class", "btn-row"),
             ));
             body
-        }
+        },
         None => vec![
             Box::new(el("div", text(choice.name.clone())).attr("class", "entry-sub")),
             Box::new(

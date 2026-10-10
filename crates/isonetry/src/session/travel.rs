@@ -127,7 +127,7 @@ pub fn resolve_transition(
             && t.owner.as_deref().is_some_and(|owner| {
                 // Faction-owned residents are not a player party unless the
                 // campaign has assigned that faction to a player controller.
-                !state.world.factions.contains_key(owner)
+                !state.world.factions().contains_key(owner)
                     || state.world.faction_controller(owner).is_some()
             })
     });
@@ -170,12 +170,12 @@ pub fn resolve_transition_for_party(
     let source_matches = state
         .world
         .party_at(party)
-        .and_then(|node| state.world.places.get(node))
+        .and_then(|node| state.world.places().get(node))
         .and_then(|place| place.map.as_deref())
         == Some(resolution.from_map.as_str());
     let target: Vec<_> = state
         .world
-        .places
+        .places()
         .values()
         .filter(|place| place.map.as_deref() == Some(resolution.to_map.as_str()))
         .collect();
@@ -184,7 +184,7 @@ pub fn resolve_transition_for_party(
         if let [target] = target.as_slice() {
             events.push(GameEvent::World(WorldEvent::PartyMoved {
                 party: party.to_owned(),
-                node: target.id.clone(),
+                node: target.key.clone(),
             }));
         }
     }

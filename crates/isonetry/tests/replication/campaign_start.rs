@@ -10,38 +10,35 @@ fn campaign(start_places: usize) -> GenerationRecord {
         } else {
             format!("tower-{index}")
         };
-        world.places.insert(
-            id.clone(),
-            WorldPlace {
-                id,
+        world
+            .assert(Assertion::Place(Place {
+                key: id,
                 name: "Ash-Bell Watchtower".into(),
-                tags: vec!["ruin".into()],
+                tags: ["ruin".into()].into(),
                 map: Some("watchtower".into()),
                 position: None,
-            },
-        );
+            }))
+            .unwrap();
     }
-    world.places.insert(
-        "forest".into(),
-        WorldPlace {
-            id: "forest".into(),
+    world
+        .assert(Assertion::Place(Place {
+            key: "forest".into(),
             name: "Bellwood Reach".into(),
-            tags: vec!["forest".into()],
+            tags: ["forest".into()].into(),
             map: Some("forest-map".into()),
             position: None,
-        },
-    );
+        }))
+        .unwrap();
     if start_places > 0 {
-        world.routes.insert(
-            "road".into(),
-            WorldRoute {
-                id: "road".into(),
+        world
+            .assert(Assertion::Route(Route {
+                key: "road".into(),
                 from: "tower".into(),
                 to: "forest".into(),
-                tags: vec!["road".into()],
+                tags: ["road".into()].into(),
                 weight: 1,
-            },
-        );
+            }))
+            .unwrap();
     }
     world.storylets.insert(
         "finale".into(),
