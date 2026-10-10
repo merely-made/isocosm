@@ -252,8 +252,9 @@ research note (754) waits for Mark.
 ## 5. Recording a ruling
 
 Numbering originally continued at 805; that ruling records the Codex model
-translation on resumption. Rulings 806 and 807 settle lineage complexity
-and event-handle translation; the next ruling is 808. Form, in the wing
+translation on resumption. Rulings 806 to 808 settle lineage complexity,
+event-handle translation and native deed agreement links; the next ruling
+is 809. Form, in the wing
 record before the "Two
 earlier rulings" paragraph:
 
@@ -270,6 +271,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, ruling 808:** Mark chose a typed optional agreement id on
+  native deed events, retaining causal-event validation and the agreement's
+  state owner. Q2's Form/Exercise/End tests exposed the former invalid
+  `agreement:<id>` cause; its narrow native repair and replay gate follow.
+- **2026-10-10, Q3 checkpoint:** `e7af61ec` verifies native anatomical
+  account gates, meals and paid births, plus 806's living repertoire order:
+  42 focused tests and the Isocosm workspace/all-target check passed. This
+  slice is ready for integration; the lane's reproduction survival gate
+  remains open and generator defaults are unchanged. Q7 holds the next
+  serialized Cargo batch; Q2 and Q3 continue their remaining gates.
 - **2026-10-10:** queue written; Q1 to Q3 have work on their branches.
 - **2026-10-10, resumed:** remote and local main both verified at `8c8b49bb`;
   all three lane worktrees clean at their WIP tips. Q1 (plans), Q2

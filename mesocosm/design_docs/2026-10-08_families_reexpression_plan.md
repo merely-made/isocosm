@@ -181,6 +181,10 @@ the bodies family.
 
 ## Progress
 
+- **2026-10-10, ruling 808:** the native record/social seam keeps a deed's
+  agreement association in an optional typed field on its event, with
+  causal-event validation unchanged. `State::agreements` retains agreement
+  authority. Q2's association and replay tests gate the implementation.
 - **2026-10-10, Q1:** current ownership and status checked against the lane
   tree under 793; dated prose retained. Documentation verification only;
   no new test, draw or headed certification.

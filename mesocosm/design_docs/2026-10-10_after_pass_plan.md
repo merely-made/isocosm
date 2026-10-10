@@ -109,6 +109,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, ruling 808:** Q2's focused contracts exposed agreement
+  actions using a non-event as an event cause. Mark chose a typed optional
+  agreement link on the native event; Q2's association and replay checks
+  gate its repair. The native `Arrive` then `Embody` path also leaves loose
+  own matter in the entity ledger which `held` reads but anatomical takes
+  cannot spend; Q3 records this body-admission residual for E3, with its
+  generated-body accounting tests qualified to that valid envelope.
 - **2026-10-10, Q1:** current state/status and native source paths verified
   under 793 to 802; dated receipts preserved. This documentation pass adds
   no compile, test, draw or headed certification.

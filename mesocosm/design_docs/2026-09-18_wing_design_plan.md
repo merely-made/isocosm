@@ -10088,6 +10088,24 @@ what later sections derive from.
      Native event keys retain their authority. *Reading, not ruled:* reverse
      lookup refuses ambiguous matches rather than choosing the first.
 
+808. **A deed's agreement link is typed on its native event.** 2026-10-10,
+     Q2's agreement/causal-event fork under 780. Question: "Native agreement
+     actions currently fail because they put `agreement:0` in the event’s
+     cause, which must name an existing event. Ruling 780 keeps deeds as
+     events and agreements in native state but leaves their link format
+     open. Where should a deed's agreement reference live?" Options:
+     "Typed optional agreement ID on the event (Recommended); keeps the deed
+     and its agreement link together, with causal-event validation intact.";
+     "Separate native map from event key to agreement ID; keeps agreement
+     links outside the event schema." Mark chose "Typed optional agreement ID on the event (Recommended); keeps the deed and its agreement link together, with causal-event validation intact."
+     So native deed events carry an optional agreement id, and their causal
+     event field retains its existing validation. Agreements remain in
+     `State::agreements`; this link does not create another agreement owner.
+     *Reading, not ruled:* the optional field defaults absent and is omitted
+     from serialization when absent, preserving unassociated event bytes;
+     the native social owner attaches it after an accepted deed and reads
+     it when deriving deeds. Q2 verifies association and save/replay.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

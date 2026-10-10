@@ -502,6 +502,10 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-10, ruling 808:** E3's native agreement deeds carry a typed
+  optional agreement id on their events, retaining causal-event validation.
+  Q2 repairs the invalid agreement-as-event cause and verifies agreement
+  formation, exercise, ending and replay before integrating it.
 - **2026-10-10, ruling 807:** E3's telling adapter derives a stable event
   handle from its native event key using one mapping shared with VTT, and
   admits the telling only when its contract handle and payload key agree.
