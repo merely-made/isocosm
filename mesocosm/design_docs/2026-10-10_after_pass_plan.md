@@ -117,6 +117,26 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, rejected meal-three classification:** native accepted watches
+  and paid provision flows establish 167 consumer births, including 140
+  birth acts by 108 distinct born parents. Child 82's own-matter ledger is
+  `8 provision + 25 feeding - 13 upkeep - 16 child provision = 4`;
+  founder 17's is `10 + 29 - 14 - 24 = 1`. Both accepted native age acts
+  at their deaths (101 and 108). All 175 lineage members died: 45 from age
+  and 130 from native exhaustion, of which 38/129 respectively were born
+  members. Two tick-54 meals divided ten units across 28/32 accepted hunters
+  and credited zero. Native consumer feed credits stop at 67 to 119 and
+  resume with 23 meals at 120. Postpass region readings repeatedly hold
+  zero producer biomass on meal ticks; they are not feeding-start snapshots.
+  The frozen accepted-only observer cannot assign every missing meal to
+  absent eligible prey, foregone Choice or a share yielding zero. No new
+  causal-policy diagnosis follows. Root verified the twelve-path receipt
+  manifest, native birth/age watches and feeding gap; manifest SHA-256
+  `430614d1e1cbe4797a7df4ba1ed7a6f843994403bc92bfc64117289064f4c5b8`.
+  *Reading, not ruled:* the next source preparation changes only consumer
+  birth period seven to fourteen, aiming to reduce multiplication and
+  provision debits while preserving meal three. It can also impair renewal
+  before age deaths. No trial ran; all other settings and gates remain fixed.
 - **2026-10-10, Q3 meal-three pilot rejected:** one fresh bare seed 0 ran on
   native inputs from `6f879936`; all other matrix arms remained withheld.
   Genesis `2e043c6982620a12a2742a9e09a03ee2ea39381770df6e18b9b67e55d6537b72`

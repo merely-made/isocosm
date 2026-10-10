@@ -284,6 +284,26 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, rejected Q3 pilot classified:** unchanged saved-native
+  evidence confirms 167 consumer births, with 140 birth acts by 108 distinct
+  born parents. Child 82 paid for two offspring. All 175 consumers died:
+  45 native age deaths and 130 exhaustion deaths, including 129 born members.
+  Founder/first-child ledgers end at one/four units; accepted age watches
+  establish their death causes. Consumer feed credits are absent at ticks
+  67 to 119; shared-pool floors yielded zero in two measured tick-54 meals.
+  The accepted-only observer cannot assign every absent meal to a specific
+  refused or foregone plan. Root verified all twelve receipt paths and
+  their hashes, plus the birth/age watches and feed gap independently;
+  receipt-manifest SHA-256 is
+  `430614d1e1cbe4797a7df4ba1ed7a6f843994403bc92bfc64117289064f4c5b8`.
+  Q3 may prepare one next Reading: only consumer birth period seven to
+  fourteen, retaining meal three and all other settings/gates. It is unrun.
+  Root also verified Q2's corrected 28-candidate manifest and its complete
+  109-path reconciliation, with no missing paths or hash mismatches.
+  Original manifest/receipt remain preserved; corrected manifest SHA-256
+  `1223594a38bcd5b29d52ebac79dfdc1e44b022ee18443111be5c7b2ac0de612d`.
+  Q8 owns Cargo for compiled faults after passing 32 harm tests and three
+  binary conservation controls. Q2's remaining gates follow; 812 stays open.
 - **2026-10-10, Q3 meal-three pilot rejected:** the frozen refreshed source
   ran only fresh bare seed 0, native Genesis
   `2e043c6982620a12a2742a9e09a03ee2ea39381770df6e18b9b67e55d6537b72`.
