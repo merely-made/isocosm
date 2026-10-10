@@ -38,13 +38,14 @@ design docs, and three crates. `crates/eponym-client` owns native input, renderi
 including body sheets, timed actions and the retained S0 room probe
 landed 2026-08-08: one room carved into a grown mesocosm hillside, one body
 under near-tier kinematics, a fixed input trace with save/reload/replay, and
-a headed run presenting netrender's composed master with a renderling room
-in it. Its default `r1-proof` profile runs the real room and perspective
+a headed run presenting netrender's composed master with the room in it,
+drawn since 2026-10-09 by Mere's `tenant` over the kiss3d fork (wing
+rulings 734 to 736, L7; renderling retired). Its default `r1-proof` profile runs the real room and perspective
 camera through the shared brick DDA, now owned by Mere's `conatus-brick`
 (pinned by rev); Eponym constructs the shared `BrickMap` from its own
 Ground binding. Three further gates landed as opt-in bins: `v1_residency`
-(continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth composed
-with renderling, D1), and `v1b_residency` (the stable capacity-fixed
+(continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth as the
+tenant's depth pre-pass, bodies layered over the traced colour, D1), and `v1b_residency` (the stable capacity-fixed
 resident brick cache, V1b), behind the `v1-proof`, `d1-proof`, and
 `v1b-proof` features. `isocosm::legacy::eponym::social` is the S1
 willingness owner landed the same

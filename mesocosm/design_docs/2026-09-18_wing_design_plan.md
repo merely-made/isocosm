@@ -9714,6 +9714,19 @@ what later sections derive from.
      "Define it with its reader (Recommended)" for 472's water field.
      Recorded in full in mere's conatus engine plan (`4d8bd703`), where the
      tenant's rulings live.
+749. **L7 lands on the tenant; D1 layers; the torch's shadows wait.**
+     2026-10-09, merged at `f291964b` with isometry repinned to mere
+     `4d8bd703`: eponym-client draws through `tenant`; renderling,
+     crabslab, 729's carriage and `ambience-lease` are gone, the forks
+     archived to `Code/archive/` as 474 has it. Questions: how bodies go
+     over the traced terrain, kiss3d's tonemap writing the caller's target
+     unblended; whether the torch casts shadows; whether eponym's
+     CLAUDE.md drops its two renderling lines. Mark chose "Separate
+     targets, netrender layers (Recommended)", "Off until testing
+     (Recommended)" and "Yes, update them (Recommended)". So the tenant
+     draws bodies onto a transparent target that netrender layers over the
+     traced colour, the torch casts no shadow until the testing pass tunes
+     it, and the CLAUDE.md names the tenant.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
