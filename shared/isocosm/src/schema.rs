@@ -56,9 +56,13 @@ pub struct Part {
     /// none, and serialize and hash as before.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tracts: Vec<crate::mosaic::Tract>,
-    /// Cells lost for good, which no tract holds (706).
+    /// Cells lost, which no tract holds until paid healing (706, 810).
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub lost: Vec<crate::mosaic::CellId>,
+    /// Previous allocation of a lost cell (810): `None` was free. An
+    /// absent entry is an unknown allocation from an older loss.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub losses: BTreeMap<crate::mosaic::CellId, Option<Key>>,
     /// What this part admits as an intake organ, where it is one (766).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub port: Option<crate::process::IntakePort>,

@@ -16,6 +16,10 @@ use std::collections::{BTreeMap, BTreeSet};
 
 #[path = "harm/crowd.rs"]
 mod crowd_tests;
+#[path = "harm/healing_legacy.rs"]
+mod healing_legacy_tests;
+#[path = "harm/healing.rs"]
+mod healing_tests;
 
 fn fixture(fragment: bool) -> Genesis {
     let mut g = BodyFounding {

@@ -206,9 +206,21 @@ pub(super) fn room(i: u32) -> Expr {
         who: Binding::Actor,
     });
     add(vec![
-        gap(&tissue(i), false),
-        gap(&reserve(i), true),
-        provision_gap(i),
+        Expr::Read(Reading::Room {
+            who: Binding::Actor,
+            key: tissue(i),
+        }),
+        Expr::Read(Reading::Room {
+            who: Binding::Actor,
+            key: reserve(i),
+        }),
+        Expr::Read(Reading::Room {
+            who: Binding::Actor,
+            key: provision(i),
+        }),
+        Expr::Read(Reading::Healing {
+            who: Binding::Actor,
+        }),
         lacking,
     ])
 }
@@ -242,6 +254,7 @@ pub(super) fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect>
     };
     let tissue_in = || into(tissue(i), gap(&tissue(i), false));
     let reserve_in = || into(reserve(i), gap(&reserve(i), true));
+    let healed = || Effect::Heal { into: SOIL.into() };
     // With the parts full, growth builds what the recipe lacks and then
     // fills the provision, before the reserve: the probe's lineages grow
     // their parts first and breed from income (520, 535).
@@ -258,8 +271,8 @@ pub(super) fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect>
     vec![
         Effect::When {
             guard: hungry(i),
-            then: [vec![reserve_in(), tissue_in()], grown()].concat(),
-            otherwise: [vec![tissue_in()], grown(), vec![reserve_in()]].concat(),
+            then: [vec![reserve_in(), healed(), tissue_in()], grown()].concat(),
+            otherwise: [vec![healed(), tissue_in()], grown(), vec![reserve_in()]].concat(),
         },
         Effect::Transfer {
             from: Binding::Actor,

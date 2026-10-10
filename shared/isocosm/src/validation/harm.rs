@@ -1,8 +1,29 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::{Result, rules::*};
+use crate::{Result, rules::*, schema::Part};
 use std::collections::BTreeSet;
+
+/// Recorded allocations name actual lost cells and catalogue functions.
+/// Unrecorded old losses remain unknown; no allocation is inferred.
+pub(super) fn losses(rules: &Rules, part: &Part, half: [i32; 3]) -> Result<()> {
+    let lost: BTreeSet<_> = part.lost.iter().copied().collect();
+    let capacity = crate::anatomy::capacity(half);
+    if lost.len() != part.lost.len() || lost.iter().any(|c| u32::from(c.0) >= capacity) {
+        return Err("invalid lost cell identities".into());
+    }
+    for (cell, allocation) in &part.losses {
+        if !lost.contains(cell) {
+            return Err("a loss allocation names a present cell".into());
+        }
+        if let Some(f) = allocation
+            && !rules.functions.contains_key(f)
+        {
+            return Err(format!("a loss allocation names unknown function {f}"));
+        }
+    }
+    Ok(())
+}
 
 /// A body's changing cell count bounds a wound's part draw. Its slot
 /// cannot also stand for a fixed expression draw or another wound.

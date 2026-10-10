@@ -143,6 +143,11 @@ impl Parties for Doing<'_> {
             .and_then(|l| l.development.clone())
             .ok_or_else(|| format!("{lineage}'s bodies cannot grow here"))
     }
+    fn lineage_trait(&self, lineage: &str, key: &str) -> bool {
+        self.lineages
+            .and_then(|l| l.get(lineage))
+            .is_some_and(|l| l.traits.contains(key))
+    }
     fn bitten(&self) -> Option<PartId> {
         self.bitten
     }
@@ -267,7 +272,8 @@ impl Doing<'_> {
                     let e = body(who)?;
                     let l = lineages.and_then(|l| l.get(&e.lineage));
                     let d = l.and_then(|l| l.development.as_ref());
-                    Ok(meaning::carried(e, r, rules, d, bitten))
+                    let heals = l.is_some_and(|l| l.traits.contains(crate::harm::HEAL));
+                    Ok(meaning::carried(e, r, rules, d, heals, bitten))
                 },
                 (r, Binding::Part) => {
                     let (half, part) = part.ok_or("no part is bound")?;

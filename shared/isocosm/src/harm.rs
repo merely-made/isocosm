@@ -4,8 +4,8 @@
 //! Harm: a wound takes cells from one part (checkpoint 10's brief, wing
 //! rulings 704 to 719, built here as far as Eponym's world move needs it,
 //! 767). A wound is its own act, never a bite (705): it takes cells across
-//! every function and the free pool together (709), keeps them lost for
-//! good (706), and spills whatever each account holds over its lowered
+//! every function and the free pool together (709), records their previous
+//! allocation for paid healing (810), and spills holdings over the lowered
 //! bound to the part's site in the part's own matter (708). A part with no
 //! cells left is severed by isometer's semantics, its subtree tombstoned
 //! with ids kept and its matter moved out, and a root with none dies (707,
@@ -25,6 +25,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 mod fragments;
+pub(crate) mod healing;
 pub(crate) mod rot;
 pub(crate) use fragments::{Fragment, detach};
 
@@ -257,6 +258,10 @@ fn take(p: &mut Part, half: Half, cells: u32) -> BTreeMap<Key, u32> {
             .copied()
             .collect::<Vec<_>>();
         gone.extend(spare);
+        let allocation = (function != FREE).then(|| function.clone());
+        for cell in &gone {
+            p.losses.insert(*cell, allocation.clone());
+        }
         p.lost.extend(gone);
         if function != FREE {
             let left = p
