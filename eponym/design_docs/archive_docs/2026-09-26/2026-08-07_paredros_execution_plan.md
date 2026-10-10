@@ -42,11 +42,11 @@ record; see
 §3.
 
 **Functional-loop direction, 2026-09-09:** the
-[functional loops and wiring plan](../../2026-09-09_functional_loops_plan.md) owns
+[functional loops and wiring plan](../2026-10-10/2026-09-09_functional_loops_plan.md) owns
 the next cross-system implementation lanes. F0-F8 remain semantic milestones;
 a curated crossing or other authored encounter is not a prerequisite. Its
 companion plans scope [world conditions](../../archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md)
-and [memory and remembrance](../../2026-09-09_memory_and_remembrance_plan.md), including
+and [memory and remembrance](../2026-10-10/2026-09-09_memory_and_remembrance_plan.md), including
 Hagiograph. The crossing's wider encounter draft below is optional content,
 not the implementation sequence for these subsystems.
 
@@ -715,7 +715,7 @@ observation/report/norm chain remain F3b work.
 #### F3b1 — A consequential answer, design proposal (2026-09-05)
 
 The concrete implementation and bounded-memory stages now live in
-[memory and remembrance](../../2026-09-09_memory_and_remembrance_plan.md).
+[memory and remembrance](../2026-10-10/2026-09-09_memory_and_remembrance_plan.md).
 
 Join observer-owned beliefs to a judgment under an explicit norm revision,
 then derive that observer's standing and an answer with its complete support
@@ -1030,7 +1030,7 @@ Charge and inhabitants are deferred while the borg design is explored.
 ### Embodied prototype alongside F3: proposed 2026-09-05
 
 **2026-09-09 scope clarification:** this remains an optional reusable fixture.
-The [functional-loop lanes](../../2026-09-09_functional_loops_plan.md) develop the
+The [functional-loop lanes](../2026-10-10/2026-09-09_functional_loops_plan.md) develop the
 underlying systems without requiring this encounter or its curated sequence.
 
 The [founding plan's player-experience proposal](../../2026-07-30_paredros_founding_plan.md#player-experience-body-place-and-other-lives)
@@ -1570,7 +1570,7 @@ play, and subjective traversal acceptance remain unclaimed.
 ## 7. Progress
 
 - **2026-09-09: controlled-session persistence foundation.** J1a in the
-  [functional-loop plan](../../2026-09-09_functional_loops_plan.md) adds one owned
+  [functional-loop plan](../2026-10-10/2026-09-09_functional_loops_plan.md) adds one owned
   `GameState` with historically validated control cuts, death and existing-life
   succession, versioned save/restore and configurable archive limits. The
   world library plus session-boundary gate passed 35 + 3 tests. No contact,
@@ -1581,7 +1581,7 @@ play, and subjective traversal acceptance remain unclaimed.
   prior art, independent surgery and a proposed sympathetic-charge magic slice.
 
 - **2026-09-09: functional-loop lanes and safe body inspection.** The new
-  [wiring plan](../../2026-09-09_functional_loops_plan.md) records dependencies for
+  [wiring plan](../2026-10-10/2026-09-09_functional_loops_plan.md) records dependencies for
   session authority, injury/directional combat, building, persistence and
   continuation, with companion world-condition and memory/Hagiograph plans.
   J0 is implemented locally in the equipment sheet: stale and dead anatomy

@@ -1,5 +1,10 @@
 # Repin onto mere `bdc89a05` (rapier 0.36)
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Landed
+2026-10-09. Its findings have homes: the isometry-views parallel hang was
+closed by ruling 730 (`ad206d26`), and 729's spirv-std carriage retired with
+renderling under 749. Nothing was left open.
+
 **Date:** 2026-10-09
 
 **Status, 2026-10-09:** landed.

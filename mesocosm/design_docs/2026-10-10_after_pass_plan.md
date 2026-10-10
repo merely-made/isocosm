@@ -15,6 +15,26 @@ needs a lineage that outlives one lifespan.
 Each item names its owning plan. An item is done when its owner's
 done-condition is met and recorded there; this plan only orders and tracks.
 
+## Current state, 2026-10-10
+
+The baseline below is a dated run, not a claim that Q1 reran the tests.
+Legacy Mesocosm and Eponym are deleted; the retained campaign is 3,968
+Rust lines, including `shared/isocosm/src/legacy/campaign.rs`, until V2.
+
+Rulings 800 and 801 update the owner labels in the original A3 list:
+M3 and the interim M4, including D5's headed condition, belong to the
+[directing plan](2026-10-08_directing_interim_m4_plan.md); the Mesocosm
+overlay keeps full M4. The protocol bump and H2 travel belong to the
+[VTT overlay's V2](../../design_docs/2026-09-25_vtt_overlay_plan.md),
+whose folded protocol plan is archived. Eponym's functional and memory
+conditions belong to its overlay's E3. Ecology residues belong to sim
+S8 to S10 (802).
+
+V2 and E3 are open under the compile gate before M3 certification (798).
+That does not close A1, the 77-failure baseline, the families' invariants,
+or the native/headed receipts. Consumer reproduction remains first (792).
+The older owner labels below are read through this annotation.
+
 ## A1. Consumer reproduction (792; owner: the sim plan)
 
 Generated consumers cannot reproduce: a birth needs 30 units of body, a
@@ -72,12 +92,26 @@ and deaths against members; the 3x2 map layout; forced births on bodied
 lineages; healing and starvation in Eponym; DC5 colour and the critter
 review (default creatures residue); VB3 to VB5 visual acceptance.
 
+*Carried 2026-10-10 from the plans archived under ruling 793 (owner: the
+Mesocosm overlay plan, its M4):* the default creatures plan's §6.6, which
+the roster must still satisfy on native bodies: every fauna body senses
+and contracts, the kingdom floor holds, and the captures read as critters;
+its CP1 clearing-and-burrow review, run beside the wing's default view at
+the 2:1 dimetric pitch, which rules Mesocosm's opening view (382, 387,
+388); and the habitat's canopy, contact and dressing, which CP1 left open.
+From the phenotype plan, archived the same day: P0's judgment, whether the
+headed meal choice feels tense rather than clerical.
+
 ## Findings
 
 - **2026-10-10:** the baseline above. Legacy stands at 3,968 lines, all
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 
 - **2026-10-10:** plan written; A2's baseline taken.
 - **2026-10-10, handoff:** three lanes stopped at Mark's weekly budget,

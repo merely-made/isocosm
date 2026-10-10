@@ -1,5 +1,14 @@
 # Ruined watchtower: first connected campaign
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** W1 to W13
+verified. What it left open is carried into the [VTT overlay
+plan](../../2026-09-25_vtt_overlay_plan.md)'s §7: the character library and Knot
+prose editing (W5), other parties and their doorways (W9), per-party map
+views and membership editing (W7). The board over the sim, its section
+"Under the wing design record", is ruling 799's two battlemap paths in that
+plan's V2. Its five failing atlas and door tests are in the [after-pass
+plan](../../../mesocosm/design_docs/2026-10-10_after_pass_plan.md)'s A2.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); W1 to W10 verified. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -17,7 +26,7 @@ confirmed. The gates below stand as the receipts they were, every one
 verified on the height-field board; the section "Under the wing design
 record" says what each becomes over the sim, and the done-conditions are
 authoritative again for what they claim. The evaluation stays in
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 ## Purpose
@@ -186,7 +195,7 @@ lands.
   not the rule. The board over the sim's volume is the VTT overlay plan's
   battlemap view (its §4, "projected from the generated volume in the game's
   grid", landing across V2 and V3) and the held
-  [board-on-isometer plan](2026-09-15_board_on_isometer_plan.md), with
+  [board-on-isometer plan](../../2026-09-15_board_on_isometer_plan.md), with
   paging wired first (rulings 282, 288 to 292).
 - **Seeds are draws (ruling 15).** W2's "repeated seeds replay, different
   seeds vary the place" is the record's own test; seed 91 in the network

@@ -1,5 +1,13 @@
 # Scale Plan (2026-08-29)
 
+**Superseded 2026-10-10; archived under wing design record ruling 793.** S1
+landed on `mesocosm-core`, which is deleted. Residency is the presentation
+plan's (`isometer::scene::residency`, 291) and its rings L10's; S3's cohort
+execution is the sim's aggregate form; S4's zoom is the [presentation
+plan](../../2026-09-11_orthographic_voxel_presentation_plan.md)'s L10; S5's stress
+receipt is carried into the [sim plan](../../2026-09-22_sim_plan.md) under S5. The
+framing ruling (slab half-height 28) was the legacy section's.
+
 **Status: active scale ladder, refreshed 2026-09-01. S1 landed 2026-08-29 on
 top of TD7. The written ladder still places S2 next, while S1's measured
 findings argue for S3 first; that order remains unruled. This lane is not the
@@ -10,7 +18,7 @@ consumes cohort scale and zoom at PE6.**
 route to hundreds of thousands of things. Rewrite is a lane under the
 record's W2 or W3; until it lands this plan's done-conditions are not
 authoritative. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 The ruling, in Mark's words: "scale is remarkable to behold, a feature in

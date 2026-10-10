@@ -2,6 +2,31 @@
 
 **Date:** 2026-10-08
 
+**Status, 2026-10-10:** D1 to D5 are built on native Isocosm under 732's
+compile gate. M3 and the interim M4 belong here (800); the after-pass still
+must certify their invariant and headed done-conditions, reproduction first.
+
+## Current state, 2026-10-10
+
+`shared/isocosm/src/directing/` owns participants, bonds, nudges,
+deliberative choices and readings. `directing/interim/` in that same
+source root owns the site-grain loop, birth/death and boundary cuts,
+resume and deep time. `shared/isocosm/src/lineage/` owns review,
+revision and speciation. Mesocosm's contract envelopes lower in
+`mesocosm/crates/mesocosm-runtime/src/runtime/translate.rs`; the host
+reads native bodies and the lifted site, rather than a legacy world.
+
+The switch and its follow-ups in Progress are implemented; the older
+“D5 waits” and “no phase opened” lines are history. The remaining gate is
+certification: pre-D1 saves, non-deliberative hashes, bond and zero-bond
+controls, tier merging, and three epochs in both modes with replaying
+headed receipts. Consumer reproduction is the prerequisite (792).
+Boundary ordering still uses living-member count in this snapshot;
+797 requires descending native metabolic complexity and is separate
+from the already-built switch. Full in-site M4 stays in the overlay plan.
+
+*The dated design and implementation entries below remain as written (793).*
+
 **Status, 2026-10-08:** plan. Assessment done and its forks ruled (681 to
 691); no phase opened.
 **Status, 2026-10-09:** D1 to D4 built on native Isocosm under 732's
@@ -12,6 +37,16 @@ interim M4 of ruling 680, and the full M4 stays there.
 
 Rulings live in the [wing design record](2026-09-18_wing_design_plan.md);
 this plan cites them by number and does not restate their reasoning.
+
+**Ownership, 2026-10-10 (ruling 800).** This plan owns M3 and the interim
+M4; the Mesocosm overlay plan keeps the profile, the contract and the full
+M4, and points here. M3's done-condition, moved here from the overlay plan
+in its words of 2026-09-25: "Done when a played critter acts on its own
+needs, senses and mood under the player's nudges, its range, home,
+priorities and stances grow from that attention, its bond moves with
+outcomes and passes across generations as the world setting says, its
+suggestions surface, and a seeded run replays to the same hash." D1 to D3
+build it; D4 and D5 are the interim M4.
 
 ## 1. What this plan does
 
@@ -174,7 +209,9 @@ on Isocosm, both modes, receipts replaying.
   aggregates distinct expressed catalogue functions and realized carried
   systems across all living members. Q3 implements this order alongside
   consumer reproduction; no certification is claimed by this decision.
-
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - **2026-10-09, D1 to D4 under 732 (lane `lane-directing`).** All in
   `shared/isocosm/src/directing/` unless named.
   - **D1:** a participant is an entity of `kingdom:participant` at

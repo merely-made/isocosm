@@ -1,11 +1,16 @@
 # The repin onto mere `329d60d0`
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Landed
+2026-10-08. What it found on the way is gone: isomere's unused
+`cubecl-runtime` patch row is no longer in its manifest, and the
+`ambience-lease` probe retired with renderling (749). Nothing was left open.
+
 **Status, 2026-10-08:** landed on main and pushed.
 
 Carries out the wing design record's ruling 650: isocosm takes mere's
 `state-witness` crate (mere's F116 to F131) by moving every mere pin to
 `329d60d0`, where it landed, keeping one mere per graph (621). H2 of the
-state witness plan (`mesocosm/design_docs/2026-10-06_state_witness_plan.md`)
+state witness plan (`mesocosm/design_docs/archive_docs/2026-10-10/2026-10-06_state_witness_plan.md`)
 builds on it, starting with F119's switch of `isometer_core`'s `hash_bytes`.
 
 ## Assessment (2026-10-08)

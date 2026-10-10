@@ -121,7 +121,7 @@ architecture that Paredros and Isometry also depend on.
   2026-09-04 after a
   naming round (figment failed: Rocket's config crate, a live Bedtime
   Digital title, and the wrong sense). See the
-  [playable ecology plan](design_docs/2026-08-31_playable_ecology_plan.md)
+  [playable ecology plan](design_docs/archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
   §6 ruling 4. Do not write "element" for this concept.
 - **scruple**: a part's stable heterogeneous mix, a measured lot of nis; the
   part layer of composition. The apothecaries' weight of twenty grains, free

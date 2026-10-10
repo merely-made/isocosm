@@ -2,6 +2,29 @@
 
 **Date:** 2026-10-10
 
+**Status, 2026-10-10, after the rulings:** classifications accepted by
+793; the review's forks are ruled as 794 to 804. The archive, folds and
+native annotations are applied by Q1. The dated proposed list below keeps
+its words; the three canonical indexes carry the surviving live set.
+
+## Current state, 2026-10-10
+
+Ruling 801 folded H2 and overmap into V2, functional loops and memory into
+Eponym E3, the catalogue into glyph expression, views founding into L10,
+and dev tools into W4. Ruling 802 folded trophic grammar, PE4's remaining
+conditions and the soil cycle into sim S8 to S10. Those documents are
+archived rather than separate live lanes. Ruling 800 gives M3 and the
+interim M4 to directing. V2 and E3 are open before M3 certification (798).
+
+The [Mesocosm/wing index](DOC_README.md),
+[VTT index](../../design_docs/DOC_README.md) and
+[Eponym index](../../eponym/design_docs/DOC_README.md) are the current
+inventory. The Findings below describe the review's source snapshot;
+contract routing, tenant adoption and turn-order compliance are separate
+implementation lanes, not work certified by these document annotations.
+
+*The original review below remains as written.*
+
 **Status, 2026-10-10:** review complete; classifications proposed, forks to
 Mark. Asked by Mark after 732's push: "We should review our plans now that
 we're in the basic state to implement them." Read-only review of the 74 docs

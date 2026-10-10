@@ -12,6 +12,35 @@ Pathfinder 2e (522). In a ruleset-led world an edition's own state
 persists beside the body with declared relations (542), and its
 procedures run unattended under declared decision policies (543).
 
+**Status, 2026-10-10:** V0 and V1 done. V2 is open now under 732's compile
+gate (798), through the contract (794, 795), with H2 and the overmap folded
+in (801). It does not wait on M3 certification; legacy/campaign remains
+until native polities replace its faction turn (247).
+
+## Current state, 2026-10-10
+
+The current campaign model remains
+`shared/isocosm/src/legacy/campaign.rs` and its `campaign/` modules.
+Assertions already enter native nouns through
+`shared/isocosm/src/asserted.rs`; V2 must make `CampaignWorld` a reading
+of the native session, founding through native generation/packs and
+replaying its asserted history. `Command::Assert` existing is not V2 done.
+
+`shared/isocosm-overlay/src/vtt/assertion.rs` keeps the table's Fact,
+Edit, Character, Storylet and PackForced vocabulary. Under 795 it maps to
+native `isocosm::asserted`, with native extended where needed, rather than
+replacing the contract with sim-internal types. Contract routing and its
+round-trip gates belong to that implementation lane.
+
+Ruling 799 keeps two battlemap paths: a lifted isometer-space site with
+the sim on, existing `MapTerrain` with it off. Native reach/knowing replace
+`party_known`; H2's travel, overmap conditions and the faction-turn retirement
+are V2's gates. The folded protocol's WorldEvent reshaping also requires
+`PROTOCOL_VERSION` and ALPN to move together (after-pass A3). V3/V4 and
+faithful edition rules remain this overlay's further work.
+
+*The dated profile, absorption tables and receipts below remain as written (793).*
+
 **Status, 2026-10-03:** Rulings 538 to 541; V0 and V1 done. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -52,13 +81,13 @@ turns, which stay this product's; the rulesets, which are packs (ruling 41,
 the record's §5.1); or naming. **Consumes:** the record; the sim plan; the
 contract crate's [README](../shared/isocosm-overlay/README.md);
 [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) for the pillars; the
-[watchtower plan](2026-09-05_watchtower_plan.md), whose pack is the first
+[watchtower plan](archive_docs/2026-10-10/2026-09-05_watchtower_plan.md), whose pack is the first
 adventure-pack fixture; the
-[protocol hardening plan](2026-08-08_protocol_hardening_plan.md), whose
+[protocol hardening plan](archive_docs/2026-10-10/2026-08-08_protocol_hardening_plan.md), whose
 `Intent -> Resolved` envelope is the handoff's shape at the table; the
 [shared authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)
 for edit mode, its tiers and creative mode; the
-[overmap presentation plan](2026-08-02_overmap_presentation_plan.md) for the
+[overmap presentation plan](archive_docs/2026-10-10/2026-08-02_overmap_presentation_plan.md) for the
 far view; the [board-on-isometer plan](2026-09-15_board_on_isometer_plan.md),
 held, for the battlemap as a scene; and the
 [vessel briefs](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
@@ -268,6 +297,47 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 
 V1 and V2 run side by side; V3 needs V1 and V2's world; V4 needs all three.
 
+### 5.1 What V2 carries from the folded plans (2026-10-10, ruling 801)
+
+Ruling 801 folded the protocol hardening plan's H2 and the overmap
+presentation plan into V2; both are archived at `archive_docs/2026-10-10/`
+with their findings. Travel over the sim is a party's move to a place-graph
+node (72, 205), so the travel resolver and what the overmap shows are both
+V2's.
+
+- **Overmap travel resolves once (H2).** Overmap travel is still
+  `GameEvent::TravelResolved`, an inline-struct variant whose clock,
+  encounter and exhaustion consequences peers apply as they always did
+  (`crates/isonetry/src/protocol.rs`). Done when an overmap journey is one
+  explicit `Resolved` naming every consequence; split-party clocks reconcile
+  from the payload, never from peer derivation; a late joiner rebuilds the
+  same state from the log alone; and a headed two-peer receipt exists. H0
+  and H1's laws stand: no peer derives a consequence, and version
+  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 4
+  with ALPN `isometry/session/v4`, and the after-pass's bump for 768's
+  `WorldEvent` reshaping is the next break; H2 moves it again. Still open
+  from H0: a peer that never sends `Hello` is not version-gated and can
+  push `Rolled`.
+- **The overmap's readings.** What the overmap shows: territory around each
+  site the party knows, tinted by meaning the VTT owns (faction control
+  where a claim exists, biome otherwise), with a generated backdrop and
+  cells that select their site and answer hover with its facts; never a
+  cell for a site the party does not know. The watchtower's atlas (W11 to
+  W13, 2026-09-09) built a fixed region backdrop and clickable polygon
+  areas over the campaign's region map; V2 changes their source to the
+  sim's place graph and reach field. Done when the sites and their
+  discovery come from the sim through the contract, never from authored
+  positions or `party_known`; the campaign shown is a draw under a seed
+  nobody chose; and one capture shows the overmap from a past standpoint
+  differing from the present on at least one site's version (the reach
+  field's arrival entries: what was believed then, what the table knows now,
+  what was retconned, which map version a character held). The drawing
+  itself moves to the presentation plan's L10: the overmap becomes a second
+  camera held at R4 and the canvas renderer retires (437). Still Mark's:
+  faction against biome tint where both exist; whether a known cell's
+  undiscovered edges clip hard or fade; and whether baked map thumbnails
+  are worth a backdrop.
+
 The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
 (ruling 231).
 
@@ -331,6 +401,32 @@ V1 is Mark's.
    plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
    after Mesocosm's M3, each on its own plan.
 
+## 7. Carried from archived plans (2026-10-10)
+
+Ruling 793 archived the VTT's done plans to `archive_docs/2026-10-10/`;
+what each left open lands here, so it has a live owner.
+
+- **The design height, from the genet host migration's Z5.** The fit
+  figure is 820 logical pixels (`DESIGN_SIZE` in
+  `crates/isometry-genet`), not 1040: the side panel diet made the panel
+  fit 820, and `the_side_panel_fits_the_design_height`
+  (`crates/isometry-genet/src/host_zoom.rs`) asserts its last row at or
+  above 800. Mere's ruling S60 had sent the 820-versus-1040 question here
+  as Mark's; the diet answered it by fitting the panel, so nothing is open
+  on the figure itself.
+- **Reachability at the smallest supported display,** the side panel
+  diet's W1 restatement of its target: every control reachable at the
+  smallest display the VTT supports. Open; no smallest display is named
+  yet.
+- **From the watchtower plan:** a reusable character library and Knot prose
+  editing (W5's follow-ons); initializing parties other than the session
+  party, and their tactical doorway updates (W9); independent per-party
+  map views and party-membership editing (W7). Each waits on V2's campaign
+  over a drawn world, since parties and their knowledge then come from the
+  sim. The watchtower's five failing atlas and door tests are in the
+  [after-pass plan](../mesocosm/design_docs/2026-10-10_after_pass_plan.md)'s
+  A2.
+
 ## Findings
 
 - **2026-09-25:** `isometry-campaign` counted at 4,234 lines,
@@ -367,6 +463,9 @@ V1 is Mark's.
   event keys to stable event handles. Translation validates agreement with
   the native key, with ambiguous reverse matches refused as an implementation
   reading. Q2 is implementing and verifying the mapping.
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - 2026-10-10: the campaign session carries its assertions (ruling 768; lane
   `lane-assert`, under 732's compile gate). `CampaignWorld` saves and
   replicates its asserted entries and folds factions, places, routes,

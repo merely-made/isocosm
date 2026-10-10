@@ -2,6 +2,14 @@
 
 **Date:** 2026-09-11
 
+**Status, 2026-10-10:** L2, L7 and L9 have landed, L7 on mere's kiss3d
+tenant rather than the DOM path this plan first drew (734 to 736, 749).
+Ruling 796 makes the tenant the wing's one body rasteriser, so Mesocosm
+moves onto it and isometer-render's `LiveBody` retires. L10 is briefed and
+unbuilt, with the views founding plan's minimap folded into its second
+camera (801). See [the current state](#current-state-2026-10-10).
+*(Earlier status lines follow as written.)*
+
 **Status, 2026-10-01:** lane [L10, the detail ladder](#l10-the-detail-ladder-2026-10-01),
 is briefed from the wing design record's rulings 423 to 426, 432 to 434, 437
 and 438: five rungs in one camera, chosen by size within what the sim holds,
@@ -312,7 +320,7 @@ number for a body whose parts move every frame.
 
 ### L2. One appearance crate
 
-**Closed 2026-09-15** by the [isometer family plan](2026-09-14_isometer_family_plan.md)
+**Closed 2026-09-15** by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md)
 step 11: the merged crate is `isometer-mesh` at
 `shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
 document, greedy quads and projection beside isometry-voxel's recipes,
@@ -1348,7 +1356,7 @@ Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
 shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
 23 files, 31 references to `mesocosm_core::World`) is the only implementation
 of tracer plus live bodies plus glyphs on one depth attachment; Paredros's
-document-host plan (`eponym/design_docs/2026-09-13_genet_document_host_plan.md`,
+document-host plan (`eponym/design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md`,
 lane P1) was building a second producer over the same two renderers because
 `Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
 be a third. That is the duplicate-runs-at-one-problem case the consolidation
@@ -1387,13 +1395,13 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 lanes edit mesocosm-genet.
 
 **Progress (2026-09-14):** steps 1 to 7 of the
-[extraction plan](2026-09-14_isometer_extraction_plan.md) landed on main
+[extraction plan](archive_docs/2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
 with step 8, the Paredros retarget (e138186, by the Paredros session), and
 the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
-core types, owned by the [isometer family plan](2026-09-14_isometer_family_plan.md).
+core types, owned by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md).
 
 ### L10. The detail ladder (2026-10-01)
 
@@ -1506,6 +1514,51 @@ whether examining fires as the camera approaches, once the lift's latency is
 measured under done-condition 1's harness. Thresholds, bands, each mode's
 default filter and the dither's pattern and frame count are bench readings,
 to come with numbers.
+
+**Folded in, 2026-10-10 (ruling 801): the views founding plan.** Its
+minimap retires into done-condition 8's second camera, and the plan is
+archived at `archive_docs/2026-10-10/`. What it keeps for that camera:
+adapter-first (the views crate discloses facts and never computes layout);
+region meaning per game, Mesocosm's being the dominant lineage, derived at
+projection time and never stored; and the cambium lane as ordinary chrome
+for text (its 2026-08-29 amendment). Today `mesocosm-views/src/minimap.rs`
+reads the native world's sites at site grain (783) through sceno's hulls.
+Done-condition 8 for Mesocosm also holds when, as that plan asked, a
+region's dominant holder visibly shifts between two captures of one long
+draw under a seed nobody chose; when its regions are the place graph's
+own nodes once places reach Mesocosm; and when a region is a hit target
+selecting its place. Fields evaluated over a place stay consumer-pull.
+The VTT's overmap readings that camera draws are its overlay plan's V2
+(§5.1 there).
+
+## Current state, 2026-10-10
+
+Added under ruling 793; the dated text above keeps its words, including
+its places where renderling or the DOM is the body's path.
+
+- **The body path is mere's tenant.** L7 landed on the kiss3d tenant
+  (`crates/conatus/tenant` in mere, 745), not on the appearance crate plus
+  DOM that L7's text describes: `eponym-client` draws bodies through it onto
+  a transparent target that netrender layers over the traced colour (749),
+  and renderling, crabslab, 729's carriage and the `ambience-lease` probe
+  are gone. Palette colours reach kiss3d as a texture by UV (736). Torch
+  brightness and shadows remain tuning findings in after-pass A4 (749).
+- **One body rasteriser (796).** Mesocosm still draws bodies through
+  isometer's scene with `isometer-render`'s unlit `LiveBody`
+  (`shared/isometer/crates/isometer-render/src/live_body.rs`); it moves
+  onto the tenant, and `LiveBody` retires once it has. L5's
+  done-conditions carry onto the tenant, and L10's R0 row draws through it
+  from then.
+- **L7's open done-conditions** are the after-pass's (its A3): the S0
+  replay hash unchanged, rg3c and `d1_depth`'s witness rewritten against the
+  tenant's report, and L3 and L5 re-proved without the specimen bench lanes
+  the switch deleted (Benches A to D ran on legacy Mesocosm; their receipts
+  stand as history, and W4 lifts the bench).
+- **Carried from the isometer family plan (archived 2026-10-10):** the
+  terrain's per-axis scale, y and z as well as x (ruling 23), is unbuilt;
+  isometer's only scale is one isotropic float per body placement.
+- **L6 and L8** are open as written. **L10** is unbuilt; its done-condition
+  8 now also carries the folded views founding plan's minimap receipts.
 
 ## CSS features and standards to earmark
 
@@ -1865,3 +1918,9 @@ transforms, hit testing, and styling per part. Per-face shading and masks
 then apply per part rather than per face. This is the shape the hybrid was
 always going to converge on; the genet first-frame slice is owed regardless
 and belongs in L1's genet plan as a named consumer.
+
+## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.

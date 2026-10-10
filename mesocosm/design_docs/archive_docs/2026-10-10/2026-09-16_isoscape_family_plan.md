@@ -1,17 +1,28 @@
 # isoscape family plan
 
+**Superseded 2026-10-10; archived under wing design record ruling 793.**
+Deep time is native (`run_deep_time` in
+`shared/isocosm/src/directing/interim/deep.rs`, the hagiograph over a
+`Session`), the lift is isometer's
+(`shared/isometer/crates/isometer-space/src/lift/`, 701), and the terrain
+models went to Isocosm (393). What it left open is carried into the [sim
+plan](../../2026-09-22_sim_plan.md) under S5: what varies the span, a save's
+history with its size receipt, and a Law C test for world history; the
+heir's entry is directing's start and `Take`. isoscape itself, the founding
+pipeline's presets, is not founded.
+
 **Date:** 2026-09-16
 
 **Status, 2026-09-16:** assessment complete, rulings 1 to 14 recorded; Phase D
 (deep time) is next, orchestrated through subagents. No crate founded, no
 code moved yet. The glyph expression plan's experience slice waits on Phase
 D, by Mark's ruling of the same day
-([glyph expression plan](2026-09-15_glyph_expression_plan.md), rulings on the
+([glyph expression plan](../../2026-09-15_glyph_expression_plan.md), rulings on the
 feat rule and pre-history).
 
 **W1, 2026-09-18:** keep. Tier: sim and stack generation. Index defect:
 absent from the index. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Annotation, 2026-09-28 (wing design record, rulings 192, 390 and 392):**
@@ -20,7 +31,7 @@ to Isocosm instead: ruling 192 made Isocosm absorb `mesocosm-core`, places
 among its families, and ruling 392 makes Isocosm own the lift from site to
 volume, leaving isoscape the founding pipeline and presets. The spine is
 planned in the rewritten
-[place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §A.
+[place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md) §A.
 Ruling 11's terrain models beside isometer's seam are that plan's decision
 1: they stand if Isocosm may depend on isometer-core, and move into Isocosm
 if not. Phase D stands as written. *Ruled later that day (393):* they move
@@ -264,7 +275,7 @@ clock, and records carry no pack hash or version.
 is licensed MIT OR Apache-2.0 (`Cargo.toml:37`) while depending on MPL-2.0
 wing crates and containing an MPL-2.0 file (`construction.rs:1-2`). And the
 tabletop's consolidation plan assigns it "generator hosting, system plugins
-and campaign proposal types" (`design_docs/2026-09-09_games_wing_consolidation_plan.md:49-51`).
+and campaign proposal types" (`design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md:49-51`).
 
 ### 1.3 Paredros
 
@@ -646,7 +657,7 @@ hagioglyph. So I figure the hagiograph bucket is more open than we planned."
   ordinary event history. That is a `muniment::Journal`"
   (`mere/crates/eidetic/hagiograph/README.md`, a 26-line reservation).
 - **Paredros's lane H**: retelling, remembrance, significance and
-  manifestation proposals (`eponym/design_docs/2026-09-09_functional_loops_plan.md:54`).
+  manifestation proposals (`eponym/design_docs/archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md:54`).
 
 **What has been taken from it since.** The **hagioglyph** took the divinity
 half on 2026-09-15: the canon, the journey, ascension, **the chosen referent

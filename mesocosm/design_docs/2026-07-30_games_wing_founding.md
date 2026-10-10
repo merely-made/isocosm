@@ -213,7 +213,7 @@ What the frame decides, and why it is here rather than only in the review:
 
 ### Isometry as an umbrella home (2026-09-09 discussion)
 
-**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
+**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
 the repository home for Mesocosm and Eponym to make interdependency easier,
 and explicitly welcomes use of all three projects. Distinguish repository
 organization, library dependency direction, and product runtime integration.
@@ -673,11 +673,11 @@ world operations are particularly interesting mod contributions.
 
 **Where these directions meet current work.** Vessel mechanics and receipts
 stay in their domain plans. Mesocosm's
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns embodied
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns embodied
 discovery and lineage development. Eponym's
-`eponym/design_docs/2026-09-09_functional_loops_plan.md`,
+`eponym/design_docs/archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md`,
 `eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md`, and
-`eponym/design_docs/2026-09-09_memory_and_remembrance_plan.md` are locally
+`eponym/design_docs/archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md` are locally
 drafted planning locations, inspected 2026-09-09, for action loops, environmental
 laws, and remembered social consequences respectively; they are not completion
 receipts for this taste record. Isometry's own rulesets decide item and surface

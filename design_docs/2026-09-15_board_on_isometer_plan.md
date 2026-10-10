@@ -2,6 +2,33 @@
 
 **Date:** 2026-09-15
 
+**Status, 2026-10-10:** the authored board and paging foundations remain
+implemented. Its sim-off path is MapTerrain; ruling 799 adds a lifted-site
+sim-on path under V2. This is not a new parity or headed receipt.
+
+## Current state, 2026-10-10
+
+`crates/isometry-views/src/scene/board.rs` draws the board through
+isometer, with terrain lowering in `scene/terrain.rs` and resident paging
+in `scene/ground.rs`. `MapTerrain` reads the authored map, tile materials
+and elevation. That implemented path remains for sim-off play (799).
+
+With the sim on, V2 must read a site through
+`shared/isometer/crates/isometer-space/src/`, using the sim's accepted
+edits and placement rather than keeping an independent map authority.
+The VTT overlay owns that integration and the faction-turn retirement;
+this plan owns its scene lowering, selection and presentation gates.
+The old “one board geometry” assumption is superseded by 799's two paths,
+not by deleting the authored map path.
+
+Native places and the lift do not make token collision, movement or
+system rules isometer-owned. Pointer picks answer the drawn scene;
+accepted tactical play remains the VTT's. Mere's tenant is the selected
+body rasteriser (796), with product adoption recorded by the presentation
+plan rather than assumed from this board's old receipts.
+
+*The dated board design and receipts below remain as written (793).*
+
 **Status, 2026-09-27:** Lanes landed 2026-09-16; paging integrated 2026-09-27. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -374,6 +401,10 @@ The Progress entries are left as written, because a progress entry records what
 a lane saw. This section is the current one, and it names its build.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 
 - **2026-09-15:** founded from three read-only assessments (the board today,
   isometer for a third consumer, the wing GUI inventory) and the isometer

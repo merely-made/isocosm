@@ -133,7 +133,7 @@ with the renderer receipt feature.
 **Open behind existing prerequisites.** The current Isometry desktop host still
 targets Genet's deleted compatibility layout cone. That migration is broader
 than this profile and is not smuggled into R0/R1. It is now the
-[genet host migration plan](../../2026-09-02_genet_host_migration_plan.md)
+[genet host migration plan](../2026-10-10/2026-09-02_genet_host_migration_plan.md)
 (2026-09-02). Protocol hardening H2 also
 remains first in the repository's audit order.
 

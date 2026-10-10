@@ -102,7 +102,9 @@ Its versioned save supports configurable archive limits. The bounded J1b
 GameState; precise poses survive replay, while existing navigation/items/combat
 retain explicit logical-cell projections. Full contact,
 autonomous/social coordination, outsider arrival and host integration remain
-open. See `design_docs/2026-09-09_functional_loops_plan.md` for current lanes.
+open. The current lanes are the overlay plan's E3, §5.1, where the
+functional loops plan folded on 2026-10-10 (its text is at
+`design_docs/archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md`).
 
 The `crossing` binary (2026-09-05) is the dry damaged-crossing contact
 fixture: two restartable body presets, board carrying, tethering, brace,

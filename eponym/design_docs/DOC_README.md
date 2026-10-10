@@ -37,11 +37,8 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | E0 and E1 done 2026-09-26; E2 to E4 wait on Mesocosm's M3. |
-| [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | Under rewrite per W1 (ruling 31). |
-| [2026-09-09_functional_loops_plan.md](2026-09-09_functional_loops_plan.md) | Functional loops and wiring: session authority, injury and combat, saves. | Rewritten to the record 2026-09-26 (rulings 280, 314). |
-| [2026-09-09_memory_and_remembrance_plan.md](2026-09-09_memory_and_remembrance_plan.md) | Memory and remembrance: observer-relative answers, durable history, the hagiograph. | Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. |
-| [2026-09-13_genet_document_host_plan.md](2026-09-13_genet_document_host_plan.md) | The presentation join: one played session through genet and netrender. | P0 to P4 landed 2026-09-14. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-10: E0/E1 done, E2 native with certification pending; E3 open now through contract (794, 798), loops/memory folded in (801). |
+| [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items
 
@@ -58,6 +55,9 @@ native package is `eponym-client`.
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-10/2026-09-09_memory_and_remembrance_plan.md`](archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md): memory and remembrance, F3a and F3b5 landed; folded into the overlay plan's E3 (801).
+- [`2026-10-10/2026-09-09_functional_loops_plan.md`](archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md): functional loops and wiring, J and B lanes landed; folded into the overlay plan's E3 (801).
+- [`2026-10-10/2026-09-13_genet_document_host_plan.md`](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md): the presentation join, P0 to P5 landed 2026-09-14; done (ruling 793), its open items in the overlay plan's §7.
 - [`2026-09-26/2026-08-07_paredros_execution_plan.md`](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md): ruling 313; F3 to F8 mapped onto the overlay plan's E2.
 - [`2026-09-26/2026-09-09_world_conditions_plan.md`](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md): ruling 315; its schema is the sim plan's §3.1.
 - [`2026-09-18/2026-08-10_r4_extraction_review.md`](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md): retired by W1 (ruling 31).

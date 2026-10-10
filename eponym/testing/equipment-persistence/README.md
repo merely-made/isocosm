@@ -8,7 +8,7 @@ composited captures from 2026-09-08.
 The binary was retired on 2026-09-15 under the
 [isomere plan](../../../mesocosm/design_docs/2026-09-15_isomere_plan.md)'s M5;
 the rationale is in
-[the genet document host plan](../../design_docs/2026-09-13_genet_document_host_plan.md),
+[the genet document host plan](../../design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md),
 under "Retiring the body sheet".
 
 What survives of the claim: the store itself is

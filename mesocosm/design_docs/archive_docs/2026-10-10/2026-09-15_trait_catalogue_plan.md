@@ -1,20 +1,28 @@
 # Trait catalogue plan
 
+**Folded into the glyph expression plan on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** Never built. Its structure, move
+order, done-conditions and open decisions are restated over the native
+function catalogue in the [glyph expression
+plan](../../2026-09-15_glyph_expression_plan.md)'s §10, parked with it (279). Its
+sizing and saturation arithmetic were taken on legacy definitions and are
+re-measured there before R1 is put again.
+
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Founds the lane the
-[glyph expression plan](2026-09-15_glyph_expression_plan.md)'s ruling 1 names,
+[glyph expression plan](../../2026-09-15_glyph_expression_plan.md)'s ruling 1 names,
 and answers its finding R2. Consumes the
-[traits brief](2026-08-29_traits_and_perception_brief.md)'s rarity ladder and
-§8 questions, the [ProcessDef plan](archive_docs/2026-09-26/2026-08-01_processdef_plan.md)'s PD3 pack
+[traits brief](../../2026-08-29_traits_and_perception_brief.md)'s rarity ladder and
+§8 questions, the [ProcessDef plan](../2026-09-26/2026-08-01_processdef_plan.md)'s PD3 pack
 door, and the
-[functional generation plan](2026-09-09_functional_generation_plan.md)'s
+[functional generation plan](../../2026-09-09_functional_generation_plan.md)'s
 blueprints. Answers Mark's 2026-09-04 framing at the foot of the
 [trophic grammar plan](2026-09-04_trophic_grammar_plan.md) §4: "make beginning
 body types; start investigating a beginning set of traits."
 
 **W1, 2026-09-18:** keep. Tier: mixed. Independently produced the
 thirty-shape receipt. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 A trait here is what the expression plan proved it is in the data: **an

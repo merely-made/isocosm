@@ -2,6 +2,31 @@
 
 **Date:** 2026-09-15
 
+**Status, 2026-10-10:** the shared sheet, panels and host assembly exist.
+The mode host remains unbuilt (442 to 445); Mesocosm's D5 supplies a native
+mode, so the old wait on M3 is removed.
+
+## Current state, 2026-10-10
+
+`shared/isomere/src/lib.rs` exposes the shared sheet, viewport, examiner,
+journal, status and optional host assembly. Those implemented M0 to M4
+lanes are distinct from §2.4's one-window mode host; this checkout has no
+mode-host workspace.
+
+Mesocosm runs a native session through
+`mesocosm/crates/mesocosm-runtime/src/runtime.rs`. D5 switched its host
+under the compile gate, with certification left to the after-pass.
+The earlier “waits on Mesocosm's M3” statuses and October 1 reading are
+superseded. Ruling 798 opens V2 and E3 before M3 certification too.
+Eponym's body path in `eponym/crates/eponym-client/src/gpu/body.rs` is
+the tenant, meeting 442's renderling-retirement prerequisite.
+
+The combined host's own gates remain: switching preserves world, subject
+and embodiment, unread mode sections survive saves, and knowledge follows
+the participant's seat and awareness. Native overlays do not certify them.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status, 2026-10-01:** The mode host ruled (442 to 445); waits on Mesocosm's M3. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -281,6 +306,10 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   confirms it holds.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-09-15:** designed from the inventory. Approved by Mark the same
   day with two rulings: the palette is seeded from today's exact hex so

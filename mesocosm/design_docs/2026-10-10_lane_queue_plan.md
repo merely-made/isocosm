@@ -282,3 +282,10 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   living members) and Q2's event identity (807: shared adapter mapping,
   agreement validated against the native key). Both choices sent to their
   running lanes; implementation and gates remain in progress.
+- **2026-10-10, Q1 integrated:** `lane-plans` finished at `901116cc`
+  (new finishing commits `3523420b`, `901116cc`). Its archives and folds
+  under 793, 800 to 802 and all 19 surviving LIVE plans' current-state
+  sections are integrated, with current canonical index rows. The lane
+  verified 143 new/index links and 43 full source paths. Merge retains
+  rulings 805 to 807 and both sides' dated Progress entries. This is a
+  documentation gate; implementation, draw and headed gates stay open.

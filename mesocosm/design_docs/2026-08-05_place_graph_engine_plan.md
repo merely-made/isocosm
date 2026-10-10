@@ -1,5 +1,14 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
+**Status, 2026-10-10:** SP1 to SP5 are built, SP4 and SP5 in
+`isometer-space` on `Ground` (733, 737 to 744), and merged with 732's
+push; their re-certification, the lift's bytes having moved with drawn
+cliffs (744), is the after-pass's. SP6 waits on mere's T2. SP7's joins are
+now the overlays': Mesocosm's full M4 in-site, Eponym's E3, and the VTT's
+battlemap as a lifted site with the sim on (799). SP8 is open. §A.13 says
+who owns what now, superseding §A.3 and §A.4's rows where they differ.
+*(Earlier status lines follow as written.)*
+
 **Status, 2026-10-09, later:** rulings 737 to 741 built on
 `lane-places-2`, with SP5's border clause (cross-site passages and span
 classes). SP5's done-condition holds within and across sites. The open
@@ -581,6 +590,31 @@ The accepted handoff, with its implemented adapter:
   cell; an edit re-derives the places its extent touches and their
   neighbours.
 
+### A.13 Current state, 2026-10-10
+
+§A.3 and §A.4 are dated 2026-09-28 and keep their words. Since then rulings
+696 to 703 and 733 moved the in-site half into isometer, and 732's push
+deleted `mesocosm-core` and Eponym's legacy world. Who owns what now,
+checked against the tree:
+
+| Piece | Owner and path | Ruling |
+| --- | --- | --- |
+| World map, sites, skeletons, edge profiles at site grain | Isocosm, `shared/isocosm/src/map/` and `schema.rs`; `shared/isocosm/src/terrain/mod.rs` reads a world's sites across to isometer through `Atlas` | 392, 701 |
+| The lift, corners, profiles, lattice and chunks, cliffs drawn | isometer, `shared/isometer/crates/isometer-space/src/lift/` | 701, 744 |
+| Edits | the sim records each as an asserted fact; isometer replays them as shape operations, `isometer-space/src/edit/` | 696, 412 to 416 |
+| Places, passages, routes, sight | isometer, `isometer-space/src/places/`; an entity names its patch through `patch` | 698, 702, 737 to 741, 743 |
+| The voxel store | isometer-core's `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`) until nisus sits under it at SP6 | 697, 700, 733 |
+| Soil | the sim's, keyed by isometer's columns; the tier line went to directing (`shared/isocosm/src/directing/tier.rs`) | 703, 742 |
+| Authored terrain | `MapTerrain`, `crates/isometry-views/src/scene/terrain.rs`: the VTT's battlemap with the sim off; with it on, a lifted `isometer-space` site | 799 |
+| Eponym's site meanings | `eponym/crates/eponym-play/src/sites.rs`, over native sites; walking and sight go through `isometer-space` | 755, 776 |
+| Mesocosm's in-site places | none of its own: legacy `places` is deleted, and the body section is lifted through `isometer-space`; in-site play is the full M4's | 681 |
+
+§A.4's rows for `mesocosm-core/src/places.rs` and
+`eponym/crates/eponym-world/src/sites.rs` name deleted code. The relief
+models went with the lift; the last legacy relief and brick fixture lives
+in the parry-ground probe (`mesocosm/crates/probes/parry-ground`, the
+reading recorded with 780 to 786).
+
 ## 0. Rulings this plan rests on (2026-08-05)
 
 *Reading, not ruled, 2026-09-28, on what stands:* 1, 3, 5, 7 and 8 stand,
@@ -682,7 +716,7 @@ layers of meaning over it:
 - **Two-scale execution target.** Places near the played body run embodied
   individuals; distant places may run deterministic cohorts once the
   conversion and comparison receipts in the
-  [scale plan](2026-08-29_scale_plan.md)
+  [scale plan](archive_docs/2026-10-10/2026-08-29_scale_plan.md)
   land. The incumbent tick is not there yet: `organism/ecology.rs` still
   advances every organism record and derives `Cohort` only as a conserved
   summary. Promotion and demotion already happen at a hops-distance boundary
@@ -699,7 +733,7 @@ zero-tick round trip must preserve the aggregate record exactly, while
 evolution over time is compared against an all-individual reference under a
 declared error envelope. Camera distance, render LOD, and cache residency
 cannot choose simulation detail. Recorded focus and other world facts may.
-The [playable ecology plan's downstream gates](2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
+The [playable ecology plan's downstream gates](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
 route that scale-owned contract into PE6.
 
 Presentation stays a family of projections of one truth (landscape §8):
@@ -1315,6 +1349,10 @@ standing rule: after two real consumers, never declared in advance.
   the browser receipt (D0 discipline).
 
 ## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 - 2026-09-28: **SP2 landed** at `38ea90f`. The world-local material table on
   the world's traits, seeded by the map; the lattice with its Coons interior,
   faded detail and exact correction in `src/terrain/lattice.rs`; column

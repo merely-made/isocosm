@@ -2,6 +2,36 @@
 
 **Date:** 2026-09-25
 
+**Status, 2026-10-10:** M0/M1 done; M2 realigned to native Isocosm with
+certification in the after-pass. Directing owns M3 and the interim M4
+(800), built under the compile gate. This plan retains the profile, contract
+and full in-site M4, which remains open.
+
+## Current state, 2026-10-10
+
+`mesocosm-core`, its sixteen-variant driving `Intent` and the legacy
+Mesocosm world are deleted. Native Isocosm owns simulation, development,
+lineages and history. The absorption tables below are dated migration
+inventories; the families plan's Progress and the sim plan's current-state
+section locate the new owners.
+
+Mesocosm's four crates are runtime, views, phenotype and genet.
+`mesocosm/crates/mesocosm-runtime/src/runtime.rs` runs a native `Session`;
+`runtime/translate.rs` lowers `isocosm_overlay::mesocosm` envelopes.
+The player directs a non-sapient critter; a sophont is driven (671, 779).
+The review's authored expression now uses native `Command::Express` (787).
+M3 and site-grain interim M4 are the
+[directing plan](2026-10-08_directing_interim_m4_plan.md)'s; migration is
+not their draw or headed certification.
+
+Full M4 still must connect in-site acts and contact to the same accepted
+world: isometer-space lift/queries, native `Command::Edit` and `Patch`,
+and perception through 741's ray. A lifted site and presentation placement
+alone do not meet those conditions. The body path still uses LiveBody here;
+796's tenant adoption belongs to the presentation lane.
+
+*The dated profile, absorption survey and receipts below remain as written (793).*
+
 **Status, 2026-10-08:** M0 and M1 done (2026-09-25); M2 is now the families
 re-expression plan's Mesocosm share (677), M3 lands with Mesocosm's world
 family (678), and M4 gains an interim milestone at site grain (680), which
@@ -25,10 +55,10 @@ whose schema, process definitions, record and generator the
 phases; the bench (W4); the other overlays (the record's §5.6 and §5.7); or
 naming. **Consumes:** the record; the sim plan and the
 [aggregation research](2026-09-22_aggregation_research.md); the
-[played slice plan](2026-08-28_played_slice_plan.md), its control
+[played slice plan](archive_docs/2026-10-10/2026-08-28_played_slice_plan.md), its control
 rewritten for directing (rulings 175 and 199) and retiring into this plan
 at M3 (196); the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md), whose open
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md), whose open
 rulings are now answered (rulings 180 to 183 and two readings); the
 [epoch boundary plan](2026-08-01_epoch_boundary_plan.md); and the
 [vessel briefs](2026-08-18_vessel_briefs_and_presentation.md) §2.
@@ -227,20 +257,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   being the switch to M3's directing (678), driving ending there (671).
   The driving intents are the critter's own acts and `Idle` goes (679). An
   interim M4 at site grain comes before the full M4 (680).
-- *Annotation, 2026-10-08 (681 to 684):* the interim M4, not the world
-  family's move, is the switch: genet's runtime moves onto a native
-  `Session` there, and in-site play waits for the full M4 (681, amending
-  678). M3 plays a native generated lineage (682), its choice made by a
-  deliberative methodology weighing needs, mood, nudges and bond (683), and
-  the interim boundary ports grow-a-copy scoring over `Session::fork_at`
-  ahead of the lineages family (684). A suggestion is a reading over
-  receipts and what the critter knows (685); the runtime translates contract
-  envelopes into native commands, the nudge among them (686); and the
-  interim M4's regions group sites by biomass after 226 (687), derived each
-  round (689). The bond is a weighted relation to a placeless participant
-  entity, one per player (688); standing orders are read from the logged
-  nudges and their outcomes (690); and survival mode filters through what
-  the critter knows (691).
+- *Annotation, 2026-10-08 (681 to 691), trimmed to a pointer 2026-10-10
+  under ruling 800:* the interim M4 is the switch (681), and M3's and the
+  interim M4's shape (682 to 691) is the
+  [directing plan](2026-10-08_directing_interim_m4_plan.md)'s, which owns
+  both; the text it held is there, rulings first.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
@@ -252,13 +273,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   loop (ruling 260), measured by persistence, turnover, collapse and the
   web's response to an intervention (267): disease, an overperforming
   lineage, or a keystone lost (283). Lands under the sim plan's S1 and S2.
-- **M3, directing on Isocosm,** built only there, with no prototype on the
-  current host (194). Done when a played critter acts on its own
-  needs, senses and mood under the player's nudges, its range, home,
-  priorities and stances grow from that attention, its bond moves
-  with outcomes and passes across generations as the world setting says,
-  its suggestions surface, and a seeded run replays to the same hash. When
-  M3 lands, the played slice plan retires into this plan (196).
+- **M3, directing on Isocosm,** and the **interim M4** at site grain (680):
+  owned by the [directing plan](2026-10-08_directing_interim_m4_plan.md)
+  since ruling 800 (2026-10-10), which carries M3's done-condition as
+  written here on 2026-09-25 and builds both as D1 to D5. The played slice
+  plan retired as 196 ruled and is archived at `archive_docs/2026-10-10/`.
 - **M4, the played loop.** Done when, from a seed nobody chose and a start
   the player picked, the headed host plays three epochs end to end on
   Isocosm: rounds under directing, a birth keeping the parent by default,
@@ -308,6 +327,10 @@ All three taken on 2026-09-25, the day the plan was drafted.
   0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - 2026-10-10: the switch (681, D5) landed under 732's compile gate.
   - Mesocosm's runtime, views and host run on a native `Session` through
     the interim loop. The runtime translates the contract's envelopes (686),

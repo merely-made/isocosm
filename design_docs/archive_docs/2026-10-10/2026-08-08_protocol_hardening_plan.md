@@ -1,18 +1,26 @@
 # Protocol Hardening Plan (2026-08-08)
 
+**Folded into the VTT overlay plan's V2 on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** H0 and H1 landed 2026-08-08. H2,
+overmap travel as one explicit `Resolved`, its done-condition and the open
+no-`Hello` hole are restated in the [VTT overlay
+plan](../../2026-09-25_vtt_overlay_plan.md)'s §5.1, with this plan's stop rules.
+Its findings stay here as the record of why the envelope has the shape it
+has.
+
 **Status: in progress (2026-08-08).** H0 and H1 landed; H2 open. Founded
 from the 2026-08-08 wing audit's two protocol
 findings, extracting the corrective work from the
-[adjudication plan](archive_docs/2026-08-08/2026-07-14_adjudication_and_representation_plan.md)
+[adjudication plan](../2026-08-08/2026-07-14_adjudication_and_representation_plan.md)
 and the
-[gameplay roadmap](archive_docs/2026-08-08/2026-07-14_gameplay_roadmap_plan.md)
+[gameplay roadmap](../2026-08-08/2026-07-14_gameplay_roadmap_plan.md)
 before their archival. The adjudication plan's law is untouched and
 governs here: **the system rules once; every peer applies, never
 re-derives.**
 
 **W1, 2026-09-18:** keep. Tier: stack, networking and receipts. H2 is the only
 open gate. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 ## 1. The violation
@@ -73,7 +81,7 @@ two-peer receipt exists.
   consequence.
 - Version negotiation refuses; it never degrades silently.
 - Extracted receipts from the archived plans
-  ([ledger](2026-08-08_extracted_receipts.md)) that touch travel land
+  ([ledger](../../2026-08-08_extracted_receipts.md)) that touch travel land
   here, not in a revived roadmap.
 
 ## Findings

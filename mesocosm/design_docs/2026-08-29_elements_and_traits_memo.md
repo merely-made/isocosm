@@ -5,7 +5,7 @@ has reaffirmed the direction that world criteria shape generated biology.
 Section 7 items 1 through 5 are ruled: storage is scheme A, payloads are
 scheme C, fired on provenance, with no fields in PE4's first world and no
 per-organism composition vectors. See the ruling note under §7 and the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) §6 ruling 4 for
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) §6 ruling 4 for
 the full record. Companion to
 [forms of life](2026-08-29_forms_of_life_brief.md) and
 [traits and perception](2026-08-29_traits_and_perception_brief.md); it does not
@@ -22,7 +22,7 @@ and schedules that make biological options useful or impossible; generated
 developmental candidates then draw from that realized vocabulary. Mechanical
 verbs remain authored and bounded, while nouns, parameters, conditions,
 placements, costs, and combinations may be generated. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns persistence,
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns persistence,
 reachability, anti-affix validation, and the first ordinary/impossible-world
 proof. It deliberately does not choose scheme A, B, or C here.
 
@@ -382,7 +382,7 @@ type vocabulary world-derived from the roster rather than an authored
 element table. Payloads are scheme C's and fire on provenance at the three
 transfer sites. Payloads are part of the generative pipeline: by the time a
 world has a roster it has its payloads. No fields in PE4's first world.
-Composition is not per-organism; see the [playable ecology plan](2026-08-31_playable_ecology_plan.md)
+Composition is not per-organism; see the [playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
 §6 ruling 4 for the full ruling, including the two composition layers and
 the disfavoured-element-pair answer. The small typed chunk of matter this
 section calls "element" is under a naming round; do not write "element" as a

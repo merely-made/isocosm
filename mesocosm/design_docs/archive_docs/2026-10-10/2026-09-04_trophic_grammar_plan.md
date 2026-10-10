@@ -1,5 +1,15 @@
 # Trophic Grammar Plan (2026-09-04)
 
+**Superseded 2026-10-10; archived under wing design record rulings 793 and
+802.** TG1's typed intake and TG2's typed matter are native
+(`shared/isocosm/src/mosaic/ports.rs`, `shared/isocosm/src/matter/`; 750,
+766), and TG3a's graft allowance is `shared/isocosm/src/rules/graft.rs`. TG3
+to TG7 are the [sim plan](../../2026-09-22_sim_plan.md)'s S8, restated over native
+Isocosm, TG7's "lexicon" renamed the term table as a working name, since
+native's lexicon is what a line has learned (764). Nothing is left here to
+govern: the 2026-09-04 rulings and stop rules are cited from S8, and this
+text stays as their record.
+
 **Status: accepted by Mark 2026-09-04; TG1 complete 2026-09-05;
 TG2a-TG2e implemented 2026-09-09; TG2f implemented 2026-09-12;
 TG2g implemented and TG2h bounded performance acceptance complete 2026-09-13.
@@ -12,13 +22,13 @@ build: the material scheme ruled 2026-09-02 turned into a trophic grammar. It
 owns typed intake, typed accounts, part composition, defenses, and selective
 edibility. It does not own fields, generated worlds, or the second form of
 life; see the [playable ecology plan](2026-08-31_playable_ecology_plan.md) section 6
-ruling 4 and the [elements and traits memo](2026-08-29_elements_and_traits_memo.md)
+ruling 4 and the [elements and traits memo](../../2026-08-29_elements_and_traits_memo.md)
 sections 1, 2, 4, 5 and 7.
 
 **W1, 2026-09-18:** keep. Tier: sim, §3.3 first shape. Restate the gates;
 the grammar is the best sim work in the repo. Evaluated against the wing
 design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **The words, ruled by Mark 2026-09-04.** **nis**: the provenance-bearing living

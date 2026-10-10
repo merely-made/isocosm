@@ -1,5 +1,9 @@
 # Isocosm's state witness
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** H1 and H2
+landed and pushed by 2026-10-08 (rulings 607 to 610, 641, 642, 647 to 653).
+Nothing was left open.
+
 **Status, 2026-10-08:** H1 and H2 landed on main and pushed. The plan is
 complete.
 
@@ -155,7 +159,7 @@ Two of these are not plain lookups:
   eight workspaces' checks and tests, where the repin's per-workspace
   targets held 126 GB.
 - 2026-10-08, H2: isocosm repinned onto mere `329d60d0` (ruling 650; its
-  own plan, `design_docs/2026-10-08_mere_329d60d0_repin_plan.md`), and
+  own plan, `design_docs/archive_docs/2026-10-10/2026-10-08_mere_329d60d0_repin_plan.md`), and
   `isometer_core::snapshot::hash_bytes` became a re-export of mere's
   `state_witness::hash_bytes` (mere's F119), held to four values computed
   apart from the crate, before and after. `Simulation::witness` gives one

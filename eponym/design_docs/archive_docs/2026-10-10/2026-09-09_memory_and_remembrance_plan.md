@@ -1,5 +1,12 @@
 # Memory, remembrance, and hagiograph
 
+**Folded into the Eponym overlay plan's E3 on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** F3a and F3b5 landed. F3b1 to F3b4 and
+the long-lived save strategy are restated in the [Eponym overlay
+plan](../../2026-09-25_eponym_overlay_plan.md)'s §5.1, the background half being
+the sim's reach field and notes on knowers (771). The save growth baseline
+and the design reasoning stay here.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -8,7 +15,7 @@ ordinary individual memory and the later memorial boundary. It is intentionally
 separate from the world-conditions plan and from the functional-loops plan.
 Those plans own world triggers and larger orchestration. This document owns
 the memory model, its evidence links, bounded recall, and promotion records.
-The adjacent contracts are [world conditions](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md)
+The adjacent contracts are [world conditions](../2026-09-26/2026-09-09_world_conditions_plan.md)
 and [functional loops](2026-09-09_functional_loops_plan.md).
 
 **Rewritten to the record, 2026-09-26 (wing design record ruling 280).**
@@ -24,7 +31,7 @@ split and the checkpoint design survive. The section "Under the wing design
 record" says what each stage becomes; done-conditions are authoritative
 again for the foreground half they describe, and the background half is the
 sim's. The evaluation stays in
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3. Paredros is Eponym since ruling 109; the dated text keeps its words.
 
 ## Scope and design position
@@ -302,7 +309,7 @@ Done-conditions:
 
 ### Save growth baseline, 2026-09-09
 
-The runnable [save-growth probe](../../shared/isocosm/examples/eponym_world_save_growth.rs)
+The runnable [save-growth probe](../../../../shared/isocosm/examples/eponym_world_save_growth.rs)
 uses a generated world, one admitted wetland body and one carried dressing.
 Each pair attaches and detaches that dressing. At every checkpoint, the current
 world, body and items equal their initial values; restoring the complete save
@@ -315,7 +322,7 @@ equals the original `GameState`, including recorded history.
 | 1,000 | 2,004 | 12,284 | 1.048 | 10.345 |
 | 10,000 | 20,004 | 123,905 | 3.454 | 15.731 |
 
-Receipt: [CSV](../testing/save_growth/2026-09-09.csv). Command:
+Receipt: [CSV](../../../testing/save_growth/2026-09-09.csv). Command:
 `cargo run -p eponym-world --example save_growth --locked --offline -j 2
 --target-dir target-contact`, with
 `CARGO_HOME=C:/Users/mark_/Code/cargo-homes/paredros-save-check-20260908`.
@@ -481,7 +488,7 @@ their owner will meet when they next format.
 
 ## Under the wing design record (2026-09-26)
 
-The record and the [sim plan](../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+The record and the [sim plan](../../../../mesocosm/design_docs/2026-09-22_sim_plan.md)
 §4 split what this plan treated as one problem into two regimes, and every
 stage above lands on one side or the other.
 
@@ -518,7 +525,7 @@ legend floor). Retelling re-seeds the field. Manifestation stays a proposal
 consumed by whoever owns world conditions, as F3b4 has it; the hagiograph
 hands memorials to the stack's procedural voxel engine (repo `CLAUDE.md`).
 
-**Where the stages land.** The [Eponym overlay plan](2026-09-25_eponym_overlay_plan.md)
+**Where the stages land.** The [Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md)
 cites this plan for lanes M and H. Its E2 knowledge family absorbs
 `epistemic` (570 lines) as notes on knowers, reports and corrections under
 the sim plan's S3, with the secrets regime; E3 has "a note written is later

@@ -1,5 +1,29 @@
 # Glyph expression plan
 
+**Status, 2026-10-10:** the trait catalogue is folded into §10 (801).
+Glyph/divinity implementation remains parked (279, 673); existing effects
+code moved to native Isocosm without opening that lane.
+
+## Current state, 2026-10-10
+
+The September 15 inventory names deleted `mesocosm-core` code. Native
+tracts and catalogue-bound functions now live in
+`shared/isocosm/src/mosaic/` and `shared/isocosm/src/process/`.
+`Command::Express` admits placement (787); `geometry.rs` and `anatomy.rs`
+in `shared/isocosm/src/` own body geometry and physiology.
+
+The moved effects family is `shared/isocosm/src/effects/`: embodiment,
+pack readings, function membership and journal. Canon and journey remain
+`shared/wing-glyphs`; the function kernel remains `shared/wing-functions`.
+The game halves are `mesocosm/crates/mesocosm-runtime/src/glyphs.rs` and
+`eponym/crates/eponym-play/src/glyphs.rs`.
+
+This realignment does not certify every glyph's trait, grants or ascension.
+Rulings 279 and 673 keep higher rungs parked. §10 holds the catalogue's
+remaining conditions; its archived plan and the deleted bench are history.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Supersedes the acquiring-act axis of the
 [effect pack preset plan](archive_docs/2026-09-18/2026-09-15_effect_pack_preset_plan.md) §3 and its
@@ -1101,10 +1125,68 @@ control that does not exist.
    heir to a line that lived through it. **Deep time belongs to the
    hagiograph**, ruled the history organ and kept in mere's eidetic core, not
    to isoscape. The
-   [isoscape family plan](2026-09-16_isoscape_family_plan.md) carries those
+   [isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) carries those
    rulings and the measurements.
 5. **The bench gains an advance-to-boundary control**, so a scenario reaches
    an epoch boundary in one action instead of waiting on Play.
+
+## 10. The trait catalogue, folded in (2026-10-10, ruling 801)
+
+Ruling 801 folded the trait catalogue plan into this one; it is archived at
+`archive_docs/2026-10-10/` with its sizing, the saturation finding and the
+traits brief's steelmen. It answered this plan's ruling 1 and finding R2:
+the catalogue is the set of definitions a world admits, a trait being an
+expressed site, a function on a part. Both stay parked under 279 with this
+plan, and nothing below is built.
+
+**What changed under it.** Its "five native definitions, four seeded" is
+now the native function catalogue: the registry carries all fifteen
+functions of `rules::default_functions`, five bound to native processes
+(`shared/isocosm/src/process/registry.rs`; 461, 466, 759), and effects key
+on `function:<name>` (773), embodiment reading the functions a living part
+expresses (`shared/isocosm/src/effects/embodiment.rs`). No shape gates a
+function (492), so its 30-rule saturation ceiling, counted over role
+subsets and seedings, has to be re-measured over native definitions before
+its R1 is put again. A lineage acquires through the native revision and the
+boundary's offers (`shared/isocosm/src/lineage/revise.rs`, `review.rs`),
+where its R2 named the legacy board.
+
+**Move order, restated.** (1) An authored tranche of new definitions as a
+pack, all acquired, no native binding; the ruleset digest moves once. (2) A
+catalogue reading: every id resolves, every entry is expressed somewhere,
+the distinct-rule count reported. (3) Composed entries, an entry borne only
+when every required base is expressed on living attached parts. (4) The
+condition door widened so the tranche is reachable at the boundary.
+(5) Generation: a seeded sampler over the declared axes, on its own salted
+stream, on the authoring side of the pack door and never inside the
+offers. (6) Functional promotion, gated on the ruling about abstract
+charge.
+
+**Done-conditions, restated** (draws, with controls):
+
+1. The tranche admits with no duplicate qualified id, and the ruleset digest
+   is stable across admissions in different file order.
+2. Every base of a canon of at least 26 glyphs has at least three
+   expressing trait ids, every trait id expresses at most four bases, and
+   every id resolves in the world's registry, asserted.
+3. The distinct-rule count is asserted against the catalogue's size, so
+   saturation shows in CI.
+4. A composed entry is borne exactly while all its bases are expressed;
+   severing any one removes it; the reading is byte-identical run twice.
+5. A catalogue trait reaches the boundary as an offer with a price, commits
+   through the revision, and a descendant is born expressing it, matter
+   conserved to the milligram.
+6. A revision that adds an expresser is admitted and one that removes a
+   glyph's last expresser is refused; a journey founded under one revision
+   judges completion against it while its body embodies under the next.
+7. Generation over 50 seeds: every accepted candidate serializes without
+   regeneration, rejections are named, one seed reproduces byte for byte.
+
+**Still Mark's,** from its §7: widen the definition or accept that variety
+comes from composition (R1, after the re-measure); rarity tiers or the
+repo's own idiom (R3); the catalogue's count, which follows the canon's
+(R4). Its R5, lineage distance unknown for founders, and R6, a weighted
+generator kept off the proposer, stand as cautions.
 
 ## Findings (2026-09-15)
 
@@ -1122,6 +1204,10 @@ Measured in the tree today; the rest are cited inline above.
   slice's real constraint.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-09-15.** Plan written. No code moved, nothing committed.
 - **2026-09-15, steps 1 to 7 done, committed together once the tree was

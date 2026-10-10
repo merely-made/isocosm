@@ -33,10 +33,10 @@ design record; see
 
 This plan owns Mesocosm's extensible process vocabulary, developmental
 expression boundary, content-pack shape, and Piccolo proof. The
-[phenotype plan](../../2026-07-31_phenotype_plan.md) continues to own body and
+[phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md) continues to own body and
 capability semantics. The
 [dependency ledger](../../archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns scheduling, and the
-[playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns the product
+[playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns the product
 integration proof that consumes PD1b and PD2.
 The [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md)
 owns what can cross into Paredros and Isometry.
@@ -301,7 +301,7 @@ initial hard Carry gate described in this historical implementation note.
 For a valid disfavoured domain pairing, the world's configured cumulative
 allowance and reserve price now determine feasibility before the same
 allocation validator is called. Invalid domains remain refused. Regrow
-retains its separate route. See [TG3a](../../2026-09-04_trophic_grammar_plan.md#tg3-scruple-per-part)
+retains its separate route. See [TG3a](../2026-10-10/2026-09-04_trophic_grammar_plan.md#tg3-scruple-per-part)
 for the approved one-cell allowance, equal-mass reserve cost, condition
 composition and remaining acceptance work.
 
@@ -1191,7 +1191,7 @@ These are intentionally deferred to the gate with evidence:
   default the PD3/PD4 residue named: a pack-declared affinity overrides
   `Founding`; `Founding` is the fallback the world ships with. Recorded at
   both residue notes above; wiring it into `World::found` and `WorldRules` is
-  PE4's, per the [playable ecology plan](../../2026-08-31_playable_ecology_plan.md).
+  PE4's, per the [playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md).
 
 - **2026-09-02, PD5 complete (with P4a): a line commits, and its descendants
   arrive already carrying it.**

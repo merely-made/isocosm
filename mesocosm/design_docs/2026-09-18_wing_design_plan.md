@@ -4,6 +4,32 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
 
+**Status, 2026-10-10:** living design record; the plan review
+rulings 793 to 804 are applied. The native migration push is integrated
+under 732's compile gate. Certification is the after-pass's, not completion
+of W2 to W5.
+
+## Current state, 2026-10-10
+
+Isocosm is the single sim in `shared/isocosm`. Legacy Mesocosm and Eponym
+are deleted; `shared/isocosm/src/legacy.rs` exports only `campaign`,
+held by the VTT until V2. Isometer owns in-site shape, edits and queries in
+`shared/isometer/crates/isometer-space/src/`. Eponym's game-side motion,
+combat, admitted anatomy and control live in `eponym/crates/eponym-play`;
+Mesocosm's runtime reads a native session.
+
+Rulings 793 to 802 supersede the earlier plan inventory and ordering:
+archived owners are indexed as history; directing owns M3 and the interim
+M4; the overlays own full M4, V2 and E3. V2 and E3 are open now (798),
+through their contracts (794, 795), without waiting for M3 certification.
+The sim plan owns the folded ecology phases S8 to S10 (802).
+Isomere's combined mode host remains unbuilt; a native Mesocosm mode is
+available. Eponym draws bodies through Mere's tenant; Mesocosm's adoption
+and LiveBody retirement remain 796's work. These are implementation facts
+and authorized targets, not new test or headed receipts.
+
+*The dated record and receipts below remain as written (793).*
+
 **Status, 2026-09-18:** design record, ruled through W1. W0 is ruled (rulings
 1 to 34, with the founding record and the three product descriptions amended
 to it); W1 is evaluated, ruled and applied for all three products. W2, the
@@ -70,7 +96,7 @@ whose laws and nouns this record sits under; the
 [place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §0 rulings;
 the [resident views composition plan](2026-08-14_resident_views_composition_plan.md)
 for "Burn proposes, the record disposes"; the
-[isoscape family plan](2026-09-16_isoscape_family_plan.md) for the
+[isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) for the
 generation bucket; the
 [board-on-isometer plan](../../design_docs/2026-09-15_board_on_isometer_plan.md)
 at the repository root as the worked example of a plan designed to the wrong
@@ -1048,7 +1074,7 @@ what later sections derive from.
      isocosm-vtt, etc. Let's plan the rename too". The reservations
      `eponym`, `isocosm` and `isocosm-vtt` were published to crates.io at
      0.0.1 the same day, and the rename is the [family rename
-     plan](2026-09-22_family_rename_plan.md). Where this record says
+     plan](archive_docs/2026-10-10/2026-09-22_family_rename_plan.md). Where this record says
      "isotropy" it means the sim, now Isocosm; where it says "Paredros" it
      means Eponym. (The clause first written here, "the tabletop keeps
      Isometry as its subtitle", was this record's inference and not Mark's
@@ -13892,6 +13918,27 @@ carries the rulings as they are made.
   bench is the first lane to lift: today it is a lane of Mesocosm's product
   host (`mesocosm-genet/src/app/bench/`), not headless and not game-free,
   so it does not yet satisfy this condition (corrected 2026-09-18 by W1).
+  *Annotation, 2026-10-10 (ruling 801): the dev tools plan folds in here,*
+  archived at `archive_docs/2026-10-10/`. The bench has a headless start:
+  `shared/isocosm/src/bin/isocosm-bench.rs` runs a founding under a seed,
+  with draws, map and lift draws, traces and saved worlds, game-free; the
+  dev source, forced births and kills are native
+  (`shared/isocosm/src/dev.rs`; 271, 782). The rest of the dev tools' twelve
+  verbs live in Mesocosm's host (`mesocosm-genet/src/app/devtime.rs`,
+  `follow.rs`, `drive.rs`) and lift to the bench as W4's lane. What carries
+  as the bench's rules: dev tools are ordinary chrome in the cambium lane;
+  two kinds of dev action and no third, host-only pacing that never reaches
+  the log, and world-changing commands that always do and label the run
+  assisted; no reading the lane invents, a missing fact filled in core with
+  a test; no second harness where the scenario driver has the verb; a step
+  is an advance bounded by work (284 to 286), shown in the world's unit of
+  time (257); the bench follows any entity at any rung, examining being an
+  intent in the log (212). W4 is done for the dev tools when the bench
+  holds every verb they named, headless and game-free: a paused run
+  advancing exactly the steps asked and hashing as one played straight; a
+  followed entity read entirely from core queries, its death reported; each
+  forced act a logged command that replays, conserves matter through the
+  dev source and is counted in the receipt.
 - **W5, the first game overlay.** Done when a game has a profile designed
   to §5 as a core implementing the overlay contract, and a played loop with
   receipts drawn from the generator. **Ruled 2026-09-24 (ruling 174):
@@ -13935,6 +13982,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   on was a crate constant.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 
 Landings a plan owns are logged in that plan: the sim plan (checkpoints, the
 scheduler), the board plan (paging, the repins), the side-panel plan, the

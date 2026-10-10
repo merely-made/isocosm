@@ -1,5 +1,9 @@
 # The epoch boundary: significance, speciation, and what youth costs
 
+**Status, 2026-10-10:** native boundary, review, revision and speciation
+are implemented. Certification is the after-pass's; 797's descending
+metabolic-complexity order is still a compliance gate in this lane snapshot.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); partially built. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -30,7 +34,7 @@ overlay plan now owns it (§11, §12), and supersedes the word `borg` (ruling
 
 This owns what happens *between* epochs: how a run is judged, how a lineage
 splits, what a player may aim at, and why a young critter is different from an
-old one. The [phenotype plan](2026-07-31_phenotype_plan.md) owns bodies and
+old one. The [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md) owns bodies and
 capability. The process vocabulary is the sim's process definition
 ([sim plan](2026-09-22_sim_plan.md) §3.1; the ProcessDef plan is archived at
 [archive_docs/2026-09-26/](archive_docs/2026-09-26/2026-08-01_processdef_plan.md),
@@ -54,7 +58,7 @@ weighs evidence and world readings, and commits a program revision that future
 descendants may realize. It is not silently triggered by every birth.
 
 The exact reproduction choice and epoch-ending rule remain open. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns their
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns their
 integration order and full proof; this plan continues to own what the lineage
 boundary means once opened.
 
@@ -686,6 +690,36 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
 
 ---
 
+## Current state, 2026-10-10
+
+Added under ruling 793; the dated sections above keep their words.
+
+The native owners are `shared/isocosm/src/lineage/boundary.rs`, `review.rs`,
+`revise.rs`, `speciate.rs` and `chronicle.rs`, all in that lineage source
+directory. `shared/isocosm/src/directing/interim/` holds at the boundary;
+`mesocosm/crates/mesocosm-runtime/src/review.rs` and the views present the
+played line's offers. The older `mesocosm-core::species`, `score`,
+`record`, `history` and `places` owners below are deleted.
+
+At the source snapshot checked for Q1 (`3523420b`), `boundary::adapt`
+sorts by living-member count. Ruling 797 requires descending metabolic
+complexity defined from catalogue functions expressed plus systems
+realized. The reproduction/turn-order lane owns that correction; this doc
+pass does not certify its behavior. Significance remains the hagiograph's,
+the native session owns history/replay, and the sim's lineage model owns
+speciation. The directing plan owns M3 and the interim M4 (800); the full
+M4 and contested spatial/resource conditions remain the overlay's gates.
+
+**Carried from the phenotype plan (archived 2026-10-10).** Its P5,
+contested flow, is this plan's subject at the lineage scale: lift finite
+local resource results into the boundary's evidence. Done when niche
+overlap can cause a lineage to fail, distinct resource paths can coexist,
+and changing spatial access changes what a line's boundary weighs, without
+a global fitness-share rule; crossing the local resolution boundary
+conserves biomass and lineage state rather than rerolling the ecology. It
+lands with the full M4's boundaries, where every lineage adapts against the
+web (182).
+
 ## Findings
 
 - **2026-08-02:** nothing in the shipped app drained the world's event buffer,
@@ -753,6 +787,9 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   and carried systems realized across the lineage's living members, each
   name counted once. The native Q3 implementation is being verified; the
   earlier dated legacy readings below remain historical.
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 - **2026-09-26: rewritten to the wing design record** under ruling 280's doc
   lane. §3 gains the record's three gates and names the hagiograph as the
   organ that judges; §11 and §12 mark what has moved to the sim and the
@@ -779,7 +816,7 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   `CLAUDE.md`. No code changed.
 
 - **2026-09-02:** the trait array's deletion ruled; the ruling lives in the
-  [phenotype plan](2026-07-31_phenotype_plan.md)'s progress, and this is the
+  [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md)'s progress, and this is the
   module the entry below already found had no consumer left in `World`.
 - **2026-09-02 (PE3a):** the boundary finally happens on its own. `EpochRule`
   is a versioned world rule beside the ruleset — `Timed { ticks }` built,

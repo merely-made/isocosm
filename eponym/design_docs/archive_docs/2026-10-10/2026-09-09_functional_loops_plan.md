@@ -1,5 +1,13 @@
 # Paredros functional loops and wiring plan
 
+**Folded into the Eponym overlay plan's E3 on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** J0, J1a to J1c and B1 to B4 landed on
+the legacy world, since moved onto native Isocosm and `eponym-play`. The
+open lanes, session and contact, death and continuation, strike quality and
+material work, are restated over native in the [Eponym overlay
+plan](../../2026-09-25_eponym_overlay_plan.md)'s §5.1; the W lane stays parked
+with magic (279).
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (rulings 280, 314). *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -21,11 +29,11 @@ builds T2 now was put separately: "Assess first" (ruling 326), a lane mapping
 what mere's conatus and nisus already do against what T2 needs, returning
 with forks before any edit to mere. The done-conditions are authoritative
 again. The evaluation stays in
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3. The world conditions plan and the execution plan this plan cites were
 archived the same day (rulings 315 and 313); the links point at the archived
 copies, and the
-[Eponym overlay plan](2026-09-25_eponym_overlay_plan.md) is Eponym's
+[Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md) is Eponym's
 executable plan.
 
 ## Direction
@@ -33,7 +41,7 @@ executable plan.
 Build systems that produce situations. A curated encounter is optional content,
 not the prerequisite for developing material life, bodies, memory, or world
 conditions. Existing F0-F8 milestones in the
-[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md) retain their semantic
+[execution plan](../2026-09-26/2026-08-07_paredros_execution_plan.md) retain their semantic
 done-conditions. This plan owns the next implementation dependencies across
 them; the damaged crossing remains a reusable contact fixture.
 
@@ -76,7 +84,7 @@ is not proof that Paredros's pinned dependency supplies it.
 | H: Hagiograph | Retelling, remembrance, significance and manifestation proposals | Remembered history changes a later interaction or admitted world proposal | M plus W for material manifestations |
 | S: save and continuation | Coherent snapshots, resume, death and succession | Save/reload continues the same consequences through another life | Incremental requirement on every lane, not a last phase |
 
-Detailed law design lives in [world conditions](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md).
+Detailed law design lives in [world conditions](../2026-09-26/2026-09-09_world_conditions_plan.md).
 Individual memory and Hagiograph live in
 [memory and remembrance](2026-09-09_memory_and_remembrance_plan.md). These are
 Paredros consumer plans; any promoted shared contract needs its own owning-repo

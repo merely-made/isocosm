@@ -1,5 +1,35 @@
 # Wing construction, embodiment and continuity
 
+**Status, 2026-10-10:** the 2026-09-28 construction refinement remains
+partly designed. Native development and the sim-to-scene connection now
+exist; continuing-subject/incarnation mapping and configured condition
+carryover remain open. Earlier receipts keep their original scope.
+
+## Current state, 2026-10-10
+
+Ruling 793 requires the native ownership below to supersede older inventory
+and adapter-absence claims, including the 2026-09-28 preparation section.
+`mesocosm-core` and the legacy Eponym world are deleted.
+
+- Isocosm owns recipes and development (`shared/isocosm/src/development.rs`),
+  body geometry (`shared/isocosm/src/geometry.rs`), physiology and tracts
+  (`shared/isocosm/src/anatomy.rs`, `shared/isocosm/src/mosaic/`). Geometry
+  uses isometer's `BodyDocument` and `PartId`; the older symbolic-u64 to
+  document-u32 proposal is not the implemented address scheme.
+- Mesocosm's scene now reads native bodies through
+  `mesocosm/crates/mesocosm-genet/src/played.rs` and
+  `mesocosm/crates/mesocosm-genet/src/section/bodies.rs`. Its section's
+  placement and scale are presentation readings, not a completed physical
+  pose or the full M4's contact loop. The deleted specimen bench is not a
+  current consumer.
+- Eponym's admitted anatomy and control remain game-side in
+  `eponym/crates/eponym-play/src/anatomy.rs` and `identity.rs`. Existing
+  native geometry and part identities do not certify incarnation continuity,
+  cross-ruleset adaptation, or selectable carryover under rulings 405 to 407.
+  Those design gates remain this contract's, with the wing organs plan.
+
+*The dated design and receipts below remain as written.*
+
 **Status, 2026-09-28:** current contract refinement documented under wing
 design record rulings 405 to 407. This is a partial design rewrite, not a
 new wire schema or completed creator. The section below supersedes earlier
@@ -24,7 +54,7 @@ authoritative. Evaluated against the wing design record; see
 
 The [games wing founding record](2026-07-30_games_wing_founding.md) remains
 authority for settled laws. Mesocosm's local body rules live in the
-[phenotype plan](2026-07-31_phenotype_plan.md). The
+[phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md). The
 [dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns current ordering;
 the execution waves plan is historical.
 
@@ -605,6 +635,10 @@ ancestry; neither operation is implemented as a flat star rebuild.
 
 ## Progress
 
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
+
 - **2026-07-31:** founding contract written; no schema or code change made.
 - **2026-08-01:** carry-this-body and regrow-here routes added after the first
   ProcessDef allocation design questions. No schema or code change made.
@@ -1077,7 +1111,7 @@ states. Broader body-plan generation remains the next substantive C0 question.
 generator request to version 4 and refuses older explicit versions. Generated
 founders now receive declared lineage tissue; the earlier version-1/2 replay
 receipts below are historical. See the
-[trophic grammar plan](2026-09-04_trophic_grammar_plan.md) for the material
+[trophic grammar plan](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md) for the material
 contract and current validation. Requests that omit a version use the current
 default. This update does not supply a new headed creator receipt.
 
@@ -1330,7 +1364,7 @@ work. Preserve existing license notices and concurrent product changes.
 ### Dependency review
 
 The following is the format-extraction baseline. The subsequent renderer and
-source migration is recorded in the [wing consolidation plan](../../design_docs/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
+source migration is recorded in the [wing consolidation plan](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
 
 The format library requires only Serde and Postcard; this slice leaves platform
 pins unchanged. Mesocosm retains primary Netrender `6f1a4fe7` and the RG3

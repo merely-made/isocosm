@@ -1,5 +1,10 @@
 # Docs dedup plan
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** D0 to D5
+landed 2026-10-06 and the residue was ruled (616 to 619) and carried out.
+Mere's one-line `DOC_POLICY.md` difference is mere's own. Nothing was left
+open.
+
 **Status, 2026-10-06:** done; D0 to D5 landed, the residue ruled (616 to 619).
 
 Carries out the wing design record's ruling 593 ("each result one home, other

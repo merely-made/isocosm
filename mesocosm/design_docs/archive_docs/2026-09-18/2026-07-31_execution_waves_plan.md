@@ -27,7 +27,7 @@ Governing plans, which own the *what*:
 - [body pipeline and host probe](../2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) — the shared organ, the body document, R-phases
 - [Mesocosm founding plan](../2026-09-26/2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
 - [games wing founding record](../../2026-07-30_games_wing_founding.md) — the laws, and the proof pair as the next architectural threshold
-- [phenotype plan](../../2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
+- [phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
 - [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
 
 ---
@@ -345,7 +345,7 @@ incorporation, and a metabolic budget.
 
 #### Phenotype gate inside 2.1, **ACTIVE 2026-07-31**
 
-The [phenotype plan](../../2026-07-31_phenotype_plan.md) supplies the dependency
+The [phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md) supplies the dependency
 order. P0 through P2 have now removed the special played-body model and proven
 one embodied consequence. P2's deferred biomass and upkeep account landed in
 `d9af641`; body v1 still waits on the later local proofs.

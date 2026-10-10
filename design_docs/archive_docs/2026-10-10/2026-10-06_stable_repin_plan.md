@@ -1,5 +1,11 @@
 # The repin onto stable Burn
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Landed
+2026-10-07 at `0de3a393`. The two Sortie failures it carried as pre-existing
+are in Eponym's index and the [after-pass
+plan](../../../mesocosm/design_docs/2026-10-10_after_pass_plan.md)'s A2. Nothing
+else was left open.
+
 **Status, 2026-10-07:** landed on main (`0de3a393`) and pushed.
 
 Carries out the wing design record's ruling 621 (amending 572): the mere pins

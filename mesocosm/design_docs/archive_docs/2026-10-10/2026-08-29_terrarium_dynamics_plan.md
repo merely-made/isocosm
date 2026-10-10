@@ -1,5 +1,11 @@
 # Terrarium Dynamics Plan (2026-08-29)
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** TD1 to TD11
+landed and the series closed 2026-08-30. The integration it exposed went to
+the playable ecology plan, archived the same day as superseded, whose open
+phases are now the [sim plan](../../2026-09-22_sim_plan.md)'s. The legacy code it
+cites is deleted; its findings stand as history.
+
 **Status: landed and closed 2026-08-30; refreshed 2026-08-31.** TD1 through
 TD11 are implemented and receipted. The instrument remains a diagnostic, but
 `breathes` no longer spawns tuning rounds for systems the game has not built.
@@ -14,7 +20,7 @@ then let the player considerations step into that."
 **W1, 2026-09-18:** keep. Tier: Mesocosm overlay, timescale. Its
 milligram-conserved soil, body and carrion cycle is sim (§3.3 second shape)
 and should be cited there. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 The diagnosis this plan answers (played slice plan, 2026-08-29 findings):
@@ -548,7 +554,7 @@ Two directions ruled with the correction, in Mark's words:
   two sides of the traits brief's Q1, which is why answering it for predation
   does not answer it at all.** The brief asks what an undefined distance costs
   and offers "max cost? outright refusal? a separate unrelated tier?"
-  ([traits and perception brief](2026-08-29_traits_and_perception_brief.md) §8
+  ([traits and perception brief](../../2026-08-29_traits_and_perception_brief.md) §8
   Q1) — every option phrased as a *penalty*, because the brief was written
   around **incorporation**, where a graft from an unrelated line is the
   expensive one. Predation reads the same `None` the other way round: an

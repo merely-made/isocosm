@@ -25,7 +25,7 @@ achievement, a particular donor part or process, or a combination under one
 body and world. The existing `learn_from` path is therefore a migration input,
 not the target model. Whether NPC lineages acquire through the same evidence
 rules remains an open question. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns the first
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns the first
 condition-to-descendant proof; this brief retains the unresolved pricing and
 perception choices.
 

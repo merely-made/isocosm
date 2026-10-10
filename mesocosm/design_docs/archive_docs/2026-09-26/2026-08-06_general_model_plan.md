@@ -76,7 +76,7 @@ ecologies, and fantastical systems can all speak it.
 **Corrected 2026-08-07 (review).** The first draft concluded "one model
 with settings, and the ecology is its first configuration." That
 generalized past the wing's own authority rules: the
-[phenotype plan](../../2026-07-31_phenotype_plan.md) forbids sharing an
+[phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md) forbids sharing an
 evaluator before two sovereign rule systems have independently proven the
 same mechanism, and the founding record rules that what vessels share is
 world identity and compatible facts, never one live world model. The

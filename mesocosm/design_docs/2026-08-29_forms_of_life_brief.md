@@ -19,12 +19,12 @@ energy, space, body, relationship, and history authority. Before a true
 mycelium, clonal stand, or biofilm is built, the game must rule whether the
 played subject owns one connected body, several spatial bodies, or a colony
 projection. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns that
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns that
 architecture decision and the first second-form proof; this brief keeps the
 biological axes and costs.
 Written to be reacted to. Opened by Mark alongside TD7 and deliberately kept
 out of that round (see
-[terrarium dynamics plan](2026-08-29_terrarium_dynamics_plan.md) TD7's closing
+[terrarium dynamics plan](archive_docs/2026-10-10/2026-08-29_terrarium_dynamics_plan.md) TD7's closing
 paragraph). Nothing here is ruled; the last section is the list of things only
 Mark can settle.
 
@@ -916,7 +916,7 @@ skipped.**
   named consumer — Stage 4 — is "deliberately last". That is the inversion the
   repo corrected elsewhere this week: route B sat deferred on a consumer pull
   nobody ever scheduled and "operated in practice as a text ban" ([views
-  founding plan](2026-08-02_views_founding_plan.md) §6, amended 2026-08-29).
+  founding plan](archive_docs/2026-10-10/2026-08-02_views_founding_plan.md) §6, amended 2026-08-29).
   Consumer pull as ruled is about dependency and lane adoption, not about
   ordering mechanics inside one crate, so the counter-argument is available and
   Mark may take it. It should be *made*, not assumed.
