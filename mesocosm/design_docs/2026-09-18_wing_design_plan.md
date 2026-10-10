@@ -9703,6 +9703,17 @@ what later sections derive from.
      (Recommended)". So the lift's bytes change on drawn worlds, which 732
      lets land without re-certifying the lift's receipts until after the
      push.
+745. **The tenant lands on mere's main.** 2026-10-09. Question: may the
+     Isocosm lane fast-forward mere's main to `isocosm/kiss3d-tenant` (a
+     new `crates/conatus/tenant`, 1,275 lines, additive, kiss3d's 34
+     packages new to the lock)? Options: yes (recommended); not yet. Mark
+     chose "Yes, push to main (Recommended)": mere `e1bf0601`.
+746 to 748. **The tenant's context slot, report and water field.**
+     2026-10-09. Mark chose "Keep the scoped slot (Recommended)" for 471's
+     handle, "Submissions only (Recommended)" for the frame report, and
+     "Define it with its reader (Recommended)" for 472's water field.
+     Recorded in full in mere's conatus engine plan (`4d8bd703`), where the
+     tenant's rulings live.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
