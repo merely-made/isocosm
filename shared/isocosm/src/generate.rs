@@ -33,6 +33,10 @@ pub struct Founding {
     /// as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bodies: Option<crate::bodied::Bodies>,
+    /// The lineage a player plays (rulings 682 and 683), which deliberates.
+    /// Absent in foundings without one, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub played: Option<crate::directing::Played>,
 }
 
 impl Default for Founding {
@@ -51,6 +55,7 @@ impl Default for Founding {
             map: None,
             preset: None,
             bodies: None,
+            played: None,
         }
     }
 }
@@ -263,6 +268,7 @@ impl Founding {
             affinity: None,
             systems: Default::default(),
             carriage: None,
+            directing: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
@@ -460,6 +466,9 @@ impl Founding {
         }
         if let Some(bodies) = &self.bodies {
             crate::bodied::embody(&mut genesis, bodies)?;
+        }
+        if let Some(played) = self.played {
+            crate::directing::found::found(self, &mut genesis, played)?;
         }
         genesis.validate()?;
         Ok(genesis)

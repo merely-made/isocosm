@@ -24,6 +24,7 @@ pub(crate) use pass::Pass;
 
 use crate::{
     Result,
+    directing::Deliberated,
     rules::*,
     schema::*,
     simulation::{Execution, Simulation, Work},
@@ -114,10 +115,12 @@ impl Simulation {
             self.filed = Some(Filed::new(population, gated, self.state.tick));
         }
         let mut work = Work::default();
+        self.chosen = Default::default();
         let done = self.scheduled(queue, end, &mut work);
         self.targets = None;
         self.filed = None;
         self.pass = None;
+        self.chosen = Default::default();
         done?;
         self.state.tick = end;
         if self.mode == Execution::Grouped {
@@ -200,7 +203,12 @@ impl Simulation {
                 if entity.is_none_or(|e| gates.is_some_and(|g| !g.open(e, self.state.tick))) {
                     continue;
                 }
-                let target = self.choose_target(actor, process);
+                let deliberated = self.deliberate(actor, process);
+                if matches!(deliberated, Deliberated::Foregone) {
+                    continue;
+                }
+                let chosen = deliberated.target();
+                let target = chosen.or_else(|| self.choose_target(actor, process));
                 if let Some(demands) = self.demands(actor, target, id, multiplicity, act) {
                     plans.push(frame::Plan {
                         actor,
@@ -299,6 +307,11 @@ impl Simulation {
             if gates.is_some_and(|g| !g.open(entity, self.state.tick)) {
                 continue;
             }
+            // A deliberative critter takes only the act it chose (683).
+            let deliberated = self.deliberate(actor, process);
+            if matches!(deliberated, Deliberated::Foregone) {
+                continue;
+            }
             // The budget counts the members an evaluation stands for (ruling
             // 285), so a budget means the same grouped and individually.
             let limit = self.genesis.rules.limits.events_per_advance as u64;
@@ -309,10 +322,16 @@ impl Simulation {
             }
             // A planned pass acts as it planned; an act it found blocked
             // stays blocked, the world it reads being the same.
+            let answering = match &deliberated {
+                Deliberated::Chosen { answers, .. } if !answers.is_empty() => Some(answers),
+                _ => None,
+            };
+            let before = answering.map(|_| self.wellbeing(actor));
             let planned = self.frame.as_ref().and_then(|f| f.planned.as_ref());
             let (target, accepted) = match planned.map(|p| p.get(&actor).cloned()) {
                 None => {
-                    let target = self.choose_target(actor, process);
+                    let chosen = deliberated.target();
+                    let target = chosen.or_else(|| self.choose_target(actor, process));
                     (
                         target,
                         self.apply(actor, target, id, None, multiplicity).accepted(),
@@ -324,6 +343,9 @@ impl Simulation {
                     self.act(actor, id, multiplicity, plan).accepted(),
                 ),
             };
+            if let (Some(answers), Some(before)) = (answering, before) {
+                self.answered(actor, id, answers, before, accepted);
+            }
             work.evaluations += 1;
             work.represented += multiplicity;
             if accepted {

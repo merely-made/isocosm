@@ -203,6 +203,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         return Err("the clock's unit must be some time".into());
     }
     rules.deep_time_ceiling()?;
+    if let Some(directing) = &rules.directing {
+        directing.validate()?;
+    }
     if rules.field.strength > 1_000_000
         || rules.field.legend_floor > 1_000_000
         || rules.field.decay_per_tick == 0

@@ -177,7 +177,8 @@ fn offspring_have_paid_matter_and_pointable_parentage() {
     assert!(sim.state().relations.contains(&Relation {
         subject: next,
         kind: "sim:parent".into(),
-        object: 3
+        object: 3,
+        value: 0,
     }));
     assert_eq!(sim.matter(), mass);
 }
