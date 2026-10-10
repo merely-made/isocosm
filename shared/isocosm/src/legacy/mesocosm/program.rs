@@ -6,6 +6,9 @@
 
 //! What a lineage commits, and what a descendant is born expressing. (P4, PD5)
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (`program`).
+//!
 //! # A program, not a body
 //!
 //! **Ruled by Mark, 2026-08-03** (phenotype plan §3): the adaptation editor may

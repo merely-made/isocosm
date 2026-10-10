@@ -6,6 +6,9 @@
 
 //! Which lineages exist, what they are called, and what they came from.
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (`tree` and `speciate`).
+//!
 //! Until now reproduction copied a parent's `SpeciesId` verbatim and nothing
 //! else ever assigned one, so **lineages could never split and no new species
 //! was ever born.** Three things quietly assumed otherwise: the complexity

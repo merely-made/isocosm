@@ -7,6 +7,9 @@
 //! The played line's own turn: what it could commit, what each would cost, and
 //! what a founder under it would look like. (PE3b)
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (`review`).
+//!
 //! [`World::adapt_round`](crate::legacy::mesocosm::World) skips the played line because its turn
 //! is the review. This is the reading that turn is made of — the same
 //! candidates, scored by the same function, priced by the same expression a

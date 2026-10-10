@@ -64,6 +64,11 @@ pub enum Command {
         lineage: Key,
         development: crate::rules::Development,
     },
+    /// A founder leaves its line for a new one, named (legacy speciation).
+    Speciate {
+        founder: Id,
+        name: Key,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -233,7 +238,10 @@ impl Session {
     /// (ruling 271), read from the history, which is the record (ruling 344).
     pub fn assisted(&self) -> bool {
         let placed = |e: &Entry| {
-            matches!(e.command, Command::PlaceMatter { .. } | Command::Edit { by: None, .. })
+            matches!(
+                e.command,
+                Command::PlaceMatter { .. } | Command::Edit { by: None, .. }
+            )
         };
         self.entries.iter().any(placed)
     }
@@ -469,5 +477,6 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.revise(lineage, development)?;
             Ok("revised".into())
         },
+        Command::Speciate { founder, name } => sim.speciate(*founder, name),
     }
 }

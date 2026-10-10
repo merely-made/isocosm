@@ -7,6 +7,9 @@
 //! The lineage turn: what a line could commit, what growing it would be worth,
 //! and what it decides. (P4b, PE3a)
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (with `directing::interim::boundary`).
+//!
 //! # A candidate is scored by growing it, never by a formula
 //!
 //! **Ruled by Mark, 2026-09-01.** A candidate is worth what it earns: the world

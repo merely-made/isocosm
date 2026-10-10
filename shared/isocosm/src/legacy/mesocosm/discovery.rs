@@ -6,6 +6,9 @@
 
 //! How a line comes to a new developmental option. (PE2)
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (native learning is the stage's lesson, 468).
+//!
 //! # Unlocks are evidence, not a diet tree
 //!
 //! Eating may supply material, a donor, and an observation. It does **not** map
