@@ -1,7 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The execution table for a default effect pack, beside `effect_experiment`.
+//! The execution table for a default effect pack (moved from legacy
+//! `effect_pack`, behaviour unchanged).
 //!
 //! One authored rule per `(effect, bearer)` pair says how an owned effect
 //! returns. **The axis is what bears the glyph, not which act earned it**
@@ -13,8 +14,8 @@
 //! cannot reach a `Journey`. Ownership is the caller's answer, passed in by
 //! value, so nothing here can grant a glyph or change one saved byte.
 
-use crate::legacy::mesocosm::body::PartId;
-use crate::legacy::mesocosm::effect_experiment::Glyph;
+use super::Glyph;
+use crate::schema::PartId;
 use serde::{Deserialize, Serialize};
 use wing_glyphs::{
     BehaviourKind, Canon, CostShape, CostUnit, EffectDeclaration, EffectPackSpec, ReceiverClass,

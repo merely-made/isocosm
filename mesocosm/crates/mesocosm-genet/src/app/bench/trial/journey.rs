@@ -10,13 +10,10 @@
 //! cannot create a grant.
 
 use crate::section::{GlyphOrientation, SpatialGlyph, stroke};
-use isocosm::legacy::mesocosm::{
-    PartId, World,
-    effect_pack::{
-        Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, MarkForm, MarkRequest, Refusal,
-    },
-    embodiment::bearing_parts,
+use isocosm::effects::pack::{
+    Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, MarkForm, MarkRequest, Refusal,
 };
+use isocosm::legacy::mesocosm::{PartId, World, embodiment::bearing_parts};
 use mesocosm_runtime::{
     Trial,
     glyphs::{AcceptedKind, EventGrant, GlyphRules},

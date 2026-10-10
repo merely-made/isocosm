@@ -9,7 +9,8 @@
 //! the run and re-anchors it. Retained flow facts are untouched by this.
 use super::journey;
 use crate::section::SpatialGlyph;
-use isocosm::legacy::mesocosm::{OrganismId, effect_pack::MarkRequest};
+use isocosm::effects::pack::MarkRequest;
+use isocosm::legacy::mesocosm::OrganismId;
 use std::collections::{BTreeMap, btree_map::Entry};
 
 /// Ticks a pulse lives, matching the retention of every other trial mark.
@@ -91,7 +92,7 @@ pub(super) fn pulse(request: &MarkRequest, ticks: u64, height: f32, size: f32) -
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::mesocosm::effect_pack::{Amount, Bearer, DEFAULT_EFFECT, EffectPackTable};
+    use isocosm::effects::pack::{Amount, Bearer, DEFAULT_EFFECT, EffectPackTable};
 
     const WHO: OrganismId = OrganismId(1);
     const AT: [i32; 3] = [2, 3, 4];

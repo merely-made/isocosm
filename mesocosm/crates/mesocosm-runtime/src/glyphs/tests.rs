@@ -330,7 +330,7 @@ fn owns_effect_joins_the_journey_to_the_current_canon_effect_through_base_and_va
 
 #[test]
 fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
-    use isocosm::legacy::mesocosm::effect_pack::{Bearer, EffectPackTable, MarkForm, Refusal};
+    use isocosm::effects::pack::{Bearer, EffectPackTable, MarkForm, Refusal};
     let (world, at) = carve_fixture();
     let mut trial = Trial::new(&world).unwrap();
     trial
@@ -353,26 +353,26 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
     );
     let first = table
         .resolve(
-            isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
+            isocosm::effects::pack::DEFAULT_EFFECT,
             owned,
             Bearer::Embodied,
             at,
             None,
             None,
-            isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
+            isocosm::effects::pack::Amount::Voxels(1),
         )
         .unwrap();
     for _ in 0..32 {
         let reading = trial.glyphs().unwrap();
         let again = table
             .resolve(
-                isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
+                isocosm::effects::pack::DEFAULT_EFFECT,
                 reading.owns_effect("test:reshape"),
                 Bearer::Embodied,
                 at,
                 None,
                 None,
-                isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
+                isocosm::effects::pack::Amount::Voxels(1),
             )
             .unwrap();
         assert_eq!(again, first);
@@ -388,23 +388,23 @@ fn repeated_resolution_over_one_reading_leaves_the_journey_byte_identical() {
     // An unowned effect paints nothing, however many times it is asked.
     assert_eq!(
         table.resolve(
-            isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT,
+            isocosm::effects::pack::DEFAULT_EFFECT,
             false,
             Bearer::Embodied,
             at,
             None,
             None,
-            isocosm::legacy::mesocosm::effect_pack::Amount::Voxels(1),
+            isocosm::effects::pack::Amount::Voxels(1),
         ),
         Err(Refusal::NotAcquired {
-            effect: isocosm::legacy::mesocosm::effect_pack::DEFAULT_EFFECT.into()
+            effect: isocosm::effects::pack::DEFAULT_EFFECT.into()
         })
     );
 }
 
 #[test]
 fn a_core_rejected_carve_yields_no_grant_and_no_mark() {
-    use isocosm::legacy::mesocosm::effect_pack::{
+    use isocosm::effects::pack::{
         Amount, Bearer, DEFAULT_EFFECT, EffectPackTable, Refusal,
     };
     let (world, at) = carve_fixture();

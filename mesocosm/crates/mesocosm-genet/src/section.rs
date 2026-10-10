@@ -46,8 +46,8 @@ pub use isometer::{
 /// The experiment's glyph choice as the renderer's stroke shape. `isometer`
 /// draws shapes; the effect-experiment vocabulary is Mesocosm's, and this is
 /// the one place the two meet.
-pub fn stroke(glyph: isocosm::legacy::mesocosm::effect_experiment::Glyph) -> Stroke {
-    use isocosm::legacy::mesocosm::effect_experiment::Glyph;
+pub fn stroke(glyph: isocosm::effects::Glyph) -> Stroke {
+    use isocosm::effects::Glyph;
     match glyph {
         Glyph::Quotes => Stroke::Quotes,
         Glyph::Slashes => Stroke::Slashes,

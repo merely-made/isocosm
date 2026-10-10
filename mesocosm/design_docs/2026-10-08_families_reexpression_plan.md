@@ -320,3 +320,36 @@ the bodies family.
   `rules::Compatibility` graft allowance. Put back as forks: mosaics (cell
   identity and intake ports against native counts) and Eponym's needs and
   wounds (counters against native accounts and checkpoint 10's wounds).
+- **2026-10-10, family 6, effects (lane `lane-effects`, under 732's compile
+  gate; no test sweeps, draws or certification run beyond the lane's three
+  unit tests).** Native `isocosm::effects` holds the family; glyphs' rungs
+  stay parked (279, 673), the code moving unchanged in behaviour.
+  - `pack` is legacy `effect_pack` moved whole with its tests (the bearer
+    table, `MarkRequest`, `Amount`'s curve), and the stroke `Glyph` moved
+    out of `effect_experiment` into `effects`.
+  - `embodiment` reads a native body: a trait is a function a living part
+    expresses, keyed `function:<name>`, the function a legacy tract's
+    process lowers onto (750). The rule is generic over (part, traits)
+    pairs, and legacy `embodiment` is now a 66-line adapter that lowers a
+    legacy phenotype through the registry to the same rule, staying with
+    the world move (755) beside its tests.
+  - `functions` is wing-functions membership over a native body (`refs`,
+    `live_parts`, `generate_among`, `generate_for_body`); legacy
+    `functions` is deleted and its one example re-points.
+  - `reading::Journal` is the world-independent half of Eponym's glyph
+    reading: the journey, the founding canon and the live one a published
+    revision moves, and `GlyphGrantOutcome`. Eponym's legacy `glyphs` keeps
+    its `GameState` half (rules, accepted kinds, evidence, the cursor) as an
+    adapter over it, going with Eponym's world move (755).
+  - `effect_experiment` is handed back to the game under 669, as
+    `mesocosm_runtime::effect_experiment`, its tests with it.
+  Callers re-pointed in mesocosm-genet (bench effects, spatial, section,
+  trial) and mesocosm-runtime's glyph tests. Legacy effects lines went from
+  2,820 to 1,252 (`embodiment` and Eponym's `glyphs` adapters with their
+  tests). *Reading, not ruled:* the experiment went to `mesocosm-runtime`,
+  the game's host-neutral runtime beside its glyph reading, rather than to
+  `mesocosm-genet`, whose manifest forbids rules; native trait ids are
+  catalogue function keys, so a table authored against `mesocosm:intake`
+  embodies nothing on a native body until it says `function:intake`. Put
+  back as forks: that trait-id namespace, and whether mesocosm-runtime's
+  own glyph reading moves onto `Journal`.

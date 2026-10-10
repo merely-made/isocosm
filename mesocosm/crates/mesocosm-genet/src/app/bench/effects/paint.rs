@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::effect_experiment::{Experiment, Mark, Receiver};
+use mesocosm_runtime::effect_experiment::{Experiment, Mark, Receiver};
 use sprigging::{ColorF, Leaf, PaintCx, Path, Size, SizeHint, round_stroke};
 
 #[derive(Default)]
