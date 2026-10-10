@@ -1,5 +1,10 @@
 # The epoch boundary: significance, speciation, and what youth costs
 
+**Status, 2026-10-10, after Q3's checkpoint:** native boundary, review,
+revision and speciation are implemented; 797/806's metabolic order is
+integrated at `97684b89` with focused tests and the native compile gate.
+Reproduction and broader invariant/headed certification remain open.
+
 **Status, 2026-10-10:** native boundary, review, revision and speciation
 are implemented. Certification is the after-pass's; 797's descending
 metabolic-complexity order is still a compliance gate in this lane snapshot.
@@ -782,6 +787,11 @@ web (182).
 
 ## Progress
 
+- **2026-10-10, Q3 checkpoint integrated:** `97684b89` includes 797/806's
+  union of expressed catalogue functions and realized systems across living
+  members. The lane's 42 focused checks and merged native compile gate
+  passed. This annotates the earlier verification-pending snapshot;
+  reproduction and broader certification remain the after-pass's gates.
 - **2026-10-10, rulings 797 and 806:** native boundary turns order by
   descending metabolic complexity: distinct catalogue functions expressed
   and carried systems realized across the lineage's living members, each

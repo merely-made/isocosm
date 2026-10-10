@@ -25,6 +25,12 @@ Boundary ordering still uses living-member count in this snapshot;
 797 requires descending native metabolic complexity and is separate
 from the already-built switch. Full in-site M4 stays in the overlay plan.
 
+*2026-10-10 annotation after Q3's checkpoint:* `97684b89` integrates
+797/806's native metabolic order, using distinct expressed catalogue
+functions and realized systems across all living members. The earlier
+member-count snapshot above is superseded; reproduction and broader
+invariant/headed certification remain open.
+
 *The dated design and implementation entries below remain as written (793).*
 
 **Status, 2026-10-08:** plan. Assessment done and its forks ruled (681 to
