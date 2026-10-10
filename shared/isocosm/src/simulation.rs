@@ -52,6 +52,11 @@ pub struct State {
     pub record: hagiograph::Record<Key, Id>,
     pub events: BTreeMap<Key, Event>,
     pub reach: Reach,
+    /// Every edit to in-site space, in global sequence (ruling 696);
+    /// isometer applies them. Absent from runs with none, which serialize
+    /// and hash as before.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub edits: Vec<Edited>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -151,6 +156,7 @@ impl Simulation {
             record: Default::default(),
             events: BTreeMap::new(),
             reach: Reach::default(),
+            edits: Vec::new(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {

@@ -35,6 +35,9 @@ impl Simulation {
         put(&mut w, "record", &s.record);
         put(&mut w, "events", &s.events);
         put(&mut w, "reach", &s.reach);
+        if !s.edits.is_empty() {
+            put(&mut w, "edits", &s.edits);
+        }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -72,6 +75,9 @@ impl Simulation {
         }
         for (index, note) in s.notes.iter().enumerate() {
             put(&mut w, label("note", [index]), note);
+        }
+        for (index, edit) in s.edits.iter().enumerate() {
+            put(&mut w, label("edit", [index]), edit);
         }
         for id in &s.roots {
             put(&mut w, label("root", [id]), &());
