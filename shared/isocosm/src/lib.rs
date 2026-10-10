@@ -13,6 +13,7 @@ mod dev;
 pub mod development;
 pub mod diffusion;
 mod ecology;
+mod edits;
 mod execute;
 pub mod flows;
 pub mod generate;

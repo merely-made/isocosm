@@ -22,6 +22,8 @@ hagiograph = { git = "https://github.com/merely-made/mere.git", rev = "50fd021ca
 muniment = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 nisus = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
+# In-site space: the lift, edits and places (wing rulings 696, 698 and 701).
+isometer-space = { path = "../isometer/crates/isometer-space" }
 # The labelled witness, built once in mere (wing rulings 609, 647, 650).
 state-witness = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 wing-functions = { path = "../wing-functions" }

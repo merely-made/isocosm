@@ -30,6 +30,11 @@ pub enum Command {
         account: Key,
         amount: u64,
     },
+    /// The dev source edits a site's volume (rulings 412 and 696).
+    Edit {
+        site: Id,
+        edit: isometer_space::Edit,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -195,10 +200,11 @@ impl Session {
         });
         Ok(outcome)
     }
-    /// Whether a dev placed matter in this run: the run is assisted
+    /// Whether a dev placed matter or edited a volume in this run: the run is assisted
     /// (ruling 271), read from the history, which is the record (ruling 344).
     pub fn assisted(&self) -> bool {
-        let placed = |e: &Entry| matches!(e.command, Command::PlaceMatter { .. });
+        let placed =
+            |e: &Entry| matches!(e.command, Command::PlaceMatter { .. } | Command::Edit { .. });
         self.entries.iter().any(placed)
     }
     pub fn save(&self) -> Saved {
@@ -397,6 +403,10 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
         } => {
             sim.place(*site, account, *amount)?;
             Ok("placed".into())
+        },
+        Command::Edit { site, edit } => {
+            sim.edit(*site, edit.clone())?;
+            Ok("edited".into())
         },
     }
 }

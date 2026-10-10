@@ -4049,6 +4049,7 @@ version = "0.1.0"
 dependencies = [
  "hagiograph",
  "isometer-core",
+ "isometer-space",
  "muniment",
  "nisus",
  "postcard",
@@ -4087,6 +4088,7 @@ dependencies = [
  "isometer-lens",
  "isometer-mesh",
  "isometer-render",
+ "isometer-space",
  "serde",
  "wgpu",
 ]
@@ -4137,6 +4139,16 @@ dependencies = [
  "isometer-mesh",
  "pollster",
  "wgpu",
+]
+
+[[package]]
+name = "isometer-space"
+version = "0.1.0"
+dependencies = [
+ "isometer-core",
+ "postcard",
+ "serde",
+ "sha2 0.10.9",
 ]
 
 [[package]]

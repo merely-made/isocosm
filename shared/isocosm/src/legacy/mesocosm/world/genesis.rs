@@ -494,7 +494,7 @@ impl World {
             // from the landscape and the ground below is real.
             places: grown.places.clone(),
             ground,
-            soil: crate::legacy::mesocosm::places::Soil::seeded(ENCLOSURE, SOIL_SEED_MG_PER_COLUMN),
+            soil: crate::legacy::mesocosm::soil::Soil::seeded(ENCLOSURE, SOIL_SEED_MG_PER_COLUMN),
             ranges: std::collections::BTreeMap::new(),
             record: crate::legacy::mesocosm::record::WorldRecord::new(),
             organisms,

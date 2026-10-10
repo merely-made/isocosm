@@ -218,6 +218,7 @@ version = "0.1.0"
 dependencies = [
  "hagiograph",
  "isometer-core",
+ "isometer-space",
  "muniment",
  "nisus",
  "postcard",
@@ -251,6 +252,16 @@ dependencies = [
  "postcard",
  "serde",
  "wing-formats",
+]
+
+[[package]]
+name = "isometer-space"
+version = "0.1.0"
+dependencies = [
+ "isometer-core",
+ "postcard",
+ "serde",
+ "sha2",
 ]
 
 [[package]]

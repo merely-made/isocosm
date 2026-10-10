@@ -8,9 +8,10 @@ use isocosm::{
     Founding,
     map::{Grid, Layout},
     simulation::Genesis,
-    terrain::{CHUNK, Chunk, View},
+    terrain::View,
 };
 use isometer::core::ground::{Ground, Terrain};
+use isometer::space::{Atlas, CHUNK, Chunk};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
@@ -124,7 +125,7 @@ fn build(
     let far = View::of(&changed)?;
     let a = near.lattice(0)?;
     let b = far.lattice(right)?;
-    let samples = |l: &isocosm::terrain::Lattice, side: u8, reverse: bool| {
+    let samples = |l: &isometer::space::Lattice, side: u8, reverse: bool| {
         let mut bytes = l.denominator().to_le_bytes().to_vec();
         for t in 0..=grid.side {
             bytes.extend_from_slice(

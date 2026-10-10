@@ -45,7 +45,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::time::Instant;
 
-use isocosm::legacy::mesocosm::places::Soil;
+use isocosm::legacy::mesocosm::soil::Soil;
 use isocosm::legacy::mesocosm::world::{ENCLOSURE, PLACE_SALT, PLACE_SIDE};
 use isocosm::legacy::mesocosm::{Intent, Places, World, snapshot, state_hash};
 

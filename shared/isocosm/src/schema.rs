@@ -281,6 +281,16 @@ pub struct Material {
     pub lineage: Key,
 }
 
+/// An edit to a site's volume as the sim keeps it (rulings 413 and 696):
+/// when, in which site's frame, and the shape operation itself. Its place
+/// in `State::edits` is its global sequence.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Edited {
+    pub tick: Tick,
+    pub site: Id,
+    pub edit: isometer_space::Edit,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Event {
     pub id: Key,

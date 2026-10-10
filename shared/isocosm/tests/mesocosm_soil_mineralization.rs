@@ -9,7 +9,7 @@
 
 use isocosm::legacy::mesocosm::flow::{Account, Carrier, Conversion, FlowEvent, Process};
 use isocosm::legacy::mesocosm::matter::{Material, Stock};
-use isocosm::legacy::mesocosm::places::Soil;
+use isocosm::legacy::mesocosm::soil::Soil;
 
 #[test]
 fn mineralization_completes_typed_stock_in_column_order_and_preserves_scalar_mass() {

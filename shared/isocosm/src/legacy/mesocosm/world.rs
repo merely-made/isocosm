@@ -249,7 +249,7 @@ pub struct World {
     /// run. World state like everything else here: serialized, hashed, and a
     /// pure function of the seed and the trace.
     #[serde(default)]
-    soil: super::places::Soil,
+    soil: super::soil::Soil,
     /// Everywhere each lineage has been.
     ///
     /// **A high-water set**, for the same reason the frontier is a high-water
