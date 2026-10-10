@@ -284,6 +284,22 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 period-fourteen source frozen:** source-only, uncompiled
+  and unrun against native `6f879936`. Compared with the rejected meal-three
+  candidate, only consumer lineage 1's birth period changes from seven to
+  fourteen. The proof explicitly keeps all original-arm birth periods and
+  producer/decomposer periods at seven. Meal size, thresholds, lifespan,
+  provision, upkeep, supply and all qualification/replay/conservation gates
+  remain fixed. The 422-line proof SHA-256 is
+  `d3d988b8e089e5312822ab01e41a786c48415d80fae34f7d599755a7e2396f77`;
+  fresh 267-input manifest SHA-256 is
+  `69f7638c09f92dcf3d95584612caa35a39a357f08840cdfe344e8a36f0171107`.
+  Root verified all hashes, the one-input difference, exact source diff and
+  byte-preserved earlier history prefix. Declaration/diff/source/history
+  use `q3-reproduction-meal3-birth14` stems in the existing external receipt
+  directory; no old evidence was overwritten. Q8 retains Cargo for its
+  bounded controls, then Q2's remaining gates run before this fresh pilot.
+  No matrix or production-default promotion is granted; 812 remains open.
 - **2026-10-10, rejected Q3 pilot classified:** unchanged saved-native
   evidence confirms 167 consumer births, with 140 birth acts by 108 distinct
   born parents. Child 82 paid for two offspring. All 175 consumers died:
