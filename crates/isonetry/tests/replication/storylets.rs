@@ -33,6 +33,7 @@ fn storylet_matches_private_fact_casts_existing_role_and_commits_effects() {
         tags: ["warden".into()].into(),
         faction: Some("tide".into()),
         place: None,
+        table: None,
     })));
     host.local_event(assert(Assertion::Law(Law {
         key: "iron-remembers".into(),

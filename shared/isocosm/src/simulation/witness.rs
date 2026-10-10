@@ -4,6 +4,7 @@
 //! The state's labelled entries, through mere's `state-witness`: one per
 //! field for saves (ruling 633), one per entity for traces (610, 649).
 
+use super::preimage;
 use super::*;
 use state_witness::{Witness, hash_value, label};
 
@@ -23,7 +24,11 @@ impl Simulation {
         put(&mut w, "world", world);
         put(&mut w, "tick", &s.tick);
         put(&mut w, "next_action", &s.next_action);
-        put(&mut w, "population", &s.population);
+        put(
+            &mut w,
+            "population",
+            &preimage::Population::from(&s.population),
+        );
         put(&mut w, "sites", &s.sites);
         put(&mut w, "lineages", &s.lineages);
         put(&mut w, "locations", &s.locations);
@@ -48,7 +53,7 @@ impl Simulation {
             put(&mut w, "agreements", &s.agreements);
         }
         if !s.asserted.is_empty() {
-            put(&mut w, "asserted", &s.asserted);
+            put(&mut w, "asserted", &preimage::Records::from(&s.asserted));
         }
         w
     }
@@ -64,7 +69,8 @@ impl Simulation {
         put(&mut w, "next_action", &s.next_action);
         put(&mut w, "next_id", &s.population.next_id);
         for (&first, cohort) in &s.population.groups {
-            let digest = hash_value(&cohort.entity).expect("sim schema encodes");
+            let digest =
+                hash_value(&preimage::Entity::from(&cohort.entity)).expect("sim schema encodes");
             for id in first..first + cohort.count {
                 put(&mut w, label("entity", [id]), &digest);
             }
@@ -104,10 +110,18 @@ impl Simulation {
             put(&mut w, label("map", [key]), map);
         }
         for (key, applied) in &s.asserted.storylets {
-            put(&mut w, label("storylet", [key]), applied);
+            put(
+                &mut w,
+                label("storylet", [key]),
+                &preimage::Applied::from(applied),
+            );
         }
         for (key, applied) in &s.asserted.packs {
-            put(&mut w, label("pack", [key]), applied);
+            put(
+                &mut w,
+                label("pack", [key]),
+                &preimage::Applied::from(applied),
+            );
         }
         for id in &s.roots {
             put(&mut w, label("root", [id]), &());

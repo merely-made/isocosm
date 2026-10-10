@@ -5,6 +5,7 @@ use crate::{Result, population::Population, reach::Reach, rules::*, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod preimage;
 mod witness;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

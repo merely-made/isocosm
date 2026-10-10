@@ -150,6 +150,7 @@ impl Arrival {
             tags: Default::default(),
             faction: None,
             place: None,
+            table: None,
         }
     }
 

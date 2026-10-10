@@ -284,6 +284,31 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 metadata and Q8 healing integration verified:**
+  root applies the bounded eleven-path native delta from `f4c106af`,
+  retaining Q2's unfinished consumer ancestry. Two existing demo/storylet
+  constructors also receive `table: None`, as already prepared in Q2's
+  consumer work; the two initial missing-field compile failures remain in
+  the receipt. On the combined native snapshot, assertions passed 9/9,
+  independent witness controls 4/4 and harm 31/31. All nine required
+  workspace/all-target checks passed offline, including root and Eponym
+  with all features. Root recomputed all fourteen command-log hashes.
+  `q2-q8-root-integration.json` under the existing external C10 receipt
+  directory has SHA-256
+  `bfb4af4a4aaeca0df90e9bdfc892a24ebaf4bb190fe700591d929e0de8346bc7`.
+  Canonical staged native bytes match the lane; the plan conflict retains
+  its earlier dated checkpoint and adds the new 809 entry. Q2 next refreshes
+  native source from integrated main and receives the serial Cargo slot
+  for campaign, actual wire replication, discarded-metadata control and
+  six-sortie gates. Q3 refreshes its declared meal-three source, preserving
+  proof WIP; its seed-0 pilot follows that bounded Q2 batch. Q8's optional
+  trait columns, release conservation audit and stronger C10 verifier are
+  source-only preparation, SHA-256
+  `59025bfe31863289bf4b39c8eccd88a4dc3ec8afeee776f37d79c0dafc27e45c`.
+  All twenty preparation inputs match. Faults 0 to 9 and fresh statistical
+  pilots/full draws remain unrun. Q1/Q7/Q15 remain done; Q2/Q3/Q8 continue
+  in their existing trees and targets. Adapter ruling 812, ordinary HEAL,
+  reproduction and full checkpoint 10 remain open.
 - **2026-10-10, Q8 known-loss healing checkpoint merged locally:**
   `02ac8167` records each lost cell's former function or free-pool status,
   pays restoration from available matter and revives eligible tombstones

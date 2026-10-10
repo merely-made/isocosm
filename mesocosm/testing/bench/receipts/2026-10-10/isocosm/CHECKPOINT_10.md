@@ -1,5 +1,16 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Root integration, 2026-10-10:** known-loss healing and native Character
+metadata are checked together on main. Assertions passed 9/9, independent
+witness controls 4/4 and harm 31/31; all nine workspace/all-target compile
+gates passed offline, including root/Eponym all features. Two older consumer
+constructors needed explicit `table: None`; their initial compile failures
+and all fourteen raw command logs are retained. The external receipt
+`q2-q8-root-integration.json` has SHA-256
+`bfb4af4a4aaeca0df90e9bdfc892a24ebaf4bb190fe700591d929e0de8346bc7`.
+This verifies the bounded native integration. Fresh C10 statistics, faults
+0 to 9, adapter allocation and ordinary HEAL remain open.
+
 **Current bounded checkpoint, 2026-10-10:** native known-loss healing and
 tombstone revival passed their focused controls under 810 and 811. Ordinary
 HEAL assignment, adapter allocation (812), downstream consumer gates and

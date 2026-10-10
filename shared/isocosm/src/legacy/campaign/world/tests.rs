@@ -24,6 +24,7 @@ fn storylet_requires_private_fact_and_casts_existing_character() {
         tags: ["warden".into()].into(),
         faction: Some("tide".into()),
         place: None,
+        table: None,
     };
     world.assert(Assertion::Character(mara)).unwrap();
     let law = Law {

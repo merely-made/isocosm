@@ -173,6 +173,7 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
             },
             faction: Some(format!("f{}", i % side)),
             place: Some(format!("p{i}")),
+            table: None,
         };
         world.assert(Assertion::Character(character)).unwrap();
 

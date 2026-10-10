@@ -197,6 +197,7 @@ impl CampaignWorld {
                     tags: tags.clone(),
                     faction: Some(id.clone()),
                     place: None,
+                    table: None,
                 }));
                 (text, Some(change))
             },

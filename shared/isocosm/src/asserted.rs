@@ -19,6 +19,7 @@ use std::collections::{BTreeMap, BTreeSet};
 pub use crate::schema::Authored;
 
 mod apply;
+mod character;
 mod fold;
 mod held;
 pub use fold::{Asserted, Refused};
@@ -133,8 +134,9 @@ pub struct Route {
 }
 
 /// An authored character: a placeless entity's fill, naming its faction
-/// and place by authored key.
-#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+/// and place by authored key. Table metadata is retained without placing
+/// a native body or granting control (809).
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
 #[serde(default)]
 pub struct Character {
     pub key: Key,
@@ -142,6 +144,16 @@ pub struct Character {
     pub tags: BTreeSet<Key>,
     pub faction: Option<Key>,
     pub place: Option<Key>,
+    pub table: Option<CharacterTable>,
+}
+
+/// The table's authored map cell and optional participant owner (809).
+/// These are data; native placement and played-life authority stay separate.
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(default)]
+pub struct CharacterTable {
+    pub cell: [i32; 3],
+    pub owner: Option<Id>,
 }
 
 /// An authored law: a world-scope rule asserted as a record (41).

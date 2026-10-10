@@ -240,3 +240,163 @@ fn a_fold_holds_groups_whole() {
     let mut again = folded.clone();
     assert_eq!(again.apply(&good[0]), Ok(false));
 }
+
+#[test]
+fn character_table_metadata_saves_and_replays_without_taking_or_moving_a_body() {
+    let genesis = Founding {
+        seed: 7,
+        sites: 4,
+        population: 48,
+        cohort_size: 4,
+        lineages: 3,
+        ecology: true,
+        bodies: Some(crate::bodied::Bodies::default()),
+        played: Some(crate::directing::Played {
+            lineage: 1,
+            region_sites: 2,
+        }),
+        ..Default::default()
+    }
+    .generate()
+    .unwrap();
+    let mut s = Session::new(genesis, Execution::Grouped).unwrap();
+    let joined = s.command(Command::Join).unwrap();
+    let participant: Id = joined
+        .strip_prefix("participant:")
+        .unwrap()
+        .parse()
+        .unwrap();
+    let critter = *s
+        .sim
+        .state()
+        .population
+        .groups
+        .iter()
+        .find(|(_, g)| g.entity.method == Method::Deliberative)
+        .unwrap()
+        .0;
+    s.command(Command::Take {
+        participant,
+        critter,
+    })
+    .unwrap();
+    let body = s.sim.state().population.get(critter).unwrap().clone();
+    assert!(
+        body.body.is_some(),
+        "the positive control has native body geometry"
+    );
+    assert_ne!(body.place, crate::directing::PLACELESS);
+    assert_eq!(
+        s.sim.plays(participant),
+        Some(critter),
+        "control was actually taken"
+    );
+    let relations = s.sim.state().relations.clone();
+    let player = s.sim.state().population.get(participant).unwrap().clone();
+    let character = Character {
+        key: "mira".into(),
+        name: "Mira".into(),
+        table: Some(CharacterTable {
+            cell: [-7, 2, 13],
+            owner: Some(participant),
+        }),
+        ..Default::default()
+    };
+    let command = Command::Assert(Assertion::Character(character.clone()));
+    s.command(command.clone()).unwrap();
+    let (id, authored) = s.sim.authored_entity("mira").unwrap();
+    assert_ne!(id, critter);
+    assert_eq!(authored.authored.as_ref(), Some(&character));
+    assert_eq!(authored.place, crate::directing::PLACELESS);
+    assert!(authored.patch.is_none());
+    assert!(authored.body.is_none());
+    assert_eq!(s.sim.state().population.get(critter), Some(&body));
+    assert_eq!(s.sim.state().population.get(participant), Some(&player));
+    assert_eq!(s.sim.state().relations, relations);
+    assert_eq!(s.sim.plays(participant), Some(critter));
+    let hash = s.sim.state_hash();
+    s.command(command).unwrap();
+    assert_eq!(
+        s.sim.state_hash(),
+        hash,
+        "identical metadata is a replay no-op"
+    );
+    let json = serde_json::to_vec(&s.save()).unwrap();
+    let loaded = Session::load_json(&json, Execution::Grouped).unwrap();
+    assert_eq!(
+        loaded.sim.state_hash(),
+        hash,
+        "the actual saved command log replays"
+    );
+    assert_eq!(
+        loaded
+            .sim
+            .authored_entity("mira")
+            .unwrap()
+            .1
+            .authored
+            .as_ref(),
+        Some(&character)
+    );
+    assert_eq!(loaded.sim.state().population.get(critter), Some(&body));
+    assert_eq!(
+        loaded.sim.state().population.get(participant),
+        Some(&player)
+    );
+    assert_eq!(loaded.sim.state().relations, relations);
+    assert_eq!(loaded.sim.plays(participant), Some(critter));
+}
+
+#[test]
+fn character_table_metadata_keeps_legacy_json_and_present_or_absent_wire_values() {
+    #[derive(Serialize)]
+    struct BeforeTable {
+        key: Key,
+        name: String,
+        tags: BTreeSet<Key>,
+        faction: Option<Key>,
+        place: Option<Key>,
+    }
+    let legacy = BeforeTable {
+        key: "mira".into(),
+        name: "Mira".into(),
+        tags: BTreeSet::new(),
+        faction: None,
+        place: None,
+    };
+    let bytes = serde_json::to_vec(&legacy).unwrap();
+    let old: Character = serde_json::from_slice(&bytes).unwrap();
+    assert!(
+        old.table.is_none(),
+        "non-table characters keep their existing path"
+    );
+    assert_eq!(serde_json::to_vec(&old).unwrap(), bytes);
+    assert_eq!(crate::digest(&old), crate::digest(&legacy));
+    assert_ne!(
+        state_witness::hash_value(&old).unwrap(),
+        state_witness::hash_value(&legacy).unwrap(),
+        "the current postcard field is a new wire/witness format, not historical compatibility"
+    );
+    for table in [
+        None,
+        Some(CharacterTable {
+            cell: [-7, 2, 13],
+            owner: Some(77),
+        }),
+        Some(CharacterTable {
+            cell: [-7, 2, 13],
+            owner: None,
+        }),
+    ] {
+        let character = Character {
+            table,
+            ..old.clone()
+        };
+        let bytes = postcard::to_allocvec(&character).unwrap();
+        let wired: Character = postcard::from_bytes(&bytes).unwrap();
+        assert_eq!(wired, character);
+        let json = serde_json::to_vec(&character).unwrap();
+        let saved: Character = serde_json::from_slice(&json).unwrap();
+        assert_eq!(saved, character);
+    }
+}
