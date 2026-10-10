@@ -117,6 +117,17 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q11 headed preflight:** read-only, without Cargo or a headed
+  run. Pinned Genet `15713014` exports `taproot::Scenario`; Mesocosm's
+  `mesocosm-genet/src/app/drive.rs` pumps it after rendered frames, routes
+  named actions through the host, and captures through the host. No OS
+  input is needed. Pointer delivery is explicitly unrouted in this host;
+  its named-action path is available. `HostConfig` and the CLI currently
+  lack a play-mode setting: `mesocosm-runtime/src/runtime.rs` founds Creative
+  play and `mesocosm-genet/src/played.rs::resume` also selects Creative.
+  Q11 must expose a mode setting and certify Survival and Creative (691)
+  separately from native Individuals/Grouped replay. Q3/Q4 prerequisites
+  remain open; this inspection supplies no headed receipt.
 - **2026-10-10, Q4/Q5 archive preflight:** source inspection only; no reader,
   fixture or test was changed and no Cargo gate ran. Q4's v1 checkpoint
   fixture carries the former Part fields `parent`, `traits` and `severed`;
