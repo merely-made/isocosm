@@ -283,6 +283,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 fresh bare arm rejected:** the unchanged threshold-12,
+  one-unit-meal, 80 to 120-tick lifespan candidate ran all twenty bare seeds
+  on `ab3b559b`, after prey timing and Q8's native checkpoint integration.
+  Only seeds 7, 14, 15 and 19 qualified (4/20). Every seed produced a true
+  played-lineage birth and born heirs; all conserved matter each tick and
+  replayed in both modes. Sixteen lineages died before tick 180. The bodied
+  and fresh original-control arms remain withheld; no rates were promoted.
+  The full keyed Genesis/output receipt is
+  `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/q3-reproduction-after-prey-matrix.log`,
+  SHA-256 `6b4f2252c4cd438380f7aaad38298345b0fd63d15f91e5c9f4295ca5c9ec4540`.
+  Q3 prepares an unchanged-seed-0 founder/firstborn receipt diagnosis while
+  Q15 owns the serialized Cargo window for query-refresh verification.
+  Q2's metadata and Q8's healing forks remain unanswered; next ruling 809.
 - **2026-10-10, Q8 bounded native checkpoint integrated:** `9b0ae46d`
   supplies native hazards, fragment matter/flow conservation, rot and
   explicit crowd scope guards. All 27 code/test/script byte hashes match

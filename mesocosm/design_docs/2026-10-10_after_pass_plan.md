@@ -117,6 +117,20 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 fresh bare candidate completed:** the unchanged declared
+  profile ran seeds 0 to 19 on integrated `ab3b559b`. Seeds 7, 14, 15 and
+  19 qualified (4/20), with respectively 8, 20, 26 and 8 living born
+  consumers, no living founders and three actual boundaries. All twenty
+  had actual played births and born heirs, conserved matter each tick and
+  replayed under Individuals and Grouped. Sixteen lineages died before
+  tick 180; seed 0 reached tick 115 with one birth and no living consumer.
+  The failed bare arm withholds the bodied and fresh original-control arms.
+  No rates were promoted. A founder/firstborn trace of unchanged seed 0
+  follows before another profile is declared. The complete keyed Genesis,
+  source/lock hashes and raw output are in
+  `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/q3-reproduction-after-prey-matrix.log`,
+  SHA-256 `6b4f2252c4cd438380f7aaad38298345b0fd63d15f91e5c9f4295ca5c9ec4540`.
+  A1 stays open; the configured epoch remains a verification Reading.
 - **2026-10-10, Q3 prey timing corrected:** the automatic feeding target
   now resolves once against its own pass's start under 454, keeping the
   tick's chosen process under 683. Explicitly applicable Thing/Act targets
