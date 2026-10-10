@@ -9839,6 +9839,28 @@ what later sections derive from.
      first-round collapses, Mark chose "Keep it, sharpened" with no wording
      yet. So the clause stands unbuilt, to be sharpened in the after-pass;
      only "levels it once held" is built.
+762. **The review and succession lanes re-point at the switch.** 2026-10-10,
+     from the lineages family (merged at `fe1f7178`). Question: every
+     consumer reads lineages through a driver holding the legacy `World`.
+     Options: at the switch (755, D5), review becoming `lineage::Review` over
+     the native `Session` and succession the interim loop's happenings
+     (recommended); now, beside legacy; only the views board now. Mark chose
+     "At the switch (Recommended)".
+763. **The boundary and revision move into `lineage/`.** 2026-10-10.
+     Question: directing built them, while 684 names adaptation as the
+     lineages family's. Options: into `lineage/`, directing re-exporting
+     (recommended); stay in directing. Mark chose "Into lineage/
+     (Recommended)".
+764. **Lexicon lessons are discovery.** 2026-10-10. Question: legacy
+     discovery's condition table, with its endurance route, against native's
+     lessons from eating a part whole (468). Options: native lessons are
+     discovery and the table retires with the world (recommended);
+     conditions as rules data; port the full model. Mark chose "Lexicon
+     lessons are discovery (Recommended)".
+765. **The native revision grows to tracts and systems.** 2026-10-10.
+     Options: legacy's declared tracts and 568's folding of systems at the
+     boundary, built in the lineages family (recommended); recipe variants
+     only. Mark chose "Grow to tracts and systems (Recommended)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
