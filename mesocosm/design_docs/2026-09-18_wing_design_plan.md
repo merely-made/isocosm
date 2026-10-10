@@ -9890,6 +9890,20 @@ what later sections derive from.
      a character a placeless `Entity`, a law an asserted rule record, a
      history line an `Event`) (recommended); an asserted-records map; all
      as notes. Mark chose "Native nouns, authored fill (Recommended)".
+770. **The legacy record leaves with the world move.** 2026-10-10.
+     Question: legacy `history`, `record` and `snapshot` are the legacy
+     `World`'s own record, shaped unlike native's. Options: they leave with
+     the world move, the moved world writing native history, journal and
+     witness (recommended); lower them now. Mark chose "Leave with the world
+     move (Recommended)".
+771. **Eponym's epistemic layer becomes notes plus knowing.** 2026-10-10.
+     Options: its simulation record leaves with Eponym's world move and the
+     epistemic layer becomes notes held by the observer plus the reach
+     field's knowing (84, 117) (recommended); a native noun of its own. Mark
+     chose "Notes plus knowing (Recommended)".
+772. **A new line's name is its key.** 2026-10-10. Options: `lineage:<name>`,
+     no schema change (recommended); a generated key and a name field. Mark
+     chose "Its name is its key (Recommended)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
