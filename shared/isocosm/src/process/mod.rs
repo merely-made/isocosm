@@ -179,7 +179,9 @@ pub enum NisKind {
 ///
 /// This is anatomy carried beside the part's allocation. Geometry supplies a
 /// founding default, but later declarations are retained through body changes.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct IntakePort {
     kinds: u8,
     deadstock: bool,

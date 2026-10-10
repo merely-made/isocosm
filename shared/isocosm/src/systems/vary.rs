@@ -62,6 +62,7 @@ pub fn inherit(e: &mut Entity) {
             shift(p, &v.from, &v.to);
         }
     }
+    e.lay_out();
 }
 
 /// The varied cells of `varied` lying in a part `part` grows as, at
@@ -108,8 +109,10 @@ pub fn vary(child: &mut Entity, rules: &Rules, recipe: &Recipe, seed: u64) -> Op
         .collect();
     let to = pick(&grown, draw("vary-to"))?;
     let situs = child.situs(id)?;
+    let half = child.extent(id);
     let part = child.parts.get_mut(&id)?;
     shift(part, &from, &to);
+    crate::mosaic::sync(part, half);
     let v = Varied { situs, from, to };
     child.varied.push(v.clone());
     Some(v)

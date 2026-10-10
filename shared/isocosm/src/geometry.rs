@@ -38,8 +38,12 @@ impl Body {
         let doc = assemble(&frames)?;
         let parts = parts
             .into_iter()
+            .zip(&frames)
             .enumerate()
-            .map(|(i, p)| (PartId(i as u32), p))
+            .map(|(i, (mut p, f))| {
+                crate::mosaic::sync(&mut p, f.half_extent);
+                (PartId(i as u32), p)
+            })
             .collect();
         Ok(Body { doc, parts })
     }
@@ -94,7 +98,9 @@ impl Body {
                 shape: s.shape.clone(),
             });
             if parts.contains_key(&n) {
-                kept.insert(PartId(n), s.part);
+                let mut part = s.part;
+                crate::mosaic::sync(&mut part, s.half_extent);
+                kept.insert(PartId(n), part);
             }
         }
         Body { doc, parts: kept }
@@ -142,10 +148,23 @@ pub fn assemble(frames: &[Frame]) -> Result<BodyDocument> {
 }
 
 impl Entity {
-    /// Takes `b` as its body, geometry and physiology.
+    /// Takes `b` as its body, geometry and physiology, and the intake ports
+    /// its geometry founds (766).
     pub fn embody(&mut self, b: Body) {
         self.body = Some(b.doc);
         self.parts = b.parts;
+        crate::mosaic::ports::seed(self);
+    }
+
+    /// Lays out every part's cells to its counts (766).
+    pub fn lay_out(&mut self) {
+        let halves: Vec<(PartId, [i32; 3])> =
+            self.parts.keys().map(|id| (*id, self.extent(*id))).collect();
+        for (id, half) in halves {
+            if let Some(p) = self.parts.get_mut(&id) {
+                crate::mosaic::sync(p, half);
+            }
+        }
     }
 
     /// The document's record of part `id`.
@@ -220,7 +239,8 @@ impl Entity {
 
     /// Adds a part of geometry `f` and physiology `p`: the root of a new
     /// document where the body has none and `f` names no parent.
-    pub fn add_part(&mut self, f: &Frame, p: Part) -> Result<PartId> {
+    pub fn add_part(&mut self, f: &Frame, mut p: Part) -> Result<PartId> {
+        crate::mosaic::sync(&mut p, f.half_extent);
         let id = match (&mut self.body, f.parent) {
             (Some(d), _) => attach(d, f)?,
             (None, None) if self.parts.is_empty() => {

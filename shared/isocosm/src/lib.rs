@@ -29,6 +29,7 @@ pub mod kingdom;
 pub mod legacy;
 pub mod lineage;
 pub mod map;
+pub mod mosaic;
 pub mod matter;
 mod meaning;
 pub mod population;
