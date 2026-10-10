@@ -9824,6 +9824,21 @@ what later sections derive from.
      members. *Reading, not ruled:* once members join, readings derived
      from them sit beside the authored attributes rather than replacing
      them, and where the two disagree is a later question.
+761. **Don't play during a migration; tuning waits.** 2026-10-09, from
+     directing's second pass (merged at `5a29f8c5`), which found that
+     generated consumers cannot reproduce (a birth needs 30 units, a
+     consumer nets about one per 7 to 8 ticks, age takes it at 20 to 60)
+     and asked whether to play a bodied founding, lower the birth
+     threshold or raise consumer feeding. Mark: "Don't play during a
+     migration feels like a fair thing to say. Why the obsession with
+     remaining perfectly functional while refactoring?" So during 732's push
+     nothing is tuned or kept playable; behaviour and balance findings go
+     to the after-pass list, consumer reproduction first among them.
+     Asked the same round whether 754's second clause ("or that the world
+     holds within reach") stays, every reading of it bringing back the
+     first-round collapses, Mark chose "Keep it, sharpened" with no wording
+     yet. So the clause stands unbuilt, to be sharpened in the after-pass;
+     only "levels it once held" is built.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
