@@ -62,10 +62,14 @@ pub(crate) fn detach(e: &mut Entity, part: PartId, tick: Tick, alive: bool) -> R
         })
         .collect();
     for (old, new) in &mapping {
+        let half = e.extent(*old);
         let p = e.parts.get_mut(old).ok_or("a subtree missing physiology")?;
         let mut copied = p.clone();
         copied.matter = std::mem::take(&mut p.matter);
         body.parts.insert(*new, copied);
+        // The fragment keeps its cells; its parent's tombstone regrows
+        // new cells only by recording and paying for these losses.
+        super::take(p, half, u32::MAX);
     }
     e.body.as_mut().unwrap().sever(part);
     let mut child = crate::meaning::births::newborn(e, body, e.soma.clone(), tick);

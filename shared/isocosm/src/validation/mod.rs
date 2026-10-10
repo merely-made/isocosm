@@ -449,6 +449,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         },
         // Growth turns matter in hand into the actor's new parts, their
         // price returned to the place (rulings 479 and 510).
+        Effect::Heal { into } => matter(rules, into)?,
         Effect::Grow {
             from,
             into,
@@ -542,6 +543,11 @@ fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
             ));
         }
         match r {
+            Reading::Healing { .. } if !matches!(who, Binding::Actor | Binding::Target) => {
+                return Err(format!(
+                    "{id} reads healing from something that is not a body"
+                ));
+            },
             Reading::Account { key, .. } => account(rules, key)?,
             _ if who == Binding::Place => {
                 return Err(format!("{id} reads a body from a site, which has none"));

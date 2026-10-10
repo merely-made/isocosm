@@ -33,6 +33,13 @@ impl Staged<'_> {
 }
 
 impl Parties for Staged<'_> {
+    fn lineage_trait(&self, lineage: &str, key: &str) -> bool {
+        self.sim
+            .state
+            .lineages
+            .get(lineage)
+            .is_some_and(|l| l.traits.contains(key))
+    }
     fn development(&mut self, lineage: &str) -> Result<crate::rules::Development> {
         let l = self.sim.state.lineages.get(lineage);
         l.and_then(|l| l.development.clone())

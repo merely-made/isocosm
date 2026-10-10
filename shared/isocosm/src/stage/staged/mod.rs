@@ -126,7 +126,15 @@ impl Staged<'_> {
                     let body = self.body(*who)?;
                     let l = sim.state.lineages.get(&body.lineage);
                     let d = l.and_then(|l| l.development.as_ref());
-                    Ok(meaning::carried(body, r, &sim.genesis.rules, d, bitten))
+                    let heals = l.is_some_and(|l| l.traits.contains(crate::harm::HEAL));
+                    Ok(meaning::carried(
+                        body,
+                        r,
+                        &sim.genesis.rules,
+                        d,
+                        heals,
+                        bitten,
+                    ))
                 },
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
@@ -273,6 +281,20 @@ impl Staged<'_> {
                             from: (start, key),
                             to: (end, arrives),
                             amount: paid,
+                        });
+                    }
+                }
+                return Ok(false);
+            },
+            Effect::Heal { into } => {
+                let paid = meaning::heal(self, &sim.genesis.rules, into)?;
+                let ends = (self.holder(Binding::Actor), self.holder(Binding::Place));
+                if let (true, (Some(start), Some(end))) = (sim.flowing(), ends) {
+                    for (key, amount) in paid {
+                        self.stage.legs.push(Leg {
+                            from: (start, key),
+                            to: (end, into.clone()),
+                            amount,
                         });
                     }
                 }

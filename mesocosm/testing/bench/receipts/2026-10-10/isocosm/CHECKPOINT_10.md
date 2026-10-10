@@ -1,5 +1,11 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Current bounded checkpoint, 2026-10-10:** native known-loss healing and
+tombstone revival passed their focused controls under 810 and 811. Ordinary
+HEAL assignment, adapter allocation (812), downstream consumer gates and
+full checkpoint 10 certification remain open. The earlier sections retain
+their exact historical source scope; the new evidence is appended below.
+
 **Ruling 811, 2026-10-10:** legacy losses with unknown allocation remain
 until explicitly repaired; recorded losses in the same body can heal.
 Normal archive checks remain intact. JSON/genesis compatibility and
@@ -100,3 +106,74 @@ Its SHA-256 is `ceb4640437ed444e40b23f540d03fd62b85e5bfc0214d32c8c1453a9bff4aefa
 These compile checks close this checkpoint's downstream compile window;
 healing/revival, the remaining faults and full statistical certification
 remain open.
+
+## Native known-loss healing checkpoint
+
+The next bounded batch used base `86a32a96` plus the 31 input hashes in
+`q8-healing-final-source.json`. It records the 25 changed code/test/script
+files, unchanged native manifest/lock/config and unchanged historical
+witness test/fixture inputs. Every candidate byte matches the repaired
+positive envelope. The final native all-target check and 31 harm tests
+passed offline, serially, using the stable tenant target and build paths.
+`q8-healing-final-gates.json` gives exact commands, exits, times and log
+hashes. Only this receipt and the sim/after-pass dated annotations were
+added after source capture; code, tests and the control script were frozen.
+
+| Raw evidence | SHA-256 |
+| --- | --- |
+| `q8-healing-final-source.json` | `d2b436c8c8dcfb7f71abe7541e8145f51db4a1da4a95984d068aa980ada18648` |
+| `q8-healing-final-gates.json` | `ffa8b2441167dddc2ef838d964d2a9dbc4efaece4b45211e41e5c102fce5b948` |
+| `q8-healing-controls.json` | `b28f36c011ec13514b9b139a53fcd05e2060203470c406987e8c7674ae53ce4d` |
+| `q8-healing-allocation-controls.json` | `8463fa383ee56e067752550bdd78a288b5922f86ac17b6c69e4fb0d63ceb1013` |
+| `q8-healing-repaired-tests.log` | `bd5dfa41817df95ecb00cb990a01925f920d57ab20e6890c66350f3ddf564917` |
+
+`Part.losses` distinguishes recorded function, recorded free (`None`) and
+absent unknown allocations. Wounds and parent tombstones record allocations
+before removal; fragment physiology and its recorded history transfer with
+its own matter. Trait-gated healing restores known cells, reserve paying
+before tissue, and transfers every payment to the site. A tombstone revives
+at its original identity/geometry only with its living parent and free box;
+its new cells are paid, never copied back from the fragment. Unknown legacy
+losses remain, without blocking known healing elsewhere in the body.
+
+The 31 tests cover both native modes, holder/account flow reconciliation,
+function/free variation, trait and insufficient-funds controls, partial and
+whole tombstone revival, feeding order and real carriage, native/crowd
+agreement and loss-bearing v3 save/replay. Controls 10 to 18 each actually
+compiled and failed their specified test: trait bypass, free restoration,
+discarded function, missed revival, unknown-first selection, unpaid parent
+descendants, two feeding-order faults and missing carriage healing asks.
+Every controlled file was restored to its exact input SHA. The first four
+used `q8-healing-controls-source.json`; the last five used the repaired
+envelope. Their controlled source bytes all match the final envelope;
+the receipts retain exact original/mutant hashes and full failing output.
+
+Compatibility evidence is deliberately narrower than historical archive
+certification. Old-shape Part JSON decodes with unknown losses; empty loss
+metadata preserves the exact old JSON, postcard and FNV hashing preimages.
+Both recorded function and recorded-free entries change those hashes.
+Native saves decode as JSON; postcard here is the Part witness preimage,
+not a native Part archive decoder. Fresh v3 Genesis-loss load/save and
+digest/checkpoint tamper controls pass without bypasses. Real retained v1/v2
+archives still fail two unchanged witness tests at the genesis-digest gate,
+matching `after-pass-2026-10-10/test-shared_isocosm.log` at 75/109 in
+`witness.rs`; the suite passed 8/10. These are Q4's existing failures, not
+proof of historical loss-history compatibility. New replayed wounds record
+allocations and may change old witnesses; normal outcome/checkpoint/final
+checks remain intact.
+
+The initial `q8-healing-source.json` omitted tracked file hashes after a
+wrong-directory capture and is disqualified. The corrected envelope's
+30-test positive is preserved. The later `q8-healing-restored-source.json`
+run stopped at a new test fixture's borrow compile error; its evidence is
+preserved separately. The repaired fixture binds the crowd world and sets
+ample carriage to isolate feeding income. The final source links the
+repaired envelope rather than relabelling either earlier run as passing.
+
+Shared BodyFounding physiology now includes healing definitions even with
+HEAL absent, changing generated rules/genesis. Ordinary `bodied.rs` HEAL
+assignment remains deferred. Adapter allocation (812) is unchanged while
+pending; this checkpoint does not settle how donor loss records cross that
+boundary. Ordinary assignment, downstream compile gates, fresh controls
+0 to 9 and full independently recomputed crowd statistics remain open.
+Cargo was released after the final restored positive. C10 is not certified.

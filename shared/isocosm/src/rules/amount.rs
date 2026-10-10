@@ -224,6 +224,11 @@ pub enum Reading {
         who: Binding,
         key: Key,
     },
+    /// Room for paid healing and the capacity it reopens, nought where
+    /// the lineage cannot heal or allocations are unknown.
+    Healing {
+        who: Binding,
+    },
 }
 
 /// Ruling 493's measurements, each read from a part's box.
@@ -263,9 +268,11 @@ impl Reading {
             Self::Measured {
                 function, measure, ..
             } => anatomy::share_of(h, p, function, *measure),
-            Self::Kept { .. } | Self::Lacking { .. } | Self::Carried { .. } | Self::Room { .. } => {
-                0
-            },
+            Self::Kept { .. }
+            | Self::Lacking { .. }
+            | Self::Carried { .. }
+            | Self::Room { .. }
+            | Self::Healing { .. } => 0,
         }
     }
 
@@ -283,7 +290,8 @@ impl Reading {
             | Self::Lacking { who }
             | Self::Measured { who, .. }
             | Self::Carried { who, .. }
-            | Self::Room { who, .. } => *who,
+            | Self::Room { who, .. }
+            | Self::Healing { who } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,
         }

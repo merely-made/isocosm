@@ -188,6 +188,11 @@ pub enum Effect {
         ask: Amount,
         lands: Vec<Key>,
     },
+    /// Recorded lost cells restored at their cell mass, reserve then
+    /// tissue paying the place's `into`, only where the lineage heals.
+    Heal {
+        into: Key,
+    },
 }
 
 impl Effect {

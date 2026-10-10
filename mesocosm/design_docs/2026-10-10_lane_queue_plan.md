@@ -284,6 +284,26 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q8 known-loss healing checkpoint merged locally:**
+  `02ac8167` records each lost cell's former function or free-pool status,
+  pays restoration from available matter and revives eligible tombstones
+  in place. Unknown legacy allocations remain unhealable under 811.
+  Native harm passed 31/31; nine compiled faults (10 to 18) were caught,
+  exact source was restored and the native all-target check passed.
+  Root verified all 31 envelope inputs against the staged merge: fifteen
+  checkout files differ only by CRLF conversion, and the staged native
+  code/test/script delta matches the lane commit exactly. The source
+  envelope is `q8-healing-final-source.json`, SHA-256
+  `d2b436c8c8dcfb7f71abe7541e8145f51db4a1da4a95984d068aa980ada18648`,
+  under `Code/testing/isometry/receipts/2026-10-10/isocosm/`.
+  The historical witness suite retains its two dated Q4 genesis failures;
+  this checkpoint does not certify those old archives. BodyFounding rules
+  change generated genesis digests even without ordinary HEAL assignment.
+  Root consumer checks await the serial Cargo slot held by Q2's native
+  metadata/witness batch. Q3's meal-three pilot awaits source refresh;
+  ordinary HEAL, adapter ruling 812 and full checkpoint 10 remain open.
+  The actual merge passed weave across 37 files and the staged whitespace
+  check. Existing worktrees and targets remain owned by Q2, Q3 and Q8.
 - **2026-10-10, Q3 meal-three trial declared, unrun:** change only
   consumer lineage 1's meal from one to three, retaining threshold twelve,
   lifespan 80 to 120, provision eight, upkeep one per five and birth every

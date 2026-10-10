@@ -102,7 +102,10 @@ fn binds_place(p: &Process) -> bool {
             Effect::Transfer { from, to, .. } => place(from) || place(to),
             Effect::Transform { who, .. } | Effect::Convert { who, .. } => place(who),
             Effect::Eat { from, .. } => place(from),
-            Effect::Condition { .. } | Effect::Spend { .. } | Effect::Grow { .. } => true,
+            Effect::Condition { .. }
+            | Effect::Spend { .. }
+            | Effect::Grow { .. }
+            | Effect::Heal { .. } => true,
             Effect::When { .. } => e.branches().any(at),
             _ => false,
         }

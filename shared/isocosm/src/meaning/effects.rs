@@ -68,6 +68,7 @@ pub(crate) fn effect(p: &mut impl Parties, rules: &Rules, e: &Effect) -> Option<
             .resolved()
             .and_then(|amount| convert(p, rules, *who, (from, to), amount, *conversion))
             .map(|_| ()),
+        Effect::Heal { into } => heal(p, rules, into).map(|_| ()),
         Effect::Grow {
             from,
             into,

@@ -141,7 +141,10 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
     {
         fields.push(Field::Born);
     }
-    if effects.iter().any(|e| matches!(e, Effect::Wound { .. })) {
+    if effects
+        .iter()
+        .any(|e| matches!(e, Effect::Wound { .. } | Effect::Heal { .. }))
+    {
         fields.extend([Field::LivingCells, Field::LostCells, Field::Severed]);
     }
     fields.extend(accounts.into_iter().map(Field::Account));
@@ -152,7 +155,10 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
             functions.extend(from.iter().chain([to]).cloned());
         }
     }
-    if effects.iter().any(|e| matches!(e, Effect::Wound { .. })) {
+    if effects
+        .iter()
+        .any(|e| matches!(e, Effect::Wound { .. } | Effect::Heal { .. }))
+    {
         functions.extend(world.genesis.rules.functions.keys().cloned());
     }
     fields.extend(functions.into_iter().map(Field::Cells));

@@ -27,6 +27,7 @@ pub(crate) fn asks(
     e: &Entity,
     rules: &Rules,
     d: Option<&Development>,
+    heals: bool,
     (function, role): (&str, Role),
     (ask, lands): (u64, &[Key]),
     bitten: Option<PartId>,
@@ -52,6 +53,13 @@ pub(crate) fn asks(
             (*id, if lands.is_empty() { by_cells } else { room(id) })
         })
         .collect();
+    if heals && !lands.is_empty() {
+        for (id, room) in crate::harm::healing::asks(e, rules, lands) {
+            if let Some((_, w)) = weights.iter_mut().find(|(effect, _)| *effect == id) {
+                *w = w.saturating_add(room);
+            }
+        }
+    }
     if !lands.is_empty()
         && let Some(d) = d
         && let Ok(Some(next)) = growth::lacking(rules, d, e)
@@ -76,6 +84,7 @@ pub(crate) fn carried(
     e: &Entity,
     rules: &Rules,
     d: Option<&Development>,
+    heals: bool,
     route: (&str, Role),
     (ask, lands): (u64, &[Key]),
     bitten: Option<PartId>,
@@ -89,7 +98,7 @@ pub(crate) fn carried(
         },
         None => ask,
     };
-    let (asked, _) = asks(e, rules, d, route, (ask, lands), bitten);
+    let (asked, _) = asks(e, rules, d, heals, route, (ask, lands), bitten);
     Ok(systems::carry(e, rules, route, &asked, bitten)?.total)
 }
 
@@ -106,8 +115,9 @@ pub(crate) fn carry(
     let bitten = p.bitten();
     let lineage = p.body(who)?.lineage.clone();
     let d = p.development(&lineage).ok();
+    let heals = p.lineage_trait(&lineage, crate::harm::HEAL);
     let body = p.body(who)?;
-    let (asked, effects) = asks(body, rules, d.as_ref(), route, landing, bitten);
+    let (asked, effects) = asks(body, rules, d.as_ref(), heals, route, landing, bitten);
     let carried = systems::carry(body, rules, route, &asked, bitten)?;
     let living: BTreeSet<PartId> = body.living().map(|(id, _)| id).collect();
     let short = asked

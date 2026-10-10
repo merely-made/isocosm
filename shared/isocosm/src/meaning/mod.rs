@@ -23,6 +23,8 @@ mod effects;
 pub(crate) use effects::{convert, effect, shift, spend};
 mod grow;
 pub(crate) use grow::grow;
+mod heal;
+pub(crate) use heal::heal;
 
 /// The needs a world's minds read their mood from; none without a mind.
 pub(crate) fn needs(rules: &Rules) -> &[Need] {
@@ -42,13 +44,33 @@ pub(crate) fn body_reading(
     lineages: Option<&BTreeMap<Key, Lineage>>,
 ) -> i64 {
     let d = || lineages.and_then(|l| l.get(&body.lineage)?.development.as_ref());
+    let heals = lineages
+        .and_then(|l| l.get(&body.lineage))
+        .is_some_and(|l| l.traits.contains(crate::harm::HEAL));
     match r {
         Reading::Lacking { .. } => {
             let lacking = d().map_or(0, |d| crate::growth::lacking_mass(rules, d, body));
             return i64::try_from(lacking).unwrap_or(i64::MAX);
         },
         // Read outside an act, a carriage knows no bite and a room no bound.
-        Reading::Carried { .. } => return carried(body, r, rules, d(), None),
+        Reading::Carried { .. } => return carried(body, r, rules, d(), heals, None),
+        Reading::Healing { .. } => {
+            let own = crate::anatomy::own(rules, &body.lineage);
+            let lands: Vec<_> = own
+                .tissue
+                .into_iter()
+                .chain(own.reserve)
+                .chain(own.provision)
+                .collect();
+            let room = if heals {
+                crate::harm::healing::asks(body, rules, &lands)
+                    .values()
+                    .sum()
+            } else {
+                0
+            };
+            return i64::try_from(room).unwrap_or(i64::MAX);
+        },
         Reading::Room { key, .. } => {
             let room = crate::anatomy::room(body, rules, key);
             return i64::try_from(room).unwrap_or(i64::MAX);
@@ -70,6 +92,7 @@ pub(crate) fn carried(
     r: &Reading,
     rules: &Rules,
     d: Option<&Development>,
+    heals: bool,
     bitten: Option<PartId>,
 ) -> i64 {
     let Reading::Carried {
@@ -85,7 +108,7 @@ pub(crate) fn carried(
     };
     let route = (function.as_str(), *role);
     let joined = joined.as_ref().map(|(f, role)| (f.as_str(), *role));
-    let total = carriage::carried(body, rules, d, route, (*ask, lands), bitten, joined);
+    let total = carriage::carried(body, rules, d, heals, route, (*ask, lands), bitten, joined);
     i64::try_from(total.unwrap_or(0)).unwrap_or(i64::MAX)
 }
 
@@ -379,6 +402,9 @@ pub(crate) trait Parties {
     /// What a lineage's bodies develop from (ruling 478).
     fn development(&mut self, lineage: &str) -> Result<Development> {
         Err(format!("{lineage}'s bodies cannot grow here"))
+    }
+    fn lineage_trait(&self, _lineage: &str, _key: &str) -> bool {
+        false
     }
     /// The part the act's bite landed on, where it bit.
     fn bitten(&self) -> Option<PartId> {

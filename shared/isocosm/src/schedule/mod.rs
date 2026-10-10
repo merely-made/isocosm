@@ -72,6 +72,7 @@ fn framed(p: &Process) -> bool {
                 | Effect::Condition { .. }
                 | Effect::Spend { .. }
                 | Effect::Grow { .. }
+                | Effect::Heal { .. }
                 | Effect::Convert {
                     who: Binding::Place,
                     ..
