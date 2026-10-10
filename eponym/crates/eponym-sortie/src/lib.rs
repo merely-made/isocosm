@@ -26,6 +26,8 @@
 pub mod march;
 pub mod party;
 pub mod scene;
+pub mod settled;
+pub mod society;
 pub mod sortie;
 
 pub use party::{Departure, Pact, Part};

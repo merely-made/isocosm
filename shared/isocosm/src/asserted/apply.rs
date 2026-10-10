@@ -205,6 +205,7 @@ impl Simulation {
             tick: self.state.tick,
             place: place.map_or(placeless, |(id, _)| id),
             subject: subject.unwrap_or(placeless),
+            object: None,
             process: h.kind.clone(),
             cause: Some(cause(&h.key)),
             strength: 0,

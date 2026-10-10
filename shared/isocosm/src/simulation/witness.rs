@@ -44,6 +44,9 @@ impl Simulation {
         if !s.laws.is_empty() {
             put(&mut w, "laws", &s.laws);
         }
+        if !s.agreements.is_empty() {
+            put(&mut w, "agreements", &s.agreements);
+        }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -90,6 +93,9 @@ impl Simulation {
         }
         for (key, law) in &s.laws {
             put(&mut w, label("law", [key]), law);
+        }
+        for (id, agreement) in &s.agreements {
+            put(&mut w, label("agreement", [id]), agreement);
         }
         for id in &s.roots {
             put(&mut w, label("root", [id]), &());

@@ -11,7 +11,7 @@ use isomere::{
     ViewportCard,
 };
 use isometer::core::PartId;
-use isocosm::legacy::eponym::world::ItemKind;
+use eponym_play::ItemKind;
 
 use super::{LEAF_KEY, SessionApp};
 

@@ -379,3 +379,15 @@ done on paper; opening E1 is Mark's.
   record's §5.6, rulings 60, 130, 152 to 156, 185 to 187 and the contract's
   rulings, Eponym's plans and its code. E0 to E4 proposed; no lane open;
   §6's seven decisions await Mark.
+- 2026-10-10: E2's families moved onto native Isocosm under the compile
+  gate (wing rulings 732, 755, 761, 767, 769 to 771; lane
+  `lane-eponym-world`; no tests, draws or certification run). Legacy
+  Eponym's world, social and identity are deleted. Bodies, needs and wounds
+  are native accounts and checkpoint 10's cell loss; lives and rounds run
+  as the sim's processes; standing, asks, agreements and homes are native
+  `social`; knowledge is notes plus the reach field's knowing (771); deeds
+  are world events. `eponym-play` is the game's crate for what 669 hands
+  back (motion, timed actions, strikes, techniques, sheets, control) and
+  for driving the played sophont over the native session (671). The
+  families plan's Progress has the detail. §4's table and E2's
+  done-conditions stand for the after-pass.

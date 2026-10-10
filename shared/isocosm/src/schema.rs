@@ -364,6 +364,11 @@ pub struct Event {
     pub tick: Tick,
     pub place: Id,
     pub subject: Id,
+    /// Whom the act was toward, where it had a target: a deed's other party
+    /// (Eponym's world move, 755). Absent elsewhere, which serialize and
+    /// hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub object: Option<Id>,
     pub process: Key,
     pub cause: Option<Key>,
     pub strength: u32,

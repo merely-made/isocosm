@@ -1,0 +1,17 @@
+[package]
+name = "eponym-play"
+version = "0.0.1"
+edition = "2024"
+license = "MPL-2.0"
+description = "Eponym's play over Isocosm: a sapient player's driving, and what the sim hands back to the game (wing rulings 597, 669, 671 and 755)."
+repository = "https://github.com/merely-made/isocosm"
+publish = false
+
+[dependencies]
+isocosm = { path = "../../../shared/isocosm" }
+isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
+isometer-space = { path = "../../../shared/isometer/crates/isometer-space" }
+wing-glyphs = { path = "../../../shared/wing-glyphs" }
+wing-functions = { path = "../../../shared/wing-functions" }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+serde_json = "1"

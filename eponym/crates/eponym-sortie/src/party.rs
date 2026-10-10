@@ -18,11 +18,11 @@
 //! the pact fires only while its agreement stands, so ending the agreement
 //! revokes the tag-in the same way it vacates a home in S2.
 
-use isocosm::legacy::eponym::identity::{SubjectId, Tick};
-use isocosm::legacy::eponym::social::agreement::AgreementId;
-use isocosm::legacy::eponym::social::offer::{Offer, Terms, Work};
-use isocosm::legacy::eponym::social::response::{Response, RulingKind, Verdict};
-use isocosm::legacy::eponym::social::society::{SocialError, Society};
+use eponym_play::identity::{SubjectId, Tick};
+use isocosm::schema::Id as AgreementId;
+use isocosm::social::{Response, RulingKind, Terms, Verdict, Work};
+
+use crate::society::{SocialError, Society};
 use serde::{Deserialize, Serialize};
 
 /// A companion's agreed part on the march. Which driver moves them, and
@@ -72,7 +72,7 @@ pub fn negotiate_scout(
     terms: Terms,
     at: Tick,
 ) -> Result<(Response, Option<Part>), SocialError> {
-    let offer = Offer::new(asked_by, asked_of, work, terms);
+    let offer = society.offer(asked_by, asked_of, work, terms);
     let answer = society.consider(&offer, at)?;
     if answer.verdict != Verdict::Accept {
         return Ok((answer, None));

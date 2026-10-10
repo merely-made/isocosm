@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::{BodyRevisionId, SubjectId};
+use eponym_play::{
     GameEvent, GameIntent, GameState, MotionInput, MotionRules, Name, World, WorldConfig,
     fixtures::three_lives::wetland_body,
 };
@@ -56,10 +56,10 @@ fn ledge(world: &World) -> ([i32; 3], MotionInput, i32) {
                 let distance = high - low;
                 let start = [x, high + 1, z];
                 if distance > 4
-                    && ground.stands(start, isocosm::legacy::mesocosm::places::WALKER_HEIGHT)
+                    && ground.stands(start, eponym_play::walking::WALKER_HEIGHT)
                     && ground.stands(
                         [x + dx, low + 1, z + dz],
-                        isocosm::legacy::mesocosm::places::WALKER_HEIGHT,
+                        eponym_play::walking::WALKER_HEIGHT,
                     )
                 {
                     return (start, input, distance);
@@ -81,8 +81,8 @@ fn game() -> (GameState, MotionInput, i32) {
         at[2] + i32::from(input.move_z.signum()),
     ];
     world
-        .apply(isocosm::legacy::eponym::world::WorldIntent::Carve {
-            tick: isocosm::legacy::eponym::identity::Tick(0),
+        .apply(eponym_play::WorldIntent::Carve {
+            tick: eponym_play::identity::Tick(0),
             by: SUBJECT,
             centre: [lower[0], lower[1] - 1, lower[2]],
             radius: 2,

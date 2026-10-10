@@ -30,6 +30,7 @@ v1b-proof = ["v1-proof"]
 # Sibling crates by path, the stack by the workspace's git pins.
 [dependencies]
 eponym-motion = { path = "../eponym-motion" }
+eponym-play = { path = "../eponym-play" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }

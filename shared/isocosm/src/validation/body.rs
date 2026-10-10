@@ -163,7 +163,7 @@ pub(crate) fn part(rules: &Rules, e: &Entity, id: PartId) -> Result<()> {
         ));
     }
     let held: u64 = part.cells.values().map(|c| u64::from(*c)).sum();
-    let capacity = crate::anatomy::capacity(e.extent(id));
+    let capacity = crate::anatomy::living_cells(e.extent(id), part);
     if held > u64::from(capacity) {
         return Err(format!(
             "a part holds {held} cells in a capacity of {capacity}"

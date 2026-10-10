@@ -12,8 +12,8 @@
 //! how the camera preset becomes a [`SlabCamera`], and where the terrain comes
 //! from.
 
-use isocosm::legacy::eponym::identity::SubjectId;
-use isocosm::legacy::eponym::world::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
+use eponym_play::identity::SubjectId;
+use eponym_play::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
 use isometer::core::{BodyDocument, PartId};
 use isometer::lens::{BrickMap, Grade};
 use isometer::{

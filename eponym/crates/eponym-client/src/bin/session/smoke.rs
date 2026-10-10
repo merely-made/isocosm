@@ -23,7 +23,7 @@ use std::time::Instant;
 
 use cambium_genet_winit_host::{AppCtx, Frame, read_frame};
 use isometer::core::PartId;
-use isocosm::legacy::eponym::world::{GameEvent, ItemKind, StrikeOutcome};
+use eponym_play::{GameEvent, ItemKind, StrikeOutcome};
 use taproot::Selector;
 
 use super::view::{Child, Logic};
@@ -265,7 +265,7 @@ fn script(state: &mut SessionApp, errors: &mut Vec<String>) {
         };
     }
     state.move_played([1, 0, 0]);
-    state.prepare(isocosm::legacy::eponym::world::timed_action::Direction::Right);
+    state.prepare(eponym_play::timed_action::Direction::Right);
     state.join_limb(PartId(2));
     state.charging = true;
     for _ in 0..4 {

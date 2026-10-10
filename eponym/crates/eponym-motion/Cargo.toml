@@ -9,6 +9,7 @@ publish = false
 
 [dependencies]
 conatus = { workspace = true }
+eponym-play = { path = "../eponym-play" }
 isocosm = { path = "../../../shared/isocosm" }
 isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }

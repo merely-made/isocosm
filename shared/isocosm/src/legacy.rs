@@ -6,5 +6,4 @@
 //! which each leaves this tree.
 
 pub mod campaign;
-pub mod eponym;
 pub mod mesocosm;

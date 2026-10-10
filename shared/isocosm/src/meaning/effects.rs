@@ -249,7 +249,7 @@ fn allocate(
         },
         None => {
             let used: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
-            let free = u64::from(crate::anatomy::capacity(half)).saturating_sub(used);
+            let free = u64::from(crate::anatomy::living_cells(half, p)).saturating_sub(used);
             if free < u64::from(cells) {
                 return Err(format!("the bound part has {free} free cells"));
             }

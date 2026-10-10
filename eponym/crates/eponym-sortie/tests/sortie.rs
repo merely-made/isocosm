@@ -14,9 +14,9 @@
 
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
-use isocosm::legacy::eponym::identity::{BodyRevisionId, ControlIntent, Tick};
-use isocosm::legacy::eponym::social::scene::{AUD, BRAM, ODRIS, SELA};
-use isocosm::legacy::eponym::social::{DeedKind, Premise, Verdict};
+use eponym_play::identity::{BodyRevisionId, ControlIntent, Tick};
+use eponym_sortie::settled::{AUD, BRAM, ODRIS, SELA};
+use isocosm::social::{DeedKind, Premise, Verdict};
 
 fn tick_of(event: &SortieEvent) -> Tick {
     match event {
@@ -111,12 +111,13 @@ fn a_tag_in_occurs_mid_action_under_the_pact() {
 
     // The tending exercised the pact's standing agreement and stood by the
     // fallen: both deeds are in the log, done by Sela to Aud.
-    let deeds = sortie.society.log();
-    assert!(deeds.deeds().iter().any(|deed| deed.doer == SELA
-        && deed.toward == Some(AUD)
+    let deeds = sortie.society.deeds();
+    let (sela, aud) = (sortie.society.id(SELA), sortie.society.id(AUD));
+    assert!(deeds.iter().any(|deed| deed.doer == sela
+        && deed.toward == Some(aud)
         && matches!(deed.kind, DeedKind::PerformedUnderAgreement(_))));
-    assert!(deeds.deeds().iter().any(|deed| deed.doer == SELA
-        && deed.toward == Some(AUD)
+    assert!(deeds.iter().any(|deed| deed.doer == sela
+        && deed.toward == Some(aud)
         && deed.kind == DeedKind::StoodBy));
 }
 
@@ -130,21 +131,13 @@ fn an_injury_persists_as_a_body_revision_fact() {
         .find(|wound| wound.subject == AUD)
         .expect("the played body was never wounded");
     assert!(wound.fell > eponym_sortie::sortie::SAFE_FALL);
-    assert_eq!(wound.revision, BodyRevisionId(1));
 
-    // The facets wear the wounded revision after the sortie: the injury is
-    // a fact about the body worn, not a status effect that expired on the
-    // walk home.
-    assert_eq!(sortie.facets.body_of(AUD), Some(wound.revision));
+    // The wound is the sim's: the body after the sortie is the one the
+    // wound left, a lost cell and no new revision (717).
+    assert_eq!(BodyRevisionId(sortie.society.body_revision(AUD)), wound.revision);
 
-    // And the wound law is uniform: Bram took the same scarp and carries
-    // his own revision, undowned.
-    assert!(
-        sortie
-            .wounds
-            .iter()
-            .any(|wound| wound.subject == BRAM && wound.revision == BodyRevisionId(1))
-    );
+    // And the wound law is uniform: Bram took the same scarp, undowned.
+    assert!(sortie.wounds.iter().any(|wound| wound.subject == BRAM));
     assert!(
         !sortie
             .events
@@ -182,12 +175,12 @@ fn a_sortie_deed_explains_a_later_answer() {
     let sortie_deed = cited
         .iter()
         .find(|id| {
-            let deed = society.log().get(**id).unwrap();
-            deed.at == shared_at && deed.kind == DeedKind::Shared && deed.doer == AUD
+            let deed = society.sim().deed(id).unwrap();
+            deed.at == shared_at.0 && deed.kind == DeedKind::Shared && deed.doer == society.id(AUD)
         })
         .expect("the answer does not cite the sortie's share");
-    let deed = society.log().get(*sortie_deed).unwrap();
-    assert_eq!(deed.toward, Some(SELA));
+    let deed = society.sim().deed(sortie_deed).unwrap();
+    assert_eq!(deed.toward, Some(society.id(SELA)));
 }
 
 #[test]
@@ -199,7 +192,7 @@ fn a_refusal_stands_and_nobody_is_ordered() {
 
     let bram = answers
         .iter()
-        .find(|answer| answer.by == BRAM)
+        .find(|answer| answer.by == sortie.society.id(BRAM))
         .expect("Bram was asked");
     assert_eq!(bram.verdict, Verdict::Refuse);
     assert!(
@@ -233,7 +226,7 @@ fn the_negotiation_is_real_and_the_agreement_closes() {
     // Bram's part exists because he said yes, with premises.
     let bram = answers
         .iter()
-        .find(|answer| answer.by == BRAM)
+        .find(|answer| answer.by == sortie.society.id(BRAM))
         .expect("Bram was asked");
     assert_eq!(bram.verdict, Verdict::Accept);
     assert!(!bram.premises.is_empty());
@@ -243,12 +236,11 @@ fn the_negotiation_is_real_and_the_agreement_closes() {
     let outing = sortie
         .society
         .agreements()
-        .find(|agreement| agreement.holder == BRAM && agreement.work == scene::OUTING)
+        .find(|agreement| agreement.holder == sortie.society.id(BRAM) && agreement.work == scene::OUTING)
         .expect("the expedition agreement exists");
     assert!(!outing.standing());
     let ended = sortie
         .society
-        .log()
         .deeds()
         .iter()
         .any(|deed| deed.kind == DeedKind::AgreementEnded(outing.id));

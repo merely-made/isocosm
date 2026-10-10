@@ -10,7 +10,7 @@
 //! can arrive in the same corner by different routes, and only one of those
 //! is determinism.
 
-use isocosm::legacy::mesocosm::snapshot;
+use isometer::core::snapshot;
 use eponym_client::probe::{ProbeError, Save};
 use eponym_client::room::SEED;
 use eponym_client::{Probe, TICKS};

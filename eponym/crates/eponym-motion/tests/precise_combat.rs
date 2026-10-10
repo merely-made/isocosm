@@ -1,10 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
-use isocosm::legacy::eponym::world::timed_action::{Direction, LimbBinding, StrikeReceipt};
-use isocosm::legacy::eponym::world::*;
-use isocosm::legacy::mesocosm::{BodyDocument, SpeciesId, VolumeRef};
+use eponym_play::identity::{BodyRevisionId, SubjectId};
+use eponym_play::timed_action::{Direction, LimbBinding, StrikeReceipt};
+use eponym_play::*;
+use isocosm::lineage::{LineageBody as BodyDocument, SpeciesId};
+use isometer_core::VolumeRef;
 
 const ACTOR: SubjectId = SubjectId(31);
 const TARGET: SubjectId = SubjectId(32);
@@ -66,7 +67,7 @@ fn fire(game: &mut GameState, revision: u32) -> StrikeOutcome {
             target: TARGET,
             strikes: vec![StrikeReceipt {
                 binding: LimbBinding {
-                    part: isocosm::legacy::mesocosm::PartId(0),
+                    part: isometer_core::PartId(0),
                     revision: BodyRevisionId(0),
                 },
                 direction: Direction::Right,
@@ -170,9 +171,9 @@ fn saved_fractional_contact_continues_exactly() {
 
 #[test]
 fn real_v5_motion_archive_retains_its_legacy_combat_history() {
-    use isocosm::legacy::eponym::world::timed_action::{TimedActionSave, TimedActionSession};
+    use eponym_play::timed_action::{TimedActionSave, TimedActionSession};
     let bytes = include_bytes!("fixtures/timed-action-v1-game-v5.save");
-    let save: TimedActionSave = isocosm::legacy::mesocosm::snapshot::decode(bytes).unwrap();
+    let save: TimedActionSave = isometer_core::snapshot::decode(bytes).unwrap();
     assert_eq!(save.session.game.version, 5);
     assert!(save.session.game.intents.iter().any(|intent| matches!(
         intent,
@@ -183,13 +184,13 @@ fn real_v5_motion_archive_retains_its_legacy_combat_history() {
     )));
     let mut restored = TimedActionSession::restore_solving(bytes, eponym_motion::SOLVER).unwrap();
     let rewritten: TimedActionSave =
-        isocosm::legacy::mesocosm::snapshot::decode(&restored.save().unwrap()).unwrap();
+        isometer_core::snapshot::decode(&restored.save().unwrap()).unwrap();
     assert_eq!(
         rewritten.session.game.version,
-        isocosm::legacy::eponym::world::GAME_STATE_VERSION
+        eponym_play::GAME_STATE_VERSION
     );
     let mut upgraded = save.clone();
-    upgraded.session.game.version = isocosm::legacy::eponym::world::GAME_STATE_VERSION;
+    upgraded.session.game.version = eponym_play::GAME_STATE_VERSION;
     assert_eq!(rewritten, upgraded);
     let subject = restored.session().control().played();
     let game = restored.session().game();

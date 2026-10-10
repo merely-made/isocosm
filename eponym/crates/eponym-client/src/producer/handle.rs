@@ -16,9 +16,9 @@
 
 use std::{cell::RefCell, rc::Rc};
 
-use isocosm::legacy::eponym::identity::SubjectId;
-use isocosm::legacy::eponym::world::timed_action::{TimedActionError, TimedActionSession};
-use isocosm::legacy::eponym::world::{GameError, GameEvent, GameIntent, GameState, Session};
+use eponym_play::identity::SubjectId;
+use eponym_play::timed_action::{TimedActionError, TimedActionSession};
+use eponym_play::{GameError, GameEvent, GameIntent, GameState, Session};
 
 use super::policy::{Appearance, CameraPolicy};
 
@@ -175,14 +175,14 @@ impl SceneModel {
     pub fn follow_centre(&self) -> Result<[f32; 3], GameError> {
         let game = self.game();
         if let Some(pose) = game.pose(self.played) {
-            let scale = isocosm::legacy::eponym::world::MOTION_SCALE as f32;
+            let scale = eponym_play::MOTION_SCALE as f32;
             return Ok([0, 1, 2].map(|i| pose.position[i] as f32 / scale));
         }
         let at = game
             .movement()
             .position(self.played)
             .ok_or(GameError::Movement(
-                isocosm::legacy::eponym::world::MovementError::MissingSubject(self.played),
+                eponym_play::MovementError::MissingSubject(self.played),
             ))?;
         Ok(at.map(|v| v as f32))
     }

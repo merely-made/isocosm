@@ -4,16 +4,18 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Walking toward somewhere, on mesocosm's kinematics.
+//! Walking toward somewhere, on the walker's step over isometer's in-site
+//! space.
 //!
-//! Nothing here moves a body except `near::step`, per the stop rule. What
+//! Nothing here moves a body except that step, per the stop rule. What
 //! this module owns is only which step to ask for: the signum heading toward
 //! a goal, and one deterministic shoulder-around when the terrain refuses it.
-//! `near::step` slides only on diagonal headings, so a cardinal march into a
+//! The step can refuse a cardinal heading, so a cardinal march into a
 //! two-voxel riser would hold forever; trying the two perpendiculars in a
 //! fixed order is that slide rule lifted one level, and just as replayable.
 
-use isocosm::legacy::mesocosm::places::{Ground, step};
+use eponym_play::walking::{WALKER_HEIGHT, step};
+use isometer_space::volume::Volume;
 
 /// One walking tick toward a goal in x and z. Returns where the body ends
 /// up, which is where it started when everything in that direction refuses.
@@ -24,13 +26,13 @@ use isocosm::legacy::mesocosm::places::{Ground, step};
 /// perpendiculars forever; with it, the walker follows the wall one way
 /// until the direct heading opens again. One integer of state, and as
 /// replayable as the step itself.
-pub fn toward(ground: &Ground, at: [i32; 3], goal: [i32; 2], shoulder: &mut i8) -> [i32; 3] {
+pub fn toward(volume: &Volume, at: [i32; 3], goal: [i32; 2], shoulder: &mut i8) -> [i32; 3] {
     let heading = [(goal[0] - at[0]).signum(), (goal[1] - at[2]).signum()];
     if heading == [0, 0] {
         return at;
     }
     let attempt =
-        |from: [i32; 3], h: [i32; 2]| step(ground, from, [from[0] + h[0], from[1], from[2] + h[1]]);
+        |from: [i32; 3], h: [i32; 2]| step(volume, from, [from[0] + h[0], from[1], from[2] + h[1]]);
 
     let direct = attempt(at, heading);
     if direct != at {
@@ -69,8 +71,8 @@ pub fn apart(a: [i32; 3], b: [i32; 3]) -> i32 {
 }
 
 /// A standing spot on the open surface of a column, if the column has one.
-pub fn stand(ground: &Ground, x: i32, z: i32) -> Option<[i32; 3]> {
-    use isocosm::legacy::mesocosm::places::WALKER_HEIGHT;
+pub fn stand(volume: &Volume, x: i32, z: i32) -> Option<[i32; 3]> {
+    let ground = volume.ground();
     let top = ground.surface(x, z)?;
     let at = [x, top + 1, z];
     ground.stands(at, WALKER_HEIGHT).then_some(at)

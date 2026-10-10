@@ -19,10 +19,10 @@
 //! `eponym-world/tests/equipment.rs`.
 
 use isometer::core::PartId;
-use isocosm::legacy::eponym::identity::SubjectId;
-use isocosm::legacy::eponym::world::CanonRevisionCause;
-use isocosm::legacy::eponym::world::glyphs::ProvenanceKind;
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::SubjectId;
+use eponym_play::CanonRevisionCause;
+use eponym_play::glyphs::ProvenanceKind;
+use eponym_play::{
     AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, GameState, ItemKind, ItemLocation,
     MOTION_SCALE, SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
 };
@@ -67,7 +67,7 @@ pub(super) fn subject_sheet(
         body: &record.document,
         knowledge: &knowledge,
         inputs: &inputs,
-        part_names: isocosm::legacy::eponym::world::fixtures::three_lives::PART_NAMES,
+        part_names: eponym_play::fixtures::three_lives::PART_NAMES,
         selected_part,
     });
     sheet.actions.clear();
@@ -89,7 +89,7 @@ pub(super) fn subject_sheet(
 
 /// One carried or worn item, as the equipment panel lists it.
 pub(super) struct Carried {
-    pub item: isocosm::legacy::eponym::world::ItemId,
+    pub item: eponym_play::ItemId,
     pub kind: ItemKind,
     /// The part it is attached to, when it is worn rather than carried.
     pub attached: Option<PartId>,
@@ -380,9 +380,9 @@ fn describe_cause(cause: &CanonRevisionCause) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::eponym::identity::BodyRevisionId;
-    use isocosm::legacy::eponym::world::GameIntent;
-    use isocosm::legacy::eponym::world::fixtures::session as session_fixture;
+    use eponym_play::identity::BodyRevisionId;
+    use eponym_play::GameIntent;
+    use eponym_play::fixtures::session as session_fixture;
 
     /// The session's own world, detached from its `Session` so a test can
     /// apply the world facts the projection has to survive.

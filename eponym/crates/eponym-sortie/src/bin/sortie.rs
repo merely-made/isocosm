@@ -12,9 +12,9 @@
 
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
-use isocosm::legacy::eponym::identity::Tick;
-use isocosm::legacy::eponym::social::Verdict;
-use isocosm::legacy::eponym::social::scene::SELA;
+use eponym_play::identity::Tick;
+use eponym_sortie::settled::SELA;
+use isocosm::social::Verdict;
 
 fn main() {
     let (answers, sortie) = scene::played_through();
@@ -22,7 +22,8 @@ fn main() {
 
     println!("The muster:");
     for answer in &answers {
-        println!("  {} {}.", name(answer.by), answer.verdict.name());
+        let by = sortie.society.name_of_entity(answer.by);
+        println!("  {by} {}.", answer.verdict.name());
     }
     println!();
 

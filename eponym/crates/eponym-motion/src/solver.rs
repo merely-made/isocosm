@@ -8,7 +8,7 @@
 use conatus::{
     BodyDesc, BodyWorld, CharacterConfig, ColliderDesc, ColliderId, ColliderShape, Transform,
 };
-use isocosm::legacy::eponym::world::{
+use eponym_play::{
     MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionSolver,
 };
 use isometer_core::ground::Ground;
@@ -27,7 +27,7 @@ pub fn advance(
 ) -> Result<MotionOutcome, MotionError> {
     match rules.revision {
         1 => rules.validate()?,
-        isocosm::legacy::eponym::world::MOVEMENT_PROFILE_REVISION => rules.validate_projection()?,
+        eponym_play::MOVEMENT_PROFILE_REVISION => rules.validate_projection()?,
         _ => return Err(MotionError::InvalidRules),
     }
     if input.move_x == i16::MIN || input.move_z == i16::MIN {

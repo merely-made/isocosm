@@ -403,3 +403,59 @@ the bodies family.
   cells in place where counts move but does not keep a tract connected;
   only a proposal must be. Nothing calls `propose` or reads the feeding
   mode yet; the world moves bring them.
+- **2026-10-10, family 7, Eponym's world (lane `lane-eponym-world`, under
+  732's compile gate; no test sweeps, draws or certification run).** Under
+  755, 767 and 769 to 771 Eponym's world family moved onto native Isocosm
+  and legacy Eponym (13,740 lines) is deleted, its 149 tests (65 in 14 unit
+  modules, 84 in 16 integration files and their fixture) and two examples
+  retired under 672.
+  - *Native nouns.* `harm`: a wound takes cells from one part across its
+    functions and free pool (709), keeps them in the part's lost cells,
+    which the tissue ceiling and free cells now subtract (706), spills each
+    account over its lowered bound to the site (708), and at the last cell
+    severs by isometer's semantics, moving the tombstones' matter out and
+    bumping the revision, or kills at the root (707, 710, 711, 717); a part
+    is drawn by living cells where none is named (716); `Command::Wound` is
+    how a game hands back a blow (669). Checkpoint 10 builds partly here;
+    healing (712), hazards (704), fragments (713 to 715) and rot (718) wait
+    for it. `needs`: hunger and fatigue are wants read by the mind's `Need`s
+    from a body's own accounts, the matter reserve and `Energy` (767).
+    `arrival`: an outsider arriving with issued matter (235, 238), its
+    geometry admitted (674), and a name as a note its namer holds (36, 200);
+    an authored character asserted placeless (769) arrives by its key, the
+    asserted entity taking up the body with its fill and faction (760), as
+    the sortie's four peers do.
+    `knowing`: observations, claims, reports and corrections are notes held
+    by the observer, claimant or hearer, an observation needing the observer
+    to be a party or to know the event by the reach field (771).
+    `social`: a deed is an act of a deed process leaving a world event,
+    native events gaining the act's `object`; standing is folded from deeds;
+    the willingness rule weighs crafts kept as skills and caution kept in
+    the disposition; standing agreements live in `State::agreements`; a home
+    is an authored place's site held by a tenancy relation naming its
+    agreement (60, 63, 67, 769). Each comes through a native command.
+  - *Handed back (669).* A new game crate, `eponym/crates/eponym-play`,
+    drives a sapient player's subject over a native session (671): Eponym's
+    world is a native founding with Eponym's pack (sophont accounts, item
+    lineages, eat, rest and exertion processes, deed processes, note kinds,
+    needs), played in one site isometer lifts; each accepted intent runs as
+    native commands and is one tick of the sim. It keeps motion, timed
+    actions, the strike resolver, techniques, sheets, admitted anatomy
+    snapshots, control and the glyph reading's game half. Walking and sight
+    go through isometer's in-site space (`places::steps`, new, and `ray`),
+    navigation through SP5's `walk`; carves and inherited sites are facts
+    the sim keeps. Population, projects, the autonomous round and the
+    simulation record retired with the world (770, 771), as did facets and
+    offices.
+  - *Re-pointed.* `eponym-client` (its room and residency now lift Eponym's
+    native world), `eponym-motion`, and `eponym-sortie`, whose society is
+    the native one with S1 and S2's scene kept as its own fixture.
+  *Reading, not ruled:* items are inert bodies of item lineages, carried by
+  a relation, their resting place and worn part the game's (740); a whole-
+  body harm out of a hundred becomes that share of living cells from one
+  drawn part, and a part a strike cut is wounded through every cell; the
+  game's body revision moves only with a severing (717); an arrival's matter
+  is issued like the dev source's; names are notes; crafts and deed kinds
+  are closed native vocabularies. Put back as forks: where handed-back game
+  code lives, the deed and agreement nouns, items, and the admitted anatomy
+  snapshot beside native geometry.
