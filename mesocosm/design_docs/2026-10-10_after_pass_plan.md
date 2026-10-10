@@ -127,7 +127,13 @@ headed meal choice feels tense rather than clerical.
   play and `mesocosm-genet/src/played.rs::resume` also selects Creative.
   Q11 must expose a mode setting and certify Survival and Creative (691)
   separately from native Individuals/Grouped replay. Q3/Q4 prerequisites
-  remain open; this inspection supplies no headed receipt.
+  remain open; this inspection supplies no headed receipt. D1 commit
+  `f76a79044af0b285b666afe755f9a3188e3fd3e2` has parent
+  `d4d7f0d516dcf10af7b2f596ddf82905f2f696d7`: its native `history.rs`
+  writes `SAVE_VERSION = 3` and its tree contains no directing module.
+  Its saved fixtures are v1/v2, without a pre-D1 v3 fixture. Producing one
+  on that actual historical source remains Q11's authentic-fixture gate;
+  a save assembled with today's source does not supply that provenance.
 - **2026-10-10, Q4/Q5 archive preflight:** source inspection only; no reader,
   fixture or test was changed and no Cargo gate ran. Q4's v1 checkpoint
   fixture carries the former Part fields `parent`, `traits` and `severed`;

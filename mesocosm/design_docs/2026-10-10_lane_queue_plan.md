@@ -284,6 +284,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q8 refreshed source verified:** the existing plans tree
+  carries Q2's eleven native paths from `6f879936` alongside unchanged C10
+  preparation. Root recomputed all 31 inputs in
+  `q8-c10-refreshed-source.json`, SHA-256
+  `825487c4aa09851f9084f6cf740604fe214356b5664c0cb3fd985e847e3bb5be`,
+  under the external C10 receipt directory. No Cargo ran on this preparation.
+  The bounded 32 harm positives, three binary conservation controls,
+  compiled faults 0 to 9 and native all-target check follow Q3's pilot.
+  Fresh release pilots/full draws need those gates and an executable freeze;
+  adapter ruling 812 and ordinary HEAL remain pending.
 - **2026-10-10, refreshed Q3 pilot source frozen:** native inputs now come
   from verified `6f879936`, preserving the owned proof, registration and
   diagnostic retirement. The 412-line proof requires
