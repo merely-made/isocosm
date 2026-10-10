@@ -24,6 +24,7 @@ pub mod growth;
 pub mod history;
 mod journal;
 pub mod legacy;
+pub mod lineage;
 pub mod map;
 pub mod matter;
 mod meaning;
