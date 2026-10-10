@@ -177,3 +177,27 @@ the bodies family.
   *Reading, not ruled:* registry, stock and flow kept their behaviour exactly;
   converging the registry onto the function catalogue and the flow record onto
   native `flows` are behaviour changes, put to Mark as forks.
+- **2026-10-09, family 2, bodies: the 674 seam (lane `lane-bodies`, under
+  732's compile gate; no tests, draws or certification run).** Isometer's
+  suites stand on their own fixtures (720): an isometer-core `fixtures`
+  feature (a seeded rolling terrain, a walker body), a fixture palette in the
+  mesh's tests, document-level attachment tests; the two receipts that drive
+  the legacy `World` (`dc4_roster`, `render_body`) moved to mesocosm-genet's
+  examples; isometer-lens, -mesh and -render no longer dev-depend on
+  isocosm. `BodyDocument` parts carry `situs` and a declared `shape` (699),
+  and `revive` clears a tombstone whose parent lives (719). Native bodies
+  keep geometry in an optional `BodyDocument` on `Entity`, and `Part` keeps
+  physiology keyed by `PartId` (674, 699), read through a new
+  `geometry` module; anatomy, growth, development, births, systems, the
+  stage and the probe read extents, parents, situs and tombstones through
+  isometer. The registry is lowered onto the function catalogue (750):
+  each native's best-fit roles and seeding read from `default_functions`,
+  values and digests unchanged, and `admits` answers every role (492).
+  *Reading, not ruled:* a part leaving whole (a bud, an incorporated part)
+  leaves its tombstone with its situs cleared, so the recipe may grow that
+  place again as before; native documents carry neutral lineage fields
+  until 721 lands. Open, put back as forks: how 721's lineage vocabulary and
+  699's mass reading leave isometer-core while the legacy world still stores
+  them in documents; whether the legacy body modules can leave before the
+  world families, which consume them; whether the registry holds all fifteen
+  catalogue functions; and fork 9.
