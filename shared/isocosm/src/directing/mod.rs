@@ -15,7 +15,7 @@ mod choice;
 pub mod found;
 pub mod interim;
 pub mod readings;
-pub mod revise;
+pub use crate::lineage::revise;
 pub mod tier;
 
 pub(crate) use choice::{Chosen, Deliberated};
