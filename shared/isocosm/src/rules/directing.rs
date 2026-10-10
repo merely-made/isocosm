@@ -43,6 +43,13 @@ pub struct Directing {
     /// trait that names the level. A level unnamed has no slot to fill.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub slots: BTreeMap<Key, u128>,
+    /// The most recipe variants a line weighs at a boundary (752).
+    #[serde(default = "four")]
+    pub variants: u32,
+}
+
+fn four() -> u32 {
+    4
 }
 
 impl Default for Directing {
@@ -56,6 +63,7 @@ impl Default for Directing {
             span: 60,
             sway: 1000,
             slots: BTreeMap::new(),
+            variants: four(),
         }
     }
 }

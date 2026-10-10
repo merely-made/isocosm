@@ -64,13 +64,12 @@ fn regions_merge_into_one_as_biomass_falls() {
 
 #[test]
 fn a_region_with_a_level_gone_has_collapsed() {
-    // A region as wide as the world holds every level founded.
-    let s = regional(3, 6);
-    assert!(
-        regions(&s.sim).iter().all(|r| !r.collapsed),
-        "{:?}",
-        regions(&s.sim)
-    );
+    // A region that never held a level has not lost it (754).
+    for seed in 1..8 {
+        let s = world(seed);
+        assert!(regions(&s.sim).iter().all(|r| !r.collapsed), "seed {seed}");
+    }
+    let s = world(3);
     // Planted fault: every producer gone.
     let gone: BTreeMap<_, _> = regions::site_biomass(&s.sim)
         .into_iter()
@@ -79,7 +78,9 @@ fn a_region_with_a_level_gone_has_collapsed() {
             (site, levels)
         })
         .collect();
-    assert!(regions::grow(&s.sim, &gone).iter().all(|r| r.collapsed));
+    for r in regions::grow(&s.sim, &gone) {
+        assert_eq!(r.collapsed, r.held.contains("life:producer"), "{r:?}");
+    }
 }
 
 #[test]

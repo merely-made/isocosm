@@ -8,10 +8,12 @@
 use crate::{schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 
+pub mod habitable;
 pub mod orders;
 pub mod regions;
 pub mod survival;
 
+pub use habitable::habitable;
 pub use orders::{Orders, orders};
 pub use regions::{Region, region_of, regions};
 pub use survival::{Mode, View, view};

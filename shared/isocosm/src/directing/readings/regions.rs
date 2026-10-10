@@ -5,7 +5,9 @@
 //! never kept. A region grows from its lowest unclaimed site along routes,
 //! taking a neighbour while every trophic level still fits its slot, the
 //! world rule's capacity; so regions merge as biomass falls, and geography
-//! counts. A region has collapsed when one of its levels is gone.
+//! counts. A region has collapsed when a level it once held is gone (225,
+//! 754): a site has held a level where a member of it was founded, lives,
+//! lay dead or passed through.
 
 use crate::{schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
@@ -16,7 +18,9 @@ pub struct Region {
     pub sites: BTreeSet<Id>,
     /// Each slotted level's living matter here.
     pub biomass: BTreeMap<Key, u128>,
-    /// A slotted level is gone here (225).
+    /// The slotted levels its sites have ever held.
+    pub held: BTreeSet<Key>,
+    /// A level it once held is gone here (225, 754).
     pub collapsed: bool,
 }
 
@@ -45,6 +49,25 @@ pub fn site_biomass(sim: &Simulation) -> BTreeMap<Id, BTreeMap<Key, u128>> {
     by
 }
 
+/// The slotted levels each site has ever held, read from the founding
+/// and from every body's place and visits.
+pub fn held(sim: &Simulation) -> BTreeMap<Id, BTreeSet<Key>> {
+    let slots = sim.genesis().rules.directing().slots;
+    let mut by: BTreeMap<Id, BTreeSet<Key>> = BTreeMap::new();
+    let founded = sim.genesis().population.groups.values();
+    for g in founded.chain(sim.state().population.groups.values()) {
+        let e = &g.entity;
+        let levels = slots.keys().filter(|l| e.traits.contains(*l));
+        for level in levels {
+            let places = std::iter::once(e.place).chain(e.visits.iter().map(|v| v.place));
+            for place in places {
+                by.entry(place).or_default().insert(level.clone());
+            }
+        }
+    }
+    by
+}
+
 /// The world's regions now, in order of their lowest site.
 pub fn regions(sim: &Simulation) -> Vec<Region> {
     grow(sim, &site_biomass(sim))
@@ -54,6 +77,7 @@ pub fn regions(sim: &Simulation) -> Vec<Region> {
 pub(crate) fn grow(sim: &Simulation, biomass: &BTreeMap<Id, BTreeMap<Key, u128>>) -> Vec<Region> {
     let slots = sim.genesis().rules.directing().slots;
     let sites = &sim.state().sites;
+    let ever = held(sim);
     let mut claimed = BTreeSet::new();
     let mut regions = Vec::new();
     for &seed in biomass.keys() {
@@ -63,6 +87,7 @@ pub(crate) fn grow(sim: &Simulation, biomass: &BTreeMap<Id, BTreeMap<Key, u128>>
         let mut region = Region {
             sites: BTreeSet::new(),
             biomass: slots.keys().map(|k| (k.clone(), 0)).collect(),
+            held: BTreeSet::new(),
             collapsed: false,
         };
         let mut queue = VecDeque::from([seed]);
@@ -80,6 +105,9 @@ pub(crate) fn grow(sim: &Simulation, biomass: &BTreeMap<Id, BTreeMap<Key, u128>>
             }
             claimed.insert(site);
             region.sites.insert(site);
+            region
+                .held
+                .extend(ever.get(&site).into_iter().flatten().cloned());
             for (level, held) in here {
                 *region.biomass.get_mut(level).unwrap() += held;
             }
@@ -87,7 +115,7 @@ pub(crate) fn grow(sim: &Simulation, biomass: &BTreeMap<Id, BTreeMap<Key, u128>>
             next.sort_unstable();
             queue.extend(next.into_iter().filter(|s| !claimed.contains(s)));
         }
-        region.collapsed = region.biomass.values().any(|m| *m == 0);
+        region.collapsed = region.held.iter().any(|l| region.biomass[l] == 0);
         regions.push(region);
     }
     regions

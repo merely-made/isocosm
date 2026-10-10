@@ -15,6 +15,7 @@ mod choice;
 pub mod found;
 pub mod interim;
 pub mod readings;
+pub mod revise;
 pub mod tier;
 
 pub(crate) use choice::{Chosen, Deliberated};
@@ -254,5 +255,7 @@ impl Simulation {
 
 #[cfg(test)]
 mod choice_tests;
+#[cfg(test)]
+mod ruled_tests;
 #[cfg(test)]
 mod tests;

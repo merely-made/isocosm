@@ -141,6 +141,13 @@ on Isocosm, both modes, receipts replaying.
   eight ticks, and age takes it within 20 to 60. So a played consumer
   lineage ends within a lifespan, and D4's three-epoch test runs epochs of
   8 ticks. The world family's re-expression, not directing, settles this.
+- **2026-10-09, after 751 to 754:** within one tick a reactive member can
+  take several moves in turn, each move's pass seeing it at its new site;
+  travel time is not charged. 754's "or that the world holds within reach"
+  is not built: every reading of it tried brings back the first-round
+  collapses 754 removed. Generated consumers still cannot reproduce; no
+  ruling sets the generated ecology's rates (447 and 518 govern bodied
+  reproduction by provision), so it goes back as a fork.
 - **2026-10-09:** at site grain a region that never held a level reads as
   collapsed (225 says "a level gone"); with slots of two sites' worth, most
   generated founding draws show such regions on their first round. The
@@ -200,6 +207,21 @@ on Isocosm, both modes, receipts replaying.
   - Checks: `cargo check --workspace --all-targets --offline` green in
     `shared/isocosm`, `mesocosm`, `eponym`, the root, `isocosm-overlay`
     and `isometer`; the lane's 21 unit tests pass. Nothing else was run.
+  - **2026-10-09, rulings 751 to 754 (lane `lane-directing-2`).**
+    751: `readings::habitable` (the conditions the lineage's
+    trait-bound processes require, and a living member); `Start { within,
+    epochs }` runs the world's deep time, then epoch by epoch until a site
+    is habitable (refused past `within`), then the player's epochs, and the
+    first life is taken at a habitable site. 752: `Command::Revise` and
+    `revise.rs`: a variant bears a learned kind the recipe lacks on one
+    tagma, the lexicon unchanged, at most `Directing.variants` (4) a line;
+    `revise::revisions` is the boundary's candidate source. 753: a played
+    founding gives every line a hunger need and every route a
+    `move:<from>-<to>` Choice process, open at its site (condition
+    `site:<id>`) while mood is low; `OnCollapse::Elsewhere` stays. 754: a
+    region's `held` levels are read from the founding and every body's
+    place and visits, and it has collapsed only where a held level reads
+    nought.
   - **For the after-pass**, beyond §3's done-conditions: a real pre-D1 v3
     save fixture (the tests show only that a plain run saves no new field);
     hashes of every non-deliberative run before and after D2 (equal by

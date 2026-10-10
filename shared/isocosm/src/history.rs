@@ -59,6 +59,11 @@ pub enum Command {
         aim: crate::directing::Aim,
         toward: crate::directing::Toward,
     },
+    /// A lineage commits a variant of its development (ruling 752).
+    Revise {
+        lineage: Key,
+        development: crate::rules::Development,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -456,6 +461,13 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
         } => {
             sim.nudge(*participant, *critter, *aim, *toward)?;
             Ok("nudged".into())
+        },
+        Command::Revise {
+            lineage,
+            development,
+        } => {
+            sim.revise(lineage, development)?;
+            Ok("revised".into())
         },
     }
 }

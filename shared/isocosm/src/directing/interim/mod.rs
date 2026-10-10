@@ -20,10 +20,13 @@ pub mod deep;
 pub use boundary::{Candidate, Score, Turn};
 pub use deep::{Handover, run_deep_time};
 
-/// When the player steps in: after the world's own deep time (452), and as
-/// many epochs more as they like (179).
+/// When the player steps in (179, 751): after the world's own deep time
+/// (452), at the first epoch boundary where a site is habitable for the
+/// played lineage, waiting at most `within` epochs for one, and then as
+/// many epochs more as they like.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Start {
+    pub within: u32,
     pub epochs: u32,
 }
 
@@ -78,9 +81,12 @@ pub struct Interim {
     pub pace: Pace,
     pub on_collapse: OnCollapse,
     pub handover: Handover,
+    /// The boundary at which the played lineage first had a habitable site.
+    pub habitable_at: Tick,
 }
 
-/// No line has native candidates yet: the lineages family brings them.
+/// Nothing to weigh, for a boundary that adapts no line; the default is
+/// `directing::revise::revisions` (752).
 pub fn no_candidates(_: &Session, _: &str) -> Vec<Candidate> {
     vec![]
 }
@@ -96,13 +102,36 @@ impl Interim {
         execution: Execution,
     ) -> Result<Self> {
         let played = genesis.founding.as_ref().and_then(|f| f.played);
-        played.ok_or("the interim plays a generated lineage (682)")?;
+        let lineage = format!(
+            "lineage:{}",
+            played
+                .ok_or("the interim plays a generated lineage (682)")?
+                .lineage
+        );
         let mut session = Session::new(genesis, execution)?;
-        let span = session.sim.genesis().rules.deep_time.epochs;
-        let span = DeepTimeSpan {
-            epochs: span.saturating_add(start.epochs),
+        let epochs = |epochs| DeepTimeSpan { epochs };
+        let span = session.sim.genesis().rules.deep_time;
+        let first = run_deep_time(&mut session, span)?;
+        let mut waited = 0;
+        while readings::habitable(&session.sim, &lineage).is_empty() {
+            if waited == start.within {
+                return Err(format!(
+                    "{lineage} found no habitable site within {waited} epochs"
+                ));
+            }
+            run_deep_time(&mut session, epochs(1))?;
+            waited += 1;
+        }
+        let habitable_at = session.sim.state().tick;
+        let last = run_deep_time(&mut session, epochs(start.epochs))?;
+        let handover = Handover {
+            span: hagiograph::DeepTime {
+                epochs: span.epochs + waited + start.epochs,
+            },
+            to_epoch: last.to_epoch,
+            to_tick: last.to_tick,
+            ..first
         };
-        let handover = run_deep_time(&mut session, span)?;
         let joined = session.command(Command::Join)?;
         let participant = joined
             .strip_prefix("participant:")
@@ -115,9 +144,10 @@ impl Interim {
             pace,
             on_collapse: OnCollapse::Stay,
             handover,
+            habitable_at,
         };
         let first = interim
-            .next_life(None)
+            .first_life(&lineage)
             .ok_or("the played lineage has no living member")?;
         interim.take(first)?;
         Ok(interim)
@@ -151,6 +181,20 @@ impl Interim {
     pub fn view(&self) -> View {
         let critter = self.critter().unwrap_or(super::PLACELESS);
         readings::view(&self.session.sim, critter, self.mode)
+    }
+
+    /// The played lineage's first life: its lowest living deliberative
+    /// member at a site habitable for it, or anywhere if none is.
+    fn first_life(&self, lineage: &str) -> Option<Id> {
+        let sim = &self.session.sim;
+        let homes = readings::habitable(sim, lineage);
+        let ours = sim.state().population.groups.iter().filter(|(_, g)| {
+            let e = &g.entity;
+            e.alive && e.lineage == lineage && e.method == Method::Deliberative
+        });
+        let ours: Vec<(Id, Id)> = ours.map(|(f, g)| (*f, g.entity.place)).collect();
+        let home = ours.iter().find(|(_, place)| homes.contains(place));
+        home.or(ours.first()).map(|(f, _)| *f)
     }
 
     /// The played lineage's next life: a living deliberative member, at
