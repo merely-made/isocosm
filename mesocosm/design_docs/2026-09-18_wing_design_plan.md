@@ -9954,6 +9954,19 @@ what later sections derive from.
      and relief terrain, bricks, near, the snapshot codec) serve only the
      parry-ground probe's fixture, so the fixture moves into the probe,
      keeping its receipt's figures, and legacy Mesocosm is deleted.
+787. **Authored cells reach the world by `Command::Express`.** 2026-10-10,
+     from the switch's follow-ups (merged at `3eafae18`). Options: a native
+     `Command::Express { entity, part, tracts }` placing cells through
+     `mosaic::propose` (recommended); a reading beside the offer; folded
+     into `Revise` as counts. Mark chose "Command::Express (Recommended)".
+788. **Eponym's and Mesocosm's CLAUDE.md files describe the native layout.**
+     2026-10-10. Question: both still describe legacy paths that no longer
+     exist. Options: update both (recommended); a diff first; leave them.
+     Mark chose "Yes, both (Recommended)".
+789. **The after-pass starts.** 2026-10-10, with 732's push in (legacy down
+     from 63,277 lines to 3,968, the campaign tree, held by the faction
+     turn until V2). Options: write the checklist first (recommended);
+     start the after-pass; pause. Mark chose "Start the after-pass".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
