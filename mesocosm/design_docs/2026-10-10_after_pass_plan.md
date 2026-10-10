@@ -117,6 +117,21 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 meal-three trial declared:** source-only, uncompiled and
+  unrun on `ab3b559b`. Only consumer lineage 1's meal changes from one to
+  three; threshold twelve, lifespan 80 to 120 and all other supply/timing
+  stay fixed. *Reading, not ruled:* the measured first-child sequence
+  projects thirteen units at tick 24, crossing the birth gate; changed
+  competition, depletion and Choice history can still reject it. Meal two
+  remains unrun source evidence. A bounded seed-0 pilot precedes the fresh
+  candidate bare20/bodied20 and original bare20/bodied20 matrix, with
+  actual births/heirs, founder turnover, three configured boundaries,
+  conservation and both replay modes required. Any failed arm withholds
+  subsequent arms. Root checked the declaration/proof/manifest hashes;
+  complete declaration SHA-256 is
+  `2c73bdd707b095d131205c149b06d0512aff2ba28c209b79b0a105fb2bd0ef17`
+  in the existing external Q3 directory. Refresh native inputs after any
+  integration before executing. No rates are promoted; A1 stays open.
 - **2026-10-10, Q3 unchanged seed-0 balance:** the rejected profile on
   `ab3b559b` reproduced extinction at tick 115, conserved matter every
   tick and replayed in Individuals and Grouped. Founder 17's balance was

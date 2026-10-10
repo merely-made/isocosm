@@ -284,6 +284,24 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 meal-three trial declared, unrun:** change only
+  consumer lineage 1's meal from one to three, retaining threshold twelve,
+  lifespan 80 to 120, provision eight, upkeep one per five and birth every
+  seven. *Reading, not ruled:* on the measured child sequence, meal two
+  peaks at eleven while meal three reaches thirteen; changed competition
+  and history can defeat that projection. Meal two remains unrun historical
+  source evidence. A separate bare seed-0 pilot must qualify with native
+  births/heirs, turnover, three boundaries, conservation and both replay
+  modes before a fresh twenty-seed matrix. The four matrix arms remain
+  candidate bare/bodied then fresh original bare/bodied; failed arms withhold
+  later arms. Root verified declaration, proof and manifest hashes; full
+  declaration SHA-256 is
+  `2c73bdd707b095d131205c149b06d0512aff2ba28c209b79b0a105fb2bd0ef17`
+  under the existing external Q3 evidence directory. Native base is still
+  `ab3b559b`; append a source refresh after any native integration before
+  execution. No Cargo grant or generator-default promotion follows here.
+  Q8 owns Cargo for restored healing controls; Q2 prepares its short batch.
+  Adapter-healing ruling 812 remains pending.
 - **2026-10-10, Q3 unchanged seed-0 balance verified:** native Genesis
   `0a55ba9f06247e21f97892468486de8948bedbb2ea313c729809a135cb6b35b5`
   on `ab3b559b` again exhausted the played lineage at tick 115. Founder 17
