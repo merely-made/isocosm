@@ -19,6 +19,7 @@ publish = false
 # deterministic, integer-only, I/O-free core must not have.
 [dependencies]
 isocosm = { workspace = true }
+isometer-core = { workspace = true }
 piccolo = "0.3"
 serde = { workspace = true }
 # The pack formats (wing design record, ruling 624): TOML for authored files,

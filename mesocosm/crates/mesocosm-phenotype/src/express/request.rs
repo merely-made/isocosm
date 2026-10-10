@@ -12,8 +12,10 @@
 //! this struct is not visible to an author, which is how "scripts cannot
 //! inspect hidden world state" is enforced rather than asked for.
 
-use isocosm::legacy::mesocosm::{BodyPhenotype, ConditionId, World, classify};
+use isocosm::mosaic::{dims, path};
 use isocosm::process::{Registry, RulesetDigest};
+use isocosm::schema::Entity;
+use isometer_core::{Role, classify};
 use serde::{Deserialize, Serialize};
 
 /// Why the host is asking. (Plan §4's bounded triggers.)
@@ -121,57 +123,12 @@ pub struct Request {
 }
 
 impl Request {
-    /// Freezes the played body's situation under one discovered condition.
-    ///
-    /// `None` when nobody is embodied or the line has not come to that
-    /// condition — the same two facts
-    /// [`World::candidate_intent`](isocosm::legacy::mesocosm::World::candidate_intent)
-    /// answers, asked one door over.
-    ///
-    /// **The one declared world condition today is `ground_mg`**: what the soil
-    /// column under the body holds. It is what PD2's played process already
-    /// reads, so it is a reading this game has rather than a knob invented to
-    /// give a script something to branch on.
-    pub fn of(world: &World, condition: ConditionId) -> Option<Self> {
-        let me = world.controlled()?;
-        let discovery = world
-            .discoveries()
-            .iter()
-            .find(|discovery| discovery.condition == condition)?;
-        let registry = world.ruleset();
-        let ground_mg = world.soil().matter_mg(world.soil().column_at(me.position));
-        let candidate = registry
-            .resolve(discovery.candidate.process)
-            .map(|def| def.id.qualified())
-            .into_iter()
-            .collect();
-
-        Some(Self {
-            trigger: Trigger::Discovery,
-            ruleset: registry.digest(),
-            revision: me.phenotype.revision(),
-            expect: me.phenotype.digest(),
-            definitions: definitions_of(registry),
-            parts: parts_of(registry, &me.phenotype),
-            candidates: candidate,
-            material_mg: me.energy_mg,
-            conditions: vec![Ambient {
-                name: "ground_mg".to_owned(),
-                value: i64::try_from(ground_mg).unwrap_or(i64::MAX),
-            }],
-        })
-    }
-
-    /// The same picture, built straight from a phenotype and a declared
-    /// context.
-    ///
-    /// What a fixture replays: no world, no soil, no roster — just the body
-    /// plan, the ruleset, and the conditions somebody wrote down. That is what
-    /// makes "contrasting contexts, one body plan" a claim a test can state
-    /// without founding two worlds.
+    /// The context for `entity`'s body, frozen: its parts as the native
+    /// mosaic lays them out (766), the registry's definitions, and what the
+    /// host chose to show beside them.
     pub fn frozen(
         registry: &Registry,
-        phenotype: &BodyPhenotype,
+        entity: &Entity,
         mut candidates: Vec<String>,
         material_mg: u64,
         mut conditions: Vec<Ambient>,
@@ -183,10 +140,10 @@ impl Request {
         Self {
             trigger: Trigger::Discovery,
             ruleset: registry.digest(),
-            revision: phenotype.revision(),
-            expect: phenotype.digest(),
+            revision: u32::try_from(entity.body_revision).unwrap_or(u32::MAX),
+            expect: isocosm::draw(entity.body_revision, "express", &[]),
             definitions: definitions_of(registry),
-            parts: parts_of(registry, phenotype),
+            parts: parts_of(entity),
             candidates,
             material_mg,
             conditions,
@@ -209,46 +166,48 @@ fn definitions_of(registry: &Registry) -> Vec<Definition> {
         .collect()
 }
 
-fn parts_of(registry: &Registry, phenotype: &BodyPhenotype) -> Vec<PartView> {
-    phenotype
-        .allocations()
-        .map(|(part, mosaic)| PartView {
-            part: part.0,
-            role: role_word(classify(
-                phenotype
-                    .body()
-                    .part(part)
-                    .expect("a living part")
-                    .half_extent,
-            )),
-            cells: mosaic.cells().count() as u32,
-            free: mosaic.free(),
-            cell_mg: phenotype.cell_mg(part),
-            tracts: mosaic
-                .tracts()
-                .iter()
-                .map(|tract| TractView {
-                    // `None` is the missing-ruleset diagnostic, not a licence
-                    // to name a similar local definition instead.
-                    process: registry
-                        .resolve(tract.process)
-                        .map(|def| def.id.qualified())
-                        .unwrap_or_else(|| "unknown".to_owned()),
-                    cells: tract.cells.iter().filter(|c| mosaic.is_living(**c)).count() as u32,
-                })
-                .collect(),
+/// A function key as the registry names its definition (773).
+pub(crate) fn qualified(function: &str) -> String {
+    format!("mesocosm:{}", function.trim_start_matches("function:"))
+}
+
+fn parts_of(entity: &Entity) -> Vec<PartView> {
+    let Some(body) = entity.body.as_ref() else {
+        return Vec::new();
+    };
+    entity
+        .living()
+        .filter_map(|(id, part)| {
+            let half = body.part(id)?.half_extent;
+            let total = path(dims(half)).len() as u32;
+            let held: u32 = part.tracts.iter().map(|t| t.cells.len() as u32).sum();
+            let lost = part.lost.len() as u32;
+            let tissue: u64 = part.matter.values().sum();
+            Some(PartView {
+                part: id.0,
+                role: role_word(classify(half)),
+                cells: total.saturating_sub(lost),
+                free: total.saturating_sub(lost).saturating_sub(held),
+                cell_mg: tissue / u64::from(total.max(1)),
+                tracts: part
+                    .tracts
+                    .iter()
+                    .map(|t| TractView {
+                        process: qualified(&t.function),
+                        cells: t.cells.len() as u32,
+                    })
+                    .collect(),
+            })
         })
         .collect()
 }
 
-/// The plain shape word a pack and a script both speak. The same closed set
-/// [`role_of`](crate::pack::role_of) reads back.
-pub(crate) fn role_word(role: isocosm::legacy::mesocosm::Role) -> String {
+pub(crate) fn role_word(role: Role) -> String {
     match role {
-        isocosm::legacy::mesocosm::Role::Mass => "mass",
-        isocosm::legacy::mesocosm::Role::Limb => "limb",
-        isocosm::legacy::mesocosm::Role::Plate => "plate",
-        isocosm::legacy::mesocosm::Role::Sensor => "sensor",
+        Role::Mass => "mass",
+        Role::Limb => "limb",
+        Role::Plate => "plate",
+        Role::Sensor => "sensor",
     }
     .to_owned()
 }

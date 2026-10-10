@@ -39,6 +39,7 @@ pub mod probe;
 pub mod process;
 mod queries;
 pub mod reach;
+pub mod rng;
 pub mod rules;
 mod schedule;
 pub mod schema;

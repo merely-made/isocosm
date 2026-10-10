@@ -21,16 +21,15 @@
 //! A part's requested tracts take tissue from the high end of its lattice
 //! downward, in the order the script listed them, each run contiguous — the
 //! same suffix rule
-//! [`Candidate::propose`](isocosm::legacy::mesocosm::Candidate) already relies on, and for
+//! legacy `Candidate::propose` relied on, and for
 //! the same reason: a suffix of the row-major order is a connected region and
 //! so is the prefix left behind. What the script did not claim keeps doing what
 //! it did. The result is a **complete desired state** for the parts named,
 //! which is the only shape the validator accepts.
 
-use isocosm::legacy::mesocosm::{
-    AllocationProposal, Arrangement, BodyPhenotype, CellId, PartId, ProposedTract,
-};
-use isocosm::process::{ProcessId, ProcessRef, Registry};
+use isocosm::mosaic::{CellId, dims, path, propose};
+use isocosm::process::{ProcessId, Registry};
+use isocosm::schema::{Entity, Key, PartId};
 use serde::{Deserialize, Serialize};
 
 use super::Refused;
@@ -57,123 +56,96 @@ pub struct Proposal {
     pub tracts: Vec<Expression>,
 }
 
-/// Lowers an authored proposal into the ordinary
-/// [`AllocationProposal`](isocosm::legacy::mesocosm::AllocationProposal).
-///
-/// The bridge's whole Lua-to-Rust half, and the last thing between a script and
-/// the validator. It resolves ids against **this world's** ruleset, lays out
-/// tissue deterministically, and hands over a complete desired state. It
-/// decides nothing else: whether a plate may carry a gland, whether the
-/// phenotype moved, whether a tract is connected and whether the body can afford
-/// it are all the validator's and the door's, and asking them twice is how two
-/// biologies start.
+/// A lowered proposal: each named part's complete desired tracts, by
+/// function key, ready for the native mosaic (766).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Allocation {
+    pub parts: Vec<(PartId, Vec<(Key, Vec<CellId>)>)>,
+}
+
+impl Allocation {
+    /// Places the cells on `entity`'s parts, all or nothing; returns how many
+    /// cells changed what they do.
+    pub fn commit(&self, entity: &mut Entity) -> Result<u32, Refused> {
+        let body = entity.body.clone().ok_or(Refused::Validator("no body".into()))?;
+        let mut parts = entity.parts.clone();
+        let mut changed = 0;
+        for (id, tracts) in &self.parts {
+            let half = body.part(*id).ok_or(Refused::UnknownPart { part: *id })?.half_extent;
+            let part = parts.get_mut(id).ok_or(Refused::UnknownPart { part: *id })?;
+            changed += propose(part, half, tracts).map_err(Refused::Validator)?;
+        }
+        entity.parts = parts;
+        Ok(changed)
+    }
+}
+
+/// Lowers a script's proposal onto `entity`'s living parts: each requested
+/// tract takes cells from the high end of the part's lattice path, in the
+/// script's order; what the script did not claim keeps doing what it did.
 pub fn lower(
     registry: &Registry,
-    phenotype: &BodyPhenotype,
+    entity: &Entity,
     proposal: &Proposal,
-) -> Result<AllocationProposal, Refused> {
-    // The parts the script named, sorted and deduplicated: the validator
-    // requires a canonical claim, and sorting here rather than refusing means
-    // an author writes what they mean instead of learning an ordering rule.
-    // The order *within* a part is the script's and is kept, because that is
-    // what decides which tissue each tract gets.
-    let mut parts: Vec<PartId> = proposal
-        .tracts
-        .iter()
-        .map(|tract| PartId(tract.part))
-        .collect();
-    parts.sort_unstable();
-    parts.dedup();
-
-    let mut tracts: Vec<ProposedTract> = Vec::new();
-    for part in &parts {
-        // A part this body does not have at all. A part it *has and severed*
-        // is not this refusal: the validator owns `SeveredPart`, and one
-        // boundary is named in one place.
-        let Some(mosaic) = phenotype.mosaic(*part) else {
-            return Err(Refused::UnknownPart { part: *part });
+) -> Result<Allocation, Refused> {
+    let body = entity.body.as_ref().ok_or(Refused::Validator("no body".into()))?;
+    let mut named: Vec<PartId> = proposal.tracts.iter().map(|t| PartId(t.part)).collect();
+    named.sort_unstable();
+    named.dedup();
+    let mut parts = Vec::new();
+    for id in named {
+        let (Some(part), Some(geometry)) = (entity.parts.get(&id), body.part(id)) else {
+            return Err(Refused::UnknownPart { part: id });
         };
-        let living_cells: Vec<CellId> = mosaic.cells().collect();
-        let asked: u32 = proposal
+        let lost = &part.lost;
+        let living: Vec<CellId> = path(dims(geometry.half_extent))
+            .into_iter()
+            .filter(|c| !lost.contains(c))
+            .collect();
+        let mine = proposal.tracts.iter().filter(|t| t.part == id.0);
+        let asked = mine.clone().map(|t| t.cells).fold(0u32, u32::saturating_add);
+        if asked as usize > living.len() {
+            return Err(Refused::TooMuchTissue {
+                part: id,
+                asked,
+                living: living.len() as u32,
+            });
+        }
+        let mut taken: Vec<CellId> = Vec::new();
+        let mut requested: Vec<(Key, Vec<CellId>)> = Vec::new();
+        for tract in mine {
+            let function = resolve(registry, &tract.process)?;
+            let remaining = &living[..living.len() - taken.len()];
+            let run = remaining[remaining.len() - tract.cells as usize..].to_vec();
+            taken.extend(run.iter().copied());
+            match requested.iter_mut().find(|(held, _)| *held == function) {
+                Some((_, cells)) => cells.extend(run),
+                None => requested.push((function, run)),
+            }
+        }
+        // What the part already does keeps its place, the script's after.
+        let mut claimed: Vec<(Key, Vec<CellId>)> = part
             .tracts
             .iter()
-            .filter(|tract| tract.part == part.0)
-            .map(|tract| tract.cells)
-            .fold(0u32, u32::saturating_add);
-        if asked as usize > living_cells.len() {
-            return Err(Refused::TooMuchTissue {
-                part: *part,
-                asked,
-                living: living_cells.len() as u32,
-            });
-        }
-
-        // Hand out from the top down, in the order the script listed them.
-        let mut taken: Vec<CellId> = Vec::new();
-        let mut requested: Vec<(ProcessRef, Vec<CellId>)> = Vec::new();
-        for tract in proposal.tracts.iter().filter(|tract| tract.part == part.0) {
-            let process = resolve(registry, &tract.process)?;
-            let remaining = &living_cells[..living_cells.len() - taken.len()];
-            let run: Vec<CellId> = remaining[remaining.len() - tract.cells as usize..].to_vec();
-            taken.extend(run.iter().copied());
-            // A definition named twice on one part is one widened tract, not two
-            // tracts for one process — the same reading `Candidate::propose`
-            // takes, and the only one the mosaic can hold.
-            match requested.iter_mut().find(|(held, _)| *held == process) {
-                Some((_, cells)) => cells.extend(run),
-                None => requested.push((process, run)),
-            }
-        }
-
-        // **What the part already does keeps its place in the list**, and the
-        // script's additions go after it. Not cosmetic: the validator hands out
-        // tract ids in proposal order, so a different order is a different
-        // committed mosaic — and this is the order `Candidate::propose` builds,
-        // which is what makes the authored and the native proposal lower to one
-        // instruction rather than to two that merely look alike. Anything left
-        // with no cells is dropped, which is how the validator is told to clear
-        // it.
-        let mut claimed: Vec<(ProcessRef, Vec<CellId>)> = mosaic
-            .tracts()
-            .iter()
-            .filter_map(|existing| {
-                let kept: Vec<CellId> = existing
-                    .cells
-                    .iter()
-                    .copied()
-                    .filter(|cell| !taken.contains(cell) && mosaic.is_living(*cell))
-                    .collect();
-                (!kept.is_empty()).then_some((existing.process, kept))
+            .filter_map(|t| {
+                let kept: Vec<CellId> =
+                    t.cells.iter().copied().filter(|c| !taken.contains(c)).collect();
+                (!kept.is_empty()).then(|| (t.function.clone(), kept))
             })
             .collect();
-        for (process, run) in requested {
-            match claimed.iter_mut().find(|(held, _)| *held == process) {
+        for (function, run) in requested {
+            match claimed.iter_mut().find(|(held, _)| *held == function) {
                 Some((_, cells)) => cells.extend(run),
-                None => claimed.push((process, run)),
+                None => claimed.push((function, run)),
             }
         }
-
-        for (process, mut cells) in claimed {
+        for (_, cells) in &mut claimed {
             cells.sort_unstable();
             cells.dedup();
-            tracts.push(ProposedTract {
-                part: *part,
-                process,
-                cells,
-            });
         }
+        parts.push((id, claimed));
     }
-
-    Ok(AllocationProposal {
-        expect: phenotype.digest(),
-        // **Authored is automatic.** `Arrangement` is diagnostic and the
-        // validator never reads it; a script is the game arranging tissue
-        // rather than a hand drawing it, which is what plan §7's two proposal
-        // sources over one authority already say.
-        source: Arrangement::Automatic,
-        parts,
-        tracts,
-    })
+    Ok(Allocation { parts })
 }
 
 /// A qualified id, resolved against the world's own ruleset.
@@ -181,13 +153,13 @@ pub fn lower(
 /// `None` is a real answer (plan §6, missing packs): an id this world did not
 /// admit is refused by name and never replaced with the nearest local
 /// definition.
-fn resolve(registry: &Registry, qualified: &str) -> Result<ProcessRef, Refused> {
+fn resolve(registry: &Registry, qualified: &str) -> Result<Key, Refused> {
     let unknown = || Refused::UnknownProcess {
         id: qualified.to_owned(),
     };
     let (namespace, name) = qualified.split_once(':').ok_or_else(unknown)?;
     registry
         .get(&ProcessId::new(namespace, name))
-        .map(|def| def.reference())
+        .map(|def| format!("function:{}", def.id.name))
         .ok_or_else(unknown)
 }

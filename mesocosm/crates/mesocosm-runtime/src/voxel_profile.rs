@@ -19,7 +19,7 @@ use std::{
 
 use nisus::{VoxelCellEdit, VoxelChunk, VoxelChunkError, VoxelEdit, VoxelPatch, VoxelRegion};
 
-use crate::legacy::mesocosm::places::{AIR, BRICK, Ground};
+use isometer_core::ground::{AIR, BRICK, Ground};
 
 pub type GroundChunkKey = [i16; 3];
 
@@ -305,10 +305,10 @@ impl Error for GroundVoxelProfileError {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::legacy::mesocosm::{Places, snapshot};
+    use isometer_core::snapshot;
 
     fn ground() -> Ground {
-        Ground::grow(&Places::grown(4_242, 4, 64), 64)
+        isometer_core::fixtures::ground(4_242, 64)
     }
 
     fn carved(ground: &mut Ground) -> [i32; 3] {

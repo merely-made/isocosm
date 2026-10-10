@@ -9,11 +9,9 @@
 //!
 //! Side, across and the default oblique view retain their measured Q9
 //! geometry. CP1 adds four cardinal terrarium views at a shallow pitch.
-//! Each mode produces a forward vector; `view.rs` turns that plus the
-//! configurable terrarium pitch into the one `SlabCamera` the terrain rays,
-//! the raster depth and the cull window all read. `terrarium.rs` clips a fixed
-//! habitat volume and applies the interior information policy. Rotation never
-//! reaches a world intent.
+//! Each mode produces a forward vector; `view.rs` turns it into the one
+//! `SlabCamera` the terrain rays, the raster depth and the cull window all
+//! read. Rotation never reaches the world.
 
 use isometer::lens::SlabWall;
 

@@ -20,7 +20,7 @@
 
 use std::collections::{BTreeMap, VecDeque};
 
-use crate::legacy::mesocosm::body::Aabb;
+use isometer_core::Aabb;
 
 use super::Places;
 use isometer_core::ground::Ground;

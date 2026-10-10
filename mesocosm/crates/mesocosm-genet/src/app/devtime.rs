@@ -6,12 +6,10 @@
 
 //! Host-only time control (DT1): pause, speed, and the manual step keys.
 //!
-//! Split out of `app.rs` at the 600-line ceiling. Everything here is pacing
-//! over [`mesocosm_runtime::Runtime::advance`] and `::step`: nothing reaches
-//! `Runtime::queue`, so nothing here can enter the trace or move a replay's
-//! hash — the dev tools plan's second principle. See `crate::dev` for the
-//! panel this state is read into, and `crate::input::dev_key` for the keys
-//! that call in here.
+//! Everything here is pacing over [`mesocosm_runtime::Runtime::advance`] and
+//! `::step`: nothing reaches `Runtime::queue`, so nothing here enters the
+//! session's log (the dev tools plan's second principle). DT3's four keys are
+//! the exception, and queue ordinary dev intents.
 
 use super::Host;
 use crate::input;
@@ -75,10 +73,8 @@ impl Host {
     /// the twelve keys `--dev` makes live. Kept off unless the flag is set, so
     /// an ordinary build's keyboard is exactly what it was before DT1.
     ///
-    /// The three follow keys are handed to [`super::follow`] and DT3's four to
-    /// [`super::devworld`]. The split is the dev tools plan's principle 2:
-    /// nothing above the last arm reaches `Runtime::queue`, and everything in
-    /// it does nothing but.
+    /// The three follow keys are handed to [`super::follow`]; DT3's four queue
+    /// dev intents and nothing else does.
     pub(super) fn try_dev_key(&mut self, key: &winit::keyboard::Key) -> bool {
         if !self.config.dev {
             return false;
@@ -115,11 +111,32 @@ impl Host {
         self.dev_manual_steps += taken;
     }
 
-    /// The dev lane's reading, taken fresh each frame. `None` when `--dev` is
-    /// off, which is also when nothing calls into `crate::dev` at all.
-    ///
-    /// The time half is this module's; the follow half is `super::follow`'s,
-    /// and every line of it comes back out of a core query.
+    /// A dev intent for one of DT3's four keys, about the followed critter.
+    fn dev_world_key(&mut self, action: input::DevKey) {
+        use isocosm_overlay::mesocosm::{DevIntent, MesocosmIntent};
+        use isocosm_overlay::{EntityHandle, WorldPoint};
+        let followed = self.followed();
+        let dev = match action {
+            input::DevKey::EndEpoch => DevIntent::EndEpoch,
+            input::DevKey::ForceBirth => DevIntent::ForceBirth {
+                organism: EntityHandle(followed.unwrap_or_default()),
+            },
+            input::DevKey::Kill => DevIntent::Kill {
+                organism: EntityHandle(followed.unwrap_or_default()),
+            },
+            input::DevKey::PlaceMatter => DevIntent::PlaceMatter {
+                at: WorldPoint(self.follow_at()),
+                mass_mg: super::DEV_PLACE_MG,
+            },
+            _ => return,
+        };
+        if input::admits(self.runtime.queued_len()) {
+            let envelope = input::envelope(&self.runtime, MesocosmIntent::Dev(dev));
+            self.runtime.queue(envelope);
+        }
+    }
+
+    /// The dev lane's reading, taken fresh each frame; `None` outside `--dev`.
     pub(super) fn dev_reading(&self) -> Option<mesocosm_views::Dev> {
         if !self.config.dev {
             return None;
@@ -128,7 +145,7 @@ impl Host {
         Some(mesocosm_views::Dev {
             running: !self.dev_paused,
             speed: DEV_SPEED_LADDER[self.dev_speed_idx].1,
-            tick: self.steps,
+            tick: self.runtime.tick(),
             manual_steps: self.dev_manual_steps,
             follow,
             lost,
@@ -140,32 +157,13 @@ impl Host {
                     },
                     |selected| {
                         mesocosm_views::part_of(
-                            self.runtime.world(),
+                            self.runtime.sim(),
                             selected.organism,
                             selected.part,
-                            self.runtime.history(),
                         )
                     },
                 )
             }),
         })
     }
-}
-
-/// Refreshes and composites the dev lane, doing nothing when `dev` is
-/// `None` — which is every frame `--dev` is off, since [`Host::dev_reading`]
-/// is what produces `Some`. A free function rather than a method: by the
-/// point `frame` calls this, `lanes` is already a reborrow out of
-/// `self.gpu`, so a method taking `&self` alongside it would be a second,
-/// conflicting borrow.
-pub(super) fn composite_dev_lane(
-    lanes: &mut super::Lanes,
-    dev: Option<&mesocosm_views::Dev>,
-    encoder: &mut wgpu::CommandEncoder,
-    view: &wgpu::TextureView,
-    frame: (u32, u32),
-) {
-    let Some(dev) = dev else { return };
-    lanes.dev.refresh(&lanes.device, dev);
-    lanes.dev.composite(&lanes.device, encoder, view, frame);
 }

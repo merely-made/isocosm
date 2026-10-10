@@ -42,6 +42,7 @@ pub use dev::{
 pub use leaf::MinimapLeaf;
 pub use minimap::{
     MINIMAP_ADAPTER, dominant_lineages, lineage_tint, minimap_leaf, minimap_scene, minimap_score,
+    site_points,
 };
 pub use review::{
     Board, BoardChild, BoardRow, board_css, board_root, commit_words, evidence_words,
@@ -49,6 +50,6 @@ pub use review::{
 };
 pub use succession::{Succession, SuccessionChild, succession_css, succession_root};
 pub use vitals::{
-    DiscoveryWords, Vitals, VitalsChild, discovery_words, notice_in, observation_words,
-    refusal_words, vitals_css, vitals_of, vitals_root,
+    Vitals, VitalsChild, compatibility_words, held_mg, kingdom_word, notice_in, refusal_words,
+    vitals_css, vitals_of, vitals_root,
 };

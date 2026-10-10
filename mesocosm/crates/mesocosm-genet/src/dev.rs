@@ -244,25 +244,6 @@ impl DevChrome {
             frame,
         );
     }
-
-    /// The same, into a capture frame's offscreen format.
-    pub fn capture_composite(
-        &self,
-        chrome: &Chrome,
-        format: wgpu::TextureFormat,
-        encoder: &mut wgpu::CommandEncoder,
-        target: &wgpu::TextureView,
-        frame: (u32, u32),
-    ) {
-        chrome.draw_as(
-            format,
-            encoder,
-            target,
-            self.raster.sample_view(),
-            self.placement(frame),
-            frame,
-        );
-    }
 }
 
 /// Resolves `id`'s on-screen rect within `dock`, walking the tree the way

@@ -6,29 +6,14 @@
 
 //! Mesocosm's host-neutral runtime.
 //!
-//! Sits between [`isocosm::legacy::mesocosm`] and any host. A host owns the window, the
-//! device, and the frame loop; it hands elapsed time in, queues intents, and
-//! reads the world back to draw it.
+//! Sits between a native Isocosm [`Session`](isocosm::Session) and any host
+//! (the switch, wing ruling 681). A host owns the window, the device and the
+//! frame loop; it hands elapsed time in, queues contract envelopes, which
+//! [`Runtime`] translates into native commands (686), and reads the world
+//! back to draw it. The critter is directed, never driven (671, 679).
 //!
-//! # Why this is shared rather than per-host
-//!
-//! The host probe compares a custom Genet lane against an engine lane. If each
-//! host wrote its own stepping, a difference between them could be a
-//! difference in *stepping* rather than in the host, and the comparison would
-//! measure the wrong thing. Both hosts drive the world through this crate, so
-//! a divergence is attributable.
-//!
-//! This is also the extraction candidate named in the body pipeline plan: if
-//! Eponym ever wants it, it gets renamed and lifted with two real consumers
-//! justifying the move. Until then it stays here and stays small.
-//!
-//! # Frame delivery does not reach the simulation
-//!
-//! [`Clock`] converts elapsed microseconds into whole fixed steps and keeps
-//! the remainder. The number of steps for a given total elapsed time is fixed,
-//! however raggedly that time arrives, and a step cap defers work rather than
-//! dropping it. Time is integer microseconds for the same reason the core is
-//! integer-only.
+//! [`Clock`] converts elapsed microseconds into whole fixed steps, so frame
+//! delivery never reaches the simulation.
 
 pub mod clock;
 pub mod effect_experiment;
@@ -38,11 +23,13 @@ pub mod review;
 pub mod runtime;
 pub mod succession;
 pub mod tactile;
+pub mod voxel_profile;
 
 pub use clock::{Advance, Clock};
-pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS};
-pub use review::{Authored, Proposed, Review, Row, Source};
-pub use runtime::{DEFAULT_MAX_STEPS_PER_ADVANCE, Receipt, Replayed, Runtime};
-pub use runtime::{MAX_TRIAL_STEPS, Trial, TrialActivity, TrialCarve, TrialUptake, UptakePosition};
+pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
+pub use review::{Offer, Reading, Review};
+pub use runtime::{
+    DEFAULT_MAX_STEPS_PER_ADVANCE, Envelope, Founded, Receipt, Refusal, Replayed, Runtime,
+};
 pub use succession::{Birth, Boundary, Checkpoint, Loss, Occasion};
 pub use tactile::{TactileCapsule, TactileError, TactileHit, TactilePick, TactileWorld};

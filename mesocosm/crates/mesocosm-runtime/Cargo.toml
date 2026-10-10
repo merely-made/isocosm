@@ -3,7 +3,7 @@ name = "mesocosm-runtime"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
-description = "Mesocosm's host-neutral runtime: fixed-timestep driving, intent queueing, and trace replay over mesocosm-core. No windowing, no graphics."
+description = "Mesocosm's host-neutral runtime: fixed-timestep driving of the interim loop over a native Isocosm session, translating the overlay contract. No windowing, no graphics."
 repository = "https://github.com/merely-made/isocosm"
 publish = false
 
@@ -13,19 +13,23 @@ publish = false
 # honest: a difference between hosts cannot be a difference in stepping.
 [dependencies]
 isocosm = { workspace = true }
-# The pack door, and the review's second proposal source (PE3b). The dependency
-# still runs one way — core knows nothing of either crate — and this is the
-# first production consumer the authoring half has had: an epoch review is
-# where a pack's declared expression is shown beside the game's own proposal.
-mesocosm-phenotype = { workspace = true }
+# The contract a host speaks; this crate translates it into native commands
+# (wing ruling 686). The contract depends on nothing sim-internal.
+isocosm-overlay = { path = "../../../shared/isocosm-overlay" }
+# The brick ground the tactile adapter and the voxel profile read, and the
+# site edits the glyph reading recognizes.
+isometer-core = { workspace = true }
+isometer-space = { path = "../../../shared/isometer/crates/isometer-space" }
+nisus = { workspace = true }
 serde = { workspace = true }
 # T1 (engine review §5): the permanent product home of the Conatus tactile
 # adapter. Rapier stays private inside conatus; this crate holds ids and
 # arrays only, and tactile answers are advice, never record authority.
 conatus = { workspace = true }
 
-# Opt-in disposable glyph progression; core World and its saved bytes stay unchanged.
+# Opt-in disposable glyph progression; the world and its saves stay unchanged.
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
 
 [dev-dependencies]
 serde_json = "1"
+isometer-core = { workspace = true, features = ["fixtures"] }

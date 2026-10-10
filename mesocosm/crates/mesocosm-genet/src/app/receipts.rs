@@ -6,15 +6,14 @@
 
 //! What the host writes on the way out.
 //!
-//! A run that left nothing behind cannot be judged, and a hash that drifted
-//! looks exactly like one that did not until somebody says so. Every exit —
-//! the window closing, Escape, a frame limit, a replay reaching the end of its
-//! trace — comes through [`Host::finish`].
+//! Every exit (the window closing, Escape, a frame limit, a scenario's end)
+//! comes through [`Host::finish`], which writes the capture, the session's
+//! save as the trace, and the receipt.
 
 use winit::event_loop::ActiveEventLoop;
 
 use super::Host;
-use crate::played::{self, FrameGraphReceipt, PlayedReceipt, PlayedTrace};
+use crate::played::{self, FrameGraphReceipt, PartSelectionReceipt, PlayedReceipt};
 
 impl Host {
     /// Writes what the run leaves behind, once, and stops the loop.
@@ -62,27 +61,22 @@ impl Host {
                     .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                         label: Some("mesocosm captured chrome into master"),
                     });
-            if !self.grafting.open && self.creator.is_none() {
+            lanes
+                .hud
+                .composite(&lanes.device, &mut encoder, &master_view, frame);
+            lanes
+                .vitals
+                .composite(&lanes.device, &mut encoder, &master_view, frame);
+            if self.config.dev {
                 lanes
-                    .hud
+                    .dev
                     .composite(&lanes.device, &mut encoder, &master_view, frame);
-                lanes
-                    .vitals
-                    .composite(&lanes.device, &mut encoder, &master_view, frame);
-                if self.config.dev {
-                    lanes
-                        .dev
-                        .composite(&lanes.device, &mut encoder, &master_view, frame);
-                }
             }
             lanes
                 .checkpoint
                 .composite(&lanes.device, &mut encoder, &master_view, frame);
             lanes
                 .board
-                .composite(&lanes.device, &mut encoder, &master_view, frame);
-            lanes
-                .grafting
                 .composite(&lanes.device, &mut encoder, &master_view, frame);
             lanes.device.queue().submit(Some(encoder.finish()));
             gpu.section.capture_from(&master.texture, |_, _, _| {})
@@ -95,27 +89,12 @@ impl Host {
         played::write_png(path, width, height, &pixels)
     }
 
-    /// A replay's trace is an input; only a played session writes one.
+    /// The session's save, which `--replay` reads back.
     fn write_trace(&self) {
-        if self.creator.is_some() {
-            return;
-        }
-        let (Some(path), None) = (&self.config.trace, &self.config.replay) else {
+        let Some(path) = &self.config.trace else {
             return;
         };
-        let recorded = PlayedTrace {
-            start: self.config.effective_start().cloned(),
-            trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
-            scene: self.config.effective_scene(),
-            body_layout: self.config.effective_body_layout(),
-            seed: self.config.seed,
-            organisms: self.runtime.receipt().organisms,
-            steps: self.runtime.trace().len() as u64,
-            state_hash: self.runtime.state_hash(),
-            intents: self.runtime.trace().to_vec(),
-            content: self.content.clone(),
-        };
-        if let Err(error) = played::write_json(path, &recorded) {
+        if let Err(error) = played::write_json(path, &self.runtime.save()) {
             eprintln!("trace: {error}");
         }
     }
@@ -123,7 +102,7 @@ impl Host {
     fn write_receipt(&mut self) {
         let receipt = self.receipt();
         println!(
-            "{}{} {} steps over {} frames, hash {:016x}{}",
+            "{}{} {} steps over {} frames, hash {:016x}",
             // **The label goes first, where it cannot be read past** (DT3).
             // A run that ended an epoch, forced a birth, killed something or
             // placed matter is not an unaided playtest, and the line that
@@ -135,15 +114,7 @@ impl Host {
             receipt.mode,
             receipt.steps,
             receipt.frames,
-            receipt.state_hash,
-            match receipt.state_hash_matches {
-                Some(true) => " (matches the recorded hash)".to_string(),
-                Some(false) => format!(
-                    " (MISMATCH: the trace recorded {:016x})",
-                    receipt.expected_state_hash.unwrap_or_default()
-                ),
-                None => String::new(),
-            }
+            receipt.run.state_hash,
         );
         // Which arm this capture is. One line, beside the hash, so a sheet of
         // three captures cannot be assembled out of order. (DC4)
@@ -159,9 +130,8 @@ impl Host {
                 receipt.body_capsules_dropped, receipt.body_parts
             );
         }
-        // The only route to a nonzero exit: a replay that landed elsewhere.
-        if receipt.state_hash_matches == Some(false) {
-            self.code = 1;
+        if let Some(fault) = &receipt.fault {
+            println!("fault: the sim stopped the run: {fault}");
         }
         let Some(path) = &self.config.receipt else {
             return;
@@ -171,60 +141,29 @@ impl Host {
         }
     }
 
-    /// `replay` for a run a trace drives, `played` for every other. One
-    /// definition, because the receipt and a scenario's `assert snap mode` both
-    /// ask.
+    /// `played`, the one mode a windowed run has; replay is headless.
     pub(crate) fn mode(&self) -> &'static str {
-        if self.creator.is_some() {
-            "creating"
-        } else if self.config.replay.is_some() {
-            "replay"
-        } else {
-            "played"
-        }
+        "played"
     }
 
     fn receipt(&self) -> PlayedReceipt {
-        let run = self.runtime.receipt();
-        // Only a replay that reached the end of its trace has a hash to be held
-        // to. A capture run cut short by `--frames` stopped somewhere in the
-        // middle of the recording on purpose, and comparing its world against
-        // the recording's *final* hash would report a determinism failure for
-        // having taken a photograph.
-        let expected = self
-            .config
-            .replay
-            .as_ref()
-            .filter(|trace| self.cursor >= trace.intents.len())
-            .map(|trace| trace.state_hash);
-        let world = self.runtime.world();
+        let gpu = self.gpu.as_ref();
+        let section = gpu.map(|gpu| &gpu.section);
+        let scene = self.scene.as_ref();
         PlayedReceipt {
-            trophic_grammar: isocosm::legacy::mesocosm::TROPHIC_GRAMMAR_REVISION,
-            scene: self.config.effective_scene().name(),
-            habitat_bounds: self.habitat.as_ref().map(|h| [h.bounds.min, h.bounds.max]),
-            terrarium_pitch: self.habitat.as_ref().map(|_| self.config.terrarium_pitch),
-            burrow_occupied: self.habitat.as_ref().and_then(|h| {
-                world
-                    .position()
-                    .map(|at| crate::section::terrarium_occupied(h, at))
-            }),
-            body_layout: if self.config.effective_start().is_some() {
-                "generated"
-            } else {
-                self.config.effective_body_layout().name()
-            },
-            body_content: if self.content.is_some() {
-                "generated-v1"
-            } else {
-                "fixtures"
-            },
             mode: self.mode(),
-            seed: run.seed,
-            organisms: run.organisms,
-            steps: run.steps,
-            state_hash: run.state_hash,
-            expected_state_hash: expected,
-            state_hash_matches: expected.map(|hash| hash == run.state_hash),
+            seed: self.config.seed,
+            population: self.config.population,
+            run: self.runtime.receipt(),
+            steps: self.steps,
+            frames: self.frames,
+            refused: self
+                .runtime
+                .trace()
+                .iter()
+                .filter(|(_, outcome)| outcome.is_err())
+                .count(),
+            fault: self.runtime.fault().map(str::to_owned),
             adapter: self
                 .adapter
                 .as_ref()
@@ -233,84 +172,29 @@ impl Host {
                 .adapter
                 .as_ref()
                 .map_or_else(|| "none".into(), |info| format!("{:?}", info.backend)),
-            frames: self.frames,
-            trace_len: self.runtime.trace().len(),
-            ground_revision: world.ground().revision(),
-            body_parts: world.body().map(|body| body.len()).unwrap_or(0),
+            site: scene.map(|scene| scene.site),
+            ground_revision: scene.map_or(0, |scene| scene.ground.revision()),
+            body_parts: self
+                .runtime
+                .played()
+                .and_then(|e| e.body.as_ref())
+                .map_or(0, |body| body.parts.len()),
             body_capsules_dropped: self.body_capsules_dropped,
-            section_roster: self
-                .gpu
-                .as_ref()
-                .map_or(0, |gpu| gpu.section.last_roster_members()),
-            roster_capsules_dropped: self
-                .gpu
-                .as_ref()
-                .map_or(0, |gpu| gpu.section.last_roster_capsules_dropped()),
-            slab_half_height: self
-                .gpu
-                .as_ref()
-                .map_or(self.config.slab_half_height, |gpu| {
-                    gpu.section.half_height()
-                }),
-            camera: self
-                .gpu
-                .as_ref()
-                .map_or(self.config.camera, |gpu| gpu.section.mode())
-                .name(),
-            cutaway: self.config.cutaway.name(),
-            terrain_style: self
-                .config
-                .terrain_style
-                .resolved(self.habitat.is_some())
-                .name(),
-            bodies: if self.grafting.open || self.creator.is_some() {
-                "voxels"
-            } else {
-                self.config.body_mode.name()
-            },
-            inspecting: self.inspection.open,
-            consume_menu: self.grafting.open
-                && self.grafting.operation == super::grafting::BodyOperation::Consume,
-            graft_menu: self.grafting.open
-                && self.grafting.operation == super::grafting::BodyOperation::Graft,
-            expression_tissue_mg: self.expression_tissue(false),
-            expression_candidate_tissue_mg: self.expression_tissue(true),
-            expression_menu: self.grafting.open
-                && self.grafting.operation == super::grafting::BodyOperation::Express,
-            expression_preview: self.grafting.operation == super::grafting::BodyOperation::Express
-                && self.grafting.preview.is_some(),
-            expression_part: (self.grafting.operation == super::grafting::BodyOperation::Express)
-                .then_some(self.grafting.root)
-                .flatten()
-                .map(|p| p.0),
-            body_view: if self.grafting.open || self.creator.is_some() {
-                "isolated"
-            } else {
-                "scene"
-            },
-            graft_preview: self.grafting.operation == super::grafting::BodyOperation::Graft
-                && self.grafting.preview.is_some(),
-            graft_root: (self.grafting.operation == super::grafting::BodyOperation::Graft)
-                .then_some(self.grafting.root)
-                .flatten()
-                .map(|part| part.0),
-            selected_part: self
-                .inspection
-                .selected
-                .map(|selection| played::PartSelectionReceipt {
-                    organism: selection.organism.0,
-                    part: selection.part.0,
-                    revision: selection.revision.0,
-                }),
+            section_roster: section.map_or(0, |s| s.last_roster_members()),
+            roster_capsules_dropped: section.map_or(0, |s| s.last_roster_capsules_dropped()),
+            slab_half_height: section.map_or(self.config.slab_half_height, |s| s.half_height()),
+            camera: section.map_or(self.config.camera, |s| s.mode()).name(),
+            terrain_style: self.config.terrain_style.resolved().name(),
+            bodies: self.config.body_mode.name(),
             body_budget: self.config.body_budget,
-            body_projection: self
-                .gpu
-                .as_ref()
-                .map(|gpu| gpu.section.body_stats())
-                .unwrap_or_default(),
-            frame_graph: self
-                .gpu
-                .as_ref()
+            body_projection: section.map(|s| s.body_stats()).unwrap_or_default(),
+            inspecting: self.inspection.open,
+            selected_part: self.inspection.selected.map(|s| PartSelectionReceipt {
+                organism: s.organism,
+                part: s.part.0,
+                revision: s.revision.0,
+            }),
+            frame_graph: gpu
                 .and_then(|gpu| gpu.last_tenant_receipt.as_ref())
                 .map(|receipt| FrameGraphReceipt {
                     tenant_name: receipt.tenant_name.clone(),
@@ -324,20 +208,13 @@ impl Host {
                     graph_submission_boundaries: receipt.graph_submission_boundaries,
                     logical_plan_dump: receipt.logical_plan_dump.clone(),
                 }),
-            trace: self
-                .config
-                .trace
-                .as_ref()
-                .map(|path| path.display().to_string()),
+            trace: self.config.trace.as_ref().map(|p| p.display().to_string()),
             capture: self
                 .config
                 .capture
                 .as_ref()
-                .map(|path| path.display().to_string()),
+                .map(|p| p.display().to_string()),
             dev: self.config.dev,
-            // Off the driver, which counts what the world accepted rather than
-            // what a key asked for — so a replay of an assisted trace reports
-            // the same number, and a refused dev intent reports none. (DT3)
             dev_intents: self.runtime.dev_intents(),
         }
     }

@@ -4,25 +4,24 @@ default-run = "mesocosm-genet"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
-description = "Mesocosm's windowed host: a winit window and wgpu surface driving the core through the shared runtime. Owns the loop and the device, never a rule."
+description = "Mesocosm's windowed host: a winit window and wgpu surface over a native Isocosm session through the shared runtime. Owns the loop and the device, never a rule."
 repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 # The host. It owns the window, the device, and the frame loop, and it holds
-# no game state: intents go in through mesocosm-runtime and the world comes
-# back out to be drawn. If a rule ever appears in this crate, it is in the
+# no game state: contract envelopes go in through mesocosm-runtime and the
+# native world comes back out to be drawn. If a rule ever appears in this crate, it is in the
 # wrong crate.
 #
 # Named for the lane rather than the dependency. Netrender owns the frame
 # master and imports the section as one opaque same-device tenant; the host
 # still owns the final surface blit and presentation.
 [dependencies]
-tempfile = "3"
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
-# The shared glyph kernel: the canon the bench's journey preset declares and
-# the declaration half of the effect pack. Data only; execution is core's.
-wing-glyphs = { path = "../../../shared/wing-glyphs" }
+# The contract the host speaks: nudges, checkpoint answers and dev intents
+# go in as overlay envelopes, never as native commands (wing ruling 686).
+isocosm-overlay = { path = "../../../shared/isocosm-overlay" }
 isocosm = { workspace = true }
 netrender = { workspace = true }
 paint_list_api = { workspace = true }

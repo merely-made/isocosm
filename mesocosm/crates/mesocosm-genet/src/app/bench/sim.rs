@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! A host over the simulation. Rendering and controls never mutate its world directly.
-use super::{state::Bench, view::Child};
+use super::{Bench, Child};
 use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
 use isocosm::{
     Execution, Founding, Session,
@@ -11,7 +11,6 @@ use isocosm::{
 };
 
 pub(super) struct Panel {
-    pub open: bool,
     pub playing: bool,
     pub ecology: bool,
     pub seed: TextInput,
@@ -33,7 +32,6 @@ pub(super) struct Panel {
 impl Panel {
     pub fn new(seed: u64) -> Self {
         Self {
-            open: false,
             playing: false,
             ecology: false,
             seed: TextInput::new(seed.to_string()),
@@ -55,15 +53,6 @@ impl Panel {
 }
 
 impl Bench {
-    pub fn open_sim(&mut self) {
-        self.sim.open = true;
-        self.effects.playing = false;
-        self.model.borrow_mut().pause_trial();
-        self.model.borrow_mut().spatial.playing = false;
-        if self.sim.session.is_none() {
-            self.sim_found();
-        }
-    }
     pub fn sim_found(&mut self) {
         self.sim.compared = None;
         let result = (|| {
@@ -303,7 +292,7 @@ fn input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
 
 pub(super) fn view(state: &Bench) -> Child {
     let mut children: Vec<Child> = vec![
-        Box::new(el("h1", text("Specimen bench / Isocosm"))),
+        Box::new(el("h1", text("Bench / Isocosm"))),
         Box::new(el(
             "p",
             text(
@@ -319,10 +308,6 @@ pub(super) fn view(state: &Bench) -> Child {
                     input("Sites", |s| &mut s.sim.sites),
                     input("Lineages", |s| &mut s.sim.lineages),
                     button("Found world", Bench::sim_found),
-                    button("Back to specimen", |s| {
-                        s.sim.open = false;
-                        s.sim.playing = false;
-                    }),
                     button("Reservoir world", |s| {
                         s.sim.ecology = false;
                         s.sim_found();

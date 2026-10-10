@@ -6,10 +6,8 @@
 
 //! Bringing the window and the device up.
 //!
-//! Split out of `app.rs` at the 600-line ceiling when PE1 added the third
-//! chrome lane. One-shot construction — surface, adapter, device, the section's
-//! pipeline, and the chrome the three lanes share — with nothing per-frame in
-//! it; the loop next door is what the file is for.
+//! One-shot construction: surface, adapter, device, the section over the
+//! played site, and the chrome the lanes share. Nothing per-frame.
 
 use std::sync::Arc;
 
@@ -29,7 +27,7 @@ impl Host {
         }
 
         let attributes = Window::default_attributes()
-            .with_title("Mesocosm | H graft tissue | O express discovery")
+            .with_title("Mesocosm | E attend | Q act | S speciate | Enter/T answer")
             .with_inner_size(winit::dpi::LogicalSize::new(
                 self.config.width,
                 self.config.height,
@@ -84,15 +82,22 @@ impl Host {
         };
         surface.configure(&device, &config);
 
-        // The section binds the live Ground at genesis and refreshes from the
-        // world's own dirty drain thereafter.
+        // The section binds the played site's lifted Ground; the frame
+        // rebinds it when the site or its edits change.
+        self.refresh_scene();
+        let Some(scene) = &self.scene else {
+            eprintln!("section: no site to draw");
+            self.code = 1;
+            event_loop.exit();
+            return;
+        };
         let mut section = match Section::new(
             device.clone(),
             queue.clone(),
             self.config.width,
             self.config.height,
             format,
-            self.runtime.world().ground(),
+            &scene.ground,
             Framing::new(self.config.slab_half_height, self.config.camera),
         ) {
             Ok(section) => section,
@@ -122,11 +127,10 @@ impl Host {
             crate::hud::SIDE,
         )
         .map(|device| Lanes {
-            hud: crate::hud::Hud::new(&device, self.runtime.world()),
+            hud: crate::hud::Hud::new(&device, self.runtime.sim(), self.runtime.critter()),
             vitals: crate::vitals::VitalsChrome::new(&device),
             checkpoint: crate::succession::SuccessionChrome::new(&device),
             board: crate::review::BoardChrome::new(&device),
-            grafting: crate::body_menu::BodyMenuChrome::new(&device),
             dev: crate::dev::DevChrome::new(&device),
             device,
         });

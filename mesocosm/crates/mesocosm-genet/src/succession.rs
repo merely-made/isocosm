@@ -28,6 +28,8 @@ use genet_livery::{
     emit_paint_list_with_text_system_scrolled_with_images, layout_with_text_system, resolve_styles,
 };
 use genet_scripted_dom::{NodeId, ScriptedDom};
+use isocosm::schema::Id;
+use isocosm::simulation::Simulation;
 use mesocosm_runtime::{Checkpoint, Occasion};
 use mesocosm_views::{Succession, SuccessionChild};
 use paint_list_api::{DeviceIntSize, PaintList as _};
@@ -44,34 +46,38 @@ const HEIGHT: u32 = 208;
 
 type Runner = GenetAppRunner<Succession, fn(&Succession) -> SuccessionChild, SuccessionChild>;
 
-/// Reads the driver's question into the words a player sees.
-///
-/// The one conversion in the lane, and it is deliberately dumb: every sentence
+/// Reads the driver's question into the words a player sees; every sentence
 /// belongs to `mesocosm-views`, and this supplies numbers.
-pub fn succession_of(checkpoint: &Checkpoint) -> Succession {
-    match checkpoint.occasion {
+pub fn succession_of(sim: &Simulation, checkpoint: &Checkpoint) -> Succession {
+    let lineage = |id: Id| {
+        sim.state()
+            .population
+            .get(id)
+            .map(|e| e.lineage.clone())
+            .unwrap_or_default()
+    };
+    match &checkpoint.occasion {
         Occasion::Birth(birth) => Succession::birth(
-            birth.parent.0,
-            birth.offspring.0,
-            birth.lineage.0,
-            birth.substance_mg,
-            birth.reserve_mg,
+            birth.parent,
+            birth.child,
+            &lineage(birth.parent),
             checkpoint.heir().is_some(),
         ),
         Occasion::Loss(loss) => Succession::loss(
-            loss.organism.0,
-            loss.lineage.0,
+            loss.critter,
+            &lineage(loss.critter),
             checkpoint.heirs.len(),
-            checkpoint.heir().map(|heir| heir.0),
+            checkpoint.heir(),
         ),
-        // The lineage checkpoint (PE3a). Same lane, same two keys — Enter is
-        // still `default_answer`, which is `Resume` here as everywhere — and no
-        // new panel: the review is PE3b's.
         Occasion::Epoch(boundary) => Succession::epoch(
-            boundary.epoch,
-            boundary.lineage.0,
-            boundary.turned,
-            boundary.committed,
+            boundary.tick,
+            &boundary.lineage,
+            boundary.turns.len(),
+            boundary
+                .turns
+                .iter()
+                .filter(|t| t.committed.is_some())
+                .count(),
         ),
     }
 }
@@ -95,7 +101,7 @@ impl SuccessionChrome {
         let runner = Runner::new(
             dom,
             mesocosm_views::succession_root as fn(&Succession) -> SuccessionChild,
-            Succession::loss(0, 0, 0, None),
+            Succession::loss(0, "", 0, None),
         );
         Self {
             runner,
@@ -110,8 +116,8 @@ impl SuccessionChrome {
 
     /// Takes the frame's question and rasterizes it if it changed. `None`
     /// clears the surface, which is what "play resumes" looks like.
-    pub fn refresh(&mut self, chrome: &Chrome, checkpoint: Option<&Checkpoint>) {
-        let reading = checkpoint.map(succession_of);
+    pub fn refresh(&mut self, chrome: &Chrome, sim: &Simulation, checkpoint: Option<&Checkpoint>) {
+        let reading = checkpoint.map(|c| succession_of(sim, c));
         if self.shown == reading {
             return;
         }
@@ -213,28 +219,6 @@ impl SuccessionChrome {
             return;
         }
         chrome.draw(
-            encoder,
-            target,
-            self.raster.sample_view(),
-            Self::placement(frame),
-            frame,
-        );
-    }
-
-    /// The same, into a capture frame's offscreen format.
-    pub fn capture_composite(
-        &self,
-        chrome: &Chrome,
-        format: wgpu::TextureFormat,
-        encoder: &mut wgpu::CommandEncoder,
-        target: &wgpu::TextureView,
-        frame: (u32, u32),
-    ) {
-        if !self.standing() {
-            return;
-        }
-        chrome.draw_as(
-            format,
             encoder,
             target,
             self.raster.sample_view(),
