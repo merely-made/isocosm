@@ -6,6 +6,9 @@
 
 //! Committing a lineage revision. (P4)
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (with `directing::revise`).
+//!
 //! **One transaction, two doors.** [`Intent::Revise`](super::Intent) is the
 //! played one and this is what it calls; an unplayed lineage reaches
 //! [`World::revise`] directly, so the two take the identical path and neither

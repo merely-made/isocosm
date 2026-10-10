@@ -6,6 +6,9 @@
 
 //! What each lineage did, measured at the end of an epoch.
 //!
+//! *Leaves with the world move (755):* the legacy `World` still holds this;
+//! its native re-expression is `isocosm::lineage` (`reckon`).
+//!
 //! [`WorldRecord::note`](crate::legacy::mesocosm::record::WorldRecord::note) was built first
 //! because its *shape* was the question, and it has had no callers since. This
 //! is the caller. It is last rather than first because a reckoning needs all

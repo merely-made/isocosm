@@ -230,3 +230,38 @@ the bodies family.
   beside the store rather than to `isonetry`, its only caller, as "its game
   crate" (669). Forks put to Mark: how authored content enters native state,
   and authored factions against polities derived from members.
+- **2026-10-09, family 5, lineages and the boundary (lane `lane-lineages`,
+  under 732's compile gate; no tests, draws or certification run beyond the
+  lane's six unit tests).** Native `isocosm::lineage` (514 lines, tests included)
+  re-expresses the family over native `Lineage`, keyed by name, reusing
+  directing's boundary (684) and revision (752) rather than copying them:
+  `tree` is legacy `Lineages`' descent (ancestry, common ancestor, distance,
+  descent, children); `speciate` is the naming act, `Command::Speciate
+  { founder, name }` founding `lineage:<name>` off the founder's line, the
+  record inherited whole and the founder its one member; `program` is the
+  line's committed `Command::Revise` entries read from the log, a fork's
+  beginning with its forebears' up to the split, with a digest; `reckon` is
+  `score::readings` (growth as living matter, spread as sites, endurance as
+  the oldest living age), read and never noted; `review` is PE3b's offers,
+  the status quo first, every lexicon variant scored by the boundary's
+  grow-a-copy, those the world would refuse kept with the reason, and
+  `Review::commit` the commands an offer sends. Native discovery is the
+  stage's lesson: eating a part whole teaches its kind to the eater's
+  lexicon (468), for every line.
+  Nothing legacy was deleted and no consumer re-pointed: `discovery`,
+  `species`, `program`, `score` and the world's `adapt`, `review` and
+  `revise` are fields and methods of the legacy `World` (its lineages, its
+  discoveries, `adapt_round` at its boundary, `offers`, `reckon`), and
+  every consumer (mesocosm-runtime's review and succession lanes, genet's
+  `review.rs` and its eating, expression and grafting, mesocosm-views'
+  board, mesocosm-phenotype's expression requests) reads them through a
+  driver holding that `World`. They go with the world move and the switch
+  (755, D5); each legacy module says so. *Reading, not ruled:* a new line's
+  key is its name; readings carry feats as keys (`feat:growth`, …) beside
+  hagiograph's axes, the record family deciding where they are noted;
+  predation has no native reading, the native flow record being the record
+  family's. Forks put to Mark: when and how the review and succession
+  lanes re-point; whether the boundary and revision move from `directing`
+  into `lineage`; what becomes of legacy discovery's condition table (the
+  endurance route, tract grants); and whether the native revision grows to
+  legacy's declared tracts and 568's folding of systems.
