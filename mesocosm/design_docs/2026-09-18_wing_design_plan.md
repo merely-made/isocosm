@@ -9904,6 +9904,14 @@ what later sections derive from.
 772. **A new line's name is its key.** 2026-10-10. Options: `lineage:<name>`,
      no schema change (recommended); a generated key and a name field. Mark
      chose "Its name is its key (Recommended)".
+773 to 775. **Effects keys, glyph reading and the experiment.** 2026-10-10,
+     from the effects family (merged at `a8570817`). Mark chose "Native
+     function keys (Recommended)": embodiment keys on `function:<name>`,
+     and legacy tables naming `mesocosm:<process>` are re-authored at the
+     world move (773). "At the switch (Recommended)": mesocosm-runtime's
+     `GlyphReading` moves onto the native `Journal` with 762's review and
+     succession (774). "mesocosm-runtime (Recommended)": `effect_experiment`
+     stays in the game's host-neutral runtime under 669 (775).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
