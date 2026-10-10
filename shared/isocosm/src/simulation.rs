@@ -71,6 +71,10 @@ pub struct State {
     /// hash as before.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub agreements: BTreeMap<Id, crate::social::Agreement>,
+    /// The table's map edits, storylets and packs (795). Absent from runs
+    /// with none, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "crate::asserted::Records::is_empty")]
+    pub asserted: crate::asserted::Records,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -177,6 +181,7 @@ impl Simulation {
             nudges: Vec::new(),
             laws: BTreeMap::new(),
             agreements: BTreeMap::new(),
+            asserted: Default::default(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {

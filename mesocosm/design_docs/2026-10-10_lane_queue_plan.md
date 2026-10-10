@@ -279,6 +279,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 native checkpoint integrated:** the twelve native paths
+  from common base `c6bc153a` through verified lane checkpoint `9dd71d78`
+  are applied independently of the branch's saved consumer WIP. They carry
+  ruling 808's typed agreement link, asserted map/storylet/pack records,
+  atomic folding, event-key ownership and witness updates. The merged native
+  workspace/all-targets check passed offline in 25.39 seconds; the lane's
+  focused event compatibility and assertion tests passed 1/1 and 7/7.
+  The native lock's SHA256 remains
+  `9417e959e1e6b254e4f240ee10e7c7e639b642c71bca3b1459386684aa029321`.
+  Q2 remains active for its consumer and overlay gates and the character
+  metadata fork. Q8's restored independent harm suite passed 10/10 and both
+  planted controls were caught; healing and full C10 remain open. Q3 gets
+  the next Cargo turn for its bounded prey-timing tests.
 - **2026-10-10, Q3's stale-prey diagnosis:** three short seed-0 probes
   identify automatic prey cached before movement, then refused outside the
   feeding scope. The production recorder was removed byte-for-byte and raw

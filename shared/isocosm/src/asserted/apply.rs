@@ -189,7 +189,7 @@ impl Simulation {
     /// An event at its place's site and about its first participant, where
     /// those are asserted, placeless otherwise; it spreads nowhere.
     pub(super) fn assert_line(&mut self, h: &HistoryLine) -> Result<Key> {
-        let id = format!("line:{}", h.key);
+        let id = h.event_key();
         if let Some(was) = self.state.events.get(&id) {
             let line = Some(h.clone());
             return held(&was.authored, &line, "history line", &h.key).map(|_| id);
@@ -208,6 +208,7 @@ impl Simulation {
             object: None,
             process: h.kind.clone(),
             cause: Some(cause(&h.key)),
+            agreement: None,
             strength: 0,
             legend: false,
             authored: Some(h.clone()),

@@ -25,8 +25,15 @@ pub const PERFORMED: &str = "deed:performed-under-agreement";
 pub const RENEGOTIATED: &str = "deed:agreement-renegotiated";
 pub const AGREEMENT_ENDED: &str = "deed:agreement-ended";
 /// The deeds asks and agreements record, which a vocabulary declares.
-pub const RECORDED: [&str; 7] =
-    [OFFER_ACCEPTED, OFFER_REFUSED, OFFER_COUNTERED, AGREEMENT_FORMED, PERFORMED, RENEGOTIATED, AGREEMENT_ENDED];
+pub const RECORDED: [&str; 7] = [
+    OFFER_ACCEPTED,
+    OFFER_REFUSED,
+    OFFER_COUNTERED,
+    AGREEMENT_FORMED,
+    PERFORMED,
+    RENEGOTIATED,
+    AGREEMENT_ENDED,
+];
 
 /// What one deed does to the standing of whoever it was toward, and how
 /// it is said.
@@ -58,7 +65,9 @@ impl Vocabulary {
     }
     /// What `deed` does to standing: trust, then liking.
     pub fn weight(&self, deed: &str) -> (i16, i16) {
-        self.deeds.get(deed).map_or((0, 0), |d| (d.trust, d.affinity))
+        self.deeds
+            .get(deed)
+            .map_or((0, 0), |d| (d.trust, d.affinity))
     }
     pub fn phrase<'a>(&'a self, deed: &'a str) -> &'a str {
         self.deeds.get(deed).map_or(deed, |d| d.phrase.as_str())
@@ -73,8 +82,7 @@ pub fn vocabulary(rules: &Rules) -> std::borrow::Cow<'_, Vocabulary> {
     }
 }
 
-/// What a deed was: its key, and the agreement it was done under, carried
-/// in the event's cause as `agreement:<id>`.
+/// What a deed was: its key and the agreement its event names (808).
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct DeedKind {
     pub key: Key,
@@ -83,10 +91,16 @@ pub struct DeedKind {
 
 impl DeedKind {
     pub fn new(key: impl Into<Key>) -> Self {
-        Self { key: key.into(), agreement: None }
+        Self {
+            key: key.into(),
+            agreement: None,
+        }
     }
     pub fn under(key: impl Into<Key>, agreement: Id) -> Self {
-        Self { key: key.into(), agreement: Some(agreement) }
+        Self {
+            key: key.into(),
+            agreement: Some(agreement),
+        }
     }
     pub fn is(&self, key: &str) -> bool {
         self.key == key
@@ -119,14 +133,56 @@ pub fn processes(vocabulary: &Vocabulary) -> BTreeMap<Key, Process> {
 
 impl Simulation {
     /// Records a deed the world declares; returns its event's key.
-    pub(crate) fn record_deed(&mut self, doer: Id, toward: Option<Id>, kind: &DeedKind) -> Result<Key> {
-        if !vocabulary(&self.genesis.rules).deeds.contains_key(&kind.key) {
+    pub(crate) fn record_deed(
+        &mut self,
+        doer: Id,
+        toward: Option<Id>,
+        kind: &DeedKind,
+    ) -> Result<Key> {
+        if kind
+            .agreement
+            .is_some_and(|id| !self.state.agreements.contains_key(&id))
+        {
+            return Err("a deed under no agreement".into());
+        }
+        self.do_deed(doer, toward, kind)
+    }
+
+    /// The formation event precedes the new agreement, both in one social act.
+    pub(super) fn record_formation(&mut self, doer: Id, toward: Id, agreement: Id) -> Result<Key> {
+        self.do_deed(
+            doer,
+            Some(toward),
+            &DeedKind::under(AGREEMENT_FORMED, agreement),
+        )
+    }
+
+    fn do_deed(&mut self, doer: Id, toward: Option<Id>, kind: &DeedKind) -> Result<Key> {
+        if !vocabulary(&self.genesis.rules)
+            .deeds
+            .contains_key(&kind.key)
+        {
             return Err(format!("{} is no deed this world declares", kind.key));
         }
-        let cause = kind.agreement.map(|a| format!("agreement:{a}"));
-        let receipt = self.execute(doer, toward, &kind.key, cause);
+        if !self
+            .genesis
+            .rules
+            .processes
+            .get(&kind.key)
+            .is_some_and(|p| p.note)
+        {
+            return Err("a deed process must leave its event".into());
+        }
+        let receipt = self.execute(doer, toward, &kind.key, None);
         match receipt.accepted() {
-            true => Ok(receipt.id),
+            true => {
+                self.state
+                    .events
+                    .get_mut(&receipt.id)
+                    .expect("a deed leaves its event")
+                    .agreement = kind.agreement;
+                Ok(receipt.id)
+            },
             false => Err(format!("a deed refused: {:?}", receipt.outcome)),
         }
     }
@@ -134,7 +190,6 @@ impl Simulation {
     /// Every deed, in the order done.
     pub fn deeds(&self) -> Vec<Deed> {
         let v = vocabulary(&self.genesis.rules);
-        let agreement = |cause: Option<&str>| cause?.strip_prefix("agreement:")?.parse().ok();
         let mut deeds: Vec<Deed> = self
             .state
             .events
@@ -145,11 +200,19 @@ impl Simulation {
                 at: e.tick,
                 doer: e.subject,
                 toward: e.object,
-                kind: DeedKind { key: e.process.clone(), agreement: agreement(e.cause.as_deref()) },
+                kind: DeedKind {
+                    key: e.process.clone(),
+                    agreement: e.agreement,
+                },
             })
             .collect();
         let order: BTreeMap<&str, usize> = self.deed_order();
-        deeds.sort_by_key(|d| (d.at, order.get(d.id.as_str()).copied().unwrap_or(usize::MAX)));
+        deeds.sort_by_key(|d| {
+            (
+                d.at,
+                order.get(d.id.as_str()).copied().unwrap_or(usize::MAX),
+            )
+        });
         deeds
     }
 
@@ -166,6 +229,8 @@ impl Simulation {
     /// kept in the order done.
     fn deed_order(&self) -> BTreeMap<&str, usize> {
         let acts = self.state.notes.iter().filter(|n| n.core.kind == "sim:act");
-        acts.enumerate().map(|(i, n)| (n.core.object.as_str(), i)).collect()
+        acts.enumerate()
+            .map(|(i, n)| (n.core.object.as_str(), i))
+            .collect()
     }
 }

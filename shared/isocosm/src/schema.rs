@@ -371,12 +371,18 @@ pub struct Event {
     pub object: Option<Id>,
     pub process: Key,
     pub cause: Option<Key>,
+    /// A deed's agreement link, distinct from its causal event (808).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub agreement: Option<Id>,
     pub strength: u32,
     pub legend: bool,
     /// An authored history line's fill (769); absent elsewhere, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub authored: Option<crate::asserted::HistoryLine>,
 }
+
+#[cfg(test)]
+mod event_tests;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FieldPolicy {

@@ -47,6 +47,9 @@ impl Simulation {
         if !s.agreements.is_empty() {
             put(&mut w, "agreements", &s.agreements);
         }
+        if !s.asserted.is_empty() {
+            put(&mut w, "asserted", &s.asserted);
+        }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -96,6 +99,15 @@ impl Simulation {
         }
         for (id, agreement) in &s.agreements {
             put(&mut w, label("agreement", [id]), agreement);
+        }
+        for (key, map) in &s.asserted.maps {
+            put(&mut w, label("map", [key]), map);
+        }
+        for (key, applied) in &s.asserted.storylets {
+            put(&mut w, label("storylet", [key]), applied);
+        }
+        for (key, applied) in &s.asserted.packs {
+            put(&mut w, label("pack", [key]), applied);
         }
         for id in &s.roots {
             put(&mut w, label("root", [id]), &());

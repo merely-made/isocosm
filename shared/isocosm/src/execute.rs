@@ -209,6 +209,7 @@ impl Simulation {
                 object: target,
                 process: process.into(),
                 cause,
+                agreement: None,
                 strength: genesis.rules.field.strength,
                 legend,
                 authored: None,

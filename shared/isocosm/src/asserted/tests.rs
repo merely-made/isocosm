@@ -151,3 +151,92 @@ fn a_fold_holds_what_the_entries_assert() {
     let early = [route("r", "ford", "shrine")];
     assert_eq!(Asserted::fold(&early), Err(Refused::Unplaced("r".into())));
 }
+
+fn map(key: &str, place: &str) -> Assertion {
+    let cell = CellEdit {
+        at: [1, 0, 2],
+        kind: "stone".into(),
+        height: 2,
+    };
+    Assertion::Edit(MapEdit {
+        key: key.into(),
+        place: place.into(),
+        cells: vec![cell],
+    })
+}
+
+fn storylet(key: &str, asserts: Vec<Assertion>) -> Assertion {
+    let source = "arrival".into();
+    Assertion::Storylet(Applied {
+        key: key.into(),
+        source,
+        asserts,
+    })
+}
+
+#[test]
+fn a_map_edit_is_held_on_an_asserted_place() {
+    let mut s = session();
+    assert!(s.command(Command::Assert(map("m", "ford"))).is_err());
+    s.command(Command::Assert(place("ford"))).unwrap();
+    assert_eq!(
+        s.command(Command::Assert(map("m", "ford"))).unwrap(),
+        "map:m"
+    );
+    assert_eq!(s.sim.state.asserted.maps["m"].cells.len(), 1);
+    assert!(s.command(Command::Assert(map("m", "shrine"))).is_err());
+}
+
+#[test]
+fn a_storylet_lands_whole_or_not_at_all() {
+    let mut s = session();
+    let before = (
+        s.sim.state_hash(),
+        s.sim.state.population.next_id,
+        s.entries.len(),
+    );
+    let bad = storylet("s", vec![place("ford"), route("r", "ford", "nowhere")]);
+    assert!(s.command(Command::Assert(bad)).is_err());
+    assert!(
+        s.sim.authored_site("ford").is_none(),
+        "nothing half-applied"
+    );
+    assert_eq!(
+        (
+            s.sim.state_hash(),
+            s.sim.state.population.next_id,
+            s.entries.len()
+        ),
+        before
+    );
+    let good = storylet("s", vec![place("ford"), map("m", "ford")]);
+    assert_eq!(
+        s.command(Command::Assert(good.clone())).unwrap(),
+        "storylet:s"
+    );
+    assert!(s.sim.authored_site("ford").is_some());
+    assert!(s.sim.state.asserted.storylets.contains_key("s"));
+    assert_eq!(s.command(Command::Assert(good)).unwrap(), "storylet:s");
+    let pack = Assertion::PackForced(Applied {
+        key: "p".into(),
+        source: "watchtower".into(),
+        asserts: vec![place("shrine")],
+    });
+    s.command(Command::Assert(pack)).unwrap();
+    assert!(s.sim.state.asserted.packs.contains_key("p"));
+    let loaded = Session::load(s.save(), Execution::Grouped).unwrap();
+    assert_eq!(loaded.sim.state_hash(), s.sim.state_hash());
+    assert_eq!(loaded.sim.state.asserted, s.sim.state.asserted);
+}
+
+#[test]
+fn a_fold_holds_groups_whole() {
+    let bad = [storylet("s", vec![place("ford"), map("m", "nowhere")])];
+    assert_eq!(Asserted::fold(&bad), Err(Refused::Unplaced("m".into())));
+    let good = [storylet("s", vec![place("ford"), map("m", "ford")])];
+    let folded = Asserted::fold(&good).unwrap();
+    assert!(folded.places.contains_key("ford"));
+    assert!(folded.records.maps.contains_key("m"));
+    let mut again = folded.clone();
+    assert_eq!(again.apply(&good[0]), Ok(false));
+}

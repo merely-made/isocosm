@@ -35,7 +35,15 @@ impl Simulation {
         let peer = self.peer(offer.asked_of)?;
         let deeds = self.deeds();
         let standing = standing_in(&self.genesis.rules, &deeds, offer.asked_of, offer.asked_by);
-        let w = willing::weigh(&self.genesis.rules, &peer, offer.asked_by, &standing, &deeds, &offer.work, &offer.terms);
+        let w = willing::weigh(
+            &self.genesis.rules,
+            &peer,
+            offer.asked_by,
+            &standing,
+            &deeds,
+            &offer.work,
+            &offer.terms,
+        );
         let kind = match w.verdict {
             Verdict::Accept => DeedKind::new(OFFER_ACCEPTED),
             Verdict::Refuse => DeedKind::new(OFFER_REFUSED),
@@ -43,7 +51,13 @@ impl Simulation {
         };
         let recorded = self.record_deed(offer.asked_of, Some(offer.asked_by), &kind)?;
         let at = self.state.tick;
-        Ok(Response { by: offer.asked_of, at, verdict: w.verdict, premises: w.premises, recorded })
+        Ok(Response {
+            by: offer.asked_of,
+            at,
+            verdict: w.verdict,
+            premises: w.premises,
+            recorded,
+        })
     }
 
     /// An offer taken as a standing agreement, if the peer accepts it.
@@ -52,25 +66,51 @@ impl Simulation {
         let peer = self.peer(offer.asked_of)?;
         let deeds = self.deeds();
         let standing = standing_in(&self.genesis.rules, &deeds, offer.asked_of, offer.asked_by);
-        let w = willing::weigh(&self.genesis.rules, &peer, offer.asked_by, &standing, &deeds, &offer.work, &offer.terms);
+        let w = willing::weigh(
+            &self.genesis.rules,
+            &peer,
+            offer.asked_by,
+            &standing,
+            &deeds,
+            &offer.work,
+            &offer.terms,
+        );
         let (by, at) = (offer.asked_of, self.state.tick);
         if !w.verdict.accepted() {
             let kind = RulingKind::Declined;
-            return Ok(Ruling { by, at, kind, premises: w.premises, recorded: None });
+            return Ok(Ruling {
+                by,
+                at,
+                kind,
+                premises: w.premises,
+                recorded: None,
+            });
         }
-        let id = self.state.agreements.keys().next_back().map_or(0, |k| k + 1);
-        let deed = self.record_deed(by, Some(offer.asked_by), &DeedKind::under(AGREEMENT_FORMED, id))?;
-        let history = vec![AgreementEvent { at, deed: deed.clone(), what: AgreementChange::Formed }];
-        self.state.agreements.insert(id, Agreement {
+        let id = self
+            .state
+            .agreements
+            .keys()
+            .next_back()
+            .map_or(0, |k| k + 1);
+        let deed = self.record_formation(by, offer.asked_by, id)?;
+        let history = vec![AgreementEvent {
+            at,
+            deed: deed.clone(),
+            what: AgreementChange::Formed,
+        }];
+        self.state.agreements.insert(
             id,
-            asker: offer.asked_by,
-            holder: by,
-            work: offer.work.clone(),
-            terms: offer.terms,
-            formed_at: at,
-            state: AgreementState::Standing,
-            history,
-        });
+            Agreement {
+                id,
+                asker: offer.asked_by,
+                holder: by,
+                work: offer.work.clone(),
+                terms: offer.terms,
+                formed_at: at,
+                state: AgreementState::Standing,
+                history,
+            },
+        );
         let mut premises = w.premises;
         premises.push(Premise::AgreementTerm {
             agreement: id,
@@ -78,7 +118,13 @@ impl Simulation {
             danger_cap: offer.terms.danger_cap,
             covers: true,
         });
-        Ok(Ruling { by, at, kind: RulingKind::Formed(id), premises, recorded: Some(deed) })
+        Ok(Ruling {
+            by,
+            at,
+            kind: RulingKind::Formed(id),
+            premises,
+            recorded: Some(deed),
+        })
     }
 
     /// The holder asked for work under an agreement.
@@ -94,21 +140,46 @@ impl Simulation {
         }];
         if !covers {
             let kind = RulingKind::OutsideTerms;
-            return Ok(Ruling { by: holder, at, kind, premises, recorded: None });
+            return Ok(Ruling {
+                by: holder,
+                at,
+                kind,
+                premises,
+                recorded: None,
+            });
         }
         let peer = self.peer(holder)?;
         let deeds = self.deeds();
         let standing = standing_in(&self.genesis.rules, &deeds, holder, asker);
-        let (willing, weighing) = willing::weigh_routine(&self.genesis.rules, &peer, asker, &standing, &deeds, work);
+        let (willing, weighing) =
+            willing::weigh_routine(&self.genesis.rules, &peer, asker, &standing, &deeds, work);
         premises.extend(weighing);
         if !willing {
             let kind = RulingKind::Declined;
-            return Ok(Ruling { by: holder, at, kind, premises, recorded: None });
+            return Ok(Ruling {
+                by: holder,
+                at,
+                kind,
+                premises,
+                recorded: None,
+            });
         }
         let deed = self.record_deed(holder, Some(asker), &DeedKind::under(PERFORMED, id))?;
         let what = AgreementChange::Exercised;
-        self.change(id, |a| a.history.push(AgreementEvent { at, deed: deed.clone(), what }));
-        Ok(Ruling { by: holder, at, kind: RulingKind::Performed, premises, recorded: Some(deed) })
+        self.change(id, |a| {
+            a.history.push(AgreementEvent {
+                at,
+                deed: deed.clone(),
+                what,
+            })
+        });
+        Ok(Ruling {
+            by: holder,
+            at,
+            kind: RulingKind::Performed,
+            premises,
+            recorded: Some(deed),
+        })
     }
 
     /// A party proposes new terms; the holder weighs a change the asker puts.
@@ -119,12 +190,21 @@ impl Simulation {
         }
         let (asker, holder, from, other) = (a.asker, a.holder, a.terms, a.other(by));
         let at = self.state.tick;
-        let mut premises = vec![Premise::TermChange { agreement: id, from, to: terms }];
+        let mut premises = vec![Premise::TermChange {
+            agreement: id,
+            from,
+            to: terms,
+        }];
         if by == asker {
             let peer = self.peer(holder)?;
             let deeds = self.deeds();
             let standing = standing_in(&self.genesis.rules, &deeds, holder, asker);
-            premises.extend(willing::evidence(&self.genesis.rules, &deeds, &standing, asker));
+            premises.extend(willing::evidence(
+                &self.genesis.rules,
+                &deeds,
+                &standing,
+                asker,
+            ));
             let caution = caution_of(&peer);
             let limit = willing::bearable(standing.affinity, caution);
             let borne = i16::from(terms.danger_cap) <= limit && terms.share >= from.share;
@@ -137,17 +217,33 @@ impl Simulation {
             });
             if !borne {
                 let kind = RulingKind::Declined;
-                return Ok(Ruling { by: holder, at, kind, premises, recorded: None });
+                return Ok(Ruling {
+                    by: holder,
+                    at,
+                    kind,
+                    premises,
+                    recorded: None,
+                });
             }
         }
         let deed = self.record_deed(by, Some(other), &DeedKind::under(RENEGOTIATED, id))?;
         let what = AgreementChange::Renegotiated { from, to: terms };
         self.change(id, |a| {
             a.terms = terms;
-            a.history.push(AgreementEvent { at, deed: deed.clone(), what });
+            a.history.push(AgreementEvent {
+                at,
+                deed: deed.clone(),
+                what,
+            });
         });
         let kind = RulingKind::Renegotiated { from, to: terms };
-        Ok(Ruling { by, at, kind, premises, recorded: Some(deed) })
+        Ok(Ruling {
+            by,
+            at,
+            kind,
+            premises,
+            recorded: Some(deed),
+        })
     }
 
     /// A party ends an agreement.
@@ -165,9 +261,19 @@ impl Simulation {
         let deed = self.record_deed(by, Some(other), &DeedKind::under(AGREEMENT_ENDED, id))?;
         self.change(id, |a| {
             a.state = AgreementState::Ended { at, why };
-            a.history.push(AgreementEvent { at, deed: deed.clone(), what: AgreementChange::Ended(why) });
+            a.history.push(AgreementEvent {
+                at,
+                deed: deed.clone(),
+                what: AgreementChange::Ended(why),
+            });
         });
-        Ok(Ruling { by, at, kind: RulingKind::Ended(why), premises, recorded: Some(deed) })
+        Ok(Ruling {
+            by,
+            at,
+            kind: RulingKind::Ended(why),
+            premises,
+            recorded: Some(deed),
+        })
     }
 
     fn change(&mut self, id: Id, f: impl FnOnce(&mut Agreement)) {
@@ -181,31 +287,71 @@ impl Simulation {
         let name = |id: &Id| self.name_of(*id).unwrap_or("someone").to_string();
         let v = super::deed::vocabulary(&self.genesis.rules);
         match premise {
-            Premise::Deed { at, doer, kind, trust, affinity, .. } => format!(
+            Premise::Deed {
+                at,
+                doer,
+                kind,
+                trust,
+                affinity,
+                ..
+            } => format!(
                 "tick {at}: {} {} (trust {trust:+}, liking {affinity:+})",
                 name(doer),
                 v.phrase(&kind.key)
             ),
-            Premise::Standing { toward, trust, affinity, from_deeds } => format!(
+            Premise::Standing {
+                toward,
+                trust,
+                affinity,
+                from_deeds,
+            } => format!(
                 "where I stand with {}: trust {trust}, liking {affinity}, out of {} deeds",
                 name(toward),
                 from_deeds.len()
             ),
-            Premise::Confidence { craft, demanded, held, margin } => {
-                format!("{} at grade {demanded}; I hold {held} ({margin:+})", craft_name(craft))
+            Premise::Confidence {
+                craft,
+                demanded,
+                held,
+                margin,
+            } => {
+                format!(
+                    "{} at grade {demanded}; I hold {held} ({margin:+})",
+                    craft_name(craft)
+                )
             },
-            Premise::TrustAsked { danger, asked, held, met } => format!(
+            Premise::TrustAsked {
+                danger,
+                asked,
+                held,
+                met,
+            } => format!(
                 "danger {danger} asks trust {asked}; I hold {held} ({})",
                 if *met { "enough" } else { "not enough" }
             ),
-            Premise::DangerWeighed { danger, bearable, affinity, caution, borne } => format!(
+            Premise::DangerWeighed {
+                danger,
+                bearable,
+                affinity,
+                caution,
+                borne,
+            } => format!(
                 "danger {danger} against the {bearable} I would bear for them \
                  (liking {affinity}, caution {caution}): {}",
                 if *borne { "within me" } else { "past me" }
             ),
-            Premise::AgreementTerm { share, danger_cap, covers, .. } => format!(
+            Premise::AgreementTerm {
+                share,
+                danger_cap,
+                covers,
+                ..
+            } => format!(
                 "our arrangement: share {share}, up to danger {danger_cap} ({})",
-                if *covers { "this fits" } else { "this is not that" }
+                if *covers {
+                    "this fits"
+                } else {
+                    "this is not that"
+                }
             ),
             Premise::TermChange { from, to, .. } => format!(
                 "terms: share {} -> {}, danger cap {} -> {}",
@@ -221,10 +367,18 @@ impl Simulation {
 }
 
 /// Standing folded from `deeds`: what `toward` did to `holder`.
-pub fn standing_in(rules: &crate::rules::Rules, deeds: &[Deed], holder: Id, toward: Id) -> Standing {
+pub fn standing_in(
+    rules: &crate::rules::Rules,
+    deeds: &[Deed],
+    holder: Id,
+    toward: Id,
+) -> Standing {
     let v = super::deed::vocabulary(rules);
     let mut s = Standing::default();
-    for d in deeds.iter().filter(|d| d.doer == toward && d.toward == Some(holder) && holder != toward) {
+    for d in deeds
+        .iter()
+        .filter(|d| d.doer == toward && d.toward == Some(holder) && holder != toward)
+    {
         let (trust, affinity) = v.weight(&d.kind.key);
         s.trust += trust;
         s.affinity += affinity;

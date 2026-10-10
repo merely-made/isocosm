@@ -18,6 +18,8 @@ pub struct Asserted {
     /// In the table's time order, the order asserted breaking ties.
     pub history: Vec<HistoryLine>,
     pub facts: BTreeMap<Key, Fact>,
+    /// Map edits, storylets applied and packs forced (795).
+    pub records: Records,
 }
 
 /// Why a fold refused an assertion.
@@ -27,7 +29,7 @@ pub enum Refused {
     Keyless,
     /// Something else is asserted under its key.
     Otherwise(Key),
-    /// A route names a place not yet asserted.
+    /// A route or a map names a place not yet asserted.
     Unplaced(Key),
 }
 
@@ -86,6 +88,33 @@ impl Asserted {
                 self.history.insert(at, h.clone());
                 Ok(true)
             },
+            Assertion::Edit(m) => {
+                if !self.places.contains_key(&m.place) {
+                    return Err(Refused::Unplaced(key.into()));
+                }
+                once(&mut self.records.maps, key, m)
+            },
+            Assertion::Storylet(a) => self.group(a, false),
+            Assertion::PackForced(a) => self.group(a, true),
         }
+    }
+
+    /// Folds a group's assertions whole, or refuses and holds nothing new.
+    fn group(&mut self, a: &Applied, pack: bool) -> Folded {
+        let held = match pack {
+            true => self.records.packs.get(&a.key),
+            false => self.records.storylets.get(&a.key),
+        };
+        if let Some(was) = held {
+            return if was == a { Ok(false) } else { Err(Refused::Otherwise(a.key.clone())) };
+        }
+        let mut next = self.clone();
+        for assertion in &a.asserts {
+            next.apply(assertion)?;
+        }
+        let map = if pack { &mut next.records.packs } else { &mut next.records.storylets };
+        map.insert(a.key.clone(), a.clone());
+        *self = next;
+        Ok(true)
     }
 }

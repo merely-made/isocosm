@@ -178,6 +178,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, Q2 native checkpoint integrated:** native deed events now
+  retain ruling 808's optional agreement ID with causal-event validation
+  intact, alongside asserted map/storylet/pack records and their witnesses.
+  The lane passed native event compatibility (1/1), assertion tests (7/7)
+  and the native compile gate; the orchestrator's merged native
+  workspace/all-targets check passed offline. Q2's consumers, the shared
+  overlay, character metadata and the broader A2 baseline remain open.
 - **2026-10-10, Q7 integration:** tenant migration `2c86e5f7` passed its
   four workspace compile gates and two CPU controls; the orchestrator also
   passed all four merged workspace gates offline. These certify source
