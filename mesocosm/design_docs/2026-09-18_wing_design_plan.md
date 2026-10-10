@@ -9983,6 +9983,42 @@ what later sections derive from.
      first, gating every played draw (recommended); checkpoint 10 first;
      both in one ecology lane. Mark chose "Reproduction first
      (Recommended)".
+793 to 804. **The plan review's rulings.** 2026-10-10, from
+     `2026-10-10_plan_review.md`, put in three rounds. Mark chose:
+     - 793, "Accept it (Recommended)": the review's classification stands;
+       the DONE and SUPERSEDED docs archive to `archive_docs/2026-10-10/`,
+       residue extracted first, and the LIVE plans are rewritten to the
+       native state.
+     - 794, "Through the contract (Recommended)": Eponym's E3 and the VTT's
+       V2 talk to the sim through their contracts, as Mesocosm does (154,
+       197); `eponym-play`'s direct commands move behind it.
+     - 795, "Contract maps to native (Recommended)": the contract keeps its
+       assertion vocabulary for the table and translates to native
+       `isocosm::asserted`, native gaining what it lacks.
+     - 796, "Mesocosm onto the tenant (Recommended)": one body rasteriser,
+       isometer-render's `LiveBody` retiring once Mesocosm moves.
+     - 797, "Code follows the ruling (Recommended)": boundary turns go in
+       descending metabolic complexity, defined natively; `lineage/boundary`
+       stops ordering by members.
+     - 798, "Now, push mode": V2 and E3 open now under 732's compile gate,
+       not after M3 certifies; this amends 231's gate.
+     - 799, "Two paths (Recommended)": the battlemap is a lifted
+       isometer-space site with the sim on, `MapTerrain` with it off.
+     - 800, "Directing owns M3, interim M4 (Recommended)": the overlay plan
+       keeps the profile, the contract and the full M4.
+     - 801, all four folds: protocol H2 and the overmap plan fold into V2;
+       functional loops and memory into Eponym's E3; the trait catalogue
+       into glyph expression; views founding retires into L10's second
+       camera and dev tools into the isocosm bench (W4).
+     - 802, "Sim plan owns them (Recommended)": the trophic grammar's TG3 to
+       TG7, PE4's impossible-world and anti-affix conditions and the soil
+       cycle's M1 to M4 become sim-plan phases; TG7's "lexicon" is renamed,
+       native already having a lexicon.
+     - 803, "Dramatis, as 34 has it (Recommended)": Eponym's identity moves
+       to dramatis when its work resumes, staying in `eponym-play` until then.
+     - 804, "Keep it for body binding (Recommended)": `TactileWorld` stays as
+       body binding's Mesocosm adoption target, moving to `refresh_queries`
+       when that builds.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
