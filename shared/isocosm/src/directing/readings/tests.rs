@@ -93,6 +93,7 @@ fn orders_grow_from_answered_nudges() {
             break;
         }
         let nudge = Command::Nudge {
+            act: None,
             participant: p,
             critter: c,
             aim: Aim::Attend,
@@ -122,6 +123,7 @@ fn readings_read_the_same_from_a_replay() {
         if s.sim.state().population.get(c).is_some_and(|e| e.alive) {
             let toward = Toward::Site(round % 6);
             let nudge = Command::Nudge {
+            act: None,
                 participant: p,
                 critter: c,
                 aim: Aim::Act,

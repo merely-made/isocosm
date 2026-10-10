@@ -62,6 +62,9 @@ pub struct Nudge {
     pub critter: Id,
     pub aim: Aim,
     pub toward: Toward,
+    /// The act it names, a process key, where the player named one (784).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub act: Option<Key>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub answer: Option<Answer>,
 }
@@ -208,6 +211,7 @@ impl Simulation {
         critter: Id,
         aim: Aim,
         to: Toward,
+        act: Option<Key>,
     ) -> Result<()> {
         self.participant(participant)?;
         if !self.state.population.get(critter).is_some_and(|e| e.alive) {
@@ -233,6 +237,7 @@ impl Simulation {
             critter,
             aim,
             toward: to,
+            act,
             answer: None,
         });
         Ok(())

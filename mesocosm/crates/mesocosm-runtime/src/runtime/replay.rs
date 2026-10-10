@@ -9,6 +9,8 @@ use isocosm::{Execution, Session};
 use serde::{Deserialize, Serialize};
 
 use super::{Founded, Runtime};
+use isocosm::directing::interim::{Interim, OnCollapse, Pace, Start};
+use isocosm::directing::readings::Mode;
 
 /// What a receipt says about a run.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -56,6 +58,21 @@ impl Runtime {
             session,
             state_hash,
         })
+    }
+
+    /// Takes a saved run up where it stands, so a host can watch it go on
+    /// (786), under `mode` and `pace`.
+    pub fn resume(saved: Saved, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
+        let session = Session::load(saved, Execution::Grouped)?;
+        let founded = Founded {
+            genesis: session.sim.genesis().clone(),
+            start: Start::default(),
+            mode,
+            pace,
+            on_collapse: OnCollapse::Stay,
+        };
+        let interim = Interim::resume(session, mode, pace)?;
+        Ok(Self::over(interim, founded, ticks_per_second))
     }
 
     /// The founding a run began from, beside its save.

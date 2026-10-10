@@ -35,10 +35,28 @@ pub const MINIMAP_ADAPTER: &str = "mesocosm";
 /// The map's half extent, in its own units.
 const EXTENT: f32 = 64.0;
 
-/// Where each site sits on the map: on a ring in site order, since a
-/// generated world's sites carry no coordinates. *Reading, presentation only.*
+/// Where each site sits on the map: its column and row where the founding
+/// laid a map (783), scaled into the map's extent; on a ring in site order
+/// otherwise.
 pub fn site_points(sim: &Simulation) -> BTreeMap<Id, Vec2> {
     let sites = &sim.state().sites;
+    let laid: BTreeMap<Id, [u32; 2]> = sites
+        .keys()
+        .filter_map(|id| isocosm::map::position(sim.genesis(), *id).map(|at| (*id, at)))
+        .collect();
+    if laid.len() == sites.len() && !laid.is_empty() {
+        let across = |k: usize| laid.values().map(|at| at[k]).max().unwrap_or(0) as f32 + 1.0;
+        let (w, h) = (across(0), across(1));
+        let step = (EXTENT * 2.0) / w.max(h);
+        return laid
+            .into_iter()
+            .map(|(id, [c, r])| {
+                let x = (c as f32 + 0.5) * step - step * w / 2.0;
+                let y = (r as f32 + 0.5) * step - step * h / 2.0;
+                (id, Vec2::new(x, y))
+            })
+            .collect();
+    }
     let n = sites.len().max(1) as f32;
     sites
         .keys()

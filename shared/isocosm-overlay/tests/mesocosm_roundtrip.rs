@@ -93,7 +93,7 @@ fn dev_intent_roundtrips_all_four() {
         organism: entity(1),
     });
     roundtrips(&DevIntent::PlaceMatter {
-        at: WorldPoint([0, 0, 0]),
+        site: PlaceHandle(3),
         mass_mg: 500,
     });
 }

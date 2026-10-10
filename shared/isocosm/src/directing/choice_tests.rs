@@ -24,6 +24,7 @@ fn set_body(s: &mut Session, c: Id, amount: u64) {
 
 fn nudge(s: &mut Session, p: Id, c: Id, aim: Aim, toward: Toward) {
     let n = Command::Nudge {
+            act: None,
         participant: p,
         critter: c,
         aim,

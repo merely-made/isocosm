@@ -136,6 +136,14 @@ pub fn row_words(offer: &Offer, selected: bool) -> BoardRow {
     }
 }
 
+/// What a pack's script made of an offer (781), in the row's words.
+pub fn authored_words(proposed: &mesocosm_runtime::Proposed) -> String {
+    match &proposed.cells {
+        Ok(cells) => format!("{} would change {cells} cells", proposed.script),
+        Err(why) => format!("{} declined: {why}", proposed.script),
+    }
+}
+
 pub fn commit_words(offer: &Offer) -> Option<String> {
     offer
         .takeable()

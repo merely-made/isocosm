@@ -119,6 +119,7 @@ fn a_nudge_needs_a_bond_and_something_named() {
     let mut s = world(7, Execution::Individuals);
     let (p, c) = played(&mut s);
     let nudge = |toward| Command::Nudge {
+            act: None,
         participant: p,
         critter: c,
         aim: Aim::Attend,
@@ -128,6 +129,7 @@ fn a_nudge_needs_a_bond_and_something_named() {
     assert!(s.command(nudge(Toward::Thing(p))).is_err());
     assert_eq!(s.command(nudge(Toward::Site(1))).unwrap(), "nudged");
     let stranger = Command::Nudge {
+            act: None,
         participant: c,
         critter: c,
         aim: Aim::Act,
@@ -149,6 +151,7 @@ fn a_nudged_run_replays_to_the_same_hash() {
                 break;
             }
             s.command(Command::Nudge {
+            act: None,
                 participant: p,
                 critter: c,
                 aim: Aim::Attend,

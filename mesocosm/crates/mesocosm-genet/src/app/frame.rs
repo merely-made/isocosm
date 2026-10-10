@@ -24,6 +24,7 @@ impl Host {
         let centre = section::centre_on(at, self.pan, half, self.config.camera);
         let checkpoint = self.runtime.checkpoint().cloned();
         let review = self.runtime.review().cloned();
+        let proposed = self.runtime.proposed().to_vec();
         if let Some(review) = &review {
             self.board_row = self.board_row.min(review.offers.len().saturating_sub(1));
         }
@@ -92,7 +93,7 @@ impl Host {
                 .refresh(&lanes.device, sim, critter, &fresh, steps, &trend);
             lanes
                 .board
-                .refresh(&lanes.device, review.as_ref(), &trend, board_row);
+                .refresh(&lanes.device, review.as_ref(), &proposed, &trend, board_row);
             let held = checkpoint.as_ref().filter(|_| !lanes.board.standing());
             lanes.checkpoint.refresh(&lanes.device, sim, held);
 

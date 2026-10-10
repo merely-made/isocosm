@@ -9,6 +9,7 @@
 //! ```text
 //! cargo run -p mesocosm-genet
 //! cargo run -p mesocosm-genet -- --replay <trace>
+//! cargo run -p mesocosm-genet -- --watch <trace>
 //! cargo run -p mesocosm-genet -- --scenario <scenario>
 //! ```
 //!
@@ -20,7 +21,8 @@
 //!
 //! `--replay` is headless: it loads a recorded save, replays it through the
 //! runtime, and exits 1 when the hash it lands on differs from the recorded
-//! one. With nothing named, the trace, receipt and capture go to scratch
+//! one. `--watch` takes the save up where it stands and plays on in the
+//! window (786). With nothing named, the trace, receipt and capture go to scratch
 //! names under `<Code>/testing/mesocosm/`, never the golden fixture.
 
 use std::path::PathBuf;
@@ -93,6 +95,10 @@ fn main() {
             "--trace" => trace = args.next().map(PathBuf::from),
             "--receipt" => receipt = args.next().map(PathBuf::from),
             "--replay" => replay = args.next().map(PathBuf::from),
+            "--watch" => match args.next().map(PathBuf::from) {
+                Some(path) => config.watch = Some(path),
+                None => fail("--watch wants a recorded save"),
+            },
             "--scenario" => {
                 let path = args
                     .next()
@@ -182,6 +188,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --trace PATH    write the session's save as the trace
   --receipt PATH  write the run's receipt
   --replay PATH   replay a recorded save headlessly and check its hash
+  --watch PATH    take a recorded save up and play on in the window
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)

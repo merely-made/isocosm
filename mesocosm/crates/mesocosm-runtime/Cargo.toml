@@ -22,6 +22,8 @@ isometer-core = { workspace = true }
 isometer-space = { path = "../../../shared/isometer/crates/isometer-space" }
 nisus = { workspace = true }
 serde = { workspace = true }
+# The pack's expression scripts, the review's second source (wing ruling 781).
+mesocosm-phenotype = { workspace = true }
 # T1 (engine review §5): the permanent product home of the Conatus tactile
 # adapter. Rapier stays private inside conatus; this crate holds ids and
 # arrays only, and tactile answers are advice, never record authority.

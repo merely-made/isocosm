@@ -4,9 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Where the section stands each body: presentation only. A native body has
-//! no position inside its site, so bodies sit on a fixed grid around the
-//! ground's centre, in roster order, each on the surface under it.
+//! Where the section stands a body the runtime has not placed in a patch
+//! yet: presentation only, on a fixed grid around the ground's centre, in
+//! roster order, each on the surface under it.
 
 use isometer::core::ground::Ground;
 

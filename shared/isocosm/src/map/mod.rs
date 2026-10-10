@@ -37,6 +37,13 @@ pub(crate) struct Laid {
 }
 
 impl Layout {
+    /// Where `site` lies on the map: its column and row (ruling 783).
+    pub fn at(&self, site: Id) -> Option<[u32; 2]> {
+        match self {
+            Layout::Grid(grid) => grid.at(site),
+        }
+    }
+
     pub(crate) fn lay(&self, seed: u64, sites: u32) -> Result<Laid> {
         match self {
             Layout::Grid(grid) => grid.lay(seed, sites),
@@ -144,4 +151,9 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// Where `site` lies on the world's map, when its founding laid one.
+pub fn position(genesis: &Genesis, site: Id) -> Option<[u32; 2]> {
+    genesis.founding.as_ref()?.map.as_ref()?.at(site)
 }

@@ -54,7 +54,12 @@ type Runner = GenetAppRunner<Board, fn(&Board) -> BoardChild, BoardChild>;
 
 /// Reads the boundary's review into the words a player sees; every sentence
 /// belongs to `mesocosm-views`, and this supplies numbers and the cursor.
-pub fn board_of(review: &Review, trend: &Trend, selected: usize) -> Board {
+pub fn board_of(
+    review: &Review,
+    proposed: &[mesocosm_runtime::Proposed],
+    trend: &Trend,
+    selected: usize,
+) -> Board {
     let mut board = Board::of(
         review.tick,
         &review.lineage,
@@ -66,7 +71,15 @@ pub fn board_of(review: &Review, trend: &Trend, selected: usize) -> Board {
         .offers
         .iter()
         .enumerate()
-        .map(|(index, offer)| mesocosm_views::row_words(offer, index == selected))
+        .map(|(index, offer)| {
+            let mut row = mesocosm_views::row_words(offer, index == selected);
+            let mine = proposed.iter().filter(|p| p.offer == index);
+            let authored: Vec<String> = mine.map(mesocosm_views::authored_words).collect();
+            if !authored.is_empty() {
+                row.source = format!("{}; {}", row.source, authored.join("; "));
+            }
+            row
+        })
         .collect();
     // Only an offer the world would admit gets a commit line, so the panel and
     // the R key cannot disagree.
@@ -115,10 +128,11 @@ impl BoardChrome {
         &mut self,
         chrome: &Chrome,
         review: Option<&Review>,
+        proposed: &[mesocosm_runtime::Proposed],
         trend: &Trend,
         selected: usize,
     ) {
-        let board = review.map(|review| board_of(review, trend, selected));
+        let board = review.map(|review| board_of(review, proposed, trend, selected));
         if self.shown == board {
             return;
         }

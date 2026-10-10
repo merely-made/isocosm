@@ -72,6 +72,8 @@ pub struct PlacedBody {
 pub struct SiteScene {
     pub site: u64,
     pub ground: Ground,
+    /// The lifted window the ground came from, which places patches (783).
+    pub window: isometer::space::volume::Volume,
     pub bodies: Vec<PlacedBody>,
     pub played: Option<u64>,
     /// Declared-extent boxes for the bodies, which carry no voxel content.

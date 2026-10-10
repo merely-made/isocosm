@@ -3,18 +3,16 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{EntityHandle, WorldPoint};
+use crate::{EntityHandle, PlaceHandle};
 
-/// A dev tool, never play (dev tools plan §2; mesocosm-core's DT3). Applied,
-/// refused and recorded like any other intent; a receipt labels a run that
-/// used one as assisted. `PlaceMatter` reaches the grid directly by a raw
-/// [`WorldPoint`] (mesocosm-core's own `PlaceMatter` and the `OffGrid`
-/// rejection already do), unlike a play-time [`super::Nudge`], which names a
-/// place-graph node (ruling 205).
+/// A dev tool, never play (dev tools plan §2). Applied, refused and recorded
+/// like any other intent; a receipt labels a run that used one as assisted.
+/// `PlaceMatter` names a site by its place handle, as a nudge names a place
+/// (rulings 205 and 784).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DevIntent {
     EndEpoch,
     ForceBirth { organism: EntityHandle },
     Kill { organism: EntityHandle },
-    PlaceMatter { at: WorldPoint, mass_mg: u64 },
+    PlaceMatter { site: PlaceHandle, mass_mg: u64 },
 }

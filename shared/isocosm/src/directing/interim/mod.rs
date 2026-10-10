@@ -153,6 +153,37 @@ impl Interim {
         Ok(interim)
     }
 
+    /// Takes up a loop from a session already played (786): its first
+    /// participant, the handover read from where the session stands.
+    pub fn resume(session: Session, mode: Mode, pace: Pace) -> Result<Self> {
+        let state = session.sim.state();
+        let participant = state
+            .population
+            .groups
+            .iter()
+            .find(|(_, g)| super::is_participant(&g.entity))
+            .map(|(first, _)| *first)
+            .ok_or("the session has no participant")?;
+        let tick = state.tick;
+        let epoch = session.sim.genesis().rules.epoch_ticks.max(1);
+        let handover = Handover {
+            span: hagiograph::DeepTime { epochs: 0 },
+            from_epoch: 0,
+            to_epoch: tick / epoch,
+            from_tick: 0,
+            to_tick: tick,
+        };
+        Ok(Self {
+            session,
+            participant,
+            mode,
+            pace,
+            on_collapse: OnCollapse::Stay,
+            handover,
+            habitable_at: 0,
+        })
+    }
+
     pub fn critter(&self) -> Option<Id> {
         self.session.sim.plays(self.participant)
     }
@@ -166,7 +197,12 @@ impl Interim {
         Ok(())
     }
 
-    pub fn nudge(&mut self, aim: super::Aim, toward: super::Toward) -> Result<String> {
+    pub fn nudge(
+        &mut self,
+        aim: super::Aim,
+        toward: super::Toward,
+        act: Option<Key>,
+    ) -> Result<String> {
         let critter = self.critter().ok_or("nobody is played")?;
         let participant = self.participant;
         self.session.command(Command::Nudge {
@@ -174,6 +210,7 @@ impl Interim {
             critter,
             aim,
             toward,
+            act,
         })
     }
 
