@@ -8,13 +8,12 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
 use std::fmt;
 
+use conatus::{
+    BodyDesc, BodyError, BodyKind, BodyWorld, ColliderDesc, ColliderId, ColliderShape,
+    SpatialFilter, Transform, VoxelEdit,
+};
 use isocosm::legacy::mesocosm::Places;
 use isocosm::legacy::mesocosm::places::{AIR, BRICK, Ground};
-use parry3d::math::{IVector, Pose, Vector};
-use parry3d::query::{
-    ContactManifold, DefaultQueryDispatcher, PersistentQueryDispatcher, PointQuery, Ray, RayCast,
-};
-use parry3d::shape::{Ball, Voxels};
 
 const SEED: u64 = 0xC011_1DE3;
 const SIDE: u16 = 3;
@@ -50,7 +49,7 @@ enum ProjectionError {
     SourceRevision { projection: u64, provided: u64 },
     TargetRevision { expected: u64, ground: u64 },
     MissingBrick([i16; 3]),
-    UnsupportedContact,
+    Conatus(String),
 }
 
 impl fmt::Display for ProjectionError {
@@ -68,17 +67,23 @@ impl fmt::Display for ProjectionError {
                 "collision delta expected Ground revision {expected}, found {ground}"
             ),
             Self::MissingBrick(key) => write!(f, "dirty Ground brick {key:?} is missing"),
-            Self::UnsupportedContact => write!(f, "Parry refused the Voxels/Ball contact query"),
+            Self::Conatus(error) => write!(f, "conatus refused a query: {error}"),
         }
     }
 }
 
 impl Error for ProjectionError {}
 
+fn refused(error: BodyError) -> ProjectionError {
+    ProjectionError::Conatus(error.to_string())
+}
+
+/// Ground's committed occupancy as one fixed conatus voxel collider.
 struct GroundCollision {
     revision: u64,
     occupied: usize,
-    voxels: Voxels,
+    world: BodyWorld,
+    collider: ColliderId,
 }
 
 impl GroundCollision {
@@ -92,18 +97,45 @@ impl GroundCollision {
                 for z in 0..BRICK {
                     for x in 0..BRICK {
                         if brick.get([x, y, z]) != AIR {
-                            occupied.push(ivec([base[0] + x, base[1] + y, base[2] + z]));
+                            occupied.push([base[0] + x, base[1] + y, base[2] + z]);
                         }
                     }
                 }
             }
         }
 
+        let count = occupied.len();
+        let mut world = BodyWorld::try_new([0.0, 0.0, 0.0]).expect("a zero-gravity world");
+        let body = world
+            .spawn(
+                BodyDesc::new(BodyKind::Fixed).with_collider(ColliderDesc::new(
+                    ColliderShape::VoxelGrid {
+                        cell_size: [1.0, 1.0, 1.0],
+                        occupied,
+                    },
+                )),
+            )
+            .expect("Ground's cells make a valid voxel grid");
+        let collider = world
+            .collider_ids(body)
+            .expect("the terrain body exists")
+            .into_iter()
+            .next()
+            .expect("the terrain body was spawned with one collider");
+        world.refresh_queries();
+
         Self {
             revision: ground.revision(),
-            occupied: occupied.len(),
-            voxels: Voxels::new(Vector::new(1.0, 1.0, 1.0), &occupied),
+            occupied: count,
+            world,
+            collider,
         }
+    }
+
+    fn filled(&self, at: [i32; 3]) -> bool {
+        self.world
+            .voxel_filled(self.collider, at)
+            .expect("the terrain collider is a voxel grid")
     }
 
     fn apply_delta(
@@ -138,23 +170,27 @@ impl GroundCollision {
                     for x in 0..BRICK {
                         let at = [base[0] + x, base[1] + y, base[2] + z];
                         let filled = brick.get([x, y, z]) != AIR;
-                        if parry_filled(&self.voxels, at) != filled {
-                            updates.push((at, filled));
+                        if self.filled(at) != filled {
+                            updates.push(VoxelEdit { cell: at, filled });
                         }
                     }
                 }
             }
         }
 
-        for (at, filled) in &updates {
-            let previous = self.voxels.set_voxel(ivec(*at), *filled);
-            debug_assert_eq!(!previous.is_empty(), !filled);
-            if *filled {
+        let summary = self
+            .world
+            .edit_voxels(self.collider, updates.iter().copied())
+            .map_err(refused)?;
+        debug_assert_eq!(summary.changed, updates.len());
+        for edit in &updates {
+            if edit.filled {
                 self.occupied += 1;
             } else {
                 self.occupied -= 1;
             }
         }
+        self.world.refresh_queries();
         self.revision = ground.revision();
 
         Ok(DeltaReceipt {
@@ -168,29 +204,59 @@ impl GroundCollision {
 
     fn query(&self, ground: &Ground, target: [i32; 3]) -> Result<QueryReceipt, ProjectionError> {
         let point = voxel_center(target);
-        let ray_origin = Vector::new(point.x, point.y + 3.0, point.z);
-        let ray = Ray::new(ray_origin, Vector::new(0.0, -1.0, 0.0));
+        let ray_origin = [point[0], point[1] + 3.0, point[2]];
         let hit = self
-            .voxels
-            .cast_local_ray_and_get_normal(&ray, 64.0, true)
+            .world
+            .raycast(
+                ray_origin,
+                [0.0, -1.0, 0.0],
+                64.0,
+                true,
+                SpatialFilter::default(),
+            )
+            .map_err(refused)?
             .expect("stored ground lies below the query ray");
         let expected_toi = ground_ray_toi(ground, ray_origin, target[0], target[2]);
         assert_eq!(
-            hit.time_of_impact.to_bits(),
+            hit.distance.to_bits(),
             expected_toi.to_bits(),
-            "Parry ray must hit the same stored Ground voxel"
+            "the conatus ray must hit the same stored Ground voxel"
         );
 
-        let ball_center = Vector::new(point.x, target[1] as f32 + 0.9, point.z);
-        let (contacts, minimum_contact_bits) = contact_receipt(&self.voxels, ball_center)?;
+        let ball_center = [point[0], target[1] as f32 + 0.9, point[2]];
+        let (contacts, minimum_contact_bits) = self.contact_receipt(ball_center)?;
+        let inside = self
+            .world
+            .colliders_at_point(point, SpatialFilter::default())
+            .map_err(refused)?;
 
         Ok(QueryReceipt {
-            occupancy: parry_filled(&self.voxels, target),
-            ray_toi_bits: hit.time_of_impact.to_bits(),
-            point_inside: self.voxels.contains_local_point(point),
+            occupancy: self.filled(target),
+            ray_toi_bits: hit.distance.to_bits(),
+            point_inside: inside.contains(&self.collider),
             contacts,
             minimum_contact_bits,
         })
+    }
+
+    /// A ball of radius 0.2 against the ground, prediction 0: how many
+    /// contacts, and the deepest one's distance bits.
+    fn contact_receipt(&self, ball_center: [f32; 3]) -> Result<(usize, Option<u32>), ProjectionError> {
+        let contacts = self
+            .world
+            .contacts(
+                Transform::from_translation(ball_center),
+                &ColliderShape::sphere(0.2),
+                0.0,
+                SpatialFilter::default(),
+            )
+            .map_err(refused)?;
+        let minimum = contacts
+            .iter()
+            .map(|contact| contact.distance)
+            .min_by(f32::total_cmp)
+            .map(f32::to_bits);
+        Ok((contacts.len(), minimum))
     }
 
     fn assert_exact(&self, ground: &Ground) -> ExactReceipt {
@@ -205,11 +271,7 @@ impl GroundCollision {
                     for x in 0..BRICK {
                         let at = [base[0] + x, base[1] + y, base[2] + z];
                         let expected = brick.get([x, y, z]) != AIR;
-                        assert_eq!(
-                            parry_filled(&self.voxels, at),
-                            expected,
-                            "occupancy differs at {at:?}"
-                        );
+                        assert_eq!(self.filled(at), expected, "occupancy differs at {at:?}");
                         compared += 1;
                         occupied += expected as usize;
                     }
@@ -218,21 +280,16 @@ impl GroundCollision {
         }
 
         assert_eq!(occupied, self.occupied);
-        let parry_occupied = self
-            .voxels
-            .voxels()
-            .filter(|voxel| !voxel.state.is_empty())
-            .inspect(|voxel| {
-                let at = [
-                    voxel.grid_coords.x,
-                    voxel.grid_coords.y,
-                    voxel.grid_coords.z,
-                ];
+        let collider_occupied = self
+            .world
+            .voxel_cells(self.collider, None)
+            .expect("the terrain collider is a voxel grid")
+            .inspect(|at| {
                 assert!(at[1] >= 0, "implicit bedrock is not materialized");
-                assert!(ground.solid(at), "Parry contains an extra voxel at {at:?}");
+                assert!(ground.solid(*at), "conatus holds an extra voxel at {at:?}");
             })
             .count();
-        assert_eq!(parry_occupied, occupied);
+        assert_eq!(collider_occupied, occupied);
 
         ExactReceipt {
             compared_voxels: compared,
@@ -274,43 +331,11 @@ fn choose_boundary_surface(ground: &Ground) -> [i32; 3] {
     panic!("fixture needs an exposed brick-boundary surface with two solid layers");
 }
 
-fn contact_receipt(
-    voxels: &Voxels,
-    ball_center: Vector,
-) -> Result<(usize, Option<u32>), ProjectionError> {
-    let dispatcher = DefaultQueryDispatcher;
-    let ball = Ball::new(0.2);
-    let position = Pose::translation(ball_center.x, ball_center.y, ball_center.z);
-    let mut manifolds: Vec<ContactManifold<(), ()>> = Vec::new();
-    let mut workspace = None;
-    dispatcher
-        .contact_manifolds(
-            &position,
-            voxels,
-            &ball,
-            0.0,
-            &mut manifolds,
-            &mut workspace,
-        )
-        .map_err(|_| ProjectionError::UnsupportedContact)?;
-
-    let contacts = manifolds
-        .iter()
-        .flat_map(|manifold| manifold.points.iter())
-        .collect::<Vec<_>>();
-    let minimum = contacts
-        .iter()
-        .map(|contact| contact.dist)
-        .min_by(f32::total_cmp)
-        .map(f32::to_bits);
-    Ok((contacts.len(), minimum))
-}
-
-fn ground_ray_toi(ground: &Ground, origin: Vector, x: i32, z: i32) -> f32 {
-    let start_y = origin.y.floor() as i32;
+fn ground_ray_toi(ground: &Ground, origin: [f32; 3], x: i32, z: i32) -> f32 {
+    let start_y = origin[1].floor() as i32;
     for y in (0..=start_y).rev() {
         if ground.solid([x, y, z]) {
-            return origin.y - (y + 1) as f32;
+            return origin[1] - (y + 1) as f32;
         }
     }
     panic!("stored Ground has no ray target at x={x}, z={z}");
@@ -327,10 +352,7 @@ fn region_signatures(collision: &GroundCollision, ground: &Ground) -> BTreeMap<[
             for y in 0..BRICK {
                 for z in 0..BRICK {
                     for x in 0..BRICK {
-                        hash ^= parry_filled(
-                            &collision.voxels,
-                            [base[0] + x, base[1] + y, base[2] + z],
-                        ) as u64;
+                        hash ^= collision.filled([base[0] + x, base[1] + y, base[2] + z]) as u64;
                         hash = hash.wrapping_mul(0x100_0000_01b3);
                     }
                 }
@@ -340,18 +362,8 @@ fn region_signatures(collision: &GroundCollision, ground: &Ground) -> BTreeMap<[
         .collect()
 }
 
-fn parry_filled(voxels: &Voxels, at: [i32; 3]) -> bool {
-    voxels
-        .voxel_state(ivec(at))
-        .is_some_and(|state| !state.is_empty())
-}
-
-fn ivec(at: [i32; 3]) -> IVector {
-    IVector::new(at[0], at[1], at[2])
-}
-
-fn voxel_center(at: [i32; 3]) -> Vector {
-    Vector::new(at[0] as f32 + 0.5, at[1] as f32 + 0.5, at[2] as f32 + 0.5)
+fn voxel_center(at: [i32; 3]) -> [f32; 3] {
+    [at[0] as f32 + 0.5, at[1] as f32 + 0.5, at[2] as f32 + 0.5]
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -447,7 +459,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
 
     println!(
-        "projection receipt: Ground revision 0, {} stored bricks, {} compared cells, {} occupied Parry voxels",
+        "projection receipt: Ground revision 0, {} stored bricks, {} compared cells, {} occupied conatus voxels",
         ground.brick_count(),
         initial_exact.compared_voxels,
         initial_exact.occupied_voxels
@@ -460,13 +472,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         delta.voxels_compared
     );
     println!(
-        "query receipt: ray {:.1} -> {:.1}, point inside {} -> {}, contacts {} -> {}",
+        "query receipt: ray {:.1} -> {:.1}, point inside {} -> {}, contacts {} -> {}, deepest {:?}",
         f32::from_bits(initial_queries.ray_toi_bits),
         f32::from_bits(committed_queries.ray_toi_bits),
         initial_queries.point_inside,
         committed_queries.point_inside,
         initial_queries.contacts,
-        committed_queries.contacts
+        committed_queries.contacts,
+        initial_queries.minimum_contact_bits.map(f32::from_bits)
     );
     println!(
         "authority receipt: stale source and skipped target revisions refused before mutation; {} unchanged regions retained occupancy; replay query bits identical",

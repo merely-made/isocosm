@@ -57,8 +57,8 @@ opt-level = 1
 # Renderer source is selected once for this product; use the same immutable
 # family revision as the other games and their Mere/Genet host dependencies.
 [workspace.dependencies]
-conatus = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
-modulus = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+modulus = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 netrender = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
 netrender_text = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
 
@@ -66,17 +66,17 @@ netrender_text = { git = "https://github.com/merely-made/netrender.git", rev = "
 # below matches Mesocosm's revision for its git family, so the graph holds
 # one identity per family: cargo keys a git source by URL plus reference,
 # and a second reference would be a second crate identity of one commit.
-cambium = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
-cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
-sprigging = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
+cambium = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+cambium-genet-winit-host = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+sprigging = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
 taproot = { git = "https://github.com/merely-made/genet.git", rev = "15713014e2e23b887360471552f75f60684f5384" }
 # The scenario lane the session acceptance run is built on. It was this
 # repository's `shared/wing-scenario` until mere took it into the cambium
 # family as `mesquite` (mere 3675a352, 2026-09-14), so it is a mere.git pin at
 # the family rev like every other cambium row above.
-mesquite = { git = "https://github.com/merely-made/mere.git", rev = "bdc89a0531273bdb4fdb2480268724e358655098" }
+mesquite = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
 genet-livery = { git = "https://github.com/merely-made/genet.git", rev = "15713014e2e23b887360471552f75f60684f5384" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", rev = "15713014e2e23b887360471552f75f60684f5384" }
 paint_list_api = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
