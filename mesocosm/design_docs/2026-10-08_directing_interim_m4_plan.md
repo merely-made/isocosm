@@ -261,5 +261,32 @@ on Isocosm, both modes, receipts replaying.
     - body scale against ground cells;
     - watching a replay in the host, which needs a `Runtime` resumed from a save.
 
+- **2026-10-10, the switch's follow-ups, rulings 781 to 784 and 786
+  (lane `lane-meso-follow`, under 732's compile gate; nothing run).**
+  Landed at `03f87b98`.
+  - *Dev commands (782).* `Command::ForceBirth` runs the parent's birth
+    process, its account needs issued by the dev source. `Command::Kill`
+    kills where the member stands. Both label the run assisted.
+  - *Act keys (784).* A nudge carries an optional act key, a process key
+    that the choice honours. The contract's `PlaceMatter` names a site
+    handle.
+  - *Placement (783).* `map::position` gives a site's grid cell, and the
+    runtime's founding lays a 3 by 2 grid. The runtime gives each unplaced
+    cohort at the played site a patch of the lifted window by
+    `Command::Patch`. Genet draws a body at its patch, and the minimap draws
+    each site at its grid cell.
+  - *Resume (786).* `Interim::resume` and `Runtime::resume` take a save up
+    where it stands, and genet's `--watch` plays on from it.
+  - *The authored door (781).* At a boundary, the runtime runs the pack's
+    scripts for every declared-tract offer on a copy of the played body,
+    through `Allocation::commit`, and the board shows the result beside the
+    row.
+  - *Reading, not ruled:*
+    - the authored cells are shown and never sent, since native has no
+      command that places cells exactly;
+    - placement gives one patch per cohort, round-robin over the window's
+      patches;
+    - a resumed run takes the save's first participant and creative mode.
+
 - **2026-10-08:** plan drafted from the directing survey; rulings 681 to
   691 taken in three rounds.
