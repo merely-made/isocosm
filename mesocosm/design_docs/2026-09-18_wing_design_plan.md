@@ -9772,6 +9772,50 @@ what later sections derive from.
      sophonts through gemot's tulpa lane; denoising in the tenant. Any of
      them must infer bit-identically or log its outputs, for replay.
      Parked as research for after 732's push.
+755. **The world families come forward; amends 678 and 681's order.**
+     2026-10-09, from the bodies lane (first pass merged at `417a2e2c`).
+     Question: deleting legacy bodies is blocked, `organism` imported by 59
+     legacy files (37 in `world/`) and every outside consumer reaching
+     organisms through the legacy `World` or Eponym's `GameState`, while 678
+     and 681 put the world families last. Options: bring the world families
+     forward, re-expressing what native lacks and moving the worlds onto
+     native (recommended); re-express now and delete later; adapt legacy to
+     native bodies. Mark chose "Bring the world families forward
+     (Recommended)". So 732's push moves Mesocosm's and Eponym's worlds onto
+     native once native serves what they need (kingdom reading, mosaics,
+     graft compatibility, Eponym's needs and wounds), the switch (681, D5)
+     with them, and legacy bodies delete with the worlds.
+756. **Lineage data moves into isocosm; isometer keeps an opaque tag.**
+     2026-10-09. Question: about 218 provenance and 200 `mass_mg` sites
+     store lineage and mass in isometer's document. Options: `SpeciesId`,
+     `Origin` and `Provenance` into isocosm, legacy sidecars keyed by
+     `PartId`, a per-part opaque tag in isometer (recommended); defer. Mark
+     chose "Into isocosm, opaque tag (Recommended)". This carries 721 and
+     699's mass reading.
+757. **Authored content enters by `Command::Assert`, with the record.**
+     2026-10-09, from the campaign lane (merged at `b37d7e91`). Question:
+     native asserts no faction, place, character, law, fact or history
+     line. Options: an assertion family carrying the contract's vocabulary,
+     built with the record family, the campaign world becoming a reading of
+     native state (recommended); build it now; the campaign stays authored
+     until V2. Mark chose "Command::Assert with the record (Recommended)".
+758. **The datasheets feed native; families-plan fork 9 closes.**
+     2026-10-09. Question: legacy `Founding`'s eight bodies come from 1,198
+     embedded TOML lines (625, 626) while `bodied::roster()` hand-codes the
+     same in Rust. Options: the sheet loader lowered onto native `Recipe`
+     and `Template`, `roster()` reading the sheets, legacy `Founding` a name
+     into them (recommended); keep both; native code authoritative. Mark
+     chose "Sheets feed native (Recommended)".
+759. **The registry carries all fifteen functions, with the world move.**
+     2026-10-09. Options: all fifteen with the world move (recommended); the
+     five natives for good. Mark chose "All fifteen, with the world move
+     (Recommended)".
+760. **An authored faction is a polity with no members yet.** 2026-10-09.
+     Question: campaign factions are authored without members while native
+     derives factions from membership (63 to 68). Options: a polity whose
+     constitution starts empty, members joining as relations (recommended);
+     notes until members exist; tags and claims stay the table's. Mark
+     chose "Polity with no members yet (Recommended)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
