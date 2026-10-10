@@ -117,6 +117,9 @@ pub struct Entity {
     /// leaves the site.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub patch: Option<isometer_space::places::PlaceId>,
+    /// An authored character's fill (769); absent elsewhere, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authored: Option<crate::asserted::Character>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the
@@ -157,6 +160,9 @@ pub struct Route {
     /// Absent on worlds without geometry, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub border: Option<Border>,
+    /// An authored route's fill (769); absent elsewhere, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authored: Option<crate::asserted::Route>,
 }
 
 /// One side of a site meeting one side of a neighbour. Side `k` runs from
@@ -192,6 +198,9 @@ pub struct Site {
     pub conditions: BTreeMap<Key, i64>,
     pub accounts: Ledger,
     pub routes: Vec<Route>,
+    /// An authored place's fill (769); absent elsewhere, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authored: Option<crate::asserted::Place>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -272,7 +281,8 @@ pub struct Polity {
 /// An authored polity's own attributes, filling its place while it has no
 /// members (760): its authored key, name, tags, and the authored keys of
 /// what it claims.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
 pub struct Authored {
     pub key: Key,
     pub name: String,
@@ -358,6 +368,9 @@ pub struct Event {
     pub cause: Option<Key>,
     pub strength: u32,
     pub legend: bool,
+    /// An authored history line's fill (769); absent elsewhere, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authored: Option<crate::asserted::HistoryLine>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

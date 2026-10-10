@@ -59,14 +59,14 @@ pub fn overmap_atlas(ui: &UiState) -> Option<GraphCanvasAtlas<String>> {
     let discovered = world.overmap_for(party);
     let known = world.party_known.get(party);
     let route_cells: std::collections::BTreeMap<_, _> = world
-        .routes
+        .routes()
         .values()
         .filter(|route| {
             known.is_some_and(|ids| ids.contains(&route.from) && ids.contains(&route.to))
         })
         .zip(&discovered.edges)
         .enumerate()
-        .map(|(index, (route, edge))| (route.id.as_str(), super::overmap_relation_id(index, edge)))
+        .map(|(index, (route, edge))| (route.key.as_str(), super::overmap_relation_id(index, edge)))
         .collect();
     let routes: Vec<_> = projection
         .routes
@@ -108,7 +108,7 @@ fn select_region_map<'a>(
     party: &str,
 ) -> Option<&'a CampaignMap> {
     let place_id = world.party_at(party)?;
-    let map_id = world.places.get(place_id)?.map.as_deref()?;
+    let map_id = world.places().get(place_id)?.map.as_deref()?;
     if let Some(map) = maps.get(map_id).filter(|map| map.scale == MapScale::Region) {
         return Some(map);
     }
@@ -159,23 +159,23 @@ fn terrain_paint_cached(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::{MapPoint, MapTransition, WorldPlace};
+    use isocosm::asserted::{Assertion, Place};
+    use isocosm::legacy::campaign::{MapPoint, MapTransition};
     use isometry_campaign::CampaignMap;
     use std::collections::{BTreeMap, BTreeSet};
 
     #[test]
     fn selection_follows_party_place_and_region_scale() {
         let mut world = CampaignWorld::default();
-        world.places.insert(
-            "site".into(),
-            WorldPlace {
-                id: "site".into(),
+        world
+            .assert(Assertion::Place(Place {
+                key: "site".into(),
                 name: "Site".into(),
-                tags: vec![],
+                tags: [].into(),
                 map: Some("region".into()),
                 position: None,
-            },
-        );
+            }))
+            .unwrap();
         world.party_node.insert("party".into(), "site".into());
         let mut maps = BTreeMap::new();
         maps.insert(
@@ -221,16 +221,15 @@ mod tests {
                 encounter_anchors: vec![],
             },
         );
-        ui.world.places.insert(
-            "region-place".into(),
-            WorldPlace {
-                id: "region-place".into(),
+        ui.world
+            .assert(Assertion::Place(Place {
+                key: "region-place".into(),
                 name: "Region".into(),
-                tags: vec!["region".into()],
+                tags: ["region".into()].into(),
                 map: Some("region".into()),
                 position: Some((0, 0)),
-            },
-        );
+            }))
+            .unwrap();
         ui.world
             .party_node
             .insert("dm".into(), "region-place".into());
@@ -259,16 +258,15 @@ mod tests {
     #[test]
     fn local_place_selects_unique_containing_region_and_rejects_ambiguity() {
         let mut world = CampaignWorld::default();
-        world.places.insert(
-            "tower".into(),
-            WorldPlace {
-                id: "tower".into(),
+        world
+            .assert(Assertion::Place(Place {
+                key: "tower".into(),
                 name: "Tower".into(),
-                tags: vec![],
+                tags: [].into(),
                 map: Some("tower-map".into()),
                 position: None,
-            },
-        );
+            }))
+            .unwrap();
         world.party_node.insert("party".into(), "tower".into());
         let region = |id: &str| CampaignMap {
             id: id.into(),

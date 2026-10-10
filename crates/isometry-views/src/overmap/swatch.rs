@@ -146,6 +146,7 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
 #[cfg(test)]
 mod tests {
     use super::*;
+    use isocosm::asserted::Assertion;
     use isocosm::legacy::campaign::OvermapNode;
 
     fn node(id: &str, at: (i32, i32)) -> OvermapNode {
@@ -229,7 +230,7 @@ mod tests {
     #[test]
     fn overmap_drag_is_local_curation_and_consumes_its_release_click() {
         let mut ui = discovered_one_place();
-        let source_position = ui.world.places["here"].position.clone();
+        let source_position = ui.world.places()["here"].position.clone();
 
         ui.drag_overmap_node(cambium::GraphCanvasNodeDrag {
             id: "here".to_owned(),
@@ -250,7 +251,8 @@ mod tests {
         let swatch = overmap_swatch(&ui).expect("a discovered place draws");
         assert_eq!(swatch.graph.nodes[0].position, (0.78, 0.22));
         assert_eq!(
-            ui.world.places["here"].position, source_position,
+            ui.world.places()["here"].position,
+            source_position,
             "pulling a Swatch node does not edit campaign geography"
         );
 
@@ -300,16 +302,15 @@ mod tests {
 
     fn discovered_one_place() -> UiState {
         let mut ui = UiState::new(isometry_core::MapDocument::new("t", 2, 2));
-        ui.world.places.insert(
-            "here".to_owned(),
-            isocosm::legacy::campaign::WorldPlace {
-                id: "here".to_owned(),
+        ui.world
+            .assert(Assertion::Place(isocosm::asserted::Place {
+                key: "here".to_owned(),
                 name: "Here".to_owned(),
-                tags: Vec::new(),
+                tags: Default::default(),
                 map: None,
                 position: None,
-            },
-        );
+            }))
+            .unwrap();
         ui.world.reveal("dm", "here");
         ui.world
             .apply(&isocosm::legacy::campaign::WorldEvent::PartyMoved {

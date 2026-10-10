@@ -107,16 +107,16 @@ pub(crate) fn atlas_projection_with_terrain(
     let mut sites = Vec::new();
     for transition in &region.transitions {
         let mut places = world
-            .places
+            .places()
             .values()
             .filter(|place| place.map.as_deref() == Some(transition.target_map.as_str()));
         let Some(place) = places.next() else {
             continue;
         };
-        if places.next().is_some() || sites.iter().any(|site: &AtlasSite| site.id == place.id) {
+        if places.next().is_some() || sites.iter().any(|site: &AtlasSite| site.id == place.key) {
             continue;
         }
-        if !known.is_some_and(|ids| ids.contains(&place.id)) {
+        if !known.is_some_and(|ids| ids.contains(&place.key)) {
             continue;
         }
         let anchor = place
@@ -129,7 +129,7 @@ pub(crate) fn atlas_projection_with_terrain(
                 )
             });
         sites.push(AtlasSite {
-            id: place.id.clone(),
+            id: place.key.clone(),
             label: place.name.clone(),
             anchor,
             footprint: cell_footprint(),
@@ -139,15 +139,15 @@ pub(crate) fn atlas_projection_with_terrain(
     // The region itself is a place too. It has no transition to itself, so add
     // it from the authored world coordinate when it is known.
     if let Some(place) = world
-        .places
+        .places()
         .values()
         .find(|place| place.map.as_deref() == Some(region.id.as_str()))
     {
-        if known.is_some_and(|ids| ids.contains(&place.id)) {
+        if known.is_some_and(|ids| ids.contains(&place.key)) {
             if let Some((col, row)) = place.position {
                 let anchor = Vec2::new(col as f32 + 0.5, row as f32 + 0.5);
                 sites.push(AtlasSite {
-                    id: place.id.clone(),
+                    id: place.key.clone(),
                     label: place.name.clone(),
                     anchor,
                     footprint: cell_footprint(),
@@ -158,13 +158,13 @@ pub(crate) fn atlas_projection_with_terrain(
     }
 
     let routes = world
-        .routes
+        .routes()
         .values()
         .filter_map(|route| {
             let from = sites.iter().find(|site| site.id == route.from)?.anchor;
             let to = sites.iter().find(|site| site.id == route.to)?.anchor;
             Some(AtlasRoute {
-                id: route.id.clone(),
+                id: route.key.clone(),
                 from,
                 to,
             })
@@ -207,7 +207,8 @@ fn cell_footprint() -> Footprint {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::{MapPoint, MapTransition, WorldPlace, WorldRoute};
+    use isocosm::asserted::{Assertion, Place, Route};
+    use isocosm::legacy::campaign::{MapPoint, MapTransition};
     use isometry_core::MapDocument;
     use std::collections::BTreeSet;
 
@@ -235,46 +236,42 @@ mod tests {
             encounter_anchors: vec![],
         };
         let mut world = CampaignWorld::default();
-        world.places.insert(
-            "east".into(),
-            WorldPlace {
-                id: "east".into(),
+        world
+            .assert(Assertion::Place(Place {
+                key: "east".into(),
                 name: "East site".into(),
-                tags: vec![],
+                tags: [].into(),
                 map: Some("east".into()),
                 position: Some((3, 1)),
-            },
-        );
-        world.places.insert(
-            "hidden".into(),
-            WorldPlace {
-                id: "hidden".into(),
+            }))
+            .unwrap();
+        world
+            .assert(Assertion::Place(Place {
+                key: "hidden".into(),
                 name: "Hidden site".into(),
-                tags: vec![],
+                tags: [].into(),
                 map: Some("hidden".into()),
                 position: Some((1, 1)),
-            },
-        );
-        world.places.insert(
-            "region".into(),
-            WorldPlace {
-                id: "region".into(),
+            }))
+            .unwrap();
+        world
+            .assert(Assertion::Place(Place {
+                key: "region".into(),
                 name: "Reach".into(),
-                tags: vec!["region".into()],
+                tags: ["region".into()].into(),
                 map: Some("region".into()),
                 position: Some((1, 1)),
-            },
-        );
-        world.routes.insert(
-            "east-route".into(),
-            WorldRoute {
-                id: "east-route".into(),
+            }))
+            .unwrap();
+        world
+            .assert(Assertion::Route(Route {
+                key: "east-route".into(),
                 from: "region".into(),
                 to: "east".into(),
-                tags: vec![],
+                tags: [].into(),
                 weight: 1,
-            },
-        );
+            }))
+            .unwrap();
         world.party_known.insert(
             "party".into(),
             BTreeSet::from(["region".into(), "east".into()]),
@@ -315,16 +312,15 @@ mod tests {
     #[test]
     fn unknown_site_details_and_routes_are_filtered() {
         let (map, mut world) = fixture();
-        world.routes.insert(
-            "hidden-route".into(),
-            WorldRoute {
-                id: "hidden-route".into(),
+        world
+            .assert(Assertion::Route(Route {
+                key: "hidden-route".into(),
                 from: "region".into(),
                 to: "hidden".into(),
-                tags: vec![],
+                tags: [].into(),
                 weight: 1,
-            },
-        );
+            }))
+            .unwrap();
         let projection = atlas_projection(Some(&map), &world, "party").unwrap();
         assert!(!projection.sites.iter().any(|site| site.id == "hidden"));
         assert_eq!(
@@ -360,7 +356,16 @@ mod tests {
     fn transition_target_resolves_place_by_map_id() {
         let (mut map, mut world) = fixture();
         map.transitions[0].target_map = "map:east".into();
-        world.places.get_mut("east").unwrap().map = Some("map:east".into());
+        world
+            .edit(|entries| {
+                for entry in entries {
+                    match entry {
+                        Assertion::Place(p) if p.key == "east" => p.map = Some("map:east".into()),
+                        _ => {},
+                    }
+                }
+            })
+            .unwrap();
         world
             .party_known
             .get_mut("party")

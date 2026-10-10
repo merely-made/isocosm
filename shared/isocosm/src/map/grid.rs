@@ -92,6 +92,7 @@ impl Grid {
                             enters: (side + 2) % 4,
                             flipped: false,
                         }),
+                        authored: None,
                     })
                 })
                 .collect();
@@ -107,6 +108,7 @@ impl Grid {
                 accounts: BTreeMap::new(),
                 conditions,
                 routes,
+                authored: None,
             };
             laid.insert(id, site);
         }

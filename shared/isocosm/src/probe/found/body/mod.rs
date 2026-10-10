@@ -334,6 +334,7 @@ impl BodyFounding {
                 conditions: BTreeMap::new(),
                 accounts: BTreeMap::from([(SOIL.into(), self.pick("body-soil", s, self.soil))]),
                 routes: vec![],
+                authored: None,
             };
             site_map.insert(s, site);
             population.insert(member(lineages, "world:ground", s, BTreeMap::new()), 1)?;

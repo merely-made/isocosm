@@ -1,150 +1,138 @@
-//! The durable world vocabulary: places, routes, characters, factions, laws,
-//! history, and storylets.
+//! The campaign world: its asserted entries and their fold, storylets, and
+//! the table's own state.
 //!
 //! Split out of `world.rs` on 2026-07-24; behavior unchanged.
 
 use super::*;
 
+/// The campaign's world: the asserted entries its session carries and
+/// their fold (768), beside the table's own state.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(try_from = "Carried", into = "Carried")]
 pub struct CampaignWorld {
-    #[serde(default)]
-    pub factions: BTreeMap<String, WorldFaction>,
-    #[serde(default)]
-    pub places: BTreeMap<String, WorldPlace>,
-    #[serde(default)]
-    pub characters: BTreeMap<String, WorldCharacter>,
-    #[serde(default)]
-    pub routes: BTreeMap<String, WorldRoute>,
-    #[serde(default)]
-    pub laws: BTreeMap<String, WorldLaw>,
-    #[serde(default)]
-    pub history: Vec<HistoryEvent>,
-    #[serde(default)]
+    assertions: Vec<Assertion>,
+    asserted: Asserted,
     pub storylets: BTreeMap<String, StoryletProposal>,
-    /// A faction's mutable numbers, keyed by faction id: banked downtime time,
-    /// and the `want_<thing>` / `have_<thing>` pairs that drive radiant quests.
-    /// A faction's "sheet" at a different scale, but integers only for now --
-    /// enough for banking and demand, and `Eq` (unlike the float-carrying
-    /// `SheetData` a token holds). Promoting it to a full sheet a system can read
-    /// through its Lua is the "abilities are projections" refinement. Unlike the
-    /// immutable identity in [`Self::factions`], this changes as a faction acts,
-    /// so it overwrites rather than insert-onces.
-    #[serde(default)]
     pub faction_sheets: BTreeMap<String, BTreeMap<String, i64>>,
-    /// Who plays each faction: faction id -> the player name granted its
-    /// channel. A faction is an owner name like any other (a token owned by a
-    /// faction id belongs to that faction), and this grant lets a player command
-    /// that faction's tokens as if their own -- the per-channel permission that
-    /// makes a faction *playable* rather than only DM-run. Absent means the DM
-    /// runs it. Session state, not authored content, but it lives beside
-    /// `faction_sheets` because both are the mutable per-faction layer.
-    #[serde(default)]
     pub faction_control: BTreeMap<String, String>,
-    /// Where each traveling party sits on the overmap: party owner -> place id.
-    /// A split party (C3) keeps separate positions; a single party has one entry.
-    /// Session play-state, like [`Self::faction_control`], not authored content.
-    #[serde(default)]
     pub party_node: BTreeMap<String, String>,
-    /// Each party's travel pace, as a percent of normal time: 100 is normal, 50
-    /// is fast (half the time), 200 is slow (double). Absent reads as 100. The
-    /// number is all the substrate keeps; what a pace *trades* (fast loses
-    /// passive Perception, slow lets you forage) is system business.
-    #[serde(default)]
     pub party_pace: BTreeMap<String, i64>,
-    /// The overmap a party has discovered: party owner -> the place ids it knows.
-    /// The rest of the map is hidden -- unseeable, unroutable -- until revealed by
-    /// travel, word of mouth, a guide, a skill check, or a map read. Fog at
-    /// overmap scale, with explored memory: once known, a place stays known.
-    #[serde(default)]
     pub party_known: BTreeMap<String, BTreeSet<String>>,
-    /// A party's named stores: party owner -> resource -> amount. Food gathered
-    /// by foraging on the road lives here; the substrate keeps the count and the
-    /// system decides what a store is worth and when it runs out.
-    #[serde(default)]
     pub party_resources: BTreeMap<String, BTreeMap<String, i64>>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldFaction {
-    pub id: String,
-    pub name: String,
+/// What a campaign world saves and replicates: the entries, not the fold.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+struct Carried {
     #[serde(default)]
-    pub tags: Vec<String>,
+    assertions: Vec<Assertion>,
     #[serde(default)]
-    pub claims: Vec<String>,
+    storylets: BTreeMap<String, StoryletProposal>,
+    #[serde(default)]
+    faction_sheets: BTreeMap<String, BTreeMap<String, i64>>,
+    #[serde(default)]
+    faction_control: BTreeMap<String, String>,
+    #[serde(default)]
+    party_node: BTreeMap<String, String>,
+    #[serde(default)]
+    party_pace: BTreeMap<String, i64>,
+    #[serde(default)]
+    party_known: BTreeMap<String, BTreeSet<String>>,
+    #[serde(default)]
+    party_resources: BTreeMap<String, BTreeMap<String, i64>>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldPlace {
-    pub id: String,
-    pub name: String,
-    #[serde(default)]
-    pub tags: Vec<String>,
-    #[serde(default)]
-    pub map: Option<String>,
-    /// Optional hand-placed overmap coordinate. `None` lets the render layout
-    /// place the site (a force-directed relaxation from the routes); `Some`
-    /// pins it, and the overmap honors authored positions when any place sets
-    /// one. Integers keep [`CampaignWorld`] `Eq` (no float in the key state).
-    #[serde(default)]
-    pub position: Option<(i32, i32)>,
+impl TryFrom<Carried> for CampaignWorld {
+    type Error = String;
+    fn try_from(c: Carried) -> Result<Self, String> {
+        let asserted = Asserted::fold(&c.assertions).map_err(|r| format!("{r:?}"))?;
+        Ok(Self {
+            assertions: c.assertions,
+            asserted,
+            storylets: c.storylets,
+            faction_sheets: c.faction_sheets,
+            faction_control: c.faction_control,
+            party_node: c.party_node,
+            party_pace: c.party_pace,
+            party_known: c.party_known,
+            party_resources: c.party_resources,
+        })
+    }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldCharacter {
-    pub id: String,
-    pub name: String,
-    #[serde(default)]
-    pub tags: Vec<String>,
-    #[serde(default)]
-    pub faction: Option<String>,
-    #[serde(default)]
-    pub place: Option<String>,
+impl From<CampaignWorld> for Carried {
+    fn from(w: CampaignWorld) -> Self {
+        Self {
+            assertions: w.assertions,
+            storylets: w.storylets,
+            faction_sheets: w.faction_sheets,
+            faction_control: w.faction_control,
+            party_node: w.party_node,
+            party_pace: w.party_pace,
+            party_known: w.party_known,
+            party_resources: w.party_resources,
+        }
+    }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldRoute {
-    pub id: String,
-    pub from: String,
-    pub to: String,
-    #[serde(default)]
-    pub tags: Vec<String>,
-    /// Travel weight for the overmap: the abstract cost of taking this route.
-    /// A road and a mountain pass between the same two places can differ, which
-    /// is the whole point of a pointcrawl (the swamp shortcut versus the safe
-    /// road). Zero (the unauthored default) reads as 1 when projected, so an
-    /// unweighted route is still traversable at unit cost.
-    #[serde(default)]
-    pub weight: u32,
-}
+impl CampaignWorld {
+    /// The asserted entries, in the order they were accepted.
+    pub fn assertions(&self) -> &[Assertion] {
+        &self.assertions
+    }
 
-/// A named rule of the generated setting. `parameters` is pack vocabulary;
-/// system plugins opt into keys they understand rather than the substrate
-/// hardcoding what iron, fire, names, oaths, or magic mean.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct WorldLaw {
-    pub id: String,
-    pub name: String,
-    pub text: String,
-    #[serde(default)]
-    pub tags: Vec<String>,
-    #[serde(default)]
-    pub parameters: BTreeMap<String, String>,
-}
+    /// Their fold.
+    pub fn asserted(&self) -> &Asserted {
+        &self.asserted
+    }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct HistoryEvent {
-    pub id: String,
-    /// Pack-defined chronological tick. Equal ticks retain authored order.
-    pub time: i64,
-    pub kind: String,
-    pub text: String,
-    #[serde(default)]
-    pub participants: Vec<String>,
-    #[serde(default)]
-    pub place: Option<String>,
-    #[serde(default)]
-    pub tags: Vec<String>,
+    pub fn factions(&self) -> &BTreeMap<String, Faction> {
+        &self.asserted.factions
+    }
+
+    pub fn places(&self) -> &BTreeMap<String, Place> {
+        &self.asserted.places
+    }
+
+    pub fn characters(&self) -> &BTreeMap<String, Character> {
+        &self.asserted.characters
+    }
+
+    pub fn routes(&self) -> &BTreeMap<String, Route> {
+        &self.asserted.routes
+    }
+
+    pub fn laws(&self) -> &BTreeMap<String, Law> {
+        &self.asserted.laws
+    }
+
+    /// History lines in the table's time order.
+    pub fn history(&self) -> &[HistoryLine] {
+        &self.asserted.history
+    }
+
+    /// Edits the entries and refolds them: a draft's edit before it is
+    /// committed. Refused, the world is left with what refolded.
+    pub fn edit(&mut self, f: impl FnOnce(&mut Vec<Assertion>)) -> Result<(), WorldError> {
+        let mut entries = std::mem::take(&mut self.assertions);
+        f(&mut entries);
+        self.asserted = Asserted::default();
+        entries.into_iter().try_for_each(|entry| self.assert(entry))
+    }
+
+    /// Asserts one entry: carried when it is new, nothing when it is held
+    /// already, refused when something else is held under its key.
+    pub fn assert(&mut self, assertion: Assertion) -> Result<(), WorldError> {
+        let new = self.asserted.apply(&assertion).map_err(|r| match r {
+            Refused::Keyless => WorldError::MissingId,
+            Refused::Otherwise(key) => WorldError::ConflictingId(key),
+            Refused::Unplaced(key) => WorldError::UnknownRouteEndpoint(key),
+        })?;
+        if new {
+            self.assertions.push(assertion);
+        }
+        Ok(())
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -169,7 +157,7 @@ pub struct RoleSlot {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum StoryletEffect {
     Fact { fact: WorldFact },
-    History { event: HistoryEvent },
+    History { event: HistoryLine },
     Item { item: ItemProposal },
     LocalMap { map: LocalMapProposal },
 }
@@ -180,7 +168,7 @@ pub enum StoryletEffect {
 #[serde(remote = "StoryletEffect", tag = "type", rename_all = "snake_case")]
 enum StoryletEffectJson {
     Fact { fact: WorldFact },
-    History { event: HistoryEvent },
+    History { event: HistoryLine },
     Item { item: ItemProposal },
     LocalMap { map: LocalMapProposal },
 }
@@ -189,7 +177,7 @@ enum StoryletEffectJson {
 #[serde(remote = "StoryletEffect")]
 enum StoryletEffectWire {
     Fact { fact: WorldFact },
-    History { event: HistoryEvent },
+    History { event: HistoryLine },
     Item { item: ItemProposal },
     LocalMap { map: LocalMapProposal },
 }
@@ -249,4 +237,3 @@ pub enum StoryletError {
     MissingWorldLaw(String),
     UncastRole(String),
 }
-

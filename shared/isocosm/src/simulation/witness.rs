@@ -41,6 +41,9 @@ impl Simulation {
         if !s.nudges.is_empty() {
             put(&mut w, "nudges", &s.nudges);
         }
+        if !s.laws.is_empty() {
+            put(&mut w, "laws", &s.laws);
+        }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -84,6 +87,9 @@ impl Simulation {
         }
         for (index, nudge) in s.nudges.iter().enumerate() {
             put(&mut w, label("nudge", [index]), nudge);
+        }
+        for (key, law) in &s.laws {
+            put(&mut w, label("law", [key]), law);
         }
         for id in &s.roots {
             put(&mut w, label("root", [id]), &());

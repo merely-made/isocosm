@@ -81,8 +81,12 @@ fn map_only_campaign_creation_does_not_require_a_regional_party() {
         else {
             panic!("campaign preview")
         };
-        campaign.world.places.clear();
-        campaign.world.routes.clear();
+        use isocosm::asserted::Assertion;
+        let geography = |a: &Assertion| matches!(a, Assertion::Place(_) | Assertion::Route(_));
+        campaign
+            .world
+            .edit(|e| e.retain(|a| !geography(a)))
+            .unwrap();
         ui.commit_generation_preview();
     });
     harness.after_dispatch();

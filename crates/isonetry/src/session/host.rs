@@ -202,9 +202,9 @@ impl HostSession {
         for (index, effect) in resolved.effects.into_iter().enumerate() {
             match effect {
                 StoryletEffect::Fact { fact } => events.push(GameEvent::Fact(fact)),
-                StoryletEffect::History { event } => {
-                    events.push(GameEvent::World(WorldEvent::History(event)))
-                },
+                StoryletEffect::History { event } => events.push(GameEvent::World(
+                    WorldEvent::Assert(isocosm::asserted::Assertion::History(event)),
+                )),
                 StoryletEffect::LocalMap { map } => {
                     let map = map
                         .lower(MapScale::Local)
@@ -397,12 +397,12 @@ impl HostSession {
                 }
                 let places: Vec<_> = draft
                     .world
-                    .places
+                    .places()
                     .values()
                     .filter(|place| place.map.as_deref() == Some(draft.starting_map.as_str()))
                     .collect();
                 match places.as_slice() {
-                    [place] => Ok((party.to_owned(), place.id.clone())),
+                    [place] => Ok((party.to_owned(), place.key.clone())),
                     [] => Err(format!(
                         "campaign starting map {} has no world place",
                         draft.starting_map

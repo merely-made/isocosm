@@ -11,15 +11,17 @@ use super::*;
 #[test]
 fn a_faction_turn_commits_and_every_peer_lives_in_the_changed_world() {
     let mut snap = snapshot();
-    snap.world.factions.insert(
-        "tide".to_owned(),
-        WorldFaction {
-            id: "tide".into(),
-            name: "Tide Court".into(),
-            tags: vec!["river".into()],
-            claims: vec![],
-        },
-    );
+    snap.world
+        .assert(Assertion::Faction(Faction {
+            authored: Authored {
+                key: "tide".into(),
+                name: "Tide Court".into(),
+                tags: ["river".into()].into(),
+                claims: [].into(),
+            },
+            ..Default::default()
+        }))
+        .unwrap();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
 
@@ -37,7 +39,7 @@ fn a_faction_turn_commits_and_every_peer_lives_in_the_changed_world() {
     // the ordered log.
     let meanwhile = |s: &GameSnapshot| {
         s.world
-            .history
+            .history()
             .iter()
             .filter(|h| h.kind == "faction-turn" && h.time == 4)
             .count()
@@ -55,36 +57,33 @@ fn a_faction_turn_commits_and_every_peer_lives_in_the_changed_world() {
 #[test]
 fn discovery_replicates_as_the_party_travels() {
     let mut snap = snapshot();
-    snap.world.places.insert(
-        "village".into(),
-        WorldPlace {
-            id: "village".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "village".into(),
             name: "Village".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
-    snap.world.places.insert(
-        "forest".into(),
-        WorldPlace {
-            id: "forest".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "forest".into(),
             name: "Forest".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
-    snap.world.routes.insert(
-        "r".into(),
-        WorldRoute {
-            id: "r".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Route(Route {
+            key: "r".into(),
             from: "village".into(),
             to: "forest".into(),
-            tags: vec![],
+            tags: [].into(),
             weight: 2,
-        },
-    );
+        }))
+        .unwrap();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
 
@@ -109,36 +108,33 @@ fn discovery_replicates_as_the_party_travels() {
 fn a_party_travels_the_overmap_and_every_peer_agrees() {
     let mut snap = snapshot();
     // A tiny overmap projected from two places joined by a route.
-    snap.world.places.insert(
-        "village".into(),
-        WorldPlace {
-            id: "village".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "village".into(),
             name: "Village".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
-    snap.world.places.insert(
-        "forest".into(),
-        WorldPlace {
-            id: "forest".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "forest".into(),
             name: "Forest".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
-    snap.world.routes.insert(
-        "r1".into(),
-        WorldRoute {
-            id: "r1".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Route(Route {
+            key: "r1".into(),
             from: "village".into(),
             to: "forest".into(),
-            tags: vec![],
+            tags: [].into(),
             weight: 2,
-        },
-    );
+        }))
+        .unwrap();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
 
@@ -167,27 +163,25 @@ fn a_party_travels_the_overmap_and_every_peer_agrees() {
 #[test]
 fn a_resolved_travel_moves_the_party_and_ticks_the_clock_on_every_peer() {
     let mut snap = snapshot();
-    snap.world.places.insert(
-        "village".into(),
-        WorldPlace {
-            id: "village".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "village".into(),
             name: "Village".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
+        }))
+        .unwrap();
     // The forest is a site (a tactical map), so arriving there advances its clock.
-    snap.world.places.insert(
-        "forest".into(),
-        WorldPlace {
-            id: "forest".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "forest".into(),
             name: "Forest".into(),
-            tags: vec![],
+            tags: [].into(),
             map: Some("forest-map".into()),
             position: None,
-        },
-    );
+        }))
+        .unwrap();
     snap.world.party_node.insert("A".into(), "village".into());
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
@@ -265,36 +259,33 @@ fn a_resolved_travel_moves_the_party_and_ticks_the_clock_on_every_peer() {
 fn an_encounter_on_the_road_drops_the_party_onto_the_map() {
     // two_map_snapshot registers the "field" and "hut" tactical maps.
     let mut snap = two_map_snapshot();
-    snap.world.places.insert(
-        "green".into(),
-        WorldPlace {
-            id: "green".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "green".into(),
             name: "Green".into(),
-            tags: vec![],
+            tags: [].into(),
             map: Some("field".into()),
             position: None,
-        },
-    );
-    snap.world.places.insert(
-        "hollow".into(),
-        WorldPlace {
-            id: "hollow".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "hollow".into(),
             name: "Hollow".into(),
-            tags: vec![],
+            tags: [].into(),
             map: Some("hut".into()),
             position: None,
-        },
-    );
-    snap.world.routes.insert(
-        "r".into(),
-        WorldRoute {
-            id: "r".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Route(Route {
+            key: "r".into(),
             from: "green".into(),
             to: "hollow".into(),
-            tags: vec![],
+            tags: [].into(),
             weight: 3,
-        },
-    );
+        }))
+        .unwrap();
     snap.world.party_node.insert("A".into(), "green".into());
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
@@ -334,26 +325,24 @@ fn an_encounter_on_the_road_drops_the_party_onto_the_map() {
 #[test]
 fn a_client_cannot_pronounce_its_own_travel() {
     let mut snap = snapshot();
-    snap.world.places.insert(
-        "village".into(),
-        WorldPlace {
-            id: "village".into(),
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "village".into(),
             name: "Village".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
-    snap.world.places.insert(
-        "forest".into(),
-        WorldPlace {
-            id: "forest".into(),
+        }))
+        .unwrap();
+    snap.world
+        .assert(Assertion::Place(Place {
+            key: "forest".into(),
             name: "Forest".into(),
-            tags: vec![],
+            tags: [].into(),
             map: None,
             position: None,
-        },
-    );
+        }))
+        .unwrap();
     snap.world.party_node.insert("A".into(), "village".into());
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
@@ -397,15 +386,17 @@ fn a_granted_player_plays_a_faction_and_a_stranger_may_not() {
     let mut snap = snapshot();
     // The goblin (token 2) is the Tide Court's furniture, not any player's.
     snap.map.tokens[1].owner = Some("tide".to_owned());
-    snap.world.factions.insert(
-        "tide".to_owned(),
-        WorldFaction {
-            id: "tide".into(),
-            name: "Tide Court".into(),
-            tags: vec!["river".into()],
-            claims: vec![],
-        },
-    );
+    snap.world
+        .assert(Assertion::Faction(Faction {
+            authored: Authored {
+                key: "tide".into(),
+                name: "Tide Court".into(),
+                tags: ["river".into()].into(),
+                claims: [].into(),
+            },
+            ..Default::default()
+        }))
+        .unwrap();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
     sim.client_hello(PeerId(10), "B");
@@ -467,15 +458,17 @@ fn a_granted_player_plays_a_faction_and_a_stranger_may_not() {
 #[test]
 fn banked_time_makes_a_bigger_tick_and_the_commit_empties_the_bank() {
     let mut snap = snapshot();
-    snap.world.factions.insert(
-        "tide".to_owned(),
-        WorldFaction {
-            id: "tide".into(),
-            name: "Tide Court".into(),
-            tags: vec!["river".into()],
-            claims: vec![],
-        },
-    );
+    snap.world
+        .assert(Assertion::Faction(Faction {
+            authored: Authored {
+                key: "tide".into(),
+                name: "Tide Court".into(),
+                tags: ["river".into()].into(),
+                claims: [].into(),
+            },
+            ..Default::default()
+        }))
+        .unwrap();
     // The table spent a long scene away: 25 units banked toward this faction.
     snap.world.faction_sheets.insert(
         "tide".to_owned(),
@@ -503,7 +496,7 @@ fn banked_time_makes_a_bigger_tick_and_the_commit_empties_the_bank() {
     };
     let logged = |s: &GameSnapshot| {
         s.world
-            .history
+            .history()
             .iter()
             .filter(|h| h.kind == "faction-turn" && h.time == 5)
             .count()

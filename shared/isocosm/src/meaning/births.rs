@@ -77,6 +77,7 @@ pub(crate) fn newborn(parent: &Entity, body: Body, soma: Vec<u8>, tick: Tick) ->
     child.visits.clear();
     child.skills = BTreeMap::new();
     child.provenance = Provenance::Born(child.lineage.clone());
+    child.authored = None;
     child
 }
 

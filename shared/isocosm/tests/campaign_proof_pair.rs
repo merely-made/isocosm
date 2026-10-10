@@ -15,7 +15,8 @@
 //! critter driven through the world until it had eaten several dozen
 //! organisms; `rng.chronicle` is one nobody ever ran.
 
-use isocosm::legacy::campaign::{Arrival, ChronicleError, HistoryEvent};
+use isocosm::asserted::HistoryLine;
+use isocosm::legacy::campaign::{Arrival, ChronicleError};
 
 const PLAYED: &[u8] = include_bytes!("campaign_fixtures/played.chronicle");
 const RNG: &[u8] = include_bytes!("campaign_fixtures/rng.chronicle");
@@ -40,7 +41,11 @@ fn both_arrive_through_the_same_door() {
         let arrival = Arrival::read(bytes).expect("both read identically");
         assert!(arrival.chronicle().parts.len() > 1);
         assert!(arrival.incorporated_parts() > 0, "both have eaten");
-        assert_eq!(arrival.foreign().count(), 0, "neither has been anywhere yet");
+        assert_eq!(
+            arrival.foreign().count(),
+            0,
+            "neither has been anywhere yet"
+        );
     }
 }
 
@@ -51,7 +56,10 @@ fn nothing_this_campaign_can_observe_sorts_them() {
     let (played_species, played_parts, played_eaten, played_deeds) = observable(PLAYED);
     let (rng_species, rng_parts, rng_eaten, rng_deeds) = observable(RNG);
 
-    assert!(played_species > 0 && rng_species > 0, "both belong to a lineage");
+    assert!(
+        played_species > 0 && rng_species > 0,
+        "both belong to a lineage"
+    );
     assert!(played_parts > 1 && rng_parts > 1, "both are composite");
     assert!(played_eaten > 0 && rng_eaten > 0, "both have provenance");
     assert_eq!(played_deeds, rng_deeds, "neither carries history yet");
@@ -80,10 +88,16 @@ fn both_take_a_roster_slot_of_the_same_shape() {
     let played = Arrival::read(PLAYED).unwrap().character("a", "Mire");
     let generated = Arrival::read(RNG).unwrap().character("b", "Thal");
 
-    assert_eq!(played.faction, generated.faction, "neither arrives affiliated");
+    assert_eq!(
+        played.faction, generated.faction,
+        "neither arrives affiliated"
+    );
     assert_eq!(played.tags, generated.tags);
     assert_eq!(played.place, generated.place);
-    assert_ne!(played.id, generated.id, "they are still two different characters");
+    assert_ne!(
+        played.key, generated.key,
+        "they are still two different characters"
+    );
 }
 
 #[test]
@@ -94,19 +108,23 @@ fn history_lands_on_both_identically() {
         let mut arrival = Arrival::read(bytes).unwrap();
         let before = arrival.chronicle().parts.len();
 
-        arrival.record(&HistoryEvent {
-            id: "h1".into(),
+        arrival.record(&HistoryLine {
+            key: "h1".into(),
             time: 40,
             kind: "held-the-ford".into(),
             text: "held the ford through the winter".into(),
             participants: vec!["the-vale".into()],
             place: Some("the-ford".into()),
-            tags: vec!["siege".into()],
+            tags: ["siege".into()].into(),
         });
 
         let back = Arrival::read(&arrival.to_bytes().unwrap()).unwrap();
         assert_eq!(back.history().len(), 1);
-        assert_eq!(back.chronicle().parts.len(), before, "history changed no anatomy");
+        assert_eq!(
+            back.chronicle().parts.len(),
+            before,
+            "history changed no anatomy"
+        );
     }
 }
 
@@ -131,6 +149,9 @@ fn a_version_bump_in_a_real_fixture_is_refused() {
     bumped[8..10].copy_from_slice(&1u16.to_le_bytes());
     assert_eq!(
         Arrival::read(&bumped),
-        Err(ChronicleError::UnknownVersion { found: 1, expected: 0 })
+        Err(ChronicleError::UnknownVersion {
+            found: 1,
+            expected: 0
+        })
     );
 }

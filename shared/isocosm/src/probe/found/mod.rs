@@ -394,6 +394,7 @@ impl ProbeFounding {
                 conditions: BTreeMap::new(),
                 accounts,
                 routes: vec![],
+                authored: None,
             };
             site_map.insert(s, site);
             population.insert(member(lineages, "world:ground", s, BTreeMap::new()), 1)?;
@@ -479,6 +480,7 @@ pub(super) fn member(
         systems: BTreeMap::new(),
         varied: vec![],
         patch: None,
+        authored: None,
     }
 }
 

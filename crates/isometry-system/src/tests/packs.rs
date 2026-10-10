@@ -75,13 +75,15 @@ fn demo_pack_composes_an_inspectable_campaign_draft() {
     };
     campaign.validate().unwrap();
     assert_eq!(campaign.maps.len(), 3);
-    assert_eq!(campaign.world.factions.len(), 2);
+    assert_eq!(campaign.world.factions().len(), 2);
     assert_eq!(campaign.secrets.len(), 1);
-    assert!(campaign.world.laws.contains_key("iron-remembers"));
-    assert!(campaign
-        .world
-        .storylets
-        .contains_key(&campaign.final_storylet));
+    assert!(campaign.world.laws().contains_key("iron-remembers"));
+    assert!(
+        campaign
+            .world
+            .storylets
+            .contains_key(&campaign.final_storylet)
+    );
 }
 
 #[test]

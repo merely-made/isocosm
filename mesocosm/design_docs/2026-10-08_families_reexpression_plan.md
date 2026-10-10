@@ -201,6 +201,42 @@ the bodies family.
   them in documents; whether the legacy body modules can leave before the
   world families, which consume them; whether the registry holds all fifteen
   catalogue functions; and fork 9.
+- **2026-10-10, family 3 continued, assertions and the campaign (lane
+  `lane-assert`, under 732's compile gate; no test sweeps, draws or
+  certification run).** Under 768 to 771:
+  - *Authored nouns (769).* `Command::Assert` gains places, routes,
+    characters, laws and history lines, each its native noun with an
+    authored fill skipped when unset: a place a `Site` (no terrain, a fresh
+    id from the entity id space), a route a `Route` on both its places'
+    sites, a character a placeless `Entity` whose asserted faction takes it
+    in as a `member` relation (760), a law an entry in a new `State::laws`
+    record (witnessed when present), a history line an `Event`
+    `line:<key>` at its place's site and about its first participant
+    where those are asserted, placeless otherwise, with strength nought.
+    `authored_site`, `authored_entity` and `authored_id` map authored keys
+    to native ids. A newborn does not inherit a fill.
+  - *The campaign carries its assertions (768).* `asserted::Asserted` folds
+    a run of entries by authored key with the legacy insert-once rules (a
+    route needs its places; history in the table's time order); it needs
+    no world. The legacy `CampaignWorld` now carries
+    `assertions: Vec<Assertion>` and their fold, saving and replicating the
+    entries only; its factions, places, routes, characters, laws and
+    history are readings. `WorldEvent`'s six authored variants became
+    `WorldEvent::Assert`; a draft's public events are its entries in order;
+    `CampaignWorld::edit` refolds a draft's entries. Deleted: legacy
+    `WorldFaction`, `WorldPlace`, `WorldCharacter`, `WorldRoute`,
+    `WorldLaw` and `HistoryEvent`, re-pointed in isometry-views,
+    isometry-genet, isonetry, isometry-system, isometry-graphshell, the
+    chronicle and the faction turn (still legacy, marked for V2, 247). The
+    two packs' generators author their worlds as assertion entries.
+  - *Eponym's epistemic layer (771)* is not built: it observes Eponym's
+    deed log by `SubjectId`, both Eponym's world, so it waits for that
+    world's move.
+  *Reading, not ruled:* routes, which 769 does not name, follow places
+  onto native sites; the fills' tags and claims are sets, so authored tag
+  order is not kept; laws are keyed by authored key; a campaign world
+  stays in `legacy::campaign` because the faction turn, overmap and
+  generator still read it.
 - **2026-10-10, family 3, the record (lane `lane-record-2`, under 732's
   compile gate; no test sweeps, draws or certification run).** Two steps
   landed.

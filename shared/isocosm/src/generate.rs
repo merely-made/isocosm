@@ -329,8 +329,10 @@ impl Founding {
                             transmission: 500_000
                                 + (random("transmission", i * 256 + to) % 500_001) as u32,
                             border: None,
+                            authored: None,
                         })
                         .collect(),
+                    authored: None,
                 },
             );
         }
@@ -376,6 +378,7 @@ impl Founding {
                     systems: BTreeMap::new(),
                     varied: vec![],
                     patch: None,
+                    authored: None,
                 },
                 1,
             )?;
@@ -425,6 +428,7 @@ impl Founding {
                     systems: BTreeMap::new(),
                     varied: vec![],
                     patch: None,
+                    authored: None,
                 },
                 count,
             )?;

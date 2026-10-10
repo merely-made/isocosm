@@ -14,39 +14,40 @@
 //! families re-expression plan's Progress, 2026-10-09).
 
 mod chronicle;
+mod construction;
 mod fact;
 mod faction;
 mod generator;
-mod construction;
 mod item;
 mod map;
 mod overmap;
 mod pack;
 mod world;
 
-pub use chronicle::{Arrival, Chronicle, ChronicleError, Deed, PartOrigin, CHRONICLE_SCHEMA, LOST_PART, VESSEL};
+pub use chronicle::{
+    Arrival, CHRONICLE_SCHEMA, Chronicle, ChronicleError, Deed, LOST_PART, PartOrigin, VESSEL,
+};
+pub use construction::{CONSTRUCTION_SCHEMA, ConstructionError, ConstructionProposal};
 pub use fact::{RevealCondition, SecretFact, Visibility, WorldFact};
 pub use faction::{FactionMove, FactionVerb};
 pub use generator::{
     CastRoleRequest, EntropyTape, GenValue, GenValueError, GenerationRecord, GenerationRecordError,
     GeneratorFixture, GeneratorRequest, ItemProposal, MapPatchProposal, NpcProposal,
 };
-pub use construction::{ConstructionProposal, ConstructionError, CONSTRUCTION_SCHEMA};
 pub use item::{
     EquipmentSlot, HiddenItemModifier, Inventory, InventoryError, ItemId, ItemInstance,
     ItemModifier, ItemModifierKind, ItemModifierReveal,
 };
 pub use map::{
-    EncounterAnchor, LocalMapProposal, MapCellProposal, MapPoint, MapProposalError,
-    MapScale, MapTransition, SpawnZone, MAX_GENERATED_MAP_EDGE,
+    EncounterAnchor, LocalMapProposal, MAX_GENERATED_MAP_EDGE, MapCellProposal, MapPoint,
+    MapProposalError, MapScale, MapTransition, SpawnZone,
 };
 pub use overmap::{Overmap, OvermapEdge, OvermapNode};
 pub use pack::{
-    BeatEntry, ContentPackError, ContentPackManifest, GeneratorChoice, GeneratorEntry,
-    GeneratorLockPreset, CONTENT_PACK_FORMAT,
+    BeatEntry, CONTENT_PACK_FORMAT, ContentPackError, ContentPackManifest, GeneratorChoice,
+    GeneratorEntry, GeneratorLockPreset,
 };
 pub use world::{
-    CampaignDraft, CampaignWorld, DraftMap, HistoryEvent, MapInhabitant, RoleSlot, StoryletEffect,
-    StoryletError, StoryletProposal, StoryletRequirements, StoryletResolution, WorldCharacter,
-    WorldError, WorldEvent, WorldFaction, WorldLaw, WorldPlace, WorldRoute,
+    CampaignDraft, CampaignWorld, DraftMap, MapInhabitant, RoleSlot, StoryletEffect, StoryletError,
+    StoryletProposal, StoryletRequirements, StoryletResolution, WorldError, WorldEvent,
 };

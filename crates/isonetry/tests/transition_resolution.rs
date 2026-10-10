@@ -9,6 +9,7 @@
 //! travel *payload* rather than of replication: what the authority says, and
 //! what a peer is thereby spared from working out.
 
+use isocosm::asserted::{Assertion, Authored};
 use isocosm::legacy::campaign::{
     EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale, MapTransition,
 };
@@ -28,15 +29,18 @@ use isonetry::{
 fn uncontrolled_faction_residents_do_not_hold_the_party_board() {
     let mut state = origin();
     state.map.tokens[0].at = (3, 3);
-    state.world.factions.insert(
-        "scavengers".to_owned(),
-        isocosm::legacy::campaign::WorldFaction {
-            id: "scavengers".to_owned(),
-            name: "Scavengers".to_owned(),
-            tags: vec![],
-            claims: vec![],
-        },
-    );
+    state
+        .world
+        .assert(Assertion::Faction(isocosm::asserted::Faction {
+            authored: Authored {
+                key: "scavengers".to_owned(),
+                name: "Scavengers".to_owned(),
+                tags: Default::default(),
+                claims: Default::default(),
+            },
+            ..Default::default()
+        }))
+        .unwrap();
     state.map.tokens[1].owner = Some("scavengers".to_owned());
     let result = resolve_transition(&state, TokenId(1), RequestId::host(901)).unwrap();
     assert_eq!(result.activated.as_deref(), Some("hut"));

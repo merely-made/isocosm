@@ -17,9 +17,9 @@ impl CampaignWorld {
         let hidden: BTreeSet<&str> = hidden_fact_ids.into_iter().collect();
         for tag in &storylet.requirements.faction_tags {
             if !self
-                .factions
+                .factions()
                 .values()
-                .any(|faction| faction.tags.iter().any(|candidate| candidate == tag))
+                .any(|faction| faction.authored.tags.contains(tag))
             {
                 return Err(StoryletError::MissingFactionTag(tag.clone()));
             }
@@ -30,7 +30,7 @@ impl CampaignWorld {
             }
         }
         for law in &storylet.requirements.world_laws {
-            if !self.laws.contains_key(law) {
+            if !self.laws().contains_key(law) {
                 return Err(StoryletError::MissingWorldLaw(law.clone()));
             }
         }
@@ -38,15 +38,15 @@ impl CampaignWorld {
         let mut used = BTreeSet::new();
         let mut cast = BTreeMap::new();
         for role in &storylet.roles {
-            let candidate = self.characters.values().find(|character| {
-                !used.contains(character.id.as_str())
+            let candidate = self.characters().values().find(|character| {
+                !used.contains(character.key.as_str())
                     && role.tags.iter().all(|tag| character.tags.contains(tag))
             });
             let Some(candidate) = candidate else {
                 return Err(StoryletError::UncastRole(role.key.clone()));
             };
-            used.insert(candidate.id.as_str());
-            cast.insert(role.key.clone(), candidate.id.clone());
+            used.insert(candidate.key.as_str());
+            cast.insert(role.key.clone(), candidate.key.clone());
         }
         Ok(StoryletResolution {
             cast,
@@ -56,28 +56,7 @@ impl CampaignWorld {
 
     pub fn apply(&mut self, event: &WorldEvent) -> Result<(), WorldError> {
         match event {
-            WorldEvent::Faction(value) => insert_same(&mut self.factions, &value.id, value),
-            WorldEvent::Place(value) => insert_same(&mut self.places, &value.id, value),
-            WorldEvent::Character(value) => insert_same(&mut self.characters, &value.id, value),
-            WorldEvent::Route(value) => {
-                if !self.places.contains_key(&value.from) || !self.places.contains_key(&value.to) {
-                    return Err(WorldError::UnknownRouteEndpoint(value.id.clone()));
-                }
-                insert_same(&mut self.routes, &value.id, value)
-            }
-            WorldEvent::Law(value) => insert_same(&mut self.laws, &value.id, value),
-            WorldEvent::History(value) => {
-                if let Some(existing) = self.history.iter().find(|event| event.id == value.id) {
-                    return if existing == value {
-                        Ok(())
-                    } else {
-                        Err(WorldError::ConflictingId(value.id.clone()))
-                    };
-                }
-                self.history.push(value.clone());
-                self.history.sort_by_key(|event| event.time);
-                Ok(())
-            }
+            WorldEvent::Assert(assertion) => self.assert(assertion.clone()),
             WorldEvent::Storylet(value) => insert_same(&mut self.storylets, &value.key, value),
             WorldEvent::FactionSheet { faction, sheet } => {
                 // A faction's resources change as it acts, so this overwrites --
@@ -85,14 +64,14 @@ impl CampaignWorld {
                 // separate variant rather than another insert_same registry.
                 self.faction_sheets.insert(faction.clone(), sheet.clone());
                 Ok(())
-            }
+            },
             WorldEvent::FactionControlSet { faction, player } => {
                 match player {
                     Some(name) => self.faction_control.insert(faction.clone(), name.clone()),
                     None => self.faction_control.remove(faction),
                 };
                 Ok(())
-            }
+            },
             WorldEvent::PartyMoved { party, node } => {
                 // The substrate records where the party is; whether the step was
                 // legal (an edge exists, the pace afforded it) is the travel
@@ -102,16 +81,16 @@ impl CampaignWorld {
                 // Arriving discovers where you are and what is one step away.
                 self.discover_around(party, node);
                 Ok(())
-            }
+            },
             WorldEvent::PartyPaceSet { party, pace } => {
                 self.party_pace.insert(party.clone(), *pace);
                 Ok(())
-            }
+            },
             WorldEvent::NodeRevealed { party, node } => {
                 // A place learned some other way: a rumour, a guide, a map read.
                 self.reveal(party, node);
                 Ok(())
-            }
+            },
         }
     }
 
@@ -134,17 +113,17 @@ impl CampaignWorld {
     pub fn overmap(&self) -> Overmap {
         let mut overmap = Overmap::new(String::new());
         overmap.nodes = self
-            .places
+            .places()
             .values()
             .map(|place| OvermapNode {
-                id: place.id.clone(),
+                id: place.key.clone(),
                 name: place.name.clone(),
                 at: place.position.unwrap_or((0, 0)),
                 site: place.map.clone(),
             })
             .collect();
         overmap.edges = self
-            .routes
+            .routes()
             .values()
             .map(|route| OvermapEdge {
                 from: route.from.clone(),
@@ -276,4 +255,3 @@ pub(crate) fn insert_same<T: Clone + PartialEq>(
     values.insert(id.to_owned(), value.clone());
     Ok(())
 }
-

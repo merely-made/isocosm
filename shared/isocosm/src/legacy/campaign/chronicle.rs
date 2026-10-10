@@ -9,14 +9,14 @@
 //!
 //! # The roster slot is the one we already had
 //!
-//! An arriving creature becomes a [`WorldCharacter`] — the same struct an
+//! An arriving creature becomes a [`Character`] — the same struct an
 //! authored NPC uses, with the same fields, stored the same way. That is not a
 //! convenience; it is the point. The games wing's third law says player history
 //! *displaces* procedural content and never gates it, and the proof it demands
 //! is that the consuming game cannot tell a played creature from a generated
 //! one. A separate `ImportedCharacter` type would fail that test by existing.
 //!
-//! Note where the arrival lands: `WorldCharacter` carries a `faction`. A
+//! Note where the arrival lands: `Character` carries a `faction`. A
 //! creature that joins one becomes a character in the wing's exact sense — a
 //! faction-associated borg — so this seam is where that promotion happens.
 //!
@@ -36,7 +36,7 @@
 use serde::{Deserialize, Serialize};
 pub use wing_formats::{Chronicle, Deed, PartOrigin};
 
-use crate::legacy::campaign::world::{HistoryEvent, WorldCharacter};
+use crate::asserted::{Character, HistoryLine};
 
 /// The schema this reads and writes.
 pub const CHRONICLE_SCHEMA: &str = wing_formats::CHRONICLE_SCHEMA;
@@ -87,7 +87,7 @@ fn chronicle_error(error: wing_formats::WireError) -> ChronicleError {
 
 /// What this campaign puts in a deed's `detail` when it records history.
 ///
-/// Written as JSON so Isometry can recover a whole [`HistoryEvent`] on the way
+/// Written as JSON so Isometry can recover a whole [`HistoryLine`] on the way
 /// back, while every other game sees an opaque blob it is obliged to keep.
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 struct HistoryDetail {
@@ -138,16 +138,16 @@ impl Arrival {
             .count()
     }
 
-    /// The roster slot. An ordinary [`WorldCharacter`], indistinguishable from
+    /// The roster slot. An ordinary [`Character`], indistinguishable from
     /// an authored one except by what the record says.
     ///
     /// Naming is the caller's: a critter becomes a borg by being named, and
     /// this campaign is where that name gets attached.
-    pub fn character(&self, id: impl Into<String>, name: impl Into<String>) -> WorldCharacter {
-        WorldCharacter {
-            id: id.into(),
+    pub fn character(&self, id: impl Into<String>, name: impl Into<String>) -> Character {
+        Character {
+            key: id.into(),
             name: name.into(),
-            tags: Vec::new(),
+            tags: Default::default(),
             faction: None,
             place: None,
         }
@@ -157,13 +157,13 @@ impl Arrival {
     ///
     /// The only mutation. Nothing here rewrites or removes a foreign deed,
     /// which is what lets a creature cross three games with its history whole.
-    pub fn record(&mut self, event: &HistoryEvent) {
+    pub fn record(&mut self, event: &HistoryLine) {
         let detail = HistoryDetail {
-            id: event.id.clone(),
+            id: event.key.clone(),
             text: event.text.clone(),
             participants: event.participants.clone(),
             place: event.place.clone(),
-            tags: event.tags.clone(),
+            tags: event.tags.iter().cloned().collect(),
         };
         self.chronicle.deeds.push(Deed {
             vessel: VESSEL.to_string(),
@@ -182,7 +182,7 @@ impl Arrival {
     /// contract needs an agreed payload: Mesocosm reads a little-endian `u32`
     /// part index here and will refuse anything else rather than guess.
     ///
-    /// Writing a [`HistoryEvent`] whose `kind` happens to be `"lost-part"`
+    /// Writing a [`HistoryLine`] whose `kind` happens to be `"lost-part"`
     /// through `record` does **not** do this, and should not: that is this
     /// campaign narrating a loss, which Mesocosm correctly declines to act on.
     /// Losing an arm in the fiction and losing a part in another game's anatomy
@@ -203,21 +203,21 @@ impl Arrival {
     ///
     /// Only ours: another game's deeds are carried, not translated. Guessing
     /// at a foreign vocabulary is how fact loss starts.
-    pub fn history(&self) -> Vec<HistoryEvent> {
+    pub fn history(&self) -> Vec<HistoryLine> {
         self.chronicle
             .deeds
             .iter()
             .filter(|deed| deed.vessel == VESSEL)
             .filter_map(|deed| {
                 let detail: HistoryDetail = serde_json::from_slice(&deed.detail).ok()?;
-                Some(HistoryEvent {
-                    id: detail.id,
+                Some(HistoryLine {
+                    key: detail.id,
                     time: deed.at as i64,
                     kind: deed.verb.clone(),
                     text: detail.text,
                     participants: detail.participants,
                     place: detail.place,
-                    tags: detail.tags,
+                    tags: detail.tags.into_iter().collect(),
                 })
             })
             .collect()
@@ -268,15 +268,15 @@ mod tests {
         })
     }
 
-    fn event(id: &str, kind: &str, time: i64) -> HistoryEvent {
-        HistoryEvent {
-            id: id.into(),
+    fn event(id: &str, kind: &str, time: i64) -> HistoryLine {
+        HistoryLine {
+            key: id.into(),
             time,
             kind: kind.into(),
             text: "held the ford through the winter".into(),
             participants: vec!["the-vale".into()],
             place: Some("the-ford".into()),
-            tags: vec!["siege".into()],
+            tags: ["siege".into()].into(),
         }
     }
 
@@ -285,7 +285,7 @@ mod tests {
         let arrival = Arrival::read(&creature()).unwrap();
         let character = arrival.character("mire-01", "Mire");
 
-        assert_eq!(character.id, "mire-01");
+        assert_eq!(character.key, "mire-01");
         assert_eq!(character.name, "Mire");
         assert_eq!(character.faction, None, "arriving does not join anything");
         assert_eq!(arrival.incorporated_parts(), 1);

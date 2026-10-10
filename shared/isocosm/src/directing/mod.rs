@@ -131,6 +131,7 @@ impl Simulation {
             systems: Default::default(),
             varied: vec![],
             patch: None,
+            authored: None,
         };
         if self.state.population.count() >= self.genesis.rules.limits.entities {
             return Err("entity limit".into());
