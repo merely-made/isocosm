@@ -148,19 +148,42 @@ impl Use<'_> {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Reading {
     /// An account a binding holds, the site's included.
-    Account { who: Binding, key: Key },
+    Account {
+        who: Binding,
+        key: Key,
+    },
     /// The longest half-extent of each part expressing a function, summed:
     /// an actuator's or a sensor's span.
-    Span { who: Binding, function: Key },
+    Span {
+        who: Binding,
+        function: Key,
+    },
     /// Every part's voxels, `(2|h| + 1)` along each axis, summed.
-    Voxels { who: Binding },
+    Voxels {
+        who: Binding,
+    },
     /// The cells each part holds for a function, summed.
-    Cells { who: Binding, function: Key },
+    Cells {
+        who: Binding,
+        function: Key,
+    },
+    /// All cells still present, the free pool included (709, 716).
+    LivingCells {
+        who: Binding,
+    },
+    LostCells {
+        who: Binding,
+    },
     /// Those cells' matter: each part's cells for a function times its cell
     /// mass, summed, such as what a body's glands hold.
-    CellMass { who: Binding, function: Key },
+    CellMass {
+        who: Binding,
+        function: Key,
+    },
     /// What one cell weighs, read of the bound part alone.
-    CellWeight { who: Binding },
+    CellWeight {
+        who: Binding,
+    },
     /// Ruling 493's measurement of each part expressing a function, taken
     /// by the function's share of the part's cells, summed.
     Measured {
@@ -170,11 +193,15 @@ pub enum Reading {
     },
     /// A value the act kept for its later effects, such as what a bite
     /// took before the meal landed.
-    Kept { name: Key },
+    Kept {
+        name: Key,
+    },
     /// The adult mass of the parts its lineage's recipe develops that the
     /// body does not yet hold (rulings 478 and 479): the room growth toward
     /// the recipe has, nought for a body without one.
-    Lacking { who: Binding },
+    Lacking {
+        who: Binding,
+    },
     /// What the systems a body carries naming `function` in `role` carry
     /// of `ask` to their effect parts (rulings 562, 575, 581 and 582):
     /// their share by their room for `lands`, or by their cells where it
@@ -193,7 +220,10 @@ pub enum Reading {
     /// What a body has room for of an account within what the act's
     /// carriage lets reach each part (581); all its room where none bounds
     /// it.
-    Room { who: Binding, key: Key },
+    Room {
+        who: Binding,
+        key: Key,
+    },
 }
 
 /// Ruling 493's measurements, each read from a part's box.
@@ -224,6 +254,8 @@ impl Reading {
             Self::Span { .. } => 0,
             Self::Voxels { .. } => extent.map(|h| 2 * u128::from(h) + 1).product(),
             Self::Cells { function, .. } => cells(function),
+            Self::LivingCells { .. } => u128::from(anatomy::living_cells(h, p)),
+            Self::LostCells { .. } => p.lost.len() as u128,
             Self::CellMass { function, .. } => {
                 cells(function) * u128::from(anatomy::cell_mass(h, b))
             },
@@ -244,6 +276,8 @@ impl Reading {
             | Self::Span { who, .. }
             | Self::Voxels { who }
             | Self::Cells { who, .. }
+            | Self::LivingCells { who }
+            | Self::LostCells { who }
             | Self::CellMass { who, .. }
             | Self::CellWeight { who }
             | Self::Lacking { who }

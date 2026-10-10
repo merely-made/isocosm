@@ -49,6 +49,9 @@ pub(in crate::probe) enum Pending {
         mark: Key,
         parent: Entity,
     },
+    Fragment {
+        child: Entity,
+    },
 }
 
 /// What a meal took of its prey: a bite of the part it landed on, or of
@@ -307,6 +310,7 @@ pub(super) fn act(
         Run::Plan(_) | Run::Free => Ledger::new(),
     };
     let mut doing = Doing {
+        tick: a.tick,
         rules: a.rules,
         lineages: a.lineages,
         member: e.clone(),
@@ -383,6 +387,7 @@ pub(super) fn act_on(
     }
     let part = p.expresses().and_then(|f| expressing(e, f));
     let mut doing = Doing {
+        tick: a.tick,
         rules: a.rules,
         lineages: a.lineages,
         member: e.clone(),
@@ -455,6 +460,7 @@ pub(super) fn mouthful(
     };
     let draws = BTreeMap::new();
     let mut doing = Doing {
+        tick: 0,
         rules,
         lineages,
         member: e.clone(),

@@ -20,6 +20,8 @@ use std::{
     collections::{BTreeMap, BTreeSet},
 };
 
+mod harm;
+
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
     pub sim: &'a Simulation,
@@ -247,6 +249,14 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::Wound { who, cells, slot } => {
+                self.wound(*who, cells.resolved()?, *slot)?;
+                return Ok(false);
+            },
+            Effect::Rot { who, amount } => {
+                self.rot(*who, amount.resolved()?)?;
+                return Ok(false);
+            },
             Effect::Spend {
                 from,
                 to,

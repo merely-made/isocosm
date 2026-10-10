@@ -187,6 +187,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- 2026-10-10, Q8 integration: the independent native checkpoint `9b0ae46d`
+  passes all five downstream workspace/all-target checks offline, including
+  root and Eponym all-features. Its final 27 code/test/script hashes match
+  the tested inputs; raw commands/log hashes are in `q8-root-integration.json`.
+  Healing/revival, the unanswered allocation fork, remaining fault controls
+  and independent crowd statistics remain open. A1 will rerun against this
+  integrated founding source; the earlier rejected profiles remain evidence.
 - **2026-10-10, Q2 native checkpoint integrated:** native deed events now
   retain ruling 808's optional agreement ID with causal-event validation
   intact, alongside asserted map/storylet/pack records and their witnesses.
@@ -227,3 +234,7 @@ headed meal choice feels tense rather than clerical.
   commits done), `lane-repro` (A1 and 797; diagnosis begun), `lane-contracts`
   (794, 795; Eponym routing begun). Worktrees under `Code/worktrees/isometry-
   {plans,repro,contracts}`. Resume each from its branch; nothing merged.
+
+- 2026-10-10, Q8 pre-gate findings. Reading, not ruled: after a total-cell wound, the wounded top part spills over its zero bound, while surviving descendants' ledgers move into the fragment. Re-rooting retains lost cells; every lineage eligible under486 begins living and physiology decides whether a zero-cell root can survive, without free restoration. The probe's optional hazard numerator is drawn per world over64; wounds and rot amounts are drawn per world, and each site's world actor chooses a matter-weighted target by the existing native selector. These bounds and cadence are balance choices for after-pass. Rot preserves material account provenance on the site; existing site mineralization performs the later conversion. Independent conservation, zero-hazard and flow controls are being written; native/crowd statistics and planted faults remain unrun. Healing allocation is pending the user's ruling and is not inferred from a recipe.
+- 2026-10-10, Q8 focused findings: ten independent harm tests and two compiling planted controls passed in the qualified restored-source receipt; this is not C10 certification. The generated crowd hazard uses exactly one agentless world actor per site, one local target and one harmful operation per process. Reading, not ruled: under that bounded domain, reading current target state equals reading the pass start; competing actors/hits require separate pass semantics. Source-only guards now reject the unsupported cases and cover commitments, pending verification. Lost-cell inspection includes injury history on parent tombstones and on transferred fragments; a living-cell loss control excludes tombstones. Hazard/rot bounds and cadence remain balancing observations for after-pass. Healing allocation remains unanswered.
+- 2026-10-10, Q8 bounded guard evidence: all sixteen harm tests now pass on integrated base `f6976e85` plus the final `q8-fragment-source.json` hashes; the native workspace all-target check and founding trait/bounds positive passed too. The guard removal fault compiled and failed its multiple-actor rejection test under the separately preserved `q8-scoped-source.json` inputs, then original bytes were restored. Crowd commitments dispatch correctly; unsupported risk/notes, nonlocal or identity selectors, competing actors and multiple harmful operations are refused. The legal C9 route-cut fixture severs the full subtree and conserves its ledgers in the site. Checkpoint scope defers ordinary HEAL assignment; FRAGMENT assignment changes ordinary genesis, and opt-in probe HEAL remains a dormant marker. No full statistical certification or downstream consumer gate is claimed. Healing allocation and revival remain pending; the hazard/rot cadence and bounds remain after-pass balance choices.

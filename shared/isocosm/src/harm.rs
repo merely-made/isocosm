@@ -11,8 +11,8 @@
 //! with ids kept and its matter moved out, and a root with none dies (707,
 //! 710, 711). Severing bumps the body's revision; a wound alone does not
 //! (717). A game that resolves a blow hands it back as a wound (669).
-//! Healing (712), hazards (704), fragments (713 to 715) and rot (718) wait
-//! for checkpoint 10.
+//! Detached matter stays in a fragment; parent tombstones hold none (470,
+//! 707, 715). The fragment keeps its wounded cells, with no free restoration.
 
 use crate::{
     Result,
@@ -23,6 +23,13 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+
+mod fragments;
+pub(crate) mod rot;
+pub(crate) use fragments::{Fragment, detach};
+
+pub const HEAL: &str = "growth:heal";
+pub const FRAGMENT: &str = "growth:fragment";
 
 /// The free pool's place among a part's functions when a wound shares out.
 const FREE: &str = "";
@@ -38,12 +45,24 @@ pub struct Wounded {
     /// Parts tombstoned, the wounded part first.
     pub severed: Vec<PartId>,
     pub died: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fragment: Option<Id>,
+}
+
+pub(crate) struct Hit {
+    pub wounded: Wounded,
+    pub fragment: Option<Fragment>,
 }
 
 impl Simulation {
     /// Wounds `entity`: `cells` cells from `part`, or from a part drawn by
     /// its living cells where none is named (716).
-    pub(crate) fn wound(&mut self, entity: Id, part: Option<PartId>, cells: u32) -> Result<Wounded> {
+    pub(crate) fn wound(
+        &mut self,
+        entity: Id,
+        part: Option<PartId>,
+        cells: u32,
+    ) -> Result<Wounded> {
         let e = self.state.population.get(entity).ok_or("unknown entity")?;
         if !e.alive {
             return Err("a wound to the dead".into());
@@ -57,60 +76,146 @@ impl Simulation {
         if !self.state.sites.contains_key(&site) {
             return Err("a wound outside any site".into());
         }
-        let rules = &self.genesis.rules;
-        let mut e = self.state.population.get(entity).cloned().ok_or("unknown entity")?;
-        let half = e.extent(part);
-        let mut wounded = Wounded {
+        let mut e = self
+            .state
+            .population
+            .get(entity)
+            .cloned()
+            .ok_or("unknown entity")?;
+        let regrows = self
+            .state
+            .lineages
+            .get(&e.lineage)
+            .is_some_and(|l| l.traits.contains(FRAGMENT));
+        let mut hit = hurt(
+            &self.genesis.rules,
+            &mut e,
             part,
-            lost: BTreeMap::new(),
-            spilled: Ledger::new(),
-            severed: vec![],
-            died: false,
-        };
-        let p = e.parts.get_mut(&part).ok_or("an unlaid part")?;
-        wounded.lost = take(p, half, cells);
-        let mut spilled = Ledger::new();
-        spill(p, half, rules, &mut spilled)?;
-        if anatomy::living_cells(half, p) == 0 {
-            if e.parent_of(part).is_none() {
-                e.alive = false;
-                wounded.died = true;
-            } else {
-                wounded.severed = sever(&mut e, part, &mut spilled)?;
-                e.body_revision = e.body_revision.saturating_add(1);
-            }
+            cells,
+            self.state.tick,
+            regrows,
+        )?;
+        let mut accounts = self.state.sites[&site].accounts.clone();
+        for (key, amount) in &hit.wounded.spilled {
+            credit(&mut accounts, key, *amount)?;
         }
-        let accounts = &mut self.state.sites.get_mut(&site).ok_or("unknown site")?.accounts;
-        for (key, amount) in &spilled {
-            credit(accounts, key, *amount)?;
+        if hit.fragment.is_some() {
+            if self.state.population.count() >= self.genesis.rules.limits.entities {
+                return Err("population limit".into());
+            }
+            self.state
+                .population
+                .next_id
+                .checked_add(1)
+                .ok_or("identity exhausted")?;
         }
         *self.state.population.lift(entity)? = e;
-        wounded.spilled = spilled;
-        Ok(wounded)
+        self.state.sites.get_mut(&site).unwrap().accounts = accounts;
+        let mut legs = spilled_legs(entity, site, &hit.wounded);
+        if let Some(fragment) = hit.fragment {
+            let living = fragment.child.alive;
+            let id = self.state.population.insert(fragment.child.clone(), 1)?;
+            legs.extend(fragment.legs(entity, id));
+            hit.wounded.fragment = Some(id);
+            if living {
+                for relation in parentage(entity, id) {
+                    self.state.relations.insert(relation);
+                }
+            }
+        }
+        self.flowed(crate::flows::MadeBy::Command("Wound".into()), legs, 1);
+        Ok(hit.wounded)
     }
 
     /// The part a wound lands on, drawn by living cells, so bigger parts
     /// are hit more often (716).
     fn drawn_part(&self, entity: Id, e: &Entity) -> Result<PartId> {
-        let weights: Vec<(PartId, u64)> = e
-            .living()
-            .map(|(id, p)| (id, u64::from(anatomy::living_cells(e.extent(id), p))))
-            .filter(|(_, w)| *w > 0)
-            .collect();
-        let total: u64 = weights.iter().map(|(_, w)| w).sum();
+        let total = cells(e);
         if total == 0 {
             return Err("a body with no cells to wound".into());
         }
         let seed = self.genesis.dynamics_seed();
-        let mut at = crate::draw(seed, "harm:part", &[entity, self.state.tick]) % total;
-        for (id, w) in weights {
-            if at < w {
-                return Ok(id);
-            }
-            at -= w;
-        }
-        unreachable!("the draw falls within the total")
+        let at = crate::draw(seed, "harm:part", &[entity, self.state.tick]) % total;
+        part_at(e, at).ok_or("a body with no cells to wound".into())
     }
+}
+
+pub(crate) fn cells(e: &Entity) -> u64 {
+    e.living()
+        .map(|(id, p)| u64::from(anatomy::living_cells(e.extent(id), p)))
+        .sum()
+}
+
+pub(crate) fn part_at(e: &Entity, mut at: u64) -> Option<PartId> {
+    for (id, p) in e.living() {
+        let n = u64::from(anatomy::living_cells(e.extent(id), p));
+        if at < n {
+            return Some(id);
+        }
+        at -= n;
+    }
+    None
+}
+
+pub(crate) fn hurt(
+    rules: &crate::rules::Rules,
+    e: &mut Entity,
+    part: PartId,
+    cells: u32,
+    tick: Tick,
+    regrows: bool,
+) -> Result<Hit> {
+    if !e.alive || !e.lives(part) {
+        return Err("a wound to no living part".into());
+    }
+    let half = e.extent(part);
+    let p = e.parts.get_mut(&part).ok_or("an unlaid part")?;
+    let mut wounded = Wounded {
+        part,
+        lost: take(p, half, cells),
+        spilled: Ledger::new(),
+        severed: vec![],
+        died: false,
+        fragment: None,
+    };
+    spill(p, half, rules, &mut wounded.spilled)?;
+    let mut fragment = None;
+    if anatomy::living_cells(half, p) == 0 {
+        if e.parent_of(part).is_none() {
+            e.alive = false;
+            wounded.died = true;
+        } else {
+            let detached = detach(e, part, tick, regrows)?;
+            wounded.severed = detached.mapping.iter().map(|(old, _)| *old).collect();
+            fragment = Some(detached);
+            e.body_revision = e.body_revision.saturating_add(1);
+        }
+    }
+    Ok(Hit { wounded, fragment })
+}
+
+pub(crate) fn spilled_legs(entity: Id, site: Id, w: &Wounded) -> Vec<crate::flows::Leg> {
+    use crate::flows::{Holder, Leg};
+    w.spilled
+        .iter()
+        .filter(|(_, n)| **n > 0)
+        .map(|(key, n)| Leg {
+            from: (Holder::Part(entity, w.part), key.clone()),
+            to: (Holder::Site(site), key.clone()),
+            amount: *n,
+        })
+        .collect()
+}
+
+pub(crate) fn parentage(parent: Id, child: Id) -> [Relation; 2] {
+    [(child, parent, "sim:parent"), (parent, child, "sim:child")].map(|(subject, object, kind)| {
+        Relation {
+            subject,
+            object,
+            kind: kind.into(),
+            value: 0,
+        }
+    })
 }
 
 /// Takes up to `cells` living cells from `p` across its functions and free
@@ -123,7 +228,8 @@ fn take(p: &mut Part, half: Half, cells: u32) -> BTreeMap<Key, u32> {
     pool.insert(FREE.into(), living.saturating_sub(used));
     let n = cells.min(living);
     let shares = shares(&pool, n);
-    let held: std::collections::BTreeSet<_> = p.tracts.iter().flat_map(|t| t.cells.clone()).collect();
+    let held: std::collections::BTreeSet<_> =
+        p.tracts.iter().flat_map(|t| t.cells.clone()).collect();
     let order = crate::mosaic::path(crate::mosaic::dims(half));
     for (function, k) in &shares {
         let mut gone: Vec<crate::mosaic::CellId> = match function.as_str() {
@@ -153,7 +259,12 @@ fn take(p: &mut Part, half: Half, cells: u32) -> BTreeMap<Key, u32> {
         gone.extend(spare);
         p.lost.extend(gone);
         if function != FREE {
-            let left = p.cells.get(function).copied().unwrap_or(0).saturating_sub(*k);
+            let left = p
+                .cells
+                .get(function)
+                .copied()
+                .unwrap_or(0)
+                .saturating_sub(*k);
             match left {
                 0 => p.cells.remove(function),
                 left => p.cells.insert(function.clone(), left),
@@ -196,7 +307,12 @@ fn shares(pool: &BTreeMap<Key, u32>, n: u32) -> BTreeMap<Key, u32> {
 
 /// Moves what each account of `p` holds over its bound out to `spilled`
 /// (708).
-fn spill(p: &mut Part, half: Half, rules: &crate::rules::Rules, spilled: &mut Ledger) -> Result<()> {
+fn spill(
+    p: &mut Part,
+    half: Half,
+    rules: &crate::rules::Rules,
+    spilled: &mut Ledger,
+) -> Result<()> {
     for (key, held) in p.matter.clone() {
         let over = held.saturating_sub(anatomy::bound(half, p, rules, &key));
         if over > 0 {
@@ -206,19 +322,4 @@ fn spill(p: &mut Part, half: Half, rules: &crate::rules::Rules, spilled: &mut Le
     }
     p.matter.retain(|_, v| *v > 0);
     Ok(())
-}
-
-/// Tombstones `part`'s subtree by isometer's semantics, moving its matter
-/// out (707).
-fn sever(e: &mut Entity, part: PartId, spilled: &mut Ledger) -> Result<Vec<PartId>> {
-    let body = e.body.as_mut().ok_or("a severing with no geometry")?;
-    let lost = body.sever(part);
-    for id in &lost {
-        if let Some(p) = e.parts.get_mut(id) {
-            for (key, amount) in std::mem::take(&mut p.matter) {
-                credit(spilled, &key, amount)?;
-            }
-        }
-    }
-    Ok(lost)
 }

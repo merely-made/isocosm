@@ -6,6 +6,7 @@ use std::collections::BTreeMap;
 
 mod body;
 mod conversion;
+mod harm;
 mod recipe;
 
 pub(crate) use body::part;
@@ -234,6 +235,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
             return Err("process key does not match identity".into());
         }
         body::process(p)?;
+        harm::draws(p)?;
         // A part's ledger holds only matter (ruling 504).
         for q in &p.requires {
             if let Query::Account {
@@ -438,6 +440,13 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         },
         // A bud is marked by a key the world names (ruling 524).
         Effect::Bud { mark, .. } => key(mark)?,
+        Effect::Wound { who, .. } | Effect::Rot { who, .. } => {
+            if matches!(who, Binding::Place | Binding::Part)
+                || (*who == Binding::Target && p.target.is_none())
+            {
+                return Err(format!("{id} harms a body it does not bind"));
+            }
+        },
         // Growth turns matter in hand into the actor's new parts, their
         // price returned to the place (rulings 479 and 510).
         Effect::Grow {

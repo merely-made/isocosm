@@ -2,6 +2,10 @@
 
 **Date:** 2026-10-10
 
+The newest Progress entry below owns execution state. The following block
+records an earlier resumed snapshot; later checkpoints and parked lanes
+are recorded in Progress without replacing that history.
+
 **Current state, 2026-10-10:** in progress. Q1 and Q7 are integrated; Q2,
 Q3 and Q8 are active. Q3's anatomical accounting and turn-order checkpoint
 is integrated, with its reproduction gate still open. Q8 reuses Q7's
@@ -279,6 +283,23 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q8 bounded native checkpoint integrated:** `9b0ae46d`
+  supplies native hazards, fragment matter/flow conservation, rot and
+  explicit crowd scope guards. All 27 code/test/script byte hashes match
+  its final tested envelope. Its native all-target check, sixteen harm
+  tests, route-cut and founding positives passed; the compiled guard fault
+  was caught and restored. Root downstream all-target checks passed offline
+  for root/all-features, Mesocosm, Eponym/all-features, wing-integration and
+  parry-ground. Exact commands/log hashes are in `q8-root-integration.json`
+  under `Code/testing/isometry/receipts/2026-10-10/isocosm/`, SHA-256
+  `ceb4640437ed444e40b23f540d03fd62b85e5bfc0214d32c8c1453a9bff4aefa`.
+  Ordinary FRAGMENT founding changes genesis digests; ordinary HEAL draws
+  are deferred and the opt-in probe marker is dormant. Healing/revival,
+  remaining faults and independent crowd certification remain open.
+  Q2 and Q8 are parked at their unanswered structural forks; next ruling
+  remains 809. Q3 gets the fresh declared reproduction window on this
+  integrated source; Q15 gets its bounded source refresh on main. No new
+  worktree is needed because Q15's files have no current collision.
 - **2026-10-10, Q2 overlay checkpoint integrated:** the complete twelve-path
   vocabulary/helper delta through `702ab6ca` is extracted from Q2's common
   base, preserving its unfinished consumer ancestry. All committed overlay
