@@ -362,6 +362,17 @@ V1 is Mark's.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+- 2026-10-10: the campaign session carries its assertions (ruling 768; lane
+  `lane-assert`, under 732's compile gate). `CampaignWorld` saves and
+  replicates its asserted entries and folds factions, places, routes,
+  characters, laws and history from them; `WorldEvent::Assert` replaces the
+  six authored variants, and the packs author worlds as entries. Native
+  `Command::Assert` takes every authored noun (769), so a native session can
+  replay the same entries when the sim switches on (248). The legacy
+  campaign tree is otherwise unmoved (3,943 lines), the faction turn marked
+  for V2. Detail in the
+  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  Progress.
 - 2026-10-10: the record family's lane (`lane-record-2`, under 732's compile
   gate) built `Command::Assert` in native Isocosm (ruling 757): an authored
   faction asserts a polity with no members carrying its name, tags, claims,
