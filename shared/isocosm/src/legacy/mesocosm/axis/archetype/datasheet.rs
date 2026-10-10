@@ -18,41 +18,16 @@
 use std::collections::BTreeMap;
 use std::sync::OnceLock;
 
-use serde::Deserialize;
-
+use crate::datasheet::schema::*;
+use crate::datasheet::{Bank, Banks, Sheets};
+pub(crate) use crate::datasheet::{FOUNDINGS, SETS};
 use crate::legacy::mesocosm::axis::{
-    ARMOUR_SHAPE, Appendage, AppendageStep, JAW_SHAPE, Recipe, Stretch, Tagma,
+    ARMOUR_SHAPE, Anchor, Appendage, AppendageStep, ChainFacing, JAW_SHAPE, Recipe, Stretch, Tagma,
 };
 use crate::legacy::mesocosm::body::VolumeRef;
-use crate::legacy::mesocosm::development::{PALETTE_SHAPES, PartPalette, PartTemplate, RoleShapes};
+use crate::legacy::mesocosm::development::{PartPalette, PartTemplate, RoleShapes};
 use crate::legacy::mesocosm::organism::Kingdom;
-use crate::legacy::mesocosm::plan::Role;
-
-mod schema;
-use schema::*;
-
-macro_rules! sheet {
-    ($name:literal) => {
-        (
-            $name,
-            include_str!(concat!(
-                env!("CARGO_MANIFEST_DIR"),
-                "/datasheets/foundings/",
-                $name,
-                ".toml"
-            )),
-        )
-    };
-}
-
-/// The roster-set sheets, by the name a founding cites them with.
-const SETS: [(&str, &str); 4] = [
-    sheet!("base"),
-    sheet!("branching"),
-    sheet!("jointed"),
-    sheet!("spaced"),
-];
-const FOUNDINGS: (&str, &str) = sheet!("foundings");
+use crate::legacy::mesocosm::plan::{Facing, Role};
 
 /// One founding, resolved: what a world founded this way admits, and the
 /// authored bodies each tier installs, one lineage each, in founding order.
@@ -82,7 +57,7 @@ pub struct Foundings {
     pub default: String,
     foundings: BTreeMap<String, FoundingSheet>,
     palettes: BTreeMap<String, NamedPalette>,
-    sheets: BTreeMap<String, SetSheet>,
+    sheets: Sheets,
 }
 
 impl Foundings {
@@ -132,34 +107,16 @@ pub fn body(body: &str, palette: &str) -> Recipe {
         .unwrap_or_else(|why| panic!("{why}"))
 }
 
-/// Reads roster-set sheets, given as `(name, text)`, and a foundings sheet.
+/// Reads roster-set sheets, given as `(name, text)`, and a foundings sheet,
+/// through the native parse (758), lowering them onto legacy recipes.
 pub fn load(sets: &[(&str, &str)], foundings: &str) -> Result<Foundings, String> {
-    let mut sheets = BTreeMap::new();
-    for &(name, text) in sets {
-        let sheet: SetSheet = parse(name, text)?;
-        sheet.check(name)?;
-        if sheets.insert(name.to_string(), sheet).is_some() {
-            return Err(format!("{name}: a sheet is named twice"));
-        }
-    }
-    let founding_sheet: FoundingsSheet = parse(FOUNDINGS.0, foundings)?;
-    founding_sheet.check(FOUNDINGS.0)?;
-
-    let mut entries = BTreeMap::new();
-    for (sheet, set) in &sheets {
-        for (name, palette) in &set.palettes {
-            if entries.insert(name.as_str(), palette).is_some() {
-                return Err(format!("{sheet}: palette {name:?} is defined twice"));
-            }
-        }
-    }
+    let sheets = Sheets::parse(sets, foundings)?;
     let mut named = BTreeMap::new();
-    for name in entries.keys() {
-        named.insert(name.to_string(), named_palette(name, &entries, 0)?);
+    for name in sheets.palette_names() {
+        named.insert(name.to_string(), NamedPalette::of(&sheets.banks(name)?));
     }
-
     let mut resolved = BTreeMap::new();
-    for (name, founding) in &founding_sheet.founding {
+    for (name, founding) in &sheets.foundings.founding {
         let palette = named
             .get(&founding.palette)
             .ok_or_else(|| format!("{name}: no palette {:?}", founding.palette))?;
@@ -179,35 +136,51 @@ pub fn load(sets: &[(&str, &str)], foundings: &str) -> Result<Foundings, String>
             },
         );
     }
-    if !resolved.contains_key(&founding_sheet.default) {
-        return Err(format!(
-            "no founding {:?} to default to",
-            founding_sheet.default
-        ));
-    }
     Ok(Foundings {
-        default: founding_sheet.default,
+        default: sheets.foundings.default.clone(),
         foundings: resolved,
         palettes: named,
         sheets,
     })
 }
 
-fn parse<T: for<'de> Deserialize<'de>>(name: &str, text: &str) -> Result<T, String> {
-    toml::from_str(text).map_err(|why| format!("{name}.toml: {why}"))
-}
-
 /// One role's admitted shapes, by name, in selector order.
-type Bank = Vec<(String, PartTemplate)>;
+type Shapes = Vec<(String, PartTemplate)>;
 
 /// A palette whose slots keep their names, so bodies can be resolved in it.
 #[derive(Clone)]
 struct NamedPalette {
-    banks: [Bank; 4],
+    banks: [Shapes; 4],
 }
 
 impl NamedPalette {
-    fn bank(&self, role: Role) -> &Bank {
+    /// The native resolution's banks, as legacy templates.
+    fn of(banks: &Banks) -> Self {
+        let mut named = NamedPalette {
+            banks: Default::default(),
+        };
+        for (role, bank) in [
+            (Role::Mass, Bank::Mass),
+            (Role::Limb, Bank::Limb),
+            (Role::Plate, Bank::Plate),
+            (Role::Sensor, Bank::Sensor),
+        ] {
+            named.banks[role_index(role)] = banks
+                .bank(bank)
+                .iter()
+                .map(|s| {
+                    let template = PartTemplate {
+                        volume: VolumeRef::from_tag(s.tag),
+                        half_extent: s.half_extent,
+                    };
+                    (s.name.clone(), template)
+                })
+                .collect();
+        }
+        named
+    }
+
+    fn bank(&self, role: Role) -> &Shapes {
         &self.banks[role_index(role)]
     }
 
@@ -250,87 +223,9 @@ fn role_index(role: Role) -> usize {
     }
 }
 
-/// Builds a palette from its own entries over the one it extends.
-fn named_palette(
-    name: &str,
-    entries: &BTreeMap<&str, &PaletteEntry>,
-    depth: usize,
-) -> Result<NamedPalette, String> {
-    let entry = entries
-        .get(name)
-        .ok_or_else(|| format!("no palette {name:?}"))?;
-    if depth > entries.len() {
-        return Err(format!("palette {name:?} extends itself"));
-    }
-    let mut palette = match &entry.extends {
-        Some(parent) => named_palette(parent, entries, depth + 1)?,
-        None => NamedPalette {
-            banks: Default::default(),
-        },
-    };
-    for (role, shapes) in [
-        (Role::Mass, &entry.mass),
-        (Role::Limb, &entry.limb),
-        (Role::Plate, &entry.plate),
-        (Role::Sensor, &entry.sensor),
-    ] {
-        let bank = &mut palette.banks[role_index(role)];
-        for shape in shapes {
-            let template = PartTemplate {
-                volume: VolumeRef::from_tag(shape.tag),
-                half_extent: shape.half_extent,
-            };
-            let taken = bank.iter().any(|(slot, _)| *slot == shape.name);
-            match &shape.replaces {
-                Some(old) => {
-                    let slot = bank
-                        .iter()
-                        .position(|(slot, _)| slot == old)
-                        .ok_or_else(|| {
-                            format!("palette {name:?}: no {role:?} shape {old:?} to replace")
-                        })?;
-                    if taken && bank[slot].0 != shape.name {
-                        return Err(format!(
-                            "palette {name:?}: {role:?} shape {:?} twice",
-                            shape.name
-                        ));
-                    }
-                    bank[slot] = (shape.name.clone(), template);
-                },
-                None if taken => {
-                    return Err(format!(
-                        "palette {name:?}: {role:?} shape {:?} twice",
-                        shape.name
-                    ));
-                },
-                None if bank.len() == PALETTE_SHAPES => {
-                    return Err(format!(
-                        "palette {name:?}: the {role:?} bank holds {PALETTE_SHAPES} shapes"
-                    ));
-                },
-                None => bank.push((shape.name.clone(), template)),
-            }
-        }
-    }
-    Ok(palette)
-}
-
 /// Resolves `<sheet>.<body>` in the given palette.
-fn recipe(
-    sheets: &BTreeMap<String, SetSheet>,
-    body: &str,
-    palette: &NamedPalette,
-) -> Result<Recipe, String> {
-    let (sheet_name, body_name) = body
-        .split_once('.')
-        .ok_or_else(|| format!("{body:?} is not <sheet>.<body>"))?;
-    let sheet = sheets
-        .get(sheet_name)
-        .ok_or_else(|| format!("{body}: no sheet {sheet_name:?}"))?;
-    let entry = sheet
-        .body
-        .get(body_name)
-        .ok_or_else(|| format!("{body}: no such body"))?;
+fn recipe(sheets: &Sheets, body: &str, palette: &NamedPalette) -> Result<Recipe, String> {
+    let (sheet_name, entry) = sheets.body(body)?;
     let fail = |index: usize, why: String| format!("{body}, tagma {index}: {why}");
 
     let mut tagmata = Vec::with_capacity(entry.tagma.len());
@@ -341,8 +236,8 @@ fn recipe(
         if let Some(stretch) = &tagma.layout {
             layout.push(Stretch {
                 parent: stretch.parent,
-                anchor: stretch.anchor.into(),
-                facing: stretch.facing.into(),
+                anchor: anchor(stretch.anchor),
+                facing: facing(stretch.facing),
                 variance: stretch.variance,
             });
         }
@@ -368,7 +263,7 @@ fn recipe(
 }
 
 fn tagma(entry: &TagmaEntry, palette: &NamedPalette) -> Result<Tagma, String> {
-    let appendage = entry.appendage.map_or(Appendage::None, Appendage::from);
+    let appendage = entry.appendage.map_or(Appendage::None, appendage);
     let shape = entry.shape.as_deref();
     if entry.mouth.is_some() && appendage != Appendage::Mouth {
         return Err("only a mouth is a jaw or bulk".into());
@@ -409,28 +304,80 @@ fn tagma(entry: &TagmaEntry, palette: &NamedPalette) -> Result<Tagma, String> {
 
 /// A chain is named within its body's sheet, or as `<sheet>.<chain>`.
 fn chain(
-    sheets: &BTreeMap<String, SetSheet>,
+    sheets: &Sheets,
     home: &str,
     name: &str,
     palette: &NamedPalette,
 ) -> Result<Vec<AppendageStep>, String> {
     let (sheet_name, chain_name) = name.split_once('.').unwrap_or((home, name));
     let steps = sheets
+        .sets
         .get(sheet_name)
         .and_then(|sheet| sheet.chain.get(chain_name))
         .ok_or_else(|| format!("no chain {name:?}"))?;
     steps
         .iter()
         .map(|step| {
-            let role: Role = step.role.into();
+            let role = role(step.role);
             Ok(AppendageStep {
                 role,
                 shape: palette.slot(role, Some(&step.shape))?,
-                facing: step.facing.into(),
+                facing: chain_facing(step.facing),
                 distal: step.distal,
             })
         })
         .collect()
+}
+
+/// The sheets' words as legacy types.
+fn appendage(word: AppendageWord) -> Appendage {
+    match word {
+        AppendageWord::None => Appendage::None,
+        AppendageWord::Limb => Appendage::Limb,
+        AppendageWord::Feeler => Appendage::Feeler,
+        AppendageWord::Plate => Appendage::Plate,
+        AppendageWord::Mouth => Appendage::Mouth,
+        AppendageWord::Vane => Appendage::Vane,
+    }
+}
+
+fn role(word: RoleWord) -> Role {
+    match word {
+        RoleWord::Mass => Role::Mass,
+        RoleWord::Limb => Role::Limb,
+        RoleWord::Plate => Role::Plate,
+        RoleWord::Sensor => Role::Sensor,
+    }
+}
+
+fn anchor(word: AnchorWord) -> Anchor {
+    match word {
+        AnchorWord::Base => Anchor::Base,
+        AnchorWord::Middle => Anchor::Middle,
+        AnchorWord::Tip => Anchor::Tip,
+    }
+}
+
+fn facing(word: FacingWord) -> Facing {
+    match word {
+        FacingWord::Front => Facing::Front,
+        FacingWord::Back => Facing::Back,
+        FacingWord::Left => Facing::Left,
+        FacingWord::Right => Facing::Right,
+        FacingWord::Above => Facing::Above,
+        FacingWord::Below => Facing::Below,
+    }
+}
+
+fn chain_facing(word: ChainFacingWord) -> ChainFacing {
+    match word {
+        ChainFacingWord::Outward => ChainFacing::Outward,
+        ChainFacingWord::Inward => ChainFacing::Inward,
+        ChainFacingWord::Above => ChainFacing::Above,
+        ChainFacingWord::Below => ChainFacing::Below,
+        ChainFacingWord::Front => ChainFacing::Front,
+        ChainFacingWord::Back => ChainFacing::Back,
+    }
 }
 
 #[cfg(test)]

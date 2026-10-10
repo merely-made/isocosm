@@ -9,6 +9,7 @@ pub mod aggregate;
 pub mod anatomy;
 pub mod bench;
 pub mod bodied;
+pub mod datasheet;
 mod dev;
 pub mod development;
 pub mod diffusion;
