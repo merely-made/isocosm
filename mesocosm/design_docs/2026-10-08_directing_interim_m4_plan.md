@@ -171,6 +171,40 @@ on Isocosm, both modes, receipts replaying.
 
 ## Findings
 
+- **2026-10-10, the fork resolved by existing ruling 454:** its text says
+  hunters draw prey from the pass's start, while 683 chooses one process
+  and never binds automatic prey for the entire tick. The bounded correction
+  keeps the process choice, resolves automatic prey once at the feeding
+  pass and reuses that resolution for planning and visiting. A Thing/Act
+  nudge keeps its identity; live answered nudges are checked against the
+  eventual target and actor's place before any bond outcome. This applies
+  to targeted `Eat` processes; other targeted acts retain their existing
+  behaviour. No movement priority or generator rate changes accompany it.
+  The five passing native controls cover moved automatic prey,
+  explicit prey and bond, stale attention answers, one process per tick and
+  one resolution per pass, and a nudge naming another act, with both-mode
+  scheduled replay. Feeding's explicit target candidate respects that
+  optional act key; other targeted processes retain their existing scope.
+  Disabling the prey resolution compiled and failed the moved-prey control:
+  the consumer took zero acts rather than its one meal. The production
+  source was restored byte for byte. The existing choice, feeding and
+  scheduling checks pass too; this is a correctness checkpoint, and A1
+  remains open.
+- **2026-10-10, Q3's cached-target fork:** actual seed-0 feed planning
+  receipts repeatedly refused `no target satisfies the declared scope`:
+  the played actor and its chosen living producer were in different sites
+  by the feeding pass. `choice.rs::deliberate` keeps the chosen process and
+  target for the tick; `schedule/mod.rs` executes ascending priority, so
+  generated migration at priority 0 precedes feeding at priority 10.
+  The automatic members' multiple moves described below can invalidate an
+  earlier eligible food target; `execute.rs` correctly rejects that later
+  invalid scope. This explains a concrete intake loss in addition to rates,
+  without relaxing target eligibility or blaming anatomical credit.
+  *Reading, not ruled:* the source/receipt-supported options are to resolve
+  automatic food targets at their chosen process's pass while preserving
+  explicit target nudges, to put generated movement after feeding, or to
+  keep the stale commitment as intended risk and tune around it. Q3
+  recommends the first and holds the choice for the wing's ruling.
 - **2026-10-10, Q3 after 797 and 806:** native boundary turns now descend
   by the union of distinct catalogue functions expressed and carried
   systems realized across living lineage members. Varied members can add
@@ -215,6 +249,21 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-10, Q3 prey timing under 454 and 683:** five feeding controls
+  pass, including the optional-act mismatch, with Individuals and Grouped
+  scheduled saves replayed in both modes. Existing choice (six), feeding
+  (ten) and scheduler (seven) controls pass. The compiled disabled-fix
+  control fails on the missing meal; source restoration matches its prior
+  SHA256. The restored positive control passes, and the native offline
+  workspace/all-target check passes in 10.87 seconds. No rate changes
+  or new reproduction sweep are included; A1 and headed certification
+  remain open.
+- **2026-10-10, Q3 mechanism probe:** seed 0's actual scheduled/planning
+  receipts and held trajectory were traced through extinction at tick 100,
+  with complete raw output retained by the sim owner's Q3 Progress.
+  The temporary observer was removed. A1's new cadence was rejected on
+  its complete bare arm; neither this diagnosis nor the account/806
+  checkpoint closes reproduction or the native/headed certification gates.
 - **2026-10-10, ruling 806:** the native boundary's lineage complexity
   aggregates distinct expressed catalogue functions and realized carried
   systems across all living members. Q3 implements this order alongside
