@@ -99,8 +99,8 @@ pub fn load_equipment(directory: &Path) -> Result<(PathBuf, Vec<u8>), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::eponym::world::GameState;
-    use isocosm::legacy::eponym::world::fixtures::session as session_fixture;
+    use eponym_play::GameState;
+    use eponym_play::fixtures::session as session_fixture;
 
     fn scratch(label: &str) -> PathBuf {
         std::env::temp_dir().join(format!(

@@ -20,22 +20,17 @@
 //! the tend, and the return, so a regrown world that stopped having that
 //! cliff fails loudly rather than silently passing a tamer sortie.
 
-use isocosm::legacy::mesocosm::places::Ground;
-use isocosm::legacy::eponym::identity::{BodyRevisionId, Control, Facets, SubjectId, Tick};
 use eponym_client::room::{Room, SEED};
-use isocosm::legacy::eponym::social::companion::Craft;
-use isocosm::legacy::eponym::social::offer::{Terms, Work};
-use isocosm::legacy::eponym::social::response::Response;
-use isocosm::legacy::eponym::social::scene::{AUD, BRAM, ODRIS, SELA};
-use isocosm::legacy::eponym::social::settling;
-use isocosm::legacy::eponym::social::society::Society;
+use eponym_play::identity::{Control, SubjectId, Tick};
+use isocosm::social::{Craft, DeedKind, Response, Terms, Work};
+use isometer_space::volume::Volume;
 
 use crate::march;
 use crate::party::{self, Pact};
+use crate::settled::{self, AUD, BRAM, ODRIS, SELA};
+use crate::society::Society;
 use crate::sortie::Sortie;
 
-/// Scouting for the expedition: harder and more dangerous than Bram's
-/// daily bounds, so it is negotiated fresh rather than assumed covered.
 pub const OUTING: Work = Work {
     craft: Craft::Scouting,
     grade: 3,
@@ -65,48 +60,33 @@ pub const SITE_OFFSET: [i32; 2] = [-15, -8];
 
 /// The settled society: S2's people, homes formed, twelve deeds deep.
 pub fn settled_society() -> Society {
-    let mut society = settling::society();
-    let mut settlement = settling::settlement();
-    settling::answers(&mut society).expect("the settling scene admits everyone");
-    settling::housings(&mut society, &mut settlement).expect("the settled offers hold");
+    let room = Room::grow(SEED).expect("S0's seed has a hillside");
+    let mut society = Society::on(room.world);
+    settled::admit(&mut society).expect("the four arrive and Aud's record is laid");
+    settled::answers(&mut society).expect("the settling scene admits everyone");
+    settled::housings(&mut society).expect("the settled offers hold");
     society
 }
 
-/// Everyone wears their first body at departure.
-pub fn facets() -> Facets {
-    let mut facets = Facets::new();
-    for subject in [AUD, BRAM, ODRIS, SELA] {
-        facets.wears(subject, BodyRevisionId(0));
-    }
-    facets
-}
-
-/// The muster: negotiation first, then the march, built on the world grown
-/// from S0's seed. Returns the departure answers alongside the sortie so a
-/// receipt can assert on why each part exists.
 pub fn muster(society: Society) -> (Vec<Response>, Sortie) {
-    let room = Room::grow(SEED).expect("S0's seed has a hillside");
-    muster_on(room.ground, society)
-}
-
-fn muster_on(ground: Ground, society: Society) -> (Vec<Response>, Sortie) {
-    let home = home_stance(&ground);
-    let site = site_stance(&ground);
+    let volume = society.world().volume().clone();
+    let home = home_stance(&volume);
+    let site = site_stance(&volume);
     let way = way_home(home);
-    muster_at(ground, society, home, site, way)
+    muster_at(society, home, site, way)
 }
 
 fn muster_at(
-    ground: Ground,
     mut society: Society,
     home: [i32; 3],
     site: [i32; 3],
     way_home: Vec<[i32; 2]>,
 ) -> (Vec<Response>, Sortie) {
     // Sela's part and the pact ride her standing settlement agreement.
+    let sela = society.id(SELA);
     let sela_home = society
         .agreements()
-        .find(|agreement| agreement.holder == SELA && agreement.standing())
+        .find(|agreement| agreement.holder == sela && agreement.standing())
         .map(|agreement| agreement.id)
         .expect("the settled scene housed Sela");
     let healer = party::healer_part(&society, sela_home, &TEND)
@@ -126,9 +106,7 @@ fn muster_at(
     parts.push((SELA, healer));
 
     let sortie = Sortie::muster(
-        ground,
         society,
-        facets(),
         Control::begin(AUD, DEPART),
         &[AUD, BRAM, ODRIS, SELA],
         parts,
@@ -146,9 +124,6 @@ fn muster_at(
     (vec![answer], sortie)
 }
 
-/// The route back, as x/z waypoints ending at home. Calibrated with the
-/// site: the scarp the outbound march drops down cannot be climbed back,
-/// so the return swings around it before making for home.
 pub fn way_home(home: [i32; 3]) -> Vec<[i32; 2]> {
     WAY_OFFSETS
         .iter()
@@ -162,16 +137,16 @@ pub fn way_home(home: [i32; 3]) -> Vec<[i32; 2]> {
 pub const WAY_OFFSETS: [[i32; 2]; 1] = [[-16, 16]];
 
 /// The surface above the carved chamber: the settlement's ground.
-pub fn home_stance(ground: &Ground) -> [i32; 3] {
+pub fn home_stance(volume: &Volume) -> [i32; 3] {
     let room = Room::grow(SEED).expect("S0's seed has a hillside");
-    march::stand(ground, room.centre[0], room.centre[2])
+    march::stand(volume, room.centre[0], room.centre[2])
         .expect("the hill above the room has a surface to stand on")
 }
 
 /// The far site, standing on the real surface at the calibrated offset.
-pub fn site_stance(ground: &Ground) -> [i32; 3] {
-    let home = home_stance(ground);
-    march::stand(ground, home[0] + SITE_OFFSET[0], home[2] + SITE_OFFSET[1])
+pub fn site_stance(volume: &Volume) -> [i32; 3] {
+    let home = home_stance(volume);
+    march::stand(volume, home[0] + SITE_OFFSET[0], home[2] + SITE_OFFSET[1])
         .expect("the site column has a surface to stand on")
 }
 
@@ -186,31 +161,25 @@ pub fn played_through() -> (Vec<Response>, Sortie) {
 /// shipped scene is `played_through`; this exists so `SITE_OFFSET` is
 /// chosen from a printed survey of the real terrain rather than by hand.
 pub fn surveyed(offset: [i32; 2], way_offsets: &[[i32; 2]]) -> Option<(Vec<Response>, Sortie)> {
-    let room = Room::grow(SEED).expect("S0's seed has a hillside");
-    let ground = room.ground.clone();
-    let home = home_stance(&ground);
-    let site = march::stand(&ground, home[0] + offset[0], home[2] + offset[1])?;
+    let society = settled_society();
+    let volume = society.world().volume().clone();
+    let home = home_stance(&volume);
+    let site = march::stand(&volume, home[0] + offset[0], home[2] + offset[1])?;
     let way = way_offsets
         .iter()
         .map(|way| [home[0] + way[0], home[2] + way[1]])
         .chain([[home[0], home[2]]])
         .collect();
-    let (answers, mut sortie) = muster_at(ground, settled_society(), home, site, way);
+    let (answers, mut sortie) = muster_at(society, home, site, way);
     sortie.run();
     Some((answers, sortie))
 }
 
-/// The canary variant: Aud abandons Bram on the eve, Bram refuses the
-/// expedition, and the sortie goes without a scout. Nothing can put him on
-/// the march, and the receipt watches him stand still to prove it.
 pub fn grudged() -> (Vec<Response>, Sortie) {
     let mut society = settled_society();
-    society.record(
-        Tick(DEPART.0 - 1),
-        AUD,
-        Some(BRAM),
-        isocosm::legacy::eponym::social::deed::DeedKind::Abandoned,
-    );
+    society
+        .record(Tick(DEPART.0 - 1), AUD, Some(BRAM), DeedKind::Abandoned)
+        .expect("Aud's desertion is recorded");
     let (answers, mut sortie) = muster(society);
     sortie.run();
     (answers, sortie)
@@ -219,9 +188,8 @@ pub fn grudged() -> (Vec<Response>, Sortie) {
 /// The ask S2 saw counteroffered, put again after the sortie. Same work,
 /// same terms, one expedition later.
 pub fn ask_again(society: &mut Society, at: Tick) -> Response {
-    society
-        .consider(&settling::ask_of(SELA), at)
-        .expect("Sela is still of the society")
+    let offer = settled::ask_of(society, SELA);
+    society.consider(&offer, at).expect("Sela is still of the society")
 }
 
 /// Odris stayed home and stays home: a subject with no part.

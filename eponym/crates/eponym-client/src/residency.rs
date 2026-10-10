@@ -6,14 +6,16 @@
 
 //! V1: the Eponym-owned residency policy pulled by continuous zoom.
 //!
-//! Mesocosm owns exact `Ground` and the brick-map allocation. Eponym owns
+//! Isometer lifts exact `Ground` from Eponym's world on Isocosm, and owns
+//! the brick-map allocation. Eponym owns
 //! which exact bricks its current camera needs and the budget that bounds that
 //! presentation working set.
 
 use std::{collections::BTreeSet, fmt};
 
 use glam::Vec3;
-use isocosm::legacy::mesocosm::places::{Places, WALKER_HEIGHT};
+use eponym_play::walking::WALKER_HEIGHT;
+use eponym_play::{World, WorldConfig};
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::TraceCamera;
 use modulus::{AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision};
@@ -46,8 +48,9 @@ pub struct ResidencyScene {
 
 impl ResidencyScene {
     pub fn grow() -> Self {
-        let grown = Places::grown(SEED, WORLD_SIDE, WORLD_EXTENT);
-        let ground = Ground::grow(&grown, WORLD_EXTENT);
+        let config = WorldConfig { side: WORLD_SIDE, extent: WORLD_EXTENT };
+        let world = World::generate(SEED, config).expect("the planning region founds");
+        let ground = world.ground().clone();
         let focus = (0_i32..=64)
             .find_map(|ring| {
                 (-ring..=ring).find_map(|z| {

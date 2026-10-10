@@ -10,9 +10,11 @@
 //! receipt. Everything load-bearing is consumed rather than grown here, per
 //! the execution plan's stop rule:
 //!
-//! - the world and the room are `mesocosm-core`'s [`places`] tier: a grown
-//!   world, brick ground, and a room carved into a hillside;
-//! - movement is `near::step` exactly, with no kinematics of our own;
+//! - the world and the room are Eponym's world on Isocosm, its played site
+//!   lifted into brick ground by isometer, and a room carved into a hillside
+//!   as an edit the sim keeps;
+//! - movement is the walker's step over isometer's in-site space, with no
+//!   kinematics of our own;
 //! - geometry is `isometer-mesh`'s greedy mesher over the same bricks the
 //!   walker collides against;
 //! - the picture is mere's body tenant on netrender's device, composed into
@@ -21,8 +23,6 @@
 //! What is Eponym's own is small and deliberate: which room, which trace,
 //! where the camera sits, and the save/replay discipline the later gates
 //! inherit.
-//!
-//! [`places`]: isocosm::legacy::mesocosm::places
 
 #[cfg(feature = "r1-proof")]
 mod brick;

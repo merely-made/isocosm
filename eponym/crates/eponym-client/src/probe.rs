@@ -16,7 +16,7 @@
 //! taken from, so restoring into a world that regenerated differently is a
 //! reported failure rather than a silently divergent replay.
 
-use isocosm::legacy::mesocosm::places::{WALKER_HEIGHT, step};
+use eponym_play::walking::{WALKER_HEIGHT, step};
 use isometer::core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
@@ -119,7 +119,7 @@ impl Probe {
         }
         let [dx, dz] = TRACE[self.tick];
         let toward = [self.at[0] + dx, self.at[1], self.at[2] + dz];
-        self.at = step(&self.room.ground, self.at, toward);
+        self.at = step(self.room.world.volume(), self.at, toward);
         debug_assert!(
             self.room.ground.stands(self.at, WALKER_HEIGHT),
             "step left the body unstandable at {:?}",

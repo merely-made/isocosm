@@ -1,13 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId, Tick};
-use isocosm::legacy::eponym::world::timed_action::{TimedActionSave, TimedActionSession};
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::{BodyRevisionId, SubjectId, Tick};
+use eponym_play::timed_action::{TimedActionSave, TimedActionSession};
+use eponym_play::{
     GAME_STATE_VERSION, GameError, GameIntent, GameState, ItemLocation, MotionInput, MotionRules,
     Name, Session, SessionError, World, WorldConfig,
 };
-use isocosm::legacy::mesocosm::snapshot;
+use isometer_core::snapshot;
 
 const SUBJECT: SubjectId = SubjectId(91);
 

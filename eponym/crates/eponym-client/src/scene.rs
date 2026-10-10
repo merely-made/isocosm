@@ -13,7 +13,7 @@
 //! see is what `stands` was asked about.
 
 use glam::{Mat4, Vec3};
-use isocosm::legacy::mesocosm::places::WALKER_HEIGHT;
+use eponym_play::walking::WALKER_HEIGHT;
 use isometer::core::VolumeRef;
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::{CritterPose, TraceCamera, critter::Capsule};

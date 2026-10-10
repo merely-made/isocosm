@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::{BodyRevisionId, SubjectId};
+use eponym_play::{
     GameIntent, GameState, ItemLocation, MotionInput, MotionPose, MotionRules, Name, World,
     WorldConfig, fixtures::three_lives::wetland_body,
 };
@@ -34,7 +34,7 @@ fn malformed_standalone_pose_receipts_cannot_corrupt_movement() {
             movement
                 .apply(
                     state.world(),
-                    isocosm::legacy::eponym::world::MovementIntent::ContactPose {
+                    eponym_play::MovementIntent::ContactPose {
                         tick: movement.next_tick(),
                         subject: SUBJECT,
                         pose,
@@ -57,7 +57,7 @@ fn game() -> GameState {
                 if game
                     .world()
                     .ground()
-                    .stands(at, isocosm::legacy::mesocosm::places::WALKER_HEIGHT) =>
+                    .stands(at, eponym_play::walking::WALKER_HEIGHT) =>
             {
                 Some(at)
             },

@@ -11,32 +11,28 @@
 //! directly: the drivers read agreements, positions, and the ground, never
 //! an order, which is the puppeteering canary held at the API as usual.
 //!
-//! The world itself is the hazard. `near::step`'s own law says a drop past
-//! `COMFORT_DROP` is taken only when nothing else remains; this crate rules
-//! that such a fall is a wound, uniformly, for anyone. What downs a body is
+//! The world itself is the hazard: a drop past a safe fall is a wound,
+//! uniformly, for anyone, handed to the sim as one cell lost. What downs a body is
 //! narrower: only the *played* body downs, because downing is a control
 //! fact — it is what the pact watches for — while a wound is a body fact
 //! and lands on whoever fell. Recorded as a finding; S4 may widen it.
 //!
-//! An injury is a body-revision fact: the wound bumps the subject's
-//! [`BodyRevisionId`] in the shared facets, and the wound record names the
-//! revision it created. What a revision means stays the wing phenotype
-//! contract's business; Eponym only points at it.
+//! A wound is the sim's (wing rulings 705 to 717): the record names the
+//! body's revision after it, which a wound alone leaves where it was and a
+//! severing moves.
 
 use std::collections::BTreeMap;
 
-use isocosm::legacy::mesocosm::places::{Ground, ROCK};
-use isocosm::legacy::mesocosm::snapshot::{encode, hash_bytes};
-use isocosm::legacy::eponym::identity::{BodyRevisionId, Control, ControlIntent, Facets, SubjectId, Tick};
-use isocosm::legacy::eponym::social::agreement::EndReason;
-use isocosm::legacy::eponym::social::deed::DeedKind;
-use isocosm::legacy::eponym::social::offer::Work;
-use isocosm::legacy::eponym::social::response::RulingKind;
-use isocosm::legacy::eponym::social::society::Society;
+use eponym_play::identity::{BodyRevisionId, Control, ControlIntent, SubjectId, Tick};
+use isocosm::schema::Id as AgreementId;
+use isocosm::social::{DeedKind, EndReason, RulingKind, Work};
+use isometer_core::ground::ROCK;
+use isometer_core::snapshot::{encode, hash_bytes};
 use serde::{Deserialize, Serialize};
 
 use crate::march;
 use crate::party::{Pact, Part};
+use crate::society::Society;
 
 /// A fall this far is taken in stride; past it is a wound. Eponym's own
 /// ruling about bodies, not a mechanical import: it coincides with the
@@ -101,7 +97,7 @@ pub enum SortieEvent {
     },
     PactInvoked {
         at: Tick,
-        under: isocosm::legacy::eponym::social::agreement::AgreementId,
+        under: AgreementId,
     },
     TaggedIn {
         at: Tick,
@@ -134,14 +130,12 @@ pub enum SortieEvent {
 }
 
 pub struct Sortie {
-    ground: Ground,
     pub society: Society,
-    pub facets: Facets,
     pub control: Control,
     positions: BTreeMap<SubjectId, [i32; 3]>,
     parts: Vec<(SubjectId, Part)>,
     pact: Option<Pact>,
-    outing: Option<isocosm::legacy::eponym::social::agreement::AgreementId>,
+    outing: Option<AgreementId>,
     tend: Work,
     home: [i32; 3],
     site: [i32; 3],
@@ -174,14 +168,12 @@ impl Sortie {
     /// they march: a refused companion is still a person with a position.
     #[allow(clippy::too_many_arguments)]
     pub fn muster(
-        ground: Ground,
         society: Society,
-        facets: Facets,
         control: Control,
         everyone: &[SubjectId],
         parts: Vec<(SubjectId, Part)>,
         pact: Option<Pact>,
-        outing: Option<isocosm::legacy::eponym::social::agreement::AgreementId>,
+        outing: Option<AgreementId>,
         tend: Work,
         home: [i32; 3],
         site: [i32; 3],
@@ -190,9 +182,7 @@ impl Sortie {
     ) -> Self {
         let positions = everyone.iter().map(|subject| (*subject, home)).collect();
         let mut sortie = Self {
-            ground,
             society,
-            facets,
             control,
             positions,
             parts,
@@ -256,7 +246,7 @@ impl Sortie {
     fn walk(&mut self, subject: SubjectId, goal: [i32; 2]) {
         let from = self.positions[&subject];
         let mut shoulder = self.shoulders.get(&subject).copied().unwrap_or(0);
-        let to = march::toward(&self.ground, from, goal, &mut shoulder);
+        let to = march::toward(self.society.world().volume(), from, goal, &mut shoulder);
         self.shoulders.insert(subject, shoulder);
         if to == from {
             return;
@@ -285,9 +275,9 @@ impl Sortie {
     }
 
     fn wound(&mut self, subject: SubjectId) {
-        let worn = self.facets.body_of(subject).map(|r| r.0).unwrap_or(0);
-        let revision = BodyRevisionId(worn + 1);
-        self.facets.wears(subject, revision);
+        let at = self.tick();
+        self.society.wound(subject, 1, at).expect("a peer's body takes the wound");
+        let revision = BodyRevisionId(self.society.body_revision(subject));
         let fell = self
             .events
             .iter()
@@ -393,7 +383,8 @@ impl Sortie {
                     .expect("the pact's agreement exists");
                 if tended.kind == RulingKind::Performed {
                     self.society
-                        .record(self.tick(), healer, Some(down), DeedKind::StoodBy);
+                        .record(self.tick(), healer, Some(down), DeedKind::StoodBy)
+                        .expect("the healer's deed is recorded");
                     self.events.push(SortieEvent::Tended {
                         at: self.tick(),
                         by: healer,
@@ -446,7 +437,7 @@ impl Sortie {
         // The find, and the turn for home.
         let leader = self.positions[&self.control.home()];
         if self.carried.is_none() && march::arrived(leader, [self.site[0], self.site[2]]) {
-            debug_assert!(self.ground.solid([leader[0], leader[1] - 1, leader[2]]));
+            debug_assert!(self.society.world().ground().solid([leader[0], leader[1] - 1, leader[2]]));
             let salvage = Salvage {
                 what: ROCK,
                 from: self.site,
@@ -485,7 +476,8 @@ impl Sortie {
             let with: Vec<SubjectId> = self.parts.iter().map(|(who, _)| *who).collect();
             for companion in with {
                 self.society
-                    .record(self.tick(), leader, Some(companion), DeedKind::Shared);
+                    .record(self.tick(), leader, Some(companion), DeedKind::Shared)
+                    .expect("the share is recorded");
                 self.events.push(SortieEvent::SharedOut {
                     at: self.tick(),
                     with: companion,
@@ -515,9 +507,8 @@ impl Sortie {
     fn dig(&mut self, subject: SubjectId, goal: [i32; 2]) {
         let at = self.positions[&subject];
         let heading = [(goal[0] - at[0]).signum(), (goal[1] - at[2]).signum()];
-        let removed = self
-            .ground
-            .carve([at[0] + heading[0], at[1] + 2, at[2] + heading[1]], 1);
+        let centre = [at[0] + heading[0], at[1] + 2, at[2] + heading[1]];
+        let removed = self.society.carve(subject, centre, 1, self.tick()).unwrap_or(0);
         if removed > 0 {
             self.hewn += removed;
             self.events.push(SortieEvent::Dug {
@@ -542,17 +533,14 @@ impl Sortie {
     /// The replay witness: everything that happened, hashed. Two runs of
     /// the same scene must agree on this number.
     pub fn hash(&self) -> u64 {
-        let ground = hash_bytes(&encode(&self.ground).expect("ground always encodes"));
         let receipt = (
             &self.trail,
             self.control.log(),
             &self.wounds,
             &self.carried,
             self.hewn,
-            ground,
             &self.events,
-            &self.society,
-            &self.facets,
+            self.society.hash(),
         );
         hash_bytes(&encode(&receipt).expect("a sortie receipt always encodes"))
     }

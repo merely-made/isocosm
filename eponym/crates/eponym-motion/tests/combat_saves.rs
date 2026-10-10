@@ -4,8 +4,8 @@
 //! A headed save restored with the motion it recorded, which only the game's
 //! solver can replay (ruling 597).
 
-use isocosm::legacy::eponym::world::timed_action::{TimedActionSave, TimedActionSession};
-use isocosm::legacy::mesocosm::snapshot;
+use eponym_play::timed_action::{TimedActionSave, TimedActionSession};
+use isometer_core::snapshot;
 
 #[test]
 fn actual_pre_combat_native_save_restores_and_can_continue() {
@@ -22,7 +22,7 @@ fn actual_pre_combat_native_save_restores_and_can_continue() {
     let saved: TimedActionSave = snapshot::decode(&upgraded).unwrap();
     assert_eq!(
         saved.session.game.version,
-        isocosm::legacy::eponym::world::GAME_STATE_VERSION
+        eponym_play::GAME_STATE_VERSION
     );
     assert_eq!(
         TimedActionSession::restore_solving(&upgraded, eponym_motion::SOLVER).unwrap(),

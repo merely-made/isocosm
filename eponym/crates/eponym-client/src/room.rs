@@ -6,21 +6,24 @@
 
 //! One room, carved into a hillside of a grown world.
 //!
-//! Nothing here invents terrain. `Places::grown` decides the relief,
-//! `Ground::grow` raises the bricks, and the room is one `carve` into rock
-//! the world already had. The hunt below only picks *where*: the first
-//! buried spot, in a deterministic outward scan, whose whole footprint is
-//! solid and whose thinnest overburden still leaves a roof.
+//! Nothing here invents terrain. Eponym's world on Isocosm lays the sites,
+//! isometer lifts the played one into bricks, and the room is one carve the
+//! sim keeps, into rock the world already had. The hunt below only picks
+//! *where*: the first buried spot, in a deterministic outward scan, whose
+//! whole footprint is solid and whose thinnest overburden still leaves a
+//! roof.
 
-use isocosm::legacy::mesocosm::places::{Places, WALKER_HEIGHT};
+use eponym_play::identity::{SubjectId, Tick};
+use eponym_play::walking::WALKER_HEIGHT;
+use eponym_play::{World, WorldConfig, WorldEvent, WorldIntent};
 use isometer::core::ground::Ground;
 
 /// The world this probe plays in. One seed, so the room is the same room on
 /// every machine and in every replay.
 pub const SEED: u64 = 4_242;
-/// Enclosure half-extent, in voxels. The value mesocosm's own place tests use.
+/// The played site's half-extent, in cells.
 pub const EXTENT: i32 = 64;
-/// Place-graph side. Four by four regions over the enclosure.
+/// Sites a side of the world map.
 pub const SIDE: u16 = 4;
 /// Half-extent of the carved room: a nine-cubed chamber.
 pub const ROOM_RADIUS: i32 = 4;
@@ -37,6 +40,8 @@ const MIN_HILL: i32 = 2 * ROOM_RADIUS + ROOF + 2;
 pub struct Room {
     pub seed: u64,
     pub ground: Ground,
+    /// Eponym's world, its played site lifted with the room carved in.
+    pub world: World,
     /// Centre of the carved chamber, in voxels.
     pub centre: [i32; 3],
     pub radius: i32,
@@ -54,16 +59,19 @@ impl Room {
     /// Grows the world and carves the room. Deterministic from `seed` alone,
     /// which is what makes a save able to name a world by its seed.
     pub fn grow(seed: u64) -> Result<Self, RoomError> {
-        let grown = Places::grown(seed, SIDE, EXTENT);
-        let mut ground = Ground::grow(&grown, EXTENT);
-        let centre = hillside(&ground, ROOM_RADIUS).ok_or(RoomError::NoHillside)?;
-
-        let removed = ground.carve(centre, ROOM_RADIUS);
+        let config = WorldConfig { side: SIDE, extent: EXTENT };
+        let mut world = World::generate(seed, config).map_err(|_| RoomError::NoHillside)?;
+        let centre = hillside(world.ground(), ROOM_RADIUS).ok_or(RoomError::NoHillside)?;
+        let carve = WorldIntent::Carve { tick: Tick(0), by: SubjectId(0), centre, radius: ROOM_RADIUS };
+        let removed = match world.apply(carve) {
+            Ok(WorldEvent::Carved { removed, .. }) => removed,
+            _ => 0,
+        };
         assert!(
             removed > 0,
             "the hunt returned {centre:?} as solid rock and the carve removed nothing"
         );
-
+        let ground = world.ground().clone();
         let stance = [centre[0], centre[1] - ROOM_RADIUS, centre[2]];
         assert!(
             ground.stands(stance, WALKER_HEIGHT),
@@ -73,6 +81,7 @@ impl Room {
         Ok(Self {
             seed,
             ground,
+            world,
             centre,
             radius: ROOM_RADIUS,
             stance,

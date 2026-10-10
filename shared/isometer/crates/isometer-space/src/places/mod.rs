@@ -27,6 +27,15 @@ pub use join::join;
 pub use route::{Body, route_over};
 pub use sight::ray;
 
+/// The stances a walker at stance `at` can step to across one column under
+/// `rules`' climb, each with its rise; a drop of any depth within headroom
+/// is a step down (ruling 702). What a game's walker reads between places.
+pub fn steps(volume: &Volume, rules: Rules, at: [i64; 3]) -> Vec<([i64; 3], i64)> {
+    let cells = Cells::new(volume, rules);
+    let climbs = |rise: i64| rise <= 0 || cells.climbable(rise);
+    cells.steps(at).into_iter().filter(|(_, rise)| climbs(*rise)).collect()
+}
+
 use crate::volume::Volume;
 use crate::{Result, SiteId};
 use cells::Cells;

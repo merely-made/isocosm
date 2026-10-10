@@ -14,7 +14,7 @@ impl App {
             subject,
             revision,
             step: pose.step + 1,
-            input: isocosm::legacy::eponym::world::MotionInput {
+            input: eponym_play::MotionInput {
                 move_x: (toward[0] * 32767) as i16,
                 move_z: (toward[2] * 32767) as i16,
             },
@@ -84,7 +84,7 @@ impl App {
             .revision;
         let first = self.action.session().game().next_tick();
         let second = Tick(first.0 + 1);
-        let next = isocosm::legacy::eponym::identity::BodyRevisionId(old.0 + 1);
+        let next = eponym_play::identity::BodyRevisionId(old.0 + 1);
         let result = self.action.apply_game_batch(&[
             GameIntent::Fall {
                 tick: first,

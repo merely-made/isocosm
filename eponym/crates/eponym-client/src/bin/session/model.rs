@@ -9,7 +9,7 @@
 //! The window is `cambium_genet_winit_host::run`. The root view is a viewport
 //! leaf whose producer is P1's [`SceneProducer`], plus a subject sheet, an
 //! equipment panel and a status panel, all projections of the one
-//! `isocosm::legacy::eponym::world::Session` held inside [`SceneModel`]. Because
+//! `eponym_play::Session` held inside [`SceneModel`]. Because
 //! `TimedActionSession` owns its session by value and exposes no mutable
 //! handle on it, the wrapper goes *inside* the model's slot
 //! (`SceneModel::timed`) rather than beside it — see `producer::Held`.
@@ -43,11 +43,11 @@ use isomere::host::{Assembly, Ctx, HostOptions, Init, KeyPress, Product, Runner}
 use isomere::{Binding, Keymap};
 use isometer::core::PartId;
 use eponym_client::producer::{SceneHandle, SceneModel, SceneModelSource, SceneProducer};
-use isocosm::legacy::eponym::identity::SubjectId;
-use isocosm::legacy::eponym::world::fixtures::session as session_fixture;
-use isocosm::legacy::eponym::world::glyphs::GlyphReading;
-use isocosm::legacy::eponym::world::timed_action::Direction;
-use isocosm::legacy::eponym::world::{CombatRules, ItemId};
+use eponym_play::identity::SubjectId;
+use eponym_play::fixtures::session as session_fixture;
+use eponym_play::glyphs::GlyphReading;
+use eponym_play::timed_action::Direction;
+use eponym_play::{CombatRules, ItemId};
 
 #[path = "actions.rs"]
 mod actions;

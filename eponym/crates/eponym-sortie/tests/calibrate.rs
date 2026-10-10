@@ -15,7 +15,7 @@
 
 use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
-use isocosm::legacy::eponym::social::scene::AUD;
+use eponym_sortie::settled::AUD;
 
 #[test]
 #[ignore = "calibration probe, run by hand"]

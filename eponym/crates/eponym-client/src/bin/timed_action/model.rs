@@ -5,10 +5,10 @@ use self::hud::Hud;
 use isocosm::lineage::{LineageBody as BodyDocument, Provenance, SpeciesId};
 use isometer::core::{Attachment, VolumeRef, Yaw};
 use eponym_client::gpu::Composer;
-use isocosm::legacy::eponym::identity::Tick;
-use isocosm::legacy::eponym::world::fixtures::three_lives;
-use isocosm::legacy::eponym::world::timed_action::{Direction, TimedActionRules, TimedActionSession};
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::Tick;
+use eponym_play::fixtures::three_lives;
+use eponym_play::timed_action::{Direction, TimedActionRules, TimedActionSession};
+use eponym_play::{
     CombatRules, GameEvent, GameIntent, GameState, ItemKind, ItemLocation, Session, World,
     WorldConfig,
 };
@@ -54,9 +54,9 @@ pub(crate) struct App {
     pub(crate) instance: wgpu::Instance,
     pub(crate) live: Option<Live>,
     pub(crate) action: TimedActionSession,
-    pub(crate) target: isocosm::legacy::eponym::identity::SubjectId,
+    pub(crate) target: eponym_play::identity::SubjectId,
     pub(crate) combat_rules: CombatRules,
-    pub(crate) target_item: isocosm::legacy::eponym::world::ItemId,
+    pub(crate) target_item: eponym_play::ItemId,
     pub(crate) attack_direction: Direction,
     pub(crate) held: bool,
     pub(crate) movement_keys: [bool; 4],
@@ -106,7 +106,7 @@ impl App {
             .items()
             .all()
             .find_map(|item| match item.location {
-                isocosm::legacy::eponym::world::ItemLocation::At(at) if item.kind == ItemKind::Dressing => Some(at),
+                eponym_play::ItemLocation::At(at) if item.kind == ItemKind::Dressing => Some(at),
                 _ => None,
             })
             .unwrap();
@@ -122,19 +122,19 @@ impl App {
         game.apply(GameIntent::Name {
             tick,
             subject,
-            name: isocosm::legacy::eponym::world::Name::new("Keeper").unwrap(),
+            name: eponym_play::Name::new("Keeper").unwrap(),
         })
         .unwrap();
         let tick = game.next_tick();
         game.apply(GameIntent::AdmitAnatomy {
             tick,
             subject,
-            revision: isocosm::legacy::eponym::identity::BodyRevisionId(0),
+            revision: eponym_play::identity::BodyRevisionId(0),
             document: Box::new(three_lives::three_lives()[0].body.clone()),
         })
         .unwrap();
         support::configure_keeper(&mut game, subject);
-        let target = isocosm::legacy::eponym::identity::SubjectId(702);
+        let target = eponym_play::identity::SubjectId(702);
         let target_item = game
             .items()
             .all()
@@ -159,14 +159,14 @@ impl App {
         game.apply(GameIntent::Name {
             tick,
             subject: target,
-            name: isocosm::legacy::eponym::world::Name::new("Target").unwrap(),
+            name: eponym_play::Name::new("Target").unwrap(),
         })
         .unwrap();
         let tick = game.next_tick();
         game.apply(GameIntent::AdmitAnatomy {
             tick,
             subject: target,
-            revision: isocosm::legacy::eponym::identity::BodyRevisionId(0),
+            revision: eponym_play::identity::BodyRevisionId(0),
             document: Box::new(target_body()),
         })
         .unwrap();
@@ -203,7 +203,7 @@ impl App {
             subject: target,
             item: target_item.id,
             part: isometer::core::PartId(2),
-            revision: isocosm::legacy::eponym::identity::BodyRevisionId(0),
+            revision: eponym_play::identity::BodyRevisionId(0),
         })
         .unwrap();
         let part = PartRef {
@@ -331,7 +331,7 @@ impl App {
         assert!(
             volley
                 .iter()
-                .any(|strike| matches!(strike.outcome, isocosm::legacy::eponym::world::StrikeOutcome::Hit { .. }))
+                .any(|strike| matches!(strike.outcome, eponym_play::StrikeOutcome::Hit { .. }))
         );
         let target = self
             .action
@@ -534,10 +534,10 @@ impl App {
                         .iter()
                         .enumerate()
                         .map(|(index, strike)| match strike.outcome {
-                            isocosm::legacy::eponym::world::StrikeOutcome::Miss => {
+                            eponym_play::StrikeOutcome::Miss => {
                                 format!("Strike {}: MISS (source {})", index + 1, strike.source.0)
                             },
-                            isocosm::legacy::eponym::world::StrikeOutcome::Hit {
+                            eponym_play::StrikeOutcome::Hit {
                                 part,
                                 quality,
                                 harm,

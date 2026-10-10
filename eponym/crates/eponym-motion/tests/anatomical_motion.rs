@@ -1,12 +1,12 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::eponym::identity::{BodyRevisionId, SubjectId};
-use isocosm::legacy::eponym::world::{
+use eponym_play::identity::{BodyRevisionId, SubjectId};
+use eponym_play::{
     GameError, GameIntent, GameState, MotionEnvelope, MotionInput, MotionRules, MovementProfile,
     Name, SupportBand, World, WorldConfig, fixtures::three_lives::wetland_body,
 };
-use isocosm::legacy::mesocosm::PartId;
+use isometer_core::PartId;
 
 const SUBJECT: SubjectId = SubjectId(73);
 const ROOT: PartId = PartId(0);
@@ -20,11 +20,11 @@ fn state() -> GameState {
         .items()
         .all()
         .find_map(|item| match item.location {
-            isocosm::legacy::eponym::world::ItemLocation::At(at)
+            eponym_play::ItemLocation::At(at)
                 if state
                     .world()
                     .ground()
-                    .stands(at, isocosm::legacy::mesocosm::places::WALKER_HEIGHT) =>
+                    .stands(at, eponym_play::walking::WALKER_HEIGHT) =>
             {
                 Some(at)
             },
@@ -59,7 +59,7 @@ fn state() -> GameState {
 
 fn profile(revision: u64, supports: Vec<PartId>) -> MovementProfile {
     MovementProfile {
-        revision: isocosm::legacy::eponym::world::MOVEMENT_PROFILE_REVISION,
+        revision: eponym_play::MOVEMENT_PROFILE_REVISION,
         source_revision: BodyRevisionId(revision),
         envelope: MotionEnvelope {
             anchor: ROOT,

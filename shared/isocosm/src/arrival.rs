@@ -29,6 +29,8 @@ pub struct Arrival {
     pub traits: BTreeSet<Key>,
     #[serde(default)]
     pub skills: BTreeMap<Key, u64>,
+    #[serde(default)]
+    pub disposition: [i16; 5],
 }
 
 impl Simulation {
@@ -72,7 +74,7 @@ impl Simulation {
             accounts,
             skills: a.skills.clone(),
             tenets: Default::default(),
-            disposition: [0; 5],
+            disposition: a.disposition,
             soma: vec![],
             systems: Default::default(),
             varied: vec![],
