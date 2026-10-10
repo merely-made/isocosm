@@ -156,3 +156,24 @@ Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.
 
 ## Progress
+
+- **2026-10-09, family 1, matter and processes (lane `lane-matter`, under
+  732's compile gate; no tests, draws or certification run).** Moved into
+  native Isocosm, legacy copies deleted, every caller re-pointed (the legacy
+  world and siblings, mesocosm-genet, -runtime, -phenotype, -views, the legacy
+  tests and examples): `process` (the five natives, the definition registry
+  that pack admission fills, intake ports, reach) is `isocosm::process`, its
+  seeding the function catalogue's `rules::Seeding` (Geometry is Grown; pack
+  files still say `geometry`); `matter` (stock, receipts, a receipt address
+  naming a member by native `Id`) is `isocosm::matter`; the legacy soil
+  transport is gone for `diffusion::percolate`, generic over a column so
+  ledgers and stocks share one kernel; `EpochRule` and `DeepTimeSpan` are
+  native `rules::epoch`'s, the budget in `WorldRules::epoch_ticks`, placed so a
+  timed world encodes and digests as before; `pressure` is native `preset`,
+  which gained the worlds' names and parameters. Legacy lines in the family
+  went from 3,740 to 1,257: `flow` (962) and `WorldRules` (295, the legacy
+  world's own record, leaving with the world family) remain. Unit tests of the
+  moved code are native tests; integration tests stay with the legacy world.
+  *Reading, not ruled:* registry, stock and flow kept their behaviour exactly;
+  converging the registry onto the function catalogue and the flow record onto
+  native `flows` are behaviour changes, put to Mark as forks.
