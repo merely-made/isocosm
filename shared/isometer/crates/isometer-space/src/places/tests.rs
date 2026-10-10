@@ -192,8 +192,9 @@ fn a_cave_with_a_mouth_is_outdoors_when_sealed_and_a_room_when_roofed() {
 }
 
 #[test]
-fn rooms_are_roofed_by_default() {
+fn rooms_are_roofed_and_necks_two_by_default() {
     assert_eq!(Rules::default(), Rules::ruled(Cover::Roofed));
+    assert_eq!(Rules::default().neck, Some(2));
 }
 
 #[test]
@@ -214,7 +215,7 @@ fn a_patch_splits_at_a_neck_narrower_than_the_world_rule() {
     assert!(necked.route(west, east, &wide).is_none());
     // Control: without the rule the gap sits inside one patch and the wide
     // body passes.
-    let open = Places::derive(&v, Rules::default()).unwrap();
+    let open = Places::derive(&v, Rules { neck: None, ..Rules::default() }).unwrap();
     assert_eq!(place(&open, w), place(&open, e));
 }
 

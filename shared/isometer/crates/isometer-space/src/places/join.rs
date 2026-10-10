@@ -63,7 +63,7 @@ pub fn join<A: Atlas + ?Sized>(
                         }
                     }
                     let mut w = [fx, y, fz];
-                    while w[1] > cf.floor && cf.air(w) {
+                    while w[1] > cf.floor && w[1] > y - HEADROOM + 1 && cf.air(w) {
                         w[1] -= 1;
                     }
                     if let Some(q) = far.1.label(w).filter(|_| cf.cell(w) == Cell::Water) {

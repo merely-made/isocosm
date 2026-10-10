@@ -86,20 +86,19 @@ pub struct Rules {
     pub cap: Cap,
     pub cover: Cover,
     /// The walkable width, in base units, below which a patch splits at a
-    /// neck (ruling 738). A world rule with no ruled default: unset, no
-    /// patch splits.
+    /// neck (ruling 738), 2 by default (743); unset, no patch splits.
     pub neck: Option<u32>,
 }
 
 impl Rules {
-    /// The ruled defaults, one up per one across (419) and the large cap
-    /// (421), under the named cover.
+    /// The ruled defaults, one up per one across (419), the large cap
+    /// (421) and a neck of 2 (743), under the named cover.
     pub fn ruled(cover: Cover) -> Self {
         Self {
             climb: Climb { rise: 1, run: 1 },
             cap: Cap::Large,
             cover,
-            neck: None,
+            neck: Some(2),
         }
     }
 }

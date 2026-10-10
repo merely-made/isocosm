@@ -71,6 +71,24 @@ fn every_border_cell_reads_in_the_volume_as_the_lift_classes_it() {
 }
 
 #[test]
+fn a_drawn_cliff_stops_a_dry_route() {
+    let mut cliffs = 0;
+    for seed in 0..4 {
+        let mut grid = Grid::drawn(seed, 2, 1, SIDE as u64, false);
+        for s in &mut grid.skeleton {
+            s[2] -= 200;
+        }
+        let lifted = cells(&grid, 0, 1, FLAT).unwrap();
+        for t in 0..SIDE {
+            let volume = read(&grid, t);
+            assert_eq!(lifted[t as usize], volume, "seed {seed}, cell {t}");
+            cliffs += u32::from(volume == Span::Stops);
+        }
+    }
+    assert!(cliffs > 0, "no dry cliff was drawn");
+}
+
+#[test]
 fn both_sides_class_a_border_alike_and_spans_take_the_easiest_cell() {
     let grid = Grid::drawn(5, 2, 1, SIDE as u64, false);
     let here = cells(&grid, 0, 1, FLAT).unwrap();
