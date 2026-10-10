@@ -31,7 +31,7 @@ pub(crate) struct Stage {
     target: Option<Id>,
     place: Id,
     /// The actor's part the act binds (ruling 338).
-    part: Option<Id>,
+    part: Option<PartId>,
     /// The members the actor stands for: one, or a whole bulk cohort.
     count: u64,
     /// The bound bodies as the act leaves them. A target that is the actor
@@ -68,7 +68,7 @@ pub(crate) struct Stage {
     /// What a carriage lets each bound body's parts still take (581), and
     /// the part the act's bite landed on.
     pub(crate) caps: BTreeMap<Id, crate::anatomy::Caps>,
-    pub(crate) bitten: Option<Id>,
+    pub(crate) bitten: Option<PartId>,
 }
 
 impl Simulation {
@@ -80,7 +80,7 @@ impl Simulation {
         &self,
         (actor, target): (Id, Option<Id>),
         place: Id,
-        part: Option<Id>,
+        part: Option<PartId>,
         count: u64,
         act: u64,
     ) -> Result<Stage> {
@@ -132,7 +132,7 @@ impl Simulation {
             }
             let base = frame.body(*id).expect("a changed body was kept");
             let live = self.state.population.get(*id).expect("staged bodies exist");
-            let part = |id: &Id| {
+            let part = |id: &PartId| {
                 // A part another act of the pass removed stays removed, so
                 // the act may not have changed it.
                 if base.parts.contains_key(id) && !live.parts.contains_key(id) {
@@ -161,9 +161,13 @@ impl Simulation {
                         .get(id)
                         .is_some_and(|now| same(&now.matter, &was.matter))
                 });
+            // A document another act reshaped while this one did too does
+            // not land (674).
+            let doc = live.body == base.body || body.body == base.body;
             fits(&live.accounts, &base.accounts, &body.accounts)
                 && body.parts.keys().all(part)
                 && removed
+                && doc
         });
         let site = stage.site.as_ref().is_none_or(|site| {
             let Some(base) = frame.site(stage.place) else {

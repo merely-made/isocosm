@@ -45,7 +45,7 @@ pub(in crate::probe) enum Pending {
     },
     Seedling {
         lineal: Lineal,
-        part: Part,
+        part: (crate::geometry::Frame, Part),
         mark: Key,
         parent: Entity,
     },
@@ -56,7 +56,7 @@ pub(in crate::probe) enum Pending {
 #[derive(Clone, Debug)]
 pub(in crate::probe) enum Took {
     Bite(Ledger),
-    Whole(Id),
+    Whole(PartId),
 }
 
 /// One state's members as an accepted act leaves them, with what its meal
@@ -91,7 +91,7 @@ pub(super) struct Seen<'a> {
 }
 
 impl Seen<'_> {
-    fn scene(&self, part: Option<Id>) -> Scene<'_> {
+    fn scene(&self, part: Option<PartId>) -> Scene<'_> {
         Scene {
             actor: self.member,
             target: Named::Unnamed,
@@ -129,7 +129,7 @@ pub(super) struct Act<'a> {
     /// A meal's prey as the pass began, the matter the meal's share takes
     /// of it (ruling 454), and the part the bite lands on where the prey
     /// keeps its matter in parts (ruling 459).
-    pub meal: Option<(&'a Entity, &'a Ledger, Option<Id>)>,
+    pub meal: Option<(&'a Entity, &'a Ledger, Option<PartId>)>,
 }
 
 fn identity_bound(p: &Process, meal: bool) -> bool {

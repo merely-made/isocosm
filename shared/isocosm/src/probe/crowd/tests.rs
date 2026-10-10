@@ -128,9 +128,9 @@ fn nursing(seed: u64) -> ProbeWorld {
         absent: vec![],
         seed: 0,
     };
-    frond.parts = develop(&rules, &d, &soma).unwrap();
+    frond.embody(develop(&rules, &d, &soma).unwrap());
     frond.soma = vec![1];
-    frond.parts.get_mut(&0).unwrap().matter =
+    frond.parts.get_mut(&PartId(0)).unwrap().matter =
         std::collections::BTreeMap::from([("tissue:0".into(), 10_000)]);
     for key in ["tissue:1", "reserve:1", "provision:1"] {
         let room = crate::anatomy::room(&parent, &rules, key);
@@ -213,9 +213,10 @@ fn a_crowd_bite_takes_what_its_part_held() {
         absent: vec![],
         seed: 0,
     };
-    prey.parts = develop(rules, &d, &soma).unwrap();
+    prey.embody(develop(rules, &d, &soma).unwrap());
     for (part, held) in [(0, 3), (1, 10)] {
-        prey.parts.get_mut(&part).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+        prey.parts.get_mut(&PartId(part)).unwrap().matter =
+            BTreeMap::from([("tissue:0".into(), held)]);
     }
     let room = crate::anatomy::room(&grazer, rules, "reserve:1");
     crate::anatomy::give(&mut grazer, rules, "reserve:1", room)
@@ -231,7 +232,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
         rules,
         lineages: Some(&g.lineages),
         draws: &draws,
-        meal: Some((&prey, &portion, Some(0))),
+        meal: Some((&prey, &portion, Some(PartId(0)))),
     };
     let p = &rules.processes["body:graze-1"];
     let acted = aggregate::act(p, &grazer, &mut site.clone(), aggregate::Run::Free, a)

@@ -13,7 +13,7 @@ pub(super) struct Doing<'a> {
     pub(super) rules: &'a Rules,
     pub(super) lineages: Lineages<'a>,
     pub(super) member: Entity,
-    pub(super) part: Option<Id>,
+    pub(super) part: Option<PartId>,
     /// The site as every member's writes leave it.
     pub(super) site: Site,
     /// The site as one member's act sees it: the pass's start and its own
@@ -24,7 +24,7 @@ pub(super) struct Doing<'a> {
     /// part its bite lands on.
     pub(super) prey: Option<Entity>,
     pub(super) portion: Option<Ledger>,
-    pub(super) bitten: Option<Id>,
+    pub(super) bitten: Option<PartId>,
     /// The target is a body the act binds whole, a member's own young
     /// (554), rather than a meal's prey.
     pub(super) bound: bool,
@@ -126,7 +126,7 @@ impl Parties for Doing<'_> {
             _ => Err("the crowd writes only the actor's body".into()),
         }
     }
-    fn part(&mut self) -> Result<(&mut Entity, Id)> {
+    fn part(&mut self) -> Result<(&mut Entity, PartId)> {
         let part = self.part.ok_or("no part is bound")?;
         Ok((&mut self.member, part))
     }
@@ -140,7 +140,7 @@ impl Parties for Doing<'_> {
             .and_then(|l| l.development.clone())
             .ok_or_else(|| format!("{lineage}'s bodies cannot grow here"))
     }
-    fn bitten(&self) -> Option<Id> {
+    fn bitten(&self) -> Option<PartId> {
         self.bitten
     }
     fn bound(&mut self, who: Binding, caps: crate::anatomy::Caps) -> Result<()> {
@@ -207,12 +207,14 @@ impl Doing<'_> {
         &mut self,
         f: impl FnOnce(&mut Read, &mut Draw, &mut PartsOf) -> Result<T>,
     ) -> Result<T> {
-        let living = |e: &Entity| -> Vec<Part> {
-            e.parts.values().filter(|p| !p.severed).cloned().collect()
+        let living = |e: &Entity| -> Vec<(crate::anatomy::Half, Part)> {
+            e.living()
+                .map(|(id, p)| (e.extent(id), p.clone()))
+                .collect()
         };
         let (mine, theirs) = (living(&self.member), self.prey.as_ref().map(living));
         let (rules, b, lineages) = (self.rules, self.rules.body(), self.lineages);
-        let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
+        let mut parts = |who: Binding| -> Result<(Vec<(crate::anatomy::Half, Part)>, BodyRules)> {
             match who {
                 Binding::Actor => Ok((mine.clone(), b)),
                 Binding::Target => match theirs.clone() {
@@ -224,7 +226,9 @@ impl Doing<'_> {
         };
         let (member, seen, prey, kept) = (&self.member, &self.seen, &self.prey, &self.kept);
         let (caps, bitten) = (&self.caps, self.bitten);
-        let part = self.part.and_then(|id| member.parts.get(&id));
+        let part = self
+            .part
+            .and_then(|id| Some((member.extent(id), member.parts.get(&id)?)));
         let mut read = |r: &Reading| -> Result<i64> {
             let body = |who: Binding| match who {
                 Binding::Actor => Ok(member),
@@ -240,7 +244,7 @@ impl Doing<'_> {
                     i64::try_from(meaning::value(&seen.accounts, key)).map_err(|e| e.to_string())
                 },
                 (Reading::Account { key, .. }, Binding::Part) => {
-                    let part = part.ok_or("no part is bound")?;
+                    let (_, part) = part.ok_or("no part is bound")?;
                     i64::try_from(meaning::value(&part.matter, key)).map_err(|e| e.to_string())
                 },
                 (Reading::Account { key, .. }, who) => {
@@ -263,8 +267,8 @@ impl Doing<'_> {
                     Ok(meaning::carried(e, r, rules, d, bitten))
                 },
                 (r, Binding::Part) => {
-                    let part = part.ok_or("no part is bound")?;
-                    Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
+                    let (half, part) = part.ok_or("no part is bound")?;
+                    Ok(i64::try_from(r.of_part(half, part, b)).unwrap_or(i64::MAX))
                 },
                 (r, who) => Ok(meaning::body_reading(body(who)?, r, rules, lineages)),
             }

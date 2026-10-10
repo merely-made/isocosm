@@ -21,11 +21,7 @@ const BOXES: [&str; 4] = [
 pub(super) fn kinds(rules: &Rules) -> Result<()> {
     for (id, kind) in &rules.kinds {
         key(id)?;
-        let part = Part {
-            half_extent: kind.half_extent,
-            ..Default::default()
-        };
-        if !part.bodied() {
+        if kind.half_extent == [0; 3] {
             return Err(format!("kind {id} has no box"));
         }
         if let Some(f) = kind
@@ -36,7 +32,7 @@ pub(super) fn kinds(rules: &Rules) -> Result<()> {
             return Err(format!("kind {id} gives cells to an unknown function {f}"));
         }
         let cells: u64 = kind.cells.values().map(|c| u64::from(*c)).sum();
-        if cells > u64::from(anatomy::capacity(&part)) {
+        if cells > u64::from(anatomy::capacity(kind.half_extent)) {
             return Err(format!("kind {id} gives more cells than its box holds"));
         }
         if !matches!(

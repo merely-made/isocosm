@@ -210,7 +210,7 @@ fn world(clutch: u32, provision: u64) -> (Genesis, Id) {
         absent: vec![],
         seed: 0,
     };
-    e.parts = develop(&g.rules, &d, &soma).unwrap();
+    e.embody(develop(&g.rules, &d, &soma).unwrap());
     e.soma = vec![1];
     e.accounts.clear();
     let rules = g.rules.clone();
@@ -367,7 +367,7 @@ fn a_clutch_splits_the_provision_among_eggs_each_the_root_alone() {
     assert_eq!(shares, [3, 3, 2, 2, 2]);
     for (_, egg) in &kids {
         assert_eq!(egg.parts.len(), 1);
-        assert_eq!(egg.parts[&0].situs, Some([0, 0, 0]));
+        assert_eq!(egg.situs(PartId(0)), Some([0, 0, 0]));
         assert_eq!(egg.soma, vec![1], "it keeps the soma it drew");
     }
 }
@@ -424,10 +424,11 @@ fn a_bud_fills_from_the_provision_and_severs_at_a_provisions_worth() {
     run(&mut s, id, "test:bud");
     let (_, child) = &children(&s, id)[0];
     assert_eq!(child.parts.len(), 1);
-    let root = &child.parts[&0];
+    let root = &child.parts[&PartId(0)];
     assert!(!root.traits.contains(BUD));
+    let f = child.frame(PartId(0));
     assert_eq!(
-        (root.parent, root.offset, root.situs),
+        (f.parent, f.offset, f.situs),
         (None, [0; 3], Some([0, 0, 0]))
     );
     assert_eq!(held(&s, child, "tissue:1"), 12);

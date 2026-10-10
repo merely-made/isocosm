@@ -19,10 +19,7 @@ const LIMB: &str = "kind:limb";
 const EYE: &str = "kind:eye";
 
 fn capacity(half_extent: [i32; 3]) -> u32 {
-    anatomy::capacity(&Part {
-        half_extent,
-        ..Default::default()
-    })
+    anatomy::capacity(half_extent)
 }
 
 /// A kind of `half_extent` whose cells go to these functions; its name is

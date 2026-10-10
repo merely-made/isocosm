@@ -18,6 +18,7 @@ mod execute;
 pub mod flows;
 pub mod generate;
 mod genesis;
+pub mod geometry;
 pub mod growth;
 pub mod history;
 mod journal;

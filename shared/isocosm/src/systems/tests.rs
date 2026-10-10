@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+use crate::geometry::{Body, Frame};
 use crate::rules::{Carriage, Rules, default_systems};
 use std::collections::BTreeMap;
 
@@ -15,18 +16,26 @@ pub(super) fn rules(per_cell: u64) -> Rules {
     r
 }
 
-pub(super) fn part(parent: Option<Id>, half_extent: [i32; 3], cells: &[(&str, u32)]) -> Part {
+pub(super) fn part(
+    parent: Option<u32>,
+    half_extent: [i32; 3],
+    cells: &[(&str, u32)],
+) -> (Frame, Part) {
     let cells: BTreeMap<Key, u32> = cells
         .iter()
         .map(|(f, n)| (format!("function:{f}"), *n))
         .collect();
-    Part {
-        parent,
+    let frame = Frame {
+        parent: parent.map(PartId),
         half_extent,
+        ..Default::default()
+    };
+    let part = Part {
         functions: cells.keys().cloned().collect(),
         cells,
         ..Default::default()
-    }
+    };
+    (frame, part)
 }
 
 /// A grazer: a lump that takes in, stores and reproduces, a limb on it, a
@@ -42,19 +51,17 @@ pub(super) fn grazer() -> Entity {
         .find(|c| c.entity.lineage == "lineage:1")
         .expect("a grazer")
         .entity;
-    e.parts = BTreeMap::from([
-        (
-            0,
-            part(
-                None,
-                [2, 2, 2],
-                &[("intake", 4), ("store", 2), ("reproduce", 2)],
-            ),
+    let body = Body::of([
+        part(
+            None,
+            [2, 2, 2],
+            &[("intake", 4), ("store", 2), ("reproduce", 2)],
         ),
-        (1, part(Some(0), [3, 1, 1], &[("contract", 2)])),
-        (2, part(Some(1), [3, 1, 1], &[("contract", 2)])),
-        (3, part(Some(0), [1, 1, 1], &[("sense", 1)])),
+        part(Some(0), [3, 1, 1], &[("contract", 2)]),
+        part(Some(1), [3, 1, 1], &[("contract", 2)]),
+        part(Some(0), [1, 1, 1], &[("sense", 1)]),
     ]);
+    e.embody(body.expect("a grazer's body"));
     e.systems = default_systems()
         .into_iter()
         .filter(|(_, s)| realizes(&e, s))
@@ -62,8 +69,8 @@ pub(super) fn grazer() -> Entity {
     e
 }
 
-fn asks(each: &[(Id, u64)]) -> BTreeMap<Id, u64> {
-    each.iter().copied().collect()
+fn asks(each: &[(u32, u64)]) -> BTreeMap<PartId, u64> {
+    each.iter().map(|(id, n)| (PartId(*id), *n)).collect()
 }
 
 #[test]
@@ -93,7 +100,7 @@ fn every_living_part_names_no_function() {
 #[test]
 fn a_latent_cell_becomes_an_ability_only_once_a_system_routes_it() {
     let mut e = grazer();
-    let lump = e.parts.get_mut(&0).unwrap();
+    let lump = e.parts.get_mut(&PartId(0)).unwrap();
     *lump.cells.get_mut("function:intake").unwrap() -= 1;
     lump.cells.insert("function:fix".into(), 1);
     lump.functions.insert("function:fix".into());
@@ -122,7 +129,7 @@ fn an_intact_body_carries_all_it_asks() {
 #[test]
 fn a_cut_route_carries_nothing_beyond_it() {
     let (r, mut e) = (rules(7), grazer());
-    e.parts.get_mut(&1).unwrap().severed = true;
+    e.body.as_mut().unwrap().parts[1].severed = true;
     let c = carry(
         &e,
         &r,
@@ -185,16 +192,16 @@ fn a_conduct_cell_carries_by_its_cross_section() {
     // A lump's smallest face is 25 voxels, the reference segment's: a
     // conduct cell there carries as any cell.
     let lump = part(None, [2, 2, 2], &[("conduct", 2), ("store", 2)]);
-    assert_eq!(capacity(&lump, &r), 40);
+    assert_eq!(capacity(lump.0.half_extent, &lump.1, &r), 40);
     // A rod's is 9: its conduct cells carry 9/25 of a cell's.
     let rod = part(None, [3, 1, 1], &[("conduct", 2)]);
-    assert_eq!(capacity(&rod, &r), 2 * 10 * 9 / 25);
+    assert_eq!(capacity(rod.0.half_extent, &rod.1, &r), 2 * 10 * 9 / 25);
 }
 
 #[test]
 fn the_parts_bitten_are_the_glands_effects() {
     let mut e = grazer();
-    let lump = e.parts.get_mut(&0).unwrap();
+    let lump = e.parts.get_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:secrete".into(), 1);
     lump.functions.insert("function:secrete".into());
     let gland = default_systems()["system:glandular"].clone();
@@ -212,6 +219,6 @@ fn the_parts_bitten_are_the_glands_effects() {
         .unwrap()
         .parts
     };
-    assert_eq!(to(Some(2)), asks(&[(2, 3)]));
+    assert_eq!(to(Some(PartId(2))), asks(&[(2, 3)]));
     assert_eq!(to(None), BTreeMap::new());
 }

@@ -25,7 +25,7 @@ fn without_nerves_or_a_sense_nothing_joins() {
     let mut numb = grazer();
     numb.systems.remove("system:nervous");
     let mut blind = grazer();
-    blind.parts.remove(&3);
+    blind.parts.remove(&PartId(3));
     for e in [numb, blind] {
         let (reached, total) = joined(&e, &rules(10), INTAKE, CONTRACT, None);
         assert_eq!(reached, 0);
@@ -38,15 +38,17 @@ fn the_joint_share_is_the_contracting_cells_the_senses_reach() {
     // The second limb hangs from the lump through a joint that cannot
     // carry, so the senses reach one limb of two.
     let mut e = grazer();
-    e.parts.insert(4, part(Some(0), [1, 1, 1], &[]));
-    e.parts.get_mut(&2).unwrap().parent = Some(4);
+    let (frame, joint) = part(Some(0), [1, 1, 1], &[]);
+    let joint = e.add_part(&frame, joint).unwrap();
+    let doc = e.body.as_mut().unwrap();
+    doc.parts[2].attachment.as_mut().unwrap().parent = joint;
     let r = rules(10);
-    assert_eq!(capacity(&e.parts[&4], &r), 0);
+    assert_eq!(capacity(e.extent(joint), &e.parts[&joint], &r), 0);
     let (reached, total) = joined(&e, &r, INTAKE, CONTRACT, None);
     assert_eq!((reached, total), (2, 4));
     // With the joint able to carry, both are reached.
     e.parts
-        .get_mut(&4)
+        .get_mut(&joint)
         .unwrap()
         .cells
         .insert("function:gate".into(), 1);

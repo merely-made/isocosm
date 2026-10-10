@@ -26,19 +26,19 @@ const OPEN: u64 = u64::MAX / 4;
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Carried {
     /// What each effect part asked was carried to it, by part.
-    pub parts: BTreeMap<Id, u64>,
+    pub parts: BTreeMap<PartId, u64>,
     pub total: u64,
 }
 
 /// What a part's cells carry a tick (560, 564, 565), nought where the world
 /// sets no carriage.
-pub fn capacity(p: &Part, rules: &Rules) -> u64 {
+pub fn capacity(h: anatomy::Half, p: &Part, rules: &Rules) -> u64 {
     let Some(c) = rules.carriage else { return 0 };
     let cells: u64 = p.cells.values().map(|n| u64::from(*n)).sum();
     let conduct = u64::from(p.cells.get(CONDUCT).copied().unwrap_or(0));
     let side = cube_root(rules.body().reference_segment_voxels.max(1));
     let face = u128::from(side * side).max(1);
-    let section = anatomy::measure(p, Measure::CrossSection);
+    let section = anatomy::measure(h, Measure::CrossSection);
     let conducted = u128::from(conduct) * u128::from(c.per_cell) * section / face;
     let plain = u128::from(cells - conduct) * u128::from(c.per_cell);
     u64::try_from(plain + conducted).unwrap_or(u64::MAX)
@@ -58,17 +58,17 @@ fn cube_root(n: u64) -> u64 {
     r
 }
 
-fn node(id: u32, part: Id) -> Node {
+fn node(id: u32, part: PartId) -> Node {
     Node {
         id: NodeId(id),
         kind: NodeKind::Effect { part: at(part) },
     }
 }
 
-fn at(part: Id) -> PartRef {
+fn at(part: PartId) -> PartRef {
     PartRef {
         subject: 0,
-        part: u32::try_from(part).unwrap_or(u32::MAX),
+        part: part.0,
     }
 }
 
@@ -81,21 +81,16 @@ pub fn carry(
     e: &Entity,
     rules: &Rules,
     (function, role): (&str, Role),
-    asks: &BTreeMap<Id, u64>,
-    bitten: Option<Id>,
+    asks: &BTreeMap<PartId, u64>,
+    bitten: Option<PartId>,
 ) -> Result<Carried> {
     let Some(system) = union(e, function, role) else {
         return Ok(Carried::default());
     };
     let sources = filling(e, &system.sources, bitten);
     let effects = filling(e, &system.effects, bitten);
-    let living: Vec<Id> = e
-        .parts
-        .iter()
-        .filter(|(_, p)| !p.severed)
-        .map(|(id, _)| *id)
-        .collect();
-    let index: BTreeMap<Id, u32> = living
+    let living: Vec<PartId> = e.living().map(|(id, _)| id).collect();
+    let index: BTreeMap<PartId, u32> = living
         .iter()
         .enumerate()
         .map(|(i, id)| (*id, u32::try_from(i).unwrap_or(u32::MAX)))
@@ -105,15 +100,15 @@ pub fn carry(
     let mut edges = vec![];
     for (id, &i) in &index {
         nodes.extend([node(jin(i), *id), node(jout(i), *id)]);
-        let room = capacity(&e.parts[id], rules);
+        let room = capacity(e.extent(*id), &e.parts[id], rules);
         if room > 0 {
             edges.push(edge(jin(i), jout(i), room));
         }
-        if let Some(&j) = e.parts[id].parent.and_then(|q| index.get(&q)) {
+        if let Some(&j) = e.parent_of(*id).and_then(|q| index.get(&q)) {
             edges.extend([edge(jout(j), jin(i), OPEN), edge(jout(i), jin(j), OPEN)]);
         }
     }
-    let wanted: Vec<(Id, u64)> = asks
+    let wanted: Vec<(PartId, u64)> = asks
         .iter()
         .filter(|(id, n)| **n > 0 && effects.contains(id))
         .map(|(id, n)| (*id, *n))
@@ -143,7 +138,7 @@ pub fn carry(
     let receipt = network
         .carry(&sites, hops, &live)
         .map_err(|e| e.to_string())?;
-    let parts: BTreeMap<Id, u64> = wanted
+    let parts: BTreeMap<PartId, u64> = wanted
         .iter()
         .zip(&receipt.delivered)
         .map(|((id, _), (_, n))| (*id, *n))
@@ -165,14 +160,19 @@ fn edge(from: u32, to: u32, capacity: u64) -> Edge {
 /// `total` split over the source parts by their cells of `function`, or by
 /// all their cells where the sources are every living part, the units left
 /// over to the parts first in order.
-fn supplies(e: &Entity, sources: &BTreeSet<Id>, function: &str, total: u64) -> Vec<(Id, u64)> {
+fn supplies(
+    e: &Entity,
+    sources: &BTreeSet<PartId>,
+    function: &str,
+    total: u64,
+) -> Vec<(PartId, u64)> {
     let cells = |p: &Part| -> u64 {
         match p.cells.get(function) {
             Some(n) => u64::from(*n),
             None => p.cells.values().map(|n| u64::from(*n)).sum(),
         }
     };
-    let weights: Vec<(Id, u64)> = sources
+    let weights: Vec<(PartId, u64)> = sources
         .iter()
         .map(|id| (*id, cells(&e.parts[id])))
         .collect();
@@ -180,7 +180,7 @@ fn supplies(e: &Entity, sources: &BTreeSet<Id>, function: &str, total: u64) -> V
     if all == 0 {
         return vec![];
     }
-    let mut out: Vec<(Id, u64)> = weights
+    let mut out: Vec<(PartId, u64)> = weights
         .iter()
         .map(|(id, w)| (*id, (u128::from(*w) * u128::from(total) / all) as u64))
         .collect();

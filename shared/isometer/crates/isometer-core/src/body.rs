@@ -44,7 +44,7 @@ impl VolumeRef {
 
 /// Quarter turns about the vertical axis. Enough to prove attachment while
 /// keeping every transform exact in integers.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Yaw {
     #[default]
     Zero,
@@ -92,7 +92,7 @@ impl Yaw {
 
 /// Where a part used to be before it became part of this body. This is the
 /// keystone record: every part carries the fact that it was once somebody.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Origin {
     /// Present when the lineage was founded.
     Founding,
@@ -104,7 +104,7 @@ pub enum Origin {
     },
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Provenance {
     pub origin: Origin,
     /// The epoch during which this part joined the body.
@@ -121,7 +121,7 @@ impl Provenance {
 }
 
 /// How a part is fixed to its parent.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Attachment {
     pub parent: PartId,
     /// Displacement from the parent's pivot to this part's pivot, in the
@@ -134,7 +134,7 @@ pub struct Attachment {
     pub yaw: Yaw,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Part {
     pub id: PartId,
     pub volume: VolumeRef,
@@ -217,7 +217,7 @@ impl Aabb {
 }
 
 /// The portable description of one critter's body.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct BodyDocument {
     pub species: SpeciesId,
     pub root: PartId,

@@ -20,7 +20,7 @@ impl Simulation {
     }
     /// The part `p` binds in `actor`: its lowest-numbered live part
     /// expressing the function `p` requires (ruling 338).
-    pub(crate) fn bind_part(&self, actor: Id, p: &Process) -> Option<Id> {
+    pub(crate) fn bind_part(&self, actor: Id, p: &Process) -> Option<PartId> {
         let function = p.expresses()?;
         expressing(self.body_at_start(actor)?, function)
     }
@@ -31,7 +31,7 @@ impl Simulation {
         actor: Id,
         target: Option<Id>,
         place: Id,
-        part: Option<Id>,
+        part: Option<PartId>,
         query: &Query,
     ) -> Result<String> {
         let related = |kind: &Key| -> Result<bool> {

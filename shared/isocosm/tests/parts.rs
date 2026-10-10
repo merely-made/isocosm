@@ -8,6 +8,7 @@
 
 use isocosm::{
     Execution, Founding, Session, Simulation,
+    geometry::{Body, Sketch},
     rules::*,
     schema::*,
     simulation::{Genesis, Outcome},
@@ -18,15 +19,37 @@ const USED: &str = "test:used";
 const WORN: &str = "test:worn";
 const ENERGY: &str = "sim:energy";
 
-fn part(shape: &str, functions: impl IntoIterator<Item = impl Into<Key>>, severed: bool) -> Part {
-    Part {
-        parent: None,
-        traits: BTreeSet::new(),
+fn part(shape: &str, functions: impl IntoIterator<Item = impl Into<Key>>, severed: bool) -> Sketch {
+    Sketch {
         severed,
         shape: shape.into(),
-        functions: functions.into_iter().map(Into::into).collect(),
+        part: Part {
+            traits: BTreeSet::new(),
+            functions: functions.into_iter().map(Into::into).collect(),
+            ..Default::default()
+        },
         ..Default::default()
     }
+}
+
+/// `e`'s parts as sketches, keyed by id.
+fn sketched(e: &Entity) -> BTreeMap<u32, Sketch> {
+    e.parts
+        .iter()
+        .map(|(k, p)| {
+            let f = e.frame(*k);
+            let sketch = Sketch {
+                parent: f.parent.map(|p| p.0),
+                half_extent: f.half_extent,
+                offset: f.offset,
+                situs: f.situs,
+                shape: f.shape,
+                severed: !e.lives(*k),
+                part: p.clone(),
+            };
+            (k.0, sketch)
+        })
+        .collect()
 }
 
 fn process(id: &str, causation: Causation, requires: Vec<Query>, effects: Vec<Effect>) -> Process {
@@ -101,7 +124,7 @@ fn an_act_binds_its_actors_lowest_numbered_live_part_expressing_the_function() {
     g.rules.shapes = default_shapes();
     g.rules.functions = default_functions();
     g.rules.traits.insert(USED.into());
-    g.population.lift(1).unwrap().parts = BTreeMap::from([
+    let body = Body::sketch([
         (0, part("part-shape:sheet", ["function:fix"], true)),
         (1, part("part-shape:rod", ["function:contract"], false)),
         (2, part("part-shape:sheet", ["function:fix"], false)),
@@ -114,6 +137,7 @@ fn an_act_binds_its_actors_lowest_numbered_live_part_expressing_the_function() {
             ),
         ),
     ]);
+    g.population.lift(1).unwrap().embody(body);
     let choice = Causation::Choice;
     for p in [
         process(
@@ -145,12 +169,12 @@ fn an_act_binds_its_actors_lowest_numbered_live_part_expressing_the_function() {
     }
     let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
     let body = |sim: &Simulation| sim.state().population.get(1).unwrap().clone();
-    let used = |sim: &Simulation| -> Vec<Id> {
+    let used = |sim: &Simulation| -> Vec<u32> {
         let parts = body(sim).parts;
         let used = parts.into_iter().filter(|(_, p)| p.traits.contains(USED));
-        used.map(|(id, _)| id).collect()
+        used.map(|(id, _)| id.0).collect()
     };
-    let address = |f: &str, part: Id, revision: u64| {
+    let address = |f: &str, part: u32, revision: u64| {
         format!("{:?} = part {part} at revision {revision}", expresses(f))
     };
     // Part 2 is bound: part 0 is severed and part 1 does not fix.
@@ -205,9 +229,7 @@ const SLICES: usize = 16;
 const TICKS: Tick = 10;
 
 fn live(e: &Entity, function: &str) -> bool {
-    e.parts
-        .values()
-        .any(|p| !p.severed && p.functions.contains(function))
+    e.living().any(|(_, p)| p.functions.contains(function))
 }
 
 /// A seeded draw: a generated world whose catalogue holds every function
@@ -296,11 +318,11 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
             });
             functions.extend(acquired.map(|(f, _)| f.clone()));
             let mut p = part(shape, functions, random("severed", at) % 6 == 0);
-            p.parent = (k > 0).then(|| random("parent", at) % k);
-            parts.insert(k, p);
+            p.parent = (k > 0).then(|| (random("parent", at) % k) as u32);
+            parts.insert(k as u32, p);
         }
         let e = &mut g.population.groups.get_mut(&member).unwrap().entity;
-        e.parts = parts;
+        e.embody(Body::sketch(parts));
         e.accounts
             .insert(ENERGY.into(), 100 + random("energy", member) % 100);
     }
@@ -315,8 +337,10 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
         let mut functions = g.rules.grown(shape);
         functions.insert(f.clone());
         let e = &mut g.population.groups.get_mut(&home).unwrap().entity;
-        let id = e.parts.keys().last().map_or(0, |k| k + 1);
-        e.parts.insert(id, part(shape, functions, false));
+        let mut all = sketched(e);
+        let id = all.keys().last().map_or(0, |k| k + 1);
+        all.insert(id, part(shape, functions, false));
+        e.embody(Body::sketch(all));
     }
     (g, chosen)
 }

@@ -488,12 +488,10 @@ pub fn evaluate(
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
                     Field::Account(k) => crate::anatomy::held(e, &world.genesis.rules, k),
-                    Field::Cells(f) => {
-                        let living = e.parts.values().filter(|p| !p.severed);
-                        living
-                            .map(|p| u64::from(p.cells.get(f).copied().unwrap_or(0)))
-                            .sum()
-                    },
+                    Field::Cells(f) => e
+                        .living()
+                        .map(|(_, p)| u64::from(p.cells.get(f).copied().unwrap_or(0)))
+                        .sum(),
                 }
             },
         });

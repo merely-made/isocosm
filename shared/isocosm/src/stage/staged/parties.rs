@@ -74,14 +74,14 @@ impl Parties for Staged<'_> {
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;
         Ok(self.stage.bodies.get_mut(&id).ok_or("body missing")?)
     }
-    fn part(&mut self) -> Result<(&mut Entity, Id)> {
+    fn part(&mut self) -> Result<(&mut Entity, PartId)> {
         let part = self.stage.part.ok_or("no part is bound")?;
         Ok((self.actor(), part))
     }
     fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
         meaning::shift(&mut self.site()?.conditions, key, delta, 1)
     }
-    fn bitten(&self) -> Option<Id> {
+    fn bitten(&self) -> Option<PartId> {
         self.stage.bitten
     }
     fn bound(&mut self, who: Binding, caps: crate::anatomy::Caps) -> Result<()> {

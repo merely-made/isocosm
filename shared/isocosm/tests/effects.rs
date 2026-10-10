@@ -37,16 +37,17 @@ fn world() -> Genesis {
     let critter = g.population.lift(1).unwrap();
     let lineage = critter.lineage.clone();
     critter.accounts = BTreeMap::from([(RESERVE.into(), 3), (TISSUE.into(), 10)]);
-    critter.parts = BTreeMap::from([(
-        0,
-        Part {
-            shape: "part-shape:sheet".into(),
+    let sheet = isocosm::geometry::Sketch {
+        shape: "part-shape:sheet".into(),
+        part: Part {
             functions: ["function:fix", "function:secrete"]
                 .map(String::from)
                 .into(),
             ..Default::default()
         },
-    )]);
+        ..Default::default()
+    };
+    critter.embody(isocosm::geometry::Body::sketch([(0, sheet)]));
     for (key, reserve) in [(RESERVE, true), (TISSUE, false)] {
         let kind = AccountKind::Matter {
             lineage: lineage.clone(),
@@ -309,8 +310,8 @@ fn allocation_moves_the_bound_parts_cells_within_its_capacity() {
     // reserve, since it stores nothing (rulings 463 and 504).
     let mut g = world();
     let critter = g.population.lift(1).unwrap();
-    let sheet = critter.parts.get_mut(&0).unwrap();
-    sheet.half_extent = [3, 3, 1];
+    critter.body.as_mut().unwrap().parts[0].half_extent = [3, 3, 1];
+    let sheet = critter.parts.get_mut(&PartId(0)).unwrap();
     sheet.cells = BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]);
     sheet.matter = BTreeMap::from([(TISSUE.into(), 10)]);
     critter.accounts.clear();
@@ -329,7 +330,7 @@ fn allocation_moves_the_bound_parts_cells_within_its_capacity() {
     with(&mut g, act("test:free", fix(), vec![allot(None, 1)]));
     let mut sim = Simulation::new(g, Execution::Individuals).unwrap();
     let cells = |sim: &Simulation| {
-        sim.state().population.get(1).unwrap().parts[&0]
+        sim.state().population.get(1).unwrap().parts[&PartId(0)]
             .cells
             .clone()
     };

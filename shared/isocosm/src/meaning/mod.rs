@@ -8,6 +8,7 @@
 
 use crate::{
     Result,
+    anatomy::Half,
     rules::{
         AccountKind, Binding, BodyRules, Conversion, Development, Effect, Need, Query, Reading,
         Rules, Seeding, expressing,
@@ -54,8 +55,10 @@ pub(crate) fn body_reading(
         },
         _ => {},
     }
-    let living = body.parts.values().filter(|p| !p.severed);
-    let total: u128 = living.map(|p| r.of_part(p, rules.body())).sum();
+    let living = body.living();
+    let total: u128 = living
+        .map(|(id, p)| r.of_part(body.extent(id), p, rules.body()))
+        .sum();
     i64::try_from(total).unwrap_or(i64::MAX)
 }
 
@@ -67,7 +70,7 @@ pub(crate) fn carried(
     r: &Reading,
     rules: &Rules,
     d: Option<&Development>,
-    bitten: Option<Id>,
+    bitten: Option<PartId>,
 ) -> i64 {
     let Reading::Carried {
         function,
@@ -130,7 +133,7 @@ pub(crate) struct Scene<'a> {
     pub actor: Option<&'a Entity>,
     pub target: Named<'a>,
     /// The actor's part the process binds, if it binds one.
-    pub part: Option<Id>,
+    pub part: Option<PartId>,
     pub site: Option<&'a Site>,
     pub tick: Tick,
     pub related: &'a dyn Fn(&Key) -> Result<bool>,
@@ -159,6 +162,17 @@ impl<'a> Scene<'a> {
         let actor = self.body(Binding::Actor)?;
         Ok(actor.parts.get(&id).ok_or("bound part missing")?)
     }
+    /// The bound part's half-extents, its geometry the document's (674).
+    fn half(&self) -> Result<crate::anatomy::Half> {
+        let id = self.part.ok_or("no part is bound")?;
+        Ok(self.body(Binding::Actor)?.extent(id))
+    }
+    /// Whether the bound part lives.
+    fn part_lives(&self) -> Result<bool> {
+        let id = self.part.ok_or("no part is bound")?;
+        self.part()?;
+        Ok(self.body(Binding::Actor)?.lives(id))
+    }
     /// What a binding holds of `key`: a body's own matter through its parts
     /// (ruling 504), the bound part's own ledger, or the site's.
     fn held(&self, b: Binding, key: &str) -> Result<u64> {
@@ -182,7 +196,7 @@ impl<'a> Scene<'a> {
 pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
     Ok(match q {
         Query::Alive(Binding::Part) => {
-            let v = !s.part()?.severed;
+            let v = s.part_lives()?;
             (v, v.to_string())
         },
         Query::Alive(b) => {
@@ -222,9 +236,10 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             part,
         } => {
             let b = s.body(*who)?;
-            let p = b.parts.get(part);
+            let id = PartId(u32::try_from(*part).unwrap_or(u32::MAX));
+            let p = b.parts.get(&id);
             (
-                b.body_revision == *revision && p.is_some_and(|p| !p.severed),
+                b.body_revision == *revision && b.lives(id),
                 format!("revision {}: {p:?}", b.body_revision),
             )
         },
@@ -262,7 +277,7 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             match expressing(actor, function) {
                 Some(id) => (
                     true,
-                    format!("part {id} at revision {}", actor.body_revision),
+                    format!("part {} at revision {}", id.0, actor.body_revision),
                 ),
                 None => (false, "no live part".into()),
             }
@@ -280,14 +295,16 @@ fn computed(x: &crate::rules::Expr, s: &Scene) -> Result<i64> {
                 i64::try_from(s.held(who, key)?).map_err(|e| e.to_string())
             },
             (r, Binding::Part) => {
-                Ok(i64::try_from(r.of_part(s.part()?, s.rules.body())).unwrap_or(i64::MAX))
+                let read = r.of_part(s.half()?, s.part()?, s.rules.body());
+                Ok(i64::try_from(read).unwrap_or(i64::MAX))
             },
             (r, who) => Ok(body_reading(s.body(who)?, r, s.rules, s.lineages)),
         }
     };
-    let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
-        let living = s.body(who)?.parts.values().filter(|p| !p.severed);
-        Ok((living.cloned().collect(), s.rules.body()))
+    let mut parts = |who: Binding| -> Result<(Vec<(Half, Part)>, BodyRules)> {
+        let body = s.body(who)?;
+        let living = body.living().map(|(id, p)| (body.extent(id), p.clone()));
+        Ok((living.collect(), s.rules.body()))
     };
     let mut draw = |_: u64, _: u8| -> Result<u64> { Err("a requirement draws nothing".into()) };
     x.eval_in(&mut read, &mut draw, &mut parts)
@@ -356,7 +373,7 @@ pub(crate) trait Parties {
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()>;
     fn body(&mut self, who: Binding) -> Result<&mut Entity>;
     /// The actor's body and the part the process binds in it.
-    fn part(&mut self) -> Result<(&mut Entity, Id)>;
+    fn part(&mut self) -> Result<(&mut Entity, PartId)>;
     /// Moves a condition at the site.
     fn shift(&mut self, key: &str, delta: i64) -> Result<()>;
     /// What a lineage's bodies develop from (ruling 478).
@@ -364,7 +381,7 @@ pub(crate) trait Parties {
         Err(format!("{lineage}'s bodies cannot grow here"))
     }
     /// The part the act's bite landed on, where it bit.
-    fn bitten(&self) -> Option<Id> {
+    fn bitten(&self) -> Option<PartId> {
         None
     }
     /// Bounds what the act gives `who`'s parts from here on, part by part

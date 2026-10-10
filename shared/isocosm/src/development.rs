@@ -12,11 +12,11 @@
 
 use crate::{
     Result,
+    geometry::{Body, Frame},
     rules::{Anchor, Development, Facing, Recipe, Rules, Template},
     schema::*,
 };
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 
 /// What a child drew from its recipe: each tagma's segment count, and the
 /// segments, by tagma and index, whose borne kind is absent.
@@ -70,28 +70,27 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
 }
 
 /// A part of `t` at `situs`, attached to `parent` at `offset`, holding
-/// nothing.
-fn part(t: &Template, situs: [u8; 3], parent: Option<Id>, offset: [i32; 3]) -> Part {
-    Part {
+/// nothing: its geometry and its physiology.
+fn part(t: &Template, situs: [u8; 3], parent: Option<PartId>, offset: [i32; 3]) -> (Frame, Part) {
+    let cells: std::collections::BTreeMap<Key, u32> = t
+        .cells
+        .iter()
+        .filter(|(_, n)| **n > 0)
+        .map(|(f, n)| (f.clone(), *n))
+        .collect();
+    let frame = Frame {
         parent,
         half_extent: t.half_extent,
         offset,
         situs: Some(situs),
-        cells: t
-            .cells
-            .iter()
-            .filter(|(_, n)| **n > 0)
-            .map(|(f, n)| (f.clone(), *n))
-            .collect(),
-        functions: t
-            .cells
-            .iter()
-            .filter(|(_, n)| **n > 0)
-            .map(|(f, _)| f.clone())
-            .collect(),
         shape: t.shape.clone(),
+    };
+    let part = Part {
+        functions: cells.keys().cloned().collect(),
+        cells,
         ..Default::default()
-    }
+    };
+    (frame, part)
 }
 
 /// The pivot-to-pivot offset that sets a child of half-extent `child`
@@ -103,17 +102,19 @@ pub fn flush(parent: [i32; 3], child: [i32; 3], facing: Facing) -> [i32; 3] {
     offset
 }
 
-/// The parts `soma` develops into, root first, holding nothing.
-pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<Id, Part>> {
+/// The body `soma` develops into, root first, holding nothing.
+pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
     let recipe = &d.recipe;
     if soma.segments.len() != recipe.tagmata.len() {
         return Err("a soma drawn from another recipe".into());
     }
     let kind = |k: &Key| rules.kinds.get(k).ok_or(format!("unknown kind {k}"));
-    let mut parts: BTreeMap<Id, Part> = BTreeMap::new();
+    // Each part in id order, its id its index.
+    let mut parts: Vec<(Frame, Part)> = vec![];
     // Each tagma's segments, by part id, for later tagmata to branch from.
-    let mut spines: Vec<Vec<Id>> = vec![];
-    let mut last: Option<Id> = None;
+    let mut spines: Vec<Vec<PartId>> = vec![];
+    let mut last: Option<PartId> = None;
+    let next = |parts: &Vec<(Frame, Part)>| PartId(parts.len() as u32);
     for (i, t) in recipe.tagmata.iter().enumerate() {
         let segment = kind(&t.segment)?;
         let mut spine = vec![];
@@ -121,7 +122,7 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
             let parent = match (spine.last(), t.parent) {
                 (Some(prev), _) => Some(*prev),
                 (None, Some(p)) => {
-                    let from: &Vec<Id> = &spines[usize::from(p)];
+                    let from: &Vec<PartId> = &spines[usize::from(p)];
                     Some(match t.anchor {
                         Anchor::Base => from[0],
                         Anchor::Middle => from[from.len() / 2],
@@ -131,11 +132,15 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
                 (None, None) => last,
             };
             let offset = match parent {
-                Some(p) => flush(parts[&p].half_extent, segment.half_extent, t.facing),
+                Some(p) => flush(
+                    parts[p.0 as usize].0.half_extent,
+                    segment.half_extent,
+                    t.facing,
+                ),
                 None => [0; 3],
             };
-            let id = parts.len() as Id;
-            parts.insert(id, part(segment, [i as u8, s, 0], parent, offset));
+            let id = next(&parts);
+            parts.push(part(segment, [i as u8, s, 0], parent, offset));
             spine.push(id);
             last = Some(id);
             let Some(bears) = &t.bears else { continue };
@@ -155,13 +160,19 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<BTreeMap<I
                 for socket in &sockets {
                     let mut offset = flush(segment.half_extent, borne.half_extent, *socket);
                     offset[run] += along;
-                    let at = parts.len() as Id;
                     slot = slot.checked_add(1).ok_or("too many borne parts")?;
-                    parts.insert(at, part(borne, [i as u8, s, slot], Some(id), offset));
+                    parts.push(part(borne, [i as u8, s, slot], Some(id), offset));
                 }
             }
         }
         spines.push(spine);
     }
-    Ok(parts)
+    let frames: Vec<Frame> = parts.iter().map(|(f, _)| f.clone()).collect();
+    let doc = crate::geometry::assemble(&frames)?;
+    let parts = parts
+        .into_iter()
+        .enumerate()
+        .map(|(i, (_, p))| (PartId(i as u32), p))
+        .collect();
+    Ok(Body { doc, parts })
 }

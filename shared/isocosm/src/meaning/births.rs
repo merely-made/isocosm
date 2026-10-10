@@ -15,6 +15,7 @@ use super::*;
 use crate::{
     anatomy,
     development::{self, Soma},
+    geometry::{Body, Frame},
     growth,
     rules::expressing,
 };
@@ -64,16 +65,11 @@ pub(crate) fn bear(
     Ok((l, shares))
 }
 
-/// A child of `parent` born at `tick`, holding nothing, with `parts` and
+/// A child of `parent` born at `tick`, holding nothing, with `body` and
 /// the segments its soma drew.
-pub(crate) fn newborn(
-    parent: &Entity,
-    parts: BTreeMap<Id, Part>,
-    soma: Vec<u8>,
-    tick: Tick,
-) -> Entity {
+pub(crate) fn newborn(parent: &Entity, body: Body, soma: Vec<u8>, tick: Tick) -> Entity {
     let mut child = parent.clone();
-    child.parts = parts;
+    child.embody(body);
     child.soma = soma;
     child.accounts = Ledger::new();
     child.born = tick;
@@ -93,13 +89,25 @@ pub(crate) fn hatch(
     soma: Soma,
     (clutch, share): (bool, u64),
     (tick, young): (Tick, Option<&Key>),
-) -> Result<(Entity, Vec<(Id, u64)>)> {
-    let mut parts = development::develop(rules, &l.d, &soma)?;
+) -> Result<(Entity, Vec<(PartId, u64)>)> {
+    let mut body = development::develop(rules, &l.d, &soma)?;
     if clutch {
-        parts.retain(|_, p| p.situs == Some([0, 0, 0]));
+        // An egg is its recipe's root alone, which development puts first.
+        let root = body
+            .parts
+            .remove(&PartId(0))
+            .ok_or("a recipe with no root")?;
+        let frame = Frame {
+            situs: Some([0, 0, 0]),
+            ..frame_of(&body.doc, PartId(0))
+        };
+        body = Body {
+            doc: crate::geometry::document(&frame),
+            parts: BTreeMap::from([(PartId(0), root)]),
+        };
     }
     let seed = soma.seed;
-    let mut child = newborn(parent, parts, soma.segments, tick);
+    let mut child = newborn(parent, body, soma.segments, tick);
     born(&mut child, rules, &l.d.recipe, seed);
     child.traits.extend(young.cloned());
     let given =
@@ -113,7 +121,19 @@ pub(crate) struct Budding {
     pub lineal: Lineal,
     pub taken: Ledger,
     pub pour: u64,
-    pub severed: Option<(Id, Part)>,
+    pub severed: Option<(PartId, (Frame, Part))>,
+}
+
+/// Part `id`'s geometry in `doc`, as a frame.
+fn frame_of(doc: &BodyDocument, id: PartId) -> Frame {
+    let g = doc.part(id);
+    Frame {
+        parent: g.and_then(|g| g.attachment).map(|a| a.parent),
+        half_extent: g.map_or([0; 3], |g| g.half_extent),
+        offset: g.and_then(|g| g.attachment).map_or([0; 3], |a| a.offset),
+        situs: g.and_then(|g| g.situs),
+        shape: g.map_or(String::new(), |g| g.shape.clone()),
+    }
 }
 
 /// Pours the provision into the actor's bud marked `mark`, growing one at
@@ -127,11 +147,8 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
         return Err("nothing provisioned".into());
     }
     let actor = p.body(Binding::Actor)?;
-    let marked = actor
-        .parts
-        .iter()
-        .find(|(_, q)| !q.severed && q.traits.contains(mark));
-    let bud = match marked.map(|(id, _)| *id) {
+    let marked = actor.living().find(|(_, q)| q.traits.contains(mark));
+    let bud = match marked.map(|(id, _)| id) {
         Some(bud) => bud,
         None => {
             let host = expressing(actor, anatomy::REPRODUCE).ok_or("nothing reproduces")?;
@@ -139,35 +156,35 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
             let kind = rules.kinds.get(root).ok_or("an unknown root kind")?;
             let offset = growth::seat(actor, &l.d.policy, host, kind.half_extent, None)
                 .ok_or("no room to bud")?;
-            let id = actor.parts.keys().next_back().map_or(0, |last| last + 1);
             let cells: BTreeMap<Key, u32> = kind
                 .cells
                 .iter()
                 .filter(|(_, n)| **n > 0)
                 .map(|(f, n)| (f.clone(), *n))
                 .collect();
-            let part = Part {
+            let frame = Frame {
                 parent: Some(host),
-                traits: BTreeSet::from([mark.clone()]),
-                shape: kind.shape.clone(),
-                functions: cells.keys().cloned().collect(),
                 half_extent: kind.half_extent,
                 offset,
+                situs: None,
+                shape: kind.shape.clone(),
+            };
+            let part = Part {
+                traits: BTreeSet::from([mark.clone()]),
+                functions: cells.keys().cloned().collect(),
                 cells,
                 ..Default::default()
             };
-            actor.parts.insert(id, part);
-            id
+            actor.add_part(&frame, part)?
         },
     };
     let worth: u64 = actor
-        .parts
-        .iter()
-        .filter(|(id, q)| **id != bud && !q.severed)
-        .map(|(_, q)| anatomy::bound(q, rules, &l.provision))
+        .living()
+        .filter(|(id, _)| *id != bud)
+        .map(|(id, q)| anatomy::bound(actor.extent(id), q, rules, &l.provision))
         .sum();
     let part = &actor.parts[&bud];
-    let full = anatomy::ceiling(part, rules.body()).min(worth);
+    let full = anatomy::ceiling(actor.extent(bud), rules.body()).min(worth);
     let need = full.saturating_sub(value(&part.matter, &l.tissue));
     // Its parts full, the body's room for tissue is the bud's; what the bud
     // does not need stays provisioned.
@@ -181,7 +198,7 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
     let actor = p.body(Binding::Actor)?;
     let held = value(&actor.parts[&bud].matter, &l.tissue);
     let severed = match full > 0 && held >= full {
-        true => Some((bud, actor.parts.remove(&bud).expect("found above"))),
+        true => Some((bud, actor.take_part(bud).expect("found above"))),
         false => None,
     };
     Ok(Budding {
@@ -197,15 +214,22 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
 pub(crate) fn seedling(
     (parent, l): (&Entity, &Lineal),
     rules: &Rules,
-    (mut part, mark): (Part, &Key),
+    ((frame, mut part), mark): ((Frame, Part), &Key),
     soma: Soma,
     tick: Tick,
 ) -> Entity {
-    part.parent = None;
-    part.offset = [0; 3];
     part.traits.remove(mark);
-    part.situs = Some([0, 0, 0]);
-    let mut child = newborn(parent, BTreeMap::from([(0, part)]), soma.segments, tick);
+    let root = Frame {
+        parent: None,
+        offset: [0; 3],
+        situs: Some([0, 0, 0]),
+        ..frame
+    };
+    let body = Body {
+        doc: crate::geometry::document(&root),
+        parts: BTreeMap::from([(PartId(0), part)]),
+    };
+    let mut child = newborn(parent, body, soma.segments, tick);
     born(&mut child, rules, &l.d.recipe, soma.seed);
     child
 }
@@ -222,7 +246,7 @@ fn born(child: &mut Entity, rules: &Rules, recipe: &crate::rules::Recipe, seed: 
     };
     let varied: Vec<Varied> = child.varied.iter().filter(|v| within(v)).cloned().collect();
     child.varied = varied;
-    crate::systems::inherit(&mut child.parts, &child.varied);
+    crate::systems::inherit(child);
     crate::systems::vary(child, rules, recipe, seed);
     crate::systems::riff(child, recipe, seed);
 }

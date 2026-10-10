@@ -43,33 +43,28 @@ struct Build {
 
 fn build(e: &Entity) -> Build {
     let b = BodyRules::default();
-    let living = || e.parts.values().filter(|p| !p.severed);
+    let living = || e.living().map(|(id, p)| (e.extent(id), p));
     let cells = |p: &Part, f: &str| u64::from(p.cells.get(f).copied().unwrap_or(0));
     let span = living()
-        .filter(|p| p.functions.contains("function:contract"))
-        .map(|p| {
-            u64::from(
-                p.half_extent
-                    .iter()
-                    .map(|h| h.unsigned_abs())
-                    .max()
-                    .unwrap_or(0),
-            )
-        })
+        .filter(|(_, p)| p.functions.contains("function:contract"))
+        .map(|(h, _)| u64::from(h.iter().map(|h| h.unsigned_abs()).max().unwrap_or(0)))
         .sum();
-    let measured =
-        |f: &str, m: Measure| -> u64 { living().map(|p| anatomy::share_of(p, f, m) as u64).sum() };
+    let measured = |f: &str, m: Measure| -> u64 {
+        living()
+            .map(|(h, p)| anatomy::share_of(h, p, f, m) as u64)
+            .sum()
+    };
     Build {
-        ceiling: living().map(|p| anatomy::ceiling(p, b)).sum(),
+        ceiling: living().map(|(h, _)| anatomy::ceiling(h, b)).sum(),
         span,
         gland: living()
-            .map(|p| cells(p, "function:secrete") * anatomy::cell_mass(p, b))
+            .map(|(h, p)| cells(p, "function:secrete") * anatomy::cell_mass(h, b))
             .sum(),
         store: living()
-            .map(|p| cells(p, "function:store") * anatomy::cell_mass(p, b))
+            .map(|(h, p)| cells(p, "function:store") * anatomy::cell_mass(h, b))
             .sum(),
         provision: living()
-            .map(|p| cells(p, "function:reproduce") * anatomy::cell_mass(p, b))
+            .map(|(h, p)| cells(p, "function:reproduce") * anatomy::cell_mass(h, b))
             .sum(),
         area: measured("function:fix", Measure::Area),
         volume: measured("function:intake", Measure::Volume),
@@ -343,7 +338,7 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
                 let rules = g.rules.clone();
                 let frond = g.population.lift(target).unwrap();
                 let before = frond.clone();
-                let part = frond.parts.get_mut(&0).unwrap();
+                let part = frond.parts.get_mut(&PartId(0)).unwrap();
                 let fixing = part.cells["function:fix"];
                 let cells = fixing.min(4);
                 part.cells.insert("function:fix".into(), fixing - cells);
@@ -580,4 +575,3 @@ fn averaging_flattens_every_own_account_at_each_site() {
     // The control: some site held producers in more than one state.
     assert!(spread > 0, "no class to flatten");
 }
-

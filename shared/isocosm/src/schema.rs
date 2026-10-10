@@ -4,6 +4,8 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+pub use isometer_core::{BodyDocument, PartId};
+
 pub type Id = u64;
 pub type Tick = u64;
 pub type Key = String;
@@ -31,54 +33,24 @@ pub enum Method {
     Normative,
 }
 
+/// A part's physiology, keyed by its id in the body's document (rulings 674
+/// and 699): its geometry, attachment, place in the plan, declared name and
+/// tombstone are the document's, read through [`crate::geometry`].
 #[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Part {
-    pub parent: Option<Id>,
     pub traits: BTreeSet<Key>,
-    pub severed: bool,
-    /// The name a part is declared by (rulings 276 and 494): empty in a
-    /// part from before shapes; where given, a tube or a shell, the hollows
-    /// a box cannot show, or the name its box and the tree read. Parts
-    /// without one serialize and hash as before the field existed.
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub shape: Key,
     /// The catalogue functions this part expresses (ruling 338), any of
     /// them on any shape (ruling 492).
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub functions: BTreeSet<Key>,
-    /// The minimal body (ruling 453), each field absent in parts without it,
-    /// which serialize and hash as before: the part's half-extents in
-    /// voxels, from which its cells, their mass and its measurements are
-    /// read (rulings 460 and 493);
-    #[serde(default, skip_serializing_if = "is_zero_extent")]
-    pub half_extent: [i32; 3],
-    /// Where it attaches: its pivot from its parent's, in the parent's
-    /// frame (rulings 462 and 510); nought at a root.
-    #[serde(default, skip_serializing_if = "is_zero_extent")]
-    pub offset: [i32; 3],
-    /// Where in its lineage's recipe it develops (252): tagma, segment, and
-    /// nought for the segment or one more than the borne part's place.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub situs: Option<[u8; 3]>,
-    /// the cells each function it expresses holds (X6's allocation), never
-    /// more in all than its capacity;
+    /// The cells each function it expresses holds (X6's allocation), never
+    /// more in all than its capacity.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub cells: BTreeMap<Key, u32>,
-    /// and the matter it holds, its own ledger (ruling 504): its tissue,
-    /// and its reserve where it stores.
+    /// The matter it holds, its own ledger (ruling 504): its tissue, and its
+    /// reserve where it stores.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub matter: Ledger,
-}
-
-impl Part {
-    /// Whether the part has a body to hold matter: a box of extents.
-    pub fn bodied(&self) -> bool {
-        self.half_extent != [0; 3]
-    }
-}
-
-fn is_zero_extent(value: &[i32; 3]) -> bool {
-    *value == [0; 3]
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -104,7 +76,11 @@ pub struct Entity {
     pub born: Tick,
     pub alive: bool,
     pub body_revision: u64,
-    pub parts: BTreeMap<Id, Part>,
+    /// Its body's geometry (674): isometer's document, absent in bodies
+    /// whose parts have none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub body: Option<BodyDocument>,
+    pub parts: BTreeMap<PartId, Part>,
     pub traits: BTreeSet<Key>,
     pub accounts: Ledger,
     pub skills: BTreeMap<Key, u64>,

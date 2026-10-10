@@ -26,7 +26,7 @@ pub enum Holder {
     Entity(Id),
     /// A member's part, holding its own ledger (ruling 504), counted as its
     /// member is.
-    Part(Id, Id),
+    Part(Id, crate::schema::PartId),
     /// The dev source (ruling 344): outside the world, holding nothing.
     Dev,
 }
@@ -111,7 +111,7 @@ pub(crate) struct Routed {
     pub body: Id,
     pub key: Key,
     pub give: bool,
-    pub parts: Vec<(Id, u64)>,
+    pub parts: Vec<(crate::schema::PartId, u64)>,
 }
 
 /// An act's legs with each side that moved a body's own matter split among
@@ -122,7 +122,8 @@ pub(crate) fn split(legs: Vec<Leg>, routed: Vec<Routed>) -> Vec<Leg> {
     if routed.is_empty() {
         return legs;
     }
-    let mut queues: BTreeMap<(Id, Key, bool), VecDeque<(Id, u64)>> = BTreeMap::new();
+    let mut queues: BTreeMap<(Id, Key, bool), VecDeque<(crate::schema::PartId, u64)>> =
+        BTreeMap::new();
     for r in routed {
         queues
             .entry((r.body, r.key, r.give))

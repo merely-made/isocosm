@@ -37,28 +37,35 @@ fn world(soil: u64) -> Genesis {
     g.rules.traits.insert(CANDIDATE.into());
     let critter = g.population.lift(1).unwrap();
     critter.traits.insert(CANDIDATE.into());
-    critter.parts = BTreeMap::from([
+    use isocosm::geometry::{Body, Sketch};
+    critter.embody(Body::sketch([
         (
             0,
-            Part {
+            Sketch {
                 shape: "part-shape:sheet".into(),
-                functions: BTreeSet::from([FIX.into()]),
                 half_extent: [6, 3, 1],
-                cells: BTreeMap::from([(FIX.into(), 8)]),
+                part: Part {
+                    functions: BTreeSet::from([FIX.into()]),
+                    cells: BTreeMap::from([(FIX.into(), 8)]),
+                    ..Default::default()
+                },
                 ..Default::default()
             },
         ),
         (
             1,
-            Part {
+            Sketch {
                 shape: "part-shape:lump".into(),
-                functions: BTreeSet::from(["function:intake".into()]),
                 half_extent: [2, 1, 1],
-                cells: BTreeMap::from([("function:intake".into(), 2)]),
+                part: Part {
+                    functions: BTreeSet::from(["function:intake".into()]),
+                    cells: BTreeMap::from([("function:intake".into(), 2)]),
+                    ..Default::default()
+                },
                 ..Default::default()
             },
         ),
-    ]);
+    ]));
     // Its own matter lives in its frond now that the frond has a body
     // (ruling 504).
     let lineage = critter.lineage.clone();
@@ -74,7 +81,12 @@ fn world(soil: u64) -> Genesis {
     let critter = g.population.lift(1).unwrap();
     for k in own {
         let v = critter.accounts.remove(&k).unwrap_or(0);
-        critter.parts.get_mut(&0).unwrap().matter.insert(k, v);
+        critter
+            .parts
+            .get_mut(&PartId(0))
+            .unwrap()
+            .matter
+            .insert(k, v);
     }
     for site in g.sites.values_mut() {
         site.accounts.insert("world:soil".into(), soil);
@@ -149,8 +161,8 @@ fn gland() -> Process {
     )
 }
 
-fn cells(sim: &Simulation, part: Id) -> BTreeMap<Key, u32> {
-    sim.state().population.get(1).unwrap().parts[&part]
+fn cells(sim: &Simulation, part: u32) -> BTreeMap<Key, u32> {
+    sim.state().population.get(1).unwrap().parts[&PartId(part)]
         .cells
         .clone()
 }
@@ -164,7 +176,7 @@ fn express_gland(soil: u64) -> (BTreeMap<Key, u32>, BTreeSet<Key>) {
         sim.execute(1, None, "test:gland", None).outcome,
         Outcome::Accepted
     );
-    let part = &sim.state().population.get(1).unwrap().parts[&0];
+    let part = &sim.state().population.get(1).unwrap().parts[&PartId(0)];
     (part.cells.clone(), part.functions.clone())
 }
 

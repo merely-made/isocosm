@@ -19,17 +19,13 @@ use std::collections::BTreeSet;
 const SENSE: &str = "function:sense";
 
 /// The living parts filling `role` in the systems naming `function` there.
-fn filled(e: &Entity, (function, role): (&str, Role), bitten: Option<Id>) -> BTreeSet<Id> {
+fn filled(e: &Entity, (function, role): (&str, Role), bitten: Option<PartId>) -> BTreeSet<PartId> {
     union(e, function, role).map_or_else(BTreeSet::new, |u| filling(e, u.role(role), bitten))
 }
 
 /// The parts a route from `from` reaches.
-fn reach(e: &Entity, rules: &Rules, from: Id) -> BTreeSet<Id> {
-    let open = |id: &Id| {
-        e.parts
-            .get(id)
-            .is_some_and(|p| !p.severed && capacity(p, rules) > 0)
-    };
+fn reach(e: &Entity, rules: &Rules, from: PartId) -> BTreeSet<PartId> {
+    let open = |id: &PartId| e.lives(*id) && capacity(e.extent(*id), &e.parts[id], rules) > 0;
     let mut seen = BTreeSet::new();
     if !open(&from) {
         return seen;
@@ -37,9 +33,8 @@ fn reach(e: &Entity, rules: &Rules, from: Id) -> BTreeSet<Id> {
     seen.insert(from);
     let mut queue = vec![from];
     while let Some(at) = queue.pop() {
-        let parent = e.parts[&at].parent;
-        let children = e.parts.iter().filter(|(_, p)| p.parent == Some(at));
-        for next in parent.into_iter().chain(children.map(|(id, _)| *id)) {
+        let parent = e.parent_of(at);
+        for next in parent.into_iter().chain(e.children_of(at)) {
             if open(&next) && seen.insert(next) {
                 queue.push(next);
             }
@@ -56,9 +51,9 @@ pub fn joined(
     rules: &Rules,
     first: (&str, Role),
     second: (&str, Role),
-    bitten: Option<Id>,
+    bitten: Option<PartId>,
 ) -> (u64, u64) {
-    let cells = |id: &Id| {
+    let cells = |id: &PartId| {
         e.parts[id]
             .cells
             .values()
@@ -71,13 +66,10 @@ pub fn joined(
         return (0, total);
     }
     let firsts = filled(e, first, bitten);
-    let senses = e
-        .parts
-        .iter()
-        .filter(|(_, p)| !p.severed && p.functions.contains(SENSE));
+    let senses = e.living().filter(|(_, p)| p.functions.contains(SENSE));
     let mut reached = BTreeSet::new();
     for (id, _) in senses {
-        let from = reach(e, rules, *id);
+        let from = reach(e, rules, id);
         if firsts.iter().any(|f| from.contains(f)) {
             reached.extend(from);
         }

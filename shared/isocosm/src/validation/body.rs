@@ -137,9 +137,11 @@ pub(super) fn process(p: &Process) -> Result<()> {
 /// A part's declared shape is one the world names, or none in a part from
 /// before shapes, and each function it expresses is in the catalogue, on
 /// whatever shape (ruling 492); it holds only matter.
-pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
-    if !part.shape.is_empty() && !rules.shapes.contains(&part.shape) {
-        return Err(format!("unknown part shape {}", part.shape));
+pub(crate) fn part(rules: &Rules, e: &Entity, id: PartId) -> Result<()> {
+    let part = &e.parts[&id];
+    let shape = e.declared(id);
+    if !shape.is_empty() && !rules.shapes.iter().any(|s| s == shape) {
+        return Err(format!("unknown part shape {shape}"));
     }
     for f in &part.functions {
         if !rules.functions.contains_key(f) {
@@ -161,7 +163,7 @@ pub(crate) fn part(rules: &Rules, part: &Part) -> Result<()> {
         ));
     }
     let held: u64 = part.cells.values().map(|c| u64::from(*c)).sum();
-    let capacity = crate::anatomy::capacity(part);
+    let capacity = crate::anatomy::capacity(e.extent(id));
     if held > u64::from(capacity) {
         return Err(format!(
             "a part holds {held} cells in a capacity of {capacity}"

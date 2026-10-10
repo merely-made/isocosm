@@ -96,11 +96,10 @@ pub fn default_kinds() -> BTreeMap<Key, Template> {
     kinds
         .into_iter()
         .map(|(name, half_extent, process)| {
-            let part = Part {
-                half_extent,
-                ..Default::default()
-            };
-            let cells = BTreeMap::from([(format!("function:{process}"), anatomy::capacity(&part))]);
+            let cells = BTreeMap::from([(
+                format!("function:{process}"),
+                anatomy::capacity(half_extent),
+            )]);
             let template = Template {
                 half_extent,
                 cells,
@@ -448,7 +447,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             &d.recipe,
             crate::draw(seed, "founder-soma", &[*first]),
         );
-        e.parts = develop(&rules, &d, &drawn)?;
+        e.embody(develop(&rules, &d, &drawn)?);
         e.soma = drawn.segments;
         let own: Vec<Key> = e
             .accounts

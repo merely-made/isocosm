@@ -91,7 +91,7 @@ impl Staged<'_> {
                 .legs
                 .extend(flows::poured(actor, b.taken, poured));
         }
-        let Some((bud, part)) = b.severed else {
+        let Some((bud, (frame, part))) = b.severed else {
             return Ok(false);
         };
         let id = self.next_child()?;
@@ -99,14 +99,20 @@ impl Staged<'_> {
             for (key, n) in part.matter.iter().filter(|(_, n)| **n > 0) {
                 self.stage.legs.push(Leg {
                     from: (Holder::Part(self.stage.actor, bud), key.clone()),
-                    to: (Holder::Part(id, 0), key.clone()),
+                    to: (Holder::Part(id, PartId(0)), key.clone()),
                     amount: *n,
                 });
             }
         }
         let soma = self.soma(&b.lineal, id);
         let tick = self.sim.state.tick;
-        let child = births::seedling((self.actor(), &b.lineal), rules, (part, mark), soma, tick);
+        let child = births::seedling(
+            (self.actor(), &b.lineal),
+            rules,
+            ((frame, part), mark),
+            soma,
+            tick,
+        );
         self.relate(id);
         self.stage.births.push(child);
         Ok(true)
