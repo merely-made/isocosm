@@ -130,7 +130,7 @@ pub use program::{
 };
 pub use record::{Feat, Mark, Scale, WorldRecord};
 pub use rng::Rng;
-pub use rules::{DeepTimeSpan, TROPHIC_GRAMMAR_REVISION, WorldRules};
+pub use rules::{TROPHIC_GRAMMAR_REVISION, WorldRules};
 pub use score::{Reading, readings};
 pub use snapshot::{SnapshotError, restore, restore_under, snapshot, state_hash};
 pub use species::{InitialTissueRecipe, Lineages, Species, TissueRecipeError};

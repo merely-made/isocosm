@@ -13,7 +13,8 @@
 //! deep-time span (D7a) and reports the handover.
 
 use isocosm::legacy::mesocosm::world::generation::Request;
-use isocosm::legacy::mesocosm::{DeepTimeSpan, Founding, History, Intent, World};
+use isocosm::legacy::mesocosm::{Founding, History, Intent, World};
+use isocosm::rules::DeepTimeSpan;
 use std::collections::BTreeSet;
 use std::time::Instant;
 

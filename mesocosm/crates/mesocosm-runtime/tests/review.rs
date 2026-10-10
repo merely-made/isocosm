@@ -16,7 +16,7 @@
 use std::path::{Path, PathBuf};
 
 use isocosm::legacy::mesocosm::discovery::HUNGER_TICKS;
-use isocosm::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::{
     Appendage, Attachment, Intent, Provenance, Recipe, Tagma, Trend, VolumeRef, World, Yaw,
 };
@@ -120,11 +120,7 @@ fn at_a_boundary(seed: u64) -> World {
         .lineages_mut()
         .set_recipe(species, Recipe::of(vec![Tagma::new(1, Appendage::Plate)]));
 
-    let mut world = world.with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 1 })
-            .scoring_over(4),
-    );
+    let mut world = world.with_rules(WorldRules::native().timed(1).scoring_over(4));
     world.apply(Intent::Idle);
     assert!(world.at_boundary());
     world

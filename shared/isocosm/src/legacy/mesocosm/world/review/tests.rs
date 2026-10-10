@@ -15,15 +15,11 @@
 
 use super::*;
 use crate::legacy::mesocosm::organism::ecology::OFFSPRING_COST;
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
 
 /// A world whose scoring window is short enough that a test can afford several.
 fn brisk(seed: u64, founders: u32) -> World {
-    World::new(seed, founders).with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 8 })
-            .scoring_over(4),
-    )
+    World::new(seed, founders).with_rules(WorldRules::native().timed(8).scoring_over(4))
 }
 
 fn played(world: &World) -> SpeciesId {

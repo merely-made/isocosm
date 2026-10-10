@@ -542,7 +542,7 @@ impl World {
         if !revising {
             self.at_boundary = false;
         }
-        if !self.scoring && (demanded || self.rules.epoch.spent(self.tick - self.epoch_began)) {
+        if !self.scoring && (demanded || self.rules.epoch_spent(self.tick - self.epoch_began)) {
             self.epoch += 1;
             self.epoch_began = self.tick;
             // Set before the round, so every unplayed line commits through the

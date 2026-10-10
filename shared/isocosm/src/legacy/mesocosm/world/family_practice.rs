@@ -11,7 +11,8 @@ use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette};
 use crate::legacy::mesocosm::discovery::{ConditionId, conditions};
 use crate::legacy::mesocosm::graft::Crossing;
 use crate::legacy::mesocosm::organism::{OrganismId, Stage};
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
+use crate::rules::EpochRule;
 
 use super::{Founding, Intent, World};
 

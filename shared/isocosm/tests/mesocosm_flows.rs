@@ -415,7 +415,7 @@ fn a_filially_expressed_birth_reconciles_to_the_milligram() {
     // ticks. Every tick from here ends one, boundaries and all.
     let mut world = world.with_rules(
         isocosm::legacy::mesocosm::WorldRules::native()
-            .ending(isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: 1 })
+            .timed(1)
             .scoring_over(2),
     );
     world.apply(Intent::Idle);

@@ -310,3 +310,21 @@ fn a_plate_is_not_an_actuator() {
     // world is what fixing is, and it is still not an arm.
     assert!(body.performs(Process::Fix), "and a plate fixes");
 }
+
+#[test]
+fn declaration_order_is_not_rule_bearing() {
+    // A manifest may list its files in any order and lower to one ruleset.
+    let mut reversed: Vec<_> = Registry::native().all().cloned().collect();
+    reversed.reverse();
+    let admitted = Registry::admit(reversed).expect("no collision");
+    assert_eq!(admitted, *Registry::native(), "canonical order is restored");
+    assert_eq!(admitted.digest(), Registry::native().digest());
+}
+
+#[test]
+fn a_repeated_qualified_id_is_refused() {
+    let mut defs: Vec<_> = Registry::native().all().cloned().collect();
+    let clash = defs[0].clone();
+    defs.push(clash.clone());
+    assert_eq!(Registry::admit(defs), Err(clash.id));
+}

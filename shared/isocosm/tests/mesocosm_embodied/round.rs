@@ -16,7 +16,7 @@
 
 use isocosm::legacy::mesocosm::discovery::HUNGER_TICKS;
 use isocosm::legacy::mesocosm::history::Event;
-use isocosm::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::{Intent, OrganismId, Stage};
 
 use super::bulk_world;
@@ -58,11 +58,7 @@ fn an_unplayed_line_takes_its_turn_at_the_boundary_and_its_next_birth_expresses(
     // To the next boundary, on a budget short enough for a test. The scoring
     // window is shortened with it: what this test is about is the round, and
     // the shipped window's own behaviour is receipted at demo scale.
-    let mut world = world.with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 1 })
-            .scoring_over(240),
-    );
+    let mut world = world.with_rules(WorldRules::native().timed(1).scoring_over(240));
     world.apply(Intent::Idle);
 
     let round = world.last_round().clone();

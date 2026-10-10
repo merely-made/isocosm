@@ -14,14 +14,13 @@ use super::*;
 use crate::legacy::mesocosm::flow::{Account, Process};
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::Stage;
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
-use crate::legacy::mesocosm::world::Intent;
+use crate::legacy::mesocosm::{rules::WorldRules, world::Intent};
+use crate::rules::EpochRule;
 
-/// A world whose epoch budget is long enough that nothing reaches a boundary
-/// by itself inside a test — so a boundary that happens is one somebody asked
-/// for.
-fn unhurried(seed: u64, founders: u32, epoch: EpochRule) -> World {
-    World::new(seed, founders).with_rules(WorldRules::native().ending(epoch).scoring_over(2))
+/// A world under `rules`, its budget too long for a boundary to arrive by
+/// itself, so one that happens is one somebody asked for.
+fn unhurried(seed: u64, founders: u32, rules: WorldRules) -> World {
+    World::new(seed, founders).with_rules(rules.scoring_over(2))
 }
 
 /// The four are named as dev intents and nothing else is.
@@ -58,7 +57,7 @@ fn the_four_dev_intents_are_named_as_such() {
 /// would have run, and the budget restarts from this tick.
 #[test]
 fn ending_the_epoch_on_demand_runs_the_timed_boundary_early() {
-    let mut world = unhurried(11, 40, EpochRule::Timed { ticks: 1_000 });
+    let mut world = unhurried(11, 40, WorldRules::native().timed(1_000));
     world.apply(Intent::Idle);
     assert_eq!(world.epoch, 0, "the budget is nowhere near spent");
     assert!(!world.at_boundary());
@@ -88,7 +87,8 @@ fn ending_the_epoch_on_demand_runs_the_timed_boundary_early() {
 /// Under `PlayerTriggered` the epoch ends on the demand and on nothing else.
 #[test]
 fn a_player_triggered_epoch_ends_only_on_the_demand() {
-    let mut world = unhurried(11, 40, EpochRule::PlayerTriggered);
+    let on_demand = WorldRules::native().ending(EpochRule::PlayerTriggered);
+    let mut world = unhurried(11, 40, on_demand);
     assert!(world.epoch_rule().built(), "DT3 built it");
     for _ in 0..400 {
         world.apply(Intent::Idle);
@@ -108,7 +108,7 @@ fn a_player_triggered_epoch_ends_only_on_the_demand() {
 /// A `Gated` world refuses the demand, and names the rule that refused.
 #[test]
 fn a_gated_world_refuses_the_demand_by_name() {
-    let mut world = unhurried(11, 40, EpochRule::Gated);
+    let mut world = unhurried(11, 40, WorldRules::native().ending(EpochRule::Gated));
     let outcome = world.apply(Intent::EndEpoch);
     assert_eq!(
         outcome,
@@ -136,7 +136,7 @@ fn a_gated_world_refuses_the_demand_by_name() {
 #[test]
 fn the_demand_and_the_spent_budget_leave_the_same_world() {
     const BUDGET: u64 = 60;
-    let rule = EpochRule::Timed { ticks: BUDGET };
+    let rule = WorldRules::native().timed(BUDGET);
 
     // The budget's own door: nobody asks, and the epoch ends when it is spent.
     let mut by_budget = unhurried(11, 40, rule);

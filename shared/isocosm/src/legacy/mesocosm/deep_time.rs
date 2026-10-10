@@ -15,8 +15,8 @@
 
 use std::fmt;
 
-use crate::legacy::mesocosm::rules::EpochRule;
 use crate::legacy::mesocosm::{History, Intent, World};
+use crate::rules::{DeepTimeSpan, EpochRule, deep_time_ceiling};
 
 pub use hagiograph::{DeepTime, Handover};
 
@@ -89,14 +89,10 @@ impl hagiograph::Epochal for Unheld<'_> {
 ///
 /// Every other rule never closes an epoch unasked: `Gated` has no condition
 /// yet, `PlayerTriggered` waits for a demand deep time never makes, and a
-/// zero-tick budget is never spent (`EpochRule::spent`).
-fn ceiling(rule: EpochRule, epochs: u32) -> Result<u64, DeepTimeError> {
-    match rule {
-        EpochRule::Timed { ticks } if ticks > 0 => {
-            Ok(u64::from(epochs).saturating_add(1).saturating_mul(ticks))
-        },
-        rule => Err(DeepTimeError::NeverCloses { rule, epochs }),
-    }
+/// zero-tick budget is never spent. Native Isocosm's ceiling, the same rule.
+fn ceiling(rule: EpochRule, ticks: u64, epochs: u32) -> Result<u64, DeepTimeError> {
+    deep_time_ceiling(rule, ticks, DeepTimeSpan { epochs })
+        .map_err(|_| DeepTimeError::NeverCloses { rule, epochs })
 }
 
 impl World {
@@ -115,7 +111,7 @@ impl World {
         let max_ticks = match span.epochs {
             0 => 0,
             epochs => {
-                let max_ticks = ceiling(rules.epoch, epochs)?;
+                let max_ticks = ceiling(rules.epoch, rules.epoch_ticks, epochs)?;
                 self.release_control();
                 // No focus, no near tier, for the whole span (ruled by the
                 // project owner, 2026-09-16): the ordinary tier update never

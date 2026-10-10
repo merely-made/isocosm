@@ -210,9 +210,7 @@ mod tests {
     #[test]
     fn a_restore_under_a_different_epoch_rule_is_refused_by_name() {
         let native = crate::legacy::mesocosm::rules::WorldRules::native();
-        let brisk = World::new(31, 10).with_rules(
-            native.ending(crate::legacy::mesocosm::rules::EpochRule::Timed { ticks: 250 }),
-        );
+        let brisk = World::new(31, 10).with_rules(native.timed(250));
         assert_ne!(brisk.rules().digest(), native.digest());
         assert_eq!(
             brisk.rules().processes,
