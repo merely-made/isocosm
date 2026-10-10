@@ -1,12 +1,17 @@
 # Games wing repository consolidation
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Published
+2026-09-09 and the standalone repositories archived. Its one follow-up, a
+single Cargo workspace, was an option and not a commitment; the shared build
+directory (643) took the part of it that cost disk. Nothing was left open.
+
 **Status: published; standalone repositories archived, 2026-09-09.** Isometry is the repository
 home for the Isometry tabletop, Mesocosm, and Paredros. Package names, product
 behaviour, licenses, source histories and existing uncommitted work survive.
 
 **W1, 2026-09-18:** keep. Tier: stack. Published and done; decides nothing
 about the world. Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 ## Scope and layout
@@ -180,8 +185,8 @@ visible UI raster between two tenant-master frames on the same renderer and
 asserts stable allocation count and identical tenant-master bytes. Presentation
 retains the existing maximum channel difference of 3, with one reported physical
 tenant submission, one logical producer, one graph encoder batch and one graph
-submission boundary. See [the machine receipt](../testing/platform-alignment/rg3b-single-renderer.json).
-The [source receipt](../testing/platform-alignment/rg3b-source.json) identifies
+submission boundary. See [the machine receipt](../../../testing/platform-alignment/rg3b-single-renderer.json).
+The [source receipt](../../../testing/platform-alignment/rg3b-source.json) identifies
 the actual source hashes and isolated probe lockfile. This is a GPU composition
 check, separate from full-host or headed acceptance.
 
@@ -216,7 +221,7 @@ Tabletop selects that exact commit rather than following Cleromancy main.
 All three products' all-features metadata pass the shared source-identity
 audit across 80 package names: each has at most one reachable
 identity per product, with matching identities wherever shared. Legitimate
-package absences are informational. The [saved audit output](../testing/platform-alignment/source-identities.txt)
+package absences are informational. The [saved audit output](../../../testing/platform-alignment/source-identities.txt)
 records the selected identities. Tabletop's tracked lockfile is refreshed;
 Mesocosm and Paredros keep their existing ignored-lock policy. The audit covers
 every resolved Git package from Mere, Genet and Netrender, plus critical names
@@ -238,5 +243,5 @@ packages; it preserves case-distinct JSON feature keys such as `USB` and `usb`.
 `pwsh -File scripts/tests/audit-source-identity.ps1` passes eleven regression
 cases, including case-distinct features, reachable versus unreachable duplicate
 sources, dynamically discovered platform packages, and incomplete or mismatched
-metadata. PowerShell 7 is required. The [verification record](../testing/platform-alignment/verification.json)
+metadata. PowerShell 7 is required. The [verification record](../../../testing/platform-alignment/verification.json)
 collects exact pins, metadata hashes, check results and GPU provenance.

@@ -52,7 +52,7 @@ them through actual operations rather than adding a catalog before its verbs.
 | --- | --- | --- |
 | `eponym-world::GameState` | Coordinates world, movement, bodies, admitted anatomy, items, intents and events | Continuous contact effects and terrain work must enter this accepted history |
 | `ContactWorld` | Fixed-step movement, board handling, attack/brace, integrity and grip/reach impairment; its own save | Bind runtime bodies to subjects and consume one durable body outcome |
-| ~~`EquipmentSession`~~ → the `session` host | *Retired 2026-09-15 with the body sheet* (rationale in the [genet document host plan](2026-09-13_genet_document_host_plan.md)). Its join landed: the host-selected played subject, attach/detach and stale/dead inspection are the session's own, over one `Session` rather than an authored fixture | Nothing from this row; the store it saved through survives as `eponym_client::equipment_store` with no caller |
+| ~~`EquipmentSession`~~ → the `session` host | *Retired 2026-09-15 with the body sheet* (rationale in the [genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md)). Its join landed: the host-selected played subject, attach/detach and stale/dead inspection are the session's own, over one `Session` rather than an authored fixture | Nothing from this row; the store it saved through survives as `eponym_client::equipment_store` with no caller |
 | `Simulation` | Needs, navigation, population and autonomous actions over `GameState` | Controlled-subject scheduling and coordinated real work |
 | `Projects` | Durable `Visit` goals | Material, repair, treatment and cooperation goals |
 | `Society` / `EpistemicLog` | Agreements, deeds, observations, reports and corrections | Belief- and norm-supported answers; bounded recall |
@@ -611,7 +611,7 @@ intent is rejected. The regression fixture
   `3a7b50230d447f6fa7ed6921cba019f78347d932`. New receipts use these selections.
   *Superseded 2026-09-14:* Netrender moved to `3961aca9` and the Parley, Taffy
   and IPC patches to Genet `101d9e9a`, matching Mesocosm, under the
-  [genet document host plan](2026-09-13_genet_document_host_plan.md) P0.
+  [genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md) P0.
 - 2026-09-13: full `eponym-world` suite passes **104 tests** on the aligned
   pins, including the real v3 archive, rejected-input atomicity, outer-surface
   contact ordering, lethal two-hit resolution and a survivor's available action
@@ -890,7 +890,7 @@ atomically on its first motion, not during profile admission.
 #### Presentation join (2026-09-13)
 
 The rendered-world/body-sheet join now has its own plan,
-[genet document host](2026-09-13_genet_document_host_plan.md). A renderling
+[genet document host](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md). A renderling
 tenant inside the timed-action host was proposed and rejected the same day:
 the wing presents through genet and netrender, and renderling exits Paredros
 under Mesocosm's L7. Session, movement, combat and anatomy rules stay here;

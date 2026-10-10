@@ -1,15 +1,22 @@
 # Genet host migration
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** M0 to M4
+landed 2026-09-03 and §6 closed for genet and isometry; the mere and
+woodshed bumps were those repos' work. Its Z5 note, the 820-versus-1040
+design figure Mere's ruling S60 sent here as Mark's call, is carried into
+the [VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s §7: the side panel
+diet kept 820 and fitted the panel to it.
+
 **Status:** M0 through M4 landed and committed (2026-09-03). §6 closed for genet and isometry; mere's pin is blocked on another session's migration and woodshed's bump stays deferred, both recorded in Progress. Founded from the 2026-09-02 wing assessment. First in the audit order ahead of protocol H2, because nothing headed could be receipted until the desktop built.
 
 **W1, 2026-09-18:** keep. Tier: stack, hosting. Exactly §2's boundary.
 Evaluated against the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
-**Related:** the [runtime profile plan](archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md)
+**Related:** the [runtime profile plan](../2026-09-18/2026-08-23_runtime_profile_plan.md)
 (its R2 desktop gate waits on this), the
-[perf and cambification plan](archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md)
+[perf and cambification plan](../2026-09-04/2026-07-20_perf_and_cambification_plan.md)
 (its one live item, the search and whisper text lanes, closes here), and
 genet's `docs/2026-08-09_cambium_desktop_host_g1_receipt.md` (the host this
 plan moves onto).

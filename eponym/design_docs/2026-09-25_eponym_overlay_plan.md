@@ -40,7 +40,7 @@ for the joins and lane S; the
 [memory and remembrance plan](2026-09-09_memory_and_remembrance_plan.md) for
 lanes M and H; the [world conditions plan](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md),
 which founds the sim's process definition (ruling 32); the
-[genet document host plan](2026-09-13_genet_document_host_plan.md) for the
+[genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md) for the
 host that stays Eponym's; and the
 [vessel briefs](../../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
 §2 for the camera.
@@ -340,6 +340,25 @@ done on paper; opening E1 is Mark's.
    nothing ordered Eponym and the VTT; the same question sat in the VTT
    plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
    after Mesocosm's M3, each on its own plan.
+
+## 7. Carried from archived plans (2026-10-10)
+
+Ruling 793 archived the genet document host plan to
+`archive_docs/2026-10-10/`, P0 to P5 landed; what it left open lands here.
+
+- **Physical keyboard and mouse acceptance** of the session host: open
+  until a person runs it. E4's headed loop is where it is taken.
+- **What a save is.** `eponym_client::equipment_store`
+  (`crates/eponym-client/src/equipment_store.rs`) still has no caller: an
+  immutable series of published saves, where the session writes one
+  mutable `session.save`. Which one an Eponym save is was left as a ruling,
+  not a retirement; it is E3's to put, since E3 replays a seeded run.
+- **Glyph marks in the scene** on the shared depth, a real canon, and
+  durable journey persistence: the scene half is the presentation plan's
+  L10 far marks; the canon and journeys are the
+  [wing organs plan](../../mesocosm/design_docs/2026-09-26_wing_organs_plan.md)'s.
+- **The session bin's name** (`crates/eponym-client/src/bin/session.rs`)
+  is a naming round, not a session default.
 
 ## Findings
 

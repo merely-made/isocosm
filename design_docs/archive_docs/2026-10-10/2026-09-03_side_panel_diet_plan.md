@@ -1,5 +1,12 @@
 # Side panel diet
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** All 187 text
+rows pass (2026-09-28), and the panel fits the 820 design, guarded by
+`the_side_panel_fits_the_design_height` in
+`crates/isometry-genet/src/host_zoom.rs`. Its W1 restatement, reachability
+at the smallest supported display, is carried into the [VTT overlay
+plan](../../2026-09-25_vtt_overlay_plan.md)'s §7.
+
 **Status, 2026-09-28:** All 187 rows pass at Mere `5ce144ff` / Genet `7b48f94d`. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -23,7 +30,7 @@ and prior headed/pixel evidence keep their separate scope.
 **W1, 2026-09-18:** keep. Tier: game overlay. Cuts landed; restate the target
 as reachable at the smallest supported display. Evaluated against the wing
 design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1.
 
 **Related:** the [genet host migration plan](2026-09-02_genet_host_migration_plan.md)

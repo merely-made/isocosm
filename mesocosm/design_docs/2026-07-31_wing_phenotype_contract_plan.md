@@ -1330,7 +1330,7 @@ work. Preserve existing license notices and concurrent product changes.
 ### Dependency review
 
 The following is the format-extraction baseline. The subsequent renderer and
-source migration is recorded in the [wing consolidation plan](../../design_docs/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
+source migration is recorded in the [wing consolidation plan](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
 
 The format library requires only Serde and Postcard; this slice leaves platform
 pins unchanged. Mesocosm retains primary Netrender `6f1a4fe7` and the RG3

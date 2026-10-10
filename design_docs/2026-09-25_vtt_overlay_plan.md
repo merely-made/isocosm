@@ -52,7 +52,7 @@ turns, which stay this product's; the rulesets, which are packs (ruling 41,
 the record's §5.1); or naming. **Consumes:** the record; the sim plan; the
 contract crate's [README](../shared/isocosm-overlay/README.md);
 [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) for the pillars; the
-[watchtower plan](2026-09-05_watchtower_plan.md), whose pack is the first
+[watchtower plan](archive_docs/2026-10-10/2026-09-05_watchtower_plan.md), whose pack is the first
 adventure-pack fixture; the
 [protocol hardening plan](2026-08-08_protocol_hardening_plan.md), whose
 `Intent -> Resolved` envelope is the handoff's shape at the table; the
@@ -330,6 +330,32 @@ V1 is Mark's.
    nothing ordered the VTT and Eponym; the same question sat in the Eponym
    plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
    after Mesocosm's M3, each on its own plan.
+
+## 7. Carried from archived plans (2026-10-10)
+
+Ruling 793 archived the VTT's done plans to `archive_docs/2026-10-10/`;
+what each left open lands here, so it has a live owner.
+
+- **The design height, from the genet host migration's Z5.** The fit
+  figure is 820 logical pixels (`DESIGN_SIZE` in
+  `crates/isometry-genet`), not 1040: the side panel diet made the panel
+  fit 820, and `the_side_panel_fits_the_design_height`
+  (`crates/isometry-genet/src/host_zoom.rs`) asserts its last row at or
+  above 800. Mere's ruling S60 had sent the 820-versus-1040 question here
+  as Mark's; the diet answered it by fitting the panel, so nothing is open
+  on the figure itself.
+- **Reachability at the smallest supported display,** the side panel
+  diet's W1 restatement of its target: every control reachable at the
+  smallest display the VTT supports. Open; no smallest display is named
+  yet.
+- **From the watchtower plan:** a reusable character library and Knot prose
+  editing (W5's follow-ons); initializing parties other than the session
+  party, and their tactical doorway updates (W9); independent per-party
+  map views and party-membership editing (W7). Each waits on V2's campaign
+  over a drawn world, since parties and their knowledge then come from the
+  sim. The watchtower's five failing atlas and door tests are in the
+  [after-pass plan](../mesocosm/design_docs/2026-10-10_after_pass_plan.md)'s
+  A2.
 
 ## Findings
 

@@ -27,7 +27,7 @@ truth, Paredros's P1 retarget, Isometry's board, and **isomere** — see §0.
 
 ## 0. The isomere boundary
 
-Mark ruled two names on 2026-09-14 (`eponym/design_docs/2026-09-13_genet_document_host_plan.md:176-189`).
+Mark ruled two names on 2026-09-14 (`eponym/design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md:176-189`).
 **isometer** is the game-world scene family: the slab camera, the depth join,
 voxel volumes, meshes, the body renderer, the brick tracer — everything that
 answers "what is in the world and where does it land on this raster".

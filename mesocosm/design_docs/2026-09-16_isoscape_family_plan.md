@@ -264,7 +264,7 @@ clock, and records carry no pack hash or version.
 is licensed MIT OR Apache-2.0 (`Cargo.toml:37`) while depending on MPL-2.0
 wing crates and containing an MPL-2.0 file (`construction.rs:1-2`). And the
 tabletop's consolidation plan assigns it "generator hosting, system plugins
-and campaign proposal types" (`design_docs/2026-09-09_games_wing_consolidation_plan.md:49-51`).
+and campaign proposal types" (`design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md:49-51`).
 
 ### 1.3 Paredros
 

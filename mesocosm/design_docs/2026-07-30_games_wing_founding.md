@@ -213,7 +213,7 @@ What the frame decides, and why it is here rather than only in the review:
 
 ### Isometry as an umbrella home (2026-09-09 discussion)
 
-**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
+**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
 the repository home for Mesocosm and Eponym to make interdependency easier,
 and explicitly welcomes use of all three projects. Distinguish repository
 organization, library dependency direction, and product runtime integration.

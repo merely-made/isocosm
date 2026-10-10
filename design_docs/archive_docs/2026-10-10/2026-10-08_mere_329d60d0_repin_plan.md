@@ -1,5 +1,10 @@
 # The repin onto mere `329d60d0`
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Landed
+2026-10-08. What it found on the way is gone: isomere's unused
+`cubecl-runtime` patch row is no longer in its manifest, and the
+`ambience-lease` probe retired with renderling (749). Nothing was left open.
+
 **Status, 2026-10-08:** landed on main and pushed.
 
 Carries out the wing design record's ruling 650: isocosm takes mere's

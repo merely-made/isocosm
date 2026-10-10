@@ -1,5 +1,12 @@
 # Genet document host for Paredros
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** P0 to P5
+landed 2026-09-14, and L7 has since moved Eponym onto mere's kiss3d tenant
+(749). What it left open is carried into the [Eponym overlay
+plan](../../2026-09-25_eponym_overlay_plan.md)'s §7: physical keyboard and mouse
+acceptance, whether a save is `equipment_store`'s series or the session's
+save, glyph marks in the scene, and the session bin's name.
+
 **Status, 2026-09-14:** P0 to P4 landed 2026-09-14. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -11,13 +18,13 @@ ruled explicitly.
 Right tier, landed, and the only Paredros plan whose done-conditions come
 from the product's own session; owes L7 a Paredros lane. Evaluated against
 the wing design record; see
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3.
 
 **Owns:** how Paredros presents one played session through genet and
 netrender, with movement, combat, equipment and inspection all reading the
 same `GameState`. This is the Paredros consumer of Mesocosm's
-[orthographic voxel presentation plan](../../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md)
+[orthographic voxel presentation plan](../../../../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md)
 rulings 2, 13, 14 and lane L7. It does not own the shared scene contract,
 the appearance crate (L2), ground tile layers (L4), or Livery's CSS work;
 those stay with Mesocosm and genet.
@@ -245,7 +252,7 @@ and the brick map for revision-driven rebuilds.
 ## Retiring the body sheet (2026-09-15)
 
 M5 of the
-[isomere plan](../../mesocosm/design_docs/2026-09-15_isomere_plan.md). This is
+[isomere plan](../../../../mesocosm/design_docs/2026-09-15_isomere_plan.md). This is
 the rationale the archive convention asks for. There is no home for retired
 *code* in this repository — `design_docs/archive_docs/<date>/` takes retired
 documents, and git history keeps everything else — so the body sheet is

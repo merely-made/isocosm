@@ -1348,7 +1348,7 @@ Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
 shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
 23 files, 31 references to `mesocosm_core::World`) is the only implementation
 of tracer plus live bodies plus glyphs on one depth attachment; Paredros's
-document-host plan (`eponym/design_docs/2026-09-13_genet_document_host_plan.md`,
+document-host plan (`eponym/design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md`,
 lane P1) was building a second producer over the same two renderers because
 `Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
 be a third. That is the duplicate-runs-at-one-problem case the consolidation

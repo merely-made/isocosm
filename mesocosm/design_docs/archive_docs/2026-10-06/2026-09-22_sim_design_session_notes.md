@@ -1114,7 +1114,7 @@ was published at `32edc2ad`, preserving the Conatus owner-plan commit `4fbcb727`
 The seven Isometry manifests now use that Mere revision and tested Genet
 `7a60ad79`: the ordinary side-panel test holds 187 rows, all four workspace
 checks pass, and Isocosm lift/spine plus Mesocosm spine pass 27 tests. The
-[side-panel plan](../../../../design_docs/2026-09-03_side_panel_diet_plan.md) records
+[side-panel plan](../../../../design_docs/archive_docs/2026-10-10/2026-09-03_side_panel_diet_plan.md) records
 the dependency/source controls and inherited renderer qualifications. SP3's
 native captures retain their original pins; they were not replayed here.
 

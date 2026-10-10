@@ -41,7 +41,6 @@ native package is `eponym-client`.
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | Under rewrite per W1 (ruling 31). |
 | [2026-09-09_functional_loops_plan.md](2026-09-09_functional_loops_plan.md) | Functional loops and wiring: session authority, injury and combat, saves. | Rewritten to the record 2026-09-26 (rulings 280, 314). |
 | [2026-09-09_memory_and_remembrance_plan.md](2026-09-09_memory_and_remembrance_plan.md) | Memory and remembrance: observer-relative answers, durable history, the hagiograph. | Rewritten to the record 2026-09-26 (ruling 280); F3b5 landed 2026-09-14. |
-| [2026-09-13_genet_document_host_plan.md](2026-09-13_genet_document_host_plan.md) | The presentation join: one played session through genet and netrender. | P0 to P4 landed 2026-09-14. |
 
 ## Open items
 
@@ -58,6 +57,7 @@ native package is `eponym-client`.
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-10/2026-09-13_genet_document_host_plan.md`](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md): the presentation join, P0 to P5 landed 2026-09-14; done (ruling 793), its open items in the overlay plan's §7.
 - [`2026-09-26/2026-08-07_paredros_execution_plan.md`](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md): ruling 313; F3 to F8 mapped onto the overlay plan's E2.
 - [`2026-09-26/2026-09-09_world_conditions_plan.md`](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md): ruling 315; its schema is the sim plan's §3.1.
 - [`2026-09-18/2026-08-10_r4_extraction_review.md`](archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md): retired by W1 (ruling 31).

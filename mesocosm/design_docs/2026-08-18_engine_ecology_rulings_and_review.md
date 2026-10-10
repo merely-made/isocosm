@@ -823,5 +823,5 @@ migration; the audit does not claim the three dependency graphs aligned.
 **Platform follow-up, 2026-09-09:** the separate migration is now implemented
 for Mesocosm's single renderer, with an actual-source GPU composition receipt.
 The exact source selections and remaining application/upstream gates are tracked
-in the [wing consolidation plan](../../design_docs/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
+in the [wing consolidation plan](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md#platform-alignment-follow-up-2026-09-09).
 The baseline identities above describe the audit input, not the current selection.

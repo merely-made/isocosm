@@ -1,5 +1,10 @@
 # One build directory for the repo's workspaces
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Landed
+2026-10-08 (rulings 643 to 648). The recipe is machine-local by design
+(644): a new checkout or worktree copies `.cargo/config.toml` as the section
+"The recipe" below says. Nothing was left open.
+
 **Status, 2026-10-08:** landed. The main checkout shares one build-dir
 (643 to 645), and isocosm builds at opt-level 1 everywhere it is built
 (646, 648).
