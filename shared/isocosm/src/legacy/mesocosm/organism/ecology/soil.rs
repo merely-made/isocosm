@@ -4,7 +4,7 @@
 //! Ecology's receipt for soil-owned mineralization.
 
 use crate::legacy::mesocosm::flow::{FlowEvent, Records};
-use crate::legacy::mesocosm::places::Soil;
+use crate::legacy::mesocosm::soil::Soil;
 
 pub(super) fn mineralize(soil: &mut Soil, dose_mg: u64, records: &mut Records<'_>) {
     let mut converted = Vec::new();

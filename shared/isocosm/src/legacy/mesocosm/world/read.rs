@@ -285,7 +285,7 @@ impl World {
     /// intents, never by a host reaching in. Its total plus every organism's
     /// substance and reserve is the conserved quantity TD6 rests on, which is
     /// what a conservation test reads through here.
-    pub fn soil(&self) -> &crate::legacy::mesocosm::places::Soil {
+    pub fn soil(&self) -> &crate::legacy::mesocosm::soil::Soil {
         &self.soil
     }
 

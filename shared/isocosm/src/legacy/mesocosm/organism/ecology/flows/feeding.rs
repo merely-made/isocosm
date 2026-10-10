@@ -14,7 +14,7 @@ use crate::legacy::mesocosm::flow::{Account, Ledger, Process, Records};
 use crate::legacy::mesocosm::matter::Stock;
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, OrganismId, step};
-use crate::legacy::mesocosm::places::Soil;
+use crate::legacy::mesocosm::soil::Soil;
 use crate::legacy::mesocosm::process::{IntakePort, NisKind};
 use crate::legacy::mesocosm::rng::Rng;
 use crate::legacy::mesocosm::species::Lineages;

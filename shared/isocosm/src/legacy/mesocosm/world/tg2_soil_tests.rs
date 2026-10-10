@@ -85,7 +85,7 @@ fn producer_world() -> (World, OrganismId) {
         .expect("the generated enclosure has a producer");
     world.organisms.retain(|organism| organism.id == producer);
     world.controlled = Some(producer);
-    world.soil = crate::legacy::mesocosm::places::Soil::seeded(world.soil.extent(), 0);
+    world.soil = crate::legacy::mesocosm::soil::Soil::seeded(world.soil.extent(), 0);
     let organism = world
         .organisms
         .iter_mut()

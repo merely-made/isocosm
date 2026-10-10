@@ -62,7 +62,7 @@ mod tests {
     use crate::legacy::mesocosm::flow::Ledger;
     use crate::legacy::mesocosm::matter::{Material, Stock};
     use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, step};
-    use crate::legacy::mesocosm::places::Soil;
+    use crate::legacy::mesocosm::soil::Soil;
     use crate::legacy::mesocosm::rng::Rng;
     use crate::legacy::mesocosm::species::Lineages;
 

@@ -10,7 +10,8 @@ use serde::{Deserialize, Serialize};
 use super::{ENCLOSURE, Founding, World};
 use crate::legacy::mesocosm::deep_time::DeepTimeError;
 use crate::legacy::mesocosm::matter::Material;
-use crate::legacy::mesocosm::places::{PlaceId, Soil, surface_stance_for};
+use crate::legacy::mesocosm::places::{PlaceId, surface_stance_for};
+use crate::legacy::mesocosm::soil::Soil;
 use crate::legacy::mesocosm::rules::DeepTimeSpan;
 use crate::legacy::mesocosm::{
     BodyDocument, BodyPhenotype, History, InitialTissueRecipe, Kingdom, PartPalette, Recipe, Rng,

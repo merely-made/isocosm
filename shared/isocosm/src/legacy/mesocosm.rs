@@ -66,6 +66,9 @@ pub mod rng;
 pub mod rules;
 pub mod score;
 pub mod snapshot;
+/// The enclosure's edible matter, per voxel column (TD6), the sim's own
+/// and split from places by wing ruling 703.
+pub mod soil;
 pub mod species;
 pub mod voxel_profile;
 pub mod world;

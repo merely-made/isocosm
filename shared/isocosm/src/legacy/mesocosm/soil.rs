@@ -13,7 +13,7 @@
 //! spends free energy to do the drawing, and that energy never enters this
 //! ledger.
 //!
-//! # Not the same thing as [`Ground`](super::Ground)
+//! # Not the same thing as [`Ground`](super::places::Ground)
 //!
 //! Ground holds bricks: what is solid, what can be walked on, what a
 //! projection draws. This holds milligrams: what can be *eaten out of* the

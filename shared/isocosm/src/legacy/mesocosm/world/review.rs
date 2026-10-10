@@ -193,7 +193,7 @@ impl World {
     /// So the declared ground is the **minimum** over the dispersal
     /// neighbourhood — the same square
     /// [`ecology::bear`](crate::legacy::mesocosm::organism::ecology::bear) scatters into, read
-    /// through the same [`Soil::column_at`](crate::legacy::mesocosm::places::Soil::column_at),
+    /// through the same [`Soil::column_at`](crate::legacy::mesocosm::soil::Soil::column_at),
     /// which clamps at the wall exactly as the birth's own clamp does. The
     /// quote is therefore at most what any birth in reach pays, and on uniform
     /// ground it is exactly that.
