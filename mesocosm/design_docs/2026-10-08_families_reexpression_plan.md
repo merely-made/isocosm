@@ -177,7 +177,6 @@ the bodies family.
   *Reading, not ruled:* registry, stock and flow kept their behaviour exactly;
   converging the registry onto the function catalogue and the flow record onto
   native `flows` are behaviour changes, put to Mark as forks.
-// refused_by: statement_fold · collision: none (no common ancestor text)
 - **2026-10-09, family 2, bodies: the 674 seam (lane `lane-bodies`, under
   732's compile gate; no tests, draws or certification run).** Isometer's
   suites stand on their own fixtures (720): an isometer-core `fixtures`
