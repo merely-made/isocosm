@@ -34,46 +34,57 @@ whether a community remains itself as control, bodies, and generations
 change.
 
 **Early implementation.** The repo holds the name-reservation package, the
-design docs, and three crates. `crates/eponym-client` owns native input, rendering and inspection,
+design docs, and four crates (`eponym-client`, `eponym-motion`,
+`eponym-play`, `eponym-sortie`). Eponym's world is native Isocosm
+(`shared/isocosm`); legacy Eponym and legacy Mesocosm are deleted, and only
+`isocosm::legacy::campaign` remains, held by the VTT's faction turn until V2
+(wing rulings 755, 767, 769 to 771, 2026-10-10). `crates/eponym-client` owns native input, rendering and inspection,
 including body sheets, timed actions and the retained S0 room probe
 landed 2026-08-08: one room carved into a grown mesocosm hillside, one body
 under near-tier kinematics, a fixed input trace with save/reload/replay, and
 a headed run presenting netrender's composed master with the room in it,
 drawn since 2026-10-09 by Mere's `tenant` over the kiss3d fork (wing
 rulings 734 to 736, L7; renderling retired). Its default `r1-proof` profile runs the real room and perspective
-camera through the shared brick DDA, now owned by Mere's `conatus-brick`
-(pinned by rev); Eponym constructs the shared `BrickMap` from its own
+camera through the shared brick DDA, now owned by Mere (`modulus`, formerly
+`conatus-brick`, pinned by rev); Eponym constructs the shared `BrickMap` from its own
 Ground binding. Three further gates landed as opt-in bins: `v1_residency`
 (continuous-zoom residency, V1/V1a), `d1_depth` (raymarch depth as the
 tenant's depth pre-pass, bodies layered over the traced colour, D1), and `v1b_residency` (the stable capacity-fixed
 resident brick cache, V1b), behind the `v1-proof`, `d1-proof`, and
-`v1b-proof` features. `isocosm::legacy::eponym::social` is the S1
-willingness owner landed the same
-day: deeds, standing, confidence, refusal, standing agreements, and the
+`v1b-proof` features. The S1 willingness owner landed the same
+day (now native `isocosm::social`): deeds, standing, confidence, refusal,
+standing agreements, and the
 premises behind every answer, with the refusal scene as an executable
 receipt. S2 (landed 2026-08-08) added the settlement in peer-agency form
-to the same crate: homes offered with daily work, residence and the
+to the same module: homes offered with daily work, residence and the
 daily round derived from agreement state, so moving out is the agreement
 ending. `crates/eponym-sortie` is S3's joint receipt (sim half landed
 2026-08-08): the one crate reading both owners, with negotiated
 participation, terrain falls as body-revision wounds, the pact-governed
-tag-in, the dig rule, and sortie deeds that explain later answers.
-`isocosm::legacy::eponym::identity` holds the identity facts both owners
-share and neither may own. `isocosm::legacy::eponym::world` owns persistent site
-meanings over stable surface and underground slots, routes, containment,
-inherited replacement, multi-author material edits, generated bodies and
-items, needs, perception, injury, recovery, death, and regrow-plus-replay
-saves. `Movement`, `Bodies`, and `Items` are separate multi-subject systems;
+tag-in, the dig rule, and sortie deeds that explain later answers; its
+society is now the native one, with S1 and S2's scene kept as its own fixture.
+`eponym-play`'s `identity` holds the identity facts both owners
+share and neither may own.
+
+The world is native Isocosm, moved 2026-10-10: persistent site meanings,
+routes, containment, inherited replacement, multi-author material edits,
+generated bodies and items, needs, perception, injury, recovery, death,
+deeds, knowing, standing, agreements and homes, and regrow-plus-replay
+saves are the sim's, and the sim advances every living member through the
+same processes with no observer or selected-subject input. Population,
+projects, the autonomous round and the simulation record retired with the
+legacy world (770, 771). The game's own half lives in `crates/eponym-play`:
+motion, timed actions, the strike resolver, techniques, sheets, admitted
+anatomy snapshots, control and the glyph reading's game half. Its
+`Movement`, `Bodies`, and `Items` are separate multi-subject systems;
 `GameState` coordinates them through one subject-addressed transition grammar
-with no control-specific path. `Population` owns deterministic site and
-migration origins; `Projects` owns durable goals and replayed completion;
-`Simulation` advances every living subject through the same game intents with
-no observer or selected-subject input. Navigation remains derived advice.
+with no control-specific path. Walking and sight go through isometer's
+in-site space (`isometer-space`). Navigation remains derived advice.
 Traversal and named-life scenarios belong to receipts, not production
-vocabulary. Its direct Mesocosm core dependency is current shared-organ
-evidence, not settled permanent ownership. F0-F2 are closed; F3 memory,
-belief, and standing is active, with F3a (pointable memory and belief)
-landed 2026-08-26. The executable plan is
+vocabulary. F0-F2 are closed; F3 memory,
+belief, and standing was active, with F3a (pointable memory and belief)
+landed 2026-08-26; E2's families moved onto native Isocosm 2026-10-10,
+their done-conditions standing for the after-pass. The executable plan is
 `design_docs/2026-09-25_eponym_overlay_plan.md`, phases E0 to E4 (wing design
 record ruling 313, 2026-09-26); the 2026-08-07 execution plan is archived at
 `design_docs/archive_docs/2026-09-26/`, its S0-S3 and F0-F2 retained as
@@ -81,8 +92,11 @@ foundation receipts and its F3-F8 mapped onto E2's families in the overlay
 plan's §4.1. The founding plan remains the charter with its phase section
 superseded.
 
-The local `isocosm::legacy::eponym::world::Session` foundation (2026-09-09) composes one
-`GameState` with historically validated control and existing-life succession.
+`eponym-play`'s `Session` foundation (2026-09-09, then in the legacy world)
+composes one `GameState` with historically validated control and
+existing-life succession. The player is a participant who takes up its
+sophont through native `Take` at each control cut (wing rulings 671, 779):
+a sophont is driven, where Mesocosm directs a critter that is not sapient.
 Its versioned save supports configurable archive limits. The bounded J1b
 `AdvanceMotion` path now owns fractional terrain motion and landing injury in
 GameState; precise poses survive replay, while existing navigation/items/combat

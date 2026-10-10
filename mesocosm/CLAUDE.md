@@ -33,9 +33,18 @@ world substrate, a lineage model, and a trust plane. Sharing engine organs is en
 organ stays verb-neutral (ruled 2026-08-05); the vessels still do not share
 a genre or their verbs.
 
-**Early implementation.** The repo has a deterministic simulation core, body
-pipeline, renderer, windowed host, epoch lab, and a proven Isometry projection.
-The repeated game loop and phenotype bridge are still under design and playtest.
+**Early implementation.** The simulation core, body pipeline and record are
+native Isocosm (`shared/isocosm`); legacy Mesocosm is deleted (wing rulings
+755 and 770, 2026-10-10). This repo holds the game's four crates:
+`mesocosm-runtime`, `mesocosm-views`, `mesocosm-phenotype` and the windowed
+host `mesocosm-genet`, all running on a native `Session` (the switch, D5), plus
+the parry-ground probe. The player directs the critter through nudges and
+answers at checkpoints; driving is gone (671, 679) and so is the
+sixteen-variant `Intent`. A critter that is not sapient is taken up through
+native `Take`, directing; a sophont would be driven (671, 779). The body
+section is lifted through isometer's in-site space (`isometer-space`). The
+repeated game loop and phenotype bridge are still under design and playtest;
+680's headed condition is the after-pass's.
 
 See `design_docs/PROJECT_DESCRIPTION.md` for the product description,
 `design_docs/DOC_README.md` for the doc index, and
@@ -70,8 +79,11 @@ architecture that Paredros and Isometry also depend on.
   sense of what the code called a site; *site* now means one cell of the
   world map. Ruled 2026-09-24 (ruling 157); the rename landed 2026-09-26,
   `Tract` and `TractId`, with old serialized names still read (ruling 224).
+  Today the native `isocosm::mosaic::Tract` holds a part's tract; `TractId`
+  went with the legacy bodies.
 - **attachment**: the point where an incoming part joins a body, in growth
-  or a graft (`growth::attachment()`). Ruled 2026-09-26 (ruling 251).
+  or a graft (isometer's `Attachment`, `isocosm::geometry::attach`). Ruled
+  2026-09-26 (ruling 251).
 - **situs**: an organ's position in a body plan's template, a (tagma,
   segment) coordinate. Ruled 2026-09-26 (ruling 252).
 - **animula**: the played soul — the little soul that guests in a body,
