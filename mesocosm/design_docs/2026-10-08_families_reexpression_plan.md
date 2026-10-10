@@ -406,9 +406,9 @@ the bodies family.
 - **2026-10-10, family 7, Eponym's world (lane `lane-eponym-world`, under
   732's compile gate; no test sweeps, draws or certification run).** Under
   755, 767 and 769 to 771 Eponym's world family moved onto native Isocosm
-  and legacy Eponym (13,740 lines) is deleted, with its 149 tests (14 unit
-  modules, 18 integration files and their fixture) and two examples retired
-  under 672.
+  and legacy Eponym (13,740 lines) is deleted, its 149 tests (65 in 14 unit
+  modules, 84 in 16 integration files and their fixture) and two examples
+  retired under 672.
   - *Native nouns.* `harm`: a wound takes cells from one part across its
     functions and free pool (709), keeps them in the part's lost cells,
     which the tissue ceiling and free cells now subtract (706), spills each
