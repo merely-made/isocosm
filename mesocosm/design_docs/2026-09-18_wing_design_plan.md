@@ -9727,6 +9727,18 @@ what later sections derive from.
      draws bodies onto a transparent target that netrender layers over the
      traced colour, the torch casts no shadow until the testing pass tunes
      it, and the CLAUDE.md names the tenant.
+750. **The flow record moves with the record family; the registry
+     converges with bodies.** 2026-10-09, the matter-and-processes family
+     (merged at `14eb2dfb`: the five natives, typed matter and the registry
+     native; legacy transport, pressure and epoch types retired; 3,740
+     legacy lines to 1,257). Questions: the flow record (962 lines) depends
+     on legacy bodies, places and record types and native `Flow` carries no
+     lineage, kingdom or composition, about 23 files reading those; the
+     registry restricts shapes (`admits()`, intake on Mass) where native's
+     function catalogue does not (492). Mark chose "Move it with the record
+     (Recommended)" and "Converge with bodies (Recommended)". So `flow`
+     stays in legacy until the record family, and the bodies lane lowers
+     the registry onto the function catalogue with phenotype allocation.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
