@@ -249,6 +249,17 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-10, Q3 balance after the prey fix:** unchanged seed 0 again
+  exhausted at tick 115. Conservation and saved replay in both modes
+  passed. No born consumer reproduced: first child 130 peaked at nine
+  below the twelve-unit birth gate. Scope blocks and correctly floored
+  shared meals limited intake; no native Refused receipt occurred. This
+  supports a declared meal-size trial, not another Choice/Transition or
+  one-process change (*Reading, not ruled*). Observers were removed,
+  exact source restored and native offline all-target compilation passed.
+  Complete raw/session/flow/source hashes are in the sim owner's Q3
+  findings; root verified six artifacts. A1 remains open at 4/20 bare,
+  and D1 to D5 certification remains gated.
 - **2026-10-10, Q3 prey timing under 454 and 683:** five feeding controls
   pass, including the optional-act mismatch, with Individuals and Grouped
   scheduled saves replayed in both modes. Existing choice (six), feeding

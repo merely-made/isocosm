@@ -117,6 +117,23 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 unchanged seed-0 balance:** the rejected profile on
+  `ab3b559b` reproduced extinction at tick 115, conserved matter every
+  tick and replayed in Individuals and Grouped. Founder 17's balance was
+  `10 + 10 meals - 12 upkeep - 8 provision = 0`; child 130's was
+  `8 provision + 4 meals - 12 upkeep = 0`. The child peaked at nine below
+  threshold twelve; no born consumer reproduced. Fourteen/sixteen feeding
+  scope blocks and two accepted zero-share meals limited parent/child
+  intake. The latter correctly floor prey holding ten across sixteen or
+  fourteen one-unit demands under 454; no native Refused receipt occurred.
+  Temporary observers were removed, original hashes restored and native
+  offline all-target compilation passed. Root verified the six evidence
+  hashes under `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/`;
+  `q3-reproduction-seed0-after-prey-findings.md` SHA-256 is
+  `d4bde01df88dba6d32bcb958e4669189b7c1cafbc29c28400bcb21bad4f74b23`.
+  *Reading, not ruled:* a larger meal is a supported next trial variable;
+  the trace gives no reason to change causal rules or the one-process rule.
+  A1 remains open at 4/20 bare, with bodied/fresh original arms withheld.
 - **2026-10-10, Q3 fresh bare candidate completed:** the unchanged declared
   profile ran seeds 0 to 19 on integrated `ab3b559b`. Seeds 7, 14, 15 and
   19 qualified (4/20), with respectively 8, 20, 26 and 8 living born

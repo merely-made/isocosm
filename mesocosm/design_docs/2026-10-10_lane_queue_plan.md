@@ -284,6 +284,25 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 unchanged seed-0 balance verified:** native Genesis
+  `0a55ba9f06247e21f97892468486de8948bedbb2ea313c729809a135cb6b35b5`
+  on `ab3b559b` again exhausted the played lineage at tick 115. Founder 17
+  received ten meal units, spent twelve upkeep units and provided eight;
+  first child 130 received four meal units beside that provision and spent
+  twelve upkeep units. The child peaked at nine, below threshold twelve,
+  and no born consumer reproduced. Scope blocks and two correctly floored
+  shared meals explain sparse intake; no native Refused receipt occurred.
+  Conservation and saved replay in both modes passed. Observers were
+  removed, exact source hashes restored and the native offline all-target
+  compile check passed. Root recomputed the six external evidence hashes;
+  findings SHA-256 is
+  `d4bde01df88dba6d32bcb958e4669189b7c1cafbc29c28400bcb21bad4f74b23`.
+  The findings and raw/session/flow/source files remain under
+  `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/`.
+  A1 remains 4/20 bare; no rates are promoted. Q3 prepares a declared
+  meal-size trial, Q2 prepares native witness compatibility projections,
+  and Q8 now owns the serial Cargo slot. Mark's adapter-healing allocation
+  fork is pending as ruling 812. Existing trees and targets are reused.
 - **2026-10-10, ruling 811:** Mark chose to load legacy losses, heal only
   losses with recorded allocations and retain unknown losses until an
   explicit repair. Unknown cells do not stall known-loss healing elsewhere
