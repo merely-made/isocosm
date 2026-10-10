@@ -50,6 +50,12 @@ pub fn capacity(h: Half) -> u32 {
     h.iter().map(|h| axis(*h)).product()
 }
 
+/// The cells of a part's lattice it still has: its capacity less those
+/// lost for good (706).
+pub fn living_cells(h: Half, p: &Part) -> u32 {
+    capacity(h).saturating_sub(p.lost.len() as u32)
+}
+
 /// The part's adult mass: its voxels priced at the reference mass a
 /// segment, at least a milligram.
 pub fn ceiling(h: Half, b: BodyRules) -> u64 {
@@ -184,7 +190,10 @@ pub fn bound(h: Half, p: &Part, rules: &Rules, key: &str) -> u64 {
     } else if provision(rules, key) {
         cells(REPRODUCE).saturating_mul(cell_mass(h, b))
     } else {
-        ceiling(h, b)
+        // A wound lowers the ceiling by the cells it took (706).
+        let whole = u128::from(ceiling(h, b));
+        let left = u128::from(living_cells(h, p));
+        u64::try_from(whole * left / u128::from(capacity(h))).unwrap_or(u64::MAX)
     }
 }
 

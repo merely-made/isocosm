@@ -206,6 +206,7 @@ impl Simulation {
                 tick: self.state.tick,
                 place,
                 subject: actor,
+                object: target,
                 process: process.into(),
                 cause,
                 strength: genesis.rules.field.strength,

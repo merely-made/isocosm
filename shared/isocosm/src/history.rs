@@ -71,6 +71,27 @@ pub enum Command {
         founder: Id,
         name: Key,
     },
+    /// A wound to a body, a part named or drawn by its cells (704 to 719):
+    /// how a game hands back a blow it resolved (669).
+    Wound {
+        entity: Id,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        part: Option<PartId>,
+        cells: u32,
+    },
+    /// An outsider arrives (235, 238).
+    Arrive(crate::arrival::Arrival),
+    /// A body's geometry admitted (674).
+    Embody {
+        entity: Id,
+        body: isometer_core::BodyDocument,
+    },
+    /// `by` names `of` (36, 168, 200).
+    Name { by: Id, of: Id, name: String },
+    /// A record of knowing (771).
+    Know(crate::knowing::Knowing),
+    /// A deed, an ask or a step in an agreement's life (60, 63, 67).
+    Social(crate::social::Social),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -481,5 +502,27 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
         },
         Command::Speciate { founder, name } => sim.speciate(*founder, name),
         Command::Assert(assertion) => sim.assert(assertion),
+        Command::Wound {
+            entity,
+            part,
+            cells,
+        } => {
+            let wounded = sim.wound(*entity, *part, *cells)?;
+            serde_json::to_string(&wounded).map_err(|e| e.to_string())
+        },
+        Command::Arrive(arrival) => Ok(format!("entity:{}", sim.arrive(arrival)?)),
+        Command::Embody { entity, body } => {
+            sim.embody(*entity, body.clone())?;
+            Ok("embodied".into())
+        },
+        Command::Name { by, of, name } => {
+            sim.name(*by, *of, name)?;
+            Ok("named".into())
+        },
+        Command::Know(knowing) => sim.know(knowing),
+        Command::Social(act) => {
+            let answer = sim.social(act)?;
+            serde_json::to_string(&answer).map_err(|e| e.to_string())
+        },
     }
 }
