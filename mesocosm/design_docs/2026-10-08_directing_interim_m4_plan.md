@@ -13,6 +13,16 @@ interim M4 of ruling 680, and the full M4 stays there.
 Rulings live in the [wing design record](2026-09-18_wing_design_plan.md);
 this plan cites them by number and does not restate their reasoning.
 
+**Ownership, 2026-10-10 (ruling 800).** This plan owns M3 and the interim
+M4; the Mesocosm overlay plan keeps the profile, the contract and the full
+M4, and points here. M3's done-condition, moved here from the overlay plan
+in its words of 2026-09-25: "Done when a played critter acts on its own
+needs, senses and mood under the player's nudges, its range, home,
+priorities and stances grow from that attention, its bond moves with
+outcomes and passes across generations as the world setting says, its
+suggestions surface, and a seeded run replays to the same hash." D1 to D3
+build it; D4 and D5 are the interim M4.
+
 ## 1. What this plan does
 
 It builds directing (194, the overlay plan's M3) on native Isocosm and then

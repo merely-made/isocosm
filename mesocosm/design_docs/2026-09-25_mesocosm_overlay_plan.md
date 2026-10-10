@@ -227,20 +227,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   being the switch to M3's directing (678), driving ending there (671).
   The driving intents are the critter's own acts and `Idle` goes (679). An
   interim M4 at site grain comes before the full M4 (680).
-- *Annotation, 2026-10-08 (681 to 684):* the interim M4, not the world
-  family's move, is the switch: genet's runtime moves onto a native
-  `Session` there, and in-site play waits for the full M4 (681, amending
-  678). M3 plays a native generated lineage (682), its choice made by a
-  deliberative methodology weighing needs, mood, nudges and bond (683), and
-  the interim boundary ports grow-a-copy scoring over `Session::fork_at`
-  ahead of the lineages family (684). A suggestion is a reading over
-  receipts and what the critter knows (685); the runtime translates contract
-  envelopes into native commands, the nudge among them (686); and the
-  interim M4's regions group sites by biomass after 226 (687), derived each
-  round (689). The bond is a weighted relation to a placeless participant
-  entity, one per player (688); standing orders are read from the logged
-  nudges and their outcomes (690); and survival mode filters through what
-  the critter knows (691).
+- *Annotation, 2026-10-08 (681 to 691), trimmed to a pointer 2026-10-10
+  under ruling 800:* the interim M4 is the switch (681), and M3's and the
+  interim M4's shape (682 to 691) is the
+  [directing plan](2026-10-08_directing_interim_m4_plan.md)'s, which owns
+  both; the text it held is there, rulings first.
 - **M2, absorption by family.** One sub-phase per family of §4, in the
   order ruled (195): matter and processes, bodies, the record, places,
   lineages and the boundary, then effects. Each is done when the family runs in Isocosm under its
@@ -252,13 +243,11 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   loop (ruling 260), measured by persistence, turnover, collapse and the
   web's response to an intervention (267): disease, an overperforming
   lineage, or a keystone lost (283). Lands under the sim plan's S1 and S2.
-- **M3, directing on Isocosm,** built only there, with no prototype on the
-  current host (194). Done when a played critter acts on its own
-  needs, senses and mood under the player's nudges, its range, home,
-  priorities and stances grow from that attention, its bond moves
-  with outcomes and passes across generations as the world setting says,
-  its suggestions surface, and a seeded run replays to the same hash. When
-  M3 lands, the played slice plan retires into this plan (196).
+- **M3, directing on Isocosm,** and the **interim M4** at site grain (680):
+  owned by the [directing plan](2026-10-08_directing_interim_m4_plan.md)
+  since ruling 800 (2026-10-10), which carries M3's done-condition as
+  written here on 2026-09-25 and builds both as D1 to D5. The played slice
+  plan retired as 196 ruled and is archived at `archive_docs/2026-10-10/`.
 - **M4, the played loop.** Done when, from a seed nobody chose and a start
   the player picked, the headed host plays three epochs end to end on
   Isocosm: rounds under directing, a birth keeping the parent by default,
