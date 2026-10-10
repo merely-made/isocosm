@@ -57,7 +57,6 @@ pub mod history;
 pub mod organism;
 pub mod phenotype;
 pub mod places;
-pub mod pressure;
 pub mod program;
 pub mod record;
 pub mod rng;
@@ -123,7 +122,6 @@ pub use phenotype::{
     TractId, TractReading, arrange,
 };
 pub use places::{Place, PlaceId, Places};
-pub use pressure::{AUTHORED, Force, HEAVY_DEEP, LONG_YEAR, Pressure, TIDAL_SHELF, WorldProfile};
 pub use program::{
     Citation, Conditions, DeclaredTract, Filial, Founder, Preview, Program, Revision, RevisionId,
     Unexpressed,
