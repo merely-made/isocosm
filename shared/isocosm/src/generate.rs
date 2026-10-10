@@ -266,6 +266,7 @@ impl Founding {
             body: None,
             kinds: BTreeMap::new(),
             affinity: None,
+            compatibility: None,
             systems: Default::default(),
             carriage: None,
             directing: None,
