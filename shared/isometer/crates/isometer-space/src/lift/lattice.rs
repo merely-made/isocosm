@@ -33,6 +33,8 @@ pub struct Lattice {
     /// Heights with the correction, in units of `1 / q` base units.
     pub heights: [[i128; POINTS]; POINTS],
     pub q: i128,
+    /// The cliffs this site's surface steps down at (ruling 744).
+    pub cliffs: Vec<super::Cliff>,
 }
 
 impl Lattice {
@@ -44,10 +46,13 @@ impl Lattice {
         let (j, fz) = cell(z, spacing);
         let (s, fx, fz) = (i128::from(self.spacing), i128::from(fx), i128::from(fz));
         let h = &self.heights;
+        let length = self.spacing * i64::from(SPANS);
+        let drop: i64 = self.cliffs.iter().map(|c| c.at(x as i64, z as i64, length)).sum();
         h[j][i] * (s - fx) * (s - fz)
             + h[j][i + 1] * fx * (s - fz)
             + h[j + 1][i] * (s - fx) * fz
             + h[j + 1][i + 1] * fx * fz
+            - i128::from(drop) * self.denominator()
     }
 
     pub fn denominator(&self) -> i128 {
@@ -101,6 +106,7 @@ pub(crate) fn lattice_with<A: Atlas + ?Sized>(
         detail: [[0; POINTS]; POINTS],
         heights: [[0; POINTS]; POINTS],
         q: 4 * i128::from(s) * i128::from(s),
+        cliffs: super::cliff::drops(a, site)?,
     };
     let mut sum = 0i128;
     for j in 0..POINTS {
@@ -117,7 +123,10 @@ pub(crate) fn lattice_with<A: Atlas + ?Sized>(
     if corrected {
         let side = i128::from(side);
         let elevation = i128::from(a.elevation(site)?);
-        spread(&mut lattice.heights, 4 * elevation * side * side - sum);
+        // What the cliffs take from the columns is put back over the
+        // interior, so the mean is still the elevation exactly.
+        let cut: i128 = lattice.cliffs.iter().map(|c| c.total(side as i64)).sum();
+        spread(&mut lattice.heights, 4 * elevation * side * side - sum + 4 * cut);
     }
     Ok(lattice)
 }

@@ -126,7 +126,8 @@ pub struct Entity {
     pub varied: Vec<Varied>,
     /// The patch or room its game placed it in, inside a lifted site
     /// (rulings 422 and 740); set only on a member split out of its cohort,
-    /// and cleared when it leaves the site.
+    /// updated by its game as it moves within the site, and cleared when it
+    /// leaves the site.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub patch: Option<isometer_space::places::PlaceId>,
 }

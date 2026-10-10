@@ -6,7 +6,7 @@
 //! it (ruling 418). A crossing is a step between stances in different
 //! places, or a stance beside water.
 
-use super::cells::{Cell, Cells, DIRECTIONS};
+use super::cells::{Cell, Cells, DIRECTIONS, HEADROOM};
 use super::flood::Found;
 use super::{Clearance, Kind, Passage, PlaceId, Places};
 use std::collections::{BTreeMap, BTreeSet};
@@ -59,7 +59,7 @@ pub(super) fn of(c: &Cells<'_>, places: &Places, found: &[Found]) -> Vec<Passage
         for &a in &f.cells {
             if f.place.kind == Kind::Water {
                 // Stances level with this water, or above it over clear air.
-                let clear = 1 + c.headroom([a[0], a[1] + 1, a[2]]);
+                let clear = (1 + c.headroom([a[0], a[1] + 1, a[2]])).min(HEADROOM);
                 for [dx, dz] in DIRECTIONS {
                     for dy in 0..clear {
                         let b = [a[0] + dx, a[1] + dy, a[2] + dz];
@@ -83,7 +83,7 @@ pub(super) fn of(c: &Cells<'_>, places: &Places, found: &[Found]) -> Vec<Passage
             // across clear air.
             for [dx, dz] in DIRECTIONS {
                 let mut w = [a[0] + dx, a[1], a[2] + dz];
-                while w[1] > c.floor && c.air(w) {
+                while w[1] > c.floor && w[1] > a[1] - HEADROOM + 1 && c.air(w) {
                     w[1] -= 1;
                 }
                 if c.cell(w) == Cell::Water

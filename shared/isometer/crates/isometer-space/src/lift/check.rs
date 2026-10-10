@@ -31,9 +31,15 @@ pub fn borders<A: Atlas>(a: &A, lattice: impl Fn(&A, SiteId) -> Result<Lattice>)
     }
     let side = a.footprint().side;
     let mut checked = 0;
+    let len = side / u64::from(super::SPANS);
     for (site, to, b) in bordered(a) {
         let (near, far) = (&lattices[&site], &lattices[&to]);
-        for t in 0..=side {
+        // A cliff span parts the two sites by design (ruling 744).
+        let cliffs = super::cliff_spans(a, site, b.side)?;
+        let stepped = |t: u64| {
+            cliffs.iter().any(|(c, _)| u64::from(c.span) * len < t && t < u64::from(c.span + 1) * len)
+        };
+        for t in (0..=side).filter(|&t| !stepped(t)) {
             let across = if b.flipped { t } else { side - t };
             if near.on_side(b.side, t) != far.on_side(b.enters, across) {
                 return Err(format!(

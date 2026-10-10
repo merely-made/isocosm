@@ -10,8 +10,9 @@ use crate::volume::Volume;
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 
-/// Headroom is counted this high and no further: past it a passage is open.
-pub(super) const HEADROOM: i64 = 64;
+/// Headroom is counted this high and no further, and no step is sought
+/// this tall either way: a drawn cliff's least drop (ruling 744).
+pub(super) const HEADROOM: i64 = crate::lift::CLIFF;
 
 /// The four horizontal neighbours.
 pub(super) const DIRECTIONS: [[i64; 2]; 4] = [[1, 0], [-1, 0], [0, 1], [0, -1]];
@@ -127,7 +128,7 @@ impl<'a> Cells<'a> {
         }
         if far.air([nx, y, nz]) {
             let mut ny = y - 1;
-            while ny >= far.floor && far.air([nx, ny, nz]) {
+            while ny >= far.floor && ny > y - HEADROOM && far.air([nx, ny, nz]) {
                 if far.stance([nx, ny, nz]) {
                     out.push(([nx, ny, nz], ny - y));
                     break;

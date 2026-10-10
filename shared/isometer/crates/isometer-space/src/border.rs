@@ -7,10 +7,11 @@
 //! sides, never drawn, so a class never disagrees with the volume: a span
 //! passes where some cell crosses dry within the world's climb, climbs
 //! where every dry cell is steeper, and stops where water lies at every
-//! cell. Both sides meet on one continuous profile, so no span stops at a
-//! cliff unless the lift draws one.
+//! cell. A span stops at a cliff where the lift drew one (ruling 744): a
+//! step of [`CLIFF`] or more, which no walker in the volume steps.
 
 use crate::edit::SiteRule;
+use crate::lift::CLIFF;
 use crate::places::Climb;
 use crate::{Atlas, Border, Result, SPANS, SiteId};
 use serde::{Deserialize, Serialize};
@@ -22,7 +23,7 @@ pub enum Span {
     Passes,
     /// Dry, with a step past the climb: the least such step.
     Climbs { step: u64 },
-    /// Water on one side or both.
+    /// Water on one side or both, or a cliff: a step of [`CLIFF`] or more.
     Stops,
 }
 
@@ -71,7 +72,7 @@ pub fn cells_with<A: Atlas + ?Sized>(
         let (top, other) = (near.top(x, z), far.top(fx, fz));
         let wet = top < near.water || other < far.water;
         let step = top.abs_diff(other);
-        out.push(if water && wet {
+        out.push(if (water && wet) || step >= CLIFF as u64 {
             Span::Stops
         } else if step * u64::from(climb.run) <= u64::from(climb.rise) {
             Span::Passes

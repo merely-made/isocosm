@@ -8,12 +8,16 @@
 
 pub mod check;
 mod chunk;
+mod cliff;
 mod corners;
 mod lattice;
 mod profile;
+#[cfg(test)]
+mod tests;
 
 pub use chunk::{CHUNK, Chunk, Exception, Materials};
 pub(crate) use chunk::{chunk, chunks, soil_depth};
+pub use cliff::{CLIFF, Cliff, cliff_spans};
 pub use corners::CornerKey;
 pub(crate) use corners::{corner_class, corner_height};
 pub use lattice::{Lattice, POINTS, fading};

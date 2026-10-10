@@ -92,6 +92,9 @@ impl Simulation {
 
     /// Names the patch or room `entity` stands in, or none. The member is
     /// split out of its cohort first, and the place must be in its site.
+    /// The sim never sees a member move within its site, so its game
+    /// names the new place as it moves it, and `None` returns it to the
+    /// site; a move to another site clears it (ruling 740).
     pub fn set_patch(&mut self, entity: Id, patch: Option<PlaceId>) -> Result<()> {
         let member = self.state.population.get(entity).ok_or("unknown entity")?;
         if patch.is_some_and(|p| p.site != member.place) {
