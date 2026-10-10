@@ -225,7 +225,16 @@ impl Interim {
         &mut self,
         candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
     ) -> Result<Vec<Happening>> {
+        self.round_with_flows(candidates).map(|(out, _)| out)
+    }
+
+    /// A round, with the matter moves its ticks made, tick by tick.
+    pub fn round_with_flows(
+        &mut self,
+        candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
+    ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
         let mut out = Vec::new();
+        let mut flows = Vec::new();
         let played = self.critter().ok_or("nobody is played")?;
         let lineage = self
             .session
@@ -244,7 +253,9 @@ impl Interim {
         let before = children(&self.session);
         let epoch = self.session.sim.genesis().rules.epoch_ticks;
         let from = self.session.sim.state().tick;
-        self.session.advance(self.pace.round)?;
+        for _ in 0..self.pace.round {
+            flows.extend(self.session.advance_tick_with_flows()?.flows);
+        }
         let now = self.session.sim.state().tick;
         // The player keeps the parent; the young are offered (183).
         for child in children(&self.session)
@@ -297,7 +308,7 @@ impl Interim {
         }) {
             out.extend(self.collapse(c)?);
         }
-        Ok(out)
+        Ok((out, flows))
     }
 
     /// The played critter's region, if it has collapsed, and where play

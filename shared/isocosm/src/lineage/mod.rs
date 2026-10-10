@@ -14,6 +14,7 @@
 
 pub mod body;
 pub mod boundary;
+pub mod chronicle;
 pub mod program;
 pub mod reckon;
 pub mod review;
@@ -22,6 +23,7 @@ pub mod speciate;
 pub mod tree;
 
 pub use body::*;
+pub use chronicle::{Chronicle, Consequence};
 pub use program::Revision;
 pub use reckon::Reading;
 pub use review::{Offer, Review};
