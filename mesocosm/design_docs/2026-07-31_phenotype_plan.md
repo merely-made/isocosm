@@ -1727,7 +1727,7 @@ section owns the cross-layer sequence, extending this plan rather than adding
 another body plan. Existing biological rules remain here and in ProcessDef;
 typed intake, nis, scruple and defenses remain in the
 [trophic grammar plan](2026-09-04_trophic_grammar_plan.md). The
-[default critters plan](2026-08-30_default_creatures_plan.md) owns the roster;
+[default critters plan](archive_docs/2026-10-10/2026-08-30_default_creatures_plan.md) owns the roster;
 its outstanding visual acceptance is delivered through this sequence.
 
 ### Intent and authority
@@ -2015,7 +2015,7 @@ preserved.
 quarter-turn terrarium views and a clearing-and-burrow prototype. His request
 to do that "after" is recorded as following this body-part inspection step;
 that ordering is an interpretation of the conversation. The camera experiment
-is [CP1](2026-08-30_default_creatures_plan.md#cp1-clearing-and-burrow-camera-prototype).
+is [CP1](archive_docs/2026-10-10/2026-08-30_default_creatures_plan.md#cp1-clearing-and-burrow-camera-prototype).
 CP1 now reuses addressed selection across all four turns (`377d774`,
 2026-09-05); it does not replace VB4's biological join. The terrain-readability
 follow-through is now native-verified. Canopy form must grow from the developed

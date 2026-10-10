@@ -1,5 +1,9 @@
 # The family rename: Isocosm, Eponym, Isocosm: VTT
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** R0 to R5
+landed by 2026-09-24. The runtime strings Mark chose to leave and the
+`paredros` crate kept for a later use are choices, not open work.
+
 **Date:** 2026-09-22
 
 **Status, 2026-09-24:** landed: R0 to R5 done (Progress). What remains is the runtime strings Mark chose to leave, and the `paredros` crate kept for a future use. R2 landed 2026-09-24: `paredros/` is
@@ -17,7 +21,7 @@ consumer. R4 and R5 remain lanes Mark opens.
 ruled on 2026-09-22 (wing design record, rulings 109 and 110), across
 documents, crates, packages, indexes and the naming ledger. **Does not
 own:** the names themselves, which are Mark's rounds, or any product's
-design. **Consumes:** the [wing design record](2026-09-18_wing_design_plan.md)
+design. **Consumes:** the [wing design record](../../2026-09-18_wing_design_plan.md)
 and the naming ledger's family naming round of 2026-09-22.
 
 ## 1. The names
@@ -122,7 +126,7 @@ each other; R3 when the peer's crate lands; R5 last.
   done-condition became "the same counts and the same two failures". Filed
   with the likely cause (mesocosm-core's 2026-09-16 ecology commits shifting
   the grown terrain the sortie scenes rely on) in the
-  [execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+  [execution plan](../../../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
   §6 for a separate lane.
 - **2026-09-24, R2: what was renamed and what was kept.** Renamed: the
   directory; the five crates' directories, package names, path dependencies,

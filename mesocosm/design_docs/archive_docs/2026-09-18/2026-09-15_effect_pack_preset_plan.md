@@ -467,8 +467,8 @@ number in this plan is checked against a stale claim.
 `structure-cli.scenario` fails at HEAD on a generated-start hash
 (`50e8f3a3a6b6d22d` expected, `8d1d3676ecf24452` got); `population.scenario`
 fails and flakes identically at HEAD. Both are in the
-[isometer extraction plan](../../2026-09-14_isometer_extraction_plan.md) steps 5
-and 7 and the [family plan](../../2026-09-14_isometer_family_plan.md) risk 1.
+[isometer extraction plan](../2026-10-10/2026-09-14_isometer_extraction_plan.md) steps 5
+and 7 and the [family plan](../2026-10-10/2026-09-14_isometer_family_plan.md) risk 1.
 Neither gates this lane, but both must be **named as excluded** in every
 green claim rather than passed over — R1 shows worldgen has in fact moved,
 so one of these may stop being upstream fixture drift.

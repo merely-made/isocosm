@@ -1,12 +1,19 @@
 # Default Creatures Plan (2026-08-30)
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** DC1 to DC4
+landed; the roster now lives as native datasheets (758). Its residue is in
+the [after-pass plan](../../2026-10-10_after_pass_plan.md)'s A4: DC5's colour, the
+critter review, §6.6's three conditions the roster must still meet, and
+CP1's camera review and habitat dressing. Q10's prey-set finding went with
+TG6 to the sim plan.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); DC1 to DC4 landed. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
 *Earlier:* **Status: implementation through DC4 landed; visual acceptance remains open
 (refreshed 2026-09-05).** DC4's roster ships as the default founding, but Mark
 still sees capsules rather than readable voxel critters. The
-[phenotype plan section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype plan section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 now coordinates procedural content, the live voxel-body path and presentation
 through VB0-VB5. The earlier claim that none of the remaining problem is
 anatomy is withdrawn: both placeholder content and lossy presentation need
@@ -24,7 +31,7 @@ are stated over "seeds 1–10" and a chosen capsule budget. The archetypes are
 good overlay content. §6 now opens with the gates restated as draws, and
 §6.6 says where the roster lands over the sim; the gates are authoritative
 again as read there. The evaluation stays in
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 ---
@@ -43,7 +50,7 @@ Mark, 2026-08-30, quoted in the terrarium dynamics plan:
 > some built in expectations of capacities."
 
 And, owning the second playtest's finding
-([`2026-08-28_played_slice_plan.md`](2026-08-28_played_slice_plan.md), Findings
+([`2026-08-28_played_slice_plan.md`](../../2026-08-28_played_slice_plan.md), Findings
 2026-08-29): bodies read as "abstract voxel shapes", and the direction was
 "shrink those down and put a few together in the shape of a body plan, maybe
 you have something that looks more like a critter or flora then."
@@ -88,7 +95,7 @@ the catalogue's job is to prove the four axial rules reach real animals, and
 these are imagined creatures.
 
 **The enabling ruling already exists.** Founding plan
-([`archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md`](archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md),
+([`archive_docs/2026-09-26/2026-07-30_mesocosm_founding_plan.md`](../2026-09-26/2026-07-30_mesocosm_founding_plan.md),
 §"The authoring caution"): *"author the organisms, generate the arrangements.
 That is the wave 2.2 ruling (three authored worlds, not procedural generation)
 holding one level further down, at the bestiary."* This plan is that sentence
@@ -760,7 +767,7 @@ contracts, the kingdom floor holds, and the captures read as critters.
     thins / 0 boil / 13 collapse respectively. All 30 roster seeds start 76
     grazers, 76 predators, and 78 omnivores. TG6 remains open because neither
     arm retains all three tiers at the end. The result belongs in the
-    [trophic grammar plan](2026-09-04_trophic_grammar_plan.md) Findings. The
+    [trophic grammar plan](../../2026-09-04_trophic_grammar_plan.md) Findings. The
     older CP1 grammar-revision-0 golden is now refused by name; retained
     current recordings use revision 1.
 

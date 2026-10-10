@@ -1048,7 +1048,7 @@ what later sections derive from.
      isocosm-vtt, etc. Let's plan the rename too". The reservations
      `eponym`, `isocosm` and `isocosm-vtt` were published to crates.io at
      0.0.1 the same day, and the rename is the [family rename
-     plan](2026-09-22_family_rename_plan.md). Where this record says
+     plan](archive_docs/2026-10-10/2026-09-22_family_rename_plan.md). Where this record says
      "isotropy" it means the sim, now Isocosm; where it says "Paredros" it
      means Eponym. (The clause first written here, "the tabletop keeps
      Isometry as its subtitle", was this record's inference and not Mark's

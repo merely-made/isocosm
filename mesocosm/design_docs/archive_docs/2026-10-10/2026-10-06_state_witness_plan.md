@@ -1,5 +1,9 @@
 # Isocosm's state witness
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** H1 and H2
+landed and pushed by 2026-10-08 (rulings 607 to 610, 641, 642, 647 to 653).
+Nothing was left open.
+
 **Status, 2026-10-08:** H1 and H2 landed on main and pushed. The plan is
 complete.
 

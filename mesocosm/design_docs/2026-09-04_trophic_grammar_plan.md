@@ -37,7 +37,7 @@ stop being labels on a body and become readings of what that body can take in;
 so that a defended body is expensive to eat rather than merely unattractive;
 and so that not everything in the stand is food for everything with a mouth.
 The measure is the thirty-seed corridor from the
-[default creatures plan](2026-08-30_default_creatures_plan.md) section 7 Q10, run
+[default creatures plan](archive_docs/2026-10-10/2026-08-30_default_creatures_plan.md) section 7 Q10, run
 on both walls, with a roster that still holds a producer tier, a consumer tier
 and a decomposer tier, and holds all three consumer readings inside the consumer
 tier. Mark's framing, 2026-09-04, verbatim: "Sounds to me like a systematic

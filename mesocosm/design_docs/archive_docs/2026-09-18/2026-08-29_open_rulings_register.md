@@ -222,7 +222,7 @@ S1 does not choose between them, only that one must happen before zoom.
 
 **Ruled by Mark, 2026-09-02: far bodies go to silhouettes** rather than
 raising the capsule caps; it lands with S4 zoom. See the
-[default creatures plan](../../2026-08-30_default_creatures_plan.md) §3.3 and §7
+[default creatures plan](../2026-10-10/2026-08-30_default_creatures_plan.md) §3.3 and §7
 question 10 for how this composes with that plan's own capsule-budget note.
 
 **Blocks.** S4 — zoom cannot mean anything while the roster is clipped.

@@ -10,7 +10,7 @@
 Carries out the wing design record's ruling 650: isocosm takes mere's
 `state-witness` crate (mere's F116 to F131) by moving every mere pin to
 `329d60d0`, where it landed, keeping one mere per graph (621). H2 of the
-state witness plan (`mesocosm/design_docs/2026-10-06_state_witness_plan.md`)
+state witness plan (`mesocosm/design_docs/archive_docs/2026-10-10/2026-10-06_state_witness_plan.md`)
 builds on it, starting with F119's switch of `isometer_core`'s `hash_bytes`.
 
 ## Assessment (2026-10-08)

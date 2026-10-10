@@ -1,5 +1,15 @@
 # isometer family plan
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** Steps 1 to 11
+landed by 2026-09-15: the family is `shared/isometer`, its four crates and
+the facade, with `isometer-space` and `isometer-render` since added. Two
+things it noted stay where they are: the heightfield march and chain critter
+in `isometer-lens` are unconsumed components, not work; and W1's "owes W3
+the terrain y-scale", the per-axis terrain scale of ruling 23, is carried
+into the [presentation
+plan](../../2026-09-11_orthographic_voxel_presentation_plan.md)'s current-state
+section.
+
 **Date:** 2026-09-14
 
 **Status, 2026-09-14:** assessment. No code moved, no commit. Sequenced after
@@ -11,7 +21,7 @@ inventory of `Section`.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. Owes W3 the terrain
 y-scale. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Owns:** turning `mesocosm-lens`, `mesocosm-render` and `mesocosm-mesh` from

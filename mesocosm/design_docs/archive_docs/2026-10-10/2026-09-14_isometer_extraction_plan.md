@@ -1,15 +1,20 @@
 # isometer extraction plan
 
+**Archived 2026-10-10 (wing design record ruling 793): done.** All six
+done-conditions held on 2026-09-14 and the presentation plan's L9 closed;
+Eponym's port notes at the foot of Progress are kept as history. Nothing was
+left open.
+
 **Date:** 2026-09-14
 
 **Status, 2026-09-14:** assessment. No code moved. Owns the execution of lane
-L9 in [the orthographic voxel presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-isometer-founded-2026-09-14),
+L9 in [the orthographic voxel presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md#l9-the-shared-scene-crate-isometer-founded-2026-09-14),
 whose six done conditions are restated in §7 as tests and receipts. The lane's
 sequencing precondition is met: `shared/wing-scenario` landed at cc7828f.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. One misfiled module set.
 Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Owns:** the move of Mesocosm's shared-depth scene out of `mesocosm-genet`

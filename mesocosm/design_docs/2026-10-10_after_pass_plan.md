@@ -72,6 +72,14 @@ and deaths against members; the 3x2 map layout; forced births on bodied
 lineages; healing and starvation in Eponym; DC5 colour and the critter
 review (default creatures residue); VB3 to VB5 visual acceptance.
 
+*Carried 2026-10-10 from the plans archived under ruling 793 (owner: the
+Mesocosm overlay plan, its M4):* the default creatures plan's §6.6, which
+the roster must still satisfy on native bodies: every fauna body senses
+and contracts, the kingdom floor holds, and the captures read as critters;
+its CP1 clearing-and-burrow review, run beside the wing's default view at
+the 2:1 dimetric pitch, which rules Mesocosm's opening view (382, 387,
+388); and the habitat's canopy, contact and dressing, which CP1 left open.
+
 ## Findings
 
 - **2026-10-10:** the baseline above. Legacy stands at 3,968 lines, all

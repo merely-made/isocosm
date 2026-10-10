@@ -312,7 +312,7 @@ number for a body whose parts move every frame.
 
 ### L2. One appearance crate
 
-**Closed 2026-09-15** by the [isometer family plan](2026-09-14_isometer_family_plan.md)
+**Closed 2026-09-15** by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md)
 step 11: the merged crate is `isometer-mesh` at
 `shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
 document, greedy quads and projection beside isometry-voxel's recipes,
@@ -1387,13 +1387,13 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 lanes edit mesocosm-genet.
 
 **Progress (2026-09-14):** steps 1 to 7 of the
-[extraction plan](2026-09-14_isometer_extraction_plan.md) landed on main
+[extraction plan](archive_docs/2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
 with step 8, the Paredros retarget (e138186, by the Paredros session), and
 the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
-core types, owned by the [isometer family plan](2026-09-14_isometer_family_plan.md).
+core types, owned by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md).
 
 ### L10. The detail ladder (2026-10-01)
 

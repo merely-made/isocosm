@@ -24,7 +24,7 @@ architecture decision and the first second-form proof; this brief keeps the
 biological axes and costs.
 Written to be reacted to. Opened by Mark alongside TD7 and deliberately kept
 out of that round (see
-[terrarium dynamics plan](2026-08-29_terrarium_dynamics_plan.md) TD7's closing
+[terrarium dynamics plan](archive_docs/2026-10-10/2026-08-29_terrarium_dynamics_plan.md) TD7's closing
 paragraph). Nothing here is ruled; the last section is the list of things only
 Mark can settle.
 
