@@ -439,7 +439,11 @@ mod tests {
         let ground = ground();
         let profile = GroundVoxelProfile::from_ground(&ground).unwrap();
         let mut world = TactileWorld::from_profile(&profile).unwrap();
-        let top = ground.surface(4, 18).expect("the fixture column") as f32;
+        // Above every column the capsule spans, whatever the fixture's relief.
+        let top = (3..=6)
+            .map(|x| ground.surface(x, 18).expect("the fixture columns"))
+            .max()
+            .unwrap() as f32;
         // The G2 fixture: one X-aligned tapered capsule hovering over the
         // surface.
         let centre = [4.5, top + 1.15, 18.5];
