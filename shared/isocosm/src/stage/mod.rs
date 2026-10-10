@@ -292,7 +292,12 @@ impl Simulation {
             t.touch(&self.state.population, reached.iter().copied());
         }
         if let Some(f) = &mut self.filed {
-            f.touch(&self.state.population, reached, self.state.tick);
+            f.touch(
+                &self.state.population,
+                reached,
+                self.state.tick,
+                &self.genesis.rules,
+            );
         }
     }
 

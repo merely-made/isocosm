@@ -364,43 +364,7 @@ impl Staged<'_> {
                 }
             },
             Effect::Birth { provision } => {
-                let born = self.stage.births.len() as u64;
-                if sim.state.population.count() + born >= sim.genesis.rules.limits.entities {
-                    return Err("population limit".into());
-                }
-                let mut child = self.actor().clone();
-                child.accounts = provision.clone();
-                child.born = tick;
-                child.arrived = tick;
-                child.visits.clear();
-                child.skills = BTreeMap::new();
-                child.provenance = Provenance::Born(child.lineage.clone());
-                for (key, value) in provision {
-                    debit(&mut self.actor().accounts, key, *value)?;
-                }
-                // Children take identities in order after the world's last.
-                let id = sim.state.population.next_id + born;
-                id.checked_add(1).ok_or("identity exhausted")?;
-                self.stage.births.push(child);
-                let parent = Relation {
-                    subject: id,
-                    object: actor,
-                    kind: "sim:parent".into(),
-                    value: 0,
-                };
-                self.stage.relations.push((parent, true));
-                // The child's matter is its parent's, moved (ruling 345).
-                let rules = &sim.genesis.rules;
-                let matter =
-                    |k: &Key| matches!(rules.accounts.get(k), Some(AccountKind::Matter { .. }));
-                let moved = provision.iter().filter(|(k, v)| matter(k) && **v > 0);
-                for (key, value) in moved.filter(|_| sim.flowing()) {
-                    self.stage.legs.push(Leg {
-                        from: (Holder::Entity(actor), key.clone()),
-                        to: (Holder::Entity(id), key.clone()),
-                        amount: *value,
-                    });
-                }
+                self.provisioned_birth(provision)?;
             },
             Effect::Tell { event } => {
                 let teller = &self.stage.bodies[&actor];
@@ -475,7 +439,18 @@ impl Staged<'_> {
                 let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
                 // A bite lands on one part, drawn by what each holds (459).
                 let draw = crate::draw(sim.genesis.seed, "bite", &[self.stage.act]);
-                let bitten = crate::anatomy::bitten(self.body(*from)?, of, draw);
+                let accounts = if of.is_empty() {
+                    rules
+                        .accounts
+                        .iter()
+                        .filter_map(|(k, a)| {
+                            matches!(a, AccountKind::Matter { .. }).then_some(k.clone())
+                        })
+                        .collect::<Vec<_>>()
+                } else {
+                    of.clone()
+                };
+                let bitten = crate::anatomy::bitten(self.body(*from)?, &accounts, draw);
                 self.stage.bitten = bitten;
                 let offered = match bitten {
                     Some(part) => {
@@ -531,7 +506,7 @@ impl Staged<'_> {
                     }
                     total = total.checked_add(*value).ok_or("meal overflow")?;
                 }
-                credit(self.ledger(Binding::Actor)?, into, total)?;
+                self.give(Binding::Actor, into, total)?;
                 if let Some(prey) = self.holder(*from).filter(|_| sim.flowing()) {
                     self.stage
                         .legs
