@@ -411,7 +411,7 @@ impl isometer::SceneHost for SectionHost<'_> {
         // The scene carries neutral material channels; which of them is the
         // expressed gland is Mesocosm's vocabulary, so the count is read back
         // here rather than named inside the scene.
-        let secrete = materials::channel(isocosm::legacy::mesocosm::process::Process::Secrete);
+        let secrete = materials::channel(isocosm::process::Process::Secrete);
         layer.stats.secretory_parts = layer
             .drawn_materials()
             .map(|materials| {

@@ -12,7 +12,7 @@
 //! their totals agree.
 
 use crate::legacy::mesocosm::body::{AttachError, Attachment, PartId, Provenance, VolumeRef};
-use crate::legacy::mesocosm::matter::{Material, Stock, StockError};
+use crate::matter::{Material, Stock, StockError};
 
 use super::BodyPhenotype;
 

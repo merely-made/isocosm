@@ -54,12 +54,10 @@ pub mod functions;
 pub mod graft;
 pub mod growth;
 pub mod history;
-pub mod matter;
 pub mod organism;
 pub mod phenotype;
 pub mod places;
 pub mod pressure;
-pub mod process;
 pub mod program;
 pub mod record;
 pub mod rng;
@@ -126,17 +124,13 @@ pub use phenotype::{
 };
 pub use places::{Place, PlaceId, Places};
 pub use pressure::{AUTHORED, Force, HEAVY_DEEP, LONG_YEAR, Pressure, TIDAL_SHELF, WorldProfile};
-pub use process::{
-    BULK_REACH, BodyProcesses, Capability, DefinitionDigest, FeedingMode, IntakePort, NATIVE_ABI,
-    NisKind, Process, ProcessDef, ProcessId, ProcessRef, Registry, Seeding, ShapeProcesses, Unmet,
-};
 pub use program::{
     Citation, Conditions, DeclaredTract, Filial, Founder, Preview, Program, Revision, RevisionId,
     Unexpressed,
 };
 pub use record::{Feat, Mark, Scale, WorldRecord};
 pub use rng::Rng;
-pub use rules::{DeepTimeSpan, RulesetDigest, TROPHIC_GRAMMAR_REVISION, WorldRules};
+pub use rules::{DeepTimeSpan, TROPHIC_GRAMMAR_REVISION, WorldRules};
 pub use score::{Reading, readings};
 pub use snapshot::{SnapshotError, restore, restore_under, snapshot, state_hash};
 pub use species::{InitialTissueRecipe, Lineages, Species, TissueRecipeError};

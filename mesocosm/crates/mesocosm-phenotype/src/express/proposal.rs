@@ -28,9 +28,9 @@
 //! which is the only shape the validator accepts.
 
 use isocosm::legacy::mesocosm::{
-    AllocationProposal, Arrangement, BodyPhenotype, CellId, PartId, ProcessId, ProcessRef,
-    ProposedTract, Registry,
+    AllocationProposal, Arrangement, BodyPhenotype, CellId, PartId, ProposedTract,
 };
+use isocosm::process::{ProcessId, ProcessRef, Registry};
 use serde::{Deserialize, Serialize};
 
 use super::Refused;

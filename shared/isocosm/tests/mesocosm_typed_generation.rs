@@ -7,9 +7,9 @@
 use std::collections::BTreeMap;
 
 use isocosm::legacy::mesocosm::flow::{Account, Conversion, RecordedFlow};
-use isocosm::legacy::mesocosm::matter::{Material, Stock};
 use isocosm::legacy::mesocosm::snapshot;
 use isocosm::legacy::mesocosm::{Intent, OrganismId, World};
+use isocosm::matter::{Material, Stock};
 
 type Key = (Account, Option<OrganismId>);
 

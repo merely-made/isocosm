@@ -5,10 +5,10 @@
 //! Absence means the route still reports scalar amounts, not untyped matter.
 
 use super::FlowEvent;
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 use serde::{Deserialize, Serialize};
 
-pub use crate::legacy::mesocosm::matter::receipt::Conversion;
+pub use crate::matter::receipt::Conversion;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Composition {
@@ -95,13 +95,13 @@ impl FlowEvent {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::legacy::mesocosm::matter::receipt::{Address, Book, Receipt, reconcile};
-    use crate::legacy::mesocosm::{OrganismId, PartId};
+    use crate::legacy::mesocosm::PartId;
+    use crate::matter::receipt::{Address, Book, Receipt, reconcile};
 
     #[test]
     fn mixed_reserve_conversion_reconciles_with_the_existing_typed_book() {
-        let source = Address::Part(OrganismId(1), PartId(0));
-        let target = Address::Reserve(OrganismId(2));
+        let source = Address::Part(1, PartId(0));
+        let target = Address::Reserve(2);
         let input = Stock::from_amounts([3, 5, 7, 11]);
         let output = Stock::single(Material::Untyped, 26);
         let before = Book::from([(source, input)]);
@@ -119,7 +119,7 @@ mod tests {
     #[test]
     fn synthesis_reconciles_untyped_soil_as_producer_tissue() {
         let soil = Address::Soil([0, 0, 0]);
-        let tissue = Address::Part(OrganismId(2), PartId(0));
+        let tissue = Address::Part(2, PartId(0));
         let before = Book::from([(soil, Stock::single(Material::Untyped, 26))]);
         let after = Book::from([
             (soil, Stock::EMPTY),

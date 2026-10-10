@@ -17,7 +17,7 @@ use crate::legacy::mesocosm::body::SpeciesId;
 use crate::legacy::mesocosm::body::{PartId, Yaw};
 use crate::legacy::mesocosm::organism::OrganismId;
 use crate::legacy::mesocosm::phenotype::Refusal;
-use crate::legacy::mesocosm::process::Unmet;
+use crate::process::Unmet;
 
 /// How an incorporated part finds its attachment.
 ///

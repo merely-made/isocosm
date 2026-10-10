@@ -4,8 +4,8 @@
 //! The selected-part reading for the host dev inspector.
 
 use isocosm::legacy::mesocosm::history::{Event, History};
-use isocosm::legacy::mesocosm::{FeedingMode, IntakePort, NisKind};
 use isocosm::legacy::mesocosm::{OrganismId, Origin, PartId, Role, World, classify};
+use isocosm::process::{FeedingMode, IntakePort, NisKind};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct PartReading {

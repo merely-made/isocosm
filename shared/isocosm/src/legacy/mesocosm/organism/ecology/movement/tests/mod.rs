@@ -15,10 +15,8 @@ use super::*;
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, OrganismId, Signal};
-use crate::legacy::mesocosm::process::{
-    BodyProcesses, FeedingMode, IntakePort, NisKind, Process, Registry,
-};
 use crate::legacy::mesocosm::species::Lineages;
+use crate::process::{BodyProcesses, FeedingMode, IntakePort, NisKind, Process, Registry};
 
 mod tiers;
 
@@ -108,7 +106,7 @@ fn a_predator_without_a_producer_port_cannot_graze_the_stand() {
     lineages.found(SpeciesId(9));
     let kin = Kin::new(&lineages);
     let hunter = predator(2, 300);
-    assert!(!hunter.admits(crate::legacy::mesocosm::process::NisKind::Producer, false));
+    assert!(!hunter.admits(crate::process::NisKind::Producer, false));
 
     let mut stand = target(1, 9, [1, 0, 0], 500);
     stand.kingdom = Kingdom::Producer;

@@ -60,11 +60,11 @@ mod tests {
     use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
     use crate::legacy::mesocosm::development::PartPalette;
     use crate::legacy::mesocosm::flow::Ledger;
-    use crate::legacy::mesocosm::matter::{Material, Stock};
     use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, step};
-    use crate::legacy::mesocosm::soil::Soil;
     use crate::legacy::mesocosm::rng::Rng;
+    use crate::legacy::mesocosm::soil::Soil;
     use crate::legacy::mesocosm::species::Lineages;
+    use crate::matter::{Material, Stock};
 
     fn subject() -> Subject {
         Subject {

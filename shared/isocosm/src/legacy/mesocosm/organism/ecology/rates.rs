@@ -14,7 +14,7 @@
 //! retune's written record.
 
 use super::Organism;
-use crate::legacy::mesocosm::process::FeedingMode;
+use crate::process::FeedingMode;
 
 /// Reference body mass for the allometric rates below.
 const REFERENCE_MASS_MG: u64 = 100;

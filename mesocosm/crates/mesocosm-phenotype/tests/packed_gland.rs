@@ -24,9 +24,9 @@
 use std::path::{Path, PathBuf};
 
 use isocosm::legacy::mesocosm::{
-    Attachment, Intent, Process, ProcessId, ProcessRef, Provenance, Registry, SnapshotError,
-    VolumeRef, World, WorldRules, Yaw,
+    Attachment, Intent, Provenance, SnapshotError, VolumeRef, World, WorldRules, Yaw,
 };
+use isocosm::process::{Process, ProcessId, ProcessRef, Registry};
 use mesocosm_phenotype::admit_dir;
 
 fn shipped_root() -> PathBuf {
@@ -345,7 +345,7 @@ fn a_replay_against_a_different_admitted_ruleset_is_refused_identifiably() {
     let mut defs: Vec<_> = packed().all().cloned().collect();
     for def in &mut defs {
         if def.id.name == "secrete" {
-            def.seeding = isocosm::legacy::mesocosm::Seeding::Geometry;
+            def.seeding = isocosm::process::Seeding::Grown;
         }
     }
     let other = Registry::admit(defs).expect("no collision");

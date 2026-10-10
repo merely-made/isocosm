@@ -25,9 +25,10 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use isocosm::legacy::mesocosm::{
-    Arrangement, Attachment, BodyPhenotype, Intent, Organism, ProcessId, Provenance, Registry,
-    Stage, VolumeRef, World, Yaw,
+    Arrangement, Attachment, BodyPhenotype, Intent, Organism, Provenance, Stage, VolumeRef, World,
+    Yaw,
 };
+use isocosm::process::{ProcessId, Registry};
 use mesocosm_phenotype::admit_dir;
 use mesocosm_phenotype::express::{
     Ambient, DRAWS, Entropy, Expression, Fixture, Policy, Request, Runner, lower,

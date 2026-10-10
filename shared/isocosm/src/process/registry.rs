@@ -25,16 +25,30 @@
 use std::sync::LazyLock;
 
 use super::{DefinitionDigest, Process, ProcessDef, ProcessId, ProcessRef, Seeding};
-use crate::legacy::mesocosm::plan::Role;
-use crate::legacy::mesocosm::rules::RulesetDigest;
+use isometer_core::Role;
+use isometer_core::snapshot::hash_bytes;
+use serde::{Deserialize, Serialize};
 
 /// The pack format ABI this build admits.
 ///
 /// Not a digest input: a ruleset is what its definitions say, and the ABI is
 /// the gate that decides whether this build can read the file at all.
-/// [`crate::legacy::mesocosm::rules::WorldRules`] therefore records the digest, and admission
+/// A world's realized rules therefore records the digest, and admission
 /// records the refusal.
 pub const NATIVE_ABI: u32 = 1;
+
+/// A content address for one complete admitted ruleset.
+#[derive(
+    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
+pub struct RulesetDigest(pub u64);
+
+impl RulesetDigest {
+    /// The form a receipt, a panel or a diagnostic prints.
+    pub fn hex(self) -> String {
+        format!("{:016x}", self.0)
+    }
+}
 
 /// The registry: every admitted process definition, in canonical order.
 ///
@@ -58,19 +72,19 @@ fn native_defs() -> Vec<ProcessDef> {
             id: ProcessId::new("mesocosm", "contract"),
             native: Some(Process::Contract),
             expressed_by: vec![Role::Limb],
-            seeding: Seeding::Geometry,
+            seeding: Seeding::Grown,
         },
         ProcessDef {
             id: ProcessId::new("mesocosm", "fix"),
             native: Some(Process::Fix),
             expressed_by: vec![Role::Plate],
-            seeding: Seeding::Geometry,
+            seeding: Seeding::Grown,
         },
         ProcessDef {
             id: ProcessId::new("mesocosm", "intake"),
             native: Some(Process::Intake),
             expressed_by: vec![Role::Mass],
-            seeding: Seeding::Geometry,
+            seeding: Seeding::Grown,
         },
         ProcessDef {
             id: ProcessId::new("mesocosm", "secrete"),
@@ -91,7 +105,7 @@ fn native_defs() -> Vec<ProcessDef> {
             id: ProcessId::new("mesocosm", "sense"),
             native: Some(Process::Sense),
             expressed_by: vec![Role::Sensor],
-            seeding: Seeding::Geometry,
+            seeding: Seeding::Grown,
         },
     ]
 }
@@ -186,6 +200,6 @@ impl Registry {
         for digest in digests {
             bytes.extend_from_slice(&digest.0.to_le_bytes());
         }
-        RulesetDigest(crate::legacy::mesocosm::snapshot::hash_bytes(&bytes))
+        RulesetDigest(hash_bytes(&bytes))
     }
 }

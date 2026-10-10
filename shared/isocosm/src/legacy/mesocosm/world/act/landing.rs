@@ -25,7 +25,7 @@ impl World {
                 Landed {
                     budget_mg: eaten.biomass_mg(),
                     body_mg: 0,
-                    body_stock: crate::legacy::mesocosm::matter::Stock::EMPTY,
+                    body_stock: crate::matter::Stock::EMPTY,
                 },
             ),
             Route::Incorporate {

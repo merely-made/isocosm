@@ -12,9 +12,9 @@
 use std::collections::BTreeMap;
 use std::time::Instant;
 
-use isocosm::legacy::mesocosm::process::FeedingMode;
 use isocosm::legacy::mesocosm::world::ENCLOSURE;
 use isocosm::legacy::mesocosm::{Founding, Intent, Kingdom, World};
+use isocosm::process::FeedingMode;
 
 use super::{BOIL_MULTIPLE, COLLAPSE_FRACTION, CROWD_CELL, SAMPLE_INTERVAL, TICKS};
 

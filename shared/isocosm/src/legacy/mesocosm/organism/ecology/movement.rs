@@ -20,10 +20,13 @@ use super::{dispersal_for, is_hungry, travels};
 use crate::legacy::mesocosm::flow::Records;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::{LastSeen, Organism};
-use crate::legacy::mesocosm::places::{Ground, Places, Tier, WalkerShape, route_step_for, step_for as grounded_step, surface_stance_for};
-use crate::legacy::mesocosm::soil::Soil;
-use crate::legacy::mesocosm::process::BodyProcesses;
+use crate::legacy::mesocosm::places::{
+    Ground, Places, Tier, WalkerShape, route_step_for, step_for as grounded_step,
+    surface_stance_for,
+};
 use crate::legacy::mesocosm::rng::Rng;
+use crate::legacy::mesocosm::soil::Soil;
+use crate::process::BodyProcesses;
 
 mod choice;
 mod far;

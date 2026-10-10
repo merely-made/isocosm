@@ -13,9 +13,9 @@
 use super::*;
 use crate::legacy::mesocosm::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 use crate::legacy::mesocosm::plan::Role;
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::{IntakePort, NisKind, Process, Registry};
 use crate::legacy::mesocosm::snapshot;
+use crate::process::BodyProcesses;
+use crate::process::{IntakePort, NisKind, Process, Registry};
 
 /// A bulk root `[2, 2, 2]`, a long limb `[7, 1, 1]`, and a frond `[4, 4, 1]`
 /// held above: one part of three different roles, so every seeded process in
@@ -439,7 +439,7 @@ fn an_unknown_definition_is_refused_rather_than_substituted() {
     let (mut phenotype, _) = critter();
     let mut proposal = arrange(&phenotype, Aim::Spare);
     let foreign = ProcessRef {
-        definition: crate::legacy::mesocosm::process::DefinitionDigest(0xdead_beef),
+        definition: crate::process::DefinitionDigest(0xdead_beef),
     };
     proposal.tracts[0].process = foreign;
 

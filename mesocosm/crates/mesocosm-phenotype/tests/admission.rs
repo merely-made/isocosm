@@ -16,7 +16,8 @@
 
 use std::path::{Path, PathBuf};
 
-use isocosm::legacy::mesocosm::{Registry, Role, Seeding};
+use isocosm::legacy::mesocosm::Role;
+use isocosm::process::{Registry, Seeding};
 
 use mesocosm_phenotype::*;
 
@@ -410,7 +411,7 @@ fn a_definition_the_engine_has_no_binding_for_still_lowers() {
     scratch.write(MANIFEST_JSON, &manifest(&["processes/filter.json"]));
     let admitted = admit_dir(scratch.path()).expect("admits");
     let def = admitted
-        .get(&isocosm::legacy::mesocosm::ProcessId::new("reef", "filter"))
+        .get(&isocosm::process::ProcessId::new("reef", "filter"))
         .expect("the id it declared");
     assert_eq!(def.native, None);
     assert_eq!(def.expressed_by, vec![Role::Plate, Role::Mass]);

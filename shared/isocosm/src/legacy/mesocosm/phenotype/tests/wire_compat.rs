@@ -53,7 +53,7 @@ fn old_form_refusal_variants_still_deserialize_to_the_same_value() {
             Refusal::TractMismatch {
                 part: PartId(3),
                 process: ProcessRef {
-                    definition: crate::legacy::mesocosm::process::DefinitionDigest(9),
+                    definition: crate::process::DefinitionDigest(9),
                 },
             },
         ),

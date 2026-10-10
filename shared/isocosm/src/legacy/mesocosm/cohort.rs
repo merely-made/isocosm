@@ -17,7 +17,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId};
 use crate::legacy::mesocosm::places::{PlaceId, Places, Tier};
-use crate::legacy::mesocosm::process::FeedingMode;
+use crate::process::FeedingMode;
 
 const MASS_BAND_MG: u64 = 64;
 

@@ -10,9 +10,7 @@
 //! half added process references and definition digests.
 
 use super::*;
-use crate::legacy::mesocosm::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::ShapeProcesses;
+use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 
 /// A bulk root, with an optional long limb reaching out along +x.
 fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {
@@ -255,7 +253,7 @@ fn a_rule_bearing_byte_changes_the_digest() {
     // And the PD2 byte is rule-bearing too: a world whose plates grew glands
     // is a different world, so it cannot answer to the same address.
     let ungrown = ProcessDef {
-        seeding: crate::legacy::mesocosm::process::Seeding::Acquired,
+        seeding: Seeding::Acquired,
         ..contract.clone()
     };
     assert_ne!(contract.digest(), ungrown.digest());

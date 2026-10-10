@@ -4,7 +4,7 @@
 use super::*;
 use crate::legacy::mesocosm::flow::Account;
 
-fn mixed_target(world: &mut World, target: OrganismId) -> crate::legacy::mesocosm::matter::Stock {
+fn mixed_target(world: &mut World, target: OrganismId) -> crate::matter::Stock {
     let donor = world
         .organisms
         .iter_mut()
@@ -16,7 +16,7 @@ fn mixed_target(world: &mut World, target: OrganismId) -> crate::legacy::mesocos
         .part(root)
         .expect("the target has a root")
         .mass_mg;
-    let stock = crate::legacy::mesocosm::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
+    let stock = crate::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
     donor.phenotype.replace_part_stock(root, stock).unwrap();
     donor.phenotype.total_stock().unwrap()
 }
@@ -30,10 +30,7 @@ fn admit_live_producer(world: &mut World) {
     world.controlled_mut().unwrap().energy_mg = 1_000;
 }
 
-fn add_stocks(
-    a: crate::legacy::mesocosm::matter::Stock,
-    b: crate::legacy::mesocosm::matter::Stock,
-) -> crate::legacy::mesocosm::matter::Stock {
+fn add_stocks(a: crate::matter::Stock, b: crate::matter::Stock) -> crate::matter::Stock {
     a.checked_add(b).unwrap()
 }
 
@@ -49,9 +46,9 @@ fn whole_mixed_meal_planned_attachment_preserves_stock_and_receipt() {
         Outcome::IncorporatedPair { part, mirror } => vec![part, mirror],
         other => panic!("planned mixed meal refused: {other:?}"),
     };
-    let attached = parts.into_iter().fold(
-        crate::legacy::mesocosm::matter::Stock::EMPTY,
-        |total, part| {
+    let attached = parts
+        .into_iter()
+        .fold(crate::matter::Stock::EMPTY, |total, part| {
             add_stocks(
                 total,
                 *world
@@ -61,8 +58,7 @@ fn whole_mixed_meal_planned_attachment_preserves_stock_and_receipt() {
                     .part_stock(part)
                     .unwrap(),
             )
-        },
-    );
+        });
     let feeding = world
         .flows()
         .iter()
@@ -80,10 +76,9 @@ fn whole_mixed_meal_planned_attachment_preserves_stock_and_receipt() {
                 && record.record.source == Account::Substance
         })
         .and_then(|record| record.record.composition)
-        .map_or(
-            crate::legacy::mesocosm::matter::Stock::EMPTY,
-            |composition| composition.output,
-        );
+        .map_or(crate::matter::Stock::EMPTY, |composition| {
+            composition.output
+        });
     assert_eq!(attached, body_stock);
     assert_eq!(add_stocks(body_stock, spill_stock), stock);
 }
@@ -138,10 +133,7 @@ fn whole_mixed_meal_burn_records_digestion_and_untyped_output() {
     assert_eq!(composition.input, stock);
     assert_eq!(
         composition.output,
-        crate::legacy::mesocosm::matter::Stock::single(
-            crate::legacy::mesocosm::matter::Material::Untyped,
-            amount
-        )
+        crate::matter::Stock::single(crate::matter::Material::Untyped, amount)
     );
     assert_eq!(
         composition.conversion,
@@ -185,9 +177,9 @@ fn whole_mixed_meal_snapshot_round_trip_preserves_part_and_flow_effect() {
     };
     assert_eq!(world, replayed);
     assert_eq!(world.flows(), replayed.flows());
-    let attached = parts.into_iter().fold(
-        crate::legacy::mesocosm::matter::Stock::EMPTY,
-        |total, part| {
+    let attached = parts
+        .into_iter()
+        .fold(crate::matter::Stock::EMPTY, |total, part| {
             add_stocks(
                 total,
                 *world
@@ -197,22 +189,21 @@ fn whole_mixed_meal_snapshot_round_trip_preserves_part_and_flow_effect() {
                     .part_stock(part)
                     .unwrap(),
             )
-        },
-    );
-    let replay_attached = replay_parts.into_iter().fold(
-        crate::legacy::mesocosm::matter::Stock::EMPTY,
-        |total, part| {
-            add_stocks(
-                total,
-                *replayed
-                    .controlled()
-                    .unwrap()
-                    .phenotype
-                    .part_stock(part)
-                    .unwrap(),
-            )
-        },
-    );
+        });
+    let replay_attached =
+        replay_parts
+            .into_iter()
+            .fold(crate::matter::Stock::EMPTY, |total, part| {
+                add_stocks(
+                    total,
+                    *replayed
+                        .controlled()
+                        .unwrap()
+                        .phenotype
+                        .part_stock(part)
+                        .unwrap(),
+                )
+            });
     assert_eq!(attached, stock);
     assert_eq!(replay_attached, stock);
     let encoded = serde_json::to_vec(world.flows()).unwrap();
@@ -227,7 +218,7 @@ fn whole_mixed_meal_snapshot_round_trip_preserves_part_and_flow_effect() {
 
 #[test]
 fn mirrored_odd_meal_preserves_both_halves_and_pending_soil_stock() {
-    use crate::legacy::mesocosm::matter::{Material, Stock};
+    use crate::matter::{Material, Stock};
     let (mut world, target) = typed_consumer_world(Stage::Mature);
     admit_live_producer(&mut world);
     let at = world.position().unwrap();

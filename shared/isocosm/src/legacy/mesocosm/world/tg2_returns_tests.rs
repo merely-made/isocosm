@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 
 use super::*;
 use crate::legacy::mesocosm::flow::{Account, Conversion, RecordedFlow};
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 
 type Key = (Account, Option<OrganismId>);
 type Book = BTreeMap<Key, Stock>;

@@ -4,7 +4,7 @@
 //! Completed metabolic returns use the lot actually paid by the body.
 
 use super::*;
-use crate::legacy::mesocosm::matter::Material;
+use crate::matter::Material;
 
 fn complete_return(
     soil: &mut Soil,

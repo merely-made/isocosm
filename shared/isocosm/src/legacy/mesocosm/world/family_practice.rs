@@ -147,14 +147,14 @@ impl World {
         // The practice parent is a mixotroph: its plate does not by itself
         // admit carrion. Author a supported intake port through the same
         // declaration seam as founding, instead of bypassing meal admission.
-        let intake = crate::legacy::mesocosm::process::Registry::native()
-            .of_native(crate::legacy::mesocosm::process::Process::Intake)
+        let intake = crate::process::Registry::native()
+            .of_native(crate::process::Process::Intake)
             .reference();
         let parent_body = world.controlled_mut().expect("practice parent lives");
         let intake_part = parent_body.body().root;
         assert!(parent_body.phenotype.declare_port(
             intake_part,
-            crate::legacy::mesocosm::process::IntakePort::deadstock().supported_by(intake),
+            crate::process::IntakePort::deadstock().supported_by(intake),
         ));
         assert!(parent_body.phenotype.intake_ports().admits_deadstock());
 

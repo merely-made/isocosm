@@ -112,7 +112,7 @@ fn generated_creator_entry_installs_the_selected_tissue() {
     request.criteria.role = Some(Kingdom::Producer);
     let world = request.prepare(palette()).unwrap().enter(0).unwrap();
     let founder = world.controlled().expect("generated founder is controlled");
-    let expected = crate::legacy::mesocosm::matter::Material::Producer;
+    let expected = crate::matter::Material::Producer;
     assert_eq!(
         world
             .lineages()
@@ -123,7 +123,7 @@ fn generated_creator_entry_installs_the_selected_tissue() {
     );
     assert_eq!(
         founder.phenotype.total_stock().unwrap(),
-        crate::legacy::mesocosm::matter::Stock::single(expected, founder.biomass_mg())
+        crate::matter::Stock::single(expected, founder.biomass_mg())
     );
 }
 

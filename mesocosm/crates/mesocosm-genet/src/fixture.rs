@@ -178,7 +178,8 @@ mod tests {
 
     #[test]
     fn food_controls_skip_targets_the_controlled_ports_do_not_admit() {
-        use isocosm::legacy::mesocosm::{IntakePort, Kingdom, NisKind, Process, Registry};
+        use isocosm::legacy::mesocosm::Kingdom;
+        use isocosm::process::{IntakePort, NisKind, Process, Registry};
         let mut world = World::new(7, 80);
         let me = world.controlled_id().unwrap();
         let plant = world
@@ -285,16 +286,14 @@ mod tests {
             // Placement is the claim here. Give this compact test body a
             // declared live-food port instead of relying on decomposers
             // historically being able to metabolize every living target.
-            let port = isocosm::legacy::mesocosm::IntakePort::live(
-                isocosm::legacy::mesocosm::NisKind::Producer,
-            )
-            .with_live(isocosm::legacy::mesocosm::NisKind::Consumer)
-            .with_live(isocosm::legacy::mesocosm::NisKind::Decomposer)
-            .supported_by(
-                isocosm::legacy::mesocosm::Registry::native()
-                    .of_native(isocosm::legacy::mesocosm::Process::Intake)
-                    .reference(),
-            );
+            let port = isocosm::process::IntakePort::live(isocosm::process::NisKind::Producer)
+                .with_live(isocosm::process::NisKind::Consumer)
+                .with_live(isocosm::process::NisKind::Decomposer)
+                .supported_by(
+                    isocosm::process::Registry::native()
+                        .of_native(isocosm::process::Process::Intake)
+                        .reference(),
+                );
             let root = organism.body().root;
             assert!(organism.phenotype.declare_port(root, port));
         }

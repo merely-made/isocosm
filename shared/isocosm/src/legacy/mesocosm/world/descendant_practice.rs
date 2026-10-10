@@ -200,7 +200,7 @@ impl World {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::legacy::mesocosm::process::{Process, Registry};
+    use crate::process::{Process, Registry};
 
     #[test]
     fn proof_separates_somatic_acquisition_from_filial_expression() {

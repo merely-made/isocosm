@@ -18,7 +18,7 @@
 
 use super::Organism;
 use super::ecology;
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 
 impl Organism {
     /// The adult mass this body plan describes.

@@ -14,13 +14,13 @@ use std::collections::BTreeMap;
 
 use crate::legacy::mesocosm::body::SpeciesId;
 use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette};
-use crate::legacy::mesocosm::matter::Material;
 use crate::legacy::mesocosm::organism::ecology;
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, Signal, Stage};
 use crate::legacy::mesocosm::plan::Role;
-use crate::legacy::mesocosm::process::{IntakePort, NisKind, Process, Registry};
 use crate::legacy::mesocosm::rng::Rng;
 use crate::legacy::mesocosm::species::{InitialTissueRecipe, Lineages};
+use crate::matter::Material;
+use crate::process::{IntakePort, NisKind, Process, Registry};
 
 use super::{DEVELOPMENT_SALT, ENCLOSURE, GRAFT_SALT, PLACE_SALT, PLACE_SIDE, RECIPE_SALT, World};
 
@@ -97,7 +97,7 @@ impl World {
         seed: u64,
         organism_count: u32,
         founding: Founding,
-        ruleset: std::sync::Arc<crate::legacy::mesocosm::process::Registry>,
+        ruleset: std::sync::Arc<crate::process::Registry>,
     ) -> Result<Self, DevelopmentError> {
         Self::found(seed, organism_count, founding.palette(), founding, ruleset)
     }
@@ -145,7 +145,7 @@ impl World {
         organism_count: u32,
         development_palette: PartPalette,
         founding: Founding,
-        ruleset: std::sync::Arc<crate::legacy::mesocosm::process::Registry>,
+        ruleset: std::sync::Arc<crate::process::Registry>,
     ) -> Result<Self, DevelopmentError> {
         let mut rng = Rng::from_seed(seed);
 

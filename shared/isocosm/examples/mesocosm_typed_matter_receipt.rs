@@ -4,24 +4,22 @@
 //! TG2a accounting and transport instrument; does not run the live World.
 use std::{hint::black_box, time::Instant};
 
-use isocosm::legacy::mesocosm::{
-    OrganismId, PartId,
-    matter::{
-        Material, Stock,
-        receipt::{Address, Book, Conversion, Receipt, reconcile, replay},
-        transport,
-    },
+use isocosm::diffusion;
+use isocosm::legacy::mesocosm::PartId;
+use isocosm::matter::{
+    Material, Stock,
+    receipt::{Address, Book, Conversion, Receipt, reconcile, replay},
 };
-#[path = "../src/legacy/mesocosm/matter/transport/scalar_reference.rs"]
+#[path = "../src/diffusion/scalar_reference.rs"]
 mod scalar_reference;
 use scalar_reference::ScalarSoil as Soil;
 use serde_json::json;
 
 fn main() {
     let soil = Address::Soil([0, 0, 0]);
-    let donor = Address::Part(OrganismId(1), PartId(0));
-    let graft = Address::Part(OrganismId(2), PartId(0));
-    let reserve = Address::Reserve(OrganismId(2));
+    let donor = Address::Part(1, PartId(0));
+    let graft = Address::Part(2, PartId(0));
+    let reserve = Address::Reserve(2);
     let before = Book::from([(soil, Stock::single(Material::Untyped, 101))]);
     let receipts = vec![
         Receipt::Conversion {
@@ -121,7 +119,7 @@ fn benchmark() -> serde_json::Value {
         let mut run_typed = || {
             let started = Instant::now();
             for _ in 0..TICKS {
-                transport::percolate(black_box(&mut typed), SIDE, 8).unwrap();
+                diffusion::percolate(black_box(&mut typed), SIDE, 8).unwrap();
             }
             started.elapsed().as_secs_f64() * 1000.0 / TICKS as f64
         };

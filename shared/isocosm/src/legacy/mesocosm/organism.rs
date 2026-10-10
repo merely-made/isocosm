@@ -23,8 +23,8 @@ use crate::legacy::mesocosm::body::{Attachment, BodyDocument, Provenance, Yaw};
 use crate::legacy::mesocosm::phenotype::BodyPhenotype;
 use crate::legacy::mesocosm::places::{Tier, WalkerShape};
 use crate::legacy::mesocosm::plan::{Role, classify};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::{FeedingMode, NisKind, Process};
+use crate::process::BodyProcesses;
+use crate::process::{FeedingMode, NisKind, Process};
 
 mod behavior;
 pub mod ecology;

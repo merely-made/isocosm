@@ -10,7 +10,7 @@
 //! definitions, schedules, generator version and digests, because a seed alone
 //! is insufficient once the code that reads it can change. `WorldRules` is that
 //! record's working label, and this is its **first proven component**: the
-//! digest of the [`Registry`](crate::legacy::mesocosm::process::Registry) a world was founded
+//! digest of the [`Registry`](crate::process::Registry) a world was founded
 //! under.
 //!
 //! # Identity, not a copy
@@ -25,7 +25,7 @@
 //!
 //! # What is rule-bearing
 //!
-//! Everything [`Registry::digest`](crate::legacy::mesocosm::process::Registry::digest) folds,
+//! Everything [`Registry::digest`](crate::process::Registry::digest) folds,
 //! and nothing else. Each definition contributes its identity, its tract
 //! requirement and its seeding; the set is folded in sorted order, so neither
 //! the order a pack declared its files in nor a definition's plain label,
@@ -40,7 +40,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::legacy::mesocosm::process::Registry;
+use crate::process::{Registry, RulesetDigest};
 
 /// Ticks an epoch runs for by default.
 ///
@@ -198,19 +198,6 @@ impl From<DeepTimeSpan> for hagiograph::DeepTime {
         Self {
             epochs: span.epochs,
         }
-    }
-}
-
-/// A content address for one complete admitted ruleset.
-#[derive(
-    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
-)]
-pub struct RulesetDigest(pub u64);
-
-impl RulesetDigest {
-    /// The form a receipt, a panel or a diagnostic prints.
-    pub fn hex(self) -> String {
-        format!("{:016x}", self.0)
     }
 }
 

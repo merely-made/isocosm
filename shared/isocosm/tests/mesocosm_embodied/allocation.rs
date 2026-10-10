@@ -10,11 +10,12 @@
 //! are what these extend: capability is still read off what a body is made of,
 //! and now the tissue that reads that way is named, counted and conserved.
 
-use isocosm::legacy::mesocosm::BodyProcesses;
 use isocosm::legacy::mesocosm::{
     Aim, AllocationProposal, Arrangement, Intent, OrganismId, Outcome, PartPalette, PartTemplate,
-    Placement, Process, Registry, RoleShapes, VolumeRef, World, arrange, snapshot,
+    Placement, RoleShapes, VolumeRef, World, arrange, snapshot,
 };
+use isocosm::process::BodyProcesses;
+use isocosm::process::{Process, Registry};
 
 use super::{bulk_world, grow_a_limb};
 
@@ -131,10 +132,10 @@ fn one_validator_serves_the_player_and_the_game() {
     };
 
     let there = automatic
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &by_game)
+        .develop(isocosm::process::Registry::native(), &by_game)
         .expect("valid");
     let here = direct
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &by_hand)
+        .develop(isocosm::process::Registry::native(), &by_hand)
         .expect("valid");
     assert_eq!(there.instruction, here.instruction);
     assert_eq!(
@@ -153,10 +154,10 @@ fn one_validator_serves_the_player_and_the_game() {
     };
     assert_eq!(
         game_refused
-            .develop(isocosm::legacy::mesocosm::Registry::native(), &bad_game)
+            .develop(isocosm::process::Registry::native(), &bad_game)
             .unwrap_err(),
         hand_refused
-            .develop(isocosm::legacy::mesocosm::Registry::native(), &bad_hand)
+            .develop(isocosm::process::Registry::native(), &bad_hand)
             .unwrap_err(),
         "one refusal, whoever asked"
     );
