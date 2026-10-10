@@ -117,6 +117,20 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q2 sortie gate:** four of six tests passed. The two failures
+  stop at missing `PactInvoked` and missing Aud wound, after the original
+  agreement-link failures were fixed. `eponym-sortie/src/sortie.rs::walk`
+  calls native harm only after a drop greater than `SAFE_FALL = 4`, then
+  downs the home body; `advance` requires that downed body before the pact
+  fires. A refused native wound would panic earlier inside `wound`, which
+  did not happen. `scene.rs` explicitly says its calibrated generated-terrain
+  route should fail when a regenerated world no longer supplies the cliff.
+  *Reading, not ruled:* stale terrain calibration is consistent with both
+  failures; a preserved trajectory diagnostic and generator history audit
+  must establish it before Q5 repairs the scene. No coordinates or hazard
+  law changed. The raw six-sortie log SHA-256 is
+  `4555e3248e6f5bbb94a516203b72f0a39439bcc7609c994c9344ff49415fabed`,
+  under `Code/testing/isometry/receipts/2026-10-10/q2-contracts/`.
 - **2026-10-10, Q11 headed preflight:** read-only, without Cargo or a headed
   run. Pinned Genet `15713014` exports `taproot::Scenario`; Mesocosm's
   `mesocosm-genet/src/app/drive.rs` pumps it after rendered frames, routes

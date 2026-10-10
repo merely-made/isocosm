@@ -284,6 +284,20 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 consumer batch partly qualified:** campaign contracts
+  passed 7/7, a compiled discarded-table-metadata fault was caught, exact
+  restored source passed 7/7, and both current-wire replication tests passed.
+  The six-sortie gate reached 4/6 after compilation. The remaining failures
+  are the absent pact handoff and played-body wound. Source inspection ties
+  both to the scene's missing greater-than-four-cell fall; no wound-hand-back
+  refusal occurred. Scene calibration and its source history are being
+  diagnosed without changing coordinates. The complete raw log lives in
+  `Code/testing/isometry/receipts/2026-10-10/q2-contracts/six_sorties.log`,
+  SHA-256 `4555e3248e6f5bbb94a516203b72f0a39439bcc7609c994c9344ff49415fabed`.
+  Q2 stopped before Eponym's nine contract tests and root/Eponym compiler
+  gates, released Cargo and remains unfinished. The frozen fresh Q3 seed-0
+  pilot now owns Cargo; Q8's bounded controls follow. Ruling 812's adapter
+  healing fork remains unanswered.
 - **2026-10-10, Q8 refreshed source verified:** the existing plans tree
   carries Q2's eleven native paths from `6f879936` alongside unchanged C10
   preparation. Root recomputed all 31 inputs in
