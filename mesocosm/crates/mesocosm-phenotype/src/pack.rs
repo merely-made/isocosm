@@ -16,7 +16,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use isocosm::legacy::mesocosm::{NATIVE_ABI, Role, Seeding};
+use isocosm::legacy::mesocosm::Role;
+use isocosm::process::{NATIVE_ABI, Seeding};
 
 /// The pack format ABI this build reads. One, and it is the core's own.
 pub const SUPPORTED_ABI: u32 = NATIVE_ABI;
@@ -98,7 +99,7 @@ pub fn role_of(word: &str) -> Option<Role> {
 /// The seeding rule a pack's word names, or `None`.
 pub fn seeding_of(word: &str) -> Option<Seeding> {
     match word {
-        "geometry" => Some(Seeding::Geometry),
+        "geometry" => Some(Seeding::Grown),
         "acquired" => Some(Seeding::Acquired),
         _ => None,
     }

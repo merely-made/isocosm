@@ -74,7 +74,7 @@ impl World {
                         .max()
                         .unwrap_or(0);
                     return Outcome::Rejected(Rejection::OutOfReach(
-                        crate::legacy::mesocosm::process::Unmet::TooFar {
+                        crate::process::Unmet::TooFar {
                             reach: self.reach(),
                             distance,
                         },
@@ -82,7 +82,7 @@ impl World {
                 }
                 if !(1..=2).contains(&radius) {
                     return Outcome::Rejected(Rejection::OutOfReach(
-                        crate::legacy::mesocosm::process::Unmet::TooFar {
+                        crate::process::Unmet::TooFar {
                             reach: 2,
                             distance: radius,
                         },

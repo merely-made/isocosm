@@ -32,11 +32,11 @@
 //! # Geometry seeds allocation; nobody edits a number
 //!
 //! P2's rule was *processes are read, not stored*: a part's processes were
-//! derived from its geometry through [`classify`](crate::legacy::mesocosm::plan::classify) and
+//! derived from its geometry through [`classify`] and
 //! kept nowhere. PD1b keeps the principle and moves the boundary. Geometry is
 //! now the **seeding rule** — [`Role::processes`] says what a shape expresses
 //! when a part is developed — and what it seeds is
-//! [allocation](crate::legacy::mesocosm::phenotype): tissue on a named part, occupying named
+//! allocation: tissue on a named part, occupying named
 //! cells, citing the exact definition it expresses.
 //!
 //! The anti-Spore property survives the move intact, in two places. A
@@ -48,12 +48,12 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::legacy::mesocosm::body::{BodyDocument, PartId};
-use crate::legacy::mesocosm::plan::{Role, classify};
+use isometer_core::snapshot::hash_bytes;
+use isometer_core::{BodyDocument, PartId, Role, classify};
 
 mod registry;
 
-pub use registry::{NATIVE_ABI, Registry};
+pub use registry::{NATIVE_ABI, Registry, RulesetDigest};
 
 /// What a part contributes.
 ///
@@ -338,21 +338,10 @@ pub struct ProcessRef {
     pub definition: DefinitionDigest,
 }
 
-/// Whether a shape that admits a definition also **grows** it.
-///
-/// PD1b had only one answer, because all four natives were things a shape
-/// simply does. PD2 needs the other: a definition a part will carry but never
-/// develops on its own, so the only way to express it is a development that
-/// takes the tissue off something else. That is the difference between a
-/// consequence and a choice, and it is rule-bearing — a world whose plates
-/// grew glands is a different world — so it is in the digest.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub enum Seeding {
-    /// Growing an admitting shape expresses it. The four originals.
-    Geometry,
-    /// Only a validated development places it. Nothing grows one.
-    Acquired,
-}
+/// Whether a shape that admits a definition also grows it: the catalogue's
+/// own [`crate::rules::Seeding`], rule-bearing and so in the digest. A pack
+/// writes `geometry` for [`Seeding::Grown`].
+pub use crate::rules::Seeding;
 
 /// One process as a record: identity, the roles whose geometry expresses
 /// it, and a digest over its rule-bearing bytes.
@@ -399,12 +388,12 @@ impl ProcessDef {
         }
         bytes.push(0);
         bytes.push(self.seeding as u8);
-        DefinitionDigest(crate::legacy::mesocosm::snapshot::hash_bytes(&bytes))
+        DefinitionDigest(hash_bytes(&bytes))
     }
 
     /// Whether growing an admitting shape expresses this definition.
     pub fn seeded(&self) -> bool {
-        self.seeding == Seeding::Geometry
+        self.seeding == Seeding::Grown
     }
 
     /// What a phenotype stores when it expresses this definition.

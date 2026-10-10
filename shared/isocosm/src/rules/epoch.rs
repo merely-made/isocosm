@@ -61,6 +61,15 @@ impl DeepTimeSpan {
     }
 }
 
+/// The hagiograph's form of the same count.
+impl From<DeepTimeSpan> for hagiograph::DeepTime {
+    fn from(span: DeepTimeSpan) -> Self {
+        Self {
+            epochs: span.epochs,
+        }
+    }
+}
+
 /// The most ticks a deep-time span may take before it is refused as stalled:
 /// one epoch more than the span, so the ceiling never ends a run its rule is
 /// closing. A span under a rule that never closes an epoch on its own is

@@ -48,7 +48,8 @@ use std::fmt;
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use crate::legacy::mesocosm::matter::{Stock, StockError, transport};
+use crate::diffusion::{Refusal, percolate};
+use crate::matter::{Material, Stock, StockError};
 
 mod mineralization;
 
@@ -103,7 +104,7 @@ pub enum SoilError {
     /// The whole finite world's scalar conservation ledger would overflow.
     GlobalTotalOverflow,
     /// Percolation could not produce a valid next field.
-    Transport(transport::TransportError),
+    Transport(Refusal<Material>),
 }
 
 impl fmt::Display for SoilError {
@@ -180,10 +181,7 @@ impl Soil {
         Self {
             extent,
             matter_mg: vec![
-                Stock::single(
-                    crate::legacy::mesocosm::matter::Material::Untyped,
-                    per_column_mg
-                );
+                Stock::single(crate::matter::Material::Untyped, per_column_mg);
                 columns
             ],
             total_mg,
@@ -265,8 +263,7 @@ impl Soil {
     /// cannot name its provenance, so letting it see mixed material would let
     /// its later [`Self::draw`] erase living history.
     pub fn matter_mg(&self, column: Column) -> u64 {
-        self.stock(column)
-            .amount(crate::legacy::mesocosm::matter::Material::Untyped)
+        self.stock(column).amount(crate::matter::Material::Untyped)
     }
 
     /// Takes up to `want_mg` out of one column, returning what was actually
@@ -277,12 +274,9 @@ impl Soil {
         let Some(held) = self.matter_mg.get(index).copied() else {
             return 0;
         };
-        let drawn = want_mg.min(held.amount(crate::legacy::mesocosm::matter::Material::Untyped));
+        let drawn = want_mg.min(held.amount(crate::matter::Material::Untyped));
         self.matter_mg[index] = held
-            .checked_sub(Stock::single(
-                crate::legacy::mesocosm::matter::Material::Untyped,
-                drawn,
-            ))
+            .checked_sub(Stock::single(crate::matter::Material::Untyped, drawn))
             .expect("a bounded untyped draw cannot underflow");
         self.total_mg -= drawn;
         drawn
@@ -303,11 +297,8 @@ impl Soil {
     /// Returns matter to one column. Decay, rent, and the player's deposit all
     /// land here.
     pub fn deposit(&mut self, column: Column, mg: u64) {
-        self.deposit_stock(
-            column,
-            Stock::single(crate::legacy::mesocosm::matter::Material::Untyped, mg),
-        )
-        .expect("scalar soil deposits must fit their finite column");
+        self.deposit_stock(column, Stock::single(crate::matter::Material::Untyped, mg))
+            .expect("scalar soil deposits must fit their finite column");
     }
 
     /// Returns typed matter to one column without losing an overflowing
@@ -375,8 +366,7 @@ impl Soil {
     /// See [`PERCOLATION_DIVISOR`] for why the round needed it.
     pub fn percolate(&mut self) -> Result<(), SoilError> {
         let side = self.side() as usize;
-        transport::percolate(&mut self.matter_mg, side, PERCOLATION_DIVISOR)
-            .map_err(SoilError::Transport)
+        percolate(&mut self.matter_mg, side, PERCOLATION_DIVISOR).map_err(SoilError::Transport)
     }
 
     /// Takes up to `want_mg` out of the richest column within `radius`.

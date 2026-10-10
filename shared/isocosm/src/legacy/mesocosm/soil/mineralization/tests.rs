@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::legacy::mesocosm::matter::{Material, Stock};
 use crate::legacy::mesocosm::soil::Soil;
+use crate::matter::{Material, Stock};
 
 #[test]
 fn mixed_stock_converts_only_a_bounded_typed_lot() {

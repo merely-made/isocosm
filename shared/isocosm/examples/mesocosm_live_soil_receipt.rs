@@ -11,10 +11,10 @@ use std::{collections::BTreeMap, hint::black_box, time::Instant};
 use isocosm::legacy::mesocosm::{
     Intent, OrganismId, World,
     flow::{Account, Conversion, RecordedFlow},
-    matter::{Material, Stock},
     snapshot,
     world::FOUNDERS,
 };
+use isocosm::matter::{Material, Stock};
 use serde_json::json;
 
 #[path = "mesocosm_live_soil_receipt/thread_time.rs"]

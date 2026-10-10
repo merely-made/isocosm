@@ -35,7 +35,7 @@ use super::BodyPhenotype;
 use super::mosaic::{CellId, MAX_TRACTS, Mosaic, TractId};
 use crate::legacy::mesocosm::body::PartId;
 use crate::legacy::mesocosm::plan::classify;
-use crate::legacy::mesocosm::process::{ProcessRef, Registry};
+use crate::process::{ProcessRef, Registry};
 
 /// Who authored a proposal. **Diagnostic only.**
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

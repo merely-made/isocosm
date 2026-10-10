@@ -24,7 +24,7 @@
 use std::collections::BTreeSet;
 use std::path::{Component, Path, PathBuf};
 
-use isocosm::legacy::mesocosm::{Process, ProcessDef, ProcessId, Registry};
+use isocosm::process::{Process, ProcessDef, ProcessId, Registry};
 
 use crate::pack::{Manifest, ProcessFile, SUPPORTED_ABI, role_of, seeding_of};
 

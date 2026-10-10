@@ -25,7 +25,7 @@ use crate::legacy::mesocosm::organism::{
 };
 use crate::legacy::mesocosm::organism::{Kingdom, Signal};
 use crate::legacy::mesocosm::places::Ground;
-use crate::legacy::mesocosm::process::{BodyProcesses, FeedingMode, NisKind};
+use crate::process::{BodyProcesses, FeedingMode, NisKind};
 use std::cmp::Reverse;
 
 /// Chooses a food source within the body's actual reach. This is local for

@@ -2,19 +2,16 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 
 fn soil() -> Address {
     Address::Soil([0, 0, 0])
 }
 fn reserve() -> Address {
-    Address::Reserve(crate::legacy::mesocosm::OrganismId(1))
+    Address::Reserve(1)
 }
 fn part(id: u16) -> Address {
-    Address::Part(
-        crate::legacy::mesocosm::OrganismId(1),
-        crate::legacy::mesocosm::PartId(u32::from(id)),
-    )
+    Address::Part(1, PartId(u32::from(id)))
 }
 
 fn book(entries: impl IntoIterator<Item = (Address, Stock)>) -> Book {

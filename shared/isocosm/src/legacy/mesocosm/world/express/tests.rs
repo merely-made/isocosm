@@ -7,8 +7,8 @@
 use crate::legacy::mesocosm::body::{Attachment, Provenance, VolumeRef, Yaw};
 use crate::legacy::mesocosm::discovery::{ConditionId, Evidence, HUNGER_TICKS, Stress};
 use crate::legacy::mesocosm::phenotype::Refusal;
-use crate::legacy::mesocosm::process::DefinitionDigest;
 use crate::legacy::mesocosm::{Outcome, Rejection};
+use crate::process::DefinitionDigest;
 
 use super::super::World;
 

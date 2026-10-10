@@ -3,6 +3,7 @@
 
 //! Founding presets (ruling 272): Mesocosm's three authored worlds, each a
 //! question and the pressures that answer it, set on every site at founding.
+//! Mesocosm's legacy `pressure` module, re-expressed here whole.
 
 use crate::schema::{Id, Key, Site};
 use serde::{Deserialize, Serialize};
@@ -69,6 +70,110 @@ impl Preset {
             .map_or(0, |(_, s)| *s)
     }
 
+    /// The world's plain name, as Mesocosm authored it.
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::TidalShelf => "the tidal shelf",
+            Self::HeavyDeep => "the heavy deep",
+            Self::LongYear => "the long year",
+        }
+    }
+
+    /// How the world answers its question, by grammar family: authoring
+    /// notes, read by nothing.
+    pub fn parameters(self) -> &'static [(&'static str, &'static str)] {
+        match self {
+            Self::TidalShelf => &[
+                (
+                    "energy schedule",
+                    "tidally locked; no day, no year, a fixed terminator",
+                ),
+                ("medium", "thin air, standing meltwater along the ring"),
+                (
+                    "chemistry",
+                    "solvent liquid only within the band; ice on one side, vapour on the other",
+                ),
+                (
+                    "topology",
+                    "one continuous habitable ring, dark side and bright side both lethal",
+                ),
+                (
+                    "cycles",
+                    "none — the defining absence, so nothing is seasonal and nothing gets a reprieve",
+                ),
+                (
+                    "initial ecology",
+                    "producers anchored to the light edge, consumers working the shade",
+                ),
+            ],
+            Self::HeavyDeep => &[
+                (
+                    "energy schedule",
+                    "a dim red sun, most light scattered before it lands",
+                ),
+                (
+                    "medium",
+                    "roughly three gravities; atmosphere dense enough to be buoyant in",
+                ),
+                (
+                    "chemistry",
+                    "reducing atmosphere with acidic aerosols; abundant solvent",
+                ),
+                (
+                    "topology",
+                    "vertical stratification -- everything is a layer, and layers are the niches",
+                ),
+                (
+                    "cycles",
+                    "slow, deep convection storms that move whole layers",
+                ),
+                (
+                    "initial ecology",
+                    "floaters and anchored filterers; nothing walks far",
+                ),
+            ],
+            Self::LongYear => &[
+                (
+                    "energy schedule",
+                    "eccentric orbit; a short fierce summer and a long deep winter",
+                ),
+                (
+                    "medium",
+                    "thin air, thickening as volatiles boil off each summer",
+                ),
+                (
+                    "chemistry",
+                    "solvent locked as ice for most of the cycle, then abundant, then gone",
+                ),
+                (
+                    "topology",
+                    "basins that hold meltwater and highlands that never thaw",
+                ),
+                (
+                    "cycles",
+                    "the defining feature -- freeze, flood, bloom, desiccation, freeze",
+                ),
+                (
+                    "initial ecology",
+                    "everything reproduces explosively in the bloom and waits out the rest",
+                ),
+            ],
+        }
+    }
+
+    /// Total pressure, to check the worlds are hard in different ways.
+    pub fn severity(self) -> i64 {
+        self.forces().iter().map(|(_, s)| s).sum()
+    }
+
+    /// The pressure the world is about: its strongest.
+    pub fn defining(self) -> Option<&'static str> {
+        self.forces()
+            .iter()
+            .max_by_key(|(_, s)| *s)
+            .map(|(k, _)| *k)
+    }
+
     /// Declares the seven pressures and sets each site's strength in them.
     pub fn apply(self, conditions: &mut BTreeSet<Key>, sites: &mut BTreeMap<Id, Site>) {
         conditions.extend(PRESSURES.iter().map(|k| k.to_string()));
@@ -77,5 +182,44 @@ impl Preset {
                 site.conditions.insert(key.into(), self.strength(key));
             }
         }
+    }
+}
+
+/// Mesocosm's checks on its three authored worlds, ported with them.
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn every_authored_world_answers_a_question() {
+        for world in Preset::ALL {
+            assert!(world.question().ends_with('?'), "{}", world.name());
+            assert!(world.parameters().len() >= 5, "{}", world.name());
+            assert!(!world.forces().is_empty(), "{}", world.name());
+        }
+    }
+
+    #[test]
+    fn the_three_worlds_are_hard_in_different_ways() {
+        let defining: BTreeSet<_> = Preset::ALL.iter().filter_map(|w| w.defining()).collect();
+        assert_eq!(
+            defining.len(),
+            3,
+            "each world is about a different pressure"
+        );
+        for world in Preset::ALL {
+            assert!(
+                world.forces().len() < PRESSURES.len(),
+                "{} leaves an axis alone",
+                world.name()
+            );
+            assert!(world.forces().iter().all(|(k, _)| PRESSURES.contains(k)));
+        }
+        let severities: BTreeSet<i64> = Preset::ALL.iter().map(|w| w.severity()).collect();
+        assert!(
+            severities.iter().all(|s| *s > 10),
+            "all three are demanding"
+        );
+        assert!(severities.len() > 1, "and not equally");
     }
 }

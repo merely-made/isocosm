@@ -10,7 +10,7 @@ use std::fmt;
 
 use serde::{Deserialize, Deserializer, Serialize};
 
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 
 /// A lineage's initial tissue proportions, in [`Material::ALL`] order.
 ///

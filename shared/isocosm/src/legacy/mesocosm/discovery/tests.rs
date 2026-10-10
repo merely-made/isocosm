@@ -11,7 +11,7 @@
 //! about the routing itself.
 
 use super::*;
-use crate::legacy::mesocosm::process::{Process, Registry};
+use crate::process::{Process, Registry};
 
 fn empty() -> BTreeSet<ConditionId> {
     BTreeSet::new()

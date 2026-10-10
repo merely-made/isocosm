@@ -23,7 +23,7 @@ fn a_producer_without_an_active_fix_port_draws_no_soil() {
     producer.phenotype.sever(frond);
     assert_eq!(
         producer.feeding_mode(),
-        crate::legacy::mesocosm::process::FeedingMode::Producer
+        crate::process::FeedingMode::Producer
     );
     assert!(!producer.phenotype.canopy());
 

@@ -8,8 +8,8 @@ use super::*;
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::organism::{FaunaDrive, Kingdom, Organism, OrganismId};
 use crate::legacy::mesocosm::places::{WALKER_HEIGHT, spot, step};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::FeedingMode;
+use crate::process::BodyProcesses;
+use crate::process::FeedingMode;
 
 #[test]
 fn bounded_fauna_policy_names_its_decision_and_replays() {

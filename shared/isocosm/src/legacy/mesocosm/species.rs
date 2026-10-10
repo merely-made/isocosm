@@ -46,7 +46,7 @@ use crate::legacy::mesocosm::axis::Soma;
 use crate::legacy::mesocosm::body::{BodyDocument, PartId, SpeciesId};
 use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette, develop_body};
 use crate::legacy::mesocosm::plan::Symmetry;
-use crate::legacy::mesocosm::process::IntakePort;
+use crate::process::IntakePort;
 
 mod tissue;
 pub use tissue::{InitialTissueRecipe, TissueRecipeError};
@@ -138,7 +138,7 @@ impl Species {
     /// may realize the same program as a legibly different body.
     pub fn preview(
         &self,
-        registry: &crate::legacy::mesocosm::process::Registry,
+        registry: &crate::process::Registry,
         founder: crate::legacy::mesocosm::program::Founder,
         seed: u64,
     ) -> Result<crate::legacy::mesocosm::program::Preview, DevelopmentError> {

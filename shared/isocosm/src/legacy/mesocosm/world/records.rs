@@ -126,7 +126,7 @@ pub(super) fn event_for(
 pub(super) struct Landed {
     pub budget_mg: u64,
     pub body_mg: u64,
-    pub body_stock: crate::legacy::mesocosm::matter::Stock,
+    pub body_stock: crate::matter::Stock,
 }
 
 impl World {

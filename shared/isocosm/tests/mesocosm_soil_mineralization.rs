@@ -8,8 +8,8 @@
 //! typed stock only, canonical order, and an exact subjectless flow shape.
 
 use isocosm::legacy::mesocosm::flow::{Account, Carrier, Conversion, FlowEvent, Process};
-use isocosm::legacy::mesocosm::matter::{Material, Stock};
 use isocosm::legacy::mesocosm::soil::Soil;
+use isocosm::matter::{Material, Stock};
 
 #[test]
 fn mineralization_completes_typed_stock_in_column_order_and_preserves_scalar_mass() {

@@ -13,7 +13,7 @@ use crate::legacy::mesocosm::places::{
     Places, Tier, WALKER_HEIGHT, WalkerShape, route_step, spot, spot_for, step, step_for,
     surface_stance_for,
 };
-use crate::legacy::mesocosm::process::{IntakePort, NisKind};
+use crate::process::{IntakePort, NisKind};
 
 /// A hand-authored hunter must say that its active mouth admits producer NIS.
 /// Geometry still supplies the actuator and movement shape; this declaration

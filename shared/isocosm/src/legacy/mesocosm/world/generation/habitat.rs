@@ -90,9 +90,9 @@ impl Prepared {
             .iter()
             .filter(|other| {
                 let kind = match other.kingdom() {
-                    Kingdom::Producer => crate::legacy::mesocosm::process::NisKind::Producer,
-                    Kingdom::Consumer => crate::legacy::mesocosm::process::NisKind::Consumer,
-                    Kingdom::Decomposer => crate::legacy::mesocosm::process::NisKind::Decomposer,
+                    Kingdom::Producer => crate::process::NisKind::Producer,
+                    Kingdom::Consumer => crate::process::NisKind::Consumer,
+                    Kingdom::Decomposer => crate::process::NisKind::Decomposer,
                 };
                 other.id != subject_id
                     && other.is_alive()

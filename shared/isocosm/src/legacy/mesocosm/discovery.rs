@@ -62,7 +62,7 @@ use crate::legacy::mesocosm::phenotype::{
     AllocationProposal, Arrangement, BodyPhenotype, CellId, ProposedTract,
 };
 use crate::legacy::mesocosm::plan::{Role, classify};
-use crate::legacy::mesocosm::process::ProcessRef;
+use crate::process::ProcessRef;
 
 mod conditions;
 
@@ -232,7 +232,7 @@ pub struct Candidate {
     /// validator checks it through [`ProcessDef::admits`], and this is what a
     /// proposal builder aims at.
     ///
-    /// [`ProcessDef::admits`]: crate::legacy::mesocosm::process::ProcessDef::admits
+    /// [`ProcessDef::admits`]: crate::process::ProcessDef::admits
     #[serde(alias = "site")]
     pub tract: Role,
     /// How much tissue the proposal would take.

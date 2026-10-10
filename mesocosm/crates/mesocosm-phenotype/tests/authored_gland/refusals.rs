@@ -15,9 +15,8 @@
 
 use std::sync::Arc;
 
-use isocosm::legacy::mesocosm::{
-    BodyPhenotype, Intent, Organism, Process, Registry, Stage, VolumeRef, World,
-};
+use isocosm::legacy::mesocosm::{BodyPhenotype, Intent, Organism, Stage, VolumeRef, World};
+use isocosm::process::{Process, Registry};
 use mesocosm_phenotype::express::{
     Entropy, Expression, Policy, Proposal, Refused, Request, Runner, lower,
 };

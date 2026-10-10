@@ -81,7 +81,7 @@ fn armed_neighbour(world: &mut World, cells: u32) -> OrganismId {
             }],
         };
         prey.phenotype
-            .develop(isocosm::legacy::mesocosm::Registry::native(), &proposal)
+            .develop(isocosm::process::Registry::native(), &proposal)
             .expect("a plate admits a gland");
     }
     world.organisms.push(prey);

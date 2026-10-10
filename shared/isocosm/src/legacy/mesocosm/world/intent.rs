@@ -17,7 +17,7 @@ use crate::legacy::mesocosm::body::SpeciesId;
 use crate::legacy::mesocosm::body::{PartId, Yaw};
 use crate::legacy::mesocosm::organism::OrganismId;
 use crate::legacy::mesocosm::phenotype::Refusal;
-use crate::legacy::mesocosm::process::Unmet;
+use crate::process::Unmet;
 
 /// How an incorporated part finds its attachment.
 ///
@@ -223,9 +223,9 @@ pub enum Intent {
     /// by whoever holds the past. The one thing that is different about it is
     /// that a hand asked.
     ///
-    /// [`EpochRule`]: crate::legacy::mesocosm::rules::EpochRule
-    /// [`EpochRule::PlayerTriggered`]: crate::legacy::mesocosm::rules::EpochRule::PlayerTriggered
-    /// [`EpochRule::admits_demand`]: crate::legacy::mesocosm::rules::EpochRule::admits_demand
+    /// [`EpochRule`]: crate::rules::EpochRule
+    /// [`EpochRule::PlayerTriggered`]: crate::rules::EpochRule::PlayerTriggered
+    /// [`EpochRule::admits_demand`]: crate::rules::EpochRule::admits_demand
     EndEpoch,
     /// Bear an offspring from this body now. **A dev tool** (DT3).
     ///
@@ -373,7 +373,7 @@ pub enum Rejection {
     /// Carries the rule, because *which* rule refused is the fact worth having:
     /// a Gated world says so, and the answer would be different in a world
     /// founded under either of the other two.
-    EpochNotOnDemand(crate::legacy::mesocosm::rules::EpochRule),
+    EpochNotOnDemand(crate::rules::EpochRule),
     /// That body is not alive, so it cannot bear and cannot be killed. (DT3)
     ///
     /// The mirror of [`Self::StillLiving`], and both dev intents that name a

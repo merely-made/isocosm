@@ -18,9 +18,10 @@
 
 use isocosm::legacy::mesocosm::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Expressed, Intent,
-    Kingdom, Organism, OrganismId, Origin, Outcome, PartId, Process, ProcessRef, ProposedTract,
-    Provenance, Registry, Rejection, SpeciesId, Stage, Verdict, VolumeRef, World, Yaw,
+    Kingdom, Organism, OrganismId, Origin, Outcome, PartId, ProposedTract, Provenance, Rejection,
+    SpeciesId, Stage, Verdict, VolumeRef, World, Yaw,
 };
+use isocosm::process::{Process, ProcessRef, Registry};
 
 use super::bulk_world;
 
@@ -150,7 +151,7 @@ fn donor(world: &mut World) -> (PartId, PartId) {
     };
     corpse
         .phenotype
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &proposal)
+        .develop(isocosm::process::Registry::native(), &proposal)
         .expect("the donor's own arrangement is valid on the donor");
     assert!(corpse.phenotype.expresses_on(frond, gland()));
 

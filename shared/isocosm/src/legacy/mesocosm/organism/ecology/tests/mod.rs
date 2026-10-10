@@ -13,7 +13,7 @@ use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, Signal};
-use crate::legacy::mesocosm::process::{IntakePort, NisKind, Process, Registry};
+use crate::process::{IntakePort, NisKind, Process, Registry};
 
 mod carrion;
 mod fixture;

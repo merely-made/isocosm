@@ -16,10 +16,10 @@
 use crate::legacy::mesocosm::development::PartPalette;
 use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
 use crate::legacy::mesocosm::history::Event;
-use crate::legacy::mesocosm::matter::{Material, Stock};
 use crate::legacy::mesocosm::places::{Ground, Tier};
 use crate::legacy::mesocosm::rng::Rng;
 use crate::legacy::mesocosm::species::Lineages;
+use crate::matter::{Material, Stock};
 
 use super::rates::OFFSPRING_COST;
 use super::{Organism, OrganismId, Stage, Tally, movement::surface_stance};

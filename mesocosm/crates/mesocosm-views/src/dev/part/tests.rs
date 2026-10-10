@@ -2,7 +2,8 @@ use super::*;
 
 #[test]
 fn intake_reading_follows_declared_ports_and_distinguishes_inactive_tissue() {
-    use isocosm::legacy::mesocosm::{IntakePort, NisKind, Process, Registry, state_hash};
+    use isocosm::legacy::mesocosm::state_hash;
+    use isocosm::process::{IntakePort, NisKind, Process, Registry};
     let (mut world, id, part) = fixture();
     let registry = Registry::native();
     let port = IntakePort::live(NisKind::Consumer)

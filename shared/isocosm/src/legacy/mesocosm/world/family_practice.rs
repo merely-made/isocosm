@@ -11,7 +11,8 @@ use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette};
 use crate::legacy::mesocosm::discovery::{ConditionId, conditions};
 use crate::legacy::mesocosm::graft::Crossing;
 use crate::legacy::mesocosm::organism::{OrganismId, Stage};
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
+use crate::rules::EpochRule;
 
 use super::{Founding, Intent, World};
 
@@ -147,14 +148,14 @@ impl World {
         // The practice parent is a mixotroph: its plate does not by itself
         // admit carrion. Author a supported intake port through the same
         // declaration seam as founding, instead of bypassing meal admission.
-        let intake = crate::legacy::mesocosm::process::Registry::native()
-            .of_native(crate::legacy::mesocosm::process::Process::Intake)
+        let intake = crate::process::Registry::native()
+            .of_native(crate::process::Process::Intake)
             .reference();
         let parent_body = world.controlled_mut().expect("practice parent lives");
         let intake_part = parent_body.body().root;
         assert!(parent_body.phenotype.declare_port(
             intake_part,
-            crate::legacy::mesocosm::process::IntakePort::deadstock().supported_by(intake),
+            crate::process::IntakePort::deadstock().supported_by(intake),
         ));
         assert!(parent_body.phenotype.intake_ports().admits_deadstock());
 

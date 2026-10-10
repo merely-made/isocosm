@@ -17,10 +17,11 @@
 use crate::legacy::mesocosm::cohort;
 use crate::legacy::mesocosm::development::PartPalette;
 use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
-use crate::legacy::mesocosm::matter::{Material, Stock};
 use crate::legacy::mesocosm::places::{Ground, Places, Tier, TierLine};
-use crate::legacy::mesocosm::{process::FeedingMode, rng::Rng, species::Lineages};
 use crate::legacy::mesocosm::soil::{FORAGE_RADIUS, Soil};
+use crate::legacy::mesocosm::{rng::Rng, species::Lineages};
+use crate::matter::{Material, Stock};
+use crate::process::FeedingMode;
 
 use crate::legacy::mesocosm::history::{Event, MealKind};
 // The routing threshold lives with the played meal's rule in `world`, making TD5 one rule.

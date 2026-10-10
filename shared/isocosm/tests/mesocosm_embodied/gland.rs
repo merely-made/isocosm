@@ -33,8 +33,9 @@
 use isocosm::legacy::mesocosm::BodyOrgans;
 use isocosm::legacy::mesocosm::{
     AllocationProposal, Arrangement, Attachment, CellId, ConditionId, Intent, Outcome, PartId,
-    Process, ProcessRef, ProposedTract, Provenance, Refusal, Registry, VolumeRef, World, Yaw,
+    ProposedTract, Provenance, Refusal, VolumeRef, World, Yaw,
 };
+use isocosm::process::{Process, ProcessRef, Registry};
 
 use super::discovery::{endure, hunger};
 use super::{bulk_world, develop_played};
@@ -302,7 +303,7 @@ fn a_refusal_names_its_boundary_and_moves_nothing() {
     // Never substituted for the nearest thing this world does hold.
     let unknown = one(
         ProcessRef {
-            definition: isocosm::legacy::mesocosm::DefinitionDigest(0xDEAD),
+            definition: isocosm::process::DefinitionDigest(0xDEAD),
         },
         vec![CellId(0)],
     );

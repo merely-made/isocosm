@@ -10,9 +10,10 @@
 //! Builds the generation door's played world with no span, then runs one epoch
 //! of deep time at a time through `World::run_deep_time`.
 
-use isocosm::legacy::mesocosm::rules::{DeepTimeSpan, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::world::generation::Request;
 use isocosm::legacy::mesocosm::{Founding, History, Kingdom, Stage, World};
+use isocosm::rules::DeepTimeSpan;
 use std::collections::BTreeMap;
 
 fn main() {

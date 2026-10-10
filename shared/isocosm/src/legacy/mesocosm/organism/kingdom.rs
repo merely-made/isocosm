@@ -63,7 +63,7 @@ use serde::{Deserialize, Serialize};
 use crate::legacy::mesocosm::body::{BodyDocument, PartId};
 use crate::legacy::mesocosm::phenotype::BodyPhenotype;
 use crate::legacy::mesocosm::plan::{Role, Symmetry, classify};
-use crate::legacy::mesocosm::process::{FeedingMode, NisKind, Process, Registry};
+use crate::process::{FeedingMode, NisKind, Process, Registry};
 
 /// Trophic role. Not a character class: these are the three ways of making a
 /// living, and a lineage may combine them.
@@ -274,7 +274,7 @@ impl BodyOrgans for BodyDocument {
 mod tests {
     use super::*;
     use crate::legacy::mesocosm::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
-    use crate::legacy::mesocosm::process::BodyProcesses;
+    use crate::process::BodyProcesses;
 
     /// A body as it would actually be born: anatomy with its allocation
     /// seeded. Since PD2 the kingdom readings ask what tissue is doing, so a
@@ -346,13 +346,10 @@ mod tests {
         let grazer = grown(&body);
         let mut predator = grown(&body);
         let intake = Registry::native().of_native(Process::Intake).reference();
-        assert!(
-            predator.declare_port(
-                mouth,
-                crate::legacy::mesocosm::process::IntakePort::live(NisKind::Consumer)
-                    .supported_by(intake),
-            )
-        );
+        assert!(predator.declare_port(
+            mouth,
+            crate::process::IntakePort::live(NisKind::Consumer).supported_by(intake),
+        ));
 
         assert_eq!(
             grazer.body(),

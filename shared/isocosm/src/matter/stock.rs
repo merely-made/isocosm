@@ -13,7 +13,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::legacy::mesocosm::process::NisKind;
+use crate::process::NisKind;
 
 /// One fixed material channel.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
@@ -173,6 +173,27 @@ impl Stock {
             .checked_sub(taken)
             .expect("proportional take never exceeds a channel");
         (taken, remainder)
+    }
+}
+
+impl std::fmt::Display for Material {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+
+/// A stock column diffuses channel by channel.
+impl crate::diffusion::Holding for Stock {
+    type Account = Material;
+    fn held(&self) -> impl Iterator<Item = (Material, u64)> + '_ {
+        Material::ALL.into_iter().map(|m| (m, self.amount(m)))
+    }
+    fn kept(&self, divisor: u64) -> Self {
+        Self(self.0.map(|mg| mg - mg / divisor))
+    }
+    fn gain(&mut self, material: &Material, mg: u64) -> bool {
+        let slot = &mut self.0[material.index()];
+        slot.checked_add(mg).map(|v| *slot = v).is_some()
     }
 }
 

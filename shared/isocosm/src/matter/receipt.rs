@@ -22,14 +22,16 @@ use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 
 use super::{Stock, StockError};
-use crate::legacy::mesocosm::{OrganismId, PartId};
+use crate::schema::Id;
+use isometer_core::PartId;
 
 /// A bounded account address for typed stock.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Address {
     Soil([i32; 3]),
-    Reserve(OrganismId),
-    Part(OrganismId, PartId),
+    /// A member's reserve, by its id.
+    Reserve(Id),
+    Part(Id, PartId),
     Dev,
 }
 

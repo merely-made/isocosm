@@ -9,7 +9,7 @@ use crate::legacy::mesocosm::body::VolumeRef;
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, Stage};
 use crate::legacy::mesocosm::places::Tier;
-use crate::legacy::mesocosm::process::{IntakePort, NisKind, Process, Registry};
+use crate::process::{IntakePort, NisKind, Process, Registry};
 
 #[path = "tg1_tests/feeding.rs"]
 mod feeding;
@@ -58,7 +58,7 @@ fn declare_mouth(world: &mut World, port: IntakePort) {
     );
 }
 
-fn mouth_support(world: &World) -> crate::legacy::mesocosm::process::ProcessRef {
+fn mouth_support(world: &World) -> crate::process::ProcessRef {
     let mouth = world
         .body()
         .expect("the eater has a body")
@@ -170,7 +170,7 @@ fn a_named_part_meal_preserves_its_donor_mixture() {
     let donor = world.organisms.iter_mut().find(|o| o.id == target).unwrap();
     let root = donor.body().root;
     let mass = donor.body().part(root).unwrap().mass_mg;
-    let mix = crate::legacy::mesocosm::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
+    let mix = crate::matter::Stock::from_amounts([mass - 6, 1, 2, 3]);
     donor.phenotype.replace_part_stock(root, mix).unwrap();
     let Outcome::Consumed { part, .. } = world.consume(target, root) else {
         panic!("the fixture part must fit")
@@ -187,7 +187,7 @@ fn a_named_part_meal_preserves_its_donor_mixture() {
             .unwrap()
             .phenotype
             .part_stock(root),
-        Some(&crate::legacy::mesocosm::matter::Stock::EMPTY)
+        Some(&crate::matter::Stock::EMPTY)
     );
     let restored = crate::legacy::mesocosm::snapshot::restore_under(
         &crate::legacy::mesocosm::snapshot(&world).unwrap(),

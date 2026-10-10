@@ -8,23 +8,25 @@ use std::collections::BTreeSet;
 
 use super::*;
 use crate::legacy::mesocosm::places::Tier;
-use crate::legacy::mesocosm::rules::{DeepTimeSpan, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
 use crate::legacy::mesocosm::state_hash;
 use crate::legacy::mesocosm::{Organism, OrganismId, Stage};
+use crate::rules::DeepTimeSpan;
 
 /// Twenty-tick epochs keep a debug build fast; the span is the world's rule,
 /// set here the way a generation door sets it.
-fn spanned(seed: u64, epoch: EpochRule, epochs: u32) -> World {
+fn spanned(seed: u64, (epoch, epoch_ticks): (EpochRule, u64), epochs: u32) -> World {
     let world = World::new(seed, 60);
     let rules = world.rules();
     world.with_rules(WorldRules {
         epoch,
+        epoch_ticks,
         deep_time: DeepTimeSpan { epochs },
         ..rules
     })
 }
 
-const BRISK: EpochRule = EpochRule::Timed { ticks: 20 };
+const BRISK: (EpochRule, u64) = (EpochRule::Timed, 20);
 
 /// Drives `world` one idle tick at a time until its next boundary, recording
 /// and reckoning the way a runtime does, and returns that reckoning together
@@ -109,7 +111,11 @@ fn the_controlled_body_is_released_for_the_run() {
 
 #[test]
 fn a_zero_span_changes_nothing() {
-    for rule in [BRISK, EpochRule::Gated, EpochRule::PlayerTriggered] {
+    for rule in [
+        BRISK,
+        (EpochRule::Gated, 20),
+        (EpochRule::PlayerTriggered, 20),
+    ] {
         let mut world = spanned(7, rule, 0);
         let before = state_hash(&world);
         let mut history = History::new();
@@ -128,16 +134,19 @@ fn a_zero_span_changes_nothing() {
 #[test]
 fn a_rule_that_never_closes_an_epoch_refuses_a_span_before_any_tick() {
     for rule in [
-        EpochRule::Gated,
-        EpochRule::PlayerTriggered,
-        EpochRule::Timed { ticks: 0 },
+        (EpochRule::Gated, 20),
+        (EpochRule::PlayerTriggered, 20),
+        (EpochRule::Timed, 0),
     ] {
         let mut world = spanned(7, rule, 3);
         let before = state_hash(&world);
         let mut history = History::new();
         assert_eq!(
             world.run_deep_time(&mut history),
-            Err(DeepTimeError::NeverCloses { rule, epochs: 3 })
+            Err(DeepTimeError::NeverCloses {
+                rule: rule.0,
+                epochs: 3
+            })
         );
         assert_eq!(world.tick, 0, "{rule:?}");
         assert_eq!(state_hash(&world), before, "not even the hand was released");
@@ -177,11 +186,8 @@ fn the_first_reckoning_after_deep_time_is_judged_against_its_record() {
 
 #[test]
 fn the_ceiling_allows_one_budget_past_the_span() {
-    assert_eq!(ceiling(EpochRule::Timed { ticks: 20 }, 2), Ok(60));
-    assert_eq!(
-        ceiling(EpochRule::Timed { ticks: u64::MAX }, u32::MAX),
-        Ok(u64::MAX)
-    );
+    assert_eq!(ceiling(EpochRule::Timed, 20, 2), Ok(60));
+    assert_eq!(ceiling(EpochRule::Timed, u64::MAX, u32::MAX), Ok(u64::MAX));
 }
 
 /// Ruled 2026-09-16: with no player, no body is near anyone. Every mature

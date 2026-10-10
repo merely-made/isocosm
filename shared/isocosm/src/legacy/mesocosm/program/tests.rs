@@ -10,7 +10,7 @@
 
 use super::*;
 use crate::legacy::mesocosm::discovery::ConditionId;
-use crate::legacy::mesocosm::process::Process;
+use crate::process::Process;
 
 fn cites(n: u64) -> Citation {
     Citation {

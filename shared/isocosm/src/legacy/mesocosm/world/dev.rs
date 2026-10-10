@@ -65,7 +65,7 @@ impl World {
     /// Whether this world's epoch rule lets a hand close the epoch now.
     ///
     /// The rule and its reasoning are
-    /// [`EpochRule::admits_demand`](crate::legacy::mesocosm::rules::EpochRule::admits_demand);
+    /// [`EpochRule::admits_demand`](crate::rules::EpochRule::admits_demand);
     /// what happens when it says yes is [`World::apply`]'s boundary block,
     /// unchanged.
     pub(super) fn demand_epoch_end(&self) -> Outcome {

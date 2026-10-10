@@ -176,9 +176,9 @@ impl Host {
                         "{} parts, {} mg tissue. {terms} Amber marks the new root. Diet after graft: {}.",
                         preview.parts.len(),
                         preview.mass_mg,
-                        mesocosm_views::dev::part::feeding_word(
-                            isocosm::legacy::mesocosm::FeedingMode::of(&preview.phenotype)
-                        )
+                        mesocosm_views::dev::part::feeding_word(isocosm::process::FeedingMode::of(
+                            &preview.phenotype
+                        ))
                     );
                     if let Some(compatibility) = &preview.compatibility {
                         detail.push_str(&format!(
