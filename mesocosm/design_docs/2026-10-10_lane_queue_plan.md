@@ -284,6 +284,22 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 meal-three pilot rejected:** the frozen refreshed source
+  ran only fresh bare seed 0, native Genesis
+  `2e043c6982620a12a2742a9e09a03ee2ea39381770df6e18b9b67e55d6537b72`.
+  The lineage ended at tick 129 with three played-parent births, four born
+  heirs, two boundaries and zero living consumers. Every tick conserved
+  matter and both saved replay modes completed before the qualification
+  assertion failed. This is a rejected candidate; no matrix, rate promotion
+  or new trial followed. Root recomputed the command/raw/session/readings/
+  state/outcome hashes. The raw pilot log in the external Q3 directory has
+  SHA-256 `0de50ae738a73abde4a01f85384311c6df84beacc67302a423698e23d191c979`.
+  Q3 diagnoses the saved founder/first-child balance and birth opportunities
+  source-only. Q8 now owns Cargo for its frozen 32 harm positives, three
+  binary conservation controls, compiled faults 0 to 9 and native check.
+  Q2's remaining nine contract tests, unchanged-scene trace and compiler
+  gates follow; its complete extraction manifest is being corrected to
+  include the root Cargo manifest and lockfile. Ruling 812 remains open.
 - **2026-10-10, Q2 consumer batch partly qualified:** campaign contracts
   passed 7/7, a compiled discarded-table-metadata fault was caught, exact
   restored source passed 7/7, and both current-wire replication tests passed.

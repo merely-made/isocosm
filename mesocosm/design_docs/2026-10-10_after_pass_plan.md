@@ -117,6 +117,21 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 meal-three pilot rejected:** one fresh bare seed 0 ran on
+  native inputs from `6f879936`; all other matrix arms remained withheld.
+  Genesis `2e043c6982620a12a2742a9e09a03ee2ea39381770df6e18b9b67e55d6537b72`
+  ended at tick 129, with three actual played-parent births, four born heirs,
+  two configured boundaries and no living consumer. Tick conservation and
+  Individuals/Grouped saved replay passed before the qualification failure.
+  Saved holdings first show founder 17 dead at tick 101 with one own unit,
+  and child 82, born at seven, dead at 108 with four own units; their peaks
+  were fifteen and fourteen. These differ from the prior meal-one starvation
+  balances. Native lifespan and birth-opportunity classification remains in
+  progress; born heirs alone do not prove that born consumers reproduced.
+  Full Session, state/events, holdings/flows and outcome are retained under
+  the complete Genesis key in the external Q3 directory. Raw pilot log
+  SHA-256 `0de50ae738a73abde4a01f85384311c6df84beacc67302a423698e23d191c979`.
+  No source or rate change followed the rejection; A1 remains open.
 - **2026-10-10, Q2 sortie gate:** four of six tests passed. The two failures
   stop at missing `PactInvoked` and missing Aud wound, after the original
   agreement-link failures were fixed. `eponym-sortie/src/sortie.rs::walk`
