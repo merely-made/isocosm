@@ -148,6 +148,17 @@ pub fn read_trace(path: &Path) -> Result<PlayedTrace, String> {
     serde_json::from_slice(&bytes).map_err(|error| format!("{}: {error}", path.display()))
 }
 
+/// Takes a recorded trace up where it stands, to play on (786).
+pub fn resume(path: &Path, ticks_per_second: u32) -> Result<Runtime, String> {
+    let saved = read_trace(path)?;
+    let pace = isocosm::directing::interim::Pace {
+        round: 1,
+        scoring: 6,
+    };
+    let mode = isocosm::directing::readings::Mode::Creative;
+    Runtime::resume(saved, mode, pace, ticks_per_second)
+}
+
 /// Replays a recorded trace; returns the recorded hash and the replayed one.
 pub fn replay(path: &Path) -> Result<(u64, u64), String> {
     let saved = read_trace(path)?;

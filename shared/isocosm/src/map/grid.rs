@@ -134,6 +134,12 @@ impl Grid {
         (0..self.height).flat_map(move |row| (0..self.width).map(move |column| (column, row)))
     }
 
+    /// The column and row of `site`, if the grid holds it.
+    pub fn at(&self, site: Id) -> Option<[u32; 2]> {
+        let w = u64::from(self.width);
+        (site < w * u64::from(self.height)).then(|| [(site % w) as u32, (site / w) as u32])
+    }
+
     fn id(&self, column: u32, row: u32) -> Id {
         u64::from(row) * u64::from(self.width) + u64::from(column)
     }

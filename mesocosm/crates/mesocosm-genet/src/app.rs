@@ -109,11 +109,23 @@ pub(crate) struct Lanes {
 
 impl Host {
     pub fn new(config: HostConfig) -> Self {
-        let runtime = Runtime::generated(config.seed, config.population, config.ticks_per_second)
-            .unwrap_or_else(|why| {
-                eprintln!("world: {why}");
-                std::process::exit(1);
-            });
+        let runtime = match &config.watch {
+            Some(path) => crate::played::resume(path, config.ticks_per_second),
+            None => Runtime::generated(config.seed, config.population, config.ticks_per_second),
+        }
+        .unwrap_or_else(|why| {
+            eprintln!("world: {why}");
+            std::process::exit(1);
+        });
+        // The shipped pack's expression scripts, the review's second source
+        // (781); a pack that will not load leaves the board one source.
+        let runtime = match mesocosm_runtime::Authored::load(&pack_root()) {
+            Ok(authored) => runtime.with_authored(authored),
+            Err(why) => {
+                eprintln!("pack expression: {why:?}");
+                runtime
+            },
+        };
         // Parsed once, so a typo stops the run before a window opens (DT4).
         let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {
             Some(Ok(scenario)) => Some(scenario),
@@ -174,7 +186,7 @@ impl Host {
         if self.scene_key == Some(key)
             && let Some(scene) = &mut self.scene
         {
-            scene.bodies = crate::played::scene::placed(sim, site, &scene.ground);
+            scene.bodies = crate::played::scene::placed(sim, site, &scene.window);
             scene.volumes = isometer::DeclaredExtentVolumes::from_documents(
                 scene.bodies.iter().map(|b| &b.document),
                 1,
@@ -261,4 +273,13 @@ impl ApplicationHandler for Host {
             window.request_redraw();
         }
     }
+}
+
+/// The shipped pack's root, from this crate's own location.
+fn pack_root() -> std::path::PathBuf {
+    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .ancestors()
+        .nth(2)
+        .map(|repo| repo.join("packs").join("mesocosm"))
+        .unwrap_or_else(|| std::path::PathBuf::from("packs/mesocosm"))
 }

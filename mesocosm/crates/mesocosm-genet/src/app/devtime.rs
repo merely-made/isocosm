@@ -114,7 +114,7 @@ impl Host {
     /// A dev intent for one of DT3's four keys, about the followed critter.
     fn dev_world_key(&mut self, action: input::DevKey) {
         use isocosm_overlay::mesocosm::{DevIntent, MesocosmIntent};
-        use isocosm_overlay::{EntityHandle, WorldPoint};
+        use isocosm_overlay::{EntityHandle, PlaceHandle};
         let followed = self.followed();
         let dev = match action {
             input::DevKey::EndEpoch => DevIntent::EndEpoch,
@@ -125,7 +125,7 @@ impl Host {
                 organism: EntityHandle(followed.unwrap_or_default()),
             },
             input::DevKey::PlaceMatter => DevIntent::PlaceMatter {
-                at: WorldPoint(self.follow_at()),
+                site: PlaceHandle(self.runtime.played().map_or(0, |e| e.place)),
                 mass_mg: super::DEV_PLACE_MG,
             },
             _ => return,

@@ -24,9 +24,10 @@ use serde::{Deserialize, Serialize};
 use crate::clock::Clock;
 use crate::glyphs::{GlyphReading, GlyphRules};
 use crate::readings::{FlowWindows, Trend};
-use crate::review::Review;
+use crate::review::{Authored, Proposed, Review};
 use crate::succession::{self, Checkpoint};
 
+pub mod placing;
 mod translate;
 pub use translate::Refusal;
 
@@ -47,12 +48,20 @@ pub struct Founded {
 }
 
 impl Founded {
-    /// A generated world with bodies and a played native lineage (682),
-    /// one tick a round, so a host's fixed step is a tick.
+    /// A generated world with bodies, a map layout whose sites have
+    /// coordinates (783) and a played native lineage (682), one tick a
+    /// round, so a host's fixed step is a tick.
     pub fn generated(seed: u64, population: u64) -> Result<Self, String> {
+        let grid = isocosm::map::Grid {
+            width: 3,
+            height: 2,
+            ..isocosm::map::Grid::drawn(seed)
+        };
         let genesis = isocosm::Founding {
             seed,
             population,
+            sites: grid.width * grid.height,
+            map: Some(isocosm::map::Layout::Grid(grid)),
             ecology: true,
             bodies: Some(isocosm::bodied::Bodies::default()),
             played: Some(isocosm::directing::Played {
@@ -87,6 +96,9 @@ pub struct Runtime {
     checkpoint: Option<Checkpoint>,
     /// The played line's turn, while holding at a boundary.
     review: Option<Review>,
+    /// A pack's expression scripts, and what they made of the review (781).
+    authored: Option<Authored>,
+    proposed: Vec<Proposed>,
     /// What the last round brought.
     happenings: Vec<Happening>,
     windows: FlowWindows,
@@ -108,7 +120,9 @@ impl Runtime {
             Execution::Grouped,
         )?;
         interim.on_collapse = founded.on_collapse;
-        Ok(Self::over(interim, founded, ticks_per_second))
+        let mut runtime = Self::over(interim, founded, ticks_per_second);
+        runtime.place_members();
+        Ok(runtime)
     }
 
     /// A generated world from `seed` (682).
@@ -125,6 +139,8 @@ impl Runtime {
             trace: Vec::new(),
             checkpoint: None,
             review: None,
+            authored: None,
+            proposed: Vec::new(),
             happenings: Vec::new(),
             windows: FlowWindows::new(),
             glyphs: None,
@@ -207,7 +223,10 @@ impl Runtime {
         }
         let revisions = isocosm::lineage::revise::revisions;
         match self.interim.round_with_flows(&revisions) {
-            Ok((happenings, flows)) => self.absorb(happenings, &flows),
+            Ok((happenings, flows)) => {
+                self.absorb(happenings, &flows);
+                self.place_members();
+            },
             Err(why) => {
                 self.happenings.clear();
                 self.fault = Some(why);
@@ -228,6 +247,7 @@ impl Runtime {
             Some(succession::Occasion::Epoch(_)) => crate::review::of(&self.interim),
             _ => None,
         };
+        self.proposed = self.authored_proposals();
         self.happenings = happenings;
     }
 
@@ -244,6 +264,32 @@ impl Runtime {
     /// The question the run is holding at, if any.
     pub fn checkpoint(&self) -> Option<&Checkpoint> {
         self.checkpoint.as_ref()
+    }
+
+    /// Gives the review a pack's expression scripts as a second source.
+    pub fn with_authored(mut self, authored: Authored) -> Self {
+        self.authored = Some(authored);
+        self
+    }
+
+    /// What the scripts made of the open review's declared-tract offers.
+    pub fn proposed(&self) -> &[Proposed] {
+        &self.proposed
+    }
+
+    fn authored_proposals(&self) -> Vec<Proposed> {
+        let (Some(authored), Some(review), Some(body)) =
+            (&self.authored, &self.review, self.played())
+        else {
+            return Vec::new();
+        };
+        let lines = &self.sim().state().lineages;
+        let held: Vec<String> = lines
+            .get(&body.lineage)
+            .and_then(|l| l.development.as_ref())
+            .map(|d| d.tracts.iter().map(|t| crate::review::qualified(&t.function)).collect())
+            .unwrap_or_default();
+        authored.propose(review, body, &held, self.sim().genesis().seed)
     }
 
     /// The played line's turn, while holding at a boundary.

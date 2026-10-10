@@ -143,7 +143,8 @@ impl Volume {
             .map_err(|_| "an edit reaching below the window's datum".to_string())
     }
 
-    fn to_ground(&self, [x, y, z]: [i64; 3]) -> [i32; 3] {
+    /// Where base cell `[x, y, z]` sits in the window's `Ground`.
+    pub fn to_ground(&self, [x, y, z]: [i64; 3]) -> [i32; 3] {
         let e = i64::from(self.extent);
         [
             (x - self.min[0] - e) as i32,

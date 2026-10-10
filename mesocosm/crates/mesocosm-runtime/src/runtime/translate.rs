@@ -55,16 +55,16 @@ impl Runtime {
         match intent {
             MesocosmIntent::Nudge(nudge) => {
                 self.playing(nudge.entity.0)?;
-                let aim = match nudge.meaning {
-                    NudgeMeaning::Attend => Aim::Attend,
-                    // At site grain an act names no act key (690).
-                    NudgeMeaning::Act(_) => Aim::Act,
+                let (aim, act) = match &nudge.meaning {
+                    NudgeMeaning::Attend => (Aim::Attend, None),
+                    // The act key names the process it asks for (784).
+                    NudgeMeaning::Act(key) => (Aim::Act, Some(key.0.clone())),
                 };
                 let toward = match nudge.target {
                     NudgeTarget::Place(place) => Toward::Site(place.0),
                     NudgeTarget::Thing(thing) => Toward::Thing(thing.0),
                 };
-                self.interim.nudge(aim, toward).map_err(sim)
+                self.interim.nudge(aim, toward, act).map_err(sim)
             },
             MesocosmIntent::Act(act) => {
                 self.playing(act.entity.0)?;
@@ -126,6 +126,7 @@ impl Runtime {
         // One answer closes the question, a committed revision included.
         self.checkpoint = None;
         self.review = None;
+        self.proposed.clear();
         Ok("answered".to_owned())
     }
 
@@ -143,18 +144,22 @@ impl Runtime {
                     .map(|_| format!("advanced {ticks}"))
                     .map_err(Refusal::Sim)
             },
-            DevIntent::PlaceMatter { mass_mg, .. } => {
-                // At site grain the point names the played critter's site.
-                let site = self.played().map(|e| e.place).ok_or(Refusal::NotPlayed)?;
+            DevIntent::PlaceMatter { site, mass_mg } => {
                 let command = Command::PlaceMatter {
-                    site,
+                    site: site.0,
                     account: PLACED.into(),
                     amount: mass_mg,
                 };
                 self.interim.session.command(command).map_err(Refusal::Sim)
             },
-            DevIntent::ForceBirth { .. } => Err(Refusal::Unbuilt("a forced birth".into())),
-            DevIntent::Kill { .. } => Err(Refusal::Unbuilt("a kill".into())),
+            DevIntent::ForceBirth { organism } => {
+                let command = Command::ForceBirth { parent: organism.0 };
+                self.interim.session.command(command).map_err(Refusal::Sim)
+            },
+            DevIntent::Kill { organism } => {
+                let command = Command::Kill { entity: organism.0 };
+                self.interim.session.command(command).map_err(Refusal::Sim)
+            },
         }
     }
 }

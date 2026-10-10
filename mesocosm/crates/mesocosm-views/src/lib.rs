@@ -45,7 +45,7 @@ pub use minimap::{
     site_points,
 };
 pub use review::{
-    Board, BoardChild, BoardRow, board_css, board_root, commit_words, evidence_words,
+    Board, BoardChild, BoardRow, authored_words, board_css, board_root, commit_words, evidence_words,
     reading_words, row_words,
 };
 pub use succession::{Succession, SuccessionChild, succession_css, succession_root};

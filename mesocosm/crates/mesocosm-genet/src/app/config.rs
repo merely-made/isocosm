@@ -40,6 +40,8 @@ pub struct HostConfig {
     pub dev: bool,
     /// Which body the camera starts on (DT2); presentation only.
     pub follow: Option<u64>,
+    /// A recorded save to take up and play on from (786).
+    pub watch: Option<PathBuf>,
 }
 
 impl Default for HostConfig {
@@ -63,6 +65,7 @@ impl Default for HostConfig {
             body_budget: section::DEFAULT_BODY_BUDGET,
             dev: false,
             follow: None,
+            watch: None,
         }
     }
 }

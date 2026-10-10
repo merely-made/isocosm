@@ -58,7 +58,14 @@ pub enum Command {
         critter: Id,
         aim: crate::directing::Aim,
         toward: crate::directing::Toward,
+        /// The act it names, a process key (784).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        act: Option<Key>,
     },
+    /// The dev source forces a birth to `parent` (ruling 782).
+    ForceBirth { parent: Id },
+    /// A dev kills `entity` (ruling 782).
+    Kill { entity: Id },
     /// Authored content asserted into the world (ruling 757).
     Assert(crate::asserted::Assertion),
     /// A lineage commits a variant of its development (ruling 752).
@@ -263,7 +270,10 @@ impl Session {
         let placed = |e: &Entry| {
             matches!(
                 e.command,
-                Command::PlaceMatter { .. } | Command::Edit { by: None, .. }
+                Command::PlaceMatter { .. }
+                    | Command::Edit { by: None, .. }
+                    | Command::ForceBirth { .. }
+                    | Command::Kill { .. }
             )
         };
         self.entries.iter().any(placed)
@@ -489,9 +499,18 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             critter,
             aim,
             toward,
+            act,
         } => {
-            sim.nudge(*participant, *critter, *aim, *toward)?;
+            sim.nudge(*participant, *critter, *aim, *toward, act.clone())?;
             Ok("nudged".into())
+        },
+        Command::ForceBirth { parent } => {
+            let receipt = sim.force_birth(*parent)?;
+            serde_json::to_string(&receipt).map_err(|e| e.to_string())
+        },
+        Command::Kill { entity } => {
+            sim.kill(*entity)?;
+            Ok("killed".into())
         },
         Command::Revise {
             lineage,

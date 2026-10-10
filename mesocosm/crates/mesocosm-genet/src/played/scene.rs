@@ -15,11 +15,7 @@ use isometer::render::kingdom_colour;
 
 use crate::section::{PlacedBody, SiteScene};
 
-/// Half the bounded window lifted around a site's centre, in base columns.
-pub const WINDOW_HALF: i64 = 32;
-
-/// Rock cells held under the window's lowest soil.
-pub const DEPTH: i64 = 8;
+pub use mesocosm_runtime::runtime::placing::{DEPTH, WINDOW_HALF};
 
 /// The site `played` stands in, or the first site when nobody is played.
 pub fn site_of(sim: &Simulation, played: Option<Id>) -> Option<Id> {
@@ -30,38 +26,37 @@ pub fn site_of(sim: &Simulation, played: Option<Id>) -> Option<Id> {
         .or_else(|| sim.state().sites.keys().next().copied())
 }
 
-/// Lifts `site` within a bounded window around its centre.
+/// Lifts `site` within the runtime's bounded window around its centre.
 pub fn lift(sim: &Simulation, site: Id) -> Result<isometer::space::volume::Volume, String> {
-    let side = sim.atlas()?.footprint.side as i64;
-    let half = WINDOW_HALF.min(side / 2).max(1);
-    let mid = side / 2;
-    let min = [(mid - half).max(0); 2];
-    let max = [(mid + half).min(side); 2];
-    sim.volume(site, min, max, DEPTH)
+    mesocosm_runtime::runtime::placing::lift(sim, site)
 }
 
 /// The scene for `played`'s site: its lifted ground and its living bodies,
 /// each placed at a presentation spot ([`super::layout`]).
 pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, String> {
     let site = site_of(sim, played).ok_or("a world with no sites")?;
-    let ground = lift(sim, site)?.ground().clone();
-    let bodies = placed(sim, site, &ground);
+    let volume = lift(sim, site)?;
+    let ground = volume.ground().clone();
+    let bodies = placed(sim, site, &volume);
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
     Ok(SiteScene {
         site,
         ground,
+        window: volume,
         bodies,
         played,
         volumes,
     })
 }
 
-/// One body per living cohort in `site` that has one, in id order.
+/// One body per living cohort in `site` that has one, in id order: at its
+/// patch where the runtime placed it (783), at a presentation spot otherwise.
 pub fn placed(
     sim: &Simulation,
     site: Id,
-    ground: &isometer::core::ground::Ground,
+    volume: &isometer::space::volume::Volume,
 ) -> Vec<PlacedBody> {
+    let ground = volume.ground();
     sim.state()
         .population
         .groups
@@ -72,7 +67,11 @@ pub fn placed(
         .map(|(index, (id, entity, document))| PlacedBody {
             id,
             document,
-            at: super::layout::spot(ground, index),
+            at: entity
+                .patch
+                .filter(|p| volume.holds(p.cell[0], p.cell[2]))
+                .map(|p| volume.to_ground(p.cell))
+                .unwrap_or_else(|| super::layout::spot(ground, index)),
             tint: tint_of(kingdom::of(entity)),
             alive: entity.alive,
         })

@@ -192,6 +192,9 @@ impl Simulation {
 
     /// Whether an act of `p` at `place` on `target` answers `n`.
     fn answers(&self, n: &Nudge, p: &Process, place: Id, target: Option<Id>) -> bool {
+        if n.act.as_ref().is_some_and(|act| *act != p.id) {
+            return false;
+        }
         let site = match n.toward {
             Toward::Thing(t) if n.aim == Aim::Act => return target == Some(t),
             Toward::Thing(t) => match self.state.population.get(t) {

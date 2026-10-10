@@ -142,6 +142,7 @@ fn a_move_per_route_and_members_migrate() {
     let body = e.accounts.insert("matter:1-0".into(), 4).unwrap();
     *e.accounts.entry("world:soil".into()).or_default() += body - 4;
     let n = Command::Nudge {
+            act: None,
         participant: p,
         critter: c,
         aim: Aim::Attend,

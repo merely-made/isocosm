@@ -27,7 +27,7 @@ pub mod voxel_profile;
 
 pub use clock::{Advance, Clock};
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
-pub use review::{Offer, Reading, Review};
+pub use review::{Authored, Offer, Proposed, Reading, Review};
 pub use runtime::{
     DEFAULT_MAX_STEPS_PER_ADVANCE, Envelope, Founded, Receipt, Refusal, Replayed, Runtime,
 };
