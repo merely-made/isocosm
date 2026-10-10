@@ -26,7 +26,9 @@ use genet_livery::{
     emit_paint_list_with_text_system_scrolled_with_images, layout_with_text_system, resolve_styles,
 };
 use genet_scripted_dom::{NodeId, ScriptedDom};
-use isocosm::legacy::mesocosm::World;
+use isocosm::schema::Id;
+use isocosm::simulation::Simulation;
+use mesocosm_runtime::{Refusal, Trend};
 use mesocosm_views::{Vitals, VitalsChild};
 use paint_list_api::{DeviceIntSize, PaintList as _};
 
@@ -81,9 +83,9 @@ pub struct VitalsChrome {
     /// The reading the raster currently holds. A frame whose vitals are
     /// unchanged pays a read and no raster.
     shown: Option<Vitals>,
-    /// The notice on screen — a refusal, or what the body did with a meal —
+    /// The notice on screen, the newest refusal,
     /// and the step it stops being shown at.
-    notice: Option<(&'static str, u64)>,
+    notice: Option<(String, u64)>,
     /// The most energy the played critter has held this session — the bar's
     /// denominator. The world has no capacity, so there is no other honest
     /// one; a new body resets it.
@@ -111,35 +113,43 @@ impl VitalsChrome {
         }
     }
 
-    /// Takes the frame's reading and rasterizes it if it changed.
-    ///
-    /// `outcomes` are the results of the steps this frame ran; a rejection or
-    /// a landed meal among them starts (or restarts) the notice's window.
-    pub fn refresh(
+    /// Takes the frame's reading and rasterizes it if it changed. `fresh` is
+    /// what the runtime applied this frame; a refusal among them starts the
+    /// notice's window.
+    pub fn refresh<E>(
         &mut self,
         chrome: &Chrome,
-        world: &World,
-        outcomes: &[isocosm::legacy::mesocosm::Outcome],
+        sim: &Simulation,
+        critter: Option<Id>,
+        fresh: &[(E, Result<String, Refusal>)],
         steps: u64,
-        trend: &isocosm::legacy::mesocosm::Trend,
+        trend: &Trend,
     ) {
-        match world.energy_mg() {
+        let held = critter
+            .and_then(|c| sim.state().population.get(c))
+            .filter(|e| e.alive)
+            .map(mesocosm_views::held_mg);
+        match held {
             Some(energy) => self.high_water = self.high_water.max(energy),
-            // Control lost: the bar's scale went with the body, and a new one
-            // will set its own.
+            // Control lost: the bar's scale went with the body.
             None => self.high_water = 0,
         }
-        if let Some(words) = mesocosm_views::notice_in(outcomes) {
+        if let Some(words) = mesocosm_views::notice_in(fresh) {
             self.notice = Some((words, steps + NOTICE_STEPS));
         }
-        if self.notice.is_some_and(|(_, until)| steps >= until) {
+        if self
+            .notice
+            .as_ref()
+            .is_some_and(|(_, until)| steps >= *until)
+        {
             self.notice = None;
         }
 
         let reading = mesocosm_views::vitals_of(
-            world,
+            sim,
+            critter,
             self.high_water,
-            self.notice.map(|(words, _)| words),
+            self.notice.as_ref().map(|(words, _)| words.clone()),
             Some(trend),
         );
         if self.shown.as_ref() == Some(&reading) {
@@ -235,25 +245,6 @@ impl VitalsChrome {
         frame: (u32, u32),
     ) {
         chrome.draw(
-            encoder,
-            target,
-            self.raster.sample_view(),
-            Self::placement(frame),
-            frame,
-        );
-    }
-
-    /// The same, into a capture frame's offscreen format.
-    pub fn capture_composite(
-        &self,
-        chrome: &Chrome,
-        format: wgpu::TextureFormat,
-        encoder: &mut wgpu::CommandEncoder,
-        target: &wgpu::TextureView,
-        frame: (u32, u32),
-    ) {
-        chrome.draw_as(
-            format,
             encoder,
             target,
             self.raster.sample_view(),

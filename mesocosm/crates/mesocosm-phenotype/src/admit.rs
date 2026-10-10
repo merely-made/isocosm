@@ -141,7 +141,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
 /// The whole door in one call: what comes back is an ordinary
 /// [`Registry`] the core runs, and its
 /// [`digest`](Registry::digest) is what a world records as its
-/// [`WorldRules`](isocosm::legacy::mesocosm::WorldRules).
+/// the world's rules.
 pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
     admit(root, &discover(root)?)
 }

@@ -7,7 +7,7 @@
 //! Handed back from Isocosm's legacy tree to the game (wing ruling 669).
 
 pub use isocosm::effects::Glyph;
-use isocosm::legacy::mesocosm::rng::Rng;
+use isocosm::rng::Rng;
 use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 1;

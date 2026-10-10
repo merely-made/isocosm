@@ -9,7 +9,10 @@ use super::*;
 use crate::legacy::mesocosm::body::{
     Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw,
 };
-use crate::legacy::mesocosm::world::{ENCLOSURE, PLACE_SALT, PLACE_SIDE};
+// The legacy enclosure the places were grown for.
+const ENCLOSURE: i32 = 64;
+const PLACE_SIDE: u16 = 3;
+const PLACE_SALT: u64 = 0x504C_4143_4553_0001;
 
 fn ground() -> Ground {
     let grown = Places::grown(4_242, 4, 64);

@@ -459,3 +459,30 @@ the bodies family.
   are closed native vocabularies. Put back as forks: where handed-back game
   code lives, the deed and agreement nouns, items, and the admitted anatomy
   snapshot beside native geometry.
+- **2026-10-10, the world move: Mesocosm's world family onto native, legacy
+  Mesocosm deleted (lane `lane-meso-world`, under 732's compile gate; rulings
+  755, 759, 762, 770, 773, 774; no tests, draws or receipts run).** Legacy
+  Mesocosm went from 40,645 lines to 2,016. Commits `635bffa7` and `91f2e050`.
+  - *Native gaps.* The registry carries all fifteen catalogue functions (759),
+    the ten without a native process bound to none, under the `mesocosm:`
+    namespace. `Interim::round_with_flows` hands the runtime each round's
+    flows. The chronicle (`of`, `append`, `read`, bytes) is
+    `isocosm::lineage::chronicle`. Legacy `rng` is `isocosm::rng`.
+    `kingdom::of` and `rules::Compatibility` have their callers in
+    mesocosm-views' vitals. `mosaic::propose` has its caller in
+    mesocosm-phenotype's expression door.
+  - *Re-pointed.* mesocosm-runtime, -views, -phenotype and -genet run on a
+    native `Session`; the directing plan's D5 entry has the detail.
+  - *Deleted.*
+    - The legacy `world` with its sixteen-variant `Intent`, genesis, generation, the lineage turn, graft and consume.
+    - The bodies modules: organism, phenotype, development, axis, graft, growth.
+    - The legacy record (770): history, record, snapshot's world half, chronicle.
+    - `flowing`, `soil`, `discovery`, `species`, `program`, `score`, `deep_time`, `cohort`, `embodiment` and `rules` (`WorldRules`).
+    - 57 legacy Mesocosm integration tests and examples in `shared/isocosm`, and the runtime's, views' and phenotype's legacy-driven tests (672).
+  - *Kept for Eponym's legacy world* (Eponym's world move takes them):
+    - `places`, with `Scale` moved into it;
+    - the `snapshot` codec;
+    - the body re-exports Eponym names (`PartId`, `BodyDocument`, `SpeciesId`, `VolumeRef` and the rest).
+  *Reading, not ruled:* `voxel_profile` went to mesocosm-runtime beside the
+  tactile adapter (669, the overlay plan's §4 reading); the chronicle's
+  legacy re-entry (`found`) and generator retired with legacy development.

@@ -6,78 +6,43 @@
 
 //! The main view: the ruled terrarium section, brick-traced.
 //!
-//! The join itself — bodies rastered into a depth attachment, terrain traced
-//! against it, the display twin and the capture read-back — is
-//! [`isometer::Scene`]'s now. What stays here is the vessel's policy over
-//! it: which Ground the map binds, where the slab sits, which body is posed,
-//! and how the traced texture reaches the surface the HUD then composites on.
+//! The join itself (bodies rastered into a depth attachment, terrain traced
+//! against it, the display twin and the capture read-back) is
+//! [`isometer::Scene`]'s. What stays here is the vessel's policy over it:
+//! which Ground the map binds, where the slab sits, which body is posed, and
+//! how the traced texture reaches the surface. The input is a native
+//! [`SiteScene`]: the played critter's lifted site and its placed bodies.
 //!
-//! Which way it looks is [`camera`]'s, and stays a host flag: the shallow
-//! oblique Mark ruled on 2026-09-04 is the default, and the two level arms the
-//! measured slice compared it against are still there behind `--camera` (DC4,
-//! Q9). None of the three moves the hash.
+//! Which way it looks is [`camera`]'s, a host flag; none of the modes moves
+//! the hash.
 
 mod bodies;
 mod camera;
 mod capsules;
-#[cfg(test)]
-use capsules::pose_at;
-pub use capsules::{pose_of, pose_of_scaled, roster_of, roster_of_scaled};
-mod materials;
+pub use capsules::{pose_of, roster_of};
 mod terrain;
-mod terrarium;
 pub use terrain::TerrainStyle;
-mod view;
-pub use terrarium::{
-    BODY_SCALE as TERRARIUM_BODY_SCALE, Cutaway, framed_habitat, occupied as terrarium_occupied,
-};
-pub use view::camera_basis;
 mod inspection;
+mod view;
 
 pub use bodies::{BodyMode, DEFAULT_BODY_BUDGET};
-pub use inspection::{BodyPick, BodySelection};
-/// The glyph batch, its attachments and the frame receipt are `isometer`'s
-/// now; re-exported so the host's bench and receipts keep one import path.
-pub use isometer::{
-    BodyFrameStats, BodyPickError, GlyphAnchor, GlyphOrientation, MAX_GLYPH_ANCHORS,
-    MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke,
-};
-
-/// The experiment's glyph choice as the renderer's stroke shape. `isometer`
-/// draws shapes; the effect-experiment vocabulary is Mesocosm's, and this is
-/// the one place the two meet.
-pub fn stroke(glyph: isocosm::effects::Glyph) -> Stroke {
-    use isocosm::effects::Glyph;
-    match glyph {
-        Glyph::Quotes => Stroke::Quotes,
-        Glyph::Slashes => Stroke::Slashes,
-        Glyph::Backticks => Stroke::Backticks,
-    }
-}
+pub use inspection::BodySelection;
+/// The frame receipt is `isometer`'s; re-exported for the receipts.
+pub use isometer::BodyFrameStats;
 
 pub use camera::{CameraMode, Framing, OBLIQUE_DEGREES, SLAB_DEPTH, TERRARIUM_DEGREES};
-/// The cull window is `isometer`'s now; re-exported so the host's roster
-/// and bench keep one import path.
+/// The cull window is `isometer`'s; re-exported for the roster.
 pub use isometer::SlabWindow;
 
-use isocosm::legacy::mesocosm::World;
-use isocosm::legacy::mesocosm::places::Ground;
+use isometer::core::BodyDocument;
+use isometer::core::ground::Ground;
 use isometer::lens::{BrickMap, CritterPose, Grade};
 use isometer::render::composite::Composite;
 use isometer::{
-    CapsuleFrame, GroundTerrain, HostTerrain, Scene, SceneFrame, SceneVolumes, TerrainSource,
+    CapsuleFrame, DeclaredExtentVolumes, GroundTerrain, Scene, SceneFrame, SceneVolumes,
 };
 
-/// The G2 slab: section depth and the palette depth of the retro grade, plus
-/// the half-height Mark ruled on 2026-08-29. Kept as defaults, not as constants
-/// a camera policy may not vary.
-///
-/// **28, framing the content's height and letting the width follow.** The world
-/// is 5.2:1 (129 voxels against a 25-voxel band) inside a 1.78:1 window, so no
-/// half-height both frames the width and fills the height; 28 shows 77% of the
-/// world and reads a 9-voxel limb at 9% of frame. A host may still carry
-/// another ([`HostConfig::slab_half_height`](crate::HostConfig)), and every
-/// framing replays to one hash. See the scale plan, "The framing".
+/// The default slab half-height, ruled 2026-08-29; a host may carry another.
 pub const SLAB_HALF_HEIGHT: f32 = 28.0;
 const PALETTE: u32 = 3;
 
@@ -92,16 +57,43 @@ pub struct Pan {
     pub y: f32,
 }
 
-/// The host's presentation reads for one frame, taken off the stepped world
-/// before the device is borrowed. None of it is world state.
+/// One body the section draws, standing where the host placed it.
+#[derive(Clone, Debug)]
+pub struct PlacedBody {
+    pub id: u64,
+    pub document: BodyDocument,
+    /// A presentation spot, never a world position (see `played::layout`).
+    pub at: [i32; 3],
+    pub tint: [f32; 3],
+    pub alive: bool,
+}
+
+/// The section's native input: a lifted site, its bodies, and who is played.
+pub struct SiteScene {
+    pub site: u64,
+    pub ground: Ground,
+    pub bodies: Vec<PlacedBody>,
+    pub played: Option<u64>,
+    /// Declared-extent boxes for the bodies, which carry no voxel content.
+    pub volumes: DeclaredExtentVolumes,
+}
+
+impl SiteScene {
+    /// Where body `id` stands in this scene, if it is here.
+    pub fn at(&self, id: u64) -> Option<[i32; 3]> {
+        self.body(id).map(|b| b.at)
+    }
+
+    pub fn body(&self, id: u64) -> Option<&PlacedBody> {
+        self.bodies.iter().find(|b| b.id == id)
+    }
+}
+
+/// The host's presentation reads for one frame. None of it is world state.
 #[derive(Clone, Copy)]
 pub struct SectionFrame<'a> {
-    pub world: &'a World,
-    pub volumes: &'a isometer::mesh::VolumeMap,
-    pub ground: &'a Ground,
-    /// The host's drain of the world's changed bricks. The slots they map to
-    /// are the only region the tracer re-uploads, so a carve costs its own
-    /// bricks and not the enclosure.
+    pub scene: &'a SiteScene,
+    /// Bricks changed since the ground was bound; empty for a rebound one.
     pub dirty: &'a [[i16; 3]],
     pub centre: [f32; 3],
     /// The controlled critter, at full capsule fidelity.
@@ -129,13 +121,12 @@ pub struct Section {
     body_budget: usize,
     /// The Mesocosm facts the scene is handed rather than the ones it derives.
     host_bodies: bodies::HostBodies,
-    terrarium: Option<terrarium::TerrariumView>,
     composite: Composite,
 }
 
 impl Section {
-    /// Binds the live Ground at genesis and builds the scene on the host's
-    /// own device. `format` is the surface's, for the composite that lands
+    /// Binds a lifted site's Ground and builds the scene on the host's own
+    /// device. `format` is the surface's, for the composite that lands
     /// the traced frame under the HUD.
     pub fn new(
         device: wgpu::Device,
@@ -164,9 +155,16 @@ impl Section {
             body_mode: BodyMode::default(),
             body_budget: DEFAULT_BODY_BUDGET,
             host_bodies: bodies::HostBodies::new(),
-            terrarium: None,
             composite,
         })
+    }
+
+    /// Rebinds the terrain to another lifted Ground: a new site, or new edits.
+    pub fn set_ground(&mut self, ground: &Ground) -> Result<(), String> {
+        let map = BrickMap::from_ground(ground).map_err(|error| error.to_string())?;
+        self.scene.set_terrain_map(map);
+        self.invalidate_query();
+        Ok(())
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
@@ -181,36 +179,10 @@ impl Section {
         self.width as f32 / self.height.max(1) as f32
     }
 
-    /// The camera the last completed frame drew with, for a caller naming a
-    /// pixel of it.
-    pub fn presented_camera(&self) -> Option<isometer::SlabCamera> {
-        self.scene.presented_camera()
-    }
-
-    /// Distinct part geometries the body layer is retaining. What a producer's
-    /// suspension keeps.
-    pub fn cached_bodies(&self) -> usize {
-        self.scene.cached_bodies()
-    }
-
     /// Which way this section is looking. The receipt names it, so a capture
     /// can be told apart from the next one.
     pub fn mode(&self) -> CameraMode {
         self.mode
-    }
-
-    /// Display-encoded sRGB bytes in an unorm view, for a document compositor
-    /// that samples encoded values directly. Alpha is opaque. The caller must
-    /// submit the section's encoder before staging this same-device image.
-    pub fn encoded_view(&self) -> &wgpu::TextureView {
-        self.scene.encoded_view()
-    }
-
-    /// Replaces the complete bounded presentation list. Invalid input leaves
-    /// the previous list intact. Empty input removes all glyphs. The batch
-    /// itself is the scene's, drawn against the depth it already wrote.
-    pub fn set_glyphs(&mut self, glyphs: Vec<SpatialGlyph>) -> Result<(), String> {
-        self.scene.set_glyphs(glyphs)
     }
 
     pub fn configure_bodies(&mut self, mode: BodyMode, budget: usize) {
@@ -226,13 +198,6 @@ impl Section {
 
     pub fn body_stats(&self) -> BodyFrameStats {
         self.scene.bodies().stats.clone()
-    }
-
-    /// Most recent Section encode's terrain work. None means terrain was
-    /// skipped or the encode failed, never a retained prior terrain receipt.
-    /// Encoding counters do not assert queue completion or visible pixels.
-    pub fn terrain_diagnostics(&self) -> Option<isometer::lens::BrickDiagnostics> {
-        self.scene.terrain_diagnostics()
     }
 
     /// How much world the section frames, in voxels of half-height.
@@ -278,38 +243,16 @@ impl Section {
     }
 
     /// Traces one frame into the tenant-owned display texture.
-    ///
-    /// The terrarium's filtered map is rebuilt here, because only the host
-    /// knows which bricks its cutaway policy hides; everything past that is
-    /// the scene's, handed one [`SceneFrame`].
     pub fn render(
         &mut self,
         encoder: &mut wgpu::CommandEncoder,
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
-        let rebuilt = match &mut self.terrarium {
-            Some(view) => view.refresh(frame.ground, self.mode)?,
-            None => None,
-        };
-        let ground_terrain = GroundTerrain(frame.ground);
-        let host_terrain = HostTerrain::new(frame.ground.revision(), rebuilt);
-        // The terrarium's map is the host's to rebuild; a plain section's is
-        // refreshed from the ground's own dirty bricks.
-        let terrain: &dyn TerrainSource = if self.terrarium.is_some() {
-            &host_terrain
-        } else {
-            &ground_terrain
-        };
+        let terrain = GroundTerrain(&frame.scene.ground);
         let camera = self.view(frame.centre);
         let voxels = self.body_mode == BodyMode::Voxels;
-        // The mosaics outlive the scene bodies that borrow them.
-        let materials = if voxels {
-            self.scene_materials(frame.world, camera.window())
-        } else {
-            Vec::new()
-        };
         let scene_bodies = if voxels {
-            self.scene_bodies(frame.world, &materials)
+            self.scene_bodies(frame.scene)
         } else {
             Vec::new()
         };
@@ -319,15 +262,15 @@ impl Section {
         } = self;
         let mut host = SectionHost {
             bodies: host_bodies,
-            world: frame.world,
+            scene: frame.scene,
         };
         scene.render(
             encoder,
             SceneFrame {
                 camera,
                 bodies: &scene_bodies,
-                volumes: SceneVolumes::Voxels(frame.volumes),
-                terrain: Some(terrain),
+                volumes: SceneVolumes::DeclaredSolid(&frame.scene.volumes),
+                terrain: Some(&terrain),
                 dirty: frame.dirty,
                 grade,
                 terrain_appearance: appearance,
@@ -390,10 +333,10 @@ impl Section {
 }
 
 /// The host policy one frame calls back into: Mesocosm's capsule stand-in for
-/// a body that would not project, and the counters only a world can supply.
+/// a body that would not project, and the counters only the scene can supply.
 struct SectionHost<'a> {
     bodies: &'a mut bodies::HostBodies,
-    world: &'a World,
+    scene: &'a SiteScene,
 }
 
 impl isometer::SceneHost for SectionHost<'_> {
@@ -408,31 +351,10 @@ impl isometer::SceneHost for SectionHost<'_> {
 
     fn prepared(&mut self, layer: &mut isometer::BodyLayer) {
         layer.stats.body_scale = self.bodies.scale;
-        // The scene carries neutral material channels; which of them is the
-        // expressed gland is Mesocosm's vocabulary, so the count is read back
-        // here rather than named inside the scene.
-        let secrete = materials::channel(isocosm::process::Process::Secrete);
-        layer.stats.secretory_parts = layer
-            .drawn_materials()
-            .map(|materials| {
-                materials
-                    .iter()
-                    .filter(|material| material.material == secrete)
-                    .count()
-            })
-            .sum();
-        // The scene knows the documents, not which of them belong to a dead
-        // organism, so the carcass count is read back here.
-        let world = self.world;
+        let scene = self.scene;
         layer.stats.carcasses = layer
             .drawn()
-            .filter(|subject| {
-                let id = bodies::organism_of(*subject);
-                world
-                    .organisms
-                    .iter()
-                    .any(|organism| organism.id == id && !organism.is_alive())
-            })
+            .filter(|subject| scene.body(subject.0).is_some_and(|b| !b.alive))
             .count();
     }
 
@@ -456,24 +378,8 @@ pub fn half_height_or_default(configured: f32) -> f32 {
     }
 }
 
-/// Where the slab sits: on the controlled critter, plus the pan, **clamped so
-/// the frame never dips below bedrock**.
-///
-/// The z component takes no pan, because the section's whole claim is that it
-/// cuts through whoever is being played.
-///
-/// The clamp is the companion ruled with the half-height (2026-08-29): the
-/// world's lowest brick is y = 0, so a frame centred below `half_height` shows
-/// void along the bottom, which reads as a slab floating rather than a
-/// terrarium. Past roughly 24 the shipped follow centre does exactly that.
-/// It is presentation, like the framing — it moves no intent, so it cannot
-/// reach the trace.
-///
-/// The floor is the camera's own vertical reach rather than the half-height
-/// (DC4): a tilted section leans its slab depth into the vertical and frames
-/// about a voxel more than a level one, so reading the half-height would let
-/// `oblique` show exactly the strip of void the clamp exists to refuse. The
-/// two level modes are unchanged, to the bit.
+/// Where the slab sits: on the followed body plus the pan, clamped so the
+/// frame never dips below bedrock. Presentation only.
 pub fn centre_on(at: [i32; 3], pan: Pan, half_height: f32, mode: CameraMode) -> [f32; 3] {
     let floor = mode.vertical_half(half_height_or_default(half_height));
     [
@@ -482,12 +388,3 @@ pub fn centre_on(at: [i32; 3], pan: Pan, half_height: f32, mode: CameraMode) -> 
         at[2] as f32,
     ]
 }
-
-#[cfg(test)]
-mod depth_tests;
-#[cfg(test)]
-mod inspection_tests;
-#[cfg(test)]
-mod query_tests;
-#[cfg(test)]
-mod tests;

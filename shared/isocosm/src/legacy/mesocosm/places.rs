@@ -55,8 +55,6 @@ mod near;
 mod relief;
 
 pub use bricks::NestEntry;
-#[cfg(test)]
-pub(crate) use bricks::nest_entry;
 // Brick truth itself lives in `isometer-core` (family plan step 6); `bricks`
 // keeps the Mesocosm half — the nest routes `Grown` describes and the
 // `Terrain` impl `Ground::grow` reads. Restated here so every caller keeps
@@ -73,8 +71,15 @@ use std::collections::{BTreeSet, VecDeque};
 
 use serde::{Deserialize, Serialize};
 
-use crate::legacy::mesocosm::record::Scale;
-use crate::legacy::mesocosm::rng::Rng;
+/// How far a feat reached, by the regions it touched.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub enum Scale {
+    Local,
+    Regional,
+    Worldwide,
+}
+
+use crate::rng::Rng;
 
 /// One region of the enclosure.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]

@@ -6,7 +6,7 @@
 691); no phase opened.
 **Status, 2026-10-09:** D1 to D4 built on native Isocosm under 732's
 compile gate (lane `lane-directing`), each phase's done-conditions left
-to the after-pass; D4 stands on three open forks (below). D5 waits. It carries the
+to the after-pass; D4 stands on three open forks (below). D5 waits. *2026-10-10:* D5 landed under the compile gate (Progress). It carries the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s M3 and the
 interim M4 of ruling 680, and the full M4 stays there.
 
@@ -227,6 +227,39 @@ on Isocosm, both modes, receipts replaying.
     hashes of every non-deliberative run before and after D2 (equal by
     construction, `Deliberated::Free`, unmeasured); draws, not the fixed
     seeds the unit tests use.
+
+- **2026-10-10, D5 under 732 (lane `lane-meso-world`).** The switch landed
+  at `91f2e050` under the compile gate; 680's headed condition is the
+  after-pass's.
+  - *The runtime* (`mesocosm-runtime`):
+    - `Runtime` drives `Interim` one round a tick from a generated world with bodies and a played lineage.
+    - It translates contract envelopes into native commands (686):
+      - a nudge is `Command::Nudge` (an act key is dropped at site grain);
+      - the player's act is `Speciate`;
+      - a birth answer keeps the parent or takes the child, and a death answer takes up an heir;
+      - a review answer commits `lineage::Review`'s offer, where offer 0, the status quo, closes the turn;
+      - `EndEpoch` advances to the boundary, and `PlaceMatter` places `world:soil` at the played site;
+      - `ForceBirth` and `Kill` are refused, since native has no command for them.
+    - Checkpoints are read from the interim's happenings (762), and the review is `lineage::Review`.
+    - The glyph reading runs on `effects::Journal` (774), reading carves, moves and intake from the log and flows.
+    - The flow windows read native flows. A run's record is its session save, replayed by `Session::load`.
+  - *The views* read the native world:
+    - vitals (holdings, `kingdom::of`, feeding mode, the graft allowance);
+    - the board over `Offer` and `Reading`;
+    - the minimap over sites, laid on a ring;
+    - the follow and part tiles.
+  - *The host* (`mesocosm-genet`):
+    - The section draws the played critter's site lifted through `Simulation::volume` (isometer-space), with the bodies of that site's members at presentation spots.
+    - Input directs: E attends, Q acts, S speciates, and the checkpoint and board keys answer.
+    - Legacy driving is removed (671, 679), along with the legacy creator, the specimen bench (the native sim panel stays), hand-driven eating, grafting and expression, the fixture scenes and the receipt examples.
+    - Genet went from 32,278 lines to 8,147.
+  - *For the after-pass:*
+    - 680's headed condition: three epochs, both modes, receipts replaying;
+    - a founding with bodies and a played lineage actually starting;
+    - consumer reproduction (761);
+    - the retired tests' behaviour as draws (672);
+    - body scale against ground cells;
+    - watching a replay in the host, which needs a `Runtime` resumed from a save.
 
 - **2026-10-08:** plan drafted from the directing survey; rulings 681 to
   691 taken in three rounds.

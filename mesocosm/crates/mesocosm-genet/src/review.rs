@@ -35,7 +35,7 @@ use genet_livery::{
     emit_paint_list_with_text_system_scrolled_with_images, layout_with_text_system, resolve_styles,
 };
 use genet_scripted_dom::{NodeId, ScriptedDom};
-use mesocosm_runtime::Review;
+use mesocosm_runtime::{Review, Trend};
 use mesocosm_views::{Board, BoardChild};
 use paint_list_api::{DeviceIntSize, PaintList as _};
 
@@ -52,42 +52,28 @@ const HEIGHT: u32 = 420;
 
 type Runner = GenetAppRunner<Board, fn(&Board) -> BoardChild, BoardChild>;
 
-/// Reads the driver's review into the words a player sees.
-///
-/// The one conversion in the lane, and deliberately dumb: every sentence
+/// Reads the boundary's review into the words a player sees; every sentence
 /// belongs to `mesocosm-views`, and this supplies numbers and the cursor.
-pub fn board_of(review: &Review, selected: usize) -> Board {
+pub fn board_of(review: &Review, trend: &Trend, selected: usize) -> Board {
     let mut board = Board::of(
-        review.epoch,
-        review.lineage.0,
-        review.budget_mg,
-        review.current.map(|revision| revision.0),
-        &review.trend,
+        review.tick,
+        &review.lineage,
+        review.program.as_deref(),
+        trend,
     );
-    board.readings = mesocosm_views::evidence_words(&review.readings, review.lineage.0);
+    board.readings = mesocosm_views::evidence_words(&review.readings, &review.lineage);
     board.rows = review
-        .rows
+        .offers
         .iter()
         .enumerate()
-        .map(|(index, row)| {
-            let sources: Vec<String> = row
-                .sources
-                .iter()
-                .map(|proposed| match &proposed.refused {
-                    Some(why) => format!("{}: {why}", proposed.source.name()),
-                    None => proposed.source.name().to_owned(),
-                })
-                .collect();
-            mesocosm_views::row_words(&row.offer, &sources, index == selected)
-        })
+        .map(|(index, offer)| mesocosm_views::row_words(offer, index == selected))
         .collect();
-    // The commit line appears only when the selected row is one the world would
-    // actually admit — `Offer::takeable`, the same question `Review::commit`
-    // answers, so the panel and the keyboard cannot disagree about what R does.
+    // Only an offer the world would admit gets a commit line, so the panel and
+    // the R key cannot disagree.
     board.commit = review
-        .rows
+        .offers
         .get(selected)
-        .and_then(|row| mesocosm_views::commit_words(&row.offer));
+        .and_then(mesocosm_views::commit_words);
     board
 }
 
@@ -125,8 +111,14 @@ impl BoardChrome {
 
     /// Takes the frame's review and rasterizes it if it changed. `None` clears
     /// the surface, which is what "play resumes" looks like.
-    pub fn refresh(&mut self, chrome: &Chrome, review: Option<&Review>, selected: usize) {
-        let board = review.map(|review| board_of(review, selected));
+    pub fn refresh(
+        &mut self,
+        chrome: &Chrome,
+        review: Option<&Review>,
+        trend: &Trend,
+        selected: usize,
+    ) {
+        let board = review.map(|review| board_of(review, trend, selected));
         if self.shown == board {
             return;
         }
@@ -223,28 +215,6 @@ impl BoardChrome {
             return;
         }
         chrome.draw(
-            encoder,
-            target,
-            self.raster.sample_view(),
-            Self::placement(frame),
-            frame,
-        );
-    }
-
-    /// The same, into a capture frame's offscreen format.
-    pub fn capture_composite(
-        &self,
-        chrome: &Chrome,
-        format: wgpu::TextureFormat,
-        encoder: &mut wgpu::CommandEncoder,
-        target: &wgpu::TextureView,
-        frame: (u32, u32),
-    ) {
-        if !self.standing() {
-            return;
-        }
-        chrome.draw_as(
-            format,
             encoder,
             target,
             self.raster.sample_view(),

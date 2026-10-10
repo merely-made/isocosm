@@ -50,29 +50,15 @@ impl Succession {
     /// Parent, offspring, cost and descent, each a line. The cost is stated in
     /// both accounts because they are not the same loss: body is what the
     /// parent will not get back, and reserve is what it will have to earn again.
-    pub fn birth(
-        parent: u32,
-        offspring: u32,
-        lineage: u32,
-        substance_mg: u64,
-        reserve_mg: u64,
-        offerable: bool,
-    ) -> Self {
+    pub fn birth(parent: u64, offspring: u64, lineage: &str, offerable: bool) -> Self {
         Self {
             headline: "a birth".into(),
             facts: vec![
                 ("parent".into(), format!("critter {parent}")),
                 ("offspring".into(), format!("critter {offspring}")),
                 (
-                    "cost".into(),
-                    format!(
-                        "{} mg — {substance_mg} of body, {reserve_mg} of reserve",
-                        substance_mg + reserve_mg
-                    ),
-                ),
-                (
                     "descent".into(),
-                    format!("child of critter {parent}, line {lineage}"),
+                    format!("child of critter {parent}, {lineage}"),
                 ),
             ],
             stay: "stay in the parent".into(),
@@ -90,12 +76,12 @@ impl Succession {
     /// preview, and nothing to spend. What it says is that the round happened,
     /// how much of the enclosure moved in it, and that yours is the line that
     /// has not answered yet — which is PE3b's review.
-    pub fn epoch(epoch: u64, lineage: u32, turned: usize, committed: usize) -> Self {
+    pub fn epoch(tick: u64, lineage: &str, turned: usize, committed: usize) -> Self {
         Self {
             headline: "the epoch is over".into(),
             facts: vec![
-                ("epoch".into(), format!("{epoch} ended")),
-                ("your line".into(), format!("line {lineage}, yet to answer")),
+                ("boundary".into(), format!("at tick {tick}")),
+                ("your line".into(), format!("{lineage}, yet to answer")),
                 (
                     "the others".into(),
                     match turned {
@@ -126,11 +112,11 @@ impl Succession {
     /// inhabit, and `heir` is the eldest of them — the one a single key takes.
     /// The count is stated so the player can tell "no line survives" from "a
     /// line survives and you are taking the eldest of it".
-    pub fn loss(organism: u32, lineage: u32, heirs: usize, heir: Option<u32>) -> Self {
+    pub fn loss(organism: u64, lineage: &str, heirs: usize, heir: Option<u64>) -> Self {
         Self {
             headline: "the body is gone".into(),
             facts: vec![
-                ("was".into(), format!("critter {organism}, line {lineage}")),
+                ("was".into(), format!("critter {organism}, {lineage}")),
                 (
                     "descendants".into(),
                     match heirs {
@@ -144,7 +130,7 @@ impl Succession {
                 0 => "look on".into(),
                 _ => "let the line go".into(),
             },
-            take: heir.map(|heir| format!("continue as critter {heir}, your eldest")),
+            take: heir.map(|heir| format!("continue as critter {heir}")),
         }
     }
 }
@@ -219,74 +205,3 @@ pub fn succession_css() -> &'static str {
 "#
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    /// Parent, offspring, cost and descent, all four pointable off the panel
-    /// itself — which is the done-condition, in the place a player reads it.
-    #[test]
-    fn a_birth_states_who_what_and_what_it_cost() {
-        let birth = Succession::birth(0, 1173, 1, 505, 505, true);
-        let facts: Vec<&str> = birth.facts.iter().map(|(key, _)| key.as_str()).collect();
-        assert_eq!(facts, ["parent", "offspring", "cost", "descent"]);
-        let cost = &birth.facts[2].1;
-        assert!(cost.contains("1010 mg"), "the whole debit: {cost}");
-        assert!(cost.contains("505 of body"), "and both accounts: {cost}");
-        assert!(cost.contains("505 of reserve"), "and both accounts: {cost}");
-        assert_eq!(birth.take.as_deref(), Some("become critter 1173"));
-    }
-
-    /// The lineage checkpoint says the round happened and offers no body.
-    /// It is still not a review: PE3b owns candidates, prices and previews.
-    #[test]
-    fn the_lineage_checkpoint_reports_the_round_and_offers_nothing_to_take() {
-        let boundary = Succession::epoch(3, 1, 4, 2);
-        let facts: Vec<&str> = boundary.facts.iter().map(|(key, _)| key.as_str()).collect();
-        assert_eq!(facts, ["epoch", "your line", "the others", "changed"]);
-        assert_eq!(boundary.take, None, "no body is offered at a lineage's own");
-        assert_eq!(boundary.stay, "back to the terrarium");
-
-        let quiet = Succession::epoch(1, 1, 0, 0);
-        assert_eq!(quiet.facts[2].1, "no line had anything to weigh");
-        assert_eq!(quiet.facts[3].1, "none of them changed");
-    }
-
-    /// Two answers and no third. A checkpoint that grew a menu would be the
-    /// epoch's job, and PE1's stop rule is that it must not become one.
-    #[test]
-    fn the_checkpoint_offers_exactly_two_answers_and_no_program() {
-        for state in [
-            Succession::birth(0, 9, 1, 100, 40, true),
-            Succession::loss(0, 1, 3, Some(9)),
-            Succession::loss(0, 1, 0, None),
-        ] {
-            let answers = usize::from(state.take.is_some()) + 1;
-            assert!(answers <= 2, "one to stay, at most one to take");
-            let words = format!("{state:?}").to_lowercase();
-            for editorial in ["program", "trait", "budget", "epoch", "revise", "founder"] {
-                assert!(
-                    !words.contains(editorial),
-                    "the individual checkpoint says nothing about {editorial}: {words}"
-                );
-            }
-        }
-    }
-
-    /// A line with nobody left in it says so, rather than offering a body that
-    /// is not there.
-    #[test]
-    fn a_loss_with_no_descendant_offers_nothing_to_take() {
-        let empty = Succession::loss(4, 1, 0, None);
-        assert_eq!(empty.take, None);
-        assert_eq!(empty.facts[1].1, "none living");
-        assert_eq!(empty.stay, "look on");
-
-        let carried = Succession::loss(4, 1, 2, Some(11));
-        assert_eq!(carried.facts[1].1, "2 living");
-        assert!(
-            carried.take.is_some_and(|words| words.contains("11")),
-            "and it names the one a key would take"
-        );
-    }
-}

@@ -20,8 +20,8 @@ use conatus::{
     BodyDesc, BodyError, BodyId, BodyKind, BodyWorld, ColliderDesc, ColliderShape, SpatialFilter,
     Transform, VoxelEdit,
 };
-use isocosm::legacy::mesocosm::places::{AIR, BRICK};
-use isocosm::legacy::mesocosm::voxel_profile::{
+use isometer_core::ground::{AIR, BRICK};
+use crate::voxel_profile::{
     GroundChunkChange, GroundVoxelProfile, GroundVoxelUpdate,
 };
 
@@ -358,10 +358,10 @@ fn rotation_from_y(direction: [f32; 3]) -> [f32; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::mesocosm::places::{Ground, Places};
+    use isometer_core::ground::Ground;
 
     fn ground() -> Ground {
-        Ground::grow(&Places::grown(4_242, 4, 64), 64)
+        isometer_core::fixtures::ground(4_242, 64)
     }
 
     fn down_pick(world: &TactileWorld, x: i32, z: i32) -> TactileHit {

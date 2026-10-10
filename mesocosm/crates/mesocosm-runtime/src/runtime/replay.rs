@@ -1,89 +1,65 @@
 // Copyright 2026 Mark Alan Boykin
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Host-free reproduction: a seed, an organism count and a trace reach the
-//! same world and the same past every time. Split out of `runtime.rs` at the
-//! 600-line ceiling.
+//! A run's record is its session's log: saving it and loading it back
+//! replays every command and checks every witness on the way.
 
-use isocosm::legacy::mesocosm::{History, Intent, World};
+use isocosm::history::Saved;
+use isocosm::{Execution, Session};
+use serde::{Deserialize, Serialize};
 
-use super::{Runtime, reckon_if_ended};
-use crate::readings::FlowWindows;
+use super::{Founded, Runtime};
+
+/// What a receipt says about a run.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Receipt {
+    pub genesis: String,
+    pub tick: u64,
+    pub entries: u64,
+    pub envelopes: u64,
+    pub state_hash: u64,
+    /// A dev placed matter or edited a volume (271).
+    pub assisted: bool,
+    pub dev_intents: u64,
+}
+
+/// A run read back from its save.
+pub struct Replayed {
+    pub session: Session,
+    pub state_hash: u64,
+}
 
 impl Runtime {
-    /// Rebuilds a run from a seed and trace, without any host at all. Two hosts
-    /// agree exactly when their traces replay to the same hash here.
-    ///
-    /// Returns the past as well as the world, because it has to: a driven run
-    /// drains its events every tick and a replay that did not would end holding
-    /// a tick of undrained ones, which is a difference in the snapshot and so a
-    /// difference in the hash. Reproducing the history rather than discarding it
-    /// is also the claim that keeps it out of the snapshot, made executable.
-    pub fn replay(seed: u64, organisms: u32, trace: &[Intent]) -> (World, History) {
-        let replayed = Self::replayed(seed, organisms, trace);
-        (replayed.world, replayed.history)
+    /// The run's save: its genesis and its log.
+    pub fn save(&self) -> Saved {
+        self.interim.session.save()
     }
 
-    /// The same replay, keeping the readings it rebuilt.
-    ///
-    /// **The done-condition made runnable.** The windows are not in the
-    /// snapshot, so nothing forces them to agree; reducing the replay's own
-    /// streams through the same reducer and comparing the encodings is what
-    /// shows that a replayed run reads the same as the run it replays.
-    pub fn replayed(seed: u64, organisms: u32, trace: &[Intent]) -> Replayed {
-        let mut world = World::new(seed, organisms);
-        let mut history = History::new();
-        let mut readings = FlowWindows::new();
-        let mut epoch_seen = 0;
-        for intent in trace {
-            world.apply(intent.clone());
-            let events = world.drain_events();
-            readings.absorb(&events, &world.drain_flows());
-            history.record_all(events);
-            // The same reckoning a driven run does, through the same function.
-            // The world ends its own epochs, so a replay reaches every boundary
-            // the run did; skipping the reckoning here would leave the replayed
-            // world's record short and its hash different. (PE3)
-            reckon_if_ended(&mut world, &history, &mut epoch_seen);
-        }
-        Replayed {
-            world,
-            history,
-            readings,
-        }
-    }
-
-    /// The receipt a host probe compares: what this run was, and where it
-    /// ended up.
     pub fn receipt(&self) -> Receipt {
+        let session = &self.interim.session;
         Receipt {
-            seed: self.seed,
-            organisms: self.organisms,
-            // The trace is one entry per step actually applied, so it is the
-            // step count whether the run was clocked or stepped by hand — and
-            // it stays honest across a checkpoint, where the clock may have
-            // authorised steps the held world never took.
-            steps: self.trace.len() as u64,
+            genesis: isocosm::digest(session.sim.genesis()),
+            tick: self.tick(),
+            entries: session.entries.len() as u64,
+            envelopes: self.trace.len() as u64,
             state_hash: self.state_hash(),
+            assisted: session.assisted(),
+            dev_intents: self.dev_intents,
         }
     }
-}
 
-/// What a replay reproduced: the world, its past, and its readings.
-pub struct Replayed {
-    pub world: World,
-    pub history: History,
-    pub readings: FlowWindows,
-}
+    /// Replays a save, refusing one that does not replay to its witness.
+    pub fn replayed(saved: Saved) -> Result<Replayed, String> {
+        let session = Session::load(saved, Execution::Grouped)?;
+        let state_hash = session.sim.state_hash();
+        Ok(Replayed {
+            session,
+            state_hash,
+        })
+    }
 
-/// A run's identity, for comparing hosts.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Receipt {
-    pub seed: u64,
-    pub organisms: u32,
-    pub steps: u64,
-    pub state_hash: u64,
+    /// The founding a run began from, beside its save.
+    pub fn founding(&self) -> &Founded {
+        &self.founded
+    }
 }

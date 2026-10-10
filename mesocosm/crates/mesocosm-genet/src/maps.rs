@@ -7,18 +7,43 @@
 //! Biome maps from a seed: the world painted as two images.
 //!
 //! The march consumes a heightmap and a colormap and nothing else, so a
-//! biosphere is whatever gets painted into them. This probe synthesiser uses
-//! the same [`Places`] partition the simulation runs on: one biome per place,
-//! terrain relief from layered value noise shaped per biome, colours from the
-//! biome's base tint shaded by height. Worldgen later replaces this with the
-//! vello lane painting richer maps; the renderer contract does not change.
+//! biosphere is whatever gets painted into them. This probe synthesiser
+//! scatters a jittered grid of regions, one biome each, with relief from
+//! layered value noise and colours from the biome's tint shaded by height.
+//! Presentation for the frame examples only; no world reads it.
 //!
-//! It lives here rather than in the lens because [`Places`] and [`Rng`] are
-//! Mesocosm's, not the lens's (isometer family plan, step 4). The lens keeps
-//! [`BiomeMaps`], which is the renderer's input type.
+//! The lens keeps [`BiomeMaps`], which is the renderer's input type.
 
-use isocosm::legacy::mesocosm::{Places, Rng};
+use isocosm::rng::Rng;
 use isometer::lens::maps::BiomeMaps;
+
+/// One region centre per cell of a `side` by `side` grid over `-extent..extent`,
+/// jittered inside its cell.
+fn scatter(rng: &mut Rng, side: i32, extent: i32) -> Vec<[i32; 2]> {
+    let edge = |i: i32| -extent + (2 * extent * i) / side;
+    let mut centres = Vec::new();
+    for row in 0..side {
+        for column in 0..side {
+            let (x, z) = (edge(column), edge(row));
+            centres.push([
+                rng.range_i32(x, (edge(column + 1) - 1).max(x)),
+                rng.range_i32(z, (edge(row + 1) - 1).max(z)),
+            ]);
+        }
+    }
+    centres
+}
+
+/// The nearest centre to `(x, z)`, ties to the lower index.
+fn nearest(centres: &[[i32; 2]], x: i32, z: i32) -> usize {
+    (0..centres.len())
+        .min_by_key(|&i| {
+            let dx = i64::from(x - centres[i][0]);
+            let dz = i64::from(z - centres[i][1]);
+            (dx * dx + dz * dz, i)
+        })
+        .unwrap_or(0)
+}
 
 /// One biome, derived from a place.
 #[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
@@ -86,7 +111,7 @@ pub fn synthesize(seed: u64, side: u32) -> BiomeMaps {
     // renderer at landscape scale, and "much bigger" was the ruling.
     let mut rng = Rng::from_seed(seed ^ 0x4C45_4E53);
     let extent = side as i32 / 2;
-    let places = Places::scatter(&mut rng, 4, extent);
+    let places = scatter(&mut rng, 4, extent);
 
     let biomes: Vec<Biome> = (0..places.len() as u32)
         .map(|index| {
@@ -104,9 +129,7 @@ pub fn synthesize(seed: u64, side: u32) -> BiomeMaps {
 
     for row in 0..side {
         for col in 0..side {
-            let world = [col as i32 - extent, 0, row as i32 - extent];
-            let place = places.at(world).expect("the partition is total");
-            let biome = biomes[place.0 as usize];
+            let biome = biomes[nearest(&places, col as i32 - extent, row as i32 - extent)];
 
             let (nx, ny) = (col as f32 / 48.0, row as f32 / 48.0);
             // Continental shape shared across biomes so borders meet on a

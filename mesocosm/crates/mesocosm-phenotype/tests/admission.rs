@@ -16,7 +16,7 @@
 
 use std::path::{Path, PathBuf};
 
-use isocosm::legacy::mesocosm::Role;
+use isometer_core::Role;
 use isocosm::process::{Registry, Seeding};
 
 use mesocosm_phenotype::*;

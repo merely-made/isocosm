@@ -1,55 +1,32 @@
 // Copyright 2026 Mark Alan Boykin
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::Founding;
-use serde::{Deserialize, Serialize};
+//! Where the section stands each body: presentation only. A native body has
+//! no position inside its site, so bodies sit on a fixed grid around the
+//! ground's centre, in roster order, each on the surface under it.
 
-/// A founding recipe set, independent of voxel content and drawing mode.
-/// Saved traces select their own set; absent values retain historical anatomy.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum BodyLayout {
-    #[default]
-    Axial,
-    Branching,
-    Jointed,
-    Spaced,
+use isometer::core::ground::Ground;
+
+/// Voxels between neighbouring presentation spots.
+pub const SPACING: i32 = 8;
+
+/// The `index`th spot of a square spiral-free grid around the origin, on the
+/// surface. Deterministic in `index` alone, so a frame never reshuffles.
+pub fn spot(ground: &Ground, index: usize) -> [i32; 3] {
+    let reach = (ground.extent() / SPACING).max(1);
+    let side = (2 * reach + 1) as usize;
+    let cell = index % (side * side);
+    let x = (cell % side) as i32 - reach;
+    let z = (cell / side) as i32 - reach;
+    let (x, z) = (x * SPACING, z * SPACING);
+    let y = ground.surface(x, z).map_or(0, |top| top + 1);
+    [x, y, z]
 }
 
-impl BodyLayout {
-    pub const fn axial() -> Self {
-        Self::Axial
-    }
-
-    pub fn founding(self) -> Founding {
-        match self {
-            Self::Axial => Founding::Roster,
-            Self::Branching => Founding::BranchingRoster,
-            Self::Jointed => Founding::JointedRoster,
-            Self::Spaced => Founding::SpacedRoster,
-        }
-    }
-
-    pub fn name(self) -> &'static str {
-        match self {
-            Self::Axial => "axial",
-            Self::Branching => "branching",
-            Self::Jointed => "jointed",
-            Self::Spaced => "spaced",
-        }
-    }
-
-    pub fn is_axial(&self) -> bool {
-        *self == Self::Axial
-    }
-
-    pub fn parse(value: &str) -> Option<Self> {
-        match value {
-            "axial" => Some(Self::Axial),
-            "branching" => Some(Self::Branching),
-            "jointed" => Some(Self::Jointed),
-            "spaced" => Some(Self::Spaced),
-            _ => None,
-        }
-    }
+/// Where the camera sits for a site with nobody to follow: its centre column.
+pub fn centre(ground: &Ground) -> [i32; 3] {
+    [0, ground.surface(0, 0).map_or(0, |top| top + 1), 0]
 }

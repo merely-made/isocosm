@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 
 use super::relief::Relief;
 use super::{Place, PlaceId, Places};
-use crate::legacy::mesocosm::rng::Rng;
+use crate::rng::Rng;
 
 /// How much rise above the higher endpoint a crossing tolerates.
 const CLIMB: i32 = 26;

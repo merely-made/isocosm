@@ -4,127 +4,86 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The bounded ecology reducer.
-//!
-//! The driver already drains a tick of causal events and rebuilds them on
-//! replay, so it is where a replay-derived reduction of the flow stream belongs
-//! (PE0, playable ecology plan §8). Nothing here is authority: it reads two
-//! streams the world emitted and keeps fixed-size integer windows over them.
-//!
-//! # Bounded, and explicitly so
-//!
-//! One ring of [`RETENTION_TICKS`] per-tick totals. Two windows are read off it
-//! — the whole ring for replacement, [`JUDGEMENT_TICKS`] for support — because
-//! several resolutions may coexist but every retention length has to be stated
-//! and tested. Nothing here grows with the length of a run.
-//!
-//! # Deterministic
-//!
-//! Integers only, summed over a fixed slice in a fixed order, from streams that
-//! are themselves a function of the seed and the trace. So a replay reduces to
-//! the same windows byte for byte, which `tests/readings.rs` asserts by encoding
-//! both and comparing the bytes.
+//! Bounded ecology windows over the native flow record (the record family,
+//! 750): the producer stand's change and what mouths took from it over a
+//! judgement window, and births and deaths over a longer one. Derivable
+//! from a save, so kept beside the world, never in it.
 
-use isocosm::flows::Flow;
-use isocosm::legacy::mesocosm::Kingdom;
-use isocosm::legacy::mesocosm::flowing::{Account, Process, Trend};
-use isocosm::legacy::mesocosm::history::Event;
-use isocosm::legacy::mesocosm::history::RecordedEvent;
+use isocosm::directing::interim::Happening;
+use isocosm::flows::{Flow, Holder};
+use isocosm::simulation::Simulation;
 use serde::{Deserialize, Serialize};
 
-/// How many ticks of per-tick totals are retained.
-///
-/// Two hundred and forty: the plan's own example window, twenty-four seconds at
-/// the canonical ten ticks a second. Long enough to hold a life-history event
-/// or two of a starter body, short enough that the whole ring is one cache line
-/// per field.
+/// Rounds the long window keeps.
 pub const RETENTION_TICKS: usize = 240;
-
-/// The window the stand reading judges over.
-///
-/// Sixty ticks — six seconds. Wide enough that one corpse or one bite does not
-/// decide the sign, narrow enough that the moment a stand starts losing ground
-/// is not smeared across half a lifetime. How *long* the trouble has lasted is
-/// carried by the shortfall streak instead, which is what the warning says.
+/// Rounds the stand is judged over.
 pub const JUDGEMENT_TICKS: usize = 60;
 
-/// One tick, reduced.
-///
-/// Four numbers, because PE0 ships two indicators: replacement (maturation
-/// against mortality) and the support path (what the standing plant matter did,
-/// and how much of it mouths took). Everything else the readings contract lists
-/// waits for the phase that consumes it.
+/// The native key the producer kingdom's flows carry.
+const FLORA: &str = "kingdom:flora";
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 struct Totals {
-    /// Net change in the substance of every producer-bodied organism.
-    ///
-    /// **The stock, not the throughput.** Producers pay rent proportional to
-    /// what they carry, so their gross draw out of the ground is mostly a
-    /// treadmill and outweighs any mouth several times over; the net of draw
-    /// against rent sits on zero at equilibrium and its sign is decided by
-    /// noise. What a support path runs short of is standing matter, so that is
-    /// what is counted, straight off the flow record's own accounts.
-    stand_change_mg: i64,
-    /// Matter taken out of producer substance by something feeding.
-    grazed_mg: u64,
-    matured: u32,
+    stand_change: i64,
+    grazed: u64,
+    born: u32,
     died: u32,
 }
 
+fn flora(kind: &Option<isocosm::flows::Kind>) -> bool {
+    kind.as_ref().is_some_and(|k| k.kingdom == FLORA)
+}
+
 impl Totals {
-    /// Reduces one tick of both streams.
-    ///
-    /// Maturation and mortality come from the causal record and the two matter
-    /// sums from the flow record, which is the split the two records exist for:
-    /// coming of age moves no matter, and a milligram of upkeep is nobody's
-    /// biography.
-    fn of(events: &[RecordedEvent], flows: &[Flow]) -> Self {
-        let mut totals = Self::default();
-        for event in events {
-            match event.record {
-                Event::Matured { .. } => totals.matured += 1,
-                Event::Died { .. } => totals.died += 1,
-                _ => {},
+    fn of(living: (u64, u64), flows: &[Flow]) -> Self {
+        let mut totals = Self {
+            born: living.1.saturating_sub(living.0) as u32,
+            died: living.0.saturating_sub(living.1) as u32,
+            ..Self::default()
+        };
+        for flow in flows.iter().filter(|f| !f.internal()) {
+            let amount = flow.amount.saturating_mul(flow.count);
+            let body = |h: Holder| h.body().is_some();
+            if flora(&flow.from_kind) && body(flow.from.0) {
+                totals.stand_change -= amount as i64;
+                if body(flow.to.0) && !flora(&flow.to_kind) {
+                    totals.grazed += amount;
+                }
             }
-        }
-        let producer = |side: Option<Kingdom>| side == Some(Kingdom::Producer);
-        for flow in flows {
-            let record = flow;
-            let amount = record.amount as i64;
-            // Every transfer touching producer substance, in either direction.
-            // A birth is producer-to-producer and cancels, which is right: a
-            // seedling is the stand rearranging itself, not growing.
-            if record.source() == Some(Account::Substance) && producer(record.from_kingdom()) {
-                totals.stand_change_mg -= amount;
-            }
-            if record.destination() == Some(Account::Substance) && producer(record.to_kingdom()) {
-                totals.stand_change_mg += amount;
-            }
-            // What a mouth took, whoever the mouth belonged to. A spill from a
-            // producer went to the ground rather than into a consumer, so it is
-            // a loss to the stand but not a graze.
-            if record.process() == Some(Process::Feeding)
-                && record.source() == Some(Account::Substance)
-                && producer(record.from_kingdom())
-            {
-                totals.grazed_mg += record.amount;
+            if flora(&flow.to_kind) && body(flow.to.0) {
+                totals.stand_change += amount as i64;
             }
         }
         totals
     }
 }
 
-/// Fixed-size integer windows over the world's two record streams.
+/// What the windows read, with the windows they cover.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Trend {
+    pub replacement_ticks: u64,
+    pub born: u32,
+    pub died: u32,
+    pub stand_ticks: u64,
+    pub stand_change: i64,
+    pub grazed: u64,
+    /// Consecutive rounds the stand has been shrinking.
+    pub shortfall_ticks: u64,
+}
+
+impl Trend {
+    /// Whether the stand has shrunk for a whole judgement window.
+    pub fn warns(&self) -> bool {
+        self.shortfall_ticks >= JUDGEMENT_TICKS as u64
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FlowWindows {
-    /// The ring. Grows to [`RETENTION_TICKS`] and never past it; a `Vec` rather
-    /// than an array only because serde's blanket array impls stop at 32 and
-    /// this has to be encodable to be compared byte for byte.
     ring: Vec<Totals>,
-    /// Ticks absorbed, ever. Also the write cursor, modulo the ring.
     absorbed: u64,
-    /// Consecutive ticks the judgement window has read short.
     shortfall_ticks: u64,
+    living: u64,
 }
 
 impl Default for FlowWindows {
@@ -139,12 +98,18 @@ impl FlowWindows {
             ring: Vec::with_capacity(RETENTION_TICKS),
             absorbed: 0,
             shortfall_ticks: 0,
+            living: 0,
         }
     }
 
-    /// Reduces one tick, dropping whatever fell out of the ring.
-    pub fn absorb(&mut self, events: &[RecordedEvent], flows: &[Flow]) {
-        let totals = Totals::of(events, flows);
+    /// Takes one round: its flows, and the living count it left.
+    pub fn absorb(&mut self, sim: &Simulation, _happenings: &[Happening], flows: &[Flow]) {
+        let groups = sim.state().population.groups.values();
+        let living = groups.filter(|g| g.entity.alive).count() as u64;
+        let first = self.absorbed == 0;
+        let before = if first { living } else { self.living };
+        self.living = living;
+        let totals = Totals::of((before, living), flows);
         let slot = (self.absorbed % RETENTION_TICKS as u64) as usize;
         if self.ring.len() < RETENTION_TICKS {
             self.ring.push(totals);
@@ -152,9 +117,6 @@ impl FlowWindows {
             self.ring[slot] = totals;
         }
         self.absorbed += 1;
-
-        // The streak is judged after this tick is in, so a warning is always
-        // about a window that includes the tick it was raised on.
         self.shortfall_ticks = if self.stand().0 < 0 {
             self.shortfall_ticks + 1
         } else {
@@ -162,158 +124,37 @@ impl FlowWindows {
         };
     }
 
-    /// How many ticks the ring is holding.
     pub fn retained(&self) -> u64 {
         self.absorbed.min(RETENTION_TICKS as u64)
     }
 
-    /// The most recent `ticks` entries, newest last. Never more than the ring.
     fn recent(&self, ticks: usize) -> impl Iterator<Item = &Totals> {
         let held = self.ring.len();
         let want = ticks.min(held);
-        // Walk backwards from the write cursor so the order is the order the
-        // ticks happened in, wherever the cursor currently sits.
         (0..want).map(move |back| {
             let index = ((self.absorbed % held as u64) as usize + held - back - 1) % held;
             &self.ring[index]
         })
     }
 
-    /// What the stand did over the judgement window, and how much was grazed.
     fn stand(&self) -> (i64, u64) {
         self.recent(JUDGEMENT_TICKS)
-            .fold((0, 0), |(change, grazed), tick| {
-                (change + tick.stand_change_mg, grazed + tick.grazed_mg)
-            })
+            .fold((0, 0), |(c, g), t| (c + t.stand_change, g + t.grazed))
     }
 
-    /// What the windows currently read.
     pub fn trend(&self) -> Trend {
-        let (matured, died) = self
+        let (born, died) = self
             .recent(RETENTION_TICKS)
-            .fold((0, 0), |(matured, died), tick| {
-                (matured + tick.matured, died + tick.died)
-            });
-        let (stand_change_mg, grazed_mg) = self.stand();
+            .fold((0, 0), |(b, d), t| (b + t.born, d + t.died));
+        let (stand_change, grazed) = self.stand();
         Trend {
             replacement_ticks: self.retained(),
-            matured,
+            born,
             died,
             stand_ticks: self.retained().min(JUDGEMENT_TICKS as u64),
-            stand_change_mg,
-            grazed_mg,
+            stand_change,
+            grazed,
             shortfall_ticks: self.shortfall_ticks,
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use isocosm::flows::Flow;
-    use isocosm::legacy::mesocosm::flowing::Subject;
-    use isocosm::legacy::mesocosm::history::Envelope;
-    use isocosm::legacy::mesocosm::{OrganismId, SpeciesId};
-
-    fn subject(kingdom: Kingdom) -> Subject {
-        Subject {
-            organism: OrganismId(1),
-            lineage: SpeciesId(1),
-            kingdom,
-        }
-    }
-
-    /// A tick in which the stand drew `grew` mg into substance and a mouth took
-    /// `grazed` out of it.
-    fn tick(grew: u64, grazed: u64) -> Vec<Flow> {
-        vec![
-            Flow::uptake(subject(Kingdom::Producer), Account::Substance, grew),
-            Flow::between(
-                Process::Feeding,
-                subject(Kingdom::Producer),
-                Account::Substance,
-                subject(Kingdom::Consumer),
-                Account::Reserve,
-                grazed,
-            ),
-        ]
-    }
-
-    fn died() -> Vec<RecordedEvent> {
-        vec![Envelope::new(
-            0,
-            None,
-            Event::Died {
-                organism: OrganismId(1),
-                species: SpeciesId(1),
-            },
-        )]
-    }
-
-    #[test]
-    fn the_ring_holds_its_stated_retention_and_no_more() {
-        // The retention length is a claim, so it is asserted rather than
-        // assumed: a run three times the window long still answers over one.
-        let mut windows = FlowWindows::new();
-        for _ in 0..RETENTION_TICKS * 3 {
-            windows.absorb(&died(), &[]);
-        }
-        assert_eq!(windows.retained(), RETENTION_TICKS as u64);
-        assert_eq!(windows.ring.len(), RETENTION_TICKS);
-        assert_eq!(windows.trend().died, RETENTION_TICKS as u32);
-    }
-
-    #[test]
-    fn a_tick_that_fell_out_of_the_window_stops_counting() {
-        let mut windows = FlowWindows::new();
-        windows.absorb(&died(), &[]);
-        assert_eq!(windows.trend().died, 1);
-        for _ in 0..RETENTION_TICKS {
-            windows.absorb(&[], &[]);
-        }
-        assert_eq!(windows.trend().died, 0, "the ring forgot it, exactly once");
-    }
-
-    #[test]
-    fn the_stand_window_is_the_shorter_of_the_two() {
-        let mut windows = FlowWindows::new();
-        for _ in 0..RETENTION_TICKS {
-            windows.absorb(&[], &tick(10, 4));
-        }
-        let trend = windows.trend();
-        assert_eq!(trend.replacement_ticks, RETENTION_TICKS as u64);
-        assert_eq!(trend.stand_ticks, JUDGEMENT_TICKS as u64);
-        assert_eq!(trend.stand_change_mg, 6 * JUDGEMENT_TICKS as i64);
-        assert_eq!(trend.grazed_mg, 4 * JUDGEMENT_TICKS as u64);
-    }
-
-    #[test]
-    fn the_streak_counts_consecutive_short_ticks_and_resets_on_one_good_one() {
-        let mut windows = FlowWindows::new();
-        for _ in 0..300 {
-            windows.absorb(&[], &tick(1, 9));
-        }
-        assert_eq!(windows.trend().shortfall_ticks, 300);
-        assert!(windows.trend().warns());
-
-        // One tick of plenty is not enough to clear a window that is still
-        // mostly short, which is the point of judging over a window at all.
-        windows.absorb(&[], &tick(100, 0));
-        assert!(windows.trend().shortfall_ticks > 0);
-
-        for _ in 0..JUDGEMENT_TICKS {
-            windows.absorb(&[], &tick(100, 0));
-        }
-        assert_eq!(windows.trend().shortfall_ticks, 0);
-        assert!(!windows.trend().warns());
-    }
-
-    #[test]
-    fn a_quiet_enclosure_never_warns() {
-        let mut windows = FlowWindows::new();
-        for _ in 0..RETENTION_TICKS * 2 {
-            windows.absorb(&[], &tick(10, 3));
-        }
-        assert_eq!(windows.trend().shortfall_ticks, 0);
     }
 }

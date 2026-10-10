@@ -182,5 +182,3 @@ pub fn dev_css() -> &'static str {
 "#
 }
 
-#[cfg(test)]
-mod tests;

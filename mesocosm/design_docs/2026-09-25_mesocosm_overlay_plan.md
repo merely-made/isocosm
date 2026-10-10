@@ -308,6 +308,18 @@ All three taken on 2026-09-25, the day the plan was drafted.
   0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
+- 2026-10-10: the switch (681, D5) landed under 732's compile gate.
+  - Mesocosm's runtime, views and host run on a native `Session` through
+    the interim loop. The runtime translates the contract's envelopes (686),
+    and the critter is directed, never driven (671, 679).
+  - Legacy Mesocosm's world, bodies and record are deleted; the families
+    plan's Progress has the counts.
+  - The intents of §3 now map as follows. `Move`, `Metabolize`, `Consume`,
+    `Graft`, `Deposit` and `Carve` are gone from the host. `Speciate` is the
+    player's act. `TakeControl` and `Resume` are the birth and death
+    answers, and `Revise` is the review answer. `EndEpoch` and `PlaceMatter`
+    have native commands; `ForceBirth` and `Kill` are refused until native
+    has commands for them.
 - 2026-09-26: this plan is Mesocosm's charter (ruling 308). §1.1 and §1.2
   carry the founding plan's Tone section and the epoch loop's turn
   structure; the founding plan is archived at `archive_docs/2026-09-26/`,

@@ -12,6 +12,7 @@ description = "Live producer-to-consumer receipts for the games wing."
 
 [dependencies]
 isocosm = { path = "../isocosm" }
+isometer-core = { path = "../isometer/crates/isometer-core" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
 
 # Isocosm's suite runs three times faster at opt-level 1, and every workspace

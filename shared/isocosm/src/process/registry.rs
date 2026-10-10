@@ -60,33 +60,40 @@ pub struct Registry {
 }
 
 /// The definitions this build ships, lowered onto the function catalogue
-/// (wing ruling 750): each native's best-fit shapes and seeding are the
-/// catalogue's (`rules::default_functions`), read as the box classes a
-/// legacy body has. A catalogue shape no box reads (tube, shell, joint,
-/// branch) has no class here. **Sorted by qualified id**, the canonical order.
+/// (wing rulings 750 and 759): all fifteen of `rules::default_functions`,
+/// each with the catalogue's best-fit shapes and seeding read as the box
+/// classes a legacy body has, the five natives bound to their process. A
+/// catalogue shape no box reads (tube, shell, joint, branch) has no class
+/// here. **Sorted by qualified id**, the canonical order.
 fn native_defs() -> Vec<ProcessDef> {
     let catalogue = crate::rules::default_functions();
-    let def = |name: &str, native: Process| {
-        let f = &catalogue[&format!("function:{name}")];
-        let expressed_by = Role::ALL
-            .into_iter()
-            .filter(|role| f.shapes.contains(shape_of(*role)))
-            .collect();
-        ProcessDef {
-            id: ProcessId::new("mesocosm", name),
-            native: Some(native),
-            expressed_by,
-            seeding: f.seeding,
-        }
-    };
-    vec![
-        def("contract", Process::Contract),
-        def("fix", Process::Fix),
-        def("intake", Process::Intake),
+    let bound = |name: &str| match name {
+        "contract" => Some(Process::Contract),
+        "fix" => Some(Process::Fix),
+        "intake" => Some(Process::Intake),
         // Acquired in the catalogue: nothing grows a gland (PD2).
-        def("secrete", Process::Secrete),
-        def("sense", Process::Sense),
-    ]
+        "secrete" => Some(Process::Secrete),
+        "sense" => Some(Process::Sense),
+        _ => None,
+    };
+    let mut defs: Vec<ProcessDef> = catalogue
+        .iter()
+        .map(|(key, f)| {
+            let name = key.trim_start_matches("function:");
+            let expressed_by = Role::ALL
+                .into_iter()
+                .filter(|role| f.shapes.contains(shape_of(*role)))
+                .collect();
+            ProcessDef {
+                id: ProcessId::new("mesocosm", name),
+                native: bound(name),
+                expressed_by,
+                seeding: f.seeding,
+            }
+        })
+        .collect();
+    defs.sort_by(|a, b| a.id.cmp(&b.id));
+    defs
 }
 
 /// The catalogue's name for what a box class reads as (ruling 494).

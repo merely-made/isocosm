@@ -10,10 +10,11 @@
 //! through the baker.
 
 use isocosm::legacy::campaign::{Arrival, ChronicleError};
-use isocosm::legacy::mesocosm::{
-    Attachment, BodyDocument, Chronicle, Consequence, Deed, Origin, PartId, Provenance, SpeciesId,
-    VolumeRef, Yaw,
+use isocosm::lineage::chronicle::Deed;
+use isocosm::lineage::{
+    Chronicle, Consequence, LineageBody as BodyDocument, Origin, Provenance, SpeciesId,
 };
+use isometer_core::{Attachment, PartId, VolumeRef, Yaw};
 use isometer_mesh::bake::{BakeParams, bake_facing};
 use isometer_mesh::profile::ProfileError;
 use isometer_mesh::{BodyProfile, Volume, VolumeMap};

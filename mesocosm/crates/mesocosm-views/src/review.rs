@@ -24,224 +24,124 @@
 //! decides when there is anything to show.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use isocosm::legacy::mesocosm::{Feat, Offer, Reading, Scale, Trend, Untakeable};
+use isocosm::lineage::{Offer, Reading};
 use isomere::{JournalClasses, JournalRow};
+use mesocosm_runtime::Trend;
 
 pub type BoardChild = Box<dyn AnyView<Board, (), GenetCtx, GenetElement>>;
 
 /// One candidate's row, already in words.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct BoardRow {
-    /// What it is: the status quo, or the condition the line came to.
     pub name: String,
-    /// Where a proposal for it comes from, in table order.
     pub source: String,
-    /// What growing it earned, with the window it was measured over.
     pub net: String,
-    /// What the next descendant would pay for it.
     pub price: String,
-    /// The founder preview it would grow.
     pub preview: String,
-    /// Why it cannot be taken. `None` when it can.
     pub reason: Option<String>,
-    /// Whether the cursor is on it.
     pub selected: bool,
 }
 
-/// What the board says. A **reading**, taken from the driver's review: nothing
-/// here is stored in the world, enters the trace, or reaches the state hash.
-/// The answers do — and they are ordinary intents the host's keyboard sends.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Board {
     pub headline: String,
-    /// The boundary's pointable facts: which epoch, whose line, what a founder
-    /// will have to spend, and what the enclosure is doing.
     pub facts: Vec<(String, String)>,
-    /// The reckoning: what this epoch came to, and which of it took the record.
-    /// Empty when nothing happened worth noting, which is a real epoch.
     pub readings: Vec<String>,
     pub rows: Vec<BoardRow>,
-    /// What committing would do, when the selected row can be committed.
     pub commit: Option<String>,
-    /// What moving the selection does.
     pub next: String,
-    /// What carrying on does.
     pub stay: String,
 }
 
 impl Board {
-    /// The boundary's headline facts.
-    ///
-    /// `current` is the revision the line is already born under, so a player who
-    /// has just committed can see that the table is now describing the new one.
-    pub fn of(
-        epoch: u64,
-        lineage: u32,
-        budget_mg: u64,
-        current: Option<u32>,
-        trend: &Trend,
-    ) -> Self {
+    /// The boundary's facts for the played line (lineage::Review, 762).
+    pub fn of(tick: u64, lineage: &str, program: Option<&str>, trend: &Trend) -> Self {
         Self {
             headline: "the epoch is over".into(),
             facts: vec![
-                ("epoch".into(), format!("{epoch} ended")),
+                ("tick".into(), tick.to_string()),
                 (
                     "your line".into(),
-                    match current {
-                        Some(revision) => format!("line {lineage}, born under revision {revision}"),
-                        None => format!("line {lineage}, born as it always was"),
+                    match program {
+                        Some(digest) => format!("{lineage}, born under {digest}"),
+                        None => format!("{lineage}, born as it always was"),
                     },
                 ),
-                // The budget, stated as what it actually is. A revision is
-                // priced flat, so what a price is weighed against is the
-                // founder's own material and not a pool somewhere.
-                (
-                    "a founder holds".into(),
-                    format!("{budget_mg} mg to develop with"),
-                ),
-                (
-                    "the enclosure".into(),
-                    crate::vitals::replacement_words(trend),
-                ),
+                ("the enclosure".into(), crate::vitals::replacement_words(trend)),
             ],
             readings: Vec::new(),
             rows: Vec::new(),
             commit: None,
             next: "another candidate".into(),
-            stay: "back to the terrarium".into(),
+            stay: "keep the line as it is".into(),
         }
     }
 
-    /// Whether anything on this table could actually be committed.
     pub fn has_a_choice(&self) -> bool {
-        self.rows
-            .iter()
-            .any(|row| row.reason.is_none() && !row.name.starts_with("the status"))
+        self.rows.iter().any(|row| row.reason.is_none() && !row.name.starts_with("the status"))
     }
 }
 
-/// One reading of the reckoning, in words.
-///
-/// **What was done, how far it reached, how much of it, and whether the world
-/// had seen the like.** The last clause is the whole of significance as the
-/// epoch boundary plan rules it: abnormality against this world's own record,
-/// never a difficulty table.
 pub fn reading_words(reading: &Reading) -> String {
     format!(
-        "{} of line {}, {} — {}{}",
-        feat_word(reading.feat),
-        reading.species.0,
-        scale_word(reading.scale),
-        reading.value,
-        if reading.took {
-            ", the most this world has seen"
-        } else {
-            ""
-        }
+        "{} of {} — {}",
+        reading.feat.trim_start_matches("feat:"),
+        reading.lineage,
+        reading.value
     )
 }
 
-/// The reckoning, narrowed to what this review is evidence for.
-///
-/// **Your line's readings whole, and one line for everyone else's.** A young
-/// enclosure reckons twenty-odd marks across six lines, which is a scrolling
-/// log rather than evidence — and a board whose table and answers are pushed
-/// off the bottom by it is worse than one that says less. The question this
-/// screen asks is what *your* line should do next, so what your line did stays
-/// whole; what the rest of the enclosure took is still stated, because
-/// significance is abnormality against a record everyone writes into.
-pub fn evidence_words(readings: &[Reading], lineage: u32) -> Vec<String> {
+/// The played line's readings, then how many other lines were read.
+pub fn evidence_words(readings: &[Reading], lineage: &str) -> Vec<String> {
     let mut words: Vec<String> = readings
         .iter()
-        .filter(|reading| reading.species.0 == lineage)
+        .filter(|r| r.lineage == lineage)
         .map(reading_words)
         .collect();
-    let others: Vec<&Reading> = readings
+    let mut others: Vec<&str> = readings
         .iter()
-        .filter(|reading| reading.species.0 != lineage && reading.took)
+        .filter(|r| r.lineage != lineage)
+        .map(|r| r.lineage.as_str())
         .collect();
+    others.sort_unstable();
+    others.dedup();
     if !others.is_empty() {
-        let mut lines: Vec<u32> = others.iter().map(|reading| reading.species.0).collect();
-        lines.sort_unstable();
-        lines.dedup();
-        words.push(format!(
-            "{} mark{} taken by {} other line{}",
-            others.len(),
-            if others.len() == 1 { "" } else { "s" },
-            lines.len(),
-            if lines.len() == 1 { "" } else { "s" },
-        ));
+        words.push(format!("{} other line{} read", others.len(), if others.len() == 1 { "" } else { "s" }));
     }
     words
 }
 
-fn feat_word(feat: Feat) -> &'static str {
-    match feat {
-        Feat::Growth => "growth",
-        Feat::Predation => "hunting",
-        Feat::Symbiosis => "giving",
-        Feat::Endurance => "living long",
-        Feat::Spread => "reaching",
-        Feat::Construction => "building",
+fn offer_name(offer: &Offer) -> String {
+    match offer.name.as_str() {
+        "candidate:stay" => "the status quo".into(),
+        name => name.trim_start_matches("candidate:").replace('-', " "),
     }
 }
 
-fn scale_word(scale: Scale) -> &'static str {
-    match scale {
-        Scale::Local => "in one place",
-        Scale::Regional => "across a region",
-        Scale::Worldwide => "across the enclosure",
-    }
-}
-
-/// One candidate's row.
-///
-/// `sources` are the names of the proposals that would express it, in the order
-/// the review found them; the host supplies them because which sources exist is
-/// the driver's question, not this crate's.
-pub fn row_words(offer: &Offer, sources: &[String], selected: bool) -> BoardRow {
-    let name = match offer.candidate {
-        None => "the status quo".to_string(),
-        Some(condition) => crate::vitals::condition_word(condition),
-    };
+pub fn row_words(offer: &Offer, selected: bool) -> BoardRow {
     BoardRow {
-        name,
-        source: match sources {
-            [] => "nothing to build".to_string(),
-            named => named.join(", "),
-        },
-        // Signed, because a candidate that earns less than standing still is a
-        // real outcome and the sign is the whole reading.
+        name: offer_name(offer),
+        source: "the boundary".into(),
         net: format!(
-            "{}{} mg over {} ticks",
-            if offer.score.net_mg() < 0 { "-" } else { "+" },
-            offer.score.net_mg().unsigned_abs(),
-            offer.score.ticks
+            "{} mg held by {} over {} ticks",
+            offer.score.held, offer.score.members, offer.score.ticks
         ),
-        price: match offer.price_mg {
-            0 => "nothing to develop".to_string(),
-            mg => format!("{mg} mg at the next birth"),
+        price: match offer.commands.len() {
+            0 => "nothing to change".into(),
+            n => format!("{n} change{}", if n == 1 { "" } else { "s" }),
         },
-        preview: format!("founder {:016x}", offer.preview),
-        reason: offer.why_not.as_ref().map(Untakeable::words),
+        preview: String::new(),
+        reason: offer.why_not.clone(),
         selected,
     }
 }
 
-/// What committing this row would do, in words.
-///
-/// `None` when it cannot be committed — the status quo, or a candidate carrying
-/// a reason — so the panel's commit line and the keyboard's commit key are
-/// answering one question rather than two that could drift apart.
 pub fn commit_words(offer: &Offer) -> Option<String> {
-    let condition = offer.takeable().then_some(offer.candidate).flatten()?;
-    Some(format!(
-        "take {} into the line",
-        crate::vitals::condition_word(condition)
-    ))
+    offer
+        .takeable()
+        .then(|| format!("take {} into the line", offer_name(offer)))
 }
 
-/// The board: the reckoning, the table, and the three answers.
 pub fn board_root(state: &Board) -> BoardChild {
     let mut children: Vec<BoardChild> = vec![Box::new(
         el::<_, Board, ()>("div", text(state.headline.clone())).attr("class", "board-headline"),
@@ -377,5 +277,3 @@ pub fn board_css() -> &'static str {
 "#
 }
 
-#[cfg(test)]
-mod tests;

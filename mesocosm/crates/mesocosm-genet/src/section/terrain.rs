@@ -22,7 +22,7 @@ impl Section {
         clearing_y: f32,
     ) {
         let before = (self.grade, self.terrain_appearance);
-        if style.resolved(self.terrarium.is_some()) == TerrainStyle::Classic {
+        if style.resolved() == TerrainStyle::Classic {
             self.terrain_appearance = None;
             self.grade = Grade::retro(PALETTE);
             if before != (self.grade, self.terrain_appearance) {
@@ -67,9 +67,9 @@ impl TerrainStyle {
         }
     }
 
-    pub fn resolved(self, terrarium: bool) -> Self {
+    /// Auto is classic; habitat is asked for by name.
+    pub fn resolved(self) -> Self {
         match self {
-            Self::Auto if terrarium => Self::Habitat,
             Self::Auto => Self::Classic,
             explicit => explicit,
         }
