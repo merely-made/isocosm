@@ -9934,6 +9934,26 @@ what later sections derive from.
      admits a sapient critter for driving. Mark chose "Native Take admits a
      sophont". So one native path takes up a life in both games: directing
      for a critter that is not sapient, driving for a sophont (671).
+780 to 786. **Eponym's shape kept; the switch's follow-ups.** 2026-10-10,
+     from the two world moves (Mesocosm's merged at `d3b90c6c`, the switch,
+     legacy Mesocosm 40,645 lines to 2,016). Mark chose "Keep as built
+     (Recommended)": deeds as events of deed processes, agreements in
+     `State::agreements`, the game half in `eponym-play` (780). "Scripts
+     allocate tract offers (Recommended)": the authored expression door
+     proposes cells for a declared-tract offer through `Allocation::commit`
+     (781). "Native dev commands (Recommended)": `ForceBirth` and `Kill` as
+     dev commands labelled assisted (782). "Patch placement and a map
+     layout (Recommended)": members placed by `Command::Patch` in the lifted
+     site, the founding drawing a map layout (783). "Nudge gains an act key
+     (Recommended)": an optional act key on `Nudge`, `PlaceMatter` naming a
+     site handle (784). "One commit closes it (Recommended)": one review
+     commit closes the boundary, offer 0 the leave answer (785). "Saved,
+     plus Runtime::resume (Recommended)": the bare `Saved` trace, and
+     `Runtime::resume` so a replay can be watched (786).
+     *Reading, not ruled:* legacy Mesocosm's last 2,016 lines (the grown
+     and relief terrain, bricks, near, the snapshot codec) serve only the
+     parry-ground probe's fixture, so the fixture moves into the probe,
+     keeping its receipt's figures, and legacy Mesocosm is deleted.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
