@@ -264,9 +264,9 @@ research note (754) waits for Mark.
 ## 5. Recording a ruling
 
 Numbering originally continued at 805; that ruling records the Codex model
-translation on resumption. Rulings 806 to 808 settle lineage complexity,
-event-handle translation and native deed agreement links; the next ruling
-is 809. Form, in the wing
+translation on resumption. Rulings 806 to 810 settle lineage complexity,
+event-handle translation, native deed agreement links, character table
+metadata and healing allocation; the next ruling is 811. Form, in the wing
 record before the "Two
 earlier rulings" paragraph:
 
@@ -283,6 +283,14 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, rulings 809 and 810:** Mark chose optional native Character
+  table metadata for the authored cell and owner, saved and replicated
+  without control or body movement (809), and healing to restore the lost
+  cell's recorded previous function or free-pool status (810). Q2 and Q8
+  resume source work; their implementation and verification remain open.
+  Q3's seed-0 diagnostic is source-ready and parked while Q15 owns Cargo.
+  Q2, Q8 and Q15 are the three active lanes; no new worktree or Cargo home.
+  The next ruling is 811.
 - **2026-10-10, Q3 fresh bare arm rejected:** the unchanged threshold-12,
   one-unit-meal, 80 to 120-tick lifespan candidate ran all twenty bare seeds
   on `ab3b559b`, after prey timing and Q8's native checkpoint integration.

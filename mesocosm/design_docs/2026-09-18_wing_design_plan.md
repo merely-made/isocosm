@@ -10106,6 +10106,44 @@ what later sections derive from.
      the native social owner attaches it after an accepted deed and reads
      it when deriving deeds. Q2 verifies association and save/replay.
 
+809. **Native characters retain optional table metadata.** 2026-10-10,
+     Q2's character-assertion fork under 795. Question: "The VTT character
+     contract supplies a map cell and an owner, but native Character stores
+     neither, so accepting it currently loses both. Ruling 795 says native
+     gains missing assertion vocabulary. Where should these authored fields
+     be retained?" Options: "Optional table metadata on native Character
+     (Recommended); save and replicate it with the assertion, without
+     granting control or moving a body."; "Campaign-owned metadata beside
+     native assertions; save and replicate a separate table record.";
+     "Refuse character assertions until Q9 implements their table metadata."
+     Mark chose "Optional table metadata on native Character (Recommended); save and replicate it with the assertion, without granting control or moving a body."
+     So native Character carries the authored map cell and owner in optional
+     table metadata. The assertion, saved state and replication retain it;
+     accepting these fields grants no control and moves no body. Control
+     remains governed by 152 and 153. Q2 implements and verifies retention.
+     *Reading, not ruled:* absence preserves the existing non-table character
+     path; the contract's cell and participant handle retain their types.
+
+810. **Healing restores a lost cell's recorded allocation.** 2026-10-10,
+     Q8's healing-allocation fork under 469 and 496. Question: "When healing
+     restores a wounded cell, what function should it recover? The saved
+     loss keeps the cell's ID but forgets its former function; rulings 469
+     and 496 require healing without settling this allocation." Options:
+     "Restore its previous function or free-pool status (Recommended),
+     recording that allocation alongside the loss; preserves authored
+     allocation and inherited variation."; "Restore the lineage recipe's
+     allocation, including inherited variation; authored changes can
+     disappear through healing."; "Restore it as free, leaving later
+     allocation to the body or player." Mark chose "Restore its previous function or free-pool status (Recommended), recording that allocation alongside the loss; preserves authored allocation and inherited variation."
+     So a loss records the cell's previous function or free-pool status,
+     and healing restores that allocation rather than recomputing the
+     lineage recipe. Authored allocation and inherited variation survive.
+     Healing still pays each cell's mass and precedes tissue/new parts (496,
+     712); tombstone revival remains 719's native operation.
+     *Reading, not ruled:* loss metadata follows its cells through severing
+     and save/replay. Q8 verifies allocation, accounting and restoration;
+     these consequences do not by themselves certify checkpoint 10.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

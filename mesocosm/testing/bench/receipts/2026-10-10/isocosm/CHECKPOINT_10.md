@@ -1,5 +1,11 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Ruling 810, 2026-10-10:** healing restores each lost cell's recorded
+previous function or free-pool status, preserving authored allocation and
+inherited variation. Q8 resumes healing and tombstone revival; their
+implementation and receipts remain open. The earlier envelopes below
+retain their measured scope and do not certify this new work.
+
 Q8 is in progress. This receipt covers native wounds, severing, fragment
 matter, agentless hazards and rot. Healing and tombstone revival wait for
 the restored-function allocation ruling. It does not certify checkpoint 10.

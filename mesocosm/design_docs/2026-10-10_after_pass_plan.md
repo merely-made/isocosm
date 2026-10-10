@@ -201,6 +201,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, structural forks settled (809, 810):** character cell and
+  owner become optional native table metadata, saved and replicated without
+  granting control or moving a body. Healing restores each lost cell's
+  recorded former function or free-pool status, preserving authored
+  allocation and inherited variation. Q2's round-trip/replication gates
+  and Q8's paid healing/revival, faults and crowd certification remain open;
+  both lanes resume source work. No new test or checkpoint receipt is claimed.
 - 2026-10-10, Q8 integration: the independent native checkpoint `9b0ae46d`
   passes all five downstream workspace/all-target checks offline, including
   root and Eponym all-features. Its final 27 code/test/script hashes match

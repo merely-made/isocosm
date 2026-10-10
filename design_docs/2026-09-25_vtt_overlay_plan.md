@@ -32,6 +32,11 @@ native `isocosm::asserted`, with native extended where needed, rather than
 replacing the contract with sim-internal types. Contract routing and its
 round-trip gates belong to that implementation lane.
 
+Ruling 809 retains the character contract's authored cell and owner as
+optional table metadata on native Character, saved and replicated with
+the assertion. It grants no control and moves no body; Q2's retention,
+round-trip and replication gates remain open.
+
 Ruling 799 keeps two battlemap paths: a lifted isometer-space site with
 the sim on, existing `MapTerrain` with it off. Native reach/knowing replace
 `party_known`; H2's travel, overmap conditions and the faction-turn retirement
@@ -459,6 +464,11 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-10, ruling 809:** authored character cell and owner stay in
+  optional table metadata on native Character. Assertion save/replay and
+  replication must retain both; accepting the metadata changes neither
+  control nor body position. Q2 resumes its implementation and gates;
+  V2 remains open.
 - **2026-10-10, Q2 vocabulary checkpoint:** `702ab6ca` supplies stable
   storylet/forced-pack application keys and the shared event-key adapter
   mapping (807). Its twelve-path overlay delta is integrated separately

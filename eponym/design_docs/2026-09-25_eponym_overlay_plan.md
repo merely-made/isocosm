@@ -502,6 +502,12 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-10, rulings 809 and 810:** shared native character assertions
+  retain optional table cell/owner metadata without control or body movement
+  (809); native healing restores each lost cell's recorded function or
+  free-pool status, preserving authored allocation and inherited variation
+  (810). Q2's remaining contract gates and Q8's healing/revival gates resume.
+  E3's product implementation and certification remain open.
 - **2026-10-10, Q2 vocabulary checkpoint:** `702ab6ca` supplies optional
   actuation motion, agreement/deed/knowing values and the shared event-key
   mapping (807). The complete twelve-path overlay delta is integrated
