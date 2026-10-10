@@ -59,3 +59,4 @@ pub use isometer_core as core;
 pub use isometer_lens as lens;
 pub use isometer_mesh as mesh;
 pub use isometer_render as render;
+pub use isometer_space as space;

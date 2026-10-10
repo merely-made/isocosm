@@ -1,0 +1,23 @@
+[package]
+name = "isometer-space"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "In-site space, product-neutral and wgpu-free: a site lifted into columns, edits as shape operations, and places, passages and travel cost over the bricks."
+repository = "https://github.com/merely-made/isocosm"
+publish = false
+
+# What a sim consumes directly (wing rulings 670, 696, 698 and 701), so it
+# names no world and no organism and never reaches wgpu. A product hands its
+# sites across through `Atlas` and keeps its map, its skeleton and its edits
+# as facts of its own.
+[dependencies]
+# `Ground`, the brick store edits are applied to until nisus sits under it
+# (ruling 733).
+isometer-core = { path = "../isometer-core" }
+serde = { version = "1", features = ["derive"] }
+# Byte equality in the lift's checks.
+postcard = { version = "1", features = ["alloc"] }
+# The lift's draws: the same domain-separated hash the sim drew them with
+# before the move, so a lift's bytes did not change with its home.
+sha2 = "0.10"

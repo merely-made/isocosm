@@ -29,6 +29,9 @@ isometer-lens = { path = "crates/isometer-lens" }
 # The body renderer's world cut interval, instance draw and part queries. A
 # member of this workspace since the move, beside the core and the mesh.
 isometer-render = { path = "crates/isometer-render" }
+# In-site space: the lift, edits and places, wgpu-free (wing rulings 698
+# and 701). A sim reaches it directly; a host reaches it through here.
+isometer-space = { path = "crates/isometer-space" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
 cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }

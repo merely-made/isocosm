@@ -88,7 +88,7 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
         None if bordered => return Err("a border on a world without a footprint".into()),
         None => {},
         Some(f) => {
-            if !(3..=12).contains(&f.sides) || f.side < u64::from(crate::terrain::SPANS) {
+            if !(3..=12).contains(&f.sides) || f.side < u64::from(isometer_space::SPANS) {
                 return Err("invalid site footprint".into());
             }
             for (&id, site) in &g.sites {

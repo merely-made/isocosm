@@ -378,6 +378,38 @@ impl Ground {
         removed
     }
 
+    /// The material at a voxel, `None` below the bedrock line.
+    pub fn material(&self, at: [i32; 3]) -> Option<u8> {
+        if at[1] < 0 {
+            return None;
+        }
+        let brick = self.bricks.get(&brick_of(at));
+        Some(brick.map_or(AIR, |b| b.get(local_of(at))))
+    }
+
+    /// Writes voxels, any material, as one edit: one revision if anything
+    /// changed, the changed bricks dirty. Voxels below the bedrock line are
+    /// refused whole. Returns how many changed.
+    pub fn write(&mut self, voxels: impl IntoIterator<Item = ([i32; 3], u8)>) -> Result<u32, [i32; 3]> {
+        let voxels: Vec<_> = voxels.into_iter().collect();
+        if let Some((at, _)) = voxels.iter().find(|(at, _)| at[1] < 0) {
+            return Err(*at);
+        }
+        let mut changed = 0;
+        for (at, material) in voxels {
+            debug_assert!(material <= MAX_MATERIAL, "material {material} past the palette bound");
+            let material = material.min(MAX_MATERIAL);
+            if self.material(at) != Some(material) {
+                self.place(at, material);
+                changed += 1;
+            }
+        }
+        if changed > 0 {
+            self.revision += 1;
+        }
+        Ok(changed)
+    }
+
     pub fn revision(&self) -> u64 {
         self.revision
     }

@@ -10,8 +10,9 @@ use isocosm::{
     map::{Grid, Layout, SHAPES},
     schema::Border,
     simulation::Genesis,
-    terrain::{EdgeProfile, SPANS, View, check},
+    terrain::View,
 };
+use isometer_space::{Atlas, CornerKey, EdgeProfile, SPANS, lift::check};
 
 /// Worlds drawn across every shape, kept as regression pins; the bench's
 /// `--map-draws` draws from a seed nobody chose.
@@ -110,7 +111,7 @@ fn corner_walks_find_every_corner_of_the_grid_once() {
         for &site in genesis.sites.keys() {
             for corner in 0..4 {
                 let class = view.corner_class(site, corner);
-                assert!(class.contains(&isocosm::terrain::CornerKey { site, corner }));
+                assert!(class.contains(&CornerKey { site, corner }));
                 corners.insert(class);
                 slots += 1;
             }

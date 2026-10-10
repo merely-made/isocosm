@@ -92,7 +92,8 @@ pub struct MapDraws {
 /// the same from both sides, whose corners agree, and which found the same
 /// world twice.
 pub fn map_draws(master_seed: u64, count: u64) -> Result<MapDraws> {
-    use crate::terrain::{View, check};
+    use crate::terrain::View;
+    use isometer_space::{Atlas, lift::check};
     if count == 0 || count > 1024 {
         return Err("bench draw budget exceeded".into());
     }
@@ -148,7 +149,8 @@ fn mapped(seed: u64) -> Result<crate::simulation::Genesis> {
 
 /// The chunks a lift receipt compares: the first and last chunk of `site`
 /// at the base grain, and every chunk three levels up.
-fn sample(view: &crate::terrain::View<'_>, site: u64) -> Result<Vec<crate::terrain::Chunk>> {
+fn sample(view: &crate::terrain::View<'_>, site: u64) -> Result<Vec<isometer_space::Chunk>> {
+    use isometer_space::Atlas;
     let last = view.chunks(0) - 1;
     let mut chunks = vec![
         view.lift(site, 0, [0, 0])?,
@@ -200,7 +202,8 @@ pub struct LiftDraws {
 /// elevations exactly, whose detail stays within relief, and whose sampled
 /// chunks lift the same bytes twice.
 pub fn lift_draws(master_seed: u64, count: u64) -> Result<LiftDraws> {
-    use crate::terrain::{View, check};
+    use crate::terrain::View;
+    use isometer_space::{Atlas, lift::check};
     if count == 0 || count > 1024 {
         return Err("bench draw budget exceeded".into());
     }

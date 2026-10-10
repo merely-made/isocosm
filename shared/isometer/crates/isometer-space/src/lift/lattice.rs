@@ -8,8 +8,8 @@
 //! columns its elevation exactly. Heights are held in units of `1 / q` base
 //! units, so that mean has a closed form and no column is ever summed.
 
-use super::{SPANS, View, signed};
-use crate::{Result, schema::Id};
+use super::{SPANS, canonical, corner_height, edge_profile, signed};
+use crate::{Atlas, Result, SiteId};
 
 /// Lattice points along a side.
 pub const POINTS: usize = SPANS as usize + 1;
@@ -73,93 +73,79 @@ fn cell(t: u64, spacing: u64) -> (usize, u64) {
     (i as usize, t - i * spacing)
 }
 
-impl View<'_> {
-    /// A site's lattice, fading and corrected as rulings 400 and 401 ask.
-    pub fn lattice(&self, site: Id) -> Result<Lattice> {
-        self.lattice_with(site, fading, true)
+/// A site's lattice with its detail shaped by `window` and the correction on
+/// or off, so the checks' controls can break either.
+pub(crate) fn lattice_with<A: Atlas + ?Sized>(
+    a: &A,
+    site: SiteId,
+    window: impl Fn(u32) -> i64,
+    corrected: bool,
+) -> Result<Lattice> {
+    let footprint = a.footprint();
+    let side = footprint.side;
+    if footprint.sides != 4 || !side.is_multiple_of(u64::from(SPANS)) || side > 1 << 16 {
+        return Err("a footprint outside the lift's exact range".into());
     }
-
-    /// A site's lattice with its detail shaped by `window` and the correction
-    /// on or off, so the checks' controls can break either.
-    pub fn lattice_with(
-        &self,
-        site: Id,
-        window: impl Fn(u32) -> i64,
-        corrected: bool,
-    ) -> Result<Lattice> {
-        let side = self.footprint.side;
-        if self.footprint.sides != 4 || !side.is_multiple_of(u64::from(SPANS)) || side > 1 << 16 {
-            return Err("a footprint outside the lift's exact range".into());
+    let s = (side / u64::from(SPANS)) as i64;
+    let sides = [
+        side_heights(a, site, 0)?,
+        side_heights(a, site, 1)?,
+        side_heights(a, site, 2)?,
+        side_heights(a, site, 3)?,
+    ];
+    let relief = a.relief(site)?;
+    let seed = a.terrain_seed(site)?;
+    let mut lattice = Lattice {
+        spacing: s,
+        base: [[0; POINTS]; POINTS],
+        detail: [[0; POINTS]; POINTS],
+        heights: [[0; POINTS]; POINTS],
+        q: 4 * i128::from(s) * i128::from(s),
+    };
+    let mut sum = 0i128;
+    for j in 0..POINTS {
+        for i in 0..POINTS {
+            let draw = crate::draw(seed, "terrain:detail", &[i as u64, j as u64]);
+            let detail = signed(draw, relief) * window(i as u32) * window(j as u32) / 65_536;
+            let base = boundary(&sides, i, j).unwrap_or_else(|| coons(&sides, i, j)) + detail;
+            lattice.detail[j][i] = detail;
+            lattice.base[j][i] = base;
+            lattice.heights[j][i] = i128::from(base) * lattice.q;
+            sum += i128::from(base) * weight(s, i) * weight(s, j);
         }
-        let s = (side / u64::from(SPANS)) as i64;
-        let sides = [
-            self.side_heights(site, 0)?,
-            self.side_heights(site, 1)?,
-            self.side_heights(site, 2)?,
-            self.side_heights(site, 3)?,
-        ];
-        let relief = self.relief(site)?;
-        let seed = self.sites.get(&site).ok_or("an absent site")?.terrain_seed;
-        let mut lattice = Lattice {
-            spacing: s,
-            base: [[0; POINTS]; POINTS],
-            detail: [[0; POINTS]; POINTS],
-            heights: [[0; POINTS]; POINTS],
-            q: 4 * i128::from(s) * i128::from(s),
-        };
-        let mut sum = 0i128;
-        for j in 0..POINTS {
-            for i in 0..POINTS {
-                let draw = crate::draw(seed, "terrain:detail", &[i as u64, j as u64]);
-                let detail = signed(draw, relief) * window(i as u32) * window(j as u32) / 65_536;
-                let base = boundary(&sides, i, j).unwrap_or_else(|| coons(&sides, i, j)) + detail;
-                lattice.detail[j][i] = detail;
-                lattice.base[j][i] = base;
-                lattice.heights[j][i] = i128::from(base) * lattice.q;
-                sum += i128::from(base) * weight(s, i) * weight(s, j);
-            }
-        }
-        if corrected {
-            let side = i128::from(side);
-            let elevation = i128::from(self.elevation(site)?);
-            spread(&mut lattice.heights, 4 * elevation * side * side - sum);
-        }
-        Ok(lattice)
     }
+    if corrected {
+        let side = i128::from(side);
+        let elevation = i128::from(a.elevation(site)?);
+        spread(&mut lattice.heights, 4 * elevation * side * side - sum);
+    }
+    Ok(lattice)
+}
 
-    /// A side's control heights in this site's own direction, from its
-    /// corner `side` to the next. A bordered side reads its shared profile;
-    /// an open edge draws its own from its corners, having nobody to agree
-    /// with.
-    fn side_heights(&self, site: Id, side: u8) -> Result<[i64; POINTS]> {
-        let mut heights = [0; POINTS];
-        if let Some((_, b)) = self.border(site, side) {
-            let profile = self.edge_profile(site, side)?;
-            let forward = b.flipped || self.canonical(site, side)? == (site, side);
-            for (k, h) in heights.iter_mut().enumerate() {
-                *h = profile.heights[if forward { k } else { LAST - k }];
-            }
-            return Ok(heights);
-        }
-        let next = (side + 1) % self.footprint.sides;
-        let (h0, h1) = (
-            self.corner_height(site, side)?,
-            self.corner_height(site, next)?,
-        );
-        let amplitude = self.relief(site)? / 2;
-        let spans = i64::from(SPANS);
+/// A side's control heights in this site's own direction, from its corner
+/// `side` to the next. A bordered side reads its shared profile; an open
+/// edge draws its own from its corners, having nobody to agree with.
+fn side_heights<A: Atlas + ?Sized>(a: &A, site: SiteId, side: u8) -> Result<[i64; POINTS]> {
+    let mut heights = [0; POINTS];
+    if let Some((_, b)) = a.border(site, side) {
+        let profile = edge_profile(a, site, side)?;
+        let forward = b.flipped || canonical(a, site, side)? == (site, side);
         for (k, h) in heights.iter_mut().enumerate() {
-            let at = k as i64;
-            let draw = crate::draw(
-                self.seed,
-                "terrain:open-edge",
-                &[site, side.into(), at as u64],
-            );
-            let fade = 4 * at * (spans - at);
-            *h = h0 + (h1 - h0) * at / spans + signed(draw, amplitude) * fade / (spans * spans);
+            *h = profile.heights[if forward { k } else { LAST - k }];
         }
-        Ok(heights)
+        return Ok(heights);
     }
+    let next = (side + 1) % a.footprint().sides;
+    let (h0, h1) = (corner_height(a, site, side)?, corner_height(a, site, next)?);
+    let amplitude = a.relief(site)? / 2;
+    let spans = i64::from(SPANS);
+    for (k, h) in heights.iter_mut().enumerate() {
+        let at = k as i64;
+        let draw = crate::draw(a.seed(), "terrain:open-edge", &[site, side.into(), at as u64]);
+        let fade = 4 * at * (spans - at);
+        *h = h0 + (h1 - h0) * at / spans + signed(draw, amplitude) * fade / (spans * spans);
+    }
+    Ok(heights)
 }
 
 /// A boundary point's height, from the side it lies on.

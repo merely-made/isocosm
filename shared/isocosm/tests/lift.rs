@@ -9,8 +9,9 @@ use isocosm::{
     Founding,
     map::{Grid, Layout, SHAPES},
     simulation::Genesis,
-    terrain::{CHUNK, View, check, fading},
+    terrain::View,
 };
+use isometer_space::{Atlas, CHUNK, fading, lift::check};
 
 /// Worlds across every shape, with sites of `side` base units, kept as
 /// regression pins; the bench's `--lift-draws` draws from a seed nobody
