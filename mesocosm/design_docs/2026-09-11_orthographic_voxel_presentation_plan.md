@@ -1507,6 +1507,22 @@ measured under done-condition 1's harness. Thresholds, bands, each mode's
 default filter and the dither's pattern and frame count are bench readings,
 to come with numbers.
 
+**Folded in, 2026-10-10 (ruling 801): the views founding plan.** Its
+minimap retires into done-condition 8's second camera, and the plan is
+archived at `archive_docs/2026-10-10/`. What it keeps for that camera:
+adapter-first (the views crate discloses facts and never computes layout);
+region meaning per game, Mesocosm's being the dominant lineage, derived at
+projection time and never stored; and the cambium lane as ordinary chrome
+for text (its 2026-08-29 amendment). Today `mesocosm-views/src/minimap.rs`
+reads the native world's sites at site grain (783) through sceno's hulls.
+Done-condition 8 for Mesocosm also holds when, as that plan asked, a
+region's dominant holder visibly shifts between two captures of one long
+draw under a seed nobody chose; when its regions are the place graph's
+own nodes once places reach Mesocosm; and when a region is a hit target
+selecting its place. Fields evaluated over a place stay consumer-pull.
+The VTT's overmap readings that camera draws are its overlay plan's V2
+(§5.1 there).
+
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's

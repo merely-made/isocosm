@@ -208,7 +208,7 @@ lands.
   knows what its characters know, arrived by reach and possibly wrong, and
   the DM sees the truth (VTT overlay plan §3 point 4, V2). The atlas's
   "filters fields by party knowledge" is the same seam on the presentation
-  side, and the [overmap presentation plan](../../2026-08-02_overmap_presentation_plan.md)
+  side, and the [overmap presentation plan](2026-08-02_overmap_presentation_plan.md)
   §3.5 says how source-time reads off the reach field's arrival entries.
 - **The overmap stays a far view (ruling 212)** and the battlemap is what
   the view shows up close; nothing on the atlas realizes an individual.

@@ -1,5 +1,14 @@
 # Overmap Presentation Plan: Hulls, Backdrop, and a Map That Reads as Terrain
 
+**Folded into the VTT overlay plan's V2 on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** What the overmap shows (territory
+around known sites, a generated backdrop, selectable cells, a past
+standpoint from the reach field) and its three open questions are restated
+in the [VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s §5.1. The
+drawing moves to the presentation plan's L10, where the overmap becomes a
+second camera and the canvas renderer retires (437); the hull-on-canvas
+machinery planned here is not built.
+
 **Date:** 2026-08-02
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280). *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
@@ -35,11 +44,11 @@ Confirmed: source-time as a feature is the record's own model, the reach
 field of §3.4 and the sim plan's §4 (rulings 5, 84, 117). This pass rewrites
 the sources (§3.1, §3.5, §4) and leaves the presentation as planned; its
 done-conditions are authoritative again. The evaluation stays in
-[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §1. The overmap is a far view (ruling 212): it reads the crowd, so what
 lands here is presentation over the sim's readings, and what the campaign
 takes from the sim lands under the
-[VTT overlay plan](2026-09-25_vtt_overlay_plan.md)'s V2.
+[VTT overlay plan](../../2026-09-25_vtt_overlay_plan.md)'s V2.
 
 ---
 

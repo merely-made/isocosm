@@ -1,5 +1,13 @@
 # Views Founding: Adapter-First UI, and the Minimap as First Chrome
 
+**Folded into the presentation plan's L10 on 2026-10-10 and archived (wing
+design record rulings 793 and 801).** Its first slice landed: the minimap
+adapter, leaf and backdrop, and the 2026-08-29 amendment making the cambium
+lane ordinary chrome. The minimap becomes L10's second camera at R4 (437);
+its posture and its open receipts (a dominance shift between two captures,
+regions as hit targets) are carried in the [presentation
+plan](../../2026-09-11_orthographic_voxel_presentation_plan.md)'s L10.
+
 **Date:** 2026-08-02
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); first slice landed. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
@@ -17,7 +25,7 @@ makes the graph the terrain (ruling 14). The adapter-first posture is the
 record's own (§4.1). This pass changes the minimap's source rung (§2, §5)
 and leaves the rest as it landed; its done-conditions are authoritative
 again. The evaluation stays in
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Companions:** mere's projection proofs plan (arrangement register; P4),

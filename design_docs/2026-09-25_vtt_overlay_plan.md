@@ -54,11 +54,11 @@ contract crate's [README](../shared/isocosm-overlay/README.md);
 [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) for the pillars; the
 [watchtower plan](archive_docs/2026-10-10/2026-09-05_watchtower_plan.md), whose pack is the first
 adventure-pack fixture; the
-[protocol hardening plan](2026-08-08_protocol_hardening_plan.md), whose
+[protocol hardening plan](archive_docs/2026-10-10/2026-08-08_protocol_hardening_plan.md), whose
 `Intent -> Resolved` envelope is the handoff's shape at the table; the
 [shared authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)
 for edit mode, its tiers and creative mode; the
-[overmap presentation plan](2026-08-02_overmap_presentation_plan.md) for the
+[overmap presentation plan](archive_docs/2026-10-10/2026-08-02_overmap_presentation_plan.md) for the
 far view; the [board-on-isometer plan](2026-09-15_board_on_isometer_plan.md),
 held, for the battlemap as a scene; and the
 [vessel briefs](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
@@ -267,6 +267,47 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
   stated tolerance (ruling 113). This is W5's done-condition for the VTT.
 
 V1 and V2 run side by side; V3 needs V1 and V2's world; V4 needs all three.
+
+### 5.1 What V2 carries from the folded plans (2026-10-10, ruling 801)
+
+Ruling 801 folded the protocol hardening plan's H2 and the overmap
+presentation plan into V2; both are archived at `archive_docs/2026-10-10/`
+with their findings. Travel over the sim is a party's move to a place-graph
+node (72, 205), so the travel resolver and what the overmap shows are both
+V2's.
+
+- **Overmap travel resolves once (H2).** Overmap travel is still
+  `GameEvent::TravelResolved`, an inline-struct variant whose clock,
+  encounter and exhaustion consequences peers apply as they always did
+  (`crates/isonetry/src/protocol.rs`). Done when an overmap journey is one
+  explicit `Resolved` naming every consequence; split-party clocks reconcile
+  from the payload, never from peer derivation; a late joiner rebuilds the
+  same state from the log alone; and a headed two-peer receipt exists. H0
+  and H1's laws stand: no peer derives a consequence, and version
+  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 4
+  with ALPN `isometry/session/v4`, and the after-pass's bump for 768's
+  `WorldEvent` reshaping is the next break; H2 moves it again. Still open
+  from H0: a peer that never sends `Hello` is not version-gated and can
+  push `Rolled`.
+- **The overmap's readings.** What the overmap shows: territory around each
+  site the party knows, tinted by meaning the VTT owns (faction control
+  where a claim exists, biome otherwise), with a generated backdrop and
+  cells that select their site and answer hover with its facts; never a
+  cell for a site the party does not know. The watchtower's atlas (W11 to
+  W13, 2026-09-09) built a fixed region backdrop and clickable polygon
+  areas over the campaign's region map; V2 changes their source to the
+  sim's place graph and reach field. Done when the sites and their
+  discovery come from the sim through the contract, never from authored
+  positions or `party_known`; the campaign shown is a draw under a seed
+  nobody chose; and one capture shows the overmap from a past standpoint
+  differing from the present on at least one site's version (the reach
+  field's arrival entries: what was believed then, what the table knows now,
+  what was retconned, which map version a character held). The drawing
+  itself moves to the presentation plan's L10: the overmap becomes a second
+  camera held at R4 and the canvas renderer retires (437). Still Mark's:
+  faction against biome tint where both exist; whether a known cell's
+  undiscovered edges clip hard or fade; and whether baked map thumbnails
+  are worth a backdrop.
 
 The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
 (ruling 231).

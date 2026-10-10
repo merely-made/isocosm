@@ -13850,6 +13850,27 @@ carries the rulings as they are made.
   bench is the first lane to lift: today it is a lane of Mesocosm's product
   host (`mesocosm-genet/src/app/bench/`), not headless and not game-free,
   so it does not yet satisfy this condition (corrected 2026-09-18 by W1).
+  *Annotation, 2026-10-10 (ruling 801): the dev tools plan folds in here,*
+  archived at `archive_docs/2026-10-10/`. The bench has a headless start:
+  `shared/isocosm/src/bin/isocosm-bench.rs` runs a founding under a seed,
+  with draws, map and lift draws, traces and saved worlds, game-free; the
+  dev source, forced births and kills are native
+  (`shared/isocosm/src/dev.rs`; 271, 782). The rest of the dev tools' twelve
+  verbs live in Mesocosm's host (`mesocosm-genet/src/app/devtime.rs`,
+  `follow.rs`, `drive.rs`) and lift to the bench as W4's lane. What carries
+  as the bench's rules: dev tools are ordinary chrome in the cambium lane;
+  two kinds of dev action and no third, host-only pacing that never reaches
+  the log, and world-changing commands that always do and label the run
+  assisted; no reading the lane invents, a missing fact filled in core with
+  a test; no second harness where the scenario driver has the verb; a step
+  is an advance bounded by work (284 to 286), shown in the world's unit of
+  time (257); the bench follows any entity at any rung, examining being an
+  intent in the log (212). W4 is done for the dev tools when the bench
+  holds every verb they named, headless and game-free: a paused run
+  advancing exactly the steps asked and hashing as one played straight; a
+  followed entity read entirely from core queries, its death reported; each
+  forced act a logged command that replays, conserves matter through the
+  dev source and is counted in the receipt.
 - **W5, the first game overlay.** Done when a game has a profile designed
   to §5 as a core implementing the overlay contract, and a played loop with
   receipts drawn from the generator. **Ruled 2026-09-24 (ruling 174):

@@ -28,7 +28,7 @@ against the wing design record; see
   landed W0-W5.
 - **Adjudication**: the **late-join replay receipt** and the protocol
   hardening both moved to the
-  [protocol hardening plan](2026-08-08_protocol_hardening_plan.md).
+  [protocol hardening plan](archive_docs/2026-10-10/2026-08-08_protocol_hardening_plan.md).
 - **Gameplay roadmap**: the transition correction (protocol plan H1), C7
   receipts, the real tileset (shared with campaign packs), and
   distribution.

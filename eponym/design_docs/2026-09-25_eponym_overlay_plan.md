@@ -35,9 +35,9 @@ record; the sim plan; the contract crate's
 [README](../../shared/isocosm-overlay/README.md); the
 [founding plan](2026-07-30_paredros_founding_plan.md), the charter; the
 [execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)'s fundamental-layer
-ledger F0 to F8; the [functional loops plan](2026-09-09_functional_loops_plan.md)
+ledger F0 to F8; the [functional loops plan](archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md)
 for the joins and lane S; the
-[memory and remembrance plan](2026-09-09_memory_and_remembrance_plan.md) for
+[memory and remembrance plan](archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md) for
 lanes M and H; the [world conditions plan](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md),
 which founds the sim's process definition (ruling 32); the
 [genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md) for the
@@ -266,6 +266,94 @@ Proposed, not opened. Done-conditions are draws, never fixtures (ruling
 
 E1 and E2 run side by side; E3 needs E2's bodies, places, lives and asks;
 E4 needs all of E2 and E3.
+
+### 5.1 What E3 carries from the folded plans (2026-10-10, ruling 801)
+
+Ruling 801 folded the functional loops plan and the memory and remembrance
+plan into E3; both are archived at `archive_docs/2026-10-10/` with their
+reasoning, prior art and receipts. Their landed lanes (J0, J1a to J1c, B1
+to B4, F3a, F3b5) stand as receipts taken on the legacy world. What remains
+is restated here over native Isocosm and `eponym-play`, as part of E3's
+done-condition; E4 takes its headed and two-peer halves.
+
+From the functional loops plan:
+
+- **Session and contact (its J1 and S1).** Done when one played sophont
+  moves through contact, suffers a fall, loses capability and is inspected
+  with the same identity, revision and item locations; a duplicate effect
+  cannot injure twice; a save resumes injury, terrain, agreements, recall,
+  control and interrupted work from one cut, the next accepted actions
+  matching uninterrupted play; and an injected partial or corrupt save never
+  partly replaces live state. Natively the wound is checkpoint 10's cell
+  loss (767), motion and the strike resolver are `eponym-play`'s (232,
+  233), and the save is the native session's log beside `eponym-play`'s
+  admitted anatomy snapshot (777).
+- **Death and continuation (its S2).** Beyond E3's succession clause: a dead
+  subject cannot act; changing who is played neither transfers property nor
+  rewrites what others remember; the previous life's remains, custody and
+  commitments persist; and the hagiograph can remember a life that never
+  became legendary. With no bonded companion, ruling 238's answers apply,
+  an arriving outsider being native arrival
+  (`shared/isocosm/src/arrival.rs`).
+- **Strike quality (its B3).** Three policies compared over the same
+  recorded contact cases before one is accepted: contact-driven,
+  quality-weighted (the recommended experiment) and an attack-roll adapter.
+  An admitted uncertain outcome is sampled under a saved RNG identity and is
+  never rerolled by reload, frame rate or limb order. Done when the
+  comparison's distributions, monotonic response to quality, defender
+  agency and exact replay are receipted and Mark picks the policy.
+- **Material work (its T1 to T3).** T1 and T3 waited on E2's bodies,
+  holding, lives and rounds, which are native now: items are inert entities
+  carried by relation (776) and crafts are rules-pack keys (778). T1 is done
+  when one creature gathers, carries and places material with provenance,
+  cannot spend it twice and resumes interrupted work, an autonomous creature
+  using the same command boundary. T2, one edit reaching collision,
+  navigation and rendering at one revision, is the place graph plan's SP4
+  edits in `isometer-space` with nisus beneath at SP6; Eponym's share is
+  that its walking, sight and scene read the edited revision. T3 is done
+  when work is interrupted and resumed by an eligible subject, refusal is a
+  complete outcome, and another creature answers an observed loss or benefit
+  without a script.
+- **World conditions (its W lane):** surgery and magic stay parked with
+  magic under ruling 279.
+
+From the memory and remembrance plan. The background is the sim's: an
+event's reach is a field and a background entity's knowing a seeded draw
+over it, held as notes on the knower (771; `shared/isocosm/src/reach.rs`,
+`shared/isocosm/src/knowing.rs`). E3 owns the foreground's recall.
+
+- **Evidence into answers (its F3b1).** Done when every admitted
+  observation points at an accepted event and never precedes it; an
+  affected subject receives it by an explicit policy and an excluded one
+  does not; an answer's support resolves to real entries and its
+  explanation names the event or belief revision without inventing
+  certainty; norm and standing revisions take part in the answer,
+  observer-relative and pointable; a correction changes only later answers
+  of those who receive it; and replay gives identical ids, beliefs,
+  premises and hash.
+- **Episodic memory and bounded recall (its F3b2).** Done when one event
+  stream yields the same episodes and recall order for every subject; hot
+  recall stays within configured global and per-subject budgets, archive
+  within its quota; pinned and recently retold episodes survive eviction,
+  and eviction changes no decision; forgetting is the record's decay (129,
+  131), replayed exactly; and a corrupt, foreign or over-budget reference
+  is rejected atomically.
+- **Long-lived saves.** Done when a checkpoint restores exactly from its
+  base and reachable deltas and refuses a broken hash or missing base;
+  publication and crash recovery are atomic; aggregates keep obligations,
+  corrections, provenance and pins; and an unattended-years receipt
+  projects storage over drawn populations (ruling 15). This is Eponym's
+  only until the sim's record replaces the histories it measures.
+- **Preferences and retelling (its F3b3), promotion and manifestation (its
+  F3b4).** Done when dispositions and their changes replay with their
+  sources pointable; a retelling points at its source memory and speaker
+  and reaches only its listeners; contradictions stay visible; promotion is
+  the hagiograph's test (ruling 4), traceable, deterministic and bounded;
+  and a manifestation is a proposal the world-conditions owner admits,
+  retelling alone never mutating terrain.
+- *Still Mark's, from the memory plan:* the initial salience inputs, the
+  first recall budgets, and the minimum stable reference vocabulary shared
+  with the hagiograph.
 
 The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
 (ruling 231).

@@ -783,7 +783,7 @@ have measured receipts.
    composition.** *Timed* ends the epoch when a fixed tick budget is spent and
    is built first. *Gated* ends it when named conditions are all met, and
    comes second. *Player-triggered* ends it on demand and is a dev tool (see
-   the [dev tools plan](../../2026-09-01_dev_tools_plan.md) DT3), never play. PE3
+   the [dev tools plan](2026-09-01_dev_tools_plan.md) DT3), never play. PE3
    realizes Timed and replaces `World::revision_admitted_now` with it.
    **Realized 2026-09-02 (PE3a):** `rules::EpochRule::Timed { ticks }`, default
    1,000, serialized and folded into `WorldRules::digest`, refused by name on a
@@ -1385,7 +1385,7 @@ receipt; a platform-shaped possibility does not reorder PE0-PE7.
   - **`Offer` is the row the next two consumers want.** It is
     `Serialize`/`Deserialize` and pure data — candidate, score, price, preview,
     program, reason — read entirely through core queries. The
-    [dev tools plan](../../2026-09-01_dev_tools_plan.md)'s DT2 asks an inspector for
+    [dev tools plan](2026-09-01_dev_tools_plan.md)'s DT2 asks an inspector for
     a critter's discoveries and *its species' current program revision*, which
     is `Review::current` and `Offer::program` already; its principle 3 (the
     lane invents no readings) is satisfied for that half without adding one.

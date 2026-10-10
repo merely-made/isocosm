@@ -657,7 +657,7 @@ hagioglyph. So I figure the hagiograph bucket is more open than we planned."
   ordinary event history. That is a `muniment::Journal`"
   (`mere/crates/eidetic/hagiograph/README.md`, a 26-line reservation).
 - **Paredros's lane H**: retelling, remembrance, significance and
-  manifestation proposals (`eponym/design_docs/2026-09-09_functional_loops_plan.md:54`).
+  manifestation proposals (`eponym/design_docs/archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md:54`).
 
 **What has been taken from it since.** The **hagioglyph** took the divinity
 half on 2026-09-15: the canon, the journey, ascension, **the chosen referent

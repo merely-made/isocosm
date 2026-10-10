@@ -1,5 +1,12 @@
 # Dev tools: sitting in a run and interrogating it
 
+**Folded into the wing design record's W4, the bench, on 2026-10-10 and
+archived (wing design record rulings 793 and 801).** DT0 to DT4 landed in
+Mesocosm's host. Its §6 already said it retires into the bench; its
+principles, stop rules and the bench's done-condition for its verbs are the
+annotation under W4 in the [wing design
+record](../../2026-09-18_wing_design_plan.md)'s §11.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280): the tools move to the bench (W4). *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -17,12 +24,12 @@ any game. The tools are right; their home is a tier down. §6 says what
 moves and what stays; DT1 to DT4's done-conditions are authoritative again
 as the record of what landed, and the lift is W4's lane. The evaluation
 stays in
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Follow-on integration, 2026-09-04:** DT1-DT4 completion does not include
 screen-to-part selection. The
-[phenotype plan section 8, VB3](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md#vb3-point-to-the-body-and-read-what-happened)
+[phenotype plan section 8, VB3](2026-07-31_phenotype_plan.md#vb3-point-to-the-body-and-read-what-happened)
 owns pointer routing, addressed body/part selection, in-scene highlighting and
 the selected-part explanation over these existing tools. The current scenario
 pointer hooks report unrouted input; VB3 must complete the real input route

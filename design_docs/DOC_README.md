@@ -34,10 +34,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-09-25_vtt_overlay_plan.md](2026-09-25_vtt_overlay_plan.md) | The VTT's overlay (W5): rulesets over the sim. | 2026-10-03: rulings 538 to 541; V0 and V1 done. |
 | [2026-09-15_board_on_isometer_plan.md](2026-09-15_board_on_isometer_plan.md) | The VTT's board on the isometer family. | Lanes landed 2026-09-16; paging integrated 2026-09-27. |
-| [2026-08-08_protocol_hardening_plan.md](2026-08-08_protocol_hardening_plan.md) | Versioned intents and resolution for doorway transitions and overmap travel. | H0 and H1 landed 2026-08-08; H2 open. |
 | [2026-08-08_stickleback_migration_plan.md](2026-08-08_stickleback_migration_plan.md) | Campaign sync onto Stickleback, gates K0 to K2. | Planned; not started. |
 | [2026-08-08_extracted_receipts.md](2026-08-08_extracted_receipts.md) | Residues extracted from the ten plans archived 2026-08-08, each pointing where it lands. | Ledger, 2026-08-08. |
-| [2026-08-02_overmap_presentation_plan.md](2026-08-02_overmap_presentation_plan.md) | The overmap as a far view, discovery as knowledge by reach. | Rewritten to the record 2026-09-26 (ruling 280). |
 | [2026-07-09_shared_authority_and_collaborative_building_plan.md](2026-07-09_shared_authority_and_collaborative_building_plan.md) | Shared authority and collaborative building: the no-second-runtime gate and the campaign grammars. | Re-scoped 2026-08-08; the gate stands. |
 | [2026-07-08_environmental_surfaces_plan.md](2026-07-08_environmental_surfaces_plan.md) | Environment as the sim's field on places, read by a ruleset at the battlemap. | A VTT note since 2026-09-26 (ruling 312), not a lane. |
 | [2026-07-07_optional_intelligence_vision.md](2026-07-07_optional_intelligence_vision.md) | Optional intelligence: a vision record. | Parked. |
@@ -47,6 +45,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own note saying why it moved. Retired plans go
 to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-10/2026-08-08_protocol_hardening_plan.md`](archive_docs/2026-10-10/2026-08-08_protocol_hardening_plan.md): versioned intents and travel as `Resolved`, H0 and H1 landed; folded into the VTT overlay plan's V2 (801).
+- [`2026-10-10/2026-08-02_overmap_presentation_plan.md`](archive_docs/2026-10-10/2026-08-02_overmap_presentation_plan.md): the overmap as a far view; folded into the VTT overlay plan's V2, its drawing into L10 (801).
 - [`2026-10-10/2026-10-09_mere_bdc89a05_repin_plan.md`](archive_docs/2026-10-10/2026-10-09_mere_bdc89a05_repin_plan.md): the repin onto mere `bdc89a05`, landed 2026-10-09; done (ruling 793).
 - [`2026-10-10/2026-10-08_mere_329d60d0_repin_plan.md`](archive_docs/2026-10-10/2026-10-08_mere_329d60d0_repin_plan.md): the repin onto mere `329d60d0`, landed 2026-10-08; done (ruling 793).
 - [`2026-10-10/2026-10-07_shared_build_dir_plan.md`](archive_docs/2026-10-10/2026-10-07_shared_build_dir_plan.md): one build directory for the workspaces, landed 2026-10-08; done (ruling 793).

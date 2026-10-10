@@ -916,7 +916,7 @@ skipped.**
   named consumer — Stage 4 — is "deliberately last". That is the inversion the
   repo corrected elsewhere this week: route B sat deferred on a consumer pull
   nobody ever scheduled and "operated in practice as a text ban" ([views
-  founding plan](2026-08-02_views_founding_plan.md) §6, amended 2026-08-29).
+  founding plan](archive_docs/2026-10-10/2026-08-02_views_founding_plan.md) §6, amended 2026-08-29).
   Consumer pull as ruled is about dependency and lane adoption, not about
   ordering mechanics inside one crate, so the counter-argument is available and
   Mark may take it. It should be *made*, not assumed.
