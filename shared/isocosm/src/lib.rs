@@ -7,6 +7,7 @@
 
 pub mod aggregate;
 pub mod anatomy;
+pub mod asserted;
 pub mod bench;
 pub mod bodied;
 mod dev;

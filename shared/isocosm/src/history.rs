@@ -59,6 +59,8 @@ pub enum Command {
         aim: crate::directing::Aim,
         toward: crate::directing::Toward,
     },
+    /// Authored content asserted into the world (ruling 757).
+    Assert(crate::asserted::Assertion),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -228,7 +230,10 @@ impl Session {
     /// (ruling 271), read from the history, which is the record (ruling 344).
     pub fn assisted(&self) -> bool {
         let placed = |e: &Entry| {
-            matches!(e.command, Command::PlaceMatter { .. } | Command::Edit { by: None, .. })
+            matches!(
+                e.command,
+                Command::PlaceMatter { .. } | Command::Edit { by: None, .. }
+            )
         };
         self.entries.iter().any(placed)
     }
@@ -457,5 +462,6 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.nudge(*participant, *critter, *aim, *toward)?;
             Ok("nudged".into())
         },
+        Command::Assert(assertion) => sim.assert(assertion),
     }
 }

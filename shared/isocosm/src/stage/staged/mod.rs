@@ -443,6 +443,7 @@ impl Staged<'_> {
                     },
                     accounts: BTreeMap::new(),
                     ended_by: None,
+                    authored: None,
                 };
                 self.stage.polities.push((actor, polity));
             },

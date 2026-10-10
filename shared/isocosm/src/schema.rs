@@ -252,6 +252,21 @@ pub struct Polity {
     pub constitution: Constitution,
     pub accounts: Ledger,
     pub ended_by: Option<Key>,
+    /// What an authored polity was asserted with (rulings 757 and 760);
+    /// absent in derived polities, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authored: Option<Authored>,
+}
+
+/// An authored polity's own attributes, filling its place while it has no
+/// members (760): its authored key, name, tags, and the authored keys of
+/// what it claims.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Authored {
+    pub key: Key,
+    pub name: String,
+    pub tags: BTreeSet<Key>,
+    pub claims: BTreeSet<Key>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
