@@ -139,6 +139,9 @@ pub(super) fn process(p: &Process) -> Result<()> {
 /// whatever shape (ruling 492); it holds only matter.
 pub(crate) fn part(rules: &Rules, e: &Entity, id: PartId) -> Result<()> {
     let part = &e.parts[&id];
+    if !e.lives(id) && part.matter.values().any(|n| *n > 0) {
+        return Err("a tombstone still holds matter".into());
+    }
     let shape = e.declared(id);
     if !shape.is_empty() && !rules.shapes.iter().any(|s| s == shape) {
         return Err(format!("unknown part shape {shape}"));

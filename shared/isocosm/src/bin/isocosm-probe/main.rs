@@ -17,7 +17,8 @@
 mod report;
 
 use isocosm::probe::{
-    BodyFounding, Crowd, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED, Variant,
+    BodyFounding, Crowd, HarmFounding, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED,
+    Variant,
     check::{self, Settings},
     readings::{self, Reading},
     run_exact, run_exact_traced,
@@ -121,6 +122,7 @@ struct Options {
     predators: bool,
     approximate: bool,
     bodies: bool,
+    harm: bool,
 }
 
 fn options() -> Result<Options, String> {
@@ -143,6 +145,7 @@ fn options() -> Result<Options, String> {
         predators: false,
         approximate: false,
         bodies: false,
+        harm: false,
     };
     while let Some(arg) = args.next() {
         let mut number = || -> Result<u64, String> {
@@ -167,6 +170,10 @@ fn options() -> Result<Options, String> {
             "--approximate" => o.approximate = true,
             // Checkpoint 6's worlds of bodies (ruling 262).
             "--bodies" => o.bodies = true,
+            "--harm" => {
+                o.bodies = true;
+                o.harm = true;
+            },
             "--output" => o.output = Some(args.next().ok_or("--output needs a path")?),
             // Draw 0's exact run, `<tick> <witness>` per tick (ruling 642).
             "--trace" => o.trace = Some(args.next().ok_or("--trace needs a path")?),
@@ -195,6 +202,7 @@ fn run() -> Result<(), String> {
     // With bodies, `--members` sets the producers per site and a quarter
     // as many grazers.
     let mut bodies = BodyFounding::default();
+    bodies.harm = o.harm.then(HarmFounding::default);
     if let Some([low, high]) = o.members {
         bodies.producers = [low, high];
         bodies.grazers = [(low / 4).max(1), (high / 4).max(1)];
@@ -289,10 +297,14 @@ fn run() -> Result<(), String> {
                 let tick = sim.state().tick;
                 lines += &format!("{tick} {:016x}\n", sim.state_hash());
                 if o.trace_entries.is_some() {
-                    entries.push(tick, sim.entity_witness()).expect("ticks advance");
+                    entries
+                        .push(tick, sim.entity_witness())
+                        .expect("ticks advance");
                 }
             };
-            let reference = run_exact_traced(&world, dynamics, true, &mut line)?.sim.state_hash();
+            let reference = run_exact_traced(&world, dynamics, true, &mut line)?
+                .sim
+                .state_hash();
             if let Some(path) = &o.trace {
                 std::fs::write(path, &lines).map_err(|e| e.to_string())?;
             }

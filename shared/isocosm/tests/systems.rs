@@ -92,6 +92,14 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
         .unwrap();
     e.systems = isocosm::systems::founded(&e, &rules);
     change(&mut e, &rules);
+    let tombstones: Vec<_> = e.parts.keys().copied().filter(|id| !e.lives(*id)).collect();
+    let site = g.sites.get_mut(&e.place).unwrap();
+    for id in tombstones {
+        for (key, amount) in std::mem::take(&mut e.parts.get_mut(&id).unwrap().matter) {
+            let held = site.accounts.entry(key).or_default();
+            *held = held.checked_add(amount).unwrap();
+        }
+    }
     let mut population = isocosm::population::Population::default();
     for (e, n) in [(ground, 1), (frond, 1), (e, 1)] {
         population.insert(e, n).unwrap();
@@ -162,23 +170,22 @@ fn a_cut_route_carries_nothing_beyond_the_cut() {
     for seed in 0..6 {
         let intact = world(seed, GRAZE, |_, _| {});
         let cut = world(seed, GRAZE, |e, _| {
-            e.body.as_mut().unwrap().parts[1].severed = true;
+            e.body.as_mut().unwrap().sever(PartId(1));
         });
+        let intact_start = of(&founded(&intact), GRAZER).clone();
         let start = of(&founded(&cut), GRAZER).clone();
         // Control: intact, the farther limb is fed.
         let fed = run(&intact);
         assert!(
-            tissue(of(&fed, GRAZER), 2) > tissue(&start, 2),
+            tissue(of(&fed, GRAZER), 2) > tissue(&intact_start, 2),
             "seed {seed}"
         );
-        // Cut, it is alive and has room, and takes nothing; the lump still
-        // takes its share.
+        // The cut subtree keeps empty tombstones; the rooted body still
+        // carries a share to its lump.
         let severed = run(&cut);
-        assert_eq!(
-            tissue(of(&severed, GRAZER), 2),
-            tissue(&start, 2),
-            "seed {seed}"
-        );
+        assert!(!of(&severed, GRAZER).lives(PartId(1)));
+        assert!(!of(&severed, GRAZER).lives(PartId(2)));
+        assert_eq!(tissue(of(&severed, GRAZER), 2), 0, "seed {seed}");
         assert!(
             tissue(of(&severed, GRAZER), 0) > tissue(&start, 0),
             "seed {seed}"

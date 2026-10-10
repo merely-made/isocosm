@@ -12,7 +12,7 @@ mod contested;
 mod mind;
 mod predator;
 
-pub use body::BodyFounding;
+pub use body::{BodyFounding, HarmFounding};
 pub use mind::{MindFounding, STRAIN};
 pub use predator::PredatorFounding;
 

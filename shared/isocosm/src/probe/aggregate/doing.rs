@@ -8,8 +8,11 @@
 
 use super::*;
 
+mod harm;
+
 /// One state's members as their act leaves them, and what the act reads.
 pub(super) struct Doing<'a> {
+    pub(super) tick: Tick,
     pub(super) rules: &'a Rules,
     pub(super) lineages: Lineages<'a>,
     pub(super) member: Entity,
@@ -300,6 +303,14 @@ impl Doing<'_> {
 
     fn one(&mut self, e: &Effect, rules: &Rules, how: &mut Run, left: &mut Ledger) -> Result<bool> {
         match e {
+            Effect::Wound { who, cells, slot } => {
+                let resolved = self.compute(|r, d, p| cells.resolve(r, d, p))?;
+                self.wound(*who, resolved.resolved()?, *slot)
+            },
+            Effect::Rot { who, amount } => {
+                let resolved = self.compute(|r, d, p| amount.resolve(r, d, p))?;
+                self.rot(*who, resolved.resolved()?)
+            },
             Effect::Keep { name, value } => {
                 let Ok(v) = self.compute(|r, d, p| value.eval_in(r, d, p)) else {
                     return Ok(false);

@@ -9,6 +9,7 @@
 //! each fight between two states.
 
 mod average;
+mod harm;
 mod hunt;
 mod kin;
 mod round;
@@ -226,6 +227,7 @@ impl<'w> Crowd<'w> {
                         );
                         children.push(child);
                     },
+                    aggregate::Pending::Fragment { child } => children.push(child.clone()),
                 }
                 match &bonds {
                     Some(young) => self.bond((&who, after), young, children),
@@ -292,6 +294,9 @@ impl<'w> Crowd<'w> {
                 continue;
             }
             acting.push((e, n, who));
+        }
+        if harm::harms(p) {
+            return self.harms(p, acting);
         }
         if hunting {
             return self.hunt(p, acting);

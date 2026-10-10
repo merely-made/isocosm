@@ -28,7 +28,7 @@ pub const MILK: &str = "care:milk";
 pub const MOUTHFULS: &str = "care:mouthfuls";
 pub const PROVISION_FIRST: &str = "growth:provision-first";
 pub const CAPITAL: &str = "breeding:capital";
-pub const TRAITS: [&str; 8] = [
+pub const TRAITS: [&str; 9] = [
     BROOD,
     EGG,
     BUD,
@@ -37,6 +37,7 @@ pub const TRAITS: [&str; 8] = [
     MOUTHFULS,
     PROVISION_FIRST,
     CAPITAL,
+    crate::harm::FRAGMENT,
 ];
 
 /// What a founding draws bodies within (550), each an inclusive range.
@@ -222,6 +223,7 @@ pub fn life(seed: u64, index: u64, b: &Bodies) -> (BTreeSet<Key>, u32, bool) {
         ("life-order", PROVISION_FIRST),
         ("life-capital", CAPITAL),
         ("life-semelparity", SEMELPAROUS),
+        ("life-fragment", crate::harm::FRAGMENT),
     ] {
         if r(domain) % 2 == 1 {
             traits.insert(key.into());

@@ -74,6 +74,19 @@ pub enum Effect {
         once: bool,
     },
     Death,
+    /// A wound takes cells, spills over lowered bounds and detaches a
+    /// non-root part only once it has no cells (705, 710, 711, 716).
+    Wound {
+        who: Binding,
+        cells: Amount,
+        /// The draw slot selecting the part by its living cells.
+        slot: u8,
+    },
+    /// A dead body's matter returns to its site, with provenance kept (718).
+    Rot {
+        who: Binding,
+        amount: Amount,
+    },
     Tell {
         event: Key,
     },
@@ -187,8 +200,9 @@ impl Effect {
             | Self::Ease { amount, .. }
             | Self::Eat { amount, .. }
             | Self::Spend { amount, .. }
+            | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => vec![amount],
-            Self::Allocate { cells, .. } => vec![cells],
+            Self::Allocate { cells, .. } | Self::Wound { cells, .. } => vec![cells],
             Self::Carry { ask, .. } => vec![ask],
             Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
             _ => vec![],
@@ -205,7 +219,8 @@ impl Effect {
         then.iter().chain(otherwise)
     }
     pub fn draws(&self) -> bool {
-        matches!(self, Self::When { guard: x, .. } | Self::Keep { value: x, .. } if x.draws())
+        matches!(self, Self::Wound { .. })
+            || matches!(self, Self::When { guard: x, .. } | Self::Keep { value: x, .. } if x.draws())
             || self.amounts().iter().any(|a| a.draws())
     }
     /// The expressions it reads besides its amounts: a guard, or a kept
@@ -259,8 +274,11 @@ impl Effect {
             | Self::Ease { amount, .. }
             | Self::Eat { amount, .. }
             | Self::Spend { amount, .. }
+            | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
-            Self::Allocate { cells, .. } => *cells = cells.resolve(read, draw, parts)?,
+            Self::Allocate { cells, .. } | Self::Wound { cells, .. } => {
+                *cells = cells.resolve(read, draw, parts)?
+            },
             Self::Carry { ask, .. } => *ask = ask.resolve(read, draw, parts)?,
             Self::When { .. } => return Err("a guarded effect is applied by its branch".into()),
             _ => {},

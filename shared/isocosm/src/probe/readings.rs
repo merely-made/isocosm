@@ -32,6 +32,9 @@ pub enum Field {
     Account(Key),
     /// The cells a member's living parts hold for a function.
     Cells(Key),
+    LivingCells,
+    LostCells,
+    Severed,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -77,6 +80,9 @@ fn name(field: &Field) -> String {
         Field::Born => "born".into(),
         Field::Account(k) => format!("account:{k}"),
         Field::Cells(f) => format!("cells:{f}"),
+        Field::LivingCells => "living-cells".into(),
+        Field::LostCells => "lost-cells".into(),
+        Field::Severed => "severed".into(),
     }
 }
 
@@ -123,11 +129,20 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
         accounts.extend(crate::anatomy::books(&group.entity).keys().cloned());
     }
     let mut fields = vec![Field::Lineage, Field::Place];
-    if effects.iter().any(|e| matches!(e, Effect::Death)) {
+    if effects
+        .iter()
+        .any(|e| matches!(e, Effect::Death | Effect::Wound { .. }))
+    {
         fields.push(Field::Alive);
     }
-    if effects.iter().any(|e| matches!(e, Effect::Birth { .. })) {
+    if effects
+        .iter()
+        .any(|e| matches!(e, Effect::Birth { .. } | Effect::Wound { .. }))
+    {
         fields.push(Field::Born);
+    }
+    if effects.iter().any(|e| matches!(e, Effect::Wound { .. })) {
+        fields.extend([Field::LivingCells, Field::LostCells, Field::Severed]);
     }
     fields.extend(accounts.into_iter().map(Field::Account));
     // A part's cells, for each function a development moves them between.
@@ -136,6 +151,9 @@ fn inspected(world: &ProbeWorld) -> Vec<Field> {
         if let Effect::Allocate { from, to, .. } = e {
             functions.extend(from.iter().chain([to]).cloned());
         }
+    }
+    if effects.iter().any(|e| matches!(e, Effect::Wound { .. })) {
+        functions.extend(world.genesis.rules.functions.keys().cloned());
     }
     fields.extend(functions.into_iter().map(Field::Cells));
     fields
@@ -487,6 +505,12 @@ pub fn evaluate(
                     Field::Place => e.place,
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
+                    Field::LivingCells => crate::harm::cells(e),
+                    Field::LostCells => e.parts.values().map(|p| p.lost.len() as u64).sum(),
+                    Field::Severed => e
+                        .body
+                        .as_ref()
+                        .map_or(0, |d| d.parts.iter().filter(|p| p.severed).count() as u64),
                     Field::Account(k) => crate::anatomy::held(e, &world.genesis.rules, k),
                     Field::Cells(f) => e
                         .living()

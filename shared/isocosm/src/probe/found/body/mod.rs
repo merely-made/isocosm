@@ -18,9 +18,11 @@
 //! the body.
 
 mod feeding;
+mod harm;
 mod life;
 mod physiology;
 mod plans;
+pub use harm::HarmFounding;
 
 use super::{ProbeWorld, Similitude, member, world_traits};
 use crate::{
@@ -87,6 +89,8 @@ pub struct BodyFounding {
     pub soil: [u64; 2],
     pub mineralization: [u64; 2],
     pub bound_per_mille: u32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub harm: Option<HarmFounding>,
 }
 
 impl Default for BodyFounding {
@@ -126,6 +130,7 @@ impl Default for BodyFounding {
             soil: [200, 12_000],
             mineralization: [0, 8],
             bound_per_mille: 200,
+            harm: None,
         }
     }
 }
@@ -190,6 +195,7 @@ impl BodyFounding {
             && self.tissue[1] <= 1000
             && self.reserve[1] <= 1000
             && self.bound_per_mille <= 1000
+            && self.harm.as_ref().is_none_or(HarmFounding::valid)
     }
 
     pub fn generate(&self) -> Result<ProbeWorld> {
@@ -216,6 +222,9 @@ impl BodyFounding {
         };
         let mut accounts = BTreeMap::from([(SOIL.into(), matter("world:ground", false, false))]);
         let mut traits: BTreeSet<Key> = life_traits().map(String::from).into();
+        if self.harm.is_some() {
+            traits.extend([crate::harm::HEAL.into(), crate::harm::FRAGMENT.into()]);
+        }
         traits.insert(CANDIDATE.into());
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
@@ -242,6 +251,16 @@ impl BodyFounding {
                 _ => &[BROOD, EGG, MILK],
             };
             let mut carried = BTreeSet::from([identity]);
+            if let Some(harm) = &self.harm {
+                for (trait_key, odds) in [
+                    (crate::harm::HEAL, harm.heals),
+                    (crate::harm::FRAGMENT, harm.fragments),
+                ] {
+                    if self.pick(trait_key, u64::from(i), [0, 999]) < odds {
+                        carried.insert(trait_key.into());
+                    }
+                }
+            }
             carried.extend(history.iter().map(|t| t.to_string()));
             lineages.insert(
                 lineage,
@@ -259,6 +278,11 @@ impl BodyFounding {
         }
         let mineralize = physiology::mineralize(2, dose);
         processes.insert(mineralize.id.clone(), mineralize);
+        if let Some(harm) = &self.harm {
+            for p in harm.processes(self) {
+                processes.insert(p.id.clone(), p);
+            }
+        }
         let rules = Rules {
             body: None,
             kinds: self.kinds(),

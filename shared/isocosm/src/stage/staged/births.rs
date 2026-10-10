@@ -18,7 +18,7 @@ use crate::{
 
 impl Staged<'_> {
     /// The next child's identity.
-    fn next_child(&mut self) -> Result<Id> {
+    pub(super) fn next_child(&mut self) -> Result<Id> {
         let (sim, born) = (self.sim, self.stage.births.len() as u64);
         if sim.state.population.count() + born >= sim.genesis.rules.limits.entities {
             return Err("population limit".into());
