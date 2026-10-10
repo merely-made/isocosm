@@ -6,9 +6,9 @@
 
 //! The main view: the ruled terrarium section, brick-traced.
 //!
-//! The join itself (bodies rastered into a depth attachment, terrain traced
-//! against it, the display twin and the capture read-back) is
-//! [`isometer::Scene`]'s. What stays here is the vessel's policy over it:
+//! [`isometer::Scene`] projects bodies and traces the terrain depth. The lit
+//! body tenant reads that pre-pass; Netrender layers its transparent target
+//! over the traced colour. What stays here is the vessel's policy over it:
 //! which Ground the map binds, where the slab sits, which body is posed, and
 //! how the traced texture reaches the surface. The input is a native
 //! [`SiteScene`]: the played critter's lifted site and its placed bodies.
@@ -19,6 +19,7 @@
 mod bodies;
 mod camera;
 mod capsules;
+mod tenant;
 pub use capsules::{pose_of, roster_of};
 mod terrain;
 pub use terrain::TerrainStyle;
@@ -107,8 +108,9 @@ pub struct SectionFrame<'a> {
 pub struct Section {
     device: wgpu::Device,
     queue: wgpu::Queue,
-    /// The shared join. Everything device-side lives in here.
+    /// Shared projection, queries and traced terrain.
     scene: Scene,
+    body_tenant: tenant::BodyTenant,
     grade: Grade,
     terrain_appearance: Option<isometer::lens::TerrainAppearance>,
     width: u32,
@@ -131,14 +133,14 @@ impl Section {
     /// device. `format` is the surface's, for the composite that lands
     /// the traced frame under the HUD.
     pub fn new(
-        device: wgpu::Device,
-        queue: wgpu::Queue,
+        host: &::tenant::HostDevice,
         width: u32,
         height: u32,
         format: wgpu::TextureFormat,
         ground: &Ground,
         framing: Framing,
     ) -> Result<Self, String> {
+        let (device, queue) = (host.device.clone(), host.queue.clone());
         let map = BrickMap::from_ground(ground).map_err(|error| error.to_string())?;
         let composite = Composite::new(&device, format);
         let mut scene = Scene::new(device.clone(), queue.clone(), width, height)?;
@@ -148,6 +150,7 @@ impl Section {
             device,
             queue,
             scene,
+            body_tenant: tenant::BodyTenant::new(host, [width, height]),
             grade: Grade::retro(PALETTE),
             terrain_appearance: None,
             width,
@@ -173,6 +176,8 @@ impl Section {
         self.width = width.max(1);
         self.height = height.max(1);
         self.scene.resize(self.width, self.height);
+        self.body_tenant
+            .resize(&self.device, [self.width, self.height]);
     }
 
     /// Aspect comes from the window rather than a fixed 16:9, so a resized
@@ -200,6 +205,15 @@ impl Section {
 
     pub fn body_stats(&self) -> BodyFrameStats {
         self.scene.bodies().stats.clone()
+    }
+
+    pub fn set_body_light(&mut self, intensity: f32) {
+        self.body_tenant.set_light(intensity);
+    }
+
+    /// Transparent lit bodies, layered over the terrain by Netrender.
+    pub fn body_view(&self) -> Option<wgpu::TextureView> {
+        (self.body_mode == BodyMode::Voxels).then(|| self.body_tenant.view())
     }
 
     /// How much world the section frames, in voxels of half-height.
@@ -260,11 +274,15 @@ impl Section {
         };
         let (grade, appearance, budget) = (self.grade, self.terrain_appearance, self.body_budget);
         let Self {
-            scene, host_bodies, ..
+            scene,
+            host_bodies,
+            body_tenant,
+            ..
         } = self;
         let mut host = SectionHost {
             bodies: host_bodies,
             scene: frame.scene,
+            tenant: body_tenant,
         };
         scene.render(
             encoder,
@@ -287,7 +305,7 @@ impl Section {
         Ok(())
     }
 
-    /// The completed same-device texture imported by Netrender's frame graph.
+    /// The completed terrain texture imported by Netrender's frame graph.
     pub fn display_texture(&self) -> &wgpu::Texture {
         self.scene.display_texture()
     }
@@ -299,7 +317,20 @@ impl Section {
         &self,
         overlay: impl FnOnce(&mut wgpu::CommandEncoder, &wgpu::TextureView, wgpu::TextureFormat),
     ) -> Option<(u32, u32, Vec<u8>)> {
-        self.scene.capture(overlay)
+        self.scene.capture(|encoder, view, format| {
+            if let Some(body) = self.body_view() {
+                Composite::new(&self.device, format).draw(
+                    &self.device,
+                    &self.queue,
+                    encoder,
+                    view,
+                    &body,
+                    (0.0, 0.0, self.width as f32, self.height as f32),
+                    (self.width, self.height),
+                );
+            }
+            overlay(encoder, view, format);
+        })
     }
 
     /// Reads a completed frame master back as RGBA8. RG3 uses this route so
@@ -330,6 +361,17 @@ impl Section {
             (0.0, 0.0, self.width as f32, self.height as f32),
             (self.width, self.height),
         );
+        if let Some(body) = self.body_view() {
+            self.composite.draw(
+                &self.device,
+                &self.queue,
+                encoder,
+                surface,
+                &body,
+                (0.0, 0.0, self.width as f32, self.height as f32),
+                (self.width, self.height),
+            );
+        }
         Ok(())
     }
 }
@@ -339,9 +381,23 @@ impl Section {
 struct SectionHost<'a> {
     bodies: &'a mut bodies::HostBodies,
     scene: &'a SiteScene,
+    tenant: &'a mut tenant::BodyTenant,
 }
 
 impl isometer::SceneHost for SectionHost<'_> {
+    fn uses_body_tenant(&self) -> bool {
+        true
+    }
+
+    fn encode_body_tenant(
+        &mut self,
+        encoder: &mut wgpu::CommandEncoder,
+        bodies: &mut isometer::BodyLayer,
+        camera: isometer::SlabCamera,
+    ) -> Result<(), String> {
+        self.tenant.encode(encoder, bodies, camera)
+    }
+
     fn begin(&mut self) {
         self.bodies.fallback.clear();
         self.bodies.played_fallback = None;

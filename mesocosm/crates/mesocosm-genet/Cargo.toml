@@ -14,9 +14,10 @@ publish = false
 # wrong crate.
 #
 # Named for the lane rather than the dependency. Netrender owns the frame
-# master and imports the section as one opaque same-device tenant; the host
-# still owns the final surface blit and presentation.
+# master and layers traced terrain with the transparent same-device body
+# tenant; the host still owns the final surface blit and presentation.
 [dependencies]
+tenant = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
 # The contract the host speaks: nudges, checkpoint answers and dev intents

@@ -86,6 +86,19 @@ checked. `Command::Express` (787) has its own tests since this baseline.
 
 ## A4. Tuning and headed findings (761)
 
+**2026-10-10, Q7 additions (presentation plan):** certify Mesocosm's lit
+body/terrain occlusion, palette and selection under each camera and after
+resize; compare the captured final layered master with the window, including
+the chromeless route. The tenant adapter's two CPU clipping/projection
+controls passed (Q7 Progress); they execute no GPU frame. Measure the
+presentation-only `--body-light` setting, per-frame
+CPU palette reconstruction and per-face pose validation, mesh uploads on
+motion/camera cuts, marked-face subdivision and the retained
+terrain receipt's extra import. The body receipt's mesh-byte estimates omit
+tenant camera/light uploads; obtain measured counters before making an
+upload-silence claim. The old body rasteriser still has VTT/Eponym scene
+consumers; migrate those before retiring LiveBody.
+
 The torch's brightness and shadows (749); body voxel scale against ground
 cells; cliff frequency on hilly worlds (744 readings); flow windows' births
 and deaths against members; the 3x2 map layout; forced births on bodied

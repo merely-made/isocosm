@@ -101,6 +101,7 @@ impl Host {
                 gpu.section.display_texture(),
                 frame,
                 gpu.section.body_stats().fallback_bodies as u64,
+                gpu.section.body_view().as_ref(),
             );
             gpu.last_tenant_receipt = Some(framed.receipt);
             let master = framed.texture.create_view(&Default::default());

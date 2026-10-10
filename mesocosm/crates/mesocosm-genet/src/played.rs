@@ -38,7 +38,8 @@ pub struct PartSelectionReceipt {
     pub revision: u64,
 }
 
-/// The last visible frame's opaque tenant participation in Netrender's graph.
+/// The terrain import's opaque participation in Netrender's graph.
+/// Body layering and chrome are separate from these boundary counts.
 #[derive(Clone, Debug, Serialize)]
 pub struct FrameGraphReceipt {
     pub tenant_name: String,
@@ -83,6 +84,7 @@ pub struct PlayedReceipt {
     pub terrain_style: &'static str,
     pub bodies: &'static str,
     pub body_budget: usize,
+    pub body_light: f32,
     pub body_projection: crate::section::BodyFrameStats,
     pub inspecting: bool,
     pub selected_part: Option<PartSelectionReceipt>,

@@ -45,6 +45,10 @@ pub struct BodyFrameStats {
     pub instance_upload_bytes: u64,
     pub frame_upload_bytes: u64,
     pub draw_parts: usize,
+    /// A host-owned body's encode report, zero for caller-owned submission.
+    pub body_tenant_internal_submissions: u64,
+    /// Qualifies estimates when a host tenant does not expose upload counters.
+    pub body_upload_measurement: Option<&'static str>,
 }
 
 /// World origin of a body's mesh: its pose, with the document's own floor
@@ -93,7 +97,7 @@ pub fn depth_target(
         sample_count: 1,
         dimension: wgpu::TextureDimension::D2,
         format: wgpu::TextureFormat::Depth32Float,
-        usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+        usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
         view_formats: &[],
     });
     let view = texture.create_view(&Default::default());

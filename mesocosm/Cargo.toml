@@ -25,6 +25,7 @@ members = [
 ]
 
 [workspace.dependencies]
+tenant = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }
 # The append-only journal, from mere's eidetic family. Rev-pinned with the
 # rest of the family; its causal shape landed 2026-08-01 for exactly this use.
 muniment = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }
