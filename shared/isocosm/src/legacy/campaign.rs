@@ -8,10 +8,13 @@
 //! ordinary event that *publishes* a fact. This crate is pure data:
 //! no I/O, no net, no substrate geometry. The substrate stores and
 //! displays these objects; system plugins interpret them.
+//!
+//! The host-private store and the proposal lifecycle went back to the VTT's
+//! `isometry-campaign` (ruling 669); what remains waits on its families (the
+//! families re-expression plan's Progress, 2026-10-09).
 
 mod chronicle;
 mod fact;
-mod collaboration;
 mod faction;
 mod generator;
 mod construction;
@@ -19,12 +22,10 @@ mod item;
 mod map;
 mod overmap;
 mod pack;
-mod store;
 mod world;
 
 pub use chronicle::{Arrival, Chronicle, ChronicleError, Deed, PartOrigin, CHRONICLE_SCHEMA, LOST_PART, VESSEL};
 pub use fact::{RevealCondition, SecretFact, Visibility, WorldFact};
-pub use collaboration::{CampaignProposal, CampaignProposalError, CampaignProposalMode};
 pub use faction::{FactionMove, FactionVerb};
 pub use generator::{
     CastRoleRequest, EntropyTape, GenValue, GenValueError, GenerationRecord, GenerationRecordError,
@@ -44,7 +45,6 @@ pub use pack::{
     BeatEntry, ContentPackError, ContentPackManifest, GeneratorChoice, GeneratorEntry,
     GeneratorLockPreset, CONTENT_PACK_FORMAT,
 };
-pub use store::CampaignStore;
 pub use world::{
     CampaignDraft, CampaignWorld, DraftMap, HistoryEvent, MapInhabitant, RoleSlot, StoryletEffect,
     StoryletError, StoryletProposal, StoryletRequirements, StoryletResolution, WorldCharacter,

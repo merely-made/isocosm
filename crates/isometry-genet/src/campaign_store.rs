@@ -7,7 +7,7 @@
 
 use std::path::Path;
 
-use isocosm::legacy::campaign::CampaignStore;
+use isometry_campaign::CampaignStore;
 use isonetry::GameSnapshot;
 use muniment::{Journal, JsonSlots, RedbBackend};
 use serde::{Deserialize, Serialize};

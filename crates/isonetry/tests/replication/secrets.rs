@@ -98,7 +98,8 @@ fn failed_reveal_restores_the_private_secret() {
 
 #[test]
 fn restored_host_reconciles_a_pending_reveal() {
-    use isocosm::legacy::campaign::{CampaignStore, RevealCondition, SecretFact};
+    use isocosm::legacy::campaign::{RevealCondition, SecretFact};
+    use isometry_campaign::CampaignStore;
 
     let mut campaign = CampaignStore::new();
     campaign.insert_secret(SecretFact {
@@ -122,7 +123,7 @@ fn restored_host_reconciles_a_pending_reveal() {
 
 #[test]
 fn restored_history_rebuilds_sequence_and_convergence_hash() {
-    use isocosm::legacy::campaign::CampaignStore;
+    use isometry_campaign::CampaignStore;
 
     let mut host = HostSession::new(snapshot());
     host.local_event(mv(1, (2, 1)));

@@ -177,6 +177,7 @@ the bodies family.
   *Reading, not ruled:* registry, stock and flow kept their behaviour exactly;
   converging the registry onto the function catalogue and the flow record onto
   native `flows` are behaviour changes, put to Mark as forks.
+// refused_by: statement_fold · collision: none (no common ancestor text)
 - **2026-10-09, family 2, bodies: the 674 seam (lane `lane-bodies`, under
   732's compile gate; no tests, draws or certification run).** Isometer's
   suites stand on their own fixtures (720): an isometer-core `fixtures`
@@ -201,3 +202,32 @@ the bodies family.
   them in documents; whether the legacy body modules can leave before the
   world families, which consume them; whether the registry holds all fifteen
   catalogue functions; and fork 9.
+- **2026-10-09, family 7, the VTT's campaign (lane `lane-campaign`, under
+  732's compile gate; no tests, draws or certification run).** Handed back
+  under 669: the host-private `CampaignStore` and the proposal lifecycle
+  (`CampaignProposal`, its mode and error), 360 lines, are the VTT's again in
+  `crates/isometry-campaign`, where both began; their five unit tests went
+  with them, as the VTT's own tests. Callers re-pointed: `isometry-genet`
+  (3 files) and `isonetry` (10). Legacy campaign lines went from 4,310 to
+  3,950. Nothing else moved, because nothing else has its native
+  destination built yet:
+  - *the record (pending):* facts and secrets as notes (80, 87, 248), the
+    world's history, items bearing provenance (relics, 157), the chronicle
+    (673);
+  - *bodies (another lane):* characters as denizens (36, 200);
+  - *places (4):* the overmap's places and routes as the native site graph
+    (72, 599), the campaign maps as the DM's edit over a site's volume
+    through isometer (243), with the board-on-isometer plan held;
+  - *founding:* the generator and packs as the generator's declared space
+    (the VTT plan's §4), native founding being changed by the directing
+    lane;
+  - *an assertion path native lacks:* the world's factions, places,
+    characters and laws, construction, and every "In: assertions" row of
+    the contract. Native `Command` asserts none of them; polities come only
+    from a process's `FoundPolity` and sites only from a founding layout;
+  - *V2:* the tape-drawn faction turn retires there (247) and is not moved,
+    so the legacy campaign copy cannot leave in full before V2.
+  *Reading, not ruled:* the proposal lifecycle went to `isometry-campaign`
+  beside the store rather than to `isonetry`, its only caller, as "its game
+  crate" (669). Forks put to Mark: how authored content enters native state,
+  and authored factions against polities derived from members.

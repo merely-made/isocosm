@@ -4157,7 +4157,9 @@ version = "0.1.0"
 dependencies = [
  "isocosm",
  "isometry-core",
+ "postcard",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
