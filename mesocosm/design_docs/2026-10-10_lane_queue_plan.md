@@ -284,6 +284,11 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q4/Q5 archive preflight recorded:** the after-pass Findings
+  distinguish native genesis-digest failures from Eponym's earlier decoding
+  failures and later generator admission gate. Raw fixtures/readers remain
+  unchanged; these are source findings, not a classification or test result.
+  Q2 owns Cargo; refreshed Q3 seed 0 and Q8's bounded controls follow.
 - **2026-10-10, Q2 metadata and Q8 healing integration verified:**
   root applies the bounded eleven-path native delta from `f4c106af`,
   retaining Q2's unfinished consumer ancestry. Two existing demo/storylet

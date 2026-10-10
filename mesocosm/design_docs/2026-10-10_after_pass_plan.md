@@ -117,6 +117,27 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q4/Q5 archive preflight:** source inspection only; no reader,
+  fixture or test was changed and no Cargo gate ran. Q4's v1 checkpoint
+  fixture carries the former Part fields `parent`, `traits` and `severed`;
+  current physiology is keyed to isometer geometry under 674. The Process
+  causation field still reads its former `shape` spelling. The two known
+  historical witness failures stop at the genesis digest, before checkpoint
+  checking. Kept-reader guarantees under 608, 641 and 651 require a reader
+  audit; 672 alone does not classify those failures as retired tests.
+  Q5's three Eponym motion archives decode as `TimedActionSave`, wrapping
+  `SessionSave`, `GameSave` and `WorldSave`; their three failing tests stop
+  at decoding before `restore_solving`. The v3 fixture is the actual headed
+  `b9ae9a2` output identified in `combat_saves.rs`. That commit's
+  `paredros/crates/paredros-world/src/transitions.rs` carries `AdmitAnatomy` with a
+  `mesocosm_core::BodyDocument` (`species/root/plan/parts`); today's
+  `eponym/crates/eponym-play/src/transitions.rs` carries `isocosm::lineage::LineageBody`
+  (`doc/species/lineals`). The preceding GameIntent variant order is
+  preserved. *Reading, not ruled:* payload drift is consistent with the
+  decoding failure, but its cause is not yet proved. Today's world reader
+  requires generator 2, so a decoded generator-1 world would still refuse. Preserve
+  the raw archives and qualify decoding, admission and replay separately
+  in Q5; the recorded 47 failures remain a dated baseline, not a fresh run.
 - **2026-10-10, Q3 meal-three trial declared:** source-only, uncompiled and
   unrun on `ab3b559b`. Only consumer lineage 1's meal changes from one to
   three; threshold twelve, lifespan 80 to 120 and all other supply/timing
