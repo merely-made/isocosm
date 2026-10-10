@@ -1,5 +1,8 @@
 //! Faction turns: the downtime tick where the world acts on itself.
 //!
+//! Retires at V2 (wing ruling 247), once the sim's factions run; it stays in
+//! legacy until then and is not re-expressed.
+//!
 //! Between scenes, factions move. One tick draws a move per committed faction
 //! from the world's own state and a host entropy tape, and each move is a
 //! bundle of ordinary [`WorldEvent`]s -- always a `History` line (the
