@@ -9861,6 +9861,35 @@ what later sections derive from.
      Options: legacy's declared tracts and 568's folding of systems at the
      boundary, built in the lineages family (recommended); recipe variants
      only. Mark chose "Grow to tracts and systems (Recommended)".
+766. **Native parts gain cell identity.** 2026-10-10, from the bodies
+     lane's second pass (merged at `5f3fe18b`). Question: legacy `Mosaic`
+     gives each part a cell graph (ids, adjacency, tracts as connected cell
+     sets, an intake port, a per-part stock) that feeding modes read, while
+     native keeps counts per function. Options: cell identity in native,
+     tracts as cell sets beside the counts and intake ports as part data
+     (recommended); counts only; a presentation projection. Mark chose "Cell
+     identity in native (Recommended)".
+767. **Eponym's needs become native accounts; its wound, checkpoint 10's
+     cell loss.** 2026-10-10. Options: hunger and fatigue as native
+     accounts (the matter reserve and `Energy`) read by `Need`s, the wound
+     built as checkpoint 10's cell loss with Eponym's world move
+     (recommended); Eponym-shaped counters in native; counters stay
+     Eponym's. Mark chose "Native accounts and wounds (Recommended)".
+768. **A campaign's session carries its assertions.** 2026-10-10, from the
+     record lane (merged at `b9e0f967`). Question: `CampaignWorld` is a field
+     of isonetry's replicated snapshot, and a native `Session` needs a
+     `Genesis` a campaign lacks. Options: the session carries the asserted
+     entries, `CampaignWorld` folds from them and a native `Session` replays
+     from them when the sim switches on (recommended); the snapshot holds a
+     `Session`; wait for native founding. Mark chose "Session carries
+     assertions (Recommended)", 248's "switched on later over the same
+     history".
+769. **Authored places, characters, laws and history lines are native nouns
+     with authored fills.** 2026-10-10. Options: each its native noun with
+     authored attributes filling placeholders as 760 did (a place a `Site`,
+     a character a placeless `Entity`, a law an asserted rule record, a
+     history line an `Event`) (recommended); an asserted-records map; all
+     as notes. Mark chose "Native nouns, authored fill (Recommended)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
