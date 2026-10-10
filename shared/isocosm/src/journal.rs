@@ -28,6 +28,8 @@ pub(crate) struct Journal {
     polities: BTreeSet<Id>,
     record: Option<hagiograph::Record<Key, Id>>,
     events: BTreeSet<Key>,
+    /// The nudges as they stood before an answer was written.
+    nudges: Option<Vec<crate::directing::Nudge>>,
     /// Debug builds keep the whole world too, to check each rollback.
     #[cfg(debug_assertions)]
     before: Box<State>,
@@ -46,6 +48,7 @@ impl Journal {
             polities: BTreeSet::new(),
             record: None,
             events: BTreeSet::new(),
+            nudges: None,
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }
@@ -70,6 +73,9 @@ impl Journal {
     }
     pub(crate) fn record(&mut self, was: &hagiograph::Record<Key, Id>) {
         self.record.get_or_insert_with(|| was.clone());
+    }
+    pub(crate) fn nudges(&mut self, was: &[crate::directing::Nudge]) {
+        self.nudges.get_or_insert_with(|| was.to_vec());
     }
     pub(crate) fn event(&mut self, id: &Key) {
         self.events.insert(id.clone());
@@ -101,6 +107,9 @@ impl Journal {
             s.record = record;
         }
         s.notes.truncate(self.notes);
+        if let Some(nudges) = self.nudges {
+            s.nudges = nudges;
+        }
         for id in self.events {
             s.events.remove(&id);
             s.reach.arrivals.remove(&id);

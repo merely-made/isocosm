@@ -12,6 +12,7 @@ pub mod bodied;
 mod dev;
 pub mod development;
 pub mod diffusion;
+pub mod directing;
 mod ecology;
 mod edits;
 mod execute;

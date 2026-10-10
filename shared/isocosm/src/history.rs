@@ -44,6 +44,18 @@ pub enum Command {
         entity: Id,
         patch: Option<isometer_space::places::PlaceId>,
     },
+    /// A participant joins, a placeless entity (ruling 688).
+    Join,
+    /// A participant takes up a critter, its bond seeded by the world's
+    /// setting (178).
+    Take { participant: Id, critter: Id },
+    /// A participant nudges its critter to attend or act (686, 690).
+    Nudge {
+        participant: Id,
+        critter: Id,
+        aim: crate::directing::Aim,
+        toward: crate::directing::Toward,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -424,6 +436,23 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
         Command::Patch { entity, patch } => {
             sim.set_patch(*entity, *patch)?;
             Ok("placed".into())
+        },
+        Command::Join => Ok(format!("participant:{}", sim.join()?)),
+        Command::Take {
+            participant,
+            critter,
+        } => {
+            sim.take(*participant, *critter)?;
+            Ok("taken".into())
+        },
+        Command::Nudge {
+            participant,
+            critter,
+            aim,
+            toward,
+        } => {
+            sim.nudge(*participant, *critter, *aim, *toward)?;
+            Ok("nudged".into())
         },
     }
 }

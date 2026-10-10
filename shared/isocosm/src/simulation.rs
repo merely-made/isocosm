@@ -57,6 +57,11 @@ pub struct State {
     /// and hash as before.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub edits: Vec<Edited>,
+    /// The nudges participants gave and how each was answered (rulings 686
+    /// and 690). Absent from runs with none, which serialize and hash as
+    /// before.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub nudges: Vec<crate::directing::Nudge>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -135,6 +140,9 @@ pub struct Simulation {
     pub(crate) watch: crate::watch::Watch,
     /// The matter moves a host asked to see.
     pub(crate) flows: crate::flows::Flows,
+    /// Each deliberative critter's choice this tick, kept only during an
+    /// advance (ruling 683).
+    pub(crate) chosen: crate::directing::Chosen,
 }
 
 impl Simulation {
@@ -157,6 +165,7 @@ impl Simulation {
             events: BTreeMap::new(),
             reach: Reach::default(),
             edits: Vec::new(),
+            nudges: Vec::new(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {
@@ -173,6 +182,7 @@ impl Simulation {
             journal: None,
             watch: Default::default(),
             flows: Default::default(),
+            chosen: Default::default(),
         })
     }
     pub fn state(&self) -> &State {

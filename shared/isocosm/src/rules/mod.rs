@@ -8,6 +8,7 @@ use std::collections::{BTreeMap, BTreeSet};
 mod amount;
 mod body;
 mod competition;
+mod directing;
 mod effect;
 mod epoch;
 mod mind;
@@ -18,6 +19,7 @@ pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read
 pub(crate) use body::expressing;
 pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
+pub use directing::{Directing, Inheritance};
 pub use effect::{Conversion, Effect};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
@@ -243,6 +245,10 @@ pub struct Rules {
     /// systems.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub carriage: Option<Carriage>,
+    /// What the world rules of directing (rulings 178 and 689); absent
+    /// means the defaults, and worlds without it hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub directing: Option<Directing>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -268,6 +274,10 @@ impl Rules {
     /// otherwise, which makes one unbounded epoch until something ends it.
     pub fn epoch_budget(&self) -> Option<Tick> {
         self.epoch.is_timed().then_some(self.epoch_ticks)
+    }
+    /// The world's directing rules, or the defaults (ruling 178).
+    pub fn directing(&self) -> Directing {
+        self.directing.clone().unwrap_or_default()
     }
     /// The most ticks this world's deep time may take (ruling 452).
     pub fn deep_time_ceiling(&self) -> crate::Result<Tick> {

@@ -266,6 +266,10 @@ impl Simulation {
                 j.site(stage.place, &s.sites[&stage.place]);
             }
             for (relation, _) in &stage.relations {
+                let r = relation;
+                if let Some(held) = related(&s.relations, r.subject, &r.kind, r.object) {
+                    j.relation(held, true);
+                }
                 j.relation(relation, s.relations.contains(relation));
             }
             for (id, _) in &stage.polities {
@@ -348,11 +352,7 @@ impl Simulation {
             }
         }
         for (relation, present) in stage.relations {
-            if present {
-                s.relations.insert(relation);
-            } else {
-                s.relations.remove(&relation);
-            }
+            crate::directing::hold(&mut s.relations, relation, present);
         }
         for (lineage, kind) in stage.lessons {
             let learned = s
