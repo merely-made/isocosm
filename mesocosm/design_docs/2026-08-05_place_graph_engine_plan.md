@@ -1,5 +1,11 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
+**Status, 2026-10-09, later:** rulings 737 to 741 built on
+`lane-places-2`, with SP5's border clause (cross-site passages and span
+classes). SP5's done-condition holds within and across sites. The open
+questions are listed under SP5's second annotation. *(Earlier status
+lines follow as written.)*
+
 **Status, 2026-10-09:** under ruling 733, SP4 and SP5 are built in
 isometer on `Ground` (`shared/isometer/crates/isometer-space`, branch
 `lane-places`), with the lift moved there (701), routing over SP5 (702)
@@ -261,6 +267,13 @@ guards is deliberately broken.
   carver's ledger, which needs the world's densities and matter accounts
   (412 sets both as world rules, with no defaults), and the overflow heap
   (416), which waits on capacity.
+  *Annotation, 2026-10-09, later (739):* `Material` carries an optional
+  density and matter account, set together at founding. An edit `by` a
+  member standing in the site credits what it carves to that member's
+  ledger and debits what it fills, each material by its density. It is
+  refused whole if a material moved has no density or the member cannot
+  pay. The conserved total moves by the net, and the member is split out
+  of its cohort. With no `by`, the dev source edits as before.
 - **SP5, places over the bricks.** Connected air, passages and travel cost at
   the declared grain. Done when local re-derivation equals full
   re-derivation after every edit of seeded sequences, a route whose profile
@@ -282,6 +295,23 @@ guards is deliberately broken.
   above; both are built, and a caller must name one); and that clearance
   lives only on edges between places, so a neck inside one patch is
   invisible to the filter unless a split falls there.
+  *Annotation, 2026-10-09, later (737, 738, 740, 741):* rooms are roofed
+  air by default (737). A patch splits where a body of the world's neck
+  width could not stand (738), but 738 gives no default width, so the
+  rule is unset and no patch splits until a world sets one. A member's
+  `patch` names its place, set only on a member split out of its cohort,
+  and cleared when it moves to another site (740). Sight casts a voxel
+  ray only at places within range of the eye, chosen by where they lie
+  rather than by passages, since sight crosses gaps a walk goes round
+  (741). The border clause: `border` classes each cell and span of a
+  bordered side as passes, climbs or stops, derived from both sites'
+  lifted columns, and `places::join` builds passages across the border
+  through the frame relation. A test checks every border cell of drawn
+  grids against the joined volumes, with a water-blind reading as the
+  control. Open questions: a derived span never stops at a cliff, since
+  both sides meet on one continuous profile, so a cliff that stops a
+  route needs drawn geometry in the lift; and the neck width has no
+  default.
 - **SP6, the store moves to nisus.** After T2 (ruling 363): baseline chunks
   land in nisus's world store and edits pass through its revision log
   (rulings 330 and 331), and `Ground` thins or retires as ruling 330 allows.
