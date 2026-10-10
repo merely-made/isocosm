@@ -9638,6 +9638,22 @@ what later sections derive from.
      directly. So one fetch of upstream kiss3d is allowed, 606's
      commit-by-name rule governs what comes in from balaur, and the mere
      crate takes a plain working name until a naming round.
+736. **Palette colours reach kiss3d as a texture addressed by UV.**
+     2026-10-09, from the renderling inventory. Evidence: kiss3d's meshes
+     carry no vertex colours (`resource/mesh3d.rs:143`), while Eponym's room
+     and body meshes carry one RGBA per vertex, about one per greedy quad
+     from isometer's palette. Options: a palette texture by UV
+     (recommended); a vertex-colour attribute in the fork. Mark chose
+     "Palette texture by UV (Recommended)". So the fork's diff stays
+     narrower and the colours map onto glTF's base-colour texture (§4.2).
+     *Reading, not ruled, from the same inventory:* 471's caller-target
+     entry also records into the caller's encoder with no internal submits
+     and returns an encode report, as netrender's opaque-tenant input
+     requires; the tenant crate's API uses its own plain types, so games
+     never see kiss3d's glam 0.33 beside their 0.30; rg3c's
+     renderling-specific counts are rewritten against that report after
+     the push (732). The inventory also found `field-bake` already retired
+     (`bb92f2e8`), leaving `ambience-lease` the one probe 474 archives.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
