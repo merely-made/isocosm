@@ -230,3 +230,21 @@ the bodies family.
   beside the store rather than to `isonetry`, its only caller, as "its game
   crate" (669). Forks put to Mark: how authored content enters native state,
   and authored factions against polities derived from members.
+- **2026-10-10, family 2, bodies, second pass (lane `lane-bodies-2`, under
+  732's compile gate; rulings 755 to 759).** Lineage data left isometer-core
+  (721, 756): its `Part` carries an opaque `origin: Option<u64>` and no mass
+  or provenance, its document no species; `centre_of_mass` takes a mass
+  reading. `SpeciesId`, `Origin`, `Provenance` and `LineageBody` (a document
+  with species, mass and provenance beside it per part) live in
+  `isocosm::lineage`, and legacy Mesocosm and Eponym keep their bodies as
+  `LineageBody` under the name `BodyDocument`. *Reading, not ruled:* the
+  tag is `Option<u64>`, the donor species plus one, rather than
+  wing-formats' `PartOrigin`, which would hold provenance a second time
+  beside the sidecar. The founding datasheets feed native (758): one parse
+  in `isocosm::datasheet`, lowered onto native kinds and recipes, which
+  `bodied::default_kinds` and `roster` read, and onto legacy recipes, which
+  legacy `Founding` names; native kinds take the sheets' names. Native
+  re-expressions for the world moves (755): `kingdom::of` and the
+  `rules::Compatibility` graft allowance. Put back as forks: mosaics (cell
+  identity and intake ports against native counts) and Eponym's needs and
+  wounds (counters against native accounts and checkpoint 10's wounds).
