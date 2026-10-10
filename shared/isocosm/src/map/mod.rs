@@ -62,6 +62,8 @@ pub fn default_materials() -> Vec<Material> {
         .map(|key| Material {
             key: key.into(),
             lineage: "world:ground".into(),
+            density: None,
+            account: None,
         })
         .collect()
 }
@@ -74,6 +76,16 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
     for material in &g.world.materials {
         if !named.insert(&material.key) || !g.lineages.contains_key(&material.lineage) {
             return Err("a material named twice or of an absent lineage".into());
+        }
+    }
+    for m in &g.world.materials {
+        let matter = |k: &Key| {
+            matches!(g.rules.accounts.get(k), Some(crate::rules::AccountKind::Matter { .. }))
+        };
+        match (&m.density, &m.account) {
+            (None, None) => {},
+            (Some(d), Some(k)) if *d > 0 && matter(k) => {},
+            _ => return Err("a material's density and matter account set apart".into()),
         }
     }
     if g.world.materials.len() > 256 {

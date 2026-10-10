@@ -475,6 +475,7 @@ pub(super) fn member(
         soma: vec![],
         systems: BTreeMap::new(),
         varied: vec![],
+        patch: None,
     }
 }
 

@@ -3,13 +3,20 @@
 
 //! In-site space through isometer (rulings 670 and 696): the sim keeps each
 //! edit as an asserted fact, and isometer lifts a site, applies the edits
-//! and derives its places. Edits enter through the dev source for now,
-//! outside the conserved total, and label the run assisted (ruling 412's
-//! reading, as ruling 271 has it for placed matter): carving into a
-//! carver's ledger waits on the world's densities.
+//! and derives its places. A member's edit moves matter through its own
+//! ledger by each material's density and account (rulings 412 and 739);
+//! the dev source edits outside the conserved total and labels the run
+//! assisted, and is the only editor of a material whose density is unset.
+//! A member may also name the patch or room it stands in (740).
 
-use crate::{Result, schema::*, simulation::Simulation, terrain::View};
-use isometer_space::{Atlas, Chunk, Edit, Op, edit::Moved, volume::Volume};
+use crate::{
+    Result,
+    meaning::{credit, debit},
+    schema::*,
+    simulation::Simulation,
+    terrain::View,
+};
+use isometer_space::{Atlas, Chunk, Edit, Op, edit::Moved, places::PlaceId, volume::Volume};
 
 impl Simulation {
     /// The world's sites as isometer reads them, with conditions as they
@@ -18,8 +25,7 @@ impl Simulation {
         View::over(&self.genesis, &self.state.sites)
     }
 
-    /// Asserts an edit to `site`'s volume, in its frame.
-    pub fn edit(&mut self, site: Id, edit: Edit) -> Result<()> {
+    fn admit(&self, site: Id, edit: &Edit) -> Result<()> {
         let atlas = self.atlas()?;
         if !self.state.sites.contains_key(&site) {
             return Err("unknown site".into());
@@ -30,8 +36,68 @@ impl Simulation {
         {
             return Err("a fill of no material".into());
         }
+        Ok(())
+    }
+
+    /// Asserts an edit to `site`'s volume, in its frame, by the dev source.
+    pub fn edit(&mut self, site: Id, edit: Edit) -> Result<()> {
+        self.admit(site, &edit)?;
         let tick = self.state.tick;
-        self.state.edits.push(Edited { tick, site, edit });
+        let by = None;
+        self.state.edits.push(Edited { tick, site, edit, by });
+        Ok(())
+    }
+
+    /// Asserts an edit by `actor`, standing in `site`: what it carves is
+    /// credited to its ledger and what it fills is debited, each material
+    /// by its density into its account. Refused whole if any material
+    /// moved has no density, or the actor cannot pay for a fill. The
+    /// actor is split out of its cohort, since its ledger now differs.
+    pub fn edit_by(&mut self, actor: Id, site: Id, edit: Edit) -> Result<()> {
+        self.admit(site, &edit)?;
+        let member = self.state.population.get(actor).ok_or("unknown actor")?;
+        if !member.alive || member.place != site {
+            return Err("an actor not standing in the site".into());
+        }
+        let mut ledger = member.accounts.clone();
+        let (mut gained, mut paid) = (Vec::new(), Vec::new());
+        for (id, cells) in self.moved(site, &edit)? {
+            let m = &self.genesis.world.materials[usize::from(id)];
+            let (Some(density), Some(account)) = (m.density, &m.account) else {
+                return Err(format!("{} has no density: the dev source only", m.key));
+            };
+            let amount = cells.unsigned_abs().checked_mul(density).ok_or("matter overflow")?;
+            match cells > 0 {
+                true => gained.push((account.clone(), amount)),
+                false => paid.push((account.clone(), amount)),
+            }
+        }
+        for (account, amount) in &gained {
+            credit(&mut ledger, account, *amount)?;
+        }
+        for (account, amount) in &paid {
+            debit(&mut ledger, account, *amount)?;
+        }
+        let sum = |legs: &[(Key, u64)]| legs.iter().map(|l| u128::from(l.1)).sum::<u128>();
+        let conserved = (self.conserved + sum(&gained))
+            .checked_sub(sum(&paid))
+            .ok_or("matter underflow")?;
+        self.state.population.lift(actor)?.accounts = ledger;
+        self.conserved = conserved;
+        let tick = self.state.tick;
+        let by = Some(actor);
+        self.state.edits.push(Edited { tick, site, edit, by });
+        Ok(())
+    }
+
+    /// Names the patch or room `entity` stands in, or none. The member is
+    /// split out of its cohort first, and the place must be in its site.
+    pub fn set_patch(&mut self, entity: Id, patch: Option<PlaceId>) -> Result<()> {
+        let member = self.state.population.get(entity).ok_or("unknown entity")?;
+        if patch.is_some_and(|p| p.site != member.place) {
+            return Err("a patch outside the entity's site".into());
+        }
+        self.state.population.lift(entity)?.patch = patch;
         Ok(())
     }
 

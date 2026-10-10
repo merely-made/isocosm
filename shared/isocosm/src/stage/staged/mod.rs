@@ -338,6 +338,7 @@ impl Staged<'_> {
                     });
                 }
                 entity.place = *destination;
+                entity.patch = None;
                 entity.arrived = tick;
             },
             Effect::Note {

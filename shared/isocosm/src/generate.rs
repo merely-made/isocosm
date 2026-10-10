@@ -367,6 +367,7 @@ impl Founding {
                     soma: vec![],
                     systems: BTreeMap::new(),
                     varied: vec![],
+                    patch: None,
                 },
                 1,
             )?;
@@ -414,6 +415,7 @@ impl Founding {
                     soma: vec![],
                     systems: BTreeMap::new(),
                     varied: vec![],
+                    patch: None,
                 },
                 count,
             )?;

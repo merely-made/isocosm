@@ -30,10 +30,19 @@ pub enum Command {
         account: Key,
         amount: u64,
     },
-    /// The dev source edits a site's volume (rulings 412 and 696).
+    /// An edit to a site's volume (rulings 412, 696 and 739): by a member,
+    /// through its ledger, or with none by the dev source.
     Edit {
         site: Id,
         edit: isometer_space::Edit,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        by: Option<Id>,
+    },
+    /// A game places a member in a patch or room of its site, or takes it
+    /// out (rulings 422 and 740).
+    Patch {
+        entity: Id,
+        patch: Option<isometer_space::places::PlaceId>,
     },
 }
 
@@ -203,8 +212,9 @@ impl Session {
     /// Whether a dev placed matter or edited a volume in this run: the run is assisted
     /// (ruling 271), read from the history, which is the record (ruling 344).
     pub fn assisted(&self) -> bool {
-        let placed =
-            |e: &Entry| matches!(e.command, Command::PlaceMatter { .. } | Command::Edit { .. });
+        let placed = |e: &Entry| {
+            matches!(e.command, Command::PlaceMatter { .. } | Command::Edit { by: None, .. })
+        };
         self.entries.iter().any(placed)
     }
     pub fn save(&self) -> Saved {
@@ -404,9 +414,16 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.place(*site, account, *amount)?;
             Ok("placed".into())
         },
-        Command::Edit { site, edit } => {
-            sim.edit(*site, edit.clone())?;
+        Command::Edit { site, edit, by } => {
+            match by {
+                None => sim.edit(*site, edit.clone())?,
+                Some(actor) => sim.edit_by(*actor, *site, edit.clone())?,
+            }
             Ok("edited".into())
+        },
+        Command::Patch { entity, patch } => {
+            sim.set_patch(*entity, *patch)?;
+            Ok("placed".into())
         },
     }
 }
