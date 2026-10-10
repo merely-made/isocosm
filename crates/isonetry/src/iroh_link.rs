@@ -25,7 +25,7 @@ use crate::protocol::{
     FNV_OFFSET, GameEvent, GameSnapshot, NetMessage, Outbound, PeerId, Recipient, fnv1a,
 };
 use crate::session::{ClientSession, HostSession};
-use isocosm::legacy::campaign::CampaignStore;
+use isometry_campaign::CampaignStore;
 use muniment::Journal;
 
 /// The session ALPN. Bumping it is a protocol break (old clients can't

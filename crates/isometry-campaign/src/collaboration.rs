@@ -95,10 +95,10 @@ impl CampaignProposal {
         match &self.mode {
             CampaignProposalMode::Create { campaign_id } if campaign_id.trim().is_empty() => {
                 Err(CampaignProposalError::MissingCampaignId)
-            }
+            },
             CampaignProposalMode::Branch { branch, .. } if branch.trim().is_empty() => {
                 Err(CampaignProposalError::MissingBranch)
-            }
+            },
             _ => Ok(()),
         }
     }
@@ -151,8 +151,7 @@ mod tests {
         for mode in modes {
             let bytes = postcard::to_allocvec(&mode).expect("encode proposal mode");
             assert_eq!(
-                postcard::from_bytes::<CampaignProposalMode>(&bytes)
-                    .expect("decode proposal mode"),
+                postcard::from_bytes::<CampaignProposalMode>(&bytes).expect("decode proposal mode"),
                 mode
             );
         }

@@ -11,7 +11,7 @@ pub enum CampaignSpaceError {
     #[error("campaign operation addresses another campaign or branch")]
     WrongSpace,
     #[error("campaign proposal is invalid: {0:?}")]
-    InvalidProposal(isocosm::legacy::campaign::CampaignProposalError),
+    InvalidProposal(isometry_campaign::CampaignProposalError),
     #[error("campaign governance proposal is invalid: {0}")]
     InvalidGovernance(CampaignGovernanceError),
     #[error("campaign governance resolution is invalid: {0}")]

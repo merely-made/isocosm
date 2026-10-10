@@ -5,9 +5,13 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
-description = "The VTT's half of the campaign layer: generated campaign maps lowered into the substrate documents peers replicate. The campaign data itself lives in the Isocosm sim."
+description = "The VTT's half of the campaign layer: generated campaign maps lowered into the substrate documents peers replicate, the host-private campaign store and the proposal lifecycle. The campaign data itself lives in the Isocosm sim."
 
 [dependencies]
 isocosm = { workspace = true }
 isometry-core = { workspace = true }
 serde = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+postcard = { workspace = true }

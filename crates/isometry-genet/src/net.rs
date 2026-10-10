@@ -8,7 +8,8 @@ use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
 
 use armillary::{ActorHandle, Correlated, Emitter, RequestId, RequestIds, Wake};
-use isocosm::legacy::campaign::{CampaignStore, GenerationRecord};
+use isocosm::legacy::campaign::GenerationRecord;
+use isometry_campaign::CampaignStore;
 use isometry_core::TokenId;
 use isonetry::iroh_link::{ClientNet, HostNet};
 use isonetry::{ActionIntent, GameEvent, GameSnapshot};

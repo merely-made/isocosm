@@ -1,7 +1,14 @@
 //! The VTT's half of the campaign layer (ruling 598): generated maps lowered
-//! into the substrate document peers replicate. The campaign data, and every
-//! check lowering makes, live in the sim at `isocosm::legacy::campaign`
-//! (rulings 591, 599); this crate only builds the VTT's documents.
+//! into the substrate document peers replicate, and the host-private store and
+//! proposal lifecycle the sim's laws exclude, handed back (ruling 669). The
+//! campaign data, and every check lowering makes, live in the sim at
+//! `isocosm::legacy::campaign` (rulings 591, 599).
+
+mod collaboration;
+mod store;
+
+pub use collaboration::{CampaignProposal, CampaignProposalError, CampaignProposalMode};
+pub use store::CampaignStore;
 
 use isocosm::legacy::campaign::{
     DraftMap, EncounterAnchor, LocalMapProposal, MapProposalError, MapScale, MapTransition,

@@ -7,17 +7,18 @@
 use std::collections::HashMap;
 
 use isocosm::legacy::campaign::{
-    CampaignStore, FactionMove, GenerationRecord, GenerationRecordError, InventoryError, ItemId,
-    ItemInstance, ItemModifierReveal, MapScale, StoryletEffect, StoryletProposal, WorldError,
-    WorldEvent, WorldFact,
+    FactionMove, GenerationRecord, GenerationRecordError, InventoryError, ItemId, ItemInstance,
+    ItemModifierReveal, MapScale, StoryletEffect, StoryletProposal, WorldError, WorldEvent,
+    WorldFact,
 };
+use isometry_campaign::CampaignStore;
 use isometry_campaign::{LowerDraftMap, LowerMap};
 use isometry_core::{EventError, TileCoord, TokenId, apply};
 use muniment::Journal;
 
 use crate::protocol::{
-    fold_event, ActionIntent, GameEvent, GameSnapshot, NetMessage, Outbound, PeerId, Recipient,
-    RequestId, FNV_OFFSET, PROTOCOL_VERSION,
+    ActionIntent, FNV_OFFSET, GameEvent, GameSnapshot, NetMessage, Outbound, PROTOCOL_VERSION,
+    PeerId, Recipient, RequestId, fold_event,
 };
 
 mod apply;
@@ -30,7 +31,7 @@ mod travel;
 // file kept the shared imports they read through `use super::*`. Re-exported
 // here so the session layer's surface is unchanged: `lib.rs` still publishes
 // exactly these four names.
-pub use apply::{apply_game, GameError};
+pub use apply::{GameError, apply_game};
 pub use client::ClientSession;
 pub use host::HostSession;
 pub use travel::{resolve_transition, resolve_transition_for_party};

@@ -10,10 +10,10 @@
 //! what a peer is thereby spared from working out.
 
 use isocosm::legacy::campaign::{
-    CampaignStore, EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale,
-    MapTransition,
+    EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale, MapTransition,
 };
 use isometry_campaign::CampaignMap;
+use isometry_campaign::CampaignStore;
 use isometry_core::{Facing, MapDocument, SessionEvent, SheetData, Token, TokenId, TurnList};
 use isonetry::sim::Sim;
 use isonetry::{

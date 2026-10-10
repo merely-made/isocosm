@@ -362,6 +362,16 @@ V1 is Mark's.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+- 2026-10-09: §4's absorption begun under 732's compile gate (lane
+  `lane-campaign`; no tests, draws or receipts run). The last row went first,
+  by 669 rather than §4's destination: the store and proposals (360 lines)
+  are handed back to `isometry-campaign`. The rest stays in
+  `isocosm::legacy::campaign` (3,950 lines), each piece waiting on its
+  family: the record, bodies, places, native founding, or an assertion path
+  native lacks. The faction turn retires at V2 (247), so the legacy copy
+  cannot leave in full before then. The detail and the forks are in the
+  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  Progress.
 - 2026-09-26: V1 done. Ruling 253 opened E1 and V1 as contract modules
   only; `src/vtt/` was built in a worktree, reviewed and merged by the
   Simulation design review session (main 1996ecc), then the shapes shared
