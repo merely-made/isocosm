@@ -10,9 +10,9 @@ use crate::legacy::mesocosm::body::Origin;
 use crate::legacy::mesocosm::discovery::{Evidence, Stress, conditions};
 use crate::legacy::mesocosm::graft::compatibility::{Compatibility, ConditionAllowance};
 use crate::legacy::mesocosm::graft::{Crossing, Domain, Verdict};
-use crate::legacy::mesocosm::matter::Stock;
 use crate::legacy::mesocosm::rules::WorldRules;
 use crate::legacy::mesocosm::{OrganismId, Outcome, Rejection, SpeciesId, state_hash};
+use crate::matter::Stock;
 
 use super::super::World;
 use super::fixture;

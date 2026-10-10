@@ -141,10 +141,10 @@ pub const STARVED_UPKEEP_TICKS: u64 = 100;
 /// natives, and a world decoded outside [`super::snapshot::restore_under`] gets
 /// them too — that raw door is documented as a same-process round trip, and the
 /// checked one replaces this with whatever the caller admitted.
-pub fn native_ruleset() -> std::sync::Arc<super::process::Registry> {
-    static NATIVE: std::sync::LazyLock<std::sync::Arc<super::process::Registry>> =
+pub fn native_ruleset() -> std::sync::Arc<crate::process::Registry> {
+    static NATIVE: std::sync::LazyLock<std::sync::Arc<crate::process::Registry>> =
         std::sync::LazyLock::new(|| {
-            std::sync::Arc::new(super::process::Registry::native().clone())
+            std::sync::Arc::new(crate::process::Registry::native().clone())
         });
     std::sync::Arc::clone(&NATIVE)
 }
@@ -182,7 +182,7 @@ pub struct World {
     /// checks the digest before it attaches anything. Skipping it also means
     /// PD4 moved no state hash.
     #[serde(skip, default = "native_ruleset")]
-    ruleset: std::sync::Arc<super::process::Registry>,
+    ruleset: std::sync::Arc<crate::process::Registry>,
     rng: Rng,
     /// Which organism the player is, if any.
     ///
@@ -542,7 +542,7 @@ impl World {
         if !revising {
             self.at_boundary = false;
         }
-        if !self.scoring && (demanded || self.rules.epoch.spent(self.tick - self.epoch_began)) {
+        if !self.scoring && (demanded || self.rules.epoch_spent(self.tick - self.epoch_began)) {
             self.epoch += 1;
             self.epoch_began = self.tick;
             // Set before the round, so every unplayed line commits through the
@@ -563,19 +563,19 @@ impl World {
     ///
     /// The set [`Self::rules`] is the identity of, and the only ruleset any
     /// development on a body in this world is validated against.
-    pub fn ruleset(&self) -> &super::process::Registry {
+    pub fn ruleset(&self) -> &crate::process::Registry {
         &self.ruleset
     }
 
     /// The same set, shareable, for a host that has to hand it somewhere.
-    pub fn admitted(&self) -> std::sync::Arc<super::process::Registry> {
+    pub fn admitted(&self) -> std::sync::Arc<crate::process::Registry> {
         std::sync::Arc::clone(&self.ruleset)
     }
 
     /// Re-attaches a decoded world's definitions. **Crate-private, and only
     /// [`super::snapshot::restore_under`] calls it** — which has already
     /// compared the digest, so this cannot swap a living world's biology.
-    pub(crate) fn reattach_ruleset(&mut self, ruleset: std::sync::Arc<super::process::Registry>) {
+    pub(crate) fn reattach_ruleset(&mut self, ruleset: std::sync::Arc<crate::process::Registry>) {
         self.ruleset = ruleset;
     }
 }

@@ -42,9 +42,10 @@ fn out_of_reach_organisms_are_refused() {
     assert!(
         matches!(
             outcome,
-            Outcome::Rejected(Rejection::OutOfReach(
-                crate::legacy::mesocosm::process::Unmet::TooFar { distance: 500, .. }
-            ))
+            Outcome::Rejected(Rejection::OutOfReach(crate::process::Unmet::TooFar {
+                distance: 500,
+                ..
+            }))
         ),
         "got {outcome:?}"
     );

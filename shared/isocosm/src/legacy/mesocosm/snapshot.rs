@@ -38,8 +38,8 @@ pub enum SnapshotError {
     /// and a ruleset that does not hold them would resolve `None` on every
     /// tract and quietly simulate a body that expresses nothing.
     Ruleset {
-        expected: crate::legacy::mesocosm::rules::RulesetDigest,
-        found: crate::legacy::mesocosm::rules::RulesetDigest,
+        expected: crate::process::RulesetDigest,
+        found: crate::process::RulesetDigest,
     },
     /// The save ran under different world rules than the ones offered, and the
     /// biology is not what they differ about. (PE3)
@@ -82,7 +82,7 @@ pub fn restore(bytes: &[u8]) -> Result<World, SnapshotError> {
 /// restore a world holding definitions it did not admit.
 pub fn restore_under(
     bytes: &[u8],
-    ruleset: std::sync::Arc<crate::legacy::mesocosm::process::Registry>,
+    ruleset: std::sync::Arc<crate::process::Registry>,
 ) -> Result<World, SnapshotError> {
     let mut world = decode::<World>(bytes)?;
     let offered = crate::legacy::mesocosm::rules::WorldRules::of(&ruleset);
@@ -144,9 +144,7 @@ mod tests {
         let before = world
             .organisms
             .iter()
-            .find(|organism| {
-                organism.feeding_mode() == crate::legacy::mesocosm::process::FeedingMode::Omnivore
-            })
+            .find(|organism| organism.feeding_mode() == crate::process::FeedingMode::Omnivore)
             .expect("the roster has one")
             .id;
         let restored = restore(&snapshot(&world).unwrap()).unwrap();
@@ -157,10 +155,10 @@ mod tests {
             .unwrap();
         assert_eq!(
             omnivore.feeding_mode(),
-            crate::legacy::mesocosm::process::FeedingMode::Omnivore
+            crate::process::FeedingMode::Omnivore
         );
-        assert!(omnivore.admits(crate::legacy::mesocosm::process::NisKind::Producer, false));
-        assert!(omnivore.admits(crate::legacy::mesocosm::process::NisKind::Consumer, false));
+        assert!(omnivore.admits(crate::process::NisKind::Producer, false));
+        assert!(omnivore.admits(crate::process::NisKind::Consumer, false));
     }
 
     #[test]
@@ -195,8 +193,7 @@ mod tests {
         // has to be one.
         let mut defs: Vec<_> = world.ruleset().all().cloned().collect();
         defs.retain(|def| def.id.name != "secrete");
-        let other =
-            std::sync::Arc::new(crate::legacy::mesocosm::process::Registry::admit(defs).unwrap());
+        let other = std::sync::Arc::new(crate::process::Registry::admit(defs).unwrap());
         let found = crate::legacy::mesocosm::rules::WorldRules::of(&other).processes;
         assert_eq!(
             restore_under(&bytes, other),
@@ -213,9 +210,7 @@ mod tests {
     #[test]
     fn a_restore_under_a_different_epoch_rule_is_refused_by_name() {
         let native = crate::legacy::mesocosm::rules::WorldRules::native();
-        let brisk = World::new(31, 10).with_rules(
-            native.ending(crate::legacy::mesocosm::rules::EpochRule::Timed { ticks: 250 }),
-        );
+        let brisk = World::new(31, 10).with_rules(native.timed(250));
         assert_ne!(brisk.rules().digest(), native.digest());
         assert_eq!(
             brisk.rules().processes,

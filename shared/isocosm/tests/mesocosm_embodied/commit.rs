@@ -74,14 +74,13 @@ fn a_revision_this_world_could_never_express_is_refused_at_the_commit() {
     // development would then refuse `UnknownProcess` forever. So the commit
     // refuses once instead: a program that can never be expressed is not a
     // program, and this is the honest place to say so.
-    let mut defs: Vec<_> = isocosm::legacy::mesocosm::Registry::native()
+    let mut defs: Vec<_> = isocosm::process::Registry::native()
         .all()
         .cloned()
         .collect();
     defs.retain(|def| def.id.name != "secrete");
-    let without = std::sync::Arc::new(
-        isocosm::legacy::mesocosm::Registry::admit(defs).expect("no collision"),
-    );
+    let without =
+        std::sync::Arc::new(isocosm::process::Registry::admit(defs).expect("no collision"));
     let mut world =
         World::founded_on(4_242, 24, Founding::default(), without).expect("the palette is valid");
 

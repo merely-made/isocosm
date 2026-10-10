@@ -14,7 +14,7 @@
 
 use isocosm::legacy::mesocosm::discovery::HUNGER_TICKS;
 use isocosm::legacy::mesocosm::history::Event;
-use isocosm::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::{
     Appendage, ConditionId, Intent, OrganismId, Outcome, Recipe, Role, SpeciesId, Stage, Tagma,
     Unexpressed, Untakeable, World,
@@ -31,11 +31,7 @@ fn plate_recipe() -> Recipe {
 
 /// Stands a world at its lineage checkpoint, on a budget a test can afford.
 fn at_the_checkpoint(world: World) -> World {
-    let mut world = world.with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 1 })
-            .scoring_over(4),
-    );
+    let mut world = world.with_rules(WorldRules::native().timed(1).scoring_over(4));
     world.apply(Intent::Idle);
     assert!(world.at_boundary(), "a one-tick budget is spent every tick");
     world

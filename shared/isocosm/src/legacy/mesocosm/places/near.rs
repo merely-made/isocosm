@@ -20,8 +20,6 @@
 
 use std::collections::{BTreeMap, VecDeque};
 
-use serde::{Deserialize, Serialize};
-
 use crate::legacy::mesocosm::body::Aabb;
 
 use super::Places;
@@ -282,34 +280,9 @@ pub fn surface_stance_for(
     shape.stands(ground, at).then_some(at)
 }
 
-/// Which mind runs an agent: embodied, or the statistical ecology.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Tier {
-    #[default]
-    Near,
-    Far,
-}
-
-/// The tier boundary with hysteresis. Promote when an agent's place
-/// comes within `promote_hops` of the focus; demote only past
-/// `demote_hops`. The band between is memory.
-#[derive(Clone, Copy, Debug)]
-pub struct TierLine {
-    pub promote_hops: u32,
-    pub demote_hops: u32,
-}
-
-impl Default for TierLine {
-    fn default() -> Self {
-        Self {
-            promote_hops: 1,
-            // The standard enclosure is a 3x3 graph with diameter two. A
-            // threshold of three would make the far tier unreachable in the
-            // shipped world, so the outer ring is the demotion boundary.
-            demote_hops: 2,
-        }
-    }
-}
+// The tier line lives in directing now (ruling 742); legacy reads hops
+// over its own places.
+pub use crate::directing::{Tier, TierLine};
 
 impl TierLine {
     /// The next tier, given where the agent and the focus are.
@@ -317,12 +290,7 @@ impl TierLine {
         let (Some(a), Some(f)) = (places.at(agent), places.at(focus)) else {
             return current;
         };
-        let hops = places.hops(a, f).unwrap_or(u32::MAX);
-        match current {
-            Tier::Far if hops <= self.promote_hops => Tier::Near,
-            Tier::Near if hops >= self.demote_hops => Tier::Far,
-            _ => current,
-        }
+        self.next(current, places.hops(a, f))
     }
 }
 

@@ -12,9 +12,8 @@
 //! this struct is not visible to an author, which is how "scripts cannot
 //! inspect hidden world state" is enforced rather than asked for.
 
-use isocosm::legacy::mesocosm::{
-    BodyPhenotype, ConditionId, Registry, RulesetDigest, World, classify,
-};
+use isocosm::legacy::mesocosm::{BodyPhenotype, ConditionId, World, classify};
+use isocosm::process::{Registry, RulesetDigest};
 use serde::{Deserialize, Serialize};
 
 /// Why the host is asking. (Plan §4's bounded triggers.)

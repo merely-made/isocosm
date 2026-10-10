@@ -196,6 +196,44 @@ pub struct Relation {
     pub subject: Id,
     pub kind: Key,
     pub object: Id,
+    /// Its weight, as a bond's (ruling 688): one relation per subject, kind
+    /// and object whatever its value; nought in older saves, which
+    /// serialize and hash as before.
+    #[serde(default, skip_serializing_if = "is_nought")]
+    pub value: i64,
+}
+
+impl Relation {
+    pub fn new(subject: Id, kind: impl Into<Key>, object: Id) -> Self {
+        Self {
+            subject,
+            kind: kind.into(),
+            object,
+            value: 0,
+        }
+    }
+    /// Whether `other` is this relation, whatever either's value.
+    pub fn same(&self, other: &Relation) -> bool {
+        (self.subject, &self.kind, self.object) == (other.subject, &other.kind, other.object)
+    }
+}
+
+/// The relation `subject` holds of kind `kind` to `object`, whatever its value.
+pub fn related<'a>(
+    relations: &'a BTreeSet<Relation>,
+    subject: Id,
+    kind: &str,
+    object: Id,
+) -> Option<&'a Relation> {
+    let at = |value| Relation {
+        value,
+        ..Relation::new(subject, kind, object)
+    };
+    relations.range(at(i64::MIN)..=at(i64::MAX)).next()
+}
+
+fn is_nought(value: &i64) -> bool {
+    *value == 0
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

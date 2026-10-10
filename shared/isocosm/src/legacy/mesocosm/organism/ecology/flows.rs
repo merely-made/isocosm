@@ -13,8 +13,8 @@
 //! that each of them also has to say what it did.
 
 use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
-use crate::legacy::mesocosm::matter::Stock;
 use crate::legacy::mesocosm::soil::Soil;
+use crate::matter::Stock;
 
 use super::{Organism, STARVED_UPKEEP_TICKS};
 

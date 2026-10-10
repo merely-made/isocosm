@@ -10,7 +10,7 @@ use crate::legacy::mesocosm::discovery::ConditionId;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::{OrganismId, Stage};
 use crate::legacy::mesocosm::program::RevisionId;
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
 
 use super::{Founding, Intent, Outcome, World};
 
@@ -95,9 +95,7 @@ impl World {
         let base = Self::expression_practice(seed, founding, palette)?;
         let parent = base.controlled_id().expect("practice body is controlled");
         let condition = hunger();
-        let rules = WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 1 })
-            .scoring_over(2);
+        let rules = WorldRules::native().timed(1).scoring_over(2);
         let species = base.controlled().expect("controlled").species;
         let mut base = base.with_rules(rules);
         // The plate is an authored starting shape shared by both
@@ -200,7 +198,7 @@ impl World {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::legacy::mesocosm::process::{Process, Registry};
+    use crate::process::{Process, Registry};
 
     #[test]
     fn proof_separates_somatic_acquisition_from_filial_expression() {

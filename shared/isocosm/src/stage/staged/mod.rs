@@ -321,6 +321,7 @@ impl Staged<'_> {
                     subject: actor,
                     kind: kind.clone(),
                     object: target.ok_or("target required")?,
+                    value: 0,
                 };
                 self.stage.relations.push((relation, *present));
             },
@@ -385,6 +386,7 @@ impl Staged<'_> {
                     subject: id,
                     object: actor,
                     kind: "sim:parent".into(),
+                    value: 0,
                 };
                 self.stage.relations.push((parent, true));
                 // The child's matter is its parent's, moved (ruling 345).

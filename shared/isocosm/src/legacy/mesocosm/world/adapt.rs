@@ -249,7 +249,7 @@ impl World {
     }
 
     /// What ends an epoch here.
-    pub fn epoch_rule(&self) -> crate::legacy::mesocosm::rules::EpochRule {
+    pub fn epoch_rule(&self) -> crate::rules::EpochRule {
         self.rules.epoch
     }
 

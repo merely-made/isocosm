@@ -204,8 +204,8 @@ pub(crate) fn condition_word(condition: isocosm::legacy::mesocosm::ConditionId) 
         .unwrap_or_else(|| "a condition this world does not hold".to_string())
 }
 
-fn process_word(process: isocosm::legacy::mesocosm::ProcessRef) -> String {
-    isocosm::legacy::mesocosm::Registry::native()
+fn process_word(process: isocosm::process::ProcessRef) -> String {
+    isocosm::process::Registry::native()
         .resolve(process)
         .map(|def| def.id.name.clone())
         .unwrap_or_else(|| "an unknown process".to_string())

@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::legacy::mesocosm::{BodyDocument, Yaw, matter::Stock};
+use crate::legacy::mesocosm::{BodyDocument, Yaw};
+use crate::matter::Stock;
 
 #[test]
 fn every_graft_lowering_carries_donor_stock_without_changing_body_profile_bytes() {
@@ -45,7 +46,7 @@ fn every_graft_lowering_carries_donor_stock_without_changing_body_profile_bytes(
         let before = recipient.total_stock().unwrap();
         let graft = recipient
             .receive(
-                crate::legacy::mesocosm::process::Registry::native(),
+                crate::process::Registry::native(),
                 &branch,
                 Attachment {
                     parent: recipient.body().root,
@@ -108,7 +109,7 @@ fn a_hand_built_cutting_cannot_claim_more_stock_than_mass() {
     assert!(
         donor
             .receive(
-                crate::legacy::mesocosm::process::Registry::native(),
+                crate::process::Registry::native(),
                 &branch,
                 Attachment {
                     parent: root,

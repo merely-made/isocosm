@@ -37,9 +37,9 @@
 use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::body::Part;
-use crate::legacy::mesocosm::matter::{Material, Stock};
 use crate::legacy::mesocosm::plan::classify;
-use crate::legacy::mesocosm::process::{IntakePort, ProcessRef, Registry};
+use crate::matter::{Material, Stock};
+use crate::process::{IntakePort, ProcessRef, Registry};
 
 /// A cell's address inside one part's mosaic. Stable, never reused.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]

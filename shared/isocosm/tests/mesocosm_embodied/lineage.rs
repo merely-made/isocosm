@@ -19,7 +19,7 @@
 use isocosm::legacy::mesocosm::discovery::HUNGER_TICKS;
 use isocosm::legacy::mesocosm::history::Event;
 use isocosm::legacy::mesocosm::program::{Conditions, Founder, RevisionId};
-use isocosm::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::{
     Appendage, ConditionId, Founding, Intent, OrganismId, Outcome, Recipe, Stage, Tagma, World,
 };
@@ -50,11 +50,7 @@ fn bare_recipe() -> Recipe {
 /// test is not about. A one-tick budget makes every tick a boundary; the
 /// scoring window comes down with it so the rounds it fires are cheap.
 pub(super) fn at_the_checkpoint(world: World) -> World {
-    let mut world = world.with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 1 })
-            .scoring_over(2),
-    );
+    let mut world = world.with_rules(WorldRules::native().timed(1).scoring_over(2));
     world.apply(Intent::Idle);
     assert!(world.at_boundary(), "a one-tick budget is spent every tick");
     world

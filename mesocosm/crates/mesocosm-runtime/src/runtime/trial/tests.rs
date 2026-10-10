@@ -376,8 +376,9 @@ fn a_world_after_core_deep_time_trials_without_reckoning_and_replays() {
     let source = World::new(7, 60);
     let rules = source.rules();
     let mut world = source.with_rules(isocosm::legacy::mesocosm::WorldRules {
-        epoch: isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: 20 },
-        deep_time: isocosm::legacy::mesocosm::DeepTimeSpan { epochs: 2 },
+        epoch: isocosm::rules::EpochRule::Timed,
+        epoch_ticks: 20,
+        deep_time: isocosm::rules::DeepTimeSpan { epochs: 2 },
         ..rules
     });
     let mut history = History::new();

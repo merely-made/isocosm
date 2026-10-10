@@ -16,11 +16,13 @@
 //! embodied requirement went unmet. Nothing here edits a capability number,
 //! because there is no capability number to edit.
 
+use isocosm::legacy::mesocosm::BodyOrgans;
 use isocosm::legacy::mesocosm::{
-    Attachment, Capability, IntakePort, Intent, NisKind, OrganismId, Outcome, Placement, Process,
-    ProcessRef, Provenance, Registry, Rejection, Unmet, VolumeRef, World, Yaw,
+    Attachment, Intent, OrganismId, Outcome, Placement, Provenance, Rejection, VolumeRef, World,
+    Yaw,
 };
-use isocosm::legacy::mesocosm::{BodyOrgans, BodyProcesses};
+use isocosm::process::BodyProcesses;
+use isocosm::process::{Capability, IntakePort, NisKind, Process, ProcessRef, Registry, Unmet};
 
 // An integration test's crate root resolves `mod` against `tests/`, and a
 // bare `tests/allocation.rs` would become a second test binary. The explicit

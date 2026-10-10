@@ -43,11 +43,12 @@ use std::collections::BTreeMap;
 use std::time::Instant;
 
 use isocosm::legacy::mesocosm::places::Tier;
-use isocosm::legacy::mesocosm::rules::{DeepTimeSpan, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::world::generation::Request;
 use isocosm::legacy::mesocosm::{
     Founding, History, Intent, Kingdom, OrganismId, Stage, World, restore, snapshot, state_hash,
 };
+use isocosm::rules::DeepTimeSpan;
 
 fn main() {
     let raw: Vec<String> = std::env::args().skip(1).collect();

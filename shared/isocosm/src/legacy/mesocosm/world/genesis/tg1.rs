@@ -8,14 +8,14 @@
 
 use super::*;
 use crate::legacy::mesocosm::phenotype::BodyPhenotype;
-use crate::legacy::mesocosm::process::{FeedingMode, NisKind};
 use crate::legacy::mesocosm::program::{Conditions, Founder};
+use crate::process::{FeedingMode, NisKind};
 
 fn declared_ports(
     phenotype: &BodyPhenotype,
 ) -> Vec<(
     crate::legacy::mesocosm::body::PartId,
-    crate::legacy::mesocosm::process::IntakePort,
+    crate::process::IntakePort,
 )> {
     phenotype
         .body()

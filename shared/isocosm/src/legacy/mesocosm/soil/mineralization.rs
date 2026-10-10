@@ -4,7 +4,7 @@
 //! Bounded conversion of retained soil nis into root-accessible stock.
 
 use super::{Column, Soil};
-use crate::legacy::mesocosm::matter::{Material, Stock};
+use crate::matter::{Material, Stock};
 
 impl Soil {
     /// Converts at most `dose_mg` of retained nis in each column to untyped

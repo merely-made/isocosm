@@ -4,9 +4,9 @@
 use super::*;
 use crate::legacy::mesocosm::{
     flow::{Account, Conversion},
-    matter::{Material, Stock},
     snapshot,
 };
+use crate::matter::{Material, Stock};
 
 #[test]
 fn mixed_soil_reconciles_completed_returns_and_snapshot_replay_per_channel() {

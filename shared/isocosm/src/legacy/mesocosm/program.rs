@@ -21,7 +21,7 @@
 //! programs](../../design_docs/2026-08-01_processdef_plan.md): a **development
 //! program**, run at a named discrete trigger, proposing through the existing
 //! atomic validator. PE2 built the first (the condition program); the third is
-//! [`ProcessDef`](crate::legacy::mesocosm::process::ProcessDef).
+//! [`ProcessDef`](crate::process::ProcessDef).
 //!
 //! # Revisions append; nothing edits one
 //!
@@ -56,8 +56,8 @@ use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette};
 use crate::legacy::mesocosm::discovery::{Candidate, ConditionId, Discovery};
 use crate::legacy::mesocosm::phenotype::{Arrangement, BodyPhenotype, Refusal};
 use crate::legacy::mesocosm::plan::{Role, classify};
-use crate::legacy::mesocosm::process::{ProcessRef, Registry};
 use crate::legacy::mesocosm::species::Species;
+use crate::process::{ProcessRef, Registry};
 
 /// Where a revision sits in one lineage's program.
 ///
@@ -99,7 +99,7 @@ impl Citation {
 /// predict. What it names is the shape the tract needs, which is exactly what
 /// [`Candidate`] names and what [`ProcessDef::admits`] gates.
 ///
-/// [`ProcessDef::admits`]: crate::legacy::mesocosm::process::ProcessDef::admits
+/// [`ProcessDef::admits`]: crate::process::ProcessDef::admits
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DeclaredTract {
     /// The shape a part must classify as to carry it.

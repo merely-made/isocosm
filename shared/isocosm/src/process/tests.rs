@@ -10,9 +10,7 @@
 //! half added process references and definition digests.
 
 use super::*;
-use crate::legacy::mesocosm::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::ShapeProcesses;
+use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 
 /// A bulk root, with an optional long limb reaching out along +x.
 fn critter(limb: bool) -> (BodyDocument, Option<PartId>) {
@@ -255,7 +253,7 @@ fn a_rule_bearing_byte_changes_the_digest() {
     // And the PD2 byte is rule-bearing too: a world whose plates grew glands
     // is a different world, so it cannot answer to the same address.
     let ungrown = ProcessDef {
-        seeding: crate::legacy::mesocosm::process::Seeding::Acquired,
+        seeding: Seeding::Acquired,
         ..contract.clone()
     };
     assert_ne!(contract.digest(), ungrown.digest());
@@ -311,4 +309,22 @@ fn a_plate_is_not_an_actuator() {
     // It bought the other thing, which is the DC1.5 half: area against the
     // world is what fixing is, and it is still not an arm.
     assert!(body.performs(Process::Fix), "and a plate fixes");
+}
+
+#[test]
+fn declaration_order_is_not_rule_bearing() {
+    // A manifest may list its files in any order and lower to one ruleset.
+    let mut reversed: Vec<_> = Registry::native().all().cloned().collect();
+    reversed.reverse();
+    let admitted = Registry::admit(reversed).expect("no collision");
+    assert_eq!(admitted, *Registry::native(), "canonical order is restored");
+    assert_eq!(admitted.digest(), Registry::native().digest());
+}
+
+#[test]
+fn a_repeated_qualified_id_is_refused() {
+    let mut defs: Vec<_> = Registry::native().all().cloned().collect();
+    let clash = defs[0].clone();
+    defs.push(clash.clone());
+    assert_eq!(Registry::admit(defs), Err(clash.id));
 }

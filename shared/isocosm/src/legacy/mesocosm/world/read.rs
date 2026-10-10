@@ -16,11 +16,11 @@ use std::collections::{BTreeMap, BTreeSet};
 use crate::legacy::mesocosm::body::{Aabb, BodyDocument, SpeciesId};
 use crate::legacy::mesocosm::organism::{Organism, OrganismId};
 use crate::legacy::mesocosm::places::{PlaceId, Places};
-use crate::legacy::mesocosm::process::Unmet;
 use crate::legacy::mesocosm::record::WorldRecord;
+use crate::process::Unmet;
 
 use super::{Ineligible, World};
-use crate::legacy::mesocosm::process::BodyProcesses;
+use crate::process::BodyProcesses;
 
 impl World {
     /// What the most recent tick did to the enclosure.

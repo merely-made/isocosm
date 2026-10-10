@@ -27,7 +27,8 @@ pub(crate) fn deep_time_world(
     let world = World::new(seed, organisms);
     let rules = world.rules();
     let mut world = world.with_rules(isocosm::legacy::mesocosm::WorldRules {
-        epoch: isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: epoch_ticks },
+        epoch: isocosm::rules::EpochRule::Timed,
+        epoch_ticks: epoch_ticks,
         ..rules
     });
     let mut history = History::new();

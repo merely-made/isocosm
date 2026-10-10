@@ -12,7 +12,7 @@ fn roots_rank_available_nutrients_and_leave_pending_nis() {
     let mut soil = Soil::seeded(1, 0);
     let centre = soil.column_at([0, 0, 0]);
     let rich = soil.column_at([1, 0, 0]);
-    let pending = Stock::single(crate::legacy::mesocosm::matter::Material::Producer, 1000);
+    let pending = Stock::single(crate::matter::Material::Producer, 1000);
     soil.deposit_stock(centre, pending).unwrap();
     soil.deposit(rich, 5);
     assert_eq!(soil.draw_richest_within(centre, 1, 100), 5);
@@ -101,10 +101,7 @@ fn typed_deposit_rejects_overflow_without_changing_the_column() {
     let before = soil.stock(column);
 
     assert_eq!(
-        soil.deposit_stock(
-            column,
-            Stock::single(crate::legacy::mesocosm::matter::Material::Producer, 3)
-        ),
+        soil.deposit_stock(column, Stock::single(crate::matter::Material::Producer, 3)),
         Err(SoilError::TotalOverflow { column })
     );
     assert_eq!(soil.stock(column), before);
@@ -117,15 +114,12 @@ fn typed_deposit_rejects_global_overflow_without_changing_either_column() {
     let second = soil.column_at([0, 0, -1]);
     soil.deposit_stock(
         first,
-        Stock::single(crate::legacy::mesocosm::matter::Material::Untyped, u64::MAX),
+        Stock::single(crate::matter::Material::Untyped, u64::MAX),
     )
     .unwrap();
 
     assert_eq!(
-        soil.deposit_stock(
-            second,
-            Stock::single(crate::legacy::mesocosm::matter::Material::Producer, 1)
-        ),
+        soil.deposit_stock(second, Stock::single(crate::matter::Material::Producer, 1)),
         Err(SoilError::GlobalTotalOverflow)
     );
     assert_eq!(soil.stock(first).amounts(), [u64::MAX, 0, 0, 0]);

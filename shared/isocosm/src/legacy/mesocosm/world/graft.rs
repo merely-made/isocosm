@@ -190,10 +190,9 @@ impl World {
         let stock = branch
             .parts
             .iter()
-            .try_fold(
-                crate::legacy::mesocosm::matter::Stock::EMPTY,
-                |total, part| total.checked_add(part.stock),
-            )
+            .try_fold(crate::matter::Stock::EMPTY, |total, part| {
+                total.checked_add(part.stock)
+            })
             .expect("a harvested branch fits its donor mass");
 
         // The source loses the branch only after the checked candidate lands.

@@ -29,7 +29,7 @@ mod tests {
     use crate::legacy::mesocosm::body::{BodyDocument, Part, SpeciesId, VolumeRef};
     use crate::legacy::mesocosm::development::{develop_body, minimum_body_mass_mg};
     use crate::legacy::mesocosm::organism::Kingdom;
-    use crate::legacy::mesocosm::process::FeedingMode;
+    use crate::process::FeedingMode;
 
     // The foot's and the broad leaf's tags in the jointed and spaced sheets.
     const FOOT_VOLUME_TAG: u8 = 14;

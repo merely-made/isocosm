@@ -194,7 +194,7 @@ impl Host {
 fn tissue_mg(
     phenotype: &isocosm::legacy::mesocosm::BodyPhenotype,
     part: isocosm::legacy::mesocosm::PartId,
-    process: isocosm::legacy::mesocosm::process::ProcessRef,
+    process: isocosm::process::ProcessRef,
 ) -> u64 {
     let Some(mosaic) = phenotype.mosaic(part) else {
         return 0;

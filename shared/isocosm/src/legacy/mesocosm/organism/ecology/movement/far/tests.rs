@@ -15,10 +15,10 @@ use crate::legacy::mesocosm::organism::ecology::tests::{Sink, organism, registry
 use crate::legacy::mesocosm::organism::ecology::{dispersal_for, is_hungry, step_with_places};
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId};
 use crate::legacy::mesocosm::places::{PlaceId, Tier};
-use crate::legacy::mesocosm::soil::Soil;
-use crate::legacy::mesocosm::process::BodyProcesses;
 use crate::legacy::mesocosm::rng::Rng;
+use crate::legacy::mesocosm::soil::Soil;
 use crate::legacy::mesocosm::{Intent, World};
+use crate::process::BodyProcesses;
 
 const WALKER: OrganismId = OrganismId(0);
 const PREY: OrganismId = OrganismId(9);

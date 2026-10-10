@@ -16,7 +16,8 @@
 //! two different ways is how they would come to disagree.
 
 use isocosm::legacy::mesocosm::flow::{Account, Process};
-use isocosm::legacy::mesocosm::{FeedingMode, Intent, OrganismId, World};
+use isocosm::legacy::mesocosm::{Intent, OrganismId, World};
+use isocosm::process::FeedingMode;
 
 use super::stepped;
 
@@ -160,8 +161,8 @@ fn branched_carcass(
         parts: vec![frond],
         tracts: vec![isocosm::legacy::mesocosm::ProposedTract {
             part: frond,
-            process: isocosm::legacy::mesocosm::Registry::native()
-                .of_native(isocosm::legacy::mesocosm::Process::Secrete)
+            process: isocosm::process::Registry::native()
+                .of_native(isocosm::process::Process::Secrete)
                 .reference(),
             cells: (0..capacity)
                 .map(|cell| isocosm::legacy::mesocosm::CellId(cell as u16))
@@ -170,7 +171,7 @@ fn branched_carcass(
     };
     corpse
         .phenotype
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &proposal)
+        .develop(isocosm::process::Registry::native(), &proposal)
         .expect("valid on the donor");
     world.organisms.push(corpse);
     // The two lines share a domain, so the carry is native and the branch

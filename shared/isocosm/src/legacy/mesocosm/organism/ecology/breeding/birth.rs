@@ -11,9 +11,9 @@ use super::*;
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::development::PartPalette;
 use crate::legacy::mesocosm::flow::{Ledger, Records};
-use crate::legacy::mesocosm::matter::{Material, Stock};
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::Kingdom;
+use crate::matter::{Material, Stock};
 
 fn parent() -> Organism {
     Organism::founding(

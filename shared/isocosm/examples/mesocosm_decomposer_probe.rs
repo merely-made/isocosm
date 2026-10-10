@@ -25,12 +25,14 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use isocosm::legacy::mesocosm::flow::Process as Flow;
 use isocosm::legacy::mesocosm::places::Tier;
-use isocosm::legacy::mesocosm::rules::{DeepTimeSpan, WorldRules};
+use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::world::generation::Request;
 use isocosm::legacy::mesocosm::{
-    BodyProcesses, Event, Founding, History, Intent, Kingdom, MealKind, OrganismId, Process, Role,
-    Stage, World, classify, restore, snapshot, state_hash,
+    Event, Founding, History, Intent, Kingdom, MealKind, OrganismId, Role, Stage, World, classify,
+    restore, snapshot, state_hash,
 };
+use isocosm::process::{BodyProcesses, Process};
+use isocosm::rules::DeepTimeSpan;
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();

@@ -11,13 +11,13 @@ use super::*;
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::development::PartPalette;
 use crate::legacy::mesocosm::flow::{Account, Ledger, Process, Records};
-use crate::legacy::mesocosm::matter::Stock;
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, OrganismId, step};
-use crate::legacy::mesocosm::soil::Soil;
-use crate::legacy::mesocosm::process::{IntakePort, NisKind};
 use crate::legacy::mesocosm::rng::Rng;
+use crate::legacy::mesocosm::soil::Soil;
 use crate::legacy::mesocosm::species::Lineages;
+use crate::matter::Stock;
+use crate::process::{IntakePort, NisKind};
 
 fn eater(mass_mg: u64) -> Organism {
     Organism::founding(

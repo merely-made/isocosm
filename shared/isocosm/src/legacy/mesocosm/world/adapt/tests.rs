@@ -10,7 +10,8 @@
 //! `tests/embodied/lineage.rs`.
 
 use super::*;
-use crate::legacy::mesocosm::rules::{EpochRule, WorldRules};
+use crate::legacy::mesocosm::rules::WorldRules;
+use crate::rules::EpochRule;
 
 fn condition(n: u64) -> Option<ConditionId> {
     Some(ConditionId(n))
@@ -29,11 +30,7 @@ fn scored(income_mg: u64, rent_mg: u64) -> Score {
 /// A world whose epoch budget is short enough to reach a boundary in a test,
 /// and whose scoring window is short enough that reaching several is cheap.
 fn brisk(seed: u64, founders: u32) -> World {
-    World::new(seed, founders).with_rules(
-        WorldRules::native()
-            .ending(EpochRule::Timed { ticks: 8 })
-            .scoring_over(4),
-    )
+    World::new(seed, founders).with_rules(WorldRules::native().timed(8).scoring_over(4))
 }
 
 #[test]
@@ -229,8 +226,7 @@ fn initiative_is_descending_recipe_complexity_then_id() {
 
 #[test]
 fn the_timed_rule_ends_the_epoch_at_the_budget_and_not_before() {
-    let mut world = World::new(4_242, 24)
-        .with_rules(WorldRules::native().ending(EpochRule::Timed { ticks: 5 }));
+    let mut world = World::new(4_242, 24).with_rules(WorldRules::native().timed(5));
     assert_eq!(world.epoch, 0);
     for tick in 1..5 {
         world.apply(Intent::Idle);
@@ -275,8 +271,7 @@ fn a_world_under_an_unbuilt_rule_never_ends_an_epoch() {
 fn a_revision_is_admitted_only_at_the_lineage_checkpoint() {
     // The placeholder replaced. Bodies change between epochs and not during
     // them, so every other tick refuses by name.
-    let mut world = World::new(4_242, 24)
-        .with_rules(WorldRules::native().ending(EpochRule::Timed { ticks: 3 }));
+    let mut world = World::new(4_242, 24).with_rules(WorldRules::native().timed(3));
     let species = world.controlled().expect("embodied").species;
 
     assert!(!world.revision_admitted_now(), "not at the founding tick");

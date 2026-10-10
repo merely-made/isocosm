@@ -26,9 +26,10 @@
 
 use isocosm::legacy::mesocosm::{
     AllocationProposal, Arrangement, Attachment, CellId, Crossing, Domain, Intent, Kingdom,
-    Organism, OrganismId, Outcome, PartId, Process, ProposedTract, Provenance, Registry, SpeciesId,
-    Stage, Trend, VolumeRef, World, Yaw,
+    Organism, OrganismId, Outcome, PartId, ProposedTract, Provenance, SpeciesId, Stage, Trend,
+    VolumeRef, World, Yaw,
 };
+use isocosm::process::{Process, Registry};
 use isometer::mesh::{Volume, VolumeMap, mesh_body};
 use isometer::render::{Camera, Renderer, SceneItem};
 

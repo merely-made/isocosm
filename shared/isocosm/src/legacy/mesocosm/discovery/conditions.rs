@@ -14,7 +14,7 @@
 //! # A digest, not a name
 //!
 //! [`ConditionId`] is a hash over a condition's rule-bearing bytes, exactly as
-//! [`ProcessRef`](crate::legacy::mesocosm::process::ProcessRef) is over a definition's. The
+//! [`ProcessRef`](crate::process::ProcessRef) is over a definition's. The
 //! friendly name is presentation. Two worlds that agree about a name and
 //! disagree about the rule under it hold different digests, so a discovery made
 //! in one cannot be resolved against the other — which is the same protection
@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::axis::Appendage;
 use crate::legacy::mesocosm::plan::Role;
-use crate::legacy::mesocosm::process::{Process, Registry};
+use crate::process::{Process, Registry};
 
 use super::{Candidate, Input, Rule, Stress};
 

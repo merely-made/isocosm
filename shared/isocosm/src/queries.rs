@@ -35,11 +35,8 @@ impl Simulation {
         query: &Query,
     ) -> Result<String> {
         let related = |kind: &Key| -> Result<bool> {
-            Ok(self.state.relations.contains(&Relation {
-                subject: actor,
-                kind: kind.clone(),
-                object: target.ok_or("target required")?,
-            }))
+            let object = target.ok_or("target required")?;
+            Ok(related(&self.state.relations, actor, kind, object).is_some())
         };
         let scene = Scene {
             actor: self.body_at_start(actor),
@@ -74,6 +71,10 @@ impl Simulation {
         let Some(b) = self.body_at_start(target) else {
             return false;
         };
+        // A participant is no body to act on (ruling 688).
+        if crate::directing::is_participant(b) {
+            return false;
+        }
         (!selector.same_place || a.place == b.place)
             && selector.alive.is_none_or(|alive| alive == b.alive)
             && selector

@@ -36,11 +36,13 @@ impl Staged<'_> {
             subject: id,
             object: actor,
             kind: "sim:parent".into(),
+            value: 0,
         };
         let young = Relation {
             subject: actor,
             object: id,
             kind: "sim:child".into(),
+            value: 0,
         };
         self.stage.relations.extend([(parent, true), (young, true)]);
     }

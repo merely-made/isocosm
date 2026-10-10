@@ -12,11 +12,11 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::legacy::mesocosm::process::{FeedingMode, Process};
 use crate::legacy::mesocosm::rng::Rng;
+use crate::process::{FeedingMode, Process};
 
 use super::{Organism, OrganismId, Signal};
-use crate::legacy::mesocosm::process::BodyProcesses;
+use crate::process::BodyProcesses;
 
 const SENSOR_COUNT: usize = 5;
 const DRIVE_COUNT: usize = 3;

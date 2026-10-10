@@ -217,8 +217,8 @@ fn a_development_that_would_not_validate_says_why_in_plain_words() {
     assert_eq!(
         refusal_words(&Rejection::Refused(Refusal::TractMismatch {
             part: isocosm::legacy::mesocosm::PartId(0),
-            process: isocosm::legacy::mesocosm::ProcessRef {
-                definition: isocosm::legacy::mesocosm::DefinitionDigest(1),
+            process: isocosm::process::ProcessRef {
+                definition: isocosm::process::DefinitionDigest(1),
             },
         })),
         "that shape does not do that"

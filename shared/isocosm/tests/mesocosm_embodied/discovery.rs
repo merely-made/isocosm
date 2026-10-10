@@ -27,9 +27,10 @@ pub(crate) use isocosm::legacy::mesocosm::discovery::Miss;
 
 use isocosm::legacy::mesocosm::discovery::{self, Condition, HUNGER_TICKS, Input};
 use isocosm::legacy::mesocosm::{
-    Arrangement, Attachment, Intent, Kingdom, Organism, OrganismId, Outcome, PartId, Process,
-    ProcessRef, Provenance, Registry, Role, Stage, VolumeRef, World, Yaw, classify,
+    Arrangement, Attachment, Intent, Kingdom, Organism, OrganismId, Outcome, PartId, Provenance,
+    Role, Stage, VolumeRef, World, Yaw, classify,
 };
+use isocosm::process::{Process, ProcessRef, Registry};
 
 use super::bulk_world;
 
@@ -369,10 +370,10 @@ fn direct_and_automatic_fixtures_lower_the_same_candidate_the_same_way() {
     let mut by_hand = world.phenotype().unwrap().clone();
     let mut by_game = by_hand.clone();
     let hand = by_hand
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &direct)
+        .develop(isocosm::process::Registry::native(), &direct)
         .expect("it validates");
     let game = by_game
-        .develop(isocosm::legacy::mesocosm::Registry::native(), &automatic)
+        .develop(isocosm::process::Registry::native(), &automatic)
         .expect("and so does it");
     assert_eq!(
         hand.instruction, game.instruction,

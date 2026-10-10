@@ -64,7 +64,7 @@ fn matter_is_conserved_across_an_epoch_boundary_and_an_npc_commit() {
 
     let mut world = world.with_rules(
         isocosm::legacy::mesocosm::WorldRules::native()
-            .ending(isocosm::legacy::mesocosm::rules::EpochRule::Timed { ticks: 4 })
+            .timed(4)
             .scoring_over(4),
     );
     // To the next boundary. The budget runs from the tick the epoch began on,

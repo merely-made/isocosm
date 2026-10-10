@@ -9727,6 +9727,51 @@ what later sections derive from.
      draws bodies onto a transparent target that netrender layers over the
      traced colour, the torch casts no shadow until the testing pass tunes
      it, and the CLAUDE.md names the tenant.
+750. **The flow record moves with the record family; the registry
+     converges with bodies.** 2026-10-09, the matter-and-processes family
+     (merged at `14eb2dfb`: the five natives, typed matter and the registry
+     native; legacy transport, pressure and epoch types retired; 3,740
+     legacy lines to 1,257). Questions: the flow record (962 lines) depends
+     on legacy bodies, places and record types and native `Flow` carries no
+     lineage, kingdom or composition, about 23 files reading those; the
+     registry restricts shapes (`admits()`, intake on Mass) where native's
+     function catalogue does not (492). Mark chose "Move it with the record
+     (Recommended)" and "Converge with bodies (Recommended)". So `flow`
+     stays in legacy until the record family, and the bodies lane lowers
+     the registry onto the function catalogue with phenotype allocation.
+751. **A site is habitable when the lineage's conditions hold and a member
+     lives there.** 2026-10-09, directing D1 to D4 (merged at `d852ceb0`).
+     Question: what habitability means natively for a player-picked start
+     (179). Options: the first epoch boundary at which a site satisfies
+     every condition the lineage's processes require and a member lives
+     there (recommended); mood at least zero; habitable from founding. Mark
+     chose "Conditions met, member lives (Recommended)".
+752. **A minimal native lineage revision comes forward.** 2026-10-09.
+     Question: native has no lineage revision, so 684's grow-a-copy boundary
+     has nothing to commit. Options: a minimal revision now, development-
+     recipe variants from what the lineage has learned (recommended); wait
+     for the lineages family; trait-set candidates. Mark chose "A minimal
+     revision now (Recommended)".
+753. **After a regional collapse, members migrate and the player may start
+     again elsewhere.** 2026-10-09. Question: `Effect::Move` takes a fixed
+     destination, so migration needs a generated process per route; or the
+     player takes up a member in a region still standing (181). Options:
+     start again elsewhere (recommended); generated move acts; both. Mark
+     chose "Both". So founding generates a move process per route, and
+     `OnCollapse::Elsewhere` stays available.
+754. **A region has collapsed only in a level it once held.** 2026-10-09.
+     Question: regions that never held a trophic level read as collapsed
+     from the first round, while 225 says "a level gone". Options: only
+     levels once held, or that the world holds within reach (recommended);
+     any empty level; grow a region until it holds every level. Mark chose
+     "Only levels once held (Recommended)".
+     *Noted 2026-10-09, not ruled:* Mark wondered whether neural networks
+     have a role. Candidates raised: a learned surrogate for the
+     statistical tier, certified by the crowd's draws; a small per-lineage
+     choice network whose weights are heritable traits; generation;
+     sophonts through gemot's tulpa lane; denoising in the tenant. Any of
+     them must infer bit-identically or log its outputs, for replay.
+     Parked as research for after 732's push.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

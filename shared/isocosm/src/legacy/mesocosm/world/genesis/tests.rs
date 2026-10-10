@@ -9,7 +9,7 @@
 
 use super::*;
 use crate::legacy::mesocosm::body::VolumeRef;
-use crate::legacy::mesocosm::process::BodyProcesses;
+use crate::process::BodyProcesses;
 
 #[path = "tg1.rs"]
 mod tg1;
@@ -36,10 +36,7 @@ fn founders_hold_their_lineages_declared_tissue() {
             .stock_for(organism.biomass_mg())
             .expect("live founder lineages declare tissue");
         assert_eq!(organism.phenotype.total_stock().unwrap(), expected);
-        assert_eq!(
-            expected.amount(crate::legacy::mesocosm::matter::Material::Untyped),
-            0
-        );
+        assert_eq!(expected.amount(crate::matter::Material::Untyped), 0);
     }
 }
 
@@ -100,8 +97,7 @@ fn intended_kingdoms(seed: u64, organism_count: u32) -> Vec<Kingdom> {
 // declares its explicit two-port omnivore.
 #[test]
 fn founding_reaches_a_jaw_a_crop_and_two_declared_ports() {
-    let mut modes: std::collections::BTreeSet<crate::legacy::mesocosm::process::FeedingMode> =
-        Default::default();
+    let mut modes: std::collections::BTreeSet<crate::process::FeedingMode> = Default::default();
     for seed in 1u64..=10 {
         let world = World::new(seed, FOUNDERS);
         for organism in &world.organisms {
@@ -293,9 +289,7 @@ fn every_founded_fauna_body_senses_and_contracts() {
             }
             per_seed += 1;
             assert!(
-                organism
-                    .body()
-                    .performs(crate::legacy::mesocosm::process::Process::Sense),
+                organism.body().performs(crate::process::Process::Sense),
                 "seed {seed}: founder {:?} has no sense organ",
                 organism.id
             );
@@ -305,9 +299,7 @@ fn every_founded_fauna_body_senses_and_contracts() {
                 organism.id
             );
             assert!(
-                organism
-                    .body()
-                    .performs(crate::legacy::mesocosm::process::Process::Contract),
+                organism.body().performs(crate::process::Process::Contract),
                 "seed {seed}: founder {:?} cannot move itself",
                 organism.id
             );
@@ -324,7 +316,7 @@ fn every_founded_fauna_body_senses_and_contracts() {
 // Consumer because none of them is held up to the light.
 #[test]
 fn the_roster_founds_a_predator_beside_the_grazers_and_an_armoured_body() {
-    use crate::legacy::mesocosm::process::{FeedingMode, Process};
+    use crate::process::{FeedingMode, Process};
     let world = World::new(1, FOUNDERS);
     let mut modes: BTreeMap<FeedingMode, u32> = BTreeMap::new();
     let mut armoured = 0;
@@ -373,7 +365,7 @@ fn the_authored_tier_founds_mobile_omnivores() {
             consumers += 1;
             assert_eq!(
                 organism.feeding_mode(),
-                crate::legacy::mesocosm::process::FeedingMode::Omnivore,
+                crate::process::FeedingMode::Omnivore,
                 "seed {seed}: founder {:?} is not an omnivore",
                 organism.id
             );

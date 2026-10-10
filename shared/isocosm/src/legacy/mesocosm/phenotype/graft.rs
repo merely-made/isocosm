@@ -41,7 +41,7 @@
 use super::mosaic::{CellId, Mosaic};
 use super::{AllocationProposal, Arrangement, BodyPhenotype, ProposedTract, Refusal};
 use crate::legacy::mesocosm::body::{Attachment, Origin, PartId, Provenance, SpeciesId};
-use crate::legacy::mesocosm::process::{IntakePort, ProcessRef};
+use crate::process::{IntakePort, ProcessRef};
 
 #[cfg(test)]
 #[path = "graft_stock_tests.rs"]
@@ -63,7 +63,7 @@ pub struct Cutting {
     pub volume: crate::legacy::mesocosm::body::VolumeRef,
     pub mass_mg: u64,
     /// Actual donor tissue, independent of how arriving organs are arranged.
-    pub stock: crate::legacy::mesocosm::matter::Stock,
+    pub stock: crate::matter::Stock,
     pub half_extent: [i32; 3],
     /// The joint this part had inside the branch: offset and yaw, preserved
     /// exactly. `None` for the branch root.
@@ -256,7 +256,7 @@ impl BodyPhenotype {
     /// try to undo itself.
     pub fn receive(
         &mut self,
-        registry: &crate::legacy::mesocosm::process::Registry,
+        registry: &crate::process::Registry,
         branch: &Branch,
         at: Attachment,
         epoch: u64,

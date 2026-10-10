@@ -8,8 +8,8 @@ use std::collections::BTreeMap;
 use isocosm::legacy::mesocosm::{
     OrganismId, World,
     flow::{Account, Conversion, RecordedFlow, Subject},
-    matter::{Material, Stock},
 };
+use isocosm::matter::{Material, Stock};
 
 pub(super) type Key = (Account, Option<OrganismId>);
 pub(super) type Book = BTreeMap<Key, Stock>;

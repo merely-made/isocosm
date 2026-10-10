@@ -21,6 +21,7 @@ fn a_parent_finds_its_own_young() {
         subject: id,
         kind: "sim:child".into(),
         object: kid,
+        value: 0,
     }));
     run(&mut s, id, "test:feed");
     let outcome = |s: &mut Session, process: &str, target: Id| -> String {

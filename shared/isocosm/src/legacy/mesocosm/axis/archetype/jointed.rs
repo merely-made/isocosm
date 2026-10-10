@@ -29,7 +29,7 @@ mod tests {
     use crate::legacy::mesocosm::body::SpeciesId;
     use crate::legacy::mesocosm::development::{develop_body, minimum_body_mass_mg};
     use crate::legacy::mesocosm::organism::Kingdom;
-    use crate::legacy::mesocosm::process::FeedingMode;
+    use crate::process::FeedingMode;
 
     fn grown(recipe: &Recipe, seed: u64) -> crate::legacy::mesocosm::phenotype::BodyPhenotype {
         let soma = Soma::develop(recipe, seed);

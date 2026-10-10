@@ -16,8 +16,8 @@ use crate::legacy::mesocosm::organism::ecology::kinship::Kin;
 use crate::legacy::mesocosm::organism::ecology::sight_for_body;
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, Signal};
 use crate::legacy::mesocosm::places::{Ground, Tier, WalkerShape, spot_for};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::{FeedingMode, NisKind};
+use crate::process::BodyProcesses;
+use crate::process::{FeedingMode, NisKind};
 
 /// An embodied mind's local visual horizon, for a body with no sense organ at
 /// all. **The reference and the floor** since TD11, not the flat cap it was:

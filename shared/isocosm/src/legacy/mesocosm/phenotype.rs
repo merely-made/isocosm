@@ -50,7 +50,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 use crate::legacy::mesocosm::body::{
     AttachError, Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef,
 };
-use crate::legacy::mesocosm::process::{IntakePort, NisKind, Process, ProcessRef, Registry};
+use crate::process::{IntakePort, NisKind, Process, ProcessRef, Registry};
 
 pub mod develop;
 pub mod graft;
@@ -291,7 +291,7 @@ impl BodyPhenotype {
     }
 
     /// The toxin this body carries: every living cell allocated to
-    /// [`Process::Secrete`](crate::legacy::mesocosm::process::Process::Secrete), priced as the
+    /// [`Process::Secrete`](crate::process::Process::Secrete), priced as the
     /// tissue it is.
     ///
     /// **The first quantitative consumer of the mosaic.** Everything before
@@ -359,7 +359,7 @@ impl BodyPhenotype {
 
     fn gland_reference() -> ProcessRef {
         Registry::native()
-            .of_native(crate::legacy::mesocosm::process::Process::Secrete)
+            .of_native(crate::process::Process::Secrete)
             .reference()
     }
 
@@ -560,7 +560,7 @@ pub struct TractReading {
     pub process: ProcessRef,
     /// The qualified id, when this world's ruleset holds the definition.
     /// `None` is the missing-ruleset diagnostic.
-    pub named: Option<crate::legacy::mesocosm::process::ProcessId>,
+    pub named: Option<crate::process::ProcessId>,
     pub cells: u32,
     pub cause: Expressed,
 }

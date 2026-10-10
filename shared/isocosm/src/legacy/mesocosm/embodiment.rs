@@ -19,7 +19,7 @@
 //!
 //! # Embodiment reads the phenotype, never the document
 //!
-//! [`BodyDocument::processes`](crate::legacy::mesocosm::process) answers from geometry;
+//! [`BodyDocument::processes`](crate::process) answers from geometry;
 //! [`BodyPhenotype::allocations`] answers from expressed tracts. A development
 //! that moves tissue makes the two disagree **by design**, and only the
 //! phenotype's is the record of expression. That is why every function here
@@ -30,7 +30,7 @@
 //! `wing-glyphs` owns the table — glyph to opaque `namespace:local` trait id,
 //! per canon revision — and knows nothing about bodies. This module owns the
 //! resolution: a stored [`ProcessRef`] through the world's [`Registry`] to a
-//! [`ProcessId`](crate::legacy::mesocosm::process::ProcessId), qualified, and looked up. Only
+//! [`ProcessId`](crate::process::ProcessId), qualified, and looked up. Only
 //! Mesocosm knows what a part is, so only this half can be here.
 
 use std::collections::BTreeSet;
@@ -39,7 +39,7 @@ use wing_glyphs::{ExpressionTable, GlyphId};
 
 use crate::legacy::mesocosm::body::PartId;
 use crate::legacy::mesocosm::phenotype::BodyPhenotype;
-use crate::legacy::mesocosm::process::Registry;
+use crate::process::Registry;
 
 /// Every glyph this body currently embodies.
 ///

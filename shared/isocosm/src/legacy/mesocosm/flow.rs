@@ -143,7 +143,7 @@ pub enum Account {
 /// Why matter moved.
 ///
 /// Named `Process` after the plan's field and kept behind the `flow::` qualifier
-/// because [`crate::legacy::mesocosm::process::Process`] is a different noun — what a *part* does.
+/// because [`crate::process::Process`] is a different noun — what a *part* does.
 /// The two converge later rather than colliding: when PE4 admits generated
 /// transformations, this is where a `ProcessDef` identity lands.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

@@ -12,8 +12,8 @@ use crate::legacy::mesocosm::body::{BodyDocument, SpeciesId};
 use crate::legacy::mesocosm::development::develop_body;
 use crate::legacy::mesocosm::organism::{Kingdom, ecology};
 use crate::legacy::mesocosm::plan::{Role, classify};
-use crate::legacy::mesocosm::process::BodyProcesses;
-use crate::legacy::mesocosm::process::{FeedingMode, Process};
+use crate::process::BodyProcesses;
+use crate::process::{FeedingMode, Process};
 
 /// The adult mass carving B implies, and the mass DC2's column is taken at.
 const BROWSER_CEILING_MG: u64 = 1_284;
