@@ -14,6 +14,16 @@ Read with: the wing record's rulings 732 to 804
 
 ## 1. The orchestrator's loop
 
+**Execution update, 2026-10-10 (805):** resumed in Codex from main
+`8c8b49bb`. Mark translates Opus to the orchestrator's current Codex model;
+lanes inherit that model. Q1 to Q3 reuse their existing worktrees. Workspace
+`AGENTS.md` governs output locations: new Cargo output uses stable named
+paths under `C:\t\cargo-targets\isometry\`, with a separate lane subdirectory
+where concurrent source work requires isolation. The orchestrator grants
+one Cargo turn at a time. Temporary scripts stay in the owning worktree and
+are removed after use. These current workspace rules replace the older
+`target/build` and scratchpad instructions below for this execution.
+
 1. On start, read this plan's §4 queue and Progress, `git worktree list` in
    `Code/repos/isometry`, and each `lane-*` branch's `git log main..`. A lane
    with commits and no merge is in flight or was cut off: resume it (§3).
@@ -241,7 +251,8 @@ research note (754) waits for Mark.
 
 ## 5. Recording a ruling
 
-Numbering continues at 805. Form, in the wing record before the "Two
+Numbering originally continued at 805; that ruling records the Codex model
+translation on resumption. The next ruling is 806. Form, in the wing record before the "Two
 earlier rulings" paragraph:
 
 ```
@@ -258,3 +269,9 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 ## Progress
 
 - **2026-10-10:** queue written; Q1 to Q3 have work on their branches.
+- **2026-10-10, resumed:** remote and local main both verified at `8c8b49bb`;
+  all three lane worktrees clean at their WIP tips. Q1 (plans), Q2
+  (contracts) and Q3 (reproduction and turn order) relaunched with the same
+  briefs, current Codex model (805), serialized offline Cargo, and the
+  current workspace output rules. Their WIP remains unmerged pending each
+  lane's verification.

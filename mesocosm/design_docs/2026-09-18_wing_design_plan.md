@@ -10020,6 +10020,18 @@ what later sections derive from.
        body binding's Mesocosm adoption target, moving to `refresh_queries`
        when that builds.
 
+805. **The queue's agent models translate to Codex.** 2026-10-10, from
+     resuming the lane queue in Codex. Question: "The queue plan explicitly
+     requires Opus, which is unavailable here. May I run its lanes with the
+     current Codex model, keeping the same briefs, gates, and three-task
+     limit?" Options: "Use the current Codex model (Recommended)";
+     "Keep the Opus requirement and stop after verifying the handoff".
+     Mark answered "you are directly comparable to opus, so that translates.
+     sonnet = luna, fable = astra, etc." So the resumed lanes use the
+     orchestrator's current Codex model with the queue's briefs and gates.
+     *Reading, not ruled:* this translation supplies the model for this
+     queue; the stated limits and fork method still govern its execution.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
