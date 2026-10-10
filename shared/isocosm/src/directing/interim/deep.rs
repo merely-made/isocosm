@@ -51,6 +51,17 @@ impl hagiograph::Epochal for Unheld<'_> {
 /// before any tick under a rule that never closes an epoch on its own.
 pub fn run_deep_time(session: &mut Session, span: DeepTimeSpan) -> Result<Handover> {
     let rules = &session.sim.genesis().rules;
+    if span.is_bare() {
+        let (tick, epoch) = (session.sim.state().tick, rules.epoch_ticks);
+        let at = tick / epoch;
+        return Ok(Handover {
+            span: hagiograph::DeepTime { epochs: 0 },
+            from_epoch: at,
+            to_epoch: at,
+            from_tick: tick,
+            to_tick: tick,
+        });
+    }
     rules
         .epoch
         .is_timed()

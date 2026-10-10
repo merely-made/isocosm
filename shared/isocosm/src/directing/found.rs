@@ -26,7 +26,6 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     }
     let i = played.lineage;
     let lineage = format!("lineage:{i}");
-    let body = format!("matter:{i}-0");
     for group in g.population.groups.values_mut() {
         if group.entity.lineage == lineage {
             group.entity.method = Method::Deliberative;
@@ -38,12 +37,13 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         .accounts
         .entry(strain.clone())
         .or_insert(AccountKind::Strain);
-    // Hungry below what a body is founded with.
-    let hunger = Need {
-        traits: BTreeSet::from([format!("ability:cycle-{i}")]),
+    // Every line is hungry below what its bodies are founded with; mood
+    // drives migration (753), and the played line's choice (683).
+    let hunger = |j: u32| Need {
+        traits: BTreeSet::from([format!("ability:cycle-{j}")]),
         query: Query::Below {
             who: Binding::Actor,
-            key: body,
+            key: format!("matter:{j}-0"),
             amount: f.stock_min + 2,
         },
         weight: -10,
@@ -57,7 +57,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         rise_traits: BTreeMap::new(),
         stake: 0,
     });
-    mind.needs.push(hunger);
+    mind.needs.extend((0..f.lineages).map(hunger));
     let mut slots = BTreeMap::new();
     for level in LEVELS.into_iter().filter(|l| rules.traits.contains(*l)) {
         let founded: u128 = g
@@ -72,9 +72,48 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         let slot = (founded * u128::from(played.region_sites)).div_ceil(u128::from(f.sites.max(1)));
         slots.insert(level.into(), slot.max(1));
     }
+    migrate(g)?;
+    let rules = &mut g.rules;
     rules.directing = Some(Directing {
         slots,
         ..Directing::default()
     });
+    Ok(())
+}
+
+/// Members migrate (753): a move process per route, open to a member at
+/// the route's site while its mood is low. A site names itself by the
+/// condition `site:<id>`, so a move asks where its actor is.
+fn migrate(g: &mut Genesis) -> Result<()> {
+    let mut moves = Vec::new();
+    for (&id, site) in &mut g.sites {
+        let here: Key = format!("site:{id}");
+        site.conditions.insert(here.clone(), 1);
+        g.rules.conditions.insert(here.clone());
+        for route in &site.routes {
+            let mut p = crate::generate::process(
+                &format!("move:{id}-{}", route.to),
+                Causation::Choice,
+                vec![Effect::Move {
+                    destination: route.to,
+                }],
+            );
+            p.requires.extend([
+                Query::Condition {
+                    key: here.clone(),
+                    at_least: 1,
+                },
+                Query::MoodBelow { amount: 0 },
+            ]);
+            p.period = Some(route.travel.max(1));
+            moves.push(p);
+        }
+    }
+    if g.rules.processes.len() + moves.len() > g.rules.limits.processes {
+        return Err("a move per route exceeds the world's process limit".into());
+    }
+    g.rules
+        .processes
+        .extend(moves.into_iter().map(|p| (p.id.clone(), p)));
     Ok(())
 }

@@ -20,7 +20,7 @@ fn genesis(seed: u64) -> Genesis {
         ecology: true,
         played: Some(Played {
             lineage: 1,
-            region_sites: 5,
+            region_sites: 2,
         }),
         ..Default::default()
     }
@@ -36,7 +36,10 @@ fn genesis(seed: u64) -> Genesis {
 fn three_epochs_end_to_end_replay_to_the_same_hash() {
     for seed in [101u64, 202, 303] {
         for mode in [Mode::Survival, Mode::Creative] {
-            let start = Start { epochs: 1 };
+            let start = Start {
+                within: 0,
+                epochs: 1,
+            };
             let mut i =
                 Interim::found(genesis(seed), start, mode, PACE, Execution::Individuals).unwrap();
             assert_eq!(
@@ -131,11 +134,14 @@ fn a_collapse_happens_only_where_a_level_is_gone() {
             .iter()
             .any(|h| matches!(h, Happening::Collapsed { .. }))
     );
-    // Planted: no producers anywhere, so every region has collapsed.
+    // Planted: every founded producer lies dead, so every region that
+    // held producers has collapsed.
     let mut g = genesis(5);
-    g.population
-        .groups
-        .retain(|_, c| !c.entity.traits.contains("life:producer"));
+    for c in g.population.groups.values_mut() {
+        if c.entity.traits.contains("life:producer") {
+            c.entity.alive = false;
+        }
+    }
     let mut i = Interim::found(
         g,
         Start::default(),
@@ -145,12 +151,28 @@ fn a_collapse_happens_only_where_a_level_is_gone() {
     )
     .unwrap();
     i.on_collapse = OnCollapse::Elsewhere;
+    let held = |r: &Region| r.held.contains("life:producer");
+    let regions = readings::regions(&i.session.sim);
+    assert!(regions.iter().all(|r| r.collapsed == held(r)));
+    let c = i.critter().unwrap();
+    let place = i.session.sim.state().population.get(c).unwrap().place;
+    let fell = held(readings::region_of(&regions, place).unwrap());
     let fallen = i.round(&no_candidates).unwrap();
     let collapsed = fallen.iter().find_map(|h| match h {
         Happening::Collapsed { moved_to, .. } => Some(*moved_to),
         _ => None,
     });
-    assert_eq!(collapsed, Some(None), "nowhere stands to play on");
+    assert_eq!(
+        collapsed.is_some(),
+        fell,
+        "the played region fell, or stood"
+    );
+    // Play went on only in a region still standing (753).
+    if let Some(Some(to)) = collapsed {
+        let now = readings::regions(&i.session.sim);
+        let at = i.session.sim.state().population.get(to).unwrap().place;
+        assert!(!readings::region_of(&now, at).unwrap().collapsed);
+    }
 }
 
 #[test]
