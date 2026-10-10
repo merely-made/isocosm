@@ -245,10 +245,7 @@ impl Fnv1a {
 
 #[cfg(test)]
 mod tests {
-    use isocosm::legacy::mesocosm::{
-        Attachment, BodyDocument, Kingdom, Organism, OrganismId, PartId, Provenance, SpeciesId,
-        Stage, VolumeRef, Yaw,
-    };
+    use isometer_core::{Attachment, BodyDocument, PartId, Provenance, SpeciesId, VolumeRef, Yaw};
 
     use super::*;
     use crate::{Volume, VolumeMap};
@@ -431,23 +428,19 @@ mod tests {
         assert_eq!(projector.cached_mesh_count(), 0);
     }
 
-    /// A product's own subject type reaches the same geometry: the organism
-    /// is read for its body, never passed into the projection.
+    /// A wounded body projects only what it still carries: isometer's own
+    /// fixture (720), where Mesocosm's carcass stood before.
     #[test]
-    fn a_carcass_keeps_its_intact_part_projection() {
-        let mut carcass = Organism::founding(
-            OrganismId(9),
-            SpeciesId(3),
-            Kingdom::Decomposer,
-            VolumeRef::from_tag(1),
-            [1, 1, 1],
-            [12, 0, 0],
-            100,
-        );
-        carcass.stage = Stage::Carrion;
+    fn a_wounded_body_projects_its_living_parts() {
+        let mut body = isometer_core::fixtures::walker();
+        body.sever(PartId(1));
+        let mut source = VolumeMap::new();
+        for tag in 1..=6 {
+            source.insert(VolumeRef::from_tag(tag), Volume::solid([2, 2, 2], tag));
+        }
         let mut projector = LiveBodyProjector::new();
 
-        let (mesh, _) = projector.project_body(carcass.body(), &source()).unwrap();
-        assert_eq!(mesh.placement_count(), carcass.body().living().count());
+        let (mesh, _) = projector.project_body(&body, &source).unwrap();
+        assert_eq!(mesh.placement_count(), body.living().count());
     }
 }

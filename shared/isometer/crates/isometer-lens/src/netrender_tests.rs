@@ -7,7 +7,7 @@
 //! G2's tenant receipt: the DDA target enters netrender's frame on the same
 //! device. The browser example reuses this exact external-texture seam.
 
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, PresentedFrame, Scene,
     WgpuHandles, create_netrender_instance,
@@ -32,7 +32,7 @@ impl Compositor for Master {
 }
 
 fn ground() -> Ground {
-    Ground::grow(&Places::grown(4_242, 4, 64), 64)
+    fixtures::ground(4_242, 64)
 }
 
 #[test]

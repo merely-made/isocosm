@@ -10,19 +10,17 @@
 //! attaches to a living body **during play**, acquires collision and mass,
 //! moves the centre of balance, and stays legible.
 //!
-//! These tests run the real simulation, eat a real organism, and check all four
-//! at once. What they cannot check is whether it *looks* good on screen; that
-//! stays a judgment for the windowed host. What they do establish is that
-//! everything the screen would need is derivable, deterministic, and cheap.
+//! Isometer's half, on its own fixtures (wing ruling 720): a part attached to
+//! a body document changes all four at once, deterministically. Whether a
+//! meal lands a part is the sim's, and certified there.
 
-use isocosm::legacy::mesocosm::{
-    Intent, Origin, Outcome, PartId, Placement, STARVED_UPKEEP_TICKS, VolumeRef, World, Yaw,
+use isometer_core::fixtures::walker;
+use isometer_core::{
+    Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
 };
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
 
-/// Volumes for the fixture: a body, and one for every primitive tag the world
-/// may mint. Developmental roles now choose their volume vocabulary from the
-/// realized body, so this adapter fixture must not assume one narrow tag band.
+/// A volume for every tag a fixture may cite.
 fn source() -> VolumeMap {
     let mut map = VolumeMap::new();
     map.insert(VolumeRef::from_tag(1), Volume::solid([3, 3, 3], 1));
@@ -32,97 +30,52 @@ fn source() -> VolumeMap {
     map
 }
 
-/// Walks the critter to its nearest neighbour and returns it.
-///
-/// Reach is anatomy since P2, so a starting critter touches about three
-/// voxels and a fixture has to travel like a player instead of assuming a
-/// meal is adjacent.
-fn reachable_organism(world: &mut World) -> isocosm::legacy::mesocosm::OrganismId {
-    for _ in 0..600 {
-        let here = world.position().expect("embodied");
-        let Some((id, at)) = world
-            .organisms
-            .iter()
-            // The played critter is an organism too since P1; never eat yourself.
-            .filter(|m| Some(m.id) != world.controlled_id() && m.is_alive())
-            .map(|m| (m.id, m.position))
-            .min_by_key(|(_, at): &(_, [i32; 3])| {
-                (0..3).map(|a| (at[a] - here[a]).abs()).max().unwrap_or(0)
-            })
-        else {
-            break;
-        };
-        if world.in_reach(at) {
-            return id;
-        }
-        world.apply(Intent::Move {
-            delta: [0, 1, 2].map(|a| (at[a] - here[a]).signum()),
-        });
-    }
-    panic!("nothing came within reach")
-}
-
-/// Fills the played critter's reserve so its next meal *builds*.
-///
-/// TD4 made the body route a meal — starved burns, provisioned incorporates —
-/// and TD7 raised what a motile body's rent is, so the starved horizon
-/// (`upkeep x STARVED_UPKEEP_TICKS`) is now further from empty than the walk to
-/// a neighbour leaves it. These tests are about attachment, not about routing,
-/// so they say which state the body is in rather than hoping.
-fn provisioned(world: &mut World) {
-    let id = world.controlled_id().expect("embodied");
-    let organism = world
-        .organisms
-        .iter_mut()
-        .find(|o| o.id == id)
-        .expect("still on the roster");
-    organism.energy_mg = organism.upkeep_mg() * (STARVED_UPKEEP_TICKS + 1);
+/// A meal's part, landed on the root at `offset`, taken from species 42.
+fn eat(body: &mut BodyDocument, tag: u8, offset: [i32; 3], yaw: Yaw) -> PartId {
+    let provenance = Provenance {
+        origin: Origin::Incorporated {
+            from_species: SpeciesId(42),
+            from_part: PartId(0),
+        },
+        epoch: 1,
+    };
+    let attachment = Attachment {
+        parent: body.root,
+        offset,
+        yaw,
+    };
+    body.attach(
+        VolumeRef::from_tag(tag),
+        400,
+        [1, 1, 1],
+        attachment,
+        provenance,
+    )
+    .expect("the meal's part lands")
 }
 
 #[test]
 fn eating_changes_mass_balance_collision_and_geometry() {
     let source = source();
-    let mut world = World::new(0x00A7_7AC4, 40);
+    let mut body = walker();
+    let mass_before = body.total_mass_mg();
+    let centre_before = body.centre_of_mass();
+    let collision_before = body.aabb();
+    let drawn_before = mesh_body(&body, &source).unwrap();
 
-    let mass_before = world.total_mass_mg();
-    let centre_before = world.body().unwrap().centre_of_mass();
-    let collision_before = world.collision().unwrap();
-    let drawn_before = mesh_body(world.body().unwrap(), &source).unwrap();
+    eat(&mut body, 40, [9, 0, 0], Yaw::Zero);
+    let drawn_after = mesh_body(&body, &source).unwrap();
 
-    let target = reachable_organism(&mut world);
-    provisioned(&mut world);
-    let outcome = world.apply(Intent::Metabolize {
-        organism: target,
-        placement: Placement::Explicit {
-            parent: PartId(0),
-            offset: [9, 0, 0],
-            yaw: Yaw::Zero,
-        },
-    });
-    assert!(
-        matches!(outcome, Outcome::Incorporated { .. }),
-        "{outcome:?}"
-    );
-
-    let drawn_after = mesh_body(world.body().unwrap(), &source).unwrap();
-
-    // Mass.
-    assert!(world.total_mass_mg() > mass_before, "the body got heavier");
-
-    // Balance. The part landed to the +x side, so the centre must follow it.
-    let centre_after = world.body().unwrap().centre_of_mass();
+    assert!(body.total_mass_mg() > mass_before, "the body got heavier");
+    let centre_after = body.centre_of_mass();
     assert!(
         centre_after[0] > centre_before[0],
         "centre of mass moved toward the new part: {centre_before:?} -> {centre_after:?}"
     );
-
-    // Collision.
     assert!(
-        world.collision().unwrap().extent()[0] > collision_before.extent()[0],
+        body.aabb().extent()[0] > collision_before.extent()[0],
         "the collision box grew"
     );
-
-    // Geometry.
     assert_eq!(
         drawn_after.placement_count(),
         drawn_before.placement_count() + 1
@@ -138,43 +91,18 @@ fn eating_changes_mass_balance_collision_and_geometry() {
 
 #[test]
 fn an_eaten_part_still_says_whose_it_was() {
-    let source = source();
-    // Use the open-surface fixture above. Provenance is the subject here;
-    // whether anatomy fits a confined stance is covered in mesocosm-core.
-    let mut world = World::new(0x00A7_7AC4, 40);
-    let target = reachable_organism(&mut world);
-    let donor = world
-        .organisms
-        .iter()
-        .find(|m| m.id == target)
-        .map(|m| m.species)
-        .unwrap();
+    let mut body = walker();
+    let part = eat(&mut body, 40, [9, 0, 0], Yaw::Quarter);
 
-    provisioned(&mut world);
-    let outcome = world.apply(Intent::Metabolize {
-        organism: target,
-        placement: Placement::Explicit {
-            parent: PartId(0),
-            offset: [9, 0, 0],
-            yaw: Yaw::Quarter,
-        },
-    });
-    let Outcome::Incorporated { part } = outcome else {
-        panic!("expected incorporation, got {outcome:?}");
-    };
-
-    // The projection can place it...
-    let mesh = mesh_body(world.body().unwrap(), &source).unwrap();
+    let mesh = mesh_body(&body, &source()).unwrap();
     let placement = mesh
         .placements
         .iter()
         .find(|p| p.part == part)
         .expect("the new part is placed");
     assert_eq!(placement.yaw, Yaw::Quarter);
-
-    // ...and the record of where it came from survives alongside the geometry.
-    match world.body().unwrap().part(part).unwrap().provenance.origin {
-        Origin::Incorporated { from_species, .. } => assert_eq!(from_species, donor),
+    match body.part(part).unwrap().provenance.origin {
+        Origin::Incorporated { from_species, .. } => assert_eq!(from_species, SpeciesId(42)),
         Origin::Founding => panic!("an eaten part is not founding stock"),
     }
 }
@@ -182,22 +110,12 @@ fn an_eaten_part_still_says_whose_it_was() {
 #[test]
 fn attaching_remeshes_only_what_is_new() {
     let source = source();
-    let mut world = World::new(31337, 40);
-
-    let before = mesh_body(world.body().unwrap(), &source).unwrap();
+    let mut body = walker();
+    let before = mesh_body(&body, &source).unwrap();
     let root_mesh_before = before.mesh_for(VolumeRef::from_tag(1)).cloned();
 
-    let target = reachable_organism(&mut world);
-    world.apply(Intent::Metabolize {
-        organism: target,
-        placement: Placement::Explicit {
-            parent: PartId(0),
-            offset: [6, 0, 0],
-            yaw: Yaw::Zero,
-        },
-    });
-
-    let after = mesh_body(world.body().unwrap(), &source).unwrap();
+    eat(&mut body, 40, [6, 0, 0], Yaw::Zero);
+    let after = mesh_body(&body, &source).unwrap();
 
     assert_eq!(
         after.mesh_for(VolumeRef::from_tag(1)).cloned(),
@@ -210,33 +128,21 @@ fn attaching_remeshes_only_what_is_new() {
 #[test]
 fn a_body_grown_over_many_meals_stays_deterministic() {
     let source = source();
-
     let grow = || {
-        let mut world = World::new(9_001, 60);
-        for _ in 0..5 {
-            let target = reachable_organism(&mut world);
-            world.apply(Intent::Metabolize {
-                organism: target,
-                placement: Placement::Explicit {
-                    parent: PartId(0),
-                    offset: [5, 0, 0],
-                    yaw: Yaw::Zero,
-                },
-            });
+        let mut body = walker();
+        for meal in 0..5 {
+            eat(&mut body, 40 + meal as u8, [5 + 3 * meal, 0, 0], Yaw::Zero);
         }
-        world
+        body
     };
 
-    let a = grow();
-    let b = grow();
-    assert_eq!(a.body(), b.body());
-
-    let mesh_a = mesh_body(a.body().unwrap(), &source).unwrap();
-    let mesh_b = mesh_body(b.body().unwrap(), &source).unwrap();
+    let (a, b) = (grow(), grow());
+    assert_eq!(a, b);
+    let (mesh_a, mesh_b) = (
+        mesh_body(&a, &source).unwrap(),
+        mesh_body(&b, &source).unwrap(),
+    );
     assert_eq!(mesh_a.placements, mesh_b.placements);
     assert_eq!(mesh_a.drawn_quads(), mesh_b.drawn_quads());
-    assert!(
-        mesh_a.placement_count() > 1,
-        "the fixture actually ate something"
-    );
+    assert!(mesh_a.placement_count() > 1, "the fixture actually ate");
 }

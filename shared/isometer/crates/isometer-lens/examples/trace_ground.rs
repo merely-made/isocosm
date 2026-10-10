@@ -12,7 +12,7 @@
 
 use std::path::{Path, PathBuf};
 
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 use isometer_lens::{
     BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade,
 };
@@ -27,8 +27,7 @@ fn main() {
         .unwrap_or_else(|| "captures".into());
     std::fs::create_dir_all(&out).expect("output directory");
 
-    let grown = Places::grown(4_242, 4, 64);
-    let mut ground = Ground::grow(&grown, 64);
+    let mut ground = fixtures::ground(4_242, 64);
     let mut map = BrickMap::from_ground(&ground).expect("the standard ground fits the atlas");
     let mut tracer = BrickTracer::headless(WIDTH, HEIGHT).expect("GPU adapter");
     let (from, to) = tunnel(&ground);

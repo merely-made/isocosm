@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use crate::{BrickChange, BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Flight, Grade};
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::fixtures;
 
 #[test]
 fn cold_retained_and_carved_terrain_have_distinct_upload_receipts() {
-    let mut ground = Ground::grow(&Places::grown(4_242, 4, 64), 64);
+    let mut ground = fixtures::ground(4_242, 64);
     let mut map = BrickMap::from_ground(&ground).expect("bounded map");
     let mut tracer =
         BrickTracer::headless(64, 64).expect("GPU adapter required for counter receipt");

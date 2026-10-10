@@ -9,7 +9,7 @@
 
 use std::time::Instant;
 
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 use isometer_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Flight, Grade,
     critter::Capsule,
@@ -76,7 +76,7 @@ fn main() -> Result<(), String> {
         view_formats: &[],
     });
     let target_view = target.create_view(&Default::default());
-    let ground = Ground::grow(&Places::grown(4_242, 4, 64), 64);
+    let ground = fixtures::ground(4_242, 64);
     let map = BrickMap::from_ground(&ground).map_err(|error| error.to_string())?;
     let (flight, pose) = view(&ground)?;
     let grade = Grade::retro(3);

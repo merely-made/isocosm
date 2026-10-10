@@ -27,10 +27,3 @@ wgpu = { version = "30", default-features = false, features = [
 bytemuck = { version = "1", features = ["derive"] }
 glam = "0.30"
 pollster = "0.4"
-
-[dev-dependencies]
-# Only for the example that writes a frame to disk for a human to look at.
-png = "0.17"
-# `render_body` drives a real `World` to get a body worth drawing; nothing in
-# the library names a product type.
-isocosm = { path = "../../../isocosm" }

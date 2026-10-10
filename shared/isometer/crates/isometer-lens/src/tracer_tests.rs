@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 
 use crate::{
     BrickChange, BrickFrameInput, BrickMap, BrickProjectionRevision, BrickRevision,
@@ -18,8 +18,7 @@ mod roster;
 mod unlit;
 
 fn ground() -> Ground {
-    let grown = Places::grown(4_242, 4, 64);
-    Ground::grow(&grown, 64)
+    fixtures::ground(4_242, 64)
 }
 
 fn flight(ground: &Ground) -> Flight {
