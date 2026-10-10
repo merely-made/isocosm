@@ -279,6 +279,21 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 prey-timing checkpoint integrated:** `73c6451f` keeps
+  one chosen process per tick while resolving automatic feeding prey once
+  at that pass's start. An applicable Thing/Act nudge keeps its named prey;
+  actual target/place determine which nudges are answered. All 28 focused
+  checks passed (five new controls, six choice, ten feeding and seven
+  scheduler); a compiled disabled fix failed the moved-prey control, then
+  exact production bytes were restored and the positive control passed.
+  The orchestrator's merged native workspace/all-targets check passed
+  offline in 22.03 seconds, and weave verified all five merge files. The
+  restored and merged `choice.rs` SHA256 both equal
+  `bd4759f265eea2f06eb8b8f683edc26dc9302667d8b0fe57226aa61f19b1f16b`.
+  Raw control/gate logs are retained with Q3's external receipts. Generator
+  defaults and the reproduction harness are unchanged on main; A1 and Q4's
+  dependency stay open. Q8 next verifies its bounded crowd guards before
+  Q3's declared fresh reproduction matrix.
 - **2026-10-10, Q2 native checkpoint integrated:** the twelve native paths
   from common base `c6bc153a` through verified lane checkpoint `9dd71d78`
   are applied independently of the branch's saved consumer WIP. They carry

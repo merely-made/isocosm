@@ -26,6 +26,10 @@ pub(crate) struct Chosen {
 pub(crate) struct Choice {
     pub process: Option<Key>,
     pub target: Option<Id>,
+    /// A Thing/Act nudge binds an identity, rather than an automatic prey draw.
+    explicit_target: bool,
+    /// Planning and visiting the feeding pass share one prey resolution (454).
+    prey_resolved: bool,
     /// The live nudges, by index, that the chosen act answers.
     pub answers: Vec<usize>,
     /// What each considered process scored, and on what target.
@@ -106,6 +110,19 @@ fn binds_place(p: &Process) -> bool {
     p.commitments.iter().chain(&p.effects).any(at)
 }
 
+fn hunts(p: &Process) -> bool {
+    fn meal(e: &Effect) -> bool {
+        matches!(
+            e,
+            Effect::Eat {
+                from: Binding::Target,
+                ..
+            }
+        ) || e.branches().any(meal)
+    }
+    p.commitments.iter().chain(&p.effects).any(meal)
+}
+
 /// The sites `p` moves its actor to.
 pub(crate) fn moves(p: &Process) -> Vec<Id> {
     let to = |e: &Effect| match e {
@@ -140,12 +157,39 @@ impl Simulation {
             self.chosen.by.insert(actor, choice);
         }
         let c = &self.chosen.by[&actor];
-        match c.process.as_deref() == Some(process.id.as_str()) {
-            true => Deliberated::Chosen {
-                target: c.target,
-                answers: c.answers.clone(),
-            },
-            false => Deliberated::Foregone,
+        if c.process.as_deref() != Some(process.id.as_str()) {
+            return Deliberated::Foregone;
+        }
+        // The methodology still chooses one process for the tick (683).
+        // Automatic hunters draw against their feeding pass's start (454),
+        // after earlier passes may have moved or killed the scored prey.
+        if hunts(process) && !c.prey_resolved {
+            let target = if c.explicit_target {
+                c.target
+            } else {
+                self.choose_target(actor, process)
+            };
+            let place = self
+                .body_at_start(actor)
+                .map_or(super::PLACELESS, |e| e.place);
+            let answers = self
+                .live_nudges(actor, tick)
+                .into_iter()
+                .filter(|&i| self.answers(&self.state.nudges[i], process, place, target))
+                .collect();
+            let c = self
+                .chosen
+                .by
+                .get_mut(&actor)
+                .expect("choice kept for the tick");
+            c.target = target;
+            c.answers = answers;
+            c.prey_resolved = true;
+        }
+        let c = &self.chosen.by[&actor];
+        Deliberated::Chosen {
+            target: c.target,
+            answers: c.answers.clone(),
         }
     }
 
@@ -250,13 +294,19 @@ impl Simulation {
                 continue;
             }
             // A nudge to act on a thing names the target, where it can be.
-            let nudged = live.iter().find_map(|&i| match self.state.nudges[i] {
-                Nudge {
-                    aim: Aim::Act,
-                    toward: Toward::Thing(t),
-                    ..
-                } if p.target.is_some() && self.feasible(actor, Some(t), p, place) => Some(t),
-                _ => None,
+            let nudged = live.iter().find_map(|&i| {
+                let n = &self.state.nudges[i];
+                if hunts(p) && n.act.as_ref().is_some_and(|act| act != &p.id) {
+                    return None;
+                }
+                match n {
+                    Nudge {
+                        aim: Aim::Act,
+                        toward: Toward::Thing(t),
+                        ..
+                    } if p.target.is_some() && self.feasible(actor, Some(*t), p, place) => Some(*t),
+                    _ => None,
+                }
             });
             let target = match p.target {
                 Some(_) => nudged.or_else(|| self.choose_target(actor, p)),
@@ -292,6 +342,7 @@ impl Simulation {
                 top = score;
                 best.process = Some(p.id.clone());
                 best.target = target;
+                best.explicit_target = nudged.is_some();
                 best.answers = answers;
             }
         }

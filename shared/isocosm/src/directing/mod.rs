@@ -265,6 +265,8 @@ impl Simulation {
 #[cfg(test)]
 mod choice_tests;
 #[cfg(test)]
+mod feeding_tests;
+#[cfg(test)]
 mod ruled_tests;
 #[cfg(test)]
 mod tests;

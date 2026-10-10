@@ -117,6 +117,15 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 prey timing corrected:** the automatic feeding target
+  now resolves once against its own pass's start under 454, keeping the
+  tick's chosen process under 683. Explicitly applicable Thing/Act targets
+  stay bound; answered nudges follow the eventual target and place. The
+  lane passed 28 controls, caught a compiled disabled fix, restored exact
+  source bytes and passed the positive control. The merged native offline
+  compile gate passed. The earlier rejected reproduction draws remain
+  historical evidence; a fresh declared matrix is required before rates
+  can be promoted. A1 remains open.
 - **2026-10-10, Q3's native seed-0 receipt diagnosis:** three bounded
   probes passed after the rejected second candidate. Accepted meals credit
   the actor correctly, but 233 lineage feeding plans refused because their
