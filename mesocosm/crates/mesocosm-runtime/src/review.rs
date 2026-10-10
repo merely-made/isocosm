@@ -17,7 +17,7 @@ use isocosm::history::Command;
 use isocosm::process::Registry;
 use isocosm::schema::Entity;
 pub use isocosm::lineage::{Offer, Reading, Review};
-use mesocosm_phenotype::express::{Entropy, Policy, Request, Runner, lower};
+use mesocosm_phenotype::express::{Allocation, Entropy, Policy, Request, Runner, lower};
 use mesocosm_phenotype::{Admission, asset, discover};
 
 /// The review for the played critter's line, when it has one.
@@ -36,12 +36,31 @@ pub struct Authored {
 }
 
 /// What one script made of one offer: the cells it would change on the
-/// played body, or why it could not.
+/// played body, or why it could not, and the placement a commit sends.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Proposed {
     pub offer: usize,
     pub script: String,
     pub cells: Result<u32, String>,
+    pub allocation: Option<Allocation>,
+}
+
+impl Proposed {
+    /// The commands committing this proposal sends for `entity` (787).
+    pub fn commands(&self, entity: isocosm::schema::Id) -> Vec<Command> {
+        let Some(allocation) = self.allocation.as_ref().filter(|_| self.cells.is_ok()) else {
+            return vec![];
+        };
+        allocation
+            .parts
+            .iter()
+            .map(|(part, tracts)| Command::Express {
+                entity,
+                part: *part,
+                tracts: tracts.clone(),
+            })
+            .collect()
+    }
 }
 
 impl Authored {
@@ -81,15 +100,19 @@ impl Authored {
             }
             let request = Request::frozen(registry, body, declared, material, vec![]);
             for (name, source) in &self.scripts {
-                let cells = Runner::load(source, self.policy)
+                let lowered = Runner::load(source, self.policy)
                     .and_then(|mut runner| runner.propose(&request, &entropy))
-                    .and_then(|proposal| lower(registry, body, &proposal))
+                    .and_then(|proposal| lower(registry, body, &proposal));
+                let cells = lowered
+                    .as_ref()
+                    .map_err(|r| r.clone())
                     .and_then(|allocation| allocation.commit(&mut body.clone()))
                     .map_err(|refused| refused.words());
                 out.push(Proposed {
                     offer: index,
                     script: name.clone(),
                     cells,
+                    allocation: lowered.ok(),
                 });
             }
         }

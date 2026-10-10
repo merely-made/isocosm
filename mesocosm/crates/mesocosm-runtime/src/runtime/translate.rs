@@ -109,7 +109,14 @@ impl Runtime {
                     return Err(Refusal::Sim(why.clone()));
                 }
                 // The status quo sends nothing and closes the turn.
-                let commands = offer.commands.clone();
+                let mut commands = offer.commands.clone();
+                // The first script's placement that held, sent after the
+                // revision (787).
+                let critter = self.critter().ok_or(Refusal::NotPlayed)?;
+                let authored = self.proposed.iter().filter(|p| p.offer == index);
+                if let Some(p) = authored.into_iter().find(|p| p.cells.is_ok()) {
+                    commands.extend(p.commands(critter));
+                }
                 for command in commands {
                     self.interim
                         .session
