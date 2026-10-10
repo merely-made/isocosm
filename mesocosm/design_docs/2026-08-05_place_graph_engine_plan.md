@@ -1,5 +1,12 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
+**Status, 2026-10-09:** under ruling 733, SP4 and SP5 are built in
+isometer on `Ground` (`shared/isometer/crates/isometer-space`, branch
+`lane-places`), with the lift moved there (701), routing over SP5 (702)
+and soil split out of the legacy places module (703). Open forks are
+listed under SP5's annotation below. *(The earlier status lines follow
+as written.)*
+
 **Status, 2026-09-30:** SP4 and SP5 designed (412 to 422); SP4 next. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -238,12 +245,43 @@ guards is deliberately broken.
   seeded edit sequences replay to identical bytes, a site re-lifted with its
   edits equals the edited site, an edit on a border is seen from both sides,
   and stored bytes grow with edits and not with sites.
+  *Annotation, 2026-10-09 (733):* built in `isometer-space`'s `edit` and
+  `volume` modules, wgpu-free, behind the `Atlas` trait a product answers
+  (Isocosm's `terrain::View`). An edit is a carve or fill over a sphere,
+  box or route; a cell is inside when its centre is, exact in doubled
+  integers. Neighbours read it across the border's frame relation (414);
+  chunks carry it as sparse exceptions, coarse levels point-sampling each
+  cell's origin (415); `tally` counts each material an edit moves, run by
+  run against the column rule (412). `Volume` realizes a window of a site
+  in `Ground`, which gained an additive write, and applies edits there.
+  The sim keeps edits in `State::edits` and asserts them through the dev
+  source, labelling the run assisted (696, 412's reading). Unit tests
+  check the done-condition's four clauses plus conservation and the
+  coarse sampling, each beside a control. Not yet built: crediting a
+  carver's ledger, which needs the world's densities and matter accounts
+  (412 sets both as world rules, with no defaults), and the overflow heap
+  (416), which waits on capacity.
 - **SP5, places over the bricks.** Connected air, passages and travel cost at
   the declared grain. Done when local re-derivation equals full
   re-derivation after every edit of seeded sequences, a route whose profile
   stops at a cliff or water reads impassable in the volume, and one that
   passes reads passable; the control, a stale dirty region, disagrees and is
   caught.
+  *Annotation, 2026-10-09 (733):* built in `isometer-space::places` over a
+  `Volume`: rooms, water bodies and walkable patches split by the climb
+  (419) and cut on the cap's grid (420, 421), passages with clearance
+  (width, height, step) and travel cost, an id of site and least cell, and
+  `rederive`, which grows the affected set until no flood meets an
+  untouched place. The tests check that local equals full re-derivation
+  after every edit of seeded sequences, with a stale region as the
+  control, and the cliff, water, doorway and cap cases within one site.
+  Routing and walking run over the passages (702). Not yet built:
+  cross-site passages through edge profiles, so the border clause of the
+  done-condition is still open, and sight. Forks raised: which air is
+  "cut off from the sky" (417: no air path to the sky, or solid anywhere
+  above; both are built, and a caller must name one); and that clearance
+  lives only on edges between places, so a neck inside one patch is
+  invisible to the filter unless a split falls there.
 - **SP6, the store moves to nisus.** After T2 (ruling 363): baseline chunks
   land in nisus's world store and edits pass through its revision log
   (rulings 330 and 331), and `Ground` thins or retires as ruling 330 allows.
