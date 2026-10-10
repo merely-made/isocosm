@@ -117,6 +117,24 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3's native seed-0 receipt diagnosis:** three bounded
+  probes passed after the rejected second candidate. Accepted meals credit
+  the actor correctly, but 233 lineage feeding plans refused because their
+  cached target no longer satisfied the declared scope. `choice.rs`
+  chooses a process and prey early in the tick; generated movement at
+  priority zero runs before feeding at ten, moving that prey outside the
+  feeding site. The played actor accepted five feeds and fifteen upkeeps,
+  had no births, peaked at eleven units and exhausted its reserve at tick
+  100. Ruling 454 already requires hunters to draw prey from the feeding
+  pass's start, while 683 keeps one chosen process. Q3 is correcting the
+  automatic target's timing, preserving explicitly named nudge targets
+  and recomputing their answers against the eventual target and place.
+  This correction is unverified and no rates have changed. Temporary
+  production instrumentation was removed and its three source hashes
+  matched the original files. Raw receipts are retained in
+  `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/`; the scope
+  trace's SHA256 is
+  `52f718cf5745628a356869b0919e4a9521c2a6b0f9f6290e2c82cf188c3480d9`.
 - **2026-10-10, Q3's second declared candidate completed:** threshold 12,
   original one-unit meals and drawn lifespans 80 to 120 completed all 20
   bare cases. Only seeds 1, 3, 14, 15 and 17 qualified (5/20). Every case

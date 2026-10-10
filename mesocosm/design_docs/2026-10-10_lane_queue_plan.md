@@ -279,6 +279,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3's stale-prey diagnosis:** three short seed-0 probes
+  identify automatic prey cached before movement, then refused outside the
+  feeding scope. The production recorder was removed byte-for-byte and raw
+  receipts retained under `Code/testing/isometry/after-pass-2026-10-10/`.
+  Rulings 454 and 683 settle the bounded correction: retain one chosen
+  process, draw automatic prey from its feeding pass's start, preserve an
+  explicitly named prey and recompute nudge answers for the actual target.
+  Q3 implements that correction while Q8 owns a short independent
+  hazard/severing/rot check and focused-test batch. Healing allocation and
+  character metadata remain pending; no new ruling or rate promotion.
 - **2026-10-10, Q3's second candidate rejected:** the declared threshold
   12, one-unit meals and 80 to 120-tick lifespan profile completed 20 bare
   seeds, with only 5 qualifying (1, 3, 14, 15, 17). Conservation and both
