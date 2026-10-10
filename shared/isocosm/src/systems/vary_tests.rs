@@ -27,8 +27,8 @@ fn rules() -> crate::rules::Rules {
 }
 
 fn sited(mut e: Entity) -> Entity {
-    for (id, p) in e.parts.iter_mut() {
-        p.situs = Some([0, *id as u8, 0]);
+    for g in e.body.as_mut().unwrap().parts.iter_mut() {
+        g.situs = Some([0, g.id.0 as u8, 0]);
     }
     e
 }
@@ -43,12 +43,12 @@ fn a_founded_body_carries_the_defaults_it_realizes() {
 fn a_developed_gland_brings_its_system_and_a_varied_cell_does_not() {
     let r = rules();
     let mut e = grazer();
-    let lump = e.parts.get_mut(&0).unwrap();
+    let lump = e.parts.get_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:fix".into(), 1);
     lump.functions.insert("function:fix".into());
     let before = e.clone();
     *e.parts
-        .get_mut(&0)
+        .get_mut(&PartId(0))
         .unwrap()
         .cells
         .get_mut("function:store")
@@ -59,7 +59,7 @@ fn a_developed_gland_brings_its_system_and_a_varied_cell_does_not() {
         "latent fix"
     );
     let before = e.clone();
-    let lump = e.parts.get_mut(&0).unwrap();
+    let lump = e.parts.get_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:secrete".into(), 1);
     lump.functions.insert("function:secrete".into());
     take_up(&mut e, &r, &before);
@@ -83,14 +83,16 @@ fn varied_cells_pass_down_where_their_parts_lie() {
             to: "function:fix".into(),
         },
     ];
-    let mut parts = e.parts.clone();
-    inherit(&mut parts, &varied);
-    assert_eq!(parts[&1].cells["function:contract"], 1);
-    assert_eq!(parts[&1].cells["function:fix"], 1);
-    assert_eq!(parts[&2], e.parts[&2]);
-    let mut limb = e.parts[&1].clone();
-    regrow(&mut limb, &varied);
-    assert_eq!(limb, parts[&1]);
+    let mut child = e.clone();
+    child.varied = varied.clone();
+    inherit(&mut child);
+    let parts = &child.parts;
+    assert_eq!(parts[&PartId(1)].cells["function:contract"], 1);
+    assert_eq!(parts[&PartId(1)].cells["function:fix"], 1);
+    assert_eq!(parts[&PartId(2)], e.parts[&PartId(2)]);
+    let mut limb = e.parts[&PartId(1)].clone();
+    regrow(&mut limb, e.situs(PartId(1)), &varied);
+    assert_eq!(limb, parts[&PartId(1)]);
 }
 
 #[test]
@@ -155,7 +157,7 @@ fn a_riff_swaps_or_adds_a_function_the_body_expresses() {
 fn a_riff_on_a_dormant_system_is_kept_only_where_it_wakes() {
     let mut e = grazer();
     // Limbless, its muscular system realizes nothing: dormant (583).
-    e.parts.retain(|id, _| *id == 0 || *id == 3);
+    e.parts.retain(|id, _| id.0 == 0 || id.0 == 3);
     e.systems.retain(|k, _| k == "system:muscular");
     assert!(!realizes(&e, &e.systems["system:muscular"]));
     for seed in 0..500 {

@@ -100,9 +100,9 @@ impl Genesis {
                 if part.traits.iter().any(|t| !self.rules.traits.contains(t)) {
                     return Err("unknown part trait".into());
                 }
-                crate::validation::part(&self.rules, part)?;
+                crate::validation::part(&self.rules, e, id)?;
                 // A body's own matter lives in its parts (ruling 504).
-                if part.bodied() {
+                if e.bodied(id) {
                     let own = e.accounts.keys().find(|k| {
                         matches!(self.rules.accounts.get(*k),
                             Some(AccountKind::Matter { lineage, .. }) if *lineage == e.lineage)
@@ -113,19 +113,20 @@ impl Genesis {
                 }
                 // A declared name cannot lie (ruling 494): a bodied part
                 // names a hollow or what its box and the tree read.
-                if part.bodied() && !part.shape.is_empty() {
+                let declared = e.declared(id);
+                if e.bodied(id) && !declared.is_empty() {
                     let read = crate::anatomy::name(e, id);
-                    if read != Some(part.shape.as_str()) {
-                        return Err(format!("a part declared {} reads as {read:?}", part.shape));
+                    if read != Some(declared) {
+                        return Err(format!("a part declared {declared} reads as {read:?}"));
                     }
                 }
-                let mut seen = BTreeSet::from([id]);
-                let mut parent = part.parent;
-                while let Some(p) = parent {
-                    if !seen.insert(p) {
-                        return Err("cyclic anatomy".into());
-                    }
-                    parent = e.parts.get(&p).ok_or("unknown parent part")?.parent;
+                // Its geometry is the document's (674), which isometer keeps
+                // acyclic; a part keyed outside it has none to read.
+                if e.body.as_ref().is_some_and(|d| d.part(id).is_none()) {
+                    return Err("a part outside its body's document".into());
+                }
+                if e.body.as_ref().is_some_and(|d| d.depth(id).is_none()) {
+                    return Err("cyclic anatomy".into());
                 }
             }
         }

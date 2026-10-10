@@ -20,19 +20,22 @@ const GRAZER: &str = "lineage:1";
 const GRAZE: &[&str] = &["body:graze-1"];
 const FIX: &[&str] = &["body:fix-1"];
 
-fn part(t: &Template, parent: Option<Id>, situs: [u8; 3]) -> Part {
+fn part(t: &Template, parent: Option<u32>, situs: [u8; 3]) -> isocosm::geometry::Sketch {
     let cells: BTreeMap<Key, u32> = t
         .cells
         .iter()
         .filter(|(_, n)| **n > 0)
         .map(|(k, n)| (k.clone(), *n))
         .collect();
-    Part {
+    isocosm::geometry::Sketch {
         parent,
         half_extent: t.half_extent,
         situs: Some(situs),
-        functions: cells.keys().cloned().collect(),
-        cells,
+        part: Part {
+            functions: cells.keys().cloned().collect(),
+            cells,
+            ..Default::default()
+        },
         ..Default::default()
     }
 }
@@ -70,16 +73,18 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
         p.matter.insert("tissue:0".into(), 10_000);
     }
     let k = |name: &str| &rules.kinds[name];
-    e.parts = BTreeMap::from([
+    e.embody(isocosm::geometry::Body::sketch([
         (0, part(k("kind:lump"), None, [0, 0, 0])),
         (1, part(k("kind:limb"), Some(0), [0, 0, 1])),
         (2, part(k("kind:limb"), Some(1), [0, 0, 2])),
         (3, part(k("kind:eye"), Some(0), [1, 0, 0])),
-    ]);
+    ]));
     let b = rules.body();
-    for p in e.parts.values_mut() {
+    let halves: BTreeMap<PartId, [i32; 3]> =
+        e.parts.keys().map(|id| (*id, e.extent(*id))).collect();
+    for (id, p) in e.parts.iter_mut() {
         p.matter
-            .insert("tissue:1".into(), anatomy::ceiling(p, b) / 2);
+            .insert("tissue:1".into(), anatomy::ceiling(halves[id], b) / 2);
     }
     let full = anatomy::room(&e, &rules, "reserve:1");
     anatomy::give(&mut e, &rules, "reserve:1", full)
@@ -128,8 +133,12 @@ fn of<'a>(bodies: &'a [Entity], lineage: &str) -> &'a Entity {
     bodies.iter().find(|e| e.lineage == lineage).unwrap()
 }
 
-fn tissue(e: &Entity, part: Id) -> u64 {
-    e.parts[&part].matter.get("tissue:1").copied().unwrap_or(0)
+fn tissue(e: &Entity, part: u32) -> u64 {
+    e.parts[&PartId(part)]
+        .matter
+        .get("tissue:1")
+        .copied()
+        .unwrap_or(0)
 }
 
 fn held(e: &Entity, key: &str) -> u64 {
@@ -153,7 +162,7 @@ fn a_cut_route_carries_nothing_beyond_the_cut() {
     for seed in 0..6 {
         let intact = world(seed, GRAZE, |_, _| {});
         let cut = world(seed, GRAZE, |e, _| {
-            e.parts.get_mut(&1).unwrap().severed = true;
+            e.body.as_mut().unwrap().parts[1].severed = true;
         });
         let start = of(&founded(&cut), GRAZER).clone();
         // Control: intact, the farther limb is fed.
@@ -180,7 +189,7 @@ fn a_cut_route_carries_nothing_beyond_the_cut() {
 #[test]
 fn a_latent_cell_earns_only_once_a_riff_routes_it() {
     let latent = |e: &mut Entity, _: &Rules| {
-        let lump = e.parts.get_mut(&0).unwrap();
+        let lump = e.parts.get_mut(&PartId(0)).unwrap();
         *lump.cells.get_mut("function:intake").unwrap() -= 1;
         lump.cells.insert("function:fix".into(), 1);
         lump.functions.insert("function:fix".into());
@@ -219,7 +228,7 @@ fn the_limbs_share_of_a_bite_needs_muscular_routes() {
             muscle.effects = [Fill::Function("function:sense".into())].into();
         });
         let limbless = world(seed, GRAZE, |e, r| {
-            e.parts.retain(|id, _| *id == 0 || *id == 3);
+            e.parts.retain(|id, _| id.0 == 0 || id.0 == 3);
             e.systems = isocosm::systems::founded(e, r);
         });
         let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");
@@ -240,7 +249,7 @@ fn the_limbs_share_needs_nerves_joining_them_to_intake() {
             e.systems.remove("system:nervous");
         });
         let limbless = world(seed, GRAZE, |e, r| {
-            e.parts.retain(|id, _| *id == 0 || *id == 3);
+            e.parts.retain(|id, _| id.0 == 0 || id.0 == 3);
             e.systems = isocosm::systems::founded(e, r);
         });
         let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");

@@ -31,6 +31,8 @@
 
 pub mod anatomy;
 pub mod body;
+#[cfg(feature = "fixtures")]
+pub mod fixtures;
 pub mod ground;
 pub mod plan;
 pub mod snapshot;

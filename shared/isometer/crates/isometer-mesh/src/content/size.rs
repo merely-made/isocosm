@@ -87,11 +87,11 @@ impl<P: Palette + PartialEq + Clone> ContentPack<P> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::mesocosm::Founding;
+    use crate::content::tests::FixturePalette;
 
     #[test]
     fn unchanged_and_invalid_sizes_preserve_the_source() {
-        let base = ContentPack::generate(Founding::default().palette()).unwrap();
+        let base = ContentPack::generate(FixturePalette::base()).unwrap();
         assert_eq!(base.resized(1).unwrap(), base);
         for size in [0, 4, u8::MAX] {
             assert_eq!(
@@ -104,10 +104,10 @@ mod tests {
 
     #[test]
     fn growth_resizes_resolved_geometry_and_preserves_roles_and_materials() {
-        let base = ContentPack::generate(Founding::default().palette()).unwrap();
+        let base = ContentPack::generate(FixturePalette::base()).unwrap();
         for size in [2, 3] {
             let enlarged = base.resized(size).unwrap();
-            let restored: ContentPack<isocosm::legacy::mesocosm::PartPalette> =
+            let restored: ContentPack<FixturePalette> =
                 postcard::from_bytes(&postcard::to_allocvec(&enlarged).unwrap()).unwrap();
             assert_eq!(restored, enlarged);
             assert!(restored.resolve_for(enlarged.palette).is_ok());
@@ -141,25 +141,37 @@ mod tests {
         }
     }
 
+    /// A core with two limbs flush on its flanks, shaped by `palette`.
+    fn shaped(palette: &FixturePalette) -> isometer_core::BodyDocument {
+        use isometer_core::fixtures::limb;
+        let core = palette.template_at(Role::Mass, 0);
+        let rod = palette.template_at(Role::Limb, 0);
+        let mut body = isometer_core::BodyDocument::new(
+            isometer_core::SpeciesId(1),
+            core.volume,
+            800,
+            core.half_extent,
+        );
+        let root = body.root;
+        let reach = core.half_extent[0] + rod.half_extent[0];
+        for side in [1, -1] {
+            limb(&mut body, root, 2, rod.half_extent, [side * reach, 0, 0]);
+        }
+        body
+    }
+
     #[test]
-    fn ordinary_development_keeps_paid_mass_while_changing_authoritative_bounds() {
-        use isocosm::legacy::mesocosm::{Recipe, Soma, SpeciesId, develop_body};
-        let base = ContentPack::generate(Founding::default().palette()).unwrap();
+    fn a_resized_palette_moves_bounds_and_keeps_the_tree() {
+        // Isometer's half of what Mesocosm's development pinned: the
+        // resized envelopes are the bounds a body is shaped by, and the part
+        // tree does not change with them. Paid mass is the sim's (699).
+        let base = ContentPack::generate(FixturePalette::base()).unwrap();
         let larger = base.resized(2).unwrap();
-        let recipe = Recipe::founding(3);
-        let soma = Soma::develop(&recipe, 17);
-        let small = develop_body(SpeciesId(1), &recipe, &soma, 800, base.palette).unwrap();
-        let big = develop_body(SpeciesId(1), &recipe, &soma, 800, larger.palette).unwrap();
-        let heavy = develop_body(SpeciesId(1), &recipe, &soma, 1600, larger.palette).unwrap();
+        let (small, big) = (shaped(&base.palette), shaped(&larger.palette));
         assert_ne!(small.aabb(), big.aabb());
-        assert_eq!(big.aabb(), heavy.aabb());
-        assert_eq!(small.total_mass_mg(), 800);
-        assert_eq!(big.total_mass_mg(), 800);
-        assert_eq!(heavy.total_mass_mg(), 1600);
         assert_eq!(small.parts.len(), big.parts.len());
         for (small, big) in small.parts.iter().zip(&big.parts) {
             assert_eq!(small.id, big.id);
-            assert_eq!(small.mass_mg, big.mass_mg);
             assert_eq!(
                 small.attachment.map(|a| a.parent),
                 big.attachment.map(|a| a.parent)

@@ -121,8 +121,8 @@ impl Rules {
 
 /// A body's lowest-numbered live part expressing `function`: the part a
 /// process needing it binds in its actor (ruling 338).
-pub(crate) fn expressing(e: &Entity, function: &str) -> Option<Id> {
-    let mut live = e.parts.iter().filter(|(_, p)| !p.severed);
-    live.find(|(_, p)| p.functions.contains(function))
-        .map(|(id, _)| *id)
+pub(crate) fn expressing(e: &Entity, function: &str) -> Option<PartId> {
+    e.living()
+        .find(|(_, p)| p.functions.contains(function))
+        .map(|(id, _)| id)
 }

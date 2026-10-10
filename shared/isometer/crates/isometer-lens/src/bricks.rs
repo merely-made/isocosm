@@ -164,13 +164,15 @@ impl Deref for BrickMap {
 
 #[cfg(test)]
 mod tests {
-    use isocosm::legacy::mesocosm::places::{BRICK, Ground, Places};
+    use isometer_core::{
+        fixtures,
+        ground::{BRICK, Ground},
+    };
 
     use super::*;
 
     fn ground() -> Ground {
-        let grown = Places::grown(4_242, 4, 64);
-        Ground::grow(&grown, 64)
+        fixtures::ground(4_242, 64)
     }
 
     #[test]

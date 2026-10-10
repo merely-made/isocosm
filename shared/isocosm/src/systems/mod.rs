@@ -33,11 +33,10 @@ fn fills(p: &Part, fill: &Fill, bitten: bool) -> bool {
 
 /// The living parts filling any of `role`; `bitten` the part a bite landed
 /// on, if one did.
-pub fn filling(e: &Entity, role: &BTreeSet<Fill>, bitten: Option<Id>) -> BTreeSet<Id> {
-    let living = e.parts.iter().filter(|(_, p)| !p.severed);
-    living
-        .filter(|(id, p)| role.iter().any(|f| fills(p, f, bitten == Some(**id))))
-        .map(|(id, _)| *id)
+pub fn filling(e: &Entity, role: &BTreeSet<Fill>, bitten: Option<PartId>) -> BTreeSet<PartId> {
+    e.living()
+        .filter(|(id, p)| role.iter().any(|f| fills(p, f, bitten == Some(*id))))
+        .map(|(id, _)| id)
         .collect()
 }
 
@@ -46,9 +45,8 @@ pub fn filling(e: &Entity, role: &BTreeSet<Fill>, bitten: Option<Id>) -> BTreeSe
 /// naming no effects, as the nervous system does (657), by its sources.
 pub fn realizes(e: &Entity, s: &System) -> bool {
     let filled = |role: &BTreeSet<Fill>| {
-        let living = e.parts.values().filter(|p| !p.severed);
-        living
-            .flat_map(|p| role.iter().map(move |f| fills(p, f, true)))
+        e.living()
+            .flat_map(|(_, p)| role.iter().map(move |f| fills(p, f, true)))
             .any(|v| v)
     };
     filled(&s.sources) && (s.effects.is_empty() || filled(&s.effects))
@@ -72,10 +70,7 @@ pub fn union(e: &Entity, function: &str, role: Role) -> Option<System> {
 /// names it there, a living part expresses it, and the systems naming it
 /// are realized as one.
 pub fn routes(e: &Entity, function: &str, role: Role) -> bool {
-    let expressed = e
-        .parts
-        .values()
-        .any(|p| !p.severed && p.functions.contains(function));
+    let expressed = e.living().any(|(_, p)| p.functions.contains(function));
     expressed && union(e, function, role).is_some_and(|u| realizes(e, &u))
 }
 

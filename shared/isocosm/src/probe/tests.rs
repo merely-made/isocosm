@@ -324,12 +324,12 @@ fn a_body_bin_moves_as_its_members_do() {
             let rules = g.rules.clone();
             for group in g.population.groups.values_mut() {
                 let e = &mut group.entity;
-                let tail = e.parts.keys().copied().filter(|id| *id > 0).max();
+                let tail = e.parts.keys().copied().filter(|id| id.0 > 0).max();
                 if cut
                     && e.lineage == "lineage:0"
                     && let Some(tail) = tail
                 {
-                    e.parts.remove(&tail);
+                    e.take_part(tail);
                     let room = crate::anatomy::room(e, &rules, "tissue:0");
                     crate::anatomy::give(e, &rules, "tissue:0", room)
                         .unwrap()

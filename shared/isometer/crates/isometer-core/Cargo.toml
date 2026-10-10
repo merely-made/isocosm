@@ -18,3 +18,7 @@ postcard = { version = "1", features = ["alloc"] }
 # The family's FNV-1a witness, built once in mere (wing ruling 609; mere's
 # F119 hands it this crate's copy). A leaf on serde, postcard and framing.
 state-witness = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }
+
+[features]
+# Isometer's own fixtures for its suites (wing ruling 720).
+fixtures = []

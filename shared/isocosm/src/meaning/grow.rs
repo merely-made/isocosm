@@ -44,10 +44,10 @@ pub(crate) fn grow(
         if anatomy::room(body, rules, &tissue) > 0 {
             break;
         }
-        let Some(part) = growth::lacking(rules, &development, body)? else {
+        let Some((frame, part)) = growth::lacking(rules, &development, body)? else {
             break;
         };
-        let price = growth::price(rules, &part);
+        let price = growth::price(rules, &frame, &part);
         let funds: u64 = pay
             .iter()
             .map(|k| anatomy::held(body, rules, k))
@@ -55,8 +55,7 @@ pub(crate) fn grow(
         if funds < price {
             break;
         }
-        let id = body.parts.keys().next_back().map_or(0, |last| last + 1);
-        body.parts.insert(id, part);
+        body.add_part(&frame, part)?;
         for (key, paid) in spend(p, &pay, Binding::Place, Some(into), price)? {
             *grown.paid.entry(key).or_default() += paid;
         }

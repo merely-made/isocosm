@@ -8,6 +8,7 @@
 use super::{Binding, BodyRules, Role};
 use crate::{
     Result, anatomy,
+    anatomy::Half,
     schema::{Key, Part},
 };
 use serde::{Deserialize, Serialize};
@@ -19,7 +20,7 @@ pub type Draw<'a> = dyn FnMut(u64, u8) -> Result<u64> + 'a;
 /// A body's living parts, for a sum over them.
 /// A binding's living parts, with the reference body their readings
 /// price cells by (ruling 460).
-pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<(Vec<Part>, BodyRules)> + 'a;
+pub type PartsOf<'a> = dyn FnMut(Binding) -> Result<(Vec<(Half, Part)>, BodyRules)> + 'a;
 
 /// The most nodes one expression may hold: room for Mesocosm's mouthful,
 /// its build multiple and its room each reading the ceiling's sum over
@@ -212,9 +213,9 @@ impl Reading {
     /// What one part shows it (X2): a span only where the part expresses
     /// the function, cell mass read from its extents (ruling 460), and an
     /// account from the part's own ledger (ruling 504).
-    pub fn of_part(&self, p: &Part, b: BodyRules) -> u128 {
+    pub fn of_part(&self, h: Half, p: &Part, b: BodyRules) -> u128 {
         let cells = |f: &str| u128::from(p.cells.get(f).copied().unwrap_or(0));
-        let extent = p.half_extent.iter().map(|h| h.unsigned_abs());
+        let extent = h.iter().map(|h| h.unsigned_abs());
         match self {
             Self::Account { key, .. } => u128::from(p.matter.get(key).copied().unwrap_or(0)),
             Self::Span { function, .. } if p.functions.contains(function) => {
@@ -224,12 +225,12 @@ impl Reading {
             Self::Voxels { .. } => extent.map(|h| 2 * u128::from(h) + 1).product(),
             Self::Cells { function, .. } => cells(function),
             Self::CellMass { function, .. } => {
-                cells(function) * u128::from(anatomy::cell_mass(p, b))
+                cells(function) * u128::from(anatomy::cell_mass(h, b))
             },
-            Self::CellWeight { .. } => u128::from(anatomy::cell_mass(p, b)),
+            Self::CellWeight { .. } => u128::from(anatomy::cell_mass(h, b)),
             Self::Measured {
                 function, measure, ..
-            } => anatomy::share_of(p, function, *measure),
+            } => anatomy::share_of(h, p, function, *measure),
             Self::Kept { .. } | Self::Lacking { .. } | Self::Carried { .. } | Self::Room { .. } => {
                 0
             },
@@ -406,9 +407,11 @@ impl Expr {
             Self::Parts { who, each } => {
                 let mut total = 0i64;
                 let (list, b) = parts(*who)?;
-                for part in list {
+                for (half, part) in list {
                     let mut one = |r: &Reading| match r.who() {
-                        Binding::Part => Ok(i64::try_from(r.of_part(&part, b)).unwrap_or(i64::MAX)),
+                        Binding::Part => {
+                            Ok(i64::try_from(r.of_part(half, &part, b)).unwrap_or(i64::MAX))
+                        },
                         _ => read(r),
                     };
                     total = total.saturating_add(each.eval(&mut one, draw)?);

@@ -14,7 +14,7 @@
 //! in the game.
 //!
 //! ```text
-//! cargo run -p isometer-lens --release --example dc4_roster -- <out_dir>
+//! cargo run -p mesocosm-genet --release --example dc4_roster -- <out_dir>
 //! ```
 //!
 //! **Two cuts.** The shipping section looks along `-z`, and `develop_body`
@@ -29,7 +29,7 @@
 
 use isocosm::legacy::mesocosm::places::{Ground, Places};
 use isocosm::legacy::mesocosm::{Recipe, Soma, SpeciesId, axis::archetype, develop_body};
-use isometer_lens::{
+use isometer::lens::{
     BodyLensProjection, BodyPlacement, BrickFrameInput, BrickMap, BrickRevision, BrickTracer,
     Grade, TraceCamera,
 };

@@ -364,6 +364,7 @@ impl Founding {
                     born: 0,
                     alive: true,
                     body_revision: 1,
+                    body: None,
                     parts: BTreeMap::new(),
                     traits: BTreeSet::new(),
                     accounts: BTreeMap::new(),
@@ -406,8 +407,9 @@ impl Founding {
                     born: 0,
                     alive: true,
                     body_revision: 1,
+                    body: None,
                     parts: BTreeMap::from([(
-                        0,
+                        PartId(0),
                         Part {
                             traits: lineages[&lineage].traits.clone(),
                             ..Default::default()

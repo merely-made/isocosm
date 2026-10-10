@@ -29,7 +29,8 @@ vox = ["dep:dot_vox"]
 # Fixtures only: `World`, `develop_body`, `Recipe`, `Soma`, `PartPalette` and
 # the archetype roster are Mesocosm's development model, which stays with
 # Mesocosm. Production code names nothing from it.
-isocosm = { path = "../../../isocosm" }
+# Isometer's own fixtures, not the sim it serves (wing ruling 720).
+isometer-core = { path = "../isometer-core", features = ["fixtures"] }
 # The bake lane's appearance recipes round-trip as JSON, and the sprite
 # example writes a JSON receipt.
 serde_json = "1"

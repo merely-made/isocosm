@@ -84,15 +84,17 @@ impl Staged<'_> {
         let (seed, act) = (self.sim.genesis.seed, self.stage.act);
         let sim = self.sim;
         let b = sim.genesis.rules.body();
-        let living = |e: &Entity| -> Vec<Part> {
-            e.parts.values().filter(|p| !p.severed).cloned().collect()
+        let living = |e: &Entity| -> Vec<(crate::anatomy::Half, Part)> {
+            e.living()
+                .map(|(id, p)| (e.extent(id), p.clone()))
+                .collect()
         };
         let mine = living(self.body(Binding::Actor)?);
         let theirs = match self.stage.target {
             Some(_) => Some(living(self.body(Binding::Target)?)),
             None => None,
         };
-        let mut parts = |who: Binding| -> Result<(Vec<Part>, BodyRules)> {
+        let mut parts = |who: Binding| -> Result<(Vec<(crate::anatomy::Half, Part)>, BodyRules)> {
             match who {
                 Binding::Actor => Ok((mine.clone(), b)),
                 Binding::Target => match theirs.clone() {
@@ -127,7 +129,8 @@ impl Staged<'_> {
                 r if r.who() == Binding::Part => {
                     let (body, id) = self.part()?;
                     let part = body.parts.get(&id).ok_or("bound part missing")?;
-                    Ok(i64::try_from(r.of_part(part, b)).unwrap_or(i64::MAX))
+                    let read = r.of_part(body.extent(id), part, b);
+                    Ok(i64::try_from(read).unwrap_or(i64::MAX))
                 },
                 r => Ok(meaning::body_reading(
                     self.body(r.who())?,

@@ -8,7 +8,10 @@
 //! bodies do. One truth, two consumers, no conversion layer beyond a
 //! byte copy into `Volume`'s layout.
 
-use isocosm::legacy::mesocosm::places::{BRICK, Ground, Places};
+use isometer_core::{
+    fixtures,
+    ground::{BRICK, Ground},
+};
 use isometer_mesh::{Volume, mesh_volume};
 
 /// A brick's materials as a mesh volume. The brick is y-major (y, z, x);
@@ -30,8 +33,7 @@ fn volume_of(ground: &Ground, key: [i16; 3]) -> Option<Volume> {
 
 #[test]
 fn world_bricks_mesh_like_bodies_do() {
-    let grown = Places::grown(4_242, 4, 64);
-    let ground = Ground::grow(&grown, 64);
+    let ground = fixtures::ground(4_242, 64);
 
     let mut meshed = 0;
     let mut quads = 0;
@@ -53,8 +55,7 @@ fn world_bricks_mesh_like_bodies_do() {
 
 #[test]
 fn a_carve_changes_exactly_its_bricks_meshes() {
-    let grown = Places::grown(4_242, 4, 64);
-    let mut ground = Ground::grow(&grown, 64);
+    let mut ground = fixtures::ground(4_242, 64);
     let before: std::collections::BTreeMap<_, _> = ground
         .keys()
         .map(|key| (key, mesh_volume(&volume_of(&ground, key).unwrap()).quads))

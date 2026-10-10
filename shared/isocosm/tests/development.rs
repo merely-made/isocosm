@@ -10,6 +10,7 @@
 use isocosm::{
     anatomy,
     development::{develop, soma},
+    geometry::Body,
     rules::{Development, Facing, Policy, Recipe, Rules, Tagma, Template},
     schema::*,
 };
@@ -75,28 +76,18 @@ fn development(tagmata: Vec<Tagma>, variance: u8, absence: [u32; 2]) -> Developm
     }
 }
 
-/// Each part's pivot in the root's frame.
-fn placed(parts: &BTreeMap<Id, Part>) -> BTreeMap<Id, [i32; 3]> {
-    let mut at = BTreeMap::new();
-    for (id, p) in parts {
-        let base = p.parent.map_or([0; 3], |q| at[&q]);
-        at.insert(*id, [0, 1, 2].map(|i| base[i] + p.offset[i]));
-    }
-    at
-}
-
 /// Pairs of parts whose boxes overlap, touching not counted (isometer's
-/// test).
-fn overlaps(parts: &BTreeMap<Id, Part>) -> Vec<(Id, Id)> {
-    let at = placed(parts);
+/// test), each placed where isometer places its pivot.
+fn overlaps(body: &Body) -> Vec<(PartId, PartId)> {
+    let d = &body.doc;
     let mut out = vec![];
-    for (a, p) in parts {
-        for (b, q) in parts.range(a + 1..) {
-            let inside = (0..3).all(|i| {
-                (at[a][i] - at[b][i]).abs() < p.half_extent[i].abs() + q.half_extent[i].abs()
-            });
+    for p in &d.parts {
+        for q in d.parts.iter().filter(|q| q.id > p.id) {
+            let (a, b) = (d.world_pivot(p.id).unwrap(), d.world_pivot(q.id).unwrap());
+            let inside = (0..3)
+                .all(|i| (a[i] - b[i]).abs() < p.half_extent[i].abs() + q.half_extent[i].abs());
             if inside {
-                out.push((*a, *b));
+                out.push((p.id, q.id));
             }
         }
     }
@@ -160,7 +151,8 @@ fn absence_follows_the_odds_and_never_takes_a_kind_that_feeds() {
     assert!((30..=70).contains(&lacking), "{lacking}");
     // An absent segment's limbs do not develop; the segment does.
     let s = soma(&r, &certain.recipe, 0);
-    let parts = develop(&r, &certain, &s).unwrap();
+    let body = develop(&r, &certain, &s).unwrap();
+    let parts = &body.parts;
     let limbs = parts
         .values()
         .filter(|p| p.functions.contains("function:contract"));
@@ -172,9 +164,16 @@ fn absence_follows_the_odds_and_never_takes_a_kind_that_feeds() {
 fn parts_sit_flush_their_borne_kinds_mirrored() {
     let r = rules();
     let d = development(vec![tagma(2, Some("kind:limb"), 1)], 0, [0, 1]);
-    let parts = develop(&r, &d, &soma(&r, &d.recipe, 7)).unwrap();
-    let offsets: Vec<(Option<Id>, [i32; 3])> =
-        parts.values().map(|p| (p.parent, p.offset)).collect();
+    let body = develop(&r, &d, &soma(&r, &d.recipe, 7)).unwrap();
+    let offsets: Vec<(Option<u32>, [i32; 3])> = body
+        .doc
+        .parts
+        .iter()
+        .map(|p| match p.attachment {
+            Some(a) => (Some(a.parent.0), a.offset),
+            None => (None, [0; 3]),
+        })
+        .collect();
     assert_eq!(
         offsets,
         [
@@ -188,14 +187,14 @@ fn parts_sit_flush_their_borne_kinds_mirrored() {
             (Some(3), [-5, 0, 0]),
         ]
     );
-    assert!(overlaps(&parts).is_empty(), "{:?}", overlaps(&parts));
+    assert!(overlaps(&body).is_empty(), "{:?}", overlaps(&body));
     // Each part is its kind's template, read as its box reads.
     let names: Vec<_> = (0..6)
-        .map(|id| anatomy::name(&tagged(&parts), id).unwrap())
+        .map(|id| anatomy::name(&tagged(&body), PartId(id)).unwrap())
         .collect();
     assert_eq!(names[0], "part-shape:lump");
     assert_eq!(names[1], "part-shape:rod");
-    assert_eq!(parts[&0].cells["function:intake"], 6);
+    assert_eq!(body.parts[&PartId(0)].cells["function:intake"], 6);
     // The control: borne behind, a limb runs into the next segment.
     let mut back = d.clone();
     back.recipe.tagmata[0].socket = Facing::Back;
@@ -203,7 +202,7 @@ fn parts_sit_flush_their_borne_kinds_mirrored() {
     assert!(!overlaps(&collide).is_empty());
 }
 
-fn tagged(parts: &BTreeMap<Id, Part>) -> Entity {
+fn tagged(body: &Body) -> Entity {
     let mut e = isocosm::probe::BodyFounding::default()
         .generate()
         .unwrap()
@@ -215,6 +214,6 @@ fn tagged(parts: &BTreeMap<Id, Part>) -> Entity {
         .unwrap()
         .entity
         .clone();
-    e.parts = parts.clone();
+    e.embody(body.clone());
     e
 }

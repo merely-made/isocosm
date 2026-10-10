@@ -191,9 +191,9 @@ fn grazing(seed: u64, held: u64) -> ProbeWorld {
         absent: vec![],
         seed: 0,
     };
-    frond.parts = develop(&rules, &d, &soma).unwrap();
+    frond.embody(develop(&rules, &d, &soma).unwrap());
     frond.soma = vec![1];
-    frond.parts.get_mut(&0).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+    frond.parts.get_mut(&PartId(0)).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
     let room = crate::anatomy::room(&grazer, &rules, "reserve:1");
     crate::anatomy::give(&mut grazer, &rules, "reserve:1", room)
         .unwrap()
@@ -244,7 +244,11 @@ fn a_whole_meal_lands_alike_in_crowd_and_core() {
                 .values()
                 .any(|p| p.matter.contains_key("tissue:0"));
             let prey = a.iter().find(|(e, _)| e.lineage == "lineage:0").unwrap();
-            let left = prey.0.parts.get(&0).map(|p| value(&p.matter, "tissue:0"));
+            let left = prey
+                .0
+                .parts
+                .get(&PartId(0))
+                .map(|p| value(&p.matter, "tissue:0"));
             whole += usize::from(took);
             bitten += usize::from(left.is_some_and(|t| t < held));
         }

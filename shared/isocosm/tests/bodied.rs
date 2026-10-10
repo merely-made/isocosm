@@ -74,7 +74,11 @@ fn flora_and_fauna_draw_recipes_that_reproduce_and_myco_and_micro_wait() {
             continue;
         }
         founders += 1;
-        assert!(e.parts.values().all(|p| p.situs.is_some() && p.bodied()));
+        assert!(
+            e.parts
+                .keys()
+                .all(|id| e.situs(*id).is_some() && e.bodied(*id))
+        );
         let own = e
             .accounts
             .keys()

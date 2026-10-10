@@ -24,7 +24,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Which way a socket faces, in body space.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Facing {
     Front,
     Back,
@@ -138,7 +138,7 @@ pub fn classify(half_extent: [i32; 3]) -> Role {
 /// trophic life was decided by a field that decides where a limb's twin goes.
 /// A kingdom is now read from feeding anatomy by the product that owns one;
 /// this says which growth mirrors, and nothing else.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Default, Serialize, Deserialize)]
 pub enum Symmetry {
     /// Paired left and right, so lateral growth grows a twin.
     #[default]
@@ -154,7 +154,7 @@ pub enum Symmetry {
 /// Deliberately small. It has to be **legible** — a plan nobody can perceive
 /// is procedural noise — and it has to be **mutable**, because the adaptation
 /// phase spends the bank on changing exactly this.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct BodyPlan {
     pub symmetry: Symmetry,
     /// Where each role prefers to attach, indexed by [`Role`].

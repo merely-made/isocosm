@@ -19,49 +19,52 @@ use crate::{
 
 /// What each part of a body may still take in an act whose carriage bound
 /// it (ruling 581): a part not named takes nothing.
-pub type Caps = std::collections::BTreeMap<Id, u64>;
+pub type Caps = std::collections::BTreeMap<PartId, u64>;
 
 pub(crate) const STORE: &str = "function:store";
 pub(crate) const REPRODUCE: &str = "function:reproduce";
 
+/// A part's half-extents, as isometer's document holds them (674).
+pub type Half = [i32; 3];
+
 /// Each axis's extent in voxels, `2|h| + 1`.
-fn axes(p: &Part) -> [u128; 3] {
-    p.half_extent.map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
+fn axes(h: Half) -> [u128; 3] {
+    h.map(|h| 2 * u128::from(h.unsigned_abs()) + 1)
 }
 
 /// The axes longest first.
-fn sorted(p: &Part) -> [u128; 3] {
-    let mut a = axes(p);
+fn sorted(h: Half) -> [u128; 3] {
+    let mut a = axes(h);
     a.sort_unstable_by(|x, y| y.cmp(x));
     a
 }
 
-pub fn voxels(p: &Part) -> u128 {
-    axes(p).iter().product()
+pub fn voxels(h: Half) -> u128 {
+    axes(h).iter().product()
 }
 
 /// Mesocosm's lattice (ruling 460): along each axis one cell per two voxels
 /// of half-extent, plus one, at most four an axis.
-pub fn capacity(p: &Part) -> u32 {
+pub fn capacity(h: Half) -> u32 {
     let axis = |h: i32| (h.unsigned_abs().max(1) / 2 + 1).clamp(1, 4);
-    p.half_extent.iter().map(|h| axis(*h)).product()
+    h.iter().map(|h| axis(*h)).product()
 }
 
 /// The part's adult mass: its voxels priced at the reference mass a
 /// segment, at least a milligram.
-pub fn ceiling(p: &Part, b: BodyRules) -> u64 {
+pub fn ceiling(h: Half, b: BodyRules) -> u64 {
     let priced =
-        voxels(p) * u128::from(b.reference_mass_mg) / u128::from(b.reference_segment_voxels.max(1));
+        voxels(h) * u128::from(b.reference_mass_mg) / u128::from(b.reference_segment_voxels.max(1));
     u64::try_from(priced).unwrap_or(u64::MAX).max(1)
 }
 
 /// What one cell weighs: the adult mass over the cells.
-pub fn cell_mass(p: &Part, b: BodyRules) -> u64 {
-    (ceiling(p, b) / u64::from(capacity(p))).max(1)
+pub fn cell_mass(h: Half, b: BodyRules) -> u64 {
+    (ceiling(h, b) / u64::from(capacity(h))).max(1)
 }
 
-pub fn measure(p: &Part, m: Measure) -> u128 {
-    let [a, b, c] = sorted(p);
+pub fn measure(h: Half, m: Measure) -> u128 {
+    let [a, b, c] = sorted(h);
     match m {
         Measure::Length => a,
         Measure::Area => a * b,
@@ -72,31 +75,27 @@ pub fn measure(p: &Part, m: Measure) -> u128 {
 
 /// What `function` takes of a measurement: the part's in proportion to the
 /// cells it holds there, floored.
-pub fn share_of(p: &Part, function: &str, m: Measure) -> u128 {
+pub fn share_of(h: Half, p: &Part, function: &str, m: Measure) -> u128 {
     let cells = u128::from(p.cells.get(function).copied().unwrap_or(0));
-    measure(p, m) * cells / u128::from(capacity(p))
+    measure(h, m) * cells / u128::from(capacity(h))
 }
 
 /// A part's name (ruling 494): a declared tube or shell, a hollow a box
 /// cannot show; otherwise its box read as isometer reads one, refined by
 /// the tree, a rod with two or more children a branch and a point between a
 /// parent and a child a joint.
-pub fn name(e: &Entity, id: Id) -> Option<&'static str> {
-    let p = e.parts.get(&id)?;
-    match p.shape.as_str() {
+pub fn name(e: &Entity, id: PartId) -> Option<&'static str> {
+    e.parts.get(&id)?;
+    match e.declared(id) {
         "part-shape:tube" => return Some("part-shape:tube"),
         "part-shape:shell" => return Some("part-shape:shell"),
         _ => {},
     }
-    let boxed = boxed(p.half_extent);
-    let children = e
-        .parts
-        .values()
-        .filter(|c| !c.severed && c.parent == Some(id))
-        .count();
+    let boxed = boxed(e.extent(id));
+    let children = e.children_of(id).len();
     Some(match boxed {
         "part-shape:rod" if children >= 2 => "part-shape:branch",
-        "part-shape:point" if p.parent.is_some() && children >= 1 => "part-shape:joint",
+        "part-shape:point" if e.parent_of(id).is_some() && children >= 1 => "part-shape:joint",
         other => other,
     })
 }
@@ -171,30 +170,30 @@ pub fn anatomical(e: &Entity, rules: &Rules, key: &str) -> bool {
         rules.accounts.get(key),
         Some(AccountKind::Matter { lineage, .. }) if *lineage == e.lineage
     );
-    own && e.parts.values().any(|p| !p.severed && p.bodied())
+    own && e.living().any(|(id, _)| e.bodied(id))
 }
 
 /// What a part may hold of `key` (rulings 463 and 518): its adult mass in
 /// tissue, in reserve its store cells' mass, and in provision its
 /// reproduce cells'.
-pub fn bound(p: &Part, rules: &Rules, key: &str) -> u64 {
+pub fn bound(h: Half, p: &Part, rules: &Rules, key: &str) -> u64 {
     let b = rules.body();
     let cells = |function: &str| u64::from(p.cells.get(function).copied().unwrap_or(0));
     if reserve(rules, key) {
-        cells(STORE).saturating_mul(cell_mass(p, b))
+        cells(STORE).saturating_mul(cell_mass(h, b))
     } else if provision(rules, key) {
-        cells(REPRODUCE).saturating_mul(cell_mass(p, b))
+        cells(REPRODUCE).saturating_mul(cell_mass(h, b))
     } else {
-        ceiling(p, b)
+        ceiling(h, b)
     }
 }
 
-/// The parts that can hold matter, living and bodied, in part order.
-fn bodies(e: &Entity) -> impl Iterator<Item = (Id, &Part)> {
-    e.parts
-        .iter()
-        .filter(|(_, p)| !p.severed && p.bodied())
-        .map(|(id, p)| (*id, p))
+/// The parts that can hold matter, living and bodied, in part order, with
+/// their half-extents.
+fn bodies(e: &Entity) -> impl Iterator<Item = (PartId, Half, &Part)> {
+    e.living()
+        .filter(|(id, _)| e.bodied(*id))
+        .map(|(id, p)| (id, e.extent(id), p))
 }
 
 /// What the body holds of `key`: its ledger's and its parts'.
@@ -204,7 +203,7 @@ pub fn held(e: &Entity, rules: &Rules, key: &str) -> u64 {
         return own;
     }
     bodies(e)
-        .map(|(_, p)| p.matter.get(key).copied().unwrap_or(0))
+        .map(|(_, _, p)| p.matter.get(key).copied().unwrap_or(0))
         .fold(own, u64::saturating_add)
 }
 
@@ -216,11 +215,11 @@ pub fn room(e: &Entity, rules: &Rules, key: &str) -> u64 {
 /// The same within `caps`, where a carriage bound the act.
 pub fn room_within(e: &Entity, rules: &Rules, key: &str, caps: Option<&Caps>) -> u64 {
     bodies(e)
-        .map(|(id, p)| capped(space(p, rules, key), id, caps))
+        .map(|(id, h, p)| capped(space(h, p, rules, key), id, caps))
         .fold(0, u64::saturating_add)
 }
 
-fn capped(room: u64, id: Id, caps: Option<&Caps>) -> u64 {
+fn capped(room: u64, id: PartId, caps: Option<&Caps>) -> u64 {
     match caps {
         Some(c) => room.min(c.get(&id).copied().unwrap_or(0)),
         None => room,
@@ -230,9 +229,9 @@ fn capped(room: u64, id: Id, caps: Option<&Caps>) -> u64 {
 /// What one part has room for of `key`: below what it may hold, its room
 /// for tissue shrunk by all the tissue it keeps, of other accounts and
 /// other lineages, as an incorporated part keeps its donor's (ruling 544).
-pub(crate) fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
+pub(crate) fn space(h: Half, p: &Part, rules: &Rules, key: &str) -> u64 {
     let held = p.matter.get(key).copied().unwrap_or(0);
-    let room = bound(p, rules, key).saturating_sub(held);
+    let room = bound(h, p, rules, key).saturating_sub(held);
     if reserve(rules, key) || provision(rules, key) {
         return room;
     }
@@ -245,13 +244,13 @@ pub(crate) fn space(p: &Part, rules: &Rules, key: &str) -> u64 {
 
 /// `amount` split by `weights`: each its exact share floored, the units
 /// left over to the largest remainders, ties in the order given.
-pub(crate) fn apportion(weights: &[(Id, u64)], amount: u64) -> Vec<(Id, u64)> {
+pub(crate) fn apportion(weights: &[(PartId, u64)], amount: u64) -> Vec<(PartId, u64)> {
     let total: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if total == 0 {
         return vec![];
     }
     let wanted = u128::from(amount).min(total);
-    let mut split: Vec<(Id, u64, u128)> = weights
+    let mut split: Vec<(PartId, u64, u128)> = weights
         .iter()
         .map(|(id, w)| {
             let product = u128::from(*w) * wanted;
@@ -278,7 +277,7 @@ pub fn take(
     rules: &Rules,
     key: &str,
     amount: u64,
-) -> Option<Result<Vec<(Id, u64)>>> {
+) -> Option<Result<Vec<(PartId, u64)>>> {
     take_within(e, rules, key, amount, None)
 }
 
@@ -290,12 +289,12 @@ pub fn take_within(
     key: &str,
     amount: u64,
     caps: Option<&mut Caps>,
-) -> Option<Result<Vec<(Id, u64)>>> {
+) -> Option<Result<Vec<(PartId, u64)>>> {
     if !anatomical(e, rules, key) {
         return None;
     }
-    let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| (id, p.matter.get(key).copied().unwrap_or(0)))
+    let weights: Vec<(PartId, u64)> = bodies(e)
+        .map(|(id, _, p)| (id, p.matter.get(key).copied().unwrap_or(0)))
         .collect();
     let total: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if total < u128::from(amount) {
@@ -318,7 +317,7 @@ pub fn give(
     rules: &Rules,
     key: &str,
     amount: u64,
-) -> Option<Result<Vec<(Id, u64)>>> {
+) -> Option<Result<Vec<(PartId, u64)>>> {
     give_within(e, rules, key, amount, None)
 }
 
@@ -330,12 +329,12 @@ pub fn give_within(
     key: &str,
     amount: u64,
     mut caps: Option<&mut Caps>,
-) -> Option<Result<Vec<(Id, u64)>>> {
+) -> Option<Result<Vec<(PartId, u64)>>> {
     if !anatomical(e, rules, key) {
         return None;
     }
-    let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| (id, capped(space(p, rules, key), id, caps.as_deref())))
+    let weights: Vec<(PartId, u64)> = bodies(e)
+        .map(|(id, h, p)| (id, capped(space(h, p, rules, key), id, caps.as_deref())))
         .collect();
     let room: u128 = weights.iter().map(|(_, w)| u128::from(*w)).sum();
     if room < u128::from(amount) {
@@ -354,7 +353,7 @@ pub fn give_within(
 fn apply(
     e: &mut Entity,
     key: &str,
-    split: &[(Id, u64)],
+    split: &[(PartId, u64)],
     f: fn(&mut Ledger, &str, u64) -> Result<()>,
 ) -> Result<()> {
     for (id, amount) in split {
@@ -367,9 +366,9 @@ fn apply(
 /// The part a bite lands on (ruling 459): drawn by what each holds of the
 /// accounts the meal names, `draw` choosing among them. `None` where the
 /// body keeps no matter in parts.
-pub fn bitten(e: &Entity, of: &[Key], draw: u64) -> Option<Id> {
-    let weights: Vec<(Id, u64)> = bodies(e)
-        .map(|(id, p)| {
+pub fn bitten(e: &Entity, of: &[Key], draw: u64) -> Option<PartId> {
+    let weights: Vec<(PartId, u64)> = bodies(e)
+        .map(|(id, _, p)| {
             let edible = of.iter().filter_map(|k| p.matter.get(k)).sum::<u64>();
             (id, edible)
         })

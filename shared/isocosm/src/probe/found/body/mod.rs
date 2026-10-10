@@ -357,16 +357,19 @@ impl BodyFounding {
                         &d.recipe,
                         crate::draw(self.seed, "body-soma", &[cohort]),
                     );
-                    e.parts = develop(rules, d, &drawn)?;
+                    e.embody(develop(rules, d, &drawn)?);
                     e.soma = drawn.segments;
                     e.systems = crate::systems::founded(&e, rules);
                     let i = i as u32;
-                    for part in e.parts.values_mut() {
-                        let held = anatomy::ceiling(part, b) * tissue_mille / 1000;
+                    let halves: BTreeMap<PartId, anatomy::Half> =
+                        e.parts.keys().map(|id| (*id, e.extent(*id))).collect();
+                    for (id, part) in e.parts.iter_mut() {
+                        let half = halves[id];
+                        let held = anatomy::ceiling(half, b) * tissue_mille / 1000;
                         part.matter.insert(tissue(i), held);
                         let cells = |f: &str| u64::from(part.cells.get(f).copied().unwrap_or(0));
                         let (stores, sown) = (cells(anatomy::STORE), cells(anatomy::REPRODUCE));
-                        let stored = stores * anatomy::cell_mass(part, b) * reserve_mille / 1000;
+                        let stored = stores * anatomy::cell_mass(half, b) * reserve_mille / 1000;
                         // Every store and reproducing part keeps its account,
                         // empty or not, so that every draw reads the same set
                         // (as checkpoint 6's ledger kept both accounts).

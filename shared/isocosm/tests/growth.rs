@@ -13,6 +13,7 @@
 use isocosm::{
     Simulation, anatomy,
     development::{Soma, develop},
+    geometry::Frame,
     growth::{lacking, price, seat},
     probe::BodyFounding,
     rules::*,
@@ -92,8 +93,16 @@ fn body(g: &Genesis, drawn: &[u8], absent: &[(u8, u8)], cut: &[[u8; 3]], reserve
         seed: 0,
     };
     let mut e = g.population.get(first_grazer(g)).unwrap().clone();
-    e.parts = develop(&g.rules, &d, &soma).unwrap();
-    e.parts.retain(|_, p| !cut.contains(&p.situs.unwrap()));
+    e.embody(develop(&g.rules, &d, &soma).unwrap());
+    let gone: Vec<PartId> = e
+        .parts
+        .keys()
+        .copied()
+        .filter(|id| cut.contains(&e.situs(*id).unwrap()))
+        .collect();
+    for id in gone {
+        e.take_part(id);
+    }
     e.soma = drawn.to_vec();
     e.accounts.clear();
     let room = anatomy::room(&e, &g.rules, "tissue:1");
@@ -106,8 +115,8 @@ fn body(g: &Genesis, drawn: &[u8], absent: &[(u8, u8)], cut: &[[u8; 3]], reserve
     e
 }
 
-fn situs_of(e: &Entity, id: Id) -> [u8; 3] {
-    e.parts[&id].situs.unwrap()
+fn situs_of(e: &Entity, id: PartId) -> [u8; 3] {
+    e.situs(id).unwrap()
 }
 
 #[test]
@@ -115,11 +124,12 @@ fn the_provision_fills_only_what_reproduces() {
     let g = world(false);
     let mut e = body(&g, &[2], &[], &[], 0);
     let b = g.rules.body();
-    for p in e.parts.values() {
+    for (id, p) in &e.parts {
+        let h = e.extent(*id);
         let cells = u64::from(p.cells.get("function:reproduce").copied().unwrap_or(0));
         assert_eq!(
-            anatomy::bound(p, &g.rules, "provision:1"),
-            cells * anatomy::cell_mass(p, b)
+            anatomy::bound(h, p, &g.rules, "provision:1"),
+            cells * anatomy::cell_mass(h, b)
         );
     }
     // Two lumps of one reproducing cell, 12 mg each.
@@ -153,26 +163,24 @@ fn a_body_lacks_what_its_recipe_develops_nearest_the_root_first() {
     // Segment 0's left limb and segment 1's right: the nearer first, where
     // development puts it, on the part holding its segment.
     let cut = body(&g, &[2], &[], &[[0, 0, 2], [0, 1, 1]], 0);
-    let next = lacking(&g.rules, &recipe(false), &cut).unwrap().unwrap();
+    let (next, _) = lacking(&g.rules, &recipe(false), &cut).unwrap().unwrap();
     assert_eq!(next.situs, Some([0, 0, 2]));
     assert_eq!(situs_of(&cut, next.parent.unwrap()), [0, 0, 0]);
     assert_eq!(next.offset, [-5, 0, 0]);
     // A limb absent at development grows in later (478).
     let absent = body(&g, &[2], &[(0, 1)], &[], 0);
-    let next = lacking(&g.rules, &recipe(false), &absent).unwrap().unwrap();
+    let (next, _) = lacking(&g.rules, &recipe(false), &absent).unwrap().unwrap();
     assert_eq!(next.situs, Some([0, 1, 1]));
     // An epimorphic body keeps the one segment it drew; an anamorphic one
     // grows the recipe's second, flush behind (495).
     let short = body(&g, &[1], &[], &[], 0);
     assert_eq!(lacking(&g.rules, &recipe(false), &short).unwrap(), None);
-    let grows = lacking(&g.rules, &recipe(true), &short).unwrap().unwrap();
+    let (grows, _) = lacking(&g.rules, &recipe(true), &short).unwrap().unwrap();
     assert_eq!((grows.situs, grows.offset), (Some([0, 1, 0]), [0, 0, 4]));
     // What was severed is not regrown before healing (485).
     let mut severed = whole.clone();
-    let limb = severed
-        .parts
-        .values_mut()
-        .find(|p| p.situs == Some([0, 0, 1]));
+    let doc = severed.body.as_mut().unwrap();
+    let limb = doc.parts.iter_mut().find(|p| p.situs == Some([0, 0, 1]));
     limb.unwrap().severed = true;
     assert_eq!(lacking(&g.rules, &recipe(false), &severed).unwrap(), None);
 }
@@ -184,36 +192,27 @@ fn a_part_takes_its_seat_or_the_first_free_facing() {
     let policy = Policy::default();
     let limb = [3, 1, 1];
     // Development's seat, left of the lump, is free.
+    let lump = PartId(0);
     assert_eq!(
-        seat(&e, &policy, 0, limb, Some([-5, 0, 0])),
+        seat(&e, &policy, lump, limb, Some([-5, 0, 0])),
         Some([-5, 0, 0])
     );
     // Taken by a part from elsewhere, the rod tries right (taken), left
     // (taken), then front, flush ahead of the lump.
-    e.parts.insert(
-        9,
-        Part {
-            parent: Some(0),
-            half_extent: limb,
-            offset: [-5, 0, 0],
-            ..Default::default()
-        },
-    );
+    let at = |offset| Frame {
+        parent: Some(lump),
+        half_extent: limb,
+        offset,
+        ..Default::default()
+    };
+    e.add_part(&at([-5, 0, 0]), Part::default()).unwrap();
     assert_eq!(
-        seat(&e, &policy, 0, limb, Some([-5, 0, 0])),
+        seat(&e, &policy, lump, limb, Some([-5, 0, 0])),
         Some([0, 0, -3])
     );
     // The control: with that taken too, no seat within the tolerance.
-    e.parts.insert(
-        10,
-        Part {
-            parent: Some(0),
-            half_extent: limb,
-            offset: [0, 0, -3],
-            ..Default::default()
-        },
-    );
-    assert_eq!(seat(&e, &policy, 0, limb, Some([-5, 0, 0])), None);
+    e.add_part(&at([0, 0, -3]), Part::default()).unwrap();
+    assert_eq!(seat(&e, &policy, lump, limb, Some([-5, 0, 0])), None);
 }
 
 fn grow_act() -> Process {
@@ -261,7 +260,7 @@ fn grown(hand: u64, reserve: u64, taken: u64) -> (Simulation, Id, u128) {
 
 fn grew(sim: &Simulation, id: Id) -> bool {
     let e = sim.state().population.get(id).unwrap();
-    e.parts.values().any(|p| p.situs == Some([0, 0, 2]))
+    e.living().any(|(id, _)| e.situs(id) == Some([0, 0, 2]))
 }
 
 #[test]
@@ -269,14 +268,15 @@ fn growth_pays_pd2s_price_from_the_reserve_and_fills_the_part_from_hand() {
     let (sim, id, before) = grown(30, 12, 0);
     let rules = &sim.genesis().rules;
     let e = sim.state().population.get(id).unwrap();
-    let limb = e
-        .parts
-        .values()
-        .find(|p| p.situs == Some([0, 0, 2]))
-        .unwrap();
+    let at = e
+        .living()
+        .find(|(id, _)| e.situs(*id) == Some([0, 0, 2]))
+        .unwrap()
+        .0;
+    let limb = &e.parts[&at];
     // A limb of 63 voxels weighs 50 mg in 2 cells: its price is 50 mg,
     // the reserve's 12 and then 38 of tissue, into the ground as soil.
-    assert_eq!(price(rules, limb), 50);
+    assert_eq!(price(rules, &e.frame(at), limb), 50);
     assert_eq!(anatomy::held(e, rules, "reserve:1"), 0);
     // The hand of 30 fills the room the price and the new limb opened.
     assert_eq!(e.accounts.get(SOIL).copied().unwrap_or(0), 0);

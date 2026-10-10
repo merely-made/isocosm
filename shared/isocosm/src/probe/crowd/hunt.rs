@@ -264,7 +264,7 @@ impl Crowd<'_> {
 /// Lands what a meal took on the prey as the hunt has left it, where it
 /// fits: a bite of what the part, or the ledger, still holds; a part taken
 /// whole only as the pass found it. Returns whether it landed.
-fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<Id>) -> bool {
+fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<PartId>) -> bool {
     let holds =
         |l: &Ledger, t: &Ledger| t.iter().all(|(k, v)| l.get(k).copied().unwrap_or(0) >= *v);
     match took {
@@ -281,8 +281,8 @@ fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<I
             if !after.parts.contains_key(id) || held(after) != held(was) {
                 return false;
             }
-            after.parts.remove(id);
-            if !after.parts.values().any(|q| !q.severed) {
+            after.take_part(*id);
+            if after.living().next().is_none() {
                 after.alive = false;
             }
             true
@@ -308,7 +308,7 @@ fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<I
 
 /// Whether a prey keeps its matter in parts, so a bite draws one.
 fn bodied(e: &Entity) -> bool {
-    e.parts.values().any(|p| !p.severed && p.bodied())
+    e.living().any(|(id, _)| e.bodied(id))
 }
 
 #[cfg(test)]

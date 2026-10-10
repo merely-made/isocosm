@@ -217,6 +217,9 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
     delta(&mut live.accounts, &base.accounts, &new.accounts);
     delta(&mut live.skills, &base.skills, &new.skills);
     merge_parts(&mut live.parts, &base.parts, new.parts.clone());
+    if new.body != base.body {
+        live.body = new.body.clone();
+    }
     for t in new.traits.difference(&base.traits) {
         live.traits.insert(t.clone());
     }
@@ -252,7 +255,11 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
 /// act added or took, anything else the act changed of it by its value. A
 /// part another act of the pass removed stays removed: the act left it as
 /// it found it, or it would not have fitted.
-fn merge_parts(live: &mut BTreeMap<Id, Part>, base: &BTreeMap<Id, Part>, new: BTreeMap<Id, Part>) {
+fn merge_parts(
+    live: &mut BTreeMap<PartId, Part>,
+    base: &BTreeMap<PartId, Part>,
+    new: BTreeMap<PartId, Part>,
+) {
     for id in base.keys().filter(|id| !new.contains_key(*id)) {
         live.remove(id);
     }

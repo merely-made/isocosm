@@ -361,8 +361,9 @@ pub struct ProcessDef {
     /// declare it. `None` is the ordinary answer for anything a pack mints
     /// that the engine has no native binding for.
     pub native: Option<Process>,
-    /// The roles whose shape may express this process: the **tract
-    /// requirement**, and what [`ProcessDef::admits`] answers.
+    /// The roles whose shape fits this process best (rulings 492 and 750):
+    /// what growing one seeds where the definition is grown. Since 492 it
+    /// gates nothing; [`ProcessDef::admits`] answers every role.
     pub expressed_by: Vec<Role>,
     /// Whether growing one of those shapes also grows this process.
     pub seeding: Seeding,
@@ -403,14 +404,11 @@ impl ProcessDef {
         }
     }
 
-    /// Whether a part of this shape may express this process.
-    ///
-    /// The tract requirement, and the reason a part cannot acquire a
-    /// capability by editing a number: allocation can only put a process
-    /// where the geometry already expresses it, so changing what a part does
-    /// still means changing what a part *is*.
-    pub fn admits(&self, role: Role) -> bool {
-        self.expressed_by.contains(&role)
+    /// Whether a part of this shape may express this process: any shape
+    /// (ruling 492, lowered by 750), form deciding how well through the
+    /// measurement each function scales with, not whether.
+    pub fn admits(&self, _role: Role) -> bool {
+        true
     }
 }
 

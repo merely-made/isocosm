@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The body as a tree: descent, depth, and loss.
+//! The body as a tree: descent, depth, loss and revival.
 //!
 //! [`BodyDocument`] could always be climbed — `world_pivot` walks parents to
 //! find where a part sits — but nothing could descend it. That made the wing's
@@ -112,6 +112,23 @@ impl BodyDocument {
             self.parts[part.0 as usize].severed = true;
         }
         lost
+    }
+
+    /// Revives a severed part whose parent lives (ruling 719): the
+    /// tombstone becomes the part again, its id and place in the plan kept.
+    /// A subtree comes back part by part from the top, so its children stay
+    /// severed until each is revived. False where there is nothing to
+    /// revive or nothing alive to hang it on.
+    pub fn revive(&mut self, id: PartId) -> bool {
+        let Some(part) = self.part(id) else {
+            return false;
+        };
+        let parent = part.attachment.map(|a| a.parent);
+        if !part.severed || !parent.is_some_and(|p| self.is_living(p)) {
+            return false;
+        }
+        self.parts[id.0 as usize].severed = false;
+        true
     }
 }
 
@@ -238,6 +255,19 @@ mod tests {
             mass_before - 300,
             "and three parts' worth of mass went with it"
         );
+    }
+
+    #[test]
+    fn a_tombstone_revives_from_the_top_down() {
+        let (mut body, [arm, hand, finger, _]) = limbed();
+        body.sever(arm);
+        assert!(!body.revive(hand), "the hand waits for its arm");
+        assert!(body.revive(arm));
+        assert!(body.is_living(arm) && !body.is_living(hand));
+        assert!(body.revive(hand) && body.revive(finger));
+        assert_eq!(body.living().count(), body.parts.len());
+        assert!(!body.revive(arm), "a living part has nothing to revive");
+        assert!(!body.revive(body.root));
     }
 
     #[test]

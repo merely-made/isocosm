@@ -21,7 +21,7 @@ use conatus::resident::{
     ChunkBounds, ChunkStamp, DirtyRegion, PlaneClass, PlaneElementType, PlaneId, RawKernelView,
     ReadEpoch, ResidentChunk, ResidentClient,
 };
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 use isometer_lens::{
     BrickChange, BrickFrameInput, BrickMap, BrickProjectionRevision, BrickRevision, BrickTracer,
     Flight, Grade, LeasedAtlas,
@@ -323,7 +323,7 @@ fn camera(ground: &Ground) -> Flight {
 }
 
 fn main() {
-    let mut ground = Ground::grow(&Places::grown(4_242, 4, 64), 64);
+    let mut ground = fixtures::ground(4_242, 64);
     let initial_ground = ground.clone();
     let mut map = BrickMap::from_ground(&ground).expect("Ground fits the brick atlas");
     let view = camera(&ground);

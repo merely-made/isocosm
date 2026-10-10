@@ -15,7 +15,7 @@ impl Staged<'_> {
     /// Takes `part` of the body `from` binds whole into the actor. Returns
     /// whether it did; a part with living children, a lineage without a
     /// recipe, a refused crossing or no seat leave it to be eaten.
-    pub(super) fn incorporate(&mut self, from: Binding, part: Id) -> Result<bool> {
+    pub(super) fn incorporate(&mut self, from: Binding, part: PartId) -> Result<bool> {
         let sim = self.sim;
         let Some(Holder::Entity(prey)) = self.holder(from) else {
             return Ok(false);

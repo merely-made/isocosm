@@ -6,6 +6,7 @@
 
 use isocosm::{
     Execution, Founding, Session, Simulation,
+    geometry::{Body, Sketch},
     history::SAVE_VERSION,
     rules::*,
     schema::*,
@@ -74,15 +75,38 @@ fn adopted() -> Genesis {
     g
 }
 
-fn part(shape: &str, functions: &[&str]) -> Part {
-    Part {
-        parent: None,
-        traits: BTreeSet::new(),
-        severed: false,
+fn part(shape: &str, functions: &[&str]) -> Sketch {
+    Sketch {
         shape: shape.into(),
-        functions: functions.iter().map(|f| f.to_string()).collect(),
+        part: Part {
+            functions: functions.iter().map(|f| f.to_string()).collect(),
+            ..Default::default()
+        },
         ..Default::default()
     }
+}
+
+/// `e` with `s` sketched in as part `id`, its other parts kept.
+fn put(e: &mut Entity, id: u32, s: Sketch) {
+    let mut all: BTreeMap<u32, Sketch> = e
+        .parts
+        .iter()
+        .map(|(k, p)| {
+            let f = e.frame(*k);
+            let sketch = Sketch {
+                parent: f.parent.map(|p| p.0),
+                half_extent: f.half_extent,
+                offset: f.offset,
+                situs: f.situs,
+                shape: f.shape,
+                severed: !e.lives(*k),
+                part: p.clone(),
+            };
+            (k.0, sketch)
+        })
+        .collect();
+    all.insert(id, s);
+    e.embody(Body::sketch(all));
 }
 
 fn process(id: &str, requires: Vec<Query>, effects: Vec<Effect>) -> Process {
@@ -195,16 +219,13 @@ fn every_one_of_the_510_functions_is_admitted() {
         g.rules.processes.insert(p.id.clone(), p);
     }
     let body = g.population.lift(1).unwrap();
-    body.parts = SHAPES
-        .iter()
-        .enumerate()
-        .map(|(i, shape)| {
-            let admitted = all.iter().filter(|(_, f)| f.shapes.contains(*shape));
-            let admitted: Vec<&str> = admitted.map(|(k, _)| k.as_str()).collect();
-            assert_eq!(admitted.len(), 256);
-            (i as Id, part(shape, &admitted))
-        })
-        .collect();
+    let sketched = SHAPES.iter().enumerate().map(|(i, shape)| {
+        let admitted = all.iter().filter(|(_, f)| f.shapes.contains(*shape));
+        let admitted: Vec<&str> = admitted.map(|(k, _)| k.as_str()).collect();
+        assert_eq!(admitted.len(), 256);
+        (i as u32, part(shape, &admitted))
+    });
+    body.embody(Body::sketch(sketched));
     g.validate().unwrap();
     // Each binds the lowest-numbered part expressing it: part i is the i-th
     // shape, so the lowest shape in the function's set, and the act's
@@ -225,11 +246,13 @@ fn a_catalogue_and_its_parts_round_trip_through_bytes() {
     let mut g = adopted();
     g.rules.functions.extend(every_function());
     let body = g.population.lift(1).unwrap();
-    body.parts.insert(
+    put(
+        body,
         1,
         part("part-shape:sheet", &["function:fix", "function:4-acquired"]),
     );
-    body.parts.insert(
+    put(
+        body,
         2,
         part("part-shape:rod", &["function:contract", "function:3-grown"]),
     );
@@ -263,7 +286,7 @@ fn a_function_is_its_set_of_shapes_and_its_seeding() {
     let p: Part = serde_json::from_str(json).unwrap();
     assert_eq!(
         p,
-        part("part-shape:sheet", &["function:fix", "function:secrete"])
+        part("part-shape:sheet", &["function:fix", "function:secrete"]).part
     );
 }
 
@@ -309,18 +332,18 @@ fn bad_shapes_functions_and_bindings_are_refused() {
         (
             "unknown part shape",
             Box::new(|g: &mut Genesis| {
-                g.population
-                    .lift(1)
-                    .unwrap()
-                    .parts
-                    .insert(1, part("part-shape:wing", &[]));
+                put(
+                    g.population.lift(1).unwrap(),
+                    1,
+                    part("part-shape:wing", &[]),
+                );
             }),
         ),
         (
             "unknown function",
             Box::new(|g: &mut Genesis| {
                 let p = part("part-shape:rod", &["function:fly"]);
-                g.population.lift(1).unwrap().parts.insert(1, p);
+                put(g.population.lift(1).unwrap(), 1, p);
             }),
         ),
         (
@@ -429,7 +452,7 @@ fn any_part_may_express_any_function() {
         part("", &["function:contract"]),
     ] {
         let mut g = adopted();
-        g.population.lift(1).unwrap().parts.insert(1, p);
+        put(g.population.lift(1).unwrap(), 1, p);
         g.validate().unwrap();
     }
 }

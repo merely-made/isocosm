@@ -119,6 +119,7 @@ impl Simulation {
             born: self.state.tick,
             alive: true,
             body_revision: 1,
+            body: None,
             parts: Default::default(),
             traits: Default::default(),
             accounts: Default::default(),

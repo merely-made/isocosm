@@ -38,17 +38,12 @@ fn cells(p: &Part, f: &str) -> u32 {
 /// difference: checkpoint 7 drew each limb's reach, and a recipe's pair is
 /// one kind, so the reach is the first limb's.
 /// Each part's box, cells and parent, in part order.
-type Plan = Vec<([i32; 3], BTreeMap<String, u32>, Option<Id>)>;
+type Plan = Vec<([i32; 3], BTreeMap<String, u32>, Option<PartId>)>;
 
 fn checkpoint_7(f: &BodyFounding) -> [Plan; 2] {
     let pick =
         |domain: &str, i: u64, r: [u64; 2]| r[0] + draw(f.seed, domain, &[i]) % (r[1] - r[0] + 1);
-    let capacity = |half_extent| {
-        anatomy::capacity(&Part {
-            half_extent,
-            ..Default::default()
-        })
-    };
+    let capacity = anatomy::capacity;
     let one = |f: &str, n: u32| BTreeMap::from([(format!("function:{f}"), n)]);
     let frond = [0, 1].map(|axis| pick("body-frond", axis, f.frond.map(|h| h as u64)) as i32);
     let frond = [frond[0], frond[1], 1];
@@ -61,9 +56,13 @@ fn checkpoint_7(f: &BodyFounding) -> [Plan; 2] {
     let mut grazer = vec![([2, 2, 2], lump, None)];
     for _ in 0..pick("body-limbs", 0, f.limbs) {
         let limb = [reach, 1, 1];
-        grazer.push((limb, one("contract", capacity(limb)), Some(0)));
+        grazer.push((limb, one("contract", capacity(limb)), Some(PartId(0))));
     }
-    grazer.push(([1, 1, 1], one("sense", capacity([1, 1, 1])), Some(0)));
+    grazer.push((
+        [1, 1, 1],
+        one("sense", capacity([1, 1, 1])),
+        Some(PartId(0)),
+    ));
     [vec![(frond, one("fix", capacity(frond)), None)], grazer]
 }
 
@@ -87,8 +86,8 @@ fn the_control_founds_checkpoint_7s_bodies() {
             for e in members(&g, &lineage) {
                 let parts: Vec<_> = e
                     .parts
-                    .values()
-                    .map(|p| (p.half_extent, p.cells.clone(), p.parent))
+                    .iter()
+                    .map(|(id, p)| (e.extent(*id), p.cells.clone(), e.parent_of(*id)))
                     .collect();
                 assert_eq!(&parts, plan, "seed {seed}, {lineage}");
                 assert!(e.soma.iter().all(|n| *n == 1));
@@ -96,9 +95,9 @@ fn the_control_founds_checkpoint_7s_bodies() {
                 // reserve only where it stores, and no provision.
                 let tissue = format!("tissue:{i}");
                 let share = |m: u64| {
-                    e.parts
-                        .values()
-                        .all(|p| p.matter[&tissue] == anatomy::ceiling(p, b) * m / 1000)
+                    e.parts.iter().all(|(id, p)| {
+                        p.matter[&tissue] == anatomy::ceiling(e.extent(*id), b) * m / 1000
+                    })
                 };
                 let [lo, hi] = f.tissue;
                 assert!((lo..=hi).any(share), "seed {seed}, {lineage}");

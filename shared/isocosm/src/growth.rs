@@ -10,39 +10,29 @@
 use crate::{
     Result, anatomy,
     development::{Soma, develop, flush},
+    geometry::Frame,
     rules::{Affinity, Development, Policy, Rules, Verdict},
     schema::*,
 };
 use std::collections::{BTreeMap, BTreeSet};
 
-/// Each part's pivot in its root's frame.
-pub fn placed(e: &Entity) -> BTreeMap<Id, [i32; 3]> {
-    let mut at: BTreeMap<Id, [i32; 3]> = BTreeMap::new();
-    for &id in e.parts.keys() {
-        // Walk up to a part already placed or the root, then back down.
-        let mut chain = vec![id];
-        while let Some(parent) = e.parts[chain.last().unwrap()].parent {
-            if at.contains_key(&parent) || chain.contains(&parent) || !e.parts.contains_key(&parent)
-            {
-                break;
-            }
-            chain.push(parent);
-        }
-        for id in chain.into_iter().rev() {
-            let p = &e.parts[&id];
-            let base = p.parent.and_then(|q| at.get(&q).copied()).unwrap_or([0; 3]);
-            at.insert(id, [0, 1, 2].map(|i| base[i] + p.offset[i]));
-        }
-    }
-    at
+/// Each part's pivot in its root's frame, as isometer places it.
+pub fn placed(e: &Entity) -> BTreeMap<PartId, [i32; 3]> {
+    let Some(d) = &e.body else {
+        return BTreeMap::new();
+    };
+    d.parts
+        .iter()
+        .filter_map(|p| Some((p.id, d.world_pivot(p.id)?)))
+        .collect()
 }
 
 /// Whether a box of `half` at `at` overlaps none of the body's living
 /// parts, touching not counted (isometer's test).
-pub fn free(e: &Entity, placed: &BTreeMap<Id, [i32; 3]>, at: [i32; 3], half: [i32; 3]) -> bool {
-    e.parts.iter().filter(|(_, p)| !p.severed).all(|(id, p)| {
-        let there = placed[id];
-        (0..3).any(|i| (at[i] - there[i]).abs() >= half[i].abs() + p.half_extent[i].abs())
+pub fn free(e: &Entity, placed: &BTreeMap<PartId, [i32; 3]>, at: [i32; 3], half: [i32; 3]) -> bool {
+    e.living().all(|(id, _)| {
+        let (there, theirs) = (placed[&id], e.extent(id));
+        (0..3).any(|i| (at[i] - there[i]).abs() >= half[i].abs() + theirs[i].abs())
     })
 }
 
@@ -51,13 +41,13 @@ pub fn free(e: &Entity, placed: &BTreeMap<Id, [i32; 3]>, at: [i32; 3], half: [i3
 pub fn seat(
     e: &Entity,
     policy: &Policy,
-    parent: Id,
+    parent: PartId,
     half: [i32; 3],
     preferred: Option<[i32; 3]>,
 ) -> Option<[i32; 3]> {
     let placed = placed(e);
     let base = placed.get(&parent).copied()?;
-    let host = e.parts.get(&parent)?.half_extent;
+    let host = e.geo(parent)?.half_extent;
     let tried = preferred.into_iter();
     let facings = policy.candidates(anatomy::boxed(half));
     let flushed = facings.into_iter().map(|f| flush(host, half, f));
@@ -71,14 +61,14 @@ pub fn seat(
 /// resolves one: for each facing its plan tries for the part's name, each
 /// living part in order, the first flush box overlapping nothing. A part
 /// taken in lands alone, its mirror not sought.
-pub fn resolve(e: &Entity, policy: &Policy, half: [i32; 3]) -> Option<(Id, [i32; 3])> {
+pub fn resolve(e: &Entity, policy: &Policy, half: [i32; 3]) -> Option<(PartId, [i32; 3])> {
     let placed = placed(e);
     for facing in policy.candidates(anatomy::boxed(half)) {
-        for (id, host) in e.parts.iter().filter(|(_, p)| !p.severed) {
-            let offset = flush(host.half_extent, half, facing);
-            let at = [0, 1, 2].map(|i| placed[id][i] + offset[i]);
+        for (id, _) in e.living() {
+            let offset = flush(e.extent(id), half, facing);
+            let at = [0, 1, 2].map(|i| placed[&id][i] + offset[i]);
             if free(e, &placed, at, half) {
-                return Some((*id, offset));
+                return Some((id, offset));
             }
         }
     }
@@ -106,41 +96,51 @@ fn target(d: &Development, e: &Entity) -> Vec<u8> {
 /// situs no part of the body holds, severed or not (regrowing what was cut
 /// waits on healing, 485), whose parent it holds alive and which has a free
 /// seat. Returns it ready to attach.
-pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<Part>> {
+pub fn lacking(rules: &Rules, d: &Development, e: &Entity) -> Result<Option<(Frame, Part)>> {
     let soma = Soma {
         segments: target(d, e),
         absent: vec![],
         seed: 0,
     };
     let ideal = develop(rules, d, &soma)?;
-    let held: BTreeSet<[u8; 3]> = e.parts.values().filter_map(|p| p.situs).collect();
-    let alive: BTreeMap<[u8; 3], Id> = e
-        .parts
-        .iter()
-        .filter(|(_, p)| !p.severed)
-        .filter_map(|(id, p)| p.situs.map(|s| (s, *id)))
+    let held = held(e);
+    let alive: BTreeMap<[u8; 3], PartId> = e
+        .living()
+        .filter_map(|(id, _)| e.situs(id).map(|s| (s, id)))
         .collect();
-    for part in ideal.values() {
-        let Some(situs) = part.situs else { continue };
+    for g in ideal.doc.parts.iter() {
+        let Some(situs) = g.situs else { continue };
         if held.contains(&situs) {
             continue;
         }
-        let parent_situs = part.parent.and_then(|q| ideal[&q].situs);
+        let parent_situs = g.attachment.and_then(|a| ideal.doc.part(a.parent)?.situs);
         let Some(parent) = parent_situs.and_then(|s| alive.get(&s).copied()) else {
             continue;
         };
-        let Some(offset) = seat(e, &d.policy, parent, part.half_extent, Some(part.offset)) else {
+        let wanted = g.attachment.map(|a| a.offset);
+        let Some(offset) = seat(e, &d.policy, parent, g.half_extent, wanted) else {
             continue;
         };
-        let mut grown = Part {
+        let frame = Frame {
             parent: Some(parent),
+            half_extent: g.half_extent,
             offset,
-            ..part.clone()
+            situs: Some(situs),
+            shape: g.shape.clone(),
         };
-        crate::systems::regrow(&mut grown, &e.varied);
-        return Ok(Some(grown));
+        let mut grown = ideal.parts[&g.id].clone();
+        crate::systems::regrow(&mut grown, Some(situs), &e.varied);
+        return Ok(Some((frame, grown)));
     }
     Ok(None)
+}
+
+/// The places in the plan the body holds, its tombstones' among them.
+fn held(e: &Entity) -> BTreeSet<[u8; 3]> {
+    e.body
+        .iter()
+        .flat_map(|d| d.parts.iter().filter_map(|p| p.situs))
+        .collect()
 }
 
 /// The adult mass of the parts `d`'s recipe develops, at the counts the
@@ -154,20 +154,22 @@ pub fn lacking_mass(rules: &Rules, d: &Development, e: &Entity) -> u64 {
     let Ok(ideal) = develop(rules, d, &soma) else {
         return 0;
     };
-    let held: BTreeSet<[u8; 3]> = e.parts.values().filter_map(|p| p.situs).collect();
+    let held = held(e);
     let b = rules.body();
     ideal
-        .values()
+        .doc
+        .parts
+        .iter()
         .filter(|p| p.situs.is_some_and(|s| !held.contains(&s)))
-        .map(|p| anatomy::ceiling(p, b))
+        .map(|p| anatomy::ceiling(p.half_extent, b))
         .fold(0, u64::saturating_add)
 }
 
 /// What expressing a new part's functions costs (PD2): one cell's mass for
 /// each cell it expresses.
-pub fn price(rules: &Rules, p: &Part) -> u64 {
+pub fn price(rules: &Rules, f: &Frame, p: &Part) -> u64 {
     let cells: u64 = p.cells.values().map(|c| u64::from(*c)).sum();
-    cells.saturating_mul(anatomy::cell_mass(p, rules.body()))
+    cells.saturating_mul(anatomy::cell_mass(f.half_extent, rules.body()))
 }
 
 /// A part taken whole (rulings 468, 516 and 544): how its crossing lets it
@@ -175,7 +177,7 @@ pub fn price(rules: &Rules, p: &Part) -> u64 {
 /// eater's lineage learns.
 pub struct Whole {
     pub verdict: Verdict,
-    pub host: Id,
+    pub host: PartId,
     pub offset: [i32; 3],
     pub kind: Option<Key>,
 }
@@ -184,24 +186,20 @@ pub struct Whole {
 /// living children, not across a refused crossing, not without a free box.
 pub fn whole(
     (eater, prey): (&Entity, &Entity),
-    part: Id,
+    part: PartId,
     (mine, theirs): (&Development, &Development),
     affinity: &Affinity,
 ) -> Option<Whole> {
-    let taken = prey.parts.get(&part)?;
-    if prey
-        .parts
-        .values()
-        .any(|c| !c.severed && c.parent == Some(part))
-    {
+    prey.parts.get(&part)?;
+    if !prey.children_of(part).is_empty() {
         return None;
     }
     let verdict = affinity.verdict(theirs.domain, mine.domain);
     if verdict == Verdict::Refused {
         return None;
     }
-    let (host, offset) = resolve(eater, &mine.policy, taken.half_extent)?;
-    let kind = taken.situs.and_then(|[t, _, slot]| {
+    let (host, offset) = resolve(eater, &mine.policy, prey.extent(part))?;
+    let kind = prey.situs(part).and_then(|[t, _, slot]| {
         let tagma = theirs.recipe.tagmata.get(usize::from(t))?;
         match slot {
             0 => Some(tagma.segment.clone()),
@@ -218,20 +216,23 @@ pub fn whole(
 
 /// Moves `part` off `prey`, dead with no living part left, onto `eater` as
 /// `w` lands it, its donor's matter kept and an adapter's expressing
-/// nothing. Returns its id on the eater.
-pub fn take_whole(eater: &mut Entity, prey: &mut Entity, part: Id, w: &Whole) -> Option<Id> {
-    let mut moved = prey.parts.remove(&part)?;
-    if !prey.parts.values().any(|q| !q.severed) {
+/// nothing; the prey keeps its tombstone. Returns its id on the eater.
+pub fn take_whole(
+    eater: &mut Entity,
+    prey: &mut Entity,
+    part: PartId,
+    w: &Whole,
+) -> Option<PartId> {
+    let (mut frame, mut moved) = prey.take_part(part)?;
+    if prey.living().next().is_none() {
         prey.alive = false;
     }
-    moved.parent = Some(w.host);
-    moved.offset = w.offset;
-    moved.situs = None;
+    frame.parent = Some(w.host);
+    frame.offset = w.offset;
+    frame.situs = None;
     if w.verdict == Verdict::Adapter {
         moved.cells.clear();
         moved.functions.clear();
     }
-    let id = eater.parts.keys().next_back().map_or(0, |last| last + 1);
-    eater.parts.insert(id, moved);
-    Some(id)
+    eater.add_part(&frame, moved).ok()
 }

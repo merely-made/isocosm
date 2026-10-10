@@ -467,6 +467,7 @@ pub(super) fn member(
         born: 0,
         alive: true,
         body_revision: 1,
+        body: None,
         parts: BTreeMap::new(),
         traits: l.traits.clone(),
         accounts,

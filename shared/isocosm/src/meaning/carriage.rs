@@ -29,33 +29,35 @@ pub(crate) fn asks(
     d: Option<&Development>,
     (function, role): (&str, Role),
     (ask, lands): (u64, &[Key]),
-    bitten: Option<Id>,
-) -> (BTreeMap<Id, u64>, BTreeSet<Id>) {
+    bitten: Option<PartId>,
+) -> (BTreeMap<PartId, u64>, BTreeSet<PartId>) {
     let Some(system) = systems::union(e, function, role) else {
         return Default::default();
     };
     let effects = systems::filling(e, &system.effects, bitten);
     let cells = |p: &Part| p.cells.values().map(|n| u64::from(*n)).sum::<u64>();
-    let room = |p: &Part| {
+    let room = |id: &PartId| {
         lands
             .iter()
-            .map(|k| anatomy::space(p, rules, k))
+            .map(|k| anatomy::space(e.extent(*id), &e.parts[id], rules, k))
             .fold(0, u64::saturating_add)
     };
-    let mut weights: Vec<(Id, u64)> = effects
+    let mut weights: Vec<(PartId, u64)> = effects
         .iter()
         .map(|id| {
             let p = &e.parts[id];
             // Cells weigh a share, not a cap: scaled by the ask, they always
             // cover it, where room caps what a landing asks.
             let by_cells = cells(p).saturating_mul(ask.max(1));
-            (*id, if lands.is_empty() { by_cells } else { room(p) })
+            (*id, if lands.is_empty() { by_cells } else { room(id) })
         })
         .collect();
     if !lands.is_empty()
         && let Some(d) = d
         && let Ok(Some(next)) = growth::lacking(rules, d, e)
-        && let Some(w) = weights.iter_mut().find(|(id, _)| Some(*id) == next.parent)
+        && let Some(w) = weights
+            .iter_mut()
+            .find(|(id, _)| Some(*id) == next.0.parent)
     {
         w.1 = w.1.saturating_add(growth::lacking_mass(rules, d, e));
     }
@@ -76,7 +78,7 @@ pub(crate) fn carried(
     d: Option<&Development>,
     route: (&str, Role),
     (ask, lands): (u64, &[Key]),
-    bitten: Option<Id>,
+    bitten: Option<PartId>,
     joined: Option<(&str, Role)>,
 ) -> Result<u64> {
     let ask = match joined {
@@ -107,12 +109,7 @@ pub(crate) fn carry(
     let body = p.body(who)?;
     let (asked, effects) = asks(body, rules, d.as_ref(), route, landing, bitten);
     let carried = systems::carry(body, rules, route, &asked, bitten)?;
-    let living: BTreeSet<Id> = body
-        .parts
-        .iter()
-        .filter(|(_, q)| !q.severed)
-        .map(|(id, _)| *id)
-        .collect();
+    let living: BTreeSet<PartId> = body.living().map(|(id, _)| id).collect();
     let short = asked
         .iter()
         .any(|(id, n)| carried.parts.get(id).copied().unwrap_or(0) < *n);

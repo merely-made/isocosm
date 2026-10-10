@@ -4,58 +4,90 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::legacy::mesocosm::{Founding, PartPalette, PartTemplate, Role, RoleShapes};
+use serde::{Deserialize, Serialize};
 
 use super::*;
 
-/// Mesocosm's development palette, seen through the mesh's generation
-/// boundary.  Production code implements this on the Mesocosm side
-/// (`mesocosm_genet::generation_content::DevelopmentPalette`); the mesh's own
-/// suite keeps the core type so its fixtures and hashes stay literal.
-impl Palette for PartPalette {
-    fn admitted(&self, role: Role) -> Vec<(u8, Shape)> {
-        let shapes: RoleShapes = self.shapes(role);
-        std::iter::once((0, shapes.default))
-            .chain(
-                shapes
-                    .extra
-                    .into_iter()
-                    .enumerate()
-                    .filter_map(|(index, template)| {
-                        template.map(|template| (index as u8 + 1, template))
-                    }),
-            )
-            .map(|(slot, template)| {
-                (
-                    slot,
-                    Shape {
-                        volume: template.volume,
-                        half_extent: template.half_extent,
-                    },
-                )
+/// One palette slot as the fixture stores it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub(crate) struct Slot {
+    volume: VolumeRef,
+    half_extent: [i32; 3],
+}
+
+/// A product's palette as the mesh sees one: four role banks of a default
+/// and three spare slots. Isometer's own fixture (wing ruling 720), holding
+/// the shapes of Mesocosm's base founding palette, so the published content
+/// addresses below stay literal.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub(crate) struct FixturePalette {
+    banks: [[Option<Slot>; 4]; 4],
+}
+
+fn bank(role: Role) -> usize {
+    match role {
+        Role::Mass => 0,
+        Role::Limb => 1,
+        Role::Plate => 2,
+        Role::Sensor => 3,
+    }
+}
+
+impl FixturePalette {
+    /// Mass, limb, plate and sensor banks, by volume tag and half-extent.
+    pub(crate) fn base() -> Self {
+        let slot = |tag: u8, half_extent: [i32; 3]| {
+            Some(Slot {
+                volume: VolumeRef::from_tag(tag),
+                half_extent,
             })
+        };
+        Self {
+            banks: [
+                [
+                    slot(1, [2, 2, 2]),
+                    slot(5, [2, 1, 1]),
+                    slot(6, [2, 2, 1]),
+                    slot(7, [2, 1, 0]),
+                ],
+                [slot(2, [4, 1, 1]), slot(8, [3, 1, 1]), None, None],
+                [
+                    slot(3, [4, 4, 1]),
+                    slot(10, [3, 3, 0]),
+                    slot(11, [4, 0, 4]),
+                    slot(12, [0, 4, 4]),
+                ],
+                [slot(4, [1, 1, 1]), slot(9, [0, 0, 0]), None, None],
+            ],
+        }
+    }
+
+    /// The shape a role's slot holds.
+    pub(crate) fn template_at(&self, role: Role, slot: u8) -> Shape {
+        let found = self.banks[bank(role)][usize::from(slot)].expect("an admitted slot");
+        Shape {
+            volume: found.volume,
+            half_extent: found.half_extent,
+        }
+    }
+}
+
+impl Palette for FixturePalette {
+    fn admitted(&self, role: Role) -> Vec<(u8, Shape)> {
+        (0..4u8)
+            .filter(|slot| self.banks[bank(role)][usize::from(*slot)].is_some())
+            .map(|slot| (slot, self.template_at(role, slot)))
             .collect()
     }
 
     fn admit(&mut self, role: Role, slot: u8, shape: Shape) {
-        let shapes = match role {
-            Role::Mass => &mut self.mass,
-            Role::Limb => &mut self.limb,
-            Role::Plate => &mut self.plate,
-            Role::Sensor => &mut self.sensor,
-        };
-        let template = PartTemplate {
+        let held = self.banks[bank(role)][usize::from(slot)]
+            .as_mut()
+            .expect("generation only visits admitted palette slots");
+        *held = Slot {
             volume: shape.volume,
             half_extent: shape.half_extent,
         };
-        match slot {
-            0 => shapes.default = template,
-            _ => {
-                *shapes.extra[usize::from(slot - 1)]
-                    .as_mut()
-                    .expect("generation only visits admitted palette slots") = template
-            },
-        }
     }
 }
 
@@ -63,7 +95,7 @@ impl Palette for PartPalette {
 fn v1_sensor_fixture_keeps_its_published_content_address() {
     // Independently hashed canonical bytes: domain, LE version 1, Sensor/1,
     // zero half-extents, LE size [1,1,1], one MATERIAL_EDGE byte (245).
-    let pack = ContentPack::generate(Founding::default().palette()).unwrap();
+    let pack = ContentPack::generate(FixturePalette::base()).unwrap();
     let sensor = pack
         .entries
         .iter()
@@ -83,7 +115,7 @@ fn v1_sensor_fixture_keeps_its_published_content_address() {
 
 #[test]
 fn generation_preserves_the_biological_palette_and_resolves_every_shape() {
-    let base = Founding::default().palette();
+    let base = FixturePalette::base();
     let pack = ContentPack::generate(base).expect("the default palette is bounded");
     let source = pack.resolve().expect("generated bytes address themselves");
 
@@ -103,16 +135,16 @@ fn generation_preserves_the_biological_palette_and_resolves_every_shape() {
 
 #[test]
 fn bytes_round_trip_without_a_regeneration_dependency() {
-    let pack = ContentPack::generate(Founding::default().palette()).unwrap();
+    let pack = ContentPack::generate(FixturePalette::base()).unwrap();
     let bytes = postcard::to_allocvec(&pack).unwrap();
-    let restored: ContentPack<PartPalette> = postcard::from_bytes(&bytes).unwrap();
+    let restored: ContentPack<FixturePalette> = postcard::from_bytes(&bytes).unwrap();
     assert_eq!(restored, pack);
     assert!(restored.resolve().is_ok());
 }
 
 #[test]
 fn changed_voxels_under_an_old_address_are_refused() {
-    let mut pack = ContentPack::generate(Founding::default().palette()).unwrap();
+    let mut pack = ContentPack::generate(FixturePalette::base()).unwrap();
     pack.entries[0].volume.set(2, 2, 2, 7);
     assert!(matches!(
         pack.resolve(),
@@ -122,7 +154,7 @@ fn changed_voxels_under_an_old_address_are_refused() {
 
 #[test]
 fn every_generated_part_is_connected_has_ports_and_plates_are_shaped() {
-    let pack = ContentPack::generate(Founding::default().palette()).unwrap();
+    let pack = ContentPack::generate(FixturePalette::base()).unwrap();
     assert!(pack.entries.iter().all(|entry| connected(&entry.volume)));
     for entry in &pack.entries {
         for axis in 0..3 {
@@ -153,7 +185,7 @@ fn malformed_persisted_voxel_lengths_are_refused_before_traversal() {
         size: [u32; 3],
         voxels: Vec<u8>,
     }
-    let mut pack = ContentPack::generate(Founding::default().palette()).unwrap();
+    let mut pack = ContentPack::generate(FixturePalette::base()).unwrap();
     let raw = Raw {
         size: pack.entries[0].volume.size,
         voxels: vec![1],
@@ -167,7 +199,7 @@ fn malformed_persisted_voxel_lengths_are_refused_before_traversal() {
 
 #[test]
 fn empty_and_disconnected_content_are_named_refusals() {
-    let mut empty = ContentPack::generate(Founding::default().palette()).unwrap();
+    let mut empty = ContentPack::generate(FixturePalette::base()).unwrap();
     empty.entries[0].volume = Volume::empty(empty.entries[0].volume.size);
     refresh_entry(&mut empty, 0);
     assert!(matches!(
@@ -175,7 +207,7 @@ fn empty_and_disconnected_content_are_named_refusals() {
         Err(ContentError::EmptyVolume { .. })
     ));
 
-    let mut split = ContentPack::generate(Founding::default().palette()).unwrap();
+    let mut split = ContentPack::generate(FixturePalette::base()).unwrap();
     let entry = &mut split.entries[0];
     let mut volume = Volume::empty(entry.volume.size);
     volume.set(0, 0, 0, MATERIAL_BODY);
@@ -193,7 +225,7 @@ fn empty_and_disconnected_content_are_named_refusals() {
     ));
 }
 
-fn refresh_entry(pack: &mut ContentPack<PartPalette>, index: usize) {
+fn refresh_entry(pack: &mut ContentPack<FixturePalette>, index: usize) {
     let (role, slot, shape) = {
         let entry = &mut pack.entries[index];
         entry.reference = content_ref(

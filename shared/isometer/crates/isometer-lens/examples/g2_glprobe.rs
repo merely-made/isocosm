@@ -9,7 +9,7 @@
 
 use std::collections::BTreeSet;
 
-use isocosm::legacy::mesocosm::places::{Ground, Places};
+use isometer_core::{fixtures, ground::Ground};
 use isometer_lens::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, CritterPose, Flight, Grade,
     critter::Capsule,
@@ -47,7 +47,7 @@ fn main() -> Result<(), String> {
         ..Default::default()
     }))
     .map_err(|error| format!("GL adapter declined WebGL2-class limits: {error}"))?;
-    let ground = Ground::grow(&Places::grown(4_242, 4, 64), 64);
+    let ground = fixtures::ground(4_242, 64);
     let map = BrickMap::from_ground(&ground).map_err(|error| error.to_string())?;
     let (flight, pose) = view(&ground)?;
     let mut tracer = BrickTracer::with_device(device, queue, WIDTH, HEIGHT);

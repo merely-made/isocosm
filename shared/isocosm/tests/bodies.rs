@@ -9,19 +9,29 @@
 
 use isocosm::{
     Execution, Founding, Simulation,
+    geometry::{Body, Sketch},
     rules::*,
     schema::*,
     simulation::{Genesis, Outcome},
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
-fn shaped(shape: &str, functions: &[&str], half_extent: [i32; 3]) -> Part {
-    Part {
+fn shaped(shape: &str, functions: &[&str], half_extent: [i32; 3]) -> Sketch {
+    Sketch {
         shape: format!("part-shape:{shape}"),
-        functions: functions.iter().map(|f| f.to_string()).collect(),
         half_extent,
+        part: Part {
+            functions: functions.iter().map(|f| f.to_string()).collect(),
+            ..Default::default()
+        },
         ..Default::default()
     }
+}
+
+/// `s` with these cells.
+fn celled(mut s: Sketch, cells: &[(&str, u32)]) -> Sketch {
+    s.part.cells = cells.iter().map(|(f, n)| (f.to_string(), *n)).collect();
+    s
 }
 
 /// One critter, id 1: a live contracting rod, a severed sheet that
@@ -40,21 +50,26 @@ fn world() -> Genesis {
     g.rules.shapes = default_shapes();
     g.rules.functions = default_functions();
     // Four cells along the rod; nine in the sheet, each weighing 21 mg.
-    let rod = Part {
-        cells: BTreeMap::from([("function:contract".into(), 4)]),
-        ..shaped("rod", &["function:contract"], [6, -1, 1])
-    };
-    let severed = Part {
+    let rod = celled(
+        shaped("rod", &["function:contract"], [6, -1, 1]),
+        &[("function:contract", 4)],
+    );
+    let severed = Sketch {
         severed: true,
         ..shaped("sheet", &["function:contract"], [2, 4, 1])
     };
-    let sheet = Part {
-        cells: BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]),
-        ..shaped("sheet", &["function:fix", "function:secrete"], [4, 4, 1])
-    };
+    let sheet = celled(
+        shaped("sheet", &["function:fix", "function:secrete"], [4, 4, 1]),
+        &[("function:fix", 1), ("function:secrete", 3)],
+    );
     let point = shaped("point", &["function:sense"], [1, 1, 1]);
     let critter = g.population.lift(1).unwrap();
-    critter.parts = BTreeMap::from([(0, rod), (1, severed), (2, sheet), (3, point)]);
+    critter.embody(Body::sketch([
+        (0, rod),
+        (1, severed),
+        (2, sheet),
+        (3, point),
+    ]));
     // Its own matter lives in its parts now that they have bodies (ruling
     // 504): all of it in the rod.
     let lineage = critter.lineage.clone();
@@ -70,7 +85,12 @@ fn world() -> Genesis {
     let critter = g.population.lift(1).unwrap();
     for k in own {
         let v = critter.accounts.remove(&k).unwrap_or(0);
-        critter.parts.get_mut(&0).unwrap().matter.insert(k, v);
+        critter
+            .parts
+            .get_mut(&PartId(0))
+            .unwrap()
+            .matter
+            .insert(k, v);
     }
     g
 }
@@ -236,11 +256,11 @@ fn a_ceiling_floors_part_by_part_as_mesocosm_does() {
         .sum();
     assert_eq!(mesocosm, 250);
     let mut g = world();
-    g.population.lift(1).unwrap().parts = parts
+    let sketched = parts
         .into_iter()
         .enumerate()
-        .map(|(i, (p, severed))| (i as Id, Part { severed, ..p }))
-        .collect();
+        .map(|(i, (p, severed))| (i as u32, Sketch { severed, ..p }));
+    g.population.lift(1).unwrap().embody(Body::sketch(sketched));
     let whole = Expr::Div(
         Box::new(Expr::Mul(vec![
             Expr::Read(Reading::Voxels {
@@ -399,7 +419,7 @@ fn bodies_and_tissue_serialize_as_before() {
     let back: AccountKind =
         serde_json::from_str(&serde_json::to_string(&reserve).unwrap()).unwrap();
     assert_eq!(back, reserve);
-    let part = world().population.get(1).unwrap().parts[&2].clone();
+    let part = world().population.get(1).unwrap().parts[&PartId(2)].clone();
     let back: Part = serde_json::from_str(&serde_json::to_string(&part).unwrap()).unwrap();
     assert_eq!(back, part);
 }
@@ -407,20 +427,22 @@ fn bodies_and_tissue_serialize_as_before() {
 #[test]
 fn a_part_allots_only_its_own_cells_to_what_it_expresses() {
     assert!(world().validate().is_ok(), "the control passes");
-    let refused = |change: &dyn Fn(&mut Part)| {
+    let refused = |change: &dyn Fn(&mut Entity)| {
         let mut g = world();
-        change(g.population.lift(1).unwrap().parts.get_mut(&2).unwrap());
+        change(g.population.lift(1).unwrap());
         g.validate().err().unwrap_or_default()
     };
     // Extents of one cell by three by one hold three cells (ruling 460);
     // the name is cleared so only the capacity can refuse it.
-    let shrunk = refused(&|p| {
-        p.half_extent = [1, 4, 1];
-        p.shape.clear();
+    let shrunk = refused(&|e| {
+        let g = &mut e.body.as_mut().unwrap().parts[2];
+        g.half_extent = [1, 4, 1];
+        g.shape.clear();
     });
     assert!(shrunk.contains("capacity of 3"), "{shrunk}");
     assert!(
-        !refused(&|p| {
+        !refused(&|e| {
+            let p = e.parts.get_mut(&PartId(2)).unwrap();
             p.cells.insert(of("contract"), 0);
         })
         .is_empty()

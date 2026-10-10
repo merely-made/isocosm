@@ -51,17 +51,22 @@ fn shift(p: &mut Part, from: &str, to: &str) -> bool {
 
 /// The varied cells down a line, applied to the part where each lies
 /// (577), in the order they arose.
-pub fn inherit(parts: &mut BTreeMap<Id, Part>, varied: &[Varied]) {
-    for v in varied {
-        if let Some(p) = parts.values_mut().find(|p| p.situs == Some(v.situs)) {
+pub fn inherit(e: &mut Entity) {
+    for v in e.varied.clone() {
+        let at = e
+            .parts
+            .keys()
+            .copied()
+            .find(|id| e.situs(*id) == Some(v.situs));
+        if let Some(p) = at.and_then(|id| e.parts.get_mut(&id)) {
             shift(p, &v.from, &v.to);
         }
     }
 }
 
-/// The varied cells of `varied` lying in a part `part` grows as, applied.
-pub fn regrow(part: &mut Part, varied: &[Varied]) {
-    let situs = part.situs;
+/// The varied cells of `varied` lying in a part `part` grows as, at
+/// `situs`, applied.
+pub fn regrow(part: &mut Part, situs: Option<[u8; 3]>, varied: &[Varied]) {
     for v in varied.iter().filter(|v| situs == Some(v.situs)) {
         shift(part, &v.from, &v.to);
     }
@@ -86,12 +91,12 @@ pub fn vary(child: &mut Entity, rules: &Rules, recipe: &Recipe, seed: u64) -> Op
     if !met(recipe.vary, draw("vary")) {
         return None;
     }
-    let living = child.parts.iter().filter(|(_, p)| !p.severed);
-    let cells: Vec<(Id, Key)> = living
+    let cells: Vec<(PartId, Key)> = child
+        .living()
         .flat_map(|(id, p)| {
             p.cells
                 .iter()
-                .flat_map(move |(f, n)| std::iter::repeat_n((*id, f.clone()), *n as usize))
+                .flat_map(move |(f, n)| std::iter::repeat_n((id, f.clone()), *n as usize))
         })
         .collect();
     let (id, from) = pick(&cells, draw("vary-cell"))?;
@@ -102,8 +107,8 @@ pub fn vary(child: &mut Entity, rules: &Rules, recipe: &Recipe, seed: u64) -> Op
         .map(|(k, _)| k.clone())
         .collect();
     let to = pick(&grown, draw("vary-to"))?;
+    let situs = child.situs(id)?;
     let part = child.parts.get_mut(&id)?;
-    let situs = part.situs?;
     shift(part, &from, &to);
     let v = Varied { situs, from, to };
     child.varied.push(v.clone());
@@ -134,12 +139,7 @@ pub fn riff(child: &mut Entity, recipe: &Recipe, seed: u64) -> Option<Riff> {
     let role = pick(&Role::ALL, draw("riff-role"))?;
     let swap = draw("riff-swap") % 2 == 0;
     let mut riffed = child.systems[&system].clone();
-    let expressed: BTreeSet<&Key> = child
-        .parts
-        .values()
-        .filter(|p| !p.severed)
-        .flat_map(|p| &p.functions)
-        .collect();
+    let expressed: BTreeSet<&Key> = child.living().flat_map(|(_, p)| &p.functions).collect();
     let open: Vec<Key> = expressed
         .into_iter()
         .filter(|f| !riffed.routes(f, role))

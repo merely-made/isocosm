@@ -78,7 +78,7 @@ fn dress(g: &mut Genesis, id: Id, d: &Development, tissue: &str) {
         seed: 0,
     };
     let e = g.population.lift(id).unwrap();
-    e.parts = develop(&rules, d, &soma).unwrap();
+    e.embody(develop(&rules, d, &soma).unwrap());
     e.soma = vec![1];
     e.accounts.clear();
     let room = anatomy::room(e, &rules, tissue);
@@ -334,10 +334,11 @@ fn pass_world(seed: u64, asks: [u64; 2]) -> (Genesis, [Id; 2], Id) {
         absent: vec![],
         seed: 0,
     };
-    producer.parts = develop(&rules, &frond, &soma).unwrap();
+    producer.embody(develop(&rules, &frond, &soma).unwrap());
     producer.soma = vec![2];
     for (part, held) in [(0, 3), (1, 10)] {
-        producer.parts.get_mut(&part).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+        producer.parts.get_mut(&PartId(part)).unwrap().matter =
+            BTreeMap::from([("tissue:0".into(), held)]);
     }
     let grazer = g.population.get(eater).unwrap().clone();
     let site = producer.place;
