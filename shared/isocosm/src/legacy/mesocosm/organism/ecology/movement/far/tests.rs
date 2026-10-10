@@ -9,7 +9,7 @@
 use super::*;
 use crate::legacy::mesocosm::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
 use crate::legacy::mesocosm::development::PartPalette;
-use crate::legacy::mesocosm::flow::Process;
+use crate::legacy::mesocosm::flowing::Process;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::ecology::tests::{Sink, organism, registry, soil};
 use crate::legacy::mesocosm::organism::ecology::{dispersal_for, is_hungry, step_with_places};
@@ -124,9 +124,9 @@ fn tick(world: &mut Vec<Organism>, places: &Places, ground: &mut Soil, who: Orga
         .flows
         .records()
         .iter()
-        .filter(|f| f.record.process == Process::Travel)
-        .filter(|f| f.record.from.is_some_and(|s| s.organism == who))
-        .map(|f| f.record.amount_mg)
+        .filter(|f| f.process() == Some(Process::Travel))
+        .filter(|f| f.from_organism() == Some(who))
+        .map(|f| f.amount)
         .sum();
     let to = world.iter().find(|o| o.id == who).unwrap().position;
     Moved { from, to, paid_mg }
@@ -353,9 +353,9 @@ fn run_far(seed: u64, released: bool, ticks: u32) -> (World, u32) {
             assert!(voxels <= most, "{organism:?} moved {voxels}, budget {most}");
             let paid: u64 = flows
                 .iter()
-                .filter(|f| f.record.process == Process::Travel)
-                .filter(|f| f.record.from.is_some_and(|s| s.organism == organism))
-                .map(|f| f.record.amount_mg)
+                .filter(|f| f.process() == Some(Process::Travel))
+                .filter(|f| f.from_organism() == Some(organism))
+                .map(|f| f.amount)
                 .sum();
             assert_eq!(paid, voxels as u64, "{organism:?} paid for other voxels");
             assert!(body.walker_shape().stands(world.ground(), to));

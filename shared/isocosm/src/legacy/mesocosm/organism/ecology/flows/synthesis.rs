@@ -23,7 +23,7 @@ pub(in crate::legacy::mesocosm::organism::ecology) fn record_synthesis(
     let reserve_mg = stock_mg(landed.reserve_stock);
     records.flow(
         at,
-        FlowEvent::between(
+        Flow::between(
             Process::Uptake,
             subject,
             Account::Substance,
@@ -36,7 +36,7 @@ pub(in crate::legacy::mesocosm::organism::ecology) fn record_synthesis(
     let spilled_mg = stock_mg(landed.spilled_stock);
     records.flow(
         at,
-        FlowEvent::returned(Process::Spill, subject, Account::Substance, spilled_mg)
+        Flow::returned(Process::Spill, subject, Account::Substance, spilled_mg)
             .with_stock(landed.spilled_stock),
     );
 }
@@ -50,7 +50,7 @@ fn record_synthesized_substance(
     let mg = stock_mg(stock);
     records.flow(
         at,
-        FlowEvent::uptake(subject, Account::Substance, mg).synthesized(stock),
+        Flow::uptake(subject, Account::Substance, mg).synthesized(stock),
     );
 }
 
@@ -59,7 +59,7 @@ mod tests {
     use super::*;
     use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
     use crate::legacy::mesocosm::development::PartPalette;
-    use crate::legacy::mesocosm::flow::Ledger;
+    use crate::legacy::mesocosm::flowing::Ledger;
     use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, step};
     use crate::legacy::mesocosm::rng::Rng;
     use crate::legacy::mesocosm::soil::Soil;
@@ -88,23 +88,19 @@ mod tests {
 
         record_synthesis(&mut records, [0, 0, 0], subject(), &landed);
 
-        let flows: Vec<_> = ledger
-            .records()
-            .iter()
-            .map(|record| record.record)
-            .collect();
+        let flows: Vec<_> = ledger.records().iter().cloned().collect();
         assert_eq!(flows.len(), 2);
         let synthesis = flows[0].composition.expect("producer tissue is converted");
         assert_eq!(
             synthesis.conversion,
-            Some(crate::legacy::mesocosm::flow::Conversion::Synthesis)
+            Some(crate::flows::Conversion::Synthesis)
         );
         assert_eq!(synthesis.input, Stock::single(Material::Untyped, 7));
         assert_eq!(synthesis.output, landed.reserve_stock);
         let digestion = flows[1].composition.expect("reserve intake is converted");
         assert_eq!(
             digestion.conversion,
-            Some(crate::legacy::mesocosm::flow::Conversion::Digestion)
+            Some(crate::flows::Conversion::Digestion)
         );
         assert_eq!(digestion.input, landed.reserve_stock);
         assert_eq!(digestion.output, Stock::single(Material::Untyped, 7));
@@ -140,38 +136,34 @@ mod tests {
             &mut soil,
         );
 
-        let flows: Vec<_> = ledger
-            .records()
-            .iter()
-            .map(|record| record.record)
-            .collect();
+        let flows: Vec<_> = ledger.records().iter().cloned().collect();
         let synthesis = flows
             .iter()
             .find(|flow| {
-                flow.source == Account::Soil
-                    && flow.destination == Account::Substance
+                flow.source() == Some(Account::Soil)
+                    && flow.destination() == Some(Account::Substance)
                     && flow
                         .composition
                         .and_then(|composition| composition.conversion)
-                        == Some(crate::legacy::mesocosm::flow::Conversion::Synthesis)
+                        == Some(crate::flows::Conversion::Synthesis)
             })
             .expect("the producer converts its accepted soil draw");
         let composition = synthesis.composition.expect("synthesis has composition");
         assert_eq!(
             composition.input.amount(Material::Untyped),
-            synthesis.amount_mg
+            synthesis.amount
         );
         assert_eq!(
             composition.output.amount(Material::Producer),
-            synthesis.amount_mg
+            synthesis.amount
         );
         assert!(flows.iter().any(|flow| {
-            flow.source == Account::Substance
-                && flow.destination == Account::Reserve
+            flow.source() == Some(Account::Substance)
+                && flow.destination() == Some(Account::Reserve)
                 && flow
                     .composition
                     .and_then(|composition| composition.conversion)
-                    == Some(crate::legacy::mesocosm::flow::Conversion::Digestion)
+                    == Some(crate::flows::Conversion::Digestion)
         }));
     }
 
@@ -220,20 +212,22 @@ mod tests {
         let mut synthesized = 0;
         let mut completion = None;
         for (index, envelope) in ledger.records().iter().enumerate() {
-            let flow = envelope.record;
-            if flow.process == Process::Upkeep && flow.destination == Account::Soil {
-                returned += flow.amount_mg;
+            let flow = envelope;
+            if flow.process() == Some(Process::Upkeep) && flow.destination() == Some(Account::Soil)
+            {
+                returned += flow.amount;
             }
-            if flow.composition.is_some_and(|c| {
-                c.conversion == Some(crate::legacy::mesocosm::flow::Conversion::Synthesis)
-            }) {
+            if flow
+                .composition
+                .is_some_and(|c| c.conversion == Some(crate::flows::Conversion::Synthesis))
+            {
                 let input = flow.composition.unwrap().input;
-                assert_eq!(input, Stock::single(Material::Untyped, flow.amount_mg));
-                synthesized += flow.amount_mg;
+                assert_eq!(input, Stock::single(Material::Untyped, flow.amount));
+                synthesized += flow.amount;
             }
-            if flow.process == Process::Decay
-                && flow.source == Account::Soil
-                && flow.destination == Account::Soil
+            if flow.process() == Some(Process::Decay)
+                && flow.source() == Some(Account::Soil)
+                && flow.destination() == Some(Account::Soil)
             {
                 completion = Some((index, flow));
             }
@@ -243,8 +237,8 @@ mod tests {
         let (completion_index, completion) = completion.expect("pending soil completed");
         assert_eq!(completion.composition.unwrap().input, completed);
         assert!(ledger.records()[..completion_index].iter().any(|envelope| {
-            envelope.record.composition.is_some_and(|composition| {
-                composition.conversion == Some(crate::legacy::mesocosm::flow::Conversion::Synthesis)
+            envelope.composition.is_some_and(|composition| {
+                composition.conversion == Some(crate::flows::Conversion::Synthesis)
             })
         }));
     }

@@ -12,7 +12,8 @@
 //! is the two routing decisions every income and every death goes through, now
 //! that each of them also has to say what it did.
 
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
+use crate::flows::Flow;
+use crate::legacy::mesocosm::flowing::{Account, Process, Records, Subject};
 use crate::legacy::mesocosm::soil::Soil;
 use crate::matter::Stock;
 
@@ -126,10 +127,8 @@ pub(super) fn record_intake(
     ] {
         let mg = stock_mg(stock);
         let flow = match from {
-            Some(from) => {
-                FlowEvent::between(Process::Feeding, from, Account::Substance, to, into, mg)
-            },
-            None => FlowEvent::uptake(to, into, mg),
+            Some(from) => Flow::between(Process::Feeding, from, Account::Substance, to, into, mg),
+            None => Flow::uptake(to, into, mg),
         };
         let flow = if into == Account::Reserve {
             flow.digested(stock)
@@ -184,7 +183,7 @@ pub(super) fn release_reserve(organism: &mut Organism, soil: &mut Soil, records:
     soil.deposit(column, organism.energy_mg);
     records.flow(
         organism.position,
-        FlowEvent::returned(
+        Flow::returned(
             Process::Death,
             Subject::of(organism),
             Account::Reserve,

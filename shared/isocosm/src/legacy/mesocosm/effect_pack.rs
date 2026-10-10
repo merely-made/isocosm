@@ -88,7 +88,7 @@ pub struct PackRule {
 
 /// The amount the accepted record supplies, always an integer already in the
 /// record. `Voxels`: `Event::Carved.removed`. `MealMass`: `Event::Fed.mass_mg`.
-/// `UptakeMass`: `RecordedFlow.amount_mg` under `Process::Uptake`, which binds
+/// `UptakeMass`: `Flow.amount_mg` under `Process::Uptake`, which binds
 /// to the feeding glyph (ruled 2026-09-15). `None`: `Event::Moved`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]

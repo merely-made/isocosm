@@ -240,12 +240,12 @@ impl World {
 
     /// Takes the events of the most recent tick, leaving the world empty of
     /// them. Recording them is a caller's business; the world only reports.
-    pub fn drain_events(&mut self) -> Vec<crate::legacy::mesocosm::flow::RecordedEvent> {
+    pub fn drain_events(&mut self) -> Vec<crate::legacy::mesocosm::history::RecordedEvent> {
         std::mem::take(&mut self.pending)
     }
 
     /// The events of the most recent tick, without taking them.
-    pub fn events(&self) -> &[crate::legacy::mesocosm::flow::RecordedEvent] {
+    pub fn events(&self) -> &[crate::legacy::mesocosm::history::RecordedEvent] {
         &self.pending
     }
 
@@ -259,12 +259,12 @@ impl World {
     ///
     /// The buffer is reopened at the top of each tick, so this returns that
     /// tick's flows whether or not the last one was ever taken.
-    pub fn drain_flows(&mut self) -> Vec<crate::legacy::mesocosm::flow::RecordedFlow> {
+    pub fn drain_flows(&mut self) -> Vec<crate::flows::Flow> {
         self.flows.take()
     }
 
     /// The most recent tick's matter movements, without taking them.
-    pub fn flows(&self) -> &[crate::legacy::mesocosm::flow::RecordedFlow] {
+    pub fn flows(&self) -> &[crate::flows::Flow] {
         self.flows.records()
     }
 

@@ -10,7 +10,8 @@ use super::Runtime;
 #[cfg(test)]
 use super::deep_time_world;
 use crate::Checkpoint;
-use isocosm::legacy::mesocosm::flow::{Account, Process, RecordedFlow};
+use isocosm::flows::Flow;
+use isocosm::legacy::mesocosm::flowing::{Account, Process};
 use isocosm::legacy::mesocosm::{
     History, Intent, OrganismId, Outcome, World, history::Event, state_hash,
 };
@@ -58,7 +59,7 @@ pub struct TrialUptake {
     /// Ordinal in the complete accepted flow batch for this tick. Identity is
     /// (tick, sequence), not the unrelated history sequence in TrialActivity.
     pub sequence: u64,
-    pub record: RecordedFlow,
+    pub record: Flow,
     pub organism: OrganismId,
     pub at: Option<[i32; 3]>,
     pub position_basis: UptakePosition,
@@ -311,7 +312,7 @@ impl Trial {
             .iter()
             .enumerate()
             .filter_map(|(index, record)| {
-                uptake(*record, index as u64, &before, self.runtime.world())
+                uptake(record.clone(), index as u64, &before, self.runtime.world())
             })
             .collect();
         for (offset, recorded) in self.runtime.history().log().entries()[start..]
@@ -395,18 +396,21 @@ fn driver(baseline: &World, history: &History) -> Runtime {
 }
 
 fn uptake(
-    record: RecordedFlow,
+    record: Flow,
     sequence: u64,
     before: &BTreeMap<OrganismId, [i32; 3]>,
     world: &World,
 ) -> Option<TrialUptake> {
-    let flow = record.record;
+    let flow = &record;
     // Internal Substance→Reserve synthesis bookkeeping also uses Uptake.
     // Only the actual soil transfer is an intake, so never count both legs.
-    if flow.process != Process::Uptake || flow.source != Account::Soil || flow.amount_mg == 0 {
+    if flow.process() != Some(Process::Uptake)
+        || flow.source() != Some(Account::Soil)
+        || flow.amount == 0
+    {
         return None;
     }
-    let organism = flow.to?.organism;
+    let organism = flow.to_organism()?;
     let (at, position_basis) = if let Some(body) = world.organisms.iter().find(|o| o.id == organism)
     {
         (Some(body.position), UptakePosition::AfterTick)

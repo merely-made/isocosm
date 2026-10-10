@@ -10,7 +10,7 @@ use super::*;
 
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::development::PartPalette;
-use crate::legacy::mesocosm::flow::{Ledger, Records};
+use crate::legacy::mesocosm::flowing::{Ledger, Records};
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::Kingdom;
 use crate::matter::{Material, Stock};
@@ -28,7 +28,7 @@ fn parent() -> Organism {
 }
 
 fn records<'a>(
-    events: &'a mut Vec<crate::legacy::mesocosm::flow::RecordedEvent>,
+    events: &'a mut Vec<crate::legacy::mesocosm::history::RecordedEvent>,
     flows: &'a mut Ledger,
 ) -> Records<'a> {
     flows.open(0);
@@ -95,9 +95,9 @@ fn birth_moves_the_parents_mixed_debit_into_the_realized_child() {
     let body = flows
         .records()
         .iter()
-        .find(|record| record.record.destination == Account::Substance)
+        .find(|record| record.destination() == Some(Account::Substance))
         .expect("birth records its body transfer")
-        .record;
+        .clone();
     assert_eq!(
         body.composition.expect("typed body transfer").input,
         expected
@@ -105,9 +105,9 @@ fn birth_moves_the_parents_mixed_debit_into_the_realized_child() {
     let reserve = flows
         .records()
         .iter()
-        .find(|record| record.record.destination == Account::Reserve)
+        .find(|record| record.destination() == Some(Account::Reserve))
         .expect("birth records its reserve transfer")
-        .record;
+        .clone();
     assert_eq!(
         reserve.composition.expect("untyped reserve transfer").input,
         Stock::single(Material::Untyped, 100)

@@ -7,8 +7,9 @@
 //! The developmental verb: a discovered candidate, previewed, expressed and
 //! paid for. (PD3)
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::discovery::ConditionId;
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Subject};
 
 use super::{Outcome, World};
 
@@ -61,8 +62,8 @@ impl World {
         self.soil.deposit(column, preview.cost_mg);
         self.flow(
             position,
-            FlowEvent::returned(
-                crate::legacy::mesocosm::flow::Process::Develop,
+            Flow::returned(
+                crate::legacy::mesocosm::flowing::Process::Develop,
                 subject,
                 Account::Reserve,
                 preview.cost_mg,

@@ -540,7 +540,7 @@ impl Prepared {
             .organisms
             .iter()
             .map(|o| {
-                crate::legacy::mesocosm::flow::Envelope::new(
+                crate::legacy::mesocosm::history::Envelope::new(
                     0,
                     world.places.at(o.position),
                     crate::legacy::mesocosm::history::Event::Born {

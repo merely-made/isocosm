@@ -18,6 +18,9 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+mod composition;
+pub use composition::{Composition, Conversion};
+
 /// Who holds an account a move leaves or reaches.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Holder {
@@ -52,6 +55,50 @@ pub struct Flow {
     /// The members the move stands for: an entity holder and those after
     /// it, each moving `amount`; a site gives or takes `amount` for each.
     pub count: u64,
+    /// The lineage and kingdom of the body each side belongs to, as they
+    /// stood when it moved; absent where a side is no body.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub from_kind: Option<Kind>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub to_kind: Option<Kind>,
+    /// What the move carried, by material, where its maker says.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub composition: Option<Composition>,
+}
+
+/// A body's lineage and kingdom, by key.
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct Kind {
+    pub lineage: Key,
+    pub kingdom: Key,
+}
+
+impl Holder {
+    /// The body this holder is, or holds a part of.
+    pub fn body(self) -> Option<Id> {
+        match self {
+            Holder::Entity(id) | Holder::Part(id, _) => Some(id),
+            Holder::Site(_) | Holder::Dev => None,
+        }
+    }
+}
+
+impl Flow {
+    /// Whether the move stays inside one body.
+    pub fn internal(&self) -> bool {
+        matches!((self.from.0.body(), self.to.0.body()), (Some(a), Some(b)) if a == b)
+    }
+
+    /// Whether a process of this key made it.
+    pub fn by_process(&self, key: &str) -> bool {
+        matches!(&self.made_by, MadeBy::Process(k) if k == key)
+    }
+}
+
+/// What the dev source issued over `flows`: every move out of it.
+pub fn issued(flows: &[Flow]) -> u64 {
+    let out = flows.iter().filter(|f| f.from.0 == Holder::Dev);
+    out.map(|f| f.amount.saturating_mul(f.count)).sum()
 }
 
 /// One completed tick or command and every matter move it made. Commands
@@ -198,13 +245,24 @@ impl Simulation {
             return;
         }
         let tick = self.state.tick;
+        let population = &self.state.population;
+        let kind = |h: Holder| {
+            let e = population.get(h.body()?)?;
+            Some(Kind {
+                lineage: e.lineage.clone(),
+                kingdom: e.kingdom.clone(),
+            })
+        };
         self.flows.flows.extend(legs.into_iter().map(|leg| Flow {
             tick,
             made_by: made_by.clone(),
+            from_kind: kind(leg.from.0),
+            to_kind: kind(leg.to.0),
             from: leg.from,
             to: leg.to,
             amount: leg.amount,
             count,
+            composition: None,
         }));
     }
 

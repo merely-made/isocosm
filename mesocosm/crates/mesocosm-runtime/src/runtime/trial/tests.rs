@@ -158,10 +158,10 @@ fn uptake_matches_actual_soil_transfers_and_replays_without_touching_history() {
             .iter()
             .enumerate()
             .filter(|(_, f)| {
-                f.record.process == Process::Uptake
-                    && f.record.source == Account::Soil
-                    && f.record.amount_mg > 0
-                    && f.record.to.is_some()
+                f.process() == Some(Process::Uptake)
+                    && f.source() == Some(Account::Soil)
+                    && f.amount > 0
+                    && f.to_organism().is_some()
             })
             .collect();
         assert_eq!(trial.uptakes().len(), expected.len());
@@ -169,9 +169,9 @@ fn uptake_matches_actual_soil_transfers_and_replays_without_touching_history() {
             assert_eq!(actual.record, *record);
             assert_eq!(actual.sequence, index as u64);
             assert_eq!(actual.tick, record.tick);
-            assert_eq!(actual.organism, record.record.to.unwrap().organism);
+            assert_eq!(Some(actual.organism), record.to_organism());
             assert!(ids.insert((actual.tick, actual.sequence)));
-            total += record.record.amount_mg;
+            total += record.amount;
         }
         observed.push(trial.uptakes().to_vec());
         assert_eq!(trial.uptakes(), observed.last().unwrap());
@@ -199,12 +199,12 @@ fn uptake_filter_refuses_zero_internal_and_unrelated_transfers_and_labels_positi
     let record = loop {
         assert!(trial.step());
         if let Some(sample) = trial.uptakes().first() {
-            break sample.record;
+            break sample.record.clone();
         }
     };
-    let organism = record.record.to.unwrap().organism;
+    let organism = record.to_organism().unwrap();
     let before = BTreeMap::from([(organism, [11, 22, 33])]);
-    let present = uptake(record, 3, &before, trial.world()).unwrap();
+    let present = uptake(record.clone(), 3, &before, trial.world()).unwrap();
     assert_eq!(present.position_basis, UptakePosition::AfterTick);
     assert_eq!(
         present.at,
@@ -217,21 +217,25 @@ fn uptake_filter_refuses_zero_internal_and_unrelated_transfers_and_labels_positi
     );
     let mut absent = trial.world().clone();
     absent.organisms.retain(|o| o.id != organism);
-    let earlier = uptake(record, 3, &before, &absent).unwrap();
+    let earlier = uptake(record.clone(), 3, &before, &absent).unwrap();
     assert_eq!(earlier.at, Some([11, 22, 33]));
     assert_eq!(earlier.position_basis, UptakePosition::BeforeTick);
-    let unknown = uptake(record, 3, &BTreeMap::new(), &absent).unwrap();
+    let unknown = uptake(record.clone(), 3, &BTreeMap::new(), &absent).unwrap();
     assert_eq!(unknown.at, None);
     assert_eq!(unknown.position_basis, UptakePosition::Unavailable);
-    let mut zero = record;
-    zero.record.amount_mg = 0;
-    let mut internal = record;
-    internal.record.source = Account::Substance;
-    internal.record.destination = Account::Reserve;
-    let mut unrelated = record;
-    unrelated.record.process = Process::Upkeep;
+    let mut zero = record.clone();
+    zero.amount = 0;
+    let body = record.to.0;
+    let mut internal = record.clone();
+    internal.from = (body, Account::Substance.key().into());
+    internal.to = (body, Account::Reserve.key().into());
+    let mut unrelated = record.clone();
+    unrelated.made_by = Process::Upkeep.made_by();
     let mut unaddressed = record;
-    unaddressed.record.to = None;
+    unaddressed.to = (
+        isocosm::flows::Holder::Site(0),
+        Account::Substance.key().into(),
+    );
     for excluded in [zero, internal, unrelated, unaddressed] {
         assert!(uptake(excluded, 3, &before, trial.world()).is_none());
     }
@@ -259,7 +263,7 @@ fn ordinary_runtime_does_not_capture_extra_flows_and_rejected_intent_does_not_in
         .map(|o| (o.id, o.position))
         .collect();
     for (index, record) in runtime.trial_flows.as_ref().unwrap().iter().enumerate() {
-        if let Some(activity) = uptake(*record, index as u64, &before, runtime.world()) {
+        if let Some(activity) = uptake(record.clone(), index as u64, &before, runtime.world()) {
             assert_ne!(activity.organism, OrganismId(999999));
             assert_eq!(activity.record, *record);
         }

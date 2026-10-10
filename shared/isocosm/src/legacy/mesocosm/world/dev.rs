@@ -44,7 +44,8 @@
 //! [`ecology::bear`]: crate::legacy::mesocosm::organism::ecology::bear
 //! [`ecology::perish`]: crate::legacy::mesocosm::organism::ecology::perish
 
-use crate::legacy::mesocosm::flow::{FlowEvent, Records};
+use crate::flows::Flow;
+use crate::legacy::mesocosm::flowing::Records;
 use crate::legacy::mesocosm::organism::{OrganismId, ecology};
 
 use super::{Outcome, Rejection, World};
@@ -163,7 +164,7 @@ impl World {
     /// insurance against a leak at the wall; a dev intent that leaned on it
     /// would quietly pile every mistyped coordinate into one edge column.
     ///
-    /// [`Account::Dev`]: crate::legacy::mesocosm::flow::Account::Dev
+    /// [`Account::Dev`]: crate::legacy::mesocosm::flowing::Account::Dev
     pub(super) fn place_matter(&mut self, at: [i32; 3], mass_mg: u64) -> Outcome {
         let extent = self.soil.extent();
         if !(-extent..=extent).contains(&at[0]) || !(-extent..=extent).contains(&at[2]) {
@@ -182,7 +183,7 @@ impl World {
         }
         let column = self.soil.column_at(at);
         self.soil.deposit(column, mass_mg);
-        self.flow(at, FlowEvent::placed(mass_mg));
+        self.flow(at, Flow::placed(mass_mg));
         Outcome::Placed { at, mass_mg }
     }
 }

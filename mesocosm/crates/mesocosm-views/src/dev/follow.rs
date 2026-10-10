@@ -15,7 +15,7 @@
 //! The words are this crate's, exactly as the vitals panel's are: core answers
 //! what is, and a panel decides how to say it.
 
-use isocosm::legacy::mesocosm::flow::Accounts;
+use isocosm::legacy::mesocosm::flowing::Accounts;
 use isocosm::legacy::mesocosm::{
     Ending, Organism, OrganismId, PartId, Passing, Role, World, classify,
 };

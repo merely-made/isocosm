@@ -23,7 +23,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use isocosm::legacy::mesocosm::flow::Process as Flow;
+use isocosm::legacy::mesocosm::flowing::Process as Flow;
 use isocosm::legacy::mesocosm::places::Tier;
 use isocosm::legacy::mesocosm::rules::WorldRules;
 use isocosm::legacy::mesocosm::world::generation::Request;
@@ -455,8 +455,8 @@ fn run(seed: u64, organisms: u32, mode: &str) {
         decayed += world
             .drain_flows()
             .iter()
-            .filter(|f| f.record.process == Flow::Decay)
-            .map(|f| f.record.amount_mg)
+            .filter(|f| f.process() == Some(Flow::Decay))
+            .map(|f| f.amount)
             .sum::<u64>();
         if world.epoch != seen {
             seen = world.epoch;

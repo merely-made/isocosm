@@ -4,7 +4,8 @@
 use std::collections::BTreeMap;
 
 use super::*;
-use crate::legacy::mesocosm::flow::{Account, Conversion, RecordedFlow};
+use crate::flows::{Conversion, Flow};
+use crate::legacy::mesocosm::flowing::Account;
 use crate::matter::{Material, Stock};
 
 type Key = (Account, Option<OrganismId>);
@@ -33,25 +34,19 @@ fn books(world: &World) -> Book {
     book
 }
 
-fn side_key(account: Account, subject: Option<crate::legacy::mesocosm::flow::Subject>) -> Key {
-    if account.is_body() {
-        (
-            account,
-            Some(subject.expect("body account has a subject").organism),
-        )
-    } else {
-        (account, None)
-    }
+fn side_key(side: &(crate::flows::Holder, String)) -> Key {
+    let account = Account::of(side).expect("a legacy account");
+    let body = side.0.body().map(|id| OrganismId(id as u32));
+    (account, body.filter(|_| account.is_body()))
 }
 
-fn expected(mut before: Book, flows: &[RecordedFlow]) -> Book {
-    for envelope in flows {
-        let flow = envelope.record;
+fn expected(mut before: Book, flows: &[Flow]) -> Book {
+    for flow in flows {
         let composition = flow
             .composition
             .expect("every live matter flow is composed");
-        let source = side_key(flow.source, flow.from);
-        let destination = side_key(flow.destination, flow.to);
+        let source = side_key(&flow.from);
+        let destination = side_key(&flow.to);
         let remaining = before
             .get(&source)
             .copied()
@@ -64,7 +59,7 @@ fn expected(mut before: Book, flows: &[RecordedFlow]) -> Book {
     before
 }
 
-fn assert_channels(before: &World, after: &World, flows: &[RecordedFlow]) {
+fn assert_channels(before: &World, after: &World, flows: &[Flow]) {
     assert!(!flows.is_empty(), "the exercised tick emitted flows");
     let mut claimed = expected(books(before), flows);
     claimed.retain(|_, stock| *stock != Stock::EMPTY);
@@ -97,7 +92,7 @@ fn mixed_body(world: &mut World, id: OrganismId) {
     assert!(typed > 0, "the fixture has typed tissue to return");
 }
 
-fn composed_step(world: &mut World, intent: Intent) -> Vec<RecordedFlow> {
+fn composed_step(world: &mut World, intent: Intent) -> Vec<Flow> {
     let before = world.clone();
     world.apply(intent);
     let flows = world.drain_flows();
@@ -114,9 +109,9 @@ fn mixed_tissue_upkeep_reconciles_every_channel() {
 
     let flows = composed_step(&mut world, Intent::Idle);
     assert!(flows.iter().any(|flow| {
-        flow.record.process == crate::legacy::mesocosm::flow::Process::Upkeep
-            && flow.record.source == Account::Substance
-            && flow.record.composition.unwrap().input.amounts()[1..]
+        flow.process() == Some(crate::legacy::mesocosm::flowing::Process::Upkeep)
+            && flow.source() == Some(Account::Substance)
+            && flow.composition.unwrap().input.amounts()[1..]
                 .iter()
                 .any(|amount| *amount > 0)
     }));
@@ -185,14 +180,14 @@ fn mixed_life_history_replays_with_composed_birth_death_and_decay() {
         decay_flows.extend(
             flows
                 .iter()
-                .filter(|f| f.record.process == crate::legacy::mesocosm::flow::Process::Decay)
+                .filter(|f| f.process() == Some(crate::legacy::mesocosm::flowing::Process::Decay))
                 .cloned(),
         );
         assert_channels(&before, &world, &flows);
         saw_decay |= flows.iter().any(|flow| {
-            flow.record.process == crate::legacy::mesocosm::flow::Process::Decay
-                && flow.record.composition.unwrap().conversion
-                    == Some(crate::legacy::mesocosm::flow::Conversion::Mineralization)
+            flow.process() == Some(crate::legacy::mesocosm::flowing::Process::Decay)
+                && flow.composition.unwrap().conversion
+                    == Some(crate::flows::Conversion::Mineralization)
         });
         replay.apply(Intent::Idle);
         let replay_flows = replay.drain_flows();
@@ -237,7 +232,7 @@ fn every_exercised_flow_has_a_typed_or_explicit_untyped_composition() {
     let flows = world.drain_flows();
     assert_channels(&before, &world, &flows);
     for flow in flows {
-        let composition = flow.record.composition.unwrap();
+        let composition = flow.composition.unwrap();
         if composition.conversion == Some(Conversion::Mineralization) {
             assert_eq!(composition.output.amounts()[1..], [0, 0, 0]);
         }

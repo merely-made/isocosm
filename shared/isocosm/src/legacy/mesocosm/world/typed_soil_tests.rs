@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::legacy::mesocosm::{
-    flow::{Account, Conversion},
-    snapshot,
-};
+use crate::flows::Conversion;
+use crate::legacy::mesocosm::{flowing::Account, snapshot};
 use crate::matter::{Material, Stock};
 
 #[test]
@@ -27,27 +25,27 @@ fn mixed_soil_reconciles_completed_returns_and_snapshot_replay_per_channel() {
         let mut expected = before.amounts().map(i128::from);
         let flows = world.drain_flows();
         for flow in &flows {
-            let event = flow.record;
+            let event = flow;
             let composition = event.composition.expect("every material flow is typed");
-            if event.source == Account::Soil {
+            if event.source() == Some(Account::Soil) {
                 for material in Material::ALL {
                     expected[material.index()] -= i128::from(composition.input.amount(material));
                 }
             }
-            if event.destination == Account::Soil {
+            if event.destination() == Some(Account::Soil) {
                 for material in Material::ALL {
                     expected[material.index()] += i128::from(composition.output.amount(material));
                 }
             }
-            if event.source == Account::Soil && event.destination == Account::Soil {
+            if event.source() == Some(Account::Soil) && event.destination() == Some(Account::Soil) {
                 assert_eq!(composition.conversion, Some(Conversion::Mineralization));
-                assert_eq!((event.from, event.to), (None, None));
+                assert_eq!((&event.from_kind, &event.to_kind), (&None, &None));
                 assert_eq!(composition.input.amount(Material::Untyped), 0);
                 assert_eq!(
                     composition.output,
-                    Stock::single(Material::Untyped, event.amount_mg)
+                    Stock::single(Material::Untyped, event.amount)
                 );
-                completed += event.amount_mg;
+                completed += event.amount;
             }
         }
         let after = world.soil.total_stock();

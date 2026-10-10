@@ -17,7 +17,7 @@
 //! [`Account::Dev`], and the claim is that naming that source is what keeps the
 //! soil's gain claimed rather than unexplained.
 
-use isocosm::legacy::mesocosm::flow::{Account, Process};
+use isocosm::legacy::mesocosm::flowing::{Account, Process};
 use isocosm::legacy::mesocosm::{Intent, World};
 
 use super::stepped;
@@ -62,17 +62,16 @@ fn the_stream_accounts_for_the_dev_verbs_too() {
         },
         "on the placement",
     );
-    let placements: Vec<&isocosm::legacy::mesocosm::flow::FlowEvent> = flows
+    let placements: Vec<&isocosm::flows::Flow> = flows
         .iter()
-        .map(|flow| &flow.record)
-        .filter(|record| record.process == Process::Place)
+        .filter(|record| record.process() == Some(Process::Place))
         .collect();
     assert_eq!(placements.len(), 1, "one placement, one record");
-    assert_eq!(placements[0].source, Account::Dev);
-    assert_eq!(placements[0].destination, Account::Soil);
-    assert_eq!(placements[0].amount_mg, 900);
+    assert_eq!(placements[0].source(), Some(Account::Dev));
+    assert_eq!(placements[0].destination(), Some(Account::Soil));
+    assert_eq!(placements[0].amount, 900);
     assert!(
-        placements[0].from.is_none() && placements[0].to.is_none(),
+        placements[0].from_kind.is_none() && placements[0].to_kind.is_none(),
         "neither end of it is a body's account"
     );
     assert_eq!(Account::issued_mg(&flows), 900);
@@ -87,7 +86,7 @@ fn the_stream_accounts_for_the_dev_verbs_too() {
         },
         "on the refused placement",
     );
-    assert!(refused.iter().all(|f| f.record.process != Process::Place));
+    assert!(refused.iter().all(|f| f.process() != Some(Process::Place)));
     assert_eq!(Account::issued_mg(&refused), 0);
 
     // And the ticks after them, because a dev verb that balanced once and left

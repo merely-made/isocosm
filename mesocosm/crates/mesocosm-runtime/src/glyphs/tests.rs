@@ -451,7 +451,7 @@ fn uptake_fixture() -> (World, OrganismId) {
     let mut takers = BTreeSet::new();
     while scout.step() {
         for record in scout.uptakes() {
-            if record.record.record.amount_mg > 0 {
+            if record.record.amount > 0 {
                 takers.insert(record.organism);
             }
         }
@@ -521,26 +521,26 @@ fn a_producer_that_only_takes_up_soil_acquires_through_uptake() {
 /// neither is somebody else's. The positive control runs in the same test.
 #[test]
 fn zero_and_foreign_uptake_are_not_accepted_acts() {
-    use isocosm::legacy::mesocosm::flow::{Account, Carrier, Envelope, FlowEvent, Process};
+    use isocosm::flows::Flow;
+    use isocosm::legacy::mesocosm::flowing::{Account, Subject};
+    use isocosm::legacy::mesocosm::{Kingdom, SpeciesId};
     let (world, organism) = uptake_fixture();
     let mut reading = GlyphReading::new(rules(organism, AcceptedKind::Uptake), &world).unwrap();
     let flow = |mg| TrialUptake {
         tick: 1,
         sequence: 0,
-        record: Envelope::new(
-            1,
-            None,
-            FlowEvent {
-                process: Process::Uptake,
-                carrier: Carrier::Matter,
-                source: Account::Soil,
-                destination: Account::Substance,
-                amount_mg: mg,
-                composition: None,
-                from: None,
-                to: None,
-            },
-        ),
+        record: Flow {
+            tick: 1,
+            ..Flow::uptake(
+                Subject {
+                    organism,
+                    lineage: SpeciesId(0),
+                    kingdom: Kingdom::Producer,
+                },
+                Account::Substance,
+                mg,
+            )
+        },
         organism,
         at: Some([0, 0, 0]),
         position_basis: crate::UptakePosition::AfterTick,

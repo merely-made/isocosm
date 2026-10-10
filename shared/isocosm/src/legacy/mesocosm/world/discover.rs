@@ -30,7 +30,7 @@ use std::collections::BTreeSet;
 use crate::legacy::mesocosm::discovery::{
     ConditionId, Discovery, Evidence, HUNGER_TICKS, Observation, Stress,
 };
-use crate::legacy::mesocosm::flow::Envelope;
+use crate::legacy::mesocosm::history::Envelope;
 use crate::legacy::mesocosm::history::Event;
 
 use super::World;

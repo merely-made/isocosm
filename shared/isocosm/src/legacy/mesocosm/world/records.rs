@@ -14,7 +14,8 @@
 //! which is the whole of the guarantee that accepted and refused transactions
 //! cannot disagree with the stream.
 
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Subject};
+use crate::flows::Flow;
+use crate::legacy::mesocosm::flowing::{Account, Process, Subject};
 use crate::legacy::mesocosm::organism::{Organism, OrganismId};
 
 use super::{Outcome, World};
@@ -130,10 +131,10 @@ pub(super) struct Landed {
 }
 
 impl World {
-    /// Records a matter movement an accepted intent caused, where it happened.
-    pub(super) fn flow(&mut self, position: [i32; 3], flow: FlowEvent) {
-        let place = self.places.at(position);
-        self.flows.record(place, flow);
+    /// Records a matter movement an accepted intent caused; the native record
+    /// keeps holders, not positions.
+    pub(super) fn flow(&mut self, _position: [i32; 3], flow: Flow) {
+        self.flows.record(flow);
     }
 
     /// The meal's ledger: every milligram the transaction moved, out of the
@@ -162,8 +163,7 @@ impl World {
             (Account::Reserve, landed.budget_mg),
             (Account::Substance, landed.body_mg),
         ] {
-            let flow =
-                FlowEvent::between(Process::Feeding, meal, Account::Substance, eater, into, mg);
+            let flow = Flow::between(Process::Feeding, meal, Account::Substance, eater, into, mg);
             self.flow(
                 eater_at,
                 if into == Account::Reserve {
@@ -179,16 +179,16 @@ impl World {
         // last one comes out of the eater rather than the eaten.
         self.flow(
             at,
-            FlowEvent::returned(Process::Spill, meal, Account::Substance, unkept)
+            Flow::returned(Process::Spill, meal, Account::Substance, unkept)
                 .with_stock(unkept_stock),
         );
         self.flow(
             at,
-            FlowEvent::returned(Process::Death, meal, Account::Reserve, eaten.energy_mg),
+            Flow::returned(Process::Death, meal, Account::Reserve, eaten.energy_mg),
         );
         self.flow(
             at,
-            FlowEvent::returned(Process::Spill, eater, Account::Reserve, spilled),
+            Flow::returned(Process::Spill, eater, Account::Reserve, spilled),
         );
     }
 }

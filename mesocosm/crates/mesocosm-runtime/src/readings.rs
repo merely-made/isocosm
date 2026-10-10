@@ -25,11 +25,11 @@
 //! the same windows byte for byte, which `tests/readings.rs` asserts by encoding
 //! both and comparing the bytes.
 
+use isocosm::flows::Flow;
 use isocosm::legacy::mesocosm::Kingdom;
-use isocosm::legacy::mesocosm::flow::{
-    Account, Process, RecordedEvent, RecordedFlow, Subject, Trend,
-};
+use isocosm::legacy::mesocosm::flowing::{Account, Process, Trend};
 use isocosm::legacy::mesocosm::history::Event;
+use isocosm::legacy::mesocosm::history::RecordedEvent;
 use serde::{Deserialize, Serialize};
 
 /// How many ticks of per-tick totals are retained.
@@ -78,7 +78,7 @@ impl Totals {
     /// sums from the flow record, which is the split the two records exist for:
     /// coming of age moves no matter, and a milligram of upkeep is nobody's
     /// biography.
-    fn of(events: &[RecordedEvent], flows: &[RecordedFlow]) -> Self {
+    fn of(events: &[RecordedEvent], flows: &[Flow]) -> Self {
         let mut totals = Self::default();
         for event in events {
             match event.record {
@@ -87,29 +87,27 @@ impl Totals {
                 _ => {},
             }
         }
-        let producer = |side: Option<Subject>| {
-            side.is_some_and(|subject| subject.kingdom == Kingdom::Producer)
-        };
+        let producer = |side: Option<Kingdom>| side == Some(Kingdom::Producer);
         for flow in flows {
-            let record = &flow.record;
-            let amount = record.amount_mg as i64;
+            let record = flow;
+            let amount = record.amount as i64;
             // Every transfer touching producer substance, in either direction.
             // A birth is producer-to-producer and cancels, which is right: a
             // seedling is the stand rearranging itself, not growing.
-            if record.source == Account::Substance && producer(record.from) {
+            if record.source() == Some(Account::Substance) && producer(record.from_kingdom()) {
                 totals.stand_change_mg -= amount;
             }
-            if record.destination == Account::Substance && producer(record.to) {
+            if record.destination() == Some(Account::Substance) && producer(record.to_kingdom()) {
                 totals.stand_change_mg += amount;
             }
             // What a mouth took, whoever the mouth belonged to. A spill from a
             // producer went to the ground rather than into a consumer, so it is
             // a loss to the stand but not a graze.
-            if record.process == Process::Feeding
-                && record.source == Account::Substance
-                && producer(record.from)
+            if record.process() == Some(Process::Feeding)
+                && record.source() == Some(Account::Substance)
+                && producer(record.from_kingdom())
             {
-                totals.grazed_mg += record.amount_mg;
+                totals.grazed_mg += record.amount;
             }
         }
         totals
@@ -145,7 +143,7 @@ impl FlowWindows {
     }
 
     /// Reduces one tick, dropping whatever fell out of the ring.
-    pub fn absorb(&mut self, events: &[RecordedEvent], flows: &[RecordedFlow]) {
+    pub fn absorb(&mut self, events: &[RecordedEvent], flows: &[Flow]) {
         let totals = Totals::of(events, flows);
         let slot = (self.absorbed % RETENTION_TICKS as u64) as usize;
         if self.ring.len() < RETENTION_TICKS {
@@ -212,7 +210,9 @@ impl FlowWindows {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::mesocosm::flow::{Envelope, FlowEvent};
+    use isocosm::flows::Flow;
+    use isocosm::legacy::mesocosm::flowing::Subject;
+    use isocosm::legacy::mesocosm::history::Envelope;
     use isocosm::legacy::mesocosm::{OrganismId, SpeciesId};
 
     fn subject(kingdom: Kingdom) -> Subject {
@@ -225,24 +225,16 @@ mod tests {
 
     /// A tick in which the stand drew `grew` mg into substance and a mouth took
     /// `grazed` out of it.
-    fn tick(grew: u64, grazed: u64) -> Vec<RecordedFlow> {
+    fn tick(grew: u64, grazed: u64) -> Vec<Flow> {
         vec![
-            Envelope::new(
-                0,
-                None,
-                FlowEvent::uptake(subject(Kingdom::Producer), Account::Substance, grew),
-            ),
-            Envelope::new(
-                0,
-                None,
-                FlowEvent::between(
-                    Process::Feeding,
-                    subject(Kingdom::Producer),
-                    Account::Substance,
-                    subject(Kingdom::Consumer),
-                    Account::Reserve,
-                    grazed,
-                ),
+            Flow::uptake(subject(Kingdom::Producer), Account::Substance, grew),
+            Flow::between(
+                Process::Feeding,
+                subject(Kingdom::Producer),
+                Account::Substance,
+                subject(Kingdom::Consumer),
+                Account::Reserve,
+                grazed,
             ),
         ]
     }

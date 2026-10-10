@@ -7,7 +7,8 @@
 //! public soil contract small and observable: one bounded dose per column,
 //! typed stock only, canonical order, and an exact subjectless flow shape.
 
-use isocosm::legacy::mesocosm::flow::{Account, Carrier, Conversion, FlowEvent, Process};
+use isocosm::flows::{Conversion, Flow};
+use isocosm::legacy::mesocosm::flowing::Account;
 use isocosm::legacy::mesocosm::soil::Soil;
 use isocosm::matter::{Material, Stock};
 
@@ -72,26 +73,15 @@ fn zero_budget_leaves_pending_typed_soil_untouched() {
 #[test]
 fn mineralization_receipt_is_subjectless_soil_to_soil_decay_with_exact_vectors() {
     let input = Stock::from_amounts([0, 2, 0, 1]);
-    let flow = FlowEvent {
-        process: Process::Decay,
-        carrier: Carrier::Matter,
-        source: Account::Soil,
-        destination: Account::Soil,
-        amount_mg: 3,
-        composition: None,
-        from: None,
-        to: None,
-    }
-    .mineralized(input);
+    let flow = Flow::soil_mineralization(input);
     let composition = flow.composition.expect("mineralization is composed");
-    assert_eq!(flow.from, None);
-    assert_eq!(flow.to, None);
-    assert_eq!(flow.source, Account::Soil);
-    assert_eq!(flow.destination, Account::Soil);
+    assert_eq!((&flow.from_kind, &flow.to_kind), (&None, &None));
+    assert_eq!(flow.source(), Some(Account::Soil));
+    assert_eq!(flow.destination(), Some(Account::Soil));
     assert_eq!(composition.input, input);
     assert_eq!(composition.output, Stock::single(Material::Untyped, 3));
     assert_eq!(composition.conversion, Some(Conversion::Mineralization));
 
-    let untyped = FlowEvent::soil_mineralization(Stock::single(Material::Untyped, 3));
+    let untyped = Flow::soil_mineralization(Stock::single(Material::Untyped, 3));
     assert_eq!(untyped.composition.unwrap().conversion, None);
 }

@@ -6,7 +6,8 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::legacy::mesocosm::flow::{Account, Conversion, RecordedFlow};
+use isocosm::flows::{Conversion, Flow};
+use isocosm::legacy::mesocosm::flowing::Account;
 use isocosm::legacy::mesocosm::snapshot;
 use isocosm::legacy::mesocosm::{Intent, OrganismId, World};
 use isocosm::matter::{Material, Stock};
@@ -36,23 +37,17 @@ fn accounts(world: &World) -> BTreeMap<Key, Stock> {
     book
 }
 
-fn body_key(account: Account, subject: Option<isocosm::legacy::mesocosm::flow::Subject>) -> Key {
-    if account.is_body() {
-        (
-            account,
-            Some(subject.expect("body flow has a subject").organism),
-        )
-    } else {
-        (account, None)
-    }
+fn body_key(side: &(isocosm::flows::Holder, String)) -> Key {
+    let account = Account::of(side).expect("a legacy account");
+    let body = side.0.body().map(|id| OrganismId(id as u32));
+    (account, body.filter(|_| account.is_body()))
 }
 
-fn expected(mut before: BTreeMap<Key, Stock>, flows: &[RecordedFlow]) -> BTreeMap<Key, Stock> {
-    for envelope in flows {
-        let flow = envelope.record;
+fn expected(mut before: BTreeMap<Key, Stock>, flows: &[Flow]) -> BTreeMap<Key, Stock> {
+    for flow in flows {
         let composition = flow.composition.expect("live matter flow is composed");
-        let source = body_key(flow.source, flow.from);
-        let destination = body_key(flow.destination, flow.to);
+        let source = body_key(&flow.from);
+        let destination = body_key(&flow.to);
         let remainder = before
             .get(&source)
             .copied()
@@ -65,7 +60,7 @@ fn expected(mut before: BTreeMap<Key, Stock>, flows: &[RecordedFlow]) -> BTreeMa
     before
 }
 
-fn reconcile(before: &World, after: &World, flows: &[RecordedFlow]) {
+fn reconcile(before: &World, after: &World, flows: &[Flow]) {
     assert!(!flows.is_empty(), "the accepted step emitted a flow");
     let mut expected = expected(accounts(before), flows);
     expected.retain(|_, stock| *stock != Stock::EMPTY);
@@ -120,15 +115,15 @@ fn generated_founder_synthesis_and_birth_replay_per_channel() {
         assert_eq!(flows, replay.drain_flows(), "idle receipt replays exactly");
         assert_eq!(world, replay, "typed founder state replays exactly");
         saw_synthesis |= flows.iter().any(|flow| {
-            flow.record.process == isocosm::legacy::mesocosm::flow::Process::Uptake
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(isocosm::legacy::mesocosm::flowing::Process::Uptake)
+                && flow.composition.is_some_and(|composition| {
                     composition.conversion == Some(Conversion::Synthesis)
                         && composition.output.amount(Material::Producer) > 0
                 })
         });
         saw_digestion |= flows.iter().any(|flow| {
-            flow.record.process == isocosm::legacy::mesocosm::flow::Process::Uptake
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(isocosm::legacy::mesocosm::flowing::Process::Uptake)
+                && flow.composition.is_some_and(|composition| {
                     composition.conversion == Some(Conversion::Digestion)
                 })
         });
@@ -178,8 +173,8 @@ fn generated_founder_synthesis_and_birth_replay_per_channel() {
     assert_eq!(world, birth_replay);
     assert!(
         flows.iter().any(|flow| {
-            flow.record.process == isocosm::legacy::mesocosm::flow::Process::Birth
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(isocosm::legacy::mesocosm::flowing::Process::Birth)
+                && flow.composition.is_some_and(|composition| {
                     composition.input.amount(Material::Producer) > 0
                         && composition.input.amount(Material::Consumer) > 0
                 })

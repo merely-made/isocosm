@@ -324,7 +324,7 @@ pub struct World {
     /// conditionally cannot be read back. That trap already cost one decode
     /// failure here.
     #[serde(default)]
-    pending: Vec<super::flow::RecordedEvent>,
+    pending: Vec<super::history::RecordedEvent>,
     /// What moved on the most recent tick, waiting to be reduced.
     ///
     /// **Beside the world rather than in it** (PE0). Dense per-tick flow in a
@@ -338,7 +338,7 @@ pub struct World {
     /// listening. `pending` keeps its old contract: sparse, and a caller's to
     /// drain.
     #[serde(skip)]
-    flows: super::flow::Ledger,
+    flows: super::flowing::Ledger,
     /// The tick the current epoch began on. (PE3)
     ///
     /// Stored rather than derived from `tick % ticks`, because only the Timed
@@ -445,7 +445,7 @@ impl World {
             let place = self.acted_at(actor);
             self.pending.insert(
                 boundary,
-                super::flow::Envelope::new(self.tick, place, event),
+                super::history::Envelope::new(self.tick, place, event),
             );
         }
 
@@ -455,8 +455,12 @@ impl World {
         let focus = self.position();
         let held = self.held();
         let tick = self.tick;
-        let mut records =
-            super::flow::Records::new(tick, Some(&self.places), &mut self.pending, &mut self.flows);
+        let mut records = super::flowing::Records::new(
+            tick,
+            Some(&self.places),
+            &mut self.pending,
+            &mut self.flows,
+        );
         self.last_tally = super::organism::ecology::step_with_ground(
             &mut self.organisms,
             &mut self.next_organism,

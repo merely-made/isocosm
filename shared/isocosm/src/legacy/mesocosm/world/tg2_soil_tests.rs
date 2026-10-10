@@ -6,7 +6,8 @@
 use std::collections::BTreeMap;
 
 use super::*;
-use crate::legacy::mesocosm::flow::{Account, Conversion, Process, RecordedFlow};
+use crate::flows::{Conversion, Flow};
+use crate::legacy::mesocosm::flowing::{Account, Process};
 use crate::legacy::mesocosm::organism::Kingdom;
 use crate::legacy::mesocosm::snapshot;
 use crate::matter::{Material, Stock};
@@ -37,23 +38,17 @@ fn accounts(world: &World) -> Book {
     book
 }
 
-fn key(account: Account, subject: Option<crate::legacy::mesocosm::flow::Subject>) -> Key {
-    if account.is_body() {
-        (
-            account,
-            Some(subject.expect("body account has a subject").organism),
-        )
-    } else {
-        (account, None)
-    }
+fn key(side: &(crate::flows::Holder, String)) -> Key {
+    let account = Account::of(side).expect("a legacy account");
+    let body = side.0.body().map(|id| OrganismId(id as u32));
+    (account, body.filter(|_| account.is_body()))
 }
 
-fn expected(mut book: Book, flows: &[RecordedFlow]) -> Book {
-    for envelope in flows {
-        let flow = envelope.record;
+fn expected(mut book: Book, flows: &[Flow]) -> Book {
+    for flow in flows {
         let composition = flow.composition.expect("matter flow is composed");
-        let source = key(flow.source, flow.from);
-        let destination = key(flow.destination, flow.to);
+        let source = key(&flow.from);
+        let destination = key(&flow.to);
         let remaining = book
             .get(&source)
             .copied()
@@ -66,7 +61,7 @@ fn expected(mut book: Book, flows: &[RecordedFlow]) -> Book {
     book
 }
 
-fn reconcile(before: &World, after: &World, flows: &[RecordedFlow]) -> Book {
+fn reconcile(before: &World, after: &World, flows: &[Flow]) -> Book {
     assert!(!flows.is_empty(), "the accepted ecology tick emitted flows");
     let mut claimed = expected(accounts(before), flows);
     claimed.retain(|_, stock| *stock != Stock::EMPTY);
@@ -141,15 +136,15 @@ fn pending_typed_soil_mineralizes_then_feeds_on_the_next_tick_and_replays() {
         control.apply(Intent::Idle);
         let control_flows = control.drain_flows();
         reconcile(&before_control, &control, &control_flows);
-        let synthesized_mg = |flows: &[RecordedFlow]| -> u64 {
+        let synthesized_mg = |flows: &[Flow]| -> u64 {
             flows
                 .iter()
                 .filter(|flow| {
-                    flow.record.composition.is_some_and(|composition| {
+                    flow.composition.is_some_and(|composition| {
                         composition.conversion == Some(Conversion::Synthesis)
                     })
                 })
-                .map(|flow| flow.record.amount_mg)
+                .map(|flow| flow.amount)
                 .sum()
         };
         if tick == 0 {
@@ -168,30 +163,30 @@ fn pending_typed_soil_mineralizes_then_feeds_on_the_next_tick_and_replays() {
         }
 
         let converted = flows.iter().any(|flow| {
-            flow.record.process == Process::Decay
-                && flow.record.source == Account::Soil
-                && flow.record.destination == Account::Soil
-                && flow.record.from.is_none()
-                && flow.record.to.is_none()
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(Process::Decay)
+                && flow.source() == Some(Account::Soil)
+                && flow.destination() == Some(Account::Soil)
+                && flow.from_kind.is_none()
+                && flow.to_kind.is_none()
+                && flow.composition.is_some_and(|composition| {
                     composition.conversion == Some(Conversion::Mineralization)
                         && composition.input.amount(Material::Producer) > 0
                         && composition.output.amount(Material::Untyped) > 0
                 })
         });
         let synthesized = flows.iter().any(|flow| {
-            flow.record.process == Process::Uptake
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(Process::Uptake)
+                && flow.composition.is_some_and(|composition| {
                     composition.conversion == Some(Conversion::Synthesis)
                         && composition.output.amount(Material::Producer) > 0
                 })
         });
         saw_mineralization |= converted;
         saw_body_return |= flows.iter().any(|flow| {
-            flow.record.process == Process::Upkeep
-                && flow.record.source == Account::Substance
-                && flow.record.destination == Account::Soil
-                && flow.record.composition.is_some_and(|composition| {
+            flow.process() == Some(Process::Upkeep)
+                && flow.source() == Some(Account::Substance)
+                && flow.destination() == Some(Account::Soil)
+                && flow.composition.is_some_and(|composition| {
                     composition.conversion == Some(Conversion::Mineralization)
                         && composition.input.amount(Material::Producer) > 0
                 })
@@ -248,15 +243,15 @@ fn zero_budget_is_a_paired_control_and_scalar_equal_channel_swap_is_rejected() {
     assert!(
         default_flows
             .iter()
-            .any(|flow| flow.record.process == Process::Decay
-                && flow.record.source == Account::Soil
-                && flow.record.destination == Account::Soil),
+            .any(|flow| flow.process() == Some(Process::Decay)
+                && flow.source() == Some(Account::Soil)
+                && flow.destination() == Some(Account::Soil)),
         "default budget converts pending soil"
     );
     assert!(!control_flows.iter().any(|flow| {
-        flow.record.process == Process::Decay
-            && flow.record.source == Account::Soil
-            && flow.record.destination == Account::Soil
+        flow.process() == Some(Process::Decay)
+            && flow.source() == Some(Account::Soil)
+            && flow.destination() == Some(Account::Soil)
     }));
     assert_eq!(
         default.total_matter_mg(),

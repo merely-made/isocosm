@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::body::SpeciesId;
 use crate::legacy::mesocosm::discovery::ConditionId;
-use crate::legacy::mesocosm::flow::Envelope;
+use crate::legacy::mesocosm::history::Envelope;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::OrganismId;
 use crate::legacy::mesocosm::program::{Citation, DeclaredTract, RevisionId};

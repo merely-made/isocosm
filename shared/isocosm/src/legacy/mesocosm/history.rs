@@ -43,8 +43,8 @@
 //!
 //! It also does not carry resource movement. Every milligram of upkeep and soil
 //! draw in a permanent causal log would be the wrong record at the wrong
-//! frequency; [`flow`](crate::legacy::mesocosm::flow) is the other half, and the two share one
-//! commit point and one [`Envelope`](crate::legacy::mesocosm::flow::Envelope).
+//! frequency; the native [`Flow`](crate::flows::Flow) record is the other half, and the two share one
+//! commit point; this one's entries carry an [`Envelope`].
 
 use std::collections::BTreeMap;
 
@@ -52,8 +52,33 @@ use muniment::{Journal, Seq};
 use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::body::{PartId, SpeciesId};
-use crate::legacy::mesocosm::flow::RecordedEvent;
 use crate::legacy::mesocosm::organism::OrganismId;
+
+/// When and where a record happened; `place` is absent where a position
+/// falls outside the place division.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Envelope<T> {
+    pub tick: u64,
+    pub place: Option<crate::legacy::mesocosm::places::PlaceId>,
+    pub record: T,
+}
+
+impl<T> Envelope<T> {
+    pub fn new(
+        tick: u64,
+        place: Option<crate::legacy::mesocosm::places::PlaceId>,
+        record: T,
+    ) -> Self {
+        Self {
+            tick,
+            place,
+            record,
+        }
+    }
+}
+
+/// A causal event, stamped.
+pub type RecordedEvent = Envelope<Event>;
 
 /// Why a feeding event happened. Keeping this on the event makes predation
 /// and scavenging distinguishable without reconstructing world state from
@@ -282,7 +307,6 @@ pub struct Ending {
     /// The tick the record was stamped with, off the same [`Envelope`] every
     /// other reading takes a tick from.
     ///
-    /// [`Envelope`]: crate::legacy::mesocosm::flow::Envelope
     pub tick: u64,
     pub how: Passing,
 }

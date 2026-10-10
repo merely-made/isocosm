@@ -23,7 +23,8 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::legacy::mesocosm::flow::{Account, Process, RecordedFlow};
+use isocosm::flows::Flow;
+use isocosm::legacy::mesocosm::flowing::{Account, Process};
 use isocosm::legacy::mesocosm::{Intent, OrganismId, Placement, World, state_hash};
 
 // An integration test's crate root resolves `mod` against `tests/`, and a bare
@@ -59,33 +60,29 @@ fn books(world: &World) -> Books {
 }
 
 /// What the stream says each account did, as a signed milligram delta.
-fn claimed(flows: &[RecordedFlow]) -> (i128, BTreeMap<OrganismId, (i128, i128)>) {
+fn claimed(flows: &[Flow]) -> (i128, BTreeMap<OrganismId, (i128, i128)>) {
     let mut soil = 0i128;
     let mut bodies: BTreeMap<OrganismId, (i128, i128)> = BTreeMap::new();
     for flow in flows {
-        let record = &flow.record;
+        let record = flow;
         soil += record.net_on(Account::Soil);
-        let amount = i128::from(record.amount_mg);
+        let amount = i128::from(record.amount);
         // `is_body` rather than a soil comparison since DT3: the dev source
         // is the second account that belongs to nobody.
-        if let Some(from) = record.from
-            && record.source.is_body()
-        {
-            let entry = bodies.entry(from.organism).or_default();
-            match record.source {
-                Account::Substance => entry.0 -= amount,
-                Account::Reserve => entry.1 -= amount,
-                Account::Soil | Account::Dev => unreachable!("guarded above"),
+        if let Some(from) = record.from_organism() {
+            let entry = bodies.entry(from).or_default();
+            match record.source() {
+                Some(Account::Substance) => entry.0 -= amount,
+                Some(Account::Reserve) => entry.1 -= amount,
+                _ => unreachable!("a body's account"),
             }
         }
-        if let Some(to) = record.to
-            && record.destination.is_body()
-        {
-            let entry = bodies.entry(to.organism).or_default();
-            match record.destination {
-                Account::Substance => entry.0 += amount,
-                Account::Reserve => entry.1 += amount,
-                Account::Soil | Account::Dev => unreachable!("guarded above"),
+        if let Some(to) = record.to_organism() {
+            let entry = bodies.entry(to).or_default();
+            match record.destination() {
+                Some(Account::Substance) => entry.0 += amount,
+                Some(Account::Reserve) => entry.1 += amount,
+                _ => unreachable!("a body's account"),
             }
         }
     }
@@ -96,12 +93,7 @@ fn claimed(flows: &[RecordedFlow]) -> (i128, BTreeMap<OrganismId, (i128, i128)>)
 ///
 /// One function, used by the runs that must pass **and** by the control that
 /// must fail: a check only shown honest ticks has not been shown to detect.
-fn reconcile(
-    before: &Books,
-    after: &Books,
-    flows: &[RecordedFlow],
-    at: &str,
-) -> Result<(), String> {
+fn reconcile(before: &Books, after: &Books, flows: &[Flow], at: &str) -> Result<(), String> {
     let (soil_claim, body_claims) = claimed(flows);
     let soil_moved = i128::from(after.soil_mg) - i128::from(before.soil_mg);
     if soil_moved != soil_claim {
@@ -138,7 +130,7 @@ fn reconcile(
 }
 
 /// A tick, reconciled. Returns the tick's flows so a caller can assert on them.
-fn stepped(world: &mut World, intent: Intent, at: &str) -> Vec<RecordedFlow> {
+fn stepped(world: &mut World, intent: Intent, at: &str) -> Vec<Flow> {
     let before = books(world);
     world.apply(intent);
     let flows = world.drain_flows();
@@ -310,21 +302,21 @@ fn a_birth_reconciles_to_the_milligram() {
 
         let paid: Vec<(Account, u64)> = flows
             .iter()
-            .map(|flow| &flow.record)
             .filter(|record| {
-                record.process == Process::Birth && record.to.map(|to| to.organism) == Some(child)
+                record.process() == Some(Process::Birth) && record.to_organism() == Some(child)
             })
             .map(|record| {
                 assert_eq!(
-                    record.from.map(|from| from.organism),
+                    record.from_organism(),
                     Some(parent),
                     "a birth is a transfer out of the parent, not a spawn"
                 );
                 assert_eq!(
-                    record.source, record.destination,
+                    record.source(),
+                    record.destination(),
                     "body pays for body and reserve for reserve"
                 );
-                (record.destination, record.amount_mg)
+                (record.destination().unwrap(), record.amount)
             })
             .collect();
         assert_eq!(paid.len(), 2, "one record per account: {paid:?}");
@@ -479,15 +471,21 @@ fn a_filially_expressed_birth_reconciles_to_the_milligram() {
 
         let developed: Vec<u64> = flows
             .iter()
-            .map(|flow| &flow.record)
             .filter(|record| {
-                record.process == Process::Develop
-                    && record.from.map(|from| from.organism) == Some(child)
+                record.process() == Some(Process::Develop) && record.from_organism() == Some(child)
             })
             .map(|record| {
-                assert_eq!(record.source, Account::Reserve, "out of the child's budget");
-                assert_eq!(record.destination, Account::Soil, "and into the ground");
-                record.amount_mg
+                assert_eq!(
+                    record.source(),
+                    Some(Account::Reserve),
+                    "out of the child's budget"
+                );
+                assert_eq!(
+                    record.destination(),
+                    Some(Account::Soil),
+                    "and into the ground"
+                );
+                record.amount
             })
             .collect();
         assert_eq!(
@@ -499,14 +497,13 @@ fn a_filially_expressed_birth_reconciles_to_the_milligram() {
         // The other half: the child's reserve is the birth's, less the program.
         let given = flows
             .iter()
-            .map(|flow| &flow.record)
             .find(|record| {
-                record.process == Process::Birth
-                    && record.destination == Account::Reserve
-                    && record.to.map(|to| to.organism) == Some(child)
+                record.process() == Some(Process::Birth)
+                    && record.destination() == Some(Account::Reserve)
+                    && record.to_organism() == Some(child)
             })
             .expect("a birth provisions a reserve")
-            .amount_mg;
+            .amount;
         let newborn = world.living().find(|o| o.id == child).expect("alive");
         assert_eq!(newborn.energy_mg, given - recorded_cost);
         assert!(
