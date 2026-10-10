@@ -9654,6 +9654,40 @@ what later sections derive from.
      renderling-specific counts are rewritten against that report after
      the push (732). The inventory also found `field-bake` already retired
      (`bb92f2e8`), leaving `ambience-lease` the one probe 474 archives.
+737. **A room is roofed air.** 2026-10-09, the places lane's forks (merged
+     at `2a26c625`). Question: 417's "air cut off from the sky", read as no
+     air path to the sky, floods an open-mouthed cave into the outdoor patch;
+     read as solid anywhere overhead, the cave is a room; both are built.
+     Options: roofed (recommended); sealed; a world rule. Mark chose "Roofed
+     (Recommended)". So caves, tunnels and lintelled doorways are places
+     with clearance on their edges, and `Cover::Roofed` is the default.
+738. **A patch splits at narrow necks.** 2026-10-09. Question: clearance
+     lives only on edges (418), so a 1-wide gap inside one large patch lets
+     a 2-wide body through. Options: split where walkable width drops below
+     a world-rule width (recommended); accept it; record each patch's
+     narrowest width. Mark chose "Split at narrow necks (Recommended)".
+739. **An edit's mass is credited by material.** 2026-10-09. Question: 412's
+     density and matter account have no defaults and the sim names no
+     carver. Options: density and account on `Material`, set at founding,
+     crediting the acting entity's ledger, dev source only until set
+     (recommended); one density; cells, not mass. Mark chose "Density and
+     account per material (Recommended)".
+740. **An entity names its patch through an optional field.** 2026-10-09.
+     Question: `Entity.place` is a site id, and a cohort's members share a
+     record. Options: `patch: Option<PlaceId>` on `Entity`, set only for
+     members split out of their cohort (recommended); a `State` map; wait on
+     275. Mark chose "Optional patch on Entity (Recommended)".
+741. **Sight is a voxel ray scoped by places.** 2026-10-09. Question: no
+     ruling defines sight over SP5's passages (702). Options: a voxel ray,
+     the place graph choosing candidates (recommended); visible sets per
+     pair of places; same or adjacent places only. Mark chose "Voxel ray,
+     place-scoped (Recommended)".
+742. **The tier line goes to directing.** 2026-10-09. Question: 703 sends it
+     to the host or directing. Options: directing, with the family's
+     re-expression (recommended); the host now. Mark chose "Directing
+     (Recommended)". So it moves with the directing plan's D2.
+     *Noted 2026-10-09:* the places lane coined `isometer-space` and
+     `Atlas` mid-session; both are working names awaiting a naming round.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
