@@ -1,5 +1,11 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Ruling 811, 2026-10-10:** legacy losses with unknown allocation remain
+until explicitly repaired; recorded losses in the same body can heal.
+Normal archive checks remain intact. JSON/genesis compatibility and
+postcard/witness compatibility are separate gates; neither field decoding
+nor these rulings certify a historical save loading and replaying.
+
 **Ruling 810, 2026-10-10:** healing restores each lost cell's recorded
 previous function or free-pool status, preserving authored allocation and
 inherited variation. Q8 resumes healing and tombstone revival; their

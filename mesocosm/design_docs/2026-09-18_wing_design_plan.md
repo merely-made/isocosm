@@ -10144,6 +10144,24 @@ what later sections derive from.
      and save/replay. Q8 verifies allocation, accounting and restoration;
      these consequences do not by themselves certify checkpoint 10.
 
+811. **Unknown legacy losses remain while recorded losses can heal.**
+     2026-10-10, Q8's legacy-loss fork after 810. Question: "Older body saves
+     retain lost cell IDs but omit their former function or free-pool
+     allocation, so ruling 810 cannot reconstruct those losses. How should
+     healing handle them?" Options: "Load them and heal only losses with
+     recorded allocations, leaving unknown losses until explicitly repaired
+     (Recommended)."; "Reject damaged body saves that lack loss-allocation
+     records."; "Load them, but require an authored allocation repair before
+     any healing of the affected body." Mark chose "Load them and heal only losses with recorded allocations, leaving unknown losses until explicitly repaired (Recommended)."
+     So legacy losses remain admissible; unknown allocation is retained as
+     unknown, and healing selects losses with recorded allocations without
+     stalling all healing of the affected body. Unknown losses wait for an
+     explicit repair; no recipe or free-pool allocation is invented for them.
+     *Reading, not ruled:* normal genesis, checkpoint, outcome and witness
+     validation still applies. Q8 must distinguish old fields decoding from
+     an archive actually loading and replaying; serialization/migration
+     compatibility remains a verification gate, not supplied by this ruling.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

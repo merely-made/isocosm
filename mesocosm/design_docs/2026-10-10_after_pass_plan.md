@@ -201,6 +201,13 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, ruling 811:** unknown legacy loss allocations remain until
+  explicitly repaired, while recorded losses in the same body can heal.
+  Q8's existing archive validation remains in force. Exact JSON/genesis and
+  postcard/witness compatibility are separate checks: field decoding is not
+  proof of a saved history loading and replaying. Q2's character metadata
+  likewise needs its native witness compatibility qualified and verified.
+  These are open implementation/gate items, not fresh compatibility receipts.
 - **2026-10-10, Q15 query refresh:** the unchanged tactile target passed
   4/4 and its former critter-before-ground failure is repaired. Omitting
   the refresh compiled and reproduced that failure; exact restoration and

@@ -502,6 +502,11 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-10, ruling 811:** native healing restores losses with recorded
+  allocations; unknown legacy losses remain until explicitly repaired and
+  do not stall other known-loss healing in the body. E3 follows that native
+  meaning. Q8's accounting and true saved-history compatibility gates remain
+  open, as do Eponym's fixture/archive repairs under Q5.
 - **2026-10-10, rulings 809 and 810:** shared native character assertions
   retain optional table cell/owner metadata without control or body movement
   (809); native healing restores each lost cell's recorded function or

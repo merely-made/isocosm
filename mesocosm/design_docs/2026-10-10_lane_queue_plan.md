@@ -264,9 +264,10 @@ research note (754) waits for Mark.
 ## 5. Recording a ruling
 
 Numbering originally continued at 805; that ruling records the Codex model
-translation on resumption. Rulings 806 to 810 settle lineage complexity,
+translation on resumption. Rulings 806 to 811 settle lineage complexity,
 event-handle translation, native deed agreement links, character table
-metadata and healing allocation; the next ruling is 811. Form, in the wing
+metadata, healing allocation and unknown legacy losses; the next ruling is
+812. Form, in the wing
 record before the "Two
 earlier rulings" paragraph:
 
@@ -283,6 +284,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, ruling 811:** Mark chose to load legacy losses, heal only
+  losses with recorded allocations and retain unknown losses until an
+  explicit repair. Unknown cells do not stall known-loss healing elsewhere
+  in that body. Q8 carries this into its known/free/unknown representation,
+  accounting, save/replay and compatibility gates; ordinary digest/witness
+  checks remain intact. Q2 also qualifies the distinction between preserved
+  JSON/genesis bytes and changed postcard witness bytes for optional table
+  metadata. Neither lane claims archive compatibility from field decoding
+  alone. Q3 owns Cargo for the unchanged seed-0 diagnosis; Q2/Q8 prepare
+  source. The next ruling is 812.
 - **2026-10-10, Q15 refresh verified:** the three query setup paths now use
   pinned Mere's `refresh_queries`; actual motion timestep/gravity and tests
   are unchanged. Tactile passed 4/4, the compiled omitted-refresh control
