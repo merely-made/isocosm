@@ -288,5 +288,20 @@ on Isocosm, both modes, receipts replaying.
       patches;
     - a resumed run takes the save's first participant and creative mode.
 
+- **2026-10-10, ruling 787 (lane `lane-express`, the after-pass open,
+  789).**
+  - `Command::Express { entity, part, tracts }` places a part's cells
+    through `mosaic::propose`, all or nothing. Each function must be in
+    the catalogue and the part must be living. It moves the body revision.
+  - Committing a review offer sends the first holding script's placement
+    after the offer's own commands.
+  - Tests:
+    - isocosm's mosaic, directing, lineage, process and kingdom unit tests:
+      50 of 50, the two new `Express` tests among them;
+    - mesocosm-runtime: 21 of 21.
+  - Two stale pins of the five-native registry were updated to 759's
+    fifteen, read from the catalogue. The tactile fixture's capsule is
+    raised above the isometer fixture's relief.
+
 - **2026-10-08:** plan drafted from the directing survey; rulings 681 to
   691 taken in three rounds.

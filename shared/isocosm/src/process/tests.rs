@@ -177,11 +177,14 @@ fn the_registry_and_the_native_view_agree() {
         assert!(ids.insert(def.id.clone()), "duplicate id {:?}", def.id);
         assert_eq!(def.id.namespace, "mesocosm");
     }
+    // The registry carries every catalogue function (759), the natives bound.
     assert_eq!(
         registry.all().count(),
-        Process::ALL.len(),
-        "the registry and the native list hold different numbers of processes"
+        crate::rules::default_functions().len(),
+        "the registry and the catalogue hold different numbers of functions"
     );
+    let bound = registry.all().filter(|def| def.native.is_some()).count();
+    assert_eq!(bound, Process::ALL.len());
 }
 
 #[test]
@@ -205,10 +208,15 @@ fn nothing_grows_a_gland() {
             "{role:?} grows a gland"
         );
     }
-    // Every definition admits a plate (492); a plate grows one of them.
+    // Every definition admits a plate (492); a plate grows the catalogue's
+    // grown functions that fit a sheet (759).
     let admitted = registry.all().filter(|def| def.admits(Role::Plate)).count();
     let grown = registry.seeds(Role::Plate).count();
-    assert_eq!((admitted, grown), (5, 1));
+    let catalogue = crate::rules::default_functions();
+    let sheet = catalogue.values().filter(|f| {
+        f.seeding == crate::rules::Seeding::Grown && f.shapes.contains("part-shape:sheet")
+    });
+    assert_eq!((admitted, grown), (catalogue.len(), sheet.count()));
 }
 
 #[test]

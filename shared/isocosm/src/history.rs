@@ -67,6 +67,13 @@ pub enum Command {
     ForceBirth { parent: Id },
     /// A dev kills `entity` (ruling 782).
     Kill { entity: Id },
+    /// Places a part's cells exactly, as an authored script proposed for a
+    /// committed review offer (ruling 787).
+    Express {
+        entity: Id,
+        part: PartId,
+        tracts: Vec<(Key, Vec<crate::mosaic::CellId>)>,
+    },
     /// Authored content asserted into the world (ruling 757).
     Assert(crate::asserted::Assertion),
     /// A lineage commits a variant of its development (ruling 752).
@@ -513,6 +520,11 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.kill(*entity)?;
             Ok("killed".into())
         },
+        Command::Express {
+            entity,
+            part,
+            tracts,
+        } => Ok(format!("expressed:{}", sim.express(*entity, *part, tracts)?)),
         Command::Revise {
             lineage,
             development,
