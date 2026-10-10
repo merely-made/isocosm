@@ -159,6 +159,14 @@ pub struct Part {
     /// See [`crate::anatomy`].
     #[serde(default)]
     pub severed: bool,
+    /// Where in its product's plan the part develops, as the product
+    /// numbers it (ruling 699); `None` where it has no place in one.
+    #[serde(default)]
+    pub situs: Option<[u8; 3]>,
+    /// The name its product declares it by (ruling 699), for the shapes a
+    /// box cannot show; empty where the box is the name.
+    #[serde(default)]
+    pub shape: String,
 }
 
 /// An axis-aligned box in body space.
@@ -245,6 +253,8 @@ impl BodyDocument {
                 attachment: None,
                 provenance: Provenance::founding(),
                 severed: false,
+                situs: None,
+                shape: String::new(),
             }],
         }
     }
@@ -285,6 +295,8 @@ impl BodyDocument {
             attachment: Some(attachment),
             provenance,
             severed: false,
+            situs: None,
+            shape: String::new(),
         });
         Ok(id)
     }
