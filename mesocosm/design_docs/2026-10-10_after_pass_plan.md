@@ -117,6 +117,18 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q6 protocol preflight:** source inspection only. The native
+  contract work leaves `isonetry::PROTOCOL_VERSION` at four and the iroh
+  ALPN at `isometry/session/v4`. Their source contract requires both to
+  change together whenever the postcard wire shape changes. Existing H0
+  tests refuse `PROTOCOL_VERSION + 1`, exclude the peer, and prevent host
+  logging or client state adoption; a matching-version positive also exists.
+  Q2's two current-wire replication tests do not qualify prior-version
+  refusal. Q6 must bump both identifiers to five and qualify refusal of
+  version four after Q2 integrates, alongside the fifteen dated VTT test
+  failures. Q9's later native-Session projection needs another wire-shape
+  audit; this planned bump does not prequalify future changes. No protocol
+  source changed and no Q6 Cargo gate ran.
 - **2026-10-10, rejected meal-three classification:** native accepted watches
   and paid provision flows establish 167 consumer births, including 140
   birth acts by 108 distinct born parents. Child 82's own-matter ledger is

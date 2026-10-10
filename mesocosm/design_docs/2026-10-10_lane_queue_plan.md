@@ -284,6 +284,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q6 preflight recorded:** the current protocol version and
+  ALPN both remain four. Existing envelope controls exercise an unsupported
+  future version and a matching-version positive; Q2's current-wire tests
+  do not establish prior-version compatibility. After Q2 integrates, Q6
+  must bump both identifiers to five and qualify refusal of version four.
+  Q9 needs its own subsequent wire-shape audit. This was source inspection
+  only; all fifteen VTT baseline failures remain dated and unremeasured.
+  Q8 retains Cargo for its remaining compiled controls and native check,
+  then Q2's remaining gates and Q3's frozen period-fourteen pilot follow.
+  Q1/Q7/Q15 remain done; 812 remains pending. No isolated resource added.
 - **2026-10-10, Q3 period-fourteen source frozen:** source-only, uncompiled
   and unrun against native `6f879936`. Compared with the rejected meal-three
   candidate, only consumer lineage 1's birth period changes from seven to
