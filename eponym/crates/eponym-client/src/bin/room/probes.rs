@@ -225,7 +225,7 @@ impl RebuildProbe {
                 "  \"fault_attempt_never_presented\": true,\n",
                 "  \"healthy_frame_presented_after_rebuild\": true,\n",
                 "  \"preserved_host_resources\": [\"window\", \"surface\"],\n",
-                "  \"recreated_shared_device_clients\": [\"adapter/device/queue\", \"renderling tenant\", \"optional DDA tenant\", \"netrender composer\", \"frame health and callbacks\"],\n",
+                "  \"recreated_shared_device_clients\": [\"adapter/device/queue\", \"body tenant\", \"optional DDA tenant\", \"netrender composer\", \"frame health and callbacks\"],\n",
                 "  \"scope_limit\": \"proves the rebuild lifecycle after a synthetic shared fault; does not manufacture physical device loss\"\n",
                 "}}\n"
             ),

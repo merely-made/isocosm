@@ -17,6 +17,7 @@ use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use eponym_client::crossing::{self, BodyId, BodyKind, HeldInput, Input, TriggeredInput};
 use eponym_client::gpu::{self, Composer, SIZE, Tenant};
+use eponym_client::scene;
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;
 use winit::event::KeyEvent;
@@ -215,16 +216,13 @@ impl App {
         }
         let world = self.world.as_ref().expect("crossing world");
         let camera = crossing::camera(world, self.player, self.yaw, self.distance);
-        live.tenant.look(camera.projection, camera.view);
-        live.tenant.set_geometry_with_ambient(
-            &crossing::geometry(world),
-            &crossing::body_geometry(world),
-            camera.eye,
-            self.ambient,
-        );
+        live.tenant.look(&camera);
+        live.tenant.light(&scene::torch(camera.eye, self.ambient));
+        live.tenant.set_room(&crossing::geometry(world));
+        live.tenant.set_body(&crossing::body_geometry(world));
         let validation_scope = live.device.push_error_scope(wgpu::ErrorFilter::Validation);
         let report = live.tenant.draw();
-        let internal_queue_submissions = report.internal_queue_submissions;
+        let internal_queue_submissions = report.internal_submissions;
         assert_eq!(internal_queue_submissions, 0, "caller-owned tenant encoder");
         let chrome = live.hud.scene(world, self.player);
         let (master, composition) =

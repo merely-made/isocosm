@@ -78,9 +78,10 @@ TTF/OTF if the host cannot find one of its platform font fallbacks.
 `PAREDROS_CROSSING_AMBIENT` sets fixture ambient light from 0 to 1 (default
 0.72). The older room probes keep their original torch lighting.
 
-Scene receipts are runnable. Building requires the sibling repos (mesocosm,
-netrender, and a local renderling fork) checked out at their expected
-relative paths, since cross-repo deps are path deps.
+Scene receipts are runnable. The stack (mere, including the body tenant,
+netrender and genet) comes in by git pin; the wing's own crates are path
+deps inside this repository. No local renderling fork is needed since L7
+(2026-10-09).
 
 ```sh
 cargo run -p eponym-social --bin refusal   # three companions answer one offer

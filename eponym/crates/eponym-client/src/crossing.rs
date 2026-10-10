@@ -6,11 +6,11 @@
 
 mod draw;
 
-use isometer::render::geometry::Vertex;
-use netrender::Scene;
 pub use eponym_motion::{BodyId, BodyKind, ContactWorld, HeldInput, Input, TriggeredInput};
 use eponym_motion::{BoxCollider, MovableBoard};
-use renderling::glam::{Mat4, Vec3};
+use glam::{Mat4, Vec3};
+use isometer::render::geometry::Vertex;
+use netrender::Scene;
 
 pub fn new_world(kind: BodyKind) -> (ContactWorld, BodyId) {
     let mut solids = vec![
@@ -155,6 +155,8 @@ pub fn camera(
         view: Mat4::look_at_rh(eye, target, Vec3::Y),
         eye,
         target,
+        near: 0.05,
+        far: 80.,
     }
 }
 

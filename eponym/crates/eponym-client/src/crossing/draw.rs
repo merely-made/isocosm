@@ -3,13 +3,13 @@
 
 //! Presentation helpers for the authored contact fixture.
 
+use glam::Vec3;
 use isometer::render::geometry::Vertex;
 use netrender::Scene;
 use netrender_text::parley::{
     Alignment, AlignmentOptions, FontContext, FontFamily, Layout, LayoutContext, StyleProperty,
     fontique,
 };
-use renderling::glam::Vec3;
 use std::sync::Arc;
 
 pub fn cuboid(out: &mut Vec<Vertex>, min: [f32; 3], max: [f32; 3], color: [f32; 3]) {

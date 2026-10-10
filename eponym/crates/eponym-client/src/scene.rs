@@ -12,6 +12,7 @@
 //! volume it actually occupies, one voxel by `WALKER_HEIGHT`, so what you
 //! see is what `stands` was asked about.
 
+use glam::{Mat4, Vec3};
 use isocosm::legacy::mesocosm::places::WALKER_HEIGHT;
 use isometer::core::VolumeRef;
 use isometer::core::ground::{BRICK, Ground};
@@ -19,7 +20,6 @@ use isometer::lens::{CritterPose, TraceCamera, critter::Capsule};
 use isometer::mesh::{BodyMesh, Volume};
 use isometer::render::geometry::{SceneItem, Vertex, build_scene_vertices};
 use netrender::Scene;
-use renderling::glam::{Mat4, Vec3};
 
 /// How far around the room to mesh, in voxels.
 pub const MESH_REACH: i32 = 20;
@@ -84,9 +84,22 @@ pub struct Camera {
     /// The Eponym-owned focus point. The DDA profile consumes this policy;
     /// it does not derive or replace it.
     pub target: Vec3,
+    /// The projection's planes, which the body tenant's shadows read.
+    pub near: f32,
+    pub far: f32,
 }
 
 impl Camera {
+    /// The body tenant's camera; its `clip_from_world` is the tracer's too.
+    pub fn tenant(&self) -> tenant::Camera {
+        tenant::Camera {
+            view: self.view.to_cols_array_2d(),
+            projection: self.projection.to_cols_array_2d(),
+            near: self.near,
+            far: self.far,
+        }
+    }
+
     pub fn trace(self, aspect: f32) -> TraceCamera {
         TraceCamera::perspective(
             self.eye.to_array(),
@@ -142,6 +155,8 @@ pub fn camera(room: &crate::Room, at: [i32; 3], heading: [i32; 2], aspect: f32) 
         view: Mat4::look_at_rh(eye, head, Vec3::Y),
         eye,
         target: head,
+        near: 0.05,
+        far: 200.0,
     }
 }
 
@@ -151,7 +166,7 @@ pub fn camera(room: &crate::Room, at: [i32; 3], heading: [i32; 2], aspect: f32) 
 #[cfg(feature = "d1-proof")]
 pub const PILLAR_COLOUR: [f32; 3] = [0.10, 0.85, 0.95];
 
-/// One renderling occlusion witness for D1: a voxel-aligned box.
+/// One raster occlusion witness for D1: a voxel-aligned box.
 #[cfg(feature = "d1-proof")]
 #[derive(Clone, Copy, Debug)]
 pub struct Pillar {
@@ -193,7 +208,7 @@ pub fn d1_pillars(room: &crate::Room) -> [Pillar; 3] {
     ]
 }
 
-/// The pillars as renderling geometry. Render-only witnesses: the trace
+/// The pillars as raster geometry. Render-only witnesses: the trace
 /// never collides with them and the world never learns about them.
 #[cfg(feature = "d1-proof")]
 pub fn pillar_vertices(pillars: &[Pillar]) -> Vec<Vertex> {
@@ -241,13 +256,35 @@ pub fn body_pose(at: [i32; 3]) -> CritterPose {
 /// wall is one flat colour across its whole quad; falloff from the eye is
 /// what turns that back into a surface with a near side and a far side.
 pub const TORCH_REACH: f32 = 13.0;
-/// How dark the far side of the torch's reach gets.
+/// How dark the far side of the torch's reach gets: the ambient floor.
 pub const TORCH_FLOOR: f32 = 0.14;
+/// The torch's strength. Untuned against the CPU falloff it replaced; the
+/// testing pass after the push (wing ruling 732) sets it from the receipts.
+pub const TORCH_INTENSITY: f32 = 1.0;
 
-/// The torch's brightness at a point.
-pub fn torch(eye: Vec3, at: [f32; 3]) -> f32 {
-    let distance = (Vec3::from(at) - eye).length();
-    (1.15 - distance / TORCH_REACH).clamp(TORCH_FLOOR, 1.0)
+/// The torch as the stack's light block: a point light riding the eye over
+/// an ambient floor. `ambient` in `0..=1` lifts the floor toward full light
+/// (the crossing's fixture policy); non-finite reads as zero.
+pub fn torch(eye: Vec3, ambient: f32) -> tenant::LightBlock {
+    let ambient = if ambient.is_finite() {
+        ambient.clamp(0.0, 1.0)
+    } else {
+        0.0
+    };
+    tenant::LightBlock {
+        sun: None,
+        ambient: tenant::Ambient {
+            color: [1.0; 3],
+            intensity: TORCH_FLOOR + (1.0 - TORCH_FLOOR) * ambient,
+        },
+        points: vec![tenant::PointLight {
+            position: eye.to_array(),
+            color: [1.0; 3],
+            intensity: TORCH_INTENSITY,
+            radius: TORCH_REACH,
+            casts_shadows: false,
+        }],
+    }
 }
 
 /// The chrome bar netrender paints over the tenant's frame: the vello half
@@ -322,9 +359,13 @@ mod tests {
     }
 
     #[test]
-    fn the_torch_falls_off_with_distance() {
-        let eye = Vec3::ZERO;
-        assert!(torch(eye, [0.0, 0.0, 0.0]) > torch(eye, [6.0, 0.0, 0.0]));
-        assert_eq!(torch(eye, [400.0, 0.0, 0.0]), TORCH_FLOOR);
+    fn the_torch_rides_the_eye_over_its_floor() {
+        let eye = Vec3::new(1.0, 2.0, 3.0);
+        let block = torch(eye, 0.0);
+        assert!(block.is_valid());
+        assert_eq!(block.points[0].position, [1.0, 2.0, 3.0]);
+        assert_eq!(block.ambient.intensity, TORCH_FLOOR);
+        assert_eq!(torch(eye, f32::NAN).ambient.intensity, TORCH_FLOOR);
+        assert_eq!(torch(eye, 1.0).ambient.intensity, 1.0);
     }
 }

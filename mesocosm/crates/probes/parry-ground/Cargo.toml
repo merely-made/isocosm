@@ -11,4 +11,4 @@ publish = false
 isocosm = { path = "../../../../shared/isocosm" }
 # The stack's collider layer (wing rulings 695, 722 to 725, 731): Rapier and
 # Parry stay private inside conatus.
-conatus = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }

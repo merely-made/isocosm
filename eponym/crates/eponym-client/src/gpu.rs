@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The picture: renderling as a tenant on netrender's device.
+//! The picture: mere's body tenant on netrender's device.
 //!
 //! One `wgpu::Device` serves both. The tenant draws the room into a texture
 //! it owns; netrender renders the chrome into its master and composites that
@@ -25,13 +25,9 @@ use netrender::{
     Compositor, ExternalTextureComposite, ExternalTexturePlacement, NetrenderOptions,
     PresentedFrame, Renderer, Scene, SurfaceKey, WgpuHandles, create_netrender_instance,
 };
-use renderling::camera::Camera;
-use renderling::context::{Context, RenderTarget};
-mod lighting;
-use lighting::shaded;
-use renderling::glam::{Mat4, Vec3};
-use renderling::primitive::Primitive;
-use renderling::stage::{Stage, StageEncodeReport};
+use tenant::{DeviceNeeds, FrameReport};
+mod body;
+pub use body::{PRODUCER_PATH, ROOM_BACKGROUND, TARGET_FORMAT, Tenant};
 
 /// The composed frame's size. Fixed, so the receipt is the same picture on
 /// every machine.
@@ -51,158 +47,30 @@ pub struct BrickAbi {
     pub atlas_bytes: usize,
 }
 
-/// What renderling wants from the shared device.
-///
-/// All optional: renderling runs without them, and a thin adapter should
-/// still get a room. Netrender's own requirement and its limit minimum are
-/// not stated here at all, which is the point of the seam — they belong to
-/// netrender and it applies them.
-fn renderling_needs() -> netrender::TenantNeeds {
+/// What the body tenant wants from the shared device, in netrender's terms.
+/// Netrender's own requirement and limit minimum are not stated here: they
+/// belong to netrender and it applies them.
+fn tenant_needs() -> netrender::TenantNeeds {
+    let needs = DeviceNeeds::tenant();
     netrender::TenantNeeds {
-        optional_features: wgpu::Features::INDIRECT_FIRST_INSTANCE
-            | wgpu::Features::MULTI_DRAW_INDIRECT_COUNT
-            | wgpu::Features::VERTEX_WRITABLE_STORAGE
-            | wgpu::Features::CLEAR_TEXTURE,
-        label: Some("paredros room probe"),
+        required_features: needs.required_features,
+        optional_features: needs.optional_features,
+        limits: needs.limits,
+        label: Some("eponym room"),
         ..Default::default()
     }
 }
 
-/// Boots one device for both tenants.
-///
-/// Netrender owns the boot (R4, 2026-08-10): this states what renderling
-/// needs and netrender unions it with its own requirements. The probe used
-/// to run the adapter dance itself and carry a copy of netrender's
-/// inter-stage-variable minimum, which is exactly the kind of copy that
-/// goes stale without anything failing until a shader will not link.
+/// Boots one device for both tenants (netrender owns the boot, R4).
 pub fn boot(instance: &wgpu::Instance, compatible: Option<&wgpu::Surface<'_>>) -> WgpuHandles {
-    netrender::boot_on(instance.clone(), compatible, &renderling_needs())
-        .expect("no wgpu device able to host both netrender and renderling")
-}
-
-/// The renderling half: the room and the body, drawn into a texture netrender
-/// will composite.
-pub struct Tenant {
-    pub view: wgpu::TextureView,
-    target: wgpu::Texture,
-    size: [u32; 2],
-    ctx: Context,
-    stage: Stage,
-    camera: Camera,
-    room: Primitive,
-    body: Primitive,
-}
-
-impl Tenant {
-    pub fn new(handles: &WgpuHandles, size: [u32; 2]) -> Self {
-        let target = handles.device.create_texture(&wgpu::TextureDescriptor {
-            label: Some("room tenant target"),
-            size: wgpu::Extent3d {
-                width: size[0],
-                height: size[1],
-                depth_or_array_layers: 1,
-            },
-            mip_level_count: 1,
-            sample_count: 1,
-            dimension: wgpu::TextureDimension::D2,
-            format: wgpu::TextureFormat::Rgba8UnormSrgb,
-            usage: wgpu::TextureUsages::RENDER_ATTACHMENT
-                | wgpu::TextureUsages::TEXTURE_BINDING
-                | wgpu::TextureUsages::COPY_SRC,
-            view_formats: &[],
-        });
-        let view = target.create_view(&Default::default());
-
-        let ctx = Context::new(
-            RenderTarget::from(target.clone()),
-            handles.adapter.clone(),
-            handles.device.clone(),
-            handles.queue.clone(),
-        );
-        ctx.set_use_direct_draw(true);
-        // Underground dark, not black: the room reads as a place with air in
-        // it rather than a cutout.
-        let stage = ctx
-            .new_stage()
-            .with_background_color([0.03, 0.03, 0.045, 1.0]);
-        let camera = stage.new_camera();
-        stage.use_camera(&camera);
-        let room = stage.new_primitive();
-        let body = stage.new_primitive();
-
-        Self {
-            view,
-            target,
-            size,
-            ctx,
-            stage,
-            camera,
-            room,
-            body,
-        }
-    }
-
-    /// The stage's stored `Depth32Float` surface for the D1 depth join,
-    /// fetched after a draw rather than held: the stage replaces the
-    /// texture on size or multisample changes, and a stale view tests the
-    /// join against zeroed memory, which loses every pixel.
-    #[cfg(feature = "d1-proof")]
-    pub fn depth_view(&self) -> wgpu::TextureView {
-        self.stage
-            .get_depth_texture()
-            .create_view(&Default::default())
-    }
-
-    pub fn size(&self) -> [u32; 2] {
-        self.size
-    }
-
-    /// Borrow the physical color target that Renderling owns. Netrender
-    /// clones the same-device handle when importing it into its opaque
-    /// tenant frame; the view remains available for the legacy path.
-    pub fn target_texture(&self) -> &wgpu::Texture {
-        &self.target
-    }
-
-    pub fn set_room(&self, vertices: &[MeshVertex], eye: Vec3) {
-        self.room
-            .set_vertices(self.stage.new_vertices(shaded(vertices, eye)));
-    }
-
-    pub fn set_body(&self, vertices: &[MeshVertex], eye: Vec3) {
-        self.body
-            .set_vertices(self.stage.new_vertices(shaded(vertices, eye)));
-    }
-
-    pub fn look(&self, projection: Mat4, view: Mat4) {
-        self.camera.set_projection_and_view(projection, view);
-    }
-
-    /// Draws one frame into the tenant texture.
-    pub fn draw(&self) -> StageEncodeReport {
-        let frame = self.ctx.get_next_frame().expect("tenant frame");
-        let mut encoder =
-            self.ctx
-                .get_device()
-                .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                    label: Some("paredros renderling tenant frame"),
-                });
-        let report = self
-            .stage
-            .encode_into(&frame.view(), &mut encoder)
-            .expect("Eponym uses Renderling's direct-draw encoder path");
-        self.ctx
-            .get_queue()
-            .submit(std::iter::once(encoder.finish()));
-        frame.present();
-        report
-    }
+    netrender::boot_on(instance.clone(), compatible, &tenant_needs())
+        .expect("no wgpu device able to host both netrender and the body tenant")
 }
 
 /// The R1 terrain tenant: Eponym camera policy over Mesocosm's existing
 /// brick ABI and DDA implementation.
 ///
-/// This is deliberately adjacent to the retained S0 renderling tenant. R1
+/// This is deliberately adjacent to the retained S0 body tenant. R1
 /// proves shared traversal; it does not silently replace the room receipt or
 /// pretend the later hybrid depth join has landed.
 #[cfg(feature = "r1-proof")]
@@ -341,15 +209,16 @@ impl DdaTenant {
     }
 }
 
-/// The D1 join: the shared brick traversal drawn over the renderling
-/// tenant's own colour and depth, so raster geometry and raymarched rock
-/// occlude each other per pixel on one device.
-///
-/// Deliberately not a third texture: the tenant renders first with its
-/// depth stored, then this pass loads both attachments and lets hardware
-/// depth testing settle every pixel between them.
+/// The D1 join, tracer first: the shared brick traversal draws the room's
+/// rock into its own colour and depth, and that depth is the body tenant's
+/// pre-pass, so bodies draw only where nearer and netrender layers them
+/// over the traced colour (L3 interleave, wing ruling 733).
 #[cfg(feature = "d1-proof")]
 pub struct JoinTenant {
+    pub view: wgpu::TextureView,
+    _colour: wgpu::Texture,
+    depth: wgpu::Texture,
+    depth_view: wgpu::TextureView,
     device: wgpu::Device,
     queue: wgpu::Queue,
     tracer: BrickTracer,
@@ -360,10 +229,41 @@ pub struct JoinTenant {
 
 #[cfg(feature = "d1-proof")]
 impl JoinTenant {
-    /// A tracer aimed at the renderling tenant's srgb colour target.
+    const COLOUR: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
+
     pub fn new(handles: &WgpuHandles, ground: &Ground, size: [u32; 2]) -> Result<Self, String> {
         let map = crate::brick::from_ground(ground).map_err(|error| error.to_string())?;
+        let texture = |label, format, usage| {
+            handles.device.create_texture(&wgpu::TextureDescriptor {
+                label: Some(label),
+                size: wgpu::Extent3d {
+                    width: size[0],
+                    height: size[1],
+                    depth_or_array_layers: 1,
+                },
+                mip_level_count: 1,
+                sample_count: 1,
+                dimension: wgpu::TextureDimension::D2,
+                format,
+                usage: wgpu::TextureUsages::RENDER_ATTACHMENT | usage,
+                view_formats: &[],
+            })
+        };
+        let colour = texture(
+            "Eponym D1 traced colour",
+            Self::COLOUR,
+            wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_SRC,
+        );
+        let depth = texture(
+            "Eponym D1 traced depth",
+            wgpu::TextureFormat::Depth32Float,
+            wgpu::TextureUsages::TEXTURE_BINDING,
+        );
         Ok(Self {
+            view: colour.create_view(&Default::default()),
+            _colour: colour,
+            depth_view: depth.create_view(&Default::default()),
+            depth,
             device: handles.device.clone(),
             queue: handles.queue.clone(),
             tracer: BrickTracer::with_format(
@@ -371,7 +271,7 @@ impl JoinTenant {
                 handles.queue.clone(),
                 size[0],
                 size[1],
-                wgpu::TextureFormat::Rgba8UnormSrgb,
+                Self::COLOUR,
             ),
             map,
             revision: BrickRevision(ground.revision()),
@@ -386,29 +286,54 @@ impl JoinTenant {
         })
     }
 
-    /// One joined frame over an already-rendered raster tenant.
-    ///
-    /// `clip_from_world` must be the same matrix the raster tenant
-    /// projected with, or the two pictures would disagree about where
-    /// surfaces sit.
-    pub fn draw_over(
+    /// The traced depth, the body tenant's pre-pass.
+    pub fn depth(&self) -> &wgpu::Texture {
+        &self.depth
+    }
+
+    /// Traces one frame into cleared colour and depth. `clip_from_world`
+    /// must be the matrix the body tenant projects with, or the two
+    /// pictures disagree about where surfaces sit.
+    pub fn draw(
         &mut self,
-        colour: &wgpu::TextureView,
-        depth: &wgpu::TextureView,
         camera: TraceCamera,
         clip_from_world: [[f32; 4]; 4],
     ) -> Result<BrickDiagnostics, String> {
         let mut encoder = self
             .device
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                label: Some("Eponym D1 depth join"),
+                label: Some("Eponym D1 traced pre-pass"),
             });
+        let [r, g, b, a] = ROOM_BACKGROUND.map(f64::from);
+        drop(encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+            label: Some("Eponym D1 clear"),
+            color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                view: &self.view,
+                resolve_target: None,
+                ops: wgpu::Operations {
+                    load: wgpu::LoadOp::Clear(wgpu::Color { r, g, b, a }),
+                    store: wgpu::StoreOp::Store,
+                },
+                depth_slice: None,
+            })],
+            depth_stencil_attachment: Some(wgpu::RenderPassDepthStencilAttachment {
+                view: &self.depth_view,
+                depth_ops: Some(wgpu::Operations {
+                    load: wgpu::LoadOp::Clear(1.0),
+                    store: wgpu::StoreOp::Store,
+                }),
+                stencil_ops: None,
+            }),
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
+        }));
         let diagnostics = self
             .tracer
             .encode_with_depth(
                 &mut encoder,
-                colour,
-                depth,
+                &self.view,
+                &self.depth_view,
                 BrickFrameInput::for_camera(&self.map, self.revision, camera, &self.grade)
                     .with_clip_from_world(clip_from_world),
             )
@@ -427,13 +352,6 @@ impl JoinTenant {
         }
     }
 }
-
-/// Mesocosm's triangles as renderling vertices, with a per-face normal taken
-/// from the winding and the torch applied per vertex.
-///
-/// The colour already carries the mesher's face shading. The torch is the
-/// other half: greedy meshing merges a whole wall into one quad, and one
-/// quad of one colour is a flat plane until something varies across it.
 
 /// The netrender half: chrome into the master, tenant texture composited in
 /// under it, and the master handed back.
@@ -458,13 +376,20 @@ impl Composer {
 
     /// One composed master: chrome over room.
     pub fn compose(&self, chrome: &Scene, tenant: &wgpu::TextureView) -> wgpu::Texture {
-        let external = [ExternalTextureComposite::new(
-            tenant,
-            ExternalTexturePlacement::new([0.0, 0.0, self.size[0] as f32, self.size[1] as f32]),
-        )
+        self.compose_layers(chrome, &[tenant])
+    }
+
+    /// Chrome over `layers`, each over the one before it (D1: traced rock,
+    /// then bodies whose background is transparent).
+    pub fn compose_layers(&self, chrome: &Scene, layers: &[&wgpu::TextureView]) -> wgpu::Texture {
+        let place =
+            ExternalTexturePlacement::new([0.0, 0.0, self.size[0] as f32, self.size[1] as f32]);
         // Boundary zero: the room goes under every chrome op, so the bar
         // paints over the picture instead of being hidden by it.
-        .with_scene_op_boundary(0)];
+        let external: Vec<_> = layers
+            .iter()
+            .map(|view| ExternalTextureComposite::new(view, place).with_scene_op_boundary(0))
+            .collect();
         let mut grab = MasterGrab { master: None };
         self.net.render_with_compositor_and_external_textures(
             chrome,
@@ -476,7 +401,7 @@ impl Composer {
         grab.master.expect("netrender presented no master")
     }
 
-    /// Compose the normal Renderling room through Netrender's RG3a opaque
+    /// Compose the normal body-tenant room through Netrender's RG3a opaque
     /// tenant graph task. The room is placed at scene-op boundary zero, so
     /// the chrome paints over it; the tenant's internal render remains closed
     /// behind this borrowed target descriptor.
@@ -484,14 +409,14 @@ impl Composer {
         &self,
         chrome: &Scene,
         tenant: &Tenant,
-        tenant_report: StageEncodeReport,
+        tenant_report: FrameReport,
     ) -> (wgpu::Texture, netrender::OpaqueTenantReceipt) {
-        assert_eq!(tenant_report.internal_queue_submissions, 0);
+        assert_eq!(tenant_report.internal_submissions, 0);
         let input = netrender::OpaqueTenantInput::new(
             tenant.target_texture(),
             netrender::OpaqueTenantMetadata::new(
                 "eponym-client",
-                "renderling::Stage::encode_into (opaque)",
+                PRODUCER_PATH,
                 0,
                 0,
                 ExternalTexturePlacement::new([0.0, 0.0, self.size[0] as f32, self.size[1] as f32]),

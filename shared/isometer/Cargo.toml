@@ -34,7 +34,7 @@ isometer-render = { path = "crates/isometer-render" }
 isometer-space = { path = "crates/isometer-space" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+cambium-rootstock = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
@@ -69,7 +69,7 @@ wgpu = { version = "30", default-features = false, features = [
 # product's own identical patch table is the one that applies.
 [patch.crates-io]
 # Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
+cubecl-runtime = { git = "https://github.com/merely-made/mere.git", rev = "4d8bd7037df4f15b3b0270d54eac49b86b06edf9" }
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.

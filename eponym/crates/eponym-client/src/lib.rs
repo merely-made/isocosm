@@ -15,7 +15,7 @@
 //! - movement is `near::step` exactly, with no kinematics of our own;
 //! - geometry is `isometer-mesh`'s greedy mesher over the same bricks the
 //!   walker collides against;
-//! - the picture is renderling on netrender's device, composed into
+//! - the picture is mere's body tenant on netrender's device, composed into
 //!   netrender's master frame as an external texture.
 //!
 //! What is Eponym's own is small and deliberate: which room, which trace,
