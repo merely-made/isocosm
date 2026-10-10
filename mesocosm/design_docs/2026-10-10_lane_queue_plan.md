@@ -279,6 +279,13 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3's second candidate rejected:** the declared threshold
+  12, one-unit meals and 80 to 120-tick lifespan profile completed 20 bare
+  seeds, with only 5 qualifying (1, 3, 14, 15, 17). Conservation and both
+  save-replay modes passed all 20. Its bodied and fresh original-control
+  arms were correctly withheld after the failed bare gate. Defaults stay
+  unchanged, Q3 stays active and Q4 stays gated. The next Cargo turn is a
+  narrow native receipt/held diagnosis before another candidate declaration.
 - **2026-10-10, Q7 integrated and Q8 launched:** `2c86e5f7` moves Mesocosm
   bodies onto Mere's pinned tenant, with caller-encoder submission, palette
   UVs, configurable ambient light, tracer depth and Netrender layering.

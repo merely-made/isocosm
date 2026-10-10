@@ -117,6 +117,15 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3's second declared candidate completed:** threshold 12,
+  original one-unit meals and drawn lifespans 80 to 120 completed all 20
+  bare cases. Only seeds 1, 3, 14, 15 and 17 qualified (5/20). Every case
+  conserved matter at each tick and replayed under Individuals and Grouped;
+  the stricter played-birth, born-heir and three-boundary gate still failed.
+  The bodied candidate and fresh original-control arms did not run because
+  the bare gate rejected. No rates were promoted. Native receipt/held
+  diagnosis of rejected seed 0 follows before another rate profile is
+  declared. A1 remains open; this is a rejected tuning receipt under 761.
 - **2026-10-10, Q3's declared reproduction draws:** seeds `0..20`, three
   sites, 60 members in cohorts of two, three lineages, played consumer
   `lineage:1` with regions of two sites, individuals, 180 played ticks and
