@@ -78,6 +78,7 @@ fn local_rederivation_equals_whole_after_every_edit() {
         let grid = Grid::drawn(seed, 1, 1, 64, false);
         let rules = Rules {
             cap: Cap::Own([8, 8]),
+            neck: Some(2),
             ..Rules::ruled(cover)
         };
         let mut v = window(&grid, &[]);
@@ -188,4 +189,55 @@ fn a_cave_with_a_mouth_is_outdoors_when_sealed_and_a_room_when_roofed() {
     let inside = [8, 17, 8];
     assert_eq!(sealed.places[&place(&sealed, inside)].kind, Kind::Patch);
     assert_eq!(roofed.places[&place(&roofed, inside)].kind, Kind::Room);
+}
+
+#[test]
+fn rooms_are_roofed_by_default() {
+    assert_eq!(Rules::default(), Rules::ruled(Cover::Roofed));
+}
+
+#[test]
+fn a_patch_splits_at_a_neck_narrower_than_the_world_rule() {
+    let grid = flat();
+    // A wall with an open gap one wide: no lintel, so no room.
+    let wall = [
+        (0, edit(Op::Fill(3), [16, 21, 0], [17, 30, SIDE])),
+        (0, edit(Op::Carve, [16, 21, 10], [17, 30, 11])),
+    ];
+    let v = window(&grid, &wall);
+    let wide = Body { width: 2, ..BODY };
+    let (w, e) = ([4, 21, 4], [28, 21, 4]);
+    let necked = Places::derive(&v, Rules { neck: Some(2), ..Rules::default() }).unwrap();
+    let (west, east) = (place(&necked, w), place(&necked, e));
+    assert_ne!(west, east);
+    assert!(necked.route(west, east, &BODY).is_some());
+    assert!(necked.route(west, east, &wide).is_none());
+    // Control: without the rule the gap sits inside one patch and the wide
+    // body passes.
+    let open = Places::derive(&v, Rules::default()).unwrap();
+    assert_eq!(place(&open, w), place(&open, e));
+}
+
+#[test]
+fn sight_is_a_clear_ray_to_a_candidate_place() {
+    let grid = flat();
+    let wall = [(0, edit(Op::Fill(3), [16, 21, 0], [17, 30, SIDE]))];
+    let v = window(&grid, &wall);
+    let places = Places::derive(&v, Rules::default()).unwrap();
+    let (eye, beyond, here) = ([4, 22, 4], [28, 22, 4], [12, 22, 4]);
+    assert!(places.sees(&v, eye, here, 16));
+    assert!(!places.sees(&v, eye, beyond, 32), "through a wall");
+    let open = window(&grid, &[]);
+    let field = Places::derive(&open, Rules::default()).unwrap();
+    assert!(field.sees(&open, eye, beyond, 32));
+    // Control: out of range, the ray is clear but no place is a candidate.
+    assert!(ray(&open, eye, beyond));
+    assert!(!field.sees(&open, eye, beyond, 8));
+    // Candidates are the places near the eye, not every place.
+    let cut = Rules { cap: Cap::Own([8, 8]), ..Rules::default() };
+    let tiles = Places::derive(&open, cut).unwrap();
+    let near = tiles.candidates(eye, 4);
+    assert!(near.contains(&place(&tiles, eye)));
+    assert!(!near.contains(&place(&tiles, beyond)));
+    assert!(near.len() < tiles.places.len());
 }

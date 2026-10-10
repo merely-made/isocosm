@@ -109,7 +109,7 @@ fn flood6(
 
 /// The walkable component of stance `s`: stances joined by steps within the
 /// climb, through outdoor air, restricted by `keep`.
-fn walk(
+pub(super) fn walk(
     c: &Cells<'_>,
     s: [i64; 3],
     stood: &mut BTreeSet<[i64; 3]>,
@@ -130,10 +130,19 @@ fn walk(
     cells
 }
 
-/// A walkable component as patches: whole, or cut on the cap's grid when it
-/// is wider than the cap either way (ruling 417).
+/// A walkable component as patches: split at its necks (ruling 738), then
+/// each piece whole, or cut on the cap's grid when it is wider than the cap
+/// either way (ruling 417).
 fn cut(c: &Cells<'_>, component: Vec<[i64; 3]>) -> Vec<Found> {
     let least = *component.iter().min().expect("a component has its seed");
+    let pieces = match c.rules.neck {
+        Some(w) if w >= 2 => super::neck::split(c, &component, i64::from(w)),
+        _ => vec![component],
+    };
+    pieces.into_iter().flat_map(|piece| capped(c, piece, least)).collect()
+}
+
+fn capped(c: &Cells<'_>, component: Vec<[i64; 3]>, least: [i64; 3]) -> Vec<Found> {
     let span = |k: usize| {
         let (lo, hi) = component.iter().fold((i64::MAX, i64::MIN), |(lo, hi), a| (lo.min(a[k]), hi.max(a[k])));
         hi - lo + 1
@@ -165,6 +174,13 @@ fn made(c: &Cells<'_>, kind: Kind, mut cells: Vec<[i64; 3]>, component: Option<[
     let least = cells[0];
     let n = cells.len() as i64;
     let sum = cells.iter().fold([0i64; 3], |s, a| [s[0] + a[0], s[1] + a[1], s[2] + a[2]]);
+    let mut bounds = [least, least];
+    for a in &cells {
+        for k in 0..3 {
+            bounds[0][k] = bounds[0][k].min(a[k]);
+            bounds[1][k] = bounds[1][k].max(a[k]);
+        }
+    }
     let id = PlaceId {
         site: c.v.site,
         cell: least,
@@ -176,6 +192,7 @@ fn made(c: &Cells<'_>, kind: Kind, mut cells: Vec<[i64; 3]>, component: Option<[
             cells: n as u64,
             centre: sum.map(|v| v.div_euclid(n)),
             component: component.unwrap_or(least),
+            bounds,
         },
         cells,
     }
