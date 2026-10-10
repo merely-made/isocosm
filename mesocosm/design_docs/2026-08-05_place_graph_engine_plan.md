@@ -1,5 +1,14 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
+**Status, 2026-10-10:** SP1 to SP5 are built, SP4 and SP5 in
+`isometer-space` on `Ground` (733, 737 to 744), and merged with 732's
+push; their re-certification, the lift's bytes having moved with drawn
+cliffs (744), is the after-pass's. SP6 waits on mere's T2. SP7's joins are
+now the overlays': Mesocosm's full M4 in-site, Eponym's E3, and the VTT's
+battlemap as a lifted site with the sim on (799). SP8 is open. §A.13 says
+who owns what now, superseding §A.3 and §A.4's rows where they differ.
+*(Earlier status lines follow as written.)*
+
 **Status, 2026-10-09, later:** rulings 737 to 741 built on
 `lane-places-2`, with SP5's border clause (cross-site passages and span
 classes). SP5's done-condition holds within and across sites. The open
@@ -580,6 +589,31 @@ The accepted handoff, with its implemented adapter:
   base cell, so re-derivation keeps the ids of places that still hold that
   cell; an edit re-derives the places its extent touches and their
   neighbours.
+
+### A.13 Current state, 2026-10-10
+
+§A.3 and §A.4 are dated 2026-09-28 and keep their words. Since then rulings
+696 to 703 and 733 moved the in-site half into isometer, and 732's push
+deleted `mesocosm-core` and Eponym's legacy world. Who owns what now,
+checked against the tree:
+
+| Piece | Owner and path | Ruling |
+| --- | --- | --- |
+| World map, sites, skeletons, edge profiles at site grain | Isocosm, `shared/isocosm/src/map/` and `schema.rs`; `shared/isocosm/src/terrain/mod.rs` reads a world's sites across to isometer through `Atlas` | 392, 701 |
+| The lift, corners, profiles, lattice and chunks, cliffs drawn | isometer, `shared/isometer/crates/isometer-space/src/lift/` | 701, 744 |
+| Edits | the sim records each as an asserted fact; isometer replays them as shape operations, `isometer-space/src/edit/` | 696, 412 to 416 |
+| Places, passages, routes, sight | isometer, `isometer-space/src/places/`; an entity names its patch through `patch` | 698, 702, 737 to 741, 743 |
+| The voxel store | isometer-core's `Ground` (`shared/isometer/crates/isometer-core/src/ground.rs`) until nisus sits under it at SP6 | 697, 700, 733 |
+| Soil | the sim's, keyed by isometer's columns; the tier line went to directing (`shared/isocosm/src/directing/tier.rs`) | 703, 742 |
+| Authored terrain | `MapTerrain`, `crates/isometry-views/src/scene/terrain.rs`: the VTT's battlemap with the sim off; with it on, a lifted `isometer-space` site | 799 |
+| Eponym's site meanings | `eponym/crates/eponym-play/src/sites.rs`, over native sites; walking and sight go through `isometer-space` | 755, 776 |
+| Mesocosm's in-site places | none of its own: legacy `places` is deleted, and the body section is lifted through `isometer-space`; in-site play is the full M4's | 681 |
+
+§A.4's rows for `mesocosm-core/src/places.rs` and
+`eponym/crates/eponym-world/src/sites.rs` name deleted code. The relief
+models went with the lift; the last legacy relief and brick fixture lives
+in the parry-ground probe (`mesocosm/crates/probes/parry-ground`, the
+reading recorded with 780 to 786).
 
 ## 0. Rulings this plan rests on (2026-08-05)
 

@@ -2,6 +2,14 @@
 
 **Date:** 2026-09-11
 
+**Status, 2026-10-10:** L2, L7 and L9 have landed, L7 on mere's kiss3d
+tenant rather than the DOM path this plan first drew (734 to 736, 749).
+Ruling 796 makes the tenant the wing's one body rasteriser, so Mesocosm
+moves onto it and isometer-render's `LiveBody` retires. L10 is briefed and
+unbuilt, with the views founding plan's minimap folded into its second
+camera (801). See [the current state](#current-state-2026-10-10).
+*(Earlier status lines follow as written.)*
+
 **Status, 2026-10-01:** lane [L10, the detail ladder](#l10-the-detail-ladder-2026-10-01),
 is briefed from the wing design record's rulings 423 to 426, 432 to 434, 437
 and 438: five rungs in one camera, chosen by size within what the sim holds,
@@ -1522,6 +1530,35 @@ own nodes once places reach Mesocosm; and when a region is a hit target
 selecting its place. Fields evaluated over a place stay consumer-pull.
 The VTT's overmap readings that camera draws are its overlay plan's V2
 (§5.1 there).
+
+## Current state, 2026-10-10
+
+Added under ruling 793; the dated text above keeps its words, including
+its places where renderling or the DOM is the body's path.
+
+- **The body path is mere's tenant.** L7 landed on the kiss3d tenant
+  (`crates/conatus/tenant` in mere, 745), not on the appearance crate plus
+  DOM that L7's text describes: `eponym-client` draws bodies through it onto
+  a transparent target that netrender layers over the traced colour (749),
+  and renderling, crabslab, 729's carriage and the `ambience-lease` probe
+  are gone. Palette colours reach kiss3d as a texture by UV (736). The
+  torch casts no shadow until the testing pass tunes it (749).
+- **One body rasteriser (796).** Mesocosm still draws bodies through
+  isometer's scene with `isometer-render`'s unlit `LiveBody`
+  (`shared/isometer/crates/isometer-render/src/live_body.rs`); it moves
+  onto the tenant, and `LiveBody` retires once it has. L5's
+  done-conditions carry onto the tenant, and L10's R0 row draws through it
+  from then.
+- **L7's open done-conditions** are the after-pass's (its A3): the S0
+  replay hash unchanged, rg3c and `d1_depth`'s witness rewritten against the
+  tenant's report, and L3 and L5 re-proved without the specimen bench lanes
+  the switch deleted (Benches A to D ran on legacy Mesocosm; their receipts
+  stand as history, and W4 lifts the bench).
+- **Carried from the isometer family plan (archived 2026-10-10):** the
+  terrain's per-axis scale, y and z as well as x (ruling 23), is unbuilt;
+  isometer's only scale is one isotropic float per body placement.
+- **L6 and L8** are open as written. **L10** is unbuilt; its done-condition
+  8 now also carries the folded views founding plan's minimap receipts.
 
 ## CSS features and standards to earmark
 
