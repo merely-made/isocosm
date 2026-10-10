@@ -10,8 +10,9 @@
 //! world, and nothing else in the crate does: `World::apply` is the only door,
 //! and this is the room behind it.
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::body::{Attachment, Origin, Provenance};
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Subject};
 use crate::legacy::mesocosm::organism::{Organism, OrganismId};
 use crate::legacy::mesocosm::phenotype::BodyPhenotype;
 use crate::legacy::mesocosm::places::step_for;
@@ -130,8 +131,8 @@ impl World {
                 self.soil.deposit(column, cost);
                 self.flow(
                     from,
-                    FlowEvent::returned(
-                        crate::legacy::mesocosm::flow::Process::Travel,
+                    Flow::returned(
+                        crate::legacy::mesocosm::flowing::Process::Travel,
                         traveller,
                         Account::Reserve,
                         cost,
@@ -253,8 +254,8 @@ impl World {
                 self.soil.deposit(column, mass_mg);
                 self.flow(
                     position,
-                    FlowEvent::returned(
-                        crate::legacy::mesocosm::flow::Process::Deposit,
+                    Flow::returned(
+                        crate::legacy::mesocosm::flowing::Process::Deposit,
                         depositor,
                         Account::Reserve,
                         mass_mg,

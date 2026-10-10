@@ -353,12 +353,15 @@ fn the_development_is_located_paid_for_and_on_the_record() {
     let paid: Vec<_> = world
         .flows()
         .iter()
-        .map(|recorded| recorded.record)
-        .filter(|flow| flow.process == isocosm::legacy::mesocosm::flow::Process::Develop)
+        .cloned()
+        .filter(|flow| flow.process() == Some(isocosm::legacy::mesocosm::flowing::Process::Develop))
         .collect();
     assert_eq!(paid.len(), 1, "one development, one payment: {paid:?}");
-    assert_eq!(paid[0].amount_mg, cost_mg);
-    assert_eq!(paid[0].source, isocosm::legacy::mesocosm::Account::Reserve);
+    assert_eq!(paid[0].amount, cost_mg);
+    assert_eq!(
+        paid[0].source(),
+        Some(isocosm::legacy::mesocosm::Account::Reserve)
+    );
 
     // The milligram went into the ground, it did not evaporate. Ecology moves
     // matter between accounts on the same tick; the sum is what must not move.

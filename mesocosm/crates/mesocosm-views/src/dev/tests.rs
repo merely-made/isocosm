@@ -14,7 +14,7 @@
 //! literal somebody typed.
 
 use super::*;
-use isocosm::legacy::mesocosm::flow::Accounts;
+use isocosm::legacy::mesocosm::flowing::Accounts;
 use isocosm::legacy::mesocosm::{Ending, OrganismId, Passing, World, classify};
 
 /// A world with a body in it, and the id of the critter under the hand.

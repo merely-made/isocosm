@@ -62,8 +62,10 @@
 //!
 //! [`World::held`]: isocosm::legacy::mesocosm::World::held
 
-use isocosm::legacy::mesocosm::flow::{Account, Process, RecordedEvent, RecordedFlow};
+use isocosm::flows::Flow;
+use isocosm::legacy::mesocosm::flowing::{Account, Process};
 use isocosm::legacy::mesocosm::history::Event;
+use isocosm::legacy::mesocosm::history::RecordedEvent;
 use isocosm::legacy::mesocosm::{History, Intent, OrganismId, SpeciesId, World};
 
 /// A birth the played critter is the parent of.
@@ -195,7 +197,7 @@ pub(crate) fn opened(
     history: &History,
     hand: Option<(OrganismId, SpeciesId)>,
     events: &[RecordedEvent],
-    flows: &[RecordedFlow],
+    flows: &[Flow],
 ) -> Option<Checkpoint> {
     let (hand, hand_lineage) = hand?;
 
@@ -256,17 +258,17 @@ pub(crate) fn opened(
     let mut substance_mg = 0;
     let mut reserve_mg = 0;
     for flow in flows {
-        let record = &flow.record;
-        if record.process != Process::Birth || record.to.map(|to| to.organism) != Some(offspring) {
+        let record = flow;
+        if record.process() != Some(Process::Birth) || record.to_organism() != Some(offspring) {
             continue;
         }
-        match record.destination {
-            Account::Substance => substance_mg += record.amount_mg,
-            Account::Reserve => reserve_mg += record.amount_mg,
+        match record.destination() {
+            Some(Account::Substance) => substance_mg += record.amount,
+            Some(Account::Reserve) => reserve_mg += record.amount,
             // Neither is a body's account, so neither is a provisioning: a
             // birth never lands in the ground, and the dev source is only ever
             // a *source*.
-            Account::Soil | Account::Dev => {},
+            _ => {},
         }
     }
 

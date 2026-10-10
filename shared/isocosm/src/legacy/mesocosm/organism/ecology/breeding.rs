@@ -13,8 +13,9 @@
 //! what moved here is the one pass that makes a new body, which has its own
 //! concerns: the filial stream, recipe realization, and the scatter.
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::development::PartPalette;
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Process, Records, Subject};
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::places::{Ground, Tier};
 use crate::legacy::mesocosm::rng::Rng;
@@ -227,7 +228,7 @@ pub fn bear(
     ] {
         records.flow(
             born_at,
-            FlowEvent::between(
+            Flow::between(
                 Process::Birth,
                 forebear,
                 account,

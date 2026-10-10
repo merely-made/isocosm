@@ -15,7 +15,7 @@
 //! The harness is next door and shared, because two files reconciling ticks
 //! two different ways is how they would come to disagree.
 
-use isocosm::legacy::mesocosm::flow::{Account, Process};
+use isocosm::legacy::mesocosm::flowing::{Account, Process};
 use isocosm::legacy::mesocosm::{Intent, OrganismId, World};
 use isocosm::process::FeedingMode;
 
@@ -83,20 +83,20 @@ fn a_consumed_part_moves_exactly_its_own_milligrams_and_says_so() {
     // about every meal that happened.
     let taken: Vec<_> = flows
         .iter()
-        .map(|recorded| recorded.record)
+        .cloned()
         .filter(|flow| {
-            flow.process == Process::Feeding
-                && flow.from.map(|from| from.organism) == Some(id)
-                && flow.source == Account::Substance
-                && flow.destination == Account::Substance
+            flow.process() == Some(Process::Feeding)
+                && flow.from_organism() == Some(id)
+                && flow.source() == Some(Account::Substance)
+                && flow.destination() == Some(Account::Substance)
         })
         .collect();
     assert_eq!(taken.len(), 1, "one organ, one transfer: {taken:?}");
-    assert_eq!(taken[0].amount_mg, 400);
-    assert_eq!(taken[0].source, Account::Substance);
+    assert_eq!(taken[0].amount, 400);
+    assert_eq!(taken[0].source(), Some(Account::Substance));
     assert_eq!(
-        taken[0].destination,
-        Account::Substance,
+        taken[0].destination(),
+        Some(Account::Substance),
         "an organ becomes body, never budget"
     );
 }
@@ -218,27 +218,27 @@ fn a_grafted_branch_moves_exactly_its_own_milligrams_and_says_so() {
     );
     let carried: Vec<_> = flows
         .iter()
-        .map(|recorded| recorded.record)
-        .filter(|flow| flow.process == Process::Graft)
+        .cloned()
+        .filter(|flow| flow.process() == Some(Process::Graft))
         .collect();
     assert_eq!(carried.len(), 1, "one branch, one transfer: {carried:?}");
-    assert_eq!(carried[0].amount_mg, branch_mg);
-    assert_eq!(carried[0].from.map(|from| from.organism), Some(donor));
+    assert_eq!(carried[0].amount, branch_mg);
+    assert_eq!(carried[0].from_organism(), Some(donor));
     assert_eq!(
-        carried[0].to.map(|to| to.organism),
+        carried[0].to_organism(),
         world.controlled_id(),
         "both subjects, because a loss and an acquisition are one fact"
     );
-    assert_eq!(carried[0].source, Account::Substance);
+    assert_eq!(carried[0].source(), Some(Account::Substance));
     assert_eq!(
-        carried[0].destination,
-        Account::Substance,
+        carried[0].destination(),
+        Some(Account::Substance),
         "a branch becomes body, never budget"
     );
     assert!(
         flows
             .iter()
-            .any(|recorded| recorded.record.process == Process::Develop),
+            .any(|recorded| recorded.process() == Some(Process::Develop)),
         "and the arrangement it carried was paid for: {flows:?}"
     );
 }

@@ -49,7 +49,7 @@ pub mod discovery;
 pub mod effect_experiment;
 pub mod effect_pack;
 pub mod embodiment;
-pub mod flow;
+pub mod flowing;
 pub mod functions;
 pub mod graft;
 pub mod growth;
@@ -105,13 +105,10 @@ pub use discovery::{
     Stress,
 };
 pub use embodiment::{bearing_parts, embodied, expressed_traits};
-pub use flow::{
-    Account, Accounts, Carrier, Envelope, FlowEvent, Ledger, RecordedEvent, RecordedFlow, Subject,
-    Trend, WARN_AFTER_TICKS,
-};
+pub use flowing::{Account, Accounts, Ledger, Subject, Trend, WARN_AFTER_TICKS};
 pub use graft::{Affinity, Crossing, Domain, Verdict};
 pub use growth::{Growth, resolve};
-pub use history::{Ending, Event, History, MealKind, Passing};
+pub use history::{Ending, Envelope, Event, History, MealKind, Passing, RecordedEvent};
 pub use organism::{
     BodyOrgans, FaunaDecisionTrace, FaunaDrive, FaunaDriveScores, FaunaPolicy, FaunaSenses,
     FaunaTraits, Kingdom, Organism, OrganismId, Signal, Stage, Tally,

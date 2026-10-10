@@ -201,6 +201,43 @@ the bodies family.
   them in documents; whether the legacy body modules can leave before the
   world families, which consume them; whether the registry holds all fifteen
   catalogue functions; and fork 9.
+- **2026-10-10, family 3, the record (lane `lane-record-2`, under 732's
+  compile gate; no test sweeps, draws or certification run).** Two steps
+  landed.
+  - *The flow record (750).* Native `Flow` gained, in native terms, each
+    side's lineage and kingdom by key (`Kind`, filled from the population
+    when the native sim records a move) and the move's material composition
+    (`Composition` and `Conversion` now in `flows/composition`). The legacy
+    world writes native `Flow`s through `legacy::mesocosm::flowing` (its
+    vocabulary, leaving with that world under 755): `soil` on site
+    `ENCLOSURE` (0), `substance` and `reserve` on the organism's id, the dev
+    source as `Holder::Dev` made by `PlaceMatter` as native's is. The
+    one-tick ledger, the commit point, `Accounts`, `Trend` and
+    `WARN_AFTER_TICKS` sit beside it; `Envelope` and `RecordedEvent` moved
+    into legacy `history`. Legacy `flow` (962 lines) is deleted; its readers
+    in mesocosm-runtime, -views and -genet, the legacy world and its tests
+    re-point. *Reading, not ruled:* legacy kingdoms map to native keys,
+    producer to `kingdom:flora`, consumer to `kingdom:fauna`, decomposer to
+    `kingdom:myco`, and `SpeciesId(n)` to `lineage:n`; a flow keeps holders,
+    not the in-site region it happened in.
+  - *`Command::Assert` (757).* A native `asserted` family. An authored
+    faction is a polity whose constitution starts with no members, its
+    governance and focus asserted, carrying `Authored` attributes (key,
+    name, tags, claims as authored keys) while it has none (760); it takes
+    a fresh id from the entity id space, polities sharing it. An authored
+    fact is a note of a kind the world's rules declare, its text the djot
+    and its tags in the open envelope, citing `assert:<key>` (80, 82, 85),
+    written whether or not the sim advances (248). Re-asserting the same
+    content changes nothing; other content under a held key is refused, and
+    a refused assertion leaves no entry.
+  Open, put back as forks: where a campaign's native world lives in the VTT
+  and so how the campaign world becomes a reading of it; the native homes
+  of authored places, characters, laws and history lines; whether legacy
+  `history`, `record`, `snapshot` and the chronicles move now or with the
+  world move (755), being that world's own record; and where Eponym's
+  simulation record and epistemic layer go. Nothing of the campaign tree
+  moved yet; the tape-drawn faction turn stays in legacy, marked to retire
+  at V2 (247).
 - **2026-10-09, family 7, the VTT's campaign (lane `lane-campaign`, under
   732's compile gate; no tests, draws or certification run).** Handed back
   under 669: the host-private `CampaignStore` and the proposal lifecycle

@@ -3,8 +3,9 @@
 
 //! Reduction of the bounded habitat trial's accepted records.
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::World;
-use crate::legacy::mesocosm::flow::{Process, RecordedFlow};
+use crate::legacy::mesocosm::flowing::Process;
 use crate::legacy::mesocosm::history::{Event, MealKind};
 use crate::legacy::mesocosm::organism::OrganismId;
 use serde::Serialize;
@@ -105,22 +106,20 @@ impl TrialEvidence {
         self.subject_alive = is_alive(world, subject);
     }
 
-    fn record_flow(&mut self, flow: RecordedFlow, subject: OrganismId) {
-        let record = flow.record;
-        if record.is_internal() {
+    fn record_flow(&mut self, flow: Flow, subject: OrganismId) {
+        let record = flow;
+        if record.internal() {
             return;
         }
-        if record.to.is_some_and(|to| to.organism == subject) {
-            self.subject_incoming_mg = self.subject_incoming_mg.saturating_add(record.amount_mg);
-            match record.process {
-                Process::Feeding => {
+        if record.to_organism() == Some(subject) {
+            self.subject_incoming_mg = self.subject_incoming_mg.saturating_add(record.amount);
+            match record.process() {
+                Some(Process::Feeding) => {
                     self.subject_feeding_events += 1;
-                    self.subject_feeding_mg =
-                        self.subject_feeding_mg.saturating_add(record.amount_mg);
+                    self.subject_feeding_mg = self.subject_feeding_mg.saturating_add(record.amount);
                 },
-                Process::Uptake => {
-                    self.subject_uptake_mg =
-                        self.subject_uptake_mg.saturating_add(record.amount_mg);
+                Some(Process::Uptake) => {
+                    self.subject_uptake_mg = self.subject_uptake_mg.saturating_add(record.amount);
                 },
                 _ => {},
             }
@@ -211,8 +210,9 @@ fn is_alive(world: &World, subject: OrganismId) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::flows::Flow;
     use crate::legacy::mesocosm::SpeciesId;
-    use crate::legacy::mesocosm::flow::{Account, Envelope, FlowEvent, Subject};
+    use crate::legacy::mesocosm::flowing::{Account, Subject};
     use crate::legacy::mesocosm::organism::{Kingdom, OrganismId};
     use std::collections::BTreeSet;
 
@@ -259,39 +259,28 @@ mod tests {
         let mut evidence = TrialEvidence::begin(&World::new(1, 3), OrganismId(7), 1);
         let eater = subject();
         evidence.record_flow(
-            Envelope::new(
-                1,
-                None,
-                FlowEvent::between(
-                    Process::Feeding,
-                    Subject {
-                        organism: OrganismId(8),
-                        ..subject()
-                    },
-                    Account::Substance,
-                    eater,
-                    Account::Reserve,
-                    9,
-                ),
+            Flow::between(
+                Process::Feeding,
+                Subject {
+                    organism: OrganismId(8),
+                    ..subject()
+                },
+                Account::Substance,
+                eater,
+                Account::Reserve,
+                9,
             ),
             eater.organism,
         );
+        evidence.record_flow(Flow::uptake(eater, Account::Reserve, 4), eater.organism);
         evidence.record_flow(
-            Envelope::new(1, None, FlowEvent::uptake(eater, Account::Reserve, 4)),
-            eater.organism,
-        );
-        evidence.record_flow(
-            Envelope::new(
-                1,
-                None,
-                FlowEvent::between(
-                    Process::Uptake,
-                    eater,
-                    Account::Substance,
-                    eater,
-                    Account::Reserve,
-                    4,
-                ),
+            Flow::between(
+                Process::Uptake,
+                eater,
+                Account::Substance,
+                eater,
+                Account::Reserve,
+                4,
             ),
             eater.organism,
         );

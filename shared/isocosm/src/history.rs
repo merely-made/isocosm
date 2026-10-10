@@ -59,6 +59,8 @@ pub enum Command {
         aim: crate::directing::Aim,
         toward: crate::directing::Toward,
     },
+    /// Authored content asserted into the world (ruling 757).
+    Assert(crate::asserted::Assertion),
     /// A lineage commits a variant of its development (ruling 752).
     Revise {
         lineage: Key,
@@ -478,5 +480,6 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
             Ok("revised".into())
         },
         Command::Speciate { founder, name } => sim.speciate(*founder, name),
+        Command::Assert(assertion) => sim.assert(assertion),
     }
 }

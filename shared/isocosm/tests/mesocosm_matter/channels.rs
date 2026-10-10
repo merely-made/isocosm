@@ -5,10 +5,8 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::legacy::mesocosm::{
-    OrganismId, World,
-    flow::{Account, Conversion, RecordedFlow, Subject},
-};
+use isocosm::flows::{Conversion, Flow, Holder};
+use isocosm::legacy::mesocosm::{OrganismId, World, flowing::Account};
 use isocosm::matter::{Material, Stock};
 
 pub(super) type Key = (Account, Option<OrganismId>);
@@ -45,23 +43,23 @@ pub(super) fn books(world: &World) -> Book {
     book
 }
 
-fn side(account: Account, subject: Option<Subject>) -> Result<Key, String> {
-    if account.is_body() {
-        subject
-            .map(|subject| (account, Some(subject.organism)))
-            .ok_or_else(|| format!("body account {account:?} omitted its subject"))
-    } else {
-        Ok((account, None))
+fn side(side: &(Holder, String)) -> Result<Key, String> {
+    let account = Account::of(side).ok_or_else(|| format!("not a legacy account: {side:?}"))?;
+    let body = side.0.body().map(|id| OrganismId(id as u32));
+    match (account.is_body(), body) {
+        (true, None) => Err(format!("body account {account:?} omitted its body")),
+        (true, body) => Ok((account, body)),
+        (false, _) => Ok((account, None)),
     }
 }
 
-fn validate(flow: &RecordedFlow) -> Result<(), String> {
-    let event = flow.record;
+fn validate(flow: &Flow) -> Result<(), String> {
+    let event = flow;
     let composition = event
         .composition
         .ok_or_else(|| format!("uncomposed live flow: {event:?}"))?;
-    if composition.input.total() != u128::from(event.amount_mg)
-        || composition.output.total() != u128::from(event.amount_mg)
+    if composition.input.total() != u128::from(event.amount)
+        || composition.output.total() != u128::from(event.amount)
     {
         return Err(format!(
             "flow amount disagrees with its composition: {event:?}"
@@ -72,13 +70,13 @@ fn validate(flow: &RecordedFlow) -> Result<(), String> {
             Err(format!("ordinary transfer changed its stock: {event:?}"))
         },
         Some(Conversion::Synthesis)
-            if composition.input.amount(Material::Untyped) == event.amount_mg
-                && composition.output.amount(Material::Producer) == event.amount_mg =>
+            if composition.input.amount(Material::Untyped) == event.amount
+                && composition.output.amount(Material::Producer) == event.amount =>
         {
             Ok(())
         },
         Some(Conversion::Digestion | Conversion::Mineralization)
-            if composition.output == Stock::single(Material::Untyped, event.amount_mg) =>
+            if composition.output == Stock::single(Material::Untyped, event.amount) =>
         {
             Ok(())
         },
@@ -87,13 +85,13 @@ fn validate(flow: &RecordedFlow) -> Result<(), String> {
     }
 }
 
-fn replay(mut before: Book, flows: &[RecordedFlow]) -> Result<Book, String> {
+fn replay(mut before: Book, flows: &[Flow]) -> Result<Book, String> {
     for flow in flows {
         validate(flow)?;
-        let event = flow.record;
+        let event = flow;
         let composition = event.composition.expect("validated");
-        let source = side(event.source, event.from)?;
-        let destination = side(event.destination, event.to)?;
+        let source = side(&event.from)?;
+        let destination = side(&event.to)?;
         let held = before.get(&source).copied().unwrap_or(Stock::EMPTY);
         let remainder = held
             .checked_sub(composition.input)
@@ -115,11 +113,7 @@ pub(super) fn matches_actual(expected: &Book, actual: &Book) -> Result<(), Strin
     }
 }
 
-pub(super) fn reconciles(
-    before: &Book,
-    after: &World,
-    flows: &[RecordedFlow],
-) -> Result<(), String> {
+pub(super) fn reconciles(before: &Book, after: &World, flows: &[Flow]) -> Result<(), String> {
     let expected = replay(before.clone(), flows)?;
     matches_actual(&expected, &books(after))
 }

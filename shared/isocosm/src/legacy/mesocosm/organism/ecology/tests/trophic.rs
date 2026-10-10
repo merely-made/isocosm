@@ -7,7 +7,7 @@
 //! Trophic admission regressions that exercise the ecology tick.
 
 use super::*;
-use crate::legacy::mesocosm::flow::Process as FlowProcess;
+use crate::legacy::mesocosm::flowing::Process as FlowProcess;
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::Kingdom;
 
@@ -46,7 +46,7 @@ fn a_producer_without_an_active_fix_port_draws_no_soil() {
         sink.flows
             .records()
             .iter()
-            .all(|record| record.record.process != FlowProcess::Uptake),
+            .all(|record| record.process() != Some(FlowProcess::Uptake)),
         "a producer reading with no active Fix allocation drew from soil"
     );
 }

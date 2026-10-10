@@ -362,6 +362,17 @@ V1 is Mark's.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+- 2026-10-10: the record family's lane (`lane-record-2`, under 732's compile
+  gate) built `Command::Assert` in native Isocosm (ruling 757): an authored
+  faction asserts a polity with no members carrying its name, tags, claims,
+  governance and focus (760), and an authored fact asserts a note, whether
+  or not the sim runs (248). The campaign world is not yet a reading of
+  native state: where a campaign's native world lives, and the native homes
+  of places, characters, laws and history lines, went back to Mark as forks.
+  `isocosm::legacy::campaign` is unchanged at 3,950 lines; the faction
+  turn is marked to retire at V2 (247). Detail in the
+  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  Progress.
 - 2026-10-09: §4's absorption begun under 732's compile gate (lane
   `lane-campaign`; no tests, draws or receipts run). The last row went first,
   by 669 rather than §4's destination: the store and proposals (360 lines)

@@ -146,21 +146,15 @@ fn disfavoured_carry_publishes_the_preview_receipt_and_prices_the_reserve() {
     let flows = world.drain_flows();
     let transfer = flows
         .iter()
-        .find(|flow| flow.record.process == crate::legacy::mesocosm::flow::Process::Graft)
+        .find(|flow| flow.process() == Some(crate::legacy::mesocosm::flowing::Process::Graft))
         .expect("one exact donor-to-recipient transfer");
-    assert_eq!(
-        transfer.record.composition.unwrap().input,
-        transferred_stock
-    );
-    assert_eq!(
-        transfer.record.composition.unwrap().output,
-        transferred_stock
-    );
+    assert_eq!(transfer.composition.unwrap().input, transferred_stock);
+    assert_eq!(transfer.composition.unwrap().output, transferred_stock);
     assert!(flows.iter().any(|flow| {
-        flow.record.process == crate::legacy::mesocosm::flow::Process::Develop
-            && flow.record.source == crate::legacy::mesocosm::flow::Account::Reserve
-            && flow.record.destination == crate::legacy::mesocosm::flow::Account::Soil
-            && flow.record.amount_mg == incoming_mg
+        flow.process() == Some(crate::legacy::mesocosm::flowing::Process::Develop)
+            && flow.source() == Some(crate::legacy::mesocosm::flowing::Account::Reserve)
+            && flow.destination() == Some(crate::legacy::mesocosm::flowing::Account::Soil)
+            && flow.amount == incoming_mg
     }));
 
     let bytes = crate::legacy::mesocosm::snapshot::snapshot(&world).expect("snapshot");

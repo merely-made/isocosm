@@ -122,7 +122,7 @@ fn a_grandchild_is_a_descendant() {
     let mut history = History::new();
     let ids: Vec<OrganismId> = (0..4).map(OrganismId).collect();
     for (tick, (child, parent)) in [(1, 0), (2, 1), (3, 0)].into_iter().enumerate() {
-        history.record(isocosm::legacy::mesocosm::flow::Envelope::new(
+        history.record(isocosm::legacy::mesocosm::history::Envelope::new(
             tick as u64,
             None,
             Event::Born {

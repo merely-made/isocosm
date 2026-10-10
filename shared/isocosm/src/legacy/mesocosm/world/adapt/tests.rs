@@ -71,15 +71,11 @@ fn producer_reserve_conversion_is_not_extra_scoring_income() {
     for _ in 0..world.rules.score_ticks {
         world.apply(Intent::Idle);
         for flow in world.drain_flows() {
-            let flow = flow.record;
-            if flow.to.is_some_and(|to| to.lineage == species) {
-                if flow
-                    .from
-                    .is_some_and(|from| flow.to.unwrap().organism == from.organism)
-                {
-                    internal += flow.amount_mg;
+            if flow.to_lineage() == Some(species) {
+                if flow.internal() {
+                    internal += flow.amount;
                 } else {
-                    income += flow.amount_mg;
+                    income += flow.amount;
                 }
             }
         }

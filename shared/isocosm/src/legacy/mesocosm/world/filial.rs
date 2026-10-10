@@ -39,7 +39,8 @@
 //! pass runs over every organism the tick's birth pass allocated an id for, so
 //! a descendant of an NPC line is developed by the identical code.
 
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Subject};
+use crate::flows::Flow;
+use crate::legacy::mesocosm::flowing::{Account, Subject};
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::OrganismId;
 use crate::legacy::mesocosm::program::{self, Conditions};
@@ -114,15 +115,15 @@ impl World {
                 self.soil.deposit(column, filial.cost_mg);
                 self.flow(
                     position,
-                    FlowEvent::returned(
-                        crate::legacy::mesocosm::flow::Process::Develop,
+                    Flow::returned(
+                        crate::legacy::mesocosm::flowing::Process::Develop,
                         subject,
                         Account::Reserve,
                         filial.cost_mg,
                     ),
                 );
                 self.pending
-                    .push(crate::legacy::mesocosm::flow::Envelope::new(
+                    .push(crate::legacy::mesocosm::history::Envelope::new(
                         tick,
                         place,
                         Event::Inherited {
@@ -136,7 +137,7 @@ impl World {
             },
             Err(why) => self
                 .pending
-                .push(crate::legacy::mesocosm::flow::Envelope::new(
+                .push(crate::legacy::mesocosm::history::Envelope::new(
                     tick,
                     place,
                     Event::Unexpressed {

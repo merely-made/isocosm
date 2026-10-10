@@ -16,7 +16,7 @@ fn complete_return(
     stock: Stock,
 ) {
     let mg = u64::try_from(stock.total()).expect("a body payment fits its scalar debt");
-    let flow = FlowEvent::returned(process, subject, source, mg).mineralized(stock);
+    let flow = Flow::returned(process, subject, source, mg).mineralized(stock);
     let output = flow
         .composition
         .expect("completed returns carry composition")
@@ -99,8 +99,9 @@ pub(in crate::legacy::mesocosm::organism::ecology) fn decay(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::flows::Conversion;
     use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
-    use crate::legacy::mesocosm::flow::{Conversion, Ledger};
+    use crate::legacy::mesocosm::flowing::Ledger;
     use crate::legacy::mesocosm::organism::{Kingdom, OrganismId};
 
     #[test]
@@ -154,9 +155,9 @@ mod tests {
         let flow = flows
             .records()
             .iter()
-            .find(|f| f.record.process == Process::Decay)
+            .find(|f| f.process() == Some(Process::Decay))
             .unwrap()
-            .record;
+            .clone();
         let composition = flow.composition.unwrap();
         assert_eq!(composition.input, paid);
         assert_eq!(composition.output, Stock::single(Material::Untyped, 1));

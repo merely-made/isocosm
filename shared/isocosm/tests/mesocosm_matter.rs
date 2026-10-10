@@ -32,7 +32,7 @@
 //!
 //! `Intent::PlaceMatter` is the one route by which the enclosure's total
 //! changes, and it is a recorded transfer out of
-//! [`Account::Dev`](isocosm::legacy::mesocosm::flow::Account::Dev). So the conserved
+//! [`Account::Dev`](isocosm::legacy::mesocosm::flowing::Account::Dev). So the conserved
 //! quantity is *the enclosure's total less what that account issued*, read off
 //! the flow record and subtracted exactly — never a tolerance, and the control
 //! below shows what happens to a placement nobody counted.
@@ -292,7 +292,7 @@ fn matter_is_conserved_through_the_dev_verbs() {
         world.apply(intent);
         // The ledger holds one tick, reopened at the top of every one, so this
         // reads exactly what this tick issued and cannot double-count.
-        issued += isocosm::legacy::mesocosm::flow::Account::issued_mg(world.flows());
+        issued += isocosm::legacy::mesocosm::flowing::Account::issued_mg(world.flows());
         conserved(&world, opening + issued, &format!("after dev step {step}")).expect("conserved");
     }
     assert_eq!(
@@ -304,7 +304,7 @@ fn matter_is_conserved_through_the_dev_verbs() {
     // fresh epoch running.
     for tick in 1..=200 {
         world.apply(Intent::Idle);
-        issued += isocosm::legacy::mesocosm::flow::Account::issued_mg(world.flows());
+        issued += isocosm::legacy::mesocosm::flowing::Account::issued_mg(world.flows());
         conserved(&world, opening + issued, &format!("on dev tick {tick}")).expect("conserved");
     }
     assert_eq!(issued, 900, "and an ordinary tick issues nothing");
@@ -324,7 +324,7 @@ fn the_check_catches_a_placement_the_dev_source_did_not_account_for() {
         at: here,
         mass_mg: 700,
     });
-    let issued = isocosm::legacy::mesocosm::flow::Account::issued_mg(world.flows());
+    let issued = isocosm::legacy::mesocosm::flowing::Account::issued_mg(world.flows());
     assert_eq!(issued, 700, "the account says what it issued");
     conserved(&world, opening + issued, "counting the dev source").expect("conserved");
 

@@ -261,7 +261,7 @@ pub enum Intent {
     ///
     /// The one route by which the enclosure's matter total changes, and it is
     /// a recorded transfer rather than a hole: the milligrams come out of
-    /// [`Account::Dev`](crate::legacy::mesocosm::flow::Account::Dev) and into the soil, so the
+    /// [`Account::Dev`](crate::legacy::mesocosm::flowing::Account::Dev) and into the soil, so the
     /// flow record still accounts for every account and a conservation check
     /// subtracts what that source issued instead of tolerating it.
     ///

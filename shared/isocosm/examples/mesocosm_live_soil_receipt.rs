@@ -8,11 +8,9 @@
 //! after each timed tick.
 use std::{collections::BTreeMap, hint::black_box, time::Instant};
 
+use isocosm::flows::{Conversion, Flow, Holder};
 use isocosm::legacy::mesocosm::{
-    Intent, OrganismId, World,
-    flow::{Account, Conversion, RecordedFlow},
-    snapshot,
-    world::FOUNDERS,
+    Intent, OrganismId, World, flowing::Account, snapshot, world::FOUNDERS,
 };
 use isocosm::matter::{Material, Stock};
 use serde_json::json;
@@ -33,24 +31,24 @@ struct ConversionCounts {
 }
 
 impl ConversionCounts {
-    fn record(&mut self, flows: &[RecordedFlow]) {
+    fn record(&mut self, flows: &[Flow]) {
         for flow in flows {
-            let event = flow.record;
+            let event = flow;
             match event
                 .composition
                 .and_then(|composition| composition.conversion)
             {
                 Some(Conversion::Synthesis) => {
                     self.synthesis_events += 1;
-                    self.synthesis_mg += event.amount_mg;
+                    self.synthesis_mg += event.amount;
                 },
                 Some(Conversion::Digestion) => {
                     self.digestion_events += 1;
-                    self.digestion_mg += event.amount_mg;
+                    self.digestion_mg += event.amount;
                 },
                 Some(Conversion::Mineralization) => {
                     self.mineralization_events += 1;
-                    self.mineralization_mg += event.amount_mg;
+                    self.mineralization_mg += event.amount;
                 },
                 None => {},
             }
@@ -92,23 +90,18 @@ fn accounts(world: &World) -> BTreeMap<Key, Stock> {
     book
 }
 
-fn side(account: Account, subject: Option<isocosm::legacy::mesocosm::flow::Subject>) -> Key {
-    if account.is_body() {
-        (
-            account,
-            Some(subject.expect("body flow names its subject").organism),
-        )
-    } else {
-        (account, None)
-    }
+fn side(side: &(Holder, String)) -> Key {
+    let account = Account::of(side).expect("a legacy account");
+    let body = side.0.body().map(|id| OrganismId(id as u32));
+    (account, body.filter(|_| account.is_body()))
 }
 
-fn reconcile(mut before: BTreeMap<Key, Stock>, flows: &[RecordedFlow]) -> BTreeMap<Key, Stock> {
+fn reconcile(mut before: BTreeMap<Key, Stock>, flows: &[Flow]) -> BTreeMap<Key, Stock> {
     for flow in flows {
-        let event = flow.record;
+        let event = flow;
         let composition = event.composition.expect("live flow carries composition");
-        let source = side(event.source, event.from);
-        let destination = side(event.destination, event.to);
+        let source = side(&event.from);
+        let destination = side(&event.to);
         let remainder = before
             .get(&source)
             .copied()

@@ -246,7 +246,7 @@ impl GlyphReading {
             return;
         };
         for record in uptakes {
-            if record.organism != self.rules.organism || record.record.record.amount_mg == 0 {
+            if record.organism != self.rules.organism || record.record.amount == 0 {
                 continue;
             }
             // Uptake identity is (tick, flow ordinal), not a history sequence.
@@ -256,7 +256,7 @@ impl GlyphReading {
             );
             let context = format!(
                 "Uptake; organism={}; {} mg",
-                record.organism.0, record.record.record.amount_mg
+                record.organism.0, record.record.amount
             );
             self.grant_one(
                 glyph.clone(),

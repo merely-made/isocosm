@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::legacy::mesocosm::flow::Account;
+use crate::legacy::mesocosm::flowing::Account;
 
 fn mixed_target(world: &mut World, target: OrganismId) -> crate::matter::Stock {
     let donor = world
@@ -63,19 +63,19 @@ fn whole_mixed_meal_planned_attachment_preserves_stock_and_receipt() {
         .flows()
         .iter()
         .find(|record| {
-            record.record.process == crate::legacy::mesocosm::flow::Process::Feeding
-                && record.record.destination == Account::Substance
+            record.process() == Some(crate::legacy::mesocosm::flowing::Process::Feeding)
+                && record.destination() == Some(Account::Substance)
         })
         .expect("the body landing has a feeding flow");
-    let body_stock = feeding.record.composition.unwrap().output;
+    let body_stock = feeding.composition.unwrap().output;
     let spill_stock = world
         .flows()
         .iter()
         .find(|record| {
-            record.record.process == crate::legacy::mesocosm::flow::Process::Spill
-                && record.record.source == Account::Substance
+            record.process() == Some(crate::legacy::mesocosm::flowing::Process::Spill)
+                && record.source() == Some(Account::Substance)
         })
-        .and_then(|record| record.record.composition)
+        .and_then(|record| record.composition)
         .map_or(crate::matter::Stock::EMPTY, |composition| {
             composition.output
         });
@@ -124,12 +124,12 @@ fn whole_mixed_meal_burn_records_digestion_and_untyped_output() {
         .flows()
         .iter()
         .find(|record| {
-            record.record.process == crate::legacy::mesocosm::flow::Process::Feeding
-                && record.record.destination == Account::Reserve
+            record.process() == Some(crate::legacy::mesocosm::flowing::Process::Feeding)
+                && record.destination() == Some(Account::Reserve)
         })
         .expect("burning emits a reserve feeding flow");
-    let composition = flow.record.composition.unwrap();
-    assert_eq!(flow.record.amount_mg, amount);
+    let composition = flow.composition.unwrap();
+    assert_eq!(flow.amount, amount);
     assert_eq!(composition.input, stock);
     assert_eq!(
         composition.output,
@@ -137,7 +137,7 @@ fn whole_mixed_meal_burn_records_digestion_and_untyped_output() {
     );
     assert_eq!(
         composition.conversion,
-        Some(crate::legacy::mesocosm::flow::Conversion::Digestion)
+        Some(crate::flows::Conversion::Digestion)
     );
 }
 
@@ -207,12 +207,10 @@ fn whole_mixed_meal_snapshot_round_trip_preserves_part_and_flow_effect() {
     assert_eq!(attached, stock);
     assert_eq!(replay_attached, stock);
     let encoded = serde_json::to_vec(world.flows()).unwrap();
-    let decoded: Vec<crate::legacy::mesocosm::flow::RecordedFlow> =
-        serde_json::from_slice(&encoded).unwrap();
+    let decoded: Vec<crate::flows::Flow> = serde_json::from_slice(&encoded).unwrap();
     assert_eq!(decoded, world.flows());
     let encoded = postcard::to_allocvec(world.flows()).unwrap();
-    let decoded: Vec<crate::legacy::mesocosm::flow::RecordedFlow> =
-        postcard::from_bytes(&encoded).unwrap();
+    let decoded: Vec<crate::flows::Flow> = postcard::from_bytes(&encoded).unwrap();
     assert_eq!(decoded, world.flows());
 }
 

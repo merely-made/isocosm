@@ -32,9 +32,10 @@
 //! provenance it writes worth writing — `Origin::Incorporated { from_part }`
 //! finally names the part it came off rather than the donor's root.
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::body::{Origin, PartId, Provenance};
 use crate::legacy::mesocosm::discovery::Evidence;
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Subject};
 use crate::legacy::mesocosm::organism::OrganismId;
 use crate::legacy::mesocosm::plan::classify;
 
@@ -145,8 +146,8 @@ impl World {
         let taken = mass_mg;
         self.flow(
             eater_at,
-            FlowEvent::between(
-                crate::legacy::mesocosm::flow::Process::Feeding,
+            Flow::between(
+                crate::legacy::mesocosm::flowing::Process::Feeding,
                 carrion,
                 Account::Substance,
                 eater,

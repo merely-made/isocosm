@@ -16,7 +16,7 @@
 
 use crate::legacy::mesocosm::cohort;
 use crate::legacy::mesocosm::development::PartPalette;
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Process, Records, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Flow, Process, Records, Subject};
 use crate::legacy::mesocosm::places::{Ground, Places, Tier, TierLine};
 use crate::legacy::mesocosm::soil::{FORAGE_RADIUS, Soil};
 use crate::legacy::mesocosm::{rng::Rng, species::Lineages};
@@ -439,7 +439,7 @@ fn step_inner(
         // the prey's substance the ground got.
         records.flow(
             at,
-            FlowEvent::returned(Process::Spill, prey, Account::Substance, landed.spilled_mg)
+            Flow::returned(Process::Spill, prey, Account::Substance, landed.spilled_mg)
                 .with_stock(landed.spilled_stock),
         );
         // Gains before costs, same order act.rs's played meal settled on: a
@@ -459,7 +459,7 @@ fn step_inner(
         soil.deposit(prey_column, paid);
         records.flow(
             prey_at,
-            FlowEvent::returned(Process::Spill, eater_subject, Account::Reserve, paid),
+            Flow::returned(Process::Spill, eater_subject, Account::Reserve, paid),
         );
         records.event(
             at,

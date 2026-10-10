@@ -50,7 +50,7 @@ fn ready_world() -> (World, ConditionId) {
 fn assert_preview_kept_world(
     world: &World,
     before_hash: u64,
-    before_flows: Vec<crate::legacy::mesocosm::RecordedFlow>,
+    before_flows: Vec<crate::flows::Flow>,
 ) {
     assert_eq!(
         crate::legacy::mesocosm::state_hash(world),

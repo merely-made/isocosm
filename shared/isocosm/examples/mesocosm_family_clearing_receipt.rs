@@ -254,12 +254,12 @@ fn run(
         }
         let feeding_mg = flow_sum(
             &flows,
-            isocosm::legacy::mesocosm::flow::Process::Feeding,
+            isocosm::legacy::mesocosm::flowing::Process::Feeding,
             parent_id,
         );
         let uptake_mg = flow_sum(
             &flows,
-            isocosm::legacy::mesocosm::flow::Process::Uptake,
+            isocosm::legacy::mesocosm::flowing::Process::Uptake,
             parent_id,
         );
         let predation_mg = events
@@ -343,15 +343,13 @@ fn run(
 }
 
 fn flow_sum(
-    flows: &[isocosm::legacy::mesocosm::flow::RecordedFlow],
-    process: isocosm::legacy::mesocosm::flow::Process,
+    flows: &[isocosm::flows::Flow],
+    process: isocosm::legacy::mesocosm::flowing::Process,
     parent: Option<isocosm::legacy::mesocosm::OrganismId>,
 ) -> u64 {
     flows
         .iter()
-        .filter(|f| {
-            f.record.process == process && f.record.to.is_some_and(|s| Some(s.organism) == parent)
-        })
-        .map(|f| f.record.amount_mg)
+        .filter(|f| f.process() == Some(process) && parent.is_some() && f.to_organism() == parent)
+        .map(|f| f.amount)
         .sum()
 }

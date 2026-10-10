@@ -113,7 +113,7 @@ impl WorldTrial {
         }
         for uptake in self.driver.uptakes() {
             self.uptake_count += 1;
-            self.uptake_mg += uptake.record.record.amount_mg;
+            self.uptake_mg += uptake.record.amount;
             self.pulses.observe(uptake.organism, uptake.tick);
             self.uptake.push(uptake.clone());
         }
@@ -193,7 +193,7 @@ impl WorldTrial {
                 else {
                     continue;
                 };
-                let amount = Amount::UptakeMass(record.record.record.amount_mg);
+                let amount = Amount::UptakeMass(record.record.amount);
                 match self
                     .journey
                     .resolve(&self.driver, record.sequence, at, None, amount)

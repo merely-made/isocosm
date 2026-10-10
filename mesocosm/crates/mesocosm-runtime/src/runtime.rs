@@ -56,7 +56,7 @@ pub struct Runtime {
     readings: FlowWindows,
     /// Optional one-tick presentation reading used only by disposable trials.
     /// The ordinary driver does not retain an additional flow copy.
-    trial_flows: Option<Vec<isocosm::legacy::mesocosm::flow::RecordedFlow>>,
+    trial_flows: Option<Vec<isocosm::flows::Flow>>,
     /// The one body whose own accounts are being reduced beside the ecology's,
     /// and what they read. (DT2)
     ///

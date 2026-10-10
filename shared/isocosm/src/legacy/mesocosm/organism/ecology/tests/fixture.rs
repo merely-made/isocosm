@@ -11,8 +11,9 @@
 
 use super::*;
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
-use crate::legacy::mesocosm::flow::{Ledger, RecordedEvent, Records};
+use crate::legacy::mesocosm::flowing::{Ledger, Records};
 use crate::legacy::mesocosm::history::Event;
+use crate::legacy::mesocosm::history::RecordedEvent;
 use crate::legacy::mesocosm::organism::Kingdom;
 
 /// The two record streams a world would own, for a fixture that has no world.

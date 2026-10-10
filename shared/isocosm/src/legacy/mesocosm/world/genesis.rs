@@ -445,7 +445,7 @@ impl World {
         let pending = organisms
             .iter()
             .map(|o| {
-                crate::legacy::mesocosm::flow::Envelope::new(
+                crate::legacy::mesocosm::history::Envelope::new(
                     0,
                     grown.places.at(o.position),
                     crate::legacy::mesocosm::history::Event::Born {
@@ -501,7 +501,7 @@ impl World {
             next_organism: organism_count + 1,
             last_tally: crate::legacy::mesocosm::organism::Tally::default(),
             pending,
-            flows: crate::legacy::mesocosm::flow::Ledger::default(),
+            flows: crate::legacy::mesocosm::flowing::Ledger::default(),
             // The first epoch starts where the world does, nothing has been
             // weighed, and no line is standing at a checkpoint. (PE3)
             epoch_began: 0,

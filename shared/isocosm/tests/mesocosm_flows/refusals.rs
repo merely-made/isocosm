@@ -17,7 +17,7 @@
 //! returns before reaching either. `dev.rs` next door makes the same claim
 //! about DT3's four.
 
-use isocosm::legacy::mesocosm::flow::Process;
+use isocosm::legacy::mesocosm::flowing::Process;
 use isocosm::legacy::mesocosm::{Intent, Placement, World};
 
 use super::stepped;
@@ -37,8 +37,8 @@ fn an_accepted_deposit_is_in_the_stream_and_a_refused_one_is_not() {
     );
     let deposits: Vec<u64> = flows
         .iter()
-        .filter(|f| f.record.process == Process::Deposit)
-        .map(|f| f.record.amount_mg)
+        .filter(|f| f.process() == Some(Process::Deposit))
+        .map(|f| f.amount)
         .collect();
     assert_eq!(deposits, vec![60], "one deposit, for what was deposited");
 
@@ -48,7 +48,9 @@ fn an_accepted_deposit_is_in_the_stream_and_a_refused_one_is_not() {
         "on the refused deposit",
     );
     assert!(
-        !refused.iter().any(|f| f.record.process == Process::Deposit),
+        !refused
+            .iter()
+            .any(|f| f.process() == Some(Process::Deposit)),
         "a refusal moved nothing, so it recorded nothing"
     );
 }
@@ -79,8 +81,9 @@ fn a_refused_meal_leaves_the_prey_out_of_the_stream() {
         "the refusal left it alive"
     );
     assert!(
-        !flows.iter().any(|f| f.record.process == Process::Feeding
-            && f.record.from.is_some_and(|s| s.organism == far)),
+        !flows
+            .iter()
+            .any(|f| f.process() == Some(Process::Feeding) && f.from_organism() == Some(far)),
         "nothing was taken out of it, so nothing was recorded"
     );
 }

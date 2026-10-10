@@ -10,7 +10,7 @@ use super::*;
 
 use crate::legacy::mesocosm::body::{SpeciesId, VolumeRef};
 use crate::legacy::mesocosm::development::PartPalette;
-use crate::legacy::mesocosm::flow::{Account, Ledger, Process, Records};
+use crate::legacy::mesocosm::flowing::{Account, Ledger, Process, Records};
 use crate::legacy::mesocosm::organism::BodyOrgans;
 use crate::legacy::mesocosm::organism::{Kingdom, OrganismId, step};
 use crate::legacy::mesocosm::rng::Rng;
@@ -137,11 +137,11 @@ fn npc_bite_records_the_mixed_lot_it_preserves() {
     let feeding = flows
         .records()
         .iter()
-        .map(|record| record.record)
+        .cloned()
         .find(|flow| {
-            flow.process == Process::Feeding
-                && flow.source == Account::Substance
-                && flow.destination == Account::Substance
+            flow.process() == Some(Process::Feeding)
+                && flow.source() == Some(Account::Substance)
+                && flow.destination() == Some(Account::Substance)
         })
         .expect("the nearby NPCs exchange a body bite");
     let composition = feeding.composition.expect("a body bite retains its lot");

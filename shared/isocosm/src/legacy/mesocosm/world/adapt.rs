@@ -74,7 +74,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::legacy::mesocosm::body::SpeciesId;
 use crate::legacy::mesocosm::discovery::ConditionId;
-use crate::legacy::mesocosm::flow::Process;
+use crate::legacy::mesocosm::flowing::Process;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::phenotype::Arrangement;
 use crate::legacy::mesocosm::program::RevisionId;
@@ -342,19 +342,19 @@ impl World {
         for _ in 0..ticks {
             copy.apply(Intent::Idle);
             for flow in copy.flows() {
-                let record = &flow.record;
-                if record.is_internal() {
+                let record = flow;
+                if record.internal() {
                     continue;
                 }
-                if record.to.is_some_and(|to| to.lineage == species) {
-                    score.income_mg = score.income_mg.saturating_add(record.amount_mg);
+                if record.to_lineage() == Some(species) {
+                    score.income_mg = score.income_mg.saturating_add(record.amount);
                 }
-                if record.from.is_some_and(|from| from.lineage == species) {
-                    match record.process {
-                        Process::Upkeep => {
-                            score.rent_mg = score.rent_mg.saturating_add(record.amount_mg);
+                if record.from_lineage() == Some(species) {
+                    match record.process() {
+                        Some(Process::Upkeep) => {
+                            score.rent_mg = score.rent_mg.saturating_add(record.amount);
                         },
-                        _ => score.outflow_mg = score.outflow_mg.saturating_add(record.amount_mg),
+                        _ => score.outflow_mg = score.outflow_mg.saturating_add(record.amount),
                     }
                 }
             }

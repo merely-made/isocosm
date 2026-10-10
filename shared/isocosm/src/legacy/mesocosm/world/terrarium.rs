@@ -8,7 +8,7 @@
 
 use crate::legacy::mesocosm::body::{Attachment, PartId, Provenance, Yaw};
 use crate::legacy::mesocosm::development::{DevelopmentError, PartPalette};
-use crate::legacy::mesocosm::flow::Envelope;
+use crate::legacy::mesocosm::history::Envelope;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::{Kingdom, Organism, OrganismId, Stage};
 use crate::legacy::mesocosm::places::{Ground, Places, surface_stance_for};

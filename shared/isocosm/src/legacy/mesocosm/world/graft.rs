@@ -33,8 +33,9 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::flows::Flow;
 use crate::legacy::mesocosm::body::{PartId, SpeciesId};
-use crate::legacy::mesocosm::flow::{Account, FlowEvent, Subject};
+use crate::legacy::mesocosm::flowing::{Account, Subject};
 use crate::legacy::mesocosm::graft::compatibility::{CompatibilityReceipt, CompatibilityRefusal};
 use crate::legacy::mesocosm::graft::{Crossing, Verdict};
 use crate::legacy::mesocosm::organism::OrganismId;
@@ -201,8 +202,8 @@ impl World {
 
         self.flow(
             position,
-            FlowEvent::between(
-                crate::legacy::mesocosm::flow::Process::Graft,
+            Flow::between(
+                crate::legacy::mesocosm::flowing::Process::Graft,
                 carrion,
                 Account::Substance,
                 eater,
@@ -216,8 +217,8 @@ impl World {
             self.soil.deposit(column, cost_mg);
             self.flow(
                 position,
-                FlowEvent::returned(
-                    crate::legacy::mesocosm::flow::Process::Develop,
+                Flow::returned(
+                    crate::legacy::mesocosm::flowing::Process::Develop,
                     eater,
                     Account::Reserve,
                     cost_mg,

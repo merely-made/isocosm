@@ -17,7 +17,7 @@
 
 use super::kinship::Kin;
 use super::{dispersal_for, is_hungry, travels};
-use crate::legacy::mesocosm::flow::Records;
+use crate::legacy::mesocosm::flowing::Records;
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::{LastSeen, Organism};
 use crate::legacy::mesocosm::places::{

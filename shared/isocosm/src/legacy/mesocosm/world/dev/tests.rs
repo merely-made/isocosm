@@ -11,7 +11,7 @@
 //! transaction and the refusal.
 
 use super::*;
-use crate::legacy::mesocosm::flow::{Account, Process};
+use crate::legacy::mesocosm::flowing::{Account, Process};
 use crate::legacy::mesocosm::history::Event;
 use crate::legacy::mesocosm::organism::Stage;
 use crate::legacy::mesocosm::{rules::WorldRules, world::Intent};
@@ -248,14 +248,14 @@ fn a_forced_birth_is_the_ordinary_birth_with_the_clock_taken_off_it() {
     let paid: Vec<(Account, u64)> = world
         .flows()
         .iter()
-        .map(|flow| flow.record)
+        .cloned()
         .filter(|record| {
-            record.process == Process::Birth && record.to.map(|to| to.organism) == Some(offspring)
+            record.process() == Some(Process::Birth) && record.to_organism() == Some(offspring)
         })
         .map(|record| {
-            assert_eq!(record.from.map(|from| from.organism), Some(parent));
-            assert_eq!(record.source, record.destination);
-            (record.destination, record.amount_mg)
+            assert_eq!(record.from_organism(), Some(parent));
+            assert_eq!(record.source(), record.destination());
+            (record.destination().unwrap(), record.amount)
         })
         .collect();
     assert_eq!(paid.len(), 2, "one record per account: {paid:?}");
@@ -343,10 +343,9 @@ fn a_dev_kill_leaves_what_a_natural_death_leaves() {
     let natural_flow = world
         .flows()
         .iter()
-        .map(|flow| flow.record)
+        .cloned()
         .find(|record| {
-            record.process == Process::Death
-                && record.from.map(|from| from.organism) == Some(natural.0)
+            record.process() == Some(Process::Death) && record.from_organism() == Some(natural.0)
         })
         .expect("a natural death releases its reserve into the ground");
     let natural_corpse = world
@@ -401,15 +400,14 @@ fn a_dev_kill_leaves_what_a_natural_death_leaves() {
     let dev_flow = world
         .flows()
         .iter()
-        .map(|flow| flow.record)
+        .cloned()
         .find(|record| {
-            record.process == Process::Death
-                && record.from.map(|from| from.organism) == Some(target)
+            record.process() == Some(Process::Death) && record.from_organism() == Some(target)
         })
         .expect("a dev kill releases its reserve the same way");
-    assert_eq!(dev_flow.source, natural_flow.source);
-    assert_eq!(dev_flow.destination, natural_flow.destination);
-    assert_eq!(dev_flow.amount_mg, reserve_was);
+    assert_eq!(dev_flow.source(), natural_flow.source());
+    assert_eq!(dev_flow.destination(), natural_flow.destination());
+    assert_eq!(dev_flow.amount, reserve_was);
 
     // And the same corpse: carrion, holding what it weighed, banking nothing.
     let corpse = world
@@ -478,14 +476,14 @@ fn placed_matter_enters_the_ground_through_the_dev_source() {
     let placed = world
         .flows()
         .iter()
-        .map(|flow| flow.record)
-        .find(|record| record.process == Process::Place)
+        .cloned()
+        .find(|record| record.process() == Some(Process::Place))
         .expect("the placement is in the flow record");
-    assert_eq!(placed.source, Account::Dev);
-    assert_eq!(placed.destination, Account::Soil);
-    assert_eq!(placed.amount_mg, 900);
+    assert_eq!(placed.source(), Some(Account::Dev));
+    assert_eq!(placed.destination(), Some(Account::Soil));
+    assert_eq!(placed.amount, 900);
     assert!(
-        placed.from.is_none() && placed.to.is_none(),
+        placed.from_kind.is_none() && placed.to_kind.is_none(),
         "neither end is a body"
     );
     assert_eq!(Account::issued_mg(world.flows()), 900);
@@ -560,7 +558,7 @@ fn a_placement_off_the_grid_or_over_the_bound_is_refused_by_name() {
         world
             .flows()
             .iter()
-            .all(|flow| flow.record.process != Process::Place),
+            .all(|flow| flow.process() != Some(Process::Place)),
         "the last tick's placement was refused, so it recorded nothing"
     );
 }
