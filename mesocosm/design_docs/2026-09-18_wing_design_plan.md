@@ -9688,6 +9688,21 @@ what later sections derive from.
      (Recommended)". So it moves with the directing plan's D2.
      *Noted 2026-10-09:* the places lane coined `isometer-space` and
      `Atlas` mid-session; both are working names awaiting a naming round.
+743. **The neck width defaults to 2.** 2026-10-09, the places lane's
+     second pass (merged at `af3a0fc4`). Question: 738's split has no
+     default, so nothing splits until a world sets one. Options: 2, so any
+     1-wide neck splits (recommended); the roster's widest body; unset.
+     Mark chose "Default 2 (Recommended)".
+744. **Cliff spans are drawn, and the lift steps its surface there.**
+     2026-10-09. Question: spans derived from the lift never stop at a
+     cliff, two sites meeting on one continuous profile, so only water
+     stops a route, while A.2 has spans "drawn from both sites' skeletons".
+     Options: draw cliff spans from both skeletons and the pair seed, the
+     lift stepping its surface there (recommended); no cliffs, a steep span
+     being a climb; edits make cliffs. Mark chose "Draw cliff spans
+     (Recommended)". So the lift's bytes change on drawn worlds, which 732
+     lets land without re-certifying the lift's receipts until after the
+     push.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
