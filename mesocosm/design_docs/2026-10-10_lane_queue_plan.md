@@ -289,3 +289,11 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   verified 143 new/index links and 43 full source paths. Merge retains
   rulings 805 to 807 and both sides' dated Progress entries. This is a
   documentation gate; implementation, draw and headed gates stay open.
+- **2026-10-10, Q7 launched:** the finished Q1 worktree
+  `C:\Users\mark_\Code\worktrees\isometry-plans` is reused at main
+  `71233197`, with its branch renamed to `lane-tenant`. Q7 owns it while
+  moving Mesocosm to the tenant and checking retirement of `LiveBody`.
+  This keeps in-progress renderer changes separate from main integration
+  of the concurrent contracts and reproduction lanes. Its Cargo output,
+  when granted, belongs at `C:\t\cargo-targets\isometry\tenant`. Q2, Q3
+  and Q7 are the three active lanes; no new worktree was created.
