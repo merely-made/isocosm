@@ -9,4 +9,6 @@ publish = false
 
 [dependencies]
 isocosm = { path = "../../../../shared/isocosm" }
-parry3d = { version = "0.31.1", features = ["enhanced-determinism"] }
+# The stack's collider layer (wing rulings 695, 722 to 725, 731): Rapier and
+# Parry stay private inside conatus.
+conatus = { git = "https://github.com/merely-made/mere.git", rev = "50fd021cac6345a320db539b56637228318669ff" }
