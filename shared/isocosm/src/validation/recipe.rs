@@ -77,6 +77,10 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
                 return refuse("branches a tagma from one not yet placed");
             }
         }
+        // A declared tract names a catalogued function on some part (765).
+        if d.tracts.iter().any(|t| t.cells == 0 || !rules.functions.contains_key(&t.function)) {
+            return refuse("declares a tract of no cells or of no catalogued function");
+        }
         let [odds, of] = recipe.absence;
         if of == 0 || odds > of {
             return refuse("has absence odds that are no chance");

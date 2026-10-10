@@ -25,7 +25,7 @@ pub use effect::{Conversion, Effect};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
-pub use recipe::{Affinity, Anchor, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
+pub use recipe::{Affinity, Anchor, Declared, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
 pub use systems::{Carriage, Fill, Role, System, default_systems};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

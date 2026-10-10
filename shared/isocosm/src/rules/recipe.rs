@@ -242,6 +242,24 @@ pub struct Development {
     /// mature, or keep the count they drew, the default (495).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub anamorphic: bool,
+    /// The tracts a body developing from this is born expressing (765,
+    /// Mesocosm's declared tracts): a shape and a function, so many cells on
+    /// each part of that shape, or as many as it holds.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub tracts: Vec<Declared>,
+    /// The systems the line folded in at a boundary from those its bodies
+    /// carried (568, 765); a child of the line carries them. Lines that
+    /// folded none serialize and hash as before.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub systems: BTreeMap<Key, super::System>,
+}
+
+/// One declared tract: `cells` of `function` on each part read as `shape`.
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct Declared {
+    pub shape: Key,
+    pub function: Key,
+    pub cells: u32,
 }
 
 impl Recipe {

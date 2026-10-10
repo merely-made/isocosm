@@ -5,8 +5,16 @@
 //! family: a line may commit a variant of its development recipe drawn
 //! from what it has learned, so 684's boundary has something to weigh. A
 //! variant bears a learned kind its recipe does not yet name on one tagma.
+//! Since 765 a revision also declares a tract the line's members express
+//! by acquisition, as Mesocosm's programs declared tracts, or folds in the
+//! systems its members carry, 568's second door.
 
-use crate::{Result, Session, rules::Development, schema::*, simulation::Simulation};
+use crate::{
+    Result, Session,
+    rules::{Declared, Development, Seeding, System},
+    schema::*,
+    simulation::Simulation,
+};
 use std::collections::BTreeMap;
 
 /// The variants of `d` a line could commit, named, at most `most`: each
@@ -41,7 +49,7 @@ pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candi
     else {
         return vec![];
     };
-    variants(d, most)
+    offered(session, lineage, d, most)
         .into_iter()
         .filter(|(_, v)| sim.revisable(lineage, v).is_ok())
         .map(|(name, development)| super::boundary::Candidate {
@@ -50,6 +58,96 @@ pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candi
                 lineage: lineage.into(),
                 development,
             }],
+        })
+        .collect()
+}
+
+/// Everything a line could commit, named: its recipe's variants, the
+/// tracts it could declare and the systems it could fold in, at most
+/// `most` of each.
+pub fn offered(
+    session: &Session,
+    lineage: &str,
+    d: &Development,
+    most: usize,
+) -> Vec<(Key, Development)> {
+    let mut out = variants(d, most);
+    out.extend(declarations(session, lineage, d).into_iter().take(most));
+    out.extend(folds(session, lineage, d).into_iter().take(most));
+    out
+}
+
+/// The line's living members, each with how many it stands for.
+fn members<'a>(session: &'a Session, lineage: &'a str) -> impl Iterator<Item = (&'a Entity, u64)> {
+    let groups = session.sim.state().population.groups.values();
+    groups
+        .filter(move |g| g.entity.alive && g.entity.lineage == lineage)
+        .map(|g| (&g.entity, g.count))
+}
+
+/// Tracts the line's members express by acquisition on a part of some
+/// shape, which `d` does not yet declare: each a variant declaring it at
+/// the most cells any member holds there.
+fn declarations(session: &Session, lineage: &str, d: &Development) -> Vec<(Key, Development)> {
+    let rules = &session.sim.genesis().rules;
+    let acquired = |f: &Key| {
+        rules
+            .functions
+            .get(f)
+            .is_some_and(|x| x.seeding == Seeding::Acquired)
+    };
+    let mut found: BTreeMap<(Key, Key), u32> = BTreeMap::new();
+    for (e, _) in members(session, lineage) {
+        for (id, p) in e.living() {
+            let Some(shape) = crate::anatomy::name(e, id) else {
+                continue;
+            };
+            for (f, n) in p.cells.iter().filter(|(f, n)| **n > 0 && acquired(f)) {
+                let slot = found.entry((shape.to_string(), f.clone())).or_default();
+                *slot = (*slot).max(*n);
+            }
+        }
+    }
+    let declared = |shape: &Key, f: &Key| {
+        d.tracts
+            .iter()
+            .any(|t| &t.shape == shape && &t.function == f)
+    };
+    found
+        .into_iter()
+        .filter(|((shape, f), _)| !declared(shape, f))
+        .map(|((shape, function), cells)| {
+            let mut v = d.clone();
+            let name = format!("revision:declare-{function}-on-{shape}");
+            v.tracts.push(Declared {
+                shape,
+                function,
+                cells,
+            });
+            v.tracts.sort();
+            (name, v)
+        })
+        .collect()
+}
+
+/// The systems the line's members carry, most members first, each a
+/// variant folding them in, those it already folded left out.
+fn folds(session: &Session, lineage: &str, d: &Development) -> Vec<(Key, Development)> {
+    let mut held: Vec<(BTreeMap<Key, System>, u64)> = vec![];
+    for (e, n) in members(session, lineage) {
+        match held.iter_mut().find(|(s, _)| *s == e.systems) {
+            Some(slot) => slot.1 += n,
+            None => held.push((e.systems.clone(), n)),
+        }
+    }
+    held.sort_by(|a, b| b.1.cmp(&a.1));
+    held.into_iter()
+        .filter(|(s, _)| !s.is_empty() && *s != d.systems)
+        .enumerate()
+        .map(|(i, (systems, _))| {
+            let mut v = d.clone();
+            v.systems = systems;
+            (format!("revision:fold-systems-{i}"), v)
         })
         .collect()
 }

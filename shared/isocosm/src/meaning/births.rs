@@ -108,7 +108,7 @@ pub(crate) fn hatch(
     }
     let seed = soma.seed;
     let mut child = newborn(parent, body, soma.segments, tick);
-    born(&mut child, rules, &l.d.recipe, seed);
+    born(&mut child, rules, &l.d, seed);
     child.traits.extend(young.cloned());
     let given =
         anatomy::give(&mut child, rules, &l.tissue, share).ok_or("a child with no parts")??;
@@ -230,15 +230,20 @@ pub(crate) fn seedling(
         parts: BTreeMap::from([(PartId(0), part)]),
     };
     let mut child = newborn(parent, body, soma.segments, tick);
-    born(&mut child, rules, &l.d.recipe, soma.seed);
+    born(&mut child, rules, &l.d, soma.seed);
     child
 }
 
 /// What a child carries beyond its recipe (568, 577 and 583): its parent's
-/// systems, and its parent's varied cells where its soma develops their
-/// parts, applied to those it has; then its own varied cell and its riff,
-/// both by its soma's seed.
-fn born(child: &mut Entity, rules: &Rules, recipe: &crate::rules::Recipe, seed: u64) {
+/// systems, or those its line folded in at a boundary (765), and its
+/// parent's varied cells where its soma develops their parts, applied to
+/// those it has; then its own varied cell and its riff, both by its soma's
+/// seed.
+fn born(child: &mut Entity, rules: &Rules, d: &Development, seed: u64) {
+    let recipe = &d.recipe;
+    if !d.systems.is_empty() {
+        child.systems = d.systems.clone();
+    }
     let soma = &child.soma;
     let within = |v: &Varied| {
         let [t, s, _] = v.situs;

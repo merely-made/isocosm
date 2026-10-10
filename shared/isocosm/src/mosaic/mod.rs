@@ -15,7 +15,10 @@ use crate::schema::*;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+mod declare;
 pub mod ports;
+
+pub use declare::declare;
 
 /// A cell's address in its part's lattice. Stable while the box is.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
