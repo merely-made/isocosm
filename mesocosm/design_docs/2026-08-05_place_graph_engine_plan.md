@@ -312,6 +312,23 @@ guards is deliberately broken.
   both sides meet on one continuous profile, so a cliff that stops a
   route needs drawn geometry in the lift; and the neck width has no
   default.
+  *Annotation, 2026-10-09, third pass (743, 744):* the neck width
+  defaults to 2 (743). Cliff spans are drawn (744) on each border's
+  interior spans: the first and last span of a side never step, so
+  corners and other borders stay put. Each is drawn from the pair seed, with a chance that
+  grows with both sites' relief and their difference in elevation. The
+  lower site's surface steps down at least `CLIFF` (64 base units) plus
+  the pair's relief, full at the border and easing back over an eighth
+  of a side. The step lives in the lattice's surface, and the mean
+  correction puts back exactly what the cliffs take, so the mean check
+  still holds. The borders check sets cliff spans aside. Places look for
+  a step no taller than `CLIFF` either way. So the border classes, still
+  derived from the lifted columns, read a cliff as a stop, and the
+  volume agrees: a dry route stops there. The lift's bytes change on
+  drawn worlds, and its own tests needed no new values, since none pins
+  a digest. *Reading, not ruled:* the sim never sees a member move
+  within its site, so its game updates `patch` through `Command::Patch`
+  as it moves it.
 - **SP6, the store moves to nisus.** After T2 (ruling 363): baseline chunks
   land in nisus's world store and edits pass through its revision log
   (rulings 330 and 331), and `Ground` thins or retires as ruling 330 allows.

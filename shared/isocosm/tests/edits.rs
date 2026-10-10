@@ -168,3 +168,15 @@ fn a_member_names_its_patch_only_in_its_own_site() {
     let loaded = Session::load_json(&json, Execution::Individuals).unwrap();
     assert_eq!(loaded.sim.state().population.get(actor).unwrap().patch, Some(patch));
 }
+
+#[test]
+fn a_member_moving_within_its_site_is_renamed_by_its_game() {
+    let mut session = Session::new(mapped(59), Execution::Individuals).unwrap();
+    let (actor, site, _) = digger(&session.sim);
+    let at = |cell| isometer_space::places::PlaceId { site, cell };
+    let patch = |s: &Session| s.sim.state().population.get(actor).unwrap().patch;
+    for p in [Some(at([2, 30, 2])), Some(at([40, 31, 9])), None] {
+        session.command(Command::Patch { entity: actor, patch: p }).unwrap();
+        assert_eq!(patch(&session), p);
+    }
+}
