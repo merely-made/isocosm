@@ -11,27 +11,48 @@ use super::flood::Found;
 use super::{Clearance, Kind, Passage, PlaceId, Places};
 use std::collections::{BTreeMap, BTreeSet};
 
-/// One crossing, from the lesser place's cell to the greater's.
+/// One crossing, from the lesser place's cell to the greater's, and the
+/// way it goes in the lesser place's frame.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-struct Crossing {
-    cells: [[i64; 3]; 2],
-    height: u32,
-    step: u32,
+pub(super) struct Crossing {
+    pub cells: [[i64; 3]; 2],
+    pub way: [i64; 2],
+    pub height: u32,
+    pub step: u32,
+}
+
+/// Crossings gathered by the pair of places they join.
+pub(super) type Crossings = BTreeMap<[PlaceId; 2], BTreeSet<Crossing>>;
+
+/// Files a crossing from `a` in `p` to `b` in `q`, which goes `way` seen
+/// from `p`'s frame and `back` seen from `q`'s.
+#[allow(clippy::too_many_arguments)]
+pub(super) fn file(
+    into: &mut Crossings,
+    [p, q]: [PlaceId; 2],
+    [a, b]: [[i64; 3]; 2],
+    [way, back]: [[i64; 2]; 2],
+    height: i64,
+    step: i64,
+) {
+    if p == q {
+        return;
+    }
+    let (between, cells, way) = if p < q { ([p, q], [a, b], way) } else { ([q, p], [b, a], back) };
+    into.entry(between).or_default().insert(Crossing {
+        cells,
+        way,
+        height: height as u32,
+        step: step.unsigned_abs() as u32,
+    });
 }
 
 /// The passages touching any of `found`, read against every labelled cell.
 pub(super) fn of(c: &Cells<'_>, places: &Places, found: &[Found]) -> Vec<Passage> {
-    let mut crossings: BTreeMap<[PlaceId; 2], BTreeSet<Crossing>> = BTreeMap::new();
+    let mut crossings = Crossings::new();
     let mut cross = |p: PlaceId, q: PlaceId, a: [i64; 3], b: [i64; 3], height: i64, step: i64| {
-        if p == q {
-            return;
-        }
-        let (between, cells) = if p < q { ([p, q], [a, b]) } else { ([q, p], [b, a]) };
-        crossings.entry(between).or_default().insert(Crossing {
-            cells,
-            height: height as u32,
-            step: step.unsigned_abs() as u32,
-        });
+        let way = [b[0] - a[0], b[2] - a[2]];
+        file(&mut crossings, [p, q], [a, b], [way, way.map(|v| -v)], height, step);
     };
     for f in found {
         let id = f.place.id;
@@ -75,14 +96,26 @@ pub(super) fn of(c: &Cells<'_>, places: &Places, found: &[Found]) -> Vec<Passage
     }
     crossings
         .into_iter()
-        .map(|(between, set)| passage(places, between, set))
+        .map(|(between, set)| {
+            let place = |k: usize| places.places.get(&between[k]);
+            let centre = |k: usize| place(k).map_or(between[k].cell, |p| p.centre);
+            let wet = (0..2).any(|k| place(k).is_some_and(|p| p.kind == Kind::Water));
+            passage(between, set, [centre(0), centre(1)], wet)
+        })
         .collect()
 }
 
-fn passage(places: &Places, between: [PlaceId; 2], set: BTreeSet<Crossing>) -> Passage {
+/// A passage from its crossings, its cost measured between `centres`
+/// given in one frame.
+pub(super) fn passage(
+    between: [PlaceId; 2],
+    set: BTreeSet<Crossing>,
+    centres: [[i64; 3]; 2],
+    wet: bool,
+) -> Passage {
     let all: Vec<Crossing> = set.into_iter().collect();
     // Runs: crossings the same way whose near cells sit side by side.
-    let way = |x: &Crossing| [x.cells[1][0] - x.cells[0][0], x.cells[1][2] - x.cells[0][2]];
+    let way = |x: &Crossing| x.way;
     let mut parent: Vec<usize> = (0..all.len()).collect();
     fn root(p: &mut [usize], i: usize) -> usize {
         let mut i = i;
@@ -140,11 +173,7 @@ fn passage(places: &Places, between: [PlaceId; 2], set: BTreeSet<Crossing>) -> P
             kept.push(*c);
         }
     }
-    let centre = |id: &PlaceId| places.places.get(id).map(|p| p.centre).unwrap_or(id.cell);
-    let (a, b) = (centre(&between[0]), centre(&between[1]));
-    let wet = between
-        .iter()
-        .any(|id| places.places.get(id).is_some_and(|p| p.kind == Kind::Water));
+    let [a, b] = centres;
     Passage {
         between,
         wet,

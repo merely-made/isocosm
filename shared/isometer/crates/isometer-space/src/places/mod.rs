@@ -12,13 +12,20 @@
 
 mod cells;
 mod flood;
+mod join;
+#[cfg(test)]
+mod join_tests;
 mod local;
+mod neck;
 mod passages;
 mod route;
+mod sight;
 #[cfg(test)]
 mod tests;
 
-pub use route::Body;
+pub use join::join;
+pub use route::{Body, route_over};
+pub use sight::ray;
 
 use crate::volume::Volume;
 use crate::{Result, SiteId};
@@ -60,14 +67,15 @@ impl Cap {
     }
 }
 
-/// Which air is cut off from the sky. Ruling 417 names rooms, caves and
-/// tunnels so; whether a cave with an open mouth is one is not yet ruled,
-/// so a caller names the reading it derives under.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+/// Which air is cut off from the sky (ruling 417). A room is roofed air
+/// (ruling 737), so an open-mouthed cave is a room; `Sealed` stays as the
+/// literal reading, for comparison.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Cover {
     /// Air with no path through air to the open sky.
     Sealed,
     /// Air with something solid anywhere above it.
+    #[default]
     Roofed,
 }
 
@@ -77,6 +85,10 @@ pub struct Rules {
     pub climb: Climb,
     pub cap: Cap,
     pub cover: Cover,
+    /// The walkable width, in base units, below which a patch splits at a
+    /// neck (ruling 738). A world rule with no ruled default: unset, no
+    /// patch splits.
+    pub neck: Option<u32>,
 }
 
 impl Rules {
@@ -87,7 +99,15 @@ impl Rules {
             climb: Climb { rise: 1, run: 1 },
             cap: Cap::Large,
             cover,
+            neck: None,
         }
+    }
+}
+
+impl Default for Rules {
+    /// The ruled defaults with rooms roofed (ruling 737).
+    fn default() -> Self {
+        Self::ruled(Cover::default())
     }
 }
 
@@ -116,6 +136,8 @@ pub struct Place {
     pub centre: [i64; 3],
     /// The least cell of the walkable component a patch was cut from.
     pub component: [i64; 3],
+    /// The least and greatest coordinate its cells reach on each axis.
+    pub bounds: [[i64; 3]; 2],
 }
 
 /// What a body must fit to cross: the widest and tallest it may be and the

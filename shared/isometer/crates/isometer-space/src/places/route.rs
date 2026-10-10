@@ -47,37 +47,50 @@ impl Places {
         to: PlaceId,
         admit: impl Fn(&Passage) -> bool,
     ) -> Option<(u64, Vec<PlaceId>)> {
-        let mut next: BTreeMap<PlaceId, Vec<(PlaceId, u64)>> = BTreeMap::new();
-        for p in self.passages.values().filter(|p| admit(p)) {
-            let [a, b] = p.between;
-            next.entry(a).or_default().push((b, p.cost));
-            next.entry(b).or_default().push((a, p.cost));
-        }
-        let mut best: BTreeMap<PlaceId, (u64, Option<PlaceId>)> = BTreeMap::from([(from, (0, None))]);
-        let mut queue = BinaryHeap::from([Reverse((0u64, from))]);
-        while let Some(Reverse((cost, at))) = queue.pop() {
-            if at == to {
-                let mut path = vec![to];
-                while let Some((_, Some(prev))) = best.get(path.last()?) {
-                    path.push(*prev);
-                }
-                path.reverse();
-                return Some((cost, path));
-            }
-            if best.get(&at).is_some_and(|b| b.0 < cost) {
-                continue;
-            }
-            for &(n, step) in next.get(&at).into_iter().flatten() {
-                let c = cost + step;
-                if best.get(&n).is_none_or(|b| c < b.0) {
-                    best.insert(n, (c, Some(at)));
-                    queue.push(Reverse((c, n)));
-                }
-            }
-        }
-        None
+        route_over(self.passages.values(), from, to, admit)
     }
+}
 
+/// The cheapest route over any passages, a site's own or those joining
+/// sites, keeping only those `admit` lets through.
+pub fn route_over<'p>(
+    passages: impl IntoIterator<Item = &'p Passage>,
+    from: PlaceId,
+    to: PlaceId,
+    admit: impl Fn(&Passage) -> bool,
+) -> Option<(u64, Vec<PlaceId>)> {
+    let mut next: BTreeMap<PlaceId, Vec<(PlaceId, u64)>> = BTreeMap::new();
+    for p in passages.into_iter().filter(|p| admit(p)) {
+        let [a, b] = p.between;
+        next.entry(a).or_default().push((b, p.cost));
+        next.entry(b).or_default().push((a, p.cost));
+    }
+    let mut best: BTreeMap<PlaceId, (u64, Option<PlaceId>)> = BTreeMap::from([(from, (0, None))]);
+    let mut queue = BinaryHeap::from([Reverse((0u64, from))]);
+    while let Some(Reverse((cost, at))) = queue.pop() {
+        if at == to {
+            let mut path = vec![to];
+            while let Some((_, Some(prev))) = best.get(path.last()?) {
+                path.push(*prev);
+            }
+            path.reverse();
+            return Some((cost, path));
+        }
+        if best.get(&at).is_some_and(|b| b.0 < cost) {
+            continue;
+        }
+        for &(n, step) in next.get(&at).into_iter().flatten() {
+            let c = cost + step;
+            if best.get(&n).is_none_or(|b| c < b.0) {
+                best.insert(n, (c, Some(at)));
+                queue.push(Reverse((c, n)));
+            }
+        }
+    }
+    None
+}
+
+impl Places {
     /// Waypoints from cell `from` to cell `to` for `body`: each crossing's
     /// two cells along the cheapest route, then `to`.
     pub fn walk(&self, from: [i64; 3], to: [i64; 3], body: &Body) -> Option<Vec<[i64; 3]>> {
@@ -85,9 +98,17 @@ impl Places {
         let (_, path) = self.route(a, b, body)?;
         let mut out = Vec::new();
         for pair in path.windows(2) {
-            let key = if pair[0] < pair[1] { [pair[0], pair[1]] } else { [pair[1], pair[0]] };
+            let key = if pair[0] < pair[1] {
+                [pair[0], pair[1]]
+            } else {
+                [pair[1], pair[0]]
+            };
             let c = body.fits(self.passages.get(&key)?)?;
-            let [near, far] = if pair[0] < pair[1] { c.cells } else { [c.cells[1], c.cells[0]] };
+            let [near, far] = if pair[0] < pair[1] {
+                c.cells
+            } else {
+                [c.cells[1], c.cells[0]]
+            };
             out.extend([near, far]);
         }
         out.push(to);

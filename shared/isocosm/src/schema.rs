@@ -124,6 +124,11 @@ pub struct Entity {
     /// regrows.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub varied: Vec<Varied>,
+    /// The patch or room its game placed it in, inside a lifted site
+    /// (rulings 422 and 740); set only on a member split out of its cohort,
+    /// and cleared when it leaves the site.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub patch: Option<isometer_space::places::PlaceId>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the
@@ -275,10 +280,17 @@ pub struct WorldTraits {
 }
 
 /// A voxel material: the nis it is, by key, and the lineage it is nis of.
+/// A founder may give it a density, the amount one base-unit cell holds,
+/// and the matter account that amount moves through (rulings 412 and
+/// 739); until both are set, only the dev source edits it.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Material {
     pub key: Key,
     pub lineage: Key,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub density: Option<u64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub account: Option<Key>,
 }
 
 /// An edit to a site's volume as the sim keeps it (rulings 413 and 696):
@@ -289,6 +301,10 @@ pub struct Edited {
     pub tick: Tick,
     pub site: Id,
     pub edit: isometer_space::Edit,
+    /// The member whose ledger it moved matter through, or none for the
+    /// dev source.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub by: Option<Id>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

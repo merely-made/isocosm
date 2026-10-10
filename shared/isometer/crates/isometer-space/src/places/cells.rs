@@ -104,28 +104,35 @@ impl<'a> Cells<'a> {
     /// any rise, with the rise: up while `a`'s column is clear above it,
     /// level, or down while the neighbour's column is clear up to `a`.
     pub fn steps(&self, a: [i64; 3]) -> Vec<([i64; 3], i64)> {
-        let [x, y, z] = a;
         let room = self.headroom(a);
+        DIRECTIONS
+            .iter()
+            .flat_map(|[dx, dz]| self.step_into(a, room, self, [a[0] + dx, a[2] + dz]))
+            .collect()
+    }
+
+    /// The steps from stance `a`, with `room` headroom, into column
+    /// `[nx, nz]` of `far`: this volume's, or a neighbour's across a border
+    /// with the same heights.
+    pub fn step_into(&self, a: [i64; 3], room: i64, far: &Cells<'_>, [nx, nz]: [i64; 2]) -> Vec<([i64; 3], i64)> {
+        let y = a[1];
         let mut out = Vec::new();
-        for [dx, dz] in DIRECTIONS {
-            let (nx, nz) = (x + dx, z + dz);
-            let mut below = self.cell([nx, y - 1, nz]);
-            for ny in y..(y + room).min(self.top + 1) {
-                let here = self.cell([nx, ny, nz]);
-                if here == Cell::Air && below == Cell::Solid {
-                    out.push(([nx, ny, nz], ny - y));
-                }
-                below = here;
+        let mut below = far.cell([nx, y - 1, nz]);
+        for ny in y..(y + room).min(far.top + 1) {
+            let here = far.cell([nx, ny, nz]);
+            if here == Cell::Air && below == Cell::Solid {
+                out.push(([nx, ny, nz], ny - y));
             }
-            if self.air([nx, y, nz]) {
-                let mut ny = y - 1;
-                while ny >= self.floor && self.air([nx, ny, nz]) {
-                    if self.stance([nx, ny, nz]) {
-                        out.push(([nx, ny, nz], ny - y));
-                        break;
-                    }
-                    ny -= 1;
+            below = here;
+        }
+        if far.air([nx, y, nz]) {
+            let mut ny = y - 1;
+            while ny >= far.floor && far.air([nx, ny, nz]) {
+                if far.stance([nx, ny, nz]) {
+                    out.push(([nx, ny, nz], ny - y));
+                    break;
                 }
+                ny -= 1;
             }
         }
         out

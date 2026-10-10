@@ -135,7 +135,7 @@ impl Edit {
 
 /// Where each side of a square starts, which way it runs, and which way is
 /// inward, in `(x, z)`.
-fn frame(k: u8, side: i64) -> ([i64; 2], [i64; 2], [i64; 2]) {
+pub(crate) fn frame(k: u8, side: i64) -> ([i64; 2], [i64; 2], [i64; 2]) {
     match k % 4 {
         0 => ([0, 0], [1, 0], [0, 1]),
         1 => ([side, 0], [0, 1], [-1, 0]),
@@ -147,7 +147,7 @@ fn frame(k: u8, side: i64) -> ([i64; 2], [i64; 2], [i64; 2]) {
 /// A point of one site's frame in its neighbour's, across `border`: as far
 /// along the shared side, run the other way unless flipped, and as far past
 /// it as it was inside.
-fn across(p: [i64; 3], border: Border, side: i64) -> [i64; 3] {
+pub(crate) fn across(p: [i64; 3], border: Border, side: i64) -> [i64; 3] {
     let (c, d, n) = frame(border.side, side);
     let rel = [p[0] - c[0], p[2] - c[1]];
     let t = rel[0] * d[0] + rel[1] * d[1];
