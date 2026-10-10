@@ -14,6 +14,12 @@ use crate::{ActKey, EntityHandle, Harm};
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum EponymHandoff {
     Blow(Blow),
+    /// Harm the game settled with no blow behind it, a fall's or a
+    /// scene's, to the envelope's subject (794).
+    Hurt(Harm),
+    /// Items the envelope's subject wore on a part it lost, fallen where it
+    /// stands: where an item is worn is the game's (ruling 776).
+    Dropped(Vec<EntityHandle>),
 }
 
 /// One blow, resolved: who struck, whom, with what act, and the harm done in

@@ -14,6 +14,14 @@ pub struct PlayerAct {
     pub kind: PlayerActKind,
 }
 
+/// The sophont's own observation, claim or correction, in the sim's opaque
+/// record vocabulary. Reports to another cross as a [`super::Telling`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct KnowingAct {
+    pub subject: EntityHandle,
+    pub record: Vec<u8>,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PlayerActKind {
     /// Name the creature one lives, or what it meets; the name is the doing,

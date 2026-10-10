@@ -18,14 +18,16 @@
 
 mod act;
 mod actuation;
+mod agree;
 mod ask;
 mod checkpoint;
 mod handoff;
 mod telling;
 
-pub use act::{PlayerAct, PlayerActKind};
+pub use act::{KnowingAct, PlayerAct, PlayerActKind};
 pub use actuation::{ActTarget, Actuation, Motion, TimedAct};
-pub use ask::{Proposal, Term, TermSide, WorkKey};
+pub use agree::{AgreementAct, Deed, DeedKey, EndReason};
+pub use ask::{AgreementHandle, Proposal, Term, TermSide, WorkKey};
 pub use checkpoint::{FirstLife, LifeCheckpoint, LifeChoice, StartTime, Succession, Successor};
 pub use handoff::{Blow, EponymHandoff};
 pub use telling::{Claim, Manner, Telling};
@@ -35,13 +37,16 @@ use serde::{Deserialize, Serialize};
 use crate::{EntityHandle, HandoffEnvelope, IntentEnvelope};
 
 /// Everything an Eponym host may send the sim: the played body's actuation,
-/// an ask, a telling, a player's own act, a checkpoint answer, or creative
-/// mode's tag-in and tag-out.
+/// an ask, a step in an agreement's life, a deed, a telling, a player's own
+/// act, a checkpoint answer, or creative mode's tag-in and tag-out.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum EponymIntent {
     Drive(Actuation),
     Ask(Proposal),
+    Agree(AgreementAct),
+    Deed(Deed),
     Tell(Telling),
+    Know(KnowingAct),
     Act(PlayerAct),
     Checkpoint(LifeCheckpoint),
     Creative(CreativeIntent),

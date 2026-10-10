@@ -5,10 +5,10 @@
 //! same format as `core_roundtrip.rs` and `mesocosm_roundtrip.rs`.
 
 use isocosm_overlay::eponym::{
-    ActTarget, Actuation, Blow, Claim, CreativeIntent, EponymHandoff, EponymHandoffEnvelope,
-    EponymIntent, EponymIntentEnvelope, FirstLife, LifeCheckpoint, LifeChoice, Manner, Motion,
-    PlayerAct, PlayerActKind, Proposal, StartTime, Succession, Successor, Telling, Term, TermSide,
-    TimedAct, WorkKey,
+    ActTarget, Actuation, AgreementAct, AgreementHandle, Blow, Claim, CreativeIntent, Deed,
+    DeedKey, EndReason, EponymHandoff, EponymHandoffEnvelope, EponymIntent, EponymIntentEnvelope,
+    FirstLife, KnowingAct, LifeCheckpoint, LifeChoice, Manner, Motion, PlayerAct, PlayerActKind,
+    Proposal, StartTime, Succession, Successor, Telling, Term, TermSide, TimedAct, WorkKey,
 };
 use isocosm_overlay::{
     ActKey, EntityHandle, EventHandle, Harm, Intent, LineageHandle, PartHandle, ParticipantHandle,
@@ -32,11 +32,11 @@ fn entity(id: u64) -> EntityHandle {
 fn actuation() -> Actuation {
     Actuation {
         body: entity(1),
-        motion: Motion {
+        motion: Some(Motion {
             at: PlaceHandle(4),
             position: WorldPoint([12, -3, 7]),
             fell: 2,
-        },
+        }),
         acts: vec![
             TimedAct {
                 act: ActKey("strike".into()),
@@ -50,11 +50,18 @@ fn actuation() -> Actuation {
                 act: ActKey("anchor".into()),
                 target: Some(ActTarget::Place(PlaceHandle(4))),
             },
+            TimedAct {
+                act: ActKey("carve".into()),
+                target: Some(ActTarget::Region {
+                    centre: WorldPoint([1, 2, 3]),
+                    radius: 2,
+                }),
+            },
         ],
     }
 }
 
-fn proposal(under: Option<EventHandle>) -> Proposal {
+fn proposal(under: Option<AgreementHandle>) -> Proposal {
     Proposal {
         from: entity(1),
         to: entity(2),
@@ -117,7 +124,7 @@ fn actuation_roundtrips_with_every_act_target() {
 #[test]
 fn proposal_roundtrips_fresh_and_under_a_standing_agreement() {
     roundtrips(&proposal(None));
-    roundtrips(&proposal(Some(EventHandle(21))));
+    roundtrips(&proposal(Some(AgreementHandle(21))));
 }
 
 #[test]
@@ -210,6 +217,14 @@ fn eponym_intent_roundtrips_every_variant() {
     roundtrips(&EponymIntent::Drive(actuation()));
     roundtrips(&EponymIntent::Ask(proposal(None)));
     roundtrips(&EponymIntent::Tell(telling(Manner::Persuade)));
+    roundtrips(&EponymIntent::Know(KnowingAct {
+        subject: entity(1),
+        record: vec![1, 2, 3],
+    }));
+    roundtrips(&EponymIntent::Drive(Actuation {
+        motion: None,
+        ..actuation()
+    }));
     roundtrips(&EponymIntent::Act(PlayerAct {
         subject: entity(1),
         kind: PlayerActKind::Name {
@@ -232,6 +247,13 @@ fn eponym_intent_is_creative_matches_the_creative_variant_only() {
     assert!(!EponymIntent::Drive(actuation()).is_creative());
     assert!(!EponymIntent::Ask(proposal(None)).is_creative());
     assert!(!EponymIntent::Tell(telling(Manner::Plain)).is_creative());
+    assert!(
+        !EponymIntent::Know(KnowingAct {
+            subject: entity(1),
+            record: vec![]
+        })
+        .is_creative()
+    );
     assert!(
         !EponymIntent::Checkpoint(LifeCheckpoint::Death(Succession {
             of: entity(1),
@@ -288,4 +310,48 @@ fn eponym_handoff_envelope_roundtrips() {
         }),
     };
     roundtrips(&envelope);
+}
+
+#[test]
+fn agreement_acts_and_deeds_roundtrip() {
+    let agreement = AgreementHandle(3);
+    let terms = proposal(None).terms;
+    for act in [
+        AgreementAct::Form(proposal(None)),
+        AgreementAct::Renegotiate {
+            agreement,
+            by: entity(2),
+            terms,
+        },
+        AgreementAct::End {
+            agreement,
+            by: entity(1),
+            why: EndReason::PremisesChanged,
+        },
+        AgreementAct::Home {
+            proposal: proposal(None),
+            dwelling: PlaceHandle(5),
+        },
+    ] {
+        roundtrips(&EponymIntent::Agree(act));
+    }
+    for why in [
+        EndReason::Withdrawn,
+        EndReason::Resigned,
+        EndReason::WorkDone,
+    ] {
+        roundtrips(&why);
+    }
+    roundtrips(&EponymIntent::Deed(Deed {
+        doer: entity(1),
+        toward: Some(entity(2)),
+        kind: DeedKey("deed:stood-by".into()),
+        under: Some(agreement),
+    }));
+}
+
+#[test]
+fn eponym_handoff_roundtrips_hurt_and_dropped() {
+    roundtrips(&EponymHandoff::Hurt(harm()));
+    roundtrips(&EponymHandoff::Dropped(vec![entity(30), entity(31)]));
 }

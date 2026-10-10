@@ -11,6 +11,8 @@ use crate::{FactionHandle, ParticipantHandle, PlaceHandle, Pointable, WorldPoint
 /// written whether the sim is on or off, so a sim-off campaign can switch it
 /// on later over the same history (ruling 248). Host-committed at the table,
 /// as `isonetry`'s `Fact`, `World`, `MapStored` and `CharacterCreated` are.
+/// Each carries the table's authored key, the key its native entry is
+/// asserted under (795): the same again is nothing new.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Assertion {
     /// A fact committed to the campaign's journal, or a secret revealed
@@ -25,12 +27,14 @@ pub enum Assertion {
     /// A storylet's effects applied, its facts asserted together (the
     /// record's §3.9).
     Storylet {
+        key: String,
         storylet: String,
         asserts: Vec<Assertion>,
     },
     /// A pack forced over generated content where the world did not meet its
     /// requirements (ruling 190).
     PackForced {
+        key: String,
         pack: String,
         asserts: Vec<Assertion>,
     },
@@ -41,6 +45,7 @@ pub enum Assertion {
 /// of `isometry-campaign`'s `WorldFact` with its subject a handle.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Fact {
+    pub key: String,
     pub kind: String,
     pub about: Option<Pointable>,
     pub text: String,
@@ -50,6 +55,7 @@ pub struct Fact {
 /// The DM's edits to one site's volume.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MapEdit {
+    pub key: String,
     pub site: PlaceHandle,
     pub cells: Vec<CellEdit>,
 }
@@ -69,6 +75,7 @@ pub struct CellEdit {
 /// none meaning the DM's.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct NewCharacter {
+    pub key: String,
     pub name: String,
     pub faction: Option<FactionHandle>,
     pub at: Cell,

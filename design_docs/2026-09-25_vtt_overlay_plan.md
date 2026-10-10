@@ -459,6 +459,13 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-10, Q2 vocabulary checkpoint:** `702ab6ca` supplies stable
+  storylet/forced-pack application keys and the shared event-key adapter
+  mapping (807). Its twelve-path overlay delta is integrated separately
+  from unfinished consumers. The unchanged source/test snapshot passed
+  46/46; lane and integrated-root all-targets checks passed offline.
+  Native Character cell/owner retention awaits a numbered ruling and V2's
+  product routing and replication gates remain open.
 - **2026-10-10, ruling 807:** V2 shares Eponym's adapter mapping from native
   event keys to stable event handles. Translation validates agreement with
   the native key, with ambiguous reverse matches refused as an implementation

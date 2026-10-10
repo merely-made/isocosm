@@ -3,15 +3,15 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{EntityHandle, EventHandle};
+use crate::EntityHandle;
 
 /// An ask: a proposal from the played sophont to one peer (rulings 60, 63).
 /// The sim answers by the peer's own methodology weighed by its opinion of
 /// the asker, and the answer, a refusal about the work, a refusal about the
 /// asker, a counteroffer or an agreement, comes back as events. A proposal
 /// accepted once and held is a standing agreement (ruling 67), which a later
-/// ask names in `under`; even then the peer may decline when the premises
-/// have changed, since an agreement is not a command.
+/// ask names in `under`, exercising it; even then the peer may decline when
+/// the premises have changed, since an agreement is not a command.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Proposal {
     /// The played sophont (ruling 152).
@@ -22,10 +22,14 @@ pub struct Proposal {
     /// offered or taken.
     pub work: WorkKey,
     pub terms: Vec<Term>,
-    /// The accepted event that formed the standing agreement this ask is
-    /// made under, if any.
-    pub under: Option<EventHandle>,
+    /// The standing agreement this ask is made under, if any (794).
+    pub under: Option<AgreementHandle>,
 }
+
+/// An opaque reference to a standing agreement (ruling 67), minted by the
+/// sim when a proposal is accepted and held.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub struct AgreementHandle(pub u64);
 
 /// Work named by opaque key; the vocabulary is the world's, as the sim
 /// names processes by string key.

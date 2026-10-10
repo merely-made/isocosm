@@ -236,6 +236,28 @@ table confirms each.
 | `TimeAdvanced` | time | `TimeIntent::Downtime { ticks }`, run when every player's `TimeIntent::Consent` has named it (ruling 246) |
 | `CharacterCreated` | assertion | `Assertion::Character(NewCharacter)` (ruling 36) |
 
+## Contract vocabulary checkpoint, 2026-10-10 (Q2)
+
+Eponym's values include optional actuation motion, agreement formation, home,
+renegotiation and ending, deeds under an optional agreement handle, and hurt
+and dropped-item handoffs. `KnowingAct` names its subject beside an opaque
+record; reports use `Telling`. VTT storylets and forced packs carry a stable
+application key beside their source. These are serializable contract values;
+this crate has no native or product dependency.
+
+The shared `key_handle` and `key_for_handle` own the adapter mapping from
+native event keys (807). Reverse lookup refuses multiple distinct matching
+keys. Consumers must use this mapping and validate a telling's outer
+`Claim.about` against its native event payload.
+
+The combined vocabulary and helper snapshot passed all 46 tests offline;
+its workspace/all-targets check passed offline with one Cargo job.
+Product routing verification remains open in Q2 and does not certify
+V2 or E3. The native Character metadata fork also remains open: the prepared
+Character translation retains its named site but currently drops its cell
+and owner. Their durable retention awaits a numbered human ruling; accepting
+the current translation does not establish preservation of those fields.
+
 ## Shapes lifted to the core, 2026-09-26
 
 E1 and V1 first defined three shapes in more than one game module, since a

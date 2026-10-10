@@ -15,7 +15,8 @@ use crate::{ActKey, EntityHandle, PlaceHandle, WorldPoint};
 pub struct Actuation {
     /// The one body the participant plays (rulings 60, 152).
     pub body: EntityHandle,
-    pub motion: Motion,
+    /// None when the solver stepped nothing this tick (794).
+    pub motion: Option<Motion>,
     /// Timed acts begun this tick, in order. A blow's outcome does not travel
     /// here: the foreground resolves it and hands the harm back through the
     /// handoff (ruling 232).
@@ -32,8 +33,9 @@ pub struct Motion {
     /// there.
     pub position: WorldPoint,
     /// Voxels fallen during the tick, if the accepted transition included a
-    /// fall. The injury a fall does is the sim's (ruling 123); `eponym-world`'s
-    /// `Fall` was a consequence of motion and never a player's intent.
+    /// fall: a consequence of motion, never a player's intent. Until the sim
+    /// has a fall of its own, the game hands its injury back as
+    /// [`super::EponymHandoff::Hurt`] (669).
     pub fell: u32,
 }
 
@@ -46,10 +48,12 @@ pub struct TimedAct {
     pub target: Option<ActTarget>,
 }
 
-/// What a timed act is aimed at: a thing, or a place named as a place-graph
-/// node (ruling 205).
+/// What a timed act is aimed at: a thing, a place named as a place-graph
+/// node (ruling 205), or a region of the site's volume, a sphere about a
+/// point, as a carve is (794).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ActTarget {
     Thing(EntityHandle),
     Place(PlaceHandle),
+    Region { centre: WorldPoint, radius: u32 },
 }

@@ -40,3 +40,39 @@ pub struct FactionHandle(pub u64);
 /// An opaque reference to an event in the record.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct EventHandle(pub u64);
+
+/// The shared adapter mapping for authored keys and native event keys (807).
+pub fn key_handle(key: &str) -> u64 {
+    key.bytes().fold(0xcbf2_9ce4_8422_2325, |h, b| {
+        (h ^ u64::from(b)).wrapping_mul(0x0100_0000_01b3)
+    })
+}
+
+/// Reverse lookup succeeds only when a handle names one distinct key.
+pub fn key_for_handle<'a>(keys: impl IntoIterator<Item = &'a str>, handle: u64) -> Option<&'a str> {
+    unique(keys.into_iter().filter(|key| key_handle(key) == handle))
+}
+
+fn unique<'a>(mut keys: impl Iterator<Item = &'a str>) -> Option<&'a str> {
+    let key = keys.next()?;
+    keys.all(|other| other == key).then_some(key)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn adapter_keys_are_stable_and_reverse_only_when_unique() {
+        assert_eq!(key_handle("hello"), 0xa430_d846_80aa_bd0b);
+        let keys = ["one", "two"];
+        assert_eq!(key_for_handle(keys, key_handle("two")), Some("two"));
+        assert_eq!(key_for_handle(keys, key_handle("three")), None);
+        assert_eq!(unique(["one", "one"].into_iter()), Some("one"));
+        assert_eq!(
+            unique(["one", "two"].into_iter()),
+            None,
+            "a collision cannot pick a key"
+        );
+    }
+}

@@ -39,7 +39,7 @@ pub use attention::{AttentionChange, AttentionSet, Pointable};
 pub use event::{EventRecord, EventTopic};
 pub use handle::{
     CandidateHandle, EntityHandle, EventHandle, FactionHandle, LineageHandle, ParticipantHandle,
-    PlaceHandle,
+    PlaceHandle, key_for_handle, key_handle,
 };
 pub use handoff::HandoffEnvelope;
 pub use harm::{Harm, PartHandle, Wound, WoundSeverity};

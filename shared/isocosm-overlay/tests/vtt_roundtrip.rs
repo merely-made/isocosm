@@ -62,6 +62,7 @@ fn batch() -> TableBatch {
 
 fn fact() -> Fact {
     Fact {
+        key: "tower-beast-nest".into(),
         kind: "reveal".into(),
         about: Some(Pointable::Entity(entity(9))),
         text: "the tower-beast nests on the north ledge".into(),
@@ -111,6 +112,7 @@ fn table_batch_roundtrips_acts_and_moves() {
 fn assertion_roundtrips_every_variant_and_nests() {
     roundtrips(&Assertion::Fact(fact()));
     roundtrips(&Assertion::Edit(MapEdit {
+        key: "ledge-map".into(),
         site: PlaceHandle(3),
         cells: vec![
             CellEdit {
@@ -126,26 +128,31 @@ fn assertion_roundtrips_every_variant_and_nests() {
         ],
     }));
     roundtrips(&Assertion::Character(NewCharacter {
+        key: "mira".into(),
         name: "Mira".into(),
         faction: Some(FactionHandle(5)),
         at: cell(2, 2),
         owner: Some(ParticipantHandle(2)),
     }));
     roundtrips(&Assertion::Character(NewCharacter {
+        key: "elian".into(),
         name: "Elian".into(),
         faction: None,
         at: cell(8, 8),
         owner: None,
     }));
     roundtrips(&Assertion::Storylet {
+        key: "conclusion-1".into(),
         storylet: "conclusion".into(),
         asserts: vec![Assertion::Fact(fact())],
     });
     roundtrips(&Assertion::PackForced {
+        key: "watchtower-forced".into(),
         pack: "watchtower".into(),
         asserts: vec![
             Assertion::Fact(fact()),
             Assertion::Storylet {
+                key: "arrival-1".into(),
                 storylet: "arrival".into(),
                 asserts: vec![],
             },

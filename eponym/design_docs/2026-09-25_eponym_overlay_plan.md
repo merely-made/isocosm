@@ -502,6 +502,13 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-10, Q2 vocabulary checkpoint:** `702ab6ca` supplies optional
+  actuation motion, agreement/deed/knowing values and the shared event-key
+  mapping (807). The complete twelve-path overlay delta is integrated
+  separately from unfinished consumers. Its unchanged source/test snapshot
+  passed 46/46, with lane and integrated-root all-targets checks passing
+  offline. Native agreement links are already integrated at `bed9ee57`
+  (808); full product routing and E3 remain open.
 - **2026-10-10, ruling 808:** E3's native agreement deeds carry a typed
   optional agreement id on their events, retaining causal-event validation.
   Q2 repairs the invalid agreement-as-event cause and verifies agreement

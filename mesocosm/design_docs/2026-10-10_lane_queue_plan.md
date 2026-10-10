@@ -279,6 +279,16 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 overlay checkpoint integrated:** the complete twelve-path
+  vocabulary/helper delta through `702ab6ca` is extracted from Q2's common
+  base, preserving its unfinished consumer ancestry. All committed overlay
+  bytes match the lane. The root workspace/all-targets offline check passed
+  in 3.09 seconds; the lane passed in 4.86 seconds. Its unchanged code/test
+  snapshot passed 46/46 earlier, with only README scope amended afterward.
+  Native event-key mapping is shared under 807. Product routing, character
+  cell/owner retention, V2 and E3 remain open; Q2 is parked at the metadata
+  fork with its six-sortie batch prepared. Q15's query-refresh preflight is
+  complete and awaits source work after Q8 integration.
 - **2026-10-10, Q3 prey-timing checkpoint integrated:** `73c6451f` keeps
   one chosen process per tick while resolving automatic feeding prey once
   at that pass's start. An applicable Thing/Act nudge keeps its named prey;
