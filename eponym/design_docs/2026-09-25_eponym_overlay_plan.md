@@ -2,6 +2,36 @@
 
 **Date:** 2026-09-25
 
+**Status, 2026-10-10:** E0/E1 done; E2's families moved onto native
+Isocosm, with their certification in the after-pass. E3 is open now under
+732's compile gate (798), through the contract (794), with functional
+loops and memory folded into §5.1 (801). The old wait on M3 is superseded.
+
+## Current state, 2026-10-10
+
+Legacy Eponym and Mesocosm are deleted. The world is native Isocosm:
+`shared/isocosm/src/social/`, `knowing.rs`, `needs.rs`, `harm.rs`,
+`arrival.rs`, `geometry.rs`, `map/` and `terrain/`. The game half lives in
+`eponym/crates/eponym-play/src/`: motion, timed actions, strike resolution,
+techniques, sheets, admitted anatomy and control. Native `Take` admits
+the participant's sophont to drive (779); succession does not transfer
+other subjects' property or knowing.
+
+E3 must route actuation, asks, agreements, deeds, notes and returned harm
+through `shared/isocosm-overlay/src/eponym/` (794); a resolved blow lowers
+to native `Command::Wound` (669). Existing game-side/native foundations
+do not certify E3's loop. E2's deferred conditions and E3's draws remain
+separate. Eponym's body path is Mere's tenant in
+`eponym/crates/eponym-client/src/gpu/body.rs`; renderling is retired.
+
+§5.1 carries T1 to T3 material work and F3b1 to F3b4 memory stages over
+native owners. T2 still depends on Mere's terrain-edit lane; its product
+receipt is not implied by the lift. E4 owns headed/two-peer acceptance.
+Identity remains in `eponym-play/src/identity.rs` until its resumed work
+moves the shared facts to dramatis (803).
+
+*The dated profile, absorption survey and receipts below remain as written (793).*
+
 **Status, 2026-09-26:** plan; E0 done 2026-09-26, its seven decisions ruled
 (231 to 235, 238, 239, 241 and 242); E1 done 2026-09-26, opened by ruling
 253 as a contract module only; E2 to E4 proposed and not opened, waiting on
@@ -471,6 +501,10 @@ Ruling 793 archived the genet document host plan to
   no type to the core.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - 2026-09-26: this plan is Eponym's executable plan (ruling 313). §4.1 maps
   the execution plan's F3 to F8 onto E2's families; the execution plan and
   the world conditions plan (315) are archived at `archive_docs/2026-09-26/`.

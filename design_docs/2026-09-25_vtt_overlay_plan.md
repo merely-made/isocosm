@@ -12,6 +12,35 @@ Pathfinder 2e (522). In a ruleset-led world an edition's own state
 persists beside the body with declared relations (542), and its
 procedures run unattended under declared decision policies (543).
 
+**Status, 2026-10-10:** V0 and V1 done. V2 is open now under 732's compile
+gate (798), through the contract (794, 795), with H2 and the overmap folded
+in (801). It does not wait on M3 certification; legacy/campaign remains
+until native polities replace its faction turn (247).
+
+## Current state, 2026-10-10
+
+The current campaign model remains
+`shared/isocosm/src/legacy/campaign.rs` and its `campaign/` modules.
+Assertions already enter native nouns through
+`shared/isocosm/src/asserted.rs`; V2 must make `CampaignWorld` a reading
+of the native session, founding through native generation/packs and
+replaying its asserted history. `Command::Assert` existing is not V2 done.
+
+`shared/isocosm-overlay/src/vtt/assertion.rs` keeps the table's Fact,
+Edit, Character, Storylet and PackForced vocabulary. Under 795 it maps to
+native `isocosm::asserted`, with native extended where needed, rather than
+replacing the contract with sim-internal types. Contract routing and its
+round-trip gates belong to that implementation lane.
+
+Ruling 799 keeps two battlemap paths: a lifted isometer-space site with
+the sim on, existing `MapTerrain` with it off. Native reach/knowing replace
+`party_known`; H2's travel, overmap conditions and the faction-turn retirement
+are V2's gates. The folded protocol's WorldEvent reshaping also requires
+`PROTOCOL_VERSION` and ALPN to move together (after-pass A3). V3/V4 and
+faithful edition rules remain this overlay's further work.
+
+*The dated profile, absorption tables and receipts below remain as written (793).*
+
 **Status, 2026-10-03:** Rulings 538 to 541; V0 and V1 done. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -429,6 +458,10 @@ what each left open lands here, so it has a live owner.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - 2026-10-10: the campaign session carries its assertions (ruling 768; lane
   `lane-assert`, under 732's compile gate). `CampaignWorld` saves and
   replicates its asserted entries and folds factions, places, routes,

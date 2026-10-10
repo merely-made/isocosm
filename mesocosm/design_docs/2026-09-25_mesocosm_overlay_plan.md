@@ -2,6 +2,36 @@
 
 **Date:** 2026-09-25
 
+**Status, 2026-10-10:** M0/M1 done; M2 realigned to native Isocosm with
+certification in the after-pass. Directing owns M3 and the interim M4
+(800), built under the compile gate. This plan retains the profile, contract
+and full in-site M4, which remains open.
+
+## Current state, 2026-10-10
+
+`mesocosm-core`, its sixteen-variant driving `Intent` and the legacy
+Mesocosm world are deleted. Native Isocosm owns simulation, development,
+lineages and history. The absorption tables below are dated migration
+inventories; the families plan's Progress and the sim plan's current-state
+section locate the new owners.
+
+Mesocosm's four crates are runtime, views, phenotype and genet.
+`mesocosm/crates/mesocosm-runtime/src/runtime.rs` runs a native `Session`;
+`runtime/translate.rs` lowers `isocosm_overlay::mesocosm` envelopes.
+The player directs a non-sapient critter; a sophont is driven (671, 779).
+The review's authored expression now uses native `Command::Express` (787).
+M3 and site-grain interim M4 are the
+[directing plan](2026-10-08_directing_interim_m4_plan.md)'s; migration is
+not their draw or headed certification.
+
+Full M4 still must connect in-site acts and contact to the same accepted
+world: isometer-space lift/queries, native `Command::Edit` and `Patch`,
+and perception through 741's ray. A lifted site and presentation placement
+alone do not meet those conditions. The body path still uses LiveBody here;
+796's tenant adoption belongs to the presentation lane.
+
+*The dated profile, absorption survey and receipts below remain as written (793).*
+
 **Status, 2026-10-08:** M0 and M1 done (2026-09-25); M2 is now the families
 re-expression plan's Mesocosm share (677), M3 lands with Mesocosm's world
 family (678), and M4 gains an interim milestone at site grain (680), which
@@ -297,6 +327,10 @@ All three taken on 2026-09-25, the day the plan was drafted.
   0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 - 2026-10-10: the switch (681, D5) landed under 732's compile gate.
   - Mesocosm's runtime, views and host run on a native `Session` through
     the interim loop. The runtime translates the contract's envelopes (686),

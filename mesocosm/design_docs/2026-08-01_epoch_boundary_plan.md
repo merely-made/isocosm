@@ -1,5 +1,9 @@
 # The epoch boundary: significance, speciation, and what youth costs
 
+**Status, 2026-10-10:** native boundary, review, revision and speciation
+are implemented. Certification is the after-pass's; 797's descending
+metabolic-complexity order is still a compliance gate in this lane snapshot.
+
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); partially built. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -690,6 +694,22 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
 
 Added under ruling 793; the dated sections above keep their words.
 
+The native owners are `shared/isocosm/src/lineage/boundary.rs`, `review.rs`,
+`revise.rs`, `speciate.rs` and `chronicle.rs`, all in that lineage source
+directory. `shared/isocosm/src/directing/interim/` holds at the boundary;
+`mesocosm/crates/mesocosm-runtime/src/review.rs` and the views present the
+played line's offers. The older `mesocosm-core::species`, `score`,
+`record`, `history` and `places` owners below are deleted.
+
+At the source snapshot checked for Q1 (`3523420b`), `boundary::adapt`
+sorts by living-member count. Ruling 797 requires descending metabolic
+complexity defined from catalogue functions expressed plus systems
+realized. The reproduction/turn-order lane owns that correction; this doc
+pass does not certify its behavior. Significance remains the hagiograph's,
+the native session owns history/replay, and the sim's lineage model owns
+speciation. The directing plan owns M3 and the interim M4 (800); the full
+M4 and contested spatial/resource conditions remain the overlay's gates.
+
 **Carried from the phenotype plan (archived 2026-10-10).** Its P5,
 contested flow, is this plan's subject at the lineage scale: lift finite
 local resource results into the boundary's evidence. Done when niche
@@ -761,6 +781,10 @@ web (182).
   descendant will express one literal phenotype.
 
 ## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 - **2026-09-26: rewritten to the wing design record** under ruling 280's doc
   lane. §3 gains the record's three gates and names the hagiograph as the
   organ that judges; §11 and §12 mark what has moved to the sim and the

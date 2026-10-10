@@ -2,6 +2,31 @@
 
 **Date:** 2026-10-08
 
+**Status, 2026-10-10:** D1 to D5 are built on native Isocosm under 732's
+compile gate. M3 and the interim M4 belong here (800); the after-pass still
+must certify their invariant and headed done-conditions, reproduction first.
+
+## Current state, 2026-10-10
+
+`shared/isocosm/src/directing/` owns participants, bonds, nudges,
+deliberative choices and readings. `directing/interim/` in that same
+source root owns the site-grain loop, birth/death and boundary cuts,
+resume and deep time. `shared/isocosm/src/lineage/` owns review,
+revision and speciation. Mesocosm's contract envelopes lower in
+`mesocosm/crates/mesocosm-runtime/src/runtime/translate.rs`; the host
+reads native bodies and the lifted site, rather than a legacy world.
+
+The switch and its follow-ups in Progress are implemented; the older
+“D5 waits” and “no phase opened” lines are history. The remaining gate is
+certification: pre-D1 saves, non-deliberative hashes, bond and zero-bond
+controls, tier merging, and three epochs in both modes with replaying
+headed receipts. Consumer reproduction is the prerequisite (792).
+Boundary ordering still uses living-member count in this snapshot;
+797 requires descending native metabolic complexity and is separate
+from the already-built switch. Full in-site M4 stays in the overlay plan.
+
+*The dated design and implementation entries below remain as written (793).*
+
 **Status, 2026-10-08:** plan. Assessment done and its forks ruled (681 to
 691); no phase opened.
 **Status, 2026-10-09:** D1 to D4 built on native Isocosm under 732's
@@ -179,6 +204,10 @@ on Isocosm, both modes, receipts replaying.
   `sim:attention` is created at `generate.rs:122` and read nowhere.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 
 - **2026-10-09, D1 to D4 under 732 (lane `lane-directing`).** All in
   `shared/isocosm/src/directing/` unless named.

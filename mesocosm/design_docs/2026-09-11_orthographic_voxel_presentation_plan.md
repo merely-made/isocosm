@@ -1541,8 +1541,8 @@ its places where renderling or the DOM is the body's path.
   DOM that L7's text describes: `eponym-client` draws bodies through it onto
   a transparent target that netrender layers over the traced colour (749),
   and renderling, crabslab, 729's carriage and the `ambience-lease` probe
-  are gone. Palette colours reach kiss3d as a texture by UV (736). The
-  torch casts no shadow until the testing pass tunes it (749).
+  are gone. Palette colours reach kiss3d as a texture by UV (736). Torch
+  brightness and shadows remain tuning findings in after-pass A4 (749).
 - **One body rasteriser (796).** Mesocosm still draws bodies through
   isometer's scene with `isometer-render`'s unlit `LiveBody`
   (`shared/isometer/crates/isometer-render/src/live_body.rs`); it moves
@@ -1918,3 +1918,9 @@ transforms, hit testing, and styling per part. Per-face shading and masks
 then apply per part rather than per face. This is the shape the hybrid was
 always going to converge on; the genet first-frame slice is owed regardless
 and belongs in L1's genet plan as a named consumer.
+
+## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.

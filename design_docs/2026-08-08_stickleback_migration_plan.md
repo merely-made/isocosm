@@ -1,5 +1,26 @@
 # Stickleback Consumer Migration Plan (2026-08-08)
 
+**Status, 2026-10-10:** K0 to K2 remain unimplemented. The native migration
+does not adopt JoinedSpace; the no-second-runtime gate still governs.
+
+## Current state, 2026-10-10
+
+`crates/isonetry/src/campaign_sync.rs` still assembles `LogSync` and
+`SyncedSpace` directly. K0's JoinedSpace adoption is therefore open;
+native simulation and the V2 assertion translation do not close it.
+
+Campaign grammar, authorization, materialization and tactical sequencing
+remain the VTT's; Stickleback supplies membership, log transport and sync.
+K1 still requires concurrent and refused-operation receipts on the new
+carrier. K2 still requires named dispositions for the older tiers.
+The native campaign owner during migration is
+`shared/isocosm/src/legacy/campaign.rs`; V2 will remove it after native
+polities act, while campaign storage/collaboration are product-side.
+That ownership change must not create a second live world runtime or
+silently drop the authorization and privacy gates.
+
+*The dated migration design and receipts below remain as written (793).*
+
 **Status: plan.** Founded from the 2026-08-08 wing audit. The
 [shared-authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)'s
 **sequencing gate stands and governs**: no second Isometry runtime. Its
@@ -75,6 +96,10 @@ dispositions and the code matches them.
   DAG, which gemot has no analogue for.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 
 - **2026-08-08:** founded from the audit; shared-authority plan stamped.
 - **2026-09-04, endpoint-readiness ruling.** K0 will remove Isometry's direct

@@ -4,6 +4,32 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
 
+**Status, 2026-10-10:** living design record; the plan review
+rulings 793 to 804 are applied. The native migration push is integrated
+under 732's compile gate. Certification is the after-pass's, not completion
+of W2 to W5.
+
+## Current state, 2026-10-10
+
+Isocosm is the single sim in `shared/isocosm`. Legacy Mesocosm and Eponym
+are deleted; `shared/isocosm/src/legacy.rs` exports only `campaign`,
+held by the VTT until V2. Isometer owns in-site shape, edits and queries in
+`shared/isometer/crates/isometer-space/src/`. Eponym's game-side motion,
+combat, admitted anatomy and control live in `eponym/crates/eponym-play`;
+Mesocosm's runtime reads a native session.
+
+Rulings 793 to 802 supersede the earlier plan inventory and ordering:
+archived owners are indexed as history; directing owns M3 and the interim
+M4; the overlays own full M4, V2 and E3. V2 and E3 are open now (798),
+through their contracts (794, 795), without waiting for M3 certification.
+The sim plan owns the folded ecology phases S8 to S10 (802).
+Isomere's combined mode host remains unbuilt; a native Mesocosm mode is
+available. Eponym draws bodies through Mere's tenant; Mesocosm's adoption
+and LiveBody retirement remain 796's work. These are implementation facts
+and authorized targets, not new test or headed receipts.
+
+*The dated record and receipts below remain as written (793).*
+
 **Status, 2026-09-18:** design record, ruled through W1. W0 is ruled (rulings
 1 to 34, with the founding record and the three product descriptions amended
 to it); W1 is evaluated, ruled and applied for all three products. W2, the
@@ -13914,6 +13940,10 @@ No code lane ran before W1 was ruled; the sim's lane opened after it, on
   on was a crate constant.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership, gates and status checked against
+  the lane tree under 793 to 802; earlier dated text retained. No new
+  compile, test, draw or headed receipt claimed.
 
 Landings a plan owns are logged in that plan: the sim plan (checkpoints, the
 scheduler), the board plan (paging, the repins), the side-panel plan, the

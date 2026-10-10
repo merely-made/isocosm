@@ -1349,6 +1349,10 @@ standing rule: after two real consumers, never declared in advance.
   the browser receipt (D0 discipline).
 
 ## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 - 2026-09-28: **SP2 landed** at `38ea90f`. The world-local material table on
   the world's traits, seeded by the map; the lattice with its Coons interior,
   faded detail and exact correction in `src/terrain/lattice.rs`; column

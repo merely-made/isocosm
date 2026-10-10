@@ -15,6 +15,26 @@ needs a lineage that outlives one lifespan.
 Each item names its owning plan. An item is done when its owner's
 done-condition is met and recorded there; this plan only orders and tracks.
 
+## Current state, 2026-10-10
+
+The baseline below is a dated run, not a claim that Q1 reran the tests.
+Legacy Mesocosm and Eponym are deleted; the retained campaign is 3,968
+Rust lines, including `shared/isocosm/src/legacy/campaign.rs`, until V2.
+
+Rulings 800 and 801 update the owner labels in the original A3 list:
+M3 and the interim M4, including D5's headed condition, belong to the
+[directing plan](2026-10-08_directing_interim_m4_plan.md); the Mesocosm
+overlay keeps full M4. The protocol bump and H2 travel belong to the
+[VTT overlay's V2](../../design_docs/2026-09-25_vtt_overlay_plan.md),
+whose folded protocol plan is archived. Eponym's functional and memory
+conditions belong to its overlay's E3. Ecology residues belong to sim
+S8 to S10 (802).
+
+V2 and E3 are open under the compile gate before M3 certification (798).
+That does not close A1, the 77-failure baseline, the families' invariants,
+or the native/headed receipts. Consumer reproduction remains first (792).
+The older owner labels below are read through this annotation.
+
 ## A1. Consumer reproduction (792; owner: the sim plan)
 
 Generated consumers cannot reproduce: a birth needs 30 units of body, a
@@ -88,5 +108,9 @@ headed meal choice feels tense rather than clerical.
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
+
+- **2026-10-10, Q1:** current state/status and native source paths verified
+  under 793 to 802; dated receipts preserved. This documentation pass adds
+  no compile, test, draw or headed certification.
 
 - **2026-10-10:** plan written; A2's baseline taken.
