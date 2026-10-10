@@ -3,8 +3,11 @@
 **Date:** 2026-09-26
 
 **Status, 2026-10-10:** the generic binding shape remains documented and
-unbuilt (346 to 352). Query refresh exists upstream and in parry-ground;
-remaining settle steps are adoption work under 804. `TactileWorld` stays.
+unbuilt (346 to 352). Q15 replaces the remaining query-only settle steps
+with upstream query refresh under 352 and 804. Both consumer compile gates,
+tactile tests and contact tests pass; existing Eponym fixture/archive
+failures remain in the after-pass's Q5.
+`TactileWorld` stays.
 
 ## Current state, 2026-10-10
 
@@ -14,16 +17,20 @@ The current board draws and picks through
 bound conatus body.
 
 Mesocosm retains `mesocosm/crates/mesocosm-runtime/src/tactile.rs` and
-its caller-owned key table (804). Its query refresh still uses `step(1e-6)`.
+its caller-owned key table (804). Q15 uses `BodyWorld::refresh_queries`
+after initial terrain creation, occupancy edits and critter changes.
 Native bodies belong to Isocosm; §5's deleted `OrganismId` owner is not an
 adoption target. The generic adapter preserves the consumer's qualified key.
-Eponym's settle steps moved into
-`eponym/crates/eponym-motion/src/solver.rs` and `contact/spatial.rs`.
+Eponym's query setup in `eponym/crates/eponym-motion/src/solver.rs`
+and `contact/spatial.rs` uses the same call. The actual character-controller
+motion retains its fixed timestep and gravity calculations.
 
 Mere implements `BodyWorld::refresh_queries` in
 `crates/conatus/conatus/src/world/queries.rs`, already used by
 `mesocosm/crates/probes/parry-ground/src/main.rs`. Replacing remaining
-steps is authorized by 352 and 804. Building the generic bindings and
+steps is authorized by 352 and 804. The products already pin Mere
+`4d8bd7037df4f15b3b0270d54eac49b86b06edf9`; this adoption changes neither
+Mere nor its pin. Building the generic bindings and
 changing T2's terrain ownership remain separate gates.
 
 *The dated design and receipts below remain as written (793).*
@@ -380,6 +387,26 @@ Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
 
 ## Findings
 
+- **2026-10-10, Q15 verification:** the four unchanged tactile tests pass,
+  including the dated critter-before-ground regression. A compiled control
+  omitting only `set_critter`'s refresh fails that same test, again picking
+  ground `[5, 11, 18]` instead of critter 7. Restoring the exact production
+  bytes and rebuilding makes it pass. No tactile failure remains for Q4
+  from this measured target.
+- **2026-10-10, Q15 Eponym boundary:** all 12 contact/action tests and one
+  compatibility-refusal test pass. The other 18 motion tests fail, and
+  each failed name also appears in the dated baseline. Eleven cannot find
+  a standable fixture position, two cannot find their ledge, two refuse
+  `InvalidStart([0, 25, 0])`, and three fail archive decoding, before the
+  changed solver setup is reached. Their tests remain unchanged for Q5;
+  query refresh does not certify those motion/save paths.
+
+- **2026-10-10, Q15 source check:** at the pinned Mere revision,
+  `BodyWorld::refresh_queries` returns unit and refreshes touched collider
+  poses and broad-phase entries without a tick or events. The three
+  consumer setup sites only need queries. The dated tactile critter test
+  failure remains unchanged for fresh verification; no test was retired.
+
 - **2026-09-26:** mere's composition plan records the tactile-bodies row as
   "Met 2026-08-26 by Mesocosm", the contract "held by Conatus's public
   vocabulary" (line 52), while its C4 gate for the same second-consumer
@@ -404,6 +431,20 @@ Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
   A leaves it; reported for the mere lane.
 
 ## Progress
+
+- **2026-10-10, Q15 verification complete:** tactile 4/4; the compiled
+  omitted-refresh control caught (Cargo 101), exact source restored and
+  positive 1/1; Eponym motion targets 13 passed, 18 failed as qualified in
+  Findings. `cargo check --workspace --all-targets --offline -j1` passed
+  in `mesocosm`, and the same check with `--all-features` passed in
+  `eponym`. No Mere edit, repin, binding implementation or test change.
+  Raw logs, source envelopes, control and baseline-name comparison live
+  in `Code/testing/isometry/after-pass-2026-10-10/q15-refresh/`.
+
+- **2026-10-10, Q15 source work:** replaced the tactile settle helper and
+  Eponym's two pre-query steps with `refresh_queries`, preserving controller
+  timing, gravity, the caller-owned key table and all existing tests.
+  Cargo verification and the deliberately broken refresh control are pending.
 
 - **2026-10-10, Q1:** current ownership and status checked against the lane
   tree under 793; dated prose retained. Documentation verification only;

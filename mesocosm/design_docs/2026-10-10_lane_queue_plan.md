@@ -283,6 +283,20 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q15 refresh verified:** the three query setup paths now use
+  pinned Mere's `refresh_queries`; actual motion timestep/gravity and tests
+  are unchanged. Tactile passed 4/4, the compiled omitted-refresh control
+  failed, exact bytes were restored and its positive passed. Eponym passed
+  13/31 (all twelve contact/action checks and one compatibility refusal);
+  eighteen known-baseline fixture/admission/archive failures occur before
+  changed setup and remain Q5's gates. Mesocosm and Eponym/all-features
+  workspace/all-target compile checks passed offline. Raw results/commands
+  and hashes are in `Code/testing/isometry/after-pass-2026-10-10/q15-refresh/`;
+  `results.json` SHA-256 is
+  `727da4f4120c058d81e500098836f2edeb22ed9ab13c8896bd2520a6a0354129`.
+  Q15 is done and Cargo is released to Q3's unchanged-seed-0 trace. Q2/Q8
+  continue source work in their existing trees; Q8's legacy loss-allocation
+  fork is pending as the next ruling, 811. No new isolated resource.
 - **2026-10-10, rulings 809 and 810:** Mark chose optional native Character
   table metadata for the authored cell and owner, saved and replicated
   without control or body movement (809), and healing to restore the lost

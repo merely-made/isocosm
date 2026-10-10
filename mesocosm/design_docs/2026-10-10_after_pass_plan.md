@@ -201,6 +201,16 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-10, Q15 query refresh:** the unchanged tactile target passed
+  4/4 and its former critter-before-ground failure is repaired. Omitting
+  the refresh compiled and reproduced that failure; exact restoration and
+  positive rerun passed. Eponym's contact/action suites passed 12/12 plus
+  one compatibility refusal. Its eighteen fixture/admission/archive
+  failures occur before the changed query setup and remain A2/Q5 work.
+  Both touched consumer compile gates passed offline. The bounded refresh
+  lane closes without certifying those motion/save paths or generic body
+  bindings. `q15-refresh/results.json` under the external after-pass
+  directory retains exact commands, source/log hashes and limitations.
 - **2026-10-10, structural forks settled (809, 810):** character cell and
   owner become optional native table metadata, saved and replicated without
   granting control or moving a body. Healing restores each lost cell's

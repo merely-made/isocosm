@@ -50,7 +50,7 @@ impl ContactWorld {
             .spawn(box_desc(body_box(*body, body.position), true))
             .expect("admitted fixture body");
         // Populate the shared query acceleration structure before the cast.
-        spatial.step(FIXED_DT_SECONDS).expect("fixed query step");
+        spatial.refresh_queries();
         let movement = spatial
             .move_character(
                 ColliderId::new(id, 0),

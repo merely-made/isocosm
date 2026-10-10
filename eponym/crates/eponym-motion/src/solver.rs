@@ -70,7 +70,7 @@ pub fn advance(
             true,
         ))
         .map_err(|_| MotionError::Physics)?;
-    spatial.step(DT).map_err(|_| MotionError::Physics)?;
+    spatial.refresh_queries();
     let mut direction = [input.move_x as f32 / 32767., input.move_z as f32 / 32767.];
     let length = (direction[0] * direction[0] + direction[1] * direction[1]).sqrt();
     if length > 1. {

@@ -129,29 +129,15 @@ impl TactileWorld {
             .into_iter()
             .next()
             .expect("the terrain body was spawned with one collider");
-        let mut tactile = Self {
+        world.refresh_queries();
+        let tactile = Self {
             world,
             terrain_body,
             terrain_collider,
             critters: BTreeMap::new(),
             source_revision: profile.source_revision(),
         };
-        tactile.settle()?;
         Ok(tactile)
-    }
-
-    /// Refresh the backend's query acceleration structure.
-    ///
-    /// Conatus queries answer through Rapier's broad phase, which only
-    /// learns about spawned or despawned colliders during a step. This
-    /// world never simulates — everything in it is fixed and gravity is
-    /// zero — so a minimal step moves nothing and exists purely to settle
-    /// the query structures after a topology change. T1 is the first
-    /// consumer that queries without ever stepping; if Conatus grows a
-    /// query-refresh seam, this is the call it replaces.
-    fn settle(&mut self) -> Result<(), TactileError> {
-        self.world.step(1e-6)?;
-        Ok(())
     }
 
     pub const fn source_revision(&self) -> u64 {
@@ -201,7 +187,7 @@ impl TactileWorld {
                 .changed
         };
         if changed > 0 {
-            self.settle()?;
+            self.world.refresh_queries();
         }
         self.source_revision = update.source_revision;
         Ok(changed)
@@ -233,14 +219,15 @@ impl TactileWorld {
         desc.colliders = colliders;
         let body = self.world.spawn(desc)?;
         self.critters.insert(key, body);
-        self.settle()
+        self.world.refresh_queries();
+        Ok(())
     }
 
     /// Remove one critter's presence, if it has any.
     pub fn clear_critter(&mut self, key: u64) -> Result<(), TactileError> {
         if let Some(body) = self.critters.remove(&key) {
             self.world.despawn(body)?;
-            self.settle()?;
+            self.world.refresh_queries();
         }
         Ok(())
     }
