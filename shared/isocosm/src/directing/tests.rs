@@ -4,37 +4,42 @@
 use super::*;
 use crate::{Execution, Founding, Session, history::Command};
 
-/// A small ecology whose lineage 1, a consumer, deliberates.
+/// A small ecology whose lineage 1, a consumer, is played.
 pub(crate) fn world(seed: u64, mode: Execution) -> Session {
-    let mut genesis = Founding {
+    let genesis = Founding {
         seed,
         sites: 4,
         population: 48,
         cohort_size: 4,
         lineages: 3,
         ecology: true,
+        played: Some(Played {
+            lineage: 1,
+            region_sites: 2,
+        }),
         ..Default::default()
     }
     .generate()
     .unwrap();
-    for g in genesis.population.groups.values_mut() {
-        if g.entity.lineage == "lineage:1" {
-            g.entity.method = Method::Deliberative;
-        }
-    }
     Session::new(genesis, mode).unwrap()
 }
 
 pub(crate) fn critter(s: &Session) -> Id {
     let groups = &s.sim.state().population.groups;
-    let played = groups.iter().find(|(_, g)| g.entity.method == Method::Deliberative);
+    let played = groups
+        .iter()
+        .find(|(_, g)| g.entity.method == Method::Deliberative);
     *played.unwrap().0
 }
 
 /// Joins a participant and takes up the first deliberative critter.
 pub(crate) fn played(s: &mut Session) -> (Id, Id) {
     let joined = s.command(Command::Join).unwrap();
-    let p: Id = joined.strip_prefix("participant:").unwrap().parse().unwrap();
+    let p: Id = joined
+        .strip_prefix("participant:")
+        .unwrap()
+        .parse()
+        .unwrap();
     let c = critter(s);
     s.command(Command::Take {
         participant: p,
@@ -49,10 +54,18 @@ fn a_relation_without_a_value_reads_as_nought_and_saves_as_before() {
     let r = Relation::new(3, "sim:parent", 4);
     let json = serde_json::to_string(&r).unwrap();
     assert!(!json.contains("value"));
-    let old: Relation = serde_json::from_str(r#"{"subject":3,"kind":"sim:parent","object":4}"#).unwrap();
+    let old: Relation =
+        serde_json::from_str(r#"{"subject":3,"kind":"sim:parent","object":4}"#).unwrap();
     assert_eq!(old, r);
     let mut set = BTreeSet::from([r.clone()]);
-    hold(&mut set, Relation { value: 9, ..r.clone() }, true);
+    hold(
+        &mut set,
+        Relation {
+            value: 9,
+            ..r.clone()
+        },
+        true,
+    );
     assert_eq!(set.len(), 1, "one relation per subject, kind and object");
     hold(&mut set, Relation { value: 9, ..r }, false);
     assert!(set.is_empty());
@@ -60,7 +73,12 @@ fn a_relation_without_a_value_reads_as_nought_and_saves_as_before() {
 
 #[test]
 fn a_run_without_directing_saves_no_new_fields() {
-    let mut s = world(7, Execution::Individuals);
+    let unplayed = Founding {
+        seed: 7,
+        ecology: true,
+        ..Default::default()
+    };
+    let mut s = Session::new(unplayed.generate().unwrap(), Execution::Individuals).unwrap();
     s.advance(12).unwrap();
     let json = serde_json::to_string(&s.save()).unwrap();
     for field in ["\"value\"", "\"nudges\"", "\"directing\"", PARTICIPANT] {
@@ -80,16 +98,20 @@ fn a_participant_is_placeless_bonded_and_seeded_by_default() {
     assert_eq!(s.sim.plays(p), Some(c));
     assert_eq!(s.sim.bonded(c), vec![(p, 250)]);
     // Nothing takes a participant as its target.
-    assert!(!s.sim.target_matches(c, Some(p), &crate::rules::Process {
-        target: Some(crate::rules::Target {
-            same_place: false,
-            alive: None,
-            lineage: None,
-            among: Default::default(),
-            weighted: false,
-        }),
-        ..crate::generate::process("test:any", crate::rules::Causation::Choice, vec![])
-    }));
+    assert!(!s.sim.target_matches(
+        c,
+        Some(p),
+        &crate::rules::Process {
+            target: Some(crate::rules::Target {
+                same_place: false,
+                alive: None,
+                lineage: None,
+                among: Default::default(),
+                weighted: false,
+            }),
+            ..crate::generate::process("test:any", crate::rules::Causation::Choice, vec![])
+        }
+    ));
 }
 
 #[test]
@@ -138,8 +160,9 @@ fn a_nudged_run_replays_to_the_same_hash() {
         let json = serde_json::to_vec(&s.save()).unwrap();
         let loaded = Session::load_json(&json, mode).unwrap();
         assert_eq!(loaded.sim.state_hash(), s.sim.state_hash());
-        let fork = s.fork_at(s.sim.state().tick, "branch:again".into()).unwrap();
+        let fork = s
+            .fork_at(s.sim.state().tick, "branch:again".into())
+            .unwrap();
         assert_eq!(fork.sim.state_hash(), s.sim.state_hash());
     }
 }
-

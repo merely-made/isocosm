@@ -48,7 +48,10 @@ pub enum Command {
     Join,
     /// A participant takes up a critter, its bond seeded by the world's
     /// setting (178).
-    Take { participant: Id, critter: Id },
+    Take {
+        participant: Id,
+        critter: Id,
+    },
     /// A participant nudges its critter to attend or act (686, 690).
     Nudge {
         participant: Id,

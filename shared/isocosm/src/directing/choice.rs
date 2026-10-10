@@ -28,8 +28,8 @@ pub(crate) struct Choice {
     pub target: Option<Id>,
     /// The live nudges, by index, that the chosen act answers.
     pub answers: Vec<usize>,
-    /// What each considered process scored, for readings.
-    pub scores: BTreeMap<Key, i64>,
+    /// What each considered process scored, and on what target.
+    pub options: BTreeMap<Key, (i64, Option<Id>)>,
 }
 
 /// What the methodology says of one actor's act in a pass.
@@ -112,7 +112,11 @@ pub(crate) fn moves(p: &Process) -> Vec<Id> {
         Effect::Move { destination } => Some(*destination),
         _ => None,
     };
-    p.commitments.iter().chain(&p.effects).filter_map(to).collect()
+    p.commitments
+        .iter()
+        .chain(&p.effects)
+        .filter_map(to)
+        .collect()
 }
 
 impl Simulation {
@@ -210,6 +214,12 @@ impl Simulation {
     /// The act `actor` takes this tick: the due Choice process it scores
     /// highest, the first in identity order among equals.
     pub(crate) fn choose(&self, actor: Id) -> Choice {
+        self.consider(actor, true)
+    }
+
+    /// What `actor` weighs: the Choice processes due now, or all of them
+    /// where `due_only` is false, as readings ask.
+    pub(crate) fn consider(&self, actor: Id, due_only: bool) -> Choice {
         let tick = self.state.tick;
         let rules = &self.genesis.rules;
         let directing = rules.directing();
@@ -221,10 +231,19 @@ impl Simulation {
         let mut best = Choice::default();
         let mut top = i64::MIN;
         let due = |p: &&Process| p.period.is_some_and(|n| tick % n == 0);
-        let choices = rules.processes.values().filter(|p| p.causation == Causation::Choice);
-        for p in choices.filter(due) {
-            let have = |a: &Key| self.body_at_start(actor).map_or(0, |e| e.accounts.get(a).copied().unwrap_or(0));
-            if p.need_account.as_ref().is_some_and(|a| have(a) >= p.need_below) {
+        let choices = rules
+            .processes
+            .values()
+            .filter(|p| p.causation == Causation::Choice);
+        for p in choices.filter(|p| !due_only || due(p)) {
+            let have = |a: &Key| {
+                self.body_at_start(actor)
+                    .map_or(0, |e| e.accounts.get(a).copied().unwrap_or(0))
+            };
+            if p.need_account
+                .as_ref()
+                .is_some_and(|a| have(a) >= p.need_below)
+            {
                 continue;
             }
             // A nudge to act on a thing names the target, where it can be.
@@ -265,7 +284,7 @@ impl Simulation {
                 })
                 .sum();
             let score = needs + sway + i64::from(p.priority);
-            best.scores.insert(p.id.clone(), score);
+            best.options.insert(p.id.clone(), (score, target));
             if score > top {
                 top = score;
                 best.process = Some(p.id.clone());
@@ -289,7 +308,11 @@ impl Simulation {
         let (now, has) = self.wellbeing(actor);
         let served = accepted && (now > mood || (now == mood && has >= held));
         let d = self.genesis.rules.directing();
-        let site = self.state.population.get(actor).map_or(super::PLACELESS, |e| e.place);
+        let site = self
+            .state
+            .population
+            .get(actor)
+            .map_or(super::PLACELESS, |e| e.place);
         if let Some(j) = &mut self.journal {
             j.nudges(&self.state.nudges);
         }

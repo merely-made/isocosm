@@ -3,7 +3,10 @@
 **Date:** 2026-10-08
 
 **Status, 2026-10-08:** plan. Assessment done and its forks ruled (681 to
-691); no phase opened. It carries the
+691); no phase opened.
+**Status, 2026-10-09:** D1 to D4 built on native Isocosm under 732's
+compile gate (lane `lane-directing`), each phase's done-conditions left
+to the after-pass; D4 stands on three open forks (below). D5 waits. It carries the
 [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s M3 and the
 interim M4 of ruling 680, and the full M4 stays there.
 
@@ -124,8 +127,34 @@ on Isocosm, both modes, receipts replaying.
   mood without them.
 - Whether a participant entity can be shared by games beyond Mesocosm
   (the VTT's players, Eponym's sophont player).
+- **2026-10-09, D4's forks, put back by the directing lane:** what
+  habitability for a critter reads natively (the runner is built; the
+  start is the world's deep time plus the player's epochs meanwhile); what
+  a native lineage's boundary candidate is; which acts move a body between
+  sites, against starting again elsewhere by `Take` (`OnCollapse`); and
+  whether a region that never held a level has collapsed.
 
 ## Findings
+
+- **2026-10-09:** a generated ecology's consumer cannot reproduce: its
+  birth needs three founded bodies of matter, it nets about one unit in
+  eight ticks, and age takes it within 20 to 60. So a played consumer
+  lineage ends within a lifespan, and D4's three-epoch test runs epochs of
+  8 ticks. The world family's re-expression, not directing, settles this.
+- **2026-10-09:** at site grain a region that never held a level reads as
+  collapsed (225 says "a level gone"); with slots of two sites' worth, most
+  generated founding draws show such regions on their first round. The
+  tests use a region as wide as the world for the standing control.
+  Open, below.
+- **2026-10-09:** native `Effect::Move` has a fixed destination, so a
+  generated move needs a process per route; and no native operation
+  revises a lineage, so the boundary has nothing to commit
+  (`interim::no_candidates`). Both are D4's forks.
+- *Reading, not ruled:* the deliberative scorer's terms (needs fed × mood,
+  nudge sway, priority, identity order for ties); "served" as no worse in
+  mood and matter; the deep-time span the world's own plus the player's
+  added epochs; the boundary's initiative by members, legacy's complexity
+  having no native reading.
 
 - **2026-10-08:** the survey's counts above, spot-checked: no manifest
   names `isocosm-overlay` but its own; `Deliberative` and `Normative` occur
@@ -133,6 +162,49 @@ on Isocosm, both modes, receipts replaying.
   `sim:attention` is created at `generate.rs:122` and read nowhere.
 
 ## Progress
+
+- **2026-10-09, D1 to D4 under 732 (lane `lane-directing`).** All in
+  `shared/isocosm/src/directing/` unless named.
+  - **D1:** a participant is an entity of `kingdom:participant` at
+    `PLACELESS`, rooted, never a target; `Relation.value` (skipped at
+    nought; one relation per subject, kind and object, `schema::related`
+    and `directing::hold`); the bond `directing:bond` and the played
+    critter `directing:plays`; `Command::{Join, Take, Nudge}`, a nudge
+    naming `Toward::{Site, Thing}` with `Aim::{Attend, Act}`, kept in
+    `State.nudges` with its `Answer`; `Rules.directing`
+    (`rules/directing.rs`): `Inheritance::{Fresh, Seeded, Lineage}`, Seeded
+    the default, and the bond's step, span and sway.
+  - **D2:** `choice.rs`: a `Method::Deliberative` critter takes one due
+    Choice process, scored by the pressing needs it feeds (scaled up by low
+    mood), the sway of each live nudge it answers (`sway × bond / most`) and
+    its priority; the scheduler skips the rest, which `Receipt.foregone`
+    lists. An answered nudge moves its bond a step up if the act left the
+    critter no worse in mood and matter, down otherwise. `Founding.played`
+    (`found.rs`) makes a generated lineage deliberative and gives the world
+    a mind with its hunger and each trophic level's slot. Ruling 742: `Tier`
+    and `TierLine` live in `tier.rs`, over site hops; legacy places
+    re-exports them and keeps its `tick` adaptor.
+  - **D3:** `readings/`: `suggestions` (the would-be `foregone` now,
+    filtered through the survival view), `orders` (range, home, priorities,
+    stances, places to avoid, from `State.nudges` and their answers),
+    `regions` (grown from the lowest unclaimed site along routes while every
+    slotted level fits; collapsed where a slotted level reads nought) and
+    `view` (`Mode::{Survival, Creative}`: survival is the critter's site,
+    visits, the sites and subjects of events it `knows`).
+  - **D4:** `interim/`: `run_deep_time` (hagiograph over `Session`, an
+    epoch per call), `boundary::{score, adapt}` (grow-a-copy over
+    `fork_at`, the played line skipped, most numerous line first), and
+    `Interim` (found, rounds, births offered with the parent kept, death
+    handing the next life at its site first, boundaries, collapse with an
+    `OnCollapse` setting, both modes).
+  - Checks: `cargo check --workspace --all-targets --offline` green in
+    `shared/isocosm`, `mesocosm`, `eponym`, the root, `isocosm-overlay`
+    and `isometer`; the lane's 21 unit tests pass. Nothing else was run.
+  - **For the after-pass**, beyond §3's done-conditions: a real pre-D1 v3
+    save fixture (the tests show only that a plain run saves no new field);
+    hashes of every non-deliberative run before and after D2 (equal by
+    construction, `Deliberated::Free`, unmeasured); draws, not the fixed
+    seeds the unit tests use.
 
 - **2026-10-08:** plan drafted from the directing survey; rulings 681 to
   691 taken in three rounds.

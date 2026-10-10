@@ -12,9 +12,13 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 mod choice;
+pub mod found;
+pub mod interim;
+pub mod readings;
 pub mod tier;
 
 pub(crate) use choice::{Chosen, Deliberated};
+pub use found::Played;
 pub use tier::{Tier, TierLine};
 
 /// The place a participant stands at: none.
@@ -138,7 +142,11 @@ impl Simulation {
     /// by the world's setting, where both are of one lineage (178).
     pub(crate) fn take(&mut self, participant: Id, critter: Id) -> Result<()> {
         self.participant(participant)?;
-        let e = self.state.population.get(critter).ok_or("unknown critter")?;
+        let e = self
+            .state
+            .population
+            .get(critter)
+            .ok_or("unknown critter")?;
         if !e.alive || e.method != Method::Deliberative {
             return Err("only a living deliberative critter is directed".into());
         }
@@ -146,13 +154,22 @@ impl Simulation {
         let rules = self.genesis.rules.directing();
         let before = self.plays(participant);
         let forebear = before
-            .filter(|b| self.state.population.get(*b).is_some_and(|f| f.lineage == lineage))
+            .filter(|b| {
+                self.state
+                    .population
+                    .get(*b)
+                    .is_some_and(|f| f.lineage == lineage)
+            })
             .and_then(|b| self.bond(participant, b));
         let weight = self
             .bond(participant, critter)
             .unwrap_or_else(|| rules.inherit(forebear));
         if let Some(before) = before {
-            hold(&mut self.state.relations, Relation::new(participant, PLAYS, before), false);
+            hold(
+                &mut self.state.relations,
+                Relation::new(participant, PLAYS, before),
+                false,
+            );
         }
         self.set_bond(participant, critter, weight);
         let plays = Relation::new(participant, PLAYS, critter);
@@ -182,7 +199,13 @@ impl Simulation {
     }
     /// Logs a nudge; refused unless the participant is bonded to a living
     /// critter and what it names is there (686, 690).
-    pub(crate) fn nudge(&mut self, participant: Id, critter: Id, aim: Aim, to: Toward) -> Result<()> {
+    pub(crate) fn nudge(
+        &mut self,
+        participant: Id,
+        critter: Id,
+        aim: Aim,
+        to: Toward,
+    ) -> Result<()> {
         self.participant(participant)?;
         if !self.state.population.get(critter).is_some_and(|e| e.alive) {
             return Err("the critter is not living".into());
@@ -192,7 +215,11 @@ impl Simulation {
         }
         let named = match to {
             Toward::Site(id) => self.state.sites.contains_key(&id),
-            Toward::Thing(id) => self.state.population.get(id).is_some_and(|e| !is_participant(e)),
+            Toward::Thing(id) => self
+                .state
+                .population
+                .get(id)
+                .is_some_and(|e| !is_participant(e)),
         };
         if !named {
             return Err("the nudge names nothing in the world".into());
@@ -225,5 +252,7 @@ impl Simulation {
     }
 }
 
+#[cfg(test)]
+mod choice_tests;
 #[cfg(test)]
 mod tests;
