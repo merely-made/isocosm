@@ -9619,6 +9619,25 @@ what later sections derive from.
      kiss3d arrives; 729's spirv-std carriage, the `ambience-lease` and
      `field-bake` probes and the renderling and crabslab forks then retire
      as 474 has them.
+734. **This lane takes the kiss3d tenant, mere included; no stopgaps;
+     amends 733's reading.** 2026-10-09. Mark: "Nah. You are now
+     responsible for kiss too. Touch mere as needed", and then "No
+     stopgaps. Remember we're dealing with a half built prototype, not a
+     national treasure". So L7 lands on the kiss3d tenant (471), not on
+     isometer-render, and the Isocosm lane builds 471's reshape and 472's
+     light block itself, editing mere where the seam lives.
+735. **The kiss3d fork: v0.47.0, a mark-ik fork, a mere crate over it.**
+     2026-10-09. Evidence: cargo's git cache holds dimforge/kiss3d at
+     `28cdddd` (2026-08-29, past v0.46.0); v0.47.0 (2026-10-04), which
+     nexus pins, is not on disk. Questions and Mark's choices: the base,
+     "v0.47.0, fetched (Recommended)" over the cached commit; the home,
+     "crates/kiss3d, mark-ik fork (Recommended)", pushed and pinned by rev,
+     over a local-only checkout; the seam, "A mere crate over the fork
+     (Recommended)", the crate owning device, targets, light block and
+     depth pre-pass with the fork beneath, over games using the fork
+     directly. So one fetch of upstream kiss3d is allowed, 606's
+     commit-by-name rule governs what comes in from balaur, and the mere
+     crate takes a plain working name until a naming round.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
