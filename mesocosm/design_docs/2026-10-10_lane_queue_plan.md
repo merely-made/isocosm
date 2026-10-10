@@ -284,6 +284,22 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, refreshed Q3 pilot source frozen:** native inputs now come
+  from verified `6f879936`, preserving the owned proof, registration and
+  diagnostic retirement. The 412-line proof requires
+  `ISOCOSM_REPRO_RECEIPT_DIR` to name the existing external Q3 receipt
+  directory; it refuses differing overwrite. Its SHA-256 is
+  `6aef92e716fe56783ce83df2b4de8b13abe3ecfb596ef5a35a5c25324355bc8b`.
+  Root recomputed all 267 native inputs; the receipt-path repair alone
+  changes the proof from the prior refreshed manifest. The current manifest
+  SHA-256 is `a1178f8724d89b412bec1c1424086a53ee934cf5e1ce73739c93ca3c813b9615`,
+  declaration `b278da6fde0d209b6188aff768da47c6a26f1c53a3ecd5eb0297b99b0f2f577a`
+  and preserved full history
+  `1ed5997d6195c5f2fd896eb07336847b4208bf4d92d6f9695b341e40ba04c830`.
+  Files are under `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/`,
+  prefixed `q3-reproduction-meal3-receipt-dir-`. World parameters and proof
+  gates remain unchanged, with only fresh bare seed 0 prepared; uncompiled
+  and unrun. Q2 owns Cargo, Q3's pilot follows, then Q8's bounded controls.
 - **2026-10-10, Q4/Q5 archive preflight recorded:** the after-pass Findings
   distinguish native genesis-digest failures from Eponym's earlier decoding
   failures and later generator admission gate. Raw fixtures/readers remain
