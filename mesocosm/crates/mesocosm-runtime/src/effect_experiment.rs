@@ -4,8 +4,10 @@
 //! Disposable effect/material experiment. This does not modify a World, assign
 //! capabilities to organs, or implement a tabletop ruleset. Coordinates are a
 //! normalized integer demonstration plane; they are not collision results.
+//! Handed back from Isocosm's legacy tree to the game (wing ruling 669).
 
-use crate::legacy::mesocosm::rng::Rng;
+pub use isocosm::effects::Glyph;
+use isocosm::legacy::mesocosm::rng::Rng;
 use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 1;
@@ -26,23 +28,12 @@ macro_rules! choices {
     };
 }
 
-choices!(Glyph { Quotes => "quotes", Slashes => "slashes", Backticks => "backticks" });
 choices!(Behavior { Stream => "stream", Enclose => "enclose", Inscribe => "inscribe" });
 choices!(Receiver { Stone => "stone", Metal => "metal", Moss => "moss" });
 choices!(Profile { Guaranteed => "guaranteed", Generated => "generated" });
 choices!(Response { Reflect => "reflect", Absorb => "absorb", Bind => "bind", Split => "split" });
 choices!(RuleOrigin { Guaranteed => "guaranteed", Generated => "generated" });
 choices!(Connection { Separate => "separate", Pairs => "pairs", String => "string" });
-
-impl Glyph {
-    pub fn text(self) -> &'static str {
-        match self {
-            Self::Quotes => "\"",
-            Self::Slashes => "/",
-            Self::Backticks => "`",
-        }
-    }
-}
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]

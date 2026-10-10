@@ -4,7 +4,7 @@
 //! A decorative plane experiment. Never advances or adjudicates the world.
 use super::{state::Bench, view::Child};
 use cambium::{clickable, custom_leaf, el, focusable, text};
-use isocosm::legacy::mesocosm::effect_experiment::{
+use mesocosm_runtime::effect_experiment::{
     Behavior, Experiment, Glyph, Profile, Receiver, Request,
 };
 use serde::{Deserialize, Serialize};

@@ -4,7 +4,7 @@
 use super::{state::Bench, view::Child};
 use crate::section::CameraMode;
 use cambium::{clickable, el, focusable, text};
-use isocosm::legacy::mesocosm::effect_experiment::Glyph;
+use isocosm::effects::Glyph;
 use serde::{Deserialize, Serialize};
 use std::time::Instant;
 mod sampling;

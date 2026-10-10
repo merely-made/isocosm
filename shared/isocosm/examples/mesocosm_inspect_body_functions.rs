@@ -3,7 +3,8 @@
 
 //! Join the existing body generator to functional construction and body loss.
 //! Run with `cargo run -p mesocosm-core --example inspect_body_functions`.
-use isocosm::legacy::mesocosm::{PartPalette, functions, world::generation::Request};
+use isocosm::effects::functions;
+use isocosm::legacy::mesocosm::{PartPalette, world::generation::Request};
 use std::collections::BTreeSet;
 use wing_functions::generation::{BodyTract, Form, GeneratorSettings, TractRole};
 use wing_functions::{Operator, PartRef, WorldRules};
@@ -50,7 +51,8 @@ fn main() {
         max_actuators: 4.min(parts.len() as u32 - 3),
         ..GeneratorSettings::default()
     };
-    let batch = functions::generate_for_body(1, &body, 7, &settings, &tracts).unwrap();
+    let live = functions::refs(1, body.living().map(|p| p.id));
+    let batch = functions::generate_among(&live, 7, &settings, &tracts).unwrap();
     let candidate = &batch
         .candidates
         .first()
@@ -87,7 +89,11 @@ fn main() {
         .map(|command| {
             candidate
                 .network
-                .preview(command, &functions::live_parts(1, &body), &rules)
+                .preview(
+                    command,
+                    &functions::refs(1, body.living().map(|p| p.id)),
+                    &rules,
+                )
                 .map_err(|e| e.to_string())
         })
         .collect();
@@ -98,7 +104,11 @@ fn main() {
         .map(|command| {
             candidate
                 .network
-                .preview(command, &functions::live_parts(1, &body), &rules)
+                .preview(
+                    command,
+                    &functions::refs(1, body.living().map(|p| p.id)),
+                    &rules,
+                )
                 .map_err(|e| e.to_string())
         })
         .collect();

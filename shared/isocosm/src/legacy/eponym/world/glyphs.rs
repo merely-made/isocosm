@@ -6,6 +6,10 @@
 
 //! P4: accepted Eponym history read through a caller-supplied glyph canon.
 //!
+//! The journal is native (`isocosm::effects::Journal`, the effects family).
+//! This adapter reads `GameState` and goes with Eponym's world move (wing
+//! ruling 755).
+//!
 //! This is the wing's second `wing-glyphs` consumer, after
 //! `mesocosm-runtime::glyphs`, and it keeps that consumer's posture:
 //!
@@ -53,12 +57,14 @@
 use crate::legacy::eponym::identity::SubjectId;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
-use wing_glyphs::{GrantOutcome, Journey, Provenance, VariantPolicy};
+use wing_glyphs::{Journey, Provenance};
 
+use crate::effects::Journal;
 use crate::legacy::eponym::world::{CanonRevisionCause, GameEvent, GameState};
 
 // The kernel types a host needs to author rules and draw a journal, so a
 // consumer of this module needs no `wing-glyphs` dependency of its own.
+pub use crate::effects::GlyphGrantOutcome;
 pub use wing_glyphs::{
     Acquisition, Canon, CanonSpec, CorrespondenceMove, Eligibility, GlyphDefinition, GrantRecord,
     ProvenanceKind,
@@ -119,15 +125,6 @@ pub struct GlyphRules {
     pub grants: Vec<EventGrant>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum GlyphGrantOutcome {
-    Acquired,
-    Recorded,
-    Duplicate,
-    Rejected(String),
-}
-
 /// One accepted event this reading answered, whatever the kernel said about
 /// it. Redrawing the journal never consumes or grants anything.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -152,15 +149,12 @@ pub struct LiveCanon {
     pub cause: CanonRevisionCause,
 }
 
-/// The opt-in reading: a `wing_glyphs::Journey` plus the evidence behind it.
+/// The opt-in reading: the native glyph [`Journal`] plus the evidence
+/// behind it.
 pub struct GlyphReading {
     rules: GlyphRules,
-    canon: Canon,
-    /// The published correspondence, equal to `canon` until a revision is
-    /// read. Only the effect an owned glyph *now* carries follows it.
-    live: Canon,
+    journal: Journal,
     revised: Option<LiveCanon>,
-    journey: Journey,
     records: Vec<GlyphEvidence>,
     cursor: usize,
     ended: bool,
@@ -189,17 +183,15 @@ impl GlyphReading {
                 ));
             }
         }
-        let journey = Journey::new(
+        let journal = Journal::new(
+            canon,
             rules.individual.clone(),
-            &canon,
             rules.unlock_thresholds.clone(),
         )?;
         let mut reading = Self {
             rules,
-            live: canon.clone(),
-            canon,
+            journal,
             revised: None,
-            journey,
             records: Vec::new(),
             cursor: 0,
             ended: false,
@@ -251,11 +243,11 @@ impl GlyphReading {
     /// The founding correspondence: what completion and the ascension basis
     /// are judged against, whatever the world publishes later.
     pub fn canon(&self) -> &Canon {
-        &self.canon
+        self.journal.canon()
     }
     /// The published correspondence this reading currently answers from.
     pub fn live_canon(&self) -> &Canon {
-        &self.live
+        self.journal.live_canon()
     }
     /// The accepted revision in force, when one has been read.
     pub fn revision(&self) -> Option<&LiveCanon> {
@@ -263,27 +255,25 @@ impl GlyphReading {
     }
     /// What this glyph meant when the journey was founded.
     pub fn founding_effect(&self, glyph: &str) -> Option<&str> {
-        self.canon.effect(glyph)
+        self.journal.founding_effect(glyph)
     }
     /// What this glyph means under the live revision. Equal to the founding
     /// effect until a revision moves that base.
     pub fn live_effect(&self, glyph: &str) -> Option<&str> {
-        self.live.effect(glyph)
+        self.journal.live_effect(glyph)
     }
     /// The bases whose effect the live revision moved.
     pub fn moved_bases(&self) -> Vec<CorrespondenceMove> {
-        self.canon
-            .correspondence_diff(&self.live)
-            .unwrap_or_default()
+        self.journal.moved_bases()
     }
     pub fn journey(&self) -> &Journey {
-        &self.journey
+        self.journal.journey()
     }
     pub fn records(&self) -> &[GlyphEvidence] {
         &self.records
     }
     pub fn eligibility(&self) -> Eligibility {
-        self.journey.eligibility()
+        self.journal.eligibility()
     }
     /// True once the bound subject's death was read. Later events are ignored.
     pub fn ended(&self) -> bool {
@@ -308,19 +298,7 @@ impl GlyphReading {
             evidence: evidence.clone(),
             context: Some(format!("subject={}", self.rules.subject.0)),
         };
-        let canon_revision = self.live.spec().revision;
-        let outcome = match self.journey.grant_at_revision(
-            &glyph,
-            provenance,
-            tick,
-            VariantPolicy::RequireOwnedBase,
-            canon_revision,
-        ) {
-            Ok(GrantOutcome::Acquired { .. }) => GlyphGrantOutcome::Acquired,
-            Ok(GrantOutcome::Recorded { .. }) => GlyphGrantOutcome::Recorded,
-            Ok(GrantOutcome::Duplicate { .. }) => GlyphGrantOutcome::Duplicate,
-            Err(why) => GlyphGrantOutcome::Rejected(why),
-        };
+        let (outcome, canon_revision) = self.journal.grant(&glyph, provenance, tick);
         self.records.push(GlyphEvidence {
             index,
             tick,
@@ -337,11 +315,7 @@ impl GlyphReading {
     /// published seed and revision alone. A revision that is not newer is
     /// history this reading has already answered under.
     fn revise(&mut self, revision: u64, seed: u64, cause: CanonRevisionCause) {
-        if revision <= self.live.spec().revision {
-            return;
-        }
-        if let Ok(live) = self.canon.shuffled(seed, revision) {
-            self.live = live;
+        if self.journal.revise(revision, seed) {
             self.revised = Some(LiveCanon {
                 revision,
                 seed,

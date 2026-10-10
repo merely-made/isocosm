@@ -6,7 +6,8 @@
 use super::{Bench, Child, journey};
 use crate::section::SpatialGlyph;
 use cambium::{clickable, el, focusable, text};
-use isocosm::legacy::mesocosm::{PartId, World, effect_pack::Amount};
+use isocosm::effects::pack::Amount;
+use isocosm::legacy::mesocosm::{PartId, World};
 use mesocosm_runtime::{Trial, TrialCarve};
 use serde::Serialize;
 
@@ -328,7 +329,7 @@ pub(super) fn view(state: &Bench) -> Child {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::mesocosm::effect_pack::{Bearer, DEFAULT_EFFECT};
+    use isocosm::effects::pack::{Bearer, DEFAULT_EFFECT};
 
     fn event(sequence: u64) -> TrialCarve {
         TrialCarve {

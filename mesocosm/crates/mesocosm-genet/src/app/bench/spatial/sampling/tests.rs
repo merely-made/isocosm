@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::legacy::mesocosm::{PartId, effect_experiment::Glyph};
+use isocosm::effects::Glyph;
+use isocosm::legacy::mesocosm::PartId;
 use isometer::mesh::BodyDependencyRevision;
 use isometer::{PartAddress, SubjectKey};
 

@@ -17,6 +17,7 @@ pub mod diffusion;
 pub mod directing;
 mod ecology;
 mod edits;
+pub mod effects;
 mod execute;
 pub mod flows;
 pub mod generate;

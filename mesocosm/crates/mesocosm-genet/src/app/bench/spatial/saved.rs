@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use super::super::state::Bench;
 use super::{Form, Spatial};
-use isocosm::legacy::mesocosm::effect_experiment::Glyph;
+use isocosm::effects::Glyph;
 use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
