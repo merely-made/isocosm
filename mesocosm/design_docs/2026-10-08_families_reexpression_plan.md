@@ -1,5 +1,29 @@
 # Re-expressing the legacy families in Isocosm
 
+**Status, 2026-10-10:** the migration push is integrated. Legacy
+Mesocosm and Eponym are deleted; only `legacy/campaign` remains until V2.
+The plan stays live until all seven families certify under 791.
+
+## Current state, 2026-10-10
+
+The October 8 assessment's 63,277-line legacy inventory is historical.
+`shared/isocosm/src/legacy.rs` now exports only `campaign`.
+Native owners under `shared/isocosm/src/` are `matter/`, `process/`,
+`development.rs`, `geometry.rs`, `mosaic/`, `history/`, `map/`, `terrain/`,
+`lineage/`, `effects/`, `knowing.rs` and `social/`. In-site shape, edits
+and queries belong to `shared/isometer/crates/isometer-space/src/`.
+Eponym's game motion, combat, admitted anatomy and control remain in
+`eponym/crates/eponym-play/src/`; Mesocosm's runtime reads a native session.
+
+Migration Progress records compile-gated implementation, not certification.
+The [after-pass plan](2026-10-10_after_pass_plan.md) owns deferred runs,
+consumer reproduction first. Ruling 791 replaces legacy parity with each
+family's conservation, replay and controls; 672 permits obsolete tests to
+retire only with their invariant's new home named. V2 and E3 are open under
+798, through contracts under 794 and 795; their completion is separate.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status, 2026-10-08:** assessment; forks ruled but 9, which goes with the bodies
 family (666 to 673).
 Comes after checkpoint 9 and the open bugs (wing design record, ruling 656).
@@ -156,6 +180,10 @@ Open: fork 9, the founding datasheets and the two `Founding`s, taken with
 the bodies family.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-10-09, family 1, matter and processes (lane `lane-matter`, under
   732's compile gate; no tests, draws or certification run).** Moved into

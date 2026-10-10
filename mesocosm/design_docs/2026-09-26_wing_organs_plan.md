@@ -1,5 +1,27 @@
 # Wing organs: the hagioglyph and the impresa (2026-09-26)
 
+**Status, 2026-10-10:** the hagioglyph and impresa kernels remain shared.
+Effects are native Isocosm; higher rungs remain parked (279, 673).
+Condition carryover remains partly designed under 406.
+
+## Current state, 2026-10-10
+
+`shared/wing-glyphs` owns canon, journey and divinity kernel types;
+`shared/wing-impresa` owns association records. Their existence does not
+complete G3, G4, G6 or G7. `shared/isocosm/src/effects/` owns the moved
+embodiment, pack, functions and journal readings. The game halves live in
+`mesocosm/crates/mesocosm-runtime/src/glyphs.rs` and
+`eponym/crates/eponym-play/src/glyphs.rs`; legacy-world and bench paths
+below are dated evidence.
+
+Mere's hagiograph is the history organ. Native deep time runs it over a
+session in `shared/isocosm/src/directing/interim/deep.rs`; the archived
+isoscape plan's residue is in sim S5. Ruling 406's condition carryover is
+distinct from restoring acquired effects and stays a design gate with the
+phenotype contract. Glyph expression owns the folded trait catalogue (801).
+
+*The dated design and receipts below remain as written (793).*
+
 **Status, 2026-09-28:** Carried 2026-09-26; carryover distinction 2026-09-28 (ruling 406). *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*
 
@@ -353,6 +375,10 @@ new visual or performance acceptance claim.
 
 
 ## 3. Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-09-26:** carried here from the general model plan's §7.4 and Findings
   under ruling 310; the general model archived the same day. No design changed.

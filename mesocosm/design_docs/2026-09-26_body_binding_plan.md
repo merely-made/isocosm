@@ -2,6 +2,32 @@
 
 **Date:** 2026-09-26
 
+**Status, 2026-10-10:** the generic binding shape remains documented and
+unbuilt (346 to 352). Query refresh exists upstream and in parry-ground;
+remaining settle steps are adoption work under 804. `TactileWorld` stays.
+
+## Current state, 2026-10-10
+
+The retired VTT `isometry-runtime` table in §1 is a historical shape.
+The current board draws and picks through
+`crates/isometry-views/src/scene/board.rs`; a drawn token need not have a
+bound conatus body.
+
+Mesocosm retains `mesocosm/crates/mesocosm-runtime/src/tactile.rs` and
+its caller-owned key table (804). Its query refresh still uses `step(1e-6)`.
+Native bodies belong to Isocosm; §5's deleted `OrganismId` owner is not an
+adoption target. The generic adapter preserves the consumer's qualified key.
+Eponym's settle steps moved into
+`eponym/crates/eponym-motion/src/solver.rs` and `contact/spatial.rs`.
+
+Mere implements `BodyWorld::refresh_queries` in
+`crates/conatus/conatus/src/world/queries.rs`, already used by
+`mesocosm/crates/probes/parry-ground/src/main.rs`. Replacing remaining
+steps is authorized by 352 and 804. Building the generic bindings and
+changing T2's terrain ownership remain separate gates.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status, 2026-09-27:** ruled 2026-09-26, rulings 346 to 352 of the wing
 design record; the shape is documented, not built. Mark ruled "Document the
 shape only" (346): the shape in §4 goes into conatus's docs now, saying
@@ -378,6 +404,10 @@ Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
   A leaves it; reported for the mere lane.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-09-26:** assessment drafted under ruling 324 from the retired
   crate at `f15fd43`, `TactileWorld`, conatus at `876320fd`, isometer's

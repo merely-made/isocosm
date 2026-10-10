@@ -1,5 +1,30 @@
 # Resident Views Composition Plan (2026-08-14)
 
+**Status, 2026-10-10:** retained/resident foundations remain bounded
+receipts. Ground and the lift are isometer's; Mere's `modulus` owns the
+brick ABI/DDA. Field admission and SP6's nisus join remain open.
+
+## Current state, 2026-10-10
+
+The dated renderling, hecs and legacy Mesocosm adoption passages below are
+historical foundations, not current body or world owners (793).
+`shared/isometer/crates/isometer-core/src/ground.rs` owns `Ground`;
+`shared/isometer/crates/isometer-space/src/` owns the lift, edits and
+in-site queries. `shared/isocosm/src/terrain/mod.rs` reads native sites
+across to it. SP6 still waits on Mere's T2 before nisus joins beneath it.
+
+The old `conatus-brick` name is now `modulus`, consumed by Eponym's
+`Cargo.toml`. The shared ABI/DDA acquires no product camera, material
+policy or world authority. Existing V1b receipts keep their original pins.
+Eponym's lit body path is Mere's `tenant`, in
+`eponym/crates/eponym-client/src/gpu/body.rs`; renderling is retired.
+Mesocosm still uses isometer-render's `LiveBody` until adoption under 796.
+The presentation plan owns that move and its validation. Native Isocosm
+owns world truth; resident leases and candidate planes remain derived.
+New fields still require this plan's named consumer and fidelity contract.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status: founded 2026-08-14; lanes A-F, the seed crystal, real-Ground
 composition, retained-allocation mutation, and strided subregion carriage are
 landed in tracked code; Conatus voxel mechanics are adopted through
@@ -784,3 +809,9 @@ allocator-observed resident and transition bytes is proven by the Paredros
   being inflated to dense 3D for storage uniformity.
 - Render mips, clipmaps, and residency windows remain views; any authoritative
   field-resolution transition has its own conservation and fidelity contract.
+
+## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.

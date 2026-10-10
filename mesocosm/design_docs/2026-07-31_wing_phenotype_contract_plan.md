@@ -1,5 +1,35 @@
 # Wing construction, embodiment and continuity
 
+**Status, 2026-10-10:** the 2026-09-28 construction refinement remains
+partly designed. Native development and the sim-to-scene connection now
+exist; continuing-subject/incarnation mapping and configured condition
+carryover remain open. Earlier receipts keep their original scope.
+
+## Current state, 2026-10-10
+
+Ruling 793 requires the native ownership below to supersede older inventory
+and adapter-absence claims, including the 2026-09-28 preparation section.
+`mesocosm-core` and the legacy Eponym world are deleted.
+
+- Isocosm owns recipes and development (`shared/isocosm/src/development.rs`),
+  body geometry (`shared/isocosm/src/geometry.rs`), physiology and tracts
+  (`shared/isocosm/src/anatomy.rs`, `shared/isocosm/src/mosaic/`). Geometry
+  uses isometer's `BodyDocument` and `PartId`; the older symbolic-u64 to
+  document-u32 proposal is not the implemented address scheme.
+- Mesocosm's scene now reads native bodies through
+  `mesocosm/crates/mesocosm-genet/src/played.rs` and
+  `mesocosm/crates/mesocosm-genet/src/section/bodies.rs`. Its section's
+  placement and scale are presentation readings, not a completed physical
+  pose or the full M4's contact loop. The deleted specimen bench is not a
+  current consumer.
+- Eponym's admitted anatomy and control remain game-side in
+  `eponym/crates/eponym-play/src/anatomy.rs` and `identity.rs`. Existing
+  native geometry and part identities do not certify incarnation continuity,
+  cross-ruleset adaptation, or selectable carryover under rulings 405 to 407.
+  Those design gates remain this contract's, with the wing organs plan.
+
+*The dated design and receipts below remain as written.*
+
 **Status, 2026-09-28:** current contract refinement documented under wing
 design record rulings 405 to 407. This is a partial design rewrite, not a
 new wire schema or completed creator. The section below supersedes earlier
@@ -604,6 +634,10 @@ ancestry; neither operation is implemented as a flat star rebuild.
   destination declares feasibility and cost while the traveler chooses.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-07-31:** founding contract written; no schema or code change made.
 - **2026-08-01:** carry-this-body and regrow-here routes added after the first

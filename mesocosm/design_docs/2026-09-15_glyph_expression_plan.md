@@ -1,5 +1,29 @@
 # Glyph expression plan
 
+**Status, 2026-10-10:** the trait catalogue is folded into §10 (801).
+Glyph/divinity implementation remains parked (279, 673); existing effects
+code moved to native Isocosm without opening that lane.
+
+## Current state, 2026-10-10
+
+The September 15 inventory names deleted `mesocosm-core` code. Native
+tracts and catalogue-bound functions now live in
+`shared/isocosm/src/mosaic/` and `shared/isocosm/src/process/`.
+`Command::Express` admits placement (787); `geometry.rs` and `anatomy.rs`
+in `shared/isocosm/src/` own body geometry and physiology.
+
+The moved effects family is `shared/isocosm/src/effects/`: embodiment,
+pack readings, function membership and journal. Canon and journey remain
+`shared/wing-glyphs`; the function kernel remains `shared/wing-functions`.
+The game halves are `mesocosm/crates/mesocosm-runtime/src/glyphs.rs` and
+`eponym/crates/eponym-play/src/glyphs.rs`.
+
+This realignment does not certify every glyph's trait, grants or ascension.
+Rulings 279 and 673 keep higher rungs parked. §10 holds the catalogue's
+remaining conditions; its archived plan and the deleted bench are history.
+
+*The dated design and receipts below remain as written (793).*
+
 **Status: plan, 2026-09-15.** Assessment only; no code moved, nothing
 committed. Supersedes the acquiring-act axis of the
 [effect pack preset plan](archive_docs/2026-09-18/2026-09-15_effect_pack_preset_plan.md) §3 and its
@@ -1180,6 +1204,10 @@ Measured in the tree today; the rest are cited inline above.
   slice's real constraint.
 
 ## Progress
+
+- **2026-10-10, Q1:** current ownership and status checked against the lane
+  tree under 793; dated prose retained. Documentation verification only;
+  no new test, draw or headed certification.
 
 - **2026-09-15.** Plan written. No code moved, nothing committed.
 - **2026-09-15, steps 1 to 7 done, committed together once the tree was
