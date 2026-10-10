@@ -12,6 +12,9 @@
 
 mod cells;
 mod flood;
+mod join;
+#[cfg(test)]
+mod join_tests;
 mod local;
 mod neck;
 mod passages;
@@ -20,7 +23,8 @@ mod sight;
 #[cfg(test)]
 mod tests;
 
-pub use route::Body;
+pub use join::join;
+pub use route::{Body, route_over};
 pub use sight::ray;
 
 use crate::volume::Volume;

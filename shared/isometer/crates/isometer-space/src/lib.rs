@@ -17,6 +17,7 @@
 //! machine. Coordinates are base units in a site's own frame: `x` and `z`
 //! across its footprint from corner 0, `y` up.
 
+pub mod border;
 pub mod edit;
 #[cfg(test)]
 mod fixture;
@@ -122,6 +123,12 @@ pub trait Atlas {
     /// Chunk `at` of `site` at `level`, unedited (ruling 402).
     fn lift(&self, site: SiteId, level: u8, at: [u32; 2]) -> Result<Chunk> {
         lift::chunk(self, site, level, at)
+    }
+
+    /// The profile's spans along `side` of `site`, each passing, climbing
+    /// or stopping for a walker under `climb`.
+    fn spans(&self, site: SiteId, side: u8, climb: places::Climb) -> Result<Vec<border::Span>> {
+        border::spans(self, site, side, climb)
     }
 
     /// The same chunk with `edits` replayed onto it in order: every edit
