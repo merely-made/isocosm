@@ -11,15 +11,16 @@ use eponym_client::room::SEED;
 use eponym_client::{Probe, TICKS, scene};
 
 fn draw_tenant(
-    tenant: &Tenant,
+    tenant: &mut Tenant,
     probe: &Probe,
     room: &[isometer::render::geometry::Vertex],
-) -> renderling::stage::StageEncodeReport {
+) -> tenant::FrameReport {
     let aspect = SIZE[0] as f32 / SIZE[1] as f32;
     let camera = scene::camera(probe.room(), probe.at(), probe.heading(), aspect);
-    tenant.look(camera.projection, camera.view);
-    tenant.set_room(room, camera.eye);
-    tenant.set_body(&scene::body_vertices(probe.at()), camera.eye);
+    tenant.look(&camera);
+    tenant.light(&scene::torch(camera.eye, 0.0));
+    tenant.set_room(room);
+    tenant.set_body(&scene::body_vertices(probe.at()));
     tenant.draw()
 }
 
@@ -36,12 +37,12 @@ fn rg3c_fixed_room_graph_matches_legacy_composition() {
     let handles = gpu::boot(&instance, None);
     let candidate_composer = Composer::new(handles.clone(), SIZE);
     let legacy_composer = Composer::new(handles.clone(), SIZE);
-    let candidate_tenant = Tenant::new(&handles, SIZE);
-    let legacy_tenant = Tenant::new(&handles, SIZE);
+    let mut candidate_tenant = Tenant::new(&handles, SIZE);
+    let mut legacy_tenant = Tenant::new(&handles, SIZE);
     let probe = Probe::new(SEED).expect("fixed room probe");
     let room = scene::room_vertices(probe.room());
-    let candidate_report = draw_tenant(&candidate_tenant, &probe, &room);
-    let _ = draw_tenant(&legacy_tenant, &probe, &room);
+    let candidate_report = draw_tenant(&mut candidate_tenant, &probe, &room);
+    let _ = draw_tenant(&mut legacy_tenant, &probe, &room);
     let chrome = scene::chrome(SIZE, 0, TICKS);
 
     let (candidate_master, receipt) =
@@ -59,16 +60,11 @@ fn rg3c_fixed_room_graph_matches_legacy_composition() {
     );
     assert!(candidate.distinct > 16, "room content is not visible");
     assert_eq!(receipt.tenant_name, "eponym-client");
-    assert_eq!(
-        receipt.producer_path,
-        "renderling::Stage::encode_into (opaque)"
-    );
+    assert_eq!(receipt.producer_path, gpu::PRODUCER_PATH);
     assert_eq!(receipt.fallback_count, 0);
     assert_eq!(receipt.scene_op_boundary, 0);
     assert_eq!(receipt.caller_reported_physical_submission_count, Some(1));
-    assert_eq!(candidate_report.render_passes, 20);
-    assert_eq!(candidate_report.copy_commands, 0);
-    assert_eq!(candidate_report.internal_queue_submissions, 0);
+    assert_eq!(candidate_report.internal_submissions, 0);
     assert_eq!(receipt.logical_opaque_producer_boundaries, 1);
     assert_eq!(receipt.graph_encoder_batches, 1);
     assert_eq!(receipt.graph_submission_boundaries, 1);
@@ -78,7 +74,7 @@ fn rg3c_fixed_room_graph_matches_legacy_composition() {
             .contains("rasterizer=Classic execution_boundary=opaque_submission")
     );
     println!(
-        "{{\"shared_device\":true,\"tenant_format\":\"Rgba8UnormSrgb\",\"master_format\":\"Rgba8Unorm\",\"tenant_name\":\"{}\",\"producer_path\":\"{}\",\"fallback_count\":{},\"scene_op_boundary\":{},\"logical_opaque_producer_boundaries\":{},\"graph_encoder_batches\":{},\"graph_submission_boundaries\":{},\"caller_reported_physical_submission_count\":1,\"tenant_render_passes\":{},\"tenant_copy_commands\":{},\"capture_distinct_colours\":{},\"plan_dump\":{:?},\"dependency_provenance\":\"renderling 3683dd6 encode_into -> netrender 93b221a5e\"}}",
+        "{{\"shared_device\":true,\"tenant_format\":\"Rgba8UnormSrgb\",\"master_format\":\"Rgba8Unorm\",\"tenant_name\":\"{}\",\"producer_path\":\"{}\",\"fallback_count\":{},\"scene_op_boundary\":{},\"logical_opaque_producer_boundaries\":{},\"graph_encoder_batches\":{},\"graph_submission_boundaries\":{},\"caller_reported_physical_submission_count\":1,\"tenant_internal_submissions\":{},\"capture_distinct_colours\":{},\"plan_dump\":{:?},\"dependency_provenance\":\"mere tenant 4d8bd703 encode -> netrender 9607d16f\"}}",
         receipt.tenant_name,
         receipt.producer_path,
         receipt.fallback_count,
@@ -86,8 +82,7 @@ fn rg3c_fixed_room_graph_matches_legacy_composition() {
         receipt.logical_opaque_producer_boundaries,
         receipt.graph_encoder_batches,
         receipt.graph_submission_boundaries,
-        candidate_report.render_passes,
-        candidate_report.copy_commands,
+        candidate_report.internal_submissions,
         candidate.distinct,
         receipt.logical_plan_dump,
     );

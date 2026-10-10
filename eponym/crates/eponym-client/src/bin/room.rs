@@ -6,7 +6,7 @@
 
 //! The headed room probe.
 //!
-//! A winit window presenting netrender's composed master: the renderling
+//! A winit window presenting netrender's composed master: the body-tenant
 //! room underneath, a vello chrome bar over it. With `ROOM_TRACE=1` the run
 //! drives itself from the fixed trace, writes the screenshot receipt, prints
 //! the hashes and the frame spans, and exits. Without it the window stays up
@@ -116,9 +116,6 @@ struct Live {
     #[cfg(feature = "r1-proof")]
     dda: Option<DdaTenant>,
     composer: Composer,
-    /// The room is meshed once. Only the torch changes, and the torch rides
-    /// the eye, so the vertices are re-shaded per frame rather than remeshed.
-    room: Vec<isometer::render::geometry::Vertex>,
     #[cfg(feature = "r1-proof")]
     adapter: String,
     health: Arc<Mutex<FrameHealth>>,
@@ -235,7 +232,7 @@ impl RoomApp {
             .find(|f| !f.is_srgb())
             .unwrap_or(capabilities.formats[0]);
 
-        let tenant = Tenant::new(&handles, SIZE);
+        let mut tenant = Tenant::new(&handles, SIZE);
         #[cfg(feature = "r1-proof")]
         let dda = self
             .r1_mode
@@ -247,6 +244,9 @@ impl RoomApp {
             "room mesh: {} triangles (device generation {device_generation})",
             room.len() / 3
         );
+        // The room is meshed once; only the torch, which rides the eye,
+        // changes per frame.
+        tenant.set_room(&room);
         #[cfg(feature = "r1-proof")]
         let adapter = handles.adapter.get_info().name;
         let composer = Composer::new(handles, SIZE);
@@ -261,7 +261,6 @@ impl RoomApp {
             #[cfg(feature = "r1-proof")]
             dda,
             composer,
-            room,
             #[cfg(feature = "r1-proof")]
             adapter,
             health,
@@ -381,39 +380,27 @@ impl RoomApp {
                     "paredros::DdaTenant::draw",
                 )
             } else {
-                live.tenant.look(camera.projection, camera.view);
-                live.tenant.set_room(&live.room, camera.eye);
-                live.tenant
-                    .set_body(&scene::body_vertices(self.probe.at()), camera.eye);
+                live.tenant.look(&camera);
+                live.tenant.light(&scene::torch(camera.eye, 0.0));
+                live.tenant.set_body(&scene::body_vertices(self.probe.at()));
                 let tenant_report = live.tenant.draw();
                 let chrome = scene::chrome(SIZE, self.probe.tick_count(), TICKS);
                 let (master, receipt) =
                     live.composer
                         .compose_opaque_tenant(&chrome, &live.tenant, tenant_report);
-                (
-                    master,
-                    Some(receipt),
-                    "eponym-client",
-                    "renderling::Stage::encode_into (opaque)",
-                )
+                (master, Some(receipt), "eponym-client", gpu::PRODUCER_PATH)
             }
             #[cfg(not(feature = "r1-proof"))]
             {
-                live.tenant.look(camera.projection, camera.view);
-                live.tenant.set_room(&live.room, camera.eye);
-                live.tenant
-                    .set_body(&scene::body_vertices(self.probe.at()), camera.eye);
+                live.tenant.look(&camera);
+                live.tenant.light(&scene::torch(camera.eye, 0.0));
+                live.tenant.set_body(&scene::body_vertices(self.probe.at()));
                 let tenant_report = live.tenant.draw();
                 let chrome = scene::chrome(SIZE, self.probe.tick_count(), TICKS);
                 let (master, receipt) =
                     live.composer
                         .compose_opaque_tenant(&chrome, &live.tenant, tenant_report);
-                (
-                    master,
-                    Some(receipt),
-                    "eponym-client",
-                    "renderling::Stage::encode_into (opaque)",
-                )
+                (master, Some(receipt), "eponym-client", gpu::PRODUCER_PATH)
             }
         };
         let validation_future = Box::pin(validation_scope.pop());

@@ -4,12 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The headed D1 receipt: raymarch depth composed with Renderling.
+//! The headed D1 receipt: raymarch depth joined with the body tenant.
 //!
-//! The renderling tenant draws the body and three cyan witness pillars with
-//! its depth stored; the shared brick traversal then draws the room's rock
-//! into the same colour target against that depth. Occlusion must hold in
-//! both directions: the pillar before the wall covers rock, the floor covers
+//! The shared brick traversal draws the room's rock first into its own
+//! colour and depth; that depth is the body tenant's pre-pass, so the body
+//! and three cyan witness pillars draw only where nearer, and netrender
+//! layers them over the traced colour. Occlusion must hold in both
+//! directions: the pillar before the wall covers rock, the floor covers
 //! the buried pillar base, and the pillar beyond the wall never appears.
 //! The run replays the fixed S0 trace, judges the final frame, and writes
 //! the capture and JSON receipt.
@@ -22,7 +23,7 @@ use eponym_client::gpu::{self, BrickAbi, Composer, JoinTenant, SIZE, Tenant};
 use eponym_client::room::SEED;
 use eponym_client::scene::Pillar;
 use eponym_client::{Probe, TICKS, scene};
-use renderling::glam::{Mat4, Vec4};
+use glam::{Mat4, Vec4};
 use winit::application::ApplicationHandler;
 use winit::dpi::PhysicalSize;
 use winit::event::WindowEvent;
@@ -105,7 +106,7 @@ impl ApplicationHandler for DepthApp {
             return;
         }
         let attributes = Window::default_attributes()
-            .with_title("Eponym D1: raymarch depth composed with Renderling")
+            .with_title("Eponym D1: raymarch depth joined with the body tenant")
             .with_inner_size(PhysicalSize::new(SIZE[0], SIZE[1]));
         let window = Arc::new(event_loop.create_window(attributes).expect("window"));
         let surface = self
@@ -124,10 +125,15 @@ impl ApplicationHandler for DepthApp {
             .find(|f| !f.is_srgb())
             .unwrap_or(capabilities.formats[0]);
 
-        let tenant = Tenant::new(&handles, SIZE);
+        let mut tenant = Tenant::new(&handles, SIZE);
         let join =
             JoinTenant::new(&handles, &self.probe.room().ground, SIZE).expect("D1 join tenant");
         let pillars = scene::d1_pillars(self.probe.room());
+        // Bodies over the traced colour: a transparent background, the
+        // traced depth as the pre-pass, and the witnesses meshed once.
+        tenant.set_background([0.0; 4]);
+        tenant.set_depth_prepass(Some(join.depth()));
+        tenant.set_room(&scene::pillar_vertices(&pillars));
         let adapter = handles.adapter.get_info().name;
         let composer = Composer::new(handles, SIZE);
 
@@ -179,28 +185,23 @@ impl DepthApp {
             aspect,
         );
 
-        // Raster half first, depth stored: the witnesses and the body, but
-        // never the room's rock, which is the raymarch's to draw.
-        live.tenant.look(camera.projection, camera.view);
-        live.tenant
-            .set_room(&scene::pillar_vertices(&live.pillars), camera.eye);
-        live.tenant
-            .set_body(&scene::body_vertices(self.probe.at()), camera.eye);
-        let _ = live.tenant.draw();
-
-        // Then the join, against the same matrix the raster projected with.
-        // The depth view is fetched after the draw because the stage may
-        // have replaced its depth texture during it.
-        let clip = (camera.projection * camera.view).to_cols_array_2d();
-        let depth_view = live.tenant.depth_view();
+        // Trace first, into cleared colour and depth, with the matrix the
+        // body tenant projects with; then the bodies over it.
+        let clip = camera.tenant().clip_from_world();
         let diagnostics = live
             .join
-            .draw_over(&live.tenant.view, &depth_view, camera.trace(aspect), clip)
-            .expect("D1 joined frame");
+            .draw(camera.trace(aspect), clip)
+            .expect("D1 traced pre-pass");
         self.last_trace = Some(diagnostics);
+        live.tenant.look(&camera);
+        live.tenant.light(&scene::torch(camera.eye, 0.0));
+        live.tenant.set_body(&scene::body_vertices(self.probe.at()));
+        let _ = live.tenant.draw();
 
         let chrome = scene::chrome(SIZE, self.probe.tick_count(), TICKS);
-        let master = live.composer.compose(&chrome, &live.tenant.view);
+        let master = live
+            .composer
+            .compose_layers(&chrome, &[&live.join.view, &live.tenant.view]);
 
         use wgpu::CurrentSurfaceTexture as Acquired;
         match live.surface.get_current_texture() {
@@ -280,7 +281,7 @@ fn configure(live: &mut Live) {
 }
 
 /// Whether a pixel can only be a witness pillar. Cyan-dominant survives the
-/// torch falloff and renderling's tonemap; nothing else in the frame is in
+/// torch falloff and the body tenant's tonemap; nothing else in the frame is in
 /// the cyan family.
 fn is_cyan(pixel: &[u8]) -> bool {
     let (r, g, b) = (pixel[0] as u32, pixel[1] as u32, pixel[2] as u32);
@@ -356,9 +357,10 @@ fn report(
     let receipt = D1Receipt {
         gate: "D1",
         vessel: "paredros",
-        mechanism: "renderling raster first with stored Depth32Float; \
-                    modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer::encode_with_depth \
-                    writes frag_depth from the shared clip_from_world under LessEqual",
+        mechanism: "modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer::encode_with_depth \
+                    writes colour and frag_depth from the shared clip_from_world first; \
+                    tenant::Tenant takes that Depth32Float as its pre-pass and netrender \
+                    layers the bodies over the traced colour",
         adapter: &live.adapter,
         size: SIZE,
         judged_tick: judged.tick,

@@ -12,11 +12,11 @@
 
 use std::{collections::BTreeSet, fmt};
 
+use glam::Vec3;
 use isocosm::legacy::mesocosm::places::{Places, WALKER_HEIGHT};
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::TraceCamera;
 use modulus::{AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision};
-use renderling::glam::Vec3;
 
 use crate::room::SEED;
 

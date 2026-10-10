@@ -14,23 +14,20 @@ path = "src/lib.rs"
 [features]
 # The shared traversal is a permanent compile-time product organ. `ROOM_R1`
 # selects it at runtime for the historical R1 receipt; ordinary room rendering
-# can still select the Renderling tenant.
+# draws through mere's body tenant.
 default = ["r1-proof"]
 r1-proof = ["dep:modulus", "dep:serde_json"]
 # V1 keeps the R1 traversal receipt and adds Eponym-owned camera and
 # residency policy over a larger exact Ground working set.
 v1-proof = ["r1-proof"]
-# D1 joins the brick raymarch and the renderling raster tenant on one depth
-# surface, so each occludes the other per pixel.
+# D1 joins the brick raymarch and the body tenant on one depth surface (the
+# traced depth is the tenant's pre-pass), so each occludes the other per pixel.
 d1-proof = ["r1-proof"]
 # V1b holds the V1 travel trace over one capacity-fixed brick cache with
 # per-brick publication and allocator-observed bytes.
 v1b-proof = ["v1-proof"]
 
-# Path deps rather than git, because the probe's whole point is to consume the
-# sibling crates as they stand on this machine: mesocosm's near-tier
-# kinematics, netrender's frame, and the local renderling fork (which has no
-# published home). Revisit when the probe grows into a shipped target.
+# Sibling crates by path, the stack by the workspace's git pins.
 [dependencies]
 eponym-motion = { path = "../eponym-motion" }
 wing-functions = { path = "../../../shared/wing-functions" }
@@ -62,7 +59,10 @@ isometer = { path = "../../../shared/isometer" }
 isomere = { path = "../../../shared/isomere", features = ["host"] }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
-renderling = { path = "../../../../../crates/renderling/crates/renderling" }
+# The lit body tenant over the reshaped kiss3d (wing rulings 471, 734 to 736,
+# L7). Its API is plain arrays and wgpu; glam below is this crate's own math.
+tenant = { workspace = true }
+glam = "0.30"
 wgpu = { version = "30", default-features = false, features = [
     "dx12",
     "vulkan",
