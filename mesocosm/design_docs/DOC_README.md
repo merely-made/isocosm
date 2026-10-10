@@ -68,6 +68,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md) | W1: every plan evaluated against the design record. | Ruled and applied 2026-09-18 (ruling 31). |
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_sim_plan.md](2026-09-22_sim_plan.md) | The sim, W2: Isocosm's schema, processes, record and phases S1 to S6. | 2026-10-09: S2 checkpoint 9 certified and merged at `df6f0527`; checkpoint 10 briefed (704 to 719). |
+| [2026-10-10_lane_queue_plan.md](2026-10-10_lane_queue_plan.md) | The lane queue after the push: the orchestrator's loop, every lane's rules, mechanics, sixteen self-contained lane briefs in order. | Queued 2026-10-10; Q1 to Q3 in flight. |
 | [2026-10-10_after_pass_plan.md](2026-10-10_after_pass_plan.md) | Certifying what 732's push moved: every deferred done-condition, its owner and its order (rulings 789 to 792). | In progress 2026-10-10. |
 | [2026-10-10_plan_review.md](2026-10-10_plan_review.md) | The plans reviewed after the push: classification, live set, overlaps, order, forks. | Review complete 2026-10-10; forks to Mark. |
 | [2026-10-08_families_reexpression_plan.md](2026-10-08_families_reexpression_plan.md) | Re-expressing the legacy sims in Isocosm's process definitions, family by family (rulings 192, 591, 656). | Assessment 2026-10-08; forks to Mark. |
