@@ -9586,6 +9586,23 @@ what later sections derive from.
      "Now". So isometry repins its 50 mere rows to `50fd021c`, fetching
      mere's source once as 728 did, and parry-ground's checks move onto
      conatus's `BodyWorld` queries.
+732. **Realign now; test after.** 2026-10-09, Mark, unprompted, after a
+     day of repins gated workspace by workspace: "i'm trying to, y'know,
+     get to all the migration stuff and leave the testing for after. just
+     feels like we're wasting so much time testing interstitial state for a
+     prototype", then "i don't have a receipt fetish. how about we... do
+     all the various realignments that we keep deferring into individual
+     phases wrapped around gated gated gated gates". So the deferred
+     realignments (the families re-expression, the 674 seam, directing and
+     the switch, the isometer moves) are done in one push, each landing on
+     main once it compiles in the workspaces it touches, and tests, draws,
+     receipts and certification run once the realigned whole stands.
+     *Reading, not ruled:* this suspends, for the push, 667's per-family
+     certification, 666's family-by-family retirement gate, 668's "bodies
+     after checkpoints 10 and 11", and the overlay plan's per-phase
+     done-conditions as merge gates; their conditions become the after-pass's
+     checklist. 700 (SP4 waits for mere's T2, now paused there) still holds
+     until Mark says otherwise.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
