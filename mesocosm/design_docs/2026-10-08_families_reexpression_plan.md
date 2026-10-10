@@ -421,7 +421,10 @@ the bodies family.
     for it. `needs`: hunger and fatigue are wants read by the mind's `Need`s
     from a body's own accounts, the matter reserve and `Energy` (767).
     `arrival`: an outsider arriving with issued matter (235, 238), its
-    geometry admitted (674), and a name as a note its namer holds (36, 200).
+    geometry admitted (674), and a name as a note its namer holds (36, 200);
+    an authored character asserted placeless (769) arrives by its key, the
+    asserted entity taking up the body with its fill and faction (760), as
+    the sortie's four peers do.
     `knowing`: observations, claims, reports and corrections are notes held
     by the observer, claimant or hearer, an observation needing the observer
     to be a party or to know the event by the reach field (771).

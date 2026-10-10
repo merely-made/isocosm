@@ -42,8 +42,12 @@ impl Society {
         Ok(())
     }
 
-    /// A peer arrives, is named, and takes a one-part body.
+    /// A peer, asserted as an authored character (769), arrives in the
+    /// played site and takes a one-part body.
     pub fn admit(&mut self, subject: SubjectId, name: &str, crafts: &[(Craft, u8)], caution: i16) -> Result<Id, SocialError> {
+        let key = name.to_lowercase();
+        let character = isocosm::asserted::Character { key: key.clone(), name: name.into(), ..Default::default() };
+        self.world.command(Command::Assert(isocosm::asserted::Assertion::Character(character)))?;
         let mut disposition = [0; 5];
         disposition[isocosm::social::CAUTION] = caution;
         let arrival = isocosm::arrival::Arrival {
@@ -57,12 +61,12 @@ impl Society {
             traits: Default::default(),
             skills: crafts.iter().map(|(c, g)| (c.skill(), u64::from(*g))).collect(),
             disposition,
+            character: Some(key),
         };
         let outcome = self.world.command(Command::Arrive(arrival))?;
         let id: Id = outcome.strip_prefix("entity:").and_then(|s| s.parse().ok()).ok_or(SocialError::Decode)?;
         let body = isometer_core::BodyDocument::new(isometer_core::VolumeRef::from_tag(0), [2, 4, 2]);
         self.world.command(Command::Embody { entity: id, body })?;
-        self.world.command(Command::Name { by: id, of: id, name: name.into() })?;
         self.world.bind(subject, id);
         Ok(id)
     }

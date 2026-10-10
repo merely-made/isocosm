@@ -200,6 +200,7 @@ impl GameState {
             traits: Default::default(),
             skills: Default::default(),
             disposition: [0; 5],
+            character: None,
         };
         let outcome = self.world.command(Command::Arrive(arrival))?;
         let entity = outcome.strip_prefix("entity:").and_then(|s| s.parse().ok()).ok_or(GameError::Decode)?;

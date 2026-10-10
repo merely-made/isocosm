@@ -7,7 +7,9 @@
 //! source's matter is, from beyond the conserved total. Its geometry is
 //! isometer's document and its physiology the sim's, keyed by part (674).
 //! A name is a note its namer holds about it (36, 168, 200): naming is a
-//! sapient's own act, and a denizen is one somebody named.
+//! sapient's own act, and a denizen is one somebody named. An authored
+//! character, asserted placeless (769), arrives by its key: the asserted
+//! entity takes up the body, keeping its fill and its faction (760).
 
 use crate::{Result, meaning::credit, rules::AccountKind, schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
@@ -31,6 +33,9 @@ pub struct Arrival {
     pub skills: BTreeMap<Key, u64>,
     #[serde(default)]
     pub disposition: [i16; 5],
+    /// The authored character arriving, by its key, where one does.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub character: Option<Key>,
 }
 
 impl Simulation {
@@ -83,7 +88,18 @@ impl Simulation {
         };
         let conserved = self.conserved.checked_add(issued).ok_or("matter overflow")?;
         let total = self.issued.checked_add(issued).ok_or("matter overflow")?;
-        let id = self.state.population.insert(entity, 1)?;
+        let id = match &a.character {
+            None => self.state.population.insert(entity, 1)?,
+            Some(key) => {
+                let (id, held) = self.authored_entity(key).ok_or("no character asserted under that key")?;
+                if held.place != crate::directing::PLACELESS || !held.alive {
+                    return Err("a character that has already arrived".into());
+                }
+                let authored = held.authored.clone();
+                *self.state.population.lift(id)? = Entity { authored, ..entity };
+                id
+            },
+        };
         self.state.roots.insert(id);
         (self.conserved, self.issued) = (conserved, total);
         Ok(id)
@@ -121,12 +137,12 @@ impl Simulation {
         self.add_note(by, format!("entity:{of}"), NAME, name.into(), None, format!("name:{of}"))
     }
 
-    /// The latest name anyone gave `of`.
+    /// The latest name anyone gave `of`, or the name it was authored with.
     pub fn name_of(&self, of: Id) -> Option<&str> {
         let about = format!("entity:{of}");
         let mut named = self.state.notes.iter().rev();
-        named
-            .find(|n| n.core.kind == NAME && n.core.object == about)
-            .map(|n| n.djot.as_str())
+        let given = named.find(|n| n.core.kind == NAME && n.core.object == about);
+        let authored = || self.state.population.get(of)?.authored.as_ref().map(|c| c.name.as_str());
+        given.map(|n| n.djot.as_str()).or_else(authored)
     }
 }

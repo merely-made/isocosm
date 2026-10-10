@@ -258,6 +258,7 @@ impl GameState {
                 traits: Default::default(),
                 skills: Default::default(),
                 disposition: [0; 5],
+                character: None,
             };
             let Ok(outcome) = self.world.command(Command::Arrive(arrival)) else { continue };
             if let Some(id) = outcome.strip_prefix("entity:").and_then(|s| s.parse().ok()) {
