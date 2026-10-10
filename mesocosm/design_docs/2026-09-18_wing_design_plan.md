@@ -9967,6 +9967,22 @@ what later sections derive from.
      from 63,277 lines to 3,968, the campaign tree, held by the faction
      turn until V2). Options: write the checklist first (recommended);
      start the after-pass; pause. Mark chose "Start the after-pass".
+790. **One after-pass plan holds every deferred done-condition.** 2026-10-10,
+     from the plan review. Question: the after-pass list was scattered (732,
+     761, the directing plan, the CLAUDE.md files). Options: one dated
+     after-pass plan, each item with its owning plan (recommended); each plan
+     keeps its own; the families plan. Mark chose "One after-pass plan
+     (Recommended)".
+791. **Families certify against invariants, not legacy parity; amends 667.**
+     2026-10-10. Question: 667's parity draws against legacy readings have
+     no control now legacy is deleted. Options: each plan's invariants
+     (conservation, replay, its controls) (recommended); a pinned pre-push
+     worktree; parity only where sim-certified. Mark chose "Invariants, no
+     legacy parity (Recommended)".
+792. **Consumer reproduction comes first.** 2026-10-10. Options: reproduction
+     first, gating every played draw (recommended); checkpoint 10 first;
+     both in one ecology lane. Mark chose "Reproduction first
+     (Recommended)".
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
