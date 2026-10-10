@@ -9912,6 +9912,28 @@ what later sections derive from.
      `GlyphReading` moves onto the native `Journal` with 762's review and
      succession (774). "mesocosm-runtime (Recommended)": `effect_experiment`
      stays in the game's host-neutral runtime under 669 (775).
+776. **Eponym's items are inert entities carried by relation.** 2026-10-10,
+     from Eponym's world move (merged at `6dac64b3`: legacy Eponym deleted;
+     harm, needs, arrival, knowing and social native; `eponym-play` holding
+     the game's half). Question: native has no item noun. Options: inert
+     entities of item lineages carried by relation, position and worn part
+     game-side (recommended, built); a native item noun; game-side. Mark
+     chose "Inert entities, carried by relation (Recommended)".
+777. **Eponym keeps its admitted anatomy snapshot.** 2026-10-10. Options:
+     keep it beside the native geometry with a game revision moving only on
+     severing (recommended, built); read everything from the native
+     document. Mark chose "Keep the snapshot (Recommended)".
+778. **Crafts and deed weights are keys in the rules pack.** 2026-10-10.
+     Question: Eponym's social vocabulary, built as closed native enums.
+     Options: closed native enums (recommended, built); keys in the rules
+     pack. Mark chose "Keys in the rules pack". So the enums become keys a
+     rules pack declares, and other games can declare their own.
+779. **Native `Take` admits a sophont for driving.** 2026-10-10. Question:
+     who is played in Eponym, built with control game-side. Options: control
+     stays game-side (recommended, built); native `Take` (directing's) also
+     admits a sapient critter for driving. Mark chose "Native Take admits a
+     sophont". So one native path takes up a life in both games: directing
+     for a critter that is not sapient, driving for a sophont (671).
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
