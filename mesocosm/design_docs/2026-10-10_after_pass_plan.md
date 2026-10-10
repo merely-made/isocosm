@@ -80,3 +80,9 @@ review (default creatures residue); VB3 to VB5 visual acceptance.
 ## Progress
 
 - **2026-10-10:** plan written; A2's baseline taken.
+- **2026-10-10, handoff:** three lanes stopped at Mark's weekly budget,
+  their work kept on branches, each closing with a WIP commit
+  (unverified): `lane-plans` (archive, folds and rewrites per 793 to 802; six
+  commits done), `lane-repro` (A1 and 797; diagnosis begun), `lane-contracts`
+  (794, 795; Eponym routing begun). Worktrees under `Code/worktrees/isometry-
+  {plans,repro,contracts}`. Resume each from its branch; nothing merged.
