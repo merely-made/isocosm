@@ -67,7 +67,7 @@ impl World {
             let body = donor.body();
             for part in body
                 .living()
-                .filter(|part| part.id != body.root && part.mass_mg > 0)
+                .filter(|part| part.id != body.root && body.mass_mg(part.id) > 0)
             {
                 sources.push((distance, donor.id, part.id));
             }

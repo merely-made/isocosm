@@ -25,8 +25,8 @@ mod native {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
     use isocosm::legacy::mesocosm::{
-        BodyDocument, Intent, OrganismId, Outcome, PartId, PartOrigin, Placement, VolumeRef, World,
-        snapshot, world::organism_extent,
+        BodyDocument, Intent, OrganismId, Outcome, PartId, Placement, VolumeRef, World, snapshot,
+        world::organism_extent,
     };
     use isometer::lens::{
         BodyLensProjection, BodyPlacement, Flight, FrameInput, Grade, Lens, MapRevision,
@@ -107,8 +107,12 @@ mod native {
         let mesh_invalidated = changed_mesh_parts(&before_mesh, &mesh);
         assert_eq!(mesh_invalidated, incorporated);
 
-        let before_profile = BodyProfile::of(&before, &volumes).expect("before profile");
-        let profile = BodyProfile::of(&body, &volumes).expect("after profile");
+        let species = body.species().0;
+        let before_profile =
+            BodyProfile::of(&before, &volumes, species, |id| before.part_origin(id))
+                .expect("before profile");
+        let profile = BodyProfile::of(&body, &volumes, species, |id| body.part_origin(id))
+            .expect("after profile");
         let changed_cells = changed_profile_cells(&before_profile, &profile, &incorporated);
         assert!(
             changed_cells > 0,
@@ -153,19 +157,16 @@ mod native {
                     .iter()
                     .find(|placement| placement.part == lens.part)
                     .expect("mesh retains every lens part");
-                assert_eq!(placement.provenance.as_ref(), Some(&lens.provenance));
+                assert_eq!(placement.origin, lens.origin);
                 assert_eq!(
                     profile.parts[lens.part.0 as usize],
-                    PartOrigin::from(&lens.provenance),
-                    "Isometry profile and lens name the same history",
+                    body.part_origin(lens.part),
+                    "Isometry profile and the body's lineage name the same history",
                 );
                 PartReceipt {
                     id: lens.part.0,
                     volume_tag: lens.volume.0[0],
-                    incorporated: matches!(
-                        lens.provenance.origin,
-                        isocosm::legacy::mesocosm::Origin::Incorporated { .. }
-                    ),
+                    incorporated: lens.origin.is_some(),
                     lens_capsule: lens.capsule,
                     mesh_placement: true,
                     isometry_attributed_voxels: profile
@@ -235,7 +236,7 @@ mod native {
                 break;
             }
         }
-        assert_eq!(world.body().map(BodyDocument::len), Some(parts));
+        assert_eq!(world.body().map(|b| b.len()), Some(parts));
     }
 
     fn nearest_prey(world: &World, here: [i32; 3]) -> Option<(OrganismId, [i32; 3])> {

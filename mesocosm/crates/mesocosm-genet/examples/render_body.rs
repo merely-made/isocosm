@@ -147,10 +147,12 @@ fn main() {
         "centre of mass: {:?}",
         world.body().unwrap().centre_of_mass()
     );
-    for part in world.body().unwrap().incorporated() {
+    let body = world.body().unwrap();
+    for part in body.incorporated() {
         println!(
             "  part {:?} came from {:?}",
-            part.id, part.provenance.origin
+            part.id,
+            body.provenance(part.id).map(|p| &p.origin)
         );
     }
 }

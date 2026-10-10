@@ -5,8 +5,9 @@
 //! This module owns labels and row shape only. `arrest_fall` evaluates
 //! availability; callers remain responsible for admitting the supplied facts.
 
-use isometer_core::{Aabb, BodyDocument, PartId, Provenance};
 use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use crate::lineage::{LineageBody as BodyDocument, Provenance};
+use isometer_core::{Aabb, PartId};
 
 use crate::legacy::eponym::world::part_bounds;
 use crate::legacy::eponym::world::{
@@ -116,7 +117,11 @@ impl SubjectSheet {
                 severed: part.severed,
                 parent: part.attachment.map(|attachment| attachment.parent),
                 bounds: part_bounds(input.body, part.id),
-                provenance: part.provenance.clone(),
+                provenance: input
+                    .body
+                    .provenance(part.id)
+                    .cloned()
+                    .unwrap_or_else(Provenance::founding),
                 capabilities: input
                     .inputs
                     .part_capabilities
@@ -234,7 +239,8 @@ fn binding_label(blocker: &BindingBlocker) -> String {
 mod tests {
     use super::*;
     use crate::legacy::eponym::world::fixtures::three_lives as fixture;
-    use isometer_core::{Attachment, Origin, SpeciesId, VolumeRef, Yaw};
+    use crate::lineage::{Origin, SpeciesId};
+    use isometer_core::{Attachment, VolumeRef, Yaw};
 
     fn sheet(
         life: &fixture::Life,
@@ -439,7 +445,8 @@ mod tests {
         assert_eq!(part_bounds(&missing_parent, child), None);
 
         let mut cycle = missing_parent.clone();
-        cycle.parts[cycle.root.0 as usize].attachment = Some(Attachment {
+        let root = cycle.root.0 as usize;
+        cycle.parts[root].attachment = Some(Attachment {
             parent: child,
             offset: [0, 0, 0],
             yaw: Yaw::Zero,

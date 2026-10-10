@@ -4,7 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The body graph: parts, attachment frames, and per-part provenance.
+//! The body graph: parts and attachment frames, each part with an opaque
+//! origin tag its product writes (wing rulings 721 and 756). Lineage and
+//! mass are the product's: a product keeps them beside the document, keyed
+//! by [`PartId`], and hands mass in where a reading needs it (699).
 //!
 //! Coordinates are voxel units and masses are milligrams, both integers.
 //! Rotations are quarter turns. Nothing here is a float, so a body's derived
@@ -16,17 +19,11 @@
 
 use serde::{Deserialize, Serialize};
 
-use wing_formats::PartOrigin;
-
 use crate::plan::BodyPlan;
 
 /// Stable index into [`BodyDocument::parts`]. Never reused within a body.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct PartId(pub u32);
-
-/// Identifies a lineage. Provenance records which one a part came from.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub struct SpeciesId(pub u32);
 
 /// Content address of the voxel volume a projection should draw. The core
 /// never reads volume contents; it only carries the reference.
@@ -90,36 +87,6 @@ impl Yaw {
     }
 }
 
-/// Where a part used to be before it became part of this body. This is the
-/// keystone record: every part carries the fact that it was once somebody.
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum Origin {
-    /// Present when the lineage was founded.
-    Founding,
-    /// Taken from another organism by incorporation.
-    Incorporated {
-        from_species: SpeciesId,
-        /// The part's identity in the body it came from.
-        from_part: PartId,
-    },
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub struct Provenance {
-    pub origin: Origin,
-    /// The epoch during which this part joined the body.
-    pub epoch: u64,
-}
-
-impl Provenance {
-    pub fn founding() -> Self {
-        Self {
-            origin: Origin::Founding,
-            epoch: 0,
-        }
-    }
-}
-
 /// How a part is fixed to its parent.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Attachment {
@@ -138,7 +105,6 @@ pub struct Attachment {
 pub struct Part {
     pub id: PartId,
     pub volume: VolumeRef,
-    pub mass_mg: u64,
     /// Half-extent in voxel units, so an extent can be derived without
     /// resolving the volume.
     pub half_extent: [i32; 3],
@@ -153,7 +119,11 @@ pub struct Part {
     pub pivot: [i32; 3],
     /// `None` only for the root.
     pub attachment: Option<Attachment>,
-    pub provenance: Provenance,
+    /// Where the part came from, as its product tags it: opaque here, read
+    /// only for whether one is set (a part taken from elsewhere, drawn in
+    /// another colour). `None` is the body's own.
+    #[serde(default)]
+    pub origin: Option<u64>,
     /// Lost, along with everything that hung off it. Tombstoned rather than
     /// removed so `PartId` stays an index and the injury stays on the record.
     /// See [`crate::anatomy`].
@@ -219,7 +189,6 @@ impl Aabb {
 /// The portable description of one critter's body.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct BodyDocument {
-    pub species: SpeciesId,
     pub root: PartId,
     /// The heritable rules that decide where growth goes. Parts fill in during
     /// an epoch; this changes between them.
@@ -238,20 +207,18 @@ pub enum AttachError {
 
 impl BodyDocument {
     /// A body with a single root part.
-    pub fn new(species: SpeciesId, volume: VolumeRef, mass_mg: u64, half_extent: [i32; 3]) -> Self {
+    pub fn new(volume: VolumeRef, half_extent: [i32; 3]) -> Self {
         let root = PartId(0);
         Self {
-            species,
             root,
             plan: BodyPlan::default(),
             parts: vec![Part {
                 id: root,
                 volume,
-                mass_mg,
                 half_extent,
                 pivot: half_extent,
                 attachment: None,
-                provenance: Provenance::founding(),
+                origin: None,
                 severed: false,
                 situs: None,
                 shape: String::new(),
@@ -275,10 +242,9 @@ impl BodyDocument {
     pub fn attach(
         &mut self,
         volume: VolumeRef,
-        mass_mg: u64,
         half_extent: [i32; 3],
         attachment: Attachment,
-        provenance: Provenance,
+        origin: Option<u64>,
     ) -> Result<PartId, AttachError> {
         if self.part(attachment.parent).is_none() {
             return Err(AttachError::UnknownParent(attachment.parent));
@@ -287,13 +253,12 @@ impl BodyDocument {
         self.parts.push(Part {
             id,
             volume,
-            mass_mg,
             half_extent,
             // Centre by default. A part authored with a socket elsewhere can
             // override it; nothing generated needs to.
             pivot: half_extent,
             attachment: Some(attachment),
-            provenance,
+            origin,
             severed: false,
             situs: None,
             shape: String::new(),
@@ -387,44 +352,29 @@ impl BodyDocument {
         None
     }
 
-    /// Mass of what is still attached. A creature does not carry the arm it
-    /// lost, so severed parts weigh nothing here.
-    pub fn total_mass_mg(&self) -> u64 {
-        self.living().map(|p| p.mass_mg).sum()
-    }
-
-    /// Mass-weighted centre in voxel units, rounded toward zero.
+    /// Mass-weighted centre in voxel units, rounded toward zero, each
+    /// living part weighing what `mass` reads of it (699: mass is the
+    /// product's ledger, not the document's).
     ///
-    /// Uses each part's **centre**, not its origin. A part's origin is its
-    /// lowest corner, so averaging origins biases the result by every part's
-    /// size and reports a balance the body does not have. This is the same
-    /// corner-versus-pivot confusion recorded in the body pipeline plan,
-    /// surfacing a third time.
-    ///
-    /// Accumulated in `i128` so a large body cannot overflow into a different
-    /// answer on a different platform.
-    pub fn centre_of_mass(&self) -> [i32; 3] {
-        let total = self.total_mass_mg();
+    /// Uses each part's **centre**, its pivot, not its lowest corner, which
+    /// would bias the result by every part's size. Accumulated in `i128` so a
+    /// large body cannot overflow into a different answer on a different
+    /// platform.
+    pub fn centre_of_mass(&self, mass: impl Fn(PartId) -> u64) -> [i32; 3] {
+        let total: i128 = self.living().map(|p| mass(p.id) as i128).sum();
         if total == 0 {
             return [0; 3];
         }
         let mut acc = [0i128; 3];
         for part in self.living() {
-            // A pivot is the part's centre, so this is a true mass-weighted
-            // centre rather than an average of corners.
             let Some(centre) = self.world_pivot(part.id) else {
                 continue;
             };
             for axis in 0..3 {
-                acc[axis] += centre[axis] as i128 * part.mass_mg as i128;
+                acc[axis] += centre[axis] as i128 * mass(part.id) as i128;
             }
         }
-        let total = total as i128;
-        [
-            (acc[0] / total) as i32,
-            (acc[1] / total) as i32,
-            (acc[2] / total) as i32,
-        ]
+        [0, 1, 2].map(|axis| (acc[axis] / total) as i32)
     }
 
     /// The body's collision extent: the union of every part's box.
@@ -448,52 +398,9 @@ impl BodyDocument {
         })
     }
 
-    /// Every part that was taken from another organism, in id order.
-    pub fn incorporated(&self) -> impl Iterator<Item = &Part> {
-        self.parts
-            .iter()
-            .filter(|p| matches!(p.provenance.origin, Origin::Incorporated { .. }))
-    }
-}
-
-/// The wire form of [`Provenance`]. Flat on purpose: `None` for both fields
-/// means the part was there at founding, and a foreign reader needs no enum
-/// from this crate to tell that from a part that was taken off somebody.
-impl From<&Provenance> for PartOrigin {
-    fn from(provenance: &Provenance) -> Self {
-        match provenance.origin {
-            Origin::Founding => PartOrigin {
-                from_species: None,
-                from_part: None,
-                epoch: provenance.epoch,
-            },
-            Origin::Incorporated {
-                from_species,
-                from_part,
-            } => PartOrigin {
-                from_species: Some(from_species.0),
-                from_part: Some(from_part.0),
-                epoch: provenance.epoch,
-            },
-        }
-    }
-}
-
-impl From<&PartOrigin> for Provenance {
-    fn from(origin: &PartOrigin) -> Self {
-        match (origin.from_species, origin.from_part) {
-            (Some(species), Some(part)) => Provenance {
-                origin: Origin::Incorporated {
-                    from_species: SpeciesId(species),
-                    from_part: PartId(part),
-                },
-                epoch: origin.epoch,
-            },
-            _ => Provenance {
-                origin: Origin::Founding,
-                epoch: origin.epoch,
-            },
-        }
+    /// Every part its product tagged with an origin, in id order.
+    pub fn tagged(&self) -> impl Iterator<Item = &Part> {
+        self.parts.iter().filter(|p| p.origin.is_some())
     }
 }
 

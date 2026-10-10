@@ -7,15 +7,14 @@
 //! stable `PartId` addresses and the lives use Eponym's continuing identity
 //! types; the binding query receives projections of these facts from callers.
 
+use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
 use crate::legacy::eponym::world::{
     AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, EquipmentFunction,
     EquipmentProjection, ItemId, PartCapability, PartFunction, ResourceKind, ResourceReserve,
     TechniqueId, TechniqueInputs, TechniqueKnowledge,
 };
-use isometer_core::{
-    Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
-};
-use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use crate::lineage::{LineageBody as BodyDocument, Origin, Provenance, SpeciesId};
+use isometer_core::{Attachment, PartId, VolumeRef, Yaw};
 
 pub const WETLAND_LINE: SpeciesId = SpeciesId(71);
 pub const NOW: u16 = 115;
@@ -212,7 +211,7 @@ pub fn three_lives() -> [Life; 3] {
             },
             Provenance {
                 origin: Origin::Incorporated {
-                    from_species: donor.species,
+                    from_species: donor.species(),
                     from_part: donor.root,
                 },
                 epoch: 114,

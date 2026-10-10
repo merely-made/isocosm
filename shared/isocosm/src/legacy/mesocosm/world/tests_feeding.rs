@@ -95,7 +95,7 @@ fn metabolize_records_where_the_part_came_from() {
     };
 
     assert_eq!(
-        world.body().unwrap().part(part).unwrap().provenance.origin,
+        world.body().unwrap().provenance(part).unwrap().origin,
         Origin::Incorporated {
             from_species: eaten_species,
             from_part: PartId(0)

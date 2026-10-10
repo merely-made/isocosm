@@ -109,11 +109,11 @@ impl Chronicle {
     /// The record of a body as it stands.
     pub fn of(body: &BodyDocument) -> Self {
         Self(wing_formats::Chronicle {
-            species: body.species.0,
+            species: body.species().0,
             parts: body
                 .parts
                 .iter()
-                .map(|part| PartOrigin::from(&part.provenance))
+                .map(|part| body.part_origin(part.id))
                 .collect(),
             deeds: Vec::new(),
         })
@@ -178,8 +178,9 @@ impl Chronicle {
         // site; origins without one remain in the chronicle, while additional
         // sites are founding tissue. Interpreted losses then tombstone the
         // locally grown subtree at that address. No foreign geometry travels.
-        for (part, origin) in body.parts.iter_mut().zip(&self.parts) {
-            part.provenance = Provenance::from(origin);
+        let ids: Vec<PartId> = body.parts.iter().map(|part| part.id).collect();
+        for (id, origin) in ids.into_iter().zip(&self.parts) {
+            body.set_provenance(id, Provenance::from(origin));
         }
         for part in lost {
             body.sever(PartId(part));

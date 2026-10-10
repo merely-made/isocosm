@@ -203,7 +203,7 @@ fn a_grafted_branch_moves_exactly_its_own_milligrams_and_says_so() {
             .body();
         body.descendants(frond)
             .into_iter()
-            .filter_map(|part| body.part(part).map(|found| found.mass_mg))
+            .map(|part| body.mass_mg(part))
             .sum::<u64>()
     };
 

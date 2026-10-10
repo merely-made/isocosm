@@ -55,7 +55,6 @@ mod tests {
     use super::*;
     use crate::bodies::Pose;
     use crate::camera::SlabCamera;
-    use crate::core::SpeciesId;
     use crate::scene::{Scene, SceneFrame, SceneHost};
     use crate::{PaletteColour, SceneBody, SubjectKey};
 
@@ -77,7 +76,7 @@ mod tests {
     #[test]
     fn a_token_body_resolves_through_the_scenes_volume_source() {
         let (hero, _) = demo::hero();
-        let token = TokenBody::from_voxels(SpeciesId(1), 70_000, &hero);
+        let token = TokenBody::from_voxels(&hero);
 
         let SceneVolumes::Voxels(volumes) = scene_volumes(&token) else {
             panic!("a token carries authored voxels, not declared boxes");
@@ -89,7 +88,7 @@ mod tests {
     #[test]
     fn a_token_body_projects_through_the_same_projector_the_body_layer_uses() {
         let (hero, _) = demo::hero();
-        let token = TokenBody::from_voxels(SpeciesId(1), 70_000, &hero);
+        let token = TokenBody::from_voxels(&hero);
 
         let mut projector = LiveBodyProjector::new();
         let (mesh, _) = projector
@@ -144,7 +143,9 @@ mod tests {
         for pixel in sheet.rgba.chunks_exact(4).filter(|pixel| pixel[3] > 0) {
             for entry in palette.iter().skip(1) {
                 let painted = [1.06_f32, 0.74, 0.55].map(|factor| {
-                    entry.map(|channel| ((f32::from(channel) * factor).round()).clamp(0.0, 255.0) as u8)
+                    entry.map(|channel| {
+                        ((f32::from(channel) * factor).round()).clamp(0.0, 255.0) as u8
+                    })
                 });
                 if painted.iter().any(|shaded| *shaded == pixel[..3]) {
                     bases.insert(*entry);
@@ -159,7 +160,7 @@ mod tests {
         let (device, queue) = device().expect("checked by the caller");
         let (hero, palette) = demo::hero();
         let table = material_colours(&palette);
-        let token = TokenBody::from_voxels(SpeciesId(1), 70_000, &hero);
+        let token = TokenBody::from_voxels(&hero);
         let mut scene = Scene::new(device, queue, SIZE, SIZE).expect("a scene");
         scene.bodies_mut().set_palette(SubjectKey(1), colours);
         let size = token.size().map(|axis| axis as f32);
@@ -261,11 +262,10 @@ mod tests {
     fn explain(pixel: [u8; 3], table: &[PaletteColour]) -> Option<PaletteColour> {
         table.iter().skip(1).copied().find(|entry| {
             SHADES.iter().any(|shade| {
-                let want = encoded(
-                    entry.map(|channel| {
+                let want =
+                    encoded(entry.map(|channel| {
                         crate::render::live_body::linear_from_display(channel) * shade
-                    }),
-                );
+                    }));
                 (0..3).all(|i| (i32::from(pixel[i]) - i32::from(want[i])).abs() <= TOLERANCE)
             })
         })
@@ -311,7 +311,10 @@ mod tests {
             );
             shown.insert(entry);
         }
-        assert!(drawn > 100, "the token must cover the frame, got {drawn} px");
+        assert!(
+            drawn > 100,
+            "the token must cover the frame, got {drawn} px"
+        );
         assert!(
             shown.len() > 1,
             "a one-colour agreement proves nothing, got {shown:?}"

@@ -79,10 +79,10 @@ fn mixed_body(world: &mut World, id: OrganismId) {
         .iter_mut()
         .find(|organism| organism.id == id)
         .expect("the selected organism exists");
-    let parts: Vec<_> = organism
-        .body()
+    let body = organism.body();
+    let parts: Vec<_> = body
         .living()
-        .map(|part| (part.id, part.mass_mg))
+        .map(|part| (part.id, body.mass_mg(part.id)))
         .collect();
     let mut typed = 0;
     for (part, mass) in parts {

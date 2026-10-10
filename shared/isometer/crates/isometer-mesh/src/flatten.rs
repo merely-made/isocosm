@@ -196,7 +196,7 @@ fn volume_corners(volume: &Volume) -> [[i32; 3]; 8] {
 mod tests {
     use super::*;
     use crate::VolumeMap;
-    use isometer_core::{Attachment, PartId, Provenance, SpeciesId, VolumeRef};
+    use isometer_core::{Attachment, PartId, VolumeRef};
 
     /// Volumes sized to exactly twice their part's half-extent, so the picture
     /// and the physics describe the same box.
@@ -211,21 +211,20 @@ mod tests {
     const ARM_HALF: [i32; 3] = [1, 1, 1];
 
     fn body() -> BodyDocument {
-        BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, CORE_HALF)
+        BodyDocument::new(VolumeRef::from_tag(1), CORE_HALF)
     }
 
     fn with_arm(offset: [i32; 3], yaw: Yaw) -> BodyDocument {
         let mut body = body();
         body.attach(
             VolumeRef::from_tag(2),
-            10,
             ARM_HALF,
             Attachment {
                 parent: PartId(0),
                 offset,
                 yaw,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         body
@@ -292,14 +291,13 @@ mod tests {
         let mut body = body();
         body.attach(
             VolumeRef::from_tag(99),
-            10,
             ARM_HALF,
             Attachment {
                 parent: PartId(0),
                 offset: [3, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         assert!(matches!(

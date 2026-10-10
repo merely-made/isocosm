@@ -10,8 +10,9 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use isometer_core::{Aabb, BodyDocument, PartId, Yaw};
 use crate::legacy::eponym::identity::{BodyRevisionId, SubjectId};
+use crate::lineage::LineageBody as BodyDocument;
+use isometer_core::{Aabb, PartId, Yaw};
 use serde::{Deserialize, Serialize};
 
 /// A deliberately small bound: the authored three-lives fixture has seven
@@ -24,7 +25,7 @@ pub const MAX_ANATOMY_WORLD_COORDINATE: i32 = 256_000_000;
 
 /// Derive a part's body-space bounds through the core's pivot and attachment
 /// arithmetic. Consumers may translate this into an authoritative world pose.
-pub fn part_bounds(document: &BodyDocument, id: PartId) -> Option<Aabb> {
+pub fn part_bounds(document: &isometer_core::BodyDocument, id: PartId) -> Option<Aabb> {
     let part = document.part(id)?;
     let extent = [
         part.half_extent[0].checked_mul(2)?,
@@ -242,7 +243,7 @@ fn validate(document: &BodyDocument) -> Result<(), AnatomyError> {
     let mut total_mass_mg = 0u64;
     for part in &document.parts {
         total_mass_mg = total_mass_mg
-            .checked_add(part.mass_mg)
+            .checked_add(document.mass_mg(part.id))
             .ok_or(AnatomyError::MassOverflow)?;
         if let Some(attachment) = part.attachment
             && !part.severed
@@ -277,7 +278,10 @@ fn validate(document: &BodyDocument) -> Result<(), AnatomyError> {
     Ok(())
 }
 
-fn checked_world_pivot(document: &BodyDocument, id: PartId) -> Result<[i32; 3], AnatomyError> {
+fn checked_world_pivot(
+    document: &isometer_core::BodyDocument,
+    id: PartId,
+) -> Result<[i32; 3], AnatomyError> {
     let mut offset = [0; 3];
     let mut cursor = id;
     for _ in 0..document.parts.len() {
@@ -313,7 +317,8 @@ fn checked_rotate(yaw: Yaw, [x, y, z]: [i32; 3]) -> Result<[i32; 3], AnatomyErro
 mod tests {
     use super::*;
     use crate::legacy::eponym::world::fixtures::three_lives::wetland_body;
-    use isometer_core::{Attachment, SpeciesId, VolumeRef};
+    use crate::lineage::SpeciesId;
+    use isometer_core::{Attachment, VolumeRef};
 
     const SUBJECT: SubjectId = SubjectId(4);
 
@@ -374,7 +379,7 @@ mod tests {
                     offset: [i32::MAX, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                isometer_core::Provenance::founding(),
+                crate::lineage::Provenance::founding(),
             )
             .unwrap();
         assert_rejected(huge_offset, AnatomyError::CoordinateOutOfBounds);
@@ -383,8 +388,8 @@ mod tests {
     #[test]
     fn rejects_overflowing_mass_and_incoherent_tombstones() {
         let mut overflow = wetland_body();
-        overflow.parts[0].mass_mg = u64::MAX;
-        overflow.parts[1].mass_mg = 1;
+        overflow.set_mass_mg(PartId(0), u64::MAX);
+        overflow.set_mass_mg(PartId(1), 1);
         assert_rejected(overflow, AnatomyError::MassOverflow);
 
         let mut severed_root = wetland_body();
@@ -412,8 +417,8 @@ mod tests {
         assert_eq!(record.revision, BodyRevisionId(3));
         assert_eq!(record.document, expected);
         assert_eq!(
-            record.document.part(PartId(1)).unwrap().provenance,
-            isometer_core::Provenance::founding()
+            record.document.provenance(PartId(1)).cloned().unwrap(),
+            crate::lineage::Provenance::founding()
         );
     }
 
@@ -502,7 +507,7 @@ mod tests {
                     offset: [2, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                isometer_core::Provenance::founding(),
+                crate::lineage::Provenance::founding(),
             )
             .unwrap();
         let mut anatomies = admitted(BodyRevisionId(2), document);

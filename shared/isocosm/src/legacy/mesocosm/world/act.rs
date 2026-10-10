@@ -447,7 +447,7 @@ impl World {
         };
         let (role, mass_mg) = (
             crate::legacy::mesocosm::plan::classify(part.half_extent),
-            part.mass_mg,
+            body.mass_mg(root),
         );
         self.observe(crate::legacy::mesocosm::discovery::Evidence::Meal {
             donor: eaten.species,

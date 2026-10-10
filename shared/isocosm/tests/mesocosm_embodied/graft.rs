@@ -186,7 +186,7 @@ fn the_source_loses_the_branch_and_the_recipient_gains_every_part_of_it() {
     let matter_before = world.total_matter_mg();
     let branch_mg = {
         let body = corpse_of(&world).body();
-        body.part(frond).unwrap().mass_mg + body.part(tip).unwrap().mass_mg
+        body.mass_mg(frond) + body.mass_mg(tip)
     };
     let donor_before = corpse_of(&world).biomass_mg();
     let mine_before = world.controlled().unwrap().biomass_mg();
@@ -254,7 +254,7 @@ fn every_transferred_part_names_the_part_it_came_off_and_keeps_its_joint() {
     let arrived: Vec<PartId> = body.descendants(root);
     assert_eq!(arrived.len(), 2);
 
-    let source_of = |part: PartId| match body.part(part).unwrap().provenance.origin {
+    let source_of = |part: PartId| match body.provenance(part).unwrap().origin {
         Origin::Incorporated {
             from_species,
             from_part,
@@ -354,7 +354,7 @@ fn a_cross_domain_carry_lands_a_visibly_incompatible_branch() {
     // that is incompatible, and a player can see both.
     let mut world = world_with(Verdict::Adapter);
     let (frond, _) = donor(&mut world);
-    let branch_mg = corpse_of(&world).body().part(frond).unwrap().mass_mg;
+    let branch_mg = corpse_of(&world).body().mass_mg(frond);
     let mine_before = world.controlled().unwrap().biomass_mg();
 
     let Outcome::Grafted { root, verdict, .. } = take(&mut world, frond, Crossing::Carry) else {

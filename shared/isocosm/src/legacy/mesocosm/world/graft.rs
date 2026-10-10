@@ -304,21 +304,22 @@ impl World {
                 if !self.affinity.holds(from) || !self.affinity.holds(into) {
                     return Err(Rejection::Incompatible { from, into });
                 }
-                let retained_mg = me
-                    .phenotype
-                    .body()
+                let body = me.phenotype.body();
+                let retained_mg = body
                     .living()
                     .filter(|part| {
                         matches!(
-                            part.provenance.origin,
-                            crate::legacy::mesocosm::body::Origin::Incorporated { from_species, .. }
-                                if self.affinity.verdict(
-                                    self.lineages.domain(from_species),
-                                    into,
-                                ) == Verdict::Refused
+                            body.provenance(part.id).map(|p| p.origin.clone()),
+                            Some(crate::legacy::mesocosm::body::Origin::Incorporated {
+                                from_species,
+                                ..
+                            }) if self.affinity.verdict(
+                                self.lineages.domain(from_species),
+                                into,
+                            ) == Verdict::Refused
                         )
                     })
-                    .try_fold(0u64, |total, part| total.checked_add(part.mass_mg))
+                    .try_fold(0u64, |total, part| total.checked_add(body.mass_mg(part.id)))
                     .ok_or(Rejection::GraftCostOverflow)?;
                 let receipt = self
                     .rules

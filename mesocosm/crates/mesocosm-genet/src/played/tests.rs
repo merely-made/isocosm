@@ -323,7 +323,7 @@ fn a_carcass_branch_graft_replays_and_keeps_its_provenance() {
     for part in &graft.parts {
         assert!(
             matches!(
-                body.part(*part).map(|found| &found.provenance.origin),
+                body.provenance(*part).map(|found| &found.origin),
                 Some(Origin::Incorporated { .. })
             ),
             "part {part:?} lost its provenance"

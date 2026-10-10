@@ -146,12 +146,7 @@ mod tests {
         use isometer_core::fixtures::limb;
         let core = palette.template_at(Role::Mass, 0);
         let rod = palette.template_at(Role::Limb, 0);
-        let mut body = isometer_core::BodyDocument::new(
-            isometer_core::SpeciesId(1),
-            core.volume,
-            800,
-            core.half_extent,
-        );
+        let mut body = isometer_core::BodyDocument::new(core.volume, core.half_extent);
         let root = body.root;
         let reach = core.half_extent[0] + rod.half_extent[0];
         for side in [1, -1] {

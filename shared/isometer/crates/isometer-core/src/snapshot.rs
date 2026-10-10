@@ -55,11 +55,11 @@ mod tests {
         assert_eq!(hash_bytes(b"isocosm"), 0xa005_dbe9_febc_5e04);
         assert_eq!(hash_bytes(&all), 0x4242_dc52_49c3_3625);
     }
-    use crate::body::{BodyDocument, SpeciesId, VolumeRef};
+    use crate::body::{BodyDocument, VolumeRef};
 
     #[test]
     fn a_body_round_trips_through_the_seam() {
-        let body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 2]);
+        let body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2]);
         let bytes = encode(&body).unwrap();
         assert_eq!(decode::<BodyDocument>(&bytes).unwrap(), body);
     }

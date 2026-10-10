@@ -135,24 +135,23 @@ impl BodyDocument {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::body::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+    use crate::body::{Attachment, VolumeRef, Yaw};
 
     /// root -> arm -> hand -> finger, plus a plate on the root.
     fn limbed() -> (BodyDocument, [PartId; 4]) {
-        let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 2]);
+        let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2]);
         // Long in one axis, so `classify` reads these as limbs and they carry
         // a Contract process. A cube would be a sensor and buy no reach.
         let link = |body: &mut BodyDocument, parent: PartId, offset: [i32; 3]| {
             body.attach(
                 VolumeRef::from_tag(2),
-                100,
                 [3, 1, 1],
                 Attachment {
                     parent,
                     offset,
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .expect("attaches")
         };
@@ -235,25 +234,16 @@ mod tests {
     }
 
     #[test]
-    fn mass_and_extent_are_folds_over_what_survives() {
+    fn extent_is_a_fold_over_what_survives() {
         // Capability as a consequence, not a stored number: the same body
         // answers differently after an injury, with nothing recomputed by hand.
-        // A product's own reading of the same fold — Mesocosm's `reach` — is
-        // pinned beside that reading, in the crate that owns it.
+        // Mass is the product's ledger (699), folded over the same parts.
         let (mut body, [arm, _, _, _]) = limbed();
         let span_before = body.aabb().extent()[0];
-        let mass_before = body.total_mass_mg();
-
         body.sever(arm);
-
         assert!(
             body.aabb().extent()[0] < span_before,
             "the long limb was the span"
-        );
-        assert_eq!(
-            body.total_mass_mg(),
-            mass_before - 300,
-            "and three parts' worth of mass went with it"
         );
     }
 

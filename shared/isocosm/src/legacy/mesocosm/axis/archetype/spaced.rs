@@ -40,7 +40,7 @@ mod tests {
         let mass = u64::from(minimum_body_mass_mg(recipe, &soma).unwrap()) + 10_000;
         let body = develop_body(SpeciesId(91), recipe, &soma, mass, palette()).unwrap();
         assert_eq!(body.total_mass_mg(), mass);
-        assert!(body.living().all(|part| part.mass_mg > 0));
+        assert!(body.living().all(|part| body.mass_mg(part.id) > 0));
         body
     }
 

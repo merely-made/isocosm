@@ -134,7 +134,7 @@ impl Mosaic {
     /// tradeoff — inside the organ, not in a flat organism-wide score — and
     /// pre-donating free tissue would have invented a number to make it
     /// painless.
-    pub fn seed(part: &Part) -> Self {
+    pub fn seed(part: &Part, mass_mg: u64) -> Self {
         let dims = lattice(part.half_extent);
         let count = cell_count(dims);
         let role = classify(part.half_extent);
@@ -180,7 +180,7 @@ impl Mosaic {
             tracts,
             next_tract,
             port: IntakePort::none(),
-            scruple: Stock::single(Material::Untyped, part.mass_mg),
+            scruple: Stock::single(Material::Untyped, mass_mg),
         }
     }
 

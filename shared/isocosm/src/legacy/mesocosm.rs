@@ -84,13 +84,23 @@ pub mod chronicle;
 // and `snapshot::{encode, decode, hash_bytes}` are restated in their own
 // modules for the same reason.
 // ---------------------------------------------------------------------------
-pub use isometer_core::{
-    Aabb, AttachError, Attachment, BodyDocument, Origin, Part, PartId, Provenance, SpeciesId,
-    VolumeRef, Yaw,
-};
+pub use isometer_core::{Aabb, AttachError, Attachment, Part, PartId, VolumeRef, Yaw};
+// Lineage left isometer-core (wing ruling 756). A legacy body is its
+// document with species, mass and provenance beside it; legacy paths keep
+// the name `BodyDocument` for it until the world families move (755).
+pub use crate::lineage::LineageBody as BodyDocument;
+pub use crate::lineage::{Lineal, Origin, Provenance, SpeciesId};
 pub use isometer_core::{BodyPlan, Facing, Role, Symmetry, classify};
 pub use isometer_core::{WireError, frame, unframe};
-pub use isometer_core::{anatomy, body, plan, wire};
+pub use isometer_core::{anatomy, plan, wire};
+
+/// isometer-core's body module with the lineage it no longer holds (756),
+/// at the path legacy code names it by.
+pub mod body {
+    pub use crate::lineage::LineageBody as BodyDocument;
+    pub use crate::lineage::{Lineal, Origin, Provenance, SpeciesId};
+    pub use isometer_core::body::*;
+}
 
 pub use axis::{Appendage, AppendageStep, ChainFacing, Recipe, Soma, Tagma, Unspeakable};
 pub use chronicle::{Chronicle, Consequence, Deed, PartOrigin, generate};

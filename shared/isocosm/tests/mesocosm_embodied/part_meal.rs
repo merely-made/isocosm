@@ -197,9 +197,9 @@ fn a_consumed_part_settles_its_own_matter_and_nothing_elses() {
             .clone()
     };
     let before = corpse(&world, donor);
-    let plate_mg = before.body().part(plate).unwrap().mass_mg;
-    let under_mg = before.body().part(under).unwrap().mass_mg;
-    let root_mg = before.body().part(before.body().root).unwrap().mass_mg;
+    let plate_mg = before.body().mass_mg(plate);
+    let under_mg = before.body().mass_mg(under);
+    let root_mg = before.body().mass_mg(before.body().root);
     let mine_before = world.controlled().unwrap().biomass_mg();
 
     let outcome = world.apply(Intent::Consume {
@@ -221,16 +221,13 @@ fn a_consumed_part_settles_its_own_matter_and_nothing_elses() {
     assert_eq!(from, donor);
     assert_eq!(from_part, plate);
     let after = corpse(&world, donor);
-    assert_eq!(after.body().part(plate).unwrap().mass_mg, 0, "it is empty");
+    assert_eq!(after.body().mass_mg(plate), 0, "it is empty");
     assert_eq!(
-        after.body().part(under).unwrap().mass_mg,
+        after.body().mass_mg(under),
         under_mg,
         "what hung off it kept its own substance: no branch came away"
     );
-    assert_eq!(
-        after.body().part(after.body().root).unwrap().mass_mg,
-        root_mg
-    );
+    assert_eq!(after.body().mass_mg(after.body().root), root_mg);
     assert_eq!(
         world.controlled().unwrap().biomass_mg(),
         mine_before + plate_mg,
@@ -244,15 +241,16 @@ fn a_consumed_part_settles_its_own_matter_and_nothing_elses() {
 
     // **Provenance, and `from_part` finally naming something.** Before PE2 this
     // field was written `PartId(0)` at every call site.
-    let grown = world.body().unwrap().part(part).expect("it attached");
+    let grown = world.body().unwrap();
+    assert!(grown.part(part).is_some(), "it attached");
     assert_eq!(
-        grown.provenance.origin,
+        grown.provenance(part).unwrap().origin,
         Origin::Incorporated {
             from_species: before.species,
             from_part: plate,
         }
     );
-    assert_eq!(grown.mass_mg, plate_mg);
+    assert_eq!(grown.mass_mg(part), plate_mg);
 }
 
 #[test]

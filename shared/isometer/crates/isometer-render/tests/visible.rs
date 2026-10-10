@@ -15,7 +15,7 @@
 //! skip rather than pass silently, because a visual test that passes when
 //! nothing rendered is worse than no test.
 
-use isometer_core::{Attachment, BodyDocument, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, BodyDocument, VolumeRef, Yaw};
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
 use isometer_render::{Camera, RenderError, Renderer};
 
@@ -29,7 +29,7 @@ fn source() -> VolumeMap {
 }
 
 fn body() -> BodyDocument {
-    BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 2])
+    BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2])
 }
 
 /// Builds a renderer, or returns `None` with a printed reason on a machine
@@ -85,14 +85,13 @@ fn an_attached_part_is_visible_in_the_frame() {
     grown
         .attach(
             VolumeRef::from_tag(2),
-            400,
             [1, 1, 1],
             Attachment {
                 parent: grown.root,
                 offset: [10, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
 

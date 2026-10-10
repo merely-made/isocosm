@@ -10,7 +10,7 @@
 use super::*;
 
 fn seed_body() -> BodyDocument {
-    BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [2, 2, 2])
+    BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2])
 }
 
 #[test]
@@ -20,7 +20,6 @@ fn root_sits_at_origin() {
     // than cornered at it, and the midline is genuinely zero.
     assert_eq!(body.world_pivot(body.root), Some([0, 0, 0]));
     assert_eq!(body.world_offset(body.root), Some([-2, -2, -2]));
-    assert_eq!(body.total_mass_mg(), 1_000);
 }
 
 #[test]
@@ -29,20 +28,13 @@ fn attaching_extends_the_collision_box() {
     let before = body.aabb();
     body.attach(
         VolumeRef::from_tag(2),
-        500,
         [1, 1, 1],
         Attachment {
             parent: body.root,
             offset: [6, 0, 0],
             yaw: Yaw::Zero,
         },
-        Provenance {
-            origin: Origin::Incorporated {
-                from_species: SpeciesId(9),
-                from_part: PartId(0),
-            },
-            epoch: 1,
-        },
+        Some(1),
     )
     .expect("root exists");
     let after = body.aabb();
@@ -54,23 +46,23 @@ fn attaching_extends_the_collision_box() {
 fn attaching_moves_the_centre_of_mass() {
     let mut body = seed_body();
     // A lone body's centre of mass is its pivot, which is the origin.
-    assert_eq!(body.centre_of_mass(), [0, 0, 0]);
+    let equal = |_| 1_000;
+    assert_eq!(body.centre_of_mass(equal), [0, 0, 0]);
 
     body.attach(
         VolumeRef::from_tag(2),
-        1_000,
         [1, 1, 1],
         Attachment {
             parent: body.root,
             offset: [10, 0, 0],
             yaw: Yaw::Zero,
         },
-        Provenance::founding(),
+        None,
     )
     .unwrap();
 
     // Equal masses at [0,0,0] and [10,0,0]: halfway between.
-    assert_eq!(body.centre_of_mass(), [5, 0, 0]);
+    assert_eq!(body.centre_of_mass(equal), [5, 0, 0]);
 }
 
 #[test]
@@ -79,27 +71,25 @@ fn yaw_rotates_child_offsets_exactly() {
     let arm = body
         .attach(
             VolumeRef::from_tag(2),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Quarter,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
     let hand = body
         .attach(
             VolumeRef::from_tag(3),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: arm,
                 offset: [4, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
     // The hand's own offset is rotated by the arm's quarter turn. Pivots
@@ -114,27 +104,25 @@ fn nested_yaw_accumulates_up_the_chain() {
     let arm = body
         .attach(
             VolumeRef::from_tag(2),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Quarter,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
     let hand = body
         .attach(
             VolumeRef::from_tag(3),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: arm,
                 offset: [2, 0, 0],
                 yaw: Yaw::Half,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
 
@@ -150,42 +138,34 @@ fn unknown_parent_is_refused() {
     let err = body
         .attach(
             VolumeRef::from_tag(2),
-            1,
             [1, 1, 1],
             Attachment {
                 parent: PartId(99),
                 offset: [0, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap_err();
     assert_eq!(err, AttachError::UnknownParent(PartId(99)));
 }
 
 #[test]
-fn incorporated_parts_are_listed_in_order() {
+fn tagged_parts_are_listed_in_order() {
     let mut body = seed_body();
     for tag in 2..5u8 {
         body.attach(
             VolumeRef::from_tag(tag),
-            10,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [tag as i32, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance {
-                origin: Origin::Incorporated {
-                    from_species: SpeciesId(tag as u32),
-                    from_part: PartId(0),
-                },
-                epoch: 1,
-            },
+            Some(1),
         )
         .unwrap();
     }
-    let ids: Vec<_> = body.incorporated().map(|p| p.id).collect();
+    let ids: Vec<_> = body.tagged().map(|p| p.id).collect();
     assert_eq!(ids, vec![PartId(1), PartId(2), PartId(3)]);
 }

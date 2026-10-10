@@ -66,11 +66,11 @@ impl World {
         };
         // Severed tissue weighs nothing in the conservation account, and an
         // emptied part has already been taken.
-        if found.severed || found.mass_mg == 0 {
+        if found.severed || donor.body().mass_mg(part) == 0 {
             return Outcome::Rejected(Rejection::NothingLeft(part));
         }
         let (mass_mg, half_extent, volume, at, lineage) = (
-            found.mass_mg,
+            donor.body().mass_mg(part),
             found.half_extent,
             found.volume,
             donor.position,

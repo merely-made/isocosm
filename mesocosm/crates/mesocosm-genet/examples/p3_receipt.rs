@@ -106,7 +106,7 @@ fn main() {
         println!(
             "  part {} <- {:?}",
             part.0,
-            body.part(*part).unwrap().provenance.origin
+            body.provenance(*part).unwrap().origin
         );
     }
     println!(

@@ -1,8 +1,8 @@
 use super::*;
-use isometer_core::{Attachment, Provenance, SpeciesId, VolumeRef, Yaw};
+use isometer_core::{Attachment, VolumeRef, Yaw};
 
 fn body() -> BodyDocument {
-    BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [1, 1, 1])
+    BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1])
 }
 
 fn environment() -> ArrestFallEnvironment {
@@ -21,14 +21,13 @@ fn limbed_body() -> BodyDocument {
     for offset in [[2, 0, 0], [-2, 0, 0]] {
         body.attach(
             VolumeRef::from_tag(2),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: PartId(0),
                 offset,
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
     }

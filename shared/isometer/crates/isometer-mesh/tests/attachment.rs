@@ -15,9 +15,7 @@
 //! meal lands a part is the sim's, and certified there.
 
 use isometer_core::fixtures::walker;
-use isometer_core::{
-    Attachment, BodyDocument, Origin, PartId, Provenance, SpeciesId, VolumeRef, Yaw,
-};
+use isometer_core::{Attachment, BodyDocument, PartId, VolumeRef, Yaw};
 use isometer_mesh::{Volume, VolumeMap, mesh_body};
 
 /// A volume for every tag a fixture may cite.
@@ -30,44 +28,47 @@ fn source() -> VolumeMap {
     map
 }
 
+/// A product's mass reading for the fixture: each part weighs its box's
+/// voxels (mass is the product's ledger, 699).
+fn weight(body: &BodyDocument) -> impl Fn(PartId) -> u64 + '_ {
+    |id| {
+        let h = body.part(id).map_or([0; 3], |p| p.half_extent);
+        h.iter().map(|h| 2 * h.unsigned_abs() as u64 + 1).product()
+    }
+}
+
+fn mass(body: &BodyDocument) -> u64 {
+    let w = weight(body);
+    body.living().map(|p| w(p.id)).sum()
+}
+
 /// A meal's part, landed on the root at `offset`, taken from species 42.
 fn eat(body: &mut BodyDocument, tag: u8, offset: [i32; 3], yaw: Yaw) -> PartId {
-    let provenance = Provenance {
-        origin: Origin::Incorporated {
-            from_species: SpeciesId(42),
-            from_part: PartId(0),
-        },
-        epoch: 1,
-    };
+    // The sim's tag for a part taken from species 42 (756).
+    let origin = Some(42);
     let attachment = Attachment {
         parent: body.root,
         offset,
         yaw,
     };
-    body.attach(
-        VolumeRef::from_tag(tag),
-        400,
-        [1, 1, 1],
-        attachment,
-        provenance,
-    )
-    .expect("the meal's part lands")
+    body.attach(VolumeRef::from_tag(tag), [1, 1, 1], attachment, origin)
+        .expect("the meal's part lands")
 }
 
 #[test]
 fn eating_changes_mass_balance_collision_and_geometry() {
     let source = source();
     let mut body = walker();
-    let mass_before = body.total_mass_mg();
-    let centre_before = body.centre_of_mass();
+    let mass_before = mass(&body);
+    let centre_before = body.centre_of_mass(weight(&body));
     let collision_before = body.aabb();
     let drawn_before = mesh_body(&body, &source).unwrap();
 
     eat(&mut body, 40, [9, 0, 0], Yaw::Zero);
     let drawn_after = mesh_body(&body, &source).unwrap();
 
-    assert!(body.total_mass_mg() > mass_before, "the body got heavier");
-    let centre_after = body.centre_of_mass();
+    assert!(mass(&body) > mass_before, "the body got heavier");
+    let centre_after = body.centre_of_mass(weight(&body));
     assert!(
         centre_after[0] > centre_before[0],
         "centre of mass moved toward the new part: {centre_before:?} -> {centre_after:?}"
@@ -101,10 +102,11 @@ fn an_eaten_part_still_says_whose_it_was() {
         .find(|p| p.part == part)
         .expect("the new part is placed");
     assert_eq!(placement.yaw, Yaw::Quarter);
-    match body.part(part).unwrap().provenance.origin {
-        Origin::Incorporated { from_species, .. } => assert_eq!(from_species, SpeciesId(42)),
-        Origin::Founding => panic!("an eaten part is not founding stock"),
-    }
+    assert_eq!(
+        body.part(part).unwrap().origin,
+        Some(42),
+        "the tag survives"
+    );
 }
 
 #[test]

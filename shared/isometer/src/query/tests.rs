@@ -12,7 +12,7 @@
 //! policy to set up and stay in Mesocosm's `section/query_tests.rs`.
 
 use isometer_core::ground::{Ground, Terrain};
-use isometer_core::{BodyDocument, PartId, SpeciesId, VolumeRef};
+use isometer_core::{BodyDocument, PartId, VolumeRef};
 
 use super::*;
 use crate::bodies::Pose;
@@ -39,7 +39,7 @@ fn device() -> Option<(wgpu::Device, wgpu::Queue)> {
 }
 
 fn document(tag: u8) -> BodyDocument {
-    BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(tag), 1_000, [1; 3])
+    BodyDocument::new(VolumeRef::from_tag(tag), [1; 3])
 }
 
 fn camera() -> SlabCamera {
@@ -328,7 +328,11 @@ fn a_pick_over_open_ground_names_the_cell_under_the_pixel() {
     let Some(Pick::Terrain(hit)) = scene.pick([0.0; 2]).unwrap() else {
         panic!("open ground answers with terrain");
     };
-    assert_eq!(hit.normal, [0.0, 1.0, 0.0], "a flat field is hit on its top");
+    assert_eq!(
+        hit.normal,
+        [0.0, 1.0, 0.0],
+        "a flat field is hit on its top"
+    );
     assert_eq!(
         ground.surface(hit.voxel[0], hit.voxel[2]),
         Some(hit.voxel[1]),

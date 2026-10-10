@@ -17,8 +17,7 @@
 //! codebase actually produced.
 
 use isocosm::legacy::mesocosm::{
-    BodyDocument, Chronicle, Consequence, Origin, PartPalette, axis::catalogue,
-    chronicle::LOST_PART,
+    BodyDocument, Chronicle, Consequence, PartPalette, axis::catalogue, chronicle::LOST_PART,
 };
 
 /// A critter this game wrote, that Isometry has since had for a while.
@@ -160,7 +159,8 @@ fn the_descendant_is_founded_under_this_games_rules() {
     let descendant = regrow(&returned, PartPalette::primitive());
 
     assert_eq!(
-        descendant.species.0, returned.species,
+        descendant.species().0,
+        returned.species,
         "the lineage continues"
     );
     assert!(
@@ -171,14 +171,8 @@ fn the_descendant_is_founded_under_this_games_rules() {
     // Every surviving part keeps the history it had. The root founded the
     // lineage and the rest were eaten, so after losing one incorporated part
     // the descendant carries one fewer than it arrived with.
-    let living_incorporated = descendant
-        .living()
-        .filter(|part| matches!(part.provenance.origin, Origin::Incorporated { .. }))
-        .count();
-    let whole_incorporated = whole
-        .living()
-        .filter(|part| matches!(part.provenance.origin, Origin::Incorporated { .. }))
-        .count();
+    let living_incorporated = descendant.incorporated().filter(|p| !p.severed).count();
+    let whole_incorporated = whole.incorporated().filter(|p| !p.severed).count();
     assert_eq!(
         living_incorporated,
         whole_incorporated - 1,

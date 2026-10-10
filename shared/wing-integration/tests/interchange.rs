@@ -71,7 +71,7 @@ fn grown() -> (BodyDocument, VolumeMap) {
 
 fn live_profile_bytes() -> Vec<u8> {
     let (body, volumes) = grown();
-    BodyProfile::of(&body, &volumes)
+    BodyProfile::of(&body, &volumes, body.species().0, |id| body.part_origin(id))
         .expect("the producer can flatten its body")
         .to_bytes()
         .expect("the producer frames the profile")

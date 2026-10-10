@@ -7,13 +7,13 @@
 //! Projects the authoritative parts graph into the Lens capsule vocabulary.
 //!
 //! The projection deliberately simplifies each living voxel part to one
-//! capsule. It retains the part address, content address, and provenance beside
+//! capsule. It retains the part address, content address, and origin tag beside
 //! that capsule, so the simplification never becomes a second body format.
 
 use std::collections::BTreeMap;
 
 use isometer_core::{
-    BodyDocument, Part, PartId, Provenance, VolumeRef,
+    BodyDocument, Part, PartId, VolumeRef,
     snapshot::{encode, hash_bytes},
 };
 use serde::{Deserialize, Serialize};
@@ -39,7 +39,8 @@ pub struct BodyPlacement {
 pub struct LensPart {
     pub part: PartId,
     pub volume: VolumeRef,
-    pub provenance: Provenance,
+    /// The part's origin tag, as its product wrote it (756).
+    pub origin: Option<u64>,
     pub capsule: u16,
     /// Hash of every fact this part's Lens realization reads, including its
     /// resolved placement. A changed parent therefore changes descendants.
@@ -149,7 +150,7 @@ impl BodyLensProjection {
                 part.half_extent,
                 part.pivot,
                 part.attachment,
-                &part.provenance,
+                part.origin,
                 pivot,
                 yaw,
                 floor,
@@ -166,7 +167,7 @@ impl BodyLensProjection {
             parts.push(LensPart {
                 part: part.id,
                 volume: part.volume,
-                provenance: part.provenance.clone(),
+                origin: part.origin,
                 capsule,
                 dependency: hash_bytes(&dependency_bytes),
             });
@@ -302,26 +303,19 @@ fn eyes_for(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometer_core::{Attachment, Origin, SpeciesId, Yaw};
+    use isometer_core::{Attachment, Yaw};
 
     fn body() -> BodyDocument {
-        let mut body = BodyDocument::new(SpeciesId(7), VolumeRef::from_tag(1), 100, [2, 2, 2]);
+        let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2]);
         body.attach(
             VolumeRef::from_tag(2),
-            40,
             [1, 1, 3],
             Attachment {
                 parent: body.root,
                 offset: [3, 0, 0],
                 yaw: Yaw::Quarter,
             },
-            Provenance {
-                origin: Origin::Incorporated {
-                    from_species: SpeciesId(42),
-                    from_part: PartId(3),
-                },
-                epoch: 2,
-            },
+            Some(1),
         )
         .unwrap();
         body
@@ -349,8 +343,8 @@ mod tests {
             vec![PartId(0), PartId(1)]
         );
         assert_eq!(
-            projected.parts[1].provenance,
-            body.part(PartId(1)).unwrap().provenance
+            projected.parts[1].origin,
+            body.part(PartId(1)).unwrap().origin
         );
     }
 
@@ -361,14 +355,13 @@ mod tests {
         let added = after_body
             .attach(
                 VolumeRef::from_tag(3),
-                20,
                 [1, 1, 1],
                 Attachment {
                     parent: after_body.root,
                     offset: [-3, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         let before = BodyLensProjection::project(&before_body, placement()).unwrap();
@@ -383,14 +376,13 @@ mod tests {
         before_body
             .attach(
                 VolumeRef::from_tag(3),
-                10,
                 [1, 1, 1],
                 Attachment {
                     parent: PartId(1),
                     offset: [0, 0, 4],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         let mut after_body = before_body.clone();
@@ -424,7 +416,7 @@ mod tests {
     #[test]
     fn different_cross_sections_project_to_different_radii() {
         let radius = |half: [i32; 3]| {
-            let body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, half);
+            let body = BodyDocument::new(VolumeRef::from_tag(1), half);
             BodyLensProjection::project(&body, placement())
                 .unwrap()
                 .pose
@@ -453,20 +445,19 @@ mod tests {
     /// The vanish, retired: a body past the budget is smaller, never absent.
     #[test]
     fn a_body_past_the_capsule_budget_is_truncated_rather_than_refused() {
-        let mut body = BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 100, [2, 2, 2]);
+        let mut body = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 2]);
         // Alternating fat and thin parts, so "widest kept" is testable.
         for index in 0..MAX_CAPSULES as i32 + 40 {
             let half = if index % 2 == 0 { [2, 2, 2] } else { [1, 1, 0] };
             body.attach(
                 VolumeRef::from_tag(2),
-                10,
                 half,
                 Attachment {
                     parent: body.root,
                     offset: [index + 4, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         }

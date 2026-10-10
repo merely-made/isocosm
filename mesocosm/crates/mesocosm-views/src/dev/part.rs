@@ -77,7 +77,8 @@ pub fn part_of(
         .and_then(|line| line.name.clone())
         .map(|name| bounded(&format!("{} — {name}", organism.species.0)))
         .unwrap_or_else(|| organism.species.0.to_string());
-    let donor = match &found.provenance.origin {
+    let origin = organism.body().provenance(part).map(|p| p.origin.clone());
+    let donor = match origin.unwrap_or(Origin::Founding) {
         Origin::Founding => "founding tissue".into(),
         Origin::Incorporated {
             from_species,
@@ -101,7 +102,7 @@ pub fn part_of(
                 } else {
                     "carcass"
                 },
-                found.mass_mg
+                organism.body().mass_mg(part)
             ),
             discovery_condition: "unknown".into(),
             history_event: bounded(&history_event(history, organism.id, part)),

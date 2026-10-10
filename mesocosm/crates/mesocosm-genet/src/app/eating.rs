@@ -38,7 +38,8 @@ impl Host {
                     .iter()
                     .find(|o| o.id == id)
                     .expect("reachable donor");
-                let tissue = donor.body().part(part).expect("addressed part");
+                donor.body().part(part).expect("addressed part");
+                let tissue_mg = donor.body().mass_mg(part);
                 BodyMenuRow {
                     source: format!(
                         "{} {} (line {})",
@@ -51,7 +52,7 @@ impl Host {
                         donor.species.0
                     ),
                     offer: format!("part {} tissue", part.0),
-                    mass: format!("{} mg", tissue.mass_mg),
+                    mass: format!("{} mg", tissue_mg),
                     ..Default::default()
                 }
             })

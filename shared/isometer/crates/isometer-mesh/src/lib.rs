@@ -57,7 +57,7 @@ pub mod voxel;
 
 use std::collections::BTreeMap;
 
-use isometer_core::{BodyDocument, PartId, Provenance, VolumeRef, Yaw};
+use isometer_core::{BodyDocument, PartId, VolumeRef, Yaw};
 
 pub use content::{
     ContentEntry, ContentError, ContentPack, MATERIAL_BODY, MATERIAL_EDGE, MATERIAL_JOINT,
@@ -82,8 +82,9 @@ pub struct Placement {
     pub pivot: [i32; 3],
     /// Orientation in body space, from [`BodyDocument::world_yaw`].
     pub yaw: Yaw,
-    /// Present for body placements; loose world matter has no body history.
-    pub provenance: Option<Provenance>,
+    /// The part's origin tag, as its product wrote it (756); `None` for a
+    /// body's own part and for loose world matter.
+    pub origin: Option<u64>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -131,7 +132,7 @@ impl BodyMesh {
                 pivot_at: [0, 0, 0],
                 pivot: [0, 0, 0],
                 yaw: Yaw::Zero,
-                provenance: None,
+                origin: None,
             }],
         }
     }
@@ -249,7 +250,7 @@ pub fn mesh_body(body: &BodyDocument, source: &impl VolumeSource) -> Result<Body
             pivot_at,
             pivot: part.pivot,
             yaw,
-            provenance: Some(part.provenance.clone()),
+            origin: part.origin,
         });
     }
 
@@ -259,7 +260,7 @@ pub fn mesh_body(body: &BodyDocument, source: &impl VolumeSource) -> Result<Body
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometer_core::{Attachment, Provenance, SpeciesId};
+    use isometer_core::Attachment;
 
     fn source() -> VolumeMap {
         let mut map = VolumeMap::new();
@@ -269,7 +270,7 @@ mod tests {
     }
 
     fn seed_body() -> BodyDocument {
-        BodyDocument::new(SpeciesId(1), VolumeRef::from_tag(1), 1_000, [1, 1, 1])
+        BodyDocument::new(VolumeRef::from_tag(1), [1, 1, 1])
     }
 
     #[test]
@@ -288,14 +289,13 @@ mod tests {
 
         body.attach(
             VolumeRef::from_tag(2),
-            500,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [8, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
 
@@ -316,14 +316,13 @@ mod tests {
         for i in 0..4 {
             body.attach(
                 VolumeRef::from_tag(2),
-                100,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset: [5 + i * 3, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         }
@@ -343,14 +342,13 @@ mod tests {
         let arm = body
             .attach(
                 VolumeRef::from_tag(2),
-                10,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset: [3, 0, 0],
                     yaw: Yaw::Zero,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
         body.sever(arm);
@@ -367,14 +365,13 @@ mod tests {
             let mut body = seed_body();
             body.attach(
                 VolumeRef::from_tag(2),
-                100,
                 [1, 1, 1],
                 Attachment {
                     parent: body.root,
                     offset,
                     yaw,
                 },
-                Provenance::founding(),
+                None,
             )
             .unwrap();
             mesh_body(&body, &source()).unwrap()
@@ -395,14 +392,13 @@ mod tests {
         let mut body = seed_body();
         body.attach(
             VolumeRef::from_tag(2),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [6, 0, 0],
                 yaw: Yaw::Quarter,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         let mesh = mesh_body(&body, &source()).unwrap();
@@ -428,14 +424,13 @@ mod tests {
         let mut body = seed_body();
         body.attach(
             VolumeRef::from_tag(99),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [4, 0, 0],
                 yaw: Yaw::Zero,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         let err = mesh_body(&body, &source()).unwrap_err();
@@ -453,14 +448,13 @@ mod tests {
         let mut body = seed_body();
         body.attach(
             VolumeRef::from_tag(2),
-            100,
             [1, 1, 1],
             Attachment {
                 parent: body.root,
                 offset: [7, 1, -2],
                 yaw: Yaw::ThreeQuarter,
             },
-            Provenance::founding(),
+            None,
         )
         .unwrap();
         let a = mesh_body(&body, &source()).unwrap();
