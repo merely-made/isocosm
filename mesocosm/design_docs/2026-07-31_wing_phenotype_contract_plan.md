@@ -1077,7 +1077,7 @@ states. Broader body-plan generation remains the next substantive C0 question.
 generator request to version 4 and refuses older explicit versions. Generated
 founders now receive declared lineage tissue; the earlier version-1/2 replay
 receipts below are historical. See the
-[trophic grammar plan](2026-09-04_trophic_grammar_plan.md) for the material
+[trophic grammar plan](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md) for the material
 contract and current validation. Requests that omit a version use the current
 default. This update does not supply a new headed creator receipt.
 

@@ -673,7 +673,7 @@ world operations are particularly interesting mod contributions.
 
 **Where these directions meet current work.** Vessel mechanics and receipts
 stay in their domain plans. Mesocosm's
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns embodied
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns embodied
 discovery and lineage development. Eponym's
 `eponym/design_docs/2026-09-09_functional_loops_plan.md`,
 `eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md`, and

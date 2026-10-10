@@ -3,7 +3,7 @@
 **Status: historical register snapshot, partially superseded; refreshed
 2026-08-31.** Do not use this file as the current execution order. TD8 through
 TD11 and DC1 through DC4 closed or reframed several entries after the snapshot,
-and the [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) now owns
+and the [playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) now owns
 the integration chain. Source plans remain authoritative.
 
 This was a worklist, not a plan. Its numbered entries are retained as a dated

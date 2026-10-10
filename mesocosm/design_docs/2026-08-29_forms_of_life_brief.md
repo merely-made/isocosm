@@ -19,7 +19,7 @@ energy, space, body, relationship, and history authority. Before a true
 mycelium, clonal stand, or biofilm is built, the game must rule whether the
 played subject owns one connected body, several spatial bodies, or a colony
 projection. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns that
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns that
 architecture decision and the first second-form proof; this brief keeps the
 biological axes and costs.
 Written to be reacted to. Opened by Mark alongside TD7 and deliberately kept

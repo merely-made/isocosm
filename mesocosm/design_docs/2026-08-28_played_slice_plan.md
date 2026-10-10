@@ -12,7 +12,7 @@ M3 lands (ruling 196).
 **Status: in progress, refreshed 2026-08-31. PS0 and PS1 landed mechanically
 and were playtested; their vitals, terrarium-dynamics, roster, and default-body
 follow-ups have also landed through DC4. PS2 is now decomposed by the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md).** The first
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md).** The first
 slice of Mesocosm a hand actually plays: the live epoch as the ruled terrarium
 section with direct control of your organism. Renderer ruled: the brick-traced
 side-on section.

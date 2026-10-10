@@ -699,7 +699,7 @@ zero-tick round trip must preserve the aggregate record exactly, while
 evolution over time is compared against an all-individual reference under a
 declared error envelope. Camera distance, render LOD, and cache residency
 cannot choose simulation detail. Recorded focus and other world facts may.
-The [playable ecology plan's downstream gates](2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
+The [playable ecology plan's downstream gates](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
 route that scale-owned contract into PE6.
 
 Presentation stays a family of projections of one truth (landscape §8):

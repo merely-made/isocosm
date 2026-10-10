@@ -120,7 +120,7 @@ PE0 + PE1 + PE2
   -> PE7 collapse-and-recovery proof
 ```
 
-The [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns those
+The [playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns those
 integration targets and done-conditions. **PE0-PE3 are landed; PE4 is next.**
 PE4's trophic grammar and the visible-body integration below now share an
 end-to-end acceptance scene. The individual and lineage checkpoints remain

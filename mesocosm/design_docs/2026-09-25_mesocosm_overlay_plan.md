@@ -28,7 +28,7 @@ naming. **Consumes:** the record; the sim plan and the
 [played slice plan](2026-08-28_played_slice_plan.md), its control
 rewritten for directing (rulings 175 and 199) and retiring into this plan
 at M3 (196); the
-[playable ecology plan](2026-08-31_playable_ecology_plan.md), whose open
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md), whose open
 rulings are now answered (rulings 180 to 183 and two readings); the
 [epoch boundary plan](2026-08-01_epoch_boundary_plan.md); and the
 [vessel briefs](2026-08-18_vessel_briefs_and_presentation.md) §2.

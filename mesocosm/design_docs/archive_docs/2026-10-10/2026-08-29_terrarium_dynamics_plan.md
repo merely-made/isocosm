@@ -9,7 +9,7 @@ cites is deleted; its findings stand as history.
 **Status: landed and closed 2026-08-30; refreshed 2026-08-31.** TD1 through
 TD11 are implemented and receipted. The instrument remains a diagnostic, but
 `breathes` no longer spawns tuning rounds for systems the game has not built.
-The [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) now owns the
+The [playable ecology plan](2026-08-31_playable_ecology_plan.md) now owns the
 integration work this series exposed.
 Make the terrarium compelling on its own — an ant farm worth watching — and
 let the player's considerations step into that. Mark's words, ruling the
@@ -366,7 +366,7 @@ comparisons against TD10's table; conservation exact; fixtures re-recorded.
 
 ## After TD11: the playable ecology chain is next
 
-The [playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns the
+The [playable ecology plan](2026-08-31_playable_ecology_plan.md) owns the
 successor product chain. **Refreshed 2026-09-05:** PE0-PE3 now compose flow
 readings, reproduction/succession, embodied discovery and lineage review;
 the former missing epoch caller and review path are implemented. NPC

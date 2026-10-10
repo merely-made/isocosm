@@ -462,7 +462,7 @@ Retire the trait array when all of these are true:
 **Receipt, 2026-09-02 (P4a/PD5, then P4b/PE3a): four of the five are met, and
 the array stays.** **Superseded the same day: Mark ruled condition 5,
 2026-09-02: delete.** **Deleted 2026-09-04, and §D4 closes: all five
-conditions now hold.** See the [playable ecology plan](2026-08-31_playable_ecology_plan.md)
+conditions now hold.** See the [playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
 PE3 for the record and the [epoch boundary plan](2026-08-01_epoch_boundary_plan.md).
 
 **The deletion receipt.** Five files went, 1,318 lines of them:
@@ -1560,7 +1560,7 @@ rather than part of it.
   `standing` and the old round, keeping the seven authored pressures and
   three authored world profiles as data since they seed PE4's world criteria.
   A deletion slice does it. This closes §D4 and P4's seventh clause; no code
-  changed in this pass. See the [playable ecology plan](2026-08-31_playable_ecology_plan.md)
+  changed in this pass. See the [playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
   PE3 and the [epoch boundary plan](2026-08-01_epoch_boundary_plan.md).
 
 - **2026-09-02, P4 partial (P4a, the lineage program): a line commits a
@@ -1726,7 +1726,7 @@ resolution began, so an act always precedes what it caused.
 section owns the cross-layer sequence, extending this plan rather than adding
 another body plan. Existing biological rules remain here and in ProcessDef;
 typed intake, nis, scruple and defenses remain in the
-[trophic grammar plan](2026-09-04_trophic_grammar_plan.md). The
+[trophic grammar plan](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md). The
 [default critters plan](archive_docs/2026-10-10/2026-08-30_default_creatures_plan.md) owns the roster;
 its outstanding visual acceptance is delivered through this sequence.
 

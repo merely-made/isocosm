@@ -9,7 +9,7 @@ and answers its finding R2. Consumes the
 door, and the
 [functional generation plan](2026-09-09_functional_generation_plan.md)'s
 blueprints. Answers Mark's 2026-09-04 framing at the foot of the
-[trophic grammar plan](2026-09-04_trophic_grammar_plan.md) §4: "make beginning
+[trophic grammar plan](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md) §4: "make beginning
 body types; start investigating a beginning set of traits."
 
 **W1, 2026-09-18:** keep. Tier: mixed. Independently produced the

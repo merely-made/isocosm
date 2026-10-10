@@ -1,16 +1,24 @@
 # Soil cycle plan
 
+**Superseded 2026-10-10; archived under wing design record rulings 793 and
+802.** S1 landed on `mesocosm-core`, which is deleted. Soil is keyed by
+isometer's columns (703) and rot is checkpoint 10's (718, its S4). M1 to M4
+are the [sim plan](../../2026-09-22_sim_plan.md)'s S10, SC1 to SC4, with §3a's
+audit and §3b's assessment as their evidence; S3, S5, S6 and S7 are listed
+there as carried and not phased. S2's near-against-far table was never run
+and its subject, legacy deep time, is gone.
+
 **Date:** 2026-09-16
 
 **Status, 2026-09-16:** S1 landed on main (`ca836e0`, merged from
 `soil-cycle-s1-held` once green). S2, deep time measured near against far,
 is next. Opened from the
-[isoscape family plan](2026-09-16_isoscape_family_plan.md) ruling 20 and its
+[isoscape family plan](../../2026-09-16_isoscape_family_plan.md) ruling 20 and its
 §2.6 assessment. Deep time's heir entry (D7b) waits on this plan.
 
 **W1, 2026-09-18:** keep. Tier: sim, §3.3 second shape. Index defect: absent
 from the index. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Owns:** making the enclosure's matter cycle work in the worlds the

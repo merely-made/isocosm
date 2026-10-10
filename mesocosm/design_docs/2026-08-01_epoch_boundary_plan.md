@@ -54,7 +54,7 @@ weighs evidence and world readings, and commits a program revision that future
 descendants may realize. It is not silently triggered by every birth.
 
 The exact reproduction choice and epoch-ending rule remain open. The
-[playable ecology plan](2026-08-31_playable_ecology_plan.md) owns their
+[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns their
 integration order and full proof; this plan continues to own what the lineage
 boundary means once opened.
 

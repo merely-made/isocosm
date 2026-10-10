@@ -604,7 +604,7 @@ form above.
 
 **Answered the same day**: every option was taken, with far-tier movement
 fixed first and ruling 19 re-measured after it. The work moves to the
-[soil cycle plan](2026-09-16_soil_cycle_plan.md), which D7b waits on.
+[soil cycle plan](archive_docs/2026-10-10/2026-09-16_soil_cycle_plan.md), which D7b waits on.
 
 **Options, from the assessment** (codes used in the question to Mark): O1
 fix far-tier movement (no bounce inside the target's place, a per-tick

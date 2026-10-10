@@ -14,7 +14,7 @@ same day (ruling 311); the order lives in the record's §11.
 
 **Status: active founding design, refreshed 2026-08-31.** Later domain plans
 and live code supersede its implementation status; the
-[playable ecology plan](../../2026-08-31_playable_ecology_plan.md) owns the current
+[playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns the current
 integration proof and the dependency ledger owns dispatch order.
 Two audit corrections bind readers of this document: (1) its M0/runtime
 descriptions are **historical** where they conflict with the landed

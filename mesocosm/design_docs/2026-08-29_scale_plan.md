@@ -3,7 +3,7 @@
 **Status: active scale ladder, refreshed 2026-09-01. S1 landed 2026-08-29 on
 top of TD7. The written ladder still places S2 next, while S1's measured
 findings argue for S3 first; that order remains unruled. This lane is not the
-next product slice. The [playable ecology plan](2026-08-31_playable_ecology_plan.md)
+next product slice. The [playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
 consumes cohort scale and zoom at PE6.**
 
 **W1, 2026-09-18:** rewrite. Tier: sim, §3.5. S3 is the wing's only measured

@@ -767,7 +767,7 @@ contracts, the kingdom floor holds, and the captures read as critters.
     thins / 0 boil / 13 collapse respectively. All 30 roster seeds start 76
     grazers, 76 predators, and 78 omnivores. TG6 remains open because neither
     arm retains all three tiers at the end. The result belongs in the
-    [trophic grammar plan](../../2026-09-04_trophic_grammar_plan.md) Findings. The
+    [trophic grammar plan](2026-09-04_trophic_grammar_plan.md) Findings. The
     older CP1 grammar-revision-0 golden is now refused by name; retained
     current recordings use revision 1.
 
