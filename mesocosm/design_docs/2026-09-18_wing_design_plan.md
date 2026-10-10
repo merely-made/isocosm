@@ -9816,6 +9816,14 @@ what later sections derive from.
      constitution starts empty, members joining as relations (recommended);
      notes until members exist; tags and claims stay the table's. Mark
      chose "Polity with no members yet (Recommended)".
+     *Annotation, 2026-10-09, Mark:* "Although to author it, surely there
+     need to be some attributes assigned to the polity that can fill the
+     placeholder". So `Command::Assert` asserts a polity with authored
+     attributes, its name, tags and claims and the constitution's
+     governance and focus, standing as asserted facts while it has no
+     members. *Reading, not ruled:* once members join, readings derived
+     from them sit beside the authored attributes rather than replacing
+     them, and where the two disagree is a later question.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
