@@ -104,11 +104,45 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3's declared reproduction draws:** seeds `0..20`, three
+  sites, 60 members in cohorts of two, three lineages, played consumer
+  `lineage:1` with regions of two sites, individuals, 180 played ticks and
+  three configured 60-tick epochs. Original rates failed the lineage gate
+  on 20/20 bare and 20/20 bodied draws. The first candidate changed all
+  three lineages' birth thresholds from 30 to 14 and consumer/decomposer
+  meals from one to two, retaining the original 20 to 60-tick lifespans.
+  Only 3/20 bare draws passed (5, 6, 17). Bodied candidate draws 0 through
+  9 completed, with only draw 1 reaching 180; the already-failed run was
+  interrupted, so no 20-draw bodied candidate receipt exists. Each completed
+  case conserved matter every tick and replayed to the same hash. These
+  candidate rates remain outside generator defaults.
+  *Reading, not ruled:* the configured 60-tick epoch is a verification
+  scope, not a settlement of the stock 525,600-tick year/epoch or headed
+  readiness. The next declared candidate keeps one-unit meals, child
+  provision eight, upkeep one per five ticks and birth cadence seven;
+  all three lineages use threshold 12 and drawn lifespans 80 to 120. Its
+  promoted gate must count actual later births and born heirs, with no
+  living founded consumer remaining at tick 180, besides replay and
+  conservation. A1 stays open until that gate passes on at least 20 draws.
+- **2026-10-10, Q2/Q3's arrived-body boundary:** `Arrive` may admit own
+  reserve on an entity ledger, then `Embody` keeps that ledger while adding
+  geometry with a free lattice and no tissue (`arrival.rs:110`). Native
+  `anatomy::held` includes that loose balance but `take_within` spends only
+  anatomical parts. Q2's hunger command consequently refuses insufficient
+  reserve. Generated-body Q3 checks cover valid founded tissue in parts,
+  not this admitted balance. Carry the arrival-to-embodiment accounting
+  decision to Q10's Eponym body admission gate; do not generalize Q3's
+  generated-body receipt to it.
 - **2026-10-10:** the baseline above. Legacy stands at 3,968 lines, all
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
 
+- **2026-10-10, Q3 checkpoint integrated:** the generated-body account
+  and turn-order slice is integrated after 42 focused tests and a merged
+  workspace/all-targets offline check. A1's survival and reproduction gate
+  remains open; these checks do not certify Arrive/Embody admission or
+  generator cadence.
 - **2026-10-10, ruling 808:** Q2's focused contracts exposed agreement
   actions using a non-event as an event cause. Mark chose a typed optional
   agreement link on the native event; Q2's association and replay checks
@@ -119,7 +153,10 @@ headed meal choice feels tense rather than clerical.
 - **2026-10-10, Q1:** current state/status and native source paths verified
   under 793 to 802; dated receipts preserved. This documentation pass adds
   no compile, test, draw or headed certification.
-
+- **2026-10-10, Q3 lane checkpoint:** native generated-body account and
+  turn-order repairs built and checked (sim and directing Progress); A1
+  remains open after the rejected first cadence. No generator rates were
+  promoted from that failed profile.
 - **2026-10-10:** plan written; A2's baseline taken.
 - **2026-10-10, handoff:** three lanes stopped at Mark's weekly budget,
   their work kept on branches, each closing with a WIP commit

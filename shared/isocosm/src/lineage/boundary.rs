@@ -5,11 +5,38 @@
 //! copy of the world grows with it committed, scored over `Session::fork_at`
 //! as legacy `adapt_round` scored over a copied world; never by a formula,
 //! and the world itself untouched. Lines take their turns from the most
-//! numerous down, committing at once, the played line skipped (its turn is
+//! metabolically complex down, committing at once, the played line skipped (its turn is
 //! the review).
 
 use crate::{Result, Session, schema::*};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
+
+/// Distinct catalogue functions expressed and carried systems realized by
+/// living members. Each name counts once across the lineage (797, 806).
+pub fn complexity(session: &Session, lineage: &str) -> usize {
+    let catalogue = &session.sim.genesis().rules.functions;
+    let mut functions = BTreeSet::new();
+    let mut systems = BTreeSet::new();
+    for g in session.sim.state().population.groups.values() {
+        let e = &g.entity;
+        if !e.alive || e.lineage != lineage {
+            continue;
+        }
+        functions.extend(
+            e.living()
+                .flat_map(|(_, p)| &p.functions)
+                .filter(|f| catalogue.contains_key(*f)),
+        );
+        systems.extend(
+            e.systems
+                .iter()
+                .filter(|(_, s)| crate::systems::realizes(e, s))
+                .map(|(name, _)| name),
+        );
+    }
+    functions.len() + systems.len()
+}
 
 /// What a copy grew to: the line's living matter and members after `ticks`.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -75,7 +102,7 @@ pub fn score(
     })
 }
 
-/// One adaptation round: each living line but `played`, most numerous
+/// One adaptation round: each living line but `played`, most complex
 /// first, weighs its candidates, the status quo among them, and commits
 /// the best at once, so later lines answer a world the earlier changed.
 pub fn adapt(
@@ -84,14 +111,14 @@ pub fn adapt(
     candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
     ticks: Tick,
 ) -> Result<Vec<Turn>> {
-    let mut lines: Vec<(u64, Key)> = session
+    let mut lines: Vec<(usize, Key)> = session
         .sim
         .state()
         .lineages
         .keys()
         .filter(|l| Some(l.as_str()) != played)
-        .map(|l| (standing(session, l).1, l.clone()))
-        .filter(|(n, _)| *n > 0)
+        .filter(|l| standing(session, l).1 > 0)
+        .map(|l| (complexity(session, l), l.clone()))
         .collect();
     lines.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| a.1.cmp(&b.1)));
     let mut turns = Vec::new();
@@ -128,3 +155,6 @@ pub fn adapt(
     }
     Ok(turns)
 }
+
+#[cfg(test)]
+mod tests;

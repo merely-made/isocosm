@@ -271,6 +271,12 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q3 checkpoint integrated:** `e7af61ec` is integrated after
+  the merged Isocosm workspace/all-targets offline check, source ceiling,
+  staged diff and weave checks passed. Its 42 focused tests certify the
+  generated-body accounting and turn-order slice. Q3 remains active for
+  the reproduction survival gate; no generator defaults were changed.
+  Q2 now holds the serialized Cargo slot for contracts and ruling 808.
 - **2026-10-10, ruling 808:** Mark chose a typed optional agreement id on
   native deed events, retaining causal-event validation and the agreement's
   state owner. Q2's Form/Exercise/End tests exposed the former invalid

@@ -387,3 +387,5 @@ impl Interim {
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod diag;

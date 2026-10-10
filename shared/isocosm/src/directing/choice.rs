@@ -241,7 +241,7 @@ impl Simulation {
         for p in choices.filter(|p| !due_only || due(p)) {
             let have = |a: &Key| {
                 self.body_at_start(actor)
-                    .map_or(0, |e| e.accounts.get(a).copied().unwrap_or(0))
+                    .map_or(0, |e| crate::anatomy::held(e, rules, a))
             };
             if p.need_account
                 .as_ref()

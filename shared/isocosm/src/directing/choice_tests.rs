@@ -34,6 +34,33 @@ fn nudge(s: &mut Session, p: Id, c: Id, aim: Aim, toward: Toward) {
 }
 
 #[test]
+fn a_bodied_choice_reads_the_native_need_ceiling() {
+    let mut g = crate::Founding {
+        seed: 3,
+        sites: 1,
+        population: 30,
+        cohort_size: 1,
+        lineages: 3,
+        ecology: true,
+        bodies: Some(crate::bodied::Bodies::default()),
+        played: Some(Played { lineage: 1, region_sites: 1 }),
+        ..Default::default()
+    }.generate().unwrap();
+    let p = g.rules.processes.get_mut("ecology:feed-1").unwrap();
+    p.need_account = Some("matter:1-0".into());
+    p.need_below = 10;
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    let c = *s.sim.state().population.groups.iter()
+        .find(|(_, g)| g.entity.lineage == "lineage:1").unwrap().0;
+    assert!(prey(&s, c).is_some());
+    assert!(!s.sim.consider(c, false).options.contains_key("ecology:feed-1"));
+    let rules = s.sim.genesis().rules.clone();
+    crate::anatomy::take(s.sim.state.population.lift(c).unwrap(), &rules,
+        "matter:1-0", 1).unwrap().unwrap();
+    assert!(s.sim.consider(c, false).options.contains_key("ecology:feed-1"));
+}
+
+#[test]
 fn an_unnudged_critter_acts_on_its_own_needs() {
     let mut s = world(3, Execution::Individuals);
     let (_, c) = played(&mut s);

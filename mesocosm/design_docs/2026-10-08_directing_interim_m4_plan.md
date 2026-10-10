@@ -171,6 +171,16 @@ on Isocosm, both modes, receipts replaying.
 
 ## Findings
 
+- **2026-10-10, Q3 after 797 and 806:** native boundary turns now descend
+  by the union of distinct catalogue functions expressed and carried
+  systems realized across living lineage members. Varied members can add
+  different names. Cohort size no longer substitutes for metabolic
+  complexity; extinction filtering and lineage-key ties are implementation
+  readings. Native anatomical need ceilings, meal deposition and generic
+  birth payment/parentage are repaired in the sim owner (its Q3 Findings).
+  The declared 60-tick-epoch reproduction proof and its rejected first
+  profile are tracked under after-pass A1; the historical eight-tick test
+  below does not certify reproduction or the stock 525,600-tick epoch.
 - **2026-10-09:** a generated ecology's consumer cannot reproduce: its
   birth needs three founded bodies of matter, it nets about one unit in
   eight ticks, and age takes it within 20 to 60. So a played consumer
@@ -212,6 +222,13 @@ on Isocosm, both modes, receipts replaying.
 - **2026-10-10, Q1:** current ownership, gates and status checked against
   the lane tree under 793 to 802; earlier dated text retained. No new
   compile, test, draw or headed receipt claimed.
+- **2026-10-10, Q3 lane checkpoint (797, 806):** descending native living
+  complexity replaces member count for boundary turns. The distinct varied
+  union and order controls pass; anatomical scheduled and deliberative
+  ceilings, meals and generic births pass the sim owner's focused checks
+  and offline all-target check (its Progress). The configured reproduction
+  gate stays open. Integration pending; this does not certify D5's headed
+  run or the stock year/epoch.
 - **2026-10-09, D1 to D4 under 732 (lane `lane-directing`).** All in
   `shared/isocosm/src/directing/` unless named.
   - **D1:** a participant is an entity of `kingdom:participant` at

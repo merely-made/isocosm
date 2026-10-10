@@ -275,7 +275,7 @@ impl<'w> Crowd<'w> {
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
         let mut acting = Vec::new();
         for (e, n, who) in snapshot {
-            if !e.alive || !gates.open(&e, self.tick) {
+            if !e.alive || !gates.open(&e, self.tick, rules) {
                 continue;
             }
             if p.causation == Causation::Agentless {

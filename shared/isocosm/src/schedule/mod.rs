@@ -112,7 +112,12 @@ impl Simulation {
         }
         if !gated.is_empty() {
             let population = &self.state.population;
-            self.filed = Some(Filed::new(population, gated, self.state.tick));
+            self.filed = Some(Filed::new(
+                population,
+                gated,
+                self.state.tick,
+                &self.genesis.rules,
+            ));
         }
         let mut work = Work::default();
         self.chosen = Default::default();
@@ -146,7 +151,7 @@ impl Simulation {
         while let Some((due, priority, id)) = queue.pop_first() {
             self.state.tick = due;
             if let Some(filed) = &mut self.filed {
-                filed.ripen(&self.state.population, due);
+                filed.ripen(&self.state.population, due, &self.genesis.rules);
             }
             let genesis = std::sync::Arc::clone(&self.genesis);
             let process = &genesis.rules.processes[&id];
@@ -200,7 +205,9 @@ impl Simulation {
             for offset in 0..calls {
                 let actor = first + offset;
                 let entity = self.state.population.get(actor);
-                if entity.is_none_or(|e| gates.is_some_and(|g| !g.open(e, self.state.tick))) {
+                if entity.is_none_or(|e| {
+                    gates.is_some_and(|g| !g.open(e, self.state.tick, &self.genesis.rules))
+                }) {
                     continue;
                 }
                 let deliberated = self.deliberate(actor, process);
@@ -249,11 +256,9 @@ impl Simulation {
         } else if entity.method == Method::Inert {
             return None;
         }
-        if process
-            .need_account
-            .as_ref()
-            .is_some_and(|a| entity.accounts.get(a).copied().unwrap_or(0) >= process.need_below)
-        {
+        if process.need_account.as_ref().is_some_and(|a| {
+            crate::anatomy::held(entity, &self.genesis.rules, a) >= process.need_below
+        }) {
             return None;
         }
         let bulk = self.mode == Execution::Grouped && process.bulk_safe();
@@ -277,7 +282,11 @@ impl Simulation {
         #[cfg(debug_assertions)]
         for (first, g) in self.state.population.groups.range(from..until.max(from)) {
             debug_assert!(
-                gates.is_some_and(|gates| !gates.open(&g.entity, self.state.tick)),
+                gates.is_some_and(|gates| !gates.open(
+                    &g.entity,
+                    self.state.tick,
+                    &self.genesis.rules
+                )),
                 "the filed pass went past group {first}"
             );
         }
@@ -304,7 +313,7 @@ impl Simulation {
             let Some(entity) = self.body_at_start(actor) else {
                 continue;
             };
-            if gates.is_some_and(|g| !g.open(entity, self.state.tick)) {
+            if gates.is_some_and(|g| !g.open(entity, self.state.tick, &self.genesis.rules)) {
                 continue;
             }
             // A deliberative critter takes only the act it chose (683).

@@ -30,7 +30,7 @@ impl Staged<'_> {
 
     /// The child `id`'s parentage, both ways, so a parent's act can find
     /// its own young (526).
-    fn relate(&mut self, id: Id) {
+    pub(super) fn relate(&mut self, id: Id) {
         let actor = self.stage.actor;
         let parent = Relation {
             subject: id,
@@ -45,6 +45,51 @@ impl Staged<'_> {
             value: 0,
         };
         self.stage.relations.extend([(parent, true), (young, true)]);
+    }
+
+    /// The generic birth keeps its parent's form, but only the provision's
+    /// matter. A bodied parent pays through its parts, never a second ledger.
+    pub(super) fn provisioned_birth(&mut self, provision: &Ledger) -> Result<()> {
+        let id = self.next_child()?;
+        let tick = self.sim.state.tick;
+        let rules = &self.sim.genesis.rules;
+        let mut child = self.actor().clone();
+        child.accounts.clear();
+        for part in child.parts.values_mut() {
+            part.matter.clear();
+        }
+        child.born = tick;
+        child.arrived = tick;
+        child.visits.clear();
+        child.skills.clear();
+        child.provenance = Provenance::Born(child.lineage.clone());
+        child.authored = None;
+        for (key, value) in provision {
+            self.take(Binding::Actor, key, *value)?;
+            if let Some(given) = crate::anatomy::give(&mut child, rules, key, *value) {
+                for (part, amount) in given? {
+                    if self.sim.flowing() {
+                        self.stage.legs.push(Leg {
+                            from: (Holder::Entity(self.stage.actor), key.clone()),
+                            to: (Holder::Part(id, part), key.clone()),
+                            amount,
+                        });
+                    }
+                }
+            } else {
+                credit(&mut child.accounts, key, *value)?;
+                if self.sim.flowing() && meaning::matter(rules, key) {
+                    self.stage.legs.push(Leg {
+                        from: (Holder::Entity(self.stage.actor), key.clone()),
+                        to: (Holder::Entity(id), key.clone()),
+                        amount: *value,
+                    });
+                }
+            }
+        }
+        self.relate(id);
+        self.stage.births.push(child);
+        Ok(())
     }
 
     /// The soma the child `id` draws from `l`'s recipe by its own seed.

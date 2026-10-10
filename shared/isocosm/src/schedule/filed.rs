@@ -10,7 +10,7 @@
 //! processes whose gates it passes, again whenever an act commits to it, and
 //! a group still too young is kept on a timer for the tick it comes of age.
 
-use crate::{meaning::value, population::Population, rules::*, schema::*};
+use crate::{population::Population, rules::*, schema::*};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// What a process requires of its actor's own state.
@@ -83,21 +83,25 @@ impl Gates {
     }
 
     /// Whether `e` passes every gate but its age.
-    fn met(&self, e: &Entity) -> bool {
+    fn met(&self, e: &Entity, rules: &Rules) -> bool {
         (!self.alive || e.alive)
             && self.traits.iter().all(|t| e.traits.contains(t))
             && self
                 .at_least
                 .iter()
-                .all(|(k, v)| value(&e.accounts, k) >= *v)
-            && self.below.iter().all(|(k, v)| value(&e.accounts, k) < *v)
-            && (self.holds == 0 || held(&e.accounts, &self.matter) >= u128::from(self.holds))
+                .all(|(k, v)| crate::anatomy::held(e, rules, k) >= *v)
+            && self
+                .below
+                .iter()
+                .all(|(k, v)| crate::anatomy::held(e, rules, k) < *v)
+            && (self.holds == 0
+                || held(&crate::anatomy::books(e), &self.matter) >= u128::from(self.holds))
             && self.expresses.iter().all(|f| expressing(e, f).is_some())
     }
 
     /// Whether `e` passes every gate at `tick`, as the requirements read it.
-    pub(crate) fn open(&self, e: &Entity, tick: Tick) -> bool {
-        self.met(e) && tick.saturating_sub(e.born) >= self.age
+    pub(crate) fn open(&self, e: &Entity, tick: Tick, rules: &Rules) -> bool {
+        self.met(e, rules) && tick.saturating_sub(e.born) >= self.age
     }
 }
 
@@ -116,7 +120,12 @@ pub(crate) struct Filed {
 }
 
 impl Filed {
-    pub(crate) fn new(population: &Population, gates: BTreeMap<Key, Gates>, tick: Tick) -> Self {
+    pub(crate) fn new(
+        population: &Population,
+        gates: BTreeMap<Key, Gates>,
+        tick: Tick,
+        rules: &Rules,
+    ) -> Self {
         let mut filed = Self::default();
         for (id, g) in &gates {
             if g.traits.is_empty() {
@@ -129,7 +138,7 @@ impl Filed {
         }
         filed.gates = gates;
         let firsts: Vec<Id> = population.groups.keys().copied().collect();
-        filed.touch(population, firsts, tick);
+        filed.touch(population, firsts, tick, rules);
         filed
     }
 
@@ -144,6 +153,7 @@ impl Filed {
         population: &Population,
         firsts: impl IntoIterator<Item = Id>,
         tick: Tick,
+        rules: &Rules,
     ) {
         for first in firsts {
             for id in self.at.remove(&first).unwrap_or_default() {
@@ -163,7 +173,7 @@ impl Filed {
             }
             for id in candidates {
                 let g = &self.gates[&id];
-                if !g.met(e) {
+                if !g.met(e, rules) {
                     continue;
                 }
                 let ripe = e.born.saturating_add(g.age);
@@ -183,7 +193,7 @@ impl Filed {
 
     /// Files the groups come of age by `tick` that still pass every other
     /// gate. A timer whose group has since changed is read afresh.
-    pub(crate) fn ripen(&mut self, population: &Population, tick: Tick) {
+    pub(crate) fn ripen(&mut self, population: &Population, tick: Tick, rules: &Rules) {
         while self
             .timers
             .first()
@@ -193,7 +203,7 @@ impl Filed {
             let Some(group) = population.groups.get(&first) else {
                 continue;
             };
-            if self.gates[&id].open(&group.entity, tick) {
+            if self.gates[&id].open(&group.entity, tick, rules) {
                 self.file(id, first);
             }
         }
