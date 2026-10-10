@@ -13,7 +13,7 @@ earlier status line follows as written.)*
 *Earlier:* **Status: implementation through DC4 landed; visual acceptance remains open
 (refreshed 2026-09-05).** DC4's roster ships as the default founding, but Mark
 still sees capsules rather than readable voxel critters. The
-[phenotype plan section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype plan section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 now coordinates procedural content, the live voxel-body path and presentation
 through VB0-VB5. The earlier claim that none of the remaining problem is
 anatomy is withdrawn: both placeholder content and lossy presentation need
@@ -50,7 +50,7 @@ Mark, 2026-08-30, quoted in the terrarium dynamics plan:
 > some built in expectations of capacities."
 
 And, owning the second playtest's finding
-([`2026-08-28_played_slice_plan.md`](../../2026-08-28_played_slice_plan.md), Findings
+([`2026-08-28_played_slice_plan.md`](2026-08-28_played_slice_plan.md), Findings
 2026-08-29): bodies read as "abstract voxel shapes", and the direction was
 "shrink those down and put a few together in the shape of a body plan, maybe
 you have something that looks more like a critter or flora then."

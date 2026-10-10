@@ -30,7 +30,7 @@ overlay plan now owns it (§11, §12), and supersedes the word `borg` (ruling
 
 This owns what happens *between* epochs: how a run is judged, how a lineage
 splits, what a player may aim at, and why a young critter is different from an
-old one. The [phenotype plan](2026-07-31_phenotype_plan.md) owns bodies and
+old one. The [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md) owns bodies and
 capability. The process vocabulary is the sim's process definition
 ([sim plan](2026-09-22_sim_plan.md) §3.1; the ProcessDef plan is archived at
 [archive_docs/2026-09-26/](archive_docs/2026-09-26/2026-08-01_processdef_plan.md),
@@ -686,6 +686,20 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
 
 ---
 
+## Current state, 2026-10-10
+
+Added under ruling 793; the dated sections above keep their words.
+
+**Carried from the phenotype plan (archived 2026-10-10).** Its P5,
+contested flow, is this plan's subject at the lineage scale: lift finite
+local resource results into the boundary's evidence. Done when niche
+overlap can cause a lineage to fail, distinct resource paths can coexist,
+and changing spatial access changes what a line's boundary weighs, without
+a global fitness-share rule; crossing the local resolution boundary
+conserves biomass and lineage state rather than rerolling the ecology. It
+lands with the full M4's boundaries, where every lineage adapts against the
+web (182).
+
 ## Findings
 
 - **2026-08-02:** nothing in the shipped app drained the world's event buffer,
@@ -773,7 +787,7 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   `CLAUDE.md`. No code changed.
 
 - **2026-09-02:** the trait array's deletion ruled; the ruling lives in the
-  [phenotype plan](2026-07-31_phenotype_plan.md)'s progress, and this is the
+  [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md)'s progress, and this is the
   module the entry below already found had no consumer left in `World`.
 - **2026-09-02 (PE3a):** the boundary finally happens on its own. `EpochRule`
   is a versioned world rule beside the ruleset — `Timed { ticks }` built,

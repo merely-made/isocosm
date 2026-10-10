@@ -682,7 +682,7 @@ layers of meaning over it:
 - **Two-scale execution target.** Places near the played body run embodied
   individuals; distant places may run deterministic cohorts once the
   conversion and comparison receipts in the
-  [scale plan](2026-08-29_scale_plan.md)
+  [scale plan](archive_docs/2026-10-10/2026-08-29_scale_plan.md)
   land. The incumbent tick is not there yet: `organism/ecology.rs` still
   advances every organism record and derives `Cohort` only as a conserved
   summary. Promotion and demotion already happen at a hops-distance boundary

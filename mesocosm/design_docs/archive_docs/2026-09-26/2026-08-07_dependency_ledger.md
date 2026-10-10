@@ -127,7 +127,7 @@ end-to-end acceptance scene. The individual and lineage checkpoints remain
 distinct and use the landed developmental path.
 
 **Visible voxel bodies (Mark's integration request, 2026-09-04):**
-[phenotype section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype section 8](../2026-10-10/2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 owns `VB0 source audit [complete] -> VB1 live voxel body -> VB2 procedural
 anatomy + VB3 addressed inspection -> VB4 body change and descendant -> VB5
 roster and cost receipt`. VB2 content design may parallel VB1 once the

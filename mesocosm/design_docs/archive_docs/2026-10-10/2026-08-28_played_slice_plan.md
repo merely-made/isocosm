@@ -1,25 +1,31 @@
 # Played Slice Plan (2026-08-28)
 
+**Superseded 2026-10-10; archived under wing design record ruling 793.** It
+retired into the [Mesocosm overlay
+plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M3 by ruling 196, and M3 was
+built as the [directing plan](../../2026-10-08_directing_interim_m4_plan.md)'s D1
+to D5, the switch landing 2026-10-10. Nothing was left open here.
+
 **Status, 2026-09-25: control rewritten for directing.** The wing design
 record's ruling 175 makes directing the first Mesocosm overlay's control,
 as ruling 60 ruled Mesocosm's mode on 2026-09-19, and at Mark's word
 (ruling 199) this slice's control is rewritten now, in the section
 "Control: directing" below. W1's keep of 2026-09-18 predates ruling 60.
-The build is the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s
+The build is the [Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s
 M3, only on Isocosm (ruling 194), and this plan retires into that one when
 M3 lands (ruling 196).
 
 **Status: in progress, refreshed 2026-08-31. PS0 and PS1 landed mechanically
 and were playtested; their vitals, terrarium-dynamics, roster, and default-body
 follow-ups have also landed through DC4. PS2 is now decomposed by the
-[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md).** The first
+[playable ecology plan](2026-08-31_playable_ecology_plan.md).** The first
 slice of Mesocosm a hand actually plays: the live epoch as the ruled terrarium
 section with direct control of your organism. Renderer ruled: the brick-traced
 side-on section.
 
 **W1, 2026-09-18:** keep. Tier: game overlay. A playtest of product content
 is a done-condition §6 allows. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 The rulings this plan executes, cited not restated: the terrarium section
@@ -96,7 +102,7 @@ world, the slab camera following the played critter as presentation only,
 the minimap, the vitals chrome, and the receipts' discipline.
 
 **Where it is built.** Only on Isocosm, as the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md)'s M3 (ruling
+[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M3 (ruling
 194); nothing of it is prototyped on this host. This plan retires into that
 one when M3 lands (ruling 196).
 

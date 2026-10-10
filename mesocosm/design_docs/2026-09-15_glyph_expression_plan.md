@@ -1101,7 +1101,7 @@ control that does not exist.
    heir to a line that lived through it. **Deep time belongs to the
    hagiograph**, ruled the history organ and kept in mere's eidetic core, not
    to isoscape. The
-   [isoscape family plan](2026-09-16_isoscape_family_plan.md) carries those
+   [isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) carries those
    rulings and the measurements.
 5. **The bench gains an advance-to-boundary control**, so a scenario reaches
    an epoch boundary in one action instead of waiting on Play.

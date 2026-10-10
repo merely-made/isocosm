@@ -22,7 +22,7 @@ the impresa; the [sim plan](2026-09-22_sim_plan.md) §2.7 and §2.8 place both
 organs among the sim's nouns; the
 [glyph expression plan](2026-09-15_glyph_expression_plan.md) is the next
 move under §1. The hagiograph, which the hagioglyph consumes, is the
-[isoscape family plan](2026-09-16_isoscape_family_plan.md)'s.
+[isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md)'s.
 
 ---
 

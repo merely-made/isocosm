@@ -63,7 +63,7 @@ flora should be edible to everything."
 Each phase lands alone and is measurable alone.
 
 **Visible-body integration (2026-09-04).** The
-[phenotype plan section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype plan section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 owns VB0-VB5: procedural voxel representation, the live body draw path,
 addressed inspection and the body-change/descendant proof. TG1 can proceed
 alongside its initial geometry work. TG2/TG3 gate diet-driven tissue appearance;

@@ -22,7 +22,7 @@ stays in
 
 **Follow-on integration, 2026-09-04:** DT1-DT4 completion does not include
 screen-to-part selection. The
-[phenotype plan section 8, VB3](2026-07-31_phenotype_plan.md#vb3-point-to-the-body-and-read-what-happened)
+[phenotype plan section 8, VB3](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md#vb3-point-to-the-body-and-read-what-happened)
 owns pointer routing, addressed body/part selection, in-scene highlighting and
 the selected-part explanation over these existing tools. The current scenario
 pointer hooks report unrouted input; VB3 must complete the real input route

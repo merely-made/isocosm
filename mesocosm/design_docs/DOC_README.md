@@ -80,7 +80,6 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | Carried 2026-09-26; carryover distinction 2026-09-28 (ruling 406). |
 | [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | Ruled 2026-09-26 (346 to 352); documented, not built. |
 | [2026-09-15_isomere_plan.md](2026-09-15_isomere_plan.md) | isomere: the wing's GUI layer and mode host. | 2026-10-01: the mode host ruled (442 to 445); waits on Mesocosm's M3. |
-| [2026-09-16_isoscape_family_plan.md](2026-09-16_isoscape_family_plan.md) | isoscape: worldgen as a family, the three generation buckets and deep time. | Assessment complete, 2026-09-16; rulings 1 to 14 recorded. |
 | [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-01: L10, the detail ladder, briefed. |
 | [2026-09-15_glyph_expression_plan.md](2026-09-15_glyph_expression_plan.md) | How a canon's glyphs come to be expressed by traits. | Assessment, 2026-09-15; no code moved. |
 | [2026-09-15_trait_catalogue_plan.md](2026-09-15_trait_catalogue_plan.md) | The trait catalogue the glyph expression plan consumes. | Assessment, 2026-09-15; no code moved. |
@@ -89,12 +88,9 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-08-14_resident_views_composition_plan.md](2026-08-14_resident_views_composition_plan.md) | How the voxel world composes with Burn/CubeCL, the tracer, collision and admitted fields on one device. | Founded 2026-08-14. |
 | [2026-08-18_vessel_briefs_and_presentation.md](2026-08-18_vessel_briefs_and_presentation.md) | The ratified vessel briefs and camera rulings. | Ratified 2026-08-18; direct control superseded by directing (rulings 60, 175). |
 | [2026-08-18_engine_ecology_rulings_and_review.md](2026-08-18_engine_ecology_rulings_and_review.md) | Engine and ecology rulings, reviewed against the live code. | Review through 2026-08-26; sharing audit 2026-09-09 (§7). |
-| [2026-07-31_phenotype_plan.md](2026-07-31_phenotype_plan.md) | Mesocosm's body rules and proof plan, with the voxel-body lanes VB0 to VB5. | Under rewrite per W1 (ruling 31). |
 | [2026-07-31_wing_phenotype_contract_plan.md](2026-07-31_wing_phenotype_contract_plan.md) | Wing construction, embodiment and continuity: body identity across games. | 2026-09-28: body mapping prepared; adapter unimplemented. |
 | [2026-08-01_epoch_boundary_plan.md](2026-08-01_epoch_boundary_plan.md) | The epoch boundary: significance, speciation and what youth costs. | Rewritten to the record 2026-09-26 (ruling 280); partially built. |
 | [2026-08-02_views_founding_plan.md](2026-08-02_views_founding_plan.md) | Adapter-first UI, with the minimap as first chrome. | Rewritten to the record 2026-09-26 (ruling 280); first slice landed. |
-| [2026-08-28_played_slice_plan.md](2026-08-28_played_slice_plan.md) | Mesocosm's first played slice. | Control rewritten for directing 2026-09-25 (ruling 199); retires into the overlay plan's M3. |
-| [2026-08-29_scale_plan.md](2026-08-29_scale_plan.md) | The scale ladder: measured terrain, atlas, place-graph, population and snapshot limits. | Under rewrite per W1 (ruling 31); S1 landed. |
 | [2026-09-01_dev_tools_plan.md](2026-09-01_dev_tools_plan.md) | Dev tools for sitting in a run and interrogating it. | Rewritten to the record 2026-09-26 (ruling 280): the tools move to the bench (W4). |
 | [2026-08-29_elements_and_traits_memo.md](2026-08-29_elements_and_traits_memo.md) | How a generated vocabulary becomes real: typed matter, coefficients, exchange. | Memo; material scheme ruled 2026-09-02. |
 | [2026-08-29_traits_and_perception_brief.md](2026-08-29_traits_and_perception_brief.md) | Traits, incorporation cost and trait-relative perception. | Design brief, refreshed 2026-09-01. |
@@ -105,6 +101,10 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 Each archived file carries its own paragraph saying why it moved and what
 was carried where. Retired plans go to `archive_docs/<YYYY-MM-DD>/`.
 
+- [`2026-10-10/2026-09-16_isoscape_family_plan.md`](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md): worldgen as a family and deep time; superseded (793), deep time native and the lift in isometer-space, its open items in the sim plan's S5.
+- [`2026-10-10/2026-08-29_scale_plan.md`](archive_docs/2026-10-10/2026-08-29_scale_plan.md): the scale ladder, S1 landed on legacy; superseded by residency, native aggregation and L10 (793), S5 carried to the sim plan.
+- [`2026-10-10/2026-08-28_played_slice_plan.md`](archive_docs/2026-10-10/2026-08-28_played_slice_plan.md): Mesocosm's first played slice; superseded (793), retired into M3 (196), built as directing's D1 to D5.
+- [`2026-10-10/2026-07-31_phenotype_plan.md`](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md): Mesocosm's body rules and VB lanes, P1 to P4 landed on legacy; superseded by native development, mosaic and revision (793).
 - [`2026-10-10/2026-09-16_soil_cycle_plan.md`](archive_docs/2026-10-10/2026-09-16_soil_cycle_plan.md): the soil cycle, S1 landed on legacy; superseded (793, 802), M1 to M4 now the sim plan's S10.
 - [`2026-10-10/2026-09-04_trophic_grammar_plan.md`](archive_docs/2026-10-10/2026-09-04_trophic_grammar_plan.md): PE4's trophic grammar, TG1 to TG3a landed and native; superseded (793, 802), TG3 to TG7 now the sim plan's S8.
 - [`2026-10-10/2026-08-31_playable_ecology_plan.md`](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md): Mesocosm's integration plan, PE0 to PE3 landed on legacy; superseded (793, 802), PE4 to the sim plan's S8 and S9, PE5 to checkpoint 11, PE6 to S4, PE7 to M4 and D4.

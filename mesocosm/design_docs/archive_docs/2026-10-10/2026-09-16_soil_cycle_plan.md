@@ -13,7 +13,7 @@ and its subject, legacy deep time, is gone.
 **Status, 2026-09-16:** S1 landed on main (`ca836e0`, merged from
 `soil-cycle-s1-held` once green). S2, deep time measured near against far,
 is next. Opened from the
-[isoscape family plan](../../2026-09-16_isoscape_family_plan.md) ruling 20 and its
+[isoscape family plan](2026-09-16_isoscape_family_plan.md) ruling 20 and its
 §2.6 assessment. Deep time's heir entry (D7b) waits on this plan.
 
 **W1, 2026-09-18:** keep. Tier: sim, §3.3 second shape. Index defect: absent

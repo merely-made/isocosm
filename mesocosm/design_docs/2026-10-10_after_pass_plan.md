@@ -79,6 +79,8 @@ and contracts, the kingdom floor holds, and the captures read as critters;
 its CP1 clearing-and-burrow review, run beside the wing's default view at
 the 2:1 dimetric pitch, which rules Mesocosm's opening view (382, 387,
 388); and the habitat's canopy, contact and dressing, which CP1 left open.
+From the phenotype plan, archived the same day: P0's judgment, whether the
+headed meal choice feels tense rather than clerical.
 
 ## Findings
 

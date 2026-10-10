@@ -35,11 +35,11 @@ existing body, ecology, history, lineage, generation, scale, and presentation
 lanes compose into Mesocosm rather than remaining separate demonstrations. It
 does not replace their detailed plans:
 
-- [the played-slice plan](../../2026-08-28_played_slice_plan.md) owns live host
+- [the played-slice plan](2026-08-28_played_slice_plan.md) owns live host
   wiring;
 - [the ProcessDef plan](../2026-09-26/2026-08-01_processdef_plan.md) owns transformations,
   expression, packs, and validation;
-- [the phenotype plan](../../2026-07-31_phenotype_plan.md) owns developmental
+- [the phenotype plan](2026-07-31_phenotype_plan.md) owns developmental
   programs, body realization, and capability;
 - [the epoch-boundary plan](../../2026-08-01_epoch_boundary_plan.md) owns lineage
   review, significance, speciation, and authorship;
@@ -49,7 +49,7 @@ does not replace their detailed plans:
   on composable forms until individual stages are ruled;
 - [the elements and traits memo](../../2026-08-29_elements_and_traits_memo.md) owns
   the three candidate schemes for generated materials;
-- [the scale plan](../../2026-08-29_scale_plan.md) owns cohort execution, residency,
+- [the scale plan](2026-08-29_scale_plan.md) owns cohort execution, residency,
   zoom, and stress receipts;
 - [the dependency ledger](../2026-09-26/2026-08-07_dependency_ledger.md) remains the
   authority on global order and cross-plan blocking.
@@ -599,7 +599,7 @@ deletion happened on 2026-09-04: `epoch::Trait`, `fitness`, `standing`, the old
 round and `examples/ecology_lab.rs` are gone, not merely marked
 non-authoritative; the seven authored pressures and the three authored world
 profiles are kept as data in `mesocosm-core/src/pressure.rs`, since they seed
-PE4's world criteria. See the [phenotype plan](../../2026-07-31_phenotype_plan.md)
+PE4's world criteria. See the [phenotype plan](2026-07-31_phenotype_plan.md)
 §D4 for the retirement conditions and the file-by-file receipt. The founder
 preview's ground ruling landed the same day (Progress, below). **Nothing in PE3
 is outstanding.**
@@ -609,7 +609,7 @@ is outstanding.**
 **PE4's first build (2026-09-04)** is the [trophic grammar plan](2026-09-04_trophic_grammar_plan.md), which lands typed intake, typed accounts, scruple, defenses, selective edibility, the re-declared roster and the lexicon in that order, and closes the unrestricted predator prey set as a consequence of typed ports.
 
 **The visible integration runs alongside it (2026-09-04):**
-[phenotype section 8](../../2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
+[phenotype section 8](2026-07-31_phenotype_plan.md#8-visible-voxel-bodies-integration-2026-09-04)
 owns VB0-VB5, connecting inherited development and allocation to procedural
 voxel bodies, the played scene, part inspection and visible life-history
 changes. Its first geometry/existing-mechanics proof does not wait for typed
@@ -900,9 +900,9 @@ detailed requirements and research live in the plan that owns each mechanism.
 
 | Concern | Owning record | First integration gate | Required before admission |
 | --- | --- | --- | --- |
-| Individual/cohort execution | [Scale](../../2026-08-29_scale_plan.md) and [place graph](../../2026-08-05_place_graph_engine_plan.md) | PE6 | Exact zero-tick aggregate/materialize round trip; persistent pointable subjects; named reductions; per-evaluator all-individual comparison envelope; unsupported-process fallback. |
+| Individual/cohort execution | [Scale](2026-08-29_scale_plan.md) and [place graph](../../2026-08-05_place_graph_engine_plan.md) | PE6 | Exact zero-tick aggregate/materialize round trip; persistent pointable subjects; named reductions; per-evaluator all-individual comparison envelope; unsupported-process fallback. |
 | Generated material vocabulary | [Elements and traits](../../2026-08-29_elements_and_traits_memo.md#storage-shape-shared-by-all-three) | PE4 | Saved world-local definitions and compact ids; exact mass reconciliation; measured local-palette versus wider-cell decision only when the one-byte baseline binds. |
-| Sub-part body mutation | [Phenotype D3a](../../2026-07-31_phenotype_plan.md#d3a-when-do-voxel-cells-become-body-state) | First played case in PE2 or PE3 that cannot use whole-part loss | New immutable volume or explicit body patch; atomic body revision; bounded revision-safe mesh/collider work; truthful fallback. **P3 (2026-09-01) named the first candidate case and did not open it:** a live cut lands on the boundary between two parts, and whole-part loss cannot express it without creating or destroying matter. |
+| Sub-part body mutation | [Phenotype D3a](2026-07-31_phenotype_plan.md#d3a-when-do-voxel-cells-become-body-state) | First played case in PE2 or PE3 that cannot use whole-part loss | New immutable volume or explicit body patch; atomic body revision; bounded revision-safe mesh/collider work; truthful fallback. **P3 (2026-09-01) named the first candidate case and did not open it:** a live cut lands on the boundary between two parts, and whole-part loss cannot express it without creating or destroying matter. |
 | Generated trait execution | [ProcessDef](../2026-09-26/2026-08-01_processdef_plan.md#one-displayed-trait-three-compiled-programs) and [acquisition](../../2026-08-29_traits_and_perception_brief.md) | PE2 then PE3 | Event-driven condition, discrete development program, and native repeated process remain separate; each is typed and bounded; the exact realized candidate and digest persist. |
 | Environmental fields | [Resident views](../../2026-08-14_resident_views_composition_plan.md#field-admission-boundary-2026-09-01) and [elements](../../2026-08-29_elements_and_traits_memo.md#field-dimensionality-is-part-of-admission) | First PE4 world rule that needs a new field | Named consumer, honest domain, cadence, sources/sinks, boundaries, units/range, conservation, scale rule, cost, and control. |
 

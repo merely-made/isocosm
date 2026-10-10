@@ -33,7 +33,7 @@ design record; see
 
 This plan owns Mesocosm's extensible process vocabulary, developmental
 expression boundary, content-pack shape, and Piccolo proof. The
-[phenotype plan](../../2026-07-31_phenotype_plan.md) continues to own body and
+[phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md) continues to own body and
 capability semantics. The
 [dependency ledger](../../archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns scheduling, and the
 [playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns the product

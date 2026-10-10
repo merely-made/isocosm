@@ -70,7 +70,7 @@ whose laws and nouns this record sits under; the
 [place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §0 rulings;
 the [resident views composition plan](2026-08-14_resident_views_composition_plan.md)
 for "Burn proposes, the record disposes"; the
-[isoscape family plan](2026-09-16_isoscape_family_plan.md) for the
+[isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) for the
 generation bucket; the
 [board-on-isometer plan](../../design_docs/2026-09-15_board_on_isometer_plan.md)
 at the repository root as the worked example of a plan designed to the wrong

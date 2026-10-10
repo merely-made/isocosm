@@ -25,7 +25,7 @@ whose schema, process definitions, record and generator the
 phases; the bench (W4); the other overlays (the record's §5.6 and §5.7); or
 naming. **Consumes:** the record; the sim plan and the
 [aggregation research](2026-09-22_aggregation_research.md); the
-[played slice plan](2026-08-28_played_slice_plan.md), its control
+[played slice plan](archive_docs/2026-10-10/2026-08-28_played_slice_plan.md), its control
 rewritten for directing (rulings 175 and 199) and retiring into this plan
 at M3 (196); the
 [playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md), whose open
