@@ -133,6 +133,8 @@ impl BodyFounding {
                     _ => self.pick("body-clutch", i, self.clutch.map(u64::from)) as u32,
                 },
                 anamorphic: false,
+                tracts: vec![],
+                systems: Default::default(),
             };
             i += 1;
             d

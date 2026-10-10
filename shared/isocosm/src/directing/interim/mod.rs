@@ -14,7 +14,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-pub mod boundary;
+pub use crate::lineage::boundary;
 pub mod deep;
 
 pub use boundary::{Candidate, Score, Turn};

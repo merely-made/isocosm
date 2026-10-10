@@ -83,7 +83,7 @@ pub fn offers(session: &Session, lineage: &str, scoring: Tick) -> Result<Vec<Off
     let Some(d) = line.and_then(|l| l.development.as_ref()) else {
         return Ok(out);
     };
-    for (name, development) in crate::directing::revise::variants(d, most) {
+    for (name, development) in super::revise::offered(session, lineage, d, most) {
         let candidate = Candidate {
             name,
             commands: vec![Command::Revise {

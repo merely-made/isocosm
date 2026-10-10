@@ -353,3 +353,17 @@ the bodies family.
   embodies nothing on a native body until it says `function:intake`. Put
   back as forks: that trait-id namespace, and whether mesocosm-runtime's
   own glyph reading moves onto `Journal`.
+- **2026-10-10, bodies and lineages, cells (lane `lane-cells`, under 732's
+  compile gate; rulings 763, 765 and 766).** The boundary and the revision
+  live in `lineage/`, directing re-exporting them (763). Native parts carry
+  cells by identity (766): `mosaic` lays a part's lattice out from its box,
+  keeps tracts (the cells each function holds) beside the counts through
+  `sync`, places cells exactly through `propose`, and keeps lost cells and
+  an intake port per part, the feeding mode read from active ports. The
+  native revision declares tracts and folds systems (765): a `Development`
+  carries both, development lays declared tracts on parts of their shape, a
+  folded line's children carry its systems, and the boundary and review
+  offer both beside recipe variants. *Reading, not ruled:* `sync` keeps
+  cells in place where counts move but does not keep a tract connected;
+  only a proposal must be. Nothing calls `propose` or reads the feeding
+  mode yet; the world moves bring them.

@@ -51,6 +51,17 @@ pub struct Part {
     /// reserve where it stores.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub matter: Ledger,
+    /// Which cells each function holds (766): beside the counts, kept to
+    /// them by [`crate::mosaic::sync`]; parts laid out by nothing yet carry
+    /// none, and serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub tracts: Vec<crate::mosaic::Tract>,
+    /// Cells lost for good, which no tract holds (706).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub lost: Vec<crate::mosaic::CellId>,
+    /// What this part admits as an intake organ, where it is one (766).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub port: Option<crate::process::IntakePort>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

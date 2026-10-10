@@ -172,7 +172,13 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
     let parts = parts
         .into_iter()
         .enumerate()
-        .map(|(i, (_, p))| (PartId(i as u32), p))
+        .map(|(i, (f, mut p))| {
+            for declared in &d.tracts {
+                crate::mosaic::declare(&mut p, &f, declared);
+            }
+            crate::mosaic::sync(&mut p, f.half_extent);
+            (PartId(i as u32), p)
+        })
         .collect();
     Ok(Body { doc, parts })
 }

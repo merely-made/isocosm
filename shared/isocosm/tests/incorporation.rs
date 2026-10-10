@@ -60,6 +60,8 @@ fn development(t: Tagma, domain: u16) -> Development {
         domain,
         clutch: 1,
         anamorphic: false,
+        tracts: vec![],
+        systems: Default::default(),
     }
 }
 

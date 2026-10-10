@@ -259,6 +259,8 @@ fn allocate(
         let slot = p.cells.entry(to.into()).or_default();
         *slot = slot.checked_add(cells).ok_or("allocation overflow")?;
     }
+    // The moved cells keep their places where they can (766).
+    crate::mosaic::sync(p, half);
     revise(e)
 }
 
