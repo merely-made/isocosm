@@ -364,6 +364,11 @@ done on paper; opening E1 is Mark's.
   no type to the core.
 
 ## Progress
+
+- **2026-10-10, ruling 807:** E3's telling adapter derives a stable event
+  handle from its native event key using one mapping shared with VTT, and
+  admits the telling only when its contract handle and payload key agree.
+  Native keys remain authoritative; Q2 is implementing and verifying this.
 - 2026-09-26: this plan is Eponym's executable plan (ruling 313). §4.1 maps
   the execution plan's F3 to F8 onto E2's families; the execution plan and
   the world conditions plan (315) are archived at `archive_docs/2026-09-26/`.

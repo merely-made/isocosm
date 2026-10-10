@@ -747,6 +747,12 @@ record beyond §3.11's reading of what a goal is in the sim's terms.
   descendant will express one literal phenotype.
 
 ## Progress
+
+- **2026-10-10, rulings 797 and 806:** native boundary turns order by
+  descending metabolic complexity: distinct catalogue functions expressed
+  and carried systems realized across the lineage's living members, each
+  name counted once. The native Q3 implementation is being verified; the
+  earlier dated legacy readings below remain historical.
 - **2026-09-26: rewritten to the wing design record** under ruling 280's doc
   lane. §3 gains the record's three gates and names the hagiograph as the
   organ that judges; §11 and §12 mark what has moved to the sim and the

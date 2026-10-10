@@ -252,7 +252,9 @@ research note (754) waits for Mark.
 ## 5. Recording a ruling
 
 Numbering originally continued at 805; that ruling records the Codex model
-translation on resumption. The next ruling is 806. Form, in the wing record before the "Two
+translation on resumption. Rulings 806 and 807 settle lineage complexity
+and event-handle translation; the next ruling is 808. Form, in the wing
+record before the "Two
 earlier rulings" paragraph:
 
 ```
@@ -275,3 +277,8 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   briefs, current Codex model (805), serialized offline Cargo, and the
   current workspace output rules. Their WIP remains unmerged pending each
   lane's verification.
+- **2026-10-10, first fork round:** Mark settled Q3's metabolic-complexity
+  aggregation (806: distinct functions and realized systems across all
+  living members) and Q2's event identity (807: shared adapter mapping,
+  agreement validated against the native key). Both choices sent to their
+  running lanes; implementation and gates remain in progress.

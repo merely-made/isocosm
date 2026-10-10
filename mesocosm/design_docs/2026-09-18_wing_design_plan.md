@@ -10032,6 +10032,36 @@ what later sections derive from.
      *Reading, not ruled:* this translation supplies the model for this
      queue; the stated limits and fork method still govern its execution.
 
+806. **A lineage's metabolic complexity counts its collective repertoire.**
+     2026-10-10, Q3's native turn-order fork under 797. Question: "Turn order
+     needs one choice that ruling 797 leaves open. Functions and working
+     systems belong to individual bodies, and members of a lineage can
+     differ. How should we measure the whole lineage's metabolic
+     complexity?" Options: distinct functions and working systems across
+     all living members (recommended); the most complex living member,
+     without combining capabilities split across bodies. Mark chose
+     "Count distinct functions and working systems across all living members (Recommended); varied members can contribute different capabilities."
+     So native boundary turns use descending counts of distinct catalogue
+     functions expressed and carried systems realized across living members,
+     each name counted once. Duplicating a member does not raise this count.
+     *Reading, not ruled:* native living-part and system-realization predicates
+     supply the count; equal counts use the stable lineage key, and member
+     count remains an extinction filter.
+807. **Event handles are an adapter reading of native event keys.**
+     2026-10-10, Q2's telling-identity fork under 794. Question: "The contracts
+     lane found another identity gap: the contract names an event with a
+     numeric handle, while native knowing stores its text key. The saved
+     work ignored the contract's event handle. How should tellings cross
+     that boundary?" Options: derive a stable handle in the adapter, share
+     the mapping with VTT, and validate agreement with the native event key
+     (recommended); add numeric event handles to native now; leave tellings
+     explicitly unavailable until native event handles exist. Mark chose
+     "Derive a stable handle from the native event key in the adapter (Recommended), share the mapping with VTT, and validate that both fields name the same event."
+     So the two contracts share one mapping; a telling's handle and native
+     event key must agree before the native knowing command is admitted.
+     Native event keys retain their authority. *Reading, not ruled:* reverse
+     lookup refuses ambiguous matches rather than choosing the first.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

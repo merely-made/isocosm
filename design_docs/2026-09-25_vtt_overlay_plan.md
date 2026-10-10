@@ -362,6 +362,11 @@ V1 is Mark's.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+
+- **2026-10-10, ruling 807:** V2 shares Eponym's adapter mapping from native
+  event keys to stable event handles. Translation validates agreement with
+  the native key, with ambiguous reverse matches refused as an implementation
+  reading. Q2 is implementing and verifying the mapping.
 - 2026-10-10: the campaign session carries its assertions (ruling 768; lane
   `lane-assert`, under 732's compile gate). `CampaignWorld` saves and
   replicates its asserted entries and folds factions, places, routes,

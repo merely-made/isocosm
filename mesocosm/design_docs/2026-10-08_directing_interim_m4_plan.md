@@ -170,6 +170,11 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-10, ruling 806:** the native boundary's lineage complexity
+  aggregates distinct expressed catalogue functions and realized carried
+  systems across all living members. Q3 implements this order alongside
+  consumer reproduction; no certification is claimed by this decision.
+
 - **2026-10-09, D1 to D4 under 732 (lane `lane-directing`).** All in
   `shared/isocosm/src/directing/` unless named.
   - **D1:** a participant is an entity of `kingdom:participant` at
