@@ -446,6 +446,16 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-11, Q6 protocol qualified:** version five and ALPN v5 passed
+  current-shaped prior-four refusal at both session ends, eight envelope
+  tests, exact current QUIC, three compiled intended fault controls,
+  restored envelope and the root all-target/all-feature compiler. The VTT
+  overlay Progress owns the source and independently rehashed receipt.
+  This closes the existing WorldEvent format's bump; historical binary
+  compatibility, all fifteen VTT fixture failures, H2 and full V2 remain
+  open. Q3's separately frozen 813 timing controls are running. Q8's 812
+  source and corrected runner await root review and serial Cargo.
+
 - **2026-10-11, rulings 812 and 813:** Q8 can now clear the restoration
   function of an adapter's recorded losses, retaining IDs and healing them
   into the free pool; 811's unknown legacy losses remain. Transfer/healing

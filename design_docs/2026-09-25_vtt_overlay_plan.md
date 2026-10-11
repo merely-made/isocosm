@@ -351,9 +351,9 @@ V2's.
   from the payload, never from peer derivation; a late joiner rebuilds the
   same state from the log alone; and a headed two-peer receipt exists. H0
   and H1's laws stand: no peer derives a consequence, and version
-  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 4
-  with ALPN `isometry/session/v4`, and the after-pass's bump for 768's
-  `WorldEvent` reshaping is the next break; H2 moves it again. Still open
+  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 5
+  with ALPN `isometry/session/v5`, qualified by Q6 for 768's `WorldEvent`
+  reshaping; H2 requires its own later break and qualification. Still open
   from H0: a peer that never sends `Hello` is not version-gated and can
   push `Rolled`.
 - **The overmap's readings.** What the overmap shows: territory around each
@@ -505,6 +505,25 @@ what each left open lands here, so it has a live owner.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+
+- **2026-10-11, Q6 protocol checkpoint:** `PROTOCOL_VERSION` and transport
+  ALPN move together from four to five. Eight envelope tests and the exact
+  current-version QUIC loopback passed; restoring the envelope passed all
+  eight again. Compiled controls disabling host refusal, disabling client
+  refusal and retaining the prior ALPN each ran one named test, exited 101
+  and failed at the intended assertion. The root workspace/all-target/
+  all-feature compiler passed offline with one job. Root independently
+  rehashed all 765 source inputs, both helpers, the external Cargo config,
+  seven raw logs, three fault sources and the tool binaries; the runner's
+  eight comparisons against the frozen manifest all matched. Root review
+  `q6-protocol-424bd9d4-root-runtime-review.json` in
+  `Code/testing/isometry/after-pass-2026-10-10/q6-vtt/` has SHA-256
+  `4c008c5e69c6bec1c9bd6ea2cc70e6f6cfa0b0b1ad01ec061ed65a2605f1b641`;
+  raw results have SHA-256
+  `970e7bdff1c619dddaeeda1505bbc1725c4adb99221db3b0623a7c2c239d7498`.
+  The prior-four refusal uses current-shaped frames carrying the old numeric
+  version. Historical binary decoding and an old-ALPN dial are uncertified.
+  All fifteen A2 fixture failures and V2's remaining product gates stay open.
 
 - **2026-10-10, Q9, source-prepared checkpoint:**
   `isometry-campaign::native::Replay` holds a private native Session, takes

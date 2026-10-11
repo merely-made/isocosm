@@ -285,6 +285,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q6 bounded protocol checkpoint:** protocol5/ALPNv5 passed
+  eight envelope tests, exact current QUIC, three compiled intended faults,
+  restored tests and the root compiler. Independent root runtime review
+  `4c008c5e69c6bec1c9bd6ea2cc70e6f6cfa0b0b1ad01ec061ed65a2605f1b641`
+  rehashed the 768 source/helper/config records and raw evidence; the VTT
+  overlay Progress owns the qualification. Fifteen fixture failures remain
+  live. Q6 resumes their external source-only preparation without changing
+  primary inputs. Q3 owns Cargo for its independently reviewed 270-input
+  813 timing batch; the earlier 454 batch is qualified but not yet integrated.
+  Q8's 350-input adapter source and corrected parser bundle await root
+  review, then serial Cargo. Q10's diagnostics remain parked. The next
+  ruling is 814; no question is pending. Full A1/A2/C10/V2/E3 remain open.
+
 - **2026-10-11, rulings 812 and 813 answered:** adapter healing restores
   recorded losses as free-pool cells after allocation clearing, retaining
   cell IDs. Q8 resumes bounded source-only transfer/healing preflight in its

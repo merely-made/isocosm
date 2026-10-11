@@ -254,7 +254,26 @@ fn the_host_attributes_an_ask_to_the_peer_it_arrived_on() {
 /// the offered and supported numbers, and nothing is applied.
 #[test]
 fn an_unsupported_version_is_refused_with_a_receipt() {
-    let stranger = PROTOCOL_VERSION + 1;
+    assert_version_refused(PROTOCOL_VERSION + 1);
+}
+
+#[test]
+fn the_prior_v4_version_is_refused_without_adopting_or_logging() {
+    assert!(4 < PROTOCOL_VERSION);
+    assert_version_refused(4);
+}
+
+#[cfg(feature = "iroh")]
+#[test]
+fn the_transport_alpn_matches_the_session_version() {
+    assert_eq!(
+        isonetry::iroh_link::ALPN,
+        format!("isometry/session/v{PROTOCOL_VERSION}").as_bytes()
+    );
+}
+
+// These are current message shapes stamped with an incompatible version.
+fn assert_version_refused(stranger: u16) {
     let receipt = NetMessage::VersionRefused {
         offered: stranger,
         supported: PROTOCOL_VERSION,
@@ -262,7 +281,9 @@ fn an_unsupported_version_is_refused_with_a_receipt() {
 
     // The host's side: a client announcing a dialect it cannot read.
     let peer = PeerId(10);
-    let mut host = HostSession::new(snapshot());
+    let before = snapshot();
+    let mut host = HostSession::new(before.clone());
+    let host_hash = host.log_hash();
     assert_eq!(
         host.on_message(
             peer,
@@ -294,10 +315,14 @@ fn an_unsupported_version_is_refused_with_a_receipt() {
     );
     assert_eq!(host.seq(), 0, "a refused peer wrote to the log");
     assert!(host.state().roll_log.is_empty());
+    assert_eq!(host.state(), &before, "a refused peer changed the snapshot");
+    assert!(host.history().is_empty(), "a refused peer changed history");
+    assert_eq!(host.log_hash(), host_hash);
 
     // The client's side: a host whose snapshot speaks a dialect the client
     // cannot read. It adopts no state at all rather than applying what parses.
     let mut client = ClientSession::new();
+    let client_hash = client.log_hash();
     assert_eq!(
         client.on_message(NetMessage::Snapshot {
             version: stranger,
@@ -314,6 +339,7 @@ fn an_unsupported_version_is_refused_with_a_receipt() {
         "state was adopted from a version this peer cannot speak"
     );
     assert_eq!(client.applied(), 0);
+    assert_eq!(client.log_hash(), client_hash);
 
     // A refused session reads nothing further, so no later event can slip past
     // the refusal on its own.
@@ -324,6 +350,8 @@ fn an_unsupported_version_is_refused_with_a_receipt() {
         })
         .is_empty());
     assert!(client.state().is_none());
+    assert_eq!(client.applied(), 0);
+    assert_eq!(client.log_hash(), client_hash);
 }
 
 /// The matching version passes, so the refusal is a gate and not a wall.
