@@ -652,3 +652,15 @@ owns the source/command receipts; original failures remain.
   retirement or reader repair; preserve all three files and dated history.
   The two sortie failures retain the earlier absent-hazard diagnosis and
   four-of-six result. No additional repair, retirement or calibration ran.
+
+- **2026-10-11, Q9 bounded replay API qualified:** native assertion-order,
+  duplicate logs, all authored nouns, atomic late/nested refusal, inert table
+  metadata, JSON/saved replay and constructed unknown losses passed eight new
+  checks plus fifteen campaign library checks. A compiled omission control
+  failed at the final note, and exact source restoration passed all 23.
+  Both original and final comment-only source passed nine serial offline
+  workspace compiler gates, with every 952-input before/after map unchanged.
+  Original tests and failure remain preserved. Full V2/current product routing,
+  authentic archive compatibility, seat-aware filtering and headed acceptance
+  remain separate. Q6's current-version/refusal/ALPN execution still awaits its
+  refreshed frozen inputs; the earlier native-current fixture obligations stay live.

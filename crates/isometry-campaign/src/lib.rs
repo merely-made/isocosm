@@ -6,6 +6,7 @@
 
 mod collaboration;
 pub mod contract;
+pub mod native;
 mod store;
 
 pub use collaboration::{CampaignProposal, CampaignProposalError, CampaignProposalMode};

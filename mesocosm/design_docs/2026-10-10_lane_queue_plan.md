@@ -284,6 +284,24 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q9 replay API checkpoint integrated:** four code paths
+  publish a private native Session replay with atomic assertion batches and
+  immutable readings. All eight new plus fifteen existing tests passed,
+  the compiled final-assertion omission failed at its named semantic check,
+  and byte-exact restoration passed all 23 again. Nine workspace compiler
+  gates passed with 952 inputs unchanged. Three new SPDX comments were then
+  aligned with the VTT crate's existing MIT OR Apache-2.0 license; every
+  remaining byte and all 72 original evidence files stayed unchanged.
+  All nine compiler gates passed again on that separately frozen correction;
+  external revised workspace root review SHA-256 is
+  `36c75324e9db7f19587a7dcbd837a400a6427137455eefe09575f65fd86185c1`.
+  This is an API checkpoint: V2 product routing, native founding, geometry,
+  stable table identity, travel, knowing, polities and legacy retirement remain
+  open. Q9 parks for Q6's earlier protocol slice. Q6 refreshes its full source,
+  helper and environment envelope from this main tip, including new dependencies.
+  Q10 diagnoses Eponym source-only. Q3's eight-path pass-start/scoring proposal
+  is frozen and under root review; no rate, A1 matrix or empty-choice timing
+  change follows. User forks 812 and empty-choice timing remain pending.
 - **2026-10-11, Q5 Ground/Room integrated:** the three qualified source
   paths and five owning doc/index updates preserve the resident-height fix,
   four independent surface controls and native spherical Room receipt.

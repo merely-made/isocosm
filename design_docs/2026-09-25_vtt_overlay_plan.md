@@ -467,6 +467,15 @@ what each left open lands here, so it has a live owner.
 
 ## Findings
 
+- **2026-10-10, Q9, Reading, not ruled:** native assertion admission can
+  accept a held map edit naming a drawn `site:<id>` even when the sim-off
+  `Asserted` fold cannot resolve it. A native campaign replay must therefore
+  apply the caller's ordered entries through `Command::Assert` without using
+  that fold as a preliminary authority. Both binding an existing site and
+  supplying native geometry for a new one fit authoring under 89 and 769;
+  their attachment implementation and native placement validation remain
+  open. Stable table adapter references can preserve aliases with ambiguous
+  identity refused; geometry and handle changes are outside this slice.
 - **2026-09-25:** `isometry-campaign` counted at 4,234 lines,
   `isometry-core` 2,822, `isometry-system` 4,373, `isonetry` 5,061,
   `isometry-views` 14,890, `isometry-genet` 9,253, `isometry-runtime` 1,308,
@@ -497,6 +506,21 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-10, Q9, source-prepared checkpoint:**
+  `isometry-campaign::native::Replay` holds a private native Session, takes
+  explicit Genesis, ordered assertions and Execution, and exposes borrowed
+  native nouns and entries. Construction and additional assertion batches
+  publish only a complete new reading; loading and saving use native Saved
+  replay and witness validation. Errors retain native refusal text beside
+  typed founding, assertion-index or load context. Prepared tests cover
+  authored nouns and groups, metadata without changing a taken body or
+  control, drawn-site edit admission, late failure, JSON save/load in both
+  execution modes, duplicate entries, tampering and unknown loss allocations.
+  The compiling omitted-assertion control and focused tests, then all nine
+  required workspace compiler gates, await the root's serialized Cargo grant
+  and frozen source review. This is an API slice; CampaignWorld/GameSnapshot
+  routing, native generators/packs, travel, reach knowing, battlemap lifting
+  and legacy retirement remain open. V2 is not complete.
 - **2026-10-10, Q2 consumer routing checkpoint:** campaign contracts passed
   7/7, the compiling discarded-metadata control was caught, exact restoration
   passed 7/7, and actual Character wire/snapshot/late-join replication passed
@@ -614,3 +638,50 @@ what each left open lands here, so it has a live owner.
   record's §5.7, rulings 114, 154, 188 to 191 and the contract's rulings,
   the system-plugin crate and this repository's plans. V0 to V4 proposed;
   no lane open; §6's eight decisions await Mark.
+
+- **2026-10-10, Q9, native replay API qualification:** the eight new replay
+  tests and fifteen existing campaign library tests passed offline, then
+  passed again after the compiled omitted-final-assertion control ran and
+  failed at the missing `assert:arrival-summary` note. Production `native.rs`
+  was restored to its exact frozen SHA256. Root, Mesocosm, Eponym, native
+  Isocosm, isometer, isomere, wing-integration, isocosm-overlay and the
+  separate parry-ground workspace all passed their required all-target
+  compiler checks, with all features on root/Eponym and default features on
+  isometer. Every gate recorded all 952 input hashes before and after;
+  only the reviewed control temporarily differed, and the owned VTT plan
+  stayed frozen throughout. Tests prove native noun/group replay, admission
+  order and duplicate log retention, drawn-site edit acceptance, metadata
+  without moving a body or granting control, late refusal atomicity,
+  Individuals/Grouped JSON save/load equivalence, tamper refusal and unknown
+  allocation preservation. This qualifies the bounded immutable API slice;
+  product routing, generators/packs, attachment geometry and table identity,
+  native polity scheduling, travel, reach knowing, lifted battlemap and
+  legacy retirement remain open. V2 is not complete. Full receipts are in
+  the external `testing/isometry/after-pass-2026-10-10/q9-vtt` artifact folder.
+
+- **2026-10-10, Q9, license-header revision qualification:** the three new
+  replay files carry `MIT OR Apache-2.0`, following the explicit VTT policy
+  in `CLAUDE.md` and inherited campaign crate license. Exactly three SPDX
+  comment lines changed; removing only those lines leaves identical source
+  bytes. All 72 original evidence files retain their exact hashes, including
+  the successful 15 library and 8 replay tests, compiled omission failure
+  and exact restoration. Root reviewed retaining that runtime evidence and
+  granted nine compiler checks only. Those nine required checks passed
+  offline with one job, all features on root/Eponym and default features on
+  isometer. Each recorded all 952 revised input hashes before and after with
+  unchanged bytes. Revised receipts are isolated from the original evidence;
+  Cargo is released. This remains the bounded replay API checkpoint, with
+  full V2 implementation open.
+
+- **2026-10-11, Q9 root integration qualification:** root independently
+  verified all original focused/control/restored logs, both sets of nine
+  compiler gates, every 952-input before/after map and the reviewed helpers.
+  The final header-only compiler review has SHA-256
+  `36c75324e9db7f19587a7dcbd837a400a6427137455eefe09575f65fd86185c1`;
+  the original focused review is
+  `a090eba8e04ed94d80247397d82f24110382a2f9184ece877f09969b40ec250d`.
+  Constructed old-loss shapes exercise unknown-allocation preservation;
+  authentic historical archive reader certification remains separate.
+  Immutable native readings are trusted adapter inputs; seat/awareness
+  filtering and runtime product publication are later V2 work. The existing
+  product still uses its legacy campaign path until those slices land.
