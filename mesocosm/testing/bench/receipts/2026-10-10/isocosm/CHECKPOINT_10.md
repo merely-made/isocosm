@@ -527,3 +527,107 @@ These are source/parser checks. No new C10 native control or statistical
 draw ran. The opt-in harm founding uses its separate life-trait generator;
 ordinary-life HEAL does not silently change that probe. Full C10, injury
 coverage and its statistical acceptance remain open.
+
+**Ruling 812 source prepared, 2026-10-11:** the answered adapter boundary
+clears only existing loss-map values to `None`; it keeps record keys and the
+lost-ID vector. Missing legacy records remain unknown under 811. Native
+crossings preserve their previous function/free allocations. The bounded
+production change is in `growth::take_whole`, called by both native
+`Staged::incorporate` and crowd `Doing::whole`; healing itself is unchanged.
+
+The new incorporation child module prepares direct Native/Adapter identity
+and unknown-preservation controls, actual individual/grouped native and
+histogram-crowd transfer/healing parity, paid-cell accounting, per-holder flow
+reconciliation, whole-world conservation and new JSON save/replay. The
+omission mutant leaves recorded donor functions; the unknown-invention mutant
+adds entries for every lost ID. Both are expected to compile and fail the
+specific direct transfer control once Cargo is granted. At preparation only
+three candidate sources and both projected mutants passed syntax parsing;
+this is neither compile proof nor a caught runtime fault.
+
+`q8-812-preflight-proposal.json` retains ten exact native preimages and the
+staged C10 guard; raw production/parent preimages are archived separately.
+`q8-812-parser-applicability.json` records exact parser/tool/config/outputs and
+one unique mutant anchor. The new candidate envelope freezes source and
+proposed offline serial commands before compilation. Earlier failed pilot,
+matched-tape method qualification and compiled C10 controls remain immutable.
+Ordinary HEAL, rates/founding, new statistical draws and full C10 promotion
+remain unrun/open. Existing staged harness and Q2 reference edits are preserved.
+**Ordinary HEAL source proposal, 2026-10-11:** the bounded ruling 812 adapter
+batch passed both native checks, the eight incorporation and thirty-two harm
+tests, and the two compiled intended failures with exact restoration. Root
+integrated those three native paths. The older source-preparation entry above
+is retained as dated evidence.
+
+The external ordinary-HEAL proposal adds only one declared trait and its own
+`life-heal` coin under 548. Root independently qualified the eighteen old-life
+tuples/HEAL coins, five projected tests and one exact omission mutant. Fixed
+old-life data does not certify an old whole Genesis. The four projected files
+are unapplied and uncompiled. Complete old lane/index/helpers/retained scratch
+and pushed `9cdf6e65` archives precede any proposed source refresh; three-doc
+weaving preserves main annotations and the exact unstaged historical suffixes.
+Fresh actual source/compiler environment and tool guards require review before
+source application, sealing or execution. Rates, all statistical settings and
+old histories remain unchanged. The initial twenty-draw verifier failure and
+later historical integrity pass remain distinct; full C10, ordinary HEAL and
+unrun 100/1000 stages stay open.
+
+**Ordinary HEAL actual native chain, 2026-10-11:** the root combined review
+`q8-heal-v11b-root-runtime-review.json`, SHA
+`55e8019b57756b4dc76f734b8a1ce5d1684142fa5021b7be7891c47aed3abf62`,
+qualifies the six actual gates against the unchanged 356-input archive
+`ac76a0d639db812d1edd9c87092c608ef711fd0bc6993591364507a6abf3741b`.
+The v10 positives passed ten bodied, thirty-two harm and eight incorporation
+tests. Actual pinned Rustc 1.98.1 compiled the parent bodied test importing
+final founder fixture `80c2be68...a2e1c7`; world actors have empty parts and
+ordinary bare myco/micro retain their authored default Part0.
+
+The distinct v11b chain compiled the one-coin omission in the actual native
+`isocosm` library, caught exactly one exit-101 failure at
+`tests/bodied/healing.rs:53:9` with `548: HEAL follows its own draw`, restored
+exact `bodied.rs` SHA `473adf4200e079b0b8706c7046adadc79889703efe0dc4e4b752d9bc088c363f`,
+and passed five restored tests plus the final native all-target check.
+Its actual receipts are `q8-heal-v11b-execution-omit-life-heal.json`
+(`b524dcd523aa09a5755f85346fefbfe804672ed196d03982116fe6b3f01c4093`),
+`q8-heal-v11b-execution-restored-heal.json`
+(`b3dcded5847ce1e83177c5b379e1dd822a46fddde22ddbaa04531305e3ad99a9`)
+and `q8-heal-v11b-execution-restored-check.json`
+(`0de1d50a75fb11532a26b94df9ad884fc3ed3e33eeeb71f58eb56b394b2e1426`).
+Raw logs, PID/UTC/argv, actual compiler positions, source/config/index guards
+and exact restoration are retained at the existing Code/testing evidence home.
+
+The original first native-check receipt remains valid-false; its successful
+actual execution has distinct root-qualified reanalysis credit for unchanged
+production. It did not compile the corrected final fixture. The two failed
+founder fixtures, pre-child omission guard refusal, failed v11 bridge
+preparation and earlier control/parser attempts remain immutable evidence.
+The repair projects only the exact declared live immutable source reference
+during the omission; every other v3 guard remains active.
+
+The ordinary HEAL catalogue entry and independent coin are now verified in
+the lane, changing ordinary generated founding serialization and digests.
+Eighteen fixed prior-life tuples preserve their narrower scope; they are not
+a whole-Genesis compatibility receipt. Root's nine combined workspace
+integration compilers are pending. This is not full C10 certification: strict
+C10 controls and fresh release statistics remain unrun; the original failed
+twenty-draw pilot and repaired historical integrity/certified-false result
+are preserved, and 100/1000 stages remain unrun. Rates, alpha 0.05, bound 0.2,
+1999 permutations and all declared seeds remain unchanged.
+
+**Ordinary HEAL integrated, 2026-10-11:** the four reviewed native source/test
+files passed all nine required serial offline workspace compiler checks
+under pinned actual Rustc/Cargo 1.98.1. Independent review
+`q8-ordinary-heal-root-integration-v3-root-runtime-review.json` (`dba19c45`) binds the exact
+992 physical inputs, compiler configuration, immutable source archive,
+owned files and actual child/argv/UTC/raw compiler records. The checks cover
+root and Eponym with all features, Mesocosm, native Isocosm, default Isometer,
+Isomere, wing-integration, isocosm-overlay and parry-ground.
+
+Ordinary HEAL is landed at this bounded checkpoint. Its catalogue and separate
+coin change generated founding serialization/digests; the fixed eighteen
+prechange life tuples retain their narrower compatibility scope. The six
+native gates, compiled intended omission and exact restoration are qualified
+in `q8-heal-v11b-root-runtime-review.json` (`55e8019b`). The earlier pending
+entries are dated preparation records. Full C10 conservation/statistics,
+fresh strict C10 controls and unrun 100/1000 stages remain open. Q3's bodied
+pilot, Q9 admission and Q10 discovery must bind the new integrated source.

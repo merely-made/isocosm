@@ -192,3 +192,6 @@ fn the_authored_bodies_are_presets() {
         assert!(r.kinds().iter().all(|k| kinds.contains_key(k)), "{name}");
     }
 }
+
+#[path = "bodied/healing.rs"]
+mod healing;

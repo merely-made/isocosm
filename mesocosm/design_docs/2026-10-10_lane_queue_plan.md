@@ -285,6 +285,30 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q8 ordinary HEAL integrated and verified:** four native
+  code/test files and the preserved three-doc weaves pass the six actual
+  native gates and all nine serial offline workspace compilers. Root review
+  `q8-ordinary-heal-root-integration-v3-root-runtime-review.json` (dba19c45) binds
+  all 992 physical inputs. Ordinary founding digests change; the old eighteen
+  life tuples certify only their original traits/clutch/anamorphy. Q3 resumes
+  fresh bodied0 preparation, Q10 its actual registry-count discovery and Q9
+  native admission preparation against this integrated tip. Q1/Q2/Q6/Q7/Q15
+  remain done; Q8/full C10, full A1/V2/E3 and Q14 runtime remain open. Earlier
+  stopped fixtures/guards and all retained queue resources are preserved.
+
+- **2026-10-11, Q8 ordinary HEAL native gates qualified:** four source/test
+  files add the declared HEAL trait and independent `life-heal` draw under
+  548. The original life traits, clutch and anamorphy retain their fixed
+  eighteen tuples. Actual bodied10/harm32/incorporation8 positives pass;
+  omission compiles the native library and catches the exact healing53:9
+  assertion, then exact restoration passes all five healing tests and the
+  final native check. Root independently qualifies all six actual gates in
+  `q8-heal-v11b-root-runtime-review.json` (55e8019b). Earlier stopped guard
+  and fixture failures stay preserved. The three documentation weaves retain
+  current main prefixes and historical lane suffixes. Root integration's
+  nine compiler gates are pending; full C10/statistics, A1, V2 and E3 stay
+  open. Existing worktrees and stable targets retain their queue owners.
+
 - **2026-10-11, ruling 814 recorded:** the VTT declares its authored
   note kinds in its world's founding rules, preserving names and native
   validation. Q9's three-path contract-admission proposal is source-reviewed

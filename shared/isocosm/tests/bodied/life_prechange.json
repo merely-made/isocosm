@@ -1,0 +1,250 @@
+{
+  "schema": "q8-bodied-life-prechange-v1",
+  "scope": "fixed independent expectations for existing default-bounds life tuple plus reviewed HEAL coin; no native Genesis generated",
+  "rows": [
+    {
+      "seed": 0,
+      "index": 0,
+      "old_traits": [
+        "breeding:capital",
+        "care:mouthfuls",
+        "growth:provision-first",
+        "strategy:egg"
+      ],
+      "old_clutch": 4,
+      "old_anamorphic": false,
+      "heal": false
+    },
+    {
+      "seed": 0,
+      "index": 1,
+      "old_traits": [
+        "breeding:capital",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 2,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 0,
+      "index": 17,
+      "old_traits": [
+        "life:semelparous",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 1,
+      "index": 0,
+      "old_traits": [
+        "breeding:capital",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 1,
+      "index": 1,
+      "old_traits": [
+        "breeding:capital",
+        "care:mouthfuls",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 1,
+      "index": 17,
+      "old_traits": [
+        "breeding:capital",
+        "care:milk",
+        "growth:fragment",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 4,
+      "old_anamorphic": false,
+      "heal": false
+    },
+    {
+      "seed": 3,
+      "index": 0,
+      "old_traits": [
+        "breeding:capital",
+        "care:milk",
+        "growth:fragment",
+        "strategy:egg"
+      ],
+      "old_clutch": 1,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 3,
+      "index": 1,
+      "old_traits": [
+        "growth:fragment",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 3,
+      "index": 17,
+      "old_traits": [
+        "breeding:capital",
+        "care:milk",
+        "growth:fragment",
+        "growth:provision-first",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 5,
+      "index": 0,
+      "old_traits": [
+        "breeding:capital",
+        "care:mouthfuls",
+        "growth:fragment",
+        "strategy:egg"
+      ],
+      "old_clutch": 1,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 5,
+      "index": 1,
+      "old_traits": [
+        "breeding:capital",
+        "care:milk",
+        "growth:fragment",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 4,
+      "old_anamorphic": true,
+      "heal": true
+    },
+    {
+      "seed": 5,
+      "index": 17,
+      "old_traits": [
+        "breeding:capital",
+        "growth:fragment",
+        "growth:provision-first",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 4,
+      "old_anamorphic": true,
+      "heal": true
+    },
+    {
+      "seed": 2026101001,
+      "index": 0,
+      "old_traits": [
+        "care:milk",
+        "growth:fragment",
+        "strategy:brood",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": false,
+      "heal": true
+    },
+    {
+      "seed": 2026101001,
+      "index": 1,
+      "old_traits": [
+        "breeding:capital",
+        "growth:fragment",
+        "growth:provision-first",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 2026101001,
+      "index": 17,
+      "old_traits": [
+        "breeding:capital",
+        "care:mouthfuls",
+        "growth:provision-first",
+        "strategy:egg"
+      ],
+      "old_clutch": 2,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 18446744073709551615,
+      "index": 0,
+      "old_traits": [
+        "growth:fragment",
+        "life:semelparous",
+        "strategy:brood",
+        "strategy:bud"
+      ],
+      "old_clutch": 2,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 18446744073709551615,
+      "index": 1,
+      "old_traits": [
+        "breeding:capital",
+        "growth:fragment",
+        "life:semelparous",
+        "strategy:bud",
+        "strategy:egg"
+      ],
+      "old_clutch": 3,
+      "old_anamorphic": true,
+      "heal": false
+    },
+    {
+      "seed": 18446744073709551615,
+      "index": 17,
+      "old_traits": [
+        "care:mouthfuls",
+        "growth:fragment",
+        "growth:provision-first",
+        "strategy:egg"
+      ],
+      "old_clutch": 1,
+      "old_anamorphic": true,
+      "heal": true
+    }
+  ]
+}

@@ -745,3 +745,53 @@ owns the source/command receipts; original failures remain.
   authentic archive compatibility, seat-aware filtering and headed acceptance
   remain separate. Q6's current-version/refusal/ALPN execution still awaits its
   refreshed frozen inputs; the earlier native-current fixture obligations stay live.
+
+- **2026-10-11, Q8 adapter source prepared under 812:** transfer clears the
+  function in each existing loss record to free, retaining IDs and unknown
+  legacy absences under 811. The same shared operation serves native and crowd
+  meals; no production healing/rate/founding code changes. Focused positive,
+  paid-healing/parity/save controls and two planted mutant candidates are
+  prepared, with syntax-only evidence. Compile/actual tests/fault catches and
+  a fresh source/executable freeze precede any fresh statistical acceptance.
+  Ordinary HEAL and full C10 remain open; the earlier failed pilot and repaired
+  historical integrity analysis retain their exact source scopes.
+- **2026-10-11, Q8 ordinary trait draw prepared:** root qualified the external
+  three-site HEAL catalogue/seed proposal under 548 and independently checked
+  eighteen old-life tuples, five focused test sources and one omission mutant.
+  The earlier adapter reset is integrated and qualified; the retained source
+  preparation notes above are historical. All old lane/index/helper/retained
+  scratch bytes and pushed `9cdf6e65` sources are archived before any proposed
+  refresh. Focused compilation and actual mutant/restoration controls remain
+  unrun. Ordinary HEAL and fresh full crowd statistics remain open; failed
+  twenty-draw evidence and repaired historical integrity are preserved.
+
+- **2026-10-11, Q8 ordinary HEAL bounded native verification complete:**
+  root review `q8-heal-v11b-root-runtime-review.json` (SHA `55e8019b...3abf62`)
+  qualifies the actual ten/thirty-two/eight positive tests, a compiled intended
+  HEAL-coin omission, five restored tests and the final native all-target
+  check. The final bare/world founder fixture was compiled by actual pinned
+  Rustc 1.98.1; the omission failed at the intended 548 assertion and exact
+  source bytes were restored. Older failed/source-only entries above remain
+  dated evidence. Ordinary founding serialization/digests change; fixed old
+  life data is narrower than whole-Genesis compatibility. The root integration
+  nine compilers and full C10 certification remain open. Strict C10 controls
+  and fresh release stages are unrun; retain original failed twenty-draw and
+  repaired historical integrity receipts with unchanged statistical settings.
+
+**Ordinary HEAL integrated, 2026-10-11:** the four reviewed native source/test
+files passed all nine required serial offline workspace compiler checks
+under pinned actual Rustc/Cargo 1.98.1. Independent review
+`q8-ordinary-heal-root-integration-v3-root-runtime-review.json` (`dba19c45`) binds the exact
+992 physical inputs, compiler configuration, immutable source archive,
+owned files and actual child/argv/UTC/raw compiler records. The checks cover
+root and Eponym with all features, Mesocosm, native Isocosm, default Isometer,
+Isomere, wing-integration, isocosm-overlay and parry-ground.
+
+Ordinary HEAL is landed at this bounded checkpoint. Its catalogue and separate
+coin change generated founding serialization/digests; the fixed eighteen
+prechange life tuples retain their narrower compatibility scope. The six
+native gates, compiled intended omission and exact restoration are qualified
+in `q8-heal-v11b-root-runtime-review.json` (`55e8019b`). The earlier pending
+entries are dated preparation records. Full C10 conservation/statistics,
+fresh strict C10 controls and unrun 100/1000 stages remain open. Q3's bodied
+pilot, Q9 admission and Q10 discovery must bind the new integrated source.
