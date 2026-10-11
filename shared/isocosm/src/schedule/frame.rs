@@ -23,6 +23,9 @@ pub(crate) struct Frame {
     /// Bodies as the pass began, by their span then: a member lifted out of
     /// its group alone, a cohort written whole with its count.
     bodies: BTreeMap<Id, (u64, Entity)>,
+    /// Changed bodies filed where they began, so an indexed target search
+    /// can still find those the live index has moved elsewhere.
+    pub(crate) targets: crate::targets::Targets,
     /// The acts the pass planned, by actor; none for a pass that takes
     /// nothing it shares.
     pub(crate) planned: Option<BTreeMap<Id, Planned>>,
@@ -101,6 +104,7 @@ impl Frame {
     pub(crate) fn keep_body(&mut self, id: Id, span: u64, e: &Entity) {
         if self.body(id).is_none() {
             self.bodies.insert(id, (span, e.clone()));
+            self.targets.keep(id, e);
         }
     }
 

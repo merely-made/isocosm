@@ -22,6 +22,13 @@ pub(crate) struct Chosen {
     by: BTreeMap<Id, Choice>,
 }
 
+impl Chosen {
+    /// An empty result lasts for one pass; a selected process lasts the tick (813).
+    pub(crate) fn begin_pass(&mut self) {
+        self.by.retain(|_, choice| choice.process.is_some());
+    }
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Choice {
     pub process: Option<Key>,
@@ -155,6 +162,8 @@ impl Simulation {
                 by: BTreeMap::new(),
             };
         }
+        // Empty results are invalidated only at a scheduled pass start (813),
+        // so planning and visiting share one decision within that pass.
         if !self.chosen.by.contains_key(&actor) {
             let choice = self.choose(actor);
             self.chosen.by.insert(actor, choice);
@@ -198,7 +207,19 @@ impl Simulation {
 
     /// The live mood of `actor` and the weights of the needs pressing it.
     pub(crate) fn minded(&self, actor: Id) -> (i64, Vec<&Need>) {
-        let Some(e) = self.state.population.get(actor) else {
+        let e = self.state.population.get(actor);
+        self.minded_in(e, e.and_then(|e| self.state.sites.get(&e.place)))
+    }
+
+    /// Scoring reads the same pass-start body and site as feasibility (454).
+    /// Wellbeing keeps its live before/after readings for bond accounting.
+    fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
+        let e = self.body_at_start(actor);
+        self.minded_in(e, e.and_then(|e| self.site_at_start(e.place)))
+    }
+
+    fn minded_in(&self, entity: Option<&Entity>, site: Option<&Site>) -> (i64, Vec<&Need>) {
+        let Some(e) = entity else {
             return (0, vec![]);
         };
         let related = |_: &Key| -> crate::Result<bool> { Err("no target".into()) };
@@ -206,7 +227,7 @@ impl Simulation {
             actor: Some(e),
             target: Named::Unnamed,
             part: None,
-            site: self.state.sites.get(&e.place),
+            site,
             tick: self.state.tick,
             related: &related,
             rules: &self.genesis.rules,
@@ -244,7 +265,7 @@ impl Simulation {
         }
         let site = match n.toward {
             Toward::Thing(t) if n.aim == Aim::Act => return target == Some(t),
-            Toward::Thing(t) => match self.state.population.get(t) {
+            Toward::Thing(t) => match self.body_at_start(t) {
                 Some(e) => e.place,
                 None => return false,
             },
@@ -277,7 +298,7 @@ impl Simulation {
             return Choice::default();
         };
         let live = self.live_nudges(actor, tick);
-        let (mood, pressing) = self.minded(actor);
+        let (mood, pressing) = self.choice_minded(actor);
         let mut best = Choice::default();
         let mut top = i64::MIN;
         let due = |p: &&Process| p.period.is_some_and(|n| tick % n == 0);

@@ -2,6 +2,11 @@
 
 **Date:** 2026-10-08
 
+**Status, 2026-10-11:** the bounded 454/813 pass-start and empty-choice
+correction is integrated and checked with all nine workspace compilers.
+Fresh consumer reproduction and D1 to D5 invariant/headed certification
+remain open; the earlier dated implementation snapshots remain history.
+
 **Status, 2026-10-10:** D1 to D5 are built on native Isocosm under 732's
 compile gate. M3 and the interim M4 belong here (800); the after-pass still
 must certify their invariant and headed done-conditions, reproduction first.
@@ -276,6 +281,30 @@ on Isocosm, both modes, receipts replaying.
   `sim:attention` is created at `generate.rs:122` and read nowhere.
 
 ## Progress
+
+- **2026-10-11, combined native integration checked:** all nine required
+  workspace compiler gates passed on the twelve Q3/Q8 paths. The complete
+  input/archive/config/environment/tool and raw-command review is recorded
+  in the [lane queue Progress](2026-10-10_lane_queue_plan.md#progress).
+  Reproduction, full C10 and headed certification remain open.
+
+- **2026-10-11, Q3 pass-start choices qualified on main:** nine native
+  paths preserve lazy pass-start bodies/sites, original population-group
+  weights, target scope, Mood/Need/Attend scoring and live wellbeing bond
+  accounting (454). Ruling 813 clears only empty choices once at each
+  scheduled pass start; a selected process remains committed for the tick,
+  and planning/visiting share an empty result within that pass. The separate
+  454 batch passed 41 named positives and six intended compiled controls;
+  its root runtime review has SHA-256
+  `5dce68da73d8b9d9c42ba0e45bae38c8bb6a1078726e4d8f8d05e6ba0002207b`.
+  The 813 batch passed 47 named positives, three intended compiled controls,
+  15 restored positives and its native all-target compiler. All 29 complete
+  274-input snapshots and 141 runtime references were independently checked;
+  complete root review SHA-256
+  `24ff8be7169ba4ea86f45d60c563f9412f99ef15b5a82794f5132612febf7d36`.
+  Generator rates and the reproduction proof remain unchanged. A fresh
+  original-rate seed-zero control and then the unchanged meal-three,
+  birth-period-fourteen candidate are proposed separately; A1 remains open.
 
 - **2026-10-11, ruling 813:** an empty choice may be reconsidered once at
   a later pass start; a selected process stays committed for the tick.

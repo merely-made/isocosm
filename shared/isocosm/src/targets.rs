@@ -23,6 +23,13 @@ pub(crate) struct Targets {
 }
 
 impl Targets {
+    /// Files a lazily preserved body by its place and lineage at pass start.
+    pub(crate) fn keep(&mut self, first: Id, entity: &Entity) {
+        let key = (entity.place, entity.lineage.clone());
+        self.filed.entry(key.clone()).or_default().insert(first);
+        self.at.insert(first, key);
+    }
+
     pub(crate) fn new(population: &Population) -> Self {
         let mut t = Self::default();
         t.touch(
@@ -45,9 +52,7 @@ impl Targets {
                 }
             }
             if let Some(group) = population.groups.get(&first) {
-                let key = (group.entity.place, group.entity.lineage.clone());
-                self.filed.entry(key.clone()).or_default().insert(first);
-                self.at.insert(first, key);
+                self.keep(first, &group.entity);
             }
         }
     }
@@ -82,6 +87,28 @@ impl Targets {
 }
 
 impl Simulation {
+    fn target_span(&self, id: Id) -> Option<(Id, u64)> {
+        let population = &self.state.population;
+        match &self.pass {
+            Some(pass) => pass.target_span(population, id),
+            None => {
+                let (&first, group) = population.groups.range(..=id).next_back()?;
+                (id < first + group.count).then_some((first, group.count))
+            },
+        }
+    }
+
+    /// Live index pieces and preserved bodies can name the same original
+    /// group. Recover its span once, with its original weight and order.
+    fn target_firsts(&self, firsts: impl Iterator<Item = Id>) -> Vec<Id> {
+        let mut firsts: Vec<_> = firsts
+            .filter_map(|id| self.target_span(id).map(|(first, _)| first))
+            .collect();
+        firsts.sort_unstable();
+        firsts.dedup();
+        firsts
+    }
+
     pub(crate) fn choose_target(&self, actor: Id, p: &Process) -> Option<Id> {
         let selector = p.target.as_ref()?;
         let entity = self.body_at_start(actor)?;
@@ -101,7 +128,7 @@ impl Simulation {
         // second always has a number. Equal members read alike, so the
         // requirements asked of one are asked for the group.
         let offered = |first: Id| -> Option<Id> {
-            let count = groups.get(&first)?.count;
+            let (_, count) = self.target_span(first)?;
             let candidate = if first == actor { first + 1 } else { first };
             let accepted = candidate < first + count
                 && self.target_matches(actor, Some(candidate), p)
@@ -112,25 +139,26 @@ impl Simulation {
         };
         let accepting = |first: &Id| offered(*first).is_some();
         let everywhere = || {
+            let firsts = self.target_firsts(groups.keys().copied());
             if selector.weighted {
-                self.drawn(actor, p, groups.keys().copied().filter(accepting))
+                self.drawn(actor, p, firsts.into_iter().filter(accepting))
             } else {
-                groups.keys().find_map(|&first| offered(first))
+                firsts.into_iter().find_map(offered)
             }
         };
         match &self.targets {
             // Every group outside the lists fails the selector anyway.
             Some(t) => {
+                let kept = self
+                    .frame
+                    .iter()
+                    .flat_map(|f| f.targets.lists(selector, place).flatten().copied());
+                let filed =
+                    self.target_firsts(t.lists(selector, place).flatten().copied().chain(kept));
                 let found = if selector.weighted {
-                    let mut filed: Vec<Id> = t.lists(selector, place).flatten().copied().collect();
-                    filed.sort_unstable();
                     self.drawn(actor, p, filed.into_iter().filter(accepting))
                 } else {
-                    // Each list is in identity order, so its first accepted
-                    // member is its least.
-                    t.lists(selector, place)
-                        .filter_map(|list| list.iter().find_map(|&first| offered(first)))
-                        .min()
+                    filed.into_iter().find_map(offered)
                 };
                 debug_assert_eq!(found, everywhere(), "the filed search missed a group");
                 found
@@ -144,13 +172,12 @@ impl Simulation {
     /// the same member is drawn however its equals are grouped.
     fn drawn(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> Option<Id> {
         let rules = &self.genesis.rules;
-        let groups = &self.state.population.groups;
         let mut eligible = Vec::new();
         let mut total = 0u128;
         for first in firsts {
-            let group = &groups[&first];
-            let within = first <= actor && actor < first + group.count;
-            let members = u128::from(group.count - u64::from(within));
+            let (_, count) = self.target_span(first).expect("original candidate span");
+            let within = first <= actor && actor < first + count;
+            let members = u128::from(count - u64::from(within));
             // A group's members began the pass alike: an act lifts out the
             // member it changes, or writes a cohort whole.
             let began = self.body_at_start(first).expect("filed groups exist");
@@ -184,3 +211,6 @@ impl Simulation {
         unreachable!("the draw falls within the total weight")
     }
 }
+
+#[cfg(test)]
+mod tests;

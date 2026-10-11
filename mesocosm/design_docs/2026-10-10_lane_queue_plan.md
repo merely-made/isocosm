@@ -285,6 +285,20 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, combined native integration checked:** the twelve
+  qualified Q3/Q8 source paths passed all nine required serial offline
+  workspace/all-target compiler gates, including root and Eponym all
+  features and default-only Isometer. Root independently rehashed all 988
+  physical inputs and their complete archive, config presence/bytes,
+  inherited/applied compiler environment, tools and nine raw commands.
+  External `q3-q8-root-nine-compiler-review.json` has SHA-256
+  `0503edb45fb35d71606401c77cc9f254b2692f2ff0a768ac6b50ebac7bd35d3b`. This closes only the bounded 454/813/812 integration;
+  A1 reproduction, full C10, historical archives and headed acceptance
+  remain separate gates.
+  Q3 prepares the refreshed two-arm seed-zero proposal, Q8 the ordinary HEAL
+  draw proposal and Q6 corrected fixture helpers, all source-only. Q10 remains
+  parked. The next numbered ruling is 814; no structural fork is pending.
+
 - **2026-10-11, Q6 bounded protocol checkpoint:** protocol5/ALPNv5 passed
   eight envelope tests, exact current QUIC, three compiled intended faults,
   restored tests and the root compiler. Independent root runtime review

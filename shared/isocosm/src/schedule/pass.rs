@@ -19,7 +19,7 @@ pub(crate) struct Pass {
 }
 
 impl Pass {
-    pub(super) fn new(population: &Population) -> Self {
+    pub(crate) fn new(population: &Population) -> Self {
         Self {
             bound: population.next_id,
             split: BTreeMap::new(),
@@ -35,6 +35,19 @@ impl Pass {
     fn span(&self, id: Id) -> Option<(Id, u64)> {
         let (&first, &count) = self.split.range(..=id).next_back()?;
         (id < first + count).then_some((first, count))
+    }
+
+    /// The original candidate span, including all pieces of a split group
+    /// once, and excluding members born during this pass.
+    pub(crate) fn target_span(&self, population: &Population, id: Id) -> Option<(Id, u64)> {
+        if id >= self.bound {
+            return None;
+        }
+        if let Some(span) = self.span(id) {
+            return Some(span);
+        }
+        let (&first, group) = population.groups.range(..=id).next_back()?;
+        (id < first + group.count).then_some((first, group.count.min(self.bound - first)))
     }
 
     /// Keeps the span of the group holding `id`, before an act lifts `id`

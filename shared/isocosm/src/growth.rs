@@ -233,6 +233,9 @@ pub fn take_whole(
     if w.verdict == Verdict::Adapter {
         moved.cells.clear();
         moved.functions.clear();
+        for allocation in moved.losses.values_mut() {
+            *allocation = None;
+        }
     }
     eater.add_part(&frame, moved).ok()
 }

@@ -20,6 +20,9 @@ use isocosm::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "incorporation/adapter.rs"]
+mod adapter;
+
 fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
     Template {
         half_extent,

@@ -33,6 +33,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 /// Whether an act of `p`'s pass could read what another act of it writes:
 /// a target, a take of shared ground, or a site it both reads and writes.
+/// A Choice implicitly scores every due option, including its targets.
 fn framed(p: &Process) -> bool {
     let at_site = |x: &Expr| x.reads().iter().any(|u| u.body() == Binding::Place);
     let computes = |e: &Effect| {
@@ -80,7 +81,11 @@ fn framed(p: &Process) -> bool {
                 | Effect::When { .. }
         )
     });
-    p.target.is_some() || p.risk.is_some() || p.takes_shared() || (reads_site && writes_site)
+    p.target.is_some()
+        || p.risk.is_some()
+        || p.causation == Causation::Choice
+        || p.takes_shared()
+        || (reads_site && writes_site)
 }
 
 impl Simulation {
@@ -163,6 +168,7 @@ impl Simulation {
             // A pass keeps its start only where one act could read what
             // another writes (ruling 454).
             self.frame = framed(process).then(Frame::default);
+            self.chosen.begin_pass();
             if process.takes_shared() {
                 self.plan(process, &id, gates.as_ref(), bound);
             }

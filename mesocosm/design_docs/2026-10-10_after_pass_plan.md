@@ -446,6 +446,27 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-11, combined native integration checked:** all nine required
+  workspace compiler gates passed on the twelve Q3/Q8 paths. The complete
+  input/archive/config/environment/tool and raw-command review is recorded
+  in the [lane queue Progress](2026-10-10_lane_queue_plan.md#progress).
+  Reproduction, full C10 and headed certification remain open.
+
+- **2026-10-11, Q3 pass-start choices qualified on main:** lazy pass-start
+  feasibility and scoring preserve 454; 813 reconsiders empty choices once
+  at later scheduled pass starts while retaining selected commitments for
+  the tick. Focused tests, intended compiled controls and exact restoration
+  are recorded in [directing Progress](2026-10-08_directing_interim_m4_plan.md#progress).
+  A fresh original-rate seed-zero control and unchanged candidate are
+  proposed separately; A1 remains open and no rates are promoted.
+
+- **2026-10-11, ruling 812 adapter reset qualified on main:** only known
+  loss allocations become free-pool allocations during adapter transfer;
+  lost IDs, existing keys and unknown old losses are preserved. The focused
+  positives, two intended compiled controls and exact restoration are in
+  [CHECKPOINT_10.md](../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
+  Ordinary HEAL draws, injury coverage and fresh full C10 remain open.
+
 - **2026-10-11, Q6 protocol qualified:** version five and ALPN v5 passed
   current-shaped prior-four refusal at both session ends, eight envelope
   tests, exact current QUIC, three compiled intended fault controls,

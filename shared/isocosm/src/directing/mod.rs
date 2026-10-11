@@ -267,6 +267,8 @@ mod choice_tests;
 #[cfg(test)]
 mod feeding_tests;
 #[cfg(test)]
+mod pass_start_tests;
+#[cfg(test)]
 mod ruled_tests;
 #[cfg(test)]
 mod tests;

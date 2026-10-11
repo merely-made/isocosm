@@ -1,5 +1,16 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Root bounded adapter integration, 2026-10-11:** ruling 812 is
+qualified by eight incorporation and 32 harm positives, two intended compiled
+faults, six restored positives and both native compiler checks. All 350
+frozen inputs and staged/retained source were preserved. Root runtime review
+SHA-256 `5e238e28390c13050a3032ccc885a800c80526e18f676512e2336b74cd60b43d`.
+The three extracted native paths were checked with Q3's nine pass-start paths
+in all nine workspaces; combined compiler review SHA-256
+`0503edb45fb35d71606401c77cc9f254b2692f2ff0a768ac6b50ebac7bd35d3b`. Ordinary HEAL draws, fresh 100/1000
+stages, injury coverage and full C10 certification remain open. Earlier
+receipts retain their exact source scope.
+
 **Root integration, 2026-10-10:** known-loss healing and native Character
 metadata are checked together on main. Assertions passed 9/9, independent
 witness controls 4/4 and harm 31/31; all nine workspace/all-target compile
