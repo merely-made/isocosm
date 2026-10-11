@@ -7,6 +7,7 @@ use std::collections::BTreeMap;
 mod body;
 mod conversion;
 mod harm;
+mod note;
 mod recipe;
 
 pub(crate) use body::part;
@@ -43,21 +44,21 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::Below { key, .. } => account(rules, key)?,
         Query::Condition { key, .. } if !rules.conditions.contains(key) => {
             return Err(format!("unknown condition {key}"));
-        },
+        }
         Query::Trait { key, .. } if !rules.traits.contains(key) => {
             return Err(format!("unknown trait {key}"));
-        },
+        }
         Query::Related { kind } if !rules.relations.contains(kind) => {
             return Err(format!("unknown relation {kind}"));
-        },
+        }
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
-        },
+        }
         Query::Expresses { function } | Query::Routes { function, .. }
             if !rules.functions.contains_key(function) =>
         {
             return Err(format!("unknown function {function}"));
-        },
+        }
         _ => (),
     }
     Ok(())
@@ -222,9 +223,11 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         .chain(&rules.conditions)
         .chain(&rules.traits)
         .chain(&rules.relations)
-        .chain(&rules.note_kinds)
     {
         key(id)?;
+    }
+    for kind in &rules.note_kinds {
+        note::kind(kind)?;
     }
     body::catalogue(rules)?;
     body::systems(rules)?;
@@ -355,27 +358,27 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if mass(take, rules) != mass(give, rules) {
                 return Err(format!("unbalanced matter transform: {id}"));
             }
-        },
+        }
         Effect::Condition { key, .. } if !rules.conditions.contains(key) => {
             return Err(format!("unknown condition {key}"));
-        },
+        }
         Effect::Trait { key, .. }
         | Effect::Bear {
             young: Some(key), ..
         } if !rules.traits.contains(key) => {
             return Err(format!("unknown trait {key}"));
-        },
+        }
         Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
             return Err(format!("unknown relation {kind}"));
-        },
+        }
         Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
             return Err(format!("unknown note kind {kind}"));
-        },
+        }
         Effect::Birth { provision } => {
             for a in provision.keys() {
                 account(rules, a)?;
             }
-        },
+        }
         Effect::FoundPolity { support, .. } => account(rules, support)?,
         Effect::Record { axis, account: a } => {
             key(axis)?;
@@ -383,7 +386,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if !p.note {
                 return Err("recorded feats require a causal event".into());
             }
-        },
+        }
         // Easing a level destroys what it takes, so it never takes
         // matter, and only bodies keep levels.
         Effect::Ease { who, key, .. } => {
@@ -391,7 +394,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if matter(rules, key).is_ok() || *who == Binding::Place {
                 return Err(format!("{id} eases what cannot be eased"));
             }
-        },
+        }
         // The target is eaten into the eater's own matter; a site or
         // the eater itself is not eaten, a meal of nothing is no meal, and
         // a meal naming accounts names matter (ruling 456).
@@ -409,7 +412,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if *from != Binding::Target || *amount == Amount::Fixed(0) {
                 return Err(format!("{id} eats what cannot be eaten"));
             }
-        },
+        }
         Effect::When { guard, .. } => {
             if e.branches().any(|b| matches!(b, Effect::When { .. })) {
                 return Err(format!("{id} guards a guard"));
@@ -419,7 +422,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             for inner in e.branches() {
                 effect(rules, p, id, inner)?;
             }
-        },
+        }
         // An ordered take drains the actor's own accounts into another
         // ledger (ruling 446).
         Effect::Spend { from, to, into, .. } => {
@@ -437,7 +440,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             {
                 return Err(format!("{id} spends to {to:?}, which it cannot"));
             }
-        },
+        }
         // A bud is marked by a key the world names (ruling 524).
         Effect::Bud { mark, .. } => key(mark)?,
         Effect::Wound { who, .. } | Effect::Rot { who, .. } => {
@@ -446,7 +449,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             {
                 return Err(format!("{id} harms a body it does not bind"));
             }
-        },
+        }
         // Growth turns matter in hand into the actor's new parts, their
         // price returned to the place (rulings 479 and 510).
         Effect::Heal { into } => matter(rules, into)?,
@@ -460,7 +463,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if *conversion == Conversion::Mineralization {
                 return Err(format!("{id} grows a body by mineralizing"));
             }
-        },
+        }
         // A conversion takes matter of one ledger into another account of
         // it, as a declared conversion (rulings 342 and 357).
         Effect::Convert { who, from, to, .. } => {
@@ -473,7 +476,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if *who == Binding::Target && p.target.is_none() {
                 return Err(format!("{id} converts a target it does not bind"));
             }
-        },
+        }
         // Allocation moves the bound part's cells between catalogue
         // functions (X6).
         Effect::Allocate { from, to, .. } => {
@@ -488,7 +491,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
             if from.as_ref() == Some(to) {
                 return Err(format!("{id} allocates a function to itself"));
             }
-        },
+        }
         // A carriage routes a catalogue function through a body it binds,
         // landing only matter (581).
         Effect::Carry {
@@ -501,8 +504,8 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                 return Err(format!("{id} carries an unknown function {function}"));
             }
             match who {
-                Binding::Actor => {},
-                Binding::Target if p.target.is_some() => {},
+                Binding::Actor => {}
+                Binding::Target if p.target.is_some() => {}
                 _ => return Err(format!("{id} carries through a body it does not bind")),
             }
             for key in lands {
@@ -510,7 +513,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
                     return Err(format!("{id} lands {key}, which is not matter"));
                 }
             }
-        },
+        }
         _ => (),
     }
     Ok(())
@@ -547,14 +550,14 @@ fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
                 return Err(format!(
                     "{id} reads healing from something that is not a body"
                 ));
-            },
+            }
             Reading::Account { key, .. } => account(rules, key)?,
             _ if who == Binding::Place => {
                 return Err(format!("{id} reads a body from a site, which has none"));
-            },
+            }
             Reading::CellWeight { .. } if who != Binding::Part => {
                 return Err(format!("{id} reads a cell weight of a whole body"));
-            },
+            }
             Reading::Span { function, .. }
             | Reading::Cells { function, .. }
             | Reading::CellMass { function, .. }
@@ -562,14 +565,14 @@ fn reads(rules: &Rules, p: &Process, id: &str, e: &Expr) -> Result<()> {
                 if !rules.functions.contains_key(function) =>
             {
                 return Err(format!("{id} reads an unknown function {function}"));
-            },
+            }
             Reading::Room { key, .. } => account(rules, key)?,
             Reading::Carried { lands, .. } => {
                 for key in lands {
                     account(rules, key)?;
                 }
-            },
-            _ => {},
+            }
+            _ => {}
         }
     }
     Ok(())

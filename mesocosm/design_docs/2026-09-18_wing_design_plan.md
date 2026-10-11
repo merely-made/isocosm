@@ -10210,6 +10210,51 @@ what later sections derive from.
      vocabulary with the rest of its native Genesis. This ruling does not
      choose that product attachment or complete V2's hosted integration.
 
+815. **Active windows contribute to one player's attention set.**
+     2026-10-11, Q14's shared-session host. Question: "Ruling 204 gives each
+     player one attention set; ruling 443 lets two windows show different
+     modes and close-up regions. When both windows use the same participant,
+     how should their attention combine?" Mark chose "Merge each active window’s
+     contribution into the player’s attention set (Recommended)."
+     So each active window contributes to the participant's single set.
+     Independent modes and close-up regions remain local to their windows
+     under 443; native attention uses their union under 204. Closing or
+     replacing a window withdraws only its own contribution. Native play,
+     profile care and seat access retain their existing owners.
+     *Reading, not ruled:* window identities, admission commands and
+     transactional host publication must implement this union and retain
+     native replay; the answer does not certify the proposed host.
+
+816. **Eponym develops admitted bodies from a selected native recipe.**
+     2026-10-11, Q10's original-test diagnosis. Question: "Eponym’s 25 failing
+     tests reach native hunger with reserve left outside the body and no
+     store cells allocated. Existing rulings make physiology native, but
+     don’t specify its initial construction. What should supply an arriving
+     or admitted body’s functions and part stocks?" Mark chose "Native recipe
+     development: a selected native recipe supplies physiology and geometry,
+     requiring a new recipe choice."
+     So native development supplies both physiology and geometry from the
+     selected recipe. The native admission must retain conserved stocks and
+     an admitted anatomy snapshot under 777. A geometry-only embodiment and
+     loose reserve do not supply functioning store cells.
+     *Reading, not ruled:* the recipe choice remains open. Logged admission,
+     stock placement, capacity refusal, conservation and replay must be
+     verified before the original twenty-five failures can be closed.
+
+817. **Migration arrives after the traversed route's travel time.**
+     2026-10-11, Q3's feeding diagnosis. Question: "Q3 traced all 117 missed
+     feeds to producers moving away earlier in the tick. Routes have authored
+     travel times, but movement currently arrives instantly and can cross
+     several routes in one tick. How should a member’s migration use that
+     travel time?" Mark chose "Journey duration (Recommended): depart and
+     arrive after the traversed route’s travel time, then allow another route."
+     So departure begins a journey and arrival occurs after that route's
+     authored duration. The member cannot begin its next route before arrival.
+     *Reading, not ruled:* native transit state, arrival scheduling and saved
+     replay must implement this duration. This answer neither certifies the
+     rejected reproduction candidate nor changes food, reproduction rates,
+     the committed choice for a tick, or the eighty-world A1 gate.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

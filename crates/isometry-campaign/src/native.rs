@@ -8,6 +8,9 @@ use isocosm::{
 };
 use std::fmt;
 
+mod contract;
+pub use contract::ContractError;
+
 mod reading;
 pub use reading::Reading;
 

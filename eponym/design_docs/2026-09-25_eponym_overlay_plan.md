@@ -538,6 +538,14 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-11, ruling 816:** an arriving or admitted body develops its
+  physiology and geometry from a selected native recipe. The recipe choice
+  remains open. Root-qualified diagnosis of all twenty-five original failures
+  (owner-cause review 969CB4B3) found native hunger unable to use loose reserve
+  with no store cells. Admission, conserved part stocks, capacity refusal,
+  replay and the resulting anatomy snapshot under 777 need verification;
+  diagnostic receipts do not qualify E3 or retire the original tests.
+
 - **2026-10-10, Q2 consumer routing checkpoint:** the directly scoped native
   contract tests passed 9/9 on the refreshed `6f879936` native source, including
   independent accepted Blow-to-Wound admission. Both root and Eponym

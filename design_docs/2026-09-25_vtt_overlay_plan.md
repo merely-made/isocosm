@@ -506,6 +506,25 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-11, Q9 native contract admission qualified:**
+  `Replay::with_contract_assertions` lowers a trusted caller's entire batch
+  into a cloned native Session, returning the candidate only after every
+  assertion is admitted. Lowering and native refusals retain their assertion
+  index. The seven contract tests have a separately qualified historical
+  observation (ecb743d5); the original failed batch remains rejected. A fresh
+  fifteen-command batch passes fifteen campaign-library and eight replay
+  tests, three intended compiled contract faults, seven restored contract
+  tests and all nine serial offline workspace/all-target compiler gates.
+  Root runtime review `q9-contract-suffix-v4-root-runtime-review-v2.json`
+  (ee80595e) verifies exact restored source, raw results and process custody.
+  The native note vocabulary also passes fourteen separately qualified gates
+  (03a315b1): declared bare table names and namespaced names are admitted,
+  malformed names refused, and account-key validation retained. Earlier
+  stopped batches and the root reader's historical-field correction remain
+  separate evidence. This qualifies the bounded admission and vocabulary
+  changes; founding generator/profile attachment, native geography and the
+  remaining V2 product and headed gates remain open.
+
 - **2026-10-11, ruling 814:** the VTT's founding rules declare the table's
   authored note kinds, including `reveal`, `narration` and `history`;
   contract lowering preserves their names and native validation remains.

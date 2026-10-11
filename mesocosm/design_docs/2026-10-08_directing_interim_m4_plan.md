@@ -301,6 +301,15 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-11, ruling 817 and Q3 causal diagnosis:** migration departs and
+  arrives after the traversed route's authored travel time; another route
+  becomes available after arrival. All 117 missing feeds in the qualified
+  diagnostic trace joined to selected prey moving before the feeding pass.
+  Native transit state, scheduling and replay remain to be implemented and
+  verified. The rejected three-site reproduction candidate remains rejected;
+  the bounded bitten-part sharing proposal passed source review (d5b349e0),
+  but its native gates and the eighty-world A1 matrix have not run.
+
 - **2026-10-11, combined native integration checked:** all nine required
   workspace compiler gates passed on the twelve Q3/Q8 paths. The complete
   input/archive/config/environment/tool and raw-command review is recorded

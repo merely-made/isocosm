@@ -285,6 +285,60 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q9 admission and note vocabulary qualified:** the distinct
+  fifteen-command batch passes three native positive groups, three intended
+  compiled contract faults and all nine offline workspace compilers. Root
+  runtime review ee80595e independently checks source restoration, raw logs,
+  typed actual exits and process custody; historical seven-test observation
+  ecb743d5 stays separate from the rejected original batch. Native note-kind
+  review 03a315b1 qualifies the declared table vocabulary with its own faults
+  and restored checks. The six source files are ready for main integration;
+  full V2 remains open. Q8's thousand-draw source packet is root-qualified
+  (dac0fde5), with native execution and its independent verifier separately
+  unrun. Q14's borrowed product/host source projection is root-qualified
+  (3e82210e), with runtime and headed acceptance unrun. Rulings 818 to 821
+  await the native recipe, fresh tissue, transit upkeep and transit birth
+  choices. The sharing fix is independent of those journey choices.
+
+- **2026-10-11, rulings 816 and 817; independent hundred-draw review:** Q10
+  must develop physiology and geometry from a selected native recipe; the
+  recipe choice remains open. Q3 migration must arrive after the traversed
+  route's travel time before another route can begin. Its 117 missing feeds
+  are traced to earlier prey movement; the rejected three-site candidate and
+  eighty-world A1 gate remain open. The separate six-path bitten-part sharing
+  proposal passed root source review (d5b349e0), with its eleven native gates
+  unrun. Q8's fresh hundred-draw native receipt (29343d96) and independent
+  verifier (b9ac867f) qualify preparation of the separately granted thousand-
+  draw run: zero main crowd refusals, injury coverage present, statistical
+  comparison inconclusive and full C10 certification false. Q9's seven
+  observed passes have a separate root-qualified historical observation
+  (ecb743d5); the original batch remains rejected and its fifteen successor
+  commands unstarted. A distinct fifteen-command batch is in final review.
+  Q14 native admission/core source passed review (97f2b96e); borrowed product
+  adapters, actual multi-window host, compilation and headed gates remain open.
+
+- **2026-10-11, ruling 815 and current evidence:** active same-participant
+  windows contribute to one native attention union; their local modes and
+  close-up regions remain independent. Q14's value proposal is uncompiled,
+  with native admission/history, actual host wiring and headed gates open.
+  Q9's fourteen note-kind gates are root-qualified (03a315b1); its fresh
+  campaign batch observed all seven native contract tests passing, then
+  stopped on the compiler-evidence parser's rejection of multiline quoted
+  package descriptions (root failure review 2b34574f). The remaining fifteen
+  commands did not run; source is restored and full V2 remains open.
+  Q10's nine actual diagnostic gates are root-qualified (FA3DE5A7), with all
+  twenty-five original failures retained. Native hunger refuses because
+  reserve remains loose while the parts have no store allocation; a
+  construction ruling is pending. Q3's feeding trace is root-qualified
+  (c1a2e3d3), exact instrumentation restored (b5d7941b), and restored compiler
+  check qualified (fd893123). Its saved three-site candidate still fails
+  survival; prey movement and a separate bitten-part collision are being
+  assessed against existing rulings. Q8's fresh twenty-draw native and
+  independent verifier receipts qualify the prepared hundred-draw pilot,
+  which now owns the serialized native slot. Full checkpoint 10 and the
+  later dependent gates remain open. All earlier evidence and lane WIP
+  remain retained.
+
 - **2026-10-11, Q8 ordinary HEAL integrated and verified:** four native
   code/test files and the preserved three-doc weaves pass the six actual
   native gates and all nine serial offline workspace compilers. Root review

@@ -25,6 +25,15 @@ The combined host's own gates remain: switching preserves world, subject
 and embodiment, unread mode sections survive saves, and knowledge follows
 the participant's seat and awareness. Native overlays do not certify them.
 
+**2026-10-11, ruling 815:** active windows belonging to one participant
+contribute to that participant's single attention set. Their pinned
+subjects and close-up regions combine; closing or replacing one window
+withdraws only that contribution. Modes and controls remain independent
+under 443. Native play, care and seat access retain their existing owners.
+Q14 has an uncompiled source proposal for the value union; native admission,
+history, transactional host binding, presentation filtering and headed
+two-window acceptance remain open.
+
 *The dated design and receipts below remain as written (793).*
 
 **Status, 2026-10-01:** The mode host ruled (442 to 445); waits on Mesocosm's M3. *(Brought current 2026-10-06 under ruling 618; the
