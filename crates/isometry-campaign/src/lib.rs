@@ -5,6 +5,7 @@
 //! `isocosm::legacy::campaign` (rulings 591, 599).
 
 mod collaboration;
+pub mod contract;
 mod store;
 
 pub use collaboration::{CampaignProposal, CampaignProposalError, CampaignProposalMode};

@@ -69,6 +69,17 @@ impl Sim {
     }
 
     /// The DM reveals a hidden item modifier into the public inventory log.
+    /// The DM's assertion through the contract (795), committed and settled.
+    pub fn host_assertion(
+        &mut self,
+        assertion: &isocosm_overlay::vtt::Assertion,
+    ) -> Result<(), String> {
+        let out = self.host.commit_assertion(assertion)?;
+        self.enqueue_from_host(out);
+        self.settle();
+        Ok(())
+    }
+
     pub fn host_reveal_item_modifier(&mut self, id: &str) -> Result<(), String> {
         let out = self.host.reveal_item_modifier(id)?;
         self.enqueue_from_host(out);

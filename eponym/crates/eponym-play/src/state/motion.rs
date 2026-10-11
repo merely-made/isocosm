@@ -97,6 +97,7 @@ impl GameState {
         debug_assert_eq!(outcome.pose.step, step);
         self.movement
             .record_contact_pose(&self.world, subject, outcome.pose)?;
+        self.actuate_motion(subject, outcome.landed_distance.unwrap_or(0).max(0) as u32)?;
         let mut events = vec![GameEvent::MotionAdvanced {
             tick,
             subject,
@@ -108,7 +109,10 @@ impl GameState {
             .landed_distance
             .filter(|distance| *distance > SAFE_FALL)
         {
-            let harm = distance.saturating_sub(SAFE_FALL).saturating_mul(10).clamp(0, 100) as u16;
+            let harm = distance
+                .saturating_sub(SAFE_FALL)
+                .saturating_mul(10)
+                .clamp(0, 100) as u16;
             let (next_revision, died, reconciled) = self.harm(tick, subject, harm, &[])?;
             events.push(GameEvent::Injured {
                 tick,

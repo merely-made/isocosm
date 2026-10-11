@@ -2,6 +2,42 @@
 
 **Date:** 2026-09-25
 
+**Status, 2026-10-10, Q2:** E3 is open in push mode (798); E2's native
+world supplies its base. Play reaches native commands through
+`eponym-play::contract` (794), including the sortie receipt's social acts.
+Contract routing is not the completion of E3's played done-conditions.
+
+### E3 next phases, 2026-10-10
+
+1. **Driven life and succession.** Complete first-life founding and start
+   time, bonded succession through native `Take` (779), and creative
+   control; keep accepted motion in the game and patch placement native.
+   Done when an uninterrupted played life and its successor replay through
+   the same contract and the same native history.
+2. **Asks, knowing and fights.** Exercise refusals about work and the asker,
+   counters and agreements with pointable premises; write/find bearer notes
+   and filter survival by knowing. Complete sizing up, yield and escalation
+   through native harm. The adapter admits plain tellings and the mind's
+   Observe/Claim/Correct records; other manners and bearer notes still
+   require native capabilities rather than a game-side authority.
+3. **Folded loops and memory.** Build T1 over inert items, T2's product
+   receipt when Mere's T2 lands, T3 work and F3b1 to F3b4 (801). Draw-based
+   and headed certification remain the after-pass's work.
+
+*Reading, not ruled:* until native vigour exists, the handoff's
+`vigour_drained` is calibrated to lost cells by the foreground, preserving
+767's whole-body harm conversion. Severing lowers to a wound through the
+whole part. Minor, serious and crippling part wounds refuse explicitly;
+their native semantics remain open with checkpoint 10 and E3.
+
+Native work and agreement terms carry asked grade/danger/danger-cap and
+offered share, each within `u8`. Other keys refuse as unbuilt; duplicate
+keys and overflowing counts refuse. Exercising an agreement requires its
+held parties and terms. This keeps the wider contract vocabulary visible
+without dropping a caller's terms during lowering.
+
+*The earlier current-state snapshot below is preserved; the Q2 checkpoint above and latest Progress entry record its later qualification.*
+
 **Status, 2026-10-10:** E0/E1 done; E2's families moved onto native
 Isocosm, with their certification in the after-pass. E3 is open now under
 732's compile gate (798), through the contract (794), with functional
@@ -501,6 +537,80 @@ Ruling 793 archived the genet document host plan to
   no type to the core.
 
 ## Progress
+
+- **2026-10-10, Q2 consumer routing checkpoint:** the directly scoped native
+  contract tests passed 9/9 on the refreshed `6f879936` native source, including
+  independent accepted Blow-to-Wound admission. Both root and Eponym
+  workspace/all-target/all-feature compile checks passed offline with one
+  Cargo job. All 109 changed-path and 255 native input hashes stayed identical
+  through the remaining batch. The preserved six-sortie receipt remains 4/6:
+  the unchanged shipped trajectory has 86 rows over 85 ticks and maximum
+  positive drops Aud 1, Bram 1, Odris 0, Sela 1. It returned without reaching
+  a drop above `SAFE_FALL = 4`, so Fell, Wounded, Downed, PactInvoked and TaggedIn never
+  occurred. Scene calibration is Q5's follow-up; coordinates, terrain,
+  threshold and fixture assertions were not retuned. Root independently
+  recomputed the trail and recorded that diagnosis on main `32bf6fae`.
+  Raw logs and full path/hash manifests remain under
+  `Code/testing/isometry/receipts/2026-10-10/q2-contracts/`.
+  E3's next phases above remain open, including the native/admitted anatomy
+  revision bridge: local harm increments once for a multi-wound batch while
+  native harm increments per severing command, already present at `c6bc153a`.
+  The local snapshot checks are internally separate; no explicit unequal
+  native/local address mapping is certified. Q10 must reconcile that bridge,
+  with native allocation/revival changes and stale bindings covered. The
+  earlier clone-cost and standalone archive qualifications remain in force.
+- **2026-10-10, Q2 combined-source consumer checkpoint, incomplete:** native
+  source was refreshed from verified main `6f879936`, preserving consumer WIP.
+  The six-sortie runtime gate reached 4/6: replay, refusal, negotiation/agreement
+  closing and deed/later-answer passed; the pact and injury tests failed because
+  no recorded Aud wound reached their postconditions. Source tracing places the
+  precursor at the scene's calibrated march: a drop greater than `SAFE_FALL=4`
+  calls the contract harm handoff, then downs Aud; that downing enables the pact.
+  A refused native wound would panic earlier at the handoff. *Reading, not
+  ruled:* the scene calibration is likely stale now that the six original
+  settled-offer refusals no longer mask it. The failures are preserved; no
+  geometry, threshold, control or fixture law was changed. The newly granted
+  nine-test adapter rerun and consumer all-feature compile gates remain pending
+  because the bounded Cargo batch stopped on these later failures. Q2 and E3
+  remain incomplete. Raw logs and source hashes are under
+  `Code/testing/isometry/receipts/2026-10-10/q2-contracts/`.
+- **2026-10-10, Q2, verification checkpoint:** focused Eponym contract tests
+  passed 9/9, native event encoding/witness compatibility passed 1/1, native
+  asserted tests passed 7/7, and the shared overlay suite passed 46/46, all
+  offline in the contracts target. Product workspace compile gates remain
+  pending; these runtime checks do not certify E3's played loop.
+- **2026-10-10, Q2:** native play commands moved behind the Eponym contract:
+  driven actuation, naming, asks, agreements, deeds, knowing and control
+  checkpoints; a resolved blow returns as a harm handoff lowered to
+  `Command::Wound`. Founding admits arrivals, bodies and authored content
+  separately. Multi-command intents and handoffs commit whole or refuse
+  whole; participant, agreement and blow-target identities are checked.
+  E3's next phases above remain open, rather than claiming its certification.
+- **2026-10-10, Q2, ruling 807:** event handles derive from native event
+  keys through the shared overlay helper. A telling's outer `Claim.about`
+  and inner proposition must name the same native event, and ambiguous
+  reverse mappings refuse; VTT consumes that same mapping.
+- **2026-10-10, Q2, ruling 808:** a deed's native event carries its optional
+  agreement ID separately from its causal event. Formation, exercise,
+  renegotiation and ending retain the link, while generic causal-event
+  validation stays intact. Events without an agreement keep their prior
+  encoding and hash; linked events participate in the native witnesses.
+- **2026-10-10, Q2, after-pass:** an embodied arrival with reserve still
+  in its loose ledger refuses native hunger: `anatomy::held` counts loose
+  matter, while `take_within` debits only parts. The adapter preserves that
+  refusal; its actuation rollback control uses independently accepted
+  fatigue. The production anatomy/ledger repair belongs to the after-pass.
+- **2026-10-10, Q2, after-pass:** multi-command intent and handoff admission
+  clones `World` and replaces it only on success. This proves whole refusal
+  semantics; representative large-world movement and per-frame actuation
+  costs have not been measured. E3's performance pass must qualify that cost
+  before treating this admission path as a played-loop receipt.
+- **2026-10-10, Q2, archive qualification:** agreement lifecycle replay is
+  checked through native `Session::save/load`. Eponym's standalone
+  `WorldSave` still records `WorldIntent`; `GameSave` replays game intents,
+  and the outer session replays control cuts. Direct contract calls kept in
+  native session entries do not yet establish a complete standalone world
+  archive receipt. Q5 and E3 retain that archive work.
 
 - **2026-10-10, ruling 811:** native healing restores losses with recorded
   allocations; unknown legacy losses remain until explicitly repaired and

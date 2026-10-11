@@ -17,6 +17,7 @@
 pub mod anatomy;
 pub mod bodies;
 pub mod combat;
+pub mod contract;
 mod equipment;
 pub mod fixtures;
 pub mod founding;

@@ -3,7 +3,7 @@
 
 use crate::identity::{SubjectId, Tick};
 
-use crate::combat::{resolve as resolve_combat, precision::resolve as resolve_precision};
+use crate::combat::{precision::resolve as resolve_precision, resolve as resolve_combat};
 use crate::{COMBAT_RULES_REVISION, DeathCause, GameError, GameEvent, MovementError};
 
 use super::GameState;
@@ -78,8 +78,13 @@ impl GameState {
             }]);
         }
         // The game resolved the blow; the sim takes its wounds (669).
-        let (revision, died, reconciled) =
-            self.harm(tick, target, resolution.harm, &resolution.severed_parts)?;
+        let (revision, died, reconciled) = self.blow(
+            tick,
+            actor,
+            target,
+            resolution.harm,
+            &resolution.severed_parts,
+        )?;
         let mut events = vec![GameEvent::VolleyResolved {
             tick,
             actor,

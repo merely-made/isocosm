@@ -4065,6 +4065,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "isocosm-overlay"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "isocosm-vtt"
 version = "0.0.2"
 
@@ -4156,6 +4163,7 @@ name = "isometry-campaign"
 version = "0.1.0"
 dependencies = [
  "isocosm",
+ "isocosm-overlay",
  "isometry-core",
  "postcard",
  "serde",
@@ -4258,6 +4266,7 @@ dependencies = [
  "iroh",
  "iroh-tickets",
  "isocosm",
+ "isocosm-overlay",
  "isometry-campaign",
  "isometry-core",
  "isometry-system",

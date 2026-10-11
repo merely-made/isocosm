@@ -2,6 +2,39 @@
 
 **Date:** 2026-09-25
 
+**Status, 2026-10-10, Q2:** V2 is open in push mode (798). The contract's
+assertions translate to native entries (795), which the campaign and each
+replicated peer fold (768). This boundary does not complete V2's native
+session, generator, travel or knowledge work.
+
+### V2 next phases, 2026-10-10
+
+1. **Native campaign reading.** Found a native `Session` from the asserted
+   history and read `CampaignWorld` from it; admit drawn places, routes,
+   factions, characters, laws and history, with packs found natively.
+   Done when sim-off assertions replay with the sim on to one native state
+   hash and the campaign owns no second simulation authority.
+2. **Travel, knowing and polities.** Run travel and the overmap conditions
+   folded under 801 through the contract, replace `party_known` by native
+   reach, require unanimous downtime consent, and retire the faction turn
+   and `legacy/campaign` once native polities act (247).
+3. **Battlemap and replay.** Keep `MapTerrain` with the sim off; with it on,
+   lift an isometer-space site (799), lower held map edits there, and prove
+   one accepted assertion stream converges across connected peers.
+
+Q2 supplies the assertion boundary. Q9 owns these phases; V3's calibrated
+action handoff and V4's played loop keep their original done-conditions.
+Ruling 809 retains Character's cell and optional participant owner in native
+table metadata beside its named site. The earlier Q2 audit found those fields
+were dropped. Native assertion/replay, campaign save/fold, current wire
+delivery, late joining and control-preservation checks now pass, including a
+compiled discarded-metadata control. The later scoped root and Eponym
+workspace/all-target/all-feature compile checks passed offline. Eponym's
+preserved 4/6 sortie result is qualified by the unchanged scene's absent
+hazard, which Q5 must recalibrate. Native placement/control remains V2's work.
+
+*The earlier current-state snapshot below is preserved; the Q2 checkpoint above and latest Progress entry record its later qualification.*
+
 **2026-10-03, rulings 538 to 541:** the VTT plays recognized editions
 faithfully as versioned rulesets, keeping the GM's decision points and
 recording their rulings, with a toolkit grown from what they repeat; a
@@ -463,6 +496,61 @@ what each left open lands here, so it has a live owner.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+
+- **2026-10-10, Q2 consumer routing checkpoint:** campaign contracts passed
+  7/7, the compiling discarded-metadata control was caught, exact restoration
+  passed 7/7, and actual Character wire/snapshot/late-join replication passed
+  2/2. The later Eponym contract gate passed 9/9 and both root and Eponym
+  workspace/all-target/all-feature checks passed offline with one Cargo job.
+  All 109 changed-path and 255 native input hashes were identical before and
+  after those remaining gates. Root independently verified the complete
+  corrected manifest, including root Cargo.toml and Cargo.lock. The trace
+  confirms Eponym's two remaining sortie failures depend on an absent >4-cell
+  drop in its unchanged shipped scene; its 4/6 result remains Q5 evidence.
+  Complete raw logs, command/environment/timing receipts and source hashes
+  remain under `Code/testing/isometry/receipts/2026-10-10/q2-contracts/`.
+  This checkpoint supplies the routed assertion boundary and retains 809
+  metadata without native placement/control authority. V2's next phases above
+  and Q6's protocol/ALPN bump remain open; old postcard frames are uncertified.
+- **2026-10-10, Q2 consumer retention checkpoint, incomplete:** refreshed native
+  source matches main `6f879936`. Campaign contract tests passed 7/7; a compiled
+  adapter that discarded Character table metadata failed the retention assertion,
+  exact source restoration was checked by SHA-256, and the restored suite passed
+  7/7. Both character replication tests passed, including actual postcard
+  `NetMessage` delivery, current snapshot/JSON round trips and late joining.
+  Native retention tests already passed 9/9 and independent former-preimage
+  controls passed 4/4 at integration. Eponym's six-sortie gate reached 4/6,
+  exposing later missing-fall/pact expectations; the bounded batch stopped before
+  its remaining focused and consumer compile gates. Q2 remains incomplete.
+  Raw logs and input hashes are retained under
+  `Code/testing/isometry/receipts/2026-10-10/q2-contracts/`.
+- **2026-10-10, Q2, ruling 809, source checkpoint:** native Character has
+  optional table metadata carrying its authored cell and participant owner;
+  the adapter unwraps contract types only at the boundary. Prepared receipts
+  cover campaign save/fold, native command-log replay with an existing played
+  body, current postcard snapshot/announcement delivery and late joining.
+  The tests, discarded-metadata control and touched compile gates are pending
+  the serialized Cargo slot. Character's absent table metadata keeps its old
+  JSON bytes and JSON digest; current postcard carries an explicit optional
+  field. Native witness-only projections retain the former five-field
+  preimage when metadata is absent and hash metadata when present, including
+  every nested held group. Independent former-byte/archive controls remain
+  pending; historical postcard-frame compatibility is not claimed.
+  Q6 owns the protocol/ALPN bump already required by the entry format change.
+- **2026-10-10, Q2, verification checkpoint:** native asserted tests passed
+  7/7 and the shared overlay suite passed 46/46 offline in the contracts
+  target. The adapter's runtime/replication tests and product compile gates
+  still await the 809 retention tests and the serialized Cargo slot.
+- **2026-10-10, Q2:** the table's Fact, Edit, Character, Storylet and
+  PackForced translate in `isometry-campaign::contract`; native assertions
+  gained map and group records. Groups resolve references to characters
+  asserted earlier in the group, fold atomically and replay idempotently.
+  `HostSession::commit_assertion` commits the translated native entry and
+  peers receive it through the existing campaign fold. V2's next phases
+  above remain open, including the protocol version bump queued as Q6.
+- **2026-10-10, Q2, ruling 807:** authored history lines expose their native
+  event key before replay, so the same shared event handle names them with
+  the sim off or on. Event facts refuse ambiguous reverse mappings.
 
 - **2026-10-10, ruling 809:** authored character cell and owner stay in
   optional table metadata on native Character. Assertion save/replay and

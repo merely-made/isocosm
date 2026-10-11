@@ -284,6 +284,41 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 consumer checkpoint integrated:** the complete 26-path
+  extraction through `d1c65d43` passes main's root and Eponym workspace,
+  all-target and all-feature checks offline (45.35 and 28.88 seconds).
+  All 26 consumer and 255 native source bytes stay unchanged during those
+  checks; the ignored Eponym lock regenerated to the qualified lane's exact
+  hash. The 21 non-document extraction blobs equal the tested tip. Five
+  manually merged documents retain main's archives and dated annotations.
+  External `q2-contracts/q2-root-source-audit-after.json`, SHA-256
+  `38d835f63b7caa942d2a7165201734ef0680d0dd7c96404addce5b5f4d63d4bb`,
+  records exact inputs, raw log hashes and the lock qualification. Q2's
+  bounded contract-routing brief is done; V2/E3 and authentic archives remain
+  open. Q5 and Q6 are now eligible, in queue order. Q3 continues source-only.
+  Q8's twenty-draw diagnostic stops at independent-verifier disagreement:
+  runtime refuses zero draws and all forty native arm-runs conserve matter,
+  but the unweighted control's meal-holdings permutation decisions differ.
+  No larger pilot, full certification or retune follows. Q8 releases Cargo
+  and reviews this evidence source-only. Ruling 812 remains pending.
+- **2026-10-10, Q2 consumer extraction reviewed; Q3 pilot rejected:** Q2's
+  complete 26-path common-base delta through `d1c65d43` is applied locally.
+  All 21 non-document blobs equal the tested lane tip; five document
+  conflicts preserve main's plan history and archives while adding the
+  lane's qualified checkpoint and V2/E3 follow-ups. Root recomputed all
+  108 classified path hashes and nine gate logs. Main's root/Eponym
+  all-target/all-feature compiler gates follow Q8's release build and
+  bounded twenty-draw diagnostic; extraction is not yet committed.
+  Q3's fresh bare meal-three/birth-fourteen seed-zero pilot validly rejects
+  at tick 125: three played-parent births, three born heirs, two boundaries,
+  no living members. Every tick conserves matter and both saved replay
+  modes match. All 267 frozen inputs and thirteen receipt hashes verify.
+  Its native census records 71 births, fourteen age deaths and 65 born
+  exhaustion deaths; accepted feeding stops after tick 81. Q3 reviews the
+  food-supply path source-only before any new proposal; no matrix or rate
+  promotion follows. Q8's optimized artifact is selected from Cargo's
+  compiler output, not an assumed filename. Ruling 812 remains pending;
+  full C10 and ordinary HEAL remain open. Existing resources are reused.
 - **2026-10-10, Q2 direct contracts and scene diagnostic passed:** all nine
   Eponym contract tests passed, including resolved Blow-to-Wound. The
   unchanged shipped sortie returned after 85 ticks; its 86 trail rows

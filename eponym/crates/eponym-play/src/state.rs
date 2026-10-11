@@ -14,6 +14,11 @@ use std::collections::BTreeMap;
 
 use isocosm::history::Command;
 use isocosm::schema::Id;
+use isocosm_overlay::eponym::{
+    ActTarget, Actuation, EponymIntent, FirstLife, LifeCheckpoint, LifeChoice, Motion, StartTime,
+    TimedAct,
+};
+use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, WorldPoint};
 use isometer_core::snapshot::{self, hash_bytes};
 
 use crate::bodies::{BodyError, BodyRecord};
@@ -116,31 +121,41 @@ impl GameState {
     /// it has not (779). Not an intent: a control cut between intents.
     pub fn take_up(&mut self, subject: SubjectId) -> Result<(), GameError> {
         let critter = self.entity_of(subject)?;
-        let participant = match self.participant {
-            Some(p) => p,
-            None => {
-                let joined = self.world.command(Command::Join)?;
-                let id = joined.strip_prefix("participant:").and_then(|s| s.parse().ok());
-                *self.participant.insert(id.ok_or(GameError::Decode)?)
-            },
+        let first = FirstLife {
+            start: StartTime::Society,
+            begins_as: LifeChoice::Denizen(EntityHandle(critter)),
         };
-        self.world.command(Command::Take { participant, critter })?;
+        let intent = EponymIntent::Checkpoint(LifeCheckpoint::First(first));
+        let lowered = self.world.submit(self.participant, &intent)?;
+        if let Some(joined) = lowered.joined {
+            self.participant = Some(joined);
+        }
         Ok(())
     }
 
     /// The subject the player drives, as the sim holds it.
     pub fn played(&self) -> Option<SubjectId> {
         let critter = self.world.sim().plays(self.participant?)?;
-        self.world.subjects().find(|(_, e)| *e == critter).map(|(s, _)| s)
+        self.world
+            .subjects()
+            .find(|(_, e)| *e == critter)
+            .map(|(s, _)| s)
     }
 
     /// Detailed anatomy may support a current action only at its admitted revision.
     pub fn current_anatomy(&self, subject: SubjectId) -> Result<&AnatomyRecord, GameError> {
         self.living(subject)?;
-        let record = self.anatomies.get(subject).ok_or(AnatomyError::Missing(subject))?;
+        let record = self
+            .anatomies
+            .get(subject)
+            .ok_or(AnatomyError::Missing(subject))?;
         let current = self.records[&subject].revision;
         if record.revision != current {
-            return Err(AnatomyError::StaleRevision { known: record.revision, current }.into());
+            return Err(AnatomyError::StaleRevision {
+                known: record.revision,
+                current,
+            }
+            .into());
         }
         Ok(record)
     }
@@ -148,14 +163,19 @@ impl GameState {
     /// Latest declared locomotion roles.
     pub fn movement_profile(&self, subject: SubjectId) -> Option<&MovementProfile> {
         self.intents.iter().rev().find_map(|intent| match intent {
-            GameIntent::ConfigureMovementProfile { subject: found, profile, .. } if *found == subject => {
-                Some(profile)
-            },
+            GameIntent::ConfigureMovementProfile {
+                subject: found,
+                profile,
+                ..
+            } if *found == subject => Some(profile),
             _ => None,
         })
     }
 
-    pub fn movement_projection(&self, subject: SubjectId) -> Result<Option<MovementProjection>, GameError> {
+    pub fn movement_projection(
+        &self,
+        subject: SubjectId,
+    ) -> Result<Option<MovementProjection>, GameError> {
         self.movement_projection_with_speed(subject, crate::MotionRules::default().speed)
     }
 
@@ -167,7 +187,10 @@ impl GameState {
         let Some(profile) = self.movement_profile(subject) else {
             return Ok(None);
         };
-        Ok(Some(profile.project(self.current_anatomy(subject)?, requested_speed)?))
+        Ok(Some(profile.project(
+            self.current_anatomy(subject)?,
+            requested_speed,
+        )?))
     }
 
     pub fn intents(&self) -> &[GameIntent] {
@@ -182,13 +205,23 @@ impl GameState {
 
     /// The sim's hash beside the game's own record.
     pub fn state_hash(&self) -> Result<u64, GameError> {
-        let record = (&self.movement, &self.anatomies, &self.records, &self.places, &self.intents, self.participant);
+        let record = (
+            &self.movement,
+            &self.anatomies,
+            &self.records,
+            &self.places,
+            &self.intents,
+            self.participant,
+        );
         let bytes = snapshot::encode(&record).map_err(|_| GameError::Encode)?;
         Ok(hash_bytes(&bytes) ^ self.world.state_hash()?)
     }
 
     fn living(&self, subject: SubjectId) -> Result<(), GameError> {
-        let body = self.bodies.get(subject).ok_or(BodyError::MissingSubject(subject))?;
+        let body = self
+            .bodies
+            .get(subject)
+            .ok_or(BodyError::MissingSubject(subject))?;
         if !body.named() {
             return Err(BodyError::Unnamed(subject).into());
         }
@@ -199,24 +232,53 @@ impl GameState {
     }
 
     fn entity_of(&self, subject: SubjectId) -> Result<Id, GameError> {
-        self.world.entity(subject).ok_or(BodyError::MissingSubject(subject).into())
+        self.world
+            .entity(subject)
+            .ok_or(BodyError::MissingSubject(subject).into())
     }
 
     /// `subject` runs `process`, toward `target` where it names one.
-    fn act(&mut self, subject: SubjectId, target: Option<Id>, process: &str) -> Result<(), GameError> {
+    fn act(
+        &mut self,
+        subject: SubjectId,
+        target: Option<Id>,
+        process: &str,
+    ) -> Result<(), GameError> {
         let actor = self.entity_of(subject)?;
-        self.act_as(actor, target, process)
+        let act = TimedAct {
+            act: ActKey(process.into()),
+            target: target.map(|id| ActTarget::Thing(EntityHandle(id))),
+        };
+        let drive = Actuation {
+            body: EntityHandle(actor),
+            motion: None,
+            acts: vec![act],
+        };
+        self.world
+            .submit(self.participant, &EponymIntent::Drive(drive))?;
+        Ok(())
     }
 
-    fn act_as(&mut self, actor: Id, target: Option<Id>, process: &str) -> Result<(), GameError> {
-        let command = Command::Act { actor, target, process: process.into(), cause: None };
-        let outcome = self.world.command(command)?;
-        let receipt: isocosm::simulation::Receipt =
-            serde_json::from_str(&outcome).map_err(|_| GameError::Decode)?;
-        match receipt.accepted() {
-            true => Ok(()),
-            false => Err(crate::WorldError::Refused.into()),
-        }
+    fn actuate_motion(&mut self, subject: SubjectId, fell: u32) -> Result<(), GameError> {
+        let position = crate::walking::to_site(self.world.volume(), self.at(subject)?);
+        let position = position
+            .map(i32::try_from)
+            .into_iter()
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|_| GameError::Decode)?;
+        let motion = Motion {
+            at: PlaceHandle(self.world.site()),
+            position: WorldPoint(position.try_into().map_err(|_| GameError::Decode)?),
+            fell,
+        };
+        let drive = Actuation {
+            body: EntityHandle(self.entity_of(subject)?),
+            motion: Some(motion),
+            acts: vec![],
+        };
+        self.world
+            .submit(self.participant, &EponymIntent::Drive(drive))?;
+        Ok(())
     }
 
     /// Reads bodies and items from the sim again.
@@ -228,7 +290,10 @@ impl GameState {
     pub fn apply(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, GameError> {
         let expected = self.next_tick();
         if intent.tick() != expected {
-            return Err(GameError::WrongTick { expected, actual: intent.tick() });
+            return Err(GameError::WrongTick {
+                expected,
+                actual: intent.tick(),
+            });
         }
         let mut next = self.clone();
         let events = next.admit(&intent)?;
@@ -242,18 +307,39 @@ impl GameState {
 
     fn admit(&mut self, intent: &GameIntent) -> Result<Vec<GameEvent>, GameError> {
         let tick = intent.tick();
-        if let GameIntent::ReviseCanon { revision, seed, cause, .. } = intent {
+        if let GameIntent::ReviseCanon {
+            revision,
+            seed,
+            cause,
+            ..
+        } = intent
+        {
             cause.validate()?;
-            return Ok(vec![GameEvent::CanonRevised { tick, revision: *revision, seed: *seed, cause: cause.clone() }]);
+            return Ok(vec![GameEvent::CanonRevised {
+                tick,
+                revision: *revision,
+                seed: *seed,
+                cause: cause.clone(),
+            }]);
         }
-        let subject = intent.subject().expect("every intent but a world-level revision names a subject");
+        let subject = intent
+            .subject()
+            .expect("every intent but a world-level revision names a subject");
         match intent {
-            GameIntent::AdvanceMotion { revision, step, input, rules, .. } => {
-                self.advance_motion(tick, subject, *revision, *step, *input, *rules)
-            },
-            GameIntent::ResolveVolley { actor, target, strikes, rules, .. } => {
-                self.resolve_volley(tick, *actor, *target, strikes, *rules)
-            },
+            GameIntent::AdvanceMotion {
+                revision,
+                step,
+                input,
+                rules,
+                ..
+            } => self.advance_motion(tick, subject, *revision, *step, *input, *rules),
+            GameIntent::ResolveVolley {
+                actor,
+                target,
+                strikes,
+                rules,
+                ..
+            } => self.resolve_volley(tick, *actor, *target, strikes, *rules),
             _ => self.admit_act(tick, subject, intent),
         }
     }
@@ -269,7 +355,9 @@ impl GameState {
             Some(crate::SiteKind::Ruin) => kinds.push(Scrap),
             _ => {},
         }
-        let Some(top) = self.world.ground().surface(0, 0) else { return };
+        let Some(top) = self.world.ground().surface(0, 0) else {
+            return;
+        };
         let at = [0, top + 1, 0];
         for kind in kinds {
             let mut accounts = isocosm::schema::Ledger::new();
@@ -286,7 +374,9 @@ impl GameState {
                 disposition: [0; 5],
                 character: None,
             };
-            let Ok(outcome) = self.world.command(Command::Arrive(arrival)) else { continue };
+            let Ok(outcome) = self.world.found(Command::Arrive(arrival)) else {
+                continue;
+            };
             if let Some(id) = outcome.strip_prefix("entity:").and_then(|s| s.parse().ok()) {
                 self.places.at.insert(crate::ItemId(id), at);
             }

@@ -117,6 +117,40 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, C10 pilot stopped by independent statistics:** the frozen
+  release artifact runs seed `2026101001`, twenty draws and all five arms.
+  All arms refuse zero draws; the forty native arm-runs conserve unassisted
+  matter over 2,400 checked tick observations. Rerun/collection controls
+  pass. The frozen Python verifier exits one: for the unweighted control's
+  `body:hazard#meal-holdings`, the Holm-adjusted permutation result is
+  `0.0245`, versus Rust's `0.0735`, straddling alpha `0.05`. Its comparison
+  and top-level detection decisions therefore disagree. Main and positive
+  equivalence are not established on twenty draws. This is a failed
+  diagnostic, not a C10 certification; larger runs stay withheld. The
+  external raw `q8-c10-harm-20.json` SHA-256 is
+  `4dc3803c9d863b7d38d1421e0fe93d8e8a7de0161d9b2d64c9a7ab8e097eb247`.
+  Root independently recomputed refusal and conservation counts and inspected
+  both decisions. Source-only sampling review follows without changing the
+  frozen evidence, thresholds or native model; ruling 812 remains open.
+- **2026-10-10, meal-three/birth-fourteen pilot rejected:** the frozen bare
+  seed-zero profile changes only the candidate consumer's birth period
+  from seven to fourteen. Extinction at tick 125 leaves three played-parent
+  births, three born heirs and two boundaries. Conservation at every tick
+  and both saved replay modes pass before the final qualification fails.
+  Native provision flows show 71 lineage births, including 45 by twenty
+  born parents. All 79 members die: fourteen accepted age acts and 65
+  born-member exhaustion acts. Founder 17 and child 119 retain four and
+  two units at their age deaths; child 119 reproduces three times. Positive
+  feeding ends at tick 81; from 82 through 125 both accepted feeding
+  watches and flows are absent. Earlier zero-credit shared meals persist.
+  Accepted-only observations cannot identify each later absence's cause.
+  The slower cadence reduces births and peak members, but neither this
+  profile nor the preserved birth-seven profile qualifies. This is a
+  Reading, not ruled; generator defaults and matrix gates remain unchanged.
+  All 267 inputs stay frozen. The thirteen-path external manifest
+  `q3-reproduction-meal3-birth14-6f879936-seed0-pilot-receipt-manifest.tsv`
+  has SHA-256 `8db610f23949ef5e7d864db743069d3ad2399b345f880c177e2163aeced40ebe`.
+  Root recomputed every receipt hash/size and the native death census.
 - **2026-10-10, unchanged sortie trajectory qualified:** the preserved
   diagnostic runs the shipped `[-15, -8]` site and `[[-16, 16]]` route,
   returning after 85 ticks with 86 complete trail rows (13 through 98).

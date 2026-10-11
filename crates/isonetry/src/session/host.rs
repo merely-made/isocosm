@@ -177,6 +177,17 @@ impl HostSession {
         self.try_commit(GameEvent::Generation(record))
     }
 
+    /// Commit the DM's assertion through the contract (ruling 795): lowered
+    /// onto the native entry the campaign folds (768), prevalidated there.
+    pub fn commit_assertion(
+        &mut self,
+        assertion: &isocosm_overlay::vtt::Assertion,
+    ) -> Result<Vec<Outbound>, String> {
+        let event = isometry_campaign::contract::translate(&self.state.world, assertion)
+            .map_err(|refusal| format!("assertion refused: {refusal:?}"))?;
+        self.try_commit(GameEvent::World(event))
+    }
+
     /// Resolve one committed storylet against public world data and private
     /// fact IDs, then commit all effects through ordinary replicated events.
     /// A cloned snapshot prevalidates the batch so a bad late effect cannot

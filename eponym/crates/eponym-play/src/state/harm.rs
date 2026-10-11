@@ -8,8 +8,8 @@
 //! severing moves the body's revision and reconciles its admitted anatomy;
 //! a wound alone does not (717).
 
-use isocosm::harm::Wounded;
-use isocosm::history::Command;
+use isocosm_overlay::eponym::{Blow, EponymHandoff};
+use isocosm_overlay::{ActKey, EntityHandle, Harm, PartHandle, Wound, WoundSeverity};
 use isometer_core::PartId;
 
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
@@ -27,15 +27,56 @@ impl GameState {
         harm: u16,
         severed: &[PartId],
     ) -> Result<(BodyRevisionId, bool, Vec<GameEvent>), GameError> {
+        let injury = self.injury(subject, harm, severed)?;
+        self.receive_harm(tick, subject, EponymHandoff::Hurt(injury))
+    }
+
+    pub(super) fn blow(
+        &mut self,
+        tick: Tick,
+        actor: SubjectId,
+        target: SubjectId,
+        harm: u16,
+        severed: &[PartId],
+    ) -> Result<(BodyRevisionId, bool, Vec<GameEvent>), GameError> {
+        let blow = Blow {
+            by: EntityHandle(self.entity_of(actor)?),
+            target: EntityHandle(self.entity_of(target)?),
+            act: ActKey("eponym:strike".into()),
+            harm: self.injury(target, harm, severed)?,
+        };
+        self.receive_harm(tick, target, EponymHandoff::Blow(blow))
+    }
+
+    fn injury(&self, subject: SubjectId, harm: u16, severed: &[PartId]) -> Result<Harm, GameError> {
         let entity = self.entity_of(subject)?;
-        let mut wounds: Vec<(Option<PartId>, u32)> = severed.iter().map(|p| (Some(*p), u32::MAX)).collect();
-        if harm > 0 && severed.is_empty() {
-            wounds.push((None, self.cells_for(entity, harm)));
-        }
+        Ok(Harm {
+            // The current native calibration is cells, preserving 767's lowering.
+            vigour_drained: if severed.is_empty() {
+                u64::from(self.cells_for(entity, harm))
+            } else {
+                0
+            },
+            wounds: severed
+                .iter()
+                .map(|p| Wound {
+                    part: PartHandle(u64::from(p.0)),
+                    severity: WoundSeverity::Severed,
+                })
+                .collect(),
+        })
+    }
+
+    fn receive_harm(
+        &mut self,
+        tick: Tick,
+        subject: SubjectId,
+        handoff: EponymHandoff,
+    ) -> Result<(BodyRevisionId, bool, Vec<GameEvent>), GameError> {
+        let entity = self.entity_of(subject)?;
+        let lowered = self.world.hand_back(entity, &handoff)?;
         let (mut cut, mut died) = (vec![], false);
-        for (part, cells) in wounds.into_iter().filter(|w| w.1 > 0) {
-            let outcome = self.world.command(Command::Wound { entity, part, cells })?;
-            let w: Wounded = serde_json::from_str(&outcome).map_err(|_| GameError::Decode)?;
+        for w in lowered.wounded {
             cut.extend(w.severed.iter().copied());
             died |= w.died;
         }
@@ -58,7 +99,12 @@ impl GameState {
 
     /// The cells a whole-body harm out of a hundred takes, at least one.
     fn cells_for(&self, entity: isocosm::schema::Id, harm: u16) -> u32 {
-        let Some(e) = self.world.sim().state().population.get(entity) else { return 0 };
+        if harm == 0 {
+            return 0;
+        }
+        let Some(e) = self.world.sim().state().population.get(entity) else {
+            return 0;
+        };
         let living: u64 = e
             .living()
             .map(|(id, p)| u64::from(isocosm::anatomy::living_cells(e.extent(id), p)))
@@ -78,23 +124,50 @@ impl GameState {
     ) -> Result<Vec<GameEvent>, GameError> {
         let at = self.at(subject)?;
         let mut events = vec![];
-        if self.anatomies.get(subject).is_some_and(|r| r.revision == from_revision) {
+        if self
+            .anatomies
+            .get(subject)
+            .is_some_and(|r| r.revision == from_revision)
+        {
             let fresh: Vec<PartId> = cut
                 .iter()
                 .copied()
-                .filter(|p| self.anatomies.get(subject).and_then(|r| r.document.part(*p)).is_some_and(|q| !q.severed))
+                .filter(|p| {
+                    self.anatomies
+                        .get(subject)
+                        .and_then(|r| r.document.part(*p))
+                        .is_some_and(|q| !q.severed)
+                })
                 .collect();
-            self.anatomies.reconcile(subject, from_revision, revision, &fresh)?;
-            events.push(GameEvent::AnatomyReconciled { tick, subject, from_revision, revision });
+            self.anatomies
+                .reconcile(subject, from_revision, revision, &fresh)?;
+            events.push(GameEvent::AnatomyReconciled {
+                tick,
+                subject,
+                from_revision,
+                revision,
+            });
         }
         self.records.get_mut(&subject).expect("recorded").revision = revision;
         let lost: Vec<PartId> = self
             .anatomies
             .get(subject)
-            .map(|r| r.document.parts.iter().filter(|p| p.severed).map(|p| p.id).collect())
+            .map(|r| {
+                r.document
+                    .parts
+                    .iter()
+                    .filter(|p| p.severed)
+                    .map(|p| p.id)
+                    .collect()
+            })
             .unwrap_or_default();
         let fallen = self.release_worn(subject, &lost, at)?;
-        events.extend(fallen.into_iter().map(|item| GameEvent::ItemReleased { tick, subject, item, at }));
+        events.extend(fallen.into_iter().map(|item| GameEvent::ItemReleased {
+            tick,
+            subject,
+            item,
+            at,
+        }));
         Ok(events)
     }
 }

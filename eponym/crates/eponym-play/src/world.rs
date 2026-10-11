@@ -16,6 +16,8 @@ use std::collections::BTreeMap;
 use isocosm::history::Command;
 use isocosm::schema::Id;
 use isocosm::{Execution, Session};
+use isocosm_overlay::eponym::{ActTarget, Actuation, EponymIntent, TimedAct};
+use isocosm_overlay::{ActKey, EntityHandle, WorldPoint};
 use isometer_core::ground::Ground;
 use isometer_core::snapshot::{self, hash_bytes};
 use isometer_space::volume::Volume;
@@ -38,14 +40,27 @@ pub struct WorldConfig {
 
 impl Default for WorldConfig {
     fn default() -> Self {
-        Self { side: 8, extent: 64 }
+        Self {
+            side: 8,
+            extent: 64,
+        }
     }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorldIntent {
-    Carve { tick: Tick, by: SubjectId, centre: [i32; 3], radius: i32 },
-    InheritSite { tick: Tick, slot: SlotId, kind: SiteKind, fact: HistoryFactId },
+    Carve {
+        tick: Tick,
+        by: SubjectId,
+        centre: [i32; 3],
+        radius: i32,
+    },
+    InheritSite {
+        tick: Tick,
+        slot: SlotId,
+        kind: SiteKind,
+        fact: HistoryFactId,
+    },
 }
 
 impl WorldIntent {
@@ -58,8 +73,20 @@ impl WorldIntent {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorldEvent {
-    Carved { tick: Tick, by: SubjectId, centre: [i32; 3], radius: i32, removed: u32, ground_revision: u64 },
-    SiteInherited { tick: Tick, slot: SlotId, kind: SiteKind, fact: HistoryFactId },
+    Carved {
+        tick: Tick,
+        by: SubjectId,
+        centre: [i32; 3],
+        radius: i32,
+        removed: u32,
+        ground_revision: u64,
+    },
+    SiteInherited {
+        tick: Tick,
+        slot: SlotId,
+        kind: SiteKind,
+        fact: HistoryFactId,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -77,11 +104,26 @@ pub enum WorldError {
     InvalidExtent,
     InvalidRadius,
     MissingSlot(SlotId),
-    OutOfOrder { previous: Tick, next: Tick },
-    GeneratorDiverged { saved: u32, current: u32 },
-    BaseDiverged { saved: u64, regrown: u64 },
+    OutOfOrder {
+        previous: Tick,
+        next: Tick,
+    },
+    GeneratorDiverged {
+        saved: u32,
+        current: u32,
+    },
+    BaseDiverged {
+        saved: u64,
+        regrown: u64,
+    },
     /// The sim refused what was asked of it.
     Refused,
+    /// An intent named a sophont its participant does not play (152).
+    NotPlayed,
+    /// The contract carried what native cannot take yet (794).
+    Unbuilt(&'static str),
+    /// Play offered at the founding door, which takes none (794).
+    NotFounding,
     Encode,
     Decode,
 }
@@ -114,11 +156,18 @@ impl World {
         let genesis = crate::founding::genesis(seed, u32::from(config.side), side)
             .map_err(|_| WorldError::InvalidExtent)?;
         let base_hash = hash_bytes(isocosm::digest(&genesis).as_bytes());
-        let session = Session::new(genesis, Execution::Individuals).map_err(|_| WorldError::Refused)?;
+        let session =
+            Session::new(genesis, Execution::Individuals).map_err(|_| WorldError::Refused)?;
         let map = WorldMap::generate(&session.sim);
-        let site = map.slots_of_kind(SiteKind::Settlement).next().map_or(0, |s| s.site);
+        let site = map
+            .slots_of_kind(SiteKind::Settlement)
+            .next()
+            .map_or(0, |s| s.site);
         let end = [side as i64; 2];
-        let volume = session.sim.volume(site, [0, 0], end, DEPTH).map_err(|_| WorldError::Refused)?;
+        let volume = session
+            .sim
+            .volume(site, [0, 0], end, DEPTH)
+            .map_err(|_| WorldError::Refused)?;
         Ok(Self {
             seed,
             config,
@@ -181,14 +230,30 @@ impl World {
         self.subjects.insert(subject, entity);
     }
 
-    /// Runs `command` in the sim, logged in its session.
-    pub fn command(&mut self, command: Command) -> Result<String, WorldError> {
-        self.session.command(command).map_err(|_| WorldError::Refused)
+    /// Runs `command` in the sim, logged in its session: the contract's
+    /// lowering and the founding door only.
+    pub(crate) fn run(&mut self, command: Command) -> Result<String, WorldError> {
+        self.session
+            .command(command)
+            .map_err(|_| WorldError::Refused)
+    }
+
+    /// The host's founding door: arrivals, bodies admitted and authored
+    /// content, never play, which crosses the contract (794).
+    pub fn found(&mut self, command: Command) -> Result<String, WorldError> {
+        match command {
+            Command::Arrive(_) | Command::Embody { .. } | Command::Assert(_) => self.run(command),
+            Command::Edit { by: None, .. } => self.run(command),
+            _ => Err(WorldError::NotFounding),
+        }
     }
 
     /// The sim's clock moves one tick.
     pub fn tick(&mut self) -> Result<(), WorldError> {
-        self.session.advance(1).map(|_| ()).map_err(|_| WorldError::Refused)
+        self.session
+            .advance(1)
+            .map(|_| ())
+            .map_err(|_| WorldError::Refused)
     }
 
     pub fn apply(&mut self, intent: WorldIntent) -> Result<WorldEvent, WorldError> {
@@ -196,24 +261,75 @@ impl World {
         if let Some(previous) = self.last_tick
             && tick < previous
         {
-            return Err(WorldError::OutOfOrder { previous, next: tick });
+            return Err(WorldError::OutOfOrder {
+                previous,
+                next: tick,
+            });
         }
         let event = match intent {
-            WorldIntent::Carve { tick, by, centre, radius } => {
+            WorldIntent::Carve {
+                tick,
+                by,
+                centre,
+                radius,
+            } => {
                 if radius < 0 {
                     return Err(WorldError::InvalidRadius);
                 }
                 let at = crate::walking::to_site(&self.volume, centre);
-                let shape = Shape::Sphere { centre: at, radius: radius as u64 };
-                let edit = Edit { op: Op::Carve, shape };
-                let (site, by_entity) = (self.site, self.entity(by));
-                self.command(Command::Edit { site, edit: edit.clone(), by: by_entity })?;
+                let shape = Shape::Sphere {
+                    centre: at,
+                    radius: radius as u64,
+                };
+                let edit = Edit {
+                    op: Op::Carve,
+                    shape,
+                };
+                match self.entity(by) {
+                    Some(body) => {
+                        let act = TimedAct {
+                            act: ActKey(crate::contract::CARVE.into()),
+                            target: Some(ActTarget::Region {
+                                centre: WorldPoint(centre),
+                                radius: radius as u32,
+                            }),
+                        };
+                        let drive = Actuation {
+                            body: EntityHandle(body),
+                            motion: None,
+                            acts: vec![act],
+                        };
+                        self.submit(None, &EponymIntent::Drive(drive))?;
+                    },
+                    None => {
+                        self.found(Command::Edit {
+                            site: self.site,
+                            edit: edit.clone(),
+                            by: None,
+                        })?;
+                    },
+                }
                 let atlas = self.session.sim.atlas().map_err(|_| WorldError::Refused)?;
-                let removed = self.volume.apply(&atlas, site, &edit).map_err(|_| WorldError::Refused)?;
+                let removed = self
+                    .volume
+                    .apply(&atlas, self.site, &edit)
+                    .map_err(|_| WorldError::Refused)?;
                 let ground_revision = self.volume.revision();
-                WorldEvent::Carved { tick, by, centre, radius, removed, ground_revision }
+                WorldEvent::Carved {
+                    tick,
+                    by,
+                    centre,
+                    radius,
+                    removed,
+                    ground_revision,
+                }
             },
-            WorldIntent::InheritSite { tick, slot, kind, fact } => {
+            WorldIntent::InheritSite {
+                tick,
+                slot,
+                kind,
+                fact,
+            } => {
                 if !self.map.inherit(slot, kind, fact) {
                     return Err(WorldError::MissingSlot(slot));
                 }
@@ -224,8 +340,13 @@ impl World {
                     text: kind.name().into(),
                     tags: Default::default(),
                 });
-                self.command(Command::Assert(assertion))?;
-                WorldEvent::SiteInherited { tick, slot, kind, fact }
+                self.found(Command::Assert(assertion))?;
+                WorldEvent::SiteInherited {
+                    tick,
+                    slot,
+                    kind,
+                    fact,
+                }
             },
         };
         self.intents.push(intent);
@@ -262,11 +383,17 @@ impl World {
 
     pub fn restore_record(save: WorldSave) -> Result<Self, WorldError> {
         if save.generator_version != GENERATOR_VERSION {
-            return Err(WorldError::GeneratorDiverged { saved: save.generator_version, current: GENERATOR_VERSION });
+            return Err(WorldError::GeneratorDiverged {
+                saved: save.generator_version,
+                current: GENERATOR_VERSION,
+            });
         }
         let mut world = Self::generate(save.seed, save.config)?;
         if save.base_hash != world.base_hash {
-            return Err(WorldError::BaseDiverged { saved: save.base_hash, regrown: world.base_hash });
+            return Err(WorldError::BaseDiverged {
+                saved: save.base_hash,
+                regrown: world.base_hash,
+            });
         }
         for intent in save.intents {
             world.apply(intent)?;

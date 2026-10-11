@@ -9,6 +9,8 @@ description = "The VTT's half of the campaign layer: generated campaign maps low
 
 [dependencies]
 isocosm = { workspace = true }
+# The VTT's contract, translated in `contract` (wing ruling 795).
+isocosm-overlay = { workspace = true }
 isometry-core = { workspace = true }
 serde = { workspace = true }
 

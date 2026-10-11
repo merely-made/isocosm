@@ -14,6 +14,10 @@ use isocosm::social::{
     Agreement, Answer, Deed, DeedKind, EndReason, Offer, Premise, Response, Ruling, Social,
     Standing, Terms, Work,
 };
+use isocosm_overlay::eponym::{
+    AgreementAct, AgreementHandle, DeedKey, EponymHandoff, EponymIntent,
+};
+use isocosm_overlay::{EntityHandle, Harm, PlaceHandle};
 
 /// What the society refuses with.
 pub type SocialError = WorldError;
@@ -44,41 +48,72 @@ impl Society {
 
     /// A peer, asserted as an authored character (769), arrives in the
     /// played site and takes a one-part body.
-    pub fn admit(&mut self, subject: SubjectId, name: &str, crafts: &[(&str, u8)], caution: i16) -> Result<Id, SocialError> {
+    pub fn admit(
+        &mut self,
+        subject: SubjectId,
+        name: &str,
+        crafts: &[(&str, u8)],
+        caution: i16,
+    ) -> Result<Id, SocialError> {
         let key = name.to_lowercase();
-        let character = isocosm::asserted::Character { key: key.clone(), name: name.into(), ..Default::default() };
-        self.world.command(Command::Assert(isocosm::asserted::Assertion::Character(character)))?;
+        let character = isocosm::asserted::Character {
+            key: key.clone(),
+            name: name.into(),
+            ..Default::default()
+        };
+        self.world
+            .found(Command::Assert(isocosm::asserted::Assertion::Character(
+                character,
+            )))?;
         let mut disposition = [0; 5];
         disposition[isocosm::social::CAUTION] = caution;
         let arrival = isocosm::arrival::Arrival {
             lineage: founding::SOPHONT.into(),
             site: self.world.site(),
             method: Method::Normative,
-            accounts: [(founding::RESERVE, founding::FULL), (founding::ENERGY, founding::FULL)]
-                .iter()
-                .map(|(k, v)| (k.to_string(), *v))
-                .collect(),
+            accounts: [
+                (founding::RESERVE, founding::FULL),
+                (founding::ENERGY, founding::FULL),
+            ]
+            .iter()
+            .map(|(k, v)| (k.to_string(), *v))
+            .collect(),
             traits: Default::default(),
-            skills: crafts.iter().map(|(c, g)| (c.to_string(), u64::from(*g))).collect(),
+            skills: crafts
+                .iter()
+                .map(|(c, g)| (c.to_string(), u64::from(*g)))
+                .collect(),
             disposition,
             character: Some(key),
         };
-        let outcome = self.world.command(Command::Arrive(arrival))?;
-        let id: Id = outcome.strip_prefix("entity:").and_then(|s| s.parse().ok()).ok_or(SocialError::Decode)?;
-        let body = isometer_core::BodyDocument::new(isometer_core::VolumeRef::from_tag(0), [2, 4, 2]);
-        self.world.command(Command::Embody { entity: id, body })?;
+        let outcome = self.world.found(Command::Arrive(arrival))?;
+        let id: Id = outcome
+            .strip_prefix("entity:")
+            .and_then(|s| s.parse().ok())
+            .ok_or(SocialError::Decode)?;
+        let body =
+            isometer_core::BodyDocument::new(isometer_core::VolumeRef::from_tag(0), [2, 4, 2]);
+        self.world.found(Command::Embody { entity: id, body })?;
         self.world.bind(subject, id);
         Ok(id)
     }
 
     pub fn id(&self, subject: SubjectId) -> Id {
-        self.world.entity(subject).expect("a peer this receipt admitted")
+        self.world
+            .entity(subject)
+            .expect("a peer this receipt admitted")
     }
     pub fn subject_of(&self, id: Id) -> Option<SubjectId> {
-        self.world.subjects().find(|(_, e)| *e == id).map(|(s, _)| s)
+        self.world
+            .subjects()
+            .find(|(_, e)| *e == id)
+            .map(|(s, _)| s)
     }
     pub fn name_of(&self, subject: SubjectId) -> &str {
-        self.world.entity(subject).and_then(|id| self.sim().name_of(id)).unwrap_or("someone")
+        self.world
+            .entity(subject)
+            .and_then(|id| self.sim().name_of(id))
+            .unwrap_or("someone")
     }
     pub fn name_of_entity(&self, id: Id) -> &str {
         self.sim().name_of(id).unwrap_or("someone")
@@ -89,7 +124,45 @@ impl Society {
 
     fn social(&mut self, act: Social, at: Tick) -> Result<Answer, SocialError> {
         self.at(at)?;
-        let outcome = self.world.command(Command::Social(act))?;
+        let intent = match act {
+            Social::Consider(o) => EponymIntent::Ask(eponym_play::contract::proposal(&o, None)),
+            Social::Form(o) => EponymIntent::Agree(AgreementAct::Form(
+                eponym_play::contract::proposal(&o, None),
+            )),
+            Social::Exercise { agreement, work } => {
+                let held = self.agreement(agreement).ok_or(SocialError::Refused)?;
+                let offer = Offer::new(held.asker, held.holder, work, held.terms);
+                EponymIntent::Ask(eponym_play::contract::proposal(&offer, Some(agreement)))
+            },
+            Social::Renegotiate {
+                agreement,
+                by,
+                terms,
+            } => EponymIntent::Agree(AgreementAct::Renegotiate {
+                agreement: AgreementHandle(agreement),
+                by: EntityHandle(by),
+                terms: eponym_play::contract::agreement_terms(&terms),
+            }),
+            Social::End { agreement, by, why } => EponymIntent::Agree(AgreementAct::End {
+                agreement: AgreementHandle(agreement),
+                by: EntityHandle(by),
+                why: eponym_play::contract::end_reason(why),
+            }),
+            Social::OfferHome { offer, dwelling } => EponymIntent::Agree(AgreementAct::Home {
+                proposal: eponym_play::contract::proposal(&offer, None),
+                dwelling: PlaceHandle(dwelling),
+            }),
+            Social::Deed { doer, toward, kind } => {
+                EponymIntent::Deed(isocosm_overlay::eponym::Deed {
+                    doer: EntityHandle(doer),
+                    toward: toward.map(EntityHandle),
+                    kind: DeedKey(kind.key),
+                    under: kind.agreement.map(AgreementHandle),
+                })
+            },
+        };
+        let lowered = self.world.submit(None, &intent)?;
+        let outcome = lowered.outcomes.first().ok_or(SocialError::Decode)?;
         serde_json::from_str(&outcome).map_err(|_| SocialError::Decode)
     }
 
@@ -100,8 +173,18 @@ impl Society {
         }
     }
 
-    pub fn record(&mut self, at: Tick, doer: SubjectId, toward: Option<SubjectId>, kind: DeedKind) -> Result<Key, SocialError> {
-        let act = Social::Deed { doer: self.id(doer), toward: toward.map(|t| self.id(t)), kind };
+    pub fn record(
+        &mut self,
+        at: Tick,
+        doer: SubjectId,
+        toward: Option<SubjectId>,
+        kind: DeedKind,
+    ) -> Result<Key, SocialError> {
+        let act = Social::Deed {
+            doer: self.id(doer),
+            toward: toward.map(|t| self.id(t)),
+            kind,
+        };
         match self.social(act, at)? {
             Answer::Deed(key) => Ok(key),
             _ => Err(SocialError::Decode),
@@ -116,24 +199,81 @@ impl Society {
     pub fn form(&mut self, offer: &Offer, at: Tick) -> Result<Ruling, SocialError> {
         self.ruling(Social::Form(offer.clone()), at)
     }
-    pub fn exercise(&mut self, agreement: Id, work: &Work, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::Exercise { agreement, work: work.clone() }, at)
+    pub fn exercise(
+        &mut self,
+        agreement: Id,
+        work: &Work,
+        at: Tick,
+    ) -> Result<Ruling, SocialError> {
+        self.ruling(
+            Social::Exercise {
+                agreement,
+                work: work.clone(),
+            },
+            at,
+        )
     }
-    pub fn propose_change(&mut self, agreement: Id, by: SubjectId, terms: Terms, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::Renegotiate { agreement, by: self.id(by), terms }, at)
+    pub fn propose_change(
+        &mut self,
+        agreement: Id,
+        by: SubjectId,
+        terms: Terms,
+        at: Tick,
+    ) -> Result<Ruling, SocialError> {
+        self.ruling(
+            Social::Renegotiate {
+                agreement,
+                by: self.id(by),
+                terms,
+            },
+            at,
+        )
     }
-    pub fn end(&mut self, agreement: Id, by: SubjectId, why: EndReason, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::End { agreement, by: self.id(by), why }, at)
+    pub fn end(
+        &mut self,
+        agreement: Id,
+        by: SubjectId,
+        why: EndReason,
+        at: Tick,
+    ) -> Result<Ruling, SocialError> {
+        self.ruling(
+            Social::End {
+                agreement,
+                by: self.id(by),
+                why,
+            },
+            at,
+        )
     }
-    pub fn offer_home(&mut self, offer: &Offer, dwelling: Id, at: Tick) -> Result<Ruling, SocialError> {
-        self.ruling(Social::OfferHome { offer: offer.clone(), dwelling }, at)
+    pub fn offer_home(
+        &mut self,
+        offer: &Offer,
+        dwelling: Id,
+        at: Tick,
+    ) -> Result<Ruling, SocialError> {
+        self.ruling(
+            Social::OfferHome {
+                offer: offer.clone(),
+                dwelling,
+            },
+            at,
+        )
     }
 
     /// A dwelling, asserted as an authored place (769).
     pub fn found_dwelling(&mut self, key: &str, name: &str) -> Result<Id, SocialError> {
-        let place = isocosm::asserted::Place { key: key.into(), name: name.into(), ..Default::default() };
-        let outcome = self.world.command(Command::Assert(isocosm::asserted::Assertion::Place(place)))?;
-        outcome.strip_prefix("site:").and_then(|s| s.parse().ok()).ok_or(SocialError::Decode)
+        let place = isocosm::asserted::Place {
+            key: key.into(),
+            name: name.into(),
+            ..Default::default()
+        };
+        let outcome = self
+            .world
+            .found(Command::Assert(isocosm::asserted::Assertion::Place(place)))?;
+        outcome
+            .strip_prefix("site:")
+            .and_then(|s| s.parse().ok())
+            .ok_or(SocialError::Decode)
     }
 
     pub fn agreement(&self, id: Id) -> Option<&Agreement> {
@@ -159,18 +299,39 @@ impl Society {
     pub fn wound(&mut self, subject: SubjectId, cells: u32, at: Tick) -> Result<(), SocialError> {
         self.at(at)?;
         let entity = self.id(subject);
-        self.world.command(Command::Wound { entity, part: None, cells })?;
+        self.world.hand_back(
+            entity,
+            &EponymHandoff::Hurt(Harm {
+                vigour_drained: u64::from(cells),
+                wounds: vec![],
+            }),
+        )?;
         Ok(())
     }
     /// The body's revision in the sim (717: a severing moves it).
     pub fn body_revision(&self, subject: SubjectId) -> u64 {
-        self.sim().state().population.get(self.id(subject)).map_or(0, |e| e.body_revision)
+        self.sim()
+            .state()
+            .population
+            .get(self.id(subject))
+            .map_or(0, |e| e.body_revision)
     }
 
     /// `by` carves a sphere where it stands; returns the cells removed.
-    pub fn carve(&mut self, by: SubjectId, centre: [i32; 3], radius: i32, at: Tick) -> Result<u32, SocialError> {
+    pub fn carve(
+        &mut self,
+        by: SubjectId,
+        centre: [i32; 3],
+        radius: i32,
+        at: Tick,
+    ) -> Result<u32, SocialError> {
         self.at(at)?;
-        match self.world.apply(WorldIntent::Carve { tick: at, by, centre, radius })? {
+        match self.world.apply(WorldIntent::Carve {
+            tick: at,
+            by,
+            centre,
+            radius,
+        })? {
             eponym_play::WorldEvent::Carved { removed, .. } => Ok(removed),
             _ => Ok(0),
         }
@@ -181,4 +342,3 @@ impl Society {
         self.world.state_hash().unwrap_or(0)
     }
 }
-

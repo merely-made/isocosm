@@ -258,6 +258,20 @@ Character translation retains its named site but currently drops its cell
 and owner. Their durable retention awaits a numbered human ruling; accepting
 the current translation does not establish preservation of those fields.
 
+### Consumer routing checkpoint, 2026-10-10 (Q2)
+
+At this vocabulary checkpoint, product routing and Character metadata
+retention were pending. The later Q2 consumer checkpoint passed campaign
+contracts 7/7, a compiling discarded-metadata control and exact restored
+positive, actual wire/snapshot/late-join replication 2/2, Eponym contracts
+9/9, and root/Eponym all-target/all-feature compile checks offline. Ruling
+809 metadata retains the cell and optional participant owner beside the
+native assertion; the tested existing body and control remain unchanged.
+The pure vocabulary suite above was not repeated. V2 and E3 remain open;
+the unchanged Eponym sortie is still 4/6 because its shipped trajectory has
+no >4-cell fall, recorded for Q5. Current native save/replay and current wire
+round trips do not certify old postcard frames; Q6 owns the protocol bump.
+
 ## Shapes lifted to the core, 2026-09-26
 
 E1 and V1 first defined three shapes in more than one game module, since a
