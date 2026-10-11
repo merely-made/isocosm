@@ -284,6 +284,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q2 direct contracts and scene diagnostic passed:** all nine
+  Eponym contract tests passed, including resolved Blow-to-Wound. The
+  unchanged shipped sortie returned after 85 ticks; its 86 trail rows
+  independently recompute to maximum drops of one/one/zero/one cells for
+  Aud/Bram/Odris/Sela. None enters the greater-than-four harm guard, so the
+  two preserved sortie postcondition failures belong to Q5's missing scene
+  calibration. No native harm refusal occurred and no route or expectation
+  was retuned. Raw external `q2-contracts/trajectory.log` SHA-256 is
+  `9501ec92f26386f0f127337b89672fd8da752a7b79b0283badee48c796cb3d32`.
+  Q2 retains Cargo for root/Eponym all-target/all-feature compiler gates.
+  Q3's frozen period-fourteen seed-zero pilot follows; Q8 prepares the C10
+  release review bundle source-only. Final C10/ordinary HEAL promotion also
+  retains the pending 812 gate, shared by native and crowd incorporation.
 - **2026-10-10, Q8 bounded C10 controls qualified:** the refreshed
   thirty-one-input envelope passed 32 harm tests, three probe-owned
   conservation controls and the native workspace/all-target compiler check.

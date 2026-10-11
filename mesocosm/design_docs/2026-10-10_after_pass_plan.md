@@ -117,6 +117,19 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, unchanged sortie trajectory qualified:** the preserved
+  diagnostic runs the shipped `[-15, -8]` site and `[[-16, 16]]` route,
+  returning after 85 ticks with 86 complete trail rows (13 through 98).
+  Root independently recomputed maximum drops: Aud/Bram/Sela one cell,
+  Odris zero. None exceeds `SAFE_FALL = 4`; no Fell, Wounded, Downed,
+  PactInvoked or TaggedIn event occurs. The earlier two sortie failures
+  therefore catch absent scene hazards, rather than a refused native wound
+  handoff. All nine scoped Eponym contracts passed, including independent
+  resolved Blow-to-Wound. Q5 owns scene recalibration and renewed six-sortie
+  qualification. No coordinates or expectations changed in Q2. External
+  `q2-contracts/trajectory.log` SHA-256 is
+  `9501ec92f26386f0f127337b89672fd8da752a7b79b0283badee48c796cb3d32`;
+  the earlier four-of-six raw result remains preserved.
 - **2026-10-10, Q10 body revision preflight:** Q2's source review finds the
   same revision rule at common base `c6bc153a`: native harm increments
   `Entity.body_revision` per successfully severed nonroot branch, while
