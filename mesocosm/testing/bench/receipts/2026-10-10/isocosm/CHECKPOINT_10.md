@@ -527,5 +527,3 @@ These are source/parser checks. No new C10 native control or statistical
 draw ran. The opt-in harm founding uses its separate life-trait generator;
 ordinary-life HEAL does not silently change that probe. Full C10, injury
 coverage and its statistical acceptance remain open.
-
-\r\n
