@@ -615,3 +615,40 @@ controls and six corrupted receipts qualify the 196-comparison historical
 20-draw reanalysis, which remains uncertified. Full 100/1000 draws, injury
 coverage, ordinary HEAL and adapter fork 812 remain open. `CHECKPOINT_10.md`
 owns the source/command receipts; original failures remain.
+
+- **2026-10-10, Q5 Ground/Room qualification:** only the resident-height
+  query, its four independent controls and Room's native spherical occupancy
+  receipt changed. Ground passed 13/13, the compiled old 0 to 24 band failed
+  the named tall-column check, byte-exact restoration passed 13/13, and Room
+  passed 4/4. Isometer workspace/all-targets and Eponym
+  workspace/all-targets/all-features compiler checks passed offline with one
+  job. The following single full Eponym remeasurement returned 65 passed,
+  33 failed, 3 ignored, nine failed targets, compared with the fresh
+  55/43/3 baseline. Ten tests now pass and no failing test name was added.
+  All 621 source/config/lock/archive hashes remained unchanged around
+  every gate; no archive bytes or native law changed. Raw logs, actual
+  command/environment/toolchain records and frozen inputs are under
+  `Code/testing/isometry/after-pass-2026-10-10/q5-eponym/`. The latest full
+  raw SHA-256 is
+  `2cdade59aa2608722c64d8b741481c3481320ab49d708ac8802a90e98845b6f3`.
+  Candidate integration and the rest of A2 remain open.
+- **2026-10-10, Q5 reached-boundary classification:** 25 remaining failures
+  are `World(Refused)`: 11 in the common timed-action fixture, six at the
+  application's `Take`, two at integer `Move`, four at `Fall` and two at
+  landing `AdvanceMotion`. These stop before their asserted behavior;
+  an inner command/receipt diagnostic remains unrun. The six producer
+  tests use the maintained Isometer scene over the tenant and stay live.
+  *Reading, not ruled:* Eponym's loose arrival reserve and native
+  part-routed spending explain a likely shared admission residual; Q10
+  owns that E3 ledger/revision bridge, and Q2's spending test established
+  native refusal parity rather than accepted spending. No wound refusal
+  follows from these coarse errors. Three residency failures now reach
+  `TooManyBricks` (6,901 versus capacities 2,047 or 1,791), without relaxing
+  the one-MiB/host budgets. Three authentic GameSave 3/4/5 archives still
+  fail outer `TimedActionSave` decoding before native admission or replay.
+  Rulings 608/641/651 govern native Isocosm readers; they do not add an
+  Eponym legacy-world migration obligation. Inspect the product's current
+  obligation and separately diagnose former grammar before a 672
+  retirement or reader repair; preserve all three files and dated history.
+  The two sortie failures retain the earlier absent-hazard diagnosis and
+  four-of-six result. No additional repair, retirement or calibration ran.

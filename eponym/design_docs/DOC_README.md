@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-10: E0/E1 done, E2 native with certification pending; E3 open. Q2 contract routing passed 9/9 and touched compiler gates; unchanged sortie remains 4/6 for Q5 scene calibration. Folded loops/memory and native/admitted revision reconciliation remain Q10. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-10: E0/E1 done, E2 native with certification pending; E3 open. Q2 contracts passed 9/9. Q5 Ground/Room candidate passed focused/control and compiler gates; fresh full Eponym result 65 passed/33 failed/3 ignored. Sortie remains 4/6; native/admitted ledger and revision reconciliation remain Q10. |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items

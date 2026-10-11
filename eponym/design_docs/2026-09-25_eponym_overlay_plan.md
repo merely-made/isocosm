@@ -672,3 +672,35 @@ Ruling 793 archived the genet document host plan to
   Eponym's crafts and deeds are keys its rules pack declares, and the
   player drives its sophont through native `Take`, one path with
   Mesocosm's directing. The families plan's Progress has the detail.
+
+- **2026-10-10, Q5 Ground/Room candidate qualified:** the resident-height
+  query now reads the highest actual solid voxel instead of the old 0 to 24
+  band. Room's occupancy receipt checks the native sphere, including solid
+  cells outside it, while retaining floor, roof, wall, stance and replay
+  checks. Ground passed 13/13; the compiled old-band control failed the
+  named tall-column invariant, exact source restoration passed 13/13, and
+  Room passed 4/4. Isometer's all-target and Eponym's all-target/all-feature
+  compiler gates passed offline. Only these three source/test paths changed;
+  the candidate awaits integration. A fresh complete Eponym run changed
+  55 passed/43 failed/3 ignored to 65/33/3, with no new failing test names.
+  Raw runs and all 621 input hashes are preserved under
+  `Code/testing/isometry/after-pass-2026-10-10/q5-eponym/`.
+- **2026-10-10, Q5 remaining boundaries:** 25 tests now stop at
+  `World(Refused)` before their intended behavior; the six current
+  `isometer::SceneProducer` tests remain live. Shared fixture setup, the
+  model's `Take`, integer `Move`, `Fall` and landing `AdvanceMotion` need
+  a bounded native command/ledger trace before their inner refusal is
+  attributed. The source still issues arrival reserve into the entity
+  ledger, while anatomical spending takes part matter; that admission
+  residual is a source-grounded hypothesis for the failures, with no inner
+  refusal named yet. It and the native/admitted revision bridge belong to Q10's E3
+  reconciliation. No native law or body allocation was changed here.
+  Three residency tests reach real atlas capacities; three actual historical
+  archives fail outer decoding before admission/replay. Earlier B1 to B4
+  remain legacy-world receipts under section 5.1, rather than proof of a
+  current GameSave 3/4/5 migration promise. Their bytes remain preserved;
+  decoding, native admission and replay need separate classification before
+  repair or retirement under 672. The two sortie failures still lack the
+  shipped route's greater-than-four-cell drop; the earlier complete
+  trajectory and four-of-six result stand. Broader E3/calibration work,
+  current save certification and pending allocation ruling remain open.

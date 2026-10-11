@@ -446,7 +446,20 @@ impl Ground {
 
     /// The highest solid y at a column, if any solid exists there.
     pub fn surface(&self, x: i32, z: i32) -> Option<i32> {
-        (0..SURFACE_BAND + 1).rev().find(|y| self.solid([x, *y, z]))
+        let bx = i16::try_from(x.div_euclid(BRICK)).ok()?;
+        let bz = i16::try_from(z.div_euclid(BRICK)).ok()?;
+        let lx = x.rem_euclid(BRICK);
+        let lz = z.rem_euclid(BRICK);
+        self.bricks
+            .range([bx, 0, i16::MIN]..=[bx, i16::MAX, i16::MAX])
+            .rev()
+            .filter(|(key, _)| key[2] == bz)
+            .find_map(|(key, brick)| {
+                (0..BRICK)
+                    .rev()
+                    .find(|y| brick.get([lx, *y, lz]) != AIR)
+                    .map(|y| i32::from(key[1]) * BRICK + y)
+            })
     }
 }
 
@@ -459,6 +472,9 @@ impl Brick {
 
 #[cfg(test)]
 mod material_tests;
+
+#[cfg(test)]
+mod surface_tests;
 
 #[cfg(test)]
 mod tests {

@@ -25,7 +25,7 @@ pub const SEED: u64 = 4_242;
 pub const EXTENT: i32 = 64;
 /// Sites a side of the world map.
 pub const SIDE: u16 = 4;
-/// Half-extent of the carved room: a nine-cubed chamber.
+/// Radius of the native spherical chamber, in cells.
 pub const ROOM_RADIUS: i32 = 4;
 /// Voxels of rock the room must keep between its ceiling and the open air.
 pub const ROOF: i32 = 2;
@@ -88,7 +88,7 @@ impl Room {
         })
     }
 
-    /// The room's interior bounds, in voxels: lowest air and highest air.
+    /// Inclusive bounds around the sphere; corner cells remain solid.
     pub fn interior(&self) -> ([i32; 3], [i32; 3]) {
         let r = self.radius;
         (
@@ -184,20 +184,32 @@ mod tests {
     fn the_room_is_a_roofed_chamber_with_a_floor_to_stand_on() {
         let room = Room::grow(SEED).expect("this seed has a hillside");
         let (low, high) = room.interior();
+        let c = room.centre;
+        let radius_squared = i64::from(2 * room.radius).pow(2);
+        let mut air = 0;
+        let mut solid = 0;
 
         for y in low[1]..=high[1] {
             for z in low[2]..=high[2] {
                 for x in low[0]..=high[0] {
-                    assert!(
-                        !room.ground.solid([x, y, z]),
-                        "rock left inside at {x},{y},{z}"
+                    let at = [x, y, z];
+                    let distance_squared: i64 = (0..3)
+                        .map(|axis| i64::from(2 * (at[axis] - c[axis]) + 1).pow(2))
+                        .sum();
+                    let inside = distance_squared <= radius_squared;
+                    assert_eq!(
+                        room.ground.solid(at),
+                        !inside,
+                        "native sphere occupancy at {at:?}"
                     );
+                    air += usize::from(inside);
+                    solid += usize::from(!inside);
                 }
             }
         }
+        assert!(air > 0 && solid > 0, "both sides of the sphere are checked");
 
         // A chamber, not a pit: rock above the ceiling and under the floor.
-        let c = room.centre;
         assert!(room.ground.solid([c[0], high[1] + 1, c[2]]), "no roof");
         assert!(room.ground.solid([c[0], low[1] - 1, c[2]]), "no floor");
         assert!(room.ground.stands(room.stance, WALKER_HEIGHT));

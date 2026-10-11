@@ -284,6 +284,24 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q5 Ground/Room integrated:** the three qualified source
+  paths and five owning doc/index updates preserve the resident-height fix,
+  four independent surface controls and native spherical Room receipt.
+  Root verified all 621 remeasurement inputs and all 33 first boundaries;
+  fresh Eponym is 65 passed, 33 failed and three ignored, with no new failures.
+  The combined main source passed all nine serial offline workspace compiler
+  gates with all 952 inputs unchanged; external Q9 workspace root review has
+  SHA-256 `87db5015ea7b320ec5ccdfffb4a8923540d403df52c7bc7adb2d59b6abb0b237`.
+  Q5's corrected classification preserves its original malformed group
+  metadata; root remeasurement review SHA-256 is
+  `6caba946709a5877b5e7fd3045dc43ca4f195190e25729c2fce8dd24d8ee48dd`.
+  Q5 is parked; Q10 reuses the contracts tree for source-only inner native
+  command/ledger/revision diagnostics. Six maintained producer checks remain
+  live; paging, actual archive obligations and sortie calibration remain open.
+  Q3 prepares its pass-start reads; 812 and empty-choice timing stay pending.
+  Q9's replay API has passed focused/control and compiler gates; its three
+  new license headers are being aligned with the existing VTT crate policy
+  before a separate checkpoint. Q6 awaits that integration and fresh freeze.
 - **2026-10-11, Q3 supply classification root-verified:** all 39 referenced
   files, 173,364 contiguous observer rows and all 267 restored native inputs
   match. Root independently confirms 68 same-pass mutated-target choices,

@@ -1444,3 +1444,22 @@ standing rule: after two real consumers, never declared in advance.
   through Browser WebGPU, passes wgpu-GL under the WebGL2-class limit profile,
   and carries synchronized 1080p Vulkan and GL tracer measurements. G4 is the
   remaining composed game-pressure gate.
+
+- **2026-10-10, Q5 resident surface query candidate:** `Ground::surface`
+  queries the highest actual resident solid voxel in a column, including
+  native heights above the former generation band and subsequent edits.
+  Four independent invariants cover tall and negative-coordinate columns,
+  deletion of upper solids, neighboring-column isolation, absent columns
+  versus virtual bedrock, and unchanged revision, bytes and projection dirt.
+  The ground suite passed 13/13. Recompiling the original 0 to 24 search
+  caused `surface_reads_resident_height_above_the_generation_band` to fail
+  with `Some(24)` versus `Some(73)`; byte-exact restoration passed 13/13.
+  Eponym's spherical Room receipt passed 4/4, and the Isometer all-target
+  and Eponym all-target/all-feature compiler gates passed offline.
+  No terrain generation, native edit law or geometry was changed. Source
+  and controls are frozen in
+  `Code/testing/isometry/after-pass-2026-10-10/q5-eponym/`; integration
+  remains pending. The newly reached Eponym residency limits are a product
+  working-set selection issue: the far page includes 6,901 full-height
+  bricks against capacities 2,047 or 1,791. Its one-budget, fixed atlas,
+  host-limit and terrain-occlusion obligations remain live.
