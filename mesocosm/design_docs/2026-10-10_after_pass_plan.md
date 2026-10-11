@@ -117,6 +117,22 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q10 body revision preflight:** Q2's source review finds the
+  same revision rule at common base `c6bc153a`: native harm increments
+  `Entity.body_revision` per successfully severed nonroot branch, while
+  Eponym stamps `BodyRecord` and admitted anatomy once per complete cut
+  batch. Two independent severings can therefore yield native plus two
+  versus local plus one. Local equipment/anatomy staleness checks compare
+  local records; this is not a new Q2 regression or an executed fixture.
+  *Reading, not ruled:* the local number behaves like an admitted snapshot
+  generation, but no explicit association with the native body revision
+  was found. Q10 must reconcile the native final address with admitted
+  anatomy, including allocation/revival refresh, and qualify a two-cut
+  handoff, save/replay and stale/current equipment checks. The external
+  `q2-contracts/native-revision-followup.md` preserves exact source sites;
+  SHA-256 `ffa985d8ec28974da7c171f93a1f833c342846041cc94980d97b0d9a3dd84caa`.
+  Root compared current and common-base source; Q2's frozen inputs stayed
+  unchanged and no Cargo ran for this review.
 - **2026-10-10, Q6 protocol preflight:** source inspection only. The native
   contract work leaves `isonetry::PROTOCOL_VERSION` at four and the iroh
   ALPN at `isometry/session/v4`. Their source contract requires both to

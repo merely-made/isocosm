@@ -284,6 +284,20 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q8 bounded C10 controls qualified:** the refreshed
+  thirty-one-input envelope passed 32 harm tests, three probe-owned
+  conservation controls and the native workspace/all-target compiler check.
+  All ten remaining planted faults compiled and failed at their intended
+  assertions. Each mutation restored its exact source bytes; root verified
+  the final input hashes and every referenced raw log/receipt/metadata hash.
+  Complete external `isocosm/q8-c10-bounded-batch.json` SHA-256 is
+  `207e05ffc0f9ce68341e01000696f6e83f528a8e82a19e8edf8b0bb515ee1a5a`.
+  C10 release pilots/full draws remain unrun, ordinary HEAL remains deferred,
+  and 812 stays pending. Q8 released Cargo; Q2 now owns its remaining nine
+  Eponym contract tests, unchanged-scene diagnostic and two compiler gates.
+  Q3's frozen period-fourteen seed-zero pilot follows. Q10 also carries the
+  source-supported native/local multi-sever revision reconciliation, already
+  present at the Q2 common base. No new isolated resource was added.
 - **2026-10-10, Q6 preflight recorded:** the current protocol version and
   ALPN both remain four. Existing envelope controls exercise an unsupported
   future version and a matching-version positive; Q2's current-wire tests
