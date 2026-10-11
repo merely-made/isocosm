@@ -284,6 +284,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, next bounded gates:** Q5's fresh baseline is 55 passed,
+  43 failed and three ignored; all 620 inputs are root-verified unchanged.
+  Its first source repair targets the truncated shared surface query and
+  stale cube-room receipt. Q3 holds the sole Cargo turn for the separately
+  frozen supply observer: 269 inputs, 261 unchanged originals and eight
+  modified/added test-only paths. The root audited every byte in its 339-entry
+  originals archive and ready source archive. Fresh candidate seed zero must
+  reproduce exact Genesis, state, readings, Session and Outcome bytes before
+  the original-rate seed-zero control; conservation and both replay modes stay
+  required. Exact restoration of all 267 original inputs precedes its separate
+  native compiler gate. Q8's Python controls stopped at an interpreter error;
+  its narrow helper-name repair must freeze separately before retrying. Q3,
+  Q5 and Q8 are the three lanes; fork 812 and all full A1/C10 gates remain open.
 - **2026-10-10, Q5 launched; Q3/Q8 diagnostics prepared:** Q2 is pushed at
   `21edca66`; its final external `q2-root-integration.json` has SHA-256
   `46bea55360919bcc4416434591e2cb79cebca2b7ed9319a5b423c07d96e230e8`.

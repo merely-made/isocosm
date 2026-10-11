@@ -117,6 +117,27 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q5 fresh failure classification:** the integrated consumer
+  source at `21edca66` yields 55 passing, 43 failing and three ignored tests,
+  with ten failed targets. Root rehashed all 620 source/config/archive inputs
+  before, after and against the clean worktree. Thirty-five failures stop at
+  setup: the live `Ground::surface` query scans only through height 24 while
+  native terrain has taller solid voxels. Six producer tests use the current
+  tenant renderer and retain their live invariants. One room receipt assumes
+  cube carving where native `WorldIntent::Carve` uses a sphere; four remaining
+  fall receipts need real terrain calibration. Three actual consumer archives
+  fail outer decoding before native admission or replay. A bounded surface
+  query/room receipt source repair is granted, with later Cargo gates withheld
+  until review. Archive bytes remain immutable; rulings 608/641/651's native
+  reader obligations do not imply every deleted consumer grammar must migrate.
+  External `q5-eponym/baseline-root-review.json` records the root audit.
+- **2026-10-10, Q8 verifier repair stopped before reanalysis:** thirteen
+  fixed-vector and enumeration controls passed, but the first corrupted receipt
+  hit a Python `UnboundLocalError`: an existing local `draw` variable shadows
+  the new seed helper. This interpreter error is not a caught corruption.
+  The failed source and raw attempt are retained separately. Only a helper
+  rename and separately frozen control envelope are granted next; no changed
+  native model, thresholds, historical pilot status or larger draw run follows.
 - **2026-10-10, Q3 food-access reconstruction:** unchanged saved-native
   flows and accepted watches reconstruct all 299 non-participant final
   ledgers, places and alive flags and three site accounts exactly. At
